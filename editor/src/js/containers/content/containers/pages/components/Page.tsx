@@ -1,17 +1,19 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import clsx from "clsx";
-import marked from "marked";
-import { ResizableBox } from "react-resizable";
-import "react-resizable/css/styles.css";
-import {PageState} from "../reducers/State";
-import {DOM} from "../../../../../utils";
-import {getHistoryInstance} from "../../../../../history";
-import PageService from "../../../../../services/PageService";
-import {addContentMarker, getEditorSize} from "../../../utils";
-import {ContentMode} from "../../../../../model";
-import BlockEditor from "../../blocks/components/BlockEditor";
+import React, {
+  useCallback, useEffect, useRef, useState
+} from 'react';
+import clsx from 'clsx';
+import marked from 'marked';
+import { ResizableBox } from 'react-resizable';
+import 'react-resizable/css/styles.css';
+import { PageState } from '../reducers/State';
+import { DOM } from '../../../../../utils';
+import { getHistoryInstance } from '../../../../../history';
+import PageService from '../../../../../services/PageService';
+import { addContentMarker, getEditorSize } from '../../../utils';
+import { ContentMode } from '../../../../../model';
+import BlockEditor from '../../blocks/components/BlockEditor';
 
-const blocksType = ["block", "flex", "grid", "table"];
+const blocksType = ['block', 'flex', 'grid', 'table'];
 
 interface PageProps {
   page: PageState;
@@ -27,7 +29,7 @@ interface PageProps {
   editMode?: any;
 }
 
-const pluginInitEvent = new Event("plugins:init");
+const pluginInitEvent = new Event('plugins:init');
 
 export const Page: React.FC<PageProps> = ({
   page,
@@ -70,7 +72,7 @@ export const Page: React.FC<PageProps> = ({
     return () => document.removeEventListener('scroll', onScroll);
   }, [blockId]);
 
-  const handleContainerClass = useCallback(value => {
+  const handleContainerClass = useCallback((value) => {
     const body = document.getElementsByTagName('body');
     if (value) body[0].classList.add('overflow-hidden');
     else body[0].classList.remove('overflow-hidden');
@@ -87,7 +89,7 @@ export const Page: React.FC<PageProps> = ({
 
     setPosition(getEditorSize(pageNode.getBoundingClientRect()));
 
-    setDraftContent(page.contentMode === "html" ? marked(page.content || "") : page.content);
+    setDraftContent(page.contentMode === 'html' ? marked(page.content || '') : page.content);
     toggleEditMode(true);
     getHistoryInstance().push(`/page/${page.id}`);
     handleContainerClass(true);
@@ -95,7 +97,7 @@ export const Page: React.FC<PageProps> = ({
 
   const onClickBlock = (e, DOMBlock, id) => {
     e.preventDefault();
-    const block = blocks.filter(elem => elem.id === id)[0];
+    const block = blocks.filter((elem) => elem.id === id)[0];
 
     if (!block) return null;
     setDOMNode(DOMBlock);
@@ -104,7 +106,7 @@ export const Page: React.FC<PageProps> = ({
 
     setBlockId(id);
     setPosition(getEditorSize(DOMBlock.getBoundingClientRect()));
-    setDraftContent(block.contentMode === "html" ? marked(block.content || "") : block.content);
+    setDraftContent(block.contentMode === 'html' ? marked(block.content || '') : block.content);
 
     toggleEditMode(true);
     handleContainerClass(true);
@@ -125,12 +127,12 @@ export const Page: React.FC<PageProps> = ({
     if (pageNode) {
       pageNode.addEventListener('click', (e) => onClickArea(e, pageNode));
     } else {
-      const defaultPageUrl = page.urls.find(url => url.isDefault);
+      const defaultPageUrl = page.urls.find((url) => url.isDefault);
 
       const pageUrl = defaultPageUrl ? defaultPageUrl.link : PageService.generateBasetUrl(page).link;
 
       if (
-        !page.urls.map(url => url.link).includes(document.location.pathname)
+        !page.urls.map((url) => url.link).includes(document.location.pathname)
         && pageUrl !== document.location.pathname
       ) {
         openPage(pageUrl);
@@ -146,13 +148,13 @@ export const Page: React.FC<PageProps> = ({
     };
   }, [page]);
 
-  const replacePageHtml = html => {
+  const replacePageHtml = (html) => {
     const pageNode = DOM.findPage(page.title);
     if (!pageNode) return;
     pageNode.innerHTML = html;
   };
 
-  useEffect(( ) => {
+  useEffect(() => {
     setDraftContent(page.content);
   }, [page.id]);
 
@@ -161,13 +163,13 @@ export const Page: React.FC<PageProps> = ({
     const DOMBlocks = DOM.findBlocks();
 
     if (DOMBlocks) {
-      for (let key in DOMBlocks) {
+      for (const key in DOMBlocks) {
         const DOMBlock = DOMBlocks[+key];
 
         if (DOMBlock) {
-          let displaValue = "inline";
+          let displaValue = 'inline';
 
-          for (let key in DOMBlock.children) {
+          for (const key in DOMBlock.children) {
             const child = DOMBlock.children[+key];
             if (!child) continue;
 
@@ -176,16 +178,15 @@ export const Page: React.FC<PageProps> = ({
 
             const displayProperty = styleDeclaration.getPropertyValue('display');
             if (blocksType.includes(displayProperty)) {
-              displaValue = "block";
+              displaValue = 'block';
               break;
             }
           }
 
-          if (displaValue === "inline") DOMBlock.style.display = "inline";
+          if (displaValue === 'inline') DOMBlock.style.display = 'inline';
 
           DOMBlock && DOMBlock.addEventListener('click', (e) => (
-            onClickBlock(e, DOMBlock, +DOMBlock.getAttribute("data-block-id")))
-          )
+            onClickBlock(e, DOMBlock, +DOMBlock.getAttribute('data-block-id'))));
         }
       }
     }
@@ -198,7 +199,7 @@ export const Page: React.FC<PageProps> = ({
           node.innerHTML = block.renderHTML;
         });
 
-        needClining = true
+        needClining = true;
       }
     });
 
@@ -208,11 +209,10 @@ export const Page: React.FC<PageProps> = ({
       // toggleEditMode(false);
 
       if (DOMBlocks) {
-        for (let key in DOMBlocks) {
+        for (const key in DOMBlocks) {
           const DOMBlock = DOMBlocks[+key];
           DOMBlock && DOMBlock.removeEventListener('click', (e) => (
-            onClickBlock(e, DOMBlock, +DOMBlock.getAttribute("data-block-id")))
-          )
+            onClickBlock(e, DOMBlock, +DOMBlock.getAttribute('data-block-id'))));
         }
       }
     };
@@ -235,7 +235,7 @@ export const Page: React.FC<PageProps> = ({
     toggleEditMode(false);
 
     if (blockId) {
-      const block = blocks.filter(elem => elem.id === blockId)[0];
+      const block = blocks.filter((elem) => elem.id === blockId)[0];
       onSaveBlock(blockId, addContentMarker(draftContent, block.contentMode));
     } else {
       onSave(page.id, addContentMarker(draftContent, page.contentMode));
@@ -251,34 +251,33 @@ export const Page: React.FC<PageProps> = ({
   };
 
   const onResize = useCallback((e, { handle }) => {
-
     const rect = blockWrapperRef && blockWrapperRef.current && blockWrapperRef.current.getBoundingClientRect();
 
     const top = oldPosition.top - e.clientY;
     const left = oldPosition.left - e.clientX;
 
     if (handle === 'sw') {
-      setPosition(prev => ({
+      setPosition((prev) => ({
         ...prev,
         width: rect.width + left,
         height: rect.height - top,
         left: rect.left - left,
       }));
     } else if (handle === 'se') {
-      setPosition(prev => ({
+      setPosition((prev) => ({
         ...prev,
         width: rect.width - left,
         height: rect.height - top,
       }));
     } else if (handle === 'ne') {
-      setPosition(prev => ({
+      setPosition((prev) => ({
         ...prev,
         width: rect.width - left,
         height: rect.height + top,
         top: rect.top - top,
       }));
     } else {
-      setPosition(prev => ({
+      setPosition((prev) => ({
         ...prev,
         width: rect.width + left,
         height: rect.height + top,
@@ -293,7 +292,7 @@ export const Page: React.FC<PageProps> = ({
     });
   }, [oldPosition]);
 
-  const onResizeStart = useCallback(e => {
+  const onResizeStart = useCallback((e) => {
     setOldPosition({
       top: e.clientY,
       left: e.clientX,
@@ -304,23 +303,23 @@ export const Page: React.FC<PageProps> = ({
     handleContainerClass(!fullscreen);
   }, [fullscreen]);
 
-  const block = blockId ? blocks.filter(elem => elem.id === blockId)[0] : null;
+  const block = blockId ? blocks.filter((elem) => elem.id === blockId)[0] : null;
   const contentMode = block ? block.contentMode : page.contentMode;
 
   const wrapperStyles = fullscreen ? {} : {
     width: `${position.width}px`,
     height: `${position.height}px`,
-    position: "absolute",
+    position: 'absolute',
     top: `${scrollValue || position.top}px`,
     left: `${position.left}px`,
-    bottom: "auto",
+    bottom: 'auto',
     zIndex: 9999,
   };
 
   return (
     <div
       ref={blockWrapperRef}
-      className={clsx("h-100 w-100", { "fullscreen-page-block": fullscreen })}
+      className={clsx('h-100 w-100', { 'fullscreen-page-block': fullscreen })}
       style={wrapperStyles as any}
     >
       <ResizableBox

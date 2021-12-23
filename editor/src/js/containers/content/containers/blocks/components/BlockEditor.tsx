@@ -3,14 +3,14 @@
 * No copying or use of this code is allowed without permission in writing from ish.
 */
 
-import React from "react";
-import clsx from "clsx";
-import {Paper} from "@material-ui/core";
-import MarkdownEditor from "../../../../../common/components/editor/MarkdownEditor";
-import Editor from "../../../../../common/components/editor/HtmlEditor";
-import {ContentMode} from "../../../../../model";
-import ContentModeSwitch from "../../../../../common/components/ContentModeSwitch";
-import CustomButton from "../../../../../common/components/CustomButton";
+import React from 'react';
+import clsx from 'clsx';
+import { Paper } from '@material-ui/core';
+import MarkdownEditor from '../../../../../common/components/editor/MarkdownEditor';
+import Editor from '../../../../../common/components/editor/HtmlEditor';
+import { ContentMode } from '../../../../../model';
+import ContentModeSwitch from '../../../../../common/components/ContentModeSwitch';
+import CustomButton from '../../../../../common/components/CustomButton';
 
 interface Props {
   mode: ContentMode;
@@ -26,14 +26,14 @@ interface Props {
   onFullscreen?: () => void;
 }
 
-const BlockEditor: React.FC<Props> = props => {
+const BlockEditor: React.FC<Props> = (props) => {
   const {
     mode, content, setContent, moduleId, setContentMode, handleSave, handleCancel, position, enabledFullscreen, fullscreen, onFullscreen
   } = props;
 
   const editor = () => {
     switch (mode) {
-      case "md": {
+      case 'md': {
         return (
           <MarkdownEditor
             height={position ? position.height - 67 - 45 : window.innerHeight - 30 - 48 - 45 - 51}
@@ -42,8 +42,8 @@ const BlockEditor: React.FC<Props> = props => {
           />
         );
       }
-      case "textile":
-      case "html":
+      case 'textile':
+      case 'html':
       default: {
         return (
           <Editor
@@ -60,8 +60,9 @@ const BlockEditor: React.FC<Props> = props => {
   return (
     <Paper className="p-1 h-100">
       <div className={
-        clsx("editor-wrapper", (mode === "html" || mode === "textile") && "ace-wrapper")
-      }>
+        clsx('editor-wrapper', (mode === 'html' || mode === 'textile') && 'ace-wrapper')
+      }
+      >
         <ContentModeSwitch
           contentModeId={mode}
           moduleId={moduleId}
@@ -74,7 +75,7 @@ const BlockEditor: React.FC<Props> = props => {
       </div>
 
       <div className="mt-3">
-        <CustomButton styleType="cancel" styles={"mr-2"} onClick={handleCancel}>
+        <CustomButton styleType="cancel" styles="mr-2" onClick={handleCancel}>
           Cancel
         </CustomButton>
         <CustomButton styleType="submit" onClick={handleSave}>
