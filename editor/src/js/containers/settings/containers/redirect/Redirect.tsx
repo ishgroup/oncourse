@@ -15,7 +15,6 @@ import { RedirectSettingsState } from './reducers/State';
 import { State } from '../../../../reducers/state';
 import CustomButton from '../../../../common/components/CustomButton';
 import { RedirectItem as RedirectItemModel } from '../../../../../../build/generated-sources';
-import { validateRedirect } from '../../../../common/utils/validation';
 
 const styles: any = (theme) => ({
   redirectWrapper: {
@@ -40,6 +39,8 @@ interface Props {
   redirect: RedirectSettingsState;
   fetching: boolean;
 }
+
+const validateFrom = (from: string) => (/^https?/.test(from) ? 'URL has invalid format' : undefined);
 
 const Redirect: React.FC<Props> = (
   {
@@ -74,7 +75,7 @@ const Redirect: React.FC<Props> = (
           ...r,
           [key]: e.target.value,
           submitted: false,
-          error: checkUniqueRule(r, e.target.value) || validateRedirect(e.target.value),
+          error: checkUniqueRule(r, e.target.value) || (key === 'from' ? validateFrom(e.target.value) : undefined),
         });
       }
       return ({ ...r, submitted: false });
