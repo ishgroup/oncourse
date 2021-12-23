@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import clsx from "clsx";
 import marked from "marked";
 import { ResizableBox } from "react-resizable";
@@ -54,6 +54,11 @@ export const Page: React.FC<PageProps> = ({
     bottom: 0,
   });
   const [fullscreen, setFullscreen] = useState<boolean>(true);
+  const [oldPosition, setOldPosition] = useState({
+    top: 0,
+    left: 0,
+  });
+  const blockWrapperRef = useRef(null);
 
   useEffect(() => {
     toggleEditMode(false);
@@ -245,12 +250,54 @@ export const Page: React.FC<PageProps> = ({
     handleContainerClass(false);
   };
 
-  const onResize = useCallback((event, {node, handle, size}) => {
-    setPosition(prev => ({
-      ...prev,
-      width: size.width,
-      height: size.height,
-    }));
+  const onResize = useCallback((e, { handle }) => {
+
+    const rect = blockWrapperRef && blockWrapperRef.current && blockWrapperRef.current.getBoundingClientRect();
+
+    const top = oldPosition.top - e.clientY;
+    const left = oldPosition.left - e.clientX;
+
+    if (handle === 'sw') {
+      setPosition(prev => ({
+        ...prev,
+        width: rect.width + left,
+        height: rect.height - top,
+        left: rect.left - left,
+      }));
+    } else if (handle === 'se') {
+      setPosition(prev => ({
+        ...prev,
+        width: rect.width - left,
+        height: rect.height - top,
+      }));
+    } else if (handle === 'ne') {
+      setPosition(prev => ({
+        ...prev,
+        width: rect.width - left,
+        height: rect.height + top,
+        top: rect.top - top,
+      }));
+    } else {
+      setPosition(prev => ({
+        ...prev,
+        width: rect.width + left,
+        height: rect.height + top,
+        top: rect.top - top,
+        left: rect.left - left,
+      }));
+    }
+
+    setOldPosition({
+      top: e.clientY,
+      left: e.clientX,
+    });
+  }, [oldPosition]);
+
+  const onResizeStart = useCallback(e => {
+    setOldPosition({
+      top: e.clientY,
+      left: e.clientX,
+    });
   }, []);
 
   const onFullscreen = useCallback(() => {
@@ -266,11 +313,13 @@ export const Page: React.FC<PageProps> = ({
     position: "absolute",
     top: `${scrollValue || position.top}px`,
     left: `${position.left}px`,
-    bottom: "auto"
+    bottom: "auto",
+    zIndex: 9999,
   };
 
   return (
     <div
+      ref={blockWrapperRef}
       className={clsx("h-100 w-100", { "fullscreen-page-block": fullscreen })}
       style={wrapperStyles as any}
     >
@@ -278,6 +327,8 @@ export const Page: React.FC<PageProps> = ({
         width={position.width}
         height={position.height}
         onResize={onResize}
+        onResizeStart={onResizeStart}
+        resizeHandles={['sw', 'se']}
       >
         {editMode && (
           <BlockEditor
