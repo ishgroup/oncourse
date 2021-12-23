@@ -77,13 +77,16 @@ class UpdateRedirects extends AbstractUpdate<Redirects> {
     UpdateRedirects validate() {
 
         ISHUrlValidator validator = new ISHUrlValidator()
-        List<RedirectItem> inccorectRedirect = (resourceToSave as Redirects).rules.findAll {
-            !validator.isValidPageRedirect(it.from) || !validator.isValidPageRedirect(it.to)
+        List<String> inccorectRedirect = new ArrayList<>();
+
+        for (RedirectItem redirectItem: (resourceToSave as Redirects).rules) {
+            if (!validator.isValidFromPageRedirect(redirectItem.from)) inccorectRedirect.add(redirectItem.from)
+            if (!validator.isValidToPageRedirect(redirectItem.to)) inccorectRedirect.add(redirectItem.to)
         }
 
         if (!inccorectRedirect.empty) {
-            error = inccorectRedirect.size() == 1 ? "Redirect ${inccorectRedirect.get(0).to} have invalid format" :
-                    "Redirect's ${inccorectRedirect.collect { redirect -> redirect.to}} have invalid format"
+            error = inccorectRedirect.size() == 1 ? "Redirect ${inccorectRedirect.get(0)} have invalid format" :
+                    "Redirect's ${inccorectRedirect.collect { redirect -> redirect}} have invalid format"
         }
         return this
     }

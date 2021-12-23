@@ -7,8 +7,7 @@ import java.util.regex.Pattern;
 
 public class ISHUrlValidator extends UrlValidator {
 
-    private static final String PAGE_PATH_REGEX = "/[a-zA-Z0-9_/&\\-]*";
-    private static final String PAGE_REDIRECT_REGEX = "/[a-zA-Z0-9_/\\-.?=&+%]*";
+    private static final String PAGE_PATH_REGEX = "/[a-zA-Z0-9_/?&\\-]*";
 
     public ISHUrlValidator() {
         super();
@@ -33,7 +32,17 @@ public class ISHUrlValidator extends UrlValidator {
     public boolean isValidPagePath(String path) {
         return StringUtils.trimToNull(path) != null && Pattern.compile(PAGE_PATH_REGEX).matcher(path).matches();
     }
-    public boolean isValidPageRedirect(String path) {
-        return StringUtils.trimToNull(path) != null &&  Pattern.compile(PAGE_REDIRECT_REGEX).matcher(path).matches();
+    public boolean isValidFromPageRedirect(String from) {
+        UrlValidator urlValidator = new UrlValidator();
+        return StringUtils.trimToNull(from) != null && urlValidator.isValid("https://127.0.0.1:0000" + from);
     }
+
+    public boolean isValidToPageRedirect(String to) {
+        UrlValidator urlValidator = new UrlValidator();
+        return to.startsWith("http") || to.startsWith("www:") ?
+                StringUtils.trimToNull(to) != null && urlValidator.isValid(to) :
+                StringUtils.trimToNull(to) != null && urlValidator.isValid("https://127.0.0.1:0000" + to);
+
+    }
+
 }
