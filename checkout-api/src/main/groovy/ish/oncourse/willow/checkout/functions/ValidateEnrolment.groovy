@@ -35,7 +35,7 @@ class ValidateEnrolment extends Validate<Enrolment>{
             this
         }
 
-        if (!courseClass.isWebVisible || !courseClass.isActive) {
+        if (!courseClass.isActive) {
             errors << "Unfortunately class ${getClassName(courseClass)} is not available for enrolling. Please return to website and select another class or add yourself to the waiting list.".toString()
             this
         }
@@ -50,14 +50,14 @@ class ValidateEnrolment extends Validate<Enrolment>{
             this
         }
 
-        String  age = new GetPreference(college, Preferences.STOP_WEB_ENROLMENTS_AGE, context).value
-        String type = new GetPreference(college, Preferences.STOP_WEB_ENROLMENTS_AGE_TYPE, context).value
-        if (!new CheckClassAge().courseClass(courseClass).classAge(ClassAge.valueOf(age, type)).check()) {
-            errors << "Unfortunately you just missed out. The class ${getClassName(courseClass)} was removed from your shopping basket since enrolments are now closed for that class. Please select another class from this course or join the waiting list. <a href=\"/course/$courseClass.course.code\">[ Show course ]</a>".toString()
-            this
-        }
+//        String  age = new GetPreference(college, Preferences.STOP_WEB_ENROLMENTS_AGE, context).value
+//        String type = new GetPreference(college, Preferences.STOP_WEB_ENROLMENTS_AGE_TYPE, context).value
+//        if (!new CheckClassAge().courseClass(courseClass).classAge(ClassAge.valueOf(age, type)).check()) {
+//            errors << "Unfortunately you just missed out. The class ${getClassName(courseClass)} was removed from your shopping basket since enrolments are now closed for that class. Please select another class from this course or join the waiting list. <a href=\"/course/$courseClass.course.code\">[ Show course ]</a>".toString()
+//            this
+//        }
       
-        validateDateOfBirth(courseClass, student)
+//        validateDateOfBirth(courseClass, student)
 
         this
     }
