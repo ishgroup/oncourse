@@ -51,6 +51,8 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	private static final Logger logger = LogManager.getLogger()
 	public static final String COURSE_STATUS = 'status'
 	public static final String COURSE_DATA_COLLECTION_RULE_ID = 'dataCollectionRuleId'
+	public static final String COURSE_ALLOW_WAITING_LIST = "allowWaitingLists"
+
 
 	@Override
 	void postAdd() {

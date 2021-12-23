@@ -5,9 +5,7 @@
 
 import React, { useCallback, useEffect, useMemo } from "react";
 import Grid from "@mui/material/Grid";
-import {
- arrayInsert, arrayRemove, change, initialize
-} from "redux-form";
+import { arrayInsert, arrayRemove, change, initialize } from "redux-form";
 import { RouteComponentProps, withRouter } from "react-router";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
@@ -472,7 +470,6 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         <Uneditable
           label="Source"
           value={values.source}
-          money
         />
       </Grid>
 
