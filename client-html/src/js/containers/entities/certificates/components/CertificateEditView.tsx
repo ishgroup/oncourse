@@ -182,7 +182,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
 
   const searchOutcomes = useCallback(
     search => {
-      setCertificateOutcomesSearch(`~"${search}" and status not is STATUS_NOT_SET and status not is null`);
+      setCertificateOutcomesSearch(`(module.nationalCode contains "${search}" or module.title contains "${search}") and status not is STATUS_NOT_SET and status not is null`);
       getCertificateOutcomes(values.studentContactId);
     },
     [values.studentContactId]
