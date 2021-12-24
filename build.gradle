@@ -7,7 +7,7 @@
  */
 buildscript {
 	ext {
-		log4j2Version = '2.16.0'
+		log4j2Version = '2.17.0'
 		cayenneVersion = '4.1'
 		jettyVersion = '10.0.7'
         mariadbVersion = '2.7.4'
