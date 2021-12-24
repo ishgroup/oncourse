@@ -13,6 +13,7 @@ export type ManualType =
   | "advancedSetup_Help"
   | "applications"
   | "assessment"
+  | "batchpayments_batchpayments"
   | "certification"
   | "classes"
   | "concessions_creatingMemberships"
