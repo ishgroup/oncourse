@@ -2,7 +2,7 @@ import React from 'react';
 import { Checkbox, FormControlLabel, IconButton } from '@material-ui/core';
 import clsx from 'clsx';
 import { withStyles } from '@material-ui/core/styles';
-import AddIcon from '@material-ui/icons/Add';
+import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MenuIcon from '@material-ui/icons/Menu';
 import PageService from '../../../../../services/PageService';
@@ -42,9 +42,10 @@ const styles: any = (theme: AppTheme) => ({
     fontFamily: theme.typography.fontFamily,
     fontSize: '14px',
     lineHeight: 1.2,
-    minHeight: '22px',
+    padding: theme.spacing(.375, 0, .375, 2.5),
     color: theme.palette.text.secondary,
     fontWeight: 300,
+    cursor: 'pointer',
     '&::after': {
       display: 'block',
       visibility: 'hidden',
@@ -65,10 +66,16 @@ const styles: any = (theme: AppTheme) => ({
       top: '1px',
     },
     '&:hover': {
-      cursor: 'pointer',
+      color: theme.palette.primary.main,
+      fontWeight: theme.typography.fontWeightRegular,
       '&::after': {
         visibility: 'visible',
         opacity: 0.85,
+      },
+      "& $arrowRight": {
+        left: -2,
+        opacity: 1,
+        visibility: 'visible',
       },
     },
   },
@@ -76,10 +83,29 @@ const styles: any = (theme: AppTheme) => ({
     color: theme.palette.primary.main,
     cursor: 'default',
     '&:hover': {
+      fontWeight: 300,
       '&::after': {
         display: 'none',
       },
     },
+    "& $arrowRight": {
+      left: -2,
+      opacity: 1,
+      visibility: 'visible',
+    },
+  },
+  arrowRight: {
+    position: 'absolute',
+    left: -16,
+    top: '50%',
+    transform: 'translateY(-50%)',
+    fontSize: "0.875rem",
+    opacity: 0,
+    visibility: 'hidden',
+    transition: theme.transitions.create('all', {
+      duration: theme.transitions.duration.standard,
+      easing: theme.transitions.easing.easeInOut,
+    }),
   },
   removeButton: {
     marginRight: theme.spacing(2),
@@ -87,13 +113,6 @@ const styles: any = (theme: AppTheme) => ({
   removeIcon: {
     color: 'rgba(0, 0, 0, 0.2)',
     fontSize: '1rem',
-  },
-  addIconButton: {
-    position: 'relative',
-    bottom: '-5px',
-  },
-  addIcon: {
-    fontSize: '1.2rem',
   },
   sideBarSetting: {
     padding: '10px 20px',
@@ -117,7 +136,7 @@ const styles: any = (theme: AppTheme) => ({
   },
   iconButton: {
     display: 'none',
-  }
+  },
 });
 
 interface Props {
@@ -294,9 +313,10 @@ class PageSettings extends React.PureComponent<Props, State> {
               <div className="centeredFlex justify-content-space-between relative">
                 <div
                   onClick={() => urls.find((url) => url.isDefault) && this.onSetDefaultUrl(defaultPageUrl)}
-                  className={clsx(classes.linkTitle, !urls.find((url) => url.isDefault) && classes.linkDefault)}
+                  className={clsx('centeredFlex', classes.linkTitle, !urls.find((url) => url.isDefault) && classes.linkDefault)}
                   title={defaultPageUrl.link}
                 >
+                  <ArrowForwardRoundedIcon color="inherit" fontSize="small" className={classes.arrowRight} />
                   {defaultPageUrl.link}
                 </div>
               </div>
@@ -305,8 +325,9 @@ class PageSettings extends React.PureComponent<Props, State> {
                 <div className={clsx(classes.linkWrapper, 'centeredFlex justify-content-space-between relative')} key={index}>
                   <div
                     onClick={() => !url.isDefault && this.onSetDefaultUrl(url)}
-                    className={clsx(classes.linkTitle, url.isDefault && classes.linkDefault)}
+                    className={clsx('centeredFlex', classes.linkTitle, url.isDefault && classes.linkDefault)}
                   >
+                    <ArrowForwardRoundedIcon color="inherit" fontSize="small" className={classes.arrowRight} />
                     {url.link}
                   </div>
 
@@ -322,9 +343,11 @@ class PageSettings extends React.PureComponent<Props, State> {
               ))}
             </div>
 
-            <div className="centeredFlex w-100">
+            <div className="centeredFlex w-100 mb-2">
               <EditInPlaceField
-                label="New Page Url"
+                hidePlaceholderInEditMode
+                disableInputOffsets
+                hideLabel
                 type="text"
                 name="newLink"
                 id="newLink"
@@ -340,14 +363,11 @@ class PageSettings extends React.PureComponent<Props, State> {
                     this.onChange(e, 'newLink');
                   },
                   onFocus: stubFunction,
-                  onBlur: stubFunction,
+                  onBlur: this.onAddNewUrl,
                   value: newLink,
                 }}
                 className="w-100"
               />
-              <IconButton size="small" disabled={!newLink || Boolean(urlError)} onClick={this.onAddNewUrl} className={classes.addIconButton} color="primary">
-                <AddIcon className={classes.addIcon} />
-              </IconButton>
             </div>
 
             <FormControlLabel
