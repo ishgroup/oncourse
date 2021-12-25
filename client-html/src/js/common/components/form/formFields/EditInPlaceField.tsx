@@ -654,6 +654,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                 }}
                 {...InputLabelProps}
                 shrink={Boolean(label || input.value)}
+                htmlFor={`input-${input.name}`}
               >
                 {labelContent}
               </InputLabel>
@@ -664,6 +665,8 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
               ? (
                 <div className={clsx(isInline && "d-inline", label && 'mt-2', classes.selectMainWrapper)}>
                   <Select
+                    id={input.name}
+                    name={input.name}
                     value={multiple
                       ? input.value || []
                       : returnType === "object"
@@ -721,6 +724,8 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                       <Edit />
                     </InputAdornment>
                   )}
+                  id={`input-${input.name}`}
+                  name={input.name}
                 />
               )}
             <FormHelperText
