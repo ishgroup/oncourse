@@ -1,12 +1,13 @@
 import * as React from "react";
-import { mount } from 'enzyme';
+import { render as testRender, screen as testScreen } from '@testing-library/react';
+import * as testUserEvent from '@testing-library/user-event';
 import { mockedAPI, TestEntry } from "../TestEntry";
 
 interface Props {
   entity: string;
   View: (props: any) => any;
   record: (mockedApi: any) => object;
-  render: (wrapper: any, initialValues: any, shallow?: any) => any;
+  render: ({ screen, initialValues, userEvent }) => void;
   defaultProps?: ({ entity, initialValues, mockedApi }) => object;
   beforeFn?: () => void;
 }
@@ -31,7 +32,7 @@ export const defaultComponents: ({
   }
 
   it(`${entity} components should render with given values`, async () => {
-    const wrapper = await mount(
+    await testRender(
       <TestEntry>
         <MockedEditView />
       </TestEntry>,
@@ -39,7 +40,11 @@ export const defaultComponents: ({
 
     return new Promise<void>(resolve => {
       setTimeout(() => {
-        render(wrapper.render(), initialValues, wrapper);
+        render({
+          screen: testScreen,
+          initialValues,
+          userEvent: testUserEvent
+        });
         resolve();
       }, 2000);
     });

@@ -378,11 +378,14 @@ const EditInPlaceDateTimeField: React.FC<any> = (
                   shrink: classes.labelShrink
                 }}
                 shrink={true}
+                htmlFor={`input-${input.name}`}
               >
                 {labelContent}
               </InputLabel>
             )}
               <Input
+                id={`input-${input.name}`}
+                name={input.name}
                 type="text"
                 onKeyPress={onKeyPress}
                 onChange={onInputChange}
@@ -417,7 +420,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
                       {type === "time" ? <QueryBuilder fontSize="inherit" color="inherit" /> : <DateRange color="inherit" fontSize="inherit" />}
                     </IconButton>
                   </InputAdornment>
-              )}
+                )}
               />
               <FormHelperText
                 classes={{
