@@ -101,7 +101,7 @@ class EntityApiImpl implements EntityApi {
                         }
                 )
 
-        var records = query.select(context)
+        List<? extends CayenneDataObject> records = query.select(context)
         response.pageSize = new BigDecimal(Math.min(response.pageSize.intValue(), records.size()))
         populateResponce(records, response, response.columns, null)
         return response

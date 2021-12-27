@@ -113,6 +113,9 @@ class TagFunctions {
         put(CourseClass.simpleName, TaggableClasses.COURSE_CLASS)
         put(Message.simpleName, TaggableClasses.MESSAGE)
         put(ProductItem.simpleName, TaggableClasses.PRODUCT_ITEM)
+        put(Article.simpleName, TaggableClasses.ARTICLE)
+        put(Voucher.simpleName, TaggableClasses.VOUCHER)
+        put(Membership.simpleName, TaggableClasses.MEMBERSHIP)
         put(ArticleProduct.simpleName, TaggableClasses.ARTICLE_PRODUCT)
         put(VoucherProduct.simpleName, TaggableClasses.VOUCHER_PRODUCT)
         put(MembershipProduct.simpleName, TaggableClasses.MEMBERSHIP_PRODUCT)
@@ -121,6 +124,7 @@ class TagFunctions {
     private static final Map<TaggableClasses, TaggableClasses[]> additionalTaggableClasses =
             new HashMap<TaggableClasses, TaggableClasses[]>() {{
         put(TaggableClasses.CONTACT, [TaggableClasses.STUDENT, TaggableClasses.TUTOR] as TaggableClasses[])
+        put(TaggableClasses.PRODUCT_ITEM, [TaggableClasses.ARTICLE, TaggableClasses.VOUCHER, TaggableClasses.MEMBERSHIP] as TaggableClasses[])
     }}
 
     static TagDTO toRestTag(Tag dbTag, Map<Long, Integer> childCountMap, boolean isParent = true) {
