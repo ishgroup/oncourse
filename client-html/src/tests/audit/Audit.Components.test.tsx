@@ -8,12 +8,14 @@ describe("Virtual rendered AuditsEditView", () => {
     entity: "Audit",
     EditView: AuditsEditView,
     record: mockedApi => mockedApi.db.getAudit(1),
-    render: ({ screen, initialValues }) => {
-      expect(screen.getByLabelText('Date and time').value).toBe(format(new Date(initialValues.created), III_DD_MMM_YYYY_HH_MM));
-      expect(screen.getByLabelText("Entity name").value).toBe(initialValues.entityIdentifier);
-      expect(screen.getByLabelText("Entity ID").value).toBe(initialValues.entityId);
-      expect(screen.getByLabelText("Action").value).toBe(initialValues.action);
-      expect(screen.getByLabelText("Message").value).toBe(initialValues.message);
+    render: ({ screen, initialValues, formRoleName }) => {
+      expect(screen.getByRole(formRoleName)).toHaveFormValues({
+        created: format(new Date(initialValues.created), III_DD_MMM_YYYY_HH_MM),
+        entityIdentifier: initialValues.entityIdentifier,
+        entityId: initialValues.entityId,
+        action: initialValues.action,
+        message: initialValues.message,
+      });
     }
   });
 });

@@ -1,11 +1,11 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
+import { EnumItem, EnumName } from "@api/model";
 import { State } from "../../../../reducers/state";
 import { Categories } from "../../../../model/preferences";
 import FormContainer from "../FormContainer";
 import AvetmissForm from "./components/AvetmissForm";
-import { EnumItem, EnumName } from "@api/model";
 import { getEnum } from "../../actions";
 
 interface Props {
@@ -24,7 +24,9 @@ class Avetmiss extends React.Component<Props, any> {
   }
 
   render() {
-    const { avetmiss, ExportJurisdiction = [], TrainingOrg_Types = [], AddressStates = [] } = this.props;
+    const {
+      avetmiss, ExportJurisdiction = [], TrainingOrg_Types = [], AddressStates = []
+    } = this.props;
 
     return (
       <div>
@@ -36,7 +38,7 @@ class Avetmiss extends React.Component<Props, any> {
             AddressStates
           }}
           category={Categories.avetmiss}
-          form={<AvetmissForm />}
+          form={formRoleName => <AvetmissForm formRoleName={formRoleName} />}
         />
       </div>
     );
