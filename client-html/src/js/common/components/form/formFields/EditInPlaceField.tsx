@@ -665,7 +665,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
               ? (
                 <div className={clsx(isInline && "d-inline", label && 'mt-2', classes.selectMainWrapper)}>
                   <Select
-                    id={input.name}
+                    id={`input-${input.name}`}
                     name={input.name}
                     value={multiple
                       ? input.value || []
