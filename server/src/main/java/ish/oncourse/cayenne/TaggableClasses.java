@@ -64,7 +64,9 @@ public enum TaggableClasses implements Serializable, ExtendedEnumeration {
 	@API
 	ARTICLE(24),
 	@API
-	MEMBERSHIP(25);
+	MEMBERSHIP(25),
+	@API
+	PRODUCT_ITEM(26);
 
 
 	private Integer persistentValue;

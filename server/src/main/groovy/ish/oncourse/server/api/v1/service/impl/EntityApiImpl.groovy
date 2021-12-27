@@ -14,12 +14,9 @@ package ish.oncourse.server.api.v1.service.impl
 import com.google.inject.Inject
 import groovy.transform.CompileDynamic
 import ish.oncourse.aql.AqlService
-import ish.oncourse.cayenne.Taggable
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.api.v1.function.AbstractTaggableFunctions
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.EntityApi
-import ish.oncourse.server.cayenne.AbstractTaggable
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.oncourse.server.preference.UserPreferenceService
 import ish.util.DateFormatter
@@ -69,50 +66,44 @@ class EntityApiImpl implements EntityApi {
         DataResponseDTO response = createResponse(entity, request.search, request.pageSize, request.offset)
         ObjectContext context = cayenneService.newReadonlyContext
 
-        List<PersistentObject> result = new ArrayList<>()
-        Class<? extends CayenneDataObject> defaultClzz = EntityUtil.entityClassForName(entity)
-        List<Class<? extends CayenneDataObject>> neededClasses = defaultClzz.interfaces.contains(AbstractTaggable)?
-                AbstractTaggableFunctions.inheritorsFor(defaultClzz):List.of(defaultClzz)
+        Class<? extends CayenneDataObject> clzz = EntityUtil.entityClassForName(entity)
+        ObjectSelect objectSelect = ObjectSelect.query(clzz)
 
-        for (clzz in neededClasses) {
-            ObjectSelect objectSelect = ObjectSelect.query(clzz)
-
-            ObjectSelect<CayenneDataObject> query = parseSearchQuery(objectSelect, context, aql, entity, request.search, request.filter, request.tagGroups)
-            if (request.filter || request.search || (request.tagGroups && !request.tagGroups.empty)) {
-                response.filteredCount = query.column(Property.create("id", Long)).select(context).toSet().size()
-            }
-
-            SortOrder sortOrder = null
-            query.offset(response.offset.intValue())
-            query.limit(response.pageSize.intValue())
-            response.sort.each {
-                sortOrder = it.ascending ? SortOrder.ASCENDING : SortOrder.DESCENDING
-                if ((it.complexAttribute != null) && (it.complexAttribute.size() > 0)) {
-                    List<Ordering> orderings = new ArrayList<>()
-                    for (String attribute : it.complexAttribute) {
-                        orderings.add(new Ordering(attribute, sortOrder))
-                    }
-                    query.orderBy(orderings)
-                } else {
-                    query.orderBy(it.attribute, sortOrder)
-                }
-            }
-            query.orderBy(ID_FIELD, sortOrder != null ? sortOrder : SortOrder.ASCENDING)
-
-            response.columns
-                    .findAll { it -> it.visible }
-                    .collect { it -> it.prefetches }
-                    .flatten()
-                    .forEach(
-                            {
-                                prefetch -> query.prefetch(prefetch.toString(), PrefetchTreeNode.DISJOINT_BY_ID_PREFETCH_SEMANTICS)
-                            }
-                    )
-
-            result.addAll(query.select(context))
+        ObjectSelect<CayenneDataObject> query = parseSearchQuery(objectSelect, context, aql, entity, request.search, request.filter, request.tagGroups)
+        if (request.filter || request.search || (request.tagGroups && !request.tagGroups.empty)) {
+            response.filteredCount = query.column(Property.create("id", Long)).select(context).toSet().size()
         }
-        response.pageSize = new BigDecimal(Math.min(response.pageSize.intValue(), result.size()))
-        populateResponce(result, response, response.columns, null)
+
+        SortOrder sortOrder = null
+        query.offset(response.offset.intValue())
+        query.limit(response.pageSize.intValue())
+        response.sort.each {
+            sortOrder = it.ascending ? SortOrder.ASCENDING : SortOrder.DESCENDING
+            if ((it.complexAttribute != null) && (it.complexAttribute.size() > 0)) {
+                List<Ordering> orderings = new ArrayList<>()
+                for (String attribute : it.complexAttribute) {
+                    orderings.add(new Ordering(attribute, sortOrder))
+                }
+                query.orderBy(orderings)
+            } else {
+                query.orderBy(it.attribute, sortOrder)
+            }
+        }
+        query.orderBy(ID_FIELD, sortOrder != null ? sortOrder : SortOrder.ASCENDING)
+
+        response.columns
+                .findAll { it -> it.visible }
+                .collect { it -> it.prefetches }
+                .flatten()
+                .forEach(
+                        {
+                            prefetch -> query.prefetch(prefetch.toString(), PrefetchTreeNode.DISJOINT_BY_ID_PREFETCH_SEMANTICS)
+                        }
+                )
+
+        var records = query.select(context)
+        response.pageSize = new BigDecimal(Math.min(response.pageSize.intValue(), records.size()))
+        populateResponce(records, response, response.columns, null)
         return response
     }
 

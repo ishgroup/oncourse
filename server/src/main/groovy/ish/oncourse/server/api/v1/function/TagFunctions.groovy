@@ -40,6 +40,7 @@ import ish.oncourse.server.cayenne.Membership
 import ish.oncourse.server.cayenne.MembershipProduct
 import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.Payslip
+import ish.oncourse.server.cayenne.ProductItem
 import ish.oncourse.server.cayenne.Quote
 import ish.oncourse.server.cayenne.QuoteLine
 import ish.oncourse.server.cayenne.Room
@@ -111,9 +112,7 @@ class TagFunctions {
         put(WaitingList.simpleName, TaggableClasses.WAITING_LIST)
         put(CourseClass.simpleName, TaggableClasses.COURSE_CLASS)
         put(Message.simpleName, TaggableClasses.MESSAGE)
-        put(Article.simpleName, TaggableClasses.ARTICLE)
-        put(Voucher.simpleName, TaggableClasses.VOUCHER)
-        put(Membership.simpleName, TaggableClasses.MEMBERSHIP)
+        put(ProductItem.simpleName, TaggableClasses.PRODUCT_ITEM)
         put(ArticleProduct.simpleName, TaggableClasses.ARTICLE_PRODUCT)
         put(VoucherProduct.simpleName, TaggableClasses.VOUCHER_PRODUCT)
         put(MembershipProduct.simpleName, TaggableClasses.MEMBERSHIP_PRODUCT)

@@ -10,18 +10,18 @@ package ish.oncourse.server.cayenne
 
 import ish.oncourse.cayenne.Taggable
 import ish.oncourse.cayenne.TaggableClasses
-import ish.oncourse.server.cayenne.glue._ArticleTagRelation
+import ish.oncourse.server.cayenne.glue._ProductItemTagRelation
 
 import javax.annotation.Nonnull
 
-class ArticleTagRelation extends _ArticleTagRelation{
+class ProductItemTagRelation extends _ProductItemTagRelation{
     /**
      * @see TagRelation#getTaggableClassesIdentifier()
      */
     @Nonnull
     @Override
     TaggableClasses getTaggableClassesIdentifier() {
-        return TaggableClasses.ARTICLE
+        return TaggableClasses.PRODUCT_ITEM
     }
 
     /**
@@ -30,7 +30,7 @@ class ArticleTagRelation extends _ArticleTagRelation{
     @Nonnull
     @Override
     Taggable getTaggedRelation() {
-        return super.getTaggedArticle()
+        return super.getTaggedProductItem()
     }
 
     /**
@@ -38,6 +38,6 @@ class ArticleTagRelation extends _ArticleTagRelation{
      */
     @Override
     void setTaggedRelation(Taggable object) {
-        super.setTaggedArticle((Article) object)
+        super.setTaggedProductItem((ProductItem) object)
     }
 }
