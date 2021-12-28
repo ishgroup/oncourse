@@ -38,7 +38,7 @@ const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups, upda
 
     const filteredSortedTags = [];
 
-    if (savedTagsOrder.length) {
+    if (savedTagsOrder && savedTagsOrder.length) {
       savedTagsOrder.forEach((tagId: number) => {
         const tag = filteredTags.find(elem => elem.tagBody.id === tagId);
         if (tag) {

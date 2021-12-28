@@ -8,7 +8,7 @@ interface Props {
   EditView: any;
   record: (mockedApi: any) => object;
   render: ({
-    screen, initialValues, userEvent, formRoleName
+    screen, initialValues, userEvent, formRoleName, mockedApi
   }) => any;
 }
 
