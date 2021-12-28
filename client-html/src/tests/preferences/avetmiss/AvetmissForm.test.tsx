@@ -24,6 +24,7 @@ describe("Virtual rendered AvetmissForm", () => {
         [PreferencesModel.Postcode.uniqueKey]: mockedAPI.db.preference[PreferencesModel.Postcode.uniqueKey].toString(),
         [PreferencesModel.State.uniqueKey]: mockedAPI.db.preference[PreferencesModel.State.uniqueKey].toString(),
 
+        [PreferencesModel.ContactName.uniqueKey]: mockedAPI.db.preference[PreferencesModel.ContactName.uniqueKey].toString(),
         [PreferencesModel.Email.uniqueKey]: mockedAPI.db.preference[PreferencesModel.Email.uniqueKey].toString(),
         [PreferencesModel.Phone.uniqueKey]: mockedAPI.db.preference[PreferencesModel.Phone.uniqueKey].toString(),
         [PreferencesModel.Fax.uniqueKey]: mockedAPI.db.preference[PreferencesModel.Fax.uniqueKey].toString(),
