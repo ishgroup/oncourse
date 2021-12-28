@@ -210,7 +210,6 @@ const LeadGeneral = (props: Props) => {
         entityName="Lead"
         fieldName="customFields"
         entityValues={values}
-        dispatch={dispatch}
         form={form}
         gridItemProps={{
           xs: twoColumn ? 6 : 12,

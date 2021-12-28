@@ -208,7 +208,6 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         entityName="MembershipProduct"
         fieldName="customFields"
         entityValues={values}
-        dispatch={dispatch}
         form={form}
         gridItemProps={{
           xs: twoColumn ? 6 : 12

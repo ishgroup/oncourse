@@ -38,7 +38,6 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
     tags,
     values,
     isNew,
-    dispatch,
     form,
     syncErrors
   } = props;
@@ -166,7 +165,6 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
         entityName="Application"
         fieldName="customFields"
         entityValues={values}
-        dispatch={dispatch}
         form={form}
         gridItemProps={{
           xs: twoColumn ? 6 : 12,

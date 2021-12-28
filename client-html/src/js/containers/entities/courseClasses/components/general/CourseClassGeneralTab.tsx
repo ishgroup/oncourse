@@ -348,7 +348,6 @@ const CourseClassGeneralTab = React.memo<Props>(
             entityName="CourseClass"
             fieldName="customFields"
             entityValues={values}
-            dispatch={dispatch}
             form={form}
             gridItemProps={{
               xs: twoColumn ? 6 : 12

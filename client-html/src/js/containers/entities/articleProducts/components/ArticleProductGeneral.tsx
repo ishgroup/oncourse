@@ -179,7 +179,6 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
         entityName="ArticleProduct"
         fieldName="customFields"
         entityValues={values}
-        dispatch={dispatch}
         form={form}
         gridItemProps={gridItemProps}
       />
