@@ -47,35 +47,39 @@ const styles: any = (theme: AppTheme) => ({
       visibility: 'hidden',
       opacity: 0,
       pointerEvents: 'none',
-      padding: '3px',
-      fontSize: '12px',
-      borderRadius: '2px',
+      padding: '2px 6px 0px',
+      fontSize: 9,
+      borderRadius: 15,
       position: 'absolute',
-      content: "'Make Default'",
+      content: "'Default'",
       fontFamily: theme.typography.fontFamily,
-      left: '100%',
+      right: -12,
       color: '#000',
       background: grey[500],
       marginLeft: '10px',
       whiteSpace: 'nowrap',
       transition: 'opacity .25s',
       top: '1px',
+      lineHeight: '14px',
     },
     '&:hover': {
       '&::after': {
         visibility: 'visible',
-        opacity: 0.6,
+        opacity: 0.5,
       },
     },
   },
   linkDefault: {
-    color: theme.palette.primary.main,
-    cursor: "'default'",
+    cursor: 'default',
     '&::after': {
-      content: "'Default'",
       visibility: 'visible',
       opacity: 0.6,
     },
+    '&:hover': {
+      '&::after': {
+        opacity: 0.6,
+      }
+    }
   },
   removeButton: {
     marginRight: theme.spacing(2),
@@ -98,6 +102,7 @@ const styles: any = (theme: AppTheme) => ({
     marginBottom: theme.spacing(2),
   },
   linkWrapper: {
+    paddingRight: theme.spacing(3.5),
     '&:hover': {
       '& $iconButton': {
         display: 'flex',
@@ -106,6 +111,8 @@ const styles: any = (theme: AppTheme) => ({
   },
   iconButton: {
     display: 'none',
+    position: 'relative',
+    top: -2,
   },
   newLinkInlineContainer: {
     marginLeft: 0,
@@ -282,7 +289,7 @@ class PageSettings extends React.PureComponent<Props, State> {
             <label htmlFor="pageUrl" className="pb-1 secondaryHeading">Page Links (URLs)</label>
 
             <div>
-              <div className="centeredFlex justify-content-space-between relative">
+              <div className={clsx(classes.linkWrapper, 'centeredFlex justify-content-space-between relative')}>
                 <div
                   onClick={() => urls.find((url) => url.isDefault) && this.onSetDefaultUrl(defaultPageUrl)}
                   className={clsx('centeredFlex', classes.linkTitle, !urls.find((url) => url.isDefault) && classes.linkDefault)}
