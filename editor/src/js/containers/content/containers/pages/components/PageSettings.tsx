@@ -42,44 +42,9 @@ const styles: any = (theme: AppTheme) => ({
     color: theme.palette.text.secondary,
     fontWeight: 300,
     cursor: 'pointer',
-    '&::after': {
-      display: 'block',
-      visibility: 'hidden',
-      opacity: 0,
-      pointerEvents: 'none',
-      padding: '2px 6px 0px',
-      fontSize: 9,
-      borderRadius: 15,
-      position: 'absolute',
-      content: "'Default'",
-      fontFamily: theme.typography.fontFamily,
-      right: -12,
-      color: '#000',
-      background: grey[500],
-      marginLeft: '10px',
-      whiteSpace: 'nowrap',
-      transition: 'opacity .25s',
-      top: '1px',
-      lineHeight: '14px',
-    },
-    '&:hover': {
-      '&::after': {
-        visibility: 'visible',
-        opacity: 0.5,
-      },
-    },
   },
   linkDefault: {
-    cursor: 'default',
-    '&::after': {
-      visibility: 'visible',
-      opacity: 0.6,
-    },
-    '&:hover': {
-      '&::after': {
-        opacity: 0.6,
-      }
-    }
+    cursor: 'default'
   },
   removeButton: {
     marginRight: theme.spacing(2),
@@ -103,18 +68,47 @@ const styles: any = (theme: AppTheme) => ({
   },
   linkWrapper: {
     paddingRight: theme.spacing(3.5),
+    '&::after': {
+      display: 'block',
+      visibility: 'hidden',
+      opacity: 0,
+      pointerEvents: 'none',
+      padding: '2px 6px',
+      fontSize: 10,
+      borderRadius: 15,
+      position: 'absolute',
+      content: "'Default'",
+      fontFamily: theme.typography.fontFamily,
+      right: -12,
+      color: theme.palette.text.secondary,
+      background: theme.palette.divider,
+      marginLeft: '10px',
+      whiteSpace: 'nowrap',
+      transition: 'opacity .25s',
+      top: '3px',
+      lineHeight: '14px',
+    },
     '&:hover': {
       '& $iconButton': {
         display: 'flex',
-      }
+      },
+      '&::after': {
+        visibility: 'visible',
+        opacity: 0.5,
+      },
+    },
+    '&$linkDefault::after,&$linkDefault:hover::after': {
+      visibility: 'visible',
+      opacity: 1,
     }
   },
   iconButton: {
     display: 'none',
     position: 'relative',
-    top: -2,
+    left: "-5px"
   },
   newLinkInlineContainer: {
+    marginTop: theme.spacing(0.5),
     marginLeft: 0,
   },
 });
@@ -289,10 +283,14 @@ class PageSettings extends React.PureComponent<Props, State> {
             <label htmlFor="pageUrl" className="pb-1 secondaryHeading">Page Links (URLs)</label>
 
             <div>
-              <div className={clsx(classes.linkWrapper, 'centeredFlex justify-content-space-between relative')}>
+              <div className={clsx(
+                classes.linkWrapper,
+                'centeredFlex justify-content-space-between relative',
+                !urls.find((url) => url.isDefault) && classes.linkDefault
+              )}>
                 <div
                   onClick={() => urls.find((url) => url.isDefault) && this.onSetDefaultUrl(defaultPageUrl)}
-                  className={clsx('centeredFlex', classes.linkTitle, !urls.find((url) => url.isDefault) && classes.linkDefault)}
+                  className={clsx('centeredFlex', classes.linkTitle)}
                   title={defaultPageUrl.link}
                 >
                   {defaultPageUrl.link}
@@ -300,10 +298,14 @@ class PageSettings extends React.PureComponent<Props, State> {
               </div>
 
               {urls.map((url, index) => (
-                <div className={clsx(classes.linkWrapper, 'centeredFlex justify-content-space-between relative')} key={index}>
+                <div className={clsx(
+                  classes.linkWrapper,
+                  url.isDefault && classes.linkDefault,
+                  'centeredFlex justify-content-space-between relative'
+                )} key={index}>
                   <div
                     onClick={() => !url.isDefault && this.onSetDefaultUrl(url)}
-                    className={clsx('centeredFlex', classes.linkTitle, url.isDefault && classes.linkDefault)}
+                    className={clsx('centeredFlex', classes.linkTitle)}
                   >
                     {url.link}
                   </div>
@@ -402,13 +404,6 @@ class PageSettings extends React.PureComponent<Props, State> {
               >
                 Remove
               </CustomButton>
-
-              {/* <CustomButton */}
-              {/*  styleType="submit" */}
-              {/*  onClick={this.onSave} */}
-              {/* > */}
-              {/*  Save */}
-              {/* </CustomButton> */}
             </div>
           </form>
         </div>
