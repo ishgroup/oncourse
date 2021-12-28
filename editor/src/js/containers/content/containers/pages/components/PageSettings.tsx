@@ -2,7 +2,7 @@ import React from 'react';
 import { Checkbox, FormControlLabel, IconButton } from '@material-ui/core';
 import clsx from 'clsx';
 import { withStyles } from '@material-ui/core/styles';
-import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
+import { grey } from '@material-ui/core/colors';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MenuIcon from '@material-ui/icons/Menu';
 import PageService from '../../../../../services/PageService';
@@ -20,9 +20,6 @@ const styles: any = (theme: AppTheme) => ({
     display: 'flex',
     paddingLeft: '8px',
   },
-  links: {
-    marginBottom: '10px',
-  },
   linkBack: {
     textTransform: 'capitalize',
     color: 'rgba(0, 0, 0, 0.87)',
@@ -35,14 +32,13 @@ const styles: any = (theme: AppTheme) => ({
     },
   },
   linkTitle: {
-    paddingRight: '15px',
     transition: 'color .15s',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     fontFamily: theme.typography.fontFamily,
     fontSize: '14px',
     lineHeight: 1.2,
-    padding: theme.spacing(.375, 0, .375, 2.5),
+    padding: theme.spacing(.375, 1.875, .375, 0),
     color: theme.palette.text.secondary,
     fontWeight: 300,
     cursor: 'pointer',
@@ -58,54 +54,28 @@ const styles: any = (theme: AppTheme) => ({
       content: "'Make Default'",
       fontFamily: theme.typography.fontFamily,
       left: '100%',
-      color: '#fff',
-      background: theme.palette.primary.main,
+      color: '#000',
+      background: grey[500],
       marginLeft: '10px',
       whiteSpace: 'nowrap',
       transition: 'opacity .25s',
       top: '1px',
     },
     '&:hover': {
-      color: theme.palette.primary.main,
-      fontWeight: theme.typography.fontWeightRegular,
       '&::after': {
         visibility: 'visible',
-        opacity: 0.85,
-      },
-      "& $arrowRight": {
-        left: -2,
-        opacity: 1,
-        visibility: 'visible',
+        opacity: 0.6,
       },
     },
   },
   linkDefault: {
     color: theme.palette.primary.main,
-    cursor: 'default',
-    '&:hover': {
-      fontWeight: 300,
-      '&::after': {
-        display: 'none',
-      },
-    },
-    "& $arrowRight": {
-      left: -2,
-      opacity: 1,
+    cursor: "'default'",
+    '&::after': {
+      content: "'Default'",
       visibility: 'visible',
+      opacity: 0.6,
     },
-  },
-  arrowRight: {
-    position: 'absolute',
-    left: -16,
-    top: '50%',
-    transform: 'translateY(-50%)',
-    fontSize: "0.875rem",
-    opacity: 0,
-    visibility: 'hidden',
-    transition: theme.transitions.create('all', {
-      duration: theme.transitions.duration.standard,
-      easing: theme.transitions.easing.easeInOut,
-    }),
   },
   removeButton: {
     marginRight: theme.spacing(2),
@@ -136,6 +106,9 @@ const styles: any = (theme: AppTheme) => ({
   },
   iconButton: {
     display: 'none',
+  },
+  newLinkInlineContainer: {
+    marginLeft: 0,
   },
 });
 
@@ -308,15 +281,13 @@ class PageSettings extends React.PureComponent<Props, State> {
 
             <label htmlFor="pageUrl" className="pb-1 secondaryHeading">Page Links (URLs)</label>
 
-            <div className={classes.links}>
-
+            <div>
               <div className="centeredFlex justify-content-space-between relative">
                 <div
                   onClick={() => urls.find((url) => url.isDefault) && this.onSetDefaultUrl(defaultPageUrl)}
                   className={clsx('centeredFlex', classes.linkTitle, !urls.find((url) => url.isDefault) && classes.linkDefault)}
                   title={defaultPageUrl.link}
                 >
-                  <ArrowForwardRoundedIcon color="inherit" fontSize="small" className={classes.arrowRight} />
                   {defaultPageUrl.link}
                 </div>
               </div>
@@ -327,7 +298,6 @@ class PageSettings extends React.PureComponent<Props, State> {
                     onClick={() => !url.isDefault && this.onSetDefaultUrl(url)}
                     className={clsx('centeredFlex', classes.linkTitle, url.isDefault && classes.linkDefault)}
                   >
-                    <ArrowForwardRoundedIcon color="inherit" fontSize="small" className={classes.arrowRight} />
                     {url.link}
                   </div>
 
@@ -347,6 +317,8 @@ class PageSettings extends React.PureComponent<Props, State> {
               <EditInPlaceField
                 hidePlaceholderInEditMode
                 disableInputOffsets
+                placeholder="New link"
+                formatting="inline"
                 hideLabel
                 type="text"
                 name="newLink"
@@ -367,6 +339,7 @@ class PageSettings extends React.PureComponent<Props, State> {
                   value: newLink,
                 }}
                 className="w-100"
+                classes={{ inlineContainer: classes.newLinkInlineContainer }}
               />
             </div>
 
