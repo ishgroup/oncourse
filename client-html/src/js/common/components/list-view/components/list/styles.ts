@@ -6,6 +6,7 @@
 import { createStyles } from "@mui/styles";
 import { alpha } from '@mui/material/styles';
 import { AppTheme } from "../../../../../model/common/Theme";
+import { HEADER_ROWS_COUNT, LIST_TWO_COLUMN_ROW_HEIGHT } from "../../../../../constants/Config";
 
 export default (theme: AppTheme) => createStyles({
   infiniteLoaderListRoot: {
@@ -17,9 +18,9 @@ export default (theme: AppTheme) => createStyles({
     background: theme.palette.background.paper,
     display: "flex",
     flexDirection: "column",
-    overflow: "auto",
-    position: "relative",
-    height: "100%"
+    width: "100%",
+    height: "100%",
+    overflow: "auto"
   },
   nestedTable: {
     background: theme.palette.background.paper,
@@ -38,7 +39,9 @@ export default (theme: AppTheme) => createStyles({
     position: "sticky",
     zIndex: 1,
     top: 0,
+    height: `${LIST_TWO_COLUMN_ROW_HEIGHT * HEADER_ROWS_COUNT}px`,
     background: theme.palette.background.paper,
+    borderBottom: `1px solid ${theme.palette.divider}`,
   },
   headerCell: {
     fontSize: '0.75rem',
@@ -50,10 +53,11 @@ export default (theme: AppTheme) => createStyles({
     },
     "& $draggingCell,&:focus $draggingCell": {
       color: theme.palette.divider
-    },
-    borderBottom: `1px solid ${theme.palette.divider}`
+    }
   },
-  draggingCell: {},
+  draggingCell: {
+    left: 0
+  },
   listHeaderCell: {
     "&:hover": {
       "& $tableSortLabel": {
@@ -67,7 +71,7 @@ export default (theme: AppTheme) => createStyles({
   },
   headerRow: {
     display: "flex",
-    background: theme.palette.background.paper
+    background: theme.palette.background.paper,
   },
   noSort: {
     lineHeight: "1.1rem"
