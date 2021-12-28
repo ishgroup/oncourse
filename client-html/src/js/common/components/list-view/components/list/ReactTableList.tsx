@@ -14,7 +14,6 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import debounce from "lodash.debounce";
 import Typography from "@mui/material/Typography";
 import DragIndicator from "@mui/icons-material/DragIndicator";
-import useMediaQuery from '@mui/material/useMediaQuery';
 import clsx from "clsx";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { Column, DataResponse, TableModel } from "@api/model";
@@ -62,7 +61,6 @@ const Table: React.FC<ListTableProps> = ({
   onChangeColumnsOrder,
   setShowColoredDots,
   showColoredDots,
-  sidebarWidth,
   mainContentWidth
 }) => {
   const [isDraggingColumn, setColumnIsDragging] = useState(false);
@@ -168,9 +166,9 @@ const Table: React.FC<ListTableProps> = ({
   };
 
   const {
+    allColumns,
     rows,
     state,
-    allColumns,
     prepareRow,
     headerGroups,
     getTableProps,
@@ -439,6 +437,7 @@ const Table: React.FC<ListTableProps> = ({
       onRowDoubleClick={onRowDoubleClick}
       mainContentWidth={mainContentWidth}
       onMouseOver={() => {}}
+      header={!threeColumn && Header}
     />
   ) : (
     <div className="noRecordsMessage h-100">
@@ -446,31 +445,18 @@ const Table: React.FC<ListTableProps> = ({
         No data
       </Typography>
     </div>
-  )), [rows, totalColumnsWidth, selectedRowIdsObj, mainContentWidth, recordsLeft, threeColumn, onRowDoubleClick, state.columnOrder]);
-
-  let tableMinWidth = `calc(100vw - ${sidebarWidth}px)`;
-
-  if (useMediaQuery('(min-width: 1920px)')) tableMinWidth = `calc(100vw - 11.5%)`;
-  if (useMediaQuery('(min-width: 2220px)')) tableMinWidth = `calc(100vw - 11%)`;
+  )), [Header, rows, totalColumnsWidth, selectedRowIdsObj, mainContentWidth, recordsLeft, threeColumn, onRowDoubleClick, state.columnOrder]);
 
   return (
     <div
       {...getTableProps()}
       ref={tableRef}
-      className={clsx(
-        classes.table, {
-          [classes.hideOverflowY]: isDraggingColumn,
-        }
-      )}
-      style={{
-        minWidth: !threeColumn && tableMinWidth,
-        width: threeColumn && `${mainContentWidth}.px`
-      }}
+      className={classes.table}
+      style={threeColumn ? { overflowX: "hidden" } : null}
       onScroll={onScroll}
     >
       {!threeColumn && <ColumnChooser columns={allColumns} classes={classes} setShowColoredDots={setShowColoredDots} />}
-      {!threeColumn && Header}
-      <div {...getTableBodyProps()} className={classes.tableBody}>
+      <div {...getTableBodyProps()} className="flex-fill">
         {List}
       </div>
     </div>
