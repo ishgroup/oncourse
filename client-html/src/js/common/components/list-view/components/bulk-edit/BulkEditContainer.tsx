@@ -15,7 +15,7 @@ import withStyles from "@mui/styles/withStyles";
 import Typography from "@mui/material/Typography";
 import { Help } from "@mui/icons-material";
 import React, {
- useCallback, useEffect, useMemo, useState 
+ useEffect, useMemo, useState
 } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -155,28 +155,26 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
     });
   };
 
-  const tags = useMemo(
-      if (rootEntity === "ProductItem" && entityTags) {
-        const unique = {};
-        const productItemTags = [];
-        
-        [
-          ...entityTags["Article"] || [],
-          ...entityTags["Voucher"] || [],
-          ...entityTags["Membership"] || [],
-        ].forEach(t => {
-          if (!unique[t.id]) {
-            unique[t.id] = true;
-            productItemTags.push(t);
-          }
-        });
-        
-        return productItemTags;
-      }
-      return (entityTags && rootEntity && entityTags[rootEntity]) || [];
-    },
-    [entityTags, rootEntity]
-  );
+  const tags = useMemo(() => {
+    if (rootEntity === "ProductItem" && entityTags) {
+      const unique = {};
+      const productItemTags = [];
+
+      [
+        ...entityTags["Article"] || [],
+        ...entityTags["Voucher"] || [],
+        ...entityTags["Membership"] || [],
+      ].forEach(t => {
+        if (!unique[t.id]) {
+          unique[t.id] = true;
+          productItemTags.push(t);
+        }
+      });
+
+      return productItemTags;
+    }
+    return (entityTags && rootEntity && entityTags[rootEntity]) || [];
+  }, [entityTags, rootEntity]);
 
   const BulkEditFieldRendered = useMemo(() => {
     if (!selectedKeyCode) {
@@ -265,7 +263,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           {...fieldProps}
         />
       );
-  }, [tags, entityTags, rootEntity, validateTagList, bulkEditFields, selectedKeyCode]);
+  }, [tags, entityTags, rootEntity, bulkEditFields, selectedKeyCode]);
 
   return (
     <Drawer
