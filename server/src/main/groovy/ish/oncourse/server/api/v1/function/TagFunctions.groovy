@@ -113,12 +113,18 @@ class TagFunctions {
         put(CourseClass.simpleName, TaggableClasses.COURSE_CLASS)
         put(Message.simpleName, TaggableClasses.MESSAGE)
         put(ProductItem.simpleName, TaggableClasses.PRODUCT_ITEM)
-        put(Article.simpleName, TaggableClasses.ARTICLE)
-        put(Voucher.simpleName, TaggableClasses.VOUCHER)
-        put(Membership.simpleName, TaggableClasses.MEMBERSHIP)
+        put(Article.simpleName, TaggableClasses.PRODUCT_ITEM)
+        put(Voucher.simpleName, TaggableClasses.PRODUCT_ITEM)
+        put(Membership.simpleName, TaggableClasses.PRODUCT_ITEM)
         put(ArticleProduct.simpleName, TaggableClasses.ARTICLE_PRODUCT)
         put(VoucherProduct.simpleName, TaggableClasses.VOUCHER_PRODUCT)
         put(MembershipProduct.simpleName, TaggableClasses.MEMBERSHIP_PRODUCT)
+    }}
+
+    private static final BidiMap<String, TaggableClasses> taggableClassesForRequirements = new BidiMap<String, TaggableClasses>() {{
+        put(Article.simpleName, TaggableClasses.ARTICLE)
+        put(Voucher.simpleName, TaggableClasses.VOUCHER)
+        put(Membership.simpleName, TaggableClasses.MEMBERSHIP)
     }}
 
     private static final Map<TaggableClasses, TaggableClasses[]> additionalTaggableClasses =
@@ -384,6 +390,12 @@ class TagFunctions {
         PrefetchTreeNode prefetch = Tag.TAG_REQUIREMENTS.joint()
         prefetch.merge(Tag.CHILD_TAGS.joint())
         prefetch
+    }
+
+    static TaggableClasses getRequirementTaggableClassForName(String entityName){
+        return taggableClassesForRequirements.containsKey(entityName)
+                ? taggableClassesForRequirements.get(entityName)
+                : getTaggableClassForName(entityName);
     }
 
     static TaggableClasses getTaggableClassForName(String entityName) {
