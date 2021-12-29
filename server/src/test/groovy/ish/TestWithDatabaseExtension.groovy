@@ -249,9 +249,7 @@ class TestWithDatabaseExtension implements
         nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedLead"))
         nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedInvoice"))
         nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedProductItem"))
-        nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedArticleProduct"))
-        nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedVoucherProduct"))
-        nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedMembershipProduct"))
+        nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedProduct"))
         for (Relationship rel : nodeRelationshipsToRemove) {
             datamap.getDbEntity("NodeRelation").removeRelationship(rel.getName())
         }
