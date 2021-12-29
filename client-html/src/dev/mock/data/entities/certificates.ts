@@ -58,10 +58,24 @@ export function mockCertificates() {
     } else {
       rows = generateArraysOfRecords(20, [
         { name: "id", type: "number" },
-        { name: "revokedOn", type: "Datetime" }
+        { name: "isQualification", type: "boolean" },
+        { name: "nationalCode", type: "string" },
+        { name: "title", type: "string" },
+        { name: "certificateNumber", type: "number" },
+        { name: "createdOn", type: "Datetime" },
+        { name: "printedOn", type: "Datetime" },
+        { name: "level", type: "string" }
       ]).map(l => ({
         id: l.id,
-        values: [l.revokedOn]
+        values: [
+          true,
+          l.nationalCode,
+          l.title,
+          l.certificateNumber,
+          l.createdOn,
+          l.printedOn,
+          l.level
+        ]
       }));
     }
 
