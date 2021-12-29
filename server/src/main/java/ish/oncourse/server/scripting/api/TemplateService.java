@@ -17,6 +17,7 @@ import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.*;
 import ish.oncourse.server.document.DocumentService;
 import ish.oncourse.server.entity.mixins.ContactMixin;
+import ish.oncourse.server.scripting.converter.RenderType;
 import ish.util.DateFormatter;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
@@ -49,6 +50,10 @@ public class TemplateService {
 	private static final String JAVA_EURO = "\u20AC";
 	private static final String HTML_EURO = "&euro;";
 	public static final String CONTACT_SERVICE_BINDING = "ContactService";
+
+	public static final String RENDER_TYPE_HTML = "HTML";
+	public static final String RENDER_TYPE_PLAIN = "PLAIN";
+	public static final String RENDER_TYPE_RAW = "RAW";
 
 	private ICayenneService cayenneService;
 	private CollegePreferenceService preferenceService;
@@ -161,6 +166,9 @@ public class TemplateService {
 		bindings.put(COLLEGE_PREFERENCE_SERVICE, preferenceService);
 		bindings.put(DATE_FORMATTER, new DateFormatter(TimeZone.getDefault()));
 		bindings.put(CONTACT_SERVICE_BINDING, new ContactTrait.ContactService());
+		bindings.put(RENDER_TYPE_HTML, RenderType.HTML);
+		bindings.put(RENDER_TYPE_RAW, RenderType.RAW);
+		bindings.put(RENDER_TYPE_PLAIN, RenderType.PLAIN);
 
 		bindings.put(BINDINGS, bindings);
 
