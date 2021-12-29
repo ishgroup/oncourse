@@ -982,12 +982,13 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     const {
       listProps, onLoadMore, selection, records, recordsLeft, currency, updateColumns, setShowColoredDots, showColoredDots
     } = this.props;
-    const { threeColumn, sidebarWidth, mainContentWidth } = this.state;
+
+    const { threeColumn, mainContentWidth } = this.state;
+
     return (
       <ReactTableList
         {...listProps}
         mainContentWidth={mainContentWidth}
-        sidebarWidth={sidebarWidth}
         onLoadMore={onLoadMore}
         selection={selection}
         records={records}

@@ -474,7 +474,6 @@ const ScriptsForm = React.memo<Props>(props => {
                     name="enabled"
                     label="Enabled"
                     color="primary"
-                    fullWidth
                   />
                 </div>
                 <FormField
@@ -484,8 +483,9 @@ const ScriptsForm = React.memo<Props>(props => {
                   items={outputTypes}
                   disabled={isInternal}
                   placeholder="no output"
+                  className="mt-2"
                 />
-                <div className="mt-3 pt-1">
+                <div className="mt-2 pt-1">
                   <Bindings
                     defaultVariables={defaultVariables}
                     dispatch={dispatch}
@@ -513,11 +513,10 @@ const ScriptsForm = React.memo<Props>(props => {
                   name="description"
                   label="Description"
                   disabled={isInternal}
-                  className="overflow-hidden"
-                  fullWidth
+                  className="overflow-hidden mt-3"
                 />
 
-                <Grid container columnSpacing={3} >
+                <Grid container columnSpacing={3}>
                   <Grid item xs className="d-flex">
                     <div className="flex-fill">
                       <Typography variant="caption" color="textSecondary">

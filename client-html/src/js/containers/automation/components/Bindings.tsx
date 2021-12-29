@@ -14,6 +14,7 @@ import {
 import { Dispatch } from "redux";
 import clsx from "clsx";
 import { makeStyles } from "@mui/styles";
+import Grid from "@mui/material/Grid";
 import { CommonListItem } from "../../../model/common/sidebar";
 import { SelectItemDefault } from "../../../model/entities/common";
 import { IMPORT_TEMPLATES_FORM_NAME } from "../containers/import-templates/ImportTemplates";
@@ -46,7 +47,7 @@ const useStyles = makeStyles((theme: AppTheme) => ({
   },
   checkboxDelete: {
     marginBottom: theme.spacing(0.25),
-    marginLeft: theme.spacing(-2.25)
+    marginLeft: "auto"
   },
   textDelete: {
     // @ts-ignore
@@ -98,42 +99,43 @@ const BindingsItem = React.memo<BindingsItemProps>(({
   }, [item, emailTemplateItems]);
 
   return type === "label" ? (
-    <>
-      {item.label && (
-        <Typography variant="caption" color="textSecondary" className={classes.itemLabel}>
-          {item.label}
-        </Typography>
-      )}
-      <Typography
-        variant="body2"
-        component="div"
-        className={clsx("centeredFlex pb-0-5", classes.labelTypeWrapper)}
-      >
-        <span>
-          {item.name}
-          {" "}
-          <Typography variant="caption" color="textSecondary">
-            (
-            {item.type}
-            )
+    <Grid item xs={12} className="centeredFlex">
+      <div className="flex-fill">
+        {item.label && (
+          <Typography variant="caption" color="textSecondary" className={classes.itemLabel}>
+            {item.label}
           </Typography>
-        </span>
-
-        {onDelete && (
-          <IconButton className="lightGrayIconButton" role={index} onClick={onDelete}>
-            <Delete fontSize="inherit" />
-          </IconButton>
         )}
-      </Typography>
-    </>
+        <Typography
+          variant="body2"
+          component="div"
+          className={clsx("centeredFlex pb-0-5", classes.labelTypeWrapper)}
+        >
+          <span>
+            {item.name}
+            {" "}
+            <Typography variant="caption" color="textSecondary">
+              (
+              {item.type}
+              )
+            </Typography>
+          </span>
+        </Typography>
+      </div>
+      {onDelete && (
+        <IconButton className="lightGrayIconButton" role={index} onClick={onDelete}>
+          <Delete fontSize="inherit" />
+        </IconButton>
+      )}
+    </Grid>
   ) : (
-    <div className="d-flex align-items-end">
+    <Grid item xs={12} className="centeredFlex">
       <Field
         label={item.name}
         name={`${field}.value`}
         type={item.type}
         component={DataTypeRenderer}
-        fullWidth
+        className="flex-fill"
         {...fieldProps}
       />
 
@@ -142,7 +144,7 @@ const BindingsItem = React.memo<BindingsItemProps>(({
           <Delete fontSize="inherit" />
         </IconButton>
       )}
-    </div>
+    </Grid>
   );
 });
 
@@ -240,9 +242,10 @@ const Bindings = React.memo<BindingsProps>( props => {
         )}
       </div>
 
-      {defaultVariables && defaultVariables.map((i, n) => <BindingsItem key={n} item={i as Binding} type="label" />)}
-
-      <FieldArray name={name} component={itemsRenderer} rerenderOnEveryChange />
+      <Grid container rowSpacing={2}>
+        {defaultVariables && defaultVariables.map((i, n) => <BindingsItem key={n} item={i as Binding} type="label" />)}
+        <FieldArray name={name} component={itemsRenderer} rerenderOnEveryChange />
+      </Grid>
     </div>
   );
 });
