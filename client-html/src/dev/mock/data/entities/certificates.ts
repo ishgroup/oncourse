@@ -20,7 +20,7 @@ export function mockCertificates() {
       modifiedOn: row.values[7],
       revokedOn: row.values[8],
       code: "cNwB7eb4yFsy",
-      expiryDate: null,
+      expiryDate: new Date().toISOString(),
       outcomes: [
         {
           code: "TAAENV402B",
@@ -35,8 +35,8 @@ export function mockCertificates() {
           name: "Work effectively in vocational education and training"
         }
       ],
-      privateNotes: null,
-      publicNotes: null,
+      privateNotes: "",
+      publicNotes: "",
       qualificationId: 1,
       studentContactId: 1,
       studentDateOfBirth: null,
