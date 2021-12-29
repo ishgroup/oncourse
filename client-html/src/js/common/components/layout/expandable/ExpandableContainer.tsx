@@ -95,7 +95,11 @@ const ExpandableContainer: React.FC<Props> = ({
             )}
           </div>
           {headerAdornment}
-          <IconButton onClick={toggleExpand} className={clsx(classes.expandButton, isExpanded && classes.expandButtonExpanded)}>
+          <IconButton
+            onClick={toggleExpand}
+            className={clsx(classes.expandButton, isExpanded && classes.expandButtonExpanded)}
+            data-testid={`expand-button-${index}`}
+          >
             <ExpandMore />
           </IconButton>
         </div>

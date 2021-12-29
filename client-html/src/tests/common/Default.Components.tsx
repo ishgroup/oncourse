@@ -1,8 +1,7 @@
 import * as React from "react";
 import {
-  render as testRender, screen as testScreen, waitFor, cleanup
+  render as testRender, screen as testScreen, waitFor, cleanup, fireEvent as testFireEvent
 } from '@testing-library/react';
-import * as testUserEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { mockedAPI, TestEntry } from "../TestEntry";
 
@@ -10,7 +9,9 @@ interface Props {
   entity: string;
   View: (props: any) => any;
   record: (mockedApi: any) => object;
-  render: ({ screen, initialValues, userEvent, mockedApi }) => any;
+  render: ({
+    screen, initialValues, mockedApi, fireEvent
+  }) => any;
   defaultProps?: ({ entity, initialValues, mockedApi }) => object;
   beforeFn?: () => void;
 }
@@ -48,8 +49,8 @@ export const defaultComponents: ({
     return render({
       screen: testScreen,
       initialValues,
-      userEvent: testUserEvent,
-      mockedApi: mockedAPI
+      mockedApi: mockedAPI,
+      fireEvent: testFireEvent,
     });
   });
 };
