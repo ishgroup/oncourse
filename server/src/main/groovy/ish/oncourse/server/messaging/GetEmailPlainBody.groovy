@@ -54,10 +54,6 @@ class GetEmailPlainBody {
     String get() {
         if (message) {
             String plain = message.emailBody
-            if (message.mailingListMessage) {
-                GetUnsubscribeLink getUnsubscribeLink = GetUnsubscribeLink.valueOf(message)
-                plain += "\n\nUnsubscribe: ${getUnsubscribeLink.get()}".toString()
-            }
             return plain
         }
 
