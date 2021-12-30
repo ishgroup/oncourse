@@ -73,16 +73,6 @@ export function mockCourseClasses() {
       isTraineeship: false,
       customFields: {},
       feeHelpClass: false,
-      // feeIncGst: value[5],
-      // tutorsAbridged: value[6],
-
-      // validEnrolmentCount: value[8],
-      // placesLeft: value[9],
-
-      // accountId: 10,
-
-      // vetFundingContract: "Skills Tasmania",
-      // vetFundingSourceNationalId: "",
       notes: [],
       tutors: [
         {
