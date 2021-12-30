@@ -6,26 +6,51 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { stubFunction } from "../../../js/common/utils/common";
 import * as React from "react";
-import DuplicateTraineeshipModal from "../../../js/containers/entities/courseClasses/components/duplicate-courseClass/DuplicateTraineeshipModal";
+import DuplicateTraineeshipModal, { DUPLICATE_TRAINEESHIP_FORM } from
+    "../../../js/containers/entities/courseClasses/components/duplicate-courseClass/DuplicateTraineeshipModal";
+import { stubFunction } from "../../../js/common/utils/common";
 import { defaultComponents } from "../../common/Default.Components";
 
-// TODO Enable test when find solution to test @mui dialogs
-
-describe.skip("Virtual rendered DuplicateTraineeshipModal of Class list view", () => {
+describe("Virtual rendered DuplicateTraineeshipModal of Class list view", () => {
   defaultComponents({
-    entity: "CheckoutPreviousInvoiceList",
+    entity: "DuplicateTraineeshipModal",
     View: props => <div><DuplicateTraineeshipModal {...props} /></div>,
     record: () => ({}),
-    defaultProps: () => ({
+    defaultProps: ({ mockedApi }) => ({
       opened: true,
-      selection: [],
+      sessions: mockedApi.db.getCourseClassTimetable(),
+      selection: mockedApi.db.getCourseClassSelectedSessions(),
       setDialogOpened: stubFunction
     }),
-    render: (wrapper, initial, shallow) => {
-      expect(wrapper.find("div.heading").text()).toContain("Duplicate traineeship class");
+    render: ({ screen, fireEvent }) => {
+      expect(screen.getByText("Duplicate traineeship class")).toBeTruthy();
+
+      fireEvent.click(screen.getByLabelText("Tutors for each session"));
+      fireEvent.click(screen.getByLabelText("Site and room for each session"));
+      fireEvent.click(screen.getByLabelText("Budget"));
+      fireEvent.click(screen.getByLabelText("Training plan"));
+      fireEvent.click(screen.getByLabelText("Discounts"));
+      fireEvent.click(screen.getByLabelText("Payable time"));
+      fireEvent.click(screen.getByLabelText("VET fields"));
+      fireEvent.click(screen.getByLabelText("Assessment task"));
+      fireEvent.click(screen.getByLabelText("Tags"));
+      fireEvent.click(screen.getByLabelText("Class notes"));
+
+      expect(screen.getByRole(DUPLICATE_TRAINEESHIP_FORM)).toHaveFormValues({
+        copyTutors: true,
+        copySitesAndRooms: true,
+        copyCosts: true,
+        copyTrainingPlans: true,
+        applyDiscounts: true,
+        copyPayableTimeForSessions: true,
+        copyVetData: true,
+        copyAssessments: true,
+        copyOnlyMandatoryTags: true,
+        copyNotes: true,
+      });
+
+      fireEvent.click(screen.getByText("Duplicate and enrol"));
     }
   });
 });
-
