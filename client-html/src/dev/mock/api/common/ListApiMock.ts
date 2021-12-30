@@ -309,6 +309,10 @@ export function listApiMock() {
         return promiseResolve(config, this.db.getPlainTutorRoles());
       }
 
+      case "Room": {
+        return promiseResolve(config, this.db.getPlainRooms(config.params));
+      }
+
       default: {
         return promiseResolve(config, {});
       }
