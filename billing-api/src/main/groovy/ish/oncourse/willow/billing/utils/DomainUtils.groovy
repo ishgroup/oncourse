@@ -17,6 +17,9 @@ import static ish.oncourse.configuration.Configuration.getValue
 @CompileStatic
 class DomainUtils {
     private static final String INVALID_RANGES_ERROR = "Error of ip validation: valid ranges on server not set"
+    private static final String UNKNOWN_HOST_ERROR = "domain setup is not correct. Go to your DNS hosting provider and set the following:\n" +
+            "sttrinians.ish.com.au A 202.167.247.94\n" +
+            "sttrinians.ish.com.au AAAA 2404:4f00:1010:1::6"
     private static final Logger logger = LogManager.getLogger()
 
     static List<SubnetUtils> ipV4Ranges = getIp4Ranges()
@@ -56,7 +59,7 @@ class DomainUtils {
             notInRangesAddress = InetAddress.getAllByName(host)
                     .find { it -> !ipInRange(it) }
         } catch (UnknownHostException e) {
-            return "Unknown host"
+            return UNKNOWN_HOST_ERROR
         }
         
         return notInRangesAddress == null ? null : "${notInRangesAddress} is not in allowed range"
