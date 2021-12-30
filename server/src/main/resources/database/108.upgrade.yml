@@ -31,7 +31,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: result
-                  type: blob
+                  type: longblob
               - column:
                   name: createdOn
                   type: datetime
