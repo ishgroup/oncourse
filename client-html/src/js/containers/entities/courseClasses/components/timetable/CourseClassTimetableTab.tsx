@@ -12,15 +12,10 @@ import {
 import withStyles from "@mui/styles/withStyles";
 import createStyles from "@mui/styles/createStyles";
 import {
-  addBusinessDays,
   addDays,
   addHours,
   addMinutes,
-  addMonths,
-  addWeeks,
-  addYears,
   differenceInMinutes,
-  isWeekend,
   subDays
 } from "date-fns";
 import { SessionWarning, TutorAttendance } from "@api/model";
@@ -63,7 +58,7 @@ import { State } from "../../../../../reducers/state";
 import { SelectItemDefault } from "../../../../../model/entities/common";
 import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
 import uniqid from "../../../../../common/utils/uniqid";
-import { setShiftedTutorAttendances } from "../../utils";
+import { getSessionsWithRepeated, setShiftedTutorAttendances } from "../../utils";
 
 const styles = () => createStyles({
     root: {
@@ -105,76 +100,6 @@ interface Props extends Partial<EditViewProps<CourseClassExtended>> {
   sessionSelection?: any[];
   bulkSessionModalOpened?: boolean;
 }
-
-const getSessionsWithRepeated = (
-  repeatSession: TimetableSession,
-  repeatType: SessionRepeatTypes,
-  repeatTimes: number,
-  allSessions: TimetableSession[]
-) => {
-  let repeated = Array.from(Array(repeatTimes <= 0 ? 1 : repeatTimes));
-  let repeatHandler = addHours;
-  let indexIncrement = 1;
-
-  switch (repeatType) {
-    case "hour":
-      repeatHandler = addHours;
-      break;
-    case "day (excluding weekends)":
-      if (isWeekend(new Date(repeatSession.start))) {
-        indexIncrement = 0;
-      }
-      repeatHandler = addBusinessDays;
-      break;
-    case "day (including weekends)":
-      repeatHandler = addDays;
-      break;
-    case "week":
-      repeatHandler = addWeeks;
-      break;
-    case "month":
-      repeatHandler = addMonths;
-      break;
-    case "year":
-      repeatHandler = addYears;
-      break;
-  }
-
-  const repeatedStart = new Date(repeatSession.start);
-
-  repeated = repeated.map<TimetableSession>((r, index) => {
-    let start = repeatHandler(new Date(repeatSession.start), index + indexIncrement);
-    let end = repeatHandler(new Date(repeatSession.end), index + indexIncrement);
-
-    // workaround for DST time offset
-    if (repeatSession.siteTimezone && repeatType !== "hour") {
-      const startHoursDiff = appendTimezone(repeatedStart, repeatSession.siteTimezone).getHours()
-      - appendTimezone(start, repeatSession.siteTimezone).getHours();
-
-      if (startHoursDiff) {
-        start = addHours(start, startHoursDiff);
-        end = addHours(end, startHoursDiff);
-      }
-    }
-
-    const result = {
-      ...repeatSession,
-      id: null,
-      temporaryId: uniqid(),
-      start: start.toISOString(),
-      end: end.toISOString(),
-    };
-
-    setShiftedTutorAttendances(repeatSession, result);
-
-    return result;
-  });
-
-  const updated = [...allSessions, ...repeated];
-  updated.sort((a, b) => (new Date(a.start) > new Date(b.start) ? 1 : -1));
-
-  return updated;
-};
 
 let pendingSessionActionArgs = null;
 
@@ -538,7 +463,6 @@ const CourseClassTimetableTab = ({
       const durationValue = differenceInMinutes(endDate, startDate);
 
       let actualPayableDurationMinutes;
-      let sessionTimeChanged;
 
       if (bulkValue.siteId !== null && bulkValue.locationChecked) {
         session.siteId = bulkValue.siteId;
@@ -551,8 +475,6 @@ const CourseClassTimetableTab = ({
         (bulkValue.startChecked && bulkValue.durationChecked && bulkValue.payableDurationChecked)
         && bulkValue.start !== "" && bulkValue.duration !== 0 && bulkValue.payableDuration !== 0
       ) {
-        sessionTimeChanged = true;
-
         const newStartDate = new Date(bulkValue.start);
         const startDate = new Date(session.start);
         startDate.setHours(newStartDate.getHours(), newStartDate.getMinutes(), 0, 0);
@@ -567,8 +489,6 @@ const CourseClassTimetableTab = ({
         (bulkValue.startChecked && bulkValue.durationChecked)
         && bulkValue.start !== "" && bulkValue.duration !== 0
       ) {
-        sessionTimeChanged = true;
-
         const newStartDate = new Date(bulkValue.start);
         const startDate = new Date(session.start);
         startDate.setHours(newStartDate.getHours(), newStartDate.getMinutes(), 0, 0);
@@ -581,8 +501,6 @@ const CourseClassTimetableTab = ({
         (bulkValue.startChecked && bulkValue.payableDurationChecked)
         && bulkValue.start !== "" && bulkValue.payableDuration !== 0
       ) {
-        sessionTimeChanged = true;
-
         const newStartDate = new Date(bulkValue.start);
         const startDate = new Date(session.start);
         startDate.setHours(newStartDate.getHours(), newStartDate.getMinutes(), 0, 0);
@@ -596,8 +514,6 @@ const CourseClassTimetableTab = ({
         (bulkValue.durationChecked && bulkValue.payableDurationChecked)
         && bulkValue.duration !== 0 && bulkValue.payableDuration !== 0
       ) {
-        sessionTimeChanged = true;
-
         const startDate = new Date(session.start);
         startDate.setSeconds(0, 0);
 
@@ -607,8 +523,6 @@ const CourseClassTimetableTab = ({
 
         actualPayableDurationMinutes = bulkValue.payableDuration;
       } else if (bulkValue.startChecked && bulkValue.start !== "") {
-        sessionTimeChanged = true;
-
         const newStartDate = new Date(bulkValue.start);
         const startDate = new Date(session.start);
         startDate.setHours(newStartDate.getHours(), newStartDate.getMinutes(), 0, 0);
@@ -618,17 +532,14 @@ const CourseClassTimetableTab = ({
         endDate.setSeconds(0, 0);
         session.end = endDate.toISOString();
       } else if (bulkValue.durationChecked && bulkValue.duration !== 0) {
-        sessionTimeChanged = true;
-        session.end = addMinutes(new Date(session.start), bulkValue.duration).toISOString();
+        session.end = addMinutes(new Date(session.start), bulkValue.duration).toISOString()
       } else if (bulkValue.payableDurationChecked && bulkValue.payableDuration !== 0) {
         actualPayableDurationMinutes = bulkValue.payableDuration;
       }
       if (bulkValue.moveForwardChecked && bulkValue.moveForward !== "" && bulkValue.moveForward !== "0") {
-        sessionTimeChanged = true;
         session.start = addDays(new Date(session.start), parseInt(bulkValue.moveForward)).toISOString();
         session.end = addDays(new Date(session.end), parseInt(bulkValue.moveForward)).toISOString();
       } else if (bulkValue.moveBackwardChecked && bulkValue.moveBackward !== "" && bulkValue.moveBackward !== "0") {
-        sessionTimeChanged = true;
         session.start = subDays(new Date(session.start), parseInt(bulkValue.moveBackward)).toISOString();
         session.end = subDays(new Date(session.end), parseInt(bulkValue.moveBackward)).toISOString();
       }
@@ -659,10 +570,6 @@ const CourseClassTimetableTab = ({
             end: end.toISOString(),
           };
         }).concat(payslipAttendances);
-      }
-
-      if (sessionTimeChanged) {
-        setShiftedTutorAttendances(originalSession, session);
       }
 
       if (typeof actualPayableDurationMinutes === 'number') {

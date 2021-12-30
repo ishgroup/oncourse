@@ -76,6 +76,7 @@ const CourseClassExpandableSession = React.memo<Props>(props => {
       onChange={onChange}
       keepPaper={!session.id}
       classes={{
+        expansionPanelRoot: "w-100",
         expandIcon: "invisible",
         expansionPanelSummayRoot: clsx(
           classes.sessionExpansionPanelSummayRoot,
