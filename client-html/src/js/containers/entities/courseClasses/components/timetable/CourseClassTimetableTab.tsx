@@ -557,12 +557,23 @@ const CourseClassTimetableTab = ({
 
           const taStart = new Date(ta.start);
           const taEnd = new Date(ta.end);
-          
-          const start = new Date(session.start);
-          const end = new Date(session.end);
+
+          let start = new Date(session.start);
+          let end = new Date(session.end);
 
           start.setHours(taStart.getHours(), taStart.getMinutes(), 0, 0);
           end.setHours(taEnd.getHours(), taEnd.getMinutes(), 0, 0);
+
+          // workaround for DST time offset
+          if (session.siteTimezone) {
+            const startHoursDiff = appendTimezone(new Date(originalSession.start), session.siteTimezone).getHours()
+              - appendTimezone(start, session.siteTimezone).getHours();
+
+            if (startHoursDiff) {
+              start = addHours(start, startHoursDiff);
+              end = addHours(end, startHoursDiff);
+            }
+          }
 
           return {
             ...ta,
@@ -742,19 +753,6 @@ const CourseClassTimetableTab = ({
         </Grid>
       ) : (
         <>
-          {/* <div className={clsx("pb-1", !attendanceChanged && "d-none")}> */}
-          {/*  <div className="centeredFlex"> */}
-          {/*    <div> */}
-          {/*      <div className="heading pb-1">Timetable</div> */}
-          {/*      <Typography variant="caption" color="textSecondary"> */}
-          {/*        Please save your attendance changes before editing timetable */}
-          {/*      </Typography> */}
-          {/*    </div> */}
-          {/*    <div className="flex-fill" /> */}
-          {/*    {selfPacedField} */}
-          {/*  </div> */}
-          {/* </div> */}
-          {/* <div className={clsx(attendanceChanged && "d-none")}> */}
           <div>
             <ExpandableContainer
               header="Timetable"
