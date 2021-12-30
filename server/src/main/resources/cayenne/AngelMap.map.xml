@@ -697,7 +697,7 @@
 		<db-attribute name="keyCode" type="CHAR" isMandatory="true" length="36"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" length="6"/>
 		<db-attribute name="outputType" type="INTEGER" length="10"/>
-		<db-attribute name="result" type="LONGVARBINARY" length="65535"/>
+		<db-attribute name="result" type="BLOB"/>
 		<db-attribute name="status" type="INTEGER" isMandatory="true" length="10"/>
 		<db-attribute name="statusMessage" type="VARCHAR" length="255"/>
 		<db-attribute name="taskId" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
