@@ -5,42 +5,85 @@ import * as Models from "../../../../../build/generated-sources/aql-model/queryL
 
 export function mockCourseClasses() {
   this.getCourseClass = id => {
-    const row = this.courseClasses.rows.find(courseClass => courseClass.id == id);
+    const row = this.courseClasses.rows.find(courseClass => Number(courseClass.id) === Number(id));
     const value = row.values;
     return {
       id: row.id,
-      courseName: value[0],
       code: value[1],
-      startDateTime: value[2],
+      courseId: row.id,
+      courseCode: value[1],
+      courseName: value[0],
       endDateTime: value[3],
-      sessionsCount: value[4],
-      feeIncGst: value[5],
-      tutorsAbridged: value[6],
-      roomSite: value[7],
-      validEnrolmentCount: value[8],
-      placesLeft: value[9],
-      createdOn: value[10],
+      startDateTime: value[2],
       attendanceType: "No information",
-      censusDate: "",
       deliveryMode: "Classroom",
-      classFundingSource: "Domestic full fee",
-      webDescription: "Lorem ipsum",
-      accountId: 10,
-      reportableHours: 20,
+      fundingSource: "Domestic full fee paying student",
+      budgetedPlaces: 0,
+      censusDate: "",
+      createdOn: value[10],
+      modifiedOn: value[10],
+      deposit: 95.45,
+      detBookingId: null,
+      expectedHours: 0,
+      feeExcludeGST: 95.45,
+      finalDetExport: null,
+      initialDetExport: null,
+      isActive: true,
+      isCancelled: false,
+      isDistantLearningCourse: false,
+      isShownOnWeb: true,
+      maxStudentAge: 25,
+      maximumDays: null,
+      maximumPlaces: 50,
+      message: "Lorem ipsum",
+      midwayDetExport: null,
+      minStudentAge: 10,
+      minimumPlaces: 1,
+      sessionsCount: value[4],
       suppressAvetmissExport: false,
       vetCourseSiteId: "10",
-      vetFundingContract: "Skills Tasmania",
-      vetFundingSourceNationalId: "",
-      vetFundingSourceStateId: "",
+      vetFundingSourceStateId: "F3",
       vetPurchasingContractId: "",
       vetPurchasingContractScheduleId: "",
+      webDescription: "Lorem ipsum",
+      relatedFundingSourceId: 4,
       qualificationHours: 0,
-      nominalHours: 15,
-      classroomHours: 15,
-      studentContactHours: 0,
-      courseCode: value[1],
+      nominalHours: 246.0,
+      classroomHours: 246.0,
+      studentContactHours: 240,
+      reportableHours: 240,
+      roomId: value[7],
+      virtualSiteId: null,
+      taxId: 1,
+      summaryFee: null,
+      summaryDiscounts: null,
+      enrolmentsToProfitLeftCount: 0,
+      allEnrolmentsCount: 1,
+      allOutcomesCount: 1,
+      inProgressOutcomesCount: 1,
+      passOutcomesCount: 0,
+      failedOutcomesCount: 0,
+      withdrawnOutcomesCount: 0,
+      otherOutcomesCount: 0,
+      successAndQueuedEnrolmentsCount: 1,
+      canceledEnrolmentsCount: 0,
+      failedEnrolmentsCount: 0,
+      tags: [this.getTag(1)],
+      documents: [],
+      isTraineeship: false,
+      customFields: {},
+      feeHelpClass: false,
+      // feeIncGst: value[5],
+      // tutorsAbridged: value[6],
+
+      // validEnrolmentCount: value[8],
+      // placesLeft: value[9],
+
+      // accountId: 10,
+
+      // vetFundingContract: "Skills Tasmania",
+      // vetFundingSourceNationalId: "",
       notes: [],
-      tags: [],
       tutors: [
         {
           name: "Hill, Eliatan",
@@ -49,7 +92,6 @@ export function mockCourseClasses() {
           inPublicity: true
         }
       ],
-      documents: []
     };
   };
 
@@ -60,21 +102,23 @@ export function mockCourseClasses() {
     const columns = params.columns;
     const keysForGeneratingArrayOfRecords = [{ name: "id", type: "number" }];
 
-    columns && columns.split(",").forEach(column => {
-      let newItem;
-      if (column.includes(".")) {
-        // const numberOfDots = column.match(/\./g).length;
-        const updColumn = column[0].toUpperCase() + column.substring(1);
-        const entityName = updColumn.slice(0, updColumn.indexOf('.'));
-        const fieldName = column.slice(column.lastIndexOf('.') + 1);
-        const field = Models[entityName][fieldName];
-        newItem = { name: column, type: field };
-      } else {
-        newItem = { name: column, type: CourseClassQueryModel[column] };
-      }
+    if (columns) {
+      columns.split(",").forEach(column => {
+        let newItem;
+        if (column.includes(".")) {
+          // const numberOfDots = column.match(/\./g).length;
+          const updColumn = column[0].toUpperCase() + column.substring(1);
+          const entityName = updColumn.slice(0, updColumn.indexOf('.'));
+          const fieldName = column.slice(column.lastIndexOf('.') + 1);
+          const field = Models[entityName][fieldName];
+          newItem = { name: column, type: field };
+        } else {
+          newItem = { name: column, type: CourseClassQueryModel[column] };
+        }
 
-      keysForGeneratingArrayOfRecords.push(newItem);
-    });
+        keysForGeneratingArrayOfRecords.push(newItem);
+      });
+    }
 
     if (columns.includes("course.name,course.code,code,feeIncGst,startDateTime,endDateTime")) {
       rows = generateArraysOfRecords(20, [
@@ -134,7 +178,7 @@ export function mockCourseClasses() {
         delete copiedObject.id;
 
         const result = [];
-        for (let key in copiedObject) {
+        for (const key in copiedObject) {
           result.push(l[key]);
         }
 
@@ -611,6 +655,1268 @@ export function mockCourseClasses() {
       }
     ];
 
+  this.getCourseClassSelectedSessions = () => [4671, 25336, 4140, 4362];
+  
+  this.getCourseClassTimetable = () => [
+    {
+      "id": 4671,
+      "temporaryId": null,
+      "name": "Certificate III in Permaculture",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 782,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-06-20T23:00:00.000Z",
+      "end": "2023-06-21T05:00:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 25336,
+      "temporaryId": null,
+      "name": "Certificate III in Permaculture",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 782,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-06-20T23:00:00.000Z",
+      "end": "2023-06-21T05:00:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 4140,
+      "temporaryId": null,
+      "name": "Certificate III in Permaculture",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 782,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-06-21T23:00:00.000Z",
+      "end": "2023-06-22T05:00:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 4362,
+      "temporaryId": null,
+      "name": "Certificate III in Permaculture",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 782,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-06-22T23:00:00.000Z",
+      "end": "2023-06-23T05:00:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 4139,
+      "temporaryId": null,
+      "name": "Certificate III in Permaculture",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 782,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-06-23T23:00:00.000Z",
+      "end": "2023-06-24T05:00:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 3531,
+      "temporaryId": null,
+      "name": "Certificate III in Permaculture",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 782,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-06-24T23:00:00.000Z",
+      "end": "2023-06-25T05:00:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 5161,
+      "temporaryId": null,
+      "name": "Certificate III in Permaculture",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 782,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-06-27T23:00:00.000Z",
+      "end": "2023-06-28T05:00:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 3473,
+      "temporaryId": null,
+      "name": "Certificate III in Permaculture",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 782,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-06-28T23:00:00.000Z",
+      "end": "2023-06-29T05:00:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 4926,
+      "temporaryId": null,
+      "name": "Certificate III in Permaculture",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 782,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-06-29T23:00:00.000Z",
+      "end": "2023-06-30T05:00:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 4925,
+      "temporaryId": null,
+      "name": "Certificate III in Permaculture",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 782,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-06-30T23:00:00.000Z",
+      "end": "2023-07-01T05:00:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 3402,
+      "temporaryId": null,
+      "name": "Certificate III in Permaculture",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 782,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-07-01T23:00:00.000Z",
+      "end": "2023-07-02T05:00:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 4249,
+      "temporaryId": null,
+      "name": "Certificate III in Permaculture",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 782,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-07-04T23:00:00.000Z",
+      "end": "2023-07-05T05:00:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 4195,
+      "temporaryId": null,
+      "name": "Certificate III in Permaculture",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 782,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-07-05T23:00:00.000Z",
+      "end": "2023-07-06T05:00:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 3710,
+      "temporaryId": null,
+      "name": "Certificate III in Permaculture",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 782,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-07-06T23:00:00.000Z",
+      "end": "2023-07-07T05:00:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 3602,
+      "temporaryId": null,
+      "name": "Certificate III in Permaculture",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 782,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-07-07T23:00:00.000Z",
+      "end": "2023-07-08T05:00:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 3326,
+      "temporaryId": null,
+      "name": "Certificate III in Permaculture",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 782,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-07-08T23:00:00.000Z",
+      "end": "2023-07-09T05:00:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 4556,
+      "temporaryId": null,
+      "name": "Certificate III in Permaculture",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 782,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-07-11T23:00:00.000Z",
+      "end": "2023-07-12T05:00:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 4796,
+      "temporaryId": null,
+      "name": "Certificate III in Permaculture",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 782,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-07-12T23:00:00.000Z",
+      "end": "2023-07-13T05:00:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 4560,
+      "temporaryId": null,
+      "name": "Certificate III in Permaculture",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 782,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-07-13T23:00:00.000Z",
+      "end": "2023-07-14T05:00:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 5227,
+      "temporaryId": null,
+      "name": "Certificate III in Permaculture",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 782,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-07-14T23:00:00.000Z",
+      "end": "2023-07-15T05:00:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+  ];
+  
+  this.getCourseClassTimetableSessions = () => [
+    {
+      "sessionId": 4671,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-5 at Wed. 21 Jun. 7:00(Australia/West) \nCHC30113-5 at Wed. 21 Jun. 7:00(Australia/West) \n30868QLDD-8 at Wed. 21 Jun. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 4671,
+      "temporaryId": null,
+      "type": "Session",
+      "referenceId": null,
+      "label": null,
+      "message": "Class already has session for that time"
+    },
+    {
+      "sessionId": 25336,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-5 at Wed. 21 Jun. 7:00(Australia/West) \nCHC30113-5 at Wed. 21 Jun. 7:00(Australia/West) \n30868QLDD-8 at Wed. 21 Jun. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 25336,
+      "temporaryId": null,
+      "type": "Session",
+      "referenceId": null,
+      "label": null,
+      "message": "Class already has session for that time"
+    },
+    {
+      "sessionId": 4140,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-5 at Thu. 22 Jun. 7:00(Australia/West) \nCHC30113-5 at Thu. 22 Jun. 7:00(Australia/West) \n30868QLDD-8 at Thu. 22 Jun. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 4362,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for CHC30113-5 at Fri. 23 Jun. 7:00(Australia/West) \n30868QLDD-5 at Fri. 23 Jun. 7:00(Australia/West) \nCHC30113-12 at Fri. 23 Jun. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 4139,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-5 at Sat. 24 Jun. 7:00(Australia/West) \nCHC30113-5 at Sat. 24 Jun. 7:00(Australia/West) \nCHC30113-12 at Sat. 24 Jun. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 3531,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for CHC30113-5 at Sun. 25 Jun. 7:00(Australia/West) \n30868QLDD-5 at Sun. 25 Jun. 7:00(Australia/West) \nCHC30113-12 at Sun. 25 Jun. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 5161,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for CHC30113-5 at Wed. 28 Jun. 7:00(Australia/West) \n30868QLDD-5 at Wed. 28 Jun. 7:00(Australia/West) \n30868QLDD-8 at Wed. 28 Jun. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 3473,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for CHC30113-5 at Thu. 29 Jun. 7:00(Australia/West) \n30868QLDD-5 at Thu. 29 Jun. 7:00(Australia/West) \n30868QLDD-8 at Thu. 29 Jun. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 4926,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for CHC30113-5 at Fri. 30 Jun. 7:00(Australia/West) \n30868QLDD-5 at Fri. 30 Jun. 7:00(Australia/West) \nCHC30113-12 at Fri. 30 Jun. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 4925,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for CHC30113-5 at Sat. 1 Jul. 7:00(Australia/West) \n30868QLDD-5 at Sat. 1 Jul. 7:00(Australia/West) \nCHC30113-12 at Sat. 1 Jul. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 3402,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-5 at Sun. 2 Jul. 7:00(Australia/West) \nCHC30113-5 at Sun. 2 Jul. 7:00(Australia/West) \nCHC30113-12 at Sun. 2 Jul. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 4249,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-5 at Wed. 5 Jul. 7:00(Australia/West) \nCHC30113-5 at Wed. 5 Jul. 7:00(Australia/West) \n30868QLDD-8 at Wed. 5 Jul. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 4195,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for CHC30113-5 at Thu. 6 Jul. 7:00(Australia/West) \n30868QLDD-5 at Thu. 6 Jul. 7:00(Australia/West) \n30868QLDD-8 at Thu. 6 Jul. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 3710,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for CHC30113-5 at Fri. 7 Jul. 7:00(Australia/West) \n30868QLDD-5 at Fri. 7 Jul. 7:00(Australia/West) \nCHC30113-12 at Fri. 7 Jul. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 3602,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-5 at Sat. 8 Jul. 7:00(Australia/West) \nCHC30113-5 at Sat. 8 Jul. 7:00(Australia/West) \nCHC30113-12 at Sat. 8 Jul. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 3326,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-5 at Sun. 9 Jul. 7:00(Australia/West) \nCHC30113-5 at Sun. 9 Jul. 7:00(Australia/West) \nCHC30113-12 at Sun. 9 Jul. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 4556,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-5 at Wed. 12 Jul. 7:00(Australia/West) \n30868QLDD-8 at Wed. 12 Jul. 7:00(Australia/West) \n30868QLDD-9 at Wed. 12 Jul. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 4796,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-5 at Thu. 13 Jul. 7:00(Australia/West) \n30868QLDD-8 at Thu. 13 Jul. 7:00(Australia/West) \n30868QLDD-9 at Thu. 13 Jul. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 4560,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-5 at Fri. 14 Jul. 7:00(Australia/West) \nCHC30113-12 at Fri. 14 Jul. 7:00(Australia/West) \n30868QLDD-8 at Fri. 14 Jul. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 5227,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-5 at Sat. 15 Jul. 7:00(Australia/West) \nCHC30113-12 at Sat. 15 Jul. 7:00(Australia/West) \n30868QLDD-8 at Sat. 15 Jul. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 3776,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-5 at Sun. 16 Jul. 7:00(Australia/West) \nCHC30113-12 at Sun. 16 Jul. 7:00(Australia/West) \n30868QLDD-8 at Sun. 16 Jul. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 3891,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-5 at Wed. 19 Jul. 7:00(Australia/West) \n30868QLDD-8 at Wed. 19 Jul. 7:00(Australia/West) \n30868QLDD-9 at Wed. 19 Jul. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 3779,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-5 at Thu. 20 Jul. 7:00(Australia/West) \n30868QLDD-8 at Thu. 20 Jul. 7:00(Australia/West) \n30868QLDD-9 at Thu. 20 Jul. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 4734,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-5 at Fri. 21 Jul. 7:00(Australia/West) \nCHC30113-12 at Fri. 21 Jul. 7:00(Australia/West) \n30868QLDD-8 at Fri. 21 Jul. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 3957,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-5 at Sat. 22 Jul. 7:00(Australia/West) \nCHC30113-12 at Sat. 22 Jul. 7:00(Australia/West) \n30868QLDD-8 at Sat. 22 Jul. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 3643,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-5 at Sun. 23 Jul. 7:00(Australia/West) \nCHC30113-12 at Sun. 23 Jul. 7:00(Australia/West) \n30868QLDD-8 at Sun. 23 Jul. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 3587,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-8 at Wed. 26 Jul. 7:00(Australia/West) \n30868QLDD-9 at Wed. 26 Jul. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 4025,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-8 at Thu. 27 Jul. 7:00(Australia/West) \n30868QLDD-9 at Thu. 27 Jul. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 4095,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for CHC30113-12 at Fri. 28 Jul. 7:00(Australia/West) \n30868QLDD-8 at Fri. 28 Jul. 7:00(Australia/West) \n30868QLDD-9 at Fri. 28 Jul. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 5226,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for CHC30113-12 at Sat. 29 Jul. 7:00(Australia/West) \n30868QLDD-8 at Sat. 29 Jul. 7:00(Australia/West) \n30868QLDD-9 at Sat. 29 Jul. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 4835,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for CHC30113-12 at Sun. 30 Jul. 7:00(Australia/West) \n30868QLDD-8 at Sun. 30 Jul. 7:00(Australia/West) \n30868QLDD-9 at Sun. 30 Jul. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 3825,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-8 at Wed. 2 Aug. 7:00(Australia/West) \n30868QLDD-9 at Wed. 2 Aug. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 4442,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-8 at Thu. 3 Aug. 7:00(Australia/West) \n30868QLDD-9 at Thu. 3 Aug. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 4358,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for CHC30113-12 at Fri. 4 Aug. 7:00(Australia/West) \n30868QLDD-8 at Fri. 4 Aug. 7:00(Australia/West) \n30868QLDD-9 at Fri. 4 Aug. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 5119,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for CHC30113-12 at Sat. 5 Aug. 7:00(Australia/West) \n30868QLDD-8 at Sat. 5 Aug. 7:00(Australia/West) \n30868QLDD-9 at Sat. 5 Aug. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 4496,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for CHC30113-12 at Sun. 6 Aug. 7:00(Australia/West) \n30868QLDD-8 at Sun. 6 Aug. 7:00(Australia/West) \n30868QLDD-9 at Sun. 6 Aug. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 4989,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-8 at Wed. 9 Aug. 7:00(Australia/West) \n30868QLDD-9 at Wed. 9 Aug. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 3472,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-8 at Thu. 10 Aug. 7:00(Australia/West) \n30868QLDD-9 at Thu. 10 Aug. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 5037,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-8 at Fri. 11 Aug. 7:00(Australia/West) \n30868QLDD-9 at Fri. 11 Aug. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 4673,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-8 at Sat. 12 Aug. 7:00(Australia/West) \n30868QLDD-9 at Sat. 12 Aug. 7:00(Australia/West) \n"
+    },
+    {
+      "sessionId": 5285,
+      "temporaryId": null,
+      "type": "Room",
+      "referenceId": 280,
+      "label": "Room 1",
+      "message": "Room Room 1 is already booked for 30868QLDD-8 at Sun. 13 Aug. 7:00(Australia/West) \n30868QLDD-9 at Sun. 13 Aug. 7:00(Australia/West) \n"
+    }
+  ];
+  
+  this.getCourseClassTutors = () => [
+    {
+      "id": 2315,
+      "classId": 1866,
+      "contactId": 182,
+      "roleId": 0,
+      "tutorName": "Eliatan Hill",
+      "roleName": "General Tutor",
+      "confirmedOn": null,
+      "isInPublicity": true
+    }
+  ];
+  
+  this.getCourseClassAssessment = () => [];
+  
+  this.getCourseClassAttendanceStudents = () => [
+    {
+      "id": 19450,
+      "sessionId": 3643,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19452,
+      "sessionId": 5226,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19454,
+      "sessionId": 5285,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19456,
+      "sessionId": 4560,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19458,
+      "sessionId": 3472,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19460,
+      "sessionId": 4358,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19462,
+      "sessionId": 4442,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19464,
+      "sessionId": 4140,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19466,
+      "sessionId": 3891,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19468,
+      "sessionId": 4926,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19470,
+      "sessionId": 4025,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19472,
+      "sessionId": 3776,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19474,
+      "sessionId": 4673,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19476,
+      "sessionId": 3531,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19478,
+      "sessionId": 4796,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19480,
+      "sessionId": 3602,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19482,
+      "sessionId": 4556,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19484,
+      "sessionId": 3402,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19486,
+      "sessionId": 5037,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19488,
+      "sessionId": 4249,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19490,
+      "sessionId": 4362,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19492,
+      "sessionId": 4139,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19494,
+      "sessionId": 3825,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19496,
+      "sessionId": 4989,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19498,
+      "sessionId": 3957,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19500,
+      "sessionId": 4925,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19502,
+      "sessionId": 3710,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19504,
+      "sessionId": 5161,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19506,
+      "sessionId": 4671,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Attended",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19508,
+      "sessionId": 3473,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19510,
+      "sessionId": 3587,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19512,
+      "sessionId": 4835,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19514,
+      "sessionId": 4496,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19516,
+      "sessionId": 3326,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19518,
+      "sessionId": 5119,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19520,
+      "sessionId": 4195,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19522,
+      "sessionId": 5227,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19524,
+      "sessionId": 4095,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19526,
+      "sessionId": 3779,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 19528,
+      "sessionId": 4734,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    },
+    {
+      "id": 61426,
+      "sessionId": 25336,
+      "contactId": 2979,
+      "contactName": "Artyom Tutor",
+      "attendanceType": "Unmarked",
+      "note": null,
+      "attendedFrom": null,
+      "attendedUntil": null
+    }
+  ];
+  
+  this.getCourseClassTrainingPlan = () => [];
+
   const rows: CourseClass[] = generateArraysOfRecords(20, [
     { name: "id", type: "number" },
     { name: "courseName", type: "string" },
@@ -620,7 +1926,7 @@ export function mockCourseClasses() {
     { name: "sessionsCount", type: "number" },
     { name: "feeIncGst", type: "string" },
     { name: "tutorsAbridged", type: "string" },
-    { name: "roomSite", type: "string" },
+    { name: "roomId", type: "number" },
     { name: "validEnrolmentCount", type: "number" },
     { name: "placesLeft", type: "number" },
     { name: "createdOn", type: "Datetime" }
@@ -631,10 +1937,10 @@ export function mockCourseClasses() {
       l.code,
       l.startDateTime,
       l.endDateTime,
-      10,
+      20,
       300,
       "not set",
-      "ish.oncourse.server.entity.mixins.SiteMixin@e41ab61",
+      280,
       10,
       20,
       l.createdOn,
