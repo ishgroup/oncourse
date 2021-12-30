@@ -12,21 +12,17 @@
 
 package ish.oncourse.server.cluster;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import ish.common.types.TaskResultType;
 import ish.oncourse.server.ICayenneService;
-import ish.oncourse.server.api.v1.model.ProcessStatusDTO;
-import ish.oncourse.server.cayenne.ExecutorManagerTask;
-import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.query.ObjectSelect;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+
+import javax.inject.Inject;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
  * This job removes all {@link ClusteredExecutorManager} tasks
@@ -46,19 +42,20 @@ public class ExpiredTasksCleaner implements Job {
         execute();
     }
 
-    void execute() {
-        ObjectContext context = cayenneService.getNewNonReplicatingContext();
-
-        LocalDateTime now = LocalDateTime.now();
-
-        List<ExecutorManagerTask> expiredTasks = ObjectSelect.query(ExecutorManagerTask.class)
-                .where(ExecutorManagerTask.CREATED_ON.lt(now.minusHours(HOURS_INACTIVE_IN_PROGRESS))
-                        .andExp(ExecutorManagerTask.STATUS.eq(TaskResultType.IN_PROGRESS)))
-                .or(ExecutorManagerTask.MODIFIED_ON.lt(now.minusHours(HOURS_INACTIVE_DONE))
-                        .andExp(ExecutorManagerTask.STATUS.in(TaskResultType.SUCCESS, TaskResultType.FAILURE)))
-                .select(context);
-
-        context.deleteObjects(expiredTasks);
-        context.commitChanges();
+    void execute() throws JobExecutionException {
+        try {
+            Connection connection = cayenneService.getDataSource().getConnection();
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM ExecutorManagerTask" +
+                    " WHERE (timestampdiff(hour, createdOn, current_timestamp)>? AND status=?)" +
+                    " OR (timestampdiff(hour, modifiedOn, current_timestamp)>? AND (status=? OR status=?))");
+            statement.setInt(1, HOURS_INACTIVE_IN_PROGRESS);
+            statement.setInt(2, TaskResultType.IN_PROGRESS.getDatabaseValue());
+            statement.setInt(3, HOURS_INACTIVE_DONE);
+            statement.setInt(4, TaskResultType.SUCCESS.getDatabaseValue());
+            statement.setInt(5, TaskResultType.FAILURE.getDatabaseValue());
+            statement.execute();
+        } catch (SQLException throwables) {
+            throw new JobExecutionException(throwables);
+        }
     }
 }
