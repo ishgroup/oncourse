@@ -82,7 +82,19 @@ export function mockEnrolments() {
     let rows = [];
 
     if (columnList.length) {
-      if (columnList.includes("status")) {
+      if (columnList.includes("student.contact.fullName")) {
+        rows = generateArraysOfRecords(20, [
+          { name: "id", type: "number" },
+          { name: "createdOn", type: "Datetime" },
+          { name: "status", type: "string" },
+          { name: "fullName", type: "string" },
+          { name: "contactId", type: "number" },
+          { name: "courseName", type: "string" }
+        ]).map(l => ({
+          id: l.id,
+          values: [l.createdOn, "Active", l.fullName, l.contactId]
+        }));
+      } else if (columnList.includes("status")) {
         ids.forEach(id => {
           rows.push({
             id,

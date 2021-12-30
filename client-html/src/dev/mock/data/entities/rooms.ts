@@ -4,7 +4,7 @@ export function mockRooms() {
   this.getRooms = () => this.rooms;
 
   this.getRoom = id => {
-    const row = this.rooms.rows.find(row => row.id == id);
+    const row = this.rooms.rows.find(room => Number(room.id) === Number(id));
     return {
       createdOn: "2021-01-30T10:17:48.295Z",
       directions: null,
@@ -45,6 +45,30 @@ export function mockRooms() {
 
   this.removeRoom = id => {
     this.rooms = removeItemByEntity(this.rooms, id);
+  };
+
+  this.getPlainRooms = params => {
+    const columnList = params.columns.split(",");
+    const ids = params.search.replace(/(id in|\(|\))/g, '').trim().split(",");
+
+    const rows = [];
+
+    if (columnList.length) {
+      if (columnList.includes("seatedCapacity")) {
+        ids.forEach(id => {
+          rows.push({
+            id,
+            values: ["none", "0"]
+          });
+        });
+      }
+    }
+
+    return getEntityResponse({
+      entity: "Room",
+      rows,
+      plain: true
+    });
   };
 
   const rows = generateArraysOfRecords(20, [
