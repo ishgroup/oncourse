@@ -36,19 +36,17 @@ public enum TaggableClasses implements Serializable, ExtendedEnumeration {
 	@API
 	ROOM(10),
 	@API
-	MESSAGE(11),
+	DOCUMENT(11),
 	@API
-	DOCUMENT(12),
+	APPLICATION(12),
 	@API
-	APPLICATION(13),
+	ENROLMENT(13),
 	@API
-	ENROLMENT(14),
+	PAYSLIP(14),
 	@API
-	PAYSLIP(15),
+	WAITING_LIST(15),
 	@API
-	WAITING_LIST(16),
-	@API
-	ASSESSMENT(17),
+	ASSESSMENT(16),
 	@API
 	LEAD(18),
 	@API
