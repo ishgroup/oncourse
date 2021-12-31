@@ -186,11 +186,6 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
     currency
   ]);
 
-  const overdue = useMemo(() => formatCurrency(values.overdue, currency.shortCurrencySymbol), [
-    values.overdue,
-    currency
-  ]);
-
   const hasPaymentDues = useMemo(() => values.paymentPlans && values.paymentPlans.some(p => p.type === "Payment due"), [
     values.paymentPlans
   ]);
@@ -340,7 +335,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         <Grid item xs={twoColumn ? 3 : 12}>
           <Uneditable
             label="Overdue"
-            value={overdue}
+            value={values && values.overdue}
             money
           />
         </Grid>

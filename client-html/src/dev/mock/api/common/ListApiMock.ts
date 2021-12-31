@@ -71,7 +71,7 @@ export function listApiMock() {
       return promiseResolve(config, this.db.getEnrolments());
     } if (entity === "ArticleProduct") {
       return promiseResolve(config, this.db.getArticleProducts());
-    } if (entity === "Invoice") {
+    } if (entity === "Invoice" || entity === "AbstractInvoice") {
       return promiseResolve(config, this.db.getInvoices());
     } if (entity === "PaymentIn") {
       return promiseResolve(config, this.db.getPaymentsIn());
