@@ -10,9 +10,9 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { change } from "redux-form";
 import { Grid, IconButton } from "@mui/material";
+import Launch from "@mui/icons-material/Launch";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
-import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
@@ -21,14 +21,8 @@ import { LinkAdornment } from "../../../../common/components/form/FieldAdornment
 import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import Launch from "@mui/icons-material/Launch";
 
 class WaitingListGeneral extends React.PureComponent<any, any> {
-  validateTagList = (value, allValues, props) => {
-    const { tags } = this.props;
-    return validateTagsList(tags, value, allValues, props);
-  };
-
   handlerCourseChange = courseId => {
     const { coursesItems, dispatch, form } = this.props;
     const course = coursesItems.find(c => c.id === courseId);
@@ -40,7 +34,6 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
     const {
       values,
       tags,
-      dispatch,
       form,
       twoColumn,
       isNew,
@@ -93,35 +86,33 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
             type="tags"
             name="tags"
             tags={tags}
-            validate={tags && tags.length ? this.validateTagList : undefined}
           />
         </Grid>
         <Grid item xs={12}>
           <FormField type="number" name="studentCount" label="Number of students" />
         </Grid>
-          <Grid item xs={12}>
-            <FormField
-              type="remoteDataSearchSelect"
-              entity="Course"
-              aqlFilter="allowWaitingLists is true"
-              name="courseId"
-              label="Course"
-              selectValueMark="id"
-              selectLabelCondition={v => v.name}
-              selectFilterCondition={courseFilterCondition}
-              defaultDisplayValue={values && values.courseName}
-              labelAdornment={<LinkAdornment link={values.courseId} linkHandler={openCourseLink} />}
-              itemRenderer={CourseItemRenderer}
-              onChange={this.handlerCourseChange}
-              rowHeight={55}
-              required
-            />
-          </Grid>
+        <Grid item xs={12}>
+          <FormField
+            type="remoteDataSearchSelect"
+            entity="Course"
+            aqlFilter="allowWaitingLists is true"
+            name="courseId"
+            label="Course"
+            selectValueMark="id"
+            selectLabelCondition={v => v.name}
+            selectFilterCondition={courseFilterCondition}
+            defaultDisplayValue={values && values.courseName}
+            labelAdornment={<LinkAdornment link={values.courseId} linkHandler={openCourseLink} />}
+            itemRenderer={CourseItemRenderer}
+            onChange={this.handlerCourseChange}
+            rowHeight={55}
+            required
+          />
+        </Grid>
         <CustomFields
           entityName="WaitingList"
           fieldName="customFields"
           entityValues={values}
-          dispatch={dispatch}
           form={form}
           gridItemProps={gridItemProps}
         />

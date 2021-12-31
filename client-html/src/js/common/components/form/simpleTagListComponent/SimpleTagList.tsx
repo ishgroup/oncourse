@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { Tag } from "@api/model";
 import {
-  FormControl, FormHelperText, Input, InputAdornment, InputLabel, Typography
+ FormControl, FormHelperText, Input, InputAdornment, InputLabel, Typography 
 } from "@mui/material";
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import createStyles from "@mui/styles/createStyles";
@@ -75,6 +75,7 @@ const styles = theme =>
       marginLeft: theme.spacing(1)
     },
     editable: {
+      position: "relative",
       display: "inline-flex",
       color: theme.palette.text.primaryEditable,
       minHeight: "32px",
@@ -89,7 +90,7 @@ const styles = theme =>
       "&:before": {
         borderBottom: '1px solid transparent',
         left: 0,
-        bottom: "4px",
+        bottom: 0,
         content: "' '",
         position: "absolute",
         right: 0,

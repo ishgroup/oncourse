@@ -16,6 +16,7 @@ import ish.common.types.ProductType
 import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
+import ish.oncourse.cayenne.Taggable
 import ish.oncourse.server.cayenne.glue._ArticleProduct
 import ish.util.AccountUtil
 import org.apache.cayenne.exp.Expression
@@ -27,8 +28,7 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class ArticleProduct extends _ArticleProduct {
-
+class ArticleProduct extends _ArticleProduct implements AttachableTrait, NotableTrait, ExpandableTrait{
 
 
 	public static final String NUMBER_SOLD_PROPERTY = "number_sold"
@@ -126,5 +126,30 @@ class ArticleProduct extends _ArticleProduct {
 	@Override
 	@Nullable Double getWeight() {
 		return super.getWeight()
+	}
+
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return ArticleProductTagRelation
+	}
+
+	@Override
+	void addToAttachmentRelations(AttachmentRelation relation) {
+		super.addToAttachmentRelations(relation as ArticleProductAttachmentRelation)
+	}
+
+	@Override
+	void removeFromAttachmentRelations(AttachmentRelation relation) {
+		super.removeFromAttachmentRelations(relation as ArticleProductAttachmentRelation)
+	}
+
+	@Override
+	Class<? extends AttachmentRelation> getRelationClass() {
+		return ArticleProductAttachmentRelation
+	}
+
+	@Override
+	Class<? extends CustomField> getCustomFieldClass() {
+		return ArticleProductCustomField
 	}
 }

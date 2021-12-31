@@ -4,10 +4,8 @@
  */
 
 import React from "react";
-import { change } from "redux-form";
-import {
- Account, ArticleProduct, ProductStatus, Tax
-} from "@api/model";
+import { change, FieldArray } from "redux-form";
+import { Account, ArticleProduct, ProductStatus, Tag, Tax } from "@api/model";
 import { connect } from "react-redux";
 import { Grid } from "@mui/material";
 import { Decimal } from "decimal.js-light";
@@ -20,10 +18,13 @@ import { PreferencesState } from "../../../preferences/reducers/state";
 import { normalizeString } from "../../../../common/utils/strings";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 
 interface ArticleProductGeneralProps extends EditViewProps<ArticleProduct> {
   accounts?: Account[];
   taxes?: Tax[];
+  tags?: Tag[];
   dataCollectionRules?: PreferencesState["dataCollectionRules"];
 }
 
@@ -61,7 +62,7 @@ const handleChangeAccount = (values: ArticleProduct, taxes: Tax[], accounts: Acc
 
 const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
   const {
-    twoColumn, accounts, isNew, taxes, values, dispatch, form, syncErrors, submitSucceeded, rootEntity, dataCollectionRules
+    twoColumn, accounts, isNew, taxes, showConfirm, tags, values, dispatch, form, syncErrors, submitSucceeded, rootEntity, dataCollectionRules
   } = props;
 
   const gridItemProps = {
@@ -87,6 +88,13 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
               />
             </Grid>
           )}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <FormField
+          type="tags"
+          name="tags"
+          tags={tags}
         />
       </Grid>
       <Grid item {...gridItemProps}>
@@ -167,8 +175,32 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
         />
       </Grid>
 
+      <CustomFields
+        entityName="ArticleProduct"
+        fieldName="customFields"
+        entityValues={values}
+        form={form}
+        gridItemProps={gridItemProps}
+      />
+
       <Grid item xs={12}>
         <FormEditorField name="description" label="Description" />
+      </Grid>
+
+      <Grid item xs={12} className="mb-3">
+        <FieldArray
+          name="documents"
+          label="Documents"
+          entity="ArticleProduct"
+          component={DocumentsRenderer}
+          xsGrid={12}
+          mdGrid={twoColumn ? 6 : 12}
+          lgGrid={twoColumn ? 4 : 12}
+          dispatch={dispatch}
+          form={form}
+          showConfirm={showConfirm}
+          rerenderOnEveryChange
+        />
       </Grid>
 
       <Grid item xs={12}>
@@ -187,7 +219,8 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
 const mapStateToProps = (state: State) => ({
   accounts: state.plainSearchRecords.Account.items,
   taxes: state.taxes.items,
+  tags: state.tags.entityTags["ArticleProduct"],
   dataCollectionRules: state.preferences.dataCollectionRules
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(ArticleProductGeneral);
+export default connect<any, any, any>(mapStateToProps)(ArticleProductGeneral);

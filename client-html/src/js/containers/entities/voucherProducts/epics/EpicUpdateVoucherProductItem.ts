@@ -4,25 +4,32 @@
  */
 
 import { Epic } from "redux-observable";
-
 import { initialize } from "redux-form";
-import { VoucherProduct } from "@api/model";
+import { Note, VoucherProduct } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import {
   GET_VOUCHER_PRODUCT_ITEM,
   UPDATE_VOUCHER_PRODUCT_ITEM,
   UPDATE_VOUCHER_PRODUCT_ITEM_FULFILLED
-} from "../actions/index";
-import { FETCH_SUCCESS } from "../../../../common/actions/index";
+} from "../actions";
+import { clearActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import voucherProductService from "../services/VoucherProductService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { processCustomFields } from "../../customFieldTypes/utils";
+import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
 
-const request: EpicUtils.Request<any, { id: number; voucherProduct: VoucherProduct }> = {
+const request: EpicUtils.Request<any, { id: number; voucherProduct: VoucherProduct & { notes: Note[] } }> = {
   type: UPDATE_VOUCHER_PRODUCT_ITEM,
-  getData: ({ id, voucherProduct }) => voucherProductService.updateVoucherProduct(id, voucherProduct),
+  getData: ({ id, voucherProduct }) => {
+    delete voucherProduct.notes;
+    processCustomFields(voucherProduct);
+    return voucherProductService.updateVoucherProduct(id, voucherProduct);
+  },
+  retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
   processData: (v, s, { id }) => [
+    ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : []),
       {
         type: UPDATE_VOUCHER_PRODUCT_ITEM_FULFILLED
       },
