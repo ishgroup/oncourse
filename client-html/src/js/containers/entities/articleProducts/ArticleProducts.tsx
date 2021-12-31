@@ -181,7 +181,6 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
         CogwheelAdornment={BulkEditCogwheelOption}
         getEditRecord={getArticleProductRecord}
         rootEntity="ArticleProduct"
-        aqlEntity="Product"
         onInit={() => setInitNew(true)}
         onCreate={onCreate}
         onSave={onSave}

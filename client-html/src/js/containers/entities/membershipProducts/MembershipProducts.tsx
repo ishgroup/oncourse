@@ -180,7 +180,6 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
         CogwheelAdornment={BulkEditCogwheelOption}
         getEditRecord={getMembershipProductRecord}
         rootEntity="MembershipProduct"
-        aqlEntity="Product"
         onInit={() => setInitNew(true)}
         onCreate={onCreate}
         onSave={onSave}

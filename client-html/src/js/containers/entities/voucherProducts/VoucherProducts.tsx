@@ -161,7 +161,6 @@ const VoucherProducts: React.FC<VoucherProductsProps> = props => {
         CogwheelAdornment={BulkEditCogwheelOption}
         getEditRecord={getVoucherProductRecord}
         rootEntity="VoucherProduct"
-        aqlEntity="Product"
         onInit={onInitCustom}
         onCreate={onCreate}
         onSave={onSave}

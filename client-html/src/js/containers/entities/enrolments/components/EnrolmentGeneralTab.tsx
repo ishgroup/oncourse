@@ -362,7 +362,6 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
         entityName="Enrolment"
         fieldName="customFields"
         entityValues={values}
-        dispatch={dispatch}
         form={form}
         gridItemProps={{
           xs: twoColumn ? 6 : 12,

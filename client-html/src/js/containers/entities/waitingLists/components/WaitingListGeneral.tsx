@@ -34,7 +34,6 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
     const {
       values,
       tags,
-      dispatch,
       form,
       twoColumn,
       isNew,
@@ -114,7 +113,6 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
           entityName="WaitingList"
           fieldName="customFields"
           entityValues={values}
-          dispatch={dispatch}
           form={form}
           gridItemProps={gridItemProps}
         />

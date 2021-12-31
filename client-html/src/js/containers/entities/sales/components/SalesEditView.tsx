@@ -139,7 +139,6 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
           entityName={customFieldType}
           fieldName="customFields"
           entityValues={values}
-          dispatch={dispatch}
           form={form}
           gridItemProps={gridItemProps}
         />
