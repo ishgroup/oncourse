@@ -2,7 +2,7 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { createStringEnum } from "@api/model";
 import { BaseFieldProps, Field } from "redux-form";
 import { validateSingleMandatoryField } from "../../../utils/validation";
@@ -19,6 +19,7 @@ import EditInPlaceQuerySelect from "./EditInPlaceQuerySelect";
 import EditInPlaceRemoteDataSearchSelect from "./EditInPlaceRemoteDataSearchSelect";
 import EditInPlaceSearchSelect from "./EditInPlaceSearchSelect";
 import { FormSwitch } from "./Switch";
+import { validateTagsList } from "../simpleTagListComponent/validateTagsList";
 
 const EditInPlaceTypes = createStringEnum([
   "text",
@@ -110,8 +111,12 @@ const FormField:React.FC<BaseProps> = React.forwardRef<any, BaseProps>(({
   name,
   required,
   validate,
+  tags,
+  type,
   ...rest
   }, ref) => {
+  const validateTags = useCallback((...args: [any, any, any]) => validateTagsList(tags && tags.length > 0 ? tags : [], ...args), [tags]);
+  
   const validateResolver = useMemo(() => {
     const result = [];
     if (required) {
@@ -120,18 +125,23 @@ const FormField:React.FC<BaseProps> = React.forwardRef<any, BaseProps>(({
     if (validate) {
       result.push(validate);
     }
+    if (type === "tags") {
+      result.push(validateTags);
+    }
 
     return result.length > 1 ? result : result.length ? result[0] : undefined;
-  }, [validate, required]);
+  }, [validate, required, type, validateTags]);
 
   return (
     <Field
+      type={type}
       name={name}
       component={FormFieldBase}
       validate={validateResolver}
       props={{
         ref
       }}
+      tags={tags}
       {...rest}
     />
   );

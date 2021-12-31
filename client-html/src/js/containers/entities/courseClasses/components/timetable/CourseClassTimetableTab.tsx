@@ -186,7 +186,6 @@ const CourseClassTimetableTab = ({
               dispatch(change(form, "sessions", []));
               dispatch(change(form, "trainingPlan", []));
               dispatch(change(form, "studentAttendance", []));
-              dispatch(change(form, "tutorAttendance", []));
               dispatch(change(form, "startDateTime", null));
               dispatch(change(form, "endDateTime", null));
               dispatch(addActionToQueue(postCourseClassSessions(values.id, []), "POST", "Session", values.id));

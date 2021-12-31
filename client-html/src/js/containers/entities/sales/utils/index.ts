@@ -26,3 +26,12 @@ export const getProductAqlType = (type: ProductType | string) => {
       throw Error("Unknown product type");
   }
 };
+
+export const getSaleEntityName = (type: ProductType) => {
+  switch (type) {
+    case "Product":
+      return "Article";
+    default:
+      return type;
+  }
+};

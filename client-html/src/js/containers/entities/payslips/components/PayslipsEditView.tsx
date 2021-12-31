@@ -7,17 +7,18 @@ import * as React from "react";
 import Grid, { GridSize } from "@mui/material/Grid";
 import clsx from "clsx";
 import {
-  arrayInsert, arrayRemove, change, FieldArray
+ arrayInsert, arrayRemove, change, FieldArray 
 } from "redux-form";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { Contact, PayslipPayType, PayslipStatus } from "@api/model";
 import Typography from "@mui/material/Typography";
+import { IconButton } from "@mui/material";
+import Launch from "@mui/icons-material/Launch";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { getListNestedEditRecord } from "../../../../common/components/list-view/actions";
 import { getEntityTags } from "../../../tags/actions";
-import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import PayslipPaylineRenderrer from "./PayslipPaylineRenderrer";
 import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
@@ -28,8 +29,6 @@ import { mapSelectItems } from "../../../../common/utils/common";
 import AddButton from "../../../../common/components/icons/AddButton";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { IconButton } from "@mui/material";
-import Launch from "@mui/icons-material/Launch";
 
 const getLayoutArray = (threeColumn: boolean): { [key: string]: boolean | GridSize }[] => (threeColumn
     ? [
@@ -75,12 +74,6 @@ class PayslipsEditView extends React.PureComponent<any, any> {
       }
     }
   }
-
-  validateTagList = (value, allValues, props) => {
-    const { tags } = this.props;
-
-    return validateTagsList(tags, value, allValues, props);
-  };
 
   calculateTotal = (accumulator: number, current: PayLineWithDefer): number => accumulator + (current.deferred ? current.quantity * current.value : 0);
 
@@ -194,7 +187,6 @@ class PayslipsEditView extends React.PureComponent<any, any> {
             type="tags"
             name="tags"
             tags={tags}
-            validate={tags && tags.length ? this.validateTagList : undefined}
           />
         </Grid>
 

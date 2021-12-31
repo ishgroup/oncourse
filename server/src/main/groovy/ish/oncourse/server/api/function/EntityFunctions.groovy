@@ -74,15 +74,10 @@ class EntityFunctions {
         return query
     }
 
-    static Expression createTagGroupExpression(String alias, String realPath, List<Long> tagIds, String entity) {
-        TaggableClasses taggable = TagFunctions.taggableClassesBidiMap.get(entity)
-        //special case: taggable class for tutor/student records is actually Contact.class
-        if(taggable in [TaggableClasses.TUTOR,TaggableClasses.STUDENT]) {
-            taggable = TaggableClasses.CONTACT
-        }
+    static Expression createTagGroupExpression(String alias, List<String> realPaths, List<Long> tagIds, String entity) {
 
         SimpleNode taggedNode = new ASTAnd()
-        Map aliases = Collections.singletonMap(alias, realPath)
+        Map aliases = Collections.singletonMap(alias, realPaths.first())
 
 
         ASTObjPath entityPath = new ASTObjPath(alias + "+." + TagRelation.ENTITY_IDENTIFIER.name)
@@ -91,10 +86,21 @@ class EntityFunctions {
         ASTObjPath idPath = new ASTObjPath(alias+ "+." + TagRelation.TAG.name + "." + Tag.ID.name)
         idPath.setPathAliases(aliases)
 
-        ASTEqual entityIdentifier = new ASTEqual(entityPath, taggable.getDatabaseValue())
+        SimpleNode taggableNode = new ASTOr()
+
+        for(curEntity in entity.split("\\|")) {
+            TaggableClasses taggable = TagFunctions.taggableClassesBidiMap.get(curEntity)
+            //special case: taggable class for tutor/student records is actually Contact.class
+            if (taggable in [TaggableClasses.TUTOR, TaggableClasses.STUDENT]) {
+                taggable = TaggableClasses.CONTACT
+            }
+            ASTEqual entityIdentifier = new ASTEqual(entityPath, taggable.getDatabaseValue())
+            ExpressionUtil.addChild(taggableNode, entityIdentifier, taggableNode.jjtGetNumChildren())
+        }
+
         ASTIn tagId = new ASTIn(idPath, new ASTList(tagIds))
 
-        ExpressionUtil.addChild(taggedNode, entityIdentifier, 0)
+        ExpressionUtil.addChild(taggedNode, taggableNode, 0)
         ExpressionUtil.addChild(taggedNode, tagId, 1)
 
         return taggedNode
@@ -110,9 +116,11 @@ class EntityFunctions {
 
             String alias = "${Tag.ALIAS}${aliasCounter++}"
 
-            String path = tagGroup.path != null ? "${tagGroup.path}+.${Tag.TAG_PATH}" : Tag.TAG_PATH
+            List<String> paths = tagGroup.path != null
+                    ? tagGroup.path.split("\\|").collect {it+"+.${Tag.TAG_PATH}"}
+                    : List.of(Tag.TAG_PATH)
 
-            Expression expr = createTagGroupExpression(alias, path, tagGroup.tagIds, tagGroup.entity?:entity)
+            Expression expr = createTagGroupExpression(alias, paths, tagGroup.tagIds, tagGroup.entity?:entity)
 
             if (result == null) {
                 result = expr
