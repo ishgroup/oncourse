@@ -177,11 +177,12 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
   }, [entityTags, rootEntity]);
 
   const BulkEditFieldRendered = useMemo(() => {
-    if (!selectedKeyCode) {
+    const field = getBulkEditFieldData();
+
+    if (!field) {
       return null;
     }
 
-    const field = getBulkEditFieldData();
     let fieldProps;
 
     // eslint-disable-next-line default-case
