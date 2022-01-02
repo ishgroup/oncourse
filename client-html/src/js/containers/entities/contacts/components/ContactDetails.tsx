@@ -406,7 +406,6 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
               entityName="Contact"
               fieldName="customFields"
               entityValues={values}
-              dispatch={dispatch}
               form={form}
               gridItemProps={gridItemProps}
             />

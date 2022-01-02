@@ -1,5 +1,7 @@
+import {
+ Diff, ProductItem, ProductItemApi, ProductItemCancel 
+} from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
-import { ProductItem, ProductItemApi, ProductItemCancel } from "@api/model";
 
 class SalesService {
   readonly salesApi = new ProductItemApi(new DefaultHttpService());
@@ -14,6 +16,10 @@ class SalesService {
 
   public cancelSale(productItemCancel: ProductItemCancel): Promise<any> {
     return this.salesApi.cancel(productItemCancel);
+  }
+
+  public bulkChange(diff: Diff): Promise<any> {
+    return this.salesApi.bulkChange(diff);
   }
 }
 

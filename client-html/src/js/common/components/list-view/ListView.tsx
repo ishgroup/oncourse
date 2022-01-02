@@ -83,6 +83,7 @@ import ReactTableList, { TableListProps } from "./components/list/ReactTableList
 import { getActiveTags, getFiltersNameString, getTagsUpdatedByIds } from "./utils/listFiltersUtils";
 import { setSwipeableDrawerDirtyForm } from "../layout/swipeable-sidebar/actions";
 import { LSGetItem } from "../../utils/storage";
+import { getCustomFieldTypes } from "../../../containers/entities/customFieldTypes/actions";
 
 export const ListSideBarDefaultWidth = 200;
 export const ListMainContentDefaultWidth = 774;
@@ -116,7 +117,6 @@ interface Props extends Partial<ListState> {
   EditViewContent: any;
   onLoadMore?: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
-  aqlEntity?: string;
   selection?: string[];
   editRecord?: any;
   onSave?: any;
@@ -202,6 +202,7 @@ interface Props extends Partial<ListState> {
   setShowColoredDots?: (value: boolean) => void;
   deleteWithoutConfirmation?: boolean;
   getCustomBulkEditFields?: any;
+  getCustomFieldTypes?: (entity: EntityName) => void;
 }
 
 interface ComponentState {
@@ -244,6 +245,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
   componentDidMount() {
     const {
       getScripts,
+      getCustomFieldTypes,
       history,
       sendGAEvent,
       rootEntity,
@@ -254,6 +256,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     } = this.props;
 
     setEntity(rootEntity);
+    getCustomFieldTypes(rootEntity);
 
     sendGAEvent("screenview", `${rootEntity}ListView`);
     window.performance.mark("ListViewStart");
@@ -1007,7 +1010,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     const {
       classes,
       rootEntity,
-      aqlEntity,
       fetch,
       EditViewContent,
       filterGroups,
@@ -1168,7 +1170,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
             toggleBulkEditDrawer={this.toggleBulkEditDrawer}
             filteredCount={records.filteredCount}
             rootEntity={rootEntity}
-            aqlEntity={aqlEntity}
             fetch={fetch}
             selection={selection}
             hasShareTypes={pdfReports.length || exportTemplates.length}
@@ -1220,6 +1221,7 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   setListMenuTags: (tags: MenuTag[]) => dispatch(setListMenuTags(tags)),
   setListUserAQLSearch: (userAQLSearch: string) => dispatch(setListUserAQLSearch(userAQLSearch)),
   getScripts: () => dispatch(getScripts(ownProps.rootEntity)),
+  getCustomFieldTypes: (entity: EntityName) => dispatch(getCustomFieldTypes(entity)),
   openNestedEditView: (entity: string, id: number, threeColumn: boolean) => dispatch(getListNestedEditRecord(entity, id, null, threeColumn)),
   openConfirm: props => dispatch(showConfirm(props)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),

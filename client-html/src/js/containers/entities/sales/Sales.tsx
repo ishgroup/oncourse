@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { ProductItem, TableModel } from "@api/model";
 import { clearListState, getFilters } from "../../../common/components/list-view/actions";
 import SendMessageEditView from "../messages/components/SendMessageEditView";
-import { getSale, updateSale } from "./actions";
+import { getSale, getSalesManuTags, updateSale } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
 import SalesEditView from "./components/SalesEditView";
@@ -17,12 +17,16 @@ import SalesCogwheel from "./components/cogwheel/SalesCogwheel";
 import { getPlainAccounts } from "../accounts/actions";
 import { getPlainTaxes } from "../taxes/actions";
 import { Dispatch } from "redux";
+import { getEntityTags, getListTags } from "../../tags/actions";
+import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
+import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 
 interface SalesProps {
   getSaleRecord?: () => void;
   onInit?: () => void;
   getFilters?: () => void;
   getTaxes?: () => void;
+  getTags?: () => void;
   getAccounts?: () => void;
   clearListState?: () => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
@@ -111,11 +115,13 @@ const Sales: React.FC<SalesProps> = props => {
     getFilters,
     getAccounts,
     getTaxes,
-    onSave
+    onSave,
+    getTags
   } = props;
 
   useEffect(() => {
     getFilters();
+    getTags();
     getAccounts();
     getTaxes();
     return () => {
@@ -132,6 +138,8 @@ const Sales: React.FC<SalesProps> = props => {
         }}
         editViewProps={{
           manualLink,
+          asyncValidate: notesAsyncValidate,
+          asyncBlurFields: ["notes[].message"],
           nameCondition: values => (values ? values.productName : "")
         }}
         nestedEditFields={nestedEditFields}
@@ -155,6 +163,12 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onInit: () => {},
   getAccounts: () => getPlainAccounts(dispatch),
   getTaxes: () => dispatch(getPlainTaxes()),
+  getTags: () => {
+    dispatch(getSalesManuTags());
+    dispatch(getEntityTags("Article"));
+    dispatch(getEntityTags("Voucher"));
+    dispatch(getEntityTags("Membership"));
+  },
   getFilters: () => dispatch(getFilters("ProductItem")),
   onSave: (id: string, productItem: ProductItem) => dispatch(updateSale(id, productItem)),
   clearListState: () => dispatch(clearListState()),
