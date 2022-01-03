@@ -647,4 +647,15 @@
 														 validate="true"/>
 	</changeSet>
 
+	<changeSet id="49" author="dmitriy" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists columnName="message" tableName="WebHostName"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="WebHostName">
+			<column name="message" type="TEXT"/>
+		</addColumn>
+	</changeSet>
+
 </databaseChangeLog>
