@@ -61,11 +61,11 @@ class StringMethods {
             return result
         }
 
-        def plainText = result.split(System.lineSeparator()).collect { line ->
-            line.replaceAll(TAG_RGXP, StringUtils.SPACE).replaceAll("\\s+",StringUtils.SPACE).trim()
+        List<String> plainText = result.split(System.lineSeparator()).collect { line ->
+            line.replaceAll(TAG_RGXP, StringUtils.SPACE).replaceAll("\\s+", StringUtils.SPACE).trim()
         }.findAll { !it.isEmpty() }
 
-        return String.join(StringUtils.SPACE, plainText)
+        return String.join(System.lineSeparator(), plainText)
     }
 
 
