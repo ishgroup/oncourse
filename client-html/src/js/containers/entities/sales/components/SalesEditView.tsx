@@ -63,6 +63,8 @@ const openRow = (value: ProductItemPayment) => {
   openInternalLink(`/invoice/${value.id}`);
 };
 
+const defaultTags = [];
+
 const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
   const {
     twoColumn,
@@ -98,7 +100,7 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
     lg: twoColumn ? 4 : 12
   } as any;
 
-  const tags = useAppSelector(state => state.tags.entityTags[getSaleEntityName(values?.productType)] || []);
+  const tags = useAppSelector(state => state.tags?.entityTags[getSaleEntityName(values?.productType)] || defaultTags);
 
   return values ? (
     <Grid container columnSpacing={3} rowSpacing={2} className={clsx("p-3", twoColumn && "pt-1")}>
