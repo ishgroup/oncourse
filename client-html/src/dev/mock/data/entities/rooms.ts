@@ -7,9 +7,9 @@ export function mockRooms() {
     const row = this.rooms.rows.find(room => Number(room.id) === Number(id));
     return {
       createdOn: "2021-01-30T10:17:48.295Z",
-      directions: null,
+      directions: "",
       documents: [],
-      facilities: null,
+      facilities: "",
       id: row.id,
       kioskUrl: `https://ishoncourse.oncourse.cc/room/kiosk/${row.id}`,
       modifiedOn: "2021-01-30T10:17:48.295Z",
