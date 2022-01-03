@@ -408,7 +408,7 @@ export const processCourseClassApiActions = async (s: State, createdClassId?: nu
   return unprocessedAsyncActions;
 };
 
-export const setShiftedTutorAttendances = (prevSession: TimetableSession, newSession: TimetableSession) => {
+export const setShiftedTutorAttendances = (prevSession: TimetableSession, newSession: TimetableSession, keepId: boolean = true) => {
   const sessionStartMinutesDiff = differenceInMinutes(new Date(newSession.start), new Date(prevSession.start));
   const sessionEndMinutesDiff = differenceInMinutes(new Date(newSession.end), new Date(prevSession.end));
 
@@ -430,6 +430,7 @@ export const setShiftedTutorAttendances = (prevSession: TimetableSession, newSes
     
     return {
       ...ta,
+      id: keepId ? ta.id : null,
       end: end.toISOString(),
       start: start.toISOString(),
       actualPayableDurationMinutes: actualPayableDurationMinutes >= 0 ? actualPayableDurationMinutes : 0
@@ -496,7 +497,7 @@ export const getSessionsWithRepeated = (
       end: end.toISOString(),
     };
 
-    setShiftedTutorAttendances(repeatSession, result);
+    setShiftedTutorAttendances(repeatSession, result, false);
 
     return result;
   });
