@@ -119,6 +119,7 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
                 content: classes.summaryContent
               }}
               expandIcon={<ExpandMoreIcon />}
+              data-testid={`minified-${item}`}
             >
               {HeaderContent ? (
                 <HeaderContent item={item} row={field} />
