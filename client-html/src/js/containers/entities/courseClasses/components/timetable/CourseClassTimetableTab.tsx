@@ -523,13 +523,26 @@ const CourseClassTimetableTab = ({
         actualPayableDurationMinutes = bulkValue.payableDuration;
       } else if (bulkValue.startChecked && bulkValue.start !== "") {
         const newStartDate = new Date(bulkValue.start);
-        const startDate = new Date(session.start);
+        let startDate = new Date(session.start);
         startDate.setHours(newStartDate.getHours(), newStartDate.getMinutes(), 0, 0);
-        session.start = startDate.toISOString();
 
-        const endDate = addMinutes(startDate, durationValue);
+        let endDate = addMinutes(startDate, durationValue);
         endDate.setSeconds(0, 0);
+
+        // workaround for DST time offset
+        if (session.siteTimezone) {
+          const startHoursDiff = appendTimezone(newStartDate, session.siteTimezone).getHours()
+            - appendTimezone(startDate, session.siteTimezone).getHours();
+
+          if (startHoursDiff) {
+            startDate = addHours(startDate, startHoursDiff);
+            endDate = addHours(endDate, startHoursDiff);
+          }
+        }
+
+        session.start = startDate.toISOString();
         session.end = endDate.toISOString();
+
       } else if (bulkValue.durationChecked && bulkValue.duration !== 0) {
         session.end = addMinutes(new Date(session.start), bulkValue.duration).toISOString()
       } else if (bulkValue.payableDurationChecked && bulkValue.payableDuration !== 0) {
