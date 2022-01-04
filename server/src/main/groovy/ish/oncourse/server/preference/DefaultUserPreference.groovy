@@ -441,6 +441,7 @@ class DefaultUserPreference {
 
     private static final TableModelDTO ARTICLE_PRODUCT_MODEL = new TableModelDTO().with {
         it.columns = [
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
                 new ColumnDTO(title: 'Name', attribute: ArticleProduct.NAME.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Code', attribute: ArticleProduct.SKU.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Price', attribute: ArticleProduct.PRICE_INC_TAX_PROPERTY, sortable: false, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
@@ -513,6 +514,7 @@ class DefaultUserPreference {
 
     private static final TableModelDTO VOUCHER_PRODUCT_MODEL = new TableModelDTO().with() {
         it.columns = [
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
                 new ColumnDTO(title: 'SKU', attribute: VoucherProduct.SKU.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Name', attribute: VoucherProduct.NAME.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Price', attribute: VoucherProduct.PRICE_EX_TAX.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
@@ -529,6 +531,7 @@ class DefaultUserPreference {
 
     private static final TableModelDTO MEMBERSHIP_PRODUCT_MODEL = new TableModelDTO().with() {
         it.columns = [
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
                 new ColumnDTO(title: 'Name', attribute: MembershipProduct.NAME.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Price', attribute: MembershipProduct.PRICE_INC_TAX_PROPERTY, sortFields: [MembershipProduct.PRICE_EX_TAX.name], sortable: true, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
                 new ColumnDTO(title: 'SKU', attribute: MembershipProduct.SKU.name, sortable: true, width: W200, visible: true),
@@ -623,6 +626,7 @@ class DefaultUserPreference {
 
     private static final TableModelDTO SALE_MODEL = new TableModelDTO().with() {
         it.columns = [
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
                 new ColumnDTO(title: 'Name', attribute: ProductItem.PRODUCT.dot(Product.NAME).name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Type', attribute: ProductItem.TYPE_STRING_DEFENITION, sortable: false, width: W200, visible: true),
                 new ColumnDTO(title: 'SKU', attribute: ProductItem.PRODUCT.dot(Product.SKU).name, sortable: true, width: W200, visible: true),

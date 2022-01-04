@@ -253,6 +253,10 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
         }
       ];
     }
+    case "ArticleProduct":
+    case "MembershipProduct":
+    case "ProductItem":
+    case "VoucherProduct":
     case "WaitingList":
     case "AbstractInvoice":
     case "Room":

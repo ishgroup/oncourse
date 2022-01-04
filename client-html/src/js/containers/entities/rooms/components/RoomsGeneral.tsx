@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import Grid, { GridSize } from "@mui/material/Grid";
-import { FieldArray, change } from "redux-form";
+import { change, FieldArray } from "redux-form";
 import ScreenShare from "@mui/icons-material/ScreenShare";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
@@ -13,7 +13,6 @@ import { connect } from "react-redux";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
 import { State } from "../../../../reducers/state";
-import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import { openInternalLink } from "../../../../common/utils/links";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
@@ -30,12 +29,6 @@ const getLayoutArray = (twoColumn: boolean): { [key: string]: GridSize }[] =>
     : [{ xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }]);
 
 class RoomsGeneral extends React.PureComponent<any, any> {
-  validateTagList = (value, allValues, props) => {
-    const { tags } = this.props;
-
-    return validateTagsList(tags, value, allValues, props);
-  };
-
   onCalendarClick = () => {
     const { values, sites } = this.props;
     const site = sites.find(el => el.value === values.siteId);
@@ -89,7 +82,6 @@ class RoomsGeneral extends React.PureComponent<any, any> {
               type="tags"
               name="tags"
               tags={tags}
-              validate={tags && tags.length ? this.validateTagList : undefined}
             />
           </Grid>
 

@@ -26,6 +26,8 @@ import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.validation.TagValidation
 import ish.oncourse.server.cayenne.AbstractInvoice
 import ish.oncourse.server.cayenne.Application
+import ish.oncourse.server.cayenne.Article
+import ish.oncourse.server.cayenne.ArticleProduct
 import ish.oncourse.server.cayenne.Assessment
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Course
@@ -34,8 +36,11 @@ import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.Invoice
 import ish.oncourse.server.cayenne.Lead
+import ish.oncourse.server.cayenne.Membership
+import ish.oncourse.server.cayenne.MembershipProduct
 import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.Payslip
+import ish.oncourse.server.cayenne.ProductItem
 import ish.oncourse.server.cayenne.Quote
 import ish.oncourse.server.cayenne.QuoteLine
 import ish.oncourse.server.cayenne.Room
@@ -45,6 +50,8 @@ import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.cayenne.TagRelation
 import ish.oncourse.server.cayenne.TagRequirement
 import ish.oncourse.server.cayenne.Tutor
+import ish.oncourse.server.cayenne.Voucher
+import ish.oncourse.server.cayenne.VoucherProduct
 import ish.oncourse.server.cayenne.WaitingList
 import ish.oncourse.server.function.GetTagGroups
 import org.apache.cayenne.ObjectContext
@@ -78,6 +85,12 @@ class TagFunctions {
         put(TaggableClasses.TUTOR, TagRequirementTypeDTO.TUTOR)
         put(TaggableClasses.WAITING_LIST, TagRequirementTypeDTO.WAITINGLIST)
         put(TaggableClasses.COURSE_CLASS, TagRequirementTypeDTO.COURSECLASS)
+        put(TaggableClasses.ARTICLE, TagRequirementTypeDTO.ARTICLE)
+        put(TaggableClasses.VOUCHER, TagRequirementTypeDTO.VOUCHER)
+        put(TaggableClasses.MEMBERSHIP, TagRequirementTypeDTO.MEMBERSHIP)
+        put(TaggableClasses.ARTICLE_PRODUCT, TagRequirementTypeDTO.ARTICLEPRODUCT)
+        put(TaggableClasses.VOUCHER_PRODUCT, TagRequirementTypeDTO.VOUCHERPRODUCT)
+        put(TaggableClasses.MEMBERSHIP_PRODUCT, TagRequirementTypeDTO.MEMBERSHIPPRODUCT)
     }}
 
     public static final BidiMap<String, TaggableClasses> taggableClassesBidiMap = new BidiMap<String, TaggableClasses>() {{
@@ -99,11 +112,25 @@ class TagFunctions {
         put(WaitingList.simpleName, TaggableClasses.WAITING_LIST)
         put(CourseClass.simpleName, TaggableClasses.COURSE_CLASS)
         put(Message.simpleName, TaggableClasses.MESSAGE)
+        put(ProductItem.simpleName, TaggableClasses.PRODUCT_ITEM)
+        put(Article.simpleName, TaggableClasses.PRODUCT_ITEM)
+        put(Voucher.simpleName, TaggableClasses.PRODUCT_ITEM)
+        put(Membership.simpleName, TaggableClasses.PRODUCT_ITEM)
+        put(ArticleProduct.simpleName, TaggableClasses.ARTICLE_PRODUCT)
+        put(VoucherProduct.simpleName, TaggableClasses.VOUCHER_PRODUCT)
+        put(MembershipProduct.simpleName, TaggableClasses.MEMBERSHIP_PRODUCT)
+    }}
+
+    private static final BidiMap<String, TaggableClasses> taggableClassesForRequirements = new BidiMap<String, TaggableClasses>() {{
+        put(Article.simpleName, TaggableClasses.ARTICLE)
+        put(Voucher.simpleName, TaggableClasses.VOUCHER)
+        put(Membership.simpleName, TaggableClasses.MEMBERSHIP)
     }}
 
     private static final Map<TaggableClasses, TaggableClasses[]> additionalTaggableClasses =
             new HashMap<TaggableClasses, TaggableClasses[]>() {{
         put(TaggableClasses.CONTACT, [TaggableClasses.STUDENT, TaggableClasses.TUTOR] as TaggableClasses[])
+        put(TaggableClasses.PRODUCT_ITEM, [TaggableClasses.ARTICLE, TaggableClasses.VOUCHER, TaggableClasses.MEMBERSHIP] as TaggableClasses[])
     }}
 
     static TagDTO toRestTag(Tag dbTag, Map<Long, Integer> childCountMap, boolean isParent = true) {
@@ -363,6 +390,12 @@ class TagFunctions {
         PrefetchTreeNode prefetch = Tag.TAG_REQUIREMENTS.joint()
         prefetch.merge(Tag.CHILD_TAGS.joint())
         prefetch
+    }
+
+    static TaggableClasses getRequirementTaggableClassForName(String entityName){
+        return taggableClassesForRequirements.containsKey(entityName)
+                ? taggableClassesForRequirements.get(entityName)
+                : getTaggableClassForName(entityName);
     }
 
     static TaggableClasses getTaggableClassForName(String entityName) {
