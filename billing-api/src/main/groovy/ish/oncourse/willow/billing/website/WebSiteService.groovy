@@ -78,7 +78,7 @@ class WebSiteService {
             domain.created = new Date()
             domain.modified = new Date()
             domain.status = WebHostNameStatus.ACTIVE
-
+            DomainUtils.buildDomainIps(domain)
         }
         context.deleteObjects(domainsToDelete)
         site.collegeDomains.each {
@@ -121,7 +121,7 @@ class WebSiteService {
             dto.configuredByInfo = getUserInfoFromSystemUser(it.configuredByUser)
             dto.primaryDomain = it.collegeDomains.find { WebHostNameStatus.PRIMARY == it.status }?.name
             dto.domains = it.collegeDomains
-                    .collectEntries {host -> [host.name, DomainUtils.findNotInRangeIp(host)]}
+                    .collectEntries {host -> [host.name, DomainUtils.checkForIpErrors(host)]}
             dto
         }
     }

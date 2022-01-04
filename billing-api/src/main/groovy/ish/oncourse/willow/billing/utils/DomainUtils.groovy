@@ -14,7 +14,6 @@ import org.apache.logging.log4j.Logger
 import static ish.oncourse.configuration.Configuration.AdminProperty.IPV4_RANGE
 import static ish.oncourse.configuration.Configuration.AdminProperty.IPV6_RANGE
 import static ish.oncourse.configuration.Configuration.getValue
-import static java.net.InetAddress.getByAddress
 
 @CompileStatic
 class DomainUtils {
@@ -32,7 +31,7 @@ class DomainUtils {
 
     private static List<SubnetUtils> getIp4Ranges() {
         def diapasonsStr = getValue(IPV4_RANGE)
-        if (diapasonsStr == null){
+        if (diapasonsStr == null) {
             logger.error("Incorrect property: diapasons for ipv4 not set")
             return null
         }
@@ -49,33 +48,49 @@ class DomainUtils {
     }
 
     /**
-     * @return error if any of this domain ip addresses are not in range or null in other cases
+     * @return error if any of this domain ip addresses are null or null in other case
      */
-    static String findNotInRangeIp(WebHostName webHostName) {
-        if(!rangesValid()){
-            logger.error(INVALID_RANGES_ERROR)
-            return INVALID_RANGES_ERROR
-        }
-
-        String ipv4Error = checkAddress(webHostName.getIpv4(), IPV4_ERROR_FORMAT, webHostName.name)
-        if(ipv4Error != null)
-            return ipv4Error
-
-        String ipv6Error = checkAddress(webHostName.getIpv6(), IPV6_ERROR_FORMAT, webHostName.name)
-        if(ipv6Error != null)
-            return ipv6Error
-
+    static String checkForIpErrors(WebHostName webHostName) {
+        if (webHostName.getIpv4() == null)
+            return String.format(IPV4_ERROR_FORMAT, webHostName.name)
+        if (webHostName.getIpv6() == null)
+            return String.format(IPV6_ERROR_FORMAT, webHostName.name)
         return null
     }
 
-    private static boolean rangesValid(){
+    /**
+     * set ipv4 and ipv6 fields of WebHostName if there are no errors and they are in ranges
+     */
+    static void buildDomainIps(WebHostName webHostName) {
+        if (!rangesValid()) {
+            logger.error(INVALID_RANGES_ERROR)
+            return
+        }
+
+        String domain = webHostName.name
+        String host = domain.startsWith("http") ? new URL(domain).getHost() : domain
+        InetAddress[] addresses
+        try {
+            addresses = InetAddress.getAllByName(host)
+        } catch (UnknownHostException e) {
+            logger.error(e.getMessage())
+            return
+        }
+
+        webHostName.setIpv4(addressOf(addresses, Inet4Address.class))
+        webHostName.setIpv6(addressOf(addresses, Inet6Address.class))
+    }
+
+    private static boolean rangesValid() {
         return ipV4Ranges != null && ipV6Address != null
     }
 
-    private static String checkAddress(byte[] address, String errorFormat, String hostName){
-        if(address == null || !ipInRange(getByAddress(address)))
-            return String.format(errorFormat, hostName)
-        return null
+    private static byte[] addressOf(InetAddress[] allAddresses, Class<? extends InetAddress> ipvClass) {
+        List<? extends InetAddress> addresses = allAddresses.findAll { ipvClass.isInstance(it) }
+                .collect { ipvClass.cast(it) }
+        if (addresses.size() != 1)
+            return null
+        return ipInRange(addresses.first()) ? addresses.first().address : null
     }
 
     private static boolean ipInRange(InetAddress inetAddress) {
