@@ -1,0 +1,20 @@
+on:
+  push:
+    branches-ignore:
+      - main
+    tags-ignore:
+      - *
+
+jobs:
+  pull-request:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: pull-request
+      uses: repo-sync/pull-request@v2.6.1
+      with:
+        destination_branch: "main"
+        pr_title: ${GITHUB_REF##*/}
+        pr_draft: true
+        pr_allow_empty: false
+        github_token: ${{ secrets.GITHUB_TOKEN }}

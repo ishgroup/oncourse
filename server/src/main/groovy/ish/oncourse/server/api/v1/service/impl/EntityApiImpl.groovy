@@ -14,7 +14,6 @@ package ish.oncourse.server.api.v1.service.impl
 import com.google.inject.Inject
 import groovy.transform.CompileDynamic
 import ish.oncourse.aql.AqlService
-import ish.oncourse.cayenne.Taggable
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.EntityApi
@@ -71,8 +70,7 @@ class EntityApiImpl implements EntityApi {
         ObjectSelect objectSelect = ObjectSelect.query(clzz)
 
         ObjectSelect<CayenneDataObject> query = parseSearchQuery(objectSelect, context, aql, entity, request.search, request.filter, request.tagGroups)
-
-        if ( request.filter || request.search || (request.tagGroups && !request.tagGroups.empty)) {
+        if (request.filter || request.search || (request.tagGroups && !request.tagGroups.empty)) {
             response.filteredCount = query.column(Property.create("id", Long)).select(context).toSet().size()
         }
 
@@ -103,7 +101,7 @@ class EntityApiImpl implements EntityApi {
                         }
                 )
 
-        List<PersistentObject> records = query.select(context)
+        List<? extends CayenneDataObject> records = query.select(context)
         response.pageSize = new BigDecimal(Math.min(response.pageSize.intValue(), records.size()))
         populateResponce(records, response, response.columns, null)
         return response

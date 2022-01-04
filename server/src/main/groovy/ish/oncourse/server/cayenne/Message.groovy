@@ -131,16 +131,6 @@ class Message extends _Message implements Queueable {
         return super.getDestinationAddress()
     }
 
-    /**
-     * @return true if message linked to mailing list which has willow id
-     */
-    boolean isMailingListMessage() {
-        if (!getTaggingRelations().isEmpty()) {
-            MessageTagRelation tagRelation = getTaggingRelations().get(0)
-            return tagRelation != null && tagRelation.getTag() != null && tagRelation.getTag().getWillowId() != null
-        }
-        return false
-    }
 
     /**
      * @return the date and time this record was created
@@ -239,23 +229,7 @@ class Message extends _Message implements Queueable {
         return super.getCreatedBy()
     }
 
-    /**
-     * @return The list of tags assigned to message
-     */
-    @Nonnull
-    @API
-    List<Tag> getTags() {
-        List<Tag> tagList = new ArrayList<>(getTaggingRelations().size())
-        for (MessageTagRelation relation : getTaggingRelations()) {
-            tagList.add(relation.getTag())
-        }
-        return tagList
-    }
 
-    @Override
-    Class<? extends TagRelation> getTagRelationClass() {
-        return MessageTagRelation.class
-    }
 /**
  * @return specific key of the message. It can be set in scripts.
  */

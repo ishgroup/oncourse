@@ -1,15 +1,13 @@
-import { generateArraysOfRecords } from "../mockUtils";
 import { getDaysInMonth } from "date-fns";
+import { Session } from "@api/model";
+import { generateArraysOfRecords } from "../mockUtils";
 
 export function mockTimetable() {
-  this.getDates = (year, month) => {
-    return generateArraysOfRecords(getDaysInMonth(new Date(year, month)), [{ name: "day", type: "number" }]).map(
-      l => l.day
-    );
-  };
+  this.getDates = (year, month): number[] => generateArraysOfRecords(
+    getDaysInMonth(new Date(year, month)), [{ name: "day", type: "number" }]
+  ).map(l => l.day);
 
-  this.findTimetableSession = () => {
-    return generateArraysOfRecords(20, [
+  this.findTimetableSession = (): Session[] => generateArraysOfRecords(20, [
       { name: "classId", type: "number" },
       { name: "code", type: "number" },
       { name: "end", type: "Datetime" },
@@ -30,10 +28,8 @@ export function mockTimetable() {
       start: l.start,
       tutors: []
     }));
-  };
 
-  this.getTimetableSessions = (ids: string) => {
-    return generateArraysOfRecords(20, [
+  this.getTimetableSessions = (ids: string): Session[] => generateArraysOfRecords(20, [
       { name: "classId", type: "number" },
       { name: "code", type: "string" },
       { name: "end", type: "Datetime" },
@@ -54,10 +50,491 @@ export function mockTimetable() {
       start: l.start,
       tutors: ["Kim", "James Nash", "Gonzalez"]
     }));
-  };
+  
+  this.getTimetableSessionList = (): Session[] => [
+    {
+      "id": 9500,
+      "temporaryId": null,
+      "name": "Certificate III in Early Childhood Education and Care (no units)",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
 
-  this.getTimetableSessionsTags = (sessionIds: string) => {
-    return [
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 780,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-05-02T03:30:00.000Z",
+      "end": "2023-05-02T09:30:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 9499,
+      "temporaryId": null,
+      "name": "Certificate III in Early Childhood Education and Care (no units)",
+      "code": null,
+      "room": "Electronic & Hardcopy",
+      "site": "Electronic & Hardcopy",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 780,
+      "roomId": 468,
+      "siteId": 446,
+      "siteTimezone": "Australia/Brisbane",
+      "start": "2023-05-02T05:30:00.000Z",
+      "end": "2023-05-02T11:30:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 3596,
+      "temporaryId": null,
+      "name": "Certificate III in Early Childhood Education and Care (no units)",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 780,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-05-03T03:30:00.000Z",
+      "end": "2023-05-03T09:30:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 9498,
+      "temporaryId": null,
+      "name": "Certificate III in Early Childhood Education and Care (no units)",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 780,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-05-03T03:30:00.000Z",
+      "end": "2023-05-03T09:30:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 4444,
+      "temporaryId": null,
+      "name": "Certificate III in Early Childhood Education and Care (no units)",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 780,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-05-04T03:30:00.000Z",
+      "end": "2023-05-04T09:30:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 4993,
+      "temporaryId": null,
+      "name": "Certificate III in Early Childhood Education and Care (no units)",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 780,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-05-05T03:30:00.000Z",
+      "end": "2023-05-05T09:30:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 4551,
+      "temporaryId": null,
+      "name": "Certificate III in Early Childhood Education and Care (no units)",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 780,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-05-06T03:30:00.000Z",
+      "end": "2023-05-06T09:30:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 4750,
+      "temporaryId": null,
+      "name": "Certificate III in Early Childhood Education and Care (no units)",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 780,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-05-07T03:30:00.000Z",
+      "end": "2023-05-07T09:30:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 4275,
+      "temporaryId": null,
+      "name": "Certificate III in Early Childhood Education and Care (no units)",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 780,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-05-10T03:30:00.000Z",
+      "end": "2023-05-10T09:30:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 3838,
+      "temporaryId": null,
+      "name": "Certificate III in Early Childhood Education and Care (no units)",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 780,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-05-11T03:30:00.000Z",
+      "end": "2023-05-11T09:30:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 3884,
+      "temporaryId": null,
+      "name": "Certificate III in Early Childhood Education and Care (no units)",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 780,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-05-12T03:30:00.000Z",
+      "end": "2023-05-12T09:30:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 3543,
+      "temporaryId": null,
+      "name": "Certificate III in Early Childhood Education and Care (no units)",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 780,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-05-13T03:30:00.000Z",
+      "end": "2023-05-13T09:30:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 4867,
+      "temporaryId": null,
+      "name": "Certificate III in Early Childhood Education and Care (no units)",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 780,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-05-14T03:30:00.000Z",
+      "end": "2023-05-14T09:30:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 4702,
+      "temporaryId": null,
+      "name": "Certificate III in Early Childhood Education and Care (no units)",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 780,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-05-17T03:30:00.000Z",
+      "end": "2023-05-17T09:30:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 3893,
+      "temporaryId": null,
+      "name": "Certificate III in Early Childhood Education and Care (no units)",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 780,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-05-18T03:30:00.000Z",
+      "end": "2023-05-18T09:30:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 4387,
+      "temporaryId": null,
+      "name": "Certificate III in Early Childhood Education and Care (no units)",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 780,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-05-19T03:30:00.000Z",
+      "end": "2023-05-19T09:30:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 4625,
+      "temporaryId": null,
+      "name": "Certificate III in Early Childhood Education and Care (no units)",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 780,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-05-20T03:30:00.000Z",
+      "end": "2023-05-20T09:30:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 5309,
+      "temporaryId": null,
+      "name": "Certificate III in Early Childhood Education and Care (no units)",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 780,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-05-21T03:30:00.000Z",
+      "end": "2023-05-21T09:30:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 5251,
+      "temporaryId": null,
+      "name": "Certificate III in Early Childhood Education and Care (no units)",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 780,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-05-24T03:30:00.000Z",
+      "end": "2023-05-24T09:30:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+    {
+      "id": 3974,
+      "temporaryId": null,
+      "name": "Certificate III in Early Childhood Education and Care (no units)",
+      "code": null,
+      "room": "Room 1",
+      "site": "Perth office",
+      "tutors": [
+
+      ],
+      "tutorAttendances": [
+
+      ],
+      "classId": null,
+      "courseId": 780,
+      "roomId": 280,
+      "siteId": 260,
+      "siteTimezone": "Australia/West",
+      "start": "2023-05-25T03:30:00.000Z",
+      "end": "2023-05-25T09:30:00.000Z",
+      "publicNotes": null,
+      "privateNotes": null,
+      "hasPaylines": false
+    },
+  ];
+
+  this.getTimetableSessionsTags = (sessionIds: string) => [
       {
         Rozelle: "2d4d63",
         "Access2Ed - Disability Support": "9656d6",
@@ -319,5 +796,4 @@ export function mockTimetable() {
         Fax: "cec2f0"
       }
     ];
-  };
 }

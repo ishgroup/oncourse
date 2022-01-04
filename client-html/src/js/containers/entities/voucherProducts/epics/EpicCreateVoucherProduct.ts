@@ -4,10 +4,9 @@
  */
 
 import { Epic } from "redux-observable";
-
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { CREATE_VOUCHER_PRODUCT_ITEM, CREATE_VOUCHER_PRODUCT_ITEM_FULFILLED } from "../actions/index";
-import { FETCH_SUCCESS } from "../../../../common/actions/index";
+import { CREATE_VOUCHER_PRODUCT_ITEM, CREATE_VOUCHER_PRODUCT_ITEM_FULFILLED } from "../actions";
+import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { initialize } from "redux-form";
 import { VoucherProduct } from "@api/model";
@@ -18,6 +17,7 @@ import {
 } from "../../../../common/components/list-view/actions";
 import voucherProductService from "../services/VoucherProductService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { processCustomFields } from "../../customFieldTypes/utils";
 
 let savedItem: VoucherProduct;
 
@@ -25,6 +25,7 @@ const request: EpicUtils.Request = {
   type: CREATE_VOUCHER_PRODUCT_ITEM,
   getData: payload => {
     savedItem = payload.voucherProduct;
+    processCustomFields(payload.voucherProduct);
     return voucherProductService.createVoucherProduct(payload.voucherProduct);
   },
   processData: () => {
