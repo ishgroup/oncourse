@@ -650,11 +650,13 @@
 	<changeSet id="49" author="dmitriy" runOnChange="false" runAlways="false" context="production">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<columnExists columnName="message" tableName="WebHostName"/>
+				<columnExists columnName="ipv4" tableName="WebHostName"/>
+				<columnExists columnName="ipv6" tableName="WebHostName"/>
 			</not>
 		</preConditions>
 		<addColumn tableName="WebHostName">
-			<column name="message" type="TEXT"/>
+			<column name="ipv4" type="VARBINARY(16)"/>
+			<column name="ipv6" type="VARBINARY(39)"/>
 		</addColumn>
 	</changeSet>
 
