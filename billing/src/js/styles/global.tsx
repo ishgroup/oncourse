@@ -9,7 +9,8 @@ import { alpha } from '@mui/material/styles';
 import { prefixer } from './mixins/prefixer';
 import { useTheme } from '../themes/ishTheme';
 import iconDots from '../../images/icon-dots.png';
-
+import InterRomanVar from '../../fonts/inter/Inter-Roman.var.woff2';
+import InterItalicVar from '../../fonts/inter/Inter-Italic.var.woff2';
 
 export const GlobalClasses = () => {
   const theme = useTheme();
@@ -18,6 +19,33 @@ export const GlobalClasses = () => {
     <GlobalStyles styles={{
       strong: {
         fontWeight: 'bold'
+      },
+      '@font-face': [
+        {
+          fontFamily: 'Inter',
+          fontWeight: '100 900',
+          fontDisplay: 'swap',
+          fontStyle: 'normal',
+          fallbacks: [
+            { src: `local('Inter'), url(${InterRomanVar}) format("woff2")` }
+          ]
+        },
+        {
+          fontFamily: 'Inter',
+          fontWeight: '100 900',
+          fontDisplay: 'swap',
+          fontStyle: 'italic',
+          fallbacks: [
+            { src: `local('Inter'), url(${InterItalicVar}) format("woff2")` }
+          ]
+        }
+      ] as any,
+      '.heading': {
+        color: '#4b6390',
+        fontSize: '14px',
+        fontFamily: 'Inter, sans-serif',
+        fontWeight: 600,
+        textTransform: 'uppercase'
       },
       '.fontWeight-normal': {
         fontWeight: 'normal'

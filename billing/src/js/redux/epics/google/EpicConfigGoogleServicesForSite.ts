@@ -24,12 +24,18 @@ import { updateCollegeSites } from '../../actions/Sites';
 const request: Request<SiteDTO, SiteValues> = {
   type: CONFIGURE_GOOGLE_FOR_SITE,
   getData: async (site, state) => {
+    const parsedSite = {
+      ...site,
+      gtmContainerId: site.gtmContainerId === 'new' ? null : site.gtmContainerId,
+      gaWebPropertyId: site.gaWebPropertyId === 'new' ? null : site.gaWebPropertyId,
+    }
+
     const token = getTokenString(state.google);
 
-    if (site.gtmAccountId) {
-      let { gaWebPropertyId } = site;
-      let gtmContainerId = state.google.gtmContainers[site.gtmAccountId].find((c) => c.publicId === site.gtmContainerId)?.containerId;
-      const existingContainer = state.google.gtmContainers[site.gtmAccountId].find((c) => c.name === GTM_CONTAINER_NAME_DEFAULT);
+    if (parsedSite.gtmAccountId) {
+      let { gaWebPropertyId } = parsedSite;
+      let gtmContainerId = state.google.gtmContainers[parsedSite.gtmAccountId].find((c) => c.publicId === parsedSite.gtmContainerId)?.containerId;
+      const existingContainer = state.google.gtmContainers[parsedSite.gtmAccountId].find((c) => c.name === GTM_CONTAINER_NAME_DEFAULT);
 
       if (existingContainer) {
         gtmContainerId = existingContainer.containerId;
@@ -38,7 +44,7 @@ const request: Request<SiteDTO, SiteValues> = {
       if (!gtmContainerId) {
         await GoogleService.createGTMContainer(
           token,
-          site.gtmAccountId,
+          parsedSite.gtmAccountId,
           {
             name: GTM_CONTAINER_NAME_DEFAULT,
             usageContext: [
@@ -53,9 +59,9 @@ const request: Request<SiteDTO, SiteValues> = {
       if (!gaWebPropertyId) {
         await GoogleService.createGAProperty(
           token,
-          site.googleAnalyticsId,
+          parsedSite.googleAnalyticsId,
           {
-            name: `${site.name} web property`
+            name: `${parsedSite.name} web property`
           }
         ).then((res) => {
           gaWebPropertyId = res.id;
@@ -63,17 +69,17 @@ const request: Request<SiteDTO, SiteValues> = {
 
         await GoogleService.createGAProfile(
           token,
-          site.googleAnalyticsId,
+          parsedSite.googleAnalyticsId,
           gaWebPropertyId,
           {
-            name: `${site.name} profile`
+            name: `${parsedSite.name} profile`
           }
         );
       }
 
       const workspaces = await GoogleService.getGTMWorkspaces(
         token,
-        site.gtmAccountId,
+        parsedSite.gtmAccountId,
         gtmContainerId
       );
 
@@ -81,7 +87,7 @@ const request: Request<SiteDTO, SiteValues> = {
 
       const preview = await GoogleService.getGTMPreview(
         token,
-        site.gtmAccountId,
+        parsedSite.gtmAccountId,
         gtmContainerId,
         workspace
       );
@@ -91,7 +97,7 @@ const request: Request<SiteDTO, SiteValues> = {
       if (!gasVariable) {
         await GoogleService.createGTMVariable(
           token,
-          site.gtmAccountId,
+          parsedSite.gtmAccountId,
           gtmContainerId,
           workspace,
           getGASVariable(gaWebPropertyId)
@@ -99,7 +105,7 @@ const request: Request<SiteDTO, SiteValues> = {
       } else {
         await GoogleService.updateGTMVariable(
           token,
-          site.gtmAccountId,
+          parsedSite.gtmAccountId,
           gtmContainerId,
           workspace,
           {
@@ -112,7 +118,7 @@ const request: Request<SiteDTO, SiteValues> = {
       const trigger_all_pages = preview.containerVersion.trigger?.find((t) => t.name === ALL_PAGES_TRIGGER_DEFAULT.name)
         || await GoogleService.createGTMTrigger(
           token,
-          site.gtmAccountId,
+          parsedSite.gtmAccountId,
           gtmContainerId,
           workspace,
           ALL_PAGES_TRIGGER_DEFAULT
@@ -121,7 +127,7 @@ const request: Request<SiteDTO, SiteValues> = {
       const trigger_all_events = preview.containerVersion.trigger?.find((t) => t.name === ALL_EVENTS_TRIGGER_DEFAULT.name)
         || await GoogleService.createGTMTrigger(
           token,
-          site.gtmAccountId,
+          parsedSite.gtmAccountId,
           gtmContainerId,
           workspace,
           ALL_EVENTS_TRIGGER_DEFAULT
@@ -130,7 +136,7 @@ const request: Request<SiteDTO, SiteValues> = {
       const trigger_maps_page = preview.containerVersion.trigger?.find((t) => t.name === MAPS_PAGE_TRIGGER_DEFAULT.name)
         || await GoogleService.createGTMTrigger(
           token,
-          site.gtmAccountId,
+          parsedSite.gtmAccountId,
           gtmContainerId,
           workspace,
           MAPS_PAGE_TRIGGER_DEFAULT
@@ -139,7 +145,7 @@ const request: Request<SiteDTO, SiteValues> = {
       if (!preview.containerVersion.tag?.some((t) => t.type === 'ua')) {
         await GoogleService.createGTMTag(
           token,
-          site.gtmAccountId,
+          parsedSite.gtmAccountId,
           gtmContainerId,
           workspace,
           {
@@ -169,7 +175,7 @@ const request: Request<SiteDTO, SiteValues> = {
 
         await GoogleService.createGTMTag(
           token,
-          site.gtmAccountId,
+          parsedSite.gtmAccountId,
           gtmContainerId,
           workspace,
           {
@@ -198,18 +204,18 @@ const request: Request<SiteDTO, SiteValues> = {
         );
       }
 
-      if (site.googleMapsApiKey) {
+      if (parsedSite.googleMapsApiKey) {
         await GoogleService.createGTMVariable(
           token,
-          site.gtmAccountId,
+          parsedSite.gtmAccountId,
           gtmContainerId,
           workspace,
-          getMapsApiKeyVariable(site.googleMapsApiKey)
+          getMapsApiKeyVariable(parsedSite.googleMapsApiKey)
         );
 
         await GoogleService.createGTMTag(
           token,
-          site.gtmAccountId,
+          parsedSite.gtmAccountId,
           gtmContainerId,
           workspace,
           {
@@ -235,13 +241,13 @@ const request: Request<SiteDTO, SiteValues> = {
 
       await GoogleService.publishGTM(
         token,
-        site.gtmAccountId,
+        parsedSite.gtmAccountId,
         gtmContainerId,
         workspace,
       );
     }
 
-    return site;
+    return parsedSite;
   },
   processData: (site) => [
     updateCollegeSites({ changed: [site] }),

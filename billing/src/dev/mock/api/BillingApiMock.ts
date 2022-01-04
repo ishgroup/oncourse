@@ -59,8 +59,8 @@ export function BillingApiMock(this: MockAdapter) {
         id: 4,
         name: 'Site 4',
         key: 'nidatest2',
-        domains: { 'www.corporate.nida.edu.au': '', 'www.open.nida.edu.au': '' },
-        primaryDomain: 'www.corporate.nida.edu.au',
+        domains: {},
+        primaryDomain: null,
         webSiteTemplate: null
       }
     ]));

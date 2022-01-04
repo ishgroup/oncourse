@@ -9,9 +9,11 @@ export const renderPlanLabel = (plan: BillingPlan) => {
   switch (plan) {
     case 'basic-21':
       return 'Basic';
-    case 'premium-21':
-      return 'Premium';
     case 'starter-21':
       return 'Starter';
+    case 'premium-21':
+      return 'Premium';
+    default:
+      return 'Lagacy';
   }
 };

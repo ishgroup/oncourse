@@ -7,7 +7,8 @@ import React, { useEffect } from 'react';
 import {
   Switch,
   Route,
-  NavLink, useHistory
+  NavLink,
+  useHistory
 } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
@@ -24,6 +25,7 @@ export const useStyles = makeAppStyles()((theme, prop, createRef) => {
   const navItem = {
     ref: createRef(),
     position: 'relative',
+    marginTop: theme.spacing(1),
     color: theme.palette.text.secondary,
     left: 0,
     transition: 'all ease-out 0.2s',
@@ -46,12 +48,11 @@ export const useStyles = makeAppStyles()((theme, prop, createRef) => {
       paddingLeft: 20,
       listStyle: 'none',
       '& > li': {
-        marginTop: theme.spacing(1)
+        marginTop: theme.spacing(2)
       },
       '& a': {
         textDecoration: 'none'
       },
-
     },
     navRoot: {
       textAlign: 'left',
@@ -59,7 +60,10 @@ export const useStyles = makeAppStyles()((theme, prop, createRef) => {
       justifyContent: 'center',
       marginTop: 70,
       flex: 1,
-      overflow: 'auto'
+      overflow: 'auto',
+      '& *': {
+        fontFamily: 'Inter, sans-serif',
+      },
     },
     activeNav: {
       [`& .${navItem.ref}`]: {
@@ -109,13 +113,13 @@ const Settings = () => {
                 to="/"
                 activeClassName={classes.activeNav}
               >
-                <Typography variant="body2" className={classes.navItem}>
+                <Typography variant="body2" className={cx(classes.navItem, 'heading')}>
                   Billing
                 </Typography>
               </NavLink>
             </li>
             <li>
-              <Typography variant="body2" color="textSecondary" className="relative">
+              <Typography className="heading relative" variant="body2" color="textSecondary">
                 Websites
                 <IconButton size="small" className={classes.plusIcon} onClick={onAddSite}>
                   <AddCircleOutlineIcon color="primary" />
@@ -129,7 +133,7 @@ const Settings = () => {
                       strict
                       to={`/websites/${s.id}/analytics`}
                     >
-                      <Typography variant="body2" className={classes.navItem}>
+                      <Typography variant="subtitle2" color="textSecondary" className={classes.navItem}>
                         {s.key}
                       </Typography>
                     </NavLink>

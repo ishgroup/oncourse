@@ -5,19 +5,28 @@
 
 import React, { useEffect, useMemo } from 'react';
 import {
+  Alert,
   Autocomplete,
   Chip,
+  Collapse,
   Grid,
   TextField,
-  Typography
+  Typography,
+  Link as MuiLink
 } from '@mui/material';
-import { SiteDTO } from '@api/model';
+
+import {
+  Link
+} from 'react-router-dom';
+import { BillingPlan, SiteDTO } from '@api/model';
 import { FormikErrors } from 'formik/dist/types';
-import { renderSelectItemsWithEmpty } from '../../utils';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import { renderSelectItems, renderSelectItemsWithEmpty } from '../../utils';
 import AutosizeInput from '../common/AutosizeInput';
 import { TemplateField } from '../common/TemplateChoser';
 import { SiteValues } from '../../models/Sites';
 import WarningMessage from '../common/WarningMessage';
+import { getGtmAndGaAccounts } from '../../redux/actions/Google';
 
 interface Props {
   classes: any;
@@ -30,6 +39,7 @@ interface Props {
   setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => Promise<FormikErrors<SiteValues>> | Promise<void>;
   setFieldError: any;
   handleChange: any;
+  billingPlan: BillingPlan;
 }
 
 const URLs = (
@@ -42,7 +52,8 @@ const URLs = (
     error,
     setFieldValue,
     setFieldError,
-    handleChange
+    handleChange,
+    billingPlan
   }: Props
 ) => {
   const initialMatchPattern = initial && initial.key.includes(`${collegeKey}-`);
@@ -74,7 +85,7 @@ const URLs = (
     if (!site.domains.length && !site.primaryDomain) setFieldValue('primaryDomain', Object.keys(site.domains)[0]);
   }, [site.domains]);
 
-  const domainItems = useMemo(() => renderSelectItemsWithEmpty(
+  const domainItems = useMemo(() => renderSelectItems(
     { items: Object.keys(site.domains) }
   ), [site.domains]);
 
@@ -141,61 +152,72 @@ const URLs = (
         {Boolean(error.key) && (<Typography className={classes.errorMessage}>{error.key}</Typography>)}
       </Grid>
       <Grid item xs={6} className={classes.pr} marginTop="auto">
-        <Autocomplete
-          size="small"
-          options={[]}
-          value={Object.keys(site.domains)}
-          classes={{
-            root: classes.domainsRoot,
-            inputRoot: classes.domainsInput,
-            hasClearIcon: classes.hasClearIcon
-          }}
-          renderInput={(params: any) => (
-            <TextField
-              {...params}
-              error={Boolean(error.domains)}
-              InputProps={{
-                ...params.InputProps,
-                margin: 'none',
-                endAdornment: params.inputProps.value
-                  ? (
-                    <Chip
-                      size="small"
-                      label="Add"
-                      clickable
-                      onClick={() => onAddDomain(params)}
-                    />
-                  )
-                  : null
+        {billingPlan === 'premium-21'
+          ? (
+            <Autocomplete
+              size="small"
+              options={[]}
+              value={Object.keys(site.domains)}
+              classes={{
+                root: classes.domainsRoot,
+                inputRoot: classes.domainsInput,
+                hasClearIcon: classes.hasClearIcon
               }}
-              helperText={Array.isArray(error.domains) ? error.domains.find((d) => d) : error.domains}
-              variant="standard"
-              label="Site domains"
-              margin="normal"
-              multiline
+              renderInput={(params: any) => (
+                <TextField
+                  {...params}
+                  error={Boolean(error.domains)}
+                  InputProps={{
+                    ...params.InputProps,
+                    margin: 'none',
+                    endAdornment: params.inputProps.value
+                      ? (
+                        <Chip
+                          size="small"
+                          label="Add"
+                          clickable
+                          onClick={() => onAddDomain(params)}
+                        />
+                      )
+                      : null
+                  }}
+                  helperText={Array.isArray(error.domains) ? error.domains.find((d) => d) : error.domains}
+                  variant="standard"
+                  label="Site domains"
+                  margin="normal"
+                  multiline
+                />
+              )}
+              onChange={onDomainsChange}
+              filterSelectedOptions
+              multiple
+              freeSolo
             />
+          )
+          : (
+            <Alert severity="info" className="mt-2">
+              <Link to="/"><MuiLink>Upgrade</MuiLink></Link> to the premium plan in order to add a custom domain
+            </Alert>
           )}
-          onChange={onDomainsChange}
-          filterSelectedOptions
-          multiple
-          freeSolo
-        />
+
       </Grid>
       <Grid item xs={6} marginTop="auto">
-        <TextField
-          select
-          fullWidth
-          margin="normal"
-          label="Primary hostname"
-          value={site.primaryDomain || ''}
-          onChange={handleChange}
-          helperText={error.primaryDomain}
-          error={Boolean(error.primaryDomain)}
-          name="primaryDomain"
-          variant="standard"
-        >
-          {domainItems}
-        </TextField>
+        <Collapse in={Boolean(domainItems.length)}>
+          <TextField
+            select
+            fullWidth
+            margin="normal"
+            label="Primary hostname"
+            value={site.primaryDomain || ''}
+            onChange={handleChange}
+            helperText={error.primaryDomain}
+            error={Boolean(error.primaryDomain)}
+            name="primaryDomain"
+            variant="standard"
+          >
+            {domainItems}
+          </TextField>
+        </Collapse>
       </Grid>
       <Grid item xs={12}>
         {domainWarnings}

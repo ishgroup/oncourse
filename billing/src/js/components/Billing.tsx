@@ -20,21 +20,24 @@ import { updateSettings } from '../redux/actions/Settings';
 import { usePrevious } from '../hooks/usePrevious';
 
 const validationSchema = yup.object().shape({
-  requestedUsersCount: yup.number().nullable().when('showPlanChangeFields', {
-    is: (val) => val,
-    then: yup.number().nullable().required('Users count is required'),
-  }).when('requestedBillingPlan', {
-    is: 'starter-21',
-    then: yup.number().nullable().max(1, 'For Starter plan only one user is available'),
-    otherwise: yup.number().nullable().min(2, 'Non Starter plan requires at least 2 users'),
-  }),
   requestedBillingPlan: yup.string().nullable().when('showPlanChangeFields', {
     is: (val) => val,
     then: yup.string().nullable().required('Billing plan is required'),
   }),
+  requestedUsersCount: yup.number()
+    .when('showPlanChangeFields', {
+      is: (val) => val,
+      then: yup.number().nullable().required('Users count is required'),
+      otherwise: yup.number().nullable().notRequired()
+    })
+    .when('requestedBillingPlan', {
+      is: 'starter-21',
+      then: yup.number().nullable().max(1, 'For Starter plan only one user is available'),
+      otherwise: yup.number().nullable().min(2, 'Non Starter plan requires at least 2 users'),
+    }),
   contactFullName: yup.string().nullable().required('Name is required'),
   contactEmail: yup.string().nullable().email('Please enter valid email').required('Email is reuired'),
-}, ['requestedUsersCount', 'requestedBillingPlan'] as any);
+});
 
 const planItems = renderSelectItems(
   {
@@ -74,6 +77,12 @@ const Billing = () => {
     }
   }, [settings]);
 
+  useEffect(() => {
+    if (values.requestedBillingPlan === 'starter-21') {
+      setFieldValue('requestedUsersCount', 1);
+    }
+  }, [values.requestedBillingPlan]);
+
   return (
     <form
       className="w-100"
@@ -87,18 +96,18 @@ const Billing = () => {
         </Grid>
         <Grid item xs={4}>
           <Typography variant="caption" color="textSecondary">
-            Licenced concurent users
-          </Typography>
-          <Typography variant="body1">
-            {settings.usersCount}
-          </Typography>
-        </Grid>
-        <Grid item xs={4}>
-          <Typography variant="caption" color="textSecondary">
             Plan
           </Typography>
           <Typography variant="body1">
             {renderPlanLabel(settings.billingPlan)}
+          </Typography>
+        </Grid>
+        <Grid item xs={4}>
+          <Typography variant="caption" color="textSecondary">
+            Licenced concurent users
+          </Typography>
+          <Typography variant="body1">
+            {settings.billingPlan === 'starter-21' ? '1' : settings.usersCount}
           </Typography>
         </Grid>
         <Grid item xs={4} className="d-flex-end">
@@ -107,7 +116,12 @@ const Billing = () => {
               disableElevation
               size="small"
               variant="contained"
-              onClick={() => setFieldValue('showPlanChangeFields', true)}
+              onClick={() => setValues({
+                ...values,
+                requestedUsersCount: null,
+                requestedBillingPlan: 'premium-21',
+                showPlanChangeFields: true
+              })}
             >
               Change
             </Button>
@@ -116,20 +130,6 @@ const Billing = () => {
         <Grid item xs={12}>
           <Collapse in={values.showPlanChangeFields}>
             <Grid container columnSpacing={3}>
-              <Grid item xs={4}>
-                <TextField
-                  fullWidth
-                  margin="normal"
-                  variant="standard"
-                  type="number"
-                  name="requestedUsersCount"
-                  label="New concurrent users"
-                  value={values.requestedUsersCount || ''}
-                  onChange={handleChange}
-                  error={Boolean(errors.requestedUsersCount)}
-                  helperText={errors.requestedUsersCount}
-                />
-              </Grid>
               <Grid item xs={4}>
                 <TextField
                   select
@@ -145,6 +145,21 @@ const Billing = () => {
                 >
                   {planItems}
                 </TextField>
+              </Grid>
+              <Grid item xs={4}>
+                <TextField
+                  fullWidth
+                  margin="normal"
+                  variant="standard"
+                  type="number"
+                  name="requestedUsersCount"
+                  label="New concurrent users"
+                  value={values.requestedUsersCount || ''}
+                  onChange={handleChange}
+                  error={Boolean(errors.requestedUsersCount)}
+                  helperText={errors.requestedUsersCount}
+                  disabled={values.requestedBillingPlan === 'starter-21'}
+                />
               </Grid>
               <Grid item xs={4} className="centeredFlex">
                 {values.showPlanChangeFields && (

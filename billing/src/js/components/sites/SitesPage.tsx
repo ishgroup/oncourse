@@ -180,6 +180,7 @@ export const SitesPage = () => {
   const loading = useAppSelector((state) => state.loading);
   const sites = useAppSelector((state) => state.sites);
   const collegeKey = useAppSelector((state) => state.college.collegeKey);
+  const billingPlan = useAppSelector((state) => state.settings.billingPlan);
 
   const { id, page } = useParams<SitePageParams>();
   const location = useLocation();
@@ -250,7 +251,7 @@ export const SitesPage = () => {
   const gtmContainer = useMemo<GTMContainer>(() => {
     let container: GTMContainer = null;
 
-    if (!values.gtmContainerId) {
+    if (!values.gtmContainerId || values.gtmContainerId === 'new') {
       return container;
     }
 
@@ -280,7 +281,7 @@ export const SitesPage = () => {
 
   const gtmContainerItems = useMemo(() => renderSelectItemsWithEmpty(
     {
-      items: (gtmContainers || {})[values.gtmAccountId],
+      items: [...((gtmContainers || {})[values.gtmAccountId] || []), { publicId: 'new', name: 'Create new container' }],
       valueKey: 'publicId',
       labelKey: 'name',
       labelCondition: renderContainerLabel
@@ -289,14 +290,17 @@ export const SitesPage = () => {
 
   const gaWebPropertyItems = useMemo(() => renderSelectItemsWithEmpty(
     {
-      items: (gaWebProperties || {})[values.googleAnalyticsId],
+      items: [...((gaWebProperties || {})[values.googleAnalyticsId] || []), { id: 'new', name: 'Create new web property' }],
       valueKey: 'id',
       labelKey: 'name',
       labelCondition: renderWebPropertyLabel
     }
   ), [gaWebProperties, values.googleAnalyticsId]);
 
-  const concurentAccounts = values.gtmContainerId
+
+  const concurentAccounts =
+    values.gtmContainerId
+    && values.gtmContainerId !== 'new'
     && gtmContainers
     && !Object.keys(gtmContainers)
       .some((k) => gtmContainers[k]
@@ -318,7 +322,12 @@ export const SitesPage = () => {
 
   // Update GA profiles on property change
   useEffect(() => {
-    if (values.googleAnalyticsId && values.gaWebPropertyId && !gaWebProfiles[values.gaWebPropertyId] && loggedWithGoogle) {
+    if (values.googleAnalyticsId
+      && values.gaWebPropertyId
+      && values.gaWebPropertyId !== 'new'
+      && !gaWebProfiles[values.gaWebPropertyId]
+      && loggedWithGoogle
+    ) {
       dispatch(getGaProfiles(values.googleAnalyticsId, values.gaWebPropertyId));
     }
   }, [gaWebProfiles, values.gaWebPropertyId, loggedWithGoogle]);
@@ -449,6 +458,9 @@ export const SitesPage = () => {
     </Alert>
   );
 
+  const hasNoGAAccounts = !(customLoading || loading) && gaAccountItems.length === 1;
+  const hasNoGTMAccounts = !(customLoading || loading) && gtmAccountItems.length === 1;
+
   const renderPage = () => {
     if (isConfig) {
       return loggedWithGoogle ? (
@@ -462,7 +474,6 @@ export const SitesPage = () => {
           gtmAccountItems={gtmAccountItems}
           gaWebPropertyItems={gaWebPropertyItems}
           gtmContainerItems={gtmContainerItems}
-          googleProfileEmail={profile?.email}
           concurentAccounts={concurentAccounts}
         />
       ) : (
@@ -483,22 +494,29 @@ export const SitesPage = () => {
             setFieldValue={setFieldValue}
             setFieldError={setFieldError}
             handleChange={handleChange}
+            billingPlan={billingPlan}
           />
         );
 
       case 'tagManager':
-        return (
+        return loggedWithGoogle ? (
           <TagManager
+            hasNoGTMAccounts={hasNoGTMAccounts}
             gtmContainerId={values.gtmContainerId}
             gtmContainer={gtmContainer}
+            googleProfileEmail={profile?.email}
+            dispatch={dispatch}
           />
-        );
+        ) : notLoggedWarning;
       case 'analytics':
         return loggedWithGoogle ? (
           <Analytics
             key={values.gaWebPropertyId}
             gaWebPropertyId={values.gaWebPropertyId}
             googleAnalyticsId={values.googleAnalyticsId}
+            googleProfileEmail={profile?.email}
+            hasNoGAAccounts={hasNoGAAccounts}
+            dispatch={dispatch}
           />
         ) : notLoggedWarning;
       default:
