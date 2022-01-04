@@ -29,12 +29,12 @@ const WarningMessage = ({ className, warning }: Props) => {
   const { classes, cx } = useStyles();
 
   return (
-    <div className={className}>
+    <pre className={className}>
       <Warning className={cx(classes.icon, classes.warningColor)} />
       <Typography variant="caption" className={classes.warningColor}>
-        {warning}
+          {warning}
       </Typography>
-    </div>
+    </pre>
   );
 };
 

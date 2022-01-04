@@ -74,29 +74,12 @@ const URLs = (
     if (!site.domains.length && !site.primaryDomain) setFieldValue('primaryDomain', Object.keys(site.domains)[0]);
   }, [site.domains]);
 
-  useEffect(() => {
-    if (!site.gtmAccountId && site.gtmContainerId) {
-      setFieldValue('gtmContainerId', null);
-    }
-  }, [site.gtmAccountId]);
-
-  useEffect(() => {
-    if (!site.googleAnalyticsId) {
-      if (site.gtmAccountId) {
-        setFieldValue('gtmAccountId', null);
-      }
-      if (site.gaWebPropertyId) {
-        setFieldValue('gaWebPropertyId', null);
-      }
-    }
-  }, [site.googleAnalyticsId]);
-
   const domainItems = useMemo(() => renderSelectItemsWithEmpty(
     { items: Object.keys(site.domains) }
   ), [site.domains]);
 
   const domainWarnings = useMemo(() => Object.keys(site.domains).map((d) => (site.domains[d]
-    ? <WarningMessage key={d} warning={`${d}: ${site.domains[d]}`} />
+    ? <WarningMessage key={d} warning={site.domains[d]} />
     : null)),
   [site.domains]);
 

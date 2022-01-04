@@ -37,7 +37,13 @@ export function BillingApiMock(this: MockAdapter) {
           lastname: 'Smith',
           email: 'john@yahoo.com'
         },
-        domains: { 'www.corporate.nida.edu.au': 'error', 'www.open.nida.edu.au': 'error' },
+        domains: { 'www.corporate.nida.edu.au': 'www.corporate.nida.edu.audomain setup is not correct. Go to your DNS hosting provider and set the following:\n' +
+            '\n' +
+            'sttrinians.ish.com.au A 202.167.247.94\n' +
+            'sttrinians.ish.com.au AAAA 2404:4f00:1010:1::6', 'www.open.nida.edu.au': 'www.open.nida.edu.au domain setup is not correct. Go to your DNS hosting provider and set the following:\n' +
+            '\n' +
+            'sttrinians.ish.com.au A 202.167.247.94\n' +
+            'sttrinians.ish.com.au AAAA 2404:4f00:1010:1::6' },
         primaryDomain: 'www.corporate.nida.edu.au',
         webSiteTemplate: null
       },
