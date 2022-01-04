@@ -7,6 +7,8 @@ properties:
     type: string
   name:
     type: string
+  googleAnalyticsId:
+    type: string
   gtmAccountId:
     type: string
   gtmContainerId:

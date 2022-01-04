@@ -21,8 +21,11 @@ export function BillingApiMock(this: MockAdapter) {
         name: 'Site 1',
         key: 'nida-1',
         domains: { 'www.corporate.nida.edu.au': 'error', 'www.open.nida.edu.au': 'error' },
+        primaryDomain: 'www.corporate.nida.edu.au',
         webSiteTemplate: null,
-        gtmContainerId: 'GTM-KXC5NC7'
+        gtmContainerId: 'GTM-59DQJVC',
+        gtmAccountId: '3075100411',
+        googleAnalyticsId: '210529690'
       },
       {
         id: 2,
@@ -35,6 +38,7 @@ export function BillingApiMock(this: MockAdapter) {
           email: 'john@yahoo.com'
         },
         domains: { 'www.corporate.nida.edu.au': 'error', 'www.open.nida.edu.au': 'error' },
+        primaryDomain: 'www.corporate.nida.edu.au',
         webSiteTemplate: null
       },
       {
@@ -42,6 +46,7 @@ export function BillingApiMock(this: MockAdapter) {
         name: 'Site 3',
         key: 'nidatest',
         domains: { 'www.corporate.nida.edu.au': '', 'www.open.nida.edu.au': '' },
+        primaryDomain: 'www.corporate.nida.edu.au',
         webSiteTemplate: null
       },
       {
@@ -49,6 +54,7 @@ export function BillingApiMock(this: MockAdapter) {
         name: 'Site 4',
         key: 'nidatest2',
         domains: { 'www.corporate.nida.edu.au': '', 'www.open.nida.edu.au': '' },
+        primaryDomain: 'www.corporate.nida.edu.au',
         webSiteTemplate: null
       }
     ]));

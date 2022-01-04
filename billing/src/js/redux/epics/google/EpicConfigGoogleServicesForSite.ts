@@ -4,8 +4,9 @@
  */
 
 import { Epic } from 'redux-observable';
+import { SiteDTO } from '@api/model';
 import { Request, Create } from '../EpicUtils';
-import { CONFIGURE_GOOGLE_FOR_SITE, getGtmAndGaData } from '../../actions/Google';
+import { CONFIGURE_GOOGLE_FOR_SITE, getGtmDataByAccount } from '../../actions/Google';
 import GoogleService from '../../../api/services/GoogleService';
 import { getTokenString } from '../../../utils/Google';
 import {
@@ -20,7 +21,7 @@ import {
 import { SiteValues } from '../../../models/Sites';
 import { updateCollegeSites } from '../../actions/Sites';
 
-const request: Request<any, SiteValues> = {
+const request: Request<SiteDTO, SiteValues> = {
   type: CONFIGURE_GOOGLE_FOR_SITE,
   getData: async (site, state) => {
     const token = getTokenString(state.google);
@@ -103,10 +104,7 @@ const request: Request<any, SiteValues> = {
           workspace,
           {
             ...gasVariable,
-            parameter: gasVariable.parameter.map((p) => ({
-              ...p,
-              value: p.key === 'trackingId' ? gaWebPropertyId : p.value
-            }))
+            ...getGASVariable(gaWebPropertyId)
           }
         );
       }
@@ -247,7 +245,7 @@ const request: Request<any, SiteValues> = {
   },
   processData: (site) => [
     updateCollegeSites({ changed: [site] }),
-    getGtmAndGaData()
+    getGtmDataByAccount(site.gtmAccountId)
   ]
 };
 

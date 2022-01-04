@@ -10,11 +10,11 @@ import Loading from '../common/Loading';
 import { renderSelectItems } from '../../utils';
 
 interface Props {
+  googleAnalyticsId: string,
   gaWebPropertyId: string,
-  loading: boolean
 }
 
-const Analytics = ({ gaWebPropertyId, loading }: Props) => {
+const Analytics = ({ gaWebPropertyId, googleAnalyticsId }: Props) => {
   const [authorizeCalled, setAuthorizeCalled] = useState(false);
   const [profileId, setProfileId] = useState(null);
 
@@ -33,7 +33,7 @@ const Analytics = ({ gaWebPropertyId, loading }: Props) => {
   ), [gaWebPropertyId, gaWebProfiles]);
 
   useEffect(() => {
-    if (gaWebProfiles && gaWebPropertyId) {
+    if (gaWebProfiles && gaWebPropertyId && gaWebProfiles[gaWebPropertyId]) {
       setProfileId(gaWebProfiles[gaWebPropertyId][0]?.id);
     }
   }, [gaWebProfiles, gaWebPropertyId]);
@@ -74,10 +74,9 @@ const Analytics = ({ gaWebPropertyId, loading }: Props) => {
 
   return (
     <div>
-      {(!ready || loading) && <div className="d-flex"><Loading /></div>}
-      {ready && !loading && (
+      {ready && (
         <div>
-          {authorized && gaWebPropertyId && (
+          {authorized && gaWebPropertyId && googleAnalyticsId && (
             <div>
               <Grid container>
                 <Grid item xs={6}>
@@ -105,7 +104,7 @@ const Analytics = ({ gaWebPropertyId, loading }: Props) => {
             !authorized && <Typography color="textSecondary">Authorizie with google to see analytics data</Typography>
           }
           {
-            !gaWebPropertyId && <Typography color="textSecondary">Select or create web property in configure section to see analytics data</Typography>
+            (!gaWebPropertyId || !googleAnalyticsId) && <Typography color="textSecondary">Select or create web property in configure section to see analytics data</Typography>
           }
         </div>
       )}

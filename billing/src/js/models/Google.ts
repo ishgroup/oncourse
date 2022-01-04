@@ -18,13 +18,14 @@ export type GAWebProperty = gapi.client.analytics.Webproperty;
 export type GAWebPropertyProfile = gapi.client.analytics.Profile;
 
 export interface GoogleState {
-  loading?: boolean;
   clientId?: string;
   profile?: GoogleLoginResponse['profileObj'],
   token?: GoogleLoginResponse['tokenObj'],
-  gtmAccounts: GTMAccount[],
-  gtmContainers: Record<GTMAccount['accountId'], GTMContainer[]>,
-  gaAccounts: GAAccount[],
-  gaWebProperties: Record<GAAccount['id'], GAWebProperty[]>,
-  gaWebProfiles: Record<GAWebProperty['id'], GAWebPropertyProfile[]>,
+  gtmAccounts?: GTMAccount[],
+  gtmContainers?: Record<GTMAccount['accountId'], GTMContainer[]>,
+  gaAccounts?: GAAccount[],
+  gaWebProperties?: Record<GAAccount['id'], GAWebProperty[]>,
+  gaWebProfiles?: Record<GAWebProperty['id'], GAWebPropertyProfile[]>,
 }
+
+export type GAProfilesRequestAction = { gaAccountId: string, gaPropertyId: string };

@@ -10,13 +10,10 @@ import Loading from '../common/Loading';
 interface Props {
   gtmContainer: GTMContainer;
   gtmContainerId: string;
-  loading: boolean;
 }
 
-const TagManager = ({ gtmContainer, gtmContainerId, loading }: Props) => (
+const TagManager = ({ gtmContainer, gtmContainerId }: Props) => (
   <Grid container>
-    {loading && <Loading />}
-    {!loading && (
     <Grid item xs={6}>
       <Typography variant="caption" color="textSecondary">
         Used container
@@ -27,7 +24,6 @@ const TagManager = ({ gtmContainer, gtmContainerId, loading }: Props) => (
           : (gtmContainerId || <span className="text-placeholder">Not specified</span>)}
       </Typography>
     </Grid>
-    )}
   </Grid>
 );
 

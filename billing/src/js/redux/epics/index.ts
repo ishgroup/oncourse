@@ -9,19 +9,25 @@ import { EpicCreateCollege } from './college/EpicCreateCollege';
 import { EpicGetSites } from './sites/EpicGetSites';
 import { EpicGetCollegeKey } from './college/EpicGetCollegeKey';
 import { EpicUpdateCollegeSites } from './sites/EpicUpdateCollegeSites';
-import { EpicGetGTMandGAData } from './google/EpicGetGTMandGAData';
+import { EpicGetGTMandGAAccounts } from './google/EpicGetGTMandGAAccounts';
+import { EpicGetGTMDataByAccount } from './google/EpicGetGTMDataByAccount';
+import { EpicGetGAWebPropertiesByAccount } from './google/EpicGetGAWebPropertiesByAccount';
+import { EpicGetGAProfilesByAccount } from './google/EpicGetGAProfilesByAccount';
 import { EpicConfigGoogleServicesForSite } from './google/EpicConfigGoogleServicesForSite';
 import { EpicGetSettings } from './settings/EpicGetSettings';
 import { EpicUpdateSettings } from './settings/EpicUpdateSettings';
 import { EpicGetClientId } from './google/EpicGetClientId';
 
 export const EpicRoot = combineEpics(
+  EpicGetGAProfilesByAccount,
+  EpicGetGAWebPropertiesByAccount,
+  EpicGetGTMDataByAccount,
   EpicUpdateCollegeSites,
   EpicCheckSiteName,
   EpicCreateCollege,
   EpicGetSites,
   EpicGetCollegeKey,
-  EpicGetGTMandGAData,
+  EpicGetGTMandGAAccounts,
   EpicConfigGoogleServicesForSite,
   EpicGetSettings,
   EpicUpdateSettings,

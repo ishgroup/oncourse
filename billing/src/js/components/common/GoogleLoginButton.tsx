@@ -14,7 +14,7 @@ import { Button, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import google from '../../../images/google.svg';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks/redux';
-import { getGtmAndGaData, setGoogleCredentials } from '../../redux/actions/Google';
+import { getGtmAndGaAccounts, setGoogleCredentials } from '../../redux/actions/Google';
 import instantFetchErrorHandler from '../../api/fetch-errors-handlers/InstantFetchErrorHandler';
 
 const SCOPE = 'email '
@@ -66,7 +66,7 @@ const GoogleLoginButton = () => {
   const responseGoogle = (response: GoogleLoginResponse) => {
     dispatch(setGoogleCredentials({ profile: response.profileObj, token: response.tokenObj }));
     setRefreshTokenTimeout(response, response.tokenObj.expires_in);
-    dispatch(getGtmAndGaData());
+    dispatch(getGtmAndGaAccounts());
   };
 
   const onLogoutSuccess = () => {
@@ -122,9 +122,7 @@ const GoogleLoginButton = () => {
           ))}
       </div>
       <Typography variant="caption" color="textSecondary">
-        {
-          profile ? `Logged into Google as ${profile.email}` : 'Login to connect your sites with google services'
-        }
+        {profile ? `Logged into Google as ${profile.email}` : 'Login to connect your sites with google services'}
       </Typography>
     </div>
   );

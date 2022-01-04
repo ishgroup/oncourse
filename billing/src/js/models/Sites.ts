@@ -12,9 +12,7 @@ import { SiteDTO } from '@api/model';
 
 export interface SiteValues extends SiteDTO {
   collegeKey: string;
-  gtmAccountId: string;
   googleMapsApiKey: string;
-  googleAnalyticsId: string;
   gaWebPropertyId: string;
 }
 

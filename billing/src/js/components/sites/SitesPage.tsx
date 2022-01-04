@@ -26,7 +26,12 @@ import { SitePageParams, SiteValues } from '../../models/Sites';
 import { showConfirm } from '../../redux/actions/Confirm';
 import { GTMContainer } from '../../models/Google';
 import { getTokenString, renderContainerLabel, renderWebPropertyLabel } from '../../utils/Google';
-import { configureGoogleForSite } from '../../redux/actions/Google';
+import {
+  configureGoogleForSite,
+  getGaProfiles,
+  getGaWebPropertiesByAccount,
+  getGtmDataByAccount
+} from '../../redux/actions/Google';
 import GoogleService from '../../api/services/GoogleService';
 import { GAS_VARIABLE_NAME, MAPS_API_KEY_NAME } from '../../constant/Google';
 import instantFetchErrorHandler from '../../api/fetch-errors-handlers/InstantFetchErrorHandler';
@@ -142,9 +147,11 @@ const validationSchema = yup.object({
     .required('Key is required')
     .max(40, 'Maximum length is 40 characters')
     .matches(/^[0-9a-z-]+$/i, 'You can only use letters, numbers and "-"'),
-  primaryDomain: yup.string().nullable().when('domains', (domains) => (Object.keys(domains).length
-    ? yup.string().nullable().required('Primary domain is required when domains specified')
-    : yup.string().nullable())),
+  primaryDomain: yup.string().nullable().when('domains', {
+    is: (val) => Object.keys(val).length,
+    then: yup.string().nullable().required('Primary domain is required when domains specified'),
+    otherwise: yup.string().nullable()
+  }),
   name: yup.mixed().required('Name is required'),
   webSiteTemplate: yup.string().nullable().when('id', {
     is: (val) => !val,
@@ -186,10 +193,9 @@ export const SitesPage = () => {
     gaAccounts,
     gtmContainers,
     gaWebProperties,
+    gaWebProfiles,
     token,
   } = useAppSelector((state) => state.google);
-
-  const googleLoading = useAppSelector((state) => state.google.loading);
 
   const loggedWithGoogle = Boolean(profile);
 
@@ -210,10 +216,8 @@ export const SitesPage = () => {
     initialValues: {
       ...initialSite,
       collegeKey,
-      gtmAccountId: '',
       googleMapsApiKey: '',
-      gaWebPropertyId: '',
-      googleAnalyticsId: ''
+      gaWebPropertyId: ''
     },
     validationSchema,
     onSubmit: (vals) => {
@@ -221,10 +225,8 @@ export const SitesPage = () => {
         case 'urls':
           const {
             collegeKey,
-            gtmAccountId,
             googleMapsApiKey,
             gaWebPropertyId,
-            googleAnalyticsId,
             ...changedSite
           } = vals;
           dispatch(updateCollegeSites({ [changedSite.id ? 'changed' : 'created']: [changedSite] }));
@@ -300,13 +302,33 @@ export const SitesPage = () => {
       .some((k) => gtmContainers[k]
         .some((c) => c.publicId === values.gtmContainerId));
 
+  // Update GTM data on account change
+  useEffect(() => {
+    if (values.gtmAccountId && !gtmContainers[values.gtmAccountId] && loggedWithGoogle) {
+      dispatch(getGtmDataByAccount(values.gtmAccountId));
+    }
+  }, [gtmContainers, values.gtmAccountId, loggedWithGoogle]);
+
+  // Update GA web properties on account change
+  useEffect(() => {
+    if (values.googleAnalyticsId && !gaWebProperties[values.googleAnalyticsId] && loggedWithGoogle) {
+      dispatch(getGaWebPropertiesByAccount(values.googleAnalyticsId));
+    }
+  }, [gaWebProperties, values.googleAnalyticsId, loggedWithGoogle]);
+
+  // Update GA profiles on property change
+  useEffect(() => {
+    if (values.googleAnalyticsId && values.gaWebPropertyId && !gaWebProfiles[values.gaWebPropertyId] && loggedWithGoogle) {
+      dispatch(getGaProfiles(values.googleAnalyticsId, values.gaWebPropertyId));
+    }
+  }, [gaWebProfiles, values.gaWebPropertyId, loggedWithGoogle]);
+
   useEffect(() => {
     if (initialSite) {
       resetForm({
         values: {
           ...initialSite,
           collegeKey,
-          gtmAccountId: '',
           googleMapsApiKey: '',
           gaWebPropertyId: '',
           googleAnalyticsId: ''
@@ -321,17 +343,13 @@ export const SitesPage = () => {
       const googleToken = getTokenString({ token } as any);
 
       const googleData = {
-        gtmAccountId: '',
         googleMapsApiKey: '',
         gaWebPropertyId: '',
-        googleAnalyticsId: ''
       };
-
-      googleData.gtmAccountId = gtmContainer.accountId;
 
       const workspaces = await GoogleService.getGTMWorkspaces(
         googleToken,
-        googleData.gtmAccountId,
+        initialSite.gtmAccountId,
         gtmContainer.containerId
       );
 
@@ -340,13 +358,10 @@ export const SitesPage = () => {
       if (workspace) {
         await GoogleService.getGTMPreview(
           googleToken,
-          googleData.gtmAccountId,
+          initialSite.gtmAccountId,
           gtmContainer.containerId,
           workspace
         ).then((res) => {
-          if (res.containerVersion.accountId) {
-            googleData.gtmAccountId = res.containerVersion.accountId;
-          }
           if (res.containerVersion.variable) {
             res.containerVersion.variable.forEach((v) => {
               if (v.name === MAPS_API_KEY_NAME) {
@@ -367,14 +382,6 @@ export const SitesPage = () => {
           }
         });
 
-        if (googleData.gaWebPropertyId && gaWebProperties) {
-          Object.keys(gaWebProperties).forEach((key) => {
-            gaWebProperties[key].forEach((pr) => {
-              googleData.googleAnalyticsId = pr.accountId;
-            });
-          });
-        }
-
         resetForm({
           values: {
             ...initialSite,
@@ -391,7 +398,7 @@ export const SitesPage = () => {
   };
 
   useEffect(() => {
-    if (initialSite?.id && initialSite?.gtmContainerId && !values.gtmAccountId && gtmContainer && token?.access_token) {
+    if (initialSite?.id && initialSite?.gtmContainerId && initialSite.gtmAccountId && gtmContainer && token?.access_token) {
       getGoogleData();
     }
   }, [initialSite?.id, gtmContainer, token?.access_token]);
@@ -456,7 +463,6 @@ export const SitesPage = () => {
           gaWebPropertyItems={gaWebPropertyItems}
           gtmContainerItems={gtmContainerItems}
           googleProfileEmail={profile?.email}
-          googleLoading={googleLoading || customLoading}
           concurentAccounts={concurentAccounts}
         />
       ) : (
@@ -485,7 +491,6 @@ export const SitesPage = () => {
           <TagManager
             gtmContainerId={values.gtmContainerId}
             gtmContainer={gtmContainer}
-            loading={googleLoading || customLoading}
           />
         );
       case 'analytics':
@@ -493,7 +498,7 @@ export const SitesPage = () => {
           <Analytics
             key={values.gaWebPropertyId}
             gaWebPropertyId={values.gaWebPropertyId}
-            loading={googleLoading || customLoading}
+            googleAnalyticsId={values.googleAnalyticsId}
           />
         ) : notLoggedWarning;
       default:
@@ -549,7 +554,7 @@ export const SitesPage = () => {
                     variant="contained"
                     color="primary"
                     type="submit"
-                    loading={loading}
+                    loading={customLoading || loading}
                     disabled={!isValid || !dirty}
                     disableElevation
                   >
@@ -572,15 +577,16 @@ export const SitesPage = () => {
                 )}
 
                 {loggedWithGoogle && !isConfig && page !== 'urls' && (
-                  <Button
+                  <LoadingButton
                     onClick={() => setIsConfig(true)}
                     disableElevation
+                    loading={customLoading || loading}
                     color="primary"
                     variant="contained"
-                    startIcon={<SettingsIcon />}
+                    endIcon={<SettingsIcon />}
                   >
                     Configure
-                  </Button>
+                  </LoadingButton>
                 )}
               </div>
             </div>

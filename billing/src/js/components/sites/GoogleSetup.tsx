@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Grid,
   TextField,
@@ -15,9 +15,8 @@ import {
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { FormikErrors } from 'formik/dist/types';
 import { SiteValues } from '../../models/Sites';
-import Loading from '../common/Loading';
 import { useAppDispatch } from '../../redux/hooks/redux';
-import { getGtmAndGaData } from '../../redux/actions/Google';
+import { getGtmAndGaAccounts } from '../../redux/actions/Google';
 
 interface Props {
   classes: any;
@@ -30,7 +29,6 @@ interface Props {
   gaWebPropertyItems: any;
   gtmContainerItems: any;
   googleProfileEmail: string;
-  googleLoading: boolean;
   concurentAccounts: boolean;
 }
 
@@ -46,7 +44,6 @@ const GoogleSetup = (
     gtmAccountItems,
     gtmContainerItems,
     googleProfileEmail,
-    googleLoading,
     concurentAccounts
   }: Props
 ) => {
@@ -55,28 +52,21 @@ const GoogleSetup = (
 
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    if (site.primaryDomain && !Object.keys(site.domains).includes(site.primaryDomain)) {
-      setFieldValue('primaryDomain', null);
-    }
-  }, [site.domains]);
-
-  useEffect(() => {
-    if (!site.gtmAccountId && site.gtmContainerId) {
+  const onGtmAccountIdChange = (e) => {
+    if (!e.target.value && site.gtmContainerId) {
       setFieldValue('gtmContainerId', null);
     }
-  }, [site.gtmAccountId]);
+    handleChange(e);
+  };
 
-  useEffect(() => {
-    if (!site.googleAnalyticsId) {
-      if (site.gtmAccountId) {
-        setFieldValue('gtmAccountId', null);
-      }
+  const onAnalyticsIdChange = (e) => {
+    if (!e.target.value) {
       if (site.gaWebPropertyId) {
         setFieldValue('gaWebPropertyId', null);
       }
     }
-  }, [site.googleAnalyticsId]);
+    handleChange(e);
+  };
 
   return (
     <Grid container>
@@ -85,10 +75,8 @@ const GoogleSetup = (
           <h4 className="coloredHeaderText m-0">Google services setup</h4>
         </div>
       </Grid>
-      {googleLoading && <Loading />}
-
       {
-        !googleLoading && !concurentAccounts && hasNoGAAccounts && (
+        !concurentAccounts && hasNoGAAccounts && (
           <Alert severity="error">
             <AlertTitle>Analytics account not found</AlertTitle>
             We have't found any Google analytics accounts associated with
@@ -105,7 +93,7 @@ const GoogleSetup = (
                 size="small"
                 variant="contained"
                 startIcon={<RefreshIcon />}
-                onClick={() => dispatch(getGtmAndGaData())}
+                onClick={() => dispatch(getGtmAndGaAccounts())}
               >
                 Try again
               </Button>
@@ -115,7 +103,7 @@ const GoogleSetup = (
       }
 
       {
-        !googleLoading && !concurentAccounts && !hasNoGAAccounts && hasNoGTMAccounts && (
+        !concurentAccounts && !hasNoGAAccounts && hasNoGTMAccounts && (
           <Alert severity="error">
             <AlertTitle>Tag manager account not found</AlertTitle>
             We have't found any Google Tag manager accounts associated with
@@ -141,7 +129,7 @@ const GoogleSetup = (
       }
 
       {
-        !googleLoading && concurentAccounts && (
+        concurentAccounts && (
           <Alert severity="error">
             <AlertTitle>No access</AlertTitle>
             You have no access to the Google Tag Manager configuration for this website. Please ask
@@ -161,7 +149,7 @@ const GoogleSetup = (
       }
 
       {
-        !googleLoading && !hasNoGAAccounts && !hasNoGTMAccounts && (
+        !hasNoGAAccounts && !hasNoGTMAccounts && (
         <>
           <Grid item xs={6} className={classes.pr}>
             <TextField
@@ -171,7 +159,7 @@ const GoogleSetup = (
               label="Analytics account"
               variant="standard"
               value={site.googleAnalyticsId || ''}
-              onChange={handleChange}
+              onChange={onAnalyticsIdChange}
               name="googleAnalyticsId"
             >
               {gaAccountItems}
@@ -188,7 +176,6 @@ const GoogleSetup = (
               value={site.gaWebPropertyId || ''}
               onChange={handleChange}
               name="gaWebPropertyId"
-              disabled={!site.googleAnalyticsId}
               helperText={site.googleAnalyticsId ? 'Leave empty to let us create property configuration' : 'Select Tag manager account first'}
             >
               {gaWebPropertyItems}
@@ -203,9 +190,8 @@ const GoogleSetup = (
               label="Tag manager account"
               variant="standard"
               name="gtmAccountId"
-              onChange={handleChange}
+              onChange={onGtmAccountIdChange}
               value={site.gtmAccountId || ''}
-              disabled={!site.googleAnalyticsId}
               error={Boolean(error.gtmAccountId)}
               helperText={error.gtmAccountId || (site.googleAnalyticsId ? '' : 'Select Analytics account first')}
             >
@@ -221,7 +207,6 @@ const GoogleSetup = (
               label="Tag manager container"
               value={site.gtmContainerId || ''}
               variant="standard"
-              disabled={!site.gtmAccountId}
               onChange={handleChange}
               name="gtmContainerId"
               helperText={site.gtmAccountId ? 'Leave empty to let us create container configuration' : 'Select Tag manager account first'}
@@ -237,7 +222,6 @@ const GoogleSetup = (
               label="Google maps API key"
               value={site.googleMapsApiKey || ''}
               variant="standard"
-              disabled={!site.gtmAccountId}
               onChange={handleChange}
               name="googleMapsApiKey"
               helperText={
