@@ -1,17 +1,21 @@
+import { VoucherProduct } from "@api/model";
 import { generateArraysOfRecords, getEntityResponse } from "../../mockUtils";
 
 export function mockVoucherProducts() {
   this.getVoucherProducts = () => this.voucherProducts;
 
-  this.getVoucherProduct = id => {
-    const row = this.voucherProducts.rows.find(row => row.id == id);
+  this.getVoucherProduct = (id: any): VoucherProduct => {
+    const row = this.voucherProducts.rows.find(voucher => Number(voucher.id) === Number(id));
     return {
       id: row.id,
       code: row.values[0],
       name: row.values[1],
       feeExTax: row.values[2],
-      soldVouchersCount: row.values[4],
+      liabilityAccountId: 1,
+      underpaymentAccountId: 1,
+      expiryDays: 365,
       value: row.values[2] + 10,
+      maxCoursesRedemption: 3,
       courses: [
         {
           code: "AVID",
@@ -44,16 +48,16 @@ export function mockVoucherProducts() {
           name: "Improving your Google Ranking"
         }
       ],
-      corporatePasses: [],
-      expiryDays: 365,
-      liabilityAccountId: 1,
-      maxCoursesRedemption: 3,
-      status: "Can be purchased in office",
-      createdOn: "2012-09-27T17:00:04.000Z",
-      modifiedOn: "2015-03-31T10:23:37.000Z",
       description:
         "Gift vouchers can be purchased for any amount. You will be able to nominate the voucher value during the checkout process.",
-      validToOffset: null
+      dataCollectionRuleId: 55667,
+      status: "Can be purchased in office",
+      corporatePasses: [],
+      soldVouchersCount: row.values[4],
+      relatedSellables: [],
+      createdOn: "2012-09-27T17:00:04.000Z",
+      modifiedOn: "2015-03-31T10:23:37.000Z",
+
     };
   };
 
