@@ -664,10 +664,12 @@
 		<preConditions onFail="HALT">
 			<not>
 				<columnExists columnName="gtmAccountId" tableName="WebSite"/>
+				<columnExists columnName="googleAnalyticsId" tableName="WebSite"/>
 			</not>
 		</preConditions>
 		<addColumn tableName="WebSite">
 			<column name="gtmAccountId" type="VARCHAR(128)"/>
+			<column name="googleAnalyticsId" type="VARCHAR(128)"/>
 		</addColumn>
 	</changeSet>
 
