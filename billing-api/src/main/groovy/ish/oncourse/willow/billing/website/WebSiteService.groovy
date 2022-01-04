@@ -118,6 +118,7 @@ class WebSiteService {
             dto.name = it.name
             dto.key = it.siteKey
             dto.gtmContainerId = it.googleTagmanagerAccount
+            dto.gtmAccountId = it.gtmAccountId
             dto.configuredByInfo = getUserInfoFromSystemUser(it.configuredByUser)
             dto.primaryDomain = it.collegeDomains.find { WebHostNameStatus.PRIMARY == it.status }?.name
             dto.domains = it.collegeDomains
@@ -201,6 +202,7 @@ class WebSiteService {
     }
 
     private void configureAccountsFor(WebSite webSite, SiteDTO dto) {
+        webSite.setGtmAccountId(dto.gtmAccountId)
         if (!dto.gtmContainerId) {
             webSite.setGoogleTagmanagerAccount(null)
         } else if(dto.gtmContainerId != webSite.googleTagmanagerAccount){

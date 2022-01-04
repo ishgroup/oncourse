@@ -660,4 +660,15 @@
 		</addColumn>
 	</changeSet>
 
+	<changeSet id="50" author="dmitriy" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="HALT">
+			<not>
+				<columnExists columnName="gtmAccountId" tableName="WebSite"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="WebSite">
+			<column name="gtmAccountId" type="VARCHAR(128)"/>
+		</addColumn>
+	</changeSet>
+
 </databaseChangeLog>
