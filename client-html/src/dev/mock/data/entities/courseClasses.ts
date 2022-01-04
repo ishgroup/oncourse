@@ -4,7 +4,7 @@ import { CourseClass as CourseClassQueryModel } from "../../../../../build/gener
 import * as Models from "../../../../../build/generated-sources/aql-model/queryLanguageModel";
 
 export function mockCourseClasses() {
-  this.getCourseClass = id => {
+  this.getCourseClass = (id: any): CourseClass => {
     const row = this.courseClasses.rows.find(courseClass => Number(courseClass.id) === Number(id));
     const value = row.values;
     return {
@@ -41,10 +41,10 @@ export function mockCourseClasses() {
       minimumPlaces: 1,
       sessionsCount: value[4],
       suppressAvetmissExport: false,
-      vetCourseSiteId: "10",
-      vetFundingSourceStateId: "F3",
-      vetPurchasingContractId: "",
-      vetPurchasingContractScheduleId: "",
+      vetCourseSiteID: 10,
+      vetFundingSourceStateID: "F3",
+      vetPurchasingContractID: "",
+      vetPurchasingContractScheduleID: "",
       webDescription: "Lorem ipsum",
       relatedFundingSourceId: 4,
       qualificationHours: 0,
@@ -73,15 +73,6 @@ export function mockCourseClasses() {
       isTraineeship: false,
       customFields: {},
       feeHelpClass: false,
-      notes: [],
-      tutors: [
-        {
-          name: "Hill, Eliatan",
-          confirmedOn: "",
-          role: "Course Manager",
-          inPublicity: true
-        }
-      ],
     };
   };
 
@@ -95,15 +86,19 @@ export function mockCourseClasses() {
     if (columns) {
       columns.split(",").forEach(column => {
         let newItem;
+
         if (column.includes(".")) {
           // const numberOfDots = column.match(/\./g).length;
           const updColumn = column[0].toUpperCase() + column.substring(1);
           const entityName = updColumn.slice(0, updColumn.indexOf('.'));
           const fieldName = column.slice(column.lastIndexOf('.') + 1);
-          const field = Models[entityName][fieldName];
+          const models = Models[entityName];
+          const field = models ? models[fieldName] : 'String';
+
           newItem = { name: column, type: field };
         } else {
-          newItem = { name: column, type: CourseClassQueryModel[column] };
+          const type = CourseClassQueryModel[column];
+          newItem = { name: column, type: type || 'String' };
         }
 
         keysForGeneratingArrayOfRecords.push(newItem);
@@ -187,466 +182,466 @@ export function mockCourseClasses() {
   };
 
   this.getCourseClassBudget = () => [
-      {
-        "id": 6455,
-        "courseClassid": 2104,
-        "taxId": 1,
-        "accountId": null,
-        "invoiceId": null,
-        "description": "attendance cost (automatically generated) 4994",
-        "invoiceToStudent": false,
-        "payableOnEnrolment": true,
-        "isSunk": false,
-        "maximumCost": null,
-        "minimumCost": null,
-        "onCostRate": 0.1500,
-        "perUnitAmountExTax": 200.00,
-        "perUnitAmountIncTax": null,
-        "actualAmount": 4830.00,
-        "unitCount": null,
-        "contactId": 62,
-        "contactName": "Eliatan Hill",
-        "flowType": "Wages",
-        "repetitionType": "Per timetabled hour",
-        "isOverriden": true,
-        "courseClassDiscount": null,
-        "paymentPlan": [
+    {
+      "id": 6455,
+      "courseClassid": 2104,
+      "taxId": 1,
+      "accountId": null,
+      "invoiceId": null,
+      "description": "attendance cost (automatically generated) 4994",
+      "invoiceToStudent": false,
+      "payableOnEnrolment": true,
+      "isSunk": false,
+      "maximumCost": null,
+      "minimumCost": null,
+      "onCostRate": 0.1500,
+      "perUnitAmountExTax": 200.00,
+      "perUnitAmountIncTax": null,
+      "actualAmount": 4830.00,
+      "unitCount": null,
+      "contactId": 62,
+      "contactName": "Eliatan Hill",
+      "flowType": "Wages",
+      "repetitionType": "Per timetabled hour",
+      "isOverriden": true,
+      "courseClassDiscount": null,
+      "paymentPlan": [
 
-        ],
-        "courseClassTutorId": 1426,
-        "tutorRole": "General Tutor"
-      },
-      {
-        "id": 7017,
-        "courseClassid": 2104,
-        "taxId": 1,
-        "accountId": null,
-        "invoiceId": null,
-        "description": "Fractions",
-        "invoiceToStudent": false,
-        "payableOnEnrolment": true,
-        "isSunk": false,
-        "maximumCost": null,
-        "minimumCost": null,
-        "onCostRate": null,
-        "perUnitAmountExTax": 28.18,
-        "perUnitAmountIncTax": null,
-        "actualAmount": 0.00,
-        "unitCount": 1.0000,
-        "contactId": null,
-        "contactName": null,
-        "flowType": "Discount",
-        "repetitionType": "Discount",
-        "isOverriden": false,
-        "courseClassDiscount": {
-          "discount": {
-            "id": 480,
-            "name": "Fractions",
-            "discountType": "Fee override",
-            "rounding": "Nearest dollar",
-            "discountValue": 144.55,
-            "discountPercent": null,
-            "discountMin": 0.00,
-            "discountMax": 0.00,
-            "cosAccount": null,
-            "predictedStudentsPercentage": 0.10,
-            "availableOnWeb": null,
-            "code": null,
-            "validFrom": null,
-            "validFromOffset": null,
-            "validTo": "2015-01-01",
-            "validToOffset": null,
-            "hideOnWeb": null,
-            "description": null,
-            "studentEnrolledWithinDays": null,
-            "studentAgeUnder": null,
-            "studentAge": null,
-            "studentPostcode": null,
-            "discountConcessionTypes": [
+      ],
+      "courseClassTutorId": 1426,
+      "tutorRole": "General Tutor"
+    },
+    {
+      "id": 7017,
+      "courseClassid": 2104,
+      "taxId": 1,
+      "accountId": null,
+      "invoiceId": null,
+      "description": "Fractions",
+      "invoiceToStudent": false,
+      "payableOnEnrolment": true,
+      "isSunk": false,
+      "maximumCost": null,
+      "minimumCost": null,
+      "onCostRate": null,
+      "perUnitAmountExTax": 28.18,
+      "perUnitAmountIncTax": null,
+      "actualAmount": 0.00,
+      "unitCount": 1.0000,
+      "contactId": null,
+      "contactName": null,
+      "flowType": "Discount",
+      "repetitionType": "Discount",
+      "isOverriden": false,
+      "courseClassDiscount": {
+        "discount": {
+          "id": 480,
+          "name": "Fractions",
+          "discountType": "Fee override",
+          "rounding": "Nearest dollar",
+          "discountValue": 144.55,
+          "discountPercent": null,
+          "discountMin": 0.00,
+          "discountMax": 0.00,
+          "cosAccount": null,
+          "predictedStudentsPercentage": 0.10,
+          "availableOnWeb": null,
+          "code": null,
+          "validFrom": null,
+          "validFromOffset": null,
+          "validTo": "2015-01-01",
+          "validToOffset": null,
+          "hideOnWeb": null,
+          "description": null,
+          "studentEnrolledWithinDays": null,
+          "studentAgeUnder": null,
+          "studentAge": null,
+          "studentPostcode": null,
+          "discountConcessionTypes": [
 
-            ],
-            "discountMemberships": [
+          ],
+          "discountMemberships": [
 
-            ],
-            "discountCourseClasses": [
+          ],
+          "discountCourseClasses": [
 
-            ],
-            "addByDefault": null,
-            "minEnrolments": null,
-            "minValue": null,
-            "corporatePassDiscounts": [
+          ],
+          "addByDefault": null,
+          "minEnrolments": null,
+          "minValue": null,
+          "corporatePassDiscounts": [
 
-            ],
-            "createdOn": null,
-            "modifiedOn": null,
-            "limitPreviousEnrolment": null,
-            "relationDiscount": false
-          },
-          "forecast": null,
-          "discountOverride": null
+          ],
+          "createdOn": null,
+          "modifiedOn": null,
+          "limitPreviousEnrolment": null,
+          "relationDiscount": false
         },
-        "paymentPlan": [
-
-        ],
-        "courseClassTutorId": null,
-        "tutorRole": null
+        "forecast": null,
+        "discountOverride": null
       },
-      {
-        "id": 7257,
-        "courseClassid": 2104,
-        "taxId": 1,
-        "accountId": 15,
-        "invoiceId": null,
-        "description": "Student enrolment fee",
-        "invoiceToStudent": true,
-        "payableOnEnrolment": true,
-        "isSunk": false,
-        "maximumCost": null,
-        "minimumCost": null,
-        "onCostRate": null,
-        "perUnitAmountExTax": 172.73,
-        "perUnitAmountIncTax": 190.00,
-        "actualAmount": 863.65,
-        "unitCount": null,
-        "contactId": null,
-        "contactName": null,
-        "flowType": "Income",
-        "repetitionType": "Per enrolment",
-        "isOverriden": false,
-        "courseClassDiscount": null,
-        "paymentPlan": [
-          {
-            "dayOffset": 28,
-            "amount": 20.00
-          },
-          {
-            "dayOffset": 35,
-            "amount": 20.00
-          },
-          {
-            "dayOffset": 14,
-            "amount": 20.00
-          },
-          {
-            "dayOffset": null,
-            "amount": 90.00
-          },
-          {
-            "dayOffset": 21,
-            "amount": 20.00
-          },
-          {
-            "dayOffset": 7,
-            "amount": 20.00
-          }
-        ],
-        "courseClassTutorId": null,
-        "tutorRole": null
-      },
-      {
-        "id": 7862,
-        "courseClassid": 2104,
-        "taxId": 1,
-        "accountId": null,
-        "invoiceId": null,
-        "description": "CorpPass Discount",
-        "invoiceToStudent": false,
-        "payableOnEnrolment": true,
-        "isSunk": false,
-        "maximumCost": null,
-        "minimumCost": null,
-        "onCostRate": null,
-        "perUnitAmountExTax": 17.27,
-        "perUnitAmountIncTax": null,
-        "actualAmount": 0.00,
-        "unitCount": 1.0000,
-        "contactId": null,
-        "contactName": null,
-        "flowType": "Discount",
-        "repetitionType": "Discount",
-        "isOverriden": false,
-        "courseClassDiscount": {
-          "discount": {
-            "id": 527,
-            "name": "CorpPass Discount",
-            "discountType": "Percent",
-            "rounding": "No Rounding",
-            "discountValue": null,
-            "discountPercent": 0.100,
-            "discountMin": null,
-            "discountMax": null,
-            "cosAccount": null,
-            "predictedStudentsPercentage": 0.10,
-            "availableOnWeb": null,
-            "code": null,
-            "validFrom": null,
-            "validFromOffset": null,
-            "validTo": null,
-            "validToOffset": null,
-            "hideOnWeb": null,
-            "description": null,
-            "studentEnrolledWithinDays": null,
-            "studentAgeUnder": null,
-            "studentAge": null,
-            "studentPostcode": null,
-            "discountConcessionTypes": [
+      "paymentPlan": [
 
-            ],
-            "discountMemberships": [
-
-            ],
-            "discountCourseClasses": [
-
-            ],
-            "addByDefault": null,
-            "minEnrolments": null,
-            "minValue": null,
-            "corporatePassDiscounts": [
-
-            ],
-            "createdOn": null,
-            "modifiedOn": null,
-            "limitPreviousEnrolment": null,
-            "relationDiscount": false
-          },
-          "forecast": null,
-          "discountOverride": null
+      ],
+      "courseClassTutorId": null,
+      "tutorRole": null
+    },
+    {
+      "id": 7257,
+      "courseClassid": 2104,
+      "taxId": 1,
+      "accountId": 15,
+      "invoiceId": null,
+      "description": "Student enrolment fee",
+      "invoiceToStudent": true,
+      "payableOnEnrolment": true,
+      "isSunk": false,
+      "maximumCost": null,
+      "minimumCost": null,
+      "onCostRate": null,
+      "perUnitAmountExTax": 172.73,
+      "perUnitAmountIncTax": 190.00,
+      "actualAmount": 863.65,
+      "unitCount": null,
+      "contactId": null,
+      "contactName": null,
+      "flowType": "Income",
+      "repetitionType": "Per enrolment",
+      "isOverriden": false,
+      "courseClassDiscount": null,
+      "paymentPlan": [
+        {
+          "dayOffset": 28,
+          "amount": 20.00
         },
-        "paymentPlan": [
-
-        ],
-        "courseClassTutorId": null,
-        "tutorRole": null
-      },
-      {
-        "id": 8209,
-        "courseClassid": 2104,
-        "taxId": 1,
-        "accountId": null,
-        "invoiceId": null,
-        "description": "Small organisation discount",
-        "invoiceToStudent": false,
-        "payableOnEnrolment": true,
-        "isSunk": false,
-        "maximumCost": null,
-        "minimumCost": null,
-        "onCostRate": null,
-        "perUnitAmountExTax": 15.00,
-        "perUnitAmountIncTax": null,
-        "actualAmount": 0.00,
-        "unitCount": 1.0000,
-        "contactId": null,
-        "contactName": null,
-        "flowType": "Discount",
-        "repetitionType": "Discount",
-        "isOverriden": false,
-        "courseClassDiscount": {
-          "discount": {
-            "id": 528,
-            "name": "Small organisation discount",
-            "discountType": "Dollar",
-            "rounding": "No Rounding",
-            "discountValue": 15.00,
-            "discountPercent": 0.100,
-            "discountMin": null,
-            "discountMax": null,
-            "cosAccount": null,
-            "predictedStudentsPercentage": 0.10,
-            "availableOnWeb": null,
-            "code": "tenoff",
-            "validFrom": null,
-            "validFromOffset": null,
-            "validTo": null,
-            "validToOffset": null,
-            "hideOnWeb": null,
-            "description": null,
-            "studentEnrolledWithinDays": null,
-            "studentAgeUnder": null,
-            "studentAge": null,
-            "studentPostcode": null,
-            "discountConcessionTypes": [
-
-            ],
-            "discountMemberships": [
-
-            ],
-            "discountCourseClasses": [
-
-            ],
-            "addByDefault": null,
-            "minEnrolments": null,
-            "minValue": null,
-            "corporatePassDiscounts": [
-
-            ],
-            "createdOn": null,
-            "modifiedOn": null,
-            "limitPreviousEnrolment": null,
-            "relationDiscount": false
-          },
-          "forecast": null,
-          "discountOverride": null
+        {
+          "dayOffset": 35,
+          "amount": 20.00
         },
-        "paymentPlan": [
-
-        ],
-        "courseClassTutorId": null,
-        "tutorRole": null
-      },
-      {
-        "id": 28007,
-        "courseClassid": 2104,
-        "taxId": 1,
-        "accountId": null,
-        "invoiceId": null,
-        "description": "1 YR DISCOUNT",
-        "invoiceToStudent": false,
-        "payableOnEnrolment": true,
-        "isSunk": false,
-        "maximumCost": null,
-        "minimumCost": null,
-        "onCostRate": null,
-        "perUnitAmountExTax": 17.27,
-        "perUnitAmountIncTax": null,
-        "actualAmount": 0.00,
-        "unitCount": 1.0000,
-        "contactId": null,
-        "contactName": null,
-        "flowType": "Discount",
-        "repetitionType": "Discount",
-        "isOverriden": false,
-        "courseClassDiscount": {
-          "discount": {
-            "id": 541,
-            "name": "1 YR DISCOUNT",
-            "discountType": "Percent",
-            "rounding": "No Rounding",
-            "discountValue": null,
-            "discountPercent": 0.100,
-            "discountMin": null,
-            "discountMax": null,
-            "cosAccount": null,
-            "predictedStudentsPercentage": 0.10,
-            "availableOnWeb": null,
-            "code": null,
-            "validFrom": "2018-01-01",
-            "validFromOffset": null,
-            "validTo": "2018-05-21",
-            "validToOffset": null,
-            "hideOnWeb": null,
-            "description": null,
-            "studentEnrolledWithinDays": null,
-            "studentAgeUnder": null,
-            "studentAge": null,
-            "studentPostcode": null,
-            "discountConcessionTypes": [
-
-            ],
-            "discountMemberships": [
-
-            ],
-            "discountCourseClasses": [
-
-            ],
-            "addByDefault": null,
-            "minEnrolments": null,
-            "minValue": null,
-            "corporatePassDiscounts": [
-
-            ],
-            "createdOn": null,
-            "modifiedOn": null,
-            "limitPreviousEnrolment": null,
-            "relationDiscount": false
-          },
-          "forecast": null,
-          "discountOverride": null
+        {
+          "dayOffset": 14,
+          "amount": 20.00
         },
-        "paymentPlan": [
-
-        ],
-        "courseClassTutorId": null,
-        "tutorRole": null
-      },
-      {
-        "id": 28574,
-        "courseClassid": 2104,
-        "taxId": 1,
-        "accountId": null,
-        "invoiceId": null,
-        "description": "Linksea Test",
-        "invoiceToStudent": false,
-        "payableOnEnrolment": true,
-        "isSunk": false,
-        "maximumCost": null,
-        "minimumCost": null,
-        "onCostRate": null,
-        "perUnitAmountExTax": 172.73,
-        "perUnitAmountIncTax": null,
-        "actualAmount": 0.00,
-        "unitCount": 1.0000,
-        "contactId": null,
-        "contactName": null,
-        "flowType": "Discount",
-        "repetitionType": "Discount",
-        "isOverriden": false,
-        "courseClassDiscount": {
-          "discount": {
-            "id": 542,
-            "name": "Linksea Test",
-            "discountType": "Percent",
-            "rounding": "No Rounding",
-            "discountValue": null,
-            "discountPercent": 1.000,
-            "discountMin": null,
-            "discountMax": null,
-            "cosAccount": null,
-            "predictedStudentsPercentage": 0.10,
-            "availableOnWeb": null,
-            "code": null,
-            "validFrom": null,
-            "validFromOffset": null,
-            "validTo": null,
-            "validToOffset": null,
-            "hideOnWeb": null,
-            "description": null,
-            "studentEnrolledWithinDays": null,
-            "studentAgeUnder": null,
-            "studentAge": null,
-            "studentPostcode": null,
-            "discountConcessionTypes": [
-
-            ],
-            "discountMemberships": [
-
-            ],
-            "discountCourseClasses": [
-
-            ],
-            "addByDefault": null,
-            "minEnrolments": null,
-            "minValue": null,
-            "corporatePassDiscounts": [
-
-            ],
-            "createdOn": null,
-            "modifiedOn": null,
-            "limitPreviousEnrolment": null,
-            "relationDiscount": false
-          },
-          "forecast": null,
-          "discountOverride": null
+        {
+          "dayOffset": null,
+          "amount": 90.00
         },
-        "paymentPlan": [
+        {
+          "dayOffset": 21,
+          "amount": 20.00
+        },
+        {
+          "dayOffset": 7,
+          "amount": 20.00
+        }
+      ],
+      "courseClassTutorId": null,
+      "tutorRole": null
+    },
+    {
+      "id": 7862,
+      "courseClassid": 2104,
+      "taxId": 1,
+      "accountId": null,
+      "invoiceId": null,
+      "description": "CorpPass Discount",
+      "invoiceToStudent": false,
+      "payableOnEnrolment": true,
+      "isSunk": false,
+      "maximumCost": null,
+      "minimumCost": null,
+      "onCostRate": null,
+      "perUnitAmountExTax": 17.27,
+      "perUnitAmountIncTax": null,
+      "actualAmount": 0.00,
+      "unitCount": 1.0000,
+      "contactId": null,
+      "contactName": null,
+      "flowType": "Discount",
+      "repetitionType": "Discount",
+      "isOverriden": false,
+      "courseClassDiscount": {
+        "discount": {
+          "id": 527,
+          "name": "CorpPass Discount",
+          "discountType": "Percent",
+          "rounding": "No Rounding",
+          "discountValue": null,
+          "discountPercent": 0.100,
+          "discountMin": null,
+          "discountMax": null,
+          "cosAccount": null,
+          "predictedStudentsPercentage": 0.10,
+          "availableOnWeb": null,
+          "code": null,
+          "validFrom": null,
+          "validFromOffset": null,
+          "validTo": null,
+          "validToOffset": null,
+          "hideOnWeb": null,
+          "description": null,
+          "studentEnrolledWithinDays": null,
+          "studentAgeUnder": null,
+          "studentAge": null,
+          "studentPostcode": null,
+          "discountConcessionTypes": [
 
-        ],
-        "courseClassTutorId": null,
-        "tutorRole": null
-      }
-    ];
+          ],
+          "discountMemberships": [
+
+          ],
+          "discountCourseClasses": [
+
+          ],
+          "addByDefault": null,
+          "minEnrolments": null,
+          "minValue": null,
+          "corporatePassDiscounts": [
+
+          ],
+          "createdOn": null,
+          "modifiedOn": null,
+          "limitPreviousEnrolment": null,
+          "relationDiscount": false
+        },
+        "forecast": null,
+        "discountOverride": null
+      },
+      "paymentPlan": [
+
+      ],
+      "courseClassTutorId": null,
+      "tutorRole": null
+    },
+    {
+      "id": 8209,
+      "courseClassid": 2104,
+      "taxId": 1,
+      "accountId": null,
+      "invoiceId": null,
+      "description": "Small organisation discount",
+      "invoiceToStudent": false,
+      "payableOnEnrolment": true,
+      "isSunk": false,
+      "maximumCost": null,
+      "minimumCost": null,
+      "onCostRate": null,
+      "perUnitAmountExTax": 15.00,
+      "perUnitAmountIncTax": null,
+      "actualAmount": 0.00,
+      "unitCount": 1.0000,
+      "contactId": null,
+      "contactName": null,
+      "flowType": "Discount",
+      "repetitionType": "Discount",
+      "isOverriden": false,
+      "courseClassDiscount": {
+        "discount": {
+          "id": 528,
+          "name": "Small organisation discount",
+          "discountType": "Dollar",
+          "rounding": "No Rounding",
+          "discountValue": 15.00,
+          "discountPercent": 0.100,
+          "discountMin": null,
+          "discountMax": null,
+          "cosAccount": null,
+          "predictedStudentsPercentage": 0.10,
+          "availableOnWeb": null,
+          "code": "tenoff",
+          "validFrom": null,
+          "validFromOffset": null,
+          "validTo": null,
+          "validToOffset": null,
+          "hideOnWeb": null,
+          "description": null,
+          "studentEnrolledWithinDays": null,
+          "studentAgeUnder": null,
+          "studentAge": null,
+          "studentPostcode": null,
+          "discountConcessionTypes": [
+
+          ],
+          "discountMemberships": [
+
+          ],
+          "discountCourseClasses": [
+
+          ],
+          "addByDefault": null,
+          "minEnrolments": null,
+          "minValue": null,
+          "corporatePassDiscounts": [
+
+          ],
+          "createdOn": null,
+          "modifiedOn": null,
+          "limitPreviousEnrolment": null,
+          "relationDiscount": false
+        },
+        "forecast": null,
+        "discountOverride": null
+      },
+      "paymentPlan": [
+
+      ],
+      "courseClassTutorId": null,
+      "tutorRole": null
+    },
+    {
+      "id": 28007,
+      "courseClassid": 2104,
+      "taxId": 1,
+      "accountId": null,
+      "invoiceId": null,
+      "description": "1 YR DISCOUNT",
+      "invoiceToStudent": false,
+      "payableOnEnrolment": true,
+      "isSunk": false,
+      "maximumCost": null,
+      "minimumCost": null,
+      "onCostRate": null,
+      "perUnitAmountExTax": 17.27,
+      "perUnitAmountIncTax": null,
+      "actualAmount": 0.00,
+      "unitCount": 1.0000,
+      "contactId": null,
+      "contactName": null,
+      "flowType": "Discount",
+      "repetitionType": "Discount",
+      "isOverriden": false,
+      "courseClassDiscount": {
+        "discount": {
+          "id": 541,
+          "name": "1 YR DISCOUNT",
+          "discountType": "Percent",
+          "rounding": "No Rounding",
+          "discountValue": null,
+          "discountPercent": 0.100,
+          "discountMin": null,
+          "discountMax": null,
+          "cosAccount": null,
+          "predictedStudentsPercentage": 0.10,
+          "availableOnWeb": null,
+          "code": null,
+          "validFrom": "2018-01-01",
+          "validFromOffset": null,
+          "validTo": "2018-05-21",
+          "validToOffset": null,
+          "hideOnWeb": null,
+          "description": null,
+          "studentEnrolledWithinDays": null,
+          "studentAgeUnder": null,
+          "studentAge": null,
+          "studentPostcode": null,
+          "discountConcessionTypes": [
+
+          ],
+          "discountMemberships": [
+
+          ],
+          "discountCourseClasses": [
+
+          ],
+          "addByDefault": null,
+          "minEnrolments": null,
+          "minValue": null,
+          "corporatePassDiscounts": [
+
+          ],
+          "createdOn": null,
+          "modifiedOn": null,
+          "limitPreviousEnrolment": null,
+          "relationDiscount": false
+        },
+        "forecast": null,
+        "discountOverride": null
+      },
+      "paymentPlan": [
+
+      ],
+      "courseClassTutorId": null,
+      "tutorRole": null
+    },
+    {
+      "id": 28574,
+      "courseClassid": 2104,
+      "taxId": 1,
+      "accountId": null,
+      "invoiceId": null,
+      "description": "Linksea Test",
+      "invoiceToStudent": false,
+      "payableOnEnrolment": true,
+      "isSunk": false,
+      "maximumCost": null,
+      "minimumCost": null,
+      "onCostRate": null,
+      "perUnitAmountExTax": 172.73,
+      "perUnitAmountIncTax": null,
+      "actualAmount": 0.00,
+      "unitCount": 1.0000,
+      "contactId": null,
+      "contactName": null,
+      "flowType": "Discount",
+      "repetitionType": "Discount",
+      "isOverriden": false,
+      "courseClassDiscount": {
+        "discount": {
+          "id": 542,
+          "name": "Linksea Test",
+          "discountType": "Percent",
+          "rounding": "No Rounding",
+          "discountValue": null,
+          "discountPercent": 1.000,
+          "discountMin": null,
+          "discountMax": null,
+          "cosAccount": null,
+          "predictedStudentsPercentage": 0.10,
+          "availableOnWeb": null,
+          "code": null,
+          "validFrom": null,
+          "validFromOffset": null,
+          "validTo": null,
+          "validToOffset": null,
+          "hideOnWeb": null,
+          "description": null,
+          "studentEnrolledWithinDays": null,
+          "studentAgeUnder": null,
+          "studentAge": null,
+          "studentPostcode": null,
+          "discountConcessionTypes": [
+
+          ],
+          "discountMemberships": [
+
+          ],
+          "discountCourseClasses": [
+
+          ],
+          "addByDefault": null,
+          "minEnrolments": null,
+          "minValue": null,
+          "corporatePassDiscounts": [
+
+          ],
+          "createdOn": null,
+          "modifiedOn": null,
+          "limitPreviousEnrolment": null,
+          "relationDiscount": false
+        },
+        "forecast": null,
+        "discountOverride": null
+      },
+      "paymentPlan": [
+
+      ],
+      "courseClassTutorId": null,
+      "tutorRole": null
+    }
+  ];
 
   this.getCourseClassSelectedSessions = () => [4671, 25336, 4140, 4362];
-  
+
   this.getCourseClassTimetable = () => [
     {
       "id": 4671,
@@ -1129,7 +1124,7 @@ export function mockCourseClasses() {
       "hasPaylines": false
     },
   ];
-  
+
   this.getCourseClassTimetableSessions = () => [
     {
       "sessionId": 4671,
@@ -1476,7 +1471,7 @@ export function mockCourseClasses() {
       "message": "Room Room 1 is already booked for 30868QLDD-8 at Sun. 13 Aug. 7:00(Australia/West) \n30868QLDD-9 at Sun. 13 Aug. 7:00(Australia/West) \n"
     }
   ];
-  
+
   this.getCourseClassTutors = () => [
     {
       "id": 2315,
@@ -1489,9 +1484,9 @@ export function mockCourseClasses() {
       "isInPublicity": true
     }
   ];
-  
+
   this.getCourseClassAssessment = () => [];
-  
+
   this.getCourseClassAttendanceStudents = () => [
     {
       "id": 19450,
@@ -1904,7 +1899,7 @@ export function mockCourseClasses() {
       "attendedUntil": null
     }
   ];
-  
+
   this.getCourseClassTrainingPlan = () => [];
 
   const rows: CourseClass[] = generateArraysOfRecords(20, [
