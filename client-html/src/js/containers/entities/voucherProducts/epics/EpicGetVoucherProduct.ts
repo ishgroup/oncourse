@@ -13,6 +13,7 @@ import { initialize } from "redux-form";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import voucherProductService from "../services/VoucherProductService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { getNoteItems } from "../../../../common/components/form/notes/actions";
 
 const request: EpicUtils.Request = {
   type: GET_VOUCHER_PRODUCT_ITEM,
@@ -23,6 +24,7 @@ const request: EpicUtils.Request = {
         type: GET_VOUCHER_PRODUCT_ITEM_FULFILLED,
         payload: { voucherProduct }
       },
+      getNoteItems("VoucherProduct", voucherProduct.id, LIST_EDIT_VIEW_FORM_NAME),
       {
         type: SET_LIST_EDIT_RECORD,
         payload: { editRecord: voucherProduct, name: voucherProduct.name }

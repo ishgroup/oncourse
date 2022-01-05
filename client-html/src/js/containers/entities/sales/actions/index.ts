@@ -31,6 +31,8 @@ export const CLEAR_SALES = "clear/sales";
 
 export const CLEAR_COURSE_CLASS_SALES = "clear/courseClassSales";
 
+export const GET_SALE_MENU_TAGS = "get/sale/tags";
+
 export const setSaleDelivered = (id: number) => ({
   type: SET_SALE_DELIVERED,
   payload: { id }
@@ -39,6 +41,10 @@ export const setSaleDelivered = (id: number) => ({
 export const getSale = (id: string) => ({
   type: GET_SALE,
   payload: { id }
+});
+
+export const getSalesManuTags = () => ({
+  type: GET_SALE_MENU_TAGS,
 });
 
 export const getSaleDetails = (id: string) => ({

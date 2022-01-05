@@ -3,12 +3,16 @@ import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "
 export function mockSales() {
   this.getProductItems = () => this.sales;
 
-  this.getProductItem = id => {
+  this.getProductItem = (id) => {
     const row = this.sales.rows.find(row => row.id == id);
     return {
       id: row.id,
+      tags: [],
+      purchasedById: null,
+      customFields: {},
+      documents: [],
       productName: row.values[0],
-      productType: row.values[1],
+      productType: "Product",
       productId: row.values[2],
       expiresOn: row.values[3],
       status: "Active",

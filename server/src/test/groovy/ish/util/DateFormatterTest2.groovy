@@ -11,6 +11,9 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 
+import java.time.LocalDateTime
+import java.time.Month
+
 @CompileStatic
 class DateFormatterTest2 {
 
@@ -18,20 +21,21 @@ class DateFormatterTest2 {
 
         Calendar cal = Calendar.getInstance(TimeZone.getDefault())
 
-        // pick 26 Dec for our tests because these tests will fail when run on that day
-        // (or the day before or after)
         int currentYear = cal.get(Calendar.YEAR)
+        int dayOfTest = 26
+        if (Math.abs(LocalDateTime.now().dayOfMonth - 26) < 2 && LocalDateTime.now().month == Month.DECEMBER)
+            dayOfTest = 23
         cal.set(Calendar.MONTH, 11)
-        cal.set(Calendar.DAY_OF_MONTH, 26)
+        cal.set(Calendar.DAY_OF_MONTH, dayOfTest)
         String dayOfWeek = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH)
 
         def data = [
-                ["26-12-" + currentYear, dayOfWeek + " 26 Dec"],
-                ["26/12/" + currentYear, dayOfWeek + " 26 Dec"],
-                ["26\\12\\" + currentYear, dayOfWeek + " 26 Dec"],
-                ["26.12." + currentYear, dayOfWeek + " 26 Dec"],
-                ["26,12," + currentYear, dayOfWeek + " 26 Dec"],
-                ["26|12|" + currentYear, dayOfWeek + " 26 Dec"],
+                [dayOfTest + "-12-" + currentYear, dayOfWeek + " " + dayOfTest + " Dec"],
+                [dayOfTest + "/12/" + currentYear, dayOfWeek + " " + dayOfTest + " Dec"],
+                [dayOfTest + "\\12\\" + currentYear, dayOfWeek + " " + dayOfTest + " Dec"],
+                [dayOfTest + ".12." + currentYear, dayOfWeek + " " + dayOfTest + " Dec"],
+                [dayOfTest + ",12," + currentYear, dayOfWeek + " " + dayOfTest + " Dec"],
+                [dayOfTest + "|12|" + currentYear, dayOfWeek + " " + dayOfTest + " Dec"],
 
                 ["2/10/2004", "Sat 2 Oct 2004"],
                 ["2\\10\\2004", "Sat 2 Oct 2004"],

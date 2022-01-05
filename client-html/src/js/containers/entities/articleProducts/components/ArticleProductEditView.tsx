@@ -13,6 +13,7 @@ import { State } from "../../../../reducers/state";
 import CorporatePassCommon from "../../common/components/CorporatePassCommon";
 import ArticleProductGeneral from "./ArticleProductGeneral";
 import { EditViewProps } from "../../../../model/common/ListView";
+import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 
 interface ArticleProductEditViewProps extends EditViewProps<ArticleProduct> {
   classes?: any;
@@ -27,15 +28,20 @@ const items: TabsListItem[] = [
     component: props => <ArticleProductGeneral {...props} />
   },
   {
+    label: "Notes",
+    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} />
+  },
+  {
     label: "Corporate Passes",
     component: props => (
       <CorporatePassCommon
+        className="mt-1"
         path="corporatePasses"
         titleCaption="Corporate Pass which can be used to purchase this article"
         {...props}
       />
     )
-  }
+  },
 ];
 
 const ArticleProductEditView: React.FC<ArticleProductEditViewProps> = props => {
