@@ -1,6 +1,6 @@
 import * as React from "react";
 import getTimestamps from "../../../js/common/utils/timestamps/getTimestamps";
-import ConcessionTypesForm
+import ConcessionTypesForm, { CONCESSION_TYPES_FORM }
   from "../../../js/containers/preferences/containers/concession-types/components/ConcessionTypesForm";
 import { defaultComponents } from "../../common/Default.Components";
 
@@ -16,10 +16,17 @@ describe("Virtual rendered ConcessionTypes", () => {
       timestamps: getTimestamps(initialValues),
       fetch: false
     }),
-    render: (wrapper, initialValues) => {
-      initialValues.forEach((type, key) => {
-        expect(wrapper.find(`#concession-type-${key} div[id="types[${key}].name"] input`).val()).toContain(type.name);
+    render: ({ screen, initialValues }) => {
+      const consessionTypes = {};
+
+      initialValues.forEach((types, index) => {
+        consessionTypes[`types[${index}].name`] = types.name;
+        consessionTypes[`types[${index}].allowOnWeb`] = types.allowOnWeb;
+        consessionTypes[`types[${index}].requireNumber`] = types.requireNumber;
+        consessionTypes[`types[${index}].requireExpary`] = types.requireExpary;
       });
+
+      expect(screen.getByRole(CONCESSION_TYPES_FORM)).toHaveFormValues(consessionTypes);
     }
   });
 });
