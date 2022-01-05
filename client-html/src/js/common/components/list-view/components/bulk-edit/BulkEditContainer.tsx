@@ -193,7 +193,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           fieldClasses: {
             text: classes.text,
             label: classes.customLabel,
-            placeholder: classes.placeholder
+            placeholder: classes.text
           }
         };
         break;
@@ -212,7 +212,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           fieldClasses: {
             text: classes.text,
             label: classes.customLabel,
-            placeholder: classes.placeholder,
+            placeholder: classes.text,
             listbox: classes.listbox
           }
         };
@@ -224,7 +224,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           fieldClasses: {
             text: classes.text,
             label: classes.customLabel,
-            placeholder: classes.placeholder
+            placeholder: classes.text
           }
         };
       }
