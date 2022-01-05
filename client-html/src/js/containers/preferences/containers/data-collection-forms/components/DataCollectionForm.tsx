@@ -32,6 +32,8 @@ import AppBarContainer from "../../../../../common/components/layout/AppBarConta
 
 const manualUrl = getManualLink("dataCollection");
 
+export const DATA_COLLECTION_FORM: string = "DataCollectionForm";
+
 const deliveryScheduleTypes = Object.keys(DeliveryScheduleType).map(mapSelectItems);
 
 deliveryScheduleTypes.sort(sortDefaultSelectItems);
@@ -130,7 +132,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
         items,
         form: currentForm
       };
-      this.props.dispatch(initialize("DataCollectionForm", state));
+      this.props.dispatch(initialize(DATA_COLLECTION_FORM, state));
     }
 
     if (props.match.params.action === "new") {
@@ -141,7 +143,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
           type: this.props.match.params.type
         }
       };
-      this.props.dispatch(initialize("DataCollectionForm", state));
+      this.props.dispatch(initialize(DATA_COLLECTION_FORM, state));
     }
   }
 
@@ -170,7 +172,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
           items,
           form: currentForm
         };
-        this.props.dispatch(initialize("DataCollectionForm", state));
+        this.props.dispatch(initialize(DATA_COLLECTION_FORM, state));
       }
     }
 
@@ -226,7 +228,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
         },
         items: []
       };
-      this.props.dispatch(initialize("DataCollectionForm", state));
+      this.props.dispatch(initialize(DATA_COLLECTION_FORM, state));
     }
   };
 
@@ -243,7 +245,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
 
     delete type.formattedLabel;
 
-    this.props.dispatch(change("DataCollectionForm", "items", [field, ...items]));
+    this.props.dispatch(change(DATA_COLLECTION_FORM, "items", [field, ...items]));
 
     this.formRef.scrollTo({
       top: 0,
@@ -260,7 +262,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
       description: ""
     };
 
-    this.props.dispatch(change("DataCollectionForm", "items", [heading, ...items]));
+    this.props.dispatch(change(DATA_COLLECTION_FORM, "items", [heading, ...items]));
 
     this.formRef.scrollTo({
       top: 0,
@@ -274,7 +276,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
     const updated = [...items];
     updated.splice(index, 1);
 
-    this.props.dispatch(change("DataCollectionForm", "items", updated));
+    this.props.dispatch(change(DATA_COLLECTION_FORM, "items", updated));
   };
 
   onSave = value => {
@@ -306,7 +308,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
           form: updated
         };
         this.skipValidation = true;
-        this.props.dispatch(initialize("DataCollectionForm", updatedData));
+        this.props.dispatch(initialize(DATA_COLLECTION_FORM, updatedData));
 
         if (nextLocation) {
           history.push(nextLocation);
@@ -401,7 +403,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
     clone.id = "";
 
     this.props.dispatch(
-      initialize("DataCollectionForm", {
+      initialize(DATA_COLLECTION_FORM, {
         items,
         form: clone
       })
@@ -429,7 +431,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
 
     return (
       <div ref={this.getFormRef}>
-        <Form className="container" onSubmit={handleSubmit(this.onSave)}>
+        <Form className="container" onSubmit={handleSubmit(this.onSave)} role={DATA_COLLECTION_FORM}>
           {!disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
           <AppBarContainer
             values={values}
@@ -540,8 +542,8 @@ class DataCollectionWrapper extends React.Component<any, any> {
 }
 
 const mapStateToProps = (state: State) => ({
-  values: getFormValues("DataCollectionForm")(state),
-  syncErrors: getFormSyncErrors("DataCollectionForm")(state),
+  values: getFormValues(DATA_COLLECTION_FORM)(state),
+  syncErrors: getFormSyncErrors(DATA_COLLECTION_FORM)(state),
   fetch: state.fetch,
   nextLocation: state.nextLocation,
 });
@@ -556,7 +558,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 const DataCollectionForm = reduxForm({
   onSubmitFail: (errors, dispatch, submitError, props) =>
     onSubmitFail(errors, dispatch, submitError, props, { behavior: "smooth", block: "end" }),
-  form: "DataCollectionForm"
+  form: DATA_COLLECTION_FORM
 })(
   connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DataCollectionWrapper))
 );
