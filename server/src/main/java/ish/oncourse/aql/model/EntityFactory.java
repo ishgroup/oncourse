@@ -32,7 +32,7 @@ public class EntityFactory {
      * List of types that supports custom fields.
      */
     private static final List<String> ENTITIES_WITH_CUSTOM_FIELDS =
-            Arrays.asList("Application", "Contact", "Course","CourseClass", "Enrolment", "WaitingList", "Survey", "Article", "Membership", "Voucher");
+            Arrays.asList("Application", "Contact", "Course","CourseClass", "Enrolment", "WaitingList", "Survey", "Article", "Membership", "Voucher", "ProductItem");
 
     /**
      * List of synthetic attributes.
@@ -129,9 +129,12 @@ public class EntityFactory {
     }
 
     private Map<String, Class<?>> customFieldLookup(String entityName) {
+        List<String> entityNames = entityName.equals("ProductItem")
+                ? List.of("Article","Voucher","Membership")
+                : List.of(entityName);
         var customFieldsNames = ObjectSelect
                 .columnQuery(CustomFieldType.class, CustomFieldType.KEY)
-                .where(CustomFieldType.ENTITY_IDENTIFIER.eq(entityName))
+                .where(CustomFieldType.ENTITY_IDENTIFIER.in(entityNames))
                 .select(context);
 
         Map<String, Class<?>> customFields = new HashMap<>();
