@@ -10,7 +10,7 @@ describe("Virtual rendered ConcessionTypes", () => {
     View: props => <ConcessionTypesForm {...props} />,
     record: mockedApi => mockedApi.db.concessionTypes,
     defaultProps: ({ initialValues }) => ({
-      form: "ConcessionTypesForm",
+      form: CONCESSION_TYPES_FORM,
       data: { types: initialValues },
       concessionTypes: initialValues,
       timestamps: getTimestamps(initialValues),
