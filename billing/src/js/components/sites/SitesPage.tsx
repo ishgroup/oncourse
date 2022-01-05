@@ -24,7 +24,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks/redux';
 import { updateCollegeSites } from '../../redux/actions/Sites';
 import { SitePageParams, SiteValues } from '../../models/Sites';
 import { showConfirm } from '../../redux/actions/Confirm';
-import { GTMContainer } from '../../models/Google';
+import { GAWebProperty, GAWebPropertyProfile, GTMContainer } from '../../models/Google';
 import { getTokenString, renderContainerLabel, renderWebPropertyLabel } from '../../utils/Google';
 import {
   configureGoogleForSite,
@@ -159,7 +159,15 @@ const validationSchema = yup.object({
   }),
   gtmAccountId: yup.string().nullable().when('googleAnalyticsId', {
     is: (val) => val,
-    then: yup.string().nullable().required('Tag manager account is required'),
+    then: yup.string().nullable().required('Tag manager account is required to use analytics'),
+  }),
+  gtmContainerId: yup.string().nullable().when('gtmAccountId', {
+    is: (val) => val,
+    then: yup.string().nullable().required('Tag manager container is required'),
+  }),
+  gaWebPropertyId: yup.string().nullable().when('googleAnalyticsId', {
+    is: (val) => val,
+    then: yup.string().nullable().required('Web property is required'),
   })
 });
 
@@ -297,9 +305,7 @@ export const SitesPage = () => {
     }
   ), [gaWebProperties, values.googleAnalyticsId]);
 
-
-  const concurentAccounts =
-    values.gtmContainerId
+  const concurentAccounts = values.gtmContainerId
     && values.gtmContainerId !== 'new'
     && gtmContainers
     && !Object.keys(gtmContainers)
@@ -407,10 +413,10 @@ export const SitesPage = () => {
   };
 
   useEffect(() => {
-    if (initialSite?.id && initialSite?.gtmContainerId && initialSite.gtmAccountId && gtmContainer && token?.access_token) {
+    if (!isConfig && initialSite?.id && initialSite?.gtmContainerId && initialSite.gtmAccountId && gtmContainer && token?.access_token) {
       getGoogleData();
     }
-  }, [initialSite?.id, gtmContainer, token?.access_token]);
+  }, [initialSite?.id, gtmContainer, isConfig, token?.access_token]);
 
   useEffect(() => {
     if (id === 'new') {
@@ -578,6 +584,20 @@ export const SitesPage = () => {
                   >
                     Save
                   </LoadingButton>
+                )}
+
+                {!isConfig && page === 'analytics'
+                && (
+                  <Button
+                    onClick={() => window.open('https://analytics.google.com/analytics/web/#/', 'blank')}
+                    disableElevation
+                    color="primary"
+                    variant="contained"
+                    className="mr-2"
+                    endIcon={<OpenInNewIcon />}
+                  >
+                    Open analytics
+                  </Button>
                 )}
 
                 {!isConfig && page === 'tagManager'

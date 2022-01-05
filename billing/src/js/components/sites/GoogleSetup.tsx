@@ -43,19 +43,21 @@ const GoogleSetup = (
   }: Props
 ) => {
   const onGtmAccountIdChange = (e) => {
-    if (!e.target.value && site.gtmContainerId) {
-      setFieldValue('gtmContainerId', null);
-    }
     handleChange(e);
+    if (site.gtmAccountId !== e.target.value && site.gtmContainerId) {
+      setTimeout(() => {
+        setFieldValue('gtmContainerId', null);
+      }, 200);
+    }
   };
 
   const onAnalyticsIdChange = (e) => {
-    if (!e.target.value) {
-      if (site.gaWebPropertyId) {
-        setFieldValue('gaWebPropertyId', null);
-      }
-    }
     handleChange(e);
+    if (site.googleAnalyticsId !== e.target.value && site.gaWebPropertyId) {
+      setTimeout(() => {
+        setFieldValue('gaWebPropertyId', null);
+      }, 200);
+    }
   };
 
   return (
@@ -95,6 +97,8 @@ const GoogleSetup = (
           value={site.googleAnalyticsId || ''}
           onChange={onAnalyticsIdChange}
           name="googleAnalyticsId"
+          error={Boolean(error.googleAnalyticsId)}
+          helperText={error.googleAnalyticsId}
         >
           {gaAccountItems}
         </TextField>
@@ -110,7 +114,8 @@ const GoogleSetup = (
           value={site.gaWebPropertyId || ''}
           onChange={handleChange}
           name="gaWebPropertyId"
-          helperText={site.googleAnalyticsId ? null : 'Select Tag manager account first'}
+          error={Boolean(error.gaWebPropertyId)}
+          helperText={error.gaWebPropertyId}
         >
           {gaWebPropertyItems}
         </TextField>
@@ -127,7 +132,7 @@ const GoogleSetup = (
           onChange={onGtmAccountIdChange}
           value={site.gtmAccountId || ''}
           error={Boolean(error.gtmAccountId)}
-          helperText={error.gtmAccountId || (site.googleAnalyticsId ? '' : 'Select Analytics account first')}
+          helperText={error.gtmAccountId}
         >
           {gtmAccountItems}
         </TextField>
@@ -143,7 +148,8 @@ const GoogleSetup = (
           variant="standard"
           onChange={handleChange}
           name="gtmContainerId"
-          helperText={site.gtmAccountId ? null : 'Select Tag manager account first'}
+          error={Boolean(error.gtmContainerId)}
+          helperText={error.gtmContainerId}
         >
           {gtmContainerItems}
         </TextField>
