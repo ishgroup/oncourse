@@ -29,6 +29,8 @@ import { State } from "../../../../../reducers/state";
 
 const manualUrl = getManualLink("dataCollection");
 
+export const DATA_COLLECTION_RULES_FORM: string = "CollectionRulesForm";
+
 const styles = () =>
   createStyles({
     selectField: {
@@ -75,16 +77,16 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
     };
 
     if (props.item) {
-      props.dispatch(initialize("CollectionRulesForm", props.item));
+      props.dispatch(initialize(DATA_COLLECTION_RULES_FORM, props.item));
     } else {
-      props.dispatch(initialize("CollectionRulesForm", { id: null }));
+      props.dispatch(initialize(DATA_COLLECTION_RULES_FORM, { id: null }));
     }
   }
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.promisePending && nextProps.item && (!this.props.item || this.props.item.id !== nextProps.item.id)) {
-      this.props.dispatch(initialize("CollectionRulesForm", nextProps.item));
+      this.props.dispatch(initialize(DATA_COLLECTION_RULES_FORM, nextProps.item));
       return;
     }
     if (this.rejectPromise && nextProps.fetch && nextProps.fetch.success === false) {
@@ -109,7 +111,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
   onHistoryChange = location => {
     const locationParts = location.pathname.split("/");
     if (locationParts[2] === "collectionRules" && locationParts[3] === "new") {
-      this.props.dispatch(initialize("CollectionRulesForm", { id: null }));
+      this.props.dispatch(initialize(DATA_COLLECTION_RULES_FORM, { id: null }));
     }
   };
 
@@ -158,7 +160,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
     if (collectionRules[0].id === id) {
       if (collectionRules.length > 1) {
         history.push(`/preferences/collectionRules/edit/${collectionRules[1].id}`);
-        setTimeout(() => dispatch(initialize("CollectionRulesForm", collectionRules[1])), 100);
+        setTimeout(() => dispatch(initialize(DATA_COLLECTION_RULES_FORM, collectionRules[1])), 100);
 
         return;
       }
@@ -166,7 +168,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
       return;
     }
     history.push(`/preferences/collectionRules/edit/${collectionRules[0].id}`);
-    setTimeout(() => dispatch(initialize("CollectionRulesForm", collectionRules[0])), 100);
+    setTimeout(() => dispatch(initialize(DATA_COLLECTION_RULES_FORM, collectionRules[0])), 100);
   };
 
   onRuleDelete = id => {
@@ -206,7 +208,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
     const isNew = match.params.action === "new";
 
     return (
-      <form className="container" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+      <form className="container" autoComplete="off" onSubmit={handleSubmit(onSubmit)} role={DATA_COLLECTION_RULES_FORM}>
         {!disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
         <AppBarContainer
@@ -381,11 +383,11 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
 }
 
 const mapStateToProps = (state: State) => ({
-  syncErrors: getFormSyncErrors("CollectionRulesForm")(state)
+  syncErrors: getFormSyncErrors(DATA_COLLECTION_RULES_FORM)(state)
 });
 
 const CollectionRulesForm = reduxForm({
-  form: "CollectionRulesForm",
+  form: DATA_COLLECTION_RULES_FORM,
   onSubmitFail
 })(withStyles(styles)(withRouter(connect<any, any, any>(mapStateToProps)(CollectionRulesBaseForm))) as any);
 
