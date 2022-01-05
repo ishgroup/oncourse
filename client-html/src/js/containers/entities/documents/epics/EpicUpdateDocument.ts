@@ -1,6 +1,6 @@
 import { initialize } from "redux-form";
 import { Epic } from "redux-observable";
-import { FETCH_SUCCESS } from "../../../../common/actions";
+import { clearActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import DocumentsService from "../../../../common/components/form/documents/services/DocumentsService";
 import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
@@ -14,6 +14,7 @@ const request: EpicUtils.Request<any, { id: number; document: Document & { notes
   getData: ({ id, document }) => DocumentsService.updateDocumentItem(id, document),
   retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
   processData: (v, s, { id }) => [
+    ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : []),
     {
       type: UPDATE_DOCUMENT_ITEM_FULFILLED
     },

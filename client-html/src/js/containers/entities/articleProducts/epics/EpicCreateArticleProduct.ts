@@ -18,6 +18,8 @@ import {
 } from "../../../../common/components/list-view/actions";
 import ArticleProductService from "../service/ArticleProductService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { processCustomFields } from "../../customFieldTypes/utils";
+import membershipProductService from "../../membershipProducts/services/MembershipProductService";
 
 let savedItem: ArticleProduct;
 
@@ -25,6 +27,7 @@ const request: EpicUtils.Request = {
   type: CREATE_ARTICLE_PRODUCT_ITEM,
   getData: payload => {
     savedItem = payload.articleProduct;
+    processCustomFields(payload.articleProduct);
     return ArticleProductService.createArticleProduct(payload.articleProduct);
   },
   processData: () => {

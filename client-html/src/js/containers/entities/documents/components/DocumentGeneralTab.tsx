@@ -14,6 +14,7 @@ import React, { useCallback, useRef } from "react";
 import clsx from "clsx";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
+  faCog,
   faFile,
   faFileAlt,
   faFileArchive,
@@ -21,33 +22,23 @@ import {
   faFileImage,
   faFilePdf,
   faFilePowerpoint,
-  faFileWord,
-  faCog
+  faFileWord
 } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
-import { arrayInsert, change, Field, } from "redux-form";
+import { arrayInsert, change, } from "redux-form";
 import { createStyles, withStyles } from "@mui/styles";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Collapse from "@mui/material/Collapse";
-import {
-  ExpandMore,
-  OpenWith
-} from "@mui/icons-material";
+import { ExpandMore, OpenWith } from "@mui/icons-material";
 import Button from "@mui/material/Button";
 import { addDays, format } from "date-fns";
 import { Document, DocumentVersion } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import DocumentsService from "../../../../common/components/form/documents/services/DocumentsService";
-import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
-import SimpleTagList from "../../../../common/components/form/simpleTagListComponent/SimpleTagList";
-import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../../../common/utils/dates/format";
-import {
-  getLatestDocumentItem,
-  iconSwitcher
-} from "../../../../common/components/form/documents/components/utils";
+import { getLatestDocumentItem, iconSwitcher } from "../../../../common/components/form/documents/components/utils";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { AppTheme } from "../../../../model/common/Theme";
 import { State } from "../../../../reducers/state";
@@ -131,11 +122,6 @@ interface DocumentGeneralProps extends EditViewProps<Document> {
   classes?: any;
   hovered?: boolean;
 }
-
-const validateTagList = (value, allValues, props) => {
-  const { tags } = props;
-  return validateTagsList(tags && tags.length > 0 ? tags : [], value, allValues, props);
-};
 
 const openDocumentURL = (e: React.MouseEvent<any>, url: string) => {
   e.stopPropagation();
@@ -294,15 +280,14 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
             </Grid>
             <Grid item container columnSpacing={3} rowSpacing={2} xs={twoColumn ? 4 : 12} alignContent="flex-start">
               <Grid item xs={12}>
-                <Field
+                <FormField
+                  type="tags"
                   name="tags"
                   tags={tags}
-                  component={SimpleTagList}
-                  validate={tags && tags.length ? validateTagList : undefined}
                 />
               </Grid>
               <Grid item xs={12}>
-                <Field name="description" label="Description" component={EditInPlaceField} multiline fullWidth />
+                <FormField type="multilineText" name="description" label="Description" />
               </Grid>
               {Boolean(values.removed) && (
               <Grid item xs={12} className="pb-2">

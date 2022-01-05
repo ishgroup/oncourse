@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Script } from "@api/model";
+import { Binding, Script } from "@api/model";
 import {
   closureSplitRegexp,
   getMessageComponent,
@@ -18,7 +18,9 @@ import {
   queryClosureRegexp,
   reportClosureRegexp,
 } from "../constants";
-import { ScriptComponentType, ScriptExtended, ScriptViewMode } from "../../../../../model/scripts";
+import {
+ ScriptComponent, ScriptComponentType, ScriptExtended, ScriptViewMode 
+} from "../../../../../model/scripts";
 
 const getClosureComponent = async (body: string, type: ScriptComponentType) => {
   switch (type) {
@@ -134,7 +136,7 @@ export const getQueryReturnValueForRender = (closureReturnValue: string) => {
   return closureReturnValue;
 };
 
-const getComponentBody = (component: any) => {
+const getComponentBody = (component: ScriptComponent, options: Binding[]) => {
   switch (component.type) {
     case "Query": {
       return getQueryTemplate(component.entity, component.query, component.queryClosureReturnValue);
@@ -143,7 +145,7 @@ const getComponentBody = (component: any) => {
       return component.content;
     }
     case "Message": {
-      return getMessageTemplate(component);
+      return getMessageTemplate(component, options);
     }
     case "Report": {
       return getReportTemplate(component);
@@ -161,7 +163,7 @@ export const appendComponents = (value: ScriptExtended, viewMode: ScriptViewMode
 
     if (value.components && value.components.length) {
       value.components.forEach(c => {
-        result.content += getComponentBody(c);
+        result.content += getComponentBody(c, value.options);
       });
     }
 

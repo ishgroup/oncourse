@@ -17,7 +17,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { darken } from "@mui/material/styles";
 import debounce from "lodash.debounce";
-import { CustomFieldType } from "@api/model";
+import { CustomFieldType, ProductType } from "@api/model";
 import { getAllMenuTags } from "../../../../../../containers/tags/utils";
 import EditInPlaceQuerySelect, { Suggestion } from "../../../../form/formFields/EditInPlaceQuerySelect";
 import QuerySaveMenu from "./QuerySaveMenu";
@@ -31,6 +31,7 @@ import { MenuTag } from "../../../../../../model/tags";
 import { FilterGroup, ListAqlMenuItemsRenderer, SavingFilterState } from "../../../../../../model/common/ListView";
 import { FILTER_TAGS_REGEX, TAGS_REGEX } from "../../../../../../constants/Config";
 import { AppTheme } from "../../../../../../model/common/Theme";
+import { getSaleEntityName } from "../../../../../../containers/entities/sales/utils";
 
 export const styles = (theme: AppTheme) => createStyles({
     container: {
@@ -227,7 +228,7 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
       });
     }
 
-    if (customFieldTypes && customFieldTypes.length && !this.state.customFieldsSuggestions) {
+    if (prevProps.customFieldTypes !== customFieldTypes && customFieldTypes.length) {
       this.setState({
         customFieldsSuggestions: getCustomFieldsSuggestions(customFieldTypes)
       });
@@ -596,14 +597,16 @@ const mapStateToProps = (state: State, ownProps: Props) => ({
   userAQLSearch: state.list.userAQLSearch,
   searchServerError: state.list.searchError,
   tags: state.list.menuTags,
-  customFieldTypes: state.customFieldTypes.types[ownProps.rootEntity]
+  customFieldTypes: ownProps.rootEntity === "ProductItem"
+    ? Object.keys(ProductType).reduce((p, c) => [...p, ...state.customFieldTypes.types[getSaleEntityName(c as any)] || []], [])
+    : state.customFieldTypes.types[ownProps.rootEntity]
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    setListSavingFilter: (savingFilter?: SavingFilterState) => dispatch(setListSavingFilter(savingFilter)),
-    setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
-    setListMenuTags: (tags: MenuTag[]) => dispatch(setListMenuTags(tags)),
-    setListUserAQLSearch: (userAQLSearch: string) => dispatch(setListUserAQLSearch(userAQLSearch))
-  });
+  setListSavingFilter: (savingFilter?: SavingFilterState) => dispatch(setListSavingFilter(savingFilter)),
+  setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
+  setListMenuTags: (tags: MenuTag[]) => dispatch(setListMenuTags(tags)),
+  setListUserAQLSearch: (userAQLSearch: string) => dispatch(setListUserAQLSearch(userAQLSearch))
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(SearchInputBase);

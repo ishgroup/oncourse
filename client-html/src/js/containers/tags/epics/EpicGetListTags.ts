@@ -9,7 +9,7 @@ import { Tag } from "@api/model";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import TagsService from "../services/TagsService";
 import { GET_ENTITY_TAGS_REQUEST_FULFILLED, GET_LIST_TAGS_FULFILLED, GET_LIST_TAGS_REQUEST } from "../actions";
-import { SET_LIST_MENU_TAGS } from "../../../common/components/list-view/actions/index";
+import { SET_LIST_MENU_TAGS } from "../../../common/components/list-view/actions";
 import { getMenuTags } from "../../../common/components/list-view/utils/listFiltersUtils";
 
 const request: EpicUtils.Request<any, { entityName: string }> = {
