@@ -2,8 +2,6 @@ on:
   push:
     branches-ignore:
       - main
-    tags-ignore:
-      - *
 
 jobs:
   pull-request:
