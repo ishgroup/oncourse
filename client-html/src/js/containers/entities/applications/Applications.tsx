@@ -179,9 +179,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
   },
   getFilters: () => dispatch(getFilters("Application")),
-  getTags: () => {
-    dispatch(getListTags("Application"));
-  },
+  getTags: () => dispatch(getListTags("Application")),
   clearListState: () => dispatch(clearListState()),
   getApplicationRecord: (id: string) => dispatch(getApplication(id)),
   onSave: (id: string, application: Application) => dispatch(updateApplication(id, application)),

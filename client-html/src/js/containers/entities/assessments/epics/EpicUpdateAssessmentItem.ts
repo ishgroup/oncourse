@@ -8,8 +8,8 @@ import { initialize } from "redux-form";
 import { Assessment } from "@api/model";
 import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_ASSESSMENT_ITEM, UPDATE_ASSESSMENT_ITEM, UPDATE_ASSESSMENT_ITEM_FULFILLED } from "../actions/index";
-import { FETCH_SUCCESS } from "../../../../common/actions/index";
+import { GET_ASSESSMENT_ITEM, UPDATE_ASSESSMENT_ITEM, UPDATE_ASSESSMENT_ITEM_FULFILLED } from "../actions";
+import { clearActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import AssessmentService from "../services/AssessmentService";
@@ -23,6 +23,7 @@ const request: EpicUtils.Request<any, { id: number; assessment: Assessment & { n
   },
   retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
   processData: (v, s, { id }) => [
+    ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : []),
       {
         type: UPDATE_ASSESSMENT_ITEM_FULFILLED
       },

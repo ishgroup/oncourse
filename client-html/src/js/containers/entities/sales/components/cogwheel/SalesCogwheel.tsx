@@ -10,6 +10,7 @@ import { getSaleDetails, setSaleDelivered, setSaleDetails } from "../../actions"
 import CancelSaleDialog from "./CancelSaleDialog";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../../common/components/list-view/constants";
 import { CogwhelAdornmentProps } from "../../../../../model/common/ListView";
+import BulkEditCogwheelOption from "../../../common/components/BulkEditCogwheelOption";
 
 interface Props extends CogwhelAdornmentProps {
   rollBackFormChanges: any;
@@ -97,6 +98,7 @@ const SalesCogwheel = memo<Props>(props => {
       <MenuItem disabled={!deliveredAllowed} className={menuItemClass} role="setToDelivered" onClick={onClick}>
         Set to delivered
       </MenuItem>
+      <BulkEditCogwheelOption {...props} />
     </>
   );
 });

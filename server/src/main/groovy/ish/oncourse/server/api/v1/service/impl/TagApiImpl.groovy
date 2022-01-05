@@ -17,8 +17,8 @@ import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.function.CayenneFunctions
 import static ish.oncourse.server.api.v1.function.TagFunctions.getAdditionalTaggableClasses
+import static ish.oncourse.server.api.v1.function.TagFunctions.getRequirementTaggableClassForName
 import static ish.oncourse.server.api.v1.function.TagFunctions.getTagGroupPrefetch
-import static ish.oncourse.server.api.v1.function.TagFunctions.getTaggableClassForName
 import static ish.oncourse.server.api.v1.function.TagFunctions.toDbTag
 import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTag
 import static ish.oncourse.server.api.v1.function.TagFunctions.validateForDelete
@@ -68,10 +68,10 @@ class TagApiImpl implements TagApi {
             Expression expr = Tag.IS_VOCABULARY.isTrue()
                     .andExp(Tag.NODE_TYPE.ne(NodeType.WEBPAGE))
             if (entityName) {
-                TaggableClasses taggableClass = getTaggableClassForName(entityName)
+                TaggableClasses taggableClass = getRequirementTaggableClassForName(entityName)
                 TaggableClasses[] additionalTags = getAdditionalTaggableClasses(taggableClass)
                 Expression tagExpr = Tag.TAG_REQUIREMENTS
-                        .dot(TagRequirement.ENTITY_IDENTIFIER).eq(getTaggableClassForName(entityName))
+                        .dot(TagRequirement.ENTITY_IDENTIFIER).eq(getRequirementTaggableClassForName(entityName))
                 for(TaggableClasses currTagClass : additionalTags) {
                     tagExpr = tagExpr.orExp(Tag.TAG_REQUIREMENTS
                             .dot(TagRequirement.ENTITY_IDENTIFIER).eq(currTagClass))

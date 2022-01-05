@@ -21,17 +21,26 @@ import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.api.dao.FieldConfigurationSchemeDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.TaxDao
+import ish.oncourse.server.cayenne.ArticleProductTagRelation
 import ish.oncourse.server.cayenne.FieldConfigurationScheme
 import ish.oncourse.server.cayenne.Product
+import ish.oncourse.server.cayenne.ArticleProductAttachmentRelation
+import ish.oncourse.server.document.DocumentService
 
 import javax.inject.Inject
 
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
 import static ish.oncourse.server.api.v1.function.ProductFunctions.updateCorporatePassesByIds
 import ish.oncourse.server.api.v1.model.ArticleProductCorporatePassDTO
 import ish.oncourse.server.api.v1.model.ArticleProductDTO
+
+import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
+import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.oncourse.server.api.v1.model.ProductStatusDTO.CAN_BE_PURCHASED_IN_OFFICE
 import static ish.oncourse.server.api.v1.model.ProductStatusDTO.CAN_BE_PURCHASED_IN_OFFICE_ONLINE
 import static ish.oncourse.server.api.v1.model.ProductStatusDTO.DISABLED
@@ -47,10 +56,13 @@ import static org.apache.commons.lang3.StringUtils.trimToNull
 
 import java.time.ZoneId
 
-class ArticleProductApiService extends EntityApiService<ArticleProductDTO, ArticleProduct, ArticleProductDao> {
+class ArticleProductApiService extends TaggableApiService<ArticleProductDTO, ArticleProduct, ArticleProductDao> {
 
     @Inject
     private AccountDao accountDao
+
+    @Inject
+    private DocumentService documentService
 
     @Inject
     private CorporatePassDao corporatePassDao
@@ -96,12 +108,17 @@ class ArticleProductApiService extends EntityApiService<ArticleProductDTO, Artic
             articleProductDTO.createdOn = articleProduct.createdOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             articleProductDTO.modifiedOn = articleProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             articleProductDTO.dataCollectionRuleId = articleProduct.fieldConfigurationScheme?.id
+            articleProductDTO.documents = articleProduct.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
+            articleProductDTO.tags = articleProduct.tags.collect{ toRestTagMinimized(it) }
+            articleProductDTO.customFields = articleProduct.customFields.collectEntries {[(it.customFieldType.key) : it.value] }
             articleProductDTO
         }
     }
 
     @Override
     ArticleProduct toCayenneModel(ArticleProductDTO articleProductDTO, ArticleProduct articleProduct) {
+        ObjectContext context = articleProduct.context
+
         articleProduct.name = trimToNull(articleProductDTO.name)
         articleProduct.sku = trimToNull(articleProductDTO.code)
         articleProduct.description = trimToNull(articleProductDTO.description)
@@ -115,6 +132,9 @@ class ArticleProductApiService extends EntityApiService<ArticleProductDTO, Artic
                 fieldConfigurationSchemeDao.getById(articleProduct.context, articleProductDTO.dataCollectionRuleId) :
                 null as FieldConfigurationScheme
         updateCorporatePassesByIds(articleProduct, articleProductDTO.corporatePasses*.id.findAll(), corporatePassProductDao, corporatePassDao)
+        updateDocuments(articleProduct, articleProduct.attachmentRelations, articleProductDTO.documents, ArticleProductAttachmentRelation, context)
+        updateTags(articleProduct, articleProduct.taggingRelations, articleProductDTO.tags*.id, ArticleProductTagRelation, context)
+        updateCustomFields(articleProduct.context, articleProduct, articleProductDTO.customFields, articleProduct.customFieldClass)
         articleProduct
     }
 
@@ -190,5 +210,14 @@ class ArticleProductApiService extends EntityApiService<ArticleProductDTO, Artic
     @Override
     void validateModelBeforeRemove(ArticleProduct articleProduct) {
         validator.throwClientErrorException(articleProduct.id, 'id', 'Product cannot be deleted. Instead of it you can disable it.')
+    }
+
+    @Override
+    Closure getAction (String key, String value) {
+        Closure action = super.getAction(key, value)
+        if (!action) {
+            validator.throwClientErrorException(key, "Unsupported attribute")
+        }
+        action
     }
 }

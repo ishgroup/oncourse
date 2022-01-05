@@ -451,6 +451,9 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
                         }
                     }
                     break
+                case Course.COURSE_ALLOW_WAITING_LIST:
+                    action = { Course c -> c.allowWaitingLists = Boolean.valueOf(value)}
+                    break
                 default:
                     validator.throwClientErrorException(key, "Unsupported attribute")
             }

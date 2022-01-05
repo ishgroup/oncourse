@@ -9,7 +9,7 @@ import { Course } from "@api/model";
 import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { updateEntityItemById } from "../../common/entityItemsService";
-import { FETCH_SUCCESS } from "../../../../common/actions";
+import { clearActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
@@ -25,6 +25,7 @@ const request: EpicUtils.Request<any, { id: number; course: Course }> = {
   },
   retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
   processData: (v, s, { id }) => [
+    ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : []),
       {
         type: FETCH_SUCCESS,
         payload: { message: `${CoursesEntity} updated` }

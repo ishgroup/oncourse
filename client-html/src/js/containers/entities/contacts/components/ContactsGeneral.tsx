@@ -3,20 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
-  useCallback, useEffect
-} from "react";
+import React, { useCallback, useEffect } from "react";
 import {
-  ConcessionType,
-  Contact,
-  ContactRelationType,
-  Student,
-  Tag,
-  Tutor
+ ConcessionType, Contact, ContactRelationType, Student, Tag, Tutor 
 } from "@api/model";
-import {
- change, Field, getFormInitialValues
-} from "redux-form";
+import { change, Field, getFormInitialValues } from "redux-form";
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { connect } from "react-redux";
@@ -28,7 +19,6 @@ import Divider from '@mui/material/Divider';
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import AvatarRenderer from "./AvatarRenderer";
-import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import { getContactFullName } from "../utils";
 import { openInternalLink } from "../../../../common/utils/links";
 import TimetableButton from "../../../../common/components/buttons/TimetableButton";
@@ -218,8 +208,6 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     setIsTutor(isInitiallyTutor);
   }, [isInitiallyCompany, isInitiallyStudent, isInitiallyTutor]);
 
-  const validateTagList = useCallback((value, allValues, props) => validateTagsList(tags, value, allValues, props), [tags]);
-
   const onCalendarClick = () => {
     openInternalLink(
       `/timetable/search?query=attendance.student.contact.id=${values.id}&title=Timetable for ${getContactFullName(
@@ -290,7 +278,6 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
             type="tags"
             name="tags"
             tags={filteredTags}
-            validate={tags && tags.length ? validateTagList : undefined}
           />
         </Grid>
       </Grid>
