@@ -15,6 +15,8 @@ import ish.oncourse.aql.impl.CompilationContext;
 import ish.oncourse.aql.impl.ExpressionUtil;
 import ish.oncourse.aql.impl.LazyExpressionNode;
 import ish.oncourse.server.cayenne.CustomFieldType;
+import ish.oncourse.server.cayenne.ProductItem;
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.parser.*;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SQLSelect;
@@ -60,13 +62,10 @@ class LazyCustomFieldNode extends LazyExpressionNode {
         var arg = args.get(1);
         if(arg instanceof LazyEmptyNode)
             arg = new ASTScalar(null);
+
+        String clazzName = ctx.getQueryRootEntity().getJavaClass().getSimpleName();
         if (arg instanceof ASTScalar && parent instanceof ASTEqual && ((ASTScalar) arg).getValue() == null) {
-
-            String clazzName = ctx.getQueryRootEntity().getJavaClass().getSimpleName();
-
-            Long fieldKeyId = ObjectSelect.columnQuery(CustomFieldType.class, CustomFieldType.ID)
-                    .where(CustomFieldType.KEY.eq(fieldKey))
-                    .selectOne(ctx.getContext());
+            Long fieldKeyId = getCustomFieldIdByFieldKey(ctx.getContext());
 
             String sql;
             if (Arrays.asList("Article", "Membership", "Voucher").contains(clazzName)) {
@@ -89,15 +88,20 @@ class LazyCustomFieldNode extends LazyExpressionNode {
                         "WHERE cf.id is NULL", clazzName, fieldKeyId);
             }
 
-            List<Long> ids = SQLSelect.dataRowQuery(sql)
-                    .select(ctx.getContext())
-                    .stream()
-                    .map(dataRow -> (Long) dataRow.get("id"))
-                    .collect(Collectors.toList());
-
-            return new ASTIn(new ASTObjPath("id"), new ASTList(ids));
+            return buildIdsRequestFromSql(sql, ctx.getContext());
 
         } else {
+
+            if(clazzName.equals(ProductItem.class.getSimpleName())){
+                Long fieldKeyId = getCustomFieldIdByFieldKey(ctx.getContext());
+
+                String sql = String.format("SELECT DISTINCT p.id from ProductItem p " +
+                        "LEFT JOIN CustomField cf ON cf.foreignId = p.id and customFieldTypeId = %d " +
+                        "WHERE cf.value = %s", fieldKeyId, arg);
+
+                return buildIdsRequestFromSql(sql, ctx.getContext());
+            }
+
             // build expression like this:
             // path.customField+.customFieldType+.name = passportNumber and path.customField+.value = 123
             var and = new ASTAnd();
@@ -118,10 +122,25 @@ class LazyCustomFieldNode extends LazyExpressionNode {
 
             ExpressionUtil.addChild(and, equalFieldKey, 0);
             ExpressionUtil.addChild(and, parent, 1);
-
             return and;
         }
 
+    }
+
+    private Long getCustomFieldIdByFieldKey(ObjectContext ctx){
+        return ObjectSelect.columnQuery(CustomFieldType.class, CustomFieldType.ID)
+                .where(CustomFieldType.KEY.eq(fieldKey))
+                .selectOne(ctx);
+    }
+
+    private ASTIn buildIdsRequestFromSql(String sql, ObjectContext ctx){
+        List<Long> ids = SQLSelect.dataRowQuery(sql)
+                .select(ctx)
+                .stream()
+                .map(dataRow -> (Long) dataRow.get("id"))
+                .collect(Collectors.toList());
+
+        return new ASTIn(new ASTObjPath("id"), new ASTList(ids));
     }
 
     @Override
