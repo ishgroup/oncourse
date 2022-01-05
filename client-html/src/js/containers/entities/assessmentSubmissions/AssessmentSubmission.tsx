@@ -95,8 +95,7 @@ const AssessmentSubmission = (props: any) => {
             label: "Assessor",
             name: "Assessor",
             type: "Select",
-            items: tutors,
-            defaultValue: "Not set",
+            items: tutors
           }
         ];
       })

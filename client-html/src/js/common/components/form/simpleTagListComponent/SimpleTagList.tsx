@@ -123,6 +123,9 @@ const styles = theme =>
         padding: 0
       }
     },
+    placeholder: {
+      opacity: 0.15
+    }
   });
 
 interface Props extends WrappedFieldProps {
@@ -499,11 +502,14 @@ const SimpleTagList: React.FC<Props> = props => {
             component="div"
             onClick={edit}
             className={clsx( classes.editable, {
-              [fieldClasses.placeholder ? fieldClasses.placeholder : "placeholderContent"]: !inputValue,
               [fieldClasses.text]: inputValue,
             })}
           >
-            <span className="centeredFlex flex-wrap">
+            <span className={clsx("centeredFlex flex-wrap", {
+              [fieldClasses.placeholder]: !inputValue,
+              [classes.placeholder]: !inputValue,
+            })}
+            >
               {InputValueForRender || "No value"}
             </span>
             {!disabled
