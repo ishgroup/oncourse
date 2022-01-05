@@ -403,7 +403,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
                   root: clsx(classes.input, fieldClasses.text, isInline && classes.inlineInput,
                     classes.inputWrapper),
                   underline: fieldClasses.underline,
-                  input: clsx(classes.input, fieldClasses.text)
+                  input: clsx(classes.input, fieldClasses.text),
                 }}
                 endAdornment={(
                   <InputAdornment position="end" className={clsx(classes.inputEndAdornment, formatting === "inline" && classes.hiddenContainer)}>
