@@ -72,6 +72,8 @@ const ExpandableItem: React.FunctionComponent<Props> = props => {
     expanded, keepPaper, onChange, classes, collapsedContent, buttonsContent, detailsContent, elevation = 2, expandButtonId
   } = props;
 
+  const buttonId = expandButtonId ? `expand-button-${expandButtonId}` : null;
+
   return (
     <Accordion
       expanded={expanded}
@@ -91,7 +93,7 @@ const ExpandableItem: React.FunctionComponent<Props> = props => {
           expandIconWrapper: classes.expandIcon
         }}
         onClick={onChange}
-        expandIcon={<IconButton id={expandButtonId ? `expand-button-${expandButtonId}` : null}><ExpandMoreIcon /></IconButton>}
+        expandIcon={<IconButton id={buttonId} data-testid={buttonId}><ExpandMoreIcon /></IconButton>}
       >
         <Collapse in={!expanded} timeout="auto" mountOnEnter unmountOnExit classes={{ root: classes.collapseRoot }}>
           {collapsedContent}
