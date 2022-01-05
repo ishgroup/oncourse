@@ -4,6 +4,7 @@ import { getArticleProduct } from "../../../js/containers/entities/articleProduc
 import { EpicGetArticleProduct } from "../../../js/containers/entities/articleProducts/epics/EpicGetArticleProduct";
 import { SET_LIST_EDIT_RECORD } from "../../../js/common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../js/common/components/list-view/constants";
+import { getNoteItems } from "../../../js/common/components/form/notes/actions";
 
 describe("Get article product epic tests", () => {
   it("EpicGetArticleProduct should returns correct values", () => DefaultEpic({
@@ -12,6 +13,7 @@ describe("Get article product epic tests", () => {
     processData: mockedApi => {
       const articleProduct = mockedApi.db.getArticleProduct(1);
       return [
+        getNoteItems("ArticleProduct", articleProduct.id, LIST_EDIT_VIEW_FORM_NAME),
         {
           type: SET_LIST_EDIT_RECORD,
           payload: { editRecord: articleProduct, name: articleProduct.name }

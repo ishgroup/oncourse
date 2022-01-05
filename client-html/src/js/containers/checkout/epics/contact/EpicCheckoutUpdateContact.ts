@@ -9,7 +9,7 @@ import { Contact } from "@api/model";
 import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { FETCH_SUCCESS } from "../../../../common/actions/index";
+import { clearActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import { updateEntityItemById } from "../../../entities/common/entityItemsService";
 import {
   CHECKOUT_GET_CONTACT,
@@ -26,6 +26,7 @@ const request: EpicUtils.Request<any, { id: number; contact: Contact & { notes: 
   },
   retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
   processData: (v, s, { id, message }) => [
+    ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : []),
     {
       type: CHECKOUT_UPDATE_CONTACT_FULFILLED
     },

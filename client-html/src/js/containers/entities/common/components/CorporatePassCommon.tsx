@@ -17,6 +17,7 @@ import {
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import clsx from "clsx";
 
 const styles = createStyles(({ spacing }: AppTheme) => ({
   marginBottomTriple: {
@@ -39,7 +40,7 @@ const corporatePassToNestedListItem = (items: DiscountCorporatePass[]): NestedLi
   }))
   : []);
 
-class VoucherProductCorporatePasses extends React.PureComponent<any, any> {
+class CorporatePassCommon extends React.PureComponent<any, any> {
   onAddCorporatePasses = (items: NestedListItem[]) => {
     const {
       values, dispatch, form, foundCorporatePassItems, path
@@ -74,13 +75,14 @@ class VoucherProductCorporatePasses extends React.PureComponent<any, any> {
       pending,
       title = "CORPORATE PASS",
       titleCaption,
-      path
+      path,
+      className
     } = this.props;
 
     const corporatePassItems = values && values[path] ? corporatePassToNestedListItem(values[path]) : [];
 
     return (
-      <div className="pl-3 pr-3">
+      <div className={clsx("pl-3 pr-3", className)}>
         <div className={twoColumn ? classes.compact : classes.marginBottomTriple}>
           <NestedList
             formId={values.id}
@@ -123,4 +125,4 @@ const mapStateToProps = (state: State) => ({
 export default connect<any, any, any>(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(VoucherProductCorporatePasses));
+)(withStyles(styles)(CorporatePassCommon));

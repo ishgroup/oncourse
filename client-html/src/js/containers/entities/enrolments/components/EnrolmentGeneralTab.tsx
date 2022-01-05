@@ -17,7 +17,8 @@ import {
   Enrolment,
   EnrolmentExemptionType,
   EnrolmentStudyReason,
-  FundingSource, GradingType,
+  FundingSource,
+  GradingType,
   PaymentSource,
   Tag
 } from "@api/model";
@@ -26,7 +27,6 @@ import Launch from "@mui/icons-material/Launch";
 import clsx from "clsx";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
-import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import { formatFundingSourceId } from "../../common/utils";
 import { defaultContactName, openContactLink } from "../../contacts/utils";
 import {
@@ -98,8 +98,6 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
     return error;
   }, [gradingTypes]);
 
-  const validateTagList = useCallback((value, allValues, props) => validateTagsList(tags, value, allValues, props), []);
-
   const invoiceTypes = useMemo(
     () => (values.id
         ? [
@@ -149,7 +147,6 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
           type="tags"
           name="tags"
           tags={tags}
-          validate={tags && tags.length ? validateTagList : undefined}
         />
       </Grid>
 
@@ -365,7 +362,6 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
         entityName="Enrolment"
         fieldName="customFields"
         entityValues={values}
-        dispatch={dispatch}
         form={form}
         gridItemProps={{
           xs: twoColumn ? 6 : 12,
