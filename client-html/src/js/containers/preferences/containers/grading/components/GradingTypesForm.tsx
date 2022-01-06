@@ -24,7 +24,7 @@ export interface GradingProps {
   gradingTypes: GradingType[];
 }
 
-export const FORM = "GradingForm";
+export const GRADING_FORM: string = "GradingForm";
 
 const GradingTypes: React.FC<GradingProps & InjectedFormProps & { dispatch: Dispatch }> = props => {
   const {
@@ -40,7 +40,7 @@ const GradingTypes: React.FC<GradingProps & InjectedFormProps & { dispatch: Disp
 
   useEffect(() => {
     if (Array.isArray(gradingTypes)) {
-      dispatch(initialize(FORM, { types: gradingTypes }));
+      dispatch(initialize(GRADING_FORM, { types: gradingTypes }));
     }
   }, [gradingTypes]);
 
@@ -76,12 +76,12 @@ const GradingTypes: React.FC<GradingProps & InjectedFormProps & { dispatch: Disp
     array.remove("types", index);
   };
 
-  const onSave = values => {
-    dispatch(updateGradingTypes(values.types));
+  const onSave = v => {
+    dispatch(updateGradingTypes(v.types));
   };
 
   return (
-    <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(onSave)}>
+    <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(onSave)} role={GRADING_FORM}>
       <RouteChangeConfirm form={form} when={dirty} />
 
       <AppBarContainer
@@ -144,7 +144,7 @@ const mapStateToProps = (state: State) => ({
 const GradingTypesForm = reduxForm({
   onSubmitFail,
   validate,
-  form: FORM,
+  form: GRADING_FORM,
   initialValues: {
     types: []
   }
