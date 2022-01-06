@@ -3,16 +3,16 @@ import { defaultComponents } from "../../common/Default.Components";
 import { mockedAPI } from "../../TestEntry";
 import * as PreferencesModel from "../../../js/model/preferences";
 import LDAP from "../../../js/containers/preferences/containers/ldap/LDAP";
-import { LDAP_FORM } from "../../../js/containers/preferences/containers/ldap/components/LDAPForm";
+import { preferencesFormRole } from "../../../js/containers/preferences/containers/FormContainer";
 import { dashedCase } from "../../common/utils";
 
 describe("Virtual rendered LDAPForm", () => {
   defaultComponents({
-    entity: LDAP_FORM,
+    entity: "LDAPForm",
     View: props => <LDAP {...props} />,
     record: () => ({}),
     defaultProps: () => ({
-      form: LDAP_FORM,
+      form: "LDAPForm",
       history: jest.fn()
     }),
     render: ({ screen, fireEvent }) => {
@@ -29,7 +29,7 @@ describe("Virtual rendered LDAPForm", () => {
         [PreferencesModel.LdapGroupSearchFilter.uniqueKey]: mockedAPI.db.preference[PreferencesModel.LdapGroupSearchFilter.uniqueKey],
       });
 
-      expect(screen.getByRole(LDAP_FORM)).toHaveFormValues(ldapFormData);
+      expect(screen.getByRole(preferencesFormRole)).toHaveFormValues(ldapFormData);
 
       fireEvent.click(screen.getByTestId('appbar-submit-button'));
     }
