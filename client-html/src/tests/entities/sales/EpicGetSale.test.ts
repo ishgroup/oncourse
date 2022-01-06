@@ -4,6 +4,7 @@ import { SET_LIST_EDIT_RECORD } from "../../../js/common/components/list-view/ac
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../js/common/components/list-view/constants";
 import { EpicGetSale } from "../../../js/containers/entities/sales/epics/EpicGetSale";
 import { GET_SALE_FULFILLED, getSale } from "../../../js/containers/entities/sales/actions";
+import { getNoteItems } from "../../../js/common/components/form/notes/actions";
 
 describe("Get sale epic tests", () => {
   it("EpicGetSale should returns correct values", () => DefaultEpic({
@@ -16,6 +17,7 @@ describe("Get sale epic tests", () => {
           type: GET_SALE_FULFILLED,
           payload: { productItem }
         },
+        getNoteItems("ProductItem", productItem.id, LIST_EDIT_VIEW_FORM_NAME),
         {
           type: SET_LIST_EDIT_RECORD,
           payload: { editRecord: productItem, name: productItem.productName }

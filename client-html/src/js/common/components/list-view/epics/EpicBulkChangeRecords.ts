@@ -23,8 +23,12 @@ import SiteService from "../../../../containers/entities/sites/services/SiteServ
 import RoomService from "../../../../containers/entities/rooms/services/RoomService";
 import WaitingListService from "../../../../containers/entities/waitingLists/services/WaitingListService";
 import LeadService from "../../../../containers/entities/leads/services/LeadService";
-import { Invoice } from "@aql/queryLanguageModel";
 import InvoiceService from "../../../../containers/entities/invoices/services/InvoiceService";
+import ArticleProductService from "../../../../containers/entities/articleProducts/service/ArticleProductService";
+import MembershipProductService
+  from "../../../../containers/entities/membershipProducts/services/MembershipProductService";
+import SaleService from "../../../../containers/entities/sales/services/SaleService";
+import VoucherProductService from "../../../../containers/entities/voucherProducts/services/VoucherProductService";
 
 const getBulkRequest = (entity: EntityName, diff: Diff): Promise<any> => {
   switch (entity) {
@@ -56,6 +60,14 @@ const getBulkRequest = (entity: EntityName, diff: Diff): Promise<any> => {
       return LeadService.bulkChange(diff);
     case "AbstractInvoice":
       return InvoiceService.bulkChange(diff);
+    case "ArticleProduct":
+      return ArticleProductService.bulkChange(diff);
+    case "MembershipProduct":
+      return MembershipProductService.bulkChange(diff);
+    case "VoucherProduct":
+      return VoucherProductService.bulkChange(diff);
+    case "ProductItem":
+      return SaleService.bulkChange(diff);
     default: {
       // eslint-disable-next-line prefer-promise-reject-errors
       return Promise.reject(`No bulk edit endpoint was found for ${entity}`);

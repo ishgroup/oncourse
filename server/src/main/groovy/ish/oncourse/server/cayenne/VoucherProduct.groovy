@@ -40,7 +40,7 @@ import java.util.List
  */
 @API
 @QueueableEntity
-class VoucherProduct extends _VoucherProduct {
+class VoucherProduct extends _VoucherProduct implements AttachableTrait, NotableTrait, ExpandableTrait{
 
 
 
@@ -126,5 +126,30 @@ class VoucherProduct extends _VoucherProduct {
 	@Override
 	List<VoucherProductCourse> getVoucherProductCourses() {
 		return super.getVoucherProductCourses()
+	}
+
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return VoucherProductTagRelation
+	}
+
+	@Override
+	void addToAttachmentRelations(AttachmentRelation relation) {
+		super.addToAttachmentRelations(relation as VoucherProductAttachmentRelation)
+	}
+
+	@Override
+	void removeFromAttachmentRelations(AttachmentRelation relation) {
+		super.removeFromAttachmentRelations(relation as VoucherProductAttachmentRelation)
+	}
+
+	@Override
+	Class<? extends AttachmentRelation> getRelationClass() {
+		return VoucherProductAttachmentRelation
+	}
+
+	@Override
+	Class<? extends CustomField> getCustomFieldClass() {
+		return VoucherProductCustomField
 	}
 }

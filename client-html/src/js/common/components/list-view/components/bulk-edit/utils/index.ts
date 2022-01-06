@@ -44,7 +44,6 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
           name: "Funding source",
           type: "Select",
           items: Object.keys(ClassFundingSource).map(mapSelectItems),
-          defaultValue: "Not set"
         },
         {
           keyCode: "vetPurchasingContractID",
@@ -73,7 +72,7 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
           name: "Delivery mode",
           type: "Select",
           items: Object.keys(DeliveryMode).map(mapSelectItems),
-          defaultValue: "Not set"
+          defaultValue: "Not Set"
         },
         {
           keyCode: "reportableHours",
@@ -189,7 +188,6 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
           name: "Default funding source national",
           type: "Select",
           items: Object.keys(ClassFundingSource).map(mapSelectItems),
-          defaultValue: "Not set"
         },
         {
           keyCode: "relatedFundingSourceId",
@@ -248,11 +246,13 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
           label: "Assessor",
           name: "Assessor",
           type: "Select",
-          items: [],
-          defaultValue: "Not set",
         }
       ];
     }
+    case "ArticleProduct":
+    case "MembershipProduct":
+    case "ProductItem":
+    case "VoucherProduct":
     case "WaitingList":
     case "AbstractInvoice":
     case "Room":

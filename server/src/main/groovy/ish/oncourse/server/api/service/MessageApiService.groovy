@@ -80,7 +80,7 @@ import org.apache.logging.log4j.Logger
 import java.time.ZoneOffset
 
 @CompileStatic
-class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageDao> {
+class MessageApiService extends EntityApiService<MessageDTO, Message, MessageDao> {
     private static final Logger logger = LogManager.logger
     private static final String CREATED_SUCCESS = "Messages created successfully"
     private static final int BATCH_SIZE = 50

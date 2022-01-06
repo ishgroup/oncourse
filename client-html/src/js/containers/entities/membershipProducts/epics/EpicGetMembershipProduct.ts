@@ -13,6 +13,7 @@ import { initialize } from "redux-form";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import membershipProductService from "../services/MembershipProductService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { getNoteItems } from "../../../../common/components/form/notes/actions";
 
 const request: EpicUtils.Request = {
   type: GET_MEMBERSHIP_PRODUCT_ITEM,
@@ -23,6 +24,7 @@ const request: EpicUtils.Request = {
         type: GET_MEMBERSHIP_PRODUCT_ITEM_FULFILLED,
         payload: { membershipProduct }
       },
+      getNoteItems("MembershipProduct", membershipProduct.id, LIST_EDIT_VIEW_FORM_NAME),
       {
         type: SET_LIST_EDIT_RECORD,
         payload: { editRecord: membershipProduct, name: membershipProduct.name }

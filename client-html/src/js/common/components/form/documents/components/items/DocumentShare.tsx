@@ -14,9 +14,7 @@ import { FormControlLabel } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import clsx from "clsx";
-import React, {
- useEffect, useMemo, useRef, useState 
-} from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
@@ -24,7 +22,13 @@ import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Typography from "@mui/material/Typography";
 import {
- Attachment, Directions, Language, Link, LockOutlined, OpenInNew, SupervisorAccount 
+  Attachment,
+  Directions,
+  Language,
+  Link,
+  LockOutlined,
+  OpenInNew,
+  SupervisorAccount
 } from "@mui/icons-material";
 import { AlertTitle } from "@mui/lab";
 import Alert from "@mui/lab/Alert";
@@ -122,6 +126,41 @@ const onAttachmentPeopleClick = (entity: string, access: DocumentVisibility, rel
   }
 };
 
+const mapEntityName = (entity: string) => {
+  switch (entity) {
+    case "VoucherProduct":
+      return "voucher";
+    case "MembershipProduct":
+      return "membership";
+    case "ArticleProduct":
+      return "product";
+    case "Voucher":
+    case "Membership":
+    case "Article":
+      return "sale";
+    default:
+      return entity.toLowerCase();
+  }
+};
+
+const mapEntityDisplayName = (entity: string, count: number) => {
+  switch (entity) {
+    case "VoucherProduct":
+      return "Voucher type";
+    case "MembershipProduct":
+      return "Membership type";
+    case "ArticleProduct":
+      return "Product";
+    case "Voucher":
+    case "Membership":
+      return `Sale${count > 1 ? "s" : ""} (${entity})`;
+    case "Article":
+      return `Sale${count > 1 ? "s" : ""} (Product)`;
+    default:
+      return `${entity}${count > 1 ? entity[entity.length - 1] === "s" ? "es" : "s" : ""}`;
+  }
+};
+
 const DocumentShare:React.FC<Props> = ({
    validUrl,
    dispatch,
@@ -167,7 +206,7 @@ const DocumentShare:React.FC<Props> = ({
 
   const linkInput = useRef<any>();
 
-  const classes  = useStyles();
+  const classes = useStyles();
 
   const onCopyLink = () => {
     linkInput.current.select();
@@ -226,18 +265,19 @@ const DocumentShare:React.FC<Props> = ({
         const displayedRelationsCount = displayedRelations.length;
         const relationsCount = relations.length;
         const moreCount = relationsCount - displayedRelationsCount;
+        const entityName = mapEntityName(entity);
 
         return (
           <div key={entity}>
             <Typography
               component="div"
             >
-              {`${relationsCount} ${entity.capitalize()}${relationsCount > 1 ? entity[entity.length - 1] === "s" ? "es" : "s" : ""} `}
+              {`${relationsCount} ${mapEntityDisplayName(entity, relationsCount)}`}
               <IconButton
                 size="small"
                 color="secondary"
                 className={classes.linkButton}
-                onClick={() => onAttachmentCategoryClick(entity, relationsMap)}
+                onClick={() => onAttachmentCategoryClick(entityName, relationsMap)}
               >
                 <OpenInNew fontSize="inherit" color="primary" />
               </IconButton>

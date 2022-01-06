@@ -14,6 +14,7 @@ import CorporatePassCommon from "../../common/components/CorporatePassCommon";
 import MembershipProductGeneral from "./MembershipProductGeneral";
 import MembershipProductDiscounts from "./MembershipProductDiscounts";
 import { EditViewProps } from "../../../../model/common/ListView";
+import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 
 const items: TabsListItem[] = [
   {
@@ -23,6 +24,10 @@ const items: TabsListItem[] = [
   {
     label: "Discounts",
     component: props => <MembershipProductDiscounts {...props} />
+  },
+  {
+    label: "Notes",
+    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} className="mb-2" />
   },
   {
     label: "Corporate Passes",
