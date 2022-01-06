@@ -3,59 +3,35 @@ import { defaultComponents } from "../../common/Default.Components";
 import { mockedAPI } from "../../TestEntry";
 import * as PreferencesModel from "../../../js/model/preferences";
 import LDAP from "../../../js/containers/preferences/containers/ldap/LDAP";
+import { LDAP_FORM } from "../../../js/containers/preferences/containers/ldap/components/LDAPForm";
+import { dashedCase } from "../../common/utils";
 
-// TODO Enable test on fix
-
-describe.skip("Virtual rendered LDAPForm", () => {
+describe("Virtual rendered LDAPForm", () => {
   defaultComponents({
-    entity: "LDAPForm",
+    entity: LDAP_FORM,
     View: props => <LDAP {...props} />,
     record: () => ({}),
     defaultProps: () => ({
-      form: "LDAPForm",
+      form: LDAP_FORM,
       history: jest.fn()
     }),
-    render: wrapper => {
-      expect(wrapper.find("#ldap-host input").val()).toContain(
-        mockedAPI.db.preference[PreferencesModel.LdapHost.uniqueKey]
-      );
+    render: ({ screen, fireEvent }) => {
+      const ldapFormData = dashedCase({
+        [PreferencesModel.LdapHost.uniqueKey]: mockedAPI.db.preference[PreferencesModel.LdapHost.uniqueKey],
+        [PreferencesModel.LdapBindUserDN.uniqueKey]: mockedAPI.db.preference[PreferencesModel.LdapBindUserDN.uniqueKey],
+        [PreferencesModel.LdapServerPort.uniqueKey]: mockedAPI.db.preference[PreferencesModel.LdapServerPort.uniqueKey],
+        [PreferencesModel.LdapBindUserPass.uniqueKey]: mockedAPI.db.preference[PreferencesModel.LdapBindUserPass.uniqueKey],
+        [PreferencesModel.LdapBaseDN.uniqueKey]: mockedAPI.db.preference[PreferencesModel.LdapBaseDN.uniqueKey],
+        [PreferencesModel.LdapUsernameAttribute.uniqueKey]: mockedAPI.db.preference[PreferencesModel.LdapUsernameAttribute.uniqueKey],
+        [PreferencesModel.LdapUserSearchFilter.uniqueKey]: mockedAPI.db.preference[PreferencesModel.LdapUserSearchFilter.uniqueKey],
+        [PreferencesModel.LdapGroupMemberAttribute.uniqueKey]: mockedAPI.db.preference[PreferencesModel.LdapGroupMemberAttribute.uniqueKey],
+        [PreferencesModel.LdapGroupAttribute.uniqueKey]: mockedAPI.db.preference[PreferencesModel.LdapGroupAttribute.uniqueKey],
+        [PreferencesModel.LdapGroupSearchFilter.uniqueKey]: mockedAPI.db.preference[PreferencesModel.LdapGroupSearchFilter.uniqueKey],
+      });
 
-      expect(wrapper.find("#ldap-bind-user-dn input").val()).toContain(
-        mockedAPI.db.preference[PreferencesModel.LdapBindUserDN.uniqueKey]
-      );
+      expect(screen.getByRole(LDAP_FORM)).toHaveFormValues(ldapFormData);
 
-      expect(wrapper.find("#ldap-serverport input").val()).toContain(
-        mockedAPI.db.preference[PreferencesModel.LdapServerPort.uniqueKey]
-      );
-
-      expect(wrapper.find("#ldap-bind-user-pass input").val()).toEqual(
-        mockedAPI.db.preference[PreferencesModel.LdapBindUserPass.uniqueKey]
-      );
-
-      expect(wrapper.find("#ldap-base-dn input").val()).toEqual(
-        mockedAPI.db.preference[PreferencesModel.LdapBaseDN.uniqueKey]
-      );
-
-      /*-----*/
-      expect(wrapper.find("#ldap-username-attibute input").val()).toEqual(
-        mockedAPI.db.preference[PreferencesModel.LdapUsernameAttribute.uniqueKey]
-      );
-
-      expect(wrapper.find("#ldap-user-search-filter input").val()).toEqual(
-        mockedAPI.db.preference[PreferencesModel.LdapUserSearchFilter.uniqueKey]
-      );
-
-      expect(wrapper.find("#ldap-group-member-attibute input").val()).toEqual(
-        mockedAPI.db.preference[PreferencesModel.LdapGroupMemberAttribute.uniqueKey]
-      );
-
-      expect(wrapper.find("#ldap-group-attibute input").val()).toEqual(
-        mockedAPI.db.preference[PreferencesModel.LdapGroupAttribute.uniqueKey]
-      );
-
-      expect(wrapper.find("#ldap-group-search-filter input").val()).toEqual(
-        mockedAPI.db.preference[PreferencesModel.LdapGroupSearchFilter.uniqueKey]
-      );
+      fireEvent.click(screen.getByTestId('appbar-submit-button'));
     }
   });
 });
