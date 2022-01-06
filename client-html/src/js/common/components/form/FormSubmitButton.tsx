@@ -34,6 +34,7 @@ const FormSubmitButton = React.memo<Props>(({
       variant="contained"
       color="primary"
       className={className}
+      data-testid="appbar-submit-button"
     >
       {text}
     </Button>
