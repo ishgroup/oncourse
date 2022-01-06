@@ -16,7 +16,7 @@ describe("Virtual rendered ContactRelationTypes", () => {
       timestamps: getTimestamps(initialValues),
       fetch: false
     }),
-    render: ({ screen, initialValues }) => {
+    render: ({ screen, initialValues, fireEvent }) => {
       const contactRelationTypes = {};
 
       initialValues.forEach((types, index) => {
@@ -26,6 +26,8 @@ describe("Virtual rendered ContactRelationTypes", () => {
       });
 
       expect(screen.getByRole(CONTACT_RELATION_TYPES_FORM)).toHaveFormValues(contactRelationTypes);
+
+      fireEvent.click(screen.getByTestId('appbar-submit-button'));
     }
   });
 });
