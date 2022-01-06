@@ -32,13 +32,13 @@ public class PaymentInLifecycleListener {
 	private static final Logger logger = LogManager.getLogger();
 
 	private final PreferenceController prefController;
-	
-	@Inject
-	private LicenseService licenseService;
+
+	private final LicenseService licenseService;
 			
 	@Inject
-	public PaymentInLifecycleListener(PreferenceController prefController) {
+	public PaymentInLifecycleListener(PreferenceController prefController, LicenseService licenseService) {
 		this.prefController = prefController;
+		this.licenseService = licenseService;
 	}
 
 	@PostAdd(value = PaymentIn.class)
