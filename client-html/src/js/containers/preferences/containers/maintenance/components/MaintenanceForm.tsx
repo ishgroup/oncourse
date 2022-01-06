@@ -48,11 +48,11 @@ class MaintenanceBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-      handleSubmit, onSave, dirty, data, invalid, form
+      handleSubmit, onSave, dirty, data, invalid, form, formRoleName
     } = this.props;
 
     return (
-      <Form className="container" onSubmit={handleSubmit(onSave)}>
+      <Form className="container" onSubmit={handleSubmit(onSave)} role={formRoleName}>
         <RouteChangeConfirm form={form} when={dirty} />
 
         <AppBarContainer
