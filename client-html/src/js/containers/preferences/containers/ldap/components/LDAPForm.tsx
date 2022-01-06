@@ -30,8 +30,6 @@ import AppBarContainer from "../../../../../common/components/layout/AppBarConta
 
 const manualUrl = getManualLink("generalPrefs_ldap");
 
-export const LDAP_FORM: string = "LDAPForm";
-
 class LDAPBaseForm extends React.Component<any, any> {
   private formModel: FormModelSchema;
 
@@ -43,7 +41,7 @@ class LDAPBaseForm extends React.Component<any, any> {
     };
 
     if (!isEmpty(props.formData)) {
-      props.dispatch(initialize(LDAP_FORM, props.formData));
+      props.dispatch(initialize("LDAPForm", props.formData));
     }
 
     this.formModel = props.formatModel(Model);
@@ -56,7 +54,7 @@ class LDAPBaseForm extends React.Component<any, any> {
   UNSAFE_componentWillReceiveProps(nextProps) {
     // Initializing form with values
     if (!isEmpty(nextProps.formData) && !this.props.initialized) {
-      this.props.dispatch(initialize(LDAP_FORM, nextProps.formData));
+      this.props.dispatch(initialize("LDAPForm", nextProps.formData));
     }
   }
 
@@ -75,14 +73,14 @@ class LDAPBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-      handleSubmit, onSave, values, licence, testLdapConnection, dirty, data, form, invalid
+      handleSubmit, onSave, values, licence, testLdapConnection, dirty, data, form, invalid, formRoleName
     } = this.props;
 
     const simpleAuthEnabled = values && values[this.formModel.LdapSimpleAuthentication.uniqueKey] === "true";
     const saslAuthEnabled = values && values[this.formModel.LdapSaslAuthentication.uniqueKey] === "true";
 
     return (
-      <Form className="container" onSubmit={handleSubmit(onSave)} role={LDAP_FORM}>
+      <Form className="container" onSubmit={handleSubmit(onSave)} role={formRoleName}>
         <RouteChangeConfirm form={form} when={dirty} />
 
         <ConfirmBase
@@ -399,11 +397,11 @@ class LDAPBaseForm extends React.Component<any, any> {
 }
 
 const mapStateToProps = (state: State) => ({
-  values: getFormValues(LDAP_FORM)(state)
+  values: getFormValues("LDAPForm")(state)
 });
 
 const LDAPForm = reduxForm({
-  form: LDAP_FORM,
+  form: "LDAPForm",
   validate: validateMultipleMandatoryFields,
   onSubmitFail
 })(
