@@ -33,7 +33,7 @@ const FormSubmitButton = React.memo<Props>(({
       startIcon={invalid && <ErrorOutline color="error" />}
       variant="contained"
       color="primary"
-      className={className}
+      className={className || ""}
       data-testid="appbar-submit-button"
     >
       {text}
