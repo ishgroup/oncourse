@@ -30,6 +30,8 @@ describe("Virtual rendered CustomFieldTypes", () => {
       });
 
       expect(screen.getByRole(CUSTOM_FIELDS_FORM)).toHaveFormValues(customFields);
+
+      fireEvent.click(screen.getByTestId('appbar-submit-button'));
     }
   });
 });

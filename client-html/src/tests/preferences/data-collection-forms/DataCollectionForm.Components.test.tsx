@@ -32,7 +32,7 @@ describe("Virtual rendered DataCollectionForm", () => {
         }
       };
     },
-    render: ({ screen, initialValues }) => {
+    render: ({ screen, initialValues, fireEvent }) => {
       const form = initialValues[0];
       const items = parseDataCollectionFormData(form);
 
@@ -56,6 +56,8 @@ describe("Virtual rendered DataCollectionForm", () => {
       });
 
       expect(screen.getByRole(DATA_COLLECTION_FORM)).toHaveFormValues(dataCollections);
+
+      fireEvent.click(screen.getByTestId('appbar-submit-button'));
     }
   });
 });
