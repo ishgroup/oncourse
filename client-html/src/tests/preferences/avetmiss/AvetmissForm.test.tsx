@@ -12,7 +12,7 @@ describe("Virtual rendered AvetmissForm", () => {
     View: props => <Avetmiss {...props} />,
     record: () => ({}),
     defaultProps: () => ({}),
-    render: ({ screen }) => {
+    render: ({ screen, fireEvent }) => {
       const avetmissFormData = dashedCase({
         [PreferencesModel.AvetmissCollegeName.uniqueKey]: mockedAPI.db.preference[PreferencesModel.AvetmissCollegeName.uniqueKey].toString(),
         [PreferencesModel.Jurisdiction.uniqueKey]: mockedAPI.db.preference[PreferencesModel.Jurisdiction.uniqueKey].toString(),
@@ -34,6 +34,8 @@ describe("Virtual rendered AvetmissForm", () => {
       });
 
       expect(screen.getByRole(preferencesFormRole)).toHaveFormValues(avetmissFormData);
+
+      fireEvent.click(screen.getByTestId('appbar-submit-button'));
     }
   });
 });
