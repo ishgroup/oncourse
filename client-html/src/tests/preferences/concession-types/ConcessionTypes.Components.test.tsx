@@ -16,7 +16,7 @@ describe("Virtual rendered ConcessionTypes", () => {
       timestamps: getTimestamps(initialValues),
       fetch: false
     }),
-    render: ({ screen, initialValues }) => {
+    render: ({ screen, initialValues, fireEvent }) => {
       const consessionTypes = {};
 
       initialValues.forEach((types, index) => {
@@ -27,6 +27,8 @@ describe("Virtual rendered ConcessionTypes", () => {
       });
 
       expect(screen.getByRole(CONCESSION_TYPES_FORM)).toHaveFormValues(consessionTypes);
+
+      fireEvent.click(screen.getByTestId('appbar-submit-button'));
     }
   });
 });

@@ -32,7 +32,7 @@ describe("Virtual rendered CollectionRules", () => {
         onSubmit: jest.fn()
       };
     },
-    render: ({ screen, initialValues }) => {
+    render: ({ screen, initialValues, fireEvent }) => {
       const rule = initialValues[0];
 
       expect(screen.getByRole(DATA_COLLECTION_RULES_FORM)).toHaveFormValues({
@@ -47,6 +47,8 @@ describe("Virtual rendered CollectionRules", () => {
         voucherFormName: rule.voucherFormName,
         membershipFormName: rule.membershipFormName,
       });
+
+      fireEvent.click(screen.getByTestId('appbar-submit-button'));
     }
   });
 });
