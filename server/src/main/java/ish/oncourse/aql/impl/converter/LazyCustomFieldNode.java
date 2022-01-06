@@ -14,6 +14,7 @@ package ish.oncourse.aql.impl.converter;
 import ish.oncourse.aql.impl.CompilationContext;
 import ish.oncourse.aql.impl.ExpressionUtil;
 import ish.oncourse.aql.impl.LazyExpressionNode;
+import ish.oncourse.server.cayenne.CustomField;
 import ish.oncourse.server.cayenne.CustomFieldType;
 import ish.oncourse.server.cayenne.ProductItem;
 import org.apache.cayenne.ObjectContext;
@@ -94,10 +95,24 @@ class LazyCustomFieldNode extends LazyExpressionNode {
 
             if(clazzName.equals(ProductItem.class.getSimpleName())){
                 Long fieldKeyId = getCustomFieldIdByFieldKey(ctx.getContext());
+                var valuePath = new ASTObjPath("value");
+                ExpressionUtil.addChild(parent, valuePath, 0);
+                ExpressionUtil.addChild(parent, arg, 1);
+
+                List<Long> customfieldsIds = ObjectSelect.columnQuery(CustomField.class, CustomField.ID)
+                        .where(
+                                CustomField.CUSTOM_FIELD_TYPE.dot(CustomFieldType.ID).eq(fieldKeyId)
+                                .andExp(parent)
+                        )
+                        .select(ctx.getContext());
+
+                String idsInSql = customfieldsIds.stream()
+                        .map(Objects::toString)
+                        .collect(Collectors.joining(","));
 
                 String sql = String.format("SELECT DISTINCT p.id from ProductItem p " +
                         "LEFT JOIN CustomField cf ON cf.foreignId = p.id and customFieldTypeId = %d " +
-                        "WHERE cf.value = %s", fieldKeyId, arg);
+                        "WHERE cf.id in (%s)", fieldKeyId, idsInSql);
 
                 return buildIdsRequestFromSql(sql, ctx.getContext());
             }
