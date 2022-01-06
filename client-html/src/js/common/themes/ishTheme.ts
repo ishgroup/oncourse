@@ -112,8 +112,7 @@ const createOverrides = (palette):{ components: Components } => ({
             WebkitTextFillColor: 'inherit'
           },
           "&::placeholder": {
-            color: palette.text.disabled,
-            fill: palette.text.disabled,
+            opacity: 0.15
           },
           textOverflow: "ellipsis",
           color: palette.text.primaryEditable,
