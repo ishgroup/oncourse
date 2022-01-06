@@ -87,11 +87,13 @@ public class TemplateService {
 		);
 		Template htmlTemplate = createHtmlTemplate(template);
 		var html = htmlTemplate.make(putBaseBindings(bindings)).toString();
+
 		MetaclassCleaner.clearGroovyCache(htmlTemplate);
-		
-		return html
-				.replaceAll(JAVA_POUND, HTML_POUND)
-				.replaceAll(JAVA_EURO, HTML_EURO);
+		html = html.replaceAll(JAVA_POUND, HTML_POUND).replaceAll(JAVA_EURO, HTML_EURO);
+
+		MessageBodyConverter messageBodyConverter = MessageBodyConverter.valueOf(html,RenderType.HTML);
+
+		return messageBodyConverter.shouldConvert() ? MessageBodyConverter.valueOf(html,RenderType.HTML).convert() : html;
 	}
 
 	public Template createPlainTemplate(EmailTemplate template) {
@@ -109,10 +111,12 @@ public class TemplateService {
 				bindings.put(opt.getName(), opt.getValue())
 		);
 		Template htmlTemplate = createPlainTemplate(template);
+
 		String result =  htmlTemplate.make(putBaseBindings(bindings)).toString();
 		MetaclassCleaner.clearGroovyCache(htmlTemplate);
+		MessageBodyConverter messageBodyConverter = MessageBodyConverter.valueOf(result,RenderType.PLAIN);
 
-		return result;
+		return messageBodyConverter.shouldConvert() ? messageBodyConverter.convert() : result;
 	}
 
 	public Template createSubjectTemplate(EmailTemplate template) {
