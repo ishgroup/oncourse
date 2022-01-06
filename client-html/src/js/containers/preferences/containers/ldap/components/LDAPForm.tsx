@@ -30,6 +30,8 @@ import AppBarContainer from "../../../../../common/components/layout/AppBarConta
 
 const manualUrl = getManualLink("generalPrefs_ldap");
 
+export const LDAP_FORM: string = "LDAPForm";
+
 class LDAPBaseForm extends React.Component<any, any> {
   private formModel: FormModelSchema;
 
@@ -41,7 +43,7 @@ class LDAPBaseForm extends React.Component<any, any> {
     };
 
     if (!isEmpty(props.formData)) {
-      props.dispatch(initialize("LDAPForm", props.formData));
+      props.dispatch(initialize(LDAP_FORM, props.formData));
     }
 
     this.formModel = props.formatModel(Model);
@@ -54,7 +56,7 @@ class LDAPBaseForm extends React.Component<any, any> {
   UNSAFE_componentWillReceiveProps(nextProps) {
     // Initializing form with values
     if (!isEmpty(nextProps.formData) && !this.props.initialized) {
-      this.props.dispatch(initialize("LDAPForm", nextProps.formData));
+      this.props.dispatch(initialize(LDAP_FORM, nextProps.formData));
     }
   }
 
@@ -80,7 +82,7 @@ class LDAPBaseForm extends React.Component<any, any> {
     const saslAuthEnabled = values && values[this.formModel.LdapSaslAuthentication.uniqueKey] === "true";
 
     return (
-      <Form className="container" onSubmit={handleSubmit(onSave)}>
+      <Form className="container" onSubmit={handleSubmit(onSave)} role={LDAP_FORM}>
         <RouteChangeConfirm form={form} when={dirty} />
 
         <ConfirmBase
@@ -397,11 +399,11 @@ class LDAPBaseForm extends React.Component<any, any> {
 }
 
 const mapStateToProps = (state: State) => ({
-  values: getFormValues("LDAPForm")(state)
+  values: getFormValues(LDAP_FORM)(state)
 });
 
 const LDAPForm = reduxForm({
-  form: "LDAPForm",
+  form: LDAP_FORM,
   validate: validateMultipleMandatoryFields,
   onSubmitFail
 })(
