@@ -177,7 +177,7 @@ class UserPreferenceService {
             case PreferenceEnumDTO.ACCOUNT_DEFAULT_VOUCHERLIABILITY_ID:
                 return preferenceController.getPreference(ACCOUNT_DEFAULT_VOUCHERLIABILITY_ID.toString(), false).getValueString()
             case PreferenceEnumDTO.REPLICATION_ENABLED:
-                return preferenceController.replicationEnabled
+                return !licenseService.replicationDisabled
             case PreferenceEnumDTO.AVETMISS_IDENTIFIER:
                 return preferenceController.avetmissID
             case PreferenceEnumDTO.COURSECLASS_DEFAULT_DELIVERYMODE:

@@ -999,8 +999,6 @@ public abstract class CommonPreferenceController {
 			return getPortalHideClassRollContactEmail();
 		} else if (ACCOUNT_PREPAID_FEES_POST_AT.equals(key)) {
 			return getAccountPrepaidFeesPostAt();
-		} else if (REPLICATION_ENABLED.equals(key)) {
-			return getReplicationEnabled();
 		} else if (CLASS_DEFAULTS_DELIVERY_MODE.equals(key)) {
 			return getCourseClassDefaultDeliveryMode();
 		} else if (CLASS_DEFAULTS_FUNDING_SOURCE.equals(key)) {
@@ -1223,14 +1221,7 @@ public abstract class CommonPreferenceController {
 	public void setCommunicationKey(Long communicationKey) {
 		setValue(SERVICES_COMMUNICATION_KEY, false, String.valueOf(communicationKey));
 	}
-
-	/**
-	 * Shows if replication should be performed for college.
-	 */
-	@Deprecated
-	public boolean getReplicationEnabled() {
-		return Boolean.parseBoolean(getValue(REPLICATION_ENABLED, false));
-	}
+	
 
 	public boolean getFeatureConcessionsInEnrolment() {
 		return Boolean.parseBoolean(getValue(FEATURE_CONCESSIONS_IN_ENROLMENT, false));

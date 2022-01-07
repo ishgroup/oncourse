@@ -78,8 +78,7 @@ const styles = theme => createStyles({
     color: theme.palette.text.primaryEditable,
     fontWeight: 400,
     "&:hover, &:hover $placeholderContent, &:hover $editButton": {
-      color: theme.palette.primary.main,
-      fill: theme.palette.primary.main
+      opacity: 0.15
     },
     "&$rightAligned": {
       display: "flex",
@@ -117,7 +116,7 @@ const styles = theme => createStyles({
     maxWidth: "100%"
   },
   placeholderContent: {
-    color: theme.palette.divider,
+    opacity: 0.15,
     fontWeight: 400,
   },
   chip: {
@@ -568,7 +567,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
             selected: classes.emptySelect
           }}
         >
-          <span className={clsx(classes.placeholderContent, fieldClasses.placeholder)}>{placeholder || "No value"}</span>
+          <span className={clsx(classes.placeholderContent, !isEditing && fieldClasses.placeholder)}>{placeholder || "No value"}</span>
         </MenuItem>,
         ...selectItems || []
       ];
