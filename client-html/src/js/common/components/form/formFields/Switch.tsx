@@ -101,8 +101,8 @@ export const Switch = withStyles(styles)(SwitchBase);
 
 export const FormSwitch = props => {
   const {
- input, color, disabled, stringValue, label, className, inline, onChangeHandler
-} = props;
+    input, color, disabled, stringValue, label, className, inline, onChangeHandler
+  } = props;
 
   const onChange = useCallback(
     (e, value) => {
@@ -125,7 +125,9 @@ export const FormSwitch = props => {
     <>
       {label && (
         <Typography variant="caption" color="textSecondary">
-          {label}
+          <label htmlFor={`input-${input.name}`}>
+            {label}
+          </label>
         </Typography>
       )}
       <Switch
@@ -135,6 +137,8 @@ export const FormSwitch = props => {
         disabled={disabled}
         className={className}
         inline={inline}
+        id={`input-${input.name}`}
+        name={input.name}
       />
     </>
   );
