@@ -48,7 +48,8 @@ const BinCogwheel = memo<Props>(props => {
       if (!selectedRecord) {
         return;
       }
-      selectedRecord.values[activeColumnIndex] === "true" ? selectedVal.push(id) : selectedDeletedVal.push(id);
+      if (selectedRecord.values[activeColumnIndex] === "true") selectedVal.push(id);
+      else selectedDeletedVal.push(id);
     });
     setSelected(selectedVal);
     setSelectedDeleted(selectedDeletedVal);
@@ -73,7 +74,7 @@ const BinCogwheel = memo<Props>(props => {
   };
 
   return selection.length ? (
-    <MenuItem onClick={onClick}>
+    <MenuItem onClick={onClick} data-testid="delete-action-item">
       <span className={deleteActionName === "Move to bin" ? "errorColor" : null}>
         {deleteActionName}
       </span>
