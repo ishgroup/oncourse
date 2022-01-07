@@ -32,7 +32,7 @@ export class CollegeBase extends React.Component<Props, any> {
           secKey={sekKey}
           timezones={timezones}
           category={Categories.college}
-          form={<CollegeForm secKey={sekKey} />}
+          form={formRoleName => <CollegeForm secKey={sekKey} formRoleName={formRoleName} />}
         />
       </div>
     );
