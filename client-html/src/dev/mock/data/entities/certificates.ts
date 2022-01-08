@@ -72,8 +72,8 @@ export function mockCertificates() {
           l.nationalCode,
           l.title,
           l.certificateNumber,
-          l.createdOn,
-          l.printedOn,
+          "2022-01-08T06:22:29.271Z",
+          "2022-01-08T06:22:29.271Z",
           l.level
         ]
       }));
