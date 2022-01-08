@@ -20,7 +20,7 @@ export function mockCertificates() {
       modifiedOn: row.values[7],
       revokedOn: row.values[8],
       code: "cNwB7eb4yFsy",
-      expiryDate: new Date().toISOString(),
+      expiryDate: "2022-01-10T06:22:29.271Z",
       outcomes: [
         {
           code: "TAAENV402B",
