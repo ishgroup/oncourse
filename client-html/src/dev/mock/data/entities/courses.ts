@@ -8,8 +8,8 @@ export function mockCourses() {
 
     return {
       id: row.id,
-      createdOn: new Date().toISOString(),
-      modifiedOn: new Date().toISOString(),
+      createdOn: "2022-01-07T07:26:02.042Z",
+      modifiedOn: "2022-01-08T07:26:02.042Z",
       name: row.values[0],
       code: row.values[1],
       tags: [this.getTag(1)],
