@@ -154,7 +154,6 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
               label="Tax type"
               items={getFormattedTaxes(taxTypes) || []}
               placeholder="Not set"
-              allwowEmpty
             />
           </Grid>
           {paymentInPermissions && storedCard && !values.removeCChistory

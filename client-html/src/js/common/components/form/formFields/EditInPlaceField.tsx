@@ -590,7 +590,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
           [classes.hideArrows]: ["percentage", "number"].includes(type),
           "text-end": rightAligned
         }),
-        placeholder: placeholder || (!isEditing && "No value"),
+        placeholder: placeholder || (!isEditing ? "No value" : ""),
         style: {
           maxWidth: isInline && !invalid ? this.getInputLength() : undefined
         },
