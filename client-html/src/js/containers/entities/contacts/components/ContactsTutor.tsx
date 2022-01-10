@@ -38,18 +38,14 @@ const workingWithChildrenStatusItems = Object.keys(WorkingWithChildrenStatus).ma
 
 const payslipPayTypes = Object.keys(PayslipPayType).map(mapSelectItems);
 
-export const TFNInputMask = props => {
-  const { inputRef, ...other } = props;
-
-  return (
-    <NumberFormat
-      {...other}
-      getInputRef={inputRef}
-      format="###-###-###"
-      allowEmptyFormatting
-    />
-  );
-};
+export const TFNInputMask = React.forwardRef<any, any>((props, ref) => (
+  <NumberFormat
+    {...props}
+    getInputRef={ref}
+    format="###-###-###"
+    allowEmptyFormatting
+  />
+));
 
 const ContactsTutor: React.FC<ContactsTutorProps> = props => {
   const {
@@ -57,25 +53,25 @@ const ContactsTutor: React.FC<ContactsTutorProps> = props => {
   } = props;
 
   const [switchChanged, setSwitchChangedValue] = useState(false);
-  const [switchValue, setSwitchValue] = useState(false)
+  const [switchValue, setSwitchValue] = useState(false);
 
-  const classes  = useStyles();
-
-  useEffect(() => {
-    if (isNew && !switchChanged) setSwitchValue(true)
-  }, [])
+  const classes = useStyles();
 
   useEffect(() => {
-    if (!switchChanged && values.tutor && values.tutor.defaultPayType) setSwitchValue(true)
-  }, [values])
+    if (isNew && !switchChanged) setSwitchValue(true);
+  }, []);
+
+  useEffect(() => {
+    if (!switchChanged && values.tutor && values.tutor.defaultPayType) setSwitchValue(true);
+  }, [values]);
 
   const changeEnableTutorPayGeneration = () => {
     const defaultPayTypeValue = !switchValue ? "Employee" : null;
-    dispatch(change(LIST_EDIT_VIEW_FORM_NAME, 'tutor.defaultPayType', defaultPayTypeValue))
+    dispatch(change(LIST_EDIT_VIEW_FORM_NAME, 'tutor.defaultPayType', defaultPayTypeValue));
 
-    if (!switchChanged) setSwitchChangedValue(true)
-    setSwitchValue(!switchValue)
-  }
+    if (!switchChanged) setSwitchChangedValue(true);
+    setSwitchValue(!switchValue);
+  };
 
   const onCalendarClick = () => {
     const tutorId = values.tutor && values.tutor.id;
@@ -152,7 +148,7 @@ const ContactsTutor: React.FC<ContactsTutorProps> = props => {
               name="tutor.defaultPayType"
               label="Tutor pay default type"
               items={payslipPayTypes}
-              defaultValue={"Employee"}
+              defaultValue="Employee"
             />
           </Grid>
         )}
