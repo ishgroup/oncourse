@@ -735,7 +735,7 @@ databaseChangeLog:
         - onFail: MARK_RAN
         - tableExists:
             tableName: Message
-        changes:
-          - customChange: {
-            "class": "ish.oncourse.server.upgrades.liquibase.change.AddNewProductRule"
-          }
+      changes:
+        - customChange: {
+          "class": "ish.oncourse.server.upgrades.liquibase.change.UpdateMessageBody"
+        }
