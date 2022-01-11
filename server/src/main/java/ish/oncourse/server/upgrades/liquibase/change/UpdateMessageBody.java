@@ -23,12 +23,13 @@ import java.util.List;
 
 public class UpdateMessageBody extends IshTaskChange {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public void execute(Database database) throws CustomChangeException {
         ICayenneService cayenneService = SchemaUpdateService.sharedCayenneService;
         DataContext context = cayenneService.getNewContext();
+        logger.warn("Running upgrade...");
 
         List<Message> emptyBodyMessages = ObjectSelect.query(Message.class)
                 .where(Message.EMAIL_BODY.isNull()
