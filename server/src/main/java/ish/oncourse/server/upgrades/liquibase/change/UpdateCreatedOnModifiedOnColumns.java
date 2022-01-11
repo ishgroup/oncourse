@@ -105,10 +105,12 @@ public class UpdateCreatedOnModifiedOnColumns extends IshTaskChange {
 
     @Override
     public void execute(Database database) throws CustomChangeException {
+        logger.warn("Running upgrade...");
 
         for (var entity : entities) {
             JdbcConnection connection = (JdbcConnection) database.getConnection();
             try (var statement = connection.createStatement()) {
+                logger.warn("Upgrade " + entity);
                 statement.execute(String.format("UPDATE %s SET createdOn = IF(modifiedOn is null, NOW(), modifiedOn) where createdOn IS NULL", entity));
                 statement.execute(String.format("UPDATE %s SET modifiedOn = IF(createdOn is null, NOW(), createdOn) where modifiedOn IS NULL", entity));
                 connection.commit();
