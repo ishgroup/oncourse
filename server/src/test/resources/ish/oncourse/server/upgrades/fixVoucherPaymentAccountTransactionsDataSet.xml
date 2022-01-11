@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-  <Account ID="1100" ACCOUNTCODE="65387" DESCRIPTION="Voucher underpayment" ISENABLED="1" TYPE="6"/>
-  <Account ID="200" ACCOUNTCODE="11305" DESCRIPTION="Trade debtors" ISENABLED="1" TYPE="1"/>
-  <Account ID="500" ACCOUNTCODE="28000" DESCRIPTION="Voucher liability" ISENABLED="1" TYPE="2"/>
-  <Account ID="100" ACCOUNTCODE="11103" DESCRIPTION="Cheque Account" ISENABLED="1" TYPE="1"/>
-  <Account ID="300" ACCOUNTCODE="11600" DESCRIPTION="GST payable to suppliers" ISENABLED="1" TYPE="1"/>
-  <Account ID="600" ACCOUNTCODE="21600" DESCRIPTION="GST receivable from customers" ISENABLED="1" TYPE="2"/>
-  <Account ID="400" ACCOUNTCODE="28050" DESCRIPTION="Cheque Account" ISENABLED="1" TYPE="1"/>
+  <Account ID="1100" ACCOUNTCODE="65387" DESCRIPTION="Voucher underpayment" ISENABLED="1" TYPE="6"
+           CREATEDON="2021-12-21 12:00:10.0" MODIFIEDON="2021-12-21 12:00:10.0"/>
+  <Account ID="200" ACCOUNTCODE="11305" DESCRIPTION="Trade debtors" ISENABLED="1" TYPE="1"
+           CREATEDON="2021-12-21 12:00:10.0" MODIFIEDON="2021-12-21 12:00:10.0"/>
+  <Account ID="500" ACCOUNTCODE="28000" DESCRIPTION="Voucher liability" ISENABLED="1" TYPE="2"
+           CREATEDON="2021-12-21 12:00:10.0" MODIFIEDON="2021-12-21 12:00:10.0"/>
+  <Account ID="100" ACCOUNTCODE="11103" DESCRIPTION="Cheque Account" ISENABLED="1" TYPE="1"
+           CREATEDON="2021-12-21 12:00:10.0" MODIFIEDON="2021-12-21 12:00:10.0"/>
+  <Account ID="300" ACCOUNTCODE="11600" DESCRIPTION="GST payable to suppliers" ISENABLED="1" TYPE="1"
+           CREATEDON="2021-12-21 12:00:10.0" MODIFIEDON="2021-12-21 12:00:10.0"/>
+  <Account ID="600" ACCOUNTCODE="21600" DESCRIPTION="GST receivable from customers" ISENABLED="1" TYPE="2"
+           CREATEDON="2021-12-21 12:00:10.0" MODIFIEDON="2021-12-21 12:00:10.0"/>
+  <Account ID="400" ACCOUNTCODE="28050" DESCRIPTION="Cheque Account" ISENABLED="1" TYPE="1"
+           CREATEDON="2021-12-21 12:00:10.0" MODIFIEDON="2021-12-21 12:00:10.0"/>
 
 
   <!--PaymentIn with 2 PaymentInLines and incorrect AccountTransactions-->
@@ -38,45 +45,56 @@
 
   <Contact id="7234" isCompany="1" isStudent="0" isTutor="0"
            lastName="Weave Youth and Community Services - Strawberry Hills" allowEmail="0" allowPost="0" allowSms="0"
-           deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" uniqueCode="mDmFBmkZds3VSgor"/>
+           deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" uniqueCode="mDmFBmkZds3VSgor"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Contact id="9675" isCompany="1" isStudent="0" isTutor="0" lastName="Weave Community Hub" allowEmail="0" allowPost="0"
            allowSms="0"
-           deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" uniqueCode="DwLNLPpjQKa6RyxE"/>
+           deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" uniqueCode="DwLNLPpjQKa6RyxE"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <PaymentMethod id="800" name="Voucher" accountId="100" active="1" type="8" reconcilable="0" bankedAutomatically="1"/>
+  <PaymentMethod id="800" name="Voucher" accountId="100" active="1" type="8" reconcilable="0" bankedAutomatically="1"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <PaymentIn ID="10957" accountInId="500" amount="480" status="3" confirmationStatus="3" paymentMethodId="800"
-             payerId="7234" source="O" paymentDate="2017-11-15" reconciled="0"/>
+             payerId="7234" source="O" paymentDate="2017-11-15" reconciled="0"
+             createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Invoice allowAutoPay="1" id="6413" debtorsAccountId="200" amoutOwing="0" contactId="7234" type="1"
            confirmationStatus="3" source="O" overdue="0" invoiceDate="2017-09-04" invoiceNumber="6447"
-           dateDue="2017-10-30"/>
+           dateDue="2017-10-30" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Invoice allowAutoPay="1" id="6423" debtorsAccountId="200" amoutOwing="0" contactId="7234" type="1"
            confirmationStatus="3" source="O" overdue="0" invoiceDate="2017-09-05" invoiceNumber="6458"
-           dateDue="2017-10-30"/>
+           dateDue="2017-10-30" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Invoice allowAutoPay="1" id="10333" debtorsAccountId="200" amoutOwing="0" contactId="9675" type="1"
            confirmationStatus="3" source="O" overdue="0" invoiceDate="2017-11-15" invoiceNumber="8760"
-           dateDue="2017-12-15"/>
+           dateDue="2017-12-15" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <PaymentInLine ID="14013" accountOutId="200" amount="200" invoiceId="6413" paymentInId="10957"/>
-  <PaymentInLine ID="14019" accountOutId="200" amount="280" invoiceId="6423" paymentInId="10957"/>
+  <PaymentInLine ID="14013" accountOutId="200" amount="200" invoiceId="6413" paymentInId="10957"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentInLine ID="14019" accountOutId="200" amount="280" invoiceId="6423" paymentInId="10957"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
 
-  <Tax id="3" isGstTaxType="0" PAYABLETOSUPPLIERACCOUNTID="300" RECEIVABLEFROMSTUDENTACCOUNTID="600" TAXCODE="*"/>
+  <Tax id="3" isGstTaxType="0" PAYABLETOSUPPLIERACCOUNTID="300" RECEIVABLEFROMSTUDENTACCOUNTID="600" TAXCODE="*"
+       createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <InvoiceLine id="12437" accountId="500" invoiceId="10333" prepaidFeesAccountId="400" discountEachExTax="0"
                prepaidFeesRemaining="0" priceEachExTax="2120" quantity="1" taxEach="0"
-               taxId="3" TITLE="Training Prepayment Voucher"/>
+               taxId="3" TITLE="Training Prepayment Voucher"
+               createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Product id="20" isWebVisible="0" taxAdjustment="0" taxId="3" sku="Voucher" expiryDays="365" expiryType="1"
            isOnSale="1" liabilityAccountId="500"
-           name="Training Prepayment Voucher" type="3"/>
+           name="Training Prepayment Voucher" type="3"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <ProductItem id="175" type="3" productId="20" invoiceLineId="12437" code="Mj3NWRzx" value="0" redeemedCoursesCount="0"
                status="3" source="O" valueOnPurchase="2120"
-               confirmationStatus="1"/>
+               confirmationStatus="1"
+               createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <Voucher_PaymentIn id="53" paymentInId="10957" voucherId="175" enrolmentsCount="0" status="0"/>
+  <Voucher_PaymentIn id="53" paymentInId="10957" voucherId="175" enrolmentsCount="0" status="0"
+                     createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
 
   <!--PaymentIn with 1 PaymentInLine and correct AccountTransactions-->
@@ -93,14 +111,18 @@
                       createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
                       transactionDate="2017-11-15"/>
 
-  <PaymentMethod id="900" name="Voucher" accountId="100" active="1" type="8" reconcilable="0" bankedAutomatically="1"/>
+  <PaymentMethod id="900" name="Voucher" accountId="100" active="1" type="8" reconcilable="0" bankedAutomatically="1"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <PaymentIn ID="11000" accountInId="500" amount="100" status="3" confirmationStatus="3" paymentMethodId="800"
-             payerId="7234" source="O" paymentDate="2017-11-15" reconciled="0"/>
+             payerId="7234" source="O" paymentDate="2017-11-15" reconciled="0"
+             createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Invoice allowAutoPay="1" id="6433" debtorsAccountId="200" amoutOwing="0" contactId="7234" type="1"
            confirmationStatus="3" source="O" overdue="0" invoiceDate="2017-09-04" invoiceNumber="6500"
-           dateDue="2017-10-30"/>
+           dateDue="2017-10-30"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <PaymentInLine ID="14021" accountOutId="200" amount="100" invoiceId="6433" paymentInId="11000"/>
+  <PaymentInLine ID="14021" accountOutId="200" amount="100" invoiceId="6433" paymentInId="11000"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 </dataset>
