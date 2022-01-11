@@ -72,7 +72,7 @@ export const useStyles = makeStyles((theme: AppTheme) => ({
       "& .content-mode-wrapper": {
         position: "absolute",
         right: "10px",
-        top: "8px",
+        top: "6px",
         padding: "5px",
         zIndex: 1000,
         "& .content-mode": {
