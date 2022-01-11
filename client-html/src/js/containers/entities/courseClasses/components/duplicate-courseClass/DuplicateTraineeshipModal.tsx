@@ -338,7 +338,6 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                     onChange={handleDaysToChange}
                     disabled={fetching}
                     className={classes.daysInput}
-                    hideArrows
                     required
                   />
                   {" "}
