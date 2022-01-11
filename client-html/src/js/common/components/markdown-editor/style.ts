@@ -38,65 +38,12 @@ export const useStyles = makeStyles((theme: AppTheme) => ({
   },
   editorArea: {
     "&#editorRoot": {
-      "& textarea.mde-text, .mde-tabs button": {
-        fontFamily: "Inter, sans-serif",
-        fontWeight: 400,
-        fontSize: '14px',
-        outline: "none"
-      },
       "& .ck-dropdown__button .ck-button__label": {
         fontSize: "14px"
       },
       cursor: "pointer",
       overflow: "auto",
       position: "relative",
-      "& .mde-textarea-wrapper, .mde-preview": {
-        "& ol": {
-          display: "block",
-          listStyleType: "decimal",
-          marginTop: "1em",
-          marginBottom: "1em",
-          marginLeft: "0",
-          marginRight: "0",
-          paddingLeft: "40px",
-        },
-        "& ul": {
-          display: "block",
-          listStyleType: "disc",
-          marginTop: "1em",
-          marginBottom: "1em",
-          marginLeft: "0",
-          marginRight: "0",
-          paddingLeft: "40px",
-        },
-        "& h2": {
-          display: "block",
-          fontSize: "1.5em",
-          marginTop: "0.83em",
-          marginBottom: "0.83em",
-          marginLeft: "0",
-          marginRight: "0",
-          fontWeight: "bold"
-        },
-        "& h3": {
-          display: "block",
-          fontSize: "1.17em",
-          marginTop: "1em",
-          marginBottom: "1em",
-          marginLeft: "0",
-          marginRight: "0",
-          fontWeight: "bold"
-        },
-        "& h4": {
-          display: "block",
-          fontSize: "1em",
-          marginTop: "1.33em",
-          marginBottom: "1.33em",
-          marginLeft: "0",
-          marginRight: "0",
-          fontWeight: "bold"
-        }
-      },
       "& .ck-list__item .ck-button": {
         height: "unset",
         padding: "5px 10px"
@@ -122,74 +69,6 @@ export const useStyles = makeStyles((theme: AppTheme) => ({
         overflow: "visible",
         width: "120px"
       },
-      "& .ck.ck-button.ck-dropdown__button": {
-        width: "140px"
-      },
-      "& .mde-header": {
-        background: theme.table.contrastRow.main,
-        height: "45px",
-        paddingLeft: "115px",
-        minHeight: "45px",
-        "& .mde-tabs": {
-          position: "absolute",
-          height: "45px",
-          zIndex: 2,
-          left: "0px"
-        },
-        "& .ck.ck-icon.ck-dropdown__arrow": {
-          width: "11px",
-          marginRight: "12px",
-          marginBottom: "0.5px"
-        },
-        "& .ck-icon": {
-          width: "19px"
-        },
-        "& ul.mde-header-group": {
-          padding: "8px"
-        },
-        "& #mdeHeadersDropdown": {
-          top: "-6px",
-          "& .ck-dropdown__button": {
-            outline: "none"
-          },
-          "& .paragraph": {
-            marginTop: "1px"
-          }
-        }
-      },
-      "& .mde-preview": {
-        "& .ck.ck-button.ck-dropdown__button": {
-          marginRight: "12px",
-          marginTop: "2px",
-          width: "140px"
-        },
-        "& .ck.ck-button": {
-          width: "31px"
-        },
-        "& .ck-list .ck-button.ck-button_with-text": {
-          width: "100%"
-        },
-        "& .ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-focused": {
-          borderColor: "rgb(196, 196, 196)",
-          boxShadow: "none"
-        },
-        "& .ck-list": {
-          padding: 0,
-          margin: 0
-        },
-        "& .mde-preview-content": {
-          position: "relative",
-          top: 0,
-          padding: 0,
-          marginTop: "-46px",
-          left: "-1px",
-          width: "calc(100% + 2px)",
-          "& h1, h2, h3, h4, h5": {
-            border: 0,
-            all: "revert"
-          }
-        },
-      },
       "& .content-mode-wrapper": {
         position: "absolute",
         right: "10px",
@@ -207,22 +86,34 @@ export const useStyles = makeStyles((theme: AppTheme) => ({
         }
       },
       "& .ck-editor": {
-        "& .ck-toolbar__items": {
-          marginLeft: "122px"
-        },
         "& .ck-content": {
           resize: "vertical",
           maxHeight: "80vh",
           minHeight: "200px",
-          borderBottom: 0,
           fontFamily: "Inter, sans-serif",
           fontWeight: 400,
           fontSize: '14px',
           color: "black"
         },
+        "& .ck-content .table": {
+          marginLeft: 0
+        },
         "& .ck-toolbar": {
           padding: "3px"
-        }
+        },
+        "& .ck-source-editing-button": {
+          marginLeft: "auto",
+          marginRight: "44px"
+        },
+        "& .ck-source-editing-button > *": {
+          visibility: 'hidden'
+        },
+        "& .ck-source-editing-button .ck_source_edit_custom": {
+          visibility: 'visible'
+        },
+        "& .ck-source-editing-button .ck_code_icon_custom": {
+          width: "24px"
+        },
       },
       "&.ace-wrapper": {
         border: `1px solid ${theme.palette.divider}`,
@@ -235,11 +126,35 @@ export const useStyles = makeStyles((theme: AppTheme) => ({
     }
   },
   previewFrame: {
+    width: "100%",
     maxHeight: "300px",
     overflow: "auto",
-    fontSize: "inherit",
+    fontSize: "14px",
+    "& > div": {
+      width: "100%"
+    },
     "& h1,h2,h3,h4": {
       all: "revert"
+    },
+    "& table": {
+      marginLeft: 0,
+      marginRight: 'auto',
+      borderCollapse: "collapse",
+      borderSpacing: 0,
+      border: '1px double #b3b3b3',
+      "& th": {
+        textAlign: 'left',
+        fontWeight: 700,
+        background: 'hsla(0,0%,0%,5%)',
+        minWidth: '2em',
+        padding: '0.4em',
+        border: '1px solid #bfbfbf'
+      },
+      "& td": {
+        minWidth: '2em',
+        padding: '0.4em',
+        border: '1px solid #bfbfbf'
+      },
     }
   },
   readonly: {

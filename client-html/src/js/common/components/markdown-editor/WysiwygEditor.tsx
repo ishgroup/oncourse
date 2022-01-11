@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
 import AutoformatPlugin from '@ckeditor/ckeditor5-autoformat/src/autoformat';
+import SourceEditing from '@ckeditor/ckeditor5-source-editing/src/sourceediting';
 import BoldPlugin from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import ItalicPlugin from '@ckeditor/ckeditor5-basic-styles/src/italic';
 import HeadingPlugin from '@ckeditor/ckeditor5-heading/src/heading';
@@ -9,18 +10,35 @@ import LinkPlugin from '@ckeditor/ckeditor5-link/src/link';
 import ListPlugin from '@ckeditor/ckeditor5-list/src/list';
 import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import Markdown from '@ckeditor/ckeditor5-markdown-gfm/src/markdown';
+import Table from '@ckeditor/ckeditor5-table/src/table';
+import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ReactDOM from "react-dom";
+import CodeIcon from '@mui/icons-material/Code';
+import CodeOffIcon from '@mui/icons-material/CodeOff';
+import { removeContentMarker } from "./utils";
 
-interface Props {
-  value?: string;
-  onChange?: (val: any) => void;
-  setParentHeight?: (val: any) => void;
-  defaultHeight?: number;
+const SourceEditingSwitch = ({ on }: { on?: boolean }) => (
+  <div className="ck_source_edit_custom">
+    {on ? <CodeOffIcon className="ck_code_icon_custom" /> : <CodeIcon className="ck_code_icon_custom" />}
+    <span className="ck ck-tooltip ck-tooltip_s"><span className="ck ck-tooltip__text">Edit markdown source</span></span>
+  </div>
+);
+
+function customizeSourceEditing( editor ) {
+  editor.plugins.get("SourceEditing").on('change:isSourceEditingMode', (e, n, on ) => {
+    const sourceEdit = document.querySelector('.ck-source-editing-button');
+    ReactDOM.render(
+      <SourceEditingSwitch on={on} />,
+      sourceEdit
+    );
+  });
 }
 
 const config = {
   plugins: [
     Markdown,
+    SourceEditing,
     EssentialsPlugin,
     AutoformatPlugin,
     BoldPlugin,
@@ -29,7 +47,10 @@ const config = {
     LinkPlugin,
     ListPlugin,
     ParagraphPlugin,
+    Table,
+    TableToolbar,
   ],
+  extraPlugins: [customizeSourceEditing],
   toolbar: [
     'heading',
     'bold',
@@ -37,7 +58,13 @@ const config = {
     'link',
     'bulletedList',
     'numberedList',
+    'insertTable',
+    'sourceEditing',
   ],
+  table: {
+    defaultHeadings: { rows: 1 },
+    contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
+  },
   heading: {
     options: [
       { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
@@ -57,58 +84,38 @@ const config = {
   },
 };
 
+interface Props {
+  value?: string;
+  onChange?: (val: any) => void;
+}
+
 const WysiwygEditor: React.FC<Props> = ({
   value,
-  onChange,
-  defaultHeight,
-  setParentHeight,
+  onChange
 }) => {
   const editorRef = useRef(null);
-  const [previewHeight, setPreviewHeight] = useState(defaultHeight);
+  
+  const onReady = editor => {
+    editorRef.current = editor;
 
-  function storeDimensions(element) {
-    element.srcElement.textHeight = element.srcElement.clientHeight;
-  }
-
-  function onResize(element) {
-    if (element.srcElement.textHeight > 20 && element.srcElement.textHeight !== element.srcElement.clientHeight) {
-      setPreviewHeight(element.srcElement.clientHeight);
-      setParentHeight(element.srcElement.clientHeight);
-    }
-  }
-
-  useEffect(() => {
-    const contentNode = document.querySelector(".ck-content") as HTMLElement;
-
-    if (contentNode) {
-      contentNode.onmousedown = storeDimensions;
-      contentNode.onmouseup = onResize;
-    }
-  }, []);
-
-  useEffect(() => {
-    if (editorRef.current) {
-      editorRef.current.editing.view.change(writer => {
-        const root = editorRef.current.editing.view.document.getRoot();
-
-        writer.setStyle(
-          "height",
-          `${previewHeight + 1}px`,
-          root,
-        );
-      });
-    }
-  }, [previewHeight, editorRef.current]);
+    // customize source edit button switch
+    const sourceEdit = document.querySelector('.ck-source-editing-button');
+    ReactDOM.render(
+      <SourceEditingSwitch />,
+      sourceEdit,
+      () => {
+        sourceEdit.classList.remove('invisible');
+      }
+    );
+  };
 
   return (
     <CKEditor
       editor={ClassicEditor}
       config={config}
-      data={value}
+      data={removeContentMarker(value)}
       onChange={(e, editor) => onChange(editor.getData())}
-      onInit={editor => {
-      editorRef.current = editor;
-    }}
+      onReady={onReady}
     />
   );
 };

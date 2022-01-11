@@ -21,7 +21,7 @@ import Typography from "@mui/material/Typography";
 import Edit from "@mui/icons-material/Edit";
 import clsx from "clsx";
 import React, { useState } from "react";
-import ReactMarkdown from "react-markdown";
+import markdown2html from '@ckeditor/ckeditor5-markdown-gfm/src/markdown2html/markdown2html.js';
 import { Field, WrappedFieldProps } from "redux-form";
 import HtmlEditor from "./HtmlEditor";
 import MarkdownEditor from "./MarkdownEditor";
@@ -56,7 +56,6 @@ const EditorResolver = ({ contentMode, draftContent, onChange }) => {
 
 interface Props {
   disabled?: boolean;
-  hideLabel?: boolean;
   fieldClasses?: any;
   label?: string;
 }
@@ -174,7 +173,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
                 {
                   value
                     ? contentMode === "md"
-                      ? <ReactMarkdown source={removeContentMarker(value)} />
+                      ? <div dangerouslySetInnerHTML={{ __html: markdown2html(removeContentMarker(value))  }}/>
                       : removeContentMarker(value)
                     : "No value"
                 }

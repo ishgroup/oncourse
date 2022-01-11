@@ -671,11 +671,14 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                           : input.value ? input.value[selectValueMark] : ""
                         : input.value || ""}
                     inputRef={this.setInputNode}
+                    inputProps={{
+                      classes: {
+                        root: classes.textFieldBorderModified,
+                        underline: fieldClasses.underline
+                      }
+                    }}
                     classes={{
-                      root: classes.textFieldBorderModified,
                       select: clsx(classes.muiSelect ,fieldClasses.text, isInline && classes.inlineSelect),
-                      // @ts-ignore
-                      underline: fieldClasses.underline
                     }}
                     multiple={multiple}
                     autoWidth={autoWidth}
