@@ -426,7 +426,6 @@ const CourseClassBulkChangeSessionForm = props => {
                         formatting="inline"
                         step="1"
                         className={classes.bulkChangeDaysInput}
-                        hideArrows
                         onChange={onMoveLater}
                       />
                       {" "}
@@ -448,7 +447,6 @@ const CourseClassBulkChangeSessionForm = props => {
                         formatting="inline"
                         step="1"
                         className={classes.bulkChangeDaysInput}
-                        hideArrows
                         onChange={onMoveEarlier}
                       />
                       {" "}
