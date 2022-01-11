@@ -1,12 +1,16 @@
 import React from 'react';
-import {connect} from "react-redux";
-import {Dispatch} from "redux";
-import clsx from "clsx";
-import {clearRenderHtml, getPages, savePage, setPageContentMode, toggleEditMode} from "./actions";
-import {Block, ContentMode, Page as PageModel} from "../../../../model";
-import {Page} from "./components/Page";
-import {State} from "../../../../reducers/state";
-import { clearBlockRenderHtml, getBlocks, saveBlock, setBlockContentMode } from "../blocks/actions";
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import clsx from 'clsx';
+import {
+  clearRenderHtml, getPages, savePage, setPageContentMode, toggleEditMode
+} from './actions';
+import { Block, ContentMode, Page as PageModel } from '../../../../model';
+import { Page } from './components/Page';
+import { State } from '../../../../reducers/state';
+import {
+  clearBlockRenderHtml, getBlocks, saveBlock, setBlockContentMode
+} from '../blocks/actions';
 
 interface Props {
   pages: PageModel[];
@@ -35,14 +39,17 @@ export class Pages extends React.Component<Props, any> {
   }
 
   render() {
-    const {match, pages, blocks, onEditHtml, onSaveBlock, toggleEditMode, clearRenderHtml, clearBlockRenderHtml,
-      editMode, fetching, setPageContentMode, setBlockContentMode} = this.props;
-    const activePage = match.params.id && pages.find(page => page.id == match.params.id);
+    const {
+      match, pages, blocks, onEditHtml, onSaveBlock, toggleEditMode, clearRenderHtml, clearBlockRenderHtml,
+      editMode, fetching, setPageContentMode, setBlockContentMode
+    } = this.props;
+    const activePage = match.params.id && pages.find((page) => page.id == match.params.id);
 
     return (
       <>
-        {activePage &&
-          <div className={clsx(fetching && "fetching")}>
+        {activePage
+          && (
+          <div className={clsx('h-100',fetching && 'fetching')}>
             <Page
               page={activePage}
               onSave={onEditHtml}
@@ -57,7 +64,7 @@ export class Pages extends React.Component<Props, any> {
               blocks={blocks}
             />
           </div>
-        }
+          )}
       </>
     );
   }
@@ -70,20 +77,18 @@ const mapStateToProps = (state: State) => ({
   editMode: state.page.editMode,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-  return {
-    onInit: () => {
-      dispatch(getPages());
-      dispatch(getBlocks());
-    },
-    onEditHtml: (id, content) => dispatch(savePage(id, {content}, true)),
-    onSaveBlock: (id, content) => dispatch(saveBlock(id, {content}, true)),
-    toggleEditMode: flag => dispatch(toggleEditMode(flag)),
-    clearRenderHtml: id => dispatch(clearRenderHtml(id)),
-    clearBlockRenderHtml: () => dispatch(clearBlockRenderHtml()),
-    setPageContentMode: (id: number, contentMode: ContentMode) => dispatch(setPageContentMode(id,contentMode)),
-    setBlockContentMode: (id: number, contentMode: ContentMode) => dispatch(setBlockContentMode(id,contentMode))
-  };
-};
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  onInit: () => {
+    dispatch(getPages());
+    dispatch(getBlocks());
+  },
+  onEditHtml: (id, content) => dispatch(savePage(id, { content }, true)),
+  onSaveBlock: (id, content) => dispatch(saveBlock(id, { content }, true)),
+  toggleEditMode: (flag) => dispatch(toggleEditMode(flag)),
+  clearRenderHtml: (id) => dispatch(clearRenderHtml(id)),
+  clearBlockRenderHtml: () => dispatch(clearBlockRenderHtml()),
+  setPageContentMode: (id: number, contentMode: ContentMode) => dispatch(setPageContentMode(id, contentMode)),
+  setBlockContentMode: (id: number, contentMode: ContentMode) => dispatch(setBlockContentMode(id, contentMode))
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Pages as any);

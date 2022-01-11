@@ -51,20 +51,3 @@ export const Create = <V, S>(request: Request<V, S>): Epic<any, any> => {
       );
   };
 };
-
-export const Reply = <V, S>(request: Request<V, S>, retryTimes: number): Epic<any, any> => {
-  return (action$: ActionsObservable<any>, state$: StateObservable<S>): Observable<any> => {
-    return action$
-      .ofType(request.type).pipe(
-        mergeMap((action: IAction<any>) =>
-          from(() =>
-            request.getData(action.payload, state$.value),
-          ).pipe(
-            retry(retryTimes),
-            mergeMap((data: V) => request.processData(data, state$.value)),
-            catchError(data => request.processError(data)),
-          ),
-        ),
-      );
-  };
-};

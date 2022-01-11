@@ -39,7 +39,7 @@ export const EpicLogin: Epic<any, any> = EpicUtils.Create(request);
 export const EpicLoggedIn: Epic<any, State> = (action$: ActionsObservable<any>, state$: StateObservable<State>): Observable<any> => {
   return action$.ofType(PAGE_RELOAD).pipe(
     mergeMap(action => {
-      setTimeout(() => document.location.reload(true), 300);
+      setTimeout(() => document.location.reload(), 300);
       return [];
     })
   );

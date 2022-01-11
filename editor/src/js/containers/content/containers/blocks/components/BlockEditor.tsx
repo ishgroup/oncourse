@@ -6,11 +6,12 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Paper } from '@material-ui/core';
-import MarkdownEditor from '../../../../../common/components/editor/MarkdownEditor';
 import Editor from '../../../../../common/components/editor/HtmlEditor';
 import { ContentMode } from '../../../../../model';
 import ContentModeSwitch from '../../../../../common/components/ContentModeSwitch';
 import CustomButton from '../../../../../common/components/CustomButton';
+import { useStyles } from '../../../../../common/components/editor/style';
+import WysiwygEditor from '../../../../../common/components/editor/WysiwygEditor';
 
 interface Props {
   mode: ContentMode;
@@ -31,12 +32,13 @@ const BlockEditor: React.FC<Props> = (props) => {
     mode, content, setContent, moduleId, setContentMode, handleSave, handleCancel, position, enabledFullscreen, fullscreen, onFullscreen
   } = props;
 
+  const classes = useStyles();
+
   const editor = () => {
     switch (mode) {
       case 'md': {
         return (
-          <MarkdownEditor
-            height={position ? position.height - 67 - 45 : window.innerHeight - 30 - 48 - 45 - 51}
+          <WysiwygEditor
             value={content}
             onChange={setContent}
           />
@@ -47,7 +49,7 @@ const BlockEditor: React.FC<Props> = (props) => {
       default: {
         return (
           <Editor
-            height={position ? `${position.height - 67 - 44}px` : null}
+            height={position && !fullscreen ? `${position.height - 67 - 44}px` : "100%"}
             value={content}
             onChange={setContent}
             mode={mode}
@@ -58,9 +60,11 @@ const BlockEditor: React.FC<Props> = (props) => {
   };
 
   return (
-    <Paper className="p-1 h-100">
-      <div className={
-        clsx('editor-wrapper', (mode === 'html' || mode === 'textile') && 'ace-wrapper')
+    <Paper className="p-1 h-100 flex-column">
+      <div
+        id="editorRoot"
+        className={
+        clsx(classes.editorArea, (mode === 'html' || mode === 'textile') && 'ace-wrapper')
       }
       >
         <ContentModeSwitch
