@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 import React from 'react';
 import { Checkbox, FormControlLabel, IconButton } from '@material-ui/core';
 import clsx from 'clsx';
@@ -215,11 +220,12 @@ class PageSettings extends React.PureComponent<Props, State> {
   };
 
   onAddNewUrl = () => {
+    if (!this.state.newLink || this.state.urlError) return;
+
     const newLink = this.formatLink(this.state.newLink);
     const { pages, page, showError } = this.props;
     const actualPages = pages.map((p) => (p.id === page.id ? { ...p, urls: this.state.urls } : p));
 
-    if (!this.state.newLink) return;
     if (!PageService.isValidPageUrl(newLink, actualPages)) {
       showError('This url already exist');
       return;

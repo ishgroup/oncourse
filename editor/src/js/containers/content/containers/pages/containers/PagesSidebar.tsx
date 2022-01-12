@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -10,10 +15,9 @@ import SidebarList from '../../../../../components/Sidebar/SidebarList';
 import { showModal } from '../../../../../common/containers/modal/actions';
 import { State } from '../../../../../reducers/state';
 import PageService from '../../../../../services/PageService';
-import { hideNavigation, setActiveUrl, showNavigation } from '../../../../../common/containers/Navigation/actions';
+import { showNavigation } from '../../../../../common/containers/Navigation/actions';
 import { SHOW_MESSAGE } from '../../../../../common/components/message/actions';
-import { getLayouts, getThemes } from '../../../../design/containers/themes/actions';
-import { getBlocks } from '../../blocks/actions';
+import { getThemes } from '../../../../design/containers/themes/actions';
 
 interface Props {
   pages: Page[];

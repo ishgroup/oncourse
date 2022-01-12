@@ -3,6 +3,6 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-export const LINK_REGEX = /[^-a-zA-Z0-9_&/]/i;
+export const LINK_REGEX = /[^-a-zA-Z0-9_&/+]/i;
 
 export const validateLink = (value) => (!value || !LINK_REGEX.test(value) ? undefined : 'URL has invalid format');
