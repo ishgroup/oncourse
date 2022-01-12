@@ -727,3 +727,15 @@ databaseChangeLog:
             columnDataType: datetime
             columnName: modifiedOn
             tableName: Survey
+
+  - changeSet:
+      id: 97-1
+      author: kristina
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: Message
+      changes:
+        - customChange: {
+          "class": "ish.oncourse.server.upgrades.liquibase.change.UpdateMessageBody"
+        }
