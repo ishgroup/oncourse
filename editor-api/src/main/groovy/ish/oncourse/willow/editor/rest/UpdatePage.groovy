@@ -31,8 +31,8 @@ class UpdatePage extends AbstractUpdate<Page> {
             link -> !validator.isValidPagePath(link)
         }
         if (!incorrectUrls.empty) {
-            error = incorrectUrls.size() == 1 ? "URL ${incorrectUrls.get(0)} have invalid format" :
-                    "URL's ${incorrectUrls.collect {it }} have invalid format"
+            error = incorrectUrls.size() == 1 ? "URL have invalid format" :
+                    "URL's ${incorrectUrls.collect { it }} have invalid format"
         }
         return this
     }
