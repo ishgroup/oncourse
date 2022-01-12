@@ -152,7 +152,7 @@ const URLs = (
         {Boolean(error.key) && (<Typography className={classes.errorMessage}>{error.key}</Typography>)}
       </Grid>
       <Grid item xs={6} className={classes.pr} marginTop="auto">
-        {billingPlan === 'premium-21'
+        {(billingPlan === 'premium-21' || !['starter-21', 'basic-21'].includes(billingPlan))
           ? (
             <Autocomplete
               size="small"
@@ -196,7 +196,9 @@ const URLs = (
           )
           : (
             <Alert severity="info" className="mt-2">
-              <Link to="/"><MuiLink>Upgrade</MuiLink></Link> to the premium plan in order to add a custom domain
+              <Link to="/"><MuiLink>Upgrade</MuiLink></Link>
+              {' '}
+              to the premium plan in order to add a custom domain
             </Alert>
           )}
 

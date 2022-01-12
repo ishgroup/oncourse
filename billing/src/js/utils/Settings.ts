@@ -14,6 +14,6 @@ export const renderPlanLabel = (plan: BillingPlan) => {
     case 'premium-21':
       return 'Premium';
     default:
-      return 'Lagacy';
+      return 'Legacy';
   }
 };

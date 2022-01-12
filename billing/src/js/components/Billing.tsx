@@ -36,7 +36,7 @@ const validationSchema = yup.object().shape({
       otherwise: yup.number().nullable().min(2, 'Non Starter plan requires at least 2 users'),
     }),
   contactFullName: yup.string().nullable().required('Name is required'),
-  contactEmail: yup.string().nullable().email('Please enter valid email').required('Email is reuired'),
+  contactEmail: yup.string().nullable().email('Please enter valid email').required('Email is required'),
 });
 
 const planItems = renderSelectItems(
@@ -91,7 +91,7 @@ const Billing = () => {
       <Grid container columnSpacing={3} rowSpacing={2}>
         <Grid item xs={12}>
           <div className="centeredFlex mt-2 mb-1">
-            <h4 className="coloredHeaderText m-0">Oncourse plan</h4>
+            <h4 className="coloredHeaderText m-0">onCourse plan</h4>
           </div>
         </Grid>
         <Grid item xs={4}>
@@ -104,7 +104,7 @@ const Billing = () => {
         </Grid>
         <Grid item xs={4}>
           <Typography variant="caption" color="textSecondary">
-            Licenced concurent users
+            Licenced concurrent users
           </Typography>
           <Typography variant="body1">
             {settings.billingPlan === 'starter-21' ? '1' : settings.usersCount}
@@ -130,6 +130,9 @@ const Billing = () => {
         <Grid item xs={12}>
           <Collapse in={values.showPlanChangeFields}>
             <Grid container columnSpacing={3}>
+              <Grid item xs={12}>
+                <h4 className="coloredHeaderText centeredFlex mt-2 mb-1">Requested onCourse plan</h4>
+              </Grid>
               <Grid item xs={4}>
                 <TextField
                   select
@@ -258,7 +261,7 @@ const Billing = () => {
             margin="normal"
             variant="standard"
             name="invoiceReference"
-            label="Reference to put on invoice to you"
+            label="Your purchase order reference"
             value={values.invoiceReference || ''}
             onChange={handleChange}
           />
