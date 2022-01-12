@@ -27,7 +27,7 @@ abstract class TaggableApiService <T extends _DTOTrait, K extends TaggableCayenn
                     value.split(",").each { id ->
                         Tag dbTag = getRecordById(entity.context, Tag, id as Long)
                         if (!entity.hasTag(dbTag.getName(), true) && !entity.addTag(dbTag)) {
-                            validator.throwClientErrorException(entity.id, key, "Unavailable to add tag ${dbTag.name}")
+                            validator.throwClientErrorException(entity.id, key, "Selected record can’t be tagged with ${dbTag.name}")
                         }
                     }
                 }
@@ -37,7 +37,7 @@ abstract class TaggableApiService <T extends _DTOTrait, K extends TaggableCayenn
                     value.split(",").each { id ->
                         Tag dbTag = getRecordById(entity.context, Tag, id as Long)
                         if (entity.hasTag(dbTag.getName(), true) && !entity.removeTag(dbTag)) {
-                            validator.throwClientErrorException(entity.id, key, "Unavailable to add tag ${dbTag.name}")
+                            validator.throwClientErrorException(entity.id, key, "Selected record can’t be tagged with ${dbTag.name}")
                         }
                     }
                 }
