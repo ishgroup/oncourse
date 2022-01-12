@@ -14,15 +14,20 @@ import liquibase.database.Database;
 import liquibase.exception.CustomChangeException;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.concurrent.atomic.AtomicLong;
 
 public class UpdateDuplicateSortOrders extends IshTaskChange {
 
+    private static final Logger logger = LogManager.getLogger();
+
     @Override
     public void execute(Database database) throws CustomChangeException {
 
         DataContext context = SchemaUpdateService.sharedCayenneService.getNewContext();
+        logger.warn("Running upgrade...");
 
         AtomicLong currentIndex = new AtomicLong();
         ObjectSelect.query(CustomFieldType.class)
