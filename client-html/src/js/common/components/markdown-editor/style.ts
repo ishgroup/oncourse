@@ -42,7 +42,7 @@ export const useStyles = makeStyles((theme: AppTheme) => ({
         fontSize: "14px"
       },
       cursor: "pointer",
-      overflow: "auto",
+      overflowY: "auto",
       position: "relative",
       "& .ck-list__item .ck-button": {
         height: "unset",
@@ -82,7 +82,11 @@ export const useStyles = makeStyles((theme: AppTheme) => ({
           backgroundColor: "black",
           color: "white",
           padding: "2px",
-          fontSize: "9px"
+          fontSize: "9px",
+          "&:hover": {
+            backgroundColor: theme.palette.primary.main,
+            color: theme.palette.primary.contrastText,
+          },
         }
       },
       "& .ck-editor": {

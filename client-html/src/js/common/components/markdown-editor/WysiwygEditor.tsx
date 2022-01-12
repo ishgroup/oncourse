@@ -21,7 +21,7 @@ import { removeContentMarker } from "./utils";
 const SourceEditingSwitch = ({ on }: { on?: boolean }) => (
   <div className="ck_source_edit_custom">
     {on ? <CodeOffIcon className="ck_code_icon_custom" /> : <CodeIcon className="ck_code_icon_custom" />}
-    <span className="ck ck-tooltip ck-tooltip_s"><span className="ck ck-tooltip__text">Edit markdown source</span></span>
+    <span className="ck ck-tooltip ck-tooltip_s"><span className="ck ck-tooltip__text">Edit source</span></span>
   </div>
 );
 
@@ -93,19 +93,11 @@ const WysiwygEditor: React.FC<Props> = ({
   value,
   onChange
 }) => {
-  const editorRef = useRef(null);
-  
-  const onReady = editor => {
-    editorRef.current = editor;
-
-    // customize source edit button switch
+  const onReady = () => {
     const sourceEdit = document.querySelector('.ck-source-editing-button');
     ReactDOM.render(
       <SourceEditingSwitch />,
-      sourceEdit,
-      () => {
-        sourceEdit.classList.remove('invisible');
-      }
+      sourceEdit
     );
   };
 
