@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 import React, { useEffect, useRef } from 'react';
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
@@ -22,7 +27,7 @@ import CodeOffIcon from './components/CodeOff';
 const SourceEditingSwitch = ({ on }: { on?: boolean }) => (
   <div className="ck_source_edit_custom">
     {on ? <CodeOffIcon className="ck_code_icon_custom" /> : <CodeIcon className="ck_code_icon_custom" />}
-    <span className="ck ck-tooltip ck-tooltip_s"><span className="ck ck-tooltip__text">Edit markdown source</span></span>
+    <span className="ck ck-tooltip ck-tooltip_s"><span className="ck ck-tooltip__text">Edit source</span></span>
   </div>
 );
 
