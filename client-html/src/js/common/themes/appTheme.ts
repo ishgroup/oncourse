@@ -281,7 +281,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
     },
     appBar: {
       header: {
-        background: "#fff",
+        background: "#f2f2f2",
         color: "#222",
       },
       headerAlternate: {
