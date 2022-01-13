@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme: AppTheme) => ({
   },
   titleTextOnStuck: {
     color: `${theme.appBar.headerAlternate.color}`,
+    "& button": {
+      color: `${theme.appBar.headerAlternate.color}`,
+    }
   },
   titleWrapper: {
     minHeight: 51,
