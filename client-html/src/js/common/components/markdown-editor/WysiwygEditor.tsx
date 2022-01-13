@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
 import AutoformatPlugin from '@ckeditor/ckeditor5-autoformat/src/autoformat';
@@ -15,21 +15,20 @@ import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ReactDOM from "react-dom";
 import CodeIcon from '@mui/icons-material/Code';
-import CodeOffIcon from '@mui/icons-material/CodeOff';
 import { removeContentMarker } from "./utils";
 
-const SourceEditingSwitch = ({ on }: { on?: boolean }) => (
+const SourceEditingSwitch = () => (
   <div className="ck_source_edit_custom">
-    {on ? <CodeOffIcon className="ck_code_icon_custom" /> : <CodeIcon className="ck_code_icon_custom" />}
+    <CodeIcon className="ck_code_icon_custom" />
     <span className="ck ck-tooltip ck-tooltip_s"><span className="ck ck-tooltip__text">Edit source</span></span>
   </div>
 );
 
 function customizeSourceEditing( editor ) {
-  editor.plugins.get("SourceEditing").on('change:isSourceEditingMode', (e, n, on ) => {
+  editor.plugins.get("SourceEditing").on('change:isSourceEditingMode', () => {
     const sourceEdit = document.querySelector('.ck-source-editing-button');
     ReactDOM.render(
-      <SourceEditingSwitch on={on} />,
+      <SourceEditingSwitch />,
       sourceEdit
     );
   });

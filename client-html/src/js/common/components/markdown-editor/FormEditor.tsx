@@ -24,17 +24,17 @@ import React, { useState } from "react";
 import markdown2html from '@ckeditor/ckeditor5-markdown-gfm/src/markdown2html/markdown2html.js';
 import { Field, WrappedFieldProps } from "redux-form";
 import HtmlEditor from "./HtmlEditor";
-import MarkdownEditor from "./MarkdownEditor";
 import { useStyles } from "./style";
 import {
   addContentMarker, CONTENT_MODES, getContentMarker, getEditorModeLabel, removeContentMarker
 } from "./utils";
+import WysiwygEditor from "./WysiwygEditor";
 
 const EditorResolver = ({ contentMode, draftContent, onChange }) => {
   switch (contentMode) {
     case "md": {
       return (
-        <MarkdownEditor
+        <WysiwygEditor
           value={draftContent}
           onChange={onChange}
         />
@@ -173,7 +173,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
                 {
                   value
                     ? contentMode === "md"
-                      ? <div dangerouslySetInnerHTML={{ __html: markdown2html(removeContentMarker(value))  }}/>
+                      ? <div dangerouslySetInnerHTML={{ __html: markdown2html(removeContentMarker(value)) }} />
                       : removeContentMarker(value)
                     : "No value"
                 }
