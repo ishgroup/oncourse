@@ -52,9 +52,9 @@ class DomainUtils {
      */
     static String checkForIpErrors(WebHostName webHostName) {
         if (webHostName.getIpv4() == null)
-            return String.format(IPV4_ERROR_FORMAT, webHostName.name)
+            return String.format(IPV4_ERROR_FORMAT, webHostName.name,webHostName.name)
         if (webHostName.getIpv6() == null)
-            return String.format(IPV6_ERROR_FORMAT, webHostName.name)
+            return String.format(IPV6_ERROR_FORMAT, webHostName.name,webHostName.name)
         return null
     }
 
