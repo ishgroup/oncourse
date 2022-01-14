@@ -6,6 +6,11 @@ import ish.oncourse.model.auto._ArticleCustomField;
 public class ArticleCustomField extends _ArticleCustomField {
 
     @Override
+    public boolean isAsyncReplicationAllowed() {
+        return getRelatedObject() != null && getRelatedObject().isAsyncReplicationAllowed();
+    }
+
+    @Override
     public void setRelatedObject(IExpandable relatedObject) {
         setRelatedObject((Article) relatedObject);
     }
