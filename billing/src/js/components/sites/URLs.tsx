@@ -20,13 +20,11 @@ import {
 } from 'react-router-dom';
 import { BillingPlan, SiteDTO } from '@api/model';
 import { FormikErrors } from 'formik/dist/types';
-import RefreshIcon from '@mui/icons-material/Refresh';
-import { renderSelectItems, renderSelectItemsWithEmpty } from '../../utils';
+import { renderSelectItems } from '../../utils';
 import AutosizeInput from '../common/AutosizeInput';
 import { TemplateField } from '../common/TemplateChoser';
 import { SiteValues } from '../../models/Sites';
 import WarningMessage from '../common/WarningMessage';
-import { getGtmAndGaAccounts } from '../../redux/actions/Google';
 
 interface Props {
   classes: any;

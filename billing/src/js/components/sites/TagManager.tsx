@@ -8,7 +8,6 @@ import {
 } from '@mui/material';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { GTMContainer } from '../../models/Google';
-import Loading from '../common/Loading';
 import { Dispatch } from 'redux';
 import { getGtmAndGaAccounts } from '../../redux/actions/Google';
 

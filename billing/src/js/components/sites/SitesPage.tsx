@@ -24,7 +24,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks/redux';
 import { updateCollegeSites } from '../../redux/actions/Sites';
 import { SitePageParams, SiteValues } from '../../models/Sites';
 import { showConfirm } from '../../redux/actions/Confirm';
-import { GAWebProperty, GAWebPropertyProfile, GTMContainer } from '../../models/Google';
+import { GTMContainer } from '../../models/Google';
 import { getTokenString, renderContainerLabel, renderWebPropertyLabel } from '../../utils/Google';
 import {
   configureGoogleForSite,
