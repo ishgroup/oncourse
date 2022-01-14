@@ -6,6 +6,11 @@ import ish.oncourse.model.auto._VoucherCustomField;
 public class VoucherCustomField extends _VoucherCustomField {
 
     @Override
+    public boolean isAsyncReplicationAllowed() {
+        return getRelatedObject() != null && getRelatedObject().isAsyncReplicationAllowed();
+    }
+
+    @Override
     public void setRelatedObject(IExpandable relatedObject) {
         setRelatedObject((Voucher) relatedObject);
     }

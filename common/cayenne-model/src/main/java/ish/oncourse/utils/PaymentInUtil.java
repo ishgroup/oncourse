@@ -4,6 +4,7 @@
 package ish.oncourse.utils;
 
 import ish.common.types.*;
+import ish.oncourse.cayenne.ICustomField;
 import ish.oncourse.model.*;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.exp.Expression;
@@ -97,6 +98,13 @@ public class PaymentInUtil {
 			for (ProductItem productItem : productItems) {
 				if (productItem.getStatus() == null || productItem.getStatus() == ProductStatus.NEW) {
 					productItem.setStatus(productStatus);
+
+					//we need this code to replicate custom fields of product items which were created but haven't paid for yet
+					if(EnrolmentStatus.SUCCESS.equals(enrolmentStatus)) {
+						for (ICustomField customField : productItem.getCustomFields()) {
+							((CustomField) customField).setModified(new Date());
+						}
+					}
 				}
 			}
 		}
