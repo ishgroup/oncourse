@@ -24,6 +24,7 @@ import org.apache.cayenne.query.SelectQuery;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -187,6 +188,16 @@ public class MariaDbAdapter implements DbAdapter {
 	@Override
 	public EJBQLTranslatorFactory getEjbqlTranslatorFactory() {
 		return delegate.getEjbqlTranslatorFactory();
+	}
+
+	@Override
+	public List<String> getSystemCatalogs() {
+		return delegate.getSystemCatalogs();
+	}
+
+	@Override
+	public List<String> getSystemSchemas() {
+		return delegate.getSystemSchemas();
 	}
 
 	/**
