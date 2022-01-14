@@ -22,7 +22,7 @@ const useStyles = makeAppStyles()((theme) => ({
 
 interface Props {
   className?: string;
-  warning: string;
+  warning: React.ReactNode;
 }
 
 const WarningMessage = ({ className, warning }: Props) => {
