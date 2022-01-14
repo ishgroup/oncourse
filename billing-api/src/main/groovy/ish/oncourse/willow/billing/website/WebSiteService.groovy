@@ -3,13 +3,11 @@ package ish.oncourse.willow.billing.website
 import com.google.inject.Inject
 import ish.oncourse.api.request.RequestService
 import ish.oncourse.configuration.Configuration
-import ish.oncourse.model.College
-import ish.oncourse.model.SystemUser
-import ish.oncourse.model.WebHostName
-import ish.oncourse.model.WebHostNameStatus
-import ish.oncourse.model.WebSite
+import ish.oncourse.model.*
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.site.WebSiteDelete
+import ish.oncourse.willow.billing.functions.IsDomainIpsValid
+import ish.oncourse.willow.billing.functions.IsDomainValid
 import ish.oncourse.willow.billing.utils.DomainUtils
 import ish.oncourse.willow.billing.v1.model.SiteDTO
 import ish.oncourse.willow.billing.v1.model.SiteTemplate
@@ -23,6 +21,7 @@ import org.apache.logging.log4j.Logger
 
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.InternalServerErrorException
+import javax.ws.rs.core.Response
 
 import static ish.oncourse.configuration.Configuration.AdminProperty.S_ROOT
 
@@ -79,6 +78,11 @@ class WebSiteService {
             domain.modified = new Date()
             domain.status = WebHostNameStatus.ACTIVE
             DomainUtils.buildDomainIps(domain)
+
+            IsDomainIpsValid isDomainIpsValid = IsDomainIpsValid.valueof(domain).validate()
+            if (isDomainIpsValid.errors) {
+                throw new BadRequestException(Response.status(400).entity(errorMessage: 'Unfortunately, Ips for domain could not be created').build())
+            }
         }
         context.deleteObjects(domainsToDelete)
         site.collegeDomains.each {
@@ -101,6 +105,10 @@ class WebSiteService {
 
         String collegeKey = requestService.college.collegeKey
 
+        if (!collegeKey) {
+            throw new IllegalArgumentException("College key can not be null")
+        }
+
         if (!dto.key.startsWith(collegeKey)) {
             throw new BadRequestException("Web site key should starts with $collegeKey prefix")
         }
@@ -122,8 +130,7 @@ class WebSiteService {
             dto.googleAnalyticsId = it.googleAnalyticsId
             dto.configuredByInfo = getUserInfoFromSystemUser(it.configuredByUser)
             dto.primaryDomain = it.collegeDomains.find { WebHostNameStatus.PRIMARY == it.status }?.name
-            dto.domains = it.collegeDomains
-                    .collectEntries {host -> [host.name, DomainUtils.checkForIpErrors(host)]}
+            dto.domains = it.collegeDomains.collectEntries {host -> [host.name, DomainUtils.checkForIpErrors(host)]}
             dto
         }
     }
@@ -199,6 +206,24 @@ class WebSiteService {
             if (!(dto.primaryDomain in dto.domains.keySet())) {
                 throw new BadRequestException("Primary url is wrong")
             }
+
+            dto.domains.collect({ domain -> domain.key })?.each {
+                IsDomainValid isDomainValid = IsDomainValid.valueof(it).validate()
+                if (isDomainValid.errors) {
+                    throw new BadRequestException(Response.status(400).entity(errorMessage: String.join("\n", isDomainValid.errors)).build())
+                }
+            }
+
+            List<WebHostName> domains = ObjectSelect.query(WebHostName.class)
+                    .where(WebHostName.NAME.in(dto.domains.collect({ domain -> domain.key })))
+                    .select(cayenneService.newContext())
+            domains?.each {
+                IsDomainIpsValid isDomainIpsValid = IsDomainIpsValid.valueof(it).validate()
+                if (isDomainIpsValid.errors) {
+                    throw new BadRequestException(Response.status(400).entity(errorMessage: String.join("\n", isDomainIpsValid.errors)).build())
+                }
+            }
+
         }
     }
 

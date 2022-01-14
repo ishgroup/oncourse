@@ -47,11 +47,12 @@ class SettingsApiImpl implements SettingsApi {
         settingsService.contactEmail = settings.contactEmail
 
         //user requested billing plan update
-         if (settingsService.requestedUsersCount != settings.requestedUsersCount ||
-                 settingsService.requestedBillingPlan != settings.requestedBillingPlan) {
-             settingsService.requestedUsersCount = settings.requestedUsersCount 
-             settingsService.requestedBillingPlan = settings.requestedBillingPlan
-             environmentService.collegeBillingChanged(requestService.college.collegeKey)
-         }
+        if (settings.requestedUsersCount != null && settings.requestedBillingPlan &&
+                (settingsService.requestedUsersCount != settings.requestedUsersCount ||
+                        settingsService.requestedBillingPlan != settings.requestedBillingPlan)) {
+            settingsService.requestedUsersCount = settings.requestedUsersCount
+            settingsService.requestedBillingPlan = settings.requestedBillingPlan
+            environmentService.collegeBillingChanged(requestService.college.collegeKey)
+        }
     }
 }
