@@ -35,15 +35,14 @@ class FieldBuilder<T> {
                 case STUDENTS_COUNT:
                     f.dataType = DataType.INTEGER
                     break
-                    // todo  kristina: unccoment this after deploying onCourse with task OD-16031
-//                case STUDY_REASON:
-//                    f.dataType = DataType.ENUM
-//                    f.enumType = aClass.simpleName
-//                    StudyReason.enumConstants.each {
-//                        StudyReason item ->
-//                            f.enumItems << new Item(value: item.displayName, key: item.databaseValue.toString())
-//                    }
-//                    break
+                case STUDY_REASON:
+                    f.dataType = DataType.ENUM
+                    f.enumType = aClass.simpleName
+                    StudyReason.enumConstants.each {
+                        StudyReason item ->
+                            f.enumItems << new Item(value: item.displayName, key: item.databaseValue.toString())
+                    }
+                    break
                 case EMAIL_ADDRESS:
                     f.dataType = DataType.EMAIL
                     break
