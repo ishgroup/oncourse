@@ -55,16 +55,6 @@ class Message extends _Message implements Queueable {
             if (getEmailSubject() == null || getEmailSubject().isEmpty()) {
                 result.addFailure(ValidationFailure.validationFailure(this, EMAIL_SUBJECT.getName(), "The email subject cannot be blank."))
             }
-            if ((getEmailBody() == null) && (getEmailHtmlBody() == null)) {
-                result.addFailure(ValidationFailure.validationFailure(this, EMAIL_BODY.getName(), "The email message cannot be blank."))
-                result.addFailure(ValidationFailure.validationFailure(this, EMAIL_HTML_BODY.getName(), "The email message cannot be blank."))
-            }
-            if (getSmsText() == null) {
-                result.addFailure(ValidationFailure.validationFailure(this, SMS_TEXT.getName(), "The sms text cannot be blank."))
-            }
-            if (getPostDescription() == null) {
-                result.addFailure(ValidationFailure.validationFailure(this, POST_DESCRIPTION.getName(), "The post description cannot be blank."))
-            }
         }
     }
 
