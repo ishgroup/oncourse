@@ -7,10 +7,9 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IshState } from '../../services/IshState';
 import Suggestions from '../components/suggestions/Suggestions';
-import { Actions, requestSuggestion } from '../actions/Actions';
+import { addClassToCart, addProductToCart, requestSuggestion } from '../actions/Actions';
 import CheckoutService from '../../enrol/services/CheckoutService';
 import { CourseClass, Product } from '../../model';
-import { GABuilder } from '../../services/GoogleAnalyticsService';
 import { getAllContactNodesFromBackend } from '../../enrol/containers/summary/actions/Actions';
 
 const mapStateToProps = (state: IshState) => ({
@@ -27,23 +26,11 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(requestSuggestion());
   },
   addProduct: (product: Product) => {
-    dispatch({
-      type: Actions.ADD_PRODUCT_TO_CART,
-      payload: product,
-      meta: {
-        analytics: GABuilder.addProductToCart(product),
-      },
-    });
+    dispatch(addProductToCart(product));
     dispatch(getAllContactNodesFromBackend());
   },
   addCourse: (courseClass: CourseClass) => {
-    dispatch({
-      type: Actions.ADD_CLASS_TO_CART,
-      payload: courseClass,
-      meta: {
-        analytics: GABuilder.addCourseClassToCart('class', courseClass),
-      },
-    });
+    dispatch(addClassToCart(courseClass));
     dispatch(getAllContactNodesFromBackend());
   },
 });

@@ -1,29 +1,28 @@
-import * as React from "react";
-import {connect} from "react-redux";
-import {Dispatch} from "redux";
-import ContactAddForm from "./contact-add/ContactAddForm";
-import CompanyAddForm from "./contact-add/CompanyAddForm";
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import ContactAddForm from './contact-add/ContactAddForm';
+import CompanyAddForm from './contact-add/CompanyAddForm';
 import Concession from './concession/Concession';
-import ContactEditForm from "./contact-edit/ContactEditForm";
-import {Messages, Progress} from "./Functions";
-import {CheckoutState, Phase} from "../reducers/State";
-import Summary from "./summary/Summary";
-import {Payment} from "./payment/Payment";
-import {Result} from "./result/Result";
-import { changePhase, getCartData, sendInitRequest } from "../actions/Actions";
-import {submitAddContact} from "./contact-add/actions/Actions";
-import CheckoutService from "../services/CheckoutService";
-import {FieldSet} from "../../model/field/FieldSet";
-import {IshState} from "../../services/IshState";
-import {updatePaymentSuccessUrl} from "../../common/actions/Actions";
+import ContactEditForm from './contact-edit/ContactEditForm';
+import { Messages, Progress } from './Functions';
+import { CheckoutState, Phase } from '../reducers/State';
+import Summary from './summary/Summary';
+import { Payment } from './payment/Payment';
+import { Result } from './result/Result';
+import { changePhase, getCartData, sendInitRequest } from '../actions/Actions';
+import { submitAddContact } from './contact-add/actions/Actions';
+import CheckoutService from '../services/CheckoutService';
+import { FieldSet } from '../../model/field/FieldSet';
+import { IshState } from '../../services/IshState';
+import { updatePaymentSuccessUrl } from '../../common/actions/Actions';
 import { getCookie, setCookie } from '../../common/utils/Cookie';
 
 export const isOldIE = () => {
   const ua = window.navigator.userAgent;
-  const  msie = ua.indexOf('MSIE ');
+  const msie = ua.indexOf('MSIE ');
   return msie !== -1;
 };
-
 
 interface Props {
   phase: Phase;
@@ -48,17 +47,20 @@ export class Checkout extends React.Component<Props, any> {
     this.props.onInit();
 
     const urlParsms = new URLSearchParams(window.location.search);
-    const sourcePath = urlParsms.get("sourcePath");
-    const cartId = urlParsms.get("cartId");
+    const sourcePath = urlParsms.get('sourcePath');
+    const cartId = urlParsms.get('cartId');
 
     if (cartId) {
-      if (getCookie("cartId")) setCookie("cartId", "");
+      if (getCookie('cartId')) setCookie('cartId', '');
       this.props.getCartData(cartId);
     }
 
     if (sourcePath) {
-      history.replaceState(null,null, window.location.origin + window.location.pathname);
       this.props.updatePaymentSuccessUrl(sourcePath);
+    }
+
+    if (cartId || sourcePath) {
+      history.replaceState(null, null, window.location.origin + window.location.pathname);
     }
   }
 
@@ -69,25 +71,27 @@ export class Checkout extends React.Component<Props, any> {
 
     return (
       <div>
-        {isOldIE() && <div
-            style={{
-              backgroundColor: "#E57373",
-              color: "white",
-              padding: "5px",
-              borderRadius: "3px",
-              lineHeight: "17px",
-              marginBottom: "20px",
-            }}
-          >
+        {isOldIE() && (
+        <div
+          style={{
+            backgroundColor: '#E57373',
+            color: 'white',
+            padding: '5px',
+            borderRadius: '3px',
+            lineHeight: '17px',
+            marginBottom: '20px',
+          }}
+        >
           {/* tslint:disable-next-line:max-line-length */}
-            Your current browser is not supported. Please ensure you are using an up to date version of Chrome, Firefox or Edge.
-          </div>
-        }
-        <Progress/>
-        <Messages/>
+          Your current browser is not supported. Please ensure you are using an up to date version of Chrome, Firefox or Edge.
+        </div>
+        )}
+        <Progress />
+        <Messages />
 
-        {(phase === Phase.AddPayer || phase === Phase.AddContact || phase === Phase.AddContactAsPayer ||
-          phase === Phase.AddParent || phase === Phase.ChangeParent) &&
+        {(phase === Phase.AddPayer || phase === Phase.AddContact || phase === Phase.AddContactAsPayer
+          || phase === Phase.AddParent || phase === Phase.ChangeParent)
+        && (
         <ContactAddForm
           childName={childName}
           phase={phase}
@@ -100,24 +104,24 @@ export class Checkout extends React.Component<Props, any> {
           fieldset={fieldset}
           minAge={minAge}
         />
-        }
-        {phase === Phase.AddContactAsCompany &&
+        )}
+        {phase === Phase.AddContactAsCompany
+        && (
         <CompanyAddForm
           onSuccess={submitAddContact}
           onCancel={() => this.props.changePhase(page)}
           fetching={fetching}
           fieldset={fieldset}
         />
-        }
+        )}
 
-        {phase === Phase.AddConcession &&
-        <Concession />
-        }
+        {phase === Phase.AddConcession
+        && <Concession />}
 
-        {(phase === Phase.EditContact || phase === Phase.ComplementEditContact) && <ContactEditForm/>}
-        {phase === Phase.Summary && <Summary/>}
-        {phase === Phase.Payment && <Payment/>}
-        {phase === Phase.Result && <Result/>}
+        {(phase === Phase.EditContact || phase === Phase.ComplementEditContact) && <ContactEditForm />}
+        {phase === Phase.Summary && <Summary />}
+        {phase === Phase.Payment && <Payment />}
+        {phase === Phase.Result && <Result />}
       </div>
     );
   }
@@ -129,7 +133,7 @@ const getChildFromProps = (state: CheckoutState) => {
 
   const child = state.contacts.entities.contact && state.contacts.entities.contact[childId];
   return child ? `${child.firstName} ${child.lastName}` : '';
-}
+};
 
 const mapStateToProps = (state: IshState) => ({
   phase: state.checkout.phase,
@@ -144,20 +148,18 @@ const mapStateToProps = (state: IshState) => ({
   isOnlyWaitingCoursesInCart: CheckoutService.isOnlyWaitingCoursesInCart(state.cart)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-  return {
-    onInit: (): void => {
-      dispatch(sendInitRequest());
-    },
-    changePhase: phase => {
-      dispatch(changePhase(phase));
-    },
-    updatePaymentSuccessUrl: url => {
-      dispatch(updatePaymentSuccessUrl(url));
-    },
-    getCartData: (cartId: string) => dispatch(getCartData(cartId)),
-  };
-};
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  onInit: (): void => {
+    dispatch(sendInitRequest());
+  },
+  changePhase: (phase) => {
+    dispatch(changePhase(phase));
+  },
+  updatePaymentSuccessUrl: (url) => {
+    dispatch(updatePaymentSuccessUrl(url));
+  },
+  getCartData: (cartId: string) => dispatch(getCartData(cartId)),
+});
 
 const Container = connect<any, any, any, IshState>(mapStateToProps, mapDispatchToProps)(Checkout);
 

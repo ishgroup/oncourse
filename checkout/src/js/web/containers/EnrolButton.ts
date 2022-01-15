@@ -1,11 +1,10 @@
 import * as EnrolButton from "../components/EnrolButton";
-import {isNil} from "lodash";
-import {connect} from "react-redux";
-import {CourseClassCartState, IshState} from "../../services/IshState";
-import {CourseClass} from "../../model";
-import {Actions} from "../actions/Actions";
+import { isNil } from "lodash";
+import { connect } from "react-redux";
+import { CourseClassCartState, IshState } from "../../services/IshState";
+import { CourseClass } from "../../model";
+import { addClassToCart, requestCourseClass } from "../actions/Actions";
 import * as CourseClassService from "../services/CourseClassService";
-import {GABuilder} from "../../services/GoogleAnalyticsService";
 
 const isAdded = (items: CourseClassCartState, id: string): boolean => {
   const item = items.result.find(itemId => itemId === id);
@@ -25,19 +24,10 @@ const mapStateToProps = (state: IshState, props) => {
 const mapDispatchToProps = dispatch => {
   return {
     addToCart: (courseClass: CourseClass) => {
-      dispatch({
-        type: Actions.ADD_CLASS_TO_CART,
-        payload: courseClass,
-        meta: {
-          analytics: GABuilder.addCourseClassToCart('class', courseClass),
-        },
-      });
+      dispatch(addClassToCart(courseClass));
     },
     loadById: (id: string) => {
-      dispatch({
-        type: Actions.REQUEST_COURSE_CLASS,
-        payload: id,
-      });
+      dispatch(requestCourseClass(id));
     },
   };
 };

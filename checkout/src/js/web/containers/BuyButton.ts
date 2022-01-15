@@ -1,9 +1,9 @@
-import {connect} from "react-redux";
-import {BuyButton, BuyButtonProps} from "../components/buyButton/BuyButton";
-import {IshState, ProductCartState} from "../../services/IshState";
-import {Product} from "../../model";
-import {Actions} from "../actions/Actions";
-import {GABuilder} from "../../services/GoogleAnalyticsService";
+import { connect } from "react-redux";
+import { BuyButton, BuyButtonProps } from "../components/buyButton/BuyButton";
+import { IshState, ProductCartState } from "../../services/IshState";
+import { Product } from "../../model";
+import { Actions, requestProduct } from "../actions/Actions";
+import { GABuilder } from "../../services/GoogleAnalyticsService";
 
 export default connect<any, any, any, IshState>(mapStateToProps, mapDispatchToProps)(BuyButton);
 
@@ -24,10 +24,7 @@ function mapDispatchToProps(dispatch) {
       });
     },
     requestProductById: (id: string) => {
-      dispatch({
-        type: Actions.REQUEST_PRODUCT,
-        payload: id,
-      });
+      dispatch(requestProduct(id));
     },
   };
 }

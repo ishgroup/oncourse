@@ -1,5 +1,7 @@
 import { FULFILLED } from '../../common/actions/ActionUtils';
 import { ContactState } from '../../services/IshState';
+import { CourseClass, Product } from '../../model';
+import { GABuilder } from '../../services/GoogleAnalyticsService';
 
 export const Actions = {
   ADD_CLASS_TO_CART: 'ADD_CLASS_TO_CART',
@@ -34,26 +36,50 @@ export const Actions = {
 /**
  * Request course class by id
  */
-export function requestCourseClass(id: string) {
+export function requestCourseClass(id: string, addToCart?: boolean) {
   return {
     type: Actions.REQUEST_COURSE_CLASS,
-    payload: id,
+    payload: { id, addToCart }
   };
 }
 
-
-
 export const requestSuggestion = () => ({
   type: Actions.REQUEST_SUGGESTION
-})
+});
 
 /**
  * Request product by id
  */
-export function requestProduct(id: string) {
+export function requestProduct(id: string, addToCart?: boolean) {
   return {
     type: Actions.REQUEST_PRODUCT,
-    payload: id,
+    payload: { id, addToCart }
+  };
+}
+
+/**
+ * add product to cart
+ */
+export function addProductToCart(product: Product) {
+  return {
+    type: Actions.ADD_PRODUCT_TO_CART,
+    payload: product,
+    meta: {
+      analytics: GABuilder.addProductToCart(product),
+    },
+  };
+}
+
+/**
+ * add course class to cart
+ */
+export function addClassToCart(courseClass: CourseClass) {
+  return {
+    type: Actions.ADD_CLASS_TO_CART,
+    payload: courseClass,
+    meta: {
+      analytics: GABuilder.addCourseClassToCart('class', courseClass),
+    },
   };
 }
 

@@ -3,69 +3,64 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ADD_CONTACT_FROM_CHECKOUT_MODEL_TO_STATE, changePhase, GET_CART_DATA, updateAmount } from '../actions/Actions';
-import * as EpicUtils from '../../common/epics/EpicUtils';
 import { Epic } from 'redux-observable';
+import { changePhase, GET_CART_DATA, getCheckoutModelFromBackend, setPayer } from '../actions/Actions';
+import * as EpicUtils from '../../common/epics/EpicUtils';
 import CartService from '../../services/CartService';
 import CheckoutServiceV2 from '../services/CheckoutServiceV2';
-import { CheckoutApi } from '../../http/CheckoutApi';
-import { DefaultHttpService } from '../../common/services/HttpService';
 import { ContactNode } from '../../model';
-import { rewriteContactNodesToState } from '../containers/summary/actions/Actions';
+import { addContactNodeToState } from '../containers/summary/actions/Actions';
+import { requestCourseClass, requestProduct } from '../../web/actions/Actions';
 import { Phase } from '../reducers/State';
-import { Actions } from '../../web/actions/Actions';
+import { addContact } from '../containers/contact-add/actions/Actions';
 
 const request: any = {
   type: GET_CART_DATA,
-  getData: payload => {
-    return CartService.get(payload).then(responce => {
-      const arrayOfPromises = [];
-      for (const key in responce) {
-        if (responce[key] && typeof responce[key] === "object" && responce[key].contactId) {
-          const currentCart = responce[key];
-          arrayOfPromises.push(CheckoutServiceV2.getContactNodeForCart({...currentCart}));
-        }
+  getData: (payload) => CartService.get(payload).then((response) => {
+    const arrayOfPromises = [];
+    for (const key in response) {
+      if (response[key] && typeof response[key] === 'object' && response[key].contactId) {
+        const currentCart = response[key];
+        arrayOfPromises.push(CheckoutServiceV2.getContactNodeForCart({ ...currentCart }));
       }
-
-      return Promise.all(arrayOfPromises).then((values: ContactNode[]) => {
-        const checkoutApi = new CheckoutApi(new DefaultHttpService());
-
-        const checkoutModelRequest = {
-          contactNodes: values,
-          payerId: responce.payerId,
-        };
-
-        return checkoutApi.getCheckoutModel(checkoutModelRequest);
-      });
-    });
-  },
-  processData: (responce: any) => {
-    if (!responce) return [];
+    }
+    return Promise.all(arrayOfPromises).then((contactNodes) => ({ contactNodes, payerId: response.payerId }));
+  }),
+  processData: ({ contactNodes, payerId }: { contactNodes: ContactNode[], payerId: string }) => {
+    if (!contactNodes) return [];
 
     const setOfClassIds = new Set();
 
-    responce.contactNodes.forEach(node => node.enrolments.forEach(enrolment => enrolment.classId && setOfClassIds.add(enrolment.classId)));
-    const getClassesIds = Array.from(setOfClassIds).map(id => ({
-      type: Actions.REQUEST_COURSE_CLASS,
-      payload: id,
+    const setOfProductIds = new Set();
+
+    contactNodes.forEach((node) => {
+      node.enrolments.forEach((enrolment) => enrolment.classId && setOfClassIds.add(enrolment.classId));
+      node.vouchers.forEach((v) => v.productId && setOfProductIds.add(v.productId));
+      node.memberships.forEach((v) => v.productId && setOfProductIds.add(v.productId));
+      node.articles.forEach((v) => v.productId && setOfProductIds.add(v.productId));
+    });
+
+    const getCourses = Array.from(setOfClassIds).map((id: string) => requestCourseClass(id, true));
+
+    const getProducts = Array.from(setOfProductIds).map((id: string) => requestProduct(id, true));
+
+    const contacts = contactNodes.map((node) => addContact({
+      email: node.contactEmail,
+      firstName: node.contactFirstName,
+      id: node.contactId,
+      lastName: node.contactLastName,
     }));
 
-    const users = responce.contactNodes.map(node => ({
-      type: ADD_CONTACT_FROM_CHECKOUT_MODEL_TO_STATE,
-      payload: {
-        email: node.contactEmail,
-        firstName: node.contactFirstName,
-        id: node.contactId,
-        lastName: node.contactLastName,
-      },
-    }));
+    const nodes = contactNodes.map((node) => addContactNodeToState(node));
 
     return [
-      ...users,
-      ...getClassesIds,
-      rewriteContactNodesToState(responce.contactNodes),
-      updateAmount(responce.amount),
+      ...contacts,
+      ...nodes,
+      ...getCourses,
+      ...getProducts,
+      setPayer(payerId),
       changePhase(Phase.Summary),
+      getCheckoutModelFromBackend()
     ];
   },
 };

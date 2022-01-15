@@ -25,8 +25,8 @@ const Suggestions: React.FC<Props> = (props) => {
   } = props;
 
   const filteredSuggestions = useMemo<SuggestionsState>(() => ({
-    products: suggestions.products.filter((pId) => !cart.products.result.includes(pId)),
-    courseClasses: suggestions.courseClasses.filter((cId) => !cart.courses.result.includes(cId))
+    products: suggestions.products?.filter((pId) => !cart.products.result.includes(pId)),
+    courseClasses: suggestions.courseClasses?.filter((cId) => !cart.courses.result.includes(cId))
   }), [cart, suggestions]);
 
   useEffect(() => {

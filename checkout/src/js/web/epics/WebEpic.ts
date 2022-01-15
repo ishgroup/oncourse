@@ -5,7 +5,7 @@ import { chunk } from 'lodash';
 import { normalize } from 'normalizr';
 import uniq from 'lodash/uniq';
 import { FULFILLED } from '../../common/actions/ActionUtils';
-import { Actions, requestCourseClass, requestProduct } from '../actions/Actions';
+import { Actions, addClassToCart, addProductToCart, requestCourseClass, requestProduct } from '../actions/Actions';
 import * as ContactAddActions from '../../enrol/containers/contact-add/actions/Actions';
 import {
   ClassesListSchema,
@@ -18,9 +18,7 @@ import {
   WaitingCoursesSchema,
 } from '../../NormalizeSchema';
 import { Injector } from '../../injector';
-import {
-  PromotionParams, ContactParams, Application, Enrolment
-} from '../../model';
+import { Application, ContactParams, CourseClass, Enrolment, Product, PromotionParams } from '../../model';
 import { IshState } from '../../services/IshState';
 import { mapError, mapPayload } from '../../common/epics/EpicUtils';
 import { rewriteContactNodeToState } from '../../enrol/containers/summary/actions/Actions';
@@ -67,8 +65,13 @@ function createCoursesEpic() {
     .bufferTime(100) // batch actions
     .filter((actions) => actions.length)
     .mergeMap((actions) => {
-      const ids: string[] = uniq(actions.map((action) => action.payload));
-      const chunkIds = chunk(ids, 25);
+      const ids = actions.reduce((prev, action) => {
+        const { id, addToCart } = action.payload;
+        prev[id] = addToCart;
+        return prev;
+      }, {});
+
+      const chunkIds = chunk(uniq(Object.keys(ids)), 25);
 
       const courseStream = Observable.from(chunkIds).mergeMap((groupedIds) => Observable
         .defer(() => courseClassesApi.getCourseClasses({
@@ -77,8 +80,18 @@ function createCoursesEpic() {
           promotions: createPromotionParams(store.getState()),
         }))
         .retry(2) // Retry two times if request has been rejected
-        .map((payload) => normalize(payload, ClassesListSchema))
-        .map(mapPayload(Actions.REQUEST_COURSE_CLASS))
+        .flatMap((payload: CourseClass[]) => {
+          const addToCartActions = [];
+
+          payload.forEach((courseClass) => {
+            if (ids[courseClass.id]) addToCartActions.push(addClassToCart(courseClass));
+          });
+
+          return [
+            mapPayload(Actions.REQUEST_COURSE_CLASS)(normalize(payload, ClassesListSchema)),
+            ...addToCartActions
+          ];
+        })
         .catch(mapError(Actions.REQUEST_COURSE_CLASS)));
 
       const urlParamContact = checkUrlParamContact();
@@ -136,15 +149,30 @@ function createProductsEpic() {
     .bufferTime(100) // batch actions
     .filter((actions) => actions.length)
     .mergeMap((actions) => {
-      const ids: string[] = actions.map((action) => action.payload);
+      const ids = actions.reduce((prev, action) => {
+        const { id, addToCart } = action.payload;
+        prev[id] = addToCart;
+        return prev;
+      }, {});
+
       return Observable
         .fromPromise(productsApi.getProducts({
-          productsIds: uniq(ids),
+          productsIds: uniq(Object.keys(ids)),
           contact: createContactParams(store.getState()),
           promotions: createPromotionParams(store.getState()),
         }))
-        .map((payload) => normalize(payload, ProductsListSchema))
-        .map(mapPayload(Actions.REQUEST_PRODUCT))
+        .flatMap((payload: Product[]) => {
+          const productActions = [];
+
+          payload.forEach((product) => {
+            if (ids[product.id]) productActions.push(addProductToCart(product));
+          });
+
+          return [
+            mapPayload(Actions.REQUEST_PRODUCT)(normalize(payload, ProductsListSchema)),
+            ...productActions
+          ];
+        })
         .catch(mapError(Actions.REQUEST_PRODUCT));
     });
 }

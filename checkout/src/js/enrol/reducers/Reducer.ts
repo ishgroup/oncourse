@@ -1,16 +1,12 @@
 import { combineReducers } from 'redux';
 import * as L from 'lodash';
 import { normalize } from 'normalizr';
-import {
-  AmountState, CheckoutState, ContactFieldsState, Phase
-} from './State';
+import { AmountState, CheckoutState, ContactFieldsState, Phase } from './State';
 import * as Actions from '../actions/Actions';
 import * as ContactEditActions from '../containers/contact-edit/actions/Actions';
 import * as ContactAddActions from '../containers/contact-add/actions/Actions';
 import { Actions as WebActions } from '../../web/actions/Actions';
-import {
-  ValidationError, Amount, RedeemVoucher
-} from '../../model';
+import { Amount, RedeemVoucher, ValidationError } from '../../model';
 import { Reducer as SummaryReducer } from '../containers/summary/reducers/Reducer';
 import { Reducer as PaymentReducer } from '../containers/payment/reducers/Reducer';
 import { Reducer as ConcessionReducer } from '../containers/concession/reducers/Reducer';
@@ -136,15 +132,6 @@ const ContactsReducer = (
       ns = L.cloneDeep(state);
       ns.entities.contact = { ...ns.entities.contact, ...action.payload.entities.contact };
       ns.result = Array.from(new Set([...ns.result, action.payload.result as any]));
-      return ns;
-
-    case Actions.ADD_CONTACT_FROM_CHECKOUT_MODEL_TO_STATE:
-      ns = L.cloneDeep(state);
-      if (!ns.entities.contact) ns.entities.contact = {};
-
-      // @ts-ignore
-      ns.entities.contact[action.payload.id] = {...action.payload};
-
       return ns;
 
     case Actions.UPDATE_PARENT_CHILDS_REQUEST:

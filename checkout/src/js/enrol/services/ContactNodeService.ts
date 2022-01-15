@@ -1,6 +1,6 @@
 import * as models from "../../model";
-import {inspect} from "util";
-import {Actions} from "../../web/actions/Actions";
+import { inspect } from "util";
+import { Actions, requestCourseClass, requestProduct } from "../../web/actions/Actions";
 
 export class ContactNodeService {
   /**
@@ -43,30 +43,21 @@ export class ContactNodeService {
       if (node.articles.length) {
         node.articles.forEach(article => {
           if (article.relatedClassId || article.relatedProductId) {
-            actions.push({
-              type: Actions.REQUEST_PRODUCT,
-              payload: article.productId,
-            })
+            actions.push(requestProduct(article.productId))
           }
         })
       }
       if (node.vouchers.length) {
         node.vouchers.forEach(voucher => {
           if (voucher.relatedClassId || voucher.relatedProductId) {
-            actions.push({
-              type: Actions.REQUEST_PRODUCT,
-              payload: voucher.productId,
-            })
+            actions.push(requestProduct(voucher.productId))
           }
         })
       }
       if (node.memberships.length) {
         node.memberships.forEach(membership => {
           if (membership.relatedClassId || membership.relatedProductId) {
-            actions.push({
-              type: Actions.REQUEST_PRODUCT,
-              payload: membership.productId,
-            })
+            actions.push(requestProduct(membership.productId))
           }
         })
       }
@@ -79,10 +70,7 @@ export class ContactNodeService {
                 payload: enrolment.courseId,
               })
             } else {
-              actions.push({
-                type: Actions.REQUEST_COURSE_CLASS,
-                payload: enrolment.classId,
-              })
+              actions.push(requestCourseClass(enrolment.classId))
             }
           }
         })

@@ -1,13 +1,13 @@
 import * as React from "react";
 import * as L from "lodash";
-import {Actions} from "../../js/web/actions/Actions";
-import {MockConfig} from "../mocks/mocks/MockConfig";
+import { Actions, addClassToCart, requestCourseClass, requestProduct } from "../../js/web/actions/Actions";
+import { MockConfig } from "../mocks/mocks/MockConfig";
 import * as ReactInspector from "react-inspector";
-import {Values} from "redux-form-website-template";
-import {NAME} from "../../js/enrol/containers/payment/components/PaymentForm";
-import {NAME as ContactEditFormName} from "../../js/enrol/containers/contact-edit/ContactEditForm";
-import {NAME as ConcessionAddForm} from "../../js/enrol/containers/concession/Concession";
-import {GABuilder} from "../../js/services/GoogleAnalyticsService";
+import { Values } from "redux-form-website-template";
+import { NAME } from "../../js/enrol/containers/payment/components/PaymentForm";
+import { NAME as ContactEditFormName } from "../../js/enrol/containers/contact-edit/ContactEditForm";
+import { NAME as ConcessionAddForm } from "../../js/enrol/containers/concession/Concession";
+import { GABuilder } from "../../js/services/GoogleAnalyticsService";
 import { localForage } from "../constants/LocalForage";
 
 interface Props {
@@ -24,32 +24,17 @@ export class MockControl extends React.Component<Props, any> {
 
   private loadBatchCourseClasses = (numbers: number[]) => {
     numbers.forEach(i =>
-      this.props.config.store.dispatch({
-        type: Actions.REQUEST_COURSE_CLASS,
-        payload: this.props.config.db.classes.result[i],
-      }),
+      this.props.config.store.dispatch(requestCourseClass(this.props.config.db.classes.result[i])),
     );
-    this.props.config.store.dispatch({
-      type: Actions.REQUEST_COURSE_CLASS,
-      payload: this.props.config.db.classes.result[0],
-    });
+    this.props.config.store.dispatch(requestCourseClass(this.props.config.db.classes.result[0]));
   }
 
   private loadCourseClasses = i => {
-    this.props.config.store.dispatch({
-      type: Actions.REQUEST_COURSE_CLASS,
-      payload: [this.props.config.db.classes.result[i]],
-    });
+    this.props.config.store.dispatch(requestCourseClass(this.props.config.db.classes.result[i]));
   }
 
   private addCourseClass = i => {
-    this.props.config.store.dispatch({
-      type: Actions.ADD_CLASS_TO_CART,
-      payload: {id: this.props.config.db.classes.result[i]},
-      meta: {
-        analytics: GABuilder.addCourseClassToCart('class', this.props.config.db.classes.entities.classes[this.props.config.db.classes.result[i]]),
-      },
-    });
+    this.props.config.store.dispatch(addClassToCart(this.props.config.db.classes.entities.classes[this.props.config.db.classes.result[i]]));
   }
 
   private loadWaitingCourse = i => {
@@ -70,11 +55,7 @@ export class MockControl extends React.Component<Props, any> {
   }
 
   private loadVoucher = () => {
-    this.props.config.store.dispatch({
-      type: Actions.REQUEST_PRODUCT,
-      payload: [this.props.config.db.products.result[0]],
-
-    });
+    this.props.config.store.dispatch(requestProduct(this.props.config.db.products.result[0]));
   }
 
   private addVoucher = () => {
