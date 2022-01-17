@@ -13,8 +13,6 @@ properties:
     type: string
   gtmContainerId:
     type: string
-  googleAnalyticsId:
-    type: string
   webSiteTemplate:
     description: web site template, neew to create new site only
     $ref: '../../enum/SiteTemplate.yaml'
