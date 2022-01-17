@@ -4,6 +4,7 @@
 package ish.oncourse.services.site;
 
 import ish.oncourse.model.Invoice;
+import ish.oncourse.model.Preference;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebSiteVersion;
 import org.apache.cayenne.ObjectContext;
@@ -38,8 +39,14 @@ public class WebSiteDelete {
 		for (Invoice invoice : invoices) {
 			invoice.setWebSite(null);
 		}
+
 		context.deleteObjects(site.getCollegeDomains());
-		context.deleteObject(site.getPreferences());
+
+		List<Preference> preferences = site.getPreferences();
+		for (int i=0; i < preferences.size(); i++) {
+			Preference deletedPreference = context.localObject(preferences.get(i));
+			context.deleteObject(deletedPreference);
+		}
 		context.deleteObject(site);
 		context.commitChanges();
 	}

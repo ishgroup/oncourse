@@ -88,7 +88,8 @@ class SettingsService {
      * @return
      */
     Integer getUsersCount() {
-        return Integer.valueOf(getSettingsValue(Settings.BILLING_USERS))
+        String value = getSettingsValue(Settings.BILLING_USERS)
+        return value ? Integer.valueOf(value) : null
     }
 
     BillingPlan getBillingPlan() {

@@ -673,4 +673,13 @@
 		</addColumn>
 	</changeSet>
 
+	<changeSet id="51" author="kristina" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<columnExists columnName="ipv4" tableName="WebHostName"/>
+			<columnExists columnName="ipv6" tableName="WebHostName"/>
+		</preConditions>
+		<dropNotNullConstraint  columnDataType="varbinary(16)" columnName="ipv4" tableName="WebHostName"/>
+		<dropNotNullConstraint  columnDataType="varbinary(39)" columnName="ipv6" tableName="WebHostName"/>
+	</changeSet>
+
 </databaseChangeLog>

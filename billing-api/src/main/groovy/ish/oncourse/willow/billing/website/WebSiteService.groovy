@@ -6,8 +6,6 @@ import ish.oncourse.configuration.Configuration
 import ish.oncourse.model.*
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.site.WebSiteDelete
-import ish.oncourse.willow.billing.functions.IsDomainIpsValid
-import ish.oncourse.willow.billing.functions.IsDomainValid
 import ish.oncourse.willow.billing.utils.DomainUtils
 import ish.oncourse.willow.billing.v1.model.SiteDTO
 import ish.oncourse.willow.billing.v1.model.SiteTemplate
@@ -78,11 +76,6 @@ class WebSiteService {
             domain.modified = new Date()
             domain.status = WebHostNameStatus.ACTIVE
             DomainUtils.buildDomainIps(domain)
-
-            IsDomainIpsValid isDomainIpsValid = IsDomainIpsValid.valueof(domain).validate()
-            if (isDomainIpsValid.errors) {
-                throw new BadRequestException(Response.status(400).entity(errorMessage: 'Unfortunately, Ips for domain could not be created').build())
-            }
         }
         context.deleteObjects(domainsToDelete)
         site.collegeDomains.each {
@@ -206,24 +199,6 @@ class WebSiteService {
             if (!(dto.primaryDomain in dto.domains.keySet())) {
                 throw new BadRequestException("Primary url is wrong")
             }
-
-            dto.domains.collect({ domain -> domain.key })?.each {
-                IsDomainValid isDomainValid = IsDomainValid.valueof(it).validate()
-                if (isDomainValid.errors) {
-                    throw new BadRequestException(Response.status(400).entity(errorMessage: String.join("\n", isDomainValid.errors)).build())
-                }
-            }
-
-            List<WebHostName> domains = ObjectSelect.query(WebHostName.class)
-                    .where(WebHostName.NAME.in(dto.domains.collect({ domain -> domain.key })))
-                    .select(cayenneService.newContext())
-            domains?.each {
-                IsDomainIpsValid isDomainIpsValid = IsDomainIpsValid.valueof(it).validate()
-                if (isDomainIpsValid.errors) {
-                    throw new BadRequestException(Response.status(400).entity(errorMessage: String.join("\n", isDomainIpsValid.errors)).build())
-                }
-            }
-
         }
     }
 

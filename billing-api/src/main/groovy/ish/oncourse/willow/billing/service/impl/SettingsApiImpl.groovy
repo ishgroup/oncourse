@@ -42,12 +42,14 @@ class SettingsApiImpl implements SettingsApi {
 
     @Override
     void updateSettings(SettingsDTO settings) {
-        settingsService.invoiceReference = settings.invoiceReference
+        if (settings.invoiceReference) {
+            settingsService.invoiceReference = settings.invoiceReference
+        }
         settingsService.contactFullName = settings.contactFullName
         settingsService.contactEmail = settings.contactEmail
 
         //user requested billing plan update
-        if (settings.requestedUsersCount != null && settings.requestedBillingPlan &&
+        if (settings.requestedUsersCount && settings.requestedBillingPlan &&
                 (settingsService.requestedUsersCount != settings.requestedUsersCount ||
                         settingsService.requestedBillingPlan != settings.requestedBillingPlan)) {
             settingsService.requestedUsersCount = settings.requestedUsersCount
