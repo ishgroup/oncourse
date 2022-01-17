@@ -48,6 +48,9 @@ class WebSiteService {
                 .where(WebSite.SITE_KEY.eq("template-$siteTemplate".toString()))
                 .selectOne(context)
 
+        if (!template) {
+            throw new BadRequestException(Response.status(400).entity(errorMessage: 'Template not found').build())
+        }
         CreateNewWebSite createNewWebSite = CreateNewWebSite.valueOf(name,
                 key,
                 template,
