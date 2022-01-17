@@ -128,7 +128,7 @@ export class StubFilterItem extends React.PureComponent<any, any> {
           variant="standard"
         />
 
-        <Tooltip title="Save Filter">
+        <Tooltip title="Save Filter" placement="right">
           <div>
             <IconButton onClick={this.onSaveFilter} className={classes.iconButton} disabled={error}>
               <BookmarkBorder fontSize="inherit" color={error ? "disabled" : "secondary"} />
@@ -136,7 +136,7 @@ export class StubFilterItem extends React.PureComponent<any, any> {
           </div>
         </Tooltip>
 
-        <Tooltip title="Delete Filter">
+        <Tooltip title="Delete Filter" placement="right">
           <IconButton onClick={this.clearFilter} className={clsx(classes.deleteButton, classes.iconButton)}>
             <Delete fontSize="inherit" color="secondary" />
           </IconButton>
