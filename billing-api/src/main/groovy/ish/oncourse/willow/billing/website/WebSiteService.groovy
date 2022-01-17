@@ -234,7 +234,7 @@ class WebSiteService {
         } else if(dto.gtmContainerId != webSite.googleTagmanagerAccount || dto.googleAnalyticsId != webSite.googleAnalyticsId){
             webSite.setGoogleTagmanagerAccount(dto.gtmContainerId)
             webSite.setGoogleAnalyticsId(dto.googleAnalyticsId)
-            webSite.setConfiguredByUser(requestService.getSystemUser())
+            webSite.setConfiguredByUser(webSite.objectContext.localObject(requestService.getSystemUser()))
         }
         
     }
