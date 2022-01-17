@@ -4,31 +4,31 @@
  */
 
 import { Epic } from 'redux-observable';
-import { SiteDTO } from '@api/model';
-import { Request, Create } from '../EpicUtils';
+import { Create, Request } from '../EpicUtils';
 import { CONFIGURE_GOOGLE_FOR_SITE, getGtmDataByAccount } from '../../actions/Google';
 import GoogleService from '../../../api/services/GoogleService';
 import { getTokenString } from '../../../utils/Google';
 import {
   ALL_EVENTS_TRIGGER_DEFAULT,
   ALL_PAGES_TRIGGER_DEFAULT,
-  MAPS_PAGE_TRIGGER_DEFAULT,
-  MAPS_API_KEY_NAME,
-  GTM_CONTAINER_NAME_DEFAULT,
+  GAS_VARIABLE_NAME,
+  getGASVariable,
   getMapsApiKeyVariable,
-  getGASVariable, GAS_VARIABLE_NAME,
+  GTM_CONTAINER_NAME_DEFAULT,
+  MAPS_API_KEY_NAME,
+  MAPS_PAGE_TRIGGER_DEFAULT,
 } from '../../../constant/Google';
 import { SiteValues } from '../../../models/Sites';
 import { updateCollegeSites } from '../../actions/Sites';
 
-const request: Request<SiteDTO, SiteValues> = {
+const request: Request<SiteValues, SiteValues> = {
   type: CONFIGURE_GOOGLE_FOR_SITE,
   getData: async (site, state) => {
     const parsedSite = {
       ...site,
       gtmContainerId: site.gtmContainerId === 'new' ? null : site.gtmContainerId,
       gaWebPropertyId: site.gaWebPropertyId === 'new' ? null : site.gaWebPropertyId,
-    }
+    };
 
     const token = getTokenString(state.google);
 
@@ -249,7 +249,12 @@ const request: Request<SiteDTO, SiteValues> = {
 
     return parsedSite;
   },
-  processData: (site) => [
+  processData: ({
+    collegeKey,
+    googleMapsApiKey,
+    gaWebPropertyId,
+    ...site
+  }) => [
     updateCollegeSites({ changed: [site] }),
     getGtmDataByAccount(site.gtmAccountId)
   ]

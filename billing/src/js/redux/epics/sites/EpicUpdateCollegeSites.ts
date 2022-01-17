@@ -4,7 +4,7 @@
  */
 
 import { Epic } from 'redux-observable';
-import { Request, Create } from '../EpicUtils';
+import { Create, Request } from '../EpicUtils';
 import { showMessage } from '../../actions';
 import WebSiteService from '../../../api/services/WebSiteService';
 import { getSites, UPDATE_COLLEGE_SITES } from '../../actions/Sites';
@@ -38,13 +38,13 @@ const request: Request<any, SitesUpdateRequest> = {
         await b();
       }, Promise.resolve());
 
-    return Promise.resolve();
+    return Promise.resolve(Boolean(removed.length || created.length));
   },
-  processData: () => [
+  processData: (updateSites) => [
     showMessage({
       message: 'Websites updated', success: true
     }),
-    getSites()
+    ...updateSites ? [getSites()] : []
   ]
 };
 
