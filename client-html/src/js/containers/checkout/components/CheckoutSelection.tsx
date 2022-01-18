@@ -1064,15 +1064,15 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                   expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.payment)}
                   onExpanded={handlePaymentClick}
                   disabled={
-                        paymentProcessStatus === "success"
-                        || hasErrors
-                        || summarryInvalid
-                        || fundingInvoiceInvalid
-                        || (
-                          !summary.list.some(l => l.items.some(li => li.checked))
-                          && !summary.voucherItems.some(i => i.checked)
-                          && !summary.previousOwing.invoices.length)
-                      }
+                    paymentProcessStatus === "success"
+                    || hasErrors
+                    || summarryInvalid
+                    || fundingInvoiceInvalid
+                    || (
+                      !summary.list.some(l => l.items.some(li => li.checked))
+                      && !summary.voucherItems.some(i => i.checked)
+                      && !summary.previousOwing.invoices.length)
+                  }
                 >
                   <CheckoutPaymentHeaderField
                     form={form}
