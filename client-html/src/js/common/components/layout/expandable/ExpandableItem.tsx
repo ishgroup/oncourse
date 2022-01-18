@@ -4,16 +4,17 @@
  */
 
 import React from "react";
+import clsx from "clsx";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Collapse from "@mui/material/Collapse";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
+import { IconButton } from "@mui/material";
 import { AppTheme } from "../../../../model/common/Theme";
 import { stopEventPropagation } from "../../../utils/events";
-import { IconButton } from "@mui/material";
+import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -73,6 +74,9 @@ const ExpandableItem: React.FunctionComponent<Props> = props => {
   } = props;
 
   const buttonId = expandButtonId ? `expand-button-${expandButtonId}` : null;
+  const iconButtonProps = IS_JEST ? {
+    "data-testid": buttonId
+  } : {};
 
   return (
     <Accordion
@@ -93,7 +97,7 @@ const ExpandableItem: React.FunctionComponent<Props> = props => {
           expandIconWrapper: classes.expandIcon
         }}
         onClick={onChange}
-        expandIcon={<IconButton id={buttonId} data-testid={buttonId}><ExpandMoreIcon /></IconButton>}
+        expandIcon={<IconButton id={buttonId} {...iconButtonProps}><ExpandMoreIcon /></IconButton>}
       >
         <Collapse in={!expanded} timeout="auto" mountOnEnter unmountOnExit classes={{ root: classes.collapseRoot }}>
           {collapsedContent}
