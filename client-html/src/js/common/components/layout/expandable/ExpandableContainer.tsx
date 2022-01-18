@@ -14,6 +14,7 @@ import clsx from "clsx";
 import Divider from "@mui/material/Divider";
 import { AppTheme } from "../../../../model/common/Theme";
 import AddButton from "../../icons/AddButton";
+import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -83,6 +84,10 @@ const ExpandableContainer: React.FC<Props> = ({
     [isExpanded, expanded, index]
   );
 
+  const iconButtonProps = IS_JEST ? {
+    'data-testid': `expand-button-${index}`,
+  } : {};
+
   return (
     <>
       <Divider className={onAdd ? "mb-2" : "mb-3"} />
@@ -98,7 +103,7 @@ const ExpandableContainer: React.FC<Props> = ({
           <IconButton
             onClick={toggleExpand}
             className={clsx(classes.expandButton, isExpanded && classes.expandButtonExpanded)}
-            data-testid={`expand-button-${index}`}
+            {...iconButtonProps}
           >
             <ExpandMore />
           </IconButton>
