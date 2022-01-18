@@ -37,6 +37,7 @@ import { courseClassCloseBulkUpdateModal } from "./actions";
 import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../../common/actions/CommonPlainRecordsActions";
 import { DD_MMM_YYYY } from "../../../../../common/utils/dates/format";
 import CourseClassTutorRooster from "./CourseClassTutorRooster";
+import { IS_JEST } from "../../../../../constants/EnvironmentConstants";
 
 export const COURSE_CLASS_BULK_UPDATE_FORM: string = "CourseClassBulkUpdateForm";
 
@@ -101,13 +102,17 @@ const BulkItemWrapper: React.FC<any> = props => {
     </Typography>
   );
 
+  const labelProps = IS_JEST ? {
+    "data-testid": `input-${name}Checked`
+  } : {};
+
   return (
     <div className="mb-2 w-100">
       <div className="centeredFlex">
         <FormGroup>
           <FormControlLabel
+            {...labelProps}
             htmlFor={`input-${name}Checked`}
-            data-testid={`input-${name}Checked`}
             control={(
               <FormField
                 type="checkbox"
@@ -277,6 +282,10 @@ const CourseClassBulkChangeSessionForm = props => {
       setEarlierDate(null);
     }
   };
+
+  const updateButtonProps = IS_JEST ? {
+    "data-testid": "update"
+  } : {};
 
   return (
     <Dialog
@@ -466,11 +475,11 @@ const CourseClassBulkChangeSessionForm = props => {
             Cancel
           </Button>
           <Button
+            {...updateButtonProps}
             variant="contained"
             color="primary"
             onClick={submitChanges}
             disabled={invalid || !dirty || Boolean(asyncValidating)}
-            data-testid="update"
           >
             Update
           </Button>
