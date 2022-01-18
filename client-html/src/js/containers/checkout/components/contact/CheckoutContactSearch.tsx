@@ -47,8 +47,18 @@ const CheckoutContactSearch = React.memo<Props>(props => {
     summary
   } = props;
 
-  const onSetContactsSearch = React.useCallback<any>(debounce((name, value) => {
-    setContactsSearch(value ? `~"${value}"` : "");
+  const onSetContactsSearch = React.useCallback<any>(debounce((name, value: string) => {
+    let search = `~"${value}"`;
+    
+    if (/\d/.test(value)) {
+      search = `homePhone starts with "${value}" or mobilePhone starts with "${value}" or workPhone starts with "${value}"`;
+    }
+
+    if (/@/.test(value)) {
+      search = `email starts with "${value}"`;
+    }
+    
+    setContactsSearch(value ? search : "");
     if (value) {
       getContacts(0);
     }
