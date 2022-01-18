@@ -15,6 +15,7 @@ import RestoreFromTrash from "@mui/icons-material/RestoreFromTrash";
 import { removeDocument, restoreDocument } from "../actions";
 import { ListState } from "../../../../model/common/ListView";
 import { NoArgFunction } from "../../../../model/common/CommonFunctions";
+import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 
 interface Props {
   selection?: ListState["selection"];
@@ -73,8 +74,12 @@ const BinCogwheel = memo<Props>(props => {
     closeMenu();
   };
 
+  const menuItemProps = IS_JEST ? {
+    "data-testid": "delete-action-item"
+  } : {};
+
   return selection.length ? (
-    <MenuItem onClick={onClick} data-testid="delete-action-item">
+    <MenuItem {...menuItemProps} onClick={onClick}>
       <span className={deleteActionName === "Move to bin" ? "errorColor" : null}>
         {deleteActionName}
       </span>
