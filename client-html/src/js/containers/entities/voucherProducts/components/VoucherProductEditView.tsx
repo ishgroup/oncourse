@@ -13,6 +13,7 @@ import { State } from "../../../../reducers/state";
 import CorporatePassCommon from "../../common/components/CorporatePassCommon";
 import VoucherProductGeneral from "./VoucherProductGeneral";
 import { EditViewProps } from "../../../../model/common/ListView";
+import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 
 interface VoucherProductEditViewProps extends EditViewProps<VoucherProduct>{
   accounts?: Account[];
@@ -22,6 +23,10 @@ const items: TabsListItem[] = [
   {
     label: "General",
     component: props => <VoucherProductGeneral {...props} />
+  },
+  {
+    label: "Notes",
+    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} className="mb-2" />
   },
   {
     label: "Corporate passes",

@@ -16,7 +16,7 @@ import {
   UPDATE_ASSESSMENT_SUBMISSIONS_ITEM,
   UPDATE_ASSESSMENT_SUBMISSIONS_ITEM_FULFILLED
 } from "../actions";
-import { FETCH_SUCCESS } from "../../../../common/actions";
+import { clearActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
@@ -30,6 +30,7 @@ const request: EpicUtils.Request<any, { id: number; assessmentSubmission: Assess
   },
   retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
   processData: (v, s, { id }) => [
+    ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : []),
     {
       type: UPDATE_ASSESSMENT_SUBMISSIONS_ITEM_FULFILLED
     },

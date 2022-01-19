@@ -16,11 +16,12 @@
   <FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0"
                           modifiedOn="2017-06-20 12:00:00.0"/>
 
-  <Account id="100" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"/>
+  <Account id="100" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"
+           createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
   <Tax id="1" isGSTTaxType="1" payableToSupplierAccountId="100" receivableFromStudentAccountId="100" taxCode="GST"
        taxrate="0.1" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"/>
   <Site id="1" isAdministrationCentre="1" isShownOnWeb="1" name="test site" localTimezone="Australia/Sydney"
-        isVirtual="0"/>
+        isVirtual="0" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
   <Room CREATEDON="2007-02-27 09:57:00.702" ID="1" MODIFIEDON="2012-05-08 16:38:46.727" SEATEDCAPACITY="157"
         SITEID="1" DIRECTIONS="On the first floor." NAME="Main hall"/>
 

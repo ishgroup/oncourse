@@ -67,7 +67,10 @@ Feature: Main feature for all POST requests with path 'list/entity/membershipPro
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "relatedSellables":[],
-        "dataCollectionRuleId":null
+        "dataCollectionRuleId":null,
+        "documents":[],
+        "customFields":{},
+        "tags":[]
         }
         """
 
@@ -135,7 +138,10 @@ Feature: Main feature for all POST requests with path 'list/entity/membershipPro
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "relatedSellables":[],
-        "dataCollectionRuleId":null
+        "dataCollectionRuleId":null,
+        "documents":[],
+        "customFields":{},
+        "tags":[]
         }
         """
 

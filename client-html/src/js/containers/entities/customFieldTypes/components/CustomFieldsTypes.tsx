@@ -11,8 +11,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { change, Field as FormField } from "redux-form";
 import { CustomFieldType } from "@api/model";
 import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { GridProps, GridTypeMap } from "@mui/material/Grid";
+import { GridProps } from "@mui/material/Grid";
 import { CheckboxField } from "../../../../common/components/form/formFields/CheckboxField";
 import EditInPlaceDateTimeField from "../../../../common/components/form/formFields/EditInPlaceDateTimeField";
 import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
@@ -25,7 +24,6 @@ import {
 } from "../../../../common/utils/validation";
 import { State } from "../../../../reducers/state";
 import EditInPlaceSearchSelect from "../../../../common/components/form/formFields/EditInPlaceSearchSelect";
-import { getCustomFieldTypes } from "../actions";
 import { EntityName } from "../../../../model/entities/common";
 
 const Field: any = FormField;
@@ -213,7 +211,6 @@ const CustomField: React.FC<CustomFieldProps> = ({
 
 interface CustomFieldsProps {
   customFieldTypes?: { key: string; value: CustomFieldType[] };
-  getCustomFieldTypes?: (entity: EntityName) => void;
   entityName: EntityName;
   fieldName: string;
   entityValues: any;
@@ -224,7 +221,6 @@ interface CustomFieldsProps {
 
 const CustomFieldsTypes = React.memo<CustomFieldsProps>(
   ({
-     getCustomFieldTypes,
      gridItemProps,
      entityName,
      customFieldTypes,
@@ -233,12 +229,6 @@ const CustomFieldsTypes = React.memo<CustomFieldsProps>(
      dispatch,
      form,
   }) => {
-    useEffect(() => {
-      if (!customFieldTypes || !customFieldTypes[entityName]) {
-        getCustomFieldTypes(entityName);
-      }
-    }, [entityName, customFieldTypes]);
-
     return (entityValues && entityValues[fieldName] && customFieldTypes && customFieldTypes[entityName]
       ? customFieldTypes[entityName].map((type, i) => (
         <Grid key={i} item {...gridItemProps} className="pr-2">
@@ -259,8 +249,4 @@ const mapStateToProps = (state: State) => ({
   customFieldTypes: state.customFieldTypes.types
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  getCustomFieldTypes: entity => dispatch(getCustomFieldTypes(entity))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(CustomFieldsTypes);
+export default connect(mapStateToProps)(CustomFieldsTypes);

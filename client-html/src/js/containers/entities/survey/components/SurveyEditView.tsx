@@ -21,7 +21,6 @@ import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { openContactLink } from "../../contacts/utils";
-import clsx from "clsx";
 
 interface Props {
   classes?: any;
@@ -140,7 +139,6 @@ const SurveyEditView = (props: Props) => {
         entityName="Survey"
         fieldName="customFields"
         entityValues={values}
-        dispatch={dispatch}
         form={form}
         gridItemProps={{
           xs: twoColumn ? 6 : 12,

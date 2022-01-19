@@ -3,9 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useCallback, useMemo
-} from "react";
+import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import { change } from "redux-form";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -13,7 +11,6 @@ import Grid from "@mui/material/Grid";
 import { CourseEnrolmentType, CourseStatus, Tag } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
-import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import { openInternalLink } from "../../../../common/utils/links";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { PreferencesState } from "../../../preferences/reducers/state";
@@ -56,9 +53,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
     dispatch,
     form
   }) => {
-    const classes  = useStyles();
-
-    const validateTagList = useCallback((value, allValues, props) => validateTagsList(tags, value, allValues, props), [tags]);
+    const classes = useStyles();
 
     const onCalendarClick = useCallback(() => {
       openInternalLink(`/timetable/search?query=courseClass.course.id=${values.id}`);
@@ -140,7 +135,6 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
             type="tags"
             name="tags"
             tags={tags}
-            validate={tags && tags.length ? validateTagList : undefined}
           />
         </Grid>
 
@@ -242,7 +236,6 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
           entityName="Course"
           fieldName="customFields"
           entityValues={values}
-          dispatch={dispatch}
           form={form}
           gridItemProps={{
               xs: twoColumn ? 6 : 12,

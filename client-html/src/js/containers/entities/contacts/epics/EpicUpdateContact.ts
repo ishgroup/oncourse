@@ -11,7 +11,7 @@ import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { processCustomFields } from "../../customFieldTypes/utils";
 import { GET_CONTACT, UPDATE_CONTACT, UPDATE_CONTACT_FULFILLED } from "../actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { FETCH_SUCCESS } from "../../../../common/actions";
+import { clearActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { updateEntityItemById } from "../../common/entityItemsService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
@@ -25,6 +25,7 @@ const request: EpicUtils.Request<any, { id: number; contact: Contact & { notes: 
   },
   retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
   processData: (v, s, { id, message }) => [
+    ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : []),
     {
       type: UPDATE_CONTACT_FULFILLED
     },

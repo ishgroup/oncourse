@@ -6,12 +6,14 @@
 import React, { useCallback, useEffect, useMemo } from "react";
 import Grid from "@mui/material/Grid";
 import {
- arrayInsert, arrayRemove, change, initialize
+ arrayInsert, arrayRemove, change, initialize 
 } from "redux-form";
 import { RouteComponentProps, withRouter } from "react-router";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { Account, Currency, Tag, Tax } from "@api/model";
+import {
+ Account, Currency, Tag, Tax 
+} from "@api/model";
 import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { addDays } from "date-fns";
@@ -37,7 +39,6 @@ import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation
 import { usePrevious } from "../../../../common/utils/hooks";
 import { leadLabelCondition, openLeadLink } from "../../leads/utils";
 import LeadSelectItemRenderer from "../../leads/components/LeadSelectItemRenderer";
-import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import Uneditable from "../../../../common/components/form/Uneditable";
 
 interface Props extends EditViewProps {
@@ -207,14 +208,6 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
     dispatch(change(form, "contactName", value["customer.fullName"]));
   };
 
-  const validateTagListCallback = useCallback(
-    (value, allValues) => {
-      const updProps = { ...props, rootEntity: "Invoice" };
-
-      return (tags && tags.length ? validateTagsList(tags, value, allValues, updProps) : undefined);
-    }, [tags]
-  );
-
   const onContactChange = useCallback(
     value => {
       setSelectedContact(value);
@@ -282,7 +275,6 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
           type="tags"
           name="tags"
           tags={tags}
-          validate={validateTagListCallback}
         />
       </Grid>
 
@@ -378,11 +370,11 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
       </Grid>
 
       <Grid item xs={twoColumn ? 3 : 12}>
-        <FormField type="multilineText" name="billToAddress" label="Billing address"/>
+        <FormField type="multilineText" name="billToAddress" label="Billing address" />
       </Grid>
 
       <Grid item xs={twoColumn ? 6 : 12}>
-        <FormField type="multilineText" name="shippingAddress" label="Shipping address"/>
+        <FormField type="multilineText" name="shippingAddress" label="Shipping address" />
       </Grid>
 
       <Grid item xs={twoColumn ? 6 : 12} className="pb-2">
@@ -472,7 +464,6 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         <Uneditable
           label="Source"
           value={values.source}
-          money
         />
       </Grid>
 
