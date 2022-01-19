@@ -1,9 +1,9 @@
-import {isNil} from "lodash";
-import {connect} from "react-redux";
-import {IshState, WaitingCourseClassState} from "../../services/IshState";
-import {Course} from "../../model";
-import {Actions} from "../actions/Actions";
-import {JoinButton} from "../components/joinButton/JoinButton";
+import { isNil } from "lodash";
+import { connect } from "react-redux";
+import { IshState, WaitingCourseClassState } from "../../services/IshState";
+import { Course } from "../../model";
+import { addWaitingCourseToCart, requestWaitingCourse } from "../actions/Actions";
+import { JoinButton } from "../components/joinButton/JoinButton";
 
 const isAdded = (items: WaitingCourseClassState, id: string): boolean => {
   const item = items.result.find(itemId => itemId === id);
@@ -30,19 +30,10 @@ const mapStateToProps = (state: IshState, props) => {
 const mapDispatchToProps = dispatch => {
   return {
     addToCart: (course: Course) => {
-      dispatch({
-        type: Actions.ADD_WAITING_COURSE_TO_CART,
-        payload: course,
-        // meta: {
-        //   analytics: GABuilder.addCourseClassToCart('Course Class', course)
-        // }
-      });
+      dispatch(addWaitingCourseToCart(course));
     },
     loadById: (id: string) => {
-      dispatch({
-        type: Actions.REQUEST_WAITING_COURSE,
-        payload: id,
-      });
+      dispatch(requestWaitingCourse(id));
     },
   };
 };

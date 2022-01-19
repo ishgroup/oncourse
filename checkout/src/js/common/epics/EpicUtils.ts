@@ -1,12 +1,12 @@
-import {FULFILLED, REJECTED} from "../actions/ActionUtils";
-import {Observable} from "rxjs";
-import {MiddlewareAPI} from "redux";
-import {ActionsObservable, Epic} from "redux-observable";
-import {SHOW_MESSAGES} from "../../enrol/actions/Actions";
-import {commonErrorToValidationError, toValidationError} from "../utils/ErrorUtils";
-import {AxiosResponse} from "axios";
-import {CommonError} from "../../model/index";
-import {IAction} from "../../actions/IshAction";
+import { FULFILLED, REJECTED } from "../actions/ActionUtils";
+import { Observable } from "rxjs";
+import { MiddlewareAPI } from "redux";
+import { ActionsObservable, Epic } from "redux-observable";
+import { SHOW_MESSAGES } from "../../enrol/actions/Actions";
+import { commonErrorToValidationError, toValidationError } from "../utils/ErrorUtils";
+import { AxiosResponse } from "axios";
+import { CommonError } from "../../model/index";
+import { IAction } from "../../actions/IshAction";
 import Bugsnag from "@bugsnag/js";
 
 const notifyBugsnagApiError = (error: any) => {
@@ -61,7 +61,10 @@ export const ProcessError = (data: AxiosResponse): { type: string, payload?: any
 export const Create = <V, S>(request: Request<V, S>): Epic<any, any> => {
   return (action$: ActionsObservable<any>, store: MiddlewareAPI<any,S>): Observable<any> => {
     return action$
-      .ofType(request.type).mergeMap(action => Observable
+      .ofType(request.type)
+      // Whait untill persist completes
+      .skipUntil(action$.filter(({ type }) => type === 'persist/REHYDRATE'))
+      .mergeMap(action => Observable
         .fromPromise(request.getData(action.payload, store.getState()))
         .flatMap(data => request.processData(data, store.getState(), action.payload))
         .catch(data => {

@@ -1,6 +1,6 @@
 import { FULFILLED } from '../../common/actions/ActionUtils';
 import { ContactState } from '../../services/IshState';
-import { CourseClass, Product } from '../../model';
+import { Course, CourseClass, Product } from '../../model';
 import { GABuilder } from '../../services/GoogleAnalyticsService';
 
 export const Actions = {
@@ -58,6 +58,16 @@ export function requestProduct(id: string, addToCart?: boolean) {
 }
 
 /**
+ * Request product by id
+ */
+export function requestWaitingCourse(id: string, addToCart?: boolean) {
+  return {
+    type: Actions.REQUEST_WAITING_COURSE,
+    payload: { id, addToCart }
+  };
+}
+
+/**
  * add product to cart
  */
 export function addProductToCart(product: Product) {
@@ -69,6 +79,17 @@ export function addProductToCart(product: Product) {
     },
   };
 }
+
+/**
+ * add course class to cart
+ */
+export function addWaitingCourseToCart(course: Course) {
+  return {
+    type: Actions.ADD_WAITING_COURSE_TO_CART,
+    payload: course,
+  };
+}
+
 
 /**
  * add course class to cart

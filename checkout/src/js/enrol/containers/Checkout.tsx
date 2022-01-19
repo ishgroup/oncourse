@@ -51,7 +51,9 @@ export class Checkout extends React.Component<Props, any> {
     const cartId = urlParsms.get('cartId');
 
     if (cartId) {
-      if (getCookie('cartId')) setCookie('cartId', '');
+      if (getCookie('cartId') !== cartId) {
+        setCookie('cartId', cartId);
+      }
       this.props.getCartData(cartId);
     }
 

@@ -10,7 +10,7 @@ import CartService from '../../services/CartService';
 import CheckoutServiceV2 from '../services/CheckoutServiceV2';
 import { ContactNode } from '../../model';
 import { addContactNodeToState } from '../containers/summary/actions/Actions';
-import { requestCourseClass, requestProduct } from '../../web/actions/Actions';
+import { requestCourseClass, requestProduct, requestWaitingCourse } from '../../web/actions/Actions';
 import { Phase } from '../reducers/State';
 import { addContact } from '../containers/contact-add/actions/Actions';
 
@@ -31,6 +31,8 @@ const request: any = {
 
     const setOfClassIds = new Set();
 
+    const setOfWaitingCourseIds = new Set();
+
     const setOfProductIds = new Set();
 
     contactNodes.forEach((node) => {
@@ -38,9 +40,12 @@ const request: any = {
       node.vouchers.forEach((v) => v.productId && setOfProductIds.add(v.productId));
       node.memberships.forEach((v) => v.productId && setOfProductIds.add(v.productId));
       node.articles.forEach((v) => v.productId && setOfProductIds.add(v.productId));
+      node.waitingLists.forEach((v) => v.courseId && setOfWaitingCourseIds.add(v.courseId))
     });
 
     const getCourses = Array.from(setOfClassIds).map((id: string) => requestCourseClass(id, true));
+
+    const getWaitingCourses = Array.from(setOfWaitingCourseIds).map((id: string) => requestWaitingCourse(id, true));
 
     const getProducts = Array.from(setOfProductIds).map((id: string) => requestProduct(id, true));
 
@@ -58,6 +63,7 @@ const request: any = {
       ...nodes,
       ...getCourses,
       ...getProducts,
+      ...getWaitingCourses,
       setPayer(payerId),
       changePhase(Phase.Summary),
       getCheckoutModelFromBackend()

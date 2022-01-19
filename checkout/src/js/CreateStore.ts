@@ -1,14 +1,13 @@
-import {createEpicMiddleware} from "redux-observable";
-import {createLogger} from "redux-logger";
-import {ConfigConstants} from "./config/ConfigConstants";
-import {applyMiddleware, compose, createStore, StoreEnhancer, Store} from "redux";
-import {IshState} from "./services/IshState";
-import {EpicRoot} from "./EpicRoot";
-import {combinedReducers} from "./reducers/reducers";
-import {EnvironmentConstants} from "./config/EnvironmentConstants";
-import {autoRehydrate, OnComplete, persistStore} from "redux-persist";
-import {syncCartStore} from "./SyncCartStore";
-import {createBlacklistFilter} from 'redux-persist-transform-filter';
+import { createEpicMiddleware } from "redux-observable";
+import { createLogger } from "redux-logger";
+import { ConfigConstants } from "./config/ConfigConstants";
+import { applyMiddleware, compose, createStore, Store, StoreEnhancer } from "redux";
+import { IshState } from "./services/IshState";
+import { EpicRoot } from "./EpicRoot";
+import { combinedReducers } from "./reducers/reducers";
+import { EnvironmentConstants } from "./config/EnvironmentConstants";
+import { autoRehydrate, OnComplete, persistStore } from "redux-persist";
+import { createBlacklistFilter } from 'redux-persist-transform-filter';
 import { localForage } from "./constants/LocalForage";
 
 const getMiddleware = (): StoreEnhancer<IshState> => {
@@ -31,8 +30,6 @@ export const CreateStore = (): Store<IshState> => {
     combinedReducers,
     <StoreEnhancer<IshState>>compose(getMiddleware(), autoRehydrate()),
   ) as Store<IshState>;
-
-  syncCartStore(store);
 
   return store;
 };

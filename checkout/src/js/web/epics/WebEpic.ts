@@ -5,7 +5,14 @@ import { chunk } from 'lodash';
 import { normalize } from 'normalizr';
 import uniq from 'lodash/uniq';
 import { FULFILLED } from '../../common/actions/ActionUtils';
-import { Actions, addClassToCart, addProductToCart, requestCourseClass, requestProduct } from '../actions/Actions';
+import {
+  Actions,
+  addClassToCart,
+  addProductToCart,
+  addWaitingCourseToCart,
+  requestCourseClass,
+  requestProduct
+} from '../actions/Actions';
 import * as ContactAddActions from '../../enrol/containers/contact-add/actions/Actions';
 import {
   ClassesListSchema,
@@ -18,7 +25,7 @@ import {
   WaitingCoursesSchema,
 } from '../../NormalizeSchema';
 import { Injector } from '../../injector';
-import { Application, ContactParams, CourseClass, Enrolment, Product, PromotionParams } from '../../model';
+import { Application, ContactParams, Course, CourseClass, Product, PromotionParams } from '../../model';
 import { IshState } from '../../services/IshState';
 import { mapError, mapPayload } from '../../common/epics/EpicUtils';
 import { rewriteContactNodeToState } from '../../enrol/containers/summary/actions/Actions';
@@ -113,14 +120,29 @@ function createWaitingCoursesEpic() {
     .bufferTime(100) // batch actions
     .filter((actions) => actions.length)
     .mergeMap((actions) => {
-      const ids: string[] = actions.map((action) => action.payload);
+      const ids = actions.reduce((prev, action) => {
+        const { id, addToCart } = action.payload;
+        prev[id] = addToCart;
+        return prev;
+      }, {});
+
       return Observable
         .defer(() => courseClassesApi.getCourses({
-          coursesIds: uniq(ids),
+          coursesIds: uniq(Object.keys(ids)),
         }))
-        .retry(2) // Retry to times if request has been rejected
-        .map((payload) => normalize(payload, WaitingCoursesListSchema))
-        .map(mapPayload(Actions.REQUEST_WAITING_COURSE))
+        .retry(2) // Retry two times if request has been rejected
+        .flatMap((payload: Course[]) => {
+          const addToCartActions = [];
+
+          payload.forEach((course) => {
+            if (ids[course.id]) addToCartActions.push(addWaitingCourseToCart(course));
+          });
+
+          return [
+            mapPayload(Actions.REQUEST_WAITING_COURSE)(normalize(payload, WaitingCoursesListSchema)),
+            ...addToCartActions
+          ];
+        })
         .catch(mapError(Actions.REQUEST_WAITING_COURSE));
     });
 }
@@ -136,7 +158,7 @@ function createInactiveCoursesEpic() {
         .defer(() => courseClassesApi.getCourses({
           coursesIds: uniq(ids),
         }))
-        .retry(2) // Retry to times if request has been rejected
+        .retry(2) // Retry two times if request has been rejected
         .map((payload) => normalize(payload, InactiveCoursesListSchema))
         .map(mapPayload(Actions.REQUEST_INACTIVE_COURSE))
         .catch(mapError(Actions.REQUEST_INACTIVE_COURSE));
@@ -303,26 +325,6 @@ function createAddClassToSummaryEpic() {
             applications: [
               ...state.checkout.summary.entities.contactNodes[node].applications,
               application
-            ]
-          };
-        } else {
-          const enrolment: Enrolment = {
-            contactId: node,
-            classId: classItem.id,
-            allowRemove: null,
-            courseId: null,
-            errors: [],
-            fieldHeadings: [],
-            price: { ...classItem.price },
-            relatedClassId: null,
-            relatedProductId: null,
-            selected: true,
-            warnings: []
-          };
-          injected = {
-            enrolments: [
-              ...state.checkout.summary.entities.contactNodes[node].enrolments,
-              enrolment
             ]
           };
         }

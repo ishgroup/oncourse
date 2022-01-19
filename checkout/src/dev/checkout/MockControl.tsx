@@ -1,6 +1,12 @@
 import * as React from "react";
 import * as L from "lodash";
-import { Actions, addClassToCart, requestCourseClass, requestProduct } from "../../js/web/actions/Actions";
+import {
+  Actions,
+  addClassToCart,
+  requestCourseClass,
+  requestProduct,
+  requestWaitingCourse
+} from "../../js/web/actions/Actions";
 import { MockConfig } from "../mocks/mocks/MockConfig";
 import * as ReactInspector from "react-inspector";
 import { Values } from "redux-form-website-template";
@@ -38,10 +44,7 @@ export class MockControl extends React.Component<Props, any> {
   }
 
   private loadWaitingCourse = i => {
-    this.props.config.store.dispatch({
-      type: Actions.REQUEST_WAITING_COURSE,
-      payload: [this.props.config.db.classes.result[i]],
-    });
+    this.props.config.store.dispatch(requestWaitingCourse(this.props.config.db.classes.result[i]));
   }
 
   private addWaitingCourseToCart = i => {
