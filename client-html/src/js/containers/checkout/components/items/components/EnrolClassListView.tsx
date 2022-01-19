@@ -14,7 +14,6 @@ import ListItem from "@mui/material/ListItem";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import Button from "@mui/material/Button";
 import { Radio } from "@mui/material";
-import { prefixer } from "../../../../../common/styles/mixins/prefixer";
 import { filterPastClasses } from "../../../utils";
 import { AppTheme } from "../../../../../model/common/Theme";
 import { getAllMonthsWithSessions } from "../../../../timetable/utils";
@@ -129,7 +128,7 @@ const EnrolClassListView = React.memo<any>(props => {
               return (
                 <CalendarDayBase day={d.day} timezone={d.timezone} key={d.day.toString()}>
                   {d.sessions.map(s => {
-                    const isSelected = selectedItems.some(i => i.type === "course" && i.class.id === s.id);
+                    const isSelected = selectedItems.some(i => i.type === "course" && i.class?.id === s.id);
                     const isTransfered = course.transferedClassId === s.id;
                     const isTraineeship = course.isTraineeship === "true";
 

@@ -296,7 +296,7 @@ export const getCheckoutModel = (
 
       contactId: l.contact.id,
 
-      enrolments: l.items.filter(i => i.checked && i.type === "course")
+      enrolments: l.items.filter(i => i.checked && i.type === "course" && i.class)
         .map((i): CheckoutEnrolment =>
           ({
             classId: i.class.id,
@@ -359,7 +359,7 @@ export const getInvoiceLineKey = (entity: CheckoutEntity) => {
 };
 
 const getInvoiceLinePrices = (item: CheckoutItem, lines: InvoiceInvoiceLine[], itemOriginal: CheckoutItem) => {
-  const id = item.type === "course" ? item.class.id : item.id;
+  const id = item.type === "course" && item.class ? item.class.id : item.id;
   const lineKey = getInvoiceLineKey(item.type);
   const targetLine = lines.find(l => l[lineKey] && (l[lineKey].productId === id || l[lineKey].classId === id));
 
