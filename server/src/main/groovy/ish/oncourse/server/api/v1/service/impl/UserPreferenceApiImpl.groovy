@@ -113,7 +113,7 @@ class UserPreferenceApiImpl implements UserPreferenceApi {
 
 
     private String getUpgradePlanLink() {
-        if (!systemPrefService.replicationEnabled && licenseService.replicationDisabled) {
+        if (licenseService.replicationDisabled) {
             return "https://www.ish.com.au/signup"
         }
         return null

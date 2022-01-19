@@ -271,7 +271,7 @@ const CourseClassTutorRooster = (
 
               </Grid>
               <Collapse in={expanded === index}>
-                <Grid container className="mt-1">
+                <Grid container columnSpacing={3} className="mt-1">
                   <Grid item xs={2}>
                     <FormField
                       name={`${fieldsName}.start`}

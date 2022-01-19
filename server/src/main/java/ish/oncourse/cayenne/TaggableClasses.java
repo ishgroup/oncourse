@@ -36,8 +36,6 @@ public enum TaggableClasses implements Serializable, ExtendedEnumeration {
 	@API
 	ROOM(10),
 	@API
-	MESSAGE(11),
-	@API
 	DOCUMENT(12),
 	@API
 	APPLICATION(13),

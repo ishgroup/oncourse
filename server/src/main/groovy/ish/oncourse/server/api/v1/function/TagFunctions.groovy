@@ -111,7 +111,6 @@ class TagFunctions {
         put(Tutor.simpleName, TaggableClasses.TUTOR)
         put(WaitingList.simpleName, TaggableClasses.WAITING_LIST)
         put(CourseClass.simpleName, TaggableClasses.COURSE_CLASS)
-        put(Message.simpleName, TaggableClasses.MESSAGE)
         put(ProductItem.simpleName, TaggableClasses.PRODUCT_ITEM)
         put(Article.simpleName, TaggableClasses.PRODUCT_ITEM)
         put(Voucher.simpleName, TaggableClasses.PRODUCT_ITEM)

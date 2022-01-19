@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
+import React, { useCallback } from "react";
 import { change, FieldArray } from "redux-form";
 import { Account, ArticleProduct, ProductStatus, Tag, Tax } from "@api/model";
 import { connect } from "react-redux";
@@ -60,6 +60,7 @@ const handleChangeAccount = (values: ArticleProduct, taxes: Tax[], accounts: Acc
   }
 };
 
+
 const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
   const {
     twoColumn, accounts, isNew, taxes, showConfirm, tags, values, dispatch, form, syncErrors, submitSucceeded, rootEntity, dataCollectionRules
@@ -69,6 +70,8 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
     xs: twoColumn ? 6 : 12,
     lg: twoColumn ? 4 : 12
   } as any;
+
+  const validateIncomeAccount = useCallback(value => (accounts.find((item: Account) => item.id === value) ? undefined : `Income account is mandatory`), [accounts])
 
   return (
 
@@ -111,7 +114,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           type="select"
           name="incomeAccountId"
           label="Income account"
-          validate={value => (accounts.find((item: Account) => item.id === value) ? undefined : `Mandatory field`)}
+          validate={validateIncomeAccount}
           onChange={handleChangeAccount(values, taxes, accounts, dispatch, form)}
           items={accounts}
           selectValueMark="id"
