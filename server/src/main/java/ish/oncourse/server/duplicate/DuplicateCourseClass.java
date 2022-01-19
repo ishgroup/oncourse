@@ -191,7 +191,8 @@ public class DuplicateCourseClass {
                                         tutorAttendance.setEndDatetime(DateTimeUtil.addDaysDaylightSafe(oldAttendance.getEndDatetime(), request.getDaysTo()));
                                         tutorAttendance.setActualPayableDurationMinutes(oldAttendance.getActualPayableDurationMinutes());
                                     });
-                        } else {
+                        }
+                        if(tutorAttendance.getStartDatetime() == null){
                             tutorAttendance.setStartDatetime(newSession.getStartDatetime());
                             tutorAttendance.setEndDatetime(newSession.getEndDatetime());
                             tutorAttendance.setActualPayableDurationMinutes(DurationFormatter.durationInMinutesBetween(newSession.getStartDatetime(), newSession.getEndDatetime()));
