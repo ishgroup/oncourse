@@ -172,12 +172,6 @@
 		<db-attribute name="specialType" type="INTEGER"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
-	<db-entity name="Cart">
-		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="payerId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="contactId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="checkoutUrl" type="VARCHAR" length="128" isMandatory="true"/>
-	</db-entity>
 	<db-entity name="Certificate">
 		<db-attribute name="awardedOn" type="DATE" isMandatory="true"/>
 		<db-attribute name="certificateNumber" type="BIGINT" isMandatory="true"/>
@@ -1860,12 +1854,6 @@
 		<obj-attribute name="settlementDate" type="java.time.LocalDate" db-attribute-path="settlementDate"/>
 		<obj-attribute name="type" type="ish.oncourse.common.BankingType" db-attribute-path="type"/>
 	</obj-entity>
-	<obj-entity name="Cart" className="ish.oncourse.server.cayenne.Cart" dbEntityName="Cart" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
-		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
-		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
-		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
-		<obj-attribute name="checkoutUrl" type="java.lang.String" db-attribute-path="checkoutUrl"/>
-	</obj-entity>
 	<obj-entity name="Certificate" className="ish.oncourse.server.cayenne.Certificate" dbEntityName="Certificate" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
 		<obj-attribute name="awardedOn" type="java.time.LocalDate" db-attribute-path="awardedOn"/>
 		<obj-attribute name="certificateNumber" type="java.lang.Long" db-attribute-path="certificateNumber"/>
@@ -3531,21 +3519,6 @@
 	<db-relationship name="documentVersion" source="BinaryRelation" target="DocumentVersion">
 		<db-attribute-pair source="documentVersionId" target="id"/>
 	</db-relationship>
-	<db-relationship name="payer" source="Cart" target="Contact">
-		<db-attribute-pair source="payerId" target="id"/>
-	</db-relationship>
-	<db-relationship name="contact" source="Cart" target="Contact">
-		<db-attribute-pair source="contactId" target="id"/>
-	</db-relationship>
-	<db-relationship name="products" source="Cart" target="Product" toMany="true">
-		<db-attribute-pair source="id" target="cartId"/>
-	</db-relationship>
-	<db-relationship name="waitingLists" source="Cart" target="WaitingList" toMany="true">
-		<db-attribute-pair source="id" target="cartId"/>
-	</db-relationship>
-	<db-relationship name="classes" source="Cart" target="CourseClass" toMany="true">
-		<db-attribute-pair source="id" target="cartId"/>
-	</db-relationship>
 	<db-relationship name="attachmentRelations" source="Certificate" target="BinaryRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
 	</db-relationship>
@@ -5071,9 +5044,6 @@
 	<obj-relationship name="createdBy" source="Banking" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdBy"/>
 	<obj-relationship name="paymentsIn" source="Banking" target="PaymentIn" deleteRule="Nullify" db-relationship-path="paymentsIn"/>
 	<obj-relationship name="paymentsOut" source="Banking" target="PaymentOut" deleteRule="Nullify" db-relationship-path="paymentsOut"/>
-	<obj-relationship name="waitingLists" source="Cart" target="WaitingList" deleteRule="Nullify" db-relationship-path="waitingLists"/>
-	<obj-relationship name="classes" source="Cart" target="CourseClass" deleteRule="Nullify" db-relationship-path="classes"/>
-	<obj-relationship name="products" source="Cart" target="Product" db-relationship-path="products"/>
 	<obj-relationship name="attachmentRelations" source="Certificate" target="CertificateAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="certificateOutcomes" source="Certificate" target="CertificateOutcome" deleteRule="Cascade" db-relationship-path="certificateOutcomes"/>
 	<obj-relationship name="qualification" source="Certificate" target="Qualification" deleteRule="Nullify" db-relationship-path="qualification"/>
