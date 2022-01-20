@@ -814,7 +814,6 @@ class DefaultUserPreference {
 
     private static final MESSAGE_MODEL = new TableModelDTO().with() {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
                 new ColumnDTO(title: 'Date time', attribute: Message.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Sent by', attribute: Message.CREATED_BY.dot(SystemUser.LOGIN).name, sortable: false, width: W200, visible: true),
                 new ColumnDTO(title: 'Recipients', attribute: Message.RECIPIENTS_STRING_PROPERTY, sortable: false, width: W200, visible: true),

@@ -177,11 +177,12 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
   }, [entityTags, rootEntity]);
 
   const BulkEditFieldRendered = useMemo(() => {
-    if (!selectedKeyCode) {
+    const field = getBulkEditFieldData();
+
+    if (!field) {
       return null;
     }
 
-    const field = getBulkEditFieldData();
     let fieldProps;
 
     // eslint-disable-next-line default-case
@@ -194,7 +195,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           fieldClasses: {
             text: classes.text,
             label: classes.customLabel,
-            placeholder: classes.placeholder
+            placeholder: classes.text
           }
         };
         break;
@@ -213,7 +214,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           fieldClasses: {
             text: classes.text,
             label: classes.customLabel,
-            placeholder: classes.placeholder,
+            placeholder: classes.text,
             listbox: classes.listbox
           }
         };
@@ -225,7 +226,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           fieldClasses: {
             text: classes.text,
             label: classes.customLabel,
-            placeholder: classes.placeholder
+            placeholder: classes.text
           }
         };
       }
