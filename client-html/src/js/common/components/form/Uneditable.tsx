@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
 
 interface UneditableProps {
   value: string | number;
-  label?: string;
+  label: string;
   labelAdornment?: any;
   url?: string;
   currencySymbol?: string;
