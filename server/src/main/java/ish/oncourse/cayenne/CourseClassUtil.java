@@ -40,7 +40,7 @@ public final class CourseClassUtil {
 	}
 
 	/**
-	 * @return the list of enrolments which are considered as REFUNDED.
+	 * @return the list of enrolments which are considered as REFUNDED or CANCELLED.
 	 */
 	public static List<Enrolment> getRefundedAndCancelledEnrolments(List<Enrolment> theEnrolments) {
 		if (theEnrolments == null || theEnrolments.size() == 0) {
@@ -48,6 +48,18 @@ public final class CourseClassUtil {
 		}
 		Expression validEnrolmentExpr = ExpressionFactory.matchExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.REFUNDED);
 		validEnrolmentExpr = validEnrolmentExpr.orExp(ExpressionFactory.matchExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.CANCELLED));
+
+		return validEnrolmentExpr.filterObjects(theEnrolments);
+	}
+
+	/**
+	 * @return the list of enrolments which are considered as CANCELLED.
+	 */
+	public static List<Enrolment> getCancelledEnrolments(List<Enrolment> theEnrolments) {
+		if (theEnrolments == null || theEnrolments.size() == 0) {
+			return theEnrolments;
+		}
+		Expression validEnrolmentExpr = ExpressionFactory.matchExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.CANCELLED);
 
 		return validEnrolmentExpr.filterObjects(theEnrolments);
 	}

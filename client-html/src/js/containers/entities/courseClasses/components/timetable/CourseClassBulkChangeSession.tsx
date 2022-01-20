@@ -3,11 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, {
+ useCallback, useEffect, useMemo, useState 
+} from "react";
 import clsx from "clsx";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { arrayPush, arrayRemove, change, Field, getFormValues, initialize, reduxForm, submit } from "redux-form";
+import {
+ arrayPush, arrayRemove, change, Field, getFormValues, initialize, reduxForm, submit 
+} from "redux-form";
 import Dialog from "@mui/material/Dialog";
 import Grid from "@mui/material/Grid";
 import DialogContent from "@mui/material/DialogContent";
@@ -18,7 +22,9 @@ import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import Collapse from "@mui/material/Collapse";
 import { TutorAttendance } from "@api/model";
-import { differenceInMinutes } from "date-fns";
+import {
+ addDays, differenceInMinutes, format as formatDate, subDays 
+} from "date-fns";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
 import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
@@ -27,6 +33,7 @@ import { greaterThanNullValidation } from "../../../../../common/utils/validatio
 import EditInPlaceDurationField from "../../../../../common/components/form/formFields/EditInPlaceDurationField";
 import { courseClassCloseBulkUpdateModal } from "./actions";
 import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../../common/actions/CommonPlainRecordsActions";
+import { DD_MMM_YYYY } from "../../../../../common/utils/dates/format";
 import CourseClassTutorRooster from "./CourseClassTutorRooster";
 
 const COURSE_CLASS_BULK_UPDATE_FORM: string = "CourseClassBulkUpdateForm";
@@ -58,7 +65,7 @@ const validateDuration = value => (value !== "" && (value < 5 || value > 1440)
   ? "Each entry in the timetable cannot be shorter than 5 minutes or longer than 24 hours."
   : undefined);
 
-const initialValues = {
+export const initialValues = {
   tutorAttendances: [],
   tutorsChecked: false,
   locationChecked: false,
@@ -78,7 +85,6 @@ const initialValues = {
   moveBackwardChecked: false,
   moveBackward: ""
 };
-
 
 const BulkItemWrapper: React.FC<any> = props => {
   const {
@@ -132,6 +138,9 @@ const CourseClassBulkChangeSessionForm = props => {
     bulkValues,
     sessions
   } = props;
+
+  const [laterDate, setLaterDate] = useState<string>(null);
+  const [earlierDate, setEarlierDate] = useState<string>(null);
 
   const classTimezone = useMemo(() => {
     if (!sessions) {
@@ -207,7 +216,7 @@ const CourseClassBulkChangeSessionForm = props => {
     []
   );
 
-  const onClose = React.useCallback(() => {
+  const onClose = useCallback(() => {
     dispatch(courseClassCloseBulkUpdateModal());
     reset();
   }, []);
@@ -219,6 +228,8 @@ const CourseClassBulkChangeSessionForm = props => {
   const onDeleteTutor = (index: number) => {
     dispatch(arrayRemove(form, `tutorAttendances`, index));
   };
+  
+  const firstSelectedSession = useMemo(() => sessions?.find(s => s.id === selection[0]) || sessions[0], [sessions, selection]);
 
   const onAddTutor = (tutor: CourseClassTutorExtended) => {
     dispatch(arrayPush(form, `tutorAttendances`, {
@@ -228,13 +239,35 @@ const CourseClassBulkChangeSessionForm = props => {
       contactName: tutor.tutorName,
       attendanceType: 'Not confirmed for payroll',
       note: null,
-      actualPayableDurationMinutes: durationValue || differenceInMinutes(new Date(sessions[0]?.end), new Date(sessions[0]?.start)),
+      actualPayableDurationMinutes: durationValue || differenceInMinutes(new Date(firstSelectedSession?.end), new Date(firstSelectedSession?.start)),
       hasPayslip: false,
-      start: bulkValues.start || sessions[0]?.start,
-      end: bulkValues.end || sessions[0]?.end,
+      start: bulkValues.start || firstSelectedSession?.start,
+      end: bulkValues.end || firstSelectedSession?.end,
       contactId: tutor.contactId,
       payslipIds: []
     } as TutorAttendance));
+  };
+
+  const onMoveLater = e => {
+    const days = e.target.value !== "" ? Number(e.target.value) : 0;
+
+    if (days > 0) {
+      setLaterDate(formatDate(addDays(new Date(firstSelectedSession?.start), days), DD_MMM_YYYY).toString());
+    } else {
+      setLaterDate(null);
+    }
+  };
+
+  const onMoveEarlier = e => {
+    const days = e.target.value !== "" ? Number(e.target.value) : 0;
+
+    if (days > 0) {
+      const firstSessionDate = new Date(firstSelectedSession?.start);
+      const toDate = formatDate(subDays(firstSessionDate, days), DD_MMM_YYYY).toString();
+      setEarlierDate(`${formatDate(firstSessionDate, DD_MMM_YYYY).toString()} to ${toDate}`);
+    } else {
+      setEarlierDate(null);
+    }
   };
 
   return (
@@ -275,7 +308,7 @@ const CourseClassBulkChangeSessionForm = props => {
                       <Field
                         name="tutorAttendances"
                         component={CourseClassTutorRooster}
-                        session={bulkValues}
+                        session={{ ...bulkValues, siteTimezone: classTimezone }}
                         tutors={tutors}
                         onDeleteTutor={onDeleteTutor}
                         onAddTutor={onAddTutor}
@@ -310,6 +343,7 @@ const CourseClassBulkChangeSessionForm = props => {
                     <Grid item xs={6}>
                       <EditInPlaceDurationField
                         label="Actual payable duration"
+                        id="actualPayableDuration"
                         meta={{}}
                         input={{
                           value: payableDurationValue,
@@ -349,6 +383,7 @@ const CourseClassBulkChangeSessionForm = props => {
                     <Grid item xs={6}>
                       <EditInPlaceDurationField
                         label="Duration"
+                        id="duration"
                         meta={{
                           error: durationError,
                           invalid: Boolean(durationError)
@@ -366,7 +401,7 @@ const CourseClassBulkChangeSessionForm = props => {
                 </BulkItemWrapper>
               </Grid>
               <Grid item xs={12}>
-                <BulkItemWrapper classes={classes} title="Move forward" name="moveForward">
+                <BulkItemWrapper classes={classes} title="Move later" name="moveForward">
                   <Grid container>
                     <Grid item xs={6}>
                       <FormField
@@ -376,15 +411,19 @@ const CourseClassBulkChangeSessionForm = props => {
                         step="1"
                         className={classes.bulkChangeDaysInput}
                         hideArrows
+                        onChange={onMoveLater}
                       />
                       {" "}
                       days
+                    </Grid>
+                    <Grid item xs={6} id="moveForwardInfo">
+                      {laterDate && `Earliest selected session will starts ${laterDate}`}
                     </Grid>
                   </Grid>
                 </BulkItemWrapper>
               </Grid>
               <Grid item xs={12}>
-                <BulkItemWrapper classes={classes} title="Move backward" name="moveBackward">
+                <BulkItemWrapper classes={classes} title="Move earlier" name="moveBackward">
                   <Grid container>
                     <Grid item xs={6}>
                       <FormField
@@ -394,9 +433,13 @@ const CourseClassBulkChangeSessionForm = props => {
                         step="1"
                         className={classes.bulkChangeDaysInput}
                         hideArrows
+                        onChange={onMoveEarlier}
                       />
                       {" "}
                       days
+                    </Grid>
+                    <Grid item xs={6} id="moveBackwardInfo">
+                      {earlierDate && `Earliest selected session will be moved from ${earlierDate}`}
                     </Grid>
                   </Grid>
                 </BulkItemWrapper>
@@ -420,11 +463,11 @@ const CourseClassBulkChangeSessionForm = props => {
       </form>
     </Dialog>
   );
-}
+};
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<any>, props) => ({
   init: () => {
-    dispatch(initialize(COURSE_CLASS_BULK_UPDATE_FORM, initialValues));
+    dispatch(initialize(COURSE_CLASS_BULK_UPDATE_FORM, props.initialValues || initialValues));
   },
   getRooms: (search: string) => {
     dispatch(setCommonPlainSearch("Room", search));

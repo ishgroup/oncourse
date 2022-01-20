@@ -12,7 +12,13 @@ import { EntityName } from "../../../../model/entities/common";
 export const GET_CUSTOM_FIELD_TYPES = _toRequestType("get/customFieldTypes");
 export const GET_CUSTOM_FIELD_TYPES_FULFILLED = FULFILLED(GET_CUSTOM_FIELD_TYPES);
 
-export const getCustomFieldTypes = (entity: EntityName) => ({
-  type: GET_CUSTOM_FIELD_TYPES,
-  payload: entity
-});
+export const GET_SALE_CUSTOM_FIELD_TYPES = _toRequestType("get/sale/customFieldTypes");
+
+export const getCustomFieldTypes = (entity: EntityName) => (entity === "ProductItem" 
+  ? {
+    type: GET_SALE_CUSTOM_FIELD_TYPES,
+  }
+  : {
+    type: GET_CUSTOM_FIELD_TYPES,
+    payload: entity
+  });

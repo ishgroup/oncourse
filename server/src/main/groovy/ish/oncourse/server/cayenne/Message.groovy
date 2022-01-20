@@ -55,16 +55,6 @@ class Message extends _Message implements Queueable {
             if (getEmailSubject() == null || getEmailSubject().isEmpty()) {
                 result.addFailure(ValidationFailure.validationFailure(this, EMAIL_SUBJECT.getName(), "The email subject cannot be blank."))
             }
-            if ((getEmailBody() == null || getEmailBody().isEmpty()) && (getEmailHtmlBody() == null || getEmailHtmlBody().isEmpty())) {
-                result.addFailure(ValidationFailure.validationFailure(this, EMAIL_BODY.getName(), "The email message cannot be blank."))
-                result.addFailure(ValidationFailure.validationFailure(this, EMAIL_HTML_BODY.getName(), "The email message cannot be blank."))
-            }
-            if (getSmsText() == null || getSmsText().isEmpty()) {
-                result.addFailure(ValidationFailure.validationFailure(this, SMS_TEXT.getName(), "The sms text cannot be blank."))
-            }
-            if (getPostDescription() == null || getPostDescription().isEmpty()) {
-                result.addFailure(ValidationFailure.validationFailure(this, POST_DESCRIPTION.getName(), "The post description cannot be blank."))
-            }
         }
     }
 
@@ -131,16 +121,6 @@ class Message extends _Message implements Queueable {
         return super.getDestinationAddress()
     }
 
-    /**
-     * @return true if message linked to mailing list which has willow id
-     */
-    boolean isMailingListMessage() {
-        if (!getTaggingRelations().isEmpty()) {
-            MessageTagRelation tagRelation = getTaggingRelations().get(0)
-            return tagRelation != null && tagRelation.getTag() != null && tagRelation.getTag().getWillowId() != null
-        }
-        return false
-    }
 
     /**
      * @return the date and time this record was created
@@ -239,23 +219,7 @@ class Message extends _Message implements Queueable {
         return super.getCreatedBy()
     }
 
-    /**
-     * @return The list of tags assigned to message
-     */
-    @Nonnull
-    @API
-    List<Tag> getTags() {
-        List<Tag> tagList = new ArrayList<>(getTaggingRelations().size())
-        for (MessageTagRelation relation : getTaggingRelations()) {
-            tagList.add(relation.getTag())
-        }
-        return tagList
-    }
 
-    @Override
-    Class<? extends TagRelation> getTagRelationClass() {
-        return MessageTagRelation.class
-    }
 /**
  * @return specific key of the message. It can be set in scripts.
  */

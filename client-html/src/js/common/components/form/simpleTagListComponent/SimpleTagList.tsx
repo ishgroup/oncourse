@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { Tag } from "@api/model";
 import {
-  FormControl, FormHelperText, Input, InputAdornment, InputLabel, Typography
+ FormControl, FormHelperText, Input, InputAdornment, InputLabel, Typography 
 } from "@mui/material";
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import createStyles from "@mui/styles/createStyles";
@@ -75,6 +75,7 @@ const styles = theme =>
       marginLeft: theme.spacing(1)
     },
     editable: {
+      position: "relative",
       display: "inline-flex",
       color: theme.palette.text.primaryEditable,
       minHeight: "32px",
@@ -89,7 +90,7 @@ const styles = theme =>
       "&:before": {
         borderBottom: '1px solid transparent',
         left: 0,
-        bottom: "4px",
+        bottom: 0,
         content: "' '",
         position: "absolute",
         right: 0,
@@ -122,6 +123,9 @@ const styles = theme =>
         padding: 0
       }
     },
+    placeholder: {
+      opacity: 0.15
+    }
   });
 
 interface Props extends WrappedFieldProps {
@@ -498,11 +502,14 @@ const SimpleTagList: React.FC<Props> = props => {
             component="div"
             onClick={edit}
             className={clsx( classes.editable, {
-              [fieldClasses.placeholder ? fieldClasses.placeholder : "placeholderContent"]: !inputValue,
               [fieldClasses.text]: inputValue,
             })}
           >
-            <span className="centeredFlex flex-wrap">
+            <span className={clsx("centeredFlex flex-wrap", {
+              [fieldClasses.placeholder]: !inputValue,
+              [classes.placeholder]: !inputValue,
+            })}
+            >
               {InputValueForRender || "No value"}
             </span>
             {!disabled

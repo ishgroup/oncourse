@@ -18,7 +18,6 @@ import ish.oncourse.server.api.v1.model.NoteDTO
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.users.SystemUserService
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.Persistent
 import org.apache.cayenne.query.SelectById
 
 public class NoteApiService extends EntityApiService<NoteDTO, Note, NoteDao> {
@@ -37,7 +36,11 @@ public class NoteApiService extends EntityApiService<NoteDTO, Note, NoteDao> {
                     (AbstractInvoice.simpleName)          : [AbstractInvoice, InvoiceNoteRelation],
                     (Lead.simpleName)                     : [Lead, LeadNoteRelation],
                     (Room.simpleName)                     : [Room, RoomNoteRelation],
-                    (Site.simpleName)                     : [Site, SiteNoteRelation]
+                    (Site.simpleName)                     : [Site, SiteNoteRelation],
+                    (VoucherProduct.simpleName)           : [VoucherProduct, VoucherProductNoteRelation],
+                    (MembershipProduct.simpleName)        : [MembershipProduct, MembershipProductNoteRelation],
+                    (ArticleProduct.simpleName)           : [ArticleProduct, ArticleProductNoteRelation],
+                    (ProductItem.simpleName)              : [ProductItem, ProductItemNoteRelation],
             ]
 
     @Inject

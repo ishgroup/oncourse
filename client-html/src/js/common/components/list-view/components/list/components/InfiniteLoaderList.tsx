@@ -4,16 +4,23 @@
  */
 
 import React, {
+  createContext,
+  forwardRef,
   memo, useCallback, useMemo
 } from "react";
 import { FixedSizeList, areEqual } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import InfiniteLoader from "react-window-infinite-loader";
 import clsx from "clsx";
-import TableCell from "@mui/material/TableCell";
 import debounce from "lodash.debounce";
 import Typography from "@mui/material/Typography";
-import { LIST_PAGE_SIZE } from "../../../../../../constants/Config";
+import {
+  HEADER_ROWS_COUNT,
+  HEADER_ROWS_INDICES,
+  LIST_PAGE_SIZE,
+  LIST_THREE_COLUMN_ROW_HEIGHT,
+  LIST_TWO_COLUMN_ROW_HEIGHT
+} from "../../../../../../constants/Config";
 import { COLUMN_WITH_COLORS } from "../utils";
 
 const ListRow = memo<any>(({ data, index, style }) => {
@@ -27,7 +34,13 @@ const ListRow = memo<any>(({ data, index, style }) => {
     onMouseOver
   } = data;
 
-  const row = rows[index];
+  if (!threeColumn && HEADER_ROWS_INDICES.includes(index)) {
+    return null;
+  }
+
+  const currentIndex = threeColumn ? index : index - HEADER_ROWS_COUNT;
+
+  const row = rows[currentIndex];
   const rowClasses = clsx(
     classes.row,
     row && row.isSelected && classes.selected,
@@ -45,7 +58,7 @@ const ListRow = memo<any>(({ data, index, style }) => {
       {...row.getRowProps()}
       style={style}
       className={rowClasses}
-      onClick={e => onRowSelect(e, row.id, index)}
+      onClick={e => onRowSelect(e, row.id, currentIndex)}
       onDoubleClick={() => onRowDoubleClick(row.id)}
     >
       {threeColumn ? (
@@ -70,6 +83,20 @@ const ListRow = memo<any>(({ data, index, style }) => {
   );
 }, areEqual);
 
+const StickyListContext = createContext(null);
+StickyListContext.displayName = "StickyListContext";
+
+const innerElementType = forwardRef<any>(({ children, ...rest }, ref) => (
+  <StickyListContext.Consumer>
+    {({ header }) => (
+      <div ref={ref} {...rest}>
+        {header}
+        {children}
+      </div>
+    )}
+  </StickyListContext.Consumer>
+));
+
 export default ({
   totalColumnsWidth,
   prepareRow,
@@ -82,7 +109,8 @@ export default ({
   threeColumn,
   onRowDoubleClick,
   onMouseOver,
-  mainContentWidth
+  mainContentWidth,
+  header
 }) => {
   const isItemLoaded = index => rows[index];
 
@@ -102,18 +130,17 @@ export default ({
       onRowSelect,
       threeColumn,
       onRowDoubleClick,
-      onMouseOver
+      onMouseOver,
     }),
     [prepareRow, rows, classes, onRowSelect, onRowDoubleClick, totalColumnsWidth, threeColumn, onMouseOver]
   );
 
-  const itemCount = useMemo(() => rows.length + (recordsLeft >= LIST_PAGE_SIZE ? LIST_PAGE_SIZE : recordsLeft === 1 ? 0 : recordsLeft), [
-    recordsLeft,
-    rows.length
-  ]);
+  const itemCount = useMemo(() => (rows.length + (recordsLeft >= LIST_PAGE_SIZE ? LIST_PAGE_SIZE : recordsLeft === 1 ? 0 : recordsLeft))
+    + (threeColumn ? 0 : HEADER_ROWS_COUNT),
+   [threeColumn, recordsLeft, rows.length]);
 
   return (
-    <div className={clsx("w-100 h-100 d-block", classes.infiniteLoaderListRoot)}>
+    <StickyListContext.Provider value={{ header }}>
       <InfiniteLoader
         threshold={0}
         minimumBatchSize={LIST_PAGE_SIZE}
@@ -128,10 +155,11 @@ export default ({
                 style={{ overflow: false }}
                 itemCount={itemCount}
                 itemData={itemData}
-                itemSize={threeColumn ? 64 : 27}
+                itemSize={threeColumn ? LIST_THREE_COLUMN_ROW_HEIGHT : LIST_TWO_COLUMN_ROW_HEIGHT}
                 height={height}
                 width={threeColumn ? mainContentWidth : (totalColumnsWidth > width ? totalColumnsWidth : width)}
                 onItemsRendered={onItemsRendered}
+                innerElementType={innerElementType}
                 ref={r => {
                   if (r) {
                     // eslint-disable-next-line no-param-reassign
@@ -147,6 +175,6 @@ export default ({
           </AutoSizer>
         )}
       </InfiniteLoader>
-    </div>
+    </StickyListContext.Provider>
   );
 };

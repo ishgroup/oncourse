@@ -4,7 +4,16 @@
  */
 
 import { AssessmentClass, Session } from "@api/model";
-import { differenceInMinutes, addMinutes } from "date-fns";
+import {
+  differenceInMinutes,
+  addMinutes,
+  addHours,
+  isWeekend,
+  addBusinessDays,
+  addDays,
+  addWeeks,
+  addMonths, addYears
+} from "date-fns";
 import { openInternalLink } from "../../../../common/utils/links";
 import {
   ClassCostExtended,
@@ -12,7 +21,7 @@ import {
   ClassCostTypes,
   Classes,
   CourseClassStatus,
-  CourseClassTutorExtended
+  CourseClassTutorExtended, SessionRepeatTypes
 } from "../../../../model/entities/CourseClass";
 import { EntityType } from "../../../../model/common/NestedEntity";
 import CourseClassTutorService from "../components/tutors/services/CourseClassTutorService";
@@ -25,6 +34,8 @@ import { getClassCostFee } from "../components/budget/utils";
 import { decimalMul, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { TimetableSession } from "../../../../model/timetable";
 import CourseClassAttendanceService from "../components/attendance/services/CourseClassAttendanceService";
+import { appendTimezone } from "../../../../common/utils/dates/formatTimezone";
+import uniqid from "../../../../common/utils/uniqid";
 
 export const openCourseClassLink = (classId: number) => openInternalLink(`/${Classes.path}/${classId}`);
 
@@ -397,13 +408,18 @@ export const processCourseClassApiActions = async (s: State, createdClassId?: nu
   return unprocessedAsyncActions;
 };
 
-export const setShiftedTutorAttendances = (prevSession: TimetableSession, newSession: TimetableSession) => {
+export const setShiftedTutorAttendances = (prevSession: TimetableSession, newSession: TimetableSession, keepId: boolean = true) => {
   const sessionStartMinutesDiff = differenceInMinutes(new Date(newSession.start), new Date(prevSession.start));
   const sessionEndMinutesDiff = differenceInMinutes(new Date(newSession.end), new Date(prevSession.end));
 
   newSession.tutorAttendances = newSession.tutorAttendances.map((ta, index) => {
-    const taStartMinutesDiff = differenceInMinutes(new Date(ta.start), new Date(prevSession.tutorAttendances[index].start));
-    const taEndMinutesDiff = differenceInMinutes(new Date(ta.end), new Date(prevSession.tutorAttendances[index].end));
+    let taStartMinutesDiff = 0;
+    let taEndMinutesDiff = 0;
+
+    if (prevSession.tutorAttendances[index]) {
+      taStartMinutesDiff = differenceInMinutes(new Date(ta.start), new Date(prevSession.tutorAttendances[index].start));
+      taEndMinutesDiff = differenceInMinutes(new Date(ta.end), new Date(prevSession.tutorAttendances[index].end));
+    }
     
     const start = addMinutes(new Date(ta.start), sessionStartMinutesDiff + taStartMinutesDiff);
     const end = addMinutes(new Date(ta.end), sessionEndMinutesDiff + taEndMinutesDiff);
@@ -414,9 +430,80 @@ export const setShiftedTutorAttendances = (prevSession: TimetableSession, newSes
     
     return {
       ...ta,
+      id: keepId ? ta.id : null,
       end: end.toISOString(),
       start: start.toISOString(),
       actualPayableDurationMinutes: actualPayableDurationMinutes >= 0 ? actualPayableDurationMinutes : 0
     };
   });
+};
+
+export const getSessionsWithRepeated = (
+  repeatSession: TimetableSession,
+  repeatType: SessionRepeatTypes,
+  repeatTimes: number,
+  allSessions: TimetableSession[]
+): TimetableSession[] => {
+  let repeated = Array.from(Array(repeatTimes <= 0 ? 1 : repeatTimes));
+  let repeatHandler = addHours;
+  let indexIncrement = 1;
+
+  switch (repeatType) {
+    case "hour":
+      repeatHandler = addHours;
+      break;
+    case "day (excluding weekends)":
+      if (isWeekend(new Date(repeatSession.start))) {
+        indexIncrement = 0;
+      }
+      repeatHandler = addBusinessDays;
+      break;
+    case "day (including weekends)":
+      repeatHandler = addDays;
+      break;
+    case "week":
+      repeatHandler = addWeeks;
+      break;
+    case "month":
+      repeatHandler = addMonths;
+      break;
+    case "year":
+      repeatHandler = addYears;
+      break;
+  }
+
+  const repeatedStart = new Date(repeatSession.start);
+
+  repeated = repeated.map<TimetableSession>((r, index) => {
+    let start = repeatHandler(new Date(repeatSession.start), index + indexIncrement);
+    let end = repeatHandler(new Date(repeatSession.end), index + indexIncrement);
+
+    // workaround for DST time offset
+    if (repeatSession.siteTimezone && repeatType !== "hour") {
+      const startHoursDiff = appendTimezone(repeatedStart, repeatSession.siteTimezone).getHours()
+        - appendTimezone(start, repeatSession.siteTimezone).getHours();
+
+      if (startHoursDiff) {
+        start = addHours(start, startHoursDiff);
+        end = addHours(end, startHoursDiff);
+      }
+    }
+
+    const result = {
+      ...repeatSession,
+      id: null,
+      temporaryId: uniqid(),
+      start: start.toISOString(),
+      end: end.toISOString(),
+    };
+
+    setShiftedTutorAttendances(repeatSession, result, false);
+
+    return result;
+  });
+
+  const updated = [...allSessions, ...repeated];
+  updated.sort((a, b) => (new Date(a.start) > new Date(b.start) ? 1 : -1));
+
+  return updated;
 };

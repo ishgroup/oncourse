@@ -9,7 +9,6 @@ import { Application, ApplicationStatus } from "@api/model";
 import { Grid, IconButton } from "@mui/material";
 import Launch from "@mui/icons-material/Launch";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import { State } from "../../../../reducers/state";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import Uneditable from "../../../../common/components/form/Uneditable";
@@ -31,11 +30,6 @@ const statusItems = Object.keys(ApplicationStatus)
   .map(value => ({ label: value, value }))
   .filter(item => item.value !== ApplicationStatus.Accepted);
 
-const validateTagList = (value, allValues, props) => {
-  const { tags } = props;
-  return validateTagsList(tags && tags.length > 0 ? tags : [], value, allValues, props);
-};
-
 const validateNonNegative = value => (value < 0 ? "Must be non negative" : undefined);
 
 const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
@@ -44,7 +38,6 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
     tags,
     values,
     isNew,
-    dispatch,
     form,
     syncErrors
   } = props;
@@ -121,15 +114,12 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           required
         />
       </Grid>
-      <Grid item container xs={12}>
-        <Grid {...gridItemProps}>
-          <FormField
-            type="tags"
-            name="tags"
-            tags={tags}
-            validate={tags && tags.length ? validateTagList : undefined}
-          />
-        </Grid>
+      <Grid item xs={12}>
+        <FormField
+          type="tags"
+          name="tags"
+          tags={tags}
+        />
       </Grid>
       <Grid item {...gridItemProps}>
         <FormField
@@ -175,7 +165,6 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
         entityName="Application"
         fieldName="customFields"
         entityValues={values}
-        dispatch={dispatch}
         form={form}
         gridItemProps={{
           xs: twoColumn ? 6 : 12,
