@@ -28,7 +28,6 @@ import ish.oncourse.server.cayenne.AssessmentClass
 import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.cayenne.Audit
 import ish.oncourse.server.cayenne.Banking
-import ish.oncourse.server.cayenne.Cart
 import ish.oncourse.server.cayenne.Certificate
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.CorporatePass
@@ -930,26 +929,6 @@ class DefaultUserPreference {
         it
     }
 
-    private static final CART_MODEL = new TableModelDTO().with {
-        it.columns = [
-                new ColumnDTO(title: 'Creation date', attribute: Cart.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
-                new ColumnDTO(title: 'Contact name', attribute: Cart.CONTACT.dot(Contact.FULL_NAME_KEY).name, sortable: true,
-                        width: W300, visible: true, sortFields: [Contact.LAST_NAME.name,
-                                                                 Contact.FIRST_NAME.name,
-                                                                 Contact.MIDDLE_NAME.name]),
-                new ColumnDTO(title: 'Payer name', attribute: Cart.PAYER.dot(Contact.FULL_NAME_KEY).name, sortable: true,
-                        width: W300, visible: true, sortFields: [Contact.LAST_NAME.name,
-                                                                 Contact.FIRST_NAME.name,
-                                                                 Contact.MIDDLE_NAME.name]),
-                new ColumnDTO(title: 'Estimated value', attribute: Cart.ESTIMATED_VALUE_KEY, sortable: true,
-                        width: W200, visible: true, type: ColumnTypeDTO.MONEY,
-                        prefetches: [Cart.CLASSES.path().toString(), Cart.PRODUCTS.path().toString()])
-        ]
-        it.layout = LayoutTypeDTO.THREE_COLUMN
-        it.filterColumnWidth = W200
-        it
-    }
-
     // must be below model initializations
     public static final Map<String, TableModelDTO> DEFAULT_MODEL_MAP = [
             (Account.ENTITY_NAME)              : ACCOUNT_MODEL,
@@ -986,8 +965,7 @@ class DefaultUserPreference {
             (DefinedTutorRole.ENTITY_NAME)     : DEFINED_TUTOR_ROLE_MODEL,
             (CourseClass.ENTITY_NAME)          : COURSECLASS_MODEL,
             (Contact.ENTITY_NAME)              : CONTACT_MODEL,
-            (PriorLearning.ENTITY_NAME)        : PRIOR_LEARNING_MODEL,
-            (Cart.ENTITY_NAME)                 : CART_MODEL
+            (PriorLearning.ENTITY_NAME)        : PRIOR_LEARNING_MODEL
 
 
     ] as Map<String, TableModelDTO>

@@ -8,15 +8,7 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.math.Money
 import ish.oncourse.server.cayenne.glue._Cart
 
 class Cart extends _Cart{
-    public static final String ESTIMATED_VALUE_KEY = "estimatedValue"
-
-    Money getEstimatedValue(){
-        def productsPrice = products.collect { it.priceIncTax }.sum() as Money
-        def classesPrice = classes.collect {it.feeIncGst}.sum() as Money
-        return productsPrice.add(classesPrice)
-    }
 }

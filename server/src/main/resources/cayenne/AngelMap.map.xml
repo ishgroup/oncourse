@@ -5074,8 +5074,6 @@
 	<obj-relationship name="waitingLists" source="Cart" target="WaitingList" deleteRule="Nullify" db-relationship-path="waitingLists"/>
 	<obj-relationship name="classes" source="Cart" target="CourseClass" deleteRule="Nullify" db-relationship-path="classes"/>
 	<obj-relationship name="products" source="Cart" target="Product" db-relationship-path="products"/>
-	<obj-relationship name="payer" source="Cart" target="Contact" db-relationship-path="payer"/>
-	<obj-relationship name="contact" source="Cart" target="Contact" db-relationship-path="contact"/>
 	<obj-relationship name="attachmentRelations" source="Certificate" target="CertificateAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="certificateOutcomes" source="Certificate" target="CertificateOutcome" deleteRule="Cascade" db-relationship-path="certificateOutcomes"/>
 	<obj-relationship name="qualification" source="Certificate" target="Qualification" deleteRule="Nullify" db-relationship-path="qualification"/>
