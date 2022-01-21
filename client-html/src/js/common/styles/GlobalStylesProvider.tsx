@@ -357,7 +357,7 @@ const globalStyles = (theme: AppTheme) =>
         }
       },
       ".defaultBackgroundColor": {
-        backgroundColor: theme.palette.background.default
+        backgroundColor: theme.appBar.header.background
       },
       ".paperBackgroundColor": {
         background: theme.palette.background.paper
