@@ -42,6 +42,7 @@ class CartService extends CartApi {
   public mapProduct = (product: Article | Membership | Voucher): StoreCartItem => ({
     id: product.productId,
     selected: product.selected,
+    quantity: product instanceof Membership ? 1 : product.quantity,
     ...this.mapCustomFields(product.fieldHeadings)
   });
 

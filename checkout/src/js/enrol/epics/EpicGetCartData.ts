@@ -98,10 +98,10 @@ const request: any = {
     const getProducts = Array.from(setOfProductIds).map((id: string) => requestProduct(id, true));
 
     const contacts = contactNodes.map((node) => addContact({
-      email: null,
-      firstName: null,
+      email: node.contactEmail,
+      firstName: node.contactFirstName,
       id: node.contactId,
-      lastName: null,
+      lastName: node.contactLastName,
     }));
 
     const nodes = contactNodes.map((node) => addContactNodeToState(node));

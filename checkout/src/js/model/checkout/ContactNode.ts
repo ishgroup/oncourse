@@ -8,6 +8,12 @@ import { WaitingList } from './WaitingList';
 export class ContactNode {
   contactId: string;
 
+  contactFirstName?: string;
+
+  contactLastName?: string;
+
+  contactEmail?: string;
+
   enrolments: Enrolment[];
 
   applications: Application[];
