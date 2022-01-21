@@ -37,7 +37,7 @@ class FieldBuilder<T> {
                     break
                 case STUDY_REASON:
                     f.dataType = DataType.ENUM
-                    f.enumType = aClass.simpleName
+                    f.enumType = StudyReason.simpleName
                     StudyReason.enumConstants.each {
                         StudyReason item ->
                             f.enumItems << new Item(value: item.displayName, key: item.databaseValue.toString())
