@@ -1,25 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
   <Contact id="1" isCompany="0" isStudent="0" isTutor="1" uniqueCode="Contact1" deliveryStatusSms="1"
-           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1"/>
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Contact id="2" isCompany="0" isStudent="1" isTutor="0" uniqueCode="Contact2" deliveryStatusSms="1"
-           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1"/>
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Contact id="3" isCompany="0" isStudent="1" isTutor="0" uniqueCode="Contact3" deliveryStatusSms="1"
-           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1"/>
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Contact id="4" isCompany="0" isStudent="1" isTutor="0" uniqueCode="Contact4" deliveryStatusSms="1"
-           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1"/>
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Contact id="5" isCompany="0" isStudent="1" isTutor="0" uniqueCode="Contact5" deliveryStatusSms="1"
-           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1"/>
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Contact id="6" isCompany="0" isStudent="1" isTutor="0" uniqueCode="Contact6" deliveryStatusSms="1"
-           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1"/>
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Contact id="7" isCompany="0" isStudent="1" isTutor="0" uniqueCode="Contact7" deliveryStatusSms="1"
-           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1"/>
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Contact id="8" isCompany="0" isStudent="1" isTutor="0" uniqueCode="Contact8" deliveryStatusSms="1"
-           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1"/>
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Contact id="9" isCompany="0" isStudent="1" isTutor="0" uniqueCode="Contact9" deliveryStatusSms="1"
-           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1"/>
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Contact id="10" isCompany="0" isStudent="1" isTutor="0" uniqueCode="Contact10" deliveryStatusSms="1"
-           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1"/>
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <CustomFieldType id="1" name="custom field1" fieldKey="customField1" defaultValue="test1" isMandatory="0"
                    createdOn="2016-06-30 12:24:00" modifiedOn="2016-06-30 12:24:00" entityIdentifier="Contact"

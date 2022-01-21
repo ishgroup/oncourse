@@ -53,6 +53,26 @@ import java.io.Writer;
 public final class Textile {
 	private static final String BRACKETS_PATTERN = "(\\{([^}]*)})";
 
+	// « (\u00AB) in UTF-8
+	// » (\u00BB) in UTF-8
+	// “ (\u201C) in UTF-8
+	// ” (\u201D) in UTF-8
+	// „ (\u201E) in UTF-8
+	// ‟ (\u201F) in UTF-8
+	// ‟ (\u0093) in UTF-8
+	// ‟ (\u0094) in UTF-8
+	public static final String REGEXP_UNICODE_DOUBLE_QUOTES = "[\\u0093\\u0094\\u201F\\u201E\\u201D\\u201C\\u00BB\\u00AB]";
+
+	// ‘ (\u2018) in UTF-8
+	// ’ (\u2019) in UTF-8
+	// ‚ (\u201A) in UTF-8
+	// ‛ (\u201B) in UTF-8
+	// ‹ (\u2039) in UTF-8
+	// › (\u203A) in UTF-8
+	public static final String REGEXP_UNICODE_SINGLE_QUOTES = "[\\u2018\\u2019\\u201A\\u201B\\u2039\\u203A]";
+
+	public static final String QUOT = "\"|&#8220;|&#8221;|\u201C|\u201D";
+
 	private Textile() {}
 
 	/**
@@ -130,4 +150,18 @@ public final class Textile {
 		}
 	}
 
+	public static String getValue(String tag, boolean isInQuots) {
+		String separator = null;
+		if (isInQuots) {
+			separator = QUOT;
+		} else {
+			separator = "[:]|\\s+|[}]";
+		}
+		String[] splitted = tag.split(separator);
+		return splitted.length >= 2 ? splitted[1] : null;
+	}
+
+	public static String unicodeQuotesEncoding(String content) {
+		return content.replaceAll(REGEXP_UNICODE_DOUBLE_QUOTES, "\"").replaceAll(REGEXP_UNICODE_SINGLE_QUOTES, "\'");
+	}
 }

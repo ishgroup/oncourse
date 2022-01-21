@@ -16,7 +16,8 @@
            MODIFIEDON="2015-11-13 10:22:44.0" TYPE="5"/>
   <Account ACCOUNTCODE="65387" CREATEDON="2015-11-13 10:22:44.0" DESCRIPTION="Voucher underpayment" ID="11"
            ISENABLED="1" MODIFIEDON="2015-11-13 10:22:44.0" TYPE="6"/>
-  <Account ACCOUNTCODE="6345 - uf" DESCRIPTION="Undeposited funds" ID="12" ISENABLED="1"
+  <Account ACCOUNTCODE="6345 - uf" CREATEDON="2015-11-13 10:22:44.0" DESCRIPTION="Undeposited funds" ID="12"
+           ISENABLED="1"
            MODIFIEDON="2020-12-08 20:06:03.0" TYPE="1"/>
 
   <FieldConfigurationScheme id="102" name="fkname" createdOn="2017-06-20 12:00:00.0"
@@ -154,12 +155,20 @@
            REPORTABLEHOURS="0.0000000000000000000000000000000" FUNDINGSOURCE="3" STARTDATEOVERRIDDEN="0"
            ENDDATEOVERRIDDEN="0"/>
 
-  <SessionCourseClassTutor actualPayableDurationMinutes="180" startDateTime="2030-04-30 09:00:00.0" endDateTime="2030-05-07 05:00:00.0" ID="1" ATTENDANCETYPE="1" COURSECLASSTUTORID="1" CREATEDON="2020-12-08 19:57:21.0"
+  <SessionCourseClassTutor actualPayableDurationMinutes="180" startDateTime="2030-04-30 09:00:00.0"
+                           endDateTime="2030-05-07 05:00:00.0" ID="1" ATTENDANCETYPE="1" COURSECLASSTUTORID="1"
+                           CREATEDON="2020-12-08 19:57:21.0"
                            MODIFIEDON="2020-12-08 19:57:32.0" MARKEDBYUSERID="1" SESSIONID="1"/>
-  <SessionCourseClassTutor actualPayableDurationMinutes="180" startDateTime="2030-04-30 09:00:00.0" endDateTime="2030-05-07 05:00:00.0" ID="2" ATTENDANCETYPE="0" COURSECLASSTUTORID="1" CREATEDON="2020-12-08 20:06:50.0"
+  <SessionCourseClassTutor actualPayableDurationMinutes="180" startDateTime="2030-04-30 09:00:00.0"
+                           endDateTime="2030-05-07 05:00:00.0" ID="2" ATTENDANCETYPE="0" COURSECLASSTUTORID="1"
+                           CREATEDON="2020-12-08 20:06:50.0"
                            MODIFIEDON="2020-12-08 20:06:50.0" SESSIONID="2"/>
-  <SessionCourseClassTutor actualPayableDurationMinutes="180" startDateTime="2030-04-30 09:00:00.0" endDateTime="2030-05-07 05:00:00.0" ID="3" ATTENDANCETYPE="0" COURSECLASSTUTORID="2" CREATEDON="2020-12-08 20:21:01.0"
+  <SessionCourseClassTutor actualPayableDurationMinutes="180" startDateTime="2030-04-30 09:00:00.0"
+                           endDateTime="2030-05-07 05:00:00.0" ID="3" ATTENDANCETYPE="0" COURSECLASSTUTORID="2"
+                           CREATEDON="2020-12-08 20:21:01.0"
                            MODIFIEDON="2020-12-08 20:21:01.0" SESSIONID="3"/>
-  <SessionCourseClassTutor actualPayableDurationMinutes="180" startDateTime="2030-04-30 09:00:00.0" endDateTime="2030-05-07 05:00:00.0" ID="4" ATTENDANCETYPE="1" COURSECLASSTUTORID="2" CREATEDON="2020-12-08 20:21:01.0"
+  <SessionCourseClassTutor actualPayableDurationMinutes="180" startDateTime="2030-04-30 09:00:00.0"
+                           endDateTime="2030-05-07 05:00:00.0" ID="4" ATTENDANCETYPE="1" COURSECLASSTUTORID="2"
+                           CREATEDON="2020-12-08 20:21:01.0"
                            MODIFIEDON="2020-12-08 20:21:39.0" MARKEDBYUSERID="1" SESSIONID="4"/>
 </dataset>

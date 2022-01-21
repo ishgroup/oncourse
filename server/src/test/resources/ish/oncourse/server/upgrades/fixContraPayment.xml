@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
   <Preference CREATEDON="2007-11-19 13:30:29.497" ID="903" MODIFIEDON="2013-05-06 00:33:41.913"
-              VALUESTRING="31-Dec-2015" NAME="finance.transaction_locked" UNIQUEKEY="finance.transaction_locked"/>
+              VALUESTRING="31-Dec-2015" NAME="finance.transaction_locked" UNIQUEKEY="finance.transaction_locked"
+              createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Site id="1" name="Default site" isAdministrationCentre="1" isShownOnWeb="0" isVirtual="0"
-        localTimezone="Australia/Sydney"/>
+        localTimezone="Australia/Sydney" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <SystemUser email="admin@mail.com" id="1" login="admin" firstName="admin" surname="admin" isActive="1" isAdmin="1"
               password="test" canEditCMS="1" canEditTara="1" createdOn="2012-05-10 00:00:00"
               modifiedOn="2012-05-10 00:00:00" defaultAdministrationCentreId="1" PASSWORDUPDATEREQUIRED="0"/>
@@ -20,27 +21,38 @@
   <Account ACCOUNTCODE="11500" CREATEDON="2007-03-01 14:35:11.118" DESCRIPTION="Trade debtors" ID="500" ISENABLED="1"
            MODIFIEDON="2013-01-08 15:22:12.014" TYPE="1"/>
 
-  <Banking id="1" type="1" settlementDate="2010-10-14"/>
-  <Banking id="2" type="1" settlementDate="2010-10-14"/>
+  <Banking id="1" type="1" settlementDate="2010-10-14" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Banking id="2" type="1" settlementDate="2010-10-14" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
 
   <Tax id="1" isGSTTaxType="1" payableToSupplierAccountId="300" receivableFromStudentAccountId="400" taxCode="GST"
        taxrate="0.1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
 
 
-  <PaymentMethod id="1" name="Cash" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
-  <PaymentMethod id="2" name="Cheque" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="1"/>
+  <PaymentMethod id="1" name="Cash" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="6"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="2" name="Cheque" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="1"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <PaymentMethod id="3" name="Credit card" accountId="300" active="1" bankedAutomatically="1" reconcilable="1"
-                 type="2"/>
-  <PaymentMethod id="4" name="EFT" accountId="300" active="1" bankedAutomatically="1" reconcilable="1" type="6"/>
-  <PaymentMethod id="5" name="B-Pay" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
-  <PaymentMethod id="6" name="Zero" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="5"/>
-  <PaymentMethod id="7" name="Other" accountId="300" active="0" bankedAutomatically="0" reconcilable="1" type="6"/>
-  <PaymentMethod id="8" name="Contra" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="7"/>
-  <PaymentMethod id="9" name="Voucher" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="8"/>
-  <PaymentMethod id="10" name="PayPal" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
-  <PaymentMethod id="11" name="Reverse" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="10"/>
-  <PaymentMethod id="12" name="EFTPOS" accountId="300" active="1" bankedAutomatically="1" reconcilable="1" type="6"/>
+                 type="2" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="4" name="EFT" accountId="300" active="1" bankedAutomatically="1" reconcilable="1" type="6"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="5" name="B-Pay" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="6"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="6" name="Zero" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="5"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0">
+  <PaymentMethod id="7" name="Other" accountId="300" active="0" bankedAutomatically="0" reconcilable="1" type="6"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="8" name="Contra" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="7"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="9" name="Voucher" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="8"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="10" name="PayPal" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="6"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="11" name="Reverse" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="10"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="12" name="EFTPOS" accountId="300" active="1" bankedAutomatically="1" reconcilable="1" type="6"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Contact id="1" firstName="Test" lastName="Student" isMale="1" isCompany="0" createdOn="2012-05-10 00:00:00"
            modifiedOn="2012-05-10 00:00:00" allowEmail="1" allowPost="0" allowSms="1" birthDate="1991-01-01 00:00:00"
