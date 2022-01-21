@@ -1,0 +1,13 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 109-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - and:
+            - tableExists:
+                tableName: MessageTemplate
+      changes:
+        - dropTable:
+            tableName: MessageTemplate
