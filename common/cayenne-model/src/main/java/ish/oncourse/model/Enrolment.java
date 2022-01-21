@@ -4,6 +4,7 @@ import ish.common.payable.EnrolmentInterface;
 import ish.common.types.ConfirmationStatus;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
+import ish.common.types.StudyReason;
 import ish.math.Money;
 import ish.oncourse.common.field.*;
 import ish.oncourse.model.auto._Enrolment;
@@ -214,5 +215,15 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface, Queueab
 	public String getCustomFieldValue(String key) {
 		CustomField field = getCustomField(key);
 		return  field == null ? null : field.getValue();
+	}
+
+	@Property(value = FieldProperty.STUDY_REASON, type = PropertyGetSetFactory.SET, params = {StudyReason.class})
+	public void setReasonForStudy(StudyReason reasonForStudy) {
+			super.setReasonForStudy(reasonForStudy.getDatabaseValue());
+	}
+
+	@Property(value = FieldProperty.STUDY_REASON, type = PropertyGetSetFactory.GET, params = {})
+	public Integer getReasonForStudy() {
+		return super.getReasonForStudy();
 	}
 }
