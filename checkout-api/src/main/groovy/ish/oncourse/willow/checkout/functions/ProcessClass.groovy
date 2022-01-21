@@ -74,6 +74,7 @@ class ProcessClass {
             enrolment  = new Enrolment().with { e ->
                 e.contactId = contact.id.toString()
                 e.classId = persistentClass.id.toString()
+                e.courseId = persistentClass.course.id.toString()
                 e.selected = true
                 ValidateEnrolment validateEnrolment = new ValidateEnrolment(context, college).validate(persistentClass, contact.student)
                 e.errors += validateEnrolment.errors
