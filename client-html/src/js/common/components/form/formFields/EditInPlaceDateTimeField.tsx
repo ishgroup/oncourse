@@ -318,7 +318,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   };
 
   const onEnterPress = e => {
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13 && inputNode.current) {
       inputNode.current.blur();
     }
   };
