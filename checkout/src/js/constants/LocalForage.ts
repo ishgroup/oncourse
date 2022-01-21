@@ -1,12 +1,14 @@
-import localforage from "localforage";
+import localforage from 'localforage';
 import { IS_JEST } from './Config';
 
 if (!IS_JEST) {
-  localforage.ready(() => {
-    console.log("localforage ready");
-  }).catch(e => {
-    console.error(e);
-  });
+  localforage.ready()
+    .catch((e) => {
+      console.error(e);
+    })
+    .then(() => {
+      console.log('localforage ready');
+    });
 }
 
 export const localForage: LocalForage = IS_JEST ? {
