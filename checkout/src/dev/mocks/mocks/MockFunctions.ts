@@ -1,22 +1,22 @@
 import faker from 'faker';
 import { normalize } from 'normalizr';
 import {
-  CourseClass,
-  Contact,
-  Room,
   Amount,
-  Field,
-  Item,
+  Contact,
   ContactNode,
-  Product,
-  Discount,
-  Promotion,
-  DataType,
+  CourseClass,
   CourseClassPrice,
-  RedeemVoucherProduct,
+  DataType,
+  Discount,
   Enrolment,
-  Voucher,
+  Field,
   FieldHeading,
+  Item,
+  Product,
+  Promotion,
+  RedeemVoucherProduct,
+  Room,
+  Voucher,
   Writable,
 } from '../../../js/model';
 import { IshState } from '../../../js/services/IshState';
@@ -147,9 +147,6 @@ export const mockContactNode = (): ContactNode => {
   const contactId = faker.datatype.number().toString();
   return {
     contactId,
-    contactEmail: '123@com.com',
-    contactFirstName: 'Test',
-    contactLastName: 'Test',
     enrolments: [],
     applications: [],
     articles: [],

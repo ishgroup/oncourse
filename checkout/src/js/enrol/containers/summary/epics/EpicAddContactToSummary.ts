@@ -4,9 +4,7 @@ import { MiddlewareAPI } from 'redux';
 import { Observable } from 'rxjs/Observable';
 import { IshState } from '../../../../services/IshState';
 import { ADD_CONTACT_TO_SUMMARY, addContactNodeToState, getContactNodeFromBackend } from '../actions/Actions';
-import {
-  changePhase, setPayer, updateContactAddProcess, updateParentChilds,
-} from '../../../actions/Actions';
+import { changePhase, setPayer, updateContactAddProcess, updateParentChilds, } from '../../../actions/Actions';
 import { addContact as addContactToCart } from '../../../../web/actions/Actions';
 import { IAction } from '../../../../actions/IshAction';
 import { Application, Contact, Enrolment } from '../../../../model';
@@ -103,9 +101,6 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
 
   result.push(addContactNodeToState({
     contactId: contact.id,
-    contactFirstName: contact.firstName,
-    contactLastName: contact.lastName,
-    contactEmail: contact.email,
     articles: [],
     memberships: [],
     vouchers: [],

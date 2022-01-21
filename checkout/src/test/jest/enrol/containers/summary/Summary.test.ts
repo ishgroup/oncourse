@@ -1,9 +1,7 @@
 import { inspect } from 'util';
 import { MockDB } from '../../../../../dev/mocks/mocks/MockDB';
 
-import {
-  Contact, CourseClass, Enrolment, ContactNode
-} from '../../../../../js/model';
+import { Contact, ContactNode, CourseClass, Enrolment } from '../../../../../js/model';
 
 import { IshState } from '../../../../../js/services/IshState';
 
@@ -17,9 +15,6 @@ const courseClass: CourseClass = db.getCourseClassByIndex(0);
 const enrolment: Enrolment = db.createEnrolment(contact.id, courseClass.id);
 
 const items: ContactNode = {
-  contactLastName: 'Test',
-  contactFirstName: 'Test',
-  contactEmail: 'test@test.test',
   contactId: contact.id,
   enrolments: [enrolment],
   applications: [],

@@ -25,7 +25,7 @@ import {
   WaitingCoursesSchema,
 } from '../../NormalizeSchema';
 import { Injector } from '../../injector';
-import { Application, ContactParams, Course, CourseClass, Product, PromotionParams } from '../../model';
+import { Application, ContactParams, Course, CourseClass, Enrolment, Product, PromotionParams } from '../../model';
 import { IshState } from '../../services/IshState';
 import { mapError, mapPayload } from '../../common/epics/EpicUtils';
 import { rewriteContactNodeToState } from '../../enrol/containers/summary/actions/Actions';
@@ -324,7 +324,34 @@ function createAddClassToSummaryEpic() {
           injected = {
             applications: [
               ...state.checkout.summary.entities.contactNodes[node].applications,
-              application
+              ...Object.keys(state.checkout.summary.entities.applications)
+                .some((applicationKey) => state.checkout.summary.entities.applications[applicationKey].classId === application.classId)
+                ? []
+                : [application]
+            ]
+          };
+        } else {
+          const enrolment: Enrolment = {
+            contactId: node,
+            classId: classItem.id,
+            allowRemove: null,
+            courseId: null,
+            errors: [],
+            fieldHeadings: [],
+            price: { ...classItem.price },
+            relatedClassId: null,
+            relatedProductId: null,
+            selected: true,
+            warnings: []
+          };
+
+          injected = {
+            enrolments: [
+              ...state.checkout.summary.entities.contactNodes[node].enrolments,
+              ...Object.keys(state.checkout.summary.entities.enrolments)
+                .some((enrolmentKey) => state.checkout.summary.entities.enrolments[enrolmentKey].classId === enrolment.classId)
+                ? []
+                : [enrolment]
             ]
           };
         }

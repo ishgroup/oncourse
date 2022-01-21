@@ -7,9 +7,6 @@ import { Reducer } from '../../../../../../js/enrol/containers/summary/reducers/
 
 const state: State = ContactNodeToState([{
   contactId: '00001',
-  contactLastName: 'Test',
-  contactFirstName: 'Test',
-  contactEmail: 'test@test.test',
   enrolments: [
     {
       contactId: '00001',
@@ -36,9 +33,6 @@ const state: State = ContactNodeToState([{
   waitingLists: []
 }, {
   contactId: '00002',
-  contactLastName: 'Test',
-  contactFirstName: 'Test',
-  contactEmail: 'test@test.test',
   enrolments: [
     {
       contactId: '00002',
@@ -85,9 +79,6 @@ const state: State = ContactNodeToState([{
 test('test add contact ', () => {
   const upi: ContactNode = {
     contactId: '00003',
-    contactLastName: 'Test',
-    contactFirstName: 'Test',
-    contactEmail: 'test@test.test',
     applications: [],
     vouchers: [],
     articles: [],
@@ -127,9 +118,6 @@ test('test add contact ', () => {
 test('test add enrolment ', () => {
   const upi: ContactNode = {
     contactId: '00002',
-    contactLastName: 'Test',
-    contactFirstName: 'Test',
-    contactEmail: 'test@test.test',
     memberships: [],
     applications: [],
     vouchers: [],
@@ -158,9 +146,6 @@ test('test add enrolment ', () => {
 test('test update enrolment', () => {
   const upi: ContactNode = {
     contactId: '00002',
-    contactLastName: 'Test',
-    contactFirstName: 'Test',
-    contactEmail: 'test@test.test',
     memberships: [],
     applications: [],
     vouchers: [],
@@ -186,9 +171,6 @@ test('test update enrolment', () => {
 test('test update application', () => {
   const upi: ContactNode = {
     contactId: '00002',
-    contactLastName: 'Test',
-    contactFirstName: 'Test',
-    contactEmail: 'test@test.test',
     applications: [
       {
         contactId: '00002',

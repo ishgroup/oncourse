@@ -1,13 +1,9 @@
 import * as models from '../../../../js/model';
 import { ContactNodeService } from '../../../../js/enrol/services/ContactNodeService';
-import { FieldHeading } from '../../../../js/model';
 
 test('test ContactNodeService.getPurchaseItem', () => {
   const node: models.ContactNode = {
     contactId: '1000',
-    contactLastName: 'Test',
-    contactFirstName: 'Test',
-    contactEmail: 'test@test.test',
     enrolments: [{
       contactId: '1000',
       classId: null,

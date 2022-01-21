@@ -1,23 +1,35 @@
-import {normalize, schema} from "normalizr";
+import { normalize, schema } from 'normalizr';
 import {
-  Enrolment,
   Application,
-  ContactNode,
-  Membership,
-  Voucher,
   Article,
+  ContactNode,
+  CorporatePass,
+  Enrolment,
+  Membership,
   PurchaseItem,
-  CorporatePass
-} from "../../../../model";
-import {WaitingList} from "../../../../model/checkout/WaitingList";
-import {ContactProps} from "../components/Index";
+  Voucher
+} from '../../../../model';
+import { WaitingList } from '../../../../model/checkout/WaitingList';
+import { ContactProps } from '../components/Index';
 
-const SEnrolments = new schema.Entity('enrolments', {}, {idAttribute: (e: Enrolment) => `${e.contactId}-${e.classId || e.courseId}`});
-const SApplications = new schema.Entity('applications', {}, {idAttribute: (a: Application) => `${a.contactId}-${a.classId}`});
-const SMemberships = new schema.Entity('memberships', {}, {idAttribute: (m: Membership) => `${m.contactId}-${m.productId}`});
-const SArticles = new schema.Entity('articles', {}, {idAttribute: (a: Article) => `${a.contactId}-${a.productId}`});
-const SVouchers = new schema.Entity('vouchers', {}, {idAttribute: (v: Voucher) => `${v.contactId}-${v.productId}`});
-const SWaitingLists = new schema.Entity('waitingLists', {}, {idAttribute: (v: WaitingList) => `${v.contactId}-${v.courseId}`});
+const SEnrolments = new schema.Entity('enrolments', {}, {
+  idAttribute: (e: Enrolment) => `${e.contactId}-${e.classId || e.courseId}`,
+});
+const SApplications = new schema.Entity('applications', {}, {
+  idAttribute: (a: Application) => `${a.contactId}-${a.classId}`,
+});
+const SMemberships = new schema.Entity('memberships', {}, {
+  idAttribute: (m: Membership) => `${m.contactId}-${m.productId}`,
+});
+const SArticles = new schema.Entity('articles', {}, {
+  idAttribute: (a: Article) => `${a.contactId}-${a.productId}`,
+});
+const SVouchers = new schema.Entity('vouchers', {}, {
+  idAttribute: (v: Voucher) => `${v.contactId}-${v.productId}`,
+});
+const SWaitingLists = new schema.Entity('waitingLists', {}, {
+  idAttribute: (v: WaitingList) => `${v.contactId}-${v.courseId}`,
+});
 
 const SContactNodes = new schema.Entity('contactNodes', {
   enrolments: [SEnrolments],
@@ -26,7 +38,11 @@ const SContactNodes = new schema.Entity('contactNodes', {
   articles: [SArticles],
   vouchers: [SVouchers],
   waitingLists: [SWaitingLists],
-},                                      {idAttribute: "contactId"});
+},
+{
+  idAttribute: 'contactId',
+  mergeStrategy: (a) => a
+});
 
 const Schema = new schema.Array(SContactNodes);
 
@@ -61,9 +77,7 @@ export interface State {
   fetching?: boolean;
 }
 
-export const ContactNodeToState = (input: ContactNode[]): State => {
-  return normalize(input, Schema);
-};
+export const ContactNodeToState = (input: ContactNode[]): State => normalize(input, Schema);
 
 export const ItemToState = (input: PurchaseItem): State => {
   const node: ContactNode = new ContactNode();

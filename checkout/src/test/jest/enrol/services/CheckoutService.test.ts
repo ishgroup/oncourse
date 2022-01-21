@@ -1,7 +1,5 @@
 import { MockDB } from '../../../../dev/mocks/mocks/MockDB';
-import {
-  Contact, CourseClass, Enrolment, ContactNode, CheckoutModelRequest, Promotion
-} from '../../../../js/model';
+import { CheckoutModelRequest, Contact, ContactNode, CourseClass, Enrolment, Promotion } from '../../../../js/model';
 import { IshState } from '../../../../js/services/IshState';
 import * as MockFunctions from '../../../../dev/mocks/mocks/MockFunctions';
 import { BuildCheckoutModelRequest } from '../../../../js/enrol/services/CheckoutService';
@@ -14,9 +12,6 @@ test('test build CheckoutModel from State', () => {
   const promotion: Promotion = MockFunctions.mockPromotion();
 
   const items: ContactNode = {
-    contactLastName: 'Test',
-    contactFirstName: 'Test',
-    contactEmail: 'test@test.test',
     contactId: contact.id,
     enrolments: [enrolment],
     applications: [],

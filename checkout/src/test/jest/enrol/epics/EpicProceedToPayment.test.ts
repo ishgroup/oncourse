@@ -1,6 +1,4 @@
-import {
-  CheckoutModel, ContactNode, Contact, CourseClass, Enrolment
-} from '../../../../js/model';
+import { CheckoutModel, Contact, ContactNode, CourseClass, Enrolment } from '../../../../js/model';
 import { CHANGE_PHASE } from '../../../../js/enrol/actions/Actions';
 import { Phase } from '../../../../js/enrol/reducers/State';
 import { ADD_CONTACT_NODE_TO_STATE } from '../../../../js/enrol/containers/summary/actions/Actions';
@@ -19,9 +17,6 @@ const enrolment12: Enrolment = db.createEnrolment(contact1.id, courseClass2.id);
 
 const node1: ContactNode = {
   contactId: contact1.id,
-  contactLastName: 'Test',
-  contactFirstName: 'Test',
-  contactEmail: 'test@test.test',
   enrolments: [enrolment11, enrolment12],
   applications: [],
   articles: [],

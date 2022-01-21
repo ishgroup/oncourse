@@ -2,34 +2,32 @@ import * as L from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import {
+  Amount,
+  Application,
+  CheckoutModel,
+  CheckoutModelRequest,
+  CodeResponse,
+  Concession,
+  Contact,
   ContactFields,
   ContactFieldsRequest,
-  CreateContactParams,
-  CheckoutModel,
-  Amount,
-  ContactNode,
-  CheckoutModelRequest,
-  ContactNodeRequest,
-  PaymentResponse,
-  GetCorporatePassRequest,
   ContactId,
-  PaymentStatus,
-  Contact,
-  Concession,
-  CodeResponse,
+  ContactNode,
+  ContactNodeRequest,
+  CreateContactParams,
+  Enrolment,
   FieldSet,
-  Application,
-  Enrolment, WaitingList,
+  GetCorporatePassRequest,
+  PaymentResponse,
+  PaymentStatus,
+  WaitingList,
 } from '../../model';
 import { Injector } from '../../injector';
 import { CartState, IshState } from '../../services/IshState';
 import { ContactApi } from '../../http/ContactApi';
 import { CheckoutApi } from '../../http/CheckoutApi';
 import { ContactNodeStorage, State } from '../containers/summary/reducers/State';
-import {
-  PaymentService,
-  CorporatePassFormValues,
-} from '../containers/payment/services/PaymentService';
+import { CorporatePassFormValues, PaymentService, } from '../containers/payment/services/PaymentService';
 import { CheckoutState, Phase } from '../reducers/State';
 import { Values as ContactValues } from '../containers/contact-add/actions/Actions';
 import { State as PaymentState } from '../containers/payment/reducers/State';
@@ -42,6 +40,7 @@ import { toServerValues } from '../../components/form/FieldFactory';
 import { ProductContainer } from '../../model/checkout/request/ProductContainer';
 import { getCookie } from '../../common/utils/Cookie';
 import CartService from '../../services/CartService';
+import { StoreCartContact } from '../../model/checkout/request/StoreCart';
 
 const DELAY_NEXT_PAYMENT_STATUS = 5000;
 
@@ -176,6 +175,14 @@ const {
 } = Injector.of();
 
 export class BuildContactNodeRequest {
+  static fromStoredCartContact = (contact: StoreCartContact, promotionIds: string[]): ContactNodeRequest => ({
+    contactId: contact.contactId,
+    classIds: [...contact?.classes?.map((c) => c.id) || [], ...contact?.applications?.map((a) => a.id) || []],
+    waitingCourseIds: contact?.waitingCourses?.map((c) => c.id) || [],
+    products: contact.products?.map((p) => ({ productId: p.id, quantity: p.quantity || 1 })) || [],
+    promotionIds
+  });
+
   static fromPurchaseItem = (item: any, state: IshState): ContactNodeRequest => {
     const result: ContactNodeRequest = new ContactNodeRequest();
 
