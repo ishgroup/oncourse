@@ -300,7 +300,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
             </Grid>
             <Grid item {...gridItemProps}>
               <FormField
-                type="text"
+                type="phone"
                 name="mobilePhone"
                 label={setMarketingLabel("mobilePhone")}
                 validate={validatePhoneNumber}
@@ -364,10 +364,10 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
               <FormField type="multilineText" name="message" label="Message (alert for operator)" />
             </Grid>
             <Grid item {...gridItemProps}>
-              <FormField type="text" name="homePhone" label="Home phone" validate={validatePhoneNumber} />
+              <FormField type="phone" name="homePhone" label="Home phone" validate={validatePhoneNumber} />
             </Grid>
             <Grid item {...gridItemProps}>
-              <FormField type="text" name="workPhone" label="Work phone" validate={validatePhoneNumber} />
+              <FormField type="phone" name="workPhone" label="Work phone" validate={validatePhoneNumber} />
             </Grid>
             <Grid item {...gridItemProps}>
               <FormField type="text" name="fax" label="Fax" />
