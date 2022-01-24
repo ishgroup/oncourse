@@ -569,7 +569,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         setActiveField,
         setCustomLoading,
         dispatch
-      ).catch(e => console.error(e));
+      );
     }
     if (waitingListIds) {
       processCheckoutWaitingListIds(
@@ -578,7 +578,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         setActiveField,
         setCustomLoading,
         dispatch
-      ).catch(e => console.error(e));
+      );
     }
     if (courseClassId) {
       processCheckoutCourseClassId(
@@ -590,7 +590,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         getClassPaymentPlans,
         openItem,
         dispatch
-      ).catch(e => console.error(e));
+      );
     }
     if (contactId) {
       processCheckoutContactId(contactId, onSelectHandler, dispatch);

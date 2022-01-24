@@ -30,11 +30,7 @@ const LeadCogWheel = memo<any>(props => {
       <BulkEditCogwheelOption {...props} />
       {noSelectedOrNew ? null : (
         <MenuItem className={menuItemClass} onClick={onQuickEnrolment} disabled={!hasQePermissions}>
-          Enrol
-          {' '}
-          {selection.length}
-          {' '}
-          highlighted contact
+          Convert lead to sale...
         </MenuItem>
       )}
     </>
