@@ -222,7 +222,7 @@ class TagFunctions {
 
         Tag dbTag = ObjectSelect.query(Tag)
                 .where(Tag.NAME.eq(tag.name))
-                .and(Tag.IS_VOCABULARY.isTrue())
+                .and(Tag.PARENT_TAG.isNull())
                 .selectOne(context)
 
         if (dbTag != null && dbTag.id != tag.id) {
@@ -325,7 +325,6 @@ class TagFunctions {
             dbTag.isWebVisible = tag.status == TagStatusDTO.SHOW_ON_WEBSITE
             dbTag.shortName = trimToNull(tag.urlPath)
             dbTag.nodeType = NodeType.TAG
-            dbTag.isVocabulary = isParent
             dbTag.weight = tag.weight
             dbTag.colour = tag.color
         }
@@ -440,7 +439,7 @@ class TagFunctions {
                         "Tag with id = " + tagId + " doesn\'t exist.")
             }
 
-            if(tag.isVocabulary) {
+            if(tag.parentTag == null) {
                 return new ValidationErrorDTO(null, 'tags',
                         "Tag relations cannot be directly related to a tag group.")
             }
