@@ -976,7 +976,6 @@
 		<db-attribute name="contents" type="CLOB" length="32000"/>
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="isVocabulary" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="isWebVisible" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="512"/>
@@ -3093,7 +3092,6 @@
 		<obj-attribute name="contents" type="java.lang.String" db-attribute-path="contents"/>
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
-		<obj-attribute name="isVocabulary" type="java.lang.Boolean" db-attribute-path="isVocabulary"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
