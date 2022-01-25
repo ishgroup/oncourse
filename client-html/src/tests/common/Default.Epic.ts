@@ -9,7 +9,6 @@ interface Props {
   processData: (mockedApi: any) => any;
   beforeProcess?: () => void;
 }
-
 export const DefaultEpic = ({
   action, epic, processData, beforeProcess = () => {}
 }: Props) => {
