@@ -6,9 +6,9 @@
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import React, {
- useCallback, useState
+  useCallback, useMemo, useState
 } from "react";
-import { Contact, PaymentMethod, Tax } from "@api/model";
+import { Cart, Contact, PaymentMethod, Tax } from "@api/model";
 import { change, FieldArray } from "redux-form";
 import IconButton from "@mui/material/IconButton";
 import LockOpen from "@mui/icons-material/LockOpen";
@@ -76,11 +76,30 @@ const financialColumns: NestedTableColumn[] = [
   }
 ];
 
+const shopingCartColumns: NestedTableColumn[] = [
+  {
+    name: "createdOn",
+    title: "Created on",
+    type: "date",
+    width: 160
+  },
+  {
+    name: "totalValue",
+    title: "Total",
+    type: "currency"
+  }
+]
+
 const openRow = value => {
   const { type, relatedEntityId } = value;
 
   const route = type[0].toLowerCase() + type.substring(1);
   openInternalLink(`/${route}/${relatedEntityId}`);
+};
+
+const openShopingCartRow = (row: Cart) => {
+  const { id } = row;
+
 };
 
 const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
@@ -112,13 +131,12 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
 
     setLockedTerms(prev => !prev);
   }, [defaultTerms, lockedTerms]);
+  
+  const fаinancialTableTitle = useMemo(() => {
+    const financialRecordsCount = (values && Array.isArray(values.financialData) ? values.financialData.length : 0);
 
-  const getFinancialRecordsCount = useCallback(
-    () => (values && Array.isArray(values.financialData) ? values.financialData.length : 0),
-    [values.financialData]
-  );
-
-  const getFinancialTableTitle = () => (getFinancialRecordsCount() === 1 ? "financial record" : "financial records");
+    return financialRecordsCount === 1 ? "financial record" : "financial records";
+  }, [values.financialData]);
 
   const removeStoredCreditCard = () => {
     dispatch(change(form, "removeCChistory", true));
@@ -192,10 +210,26 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
           >
             <FieldArray
               name="financialData"
-              title={getFinancialTableTitle()}
+              title={fаinancialTableTitle}
               component={NestedTable}
               columns={financialColumns}
               onRowDoubleClick={openRow}
+              rerenderOnEveryChange
+              calculateHeight
+            />
+          </Grid>
+
+          <Grid
+            item
+            xs={12}
+            className="flex-column"
+          >
+            <FieldArray
+              name="abandonedCarts"
+              title="Abandoned shopping carts"
+              component={NestedTable}
+              columns={shopingCartColumns}
+              onRowDoubleClick={openShopingCartRow}
               rerenderOnEveryChange
               calculateHeight
               hideHeader

@@ -17,6 +17,11 @@ export const phoneMasks = {
   "AS": "+1 (684) ###-####",
   "AT": "+43 (###) ###-####",
   "AU": "+61-#-####-####",
+  "AU1": "+02-####-####",
+  "AU2": "+03-####-####",
+  "AU3": "+04-####-####",
+  "AU4": "+07-####-####",
+  "AU5": "+08-####-####",
   "AW": "+297-###-####",
   "AZ": "+994-##-###-##-##",
   "BA": "+387-##-#####",
@@ -171,7 +176,6 @@ export const phoneMasks = {
   "ML": "+223-##-##-####",
   "MM": "+95-##-###-###",
   "MM1": "+95-#-###-###",
-  "MM2": "+95-###-###",
   "MN": "+976-##-##-####",
   "MO": "+853-####-####",
   "MP": "+1 (670) ###-####",
@@ -293,11 +297,14 @@ export const phoneMasks = {
   "YE2": "+967-##-###-###",
   "ZA": "+27-##-###-####",
   "ZM": "+260-##-###-####",
-  "ZW": "+263-#-######"
+  "ZW": "+263-#-######",
+  "DEFAULT": "+####-#### ###########"
 };
 
-export const getPhoneMask =  (value: string)  => {
-  const maskKey = Object.keys (phoneMasks) .find (key => value.startsWith (phoneMasks[key]?.match (/\d/g) ?.join ("") ) ) ;
-
-  return phoneMasks[maskKey] ? phoneMasks[maskKey].replace (/\d/g, "#")  : null;
+export const getPhoneMask = (value: string) => {
+  const maskKey = Object.keys(phoneMasks).find(key => {
+    const mask = phoneMasks[key];
+    return value.startsWith(mask?.match(/\d/g)?.join("")) && value.length === mask?.match(/\d|#/g)?.length;
+  });
+  return phoneMasks[maskKey] ? phoneMasks[maskKey].replace(/\d/g, "#") : value.length === 8 ? phoneMasks["DEFAULT"] : null;
 };
