@@ -1,0 +1,105 @@
+name: onCourse AVETMISS outcome import
+keyCode: ish.onCourse.import.avetmiss.outcome
+body: avetmissOutcomeImport.groovy
+enabled: true
+description: Import outcomes from avetmiss
+variables:
+  - name: avetmiss120
+    label: Avetmiss120
+    dataType: FILE
+  - name: avetmiss60
+    label: Avetmiss60
+    dataType: FILE
+  - name: avetmiss80
+    label: Avetmiss80
+    dataType: FILE
+  - name: avetmiss85
+    label: Avetmiss85
+    dataType: FILE
+
+name: onCourse AVETMISS outcome update import
+keyCode: ish.onCourse.import.update.avetmiss.outcome
+body: avetmissOutcomeUpdateImport.groovy
+enabled: true
+description: Import outcomes to update from avetmiss
+variables:
+  - name: avetmiss120
+    label: Avetmiss120
+    dataType: FILE
+  - name: avetmiss60
+    label: Avetmiss60
+    dataType: FILE
+  - name: avetmiss80
+    label: Avetmiss80
+    dataType: FILE
+  - name: avetmiss85
+    label: Avetmiss85
+    dataType: FILE
+
+name: onCourse AVETMISS student import
+keyCode: ish.onCourse.import.avetmiss.student
+body: avetmissStudentImport.groovy
+enabled: true
+description: Import students from avetmiss
+variables:
+  - name: avetmiss80
+    label: Avetmiss80
+    dataType: FILE
+  - name: avetmiss85
+    label: Avetmiss85
+    dataType: FILE
+
+name: onCourse AVETMISS student update import
+keyCode: ish.onCourse.import.update.avetmiss.student
+body: avetmissStudentUpdateImport.groovy
+enabled: true
+description: Import students to update from avetmiss
+variables:
+  - name: avetmiss80
+    label: Avetmiss80
+    dataType: FILE
+  - name: avetmiss85
+    label: Avetmiss85
+    dataType: FILE
+
+name: onCourse contact csv import
+keyCode: ish.onCourse.import.contact.csv
+body: contactCsvImport.groovy
+enabled: true
+description: Import contacts from csv file
+variables:
+  - name: contactFile
+    label: File with contacts
+    dataType: FILE
+
+name: onCourse contact update subscriptions csv import
+keyCode: ish.onCourse.import.contactUpdateSubscriptions.csv
+body: contactUpdateSubscriptionsCsvImport.groovy
+enabled: true
+description: Import contacts to update subscriptions from csv file
+variables:
+  - name: contactFile
+    label: File with contacts
+    dataType: FILE
+
+name: onCourse custom field types import
+keyCode: ish.onCourse.import.customFieldTypes.json
+body: customFieldTypesImport.groovy
+enabled: true
+description: Import custom field types 
+variables:
+  - name: customFieldTypes
+    label: Custom field types
+    dataType: FILE
+
+
+name: onCourse paymentIn csv import
+keyCode: ish.onCourse.import.paymentIn.csv
+body: paymentInCsvImport.groovy
+enabled: true
+description: Import paymentIn from csv file
+variables:
+  - name: importFile
+    label: File with paymentIns
+    dataType: FILE
+
