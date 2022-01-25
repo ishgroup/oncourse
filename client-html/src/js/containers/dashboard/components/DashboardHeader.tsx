@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import clsx from "clsx";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import PaletteIcon from "@mui/icons-material/PaletteOutlined";
@@ -20,7 +19,7 @@ import {
 import HamburgerMenu from "../../../common/components/layout/swipeable-sidebar/components/HamburgerMenu";
 import { VARIANTS } from "../../../common/components/layout/swipeable-sidebar/utils";
 import DashboardService from "../services/DashboardService";
-import { LSGetItem, LSRemoveItem } from "../../../common/utils/storage";
+import { LSRemoveItem } from "../../../common/utils/storage";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
 import { useAppSelector } from "../../../common/utils/hooks";
 import { makeAppStyles } from "../../../common/styles/makeStyles";
@@ -46,7 +45,7 @@ const useStyles = makeAppStyles(theme => ({
     borderBottom: `1px solid ${theme.palette.divider}`
   },
   toolBarButton: {
-    color: theme.palette.mode === "light" ? theme.palette.primary.main : theme.palette.primary.contrastText
+    color: theme.addButtonColor.color
   },
   upgradeButton: {
     color: theme.palette.primary.contrastText,

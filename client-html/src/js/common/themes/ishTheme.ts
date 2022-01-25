@@ -278,9 +278,9 @@ const monochromeThemePalette = {
   mode: "light" as PaletteMode,
   common: { black: "#000", white: "#fff" },
   primary: {
-    main: "#eaeaea",
+    main: "#000000",
     dark: "#76838f",
-    contrastText: "#222222"
+    contrastText: "#fff"
   },
   secondary: {
     light: "#9bbeff",

@@ -7,7 +7,6 @@ import * as React from "react";
 import { alpha, darken } from '@mui/material/styles';
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
-import { grey } from "@mui/material/colors";
 import getOS from "../utils/getOS";
 import { AppTheme } from "../../model/common/Theme";
 import InterRomanVar from "../../../fonts/inter/Inter-Roman.var.woff2";
@@ -283,7 +282,7 @@ const globalStyles = (theme: AppTheme) =>
         marginRight: "100px"
       },
       ".addButtonColor": {
-        color: theme.palette.mode === "light" ? "#f7941d" : darken(grey[400], 0.1)
+        color: theme.addButtonColor.color
       },
       ".labelOffset": {
         marginLeft: "-14px"
