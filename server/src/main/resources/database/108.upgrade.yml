@@ -12,18 +12,12 @@ databaseChangeLog:
             - columnExists:
                 tableName: Checkout
                 columnName: totalValue
-            - columnExists:
-                tableName: Checkout
-                columnName: cartId
       changes:
         - addColumn:
             tableName: Checkout
             columns:
               - column:
                   name: payerId
-                  type: BIGINT
-              - column:
-                  name: cartId
                   type: BIGINT
               - column:
                   name: totalValue
