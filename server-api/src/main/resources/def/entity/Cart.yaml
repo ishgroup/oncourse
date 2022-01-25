@@ -9,8 +9,6 @@ properties:
   totalValue:
     type: number
     description: Total amount of cart
-  checkoutUrl:
-    type: string
   createdOn:
     type: string
     format: date-time
