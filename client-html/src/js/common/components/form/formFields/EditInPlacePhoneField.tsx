@@ -7,7 +7,7 @@
  */
 
 import React, {
- useCallback, useState 
+  useCallback, useEffect, useState
 } from "react";
 import NumberFormat from "react-number-format";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -20,6 +20,7 @@ import { getPhoneMask } from "../../../../constants/PhoneMasks";
 
 interface NumberFormatCustomProps extends WrappedFieldProps {
   onChange?: (event: { target: { value: string } }) => void;
+  value?: string;
 }
 
 const NumberFormatCustom = React.forwardRef<any, NumberFormatCustomProps>((props, ref) => {
@@ -29,11 +30,17 @@ const NumberFormatCustom = React.forwardRef<any, NumberFormatCustomProps>((props
 
   const processFormat = useCallback(debounce(value => {
     setFormat(getPhoneMask(value));
-  }, 500), []);
+  }, 1000), []);
 
   const onValueChange = useCallback(data => {
     processFormat(data.value);
     onChange(data.value);
+  }, []);
+
+  useEffect(() => {
+    if (other.value) {
+      setFormat(getPhoneMask(other.value));
+    }
   }, []);
 
   return (
