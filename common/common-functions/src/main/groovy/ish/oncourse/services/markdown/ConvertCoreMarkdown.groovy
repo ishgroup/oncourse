@@ -11,6 +11,9 @@ import org.commonmark.renderer.html.HtmlRenderer
 
 class ConvertCoreMarkdown extends CoreConverter {
 
+    private final List<Extension> extensions = Arrays.asList(HeadingAnchorExtension.builder().idPrefix("header-").build(),
+            TablesExtension.create())
+
     private ConvertCoreMarkdown(){}
 
     static ConvertCoreMarkdown valueOf(String content) {
@@ -20,8 +23,7 @@ class ConvertCoreMarkdown extends CoreConverter {
     }
 
     String convert() {
-        List<Extension> extensions = Arrays.asList(HeadingAnchorExtension.builder().idPrefix("header-").build(),
-                TablesExtension.create())
+        content = MarkdownTableAnalyzer.valueOf(content).getContentWithFixedSeparators()
         Parser parser = Parser.builder().extensions(extensions).build()
         Node document = parser.parse(content)
         HtmlRenderer renderer = HtmlRenderer.builder().extensions(extensions).build()
