@@ -8,6 +8,7 @@
 
 package ish.oncourse.server.api.v1.function
 
+import groovy.json.JsonSlurper
 import ish.oncourse.server.api.v1.model.CartDTO
 import ish.oncourse.server.cayenne.Checkout
 
@@ -18,6 +19,10 @@ class CartFunctions {
         new CartDTO().with{dto ->
             dto.createdOn = checkout.createdOn?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
             dto.totalValue = checkout.totalValue
+
+            def slurper = new JsonSlurper()
+            def parsedCart = slurper.parseText(checkout.shoppingCart) as Map
+            dto.checkoutUrl = parsedCart.checkoutURL
             dto.id = checkout.id
             dto
         }
