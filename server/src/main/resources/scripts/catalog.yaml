@@ -3,7 +3,7 @@
   body: ish.script.alertStudentsOfAssessmentRelease.groovy
   enabled: false
   triggerType: CRON
-  schedule: 0 0 8 1/1 * ? *
+  schedule: "@daily-morning"
   description: email notification to students to inform them that assessments are now available in the SkillsOnCourse portal
   options:
     - name: templateKeycode
@@ -27,7 +27,7 @@
   body: ish.script.alertTutorsOfAssessmentRelease.groovy
   enabled: false
   triggerType: CRON
-  schedule: 0 0 8 1/1 * ? *
+  schedule: "@daily-morning"
   description: email notification to tutors to inform them that assessments have be released and are now available in the SkillsOnCourse portal for students
   options:
     - name: templateKeycode
@@ -71,7 +71,7 @@
   keyCode: ish.script.courseCompletionSurvey
   enabled: false
   triggerType: CRON
-  schedule: 0 0 8 1/1 * ? *
+  schedule: "@daily-morning"
   description: Send the completion survey to all students who completed a course recently.
   options:
     - name: courseSurveyTemplate
@@ -83,8 +83,8 @@
   keyCode: ish.script.creationVetCertificates
   enabled: false
   triggerType: CRON
-  schedule: 0 0 4 * * ?
-  description: For each enrolment, at 4am every day check for outcomes which have been modified in the previous 24 hrs. If any outcomes attached to the enrolment are not yet marked, skip this enrolment. For students with at least one successful outcome, create the certificate record (statement of attainment or qualification, based on the isFullQual flag at the course level). If the outcome is already joined to a certificate, do not create a new certificate containing that outcome
+  schedule: "@daily-morning"
+  description: For each enrolment, check for outcomes which have been modified in the previous 24 hrs. If any outcomes attached to the enrolment are not yet marked, skip this enrolment. For students with at least one successful outcome, create the certificate record (statement of attainment or qualification, based on the isFullQual flag at the course level). If the outcome is already joined to a certificate, do not create a new certificate containing that outcome
   
 - name: Historic Aged Debtor Export
   body: ish.script.historicAgedDebtor.groovy
@@ -111,7 +111,7 @@
   keyCode: ish.script.listOfDocumentsBeDeleted
   enabled: true
   triggerType: CRON
-  schedule: 0 0 7 ? * MON *
+  schedule: "@weekly"
   description: A notification with list of documents which will be deleted
   options:
     - name: templateForNotification
@@ -123,7 +123,7 @@
   body: ish.script.mailchimpPullUnsubscribes.groovy
   enabled: false
   triggerType: CRON
-  schedule: 0 0 6 1/1 * ? *
+  schedule: "@daily-morning"
   description:  Pull unsubscribers and mark the email address in onCourse as not allowed for marketing.
   options:
     - name: numberOfDays
@@ -191,7 +191,7 @@
   body: ish.script.membershipNotificationRenewal.groovy
   enabled: false
   triggerType: CRON
-  schedule: 0 0 3 ? * MON
+  schedule: "@weekly"
   description: This script identifies members whose membership will expire in the next 7 days and send an email with notification.
   options:
     - name: renewalNotificationTemplate
@@ -203,7 +203,7 @@
   body: ish.script.micropowerUpdateMembers.groovy
   enabled: false
   triggerType: CRON
-  schedule: 0 0 5 1/1 * ? *
+  schedule: "@daily-morning"
   description: Get memberships recently updated or created in Micropower and populate these changes into onCourse
   options:
     - name: nameOfIntegration
@@ -227,8 +227,8 @@
   body: ish.script.notificationOfUnmarkedAttandance.groovy
   enabled: false
   triggerType: CRON
-  schedule: 0 0 3 ? * *
-  description: This script runs at 3am each day and checks for every session run on the previous day, if any student attendance is unmarked. A summary of the session details containing unmarked attendance is sent to the default admin email address.
+  schedule: "@daily-morning"
+  description: Check for every session run on the previous day, if any student attendance is unmarked. A summary of the session details containing unmarked attendance is sent to the default admin email address.
   options:
     - name: tagName
       dataType: TEXT
@@ -239,8 +239,8 @@
   body: ish.script.notifyTutorOfUnmarkedAttendance.groovy
   enabled: false
   triggerType: CRON
-  schedule: 0 0 3 ? * *
-  description: This script runs at 3am each day and checks for every session run on the previous 7 days. If any student attendance is unmarked, sends to the tutors email notification to mark their class roll.
+  schedule: "@daily-morning"
+  description: This script checks for every session run on the previous 7 days. If any student attendance is unmarked, sends to the tutors email notification to mark their class roll.
   options:
     - name: tutorNoticeTemplate
       dataType: MESSAGE_TEMPLATE
@@ -343,7 +343,7 @@
   body: ish.script.sendCertificateCreatedNotification.groovy
   enabled: false
   triggerType: CRON
-  schedule: 0 0 6 ? * *
+  schedule: "@daily-morning"
   description: Create a certificate of attendance for non-VET training with your custom certificate_attendance_backgound.pdf, upload the certificate to the portal and send an email to the student containing the link. There are options in the script to check attendance requirements before creating certificates, which are commented out by default.
   options:
     - name: certificateReportTemplate
@@ -361,7 +361,7 @@
   body: ish.script.sendCertificateCreatedNotificationVet.groovy
   enabled: false
   triggerType: CRON
-  schedule: 0 0 5 ? * *
+  schedule: "@daily-morning"
   description: Print and upload to the portal VET certifcates where the student meets the requirements for certification, including having supplied their USI. Send an email to notify the student that their certificate is available in the portal.
   options:
     - name: certificateReportTemplate
@@ -397,7 +397,7 @@
   body: ish.script.sendClassConfirmed.groovy
   enabled: false
   triggerType: CRON
-  schedule: 0 0 20 1/1 * ? *
+  schedule: "@daily-evening"
   description: Send an email to students when course class is confirmed
   options:
     - name: classConfirmedTemplate
@@ -471,7 +471,7 @@
   body: ish.script.sendPaymentPlanReminder.groovy
   enabled: false
   triggerType: CRON
-  schedule: 0 2 3 ? * *
+  schedule: "@daily-morning"
   description: Send an email reminder with payment due date to the payer.
   options:
     - name: paymentReminderTemplate
@@ -496,7 +496,7 @@
   body: ish.script.sendStudentClassCommencementNotice.groovy
   enabled: false
   triggerType: CRON
-  schedule: 0 0 9 * * ?
+  schedule: "@daily-morning"
   description: Send an email to the student with information about when their class is starting, the day before it starts
   options:
     - name: classCommencementTemplate
@@ -512,7 +512,7 @@
   body: ish.script.sendStudentClassCommencementNotice7days.groovy
   enabled: false
   triggerType: CRON
-  schedule: 0 15 9 1/1 * ? *
+  schedule: "@daily-morning"
   description: Send an email to the student with information about when their class is starting, 7 days before it starts
   options:
     - name: classCommencementTemplate
@@ -536,7 +536,7 @@
   keyCode: ish.script.sendTutorClassCommencementNotice
   enabled: false
   triggerType: CRON
-  schedule: 0 0 9 * * ?
+  schedule: "@daily-morning"
   description: Send an email to the tutor with information about when their class is starting, two days before it starts
   options:
     - name: send_before_each_session
@@ -558,7 +558,7 @@
   body: ish.script.sendUsiReminder.groovy
   enabled: false
   triggerType: CRON
-  schedule: 0 0 9 ? * MON
+  schedule: "@weekly"
   description: Send an email to the student remindering them to supply their USI number, and send a notice to the default onCourse admin of how many students were contacted each time this message is sent
   options:
     - name: usiReminderTemplate
@@ -573,7 +573,7 @@
   keyCode: ish.script.sendVETCourseCompletionSurvey
   enabled: false
   triggerType: CRON
-  schedule: 0 0 3 * * ?
+  schedule: "@daily-morning"
   description: Send the VET completion survey to all students who completed a VET course recently.
   options:
     - name: vetCourseSurveyTemplate
@@ -598,7 +598,7 @@
   body: ish.script.sendWaitingListReminder.groovy
   enabled: false
   triggerType: CRON
-  schedule: 0 0 9 ? * MON
+  schedule: "@weekly"
   description: Send an email to the student if they are on the waiting list with information about upcoming classes scheduled
   options:
     - name: waitingListReminderTemplate
@@ -610,7 +610,7 @@
   body: ish.script.sendWeeklyFinanceSummaryReport.groovy
   enabled: false
   triggerType: CRON
-  schedule: 0 0 3 ? * MON
+  schedule: "@weekly"
   description: Send an email with weekly finance summary based on 'Trial Balance' report.
   options:
     - name: reportKeycode
@@ -622,7 +622,7 @@
   body: ish.script.surveyMonkeySendInviteOnCompletion.groovy
   enabled: false
   triggerType: CRON
-  schedule: 0 0 9 * * ?
+  schedule: "@daily-morning"
   description: Send SurveyMonkey survey invite upon enrolment completion
   options:
     - name: tagName
@@ -646,7 +646,7 @@
   body: ish.script.surveygizmoSendInviteOnCompletion.groovy
   enabled: false
   triggerType: CRON
-  schedule: 0 0 9 * * ?
+  schedule: "@daily-morning"
   description: Send SurveyGizmo invite upon enrolment completion
   options:
     - name: surveyInvitationTemplate
