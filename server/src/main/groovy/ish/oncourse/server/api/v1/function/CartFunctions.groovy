@@ -18,7 +18,7 @@ class CartFunctions {
         new CartDTO().with{dto ->
             dto.createdOn = checkout.createdOn?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
             dto.totalValue = checkout.totalValue
-            dto.id = checkout.cartId
+            dto.id = checkout.id
             dto
         }
     }

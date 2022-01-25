@@ -208,7 +208,6 @@
 		<db-attribute name="UUID" type="VARCHAR" length="30"/>
 		<db-attribute name="shoppingCart" type="CLOB" length="5000"/>
 		<db-attribute name="payerId" type="BIGINT"/>
-		<db-attribute name="cartId" type="BIGINT"/>
 		<db-attribute name="totalValue" type="DECIMAL" length="10" scale="2"/>
 	</db-entity>
 	<db-entity name="ClassCost">
@@ -1889,7 +1888,6 @@
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
-		<obj-attribute name="cartId" type="java.lang.Long" db-attribute-path="cartId"/>
 		<obj-attribute name="UUID" type="java.lang.String" db-attribute-path="UUID"/>
 		<obj-attribute name="shoppingCart" type="java.lang.String" db-attribute-path="shoppingCart"/>
 		<obj-attribute name="totalValue" type="ish.math.Money" db-attribute-path="totalValue"/>
