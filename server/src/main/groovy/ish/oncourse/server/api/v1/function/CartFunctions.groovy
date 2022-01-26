@@ -8,7 +8,9 @@
 
 package ish.oncourse.server.api.v1.function
 
+import groovy.json.JsonSlurper
 import ish.oncourse.server.api.v1.model.CartDTO
+import ish.oncourse.server.api.v1.model.CartIdsDTO
 import ish.oncourse.server.cayenne.Checkout
 
 import java.time.ZoneOffset
@@ -21,5 +23,35 @@ class CartFunctions {
             dto.id = checkout.id
             dto
         }
+    }
+
+    static CartIdsDTO cartDataIdsOf(Checkout checkout){
+        def cartAsJson = checkout.shoppingCart
+        def cartIds = new CartIdsDTO()
+        if(cartAsJson == null)
+            return cartIds
+
+        def cartAsMap = new JsonSlurper().parseText(cartAsJson) as Map
+        cartIds.payerId = parseAsLong(cartAsMap.payerId)
+
+        def cartContacts = (cartAsMap.contacts as List<Map>)
+        cartIds.contactIds = mapToIds(cartContacts, "contactId")
+
+        cartIds.courseIds = mapToIds(flatMapByKey(cartContacts, "courses"))
+        cartIds.waitingCoursesIds = mapToIds(flatMapByKey(cartContacts,"waitingCourses"))
+        cartIds.productIds = mapToIds(flatMapByKey(cartContacts,"products"))
+        return cartIds
+    }
+
+    private static List<Map> flatMapByKey(List<Map> objects, String key){
+        objects.collect {it.get(key) as List<Map>}.flatten() as List<Map>
+    }
+
+    private static List<Long> mapToIds(List<Map> objects, String key = "id"){
+        objects.collect {parseAsLong(it.get(key))} as List<Long>
+    }
+
+    private static Long parseAsLong(Object value){
+        Long.parseLong(value as String)
     }
 }
