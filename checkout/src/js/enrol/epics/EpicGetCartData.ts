@@ -4,7 +4,13 @@
  */
 
 import { Epic } from 'redux-observable';
-import { changePhase, GET_CART_DATA, getCheckoutModelFromBackend, setPayer } from '../actions/Actions';
+import {
+  changePhase,
+  GET_CART_DATA,
+  getCheckoutModelFromBackend,
+  resetCheckoutState,
+  setPayer
+} from '../actions/Actions';
 import * as EpicUtils from '../../common/epics/EpicUtils';
 import CartService from '../../services/CartService';
 import CheckoutServiceV2 from '../services/CheckoutServiceV2';
@@ -18,7 +24,7 @@ import { BuildContactNodeRequest } from '../services/CheckoutService';
 
 const commonMap = (item: Enrolment | Application | WaitingList | Article | Membership | Voucher, storedItem: StoreCartItem) => ({
   ...item,
-  selected: typeof storedItem?.selected === "boolean" ? storedItem.selected : item.selected,
+  selected: typeof storedItem?.selected === 'boolean' ? storedItem.selected : item.selected,
   fieldHeadings: item.fieldHeadings.map((fh, fhIndex) => ({
     ...fh,
     fields: fh.fields.map((field) => ({
@@ -107,6 +113,7 @@ const request: any = {
     const nodes = contactNodes.map((node) => addContactNodeToState(node));
 
     return [
+      resetCheckoutState(),
       ...contacts,
       ...nodes,
       ...getCourses,

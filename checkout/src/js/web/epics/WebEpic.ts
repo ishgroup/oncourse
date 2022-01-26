@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 import { combineEpics } from 'redux-observable';
 import { Observable } from 'rxjs';
 import { Store } from 'redux';
@@ -25,12 +30,14 @@ import {
   WaitingCoursesSchema,
 } from '../../NormalizeSchema';
 import { Injector } from '../../injector';
-import { Application, ContactParams, Course, CourseClass, Enrolment, Product, PromotionParams } from '../../model';
+import { ContactNode, ContactParams, Course, CourseClass, Product, PromotionParams } from '../../model';
 import { IshState } from '../../services/IshState';
 import { mapError, mapPayload } from '../../common/epics/EpicUtils';
 import { rewriteContactNodeToState } from '../../enrol/containers/summary/actions/Actions';
 import { SuggestionResponse } from '../../model/v2/suggestion/SuggestionResponse';
 import { SuggestionRequest } from '../../model/v2/suggestion/SuggestionRequest';
+import { BuildContactNodeRequest } from '../../enrol/services/CheckoutService';
+import CheckoutServiceV2 from '../../enrol/services/CheckoutServiceV2';
 
 const {
   courseClassesApi,
@@ -55,7 +62,7 @@ export const WebEpic = combineEpics(
   createSyncCartEpic(),
   createLegacySyncEpic(),
   createAddClassToCartEpic(),
-  createAddClassToSummaryEpic(),
+  createAddPurchaseToSummaryEpic(),
   createRemoveClassFromCartEpic(),
   createAddProductToCartEpic(),
   createRemoveProductFromCartEpic(),
@@ -254,8 +261,8 @@ function createUpdateCoursesEpic() {
       FULFILLED(Actions.ADD_PROMOTION_TO_CART),
       FULFILLED(Actions.REMOVE_PROMOTION_FROM_CART),
     )
-    .filter((action) => store.getState().courses.result.length)
-    .mergeMap((action) => {
+    .filter(() => store.getState().courses.result.length)
+    .mergeMap(() => {
       const ids = store.getState().courses.result;
 
       return Observable
@@ -277,8 +284,8 @@ function createUpdateProductsEpic() {
       FULFILLED(Actions.ADD_PROMOTION_TO_CART),
       FULFILLED(Actions.REMOVE_PROMOTION_FROM_CART),
     )
-    .filter((action) => store.getState().products.result.length)
-    .mergeMap((action) => {
+    .filter(() => store.getState().products.result.length)
+    .mergeMap(() => {
       const ids = store.getState().products.result;
 
       return Observable
@@ -302,65 +309,28 @@ function createAddClassToCartEpic() {
     }));
 }
 
-function createAddClassToSummaryEpic() {
+function createAddPurchaseToSummaryEpic() {
   return (action$, store: Store<IshState>) => action$
-    .ofType(Actions.ADD_CLASS_TO_CART)
-    .mergeMap((action) => {
+    .ofType(
+      Actions.ADD_CLASS_TO_CART,
+      FULFILLED(Actions.ADD_PRODUCT_TO_CART),
+    )
+    .mergeMap(({ payload }) => {
       const state = store.getState();
-      const contacts = state.checkout.summary.result;
-      const classItem = state.courses.entities[action.payload.id];
-      return contacts.map((node) => {
-        let injected = {};
-
-        if (classItem.isAllowByApplication) {
-          const application: Application = {
-            contactId: node,
-            classId: classItem.id,
-            errors: [],
-            fieldHeadings: [],
-            selected: true,
-            warnings: []
-          };
-          injected = {
-            applications: [
-              ...state.checkout.summary.entities.contactNodes[node].applications,
-              ...Object.keys(state.checkout.summary.entities.applications)
-                .some((applicationKey) => state.checkout.summary.entities.applications[applicationKey].classId === application.classId)
-                ? []
-                : [application]
-            ]
-          };
-        } else {
-          const enrolment: Enrolment = {
-            contactId: node,
-            classId: classItem.id,
-            allowRemove: null,
-            courseId: null,
-            errors: [],
-            fieldHeadings: [],
-            price: { ...classItem.price },
-            relatedClassId: null,
-            relatedProductId: null,
-            selected: true,
-            warnings: []
-          };
-
-          injected = {
-            enrolments: [
-              ...state.checkout.summary.entities.contactNodes[node].enrolments,
-              ...Object.keys(state.checkout.summary.entities.enrolments)
-                .some((enrolmentKey) => state.checkout.summary.entities.enrolments[enrolmentKey].classId === enrolment.classId)
-                ? []
-                : [enrolment]
-            ]
-          };
-        }
-
-        return rewriteContactNodeToState({
-          ...state.checkout.summary.entities.contactNodes[node],
-          ...injected
-        } as any);
-      });
+      return Observable.forkJoin(
+        state.checkout.contacts.result.map((id) => {
+          const request = BuildContactNodeRequest.fromCartItem(payload, state, id);
+          if (!request) {
+            return Promise.resolve(null);
+          }
+          request.contactId = id;
+          return CheckoutServiceV2.getContactNodeByNodeRequest(request);
+        }),
+      )
+        .flatMap((results: ContactNode[]) => results.map((node) => (node
+          ? rewriteContactNodeToState(node)
+          : null)))
+        .filter((a) => !!a);
     });
 }
 

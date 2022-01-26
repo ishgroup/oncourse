@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 import * as L from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
@@ -14,12 +19,14 @@ import {
   ContactId,
   ContactNode,
   ContactNodeRequest,
+  CourseClass,
   CreateContactParams,
   Enrolment,
   FieldSet,
   GetCorporatePassRequest,
   PaymentResponse,
   PaymentStatus,
+  Product,
   WaitingList,
 } from '../../model';
 import { Injector } from '../../injector';
@@ -27,7 +34,7 @@ import { CartState, IshState } from '../../services/IshState';
 import { ContactApi } from '../../http/ContactApi';
 import { CheckoutApi } from '../../http/CheckoutApi';
 import { ContactNodeStorage, State } from '../containers/summary/reducers/State';
-import { CorporatePassFormValues, PaymentService, } from '../containers/payment/services/PaymentService';
+import { CorporatePassFormValues, PaymentService } from '../containers/payment/services/PaymentService';
 import { CheckoutState, Phase } from '../reducers/State';
 import { Values as ContactValues } from '../containers/contact-add/actions/Actions';
 import { State as PaymentState } from '../containers/payment/reducers/State';
@@ -174,6 +181,35 @@ const {
   corporatePassApi,
 } = Injector.of();
 
+const getClassIdsFromSummary = (summary: State, contactId: string): string[] => {
+  const classIds = [];
+  if (summary.entities.contactNodes && summary.entities.contactNodes[contactId]) {
+    summary.entities.contactNodes[contactId].enrolments.forEach((key) => {
+      if (summary.entities.enrolments[key] && summary.entities.enrolments[key].classId) {
+        classIds.push(summary.entities.enrolments[key].classId);
+      }
+    });
+    summary.entities.contactNodes[contactId].applications.forEach((key) => {
+      if (summary.entities.applications[key] && summary.entities.applications[key].classId) {
+        classIds.push(summary.entities.applications[key].classId);
+      }
+    });
+  }
+
+  return classIds;
+};
+
+const getProductIdsFromCart = (cart: CartState, payerId: string, contactId: string) => cart.products.result.map((productId) => {
+  const productType = cart.products.entities[productId] && cart.products.entities[productId].type;
+  if (productType === 'VOUCHER' && contactId !== payerId) {
+    return null;
+  }
+  const container = new ProductContainer();
+  container.productId = productId;
+  container.quantity = 1;
+  return container;
+}).filter((pr) => pr);
+
 export class BuildContactNodeRequest {
   static fromStoredCartContact = (contact: StoreCartContact, promotionIds: string[]): ContactNodeRequest => ({
     contactId: contact.contactId,
@@ -210,34 +246,24 @@ export class BuildContactNodeRequest {
     return result;
   };
 
+  static fromCartItem = (item: CourseClass & Product, state: IshState, contactId: string): ContactNodeRequest => {
+    const result: ContactNodeRequest = new ContactNodeRequest();
+    result.classIds = getClassIdsFromSummary(state.checkout.summary, contactId);
+    result.products = getProductIdsFromCart(state.cart, state.checkout.payerId, contactId);
+    if (item.course?.id) {
+      result.classIds.push(item.id);
+    }
+    result.contactId = contactId;
+    result.promotionIds = state.checkout.payerId === contactId ? state.cart.promotions.result : [];
+    result.waitingCourseIds = state.cart.waitingCourses.result;
+    return Object.keys(result).some((key) => Array.isArray(result[key]) && result[key].length) ? result : null;
+  };
+
   static fromContact = (contact: Contact, summary: State, cart: CartState, payerId: string): ContactNodeRequest => {
     const result: ContactNodeRequest = new ContactNodeRequest();
     result.contactId = contact.id;
-    result.classIds = [];
-    if (summary.entities.contactNodes && summary.entities.contactNodes[contact.id]) {
-      summary.entities.contactNodes[contact.id].enrolments.forEach((key) => {
-        if (summary.entities.enrolments[key] && summary.entities.enrolments[key].classId) {
-          result.classIds.push(summary.entities.enrolments[key].classId);
-        }
-      });
-
-      summary.entities.contactNodes[contact.id].applications.forEach((key) => {
-        if (summary.entities.applications[key] && summary.entities.applications[key].classId) {
-          result.classIds.push(summary.entities.applications[key].classId);
-        }
-      });
-    }
-
-    result.products = cart.products.result.map((productId) => {
-      const productType = cart.products.entities[productId] && cart.products.entities[productId].type;
-      if (productType === 'VOUCHER' && contact.id !== payerId) {
-        return null;
-      }
-      const container = new ProductContainer();
-      container.productId = productId;
-      container.quantity = 1;
-      return container;
-    }).filter((pr) => pr);
+    result.classIds = getClassIdsFromSummary(summary, contact.id);
+    result.products = getProductIdsFromCart(cart, payerId, contact.id);
     result.promotionIds = cart.promotions.result;
     result.waitingCourseIds = cart.waitingCourses.result;
     return result;
