@@ -67,7 +67,7 @@ const config = {
   ],
   table: {
     defaultHeadings: { rows: 1 },
-    contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
+    contentToolbar: ['tableColumn', 'tableRow']
   },
   heading: {
     options: [
