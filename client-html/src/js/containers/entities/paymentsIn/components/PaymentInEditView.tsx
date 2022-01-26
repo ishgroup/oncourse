@@ -122,7 +122,7 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
           selectLabelCondition={getAdminCenterLabel}
           items={adminSites || []}
           labelAdornment={<LinkAdornment link={values && values.administrationCenterId} linkHandler={openSiteLink} />}
-          disabled={initialValues.dateBanked}
+          disabled={!!initialValues.dateBanked}
         />
       </Grid>
       <Grid item {...gridItemProps}>

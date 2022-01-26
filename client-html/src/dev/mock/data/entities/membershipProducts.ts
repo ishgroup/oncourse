@@ -4,7 +4,7 @@ export function mockMembershipProducts() {
   this.getMembershipProducts = () => this.membershipProducts;
 
   this.getMembershipProduct = id => {
-    const row = this.membershipProducts.rows.find(row => row.id == id);
+    const row = this.membershipProducts.rows.find(membership => Number(membership.id) === Number(id));
     return {
       id: row.id,
       name: row.values[0],
@@ -19,6 +19,7 @@ export function mockMembershipProducts() {
       status: "Can be purchased in office & online",
       corporatePasses: [],
       membershipDiscounts: [],
+      dataCollectionRuleId: 55667,
       createdOn: "2016-11-30T11:58:39.000Z",
       modifiedOn: "2018-03-23T13:53:18.000Z"
     };

@@ -18,7 +18,7 @@ export function mockApplications() {
       feeOverride: row.values[5],
       contactId: 1,
       courseId: 1,
-      createdBy: null,
+      createdBy: "",
       customFields: {},
       documents: [],
       notes: [],

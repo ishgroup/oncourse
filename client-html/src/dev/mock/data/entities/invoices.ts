@@ -5,20 +5,26 @@ export function mockInvoices() {
   this.getInvoices = () => this.invoices;
 
   this.getInvoice = (id): Invoice => {
-    const row = this.invoices.rows.find(row => row.id == id);
+    const row = this.invoices.rows.find(invoice => Number(invoice.id) === Number(id));
 
     return {
       id: row.id,
-      type: 'Invoice',
-      amountOwing: row.values[4],
-      billToAddress: "",
+      type: row.values[1],
       contactId: 323,
-      contactName: row.values[3],
-      createdByUser: "admin",
-      createdOn: "2011-08-03T08:04:51.000Z",
-      customerReference: null,
-      dateDue: "2011-08-03",
+      leadId: -1,
+      leadCustomerName: "",
+      contactName: row.values[6],
+      customerReference: "Test",
+      invoiceNumber: row.values[2],
+      quoteNumber: row.values[3],
+      relatedFundingSourceId: null,
+      billToAddress: "Surtherland",
+      title: "Test",
+      description: "Lorem ipsum",
+      shippingAddress: "Lorem ipsum",
       invoiceDate: "2011-08-03",
+      dateDue: "2011-08-03",
+      overdue: row.values[9],
       invoiceLines: [
         {
           id: 461,
@@ -29,7 +35,10 @@ export function mockInvoices() {
           incomeAccountName: "Student enrolments 41000",
           priceEachExTax: 120.0,
           discountEachExTax: 0.0,
+          discountId: null,
+          discountName: null,
           taxEach: 12.0,
+          finalPriceToPayIncTax: null,
           taxId: 1,
           taxName: "Australian GST",
           description: "SPAM-07 Email Filtering and Security",
@@ -39,12 +48,17 @@ export function mockInvoices() {
           classCode: null,
           enrolmentId: null,
           enrolledStudent: null,
-          courseId: null
+          courseId: null,
+          enrolment: null,
+          voucher: null,
+          article: null,
+          membership: null,
+          contactId: null,
         }
       ],
-      invoiceNumber: row.values[0],
-      modifiedOn: "2021-01-20T05:31:37.412Z",
-      overdue: row.values[6],
+      total: row.values[8],
+      amountOwing: row.values[7],
+      publicNotes: "",
       paymentPlans: [
         {
           id: 461,
@@ -103,11 +117,12 @@ export function mockInvoices() {
           entityName: "PaymentIn"
         }
       ],
-      publicNotes: null,
+      source: row.values[4],
+      createdByUser: "admin",
       sendEmail: false,
-      shippingAddress: null,
-      source: row.values[1],
-      total: row.values[5]
+      tags: [this.getTag(1), this.getTag(2)],
+      createdOn: "2011-08-03T08:04:51.000Z",
+      modifiedOn: "2021-01-20T05:31:37.412Z",
     };
   };
 
@@ -399,7 +414,10 @@ export function mockInvoices() {
 
   const rows = generateArraysOfRecords(20, [
     { name: "id", type: "number" },
+    { name: "tagIds", type: "array" },
+    { name: "type", type: "string" },
     { name: "invoiceNumber", type: "number" },
+    { name: "quoteNumber", type: "number" },
     { name: "source", type: "string" },
     { name: "dateDue", type: "Datetime" },
     { name: "contactName", type: "string" },
@@ -408,7 +426,7 @@ export function mockInvoices() {
     { name: "overdue", type: "number" }
   ]).map(l => ({
     id: l.id,
-    values: [l.invoiceNumber, l.source, l.dateDue, l.contactName, 132, 132, 132]
+    values: [[], "Invoice", l.invoiceNumber, null, l.source, l.dateDue, l.contactName, 132, 132, 132]
   }));
 
   return getEntityResponse({
@@ -416,8 +434,25 @@ export function mockInvoices() {
     rows,
     columns: [
       {
+        title: "Tags",
+        attribute: "tagIds",
+        type: "Tags",
+        width: 100,
+      },
+      {
+        title: "Type",
+        attribute: "type",
+        sortable: true,
+        width: 100,
+      },
+      {
         title: "Invoice number",
         attribute: "invoiceNumber",
+        sortable: true
+      },
+      {
+        title: "Quote number",
+        attribute: "quoteNumber",
         sortable: true
       },
       {
@@ -453,6 +488,19 @@ export function mockInvoices() {
         attribute: "overdue",
         type: "Money",
         sortable: true
+      },
+      {
+        title: "Invoice date",
+        attribute: "invoiceDate",
+        type: "Date",
+        sortable: true,
+        visible: false,
+      },
+      {
+        title: "Reference",
+        attribute: "customerReference",
+        sortable: true,
+        visible: false,
       }
     ],
     res: {
