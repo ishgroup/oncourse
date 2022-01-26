@@ -15,6 +15,8 @@
   "devDependencies": {
     "@ckeditor/ckeditor5-dev-utils": "24.*",
     "@mui/types": "7.*",
+    "@testing-library/dom": "^8.11.1",
+    "@testing-library/jest-dom": "^5.16.1",
     "@types/history": "4.*",
     "@types/jest": "26.*",
     "@types/lodash.debounce": "4.*",
@@ -96,6 +98,8 @@
     "@mui/material": "5.*",
     "@mui/styles": "5.*",
     "@react-loadable/revised": "1.*",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^13.5.0",
     "antlr4-c3": "1.1.16",
     "antlr4ts": "0.5.0-alpha.4",
     "autosuggest-highlight": "3.1.*",
