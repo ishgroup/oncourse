@@ -1,11 +1,14 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 import * as React from 'react';
 import * as Form from 'redux-form';
+import { unregisterField } from 'redux-form';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { unregisterField } from 'redux-form';
-import {
-  Field, DataType, Item, Suburb
-} from '../../model';
+import { DataType, Field, Item, Suburb } from '../../model';
 import { CheckboxField } from './CheckboxField';
 import { TextField } from './TextField';
 import { TextAreaField } from './TextAreaField';
@@ -48,7 +51,6 @@ class FieldFactory extends React.Component<any, any> {
         return <Form.Field {...props} component={TextField} type="text" autocomplete="tel" />;
       case DataType.POSTCODE:
         return <Form.Field {...props} component={TextField} type="text" autocomplete="postal-code" />;
-
       case DataType.PATTERN_TEXT:
         return (
           <Form.Field
@@ -58,22 +60,16 @@ class FieldFactory extends React.Component<any, any> {
             type="text"
           />
         );
-
       case DataType.EMAIL:
         return <Form.Field {...props} component={TextField} validate={validateEmail} autocomplete="email" type="text" />;
-
       case DataType.URL:
         return <Form.Field {...props} component={TextField} validate={validateURL} autocomplete="url" type="text" />;
-
       case DataType.LONG_STRING:
         return <Form.Field {...props} component={TextAreaField} type="text" />;
-
       case DataType.INTEGER:
         return <Form.Field {...props} component={TextField} type="number" />;
-
       case DataType.MONEY:
         return <Form.Field {...props} component={MoneyField} type="number" />;
-
       case DataType.ENUM:
         return (
           <Form.Field
@@ -298,9 +294,14 @@ export const getFormInitialValues = (headings) => {
 
   if (headings && headings.length) {
     headings
-      .map((h) => h.fields
-        .filter((f) => f.defaultValue)
-        .map((f, index) => (initialValues[toFormKey(f.key, index)] = f.defaultValue)));
+      .forEach((h) => h.fields
+        .forEach((f, index) => {
+          if (f.defaultValue) {
+            initialValues[toFormKey(f.key, index)] = f.dataType === 'ENUM'
+              ? f.enumItems.find((en) => en.key === f.defaultValue)
+              : f.defaultValue;
+          }
+        }));
 
     return initialValues;
   }

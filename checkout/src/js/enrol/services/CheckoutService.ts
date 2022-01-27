@@ -364,7 +364,7 @@ const formatNodeCustomFields = (items: (Application & Enrolment & WaitingList)[]
   items.forEach((it) => {
     if (it && it.fieldHeadings) {
       it.fieldHeadings.forEach((fh) => {
-        const form = stateRoot.form[`${it.contactId}-${it.courseId || it.classId}`];
+        const form = stateRoot.form[`${it.contactId}-${it.courseId}`] || stateRoot.form[`${it.contactId}-${it.classId}`];
         if (form && form.values) {
           toServerValues(fh.fields, form.values);
         }

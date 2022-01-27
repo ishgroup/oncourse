@@ -1,9 +1,13 @@
-import * as React from "react";
-import {FieldHeading} from "../../model";
-import FieldFactory from "../../components/form/FieldFactory";
-import {replaceWithNl} from "../../common/utils/HtmlUtils";
-import { Dispatch } from 'redux';
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
 
+import * as React from 'react';
+import { Dispatch } from 'redux';
+import { FieldHeading } from '../../model';
+import FieldFactory from '../../components/form/FieldFactory';
+import { replaceWithNl } from '../../common/utils/HtmlUtils';
 
 interface Prop {
   heading: FieldHeading;
@@ -14,35 +18,40 @@ interface Prop {
 }
 
 export class HeadingComp extends React.Component<Prop, any> {
-
   render() {
-    const {heading, touch, onChangeSuburb, form, dispatch} = this.props;
+    const {
+      heading, touch, onChangeSuburb, form, dispatch
+    } = this.props;
 
     return (
       <fieldset>
-        {heading.name &&
+        {heading.name
+          && (
           <legend
-            style={{whiteSpace: "pre-line"}}
+            style={{ whiteSpace: 'pre-line' }}
           >
             {replaceWithNl(heading.name)}
           </legend>
-        }
-        {heading.description &&
+          )}
+        {heading.description
+          && (
           <div
             className="message"
-            dangerouslySetInnerHTML={{__html: replaceWithNl(heading.description)}}
-            style={{whiteSpace: "pre-line"}}
+            dangerouslySetInnerHTML={{ __html: replaceWithNl(heading.description) }}
+            style={{ whiteSpace: 'pre-line' }}
           />
-        }
-        {heading.fields.map((field, i) => <FieldFactory
-          key={i}
-          field={field}
-          index={i}
-          onBlurSelect={touch}
-          onChangeSuburb={onChangeSuburb}
-          form={form}
-          dispatch={dispatch}
-        />)}
+          )}
+        {heading.fields.map((field, i) => (
+          <FieldFactory
+            key={i}
+            field={field}
+            index={i}
+            onBlurSelect={touch}
+            onChangeSuburb={onChangeSuburb}
+            form={form}
+            dispatch={dispatch}
+          />
+        ))}
       </fieldset>
     );
   }

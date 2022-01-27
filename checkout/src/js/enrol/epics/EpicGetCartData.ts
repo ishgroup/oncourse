@@ -29,7 +29,9 @@ const commonMap = (item: Enrolment | Application | WaitingList | Article | Membe
     ...fh,
     fields: fh.fields.map((field) => ({
       ...field,
-      defaultValue: storedItem?.customFields && storedItem?.customFields[fhIndex]?.fields.find((fhf) => fhf.id === field.id)?.value || field.defaultValue
+      defaultValue: storedItem?.customFields
+        && storedItem?.customFields[fhIndex]?.fields.find((fhf) => fhf.id === field.id)?.value
+        || field.defaultValue
     }))
   }))
 });
