@@ -17,6 +17,7 @@ import MessageCardContent from "./MessageCardContent";
 import ReportCardContent from "./ReportCardContent";
 import { getType } from "../../utils";
 import { ShowConfirmCaller } from "../../../../../../model/common/Confirm";
+import AddScriptAction from "../AddScriptAction";
 
 const onDragEnd = ({ destination, source, fields }) => {
   if (destination && destination.index !== source.index) {
@@ -32,6 +33,8 @@ interface Props {
   isInternal: boolean;
   onInternalSaveClick: any;
   emailTemplates: any[];
+  addComponent?: any;
+  values?: any;
 }
 
 const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
@@ -44,7 +47,9 @@ const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
     hasUpdateAccess,
     isInternal,
     onInternalSaveClick,
-    emailTemplates
+    emailTemplates,
+    addComponent,
+    values
   } = props;
 
   const onDelete = (e, index) => {
@@ -93,123 +98,132 @@ const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
     <DragDropContext onDragEnd={args => onDragEnd({ ...args, fields })}>
       <Droppable droppableId="droppable">
         {provided => (
-          <div ref={provided.innerRef} className="pt-3 pb-3">
+          <div ref={provided.innerRef}>
             {fields.map((item, index) => {
               const component: ScriptComponent = fields.get(index);
 
-              switch (component.type) {
-                case "Script": {
-                  return (
-                    <Draggable key={component.id} draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
-                      {provided => (
-                        <div ref={provided.innerRef} {...provided.draggableProps}>
-                          <ScriptCard
-                            heading="Script"
-                            className="mb-3"
-                            onDelete={!isInternal && hasUpdateAccess ? e => onDelete(e, index) : null}
-                            dragHandlerProps={provided.dragHandleProps}
-                            expanded
-                            noPadding
-                            onDetailsClick={isInternal ? onInternalSaveClick : undefined}
-                          >
-                            <FormField
-                              type="code"
-                              name={`${item}.content`}
-                              disabled={isInternal || !hasUpdateAccess}
-                              className="mt-3"
-                            />
-                          </ScriptCard>
-                        </div>
-                      )}
-                    </Draggable>
-                  );
-                }
-                case "Query": {
-                  return (
-                    <Draggable key={component.id} draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
-                      {provided => (
-                        <div ref={provided.innerRef} {...provided.draggableProps}>
-                          <ScriptCard
-                            heading="Query"
-                            className="mb-3"
-                            onDelete={!isInternal ? e => onDelete(e, index) : null}
-                            dragHandlerProps={provided.dragHandleProps}
-                            expanded
-                            onDetailsClick={isInternal ? onInternalSaveClick : undefined}
-                          >
-                            <QueryCardContent
-                              dispatch={dispatch}
-                              field={component}
-                              name={item}
-                              classes={classes}
-                              disabled={isInternal}
-                            />
-                          </ScriptCard>
-                        </div>
-                      )}
-                    </Draggable>
-                  );
-                }
-                case "Message": {
-                  return (
-                    <Draggable key={component.id} draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
-                      {provided => (
-                        <div ref={provided.innerRef} {...provided.draggableProps}>
-                          <ScriptCard
-                            heading="Message"
-                            className="mb-3"
-                            onDelete={!isInternal ? e => onDelete(e, index) : null}
-                            dragHandlerProps={provided.dragHandleProps}
-                            expanded
-                            onDetailsClick={isInternal ? onInternalSaveClick : undefined}
-                          >
-                            <MessageCardContent
-                              dispatch={dispatch}
-                              field={component}
-                              name={item}
-                              classes={classes}
-                              emailTemplates={emailTemplates}
-                              renderVariables={renderVariables}
-                              form={form}
-                              disabled={isInternal}
-                            />
-                          </ScriptCard>
-                        </div>
-                      )}
-                    </Draggable>
-                  );
-                }
+              let componentBlock = null;
 
-                case "Report": {
-                  return (
-                    <Draggable key={component.id} draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
-                      {provided => (
-                        <div ref={provided.innerRef} {...provided.draggableProps}>
-                          <ScriptCard
-                            heading="Report"
-                            className="mb-3"
-                            onDelete={!isInternal ? e => onDelete(e, index) : null}
-                            dragHandlerProps={provided.dragHandleProps}
-                            expanded
-                            onDetailsClick={isInternal ? onInternalSaveClick : undefined}
-                          >
-                            <ReportCardContent
-                              dispatch={dispatch}
-                              field={component}
-                              name={item}
-                              form={form}
-                              disabled={isInternal}
-                              renderVariables={renderVariables}
-                            />
-                          </ScriptCard>
-                        </div>
-                      )}
-                    </Draggable>
-                  );
-                }
-                default:
-                  return null;
+              if (component.type === "Script") {
+                componentBlock = (
+                  <Draggable key={component.id} draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
+                    {provided => (
+                      <div ref={provided.innerRef} {...provided.draggableProps}>
+                        <ScriptCard
+                          heading="Script"
+                          className="mb-3"
+                          onDelete={!isInternal && hasUpdateAccess ? e => onDelete(e, index) : null}
+                          dragHandlerProps={provided.dragHandleProps}
+                          expanded
+                          noPadding
+                          onDetailsClick={isInternal ? onInternalSaveClick : undefined}
+                        >
+                          <FormField
+                            type="code"
+                            name={`${item}.content`}
+                            disabled={isInternal || !hasUpdateAccess}
+                            className="mt-3"
+                          />
+                        </ScriptCard>
+                      </div>
+                    )}
+                  </Draggable>
+                );
+              } else if (component.type === "Query") {
+                componentBlock = (
+                  <Draggable key={component.id} draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
+                    {provided => (
+                      <div ref={provided.innerRef} {...provided.draggableProps}>
+                        <ScriptCard
+                          heading="Query"
+                          className="mb-3"
+                          onDelete={!isInternal ? e => onDelete(e, index) : null}
+                          dragHandlerProps={provided.dragHandleProps}
+                          expanded
+                          onDetailsClick={isInternal ? onInternalSaveClick : undefined}
+                        >
+                          <QueryCardContent
+                            dispatch={dispatch}
+                            field={component}
+                            name={item}
+                            classes={classes}
+                            disabled={isInternal}
+                          />
+                        </ScriptCard>
+                      </div>
+                    )}
+                  </Draggable>
+                );
+              } else if (component.type === "Message") {
+                componentBlock = (
+                  <Draggable key={component.id} draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
+                    {provided => (
+                      <div ref={provided.innerRef} {...provided.draggableProps}>
+                        <ScriptCard
+                          heading="Message"
+                          className="mb-3"
+                          onDelete={!isInternal ? e => onDelete(e, index) : null}
+                          dragHandlerProps={provided.dragHandleProps}
+                          expanded
+                          onDetailsClick={isInternal ? onInternalSaveClick : undefined}
+                        >
+                          <MessageCardContent
+                            dispatch={dispatch}
+                            field={component}
+                            name={item}
+                            classes={classes}
+                            emailTemplates={emailTemplates}
+                            renderVariables={renderVariables}
+                            form={form}
+                            disabled={isInternal}
+                          />
+                        </ScriptCard>
+                      </div>
+                    )}
+                  </Draggable>
+                );
+              } else if (component.type === "Report") {
+                componentBlock = (
+                  <Draggable key={component.id} draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
+                    {provided => (
+                      <div ref={provided.innerRef} {...provided.draggableProps}>
+                        <ScriptCard
+                          heading="Report"
+                          className="mb-3"
+                          onDelete={!isInternal ? e => onDelete(e, index) : null}
+                          dragHandlerProps={provided.dragHandleProps}
+                          expanded
+                          onDetailsClick={isInternal ? onInternalSaveClick : undefined}
+                        >
+                          <ReportCardContent
+                            dispatch={dispatch}
+                            field={component}
+                            name={item}
+                            form={form}
+                            disabled={isInternal}
+                            renderVariables={renderVariables}
+                          />
+                        </ScriptCard>
+                      </div>
+                    )}
+                  </Draggable>
+                );
               }
+
+              return (
+                <>
+                  {componentBlock}
+
+                  <AddScriptAction
+                    index={index}
+                    addComponent={addComponent}
+                    form={form}
+                    dispatch={dispatch}
+                    values={values}
+                    hasUpdateAccess={hasUpdateAccess}
+                  />
+                </>
+              );
             })}
           </div>
         )}

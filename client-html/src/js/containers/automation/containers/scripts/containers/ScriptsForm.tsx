@@ -43,6 +43,7 @@ import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/
 import { ApiMethods } from "../../../../../model/common/apiHandlers";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import AddScriptAction from "../components/AddScriptAction";
 
 const manualUrl = getManualLink("scripts");
 const getAuditsUrl = (id: number) => `audit?search=~"Script" and entityId == ${id}`;
@@ -219,8 +220,8 @@ const ScriptsForm = React.memo<Props>(props => {
     [values, viewMode],
   );
 
-  const addComponent = async (componentName: ScriptComponentType) => {
-    dispatch(arrayInsert(form, "components", 0, await getInitComponentBody(componentName)));
+  const addComponent = async (componentName: ScriptComponentType, index) => {
+    dispatch(arrayInsert(form, "components", index, await getInitComponentBody(componentName)));
   };
 
   const addImport = e => {
@@ -427,7 +428,7 @@ const ScriptsForm = React.memo<Props>(props => {
                 ) : (
                   <>
                     {values.imports && (
-                      <div>
+                      <div className="pt-3">
                         <ScriptCard
                           heading="Import"
                           className="mt-3"
@@ -442,6 +443,15 @@ const ScriptsForm = React.memo<Props>(props => {
                       </div>
                     )}
 
+                    <AddScriptAction
+                      index={0}
+                      addComponent={addComponent}
+                      form={form}
+                      dispatch={dispatch}
+                      values={values}
+                      hasUpdateAccess={hasUpdateAccess}
+                    />
+
                     <FieldArray
                       name="components"
                       component={CardsRenderer}
@@ -453,6 +463,8 @@ const ScriptsForm = React.memo<Props>(props => {
                       isInternal={isInternal}
                       onInternalSaveClick={onInternalSaveClick}
                       emailTemplates={emailTemplates}
+                      addComponent={addComponent}
+                      values={values}
                     />
                   </>
                 )}
