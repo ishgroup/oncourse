@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
 import AutoformatPlugin from '@ckeditor/ckeditor5-autoformat/src/autoformat';
@@ -12,6 +12,10 @@ import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import Markdown from '@ckeditor/ckeditor5-markdown-gfm/src/markdown';
 import Table from '@ckeditor/ckeditor5-table/src/table';
 import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
+import Image from '@ckeditor/ckeditor5-image/src/image';
+import LinkImage from '@ckeditor/ckeditor5-link/src/linkimage';
+import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption';
+import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ReactDOM from "react-dom";
 import CodeIcon from '@mui/icons-material/Code';
@@ -48,6 +52,10 @@ const config = {
     ParagraphPlugin,
     Table,
     TableToolbar,
+    Image,
+    LinkImage,
+    ImageStyle,
+    ImageCaption,
   ],
   extraPlugins: [customizeSourceEditing],
   toolbar: [
@@ -100,12 +108,14 @@ const WysiwygEditor: React.FC<Props> = ({
     );
   };
 
+  const onChangeHandler = useCallback((e, editor) => onChange(editor.getData()), []);
+
   return (
     <CKEditor
       editor={ClassicEditor}
       config={config}
       data={removeContentMarker(value)}
-      onChange={(e, editor) => onChange(editor.getData())}
+      onChange={onChangeHandler}
       onReady={onReady}
     />
   );
