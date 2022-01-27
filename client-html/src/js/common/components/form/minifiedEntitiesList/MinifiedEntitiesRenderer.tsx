@@ -17,6 +17,7 @@ import withStyles from "@mui/styles/withStyles";
 import Button from "@mui/material/Button";
 import { getDeepValue } from "../../../utils/common";
 import { AppTheme } from "../../../../model/common/Theme";
+import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -104,6 +105,9 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
     <div>
       {fields.map((item, index) => {
         const field = fields.get(index);
+        const summaryProps = IS_JEST ? {
+          "data-testid": `minified-${item}`
+        } : {};
 
         return (
           <Accordion
@@ -119,6 +123,7 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
                 content: classes.summaryContent
               }}
               expandIcon={<ExpandMoreIcon />}
+              {...summaryProps}
             >
               {HeaderContent ? (
                 <HeaderContent item={item} row={field} />

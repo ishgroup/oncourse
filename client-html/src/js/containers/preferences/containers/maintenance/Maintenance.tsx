@@ -28,7 +28,7 @@ class Maintenance extends React.Component<Props, any> {
           enums={{ MaintenanceTimes }}
           data={maintenance}
           category={Categories.maintenance}
-          form={<MaintenanceForm />}
+          form={formRoleName => <MaintenanceForm formRoleName={formRoleName} />}
         />
       </div>
     );

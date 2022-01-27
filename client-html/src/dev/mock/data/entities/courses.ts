@@ -8,74 +8,27 @@ export function mockCourses() {
 
     return {
       id: row.id,
+      createdOn: "2022-01-07T07:26:02.042Z",
+      modifiedOn: "2022-01-08T07:26:02.042Z",
       name: row.values[0],
       code: row.values[1],
-      tags: [],
+      tags: [this.getTag(1)],
       enrolmentType: "Open enrolment",
       allowWaitingLists: true,
-      dataCollectionRuleId: 102,
+      dataCollectionRuleId: 55667,
       dataCollectionRuleName: "Accredited course",
       status: "Enabled and visible online",
       brochureDescription: "Accounting bro description",
-      classes: [
-        {
-          id: 500,
-          code: "ACT1",
-          selfPaced: false
-        },
-        {
-          id: 501,
-          code: "ACT2",
-          selfPaced: false
-        },
-        {
-          id: 522,
-          code: "ACT3",
-          selfPaced: false
-        },
-        {
-          id: 540,
-          code: "4",
-          selfPaced: false
-        },
-        {
-          id: 541,
-          code: "ACT5",
-          selfPaced: false
-        },
-        {
-          id: 601,
-          code: "ACT7",
-          selfPaced: false
-        },
-        {
-          id: 640,
-          code: "act8",
-          selfPaced: false
-        },
-        {
-          id: 1061,
-          code: "act9",
-          selfPaced: false
-        },
-        {
-          id: 1461,
-          code: "act10",
-          selfPaced: false
-        },
-        {
-          id: 1546,
-          code: "act12",
-          selfPaced: false
-        },
-        {
-          id: 1547,
-          code: "act11",
-          selfPaced: false
-        }
-      ],
+      currentClassesCount: 0,
+      futureClasseCount: 17,
+      selfPacedclassesCount: 0,
+      unscheduledClasseCount: 5,
+      passedClasseCount: 40,
+      cancelledClassesCount: 21,
+      studentWaitingListCount: 9,
+      hasEnrolments: true,
       webDescription: "Lorem ipsum",
-      documents: null,
+      documents: [],
       relatedProducts: [
         {
           id: 381,
@@ -93,6 +46,21 @@ export function mockCourses() {
           type: "Course"
         }
       ],
+      qualificationId: 16922,
+      qualNationalCode: "SG00000188",
+      qualTitle: "SG00000188 - Skills Group",
+      qualLevel: "course in",
+      isSufficientForQualification: true,
+      isVET: true,
+      fieldOfEducation: "1299",
+      reportableHours: 0,
+      modules: [],
+      customFields: {},
+      rules: [],
+      isTraineeship: false,
+      currentlyOffered: true,
+      feeHelpClass: false,
+      fullTimeLoad: null,
       notes: [
         {
           id: 211,
@@ -127,17 +95,6 @@ export function mockCourses() {
           modifiedBy: "onCourse Administrator"
         }
       ],
-      qualificationId: null,
-      qualNationalCode: null,
-      qualTitle: null,
-      qualLevel: null,
-      isSufficientForQualification: true,
-      isVET: true,
-      fieldOfEducation: "1299",
-      reportableHours: null,
-      modules: [],
-      customFields: {},
-      rules: []
     };
   };
 
@@ -163,67 +120,10 @@ export function mockCourses() {
     tags: [],
     enrolmentType: "Open enrolment",
     allowWaitingLists: true,
-    dataCollectionRuleId: 102,
+    dataCollectionRuleId: 55667,
     dataCollectionRuleName: "Accredited course",
     status: "Enabled and visible online",
     brochureDescription: "Accounting bro description",
-    classes: [
-      {
-        id: 500,
-        code: "ACT1",
-        selfPaced: false
-      },
-      {
-        id: 501,
-        code: "ACT2",
-        selfPaced: false
-      },
-      {
-        id: 522,
-        code: "ACT3",
-        selfPaced: false
-      },
-      {
-        id: 540,
-        code: "4",
-        selfPaced: false
-      },
-      {
-        id: 541,
-        code: "ACT5",
-        selfPaced: false
-      },
-      {
-        id: 601,
-        code: "ACT7",
-        selfPaced: false
-      },
-      {
-        id: 640,
-        code: "act8",
-        selfPaced: false
-      },
-      {
-        id: 1061,
-        code: "act9",
-        selfPaced: false
-      },
-      {
-        id: 1461,
-        code: "act10",
-        selfPaced: false
-      },
-      {
-        id: 1546,
-        code: "act12",
-        selfPaced: false
-      },
-      {
-        id: 1547,
-        code: "act11",
-        selfPaced: false
-      }
-    ],
     webDescription: "Lorem ipsum",
     documents: null,
     relatedProducts: [
