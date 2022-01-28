@@ -92,7 +92,7 @@ const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
         )
       ))}
     </>
-);
+  );
 
   return (
     <DragDropContext onDragEnd={args => onDragEnd({ ...args, fields })}>
@@ -106,7 +106,7 @@ const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
 
               if (component.type === "Script") {
                 componentBlock = (
-                  <Draggable key={component.id} draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
+                  <Draggable draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
                     {provided => (
                       <div ref={provided.innerRef} {...provided.draggableProps}>
                         <ScriptCard
@@ -131,7 +131,7 @@ const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
                 );
               } else if (component.type === "Query") {
                 componentBlock = (
-                  <Draggable key={component.id} draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
+                  <Draggable draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
                     {provided => (
                       <div ref={provided.innerRef} {...provided.draggableProps}>
                         <ScriptCard
@@ -156,7 +156,7 @@ const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
                 );
               } else if (component.type === "Message") {
                 componentBlock = (
-                  <Draggable key={component.id} draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
+                  <Draggable draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
                     {provided => (
                       <div ref={provided.innerRef} {...provided.draggableProps}>
                         <ScriptCard
@@ -184,7 +184,7 @@ const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
                 );
               } else if (component.type === "Report") {
                 componentBlock = (
-                  <Draggable key={component.id} draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
+                  <Draggable draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
                     {provided => (
                       <div ref={provided.innerRef} {...provided.draggableProps}>
                         <ScriptCard
@@ -211,18 +211,20 @@ const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
               }
 
               return (
-                <>
+                <div key={component.id}>
                   {componentBlock}
 
-                  <AddScriptAction
-                    index={index}
-                    addComponent={addComponent}
-                    form={form}
-                    dispatch={dispatch}
-                    values={values}
-                    hasUpdateAccess={hasUpdateAccess}
-                  />
-                </>
+                  {!isInternal && (
+                    <AddScriptAction
+                      index={index + 1}
+                      addComponent={addComponent}
+                      form={form}
+                      dispatch={dispatch}
+                      values={values}
+                      hasUpdateAccess={hasUpdateAccess}
+                    />
+                  )}
+                </div>
               );
             })}
           </div>

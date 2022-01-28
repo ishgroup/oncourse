@@ -18,12 +18,13 @@ import Collapse from "@mui/material/Collapse";
 
 const styles = createStyles(theme => ({
   addActionWrapper: {
+    minHeight: theme.spacing(3),
     transition: theme.transitions.create("all", {
       duration: theme.transitions.duration.standard,
       easing: theme.transitions.easing.easeInOut
     }),
     "&:hover": {
-      padding: theme.spacing(2, 0),
+      padding: theme.spacing(3, 0),
       "& $buttonRoot": {
         height: "auto",
         padding: theme.spacing(3.5, 2),
@@ -46,7 +47,7 @@ const styles = createStyles(theme => ({
     opacity: 0,
   },
   actionPaper: {
-    margin: theme.spacing(2, 0),
+    margin: theme.spacing(3, 0),
   },
   heading: {
     borderBottom: `1px solid ${theme.palette.divider}`,
@@ -105,7 +106,7 @@ const ScriptAction = React.memo<ScriptActionProps>(props => {
       onClick={() => addAction(title)}
       disabled={disabled}
     >
-      <IconButton size="large" centerRipple className={iconClass}>
+      <IconButton size="large" centerRipple className={iconClass} disabled={disabled}>
         {icon}
       </IconButton>
       <div className="pl-2 mt-0-5">
