@@ -1,7 +1,6 @@
 import React, { useCallback } from "react";
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
-import AutoformatPlugin from '@ckeditor/ckeditor5-autoformat/src/autoformat';
 import SourceEditing from '@ckeditor/ckeditor5-source-editing/src/sourceediting';
 import BoldPlugin from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import ItalicPlugin from '@ckeditor/ckeditor5-basic-styles/src/italic';
@@ -43,7 +42,6 @@ const config = {
     Markdown,
     SourceEditing,
     EssentialsPlugin,
-    AutoformatPlugin,
     BoldPlugin,
     ItalicPlugin,
     HeadingPlugin,
