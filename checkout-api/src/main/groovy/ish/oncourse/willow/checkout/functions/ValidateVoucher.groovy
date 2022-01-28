@@ -33,8 +33,9 @@ class ValidateVoucher extends Validate<Voucher>{
 
     @CompileStatic(TypeCheckingMode.SKIP)
     ValidateVoucher validate(VoucherProduct product, Double price, Double total, String contactId, Integer quantity) {
-        
-        if (payerId && payerId != contactId) {
+        if (!product.isOnSale) {
+            errors << "Not available for sale ".toString()
+        } else if (payerId && payerId != contactId) {
             errors << "Voucher purchase avalible for payer only: $product.name".toString()
         } else if (product.redemptionCourses.empty && product.priceExTax == null && !price.toMoney().isGreaterThan(Money.ZERO)) {
             errors << "Please enter the correct price for voucher: $product.name".toString()
