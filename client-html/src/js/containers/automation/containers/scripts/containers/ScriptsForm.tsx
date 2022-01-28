@@ -382,15 +382,6 @@ const ScriptsForm = React.memo<Props>(props => {
               ]}
             />
           )}
-          customAddMenu={!isInternal && viewMode !== "Code" && (
-            <ScriptAddMenu
-              addComponent={addComponent}
-              form={form}
-              dispatch={dispatch}
-              values={values}
-              hasUpdateAccess={hasUpdateAccess}
-            />
-          )}
         >
           {values && (
             <Grid container className={classes.root}>
@@ -443,14 +434,16 @@ const ScriptsForm = React.memo<Props>(props => {
                       </div>
                     )}
 
-                    <AddScriptAction
-                      index={0}
-                      addComponent={addComponent}
-                      form={form}
-                      dispatch={dispatch}
-                      values={values}
-                      hasUpdateAccess={hasUpdateAccess}
-                    />
+                    {!isInternal && (
+                      <AddScriptAction
+                        index={0}
+                        addComponent={addComponent}
+                        form={form}
+                        dispatch={dispatch}
+                        values={values}
+                        hasUpdateAccess={hasUpdateAccess}
+                      />
+                    )}
 
                     <FieldArray
                       name="components"
