@@ -1,46 +1,58 @@
-- name: alert students of assessment release
+- name: Alert students of assessment release
   keyCode: ish.script.alertStudentsOfAssessmentRelease
   body: ish.script.alertStudentsOfAssessmentRelease.groovy
   enabled: false
   triggerType: CRON
   schedule: "@daily-morning"
-  description: email notification to students to inform them that assessments are now available in the SkillsOnCourse portal
+  description: For classes that contain assessments with release dates, sends an email notification to students upon release to inform them that assessments are now available in the SkillsOnCourse portal.
+  short: Notify students that one of their class assessments has been made available on the SkillsonCourse Portal.
+  category: Class
+  tag:
   options:
     - name: templateKeycode
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.alertStudentsOfAssessmentRelease"
   
-- name: alert students of related class
+- name: Alert students of related class
   body: ish.script.alertStudentsOfRelatedClass.groovy
   keyCode: ish.script.alertStudentsOfRelatedClass
   enabled: false
   triggerType: ON_DEMAND
   entityClass: CourseClass
-  description: email notification to promote the class to a short list of students who attended a previously class of the same tutor in the past.
+  description: Email a notification to promote the selected class to a short list of students who, in the past, attended a class of the same tutor.
+  short: Inform students taught by the tutor of the selected class over the last 18 months that they have another class upcoming in the near future.1234
+  category: Marketing
+  tag:
   options:
     - name: alertStudentsTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.alertStudentsOfRelatedClass"
   
-- name: alert tutors of assessment release
+- name: Alert tutors of assessment release
   keyCode: ish.script.alertTutorsOfAssessmentRelease
   body: ish.script.alertTutorsOfAssessmentRelease.groovy
   enabled: false
   triggerType: CRON
   schedule: "@daily-morning"
-  description: email notification to tutors to inform them that assessments have be released and are now available in the SkillsOnCourse portal for students
+  description: For classes that contain assessments with release dates, sends an email notification to the class tutors upon release to inform them that assessments are now available for students in the SkillsOnCourse portal.
+  short: Notify tutors that one of their class assessments has been made available for students on the SkillsonCourse Portal.
+  category: Class
+  tag:
   options:
     - name: templateKeycode
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.alertTutorsOfAssessmentRelease"
   
-- name: canvas enrol
+- name: Canvas enrol
   keyCode: ish.script.canvasEnrolment
   body: ish.script.canvasEnrolment.groovy
   enabled: false
   triggerType: ONCOURSE_EVENT
   onCourseEventType: ENROLMENT_SUCCESSFUL
-  description: Enrol user to a Canvas course upon onCourse enrolment. Canvas course must have the same code as the course in onCourse
+  description: On successful enrolment, enrol student into a Canvas course. Canvas integration must be set up and active.
+  short: Requires active Canvas integration. When a student enrols into a Canvas-related course in onCourse, send the data and enrol them into the same course in Canvas.
+  category: Integrations
+  tag:
   options:
     - name: tagName
       dataType: TEXT
@@ -52,19 +64,25 @@
   enabled: true
   triggerType: CRON
   schedule: "@daily-morning"
-  description: This script runs daily to verify that all critical emails were sent during the day.
+  description: This script runs daily to verify that all critical emails - enrolment confirmations, tax invoices, payments etc - were sent during the day.
+  short: Runs daily in the morning to check all system critical emails have been sent as expected.
+  category: System
+  tag: Popular
   options:
     - name: numberOfDays
       dataType: TEXT
       value: "7"
   
-- name: coassemble enrol
+- name: Coassemble enrol
   keyCode: ish.script.coassembleEnrolment
   body: ish.script.coassembleEnrolment.groovy
   enabled: false
   triggerType: ONCOURSE_EVENT
   onCourseEventType: ENROLMENT_SUCCESSFUL
-  description: Enrol user to Coassemble course upon onCourse enrolment. Coassemble course must have the same title as onCourse course name
+  description: Coassemble integration must be active. Enrols student into Coassemble course upon onCourse enrolment. Coassemble course must have the same title as onCourse course name
+  short: Requires active Coassemble integration. When a student enrols into a Coassemble-related course, send the date and enrol them into the same course in Coassemble.
+  category: Integrations
+  tag:
   
 - name: Course Completion Survey
   body: ish.script.courseCompletionSurvey.groovy
@@ -72,7 +90,10 @@
   enabled: false
   triggerType: CRON
   schedule: "@daily-morning"
-  description: Send the completion survey to all students who completed a course recently.
+  description: Send the completion survey to all students who completed a course recently. Whether this is ent at the beginning, middle or end of a course is set in Data Collection.
+  short: Send the student feedback survey to all students who have passed the defined feedback point set in your survey data collection forms.
+  category: Compliance
+  tag: Popular
   options:
     - name: courseSurveyTemplate
       dataType: MESSAGE_TEMPLATE
@@ -85,6 +106,9 @@
   triggerType: CRON
   schedule: "@daily-morning"
   description: For each enrolment, check for outcomes which have been modified in the previous 24 hrs. If any outcomes attached to the enrolment are not yet marked, skip this enrolment. For students with at least one successful outcome, create the certificate record (statement of attainment or qualification, based on the isFullQual flag at the course level). If the outcome is already joined to a certificate, do not create a new certificate containing that outcome
+  short: Automatically generate the appropriate VET certificate for all VET enrolments with outcomes that were marked in the last 24hrs.
+  category: Compliance
+  tag:
   
 - name: Historic Aged Debtor Export
   body: ish.script.historicAgedDebtor.groovy
@@ -93,6 +117,9 @@
   triggerType: ON_DEMAND
   outputType: CSV
   description: "Export in CSV format the aged historic debtors as of midnight at the end of the 'As At Date"
+  short: When run, produces a CSV export showing the aged historic debtors as of midnight at the end of the 'as at date'.
+  category: Finance
+  tag: Popular
   variables:
     - name: atDate
       label: "As At Date"
@@ -105,46 +132,58 @@
   triggerType: ONCOURSE_EVENT
   onCourseEventType: ENROLMENT_SUCCESSFUL
   description: This script will create enrolments in LearnDash. Students will be matched by email address and if none exists in LearnDash, a student will be created. That student will be enrolled in the Learndash course with slug matching the course code in onCourse.
+  short: Requires an active Learndash integration. Creates students and enrols them in the same course in Learndash.
+  category: Integrations
+  tag:
   
-- name: notification of documents pending for deletion
+- name: Notification of documents pending for deletion
   body: ish.script.listOfDocumentsBeDeleted.groovy
   keyCode: ish.script.listOfDocumentsBeDeleted
   enabled: true
   triggerType: CRON
   schedule: "@weekly"
   description: A notification with list of documents which will be deleted
+  short: Sends a weekly notification with a list showing the documents in your system that have been marked for deletion.
+  category: System
+  tag:
   options:
     - name: templateForNotification
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.notificationWithDocumentsList"
   
-- name: mailchimp pull subscribe
+- name: Mailchimp pull subscribe
   keyCode: ish.script.mailchimpPullUnsubscribes
   body: ish.script.mailchimpPullUnsubscribes.groovy
   enabled: false
   triggerType: CRON
   schedule: "@daily-morning"
   description:  Pull unsubscribers and mark the email address in onCourse as not allowed for marketing.
+  short: Requires an active Mailchip Integration. Pulls from your Mailchimp the latest list of unsubscribers and marks the contact in onCourse as unavailable for marketing messages.
+  category: Integrations
+  tag:
   options:
     - name: numberOfDays
       dataType: TEXT
       value: "7"
   
   
-- name: mailchimp subscribe
+- name: Mailchimp subscribe
   keyCode: ish.script.mailchimpSubcribe
   body: ish.script.mailchimpSubcribe.groovy
   enabled: false
   triggerType: ENTITY_EVENT
   entityClass: ContactTagRelation
   entityEventType: CREATE
-  description: Subscribe contact to a mailchimp list
+  description: Subscribe contact to a mailchimp list by applying a mailing list tag to it.
+  short: Requires an active Mailchimp integration. On applying a Mailing List tag to a contact in onCourse, add the contact to that mailing list in your Mailchimp.
+  category: Integrations
+  tag:
   options:
     - name: integrationAction
       dataType: TEXT
       value: "subscribe"
   
-- name: mailchimp subscribe on attribute changing
+- name: Mailchimp subscribe on attribute changing
   keyCode: ish.script.mailchimpSubcribeOnAttributeChanging
   body: ish.script.mailchimpSubcribeOnAttributeChanging.groovy
   enabled: false
@@ -152,19 +191,25 @@
   entityClass: Contact
   entityAttribute: allowEmail
   entityEventType: UPDATE
-  description: Subscribe\unsubscribe user to Mailchimp upon specified attribute changing
+  description: Subscribe\unsubscribe contact to Mailchimp upon changing the 'allow email marketing' flag on their contact
+  short: Requires an active Mailchimp integration. Subscribe\unsubscribe contact to Mailchimp upon changing the 'allow email marketing' flag on their contact.
+  category: Integrations
+  tag:
   options:
     - name: nameOfIntegration
       dataType: TEXT
       value: ""
   
-- name: mailchimp subscribe on enrolment
+- name: Mailchimp subscribe on enrolment
   keyCode: ish.script.mailchimpSubcribeOnEnrolment
   body: ish.script.mailchimpSubcribeOnEnrolment.groovy
   enabled: false
   triggerType: ONCOURSE_EVENT
   onCourseEventType: ENROLMENT_SUCCESSFUL
   description: Subscribe user to Mailchimp upon enrolment
+  short: Requires an active Mailchimp integration. Subscribe student to Mailchimp on creation of a successful enrolment
+  category: Integrations
+  tag:
   options:
     - name: integrationAction
       dataType: TEXT
@@ -173,7 +218,7 @@
       dataType: TEXT
       value: "Enrolment"
   
-- name: mailchimp unsubscribe
+- name: Mailchimp unsubscribe
   keyCode: ish.script.mailchimpUnsubscribe
   body: ish.script.mailchimpUnsubscribe.groovy
   enabled: false
@@ -181,6 +226,9 @@
   entityClass: ContactTagRelation
   entityEventType: REMOVE
   description: Unsubscribe contact from a mailchimp list
+  short: Requires an active Mailchimp integration. Upon removing a Mailing List tag from a contact, remove that contact from that Mailchimp list.
+  category: Integrations
+  tag:
   options:
     - name: integrationAction
       dataType: TEXT
@@ -192,19 +240,25 @@
   enabled: false
   triggerType: CRON
   schedule: "@weekly"
-  description: This script identifies members whose membership will expire in the next 7 days and send an email with notification.
+  description: This script identifies members whose membership will expire in the next 7 days and sends them an email notification.
+  short: Finds contacts with a membership that expires within the next 7 days and notifies them.
+  category: Reminders
+  tag:
   options:
     - name: renewalNotificationTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.membershipNotificationRenewal"
   
-- name: micropower  update members
+- name: Micropower update members
   keyCode: ish.script.micropowerUpdateMembers
   body: ish.script.micropowerUpdateMembers.groovy
   enabled: false
   triggerType: CRON
   schedule: "@daily-morning"
   description: Get memberships recently updated or created in Micropower and populate these changes into onCourse
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: nameOfIntegration
       dataType: TEXT
@@ -217,6 +271,9 @@
   triggerType: ONCOURSE_EVENT
   onCourseEventType: ENROLMENT_SUCCESSFUL
   description: Enrol user to Moodle course upon onCourse enrolment
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: tagName
       dataType: TEXT
@@ -229,6 +286,9 @@
   triggerType: CRON
   schedule: "@daily-morning"
   description: Check for every session run on the previous day, if any student attendance is unmarked. A summary of the session details containing unmarked attendance is sent to the default admin email address.
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: tagName
       dataType: TEXT
@@ -241,6 +301,9 @@
   triggerType: CRON
   schedule: "@daily-morning"
   description: This script checks for every session run on the previous 7 days. If any student attendance is unmarked, sends to the tutors email notification to mark their class roll.
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: tutorNoticeTemplate
       dataType: MESSAGE_TEMPLATE
@@ -253,6 +316,9 @@
   triggerType: ONCOURSE_EVENT
   onCourseEventType: PAYSLIP_APPROVED
   description: If approved payslip has type 'Contractor', send a message to the contractor
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: contractorNoticeTemplate
       dataType: MESSAGE_TEMPLATE
@@ -265,6 +331,9 @@
   triggerType: ONCOURSE_EVENT
   onCourseEventType: PAYSLIP_PAID
   description: If paid payslip has type 'Employee', send a message to the tutor
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: tutorNoticeTemplate
       dataType: MESSAGE_TEMPLATE
@@ -278,6 +347,9 @@
   entityClass: Article
   entityEventType: CREATE
   description: email notification when someone purchases a product through the onCourse website
+  short: 1234
+  category: 1234
+  tag:
   
 - name: send account statement
   keyCode: ish.script.sendAccountStatement
@@ -286,6 +358,9 @@
   triggerType: CRON
   schedule: 0 0 3 1 * ? *
   description: Send a statement report to all contacts with outstanding balances on the first on the month
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: certificateReportTemplate
       dataType: TEXT
@@ -302,6 +377,9 @@
   entityClass: Application
   entityEventType: CREATE_OR_UPDATE
   description: Send an email to the student about whether their application has been offered or rejected
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: applicationAcceptedTemplate
       dataType: MESSAGE_TEMPLATE
@@ -318,6 +396,9 @@
   entityClass: Application
   entityEventType: CREATE
   description: Send an email to the student when their application has been received
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: applicationReceivedTemplate
       dataType: MESSAGE_TEMPLATE
@@ -330,6 +411,9 @@
   triggerType: CRON
   schedule: 0 0 4 ? * SUN *
   description: This script sends a student a birthday voucher on the week of their birthday. Before activating this script, you will need to create a new VoucherType with the sku 'birthday'. Vouchers of this type will be created and sent to students on the week of their birthday. This VoucherType must also be ticked as 'Is on sale' to be able to be redeemed by students.
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: birthdayVoucherTemplate
       dataType: MESSAGE_TEMPLATE
@@ -345,6 +429,9 @@
   triggerType: CRON
   schedule: "@daily-morning"
   description: Create a certificate of attendance for non-VET training with your custom certificate_attendance_backgound.pdf, upload the certificate to the portal and send an email to the student containing the link. There are options in the script to check attendance requirements before creating certificates, which are commented out by default.
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: certificateReportTemplate
       dataType: TEXT
@@ -363,6 +450,9 @@
   triggerType: CRON
   schedule: "@daily-morning"
   description: Print and upload to the portal VET certifcates where the student meets the requirements for certification, including having supplied their USI. Send an email to notify the student that their certificate is available in the portal.
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: certificateReportTemplate
       dataType: TEXT
@@ -387,6 +477,9 @@
   triggerType: ONCOURSE_EVENT
   onCourseEventType: CLASS_CANCELLED
   description: Send an email to the student with information about class cancellation
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: cancellationTemplate
       dataType: MESSAGE_TEMPLATE
@@ -399,6 +492,9 @@
   triggerType: CRON
   schedule: "@daily-evening"
   description: Send an email to students when course class is confirmed
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: classConfirmedTemplate
       dataType: MESSAGE_TEMPLATE
@@ -420,6 +516,9 @@
   triggerType: ONCOURSE_EVENT
   onCourseEventType: ENROLMENT_SUCCESSFUL
   description: Send the enrolment confirmation email to the student
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: enrolmentConfirmationTemplate
       dataType: MESSAGE_TEMPLATE
@@ -432,6 +531,9 @@
   triggerType: ONCOURSE_EVENT
   onCourseEventType: ENROLMENT_SUCCESSFUL
   description: Send an enrolment notification email to tutors attached to classes. Classes can be filtered by tag with name from 'tagName' option
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: enrolmentNotificationTemplate
       dataType: MESSAGE_TEMPLATE
@@ -448,6 +550,9 @@
   entityClass: Invoice
   entityEventType: CREATE_OR_UPDATE
   description: Send an email to the payer with their invoice
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: invoiceTemplate
       dataType: MESSAGE_TEMPLATE
@@ -461,6 +566,9 @@
   entityEventType: CREATE_OR_UPDATE
   entityClass: PaymentOut
   description: Send an email to the payer about a refund that has been processed
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: refundAdviceTemplate
       dataType: MESSAGE_TEMPLATE
@@ -473,6 +581,9 @@
   triggerType: CRON
   schedule: "@daily-morning"
   description: Send an email reminder with payment due date to the payer.
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: paymentReminderTemplate
       dataType: MESSAGE_TEMPLATE
@@ -486,6 +597,9 @@
   entityClass: PaymentIn
   entityEventType: CREATE_OR_UPDATE
   description: Send a payment receipt email to the payer
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: paymentReceiptTemplate
       dataType: MESSAGE_TEMPLATE
@@ -498,6 +612,9 @@
   triggerType: CRON
   schedule: "@daily-morning"
   description: Send an email to the student with information about when their class is starting, the day before it starts
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: classCommencementTemplate
       dataType: MESSAGE_TEMPLATE
@@ -506,6 +623,7 @@
       dataType: TEXT
       value: "0"
       description: Set the number of days from class start that you'd like the notification to be sent. Setting this to 0 will send it on the day of the class.
+
   
 - name: send student class commencement notice 7 days
   keyCode: ish.script.sendStudentClassCommencementNotice7days
@@ -514,6 +632,9 @@
   triggerType: CRON
   schedule: "@daily-morning"
   description: Send an email to the student with information about when their class is starting, 7 days before it starts
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: classCommencementTemplate
       dataType: MESSAGE_TEMPLATE
@@ -526,6 +647,9 @@
   triggerType: ONCOURSE_EVENT
   onCourseEventType: CLASS_CANCELLED
   description: Send an email to the tutor with information about class cancellation
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: classCancellationTemplate
       dataType: MESSAGE_TEMPLATE
@@ -538,6 +662,9 @@
   triggerType: CRON
   schedule: "@daily-morning"
   description: Send an email to the tutor with information about when their class is starting, two days before it starts
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: send_before_each_session
       dataType: BOOLEAN
@@ -560,6 +687,9 @@
   triggerType: CRON
   schedule: "@weekly"
   description: Send an email to the student remindering them to supply their USI number, and send a notice to the default onCourse admin of how many students were contacted each time this message is sent
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: usiReminderTemplate
       dataType: MESSAGE_TEMPLATE
@@ -575,6 +705,9 @@
   triggerType: CRON
   schedule: "@daily-morning"
   description: Send the VET completion survey to all students who completed a VET course recently.
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: vetCourseSurveyTemplate
       dataType: MESSAGE_TEMPLATE
@@ -588,6 +721,9 @@
   entityClass: Voucher
   entityEventType: CREATE_OR_UPDATE
   description: Send an email to the student with information about a voucher they have purchased
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: voucherEmailTemplate
       dataType: MESSAGE_TEMPLATE
@@ -600,6 +736,9 @@
   triggerType: CRON
   schedule: "@weekly"
   description: Send an email to the student if they are on the waiting list with information about upcoming classes scheduled
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: waitingListReminderTemplate
       dataType: MESSAGE_TEMPLATE
@@ -612,6 +751,9 @@
   triggerType: CRON
   schedule: "@weekly"
   description: Send an email with weekly finance summary based on 'Trial Balance' report.
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: reportKeycode
       dataType: TEXT
@@ -624,6 +766,9 @@
   triggerType: CRON
   schedule: "@daily-morning"
   description: Send SurveyMonkey survey invite upon enrolment completion
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: tagName
       dataType: TEXT
@@ -636,6 +781,9 @@
   triggerType: ONCOURSE_EVENT
   onCourseEventType: ENROLMENT_SUCCESSFUL
   description: Send SurveyMonkey survey invite upon enrolment
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: tagName
       dataType: TEXT
@@ -648,6 +796,9 @@
   triggerType: CRON
   schedule: "@daily-morning"
   description: Send SurveyGizmo invite upon enrolment completion
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: surveyInvitationTemplate
       dataType: MESSAGE_TEMPLATE
@@ -663,6 +814,9 @@
   triggerType: ONCOURSE_EVENT
   onCourseEventType: ENROLMENT_SUCCESSFUL
   description: Send SurveyGizmo invite upon enrolment
+  short: 1234
+  category: 1234
+  tag:
   options:
     - name: surveyInvitationTemplate
       dataType: MESSAGE_TEMPLATE
@@ -678,6 +832,9 @@
   triggerType: ONCOURSE_EVENT
   onCourseEventType: ENROLMENT_CANCELLED
   description: This script finds all single session classes taught by the same tutor in the same room with overlapping times and keeps the places available in sync. For each enrolment in Class A, the maximum available places in Class B is reduced by one. This is useful if one class is a subset of another (eg. a refresher First Aid class where students need only come to the second half of the regular First Aid class). If you enable this script, you'll also want to enable 'Synchronise availability (enrolment)'
+  short: 1234
+  category: 1234
+  tag:
   
 - name: Synchronise availability (enrolment)
   keyCode: ish.script.syncAvailabilityEnrolment
@@ -686,6 +843,9 @@
   triggerType: ONCOURSE_EVENT
   onCourseEventType: ENROLMENT_SUCCESSFUL
   description: This script finds all single session classes taught by the same tutor in the same room with overlapping times and keeps the places available in sync. For each enrolment in Class A, the maximum available places in Class B is reduced by one. This is useful if one class is a subset of another (eg. a refresher First Aid class where students need only come to the second half of the regular First Aid class). If you enable this script, you'll also want to enable 'Synchronise availability (cancellation)'
+  short: 1234
+  category: 1234
+  tag:
   
 - name: TalentLMS course enrolment
   body: ish.script.talentLMSEnrolment.groovy
@@ -694,6 +854,9 @@
   triggerType: ONCOURSE_EVENT
   onCourseEventType: ENROLMENT_SUCCESSFUL
   description: This script will create enrolments in TalentLMS. Students will be matched by email address and if none exists in TalentLMS, a student will be created. That student will be enrolled in the TalentLMS code matching the course code in onCourse.
+  short: 1234
+  category: 1234
+  tag:
    Create course enrolment in Talent LMS. One TalentLMS course per unit within an onCourse class. TalentLMS code would be ABC-123-XYZ (where XYZ is the unit code)
   
 - name: Trial balance
@@ -703,6 +866,9 @@
   triggerType: ON_DEMAND
   outputType: PDF
   description: Print pdf report to provide a more general overview of transactions made over a specified period of time.This report prints in Landscape format
+  short: 1234
+  category: 1234
+  tag:
   variables:
     - name: fromDate
       label: Transactions from
