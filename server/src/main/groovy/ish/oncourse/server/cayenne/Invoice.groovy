@@ -175,6 +175,20 @@ class Invoice extends _Invoice implements InvoiceInterface {
     }
 
     /**
+     *
+     * @return map of products, related to this invoice, with their profound quantities
+     */
+    List<Map.Entry<Product,BigDecimal>> getProductsWithQuantities(){
+        Map<Product, BigDecimal> result = new HashMap<>()
+        invoiceLines.each { def invoiceLine ->
+            invoiceLine.productItems.each { def productItem ->
+                result.merge(productItem.product, invoiceLine.quantity, { first, second -> first.add(second) })
+            }
+        }
+        return result.entrySet().toList()
+    }
+
+    /**
      * This is the contact to whom the invoice was issued. They are liable for the debt this invoice represents.
      * Note that the invoice contact might not be the same contact as the person enrolled in classes linked to
      * invoice lines.
