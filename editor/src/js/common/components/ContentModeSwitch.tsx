@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 import React, {useState} from 'react';
 import clsx from "clsx";
 import {ButtonBase, Menu, MenuItem, Tooltip} from "@material-ui/core";
@@ -64,7 +69,7 @@ const ContentModeSwitch = (props: Props) => {
   };
 
   return (
-    <div className={clsx("d-flex align-items-center", classes.contentModeWrapper)}>
+    <div className={clsx("d-flex align-items-center content-mode", classes.contentModeWrapper)}>
       <Tooltip title="Change content mode" disableFocusListener>
         <ButtonBase
           onClick={modeMenuOpen}

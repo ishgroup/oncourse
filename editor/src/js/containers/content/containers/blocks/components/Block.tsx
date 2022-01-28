@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 import React, {useEffect, useState} from 'react';
 import marked from "marked";
 import {BlockState} from "../reducers/State";
@@ -39,7 +44,7 @@ const Block: React.FC<Props> = ({
   }, [block, block && block.content]);
 
   return (
-    <div className="block-wrapper">
+    <div className="block-wrapper h-100">
       <BlockEditor
         mode={block.contentMode}
         content={draftContent}

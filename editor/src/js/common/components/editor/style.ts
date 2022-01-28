@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 import { makeStyles } from '@material-ui/core/styles';
 import { AppTheme } from '../../../styles/themeInterface';
 
@@ -86,6 +91,9 @@ export const useStyles = makeStyles((theme: AppTheme) => ({
           fontSize: '9px'
         }
       },
+      '&.block-editor .content-mode-switch': {
+        top: '15px'
+      },
       '& .ck-editor': {
         height: '100%',
         '& .ck-editor__main': {
@@ -93,6 +101,9 @@ export const useStyles = makeStyles((theme: AppTheme) => ({
         },
         '& .ck-source-editing-area': {
           height: '100%',
+        },
+        '& .ck-source-editing-area textarea': {
+          overflow: 'auto'
         },
         '& .ck-content': {
           fontFamily: 'Inter, sans-serif',
@@ -120,7 +131,7 @@ export const useStyles = makeStyles((theme: AppTheme) => ({
         },
         '& .ck-source-editing-button .ck_code_icon_custom': {
           width: '24px'
-        },
+        }
       },
       '&.ace-wrapper': {
         border: `1px solid ${theme.palette.divider}`,

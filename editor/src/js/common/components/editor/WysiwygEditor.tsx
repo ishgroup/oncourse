@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback } from 'react';
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
-import AutoformatPlugin from '@ckeditor/ckeditor5-autoformat/src/autoformat';
 import SourceEditing from '@ckeditor/ckeditor5-source-editing/src/sourceediting';
+import AutoformatPlugin from '@ckeditor/ckeditor5-autoformat/src/autoformat';
 import BoldPlugin from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import ItalicPlugin from '@ckeditor/ckeditor5-basic-styles/src/italic';
 import HeadingPlugin from '@ckeditor/ckeditor5-heading/src/heading';
@@ -17,9 +17,14 @@ import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import Markdown from '@ckeditor/ckeditor5-markdown-gfm/src/markdown';
 import Table from '@ckeditor/ckeditor5-table/src/table';
 import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
+import Image from '@ckeditor/ckeditor5-image/src/image';
+import LinkImage from '@ckeditor/ckeditor5-link/src/linkimage';
+import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption';
+import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ReactDOM from 'react-dom';
 import CodeIcon from '@material-ui/icons/Code';
+import { removeContentMarker } from './utils';
 
 const SourceEditingSwitch = () => (
   <div className="ck_source_edit_custom">
@@ -53,6 +58,10 @@ const config = {
     ParagraphPlugin,
     Table,
     TableToolbar,
+    Image,
+    LinkImage,
+    ImageCaption,
+    ImageStyle
   ],
   extraPlugins: [customizeSourceEditing],
   toolbar: [
@@ -97,7 +106,7 @@ const WysiwygEditor: React.FC<Props> = ({
   value,
   onChange
 }) => {
-  const onReady = () => {
+  const onReady = (editor) => {
     const sourceEdit = document.querySelector('.ck-source-editing-button');
 
     if (sourceEdit) {
@@ -106,16 +115,23 @@ const WysiwygEditor: React.FC<Props> = ({
         sourceEdit
       );
     }
+
+    if (value) {
+      editor.setData(value);
+    }
   };
+
+  const onChangeHandler = useCallback((e, editor) => {
+    onChange(editor.getData())
+  }, []);
 
   return (
     <CKEditor
       editor={ClassicEditor}
       config={config}
       data={value}
-      onChange={(e, editor) => onChange(editor.getData())}
+      onChange={onChangeHandler}
       onReady={onReady}
-      onInit={() => null}
     />
   );
 };

@@ -1,7 +1,7 @@
 /*
-* Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
-* No copying or use of this code is allowed without permission in writing from ish.
-*/
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
 
 import React from 'react';
 import clsx from 'clsx';
@@ -27,37 +27,39 @@ interface Props {
   onFullscreen?: () => void;
 }
 
+const EditorResolver = ({
+  mode, content, setContent, position, fullscreen
+}) => {
+  switch (mode) {
+    case 'md': {
+      return (
+        <WysiwygEditor
+          value={content}
+          onChange={setContent}
+        />
+      );
+    }
+    case 'textile':
+    case 'html':
+    default: {
+      return (
+        <Editor
+          height={position && !fullscreen ? `${position.height - 67 - 44}px` : '100%'}
+          value={content}
+          onChange={setContent}
+          mode={mode}
+        />
+      );
+    }
+  }
+};
+
 const BlockEditor: React.FC<Props> = (props) => {
   const {
     mode, content, setContent, moduleId, setContentMode, handleSave, handleCancel, position, enabledFullscreen, fullscreen, onFullscreen
   } = props;
 
   const classes = useStyles();
-
-  const editor = () => {
-    switch (mode) {
-      case 'md': {
-        return (
-          <WysiwygEditor
-            value={content}
-            onChange={setContent}
-          />
-        );
-      }
-      case 'textile':
-      case 'html':
-      default: {
-        return (
-          <Editor
-            height={position && !fullscreen ? `${position.height - 67 - 44}px` : "100%"}
-            value={content}
-            onChange={setContent}
-            mode={mode}
-          />
-        );
-      }
-    }
-  };
 
   return (
     <Paper className="p-1 h-100 flex-column">
@@ -75,7 +77,13 @@ const BlockEditor: React.FC<Props> = (props) => {
           onFullscreen={onFullscreen}
           fullscreen={fullscreen}
         />
-        {editor()}
+        <EditorResolver
+          mode={mode}
+          content={content}
+          setContent={setContent}
+          position={position}
+          fullscreen={fullscreen}
+        />
       </div>
 
       <div className="mt-3">
