@@ -28,7 +28,7 @@ class ValidateMembership extends Validate<Membership>{
 
     ValidateMembership validate(MembershipProduct product, Contact contact) {
         if (!product.isOnSale) {
-            errors << "Not available for sale".toString()
+            errors << "Not available for purchase".toString()
         } else if (contact.memberships.any { ACTIVE == it.status && it.product == product && it.product.expiryType == ExpiryType.LIFETIME }) {
             errors << "$contact.fullName is already has this membership $product.sku.".toString()
         }

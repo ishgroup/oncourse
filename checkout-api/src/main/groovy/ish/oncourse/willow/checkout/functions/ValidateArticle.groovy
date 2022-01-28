@@ -31,7 +31,7 @@ class ValidateArticle extends Validate<Article> {
         Money productPrice = new CalculatePrice(p.priceExTax, Money.ZERO, taxOverridden ? taxOverridden.rate : p.taxRate, p.taxAdjustment, new BigDecimal(a.quantity)).calculate().finalPriceToPayIncTax
 
         if (!p.isOnSale) {
-            errors << "Not available for sale".toString()
+            errors << "Not available for purchase".toString()
         } else if (productPrice != a.total.toMoney()) {
             errors << "Product price is wrong".toString()
         }
