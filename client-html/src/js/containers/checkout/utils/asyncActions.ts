@@ -90,7 +90,12 @@ export const processCheckoutLeadId = async (id: string, onChangeStep, setActiveF
       const classResponse = await EntityService.getPlainRecords(
         "CourseClass",
         CHECKOUT_COURSE_CLASS_COLUMNS,
-        `course.id is ${plainCourse.courseId} and isCancelled is false and isActive is true and ( (startDateTime < tomorrow and endDateTime >= today and isCancelled is false) or (startDateTime >= tomorrow and endDateTime >= tomorrow and isCancelled is false) )`,
+        `course.id is ${plainCourse.courseId} 
+        and isCancelled is false 
+        and isActive is true 
+        and ( (startDateTime < tomorrow and endDateTime >= today) 
+          or (startDateTime >= tomorrow and endDateTime >= tomorrow) 
+          or (isDistantLearningCourse is true) )`,
         null,
         0,
         "startDateTime",
