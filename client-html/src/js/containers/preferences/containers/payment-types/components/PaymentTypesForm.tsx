@@ -22,6 +22,8 @@ import AppBarContainer from "../../../../../common/components/layout/AppBarConta
 
 const manualUrl = getManualLink("generalPrefs_paymentTypes");
 
+export const PAYMENT_TYPES_FORM: string = "PaymentTypesForm";
+
 interface Props {
   created: Date;
   modified: Date;
@@ -54,7 +56,7 @@ class PaymentTypesBaseForm extends React.Component<Props, any> {
   constructor(props) {
     super(props);
 
-    props.dispatch(initialize("PaymentTypesForm", { types: props.paymentTypes }));
+    props.dispatch(initialize(PAYMENT_TYPES_FORM, { types: props.paymentTypes }));
   }
 
   // eslint-disable-next-line camelcase
@@ -97,7 +99,7 @@ class PaymentTypesBaseForm extends React.Component<Props, any> {
       .then(() => {
         const { nextLocation, history, setNextLocation } = this.props;
 
-        this.props.dispatch(initialize("PaymentTypesForm", { types: this.props.paymentTypes }));
+        this.props.dispatch(initialize(PAYMENT_TYPES_FORM, { types: this.props.paymentTypes }));
 
         nextLocation && history.push(nextLocation);
         setNextLocation('');
@@ -129,7 +131,7 @@ class PaymentTypesBaseForm extends React.Component<Props, any> {
     item.accountId = null;
     item.undepositAccountId = null;
 
-    this.props.dispatch(arrayInsert("PaymentTypesForm", "types", 0, item));
+    this.props.dispatch(arrayInsert(PAYMENT_TYPES_FORM, "types", 0, item));
     const domNode = document.getElementById("types[0].name");
     if (domNode) domNode.scrollIntoView({ behavior: "smooth" });
   };
@@ -147,13 +149,13 @@ class PaymentTypesBaseForm extends React.Component<Props, any> {
         if (item.id) {
           onDelete(item.id);
         } else {
-          this.props.dispatch(arrayRemove("PaymentTypesForm", "types", index));
+          this.props.dispatch(arrayRemove(PAYMENT_TYPES_FORM, "types", index));
           this.resolvePromise(true);
         }
       })
         .then(clientSideDelete => {
           if (!clientSideDelete) {
-            this.props.dispatch(initialize("PaymentTypesForm", { types: this.props.paymentTypes }));
+            this.props.dispatch(initialize(PAYMENT_TYPES_FORM, { types: this.props.paymentTypes }));
           }
         })
         .catch(() => {
@@ -170,7 +172,7 @@ class PaymentTypesBaseForm extends React.Component<Props, any> {
     } = this.props;
 
     return (
-      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
+      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)} role={PAYMENT_TYPES_FORM}>
         <RouteChangeConfirm form={form} when={dirty} />
 
         <AppBarContainer
@@ -216,7 +218,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 const PaymentTypesForm = reduxForm({
   onSubmitFail,
-  form: "PaymentTypesForm"
+  form: PAYMENT_TYPES_FORM
 })(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(formCommonStyles)(withRouter(PaymentTypesBaseForm)) as any));
 
 export default PaymentTypesForm;

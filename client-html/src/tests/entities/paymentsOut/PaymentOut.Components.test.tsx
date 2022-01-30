@@ -8,20 +8,19 @@ describe("Virtual rendered PaymentsOutEditView", () => {
     entity: "PaymentOut",
     EditView: PaymentsOutEditView,
     record: mockecApi => mockecApi.db.getPaymentOut(1),
-    render: (wrapper, initialValues) => {
-      const inputs = wrapper.find("input");
-      expect(inputs[0].attribs.value).toContain(initialValues.payeeName);
-      expect(inputs[1].attribs.value).toContain(initialValues.administrationCenterName);
-      expect(inputs[3].attribs.value).toContain(initialValues.status);
-      expect(inputs[4].attribs.value).toContain("Account is disabled");
-      expect(inputs[5].attribs.value).toContain(initialValues.amount);
-      expect(inputs[6].attribs.value).toContain(
-        format(new Date(initialValues.datePayed), III_DD_MMM_YYYY).toString()
-      );
-      expect(inputs[7].attribs.value).toContain(
-        format(new Date(initialValues.dateBanked), III_DD_MMM_YYYY).toString()
-      );
-      expect(inputs[8].attribs.value).toContain(initialValues.createdBy);
+    render: ({ screen, initialValues, formRoleName }) => {
+      expect(screen.getByRole(formRoleName)).toHaveFormValues({
+        administrationCenterId: initialValues.administrationCenterName,
+        privateNotes: initialValues.privateNotes,
+      });
+
+      expect(screen.getByLabelText('Payment to', { selector: 'input' }).value).toBe(initialValues.payeeName);
+      expect(screen.getByLabelText('Status').value).toBe(initialValues.status);
+      expect(screen.getByLabelText('Account').value).toBe("Account is disabled");
+      expect(screen.getByLabelText('Amount').value).toBe(initialValues.amount.toFixed(2));
+      expect(screen.getByLabelText('Date paid').value).toBe(format(new Date(initialValues.datePayed), III_DD_MMM_YYYY).toString());
+      expect(screen.getByLabelText('Date banked').value).toBe(format(new Date(initialValues.dateBanked), III_DD_MMM_YYYY).toString());
+      expect(screen.getByLabelText('Created by').value).toBe(initialValues.createdBy);
     }
   });
 });

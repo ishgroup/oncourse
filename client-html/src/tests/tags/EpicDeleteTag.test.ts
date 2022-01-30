@@ -10,8 +10,8 @@ describe("Delete tag epic tests", () => {
   it("EpicDeleteTag should returns correct values", () => DefaultEpic({
     action: deleteTag(1),
     epic: EpicDeleteTag,
-    processData: () => {
-      const allTags = [];
+    processData: mockedApi => {
+      const allTags = mockedApi.db.getTags();
 
       return [
         {

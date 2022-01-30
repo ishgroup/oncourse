@@ -4,13 +4,13 @@
  */
 
 import React, {
- useCallback, useEffect, useMemo, useState 
+  useCallback, useEffect, useMemo, useState
 } from "react";
 import clsx from "clsx";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import {
- arrayPush, arrayRemove, change, Field, getFormValues, initialize, reduxForm, submit 
+  arrayPush, arrayRemove, change, Field, getFormValues, initialize, reduxForm, submit
 } from "redux-form";
 import Dialog from "@mui/material/Dialog";
 import Grid from "@mui/material/Grid";
@@ -21,9 +21,11 @@ import Typography from "@mui/material/Typography";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import Collapse from "@mui/material/Collapse";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
 import { TutorAttendance } from "@api/model";
 import {
- addDays, differenceInMinutes, format as formatDate, subDays 
+  addDays, differenceInMinutes, format as formatDate, subDays
 } from "date-fns";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
@@ -35,8 +37,9 @@ import { courseClassCloseBulkUpdateModal } from "./actions";
 import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../../common/actions/CommonPlainRecordsActions";
 import { DD_MMM_YYYY } from "../../../../../common/utils/dates/format";
 import CourseClassTutorRooster from "./CourseClassTutorRooster";
+import { IS_JEST } from "../../../../../constants/EnvironmentConstants";
 
-const COURSE_CLASS_BULK_UPDATE_FORM: string = "CourseClassBulkUpdateForm";
+export const COURSE_CLASS_BULK_UPDATE_FORM: string = "CourseClassBulkUpdateForm";
 
 const styles = theme => createStyles({
   paperDialog: {
@@ -47,14 +50,11 @@ const styles = theme => createStyles({
       paddingTop: theme.spacing(1)
     },
   },
-  checkboxes: {
-    marginLeft: theme.spacing(-1.25)
-  },
   bulkChangeDaysInput: {
     maxWidth: theme.spacing(10)
   },
   bullkWrapperItem: {
-    paddingLeft: theme.spacing(5)
+    paddingLeft: theme.spacing(3.625)
   },
   disabledHeading: {
     color: `${theme.palette.text.secondary} !important`
@@ -102,17 +102,29 @@ const BulkItemWrapper: React.FC<any> = props => {
     </Typography>
   );
 
+  const labelProps = IS_JEST ? {
+    "data-testid": `input-${name}Checked`
+  } : {};
+
   return (
     <div className="mb-2 w-100">
       <div className="centeredFlex">
-        <FormField
-          type="checkbox"
-          name={`${name}Checked`}
-          color="secondary"
-          checked={opened}
-          onChange={onChange}
-        />
-        {noCollapse ? opened ? children : renderedTitle : renderedTitle}
+        <FormGroup>
+          <FormControlLabel
+            {...labelProps}
+            htmlFor={`input-${name}Checked`}
+            control={(
+              <FormField
+                type="checkbox"
+                name={`${name}Checked`}
+                color="secondary"
+                checked={opened}
+                onChange={onChange}
+              />
+            )}
+            label={noCollapse ? opened ? children : renderedTitle : renderedTitle}
+          />
+        </FormGroup>
       </div>
       {!noCollapse && <Collapse in={opened} className={classes.bullkWrapperItem}>{children}</Collapse>}
     </div>
@@ -239,7 +251,8 @@ const CourseClassBulkChangeSessionForm = props => {
       contactName: tutor.tutorName,
       attendanceType: 'Not confirmed for payroll',
       note: null,
-      actualPayableDurationMinutes: durationValue || differenceInMinutes(new Date(firstSelectedSession?.end), new Date(firstSelectedSession?.start)),
+      actualPayableDurationMinutes:
+        durationValue || differenceInMinutes(new Date(firstSelectedSession?.end), new Date(firstSelectedSession?.start)),
       hasPayslip: false,
       start: bulkValues.start || firstSelectedSession?.start,
       end: bulkValues.end || firstSelectedSession?.end,
@@ -270,6 +283,10 @@ const CourseClassBulkChangeSessionForm = props => {
     }
   };
 
+  const updateButtonProps = IS_JEST ? {
+    "data-testid": "update"
+  } : {};
+
   return (
     <Dialog
       open={opened}
@@ -283,7 +300,7 @@ const CourseClassBulkChangeSessionForm = props => {
         paper: classes.paperDialog
       }}
     >
-      <form autoComplete="off" noValidate onSubmit={handleSubmit}>
+      <form autoComplete="off" noValidate onSubmit={handleSubmit} role={COURSE_CLASS_BULK_UPDATE_FORM}>
         <DialogContent
           classes={{
             root: classes.bulkChangeDialogContent
@@ -300,7 +317,7 @@ const CourseClassBulkChangeSessionForm = props => {
                 {`Update ${selection.length} timetable event${selection.length > 1 ? "s" : ""}`}
               </div>
             </Grid>
-            <Grid item xs={12} container className={classes.checkboxes}>
+            <Grid item xs={12} container>
               <Grid item xs={12}>
                 {tutors.length > 0 && (
                   <BulkItemWrapper classes={classes} title="Tutors" name="tutors" noCollapse>
@@ -349,7 +366,8 @@ const CourseClassBulkChangeSessionForm = props => {
                           value: payableDurationValue,
                           onChange: stubFunction,
                           onBlur: onPayableDurationChange,
-                          onFocus: stubFunction
+                          onFocus: stubFunction,
+                          name: "actualPayableDuration"
                         }}
                         hideLabel
                       />
@@ -368,7 +386,13 @@ const CourseClassBulkChangeSessionForm = props => {
                       <FormField
                         type="time"
                         name="start"
-                        label={`Start time ${initial.siteTimezone ? `(${initial.siteTimezone})` : classTimezone ? `(${classTimezone})` : ""}`}
+                        label={
+                          `Start time ${initial.siteTimezone
+                            ? `(${initial.siteTimezone})`
+                            : classTimezone
+                              ? `(${classTimezone})`
+                              : ""}`
+                        }
                         timezone={initial.siteTimezone || classTimezone}
                         persistValue
                         hideLabel
@@ -392,7 +416,8 @@ const CourseClassBulkChangeSessionForm = props => {
                           value: durationValue,
                           onChange: stubFunction,
                           onBlur: onDurationChange,
-                          onFocus: stubFunction
+                          onFocus: stubFunction,
+                          name: "duration"
                         }}
                         hideLabel
                       />
@@ -410,7 +435,6 @@ const CourseClassBulkChangeSessionForm = props => {
                         formatting="inline"
                         step="1"
                         className={classes.bulkChangeDaysInput}
-                        hideArrows
                         onChange={onMoveLater}
                       />
                       {" "}
@@ -432,7 +456,6 @@ const CourseClassBulkChangeSessionForm = props => {
                         formatting="inline"
                         step="1"
                         className={classes.bulkChangeDaysInput}
-                        hideArrows
                         onChange={onMoveEarlier}
                       />
                       {" "}
@@ -452,6 +475,7 @@ const CourseClassBulkChangeSessionForm = props => {
             Cancel
           </Button>
           <Button
+            {...updateButtonProps}
             variant="contained"
             color="primary"
             onClick={submitChanges}

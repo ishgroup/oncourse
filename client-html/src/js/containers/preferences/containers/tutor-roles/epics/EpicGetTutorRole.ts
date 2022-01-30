@@ -4,9 +4,7 @@
  */
 
 import { Epic } from "redux-observable";
-
 import { initialize } from "redux-form";
-import * as _ from "lodash";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { DefinedTutorRole } from "@api/model";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
@@ -14,24 +12,22 @@ import PreferencesService from "../../../services/PreferencesService";
 import { GET_TUTOR_ROLE_FULFILLED, GET_TUTOR_ROLE_REQUEST } from "../../../actions";
 import { TUTOR_ROLES_FORM_NAME } from "../TutorRoleFormContainer";
 
-const request: EpicUtils.Request<any,  any> = {
+const request: EpicUtils.Request<any, any> = {
   type: GET_TUTOR_ROLE_REQUEST,
   getData: payload => PreferencesService.getTutorRole(payload.id),
   processData: (response: DefinedTutorRole) => {
-    const payRates =
-      (response.payRates && response.payRates.length > 0 && _.orderBy(response.payRates, ["validFrom"], ["desc"])) ||
-      [];
+    const payRates = (response.payRates && response.payRates.length > 0
+        && response.payRates.sort((a, b) => (b.validFrom > a.validFrom ? 1 : -1)))
+      || [];
 
     return [
       {
         type: GET_TUTOR_ROLE_FULFILLED
       },
-      initialize(TUTOR_ROLES_FORM_NAME, Object.assign({}, response, { payRates }))
+      initialize(TUTOR_ROLES_FORM_NAME, { ...response, payRates })
     ];
   },
-  processError: response => {
-    return [...FetchErrorHandler(response, "Failed to get tutor role"), initialize(TUTOR_ROLES_FORM_NAME, null)];
-  }
+  processError: response => [...FetchErrorHandler(response, "Failed to get tutor role"), initialize(TUTOR_ROLES_FORM_NAME, null)]
 };
 
 export const EpicGetTutorRole: Epic<any, any> = EpicUtils.Create(request);
