@@ -4,7 +4,7 @@
   enabled: false
   triggerType: CRON
   schedule: "@daily-morning"
-  description: For classes that contain assessments with release dates, sends an email notification to students upon release to inform them that assessments are now available in the SkillsOnCourse portal.
+  description: For classes that contain assessments with release dates, sends an email notification to students upon release to inform them that assessments are now available in the SkillsOnCourse portal. templateKeycode defines the message template used for the email notification.
   short: Notify students that one of their class assessments has been made available on the SkillsonCourse Portal.
   category: Class
   tag:
@@ -19,8 +19,8 @@
   enabled: false
   triggerType: ON_DEMAND
   entityClass: CourseClass
-  description: Email a notification to promote the selected class to a short list of students who, in the past, attended a class of the same tutor.
-  short: Inform students taught by the tutor of the selected class over the last 18 months that they have another class upcoming in the near future.1234
+  description: Email a notification to promote the selected class to a short list of students who, in the past, attended a class of the same tutor. alertStudentsTemplate defines the message template used for the email notification.
+  short: Inform students taught by the tutor of the selected class over the last 18 months that this tutor has another class they might be interested in starting in the near future.
   category: Marketing
   tag:
   options:
@@ -34,7 +34,7 @@
   enabled: false
   triggerType: CRON
   schedule: "@daily-morning"
-  description: For classes that contain assessments with release dates, sends an email notification to the class tutors upon release to inform them that assessments are now available for students in the SkillsOnCourse portal.
+  description: For classes that contain assessments with release dates, sends an email notification to the class tutors upon release to inform them that assessments are now available for students in the SkillsOnCourse portal. templateKeycode defines the message template used for the email notification.
   short: Notify tutors that one of their class assessments has been made available for students on the SkillsonCourse Portal.
   category: Class
   tag:
@@ -49,7 +49,7 @@
   enabled: false
   triggerType: ONCOURSE_EVENT
   onCourseEventType: ENROLMENT_SUCCESSFUL
-  description: On successful enrolment, enrol student into a Canvas course. Canvas integration must be set up and active.
+  description: On successful enrolment, enrol student into a Canvas course. tagName defines the name of the course tag that you'll apply to Canvas courses in onCourse.
   short: Requires active Canvas integration. When a student enrols into a Canvas-related course in onCourse, send the data and enrol them into the same course in Canvas.
   category: Integrations
   tag:
@@ -64,7 +64,7 @@
   enabled: true
   triggerType: CRON
   schedule: "@daily-morning"
-  description: This script runs daily to verify that all critical emails - enrolment confirmations, tax invoices, payments etc - were sent during the day.
+  description: This script runs daily to verify that all critical emails - enrolment confirmations, tax invoices, payments etc - were sent during the day. numberOfDays is the number of days the system checks back in time, 7 is the default.
   short: Runs daily in the morning to check all system critical emails have been sent as expected.
   category: System
   tag: Popular
@@ -79,7 +79,7 @@
   enabled: false
   triggerType: ONCOURSE_EVENT
   onCourseEventType: ENROLMENT_SUCCESSFUL
-  description: Coassemble integration must be active. Enrols student into Coassemble course upon onCourse enrolment. Coassemble course must have the same title as onCourse course name
+  description: Enrols student into Coassemble course upon onCourse enrolment. Coassemble course must have the same title as onCourse course name
   short: Requires active Coassemble integration. When a student enrols into a Coassemble-related course, send the date and enrol them into the same course in Coassemble.
   category: Integrations
   tag:
@@ -90,8 +90,8 @@
   enabled: false
   triggerType: CRON
   schedule: "@daily-morning"
-  description: Send the completion survey to all students who completed a course recently. Whether this is ent at the beginning, middle or end of a course is set in Data Collection.
-  short: Send the student feedback survey to all students who have passed the defined feedback point set in your survey data collection forms.
+  description: Send a course completion survey to all students who have recently passed the timing threshold for the release of the survey. You can alter the timing of this release within your survey data collection forms.
+  short: Invite students to complete the survey data collection form upon completion.
   category: Compliance
   tag: Popular
   options:
@@ -142,7 +142,7 @@
   enabled: true
   triggerType: CRON
   schedule: "@weekly"
-  description: A notification with list of documents which will be deleted
+  description: templateForNotification is the default message template selected for this notification.
   short: Sends a weekly notification with a list showing the documents in your system that have been marked for deletion.
   category: System
   tag:
@@ -157,7 +157,7 @@
   enabled: false
   triggerType: CRON
   schedule: "@daily-morning"
-  description:  Pull unsubscribers and mark the email address in onCourse as not allowed for marketing.
+  description:  Pull the latest unsubscribers from Mailchimp and mark the email address in onCourse as not allowed for marketing. numberOfDays tells the integration how far back in time it should find unsubscribers in Mailchimp.
   short: Requires an active Mailchip Integration. Pulls from your Mailchimp the latest list of unsubscribers and marks the contact in onCourse as unavailable for marketing messages.
   category: Integrations
   tag:
@@ -174,7 +174,7 @@
   triggerType: ENTITY_EVENT
   entityClass: ContactTagRelation
   entityEventType: CREATE
-  description: Subscribe contact to a mailchimp list by applying a mailing list tag to it.
+  description: Subscribe contact to a mailchimp list by applying a mailing list tag to it. integrationAction should be either 'subscribe' (default) or 'unsubscribe'.
   short: Requires an active Mailchimp integration. On applying a Mailing List tag to a contact in onCourse, add the contact to that mailing list in your Mailchimp.
   category: Integrations
   tag:
@@ -191,8 +191,8 @@
   entityClass: Contact
   entityAttribute: allowEmail
   entityEventType: UPDATE
-  description: Subscribe\unsubscribe contact to Mailchimp upon changing the 'allow email marketing' flag on their contact
-  short: Requires an active Mailchimp integration. Subscribe\unsubscribe contact to Mailchimp upon changing the 'allow email marketing' flag on their contact.
+  description: Activating the 'allow email marketing' flag on their contact will subscribe the contact to the list, while removing it will unsusbscribe them. nameOfIntegration should match the related Mailchimp integration in your system.
+  short: Requires an active Mailchimp integration. Subscribes or unsubscribes the contact to/from Mailchimp upon changing the 'allow email marketing' flag on their contact.
   category: Integrations
   tag:
   options:
@@ -206,7 +206,7 @@
   enabled: false
   triggerType: ONCOURSE_EVENT
   onCourseEventType: ENROLMENT_SUCCESSFUL
-  description: Subscribe user to Mailchimp upon enrolment
+  description: integrationAction should always be set as 'subscribe'. nameOfIntegration should match the name of the related Mailchimp integration in your system.
   short: Requires an active Mailchimp integration. Subscribe student to Mailchimp on creation of a successful enrolment
   category: Integrations
   tag:
@@ -225,7 +225,7 @@
   triggerType: ENTITY_EVENT
   entityClass: ContactTagRelation
   entityEventType: REMOVE
-  description: Unsubscribe contact from a mailchimp list
+  description: integrationAction should always be set as 'unsubscribe'.
   short: Requires an active Mailchimp integration. Upon removing a Mailing List tag from a contact, remove that contact from that Mailchimp list.
   category: Integrations
   tag:
@@ -240,8 +240,8 @@
   enabled: false
   triggerType: CRON
   schedule: "@weekly"
-  description: This script identifies members whose membership will expire in the next 7 days and sends them an email notification.
-  short: Finds contacts with a membership that expires within the next 7 days and notifies them.
+  description: renewalNotificationTemplate defines the template to be sent as the notification.
+  short: Finds contacts with a currently valid membership that expires within the next 7 days and notifies them of its impending expiration.
   category: Reminders
   tag:
   options:
@@ -255,70 +255,70 @@
   enabled: false
   triggerType: CRON
   schedule: "@daily-morning"
-  description: Get memberships recently updated or created in Micropower and populate these changes into onCourse
-  short: 1234
-  category: 1234
+  description: Pulls in memberships recently updated or created in Micropower and populates these changes into onCourse. nameOfIntegration should match the name of the associated Micropoer Integration in your system.
+  short: Requires an active Micropower integration to use. Retrieve memberships that have been recently changed or created in Micropower and pull them into onCourse.
+  category: Integrations
   tag:
   options:
     - name: nameOfIntegration
       dataType: TEXT
       value: ""
   
-- name: moodle enrol
+- name: Moodle enrol
   keyCode: ish.script.moodleEnrolment
   body: ish.script.moodleEnrolment.groovy
   enabled: false
   triggerType: ONCOURSE_EVENT
   onCourseEventType: ENROLMENT_SUCCESSFUL
-  description: Enrol user to Moodle course upon onCourse enrolment
-  short: 1234
-  category: 1234
+  description: For classes in courses that are tagged with the set tag in tagName, enrol the enrolling student automatically in to the same Moodle course upon successful onCourse enrolment.
+  short: Requires an active Moodle integration. Students enrolling into classes in courses tagged with the defined tag will be automatically enrolled into the same Moodle class.
+  category: Integrations
   tag:
   options:
     - name: tagName
       dataType: TEXT
       value: ""
   
-- name: notification of unmarked attendance
+- name: Notification of unmarked attendance
   keyCode: ish.script.notificationOfUnmarkedAttandance
   body: ish.script.notificationOfUnmarkedAttandance.groovy
   enabled: false
   triggerType: CRON
   schedule: "@daily-morning"
-  description: Check for every session run on the previous day, if any student attendance is unmarked. A summary of the session details containing unmarked attendance is sent to the default admin email address.
-  short: 1234
-  category: 1234
-  tag:
+  description: Checks every session held in the last 24 hours for unmarked student attendance and sends a summary of the session details containing unmarked attendance to the default admin email address. If 'tagName' is defined, only search for unmarked attendance in classes within the courses marked with that tag.
+  short: Looks for all cases of unmarked student attendance from class sessions held in the last 24 hours, and emails your onCourse system administrator a summary of the details.
+  category: Reminders
+  tag: Popular
   options:
     - name: tagName
       dataType: TEXT
       value: ""
   
-- name: notify tutor of unmarked attendance
+- name: Notify tutor of unmarked attendance
   keyCode: ish.script.notifyTutorOfUnmarkedAttendance
   body: ish.script.notifyTutorOfUnmarkedAttendance.groovy
   enabled: false
   triggerType: CRON
   schedule: "@daily-morning"
-  description: This script checks for every session run on the previous 7 days. If any student attendance is unmarked, sends to the tutors email notification to mark their class roll.
-  short: 1234
-  category: 1234
+  description: This script checks for every session run on the previous 7 days. If any student attendance is unmarked, sends to the tutors email notification to mark their class roll. tutorNoticeTemplate sets the message template to be used as the notification.
+  short: Looks for all cases of unmarked student attendance from class sessions held over the last 7 days, and sends the tutor responsible an email to notify them.
+  category: Reminders
   tag:
   options:
     - name: tutorNoticeTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.tutorNoticeOfUnmarkedAttendance"
   
-- name: notify contractor of approved payslip
+- name: Notify contractor of approved payslip
   keyCode: ish.script.payrollContractorNotification
   body: ish.script.payrollContractorNotification.groovy
   enabled: false
   triggerType: ONCOURSE_EVENT
   onCourseEventType: PAYSLIP_APPROVED
-  description: If approved payslip has type 'Contractor', send a message to the contractor
-  short: 1234
-  category: 1234
-  tag:
+  description: Sends to tutors set as a 'Contractor' in their Tutor record. contactorNoticeTemplate sets the message template to be used as the notification.
+  short: For all Tutors listed as 'Contractor', when an associated new payslip is set as 'Approved', send a notification to the tutor.
+  category: Finance
+  tag: Popular
   options:
     - name: contractorNoticeTemplate
       dataType: MESSAGE_TEMPLATE
@@ -330,7 +330,7 @@
   enabled: false
   triggerType: ONCOURSE_EVENT
   onCourseEventType: PAYSLIP_PAID
-  description: If paid payslip has type 'Employee', send a message to the tutor
+  description: When tutor pay is If paid payslip has type 'Employee', send a message to the tutor
   short: 1234
   category: 1234
   tag:
