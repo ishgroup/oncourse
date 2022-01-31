@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 import { CartApi } from '../http/CartApi';
 import { Article, ContactNode, Enrolment, FieldHeading, Membership, Token, Voucher, WaitingList } from '../model';
 import { DefaultHttpService } from '../common/services/HttpService';
@@ -59,6 +64,9 @@ class CartService extends CartApi {
       ],
     };
 
+    if (!cartContact.applications.length) {
+      delete cartContact.applications;
+    }
     if (!cartContact.classes.length) {
       delete cartContact.classes;
     }
