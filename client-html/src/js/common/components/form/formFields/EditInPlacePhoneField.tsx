@@ -12,7 +12,6 @@ import React, {
 import NumberFormat from "react-number-format";
 import InputAdornment from "@mui/material/InputAdornment";
 import PhoneIcon from '@mui/icons-material/Phone';
-import clsx from "clsx";
 import { WrappedFieldProps } from "redux-form";
 import debounce from "lodash.debounce";
 import EditInPlaceField from "./EditInPlaceField";
@@ -28,13 +27,13 @@ const NumberFormatCustom = React.forwardRef<any, NumberFormatCustomProps>((props
   
   const [format, setFormat] = useState(null);
 
-  const processFormat = useCallback(debounce(value => {
-    setFormat(getPhoneMask(value));
+  const processFormat = useCallback(debounce(data => {
+    setFormat(getPhoneMask(data.value));
+    onChange(data.formattedValue?.replace(/[^0-9+]/g, "") || null);
   }, 1000), []);
 
   const onValueChange = useCallback(data => {
-    processFormat(data.value);
-    onChange(data.value);
+    processFormat(data);
   }, []);
 
   useEffect(() => {
@@ -49,7 +48,7 @@ const NumberFormatCustom = React.forwardRef<any, NumberFormatCustomProps>((props
       getInputRef={ref}
       onValueChange={onValueChange}
       format={format}
-      prefix="+"
+      type="tel"
     />
   );
 });
@@ -68,8 +67,7 @@ const EditInPlacePhoneField: React.FunctionComponent<any> = props => {
         startAdornment: <InputAdornment position="start"><PhoneIcon /></InputAdornment>,
         inputComponent: NumberFormatCustom
       }}
-      className={clsx("money", className)}
-      type="money"
+      className={className}
     />
   );
 };
