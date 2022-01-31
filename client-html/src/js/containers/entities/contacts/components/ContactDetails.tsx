@@ -370,7 +370,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
               <FormField type="phone" name="workPhone" label="Work phone" validate={validatePhoneNumber} />
             </Grid>
             <Grid item {...gridItemProps}>
-              <FormField type="text" name="fax" label="Fax" />
+              <FormField type="phone" name="fax" label="Fax" />
             </Grid>
             <Grid item {...gridItemProps}>
               <FormField type="text" name="abn" label="Business number (ABN)" validate={validateABN} />
