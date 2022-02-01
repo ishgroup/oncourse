@@ -59,7 +59,7 @@ import {
   checkoutCourseMap,
   checkoutProductMap,
   checkoutVoucherMap,
-  getCheckoutCurrentStep,
+  getCheckoutCurrentStep, processCeckoutCartIds,
   processCheckoutContactId,
   processCheckoutCourseClassId,
   processCheckoutEnrolmentId,
@@ -558,9 +558,19 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     const leadId = query.get("leadId");
     const courseClassId = query.get("courseClassId");
     const waitingListIds = query.get("waitingListIds");
+    const cartIds = query.get("cartIds");
 
     if (window.location.search) {
       history.replace("/checkout");
+    }
+    if (cartIds) {
+      processCeckoutCartIds(
+        JSON.parse(cartIds),
+        onChangeStep,
+        setActiveField,
+        setCustomLoading,
+        dispatch
+      );
     }
     if (leadId) {
       processCheckoutLeadId(
@@ -1087,14 +1097,14 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                   </CheckoutSectionExpandableRenderer>
 
                   {Boolean(fundingInvoiceValues.fundingInvoices.length && selectedItems.filter(i => i.checked).length > 0) && (
-                  <CheckoutSectionExpandableRenderer
-                    title="Funding Invoices"
-                    expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.fundingInvoice)}
-                    onExpanded={handleFundingInvoiceClick}
-                    disabled={paymentProcessStatus === "success"}
-                  >
-                    <CheckoutFundingThisInvoice dispatch={dispatch} />
-                  </CheckoutSectionExpandableRenderer>
+                    <CheckoutSectionExpandableRenderer
+                      title="Funding Invoices"
+                      expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.fundingInvoice)}
+                      onExpanded={handleFundingInvoiceClick}
+                      disabled={paymentProcessStatus === "success"}
+                    >
+                      <CheckoutFundingThisInvoice dispatch={dispatch} />
+                    </CheckoutSectionExpandableRenderer>
                  )}
 
                   <CheckoutSectionExpandableRenderer

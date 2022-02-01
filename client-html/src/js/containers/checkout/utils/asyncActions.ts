@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ProductType } from "@api/model";
+import { CartIds, ProductType } from "@api/model";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import EntityService from "../../../common/services/EntityService";
 import { getCustomColumnsMap } from "../../../common/utils/common";
@@ -33,6 +33,17 @@ import {
 import uniqid from "../../../common/utils/uniqid";
 import { getProductAqlType } from "../../entities/sales/utils";
 import { decimalPlus } from "../../../common/utils/numbers/decimalCalculation";
+
+export const processCeckoutCartIds = async (cartIds: CartIds, onChangeStep, setActiveField, setCustomLoading, dispatch) => {
+  setCustomLoading(true);
+
+  const enrolments: CheckoutEnrolmentCustom[] = [];
+  const purchases: CheckoutProductPurchase[] = [];
+
+
+
+}
+
 
 export const processCheckoutLeadId = async (id: string, onChangeStep, setActiveField, setCustomLoading, dispatch) => {
   setCustomLoading(true);
