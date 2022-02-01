@@ -9,17 +9,17 @@ properties:
     required: false
     description: array of classes ids related to this cart
     items:
-      $ref: './CartContactIds.yaml'
+      $ref: './CartObjectData.yaml'
   waitingCoursesIds:
     type: array
     required: false
     description: array of waiting course ids related to this cart
     items:
-      $ref: './CartContactIds.yaml'
+      $ref: './CartObjectData.yaml'
   productIds:
     type: array
     required: false
     description: array of product ids related to this cart
     items:
-      $ref: './CartContactIds.yaml'
+      $ref: './CartObjectData.yaml'
 
