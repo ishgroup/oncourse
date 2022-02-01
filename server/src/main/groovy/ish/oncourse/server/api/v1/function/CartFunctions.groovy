@@ -37,7 +37,7 @@ class CartFunctions {
         def cartContacts = (cartAsMap.contacts as List<Map>)
         cartIds.contactIds = mapToIds(cartContacts, "contactId")
 
-        cartIds.courseIds = mapToIds(flatMapByKey(cartContacts, "courses"))
+        cartIds.classIds = mapToIds(flatMapByKey(cartContacts, "classes"))
         cartIds.waitingCoursesIds = mapToIds(flatMapByKey(cartContacts,"waitingCourses"))
         cartIds.productIds = mapToIds(flatMapByKey(cartContacts,"products"))
         return cartIds
