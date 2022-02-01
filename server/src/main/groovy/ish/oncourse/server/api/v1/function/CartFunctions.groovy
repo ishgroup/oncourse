@@ -19,7 +19,7 @@ class CartFunctions {
     static CartDTO toRestCart(Checkout checkout){
         new CartDTO().with{dto ->
             dto.createdOn = checkout.createdOn?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
-            dto.totalValue = checkout.totalValue
+            dto.totalValue = checkout.totalValue.toBigDecimal()
             dto.id = checkout.id
             dto
         }
