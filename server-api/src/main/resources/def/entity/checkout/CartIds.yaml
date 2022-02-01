@@ -1,6 +1,6 @@
 type: object
 properties:
-  courseIds:
+  classIds:
     type: array
     required: false
     description: array of course ids related to this cart
