@@ -9,7 +9,7 @@ import React, {
   useCallback, useMemo, useState
 } from "react";
 import {
-  Cart, CheckoutApi, Contact, PaymentMethod, Tax
+  Cart, Contact, PaymentMethod, Tax
 } from "@api/model";
 import { change, FieldArray } from "redux-form";
 import IconButton from "@mui/material/IconButton";
@@ -27,7 +27,6 @@ import { ContactsState } from "../reducers";
 import { EditViewProps } from "../../../../model/common/ListView";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
 import CheckoutService from "../../../checkout/services/CheckoutService";
-import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 
 interface ContactsFinancialProps extends EditViewProps<Contact> {
   taxTypes?: Tax[];

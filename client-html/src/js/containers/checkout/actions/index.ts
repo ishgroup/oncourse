@@ -4,8 +4,7 @@
  */
 
 import {
-  CheckoutEnrolmentCustom,
-  CheckoutProductPurchase,
+  CheckoutAddItemsRequiest,
   CheckoutSaleRelationExtended
 } from "../../../model/checkout";
 
@@ -87,7 +86,7 @@ export const toggleSendContext = (listIndex: number, type: string) => ({
   payload: { listIndex, type }
 });
 
-export const checkoutAddItems = (items: { enrolments?: CheckoutEnrolmentCustom[], purchases?: CheckoutProductPurchase[] }) => ({
+export const checkoutAddItems = (items: CheckoutAddItemsRequiest) => ({
   type: CHECKOUT_ADD_ITEMS,
   payload: items
 });
