@@ -117,7 +117,7 @@ export const getContactPhoneAqlSearch = (value: string): string => {
   }
 
   // search with country code
-  if (/!^+612/.test(value)) {
+  if (!/^\+612/.test(value)) {
     search += " or " + getSearchTemplate("+612" + value);
   }
 
