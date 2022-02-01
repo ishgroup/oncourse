@@ -1,33 +1,9 @@
 type: object
 properties:
-  classIds:
+  contacts:
     type: array
-    required: false
-    description: array of course ids related to this cart
     items:
-      type: integer
-      format: int64
-  waitingCoursesIds:
-    type: array
-    required: false
-    description: array of course ids related to this cart
-    items:
-      type: integer
-      format: int64
-  contactIds:
-    type: array
-    required: false
-    description: array of contact ids related to this cart
-    items:
-      type: integer
-      format: int64
-  productIds:
-    type: array
-    required: false
-    description: array of product ids related to this cart
-    items:
-      type: integer
-      format: int64
+      $ref: './CartContactIds.yaml'
   payerId:
     type: integer
     format: int64
