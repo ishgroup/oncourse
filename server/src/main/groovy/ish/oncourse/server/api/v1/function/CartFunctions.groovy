@@ -44,7 +44,7 @@ class CartFunctions {
     }
 
     private static List<Map> flatMapByKey(List<Map> objects, String key){
-        objects.collect {it.get(key) as List<Map>}.flatten() as List<Map>
+        objects.collect {it.containsKey(key) ? it.get(key) : new ArrayList<>() as List<Map>}.flatten() as List<Map>
     }
 
     private static List<Long> mapToIds(List<Map> objects, String key = "id"){
