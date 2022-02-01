@@ -4,28 +4,22 @@ properties:
     type: integer
     format: int64
     required: true
-  selected:
-    type: boolean
-    required: true
   classIds:
     type: array
     required: false
-    description: array of course ids related to this cart
+    description: array of classes ids related to this cart
     items:
-      type: integer
-      format: int64
+      $ref: './CartContactIds.yaml'
   waitingCoursesIds:
     type: array
     required: false
-    description: array of course ids related to this cart
+    description: array of waiting course ids related to this cart
     items:
-      type: integer
-      format: int64
+      $ref: './CartContactIds.yaml'
   productIds:
     type: array
     required: false
     description: array of product ids related to this cart
     items:
-      type: integer
-      format: int64
+      $ref: './CartContactIds.yaml'
 
