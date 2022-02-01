@@ -8,7 +8,9 @@ import Typography from "@mui/material/Typography";
 import React, {
   useCallback, useMemo, useState
 } from "react";
-import { Cart, Contact, PaymentMethod, Tax } from "@api/model";
+import {
+  Cart, CheckoutApi, Contact, PaymentMethod, Tax
+} from "@api/model";
 import { change, FieldArray } from "redux-form";
 import IconButton from "@mui/material/IconButton";
 import LockOpen from "@mui/icons-material/LockOpen";
@@ -24,6 +26,8 @@ import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { ContactsState } from "../reducers";
 import { EditViewProps } from "../../../../model/common/ListView";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
+import CheckoutService from "../../../checkout/services/CheckoutService";
+import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 
 interface ContactsFinancialProps extends EditViewProps<Contact> {
   taxTypes?: Tax[];
@@ -88,7 +92,7 @@ const shopingCartColumns: NestedTableColumn[] = [
     title: "Total",
     type: "currency"
   }
-]
+];
 
 const openRow = value => {
   const { type, relatedEntityId } = value;
@@ -97,9 +101,11 @@ const openRow = value => {
   openInternalLink(`/${route}/${relatedEntityId}`);
 };
 
-const openShopingCartRow = (row: Cart) => {
-  const { id } = row;
-
+const openShopingCartRow = async (row: Cart) => {
+  const cartIds = await CheckoutService.getCartDataIds(row.id);
+  if (cartIds) {
+    openInternalLink(`/checkout?cartIds=${JSON.stringify(cartIds)}`);
+  }
 };
 
 const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
@@ -132,7 +138,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
     setLockedTerms(prev => !prev);
   }, [defaultTerms, lockedTerms]);
   
-  const fаinancialTableTitle = useMemo(() => {
+  const financialTableTitle = useMemo(() => {
     const financialRecordsCount = (values && Array.isArray(values.financialData) ? values.financialData.length : 0);
 
     return financialRecordsCount === 1 ? "financial record" : "financial records";
@@ -210,7 +216,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
           >
             <FieldArray
               name="financialData"
-              title={fаinancialTableTitle}
+              title={financialTableTitle}
               component={NestedTable}
               columns={financialColumns}
               onRowDoubleClick={openRow}
@@ -226,13 +232,12 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
           >
             <FieldArray
               name="abandonedCarts"
-              title="Abandoned shopping carts"
+              title={`Abandoned shopping cart${values.abandonedCarts.length !== 1 ? "s" : ""}`}
               component={NestedTable}
               columns={shopingCartColumns}
               onRowDoubleClick={openShopingCartRow}
               rerenderOnEveryChange
               calculateHeight
-              hideHeader
             />
           </Grid>
         </Grid>
