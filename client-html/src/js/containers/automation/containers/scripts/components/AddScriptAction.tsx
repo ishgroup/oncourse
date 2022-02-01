@@ -14,11 +14,21 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import CodeIcon from "@mui/icons-material/Code";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import StackedLineChartIcon from "@mui/icons-material/StackedLineChart";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import AddIcon from "@mui/icons-material/Add";
 import Collapse from "@mui/material/Collapse";
 
 const styles = createStyles(theme => ({
+  addActionButton: {
+    position: "relative",
+    "&:hover": {
+      "& $cardLeftIcon": {
+        color: theme.heading.color
+      }
+    }
+  },
   addActionWrapper: {
-    minHeight: theme.spacing(3),
+    minHeight: theme.spacing(5.75),
     transition: theme.transitions.create("all", {
       duration: theme.transitions.duration.standard,
       easing: theme.transitions.easing.easeInOut
@@ -45,6 +55,16 @@ const styles = createStyles(theme => ({
     }),
     visibility: "hidden",
     opacity: 0,
+  },
+  activeStep: {
+    padding: theme.spacing(3, 0),
+      "& $buttonRoot": {
+      height: "auto",
+        padding: theme.spacing(3.5, 2),
+        border: `2px dashed ${theme.palette.divider}`,
+        visibility: "visible",
+        opacity: 1,
+    }
   },
   actionPaper: {
     margin: theme.spacing(3, 0),
@@ -81,6 +101,27 @@ const styles = createStyles(theme => ({
   reportIcon: {
     backgroundColor: "#f6ecf5 !important",
     color: "#9e5193"
+  },
+  cardLeftIcon: {
+    position: "absolute",
+    left: -59,
+    width: 20,
+    height: 20,
+    zIndex: 1,
+    top: "50%",
+    transform: "translateY(-50%)",
+    backgroundColor: `${theme.appBar.header.background} !important`,
+    color: theme.palette.divider,
+  },
+  cardPlusIconActive: {
+    color: theme.heading.color
+  },
+  activeLeftButton: {
+    left: -75,
+    width: 50,
+    height: 50,
+    backgroundColor: "#eaebe6 !important",
+    color: theme.heading.color
   }
 }));
 
@@ -123,7 +164,7 @@ const ScriptAction = React.memo<ScriptActionProps>(props => {
 
 const AddScriptAction: React.FC<any> = props => {
   const {
-    classes, index, values, dispatch, form, addComponent, hasUpdateAccess
+    classes, index, values, dispatch, form, addComponent, hasUpdateAccess, active
   } = props;
 
   const [open, setOpen] = useState<boolean>(false);
@@ -141,9 +182,15 @@ const AddScriptAction: React.FC<any> = props => {
   const hasImports = Boolean(values && values.imports);
 
   return (
-    <div>
+    <div className={classes.addActionButton}>
+      <IconButton
+        size={active ? "large" : "small"}
+        className={clsx(classes.cardLeftIcon, { [classes.cardPlusIconActive]: open, [classes.activeLeftButton]: active })}
+      >
+        {active ? <AddIcon /> : <AddCircleOutlineIcon />}
+      </IconButton>
       <Collapse in={!open}>
-        <div className={classes.addActionWrapper}>
+        <div className={clsx(classes.addActionWrapper, { [classes.activeStep]: active })}>
           <Button
             component="div"
             variant="outlined"
