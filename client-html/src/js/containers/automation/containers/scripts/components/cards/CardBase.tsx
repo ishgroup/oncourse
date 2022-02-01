@@ -69,7 +69,8 @@ const CardBase = props => {
     dragHandlerProps,
     disableExpandedBottomMargin,
     onAddItem,
-    onDetailsClick
+    onDetailsClick,
+    customHeading
   } = props;
 
   return (
@@ -90,15 +91,17 @@ const CardBase = props => {
         }}
       >
         <div className="flex-fill centeredFlex" {...dragHandlerProps}>
-          <div>
-            <Typography className="heading" component="div">
-              {heading}
-            </Typography>
-            <Typography variant="subtitle1" color="textSecondary">
-              {details}
-            </Typography>
-          </div>
           {Boolean(dragHandlerProps) && <DragIndicator color="disabled" />}
+          {customHeading ? heading : (
+            <div>
+              <Typography className="heading" component="div">
+                {heading}
+              </Typography>
+              <Typography variant="subtitle1" color="textSecondary">
+                {details}
+              </Typography>
+            </div>
+          )}
           {Boolean(onAddItem) && (
             <AddButton className="addButtonColor fs2 p-1" onClick={onAddItem} iconFontSize="inherit" />
           )}
