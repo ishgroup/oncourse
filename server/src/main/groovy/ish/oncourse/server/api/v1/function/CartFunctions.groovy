@@ -12,6 +12,7 @@ import groovy.json.JsonSlurper
 import ish.oncourse.server.api.v1.model.CartDTO
 import ish.oncourse.server.api.v1.model.CartIdsDTO
 import ish.oncourse.server.cayenne.Checkout
+import ish.oncourse.server.cayenne.glue.CayenneDataObject
 
 import java.time.ZoneOffset
 
@@ -34,12 +35,12 @@ class CartFunctions {
         def cartAsMap = new JsonSlurper().parseText(cartAsJson) as Map
         cartIds.payerId = parseAsLong(cartAsMap.payerId)
 
-        def cartContacts = (cartAsMap.contacts as List<Map>)
-        cartIds.contactIds = mapToIds(cartContacts, "contactId")
+        /*def cartContacts = (cartAsMap.contacts as List<Map>)
+        cartIds.contactIds = mapToAngelIds(cartContacts, "contactId")
 
-        cartIds.classIds = mapToIds(flatMapByKey(cartContacts, "classes"))
-        cartIds.waitingCoursesIds = mapToIds(flatMapByKey(cartContacts,"waitingCourses"))
-        cartIds.productIds = mapToIds(flatMapByKey(cartContacts,"products"))
+        cartIds.classIds = mapToAngelIds(flatMapByKey(cartContacts, "classes"))
+        cartIds.waitingCoursesIds = mapToAngelIds(flatMapByKey(cartContacts,"waitingCourses"))
+        cartIds.productIds = mapToAngelIds(flatMapByKey(cartContacts,"products"))*/
         return cartIds
     }
 
@@ -47,11 +48,15 @@ class CartFunctions {
         objects.collect {it.containsKey(key) ? it.get(key) : new ArrayList<>() as List<Map>}.flatten() as List<Map>
     }
 
-    private static List<Long> mapToIds(List<Map> objects, String key = "id"){
-        objects.collect {parseAsLong(it.get(key))} as List<Long>
+    private static List<Long> mapToAngelIds(List<Map> objects, Class<? extends CayenneDataObject> angelClass, String key = "id"){
+        objects.collect {toAngelId(parseAsLong(it.get(key)), angelClass)} as List<Long>
     }
 
     private static Long parseAsLong(Object value){
         Long.parseLong(value as String)
+    }
+
+    private static Long toAngelId(Long willowId, Class<? extends CayenneDataObject> angelClass){
+
     }
 }
