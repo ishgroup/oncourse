@@ -214,3 +214,9 @@ export interface CheckoutSaleRelationExtended extends CheckoutSaleRelation {
   contactId?: number;
   toItem?: CheckoutSaleExtended;
 }
+
+export type CheckoutAddItemsRequiest = {
+  enrolments?: CheckoutEnrolmentCustom[],
+  purchases?: CheckoutProductPurchase[],
+  keepChecked?: boolean
+}
