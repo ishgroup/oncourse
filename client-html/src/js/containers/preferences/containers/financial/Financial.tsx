@@ -24,7 +24,12 @@ class Financial extends React.Component<Props, any> {
 
     return (
       <div>
-        <FormContainer data={financial} accounts={accounts} category={Categories.financial} form={<FinancialForm />} />
+        <FormContainer
+          data={financial}
+          accounts={accounts}
+          category={Categories.financial}
+          form={formRoleName => <FinancialForm formRoleName={formRoleName} />}
+        />
       </div>
     );
   }

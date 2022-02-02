@@ -6,9 +6,18 @@ describe("Virtual rendered PriorLearningEditView", () => {
     entity: "PriorLearning",
     EditView: PriorLearningEditView,
     record: mockecApi => mockecApi.db.getPriorLearning(1),
-    render: (wrapper, initialValues) => {
-      expect(wrapper.find("#title input").val()).toContain(initialValues.title);
-      expect(wrapper.find("#contactId input").val()).toContain(initialValues.contactName);
+    render: ({ screen, initialValues, formRoleName }) => {
+      expect(screen.getByRole(formRoleName)).toHaveFormValues({
+        title: initialValues.title,
+        contactId: initialValues.contactName,
+        qualificationName: initialValues.qualificationName,
+        qualificationNationalCode: initialValues.qualificationNationalCode,
+        externalReference: initialValues.externalReference,
+        outcomeIdTrainingOrg: initialValues.outcomeIdTrainingOrg.toString(),
+        notes: initialValues.notes,
+      });
+
+      expect(screen.getByLabelText('Level').value).toBe(initialValues.qualificationLevel);
     }
   });
 });

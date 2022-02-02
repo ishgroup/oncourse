@@ -22,6 +22,8 @@ import AppBarContainer from "../../../../../common/components/layout/AppBarConta
 
 const manualUrl = getManualLink("generalPrefs_concessionTypes");
 
+export const CONCESSION_TYPES_FORM: string = "ConcessionTypesForm";
+
 interface Props {
   data: any;
   classes: any;
@@ -51,7 +53,7 @@ class ConcessionTypesBaseForm extends React.Component<Props, any> {
   constructor(props) {
     super(props);
 
-    props.dispatch(initialize("ConcessionTypesForm", { types: props.concessionTypes }));
+    props.dispatch(initialize(CONCESSION_TYPES_FORM, { types: props.concessionTypes }));
   }
 
   // eslint-disable-next-line camelcase
@@ -93,7 +95,7 @@ class ConcessionTypesBaseForm extends React.Component<Props, any> {
       .then(() => {
         const { nextLocation, history, setNextLocation } = this.props;
 
-        this.props.dispatch(initialize("ConcessionTypesForm", { types: this.props.concessionTypes }));
+        this.props.dispatch(initialize(CONCESSION_TYPES_FORM, { types: this.props.concessionTypes }));
 
         nextLocation && history.push(nextLocation);
         setNextLocation('');
@@ -121,7 +123,7 @@ class ConcessionTypesBaseForm extends React.Component<Props, any> {
     item.requireNumber = false;
     item.allowOnWeb = false;
 
-    this.props.dispatch(arrayInsert("ConcessionTypesForm", "types", 0, item));
+    this.props.dispatch(arrayInsert(CONCESSION_TYPES_FORM, "types", 0, item));
     const domNode = document.getElementById("types[0].name");
     if (domNode) domNode.scrollIntoView({ behavior: "smooth" });
   };
@@ -139,13 +141,13 @@ class ConcessionTypesBaseForm extends React.Component<Props, any> {
         if (item.id) {
           onDelete(item.id);
         } else {
-          this.props.dispatch(arrayRemove("ConcessionTypesForm", "types", index));
+          this.props.dispatch(arrayRemove(CONCESSION_TYPES_FORM, "types", index));
           this.resolvePromise(true);
         }
       })
         .then(clientSideDelete => {
           if (!clientSideDelete) {
-            this.props.dispatch(initialize("ConcessionTypesForm", { types: this.props.concessionTypes }));
+            this.props.dispatch(initialize(CONCESSION_TYPES_FORM, { types: this.props.concessionTypes }));
           }
         })
         .catch(() => {
@@ -162,7 +164,7 @@ class ConcessionTypesBaseForm extends React.Component<Props, any> {
     } = this.props;
 
     return (
-      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
+      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)} role={CONCESSION_TYPES_FORM}>
         <RouteChangeConfirm form={form} when={dirty} />
 
         <AppBarContainer
@@ -207,7 +209,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 const ConcessionTypesForm = reduxForm({
   onSubmitFail,
-  form: "ConcessionTypesForm"
+  form: CONCESSION_TYPES_FORM
 })(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(cardsFormStyles)(withRouter(ConcessionTypesBaseForm)) as any));
 
 export default ConcessionTypesForm;

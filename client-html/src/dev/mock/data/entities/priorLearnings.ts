@@ -4,17 +4,17 @@ export function mockPriorLearnings() {
   this.getPriorLearnings = () => this.priorLearnings;
 
   this.getPriorLearning = id => {
-    const row = this.priorLearnings.rows.find(row => row.id == id);
+    const row = this.priorLearnings.rows.find(priorLearning => Number(priorLearning.id) === Number(id));
     return {
       "id": row.id,
       "createdOn": "2016-01-27T07:50:57.000Z",
       "modifiedOn": "2016-01-27T08:00:54.000Z",
       "title": row.values[2],
       "externalReference": row.values[1],
-      "qualificationId": null,
-      "qualificationNationalCode": null,
-      "qualificationLevel": null,
-      "qualificationName": null,
+      "qualificationId": 1,
+      "qualificationNationalCode": "nationalCode 1",
+      "qualificationLevel": "",
+      "qualificationName": "title 1",
       "outcomes": [
         {
           "id": 1,
@@ -49,10 +49,10 @@ export function mockPriorLearnings() {
       "documents": [
 
       ],
-      "notes": null,
+      "notes": "Lorem ipsum",
       "contactId": row.id,
       "contactName": row.values[0],
-      "outcomeIdTrainingOrg": null
+      "outcomeIdTrainingOrg": row.values[3],
     };
   };
 
@@ -110,7 +110,7 @@ export function mockPriorLearnings() {
     { name: "nationalCode", type: "string" }
   ]).map(l => ({
     id: l.id,
-    values: [l.studentName, null, l.title, null, l.nationalCode]
+    values: [l.studentName, l.externalRef, l.title, l.outcomeIdTrainingOrg, l.nationalCode]
   }));
 
   return getEntityResponse({
