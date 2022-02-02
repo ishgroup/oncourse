@@ -92,18 +92,18 @@ const RoosterStatuses = ({
     )}
   >
     <MenuItem value="Confirmed for payroll">
-      <Typography variant="button" display="block" className="successColor" noWrap>
-        Pay scheduled
+      <Typography variant="button" display="block" color="textPrimary" noWrap>
+        PAY CONFIRMED
       </Typography>
     </MenuItem>
     <MenuItem value="Rejected for payroll">
       <Typography variant="button" display="block" color="error" noWrap>
-        Absent
+        DON’T PAY
       </Typography>
     </MenuItem>
     <MenuItem value="Not confirmed for payroll">
       <Typography variant="button" display="block" color="textSecondary" noWrap>
-        Payable
+        PAY NOT CONFIRMED
         {" "}
         {payableTime}
       </Typography>
