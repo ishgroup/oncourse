@@ -15,8 +15,8 @@ import org.apache.commons.lang3.StringUtils
  */
 class MarkdownTableAnalyzer {
 
-    private static final TEST_SEPARATOR = "<__!br!__>"
-    private static HTML_SEPARATOR = "<br>"
+    private static final String TEST_SEPARATOR = "<__!br!__>"
+    private static final String HTML_SEPARATOR = "<br>"
 
     private String text
 
@@ -181,7 +181,7 @@ class MarkdownTableAnalyzer {
      0 - rule is disabled.
      If there is a jump in the parsed sequence, that sequence does not conform to the parser syntax.
      */
-    private static final int[][] adjacencyMatrix = [
+    private static final Integer[][] adjacencyMatrix = [
         //   | ' ' t  -  \n :
             [0, 1, 0, 0, 1, 0], // |
             [1, 0, 1, 1, 0, 0], // ' '
@@ -189,6 +189,6 @@ class MarkdownTableAnalyzer {
             [0, 1, 0, 1, 0, 0], // text
             [1, 0, 0, 0, 0, 0], // \n ;
             [1, 0, 0, 0, 1, 0] // :
-    ]
+    ] as Integer[][]
 }
 
