@@ -4,10 +4,10 @@
  */
 
 import React, {
- useCallback, useEffect, useMemo, useRef, useState
+  useCallback, useEffect, useMemo, useRef, useState
 } from "react";
 import {
-  useBlockLayout, useColumnOrder, useResizeColumns, useRowSelect, useSortBy, UseSortByOptions, useTable
+  useBlockLayout, useColumnOrder, useResizeColumns, useRowSelect, useSortBy, useTable
 } from "react-table";
 import makeStyles from "@mui/styles/makeStyles";
 import TableSortLabel from "@mui/material/TableSortLabel";
@@ -61,7 +61,6 @@ const Table: React.FC<ListTableProps> = ({
   onChangeColumnsOrder,
   setShowColoredDots,
   showColoredDots,
-  sidebarWidth,
   mainContentWidth
 }) => {
   const [isDraggingColumn, setColumnIsDragging] = useState(false);
@@ -167,9 +166,9 @@ const Table: React.FC<ListTableProps> = ({
   };
 
   const {
+    allColumns,
     rows,
     state,
-    allColumns,
     prepareRow,
     headerGroups,
     getTableProps,
@@ -438,6 +437,7 @@ const Table: React.FC<ListTableProps> = ({
       onRowDoubleClick={onRowDoubleClick}
       mainContentWidth={mainContentWidth}
       onMouseOver={() => {}}
+      header={!threeColumn && Header}
     />
   ) : (
     <div className="noRecordsMessage h-100">
@@ -445,26 +445,18 @@ const Table: React.FC<ListTableProps> = ({
         No data
       </Typography>
     </div>
-  )), [rows, totalColumnsWidth, selectedRowIdsObj, mainContentWidth, recordsLeft, threeColumn, onRowDoubleClick, state.columnOrder]);
+  )), [Header, rows, totalColumnsWidth, selectedRowIdsObj, mainContentWidth, recordsLeft, threeColumn, onRowDoubleClick, state.columnOrder]);
 
   return (
     <div
       {...getTableProps()}
       ref={tableRef}
-      className={clsx(
-        classes.table, {
-          [classes.hideOverflowY]: isDraggingColumn,
-        }
-      )}
-      style={{
-        minWidth: !threeColumn && `calc(100vw - ${sidebarWidth}px)`,
-        width: threeColumn && `${mainContentWidth}.px`
-      }}
+      className={classes.table}
+      style={threeColumn ? { overflowX: "hidden" } : null}
       onScroll={onScroll}
     >
       {!threeColumn && <ColumnChooser columns={allColumns} classes={classes} setShowColoredDots={setShowColoredDots} />}
-      {!threeColumn && Header}
-      <div {...getTableBodyProps()} className={classes.tableBody}>
+      <div {...getTableBodyProps()} className="flex-fill">
         {List}
       </div>
     </div>

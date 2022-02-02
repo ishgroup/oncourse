@@ -314,7 +314,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
       disableEscapeKeyDown={disableClose}
       onKeyDown={e => e.stopPropagation()}
     >
-      <form autoComplete="off" noValidate onSubmit={handleSubmit(onSubmit)}>
+      <form autoComplete="off" noValidate onSubmit={handleSubmit(onSubmit)} role={DUPLICATE_TRAINEESHIP_FORM}>
         <DialogContent
           classes={{
             root: classes.dialogContent
@@ -338,7 +338,6 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                     onChange={handleDaysToChange}
                     disabled={fetching}
                     className={classes.daysInput}
-                    hideArrows
                     required
                   />
                   {" "}

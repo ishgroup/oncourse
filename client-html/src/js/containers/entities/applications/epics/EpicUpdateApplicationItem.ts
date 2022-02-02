@@ -10,7 +10,7 @@ import { processNotesAsyncQueue } from "../../../../common/components/form/notes
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { processCustomFields } from "../../customFieldTypes/utils";
 import { GET_APPLICATION_ITEM, UPDATE_APPLICATION_ITEM, UPDATE_APPLICATION_ITEM_FULFILLED } from "../actions";
-import { FETCH_SUCCESS } from "../../../../common/actions";
+import { clearActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import ApplicationService from "../service/ApplicationService";
@@ -25,6 +25,7 @@ const request: EpicUtils.Request<any, { id: number; application: Application & {
   },
   retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
   processData: (v, s, { id }) => [
+    ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : []),
       {
         type: UPDATE_APPLICATION_ITEM_FULFILLED
       },

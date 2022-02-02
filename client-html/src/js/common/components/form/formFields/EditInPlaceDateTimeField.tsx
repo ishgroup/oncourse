@@ -14,7 +14,7 @@
  * */
 
 import React, {
- ComponentClass, useEffect, useMemo, useRef, useState
+  ComponentClass, useEffect, useMemo, useRef, useState
 } from "react";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
@@ -30,7 +30,7 @@ import IconButton from "@mui/material/IconButton";
 import { DateTimeField } from "./DateTimeField";
 import { formatStringDate } from "../../../utils/dates/formatString";
 import {
- HH_MM_COLONED, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM, YYYY_MM_DD_MINUSED 
+  HH_MM_COLONED, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM, YYYY_MM_DD_MINUSED
 } from "../../../utils/dates/format";
 import { appendTimezone, appendTimezoneToUTC } from "../../../utils/dates/formatTimezone";
 
@@ -228,7 +228,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   }, [dateValue]);
 
   const onInputChange = e => {
-    e && setTextValue(e.target.value);
+    if (e) setTextValue(e.target.value);
   };
 
   const openPicker = () => {
@@ -287,8 +287,20 @@ const EditInPlaceDateTimeField: React.FC<any> = (
 
     if (parsed) {
       const appended = timezone ? appendTimezoneToUTC(parsed, timezone) : parsed;
-      input.onBlur(appended.toISOString());
-      input.onChange(appended.toISOString());
+      let formatted;
+      if (formatValue) {
+        formatted = format(appended, formatValue);
+      } else if (type === "date" && isValid(appended)) {
+        formatted = format(appended, YYYY_MM_DD_MINUSED);
+      } else {
+        try {
+          formatted = appended.toISOString();
+        } catch {
+          formatted = null;
+        }
+      }
+      input.onBlur(formatted);
+      input.onChange(formatted);
     } else {
       input.onBlur(null);
       input.onChange(null);
@@ -296,6 +308,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   };
 
   const onClose = () => {
+    onBlur();
     setIsEditing(false);
     setPickerOpened(false);
   };
@@ -305,7 +318,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   };
 
   const onEnterPress = e => {
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13 && inputNode.current) {
       inputNode.current.blur();
     }
   };
@@ -336,7 +349,6 @@ const EditInPlaceDateTimeField: React.FC<any> = (
         id={input.name}
         className="w-100"
       >
-
         <DateTimeField
           type={type}
           toolbarTitle={label}
@@ -344,19 +356,18 @@ const EditInPlaceDateTimeField: React.FC<any> = (
           value={dateValue}
           onChange={onPickerChange}
           onClose={onClose}
-          renderInput={pickerProps => (
+          renderInput={() => (
             <FormControl
-              {...pickerProps}
               error={invalid}
               variant="standard"
               margin="none"
               fullWidth
               className={clsx({
-              "pr-2": formatting !== "inline",
-              [classes.topMargin]: !listSpacing,
-              [classes.bottomMargin]: listSpacing && formatting !== "inline",
-              [classes.inlineTextField]: isInline
-            })}
+                "pr-2": formatting !== "inline",
+                [classes.topMargin]: !listSpacing,
+                [classes.bottomMargin]: listSpacing && formatting !== "inline",
+                [classes.inlineTextField]: isInline
+              })}
             >
               {Boolean(label) && (
               <InputLabel
@@ -365,11 +376,14 @@ const EditInPlaceDateTimeField: React.FC<any> = (
                   shrink: classes.labelShrink
                 }}
                 shrink={true}
+                htmlFor={`input-${input.name}`}
               >
                 {labelContent}
               </InputLabel>
             )}
               <Input
+                id={`input-${input.name}`}
+                name={input.name}
                 type="text"
                 onKeyPress={onKeyPress}
                 onChange={onInputChange}
@@ -383,17 +397,20 @@ const EditInPlaceDateTimeField: React.FC<any> = (
                   className: clsx({
                     [classes.inlineInput]: isInline
                   }),
-                  placeholder: placeholder || (!isEditing && "No value"),
+                  placeholder: placeholder || (!isEditing ? "No value" : ""),
                 }}
                 value={textValue}
                 classes={{
                   root: clsx(classes.input, fieldClasses.text, isInline && classes.inlineInput,
                     classes.inputWrapper),
                   underline: fieldClasses.underline,
-                  input: clsx(classes.input, fieldClasses.text)
+                  input: clsx(classes.input, fieldClasses.text),
                 }}
                 endAdornment={(
-                  <InputAdornment position="end" className={clsx(classes.inputEndAdornment, formatting === "inline" && classes.hiddenContainer)}>
+                  <InputAdornment
+                    position="end"
+                    className={clsx(classes.inputEndAdornment, formatting === "inline" && classes.hiddenContainer)}
+                  >
                     <IconButton
                       tabIndex={-1}
                       onClick={openPicker}
@@ -401,10 +418,12 @@ const EditInPlaceDateTimeField: React.FC<any> = (
                         root: clsx(fieldClasses.text, isInline ? classes.inlinePickerButton : classes.pickerButton)
                       }}
                     >
-                      {type === "time" ? <QueryBuilder fontSize="inherit" color="inherit" /> : <DateRange color="inherit" fontSize="inherit" />}
+                      {type === "time"
+                        ? <QueryBuilder fontSize="inherit" color="inherit" />
+                        : <DateRange color="inherit" fontSize="inherit" />}
                     </IconButton>
                   </InputAdornment>
-              )}
+                )}
               />
               <FormHelperText
                 classes={{
@@ -414,9 +433,8 @@ const EditInPlaceDateTimeField: React.FC<any> = (
                 {error || helperText}
               </FormHelperText>
             </FormControl>
-)}
+          )}
         />
-
       </div>
     </div>
   );

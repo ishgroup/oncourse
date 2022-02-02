@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-  <Account id="100" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"/>
-  <Account id="200" accountCode="INC6" description="Test income account" isEnabled="1" type="4" taxId="100"/>
-  <Account id="300" accountCode="accEnrl" description="Test asset account" isEnabled="1" type="1"/>
-  <Account id="400" accountCode="accDebt" description="Test income account" isEnabled="1" type="4" taxId="100"/>
-  <Account id="500" accountCode="accFees" description="Test fees account" isEnabled="1" type="2"/>
-  <Account id="600" accountCode="accLiab" description="Test liability account" isEnabled="1" type="2"/>
+  <Account id="100" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account id="200" accountCode="INC6" description="Test income account" isEnabled="1" type="4" taxId="100"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account id="300" accountCode="accEnrl" description="Test asset account" isEnabled="1" type="1"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account id="400" accountCode="accDebt" description="Test income account" isEnabled="1" type="4" taxId="100"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account id="500" accountCode="accFees" description="Test fees account" isEnabled="1" type="2"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account id="600" accountCode="accLiab" description="Test liability account" isEnabled="1" type="2"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <PaymentMethod id="500" name="Zero" accountId="300" active="1" bankedAutomatically="1" reconcilable="1" type="5"/>
+  <PaymentMethod id="500" name="Zero" accountId="300" active="1" bankedAutomatically="1" reconcilable="1" type="5"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Tax id="100" isGSTTaxType="1" payableToSupplierAccountId="200" receivableFromStudentAccountId="300" taxCode="GST"
-       taxrate="0.1"/>
+       taxrate="0.1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <AccountTransaction id="1000" accountId="100" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[before]"
                       modifiedOn="[before]" transactionDate="[before]"/>
@@ -42,7 +49,7 @@
                       modifiedOn="[after]" transactionDate="[after]"/>
 
   <Site id="100" name="Default site" isAdministrationCentre="1" isShownOnWeb="0" isVirtual="0"
-        localTimezone="Australia/Sydney"/>
+        localTimezone="Australia/Sydney" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <SystemUser email="admin@mail.com" id="100" login="admin" firstName="admin" surname="admin" isActive="1" isAdmin="1"
               password="test" canEditCMS="1" canEditTara="1" createdOn="2012-05-10 00:00:00"

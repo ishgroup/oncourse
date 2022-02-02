@@ -45,7 +45,7 @@ import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.Tutor
 import ish.oncourse.server.cayenne.Voucher
 import ish.oncourse.server.cayenne.WaitingList
-import static ish.oncourse.server.messaging.MessageService.createMessagePerson
+import static ish.oncourse.server.messaging.MessageService.buildMessage
 import org.apache.commons.lang3.StringUtils
 
 
@@ -80,7 +80,7 @@ import org.apache.logging.log4j.Logger
 import java.time.ZoneOffset
 
 @CompileStatic
-class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageDao> {
+class MessageApiService extends EntityApiService<MessageDTO, Message, MessageDao> {
     private static final Logger logger = LogManager.logger
     private static final String CREATED_SUCCESS = "Messages created successfully"
     private static final int BATCH_SIZE = 50
@@ -112,7 +112,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
             messageDTO.createdOn = message.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             messageDTO.modifiedOn = message.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             messageDTO.creatorKey = message.creatorKey
-            messageDTO.sentToContactFullname = MessageMixin.getRecipientsString(message)
+            messageDTO.sentToContactFullname = message.getContact().getFullName()
             messageDTO.subject = message.emailSubject
             messageDTO.message = message.emailBody
             messageDTO.sms = message.smsText
@@ -469,7 +469,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
                         message.createdBy = batchContext.localObject(user)
                         fillMessage(message)
 
-                        createMessagePerson(message, batchContext.localObject(recipient), template.type)
+                        buildMessage(message, batchContext.localObject(recipient), template.type)
                     }
                 }
             }

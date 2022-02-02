@@ -12,14 +12,14 @@ import React, {
 } from "react";
 import {
   ConcessionType,
-  Contact, ContactGender, ContactRelationType, StudentConcession
+  Contact, ContactGender, ContactRelationType, StudentCitizenship, StudentConcession
 } from "@api/model";
 import {
   arrayInsert, arrayRemove, change
 } from "redux-form";
 import { connect } from "react-redux";
 import {
- Alert, FormControlLabel, Grid, IconButton 
+ Alert, FormControlLabel, Grid, IconButton
 } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -46,6 +46,7 @@ const UNDELIVERABLE_MSG = "(undeliverable)";
 const NO_MARKETING_AND_UNDELIVERABLE_MSG = "(no marketing and undeliverable)";
 
 const contactGenderItems = Object.keys(ContactGender).map(mapSelectItems);
+const studentCitizenships = Object.keys(StudentCitizenship).map(mapSelectItems);
 
 const validateBirthDate = v => (!v || new Date(v).getTime() - Date.now() < 0 ? undefined : "Date of birth cannot be in future.");
 
@@ -242,8 +243,8 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
   return values ? (
     <Grid container className="pt-2 pl-3 pr-3">
       <Grid item xs={12}>
-        <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Contact">
-          <Grid container columnSpacing={3} rowSpacing={2}>
+        <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} mountAll header="Contact">
+          <Grid container columnSpacing={3} rowSpacing={2} className="mb-2">
             <Grid item {...gridItemProps}>
               <FormField
                 type="text"
@@ -405,7 +406,6 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
               entityName="Contact"
               fieldName="customFields"
               entityValues={values}
-              dispatch={dispatch}
               form={form}
               gridItemProps={gridItemProps}
             />
@@ -433,6 +433,14 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
                 </Grid>
                 <Grid item {...gridItemProps}>
                   <FormField type="multilineText" name="student.specialNeeds" label="Special needs" />
+                </Grid>
+                <Grid item {...gridItemProps}>
+                  <FormField
+                    type="select"
+                    name="student.citizenship"
+                    label="Citizenship status"
+                    items={studentCitizenships}
+                  />
                 </Grid>
               </>
             )}

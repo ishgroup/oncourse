@@ -7,6 +7,7 @@ import {
   GET_MEMBERSHIP_PRODUCT_ITEM_FULFILLED,
   getMembershipProduct
 } from "../../../js/containers/entities/membershipProducts/actions";
+import { getNoteItems } from "../../../js/common/components/form/notes/actions";
 
 describe("Get membership product epic tests", () => {
   it("EpicGetMembershipProduct should returns correct values", () => DefaultEpic({
@@ -19,6 +20,7 @@ describe("Get membership product epic tests", () => {
           type: GET_MEMBERSHIP_PRODUCT_ITEM_FULFILLED,
           payload: { membershipProduct }
         },
+        getNoteItems("MembershipProduct", membershipProduct.id, LIST_EDIT_VIEW_FORM_NAME),
         {
           type: SET_LIST_EDIT_RECORD,
           payload: { editRecord: membershipProduct, name: membershipProduct.name }

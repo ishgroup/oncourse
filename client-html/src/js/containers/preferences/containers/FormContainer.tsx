@@ -38,10 +38,12 @@ const styles = () =>
     }
   });
 
+export const preferencesFormRole: string = "preferences-form";
+
 interface Props {
   category: Categories;
   data: any;
-  form: any;
+  form: (roleName?: string) => any;
   formName: string;
   history: any;
   onInit?: (category) => void;
@@ -79,7 +81,9 @@ const FieldsModel = {
 
 class FormContainer extends React.Component<Props & RouteComponentProps, any> {
   private resolveValidation;
+
   private rejectValidation;
+
   private isValidating: boolean = false;
 
   componentDidMount() {
@@ -197,7 +201,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps, any> {
     const mandatoryFields = this.getMangatoryFields(Categories[category]);
 
     // Extend component props
-    const componentForm = React.cloneElement(form, {
+    const componentForm = React.cloneElement(form(preferencesFormRole), {
       data,
       enums,
       formData,

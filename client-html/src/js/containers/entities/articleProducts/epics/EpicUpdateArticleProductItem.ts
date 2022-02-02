@@ -8,17 +8,25 @@ import { Epic } from "redux-observable";
 import { initialize } from "redux-form";
 import { ArticleProduct } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_ARTICLE_PRODUCT_ITEM, UPDATE_ARTICLE_PRODUCT_ITEM } from "../actions/index";
-import { FETCH_SUCCESS } from "../../../../common/actions/index";
+import { GET_ARTICLE_PRODUCT_ITEM, UPDATE_ARTICLE_PRODUCT_ITEM } from "../actions";
+import { clearActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import ArticleProductService from "../service/ArticleProductService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { processCustomFields } from "../../customFieldTypes/utils";
+import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
 
-const request: EpicUtils.Request<any, { id: number; articleProduct: ArticleProduct }> = {
+const request: EpicUtils.Request<any, { id: number; articleProduct: ArticleProduct & { notes: any } }> = {
   type: UPDATE_ARTICLE_PRODUCT_ITEM,
-  getData: ({ id, articleProduct }) => ArticleProductService.updateArticleProduct(id, articleProduct),
+  getData: ({ id, articleProduct }) => {
+    delete articleProduct.notes;
+    processCustomFields(articleProduct);
+    return ArticleProductService.updateArticleProduct(id, articleProduct);
+  },
+  retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
   processData: (v, s, { id }) => [
+    ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : []),
       {
         type: FETCH_SUCCESS,
         payload: { message: "Product Record updated" }

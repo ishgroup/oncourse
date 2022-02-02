@@ -48,7 +48,7 @@ const getFormattedTaxes = (taxes: Tax[]) =>
 
 const AccountsEditView = props => {
   const {
-   twoColumn, taxTypes, isNew, values
+   twoColumn, taxTypes, isNew, values, syncErrors
   } = props;
   const isCustom = values && values.isCustom === true;
   const isDisabled = isNew ? false : !isCustom;
@@ -68,13 +68,16 @@ const AccountsEditView = props => {
         <FullScreenStickyHeader
           twoColumn={twoColumn}
           title={values && values.accountCode}
+          opened={isNew || Object.keys(syncErrors).includes("accountCode")}
           fields={(
-            <FormField
-              type="text"
-              name="accountCode"
-              label="Code"
-              required
-            />
+            <Grid item xs={12}>
+              <FormField
+                type="text"
+                name="accountCode"
+                label="Code"
+                required
+              />
+            </Grid>
           )}
         />
       </Grid>

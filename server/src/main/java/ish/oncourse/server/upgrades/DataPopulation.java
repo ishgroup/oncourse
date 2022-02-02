@@ -19,6 +19,7 @@ import ish.oncourse.server.AngelModule;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.integration.PluginService;
 import ish.oncourse.server.report.IReportService;
+import ish.report.ImportReportResult;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,10 +28,7 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static ish.oncourse.server.upgrades.DataPopulationUtils.removeFromDbDeletedResources;
 
@@ -86,19 +84,25 @@ public class DataPopulation implements Runnable {
 
 		logger.warn("Resource loading: reports");
 		var resourcesList = PluginService.getPluggableResources(ResourceType.REPORT.getResourcePath(), ResourceType.REPORT.getFilePattern());
+		Set<Long> importedReportsIds = new HashSet<>();
 		for (var path : resourcesList) {
 			try (InputStream inputStream = ResourcesUtil.getResourceAsInputStream(path)) {
 				logger.debug("importing report {}", path);
 				if (inputStream != null) {
-					this.reportService.importReport(IOUtils.toString(inputStream, Charset.defaultCharset()));
+					ImportReportResult reportResult = this.reportService.
+							importReport(IOUtils.toString(inputStream, Charset.defaultCharset()));
+					importedReportsIds.add(reportResult.getReportId());
 					logger.debug("...imported");
 				}
 			} catch (Exception e ) {
 				logger.error("Failed to import report: {}", path, e);
 			}
 		}
+		logger.warn("Deleted from sourses resource removing: reports");
+        DataPopulationUtils.removeDeletedReports(context, importedReportsIds);
 
-		logger.warn("Resource loading: scripts");
+
+        logger.warn("Resource loading: scripts");
 		var scripts = getResourcesList(ResourceType.SCRIPT);
 		scripts.forEach( props -> {
 			try {

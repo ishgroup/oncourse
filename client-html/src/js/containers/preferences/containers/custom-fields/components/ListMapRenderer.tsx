@@ -101,7 +101,7 @@ const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
                   const isMap = dataType === "Map";
 
                   return (
-                    <li className={hoverClasses.container}>
+                    <li key={index} className={hoverClasses.container}>
                       <Typography variant="body2" color="inherit" component="span">
                         <EditInPlaceField
                           meta={{

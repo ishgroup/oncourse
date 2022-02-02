@@ -10,7 +10,7 @@ const CalendarModesSwitcher = ({ className }) => {
   const onChange = useCallback(e => setCalendarMode(e.target.value), [setCalendarMode]);
 
   return (
-    <FormControl className={className}>
+    <FormControl className={className} variant="standard">
       <Select value={calendarMode} onChange={onChange}>
         <MenuItem value="Compact">Compact</MenuItem>
         <MenuItem value="Gap(Days)">Gap (Days)</MenuItem>

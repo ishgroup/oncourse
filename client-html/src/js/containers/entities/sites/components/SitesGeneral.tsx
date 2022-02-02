@@ -6,9 +6,7 @@
 import { Room, Site } from "@api/model";
 import * as React from "react";
 import Grid, { GridSize } from "@mui/material/Grid";
-import {
-  arrayInsert, arrayRemove
-} from "redux-form";
+import { arrayInsert, arrayRemove } from "redux-form";
 import ScreenShare from "@mui/icons-material/ScreenShare";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
@@ -20,10 +18,9 @@ import Tooltip from "@mui/material/Tooltip";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
-import { validateSingleMandatoryField, greaterThanNullValidation } from "../../../../common/utils/validation";
+import { greaterThanNullValidation, validateSingleMandatoryField } from "../../../../common/utils/validation";
 import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
 import { State } from "../../../../reducers/state";
-import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import StaticGoogleMap from "../../../../common/components/google-maps/StaticGoogleMap";
 import CoordinatesValueUpdater from "../../../../common/components/google-maps/CoordinatesValueUpdater";
 import { validateDeleteRoom } from "../../rooms/actions";
@@ -122,12 +119,6 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
     });
   };
 
-  validateTagList = (value, allValues, props) => {
-    const { tags } = this.props;
-
-    return validateTagsList(tags, value, allValues, props);
-  };
-
   updateLatLong = () => {
     const { values } = this.props;
 
@@ -170,7 +161,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
             twoColumn={twoColumn}
             title={values && values.name}
             fields={(
-              <Grid xs={twoColumn ? 4 : 12}>
+              <Grid item xs={twoColumn ? 4 : 12}>
                 <FormField
                   type="text"
                   name="name"
@@ -178,7 +169,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
                   required
                 />
               </Grid>
-              )}
+            )}
           />
         </Grid>
 
@@ -188,7 +179,6 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
               type="tags"
               name="tags"
               tags={tags}
-              validate={tags && tags.length ? this.validateTagList : undefined}
             />
           </Grid>
 
@@ -226,9 +216,28 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
             />
           </div>
         </Grid>
+   
+        {timezones && (
+          <Grid item xs={layoutArray[2].xs} className="mb-2">
+            <FormField
+              type="searchSelect"
+              name="timezone"
+              label="Default timezone"
+              items={timezones}
+              labelAdornment={(
+                <Tooltip title="Timetables will be adjusted to users' timezone where possible, but in cases where it is unknown such as emails, this default will be used.">
+                  <IconButton classes={{ root: "inputAdornmentButton" }}>
+                    <InfoOutlinedIcon className="inputAdornmentIcon" color="inherit" />
+                  </IconButton>
+                </Tooltip>
+                )}
+              validate={validateSingleMandatoryField}
+            />
+          </Grid>
+        )}
 
         <Collapse in={!values.isVirtual}>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid container item xs={layoutArray[2].xs} columnSpacing={3} rowSpacing={2}>
               <Grid item xs={12}>
                 <FormField
@@ -260,24 +269,6 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
                     onBlur={this.updateLatLong}
                     required={!values.isVirtual}
                     items={countries}
-                  />
-                )}
-              </Grid>
-              <Grid item xs={12}>
-                {timezones && (
-                  <FormField
-                    type="searchSelect"
-                    name="timezone"
-                    label="Default timezone"
-                    items={timezones}
-                    labelAdornment={(
-                      <Tooltip title="Timetables will be adjusted to users' timezone where possible, but in cases where it is unknown such as emails, this default will be used.">
-                        <IconButton classes={{ root: "inputAdornmentButton" }}>
-                          <InfoOutlinedIcon className="inputAdornmentIcon" color="inherit" />
-                        </IconButton>
-                      </Tooltip>
-                    )}
-                    validate={validateSingleMandatoryField}
                   />
                 )}
               </Grid>

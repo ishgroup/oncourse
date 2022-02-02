@@ -48,7 +48,6 @@ class ServerApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(DataCollectionApi)
         CXFModule.contributeResources(binder).addBinding().to(DiscountApi)
         CXFModule.contributeResources(binder).addBinding().to(DocumentApi)
-        CXFModule.contributeResources(binder).addBinding().to(DocumentExportApi)
 
         CXFModule.contributeResources(binder).addBinding().to(EmailTemplateApi)
         CXFModule.contributeResources(binder).addBinding().to(EnrolmentApi)

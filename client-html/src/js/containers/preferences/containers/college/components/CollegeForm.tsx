@@ -44,11 +44,11 @@ class CollegeBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-     classes, handleSubmit, onSave, dirty, secKey, timezones, data, invalid, form
+     classes, handleSubmit, onSave, dirty, secKey, timezones, data, invalid, form, formRoleName
     } = this.props;
 
     return (
-      <Form className="container" onSubmit={handleSubmit(onSave)}>
+      <Form className="container" onSubmit={handleSubmit(onSave)} role={formRoleName}>
         <RouteChangeConfirm form={form} when={dirty} />
 
         <AppBarContainer

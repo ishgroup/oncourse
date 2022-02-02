@@ -6,18 +6,18 @@
 	<property name="defaultPackage" value="ish.oncourse.server.cayenne"/>
 	<property name="quoteSqlIdentifiers" value="true"/>
 	<db-entity name="ACLAccessKey">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="includesChildren" type="BIT"/>
 		<db-attribute name="keycode" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="mask" type="SMALLINT" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="role_id" type="BIGINT" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="ACLRole">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="45"/>
 	</db-entity>
 	<db-entity name="ACLRoleSystemUser">
@@ -26,22 +26,22 @@
 	</db-entity>
 	<db-entity name="Account">
 		<db-attribute name="accountCode" type="VARCHAR" isMandatory="true" length="40"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="VARCHAR" isMandatory="true" length="500"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="isEnabled" type="SMALLINT" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="taxId" type="BIGINT"/>
 		<db-attribute name="type" type="INTEGER" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="AccountTransaction">
 		<db-attribute name="accountId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="amount" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
-		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"  isMandatory="true"/>
 		<db-attribute name="description" type="VARCHAR" length="128"/>
 		<db-attribute name="foreignRecordId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true" />
 		<db-attribute name="tableName" type="VARCHAR" isMandatory="true" length="50"/>
 		<db-attribute name="transactionDate" type="DATE" isMandatory="true"/>
 	</db-entity>
@@ -49,7 +49,7 @@
 		<db-attribute name="confirmationStatus" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="courseId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="createdByUserId" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"  isMandatory="true"/>
 		<db-attribute name="enrolBy" type="TIMESTAMP"/>
 		<db-attribute name="feeOverride" type="DECIMAL" length="10" scale="2"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
@@ -63,7 +63,7 @@
 	<db-entity name="Assessment">
 		<db-attribute name="active" type="BOOLEAN" isMandatory="true"/>
 		<db-attribute name="code" type="VARCHAR" isMandatory="true" length="64"/>
-		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"  isMandatory="true"/>
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
@@ -74,7 +74,7 @@
 	<db-entity name="AssessmentClass">
 		<db-attribute name="assessmentId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="courseClassId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"  isMandatory="true"/>
 		<db-attribute name="dueDate" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
@@ -83,7 +83,7 @@
 	</db-entity>
 	<db-entity name="AssessmentClassModule">
 		<db-attribute name="assessmentClassId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"  isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="moduleId" type="BIGINT" isMandatory="true"/>
@@ -91,7 +91,7 @@
 	</db-entity>
 	<db-entity name="AssessmentClassTutor">
 		<db-attribute name="assessmentClassId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"  isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="tutorId" type="BIGINT" isMandatory="true"/>
@@ -99,7 +99,7 @@
 	</db-entity>
 	<db-entity name="AssessmentSubmission">
 		<db-attribute name="assessmentClassId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"  isMandatory="true"/>
 		<db-attribute name="enrolmentId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
@@ -113,12 +113,12 @@
 		<db-attribute name="attendanceType" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="attendedFrom" type="TIMESTAMP"/>
 		<db-attribute name="attendedUntil" type="TIMESTAMP"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="durationMinutes" type="INTEGER"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="markedByTutorDate" type="TIMESTAMP"/>
 		<db-attribute name="markedByTutorId" type="BIGINT"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="note" type="LONGVARCHAR" length="8000"/>
 		<db-attribute name="sessionID" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="studentID" type="BIGINT" isMandatory="true"/>
@@ -134,7 +134,7 @@
 		<db-attribute name="systemUserId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="AutomationBinding">
-		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"  isMandatory="true"/>
 		<db-attribute name="dataType" type="INTEGER"/>
 		<db-attribute name="entityIdentifier" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="entityRecordId" type="BIGINT" isMandatory="true"/>
@@ -148,39 +148,39 @@
 		<db-attribute name="adminSiteId" type="BIGINT"/>
 		<db-attribute name="assetAccountId" type="BIGINT"/>
 		<db-attribute name="createdById" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="settlementDate" type="DATE" isMandatory="true"/>
 		<db-attribute name="type" type="INTEGER" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="BinaryData">
 		<db-attribute name="content" type="BLOB" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="documentVersionId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="BinaryRelation">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="documentId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="documentVersionId" type="BIGINT"/>
 		<db-attribute name="entityIdentifier" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="entityRecordId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="specialType" type="INTEGER"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Certificate">
 		<db-attribute name="awardedOn" type="DATE" isMandatory="true"/>
 		<db-attribute name="certificateNumber" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="expiryDate" type="DATE"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="isQualification" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="issuedOn" type="DATE"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="printedOn" type="DATE"/>
 		<db-attribute name="privateNotes" type="VARCHAR" length="1000"/>
 		<db-attribute name="publicNotes" type="VARCHAR" length="1000"/>
@@ -194,16 +194,16 @@
 	</db-entity>
 	<db-entity name="Certificate_Outcome">
 		<db-attribute name="certificateId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="outcomeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Checkout">
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 		<db-attribute name="UUID" type="VARCHAR" length="30"/>
 		<db-attribute name="shoppingCart" type="CLOB" length="5000"/>
@@ -211,7 +211,7 @@
 	<db-entity name="ClassCost">
 		<db-attribute name="contactId" type="BIGINT"/>
 		<db-attribute name="courseClassId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="createdbyUserID" type="BIGINT"/>
 		<db-attribute name="description" type="CLOB" length="5000"/>
 		<db-attribute name="discountCourseClassId" type="BIGINT"/>
@@ -221,7 +221,7 @@
 		<db-attribute name="isSunk" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="maximumCost" type="DECIMAL" length="10" scale="2"/>
 		<db-attribute name="minimumCost" type="DECIMAL" length="10" scale="2"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="onCostRate" type="DECIMAL" length="8" scale="4"/>
 		<db-attribute name="payableOnEnrolment" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="perUnitAmountExTax" type="DECIMAL" length="10" scale="2"/>
@@ -233,12 +233,12 @@
 	</db-entity>
 	<db-entity name="ConcessionType">
 		<db-attribute name="createdById" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="hasConcessionNumber" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="hasExpiryDate" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="isEnabled" type="SMALLINT" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="256"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
@@ -249,7 +249,7 @@
 		<db-attribute name="allowSms" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="birthDate" type="DATE"/>
 		<db-attribute name="countryId" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="deliveryStatusEmail" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="deliveryStatusPost" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="deliveryStatusSms" type="INTEGER" isMandatory="true"/>
@@ -268,7 +268,7 @@
 		<db-attribute name="message" type="VARCHAR" length="500"/>
 		<db-attribute name="middleName" type="VARCHAR" length="128"/>
 		<db-attribute name="mobilePhone" type="VARCHAR" length="20"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="postcode" type="VARCHAR" length="20"/>
 		<db-attribute name="state" type="VARCHAR" length="20"/>
 		<db-attribute name="street" type="VARCHAR" length="1000"/>
@@ -285,7 +285,7 @@
 		<db-attribute name="contactToDeleteWillowId" type="BIGINT"/>
 		<db-attribute name="contactToUpdateId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="createdBy" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"  isMandatory="true"/>
 		<db-attribute name="description" type="VARCHAR" length="1000"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
@@ -293,65 +293,65 @@
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="ContactRelation">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="fromContactId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="toContactId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="typeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT" length="19"/>
 	</db-entity>
 	<db-entity name="ContactRelationType">
 		<db-attribute name="createdById" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="delegatedAccessToContact" type="BOOLEAN" isMandatory="true"/>
 		<db-attribute name="fromContactName" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="toContactName" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="willowId" type="BIGINT" length="19"/>
 	</db-entity>
 	<db-entity name="CorporatePass">
 		<db-attribute name="contactId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="expiryDate" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="invoiceEmail" type="VARCHAR" length="100"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="password" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="CorporatePass_CourseClass">
 		<db-attribute name="corporatePassId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="courseClassId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="CorporatePass_Discount">
 		<db-attribute name="corporatePassId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="discountId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="CorporatePass_Product">
 		<db-attribute name="corporatePassId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="productId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Country">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="isoCodeAlpha2" type="VARCHAR" length="3"/>
 		<db-attribute name="isoCodeAlpha3" type="VARCHAR" length="3"/>
 		<db-attribute name="isoCodeNumeric" type="INTEGER" length="3"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="50"/>
 		<db-attribute name="saccCode" type="INTEGER" length="4"/>
 		<db-attribute name="willowId" type="BIGINT"/>
@@ -359,7 +359,7 @@
 	<db-entity name="Course">
 		<db-attribute name="allowWaitingLists" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="code" type="VARCHAR" isMandatory="true" length="128"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="currentlyOffered" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="enrolmentType" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="fieldConfigurationSchemaId" type="BIGINT" isMandatory="true"/>
@@ -369,7 +369,7 @@
 		<db-attribute name="isSufficientForQualification" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="isTraineeship" type="SMALLINT"/>
 		<db-attribute name="isVET" type="SMALLINT" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="200"/>
 		<db-attribute name="printedBrochureDescription" type="CLOB" length="32000"/>
 		<db-attribute name="qualificationId" type="BIGINT"/>
@@ -385,7 +385,7 @@
 		<db-attribute name="censusDate" type="DATE"/>
 		<db-attribute name="code" type="VARCHAR" isMandatory="true" length="50"/>
 		<db-attribute name="courseId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="deliveryMode" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="deposit" type="DECIMAL" length="10" scale="2"/>
 		<db-attribute name="detBookingId" type="VARCHAR" length="10"/>
@@ -412,7 +412,7 @@
 		<db-attribute name="minStudentAge" type="INTEGER"/>
 		<db-attribute name="minimumPlaces" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="minutesPerSession" type="INTEGER" length="10" scale="2"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="reportableHours" type="REAL"/>
 		<db-attribute name="roomId" type="BIGINT"/>
 		<db-attribute name="sessionCount" type="INTEGER" isMandatory="true"/>
@@ -433,29 +433,29 @@
 	<db-entity name="CourseClassPaymentPlanLine">
 		<db-attribute name="amount" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="courseClassId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="dayOffset" type="INTEGER"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="CourseClassTutor">
 		<db-attribute name="confirmedOn" type="TIMESTAMP"/>
 		<db-attribute name="courseClassId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="definedTutorRoleId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="inPublicity" type="SMALLINT" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="tutorId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="CourseSession">
 		<db-attribute name="courseClass_Id" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="endDatetime" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="privateNotes" type="CLOB" length="32000"/>
 		<db-attribute name="publicNotes" type="CLOB" length="32000"/>
 		<db-attribute name="roomId" type="BIGINT"/>
@@ -463,7 +463,7 @@
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="CustomField">
-		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"  isMandatory="true"/>
 		<db-attribute name="customFieldTypeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="entityIdentifier" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="foreignId" type="BIGINT" isMandatory="true"/>
@@ -473,7 +473,7 @@
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="CustomFieldType">
-		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"  isMandatory="true"/>
 		<db-attribute name="dataType" type="INTEGER"/>
 		<db-attribute name="defaultValue" type="CLOB" length="32000"/>
 		<db-attribute name="pattern" type="VARCHAR" length="128"/>
@@ -497,7 +497,7 @@
 		<db-attribute name="addByDefault" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="code" type="VARCHAR" length="20"/>
 		<db-attribute name="cosAccountId" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="discountDollar" type="DECIMAL" length="10" scale="2"/>
 		<db-attribute name="discountMax" type="DECIMAL" length="10" scale="2"/>
 		<db-attribute name="discountMin" type="DECIMAL" length="10" scale="2"/>
@@ -509,7 +509,7 @@
 		<db-attribute name="limitPreviousEnrolment" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="minEnrolments" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="minValue" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="predictedStudentsPercentage" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="publicDescription" type="CLOB" length="32000"/>
@@ -526,48 +526,48 @@
 	</db-entity>
 	<db-entity name="Discount_ConcessionType">
 		<db-attribute name="concessionTypeId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="discountId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Discount_CourseClass">
 		<db-attribute name="courseClassId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="discountDollar" type="DECIMAL" length="10" scale="2"/>
 		<db-attribute name="discountId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="predictedStudentsPercentage" type="DECIMAL" length="10"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Discount_Membership">
 		<db-attribute name="applyToMemberOnly" type="SMALLINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="discountId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="membershipProductId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Discount_Membership_RelationType">
 		<db-attribute name="contactRelationTypeId" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="membershipDiscountId" type="BIGINT"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Document">
 		<db-attribute name="added" type="TIMESTAMP" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="fileUUID" type="VARCHAR" length="160"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="isRemoved" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="isShared" type="SMALLINT" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="512"/>
 		<db-attribute name="webVisibility" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
@@ -575,14 +575,14 @@
 	<db-entity name="DocumentVersion">
 		<db-attribute name="byteSize" type="BIGINT"/>
 		<db-attribute name="createdByUserId" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="documentId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="fileName" type="VARCHAR" length="512"/>
 		<db-attribute name="hash" type="VARCHAR" length="64"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="mimeType" type="VARCHAR" length="255"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="pixelHeight" type="INTEGER"/>
 		<db-attribute name="pixelWidth" type="INTEGER"/>
 		<db-attribute name="thumbnail" type="BLOB"/>
@@ -593,13 +593,13 @@
 	<db-entity name="EmailTemplate">
 		<db-attribute name="bodyHtml" type="CLOB"/>
 		<db-attribute name="bodyPlain" type="CLOB"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="enabled" type="SMALLINT"/>
 		<db-attribute name="entity" type="VARCHAR" length="128"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="keyCode" type="VARCHAR" length="80"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="subject" type="CLOB"/>
 		<db-attribute name="type" type="INTEGER"/>
@@ -610,7 +610,7 @@
 		<db-attribute name="attendanceType" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="confirmationStatus" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="courseClass_Id" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="creditFOEId" type="VARCHAR" length="4"/>
 		<db-attribute name="creditLevel" type="INTEGER"/>
 		<db-attribute name="creditOfferedValue" type="VARCHAR" length="4"/>
@@ -627,7 +627,7 @@
 		<db-attribute name="fundingSource" type="INTEGER"/>
 		<db-attribute name="fundingSourceId" type="BIGINT"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="outcomeIdTrainingOrg" type="VARCHAR" length="12"/>
 		<db-attribute name="source" type="CHAR" isMandatory="true" length="1"/>
 		<db-attribute name="status" type="INTEGER"/>
@@ -648,11 +648,11 @@
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="EntityRelation">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="fromEntityIdentifier" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="fromRecordId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="toEntityIdentifier" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="toRecordId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="typeId" type="BIGINT" isMandatory="true"/>
@@ -660,32 +660,32 @@
 	</db-entity>
 	<db-entity name="EntityRelationType">
 		<db-attribute name="considerHistory" type="SMALLINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="VARCHAR" length="1000"/>
 		<db-attribute name="discountId" type="BIGINT"/>
 		<db-attribute name="fromName" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="isShownOnWeb" type="SMALLINT"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="shoppingCart" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="toName" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="ExportTemplate">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="enabled" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="entity" type="VARCHAR" isMandatory="true" length="40"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="keyCode" type="VARCHAR" isMandatory="true" length="80"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="outputType" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="script" type="CLOB"/>
 	</db-entity>
 	<db-entity name="Field">
-		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"  isMandatory="true"/>
 		<db-attribute name="defaultValue" type="VARCHAR" length="300"/>
 		<db-attribute name="description" type="CLOB"/>
 		<db-attribute name="fieldConfigurationId" type="BIGINT" isMandatory="true"/>
@@ -700,7 +700,7 @@
 	</db-entity>
 	<db-entity name="FieldConfiguration">
 		<db-attribute name="createdById" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"  isMandatory="true"/>
 		<db-attribute name="deliverySchedule" type="SMALLINT"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
@@ -710,7 +710,7 @@
 	</db-entity>
 	<db-entity name="FieldConfigurationLink">
 		<db-attribute name="configurationId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"  isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="schemeId" type="BIGINT" isMandatory="true"/>
@@ -718,14 +718,14 @@
 	</db-entity>
 	<db-entity name="FieldConfigurationScheme">
 		<db-attribute name="createdById" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"  isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="200"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="FieldHeading">
-		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"  isMandatory="true"/>
 		<db-attribute name="description" type="CLOB"/>
 		<db-attribute name="fieldConfigurationId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="fieldOrder" type="INTEGER"/>
@@ -736,35 +736,35 @@
 	</db-entity>
 	<db-entity name="FundingSource">
 		<db-attribute name="active" type="SMALLINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="flavour" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="fundingProviderId" type="BIGINT"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="256"/>
 	</db-entity>
 	<db-entity name="FundingUpload">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="outcomeCount" type="BIGINT"/>
 		<db-attribute name="settings" type="LONGVARCHAR"/>
 		<db-attribute name="status" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="systemUserId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="FundingUpload_Outcome">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="endDate" type="DATE" isMandatory="true"/>
 		<db-attribute name="fundingUploadId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="outcomeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="startDate" type="DATE" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="GradingItem">
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="lowerBound" type="DECIMAL" length="6" scale="2" isMandatory="true"/>
 		<db-attribute name="gradingTypeId" type="BIGINT" isMandatory="true"/>
@@ -772,8 +772,8 @@
 	</db-entity>
 	<db-entity name="GradingType">
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="min_value" type="DECIMAL" length="6" scale="2" isMandatory="true"/>
 		<db-attribute name="max_value" type="DECIMAL" length="6" scale="2" isMandatory="true"/>
@@ -781,29 +781,29 @@
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Import">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="enabled" type="SMALLINT"/>
 		<db-attribute name="entity" type="VARCHAR" length="128"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="keyCode" type="VARCHAR" isMandatory="true" length="128"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="script" type="CLOB" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="IntegrationConfiguration">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="type" type="INTEGER" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="IntegrationProperty">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="integrationConfigurationId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="keyCode" type="VARCHAR" isMandatory="true" length="128"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="value" type="VARCHAR" length="4096"/>
 	</db-entity>
 	<db-entity name="Invoice">
@@ -815,7 +815,7 @@
 		<db-attribute name="contactId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="corporatePassId" type="BIGINT"/>
 		<db-attribute name="createdByUserId" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="customerReference" type="CLOB" length="5000"/>
 		<db-attribute name="dateDue" type="DATE" isMandatory="true"/>
 		<db-attribute name="debtorsAccountId" type="BIGINT" isMandatory="true"/>
@@ -824,7 +824,7 @@
 		<db-attribute name="invoiceDate" type="DATE" isMandatory="true"/>
 		<db-attribute name="invoiceNumber" type="BIGINT"/>
 		<db-attribute name="quoteNumber" type="BIGINT"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="overdue" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="publicNotes" type="CLOB" length="32000"/>
 		<db-attribute name="shippingAddress" type="CLOB" length="32000"/>
@@ -836,24 +836,24 @@
 	</db-entity>
 	<db-entity name="InvoiceDueDate">
 		<db-attribute name="amount" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="dueDate" type="DATE" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="invoiceId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="InvoiceLine">
 		<db-attribute name="accountId" type="BIGINT"/>
 		<db-attribute name="cosAccountId" type="BIGINT"/>
 		<db-attribute name="courseClassId" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="discountEachexTax" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="enrolmentId" type="BIGINT"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="invoiceId" type="BIGINT"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="prepaidFeesAccountId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="prepaidFeesRemaining" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="priceEachexTax" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
@@ -866,26 +866,26 @@
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="InvoiceLine_Discount">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="discountId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="invoiceLineId" type="BIGINT"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Language">
 		<db-attribute name="absCode" type="VARCHAR" length="10"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="isActive" type="SMALLINT" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="50"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Lead">
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="studentCount" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="contactId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="estimatedValue" type="DECIMAL" length="10" scale="2"/>
@@ -897,8 +897,8 @@
 	</db-entity>
 	<db-entity name="LeadItem">
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="leadId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="courseId" type="BIGINT"/>
 		<db-attribute name="productId" type="BIGINT"/>
@@ -906,52 +906,45 @@
 	</db-entity>
 	<db-entity name="Lead_Site">
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="leadId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="siteId" type="BIGINT"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Message">
 		<db-attribute name="createdByUserId" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="creatorKey" type="VARCHAR" length="256"/>
 		<db-attribute name="emailBody" type="CLOB" length="32000"/>
 		<db-attribute name="emailFrom" type="VARCHAR" length="200"/>
 		<db-attribute name="emailHtmlBody" type="CLOB"/>
 		<db-attribute name="emailSubject" type="VARCHAR" length="500"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="postDescription" type="VARCHAR" length="1000"/>
 		<db-attribute name="smsText" type="CLOB"/>
 		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="numberOfAttempts" type="INTEGER" isMandatory="false"/>
+		<db-attribute name="contactId" type="BIGINT" isMandatory="false"/>
+		<db-attribute name="destinationAddress" type="VARCHAR" isMandatory="false" length="500"/>
+		<db-attribute name="response" type="VARCHAR" length="500"/>
+		<db-attribute name="timeOfDelivery" type="TIMESTAMP"/>
+		<db-attribute name="status" type="INTEGER" isMandatory="false"/>
+		<db-attribute name="type" type="INTEGER" isMandatory="false"/>
 	</db-entity>
 	<db-entity name="MessageTemplate">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="message" type="CLOB" length="32000"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="subject" type="VARCHAR" length="512"/>
 		<db-attribute name="type" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
-	<db-entity name="Message_Person">
-		<db-attribute name="attemptCount" type="INTEGER" isMandatory="true"/>
-		<db-attribute name="contactId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
-		<db-attribute name="destinationAddress" type="VARCHAR" isMandatory="true" length="500"/>
-		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="messageId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
-		<db-attribute name="response" type="VARCHAR" length="500"/>
-		<db-attribute name="sentOn" type="TIMESTAMP"/>
-		<db-attribute name="status" type="INTEGER" isMandatory="true"/>
-		<db-attribute name="type" type="INTEGER" isMandatory="true"/>
-		<db-attribute name="willowId" type="BIGINT"/>
-	</db-entity>
 	<db-entity name="Module">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="creditPoints" type="DECIMAL" length="10" scale="2"/>
 		<db-attribute name="defaultQualificationId" type="BIGINT"/>
 		<db-attribute name="expiryDays" type="BIGINT"/>
@@ -959,7 +952,7 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="isCustom" type="SMALLINT"/>
 		<db-attribute name="isOffered" type="SMALLINT" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="nationalCode" type="VARCHAR" length="16"/>
 		<db-attribute name="nominalHours" type="REAL"/>
 		<db-attribute name="specialization" type="VARCHAR" length="128"/>
@@ -970,20 +963,20 @@
 	</db-entity>
 	<db-entity name="Module_Course">
 		<db-attribute name="courseId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="moduleId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Node">
 		<db-attribute name="colour" type="CHAR" length="6"/>
 		<db-attribute name="contents" type="CLOB" length="32000"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="isVocabulary" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="isWebVisible" type="SMALLINT" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="512"/>
 		<db-attribute name="nodeType" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="parentId" type="BIGINT"/>
@@ -993,34 +986,34 @@
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="NodeRelation">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="entityIdentifier" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="entityRecordId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="nodeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="NodeRequirement">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="entityIdentifier" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="isRequired" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="manyTermsAllowed" type="SMALLINT" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="nodeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Note">
 		<db-attribute name="changedById" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"  isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="note" type="CLOB" isMandatory="true" length="32000"/>
 		<db-attribute name="systemUserId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="NoteRelation">
-		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"  isMandatory="true"/>
 		<db-attribute name="entityIdentifier" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="entityRecordId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
@@ -1028,7 +1021,7 @@
 		<db-attribute name="noteId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="Outcome">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="deliveryMode" type="INTEGER"/>
 		<db-attribute name="endDate" type="DATE"/>
 		<db-attribute name="endDateOverridden" type="SMALLINT"/>
@@ -1038,7 +1031,7 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="markedByTutorDate" type="TIMESTAMP"/>
 		<db-attribute name="markedByTutorId" type="BIGINT"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="moduleId" type="BIGINT"/>
 		<db-attribute name="priorLearningId" type="BIGINT"/>
 		<db-attribute name="reportableHours" type="REAL"/>
@@ -1056,11 +1049,11 @@
 		<db-attribute name="budgetedTaxValue" type="DECIMAL" length="10" scale="2"/>
 		<db-attribute name="budgetedValue" type="DECIMAL" length="8" scale="4"/>
 		<db-attribute name="classCostId" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="dateFor" type="DATE"/>
 		<db-attribute name="description" type="VARCHAR" length="5000"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="payslipId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="quantity" type="DECIMAL" isMandatory="true" length="8" scale="4"/>
 		<db-attribute name="sessionId" type="BIGINT"/>
@@ -1068,7 +1061,7 @@
 		<db-attribute name="value" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 	</db-entity>
 	<db-entity name="PayRate">
-		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"  isMandatory="true"/>
 		<db-attribute name="definedTutorRoleId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="description" type="VARCHAR" length="128"/>
 		<db-attribute name="editedById" type="BIGINT" isMandatory="true"/>
@@ -1090,7 +1083,7 @@
 		<db-attribute name="chequeDrawer" type="VARCHAR" length="100"/>
 		<db-attribute name="confirmationStatus" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="createdByUserId" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="creditCardExpiry" type="VARCHAR" length="16"/>
 		<db-attribute name="creditCardName" type="VARCHAR" length="64"/>
 		<db-attribute name="creditCardNumber" type="VARCHAR" length="20"/>
@@ -1099,7 +1092,7 @@
 		<db-attribute name="gatewayReference" type="VARCHAR" length="64"/>
 		<db-attribute name="gatewayResponse" type="CLOB" length="32000"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="payerId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="paymentDate" type="DATE" isMandatory="true"/>
 		<db-attribute name="paymentMethodId" type="BIGINT"/>
@@ -1115,10 +1108,10 @@
 	<db-entity name="PaymentInLine">
 		<db-attribute name="accountOutId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="amount" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="invoiceId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="paymentInId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="payslipId" type="BIGINT"/>
 		<db-attribute name="willowId" type="BIGINT"/>
@@ -1128,9 +1121,9 @@
 		<db-attribute name="active" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="bankedAutomatically" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="createdById" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="reconcilable" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="type" type="INTEGER" isMandatory="true"/>
@@ -1147,7 +1140,7 @@
 		<db-attribute name="chequeNumber" type="VARCHAR" length="40"/>
 		<db-attribute name="confirmationStatus" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="createdByUserId" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="creditCardExpiry" type="VARCHAR" length="16"/>
 		<db-attribute name="creditCardName" type="VARCHAR" length="64"/>
 		<db-attribute name="creditCardNumber" type="VARCHAR" length="20"/>
@@ -1155,7 +1148,7 @@
 		<db-attribute name="dateBanked" type="TIMESTAMP"/>
 		<db-attribute name="gatewayReference" type="VARCHAR" length="64"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="payeeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="paymentDate" type="DATE" isMandatory="true"/>
 		<db-attribute name="paymentInGatewayReference" type="VARCHAR" length="64"/>
@@ -1169,18 +1162,18 @@
 	<db-entity name="PaymentOutLine">
 		<db-attribute name="accountInId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="amount" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="invoiceId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="paymentOutId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="payslipId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Payslip">
 		<db-attribute name="contactId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="notes" type="LONGVARCHAR" length="8000"/>
 		<db-attribute name="payType" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="privateNotes" type="LONGVARCHAR" length="8000"/>
@@ -1198,9 +1191,9 @@
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Preference">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="uniqueKey" type="VARCHAR" length="128"/>
 		<db-attribute name="userId" type="BIGINT"/>
@@ -1209,10 +1202,10 @@
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="PriorLearning">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="externalRef" type="VARCHAR" length="12"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="notes" type="CLOB" length="32000"/>
 		<db-attribute name="outcomeIdTrainingOrg" type="VARCHAR" length="12"/>
 		<db-attribute name="qualificationId" type="BIGINT"/>
@@ -1222,7 +1215,7 @@
 	</db-entity>
 	<db-entity name="Product">
 		<db-attribute name="SKU" type="VARCHAR" isMandatory="true" length="100"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="LONGVARCHAR" length="8000"/>
 		<db-attribute name="expiryDays" type="INTEGER"/>
 		<db-attribute name="expiryType" type="INTEGER"/>
@@ -1233,7 +1226,7 @@
 		<db-attribute name="isWebVisible" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="liabilityAccountId" type="BIGINT"/>
 		<db-attribute name="maxCoursesRedemption" type="INTEGER"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" length="500"/>
 		<db-attribute name="notes" type="LONGVARCHAR" length="8000"/>
 		<db-attribute name="priceExTax" type="DECIMAL" length="10" scale="2"/>
@@ -1249,11 +1242,11 @@
 		<db-attribute name="code" type="VARCHAR" length="10"/>
 		<db-attribute name="confirmationStatus" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="contactId" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="expiryDate" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="invoiceLineId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="productId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="redeemedCoursesCount" type="INTEGER"/>
 		<db-attribute name="source" type="CHAR" length="1"/>
@@ -1265,13 +1258,13 @@
 	</db-entity>
 	<db-entity name="Qualification">
 		<db-attribute name="ANZSCO" type="VARCHAR" length="6"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="fieldOfEducation" type="VARCHAR" length="6"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="isAccreditedCourse" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="isCustom" type="SMALLINT"/>
 		<db-attribute name="isOffered" type="SMALLINT" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="nationalCode" type="VARCHAR" length="12"/>
 		<db-attribute name="newApprenticeship" type="VARCHAR" length="50"/>
 		<db-attribute name="nominalHours" type="REAL"/>
@@ -1284,7 +1277,7 @@
 	</db-entity>
 	<db-entity name="QualityRule">
 		<db-attribute name="active" type="SMALLINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"  isMandatory="true"/>
 		<db-attribute name="entity" type="VARCHAR" length="64"/>
 		<db-attribute name="groupName" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
@@ -1295,7 +1288,7 @@
 	</db-entity>
 	<db-entity name="Report">
 		<db-attribute name="backgroundId" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="data" type="BLOB" isMandatory="true"/>
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="enabled" type="SMALLINT" isMandatory="true"/>
@@ -1303,24 +1296,24 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="isVisible" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="keyCode" type="VARCHAR" isMandatory="true" length="80"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="preview" type="BLOB"/>
 		<db-attribute name="sortOn" type="VARCHAR" length="200"/>
 	</db-entity>
 	<db-entity name="ReportOverlay">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="overlay" type="BLOB"/>
 	</db-entity>
 	<db-entity name="Room">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="directions" type="CLOB" length="32000"/>
 		<db-attribute name="facilities" type="CLOB" length="32000"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="150"/>
 		<db-attribute name="seatedCapacity" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="siteId" type="BIGINT" isMandatory="true"/>
@@ -1328,7 +1321,7 @@
 	</db-entity>
 	<db-entity name="SavedFind">
 		<db-attribute name="aqlExpressionString" type="CLOB" length="5000"/>
-		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"  isMandatory="true"/>
 		<db-attribute name="expressionString" type="CLOB" length="5000"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
@@ -1337,7 +1330,7 @@
 		<db-attribute name="tableName" type="VARCHAR" isMandatory="true" length="100"/>
 	</db-entity>
 	<db-entity name="Script">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="enabled" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="entityClass" type="VARCHAR" length="128"/>
@@ -1345,7 +1338,7 @@
 		<db-attribute name="entityEventType" type="INTEGER"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="keyCode" type="VARCHAR" length="80"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="onCourseEventType" type="INTEGER"/>
 		<db-attribute name="outputType" type="INTEGER"/>
@@ -1358,11 +1351,11 @@
 		<db-attribute name="approvedByUserId" type="BIGINT"/>
 		<db-attribute name="attendanceType" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="courseClassTutorId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="actualPayableDurationMinutes" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="markedByUserId" type="BIGINT"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="note" type="LONGVARCHAR" length="8000"/>
 		<db-attribute name="sessionId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
@@ -1370,16 +1363,16 @@
 		<db-attribute name="startDatetime" type="TIMESTAMP" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="Session_Module">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="moduleId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="sessionId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Site">
 		<db-attribute name="countryId" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="drivingDirections" type="CLOB" length="32000"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="isAdministrationCentre" type="INTEGER" isMandatory="true"/>
@@ -1388,7 +1381,7 @@
 		<db-attribute name="latitude" type="DECIMAL" length="11" scale="8"/>
 		<db-attribute name="localTimezone" type="VARCHAR" isMandatory="true" length="50"/>
 		<db-attribute name="longitude" type="DECIMAL" length="11" scale="8"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="150"/>
 		<db-attribute name="postcodeNew" type="VARCHAR" length="10"/>
 		<db-attribute name="publicTransportDirections" type="CLOB" length="32000"/>
@@ -1408,7 +1401,7 @@
 		<db-attribute name="contactId" type="BIGINT"/>
 		<db-attribute name="countryOfBirthId" type="BIGINT"/>
 		<db-attribute name="countryOfResidencyId" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="disabilityType" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="employmentCategoryId" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="englishProficiency" type="INTEGER" isMandatory="true"/>
@@ -1420,7 +1413,7 @@
 		<db-attribute name="isStillAtSchool" type="SMALLINT"/>
 		<db-attribute name="languageId" type="BIGINT"/>
 		<db-attribute name="medicalInsurance" type="VARCHAR" length="500"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="passportNumber" type="VARCHAR" length="100"/>
 		<db-attribute name="priorEducationCode" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="specialNeeds" type="CLOB" length="32000"/>
@@ -1442,21 +1435,21 @@
 		<db-attribute name="authorisedOn" type="TIMESTAMP"/>
 		<db-attribute name="concessionNumber" type="VARCHAR" length="32"/>
 		<db-attribute name="concessionTypeId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="expiresOn" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="studentId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Survey">
 		<db-attribute name="comment" type="LONGVARCHAR"/>
 		<db-attribute name="courseScore" type="INTEGER" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="enrolmentId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="fieldConfigurationId" type="BIGINT"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="netPromoterScore" type="INTEGER"/>
 		<db-attribute name="publicComment" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="testimonial" type="LONGVARCHAR"/>
@@ -1467,7 +1460,7 @@
 	<db-entity name="SystemUser">
 		<db-attribute name="canEditCMS" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="canEditTara" type="SMALLINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="defaultAdministrationCentreId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="email" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="firstName" type="VARCHAR" isMandatory="true" length="100"/>
@@ -1478,7 +1471,7 @@
 		<db-attribute name="lastLoginIP" type="VARCHAR" length="100"/>
 		<db-attribute name="lastLoginOn" type="TIMESTAMP"/>
 		<db-attribute name="login" type="VARCHAR" length="20"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="password" type="VARCHAR" length="128"/>
 		<db-attribute name="passwordLastChanged" type="DATE"/>
 		<db-attribute name="passwordUpdateRequired" type="SMALLINT" isMandatory="true"/>
@@ -1494,7 +1487,7 @@
 	<db-entity name="ApiToken">
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"  isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" length="100" isMandatory="true"/>
 		<db-attribute name="secret" type="VARCHAR" length="100" isMandatory="true"/>
 		<db-attribute name="lastAccess" type="TIMESTAMP"/>
@@ -1502,11 +1495,11 @@
 	</db-entity>
 	<db-entity name="Tax">
 		<db-attribute name="createdById" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="VARCHAR" length="500"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="isGSTTaxType" type="SMALLINT" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="payableToSupplierAccountId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="receivableFromStudentAccountId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="taxCode" type="VARCHAR" isMandatory="true" length="10"/>
@@ -1516,12 +1509,12 @@
 	<db-entity name="TrainingPackage">
 		<db-attribute name="copyrightCategory" type="VARCHAR" length="50"/>
 		<db-attribute name="copyrightContact" type="VARCHAR" length="50"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="developer" type="VARCHAR" length="50"/>
 		<db-attribute name="endorsementFrom" type="TIMESTAMP"/>
 		<db-attribute name="endorsementTo" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="nationalISC" type="VARCHAR" length="50"/>
 		<db-attribute name="purchaseFrom" type="VARCHAR" length="100"/>
 		<db-attribute name="title" type="VARCHAR" length="255"/>
@@ -1530,13 +1523,13 @@
 	</db-entity>
 	<db-entity name="Tutor">
 		<db-attribute name="contactId" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="dateFinished" type="TIMESTAMP"/>
 		<db-attribute name="dateStarted" type="TIMESTAMP"/>
 		<db-attribute name="familyName_legal" type="VARCHAR" length="256"/>
 		<db-attribute name="givenName_legal" type="VARCHAR" length="256"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="payType" type="SMALLINT"/>
 		<db-attribute name="payrollRef" type="VARCHAR" length="32"/>
 		<db-attribute name="resume" type="CLOB" length="32000"/>
@@ -1549,11 +1542,11 @@
 	<db-entity name="UnavailableRule">
 		<db-attribute name="allDay" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="createdById" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="endDateTime" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="explanation" type="VARCHAR" length="1024"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="recurrenceFrequency" type="INTEGER"/>
 		<db-attribute name="recurrenceInterval" type="INTEGER"/>
 		<db-attribute name="repetitionCount" type="INTEGER"/>
@@ -1561,27 +1554,27 @@
 		<db-attribute name="untilDateTime" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="UnavailableRuleRelation">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="entityIdentifier" type="VARCHAR" isMandatory="true" length="256"/>
 		<db-attribute name="entityRecordId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="unavailableRuleId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="VoucherProduct_Course">
 		<db-attribute name="courseId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="voucherProductId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Voucher_PaymentIn">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="enrolmentsCount" type="INTEGER"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="invoiceLineId" type="BIGINT"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="paymentInId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="status" type="INTEGER"/>
 		<db-attribute name="voucherId" type="BIGINT" isMandatory="true"/>
@@ -1589,9 +1582,9 @@
 	</db-entity>
 	<db-entity name="WaitingList">
 		<db-attribute name="courseId" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="notes" type="CLOB" length="32000"/>
 		<db-attribute name="studentCount" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="studentId" type="BIGINT" isMandatory="true"/>
@@ -1716,6 +1709,51 @@
 		<qualifier><![CDATA[type = 1]]></qualifier>
 		<obj-attribute name="weight" type="java.lang.Double" db-attribute-path="weight"/>
 	</obj-entity>
+	<obj-entity name="ArticleProductCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.ArticleProductCustomField">
+		<qualifier><![CDATA[entityIdentifier = "ArticleProduct"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="VoucherProductAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.VoucherProductAttachmentRelation" clientClassName="ish.oncourse.cayenne.VoucherProductAttachmentRelation">
+		<qualifier><![CDATA[entityIdentifier = "VoucherProduct"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="ArticleProductAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.ArticleProductAttachmentRelation" clientClassName="ish.oncourse.cayenne.ArticleProductAttachmentRelation">
+		<qualifier><![CDATA[entityIdentifier = "ArticleProduct"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="MembershipProductAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.MembershipProductAttachmentRelation" clientClassName="ish.oncourse.cayenne.MembershipProductAttachmentRelation">
+		<qualifier><![CDATA[entityIdentifier = "MembershipProduct"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="VoucherAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.VoucherAttachmentRelation" clientClassName="ish.oncourse.cayenne.VoucherAttachmentRelation">
+		<qualifier><![CDATA[entityIdentifier = "Voucher"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="ArticleAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.ArticleAttachmentRelation" clientClassName="ish.oncourse.cayenne.ArticleAttachmentRelation">
+		<qualifier><![CDATA[entityIdentifier = "Article"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="MembershipAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.MembershipAttachmentRelation" clientClassName="ish.oncourse.cayenne.MembershipAttachmentRelation">
+		<qualifier><![CDATA[entityIdentifier = "Membership"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="VoucherProductNoteRelation" superEntityName="NoteRelation" className="ish.oncourse.server.cayenne.VoucherProductNoteRelation" clientClassName="ish.oncourse.cayenne.VoucherProductNoteRelation">
+		<qualifier><![CDATA[entityIdentifier = "VoucherProduct"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="ArticleProductNoteRelation" superEntityName="NoteRelation" className="ish.oncourse.server.cayenne.ArticleProductNoteRelation" clientClassName="ish.oncourse.cayenne.ArticleProductNoteRelation">
+		<qualifier><![CDATA[entityIdentifier = "ArticleProduct"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="MembershipProductNoteRelation" superEntityName="NoteRelation" className="ish.oncourse.server.cayenne.MembershipProductNoteRelation" clientClassName="ish.oncourse.cayenne.MembershipProductNoteRelation">
+		<qualifier><![CDATA[entityIdentifier = "MembershipProduct"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="ProductItemNoteRelation" superEntityName="NoteRelation" className="ish.oncourse.server.cayenne.ProductItemNoteRelation" clientClassName="ish.oncourse.cayenne.ProductItemNoteRelation">
+		<qualifier><![CDATA[entityIdentifier = "ProductItem"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="VoucherProductTagRelation" superEntityName="TagRelation" className="ish.oncourse.server.cayenne.VoucherProductTagRelation" clientClassName="ish.oncourse.cayenne.VoucherProductTagRelation">
+		<qualifier><![CDATA[entityIdentifier = 20]]></qualifier>
+	</obj-entity>
+	<obj-entity name="ArticleProductTagRelation" superEntityName="TagRelation" className="ish.oncourse.server.cayenne.ArticleProductTagRelation" clientClassName="ish.oncourse.cayenne.ArticleProductTagRelation">
+		<qualifier><![CDATA[entityIdentifier = 21]]></qualifier>
+	</obj-entity>
+	<obj-entity name="MembershipProductTagRelation" superEntityName="TagRelation" className="ish.oncourse.server.cayenne.MembershipProductTagRelation" clientClassName="ish.oncourse.cayenne.MembershipProductTagRelation">
+		<qualifier><![CDATA[entityIdentifier = 22]]></qualifier>
+	</obj-entity>
+	<obj-entity name="ProductItemTagRelation" superEntityName="TagRelation" className="ish.oncourse.server.cayenne.ProductItemTagRelation" clientClassName="ish.oncourse.cayenne.ProductItemTagRelation">
+		<qualifier><![CDATA[entityIdentifier = 26]]></qualifier>
+	</obj-entity>
 	<obj-entity name="Assessment" className="ish.oncourse.server.cayenne.Assessment" clientClassName="ish.oncourse.cayenne.Assessment" dbEntityName="Assessment" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
 		<obj-attribute name="active" type="java.lang.Boolean" db-attribute-path="active"/>
 		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
@@ -1769,12 +1807,6 @@
 	</obj-entity>
 	<obj-entity name="AssessmentTagRelation" superEntityName="TagRelation" className="ish.oncourse.server.cayenne.AssessmentTagRelation" clientClassName="ish.oncourse.cayenne.AssessmentTagRelation">
 		<qualifier><![CDATA[entityIdentifier = 17]]></qualifier>
-	</obj-entity>
-	<obj-entity name="AttachmentData" className="ish.oncourse.server.cayenne.AttachmentData" clientClassName="ish.oncourse.cayenne.AttachmentData" dbEntityName="BinaryData" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
-		<obj-attribute name="content" type="byte[]" db-attribute-path="content"/>
-		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
-		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
-		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 	</obj-entity>
 	<obj-entity name="AttachmentRelation" abstract="true" className="ish.oncourse.server.cayenne.AttachmentRelation" clientClassName="ish.oncourse.cayenne.AttachmentRelation" dbEntityName="BinaryRelation" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
@@ -2532,7 +2564,10 @@
 	<obj-entity name="MembershipProduct" superEntityName="Product" className="ish.oncourse.server.cayenne.MembershipProduct" clientClassName="ish.oncourse.cayenne.MembershipProduct">
 		<qualifier><![CDATA[type = 2]]></qualifier>
 	</obj-entity>
-	<obj-entity name="Message" className="ish.oncourse.server.cayenne.Message" clientClassName="ish.oncourse.cayenne.Message" dbEntityName="Message" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
+	<obj-entity name="MembershipProductCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.MembershipProductCustomField">
+		<qualifier><![CDATA[entityIdentifier = "MembershipProduct"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="Message" className="ish.oncourse.server.cayenne.Message" clientClassName="ish.oncourse.cayenne.Message" dbEntityName="Message" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="creatorKey" type="java.lang.String" db-attribute-path="creatorKey"/>
 		<obj-attribute name="emailBody" type="java.lang.String" db-attribute-path="emailBody"/>
@@ -2544,21 +2579,12 @@
 		<obj-attribute name="postDescription" type="java.lang.String" db-attribute-path="postDescription"/>
 		<obj-attribute name="smsText" type="java.lang.String" db-attribute-path="smsText"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
-	</obj-entity>
-	<obj-entity name="MessagePerson" className="ish.oncourse.server.cayenne.MessagePerson" clientClassName="ish.oncourse.cayenne.MessagePerson" dbEntityName="Message_Person" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
-		<obj-attribute name="attemptCount" type="java.lang.Integer" db-attribute-path="attemptCount"/>
-		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
-		<obj-attribute name="destinationAddress" type="java.lang.String" db-attribute-path="destinationAddress"/>
-		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
-		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="response" type="java.lang.String" db-attribute-path="response"/>
-		<obj-attribute name="sentOn" type="java.util.Date" db-attribute-path="sentOn"/>
+		<obj-attribute name="timeOfDelivery" type="java.util.Date" db-attribute-path="timeOfDelivery"/>
 		<obj-attribute name="status" type="ish.common.types.MessageStatus" db-attribute-path="status"/>
 		<obj-attribute name="type" type="ish.common.types.MessageType" db-attribute-path="type"/>
-		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
-	</obj-entity>
-	<obj-entity name="MessageTagRelation" superEntityName="TagRelation" className="ish.oncourse.server.cayenne.MessageTagRelation" clientClassName="ish.oncourse.cayenne.MessageTagRelation">
-		<qualifier><![CDATA[entityIdentifier = 11]]></qualifier>
+		<obj-attribute name="numberOfAttempts" type="java.lang.Integer" db-attribute-path="numberOfAttempts"/>
+		<obj-attribute name="destinationAddress" type="java.lang.String" db-attribute-path="destinationAddress"/>
 	</obj-entity>
 	<obj-entity name="MessageTemplate" className="ish.oncourse.server.cayenne.MessageTemplate" clientClassName="ish.oncourse.cayenne.MessageTemplate" dbEntityName="MessageTemplate" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
@@ -2762,7 +2788,7 @@
 	<obj-entity name="PriorLearningAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.PriorLearningAttachmentRelation" clientClassName="ish.oncourse.cayenne.PriorLearningAttachmentRelation">
 		<qualifier><![CDATA[entityIdentifier = "PriorLearning"]]></qualifier>
 	</obj-entity>
-	<obj-entity name="Product" abstract="true" className="ish.oncourse.server.cayenne.Product" clientClassName="ish.oncourse.cayenne.Product" dbEntityName="Product" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
+	<obj-entity name="Product" abstract="true" className="ish.oncourse.server.cayenne.Product" clientClassName="ish.oncourse.cayenne.Product" dbEntityName="Product" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
 		<obj-attribute name="expiryDays" type="java.lang.Integer" db-attribute-path="expiryDays"/>
@@ -2779,7 +2805,7 @@
 		<obj-attribute name="type" type="java.lang.Integer" db-attribute-path="type"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
-	<obj-entity name="ProductItem" abstract="true" className="ish.oncourse.server.cayenne.ProductItem" dbEntityName="ProductItem" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
+	<obj-entity name="ProductItem" abstract="true" className="ish.oncourse.server.cayenne.ProductItem" dbEntityName="ProductItem" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
 		<obj-attribute name="confirmationStatus" type="ish.common.types.ConfirmationStatus" db-attribute-path="confirmationStatus"/>
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="expiryDate" type="java.util.Date" db-attribute-path="expiryDate"/>
@@ -3198,6 +3224,9 @@
 		<obj-attribute name="maxCoursesRedemption" type="java.lang.Integer" db-attribute-path="maxCoursesRedemption"/>
 		<obj-attribute name="value" type="ish.math.Money" db-attribute-path="value"/>
 	</obj-entity>
+	<obj-entity name="VoucherProductCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.VoucherProductCustomField">
+		<qualifier><![CDATA[entityIdentifier = "VoucherProduct"]]></qualifier>
+	</obj-entity>
 	<obj-entity name="VoucherProductCourse" className="ish.oncourse.server.cayenne.VoucherProductCourse" clientClassName="ish.oncourse.cayenne.VoucherProductCourse" dbEntityName="VoucherProduct_Course" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
@@ -3427,9 +3456,6 @@
 	<db-relationship name="paymentsOut" source="Banking" target="PaymentOut" toMany="true">
 		<db-attribute-pair source="id" target="bankingId"/>
 	</db-relationship>
-	<db-relationship name="documentVersion" source="BinaryData" target="DocumentVersion">
-		<db-attribute-pair source="documentVersionId" target="id"/>
-	</db-relationship>
 	<db-relationship name="attachedApplication" source="BinaryRelation" target="Application">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
@@ -3443,6 +3469,12 @@
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
 	<db-relationship name="attachedContact" source="BinaryRelation" target="Contact">
+		<db-attribute-pair source="entityRecordId" target="id"/>
+	</db-relationship>
+	<db-relationship name="attachedProduct" source="BinaryRelation" target="Product">
+		<db-attribute-pair source="entityRecordId" target="id"/>
+	</db-relationship>
+	<db-relationship name="attachedProductItem" source="BinaryRelation" target="ProductItem">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
 	<db-relationship name="attachedCourse" source="BinaryRelation" target="Course">
@@ -3541,6 +3573,12 @@
 	<db-relationship name="attachmentRelations" source="Contact" target="BinaryRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
 	</db-relationship>
+	<db-relationship name="attachmentRelations" source="Product" target="BinaryRelation" toMany="true">
+		<db-attribute-pair source="id" target="entityRecordId"/>
+	</db-relationship>
+	<db-relationship name="attachmentRelations" source="ProductItem" target="BinaryRelation" toMany="true">
+		<db-attribute-pair source="id" target="entityRecordId"/>
+	</db-relationship>
 	<db-relationship name="classCosts" source="Contact" target="ClassCost" toMany="true">
 		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
@@ -3568,10 +3606,16 @@
 	<db-relationship name="leads" source="Contact" target="Lead" toMany="true">
 		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
-	<db-relationship name="messages" source="Contact" target="Message_Person" toMany="true">
+	<db-relationship name="messages" source="Contact" target="Message" toMany="true">
 		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
 	<db-relationship name="noteRelations" source="Contact" target="NoteRelation" toMany="true">
+		<db-attribute-pair source="id" target="entityRecordId"/>
+	</db-relationship>
+	<db-relationship name="noteRelations" source="Product" target="NoteRelation" toMany="true">
+		<db-attribute-pair source="id" target="entityRecordId"/>
+	</db-relationship>
+	<db-relationship name="noteRelations" source="ProductItem" target="NoteRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
 	</db-relationship>
 	<db-relationship name="paymentsIn" source="Contact" target="PaymentIn" toMany="true">
@@ -3590,6 +3634,12 @@
 		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
 	<db-relationship name="taggingRelations" source="Contact" target="NodeRelation" toMany="true">
+		<db-attribute-pair source="id" target="entityRecordId"/>
+	</db-relationship>
+	<db-relationship name="taggingRelations" source="Product" target="NodeRelation" toMany="true">
+		<db-attribute-pair source="id" target="entityRecordId"/>
+	</db-relationship>
+	<db-relationship name="taggingRelations" source="ProductItem" target="NodeRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
 	</db-relationship>
 	<db-relationship name="taxOverride" source="Contact" target="Tax">
@@ -3832,6 +3882,15 @@
 	<db-relationship name="relatedVoucher" source="CustomField" target="ProductItem">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
+	<db-relationship name="relatedArticleProduct" source="CustomField" target="Product">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="relatedMembershipProduct" source="CustomField" target="Product">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="relatedVoucherProduct" source="CustomField" target="Product">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
 	<db-relationship name="relatedSurvey" source="CustomField" target="Survey">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
@@ -3908,9 +3967,6 @@
 		<db-attribute-pair source="id" target="documentId"/>
 	</db-relationship>
 	<db-relationship name="attachingRelations" source="DocumentVersion" target="BinaryRelation" toMany="true">
-		<db-attribute-pair source="id" target="documentVersionId"/>
-	</db-relationship>
-	<db-relationship name="attachmentData" source="DocumentVersion" target="BinaryData">
 		<db-attribute-pair source="id" target="documentVersionId"/>
 	</db-relationship>
 	<db-relationship name="createdByUser" source="DocumentVersion" target="SystemUser">
@@ -4177,17 +4233,11 @@
 	<db-relationship name="createdBy" source="Message" target="SystemUser">
 		<db-attribute-pair source="createdByUserId" target="id"/>
 	</db-relationship>
-	<db-relationship name="messagePerson" source="Message" target="Message_Person" toMany="true">
-		<db-attribute-pair source="id" target="messageId"/>
-	</db-relationship>
 	<db-relationship name="taggingRelations" source="Message" target="NodeRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
 	</db-relationship>
-	<db-relationship name="contact" source="Message_Person" target="Contact">
+	<db-relationship name="contact" source="Message" target="Contact">
 		<db-attribute-pair source="contactId" target="id"/>
-	</db-relationship>
-	<db-relationship name="message" source="Message_Person" target="Message">
-		<db-attribute-pair source="messageId" target="id"/>
 	</db-relationship>
 	<db-relationship name="assessmentClassModules" source="Module" target="AssessmentClassModule" toMany="true">
 		<db-attribute-pair source="id" target="moduleId"/>
@@ -4232,6 +4282,12 @@
 		<db-attribute-pair source="nodeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="taggedApplication" source="NodeRelation" target="Application">
+		<db-attribute-pair source="entityRecordId" target="id"/>
+	</db-relationship>
+	<db-relationship name="taggedProduct" source="NodeRelation" target="Product">
+		<db-attribute-pair source="entityRecordId" target="id"/>
+	</db-relationship>
+	<db-relationship name="taggedProductItem" source="NodeRelation" target="ProductItem">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
 	<db-relationship name="taggedAssessment" source="NodeRelation" target="Assessment">
@@ -4307,6 +4363,12 @@
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
 	<db-relationship name="notedContact" source="NoteRelation" target="Contact">
+		<db-attribute-pair source="entityRecordId" target="id"/>
+	</db-relationship>
+	<db-relationship name="notedProduct" source="NoteRelation" target="Product">
+		<db-attribute-pair source="entityRecordId" target="id"/>
+	</db-relationship>
+	<db-relationship name="notedProductItem" source="NoteRelation" target="ProductItem">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
 	<db-relationship name="notedCourse" source="NoteRelation" target="Course">
@@ -4541,6 +4603,9 @@
 		<db-attribute-pair source="id" target="voucherId"/>
 	</db-relationship>
 	<db-relationship name="customFields" source="ProductItem" target="CustomField" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
+	</db-relationship>
+	<db-relationship name="customFields" source="Product" target="CustomField" toMany="true">
 		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
 	<db-relationship name="certificates" source="Qualification" target="Certificate" toMany="true">
@@ -4968,7 +5033,6 @@
 	<obj-relationship name="attachedAssessmentSubmission" source="AssessmentSubmissionAttachmentRelation" target="AssessmentSubmission" deleteRule="Nullify" db-relationship-path="attachedAssessmentSubmission"/>
 	<obj-relationship name="notedAssessmentSubmission" source="AssessmentSubmissionNoteRelation" target="AssessmentSubmission" deleteRule="Nullify" db-relationship-path="notedAssessmentSubmission"/>
 	<obj-relationship name="taggedAssessment" source="AssessmentTagRelation" target="Assessment" deleteRule="Nullify" db-relationship-path="taggedAssessment"/>
-	<obj-relationship name="documentVersion" source="AttachmentData" target="DocumentVersion" deleteRule="Nullify" db-relationship-path="documentVersion"/>
 	<obj-relationship name="document" source="AttachmentRelation" target="Document" deleteRule="Nullify" db-relationship-path="document"/>
 	<obj-relationship name="documentVersion" source="AttachmentRelation" target="DocumentVersion" deleteRule="Nullify" db-relationship-path="documentVersion"/>
 	<obj-relationship name="markedByTutor" source="Attendance" target="Tutor" deleteRule="Nullify" db-relationship-path="markedByTutor"/>
@@ -5001,6 +5065,12 @@
 	</obj-relationship>
 	<obj-relationship name="studentConcessions" source="ConcessionType" target="StudentConcession" deleteRule="Deny" db-relationship-path="concessionType_studentConcessions"/>
 	<obj-relationship name="attachmentRelations" source="Contact" target="ContactAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
+	<obj-relationship name="attachmentRelations" source="VoucherProduct" target="VoucherProductAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
+	<obj-relationship name="attachmentRelations" source="ArticleProduct" target="ArticleProductAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
+	<obj-relationship name="attachmentRelations" source="MembershipProduct" target="MembershipProductAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
+	<obj-relationship name="attachmentRelations" source="Voucher" target="VoucherAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
+	<obj-relationship name="attachmentRelations" source="Article" target="ArticleAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
+	<obj-relationship name="attachmentRelations" source="Membership" target="MembershipAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="classCosts" source="Contact" target="ClassCost" deleteRule="Nullify" db-relationship-path="classCosts"/>
 	<obj-relationship name="concessionsAuthorised" source="Contact" target="StudentConcession" deleteRule="Deny" db-relationship-path="concessionsAuthorised"/>
 	<obj-relationship name="contactDuplicate" source="Contact" target="ContactDuplicate" deleteRule="Cascade" db-relationship-path="contactDuplicate"/>
@@ -5011,8 +5081,12 @@
 	<obj-relationship name="invoices" source="Contact" target="Invoice" deleteRule="Cascade" db-relationship-path="invoices"/>
 	<obj-relationship name="quotes" source="Contact" target="Quote" deleteRule="Cascade" db-relationship-path="invoices"/>
 	<obj-relationship name="leads" source="Contact" target="Lead" deleteRule="Cascade" db-relationship-path="leads"/>
-	<obj-relationship name="messages" source="Contact" target="MessagePerson" deleteRule="Cascade" db-relationship-path="messages"/>
+	<obj-relationship name="messages" source="Contact" target="Message" deleteRule="Cascade" db-relationship-path="messages"/>
 	<obj-relationship name="noteRelations" source="Contact" target="ContactNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
+	<obj-relationship name="noteRelations" source="VoucherProduct" target="VoucherProductNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
+	<obj-relationship name="noteRelations" source="ArticleProduct" target="ArticleProductNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
+	<obj-relationship name="noteRelations" source="MembershipProduct" target="MembershipProductNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
+	<obj-relationship name="noteRelations" source="ProductItem" target="ProductItemNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
 	<obj-relationship name="paymentsIn" source="Contact" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentsIn"/>
 	<obj-relationship name="paymentsOut" source="Contact" target="PaymentOut" deleteRule="Deny" db-relationship-path="paymentsOut"/>
 	<obj-relationship name="payslips" source="Contact" target="Payslip" deleteRule="Deny" db-relationship-path="payslips"/>
@@ -5024,10 +5098,20 @@
 	<obj-relationship name="tutor" source="Contact" target="Tutor" deleteRule="Cascade" db-relationship-path="tutor"/>
 	<obj-relationship name="unavailableRuleRelations" source="Contact" target="ContactUnavailableRuleRelation" deleteRule="Cascade" db-relationship-path="unavailableRuleRelations"/>
 	<obj-relationship name="attachedContact" source="ContactAttachmentRelation" target="Contact" deleteRule="Nullify" db-relationship-path="attachedContact"/>
+	<obj-relationship name="attachedVoucherProduct" source="VoucherProductAttachmentRelation" target="VoucherProduct" deleteRule="Nullify" db-relationship-path="attachedProduct"/>
+	<obj-relationship name="attachedArticleProduct" source="ArticleProductAttachmentRelation" target="ArticleProduct" deleteRule="Nullify" db-relationship-path="attachedProduct"/>
+	<obj-relationship name="attachedMembershipProduct" source="MembershipProductAttachmentRelation" target="MembershipProduct" deleteRule="Nullify" db-relationship-path="attachedProduct"/>
+	<obj-relationship name="attachedVoucher" source="VoucherAttachmentRelation" target="Voucher" deleteRule="Nullify" db-relationship-path="attachedProductItem"/>
+	<obj-relationship name="attachedArticle" source="ArticleAttachmentRelation" target="Article" deleteRule="Nullify" db-relationship-path="attachedProductItem"/>
+	<obj-relationship name="attachedMembership" source="MembershipAttachmentRelation" target="Membership" deleteRule="Nullify" db-relationship-path="attachedProductItem"/>
 	<obj-relationship name="relatedObject" source="ContactCustomField" target="Contact" deleteRule="Nullify" db-relationship-path="relatedContact"/>
 	<obj-relationship name="contactToUpdate" source="ContactDuplicate" target="Contact" deleteRule="Deny" db-relationship-path="contactToUpdate"/>
 	<obj-relationship name="createdByUser" source="ContactDuplicate" target="SystemUser" deleteRule="Deny" db-relationship-path="createdByUser"/>
 	<obj-relationship name="notedContact" source="ContactNoteRelation" target="Contact" deleteRule="Nullify" db-relationship-path="notedContact"/>
+	<obj-relationship name="notedVoucherProduct" source="VoucherProductNoteRelation" target="VoucherProduct" deleteRule="Nullify" db-relationship-path="notedProduct"/>
+	<obj-relationship name="notedArticleProduct" source="ArticleProductNoteRelation" target="ArticleProduct" deleteRule="Nullify" db-relationship-path="notedProduct"/>
+	<obj-relationship name="notedMembershipProduct" source="MembershipProductNoteRelation" target="MembershipProduct" deleteRule="Nullify" db-relationship-path="notedProduct"/>
+	<obj-relationship name="notedProductItem" source="ProductItemNoteRelation" target="ProductItem" deleteRule="Nullify" db-relationship-path="notedProductItem"/>
 	<obj-relationship name="fromContact" source="ContactRelation" target="Contact" deleteRule="Nullify" db-relationship-path="fromContact"/>
 	<obj-relationship name="relationType" source="ContactRelation" target="ContactRelationType" deleteRule="Nullify" db-relationship-path="relationType"/>
 	<obj-relationship name="toContact" source="ContactRelation" target="Contact" deleteRule="Nullify" db-relationship-path="toContact"/>
@@ -5131,7 +5215,6 @@
 	<obj-relationship name="taggingRelations" source="Document" target="DocumentTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
 	<obj-relationship name="versions" source="Document" target="DocumentVersion" deleteRule="Cascade" db-relationship-path="versions"/>
 	<obj-relationship name="taggedDocument" source="DocumentTagRelation" target="Document" deleteRule="Nullify" db-relationship-path="taggedDocument"/>
-	<obj-relationship name="attachmentData" source="DocumentVersion" target="AttachmentData" deleteRule="Cascade" db-relationship-path="attachmentData"/>
 	<obj-relationship name="attachmentRelations" source="DocumentVersion" target="AttachmentRelation" deleteRule="Deny" db-relationship-path="attachingRelations"/>
 	<obj-relationship name="createdByUser" source="DocumentVersion" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdByUser"/>
 	<obj-relationship name="document" source="DocumentVersion" target="Document" deleteRule="Nullify" db-relationship-path="document"/>
@@ -5230,13 +5313,8 @@
 	<obj-relationship name="taggedLead" source="LeadTagRelation" target="Lead" deleteRule="Nullify" db-relationship-path="taggedLead"/>
 	<obj-relationship name="discountMemberships" source="MembershipProduct" target="DiscountMembership" deleteRule="Deny" db-relationship-path="discountMembershipProducts"/>
 	<obj-relationship name="discountsAvailable" source="MembershipProduct" target="Discount" deleteRule="Deny" db-relationship-path="discountMembershipProducts.discount"/>
-	<obj-relationship name="contacts" source="Message" target="Contact" deleteRule="Nullify" db-relationship-path="messagePerson.contact"/>
+	<obj-relationship name="contact" source="Message" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="createdBy" source="Message" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdBy"/>
-	<obj-relationship name="messagePersons" source="Message" target="MessagePerson" deleteRule="Cascade" db-relationship-path="messagePerson"/>
-	<obj-relationship name="taggingRelations" source="Message" target="MessageTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
-	<obj-relationship name="contact" source="MessagePerson" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
-	<obj-relationship name="message" source="MessagePerson" target="Message" deleteRule="Nullify" db-relationship-path="message"/>
-	<obj-relationship name="taggedMessage" source="MessageTagRelation" target="Message" deleteRule="Nullify" db-relationship-path="taggedMessage"/>
 	<obj-relationship name="assessmentClassModules" source="Module" target="AssessmentClassModule" deleteRule="Deny" db-relationship-path="assessmentClassModules"/>
 	<obj-relationship name="courses" source="Module" target="Course" deleteRule="Deny" db-relationship-path="courses.course"/>
 	<obj-relationship name="defaultQualification" source="Module" target="Qualification" deleteRule="Deny" db-relationship-path="defaultQualification"/>
@@ -5311,6 +5389,10 @@
 	<obj-relationship name="fieldConfigurationScheme" source="Product" target="FieldConfigurationScheme" deleteRule="Nullify" db-relationship-path="fieldConfigurationScheme"/>
 	<obj-relationship name="leadItems" source="Product" target="LeadItem" deleteRule="Cascade" db-relationship-path="leadItems"/>
 	<obj-relationship name="leads" source="Product" target="Lead" deleteRule="Nullify" db-relationship-path="leadItems.lead"/>
+	<obj-relationship name="taggingRelations" source="VoucherProduct" target="VoucherProductTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
+	<obj-relationship name="taggingRelations" source="ArticleProduct" target="ArticleProductTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
+	<obj-relationship name="taggingRelations" source="MembershipProduct" target="MembershipProductTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
+	<obj-relationship name="taggingRelations" source="ProductItem" target="ProductItemTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
 	<obj-relationship name="underpaymentAccount" source="VoucherProduct" target="Account" deleteRule="Deny" db-relationship-path="underpaymentAccount"/>
 	<obj-relationship name="productItems" source="Product" target="ProductItem" deleteRule="Deny" db-relationship-path="productItems"/>
 	<obj-relationship name="tax" source="Product" target="Tax" deleteRule="Nullify" db-relationship-path="tax"/>
@@ -5328,7 +5410,13 @@
 	<obj-relationship name="defaultModules" source="Qualification" target="Module" deleteRule="Deny" db-relationship-path="defaultModules"/>
 	<obj-relationship name="priorLearnings" source="Qualification" target="PriorLearning" deleteRule="Deny" db-relationship-path="priorLearnings"/>
 	<obj-relationship name="trainingPackage" source="Qualification" target="TrainingPackage" deleteRule="Deny" db-relationship-path="trainingPackage"/>
-	
+	<obj-relationship name="customFields" source="VoucherProduct" target="VoucherProductCustomField" deleteRule="Nullify" db-relationship-path="customFields"/>
+	<obj-relationship name="relatedObject" source="VoucherProductCustomField" target="VoucherProduct" deleteRule="Nullify" db-relationship-path="relatedVoucherProduct"/>
+	<obj-relationship name="customFields" source="ArticleProduct" target="ArticleProductCustomField" deleteRule="Nullify" db-relationship-path="customFields"/>
+	<obj-relationship name="relatedObject" source="ArticleProductCustomField" target="ArticleProduct" deleteRule="Nullify" db-relationship-path="relatedArticleProduct"/>
+	<obj-relationship name="customFields" source="MembershipProduct" target="MembershipProductCustomField" deleteRule="Nullify" db-relationship-path="customFields"/>
+	<obj-relationship name="relatedObject" source="MembershipProductCustomField" target="MembershipProduct" deleteRule="Nullify" db-relationship-path="relatedMembershipProduct"/>
+
 	<obj-relationship name="contact" source="Quote" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="quoteLines" source="Quote" target="QuoteLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
 
@@ -5353,7 +5441,10 @@
 	<obj-relationship name="abstractInvoiceLines" source="AbstractInvoice" target="AbstractInvoiceLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
 	<obj-relationship name="contact" source="AbstractInvoice" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 
-
+	<obj-relationship name="taggedVoucherProduct" source="VoucherProductTagRelation" target="VoucherProduct" deleteRule="Nullify" db-relationship-path="taggedProduct"/>
+	<obj-relationship name="taggedArticleProduct" source="ArticleProductTagRelation" target="ArticleProduct" deleteRule="Nullify" db-relationship-path="taggedProduct"/>
+	<obj-relationship name="taggedMembershipProduct" source="MembershipProductTagRelation" target="MembershipProduct" deleteRule="Nullify" db-relationship-path="taggedProduct"/>
+	<obj-relationship name="taggedProductItem" source="ProductItemTagRelation" target="ProductItem" deleteRule="Nullify" db-relationship-path="taggedProductItem"/>
 	<obj-relationship name="courseClass" source="QuoteLine" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="enrolment" source="QuoteLine" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
 	<obj-relationship name="quote" source="QuoteLine" target="Quote" deleteRule="Nullify" db-relationship-path="invoice"/>

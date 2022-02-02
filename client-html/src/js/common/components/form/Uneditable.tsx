@@ -19,13 +19,14 @@ import { LinkAdornment } from "./FieldAdornments";
 const useStyles = makeStyles(() => ({
   rightAlignedLabel: {
     left: "unset",
-    right: "-10px"
+    right: 0,
+    transformOrigin: '100% 0'
   }
 }));
 
 interface UneditableProps {
   value: string | number;
-  label?: string;
+  label: string;
   labelAdornment?: any;
   url?: string;
   currencySymbol?: string;
@@ -44,6 +45,7 @@ const Uneditable = React.memo<UneditableProps>(props => {
   } = props;
   
   const classes = useStyles();
+  const inputId = `input-${label.toLowerCase().replace(' ', '-')}`;
 
   const openLink = useCallback(() => {
     openInternalLink(url);
@@ -51,7 +53,6 @@ const Uneditable = React.memo<UneditableProps>(props => {
 
   return (
     <FormControl
-      dir={rightAligned ? "rtl" : null}
       className={clsx(className, money && "money")}
       error={Boolean(error)}
       variant="standard"
@@ -62,6 +63,7 @@ const Uneditable = React.memo<UneditableProps>(props => {
         classes={{
           root: rightAligned ? classes.rightAlignedLabel : null
         }}
+        htmlFor={inputId}
       >
         {label}
         {url && <LinkAdornment link={url} className="pl-0-5" clickHandler={openLink} />}
@@ -73,6 +75,7 @@ const Uneditable = React.memo<UneditableProps>(props => {
         )}
       </InputLabel>
       <Input
+        id={inputId}
         startAdornment={money && <InputAdornment position="start">{currencySymbol}</InputAdornment>}
         value={
           money
@@ -85,6 +88,9 @@ const Uneditable = React.memo<UneditableProps>(props => {
           }
         multiline={multiline}
         placeholder={placeholder}
+        inputProps={{
+          className: rightAligned && "text-end"
+        }}
         disabled
       />
       <FormHelperText>{error}</FormHelperText>

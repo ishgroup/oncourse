@@ -220,7 +220,7 @@ const MergeContacts = React.memo<Props>(
           {/* </DialogActions> */}
         </Dialog>
         <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-          <AppBar className={clsx(LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader")}>
+          <AppBar>
             <Toolbar>
               <Typography className="appHeaderFontSize">
                 Merge

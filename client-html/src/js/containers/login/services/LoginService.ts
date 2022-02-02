@@ -4,7 +4,7 @@ import {
   UserApi,
   LoginRequest,
   LoginResponse,
-  PasswordComplexity
+  PasswordComplexity, User
 } from "@api/model";
 import { CONTEXT } from "../../../common/api/Constants";
 import { DefaultHttpService } from "../../../common/services/HttpService";
@@ -52,6 +52,10 @@ class LoginService {
 
   public createPasswordByToken(token: string, password: string): Promise<LoginResponse> {
     return this.createCustomAPI("user").createPassword(token, password);
+  }
+
+  public getUser(): Promise<User> {
+    return this.createCustomAPI("login").getUser();
   }
 }
 

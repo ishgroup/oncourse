@@ -13,7 +13,7 @@ package ish.oncourse.server.messaging
 
 import groovy.transform.CompileDynamic
 import ish.oncourse.server.cayenne.EmailTemplate
-import ish.oncourse.server.cayenne.MessagePerson
+import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.scripting.api.TemplateService
 
 @CompileDynamic
@@ -23,7 +23,7 @@ class GetEmailHtmlBody {
     private String templateIdentifier
     private Map<String, Object> bindings
 
-    private MessagePerson messagePerson
+    private Message message
 
     private GetEmailHtmlBody() {
 
@@ -41,19 +41,15 @@ class GetEmailHtmlBody {
         getEmailHtmlBody
     }
 
-    static GetEmailHtmlBody valueOf(MessagePerson messagePerson) {
+    static GetEmailHtmlBody valueOf(Message message) {
         GetEmailHtmlBody getEmailHtmlBody = new GetEmailHtmlBody()
-        getEmailHtmlBody.messagePerson = messagePerson
+        getEmailHtmlBody.message = message
         getEmailHtmlBody
     }
 
     String get() {
-        if (messagePerson) {
-            String html = messagePerson.message.emailHtmlBody
-            if (messagePerson.message.mailingListMessage) {
-                GetUnsubscribeLink getUnsubscribeLink = GetUnsubscribeLink.valueOf(messagePerson)
-                html += "\n<br/>\n<p><small><a href=\"${getUnsubscribeLink.get()}\">Unsubsribe</a></small></p>".toString()
-            }
+        if (message) {
+            String html = message.emailHtmlBody
             return html
         }
 
