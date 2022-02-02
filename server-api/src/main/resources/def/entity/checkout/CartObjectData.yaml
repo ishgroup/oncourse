@@ -9,3 +9,7 @@ properties:
   selected:
     type: boolean
     required: true
+  productType:
+    $ref: '../../enum/ProductType.yaml'
+    required: false
+
