@@ -52,11 +52,11 @@ class FinancialBaseForm extends React.Component<any, any> {
 
   public render() {
     const {
-     handleSubmit, onSave, accounts = [], dirty, data, invalid, form
+     handleSubmit, onSave, accounts = [], dirty, data, invalid, form, formRoleName
     } = this.props;
 
     return (
-      <Form className="container" onSubmit={handleSubmit(onSave)}>
+      <Form className="container" onSubmit={handleSubmit(onSave)} role={formRoleName}>
         <RouteChangeConfirm form={form} when={dirty} />
 
         <AppBarContainer

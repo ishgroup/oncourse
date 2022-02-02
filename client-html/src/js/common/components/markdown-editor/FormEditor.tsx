@@ -10,7 +10,7 @@
  */
 
 import {
- FormControl, FormHelperText, InputLabel
+  FormControl, FormHelperText, InputLabel, Input
 } from "@mui/material";
 import ButtonBase from "@mui/material/ButtonBase";
 import ClickAwayListener from '@mui/material/ClickAwayListener';
@@ -109,6 +109,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
           classes={{
             root: fieldClasses.label
           }}
+          htmlFor={`input-${name}`}
         >
           {label}
         </InputLabel>
@@ -160,34 +161,45 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
               onChange={onChange}
             />
           </div>
-          ) : (
-            <Typography
-              variant="body1"
-              component="div"
-              onClick={onEditButtonFocus}
-              className={clsx( classes.editable, {
-                [fieldClasses.placeholder ? fieldClasses.placeholder : "placeholderContent"]: !value,
-                [fieldClasses.text]: value,
-              })}
-            >
-              <span className={clsx(contentMode === "md" ? classes.previewFrame : "centeredFlex overflow-hidden")}>
-                {
-                  value
-                    ? contentMode === "md"
-                      ? <ReactMarkdown source={removeContentMarker(value)} />
-                      : removeContentMarker(value)
-                    : "No value"
-                }
-              </span>
-              {!disabled
-              && <Edit color="primary" className={classes.hoverIcon} />}
-            </Typography>
-          )}
+        ) : (
+          <Typography
+            variant="body1"
+            component="div"
+            onClick={onEditButtonFocus}
+            className={clsx( classes.editable, {
+              [fieldClasses.placeholder ? fieldClasses.placeholder : "placeholderContent"]: !value,
+              [fieldClasses.text]: value,
+            })}
+          >
+            <span className={clsx(contentMode === "md" ? classes.previewFrame : "centeredFlex overflow-hidden")}>
+              {
+                value
+                  ? contentMode === "md"
+                    ? <ReactMarkdown source={removeContentMarker(value)} />
+                    : removeContentMarker(value)
+                  : "No value"
+              }
+            </span>
+            {!disabled
+            && <Edit color="primary" className={classes.hoverIcon} />}
+          </Typography>
+        )}
         <FormHelperText>
           <span className="shakingError">
             {meta.error}
           </span>
         </FormHelperText>
+        <Input
+          type="hidden"
+          id={`input-${name}`}
+          name={name}
+          classes={{
+            root: "d-none"
+          }}
+          inputProps={{
+            value
+          }}
+        />
       </FormControl>
     </ClickAwayListener>
   );

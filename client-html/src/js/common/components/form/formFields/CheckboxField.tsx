@@ -54,7 +54,7 @@ export const StyledCheckbox = withStyles(styles)(StyledCheckboxBase);
 
 export const CheckboxField = props => {
   const {
-   input, color, disabled, stringValue, className, uncheckedClass, onChangeHandler, stopPropagation
+    input, color, disabled, stringValue, className, uncheckedClass, onChangeHandler, stopPropagation
   } = props;
 
   const onChange = useCallback(
@@ -83,6 +83,8 @@ export const CheckboxField = props => {
       className={className}
       uncheckedClass={uncheckedClass}
       onClick={stopPropagation ? e => e.stopPropagation() : undefined}
+      id={`input-${input.name}`}
+      name={input.name}
     />
   );
 };

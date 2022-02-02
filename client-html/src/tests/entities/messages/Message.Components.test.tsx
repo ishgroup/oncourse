@@ -9,15 +9,11 @@ describe("Virtual rendered MessageEditView", () => {
     entity: "Message",
     EditView: MessageEditView,
     record: mockecApi => mockecApi.db.getMessage(1),
-    render: (wrapper, initialValues) => {
-      const inputs = wrapper.find("input");
-      expect(inputs[0].attribs.value).toContain(initialValues.subject);
-      expect(inputs[1].attribs.value).toContain(defaultContactName(initialValues.sentToContactFullname));
-      expect(inputs[2].attribs.value).toContain(
-        format(new Date(initialValues.createdOn), III_DD_MMM_YYYY).toString()
-      );
-      expect(wrapper.find("code").text()).toContain(initialValues.message);
-      expect(inputs[5].attribs.value).toContain(initialValues.creatorKey);
+    render: ({ screen, initialValues }) => {
+      expect(screen.getByLabelText("Subject").value).toBe(initialValues.subject);
+      expect(screen.getByLabelText(/Sent to/i, { selector: 'input' }).value).toBe(defaultContactName(initialValues.sentToContactFullname));
+      expect(screen.getByLabelText("Created on").value).toBe(format(new Date(initialValues.createdOn), III_DD_MMM_YYYY));
+      expect(screen.getByLabelText("Creator key").value).toBe(initialValues.creatorKey);
     }
   });
 });
