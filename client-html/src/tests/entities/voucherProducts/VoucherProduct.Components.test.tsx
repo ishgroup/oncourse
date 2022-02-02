@@ -6,14 +6,19 @@ describe("Virtual rendered VoucherProductEditView", () => {
     entity: "VoucherProduct",
     EditView: VoucherProductEditView,
     record: mockecApi => mockecApi.db.getVoucherProduct(1),
-    render: (wrapper, initialValues) => {
-      expect(wrapper.find("#name input").val()).toContain(initialValues.name);
-      expect(wrapper.find("#code input").val()).toContain(initialValues.code);
-      expect(wrapper.find("#expiryDays input").val()).toContain(initialValues.expiryDays);
-      expect(wrapper.find("#maxCoursesRedemption input").val()).toContain(initialValues.maxCoursesRedemption);
-      expect(wrapper.find("#feeExTax input").val()).toContain(initialValues.feeExTax);
-      expect(wrapper.find("#status input").val()).toContain(initialValues.status);
-      expect(wrapper.find("#description").text()).toContain(initialValues.description);
+    render: ({ screen, initialValues, formRoleName }) => {
+      expect(screen.getByRole(formRoleName)).toHaveFormValues({
+        name: initialValues.name,
+        code: initialValues.code,
+        liabilityAccountId: initialValues.liabilityAccountId.toString(),
+        underpaymentAccountId: initialValues.underpaymentAccountId.toString(),
+        expiryDays: initialValues.expiryDays,
+        maxCoursesRedemption: initialValues.maxCoursesRedemption,
+        feeExTax: initialValues.feeExTax.toString(),
+        status: initialValues.status,
+        dataCollectionRuleId: initialValues.dataCollectionRuleId.toString(),
+        description: initialValues.description,
+      });
     }
   });
 });

@@ -30,7 +30,8 @@ export const getEntityResponse = ({
     visible: true,
     system: null,
     width: 200,
-    sortFields: []
+    sortFields: [],
+    prefetches: [],
   };
 
   const columnsList = [];

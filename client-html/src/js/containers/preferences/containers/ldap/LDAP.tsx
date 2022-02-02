@@ -30,7 +30,7 @@ class LDAP extends React.Component<any, any> {
         testLdapConnection={this.handleTestLdapConnection.bind(this)}
         licence={licences}
         category={Categories.ldap}
-        form={<LDAPForm />}
+        form={formRoleName => <LDAPForm formRoleName={formRoleName} />}
       />
     );
   }

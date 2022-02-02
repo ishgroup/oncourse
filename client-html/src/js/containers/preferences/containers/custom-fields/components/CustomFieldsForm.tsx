@@ -25,6 +25,8 @@ import AppBarContainer from "../../../../../common/components/layout/AppBarConta
 
 const manualUrl = getManualLink("generalPrefs_customFields");
 
+export const CUSTOM_FIELDS_FORM: string = "CustomFieldsForm";
+
 const styles = theme => createStyles({
   dragIcon: {
     fill: "#e0e0e0"
@@ -89,7 +91,7 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
     super(props);
     this.state = { fieldToDelete: null };
 
-    props.dispatch(initialize("CustomFieldsForm", { "types": props.customFields }));
+    props.dispatch(initialize(CUSTOM_FIELDS_FORM, { "types": props.customFields }));
   }
 
   componentDidUpdate() {
@@ -130,7 +132,7 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
           nextLocation, history, setNextLocation, data
         } = this.props;
 
-        this.props.dispatch(initialize("CustomFieldsForm", data));
+        this.props.dispatch(initialize(CUSTOM_FIELDS_FORM, data));
         this.props.dispatch(getCustomFields());
 
         nextLocation && history.push(nextLocation);
@@ -172,7 +174,7 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
 
     updated.forEach((field, index) => (field.sortOrder = index));
 
-    dispatch(change("CustomFieldsForm", "types", updated));
+    dispatch(change(CUSTOM_FIELDS_FORM, "types", updated));
     setTimeout(() => {
       const domNode = document.getElementById("types[0].name");
       if (domNode) domNode.scrollIntoView({ behavior: "smooth" });
@@ -184,7 +186,7 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
       if (item.id) {
         this.props.onDelete(item.id);
       } else {
-        this.props.dispatch(arrayRemove("CustomFieldsForm", "types", index));
+        this.props.dispatch(arrayRemove(CUSTOM_FIELDS_FORM, "types", index));
       }
     };
 
@@ -207,7 +209,7 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
     return (
       <>
         <CustomFieldsDeleteDialog setFieldToDelete={this.setFieldToDelete} item={fieldToDelete} onConfirm={this.onDeleteConfirm} />
-        <Form className={classes.container} onSubmit={handleSubmit(this.onSave)} noValidate autoComplete="off">
+        <Form className={classes.container} onSubmit={handleSubmit(this.onSave)} noValidate autoComplete="off" role={CUSTOM_FIELDS_FORM}>
           <RouteChangeConfirm form={form} when={dirty} />
 
           <AppBarContainer
@@ -252,7 +254,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 const CustomFieldsForm = reduxForm({
   onSubmitFail,
-  form: "CustomFieldsForm"
+  form: CUSTOM_FIELDS_FORM
 })(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(
   withStyles(theme => ({ ...formCommonStyles(theme), ...styles(theme) }))(withRouter(CustomFieldsBaseForm) as any)
 ));

@@ -10,7 +10,7 @@
  */
 
 import {
- FormControl, FormHelperText, InputLabel
+  FormControl, FormHelperText, InputLabel, Input
 } from "@mui/material";
 import ButtonBase from "@mui/material/ButtonBase";
 import ClickAwayListener from '@mui/material/ClickAwayListener';
@@ -108,6 +108,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
           classes={{
             root: fieldClasses.label
           }}
+          htmlFor={`input-${name}`}
         >
           {label}
         </InputLabel>
@@ -187,6 +188,17 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
             {meta.error}
           </span>
         </FormHelperText>
+        <Input
+          type="hidden"
+          id={`input-${name}`}
+          name={name}
+          classes={{
+            root: "d-none"
+          }}
+          inputProps={{
+            value
+          }}
+        />
       </FormControl>
     </ClickAwayListener>
   );
