@@ -8,6 +8,7 @@
 
 import React, { useMemo, useRef, useState } from "react";
 import {
+  Card,
   Collapse,
   FormControl,
   FormHelperText,
@@ -41,7 +42,13 @@ import { AppTheme } from "../../../../../model/common/Theme";
 import AddButton from "../../../../../common/components/icons/AddButton";
 
 const useStyles = makeStyles((theme: AppTheme) => ({
+  root: {
+    width: "100%",
+  },
   tutorItem: {
+    marginLeft: theme.spacing(-1),
+    padding: theme.spacing(0, 1),
+    position: 'relative',
     "&:hover $tutorItemActions": {
       visibility: 'visible'
     },
@@ -51,9 +58,12 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     fontWeight: 400
   },
   tutorItemActions: {
+    position: "absolute",
     display: "flex",
     marginLeft: theme.spacing(1),
-    visibility: "hidden"
+    visibility: "hidden",
+    right: 0,
+    top: 0
   },
   expanded: {
     transform: 'rotate(180deg)',
@@ -152,7 +162,7 @@ const CourseClassTutorRooster = (
     [tutors, session.tutorAttendances]);
 
   return (
-    <FormControl error={invalid} id={name} className="w-100">
+    <FormControl error={invalid} id={name} className={classes.root}>
       <div className="centeredFlex">
         <div className={clsx("secondaryHeading mb-1 mt-1", (invalid || warningTypes?.Tutor.length) && "errorColor")}>
           TUTOR  TIME & ATTENDANCE
@@ -209,65 +219,59 @@ const CourseClassTutorRooster = (
             dispatch(change(form, `${fieldsName}.actualPayableDurationMinutes`, t.actualPayableDurationMinutes + minutesOffset));
           };
 
+          const isExpanded = expanded === index;
+
           return (
-            <div key={t.courseClassTutorId || t.temporaryTutorId} className={classes.tutorItem}>
+            <Card elevation={isExpanded ? 3 : 0} key={t.courseClassTutorId || t.temporaryTutorId} className={classes.tutorItem}>
               <Grid container columnSpacing={3}>
                 <Grid item xs={6} className="centeredFlex">
                   <Typography variant="body1" className={classes.tutorItemLabel} noWrap>
                     {`${defaultContactName(t.contactName)}${tutor ? ` (${tutor.roleName})` : ""}`}
                   </Typography>
-                  <div className={classes.tutorItemActions}>
-                    <IconButton size="small" disabled={t.hasPayslip} onClick={() => setExpanded(expanded === index ? null : index)}>
-                      <ExpandMore fontSize="inherit" className={clsx(classes.expandIcon, expanded === index && classes.expanded)} />
-                    </IconButton>
-                    <IconButton size="small" disabled={t.hasPayslip} onClick={() => onDeleteTutor(index)}>
-                      <DeleteIcon fontSize="inherit" />
-                    </IconButton>
-                  </div>
                 </Grid>
 
                 <Grid item xs={6} className="centeredFlex">
                   <div>
                     {
-                      t.hasPayslip ? (
-                        <Typography variant="button" display="block" className="successColor centeredFlex" noWrap>
-                          Paid
-                          <IconButton className="ml-05" size="small" onClick={() => openInternalLink(`/payslip?search=id in (${t.payslipIds.toString()})`)}>
-                            <OpenInNew fontSize="inherit" color="secondary" />
-                          </IconButton>
-                        </Typography>
-                      ) : (
-                        <Field
-                          name={`${fieldsName}.attendanceType`}
-                          component={RoosterStatuses}
-                          payableTime={formatDurationMinutes(t.actualPayableDurationMinutes || sessionDuration)}
-                          className={clsx('hoverIconContainer', classes.statusSelect)}
-                        />
-                      )
-                    }
+                        t.hasPayslip ? (
+                          <Typography variant="button" display="block" className="successColor centeredFlex" noWrap>
+                            Paid
+                            <IconButton className="ml-05" size="small" onClick={() => openInternalLink(`/payslip?search=id in (${t.payslipIds.toString()})`)}>
+                              <OpenInNew fontSize="inherit" color="secondary" />
+                            </IconButton>
+                          </Typography>
+                        ) : (
+                          <Field
+                            name={`${fieldsName}.attendanceType`}
+                            component={RoosterStatuses}
+                            payableTime={formatDurationMinutes(t.actualPayableDurationMinutes || sessionDuration)}
+                            className={clsx('hoverIconContainer', classes.statusSelect)}
+                          />
+                        )
+                      }
                   </div>
                 </Grid>
 
-                { expanded !== index
+                { !isExpanded
                   && (
                     <Grid item xs={6} className="centeredFlex">
-                      <Typography variant="subtitle2">
+                      <Typography variant="body2" color="textSecondary">
                         {diffLabel}
                       </Typography>
                     </Grid>
-                )}
+                  )}
 
-                {expanded !== index && t.note && (
-                  <Grid item xs={6} className="centeredFlex">
-                    <Typography variant="body2" color="textSecondary">
-                      <ChatIcon fontSize="inherit" className={classes.noteIcon} />
-                      {t.note}
-                    </Typography>
-                  </Grid>
-                )}
+                {!isExpanded && t.note && (
+                <Grid item xs={6} className="centeredFlex">
+                  <Typography variant="body2" color="textSecondary" noWrap>
+                    <ChatIcon fontSize="inherit" className={classes.noteIcon} />
+                    {t.note}
+                  </Typography>
+                </Grid>
+                  )}
 
               </Grid>
-              <Collapse in={expanded === index}>
+              <Collapse in={isExpanded}>
                 <Grid container columnSpacing={3} className="mt-1">
                   <Grid item xs={2}>
                     <FormField
@@ -304,7 +308,15 @@ const CourseClassTutorRooster = (
                 </Grid>
               </Collapse>
               {tutorWarning && <ErrorMessage message={tutorWarning.message} className="m-0 p-0" />}
-            </div>
+              <div className={classes.tutorItemActions}>
+                <IconButton size="small" disabled={t.hasPayslip} onClick={() => onDeleteTutor(index)}>
+                  <DeleteIcon fontSize="inherit" />
+                </IconButton>
+                <IconButton size="small" disabled={t.hasPayslip} onClick={() => setExpanded(isExpanded ? null : index)}>
+                  <ExpandMore fontSize="inherit" className={clsx(classes.expandIcon, isExpanded && classes.expanded)} />
+                </IconButton>
+              </div>
+            </Card>
           );
         })}
       </div>
