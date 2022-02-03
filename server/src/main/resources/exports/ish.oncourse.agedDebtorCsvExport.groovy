@@ -67,7 +67,8 @@ ObjectSelect.query(Contact)
 
                                 if (periodOwing.isGreaterThan(payedForPeriod)) {
                                     Money owing = periodOwing.subtract(payedForPeriod)
-                                    switch (days) {
+                                    def dueDate = i.dateDue
+                                    switch (DAYS.between(dueDate, atDate).intValue()) {
                                         case 1..30:
                                             row.b_1_30 = owing
                                             break
