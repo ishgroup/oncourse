@@ -1,0 +1,14 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 108-1
+      author: dmitrij
+      preConditions:
+        - onFail: HALT
+        - and:
+            columnExists:
+              tableName: QueuedRecord
+              columnName: tableName
+      changes:
+        changes:
+          - sql: "DELETE FROM QueuedRecord WHERE tableName = 'MessagePerson'"
