@@ -399,9 +399,11 @@ class MessageApiService extends EntityApiService<MessageDTO, Message, MessageDao
                     htmlBindings.put(templateService.RECORD, entity)
                     htmlBindings.put(entityVarName, entity)
                     htmlBindings.put(templateService.TO, recipient)
+                    htmlBindings.put(templateService.AUTHOR_NAME, user.fullName)
                     plainBindings.put(templateService.RECORD, entity)
                     plainBindings.put(entityVarName, entity)
                     plainBindings.put(templateService.TO, recipient)
+                    plainBindings.put(templateService.AUTHOR_NAME, user.fullName)
                     templateService.addSubject(template, plainBindings, htmlBindings)
                     return templateService.renderHtml(template, htmlBindings)
                 case MessageTypeDTO.SMS:
@@ -464,6 +466,8 @@ class MessageApiService extends EntityApiService<MessageDTO, Message, MessageDao
                         htmlBindings.put(entityVarName, entity)
                         plainBindings.put(templateService.TO, recipient)
                         htmlBindings.put(templateService.TO, recipient)
+                        plainBindings.put(templateService.AUTHOR_NAME, user.fullName)
+                        htmlBindings.put(templateService.AUTHOR_NAME, user.fullName)
 
                         Message message = batchContext.newObject(Message.class)
                         message.createdBy = batchContext.localObject(user)
