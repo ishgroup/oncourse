@@ -26,6 +26,14 @@ import java.util.Date
 @API
 @QueueableEntity
 class EmailTemplate extends _EmailTemplate implements Queueable, AutomationTrait {
+	@Override
+	protected void postAdd() {
+		if(isSubtemplate == null)
+			setIsSubtemplate(false)
+
+		super.postAdd()
+	}
+
 
 	/**
 	 * @return email HTML body template

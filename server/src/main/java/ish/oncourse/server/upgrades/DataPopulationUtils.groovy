@@ -119,6 +119,8 @@ class DataPopulationUtils {
         dbMessage.subject = getString(props, SUBJECT) ?: dbMessage.subject
 
         configureAutomationWithCommonFields(dbMessage, props)
+
+        dbMessage.isSubtemplate = dbMessage.name.toLowerCase().contains("header") || dbMessage.name.toLowerCase().contains("footer")
     }
 
     static fillImportWithCommonFields(Import dbImport, Map<String, Object> props){
