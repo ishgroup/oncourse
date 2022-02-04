@@ -14,7 +14,7 @@ import ListItem from "@mui/material/ListItem";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { RouteComponentProps, withRouter } from "react-router";
 import NewsRender from "../news/NewsRender";
-import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME, TAB_LIST_SCROLL_TARGET_ID } from "../../../constants/Config";
+import { APP_BAR_HEIGHT, TAB_LIST_SCROLL_TARGET_ID } from "../../../constants/Config";
 import { LSGetItem, LSSetItem } from "../../utils/storage";
 import { EditViewProps } from "../../../model/common/ListView";
 import { useStickyScrollSpy } from "../../utils/hooks";
@@ -238,7 +238,7 @@ const TabsList = React.memo<Props & RouteComponentProps>((
             id={i.label}
             key={tabIndex}
             ref={el => scrollNodes.current[tabIndex] = el}
-            className={tabIndex === items.length - 1 && "saveButtonTableOffset"}
+            className={tabIndex === items.length - 1 ? "saveButtonTableOffset" : undefined}
           >
             {i.component({
               ...itemProps, expanded, setExpanded, tabIndex
@@ -248,9 +248,7 @@ const TabsList = React.memo<Props & RouteComponentProps>((
       </Grid>
       {itemProps.twoColumn && (
         <Grid item xs={layoutArray[1].xs} className="root">
-          <div className={clsx(
-            classes.listContainer,
-          )}
+          <div className={classes.listContainer}
           >
             <div className={classes.listContainerInner}>
               {items.map((i, index) => {

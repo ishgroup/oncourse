@@ -17,6 +17,7 @@ import ish.oncourse.API
 import ish.oncourse.entity.services.StudentConcessionService
 import ish.oncourse.entity.services.StudentService
 import ish.oncourse.server.cayenne.Student
+import static ish.oncourse.server.entity.mixins.MixinHelper.getService
 import ish.oncourse.server.cayenne.StudentConcession
 
 import javax.annotation.Nonnull

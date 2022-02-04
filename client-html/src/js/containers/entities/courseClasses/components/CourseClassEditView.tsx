@@ -6,7 +6,7 @@
 import clsx from "clsx";
 import Decimal from "decimal.js-light";
 import React, {
- useEffect, useMemo, useState, Fragment
+  useEffect, useMemo, useState, Fragment
 } from "react";
 import { format } from "date-fns";
 import { connect, useSelector } from "react-redux";
@@ -222,7 +222,7 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
  expandBudgetItem,
  currentTax
 }) => {
-  const classes  = useBudgetAdornmentStyles();
+  const classes = useBudgetAdornmentStyles();
 
   const discounts = useMemo(() => {
     const discountItems = budget.filter(b => b.flowType === "Discount"

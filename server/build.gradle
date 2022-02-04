@@ -63,6 +63,10 @@ dependencies {
 	api "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
 	api "org.apache.cayenne:cayenne-commitlog:$cayenneVersion"
 
+	api 'org.commonmark:commonmark:0.18.1'
+	api 'org.commonmark:commonmark-ext-gfm-tables:0.18.1'
+	api 'org.commonmark:commonmark-ext-heading-anchor:0.18.1'
+
 	implementation 'javax.jws:javax.jws-api:1.1'
 	implementation "org.eclipse.jetty:jetty-servlet:$jettyVersion"
 
