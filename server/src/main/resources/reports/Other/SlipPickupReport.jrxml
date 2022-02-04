@@ -102,10 +102,15 @@
 					<reportElement key="staticText-17" style="Label" x="0" y="180" width="115" height="25" uuid="c58464dc-30bf-48be-921c-09f43b98defb"/>
 					<text><![CDATA[Class:]]></text>
 				</staticText>
-				<textField isBlankWhenNull="true">
-					<reportElement key="textField-20" style="data field" x="120" y="180" width="125" height="25" uuid="3cfeeeb9-3a78-4263-8450-2a4e310d76ac"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement key="textField-20" style="data field" x="120" y="180" width="200" height="25" uuid="3cfeeeb9-3a78-4263-8450-2a4e310d76ac"/>
 					<textElement textAlignment="Left"/>
-					<textFieldExpression><![CDATA[$F{invoiceLine}?.courseClass != null ? $F{invoiceLine}?.courseClass?.startDateTime+", "+$F{invoiceLine}?.courseClass?.course?.name+", "+$F{invoiceLine}?.courseClass?.room?.name+", "+$F{invoiceLine}?.courseClass?.room?.site?.name : "Not found"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{invoiceLine}?.courseClass != null ? $F{invoiceLine}?.courseClass?.startDateTime+", "+$F{invoiceLine}?.courseClass?.course?.name+", " : "Not found"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement key="textField-20" style="data field" x="0" y="180" width="300" height="25" uuid="3cfeeeb9-3a78-4263-8450-2a4e310d76ac"/>
+					<textElement textAlignment="Left"/>
+					<textFieldExpression><![CDATA[$F{invoiceLine}?.courseClass != null ? $F{invoiceLine}?.courseClass?.room?.name+", "+$F{invoiceLine}?.courseClass?.room?.site?.name : ""]]></textFieldExpression>
 				</textField>
 				<componentElement>
 					<reportElement x="440" y="165" width="325" height="30" uuid="8296b6c8-44f6-41f4-b5bd-20109d7eea80"/>
