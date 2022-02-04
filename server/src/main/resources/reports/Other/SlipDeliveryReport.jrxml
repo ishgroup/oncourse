@@ -59,6 +59,7 @@
 	<subDataset name="subDataSet" uuid="c97e421f-a1b2-4251-8cc0-2c69f3d2c269">
 		<field name="value" class="java.math.BigDecimal"/>
 		<field name="key.name" class="java.lang.String"/>
+		<field name="key.sku" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="ReportName" class="java.lang.String"/>
 	<field name="product" class="ish.oncourse.server.cayenne.Product"/>
@@ -107,7 +108,7 @@
 								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="325" height="30" uuid="15095788-3dd4-4c9f-8c80-7d0a181e25f9"/>
 								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 									<reportElement style="data field" x="0" y="0" width="325" height="12" uuid="ea3b8dd0-daa7-49c8-b67e-086b5dc86225"/>
-									<textFieldExpression><![CDATA[$F{value}.intValue()+" x "+$F{key.name}]]></textFieldExpression>
+									<textFieldExpression><![CDATA[$F{value}.intValue()+" x "+$F{key.name}+" - "+$F{key.sku}]]></textFieldExpression>
 								</textField>
 							</frame>
 						</jr:listContents>
