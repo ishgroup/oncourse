@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.18.1.final using JasperReports Library version 6.18.1-9d75d1969e774d4f179fb3be8401e98a0e6d1611  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="StudentDetailReport" language="groovy" pageWidth="842" pageHeight="595" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" orientation="Landscape" uuid="82257ef6-8a8b-43e3-8c0c-3c2496e85a30">
-	<property name="name" value="Packing Slip Delivery"/>
+	<property name="name" value="Packing Slip Pickup"/>
 	<property name="entity" value="ProductItem"/>
 	<property name="isSubreport" value="false"/>
 	<property name="isVisible" value="true"/>
-	<property name="keyCode" value="ish.oncourse.slipDeliveryReport"/>
+	<property name="keyCode" value="slipPickupReport"/>
 	<property name="ish.oncourse.title" value="Sales delivery"/>
 	<property name="ish.oncourse.filePrefix" value="saleDelivery"/>
 	<property name="ish.oncourse.description" value="A useful educational report showing an overview of all units a student has undertaken at the training organisation and their outcomes.This report prints in Portrait format."/>
@@ -64,6 +64,7 @@
 	<parameter name="ReportName" class="java.lang.String"/>
 	<field name="product" class="ish.oncourse.server.cayenne.Product"/>
 	<field name="invoiceLine" class="ish.oncourse.server.cayenne.InvoiceLine"/>
+	<field name="invoiceLine.CourseClass" class="ish.oncourse.server.cayenne.CourseClass"/>
 	<field name="datasource.invoiceLine.invoice.productsWithQuantities" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<field name="image.poweredby" class="java.io.InputStream"/>
 	<group name="details">
@@ -96,6 +97,15 @@
 					<reportElement key="textField-19" style="data field" x="120" y="160" width="125" height="25" uuid="3cfeeeb9-3a78-4263-8450-2a4e310d76ac"/>
 					<textElement textAlignment="Left"/>
 					<textFieldExpression><![CDATA[$F{product}.hasTag("Shipped") ? "Shipped" : $F{product}.hasTag("Pickup") ? "Pickup" : "Not set"]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-17" style="Label" x="0" y="180" width="115" height="25" uuid="c58464dc-30bf-48be-921c-09f43b98defb"/>
+					<text><![CDATA[Class:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-20" style="data field" x="120" y="180" width="125" height="25" uuid="3cfeeeb9-3a78-4263-8450-2a4e310d76ac"/>
+					<textElement textAlignment="Left"/>
+					<textFieldExpression><![CDATA[$F{invoiceLine}?.courseClass != null ? $F{invoiceLine}?.courseClass?.startDateTime+", "+$F{invoiceLine}?.courseClass?.course?.name+", "+$F{invoiceLine}?.courseClass?.room?.name+", "+$F{invoiceLine}?.courseClass?.room?.site?.name : "Not found"]]></textFieldExpression>
 				</textField>
 				<componentElement>
 					<reportElement x="440" y="165" width="325" height="30" uuid="8296b6c8-44f6-41f4-b5bd-20109d7eea80"/>
