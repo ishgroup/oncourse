@@ -24,12 +24,13 @@ import { getDefaultInvoiceTerms } from "../entities/invoices/actions";
 import { changeStep, checkoutClearState } from "./actions";
 import CheckoutSelection from "./components/CheckoutSelection";
 import { getCheckoutCurrentStep } from "./utils";
+import { getCustomFieldTypes } from "../entities/customFieldTypes/actions";
 
 export const FORM: string = "QUICK_ENROL_FORM";
-export const CONTACT_ENTITY_NAME: string = "Contact";
 
 interface Props {
   getContactTags?: NoArgFunction;
+  getContactCustomFieldTypes?: NoArgFunction;
   getCountries?: NoArgFunction;
   getLanguages?: NoArgFunction;
   getContactsRelationTypes?: NoArgFunction;
@@ -57,12 +58,14 @@ const Checkout = React.memo<Props>(props => {
     getDefaultTerms,
     clearState,
     getActiveFundingContracts,
+    getContactCustomFieldTypes,
     getQePermissions
   } = props;
 
   const [paymentStatus, setPaymentStatus] = React.useState("");
 
   React.useEffect(() => {
+    getContactCustomFieldTypes();
     getContactTags();
     getCountries();
     getLanguages();
@@ -99,6 +102,7 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  getContactCustomFieldTypes: () => dispatch(getCustomFieldTypes("Contact")),
   getContactTags: () => dispatch(getContactTags()),
   getCountries: () => dispatch(getCountries()),
   getLanguages: () => dispatch(getLanguages()),
