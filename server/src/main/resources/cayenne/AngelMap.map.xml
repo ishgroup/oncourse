@@ -596,6 +596,7 @@
 		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="enabled" type="SMALLINT"/>
+		<db-attribute name="isSubtemplate" type="TINYINT"/>
 		<db-attribute name="entity" type="VARCHAR" length="128"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="keyCode" type="VARCHAR" length="80"/>
@@ -2269,6 +2270,7 @@
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
 		<obj-attribute name="enabled" type="java.lang.Boolean" db-attribute-path="enabled"/>
+		<obj-attribute name="isSubtemplate" type="java.lang.Boolean" db-attribute-path="isSubtemplate"/>
 		<obj-attribute name="entity" type="java.lang.String" db-attribute-path="entity"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="keyCode" type="java.lang.String" db-attribute-path="keyCode"/>
