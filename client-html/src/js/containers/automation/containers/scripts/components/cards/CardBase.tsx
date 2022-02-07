@@ -53,6 +53,9 @@ const styles = theme =>
       "&:hover": {
         backgroundColor: theme.palette.action.hover
       }
+    },
+    summaryContent: {
+      width: "calc(100% - 48px)"
     }
   });
 
@@ -87,10 +90,11 @@ const CardBase = props => {
         classes={{
           root: classes.summaryRoot,
           expanded: classes.summaryExpanded,
-          expandIconWrapper: clsx("p-0-5 mr-2", classes.summaryExpandIcon)
+          expandIconWrapper: clsx("p-0-5 mr-2", classes.summaryExpandIcon),
+          content: classes.summaryContent
         }}
       >
-        <div className="flex-fill centeredFlex" {...dragHandlerProps}>
+        <div className="flex-fill centeredFlex w-100" {...dragHandlerProps}>
           {Boolean(dragHandlerProps) && <DragIndicator color="disabled" />}
           {customHeading ? heading : (
             <div>
