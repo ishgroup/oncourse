@@ -14,7 +14,6 @@ import ListItem from "@mui/material/ListItem";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import Button from "@mui/material/Button";
 import { Radio } from "@mui/material";
-import { prefixer } from "../../../../../common/styles/mixins/prefixer";
 import { filterPastClasses } from "../../../utils";
 import { AppTheme } from "../../../../../model/common/Theme";
 import { getAllMonthsWithSessions } from "../../../../timetable/utils";
