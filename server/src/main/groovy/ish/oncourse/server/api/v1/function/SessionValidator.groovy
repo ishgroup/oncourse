@@ -161,10 +161,10 @@ class SessionValidator {
                 warning.referenceId = contact.id
                 warning.label = contact.fullName
                 warning.type = TUTOR
-                warning.message = "$warning.label is already booked for "
+                warning.message = "Clash for $warning.label with class "
                 rosterClashes.each {
                     format.setTimeZone(it.session.timeZone)
-                    warning.message += "$it.session.courseClass.uniqueCode at ${format.format(it.startDatetime)}(${it.session.timeZone.ID}) \n"
+                    warning.message += "$it.session.courseClass.uniqueCode \n"
                 }
 
                 sessionWarning << warning
@@ -198,11 +198,11 @@ class SessionValidator {
                 warning.referenceId = room.id
                 warning.label = room.name
                 warning.type = ROOM
-                warning.message = "Room $warning.label is already booked for "
+                warning.message = "Clash for Room $warning.label with class "
 
                 roomClashes.each {
                     format.setTimeZone(it.timeZone)
-                    warning.message += "$it.courseClass.uniqueCode at ${format.format(it.startDatetime)}(${it.timeZone.ID}) \n"
+                    warning.message += "$it.courseClass.uniqueCode \n"
                 }
 
                 sessionWarning << warning
