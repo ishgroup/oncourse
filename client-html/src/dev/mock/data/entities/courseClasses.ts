@@ -1902,6 +1902,12 @@ export function mockCourseClasses() {
 
   this.getCourseClassTrainingPlan = () => [];
 
+  this.cancelCourseClassPayload = () => ({
+    classIds: ["2"],
+    refundManualInvoices: true,
+    sendEmail: true,
+  });
+
   const rows: CourseClass[] = generateArraysOfRecords(20, [
     { name: "id", type: "number" },
     { name: "courseName", type: "string" },
