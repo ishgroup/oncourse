@@ -11,6 +11,10 @@ export function CourseClassApiMock(mock) {
     return promiseResolve(config, this.db.getCourseClass(id));
   });
 
+  this.api.onPost("/v1/list/entity/courseClass/cancel").reply(config => {
+    return promiseResolve(config, {});
+  });
+
   this.api.onGet(new RegExp("/v1/list/entity/courseClass/budget/\\d+")).reply(config => {
     return promiseResolve(config, this.db.getCourseClassBudget());
   });
