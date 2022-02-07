@@ -479,10 +479,10 @@ const ScriptsForm = React.memo<Props>(props => {
                     ) : (
                       <>
                         {values.imports && (
-                          <div className="pt-3">
+                          <div className="mb-5">
                             <ScriptCard
                               heading="Import"
-                              className="mt-3"
+                              className="mb-5"
                               onDelete={hasUpdateAccess && !isInternal ? removeImports : null}
                               onAddItem={hasUpdateAccess && !isInternal ? addImport : null}
                               disableExpandedBottomMargin

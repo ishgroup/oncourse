@@ -189,14 +189,15 @@ const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
     let detail = null;
 
     if (type === "Query") {
-      heading = component.entity || type;
+      heading = component.entity ? `Find ${component.entity}` : type;
       detail = component.query;
     } else if (type === "Message") {
-      heading = component.template && component.templateEntity ? component.templateEntity.name : type;
+      heading = "Send message";
+      detail = component.template && component.templateEntity ? component.templateEntity.name : null;
       if (emailTemplates && emailTemplates.length && values && values.options) {
         const templateKeyCode = values.options.filter(o => o.name === component.template);
         if (templateKeyCode.length > 0) {
-          heading = emailTemplates.find(t => t.keyCode === templateKeyCode[0].value).name;
+          detail = emailTemplates.find(t => t.keyCode === templateKeyCode[0].value).name;
         }
       }
     }
