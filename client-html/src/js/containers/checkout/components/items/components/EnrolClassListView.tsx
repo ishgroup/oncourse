@@ -95,8 +95,8 @@ const EnrolClassListView = React.memo<any>(props => {
         getAllMonthsWithSessions(
           visibleClasses.map(c => ({ ...c, start: c.startDateTime, end: c.endDateTime })),
           visibleClasses[0].siteTimezone && visibleClasses[0].siteTimezone.length > 0
-            ? new Date(visibleClasses[0].startDateTime)
-            : appendTimezone(new Date(visibleClasses[0].startDateTime), visibleClasses[0].siteTimezone)
+            ? appendTimezone(new Date(visibleClasses[0].startDateTime), visibleClasses[0].siteTimezone)
+            : new Date(visibleClasses[0].startDateTime)
         )
       );
     }

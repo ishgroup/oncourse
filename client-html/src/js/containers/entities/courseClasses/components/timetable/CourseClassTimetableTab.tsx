@@ -613,8 +613,8 @@ const CourseClassTimetableTab = ({
         getAllMonthsWithSessions(
           updated,
           updated[0].siteTimezone
-            ? new Date(updated[0].start)
-            : appendTimezone(new Date(updated[0].start), updated[0].siteTimezone)
+            ? appendTimezone(new Date(updated[0].start), updated[0].siteTimezone)
+            : new Date(updated[0].start)
         )
       );
     }
