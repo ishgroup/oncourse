@@ -5,7 +5,7 @@
 	<property name="entity" value="ProductItem"/>
 	<property name="isSubreport" value="false"/>
 	<property name="isVisible" value="true"/>
-	<property name="keyCode" value="slipPickupReport"/>
+	<property name="keyCode" value="ish.oncourse.slipPickupReport"/>
 	<property name="ish.oncourse.title" value="Sales delivery"/>
 	<property name="ish.oncourse.filePrefix" value="saleDelivery"/>
 	<property name="ish.oncourse.description" value="A useful educational report showing an overview of all units a student has undertaken at the training organisation and their outcomes.This report prints in Portrait format."/>
