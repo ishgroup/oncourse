@@ -558,14 +558,14 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     const leadId = query.get("leadId");
     const courseClassId = query.get("courseClassId");
     const waitingListIds = query.get("waitingListIds");
-    const cartIds = query.get("cartIds");
+    const cartId = query.get("cartId");
 
     if (window.location.search) {
       history.replace("/checkout");
     }
-    if (cartIds) {
+    if (cartId) {
       processCeckoutCartIds(
-        JSON.parse(cartIds),
+        cartId,
         onChangeStep,
         setActiveField,
         setCustomLoading,
