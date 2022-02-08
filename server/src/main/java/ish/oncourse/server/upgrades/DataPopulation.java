@@ -70,8 +70,7 @@ public class DataPopulation implements Runnable {
 		for (var path : filePaths) {
 			try (InputStream resourceAsStream = ResourcesUtil.getResourceAsInputStream(path)) {
 					Yaml yaml = new Yaml();
-					Map<String, Object> yamlMap = yaml.load(resourceAsStream);
-					resourcesList.add(yamlMap);
+					resourcesList.addAll(yaml.load(resourceAsStream));
 			} catch (IOException ex) {
 				logger.warn("failed to import file {}: {}", type.getDisplayName(), path);
 			}
