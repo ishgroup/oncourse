@@ -38,3 +38,14 @@ databaseChangeLog:
             constraintName: fk_Checkout_Payer
             referencedColumnNames: id
             referencedTableName: Contact
+
+  - changeSet:
+      id: 108-3
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: Checkout
+      changes:
+        - sql: "DELETE FROM Checkout"
+        - sql: "DELETE FROM QueuedRecord WHERE tableName='Checkout'"
