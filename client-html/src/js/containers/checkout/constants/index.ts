@@ -32,7 +32,8 @@ export const CHECKOUT_COURSE_CLASS_COLUMNS = "course.name,"
   + "relatedFundingSource.id,"
   + "sessions.id,"
   + "relatedFundingSource.fundingProvider.id,"
-  + "vetPurchasingContractID";
+  + "vetPurchasingContractID,"
+  + "course.id";
 
 export const CheckoutCurrentStep = createStringEnum([
   "shoppingCart",

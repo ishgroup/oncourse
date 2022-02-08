@@ -26,7 +26,6 @@ import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { ContactsState } from "../reducers";
 import { EditViewProps } from "../../../../model/common/ListView";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
-import CheckoutService from "../../../checkout/services/CheckoutService";
 
 interface ContactsFinancialProps extends EditViewProps<Contact> {
   taxTypes?: Tax[];
@@ -100,11 +99,8 @@ const openRow = value => {
   openInternalLink(`/${route}/${relatedEntityId}`);
 };
 
-const openShopingCartRow = async (row: Cart) => {
-  const cartIds = await CheckoutService.getCartDataIds(row.id);
-  if (cartIds) {
-    openInternalLink(`/checkout?cartIds=${JSON.stringify(cartIds)}`);
-  }
+const openShopingCartRow = (row: Cart) => {
+  openInternalLink(`/checkout?cartId=${row.id}`);
 };
 
 const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {

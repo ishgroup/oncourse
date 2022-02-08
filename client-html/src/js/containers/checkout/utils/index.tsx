@@ -505,7 +505,8 @@ export const checkoutCourseClassMap = ({ id, values }): CheckoutCourseClass => {
     relatedFundingSourceId: JSON.parse(values[17]),
     sessionIds: JSON.parse(values[18]),
     fundingProviderId: values[19] ? Number(values[19]) : null,
-    vetPurchasingContractID: values[20]
+    vetPurchasingContractID: values[20],
+    courseId: values[21] ? Number(values[21]) : null,
   };
 
   const strTutorNames = cc.tutors;

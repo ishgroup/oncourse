@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CartIds, ProductType } from "@api/model";
+import { ProductType } from "@api/model";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import EntityService from "../../../common/services/EntityService";
 import { getCustomColumnsMap } from "../../../common/utils/common";
@@ -34,12 +34,14 @@ import uniqid from "../../../common/utils/uniqid";
 import { getProductAqlType } from "../../entities/sales/utils";
 import { decimalPlus } from "../../../common/utils/numbers/decimalCalculation";
 
-export const processCeckoutCartIds = async (cartIds: CartIds, onChangeStep, setActiveField, setCustomLoading, dispatch) => {
+export const processCeckoutCartIds = async (cartId, onChangeStep, setActiveField, setCustomLoading, dispatch) => {
   setCustomLoading(true);
+
+  const cartIds = await CheckoutService.getCartDataIds(cartId);
 
   const enrolments: CheckoutEnrolmentCustom[] = [];
   const purchases: CheckoutProductPurchase[] = [];
-  
+
   try {
     for (const contactRow of cartIds.contacts) {
       const contact = await EntityService.getPlainRecords("Contact", CHECKOUT_CONTACT_COLUMNS, `id is ${contactRow.contactId}`, 1)
@@ -90,8 +92,8 @@ export const processCeckoutCartIds = async (cartIds: CartIds, onChangeStep, setA
         );
         if (classResponse.rows.length) {
           const courseClass = [classResponse.rows[0]].map(checkoutCourseClassMap)[0];
-          const plainCourse = await EntityService.getPlainRecords("Course", "code,name,isTraineeship", `id in (${courseClass.courseId})`)
-            .then(res => res.rows.map(row => checkoutCourseMap(getCustomColumnsMap("code,name,isTraineeship")(row))))[0];
+          const plainCourse = await EntityService.getPlainRecords("Course", "code,name,isTraineeship", `id is ${courseClass.courseId}`, 1, 0)
+            .then(res => res.rows.map(row => checkoutCourseMap(getCustomColumnsMap("code,name,isTraineeship")(row)))[0]);
 
           enrolment.courseClass = {
             ...plainCourse,
@@ -176,7 +178,7 @@ export const processCeckoutCartIds = async (cartIds: CartIds, onChangeStep, setA
           });
         });
 
-        return await CheckoutService.getContactDiscounts(
+        await CheckoutService.getContactDiscounts(
           en.contactId,
           en.courseClass.class.id,
           courseIds.toString(),
@@ -186,21 +188,24 @@ export const processCeckoutCartIds = async (cartIds: CartIds, onChangeStep, setA
           membershipIds.toString(),
           total
         )
-          .then(res => {
-            if (res.length) {
-              const discounts = res.map(r => r.discount);
-              en.courseClass.discounts = discounts;
-              en.courseClass.discount = discounts[0];
-            }
-          });
+        .then(res => {
+          if (res.length) {
+            const discounts = res.map(r => r.discount);
+            en.courseClass.discounts = discounts;
+            en.courseClass.discount = discounts[0];
+          }
+        });
       }
     }
   } catch (res) {
+    console.error(res);
     instantFetchErrorHandler(dispatch, res);
     setCustomLoading(false);
   }
 
   dispatch(checkoutAddItems({ enrolments, purchases, keepChecked: true }));
+  onChangeStep(CheckoutCurrentStep.summary);
+  setActiveField(CheckoutPage.summary);
   dispatch(checkoutUpdateSummaryPrices());
   setCustomLoading(false);
 };
