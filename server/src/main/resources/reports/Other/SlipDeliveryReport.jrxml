@@ -8,8 +8,8 @@
 	<property name="keyCode" value="ish.oncourse.slipDeliveryReport"/>
 	<property name="ish.oncourse.title" value="Sales delivery"/>
 	<property name="ish.oncourse.filePrefix" value="saleDelivery"/>
-	<property name="ish.oncourse.description" value="A useful educational report showing an overview of all units a student has undertaken at the training organisation and their outcomes.This report prints in Portrait format."/>
-	<property name="ish.oncourse.pdfFileName" value="Students.pdf"/>
+	<property name="ish.oncourse.description" value="This report will be for the college to attach to sold products as a packing slip for shipping."/>
+	<property name="ish.oncourse.pdfFileName" value="Shipped_sales.pdf"/>
 	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="true"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
