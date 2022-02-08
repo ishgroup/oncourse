@@ -21,6 +21,11 @@ import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import CodeIcon from '@mui/icons-material/Code';
 import IconButton from "@mui/material/IconButton";
 import Divider from "@mui/material/Divider";
+import Accordion from "@mui/material/Accordion";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import CheckIcon from "@mui/icons-material/Check";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { mapSelectItems } from "../../../../../common/utils/common";
 import { usePrevious } from "../../../../../common/utils/hooks";
@@ -48,6 +53,7 @@ import AppBarContainer from "../../../../../common/components/layout/AppBarConta
 import AddScriptAction from "../components/AddScriptAction";
 import BoltIcon from "../../../../../../images/icon-bolt.svg";
 import ScriptIcon from "../../../../../../images/icon-script.svg";
+import { Theme } from "@mui/material";
 
 const manualUrl = getManualLink("scripts");
 const getAuditsUrl = (id: number) => `audit?search=~"Script" and entityId == ${id}`;
@@ -135,6 +141,16 @@ const styles = theme =>
     queryIcon: {
       backgroundColor: "#fef4e8 !important",
       color: "#f7941d"
+    },
+    technicalInfoRoot: {
+      boxShadow: "none",
+      background: "none",
+      "&::before": {
+        content: "none",
+      },
+    },
+    technicalInfoExpanded: {
+      margin: "0px !important",
     },
   });
 
@@ -230,6 +246,7 @@ const ScriptsForm = React.memo<Props>(props => {
 
   const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
   const [viewMode, setViewMode] = useState<ScriptViewMode>("Cards");
+  const [expandInfo, setExpandInfo] = useState<boolean>(true);
 
   const isInternal = useMemo(() => values && values.keyCode && values.keyCode.startsWith("ish."), [values && values.keyCode]);
   const isOriginallyInternal = useMemo(
@@ -427,13 +444,40 @@ const ScriptsForm = React.memo<Props>(props => {
           {values && (
             <>
               <Grid container className="mb-5">
-                <Grid item xs={12} sm={9}>
-                  <Typography variant="body1" className="mb-1">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, (short)
-                  </Typography>
-                  <Typography variant="caption" className="mb-1">
+                <Grid item xs={12} sm={9} className="mb-4">
+                  <FormField
+                    type="multilineText"
+                    name="description"
+                    disabled={isInternal}
+                    className="overflow-hidden mb-1"
+                    hideLabel
+                    isInline
+                  />
+                  <Typography variant="caption">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. (description)
                   </Typography>
+                </Grid>
+                <Grid item xs={12} sm={9}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6} md={3}>
+                      <FormField
+                        type="number"
+                        name="daysInAdvance"
+                        label="Days in advance"
+                        disabled={isInternal}
+                        className="overflow-hidden mb-1"
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <FormField
+                        type="text"
+                        name="email"
+                        label="From address"
+                        disabled={isInternal}
+                        className="overflow-hidden mb-1"
+                      />
+                    </Grid>
+                  </Grid>
                 </Grid>
               </Grid>
               <Divider className="mb-5" />
@@ -444,7 +488,17 @@ const ScriptsForm = React.memo<Props>(props => {
                       <IconButton size="large" className={clsx(classes.cardLeftIcon, classes.cardBoltIcon)}>
                         <img src={BoltIcon} alt="icon-bolt" />
                       </IconButton>
-                      <ScriptCard heading="Trigger" disableExpandedBottomMargin>
+                      <ScriptCard
+                        heading="Trigger"
+                        disableExpandedBottomMargin
+                        customButtons={(
+                          <FormField
+                            type="switch"
+                            name="enabled"
+                            color="primary"
+                          />
+                        )}
+                      >
                         <TriggerCardContent
                           classes={classes}
                           dispatch={dispatch}
@@ -534,55 +588,7 @@ const ScriptsForm = React.memo<Props>(props => {
                 </Grid>
 
                 <Grid item xs={3}>
-                  <div>
-                    <FormField
-                      type="switch"
-                      name="enabled"
-                      label="Enabled"
-                      color="primary"
-                    />
-                  </div>
-                  <FormField
-                    label="Output"
-                    name="outputType"
-                    type="select"
-                    items={outputTypes}
-                    disabled={isInternal}
-                    placeholder="no output"
-                    className="mt-2"
-                  />
-                  <div className="mt-2 pt-1">
-                    <Bindings
-                      defaultVariables={defaultVariables}
-                      dispatch={dispatch}
-                      form={form}
-                      name="variables"
-                      label="Variables"
-                      itemsType="label"
-                      disabled={isInternal}
-                    />
-                  </div>
-                  <div className="mt-3">
-                    <Bindings
-                      dispatch={dispatch}
-                      form={form}
-                      itemsType="component"
-                      name="options"
-                      label="Options"
-                      disabled={isInternal}
-                      emailTemplates={emailTemplates}
-                    />
-                  </div>
-
-                  <FormField
-                    type="multilineText"
-                    name="description"
-                    label="Description"
-                    disabled={isInternal}
-                    className="overflow-hidden mt-3"
-                  />
-
-                  <Grid container columnSpacing={3}>
+                  <Grid container columnSpacing={3} className="mb-5">
                     <Grid item xs className="d-flex">
                       <div className="flex-fill">
                         <Typography variant="caption" color="textSecondary">
@@ -591,9 +597,12 @@ const ScriptsForm = React.memo<Props>(props => {
 
                         {values.lastRun && values.lastRun.length ? (
                           values.lastRun.map((runDate, index) => (
-                            <Typography variant="body1" key={runDate + index}>
-                              {formatRelativeDate(new Date(runDate), new Date(), DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL)}
-                            </Typography>
+                            <div key={runDate + index} className="centeredFlex mb-0-5">
+                              <CheckIcon className="mr-0-5" color="success" />
+                              <Typography variant="body1">
+                                {formatRelativeDate(new Date(runDate), new Date(), DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL)}
+                              </Typography>
+                            </div>
                           ))
                         ) : (
                           <Typography variant="subtitle1" color="textSecondary">
@@ -603,6 +612,50 @@ const ScriptsForm = React.memo<Props>(props => {
                       </div>
                     </Grid>
                   </Grid>
+                  <Accordion
+                    defaultExpanded={expandInfo}
+                    onChange={() => setExpandInfo(!expandInfo)}
+                    classes={{ root: classes.technicalInfoRoot, expanded: classes.technicalInfoExpanded }}
+                  >
+                    <AccordionSummary classes={{ root: "p-0" }} expandIcon={<ExpandMoreIcon />}>
+                      <Typography className="heading" component="div">
+                        Technical info
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails classes={{ root: "p-0" }}>
+                      <div className="mb-2">
+                        <Bindings
+                          defaultVariables={defaultVariables}
+                          dispatch={dispatch}
+                          form={form}
+                          name="variables"
+                          label="Variables"
+                          itemsType="label"
+                          disabled={isInternal}
+                        />
+                      </div>
+                      <FormField
+                        label="Output"
+                        name="outputType"
+                        type="select"
+                        items={outputTypes}
+                        disabled={isInternal}
+                        placeholder="no output"
+                      />
+                    </AccordionDetails>
+                  </Accordion>
+                  <div className="mt-3">
+                    <Bindings
+                      dispatch={dispatch}
+                      form={form}
+                      itemsType="component"
+                      name="options"
+                      label="Add Option"
+                      disabled={isInternal}
+                      emailTemplates={emailTemplates}
+                    />
+                  </div>
+
                 </Grid>
               </Grid>
             </>

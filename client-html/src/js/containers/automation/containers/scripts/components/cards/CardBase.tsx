@@ -73,7 +73,8 @@ const CardBase = props => {
     disableExpandedBottomMargin,
     onAddItem,
     onDetailsClick,
-    customHeading
+    customHeading,
+    customButtons
   } = props;
 
   return (
@@ -111,6 +112,7 @@ const CardBase = props => {
           )}
         </div>
         <div>
+          {customButtons}
           {Boolean(onDelete) && (
             <IconButton className="fs2 p-1" onClick={onDelete} data-component={heading}>
               <Delete fontSize="inherit" />
