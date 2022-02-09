@@ -94,6 +94,7 @@ const useStyles = makeStyles((theme: AppTheme) => ({
 }));
 
 interface Props {
+  isNew?: boolean;
   title?: any;
   actions?: any;
   hideHelpMenu?: boolean;
@@ -126,7 +127,7 @@ const AppBarContainer = (props: Props) => {
   const {
     title, actions, hideHelpMenu, children, noDrawer, noTitle, noScrollSpy, values, manualUrl, getAuditsUrl, disabled, invalid, fields,
     disableInteraction, hideSubmitButton, disabledScrolling, createdOn, modifiedOn, onAddMenu, customAddMenu, submitButtonText,
-    onCloseClick, hamburgerMenu, opened, containerClass, closeButtonText
+    onCloseClick, hamburgerMenu, opened, containerClass, closeButtonText, isNew
   } = props;
   
   const dispatch = useAppDispatch();
@@ -193,6 +194,8 @@ const AppBarContainer = (props: Props) => {
                 fields={fields}
                 disableInteraction={disableInteraction}
                 twoColumn
+                defaultEditable={isNew}
+                isNew={isNew}
               />
             )
           }

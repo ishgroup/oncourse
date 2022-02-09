@@ -396,9 +396,10 @@ const ScriptsForm = React.memo<Props>(props => {
           getAuditsUrl={getAuditsUrl}
           disabled={!dirty}
           invalid={invalid}
-          title={(isNew || !values.name) ? "New" : values.name.trim()}
+          isNew={isNew}
+          title={!values.name ? "" : values.name.trim()}
           disableInteraction={isInternal}
-          opened={isNew || Object.keys(syncErrors).includes("name")}
+          opened={!values.name || Object.keys(syncErrors).includes("name")}
           noDrawer
           fields={(
             <Grid item xs={12}>
@@ -407,6 +408,7 @@ const ScriptsForm = React.memo<Props>(props => {
                 label="Name"
                 disabled={isInternal}
                 required
+                placeholder={` `}
               />
             </Grid>
           )}
@@ -447,14 +449,23 @@ const ScriptsForm = React.memo<Props>(props => {
                 <Grid item xs={12} sm={9} className="mb-4">
                   <FormField
                     type="multilineText"
-                    name="description"
+                    name="shortDescription"
                     disabled={isInternal}
                     className="overflow-hidden mb-1"
                     hideLabel
                     isInline
+                    placeholder="Short description"
                   />
                   <Typography variant="caption">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. (description)
+                    <FormField
+                      type="multilineText"
+                      name="description"
+                      disabled={isInternal}
+                      className="overflow-hidden mb-1"
+                      hideLabel
+                      isInline
+                      placeholder="Description"
+                    />
                   </Typography>
                 </Grid>
                 <Grid item xs={12} sm={9}>

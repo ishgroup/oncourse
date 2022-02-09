@@ -21,11 +21,24 @@ import Collapse from "@mui/material/Collapse";
 const styles = createStyles(theme => ({
   addActionButton: {
     position: "relative",
+    marginLeft: theme.spacing(-9),
+    paddingLeft: theme.spacing(9),
+    zIndex: 1,
     "&:hover": {
       "& $cardLeftIcon": {
         color: theme.heading.color
+      },
+      "& $buttonRoot": {
+        height: "auto",
+        padding: theme.spacing(3.5, 2),
+        border: `2px dashed ${theme.palette.divider}`,
+        visibility: "visible",
+        opacity: 1,
+      },
+      "& $addActionWrapper": {
+        margin: theme.spacing(3, 0),
       }
-    }
+    },
   },
   addActionWrapper: {
     minHeight: theme.spacing(5.75),
@@ -33,16 +46,6 @@ const styles = createStyles(theme => ({
       duration: theme.transitions.duration.standard,
       easing: theme.transitions.easing.easeInOut
     }),
-    "&:hover": {
-      padding: theme.spacing(3, 0),
-      "& $buttonRoot": {
-        height: "auto",
-        padding: theme.spacing(3.5, 2),
-        border: `2px dashed ${theme.palette.divider}`,
-        visibility: "visible",
-        opacity: 1,
-      }
-    }
   },
   buttonRoot: {
     height: 0,
@@ -57,7 +60,7 @@ const styles = createStyles(theme => ({
     opacity: 0,
   },
   activeStep: {
-    padding: theme.spacing(3, 0),
+    margin: theme.spacing(3, 0),
       "& $buttonRoot": {
       height: "auto",
         padding: theme.spacing(3.5, 2),
@@ -104,7 +107,7 @@ const styles = createStyles(theme => ({
   },
   cardLeftIcon: {
     position: "absolute",
-    left: -59,
+    left: 13,
     width: 20,
     height: 20,
     zIndex: 1,
@@ -117,7 +120,7 @@ const styles = createStyles(theme => ({
     color: theme.heading.color
   },
   activeLeftButton: {
-    left: -75,
+    left: -3,
     width: 50,
     height: 50,
     backgroundColor: "#eaebe6 !important",
@@ -187,7 +190,7 @@ const AddScriptAction: React.FC<any> = props => {
         size={active ? "large" : "small"}
         className={clsx(classes.cardLeftIcon, { [classes.cardPlusIconActive]: open, [classes.activeLeftButton]: active })}
       >
-        {active ? <AddIcon /> : <AddCircleOutlineIcon />}
+        {active ? <AddIcon onClick={() => setOpen(true)} /> : <AddCircleOutlineIcon onClick={() => setOpen(true)} />}
       </IconButton>
       <Collapse in={!open}>
         <div className={clsx(classes.addActionWrapper, { [classes.activeStep]: active })}>

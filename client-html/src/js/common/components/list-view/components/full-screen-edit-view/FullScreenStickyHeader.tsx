@@ -7,6 +7,7 @@ import {
  ClickAwayListener, Collapse, Typography, Grid 
 } from "@mui/material";
 import { Edit } from "@mui/icons-material";
+import Chip from "@mui/material/Chip";
 import { AppTheme } from "../../../../../model/common/Theme";
 import { APP_BAR_HEIGHT, STICKY_HEADER_EVENT } from "../../../../../constants/Config";
 
@@ -85,7 +86,11 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     marginTop: 0,
     height: APP_BAR_HEIGHT
   },
-  disableInteraction: {}
+  disableInteraction: {},
+  newChip: {
+    backgroundColor: "rgba(69, 170, 5, 0.1)",
+    color: "#45AA05",
+  }
 }));
 
 interface Props {
@@ -98,6 +103,8 @@ interface Props {
   disableInteraction?: boolean,
   opened?: boolean,
   fields?: any;
+  defaultEditable?: boolean;
+  isNew?: boolean;
 }
 
 const FullScreenStickyHeader = React.memo<Props>(props => {
@@ -107,12 +114,14 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
     opened,
     fields,
     twoColumn,
-    disableInteraction
+    disableInteraction,
+    defaultEditable = false,
+    isNew,
   } = props;
 
   const classes = useStyles();
   
-  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState<boolean>(defaultEditable);
   const [isStuck, setIsStuck] = useState<boolean>(false);
 
   const onClickAway = () => {
@@ -179,6 +188,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
                 <Typography
                   variant="h5"
                   className={clsx(
+                    "align-items-center",
                     classes.titleText,
                     !twoColumn && !opened && 'mb-1',
                     { [classes.titleTextOnStuck]: showTitleOnly },
@@ -190,6 +200,9 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
                   <span className="text-truncate">
                     {title}
                   </span>
+                  {isNew && (
+                    <Chip label="New" size="small" className={clsx("fontWeight600 text-uppercase ml-1", classes.newChip)} />
+                  )}
                   <Edit color="primary" className={classes.titleIcon} />
                 </Typography>
               </Collapse>
