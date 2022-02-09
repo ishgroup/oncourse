@@ -1,0 +1,53 @@
+databaseChangeLog:
+  - changeSet:
+      id: 109-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - not:
+            - columnExists:
+                tableName: Script
+                columnName: shortDescription
+            - columnExists:
+                tableName: Import
+                columnName: shortDescription
+            - columnExists:
+                tableName: EmailTemplate
+                columnName: shortDescription
+            - columnExists:
+                tableName: ExportTemplate
+                columnName: shortDescription
+            - columnExists:
+                tableName: Report
+                columnName: shortDescription
+      changes:
+        - addColumn:
+            tableName: Script
+            columns:
+              - column:
+                  name: shortDescription
+                  type: VARCHAR(128)
+        - addColumn:
+            tableName: Import
+            columns:
+              - column:
+                  name: shortDescription
+                  type: VARCHAR(128)
+        - addColumn:
+            tableName: Report
+            columns:
+              - column:
+                  name: shortDescription
+                  type: VARCHAR(128)
+        - addColumn:
+            tableName: ExportTemplate
+            columns:
+              - column:
+                  name: shortDescription
+                  type: VARCHAR(128)
+        - addColumn:
+            tableName: EmailTemplate
+            columns:
+              - column:
+                  name: shortDescription
+                  type: VARCHAR(128)
