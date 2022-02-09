@@ -135,7 +135,6 @@ const LeadGeneral = (props: Props) => {
           dispatch(change(form, "contactId", Number(contactId)));
           dispatch(change(form, "contactName", contactName));
           dispatch(change(form, "relatedSellables", relatedSellables));
-          asyncUpdateEstimatedValue(dispatch, form, relatedSellables, 1);
         })
         .catch(res => instantFetchErrorHandler(dispatch, res))
         .finally(() => {
