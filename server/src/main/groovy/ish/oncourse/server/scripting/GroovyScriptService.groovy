@@ -484,10 +484,23 @@ class GroovyScriptService {
             return ScriptResult.success(result)
         } catch (ScriptException e) {
             logger.error("Execution failed for '{}'.", script.getName(), e)
-            return ScriptResult.failure(e.getMessage())
+            return ScriptResult.failure(e.getMessage() + " \nError in line: " + getErrorLineInScript(e))
         }
     }
 
+    private static int getErrorLineInScript(Exception e) {
+        def cause = rootCause(e)
+        def line = cause.stackTrace.find {
+            it.fileName ==~ /^Script\d+\.groovy$/
+        }.lineNumber
+        return line - DEFAULT_IMPORTS.lines().count() - PREPARE_API.lines().count() - PREPARE_LOGGER.lines().count()
+    }
+
+    private static Throwable rootCause(Exception e) {
+        Throwable throwable = e
+        while (throwable.cause != null) throwable = throwable.cause
+        return throwable
+    }
 
     void runScript(Script script) throws ExecutionException {
         runScript(script, ScriptParameters.empty())
