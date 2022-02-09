@@ -90,7 +90,7 @@
   enabled: false
   triggerType: CRON
   schedule: "@daily-morning"
-  description: Send a course completion survey to all students who have recently passed the timing threshold for the release of the survey. You can alter the timing of this release within your survey data collection forms.
+  description: Send the defined completion survey to all students who have recently passed the timing threshold for the release of the survey. You can alter the timing of this release within your survey data collection forms.
   short: Invite students to complete the survey data collection form upon completion.
   category: Compliance
   tag: Popular
@@ -672,7 +672,6 @@
     - name: number_of_days
       dataType: TEXT
       value: "0"
-      description: Set the number of days from class start that you'd like the notification to be sent. Setting this to 0 will send it on the day of the class.\
     - name: sessionCommencementTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.tutorNoticeOfSessionCommencement"
@@ -686,8 +685,8 @@
   enabled: false
   triggerType: CRON
   schedule: "@weekly"
-  description: Send a weekly reminder email to students who haven't supplied a USI number to you, but are required to do so. remindering them to supply their USI number, and send a notice to the default onCourse admin of how many students were contacted each time this message is sent
-  short: 1234
+  description: Send a weekly reminder email to students who haven't supplied a USI number to you, but are required to do so. usiReminderTemplate is the defined message template, usiRequiredDate is the date from which the script will start to look for missing USI numbers.
+  short: For students who are required to provide you with their USI number but haven't yet, send them a reminder.
   category: Compliance
   tag:
   options:
@@ -704,9 +703,9 @@
   enabled: false
   triggerType: CRON
   schedule: "@daily-morning"
-  description: Send the VET completion survey to all students who completed a VET course recently.
-  short: 1234
-  category: 1234
+  description: Send the completion survey defined in vetCourseSurveyTemplate to all VET students who have recently passed the timing threshold for the release of the survey. You can alter the timing of this release within your survey data collection forms.
+  short: Invite VET students to complete the survey data collection form upon completion.
+  category: Marketing
   tag:
   options:
     - name: vetCourseSurveyTemplate
@@ -720,10 +719,10 @@
   triggerType: ENTITY_EVENT
   entityClass: Voucher
   entityEventType: CREATE_OR_UPDATE
-  description: Send an email to the student with information about a voucher they have purchased
-  short: 1234
-  category: 1234
-  tag:
+  description: Send the message template defined in voucherEmailTemplate to the student with information about the voucher they have purchased.
+  short: When someone purchases a voucher from you, this will send them the voucher information in an email for later use.
+  category: Sales
+  tag: Popular
   options:
     - name: voucherEmailTemplate
       dataType: MESSAGE_TEMPLATE
@@ -735,9 +734,9 @@
   enabled: false
   triggerType: CRON
   schedule: "@weekly"
-  description: Send an email to the student if they are on the waiting list with information about upcoming classes scheduled
-  short: 1234
-  category: 1234
+  description: Send contacts on the waiting list a notification when classes become available in those courses. waitingListReminderTemplate defines the message template sent to contacts.
+  short: Let contacts on a waiting list know when new classes become available for enrolment.
+  category: Marketing
   tag:
   options:
     - name: waitingListReminderTemplate
@@ -750,9 +749,9 @@
   enabled: false
   triggerType: CRON
   schedule: "@weekly"
-  description: Send an email with weekly finance summary based on 'Trial Balance' report.
-  short: 1234
-  category: 1234
+  description: Send an email once a week to the system admin email address containing a Trial Balance report for the last 7 days. reportKeycode is the defined message template sent.
+  short: Once a week, send a trial balance summary for the last seven (7) days to the system admin email address.
+  category: Accounting
   tag:
   options:
     - name: reportKeycode
@@ -765,9 +764,9 @@
   enabled: false
   triggerType: CRON
   schedule: "@daily-morning"
-  description: Send SurveyMonkey survey invite upon enrolment completion
-  short: 1234
-  category: 1234
+  description: Send an invite to a SurveyMonkey survey to students who have just completed an enrolment. If a tag is defined in tagName, then will only run for courses tagged with defined tag. Otherwise it will run for all enrolment completions.
+  short: Requires an active SurveyMonkey integration to use. On completion of an enrolment into certain courses, send an invite to a SurveyMonkey survey.
+  category: Integrations
   tag:
   options:
     - name: tagName
@@ -780,9 +779,9 @@
   enabled: false
   triggerType: ONCOURSE_EVENT
   onCourseEventType: ENROLMENT_SUCCESSFUL
-  description: Send SurveyMonkey survey invite upon enrolment
-  short: 1234
-  category: 1234
+  description: Send an invite to a SurveyMonkey survey to students who have just enrolled. If a tag is defined in tagName, then will only run for enrolments in courses tagged with defined tag.
+  short: Requires an active SurveyMonkey integration to use. On enrolment into certain courses, send an invite to a SurveyMonkey survey.
+  category: Integrations
   tag:
   options:
     - name: tagName
@@ -795,9 +794,9 @@
   enabled: false
   triggerType: CRON
   schedule: "@daily-morning"
-  description: Send SurveyGizmo invite upon enrolment completion
-  short: 1234
-  category: 1234
+  description: Send an invite to a SurveyGizmo survey to students who have just enrolled. If a tag is defined in tagName, then will only run for enrolments in courses tagged with defined tag. surveyInvitationTemplate defines the message template the invitation is sent in.
+  short: Requires an active SurveyGizmo integration to use. On enrolment into certain courses, send an invite to a SurveyGizmo survey.
+  category: Integrations
   tag:
   options:
     - name: surveyInvitationTemplate
@@ -813,9 +812,9 @@
   enabled: false
   triggerType: ONCOURSE_EVENT
   onCourseEventType: ENROLMENT_SUCCESSFUL
-  description: Send SurveyGizmo invite upon enrolment
-  short: 1234
-  category: 1234
+  description: Send an invite to a SurveyGizmo survey to students who have just enrolled. If a tag is defined in tagName, then will only run for enrolments in courses tagged with defined tag.
+  short: Requires an active SurveyGizmo integration to use. On enrolment into certain courses, send an invite to a SurveyGizmo survey.
+  category: Integrations
   tag:
   options:
     - name: surveyInvitationTemplate
@@ -832,8 +831,8 @@
   triggerType: ONCOURSE_EVENT
   onCourseEventType: ENROLMENT_CANCELLED
   description: This script finds all single session classes taught by the same tutor in the same room with overlapping times and keeps the places available in sync. For each enrolment in Class A, the maximum available places in Class B is reduced by one. This is useful if one class is a subset of another (eg. a refresher First Aid class where students need only come to the second half of the regular First Aid class). If you enable this script, you'll also want to enable 'Synchronise availability (enrolment)'
-  short: 1234
-  category: 1234
+  short: If you have concurrent classes running that share the same tutor, room and timetable, this will synchronise the enrolment cancellations between those classes. Requires Synchronise availability (enrolment) to be active
+  category: Class
   tag:
   
 - name: Synchronise availability (enrolment)
@@ -843,8 +842,8 @@
   triggerType: ONCOURSE_EVENT
   onCourseEventType: ENROLMENT_SUCCESSFUL
   description: This script finds all single session classes taught by the same tutor in the same room with overlapping times and keeps the places available in sync. For each enrolment in Class A, the maximum available places in Class B is reduced by one. This is useful if one class is a subset of another (eg. a refresher First Aid class where students need only come to the second half of the regular First Aid class). If you enable this script, you'll also want to enable 'Synchronise availability (cancellation)'
-  short: 1234
-  category: 1234
+  short: If you have concurrent classes running that share the same tutor, room and timetable, this will synchronise the enrolments between those classes. Requires Synchronise availability (cancellation) to be active
+  category: Class
   tag:
   
 - name: TalentLMS course enrolment
@@ -853,11 +852,11 @@
   enabled: false
   triggerType: ONCOURSE_EVENT
   onCourseEventType: ENROLMENT_SUCCESSFUL
-  description: This script will create enrolments in TalentLMS. Students will be matched by email address and if none exists in TalentLMS, a student will be created. That student will be enrolled in the TalentLMS code matching the course code in onCourse.
-  short: 1234
-  category: 1234
+  description: This script will create enrolments in TalentLMS. Students will be matched by email address and if none exists in TalentLMS, a student will be created. That student will be enrolled in the TalentLMS code matching the course code in onCourse. Create course enrolment in Talent LMS. One TalentLMS course per unit within an onCourse class. TalentLMS code would be ABC-123-XYZ (where XYZ is the unit code).
+  short: Requires an active TalentLMS Integration. Create course enrolments in Talent LMS when a student enrols into a shared course that exists in onCourse and TalentLMS.
+  category: Integrations
   tag:
-   Create course enrolment in Talent LMS. One TalentLMS course per unit within an onCourse class. TalentLMS code would be ABC-123-XYZ (where XYZ is the unit code)
+
   
 - name: Trial balance
   body: ish.script.trialBalance.groovy
@@ -865,9 +864,9 @@
   enabled: true
   triggerType: ON_DEMAND
   outputType: PDF
-  description: Print pdf report to provide a more general overview of transactions made over a specified period of time.This report prints in Landscape format
-  short: 1234
-  category: 1234
+  description: Generate a trial balance report for the date period defined between fromDate and toDate. Run from the Dashboard.
+  short: For the defined from and to dates, generate a Trial Balance pdf report.
+  category: Finance
   tag:
   variables:
     - name: fromDate
