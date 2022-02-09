@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
+import React, { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import Grid from "@mui/material/Grid";
 import { FormControlLabel } from "@mui/material";
@@ -44,26 +44,41 @@ interface Props {
   values?: any;
 }
 
-const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
+interface ScriptItemProps extends Props {
+  component: any;
+  index: number;
+  item: any;
+  onDragging: (isDragging: boolean) => void;
+  isDragging: boolean;
+}
+
+const ScriptCardItem: React.FC<ScriptItemProps & WrappedFieldArrayProps> = props => {
   const {
     fields,
+    showConfirm,
     dispatch,
     meta: { form },
     classes,
-    showConfirm,
     hasUpdateAccess,
     isInternal,
     onInternalSaveClick,
     emailTemplates,
     addComponent,
-    values
+    values,
+    component,
+    index,
+    item,
+    onDragging,
+    isDragging,
   } = props;
 
-  const onDelete = (e, index) => {
+  const [expand, setExpand] = useState<boolean>(false);
+
+  const onDelete = (e, i) => {
     e.stopPropagation();
     showConfirm({
       onConfirm: () => {
-        fields.remove(index);
+        fields.remove(i);
       },
       confirmMessage: "Script component will be deleted permanently"
     });
@@ -203,13 +218,13 @@ const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
     }
 
     return (
-      <Grid container className="align-items-center">
-        <Grid item sm={detail ? 4 : 12}>
-          <Typography className="heading" component="div">
+      <Grid container className="align-items-center" spacing={2}>
+        <Grid item sm={detail && !expand ? 4 : 12}>
+          <Typography className="heading text-truncate" component="div">
             {heading}
           </Typography>
         </Grid>
-        {detail && (
+        {detail && !expand && (
           <Grid item sm={8} className="text-nowrap text-truncate">
             <Typography variant="caption" color="textSecondary">
               {detail}
@@ -221,6 +236,54 @@ const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
   };
 
   return (
+    <>
+      <Draggable draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
+        {provided => {
+          onDragging(!!provided.draggableProps.style.transition);
+          return (
+            <div ref={provided.innerRef} {...provided.draggableProps}>
+              {getComponentImage(component.type)}
+              <ScriptCard
+                heading={getHeading(component, emailTemplates, values)}
+                onDelete={(!isInternal || (!isInternal && component.type === "Script" && hasUpdateAccess))
+                  ? e => onDelete(e, index) : null}
+                dragHandlerProps={provided.dragHandleProps}
+                noPadding={component.type === "Script"}
+                onDetailsClick={isInternal ? onInternalSaveClick : undefined}
+                customHeading
+                onExpand={() => setExpand(!expand)}
+              >
+                {getComponent(component.type, item, component)}
+              </ScriptCard>
+              {!isInternal && (
+                <AddScriptAction
+                  index={index + 1}
+                  addComponent={addComponent}
+                  form={form}
+                  dispatch={dispatch}
+                  values={values}
+                  hasUpdateAccess={hasUpdateAccess}
+                  active={(fields.length - 1) === index}
+                  disabled={isDragging}
+                />
+              )}
+            </div>
+          );
+        }}
+      </Draggable>
+    </>
+  );
+};
+
+const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
+  const {
+    fields,
+    isInternal,
+  } = props;
+
+  const [isDragging, setDragging] = useState<boolean>(false);
+
+  return (
     <DragDropContext onDragEnd={args => onDragEnd({ ...args, fields })}>
       <Droppable droppableId="droppable">
         {provided => (
@@ -230,38 +293,14 @@ const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
 
               return (
                 <div key={component.id} className={clsx("card-reader-item", { "mb-5": isInternal })}>
-
-                  {getComponentImage(component.type)}
-
-                  <Draggable draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
-                    {provided => (
-                      <div ref={provided.innerRef} {...provided.draggableProps}>
-                        <ScriptCard
-                          heading={getHeading(component, emailTemplates, values)}
-                          onDelete={(!isInternal || (!isInternal && component.type === "Script" && hasUpdateAccess))
-                            ? e => onDelete(e, index) : null}
-                          dragHandlerProps={provided.dragHandleProps}
-                          noPadding={component.type === "Script"}
-                          onDetailsClick={isInternal ? onInternalSaveClick : undefined}
-                          customHeading
-                        >
-                          {getComponent(component.type, item, component)}
-                        </ScriptCard>
-                      </div>
-                    )}
-                  </Draggable>
-
-                  {!isInternal && (
-                    <AddScriptAction
-                      index={index + 1}
-                      addComponent={addComponent}
-                      form={form}
-                      dispatch={dispatch}
-                      values={values}
-                      hasUpdateAccess={hasUpdateAccess}
-                      active={(fields.length - 1) === index}
-                    />
-                  )}
+                  <ScriptCardItem
+                    {...props}
+                    component={component}
+                    index={index}
+                    item={item}
+                    onDragging={setDragging}
+                    isDragging={isDragging}
+                  />
                 </div>
               );
             })}

@@ -50,6 +50,7 @@ const styles = theme =>
       borderBottomColor: `${theme.palette.divider}`
     },
     summaryExpandIcon: {
+      borderRadius: "50%",
       "&:hover": {
         backgroundColor: theme.palette.action.hover
       }
@@ -74,7 +75,8 @@ const CardBase = props => {
     onAddItem,
     onDetailsClick,
     customHeading,
-    customButtons
+    customButtons,
+    onExpand,
   } = props;
 
   return (
@@ -85,6 +87,7 @@ const CardBase = props => {
       }}
       className={className}
       defaultExpanded={expanded}
+      onChange={onExpand}
     >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}

@@ -26,6 +26,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import CheckIcon from "@mui/icons-material/Check";
+import UploadIcon from "@mui/icons-material/Upload";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { mapSelectItems } from "../../../../../common/utils/common";
 import { usePrevious } from "../../../../../common/utils/hooks";
@@ -53,7 +54,6 @@ import AppBarContainer from "../../../../../common/components/layout/AppBarConta
 import AddScriptAction from "../components/AddScriptAction";
 import BoltIcon from "../../../../../../images/icon-bolt.svg";
 import ScriptIcon from "../../../../../../images/icon-script.svg";
-import { Theme } from "@mui/material";
 
 const manualUrl = getManualLink("scripts");
 const getAuditsUrl = (id: number) => `audit?search=~"Script" and entityId == ${id}`;
@@ -247,6 +247,7 @@ const ScriptsForm = React.memo<Props>(props => {
   const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
   const [viewMode, setViewMode] = useState<ScriptViewMode>("Cards");
   const [expandInfo, setExpandInfo] = useState<boolean>(true);
+  const [triggerExpand, setTriggerExpand] = useState<boolean>(false);
 
   const isInternal = useMemo(() => values && values.keyCode && values.keyCode.startsWith("ish."), [values && values.keyCode]);
   const isOriginallyInternal = useMemo(
@@ -383,6 +384,41 @@ const ScriptsForm = React.memo<Props>(props => {
 
   const enableEntityNameField = entityNameTypes.indexOf(values && values.trigger && values.trigger.type) > -1;
 
+  const customTriggerHeading = () => {
+    let detail;
+
+    if (values?.trigger?.type === "On demand") {
+      detail = values?.trigger?.entityName;
+    } else if (values?.trigger?.type === "Schedule") {
+      detail = values?.trigger?.cron?.scheduleType;
+      if (values?.trigger?.cron?.scheduleType === "Custom") detail += ` (${values?.trigger?.cron?.custom})`;
+    } else if (enableEntityNameField && values?.trigger?.entityName) {
+      detail = values?.trigger?.entityName;
+      if (values?.trigger?.type === "On edit" && values?.trigger?.entityAttribute) {
+        detail += ` (${values?.trigger?.entityAttribute})`;
+      }
+    } else {
+      detail = values?.trigger?.type;
+    }
+
+    return (
+      <Grid container className="align-items-center" spacing={2}>
+        <Grid item sm={detail && !triggerExpand ? 4 : 12}>
+          <Typography className="heading text-truncate" component="div">
+            Trigger
+          </Typography>
+        </Grid>
+        {detail && !triggerExpand && (
+          <Grid item sm={8} className="text-nowrap text-truncate">
+            <Typography variant="caption" color="textSecondary">
+              {detail}
+            </Typography>
+          </Grid>
+        )}
+      </Grid>
+    );
+  };
+
   return (
     <>
       <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialogClose} onSave={onDialogSave} hasNameField />
@@ -453,7 +489,6 @@ const ScriptsForm = React.memo<Props>(props => {
                     disabled={isInternal}
                     className="overflow-hidden mb-1"
                     hideLabel
-                    isInline
                     placeholder="Short description"
                   />
                   <Typography variant="caption">
@@ -463,7 +498,6 @@ const ScriptsForm = React.memo<Props>(props => {
                       disabled={isInternal}
                       className="overflow-hidden mb-1"
                       hideLabel
-                      isInline
                       placeholder="Description"
                     />
                   </Typography>
@@ -500,7 +534,7 @@ const ScriptsForm = React.memo<Props>(props => {
                         <img src={BoltIcon} alt="icon-bolt" />
                       </IconButton>
                       <ScriptCard
-                        heading="Trigger"
+                        heading={customTriggerHeading()}
                         disableExpandedBottomMargin
                         customButtons={(
                           <FormField
@@ -509,6 +543,8 @@ const ScriptsForm = React.memo<Props>(props => {
                             color="primary"
                           />
                         )}
+                        onExpand={() => setTriggerExpand(!triggerExpand)}
+                        customHeading
                       >
                         <TriggerCardContent
                           classes={classes}
@@ -544,10 +580,12 @@ const ScriptsForm = React.memo<Props>(props => {
                     ) : (
                       <>
                         {values.imports && (
-                          <div className="mb-5">
+                          <div className={clsx("mt-5", { "mb-5": isInternal })}>
+                            <IconButton size="large" className={classes.cardLeftIcon}>
+                              <UploadIcon />
+                            </IconButton>
                             <ScriptCard
                               heading="Import"
-                              className="mb-5"
                               onDelete={hasUpdateAccess && !isInternal ? removeImports : null}
                               onAddItem={hasUpdateAccess && !isInternal ? addImport : null}
                               disableExpandedBottomMargin

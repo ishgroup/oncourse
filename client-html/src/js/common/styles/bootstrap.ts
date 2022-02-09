@@ -158,6 +158,9 @@ export const bootstrap = (theme: AppTheme) => ({
   ".m-3": {
     margin: theme.spacing(3)
   },
+  ".mt-5": {
+    marginTop: theme.spacing(5)
+  },
   ".mt-4": {
     marginTop: theme.spacing(4)
   },

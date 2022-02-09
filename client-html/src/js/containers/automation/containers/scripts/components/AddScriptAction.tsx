@@ -24,6 +24,8 @@ const styles = createStyles(theme => ({
     marginLeft: theme.spacing(-9),
     paddingLeft: theme.spacing(9),
     zIndex: 1,
+  },
+  addActionButtonHover: {
     "&:hover": {
       "& $cardLeftIcon": {
         color: theme.heading.color
@@ -167,7 +169,7 @@ const ScriptAction = React.memo<ScriptActionProps>(props => {
 
 const AddScriptAction: React.FC<any> = props => {
   const {
-    classes, index, values, dispatch, form, addComponent, hasUpdateAccess, active
+    classes, index, values, dispatch, form, addComponent, hasUpdateAccess, active, disabled
   } = props;
 
   const [open, setOpen] = useState<boolean>(false);
@@ -185,12 +187,13 @@ const AddScriptAction: React.FC<any> = props => {
   const hasImports = Boolean(values && values.imports);
 
   return (
-    <div className={classes.addActionButton}>
+    <div className={clsx(classes.addActionButton, { [classes.addActionButtonHover]: !disabled })}>
       <IconButton
         size={active ? "large" : "small"}
         className={clsx(classes.cardLeftIcon, { [classes.cardPlusIconActive]: open, [classes.activeLeftButton]: active })}
+        onClick={() => setOpen(true)}
       >
-        {active ? <AddIcon onClick={() => setOpen(true)} /> : <AddCircleOutlineIcon onClick={() => setOpen(true)} />}
+        {active ? <AddIcon /> : <AddCircleOutlineIcon />}
       </IconButton>
       <Collapse in={!open}>
         <div className={clsx(classes.addActionWrapper, { [classes.activeStep]: active })}>
