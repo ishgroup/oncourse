@@ -152,6 +152,9 @@ const styles = theme =>
     technicalInfoExpanded: {
       margin: "0px !important",
     },
+    cardReaderCustomHeading: {
+      maxWidth: "calc(100% - 8px)",
+    },
   });
 
 const entityNameTypes = Object.keys(TriggerType).slice(0, 6).filter(t => t !== "Schedule");
@@ -248,6 +251,7 @@ const ScriptsForm = React.memo<Props>(props => {
   const [viewMode, setViewMode] = useState<ScriptViewMode>("Cards");
   const [expandInfo, setExpandInfo] = useState<boolean>(true);
   const [triggerExpand, setTriggerExpand] = useState<boolean>(false);
+  const [isCardDragging, setCardDragging] = useState<boolean>(false);
 
   const isInternal = useMemo(() => values && values.keyCode && values.keyCode.startsWith("ish."), [values && values.keyCode]);
   const isOriginallyInternal = useMemo(
@@ -528,7 +532,10 @@ const ScriptsForm = React.memo<Props>(props => {
               <Divider className="mb-5" />
               <Grid container className={classes.root}>
                 <Grid item xs={9} className={classes.cardsBox}>
-                  <div className={clsx(classes.cardsItem, { [classes.cardCodeView]: (viewMode === "Code" || isInternal) })}>
+                  <div
+                    className={clsx(classes.cardsItem,
+                      { [classes.cardCodeView]: (viewMode === "Code" || isInternal || isCardDragging) })}
+                  >
                     <div className={(viewMode === "Code" || isInternal) ? "mb-5" : ""}>
                       <IconButton size="large" className={clsx(classes.cardLeftIcon, classes.cardBoltIcon)}>
                         <img src={BoltIcon} alt="icon-bolt" />
@@ -605,6 +612,7 @@ const ScriptsForm = React.memo<Props>(props => {
                             dispatch={dispatch}
                             values={values}
                             hasUpdateAccess={hasUpdateAccess}
+                            disabled={isCardDragging}
                           />
                         )}
 
@@ -621,19 +629,23 @@ const ScriptsForm = React.memo<Props>(props => {
                           emailTemplates={emailTemplates}
                           addComponent={addComponent}
                           values={values}
+                          setDragging={setCardDragging}
+                          isDragging={isCardDragging}
                         />
                       </>
                     )}
                   </div>
 
-                  <FormField
-                    type="text"
-                    label="Key Code"
-                    name="keyCode"
-                    validate={isNew || !isInternal ? validateKeycode : undefined}
-                    disabled={isOriginallyInternal}
-                    required
-                  />
+                  <div className={clsx({ "invisible": isCardDragging })}>
+                    <FormField
+                      type="text"
+                      label="Key Code"
+                      name="keyCode"
+                      validate={isNew || !isInternal ? validateKeycode : undefined}
+                      disabled={isOriginallyInternal}
+                      required
+                    />
+                  </div>
                 </Grid>
 
                 <Grid item xs={3}>

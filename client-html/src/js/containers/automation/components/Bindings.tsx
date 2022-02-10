@@ -100,9 +100,14 @@ const BindingsItem = React.memo<BindingsItemProps>(({
 
   return type === "label" ? (
     <Grid item xs={12} className="centeredFlex">
-      <div className="flex-fill">
+      <div className="flex-fill w-100">
         {item.label && (
-          <Typography variant="caption" color="textSecondary" className={classes.itemLabel}>
+          <Typography
+            variant="caption"
+            color="textSecondary"
+            component="div"
+            className={clsx("text-truncate text-nowrap", classes.itemLabel)}
+          >
             {item.label}
           </Typography>
         )}
@@ -111,8 +116,8 @@ const BindingsItem = React.memo<BindingsItemProps>(({
           component="div"
           className={clsx("centeredFlex pb-0-5", classes.labelTypeWrapper)}
         >
-          <span>
-            {item.name}
+          <span className="w-100 centeredFlex">
+            <span className="text-truncate text-nowrap">{item.name}</span>
             {" "}
             <Typography variant="caption" color="textSecondary">
               (
@@ -135,7 +140,7 @@ const BindingsItem = React.memo<BindingsItemProps>(({
         name={`${field}.value`}
         type={item.type}
         component={DataTypeRenderer}
-        className="flex-fill"
+        className="flex-fill w-100"
         {...fieldProps}
       />
 

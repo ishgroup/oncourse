@@ -42,6 +42,8 @@ interface Props {
   emailTemplates: any[];
   addComponent?: any;
   values?: any;
+  setDragging?: (dragging: boolean) => void;
+  isDragging?: boolean;
 }
 
 interface ScriptItemProps extends Props {
@@ -218,7 +220,7 @@ const ScriptCardItem: React.FC<ScriptItemProps & WrappedFieldArrayProps> = props
     }
 
     return (
-      <Grid container className="align-items-center" spacing={2}>
+      <Grid container className={clsx("align-items-center", classes.cardReaderCustomHeading)} spacing={2}>
         <Grid item sm={detail && !expand ? 4 : 12}>
           <Typography className="heading text-truncate" component="div">
             {heading}
@@ -263,7 +265,7 @@ const ScriptCardItem: React.FC<ScriptItemProps & WrappedFieldArrayProps> = props
                   dispatch={dispatch}
                   values={values}
                   hasUpdateAccess={hasUpdateAccess}
-                  active={(fields.length - 1) === index}
+                  active={!isDragging && (fields.length - 1) === index}
                   disabled={isDragging}
                 />
               )}
@@ -279,9 +281,9 @@ const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
   const {
     fields,
     isInternal,
+    setDragging,
+    isDragging
   } = props;
-
-  const [isDragging, setDragging] = useState<boolean>(false);
 
   return (
     <DragDropContext onDragEnd={args => onDragEnd({ ...args, fields })}>

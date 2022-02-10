@@ -56,8 +56,11 @@ const styles = theme =>
       }
     },
     summaryContent: {
-      width: "calc(100% - 48px)"
-    }
+      maxWidth: "calc(100% - 48px)"
+    },
+    summaryContentInner: {
+      maxWidth: "calc(100% - 32px)"
+    },
   });
 
 const CardBase = props => {
@@ -98,7 +101,7 @@ const CardBase = props => {
           content: classes.summaryContent
         }}
       >
-        <div className="flex-fill centeredFlex w-100" {...dragHandlerProps}>
+        <div className={clsx("flex-fill centeredFlex w-100", classes.summaryContentInner)} {...dragHandlerProps}>
           {Boolean(dragHandlerProps) && <DragIndicator color="disabled" />}
           {customHeading ? heading : (
             <div>
