@@ -12,4 +12,8 @@ properties:
   productType:
     $ref: '../../enum/ProductType.yaml'
     required: false
+  quantity:
+    type: integer
+    format: int64
+    required: false
 
