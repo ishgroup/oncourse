@@ -7,10 +7,8 @@ import React, { useEffect, useMemo } from "react";
 import { isDirty, reset } from "redux-form";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import Lock from "@mui/icons-material/LockOutlined";
 import { LICENSE_SCRIPTING_KEY, ADMIN_EMAIL_KEY } from "../../constants/Config";
 import { State } from "../../reducers/state";
-import { CommonListFilter } from "../../model/common/sidebar";
 import { SidebarWithSearch } from "../../common/components/layout/sidebar-with-search/SidebarWithSearch";
 import { setSwipeableDrawerDirtyForm } from "../../common/components/layout/swipeable-sidebar/actions";
 import { getUserPreferences } from "../../common/actions";
@@ -24,22 +22,6 @@ import { getAutomationPdfReportsList } from "./containers/pdf-reports/actions";
 import { getAutomationPdfBackgroundsList } from "./containers/pdf-backgrounds/actions";
 import { getEmailTemplatesList } from "./containers/email-templates/actions";
 import { getImportTemplatesList } from "./containers/import-templates/actions";
-
-const filters: CommonListFilter[] = [
-  {
-    name: "Built-in",
-    condition: item => item.hasIcon,
-    icon: <Lock />
-  },
-  {
-    name: "Custom",
-    condition: item => !item.hasIcon
-  },
-  {
-    name: "Disabled",
-    condition: item => item.grayOut
-  }
-];
 
 const Automation = React.memo<any>(props => {
   const {
@@ -61,7 +43,7 @@ const Automation = React.memo<any>(props => {
   }, [isNew, dirty, formName]);
 
   return (
-    <SidebarWithSearch SideBar={SideBar} AppFrame={AutomatiomAppFrame} filters={filters} {...props} appFrameClass="w-50" />
+    <SidebarWithSearch SideBar={SideBar} AppFrame={AutomatiomAppFrame} {...props} noSearch appFrameClass="w-50" />
   );
 });
 

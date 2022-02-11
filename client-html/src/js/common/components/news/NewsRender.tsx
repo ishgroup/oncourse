@@ -170,7 +170,7 @@ const NewsItemRender = props => {
 
 const NewsRender = props => {
   const {
-    blogPosts, classes, page, preferences, setReadNews, fullScreenEditView, setReadNewsLocal, newsOffset
+    blogPosts, classes, page, preferences, setReadNews, fullScreenEditView, setReadNewsLocal, showPlaceholder, newsOffset
   } = props;
 
   const lastLoginOn = localStorage.getItem("lastLoginOn");
@@ -201,6 +201,12 @@ const NewsRender = props => {
         />
       ))}
     </Box>
+  ) : showPlaceholder ? (
+    <div className="noRecordsMessage">
+      <Typography variant="h6" color="inherit" align="center">
+        No unread news
+      </Typography>
+    </div>
   ) : null;
 };
 
