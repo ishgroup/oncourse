@@ -388,14 +388,16 @@ const ScriptsForm = React.memo<Props>(props => {
 
   const enableEntityNameField = entityNameTypes.indexOf(values && values.trigger && values.trigger.type) > -1;
 
-  const customTriggerHeading = () => {
+  const customTriggerHeading = useMemo(() => {
     let detail;
 
     if (values?.trigger?.type === "On demand") {
       detail = values?.trigger?.entityName;
     } else if (values?.trigger?.type === "Schedule") {
       detail = values?.trigger?.cron?.scheduleType;
-      if (values?.trigger?.cron?.scheduleType === "Custom") detail += ` (${values?.trigger?.cron?.custom})`;
+      if (values?.trigger?.cron?.scheduleType === "Custom" && values?.trigger?.cron?.custom) {
+        detail += ` (${values?.trigger?.cron?.custom})`;
+      }
     } else if (enableEntityNameField && values?.trigger?.entityName) {
       detail = values?.trigger?.entityName;
       if (values?.trigger?.type === "On edit" && values?.trigger?.entityAttribute) {
@@ -419,7 +421,14 @@ const ScriptsForm = React.memo<Props>(props => {
         )}
       </div>
     );
-  };
+  }, [
+    triggerExpand,
+    values,
+    values && values.trigger,
+    values && values.trigger && values.trigger.type,
+    values && values.trigger && values.trigger.entityName,
+    values && values.trigger && values.trigger.entityAttribute,
+  ]);
 
   return (
     <>
@@ -538,7 +547,7 @@ const ScriptsForm = React.memo<Props>(props => {
                         <img src={BoltIcon} alt="icon-bolt" />
                       </IconButton>
                       <ScriptCard
-                        heading={customTriggerHeading()}
+                        heading={customTriggerHeading}
                         disableExpandedBottomMargin
                         customButtons={(
                           <FormField

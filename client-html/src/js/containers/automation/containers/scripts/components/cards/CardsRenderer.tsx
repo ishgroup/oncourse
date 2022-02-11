@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import Grid from "@mui/material/Grid";
 import { FormControlLabel } from "@mui/material";
@@ -74,7 +74,7 @@ const ScriptCardItem: React.FC<ScriptItemProps & WrappedFieldArrayProps> = props
 
   const [expand, setExpand] = useState<boolean>(false);
 
-  const onDelete = (e, i) => {
+  const onDelete = useCallback((e, i) => {
     e.stopPropagation();
     showConfirm({
       onConfirm: () => {
@@ -82,9 +82,9 @@ const ScriptCardItem: React.FC<ScriptItemProps & WrappedFieldArrayProps> = props
       },
       confirmMessage: "Script component will be deleted permanently"
     });
-  };
+  }, [fields]);
 
-  const renderVariables = (variables, name, disabled) => (
+  const renderVariables = useCallback((variables, name, disabled) => (
     <>
       {variables.map(elem => (
         elem.type === "Checkbox" ? (
@@ -114,10 +114,10 @@ const ScriptCardItem: React.FC<ScriptItemProps & WrappedFieldArrayProps> = props
         )
       ))}
     </>
-  );
+  ), []);
 
-  const getComponent = (type, item, component) => {
-    switch (type) {
+  const getComponent = useMemo(() => {
+    switch (component.type) {
       case "Script":
         return (
           <FormField
@@ -164,41 +164,40 @@ const ScriptCardItem: React.FC<ScriptItemProps & WrappedFieldArrayProps> = props
       default:
         return null;
     }
-  };
+  }, [component, component.type, item]);
 
-  const getComponentImage = type => {
-    if (type === "Script") {
-      return (
-        <IconButton size="large" className={classes.cardLeftIcon}>
-          <img src={ScriptIcon} alt="icon-script" />
-        </IconButton>
-      );
+  const getComponentImage = useMemo(() => {
+    switch (component.type) {
+      case "Script":
+        return (
+          <IconButton size="large" className={classes.cardLeftIcon}>
+            <img src={ScriptIcon} alt="icon-script" />
+          </IconButton>
+        );
+      case "Query":
+        return (
+          <IconButton size="large" className={classes.cardLeftIcon}>
+            <HelpOutlineIcon />
+          </IconButton>
+        );
+      case "Message":
+        return (
+          <IconButton size="large" className={classes.cardLeftIcon}>
+            <EmailOutlinedIcon />
+          </IconButton>
+        );
+      case "Report":
+        return (
+          <IconButton size="large" className={classes.cardLeftIcon}>
+            <StackedLineChartIcon />
+          </IconButton>
+        );
+      default:
+        return null;
     }
-    if (type === "Query") {
-      return (
-        <IconButton size="large" className={classes.cardLeftIcon}>
-          <HelpOutlineIcon />
-        </IconButton>
-      );
-    }
-    if (type === "Message") {
-      return (
-        <IconButton size="large" className={classes.cardLeftIcon}>
-          <EmailOutlinedIcon />
-        </IconButton>
-      );
-    }
-    if (type === "Report") {
-      return (
-        <IconButton size="large" className={classes.cardLeftIcon}>
-          <StackedLineChartIcon />
-        </IconButton>
-      );
-    }
-    return null;
-  };
+  }, [component, component.type]);
 
-  const getHeading = (component, emailTemplates, values) => {
+  const getHeading = useMemo(() => {
     const type = component.type;
     let heading = type;
     let detail = null;
@@ -231,16 +230,28 @@ const ScriptCardItem: React.FC<ScriptItemProps & WrappedFieldArrayProps> = props
         )}
       </div>
     );
-  };
+  }, [
+    values,
+    values.options,
+    component,
+    component.type,
+    component.entity,
+    component.query,
+    component.template,
+    component.template && component.template.templateEntity,
+    component.template && component.template.templateEntity && component.templateEntity.name,
+    emailTemplates,
+    expand
+  ]);
 
   return (
     <>
       <Draggable draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
         {provided => (
           <div ref={provided.innerRef} {...provided.draggableProps}>
-            {getComponentImage(component.type)}
+            {getComponentImage}
             <ScriptCard
-              heading={getHeading(component, emailTemplates, values)}
+              heading={getHeading}
               onDelete={(!isInternal || (!isInternal && component.type === "Script" && hasUpdateAccess))
                 ? e => onDelete(e, index) : null}
               dragHandlerProps={provided.dragHandleProps}
@@ -249,7 +260,7 @@ const ScriptCardItem: React.FC<ScriptItemProps & WrappedFieldArrayProps> = props
               customHeading
               onExpand={() => setExpand(!expand)}
             >
-              {getComponent(component.type, item, component)}
+              {getComponent}
             </ScriptCard>
             {!isInternal && (
               <AddScriptAction
