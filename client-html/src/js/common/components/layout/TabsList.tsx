@@ -6,76 +6,33 @@
 import React, {
  useEffect, useRef, useState
 } from "react";
-import Typography from "@mui/material/Typography";
-import { makeStyles } from "@mui/styles";
 import Grid, { GridSize } from "@mui/material/Grid";
 import clsx from "clsx";
-import ListItem from "@mui/material/ListItem";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { RouteComponentProps, withRouter } from "react-router";
 import NewsRender from "../news/NewsRender";
 import { APP_BAR_HEIGHT, TAB_LIST_SCROLL_TARGET_ID } from "../../../constants/Config";
 import { LSGetItem, LSSetItem } from "../../utils/storage";
 import { EditViewProps } from "../../../model/common/ListView";
 import { useStickyScrollSpy } from "../../utils/hooks";
-import { AppTheme } from "../../../model/common/Theme";
+import { makeAppStyles } from "../../styles/makeStyles";
+import SideBarHeader from "./side-bar-list/SideBarHeader";
 
-const useStyles = makeStyles<AppTheme>(theme => ({
-    listContainer: {
-      flex: 1,
-      overflowY: 'auto',
-      flexDirection: "column",
-      backgroundColor: theme.tabList.listContainer.backgroundColor,
-      padding: theme.spacing(4)
-    },
-    listContainerInner: {
-      marginBottom: theme.spacing(8)
-    },
-    listItemRoot: {
-      alignItems: "flex-start",
-      marginBottom: theme.spacing(3),
-      color: theme.tabList.listItemRoot.color,
-      fontWeight: 600,
-      opacity: 0.6,
-      padding: 0,
-      position: "relative",
-      cursor: 'pointer',
-      willChange: "transform, visibility, backgroundColor, opacity",
-      "&$selected": {
-        opacity: 1,
-        backgroundColor: "inherit",
-        color: theme.tabList.listItemRoot.selectedColor,
-        "& $arrowIcon": {
-          transform: "translateX(0)",
-          visibility: "visible"
-        },
-        "& $listItemLabel": {
-          paddingLeft: 30,
-        },
-      },
-    "&:hover": {
-      opacity: 0.8,
-      }
-    },
-    listItemText: {
-      fontWeight: "inherit",
-      width: "100%",
-    },
+const useStyles = makeAppStyles(theme => ({
+  listContainer: {
+    flex: 1,
+    overflowY: 'auto',
+    flexDirection: "column",
+    backgroundColor: theme.tabList.listContainer.backgroundColor,
+    padding: theme.spacing(4)
+  },
+  listContainerInner: {
+    marginBottom: theme.spacing(8),
+    color: theme.tabList.listItemRoot.color
+  },
   indicator: {
     display: "none"
-  },
-  listItemLabel: {
-    textTransform: 'uppercase',
-    transition: "all 0.2s ease-in-out",
-    },
-    selected: {},
-    arrowIcon: {
-      visibility: "hidden",
-      position: "absolute",
-      transform: "translateX(-30px)",
-      transition: "all 0.2s ease-in-out",
-    },
-  }));
+  }
+}));
 
 export interface TabsListItem {
   readonly type?: string;
@@ -250,34 +207,17 @@ const TabsList = React.memo<Props & RouteComponentProps>((
       </Grid>
       {itemProps.twoColumn && (
         <Grid item xs={layoutArray[1].xs} className="root">
-          <div className={classes.listContainer}
-          >
+          <div className={classes.listContainer}>
             <div className={classes.listContainerInner}>
-              {items.map((i, index) => {
-                const itemSelected = i.label === selected;
-                return (
-                  <ListItem
-                    selected={itemSelected}
-                    classes={{
-                      root: classes.listItemRoot,
-                      selected: classes.selected
-                    }}
-                    onClick={() => scrollToSelected(i, index)}
-                    key={index}
-                  >
-
-                    <Typography variant="body2" component="div" classes={{ root: classes.listItemText }} color="inherit">
-                      <ArrowForwardIcon color="inherit" fontSize="small" className={classes.arrowIcon} />
-                      <div className={classes.listItemLabel}>{i.label}</div>
-                      {i.labelAdornment && (
-                        <Typography variant="caption" component="div" className="text-pre-wrap">
-                          {i.labelAdornment}
-                        </Typography>
-                      )}
-                    </Typography>
-                  </ListItem>
-                );
-              })}
+              {items.map((i, index) => (
+                <SideBarHeader
+                  label={i.label}
+                  labelAdornment={i.labelAdornment}
+                  selected={i.label === selected}
+                  onClick={() => scrollToSelected(i, index)}
+                  key={index}
+                />
+              ))}
             </div>
           </div>
         </Grid>

@@ -45,18 +45,16 @@ const ScriptsBase = React.memo<any>(props => {
   const [isNew, setIsNew] = useState(false);
 
   useEffect(() => {
-    const newId = id === "new";
-
     if (!id && scripts.length) {
       history.push(`/automation/script/${scripts[0].id}`);
       return;
     }
 
-    if (newId && !isNew) {
+    if (id === "new" && !isNew) {
       setIsNew(true);
       dispatch(initialize(SCRIPT_EDIT_VIEW_FORM_NAME, Initial));
     }
-    if (!newId && id) {
+    if (id && !Number.isNaN(Number(id))) {
       getScriptItem(id);
       if (isNew) {
         setIsNew(false);

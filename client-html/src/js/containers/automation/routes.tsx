@@ -6,6 +6,7 @@ import ExportTemplates from "./containers/export-templates/ExportTemplates";
 import PdfReports from "./containers/pdf-reports/PdfReports";
 import PdfBackgrounds from "./containers/pdf-backgrounds/PdfBackgrounds";
 import ImportTemplates from "./containers/import-templates/ImportTemplates";
+import ScriptsCatalog from "./containers/scripts/ScriptsCatalog";
 
 const automationRoutes = [
   {
@@ -45,6 +46,13 @@ const automationRoutes = [
     noMenuLink: true,
     customAppBar: true,
     main: integrationsForm
+  },
+  {
+    title: "Automations",
+    path: "/automation/script/list",
+    url: "/automation/script/list",
+    noMenuLink: true,
+    main: ScriptsCatalog
   },
   {
     title: "Scripts",

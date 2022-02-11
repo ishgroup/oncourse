@@ -22,12 +22,13 @@ interface Props {
   history: any;
   match: any;
   filters?: CommonListFilter[];
+  noSearch?: boolean;
 }
 
 export const SidebarWithSearch = React.memo<Props>(props => {
   const {
- leftColumnWidth, updateColumnsWidth, onInit, history, match, SideBar, AppFrame, filters = [] 
-} = props;
+   leftColumnWidth, updateColumnsWidth, onInit, history, match, SideBar, AppFrame, noSearch, filters = []
+  } = props;
 
   const [sidebarWidth, setSidebarWidth] = useState(leftColumnWidth || ListSideBarDefaultWidth);
   const [activeFilters, setActveFilters] = useState<boolean[]>(Array(filters.length).fill(false));
@@ -71,7 +72,7 @@ export const SidebarWithSearch = React.memo<Props>(props => {
           <div className="pl-2">
             <HamburgerMenu variant={VARIANTS.temporary} />
           </div>
-          <SidebarSearch setParentSearch={setSearch} />
+          {!noSearch && <SidebarSearch setParentSearch={setSearch} smallIcons />}
           {Boolean(filters.length) && (
             <FiltersList filters={filters} activeFilters={activeFilters} setActveFilters={setActveFilters} />
           )}
