@@ -16,7 +16,6 @@ import { WrappedFieldProps } from "redux-form";
 import debounce from "lodash.debounce";
 import EditInPlaceField from "./EditInPlaceField";
 import { getPhoneMask } from "../../../../constants/PhoneMasks";
-import { stubFunction } from "../../../utils/common";
 
 interface NumberFormatCustomProps extends WrappedFieldProps {
   onChange?: (event: { target: { value: string } }) => void;
