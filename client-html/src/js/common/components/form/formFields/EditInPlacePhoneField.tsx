@@ -28,14 +28,14 @@ const NumberFormatCustom = React.forwardRef<any, NumberFormatCustomProps>((props
   
   const [format, setFormat] = useState(null);
 
-  const processFormat = data => {
+  const processFormat = useCallback(debounce(data => {
     setFormat(getPhoneMask(data.value));
-    onChange(data.formattedValue?.replace(/[^0-9+]/g, "") || null);
-  };
-
-  const onValueChange = useCallback(debounce(data => {
-    processFormat(data);
   }, 500), []);
+
+  const onValueChange = useCallback(data => {
+    onChange(data.formattedValue?.replace(/[^0-9+]/g, "") || null);
+    processFormat(data);
+  }, []);
 
   useEffect(() => {
     if (other.value) {
