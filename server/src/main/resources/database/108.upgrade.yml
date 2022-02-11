@@ -48,4 +48,3 @@ databaseChangeLog:
             tableName: Checkout
       changes:
         - sql: "DELETE FROM Checkout"
-        - sql: "DELETE FROM QueuedRecord WHERE tableName='Checkout'"
