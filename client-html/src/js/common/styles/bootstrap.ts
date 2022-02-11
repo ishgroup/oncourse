@@ -170,6 +170,12 @@ export const bootstrap = (theme: AppTheme) => ({
   ".ml-3": {
     marginLeft: theme.spacing(3)
   },
+  ".mr-5": {
+    marginRight: theme.spacing(5)
+  },
+  ".mr-4": {
+    marginRight: theme.spacing(4)
+  },
   ".mr-3": {
     marginRight: theme.spacing(3)
   },
@@ -413,6 +419,9 @@ export const bootstrap = (theme: AppTheme) => ({
   },
   ".mw-100": {
     maxWidth: "100%"
+  },
+  ".w-50": {
+    width: "50%"
   },
   ".mw-800": {
     maxWidth: theme.spacing(100)

@@ -190,12 +190,12 @@ const AddScriptAction: React.FC<any> = props => {
     <div className={clsx(classes.addActionButton, { [classes.addActionButtonHover]: !disabled })}>
       <IconButton
         size={active ? "large" : "small"}
-        className={clsx(classes.cardLeftIcon, { [classes.cardPlusIconActive]: open, [classes.activeLeftButton]: active })}
+        className={clsx(classes.cardLeftIcon, { [classes.cardPlusIconActive]: open && !disabled, [classes.activeLeftButton]: active })}
         onClick={() => setOpen(true)}
       >
         {active ? <AddIcon /> : <AddCircleOutlineIcon />}
       </IconButton>
-      <Collapse in={!open}>
+      <Collapse in={!open || disabled}>
         <div className={clsx(classes.addActionWrapper, { [classes.activeStep]: active })}>
           <Button
             component="div"
@@ -209,7 +209,7 @@ const AddScriptAction: React.FC<any> = props => {
         </div>
       </Collapse>
 
-      <Collapse in={open}>
+      <Collapse in={open && !disabled}>
         <Paper className={classes.actionPaper}>
           <div className={clsx('centeredFlex pl-2 pr-1', classes.heading)}>
             <Typography className="heading flex-fill">

@@ -61,7 +61,7 @@ const Automation = React.memo<any>(props => {
   }, [isNew, dirty, formName]);
 
   return (
-    <SidebarWithSearch SideBar={SideBar} AppFrame={AutomatiomAppFrame} filters={filters} {...props} />
+    <SidebarWithSearch SideBar={SideBar} AppFrame={AutomatiomAppFrame} filters={filters} {...props} appFrameClass="w-50" />
   );
 });
 

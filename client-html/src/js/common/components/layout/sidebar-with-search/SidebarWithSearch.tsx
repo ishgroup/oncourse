@@ -1,6 +1,7 @@
 import React, {
- useCallback, useEffect, useMemo, useState 
+  useCallback, useEffect, useMemo, useState
 } from "react";
+import clsx from "clsx";
 import { ColumnWidth } from "@api/model";
 import { ListSideBarDefaultWidth } from "../../list-view/ListView";
 import ResizableWrapper from "../resizable/ResizableWrapper";
@@ -22,12 +23,13 @@ interface Props {
   history: any;
   match: any;
   filters?: CommonListFilter[];
+  appFrameClass?: string;
 }
 
 export const SidebarWithSearch = React.memo<Props>(props => {
   const {
- leftColumnWidth, updateColumnsWidth, onInit, history, match, SideBar, AppFrame, filters = [] 
-} = props;
+    leftColumnWidth, updateColumnsWidth, onInit, history, match, SideBar, AppFrame, filters = [], appFrameClass
+  } = props;
 
   const [sidebarWidth, setSidebarWidth] = useState(leftColumnWidth || ListSideBarDefaultWidth);
   const [activeFilters, setActveFilters] = useState<boolean[]>(Array(filters.length).fill(false));
@@ -79,7 +81,7 @@ export const SidebarWithSearch = React.memo<Props>(props => {
         </Drawer>
       </ResizableWrapper>
 
-      <div className="appFrame">
+      <div className={clsx("appFrame", appFrameClass)}>
         <LoadingIndicator />
         <AppFrame match={match} />
       </div>

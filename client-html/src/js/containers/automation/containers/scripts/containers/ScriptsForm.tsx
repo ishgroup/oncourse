@@ -406,20 +406,18 @@ const ScriptsForm = React.memo<Props>(props => {
     }
 
     return (
-      <Grid container className="align-items-center" spacing={2}>
-        <Grid item sm={detail && !triggerExpand ? 4 : 12}>
-          <Typography className="heading text-truncate" component="div">
-            Trigger
-          </Typography>
-        </Grid>
+      <div className="w-100 centeredFlex text-nowrap text-truncate">
+        <Typography className="heading mr-5" component="div">
+          Trigger
+        </Typography>
         {detail && !triggerExpand && (
-          <Grid item sm={8} className="text-nowrap text-truncate">
+          <div className="text-nowrap text-truncate pr-1">
             <Typography variant="caption" color="textSecondary">
               {detail}
             </Typography>
-          </Grid>
+          </div>
         )}
-      </Grid>
+      </div>
     );
   };
 
@@ -636,16 +634,14 @@ const ScriptsForm = React.memo<Props>(props => {
                     )}
                   </div>
 
-                  <div className={clsx({ "invisible": isCardDragging })}>
-                    <FormField
-                      type="text"
-                      label="Key Code"
-                      name="keyCode"
-                      validate={isNew || !isInternal ? validateKeycode : undefined}
-                      disabled={isOriginallyInternal}
-                      required
-                    />
-                  </div>
+                  <FormField
+                    type="text"
+                    label="Key Code"
+                    name="keyCode"
+                    validate={isNew || !isInternal ? validateKeycode : undefined}
+                    disabled={isOriginallyInternal}
+                    required
+                  />
                 </Grid>
 
                 <Grid item xs={3}>
