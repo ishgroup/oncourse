@@ -26,7 +26,7 @@ public class UpdateContactsPhoneNumbers extends IshTaskChange {
 
     @Override
     public void execute(Database database) throws CustomChangeException {
-        DataContext context = SchemaUpdateService.sharedCayenneService.getNewContext();
+        DataContext context = SchemaUpdateService.sharedCayenneService.getNewNonReplicatingContext();
         logger.warn("Running upgrade...");
 
         Long currentLastId = 0L;
