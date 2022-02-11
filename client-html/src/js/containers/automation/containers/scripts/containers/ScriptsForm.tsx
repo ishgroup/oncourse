@@ -434,7 +434,6 @@ const ScriptsForm = React.memo<Props>(props => {
           getAuditsUrl={getAuditsUrl}
           disabled={!dirty}
           invalid={invalid}
-          isNew={isNew}
           title={!values.name ? "" : values.name.trim()}
           disableInteraction={isInternal}
           opened={!values.name || Object.keys(syncErrors).includes("name")}
