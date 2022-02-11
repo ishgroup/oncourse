@@ -35,7 +35,7 @@ const NumberFormatCustom = React.forwardRef<any, NumberFormatCustomProps>((props
 
   const onValueChange = useCallback(debounce(data => {
     processFormat(data);
-  }, 600), []);
+  }, 500), []);
 
   useEffect(() => {
     if (other.value) {
@@ -47,7 +47,6 @@ const NumberFormatCustom = React.forwardRef<any, NumberFormatCustomProps>((props
     <NumberFormat
       {...other}
       getInputRef={ref}
-      onBlur={stubFunction}
       onValueChange={onValueChange}
       format={format}
       type="tel"
