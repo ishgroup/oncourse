@@ -727,11 +727,3 @@ databaseChangeLog:
             columnDataType: datetime
             columnName: modifiedOn
             tableName: Survey
-  - changeSet:
-      id: 97-1
-      author: dmitriy
-      comment: remove symbols from contacts phones which are not in [+0-9]
-      changes:
-        - customChange: {
-          "class": "ish.oncourse.server.upgrades.liquibase.change.UpdateContactsPhoneNumbers"
-        }
