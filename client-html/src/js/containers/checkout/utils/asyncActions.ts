@@ -55,7 +55,7 @@ export const processCeckoutCartIds = async (cartId, onChangeStep, setActiveField
         items: []
       };
 
-      for (const { id, selected, productType } of contactRow.productIds) {
+      for (const { id, selected, productType, quantity } of contactRow.productIds) {
         const columns = getProductColumnsByType(productType);
         const product = await EntityService.getPlainRecords(
           getProductAqlType(productType),
@@ -67,6 +67,7 @@ export const processCeckoutCartIds = async (cartId, onChangeStep, setActiveField
           : checkoutProductMap(res.rows.map(getCustomColumnsMap(columns))[0])));
         processCheckoutSale(product, productType.toLowerCase());
         product["checked"] = selected;
+        product["quantity"] = quantity || 1;
         purchase.items.push(product as any);
       }
 
