@@ -7,7 +7,8 @@
  */
 
 export interface CatalogItemType {
-  title: string;
+  id: number;
+  title: any;
   category: string;
   installed?: boolean;
   enabled?: boolean;

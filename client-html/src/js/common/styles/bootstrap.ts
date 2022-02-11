@@ -359,7 +359,7 @@ export const bootstrap = (theme: AppTheme) => ({
     outline: "none"
   },
   ".disabled": {
-    opacity: 0.6,
+    opacity: theme.palette.action.disabledOpacity,
     pointerEvents: "none"
   },
   ".text-op065": {

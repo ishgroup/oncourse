@@ -29,43 +29,43 @@ const AutomationSideBar = React.memo<Props>(
     return (
       <div className={classes.root}>
         <SideBarHeader
-          selected={history.location.pathname === "/automation/script/list"}
+          selected={history.location.pathname.startsWith("/automation/script")}
           label="Automations"
-          onClick={() => history.push("/automation/script/list")}
+          onClick={() => history.push("/automation/scripts")}
         />
 
         <SideBarHeader
-          selected={history.location.pathname === "/automation/import-templates/"}
+          selected={history.location.pathname.startsWith("/automation/import-templates/")}
           label="Import Templates"
           onClick={() => history.push("/automation/import-templates/")}
         />
 
         <SideBarHeader
-          selected={history.location.pathname === "/automation/export-templates/"}
+          selected={history.location.pathname.startsWith("/automation/export-templates/")}
           label="Export Templates"
           onClick={() => history.push("/automation/export-templates/")}
         />
 
         <SideBarHeader
-          selected={history.location.pathname === "/automation/email-templates/"}
+          selected={history.location.pathname.startsWith("/automation/email-templates/")}
           label="Message Templates"
           onClick={() => history.push("/automation/email-templates/")}
         />
 
         <SideBarHeader
-          selected={history.location.pathname === "/automation/pdf-backgrounds/"}
+          selected={history.location.pathname.startsWith("/automation/pdf-backgrounds/")}
           label="PDF Backgrounds"
           onClick={() => history.push("/automation/pdf-backgrounds/")}
         />
 
         <SideBarHeader
-          selected={history.location.pathname === "/automation/pdf-reports/"}
+          selected={history.location.pathname.startsWith("/automation/pdf-reports/")}
           label="PDF Reports"
           onClick={() => history.push("/automation/pdf-reports/")}
         />
 
         <SideBarHeader
-          selected={history.location.pathname === "/automation/integrations/list"}
+          selected={history.location.pathname.startsWith("/automation/integrations/list")}
           label="Integrations"
           onClick={() => history.push("/automation/integrations/list")}
         />

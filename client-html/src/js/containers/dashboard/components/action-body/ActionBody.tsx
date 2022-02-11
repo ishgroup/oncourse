@@ -25,7 +25,8 @@ const styles = (theme: AppTheme) =>
       display: "flex",
       backgroundColor: theme.palette.background.default,
       overflowY: "auto",
-      minWidth: 370
+      minWidth: 370,
+      padding: theme.spacing(3)
     }
   });
 

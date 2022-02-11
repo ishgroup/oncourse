@@ -7,32 +7,66 @@
  */
 
 import React, {
-  ReactNode, useMemo, useState
+  memo, useMemo, useState
 } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import Fab from "@mui/material/Fab";
 import { Fade, List, Typography } from "@mui/material";
 import clsx from "clsx";
+import { FixedSizeList, areEqual } from "react-window";
+import AutoSizer from "react-virtualized-auto-sizer";
 import SidebarSearch from "../sidebar-with-search/components/SidebarSearch";
 import { makeAppStyles } from "../../../styles/makeStyles";
 import AddButton from "../../icons/AddButton";
 import CatalogItem from "./CatalogItem";
 import { CatalogItemType } from "../../../../model/common/Catalog";
+import NewsRender from "../../news/NewsRender";
+import DynamicSizeList from "../../form/DynamicSizeList";
+import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
+import ExpandableContainer from "../expandable/ExpandableContainer";
+
+const Row = memo<any>(
+  props => {
+    const { style, item, onOpen } = props;
+    return (
+      <div style={style}>
+        <CatalogItem {...item} dotColor="#45AA05" onOpen={onOpen} />
+      </div>
+    );
+  },
+  areEqual
+);
+
+const RowRenderer = React.forwardRef<any, any>(({ data, index, style }, ref) => {
+  const { items, ...rest } = data;
+  return (
+    <Row
+      key={index}
+      item={items[index]}
+      style={style}
+      forwardedRef={ref}
+      {...rest}
+    />
+  );
+});
 
 interface Props {
-  addNewItem: CatalogItemType;
+  addNewItem: Partial<CatalogItemType>;
   items: CatalogItemType[];
-  setSearch: any;
   title: string;
   itemsListTitle: string;
   description?: string;
+  onOpen: AnyArgFunction;
 }
 
 const useStyles = makeAppStyles(theme => ({
   root: {
     padding: theme.spacing(4),
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
+    display: "flex",
+    flexDirection: "column",
+    height: "100vh"
   },
   fabContainer: {
     zIndex: 1,
@@ -71,11 +105,14 @@ const CatalogWithSearch = (
     title,
     items,
     itemsListTitle,
-    setSearch,
-    description
+    description,
+    onOpen,
+    addNewItem
   }:Props
 ) => {
+  const [search, setSearch] = useState("");
   const [opened, setOpened] = useState(false);
+  const [expanded, setExpanded] = useState([0]);
   const classes = useStyles();
 
   const open = () => setOpened(prev => !prev);
@@ -83,12 +120,12 @@ const CatalogWithSearch = (
   const filteredItems = useMemo(() => {
     const result = {
       installed: [],
-      categories: {
-        other: []
-      }
+      categories: {}
     };
 
-    items.forEach(i => {
+    items
+    .filter(i => i.title.toLowerCase().includes(search.toLowerCase()))
+    .forEach(i => {
       if (i.installed) {
         result.installed.push(i);
       }
@@ -97,15 +134,11 @@ const CatalogWithSearch = (
           result.categories[i.category] = [];
         }
         result.categories[i.category].push(i);
-      } else {
-        result.categories.other.push(i);
       }
     });
 
    return result;
-  }, [items]);
-  
-  const renderedInstalled = useMemo(() => filteredItems.installed.map((i, key) => <CatalogItem key={key} {...i} />), [filteredItems]);
+  }, [items, search]);
 
   return (
     <div className={classes.root}>
@@ -126,30 +159,72 @@ const CatalogWithSearch = (
         <SidebarSearch setParentSearch={setSearch} />
       </div>
       <Typography variant="h4" className="mt-5 mb-3">{title}</Typography>
-      <Fade in={!opened} unmountOnExit mountOnEnter>
-        <div>
-          <div className="centeredFlex">
-            <div className="heading">
-              {itemsListTitle}
+      <NewsRender page className="mb-3" />
+      <div className="relative flex-fill flex-column">
+        <Fade in={opened} className="flex-fill flex-column absolute w-100 h-100 overflow-auto">
+          <div>
+            {description && (
+              <div className="mb-3">
+                {description}
+              </div>
+            )}
+            <div className="mb-2">
+              <div className="heading">
+                {addNewItem.category}
+              </div>
+              <CatalogItem {...addNewItem} showAdded={false} enabled installed />
             </div>
-            <div className="flex-fill" />
-            <div className="centeredFlex primaryColor">
-              <Typography variant="button">
-                Add new
-              </Typography>
-              <AddButton className="p-1" onClick={open} />
+            <div>
+              {Object.keys(filteredItems.categories).map((c, index) => (
+                <ExpandableContainer
+                  key={c}
+                  index={index}
+                  header={c}
+                  expanded={search ? [index] : expanded}
+                  setExpanded={setExpanded}
+                  noDivider
+                >
+                  {filteredItems.categories[c].map(i => <CatalogItem key={i.title + index} {...i} showAdded />)}
+                </ExpandableContainer>
+              ))}
             </div>
           </div>
-          <List>
-            {renderedInstalled}
-          </List>
-        </div>
-      </Fade>
-      <Fade in={opened} unmountOnExit mountOnEnter>
-        <div>
-          {description}
-        </div>
-      </Fade>
+        </Fade>
+        <Fade in={!opened} className="flex-fill flex-column absolute w-100 h-100">
+          <div>
+            <div className="centeredFlex">
+              <div className="heading">
+                {itemsListTitle}
+              </div>
+              <div className="flex-fill" />
+              <div className="centeredFlex primaryColor">
+                <Typography variant="button">
+                  Add new
+                </Typography>
+                <AddButton className="p-1" onClick={open} />
+              </div>
+            </div>
+            <div className="flex-fill">
+              <AutoSizer>
+                {({ width, height }) => (
+                  <DynamicSizeList
+                    height={height}
+                    width={width}
+                    itemCount={filteredItems.installed.length}
+                    estimatedItemSize={54}
+                    itemData={{
+                      items: filteredItems.installed,
+                      onOpen
+                    }}
+                  >
+                    {RowRenderer}
+                  </DynamicSizeList>
+                )}
+              </AutoSizer>
+            </div>
+          </div>
+        </Fade>
+      </div>
     </div>
 );
 };

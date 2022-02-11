@@ -49,14 +49,14 @@ const automationRoutes = [
   },
   {
     title: "Automations",
-    path: "/automation/script/list",
-    url: "/automation/script/list",
+    path: "/automation/scripts",
+    url: "/automation/scripts",
     noMenuLink: true,
     main: ScriptsCatalog
   },
   {
     title: "Scripts",
-    path: "/automation/script/:id?",
+    path: "/automation/script/:id",
     url: "/automation/script",
     main: Scripts,
     group: "Preferences"

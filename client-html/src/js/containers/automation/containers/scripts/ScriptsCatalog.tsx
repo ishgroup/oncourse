@@ -7,21 +7,38 @@
  */
 
 import React, { useMemo } from "react";
+import { RouteComponentProps } from "react-router";
 import CatalogWithSearch from "../../../../common/components/layout/catalog/CatalogWithSearch";
 import { useAppSelector } from "../../../../common/utils/hooks";
 import { CatalogItemType } from "../../../../model/common/Catalog";
 
-const ScriptsCatalog = () => {
+// TODO: remove on api model change
+const getMockedCategory = index => {
+  if (index < 6) {
+    return "Course Notifications";
+  }
+  if (index < 60) {
+    return "Payroll";
+  }
+    return "Rostering";
+};
+
+const ScriptsCatalog = ({ history }: RouteComponentProps) => {
   const scripts = useAppSelector(state => state.automation.script.scripts);
 
-  const items = useMemo<CatalogItemType[]>(() => scripts?.map(s => ({
+  const items = useMemo<CatalogItemType[]>(() => scripts?.map((s, index) => ({
+    id: s.id,
     title: s.name,
-    category: s.custom ? "Custom" : "System",
+    category: getMockedCategory(index),
     installed: true,
     enabled: s.grayOut,
-    tag: null,
+    tag: index === 4 ? "New" : index === 5 ? "Popular" : null,
     shortDescription: null
   })) || [], [scripts]);
+
+  const onOpen = id => {
+    history.push(`/automation/script/${id}`);
+  };
   
   return (
     <CatalogWithSearch
@@ -33,7 +50,7 @@ const ScriptsCatalog = () => {
       items={items}
       title="Automations"
       itemsListTitle="installed automations"
-      setSearch={() => null}
+      onOpen={onOpen}
       description="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, assumenda, cum cupiditate dignissimos doloribus iure modi nisi nobis possimus quos ratione recusandae tenetur totam! Aliquam laudantium nesciunt ratione tempora totam!"
     />
   );

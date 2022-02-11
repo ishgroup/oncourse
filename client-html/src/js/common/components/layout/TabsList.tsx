@@ -191,7 +191,7 @@ const TabsList = React.memo<Props & RouteComponentProps>((
         id={TAB_LIST_SCROLL_TARGET_ID}
         ref={scrollContainer}
       >
-        <NewsRender newsOffset={newsOffset} page />
+        <NewsRender newsOffset={newsOffset} page className="p-3" />
         {items.map((i, tabIndex) => (
           <div
             id={i.label}
