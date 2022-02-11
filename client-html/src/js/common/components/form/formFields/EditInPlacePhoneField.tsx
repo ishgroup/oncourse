@@ -16,6 +16,7 @@ import { WrappedFieldProps } from "redux-form";
 import debounce from "lodash.debounce";
 import EditInPlaceField from "./EditInPlaceField";
 import { getPhoneMask } from "../../../../constants/PhoneMasks";
+import { stubFunction } from "../../../utils/common";
 
 interface NumberFormatCustomProps extends WrappedFieldProps {
   onChange?: (event: { target: { value: string } }) => void;
@@ -27,14 +28,14 @@ const NumberFormatCustom = React.forwardRef<any, NumberFormatCustomProps>((props
   
   const [format, setFormat] = useState(null);
 
-  const processFormat = useCallback(debounce(data => {
+  const processFormat = data => {
     setFormat(getPhoneMask(data.value));
     onChange(data.formattedValue?.replace(/[^0-9+]/g, "") || null);
-  }, 1000), []);
+  };
 
-  const onValueChange = useCallback(data => {
+  const onValueChange = useCallback(debounce(data => {
     processFormat(data);
-  }, []);
+  }, 600), []);
 
   useEffect(() => {
     if (other.value) {
@@ -46,6 +47,7 @@ const NumberFormatCustom = React.forwardRef<any, NumberFormatCustomProps>((props
     <NumberFormat
       {...other}
       getInputRef={ref}
+      onBlur={stubFunction}
       onValueChange={onValueChange}
       format={format}
       type="tel"
