@@ -48,7 +48,7 @@ const financialColumns: NestedTableColumn[] = [
   },
   {
     name: "date",
-    title: "Date",
+    title: "Created on",
     type: "date",
     width: 160
   },
@@ -227,10 +227,11 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
           >
             <FieldArray
               name="abandonedCarts"
-              title={`Abandoned shopping cart${values.abandonedCarts.length !== 1 ? "s" : ""}`}
+              title={`Abandoned shopping cart${values.abandonedCarts?.length !== 1 ? "s" : ""}`}
               component={NestedTable}
               columns={shopingCartColumns}
               onRowDoubleClick={openShopingCartRow}
+              sortBy={(a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()}
               rerenderOnEveryChange
               calculateHeight
             />

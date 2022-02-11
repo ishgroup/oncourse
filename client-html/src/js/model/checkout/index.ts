@@ -95,6 +95,7 @@ export type CheckoutItem = CheckoutCourse & VoucherProduct & MembershipProduct &
   cartAction?: EntityRelationCartAction;
   relationDiscount?: Discount;
   fromItemRelation?: Sale;
+  quantity?: number;
 };
 
 export type CheckoutProductPurchase = {
