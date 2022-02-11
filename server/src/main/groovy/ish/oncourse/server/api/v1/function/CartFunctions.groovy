@@ -90,8 +90,11 @@ class CartFunctions {
             it.selected = data.selected
             def cayenneObject = cayenneObjectFrom(parseAsLong(data.id), angelClass, context)
             it.id = cayenneObject.getValueForKey("id") as Long
-            if (angelClass.equals(Product.class))
+            if (angelClass.equals(Product.class)) {
                 it.productType = ProductTypeDTO.fromValue(TypesUtil.getEnumForDatabaseValue((cayenneObject as Product).type, ProductType).toString())
+                if (data.containsKey("quantity"))
+                    it.quantity = parseAsLong(data.quantity)
+            }
             it
         }
     }
