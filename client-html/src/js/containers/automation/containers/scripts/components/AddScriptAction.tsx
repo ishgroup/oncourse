@@ -17,6 +17,7 @@ import StackedLineChartIcon from "@mui/icons-material/StackedLineChart";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import AddIcon from "@mui/icons-material/Add";
 import Collapse from "@mui/material/Collapse";
+import { transition } from "../../../../../common/styles/mixins/common";
 
 const styles = createStyles(theme => ({
   addActionButton: {
@@ -44,31 +45,25 @@ const styles = createStyles(theme => ({
   },
   addActionWrapper: {
     minHeight: theme.spacing(5.75),
-    transition: theme.transitions.create("all", {
-      duration: theme.transitions.duration.standard,
-      easing: theme.transitions.easing.easeInOut
-    }),
+    ...transition(theme, "all"),
   },
   buttonRoot: {
     height: 0,
     padding: 0,
     border: 0,
     textAlign: "center",
-    transition: theme.transitions.create("all", {
-      duration: theme.transitions.duration.standard,
-      easing: theme.transitions.easing.easeInOut
-    }),
+    ...transition(theme, "visibility, opacity, height, padding, border"),
     visibility: "hidden",
     opacity: 0,
   },
   activeStep: {
     margin: theme.spacing(3, 0),
-      "& $buttonRoot": {
+    "& $buttonRoot": {
       height: "auto",
-        padding: theme.spacing(3.5, 2),
-        border: `2px dashed ${theme.palette.divider}`,
-        visibility: "visible",
-        opacity: 1,
+      padding: theme.spacing(3.5, 2),
+      border: `2px dashed ${theme.palette.divider}`,
+      visibility: "visible",
+      opacity: 1,
     }
   },
   actionPaper: {
