@@ -41,11 +41,11 @@ ObjectSelect.query(Invoice)
         }
     }
 
+def sortedRows = rows.findAll{it.value.nonZero()}
+        .sort { it.value.name }
 
 if (detail) {
-    rows.findAll{it.value.nonZero()}
-            .sort { it.key }
-            .each { entry ->
+    sortedRows.each { entry ->
                 def i = entry.value
 
                 csv << [
@@ -59,11 +59,9 @@ if (detail) {
         }
 } else {
 
-    rows.findAll{it.value.nonZero()}
-            .groupBy { it.key }
-            .sort()
-            .each { contactId, invoices ->
-
+   sortedRows.groupBy { it.value.contactId }
+            .each { contactId, invoicesMap ->
+        def invoices = invoicesMap.values()
         csv << [
                 "Debtor"               : invoices.first().name,
                 "Not due"              : invoices.b_0.sum(),
@@ -76,12 +74,12 @@ if (detail) {
 }
 
 static def addInvoice(Map<Integer, ExportInvoice> rows, i) {
-    def row = rows.get(i.getId())
+    def row = rows.get(i.id)
     if (row) {
         return row
     }
     row = new ExportInvoice(i)
-    rows.put(i.getId(), row)
+    rows.put(i.id, row)
     return row
 }
 
@@ -89,6 +87,7 @@ static def addInvoice(Map<Integer, ExportInvoice> rows, i) {
 class ExportInvoice {
     String name
     String key
+    Long contactId
     Invoice invoice
 
     Money b_0 = Money.ZERO
@@ -99,6 +98,7 @@ class ExportInvoice {
 
     ExportInvoice(Invoice i) {
         this.invoice = invoice
+        this.contactId = i.contact.id
         this.name = i.contact.firstName ? "${i.contact.lastName}, ${ i.contact.firstName}" : i.contact.lastName
         this.key = i.contact.lastName + i.contact.id.toString()
     }
