@@ -5,8 +5,12 @@ versionNumber: 1
 minVersion: 9.13
 body: ish.oncourse.agedDebtorCsvExport.groovy
 outputType: csv
-description: "Export in CSV format the aged historic debtors as of midnight at the end of the 'As At Date"
+description: "Export in CSV format the aged historic debtors as of midnight at the end of the 'As At Date' Optionally export all invoices individually."
 variables:
   - name: atDate
     label: "As At Date"
+    dataType: DATE
+variables:
+  - name: detail
+    label: "Export detail lines"
     dataType: DATE
