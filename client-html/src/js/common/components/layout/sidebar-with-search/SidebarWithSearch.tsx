@@ -7,7 +7,7 @@ import { ListSideBarDefaultWidth } from "../../list-view/ListView";
 import ResizableWrapper from "../resizable/ResizableWrapper";
 import Drawer from "../Drawer";
 import LoadingIndicator from "../LoadingIndicator";
-import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
+import { AnyArgFunction, NumberArgFunction } from "../../../../model/common/CommonFunctions";
 import HamburgerMenu from "../swipeable-sidebar/components/HamburgerMenu";
 import { VARIANTS } from "../swipeable-sidebar/utils";
 import SidebarSearch from "./components/SidebarSearch";
@@ -16,8 +16,8 @@ import FiltersList from "./components/FiltersList";
 
 interface Props {
   leftColumnWidth: number;
-  onInit: AnyArgFunction;
-  updateColumnsWidth: (columnsWidth: ColumnWidth) => void;
+  onInit?: AnyArgFunction;
+  updateColumnsWidth: NumberArgFunction;
   SideBar: React.ComponentType<any>;
   AppFrame: React.ComponentType<any>;
   history: any;

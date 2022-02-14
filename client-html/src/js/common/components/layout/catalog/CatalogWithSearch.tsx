@@ -10,11 +10,10 @@ import React, {
   memo, useMemo, useState
 } from "react";
 import AddIcon from "@mui/icons-material/Add";
-import CloseIcon from "@mui/icons-material/Close";
 import Fab from "@mui/material/Fab";
-import { Fade, List, Typography } from "@mui/material";
+import { Fade, Typography } from "@mui/material";
 import clsx from "clsx";
-import { FixedSizeList, areEqual } from "react-window";
+import { areEqual } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import SidebarSearch from "../sidebar-with-search/components/SidebarSearch";
 import { makeAppStyles } from "../../../styles/makeStyles";
@@ -42,7 +41,7 @@ const RowRenderer = React.forwardRef<any, any>(({ data, index, style }, ref) => 
   const { items, ...rest } = data;
   return (
     <Row
-      key={index}
+      key={items[index]?.id}
       item={items[index]}
       style={style}
       forwardedRef={ref}
@@ -52,12 +51,14 @@ const RowRenderer = React.forwardRef<any, any>(({ data, index, style }, ref) => 
 });
 
 interface Props {
-  addNewItem: Partial<CatalogItemType>;
   items: CatalogItemType[];
   title: string;
   itemsListTitle: string;
-  description?: string;
   onOpen: AnyArgFunction;
+  addNewItem?: Partial<CatalogItemType>;
+  onClickNew?: AnyArgFunction;
+  customAddNew?: AnyArgFunction;
+  description?: string;
 }
 
 const useStyles = makeAppStyles(theme => ({
@@ -100,27 +101,31 @@ const useStyles = makeAppStyles(theme => ({
   fabOpened: {},
 }));
 
-const CatalogWithSearch = (
+const CatalogWithSearch = React.memo<Props>((
   {
     title,
     items,
-    itemsListTitle,
-    description,
     onOpen,
-    addNewItem
-  }:Props
+    addNewItem,
+    description,
+    itemsListTitle,
+    customAddNew,
+    onClickNew
+  }
 ) => {
   const [search, setSearch] = useState("");
   const [opened, setOpened] = useState(false);
   const [expanded, setExpanded] = useState([0]);
   const classes = useStyles();
 
-  const open = () => setOpened(prev => !prev);
+  const open = () => (customAddNew ? customAddNew() : setOpened(prev => !prev));
 
   const filteredItems = useMemo(() => {
     const result = {
       installed: [],
-      categories: {}
+      categories: {
+      },
+      other: []
     };
 
     items
@@ -134,11 +139,15 @@ const CatalogWithSearch = (
           result.categories[i.category] = [];
         }
         result.categories[i.category].push(i);
+      } else {
+        result.other.push(i);
       }
     });
 
    return result;
   }, [items, search]);
+  
+  const categoryKeys = Object.keys(filteredItems.categories);
 
   return (
     <div className={classes.root}>
@@ -168,25 +177,38 @@ const CatalogWithSearch = (
                 {description}
               </div>
             )}
-            <div className="mb-2">
-              <div className="heading">
-                {addNewItem.category}
+            {addNewItem && (
+              <div className="mb-2">
+                <div className="heading">
+                  {addNewItem.category}
+                </div>
+                <CatalogItem {...addNewItem} onOpen={onClickNew} showAdded={false} enabled installed />
               </div>
-              <CatalogItem {...addNewItem} showAdded={false} enabled installed />
-            </div>
+            )}
             <div>
-              {Object.keys(filteredItems.categories).map((c, index) => (
+              {categoryKeys.map((c, index) => (
                 <ExpandableContainer
-                  key={c}
+                  key={c + index}
                   index={index}
                   header={c}
                   expanded={search ? [index] : expanded}
                   setExpanded={setExpanded}
                   noDivider
                 >
-                  {filteredItems.categories[c].map(i => <CatalogItem key={i.title + index} {...i} showAdded />)}
+                  {filteredItems.categories[c].map(i => <CatalogItem key={i.id} {...i} showAdded />)}
                 </ExpandableContainer>
               ))}
+              {Boolean(filteredItems.other.length) && (
+                <ExpandableContainer
+                  index={categoryKeys.length}
+                  header="Other"
+                  expanded={search ? [categoryKeys.length] : expanded}
+                  setExpanded={setExpanded}
+                  noDivider
+                >
+                  {filteredItems.other.map(i => <CatalogItem key={i.id} {...i} showAdded />)}
+                </ExpandableContainer>
+              )}
             </div>
           </div>
         </Fade>
@@ -227,6 +249,6 @@ const CatalogWithSearch = (
       </div>
     </div>
 );
-};
+});
 
 export default CatalogWithSearch;

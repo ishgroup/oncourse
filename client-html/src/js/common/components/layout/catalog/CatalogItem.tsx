@@ -37,17 +37,9 @@ const useStyles = makeAppStyles(theme => ({
     fontWeight: 600,
     fontSize: "12px",
     marginLeft: theme.spacing(1),
-    "&$chipPrimary": {
-      color: theme.palette.primary.main,
-      backgroundColor: alpha(theme.palette.primary.main, 0.15)
-    },
-    "&$chipSuccess": {
-      color: theme.palette.success.light,
-      backgroundColor: alpha(theme.palette.success.light, 0.15)
-    }
-  },
-  chipPrimary: {},
-  chipSuccess: {},
+    color: theme.palette.success.light,
+    backgroundColor: alpha(theme.palette.success.light, 0.15)
+  }
 }));
 
 type Props = Partial<CatalogItemType> & {
@@ -55,15 +47,6 @@ type Props = Partial<CatalogItemType> & {
   onOpen?: NumberArgFunction;
   showAdded?: boolean;
 }
-
-const getTagClass = (tag, classes) => {
-  switch (tag) {
-    case "New":
-      return classes["chipSuccess"];
-    default:
-      return classes["chipPrimary"];
-  }
-};
 
 const CatalogItem = (
   {
@@ -99,7 +82,7 @@ const CatalogItem = (
             <div className="centeredFlex">
               {dotColor && <span className={classes.dot} style={{ backgroundColor: enabled ? dotColor : null }} />}
               {title}
-              {!dotColor && tag && <Chip className={clsx(classes.chip, getTagClass(tag, classes))} label={tag} size="small" />}
+              {!dotColor && tag && <Chip className={classes.chip} label={tag} size="small" />}
             </div>
           )}
           secondary={shortDescription || "No description"}
