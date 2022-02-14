@@ -1,5 +1,7 @@
 import ish.oncourse.cayenne.PaymentLineInterface
 
+import java.time.LocalDate
+
 Map<Integer, ExportInvoice> rows = [:]
 
 ObjectSelect.query(Invoice)
@@ -45,7 +47,8 @@ def sortedRows = rows.findAll{it.value.nonZero()}
         .sort { it.value.name }
 
 if (detail) {
-    sortedRows.each { entry ->
+    sortedRows.sort {it.value.date}
+            .each { entry ->
                 def i = entry.value
 
                 csv << [
@@ -54,7 +57,9 @@ if (detail) {
                         "Overdue up to 30 days": i.b_1_30,
                         "Overdue 31-60 days"   : i.b_31_60,
                         "Overdue 61-90 days"   : i.b_61_90,
-                        "Overdue over 90 days" : i.b_90
+                        "Overdue over 90 days" : i.b_90,
+                        "Date"                 : i.date,
+                        "Invoice id"           : entry.key
                 ]
         }
 } else {
@@ -88,6 +93,7 @@ class ExportInvoice {
     String name
     String key
     Long contactId
+    LocalDate date
     Invoice invoice
 
     Money b_0 = Money.ZERO
@@ -101,6 +107,7 @@ class ExportInvoice {
         this.contactId = i.contact.id
         this.name = i.contact.firstName ? "${i.contact.lastName}, ${ i.contact.firstName}" : i.contact.lastName
         this.key = i.contact.lastName + i.contact.id.toString()
+        this.date = i.dateDue
     }
 
     boolean nonZero() {
