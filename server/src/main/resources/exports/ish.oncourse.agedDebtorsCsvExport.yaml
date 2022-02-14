@@ -9,8 +9,7 @@ description: "Export in CSV format the aged historic debtors as of midnight at t
 variables:
   - name: detail
     label: Export detail lines
-    dataType: BOOLEAN
-    value: "false"
+    dataType: DATE
   - name: atDate
     label: As At Date
     dataType: DATE
