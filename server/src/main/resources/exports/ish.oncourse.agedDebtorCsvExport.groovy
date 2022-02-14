@@ -1,8 +1,6 @@
-import ish.oncourse.cayenne.PaymentLineInterface
+import ish.math.Money
 
-import java.time.LocalDate
-
-Map<Integer, ExportInvoice> rows = [:]
+List<ExportInvoice> rows = []
 
 ObjectSelect.query(Invoice)
     .where(Invoice.INVOICE_DATE.lte(atDate))
@@ -17,10 +15,11 @@ ObjectSelect.query(Invoice)
     .select(context)
     .each { i ->
 
-        def row = addInvoice(rows, i)
+        def row = new ExportInvoice(i)
+        rows << row
 
-        List<PaymentLineInterface> paymentLines = i.paymentLines.findAll { pl -> pl.payment.paymentDate <= atDate && pl.payment.status == PaymentStatus.SUCCESS }
-        Money owing = i.totalIncTax.subtract(paymentLines.sum { pl -> pl instanceof PaymentOutLine ? pl.amount.negate() : pl.amount } as Money ?: Money.ZERO)
+        def paymentLines = i.paymentLines.findAll { pl -> pl.payment.paymentDate <= atDate && pl.payment.status == PaymentStatus.SUCCESS }
+        def owing = i.totalIncTax.subtract(paymentLines.sum { pl -> pl instanceof PaymentOutLine ? pl.amount.negate() : pl.amount } ?: Money.ZERO)
 
         if (i.invoiceDueDates.size() == 0) {
             row.addOwing(owing, i.dateDue, atDate)
@@ -37,63 +36,48 @@ ObjectSelect.query(Invoice)
             }
 
             // we should not hit the next condition, but just in case let's not lose the money from the export
-            if (owing > 0) {
-                row.addOwing(owing, i.dateDue, atDate)
-            }
+            row.addOwing(owing, i.dateDue, atDate)
         }
     }
 
-def sortedRows = rows.findAll{it.value.nonZero()}
-        .sort { it.value.name }
+def sortedRows = rows.findAll{it.nonZero()}
+        .sort { it.key }
 
 if (detail) {
-    sortedRows.sort {it.value.date}
-            .each { entry ->
-                def i = entry.value
+    sortedRows.sort {it.date}
+            .each { row ->
 
                 csv << [
-                        "Debtor"               : i.name,
-                        "Not due"              : i.b_0,
-                        "Overdue up to 30 days": i.b_1_30,
-                        "Overdue 31-60 days"   : i.b_31_60,
-                        "Overdue 61-90 days"   : i.b_61_90,
-                        "Overdue over 90 days" : i.b_90,
-                        "Date"                 : i.date,
-                        "Invoice id"           : entry.key
+                        "Debtor"               : row.name,
+                        "Not due"              : row.b_0,
+                        "Overdue up to 30 days": row.b_1_30,
+                        "Overdue 31-60 days"   : row.b_31_60,
+                        "Overdue 61-90 days"   : row.b_61_90,
+                        "Overdue over 90 days" : row.b_90,
+                        "Date"                 : row.invoice.dateDue,
+                        "Invoice id"           : row.invoice.id
                 ]
         }
 } else {
 
-   sortedRows.groupBy { it.value.contactId }
-            .each { contactId, invoicesMap ->
-        def invoices = invoicesMap.values()
+   sortedRows.groupBy { it.contactId }
+            .each { contactId, contactGroup ->
         csv << [
-                "Debtor"               : invoices.first().name,
-                "Not due"              : invoices.b_0.sum(),
-                "Overdue up to 30 days": invoices.b_1_30.sum(),
-                "Overdue 31-60 days"   : invoices.b_31_60.sum(),
-                "Overdue 61-90 days"   : invoices.b_61_90.sum(),
-                "Overdue over 90 days" : invoices.b_90.sum()
+                "Debtor"               : contactGroup.first().name,
+                "Not due"              : contactGroup.b_0.sum(),
+                "Overdue up to 30 days": contactGroup.b_1_30.sum(),
+                "Overdue 31-60 days"   : contactGroup.b_31_60.sum(),
+                "Overdue 61-90 days"   : contactGroup.b_61_90.sum(),
+                "Overdue over 90 days" : contactGroup.b_90.sum()
                 ]
     }
-}
-
-static def addInvoice(Map<Integer, ExportInvoice> rows, i) {
-    def row = rows.get(i.id)
-    if (row) {
-        return row
-    }
-    row = new ExportInvoice(i)
-    rows.put(i.id, row)
-    return row
 }
 
 // A row in the export.
 class ExportInvoice {
     String name
-    String key
+    String key // a key just for sorting on
     Long contactId
-    LocalDate date
     Invoice invoice
 
     Money b_0 = Money.ZERO
@@ -107,7 +91,6 @@ class ExportInvoice {
         this.contactId = i.contact.id
         this.name = i.contact.firstName ? "${i.contact.lastName}, ${ i.contact.firstName}" : i.contact.lastName
         this.key = i.contact.lastName + i.contact.id.toString()
-        this.date = i.dateDue
     }
 
     boolean nonZero() {
