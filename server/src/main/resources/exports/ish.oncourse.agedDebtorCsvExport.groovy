@@ -1,5 +1,3 @@
-import ish.math.Money
-
 List<ExportInvoice> rows = []
 
 ObjectSelect.query(Invoice)
@@ -49,11 +47,11 @@ if (detail) {
 
                 csv << [
                         "Debtor"               : row.name,
-                        "Not due"              : row.b_0,
-                        "Overdue up to 30 days": row.b_1_30,
-                        "Overdue 31-60 days"   : row.b_31_60,
-                        "Overdue 61-90 days"   : row.b_61_90,
-                        "Overdue over 90 days" : row.b_90,
+                        "Not due"              : row.b_0.toPlainString(),
+                        "Overdue up to 30 days": row.b_1_30.toPlainString(),
+                        "Overdue 31-60 days"   : row.b_31_60.toPlainString(),
+                        "Overdue 61-90 days"   : row.b_61_90.toPlainString(),
+                        "Overdue over 90 days" : row.b_90.toPlainString(),
                         "Date"                 : row.invoice.dateDue,
                         "Invoice id"           : row.invoice.id
                 ]
@@ -64,11 +62,11 @@ if (detail) {
             .each { contactId, contactGroup ->
         csv << [
                 "Debtor"               : contactGroup.first().name,
-                "Not due"              : contactGroup.b_0.sum(),
-                "Overdue up to 30 days": contactGroup.b_1_30.sum(),
-                "Overdue 31-60 days"   : contactGroup.b_31_60.sum(),
-                "Overdue 61-90 days"   : contactGroup.b_61_90.sum(),
-                "Overdue over 90 days" : contactGroup.b_90.sum()
+                "Not due"              : contactGroup.b_0.sum().toPlainString(),
+                "Overdue up to 30 days": contactGroup.b_1_30.sum().toPlainString(),
+                "Overdue 31-60 days"   : contactGroup.b_31_60.sum().toPlainString(),
+                "Overdue 61-90 days"   : contactGroup.b_61_90.sum().toPlainString(),
+                "Overdue over 90 days" : contactGroup.b_90.sum().toPlainString()
                 ]
     }
 }
