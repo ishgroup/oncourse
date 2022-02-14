@@ -1,5 +1,3 @@
-import ish.oncourse.cayenne.PaymentLineInterface
-
 Map<Integer, ExportInvoice> rows = [:]
 
 ObjectSelect.query(Invoice)
@@ -43,23 +41,24 @@ ObjectSelect.query(Invoice)
 
 
 if (detail) {
-    rows.findAll{it.value.nonZero()}
+    rows.findAll{it.nonZero()}
             .sort { it.key }
-            .each { entry ->
-                def i = entry.value
+            .each { invoices ->
+        invoices.each { i ->
 
-                csv << [
-                        "Debtor"               : i.name,
-                        "Not due"              : i.b_0,
-                        "Overdue up to 30 days": i.b_1_30,
-                        "Overdue 31-60 days"   : i.b_31_60,
-                        "Overdue 61-90 days"   : i.b_61_90,
-                        "Overdue over 90 days" : i.b_90
-                ]
+            csv << [
+                    "Debtor"               : i.name,
+                    "Not due"              : i.b_0,
+                    "Overdue up to 30 days": i.b_1_30,
+                    "Overdue 31-60 days"   : i.b_31_60,
+                    "Overdue 61-90 days"   : i.b_61_90,
+                    "Overdue over 90 days" : i.b_90
+            ]
         }
+    }
 } else {
 
-    rows.findAll{it.value.nonZero()}
+    rows.findAll{it.nonZero()}
             .groupBy { it.key }
             .sort()
             .each { contactId, invoices ->
@@ -76,12 +75,12 @@ if (detail) {
 }
 
 static def addInvoice(Map<Integer, ExportInvoice> rows, i) {
-    def row = rows.get(i.getId())
+    def row = rows.get(i)
     if (row) {
         return row
     }
     row = new ExportInvoice(i)
-    rows.put(i.getId(), row)
+    rows << row
     return row
 }
 
@@ -107,7 +106,7 @@ class ExportInvoice {
         return b_0 != Money.ZERO || b_1_30 != Money.ZERO || b_31_60 != Money.ZERO || b_61_90 != Money.ZERO || b_90 != Money.ZERO
     }
 
-    void addOwing(Money owing, dateDue, atDate) {
+    addOwing(Money owing, dateDue, atDate) {
         if (owing == Money.ZERO) {
             return
         }
