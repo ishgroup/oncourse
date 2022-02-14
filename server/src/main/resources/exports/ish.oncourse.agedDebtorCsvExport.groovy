@@ -1,4 +1,17 @@
-Map<Integer, ExportInvoice> rows = [:]
+// find all recrods before the threshold date exclusive
+// atDate - export param
+import ish.math.Money
+import ish.oncourse.cayenne.PaymentLineInterface
+import ish.oncourse.server.cayenne.*
+import org.apache.cayenne.query.ObjectSelect
+
+import static java.time.temporal.ChronoUnit.DAYS
+import java.time.LocalDate
+
+LocalDate atDate = LocalDate.parse('2019-06-30')
+def detail = false
+
+List<ExportInvoice> rows = []
 
 ObjectSelect.query(Invoice)
     .where(Invoice.INVOICE_DATE.lte(atDate))
@@ -13,37 +26,107 @@ ObjectSelect.query(Invoice)
     .select(context)
     .each { i ->
 
-        def row = addInvoice(rows, i)
+        def name = i.contact.firstName ? "${i.contact.lastName}, ${ i.contact.firstName}" : i.contact.lastName
+        ExportInvoice row = new ExportInvoice(name: name, invoiceId: i.id, contactId: i.contact.id)
 
         List<PaymentLineInterface> paymentLines = i.paymentLines.findAll { pl -> pl.payment.paymentDate <= atDate && pl.payment.status == PaymentStatus.SUCCESS }
-        Money owing = i.totalIncTax.subtract(paymentLines.sum { pl -> pl instanceof PaymentOutLine ? pl.amount.negate() : pl.amount } as Money ?: Money.ZERO)
+        if (i.invoiceDueDates.size() > 0) {
+            Money invoiceTotal = i.invoiceDueDates.sum { it.amount } as Money
+            Money nonOverdued =  i.invoiceDueDates.findAll { it.dueDate > atDate }.sum { it.amount } as Money ?: Money.ZERO
+            Money paidAmount = paymentLines.sum { it instanceof PaymentOutLine ? it.amount.negate() : it.amount } as Money ?: Money.ZERO
+            if (invoiceTotal.isGreaterThan(paidAmount)) {
+                row.b_0 += invoiceTotal.subtract(paidAmount).min(nonOverdued)
 
-        if (i.invoiceDueDates.size() == 0) {
-            row.addOwing(owing, i.dateDue, atDate)
+                Money overpay = Money.ZERO
 
-        } else {
+                LocalDate startOfperiod = i.invoiceDueDates.sort { it.dueDate }[0].dueDate
+                boolean fromInvoicedate = true
 
-            // For each due date, starting from the latest, allocate some of the amount owing
-            i.invoiceDueDates.sort { it.dueDate }.reverse().findAll { invoiceDueDate ->
-                def thisAmount = owing.min(invoiceDueDate.amount)
-                owing = owing - thisAmount
-                row.addOwing(thisAmount, invoiceDueDate.dueDate, atDate)
+                for (int days = 1; days < 91;) {
 
-                return owing > 0  // breaks the loop when we run out of owing
+                    if (startOfperiod <= atDate) {
+                        LocalDate nextPeriod = DAYS.between(startOfperiod, atDate) > 30 ? startOfperiod.plusDays(30) : atDate
+
+                        Money periodOwing
+                        Money paidForPeriod
+                        if (fromInvoicedate) {
+                            fromInvoicedate = false
+                            periodOwing = i.invoiceDueDates.findAll { it.dueDate <= nextPeriod }.sum { it.amount } as Money ?: Money.ZERO
+                            paidForPeriod = paymentLines.findAll { it.payment.paymentDate <= nextPeriod }.sum {
+                                it instanceof PaymentOutLine ? it.amount.negate() : it.amount
+                            } as Money ?: Money.ZERO
+                        } else {
+                            fromInvoicedate = false
+                            periodOwing = i.invoiceDueDates.findAll { it.dueDate > startOfperiod && it.dueDate <= nextPeriod }.sum { it.amount } as Money ?: Money.ZERO
+                            paidForPeriod = paymentLines.findAll { it.payment.paymentDate > startOfperiod && it.payment.paymentDate <= nextPeriod }.sum {
+                                it instanceof PaymentOutLine ? it.amount.negate() : it.amount
+                            } as Money ?: Money.ZERO
+                        }
+
+                        paidForPeriod += overpay
+                        overpay = Money.ZERO
+
+                        if (periodOwing.isGreaterThan(paidForPeriod)) {
+                            Money owing = periodOwing.subtract(paidForPeriod)
+                            switch (DAYS.between(i.dateDue, atDate).intValue()) {
+                                case 1..30:
+                                    row.b_1_30 += owing
+                                    break
+                                case 31..60:
+                                    row.b_31_60 += owing
+                                    break
+                                case 61..90:
+                                    row.b_61_90 += owing
+                                    break
+                                case { it > 90 }:
+                                    row.b_90 += owing
+                                    break
+                            }
+                        } else {
+                            overpay = paidForPeriod.subtract(periodOwing)
+                        }
+
+                        startOfperiod = nextPeriod
+                    }
+
+                    days += 30
+
+                }
             }
 
-            // we should not hit the next condition, but just in case let's not lose the money from the export
-            if (owing > 0) {
-                row.addOwing(owing, i.dateDue, atDate)
+        }
+        else {
+
+            def dueDate = i.dateDue
+
+            Money owing = i.totalIncTax.subtract(paymentLines.sum { pl -> pl instanceof PaymentOutLine ? pl.amount.negate() : pl.amount } as Money ?: Money.ZERO)
+
+            switch (DAYS.between(dueDate, atDate).intValue()) {
+                case 1..30:
+                    row.b_1_30 += owing
+                    break
+                case 31..60:
+                    row.b_31_60 += owing
+                    break
+                case 61..90:
+                    row.b_61_90 += owing
+                    break
+                case { it > 90 }:
+                    row.b_90 += owing
+                    break
+                default:
+                    row.b_0 += owing
             }
+        }
+
+        if (row.notPaid) {
+            rows << row
         }
     }
 
 
 if (detail) {
-    rows.findAll{it.nonZero()}
-            .sort { it.key }
-            .each { invoices ->
+    rows.sort { it.name }.each { invoices ->
         invoices.each { i ->
 
             csv << [
@@ -58,8 +141,7 @@ if (detail) {
     }
 } else {
 
-    rows.findAll{it.nonZero()}
-            .groupBy { it.key }
+    rows.groupBy { it.name + it.contactId.toString() }
             .sort()
             .each { contactId, invoices ->
 
@@ -74,21 +156,12 @@ if (detail) {
     }
 }
 
-static def addInvoice(Map<Integer, ExportInvoice> rows, i) {
-    def row = rows.get(i)
-    if (row) {
-        return row
-    }
-    row = new ExportInvoice(i)
-    rows << row
-    return row
-}
 
-// A row in the export.
+// A row in the export. Might represent either contacts or invoices
 class ExportInvoice {
     String name
-    String key
-    Invoice invoice
+    int contactId
+    int invoiceId
 
     Money b_0 = Money.ZERO
     Money b_1_30 = Money.ZERO
@@ -96,37 +169,8 @@ class ExportInvoice {
     Money b_61_90 = Money.ZERO
     Money b_90 = Money.ZERO
 
-    ExportInvoice(Invoice i) {
-        this.invoice = invoice
-        this.name = i.contact.firstName ? "${i.contact.lastName}, ${ i.contact.firstName}" : i.contact.lastName
-        this.key = i.contact.lastName + i.contact.id.toString()
-    }
-
-    boolean nonZero() {
+    boolean isNotPaid() {
         return b_0 != Money.ZERO || b_1_30 != Money.ZERO || b_31_60 != Money.ZERO || b_61_90 != Money.ZERO || b_90 != Money.ZERO
     }
-
-    addOwing(Money owing, dateDue, atDate) {
-        if (owing == Money.ZERO) {
-            return
-        }
-        switch (java.time.temporal.ChronoUnit.DAYS.between(dateDue, atDate).intValue()) {
-            case 1..30:
-                b_1_30 += owing
-                break
-            case 31..60:
-                b_31_60 += owing
-                break
-            case 61..90:
-                b_61_90 += owing
-                break
-            case { it > 90 }:
-                b_90 += owing
-                break
-            default:
-                b_0 += owing
-        }
-    }
-
 }
 
