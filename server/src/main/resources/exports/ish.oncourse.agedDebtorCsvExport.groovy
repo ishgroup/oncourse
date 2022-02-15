@@ -13,7 +13,7 @@ ObjectSelect.query(Invoice)
         def paymentLines = i.paymentLines.findAll { pl -> pl.payment.paymentDate <= atDate && pl.payment.status == PaymentStatus.SUCCESS }
         def owing = i.totalIncTax.subtract(paymentLines.sum { pl -> pl instanceof PaymentOutLine ? pl.amount.negate() : pl.amount } ?: Money.ZERO)
 
-        if (owing != Math.ZERO) {
+        if (owing != Money.ZERO) {
             // For each due date, starting from the latest, allocate some of the amount owing
             i.invoiceDueDates.sort { it.dueDate }.reverse().findAll { invoiceDueDate ->
                 def thisAmount = owing.min(invoiceDueDate.amount)
@@ -32,19 +32,19 @@ ObjectSelect.query(Invoice)
         }
     }
 
-
+def title = "Debtor as at end ${atDate}".toString()
 if (detail) {
     rows.sort { a,b -> a.key <=> b.key ?: a.invoice.dateDue <=> b.invoice.dateDue }
          .each { row ->
             csv << [
-                "Debtor"               : row.name,
-                "Not due"              : row.b_0.toPlainString(),
-                "Overdue up to 30 days": row.b_1_30.toPlainString(),
-                "Overdue 31-60 days"   : row.b_31_60.toPlainString(),
-                "Overdue 61-90 days"   : row.b_61_90.toPlainString(),
-                "Overdue over 90 days" : row.b_90.toPlainString(),
-                "Date due"             : row.invoice.dateDue,
-                "Invoice id"           : row.invoice.id
+                (title)                     : row.name,
+                "Not due"                   : row.b_0.toPlainString(),
+                "Overdue up to 30 days"     : row.b_1_30.toPlainString(),
+                "Overdue 31-60 days"        : row.b_31_60.toPlainString(),
+                "Overdue 61-90 days"        : row.b_61_90.toPlainString(),
+                "Overdue over 90 days"      : row.b_90.toPlainString(),
+                "Date due"                  : row.invoice.dateDue,
+                "Invoice id"                : row.invoice.id
             ]
          }
 } else {
@@ -52,12 +52,12 @@ if (detail) {
         .sort()
         .each { key, contactGroup ->
             csv << [
-                "Debtor"               : contactGroup.first().name,
-                "Not due"              : contactGroup.b_0.sum().toPlainString(),
-                "Overdue up to 30 days": contactGroup.b_1_30.sum().toPlainString(),
-                "Overdue 31-60 days"   : contactGroup.b_31_60.sum().toPlainString(),
-                "Overdue 61-90 days"   : contactGroup.b_61_90.sum().toPlainString(),
-                "Overdue over 90 days" : contactGroup.b_90.sum().toPlainString()
+                (title)                     : contactGroup.first().name,
+                "Not due"                   : contactGroup.b_0.sum().toPlainString(),
+                "Overdue up to 30 days"     : contactGroup.b_1_30.sum().toPlainString(),
+                "Overdue 31-60 days"        : contactGroup.b_31_60.sum().toPlainString(),
+                "Overdue 61-90 days"        : contactGroup.b_61_90.sum().toPlainString(),
+                "Overdue over 90 days"      : contactGroup.b_90.sum().toPlainString()
             ]
     }
 }
