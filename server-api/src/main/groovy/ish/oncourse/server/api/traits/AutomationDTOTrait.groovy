@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.api.traits
 
+import ish.oncourse.server.api.v1.model.AutomationStatusDTO
 import ish.oncourse.server.api.v1.model.BindingDTO
 import ish.util.LocalDateUtils
 
@@ -28,7 +29,7 @@ trait AutomationDTOTrait implements _DTOTrait {
 
     abstract void setBody(String body)
 
-    abstract void setEnabled(Boolean enabled)
+    abstract void setEnabled(AutomationStatusDTO enabled)
 
     abstract void setDescription(String description)
 
@@ -59,7 +60,7 @@ trait AutomationDTOTrait implements _DTOTrait {
 
     abstract Long getId()
 
-    abstract Boolean isEnabled()
+    abstract AutomationStatusDTO getEnabled()
 
     abstract String getDescription()
 
