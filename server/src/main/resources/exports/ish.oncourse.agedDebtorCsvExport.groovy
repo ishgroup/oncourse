@@ -1,12 +1,3 @@
-import ish.common.types.PaymentStatus
-import ish.math.Money
-import ish.oncourse.server.cayenne.*
-import org.apache.cayenne.exp.ExpressionFactory
-import org.apache.cayenne.query.ObjectSelect
-
-import java.time.LocalDate
-
-LocalDate atDate = LocalDate.now()
 List<ExportInvoice> rows = []
 
 // Our starting target of invoices are:
