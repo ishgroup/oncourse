@@ -1,16 +1,32 @@
 import ish.common.types.PaymentStatus
 import ish.math.Money
 import ish.oncourse.server.cayenne.*
+import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
 
+import java.time.LocalDate
+
+LocalDate atDate = LocalDate.now()
 List<ExportInvoice> rows = []
 
+// Our starting target of invoices are:
+// 1. Created before the atDate, and either
+// a. Those which currently have something owing, or
+// b. Where there is a payment after the atDate
+
+// Because the atDate is usually in the recent past, this is a shorter list to look for than starting at the beginning of time
 def invoices = ObjectSelect.query(Invoice)
         .where(Invoice.INVOICE_DATE.lte(atDate))
+        .and(
+                Invoice.AMOUNT_OWING.ne(Money.ZERO)
+                .orExp(Invoice.PAYMENT_IN_LINES.dot(PaymentInLine.PAYMENT_IN.dot(PaymentIn.PAYMENT_DATE)).gt(atDate))
+                .orExp(Invoice.PAYMENT_OUT_LINES.dot(PaymentOutLine.PAYMENT_OUT.dot(PaymentOut.PAYMENT_DATE)).gt(atDate))
+        )
         .select(context)
 
 invoices.each { i ->
 
+    // get the total of all successful payments for this invoice
     def paymentOut = ObjectSelect.columnQuery(PaymentOutLine, PaymentOutLine.INVOICE)
             .where(PaymentOutLine.INVOICE.eq(i))
             .and(PaymentOutLine.PAYMENT_OUT.dot(PaymentOut.PAYMENT_DATE).lte(atDate))
@@ -30,7 +46,7 @@ invoices.each { i ->
     if (owing != Money.ZERO) {
         def row = new ExportInvoice(i)
 
-        // For each due date, starting from the latest, allocate some of the amount owing
+        // For each payment plan due date, starting from the latest, allocate some of the amount owing
         i.invoiceDueDates.sort { it.dueDate }.reverse().findAll { invoiceDueDate ->
             def thisAmount = owing.min(invoiceDueDate.amount)
             owing = owing - thisAmount
@@ -80,7 +96,7 @@ if (detail) {
 
 // A row in the export.
 class ExportInvoice {
-    String key // a key for grouping and sorting (unique id, but starting with name for alphabetical sorting)
+    String key // a contact key for grouping and sorting (unique id, but starting with name for alphabetical sorting)
     Invoice invoice
 
     Money b_0 = Money.ZERO
