@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.upgrades
 
+import ish.common.types.AutomationStatus
 import ish.common.types.EntityEvent
 import ish.common.types.MessageType
 import ish.oncourse.server.cayenne.Report
@@ -80,7 +81,7 @@ class DataPopulationUtils {
 
         Script oldScript = (ObjectSelect.query(Script).where(Script.NAME.eq(name)) & Script.KEY_CODE.ne(keyCode).orExp(Script.KEY_CODE.isNull())).selectOne(context)
         if (oldScript) {
-            if (oldScript.enabled != null && oldScript.enabled) {
+            if (oldScript.enabled != null && oldScript.automationStatus.equals(AutomationStatus.ENABLED)) {
                 oldScript.name = oldScript.name + " (old)"
             } else {
                 logger.warn("remove disabled script $oldScript.name, \n $oldScript.body")
@@ -93,7 +94,7 @@ class DataPopulationUtils {
         if (!newScript) {
             newScript = context.newObject(Script)
             newScript.keyCode = keyCode
-            newScript.enabled = oldScript ? Boolean.FALSE : getBoolean(props, ENABLED)
+            newScript.automationStatus = oldScript ? AutomationStatus.NOT_INSTALLED : get(props, STATUS, AutomationStatus)
             newScript.cronSchedule = getString(props, CRON_SCHEDULE)
         }
 
@@ -125,7 +126,7 @@ class DataPopulationUtils {
         if (!dbImport) {
             dbImport = context.newObject(Import)
             dbImport.keyCode = keyCode
-            dbImport.enabled = getBoolean(props, ENABLED)
+            dbImport.automationStatus = get(props, STATUS, AutomationStatus)
         }
         dbImport.name = getString(props, NAME)
         dbImport.body = getBody(props, BODY, IMPORT)
@@ -145,7 +146,7 @@ class DataPopulationUtils {
         if (!dbExport) {
             dbExport = context.newObject(ExportTemplate)
             dbExport.keyCode = keyCode
-            dbExport.enabled = Boolean.TRUE
+            dbExport.automationStatus = AutomationStatus.ENABLED
         }
 
         dbExport.name = getString(props, NAME)
@@ -168,7 +169,7 @@ class DataPopulationUtils {
         if (!dbMessage) {
             dbMessage = context.newObject(EmailTemplate)
             dbMessage.keyCode = keyCode
-            dbMessage.enabled = Boolean.TRUE
+            dbMessage.automationStatus = AutomationStatus.ENABLED
         }
 
         dbMessage.name = getString(props, NAME)

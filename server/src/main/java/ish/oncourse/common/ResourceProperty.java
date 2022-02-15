@@ -20,7 +20,7 @@ public enum  ResourceProperty {
 
     //common automation props
     NAME("name"),
-    ENABLED("enabled"),
+    STATUS("status"),
     ENTITY_CLASS("entityClass"),
     ENTITY_ATTRIBUTE("entityAttribute"),
     DESCRIPTION("description"),

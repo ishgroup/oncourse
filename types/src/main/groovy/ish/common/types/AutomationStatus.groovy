@@ -8,13 +8,14 @@
 
 package ish.common.types
 
+import ish.common.util.DisplayableExtendedEnumeration
 import ish.oncourse.API
 
 /**
  * Status of automations
  */
 @API
-enum AutomationStatus {
+enum AutomationStatus implements DisplayableExtendedEnumeration<Integer> {
 
     /**
      * Database value: 0
