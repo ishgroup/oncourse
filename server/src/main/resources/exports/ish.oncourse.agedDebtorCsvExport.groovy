@@ -1,36 +1,52 @@
+import ish.common.types.PaymentStatus
+import ish.math.Money
+import ish.oncourse.server.cayenne.*
+import org.apache.cayenne.query.ObjectSelect
+
 List<ExportInvoice> rows = []
 
-ObjectSelect.query(Invoice)
-    .where(Invoice.INVOICE_DATE.lte(atDate))
-    .prefetch(Invoice.CONTACT.joint())
-    .prefetch(Invoice.PAYMENT_IN_LINES.joint())
-    .prefetch(Invoice.PAYMENT_OUT_LINES.joint())
-    .select(context)
-    .each { i ->
+def invoices = ObjectSelect.query(Invoice)
+        .where(Invoice.INVOICE_DATE.lte(atDate))
+        .select(context)
 
+invoices.each { i ->
+
+    def paymentOut = ObjectSelect.columnQuery(PaymentOutLine, PaymentOutLine.INVOICE)
+            .where(PaymentOutLine.INVOICE.eq(i))
+            .and(PaymentOutLine.PAYMENT_OUT.dot(PaymentOut.PAYMENT_DATE).lte(atDate))
+            .and(PaymentOutLine.PAYMENT_OUT.dot(PaymentOut.STATUS).eq(PaymentStatus.SUCCESS))
+            .sum(PaymentOutLine.AMOUNT)
+            .selectOne(context) ?: Money.ZERO
+
+    def paymentIn = ObjectSelect.query(PaymentInLine)
+            .where(PaymentInLine.INVOICE.eq(i))
+            .and(PaymentInLine.PAYMENT_IN.dot(PaymentIn.PAYMENT_DATE).lte(atDate))
+            .and(PaymentInLine.PAYMENT_IN.dot(PaymentIn.STATUS).eq(PaymentStatus.SUCCESS))
+            .sum(PaymentInLine.AMOUNT)
+            .selectOne(context) ?: Money.ZERO
+
+    def owing = i.totalIncTax - paymentIn + paymentOut
+
+    if (owing != Money.ZERO) {
         def row = new ExportInvoice(i)
 
-        def paymentLines = i.paymentLines.findAll { pl -> pl.payment.paymentDate <= atDate && pl.payment.status == PaymentStatus.SUCCESS }
-        def owing = i.totalIncTax.subtract(paymentLines.sum { pl -> pl instanceof PaymentOutLine ? pl.amount.negate() : pl.amount } ?: Money.ZERO)
+        // For each due date, starting from the latest, allocate some of the amount owing
+        i.invoiceDueDates.sort { it.dueDate }.reverse().findAll { invoiceDueDate ->
+            def thisAmount = owing.min(invoiceDueDate.amount)
+            owing = owing - thisAmount
+            row.addOwing(thisAmount, invoiceDueDate.dueDate, atDate)
 
-        if (owing != Money.ZERO) {
-            // For each due date, starting from the latest, allocate some of the amount owing
-            i.invoiceDueDates.sort { it.dueDate }.reverse().findAll { invoiceDueDate ->
-                def thisAmount = owing.min(invoiceDueDate.amount)
-                owing = owing - thisAmount
-                row.addOwing(thisAmount, invoiceDueDate.dueDate, atDate)
+            return owing > 0  // breaks the loop when we run out of owing
+        }
 
-                return owing > 0  // breaks the loop when we run out of owing
-            }
+        // anything remaining just attch to the invoice due date
+        row.addOwing(owing, i.dateDue, atDate)
 
-            // anything remaining just attch to the invoice due date
-            row.addOwing(owing, i.dateDue, atDate)
-
-            if (row.nonZero()) {
-                rows << row
-            }
+        if (row.nonZero()) {
+            rows << row
         }
     }
+}
 
 def title = "Debtor as at end ${atDate}".toString()
 if (detail) {
