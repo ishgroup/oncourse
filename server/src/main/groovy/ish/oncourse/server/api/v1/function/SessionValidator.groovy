@@ -18,21 +18,10 @@ import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.dao.CourseDao
 import ish.oncourse.server.api.dao.RoomDao
 import ish.oncourse.server.api.dao.UnavailableRuleDao
-import ish.oncourse.server.api.traits.SessionDTOTrait
-import ish.oncourse.server.api.v1.model.TutorAttendanceDTO
-import ish.oncourse.server.cayenne.CourseClassTutor
-import ish.oncourse.server.cayenne.TutorAttendance
-
-import static ish.oncourse.server.api.v1.model.ClashTypeDTO.*
 import ish.oncourse.server.api.v1.model.SessionDTO
 import ish.oncourse.server.api.v1.model.SessionWarningDTO
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Room
-import ish.oncourse.server.cayenne.Session
-import ish.oncourse.server.cayenne.Tutor
-import ish.oncourse.server.cayenne.UnavailableRule
+import ish.oncourse.server.api.v1.model.TutorAttendanceDTO
+import ish.oncourse.server.cayenne.*
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
@@ -41,6 +30,8 @@ import org.apache.cayenne.query.ObjectSelect
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+
+import static ish.oncourse.server.api.v1.model.ClashTypeDTO.*
 
 @CompileStatic
 class SessionValidator {
@@ -273,11 +264,12 @@ class SessionValidator {
                         .orExp(TutorAttendance.START_DATETIME.gte(start).andExp(TutorAttendance.END_DATETIME.lte(end)))
         )
 
-        return ObjectSelect.query(TutorAttendance)
+        List<TutorAttendance> result = ObjectSelect.query(TutorAttendance)
                 .where(filter)
                 .prefetch(TutorAttendance.SESSION.dot(Session.COURSE_CLASS).dot(CourseClass.COURSE).joint())
                 .limit(3)
                 .select(cayenneService.newContext)
+        result.subList(0, result.size() >= 3 ? 3 : result.size())
     }
     
     private List<Session> getRoomSessionClashes(Date start, Date end, Long roomId, Long classId) {
@@ -293,12 +285,13 @@ class SessionValidator {
                         .orExp(Session.START_DATETIME.lte(start).andExp(Session.END_DATETIME.gte(end)))
                         .orExp(Session.START_DATETIME.gte(start).andExp(Session.END_DATETIME.lte(end)))
         )
-        
-        return ObjectSelect.query(Session)
+
+        List<Session> result = ObjectSelect.query(Session)
                 .where(filter)
                 .prefetch(Session.COURSE_CLASS.dot(CourseClass.COURSE).joint())
                 .limit(3)
                 .select(cayenneService.newContext)
+        result.subList(0, result.size() >= 3 ? 3 : result.size())
     }
 
 }
