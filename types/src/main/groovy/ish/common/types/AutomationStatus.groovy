@@ -15,7 +15,7 @@ import ish.oncourse.API
  * Status of automations
  */
 @API
-enum AutomationStatus implements DisplayableExtendedEnumeration<Integer> {
+public enum AutomationStatus implements DisplayableExtendedEnumeration<Integer> {
 
     /**
      * Database value: 0
