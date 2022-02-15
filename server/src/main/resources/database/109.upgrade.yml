@@ -157,3 +157,50 @@ databaseChangeLog:
               - column:
                   name: category
                   type: VARCHAR(255)
+
+  - changeSet:
+      id: 109-4
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: Script
+            columnName: enabled
+        - columnExists:
+            tableName: Import
+            columnName: enabled
+        - columnExists:
+            tableName: EmailTemplate
+            columnName: enabled
+        - columnExists:
+            tableName: ExportTemplate
+            columnName: enabled
+        - columnExists:
+            tableName: Report
+            columnName: enabled
+      changes:
+        - sql:
+            - "UPDATE Script SET enabled = CASE WHEN enabled=1 THEN 2
+                                                WHEN enabled=0 AND keyCode LIKE 'ish.%' THEN 1
+                                                ELSE 0 
+                                                END"
+        - sql:
+            - "UPDATE Report SET enabled = CASE WHEN enabled=1 THEN 2
+                                                WHEN enabled=0 AND keyCode LIKE 'ish.%' THEN 1
+                                                ELSE 0 
+                                                END"
+        - sql:
+            - "UPDATE EmailTemplate SET enabled = CASE WHEN enabled=1 THEN 2
+                                                WHEN enabled=0 AND keyCode LIKE 'ish.%' THEN 1
+                                                ELSE 0 
+                                                END"
+        - sql:
+            - "UPDATE ExportTemplate SET enabled = CASE WHEN enabled=1 THEN 2
+                                                WHEN enabled=0 AND keyCode LIKE 'ish.%' THEN 1
+                                                ELSE 0 
+                                                END"
+        - sql:
+            - "UPDATE Import SET enabled = CASE WHEN enabled=1 THEN 2
+                                                WHEN enabled=0 AND keyCode LIKE 'ish.%' THEN 1
+                                                ELSE 0 
+                                                END"
