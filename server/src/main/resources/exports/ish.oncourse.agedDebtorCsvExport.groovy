@@ -18,7 +18,7 @@ def invoices = ObjectSelect.query(Invoice)
 invoices.each { i ->
 
     // get the total of all successful payments for this invoice
-    def paymentOut = ObjectSelect.columnQuery(PaymentOutLine, PaymentOutLine.INVOICE)
+    def paymentOut = ObjectSelect.columnQuery(PaymentOutLine)
             .where(PaymentOutLine.INVOICE.eq(i))
             .and(PaymentOutLine.PAYMENT_OUT.dot(PaymentOut.PAYMENT_DATE).lte(atDate))
             .and(PaymentOutLine.PAYMENT_OUT.dot(PaymentOut.STATUS).eq(PaymentStatus.SUCCESS))
