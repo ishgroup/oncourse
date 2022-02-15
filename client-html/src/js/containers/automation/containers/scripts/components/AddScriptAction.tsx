@@ -146,8 +146,9 @@ const ScriptAction = React.memo<ScriptActionProps>(props => {
       color="inherit"
       onClick={() => addAction(title)}
       disabled={disabled}
+      disableRipple
     >
-      <IconButton size="large" centerRipple className={iconClass} disabled={disabled}>
+      <IconButton size="large" centerRipple className={iconClass} disabled={disabled} disableRipple>
         {icon}
       </IconButton>
       <div className="pl-2 mt-0-5">
@@ -187,6 +188,7 @@ const AddScriptAction: React.FC<any> = props => {
         size={active ? "large" : "small"}
         className={clsx(classes.cardLeftIcon, { [classes.cardPlusIconActive]: open && !disabled, [classes.activeLeftButton]: active })}
         onClick={() => setOpen(true)}
+        disableRipple
       >
         {active ? <AddIcon /> : <AddCircleOutlineIcon />}
       </IconButton>

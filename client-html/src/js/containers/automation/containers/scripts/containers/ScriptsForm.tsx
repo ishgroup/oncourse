@@ -19,7 +19,6 @@ import createStyles from "@mui/styles/createStyles";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import CodeIcon from '@mui/icons-material/Code';
-import IconButton from "@mui/material/IconButton";
 import Divider from "@mui/material/Divider";
 import Accordion from "@mui/material/Accordion";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -93,15 +92,10 @@ const styles = theme =>
         bottom: 0,
       }
     },
-    cardLeftIcon: {
-      position: "absolute",
-      left: -75,
-      width: 50,
-      height: 50,
-      backgroundColor: "#fef4e8 !important",
-      color: "#f7941d",
-      zIndex: 1,
-      top: 0,
+    isCardDragging: {
+      "&::after": {
+        content: "none",
+      },
     },
     cardBoltIcon: {
       backgroundColor: "#e9f2d9 !important",
@@ -154,6 +148,9 @@ const styles = theme =>
     },
     cardReaderCustomHeading: {
       maxWidth: "calc(100% - 8px)",
+    },
+    descriptionText: {
+      fontSize: theme.spacing(1.625),
     },
   });
 
@@ -430,6 +427,12 @@ const ScriptsForm = React.memo<Props>(props => {
     values && values.trigger && values.trigger.entityAttribute,
   ]);
 
+  // console.log(syncErrors);
+  // console.log(syncErrors && Boolean(
+  //   syncErrors?.trigger?.type || syncErrors?.trigger?.entityName || syncErrors?.trigger?.cron
+  //   || syncErrors?.trigger?.cron?.custom
+  // ));
+
   return (
     <>
       <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialogClose} onSave={onDialogSave} hasNameField />
@@ -509,6 +512,9 @@ const ScriptsForm = React.memo<Props>(props => {
                       className="overflow-hidden mb-1"
                       hideLabel
                       placeholder="Description"
+                      fieldClasses={{
+                        text: clsx("fw300", classes.descriptionText)
+                      }}
                     />
                   </Typography>
                 </Grid>
@@ -540,12 +546,10 @@ const ScriptsForm = React.memo<Props>(props => {
                 <Grid item xs={9} className={classes.cardsBox}>
                   <div
                     className={clsx(classes.cardsItem,
-                      { [classes.cardCodeView]: (viewMode === "Code" || isInternal || isCardDragging) })}
+                      { [classes.cardCodeView]: (viewMode === "Code" || isInternal) },
+                      { [classes.isCardDragging]: isCardDragging })}
                   >
-                    <div className={(viewMode === "Code" || isInternal) ? "mb-5" : ""}>
-                      <IconButton size="large" className={clsx(classes.cardLeftIcon, classes.cardBoltIcon)}>
-                        <img src={BoltIcon} alt="icon-bolt" />
-                      </IconButton>
+                    <div className={(viewMode === "Code" || isInternal || isCardDragging) ? "mb-5" : ""}>
                       <ScriptCard
                         heading={customTriggerHeading}
                         disableExpandedBottomMargin
@@ -558,6 +562,12 @@ const ScriptsForm = React.memo<Props>(props => {
                         )}
                         onExpand={() => setTriggerExpand(!triggerExpand)}
                         customHeading
+                        leftIcon={!isCardDragging && (<img src={BoltIcon} alt="icon-bolt" />)}
+                        leftIconClass={classes.cardBoltIcon}
+                        // expanded={syncErrors && Boolean(
+                        //   syncErrors?.trigger?.type || syncErrors?.trigger?.entityName || syncErrors?.trigger?.cron
+                        //   || syncErrors?.trigger?.cron?.custom
+                        // )}
                       >
                         <TriggerCardContent
                           classes={classes}
@@ -574,13 +584,11 @@ const ScriptsForm = React.memo<Props>(props => {
 
                     {viewMode === "Code" ? (
                       <div className="mb-5">
-                        <IconButton size="large" className={classes.cardLeftIcon}>
-                          <img src={ScriptIcon} alt="icon-script" />
-                        </IconButton>
                         <ScriptCard
                           heading="Script"
                           onDetailsClick={isInternal ? onInternalSaveClick : undefined}
                           noPadding
+                          leftIcon={!isCardDragging && (<img src={ScriptIcon} alt="icon-script" />)}
                         >
                           <FormField
                             type="code"
@@ -593,10 +601,7 @@ const ScriptsForm = React.memo<Props>(props => {
                     ) : (
                       <>
                         {values.imports && (
-                          <div className={clsx("mt-5", { "mb-5": isInternal })}>
-                            <IconButton size="large" className={classes.cardLeftIcon}>
-                              <UploadIcon />
-                            </IconButton>
+                          <div className={clsx("mt-5", { "mb-5": (isInternal || isCardDragging) })}>
                             <ScriptCard
                               heading="Import"
                               onDelete={hasUpdateAccess && !isInternal ? removeImports : null}
@@ -604,13 +609,14 @@ const ScriptsForm = React.memo<Props>(props => {
                               disableExpandedBottomMargin
                               expanded
                               onDetailsClick={isInternal ? onInternalSaveClick : undefined}
+                              leftIcon={!isCardDragging && (<UploadIcon />)}
                             >
                               <ImportCardContent classes={classes} hasUpdateAccess={hasUpdateAccess} isInternal={isInternal} />
                             </ScriptCard>
                           </div>
                         )}
 
-                        {!isInternal && (
+                        {!isInternal && !isCardDragging && (
                           <AddScriptAction
                             index={0}
                             addComponent={addComponent}
@@ -619,6 +625,7 @@ const ScriptsForm = React.memo<Props>(props => {
                             values={values}
                             hasUpdateAccess={hasUpdateAccess}
                             disabled={isCardDragging}
+                            active={!values.components}
                           />
                         )}
 

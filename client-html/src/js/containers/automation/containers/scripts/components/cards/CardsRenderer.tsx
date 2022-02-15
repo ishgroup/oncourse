@@ -14,7 +14,6 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import StackedLineChartIcon from "@mui/icons-material/StackedLineChart";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { ScriptComponent } from "../../../../../../model/scripts";
 import ScriptCard from "./CardBase";
@@ -169,29 +168,13 @@ const ScriptCardItem: React.FC<ScriptItemProps & WrappedFieldArrayProps> = props
   const getComponentImage = useMemo(() => {
     switch (component.type) {
       case "Script":
-        return (
-          <IconButton size="large" className={classes.cardLeftIcon}>
-            <img src={ScriptIcon} alt="icon-script" />
-          </IconButton>
-        );
+        return <img src={ScriptIcon} alt="icon-script" />;
       case "Query":
-        return (
-          <IconButton size="large" className={classes.cardLeftIcon}>
-            <HelpOutlineIcon />
-          </IconButton>
-        );
+        return <HelpOutlineIcon />;
       case "Message":
-        return (
-          <IconButton size="large" className={classes.cardLeftIcon}>
-            <EmailOutlinedIcon />
-          </IconButton>
-        );
+        return <EmailOutlinedIcon />;
       case "Report":
-        return (
-          <IconButton size="large" className={classes.cardLeftIcon}>
-            <StackedLineChartIcon />
-          </IconButton>
-        );
+        return <StackedLineChartIcon />;
       default:
         return null;
     }
@@ -249,7 +232,6 @@ const ScriptCardItem: React.FC<ScriptItemProps & WrappedFieldArrayProps> = props
       <Draggable draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
         {provided => (
           <div ref={provided.innerRef} {...provided.draggableProps}>
-            {getComponentImage}
             <ScriptCard
               heading={getHeading}
               onDelete={(!isInternal || (!isInternal && component.type === "Script" && hasUpdateAccess))
@@ -259,10 +241,11 @@ const ScriptCardItem: React.FC<ScriptItemProps & WrappedFieldArrayProps> = props
               onDetailsClick={isInternal ? onInternalSaveClick : undefined}
               customHeading
               onExpand={() => setExpand(!expand)}
+              leftIcon={!isDragging && getComponentImage}
             >
               {getComponent}
             </ScriptCard>
-            {!isInternal && (
+            {!isInternal && !isDragging && (
               <AddScriptAction
                 index={index + 1}
                 addComponent={addComponent}
@@ -301,7 +284,7 @@ const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
                 const component: ScriptComponent = fields.get(index);
 
                 return (
-                  <div key={component.id} className={clsx("card-reader-item", { "mb-5": isInternal })}>
+                  <div key={component.id} className={clsx("card-reader-item", { "mb-5": (isInternal || isDragging) })}>
                     <ScriptCardItem
                       {...props}
                       component={component}
