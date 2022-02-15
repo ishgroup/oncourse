@@ -1,0 +1,25 @@
+type: object
+properties:
+  contactId:
+    type: integer
+    format: int64
+    required: true
+  classIds:
+    type: array
+    required: false
+    description: array of classes ids related to this cart
+    items:
+      $ref: './CartObjectData.yaml'
+  waitingCoursesIds:
+    type: array
+    required: false
+    description: array of waiting course ids related to this cart
+    items:
+      $ref: './CartObjectData.yaml'
+  productIds:
+    type: array
+    required: false
+    description: array of product ids related to this cart
+    items:
+      $ref: './CartObjectData.yaml'
+

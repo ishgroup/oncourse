@@ -32,7 +32,8 @@ export const CHECKOUT_COURSE_CLASS_COLUMNS = "course.name,"
   + "relatedFundingSource.id,"
   + "sessions.id,"
   + "relatedFundingSource.fundingProvider.id,"
-  + "vetPurchasingContractID";
+  + "vetPurchasingContractID,"
+  + "course.id";
 
 export const CheckoutCurrentStep = createStringEnum([
   "shoppingCart",
@@ -60,7 +61,7 @@ export type CheckoutPageType = keyof typeof CheckoutPage;
 
 export const titles = {
   [CheckoutPage.default]: "Type in student name or code in order to search",
-  [CheckoutPage.contacts]: "Search for a contact by name.",
+  [CheckoutPage.contacts]: "Search for a contact by email, phone or name.",
   [CheckoutPage.items]: "Search for a course, product, membership or voucher by name or code.",
   [CheckoutPage.promocodes]: "Search for a promotional discount by code",
   [CheckoutPage.summary]: "Summary",
