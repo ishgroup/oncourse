@@ -593,6 +593,7 @@
 	<db-entity name="EmailTemplate">
 		<db-attribute name="bodyHtml" type="CLOB"/>
 		<db-attribute name="bodyPlain" type="CLOB"/>
+		<db-attribute name="category" type="VARCHAR" length="255"/>
 		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="enabled" type="SMALLINT"/>
@@ -605,7 +606,7 @@
 		<db-attribute name="type" type="INTEGER"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 		<db-attribute name="shortDescription" type="CLOB" length="32000"/>
-		<db-attribute name="automationTags" type="VARCHAR" length="255"/>
+		<db-attribute name="tags" type="VARCHAR" length="255"/>
 	</db-entity>
 	<db-entity name="Enrolment">
 		<db-attribute name="associatedCourseIdentifier" type="VARCHAR" length="12"/>
@@ -675,6 +676,7 @@
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="ExportTemplate">
+		<db-attribute name="category" type="VARCHAR" length="255"/>
 		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="enabled" type="SMALLINT" isMandatory="true"/>
@@ -785,6 +787,7 @@
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Import">
+		<db-attribute name="category" type="VARCHAR" length="255"/>
 		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="enabled" type="SMALLINT"/>
@@ -1294,6 +1297,7 @@
 	</db-entity>
 	<db-entity name="Report">
 		<db-attribute name="backgroundId" type="BIGINT"/>
+		<db-attribute name="category" type="VARCHAR" length="255"/>
 		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="data" type="BLOB" isMandatory="true"/>
 		<db-attribute name="description" type="CLOB" length="32000"/>
@@ -1338,6 +1342,7 @@
 		<db-attribute name="tableName" type="VARCHAR" isMandatory="true" length="100"/>
 	</db-entity>
 	<db-entity name="Script">
+		<db-attribute name="category" type="VARCHAR" length="255"/>
 		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="enabled" type="SMALLINT" isMandatory="true"/>
@@ -2278,7 +2283,7 @@
 		<obj-attribute name="bodyPlain" type="java.lang.String" db-attribute-path="bodyPlain"/>
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
-		<obj-attribute name="enabled" type="java.lang.Boolean" db-attribute-path="enabled"/>
+		<obj-attribute name="automationStatus" type="ish.common.types.AutomationStatus" db-attribute-path="enabled"/>
 		<obj-attribute name="entity" type="java.lang.String" db-attribute-path="entity"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="keyCode" type="java.lang.String" db-attribute-path="keyCode"/>
@@ -2289,6 +2294,7 @@
 		<obj-attribute name="willowId" type="java.lang.Long" lock="true" db-attribute-path="willowId"/>
 		<obj-attribute name="shortDescription" type="java.lang.String" db-attribute-path="shortDescription"/>
 		<obj-attribute name="automationTags" type="java.lang.String" db-attribute-path="tags"/>
+		<obj-attribute name="category" type="java.lang.String" db-attribute-path="category"/>
 	</obj-entity>
 	<obj-entity name="EmailTemplateAutomationBinding" superEntityName="AutomationBinding" className="ish.oncourse.server.cayenne.EmailTemplateAutomationBinding" clientClassName="ish.oncourse.cayenne.EmailTemplateAutomationBinding">
 		<qualifier><![CDATA[entityIdentifier = "EmailTemplate"]]></qualifier>
@@ -2373,7 +2379,7 @@
 	<obj-entity name="ExportTemplate" className="ish.oncourse.server.cayenne.ExportTemplate" clientClassName="ish.oncourse.cayenne.ExportTemplate" dbEntityName="ExportTemplate" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
-		<obj-attribute name="enabled" type="java.lang.Boolean" db-attribute-path="enabled"/>
+		<obj-attribute name="automationStatus" type="ish.common.types.AutomationStatus" db-attribute-path="enabled"/>
 		<obj-attribute name="entity" type="java.lang.String" db-attribute-path="entity"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="keyCode" type="java.lang.String" db-attribute-path="keyCode"/>
@@ -2383,6 +2389,7 @@
 		<obj-attribute name="script" type="java.lang.String" db-attribute-path="script"/>
 		<obj-attribute name="shortDescription" type="java.lang.String" db-attribute-path="shortDescription"/>
 		<obj-attribute name="automationTags" type="java.lang.String" db-attribute-path="tags"/>
+		<obj-attribute name="category" type="java.lang.String" db-attribute-path="category"/>
 	</obj-entity>
 	<obj-entity name="ExportTemplateAutomationBinding" superEntityName="AutomationBinding" className="ish.oncourse.server.cayenne.ExportTemplateAutomationBinding" clientClassName="ish.oncourse.cayenne.ExportTemplateAutomationBinding">
 		<qualifier><![CDATA[entityIdentifier = "ExportTemplate"]]></qualifier>
@@ -2473,7 +2480,7 @@
 	<obj-entity name="Import" className="ish.oncourse.server.cayenne.Import" clientClassName="ish.oncourse.cayenne.Import" dbEntityName="Import" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
-		<obj-attribute name="enabled" type="java.lang.Boolean" db-attribute-path="enabled"/>
+		<obj-attribute name="automationStatus" type="ish.common.types.AutomationStatus" db-attribute-path="enabled"/>
 		<obj-attribute name="entity" type="java.lang.String" db-attribute-path="entity"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="keyCode" type="java.lang.String" db-attribute-path="keyCode"/>
@@ -2482,6 +2489,7 @@
 		<obj-attribute name="script" type="java.lang.String" db-attribute-path="script"/>
 		<obj-attribute name="shortDescription" type="java.lang.String" db-attribute-path="shortDescription"/>
 		<obj-attribute name="automationTags" type="java.lang.String" db-attribute-path="tags"/>
+		<obj-attribute name="category" type="java.lang.String" db-attribute-path="category"/>
 	</obj-entity>
 	<obj-entity name="ImportAutomationBinding" superEntityName="AutomationBinding" className="ish.oncourse.server.cayenne.ImportAutomationBinding" clientClassName="ish.oncourse.cayenne.ImportAutomationBinding">
 		<qualifier><![CDATA[entityIdentifier = "Import"]]></qualifier>
@@ -2867,7 +2875,7 @@
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="data" type="byte[]" db-attribute-path="data"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
-		<obj-attribute name="enabled" type="java.lang.Boolean" db-attribute-path="enabled"/>
+		<obj-attribute name="automationStatus" type="ish.common.types.AutomationStatus" db-attribute-path="enabled"/>
 		<obj-attribute name="entity" type="java.lang.String" db-attribute-path="entity"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="isVisible" type="java.lang.Boolean" db-attribute-path="isVisible"/>
@@ -2878,6 +2886,7 @@
 		<obj-attribute name="sortOn" type="java.lang.String" db-attribute-path="sortOn"/>
 		<obj-attribute name="shortDescription" type="java.lang.String" db-attribute-path="shortDescription"/>
 		<obj-attribute name="automationTags" type="java.lang.String" db-attribute-path="tags"/>
+		<obj-attribute name="category" type="java.lang.String" db-attribute-path="category"/>
 	</obj-entity>
 	<obj-entity name="ReportAutomationBinding" superEntityName="AutomationBinding" className="ish.oncourse.server.cayenne.ReportAutomationBinding" clientClassName="ish.oncourse.cayenne.ReportAutomationBinding">
 		<qualifier><![CDATA[entityIdentifier = "Report"]]></qualifier>
@@ -2934,7 +2943,7 @@
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="cronSchedule" type="java.lang.String" db-attribute-path="schedule"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
-		<obj-attribute name="enabled" type="java.lang.Boolean" db-attribute-path="enabled"/>
+		<obj-attribute name="automationStatus" type="ish.common.types.AutomationStatus" db-attribute-path="enabled"/>
 		<obj-attribute name="entityClass" type="java.lang.String" db-attribute-path="entityClass"/>
 		<obj-attribute name="entityAttribute" type="java.lang.String" db-attribute-path="triggerOnAttribute"/>
 		<obj-attribute name="entityEventType" type="ish.common.types.EntityEvent" db-attribute-path="entityEventType"/>
@@ -2949,6 +2958,7 @@
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 		<obj-attribute name="shortDescription" type="java.lang.String" db-attribute-path="shortDescription"/>
 		<obj-attribute name="automationTags" type="java.lang.String" db-attribute-path="tags"/>
+		<obj-attribute name="category" type="java.lang.String" db-attribute-path="category"/>
 	</obj-entity>
 	<obj-entity name="ScriptAutomationBinding" superEntityName="AutomationBinding" className="ish.oncourse.server.cayenne.ScriptAutomationBinding" clientClassName="ish.oncourse.cayenne.ScriptAutomationBinding">
 		<qualifier><![CDATA[entityIdentifier = "Script"]]></qualifier>

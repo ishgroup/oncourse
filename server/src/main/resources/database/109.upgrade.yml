@@ -104,3 +104,56 @@ databaseChangeLog:
               - column:
                   name: tags
                   type: VARCHAR(255)
+
+  - changeSet:
+      id: 109-3
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - not:
+            - columnExists:
+                tableName: Script
+                columnName: category
+            - columnExists:
+                tableName: Import
+                columnName: category
+            - columnExists:
+                tableName: EmailTemplate
+                columnName: category
+            - columnExists:
+                tableName: ExportTemplate
+                columnName: category
+            - columnExists:
+                tableName: Report
+                columnName: category
+      changes:
+        - addColumn:
+            tableName: Script
+            columns:
+              - column:
+                  name: category
+                  type: VARCHAR(255)
+        - addColumn:
+            tableName: Import
+            columns:
+              - column:
+                  name: category
+                  type: VARCHAR(255)
+        - addColumn:
+            tableName: Report
+            columns:
+              - column:
+                  name: category
+                  type: VARCHAR(255)
+        - addColumn:
+            tableName: ExportTemplate
+            columns:
+              - column:
+                  name: category
+                  type: VARCHAR(255)
+        - addColumn:
+            tableName: EmailTemplate
+            columns:
+              - column:
+                  name: category
+                  type: VARCHAR(255)
