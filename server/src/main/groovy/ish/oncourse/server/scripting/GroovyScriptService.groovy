@@ -14,6 +14,7 @@ import com.google.inject.Inject
 import com.google.inject.Injector
 import groovy.transform.CompileStatic
 import io.bootique.BQRuntime
+import ish.common.types.AutomationStatus
 import ish.common.types.EntityEvent
 import ish.common.types.SystemEventType
 import ish.common.types.TriggerType
@@ -240,7 +241,7 @@ class GroovyScriptService {
 
         def enabledScripts = ObjectSelect.query(Script)
                 .where(Script.TRIGGER_TYPE.eq(ENTITY_EVENT))
-                .and(Script.ENABLED.isTrue())
+                .and(Script.AUTOMATION_STATUS.eq(AutomationStatus.ENABLED))
                 .and(Script.ENTITY_CLASS.isNotNull())
                 .select(context)
 
