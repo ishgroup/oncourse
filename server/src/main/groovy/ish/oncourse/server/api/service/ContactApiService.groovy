@@ -187,9 +187,9 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         cayenneModel.isCompany = dto.isCompany
         cayenneModel.gender = dto.gender?.dbType
         cayenneModel.message = dto.message
-        cayenneModel.homePhone = dto.homePhone
-        cayenneModel.mobilePhone = dto.mobilePhone
-        cayenneModel.workPhone = dto.workPhone
+        cayenneModel.homePhone = removeUnsupportedSymbolsFromPhone(dto.homePhone)
+        cayenneModel.mobilePhone = removeUnsupportedSymbolsFromPhone(dto.mobilePhone)
+        cayenneModel.workPhone = removeUnsupportedSymbolsFromPhone(dto.workPhone)
         cayenneModel.postcode = dto.postcode
         cayenneModel.state = dto.state
         cayenneModel.street = dto.street
@@ -220,6 +220,15 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
             paymentInDao.removeCChistory(cayenneModel)
         }
         cayenneModel
+    }
+
+    private String removeUnsupportedSymbolsFromPhone(String phone){
+        StringBuilder updatedPhone = new StringBuilder()
+        for(char symbol in phone.chars){
+            if(symbol == ('+' as char) || (symbol >= ('0' as char) && symbol <= ('9' as char)))
+                updatedPhone.append(symbol)
+        }
+        updatedPhone.toString()
     }
 
     Student toStudentCayenneModel(ObjectContext context, Contact contact, StudentDTO dto, Student cayenneModel) {
