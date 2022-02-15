@@ -64,7 +64,6 @@ if (detail) {
 
 // A row in the export.
 class ExportInvoice {
-    String name
     String key // a key for grouping and sorting (unique id, but starting with name for alphabetical sorting)
     Invoice invoice
 
@@ -76,12 +75,15 @@ class ExportInvoice {
 
     ExportInvoice(Invoice i) {
         this.invoice = invoice
-        this.name = i.contact.firstName ? "${i.contact.lastName}, ${ i.contact.firstName}" : i.contact.lastName
         this.key = i.contact.lastName + i.contact.id.toString()
     }
 
     boolean nonZero() {
         return b_0 != Money.ZERO || b_1_30 != Money.ZERO || b_31_60 != Money.ZERO || b_61_90 != Money.ZERO || b_90 != Money.ZERO
+    }
+
+    String getName() {
+        return invoice.contact.firstName ? "${invoice.contact.lastName}, ${invoice.contact.firstName}" : invoice.contact.lastName
     }
 
     void addOwing(Money owing, dateDue, atDate) {
