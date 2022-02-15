@@ -225,7 +225,7 @@ ${messageStart} to the ish onCourse application for ${serverAddress} . Please cl
 
 ${serverAddress}/invite/${invitationToken}
 
-This invitation will expire in 24 hours.
+This invitation will expire in 7 days.
                 """
 
         SmtpParameters parameters = new SmtpParameters(preferenceController.emailFromAddress, preferenceController.emailFromName, newUser.email, subject, messageText)
