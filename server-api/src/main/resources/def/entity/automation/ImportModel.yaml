@@ -25,7 +25,7 @@ properties:
     type: string
     required: true
     description: import script
-  enabled:
+  status:
     $ref: './AutomationStatus.yaml'
     description: Automation status
     required: true
