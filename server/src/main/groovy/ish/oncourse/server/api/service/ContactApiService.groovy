@@ -222,7 +222,9 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         cayenneModel
     }
 
-    private String removeUnsupportedSymbolsFromPhone(String phone){
+    private static String removeUnsupportedSymbolsFromPhone(String phone){
+        if(phone == null)
+            return null
         StringBuilder updatedPhone = new StringBuilder()
         for(char symbol in phone.chars){
             if(symbol == ('+' as char) || (symbol >= ('0' as char) && symbol <= ('9' as char)))
