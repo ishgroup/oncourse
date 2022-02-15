@@ -13,7 +13,7 @@ describe("Update script epic tests", () => {
     action: saveScriptItem(1, {
       id: 1,
       name: "script 1",
-      enabled: false,
+      status: "Installed but Disabled",
       keyCode: null,
       entity: null,
       description: "test script",

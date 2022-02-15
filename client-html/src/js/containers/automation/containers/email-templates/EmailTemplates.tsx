@@ -22,7 +22,7 @@ const initialDefault: EmailTemplate = {
   subject: null,
   plainBody: "",
   body: null,
-  enabled: false,
+  status: "Installed but Disabled",
   variables: [],
   options: [],
   type: null
