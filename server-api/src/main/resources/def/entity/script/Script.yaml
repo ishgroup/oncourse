@@ -83,3 +83,9 @@ properties:
     require: false
     description: automation category
     example: imports
+  daysInAdvance:
+    type: string
+    required: true
+  fromAddress:
+    type: string
+    required: true

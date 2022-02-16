@@ -86,6 +86,8 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
     ScriptDTO toRestModel(Script dbScript) {
         ScriptDTO scriptDTO = super.toRestModel(dbScript) as ScriptDTO
         scriptDTO.entity = dbScript.entity
+        scriptDTO.fromAddress = dbScript.fromAddress
+        scriptDTO.daysInAdvance = dbScript.daysInAdvance
         scriptDTO.outputType = OutputTypeDTO.values()[0].fromDbType(dbScript.outputType)
         scriptDTO.trigger = new ScriptTriggerDTO().with { st ->
             switch (dbScript.triggerType) {
@@ -184,6 +186,8 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
     Script toCayenneModel(ScriptDTO scriptDTO, Script script) {
         super.toCayenneModel(scriptDTO, script)
         script.outputType = scriptDTO.outputType?.dbType
+        script.fromAddress = scriptDTO.fromAddress
+        script.daysInAdvance = scriptDTO.daysInAdvance
         updateTrigger(scriptDTO, script)
         script
     }

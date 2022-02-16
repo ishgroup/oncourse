@@ -204,3 +204,32 @@ databaseChangeLog:
                                                 WHEN enabled=0 AND keyCode LIKE 'ish.%' THEN 1
                                                 ELSE 0 
                                                 END"
+
+  - changeSet:
+      id: 109-5
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - not:
+            - columnExists:
+                tableName: Script
+                columnName: daysInAdvance
+            - columnExists:
+                tableName: Script
+                columnName: fromAddress
+      changes:
+        - addColumn:
+            tableName: Script
+            columns:
+              - column:
+                  name: daysInAdvance
+                  type: VARCHAR(255)
+              - column:
+                  name: fromAddress
+                  type: VARCHAR(255)
+        - addColumn:
+            tableName: Import
+            columns:
+              - column:
+                  name: tags
+                  type: VARCHAR(255)
