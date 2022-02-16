@@ -19,23 +19,22 @@ import SidebarSearch from "../sidebar-with-search/components/SidebarSearch";
 import { makeAppStyles } from "../../../styles/makeStyles";
 import AddButton from "../../icons/AddButton";
 import CatalogItem from "./CatalogItem";
-import { CatalogItemType } from "../../../../model/common/Catalog";
+import { CatalogData, CatalogItemType } from "../../../../model/common/Catalog";
 import NewsRender from "../../news/NewsRender";
 import DynamicSizeList from "../../form/DynamicSizeList";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import ExpandableContainer from "../expandable/ExpandableContainer";
 
 const Row = memo<any>(
-  props => {
-    const { style, item, onOpen } = props;
-    return (
-      <div style={style}>
-        <CatalogItem {...item} dotColor="#45AA05" onOpen={onOpen} />
-      </div>
-    );
-  },
+  ({
+   style, item, onOpen, forwardedRef
+  }) => (
+    <div style={style} ref={forwardedRef}>
+      <CatalogItem {...item} onOpen={onOpen} />
+    </div>
+  ),
   areEqual
-);
+  );
 
 const RowRenderer = React.forwardRef<any, any>(({ data, index, style }, ref) => {
   const { items, ...rest } = data;
@@ -55,6 +54,7 @@ interface Props {
   title: string;
   itemsListTitle: string;
   onOpen: AnyArgFunction;
+  toggleInstall?: (item: CatalogItemType) => void;
   addNewItem?: Partial<CatalogItemType>;
   onClickNew?: AnyArgFunction;
   customAddNew?: AnyArgFunction;
@@ -106,6 +106,7 @@ const CatalogWithSearch = React.memo<Props>((
     title,
     items,
     onOpen,
+    toggleInstall,
     addNewItem,
     description,
     itemsListTitle,
@@ -120,12 +121,12 @@ const CatalogWithSearch = React.memo<Props>((
 
   const open = () => (customAddNew ? customAddNew() : setOpened(prev => !prev));
 
-  const filteredItems = useMemo(() => {
+  const filteredItems = useMemo<CatalogData>(() => {
     const result = {
       installed: [],
       categories: {
       },
-      other: []
+      custom: []
     };
 
     items
@@ -140,7 +141,7 @@ const CatalogWithSearch = React.memo<Props>((
         }
         result.categories[i.category].push(i);
       } else {
-        result.other.push(i);
+        result.custom.push(i);
       }
     });
 
@@ -195,18 +196,32 @@ const CatalogWithSearch = React.memo<Props>((
                   setExpanded={setExpanded}
                   noDivider
                 >
-                  {filteredItems.categories[c].map(i => <CatalogItem key={i.id} {...i} showAdded />)}
+                  {filteredItems.categories[c].map(i => (
+                    <CatalogItem
+                      onOpen={() => toggleInstall(i)}
+                      key={i.id} 
+                      {...i} 
+                      showAdded
+                    />
+                  ))}
                 </ExpandableContainer>
               ))}
-              {Boolean(filteredItems.other.length) && (
+              {Boolean(filteredItems.custom.length) && (
                 <ExpandableContainer
                   index={categoryKeys.length}
-                  header="Other"
+                  header="Custom"
                   expanded={search ? [categoryKeys.length] : expanded}
                   setExpanded={setExpanded}
                   noDivider
                 >
-                  {filteredItems.other.map(i => <CatalogItem key={i.id} {...i} showAdded />)}
+                  {filteredItems.custom.map(i => (
+                    <CatalogItem
+                      onOpen={() => toggleInstall(i)}
+                      key={i.id}
+                      {...i}
+                      showAdded
+                    />
+                  ))}
                 </ExpandableContainer>
               )}
             </div>

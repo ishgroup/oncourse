@@ -6,24 +6,4 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { ReactNode } from "react";
-
-export interface CatalogItemType {
-  id: number;
-  title: string;
-  category?: string;
-  titleAdornment?: ReactNode;
-  installed?: boolean;
-  enabled?: boolean;
-  tags?: string;
-  shortDescription?: ReactNode;
-  keyCode?: string;
-}
-
-export interface CatalogData {
-  installed: CatalogItemType[],
-  custom: CatalogItemType[];
-  categories: {
-    [key: string]: CatalogItemType[]
-  }
-}
+export type AutomationEntity = "EmailTemplate" | "ExportTemplate" | "Import" | "Integration" | "ReportOverlay" | "Report" | "Script"

@@ -6,16 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { ReactNode } from "react";
+import React from "react";
 import {
  ListItem, ListItemText, Divider, Typography 
 } from "@mui/material";
 import clsx from "clsx";
 import Chip from "@mui/material/Chip";
+import { alpha } from "@mui/material/styles";
 import { CatalogItemType } from "../../../../model/common/Catalog";
 import { makeAppStyles } from "../../../styles/makeStyles";
 import { NumberArgFunction } from "../../../../model/common/CommonFunctions";
-import { alpha } from "@mui/material/styles";
 
 const useStyles = makeAppStyles(theme => ({
   primaryText: {
@@ -30,20 +30,24 @@ const useStyles = makeAppStyles(theme => ({
     width: "10px",
     borderRadius: "50%",
     marginRight: theme.spacing(1),
-    backgroundColor: theme.palette.text.primary
+    backgroundColor: theme.palette.success.light
   },
   chip: {
     textTransform: "uppercase",
     fontWeight: 600,
     fontSize: "12px",
     marginLeft: theme.spacing(1),
-    color: theme.palette.success.light,
-    backgroundColor: alpha(theme.palette.success.light, 0.15)
+    color: theme.palette.primary.light,
+    backgroundColor: alpha(theme.palette.primary.light, 0.15)
+  },
+  root: {
+    "&.disabled $dot": {
+      backgroundColor: theme.palette.text.primary
+    }
   }
 }));
 
 type Props = Partial<CatalogItemType> & {
-  dotColor?: string;
   onOpen?: NumberArgFunction;
   showAdded?: boolean;
 }
@@ -52,12 +56,11 @@ const CatalogItem = (
   {
     id,
     title,
-    category,
+    titleAdornment,
     installed,
     enabled,
-    tag,
+    tags,
     shortDescription,
-    dotColor,
     onOpen,
     showAdded,
   }: Props
@@ -70,19 +73,21 @@ const CatalogItem = (
         button
         className="p-0"
         onClick={() => onOpen(id)}
-        secondaryAction={showAdded && !enabled && <Typography variant="caption" className="disabled">Added</Typography>}
+        secondaryAction={showAdded && installed && <Typography variant="caption">Added</Typography>}
+        disabled={showAdded && installed}
       >
         <ListItemText
           classes={{
-            root: !enabled && "disabled",
+            root: clsx(classes.root, !showAdded && !enabled && "disabled"),
             primary: classes.primaryText,
             secondary: classes.secondaryText
           }}
           primary={(
             <div className="centeredFlex">
-              {dotColor && <span className={classes.dot} style={{ backgroundColor: enabled ? dotColor : null }} />}
+              {!showAdded && installed && <span className={classes.dot} />}
               {title}
-              {!dotColor && tag && <Chip className={classes.chip} label={tag} size="small" />}
+              {titleAdornment}
+              {tags?.split(",").map(t => <Chip className={classes.chip} key={t} label={t} size="small" />)}
             </div>
           )}
           secondary={shortDescription || "No description"}

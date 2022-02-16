@@ -3,35 +3,38 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import React from "react";
+import CropPortraitIcon from '@mui/icons-material/CropPortrait';
+import CropLandscapeIcon from '@mui/icons-material/CropLandscape';
 import { Epic } from "redux-observable";
-
 import { DataResponse } from "@api/model";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { GET_AUTOMATION_PDF_BACKGROUNDS_LIST, GET_AUTOMATION_PDF_BACKGROUNDS_LIST_FULFILLED } from "../actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import EntityService from "../../../../../common/services/EntityService";
 import history from "../../../../../constants/History";
-import { CommonListItem } from "../../../../../model/common/sidebar";
+import { CatalogItemType } from "../../../../../model/common/Catalog";
 
 const request: EpicUtils.Request<any, { selectFirst: boolean; filenameToSelect: string }> = {
   type: GET_AUTOMATION_PDF_BACKGROUNDS_LIST,
   getData: () => EntityService.getPlainRecords("ReportOverlay", "name,portrait", null, null, null, "name", true),
   processData: (response: DataResponse, s, p) => {
-    const pdfBackgrounds: CommonListItem[] = response.rows.map(r => ({
+    const pdfBackgrounds: CatalogItemType[] = response.rows.map(r => ({
       id: Number(r.id),
-      name: r.values[0],
-      isPortrait: r.values[1] === "true",
-      hasIcon: true
+      title: r.values[0],
+      installed: true,
+      enabled: true,
+      titleAdornment: r.values[1] === "true" ? <CropPortraitIcon className="ml-0-5 disabled" /> : <CropLandscapeIcon className="ml-0-5 disabled" />
     }));
 
-    pdfBackgrounds.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
+    pdfBackgrounds.sort((a, b) => (a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1));
 
     if (p) {
       if (p.selectFirst) {
         history.push(`/automation/pdf-backgrounds`);
       }
       if (p.filenameToSelect) {
-        history.push(`/automation/pdf-backgrounds/${pdfBackgrounds.find(t => t.name === p.filenameToSelect).id}`);
+        history.push(`/automation/pdf-backgrounds/${pdfBackgrounds.find(t => t.title === p.filenameToSelect).id}`);
       }
     }
 

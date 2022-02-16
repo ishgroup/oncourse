@@ -8,7 +8,7 @@ import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import IntegrationService from "../services";
 import { parseIntegrations } from "../utils";
-import { GET_INTEGRATIONS_FULFILLED, GET_INTEGRATIONS_REQUEST } from "../../../actions";
+import { GET_INTEGRATIONS_REQUEST, getIntegrationsFulfilled } from "../../../actions";
 
 const request: EpicUtils.Request = {
   type: GET_INTEGRATIONS_REQUEST,
@@ -18,10 +18,7 @@ const request: EpicUtils.Request = {
     integrations.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
 
     return [
-      {
-        type: GET_INTEGRATIONS_FULFILLED,
-        payload: { integrations }
-      }
+      getIntegrationsFulfilled(integrations)
     ];
   }
 };

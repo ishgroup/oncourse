@@ -6,26 +6,105 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-
 import React, { useMemo } from "react";
 import { RouteComponentProps } from "react-router";
-import { useAppSelector } from "../../../common/utils/hooks";
-import { CatalogItemType } from "../../../model/common/Catalog";
+import { useAppDispatch, useAppSelector } from "../../../common/utils/hooks";
 import CatalogWithSearch from "../../../common/components/layout/catalog/CatalogWithSearch";
+import { CatalogItemType } from "../../../model/common/Catalog";
+import IntegrationTypes from "./integrations/IntegrationTypes";
+import { AutomationEntity } from "../../../model/automation/integrations";
+import { installAutomation, uninstallAutomation } from "../actions";
+import { showConfirm } from "../../../common/actions";
+import { getEmailTemplatesListFulfilled } from "./email-templates/actions";
+import { getExportTemplatesListFulfilled } from "./export-templates/actions";
+import { getImportTemplatesListFulfilled } from "./import-templates/actions";
+import { getAutomationPdfReportsListFulfilled } from "./pdf-reports/actions";
+import { getScriptsListFulfilled } from "./scripts/actions";
+
+const useUpdateAutomationStatus = (entity: AutomationEntity) => {
+  const dispatch = useAppDispatch();
+  const emailTemplates = useAppSelector(state => state.automation.emailTemplate.emailTemplates);
+  const exportTemplates = useAppSelector(state => state.automation.exportTemplate.exportTemplates);
+  const importTemplates = useAppSelector(state => state.automation.importTemplate.importTemplates);
+  const pdfReports = useAppSelector(state => state.automation.pdfReport.pdfReports);
+  const scripts = useAppSelector(state => state.automation.script.scripts);
+  
+  switch (entity) {
+    case "EmailTemplate": {
+      return (id: number, installed: boolean) => {
+        dispatch(getEmailTemplatesListFulfilled(emailTemplates.map(t => ({
+          ...t,
+          installed: t.id === id ? installed : t.installed,
+          enabled: installed
+        }))));
+      };
+    }
+    case "ExportTemplate": {
+      return (id: number, installed: boolean) => {
+        dispatch(getExportTemplatesListFulfilled(exportTemplates.map(t => ({
+          ...t,
+          installed: t.id === id ? installed : t.installed,
+          enabled: installed
+        }))));
+      };
+    }
+    case "Import": {
+      return (id: number, installed: boolean) => {
+        dispatch(getImportTemplatesListFulfilled(importTemplates.map(t => ({
+          ...t,
+          installed: t.id === id ? installed : t.installed,
+          enabled: installed
+        }))));
+      };
+    }
+    case "Report": {
+      return (id: number, installed: boolean) => {
+        dispatch(getAutomationPdfReportsListFulfilled(pdfReports.map(t => ({
+          ...t,
+          installed: t.id === id ? installed : t.installed,
+          enabled: installed
+        }))));
+      };
+    }
+    case "Script": {
+      return (id: number, installed: boolean) => {
+        dispatch(getScriptsListFulfilled(scripts.map(t => ({
+          ...t,
+          installed: t.id === id ? installed : t.installed,
+          enabled: installed
+        }))));
+      };
+    }
+    default: 
+      throw Error("Unknown automation type");
+  }
+};
+
+const useInstallToggle = (entity: AutomationEntity) => {
+  const dispatch = useAppDispatch();
+  const updateAutomationStatus = useUpdateAutomationStatus(entity);
+  
+  return (automation: CatalogItemType) => {
+    if (!automation.installed) {
+      dispatch(installAutomation(automation, entity));
+      updateAutomationStatus(automation.id, true);
+      return;
+    }
+    dispatch(showConfirm({
+      onConfirm: () => {
+        dispatch(uninstallAutomation(automation, entity));
+        updateAutomationStatus(automation.id, false);
+      },
+      confirmMessage: "Automation will be uninstalled",
+      confirmButtonText: "Uninstall"
+    }));
+  };
+};
 
 export const EmailTemplatesCatalog = ({ history }: RouteComponentProps) => {
   const emailTemplates = useAppSelector(state => state.automation.emailTemplate.emailTemplates);
 
-  // TODO: remove on api model change
-  const items = useMemo<CatalogItemType[]>(() => emailTemplates?.map((s, index) => ({
-    id: s.id,
-    title: s.name,
-    category: null,
-    installed: true,
-    enabled: s.grayOut,
-    tag: index === 4 ? "New" : index === 5 ? "Popular" : null,
-    shortDescription: null
-  })) || [], [emailTemplates]);
+  const toggleInstall = useInstallToggle("EmailTemplate");
 
   const onOpen = id => {
     history.push(`/automation/email-template/${id}`);
@@ -42,7 +121,8 @@ export const EmailTemplatesCatalog = ({ history }: RouteComponentProps) => {
         category: "Advanced",
         shortDescription: "Create a new email template from scratch"
       }}
-      items={items}
+      toggleInstall={toggleInstall}
+      items={emailTemplates}
       title="Email templates"
       itemsListTitle="installed email templates"
       onOpen={onOpen}
@@ -55,16 +135,7 @@ export const EmailTemplatesCatalog = ({ history }: RouteComponentProps) => {
 export const ExportTemplatesCatalog = ({ history }: RouteComponentProps) => {
   const exportTemplates = useAppSelector(state => state.automation.exportTemplate.exportTemplates);
 
-  // TODO: remove on api model change
-  const items = useMemo<CatalogItemType[]>(() => exportTemplates?.map((s, index) => ({
-    id: s.id,
-    title: s.name,
-    category: null,
-    installed: true,
-    enabled: s.grayOut,
-    tag: index === 4 ? "New" : index === 5 ? "Popular" : null,
-    shortDescription: null
-  })) || [], [exportTemplates]);
+  const toggleInstall = useInstallToggle("ExportTemplate");
 
   const onOpen = id => {
     history.push(`/automation/export-template/${id}`);
@@ -81,7 +152,9 @@ export const ExportTemplatesCatalog = ({ history }: RouteComponentProps) => {
         category: "Advanced",
         shortDescription: "Create a new export template from scratch"
       }}
-      items={items}
+      
+      toggleInstall={toggleInstall}
+      items={exportTemplates}
       title="Export templates"
       itemsListTitle="Installed export templates"
       onOpen={onOpen}
@@ -94,16 +167,7 @@ export const ExportTemplatesCatalog = ({ history }: RouteComponentProps) => {
 export const ImportTemplatesCatalog = ({ history }: RouteComponentProps) => {
   const importTemplates = useAppSelector(state => state.automation.importTemplate.importTemplates);
 
-  // TODO: remove on api model change
-  const items = useMemo<CatalogItemType[]>(() => importTemplates?.map((s, index) => ({
-    id: s.id,
-    title: s.name,
-    category: null,
-    installed: true,
-    enabled: s.grayOut,
-    tag: index === 4 ? "New" : index === 5 ? "Popular" : null,
-    shortDescription: null
-  })) || [], [importTemplates]);
+  const toggleInstall = useInstallToggle("Import");
 
   const onOpen = id => {
     history.push(`/automation/import-template/${id}`);
@@ -120,7 +184,9 @@ export const ImportTemplatesCatalog = ({ history }: RouteComponentProps) => {
         category: "Advanced",
         shortDescription: "Create a new import template from scratch"
       }}
-      items={items}
+      
+      toggleInstall={toggleInstall}
+      items={importTemplates}
       title="Import templates"
       itemsListTitle="installed import templates"
       onOpen={onOpen}
@@ -133,16 +199,7 @@ export const ImportTemplatesCatalog = ({ history }: RouteComponentProps) => {
 export const PDFReportsCatalog = ({ history }: RouteComponentProps) => {
   const pdfReports = useAppSelector(state => state.automation.pdfReport.pdfReports);
 
-  // TODO: remove on api model change
-  const items = useMemo<CatalogItemType[]>(() => pdfReports?.map((s, index) => ({
-    id: s.id,
-    title: s.name,
-    category: null,
-    installed: true,
-    enabled: s.grayOut,
-    tag: index === 4 ? "New" : index === 5 ? "Popular" : null,
-    shortDescription: null
-  })) || [], [pdfReports]);
+  const toggleInstall = useInstallToggle("Report");
 
   const onOpen = id => {
     history.push(`/automation/pdf-report/${id}`);
@@ -159,7 +216,9 @@ export const PDFReportsCatalog = ({ history }: RouteComponentProps) => {
         category: "Advanced",
         shortDescription: "Create a new pdf report template from scratch"
       }}
-      items={items}
+      
+      toggleInstall={toggleInstall}
+      items={pdfReports}
       title="PDF reports"
       itemsListTitle="Installed pdf reports"
       onOpen={onOpen}
@@ -172,17 +231,6 @@ export const PDFReportsCatalog = ({ history }: RouteComponentProps) => {
 export const PDFBackgroundsCatalog = ({ history }: RouteComponentProps) => {
   const pdfBackgrounds = useAppSelector(state => state.automation.pdfBackground.pdfBackgrounds);
 
-  // TODO: remove on api model change
-  const items = useMemo<CatalogItemType[]>(() => pdfBackgrounds?.map((s, index) => ({
-    id: s.id,
-    title: s.name,
-    category: null,
-    installed: true,
-    enabled: s.grayOut,
-    tag: index === 4 ? "New" : index === 5 ? "Popular" : null,
-    shortDescription: null
-  })) || [], [pdfBackgrounds]);
-
   const onOpen = id => {
     history.push(`/automation/pdf-background/${id}`);
   };
@@ -193,7 +241,7 @@ export const PDFBackgroundsCatalog = ({ history }: RouteComponentProps) => {
 
   return (
     <CatalogWithSearch
-      items={items}
+      items={pdfBackgrounds}
       title="PDF backgrounds"
       itemsListTitle="Available pdf backgrounds"
       onOpen={onOpen}
@@ -203,17 +251,16 @@ export const PDFBackgroundsCatalog = ({ history }: RouteComponentProps) => {
 };
 
 export const IntegrationsCatalog = ({ history }: RouteComponentProps) => {
-  const integrations:any = useAppSelector(state => state.automation.integration.integrations);
+  const integrations = useAppSelector(state => state.automation.integration.integrations);
 
-  // TODO: remove on api model change
-  const items = useMemo<CatalogItemType[]>(() => integrations?.map((s, index) => ({
-    id: s.id,
-    title: s.name,
+  const items = useMemo<CatalogItemType[]>(() => integrations?.map(i => ({
+    id: i.id,
+    title: i.name,
     category: null,
     installed: true,
-    enabled: s.grayOut,
-    tag: index === 4 ? "New" : index === 5 ? "Popular" : null,
-    shortDescription: null
+    enabled: true,
+    tag: null,
+    shortDescription: IntegrationTypes[i.type].description
   })) || [], [integrations]);
 
   const onOpen = id => {
@@ -235,30 +282,10 @@ export const IntegrationsCatalog = ({ history }: RouteComponentProps) => {
   );
 };
 
-// TODO: remove on api model change
-const getMockedCategory = index => {
-  if (index < 6) {
-    return "Course Notifications";
-  }
-  if (index < 60) {
-    return "Payroll";
-  }
-  return "Rostering";
-};
-
 export const ScriptsCatalog = ({ history }: RouteComponentProps) => {
   const scripts = useAppSelector(state => state.automation.script.scripts);
 
-  // TODO: remove on api model change
-  const items = useMemo<CatalogItemType[]>(() => scripts?.map((s, index) => ({
-    id: s.id,
-    title: s.name,
-    category: getMockedCategory(index),
-    installed: true,
-    enabled: s.grayOut,
-    tag: index === 4 ? "New" : index === 5 ? "Popular" : null,
-    shortDescription: null
-  })) || [], [scripts]);
+  const toggleInstall = useInstallToggle("Script");
 
   const onOpen = id => {
     history.push(`/automation/script/${id}`);
@@ -275,7 +302,9 @@ export const ScriptsCatalog = ({ history }: RouteComponentProps) => {
         category: "Advanced",
         shortDescription: "Create a new script from scratch"
       }}
-      items={items}
+      
+      toggleInstall={toggleInstall}
+      items={scripts}
       title="Automations"
       itemsListTitle="installed automations"
       onOpen={onOpen}
