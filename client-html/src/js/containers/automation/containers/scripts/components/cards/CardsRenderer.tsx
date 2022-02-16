@@ -227,38 +227,44 @@ const ScriptCardItem: React.FC<ScriptItemProps & WrappedFieldArrayProps> = props
     expand
   ]);
 
+  const draggableId = index + component.id;
+
   return (
     <>
-      <Draggable draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
-        {provided => (
-          <div ref={provided.innerRef} {...provided.draggableProps}>
-            <ScriptCard
-              heading={getHeading}
-              onDelete={(!isInternal || (!isInternal && component.type === "Script" && hasUpdateAccess))
-                ? e => onDelete(e, index) : null}
-              dragHandlerProps={provided.dragHandleProps}
-              noPadding={component.type === "Script"}
-              onDetailsClick={isInternal ? onInternalSaveClick : undefined}
-              customHeading
-              onExpand={() => setExpand(!expand)}
-              leftIcon={!isDragging && getComponentImage}
-            >
-              {getComponent}
-            </ScriptCard>
-            {!isInternal && !isDragging && (
-              <AddScriptAction
-                index={index + 1}
-                addComponent={addComponent}
-                form={form}
-                dispatch={dispatch}
-                values={values}
-                hasUpdateAccess={hasUpdateAccess}
-                active={!isDragging && (fields.length - 1) === index}
-                disabled={isDragging}
-              />
-            )}
-          </div>
-        )}
+      <Draggable draggableId={draggableId} index={index} isDragDisabled={isInternal}>
+        {provided => {
+          const hideIconOnDragging = Boolean(!provided?.draggableProps?.style?.position
+            && draggableId === provided.draggableProps["data-rbd-draggable-id"]);
+          return (
+            <div ref={provided.innerRef} {...provided.draggableProps}>
+              <ScriptCard
+                heading={getHeading}
+                onDelete={(!isInternal || (!isInternal && component.type === "Script" && hasUpdateAccess))
+                  ? e => onDelete(e, index) : null}
+                dragHandlerProps={provided.dragHandleProps}
+                noPadding={component.type === "Script"}
+                onDetailsClick={isInternal ? onInternalSaveClick : undefined}
+                customHeading
+                onExpand={() => setExpand(!expand)}
+                leftIcon={hideIconOnDragging && getComponentImage}
+              >
+                {getComponent}
+              </ScriptCard>
+              {!isInternal && hideIconOnDragging && (
+                <AddScriptAction
+                  index={index + 1}
+                  addComponent={addComponent}
+                  form={form}
+                  dispatch={dispatch}
+                  values={values}
+                  hasUpdateAccess={hasUpdateAccess}
+                  active={!isDragging && (fields.length - 1) === index}
+                  disabled={isDragging}
+                />
+              )}
+            </div>
+          );
+        }}
       </Draggable>
     </>
   );
@@ -276,7 +282,7 @@ const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
     <DragDropContext onDragEnd={args => onDragEnd({ ...args, fields })}>
       <Droppable droppableId="droppable">
         {provided => {
-          const draggingItemHeight = provided.placeholder.props.on ? provided.placeholder.props.on.client.contentBox.height + 50 : 0;
+          const draggingItemHeight = provided.placeholder.props.on ? provided.placeholder.props.on.client.contentBox.height + 40 : 0;
           setDragging(Boolean(draggingItemHeight));
           return (
             <div ref={provided.innerRef} className="card-reader-list" style={{ paddingBottom: `${draggingItemHeight}px` }}>
@@ -284,7 +290,7 @@ const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
                 const component: ScriptComponent = fields.get(index);
 
                 return (
-                  <div key={component.id} className={clsx("card-reader-item", { "mb-5": (isInternal || isDragging) })}>
+                  <div key={component.id} className={clsx("card-reader-item", { "mb-5": isInternal })}>
                     <ScriptCardItem
                       {...props}
                       component={component}
