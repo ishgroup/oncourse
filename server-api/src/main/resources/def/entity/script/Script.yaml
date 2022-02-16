@@ -84,7 +84,7 @@ properties:
     description: automation category
     example: imports
   daysInAdvance:
-    type: string
+    type: integer
     required: true
   fromAddress:
     type: string
