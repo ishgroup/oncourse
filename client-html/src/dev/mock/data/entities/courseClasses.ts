@@ -39,7 +39,6 @@ export function mockCourseClasses() {
       midwayDetExport: null,
       minStudentAge: 10,
       minimumPlaces: 1,
-      sessionsCount: value[4],
       suppressAvetmissExport: false,
       vetCourseSiteID: 10,
       vetFundingSourceStateID: "F3",

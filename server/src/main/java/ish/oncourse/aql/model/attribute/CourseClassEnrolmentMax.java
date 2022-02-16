@@ -43,7 +43,7 @@ public class CourseClassEnrolmentMax implements SyntheticAttributeDescriptor {
 
     @Override
     public SimpleNode spawnNode() {
-        return new SyntheticCourseClassNode() {
+        return new SyntheticCourseClassEnrolmentNode() {
             @Override
             protected SimpleNode convertParentExpression(SimpleNode parent, List<SimpleNode> args) {
                 var arg2 = args.get(2);

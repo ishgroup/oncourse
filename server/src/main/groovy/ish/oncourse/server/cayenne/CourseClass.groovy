@@ -90,6 +90,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	public static final String TIME_ZONE_ID = "clientTimeZoneId"
 	public static final String HAS_ZERO_WAGES = "hasZeroWages"
 	public static final String IS_TRAINEESHIP = "isTraineeship"
+	public static final String SESSIONS_COUNT = "sessionsCount"
 
 	/**
 	 * @return
@@ -242,10 +243,6 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		return null
 	}
 
-	void updateSessionCount() {
-		setSessionsCount(getSessions().size())
-	}
-
 	/**
 	 * making the class room match the session room (first session listed chronologically) <br>
 	 * (this code is a result of long going bug, it might be limiting to some customers by not allowing to choose the class room freely, but since there it is
@@ -282,15 +279,6 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 			if (end == null || getEndDateTime() == null || end != getEndDateTime()) {
 				setEndDateTime(end)
 			}
-			setSessionsCount(sess.size())
-			setMinutesPerSession((int) (totalTimeInMilis / 1000 / 60 / sess.size()))
-		} else {
-			if (getSessionRepeatInterval() != null && getSessionsCount() != null && getStartDateTime() != null) {
-				GregorianCalendar gc = new GregorianCalendar()
-				gc.setTime(getStartDateTime())
-				gc.add(GregorianCalendar.DATE, getSessionRepeatInterval() * getSessionsCount())
-				setEndDateTime(gc.getTime())
-			}
 		}
 	}
 
@@ -320,7 +308,6 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		int costsSize = getCosts().size()
 
 		updateStartEndDates()
-		updateSessionCount()
 
 		if (sessionSize > 0) {
 			updateClassRoom()
@@ -420,8 +407,6 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		BigDecimal sum = BigDecimal.ZERO
 		if (sessions != null && !sessions.isEmpty()) {
 			sum = sessions*.payableDurationInHours.sum() as BigDecimal
-		} else if (sessionsCount != null && minutesPerSession != null) {
-			return sessionsCount * minutesPerSession / 60L
 		}
 		return sum
 	}
@@ -510,9 +495,6 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		}
 		if (getIsActive() == null) {
 			setIsActive(true)
-		}
-		if (getSessionsCount() == null) {
-			setSessionsCount(0)
 		}
 		if (getIsClassFeeApplicationOnly() == null) {
 			setIsClassFeeApplicationOnly(false)
@@ -865,15 +847,6 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	}
 
 	/**
-	 * @return duration of the session in minutes
-	 */
-	@API
-	@Override
-	Integer getMinutesPerSession() {
-		return super.getMinutesPerSession()
-	}
-
-	/**
 	 * @return the date and time this record was modified
 	 */
 	@API
@@ -889,42 +862,6 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	@Override
 	BigDecimal getReportableHours() {
 		return super.getReportableHours()
-	}
-
-	/**
-	 * @return
-	 */
-	@API
-	@Override
-	Integer getSessionRepeatInterval() {
-		return super.getSessionRepeatInterval()
-	}
-
-	/**
-	 * @return
-	 */
-	@Override
-	SessionRepetitionType getSessionRepeatType() {
-		return super.getSessionRepeatType()
-	}
-
-	/**
-	 * @return number of sessions class has
-	 */
-	@Nonnull
-	@API
-	@Override
-	Integer getSessionsCount() {
-		return super.getSessionsCount()
-	}
-
-	/**
-	 * @return
-	 */
-	@API
-	@Override
-	Boolean getSessionsSkipWeekends() {
-		return super.getSessionsSkipWeekends()
 	}
 
 	/**
@@ -1222,5 +1159,9 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	@Override
 	Class<? extends CustomField> getCustomFieldClass() {
 		return CourseClassCustomField
+	}
+
+	int getSessionsCount() {
+		return getSessions().size()
 	}
 }

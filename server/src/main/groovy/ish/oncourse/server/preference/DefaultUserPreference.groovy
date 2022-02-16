@@ -856,7 +856,7 @@ class DefaultUserPreference {
                                      CourseClass.CODE.name]),
                 new ColumnDTO(title: 'Starts', attribute: CourseClass.START_DATE_TIME.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
                 new ColumnDTO(title: 'Ends', attribute: CourseClass.END_DATE_TIME.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
-                new ColumnDTO(title: 'Sessions', attribute: CourseClass.SESSIONS_COUNT.name, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Sessions', attribute: CourseClass.SESSIONS_COUNT, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Fee', attribute: CourseClass.FEE_INC_GST, sortable: false, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
                 new ColumnDTO(title: 'Tutor', attribute: CourseClass.TUTORS_ABRIDGED_PROP, sortable: false, width: W200, visible: true),
                 new ColumnDTO(title: 'Site name', attribute: CourseClass.ROOM.dot(Room.SITE).dot(Site.NAME).name, sortable: true, width: W200, visible: true, sortFields: [CourseClass.ROOM.outer().dot(Room.SITE).outer().dot(Site.NAME).name]),
