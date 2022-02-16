@@ -46,8 +46,8 @@ properties:
   lastRun:
     type: array
     items:
-      type: string
-      description: ISO date string
+      $ref: './LastRun.yaml'
+      description: ISO date string and status
   createdOn:
     type: string
     format: date-time
