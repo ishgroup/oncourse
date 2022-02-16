@@ -9,30 +9,17 @@ List<ExportInvoice> rows = []
 // b. Where there is a payment after the atDate
 
 // Because the atDate is usually in the recent past, this is a shorter list to look for than starting at the beginning of time
-//def invoices = ObjectSelect.query(Invoice)
-//        .where(Invoice.INVOICE_DATE.lte(atDate)
-//                .andExp(
-//                    Invoice.AMOUNT_OWING.ne(Money.ZERO)
-//                    .orExp(Invoice.PAYMENT_IN_LINES.dot(PaymentInLine.PAYMENT_IN.dot(PaymentIn.PAYMENT_DATE)).gt(atDate))
-//                    .orExp(Invoice.PAYMENT_OUT_LINES.dot(PaymentOutLine.PAYMENT_OUT.dot(PaymentOut.PAYMENT_DATE)).gt(atDate))
-//                )
-//        )
-//        .select(context)
-
 def invoices = ObjectSelect.query(Invoice)
-        .where(Invoice.INVOICE_DATE.lte(atDate))
-        .and(Invoice.AMOUNT_OWING.ne(Money.ZERO))
+        .where(Invoice.INVOICE_DATE.lte(atDate)
+                .andExp(
+                    Invoice.AMOUNT_OWING.ne(Money.ZERO)
+                    .orExp(Invoice.PAYMENT_IN_LINES.outer().dot(PaymentInLine.PAYMENT_IN.outer().dot(PaymentIn.PAYMENT_DATE)).gt(atDate))
+                    .orExp(Invoice.PAYMENT_OUT_LINES.outer().dot(PaymentOutLine.PAYMENT_OUT.outer().dot(PaymentOut.PAYMENT_DATE)).gt(atDate))
+                )
+        )
         .select(context)
 
-invoices += ObjectSelect.query(Invoice)
-        .where(Invoice.PAYMENT_IN_LINES.dot(PaymentInLine.PAYMENT_IN.dot(PaymentIn.PAYMENT_DATE)).gt(atDate))
-        .select(context)
-
-invoices += ObjectSelect.query(Invoice)
-        .where(Invoice.PAYMENT_OUT_LINES.dot(PaymentOutLine.PAYMENT_OUT.dot(PaymentOut.PAYMENT_DATE)).gt(atDate))
-        .select(context)
-
-invoices.unique().each { i ->
+invoices.each { i ->
 
     // get the total of all successful payments for this invoice before the atDate
     def paymentOut = ObjectSelect.query(PaymentOutLine)
