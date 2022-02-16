@@ -1,3 +1,6 @@
+import ish.math.Money
+import ish.oncourse.server.cayenne.*
+
 List<ExportInvoice> rows = []
 
 // Our starting target of invoices are:
@@ -7,17 +10,18 @@ List<ExportInvoice> rows = []
 
 // Because the atDate is usually in the recent past, this is a shorter list to look for than starting at the beginning of time
 def invoices = ObjectSelect.query(Invoice)
-        .where(Invoice.INVOICE_DATE.lte(atDate))
-        .and(
-                Invoice.AMOUNT_OWING.ne(Money.ZERO)
-                .orExp(Invoice.PAYMENT_IN_LINES.dot(PaymentInLine.PAYMENT_IN.dot(PaymentIn.PAYMENT_DATE)).gt(atDate))
-                .orExp(Invoice.PAYMENT_OUT_LINES.dot(PaymentOutLine.PAYMENT_OUT.dot(PaymentOut.PAYMENT_DATE)).gt(atDate))
+        .where(Invoice.INVOICE_DATE.lte(atDate)
+                .andExp(
+                    Invoice.AMOUNT_OWING.ne(Money.ZERO)
+                    .orExp(Invoice.PAYMENT_IN_LINES.dot(PaymentInLine.PAYMENT_IN.dot(PaymentIn.PAYMENT_DATE)).gt(atDate))
+                    .orExp(Invoice.PAYMENT_OUT_LINES.dot(PaymentOutLine.PAYMENT_OUT.dot(PaymentOut.PAYMENT_DATE)).gt(atDate))
+                )
         )
         .select(context)
 
 invoices.each { i ->
 
-    // get the total of all successful payments for this invoice
+    // get the total of all successful payments for this invoice before the atDate
     def paymentOut = ObjectSelect.query(PaymentOutLine)
             .where(PaymentOutLine.INVOICE.eq(i))
             .and(PaymentOutLine.PAYMENT_OUT.dot(PaymentOut.PAYMENT_DATE).lte(atDate))
@@ -43,7 +47,7 @@ invoices.each { i ->
             owing = owing - thisAmount
             row.addOwing(thisAmount, invoiceDueDate.dueDate, atDate)
 
-            return owing > 0  // breaks the loop when we run out of owing
+            return owing != Money.ZERO  // breaks the loop when we run out of owing
         }
 
         // anything remaining just attch to the invoice due date
@@ -61,13 +65,14 @@ if (detail) {
          .each { row ->
             csv << [
                 (title)                     : row.name,
+                "Invoice id"                : row.invoice.id,
+                "Invoice date"              : row.invoice.invoiceDate,
+                "Date due"                  : row.invoice.dateDue,
                 "Not due"                   : row.b_0.toPlainString(),
                 "Overdue up to 30 days"     : row.b_1_30.toPlainString(),
                 "Overdue 31-60 days"        : row.b_31_60.toPlainString(),
                 "Overdue 61-90 days"        : row.b_61_90.toPlainString(),
-                "Overdue over 90 days"      : row.b_90.toPlainString(),
-                "Date due"                  : row.invoice.dateDue,
-                "Invoice id"                : row.invoice.id
+                "Overdue over 90 days"      : row.b_90.toPlainString()
             ]
          }
 } else {
@@ -96,9 +101,9 @@ class ExportInvoice {
     Money b_61_90 = Money.ZERO
     Money b_90 = Money.ZERO
 
-    ExportInvoice(Invoice i) {
+    ExportInvoice(Invoice invoice) {
         this.invoice = invoice
-        this.key = i.contact.lastName + i.contact.id.toString()
+        this.key = invoice.contact.lastName + invoice.contact.id.toString()
     }
 
     boolean nonZero() {
