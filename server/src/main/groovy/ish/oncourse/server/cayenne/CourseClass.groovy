@@ -1182,4 +1182,13 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	int getSessionsCount() {
 		return getSessions().size()
 	}
+
+	@Deprecated
+	Integer getMinutesPerSession() {
+		if (!getSessions().isEmpty()) {
+			int sum = getSessions().sum{it.getDurationInMinutes()} as int
+			return (int) (sum / getSessions().size())
+		}
+		return null
+	}
 }
