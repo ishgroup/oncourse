@@ -1,8 +1,0 @@
-name: SCC Sale tagging
-keyCode: scc-sale-tagging
-body: ish.script.sccSaleTagging.groovy
-enabled: true
-triggerType: ENTITY_EVENT
-entityClass: ProductItem
-entityEventType: CREATE
-description: The goal of this script is to add a 'Waiting for Shipping' tag to the product sale of any product sold that is tagged with 'Shipped' or 'Pickup'
