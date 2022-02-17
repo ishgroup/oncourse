@@ -105,3 +105,21 @@ export const getNestedTutorClassItem = (status: CourseClassStatus, count: number
     }
   }
 };
+
+export const getContactPhoneAqlSearch = (value: string): string => {
+  const getSearchTemplate = val => `(homePhone starts with "${val}" or mobilePhone starts with "${val}" or workPhone starts with "${val}")`;
+  
+  let search = getSearchTemplate(value);
+
+  // check for area code
+  if (/^0[23478]/.test(value)) {
+    search += " or " + getSearchTemplate(value.replace(/^0[23478]/, ""));
+  }
+
+  // search with country code
+  if (!/^\+612/.test(value)) {
+    search += " or " + getSearchTemplate("+612" + value);
+  }
+
+  return search;
+};

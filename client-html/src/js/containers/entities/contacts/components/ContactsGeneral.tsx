@@ -3,9 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import {
- ConcessionType, Contact, ContactRelationType, Student, Tag, Tutor 
+ Contact, Student, Tag, Tutor
 } from "@api/model";
 import { change, Field, getFormInitialValues } from "redux-form";
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
@@ -16,6 +16,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Divider from '@mui/material/Divider';
+import { Dispatch } from "redux";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import AvatarRenderer from "./AvatarRenderer";
@@ -25,13 +26,13 @@ import TimetableButton from "../../../../common/components/buttons/TimetableButt
 import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 
 const TutorInitial: Tutor = {
   wwChildrenStatus: "Not checked"
 };
 
 interface ContactsGeneralProps extends EditViewProps<Contact> {
-  classes?: any;
   initialValues?: Contact;
   isStudent?: boolean;
   isTutor?: boolean;
@@ -40,11 +41,7 @@ interface ContactsGeneralProps extends EditViewProps<Contact> {
   setIsTutor?: any;
   setIsCompany?: any;
   tags?: any;
-  countries?: any;
-  relationTypes?: ContactRelationType[];
-  concessionTypes?: ConcessionType[];
   usiLocked?: boolean;
-  fullScreenEditView?: boolean;
 }
 
 export const studentInitial: Student = {
@@ -89,7 +86,19 @@ const filterCompanyTags = (tag: Tag) => {
   return true;
 };
 
-export const ProfileHeading: React.FC<any> = props => {
+interface Props {
+  form: string;
+  dispatch: Dispatch;
+  showConfirm: ShowConfirmCaller;
+  values: Contact;
+  twoColumn: boolean;
+  isCompany: boolean;
+  usiLocked: boolean;
+  syncErrors: any;
+  isNew: boolean;
+}
+
+export const ProfileHeading = (props: Props) => {
   const {
     form,
     dispatch,
@@ -101,26 +110,26 @@ export const ProfileHeading: React.FC<any> = props => {
     syncErrors,
     isNew
   } = props;
+  
+  const Avatar = useCallback(aProps => (
+    <Field
+      name="profilePicture"
+      label="Profile picture"
+      component={AvatarRenderer}
+      form={form}
+      dispatch={dispatch}
+      showConfirm={showConfirm}
+      email={values.email}
+      twoColumn={twoColumn}
+      {...aProps}
+    />
+  ), [values.email]);
 
   return (
     <FullScreenStickyHeader
       opened={isNew || Object.keys(syncErrors).some(k => ['title', 'firstName', 'middleName', 'lastName'].includes(k))}
       twoColumn={twoColumn}
-      Avatar={aProps => (
-        <Field
-          name="profilePicture"
-          label="Profile picture"
-          component={AvatarRenderer}
-          props={{
-            form,
-            dispatch,
-            showConfirm,
-            email: values.email,
-            twoColumn,
-            ...aProps
-          }}
-        />
-      )}
+      Avatar={Avatar}
       title={(
         <>
           {values && !isCompany && values.title && values.title.trim().length > 0 ? `${values.title} ` : ""}
@@ -166,6 +175,9 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     setIsCompany,
     tags,
     isNew,
+    syncErrors,
+    showConfirm,
+    usiLocked,
   } = props;
 
   const isInitiallyStudent = initialValues && !!initialValues.student;
@@ -216,7 +228,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     );
   };
 
-  const getFilteredTags = useCallback(() => {
+  const filteredTags = useMemo(() => {
     if (Array.isArray(tags)) {
       if (isStudent && isTutor) {
         return Array.from(new Set([...tags.filter(filterStudentTags), ...tags.filter(filterTutorTags)]));
@@ -235,11 +247,19 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     return [];
   }, [tags, isStudent, isTutor, isCompany]);
 
-  const filteredTags = getFilteredTags();
-
   return (
     <div className="pt-3 pl-3 pr-3">
-      <ProfileHeading {...props} isNew={isNew} />
+      <ProfileHeading
+        isNew={isNew}
+        form={form}
+        dispatch={dispatch}
+        showConfirm={showConfirm}
+        values={values}
+        twoColumn={twoColumn}
+        isCompany={isCompany}
+        usiLocked={usiLocked}
+        syncErrors={syncErrors}
+      />
       <Grid container columnSpacing={3}>
         <Grid item xs={12} md={twoColumn ? 7 : 12}>
           <Typography variant="caption" display="block" gutterBottom>
