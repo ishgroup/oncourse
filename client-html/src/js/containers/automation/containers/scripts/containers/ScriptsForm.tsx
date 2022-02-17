@@ -25,6 +25,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import CheckIcon from "@mui/icons-material/Check";
+import ClearIcon from "@mui/icons-material/Clear";
 import UploadIcon from "@mui/icons-material/Upload";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { mapSelectItems } from "../../../../../common/utils/common";
@@ -380,6 +381,22 @@ const ScriptsForm = React.memo<Props>(props => {
 
   const enableEntityNameField = entityNameTypes.indexOf(values && values.trigger && values.trigger.type) > -1;
 
+  const isTriggerExpanded = useMemo(() => {
+    return triggerExpand
+      || !values?.trigger?.type
+      || (enableEntityNameField && values?.trigger?.type !== "On demand" && !values?.trigger?.entityName)
+      || (values?.trigger?.type === "Schedule" && !values?.trigger?.cron?.scheduleType)
+      || (values?.trigger?.cron?.scheduleType === "Custom" && !values?.trigger?.cron?.custom);
+  }, [
+    triggerExpand,
+    values,
+    values && values.trigger,
+    values && values.trigger && values.trigger.type,
+    values && values.trigger && values.trigger.entityName,
+    values?.trigger?.cron?.scheduleType,
+    values?.trigger?.cron?.custom
+  ]);
+
   const customTriggerHeading = useMemo(() => {
     let detail;
 
@@ -404,7 +421,7 @@ const ScriptsForm = React.memo<Props>(props => {
         <Typography className="heading mr-5" component="div">
           Trigger
         </Typography>
-        {detail && !triggerExpand && (
+        {detail && !triggerExpand && !isTriggerExpanded && (
           <div className="text-nowrap text-truncate pr-1">
             <Typography variant="caption" color="textSecondary">
               {detail}
@@ -415,18 +432,13 @@ const ScriptsForm = React.memo<Props>(props => {
     );
   }, [
     triggerExpand,
+    isTriggerExpanded,
     values,
     values && values.trigger,
     values && values.trigger && values.trigger.type,
     values && values.trigger && values.trigger.entityName,
     values && values.trigger && values.trigger.entityAttribute,
   ]);
-
-  // console.log(syncErrors);
-  // console.log(syncErrors && Boolean(
-  //   syncErrors?.trigger?.type || syncErrors?.trigger?.entityName || syncErrors?.trigger?.cron
-  //   || syncErrors?.trigger?.cron?.custom
-  // ));
 
   return (
     <>
@@ -558,10 +570,7 @@ const ScriptsForm = React.memo<Props>(props => {
                         customHeading
                         leftIcon={<img src={BoltIcon} alt="icon-bolt" />}
                         leftIconClass={classes.cardBoltIcon}
-                        // expanded={syncErrors && Boolean(
-                        //   syncErrors?.trigger?.type || syncErrors?.trigger?.entityName || syncErrors?.trigger?.cron
-                        //   || syncErrors?.trigger?.cron?.custom
-                        // )}
+                        forceExpanded={isTriggerExpanded}
                       >
                         <TriggerCardContent
                           classes={classes}
@@ -662,11 +671,13 @@ const ScriptsForm = React.memo<Props>(props => {
                         </Typography>
 
                         {values.lastRun && values.lastRun.length ? (
-                          values.lastRun.map((runDate, index) => (
-                            <div key={runDate + index} className="centeredFlex mb-0-5">
-                              <CheckIcon className="mr-0-5" color="success" />
+                          values.lastRun.map((lastRun, index) => (
+                            <div key={index} className="centeredFlex mb-0-5">
+                              {lastRun.status === "Script executed"
+                                ? <CheckIcon className="mr-0-5" color="success" />
+                                : <ClearIcon className="mr-0-5" color="error" />}
                               <Typography variant="body1">
-                                {formatRelativeDate(new Date(runDate), new Date(), DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL)}
+                                {formatRelativeDate(new Date(lastRun.date), new Date(), DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL)}
                               </Typography>
                             </div>
                           ))

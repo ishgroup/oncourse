@@ -92,6 +92,7 @@ const CardBase = props => {
     onExpand,
     leftIcon,
     leftIconClass,
+    forceExpanded,
   } = props;
 
   return (
@@ -107,8 +108,8 @@ const CardBase = props => {
           expanded: disableExpandedBottomMargin ? classes.panelExpandedWithoutMargin : classes.panelExpanded
         }}
         className={className}
+        expanded={forceExpanded}
         defaultExpanded={expanded}
-        onChange={onExpand}
       >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -118,6 +119,7 @@ const CardBase = props => {
             expandIconWrapper: clsx("p-0-5 mr-2", classes.summaryExpandIcon),
             content: classes.summaryContent
           }}
+          onClick={onExpand}
         >
           <div className={clsx("flex-fill centeredFlex w-100", classes.summaryContentInner)} {...dragHandlerProps}>
             {Boolean(dragHandlerProps) && <DragIndicator color="disabled" />}
