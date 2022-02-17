@@ -1346,11 +1346,9 @@
 	<db-entity name="Script">
 		<db-attribute name="category" type="VARCHAR" length="255"/>
 		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
-		<db-attribute name="daysInAdvance" type="VARCHAR" length="255"/>
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="enabled" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="entityClass" type="VARCHAR" length="128"/>
-		<db-attribute name="fromAddress" type="VARCHAR" length="255"/>
 		<db-attribute name="triggerOnAttribute" type="VARCHAR" length="128"/>
 		<db-attribute name="entityEventType" type="INTEGER"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
@@ -2947,13 +2945,11 @@
 	<obj-entity name="Script" className="ish.oncourse.server.cayenne.Script" clientClassName="ish.oncourse.cayenne.Script" dbEntityName="Script" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="cronSchedule" type="java.lang.String" db-attribute-path="schedule"/>
-		<obj-attribute name="daysInAdvance" type="java.lang.String" db-attribute-path="daysInAdvance"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
 		<obj-attribute name="automationStatus" type="ish.common.types.AutomationStatus" db-attribute-path="enabled"/>
 		<obj-attribute name="entityClass" type="java.lang.String" db-attribute-path="entityClass"/>
 		<obj-attribute name="entityAttribute" type="java.lang.String" db-attribute-path="triggerOnAttribute"/>
 		<obj-attribute name="entityEventType" type="ish.common.types.EntityEvent" db-attribute-path="entityEventType"/>
-		<obj-attribute name="fromAddress" type="java.lang.String" db-attribute-path="fromAddress"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="keyCode" type="java.lang.String" db-attribute-path="keyCode"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
