@@ -3,265 +3,265 @@
   body: ish.onCourse.account.csv.groovy
   name: Account CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.account.xml
   entityClass: Account
   body: ish.onCourse.account.xml.groovy
   name: Account XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.accountTransaction.csv
   entityClass: AccountTransaction
   body: ish.onCourse.accountTransaction.csv.groovy
   name: Account Transaction CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.accountTransaction.xml
   entityClass: AccountTransaction
   body: ish.onCourse.accountTransaction.xml.groovy
   name: Account Transaction XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.accountTransactionMYOB.csv
   entityClass: AccountTransaction
   body: ish.onCourse.accountTransactionMYOB.csv.groovy
   name: Account Transaction MYOB export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.accountTransactionSegmentation.csv
   entityClass: AccountTransaction
   body: ish.onCourse.accountTransactionSegmentation.csv.groovy
   name: Account Transaction Segmentation CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.application.xml
   entityClass: Application
   body: ish.onCourse.application.xml.groovy
   name: Application XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.assessment.csv
   entityClass: Assessment
   body: ish.onCourse.assessment.csv.groovy
   name: Assessment CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.assessment.xml
   entityClass: Assessment
   body: ish.onCourse.assessment.xml.groovy
   name: Assessment XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.assessmentSubmission.csv
   entityClass: AssessmentSubmission
   body: ish.onCourse.assessmentSubmission.csv.groovy
   name: Assessment Submission CSV export
   outputType: csv
-  
+
 - keyCode: ish.onCourse.assessmentSubmission.xml
   entityClass: AssessmentSubmission
   body: ish.onCourse.assessmentSubmission.xml.groovy
   name: Assessment Submission XML export
   outputType: xml
-  
+
 - keyCode: ish.onCourse.attendance.csv
   entityClass: CourseClass
   body: ish.onCourse.attendance.csv.groovy
   name: Attendance CSV
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.audit.xml
   entityClass: Audit
   body: ish.onCourse.audit.xml.groovy
   name: Audit XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.auditLogging.csv
   entityClass: Audit
   body: ish.onCourse.auditLogging.csv.groovy
   name: Audit Logging CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.banking.csv
   entityClass: Banking
   body: ish.onCourse.banking.csv.groovy
   name: Banking CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.banking.xml
   entityClass: Banking
   body: ish.onCourse.banking.xml.groovy
   name: Banking XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.certificate.csv
   entityClass: Certificate
   body: ish.onCourse.certificate.csv.groovy
   name: Certificate CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.certificate.xml
   entityClass: Certificate
   body: ish.onCourse.certificate.xml.groovy
   name: Certificate XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.certificateCQR.csv
   entityClass: Certificate
   body: ish.onCourse.certificateCQR.csv.groovy
   name: Certificate CQR CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.classBudget.csv
   entityClass: CourseClass
   body: ish.onCourse.classBudget.csv.groovy
   name: Class Budget Summary CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.classOutcomes.csv
   entityClass: CourseClass
   body: ish.onCourse.classOutcomes.csv.groovy
   name: Class outcomes CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.contact.csv
   entityClass: Contact
   body: ish.onCourse.contact.csv.groovy
   name: Contact CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.contact.xml
   entityClass: Contact
   body: ish.onCourse.contact.xml.groovy
   name: Contact XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.corporatePass.csv
   entityClass: CorporatePass
   body: ish.onCourse.corporatePass.csv.groovy
   name: CorporatePass CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.corporatePass.xml
   entityClass: CorporatePass
   body: ish.onCourse.corporatePass.xml.groovy
   name: CorporatePass XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.course.csv
   entityClass: Course
   body: ish.onCourse.course.csv.groovy
   name: Course CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.course.xml
   entityClass: Course
   body: ish.onCourse.course.xml.groovy
   name: Course XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.courseClass.csv
   entityClass: CourseClass
   body: ish.onCourse.courseClass.csv.groovy
   name: CourseClass CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.courseClass.xml
   entityClass: CourseClass
   body: ish.onCourse.courseClass.xml.groovy
   name: CourseClass XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.courseClassSessions.csv
   entityClass: CourseClass
   body: ish.onCourse.courseClassSessions.csv.groovy
   name: CourseClass Sessions CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.debtorPaymentSummary.csv
   entityClass: Invoice
   body: ish.onCourse.debtorPaymentSummary.csv.groovy
   name: Debtor Payment Summary
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.discount.csv
   entityClass: Discount
   body: ish.onCourse.discount.csv.groovy
   name: Discount CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.discount.xml
   entityClass: Discount
   body: ish.onCourse.discount.xml.groovy
   name: Discount XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.document.csv
   entityClass: Document
   body: ish.onCourse.document.csv.groovy
   name: Document CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.document.xml
   entityClass: Document
   body: ish.onCourse.documents.xml.groovy
   name: Document XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.enrolment.csv
   entityClass: Enrolment
   body: ish.onCourse.enrolment.csv.groovy
   name: Enrolment CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.enrolment.xml
   entityClass: Enrolment
   body: ish.onCourse.enrolment.xml.groovy
   name: Enrolment XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.enrolmentExtendedOutcomes.csv
   entityClass: Enrolment
   body: ish.onCourse.enrolmentExtendedOutcomes.csv.groovy
   name: Extended outcomes CSV
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.enrolmentsASQAAudit.csv
   entityClass: Enrolment
   name: ASQA Enrolments Audit
@@ -269,194 +269,194 @@
   minVersion: 9.13
   body: ish.onCourse.enrolmentsASQAAudit.groovy
   outputType: csv
-  
+
 - keyCode: ish.onCourse.extendedOutcomes.csv
   entityClass: CourseClass
   body: ish.onCourse.extendedOutcomes.csv.groovy
   name: Extended outcomes CSV
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.groupedMYOB.csv
   entityClass: AccountTransaction
   body: ish.onCourse.groupedMYOB.csv.groovy
   name: grouped MYOB export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.indesignBrochureClass.xml
   entityClass: CourseClass
   body: ish.onCourse.indesignBrochureClass.xml.groovy
   name: Indesign Brochure XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.invoice.csv
   entityClass: Invoice
   body: ish.onCourse.invoice.csv.groovy
   name: Invoice CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.invoice.xml
   entityClass: Invoice
   body: ish.onCourse.invoice.xml.groovy
   name: Invoice XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.invoiceLine.csv
   entityClass: Invoice
   body: ish.onCourse.invoiceLine.csv.groovy
   name: InvoiceLine CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.lead.csv
   entityClass: Lead
   body: ish.onCourse.lead.csv.groovy
   name: Lead CSV export
   outputType: csv
-  
+
 - keyCode: ish.onCourse.lead.xml
   entityClass: Lead
   body: ish.onCourse.lead.xml.groovy
   name: Lead XML export
   outputType: xml
-  
+
 - keyCode: ish.onCourse.message.csv
   entityClass: Message
   body: ish.onCourse.message.csv.groovy
   name: Message CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.message.xml
   entityClass: Message
   body: ish.onCourse.message.xml.groovy
   name: Message XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.module.csv
   entityClass: Module
   body: ish.onCourse.module.csv.groovy
   name: Module CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.module.xml
   entityClass: Module
   body: ish.onCourse.module.xml.groovy
   name: Module XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.myobactivity.csv
   entityClass: Payslip
   body: ish.onCourse.myobactivity.csv.groovy
   name: MYOB Activity Payslip CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.nswOlgr.csv
   entityClass: Contact
   body: ish.onCourse.nswOlgr.csv.groovy
   name: NSW OLGR CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.outcome.csv
   entityClass: Outcome
   body: ish.onCourse.outcome.csv.groovy
   name: Outcome CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.outcome.xml
   entityClass: Outcome
   body: ish.onCourse.outcome.xml.groovy
   name: Outcome XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.paymentIn.csv
   entityClass: PaymentIn
   body: ish.onCourse.paymentIn.csv.groovy
   name: PaymentIn CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.paymentIn.xml
   entityClass: PaymentIn
   body: ish.onCourse.paymentIn.xml.groovy
   name: PaymentIn XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.paymentOut.csv
   entityClass: PaymentOut
   body: ish.onCourse.paymentOut.csv.groovy
   name: PaymentOut CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.paymentOut.xml
   entityClass: PaymentOut
   body: ish.onCourse.paymentOut.xml.groovy
   name: PaymentOut XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.payslip.csv
   entityClass: Payslip
   body: ish.onCourse.payslip.csv.groovy
   name: Payslip CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.payslip.xml
   entityClass: Payslip
   body: ish.onCourse.payslip.xml.groovy
   name: Payslip XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.payslipMicropay.csv
   entityClass: Payslip
   body: ish.onCourse.payslipMicropay.csv.groovy
   name: Payslip MicroPay export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.priorLearning.csv
   entityClass: PriorLearning
   body: ish.onCourse.priorLearning.csv.groovy
   name: Prior Learning CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.priorLearning.xml
   entityClass: PriorLearning
   body: ish.onCourse.priorLearning.xml.groovy
   name: Prior Learning XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.qualification.csv
   entityClass: Qualification
   body: ish.onCourse.qualification.csv.groovy
   name: Qualification CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.qualification.xml
   entityClass: Qualification
   body: ish.onCourse.qualification.xml.groovy
   name: Qualification XML export
   outputType: xml
-  
-  
+
+
   name: ASQA Qualifications Export
   description: This export produces results in accordance with ASQA's Delivery Data Summary - Table A spreadsheet. The last three columns are expected to be empty as these must be filled out manually.
 - keyCode: ish.onCourse.qualificationsASQAExport.csv
@@ -464,98 +464,98 @@
   body: ish.onCourse.qualificationsASQAExport.groovy
   outputType: csv
   minVersion: 9.13
-  
+
 - keyCode: ish.onCourse.quote.csv
   entityClass: Quote
   body: ish.onCourse.quote.csv.groovy
   name: Quote CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.quote.xml
   entityClass: Quote
   body: ish.onCourse.quote.xml.groovy
   name: Quote XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.quoteLine.csv
   entityClass: Quote
   body: ish.onCourse.quoteLine.csv.groovy
   name: QuoteLine CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.room.csv
   entityClass: Room
   body: ish.onCourse.room.csv.groovy
   name: Room CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.room.xml
   entityClass: Room
   body: ish.onCourse.room.xml.groovy
   name: Room XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.script.csv
   entityClass: Script
   body: ish.onCourse.script.csv.groovy
   name: Script CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.script.xml
   entityClass: Script
   body: ish.onCourse.script.xml.groovy
   name: Script XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.site.csv
   entityClass: Site
   body: ish.onCourse.site.csv.groovy
   name: Site CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.site.xml
   entityClass: Site
   body: ish.onCourse.site.xml.groovy
   name: Site XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.ssBulkUpload.csv
   entityClass: Application
   body: ish.onCourse.ssBulkUpload.csv.groovy
   name: Smart & Skilled Bulk Upload
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.survey.csv
   entityClass: Survey
   body: ish.onCourse.survey.csv.groovy
   name: StudentFeedback CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.survey.xml
   entityClass: Survey
   body: ish.onCourse.survey.xml.groovy
   name: StudentFeedback XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.trainingPackage.csv
   entityClass: TrainingPackage
   body: ish.onCourse.trainingPackage.csv.groovy
   name: Training Package CSV export
   outputType: csv
-  
-  
+
+
   name: ASQA Units of Competency Export
   description: This export produces results in accordance with ASQA's Delivery Data Summary - Table B spreadsheet. The last three columns are expected to be empty as these must be filled out manually.
 - keyCode: ish.onCourse.unitsOfCompetencyASQAExport.csv
@@ -563,59 +563,61 @@
   body: ish.onCourse.unitsOfCompetencyASQAExport.groovy
   outputType: csv
   minVersion: 9.13
-  
+
 - keyCode: ish.onCourse.voucher.csv
   entityClass: Voucher
   body: ish.onCourse.voucher.csv.groovy
   name: Voucher CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.voucher.xml
   entityClass: Voucher
   body: ish.onCourse.voucher.xml.groovy
   name: Voucher XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.voucherProduct.csv
   entityClass: VoucherProduct
   body: ish.onCourse.voucherProduct.csv.groovy
   name: Voucher Product CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.voucherProduct.xml
   entityClass: VoucherProduct
   body: ish.onCourse.voucherProduct.xml.groovy
   name: VoucherProduct XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.onCourse.waitingList.csv
   entityClass: WaitingList
   body: ish.onCourse.waitingList.csv.groovy
   name: WaitingList CSV export
   outputType: csv
-  
-  
+
+
 - keyCode: ish.onCourse.waitingList.xml
   entityClass: WaitingList
   body: ish.onCourse.waitingList.xml.groovy
   name: WaitingList XML export
   outputType: xml
-  
-  
+
+
 - keyCode: ish.oncourse.agedDebtorCsvExport.csv
   entityClass: Invoice
   name: Historic Aged Debtor Csv Export
-  versionNumber: 1
-  minVersion: 9.13
-  body: ish.oncourse.agedDebtorCsvExport.groovy
+  body: ish.onCourse.agedDebtorCsvExport.groovy
   outputType: csv
-  description: "Export in CSV format the aged historic debtors as of midnight at the end of the 'As At Date"
+  description: "Export in CSV format the aged historic debtors as of midnight at the end of the 'As At Date'. Optionally export detail lines of all owing invoices individually. Note that this export runs on all data in the database and ignores the selection of contacts you have made before running the export."
   variables:
+    - name: detail
+      label: Export detail lines
+      dataType: BOOLEAN
+      value: "false"
     - name: atDate
-      label: "As At Date"
+      label: As at date
       dataType: DATE
-  
+

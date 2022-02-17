@@ -12,7 +12,7 @@
     - name: templateKeycode
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.alertStudentsOfAssessmentRelease"
-  
+
 - name: Alert students of related class
   body: ish.script.alertStudentsOfRelatedClass.groovy
   keyCode: ish.script.alertStudentsOfRelatedClass
@@ -27,7 +27,7 @@
     - name: alertStudentsTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.alertStudentsOfRelatedClass"
-  
+
 - name: Alert tutors of assessment release
   keyCode: ish.script.alertTutorsOfAssessmentRelease
   body: ish.script.alertTutorsOfAssessmentRelease.groovy
@@ -42,7 +42,7 @@
     - name: templateKeycode
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.alertTutorsOfAssessmentRelease"
-  
+
 - name: Canvas enrol
   keyCode: ish.script.canvasEnrolment
   body: ish.script.canvasEnrolment.groovy
@@ -57,7 +57,7 @@
     - name: tagName
       dataType: TEXT
       value: ""
-  
+
 - name: Check critical emails sent
   keyCode: ish.script.checkCriticalEmails
   body: ish.script.checkCriticalEmails.groovy
@@ -72,7 +72,7 @@
     - name: numberOfDays
       dataType: TEXT
       value: "7"
-  
+
 - name: Coassemble enrol
   keyCode: ish.script.coassembleEnrolment
   body: ish.script.coassembleEnrolment.groovy
@@ -83,7 +83,7 @@
   short: Requires active Coassemble integration. When a student enrols into a Coassemble-related course, send the date and enrol them into the same course in Coassemble.
   category: Integrations
   tag:
-  
+
 - name: Course Completion Survey
   body: ish.script.courseCompletionSurvey.groovy
   keyCode: ish.script.courseCompletionSurvey
@@ -98,7 +98,7 @@
     - name: courseSurveyTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.courseCompletionSurvey"
-  
+
 - name: Automatic creation of VET Certificates
   body: ish.script.creationVetCertificates.groovy
   keyCode: ish.script.creationVetCertificates
@@ -109,22 +109,7 @@
   short: Automatically generate the appropriate VET certificate for all VET enrolments with outcomes that were marked in the last 24hrs.
   category: Compliance
   tag:
-  
-- name: Historic Aged Debtor Export
-  body: ish.script.historicAgedDebtor.groovy
-  keyCode: ish.script.historicAgedDebtor
-  status: NOT_INSTALLED
-  triggerType: ON_DEMAND
-  outputType: CSV
-  description: "Export in CSV format the aged historic debtors as of midnight at the end of the 'As At Date"
-  short: When run, produces a CSV export showing the aged historic debtors as of midnight at the end of the 'as at date'.
-  category: Accounting
-  tag: Popular
-  variables:
-    - name: atDate
-      label: "As At Date"
-      dataType: DATE
-  
+
 - name: LearnDash course enrolment
   body: ish.script.learnDashEnrolment.groovy
   keyCode: ish.script.learnDashEnrolment
@@ -135,7 +120,7 @@
   short: Requires an active Learndash integration. Creates students and enrols them in the same course in Learndash.
   category: Integrations
   tag:
-  
+
 - name: Notification of documents pending for deletion
   body: ish.script.listOfDocumentsBeDeleted.groovy
   keyCode: ish.script.listOfDocumentsBeDeleted
@@ -150,7 +135,7 @@
     - name: templateForNotification
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.notificationWithDocumentsList"
-  
+
 - name: Mailchimp pull subscribe
   keyCode: ish.script.mailchimpPullUnsubscribes
   body: ish.script.mailchimpPullUnsubscribes.groovy
@@ -165,8 +150,8 @@
     - name: numberOfDays
       dataType: TEXT
       value: "7"
-  
-  
+
+
 - name: Mailchimp subscribe
   keyCode: ish.script.mailchimpSubcribe
   body: ish.script.mailchimpSubcribe.groovy
@@ -182,7 +167,7 @@
     - name: integrationAction
       dataType: TEXT
       value: "subscribe"
-  
+
 - name: Mailchimp subscribe on attribute changing
   keyCode: ish.script.mailchimpSubcribeOnAttributeChanging
   body: ish.script.mailchimpSubcribeOnAttributeChanging.groovy
@@ -199,7 +184,7 @@
     - name: nameOfIntegration
       dataType: TEXT
       value: ""
-  
+
 - name: Mailchimp subscribe on enrolment
   keyCode: ish.script.mailchimpSubcribeOnEnrolment
   body: ish.script.mailchimpSubcribeOnEnrolment.groovy
@@ -217,7 +202,7 @@
     - name: nameOfIntegration
       dataType: TEXT
       value: "Enrolment"
-  
+
 - name: Mailchimp unsubscribe
   keyCode: ish.script.mailchimpUnsubscribe
   body: ish.script.mailchimpUnsubscribe.groovy
@@ -233,7 +218,7 @@
     - name: integrationAction
       dataType: TEXT
       value: "unsubscribe"
-  
+
 - name: Membership Renewal
   keyCode: ish.script.membershipNotificationRenewal
   body: ish.script.membershipNotificationRenewal.groovy
@@ -248,7 +233,7 @@
     - name: renewalNotificationTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.membershipNotificationRenewal"
-  
+
 - name: Micropower update members
   keyCode: ish.script.micropowerUpdateMembers
   body: ish.script.micropowerUpdateMembers.groovy
@@ -263,7 +248,7 @@
     - name: nameOfIntegration
       dataType: TEXT
       value: ""
-  
+
 - name: Moodle enrol
   keyCode: ish.script.moodleEnrolment
   body: ish.script.moodleEnrolment.groovy
@@ -278,7 +263,7 @@
     - name: tagName
       dataType: TEXT
       value: ""
-  
+
 - name: Notification of unmarked attendance
   keyCode: ish.script.notificationOfUnmarkedAttandance
   body: ish.script.notificationOfUnmarkedAttandance.groovy
@@ -293,7 +278,7 @@
     - name: tagName
       dataType: TEXT
       value: ""
-  
+
 - name: Notify tutor of unmarked attendance
   keyCode: ish.script.notifyTutorOfUnmarkedAttendance
   body: ish.script.notifyTutorOfUnmarkedAttendance.groovy
@@ -308,7 +293,7 @@
     - name: tutorNoticeTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.tutorNoticeOfUnmarkedAttendance"
-  
+
 - name: Notify contractor of approved payslip
   keyCode: ish.script.payrollContractorNotification
   body: ish.script.payrollContractorNotification.groovy
@@ -323,7 +308,7 @@
     - name: contractorNoticeTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.payrollContractorNotification"
-  
+
 - name: Notify tutor of processed payslip
   keyCode: ish.script.payrollTutorNotification
   body: ish.script.payrollTutorNotification.groovy
@@ -338,7 +323,7 @@
     - name: tutorNoticeTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.payrollTutorNotification"
-  
+
 - name: Send product purchased email
   keyCode: ish.script.productPurchasedWebScript
   body: ish.script.productPurchasedWebScript.groovy
@@ -350,7 +335,7 @@
   short: Send a notification to your system admin that a contact has purchased a product from your website.
   category: Sales
   tag: Popular
-  
+
 - name: Send account statement
   keyCode: ish.script.sendAccountStatement
   body: ish.script.sendAccountStatement.groovy
@@ -368,7 +353,7 @@
     - name: certificateReportBackground
       dataType: TEXT
       value: "statement_record_background.pdf"
-  
+
 - name: Send application decision
   keyCode: ish.script.sendApplicationDecision
   body: ish.script.sendApplicationDecision.groovy
@@ -387,7 +372,7 @@
     - name: applicationRejectedTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.enrolmentApplicationRejected"
-  
+
 - name: Send application received notification
   keyCode: ish.script.sendApplicationReceivedNotification
   body: ish.script.sendApplicationReceivedNotification.groovy
@@ -403,7 +388,7 @@
     - name: applicationReceivedTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.enrolmentApplicationReceived"
-  
+
 - name: Send birthday voucher
   keyCode: ish.script.sendBirthdayVoucher
   body: ish.script.sendBirthdayVoucher.groovy
@@ -421,7 +406,7 @@
     - name: birthdayProdSku
       dataType: TEXT
       value: "birthday"
-  
+
 - name: Send certificate created notification
   keyCode: ish.script.sendCertificateCreatedNotification
   body: ish.script.sendCertificateCreatedNotification.groovy
@@ -442,7 +427,7 @@
     - name: certificateMessageTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.availableCertificate"
-  
+
 - name: Send certificate vet created notification
   keyCode: ish.script.sendCertificateCreatedNotificationVet
   body: ish.script.sendCertificateCreatedNotificationVet.groovy
@@ -469,7 +454,7 @@
     - name: certificateMessageTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.availableCertificate"
-  
+
 - name: Send class cancellation
   keyCode: ish.script.sendClassCancellation
   body: ish.script.sendClassCancellation.groovy
@@ -484,7 +469,7 @@
     - name: cancellationTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.classCancellation"
-  
+
 - name: Send class confirmed
   keyCode: ish.script.sendClassConfirmed
   body: ish.script.sendClassConfirmed.groovy
@@ -508,7 +493,7 @@
     - name: emailSubjectToAdmin
       dataType: TEXT
       value: "Confirmed class now below class minimum"
-  
+
 - name: send enrolment
   body: ish.script.sendEnrolment.groovy
   keyCode: ish.script.sendEnrolment
@@ -523,7 +508,7 @@
     - name: enrolmentConfirmationTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.enrolmentConfirmation"
-  
+
 - name: send enrolment notice for tutors
   keyCode: ish.script.sendEnrolmentNoticeForTutors
   body: ish.script.sendEnrolmentNoticeForTutors.groovy
@@ -541,7 +526,7 @@
     - name: tagName
       dataType: TEXT
       value: ""
-  
+
 - name: send invoice
   keyCode: ish.script.sendInvoice
   body: ish.script.sendInvoice.groovy
@@ -557,7 +542,7 @@
     - name: invoiceTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.taxInvoice"
-  
+
 - name: send refund advice
   keyCode: ish.script.sendInvoiceRefund
   body: ish.script.sendInvoiceRefund.groovy
@@ -573,7 +558,7 @@
     - name: refundAdviceTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.refundAdvice"
-  
+
 - name: send payment plan reminder
   keyCode: ish.script.sendPaymentPlanReminder
   body: ish.script.sendPaymentPlanReminder.groovy
@@ -588,7 +573,7 @@
     - name: paymentReminderTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.paymentReminder"
-  
+
 - name: send payment receipt
   keyCode: ish.script.sendPaymentReceipt
   body: ish.script.sendPaymentReceipt.groovy
@@ -604,7 +589,7 @@
     - name: paymentReceiptTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.paymentReceipt"
-  
+
 - name: send student class commencement notice
   keyCode: ish.script.sendStudentClassCommencementNotice
   body: ish.script.sendStudentClassCommencementNotice.groovy
@@ -624,7 +609,7 @@
       value: "0"
       description: Set the number of days from class start that you'd like the notification to be sent. Setting this to 0 will send it on the day of the class.
 
-  
+
 - name: send student class commencement notice 7 days
   keyCode: ish.script.sendStudentClassCommencementNotice7days
   body: ish.script.sendStudentClassCommencementNotice7days.groovy
@@ -639,7 +624,7 @@
     - name: classCommencementTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.studentNoticeOfClassCommencement"
-  
+
 - name: cancelled class notice for tutor
   keyCode: ish.script.sendTutorClassCancellationNotice
   body: ish.script.sendTutorClassCancellationNotice.groovy
@@ -654,7 +639,7 @@
     - name: classCancellationTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.tutorNoticeOfClassCancellation"
-  
+
 - name: send tutor class commencement notice
   body: ish.script.sendTutorClassCommencementNotice.groovy
   keyCode: ish.script.sendTutorClassCommencementNotice
@@ -678,7 +663,7 @@
     - name: classCommencementTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.tutorNoticeOfClassCommencement"
-  
+
 - name: send usi reminder
   keyCode: ish.script.sendUsiReminder
   body: ish.script.sendUsiReminder.groovy
@@ -696,7 +681,7 @@
     - name: usiRequiredDate
       dataType: DATE
       value: "2015-01-01"
-  
+
 - name: VET Course completion survey
   body: ish.script.sendVETCourseCompletionSurvey.groovy
   keyCode: ish.script.sendVETCourseCompletionSurvey
@@ -711,7 +696,7 @@
     - name: vetCourseSurveyTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.VETCourseCompletionSurvey"
-  
+
 - name: send voucher
   keyCode: ish.script.sendVoucher
   body: ish.script.sendVoucher.groovy
@@ -727,7 +712,7 @@
     - name: voucherEmailTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.voucherEmailTemplate"
-  
+
 - name: send waiting list reminder
   keyCode: ish.script.sendWaitingListReminder
   body: ish.script.sendWaitingListReminder.groovy
@@ -742,7 +727,7 @@
     - name: waitingListReminderTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.waitingListReminder"
-  
+
 - name: send weekly finance summary report
   keyCode: ish.script.sendWeeklyFinanceSummaryReport
   body: ish.script.sendWeeklyFinanceSummaryReport.groovy
@@ -757,7 +742,7 @@
     - name: reportKeycode
       dataType: TEXT
       value: "ish.onCourse.trialBalance"
-  
+
 - name: SurveyMonkey send invite on enrolment completion
   keyCode: ish.script.surveyMonkeySendInviteOnCompletion
   body: ish.script.surveyMonkeySendInviteOnCompletion.groovy
@@ -772,7 +757,7 @@
     - name: tagName
       dataType: TEXT
       value: ""
-  
+
 - name: SurveyMonkey send invite on enrolment
   keyCode: ish.script.surveyMonkeySendInviteOnEnrolment
   body: ish.script.surveyMonkeySendInviteOnEnrolment.groovy
@@ -787,7 +772,7 @@
     - name: tagName
       dataType: TEXT
       value: ""
-  
+
 - name: SurveyGizmo send invite on enrolment completion
   keyCode: ish.script.surveygizmoSendInviteOnCompletion
   body: ish.script.surveygizmoSendInviteOnCompletion.groovy
@@ -805,7 +790,7 @@
     - name: tagName
       dataType: TEXT
       value: ""
-  
+
 - name: SurveyGizmo send invite on enrolment
   keyCode: ish.script.surveygizmoSendInviteOnEnrolment
   body: ish.script.surveygizmoSendInviteOnEnrolment.groovy
@@ -823,7 +808,7 @@
     - name: tagName
       dataType: TEXT
       value: ""
-  
+
 - name: Synchronise availability (cancellation)
   keyCode: ish.script.syncAvailabilityCancellation
   body: ish.script.syncAvailabilityCancellation.groovy
@@ -834,7 +819,7 @@
   short: If you have concurrent classes running that share the same tutor, room and timetable, this will synchronise the enrolment cancellations between those classes. Requires Synchronise availability (enrolment) to be active
   category: Class
   tag:
-  
+
 - name: Synchronise availability (enrolment)
   keyCode: ish.script.syncAvailabilityEnrolment
   body: ish.script.syncAvailabilityEnrolment.groovy
@@ -845,7 +830,7 @@
   short: If you have concurrent classes running that share the same tutor, room and timetable, this will synchronise the enrolments between those classes. Requires Synchronise availability (cancellation) to be active
   category: Class
   tag:
-  
+
 - name: TalentLMS course enrolment
   body: ish.script.talentLMSEnrolment.groovy
   keyCode: ish.script.talentLMSEnrolment
@@ -857,7 +842,7 @@
   category: Integrations
   tag:
 
-  
+
 - name: Trial balance
   body: ish.script.trialBalance.groovy
   keyCode: ish.script.trialBalance
@@ -875,4 +860,4 @@
     - name: toDate
       label: Transactions to
       dataType: DATE
-  
+
