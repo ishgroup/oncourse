@@ -1,7 +1,0 @@
-name: Prepare shipping
-body: ish.script.prepareShipping.groovy
-keyCode: ish.script.prepareShipping
-enabled: false
-outputType: PDF
-triggerType: ON_DEMAND
-description: This custom script will find all sales records tagged with "Waiting for Shipping", remove that tag and replace it with a different one called 'In progress'. It will also generate a PDF report for each record it finds.
