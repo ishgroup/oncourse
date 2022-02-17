@@ -4,7 +4,7 @@ import clsx from "clsx";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button/Button";
+import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
