@@ -7,7 +7,7 @@
  */
 
 import React, {
-  useCallback, useEffect, useState
+  useCallback, useEffect, useRef, useState
 } from "react";
 import NumberFormat from "react-number-format";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -25,10 +25,19 @@ interface NumberFormatCustomProps extends WrappedFieldProps {
 const NumberFormatCustom = React.forwardRef<any, NumberFormatCustomProps>((props, ref) => {
   const { onChange, ...other } = props;
   
+  const inputRef = useRef<any>();
+
   const [format, setFormat] = useState(null);
+  const [prefix, setPrefix] = useState(undefined);
 
   const processFormat = useCallback(debounce(data => {
     setFormat(getPhoneMask(data.value));
+    if (!data.value) {
+      setPrefix(undefined);
+    }
+    if (data.formattedValue.startsWith("+") && prefix !== "+") {
+      setPrefix("+");
+    }
   }, 500), []);
 
   const onValueChange = useCallback(data => {
@@ -42,13 +51,29 @@ const NumberFormatCustom = React.forwardRef<any, NumberFormatCustomProps>((props
     }
   }, []);
 
+  const onKeyPress = e => {
+    if (e.key === "+") {
+      inputRef.current._valueTracker.setValue("+");
+      if (prefix !== "+") {
+        setPrefix("+");
+      }
+    }
+  };
+  
+  const getInputRef = input => {
+    ref = input;
+    inputRef.current = input;
+  };
+
   return (
     <NumberFormat
       {...other}
-      getInputRef={ref}
+      getInputRef={getInputRef}
+      onKeyPress={onKeyPress}
+      prefix={prefix}
       onValueChange={onValueChange}
       format={format}
-      type="tel"
+      type="text"
     />
   );
 });
