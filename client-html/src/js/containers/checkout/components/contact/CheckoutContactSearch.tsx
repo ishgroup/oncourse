@@ -51,7 +51,7 @@ const CheckoutContactSearch = React.memo<Props>(props => {
   const onSetContactsSearch = React.useCallback<any>(debounce((name, value: string) => {
     let search = `~"${value}"`;
     
-    if (/^\+?\d+/g.test(value)) {
+    if (/\d+/g.test(value)) {
       search = getContactPhoneAqlSearch(value);
     }
 
