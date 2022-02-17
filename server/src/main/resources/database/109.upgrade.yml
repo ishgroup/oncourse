@@ -223,7 +223,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: daysInAdvance
-                  type: INTEGER
+                  type: VARCHAR(255)
               - column:
                   name: fromAddress
                   type: VARCHAR(255)
