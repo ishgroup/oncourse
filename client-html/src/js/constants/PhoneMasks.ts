@@ -16,12 +16,13 @@ export const phoneMasks = {
   "AR": "+54 (###) ###-####",
   "AS": "+1 (684) ###-####",
   "AT": "+43 (###) ###-####",
-  "AU": "+61-#-####-####",
-  "AU1": "02-####-####",
-  "AU2": "03-####-####",
-  "AU3": "04-####-####",
-  "AU4": "07-####-####",
-  "AU5": "08-####-####",
+  "AU": "+61 4## ### ###",
+  "AU1": "+61 # #### ####",
+  "AU2": "(02) #### ####",
+  "AU3": "(03) #### ####",
+  "AU4": "04## ### ###",
+  "AU5": "(07) #### ####",
+  "AU6": "(08) #### ####",
   "AW": "+297-###-####",
   "AZ": "+994-##-###-##-##",
   "BA": "+387-##-#####",
@@ -298,7 +299,7 @@ export const phoneMasks = {
   "ZA": "+27-##-###-####",
   "ZM": "+260-##-###-####",
   "ZW": "+263-#-######",
-  "DEFAULT": "####-#### ###########"
+  "DEFAULT": "#### #### ###########"
 };
 
 export const getPhoneMask = (value: string) => {
@@ -306,5 +307,6 @@ export const getPhoneMask = (value: string) => {
     const mask = phoneMasks[key];
     return value.startsWith(mask?.match(/\d/g)?.join("")) && value.length === mask?.match(/\d|#/g)?.length;
   });
+
   return phoneMasks[maskKey] ? phoneMasks[maskKey].replace(/\d/g, "#") : value.length === 8 ? phoneMasks["DEFAULT"] : null;
 };
