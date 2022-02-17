@@ -8,14 +8,15 @@
 
 import React from "react";
 import {
- ListItem, ListItemText, Divider, Typography 
+  ListItem, ListItemText, Divider, Typography, Chip, IconButton
 } from "@mui/material";
 import clsx from "clsx";
-import Chip from "@mui/material/Chip";
 import { alpha } from "@mui/material/styles";
+import { Delete } from "@mui/icons-material";
 import { CatalogItemType } from "../../../../model/common/Catalog";
 import { makeAppStyles } from "../../../styles/makeStyles";
-import { NumberArgFunction } from "../../../../model/common/CommonFunctions";
+import { AnyArgFunction, NumberArgFunction } from "../../../../model/common/CommonFunctions";
+import { useHoverShowStyles } from "../../../styles/hooks";
 
 const useStyles = makeAppStyles(theme => ({
   primaryText: {
@@ -47,33 +48,56 @@ const useStyles = makeAppStyles(theme => ({
   }
 }));
 
-type Props = Partial<CatalogItemType> & {
+interface Props {
+  item: Partial<CatalogItemType>;
   onOpen?: NumberArgFunction;
+  onRemove?: AnyArgFunction;
   showAdded?: boolean;
 }
 
 const CatalogItem = (
   {
+    item,
+    onOpen,
+    onRemove,
+    showAdded,
+  }: Props
+) => {
+  const { 
     id,
     title,
     titleAdornment,
     installed,
     enabled,
     tags,
-    shortDescription,
-    onOpen,
-    showAdded,
-  }: Props
-) => {
+    shortDescription 
+  } = item;
+  
   const classes = useStyles();
+  const hoverClasses = useHoverShowStyles();
 
   return (
     <>
       <ListItem
         button
-        className="p-0"
+        className={clsx("p-0", hoverClasses.container)}
         onClick={() => onOpen(id)}
-        secondaryAction={showAdded && installed && <Typography variant="caption">Added</Typography>}
+        secondaryAction={showAdded 
+          ? (installed && <Typography variant="caption">Added</Typography>) 
+          : (installed
+            && Boolean(onRemove) && (
+              <IconButton
+                onMouseDown={e => e.stopPropagation()}
+                onClick={e => {
+                  e.stopPropagation();
+                  onRemove(item);
+                }}
+                className={clsx(hoverClasses.target, "lightGrayIconButton")}
+                size="small"
+              >
+                <Delete fontSize="inherit" />
+              </IconButton>
+            ))}
         disabled={showAdded && installed}
       >
         <ListItemText

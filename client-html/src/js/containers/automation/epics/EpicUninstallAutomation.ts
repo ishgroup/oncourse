@@ -19,35 +19,35 @@ import PdfService from "../containers/pdf-reports/services/PdfService";
 import ScriptsService from "../containers/scripts/services/ScriptsService";
 import { showMessage } from "../../../common/actions";
 
-const request: Request<any,{ automation: CatalogItemType, entity: AutomationEntity }> = {
+const request: Request<any, { automation: CatalogItemType, entity: AutomationEntity }> = {
   type: UNINSTALL_AUTOMATION,
   getData: async ({ automation: { id, keyCode }, entity }) => {
     const isInternal = keyCode.startsWith("ish.");
     switch (entity) {
       case "EmailTemplate": {
-        const template = EmailTemplateService.get(id);
-        const updated = {...template, status: "Not Installed" as any };
+        const template = await EmailTemplateService.get(id);
+        const updated = { ...template, status: "Not Installed" as any };
         return isInternal ? EmailTemplateService.updateInternal(updated) : EmailTemplateService.update(id, updated);
       }
       case "ExportTemplate": {
-        const template = ExportTemplatesService.get(id);
-        const updated = {...template, status: "Not Installed" as any };
+        const template = await ExportTemplatesService.get(id);
+        const updated = { ...template, status: "Not Installed" as any };
         return isInternal ? ExportTemplatesService.updateInternal(updated) : ExportTemplatesService.update(id, updated);
       }
       case "Import": {
-        const template = ImportTemplatesService.get(id);
-        const updated = {...template, status: "Not Installed" as any };
+        const template = await ImportTemplatesService.get(id);
+        const updated = { ...template, status: "Not Installed" as any };
         return isInternal ? ImportTemplatesService.updateInternal(updated) : ImportTemplatesService.update(id, updated);
       }
       case "Report": {
-        const report = PdfService.getReport(id);
-        const updated = {...report, status: "Not Installed" as any };
-        return isInternal ? PdfService.updateInternalReport(updated) : PdfService.updateReport(id,updated);
+        const report = await PdfService.getReport(id);
+        const updated = { ...report, status: "Not Installed" as any };
+        return isInternal ? PdfService.updateInternalReport(updated) : PdfService.updateReport(id, updated);
       }
       case "Script": {
-        const script = ScriptsService.getScriptItem(id);
-        const updated = {...script, status: "Not Installed" as any };
-        return isInternal ? ScriptsService.patchScriptItem(id,updated) : ScriptsService.saveScriptItem(id,updated)
+        const script = await ScriptsService.getScriptItem(id);
+        const updated = { ...script, status: "Not Installed" as any };
+        return isInternal ? ScriptsService.patchScriptItem(id, updated) : ScriptsService.saveScriptItem(id, updated);
       }
     }
     return Promise.reject("Unknown automation type");

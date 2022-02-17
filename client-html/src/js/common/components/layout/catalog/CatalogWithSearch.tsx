@@ -27,10 +27,10 @@ import ExpandableContainer from "../expandable/ExpandableContainer";
 
 const Row = memo<any>(
   ({
-   style, item, onOpen, forwardedRef
+   style, item, onOpen, onRemove, forwardedRef
   }) => (
     <div style={style} ref={forwardedRef}>
-      <CatalogItem {...item} onOpen={onOpen} />
+      <CatalogItem item={item} onOpen={onOpen} onRemove={onRemove} />
     </div>
   ),
   areEqual
@@ -183,7 +183,7 @@ const CatalogWithSearch = React.memo<Props>((
                 <div className="heading">
                   {addNewItem.category}
                 </div>
-                <CatalogItem {...addNewItem} onOpen={onClickNew} showAdded={false} enabled installed />
+                <CatalogItem item={{...addNewItem, installed: true, enabled: true}} onOpen={onClickNew} showAdded={false} />
               </div>
             )}
             <div>
@@ -198,9 +198,9 @@ const CatalogWithSearch = React.memo<Props>((
                 >
                   {filteredItems.categories[c].map(i => (
                     <CatalogItem
+                      item={i}
                       onOpen={() => toggleInstall(i)}
-                      key={i.id} 
-                      {...i} 
+                      key={i.id}
                       showAdded
                     />
                   ))}
@@ -216,9 +216,9 @@ const CatalogWithSearch = React.memo<Props>((
                 >
                   {filteredItems.custom.map(i => (
                     <CatalogItem
+                      item={i}
                       onOpen={() => toggleInstall(i)}
                       key={i.id}
-                      {...i}
                       showAdded
                     />
                   ))}
@@ -251,7 +251,8 @@ const CatalogWithSearch = React.memo<Props>((
                     estimatedItemSize={54}
                     itemData={{
                       items: filteredItems.installed,
-                      onOpen
+                      onOpen,
+                      onRemove: toggleInstall
                     }}
                   >
                     {RowRenderer}

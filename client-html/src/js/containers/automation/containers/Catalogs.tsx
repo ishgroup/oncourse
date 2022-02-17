@@ -34,8 +34,7 @@ const useUpdateAutomationStatus = (entity: AutomationEntity) => {
       return (id: number, installed: boolean) => {
         dispatch(getEmailTemplatesListFulfilled(emailTemplates.map(t => ({
           ...t,
-          installed: t.id === id ? installed : t.installed,
-          enabled: installed
+          ...t.id === id ? { installed, enabled: installed } : {}
         }))));
       };
     }
@@ -43,8 +42,7 @@ const useUpdateAutomationStatus = (entity: AutomationEntity) => {
       return (id: number, installed: boolean) => {
         dispatch(getExportTemplatesListFulfilled(exportTemplates.map(t => ({
           ...t,
-          installed: t.id === id ? installed : t.installed,
-          enabled: installed
+          ...t.id === id ? { installed, enabled: installed } : {}
         }))));
       };
     }
@@ -52,8 +50,7 @@ const useUpdateAutomationStatus = (entity: AutomationEntity) => {
       return (id: number, installed: boolean) => {
         dispatch(getImportTemplatesListFulfilled(importTemplates.map(t => ({
           ...t,
-          installed: t.id === id ? installed : t.installed,
-          enabled: installed
+          ...t.id === id ? { installed, enabled: installed } : {}
         }))));
       };
     }
@@ -61,8 +58,7 @@ const useUpdateAutomationStatus = (entity: AutomationEntity) => {
       return (id: number, installed: boolean) => {
         dispatch(getAutomationPdfReportsListFulfilled(pdfReports.map(t => ({
           ...t,
-          installed: t.id === id ? installed : t.installed,
-          enabled: installed
+          ...t.id === id ? { installed, enabled: installed } : {}
         }))));
       };
     }
@@ -70,8 +66,7 @@ const useUpdateAutomationStatus = (entity: AutomationEntity) => {
       return (id: number, installed: boolean) => {
         dispatch(getScriptsListFulfilled(scripts.map(t => ({
           ...t,
-          installed: t.id === id ? installed : t.installed,
-          enabled: installed
+          ...t.id === id ? { installed, enabled: installed } : {}
         }))));
       };
     }
