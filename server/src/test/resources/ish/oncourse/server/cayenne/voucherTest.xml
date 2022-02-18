@@ -22,7 +22,7 @@
   <EmailTemplate id="3" keycode="legacy.3" name="Voucher Email" subject="Voucher" bodyPlain="test" bodyHtml="test"
                  createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <Script id="1" name="send_voucher" enabled="1" triggerType="2" entityClass="Voucher" entityEventType="4" script="
+  <Script id="1" name="send_voucher" automationStatus="2" triggerType="2" entityClass="Voucher" entityEventType="4" script="
 	def voucher = args.entity&#xA;
 
 	if (voucher.status == ProductStatus.ACTIVE &amp;&amp; voucher.confirmationStatus == ConfirmationStatus.NOT_SENT) {&#xA;
