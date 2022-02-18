@@ -204,3 +204,29 @@ databaseChangeLog:
                                                 WHEN enabled=0 AND keyCode LIKE 'ish.%' THEN 1
                                                 ELSE 0 
                                                 END"
+
+  - changeSet:
+      id: 109-5
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: Script
+            columnName: keyCode
+      changes:
+        - sql:
+            - "UPDATE Script SET keyCode = CONCAT('legacy.',id) WHERE keyCode IS NULL"
+
+  - changeSet:
+      id: 109-6
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: Script
+            columnName: keyCode
+      changes:
+        - addNotNullConstraint:
+            tableName: Script
+            columnName: keyCode
+            columnDataType: VARCHAR(80)
