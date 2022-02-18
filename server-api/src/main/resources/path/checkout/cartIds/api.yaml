@@ -1,0 +1,21 @@
+get:
+  operationId: getCartDataIds
+  description: Get ids of data, stored in cart json
+  tags:
+    - Checkout
+  parameters:
+    - name: checkoutId
+      in: path
+      type: integer
+      format: int64
+      required: true
+  responses:
+    '200':
+      schema:
+          $ref: './def/entity/checkout/CartIds.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: ENROLMENT
+    errorMessage: Sorry, you have no permissions to view checkout. Please contact your administrator

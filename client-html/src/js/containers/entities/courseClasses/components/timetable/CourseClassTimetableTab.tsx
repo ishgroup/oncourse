@@ -213,8 +213,8 @@ const CourseClassTimetableTab = ({
         getAllMonthsWithSessions(
           values.sessions,
           values.sessions[0].siteTimezone
-            ? new Date(values.sessions[0].start)
-            : appendTimezone(new Date(values.sessions[0].start), values.sessions[0].siteTimezone)
+            ? appendTimezone(new Date(values.sessions[0].start), values.sessions[0].siteTimezone)
+            : new Date(values.sessions[0].start)
         )
       );
     }
@@ -544,9 +544,8 @@ const CourseClassTimetableTab = ({
 
         session.start = startDate.toISOString();
         session.end = endDate.toISOString();
-
       } else if (bulkValue.durationChecked && bulkValue.duration !== 0) {
-        session.end = addMinutes(new Date(session.start), bulkValue.duration).toISOString()
+        session.end = addMinutes(new Date(session.start), bulkValue.duration).toISOString();
       } else if (bulkValue.payableDurationChecked && bulkValue.payableDuration !== 0) {
         actualPayableDurationMinutes = bulkValue.payableDuration;
       }
@@ -616,8 +615,8 @@ const CourseClassTimetableTab = ({
         getAllMonthsWithSessions(
           updated,
           updated[0].siteTimezone
-            ? new Date(updated[0].start)
-            : appendTimezone(new Date(updated[0].start), updated[0].siteTimezone)
+            ? appendTimezone(new Date(updated[0].start), updated[0].siteTimezone)
+            : new Date(updated[0].start)
         )
       );
     }

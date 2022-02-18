@@ -1,0 +1,13 @@
+type: object
+properties:
+  contacts:
+    type: array
+    items:
+      $ref: './CartContactIds.yaml'
+  payerId:
+    type: integer
+    format: int64
+    required: true
+    example: 200
+    description: Id of payer for this cart
+

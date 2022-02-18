@@ -203,6 +203,6 @@ class UserApiImpl implements UserApi {
             error.setErrorMessage(ex.message)
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
         }
-        whoBeChanged.invitationTokenExpiryDate = new Date() + 1
+        whoBeChanged.invitationTokenExpiryDate = new Date() + 7
     }
 }

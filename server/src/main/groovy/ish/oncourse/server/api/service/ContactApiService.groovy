@@ -42,6 +42,7 @@ import javax.ws.rs.core.Response
 import java.time.LocalDate
 
 import static ish.common.types.USIVerificationStatus.VALID
+import static ish.oncourse.server.api.v1.function.CartFunctions.toRestCart
 import static ish.oncourse.server.api.v1.function.ContactFunctions.*
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.*
@@ -153,6 +154,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
                     }.collect{ d ->
                         toRestDocumentMinimized(d, d.currentVersion.id, documentService)
                     }
+            dto.abandonedCarts = cayenneModel.abandonedCarts.collect{toRestCart(it)}
             dto.tags = cayenneModel.tags.collect{ toRestTagMinimized(it) }
             dto.memberships = cayenneModel.memberships.collect {  productItemApiService.toRestModel(it) }
             dto.profilePicture = getProfilePicture(cayenneModel)
@@ -185,9 +187,9 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         cayenneModel.isCompany = dto.isCompany
         cayenneModel.gender = dto.gender?.dbType
         cayenneModel.message = dto.message
-        cayenneModel.homePhone = dto.homePhone
-        cayenneModel.mobilePhone = dto.mobilePhone
-        cayenneModel.workPhone = dto.workPhone
+        cayenneModel.homePhone = removeUnsupportedSymbolsFromPhone(dto.homePhone)
+        cayenneModel.mobilePhone = removeUnsupportedSymbolsFromPhone(dto.mobilePhone)
+        cayenneModel.workPhone = removeUnsupportedSymbolsFromPhone(dto.workPhone)
         cayenneModel.postcode = dto.postcode
         cayenneModel.state = dto.state
         cayenneModel.street = dto.street
@@ -218,6 +220,17 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
             paymentInDao.removeCChistory(cayenneModel)
         }
         cayenneModel
+    }
+
+    private static String removeUnsupportedSymbolsFromPhone(String phone){
+        if(phone == null)
+            return null
+        StringBuilder updatedPhone = new StringBuilder()
+        for(char symbol in phone.chars){
+            if(symbol == ('+' as char) || (symbol >= ('0' as char) && symbol <= ('9' as char)))
+                updatedPhone.append(symbol)
+        }
+        updatedPhone.toString()
     }
 
     Student toStudentCayenneModel(ObjectContext context, Contact contact, StudentDTO dto, Student cayenneModel) {
