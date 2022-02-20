@@ -32,7 +32,7 @@ import FormField from "../../../../../common/components/form/formFields/FormFiel
 import { mapSelectItems } from "../../../../../common/utils/common";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { CommonListItem } from "../../../../../model/common/sidebar";
-import Bindings from "../../../components/Bindings";
+import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import { validateKeycode } from "../../../utils";
 import ScriptCard from "../components/cards/CardBase";
@@ -252,7 +252,7 @@ const ScriptsForm = React.memo<Props>(props => {
 
   const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
   const [viewMode, setViewMode] = useState<ScriptViewMode>("Cards");
-  const [expandInfo, setExpandInfo] = useState<boolean>(true);
+  const [expandInfo, setExpandInfo] = useState<boolean>(false);
   const [triggerExpand, setTriggerExpand] = useState<boolean>(false);
   const [isCardDragging, setCardDragging] = useState<boolean>(false);
 
@@ -514,8 +514,8 @@ const ScriptsForm = React.memo<Props>(props => {
         >
           {values && (
             <>
-              <Grid container>
-                <Grid item xs={12} sm={9} className="mb-4">
+              <Grid container className="mb-4" rowSpacing={2}>
+                <Grid item xs={12} sm={9}>
                   <FormField
                     type="multilineText"
                     name="shortDescription"
@@ -538,6 +538,12 @@ const ScriptsForm = React.memo<Props>(props => {
                     />
                   </Typography>
                 </Grid>
+                <FieldArray
+                  name="options"
+                  component={BindingsRenderer}
+                  itemsType="component"
+                  rerenderOnEveryChange
+                />
               </Grid>
               <Divider className="mb-5" />
               <Grid container className={classes.root}>
@@ -647,15 +653,6 @@ const ScriptsForm = React.memo<Props>(props => {
                       </>
                     )}
                   </div>
-
-                  <FormField
-                    type="text"
-                    label="Key Code"
-                    name="keyCode"
-                    validate={isNew || !isInternal ? validateKeycode : undefined}
-                    disabled={isOriginallyInternal}
-                    required
-                  />
                 </Grid>
 
                 <Grid item xs={3}>
@@ -701,12 +698,25 @@ const ScriptsForm = React.memo<Props>(props => {
                           defaultVariables={defaultVariables}
                           dispatch={dispatch}
                           form={form}
-                          name="variables"
-                          label="Variables"
-                          itemsType="label"
+                          itemsType="component"
+                          name="options"
+                          label="Configuration variables"
                           disabled={isInternal}
+                          emailTemplates={emailTemplates}
                         />
                       </div>
+                      {values?.trigger?.type === "On demand" && (
+                        <div className="mt-3 mb-4">
+                          <Bindings
+                            dispatch={dispatch}
+                            form={form}
+                            name="variables"
+                            label="Runtime variables"
+                            itemsType="label"
+                            disabled={isInternal}
+                          />
+                        </div>
+                      )}
                       <FormField
                         label="Output"
                         name="outputType"
@@ -714,19 +724,16 @@ const ScriptsForm = React.memo<Props>(props => {
                         items={outputTypes}
                         disabled={isInternal}
                         placeholder="no output"
+                        className="mb-2"
                       />
-
-                      <div className="mt-3">
-                        <Bindings
-                          dispatch={dispatch}
-                          form={form}
-                          itemsType="component"
-                          name="options"
-                          label="Add Option"
-                          disabled={isInternal}
-                          emailTemplates={emailTemplates}
-                        />
-                      </div>
+                      <FormField
+                        type="text"
+                        label="Code"
+                        name="keyCode"
+                        validate={isNew || !isInternal ? validateKeycode : undefined}
+                        disabled={isOriginallyInternal}
+                        required
+                      />
                     </AccordionDetails>
                   </Accordion>
                 </Grid>
