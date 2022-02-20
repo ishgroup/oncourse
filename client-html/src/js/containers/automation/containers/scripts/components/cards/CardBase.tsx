@@ -60,17 +60,7 @@ const styles = theme =>
     },
     summaryContentInner: {
       maxWidth: "calc(100% - 32px)"
-    },
-    cardLeftIcon: {
-      position: "absolute",
-      left: -75,
-      width: 50,
-      height: 50,
-      backgroundColor: "#fef4e8 !important",
-      color: "#f7941d",
-      zIndex: 1,
-      top: 0,
-    },
+    }
   });
 
 const CardBase = props => {
@@ -90,73 +80,64 @@ const CardBase = props => {
     customHeading,
     customButtons,
     onExpand,
-    leftIcon,
-    leftIconClass,
     forceExpanded,
   } = props;
 
   return (
-    <>
-      {leftIcon && (
-        <IconButton size="large" className={clsx(classes.cardLeftIcon, leftIconClass)} disableRipple>
-          {leftIcon}
-        </IconButton>
-      )}
-      <Accordion
-        classes={{
+    <Accordion
+      classes={{
           root: classes.panelRoot,
           expanded: disableExpandedBottomMargin ? classes.panelExpandedWithoutMargin : classes.panelExpanded
         }}
-        className={className}
-        expanded={forceExpanded}
-        defaultExpanded={expanded}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          classes={{
+      className={className}
+      expanded={forceExpanded}
+      defaultExpanded={expanded}
+    >
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+        classes={{
             root: classes.summaryRoot,
             expanded: classes.summaryExpanded,
             expandIconWrapper: clsx("p-0-5 mr-2", classes.summaryExpandIcon),
             content: classes.summaryContent
           }}
-          onClick={onExpand}
-        >
-          <div className={clsx("flex-fill centeredFlex w-100", classes.summaryContentInner)} {...dragHandlerProps}>
-            {Boolean(dragHandlerProps) && <DragIndicator color="disabled" />}
-            {customHeading ? heading : (
-              <div>
-                <Typography className="heading" component="div">
-                  {heading}
-                </Typography>
-                <Typography variant="subtitle1" color="textSecondary">
-                  {details}
-                </Typography>
-              </div>
+        onClick={onExpand}
+      >
+        <div className={clsx("flex-fill centeredFlex w-100", classes.summaryContentInner)} {...dragHandlerProps}>
+          {Boolean(dragHandlerProps) && <DragIndicator color="disabled" />}
+          {customHeading ? heading : (
+            <div>
+              <Typography className="heading" component="div">
+                {heading}
+              </Typography>
+              <Typography variant="subtitle1" color="textSecondary">
+                {details}
+              </Typography>
+            </div>
             )}
-            {Boolean(onAddItem) && (
-              <AddButton className="addButtonColor fs2 p-1" onClick={onAddItem} iconFontSize="inherit" />
+          {Boolean(onAddItem) && (
+          <AddButton className="addButtonColor fs2 p-1" onClick={onAddItem} iconFontSize="inherit" />
             )}
-          </div>
-          <div>
-            {customButtons}
-            {Boolean(onDelete) && (
-              <IconButton className="fs2 p-1" onClick={onDelete} data-component={heading}>
-                <Delete fontSize="inherit" />
-              </IconButton>
+        </div>
+        <div>
+          {customButtons}
+          {Boolean(onDelete) && (
+          <IconButton className="fs2 p-1" onClick={onDelete} data-component={heading}>
+            <Delete fontSize="inherit" />
+          </IconButton>
             )}
-          </div>
-        </AccordionSummary>
-        <AccordionDetails
-          onClick={onDetailsClick}
-          classes={{
+        </div>
+      </AccordionSummary>
+      <AccordionDetails
+        onClick={onDetailsClick}
+        classes={{
             root: clsx("relative", classes.panelDetailsRoot)
           }}
-          className={noPadding ? "p-0" : classes.panelDetailsPadding}
-        >
-          {children}
-        </AccordionDetails>
-      </Accordion>
-    </>
+        className={noPadding ? "p-0" : classes.panelDetailsPadding}
+      >
+        {children}
+      </AccordionDetails>
+    </Accordion>
   );
 };
 

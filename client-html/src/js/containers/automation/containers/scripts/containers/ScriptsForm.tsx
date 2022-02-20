@@ -27,6 +27,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
 import UploadIcon from "@mui/icons-material/Upload";
+import IconButton from "@mui/material/IconButton";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { mapSelectItems } from "../../../../../common/utils/common";
 import { usePrevious } from "../../../../../common/utils/hooks";
@@ -39,7 +40,7 @@ import { formatRelativeDate } from "../../../../../common/utils/dates/formatRela
 import ImportCardContent from "../components/cards/ImportCardContent";
 import TriggerCardContent from "../components/cards/TriggerCardContent";
 import { setScriptComponents } from "../actions";
-import { ScriptComponentType, ScriptViewMode } from "../../../../../model/scripts";
+import { ScriptComponentType, ScriptExtended, ScriptViewMode } from "../../../../../model/scripts";
 import CardsRenderer from "../components/cards/CardsRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import {
@@ -54,11 +55,13 @@ import AppBarContainer from "../../../../../common/components/layout/AppBarConta
 import AddScriptAction from "../components/AddScriptAction";
 import BoltIcon from "../../../../../../images/icon-bolt.svg";
 import ScriptIcon from "../../../../../../images/icon-script.svg";
+import InfoPill from "../../../../../common/components/layout/InfoPill";
+import { AppTheme } from "../../../../../model/common/Theme";
 
 const manualUrl = getManualLink("scripts");
 const getAuditsUrl = (id: number) => `audit?search=~"Script" and entityId == ${id}`;
 
-const styles = theme =>
+const styles = (theme: AppTheme) =>
   createStyles({
     root: {
       padding: theme.spacing(0, 9),
@@ -75,10 +78,7 @@ const styles = theme =>
     },
     cardsItem: {
       position: "relative",
-      "& > div, & > .card-reader-list > .card-reader-item": {
-        position: "relative",
-      },
-      "&::after": {
+      "&::before": {
         content: `" "`,
         position: "absolute",
         left: -50,
@@ -92,9 +92,6 @@ const styles = theme =>
       "&::after": {
         bottom: 0,
       }
-    },
-    cardBoltIcon: {
-      backgroundColor: "#e9f2d9 !important",
     },
     deleteButtonContainer: {
       display: "flex",
@@ -129,7 +126,7 @@ const styles = theme =>
     },
     queryField: {},
     queryIcon: {
-      backgroundColor: "#fef4e8 !important",
+      backgroundColor: "#fef4e8",
       color: "#f7941d"
     },
     technicalInfoRoot: {
@@ -140,13 +137,26 @@ const styles = theme =>
       },
     },
     technicalInfoExpanded: {
-      margin: "0px !important",
+      margin: "0px",
     },
     cardReaderCustomHeading: {
       maxWidth: "calc(100% - 8px)",
     },
     descriptionText: {
       fontSize: theme.spacing(1.625),
+    },
+    cardLeftIcon: {
+      position: "absolute",
+      left: -75,
+      width: 50,
+      height: 50,
+      backgroundColor: theme.palette.mode === "light" ? "#fef4e8" : theme.palette.background.paper,
+      color: theme.palette.primary.main,
+      zIndex: 1,
+      top: 0,
+      "&:hover": {
+        cursor: "inherit"
+      }
     },
   });
 
@@ -167,7 +177,7 @@ const TriggerToRecordTypeMap: TriggerToRecordObjType = {
 
 interface Props {
   isNew: boolean;
-  values: any;
+  values: ScriptExtended;
   initialValues;
   dispatch: any;
   ScheduleTypeItems: any;
@@ -381,13 +391,11 @@ const ScriptsForm = React.memo<Props>(props => {
 
   const enableEntityNameField = entityNameTypes.indexOf(values && values.trigger && values.trigger.type) > -1;
 
-  const isTriggerExpanded = useMemo(() => {
-    return triggerExpand
+  const isTriggerExpanded = useMemo(() => triggerExpand
       || !values?.trigger?.type
       || (enableEntityNameField && values?.trigger?.type !== "On demand" && !values?.trigger?.entityName)
       || (values?.trigger?.type === "Schedule" && !values?.trigger?.cron?.scheduleType)
-      || (values?.trigger?.cron?.scheduleType === "Custom" && !values?.trigger?.cron?.custom);
-  }, [
+      || (values?.trigger?.cron?.scheduleType === "Custom" && !values?.trigger?.cron?.custom), [
     triggerExpand,
     values,
     values && values.trigger,
@@ -453,7 +461,12 @@ const ScriptsForm = React.memo<Props>(props => {
           getAuditsUrl={getAuditsUrl}
           disabled={!dirty}
           invalid={invalid}
-          title={!values.name ? "" : values.name.trim()}
+          title={(
+            <div className="centeredFlex">
+              {values.name}
+              {values.automationTags?.split(",").map(t => <InfoPill key={t} label={t} />)}
+            </div>
+          )}
           disableInteraction={isInternal}
           opened={!values.name || Object.keys(syncErrors).includes("name")}
           noDrawer
@@ -501,7 +514,7 @@ const ScriptsForm = React.memo<Props>(props => {
         >
           {values && (
             <>
-              <Grid container className="mb-5">
+              <Grid container>
                 <Grid item xs={12} sm={9} className="mb-4">
                   <FormField
                     type="multilineText"
@@ -525,28 +538,6 @@ const ScriptsForm = React.memo<Props>(props => {
                     />
                   </Typography>
                 </Grid>
-                <Grid item xs={12} sm={9}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12} sm={6} md={3}>
-                      <FormField
-                        type="number"
-                        name="daysInAdvance"
-                        label="Days in advance"
-                        disabled={isInternal}
-                        className="overflow-hidden mb-1"
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <FormField
-                        type="text"
-                        name="email"
-                        label="From address"
-                        disabled={isInternal}
-                        className="overflow-hidden mb-1"
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
               </Grid>
               <Divider className="mb-5" />
               <Grid container className={classes.root}>
@@ -556,6 +547,9 @@ const ScriptsForm = React.memo<Props>(props => {
                       { [classes.cardCodeView]: (viewMode === "Code" || isInternal) })}
                   >
                     <div className={(viewMode === "Code" || isInternal) ? "mb-5" : ""}>
+                      <IconButton size="large" className={classes.cardLeftIcon} disableRipple>
+                        <img src={BoltIcon} alt="icon-bolt" />
+                      </IconButton>
                       <ScriptCard
                         heading={customTriggerHeading}
                         disableExpandedBottomMargin
@@ -568,8 +562,6 @@ const ScriptsForm = React.memo<Props>(props => {
                         )}
                         onExpand={() => setTriggerExpand(!triggerExpand)}
                         customHeading
-                        leftIcon={<img src={BoltIcon} alt="icon-bolt" />}
-                        leftIconClass={classes.cardBoltIcon}
                         forceExpanded={isTriggerExpanded}
                       >
                         <TriggerCardContent
@@ -587,11 +579,13 @@ const ScriptsForm = React.memo<Props>(props => {
 
                     {viewMode === "Code" ? (
                       <div className="mb-5">
+                        <IconButton size="large" className={classes.cardLeftIcon} disableRipple>
+                          <img src={ScriptIcon} alt="icon-script" />
+                        </IconButton>
                         <ScriptCard
                           heading="Script"
                           onDetailsClick={isInternal ? onInternalSaveClick : undefined}
                           noPadding
-                          leftIcon={<img src={ScriptIcon} alt="icon-script" />}
                         >
                           <FormField
                             type="code"
@@ -605,6 +599,9 @@ const ScriptsForm = React.memo<Props>(props => {
                       <>
                         {values.imports && (
                           <div className={clsx("mt-5", { "mb-5": isInternal })}>
+                            <IconButton size="large" className={classes.cardLeftIcon} disableRipple>
+                              <UploadIcon />
+                            </IconButton>
                             <ScriptCard
                               heading="Import"
                               onDelete={hasUpdateAccess && !isInternal ? removeImports : null}
@@ -612,7 +609,6 @@ const ScriptsForm = React.memo<Props>(props => {
                               disableExpandedBottomMargin
                               expanded
                               onDetailsClick={isInternal ? onInternalSaveClick : undefined}
-                              leftIcon={<UploadIcon />}
                             >
                               <ImportCardContent classes={classes} hasUpdateAccess={hasUpdateAccess} isInternal={isInternal} />
                             </ScriptCard>
@@ -627,8 +623,8 @@ const ScriptsForm = React.memo<Props>(props => {
                             dispatch={dispatch}
                             values={values}
                             hasUpdateAccess={hasUpdateAccess}
-                            disabled={isCardDragging}
                             active={!values.components}
+                            disabled={isCardDragging}
                           />
                         )}
 
@@ -676,7 +672,7 @@ const ScriptsForm = React.memo<Props>(props => {
                               {lastRun.status === "Script executed"
                                 ? <CheckIcon className="mr-0-5" color="success" />
                                 : <ClearIcon className="mr-0-5" color="error" />}
-                              <Typography variant="body1">
+                              <Typography variant="body2">
                                 {formatRelativeDate(new Date(lastRun.date), new Date(), DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL)}
                               </Typography>
                             </div>
@@ -719,20 +715,20 @@ const ScriptsForm = React.memo<Props>(props => {
                         disabled={isInternal}
                         placeholder="no output"
                       />
+
+                      <div className="mt-3">
+                        <Bindings
+                          dispatch={dispatch}
+                          form={form}
+                          itemsType="component"
+                          name="options"
+                          label="Add Option"
+                          disabled={isInternal}
+                          emailTemplates={emailTemplates}
+                        />
+                      </div>
                     </AccordionDetails>
                   </Accordion>
-                  <div className="mt-3">
-                    <Bindings
-                      dispatch={dispatch}
-                      form={form}
-                      itemsType="component"
-                      name="options"
-                      label="Add Option"
-                      disabled={isInternal}
-                      emailTemplates={emailTemplates}
-                    />
-                  </div>
-
                 </Grid>
               </Grid>
             </>

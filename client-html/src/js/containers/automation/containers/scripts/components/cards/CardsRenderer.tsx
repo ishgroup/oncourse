@@ -14,6 +14,7 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import StackedLineChartIcon from "@mui/icons-material/StackedLineChart";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { ScriptComponent } from "../../../../../../model/scripts";
 import ScriptCard from "./CardBase";
@@ -49,7 +50,7 @@ interface ScriptItemProps extends Props {
   component: any;
   index: number;
   item: any;
-  isDragging: boolean;
+  draggableId: any;
 }
 
 const ScriptCardItem: React.FC<ScriptItemProps & WrappedFieldArrayProps> = props => {
@@ -63,12 +64,11 @@ const ScriptCardItem: React.FC<ScriptItemProps & WrappedFieldArrayProps> = props
     isInternal,
     onInternalSaveClick,
     emailTemplates,
-    addComponent,
     values,
     component,
     index,
     item,
-    isDragging,
+    draggableId
   } = props;
 
   const [expand, setExpand] = useState<boolean>(false);
@@ -165,21 +165,6 @@ const ScriptCardItem: React.FC<ScriptItemProps & WrappedFieldArrayProps> = props
     }
   }, [component, component.type, item]);
 
-  const getComponentImage = useMemo(() => {
-    switch (component.type) {
-      case "Script":
-        return <img src={ScriptIcon} alt="icon-script" />;
-      case "Query":
-        return <HelpOutlineIcon />;
-      case "Message":
-        return <EmailOutlinedIcon />;
-      case "Report":
-        return <StackedLineChartIcon />;
-      default:
-        return null;
-    }
-  }, [component, component.type]);
-
   const getHeading = useMemo(() => {
     const type = component.type;
     let heading = type;
@@ -226,81 +211,121 @@ const ScriptCardItem: React.FC<ScriptItemProps & WrappedFieldArrayProps> = props
     emailTemplates,
     expand
   ]);
-
-  const draggableId = index + component.id;
-
+  
   return (
-    <>
-      <Draggable draggableId={draggableId} index={index} isDragDisabled={isInternal}>
-        {provided => {
-          const hideIconOnDragging = Boolean(!provided?.draggableProps?.style?.position
-            && draggableId === provided.draggableProps["data-rbd-draggable-id"]);
-          return (
-            <div ref={provided.innerRef} {...provided.draggableProps}>
-              <ScriptCard
-                heading={getHeading}
-                onDelete={(!isInternal || (!isInternal && component.type === "Script" && hasUpdateAccess))
+    <Draggable draggableId={draggableId} index={index} isDragDisabled={isInternal}>
+      {provided => (
+        <div ref={provided.innerRef} {...provided.draggableProps}>
+          <ScriptCard
+            heading={getHeading}
+            onDelete={(!isInternal || (!isInternal && component.type === "Script" && hasUpdateAccess))
                   ? e => onDelete(e, index) : null}
-                dragHandlerProps={provided.dragHandleProps}
-                noPadding={component.type === "Script"}
-                onDetailsClick={isInternal ? onInternalSaveClick : undefined}
-                customHeading
-                onExpand={() => setExpand(!expand)}
-                leftIcon={hideIconOnDragging && getComponentImage}
-              >
-                {getComponent}
-              </ScriptCard>
-              {!isInternal && hideIconOnDragging && (
-                <AddScriptAction
-                  index={index + 1}
-                  addComponent={addComponent}
-                  form={form}
-                  dispatch={dispatch}
-                  values={values}
-                  hasUpdateAccess={hasUpdateAccess}
-                  active={!isDragging && (fields.length - 1) === index}
-                  disabled={isDragging}
-                />
-              )}
-            </div>
-          );
-        }}
-      </Draggable>
-    </>
+            dragHandlerProps={provided.dragHandleProps}
+            noPadding={component.type === "Script"}
+            onDetailsClick={isInternal ? onInternalSaveClick : undefined}
+            customHeading
+            onExpand={() => setExpand(!expand)}
+          >
+            {getComponent}
+          </ScriptCard>
+        </div>
+          )}
+    </Draggable>
   );
+};
+
+const getComponentImage = type => {
+  switch (type) {
+    case "Script":
+      return <img src={ScriptIcon} alt="icon-script" />;
+    case "Query":
+      return <HelpOutlineIcon />;
+    case "Message":
+      return <EmailOutlinedIcon />;
+    case "Report":
+      return <StackedLineChartIcon />;
+    default:
+      return null;
+  }
 };
 
 const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
   const {
     fields,
     isInternal,
+    classes,
+    addComponent,
+    meta: { form },
+    dispatch,
+    values,
+    hasUpdateAccess,
     setDragging,
     isDragging
   } = props;
-
+  
+  const onDragEndHandler = args => {
+    onDragEnd({ ...args, fields });
+    setDragging(false);
+  };
+  
   return (
-    <DragDropContext onDragEnd={args => onDragEnd({ ...args, fields })}>
+    <DragDropContext onDragEnd={onDragEndHandler} onDragStart={setDragging}>
       <Droppable droppableId="droppable">
-        {provided => {
-          const draggingItemHeight = provided.placeholder.props.on ? provided.placeholder.props.on.client.contentBox.height + 40 : 0;
-          setDragging(Boolean(draggingItemHeight));
+        {(provided, { isDraggingOver, draggingOverWith }) => {
+          const draggingItemHeight = provided.placeholder.props.on ? provided.placeholder.props.on.client.contentBox.height : 0;
+
           return (
-            <div ref={provided.innerRef} className="card-reader-list" style={{ paddingBottom: `${draggingItemHeight}px` }}>
+            <div
+              ref={provided.innerRef}
+              style={(isDragging || isDraggingOver) ? { paddingBottom: draggingItemHeight } : undefined}
+            >
               {fields.map((item, index) => {
                 const component: ScriptComponent = fields.get(index);
+                const leftIcon = getComponentImage(component.type);
+                const draggableId = index + component.id;
+                const isDraggingItem = draggingOverWith === draggableId;
+                const isAfterDragging = draggingOverWith ? index > Number(draggingOverWith[0]) : false;
 
-                return (
-                  <div key={component.id} className={clsx("card-reader-item", { "mb-5": isInternal })}>
-                    <ScriptCardItem
-                      {...props}
-                      component={component}
-                      index={index}
-                      item={item}
-                      isDragging={isDragging}
-                    />
+              return (
+                <div key={component.id} className={clsx("relative", { "mb-5": isInternal })}>
+                  <div style={!isDraggingItem && isAfterDragging && (isDragging || isDraggingOver) ? {
+                    transform: `translateY(${draggingItemHeight}px)`,
+                  } : {}}
+                  >
+                    {leftIcon && (
+                      <IconButton size="large" className={classes.cardLeftIcon} disableRipple>
+                        {leftIcon}
+                      </IconButton>
+                    )}
                   </div>
-                );
-              })}
+                  <ScriptCardItem
+                    {...props}
+                    draggableId={draggableId}
+                    component={component}
+                    index={index}
+                    item={item}
+                  />
+                  <div style={(isAfterDragging || isDraggingItem) && (isDragging || isDraggingOver) 
+                    ? { transform: `translateY(${draggingItemHeight}px)` } 
+                    : {}}
+                  >
+                    {!isInternal && (
+                      <AddScriptAction
+                        index={index + 1}
+                        addComponent={addComponent}
+                        form={form}
+                        dispatch={dispatch}
+                        values={values}
+                        hasUpdateAccess={hasUpdateAccess}
+                        disabled={isDraggingOver || isDragging}
+                        active={(fields.length - 1) === index}
+                      />
+                    )}
+                  </div>
+
+                </div>
+              );
+            })}
             </div>
           );
         }}

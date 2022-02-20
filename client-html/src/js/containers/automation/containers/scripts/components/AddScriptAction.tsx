@@ -83,23 +83,23 @@ const styles = createStyles(theme => ({
     fontWeight: "bold"
   },
   importIcon: {
-    backgroundColor: "#f6ecf5 !important",
+    backgroundColor: "#f6ecf5",
     color: "#9e5193"
   },
   queryIcon: {
-    backgroundColor: "#fef4e8 !important",
+    backgroundColor: "#fef4e8",
     color: "#f7941d"
   },
   scriptIcon: {
-    backgroundColor: "#fef4e8 !important",
+    backgroundColor: "#fef4e8",
     color: "#f7941d"
   },
   messageIcon: {
-    backgroundColor: "#eeeff4 !important",
+    backgroundColor: "#eeeff4",
     color: "#4b6390"
   },
   reportIcon: {
-    backgroundColor: "#f6ecf5 !important",
+    backgroundColor: "#f6ecf5",
     color: "#9e5193"
   },
   cardLeftIcon: {
@@ -110,8 +110,11 @@ const styles = createStyles(theme => ({
     zIndex: 1,
     top: "50%",
     transform: "translateY(-50%)",
-    backgroundColor: `${theme.appBar.header.background} !important`,
+    backgroundColor: `${theme.appBar.header.background}`,
     color: theme.palette.divider,
+    "&:hover": {
+      cursor: "inherit"
+    }
   },
   cardPlusIconActive: {
     color: theme.heading.color
@@ -120,7 +123,7 @@ const styles = createStyles(theme => ({
     left: -3,
     width: 50,
     height: 50,
-    backgroundColor: "#eaebe6 !important",
+    backgroundColor: theme.palette.mode === "light" ? "#eaebe6" : theme.palette.background.paper,
     color: theme.heading.color
   }
 }));

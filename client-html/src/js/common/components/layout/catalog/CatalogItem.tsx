@@ -8,15 +8,15 @@
 
 import React from "react";
 import {
-  ListItem, ListItemText, Divider, Typography, Chip, IconButton
+  ListItem, ListItemText, Divider, Typography, IconButton
 } from "@mui/material";
 import clsx from "clsx";
-import { alpha } from "@mui/material/styles";
 import { Delete } from "@mui/icons-material";
 import { CatalogItemType } from "../../../../model/common/Catalog";
 import { makeAppStyles } from "../../../styles/makeStyles";
 import { AnyArgFunction, NumberArgFunction } from "../../../../model/common/CommonFunctions";
 import { useHoverShowStyles } from "../../../styles/hooks";
+import InfoPill from "../InfoPill";
 
 const useStyles = makeAppStyles(theme => ({
   primaryText: {
@@ -32,14 +32,6 @@ const useStyles = makeAppStyles(theme => ({
     borderRadius: "50%",
     marginRight: theme.spacing(1),
     backgroundColor: theme.palette.success.light
-  },
-  chip: {
-    textTransform: "uppercase",
-    fontWeight: 600,
-    fontSize: "12px",
-    marginLeft: theme.spacing(1),
-    color: theme.palette.primary.light,
-    backgroundColor: alpha(theme.palette.primary.light, 0.15)
   },
   root: {
     "&.disabled $dot": {
@@ -111,7 +103,7 @@ const CatalogItem = (
               {!showAdded && installed && <span className={classes.dot} />}
               {title}
               {titleAdornment}
-              {tags?.split(",").map(t => <Chip className={classes.chip} key={t} label={t} size="small" />)}
+              {tags?.split(",").map(t => <InfoPill key={t} label={t} />)}
             </div>
           )}
           secondary={shortDescription || "No description"}
