@@ -244,11 +244,12 @@ const ExportTemplatesForm = React.memo<Props>(
               <Grid item xs={3}>
                 <div>
                   <FormField
-                    type="switch"
-                    name="enabled"
                     label="Enabled"
+                    type="switch"
+                    name="status"
                     color="primary"
-                    fullWidth
+                    format={v => v === "Enabled"}
+                    parse={v => v ? "Enabled" : "Installed but Disabled"}
                   />
                 </div>
                 <div className="mt-3 pt-1">

@@ -562,8 +562,11 @@ const ScriptsForm = React.memo<Props>(props => {
                         customButtons={(
                           <FormField
                             type="switch"
-                            name="enabled"
+                            name="status"
                             color="primary"
+                            format={v => v === "Enabled"}
+                            parse={v => v ? "Enabled" : "Installed but Disabled"}
+                            onClick={e => e.stopPropagation()}
                           />
                         )}
                         onExpand={() => setTriggerExpand(!triggerExpand)}
