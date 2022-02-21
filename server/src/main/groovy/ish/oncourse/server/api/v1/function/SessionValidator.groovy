@@ -267,7 +267,6 @@ class SessionValidator {
         List<TutorAttendance> result = ObjectSelect.query(TutorAttendance)
                 .where(filter)
                 .prefetch(TutorAttendance.SESSION.dot(Session.COURSE_CLASS).dot(CourseClass.COURSE).joint())
-                .limit(3)
                 .select(cayenneService.newContext)
         result.subList(0, result.size() >= 3 ? 3 : result.size())
     }
@@ -289,7 +288,6 @@ class SessionValidator {
         List<Session> result = ObjectSelect.query(Session)
                 .where(filter)
                 .prefetch(Session.COURSE_CLASS.dot(CourseClass.COURSE).joint())
-                .limit(3)
                 .select(cayenneService.newContext)
         result.subList(0, result.size() >= 3 ? 3 : result.size())
     }
