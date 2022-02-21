@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: 110-1
+      author: dmitriy
+      preconditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: SessionCourseClassTutor
+        - tableExists:
+            tableName: CourseSession
+      changes:
+        - sql: "UPDATE SessionCourseClassTutor 
+                    JOIN CourseSession ON SessionCourseClassTutor.sessionId = CourseSession.id 
+                SET SessionCourseClassTutor.startDatetime = CASE WHEN DATE(SessionCourseClassTutor.startDatetime) != DATE(CourseSession.startDatetime)
+                                                            THEN CONCAT(CONCAT(DATE(CourseSession.startDatetime),' '), TIME(SessionCourseClassTutor.startDatetime))
+                                                            ELSE SessionCourseClassTutor.startDatetime
+                                                            END,
+                    SessionCourseClassTutor.endDatetime = CASE WHEN DATE(SessionCourseClassTutor.endDatetime) != DATE(CourseSession.endDatetime)
+                                                          THEN CONCAT(CONCAT(DATE(CourseSession.endDatetime),' '), TIME(SessionCourseClassTutor.endDatetime))
+                                                          ELSE SessionCourseClassTutor.endDatetime
+                                                          END
+                WHERE DATE(SessionCourseClassTutor.startDatetime) != DATE(CourseSession.startDatetime) OR DATE(SessionCourseClassTutor.endDatetime) != DATE(CourseSession.endDatetime)"
