@@ -197,8 +197,8 @@ const CourseClassTutorRoosterItem = (
   const isExpanded = expanded === index;
 
   const wage = budget.find(b => b.flowType === "Wages"
-    && (b.courseClassTutorId === tutor.id
-      || (b.temporaryTutorId && b.temporaryTutorId === tutor.temporaryId)));
+    && (b.courseClassTutorId === tutor?.id
+      || (b.temporaryTutorId && b.temporaryTutorId === tutor?.temporaryId)));
 
   const openTutorWage = () => addTutorWage(tutor, wage);
 
