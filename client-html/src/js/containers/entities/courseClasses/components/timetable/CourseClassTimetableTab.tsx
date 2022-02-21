@@ -544,6 +544,7 @@ const CourseClassTimetableTab = ({
 
         session.start = startDate.toISOString();
         session.end = endDate.toISOString();
+        setShiftedTutorAttendances(originalSession, session);
       } else if (bulkValue.durationChecked && bulkValue.duration !== 0) {
         session.end = addMinutes(new Date(session.start), bulkValue.duration).toISOString();
       } else if (bulkValue.payableDurationChecked && bulkValue.payableDuration !== 0) {
