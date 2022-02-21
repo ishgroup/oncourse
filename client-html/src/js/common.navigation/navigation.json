@@ -1,0 +1,693 @@
+{
+  "categories": [
+    {
+      "title": "Scheduling",
+      "key": "scheduling",
+      "description": "Make scheduling courses and events a breeze with onCourse scheduling. Whether you offer classroom, self-paced or virtual courses, onCourse has the power to manage even the most complex scheduling requirements. Whether you offer classroom, self-paced or virtual courses, onCourse has the power to manage even the most complex scheduling requirements.<p>Make course scheduling a pleasure and free your organisation from costly mistakes.</p><ul><li>Collision Detection</li><li>Course Duplication</li><li>Availability Rules</li><li>Capacity Management</li><li>Worldwide Time-zone Support</li><li>Automation</li><li>Timetable Views</li><ul>"
+    },
+    {
+      "title": "Accounting",
+      "key": "accounting",
+      "description": "."
+    },
+    {
+      "title": "Sales",
+      "key": "sales",
+      "description": "."
+    }
+  ],
+  "features": [
+    {
+      "title": "Accounts",
+      "key": "Accounts",
+      "link": "/account",
+      "categories": [
+        "accounting"
+      ],
+      "description": "The different transactional accounts available in onCourse."
+    },
+    {
+      "title": "Applications",
+      "key": "Applications",
+      "link": "/application",
+      "categories": [
+        "sales"
+      ],
+      "description": "All the applications sent in by students to courses that are set as 'enrolment by application'."
+    },
+    {
+      "title": "Assessment submissions",
+      "key": "Assessment submissions",
+      "link": "",
+      "categories": [
+        "education"
+      ],
+      "description": "A list of the various assessment submissions saved to your onCourse."
+    },
+    {
+      "title": "Assessment tasks",
+      "key": "Assessment tasks",
+      "link": "/assessment",
+      "categories": [
+        "Education"
+      ],
+      "description": "A list of assessment tasks uploaded to your system. They are available to be added to classes."
+    },
+    {
+      "title": "Audit Logging",
+      "key": "Audit Logging",
+      "link": "/audit",
+      "categories": [
+        "System"
+      ],
+      "description": "A recorded log of every action taken in your onCourse system. Also used to power the 'Automation Status' section on the dashboard.  "
+    },
+    {
+      "title": "Automation",
+      "key": "Automation",
+      "link": "/automation",
+      "categories": [
+        ""
+      ],
+      "description": "Where to access your reports, export templates, message templates, scripts and more."
+    },
+    {
+      "title": "Banking Deposits",
+      "key": "Banking Deposits",
+      "link": "/banking",
+      "categories": [
+        "Accounting"
+      ],
+      "description": "All the banking deposits created in your onCourse system."
+    },
+    {
+      "title": "Process payment plans (batch payment in)",
+      "key": "Batch payment in",
+      "link": "/batchPayment",
+      "categories": [
+        "Accounting",
+        "Sales"
+      ],
+      "description": "Review and process all outstanding invoices and payment plans. In one batch, charge customer credit cards.",
+      "links_extra": [
+        {
+          "title": "%s owing invoices",
+          "count": "invoice.owing > 0"
+        }
+      ]
+    },
+    {
+      "title": "Certificates",
+      "key": "Certificates",
+      "link": "/certificate",
+      "categories": [
+        "Compliance"
+      ],
+      "description": "Manage the certification of students who have achieved competency in their outcomes, including issuing and revoking certificates. "
+    },
+    {
+      "title": "Change my password",
+      "key": "Change my password",
+      "link": "/login?updatePassword=true",
+      "categories": [
+        "Help"
+      ],
+      "description": "Change your onCourse password."
+    },
+    {
+      "title": "Classes",
+      "key": "Classes",
+      "link": "/class",
+      "categories": [
+        "Scheduling"
+      ],
+      "description": "A list of all the classes in your onCourse system."
+    },
+    {
+      "title": "Community support",
+      "key": "Community support",
+      "link": "https://forum.ish.com.au",
+      "categories": [
+        "Help"
+      ],
+      "description": "Ask a question of the onCourse community in our forum."
+    },
+    {
+      "title": "Companies",
+      "key": "Companies",
+      "link": "/contact?filter=@Companies",
+      "categories": [
+        "Customers"
+      ],
+      "description": "A list of your contacts that are set as being a company."
+    },
+    {
+      "title": "Concession types",
+      "key": "Concession types",
+      "link": "/preferences/concessionTypes",
+      "categories": [
+        ""
+      ],
+      "description": "The concession types available to your customers in onCourse."
+    },
+    {
+      "title": "Contact relation types",
+      "key": "Contact relation types",
+      "link": "/preferences/contactRelationTypes",
+      "categories": [
+        ""
+      ],
+      "description": "The types of relationships between different contacts in the system. Relationships can be used to link contacts and inherit discounts.  "
+    },
+    {
+      "title": "Contacts",
+      "key": "Contacts",
+      "link": "/contact",
+      "categories": [
+        "Customers"
+      ],
+      "description": "A complete list of all the contacts in your system, including students, tutors and companies."
+    },
+    {
+      "title": "Corporate Pass",
+      "key": "Corporate Pass",
+      "link": "/corporatePass",
+      "categories": [
+        ""
+      ],
+      "description": "A list of the corporate passes created in your system."
+    },
+    {
+      "title": "Courses",
+      "key": "Courses",
+      "link": "/course",
+      "categories": [
+        "Scheduling"
+      ],
+      "description": "A list of all your courses."
+    },
+    {
+      "title": "Custom fields",
+      "key": "Custom fields",
+      "link": "/preferences/customFields",
+      "categories": [
+        ""
+      ],
+      "description": "Custom fields allow you to create data fields in almost any record type in onCourse to store data that onCourse may not already have a field for."
+    },
+    {
+      "title": "Data collection forms",
+      "key": "Data collection forms",
+      "link": "/preferences/collectionForms",
+      "categories": [
+        "Marketing"
+      ],
+      "description": "Organise your data collection questions into different forms covering different processes. Create separate forms for Enrolments, Applications, Surveys, Parents, Payers and more."
+    },
+    {
+      "title": "Data collection rules",
+      "key": "Data collection rules",
+      "link": "/preferences/collectionRules",
+      "categories": [
+        "Marketing"
+      ],
+      "description": "Set the rules around which data collection forms are used for which student process. Apply different forms for Enrolments, Applications, Waiting Lists and more. "
+    },
+    {
+      "title": "Deposit banking",
+      "key": "Deposit banking",
+      "link": "/banking/new",
+      "categories": [
+        "Accounting"
+      ],
+      "description": "Create a bank reconcilliation record for today's date."
+    },
+    {
+      "title": "Discounts",
+      "key": "Discounts",
+      "link": "/discount",
+      "categories": [
+        ""
+      ],
+      "description": "Create discounts and apply them to classes to offer savings on enrolment. "
+    },
+    {
+      "title": "Documentation",
+      "key": "Documentation",
+      "link": "https://www.ish.com.au/au/support",
+      "categories": [
+        "Help"
+      ],
+      "description": "Need to find out how something in onCourse works? Our onCourse documentation manual almost certainly has you covered."
+    },
+    {
+      "title": "Documents",
+      "key": "Documents",
+      "link": "/document",
+      "categories": [
+        ""
+      ],
+      "description": "A list of all the documents you've uploaded to your system."
+    },
+    {
+      "title": "Enrolments",
+      "key": "Enrolments",
+      "link": "",
+      "categories": [
+        ""
+      ],
+      "description": "A list of all the enrolments you've taken in your system."
+    },
+    {
+      "title": "Export AVETMISS 8...",
+      "key": "Export AVETMISS 8...",
+      "link": "/avetmiss-export",
+      "categories": [
+        "Compliance"
+      ],
+      "description": "Export records into the AVETMISS 8 format for the purpose of reporting to govenrment funding agencies."
+    },
+    {
+      "title": "Export templates",
+      "key": "Export templates",
+      "link": "/automation/export-templates",
+      "categories": [
+        ""
+      ],
+      "description": "Create export templates allowing you to export your onCourse data into a format readable in other applications. Formats include CSV, XML, JSON, PDF and more."
+    },
+    {
+      "title": "Finalise period",
+      "key": "Finalise period",
+      "link": "/finalise",
+      "categories": [
+        "Accounting"
+      ],
+      "description": "Finalise the accounting within the defined start and end dates. Once a period is finalised you cannot edit financial records from before that date again."
+    },
+    {
+      "title": "Funding Contract",
+      "key": "Funding Contract",
+      "link": "/preferences/fundingContracts",
+      "categories": [
+        ""
+      ],
+      "description": "Create custom funding contracts for any source of funding that supports the student enrolment, and enable/disable default funding contracts."
+    },
+    {
+      "title": "Holidays",
+      "key": "Holidays",
+      "link": "/preferences/holidays",
+      "categories": [
+        ""
+      ],
+      "description": "Set the holiday periods your business will be closed for"
+    },
+    {
+      "title": "Import templates",
+      "key": "Import templates",
+      "link": "/automation/import-templates",
+      "categories": [
+        ""
+      ],
+      "description": ""
+    },
+    {
+      "title": "Integrations",
+      "key": "Integrations",
+      "link": "/automation/integrations",
+      "categories": [
+        ""
+      ],
+      "description": ""
+    },
+    {
+      "title": "Invoices",
+      "key": "Invoices",
+      "link": "/invoice",
+      "categories": [
+        "Accounting",
+        "Sales"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Leads",
+      "key": "Leads",
+      "link": "/lead",
+      "categories": [
+        "Sales"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Memberships",
+      "key": "Memberships",
+      "link": "/membership",
+      "categories": [
+        ""
+      ],
+      "description": ""
+    },
+    {
+      "title": "Message templates",
+      "key": "Message templates",
+      "link": "/automation/email-templates",
+      "categories": [
+        ""
+      ],
+      "description": ""
+    },
+    {
+      "title": "Messages",
+      "key": "Messages",
+      "link": "/message",
+      "categories": [
+        ""
+      ],
+      "description": ""
+    },
+    {
+      "title": "onCourse news",
+      "key": "onCourse news",
+      "link": "https://ish.com.au/blog",
+      "categories": [
+        "Help"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Outcomes",
+      "key": "Outcomes",
+      "link": "/outcome",
+      "categories": [
+        "Education"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Payment types",
+      "key": "Payment types",
+      "link": "/preferences/paymentTypes",
+      "categories": [
+        "Accounting"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Payments In",
+      "key": "Payments In",
+      "link": "/paymentIn",
+      "categories": [
+        "Accounting",
+        "Sales"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Payments Out",
+      "key": "Payments Out",
+      "link": "/paymentOut",
+      "categories": [
+        "Accounting",
+        "Sales"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Report backgrounds",
+      "key": "PDF backgrounds",
+      "link": "/automation/pdf-backgrounds",
+      "categories": [
+        "Automation"
+      ],
+      "description": ""
+    },
+    {
+      "title": "PDF reports",
+      "key": "PDF reports",
+      "link": "/automation/pdf-reports",
+      "categories": [
+        "Automation"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Preferences",
+      "key": "Preferences",
+      "link": "/preferences/college",
+      "categories": [
+        "System"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Prior learnings",
+      "key": "Prior learnings",
+      "link": "/priorLearning",
+      "categories": [
+        "Education"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Products",
+      "key": "Products",
+      "link": "/product",
+      "categories": [
+        ""
+      ],
+      "description": ""
+    },
+    {
+      "title": "Qualifications",
+      "key": "Qualifications",
+      "link": "/qualification",
+      "categories": [
+        "Compliance"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Quotes",
+      "key": "Quotes",
+      "link": "/invoice?filter=@Quote",
+      "categories": [
+        ""
+      ],
+      "description": ""
+    },
+    {
+      "title": "Release notes",
+      "key": "Release notes",
+      "link": "https://www.ish.com.au/onCourse/doc/release-notes/",
+      "categories": [
+        "Help"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Rooms",
+      "key": "Rooms",
+      "link": "/room",
+      "categories": [
+        "Scheduling"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Sales",
+      "key": "Sales",
+      "link": "/sale",
+      "categories": [
+        ""
+      ],
+      "description": ""
+    },
+    {
+      "title": "Scripts",
+      "key": "Scripts",
+      "link": "/automation/script",
+      "categories": [
+        "Automation"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Security",
+      "key": "Security",
+      "link": "/security",
+      "categories": [
+        "System"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Sellable items relation types",
+      "key": "Sellable items relation types",
+      "link": "",
+      "categories": [
+        "Scheduling"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Send support request...",
+      "key": "Send support request...",
+      "link": "",
+      "categories": [
+        "Help"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Sites",
+      "key": "Sites",
+      "link": "",
+      "categories": [
+        "Scheduling"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Student Feedback",
+      "key": "Student Feedback",
+      "link": "",
+      "categories": [
+        "Marketing"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Students",
+      "key": "Students",
+      "link": "",
+      "categories": [
+        "Customers"
+      ],
+      "description": "A list of your student contacts."
+    },
+    {
+      "title": "Tags",
+      "key": "Tags",
+      "link": "",
+      "categories": [
+        "System"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Tax types",
+      "key": "Tax types",
+      "link": "",
+      "categories": [
+        "Accounting"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Timetable",
+      "key": "Timetable",
+      "link": "",
+      "categories": [
+        "Scheduling"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Traineeship Courses",
+      "key": "Traineeship Courses",
+      "link": "",
+      "categories": [
+        "Scheduling",
+        "Compliance"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Traineeships",
+      "key": "Traineeships",
+      "link": "",
+      "categories": [
+        "Scheduling",
+        "Compliance"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Transactions",
+      "key": "Transactions",
+      "link": "",
+      "categories": [
+        "Accounting"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Tutor pay",
+      "key": "Tutor pay",
+      "link": "",
+      "categories": [
+        "Accounting, Payroll"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Tutor pay rates",
+      "key": "Tutor pay rates",
+      "link": "",
+      "categories": [
+        "Accounting",
+        "Payroll"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Tutors",
+      "key": "Tutors",
+      "link": "",
+      "categories": [
+        "Sales",
+        "Marketing"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Units Of Competency",
+      "key": "Units Of Competency",
+      "link": "",
+      "categories": [
+        "Compliance"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Voucher Types",
+      "key": "Voucher Types",
+      "link": "",
+      "categories": [
+        "Sales"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Waiting lists",
+      "key": "Waiting lists",
+      "link": "",
+      "categories": [
+        "Scheduling",
+        "Sales"
+      ],
+      "description": ""
+    },
+    {
+      "title": "Website setup",
+      "key": "Website setup",
+      "link": "",
+      "categories": [
+        ""
+      ],
+      "description": ""
+    }
+  ]
+}
