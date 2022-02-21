@@ -72,7 +72,7 @@ public class DataPopulation implements Runnable {
 					Yaml yaml = new Yaml();
 					resourcesList.addAll(yaml.load(resourceAsStream));
 			} catch (IOException ex) {
-				logger.warn("failed to import file {}: {}", type.getDisplayName(), path);
+				logger.warn("Failed to import file {}: {}", type.getDisplayName(), path);
 			}
 		}
 		return resourcesList;
@@ -81,7 +81,7 @@ public class DataPopulation implements Runnable {
 	public void run() {
 		var context = cayenneService.getNewContext();
 
-		logger.warn("Resource loading: reports");
+		logger.info("Resource loading: reports");
 		var resourcesList = PluginService.getPluggableResources(ResourceType.REPORT.getResourcePath(), ResourceType.REPORT.getFilePattern());
 		Set<Long> importedReportsIds = new HashSet<>();
 		for (var path : resourcesList) {
@@ -97,11 +97,10 @@ public class DataPopulation implements Runnable {
 				logger.error("Failed to import report: {}", path, e);
 			}
 		}
-		logger.warn("Deleted from sourses resource removing: reports");
         DataPopulationUtils.removeDeletedReports(context, importedReportsIds);
 
 
-        logger.warn("Resource loading: scripts");
+        logger.info("Resource loading: scripts");
 		var scripts = getResourcesList(ResourceType.SCRIPT);
 		scripts.forEach( props -> {
 			try {
@@ -112,7 +111,7 @@ public class DataPopulation implements Runnable {
 		});
 		removeFromDbDeletedResources(context, scripts, ResourceType.SCRIPT);
 
-		logger.warn("Resource loading: imports");
+		logger.info("Resource loading: imports");
 		var imports = getResourcesList(ResourceType.IMPORT);
 		imports.forEach( props -> {
 			try {
@@ -123,7 +122,7 @@ public class DataPopulation implements Runnable {
 		});
 		removeFromDbDeletedResources(context, imports, ResourceType.IMPORT);
 
-		logger.warn("Resource loading: message templates");
+		logger.info("Resource loading: message templates");
 		var emailYamls = getResourcesList(ResourceType.MESSAGING);
 		emailYamls.forEach( props -> {
 			try {
@@ -134,7 +133,7 @@ public class DataPopulation implements Runnable {
 		});
 		removeFromDbDeletedResources(context, emailYamls, ResourceType.MESSAGING);
 
-		logger.warn("Resource loading: exports");
+		logger.info("Resource loading: exports");
 		var exports = getResourcesList(ResourceType.EXPORT);
 		exports.forEach(props -> {
 			try {
@@ -145,6 +144,6 @@ public class DataPopulation implements Runnable {
 		});
 		removeFromDbDeletedResources(context, exports, ResourceType.EXPORT);
 
-		logger.warn("Resource loading thread finished.");
+		logger.info("Resource loading thread finished.");
 	}
 }
