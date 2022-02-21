@@ -123,6 +123,7 @@ module.exports = {
         "react/no-did-update-set-state": "off",
         "react/jsx-props-no-spreading": "off",
         "react/jsx-boolean-value": "off",
+        "react/jsx-props-no-multi-spaces": "off",
         "semi": "error",
         "space-before-function-paren": "off",
         "space-in-parens": [
