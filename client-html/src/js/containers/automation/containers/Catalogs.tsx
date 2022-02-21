@@ -28,7 +28,7 @@ const useUpdateAutomationStatus = (entity: AutomationEntity) => {
   const importTemplates = useAppSelector(state => state.automation.importTemplate.importTemplates);
   const pdfReports = useAppSelector(state => state.automation.pdfReport.pdfReports);
   const scripts = useAppSelector(state => state.automation.script.scripts);
-  
+
   switch (entity) {
     case "EmailTemplate": {
       return (id: number, installed: boolean) => {
@@ -70,7 +70,7 @@ const useUpdateAutomationStatus = (entity: AutomationEntity) => {
         }))));
       };
     }
-    default: 
+    default:
       throw Error("Unknown automation type");
   }
 };
@@ -78,7 +78,7 @@ const useUpdateAutomationStatus = (entity: AutomationEntity) => {
 const useInstallToggle = (entity: AutomationEntity) => {
   const dispatch = useAppDispatch();
   const updateAutomationStatus = useUpdateAutomationStatus(entity);
-  
+
   return (automation: CatalogItemType) => {
     if (!automation.installed) {
       dispatch(installAutomation(automation, entity));
@@ -112,17 +112,17 @@ export const EmailTemplatesCatalog = ({ history }: RouteComponentProps) => {
   return (
     <CatalogWithSearch
       addNewItem={{
-        title: "Custom email template",
+        title: "Custom message template",
         category: "Advanced",
-        shortDescription: "Create a new email template from scratch"
+        shortDescription: "Create a new message template from scratch"
       }}
       toggleInstall={toggleInstall}
       items={emailTemplates}
-      title="Email templates"
-      itemsListTitle="installed email templates"
+      title="Message templates"
+      itemsListTitle="Installed message templates"
       onOpen={onOpen}
       onClickNew={onClickNew}
-      description="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, assumenda, cum cupiditate dignissimos doloribus iure modi nisi nobis possimus quos ratione recusandae tenetur totam! Aliquam laudantium nesciunt ratione tempora totam!"
+      description="Use one of onCourse's message templates to simply and quickly communicate with your customers via email or SMS. Many templates rely on the standard footer and header templates, so customise those to add your logo or styling. Message templates can make use of embedded scripts, so you have full access output any data you want, styled in any way.<p>Be aware that it can be a little trick to support many different email software and devices in html emails, so be conservative with your styling choices.</p>"
     />
   );
 };
@@ -143,18 +143,18 @@ export const ExportTemplatesCatalog = ({ history }: RouteComponentProps) => {
   return (
     <CatalogWithSearch
       addNewItem={{
-        title: "Custom export template",
+        title: "Export template",
         category: "Advanced",
         shortDescription: "Create a new export template from scratch"
       }}
-      
+
       toggleInstall={toggleInstall}
       items={exportTemplates}
-      title="Export templates"
+      title="Exports"
       itemsListTitle="Installed export templates"
       onOpen={onOpen}
       onClickNew={onClickNew}
-      description="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, assumenda, cum cupiditate dignissimos doloribus iure modi nisi nobis possimus quos ratione recusandae tenetur totam! Aliquam laudantium nesciunt ratione tempora totam!"
+      description="Export every piece of data from onCourse system into any of the commonly-used formats; csv, json, xml, txt or anything else you can think of. Using export templates you can not only choose which pieces of data to export but transform your data on the way out in any way you want. Rather than exporting CSV and then spending ages every week"
     />
   );
 };
@@ -175,18 +175,18 @@ export const ImportTemplatesCatalog = ({ history }: RouteComponentProps) => {
   return (
     <CatalogWithSearch
       addNewItem={{
-        title: "Custom import template",
+        title: "Import template",
         category: "Advanced",
         shortDescription: "Create a new import template from scratch"
       }}
-      
+
       toggleInstall={toggleInstall}
       items={importTemplates}
-      title="Import templates"
-      itemsListTitle="installed import templates"
+      title="Imports"
+      itemsListTitle="Installed import templates"
       onOpen={onOpen}
       onClickNew={onClickNew}
-      description="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, assumenda, cum cupiditate dignissimos doloribus iure modi nisi nobis possimus quos ratione recusandae tenetur totam! Aliquam laudantium nesciunt ratione tempora totam!"
+      description="onCourse imports allow you to import any data as either a once-off event, or a regular data transfer between onCourse and other applications you use. The import script can be customised to transform any input data type into onCourse records. json, xml, and csv importers are available or you can write your own parser."
     />
   );
 };
@@ -207,18 +207,19 @@ export const PDFReportsCatalog = ({ history }: RouteComponentProps) => {
   return (
     <CatalogWithSearch
       addNewItem={{
-        title: "Custom PDF report",
+        title: "Custom report",
         category: "Advanced",
-        shortDescription: "Create a new pdf report template from scratch"
+        shortDescription: "Create a new report template from scratch"
       }}
-      
+
       toggleInstall={toggleInstall}
       items={pdfReports}
-      title="PDF reports"
-      itemsListTitle="Installed pdf reports"
+      title="Reports"
+      itemsListTitle="Installed reports"
       onOpen={onOpen}
       onClickNew={onClickNew}
-      description="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, assumenda, cum cupiditate dignissimos doloribus iure modi nisi nobis possimus quos ratione recusandae tenetur totam! Aliquam laudantium nesciunt ratione tempora totam!"
+      description="onCourse comes with a large range of reports across all data sets within the system. You can modify the built-in reports or create your own using the free Jaspersoft Studio.
+"
     />
   );
 };
@@ -237,10 +238,11 @@ export const PDFBackgroundsCatalog = ({ history }: RouteComponentProps) => {
   return (
     <CatalogWithSearch
       items={pdfBackgrounds}
-      title="PDF backgrounds"
-      itemsListTitle="Available pdf backgrounds"
+      title="Report backgrounds"
+      itemsListTitle="Available report backgrounds"
       onOpen={onOpen}
       customAddNew={onClickNew}
+      description="Upload a background for your reports. This is the simplest way to add your branding to reports or create a custom certificate."
     />
   );
 };
@@ -270,9 +272,10 @@ export const IntegrationsCatalog = ({ history }: RouteComponentProps) => {
     <CatalogWithSearch
       items={items}
       title="Integrations"
-      itemsListTitle="Added integrations"
+      itemsListTitle="Activated integrations"
       onOpen={onOpen}
       customAddNew={onClickNew}
+      description="Here you'll find pre-packaged integrations with third party systems. They will typically be used in an automation to perform some action, for example to trigger a subscription to a learning platform when an enrolment is successful."
     />
   );
 };
@@ -293,18 +296,18 @@ export const ScriptsCatalog = ({ history }: RouteComponentProps) => {
   return (
     <CatalogWithSearch
       addNewItem={{
-        title: "Custom script",
+        title: "Automation",
         category: "Advanced",
-        shortDescription: "Create a new script from scratch"
+        shortDescription: "Create a new automation from scratch"
       }}
-      
+
       toggleInstall={toggleInstall}
       items={scripts}
       title="Automations"
-      itemsListTitle="installed automations"
+      itemsListTitle="Installed automations"
       onOpen={onOpen}
       onClickNew={onClickNew}
-      description="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, assumenda, cum cupiditate dignissimos doloribus iure modi nisi nobis possimus quos ratione recusandae tenetur totam! Aliquam laudantium nesciunt ratione tempora totam!"
+      description="Automations are the beating heart of onCourse. From basic notifications like sending a payment receipt or a enrolment confirmation through to personalised, complex workflow; automations make Business Process Automation (BPA) possible. Automations can be triggers on any of hundreds of different events or to a schedule. They can interact with external systems, send messages, and create or update data inside onCourse."
     />
   );
 };
