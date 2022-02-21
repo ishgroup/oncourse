@@ -80,10 +80,7 @@ module.exports = {
         "implicit-arrow-linebreak": "off",
         // "linebreak-style": "off",
         "max-len": [
-            "error",
-            { "ignoreComments": true},
-            { "ignoreTrailingComments": true },
-            { "code": 140, }
+            "off",
         ],
         "new-parens": "off",
         "newline-per-chained-call": "off",
