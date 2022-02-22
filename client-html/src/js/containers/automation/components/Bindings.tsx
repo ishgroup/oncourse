@@ -16,7 +16,6 @@ import { Dispatch } from "redux";
 import clsx from "clsx";
 import { makeStyles } from "@mui/styles";
 import Grid from "@mui/material/Grid";
-import { CommonListItem } from "../../../model/common/sidebar";
 import { SelectItemDefault } from "../../../model/entities/common";
 import { IMPORT_TEMPLATES_FORM_NAME } from "../containers/import-templates/ImportTemplates";
 import { SCRIPT_EDIT_VIEW_FORM_NAME } from "../containers/scripts/constants";
@@ -27,6 +26,7 @@ import { renderAutomationItems } from "../utils";
 import { AppTheme } from "../../../model/common/Theme";
 import AddButton from "../../../common/components/icons/AddButton";
 import { useHoverShowStyles } from "../../../common/styles/hooks";
+import { CatalogItemType } from "../../../model/common/Catalog";
 
 export type BindingsItemType = "component" | "label";
 
@@ -40,6 +40,7 @@ interface BindingsItemProps {
   emailTemplateItems?: SelectItemDefault[];
   gridProps?: any;
   highlightable?: boolean;
+  noLabel?: boolean;
 }
 
 // @ts-ignore
@@ -103,7 +104,7 @@ const showOnForm = (item, field) => {
 };
 
 const BindingsItem = React.memo<BindingsItemProps>(({
-    item, index, onDelete, infoLink, type, field, emailTemplateItems, highlightable, gridProps = {}
+    item, index, onDelete, infoLink, type, field, emailTemplateItems, highlightable, noLabel, gridProps = {}
   }) => {
   const classes = useStyles();
   const hoverClasses = useHoverShowStyles();
@@ -130,7 +131,7 @@ const BindingsItem = React.memo<BindingsItemProps>(({
   return type === "label" ? (
     <Grid item xs={12} className={clsx("centeredFlex", hoverClasses.container)}>
       <div className="flex-fill w-100">
-        {item.label && (
+        {!noLabel && item.label && (
           <Typography
             variant="caption"
             color="textSecondary"
@@ -183,8 +184,16 @@ const BindingsItem = React.memo<BindingsItemProps>(({
 
 export const BindingsRenderer = props => {
     const {
-     fields, disabled, handleDelete, itemsType, emailTemplateItems, highlightable
+     fields, disabled, handleDelete, itemsType, emailTemplates, highlightable, noLabel
     } = props;
+
+  const emailTemplateItems = useMemo(
+    () => (emailTemplates
+      ? emailTemplates.filter(t => t.keyCode).map(t => ({
+        value: t.keyCode, label: t.title, hasIcon: t.keyCode.startsWith("ish."), id: t.id,
+      }))
+      : []), [emailTemplates],
+  );
 
   return fields.map((i, n) => (
     <BindingsItem
@@ -196,6 +205,7 @@ export const BindingsRenderer = props => {
       onDelete={!disabled && handleDelete}
       emailTemplateItems={emailTemplateItems}
       highlightable={highlightable}
+      noLabel={noLabel}
     />
   ));
 };
@@ -216,7 +226,7 @@ interface BindingsProps {
   defaultVariables?: { type: string; name: string }[];
   dispatch: Dispatch;
   itemsType: BindingsItemType;
-  emailTemplates?: CommonListItem[];
+  emailTemplates?: CatalogItemType[];
 }
 
 const Bindings = React.memo<BindingsProps>( props => {
@@ -230,13 +240,6 @@ const Bindings = React.memo<BindingsProps>( props => {
   const isVariablesBindingType = useMemo(() => (name === "variables"), [name]);
   const isImportAutomation = useMemo(() => (form === IMPORT_TEMPLATES_FORM_NAME), [form]);
   const isScriptsAutomation = useMemo(() => (form === SCRIPT_EDIT_VIEW_FORM_NAME), [form]);
-  const emailTemplateItems = useMemo(
-    () => (emailTemplates
-      ? emailTemplates.filter(t => t.keyCode).map(t => ({
-        value: t.keyCode, label: t.name, hasIcon: t.hasIcon, id: t.id,
-      }))
-      : []), [emailTemplates],
-  );
 
   const handleClick = useCallback(event => {
     setAnchorEl(event.currentTarget);
@@ -295,8 +298,9 @@ const Bindings = React.memo<BindingsProps>( props => {
           disabled={disabled} 
           handleDelete={handleDelete} 
           itemsType="label"
-          emailTemplateItems={emailTemplateItems}
+          emailTemplates={emailTemplates}
           highlightable={isOptionsBindingType}
+          noLabel={isOptionsBindingType}
           rerenderOnEveryChange 
         />
       </Grid>

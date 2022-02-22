@@ -31,7 +31,6 @@ import IconButton from "@mui/material/IconButton";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { mapSelectItems } from "../../../../../common/utils/common";
 import { usePrevious } from "../../../../../common/utils/hooks";
-import { CommonListItem } from "../../../../../model/common/sidebar";
 import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import { validateKeycode } from "../../../utils";
@@ -40,7 +39,9 @@ import { formatRelativeDate } from "../../../../../common/utils/dates/formatRela
 import ImportCardContent from "../components/cards/ImportCardContent";
 import TriggerCardContent from "../components/cards/TriggerCardContent";
 import { setScriptComponents } from "../actions";
-import { ScriptComponent, ScriptComponentType, ScriptExtended, ScriptViewMode } from "../../../../../model/scripts";
+import {
+ ScriptComponent, ScriptComponentType, ScriptExtended, ScriptViewMode 
+} from "../../../../../model/scripts";
 import CardsRenderer from "../components/cards/CardsRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import {
@@ -57,6 +58,7 @@ import BoltIcon from "../../../../../../images/icon-bolt.svg";
 import ScriptIcon from "../../../../../../images/icon-script.svg";
 import InfoPill from "../../../../../common/components/layout/InfoPill";
 import { AppTheme } from "../../../../../model/common/Theme";
+import { CatalogItemType } from "../../../../../model/common/Catalog";
 
 const manualUrl = getManualLink("scripts");
 const getAuditsUrl = (id: number) => `audit?search=~"Script" and entityId == ${id}`;
@@ -197,7 +199,7 @@ interface Props {
   onCreate?: (script: Script, viewMode: ScriptViewMode) => void;
   onDelete?: any;
   formsState?: any;
-  emailTemplates?: CommonListItem[];
+  emailTemplates?: CatalogItemType[];
   timeZone?: string;
   syncErrors?: any;
 }
@@ -261,7 +263,7 @@ const ScriptsForm = React.memo<Props>(props => {
     const updated = [...prev];
     index === -1 ? updated.push(id) : updated.splice(index, 1);
     return updated;
-  })
+  });
 
   const isInternal = useMemo(() => values && values.keyCode && values.keyCode.startsWith("ish."), [values && values.keyCode]);
   const isOriginallyInternal = useMemo(
@@ -546,8 +548,9 @@ const ScriptsForm = React.memo<Props>(props => {
                 </Grid>
                 <FieldArray
                   name="options"
-                  component={BindingsRenderer}
                   itemsType="component"
+                  component={BindingsRenderer}
+                  emailTemplates={emailTemplates}
                   rerenderOnEveryChange
                 />
               </Grid>
@@ -714,7 +717,6 @@ const ScriptsForm = React.memo<Props>(props => {
                           name="options"
                           label="Configuration variables"
                           disabled={isInternal}
-                          emailTemplates={emailTemplates}
                         />
                       </div>
                       {values?.trigger?.type === "On demand" && (
