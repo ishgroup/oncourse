@@ -79,24 +79,22 @@ const CardBase = props => {
     onDetailsClick,
     customHeading,
     customButtons,
-    onExpand,
-    forceExpanded,
+    onExpand
   } = props;
 
   return (
     <Accordion
       classes={{
-          root: classes.panelRoot,
-          expanded: disableExpandedBottomMargin ? classes.panelExpandedWithoutMargin : classes.panelExpanded
-        }}
+        root: classes.panelRoot,
+        expanded: disableExpandedBottomMargin ? classes.panelExpandedWithoutMargin : classes.panelExpanded
+      }}
       className={className}
-      expanded={forceExpanded}
-      defaultExpanded={expanded}
+      expanded={expanded}
     >
       <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
+        expandIcon={onExpand ? <ExpandMoreIcon /> : null}
         classes={{
-            root: classes.summaryRoot,
+            root: clsx(classes.summaryRoot, !onExpand && "p-0"),
             expanded: classes.summaryExpanded,
             expandIconWrapper: clsx("p-0-5 mr-2", classes.summaryExpandIcon),
             content: classes.summaryContent
@@ -116,7 +114,7 @@ const CardBase = props => {
             </div>
             )}
           {Boolean(onAddItem) && (
-          <AddButton className="addButtonColor fs2 p-1" onClick={onAddItem} iconFontSize="inherit" />
+            <AddButton className="addButtonColor fs2 p-1" onClick={onAddItem} iconFontSize="inherit" />
             )}
         </div>
         <div>

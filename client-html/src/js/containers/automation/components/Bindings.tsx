@@ -69,44 +69,44 @@ const useStyles = makeStyles((theme: AppTheme) => ({
   highlightable: {}
 }));
 
+const showOnForm = (item, field) => {
+  const fieldNodes = document.querySelectorAll(`[id^='${field}.value'],[id^='input-${field}.value']`);
+
+  if (item.type === "Checkbox") {
+    fieldNodes.forEach(node => {
+      node.closest("label")?.classList.add("animated", "shake", "primaryColor");
+      node.closest("label")?.querySelector("svg")?.classList.add("primaryColor");
+    });
+
+    setTimeout(() => {
+      fieldNodes.forEach(node => {
+        node.closest("label")?.classList.remove("animated", "shake", "primaryColor");
+        node.closest("label")?.querySelector("svg")?.classList.remove("primaryColor");
+      });
+    }, 1000);
+    return;
+  }
+
+  fieldNodes.forEach(node => {
+    node.querySelector("label")?.classList.add("primaryColor");
+    node.querySelector("input")?.classList.add("primaryColor");
+    node.classList.add("animated", "shake");
+  });
+
+  setTimeout(() => {
+    fieldNodes.forEach(node => {
+      node.querySelector("label")?.classList.remove("primaryColor");
+      node.querySelector("input")?.classList.remove("primaryColor");
+      node.classList.remove("animated", "shake", "primaryColor");
+    });
+  }, 1000);
+};
+
 const BindingsItem = React.memo<BindingsItemProps>(({
     item, index, onDelete, infoLink, type, field, emailTemplateItems, highlightable, gridProps = {}
   }) => {
   const classes = useStyles();
   const hoverClasses = useHoverShowStyles();
-
-  const showOnForm = () => {
-    const fieldNodes = document.querySelectorAll(`[id^='${field}.value'],[id^='input-${field}.value']`);
-
-    if (item.type === "Checkbox") {
-      fieldNodes.forEach(node => {
-        node.closest("label")?.classList.add("animated", "shake", "primaryColor");
-        node.closest("label")?.querySelector("svg")?.classList.add("primaryColor");
-      });
-
-      setTimeout(() => {
-        fieldNodes.forEach(node => {
-          node.closest("label")?.classList.remove("animated", "shake", "primaryColor");
-          node.closest("label")?.querySelector("svg")?.classList.remove("primaryColor");
-        });
-      }, 1000);
-      return;
-    }
-
-    fieldNodes.forEach(node => {
-      node.querySelector("label")?.classList.add("primaryColor");
-      node.querySelector("input")?.classList.add("primaryColor");
-      node.classList.add("animated", "shake");
-    });
-
-    setTimeout(() => {
-      fieldNodes.forEach(node => {
-        node.querySelector("label")?.classList.remove("primaryColor");
-        node.querySelector("input")?.classList.remove("primaryColor");
-        node.classList.remove("animated", "shake", "primaryColor");
-      });
-    }, 1000);
-  };
 
   const fieldProps: any = useMemo(() => {
     const props = {};
@@ -143,7 +143,7 @@ const BindingsItem = React.memo<BindingsItemProps>(({
         <Typography
           variant="body1"
           component="div"
-          onMouseEnter={highlightable ? showOnForm : null}
+          onMouseEnter={highlightable ? () => showOnForm(item, field) : null}
           className={clsx("centeredFlex pb-0-5", classes.labelTypeWrapper, highlightable && classes.highlightable)}
         >
           <span className="w-100 centeredFlex">
@@ -169,9 +169,9 @@ const BindingsItem = React.memo<BindingsItemProps>(({
       )}
     </Grid>
   ) : (
-    <Grid item xs={6} className="centeredFlex" {...gridProps}>
+    <Grid item xs={6} {...gridProps}>
       <Field
-        label={item.name}
+        label={item.label || item.name}
         name={`${field}.value`}
         type={item.type}
         component={DataTypeRenderer}
@@ -296,7 +296,7 @@ const Bindings = React.memo<BindingsProps>( props => {
           handleDelete={handleDelete} 
           itemsType="label"
           emailTemplateItems={emailTemplateItems}
-          highlightable
+          highlightable={isOptionsBindingType}
           rerenderOnEveryChange 
         />
       </Grid>

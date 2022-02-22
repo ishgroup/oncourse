@@ -40,7 +40,7 @@ import { formatRelativeDate } from "../../../../../common/utils/dates/formatRela
 import ImportCardContent from "../components/cards/ImportCardContent";
 import TriggerCardContent from "../components/cards/TriggerCardContent";
 import { setScriptComponents } from "../actions";
-import { ScriptComponentType, ScriptExtended, ScriptViewMode } from "../../../../../model/scripts";
+import { ScriptComponent, ScriptComponentType, ScriptExtended, ScriptViewMode } from "../../../../../model/scripts";
 import CardsRenderer from "../components/cards/CardsRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import {
@@ -81,9 +81,8 @@ const styles = (theme: AppTheme) =>
       "&::before": {
         content: `" "`,
         position: "absolute",
+        height: `calc(100% - ${theme.spacing(3)})`,
         left: -50,
-        top: 0,
-        bottom: 60,
         width: 2,
         backgroundColor: theme.palette.divider
       }
@@ -203,7 +202,7 @@ interface Props {
   syncErrors?: any;
 }
 
-const getInitComponentBody = (componentName: ScriptComponentType) => {
+const getInitComponentBody = (componentName: ScriptComponentType): ScriptComponent | Promise<ScriptComponent> => {
   switch (componentName) {
     case "Query": {
       return getQueryComponent("");
@@ -255,6 +254,14 @@ const ScriptsForm = React.memo<Props>(props => {
   const [expandInfo, setExpandInfo] = useState<boolean>(false);
   const [triggerExpand, setTriggerExpand] = useState<boolean>(false);
   const [isCardDragging, setCardDragging] = useState<boolean>(false);
+  const [expanded, setExpand] = useState([]);
+  
+  const onExpand = id => setExpand(prev => {
+    const index = prev.indexOf(id);
+    const updated = [...prev];
+    index === -1 ? updated.push(id) : updated.splice(index, 1);
+    return updated;
+  })
 
   const isInternal = useMemo(() => values && values.keyCode && values.keyCode.startsWith("ish."), [values && values.keyCode]);
   const isOriginallyInternal = useMemo(
@@ -265,15 +272,14 @@ const ScriptsForm = React.memo<Props>(props => {
 
   const [modalOpened, setModalOpened] = useState<boolean>(false);
 
-  const onDialogClose = useCallback(() => setModalOpened(false), []);
+  const onDialogClose = () => setModalOpened(false);
 
-  const onInternalSaveClick = useCallback(() => {
+  const onInternalSaveClick = () => {
     dispatch(initialize("SaveAsNewAutomationForm", {}));
     setModalOpened(true);
-  }, []);
+  };
 
-  const onDialogSave = useCallback(
-    ({ keyCode, name }) => {
+  const onDialogSave = ({ keyCode, name }) => {
       setDisableRouteConfirm(true);
       onCreate({
         ...values,
@@ -282,12 +288,12 @@ const ScriptsForm = React.memo<Props>(props => {
         name,
       }, viewMode);
       onDialogClose();
-    },
-    [values, viewMode],
-  );
+    };
 
   const addComponent = async (componentName: ScriptComponentType, index) => {
-    dispatch(arrayInsert(form, "components", index, await getInitComponentBody(componentName)));
+    const component = await getInitComponentBody(componentName);
+    dispatch(arrayInsert(form, "components", index, component));
+    onExpand(component.id);
   };
 
   const addImport = e => {
@@ -514,7 +520,7 @@ const ScriptsForm = React.memo<Props>(props => {
         >
           {values && (
             <>
-              <Grid container className="mb-4" rowSpacing={2}>
+              <Grid container className="mb-4" rowSpacing={2} columnSpacing={3}>
                 <Grid item xs={12} sm={9}>
                   <FormField
                     type="multilineText"
@@ -552,7 +558,7 @@ const ScriptsForm = React.memo<Props>(props => {
                     className={clsx(classes.cardsItem,
                       { [classes.cardCodeView]: (viewMode === "Code" || isInternal) })}
                   >
-                    <div className={(viewMode === "Code" || isInternal) ? "mb-5" : ""}>
+                    <div className={clsx("relative", (viewMode === "Code" || isInternal) ? "mb-5" : "")}>
                       <IconButton size="large" className={classes.cardLeftIcon} disableRipple>
                         <img src={BoltIcon} alt="icon-bolt" />
                       </IconButton>
@@ -565,13 +571,13 @@ const ScriptsForm = React.memo<Props>(props => {
                             name="status"
                             color="primary"
                             format={v => v === "Enabled"}
-                            parse={v => v ? "Enabled" : "Installed but Disabled"}
+                            parse={v => (v ? "Enabled" : "Installed but Disabled")}
                             onClick={e => e.stopPropagation()}
                           />
                         )}
                         onExpand={() => setTriggerExpand(!triggerExpand)}
+                        expanded={isTriggerExpanded}
                         customHeading
-                        forceExpanded={isTriggerExpanded}
                       >
                         <TriggerCardContent
                           classes={classes}
@@ -587,7 +593,7 @@ const ScriptsForm = React.memo<Props>(props => {
                     </div>
 
                     {viewMode === "Code" ? (
-                      <div className="mb-5">
+                      <div className={clsx("mb-5 relative")}>
                         <IconButton size="large" className={classes.cardLeftIcon} disableRipple>
                           <img src={ScriptIcon} alt="icon-script" />
                         </IconButton>
@@ -607,7 +613,7 @@ const ScriptsForm = React.memo<Props>(props => {
                     ) : (
                       <>
                         {values.imports && (
-                          <div className={clsx("mt-5", { "mb-5": isInternal })}>
+                          <div className={clsx("mt-5 relative", { "mb-5": isInternal })}>
                             <IconButton size="large" className={classes.cardLeftIcon} disableRipple>
                               <UploadIcon />
                             </IconButton>
@@ -652,6 +658,9 @@ const ScriptsForm = React.memo<Props>(props => {
                           values={values}
                           setDragging={setCardDragging}
                           isDragging={isCardDragging}
+                          syncErrors={syncErrors}
+                          onExpand={onExpand}
+                          expanded={expanded}
                         />
                       </>
                     )}

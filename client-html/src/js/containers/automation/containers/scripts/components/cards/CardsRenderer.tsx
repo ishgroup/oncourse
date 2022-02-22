@@ -3,7 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo, useState } from "react";
+import React, {
+  useCallback, useMemo
+} from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import Grid from "@mui/material/Grid";
 import { FormControlLabel } from "@mui/material";
@@ -16,7 +18,7 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { ScriptComponent } from "../../../../../../model/scripts";
+import { ScriptComponent, ScriptExtended } from "../../../../../../model/scripts";
 import ScriptCard from "./CardBase";
 import QueryCardContent from "./QueryCardContent";
 import MessageCardContent from "./MessageCardContent";
@@ -25,6 +27,7 @@ import { getType } from "../../utils";
 import { ShowConfirmCaller } from "../../../../../../model/common/Confirm";
 import AddScriptAction from "../AddScriptAction";
 import ScriptIcon from "../../../../../../../images/icon-script.svg";
+import { usePrevious } from "../../../../../../common/utils/hooks";
 
 const onDragEnd = ({ destination, source, fields }) => {
   if (destination && destination.index !== source.index) {
@@ -44,16 +47,21 @@ interface Props {
   values?: any;
   setDragging?: (dragging: boolean) => void;
   isDragging?: boolean;
+  syncErrors?: ScriptExtended;
+  expanded: any[];
+  onExpand: any;
 }
 
 interface ScriptItemProps extends Props {
   component: any;
   index: number;
-  item: any;
+  item: string;
   draggableId: any;
+  syncErrors: any;
+  expand: boolean;
 }
 
-const ScriptCardItem: React.FC<ScriptItemProps & WrappedFieldArrayProps> = props => {
+const ScriptCardItem = React.memo<ScriptItemProps & WrappedFieldArrayProps>(props => {
   const {
     fields,
     showConfirm,
@@ -68,10 +76,13 @@ const ScriptCardItem: React.FC<ScriptItemProps & WrappedFieldArrayProps> = props
     component,
     index,
     item,
-    draggableId
+    draggableId,
+    syncErrors,
+    expand,
+    onExpand
   } = props;
 
-  const [expand, setExpand] = useState<boolean>(false);
+  const invalid = Boolean(syncErrors[fields.name] && syncErrors[fields.name][index]);
 
   const onDelete = useCallback((e, i) => {
     e.stopPropagation();
@@ -217,14 +228,15 @@ const ScriptCardItem: React.FC<ScriptItemProps & WrappedFieldArrayProps> = props
       {provided => (
         <div ref={provided.innerRef} {...provided.draggableProps}>
           <ScriptCard
+            customHeading
             heading={getHeading}
             onDelete={(!isInternal || (!isInternal && component.type === "Script" && hasUpdateAccess))
                   ? e => onDelete(e, index) : null}
             dragHandlerProps={provided.dragHandleProps}
             noPadding={component.type === "Script"}
             onDetailsClick={isInternal ? onInternalSaveClick : undefined}
-            customHeading
-            onExpand={() => setExpand(!expand)}
+            onExpand={invalid ? null : onExpand}
+            expanded={invalid || expand}
           >
             {getComponent}
           </ScriptCard>
@@ -232,7 +244,7 @@ const ScriptCardItem: React.FC<ScriptItemProps & WrappedFieldArrayProps> = props
           )}
     </Draggable>
   );
-};
+});
 
 const getComponentImage = type => {
   switch (type) {
@@ -260,14 +272,17 @@ const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
     values,
     hasUpdateAccess,
     setDragging,
-    isDragging
+    isDragging,
+    syncErrors,
+    expanded,
+    onExpand
   } = props;
-  
+
   const onDragEndHandler = args => {
     onDragEnd({ ...args, fields });
     setDragging(false);
   };
-  
+
   return (
     <DragDropContext onDragEnd={onDragEndHandler} onDragStart={setDragging}>
       <Droppable droppableId="droppable">
@@ -286,46 +301,49 @@ const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
                 const isDraggingItem = draggingOverWith === draggableId;
                 const isAfterDragging = draggingOverWith ? index > Number(draggingOverWith[0]) : false;
 
-              return (
-                <div key={component.id} className={clsx("relative", { "mb-5": isInternal })}>
-                  <div style={!isDraggingItem && isAfterDragging && (isDragging || isDraggingOver) ? {
-                    transform: `translateY(${draggingItemHeight}px)`,
-                  } : {}}
-                  >
-                    {leftIcon && (
-                      <IconButton size="large" className={classes.cardLeftIcon} disableRipple>
-                        {leftIcon}
-                      </IconButton>
-                    )}
+                return (
+                  <div key={component.id} className={clsx("relative", { "mb-5": isInternal })}>
+                    <div style={!isDraggingItem && isAfterDragging && (isDragging || isDraggingOver) ? {
+                      transform: `translateY(${draggingItemHeight}px)`,
+                    } : {}}
+                    >
+                      {leftIcon && (
+                        <IconButton size="large" className={classes.cardLeftIcon} disableRipple>
+                          {leftIcon}
+                        </IconButton>
+                      )}
+                    </div>
+                    <ScriptCardItem
+                      {...props}
+                      expand={expanded.includes(component.id)}
+                      onExpand={() => onExpand(component.id)}
+                      key={component.id}
+                      syncErrors={syncErrors}
+                      draggableId={draggableId}
+                      component={component}
+                      index={index}
+                      item={item}
+                    />
+                    <div style={(isAfterDragging || isDraggingItem) && (isDragging || isDraggingOver) 
+                      ? { transform: `translateY(${draggingItemHeight}px)` } 
+                      : {}}
+                    >
+                      {!isInternal && (
+                        <AddScriptAction
+                          index={index + 1}
+                          addComponent={addComponent}
+                          form={form}
+                          dispatch={dispatch}
+                          values={values}
+                          hasUpdateAccess={hasUpdateAccess}
+                          disabled={isDraggingOver || isDragging}
+                          active={(fields.length - 1) === index}
+                        />
+                      )}
+                    </div>
                   </div>
-                  <ScriptCardItem
-                    {...props}
-                    draggableId={draggableId}
-                    component={component}
-                    index={index}
-                    item={item}
-                  />
-                  <div style={(isAfterDragging || isDraggingItem) && (isDragging || isDraggingOver) 
-                    ? { transform: `translateY(${draggingItemHeight}px)` } 
-                    : {}}
-                  >
-                    {!isInternal && (
-                      <AddScriptAction
-                        index={index + 1}
-                        addComponent={addComponent}
-                        form={form}
-                        dispatch={dispatch}
-                        values={values}
-                        hasUpdateAccess={hasUpdateAccess}
-                        disabled={isDraggingOver || isDragging}
-                        active={(fields.length - 1) === index}
-                      />
-                    )}
-                  </div>
-
-                </div>
-              );
-            })}
+                );
+              })}
             </div>
           );
         }}

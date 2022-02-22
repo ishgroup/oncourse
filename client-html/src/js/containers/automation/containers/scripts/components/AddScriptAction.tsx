@@ -38,7 +38,7 @@ const styles = createStyles(theme => ({
         visibility: "visible",
         opacity: 1,
       },
-      "& $addActionWrapper": {
+      "&:not($active) $addActionWrapper": {
         margin: theme.spacing(3, 0),
       }
     },
@@ -57,7 +57,7 @@ const styles = createStyles(theme => ({
     opacity: 0,
   },
   activeStep: {
-    margin: theme.spacing(3, 0),
+    marginTop: theme.spacing(3),
     "& $buttonRoot": {
       height: "auto",
       padding: theme.spacing(3.5, 2),
@@ -121,11 +121,13 @@ const styles = createStyles(theme => ({
   },
   activeLeftButton: {
     left: -3,
+    top: `calc(50% + ${theme.spacing(1.5)})`,
     width: 50,
     height: 50,
     backgroundColor: theme.palette.mode === "light" ? "#eaebe6" : theme.palette.background.paper,
     color: theme.heading.color
-  }
+  },
+  active: {},
 }));
 
 interface ScriptActionProps {
@@ -186,7 +188,7 @@ const AddScriptAction: React.FC<any> = props => {
   const hasImports = Boolean(values && values.imports);
 
   return (
-    <div className={clsx(classes.addActionButton, { [classes.addActionButtonHover]: !disabled })}>
+    <div className={clsx(classes.addActionButton, { [classes.addActionButtonHover]: !disabled, [classes.active]: active })}>
       <IconButton
         size={active ? "large" : "small"}
         className={clsx(classes.cardLeftIcon, { [classes.cardPlusIconActive]: open && !disabled, [classes.activeLeftButton]: active })}
