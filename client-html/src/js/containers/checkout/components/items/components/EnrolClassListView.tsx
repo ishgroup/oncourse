@@ -128,7 +128,7 @@ const EnrolClassListView = React.memo<any>(props => {
               return (
                 <CalendarDayBase day={d.day} timezone={d.timezone} key={d.day.toString()}>
                   {d.sessions.map(s => {
-                    const isSelected = selectedItems.some(i => i.type === "course" && i.class.id === s.id);
+                    const isSelected = selectedItems.some(i => i.type === "course" && i.class?.id === s.id);
                     const isTransfered = course.transferedClassId === s.id;
                     const isTraineeship = course.isTraineeship === "true";
 
