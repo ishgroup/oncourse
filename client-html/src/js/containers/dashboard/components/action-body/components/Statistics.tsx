@@ -127,7 +127,7 @@ const TotalStatisticInfo = props => {
         <Person className={classes.enrolmentsColor} />
         {' '}
         <span>{totalStudents}</span>
-        <strong className={classes.revenueColor}>{currency && currency.shortCurrencySymbol}</strong>
+        <strong className={classes.revenueColor}>{(currency && totalEnrolments !== null) && currency.shortCurrencySymbol}</strong>
         {totalEnrolments && (<span className="money">{formatCurrency(totalEnrolments, "")}</span>)}
       </Typography>
     </div>
@@ -260,7 +260,7 @@ class Statistics extends React.Component<Props, any> {
     return statisticData ? (
       <Grid container className={classes.root}>
         <Grid item className="w-100 d-flex">
-          <Typography className="heading flex-fill">Enrolments & Revenue</Typography>
+          <Typography className="heading flex-fill">{statisticData.moneyCount !== null ? 'Enrolments & Revenue' : 'Enrolments'}</Typography>
           <Typography variant="caption">Past 4 weeks</Typography>
         </Grid>
         <Grid item xs={12}>
