@@ -215,7 +215,9 @@ const _GenerateSW = () => new WorkboxPlugin.GenerateSW({
   clientsClaim: true,
   skipWaiting: true,
   cleanupOutdatedCaches: true,
-  exclude: ['index.html']
+  exclude: [
+    /index\.html$/,
+  ],
 });
 
 module.exports = {
