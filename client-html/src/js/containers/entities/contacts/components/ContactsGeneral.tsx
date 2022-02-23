@@ -116,12 +116,12 @@ export const ProfileHeading = (props: Props) => {
       name="profilePicture"
       label="Profile picture"
       component={AvatarRenderer}
-      form={form}
       showConfirm={showConfirm}
       email={values.email}
       twoColumn={twoColumn}
       props={{
-        dispatch
+        dispatch,
+        form
       }}
       {...aProps}
     />
