@@ -341,7 +341,7 @@ const CourseClassGeneralTab = React.memo<Props>(
               openBudget={openBudget}
               showAllWeeks={showAllWeeks}
               setShowAllWeeks={setShowAllWeeks}
-              hasBudget={values.budget.some(b => b.invoiceToStudent && b.perUnitAmountIncTax > 0)}
+              hasBudget={values.budget?.some(b => b.invoiceToStudent && b.perUnitAmountIncTax > 0)}
             />
           </Grid>
           <CustomFields
