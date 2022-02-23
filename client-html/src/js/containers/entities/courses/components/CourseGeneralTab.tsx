@@ -224,14 +224,6 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
           />
         </Grid>
 
-        <Grid item xs={12}>
-          <FormField
-            type="multilineText"
-            name="brochureDescription"
-            label="Print brochure description"
-          />
-        </Grid>
-
         <CustomFields
           entityName="Course"
           fieldName="customFields"
