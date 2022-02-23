@@ -714,6 +714,7 @@ const CourseClassTimetableTab = ({
           opened={bulkSessionModalOpened}
           sessions={values.sessions}
           tutors={values.tutors}
+          budget={values.budget}
         />
       )}
       {values.isDistantLearningCourse ? (

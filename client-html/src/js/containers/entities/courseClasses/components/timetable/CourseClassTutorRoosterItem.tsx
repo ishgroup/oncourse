@@ -46,7 +46,8 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     "&:hover $tutorItemActions": {
       visibility: 'visible'
     },
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(1),
+    backgroundColor: "inherit"
   },
   tutorItemLabel: {
     fontWeight: 400
@@ -200,7 +201,7 @@ const CourseClassTutorRoosterItem = (
     && (b.courseClassTutorId === tutor?.id
       || (b.temporaryTutorId && b.temporaryTutorId === tutor?.temporaryId)));
 
-  const openTutorWage = () => addTutorWage(tutor, wage);
+  const openTutorWage = () => addTutorWage ? addTutorWage(tutor, wage) : null;
 
   const hasWage = Boolean(wage);
 
@@ -244,13 +245,15 @@ const CourseClassTutorRoosterItem = (
                   >
                     No pay
                   </Button>
-                  <Button
-                    color="primary"
-                    className={classes.addWage}
-                    onClick={openTutorWage}
-                  >
-                    Add pay
-                  </Button>
+                  {Boolean(addTutorWage) && (
+                    <Button
+                      color="primary"
+                      className={classes.addWage}
+                      onClick={openTutorWage}
+                    >
+                      Add pay
+                    </Button>
+                  )}
                 </div>
               )
             }
