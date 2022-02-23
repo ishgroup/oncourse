@@ -91,7 +91,7 @@ const showOnForm = (item, field) => {
   fieldNodes.forEach(node => {
     node.querySelector("label")?.classList.add("primaryColor");
     node.querySelector("input")?.classList.add("primaryColor");
-    node.classList.add("animated", "shake");
+    node.classList.add("animated", "shake", "primaryColor");
   });
 
   setTimeout(() => {

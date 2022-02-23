@@ -624,9 +624,10 @@ const ScriptsForm = React.memo<Props>(props => {
                               heading="Import"
                               onDelete={hasUpdateAccess && !isInternal ? removeImports : null}
                               onAddItem={hasUpdateAccess && !isInternal ? addImport : null}
-                              disableExpandedBottomMargin
-                              expanded
+                              expanded={expanded.includes("Import")}
+                              onExpand={() => onExpand("Import")}
                               onDetailsClick={isInternal ? onInternalSaveClick : undefined}
+                              disableExpandedBottomMargin
                             >
                               <ImportCardContent classes={classes} hasUpdateAccess={hasUpdateAccess} isInternal={isInternal} />
                             </ScriptCard>

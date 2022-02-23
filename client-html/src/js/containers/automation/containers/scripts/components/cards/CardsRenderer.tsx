@@ -27,7 +27,6 @@ import { getType } from "../../utils";
 import { ShowConfirmCaller } from "../../../../../../model/common/Confirm";
 import AddScriptAction from "../AddScriptAction";
 import ScriptIcon from "../../../../../../../images/icon-script.svg";
-import { usePrevious } from "../../../../../../common/utils/hooks";
 
 const onDragEnd = ({ destination, source, fields }) => {
   if (destination && destination.index !== source.index) {
@@ -286,7 +285,7 @@ const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
   return (
     <DragDropContext onDragEnd={onDragEndHandler} onDragStart={setDragging}>
       <Droppable droppableId="droppable">
-        {(provided, { isDraggingOver, draggingOverWith }) => {
+        {(provided, { isDraggingOver, draggingOverWith, draggingFromThisWith }) => {
           const draggingItemHeight = provided.placeholder.props.on ? provided.placeholder.props.on.client.contentBox.height : 0;
 
           return (
@@ -298,7 +297,7 @@ const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
                 const component: ScriptComponent = fields.get(index);
                 const leftIcon = getComponentImage(component.type);
                 const draggableId = index + component.id;
-                const isDraggingItem = draggingOverWith === draggableId;
+                const isDraggingItem = draggingOverWith === draggableId || draggingFromThisWith === draggableId;
                 const isAfterDragging = draggingOverWith ? index > Number(draggingOverWith[0]) : false;
 
                 return (

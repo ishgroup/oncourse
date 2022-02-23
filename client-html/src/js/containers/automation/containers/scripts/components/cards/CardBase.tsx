@@ -89,7 +89,7 @@ const CardBase = props => {
         expanded: disableExpandedBottomMargin ? classes.panelExpandedWithoutMargin : classes.panelExpanded
       }}
       className={className}
-      expanded={expanded}
+      expanded={onExpand ? expanded : true}
     >
       <AccordionSummary
         expandIcon={onExpand ? <ExpandMoreIcon /> : null}
