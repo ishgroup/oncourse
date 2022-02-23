@@ -39,12 +39,16 @@ const styles = theme =>
       }
     },
     panelDetailsPadding: {},
+    noHoverEffect: {},
     collapse: {
       overflow: "visible"
     },
     summaryRoot: {
       borderBottom: "1px solid transparent",
-      padding: theme.spacing(0, 0, 0, 2)
+      padding: theme.spacing(0, 0, 0, 2),
+      "&$noHoverEffect:hover": {
+        cursor: "inherit"
+      }
     },
     summaryExpanded: {
       borderBottomColor: `${theme.palette.divider}`
@@ -94,11 +98,11 @@ const CardBase = props => {
       <AccordionSummary
         expandIcon={onExpand ? <ExpandMoreIcon /> : null}
         classes={{
-            root: clsx(classes.summaryRoot, !onExpand && "p-0"),
-            expanded: classes.summaryExpanded,
-            expandIconWrapper: clsx("p-0-5 mr-2", classes.summaryExpandIcon),
-            content: classes.summaryContent
-          }}
+          root: clsx(classes.summaryRoot, !onExpand && clsx("p-0", classes.noHoverEffect)),
+          expanded: classes.summaryExpanded,
+          expandIconWrapper: clsx("p-0-5 mr-2", classes.summaryExpandIcon),
+          content: classes.summaryContent
+        }}
         onClick={onExpand}
       >
         <div className={clsx("flex-fill centeredFlex w-100", classes.summaryContentInner)} {...dragHandlerProps}>
