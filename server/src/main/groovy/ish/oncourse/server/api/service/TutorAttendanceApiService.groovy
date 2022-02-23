@@ -133,9 +133,9 @@ class TutorAttendanceApiService extends EntityApiService<TutorAttendanceDTO, Tut
             } else {
                 attendance = getEntityAndValidateExistence(context, dto.id)
             }
-            checkDates(session, attendance)
             validateModelBeforeSave(dto, context, dto.id)
-            toCayenneModel(dto, attendance)
+            attendance = toCayenneModel(dto, attendance)
+            checkDates(session, attendance)
         }
     }
 
