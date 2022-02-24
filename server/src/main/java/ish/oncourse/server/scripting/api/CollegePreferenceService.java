@@ -78,7 +78,7 @@ public class CollegePreferenceService {
 		if(Preferences.COLLEGE_URL.equals(prefName) && value != null && !((String)value).contains(PROTOCOL_DELIMITER)) {
 			value = String.format("%s%s%s", HTTP_PREFIX, PROTOCOL_DELIMITER, value);
 		}
-		if (prefName.equals(COLLEGE_PAYMENT_INFO)) {
+		if (prefName.equals(COLLEGE_PAYMENT_INFO) && value != null) {
 			value = MessageBodyConverter.valueOf((String) value, RenderType.HTML).convert();
 		}
 
