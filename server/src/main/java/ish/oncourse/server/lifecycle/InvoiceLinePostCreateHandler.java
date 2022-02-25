@@ -18,8 +18,8 @@ import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.graph.GraphChangeHandler;
 
 public class InvoiceLinePostCreateHandler implements GraphChangeHandler {
-    private ObjectContext currentContext;
-    private AccountTransactionService accountTransactionService;
+    private final ObjectContext currentContext;
+    private final AccountTransactionService accountTransactionService;
 
 
     public InvoiceLinePostCreateHandler(ObjectContext currentContext, AccountTransactionService accountTransactionService){
