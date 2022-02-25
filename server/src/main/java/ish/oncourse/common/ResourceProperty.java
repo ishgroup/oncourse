@@ -27,6 +27,9 @@ public enum  ResourceProperty {
     BODY("body"),
     KEY_CODE("keyCode"),
     OUTPUT_TYPE("outputType"),
+    SHORT_DESCRIPTION("short"),
+    CATEGORY("category"),
+    TAG("tag"),
 
     @Deprecated
     MIN_VERSION("minVersion"),

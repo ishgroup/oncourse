@@ -25,7 +25,6 @@ import ish.oncourse.server.cayenne.ExportTemplate
 import ish.oncourse.server.cayenne.ExportTemplateAutomationBinding
 import ish.oncourse.server.cayenne.Import
 import ish.oncourse.server.cayenne.ImportAutomationBinding
-import ish.oncourse.server.cayenne.Message
 import ish.oncourse.types.OutputType
 import ish.common.types.SystemEventType
 import ish.common.types.TriggerType
@@ -74,6 +73,14 @@ class DataPopulationUtils {
     }
 
 
+    private static configureAutomationWithCommonFields(AutomationTrait automationTrait, Map<String, Object> props){
+        automationTrait.description = getString(props, DESCRIPTION)
+        automationTrait.shortDescription = getString(props, SHORT_DESCRIPTION)
+        automationTrait.category = getString(props, CATEGORY)
+        automationTrait.automationTags = getString(props, TAG)
+    }
+
+
     static void updateScript(ObjectContext context, Map<String, Object> props) {
         boolean keepOldScript = false
         String name = getString(props, NAME)
@@ -107,8 +114,9 @@ class DataPopulationUtils {
         newScript.entityEventType = get(props, ENTITY_EVENT_TYPE, EntityEvent)
         newScript.systemEventType = get(props, ON_COURSE_EVENT_TYPE, SystemEventType)
 
-        newScript.description = getString(props, DESCRIPTION)
         newScript.body = getBody(props, BODY, SCRIPT)
+
+        configureAutomationWithCommonFields(newScript, props)
 
         context.commitChanges()
 
@@ -130,8 +138,7 @@ class DataPopulationUtils {
         }
         dbImport.name = getString(props, NAME)
         dbImport.body = getBody(props, BODY, IMPORT)
-        dbImport.description = getString(props, DESCRIPTION)
-
+        configureAutomationWithCommonFields(dbImport, props)
         context.commitChanges()
 
         BindingUtils.updateOptions(context, get(props, OPTIONS, List), dbImport, ImportAutomationBinding)
@@ -151,9 +158,9 @@ class DataPopulationUtils {
 
         dbExport.name = getString(props, NAME)
         dbExport.entity = getString(props, ENTITY_CLASS)
-        dbExport.description = getString(props, DESCRIPTION)
         dbExport.outputType = get(props, OUTPUT_TYPE, OutputType)
         dbExport.body = getBody(props, BODY, EXPORT)
+        configureAutomationWithCommonFields(dbExport, props)
 
         context.commitChanges()
 
@@ -174,13 +181,13 @@ class DataPopulationUtils {
 
         dbMessage.name = getString(props, NAME)
         dbMessage.entity = getString(props, ENTITY_CLASS)
-        dbMessage.description = getString(props, DESCRIPTION)
         dbMessage.type = get(props, MESSAGE_TYPE, MessageType)
         dbMessage.subject = getString(props, SUBJECT)
         dbMessage.bodyPlain = getBody(props, TXT_TEMPLATE, MESSAGING)
         if (getString(props, HTML_TEMPLATE)) {
             dbMessage.bodyHtml = getBody(props, HTML_TEMPLATE, MESSAGING)
         }
+        configureAutomationWithCommonFields(dbMessage, props)
 
         context.commitChanges()
 
