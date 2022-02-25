@@ -20,10 +20,13 @@ import ish.oncourse.server.services.TransactionLockedService;
 import ish.util.AccountUtil;
 import ish.validation.ValidationFailure;
 import ish.validation.ValidationResult;
+import org.apache.cayenne.DataChannelSyncFilter;
+import org.apache.cayenne.DataChannelSyncFilterChain;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.annotation.PostPersist;
 import org.apache.cayenne.annotation.PreUpdate;
+import org.apache.cayenne.graph.GraphDiff;
 import org.apache.cayenne.validation.ValidationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,7 +35,7 @@ import java.time.LocalDate;
 
 import static ish.oncourse.server.lifecycle.ChangeFilter.getAtrAttributeChange;
 
-public class TransactionsLifecycleListener {
+public class TransactionsLifecycleListener implements DataChannelSyncFilter {
 
 	private TransactionLockedService transactionLockedService;
 	private AccountTransactionService accountTransactionService;
@@ -139,5 +142,11 @@ public class TransactionsLifecycleListener {
 			result.addFailure(new ValidationFailure(o, PaymentIn.BANKING.getName(), "You can not modify banking which has settlement date before " + lockedTade.toString()));
 			throw new ValidationException(result);
 		}
+	}
+
+	@Override
+	public GraphDiff onSync(ObjectContext originatingContext, GraphDiff changes, int syncType, DataChannelSyncFilterChain filterChain) {
+		changes.apply(new InvoiceLinePostCreateHandler(originatingContext, accountTransactionService));
+		return filterChain.onSync(originatingContext, changes, syncType);
 	}
 }

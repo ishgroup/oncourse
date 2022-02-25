@@ -8,54 +8,62 @@
 
 package ish.oncourse.server.lifecycle;
 
+import ish.oncourse.server.accounting.AccountTransactionService;
+import ish.oncourse.server.accounting.builder.InvoiceLineTransactionsBuilder;
 import ish.oncourse.server.cayenne.InvoiceLine;
-import ish.util.EntityUtil;
+import ish.oncourse.server.cayenne.PaymentOut;
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.graph.GraphChangeHandler;
-import org.apache.cayenne.graph.GraphDiff;
-import org.apache.cayenne.query.ObjectSelect;
-import org.apache.cayenne.query.SelectById;
 
-public class InvoiceLinePreCreateHandler implements GraphChangeHandler {
+public class InvoiceLinePostCreateHandler implements GraphChangeHandler {
     private ObjectContext currentContext;
+    private AccountTransactionService accountTransactionService;
 
-    public InvoiceLinePreCreateHandler(ObjectContext currentContext){
+
+    public InvoiceLinePostCreateHandler(ObjectContext currentContext, AccountTransactionService accountTransactionService){
         this.currentContext = currentContext;
+        this.accountTransactionService = accountTransactionService;
     }
 
     @Override
     public void nodeIdChanged(Object nodeId, Object newId) {
-        System.out.println("temp");
+
     }
 
     @Override
     public void nodeCreated(Object nodeId) {
         if(nodeId instanceof ObjectId){
-            ObjectId node = (ObjectId) nodeId;
-           // if(node.getEntityName().equals(InvoiceLine.ENTITY_NAME)){
-                System.out.println("temp");
-           // }
+            Object o = Cayenne.objectForPK(currentContext, (ObjectId) nodeId);
+            if(o instanceof InvoiceLine){
+                accountTransactionService.createTransactions(InvoiceLineTransactionsBuilder.valueOf((InvoiceLine) o));
+            }
         }
     }
 
     @Override
     public void nodeRemoved(Object nodeId) {
-        System.out.println("temp");
+
     }
 
     @Override
     public void nodePropertyChanged(Object nodeId, String property, Object oldValue, Object newValue) {
-        System.out.println("temp");
+        if(nodeId instanceof ObjectId){
+            Object o = Cayenne.objectForPK(currentContext, (ObjectId) nodeId);
+            if(o instanceof PaymentOut){
+                accountTransactionService.createTransactions(InvoiceLineTransactionsBuilder.valueOf((InvoiceLine) o));
+            }
+        }
     }
 
     @Override
     public void arcCreated(Object nodeId, Object targetNodeId, Object arcId) {
-        System.out.println("temp");
+
     }
 
     @Override
     public void arcDeleted(Object nodeId, Object targetNodeId, Object arcId) {
-        System.out.println("temp");
+
     }
 }
