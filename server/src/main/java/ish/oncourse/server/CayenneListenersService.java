@@ -19,6 +19,7 @@ import ish.oncourse.server.scripting.GroovyScriptService;
 import ish.oncourse.server.scripting.ScriptTriggeringListener;
 import ish.oncourse.server.services.TransactionLockedService;
 import org.apache.cayenne.access.ValidationFilter;
+import org.apache.cayenne.configuration.server.ServerModule;
 
 /**
  */
@@ -35,7 +36,7 @@ public class CayenneListenersService {
         cayenneService.addListener(new AbstractInvoiceLifecycleListener());
         cayenneService.addListener(new InvoiceLifecycleListener());
         cayenneService.addListener(new AbstractInvoiceLineLifecycleListener());
-        cayenneService.addListener(new InvoiceLineLifecycleListener(invoiceLineInitHelper, accountTransactionService));
+       // cayenneService.addListener(new InvoiceLineLifecycleListener(invoiceLineInitHelper, accountTransactionService));
         cayenneService.addListener(new PaymentOutLifecycleListener());
         cayenneService.addListener(new EnrolmentLifecycleListener(cayenneService, eventService));
         cayenneService.addListener(new TransactionsLifecycleListener(transactionLockedService, accountTransactionService));
@@ -48,9 +49,9 @@ public class CayenneListenersService {
 
         // Disable QualityCheckListener until we don't have a working STOMP
 //		cayenneService.addListener(new QualityCheckListener(qualityService, cayenneService));
-
         // add filters
         cayenneService.addSyncFilter(new ChangeFilter());
+        cayenneService.addSyncFilter(new InvoiceLineLifecycleListener(invoiceLineInitHelper, accountTransactionService));
         cayenneService.addSyncFilter(new ScriptTriggeringListener(scriptService, cayenneService));
         cayenneService.addQueryFilter(new RelationshipQueryInvalidatingFilter());
         cayenneService.addSyncFilter(new ValidationFilter());
