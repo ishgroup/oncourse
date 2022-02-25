@@ -30,7 +30,7 @@ const request: EpicUtils.Request<any, { selectFirst: boolean; keyCodeToSelect: s
         history.push(`/automation/email-templates`);
       }
       if (p.keyCodeToSelect) {
-        history.push(`/automation/email-templates/${emailTemplates.find(t => t.keyCode === p.keyCodeToSelect).id}`);
+        history.push(`/automation/email-template/${emailTemplates.find(t => t.keyCode === p.keyCodeToSelect).id}`);
       }
     }
 

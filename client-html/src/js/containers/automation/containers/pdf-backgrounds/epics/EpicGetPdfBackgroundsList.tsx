@@ -34,7 +34,7 @@ const request: EpicUtils.Request<any, { selectFirst: boolean; filenameToSelect: 
         history.push(`/automation/pdf-backgrounds`);
       }
       if (p.filenameToSelect) {
-        history.push(`/automation/pdf-backgrounds/${pdfBackgrounds.find(t => t.title === p.filenameToSelect).id}`);
+        history.push(`/automation/pdf-background/${pdfBackgrounds.find(t => t.title === p.filenameToSelect).id}`);
       }
     }
 

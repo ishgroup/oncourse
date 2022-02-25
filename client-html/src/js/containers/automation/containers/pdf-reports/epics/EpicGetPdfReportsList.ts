@@ -29,7 +29,7 @@ const request: Request<any, { selectFirst: boolean; keyCodeToSelect: string }> =
         history.push(`/automation/pdf-reports`);
       }
       if (p.keyCodeToSelect) {
-        history.push(`/automation/pdf-reports/${pdfReports.find(t => t.keyCode === p.keyCodeToSelect).id}`);
+        history.push(`/automation/pdf-report/${pdfReports.find(t => t.keyCode === p.keyCodeToSelect).id}`);
       }
     }
 

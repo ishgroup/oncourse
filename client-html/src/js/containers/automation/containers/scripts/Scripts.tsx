@@ -23,7 +23,7 @@ import { setNextLocation, showConfirm } from "../../../../common/actions";
 
 const ScheduleTypeItems = Object.keys(ScheduleType).map(mapSelectItems);
 
-const Initial: Script = { status: "Not Installed", content: "", keyCode: null };
+const Initial: Script = { status: "Installed but Disabled", content: "", keyCode: null };
 
 const ScriptsBase = React.memo<any>(props => {
   const {

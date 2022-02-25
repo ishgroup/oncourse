@@ -253,7 +253,7 @@ const ScriptsForm = React.memo<Props>(props => {
 
   const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
   const [viewMode, setViewMode] = useState<ScriptViewMode>("Cards");
-  const [expandInfo, setExpandInfo] = useState<boolean>(false);
+  const [expandInfo, setExpandInfo] = useState<boolean>(isNew);
   const [triggerExpand, setTriggerExpand] = useState<boolean>(false);
   const [isCardDragging, setCardDragging] = useState<boolean>(false);
   const [expanded, setExpand] = useState([]);

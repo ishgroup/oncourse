@@ -31,7 +31,7 @@ const request: EpicUtils.Request<any, { selectFirst: boolean; keyCodeToSelect: s
         history.push(`/automation/export-templates`);
       }
       if (p.keyCodeToSelect) {
-        history.push(`/automation/export-templates/${exportTemplates.find(t => t.keyCode === p.keyCodeToSelect).id}`);
+        history.push(`/automation/export-template/${exportTemplates.find(t => t.keyCode === p.keyCodeToSelect).id}`);
       }
     }
 
