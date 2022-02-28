@@ -33,7 +33,8 @@ public class TransactionsLifecycleListener implements DataChannelSyncFilter {
 
 	@Override
 	public GraphDiff onSync(ObjectContext originatingContext, GraphDiff changes, int syncType, DataChannelSyncFilterChain filterChain) {
+		var changesBeforeApply = filterChain.onSync(originatingContext, changes, syncType);
 		changes.apply(new PaymentOutPostCreateHandler(originatingContext, accountTransactionService, changes, transactionLockedService));
-		return filterChain.onSync(originatingContext, changes, syncType);
+		return changesBeforeApply;
 	}
 }

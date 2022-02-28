@@ -40,7 +40,8 @@ public class InvoiceLineLifecycleListener implements DataChannelSyncFilter {
 
 	@Override
 	public GraphDiff onSync(ObjectContext originatingContext, GraphDiff changes, int syncType, DataChannelSyncFilterChain filterChain) {
+		var changesBeforeApply = filterChain.onSync(originatingContext, changes, syncType);
 		changes.apply(new InvoiceLinePostCreateHandler(originatingContext, accountTransactionService));
-		return filterChain.onSync(originatingContext, changes, syncType);
+		return changesBeforeApply;
 	}
 }

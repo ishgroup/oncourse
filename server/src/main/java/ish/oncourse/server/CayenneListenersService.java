@@ -35,6 +35,7 @@ public class CayenneListenersService {
         cayenneService.addListener(new PaymentInLineLifecycleListener());
         cayenneService.addListener(new AbstractInvoiceLifecycleListener());
         cayenneService.addListener(new InvoiceLifecycleListener());
+        cayenneService.addListener(new InvoiceLineLifecycleListener(invoiceLineInitHelper, accountTransactionService));
         cayenneService.addListener(new AbstractInvoiceLineLifecycleListener());
         cayenneService.addListener(new PaymentOutLifecycleListener());
         cayenneService.addListener(new EnrolmentLifecycleListener(cayenneService, eventService));
