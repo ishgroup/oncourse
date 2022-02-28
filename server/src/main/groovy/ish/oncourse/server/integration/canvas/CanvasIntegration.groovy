@@ -37,7 +37,6 @@ class CanvasIntegration implements PluginTrait {
     public static final String CANVAS_ACCOUNT_ID_KEY = "accountId"
     public static final String CANVAS_REFRESH_TOKEN = "refreshToken"
     public static final String CANVAS_REDIRECT_URL = "redirectUrl"
-    public static final String CANVAS_AUTH_REQUIRED = "authRequired"
 
 
     String baseUrl
@@ -46,7 +45,6 @@ class CanvasIntegration implements PluginTrait {
     String accountId
     String authHeader
     String refreshToken
-    boolean authRequired
 
     private static Logger logger = LogManager.logger
 
@@ -58,7 +56,6 @@ class CanvasIntegration implements PluginTrait {
         this.clientSecret = configuration.getIntegrationProperty(CANVAS_CLIENT_SECRET_KEY).value
         this.accountId =configuration.getIntegrationProperty(CANVAS_ACCOUNT_ID_KEY).value
         this.refreshToken = configuration.getIntegrationProperty(CANVAS_REFRESH_TOKEN).value
-        this.authRequired = configuration.getIntegrationProperty(CANVAS_AUTH_REQUIRED).value.toBoolean()
     }
 
     /**
@@ -126,7 +123,7 @@ class CanvasIntegration implements PluginTrait {
      * @param email email of the onCourse student
      * @return created student object
      */
-    def createNewUser(String fullName, String email) {
+    def createNewUser(String fullName, String email, int authentication_provider_id) {
         def client = new RESTClient(baseUrl)
         def pseudonymProperties = [
                 unique_id: email,
@@ -135,8 +132,8 @@ class CanvasIntegration implements PluginTrait {
                 sis_user_id: email
         ]
 
-        if(authRequired)
-            pseudonymProperties.put("authentication_provider_id", "1")
+        if(authentication_provider_id != 0)
+            pseudonymProperties.put("authentication_provider_id", authentication_provider_id)
 
         client.headers["Authorization"] = "Bearer ${authHeader}"
         client.request(Method.POST, ContentType.JSON) {
