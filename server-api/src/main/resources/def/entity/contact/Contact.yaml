@@ -202,6 +202,10 @@ properties:
     type: array
     items:
       $ref: '../Holiday.yaml'
+  abandonedCarts:
+    type: array
+    items:
+      $ref: '../Cart.yaml'
   removeCChistory:
     type: boolean
 

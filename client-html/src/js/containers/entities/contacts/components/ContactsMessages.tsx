@@ -27,7 +27,7 @@ const ContactsMessages: React.FC<ContactsMessagesProps> = props => {
   const messagesColumns: NestedTableColumn[] = [
     {
       name: "createdOn",
-      title: "Created",
+      title: "Created on",
       type: "date",
       width: 160
     },

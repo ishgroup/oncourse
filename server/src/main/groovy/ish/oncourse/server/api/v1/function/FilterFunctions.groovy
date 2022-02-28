@@ -23,6 +23,7 @@ import org.apache.cayenne.ObjectContext
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
+import java.util.regex.Pattern
 
 @CompileStatic
 class FilterFunctions {
@@ -32,6 +33,9 @@ class FilterFunctions {
         CompilationResult aqlCompile = aqlService.compile(filter.expression, clzz, context)
         if (aqlCompile.errors) {
             return new ValidationErrorDTO(null, null, "Invalid search expression: '${filter.expression}'.")
+        }
+        if (!isNameValid(filter.name)) {
+            return new ValidationErrorDTO(null, null, "Filter name can only contain letters, numbers, '-', '_' and spaces.")
         }
         null
     }
@@ -54,5 +58,10 @@ class FilterFunctions {
         if (error) {
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
         }
+    }
+
+    private static boolean isNameValid(String name) {
+        Pattern p = Pattern.compile("^([\\w_ -])+")
+        return p.matcher(name).matches()
     }
 }

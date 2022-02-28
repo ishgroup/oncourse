@@ -41,6 +41,8 @@ paths:
     $ref: './path/checkout/status/api.yaml'
   /checkout/discount:
     $ref: './path/checkout/discount/api.yaml'
+  /checkout/cartIds:
+    $ref: './path/checkout/cartIds/api.yaml'
   /checkout/saleRelations:
     $ref: './path/checkout/saleRelations/api.yaml'
   /control:
