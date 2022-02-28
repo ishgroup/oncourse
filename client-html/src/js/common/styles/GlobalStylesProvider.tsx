@@ -272,7 +272,7 @@ const globalStyles = (theme: AppTheme) =>
         marginRight: "auto",
         paddingRight: theme.spacing(2),
         paddingTop: "1px",
-        fontSize: `${theme.typography.fontSize}px`
+        fontSize: `14px`
       },
       ".switchWrapper": {
         flexDirection: "row-reverse",

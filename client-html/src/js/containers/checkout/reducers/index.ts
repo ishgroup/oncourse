@@ -6,10 +6,9 @@
 import { IAction } from "../../../common/actions/IshAction";
 import { decimalPlus } from "../../../common/utils/numbers/decimalCalculation";
 import {
+  CheckoutAddItemsRequiest,
   CheckoutDiscount,
-  CheckoutEnrolmentCustom,
   CheckoutItem,
-  CheckoutProductPurchase,
   CheckoutState
 } from "../../../model/checkout";
 import { getContactName } from "../../entities/contacts/utils";
@@ -1121,7 +1120,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
     }
 
     case CHECKOUT_ADD_ITEMS: {
-      const { enrolments, purchases }: { enrolments?: CheckoutEnrolmentCustom[], purchases?: CheckoutProductPurchase[] } = action.payload;
+      const { enrolments, purchases, keepChecked }: CheckoutAddItemsRequiest = action.payload;
 
       const addedEnrolments = {};
       const addedProducts = {};
@@ -1164,7 +1163,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
               return true;
             }).map(item => ({
               ...item,
-              checked: item.type === "course"
+              checked: keepChecked ? item.checked : item.type === "course"
                ? Boolean(enrolments.find(en => en.contactId === li.contact.id && en.courseClass && en.courseClass.id === item.id))
                : true
             }))
