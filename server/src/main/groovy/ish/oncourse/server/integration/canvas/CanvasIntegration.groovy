@@ -123,7 +123,7 @@ class CanvasIntegration implements PluginTrait {
      * @param email email of the onCourse student
      * @return created student object
      */
-    def createNewUser(String fullName, String email, int authentication_provider_id) {
+    def createNewUser(String fullName, String email, int authenticationProviderId, String password) {
         def client = new RESTClient(baseUrl)
         def pseudonymProperties = [
                 unique_id: email,
@@ -131,16 +131,18 @@ class CanvasIntegration implements PluginTrait {
                 force_self_registration: true,
                 sis_user_id: email
         ]
-
-        if(authentication_provider_id != 0)
-            pseudonymProperties.put("authentication_provider_id", authentication_provider_id)
+        if(authenticationProviderId != 0)
+            pseudonymProperties.put("authentication_provider_id", authenticationProviderId)
+        if(password)
+            pseudonymProperties.put("password", password)
 
         client.headers["Authorization"] = "Bearer ${authHeader}"
         client.request(Method.POST, ContentType.JSON) {
             uri.path = "/api/v1/accounts/${accountId}/users"
             body = [
                     user: [
-                            name: fullName
+                            name: fullName,
+                            skip_registration: password != null
                     ],
                     pseudonym: pseudonymProperties
             ]
