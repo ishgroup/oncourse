@@ -14,9 +14,16 @@ package ish.oncourse.server.integration.canvas
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.oncourse.API
+import ish.oncourse.server.api.v1.function.CustomFieldFunctions
+import ish.oncourse.server.cayenne.CustomField
+import ish.oncourse.server.cayenne.CustomFieldType
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.scripting.ScriptClosureTrait
 import ish.oncourse.server.scripting.ScriptClosure
+import org.apache.commons.lang.RandomStringUtils
+
+import java.security.SecureRandom
+
 /**
  * Integration allows us to establish interaction between Canvas LMS and onCourse enrol system.
  *
@@ -38,6 +45,8 @@ import ish.oncourse.server.scripting.ScriptClosure
 @CompileStatic
 @ScriptClosure(key = "canvas", integration = CanvasIntegration)
 class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
+    private static final char[] POSSIBLE_PASSWORD_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`!@#\$%^&*()-_=+[{]}\\|;:\'\",<.>/?".toCharArray()
+    private static final int PASSWORD_LENGTH = 8
 
     Enrolment enrolment
     String course_code
@@ -45,6 +54,7 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
     boolean create_section
     boolean create_student
     int authentication_provider_id
+    String create_password
 
     def enrolment(Enrolment enrolment) {
         this.enrolment = enrolment
@@ -70,7 +80,9 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
         this.authentication_provider_id = authentication_provider_id
     }
 
-
+    def create_password(String create_password){
+        this.create_password = create_password
+    }
 
     @Override
     Object execute(CanvasIntegration integration) {
@@ -79,6 +91,9 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
         if (enrolment.student.contact.email) {
             Map userResp = integration.getUserByEmail(enrolment.student.contact.email) as Map
             List userJson = integration.responseToJson(userResp) as List
+            String password = null
+            if(create_password)
+                password = RandomStringUtils.random( PASSWORD_LENGTH, 0, POSSIBLE_PASSWORD_CHARS.length-1, false, false, POSSIBLE_PASSWORD_CHARS, new SecureRandom())
 
             List course = integration.getCourse(course_code) as List
 
@@ -97,7 +112,11 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
                     throw new IllegalArgumentException("Illegal state, no student with email ${enrolment.student.contact.email} with student creation disabled.")
                 }
 
-                student = integration.createNewUser(enrolment.student.contact.fullName, enrolment.student.contact.email, authentication_provider_id)
+
+
+                student = integration.createNewUser(enrolment.student.contact.fullName, enrolment.student.contact.email, authentication_provider_id, password)
+
+
             } else {
 
                 // will return a list of one students, take the first item in the list
@@ -116,6 +135,10 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
 
             integration.enrolUser(student["id"], section["id"])
 
+            if(create_password){
+                CustomFieldFunctions.updateCustomFieldWithoutCommit(create_password, password, enrolment.student.contact, enrolment.context)
+                enrolment.context.commitChanges()
+            }
         }
         return null
     }

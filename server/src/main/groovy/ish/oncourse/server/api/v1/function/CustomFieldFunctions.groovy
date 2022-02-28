@@ -28,19 +28,21 @@ class CustomFieldFunctions {
         List<CustomField> dbCustomFields = dbObject.customFields as List<CustomField>
 
         context.deleteObjects(dbCustomFields.findAll { !customFieldsToSave.contains(it.customFieldType.key) })
-        customFields.each { k, v ->
-            CustomField cf = dbCustomFields.find { it.customFieldType.key == k }
-            
-            if (cf) {
-                cf.value = trimToNull(v)
-            } else if (v) {
-                cf = context.newObject(relationClass)
-                cf.relatedObject = dbObject
-                cf.customFieldType = getCustomFieldType(context, dbObject.class.simpleName, k)
-                cf.value = trimToNull(v)
-            }
-        }
+        customFields.each { k, v -> updateCustomFieldWithoutCommit(k,v,dbObject, context)}
         dbObject.modifiedOn = new Date()
+    }
+
+    static void updateCustomFieldWithoutCommit(String key, String value, ExpandableTrait entity, ObjectContext context){
+        CustomField cf = entity.customFields.find { it.customFieldType.key == key }
+
+        if (cf) {
+            cf.value = trimToNull(value)
+        } else if (value) {
+            cf = context.newObject(entity.getCustomFieldClass())
+            cf.relatedObject = entity
+            cf.customFieldType = getCustomFieldType(context, entity.class.simpleName, key)
+            cf.value = trimToNull(value)
+        }
     }
 
     static List<CustomFieldType> getCustomFieldTypes(ObjectContext objectContext, String entityName) {
