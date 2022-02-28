@@ -114,6 +114,7 @@ export const ContactInitial: Contact = {
   deliveryStatusSms: 0,
   deliveryStatusEmail: 0,
   customFields: {},
+  abandonedCarts: [],
   tags: []
 };
 
