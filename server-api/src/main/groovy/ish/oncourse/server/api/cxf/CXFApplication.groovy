@@ -1,12 +1,9 @@
 /*
- * Copyright ish group pty ltd 2020.
+ * Copyright ish group pty ltd 2021.
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of the
- * GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License for more details.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 package ish.oncourse.server.api.cxf
@@ -16,9 +13,6 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider
 
 import javax.ws.rs.core.Application
 
-/**
- * Created by akoira on 2/5/17.
- */
 class CXFApplication extends Application{
 
     private Set<Object> singletons = new HashSet<>()

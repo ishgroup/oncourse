@@ -10,8 +10,6 @@
  */
 package ish.oncourse.server;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import ish.math.MoneyType;
 import ish.oncourse.server.cayenne.glue.CayenneDataObject;
 import ish.util.Maps;
@@ -25,6 +23,8 @@ import org.apache.cayenne.map.LifecycleEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.sql.DataSource;
 import java.util.Map;
 

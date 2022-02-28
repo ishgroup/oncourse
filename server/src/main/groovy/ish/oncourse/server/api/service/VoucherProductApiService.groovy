@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.common.types.AccountType
 import ish.common.types.ExpiryType
@@ -238,7 +238,7 @@ class VoucherProductApiService extends TaggableApiService<VoucherProductDTO, Vou
                 validator.throwClientErrorException(id, 'underpaymentAccountId', "Only accounts of expense type can be assigned to voucher underpayment account.")
             }
         }
-        
+
         voucherProductDTO.corporatePasses.each {
             if (!it.id) {
                 validator.throwClientErrorException(id, 'corporatePasses', 'Id is required for corporate pass entity.')

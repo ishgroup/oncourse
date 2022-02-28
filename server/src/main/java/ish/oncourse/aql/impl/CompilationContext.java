@@ -11,7 +11,7 @@
 
 package ish.oncourse.aql.impl;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import ish.oncourse.aql.CompilationError;
 import ish.oncourse.aql.CompilationResult;
 import ish.oncourse.aql.model.Entity;

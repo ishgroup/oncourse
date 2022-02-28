@@ -8,7 +8,6 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
 import ish.oncourse.server.api.dao.ApiTokenDao
 import ish.oncourse.server.api.dao.UserDao
 import ish.oncourse.server.api.v1.model.ApiTokenDTO
@@ -17,11 +16,13 @@ import ish.oncourse.server.cayenne.SystemUser
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 
+import javax.inject.Inject
+
 class ApiTokenApiService extends EntityApiService<ApiTokenDTO, ApiToken, ApiTokenDao> {
-    
+
     @Inject
     UserDao userDao
-    
+
     @Override
     Class<ApiToken> getPersistentClass() {
         return ApiToken
@@ -60,11 +61,11 @@ class ApiTokenApiService extends EntityApiService<ApiTokenDTO, ApiToken, ApiToke
             validator.throwClientErrorException(id, 'userId', 'System user is required.')
         }
         SystemUser user = userDao.getById(context, dto.userId)
-        
+
         if (!user) {
             validator.throwClientErrorException(id, 'userId', 'System user is noty exist.')
         }
-        
+
         if (!user.isActive) {
             validator.throwClientErrorException(id, 'userId', 'System user is not available.')
         }

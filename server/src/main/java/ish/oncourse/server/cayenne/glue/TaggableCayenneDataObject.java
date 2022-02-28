@@ -11,7 +11,7 @@
 package ish.oncourse.server.cayenne.glue;
 
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import ish.oncourse.API;
 import ish.oncourse.cayenne.Taggable;
 import ish.oncourse.cayenne.TaggableClasses;

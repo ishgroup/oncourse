@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
 import ish.common.types.AccountType
 import ish.math.Money
 import ish.oncourse.server.api.dao.AccountDao
@@ -27,6 +26,8 @@ import ish.oncourse.server.cayenne.FieldConfigurationScheme
 import ish.oncourse.server.cayenne.Product
 import ish.oncourse.server.cayenne.ArticleProductAttachmentRelation
 import ish.oncourse.server.document.DocumentService
+
+import javax.inject.Inject
 
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields

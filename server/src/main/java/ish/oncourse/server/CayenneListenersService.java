@@ -10,7 +10,7 @@
  */
 package ish.oncourse.server;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import ish.oncourse.server.accounting.AccountTransactionService;
 import ish.oncourse.server.integration.EventService;
 import ish.oncourse.server.license.LicenseService;

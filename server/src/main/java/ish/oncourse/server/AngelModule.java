@@ -1,27 +1,23 @@
 /*
- * Copyright ish group pty ltd 2020.
+ * Copyright ish group pty ltd 2021.
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of the
- * GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License for more details.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 package ish.oncourse.server;
 
-import com.google.inject.*;
-import com.google.inject.name.Names;
+import io.bootique.di.*;
 import io.bootique.BQCoreModule;
 import io.bootique.ConfigModule;
 import io.bootique.cayenne.CayenneModule;
 import io.bootique.command.CommandDecorator;
 import io.bootique.config.ConfigurationFactory;
+import io.bootique.jetty.JettyModule;
 import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedServlet;
 import io.bootique.jetty.command.ServerCommand;
-import ish.oncourse.server.jetty.AngelJettyModule;
 import ish.oncourse.common.ResourcesUtil;
 import ish.oncourse.server.api.servlet.ApiFilter;
 import ish.oncourse.server.api.servlet.ISessionManager;
@@ -57,6 +53,8 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.utils.ConnectionProvider;
 import org.quartz.utils.DBConnectionManager;
 
+import javax.inject.Provider;
+import javax.inject.Singleton;
 import javax.management.MalformedObjectNameException;
 import javax.management.NotCompliantMBeanException;
 import java.sql.Connection;
@@ -150,19 +148,19 @@ public class AngelModule extends ConfigModule {
                 .addModule(CommitLogModuleExt.class);
 
 
-        AngelJettyModule.extend(binder)
+        JettyModule.extend(binder)
                 .addMappedFilter(API_FILTER)
                 .addMappedServlet(HEALTHCHECK_SERVLET)
                 .addServlet(new ResourceServlet(),"resources", ROOT_URL_PATTERN);
 
-        binder.bind(ISessionManager.class).to(SessionManager.class).in(Scopes.SINGLETON);
-        binder.bind(CertificateUpdateWatcher.class).in(Scopes.SINGLETON);
-        binder.bind(ICayenneService.class).to(CayenneService.class).in(Scopes.SINGLETON);
+        binder.bind(ISessionManager.class).to(SessionManager.class).inSingletonScope();
+        binder.bind(CertificateUpdateWatcher.class).inSingletonScope();
+        binder.bind(ICayenneService.class).to(CayenneService.class).inSingletonScope();
         binder.bind(PreferenceController.class);
         binder.bind(UserPreferenceService.class);
-        binder.bind(String.class).annotatedWith(Names.named(ANGEL_VERSION)).toInstance(getVersion());
-        binder.bind(EmailService.class).in(Scopes.SINGLETON);
-        binder.bind(PluginService.class).in(Scopes.SINGLETON);
+        binder.bind(String.class, ANGEL_VERSION).toInstance(getVersion());
+        binder.bind(EmailService.class).inSingletonScope();
+        binder.bind(PluginService.class).inSingletonScope();
         PluginService.configurePlugin(binder);
     }
 
@@ -203,7 +201,7 @@ public class AngelModule extends ConfigModule {
             return new RegisterMBean(
                     injector.getInstance(ICayenneService.class),
                     injector.getInstance(ISessionManager.class),
-                    injector.getInstance(Key.get(String.class, Names.named(ANGEL_VERSION))),
+                    injector.getInstance(Key.get(String.class, ANGEL_VERSION)),
                     injector.getInstance(PreferenceController.class));
         } catch (MalformedObjectNameException | NotCompliantMBeanException e) {
             logger.catching(e);

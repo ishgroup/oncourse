@@ -1,16 +1,16 @@
 package ish.oncourse.server.security.api
 
-import com.google.inject.Binder
-import com.google.inject.Module
 import groovy.transform.CompileStatic
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
 import ish.oncourse.server.services.ISystemUserService
 
 @CompileStatic
-class MockModule implements Module {
+class MockModule implements BQModule {
 
-    
+
     @Override
     void configure(Binder binder) {
-        binder.bind(ISystemUserService.class).to(MockSystemUserService.class).asEagerSingleton()
+        binder.bind(ISystemUserService.class).to(MockSystemUserService.class).initOnStartup()
     }
 }

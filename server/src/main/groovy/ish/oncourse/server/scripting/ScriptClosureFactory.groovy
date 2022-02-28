@@ -11,8 +11,8 @@
 
 package ish.oncourse.server.scripting
 
-import com.google.inject.Injector
 import groovy.transform.CompileStatic
+import io.bootique.di.Injector
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.IntegrationConfiguration
 import ish.oncourse.server.integration.Plugin
@@ -62,7 +62,7 @@ class ScriptClosureFactory {
                 throw e
             }
         }
-        
+
         if (result.empty) {
             return null
         } else if (result.size() == 1) {
@@ -70,7 +70,7 @@ class ScriptClosureFactory {
         } else {
             return result
         }
-        
+
     }
 
     private List<IntegrationConfiguration> getIntegrationConfiguration(ScriptClosureTrait spec, int type) {

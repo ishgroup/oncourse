@@ -11,13 +11,12 @@
 
 package ish.oncourse.server.db;
 
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
 import io.bootique.ConfigModule;
 import io.bootique.config.ConfigurationFactory;
+import io.bootique.di.Provides;
 
 
-import java.util.Map;
+import javax.inject.Singleton;
 
 public class DbModule extends ConfigModule {
 

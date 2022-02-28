@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.imports.ImportResult
 import ish.oncourse.server.api.dao.ImportDao
 import ish.oncourse.server.api.model.ImportModel
