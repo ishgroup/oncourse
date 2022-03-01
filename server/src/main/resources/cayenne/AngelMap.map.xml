@@ -207,6 +207,8 @@
 		<db-attribute name="willowId" type="BIGINT"/>
 		<db-attribute name="UUID" type="VARCHAR" length="30"/>
 		<db-attribute name="shoppingCart" type="CLOB" length="5000"/>
+		<db-attribute name="payerId" type="BIGINT"/>
+		<db-attribute name="totalValue" type="DECIMAL" length="10" scale="2"/>
 	</db-entity>
 	<db-entity name="ClassCost">
 		<db-attribute name="contactId" type="BIGINT"/>
@@ -1888,6 +1890,7 @@
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 		<obj-attribute name="UUID" type="java.lang.String" db-attribute-path="UUID"/>
 		<obj-attribute name="shoppingCart" type="java.lang.String" db-attribute-path="shoppingCart"/>
+		<obj-attribute name="totalValue" type="ish.math.Money" db-attribute-path="totalValue"/>
 	</obj-entity>
 	<obj-entity name="ClassCost" className="ish.oncourse.server.cayenne.ClassCost" clientClassName="ish.oncourse.cayenne.ClassCost" dbEntityName="ClassCost" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
@@ -3537,6 +3540,9 @@
 	<db-relationship name="outcome" source="Certificate_Outcome" target="Outcome">
 		<db-attribute-pair source="outcomeId" target="id"/>
 	</db-relationship>
+	<db-relationship name="payer" source="Checkout" target="Contact">
+		<db-attribute-pair source="payerId" target="id"/>
+	</db-relationship>
 	<db-relationship name="contact" source="ClassCost" target="Contact">
 		<db-attribute-pair source="contactId" target="id"/>
 	</db-relationship>
@@ -3572,6 +3578,9 @@
 	</db-relationship>
 	<db-relationship name="attachmentRelations" source="Contact" target="BinaryRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
+	</db-relationship>
+	<db-relationship name="abandonedCarts" source="Contact" target="Checkout" toMany="true">
+		<db-attribute-pair source="id" target="payerId"/>
 	</db-relationship>
 	<db-relationship name="attachmentRelations" source="Product" target="BinaryRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
@@ -5046,6 +5055,7 @@
 	<obj-relationship name="attachedCertificate" source="CertificateAttachmentRelation" target="Certificate" deleteRule="Nullify" db-relationship-path="attachedCertificate"/>
 	<obj-relationship name="certificate" source="CertificateOutcome" target="Certificate" deleteRule="Nullify" db-relationship-path="certificate"/>
 	<obj-relationship name="outcome" source="CertificateOutcome" target="Outcome" deleteRule="Nullify" db-relationship-path="outcome"/>
+	<obj-relationship name="payer" source="Checkout" target="Contact" deleteRule="Nullify" db-relationship-path="payer"/>
 	<obj-relationship name="contact" source="ClassCost" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="courseClass" source="ClassCost" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="createdBy" source="ClassCost" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdBy"/>
@@ -5059,6 +5069,7 @@
 	</obj-relationship>
 	<obj-relationship name="studentConcessions" source="ConcessionType" target="StudentConcession" deleteRule="Deny" db-relationship-path="concessionType_studentConcessions"/>
 	<obj-relationship name="attachmentRelations" source="Contact" target="ContactAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
+	<obj-relationship name="abandonedCarts" source="Contact" target="Checkout" deleteRule="Cascade" db-relationship-path="abandonedCarts"/>
 	<obj-relationship name="attachmentRelations" source="VoucherProduct" target="VoucherProductAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="attachmentRelations" source="ArticleProduct" target="ArticleProductAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="attachmentRelations" source="MembershipProduct" target="MembershipProductAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>

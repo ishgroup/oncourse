@@ -4,18 +4,18 @@ export function mockModules() {
   this.getModules = () => this.modules;
 
   this.getModule = id => {
-    const row = this.modules.rows.find(row => row.id == id);
+    const row = this.modules.rows.find(module => Number(module.id) === Number(id));
 
     return {
       id: row.id,
       createdOn: "2021-01-21T12:22:00.018Z",
-      creditPoints: null,
-      expiryDays: null,
+      creditPoints: 10,
+      expiryDays: 15,
       fieldOfEducation: "080399",
       isCustom: false,
       modifiedOn: "2021-01-21T12:22:00.018Z",
       nominalHours: 20,
-      specialization: null,
+      specialization: "",
       nationalCode: row.values[0],
       title: row.values[1],
       isOffered: row.values[2],

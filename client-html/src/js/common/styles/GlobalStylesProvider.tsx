@@ -272,7 +272,7 @@ const globalStyles = (theme: AppTheme) =>
         marginRight: "auto",
         paddingRight: theme.spacing(2),
         paddingTop: "1px",
-        fontSize: `${theme.typography.fontSize}px`
+        fontSize: `14px`
       },
       ".switchWrapper": {
         flexDirection: "row-reverse",
@@ -357,7 +357,7 @@ const globalStyles = (theme: AppTheme) =>
         }
       },
       ".defaultBackgroundColor": {
-        backgroundColor: theme.palette.background.default
+        backgroundColor: theme.appBar.header.background
       },
       ".paperBackgroundColor": {
         background: theme.palette.background.paper

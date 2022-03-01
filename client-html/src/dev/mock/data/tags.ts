@@ -57,7 +57,7 @@ export function mockTags(): Tag[] {
     type: "WaitingList"
   }];
 
-  const tags = generateArraysOfRecords(1, ofRecord).map(l => ({
+  const tags = generateArraysOfRecords(2, ofRecord).map(l => ({
     id: l.id,
     name: l.name,
     status: "Show on website",
