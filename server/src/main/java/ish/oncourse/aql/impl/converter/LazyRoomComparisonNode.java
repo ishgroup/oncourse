@@ -51,6 +51,8 @@ public class LazyRoomComparisonNode extends LazyEntityComparisonNode {
             if ((op == Op.EQ) || (op == Op.NE)) {
                 return value;
             }
+            if (op == Op.CONTAINS)
+                value = "%" + value;
             return value == null ? null : value + "%";
         }
     }

@@ -105,3 +105,16 @@ export const getNestedTutorClassItem = (status: CourseClassStatus, count: number
     }
   }
 };
+
+export const getContactPhoneAqlSearch = (value: string): string => {
+  const getSearchTemplate = val => `(homePhone starts with "${val}" or mobilePhone starts with "${val}" or workPhone starts with "${val}")`;
+  
+  let search = getSearchTemplate(value.replace(/[^\d]/g, ""));
+
+  // search with special symbols
+  if (/^\+/.test(value)) {
+    search += " or " + getSearchTemplate("+" + value.replace(/[^\d]/g, ""));
+  }
+
+  return search;
+};

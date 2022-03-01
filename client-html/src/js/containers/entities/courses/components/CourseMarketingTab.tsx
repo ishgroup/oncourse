@@ -12,6 +12,7 @@ import { FormEditorField } from "../../../../common/components/markdown-editor/F
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
 import { EditViewProps } from "../../../../model/common/ListView";
+import FormField from "../../../../common/components/form/formFields/FormField";
 
 const relationTypesFilter = {
   entities: ["Module" as const],
@@ -40,6 +41,14 @@ const CourseMarketingTab: React.FC<EditViewProps<Course> & { classes: any }> = p
 
       <Grid item xs={12}>
         <FormEditorField name="webDescription" label="Web description" />
+      </Grid>
+
+      <Grid item xs={12}>
+        <FormField
+          type="multilineText"
+          name="brochureDescription"
+          label="Print brochure description"
+        />
       </Grid>
 
       <Grid item xs={12}>
