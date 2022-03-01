@@ -1,0 +1,14 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+    example: 200
+    description: Unique contact identifier in onCourse
+  totalValue:
+    type: number
+    description: Total amount of cart
+  createdOn:
+    type: string
+    format: date-time

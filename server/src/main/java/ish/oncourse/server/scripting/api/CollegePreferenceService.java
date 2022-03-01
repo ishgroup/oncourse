@@ -17,6 +17,7 @@ import ish.oncourse.server.PreferenceController;
 import ish.oncourse.server.cayenne.Student;
 import ish.oncourse.server.cayenne.SurveyFieldConfiguration;
 import ish.oncourse.server.license.LicenseService;
+import ish.oncourse.server.scripting.converter.RenderType;
 import ish.persistence.Preferences;
 import ish.util.UrlUtil;
 import org.apache.cayenne.query.ObjectSelect;
@@ -25,6 +26,8 @@ import org.apache.commons.lang3.time.DateUtils;
 
 import java.util.Calendar;
 import java.util.Date;
+
+import static ish.persistence.Preferences.COLLEGE_PAYMENT_INFO;
 
 /**
  * Service for accessing college preferences.
@@ -74,6 +77,9 @@ public class CollegePreferenceService {
 		// Do it exactly here, because it needs for each email template
 		if(Preferences.COLLEGE_URL.equals(prefName) && value != null && !((String)value).contains(PROTOCOL_DELIMITER)) {
 			value = String.format("%s%s%s", HTTP_PREFIX, PROTOCOL_DELIMITER, value);
+		}
+		if (prefName.equals(COLLEGE_PAYMENT_INFO) && value != null) {
+			value = MessageBodyConverter.valueOf((String) value, RenderType.HTML).convert();
 		}
 
 		return value != null ? value : defaultValue;

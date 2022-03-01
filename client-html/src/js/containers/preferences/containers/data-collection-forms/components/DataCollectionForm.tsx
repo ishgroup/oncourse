@@ -438,7 +438,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
             manualUrl={manualUrl}
             getAuditsUrl={() => `audit?search=~"${type}FieldConfiguration" and entityId == ${values.form.id}`}
             disabled={!dirty}
-            invalid={valid}
+            invalid={!valid}
             title={(isNew && (!values || !values.form.name || values.form.name.trim().length === 0))
               ? "New"
               : values && values.form.name.trim()}

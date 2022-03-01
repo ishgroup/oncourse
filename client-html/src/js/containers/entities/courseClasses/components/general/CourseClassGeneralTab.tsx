@@ -331,19 +331,20 @@ const CourseClassGeneralTab = React.memo<Props>(
               className="pt-2"
             />
           </Grid>
-          <Grid item xs={twoColumn && !showAllWeeks ? 6 : 12}>
-            <CourseClassEnrolmentsChart
-              classId={values.id}
-              classStart={values.startDateTime}
-              minEnrolments={values.minimumPlaces}
-              maxEnrolments={values.maximumPlaces}
-              targetEnrolments={enrolmentsToProfitAllCount}
-              openBudget={openBudget}
-              showAllWeeks={showAllWeeks}
-              setShowAllWeeks={setShowAllWeeks}
-              hasBudget={values.budget.some(b => b.invoiceToStudent && b.perUnitAmountIncTax > 0)}
-            />
-          </Grid>
+
+          <CourseClassEnrolmentsChart
+            classId={values.id}
+            classStart={values.startDateTime}
+            minEnrolments={values.minimumPlaces}
+            maxEnrolments={values.maximumPlaces}
+            targetEnrolments={enrolmentsToProfitAllCount}
+            openBudget={openBudget}
+            showAllWeeks={showAllWeeks}
+            setShowAllWeeks={setShowAllWeeks}
+            twoColumn={twoColumn}
+            hasBudged={values.budget.some(b => b.invoiceToStudent && b.perUnitAmountIncTax > 0)}
+          />
+
           <CustomFields
             entityName="CourseClass"
             fieldName="customFields"

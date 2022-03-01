@@ -58,6 +58,7 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.PrefetchTreeNode
 
+import java.util.regex.Pattern
 import java.util.stream.Collectors
 
 import static org.apache.commons.lang3.StringUtils.EMPTY
@@ -229,6 +230,10 @@ class TagFunctions {
             return new ValidationErrorDTO(tag.id?.toString(), 'name', 'Name should be unique.')
         }
 
+        if (validateTagName(tag)) {
+            return new ValidationErrorDTO(null, 'name', 'Filter name can only contain letters, numbers, \'-\', \'_\' and spaces.')
+        }
+
         if (validateTagNameUniqueness(tag)) {
             return new ValidationErrorDTO(null, 'name', 'The tag name is not unique within its parent tag.')
         }
@@ -286,10 +291,18 @@ class TagFunctions {
         tag.childTags.collect { validateTagNameUniqueness(it) }.contains(true) || tag.childTags.size() != tag.childTags*.name.unique().size()
     }
 
+    static boolean validateTagName(TagDTO tag) {
+        tag.childTags.collect { validateTagName(it) }.contains(true) || !isNameValid(tag.name)
+    }
+
     static boolean validateUrlPathUniqueness(TagDTO tag) {
         tag.childTags.collect { validateUrlPathUniqueness(it) }.contains(true) || tag.childTags*.urlPath.findAll().size() != tag.childTags*.urlPath.findAll().unique().size()
     }
 
+    private static boolean isNameValid(String name) {
+        Pattern p = Pattern.compile("^([\\w_ -])+")
+        return p.matcher(name).matches()
+    }
 
     static Tag toDbTag(ObjectContext context, TagDTO tag, Tag dbTag, boolean isParent = true, Map<Long, Tag> childTagsToRemove = getAllChildTags(dbTag)) {
 
