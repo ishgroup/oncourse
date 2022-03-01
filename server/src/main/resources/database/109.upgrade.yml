@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 109-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: Checkout
+      changes:
+        - sql: "DELETE FROM Checkout"
