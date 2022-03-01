@@ -36,10 +36,13 @@ import java.security.SecureRandom
  *     section_code "key." + e.courseClass.uniqueCode
  * 	   create_section true
  * 	   create_student true
+ * 	   authentication_provider_id 1
+ * 	   create_password "myCustomField"
  * }
  * ```
  * Setting 'create_section' to true will create a new Canvas sections from the equivalent onCourse Class if one does not already exist inside your Canvas instance.
  * Setting 'create_student' to true will create a new Canvas User profile for the enrolled student if one does not exist in your Canvas instance.
+ * Setting 'myCustomField' will generate random password for student to canvas and save to customField of Contact with key like create_password parameter
  */
 @API
 @CompileStatic
@@ -130,7 +133,7 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
                     throw new IllegalArgumentException("Illegal state, no section for courseClass ${enrolment.courseClass.uniqueCode} with section creation disabled.")
                 }
 
-                section = integration.createSection(section_code, course["id"])
+                section = integration.createSection(section_code, course["id"][0])
             }
 
             integration.enrolUser(student["id"], section["id"])
