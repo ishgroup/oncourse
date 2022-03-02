@@ -6,11 +6,11 @@
 import clsx from "clsx";
 import Decimal from "decimal.js-light";
 import React, {
- useEffect, useMemo, useState, Fragment
+  useEffect, useMemo, useState, Fragment, useCallback
 } from "react";
 import { format } from "date-fns";
 import { connect, useSelector } from "react-redux";
-import { Tax } from "@api/model";
+import { ClassCost, CourseClassTutor, DefinedTutorRole, Tax } from "@api/model";
 import debounce from "lodash.debounce";
 import Edit from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
@@ -49,6 +49,7 @@ import { COURSE_CLASS_COST_DIALOG_FORM } from "../constants";
 import { appendTimezone } from "../../../../common/utils/dates/formatTimezone";
 import { discountsSort } from "./budget/utils";
 import { makeAppStyles } from "../../../../common/styles/makeStyles";
+import { getTutorPayInitial } from "./tutors/utils";
 
 const itemsBase: TabsListItem[] = [
   {
@@ -123,6 +124,7 @@ const itemsBase: TabsListItem[] = [
 ];
 
 interface Props extends EditViewProps<CourseClassExtended> {
+  tutorRoles?: DefinedTutorRole[];
   currencySymbol?: string;
   taxes?: Tax[];
 }
@@ -222,7 +224,7 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
  expandBudgetItem,
  currentTax
 }) => {
-  const classes  = useBudgetAdornmentStyles();
+  const classes = useBudgetAdornmentStyles();
 
   const discounts = useMemo(() => {
     const discountItems = budget.filter(b => b.flowType === "Discount"
@@ -334,7 +336,8 @@ const CourseClassEditView: React.FC<Props> = ({
   invalid,
   toogleFullScreenEditView,
   currencySymbol,
-  taxes
+  taxes,
+  tutorRoles
 }) => {
   const [classRooms, setClassRooms] = useState<CourseClassRoom[]>([]);
   const [sessionsData, setSessionsData] = useState<any>(null);
@@ -459,6 +462,31 @@ const CourseClassEditView: React.FC<Props> = ({
 
   const savedTutors = useMemo(() => (values.tutors ? values.tutors.filter(t => t.id) : []), [values.tutors]);
 
+  const addTutorWage = useCallback(
+    (tutor: CourseClassTutor, wage?: ClassCostExtended) => {
+      const role = tutorRoles.find(r => r.id === tutor.roleId);
+      const onCostRate = (role && role["currentPayrate.oncostRate"]) ? parseFloat(role["currentPayrate.oncostRate"]) : 0;
+      const perUnitAmountExTax = (role && role["currentPayrate.rate"]) ? parseFloat(role["currentPayrate.rate"]) : 0;
+      const initWage: ClassCost = wage || getTutorPayInitial(tutor, values.id, values.taxId, role, perUnitAmountExTax);
+
+      dispatch(setCourseClassBudgetModalOpened(true, isNaN(onCostRate) ? 0 : onCostRate));
+      dispatch(initialize(COURSE_CLASS_COST_DIALOG_FORM, initWage));
+      if (twoColumn) {
+        const search = new URLSearchParams(window.location.search);
+        search.append("expandTab", "4");
+        history.replace({
+          pathname: history.location.pathname,
+          search: decodeURIComponent(search.toString())
+        });
+
+        if (!expandedBudget.includes("Total Cost")) {
+          expandBudgetItem("Total Cost");
+        }
+      }
+    },
+    [tutorRoles, twoColumn, values.taxId, values.id, expandedBudget]
+  );
+
   return (
     <TabsList
       items={items}
@@ -486,6 +514,7 @@ const CourseClassEditView: React.FC<Props> = ({
         savedTutors,
         expandedBudget,
         expandBudgetItem,
+        addTutorWage,
         currentTax
       }}
     />
@@ -494,6 +523,7 @@ const CourseClassEditView: React.FC<Props> = ({
 
 const mapStateToProps = (state: State) => ({
   taxes: state.taxes.items,
+  tutorRoles: state.preferences.tutorRoles,
   currencySymbol: state.currency.shortCurrencySymbol
 });
 

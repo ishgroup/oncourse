@@ -25,7 +25,7 @@ export function mockOutcomes() {
   };
 
   this.getOutcome = id => {
-    const row = this.outcomes.rows.find(row => row.id == id);
+    const row = this.outcomes.rows.find(outcome => Number(outcome.id) === Number(id));
     return {
       id: row.id,
       studentName: row.values[0],
@@ -36,11 +36,14 @@ export function mockOutcomes() {
       reportableHours: 1,
       deliveryMode: "Classroom",
       fundingSource: "Domestic full fee paying student",
-      status: "RCC granted (53)",
+      status: "Not set",
       hoursAttended: 1,
       purchasingContractIdentifier: "test purchasing contract identifier",
       fundingSourceState: "test funding source state",
-      specificProgramIdentifier: "4561259787"
+      specificProgramIdentifier: "4561259787",
+      vetFundingSourceStateID: "",
+      vetPurchasingContractID: "",
+      vetPurchasingContractScheduleID: "",
     };
   };
 

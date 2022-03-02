@@ -33,12 +33,12 @@ class SettingsForm extends React.Component<any, any> {
   constructor(props) {
     super(props);
 
-    this.formModel = props.formatModel(Model);
-
     // Initializing form with values
     if (!isEmpty(props.formData)) {
       props.dispatch(initialize("SecuritySettingsForm", props.formData));
     }
+
+    this.formModel = props.formatModel(Model);
 
     this.state = {
       enablePasswordScheduleField: Boolean(
@@ -107,12 +107,12 @@ class SettingsForm extends React.Component<any, any> {
 
   render() {
     const {
-      enums, handleSubmit, onSave, dirty, data, form, invalid
+      enums, handleSubmit, onSave, dirty, data, form, invalid, formRoleName
     } = this.props;
     const { enablePasswordScheduleField, enableTOTPScheduleField } = this.state;
 
     return (
-      <Form className="container" onSubmit={handleSubmit(onSave)}>
+      <Form className="container" onSubmit={handleSubmit(onSave)} role={formRoleName}>
         <RouteChangeConfirm form={form} when={dirty} />
 
         <AppBarContainer
@@ -133,7 +133,7 @@ class SettingsForm extends React.Component<any, any> {
                 <FormControlLabel
                   classes={{
                     root: "switchWrapper",
-                    label: `${"switchLabel"} ${"switchLabelMargin"}`
+                    label: "switchLabel switchLabelMargin"
                   }}
                   control={(
                     <FormField

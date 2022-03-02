@@ -161,7 +161,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
             twoColumn={twoColumn}
             title={values && values.name}
             fields={(
-              <Grid xs={twoColumn ? 4 : 12}>
+              <Grid item xs={twoColumn ? 4 : 12}>
                 <FormField
                   type="text"
                   name="name"
@@ -169,7 +169,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
                   required
                 />
               </Grid>
-              )}
+            )}
           />
         </Grid>
 

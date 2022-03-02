@@ -1,12 +1,16 @@
 keyCode: ish.oncourse.agedDebtorCsvExport.csv
-entityClass: Invoice
-name: Historic Aged Debtor Csv Export
+entityClass: Contact
+name: Historic Aged Debtor CSV Export
 versionNumber: 1
 minVersion: 9.13
 body: ish.oncourse.agedDebtorCsvExport.groovy
 outputType: csv
-description: "Export in CSV format the aged historic debtors as of midnight at the end of the 'As At Date"
+description: "Export in CSV format the aged historic debtors as of midnight at the end of the 'As At Date'. Optionally export detail lines of all owing invoices individually. Note that this export runs on all data in the database and ignores the selection of contacts you have made before running the export."
 variables:
+  - name: detail
+    label: Export detail lines
+    dataType: BOOLEAN
+    value: "false"
   - name: atDate
-    label: "As At Date"
+    label: As at date
     dataType: DATE

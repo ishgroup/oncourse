@@ -56,7 +56,7 @@ public class MessageBodyConverter {
         }
 
         if (content == null) {
-            return null;
+           content = messageBody;
         }
 
         if (renderType == RenderType.RAW) {
