@@ -174,7 +174,7 @@ class UserFunctions {
                 .where(Site.ID.eq(dtoModel.administrationCentre))
                 .selectOne(context)
         if (!site) {
-            return new ValidationErrorDTO(dtoModel.id?.toString(), 'administrationCentre', "Administration centre doesn't exist.")
+            return new ValidationErrorDTO(dtoModel.id?.toString(), 'administrationCentre', "Select an option for the 'Bank cash/cheques to site' field.")
         }
 
         if (!dtoModel.admin && !dtoModel.role) {
