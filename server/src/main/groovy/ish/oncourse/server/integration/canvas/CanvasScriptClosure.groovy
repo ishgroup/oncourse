@@ -115,10 +115,11 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
                     throw new IllegalArgumentException("Illegal state, no student with email ${enrolment.student.contact.email} with student creation disabled.")
                 }
 
-
-
-                student = integration.createNewUser(enrolment.student.contact.fullName, enrolment.student.contact.email, authentication_provider_id, password)
-
+                student = integration.createNewUser(enrolment.student.contact.fullName,
+                        enrolment.student.contact.email,
+                        enrolment.student.contact.id.toString(),
+                        authentication_provider_id,
+                        password)
 
             } else {
 
@@ -133,7 +134,7 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
                     throw new IllegalArgumentException("Illegal state, no section for courseClass ${enrolment.courseClass.uniqueCode} with section creation disabled.")
                 }
 
-                section = integration.createSection(section_code, course["id"][0])
+                section = integration.createSection(section_code, course["id"][0], enrolment.courseClass.id)
             }
 
             integration.enrolUser(student["id"], section["id"])
