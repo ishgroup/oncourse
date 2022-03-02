@@ -174,6 +174,7 @@ const findRelatedGroup: any[] = [
   { title: "Payments in", list: "paymentIn", expression: "payer.id" },
   { title: "Payments out", list: "paymentOut", expression: "payee.id" },
   { title: "Payslips", list: "payslip", expression: "contact.id" },
+  { title: "Sales", list: "sale", expression: "purchasedBy.id" },
   { title: "Transactions", list: "transaction", expression: "contact.id" },
   { title: "Waiting lists", list: "waitingList", expression: "student.contact.id" }
 ];

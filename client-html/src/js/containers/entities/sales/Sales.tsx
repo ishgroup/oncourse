@@ -94,7 +94,6 @@ const findRelatedGroup: any[] = [
     expression:
       "(entityIdentifier = Membership || entityIdentifier = Voucher || entityIdentifier = Article) AND entityId"
   },
-  { title: "Contact", list: "contact", expression: "productItems.contactId" },
   { title: "Product", list: "product", expression: "productItems.id" },
   { title: "Membership", list: "membership", expression: "productItems.id" },
   { title: "Voucher", list: "voucher", expression: "productItems.id" },
