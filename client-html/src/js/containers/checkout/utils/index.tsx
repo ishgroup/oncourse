@@ -296,7 +296,7 @@ export const getCheckoutModel = (
 
       contactId: l.contact.id,
 
-      enrolments: l.items.filter(i => i.checked && i.type === "course")
+      enrolments: l.items.filter(i => i.checked && i.type === "course" && i.class)
         .map((i): CheckoutEnrolment =>
           ({
             classId: i.class.id,
@@ -359,7 +359,7 @@ export const getInvoiceLineKey = (entity: CheckoutEntity) => {
 };
 
 const getInvoiceLinePrices = (item: CheckoutItem, lines: InvoiceInvoiceLine[], itemOriginal: CheckoutItem) => {
-  const id = item.type === "course" ? item.class.id : item.id;
+  const id = item.type === "course" && item.class ? item.class.id : item.id;
   const lineKey = getInvoiceLineKey(item.type);
   const targetLine = lines.find(l => l[lineKey] && (l[lineKey].productId === id || l[lineKey].classId === id));
 
@@ -505,7 +505,8 @@ export const checkoutCourseClassMap = ({ id, values }): CheckoutCourseClass => {
     relatedFundingSourceId: JSON.parse(values[17]),
     sessionIds: JSON.parse(values[18]),
     fundingProviderId: values[19] ? Number(values[19]) : null,
-    vetPurchasingContractID: values[20]
+    vetPurchasingContractID: values[20],
+    courseId: values[21] ? Number(values[21]) : null,
   };
 
   const strTutorNames = cc.tutors;

@@ -3,9 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import React from "react";
 import Button from "@mui/material/Button";
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
-import React from "react";
+import { IS_JEST } from "../../../constants/EnvironmentConstants";
 
 interface Props {
   disabled: boolean;
@@ -22,22 +23,28 @@ const FormSubmitButton = React.memo<Props>(({
     fab = false,
     text = "Save",
     className,
-  }) => (
-    <Button
-      type="submit"
-      classes={{
-        root: fab ? "saveButtonEditView" : "whiteAppBarButton",
-        disabled: fab ? "saveButtonEditViewDisabled" : "whiteAppBarButtonDisabled"
-      }}
-      disabled={disabled}
-      startIcon={invalid && <ErrorOutline color="error" />}
-      variant="contained"
-      color="primary"
-      className={className}
-    >
-      {text}
-    </Button>
-  ));
+  }) => {
+    const buttonProps = IS_JEST ? {
+      "data-testid": "appbar-submit-button"
+    } : {};
+    return (
+      <Button
+        type="submit"
+        classes={{
+          root: fab ? "saveButtonEditView" : "whiteAppBarButton",
+          disabled: fab ? "saveButtonEditViewDisabled" : "whiteAppBarButtonDisabled"
+        }}
+        disabled={disabled}
+        startIcon={invalid && <ErrorOutline color="error" />}
+        variant="contained"
+        color="primary"
+        className={className || ""}
+        {...buttonProps}
+      >
+        {text}
+      </Button>
+    );
+  });
 
 export default FormSubmitButton;
 

@@ -5,7 +5,7 @@ export function mockPaymentsIn() {
   this.getPaymentsIn = () => this.paymentsIn;
 
   this.getPaymentIn = id => {
-    const row = this.paymentsIn.rows.find(row => row.id == id);
+    const row = this.paymentsIn.rows.find(paymentsIn => Number(paymentsIn.id) === Number(id));
     const site = this.getSite(row.id);
 
     return {
@@ -20,7 +20,7 @@ export function mockPaymentsIn() {
       ccTransaction: "1098103",
       chequeSummary: {},
       createdBy: "admin",
-      dateBanked: null,
+      dateBanked: "",
       datePayed: row.values[6],
       emailConfirmation: false,
       invoices: [

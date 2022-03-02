@@ -153,7 +153,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/paymentOut'
         And request {"id":1000, "privateNotes":"some private notes","datePayed":"2019-09-10", "dateBanked":"2018-12-31","administrationCenterId":200,"paymentMethodId":0}
         When method PUT
         Then status 400
-        And match $.errorMessage == "Date banked must be after Date paid"
+        And match $.errorMessage == "Date banked must be after or equal to date paid"
 
 
 
