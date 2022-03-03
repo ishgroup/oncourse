@@ -23,8 +23,10 @@ import {
   ACCOUNT_DEFAULT_VOUCHER_UNDERPAYMENT_ID
 } from "../../../constants/Config";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import { getEntityTags } from "../../tags/actions";
+import { getEntityTags, getListTags } from "../../tags/actions";
 import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
+import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
+import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 
 interface VoucherProductsProps {
   getVoucherProductRecord?: () => void;
@@ -34,6 +36,7 @@ interface VoucherProductsProps {
   onSave?: (id: string, voucherProduct: VoucherProduct) => void;
   getFilters?: () => void;
   getRelationTypes?: () => void;
+  getTags?: () => void;
   clearListState?: () => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
   getDefaultAccounts?: () => void;
@@ -74,7 +77,7 @@ const filterGroups: FilterGroup[] = [
         name: "Inactive",
         expression: "isOnSale == false",
         active: false
-      }
+      },
     ]
   }
 ];
@@ -83,7 +86,8 @@ const findRelatedGroup: any[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == VoucherProduct and entityId" },
   { title: "Contacts purchased", list: "contact", expression: "invoices.invoiceLines.productItems.product.id" },
   { title: "Courses", list: "course", expression: "voucherProductCourses.voucherProduct.id" },
-  { title: "Vouchers", list: "sale", expression: "product.id" }
+  { title: "Sales", list: "sale", expression: "type is VOUCHER AND product.id" },
+  { title: "Vouchers", list: "sale", expression: "product.id" },
 ];
 
 const preformatBeforeSubmit = (value: VoucherProduct): VoucherProduct => {
@@ -113,7 +117,8 @@ const VoucherProducts: React.FC<VoucherProductsProps> = props => {
     accounts,
     checkPermissions,
     getRelationTypes,
-    getDataCollectionRules
+    getDataCollectionRules,
+    getTags
   } = props;
 
   const onInitCustom = () => {
@@ -130,6 +135,7 @@ const VoucherProducts: React.FC<VoucherProductsProps> = props => {
     getDefaultAccounts();
     getAccounts();
     getFilters();
+    getTags();
     getTagsForClassesSearch();
     checkPermissions();
     getRelationTypes();
@@ -148,12 +154,14 @@ const VoucherProducts: React.FC<VoucherProductsProps> = props => {
         }}
         editViewProps={{
           manualLink,
+          asyncValidate: notesAsyncValidate,
+          asyncBlurFields: ["notes[].message"],
           hideTitle: true
         }}
         EditViewContent={VoucherProductEditView}
+        CogwheelAdornment={BulkEditCogwheelOption}
         getEditRecord={getVoucherProductRecord}
         rootEntity="VoucherProduct"
-        aqlEntity="Product"
         onInit={onInitCustom}
         onCreate={onCreate}
         onSave={onSave}
@@ -175,6 +183,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getTagsForClassesSearch: () => {
     dispatch(getEntityTags("Course"));
   },
+  getTags: () => dispatch(getListTags("VoucherProduct")),
   getFilters: () => dispatch(getFilters("VoucherProduct")),
   getAccounts: () => getPlainAccounts(dispatch),
   getDefaultAccounts: () => {

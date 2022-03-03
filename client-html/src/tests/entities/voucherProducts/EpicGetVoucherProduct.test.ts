@@ -7,6 +7,7 @@ import {
   GET_VOUCHER_PRODUCT_ITEM_FULFILLED,
   getVoucherProduct
 } from "../../../js/containers/entities/voucherProducts/actions";
+import { getNoteItems } from "../../../js/common/components/form/notes/actions";
 
 describe("Get voucherProduct epic tests", () => {
   it("EpicGetVoucherProduct should returns correct values", () => DefaultEpic({
@@ -19,6 +20,7 @@ describe("Get voucherProduct epic tests", () => {
           type: GET_VOUCHER_PRODUCT_ITEM_FULFILLED,
           payload: { voucherProduct }
         },
+        getNoteItems("VoucherProduct", voucherProduct.id, LIST_EDIT_VIEW_FORM_NAME),
         {
           type: SET_LIST_EDIT_RECORD,
           payload: { editRecord: voucherProduct, name: voucherProduct.name }

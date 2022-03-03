@@ -31,6 +31,12 @@ const useStyles = makeStyles((theme: AppTheme) => ({
       easing: theme.transitions.easing.easeInOut
     }),
   },
+  titleTextOnStuck: {
+    color: `${theme.appBar.headerAlternate.color}`,
+    "& button": {
+      color: `${theme.appBar.headerAlternate.color}`,
+    }
+  },
   titleWrapper: {
     minHeight: 51,
   },
@@ -175,6 +181,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
                   className={clsx(
                     classes.titleText,
                     !twoColumn && !opened && 'mb-1',
+                    { [classes.titleTextOnStuck]: showTitleOnly },
                     showTitleOnly ? "appHeaderFontSize centeredFlex" : classes.title,
                     disableInteraction && classes.disableInteraction
                   )}

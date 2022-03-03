@@ -3,9 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useCallback, useMemo
-} from "react";
+import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import { change } from "redux-form";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -13,7 +11,6 @@ import Grid from "@mui/material/Grid";
 import { CourseEnrolmentType, CourseStatus, Tag } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
-import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import { openInternalLink } from "../../../../common/utils/links";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { PreferencesState } from "../../../preferences/reducers/state";
@@ -23,7 +20,6 @@ import { CourseExtended } from "../../../../model/entities/Course";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { mapSelectItems } from "../../../../common/utils/common";
 import CourseAvailableClassChart from "./CourseAvailableClassChart";
-import { makeAppStyles } from "../../../../common/styles/makeStyles";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
@@ -36,12 +32,6 @@ interface CourseGeneralTabProps extends EditViewProps<CourseExtended> {
   dispatch: any;
   form: string;
 }
-
-const useStyles = makeAppStyles(() => ({
-  chartWrapper: {
-    height: "250px",
-  },
-}));
 
 const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
   ({
@@ -56,10 +46,6 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
     dispatch,
     form
   }) => {
-    const classes  = useStyles();
-
-    const validateTagList = useCallback((value, allValues, props) => validateTagsList(tags, value, allValues, props), [tags]);
-
     const onCalendarClick = useCallback(() => {
       openInternalLink(`/timetable/search?query=courseClass.course.id=${values.id}`);
     }, [values.id]);
@@ -140,13 +126,10 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
             type="tags"
             name="tags"
             tags={tags}
-            validate={tags && tags.length ? validateTagList : undefined}
           />
         </Grid>
 
-        <Grid item xs={12} className={classes.chartWrapper}>
-          <CourseAvailableClassChart courseId={values.id} isNew={isNew} />
-        </Grid>
+        <CourseAvailableClassChart courseId={values.id} isNew={isNew} />
 
         <Grid item xs={12} className="mb-2">
           <TimetableButton onClick={onCalendarClick} />
@@ -230,19 +213,10 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
           />
         </Grid>
 
-        <Grid item xs={12}>
-          <FormField
-            type="multilineText"
-            name="brochureDescription"
-            label="Print brochure description"
-          />
-        </Grid>
-
         <CustomFields
           entityName="Course"
           fieldName="customFields"
           entityValues={values}
-          dispatch={dispatch}
           form={form}
           gridItemProps={{
               xs: twoColumn ? 6 : 12,

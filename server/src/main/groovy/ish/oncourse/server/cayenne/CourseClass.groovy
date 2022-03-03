@@ -401,16 +401,27 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		return (List<Enrolment>) CourseClassUtil.getSuccessAndQueuedEnrolments(getEnrolments())
 	}
 
+	@Nonnull
+	List<Enrolment> getCancelledEnrolments() {
+		return (List<Enrolment>) CourseClassUtil.getCancelledEnrolments(getEnrolments())
+	}
+
+	List<Enrolment> getActualEnrolments() {
+		def actualEnrolments = getSuccessAndQueuedEnrolments()
+		actualEnrolments.addAll(cancelledEnrolments)
+		return actualEnrolments
+	}
+
 	/**
 	 * @return sum of payable hours in all sessions of this courseClass
 	 */
 	@API
 	BigDecimal getPayableClassroomHours() {
 		BigDecimal sum = BigDecimal.ZERO
-		if (getSessions() != null && getSessions().size() > 0) {
-			sum = getSessions()*.getDurationInHours().sum() as BigDecimal
-		} else if (getSessionsCount() != null && getMinutesPerSession() != null) {
-			return getSessionsCount() * getMinutesPerSession() / 60L
+		if (sessions != null && !sessions.isEmpty()) {
+			sum = sessions*.payableDurationInHours.sum() as BigDecimal
+		} else if (sessionsCount != null && minutesPerSession != null) {
+			return sessionsCount * minutesPerSession / 60L
 		}
 		return sum
 	}
@@ -438,6 +449,18 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	@API
 	int getValidEnrolmentCount() {
 		List<Enrolment> list = getSuccessAndQueuedEnrolments()
+		if (list == null) {
+			return 0
+		}
+
+		return list.size()
+	}
+
+	/**
+	 * @return number of successful, cancelled and in transaction enrolments made to this class
+	 */
+	int getActualEnrolmentCount() {
+		List<Enrolment> list = getActualEnrolments()
 		if (list == null) {
 			return 0
 		}

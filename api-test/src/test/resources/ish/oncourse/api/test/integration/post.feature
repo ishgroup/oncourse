@@ -10,7 +10,7 @@ Feature: Main feature for all POST requests with path 'integration'
         
         
     Scenario: (+) Create MYOB integration
-        * def integration = {name: 'someName', type: 6}
+        * def integration = {name: 'someName', type: 3}
         Given path ishPath
         And request integration
         When method POST
@@ -19,7 +19,7 @@ Feature: Main feature for all POST requests with path 'integration'
         Given path ishPath
         When method GET
         Then status 200
-        And match response[0].type == 6
+        And match response[0].type == 3
         And match response[0].name == 'someName'
         And match response[0].verificationCode == null
         And match each response[0].props[*].value == null

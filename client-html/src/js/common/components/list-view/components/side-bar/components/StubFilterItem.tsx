@@ -13,7 +13,7 @@ import { Dispatch } from "redux";
 import { Filter } from "@api/model";
 import { createCustomFilter, setListSavingFilter } from "../../../actions";
 import { SavingFilterState } from "../../../../../../model/common/ListView";
-import { validateSingleMandatoryField, validateTagName } from "../../../../../utils/validation";
+import { validateSingleMandatoryField, validateAqlFilterOrTagName } from "../../../../../utils/validation";
 import { SIMPLE_SEARCH_QUOTES_REGEX, SIMPLE_SEARCH_REGEX } from "../../../../../../constants/Config";
 
 const styles = theme =>
@@ -46,7 +46,7 @@ const styles = theme =>
     }
   });
 
-const validationArr = [validateSingleMandatoryField, validateTagName];
+const validationArr = [validateSingleMandatoryField, validateAqlFilterOrTagName];
 
 export class StubFilterItem extends React.PureComponent<any, any> {
   private inputNode: HTMLInputElement;
@@ -126,9 +126,10 @@ export class StubFilterItem extends React.PureComponent<any, any> {
           inputRef={this.setInputNode}
           value={filterName}
           variant="standard"
+          className="ml-1"
         />
 
-        <Tooltip title="Save Filter">
+        <Tooltip title="Save Filter" placement="right">
           <div>
             <IconButton onClick={this.onSaveFilter} className={classes.iconButton} disabled={error}>
               <BookmarkBorder fontSize="inherit" color={error ? "disabled" : "secondary"} />
@@ -136,7 +137,7 @@ export class StubFilterItem extends React.PureComponent<any, any> {
           </div>
         </Tooltip>
 
-        <Tooltip title="Delete Filter">
+        <Tooltip title="Delete Filter" placement="right">
           <IconButton onClick={this.clearFilter} className={clsx(classes.deleteButton, classes.iconButton)}>
             <Delete fontSize="inherit" color="secondary" />
           </IconButton>

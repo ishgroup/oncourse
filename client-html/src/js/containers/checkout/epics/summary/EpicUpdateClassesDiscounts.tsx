@@ -23,7 +23,7 @@ const request: EpicUtils.Request<any, boolean> = {
 
     let totalEnrolmentsCount = 0;
     let totalAmountExDiscount = 0;
-    const payerId = state.checkout.summary.list.find(l => l.payer).contact.id;
+    const payerId = state.checkout.summary.list.find(l => l.payer)?.contact.id;
     const enrolments = [];
 
     state.checkout.summary.list.forEach((l, listIndex) => {
@@ -35,7 +35,7 @@ const request: EpicUtils.Request<any, boolean> = {
           }
           totalAmountExDiscount = decimalPlus(totalAmountExDiscount, parseFloat(originalItem.price));
 
-          if (i.type === "course") {
+          if (i.type === "course" && i.class) {
             totalEnrolmentsCount++;
 
             const courseItems = l.items.filter(item => item.checked && item.type === "course");

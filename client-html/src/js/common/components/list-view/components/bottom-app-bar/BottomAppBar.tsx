@@ -13,7 +13,7 @@ import Share from "@mui/icons-material/Share";
 import Settings from "@mui/icons-material/Settings";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { List, ListItem, Tooltip } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 import { alpha, darken } from '@mui/material/styles';
 import FindInPage from "@mui/icons-material/FindInPage";
 import { connect } from "react-redux";
@@ -244,7 +244,6 @@ class BottomAppBar extends React.PureComponent<any, any> {
       showBulkEditDrawer,
       selection,
       rootEntity,
-      aqlEntity,
       querySearch,
       changeQueryView,
       onQuerySearch,
@@ -330,12 +329,12 @@ class BottomAppBar extends React.PureComponent<any, any> {
           filteredCount={filteredCount}
         />
 
-        <div className={clsx(classes.root, LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader")}>
+        <div className={classes.root}>
           <SearchInput
             innerRef={searchComponentNode}
             onQuerySearch={onQuerySearch}
             querySearch={querySearch}
-            rootEntity={aqlEntity || rootEntity}
+            rootEntity={rootEntity}
             changeQueryView={changeQueryView}
             searchMenuItemsRenderer={searchMenuItemsRenderer}
             placeholder="Find..."

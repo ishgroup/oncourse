@@ -9,6 +9,10 @@ options:
   - name: send_before_each_session
     dataType: BOOLEAN
     value: "false"
+  - name: number_of_days
+    dataType: TEXT
+    value: "0"
+    description: Set the number of days from class start that you'd like the notification to be sent. Setting this to 0 will send it on the day of the class.\
   - name: sessionCommencementTemplate
     dataType: MESSAGE_TEMPLATE
     value: "ish.email.tutorNoticeOfSessionCommencement"

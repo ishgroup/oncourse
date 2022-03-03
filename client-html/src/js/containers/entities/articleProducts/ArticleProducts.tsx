@@ -22,6 +22,9 @@ import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID } from "../../../constants/Config
 import { checkPermissions, getUserPreferences } from "../../../common/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
+import { getListTags } from "../../tags/actions";
+import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
+import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 
 interface ArticleProductsProps {
   getArticleProductRecord?: () => void;
@@ -30,6 +33,7 @@ interface ArticleProductsProps {
   onDelete?: (id: string) => void;
   onSave?: (id: string, articleProduct: ArticleProduct) => void;
   getFilters?: () => void;
+  getTags?: () => void;
   clearListState?: () => void;
   getAccounts?: () => void;
   getRelationTypes?: () => void;
@@ -92,7 +96,8 @@ const findRelatedGroup: any[] = [
     title: "Invoices",
     list: "invoice",
     expression: "(invoiceLines.productItems.status  ==  ACTIVE) and invoiceLines.productItems.product.id"
-  }
+  },
+  { title: "Sales", list: "sale", expression: "type is ARTICLE AND product.id" },
 ];
 
 const manualLink = getManualLink("product");
@@ -129,7 +134,8 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
     updatingTaxes,
     checkPermissions,
     getRelationTypes,
-    getDataCollectionRules
+    getDataCollectionRules,
+    getTags
   } = props;
 
   useEffect(() => {
@@ -150,6 +156,7 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
     getAccounts();
     getTaxes();
     getFilters();
+    getTags();
     checkPermissions();
     getRelationTypes();
     getDataCollectionRules();
@@ -167,12 +174,14 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
         }}
         editViewProps={{
           manualLink,
+          asyncValidate: notesAsyncValidate,
+          asyncBlurFields: ["notes[].message"],
           hideTitle: true
         }}
         EditViewContent={ArticleProductEditView}
+        CogwheelAdornment={BulkEditCogwheelOption}
         getEditRecord={getArticleProductRecord}
         rootEntity="ArticleProduct"
-        aqlEntity="Product"
         onInit={() => setInitNew(true)}
         onCreate={onCreate}
         onSave={onSave}
@@ -194,6 +203,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getDefaultIncomeAccount: () => dispatch(getUserPreferences([ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID])),
   getTaxes: () => dispatch(getPlainTaxes()),
   getAccounts: () => getPlainAccounts(dispatch, "income"),
+  getTags: () => dispatch(getListTags("ArticleProduct")),
   getFilters: () => dispatch(getFilters("ArticleProduct")),
   clearListState: () => dispatch(clearListState()),
   getArticleProductRecord: (id: string) => dispatch(getArticleProduct(id)),

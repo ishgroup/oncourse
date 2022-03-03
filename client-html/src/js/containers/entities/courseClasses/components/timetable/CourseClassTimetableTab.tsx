@@ -4,26 +4,21 @@
  */
 
 import React, {
-  useCallback, useEffect, useMemo, useState
+ useCallback, useEffect, useMemo, useState 
 } from "react";
 import {
-  change, initialize, arrayRemove, startAsyncValidation, stopAsyncValidation
+ arrayRemove, change, initialize, startAsyncValidation, stopAsyncValidation 
 } from "redux-form";
 import withStyles from "@mui/styles/withStyles";
 import createStyles from "@mui/styles/createStyles";
 import {
-  addBusinessDays,
   addDays,
   addHours,
   addMinutes,
-  addMonths,
-  addWeeks,
-  addYears,
   differenceInMinutes,
-  isWeekend, setDate,
   subDays
 } from "date-fns";
-import { SessionWarning, TutorAttendance } from "@api/model";
+import { CourseClassTutor, SessionWarning, TutorAttendance } from "@api/model";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import { connect } from "react-redux";
@@ -40,7 +35,7 @@ import { TimetableMonth, TimetableSession } from "../../../../../model/timetable
 import { getAllMonthsWithSessions } from "../../../../timetable/utils";
 import CalendarMonthBase from "../../../../timetable/components/calendar/components/month/CalendarMonthBase";
 import CalendarDayBase from "../../../../timetable/components/calendar/components/day/CalendarDayBase";
-import { CourseClassExtended, SessionRepeatTypes } from "../../../../../model/entities/CourseClass";
+import { ClassCostExtended, CourseClassExtended, SessionRepeatTypes } from "../../../../../model/entities/CourseClass";
 import ExpandableContainer from "../../../../../common/components/layout/expandable/ExpandableContainer";
 import history from "../../../../../constants/History";
 import { setCourseClassSessionsWarnings } from "../../actions";
@@ -63,7 +58,7 @@ import { State } from "../../../../../reducers/state";
 import { SelectItemDefault } from "../../../../../model/entities/common";
 import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
 import uniqid from "../../../../../common/utils/uniqid";
-import { setShiftedTutorAttendances } from "../../utils";
+import { getSessionsWithRepeated, setShiftedTutorAttendances } from "../../utils";
 
 const styles = () => createStyles({
     root: {
@@ -104,77 +99,8 @@ interface Props extends Partial<EditViewProps<CourseClassExtended>> {
   sessionWarnings?: SessionWarning[];
   sessionSelection?: any[];
   bulkSessionModalOpened?: boolean;
+  addTutorWage: (tutor: CourseClassTutor, wage?: ClassCostExtended) => void;
 }
-
-const getSessionsWithRepeated = (
-  repeatSession: TimetableSession,
-  repeatType: SessionRepeatTypes,
-  repeatTimes: number,
-  allSessions: TimetableSession[]
-) => {
-  let repeated = Array.from(Array(repeatTimes <= 0 ? 1 : repeatTimes));
-  let repeatHandler = addHours;
-  let indexIncrement = 1;
-
-  switch (repeatType) {
-    case "hour":
-      repeatHandler = addHours;
-      break;
-    case "day (excluding weekends)":
-      if (isWeekend(new Date(repeatSession.start))) {
-        indexIncrement = 0;
-      }
-      repeatHandler = addBusinessDays;
-      break;
-    case "day (including weekends)":
-      repeatHandler = addDays;
-      break;
-    case "week":
-      repeatHandler = addWeeks;
-      break;
-    case "month":
-      repeatHandler = addMonths;
-      break;
-    case "year":
-      repeatHandler = addYears;
-      break;
-  }
-
-  const repeatedStart = new Date(repeatSession.start);
-
-  repeated = repeated.map<TimetableSession>((r, index) => {
-    let start = repeatHandler(new Date(repeatSession.start), index + indexIncrement);
-    let end = repeatHandler(new Date(repeatSession.end), index + indexIncrement);
-
-    // workaround for DST time offset
-    if (repeatSession.siteTimezone && repeatType !== "hour") {
-      const startHoursDiff = appendTimezone(repeatedStart, repeatSession.siteTimezone).getHours()
-      - appendTimezone(start, repeatSession.siteTimezone).getHours();
-
-      if (startHoursDiff) {
-        start = addHours(start, startHoursDiff);
-        end = addHours(end, startHoursDiff);
-      }
-    }
-
-    const result = {
-      ...repeatSession,
-      id: null,
-      temporaryId: uniqid(),
-      start: start.toISOString(),
-      end: end.toISOString(),
-    };
-
-    setShiftedTutorAttendances(repeatSession, result);
-
-    return result;
-  });
-
-  const updated = [...allSessions, ...repeated];
-  updated.sort((a, b) => (new Date(a.start) > new Date(b.start) ? 1 : -1));
-
-  return updated;
-};
 
 let pendingSessionActionArgs = null;
 
@@ -242,7 +168,8 @@ const CourseClassTimetableTab = ({
   isNew,
   sessionWarnings,
   sessionSelection,
-  bulkSessionModalOpened
+  bulkSessionModalOpened,
+  addTutorWage
 }: Props) => {
   const [expandedSession, setExpandedSession] = useState(null);
   const [copyDialogAnchor, setCopyDialogAnchor] = useState(null);
@@ -261,7 +188,6 @@ const CourseClassTimetableTab = ({
               dispatch(change(form, "sessions", []));
               dispatch(change(form, "trainingPlan", []));
               dispatch(change(form, "studentAttendance", []));
-              dispatch(change(form, "tutorAttendance", []));
               dispatch(change(form, "startDateTime", null));
               dispatch(change(form, "endDateTime", null));
               dispatch(addActionToQueue(postCourseClassSessions(values.id, []), "POST", "Session", values.id));
@@ -287,8 +213,8 @@ const CourseClassTimetableTab = ({
         getAllMonthsWithSessions(
           values.sessions,
           values.sessions[0].siteTimezone
-            ? new Date(values.sessions[0].start)
-            : appendTimezone(new Date(values.sessions[0].start), values.sessions[0].siteTimezone)
+            ? appendTimezone(new Date(values.sessions[0].start), values.sessions[0].siteTimezone)
+            : new Date(values.sessions[0].start)
         )
       );
     }
@@ -538,7 +464,6 @@ const CourseClassTimetableTab = ({
       const durationValue = differenceInMinutes(endDate, startDate);
 
       let actualPayableDurationMinutes;
-      let sessionTimeChanged;
 
       if (bulkValue.siteId !== null && bulkValue.locationChecked) {
         session.siteId = bulkValue.siteId;
@@ -551,8 +476,6 @@ const CourseClassTimetableTab = ({
         (bulkValue.startChecked && bulkValue.durationChecked && bulkValue.payableDurationChecked)
         && bulkValue.start !== "" && bulkValue.duration !== 0 && bulkValue.payableDuration !== 0
       ) {
-        sessionTimeChanged = true;
-
         const newStartDate = new Date(bulkValue.start);
         const startDate = new Date(session.start);
         startDate.setHours(newStartDate.getHours(), newStartDate.getMinutes(), 0, 0);
@@ -567,8 +490,6 @@ const CourseClassTimetableTab = ({
         (bulkValue.startChecked && bulkValue.durationChecked)
         && bulkValue.start !== "" && bulkValue.duration !== 0
       ) {
-        sessionTimeChanged = true;
-
         const newStartDate = new Date(bulkValue.start);
         const startDate = new Date(session.start);
         startDate.setHours(newStartDate.getHours(), newStartDate.getMinutes(), 0, 0);
@@ -581,8 +502,6 @@ const CourseClassTimetableTab = ({
         (bulkValue.startChecked && bulkValue.payableDurationChecked)
         && bulkValue.start !== "" && bulkValue.payableDuration !== 0
       ) {
-        sessionTimeChanged = true;
-
         const newStartDate = new Date(bulkValue.start);
         const startDate = new Date(session.start);
         startDate.setHours(newStartDate.getHours(), newStartDate.getMinutes(), 0, 0);
@@ -596,8 +515,6 @@ const CourseClassTimetableTab = ({
         (bulkValue.durationChecked && bulkValue.payableDurationChecked)
         && bulkValue.duration !== 0 && bulkValue.payableDuration !== 0
       ) {
-        sessionTimeChanged = true;
-
         const startDate = new Date(session.start);
         startDate.setSeconds(0, 0);
 
@@ -607,28 +524,36 @@ const CourseClassTimetableTab = ({
 
         actualPayableDurationMinutes = bulkValue.payableDuration;
       } else if (bulkValue.startChecked && bulkValue.start !== "") {
-        sessionTimeChanged = true;
-
         const newStartDate = new Date(bulkValue.start);
-        const startDate = new Date(session.start);
+        let startDate = new Date(session.start);
         startDate.setHours(newStartDate.getHours(), newStartDate.getMinutes(), 0, 0);
-        session.start = startDate.toISOString();
 
-        const endDate = addMinutes(startDate, durationValue);
+        let endDate = addMinutes(startDate, durationValue);
         endDate.setSeconds(0, 0);
+
+        // workaround for DST time offset
+        if (session.siteTimezone) {
+          const startHoursDiff = appendTimezone(newStartDate, session.siteTimezone).getHours()
+            - appendTimezone(startDate, session.siteTimezone).getHours();
+
+          if (startHoursDiff) {
+            startDate = addHours(startDate, startHoursDiff);
+            endDate = addHours(endDate, startHoursDiff);
+          }
+        }
+
+        session.start = startDate.toISOString();
         session.end = endDate.toISOString();
+        setShiftedTutorAttendances(originalSession, session);
       } else if (bulkValue.durationChecked && bulkValue.duration !== 0) {
-        sessionTimeChanged = true;
         session.end = addMinutes(new Date(session.start), bulkValue.duration).toISOString();
       } else if (bulkValue.payableDurationChecked && bulkValue.payableDuration !== 0) {
         actualPayableDurationMinutes = bulkValue.payableDuration;
       }
       if (bulkValue.moveForwardChecked && bulkValue.moveForward !== "" && bulkValue.moveForward !== "0") {
-        sessionTimeChanged = true;
         session.start = addDays(new Date(session.start), parseInt(bulkValue.moveForward)).toISOString();
         session.end = addDays(new Date(session.end), parseInt(bulkValue.moveForward)).toISOString();
       } else if (bulkValue.moveBackwardChecked && bulkValue.moveBackward !== "" && bulkValue.moveBackward !== "0") {
-        sessionTimeChanged = true;
         session.start = subDays(new Date(session.start), parseInt(bulkValue.moveBackward)).toISOString();
         session.end = subDays(new Date(session.end), parseInt(bulkValue.moveBackward)).toISOString();
       }
@@ -639,18 +564,30 @@ const CourseClassTimetableTab = ({
           // Check for payslip
           const payslipAttendanceIndex = payslipAttendances.findIndex(pa => pa.courseClassTutorId === ta.courseClassTutorId);
           if (payslipAttendanceIndex !== -1) {
+            const result = payslipAttendances[payslipAttendanceIndex];
             payslipAttendances.splice(payslipAttendanceIndex, 1);
-            return payslipAttendances[payslipAttendanceIndex];
+            return result;
           }
 
           const taStart = new Date(ta.start);
           const taEnd = new Date(ta.end);
-          
-          const start = new Date(session.start);
-          const end = new Date(session.end);
+
+          let start = new Date(session.start);
+          let end = new Date(session.end);
 
           start.setHours(taStart.getHours(), taStart.getMinutes(), 0, 0);
           end.setHours(taEnd.getHours(), taEnd.getMinutes(), 0, 0);
+
+          // workaround for DST time offset
+          if (session.siteTimezone) {
+            const startHoursDiff = appendTimezone(new Date(originalSession.start), session.siteTimezone).getHours()
+              - appendTimezone(start, session.siteTimezone).getHours();
+
+            if (startHoursDiff) {
+              start = addHours(start, startHoursDiff);
+              end = addHours(end, startHoursDiff);
+            }
+          }
 
           return {
             ...ta,
@@ -658,10 +595,6 @@ const CourseClassTimetableTab = ({
             end: end.toISOString(),
           };
         }).concat(payslipAttendances);
-      }
-
-      if (sessionTimeChanged) {
-        setShiftedTutorAttendances(originalSession, session);
       }
 
       if (typeof actualPayableDurationMinutes === 'number') {
@@ -683,8 +616,8 @@ const CourseClassTimetableTab = ({
         getAllMonthsWithSessions(
           updated,
           updated[0].siteTimezone
-            ? new Date(updated[0].start)
-            : appendTimezone(new Date(updated[0].start), updated[0].siteTimezone)
+            ? appendTimezone(new Date(updated[0].start), updated[0].siteTimezone)
+            : new Date(updated[0].start)
         )
       );
     }
@@ -742,6 +675,8 @@ const CourseClassTimetableTab = ({
                       warnings={warnings}
                       setOpenCopyDialog={setOpenCopyDialog}
                       openCopyDialog={openCopyDialog}
+                      budget={values.budget}
+                      addTutorWage={addTutorWage}
                     />
                   );
                 })}
@@ -750,7 +685,7 @@ const CourseClassTimetableTab = ({
           })}
       </CalendarMonthBase>
       )),
-    [months, values.tutors, sessionSelection, sessionWarnings, openCopyDialog]
+    [months, values.tutors, values.budget, sessionSelection, sessionWarnings, openCopyDialog]
   );
 
   const selfPacedField = (
@@ -773,12 +708,13 @@ const CourseClassTimetableTab = ({
 
   return (
     <div className="pl-3 pr-3">
-      {sessionSelection.length > 0 && (
+      {sessionSelection.length > 0 && bulkSessionModalOpened && (
         <CourseClassBulkChangeSession
           onSubmit={onBulkSessionUpdate}
           opened={bulkSessionModalOpened}
           sessions={values.sessions}
           tutors={values.tutors}
+          budget={values.budget}
         />
       )}
       {values.isDistantLearningCourse ? (
@@ -834,19 +770,6 @@ const CourseClassTimetableTab = ({
         </Grid>
       ) : (
         <>
-          {/* <div className={clsx("pb-1", !attendanceChanged && "d-none")}> */}
-          {/*  <div className="centeredFlex"> */}
-          {/*    <div> */}
-          {/*      <div className="heading pb-1">Timetable</div> */}
-          {/*      <Typography variant="caption" color="textSecondary"> */}
-          {/*        Please save your attendance changes before editing timetable */}
-          {/*      </Typography> */}
-          {/*    </div> */}
-          {/*    <div className="flex-fill" /> */}
-          {/*    {selfPacedField} */}
-          {/*  </div> */}
-          {/* </div> */}
-          {/* <div className={clsx(attendanceChanged && "d-none")}> */}
           <div>
             <ExpandableContainer
               header="Timetable"

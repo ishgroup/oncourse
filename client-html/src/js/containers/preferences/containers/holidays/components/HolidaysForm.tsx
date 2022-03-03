@@ -34,6 +34,8 @@ import AppBarContainer from "../../../../../common/components/layout/AppBarConta
 
 const manualUrl = getManualLink("generalPrefs_holidays");
 
+export const HOLIDAYS_FORM: string = "HolidaysForm";
+
 interface Props {
   values: any;
   holidays: Holiday[];
@@ -64,7 +66,7 @@ class HolidaysBaseForm extends React.Component<Props, any> {
     super(props);
 
     if (props.holidays) {
-      props.dispatch(initialize("HolidaysForm", { holidays: props.holidays }));
+      props.dispatch(initialize(HOLIDAYS_FORM, { holidays: props.holidays }));
     }
   }
 
@@ -72,7 +74,7 @@ class HolidaysBaseForm extends React.Component<Props, any> {
   UNSAFE_componentWillReceiveProps(nextProps) {
     // Initializing form with values
     if (nextProps.holidays && !this.props.initialized) {
-      this.props.dispatch(initialize("HolidaysForm", { holidays: nextProps.holidays }));
+      this.props.dispatch(initialize(HOLIDAYS_FORM, { holidays: nextProps.holidays }));
     }
     if (!this.isPending) {
       return;
@@ -101,7 +103,7 @@ class HolidaysBaseForm extends React.Component<Props, any> {
     item.repeatEndAfter = 0;
     item.repeatOn = undefined;
 
-    this.props.dispatch(arrayInsert("HolidaysForm", "holidays", 0, item));
+    this.props.dispatch(arrayInsert(HOLIDAYS_FORM, "holidays", 0, item));
     const domNode = document.getElementById("holidays[0].description");
     if (domNode) domNode.scrollIntoView({ behavior: "smooth" });
   };
@@ -132,7 +134,7 @@ class HolidaysBaseForm extends React.Component<Props, any> {
     })
       .then(() => {
         const { history, nextLocation, setNextLocation } = this.props;
-        this.props.dispatch(initialize("HolidaysForm", { holidays: this.props.holidays }));
+        this.props.dispatch(initialize(HOLIDAYS_FORM, { holidays: this.props.holidays }));
 
         nextLocation && history.push(nextLocation);
         setNextLocation('');
@@ -166,13 +168,13 @@ class HolidaysBaseForm extends React.Component<Props, any> {
         if (item.id) {
           onDelete(item.id);
         } else {
-          this.props.dispatch(arrayRemove("HolidaysForm", "holidays", index));
+          this.props.dispatch(arrayRemove(HOLIDAYS_FORM, "holidays", index));
           this.resolvePromise(true);
         }
       })
         .then(clientSideDelete => {
           if (!clientSideDelete) {
-            this.props.dispatch(initialize("HolidaysForm", { holidays: this.props.holidays }));
+            this.props.dispatch(initialize(HOLIDAYS_FORM, { holidays: this.props.holidays }));
           }
         })
         .catch(() => {
@@ -191,7 +193,7 @@ class HolidaysBaseForm extends React.Component<Props, any> {
     const modified = timestamps && timestamps[1];
 
     return (
-      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
+      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)} role={HOLIDAYS_FORM}>
         <RouteChangeConfirm form={form} when={dirty} />
 
         <AppBarContainer
@@ -228,7 +230,7 @@ class HolidaysBaseForm extends React.Component<Props, any> {
 const mapStateToProps = (state: State) => ({
   timestamps: state.preferences.holidays && getTimestamps(state.preferences.holidays),
   holidays: state.preferences.holidays,
-  values: getFormValues("HolidaysForm")(state),
+  values: getFormValues(HOLIDAYS_FORM)(state),
   fetch: state.fetch,
   nextLocation: state.nextLocation
 });
@@ -239,7 +241,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 const HolidaysForm = reduxForm({
   onSubmitFail,
-  form: "HolidaysForm"
+  form: HOLIDAYS_FORM
 })(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(
   withRouter(HolidaysBaseForm)
 ));

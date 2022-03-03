@@ -99,7 +99,6 @@ export default (props: WrappedFieldArrayProps & Props) => {
                             normalize={normalizeNumber}
                             label="Min value"
                             required={field.entryType === "number"}
-                            hideArrows
                             fullWidth
                           />
                         </Grid>
@@ -110,7 +109,6 @@ export default (props: WrappedFieldArrayProps & Props) => {
                             normalize={normalizeNumber}
                             label="Max value"
                             required={field.entryType === "number"}
-                            hideArrows
                             fullWidth
                           />
                         </Grid>

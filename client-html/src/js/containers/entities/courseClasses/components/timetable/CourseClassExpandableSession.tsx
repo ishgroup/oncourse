@@ -17,6 +17,7 @@ import { TimetableSession } from "../../../../../model/timetable";
 import CourseClassSessionFields from "./CourseClassSessionFields";
 import CalendarSession from "../../../../timetable/components/calendar/components/session/CalendarSession";
 import ExpandableItem from "../../../../../common/components/layout/expandable/ExpandableItem";
+import { ClassCostExtended } from "../../../../../model/entities/CourseClass";
 
 interface Props {
   expanded: number;
@@ -34,6 +35,8 @@ interface Props {
   warnings: SessionWarning[];
   setOpenCopyDialog?: ({ open, session }) => void;
   openCopyDialog?: { open?: boolean, session: { id: any } };
+  budget: ClassCostExtended[];
+  addTutorWage: (tutor: CourseClassTutor, wage?: ClassCostExtended) => void;
 }
 
 const CourseClassExpandableSession = React.memo<Props>(props => {
@@ -52,7 +55,9 @@ const CourseClassExpandableSession = React.memo<Props>(props => {
     sessionSelection,
     warnings,
     setOpenCopyDialog,
-    openCopyDialog
+    openCopyDialog,
+    budget,
+    addTutorWage
   } = props;
 
   const onCopyClick = React.useCallback(e => {
@@ -76,6 +81,7 @@ const CourseClassExpandableSession = React.memo<Props>(props => {
       onChange={onChange}
       keepPaper={!session.id}
       classes={{
+        expansionPanelRoot: "w-100",
         expandIcon: "invisible",
         expansionPanelSummayRoot: clsx(
           classes.sessionExpansionPanelSummayRoot,
@@ -118,6 +124,8 @@ const CourseClassExpandableSession = React.memo<Props>(props => {
             triggerDebounseUpdate={triggerDebounseUpdate}
             tutors={tutors}
             warnings={warnings}
+            budget={budget}
+            addTutorWage={addTutorWage}
           />
         )
       }

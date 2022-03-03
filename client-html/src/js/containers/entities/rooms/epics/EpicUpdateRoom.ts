@@ -9,9 +9,9 @@ import { initialize } from "redux-form";
 import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
 
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_ROOM_ITEM, UPDATE_ROOM_ITEM, UPDATE_ROOM_ITEM_FULFILLED } from "../actions/index";
+import { GET_ROOM_ITEM, UPDATE_ROOM_ITEM, UPDATE_ROOM_ITEM_FULFILLED } from "../actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { FETCH_SUCCESS } from "../../../../common/actions/index";
+import { clearActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { updateEntityItemById } from "../../common/entityItemsService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
@@ -30,6 +30,7 @@ const request: EpicUtils.Request = {
   },
   retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
   processData: (p, s) => [
+    ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : []),
       {
         type: UPDATE_ROOM_ITEM_FULFILLED
       },

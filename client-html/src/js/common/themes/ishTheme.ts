@@ -1,16 +1,15 @@
 import { createTheme } from '@mui/material/styles';
+import { Components } from "@mui/material/styles/components";
+import { PaletteMode } from "@mui/material";
 import { theme } from "./appTheme";
 import {
   AppTheme,
-  ChristmasThemeKey,
   DarkThemeKey,
   DefaultThemeKey,
   HighcontrastThemeKey,
   MonochromeThemeKey,
   ThemeValues
 } from "../../model/common/Theme";
-import { Components } from "@mui/material/styles/components";
-import { PaletteMode } from "@mui/material";
 
 const createOverrides = (palette):{ components: Components } => ({
   components: {
@@ -113,8 +112,7 @@ const createOverrides = (palette):{ components: Components } => ({
             WebkitTextFillColor: 'inherit'
           },
           "&::placeholder": {
-            color: palette.text.disabled,
-            fill: palette.text.disabled,
+            opacity: 0.15
           },
           textOverflow: "ellipsis",
           color: palette.text.primaryEditable,
@@ -350,47 +348,6 @@ export const highcontrastTheme = createTheme({
   ...createOverrides(highcontrastThemePalette)
 }) as AppTheme;
 
-// High Contrast Theme
-
-const christmasThemePalette = {
-  mode: "light" as PaletteMode,
-  common: { black: "#111111", white: "#fff" },
-  primary: {
-    main: "#B3000C",
-    dark: "#76838f",
-    contrastText: "#fff"
-  },
-  secondary: {
-    light: "#9bbeff",
-    main: "#165B33",
-    dark: "#111111",
-    contrastText: "#fff"
-  },
-  background: {
-    default: "#fff"
-  },
-  error: {
-    light: "#e57373", main: "#f44336", dark: "#d32f2f", contrastText: "#fff"
-  },
-  text: {
-    primary: "#111111",
-    primaryEditable: "#070707",
-    secondary: "#111111",
-    disabled: "rgba(34, 34, 34, 0.38)",
-    hint: "rgba(34, 34, 34, 0.38)"
-  },
-  action: {
-    disabled: "rgba(255, 255, 255, 0.26)"
-  }
-};
-
-export const christmasTheme = createTheme({
-  palette: christmasThemePalette,
-  ...commonTypography,
-  ...theme.christmas,
-  ...createOverrides(christmasThemePalette)
-}) as AppTheme;
-
 export const currentTheme = (themeName: ThemeValues): AppTheme => {
   switch (themeName) {
     case DarkThemeKey: {
@@ -404,9 +361,6 @@ export const currentTheme = (themeName: ThemeValues): AppTheme => {
     }
     case HighcontrastThemeKey: {
       return highcontrastTheme;
-    }
-    case ChristmasThemeKey: {
-      return christmasTheme;
     }
     default: {
       return defaultTheme;

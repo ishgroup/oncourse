@@ -24,6 +24,8 @@ import AppBarContainer from "../../../../../common/components/layout/AppBarConta
 
 const manualUrl = getManualLink("generalPrefs_sellableItemsRelationTypes");
 
+export const ENTITY_RELATION_TYPES_FORM: string = "EntityRelationTypesForm";
+
 interface Props {
   data: any;
   classes: any;
@@ -54,7 +56,7 @@ class EntityRelationTypesBaseForm extends React.Component<Props, any> {
   constructor(props) {
     super(props);
 
-    props.dispatch(initialize("EntityRelationTypesForm", { types: props.entityRelationTypes }));
+    props.dispatch(initialize(ENTITY_RELATION_TYPES_FORM, { types: props.entityRelationTypes }));
   }
 
   // eslint-disable-next-line camelcase
@@ -96,7 +98,7 @@ class EntityRelationTypesBaseForm extends React.Component<Props, any> {
       .then(() => {
         const { nextLocation, history, setNextLocation } = this.props;
 
-        this.props.dispatch(initialize("EntityRelationTypesForm", { types: this.props.entityRelationTypes }));
+        this.props.dispatch(initialize(ENTITY_RELATION_TYPES_FORM, { types: this.props.entityRelationTypes }));
 
         nextLocation && history.push(nextLocation);
         setNextLocation('');
@@ -128,7 +130,7 @@ class EntityRelationTypesBaseForm extends React.Component<Props, any> {
     item.isShownOnWeb = true;
     item.considerHistory = false;
 
-    this.props.dispatch(arrayInsert("EntityRelationTypesForm", "types", 0, item));
+    this.props.dispatch(arrayInsert(ENTITY_RELATION_TYPES_FORM, "types", 0, item));
     const domNode = document.getElementById("types[0].toName");
     if (domNode) domNode.scrollIntoView({ behavior: "smooth" });
   };
@@ -146,13 +148,13 @@ class EntityRelationTypesBaseForm extends React.Component<Props, any> {
         if (item.id) {
           onDelete(item.id);
         } else {
-          this.props.dispatch(arrayRemove("EntityRelationTypesForm", "types", index));
+          this.props.dispatch(arrayRemove(ENTITY_RELATION_TYPES_FORM, "types", index));
           this.resolvePromise(true);
         }
       })
         .then(clientSideDelete => {
           if (!clientSideDelete) {
-            this.props.dispatch(initialize("EntityRelationTypesForm", { types: this.props.entityRelationTypes }));
+            this.props.dispatch(initialize(ENTITY_RELATION_TYPES_FORM, { types: this.props.entityRelationTypes }));
           }
         })
         .catch(() => {
@@ -169,7 +171,7 @@ class EntityRelationTypesBaseForm extends React.Component<Props, any> {
     } = this.props;
 
     return (
-      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
+      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)} role={ENTITY_RELATION_TYPES_FORM}>
         <RouteChangeConfirm form={form} when={dirty} />
 
         <AppBarContainer
@@ -215,7 +217,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 const EntityRelationTypesForm = reduxForm({
   onSubmitFail,
-  form: "EntityRelationTypesForm"
+  form: ENTITY_RELATION_TYPES_FORM
 })(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(
   withStyles(cardsFormStyles)(withRouter(EntityRelationTypesBaseForm) as any)
 ));
