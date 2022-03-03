@@ -1,10 +1,11 @@
+import { SurveyItem } from "@api/model";
 import { generateArraysOfRecords, getEntityResponse } from "../../mockUtils";
 
 export function mockSurvey() {
   this.getSurveys = () => this.surveys;
 
-  this.getSurvey = id => {
-    const row = this.surveys.rows.find(row => row.id == id);
+  this.getSurvey = (id: any): SurveyItem => {
+    const row = this.surveys.rows.find(survey => Number(survey.id) === Number(id));
     return {
       id: row.id,
       studentName: row.values[1],
@@ -12,17 +13,17 @@ export function mockSurvey() {
       classId: 1,
       className: `${row.values[3]} ${row.values[2]}`,
       comment: "Override my previous comment",
-      courseScore: 0,
+      courseScore: row.values[4],
       customFields: {},
       roomId: 1,
       roomName: "Elder Hall",
       siteId: 1,
       siteName: "Adelaide Campus",
       studentContactId: 1,
-      testimonial: null,
-      tutorScore: 0,
+      testimonial: "",
+      tutorScore: row.values[4],
       tutors: { 1866: "Temple, Hannah" },
-      venueScore: 0,
+      venueScore: row.values[4],
       visibility: "Waiting review"
     };
   };

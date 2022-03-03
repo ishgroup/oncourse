@@ -37,10 +37,11 @@ export function mockPayslips() {
           deferred: true
         }
       ],
-      privateNotes: null,
-      publicNotes: null,
+      privateNotes: "",
+      publicNotes: "",
       tutorId: 1,
-      tags: []
+      tags: [],
+      payType: "Employee",
     };
   };
 

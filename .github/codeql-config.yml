@@ -1,0 +1,8 @@
+name: "onCourse CodeQL config"
+
+queries:
+  - uses: security-and-quality
+
+paths-ignore:
+  - '**/build/generated-resources/**'
+  - '**/build/generated-sources/**'

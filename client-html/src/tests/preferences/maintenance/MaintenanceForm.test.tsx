@@ -3,19 +3,23 @@ import { defaultComponents } from "../../common/Default.Components";
 import { mockedAPI } from "../../TestEntry";
 import * as PreferencesModel from "../../../js/model/preferences";
 import Maintenance from "../../../js/containers/preferences/containers/maintenance/Maintenance";
+import { preferencesFormRole } from "../../../js/containers/preferences/containers/FormContainer";
+import { dashedCase } from "../../common/utils";
 
-// TODO Enable test on fix
-
-describe.skip("Virtual rendered MaintenanceForm", () => {
+describe("Virtual rendered MaintenanceForm", () => {
   defaultComponents({
     entity: "MaintenanceForm",
     View: props => <Maintenance {...props} />,
     record: () => ({}),
     defaultProps: () => ({}),
-    render: wrapper => {
-      expect(wrapper.find("#logout-timeout input").val()).toEqual(
-        mockedAPI.db.preference[PreferencesModel.LogoutTimeout.uniqueKey].toString()
-      );
+    render: ({ screen, fireEvent }) => {
+      const maintenanceFormData = dashedCase({
+        [PreferencesModel.LogoutTimeout.uniqueKey]: Number(mockedAPI.db.preference[PreferencesModel.LogoutTimeout.uniqueKey])
+      });
+
+      expect(screen.getByRole(preferencesFormRole)).toHaveFormValues(maintenanceFormData);
+
+      fireEvent.click(screen.getByTestId('appbar-submit-button'));
     }
   });
 });

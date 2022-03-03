@@ -1,11 +1,11 @@
-import { AccountType } from "@api/model";
+import { AccountType, Transaction } from "@api/model";
 import { generateArraysOfRecords, getEntityResponse } from "../../mockUtils";
 
 export function mockAccountTransactions() {
   this.getAccountTransactions = () => this.accountTransactions;
 
-  this.getAccountTransaction = id => {
-    const row = this.accountTransactions.rows.find(row => row.id == id);
+  this.getAccountTransaction = (id: any): Transaction => {
+    const row = this.accountTransactions.rows.find(accountTransaction => Number(accountTransaction.id) === Number(id));
     return {
       id: row.id,
       transactionDate: row.values[0],
@@ -24,7 +24,15 @@ export function mockAccountTransactions() {
 
     accountTransactions.rows.push({
       id: data.id,
-      values: [data.transactionDate, data.fromAccount, "Deposited funds", AccountType.asset, data.amount, "Payment in line", new Date().toISOString()]
+      values: [
+        data.transactionDate,
+        data.fromAccount,
+        "Deposited funds",
+        AccountType.asset,
+        data.amount,
+        "Payment in line",
+        new Date().toISOString()
+      ]
     });
 
     this.accountTransactions = accountTransactions;
@@ -42,7 +50,15 @@ export function mockAccountTransactions() {
     { name: "createdOn", type: "Datetime" }
   ]).map(l => ({
     id: l.id,
-    values: [l.transactionDate, l.fromAccount, "Deposited funds", AccountType.asset, 100 * l.amount, "Payment in line", l.createdOn]
+    values: [
+      l.transactionDate,
+      l.fromAccount,
+      "Deposited funds",
+      AccountType.asset,
+      100 * l.amount,
+      "Payment in line",
+      l.createdOn
+    ]
   }));
 
   return getEntityResponse({
