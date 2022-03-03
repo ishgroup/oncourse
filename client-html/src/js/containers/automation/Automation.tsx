@@ -8,11 +8,10 @@ import { isDirty, reset } from "redux-form";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
-import { LICENSE_SCRIPTING_KEY, ADMIN_EMAIL_KEY } from "../../constants/Config";
+import { ADMIN_EMAIL_KEY } from "../../constants/Config";
 import { State } from "../../reducers/state";
 import { SidebarWithSearch } from "../../common/components/layout/sidebar-with-search/SidebarWithSearch";
 import { setSwipeableDrawerDirtyForm } from "../../common/components/layout/swipeable-sidebar/actions";
-import { getUserPreferences } from "../../common/actions";
 import { getColumnsWidth, updateColumnsWidth, getPreferencesByKeys } from "../preferences/actions";
 import SideBar from "./components/AutomationSideBar";
 import AutomatiomAppFrame from "./components/AutomationAppFrame";
@@ -76,7 +75,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onInit: () => {
     dispatch(getColumnsWidth());
     dispatch(getIntegrations());
-    dispatch(getUserPreferences([LICENSE_SCRIPTING_KEY]));
     dispatch(getPreferencesByKeys([ADMIN_EMAIL_KEY], 14));
     dispatch(getScriptsList());
     dispatch(getEmailTemplatesList());
