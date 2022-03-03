@@ -15,9 +15,9 @@ import { LSGetItem } from "../../../../utils/storage";
 
 const styles = () => createStyles({
   activityStatistic: {
-    display: "grid",
-    gridTemplateColumns: "min-content 1fr",
-    marginTop: "4px"
+    // display: "grid",
+    // gridTemplateColumns: "min-content 1fr",
+    marginTop: 4
   }
 });
 

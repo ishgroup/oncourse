@@ -51,12 +51,11 @@ class ActionBody extends React.PureComponent<Props, any> {
     this.state = {
       statisticsColumnWidth: props.preferencesCategoryWidth
         ? Number(props.preferencesCategoryWidth)
-        : window.screen.width - dashboardFeedWidth,
-      activityColumnWidth: props.preferencesActivityWidth ? Number(props.preferencesActivityWidth) : 425
+        : window.screen.width - dashboardFeedWidth
     };
   }
 
-  componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+  UNSAFE_componentWillReceiveProps(nextProps: Readonly<Props>): void {
     const { statisticsColumnWidth } = this.state;
     if (nextProps.drawerOpened === true) {
       if (this.drawerUpdated) {
@@ -75,7 +74,7 @@ class ActionBody extends React.PureComponent<Props, any> {
     }
   }
 
-  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<Props>) {
+  componentDidUpdate(prevProps: Readonly<Props>) {
     const { preferencesCategoryWidth } = this.props;
 
     if (!prevProps.preferencesCategoryWidth && preferencesCategoryWidth) {
