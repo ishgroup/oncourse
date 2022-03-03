@@ -8,9 +8,9 @@ import { connect } from "react-redux";
 import clsx from "clsx";
 import withStyles from "@mui/styles/withStyles";
 import createStyles from "@mui/styles/createStyles";
-import Chip from "@mui/material/Chip";
 import List from "@mui/material/List";
 import Collapse from "@mui/material/Collapse";
+import Typography from "@mui/material/Typography";
 import { openInternalLink } from "../../../../../utils/links";
 import ListLinkItem from "./ListLinkItem";
 import { State } from "../../../../../../reducers/state";
@@ -18,41 +18,20 @@ import { getResultId } from "../../utils";
 
 const styles = theme =>
   createStyles({
-    chip: {
-      color: theme.palette.text.primary,
-      height: 30,
+    showMoreText: {
+      color: theme.palette.primary.main,
       width: "min-content",
-      marginTop: 12,
-      marginBottom: 12,
+      margin: theme.spacing(2.5, 0),
       whiteSpace: "nowrap",
       maxWidth: 140,
-      fontSize: theme.spacing(2),
+      fontSize: theme.spacing(1.375),
       fontWeight: 600,
+      padding: theme.spacing(0, 0.75),
     },
-    chipWrapper: {
-      position: "absolute",
-      left: 0
+    heading: {
+      padding: theme.spacing(0, 0.75),
+      margin: theme.spacing(2.5, 0),
     },
-    chipOffset: {
-      position: "relative",
-      left: "-100%"
-    },
-    collapseChip: {
-      backgroundColor: "inherit",
-      "&:hover": {
-        backgroundColor: theme.palette.grey[200]
-      },
-      "&:active": {
-        backgroundColor: "inherit"
-      },
-      "&:focus": {
-        backgroundColor: "inherit"
-      }
-    },
-    collapseChipLabel: {
-      color: theme.palette.primary.main,
-      fontWeight: "bolder"
-    }
   });
 
 class ListLinksGroup extends React.PureComponent<any, any> {
@@ -90,14 +69,30 @@ class ListLinksGroup extends React.PureComponent<any, any> {
       const url = category.url.indexOf("?") !== -1 ? category.url.slice(0, category.url.indexOf("?")) : category.url;
 
       showConfirm(() => openInternalLink(
-        !id || !isNaN(Number(id)) ? url + (id ? `/${id}` : "") : id
+        !id || !Number.isNaN(Number(id)) ? url + (id ? `/${id}` : "") : id
       ));
     }
   };
 
+  getListItems = items => {
+    const {
+      entity, entityDisplayName, checkSelectedResult
+    } = this.props;
+    return items.map((v, i) => (
+      <ListLinkItem
+        key={i}
+        item={v}
+        openLink={this.openLink}
+        entity={entityDisplayName}
+        selected={checkSelectedResult(entity, "id", v.id)}
+        id={getResultId(i, `${entity}-${v.id}`)}
+      />
+    ));
+  };
+
   render() {
     const {
-      entity, classes, entityDisplayName, items, showFirst, withOffset, checkSelectedResult
+      classes, entityDisplayName, items, showFirst
     } = this.props;
     const { collapsed } = this.state;
 
@@ -110,19 +105,23 @@ class ListLinksGroup extends React.PureComponent<any, any> {
     }
     return (
       <>
-        <div className={clsx({ [classes.chipWrapper]: withOffset })}>
-          <Chip
+        <div className="d-flex align-items-center">
+          <Typography
             onClick={() => this.openEntity()}
-            label={entityDisplayName}
-            className={clsx("mr-1", classes.chip, { [classes.chipOffset]: withOffset })}
-          />
+            className={clsx("heading cursor-pointer mr-1", classes.heading)}
+          >
+            {entityDisplayName}
+          </Typography>
           {showFirst && Boolean(lastItems.length) && (
-            <Chip
-              onClick={this.toggleCollapsed}
-              className={clsx("mr-1", classes.chip, classes.chipOffset)}
-              label={`${lastItems.length} ${collapsed ? "less" : "more"}`}
-              classes={{ clickable: classes.collapseChip, label: classes.collapseChipLabel }}
-            />
+            <>
+              <div className="flex-fill" />
+              <Typography
+                onClick={this.toggleCollapsed}
+                className={clsx("cursor-pointer", classes.showMoreText)}
+              >
+                {`View ${lastItems.length} ${collapsed ? "less" : "more"}`}
+              </Typography>
+            </>
           )}
         </div>
 
@@ -130,42 +129,13 @@ class ListLinksGroup extends React.PureComponent<any, any> {
           {showFirst ? (
             <>
               <Collapse in={collapsed}>
-                {items.map((v, i) => (
-                  <ListLinkItem
-                    key={i}
-                    item={v}
-                    openLink={this.openLink}
-                    entity={entityDisplayName}
-                    selected={checkSelectedResult(entity, "id", v.id)}
-                    id={getResultId(i, `${entity}-${v.id}`)}
-                  />
-                ))}
+                {this.getListItems(items)}
               </Collapse>
               <Collapse in={!collapsed}>
-                {firstItems.map((v, i) => (
-                  <ListLinkItem
-                    key={i}
-                    item={v}
-                    openLink={this.openLink}
-                    entity={entityDisplayName}
-                    selected={checkSelectedResult(entity, "id", v.id)}
-                    id={getResultId(i, `${entity}-${v.id}`)}
-                  />
-                ))}
+                {this.getListItems(firstItems)}
               </Collapse>
             </>
-          ) : (
-            items.map((v, i) => (
-              <ListLinkItem
-                key={i}
-                item={v}
-                openLink={this.openLink}
-                entity={entityDisplayName}
-                selected={checkSelectedResult(entity, "id", v.id)}
-                id={getResultId(i, `${entity}-${v.id}`)}
-              />
-            ))
-          )}
+          ) : this.getListItems(items)}
         </List>
       </>
     );

@@ -61,7 +61,6 @@ const styles = theme => createStyles({
     }
   },
   favouriteHighlightSelect: {
-    // border: `1px solid ${theme.palette.text.primary}`
     "&::after": {
       transform: "scaleX(1)",
       borderBottomColor: theme.palette.text.primary,

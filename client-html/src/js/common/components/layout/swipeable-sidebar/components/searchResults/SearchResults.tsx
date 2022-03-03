@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import withStyles from "@mui/styles/withStyles";
 import createStyles from "@mui/styles/createStyles";
 import List from "@mui/material/List";
+import Divider from "@mui/material/Divider";
 import CircularProgress from "@mui/material/CircularProgress";
 import { getHighlightedPartLabel } from "../../../../../utils/formatting";
 import { getEntityDisplayName } from "../../../../../utils/getEntityDisplayName";
@@ -19,12 +20,14 @@ import ListLinkItem from "./ListLinkItem";
 import ListLinksGroup from "./ListLinksGroup";
 import { getResultId } from "../../utils";
 
-const styles = theme =>
-  createStyles({
-    root: {
-      padding: `${theme.spacing(2)} ${theme.spacing(2)} 228px ${theme.spacing(2)}`
-    }
-  });
+const styles = theme => createStyles({
+  root: {
+    padding: `${theme.spacing(2)} ${theme.spacing(2)} 228px ${theme.spacing(2)}`
+  },
+  divider: {
+    margin: theme.spacing(2, 0, 1.25),
+  }
+});
 
 const SearchResults = props => {
   const {
@@ -81,9 +84,8 @@ const SearchResults = props => {
       {!updating
         && searchResults
         && searchResults.map((r, index) => (
-          <div className="d-flex relative" key={index}>
+          <div className="relative" key={index}>
             <ListLinksGroup
-              withOffset
               showFirst={3}
               entity={r.entity}
               entityDisplayName={getEntityDisplayName(r.entity)}
@@ -96,6 +98,7 @@ const SearchResults = props => {
               userSearch={userSearch}
               showConfirm={showConfirm}
             />
+            {((searchResults.length - 1) > index) && <Divider className={classes.divider} />}
           </div>
         ))}
     </List>
