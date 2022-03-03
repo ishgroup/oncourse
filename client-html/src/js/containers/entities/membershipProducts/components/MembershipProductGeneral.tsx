@@ -160,7 +160,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
             <Grid container columnSpacing={3} rowSpacing={2}>
               <Grid item xs={twoColumn ? 2 : 12}>
                 <FormField
-                  label="Code"
+                  label="SKU"
                   name="code"
                   required
                   fullWidth
@@ -168,7 +168,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
               </Grid>
               <Grid item xs={twoColumn ? 4 : 12}>
                 <FormField
-                  label="SKU"
+                  label="Name"
                   name="name"
                   required
                   fullWidth
