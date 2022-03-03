@@ -11,6 +11,7 @@ package ish.oncourse.server.cayenne
 import groovy.json.JsonSlurper
 import ish.math.Money
 import ish.oncourse.API
+import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Checkout
 
 import javax.annotation.Nonnull
@@ -20,6 +21,7 @@ import javax.annotation.Nullable
  * A shopping cart record typically created by a user who abandoned their cart during checkout on the onCourse website
  */
 @API
+@QueueableEntity
 class Checkout extends _Checkout implements Queueable {
 
     /**
