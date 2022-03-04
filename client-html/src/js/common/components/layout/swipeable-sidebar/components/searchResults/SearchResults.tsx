@@ -98,7 +98,6 @@ const SearchResults = props => {
               userSearch={userSearch}
               showConfirm={showConfirm}
             />
-            {((searchResults.length - 1) > index) && <Divider className={classes.divider} />}
           </div>
         ))}
     </List>

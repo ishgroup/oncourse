@@ -11,6 +11,8 @@ import { createStyles, withStyles } from "@mui/styles";
 import { darken } from "@mui/material/styles";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Divider from "@mui/material/Divider";
+import Collapse from "@mui/material/Collapse";
+import Typography from "@mui/material/Typography";
 import { AppTheme } from "../../../../model/common/Theme";
 import { State } from "../../../../reducers/state";
 import { getDashboardCategories, getDashboardSearch, getFavoriteScripts } from "../../../../containers/dashboard/actions";
@@ -25,6 +27,8 @@ import Favorites from "./components/favorites/Favorites";
 import { getResultId } from "./utils";
 import HamburgerMenu from "./components/HamburgerMenu";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import onCourseLogoDark from "../../../../../images/onCourseLogoDark.png";
+import onCourseLogoLight from "../../../../../images/onCourseLogoLight.png";
 
 export const SWIPEABLE_SIDEBAR_WIDTH: number = 350;
 
@@ -72,7 +76,8 @@ const styles = (theme: AppTheme) =>
       overflowY: "auto",
       maxHeight: "calc(100vh - 64px - 60px)",
       transition: "all 0.5s ease-in"
-    }
+    },
+    logo: { height: "36px", width: "auto" },
   });
 
 interface Props {
@@ -123,6 +128,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
   const [resultIndex, setResultIndex] = React.useState(-1);
   const [scriptIdSelected, setScriptIdSelected] = React.useState(null);
   const [execMenuOpened, setExecMenuOpened] = React.useState(false);
+  const [focusOnSearchInput, setFocusOnSearchInput] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     getCategories();
@@ -323,45 +329,65 @@ const SwipeableSidebar: React.FC<Props> = props => {
       onOpen={toggleDrawer(true)}
       classes={{
         paper: classes.drawerPaper,
-          root: classes.drawerRoot,
-        }}
+        root: classes.drawerRoot,
+      }}
     >
       <div className={classes.drawerWidth}>
         <div className={clsx("pl-2", classes.toolbar)}>
           <HamburgerMenu variant={variant} form={form} />
+          <img
+            src={theme.palette.mode === "dark" ? onCourseLogoLight : onCourseLogoDark}
+            className={classes.logo}
+            alt="Logo"
+          />
         </div>
-        <UserSearch getSearchResults={getSearchResults} />
+        <UserSearch
+          getSearchResults={getSearchResults}
+          setFocusOnSearchInput={setFocusOnSearchInput}
+          focusOnSearchInput={(focusOnSearchInput || showUserSearch)}
+        />
         <div>
-          <div
-            id="search-results-wrapper"
-            className={clsx(classes.searchResultsWrapper, !showUserSearch ? "d-none" : "")}
-          >
-            <SearchResults
-              classes={{ root: classes.searchResultsRoot }}
-              userSearch={userSearch}
-              checkSelectedResult={checkSelectedResult}
-              showConfirm={showConfirmHandler}
-              setExecMenuOpened={setExecMenuOpened}
-              setScriptIdSelected={setScriptIdSelected}
-            />
-          </div>
-          <div className={showUserSearch ? "d-none" : ""}>
-            <Favorites
-              classes={{ topBar: classes.favoritesTopBar }}
-              showConfirm={showConfirmHandler}
-              isFormDirty={isFormDirty}
-              scriptIdSelected={scriptIdSelected}
-              setScriptIdSelected={setScriptIdSelected}
-              execMenuOpened={execMenuOpened}
-              setExecMenuOpened={setExecMenuOpened}
-            />
-            <Divider variant="middle" />
-            <SidebarLatestActivity showConfirm={showConfirmHandler} checkSelectedResult={checkSelectedResult} />
-          </div>
+          <Collapse in={(focusOnSearchInput && !showUserSearch)}>
+            <div className="p-2">
+              <Typography className="mb-1" component="div" variant="body2">
+                Navigate to an onCourse feature by typing the action you want to perform.
+              </Typography>
+              <Typography className="mb-1" component="div" variant="body2">
+                Search for contacts by phone, email or name. Find courses, invoices and much more.
+              </Typography>
+            </div>
+          </Collapse>
+          <Collapse in={!focusOnSearchInput || showUserSearch}>
+            <div
+              id="search-results-wrapper"
+              className={clsx(classes.searchResultsWrapper, !showUserSearch ? "d-none" : "")}
+            >
+              <SearchResults
+                classes={{ root: classes.searchResultsRoot }}
+                userSearch={userSearch}
+                checkSelectedResult={checkSelectedResult}
+                showConfirm={showConfirmHandler}
+                setExecMenuOpened={setExecMenuOpened}
+                setScriptIdSelected={setScriptIdSelected}
+              />
+            </div>
+            <div className={showUserSearch ? "d-none" : ""}>
+              <Favorites
+                classes={{ topBar: classes.favoritesTopBar }}
+                showConfirm={showConfirmHandler}
+                isFormDirty={isFormDirty}
+                scriptIdSelected={scriptIdSelected}
+                setScriptIdSelected={setScriptIdSelected}
+                execMenuOpened={execMenuOpened}
+                setExecMenuOpened={setExecMenuOpened}
+              />
+              <Divider variant="middle" />
+              <SidebarLatestActivity showConfirm={showConfirmHandler} checkSelectedResult={checkSelectedResult} />
+            </div>
+          </Collapse>
         </div>
       </div>
     </SwipeableDrawer>
-
   );
 };
 

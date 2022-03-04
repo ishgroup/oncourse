@@ -29,8 +29,7 @@ const styles = theme =>
       padding: theme.spacing(0, 0.75),
     },
     heading: {
-      padding: theme.spacing(0, 0.75),
-      margin: theme.spacing(2.5, 0),
+      margin: theme.spacing(4, 0, 2),
     },
   });
 

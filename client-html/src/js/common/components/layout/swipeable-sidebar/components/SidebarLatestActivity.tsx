@@ -59,7 +59,6 @@ const SidebarLatestActivity: React.FC<any> = props => {
                 showConfirm={showConfirm}
                 checkSelectedResult={checkSelectedResult}
               />
-              {((activities.data.length - 1) > i) && <Divider className={classes.divider} />}
             </div>
           ))}
       </Grid>
