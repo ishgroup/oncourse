@@ -3,56 +3,56 @@
   <Node id="11" isWebVisible="1" nodeType="1" name="Subjects" specialType="1" parentId="[null]"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <Node id="12" nodeType="1" name="Subjects_1" specialType="[null]" parentId="11"
+  <Node id="12" IsWebVisible="1" nodeType="1" name="Subjects_1" specialType="[null]" parentId="11"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="13" nodeType="1" name="Subjects_1_1" specialType="[null]" parentId="12"
+  <Node id="13" IsWebVisible="1" nodeType="1" name="Subjects_1_1" specialType="[null]" parentId="12"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="14" nodeType="1" name="Subjects_1_2" specialType="[null]" parentId="12"
+  <Node id="14" IsWebVisible="1" nodeType="1" name="Subjects_1_2" specialType="[null]" parentId="12"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="15" nodeType="1" name="Subjects_1_3" specialType="[null]" parentId="12"
+  <Node id="15" IsWebVisible="1" nodeType="1" name="Subjects_1_3" specialType="[null]" parentId="12"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <Node id="16" nodeType="1" name="Subjects_2" specialType="[null]" parentId="11"
+  <Node id="16" IsWebVisible="1" nodeType="1" name="Subjects_2" specialType="[null]" parentId="11"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="17" nodeType="1" name="Subjects_2_1" specialType="[null]" parentId="16"
+  <Node id="17" IsWebVisible="1" nodeType="1" name="Subjects_2_1" specialType="[null]" parentId="16"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="18" nodeType="1" name="Subjects_2_1_1" specialType="[null]"
+  <Node id="18" IsWebVisible="1" nodeType="1" name="Subjects_2_1_1" specialType="[null]"
         parentId="17" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="19" nodeType="1" name="Subjects_2_1_2" specialType="[null]"
+  <Node id="19" IsWebVisible="1" nodeType="1" name="Subjects_2_1_2" specialType="[null]"
         parentId="17" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="20" nodeType="1" name="Subjects_2_2" specialType="[null]" parentId="16"
+  <Node id="20" IsWebVisible="1" nodeType="1" name="Subjects_2_2" specialType="[null]" parentId="16"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="21" nodeType="1" name="Subjects_2_2_1" specialType="[null]"
+  <Node id="21" IsWebVisible="1" nodeType="1" name="Subjects_2_2_1" specialType="[null]"
         parentId="20" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="22" nodeType="1" name="Subjects_2_2_2" specialType="[null]"
+  <Node id="22" IsWebVisible="1" nodeType="1" name="Subjects_2_2_2" specialType="[null]"
         parentId="20" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <Node id="23" nodeType="1" name="Subjects_3" specialType="[null]" parentId="11"
+  <Node id="23" IsWebVisible="1" nodeType="1" name="Subjects_3" specialType="[null]" parentId="11"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="24" nodeType="1" name="Subjects_3_1" specialType="[null]" parentId="23"
+  <Node id="24" IsWebVisible="1" nodeType="1" name="Subjects_3_1" specialType="[null]" parentId="23"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="25" nodeType="1" name="Subjects_3_2" specialType="[null]" parentId="23"
+  <Node id="25" IsWebVisible="1" nodeType="1" name="Subjects_3_2" specialType="[null]" parentId="23"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="26" nodeType="1" name="Subjects_3_3" specialType="[null]" parentId="23"
+  <Node id="26" IsWebVisible="1" nodeType="1" name="Subjects_3_3" specialType="[null]" parentId="23"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="27" nodeType="1" name="Subjects_3_4" specialType="[null]" parentId="23"
+  <Node id="27" IsWebVisible="1" nodeType="1" name="Subjects_3_4" specialType="[null]" parentId="23"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="28" nodeType="1" name="Subjects_3_5" specialType="[null]" parentId="23"
+  <Node id="28" IsWebVisible="1" nodeType="1" name="Subjects_3_5" specialType="[null]" parentId="23"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Node id="101" isWebVisible="1" name="Regions" nodeType="1" specialType="[null]" parentId="[null]"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="102" name="Regions_1" nodeType="1" specialType="[null]" parentId="101"
+  <Node id="102" IsWebVisible="1" name="Regions_1" nodeType="1" specialType="[null]" parentId="101"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="103" name="Regions_2" nodeType="1" specialType="[null]" parentId="101"
+  <Node id="103" IsWebVisible="1" name="Regions_2" nodeType="1" specialType="[null]" parentId="101"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="104" name="Regions_3" nodeType="1" specialType="[null]" parentId="101"
+  <Node id="104" IsWebVisible="1" name="Regions_3" nodeType="1" specialType="[null]" parentId="101"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="105" name="Regions_3_1" nodeType="1" specialType="[null]" parentId="105"
+  <Node id="105" IsWebVisible="1" name="Regions_3_1" nodeType="1" specialType="[null]" parentId="105"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="106" name="Regions_3_2" nodeType="1" specialType="[null]" parentId="105"
+  <Node id="106" IsWebVisible="1" name="Regions_3_2" nodeType="1" specialType="[null]" parentId="105"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="107" name="Regions_4" nodeType="1" specialType="[null]" parentId="101"
+  <Node id="107" IsWebVisible="1" name="Regions_4" nodeType="1" specialType="[null]" parentId="101"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <NodeRequirement id="1" entityIdentifier="1" isRequired="0" manyTermsAllowed="1" nodeId="11"

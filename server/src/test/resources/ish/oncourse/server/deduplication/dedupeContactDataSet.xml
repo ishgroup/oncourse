@@ -122,7 +122,7 @@
         modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRequirement id="1" entityIdentifier="8" isRequired="0" manyTermsAllowed="1" nodeId="1"
                    createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="2" name="ContactCommonChildTag" nodeType="1" parentId="1"
+  <Node id="2" IsWebVisible="1" name="ContactCommonChildTag" nodeType="1" parentId="1"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="1" entityIdentifier="8" entityRecordId="1" nodeId="2" createdOn="2021-12-21 12:00:10.0"
                 modifiedOn="2021-12-21 12:00:10.0"/>
@@ -133,7 +133,7 @@
         modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRequirement id="2" entityIdentifier="8" isRequired="0" manyTermsAllowed="1" nodeId="3"
                    createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="4" name="Contact1ChildTag" nodeType="1" parentId="3"
+  <Node id="4" IsWebVisible="1" name="Contact1ChildTag" nodeType="1" parentId="3"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="3" entityIdentifier="8" entityRecordId="1" nodeId="4" createdOn="2021-12-21 12:00:10.0"
                 modifiedOn="2021-12-21 12:00:10.0"/>
@@ -142,7 +142,7 @@
         modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRequirement id="3" entityIdentifier="8" isRequired="0" manyTermsAllowed="1" nodeId="5"
                    createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="6" name="Contact2ChildTag" nodeType="1" parentId="5"
+  <Node id="6" IsWebVisible="1" name="Contact2ChildTag" nodeType="1" parentId="5"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="4" entityIdentifier="8" entityRecordId="2" nodeId="6" createdOn="2021-12-21 12:00:10.0"
                 modifiedOn="2021-12-21 12:00:10.0"/>
