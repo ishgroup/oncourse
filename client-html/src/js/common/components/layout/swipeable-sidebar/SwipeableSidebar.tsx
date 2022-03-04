@@ -27,8 +27,6 @@ import Favorites from "./components/favorites/Favorites";
 import { getResultId } from "./utils";
 import HamburgerMenu from "./components/HamburgerMenu";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
-import onCourseLogoDark from "../../../../../images/onCourseLogoDark.png";
-import onCourseLogoLight from "../../../../../images/onCourseLogoLight.png";
 
 export const SWIPEABLE_SIDEBAR_WIDTH: number = 350;
 
@@ -122,7 +120,6 @@ const SwipeableSidebar: React.FC<Props> = props => {
     getScriptsPermissions,
     scripts,
     hasScriptsPermissions,
-    theme,
   } = props;
 
   const [controlResults, setControlResults] = React.useState([]);
@@ -336,11 +333,6 @@ const SwipeableSidebar: React.FC<Props> = props => {
       <div className={classes.drawerWidth}>
         <div className={clsx("pl-2", classes.toolbar)}>
           <HamburgerMenu variant={variant} form={form} />
-          <img
-            src={theme.palette.mode === "dark" ? onCourseLogoLight : onCourseLogoDark}
-            className={classes.logo}
-            alt="Logo"
-          />
         </div>
         <UserSearch
           getSearchResults={getSearchResults}
@@ -414,4 +406,4 @@ const mapStateToDispatch = (dispatch: Dispatch<any>) => ({
   showConfirm: props => dispatch(showConfirm(props))
 });
 
-export default connect<any, any, any>(mapsStateToProps, mapStateToDispatch)(withStyles(styles, { withTheme: true })(SwipeableSidebar));
+export default connect<any, any, any>(mapsStateToProps, mapStateToDispatch)(withStyles(styles)(SwipeableSidebar));
