@@ -16,7 +16,7 @@ class Messaging extends React.Component<any, any> {
         <FormContainer
           data={messaging}
           category={Categories.messaging}
-          form={<MessagingForm />}
+          form={formRoleName => <MessagingForm formRoleName={formRoleName} />}
           emailQueued={this.props.emailQueued.bind(this)}
           smsQueued={this.props.smsQueued.bind(this)}
         />

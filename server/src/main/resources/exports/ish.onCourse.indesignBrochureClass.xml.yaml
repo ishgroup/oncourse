@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.indesignBrochureClass.xml
-entityClass: CourseClass
-body: ish.onCourse.indesignBrochureClass.xml.groovy
-name: Indesign Brochure XML export
-outputType: xml

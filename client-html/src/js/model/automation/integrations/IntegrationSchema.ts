@@ -16,7 +16,7 @@ import {
 
 export interface IntegrationSchema {
   type: number;
-  id: string;
+  id: number;
   name: string;
   configured?: boolean;
   verificationCode?: string;
@@ -39,7 +39,12 @@ export interface IntegrationSchema {
 }
 
 export interface IntegrationTypeSchema {
-  type: number;
   name: string;
+  image: string;
+  form: React.ComponentType<any>;
   description: React.ReactNode;
+}
+
+export interface IntegrationTypesModel {
+  [key: number]: IntegrationTypeSchema
 }

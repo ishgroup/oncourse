@@ -22,6 +22,8 @@ import AppBarContainer from "../../../../../common/components/layout/AppBarConta
 
 const manualUrl = getManualLink("generalPrefs_contactRelationTypes");
 
+export const CONTACT_RELATION_TYPES_FORM: string = "ContactRelationTypesForm";
+
 interface Props {
   data: any;
   classes: any;
@@ -51,7 +53,7 @@ class ContactRelationTypesBaseForm extends React.Component<Props, any> {
   constructor(props) {
     super(props);
 
-    props.dispatch(initialize("ContactRelationTypesForm", { types: props.contactRelationTypes }));
+    props.dispatch(initialize(CONTACT_RELATION_TYPES_FORM, { types: props.contactRelationTypes }));
   }
 
   // eslint-disable-next-line camelcase
@@ -93,7 +95,7 @@ class ContactRelationTypesBaseForm extends React.Component<Props, any> {
       .then(() => {
         const { nextLocation, history, setNextLocation } = this.props;
 
-        this.props.dispatch(initialize("ContactRelationTypesForm", { types: this.props.contactRelationTypes }));
+        this.props.dispatch(initialize(CONTACT_RELATION_TYPES_FORM, { types: this.props.contactRelationTypes }));
 
         nextLocation && history.push(nextLocation);
         setNextLocation('');
@@ -121,7 +123,7 @@ class ContactRelationTypesBaseForm extends React.Component<Props, any> {
     item.portalAccess = false;
     item.systemType = false;
 
-    this.props.dispatch(arrayInsert("ContactRelationTypesForm", "types", 0, item));
+    this.props.dispatch(arrayInsert(CONTACT_RELATION_TYPES_FORM, "types", 0, item));
     const domNode = document.getElementById("types[0].relationName");
     if (domNode) domNode.scrollIntoView({ behavior: "smooth" });
   };
@@ -139,13 +141,13 @@ class ContactRelationTypesBaseForm extends React.Component<Props, any> {
         if (item.id) {
           onDelete(item.id);
         } else {
-          this.props.dispatch(arrayRemove("ContactRelationTypesForm", "types", index));
+          this.props.dispatch(arrayRemove(CONTACT_RELATION_TYPES_FORM, "types", index));
           this.resolvePromise(true);
         }
       })
         .then(clientSideDelete => {
           if (!clientSideDelete) {
-            this.props.dispatch(initialize("ContactRelationTypesForm", { types: this.props.contactRelationTypes }));
+            this.props.dispatch(initialize(CONTACT_RELATION_TYPES_FORM, { types: this.props.contactRelationTypes }));
           }
         })
         .catch(() => {
@@ -162,7 +164,7 @@ class ContactRelationTypesBaseForm extends React.Component<Props, any> {
     } = this.props;
 
     return (
-      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
+      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)} role={CONTACT_RELATION_TYPES_FORM}>
         <RouteChangeConfirm form={form} when={dirty} />
 
         <AppBarContainer
@@ -207,7 +209,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 const ContactRelationTypesForm = reduxForm({
   onSubmitFail,
-  form: "ContactRelationTypesForm"
+  form: CONTACT_RELATION_TYPES_FORM
 })(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(
   withStyles(cardsFormStyles)(withRouter(ContactRelationTypesBaseForm)) as any
 ));

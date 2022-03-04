@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.banking.xml
-entityClass: Banking
-body: ish.onCourse.banking.xml.groovy
-name: Banking XML export
-outputType: xml

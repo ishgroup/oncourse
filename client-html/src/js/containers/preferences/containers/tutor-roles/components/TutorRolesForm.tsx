@@ -37,6 +37,8 @@ interface Props extends InjectedFormProps {
 
 const manualUrl = getManualLink("advancedSetup_Tutor");
 
+export const TUTOR_ROLES_FORM: string = "TutorRolesForm";
+
 const TutorRolesForm = React.memo<Props>(
   ({
     dirty,
@@ -51,10 +53,10 @@ const TutorRolesForm = React.memo<Props>(
     showConfirm,
     disableRouteConfirm
   }) => {
-    const syncErrors = useAppSelector(state => getFormSyncErrors("TutorRolesForm")(state));
+    const syncErrors = useAppSelector(state => getFormSyncErrors(TUTOR_ROLES_FORM)(state));
     
     return (
-      <form className="container" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+      <form className="container" autoComplete="off" onSubmit={handleSubmit(onSubmit)} role={TUTOR_ROLES_FORM}>
         {!disableRouteConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
         <AppBarContainer
           values={value}
@@ -116,6 +118,6 @@ const TutorRolesForm = React.memo<Props>(
 );
 
 export default reduxForm({
-  form: "TutorRolesForm",
+  form: TUTOR_ROLES_FORM,
   onSubmitFail,
 })(props => (props.value ? <TutorRolesForm {...props} /> : null));

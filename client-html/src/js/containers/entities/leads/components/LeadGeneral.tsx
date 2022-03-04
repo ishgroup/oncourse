@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
@@ -29,13 +29,17 @@ import {
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
-import { mapSelectItems } from "../../../../common/utils/common";
+import { getCustomColumnsMap, mapSelectItems } from "../../../../common/utils/common";
 import EntityService from "../../../../common/services/EntityService";
 import { decimalMul, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { getProductAqlType } from "../../sales/utils";
 import { makeAppStyles } from "../../../../common/styles/makeStyles";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import history from "../../../../constants/History";
+import { RELATION_COURSE_COLUMNS } from "../../common/entityConstants";
+import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import { formatRelatedSalables, mapRelatedSalables } from "../../common/utils";
 
 const statusItems = Object.keys(LeadStatus).map(mapSelectItems);
 
@@ -49,7 +53,6 @@ const useStyles = makeAppStyles(() => ({
 interface Props extends EditViewProps<Lead> {
   tags?: Tag[];
   users?: User[];
-  isScrolling?: boolean;
 }
 
 const asyncUpdateEstimatedValue = async (dispatch: Dispatch, form: string, relatedSellables: Sale[], places: number) => {
@@ -112,6 +115,40 @@ const LeadGeneral = (props: Props) => {
   const onContactChange = value => {
     dispatch(change(form, "contactName", getContactName(value)));
   };
+
+  useEffect(() => {
+    if (history.location.search) {
+      const params = new URLSearchParams(history.location.search);
+
+      const courseIds = params.get('courseIds');
+      const contactId = params.get('contactId');
+      const contactName = params.get('contactName');
+
+      if (courseIds && contactId && contactName) {
+        EntityService.getPlainRecords(
+          'Course',
+          RELATION_COURSE_COLUMNS,
+          `id in (${courseIds})`,
+        ).then(({ rows }) => {
+          const items = rows.map(getCustomColumnsMap(RELATION_COURSE_COLUMNS));
+          const relatedSellables = formatRelatedSalables(items, 'Course').map(mapRelatedSalables);
+          dispatch(change(form, "contactId", Number(contactId)));
+          dispatch(change(form, "contactName", contactName));
+          dispatch(change(form, "relatedSellables", relatedSellables));
+        })
+        .catch(res => instantFetchErrorHandler(dispatch, res))
+        .finally(() => {
+          params.delete('courseIds');
+          params.delete('contactId');
+          params.delete('contactName');
+          history.replace({
+            pathname: history.location.pathname,
+            search: decodeURIComponent(params.toString())
+          });
+        });
+      }
+    }
+  }, []);
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pt-3 pr-3">

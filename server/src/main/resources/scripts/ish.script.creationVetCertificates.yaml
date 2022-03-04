@@ -1,7 +1,0 @@
-name: Automatic creation of VET Certificates
-body: ish.script.creationVetCertificates.groovy
-keyCode: ish.script.creationVetCertificates
-enabled: false
-triggerType: CRON
-schedule: 0 0 4 * * ?
-description: For each enrolment, at 4am every day check for outcomes which have been modified in the previous 24 hrs. If any outcomes attached to the enrolment are not yet marked, skip this enrolment. For students with at least one successful outcome, create the certificate record (statement of attainment or qualification, based on the isFullQual flag at the course level). If the outcome is already joined to a certificate, do not create a new certificate containing that outcome

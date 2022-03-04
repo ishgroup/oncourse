@@ -1,5 +1,6 @@
 import { ExecuteImportRequest } from "@api/model";
 import { _toRequestType, FULFILLED } from "../../../../../common/actions/ActionUtils";
+import { CatalogItemType } from "../../../../../model/common/Catalog";
 
 export const GET_IMPORT_TEMPLATES_LIST = _toRequestType("get/import-templates/list");
 export const GET_IMPORT_TEMPLATES_LIST_FULFILLED = FULFILLED(GET_IMPORT_TEMPLATES_LIST);
@@ -55,4 +56,9 @@ export const getImportTemplatesList = (selectFirst?: boolean, keyCodeToSelect?: 
 export const runImport = (executeImportRequest: ExecuteImportRequest, files: any[]) => ({
     type: POST_IMPORT_RUN_REQUEST,
     payload: { executeImportRequest, files }
+});
+
+export const getImportTemplatesListFulfilled = (importTemplates: CatalogItemType[]) => ({
+    type: GET_IMPORT_TEMPLATES_LIST_FULFILLED,
+    payload: { importTemplates }
 });

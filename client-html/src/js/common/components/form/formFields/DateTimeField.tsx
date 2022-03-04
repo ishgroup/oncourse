@@ -18,7 +18,7 @@ export const DateTimeField = props => {
     <MobileDatePicker
       ref={setPickerRef}
       onChange={onChange}
-      ampm={ampm || "false"}
+      ampm={ampm || false}
       value={value}
       format={formatDate || DD_MMM_YYYY_MINUSED}
       maxDate={maxDate || undefined}
@@ -31,7 +31,7 @@ export const DateTimeField = props => {
       <MobileTimePicker
         ref={setPickerRef}
         onChange={onChange}
-        ampm={ampm || "false"}
+        ampm={ampm || false}
         value={value}
         format={formatDate || HH_MM_COLONED}
         maxDate={maxDate || undefined}

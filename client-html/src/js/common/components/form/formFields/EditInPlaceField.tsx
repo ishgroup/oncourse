@@ -581,7 +581,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         min,
         max,
         onKeyDown,
-        allowNegative,
+        allownegative: allowNegative,
         type: type !== "password" ? (type === "percentage" ? "number" : type) : undefined,
         className: clsx(fieldClasses.text, {
           [classes.inlineInput]: isInline,
@@ -590,7 +590,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
           [classes.hideArrows]: ["percentage", "number"].includes(type),
           "text-end": rightAligned
         }),
-        placeholder: placeholder || (!isEditing && "No value"),
+        placeholder: placeholder || (!isEditing ? "No value" : ""),
         style: {
           maxWidth: isInline && !invalid ? this.getInputLength() : undefined
         },
@@ -652,6 +652,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                   }}
                   {...InputLabelProps}
                   shrink={Boolean(label || input.value)}
+                  htmlFor={`input-${input.name}`}
                 >
                   {labelContent}
                 </InputLabel>
@@ -662,6 +663,8 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
               ? (
                 <div className={clsx(isInline && "d-inline", label && 'mt-2', classes.selectMainWrapper)}>
                   <Select
+                    id={`input-${input.name}`}
+                    name={input.name}
                     value={multiple
                       ? input.value || []
                       : returnType === "object"
@@ -670,11 +673,14 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                           : input.value ? input.value[selectValueMark] : ""
                         : input.value || ""}
                     inputRef={this.setInputNode}
+                    inputProps={{
+                      classes: {
+                        root: classes.textFieldBorderModified,
+                        underline: fieldClasses.underline
+                      }
+                    }}
                     classes={{
-                      root: classes.textFieldBorderModified,
                       select: clsx(classes.muiSelect ,fieldClasses.text, isInline && classes.inlineSelect),
-                      // @ts-ignore
-                      underline: fieldClasses.underline
                     }}
                     multiple={multiple}
                     autoWidth={autoWidth}
@@ -719,6 +725,8 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                       <Edit />
                     </InputAdornment>
                   )}
+                  id={`input-${input.name}`}
+                  name={input.name}
                 />
               )}
             <FormHelperText

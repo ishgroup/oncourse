@@ -246,6 +246,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
           control={(
             <CheckboxField
               input={{
+                name: "restrictStudents",
                 value: this.state.limited ? this.state.limited : undefined,
                 onChange: this.onChangeCertainStudents
               }}

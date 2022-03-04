@@ -7,26 +7,23 @@
  */
 
 import * as React from "react";
-// import { addDays, format as formatDate } from "date-fns";
-// import { DD_MMM_YYYY } from "../../../js/common/utils/dates/format";
 import CourseClassBulkChangeSession, {
-  initialValues
+  initialValues, COURSE_CLASS_BULK_UPDATE_FORM
 } from "../../../js/containers/entities/courseClasses/components/timetable/CourseClassBulkChangeSession";
 import { defaultComponents } from "../../common/Default.Components";
-
-// TODO Enable test when find solution to test @mui dialogs
 
 describe("Virtual rendered CourseClassBulkChangeSession of Class edit view", () => {
   defaultComponents({
     entity: "CourseClassBulkChangeSession",
     View: props => <div><CourseClassBulkChangeSession {...props} /></div>,
-    record: mockedApi => ({ sessions: mockedApi.db.getTimetableSessionList() }),
+    record: mockedApi => ({ sessions: mockedApi.db.getCourseClassTimetable() }),
     defaultProps: ({ mockedApi }) => ({
       opened: true,
-      selection: [9500, 9499, 3596],
       onClose: jest.fn(),
+      handleSubmit: jest.fn(),
       tutors: [],
-      sessions: mockedApi.db.getTimetableSessionList(),
+      sessions: mockedApi.db.getCourseClassTimetable(),
+      selection: mockedApi.db.getCourseClassSelectedSessions(),
       initialValues: {
         ...initialValues,
         payableDuration: 2,
@@ -37,30 +34,30 @@ describe("Virtual rendered CourseClassBulkChangeSession of Class edit view", () 
       },
       rooms: [],
     }),
-    render: (wrapper, initial, shallow) => {
-      expect(shallow.find("div.heading").text()).toContain("Bulk change");
+    render: ({ screen, fireEvent }) => {
+      expect(screen.getByText("Bulk change")).toBeTruthy();
+      expect(screen.getByText("Update 0 timetable event")).toBeTruthy();
 
-      shallow.find("input[type=\"checkbox\"]").at(0).simulate("click");
-      expect(shallow.find("#roomId label").text()).toContain("Site and room");
+      fireEvent.click(screen.getByLabelText("Location"));
+      fireEvent.click(screen.getByTestId("input-payableDurationChecked", { selector: 'input' }));
+      fireEvent.click(screen.getByTestId("input-startChecked", { selector: 'input' }));
+      fireEvent.click(screen.getByTestId("input-durationChecked", { selector: 'input' }));
+      fireEvent.click(screen.getByTestId("input-moveForwardChecked", { selector: 'input' }));
 
-      shallow.find("input[type=\"checkbox\"]").at(1).simulate("click");
-      expect(shallow.find("#actualPayableDuration label").text()).toContain("Actual payable duration");
-      expect(shallow.find("#actualPayableDuration input").props().value).toContain("2");
-
-      shallow.find("input[type=\"checkbox\"]").at(2).simulate("click");
-      expect(shallow.find("#start label").text()).toContain("Start time (Australia/West)");
-      expect(shallow.find("#start input").props().value).toContain("01:05");
-
-      shallow.find("input[type=\"checkbox\"]").at(3).simulate("click");
-      expect(shallow.find("#duration label").text()).toContain("Duration");
-      expect(shallow.find("#duration input").props().value).toContain("3");
-
-      shallow.find("input[type=\"checkbox\"]").at(4).simulate("click");
-      expect(shallow.find("#moveForward input").props().value).toContain("2");
-
-      // const laterDate = formatDate(addDays(new Date(initial.sessions[0].start), 2), DD_MMM_YYYY).toString();
-
-      // expect(wrapper.find("#moveForwardInfo").text()).toContain(`Earliest selected session will starts ${laterDate}`);
+      expect(screen.getByRole(COURSE_CLASS_BULK_UPDATE_FORM)).toHaveFormValues({
+        locationChecked: true,
+        roomId: "",
+        payableDurationChecked: true,
+        actualPayableDuration: "2min",
+        startChecked: true,
+        start: "01:05",
+        durationChecked: true,
+        duration: "3min",
+        moveForwardChecked: true,
+        moveForward: 2,
+        moveBackwardChecked: false,
+        moveBackward: null,
+      });
     }
   });
 });

@@ -18,7 +18,7 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         {
         "name":"post Report01",
         "entity":"AccountTransaction",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"post1",
         "description":"some description",
         "body":"someBody",
@@ -56,7 +56,7 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         "id":"#(~~id)",
         "name":"post Report01",
         "entity":"AccountTransaction",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"post1",
         "description":"some description",
         "body":"someBody",
@@ -67,7 +67,10 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         "variables":[{"name":"varName1","label":"varLabel1","type":"Text","value":null,"system":null,"valueDefault":null}],
         "options":"#present",
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -94,7 +97,7 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         {
         "name":"post Report02",
         "entity":"Account",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"post2",
         "description":"some description",
         "body":"someBody",
@@ -104,6 +107,9 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         "preview":null,
         "variables":[{"name":"varName2", "label":"varLabel2", "type":"Date"}],
         "options":[{"name":"optName2","type":"Checkbox","value":true}],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -132,7 +138,7 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         "id":"#(~~id)",
         "name":"post Report02",
         "entity":"Account",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"post2",
         "description":"some description",
         "body":"someBody",
@@ -143,7 +149,10 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         "variables":[{"name":"varName2","label":"varLabel2","type":"Date","value":null,"system":null,"valueDefault":null}],
         "options":[{"name":"optName2","label":null,"type":"Checkbox","value":"true","system":null,"valueDefault":null}],
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -171,7 +180,7 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         {
         "name":"post Report03",
         "entity":"Account",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"post3",
         "description":"some description",
         "body":"someBody",
@@ -181,6 +190,9 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         "preview":null,
         "variables":[{"name":"varName2", "label":"varLabel2", "type":"Date"}],
         "options":[{"name":"optName2","type":"Checkbox","value":true}],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -199,7 +211,7 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         {
         "name":"",
         "entity":"Account",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"post4",
         "description":"some description",
         "body":"someBody",
@@ -209,6 +221,9 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         "preview":null,
         "variables":[],
         "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -227,7 +242,7 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         {
         "name":"post Report05",
         "entity":"Account",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"",
         "description":"some description",
         "body":"someBody",
@@ -237,6 +252,9 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         "preview":null,
         "variables":[],
         "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -255,7 +273,7 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         {
         "name":"post Report06",
         "entity":"",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"post6",
         "description":"some description",
         "body":"someBody",
@@ -265,6 +283,9 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         "preview":null,
         "variables":[],
         "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -283,7 +304,7 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         {
         "name":"post Report07",
         "entity":"Account",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"post7",
         "description":"some description",
         "body":"",
@@ -293,6 +314,9 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         "preview":null,
         "variables":[],
         "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -311,7 +335,7 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         {
         "name":"post Report09",
         "entity":"Account",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"ish.post9",
         "description":"some description",
         "body":"someBody",
@@ -321,6 +345,9 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         "preview":null,
         "variables":[],
         "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -340,7 +367,7 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         {
         "name":"post Report11",
         "entity":"Account",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"post11",
         "description":"some description",
         "body":"someBody",
@@ -350,6 +377,9 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         "preview":null,
         "variables":[],
         "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -375,7 +405,7 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
          {
          "name":"post Report11aaa",
          "entity":"Account",
-         "enabled":true,
+         "status":"Enabled",
          "keyCode":"post11",
          "description":"some description",
          "body":"someBody",
@@ -385,6 +415,9 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
          "preview":null,
          "variables":[],
          "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
          }
          """
 
@@ -408,7 +441,7 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         {
         "name":"post Report13",
         "entity":"Account",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"post13",
         "description":"some description",
         "body":"someBody",
@@ -418,6 +451,9 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         "preview":null,
         "variables":[{"name":"varName3", "label":"varLabel3", "type":"Date"}],
         "options":[{"name":"optName3","type":"Date time","value":"2019-01-03"}],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -436,7 +472,7 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         {
         "name":"A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A1",
         "entity":"AccountTransaction",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"post14",
         "description":"some description",
         "body":"someBody",
@@ -445,7 +481,10 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         "sortOn":"amount",
         "preview":null,
         "variables":[],
-        "options":[]
+        "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -464,7 +503,7 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         {
         "name":"post Report15",
         "entity":"AccountTransaction",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A",
         "description":"some description",
         "body":"someBody",
@@ -473,7 +512,10 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         "sortOn":"amount",
         "preview":null,
         "variables":[],
-        "options":[]
+        "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -492,7 +534,7 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         {
         "name":"post Report16",
         "entity":"AccountTransaction",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"post16",
         "description":"some description",
         "body":"someBody",
@@ -501,7 +543,10 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         "sortOn":"amount",
         "preview":null,
         "variables":[{"name":"varName13", "label":"varLabel1", "type":"Text"},{"name":"varName13", "label":"varLabel1", "type":"Text"}],
-        "options":[]
+        "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -520,7 +565,7 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         {
         "name":"post Report17",
         "entity":"AccountTransaction",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"post17",
         "description":"some description",
         "body":"someBody",
@@ -529,7 +574,10 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         "sortOn":"amount",
         "preview":null,
         "variables":[],
-        "options":[{"name":"optName14","type":"Date","value":"2019-01-01"},{"name":"optName14","type":"Date","value":"2019-01-01"}]
+        "options":[{"name":"optName14","type":"Date","value":"2019-01-01"},{"name":"optName14","type":"Date","value":"2019-01-01"}],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 

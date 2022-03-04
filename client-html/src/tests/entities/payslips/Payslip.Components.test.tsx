@@ -6,8 +6,21 @@ describe("Virtual rendered PayslipsEditView", () => {
     entity: "Payslip",
     EditView: PayslipsEditView,
     record: mockecApi => mockecApi.db.getPayslip(1),
-    render: (wrapper, initialValues) => {
-      expect(wrapper.find("#tutorId input").val()).toContain(initialValues.tutorFullName);
+    render: ({ screen, initialValues, formRoleName }) => {
+      const paylines = {};
+
+      initialValues.paylines.forEach((payline, i) => {
+        paylines[`paylines[${i}].value`] = payline.value.toString();
+        paylines[`paylines[${i}].description`] = payline.description;
+      });
+
+      expect(screen.getByRole(formRoleName)).toHaveFormValues({
+        tutorId: initialValues.tutorFullName,
+        payType: initialValues.payType,
+        publicNotes: initialValues.publicNotes,
+        privateNotes: initialValues.privateNotes,
+        ...paylines,
+      });
     }
   });
 });
