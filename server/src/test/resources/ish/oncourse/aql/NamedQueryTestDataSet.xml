@@ -66,31 +66,31 @@
                budgetedPlaces="10" attendanceType="0" createdOn="2021-12-21 12:00:10.0"
                modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <Node id="1" isVocabulary="1" isWebVisible="1" nodeType="1" name="Subjects" specialType="1"
+  <Node id="1" isWebVisible="1" nodeType="1" name="Subjects" specialType="1"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRequirement id="1" entityIdentifier="1" isRequired="0" manyTermsAllowed="1" nodeId="1"
                    createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="2" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art1" parentId="1" weight="1" contents="content1"
+  <Node id="2" PaymentOutisWebVisible="1" nodeType="1" name="Art1" parentId="1" weight="1" contents="content1"
         shortName="Arts1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="3" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art2" parentId="1" weight="2" contents="content2"
+  <Node id="3" PaymentOutisWebVisible="1" nodeType="1" name="Art2" parentId="1" weight="2" contents="content2"
         shortName="Arts2" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="4" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art3" parentId="1" weight="3" contents="content3"
+  <Node id="4" PaymentOutisWebVisible="1" nodeType="1" name="Art3" parentId="1" weight="3" contents="content3"
         shortName="Arts3" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="1" entityIdentifier="1" entityRecordId="1" nodeId="2" createdOn="2021-12-21 12:00:10.0"
                 modifiedOn="2021-12-21 12:00:10.0"/>
 
 
-  <Node id="11" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects" specialType="0"
+  <Node id="11" PaymentOutisWebVisible="1" nodeType="1" name="Subjects" specialType="0"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRequirement id="11" entityIdentifier="2" isRequired="0" manyTermsAllowed="1" nodeId="1"
                    createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="12" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art11" parentId="11" weight="1"
+  <Node id="12" PaymentOutisWebVisible="1" nodeType="1" name="Art11" parentId="11" weight="1"
         contents="content11"
         shortName="Arts11" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="13" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art12" parentId="11" weight="2"
+  <Node id="13" PaymentOutisWebVisible="1" nodeType="1" name="Art12" parentId="11" weight="2"
         contents="content12"
         shortName="Arts12" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="14" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art13" parentId="11" weight="3"
+  <Node id="14" PaymentOutisWebVisible="1" nodeType="1" name="Art13" parentId="11" weight="3"
         contents="content13"
         shortName="Arts13" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="11" entityIdentifier="2" entityRecordId="1" nodeId="12" createdOn="2021-12-21 12:00:10.0"
