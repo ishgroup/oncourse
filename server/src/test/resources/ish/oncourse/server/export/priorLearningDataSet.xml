@@ -145,7 +145,7 @@
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRequirement id="2" entityIdentifier="3" isRequired="0" manyTermsAllowed="1" nodeId="2"
                    createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="3" name="StudentChildTag" nodeType="1" parentId="2"
+  <Node id="3" IsWebVisible="1" name="StudentChildTag" nodeType="1" parentId="2"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="2" entityIdentifier="3" entityRecordId="1" nodeId="3"
                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
@@ -154,7 +154,7 @@
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRequirement id="3" entityIdentifier="1" isRequired="0" manyTermsAllowed="1" nodeId="4"
                    createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="5" name="CourseChildTag" nodeType="1" parentId="4"
+  <Node id="5" IsWebVisible="1" name="CourseChildTag" nodeType="1" parentId="4"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="3" entityIdentifier="1" entityRecordId="100" nodeId="5"
                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
