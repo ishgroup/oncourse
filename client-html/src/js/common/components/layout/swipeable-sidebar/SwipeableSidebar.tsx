@@ -121,7 +121,8 @@ const SwipeableSidebar: React.FC<Props> = props => {
     categories,
     getScriptsPermissions,
     scripts,
-    hasScriptsPermissions
+    hasScriptsPermissions,
+    theme,
   } = props;
 
   const [controlResults, setControlResults] = React.useState([]);
@@ -413,4 +414,4 @@ const mapStateToDispatch = (dispatch: Dispatch<any>) => ({
   showConfirm: props => dispatch(showConfirm(props))
 });
 
-export default connect<any, any, any>(mapsStateToProps, mapStateToDispatch)(withStyles(styles)(SwipeableSidebar));
+export default connect<any, any, any>(mapsStateToProps, mapStateToDispatch)(withStyles(styles, { withTheme: true })(SwipeableSidebar));
