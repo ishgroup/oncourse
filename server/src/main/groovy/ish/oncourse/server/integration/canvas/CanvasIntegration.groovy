@@ -16,6 +16,7 @@ import groovy.json.JsonSlurper
 import groovy.transform.CompileDynamic
 import groovyx.net.http.ContentType
 import groovyx.net.http.HttpResponseDecorator
+import groovyx.net.http.HttpResponseException
 import groovyx.net.http.Method
 import groovyx.net.http.RESTClient
 import ish.oncourse.server.api.v1.service.impl.IntegrationApiImpl
@@ -210,6 +211,135 @@ class CanvasIntegration implements PluginTrait {
         return responseToJson(result)
     }
 
+    /**
+     * Create a new course in Canvas from the blueprint specified
+     *
+     * @param courseBlueprint course code with blueprint=true in Canvas
+     * @param courseCode code of course to create Course in Canvas
+     * @param courseName name of course to create Course in Canvas
+     * @param courseId id of course to create Course in Canvas
+     * @return created course object from the blueprint specified
+     */
+    def createNewCourseFromBlueprint(String courseBlueprint, String courseCode, String courseName, String courseId) {
+        List coursesByBlueprintCode = getCourse(courseBlueprint) as List
+        def blueprintCourses = coursesByBlueprintCode.findAll { it["blueprint"] == true}
+        if (blueprintCourses.size() == 0) {
+            throw new IllegalArgumentException("Illegal state: There are no blueprint courses with specified code ${courseBlueprint}")
+        }
+        if (blueprintCourses.size() > 1) {
+            throw new IllegalArgumentException("Illegal state: There are find more that one blueprint course for specified course code: ${courseBlueprint}. " +
+                    "Please, specify more unique course code.")
+        }
+        def course = createNewCourse(courseCode, courseName, courseId)
+        def resultOfUpdate = updateAssociatedCourses(blueprintCourses["id"][0], List.of(course["id"]))
+        if (resultOfUpdate["success"] == true) {
+            migrateFromBlueprintCourse(blueprintCourses["id"][0])
+            return getCourse(courseCode)
+        } else {
+//            If delete course in Canvas, sis_course_id will remain in the Canvas and user can't create new Course with same sis_course_id (course.id in Angel) in Canvas.
+//            Decided to leave the course even if there were errors during migration from blueprint. The course can be linked and synchronized manually in Canvas.
+//            deleteCourse(course["id"] as int)
+            throw new IllegalStateException("Failed to update associated courses, course code: ${courseCode}, blueprint course code: ${blueprintCourses["id"][0]}")
+        }
+    }
+
+    /**
+     * Create a new course in Canvas
+     *
+     * @param courseCode code of course to create Course in Canvas
+     * @param courseName name of course to create Course in Canvas
+     * @param courseId id of course to create Course in Canvas
+     * @return created course object
+     */
+    def createNewCourse(String courseCode, String courseName, String courseId) {
+        def client = new RESTClient(baseUrl)
+        client.headers["Authorization"] = "Bearer ${authHeader}"
+        client.request(Method.POST, ContentType.JSON) {
+            uri.path = "/api/v1/accounts/${accountId}/courses"
+            body = [
+                    course: [
+                            name: courseName,
+                            course_code: courseCode,
+                            sis_course_id: courseId,
+                    ]
+            ]
+            response.success = { resp, result ->
+                return result
+            }
+
+            response.failure = { resp, result ->
+                throw new IllegalStateException("Failed to create course, course code: ${courseCode}, course name: ${courseName} ${resp.getStatusLine()}")
+            }
+        }
+    }
+
+    /**
+     * Delete course in Canvas
+     *
+     * @param courseId id of course to delete Course in Canvas
+     * @return delete status response
+     */
+    def deleteCourse(int courseId) {
+        def client = new CanvasRESTClient(baseUrl)
+        client.headers["Authorization"] = "Bearer ${authHeader}"
+        try {
+            client.delete(
+                    path: "/api/v1/courses/${courseId}",
+                    body: [
+                            event: 'delete'
+                    ],
+                    requestContentType: 'application/json'
+            )
+        } catch (HttpResponseException e) {
+            throw new IllegalStateException("Failed to delete course, course id: ${courseId}. ${e.getMessage()}")
+        }
+    }
+
+    /**
+     * Update associated courses to blueprint course
+     *
+     * @param blueprintCourseId course id of blueprint from Canvas
+     * @param courseIdsToAdd courses ids from Canvas to add as associated courses
+     * @return success status
+     */
+    def updateAssociatedCourses(int blueprintCourseId, List courseIdsToAdd) {
+        def client = new RESTClient(baseUrl)
+        client.headers["Authorization"] = "Bearer ${authHeader}"
+        client.request(Method.PUT, ContentType.JSON) {
+            uri.path = "/api/v1/courses/${blueprintCourseId}/blueprint_templates/default/update_associations"
+            body = [
+                    course_ids_to_add: courseIdsToAdd,
+            ]
+            response.success = { resp, result ->
+                return result
+            }
+
+            response.failure = { resp, result ->
+                throw new IllegalStateException("Failed to update associated courses, blueprint course id: ${blueprintCourseId}, course ids ${courseIdsToAdd} ${resp.getStatusLine()}")
+            }
+        }
+    }
+
+    /**
+     * Begins a migration to push recently updated content to all associated courses
+     *
+     * @param blueprintCourseId course id of blueprint from Canvas
+     * @return BlueprintMigration object
+     */
+    def migrateFromBlueprintCourse(int blueprintCourseId) {
+        def client = new RESTClient(baseUrl)
+        client.headers["Authorization"] = "Bearer ${authHeader}"
+        client.request(Method.POST, ContentType.JSON) {
+            uri.path = "/api/v1/courses/${blueprintCourseId}/blueprint_templates/default/migrations"
+            response.success = { resp, result ->
+                return result
+            }
+
+            response.failure = { resp, result ->
+                throw new IllegalStateException("Failed to migrate associated courses, blueprint course id: ${blueprintCourseId} ${resp.getStatusLine()}")
+            }
+        }
+    }
     /**
      * Get all sections for a Canvas course
      *
