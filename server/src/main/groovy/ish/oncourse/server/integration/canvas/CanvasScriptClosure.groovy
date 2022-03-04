@@ -11,12 +11,9 @@
 
 package ish.oncourse.server.integration.canvas
 
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.oncourse.API
 import ish.oncourse.server.api.v1.function.CustomFieldFunctions
-import ish.oncourse.server.cayenne.CustomField
-import ish.oncourse.server.cayenne.CustomFieldType
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.scripting.ScriptClosureTrait
 import ish.oncourse.server.scripting.ScriptClosure
@@ -38,11 +35,13 @@ import java.security.SecureRandom
  * 	   create_student true
  * 	   authentication_provider_id 1
  * 	   create_password "myCustomField"
+ * 	   course_blueprint "ABC"
  * }
  * ```
  * Setting 'create_section' to true will create a new Canvas sections from the equivalent onCourse Class if one does not already exist inside your Canvas instance.
  * Setting 'create_student' to true will create a new Canvas User profile for the enrolled student if one does not exist in your Canvas instance.
- * Setting 'myCustomField' will generate random password for student to canvas and save to customField of Contact with key like create_password parameter
+ * Setting 'create_password' will generate random password for student to canvas and save to customField of Contact with key like create_password parameter
+ * Setting 'course_blueprint' use if the course does not already exist in Canvas with the code provided, will create a new course from the blueprint specified.
  */
 @API
 @CompileStatic
@@ -58,6 +57,7 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
     boolean create_student
     int authentication_provider_id
     String create_password
+    String course_blueprint
 
     def enrolment(Enrolment enrolment) {
         this.enrolment = enrolment
@@ -87,6 +87,10 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
         this.create_password = create_password
     }
 
+    def course_blueprint(String course_blueprint){
+        this.course_blueprint = course_blueprint
+    }
+
     @Override
     Object execute(CanvasIntegration integration) {
         integration.initAuthHeader()
@@ -101,7 +105,12 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
             List course = integration.getCourse(course_code) as List
 
             if (course.size() == 0) {
-                throw new IllegalArgumentException("Illegal state: There are no courses with specified code ${course_code}")
+                if (course_blueprint != null) {
+                    course = integration.createNewCourseFromBlueprint(course_blueprint, course_code, enrolment.courseClass.course.name, enrolment.courseClass.course.id.toString()) as List
+                }
+                else {
+                    throw new IllegalArgumentException("Illegal state: There are no courses with specified code ${course_code} and blueprint course is not presented from script.")
+                }
             }
             if (course.size() > 1) {
                 throw new IllegalArgumentException("Illegal state: There are find more that one course for specified course code: ${course_code}. " +
