@@ -14,21 +14,21 @@ import { SWIPEABLE_SIDEBAR_WIDTH } from "../../../../common/components/layout/sw
 import { DASHBOARD_CATEGORY_WIDTH_KEY } from "../../../../constants/Config";
 import Statistics from "./components/Statistics";
 import NewsRender from "../../../../common/components/news/NewsRender";
+import TutorialPanel from "./components/TutorialPanel";
 
-const styles = (theme: AppTheme) =>
-  createStyles({
-    root: {
-      marginTop: "64px",
-      height: "calc(100% - 64px)"
-    },
-    rightSideBar: {
-      display: "flex",
-      backgroundColor: theme.palette.background.default,
-      overflowY: "auto",
-      minWidth: 370,
-      padding: theme.spacing(3)
-    }
-  });
+const styles = (theme: AppTheme) => createStyles({
+  root: {
+    marginTop: "64px",
+    height: "calc(100% - 64px)"
+  },
+  rightSideBar: {
+    display: "flex",
+    backgroundColor: theme.palette.background.default,
+    overflowY: "auto",
+    minWidth: 370,
+    padding: theme.spacing(3)
+  }
+});
 
 interface Props {
   classes?: any;
@@ -119,8 +119,20 @@ class ActionBody extends React.PureComponent<Props, any> {
           onResize={this.handleStatisticsResize}
           sidebarWidth={statisticsColumnWidth}
           ignoreScreenWidth
+          // showDotsBackground
         >
           <Grid item xs>
+            {/*<TutorialPanel
+              tutorial={{
+                "entity": "Course",
+                "title": "Getting starting with onCourse",
+                "documentation": "/manual/#courses",
+                "link": "/course/new",
+                "canSkip": false,
+                "video": "q8m9kIYW1Cw",
+                "content": "<p>Let's get started by creating our first course. For now, your new course will need a name and a code as well as a data collection rule detailing the questions asked of people enrolling. Choose one of the built-in rules for now.</p><p>Under the marketing section, go ahead and add a web description for your course. You don't need to mention pricing, schedules or trainers... we'll do all that later. Just put in a description to get people excited about your offering.</p><p>Courses are the product you offer, not the specific event that students or customers are purchasing. We'll set that up later.</p><p>When you are done with your course, hit save at the top right.</p>",
+              }}
+            />*/}
             <Statistics setUpdateChart={this.setUpdateChart} />
           </Grid>
         </ResizableWrapper>
