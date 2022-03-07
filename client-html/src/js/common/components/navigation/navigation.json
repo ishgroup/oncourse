@@ -6,6 +6,11 @@
       "description": "Make scheduling courses and events a breeze with onCourse scheduling. Whether you offer classroom, self-paced or virtual courses, onCourse has the power to manage even the most complex scheduling requirements. Whether you offer classroom, self-paced or virtual courses, onCourse has the power to manage even the most complex scheduling requirements.<p>Make course scheduling a pleasure and free your organisation from costly mistakes.</p><ul><li>Collision Detection</li><li>Course Duplication</li><li>Availability Rules</li><li>Capacity Management</li><li>Worldwide Time-zone Support</li><li>Automation</li><li>Timetable Views</li><ul>"
     },
     {
+      "title": "Automation",
+      "key": "automation",
+      "description": "."
+    },
+    {
       "title": "Accounting",
       "key": "accounting",
       "description": "."
@@ -13,6 +18,41 @@
     {
       "title": "Sales",
       "key": "sales",
+      "description": "."
+    },
+    {
+      "title": "System",
+      "key": "system",
+      "description": "."
+    },
+    {
+      "title": "Compliance",
+      "key": "compliance",
+      "description": "."
+    },
+    {
+      "title": "Customers",
+      "key": "customers",
+      "description": "."
+    },
+    {
+      "title": "Help",
+      "key": "help",
+      "description": "."
+    },
+    {
+      "title": "Marketing",
+      "key": "marketing",
+      "description": "."
+    },
+    {
+      "title": "Education",
+      "key": "education",
+      "description": "."
+    },
+    {
+      "title": "Payroll",
+      "key": "payroll",
       "description": "."
     }
   ],
@@ -49,7 +89,7 @@
       "key": "Assessment tasks",
       "link": "/assessment",
       "categories": [
-        "Education"
+        "education"
       ],
       "description": "A list of assessment tasks uploaded to your system. They are available to be added to classes."
     },
@@ -58,7 +98,7 @@
       "key": "Audit Logging",
       "link": "/audit",
       "categories": [
-        "System"
+        "system"
       ],
       "description": "A recorded log of every action taken in your onCourse system. Also used to power the 'Automation Status' section on the dashboard.  "
     },
@@ -76,7 +116,7 @@
       "key": "Banking Deposits",
       "link": "/banking",
       "categories": [
-        "Accounting"
+        "accounting"
       ],
       "description": "All the banking deposits created in your onCourse system."
     },
@@ -85,8 +125,8 @@
       "key": "Batch payment in",
       "link": "/batchPayment",
       "categories": [
-        "Accounting",
-        "Sales"
+        "accounting",
+        "sales"
       ],
       "description": "Review and process all outstanding invoices and payment plans. In one batch, charge customer credit cards.",
       "links_extra": [
@@ -101,7 +141,7 @@
       "key": "Certificates",
       "link": "/certificate",
       "categories": [
-        "Compliance"
+        "compliance"
       ],
       "description": "Manage the certification of students who have achieved competency in their outcomes, including issuing and revoking certificates. "
     },
@@ -110,7 +150,7 @@
       "key": "Change my password",
       "link": "/login?updatePassword=true",
       "categories": [
-        "Help"
+        "help"
       ],
       "description": "Change your onCourse password."
     },
@@ -119,7 +159,7 @@
       "key": "Classes",
       "link": "/class",
       "categories": [
-        "Scheduling"
+        "scheduling"
       ],
       "description": "A list of all the classes in your onCourse system."
     },
@@ -128,7 +168,7 @@
       "key": "Community support",
       "link": "https://forum.ish.com.au",
       "categories": [
-        "Help"
+        "help"
       ],
       "description": "Ask a question of the onCourse community in our forum."
     },
@@ -137,7 +177,7 @@
       "key": "Companies",
       "link": "/contact?filter=@Companies",
       "categories": [
-        "Customers"
+        "customers"
       ],
       "description": "A list of your contacts that are set as being a company."
     },
@@ -164,7 +204,7 @@
       "key": "Contacts",
       "link": "/contact",
       "categories": [
-        "Customers"
+        "customers"
       ],
       "description": "A complete list of all the contacts in your system, including students, tutors and companies."
     },
@@ -182,7 +222,7 @@
       "key": "Courses",
       "link": "/course",
       "categories": [
-        "Scheduling"
+        "scheduling"
       ],
       "description": "A list of all your courses."
     },
@@ -200,7 +240,7 @@
       "key": "Data collection forms",
       "link": "/preferences/collectionForms",
       "categories": [
-        "Marketing"
+        "marketing"
       ],
       "description": "Organise your data collection questions into different forms covering different processes. Create separate forms for Enrolments, Applications, Surveys, Parents, Payers and more."
     },
@@ -209,7 +249,7 @@
       "key": "Data collection rules",
       "link": "/preferences/collectionRules",
       "categories": [
-        "Marketing"
+        "marketing"
       ],
       "description": "Set the rules around which data collection forms are used for which student process. Apply different forms for Enrolments, Applications, Waiting Lists and more. "
     },
@@ -218,7 +258,7 @@
       "key": "Deposit banking",
       "link": "/banking/new",
       "categories": [
-        "Accounting"
+        "accounting"
       ],
       "description": "Create a bank reconcilliation record for today's date."
     },
@@ -236,7 +276,7 @@
       "key": "Documentation",
       "link": "https://www.ish.com.au/au/support",
       "categories": [
-        "Help"
+        "help"
       ],
       "description": "Need to find out how something in onCourse works? Our onCourse documentation manual almost certainly has you covered."
     },
@@ -263,7 +303,7 @@
       "key": "Export AVETMISS 8...",
       "link": "/avetmiss-export",
       "categories": [
-        "Compliance"
+        "compliance"
       ],
       "description": "Export records into the AVETMISS 8 format for the purpose of reporting to govenrment funding agencies."
     },
@@ -281,7 +321,7 @@
       "key": "Finalise period",
       "link": "/finalise",
       "categories": [
-        "Accounting"
+        "accounting"
       ],
       "description": "Finalise the accounting within the defined start and end dates. Once a period is finalised you cannot edit financial records from before that date again."
     },
@@ -326,8 +366,8 @@
       "key": "Invoices",
       "link": "/invoice",
       "categories": [
-        "Accounting",
-        "Sales"
+        "accounting",
+        "sales"
       ],
       "description": ""
     },
@@ -336,7 +376,7 @@
       "key": "Leads",
       "link": "/lead",
       "categories": [
-        "Sales"
+        "sales"
       ],
       "description": ""
     },
@@ -372,7 +412,7 @@
       "key": "onCourse news",
       "link": "https://ish.com.au/blog",
       "categories": [
-        "Help"
+        "help"
       ],
       "description": ""
     },
@@ -381,7 +421,7 @@
       "key": "Outcomes",
       "link": "/outcome",
       "categories": [
-        "Education"
+        "education"
       ],
       "description": ""
     },
@@ -399,8 +439,8 @@
       "key": "Payments In",
       "link": "/paymentIn",
       "categories": [
-        "Accounting",
-        "Sales"
+        "accounting",
+        "sales"
       ],
       "description": ""
     },
@@ -409,8 +449,8 @@
       "key": "Payments Out",
       "link": "/paymentOut",
       "categories": [
-        "Accounting",
-        "Sales"
+        "accounting",
+        "sales"
       ],
       "description": ""
     },
@@ -419,7 +459,7 @@
       "key": "PDF backgrounds",
       "link": "/automation/pdf-backgrounds",
       "categories": [
-        "Automation"
+        "automation"
       ],
       "description": ""
     },
@@ -428,7 +468,7 @@
       "key": "PDF reports",
       "link": "/automation/pdf-reports",
       "categories": [
-        "Automation"
+        "automation"
       ],
       "description": ""
     },
@@ -437,7 +477,7 @@
       "key": "Preferences",
       "link": "/preferences/college",
       "categories": [
-        "System"
+        "system"
       ],
       "description": ""
     },
@@ -446,7 +486,7 @@
       "key": "Prior learnings",
       "link": "/priorLearning",
       "categories": [
-        "Education"
+        "education"
       ],
       "description": ""
     },
@@ -464,7 +504,7 @@
       "key": "Qualifications",
       "link": "/qualification",
       "categories": [
-        "Compliance"
+        "compliance"
       ],
       "description": ""
     },
@@ -482,7 +522,7 @@
       "key": "Release notes",
       "link": "https://www.ish.com.au/onCourse/doc/release-notes/",
       "categories": [
-        "Help"
+        "help"
       ],
       "description": ""
     },
@@ -491,7 +531,7 @@
       "key": "Rooms",
       "link": "/room",
       "categories": [
-        "Scheduling"
+        "scheduling"
       ],
       "description": ""
     },
@@ -509,7 +549,7 @@
       "key": "Scripts",
       "link": "/automation/script",
       "categories": [
-        "Automation"
+        "automation"
       ],
       "description": ""
     },
@@ -518,7 +558,7 @@
       "key": "Security",
       "link": "/security",
       "categories": [
-        "System"
+        "system"
       ],
       "description": ""
     },
@@ -527,7 +567,7 @@
       "key": "Sellable items relation types",
       "link": "",
       "categories": [
-        "Scheduling"
+        "scheduling"
       ],
       "description": ""
     },
@@ -536,7 +576,7 @@
       "key": "Send support request...",
       "link": "",
       "categories": [
-        "Help"
+        "help"
       ],
       "description": ""
     },
@@ -545,7 +585,7 @@
       "key": "Sites",
       "link": "",
       "categories": [
-        "Scheduling"
+        "scheduling"
       ],
       "description": ""
     },
@@ -554,7 +594,7 @@
       "key": "Student Feedback",
       "link": "",
       "categories": [
-        "Marketing"
+        "marketing"
       ],
       "description": ""
     },
@@ -563,7 +603,7 @@
       "key": "Students",
       "link": "",
       "categories": [
-        "Customers"
+        "customers"
       ],
       "description": "A list of your student contacts."
     },
@@ -572,7 +612,7 @@
       "key": "Tags",
       "link": "",
       "categories": [
-        "System"
+        "system"
       ],
       "description": ""
     },
@@ -581,7 +621,7 @@
       "key": "Tax types",
       "link": "",
       "categories": [
-        "Accounting"
+        "sccounting"
       ],
       "description": ""
     },
@@ -590,7 +630,7 @@
       "key": "Timetable",
       "link": "",
       "categories": [
-        "Scheduling"
+        "scheduling"
       ],
       "description": ""
     },
@@ -599,8 +639,8 @@
       "key": "Traineeship Courses",
       "link": "",
       "categories": [
-        "Scheduling",
-        "Compliance"
+        "scheduling",
+        "compliance"
       ],
       "description": ""
     },
@@ -609,8 +649,8 @@
       "key": "Traineeships",
       "link": "",
       "categories": [
-        "Scheduling",
-        "Compliance"
+        "scheduling",
+        "compliance"
       ],
       "description": ""
     },
@@ -619,7 +659,7 @@
       "key": "Transactions",
       "link": "",
       "categories": [
-        "Accounting"
+        "accounting"
       ],
       "description": ""
     },
@@ -628,7 +668,7 @@
       "key": "Tutor pay",
       "link": "",
       "categories": [
-        "Accounting, Payroll"
+        "accounting, payroll"
       ],
       "description": ""
     },
@@ -637,8 +677,8 @@
       "key": "Tutor pay rates",
       "link": "",
       "categories": [
-        "Accounting",
-        "Payroll"
+        "accounting",
+        "payroll"
       ],
       "description": ""
     },
@@ -647,8 +687,8 @@
       "key": "Tutors",
       "link": "",
       "categories": [
-        "Sales",
-        "Marketing"
+        "sales",
+        "marketing"
       ],
       "description": ""
     },
@@ -657,7 +697,7 @@
       "key": "Units Of Competency",
       "link": "",
       "categories": [
-        "Compliance"
+        "compliance"
       ],
       "description": ""
     },
@@ -666,7 +706,7 @@
       "key": "Voucher Types",
       "link": "",
       "categories": [
-        "Sales"
+        "sales"
       ],
       "description": ""
     },
@@ -675,8 +715,8 @@
       "key": "Waiting lists",
       "link": "",
       "categories": [
-        "Scheduling",
-        "Sales"
+        "scheduling",
+        "sales"
       ],
       "description": ""
     },

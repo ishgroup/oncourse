@@ -334,6 +334,9 @@ const globalStyles = (theme: AppTheme) =>
       ".primaryColor": {
         color: theme.palette.primary.main
       },
+      ".secondaryColor": {
+        color: theme.palette.secondary.main
+      },
       ".warningColor": {
         color: theme.palette.warning.light
       },

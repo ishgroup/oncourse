@@ -11,6 +11,8 @@ import { createStyles, withStyles } from "@mui/styles";
 import { darken } from "@mui/material/styles";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Divider from "@mui/material/Divider";
+import { useEffect, useState } from "react";
+import { Backdrop } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
 import Typography from "@mui/material/Typography";
 import { AppTheme } from "../../../../model/common/Theme";
@@ -24,11 +26,15 @@ import UserSearch from "./components/UserSearch";
 import SearchResults from "./components/searchResults/SearchResults";
 import SidebarLatestActivity from "./components/SidebarLatestActivity";
 import Favorites from "./components/favorites/Favorites";
-import { getResultId } from "./utils";
+import { getResultId, VARIANTS } from "./utils";
 import HamburgerMenu from "./components/HamburgerMenu";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import Navigation from "../../navigation/Navigation";
+import NavigationCategory from "../../navigation/NavigationCategory";
 
 export const SWIPEABLE_SIDEBAR_WIDTH: number = 350;
+
+export const CATEGORY_SIDEBAR_WIDTH: number = 850;
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -41,7 +47,9 @@ const styles = (theme: AppTheme) =>
     drawerWidth: {
       width: SWIPEABLE_SIDEBAR_WIDTH,
       maxWidth: SWIPEABLE_SIDEBAR_WIDTH,
-      position: "relative"
+      zIndex: 2,
+      position: "relative",
+      background: theme.palette.background.paper,
     },
     appBar: {
       backgroundColor:
@@ -75,6 +83,24 @@ const styles = (theme: AppTheme) =>
       maxHeight: "calc(100vh - 64px - 60px)",
       transition: "all 0.5s ease-in"
     },
+    categoryRoot: {
+      top: 0,
+      zIndex: 1,
+      width: `${CATEGORY_SIDEBAR_WIDTH}px`,
+      height: "100%",
+      position: "fixed",
+      display: "flex",
+      background: theme.palette.background.default,
+      transition: "transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms",
+      left: `${SWIPEABLE_SIDEBAR_WIDTH}px`,
+      transform: `translateX(-${CATEGORY_SIDEBAR_WIDTH + SWIPEABLE_SIDEBAR_WIDTH}px)`
+    },
+    categoryVisible: {
+      transform: "translateX(1px)"
+    },
+    paperBorder: {
+      borderRight: `1px solid ${theme.palette.divider}`
+    },
     logo: { height: "36px", width: "auto" },
   });
 
@@ -92,7 +118,7 @@ interface Props {
   getSearchResults: any;
   userSearch: any;
   searchResults: any;
-  variant: any;
+  variant: keyof typeof VARIANTS;
   categories: any;
   getScriptsPermissions: any;
   scripts: any;
@@ -119,21 +145,22 @@ const SwipeableSidebar: React.FC<Props> = props => {
     categories,
     getScriptsPermissions,
     scripts,
-    hasScriptsPermissions,
+    hasScriptsPermissions
   } = props;
 
-  const [controlResults, setControlResults] = React.useState([]);
-  const [resultIndex, setResultIndex] = React.useState(-1);
-  const [scriptIdSelected, setScriptIdSelected] = React.useState(null);
-  const [execMenuOpened, setExecMenuOpened] = React.useState(false);
+  const [controlResults, setControlResults] = useState([]);
+  const [resultIndex, setResultIndex] = useState(-1);
+  const [scriptIdSelected, setScriptIdSelected] = useState(null);
+  const [execMenuOpened, setExecMenuOpened] = useState(false);
+  const [selected, setSelected] = useState(null);
   const [focusOnSearchInput, setFocusOnSearchInput] = React.useState<boolean>(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     getCategories();
     getScriptsPermissions();
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (hasScriptsPermissions) {
       getScripts();
       getFavoriteScripts();
@@ -194,7 +221,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
     [userSearch, categories, resultIndex]
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (searchResults) {
       const updated = [...searchResults];
 
@@ -207,7 +234,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
   const showUserSearch = userSearch && userSearch.length > 0;
   const getUserSearchField: any = document.getElementsByName("sidebar_user_search");
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (getUserSearchField.length > 0) {
       if (resultIndex > -1) {
         getUserSearchField[0].blur();
@@ -287,7 +314,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
     [controlResults, resultIndex, categories]
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.addEventListener("keydown", onKeyDown);
 
     return () => {
@@ -320,68 +347,104 @@ const SwipeableSidebar: React.FC<Props> = props => {
   }, [isFormDirty, resetEditView]);
 
   return (
-    <SwipeableDrawer
-      variant={variant}
-      open={opened}
-      onClose={toggleDrawer(false)}
-      onOpen={toggleDrawer(true)}
-      classes={{
-        paper: classes.drawerPaper,
-        root: classes.drawerRoot,
-      }}
-    >
-      <div className={classes.drawerWidth}>
-        <div className={clsx("pl-2", classes.toolbar)}>
-          <HamburgerMenu variant={variant} form={form} />
+    <>
+      <SwipeableDrawer
+        variant={variant}
+        open={opened}
+        onClose={toggleDrawer(false)}
+        onOpen={toggleDrawer(true)}
+        classes={{
+          paper: classes.drawerPaper,
+          root: classes.drawerRoot,
+        }}
+        PaperProps={{
+          classes: {
+            root: variant === "temporary" && opened && selected !== null && classes.paperBorder
+          }
+        }}
+      >
+        <div className={classes.drawerWidth}>
+          <div className={clsx("pl-2", classes.toolbar)}>
+            <HamburgerMenu variant={variant} form={form} />
+          </div>
+          <UserSearch
+            getSearchResults={getSearchResults}
+            setFocusOnSearchInput={setFocusOnSearchInput}
+            focusOnSearchInput={(focusOnSearchInput || showUserSearch)}
+          />
+          <div>
+            <Collapse in={(focusOnSearchInput && !showUserSearch)}>
+              <div className="p-2">
+                <Typography className="mb-1" component="div" variant="body2">
+                  Navigate to an onCourse feature by typing the action you want to perform.
+                </Typography>
+                <Typography className="mb-1" component="div" variant="body2">
+                  Search for contacts by phone, email or name. Find courses, invoices and much more.
+                </Typography>
+              </div>
+            </Collapse>
+            <Collapse in={!focusOnSearchInput || showUserSearch}>
+              <div
+                id="search-results-wrapper"
+                className={clsx(classes.searchResultsWrapper, !showUserSearch ? "d-none" : "")}
+              >
+                <SearchResults
+                  classes={{ root: classes.searchResultsRoot }}
+                  userSearch={userSearch}
+                  checkSelectedResult={checkSelectedResult}
+                  showConfirm={showConfirmHandler}
+                  setExecMenuOpened={setExecMenuOpened}
+                  setScriptIdSelected={setScriptIdSelected}
+                />
+              </div>
+              <div className={showUserSearch ? "d-none" : ""}>
+                {/* <Favorites */}
+                {/*  classes={{ topBar: classes.favoritesTopBar }} */}
+                {/*  showConfirm={showConfirmHandler} */}
+                {/*  isFormDirty={isFormDirty} */}
+                {/*  scriptIdSelected={scriptIdSelected} */}
+                {/*  setScriptIdSelected={setScriptIdSelected} */}
+                {/*  execMenuOpened={execMenuOpened} */}
+                {/*  setExecMenuOpened={setExecMenuOpened} */}
+                {/* /> */}
+
+                <Navigation
+                  selected={selected}
+                  setSelected={setSelected}
+                  scriptIdSelected={scriptIdSelected}
+                  setScriptIdSelected={setScriptIdSelected}
+                  execMenuOpened={execMenuOpened}
+                  setExecMenuOpened={setExecMenuOpened}
+                />
+                <Divider variant="middle" />
+                <SidebarLatestActivity showConfirm={showConfirmHandler} checkSelectedResult={checkSelectedResult} />
+              </div>
+            </Collapse>
+          </div>
         </div>
-        <UserSearch
-          getSearchResults={getSearchResults}
-          setFocusOnSearchInput={setFocusOnSearchInput}
-          focusOnSearchInput={(focusOnSearchInput || showUserSearch)}
+
+        <div className={
+          clsx(
+            classes.categoryRoot,
+            opened && selected !== null && classes.categoryVisible
+          )}
+        >
+          <NavigationCategory
+            selected={selected}
+            onClose={() => setSelected(null)}
+          />
+        </div>
+      </SwipeableDrawer>
+
+
+      {variant !== "temporary" && (
+        <Backdrop
+          open={opened && selected !== null}
+          onClick={toggleDrawer(false)}
         />
-        <div>
-          <Collapse in={(focusOnSearchInput && !showUserSearch)}>
-            <div className="p-2">
-              <Typography className="mb-1" component="div" variant="body2">
-                Navigate to an onCourse feature by typing the action you want to perform.
-              </Typography>
-              <Typography className="mb-1" component="div" variant="body2">
-                Search for contacts by phone, email or name. Find courses, invoices and much more.
-              </Typography>
-            </div>
-          </Collapse>
-          <Collapse in={!focusOnSearchInput || showUserSearch}>
-            <div
-              id="search-results-wrapper"
-              className={clsx(classes.searchResultsWrapper, !showUserSearch ? "d-none" : "")}
-            >
-              <SearchResults
-                classes={{ root: classes.searchResultsRoot }}
-                userSearch={userSearch}
-                checkSelectedResult={checkSelectedResult}
-                showConfirm={showConfirmHandler}
-                setExecMenuOpened={setExecMenuOpened}
-                setScriptIdSelected={setScriptIdSelected}
-              />
-            </div>
-            <div className={showUserSearch ? "d-none" : ""}>
-              <Favorites
-                classes={{ topBar: classes.favoritesTopBar }}
-                showConfirm={showConfirmHandler}
-                isFormDirty={isFormDirty}
-                scriptIdSelected={scriptIdSelected}
-                setScriptIdSelected={setScriptIdSelected}
-                execMenuOpened={execMenuOpened}
-                setExecMenuOpened={setExecMenuOpened}
-              />
-              <Divider variant="middle" />
-              <SidebarLatestActivity showConfirm={showConfirmHandler} checkSelectedResult={checkSelectedResult} />
-            </div>
-          </Collapse>
-        </div>
-      </div>
-    </SwipeableDrawer>
-  );
+      )}
+    </>
+);
 };
 
 const mapsStateToProps = (state: State) => ({
@@ -406,4 +469,4 @@ const mapStateToDispatch = (dispatch: Dispatch<any>) => ({
   showConfirm: props => dispatch(showConfirm(props))
 });
 
-export default connect<any, any, any>(mapsStateToProps, mapStateToDispatch)(withStyles(styles)(SwipeableSidebar));
+export default connect<any, any, any>(mapsStateToProps, mapStateToDispatch)(withStyles(styles, { withTheme: true })(SwipeableSidebar));
