@@ -20,6 +20,7 @@ import groovyx.net.http.HttpResponseException
 import groovyx.net.http.Method
 import groovyx.net.http.RESTClient
 import ish.oncourse.server.api.v1.service.impl.IntegrationApiImpl
+import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.IntegrationConfiguration
 import ish.oncourse.server.cayenne.IntegrationProperty
 import ish.oncourse.server.integration.GetProps
@@ -435,6 +436,60 @@ class CanvasIntegration implements PluginTrait {
 
             response.failure = { resp, result ->
                 throw new IllegalStateException("Failed to enrol student: ${studentId} into section: ${sectionId} ${resp.getStatusLine()}")
+            }
+        }
+    }
+
+    /**
+     * Enrol teachers into the Canvas course
+     *
+     * @param List<Contact> tutors
+     * @param courseId from Canvas
+     * @return enroled teachers
+     */
+    def enrolTeachers(List<Contact> tutors, courseId) {
+        List enroledTeachers = new ArrayList<>()
+        tutors.each { tutor ->
+            Map userResp = getUserByEmail(tutor.email) as Map
+            List teachers = responseToJson(userResp) as List
+            teachers = teachers.findAll {tutor.fullName.equals(it["name"])} as List
+            if (teachers.size() > 1) {
+                logger.warn("More than one teacher found with this email: ${tutor.email} and name: ${tutor.name}. Enrol teachers to the course is impossible")
+                return
+            }
+            if (teachers.size() == 1) {
+                enrolTeacherForCourse(teachers["id"][0], courseId)
+                enroledTeachers.add(teachers)
+            }
+        }
+        return enroledTeachers
+    }
+
+    /**
+     * Create a new enrolment with the teacher and course id
+     *
+     * @param teacherId from Canvas
+     * @param courseId from Canvas
+     * @return enrolment object
+     */
+    def enrolTeacherForCourse(teachertId, courseId) {
+        def client = new RESTClient(baseUrl)
+        client.headers["Authorization"] = "Bearer ${authHeader}"
+        client.request(Method.POST, ContentType.JSON) {
+            uri.path = "/api/v1/courses/${courseId}/enrollments"
+            body = [
+                    enrollment: [
+                            user_id: teachertId,
+                            type: "TeacherEnrollment",
+                            enrollment_state: "active"
+                    ]
+            ]
+            response.success = { resp, result ->
+                return result
+            }
+
+            response.failure = { resp, result ->
+                throw new IllegalStateException("Failed to enrol teacher: ${teachertId} into course: ${courseId} ${resp.getStatusLine()}")
             }
         }
     }
