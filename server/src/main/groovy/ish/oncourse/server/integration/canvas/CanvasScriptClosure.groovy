@@ -36,12 +36,14 @@ import java.security.SecureRandom
  * 	   authentication_provider_id 1
  * 	   create_password "myCustomField"
  * 	   course_blueprint "ABC"
+ * 	   add_tutors true
  * }
  * ```
  * Setting 'create_section' to true will create a new Canvas sections from the equivalent onCourse Class if one does not already exist inside your Canvas instance.
  * Setting 'create_student' to true will create a new Canvas User profile for the enrolled student if one does not exist in your Canvas instance.
  * Setting 'create_password' will generate random password for student to canvas and save to customField of Contact with key like create_password parameter
  * Setting 'course_blueprint' use if the course does not already exist in Canvas with the code provided, will create a new course from the blueprint specified.
+ * Setting 'add_tutors' to true will enrol tutors from enrolment's class into the Canvas course as teachers
  */
 @API
 @CompileStatic
@@ -58,6 +60,7 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
     int authentication_provider_id
     String create_password
     String course_blueprint
+    boolean add_tutors
 
     def enrolment(Enrolment enrolment) {
         this.enrolment = enrolment
@@ -89,6 +92,10 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
 
     def course_blueprint(String course_blueprint){
         this.course_blueprint = course_blueprint
+    }
+
+    def add_tutors(boolean add_tutors){
+        this.add_tutors = add_tutors
     }
 
     @Override
@@ -147,6 +154,10 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
             }
 
             integration.enrolUser(student["id"], section["id"])
+
+            if (add_tutors) {
+                integration.enrolTeachers(enrolment.courseClass.tutorRoles.tutor.contact, course["id"][0])
+            }
 
             if(create_password){
                 CustomFieldFunctions.updateCustomFieldWithoutCommit(create_password, password, enrolment.student.contact, enrolment.context)
