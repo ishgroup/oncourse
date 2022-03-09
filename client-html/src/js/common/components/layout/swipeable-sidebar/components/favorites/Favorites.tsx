@@ -121,7 +121,7 @@ const Favorites: React.FC<Props> = props => {
   const [localFavoriteScripts, setLocalFavoriteScripts] = React.useState([...favoriteScripts]);
   const [isEditing, setIsEditing] = React.useState(false);
 
-  const groupedSortedItems: DashboardItem[] = useMemo(() => [...categories, ...((hasScriptsPermissions && scripts) || [])].sort(sortItems),
+  const groupedSortedItems: DashboardItem[] = useMemo(() => [...categories, ...((hasScriptsPermissions && scripts as DashboardItem[]) || [])].sort(sortItems),
     [categories, scripts]);
 
   React.useEffect(() => {

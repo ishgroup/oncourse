@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.message.csv
-entityClass: Message
-body: ish.onCourse.message.csv.groovy
-name: Message CSV export
-outputType: csv
