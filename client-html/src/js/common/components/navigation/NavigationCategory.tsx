@@ -17,6 +17,11 @@ import { SelectedCategoryItem } from "../../../model/common/drawer/SwipeableDraw
 const useStyles = makeAppStyles(() => ({
   root: {
     
+  },
+  closeIconButton: {
+    position: "absolute",
+    right: 20,
+    top: 20,
   }
 }));
 
@@ -34,26 +39,18 @@ const NavigationCategory = (
   }:Props
 ) => {
   const category = useMemo(() => navigation.categories.find(c => c.key === selected), [selected]);
+  const classes = useStyles();
 
   console.log({ category });
-
-  const closeIcon = (
-    <IconButton size="large" onClick={onClose}>
-      <Close />
-    </IconButton>
-  );
 
   const showPreview = useMemo(() => {
     switch (selectedCategoryItem.entity) {
       case "Contacts":
-        return <ContactPreview selected={selectedCategoryItem} closeIcon={closeIcon} />;
+        return <ContactPreview selected={selectedCategoryItem} />;
       default:
         return (
-          <div className="d-flex">
+          <div className="d-flex pr-4">
             <Typography variant="h4" className="flex-fill">{category?.title}</Typography>
-            <IconButton size="large" onClick={onClose}>
-              <Close />
-            </IconButton>
           </div>
         );
     }
@@ -61,6 +58,9 @@ const NavigationCategory = (
   
   return (
     <div className="flex-fill p-3 appFrame overflow-y-auto">
+      <IconButton size="large" onClick={onClose} className={classes.closeIconButton} sx={{ zIndex: "zIndex.modal" }}>
+        <Close />
+      </IconButton>
       {showPreview}
     </div>
 );
