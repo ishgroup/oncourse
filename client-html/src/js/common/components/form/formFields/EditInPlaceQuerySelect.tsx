@@ -13,10 +13,6 @@ import { change, WrappedFieldMetaProps } from "redux-form";
 import { format as formatDate } from "date-fns";
 import clsx from "clsx";
 import { DatePicker, TimePicker as Time } from "@mui/lab";
-import CreateIcon from '@mui/icons-material/Create';
-import ButtonBase from "@mui/material/ButtonBase";
-import ListItemText from "@mui/material/ListItemText";
-import Typography from "@mui/material/Typography";
 import { InputProps } from "@mui/material/Input";
 import { CodeCompletionCore } from "antlr4-c3";
 import { ANTLRInputStream, CommonTokenStream } from "antlr4ts";
@@ -1177,13 +1173,10 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
       input,
       meta,
       label,
-      hideLabel,
-      editableComponent,
       disabled,
       className,
       inline,
       placeholder,
-      labelAdornment,
       endAdornment,
       disableUnderline,
       disableErrorText,
@@ -1245,6 +1238,9 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
                 {...params}
                 variant="standard"
                 onKeyDown={this.onKeyDown}
+                InputLabelProps={{
+                  shrink: true
+                }}
                 InputProps={{
                   ...params.InputProps,
                   disableUnderline,

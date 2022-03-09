@@ -1,0 +1,5 @@
+type: string
+enum:
+  - Not Installed
+  - Installed but Disabled
+  - Enabled

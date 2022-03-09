@@ -735,3 +735,14 @@ databaseChangeLog:
         - sql: "UPDATE Contact SET homePhone = REGEXP_REPLACE(homePhone,'[^0-9+]',''), 
                                    mobilePhone = REGEXP_REPLACE(mobilePhone,'[^0-9+]',''), 
                                    workPhone = REGEXP_REPLACE(workPhone,'[^0-9+]','')"
+  - changeSet:
+      id: 109-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: Checkout
+      changes:
+        - customChange: {
+          "class": "ish.oncourse.server.upgrades.liquibase.change.CleanCheckoutsWithReplication"
+        }

@@ -112,7 +112,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
 
   const classes = useStyles();
   
-  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState<boolean>(opened);
   const [isStuck, setIsStuck] = useState<boolean>(false);
 
   const onClickAway = () => {
