@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
+import React, { Dispatch } from "react";
 import { connect } from "react-redux";
 import clsx from "clsx";
 import withStyles from "@mui/styles/withStyles";
@@ -15,6 +15,7 @@ import { openInternalLink } from "../../../../../utils/links";
 import ListLinkItem from "./ListLinkItem";
 import { State } from "../../../../../../reducers/state";
 import { getResultId } from "../../utils";
+import { setSelectedCategoryItem } from "../../actions";
 
 const styles = theme =>
   createStyles({
@@ -61,15 +62,20 @@ class ListLinksGroup extends React.PureComponent<any, any> {
   };
 
   openLink = id => {
-    const { showConfirm, entityDisplayName, categories } = this.props;
+    const {
+      showConfirm, entityDisplayName, categories, selectCategoryItem
+    } = this.props;
     const category = categories.find(c => c.category === entityDisplayName);
 
     if (category) {
       const url = category.url.indexOf("?") !== -1 ? category.url.slice(0, category.url.indexOf("?")) : category.url;
+      const link = !id || !Number.isNaN(Number(id)) ? url + (id ? `/${id}` : "") : id;
 
-      showConfirm(() => openInternalLink(
-        !id || !Number.isNaN(Number(id)) ? url + (id ? `/${id}` : "") : id
-      ));
+      if (entityDisplayName === "Contacts") {
+        selectCategoryItem(entityDisplayName, id);
+      } else {
+        showConfirm(() => openInternalLink(link));
+      }
     }
   };
 
@@ -145,4 +151,8 @@ const mapStateToProps = (state: State) => ({
   categories: state.dashboard.categories
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(withStyles(styles)(ListLinksGroup));
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  selectCategoryItem: (entity, id) => dispatch(setSelectedCategoryItem(entity, id)),
+});
+
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ListLinksGroup));
