@@ -23,6 +23,9 @@ export const bootstrap = (theme: AppTheme) => ({
   ".text-bolder": {
     fontWeight: "bolder"
   },
+  ".fs-13": {
+    fontSize: theme.spacing(1.625)
+  },
   ".fs2": {
     fontSize: theme.spacing(2)
   },

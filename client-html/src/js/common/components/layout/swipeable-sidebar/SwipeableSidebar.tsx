@@ -45,7 +45,7 @@ const styles = (theme: AppTheme) =>
     },
     drawerPaper: {
       overflowX: "hidden",
-      zIndex: theme.zIndex.modal + 2,
+      zIndex: theme.zIndex.modal,
     },
     drawerWidth: {
       width: SWIPEABLE_SIDEBAR_WIDTH,

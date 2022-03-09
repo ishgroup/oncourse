@@ -6,7 +6,9 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { Dispatch, useCallback, useEffect } from "react";
+import React, {
+  Dispatch, useCallback, useEffect, useState
+} from "react";
 import { connect } from "react-redux";
 import { Field, getFormValues, reduxForm } from "redux-form";
 import Launch from "@mui/icons-material/Launch";
@@ -25,6 +27,7 @@ import MuiAvatar from '@mui/material/Avatar';
 import Button from "@mui/material/Button";
 import PhoneCallbackOutlinedIcon from "@mui/icons-material/PhoneCallbackOutlined";
 import CollectionsBookmarkOutlinedIcon from "@mui/icons-material/CollectionsBookmarkOutlined";
+import Collapse from "@mui/material/Collapse";
 import { State } from "../../../reducers/state";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import FullScreenStickyHeader
@@ -34,6 +37,9 @@ import { getContact } from "./actions";
 import { getContactFullName } from "./utils";
 import { openInternalLink } from "../../../common/utils/links";
 import CustomSelector, { CustomSelectorOption } from "../../../common/components/custom-selector/CustomSelector";
+import FormSubmitButton from "../../../common/components/form/FormSubmitButton";
+import FormField from "../../../common/components/form/formFields/FormField";
+import { DD_MM_YYYY_SLASHED } from "../../../common/utils/dates/format";
 
 const ContactPreview: React.FC<any> = props => {
   const {
@@ -43,6 +49,8 @@ const ContactPreview: React.FC<any> = props => {
     selected,
     getContactRecord,
   } = props;
+
+  const [addNote, setAddNote] = useState<boolean>(false);
 
   useEffect(() => {
     if (selected.id) getContactRecord(selected.id);
@@ -176,24 +184,56 @@ const ContactPreview: React.FC<any> = props => {
               sx={{
                 width: '100%', borderRadius: 1, border: "1px solid", borderColor: "divider"
               }}
-              className="centeredFlex pt-1 pb-1 p-2"
+              className="pt-1 pb-1 p-2"
             >
-              <Typography variant="caption" className="flex-fill">
-                Click here to add a note
-              </Typography>
-              <CustomSelector
-                caption=""
-                options={addNoteOptions}
-                onSelect={() => {}}
-                initialIndex={0}
-              />
+              <Stack spacing={0} direction="column">
+                <div className="d-flex">
+                  <FormField
+                    type="multilineText"
+                    name="note"
+                    placeholder="Click here to add a note"
+                    fieldClasses={{ text: "fs-13" }}
+                    className="pr-2 flex-fill"
+                    onClick={() => setAddNote(!addNote)}
+                    isInline
+                    hideLabel
+                  />
+                  <CustomSelector
+                    caption=""
+                    options={addNoteOptions}
+                    onSelect={() => {}}
+                    initialIndex={0}
+                  />
+                </div>
+                <Collapse in={addNote}>
+                  <Box component="div" sx={{ pt: 4 }}>
+                    <Stack spacing={2} direction="row" className="mb-1">
+                      <FormField
+                        type="date"
+                        name="date"
+                        label="Date"
+                        formatDate={DD_MM_YYYY_SLASHED}
+                      />
+                      <FormField
+                        type="time"
+                        name="time"
+                        label="Time"
+                      />
+                      <div className="flex-fill" />
+                      <div>
+                        <FormSubmitButton disabled={false} invalid={false} fab />
+                      </div>
+                    </Stack>
+                  </Box>
+                </Collapse>
+              </Stack>
             </Box>
             <Box component="div" className="mt-1">
               <List sx={{ width: '100%' }}>
                 <ListItem className="align-items-start pl-0 pr-0">
                   <ListItemAvatar>
                     <MuiAvatar sx={{ bgcolor: theme => theme.palette.grey[50] }}>
-                      <PhoneCallbackOutlinedIcon color="secondary" />
+                      <PhoneCallbackOutlinedIcon color="secondary" fontSize="small" />
                     </MuiAvatar>
                   </ListItemAvatar>
                   <ListItemText
@@ -225,7 +265,7 @@ const ContactPreview: React.FC<any> = props => {
                 <ListItem className="align-items-start pl-0 pr-0">
                   <ListItemAvatar>
                     <MuiAvatar sx={{ bgcolor: theme => theme.palette.grey[50] }}>
-                      <CollectionsBookmarkOutlinedIcon color="secondary" />
+                      <CollectionsBookmarkOutlinedIcon color="secondary" fontSize="small" />
                     </MuiAvatar>
                   </ListItemAvatar>
                   <ListItemText
