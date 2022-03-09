@@ -3,7 +3,7 @@
     {
       "title": "Scheduling",
       "key": "scheduling",
-      "description": "Make scheduling courses and events a breeze with onCourse scheduling. Whether you offer classroom, self-paced or virtual courses, onCourse has the power to manage even the most complex scheduling requirements. Whether you offer classroom, self-paced or virtual courses, onCourse has the power to manage even the most complex scheduling requirements.<p>Make course scheduling a pleasure and free your organisation from costly mistakes.</p><ul><li>Collision Detection</li><li>Course Duplication</li><li>Availability Rules</li><li>Capacity Management</li><li>Worldwide Time-zone Support</li><li>Automation</li><li>Timetable Views</li><ul>"
+      "description": "Make scheduling courses and events a breeze with onCourse scheduling. Whether you offer classroom, self-paced or virtual courses, onCourse has the power to manage even the most complex scheduling requirements. Whether you offer classroom, self-paced or virtual courses, onCourse has the power to manage even the most complex scheduling requirements.<p>Make course scheduling a pleasure and free your organisation from costly mistakes.</p> <ul><li>Collision Detection</li><li>Course Duplication</li><li>Availability Rules</li><li>Capacity Management</li><li>Worldwide Time-zone Support</li><li>Automation</li><li>Timetable Views</li><ul>"
     },
     {
       "title": "Automation",
@@ -59,7 +59,7 @@
   "features": [
     {
       "title": "Accounts",
-      "key": "Accounts",
+      "key": "accounts",
       "link": "/account",
       "categories": [
         "accounting"
@@ -68,7 +68,7 @@
     },
     {
       "title": "Applications",
-      "key": "Applications",
+      "key": "applications",
       "link": "/application",
       "categories": [
         "sales"
@@ -77,7 +77,7 @@
     },
     {
       "title": "Assessment submissions",
-      "key": "Assessment submissions",
+      "key": "assessmentSubmissions",
       "link": "",
       "categories": [
         "education"
@@ -86,7 +86,7 @@
     },
     {
       "title": "Assessment tasks",
-      "key": "Assessment tasks",
+      "key": "assessmentTasks",
       "link": "/assessment",
       "categories": [
         "education"
@@ -95,7 +95,7 @@
     },
     {
       "title": "Audit Logging",
-      "key": "Audit Logging",
+      "key": "auditLogging",
       "link": "/audit",
       "categories": [
         "system"
@@ -104,7 +104,7 @@
     },
     {
       "title": "Automation",
-      "key": "Automation",
+      "key": "automation",
       "link": "/automation",
       "categories": [
         ""
@@ -113,7 +113,7 @@
     },
     {
       "title": "Banking Deposits",
-      "key": "Banking Deposits",
+      "key": "bankingDeposits",
       "link": "/banking",
       "categories": [
         "accounting"
@@ -122,7 +122,7 @@
     },
     {
       "title": "Process payment plans (batch payment in)",
-      "key": "Batch payment in",
+      "key": "batchPaymentIn",
       "link": "/batchPayment",
       "categories": [
         "accounting",
@@ -138,7 +138,7 @@
     },
     {
       "title": "Certificates",
-      "key": "Certificates",
+      "key": "certificates",
       "link": "/certificate",
       "categories": [
         "compliance"
@@ -147,7 +147,7 @@
     },
     {
       "title": "Change my password",
-      "key": "Change my password",
+      "key": "changeMyPassword",
       "link": "/login?updatePassword=true",
       "categories": [
         "help"
@@ -156,7 +156,7 @@
     },
     {
       "title": "Classes",
-      "key": "Classes",
+      "key": "classes",
       "link": "/class",
       "categories": [
         "scheduling"
@@ -165,7 +165,7 @@
     },
     {
       "title": "Community support",
-      "key": "Community support",
+      "key": "communitySupport",
       "link": "https://forum.ish.com.au",
       "categories": [
         "help"
@@ -174,7 +174,7 @@
     },
     {
       "title": "Companies",
-      "key": "Companies",
+      "key": "companies",
       "link": "/contact?filter=@Companies",
       "categories": [
         "customers"
@@ -183,7 +183,7 @@
     },
     {
       "title": "Concession types",
-      "key": "Concession types",
+      "key": "concessionTypes",
       "link": "/preferences/concessionTypes",
       "categories": [
         ""
@@ -192,7 +192,7 @@
     },
     {
       "title": "Contact relation types",
-      "key": "Contact relation types",
+      "key": "contactRelationTypes",
       "link": "/preferences/contactRelationTypes",
       "categories": [
         ""
@@ -201,7 +201,7 @@
     },
     {
       "title": "Contacts",
-      "key": "Contacts",
+      "key": "contacts",
       "link": "/contact",
       "categories": [
         "customers"
@@ -210,7 +210,7 @@
     },
     {
       "title": "Corporate Pass",
-      "key": "Corporate Pass",
+      "key": "corporatePass",
       "link": "/corporatePass",
       "categories": [
         ""
@@ -219,7 +219,7 @@
     },
     {
       "title": "Courses",
-      "key": "Courses",
+      "key": "courses",
       "link": "/course",
       "categories": [
         "scheduling"
@@ -228,7 +228,7 @@
     },
     {
       "title": "Custom fields",
-      "key": "Custom fields",
+      "key": "customFields",
       "link": "/preferences/customFields",
       "categories": [
         ""
@@ -237,7 +237,7 @@
     },
     {
       "title": "Data collection forms",
-      "key": "Data collection forms",
+      "key": "dataCollectionForms",
       "link": "/preferences/collectionForms",
       "categories": [
         "marketing"
@@ -246,7 +246,7 @@
     },
     {
       "title": "Data collection rules",
-      "key": "Data collection rules",
+      "key": "dataCollectionRules",
       "link": "/preferences/collectionRules",
       "categories": [
         "marketing"
@@ -255,7 +255,7 @@
     },
     {
       "title": "Deposit banking",
-      "key": "Deposit banking",
+      "key": "depositBanking",
       "link": "/banking/new",
       "categories": [
         "accounting"
@@ -264,7 +264,7 @@
     },
     {
       "title": "Discounts",
-      "key": "Discounts",
+      "key": "discounts",
       "link": "/discount",
       "categories": [
         ""
@@ -273,7 +273,7 @@
     },
     {
       "title": "Documentation",
-      "key": "Documentation",
+      "key": "documentation",
       "link": "https://www.ish.com.au/au/support",
       "categories": [
         "help"
@@ -282,7 +282,7 @@
     },
     {
       "title": "Documents",
-      "key": "Documents",
+      "key": "documents",
       "link": "/document",
       "categories": [
         ""
@@ -291,7 +291,7 @@
     },
     {
       "title": "Enrolments",
-      "key": "Enrolments",
+      "key": "enrolments",
       "link": "",
       "categories": [
         ""
@@ -300,7 +300,7 @@
     },
     {
       "title": "Export AVETMISS 8...",
-      "key": "Export AVETMISS 8...",
+      "key": "exportAVETMISS8",
       "link": "/avetmiss-export",
       "categories": [
         "compliance"
@@ -309,7 +309,7 @@
     },
     {
       "title": "Export templates",
-      "key": "Export templates",
+      "key": "exportTemplates",
       "link": "/automation/export-templates",
       "categories": [
         ""
@@ -318,7 +318,7 @@
     },
     {
       "title": "Finalise period",
-      "key": "Finalise period",
+      "key": "finalisePeriod",
       "link": "/finalise",
       "categories": [
         "accounting"
@@ -327,7 +327,7 @@
     },
     {
       "title": "Funding Contract",
-      "key": "Funding Contract",
+      "key": "fundingContract",
       "link": "/preferences/fundingContracts",
       "categories": [
         ""
@@ -336,7 +336,7 @@
     },
     {
       "title": "Holidays",
-      "key": "Holidays",
+      "key": "holidays",
       "link": "/preferences/holidays",
       "categories": [
         ""
@@ -345,7 +345,7 @@
     },
     {
       "title": "Import templates",
-      "key": "Import templates",
+      "key": "importTemplates",
       "link": "/automation/import-templates",
       "categories": [
         ""
@@ -354,7 +354,7 @@
     },
     {
       "title": "Integrations",
-      "key": "Integrations",
+      "key": "integrations",
       "link": "/automation/integrations",
       "categories": [
         ""
@@ -363,7 +363,7 @@
     },
     {
       "title": "Invoices",
-      "key": "Invoices",
+      "key": "invoices",
       "link": "/invoice",
       "categories": [
         "accounting",
@@ -373,7 +373,7 @@
     },
     {
       "title": "Leads",
-      "key": "Leads",
+      "key": "leads",
       "link": "/lead",
       "categories": [
         "sales"
@@ -382,7 +382,7 @@
     },
     {
       "title": "Memberships",
-      "key": "Memberships",
+      "key": "memberships",
       "link": "/membership",
       "categories": [
         ""
@@ -391,7 +391,7 @@
     },
     {
       "title": "Message templates",
-      "key": "Message templates",
+      "key": "messageTemplates",
       "link": "/automation/email-templates",
       "categories": [
         ""
@@ -400,7 +400,7 @@
     },
     {
       "title": "Messages",
-      "key": "Messages",
+      "key": "messages",
       "link": "/message",
       "categories": [
         ""
@@ -409,7 +409,7 @@
     },
     {
       "title": "onCourse news",
-      "key": "onCourse news",
+      "key": "onCoursenews",
       "link": "https://ish.com.au/blog",
       "categories": [
         "help"
@@ -418,7 +418,7 @@
     },
     {
       "title": "Outcomes",
-      "key": "Outcomes",
+      "key": "outcomes",
       "link": "/outcome",
       "categories": [
         "education"
@@ -427,7 +427,7 @@
     },
     {
       "title": "Payment types",
-      "key": "Payment types",
+      "key": "paymentTypes",
       "link": "/preferences/paymentTypes",
       "categories": [
         "Accounting"
@@ -436,7 +436,7 @@
     },
     {
       "title": "Payments In",
-      "key": "Payments In",
+      "key": "paymentsIn",
       "link": "/paymentIn",
       "categories": [
         "accounting",
@@ -446,7 +446,7 @@
     },
     {
       "title": "Payments Out",
-      "key": "Payments Out",
+      "key": "paymentsOut",
       "link": "/paymentOut",
       "categories": [
         "accounting",
@@ -456,7 +456,7 @@
     },
     {
       "title": "Report backgrounds",
-      "key": "PDF backgrounds",
+      "key": "PDFbackgrounds",
       "link": "/automation/pdf-backgrounds",
       "categories": [
         "automation"
@@ -465,7 +465,7 @@
     },
     {
       "title": "PDF reports",
-      "key": "PDF reports",
+      "key": "PDFreports",
       "link": "/automation/pdf-reports",
       "categories": [
         "automation"
@@ -474,7 +474,7 @@
     },
     {
       "title": "Preferences",
-      "key": "Preferences",
+      "key": "preferences",
       "link": "/preferences/college",
       "categories": [
         "system"
@@ -483,7 +483,7 @@
     },
     {
       "title": "Prior learnings",
-      "key": "Prior learnings",
+      "key": "priorLearnings",
       "link": "/priorLearning",
       "categories": [
         "education"
@@ -492,7 +492,7 @@
     },
     {
       "title": "Products",
-      "key": "Products",
+      "key": "products",
       "link": "/product",
       "categories": [
         ""
@@ -501,7 +501,7 @@
     },
     {
       "title": "Qualifications",
-      "key": "Qualifications",
+      "key": "qualifications",
       "link": "/qualification",
       "categories": [
         "compliance"
@@ -510,7 +510,7 @@
     },
     {
       "title": "Quotes",
-      "key": "Quotes",
+      "key": "quotes",
       "link": "/invoice?filter=@Quote",
       "categories": [
         ""
@@ -519,7 +519,7 @@
     },
     {
       "title": "Release notes",
-      "key": "Release notes",
+      "key": "releaseNotes",
       "link": "https://www.ish.com.au/onCourse/doc/release-notes/",
       "categories": [
         "help"
@@ -528,7 +528,7 @@
     },
     {
       "title": "Rooms",
-      "key": "Rooms",
+      "key": "rooms",
       "link": "/room",
       "categories": [
         "scheduling"
@@ -537,7 +537,7 @@
     },
     {
       "title": "Sales",
-      "key": "Sales",
+      "key": "sales",
       "link": "/sale",
       "categories": [
         ""
@@ -546,7 +546,7 @@
     },
     {
       "title": "Scripts",
-      "key": "Scripts",
+      "key": "scripts",
       "link": "/automation/script",
       "categories": [
         "automation"
@@ -555,7 +555,7 @@
     },
     {
       "title": "Security",
-      "key": "Security",
+      "key": "security",
       "link": "/security",
       "categories": [
         "system"
@@ -564,7 +564,7 @@
     },
     {
       "title": "Sellable items relation types",
-      "key": "Sellable items relation types",
+      "key": "sellableItemsRelationTypes",
       "link": "",
       "categories": [
         "scheduling"
@@ -573,7 +573,7 @@
     },
     {
       "title": "Send support request...",
-      "key": "Send support request...",
+      "key": "sendSupportRequest",
       "link": "",
       "categories": [
         "help"
@@ -582,7 +582,7 @@
     },
     {
       "title": "Sites",
-      "key": "Sites",
+      "key": "sites",
       "link": "",
       "categories": [
         "scheduling"
@@ -591,7 +591,7 @@
     },
     {
       "title": "Student Feedback",
-      "key": "Student Feedback",
+      "key": "studentFeedback",
       "link": "",
       "categories": [
         "marketing"
@@ -600,7 +600,7 @@
     },
     {
       "title": "Students",
-      "key": "Students",
+      "key": "students",
       "link": "",
       "categories": [
         "customers"
@@ -609,7 +609,7 @@
     },
     {
       "title": "Tags",
-      "key": "Tags",
+      "key": "tags",
       "link": "",
       "categories": [
         "system"
@@ -618,7 +618,7 @@
     },
     {
       "title": "Tax types",
-      "key": "Tax types",
+      "key": "taxTypes",
       "link": "",
       "categories": [
         "sccounting"
@@ -627,7 +627,7 @@
     },
     {
       "title": "Timetable",
-      "key": "Timetable",
+      "key": "timetable",
       "link": "",
       "categories": [
         "scheduling"
@@ -636,7 +636,7 @@
     },
     {
       "title": "Traineeship Courses",
-      "key": "Traineeship Courses",
+      "key": "traineeshipCourses",
       "link": "",
       "categories": [
         "scheduling",
@@ -646,7 +646,7 @@
     },
     {
       "title": "Traineeships",
-      "key": "Traineeships",
+      "key": "traineeships",
       "link": "",
       "categories": [
         "scheduling",
@@ -656,7 +656,7 @@
     },
     {
       "title": "Transactions",
-      "key": "Transactions",
+      "key": "transactions",
       "link": "",
       "categories": [
         "accounting"
@@ -665,7 +665,7 @@
     },
     {
       "title": "Tutor pay",
-      "key": "Tutor pay",
+      "key": "tutorPay",
       "link": "",
       "categories": [
         "accounting, payroll"
@@ -674,7 +674,7 @@
     },
     {
       "title": "Tutor pay rates",
-      "key": "Tutor pay rates",
+      "key": "tutorPayRates",
       "link": "",
       "categories": [
         "accounting",
@@ -684,7 +684,7 @@
     },
     {
       "title": "Tutors",
-      "key": "Tutors",
+      "key": "tutors",
       "link": "",
       "categories": [
         "sales",
@@ -694,7 +694,7 @@
     },
     {
       "title": "Units Of Competency",
-      "key": "Units Of Competency",
+      "key": "unitsOfCompetency",
       "link": "",
       "categories": [
         "compliance"
@@ -703,7 +703,7 @@
     },
     {
       "title": "Voucher Types",
-      "key": "Voucher Types",
+      "key": "voucherTypes",
       "link": "",
       "categories": [
         "sales"
@@ -712,7 +712,7 @@
     },
     {
       "title": "Waiting lists",
-      "key": "Waiting lists",
+      "key": "waitingLists",
       "link": "",
       "categories": [
         "scheduling",
@@ -722,7 +722,7 @@
     },
     {
       "title": "Website setup",
-      "key": "Website setup",
+      "key": "websiteSetup",
       "link": "",
       "categories": [
         ""
