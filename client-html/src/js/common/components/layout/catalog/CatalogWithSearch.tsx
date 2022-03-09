@@ -11,10 +11,11 @@ import React, {
 } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import Fab from "@mui/material/Fab";
-import { Fade, Typography } from "@mui/material";
+import { Fade, IconButton, Typography } from "@mui/material";
 import clsx from "clsx";
 import { areEqual } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
+import { Delete } from "@mui/icons-material";
 import SidebarSearch from "../sidebar-with-search/components/SidebarSearch";
 import { makeAppStyles } from "../../../styles/makeStyles";
 import AddButton from "../../icons/AddButton";
@@ -30,7 +31,25 @@ const Row = memo<any>(
    style, item, onOpen, onRemove, forwardedRef
   }) => (
     <div style={style} ref={forwardedRef}>
-      <CatalogItem item={item} onOpen={onOpen} onRemove={onRemove} />
+      <CatalogItem
+        item={item}
+        onOpen={onOpen}
+        secondaryAction={(
+          <IconButton
+            onMouseDown={e => e.stopPropagation()}
+            onClick={e => {
+              e.stopPropagation();
+              onRemove(item);
+            }}
+            className="lightGrayIconButton"
+            size="small"
+          >
+            <Delete fontSize="inherit" />
+          </IconButton>
+        )}
+        showDot
+        hoverSecondary
+      />
     </div>
   ),
   areEqual
@@ -183,7 +202,7 @@ const CatalogWithSearch = React.memo<Props>((
                 <div className="heading">
                   {addNewItem.category}
                 </div>
-                <CatalogItem item={{...addNewItem, installed: true, enabled: true}} onOpen={onClickNew} showAdded={false} />
+                <CatalogItem item={{ ...addNewItem, installed: true, enabled: true }} onOpen={onClickNew} />
               </div>
             )}
             <div>
@@ -201,7 +220,8 @@ const CatalogWithSearch = React.memo<Props>((
                       item={i}
                       onOpen={() => toggleInstall(i)}
                       key={i.id}
-                      showAdded
+                      secondaryAction={i.installed && <Typography variant="caption">Added</Typography>}
+                      disabled={i.installed}
                     />
                   ))}
                 </ExpandableContainer>
@@ -219,7 +239,8 @@ const CatalogWithSearch = React.memo<Props>((
                       item={i}
                       onOpen={() => toggleInstall(i)}
                       key={i.id}
-                      showAdded
+                      secondaryAction={i.installed && <Typography variant="caption">Added</Typography>}
+                      disabled={i.installed}
                     />
                   ))}
                 </ExpandableContainer>

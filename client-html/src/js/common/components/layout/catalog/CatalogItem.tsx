@@ -8,13 +8,12 @@
 
 import React from "react";
 import {
-  ListItem, ListItemText, Divider, Typography, IconButton
+  ListItem, ListItemText, Divider
 } from "@mui/material";
 import clsx from "clsx";
-import { Delete } from "@mui/icons-material";
 import { CatalogItemType } from "../../../../model/common/Catalog";
 import { makeAppStyles } from "../../../styles/makeStyles";
-import { AnyArgFunction, NumberArgFunction } from "../../../../model/common/CommonFunctions";
+import { NumberArgFunction } from "../../../../model/common/CommonFunctions";
 import { useHoverShowStyles } from "../../../styles/hooks";
 import InfoPill from "../InfoPill";
 
@@ -34,6 +33,7 @@ const useStyles = makeAppStyles(theme => ({
     backgroundColor: theme.palette.success.light
   },
   root: {
+    paddingRight: theme.spacing(7.5),
     "&.disabled $dot": {
       backgroundColor: theme.palette.text.primary
     }
@@ -43,26 +43,30 @@ const useStyles = makeAppStyles(theme => ({
 interface Props {
   item: Partial<CatalogItemType>;
   onOpen?: NumberArgFunction;
-  onRemove?: AnyArgFunction;
-  showAdded?: boolean;
+  secondaryAction?: React.ReactNode;
+  hoverSecondary?: boolean;
+  disabled?: boolean;
+  showDot?: boolean;
+  grayOut?: boolean;
 }
 
 const CatalogItem = (
   {
     item,
     onOpen,
-    onRemove,
-    showAdded,
+    secondaryAction,
+    hoverSecondary,
+    grayOut,
+    showDot,
+    disabled
   }: Props
 ) => {
   const { 
     id,
     title,
     titleAdornment,
-    installed,
-    enabled,
     tags,
-    shortDescription 
+    shortDescription
   } = item;
   
   const classes = useStyles();
@@ -74,33 +78,18 @@ const CatalogItem = (
         button
         className={clsx("p-0", hoverClasses.container)}
         onClick={() => onOpen(id)}
-        secondaryAction={showAdded 
-          ? (installed && <Typography variant="caption">Added</Typography>) 
-          : (installed
-            && Boolean(onRemove) && (
-              <IconButton
-                onMouseDown={e => e.stopPropagation()}
-                onClick={e => {
-                  e.stopPropagation();
-                  onRemove(item);
-                }}
-                className={clsx(hoverClasses.target, "lightGrayIconButton")}
-                size="small"
-              >
-                <Delete fontSize="inherit" />
-              </IconButton>
-            ))}
-        disabled={showAdded && installed}
+        secondaryAction={<span className={clsx(hoverSecondary && hoverClasses.target)}>{secondaryAction}</span>}
+        disabled={disabled}
       >
         <ListItemText
           classes={{
-            root: clsx(classes.root, !showAdded && !enabled && "disabled"),
+            root: clsx(classes.root, grayOut && "disabled"),
             primary: classes.primaryText,
-            secondary: classes.secondaryText
+            secondary: classes.secondaryText,
           }}
           primary={(
             <div className="centeredFlex">
-              {!showAdded && installed && <span className={classes.dot} />}
+              {showDot && <span className={classes.dot} />}
               {title}
               {titleAdornment}
               {tags?.split(",").map(t => <InfoPill key={t} label={t} />)}

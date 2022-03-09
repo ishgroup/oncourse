@@ -35,7 +35,7 @@ const Navigation = (
 
   return (
     <div>
-      <div className="secondaryColor p-2">
+      <div className="secondaryColor pt-2 pr-2 pl-2">
         {navigation.categories.map(category => (
           <SideBarHeader
             selected={selected === category.key}
@@ -44,8 +44,6 @@ const Navigation = (
           />
         ))}
       </div>
-
-    
       <ExecuteScriptModal
         opened={execMenuOpened}
         onClose={() => {
@@ -55,7 +53,7 @@ const Navigation = (
         scriptId={scriptIdSelected}
       />
     </div>
-);
+  );
 };
 
 export default Navigation;

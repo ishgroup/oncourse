@@ -4,7 +4,6 @@
  */
 
 import React from "react";
-import { connect } from "react-redux";
 import clsx from "clsx";
 import withStyles from "@mui/styles/withStyles";
 import createStyles from "@mui/styles/createStyles";
@@ -13,8 +12,8 @@ import Collapse from "@mui/material/Collapse";
 import Typography from "@mui/material/Typography";
 import { openInternalLink } from "../../../../../utils/links";
 import ListLinkItem from "./ListLinkItem";
-import { State } from "../../../../../../reducers/state";
 import { getResultId } from "../../utils";
+import navigation from "../../../../navigation/navigation.json";
 
 const styles = theme =>
   createStyles({
@@ -46,13 +45,13 @@ class ListLinksGroup extends React.PureComponent<any, any> {
 
   openEntity = () => {
     const {
-      showConfirm, categories, entityDisplayName, userSearch
+      showConfirm, entityDisplayName, userSearch
     } = this.props;
 
-    const category = categories.find(c => c.category === entityDisplayName);
+    const category = navigation.features.find(c => c.title === entityDisplayName);
 
     if (category) {
-      const url = category.url.indexOf("?") !== -1 ? category.url.slice(0, category.url.indexOf("?")) : category.url;
+      const url = category.link.indexOf("?") !== -1 ? category.link.slice(0, category.link.indexOf("?")) : category.link;
 
       showConfirm(() => openInternalLink(
         url + (userSearch ? `?search=~"${userSearch}"` : "")
@@ -61,11 +60,11 @@ class ListLinksGroup extends React.PureComponent<any, any> {
   };
 
   openLink = id => {
-    const { showConfirm, entityDisplayName, categories } = this.props;
-    const category = categories.find(c => c.category === entityDisplayName);
+    const { showConfirm, entityDisplayName } = this.props;
+    const category = navigation.features.find(c => c.title === entityDisplayName);
 
     if (category) {
-      const url = category.url.indexOf("?") !== -1 ? category.url.slice(0, category.url.indexOf("?")) : category.url;
+      const url = category.link.indexOf("?") !== -1 ? category.link.slice(0, category.link.indexOf("?")) : category.link;
 
       showConfirm(() => openInternalLink(
         !id || !Number.isNaN(Number(id)) ? url + (id ? `/${id}` : "") : id
@@ -141,8 +140,4 @@ class ListLinksGroup extends React.PureComponent<any, any> {
   }
 }
 
-const mapStateToProps = (state: State) => ({
-  categories: state.dashboard.categories
-});
-
-export default connect<any, any, any>(mapStateToProps, null)(withStyles(styles)(ListLinksGroup));
+export default withStyles(styles)(ListLinksGroup);

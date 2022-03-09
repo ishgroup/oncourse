@@ -9,40 +9,163 @@
 import { IconButton, Typography } from "@mui/material";
 import Close from "@mui/icons-material/Close";
 import React, { useMemo } from "react";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import { makeAppStyles } from "../../styles/makeStyles";
 import navigation from "./navigation.json";
+import CatalogItem from "../layout/catalog/CatalogItem";
+import { useAppDispatch, useAppSelector } from "../../utils/hooks";
+import { DASHBOARD_FAVORITES_KEY, FAVORITE_SCRIPTS_KEY } from "../../../constants/Config";
+import { setUserPreference } from "../../actions";
+import { AnyArgFunction, BooleanArgFunction, NumberArgFunction } from "../../../model/common/CommonFunctions";
+import { openInternalLink } from "../../utils/links";
 
-const useStyles = makeAppStyles(() => ({
-  root: {
-    
+const useStyles = makeAppStyles(theme => ({
+  description: {
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
+    "& ul": {
+      paddingLeft: theme.spacing(2)
+    }
   }
 }));
 
 interface Props {
+  showConfirm: AnyArgFunction,
   selected: string;
   onClose: any;
+  favorites: string[];
+  favoriteScripts: string[];
+  setExecMenuOpened: BooleanArgFunction,
+  setScriptIdSelected: NumberArgFunction,
 }
+
+const NavigationItem = ({
+ favorites, item, onOpen, onFavoriteClick 
+}) => {
+  const isFavorite = favorites.includes(item.key);
+  return (
+    <CatalogItem
+      onOpen={onOpen}
+      item={{
+        title: item.title,
+        titleAdornment: item.titleAdornment,
+        shortDescription: item.description
+      }}
+      secondaryAction={(
+        <IconButton
+          onMouseDown={e => e.stopPropagation()}
+          onClick={onFavoriteClick}
+          className="lightGrayIconButton"
+          size="small"
+        >
+          <FavoriteBorderIcon fontSize="inherit" color={isFavorite ? "primary" : "inherit"} />
+        </IconButton>
+      )}
+      hoverSecondary={!isFavorite}
+    />
+  );
+};
 
 const NavigationCategory = (
   {
     selected,
-    onClose
+    onClose,
+    favorites,
+    favoriteScripts,
+    showConfirm,
+    setScriptIdSelected,
+    setExecMenuOpened
   }:Props
 ) => {
-  const category = useMemo(() => navigation.categories.find(c => c.key === selected), [selected]);
+  const classes = useStyles();
 
-  console.log({ category });
+  const dispatch = useAppDispatch();
+
+  const scripts = useAppSelector(state => state.dashboard.scripts);
   
+  const category = useMemo(() => navigation.categories.find(c => c.key === selected), [selected]);
+  
+  const features = useMemo(() => (category 
+    ? navigation.features.filter(f => f.categories.includes(category.key)) 
+    : []), [category]);
+  
+  const updateFavorites = (key, type: "category" | "automation") => {
+    if (type === "category") {
+      dispatch(setUserPreference({
+        key: DASHBOARD_FAVORITES_KEY,
+        value: favorites.includes(key)
+          ? favorites.filter(v => v !== key).toString()
+          : [...favorites, key].toString()
+      }));
+    }
+    if (type === "automation") {
+      dispatch(setUserPreference({
+        key: FAVORITE_SCRIPTS_KEY,
+        value: favoriteScripts.includes(key)
+          ? favoriteScripts.filter(v => v !== key).toString()
+          : [...favoriteScripts, key].toString()
+      }));
+    }
+  };
+
+  const onOpen = (link: string) => {
+    showConfirm(() => openInternalLink(link));
+  };
+
   return (
-    <div className="flex-fill p-3">
+    <div className="flex-fill p-3 overflow-y-auto">
       <div className="d-flex">
         <Typography variant="h4" className="flex-fill">{category?.title}</Typography>
         <IconButton size="large" onClick={onClose}>
           <Close />
         </IconButton>
       </div>
+      <Typography className={classes.description} variant="body2" dangerouslySetInnerHTML={{ __html: category?.description }} />
+      <div className="heading mb-2">
+        Features
+      </div>
+      {features.map(f => (
+        <NavigationItem
+          onOpen={() => onOpen(f.link)}
+          key={f.key}
+          item={f}
+          favorites={favorites}
+          onFavoriteClick={e => {
+            e.stopPropagation();
+            updateFavorites(f.key, "category");
+          }}
+        />
+      ))}
+      {category?.key === "automation" && (
+        <div>
+          <div className="heading mb-2 mt-4">
+            Automations
+          </div>
+          {scripts.map(s => (
+            <NavigationItem
+              onOpen={() => {
+                setScriptIdSelected(s.id);
+                setExecMenuOpened(true);
+              }}
+              key={s.id}
+              item={{
+                key: String(s.id),
+                title: s.name,
+                titleAdornment: <DescriptionOutlinedIcon className="lightGrayIconButton" />,
+                description: s.description
+              }}
+              favorites={favoriteScripts}
+              onFavoriteClick={e => {
+                e.stopPropagation();
+                updateFavorites(String(s.id), "automation");
+              }}
+            />
+          ))}
+        </div>
+      )}
     </div>
-);
+  );
 };
 
 export default NavigationCategory;

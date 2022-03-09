@@ -60,6 +60,8 @@ export const DEFAULT_TIMEZONE_KEY: PreferenceEnum = "timezone.default";
 
 export const DASHBOARD_CATEGORY_WIDTH_KEY: PreferenceEnum = "html.dashboard.category.width";
 
+export const DASHBOARD_FAVORITES_KEY: PreferenceEnum = "html.dashboard.favorite";
+
 export const READ_NEWS: PreferenceEnum = "news.read";
 
 export const ACCOUNT_INVOICE_TERMS: PreferenceEnum = "account.invoice.terms";

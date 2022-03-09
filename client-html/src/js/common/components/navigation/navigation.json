@@ -58,6 +58,13 @@
   ],
   "features": [
     {
+      "title": "Checkout (Quick Enrol)",
+      "key": "quickEnrol",
+      "link": "/checkout",
+      "categories": [
+      ]
+    },
+    {
       "title": "Accounts",
       "key": "accounts",
       "link": "/account",
@@ -312,7 +319,7 @@
       "key": "exportTemplates",
       "link": "/automation/export-templates",
       "categories": [
-        ""
+        "automation"
       ],
       "description": "Create export templates allowing you to export your onCourse data into a format readable in other applications. Formats include CSV, XML, JSON, PDF and more."
     },
@@ -348,7 +355,7 @@
       "key": "importTemplates",
       "link": "/automation/import-templates",
       "categories": [
-        ""
+        "automation"
       ],
       "description": ""
     },
@@ -357,7 +364,7 @@
       "key": "integrations",
       "link": "/automation/integrations",
       "categories": [
-        ""
+        "automation"
       ],
       "description": ""
     },
@@ -394,7 +401,7 @@
       "key": "messageTemplates",
       "link": "/automation/email-templates",
       "categories": [
-        ""
+        "automation"
       ],
       "description": ""
     },
