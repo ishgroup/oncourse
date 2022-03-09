@@ -14,8 +14,6 @@ package ish.oncourse.server.api.v1.service.impl
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.api.v1.model.CategoryDTO
-import ish.oncourse.server.api.v1.model.DashboardLinksDTO
 import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
 import ish.oncourse.server.api.v1.model.UserPreferenceDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
@@ -65,17 +63,7 @@ class UserPreferenceApiImpl implements UserPreferenceApi {
     }
 
     @Override
-    DashboardLinksDTO getDashboardLinks() {
-        return null
-    }
-
-    @Override
     void set(UserPreferenceDTO preference) {
         usePrefService.set(preference.key, preference.value)
-    }
-
-    @Override
-    void setFavorites(List<CategoryDTO> categories) {
-
     }
 }
