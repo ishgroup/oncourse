@@ -735,3 +735,11 @@ databaseChangeLog:
         - sql: "UPDATE Contact SET homePhone = REGEXP_REPLACE(homePhone,'[^0-9+]',''), 
                                    mobilePhone = REGEXP_REPLACE(mobilePhone,'[^0-9+]',''), 
                                    workPhone = REGEXP_REPLACE(workPhone,'[^0-9+]','')"
+  - changeSet:
+      id: 110-1
+      author: dmitriy
+      comment: upgrade favourite links preference with new values format
+      changes:
+        - customChange: {
+          "class": "ish.oncourse.server.upgrades.liquibase.change.UpdateFavouriteLinks"
+        }
