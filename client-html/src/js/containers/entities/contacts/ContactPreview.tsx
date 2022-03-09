@@ -12,17 +12,6 @@ import { Field, getFormValues, reduxForm } from "redux-form";
 import Launch from "@mui/icons-material/Launch";
 import IconButton from "@mui/material/IconButton";
 import Chip from "@mui/material/Chip";
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import Divider from "@mui/material/Divider";
-import Grid from "@mui/material/Grid";
-import ListItemText from "@mui/material/ListItemText";
-import Typography from "@mui/material/Typography";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import MuiAvatar from '@mui/material/Avatar';
-import PhoneCallbackOutlinedIcon from "@mui/icons-material/PhoneCallbackOutlined";
 import { State } from "../../../reducers/state";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import FullScreenStickyHeader
@@ -31,6 +20,10 @@ import AvatarRenderer from "./components/AvatarRenderer";
 import { getContact } from "./actions";
 import { getContactFullName } from "./utils";
 import { openInternalLink } from "../../../common/utils/links";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Divider from "@mui/material/Divider";
+import { Grid, Typography } from "@mui/material";
 
 const ContactPreview: React.FC<any> = props => {
   const {
@@ -175,41 +168,6 @@ const ContactPreview: React.FC<any> = props => {
               <Typography variant="caption">
                 Click here to add a note
               </Typography>
-            </Box>
-            <Box component="div" className="mt-2 mb-2">
-              <List sx={{ width: '100%' }}>
-                <ListItem className="align-items-start pl-0 pr-0">
-                  <ListItemAvatar>
-                    <MuiAvatar sx={{ bgcolor: theme => theme.palette.grey[50] }}>
-                      <PhoneCallbackOutlinedIcon color="primary" />
-                    </MuiAvatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={(
-                      <Stack spacing={2} direction="row" className="mb-2">
-                        <Typography variant="caption" className="flex-fill">
-                          <span className="fontWeight600">Ari</span>
-                          {" "}
-                          received Inbound phone call
-                        </Typography>
-                        <Typography variant="caption">
-                          2 days ago
-                        </Typography>
-                      </Stack>
-                    )}
-                    secondary={(
-                      <Box
-                        sx={{
-                          width: '100%', borderColor: "divider", bgcolor: theme => theme.palette.grey[50]
-                        }}
-                        className="p-2"
-                      >
-                        Called to enquire about group training. Presented what we could do for them. Sounds interested. Scheduled a meeting for next week to discuss in more detail with management.
-                      </Box>
-                    )}
-                  />
-                </ListItem>
-              </List>
             </Box>
           </Box>
         </Grid>
