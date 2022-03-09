@@ -4,7 +4,6 @@
  */
 
 import { Epic } from "redux-observable";
-
 import { ExportTemplate, ImportModel } from "@api/model";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import {
@@ -12,7 +11,7 @@ import {
   GET_EXPORT_TEMPLATES_LIST,
   UPDATE_EXPORT_TEMPLATE,
   UPDATE_EXPORT_TEMPLATE_FULFILLED
-} from "../actions/index";
+} from "../actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import ExportTemplatesService from "../services/ExportTemplatesService";
 import { FETCH_SUCCESS } from "../../../../../common/actions";

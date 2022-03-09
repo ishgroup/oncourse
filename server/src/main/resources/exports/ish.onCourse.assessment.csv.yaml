@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.assessment.csv
-entityClass: Assessment
-body: ish.onCourse.assessment.csv.groovy
-name: Assessment CSV export
-outputType: csv

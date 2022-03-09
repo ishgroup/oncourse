@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.payslip.csv
-entityClass: Payslip
-body: ish.onCourse.payslip.csv.groovy
-name: Payslip CSV export
-outputType: csv

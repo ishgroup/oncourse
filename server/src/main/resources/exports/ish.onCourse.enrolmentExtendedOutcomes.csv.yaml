@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.enrolmentExtendedOutcomes.csv
-entityClass: Enrolment
-body: ish.onCourse.enrolmentExtendedOutcomes.csv.groovy
-name: Extended outcomes CSV
-outputType: csv

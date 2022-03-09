@@ -12,6 +12,7 @@
 package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
+import ish.common.types.AutomationStatus
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.service.EmailTemplateApiService
 import ish.oncourse.server.api.v1.model.EmailTemplateDTO
@@ -33,7 +34,7 @@ class EmailTemplateApiImpl implements EmailTemplateApi {
         def currentEntitiesNames = AbstractEntitiesUtil.getImplsOf(entityName)
         def currentEntityNameRequiredExp = buildExpressionForEntitiesNames(currentEntitiesNames)
         List<EmailTemplateDTO> result = ObjectSelect.query(EmailTemplate)
-                    .and(EmailTemplate.ENABLED.isTrue())
+                    .and(EmailTemplate.AUTOMATION_STATUS.eq(AutomationStatus.ENABLED))
                     .and(currentEntityNameRequiredExp)
                 .select(cayenneService.newContext)
                 .collect { service.toRestModel(it) }

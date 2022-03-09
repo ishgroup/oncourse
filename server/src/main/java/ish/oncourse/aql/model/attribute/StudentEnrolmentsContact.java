@@ -18,9 +18,13 @@ import ish.oncourse.server.cayenne.Contact;
 import ish.oncourse.server.cayenne.Enrolment;
 import ish.oncourse.server.cayenne.Student;
 import org.apache.cayenne.Persistent;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.exp.parser.ASTObjPath;
 import org.apache.cayenne.exp.parser.SimpleNode;
 
+import java.util.HashMap;
 import java.util.Optional;
+import java.util.UUID;
 
 public class StudentEnrolmentsContact implements SyntheticAttributeDescriptor {
 
@@ -47,9 +51,14 @@ public class StudentEnrolmentsContact implements SyntheticAttributeDescriptor {
 
     @Override
     public SimpleNode spawnNode() {
-        return new SyntheticNodeTemplate(Contact.STUDENT.outer()
-                .dot(Student.ENROLMENTS).outer()
-                .getExpression(),
-                getAttributeName());
+        // for request with equals joins which not needed to be replaced with one on cayenne level
+        // we replace in different requests right part, which will be joined,
+        // with different unique aliases
+        var alias = UUID.randomUUID().toString();
+        var aliases = new HashMap<String, String>();
+        aliases.put(alias, Student.ENROLMENTS.getName() + "+");
+        ASTObjPath expression = (ASTObjPath) ExpressionFactory.pathExp("student." + alias);
+        expression.setPathAliases(aliases);
+        return new SyntheticNodeTemplate(expression, getAttributeName());
     }
 }
