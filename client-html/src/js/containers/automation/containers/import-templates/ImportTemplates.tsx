@@ -23,7 +23,7 @@ const initialDefault: ExportTemplate = {
   keyCode: null,
   entity: null,
   body: null,
-  enabled: false,
+  status: "Installed but Disabled",
   variables: [],
   options: []
 };

@@ -21,6 +21,7 @@ import ish.oncourse.common.AvetmissConstants
 import ish.oncourse.common.ExportJurisdiction
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
+import ish.oncourse.server.api.v1.model.LockedDateDTO
 import ish.oncourse.server.cayenne.Message
 
 import static ish.oncourse.server.api.v1.function.CountryFunctions.toRestCountry
@@ -217,8 +218,8 @@ class PreferenceApiImpl implements PreferenceApi {
     }
 
     @Override
-    LocalDate getLockedDate() {
-        return transactionLockedService.transactionLocked
+    LockedDateDTO getLockedDate() {
+        return new LockedDateDTO(transactionLockedService.transactionLocked)
     }
 
     @Override

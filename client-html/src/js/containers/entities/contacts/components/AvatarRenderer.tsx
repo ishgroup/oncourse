@@ -73,7 +73,7 @@ const AvatarRenderer: React.FC<any> = props => {
     avatarSize,
     twoColumn,
   } = props;
-  
+
   const classes = useStyles();
 
   const fileRef = useRef<any>();
@@ -92,7 +92,7 @@ const AvatarRenderer: React.FC<any> = props => {
     fileRef.current.click();
   }, []);
 
-  const handleFileSelect = useCallback(() => {
+  const handleFileSelect = () => {
     const file = fileRef.current.files[0];
 
     if (file) {
@@ -114,7 +114,7 @@ const AvatarRenderer: React.FC<any> = props => {
         }
       });
     }
-  }, [form, input.name]);
+  };
 
   const size = avatarSize || 90;
 

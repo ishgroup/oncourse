@@ -359,7 +359,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
 
   return values ? (
     <div className="p-3 h-100 flex-column">
-      <Grid container columnSpacing={3}>
+      <Grid container columnSpacing={3} rowSpacing={2}>
         <Grid item xs={12}>
           <Uneditable value={values.payeeName} label="Payment to" url={`/contact/${values.payeeId}`} />
         </Grid>

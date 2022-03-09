@@ -149,4 +149,20 @@ class AqlTestIT extends TestWithDatabase {
                 .select(cayenneContext)
         Assertions.assertEquals(0, classes.size())
     }
+
+    @Test
+    void testDifferentJoinSemanticStudentEnrollments() {
+        CompilationResult result = aqlService.compile(
+                "studentEnrolments.courseClass.course.code contains \"ATT1\" " +
+                        "and studentEnrolments.courseClass.course.code contains \"ATT2\" ",
+                Contact.class, cayenneContext
+        )
+        Assertions.assertTrue(result.getCayenneExpression().isPresent())
+        Assertions.assertTrue(result.getErrors().isEmpty())
+
+        List<Contact> contacts = ObjectSelect.query(Contact)
+                .where(result.getCayenneExpression().get())
+                .select(cayenneContext)
+        Assertions.assertEquals(1, contacts.size())
+    }
 }

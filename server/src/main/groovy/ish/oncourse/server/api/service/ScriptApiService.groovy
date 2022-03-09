@@ -12,6 +12,7 @@
 package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
+import ish.oncourse.server.api.v1.model.LastRunDTO
 import ish.oncourse.types.AuditAction
 import ish.common.types.EntityEvent
 import ish.common.types.SystemEventType
@@ -167,17 +168,25 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
             st
         }
 
-        List<String> lastRunList = ObjectSelect.columnQuery(Audit, Audit.CREATED)
+        List<LastRunDTO> lastRunList = ObjectSelect.columnQuery(Audit, Audit.CREATED, Audit.ACTION)
                 .where(Audit.ENTITY_IDENTIFIER.eq(dbScript.class.simpleName))
                 .and(Audit.ENTITY_ID.eq(dbScript.id))
                 .and(Audit.ACTION.in(AuditAction.SCRIPT_EXECUTED, AuditAction.SCRIPT_FAILED))
                 .orderBy(Audit.CREATED.desc())
                 .limit(LAST_RUN_FETCH_LIMIT)
                 .select(cayenneService.newContext)
-                .collect { DateFormatter.formatDateISO8601(it) }
-
+                .collect { convertArray(it) }
+        
         scriptDTO.lastRun = lastRunList
         scriptDTO
+    }
+
+    private static LastRunDTO convertArray(Object[]arr){
+        new LastRunDTO().with{ it ->
+            it.date = DateFormatter.formatDateISO8601(arr[0] as Date)
+            it.status = (arr[1] as AuditAction).displayName
+            it
+        }
     }
 
     @Override

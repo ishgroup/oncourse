@@ -92,3 +92,16 @@ export const formattedEntityRelationTypes = (types: EntityRelationType[]): Entit
 };
 
 export const salesSort = (a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+
+export const mapRelatedSalables = (s): Sale & { tempId: any } => ({
+  id: s.entityId,
+  tempId: s.entityId,
+  name: s.primaryText,
+  code: s.secondaryText,
+  active: s.active,
+  type: s.entityName,
+  expiryDate: null,
+  entityFromId: s.entityId,
+  entityToId: null,
+  relationId: -1
+})

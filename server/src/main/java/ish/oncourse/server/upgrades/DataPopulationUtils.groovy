@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.upgrades
 
+import ish.common.types.AutomationStatus
 import ish.common.types.EntityEvent
 import ish.common.types.MessageType
 import ish.oncourse.server.cayenne.Report
@@ -24,7 +25,6 @@ import ish.oncourse.server.cayenne.ExportTemplate
 import ish.oncourse.server.cayenne.ExportTemplateAutomationBinding
 import ish.oncourse.server.cayenne.Import
 import ish.oncourse.server.cayenne.ImportAutomationBinding
-import ish.oncourse.server.cayenne.Message
 import ish.oncourse.types.OutputType
 import ish.common.types.SystemEventType
 import ish.common.types.TriggerType
@@ -73,6 +73,14 @@ class DataPopulationUtils {
     }
 
 
+    private static configureAutomationWithCommonFields(AutomationTrait automationTrait, Map<String, Object> props){
+        automationTrait.description = getString(props, DESCRIPTION)
+        automationTrait.shortDescription = getString(props, SHORT_DESCRIPTION)
+        automationTrait.category = getString(props, CATEGORY)
+        automationTrait.automationTags = getString(props, TAG)
+    }
+
+
     static void updateScript(ObjectContext context, Map<String, Object> props) {
         boolean keepOldScript = false
         String name = getString(props, NAME)
@@ -80,7 +88,7 @@ class DataPopulationUtils {
 
         Script oldScript = (ObjectSelect.query(Script).where(Script.NAME.eq(name)) & Script.KEY_CODE.ne(keyCode).orExp(Script.KEY_CODE.isNull())).selectOne(context)
         if (oldScript) {
-            if (oldScript.enabled != null && oldScript.enabled) {
+            if (oldScript.enabled != null && oldScript.automationStatus.equals(AutomationStatus.ENABLED)) {
                 oldScript.name = oldScript.name + " (old)"
             } else {
                 logger.warn("remove disabled script $oldScript.name, \n $oldScript.body")
@@ -93,7 +101,7 @@ class DataPopulationUtils {
         if (!newScript) {
             newScript = context.newObject(Script)
             newScript.keyCode = keyCode
-            newScript.enabled = oldScript ? Boolean.FALSE : getBoolean(props, ENABLED)
+            newScript.automationStatus = oldScript ? AutomationStatus.NOT_INSTALLED : get(props, STATUS, AutomationStatus)
             newScript.cronSchedule = getString(props, CRON_SCHEDULE)
         }
 
@@ -106,8 +114,9 @@ class DataPopulationUtils {
         newScript.entityEventType = get(props, ENTITY_EVENT_TYPE, EntityEvent)
         newScript.systemEventType = get(props, ON_COURSE_EVENT_TYPE, SystemEventType)
 
-        newScript.description = getString(props, DESCRIPTION)
         newScript.body = getBody(props, BODY, SCRIPT)
+
+        configureAutomationWithCommonFields(newScript, props)
 
         context.commitChanges()
 
@@ -125,12 +134,11 @@ class DataPopulationUtils {
         if (!dbImport) {
             dbImport = context.newObject(Import)
             dbImport.keyCode = keyCode
-            dbImport.enabled = getBoolean(props, ENABLED)
+            dbImport.automationStatus = get(props, STATUS, AutomationStatus)
         }
         dbImport.name = getString(props, NAME)
         dbImport.body = getBody(props, BODY, IMPORT)
-        dbImport.description = getString(props, DESCRIPTION)
-
+        configureAutomationWithCommonFields(dbImport, props)
         context.commitChanges()
 
         BindingUtils.updateOptions(context, get(props, OPTIONS, List), dbImport, ImportAutomationBinding)
@@ -145,14 +153,14 @@ class DataPopulationUtils {
         if (!dbExport) {
             dbExport = context.newObject(ExportTemplate)
             dbExport.keyCode = keyCode
-            dbExport.enabled = Boolean.TRUE
+            dbExport.automationStatus = AutomationStatus.ENABLED
         }
 
         dbExport.name = getString(props, NAME)
         dbExport.entity = getString(props, ENTITY_CLASS)
-        dbExport.description = getString(props, DESCRIPTION)
         dbExport.outputType = get(props, OUTPUT_TYPE, OutputType)
         dbExport.body = getBody(props, BODY, EXPORT)
+        configureAutomationWithCommonFields(dbExport, props)
 
         context.commitChanges()
 
@@ -168,18 +176,18 @@ class DataPopulationUtils {
         if (!dbMessage) {
             dbMessage = context.newObject(EmailTemplate)
             dbMessage.keyCode = keyCode
-            dbMessage.enabled = Boolean.TRUE
+            dbMessage.automationStatus = AutomationStatus.ENABLED
         }
 
         dbMessage.name = getString(props, NAME)
         dbMessage.entity = getString(props, ENTITY_CLASS)
-        dbMessage.description = getString(props, DESCRIPTION)
         dbMessage.type = get(props, MESSAGE_TYPE, MessageType)
         dbMessage.subject = getString(props, SUBJECT)
         dbMessage.bodyPlain = getBody(props, TXT_TEMPLATE, MESSAGING)
         if (getString(props, HTML_TEMPLATE)) {
             dbMessage.bodyHtml = getBody(props, HTML_TEMPLATE, MESSAGING)
         }
+        configureAutomationWithCommonFields(dbMessage, props)
 
         context.commitChanges()
 

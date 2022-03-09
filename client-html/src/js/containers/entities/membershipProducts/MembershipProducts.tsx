@@ -96,7 +96,8 @@ const findRelatedGroup: any[] = [
   { title: "Current members", list: "contact", expression: "productItems.expiryDate > now" + expressionFindMembers },
   { title: "Expired members", list: "contact", expression: "productItems.expiryDate <= now" + expressionFindMembers },
   { title: "Classes", list: "class", expression: "discountCourseClasses.discount.discountMemberships.membershipProduct.id" },
-  { title: "Discounts", list: "discount", expression: "discountMemberships.membershipProduct.id" }
+  { title: "Discounts", list: "discount", expression: "discountMemberships.membershipProduct.id" },
+  { title: "Sales", list: "sale", expression: "type is MEMBERSHIP AND product.id" },
 ];
 
 const manualLink = getManualLink("concessions_creatingMemberships");

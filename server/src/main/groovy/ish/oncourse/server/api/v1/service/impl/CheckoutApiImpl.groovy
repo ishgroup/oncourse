@@ -37,6 +37,7 @@ import ish.util.DiscountUtils
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.validation.ValidationException
 import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
@@ -47,6 +48,7 @@ import javax.ws.rs.core.Response
 
 import static ish.common.types.ConfirmationStatus.DO_NOT_SEND
 import static ish.common.types.ConfirmationStatus.NOT_SENT
+import static ish.oncourse.server.api.v1.function.CartFunctions.cartDataIdsOf
 import static ish.oncourse.server.windcave.PaymentService.AUTH_TYPE
 
 @CompileStatic
@@ -117,6 +119,12 @@ class CheckoutApiImpl implements CheckoutApi {
 
     @Inject
     PaymentInDao paymentInDao
+
+    @Override
+    CartIdsDTO getCartDataIds(Long checkoutId) {
+        def checkout = SelectById.query(ish.oncourse.server.cayenne.Checkout,checkoutId).selectOne(cayenneService.newReadonlyContext)
+        return cartDataIdsOf(checkout)
+    }
 
     @Override
     List<CourseClassDiscountDTO> getContactDiscounts(Long contactId, Long classId,
