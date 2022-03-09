@@ -137,6 +137,11 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
                         authentication_provider_id,
                         password)
 
+                if(create_password){
+                    CustomFieldFunctions.addCustomFieldWithoutCommit(create_password, password, enrolment.student.contact, enrolment.context)
+                    enrolment.context.commitChanges()
+                }
+
             } else {
 
                 // will return a list of one students, take the first item in the list
@@ -159,10 +164,6 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
                 integration.enrolTeachers(enrolment.courseClass.tutorRoles.tutor.contact, course["id"][0])
             }
 
-            if(create_password){
-                CustomFieldFunctions.updateCustomFieldWithoutCommit(create_password, password, enrolment.student.contact, enrolment.context)
-                enrolment.context.commitChanges()
-            }
         }
         return null
     }
