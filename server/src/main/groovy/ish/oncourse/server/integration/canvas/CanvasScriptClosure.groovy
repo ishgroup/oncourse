@@ -44,6 +44,7 @@ import java.security.SecureRandom
  * Setting 'create_password' will generate random password for student to canvas and save to customField of Contact with key like create_password parameter
  * Setting 'course_blueprint' use if the course does not already exist in Canvas with the code provided, will create a new course from the blueprint specified.
  * Setting 'add_tutors' to true will enrol tutors from enrolment's class into the Canvas course as teachers
+ * Setting 'student_attributes' map adds any valid parameters for Canvas user. Default parameters will be overwritten
  */
 @API
 @CompileStatic
@@ -61,6 +62,7 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
     String create_password
     String course_blueprint
     boolean add_tutors
+    Map student_attributes
 
     def enrolment(Enrolment enrolment) {
         this.enrolment = enrolment
@@ -96,6 +98,10 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
 
     def add_tutors(boolean add_tutors){
         this.add_tutors = add_tutors
+    }
+
+    def student_attributes(Map student_attributes){
+        this.student_attributes = student_attributes
     }
 
     @Override
@@ -135,7 +141,9 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
                         enrolment.student.contact.email,
                         enrolment.student.contact.id.toString(),
                         authentication_provider_id,
-                        password)
+                        password,
+                        student_attributes
+                )
 
                 if(create_password){
                     CustomFieldFunctions.addCustomFieldWithoutCommit(create_password, password, enrolment.student.contact, enrolment.context)

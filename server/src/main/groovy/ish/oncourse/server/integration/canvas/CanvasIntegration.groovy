@@ -125,7 +125,7 @@ class CanvasIntegration implements PluginTrait {
      * @param email email of the onCourse student
      * @return created student object
      */
-    def createNewUser(String fullName, String email, String contactId, int authenticationProviderId, String password) {
+    def createNewUser(String fullName, String email, String contactId, int authenticationProviderId, String password, Map studentAttributes) {
         def client = new RESTClient(baseUrl)
         def pseudonymProperties = [
                 unique_id: email,
@@ -138,16 +138,19 @@ class CanvasIntegration implements PluginTrait {
         if(password)
             pseudonymProperties.put("password", password)
 
+        def parameters = [
+                user: [
+                        name: fullName,
+                        skip_registration: password != null
+                ],
+                pseudonym: pseudonymProperties
+        ]
+        parameters = mergeMaps(parameters, studentAttributes)
+
         client.headers["Authorization"] = "Bearer ${authHeader}"
         client.request(Method.POST, ContentType.JSON) {
             uri.path = "/api/v1/accounts/${accountId}/users"
-            body = [
-                    user: [
-                            name: fullName,
-                            skip_registration: password != null
-                    ],
-                    pseudonym: pseudonymProperties
-            ]
+            body = parameters
 
             response.success = { resp, result ->
                 return result
@@ -542,6 +545,13 @@ class CanvasIntegration implements PluginTrait {
                 configuration.getIntegrationProperty(CANVAS_CLIENT_TOKEN_KEY),
                 configuration.getIntegrationProperty(CANVAS_CLIENT_SECRET_KEY),
                 configuration.getIntegrationProperty(CANVAS_ACCOUNT_ID_KEY)]
+    }
+
+    def mergeMaps(Map lhs, Map rhs) {
+        rhs.each { k, v ->
+            lhs[k] = (lhs[k] in Map ? mergeMaps(lhs[k], v) : v)
+        }
+        return lhs
     }
 
 }
