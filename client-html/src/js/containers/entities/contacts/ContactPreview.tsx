@@ -40,6 +40,7 @@ import CustomSelector, { CustomSelectorOption } from "../../../common/components
 import FormSubmitButton from "../../../common/components/form/FormSubmitButton";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { DD_MM_YYYY_SLASHED } from "../../../common/utils/dates/format";
+import { setListEntity } from "../../../common/components/list-view/actions";
 
 const ContactPreview: React.FC<any> = props => {
   const {
@@ -47,13 +48,17 @@ const ContactPreview: React.FC<any> = props => {
     dispatch,
     form,
     selected,
+    onSetListEntity,
     getContactRecord,
   } = props;
 
   const [addNote, setAddNote] = useState<boolean>(false);
 
   useEffect(() => {
-    if (selected.id) getContactRecord(selected.id);
+    if (selected.id) {
+      onSetListEntity();
+      getContactRecord(selected.id);
+    }
   }, [selected]);
 
   const Avatar = useCallback(aProps => (
@@ -329,6 +334,7 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getContactRecord: (id: number) => dispatch(getContact(id)),
+  onSetListEntity: () => dispatch(setListEntity("Contact")),
 });
 
 export default reduxForm<any, any>({
