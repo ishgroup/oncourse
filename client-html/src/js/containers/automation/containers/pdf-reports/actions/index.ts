@@ -1,5 +1,6 @@
 import { _toRequestType, FULFILLED } from "../../../../../common/actions/ActionUtils";
 import { Report } from "@api/model";
+import { CatalogItemType } from "../../../../../model/common/Catalog";
 
 export const GET_AUTOMATION_PDF_REPORTS_LIST = _toRequestType("get/pdf-reports/list");
 export const GET_AUTOMATION_PDF_REPORTS_LIST_FULFILLED = FULFILLED(GET_AUTOMATION_PDF_REPORTS_LIST);
@@ -41,4 +42,9 @@ export const getAutomationPdfReport = (id: number) => ({
 export const getAutomationPdfReportsList = (selectFirst?: boolean, keyCodeToSelect?: string) => ({
   type: GET_AUTOMATION_PDF_REPORTS_LIST,
   payload: { selectFirst, keyCodeToSelect }
+});
+
+export const getAutomationPdfReportsListFulfilled = (pdfReports: CatalogItemType[]) => ({
+  type: GET_AUTOMATION_PDF_REPORTS_LIST_FULFILLED,
+  payload: { pdfReports }
 });

@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.api.dao
 
+import ish.common.types.AutomationStatus
 import ish.oncourse.server.cayenne.Import
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
@@ -40,7 +41,7 @@ class ImportDao implements AutomationDao<Import> {
     List<Import> getForEntity(String entityName, ObjectContext context) {
         ObjectSelect.query(Import)
                 .where(Import.ENTITY.eq(entityName))
-                .and(Import.ENABLED.isTrue())
+                .and(Import.AUTOMATION_STATUS.eq(AutomationStatus.ENABLED))
                 .orderBy(Import.NAME.asc())
                 .select(context)
     }

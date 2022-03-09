@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.certificateCQR.csv
-entityClass: Certificate
-body: ish.onCourse.certificateCQR.csv.groovy
-name: Certificate CQR CSV export
-outputType: csv
