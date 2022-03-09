@@ -11,7 +11,7 @@ import { createStyles, withStyles } from "@mui/styles";
 import { darken } from "@mui/material/styles";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Divider from "@mui/material/Divider";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Backdrop } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
 import Typography from "@mui/material/Typography";
@@ -21,7 +21,7 @@ import { getDashboardCategories, getDashboardSearch, getFavoriteScripts } from "
 import { openInternalLink } from "../../../utils/links";
 import { getEntityDisplayName } from "../../../utils/getEntityDisplayName";
 import { checkPermissions, getOnDemandScripts, showConfirm } from "../../../actions";
-import { clearSelectedCategoryItem, toggleSwipeableDrawer } from "./actions";
+import { toggleSwipeableDrawer } from "./actions";
 import UserSearch from "./components/UserSearch";
 import SearchResults from "./components/searchResults/SearchResults";
 import SidebarLatestActivity from "./components/SidebarLatestActivity";
@@ -31,8 +31,6 @@ import HamburgerMenu from "./components/HamburgerMenu";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import Navigation from "../../navigation/Navigation";
 import NavigationCategory from "../../navigation/NavigationCategory";
-import { NoArgFunction } from "../../../../model/common/CommonFunctions";
-import { SelectedCategoryItem } from "../../../../model/common/drawer/SwipeableDrawerModel";
 
 export const SWIPEABLE_SIDEBAR_WIDTH: number = 350;
 
@@ -44,8 +42,7 @@ const styles = (theme: AppTheme) =>
       zIndex: theme.zIndex.modal + 2,
     },
     drawerPaper: {
-      overflowX: "hidden",
-      zIndex: theme.zIndex.modal + 2,
+      overflowX: "hidden"
     },
     drawerWidth: {
       width: SWIPEABLE_SIDEBAR_WIDTH,
@@ -89,15 +86,14 @@ const styles = (theme: AppTheme) =>
     categoryRoot: {
       top: 0,
       zIndex: 1,
-      width: `100%`,
+      width: `${CATEGORY_SIDEBAR_WIDTH}px`,
       height: "100%",
       position: "fixed",
       display: "flex",
       background: theme.palette.background.default,
       transition: "transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms",
       left: `${SWIPEABLE_SIDEBAR_WIDTH}px`,
-      transform: `translateX(-180%)`,
-      maxWidth: `calc(90% - ${SWIPEABLE_SIDEBAR_WIDTH}px)`
+      transform: `translateX(-${CATEGORY_SIDEBAR_WIDTH + SWIPEABLE_SIDEBAR_WIDTH}px)`
     },
     categoryVisible: {
       transform: "translateX(1px)"
@@ -128,8 +124,6 @@ interface Props {
   scripts: any;
   hasScriptsPermissions: any;
   theme?: AppTheme;
-  onClearSelectedCategoryItem?: NoArgFunction;
-  selectedCategoryItem?: SelectedCategoryItem;
 }
 
 const SwipeableSidebar: React.FC<Props> = props => {
@@ -151,9 +145,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
     categories,
     getScriptsPermissions,
     scripts,
-    hasScriptsPermissions,
-    onClearSelectedCategoryItem,
-    selectedCategoryItem
+    hasScriptsPermissions
   } = props;
 
   const [controlResults, setControlResults] = useState([]);
@@ -184,7 +176,6 @@ const SwipeableSidebar: React.FC<Props> = props => {
 
     if (!open) {
       getSearchResults("");
-      onClearSelectedCategoryItem();
     }
   };
 
@@ -355,11 +346,6 @@ const SwipeableSidebar: React.FC<Props> = props => {
     }
   }, [isFormDirty, resetEditView]);
 
-  const clearNavigationSelection = useCallback(() => {
-    setSelected(null);
-    onClearSelectedCategoryItem();
-  }, []);
-
   return (
     <>
       <SwipeableDrawer
@@ -440,13 +426,12 @@ const SwipeableSidebar: React.FC<Props> = props => {
         <div className={
           clsx(
             classes.categoryRoot,
-            opened && (selected !== null || selectedCategoryItem.id !== null) && classes.categoryVisible
+            opened && selected !== null && classes.categoryVisible
           )}
         >
           <NavigationCategory
             selected={selected}
-            onClose={clearNavigationSelection}
-            selectedCategoryItem={selectedCategoryItem}
+            onClose={() => setSelected(null)}
           />
         </div>
       </SwipeableDrawer>
@@ -454,7 +439,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
 
       {variant !== "temporary" && (
         <Backdrop
-          open={opened && (selected !== null || selectedCategoryItem.id !== null)}
+          open={opened && selected !== null}
           onClick={toggleDrawer(false)}
         />
       )}
@@ -471,8 +456,7 @@ const mapsStateToProps = (state: State) => ({
   categories: state.dashboard.categories,
   searchResults: state.dashboard.searchResults.results,
   scripts: state.dashboard.scripts,
-  hasScriptsPermissions: state.access["ADMIN"],
-  selectedCategoryItem: state.swipeableDrawer.categoryItem,
+  hasScriptsPermissions: state.access["ADMIN"]
 });
 
 const mapStateToDispatch = (dispatch: Dispatch<any>) => ({
@@ -482,8 +466,7 @@ const mapStateToDispatch = (dispatch: Dispatch<any>) => ({
   getScripts: () => dispatch(getOnDemandScripts()),
   getFavoriteScripts: () => dispatch(getFavoriteScripts()),
   getScriptsPermissions: () => dispatch(checkPermissions({ keyCode: "ADMIN" })),
-  showConfirm: props => dispatch(showConfirm(props)),
-  onClearSelectedCategoryItem: () => dispatch(clearSelectedCategoryItem()),
+  showConfirm: props => dispatch(showConfirm(props))
 });
 
 export default connect<any, any, any>(mapsStateToProps, mapStateToDispatch)(withStyles(styles, { withTheme: true })(SwipeableSidebar));

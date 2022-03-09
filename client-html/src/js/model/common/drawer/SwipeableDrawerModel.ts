@@ -10,10 +10,4 @@ export interface SwipeableDrawer {
   variant?: keyof typeof VARIANTS;
   isDirty?: boolean;
   resetEditView?: () => void;
-  categoryItem?: SelectedCategoryItem;
-}
-
-export interface SelectedCategoryItem {
-  entity: string;
-  id: number;
 }

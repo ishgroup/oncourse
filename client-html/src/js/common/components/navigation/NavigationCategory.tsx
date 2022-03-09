@@ -11,8 +11,6 @@ import Close from "@mui/icons-material/Close";
 import React, { useMemo } from "react";
 import { makeAppStyles } from "../../styles/makeStyles";
 import navigation from "./navigation.json";
-import ContactPreview from "../../../containers/entities/contacts/ContactPreview";
-import { SelectedCategoryItem } from "../../../model/common/drawer/SwipeableDrawerModel";
 
 const useStyles = makeAppStyles(() => ({
   root: {
@@ -23,45 +21,26 @@ const useStyles = makeAppStyles(() => ({
 interface Props {
   selected: string;
   onClose: any;
-  selectedCategoryItem?: SelectedCategoryItem;
 }
 
 const NavigationCategory = (
   {
     selected,
-    onClose,
-    selectedCategoryItem
+    onClose
   }:Props
 ) => {
   const category = useMemo(() => navigation.categories.find(c => c.key === selected), [selected]);
 
   console.log({ category });
-
-  const closeIcon = (
-    <IconButton size="large" onClick={onClose}>
-      <Close />
-    </IconButton>
-  );
-
-  const showPreview = useMemo(() => {
-    switch (selectedCategoryItem.entity) {
-      case "Contacts":
-        return <ContactPreview selected={selectedCategoryItem} closeIcon={closeIcon} />;
-      default:
-        return (
-          <div className="d-flex">
-            <Typography variant="h4" className="flex-fill">{category?.title}</Typography>
-            <IconButton size="large" onClick={onClose}>
-              <Close />
-            </IconButton>
-          </div>
-        );
-    }
-  }, [selectedCategoryItem, category]);
   
   return (
-    <div className="flex-fill p-3 appFrame overflow-y-auto">
-      {showPreview}
+    <div className="flex-fill p-3">
+      <div className="d-flex">
+        <Typography variant="h4" className="flex-fill">{category?.title}</Typography>
+        <IconButton size="large" onClick={onClose}>
+          <Close />
+        </IconButton>
+      </div>
     </div>
 );
 };

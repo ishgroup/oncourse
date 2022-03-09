@@ -17,12 +17,14 @@ import ActionBody from "./components/action-body/ActionBody";
 import { getUserPreferences, showConfirm, setUserPreference } from "../../common/actions";
 import {
   DASHBOARD_CATEGORY_WIDTH_KEY,
-  DASHBOARD_THEME_KEY
+  DASHBOARD_THEME_KEY,
+  APPLICATION_THEME_STORAGE_NAME
 } from "../../constants/Config";
 import { AppTheme, ThemeValues } from "../../model/common/Theme";
 import { toggleSwipeableDrawer } from "../../common/components/layout/swipeable-sidebar/actions";
 import { VARIANTS } from "../../common/components/layout/swipeable-sidebar/utils";
 import { SWIPEABLE_SIDEBAR_WIDTH } from "../../common/components/layout/swipeable-sidebar/SwipeableSidebar";
+import { LSGetItem } from "../../common/utils/storage";
 
 const styles = (theme: AppTheme) =>
   createStyles({
