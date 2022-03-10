@@ -8,53 +8,48 @@
     {
       "title": "Automation",
       "key": "automation",
-      "description": "."
+      "description": "onCourse includes a powerful scripting engine that allows you to automate just about any process. Send automated emails or SMS messages, update records, integrate with third-party tools such as analytics or email marketing, export data to finance systems or your LMS. Scripts turn your student management system into a completely customisable tool with your business workflows built right in.<ul><li>Scripting</li><li>Data Imports and Exports</li><li>Message Templates</li><li>Build-in PDF Reports</li><li>Third-party Integrations</li><ul>"
     },
     {
       "title": "Accounting",
       "key": "accounting",
-      "description": "."
+      "description": "Financial management is at the core of onCourse software with fully-integrated budgeting, a complete general ledger, built-in ecommerce and payment gateway, banking, reconciliation, integrations with popular financial software and a host of tools and reporting to make managing your finances easy.<ul><li>Class budgets</li><li>Banking and Reconciliation</li><li>General Ledger</li><li>Payment Plans and Reminders</li><li></li><li>Built-In Financial Reports</li><li>Payment Card Processing</li><li>Accounts & Transactions</li><ul>"
     },
     {
       "title": "Sales",
       "key": "sales",
-      "description": "."
+      "description": "Set up virtually any product, issue gift vouchers or offer memberships using onCourse software. Sell products to supplement student learning, such as textbooks or audio, issue gift vouchers for special occasions or offer memberships to your high-value customers with a special discount on enrolment.<ul><li>Flexible Products</li><li>Cart & Checkout</li><li>Abandoned Carts</li><li>Discounts</li><li></li><li>Promotional Codes</li><li>Corporate Pass</li><li>Data Collection Rules & Forms</li><ul>"
     },
     {
-      "title": "System",
-      "key": "system",
-      "description": "."
+      "title": "Configuration",
+      "key": "configuration",
+      "description": "onCourse software provides many configuration options allowing you to manage your internal workflows, along with easy to manage system preferences. Set your default timezone, set up and manage your onCourse users, add your local holiday dates and much more."
     },
     {
-      "title": "Compliance",
-      "key": "compliance",
-      "description": "."
-    },
-    {
-      "title": "Customers",
-      "key": "customers",
-      "description": "."
+      "title": "Accreditation & RTO",
+      "key": "accreditation",
+      "description": "Automatically create fully compliant certificates for Vocational Education Training (VET), or Certificates of Attendance for non-accredited and professional development course certification. onCourse software produces student certificates with built-in verification that authenticates whether your organisation issued the certificate. Easily export your data for reporting to a funding body.<ul><li>Certificate Automation</li><li>QR Code Support for Accredited Certificate Compliance</li><li>Certificate Customisation</li><li>AVETMISS 8 Export</li><ul>"
     },
     {
       "title": "Help",
       "key": "help",
-      "description": "."
+      "description": "If you need a question answered about your onCourse system, this is the best place to start. We have detailed documentation on all the different areas of onCourse. Visit our user manual, ask a community question on our forums, or get in touch with onCourse support.<ul><li>Community Support</li><li>Documentation & Manuals</li><li>onCourse Support</li><li>Audit Logging</i><ul>"
     },
     {
       "title": "Marketing",
       "key": "marketing",
-      "description": "."
+      "description": "onCourse is the most comprehensive education CRM software available today, making it a powerful tool for effective customer relationship management - and creating happy customers. onCourse meets the business needs of sales teams, marketing teams and customer service teams to create personalised customer experiences and build lasting customer relationships.<ul><li>Contacts</li><li>Leads</li><li>Quotes</li><li>Tagging</li><li>Messages</li><li>Product Relationships</li><li>Notes</li><li>Applications</li><ul>"
     },
     {
       "title": "Education",
       "key": "education",
-      "description": "."
+      "description": "Whether you offer a small number of courses or thousands, onCourse is scalable to organisations of every size, so we grow with you. With powerful search capability, tagging, auditable notes, document management and full access controls, recording information and categorising your courses is as simple as a click of your mouse. onCourse supports timetabled and self-paced courses of every kind with an intuitive user interface that’s powerful and flexible.<ul><li>Courses</li><li>Classes</li><li>Assessments</li><li>Enrolments</li><li>Traineeships</li><li>Outcomes</li><li>Document management</li><li>Assessment Submissions</li><ul>"
     },
     {
       "title": "Payroll",
       "key": "payroll",
-      "description": "."
-    }
+      "description": " Powerful payroll capabilities within onCourse software bind your payroll directly with scheduling, so you can be sure you’re paying the correct number of hours every time. With centralised pay rates and roles, managing your payroll couldn’t be easier. Pay fixed amounts, per session, per enrolment, per timetabled hour, per student contact hour or any unit you define.<ul><li>Budgeting</li><li>Payroll</li><li>Tutor roles</li><li>Third-Party Integrations</li><li>Collision Detection</li><li>Tutor Pay Rates</li><ul>"
+    },
   ],
   "features": [
     {
@@ -78,25 +73,27 @@
       "key": "applications",
       "link": "/application",
       "categories": [
-        "sales"
+        "marketing"
       ],
       "description": "All the applications sent in by students to courses that are set as 'enrolment by application'."
     },
     {
       "title": "Assessment submissions",
       "key": "assessmentSubmissions",
-      "link": "",
+      "link": "/assessmentSubmission",
       "categories": [
-        "education"
+        "education",
+        "accreditation"
       ],
-      "description": "A list of the various assessment submissions saved to your onCourse."
+      "description": "A list of the various assessment submissions saved in your system."
     },
     {
       "title": "Assessment tasks",
       "key": "assessmentTasks",
       "link": "/assessment",
       "categories": [
-        "education"
+        "education",
+        "accreditation"
       ],
       "description": "A list of assessment tasks uploaded to your system. They are available to be added to classes."
     },
@@ -105,16 +102,16 @@
       "key": "auditLogging",
       "link": "/audit",
       "categories": [
-        "system"
+        "configuration"
       ],
-      "description": "A recorded log of every action taken in your onCourse system. Also used to power the 'Automation Status' section on the dashboard.  "
+      "description": "A recorded log of every action taken in your onCourse system. Also used to power the 'Automation Status' section on the dashboard."
     },
     {
       "title": "Automation",
       "key": "automation",
       "link": "/automation",
       "categories": [
-        ""
+        "automation"
       ],
       "description": "Where to access your reports, export templates, message templates, scripts and more."
     },
@@ -125,7 +122,7 @@
       "categories": [
         "accounting"
       ],
-      "description": "All the banking deposits created in your onCourse system."
+      "description": "Review all the daily banking deposit records created in your system."
     },
     {
       "title": "Process payment plans (batch payment in)",
@@ -148,7 +145,7 @@
       "key": "certificates",
       "link": "/certificate",
       "categories": [
-        "compliance"
+        "accreditation"
       ],
       "description": "Manage the certification of students who have achieved competency in their outcomes, including issuing and revoking certificates. "
     },
@@ -166,7 +163,8 @@
       "key": "classes",
       "link": "/class",
       "categories": [
-        "scheduling"
+        "scheduling",
+        "education"
       ],
       "description": "A list of all the classes in your onCourse system."
     },
@@ -177,14 +175,14 @@
       "categories": [
         "help"
       ],
-      "description": "Ask a question of the onCourse community in our forum."
+      "description": "Ask a question to the onCourse community via our onCourse forums."
     },
     {
       "title": "Companies",
       "key": "companies",
       "link": "/contact?filter=@Companies",
       "categories": [
-        "customers"
+        "marketing"
       ],
       "description": "A list of your contacts that are set as being a company."
     },
@@ -193,7 +191,8 @@
       "key": "concessionTypes",
       "link": "/preferences/concessionTypes",
       "categories": [
-        ""
+        "marketing",
+        "configuration"
       ],
       "description": "The concession types available to your customers in onCourse."
     },
@@ -202,16 +201,17 @@
       "key": "contactRelationTypes",
       "link": "/preferences/contactRelationTypes",
       "categories": [
-        ""
+        "marketing",
+        "configuration"
       ],
-      "description": "The types of relationships between different contacts in the system. Relationships can be used to link contacts and inherit discounts.  "
+      "description": "The types of relationships between different contacts in the system. Relationships can be used to link contacts and inherit discounts."
     },
     {
       "title": "Contacts",
       "key": "contacts",
       "link": "/contact",
       "categories": [
-        "customers"
+        "marketing"
       ],
       "description": "A complete list of all the contacts in your system, including students, tutors and companies."
     },
@@ -220,7 +220,7 @@
       "key": "corporatePass",
       "link": "/corporatePass",
       "categories": [
-        ""
+        "marketing"
       ],
       "description": "A list of the corporate passes created in your system."
     },
@@ -229,7 +229,7 @@
       "key": "courses",
       "link": "/course",
       "categories": [
-        "scheduling"
+        "education"
       ],
       "description": "A list of all your courses."
     },
@@ -238,7 +238,8 @@
       "key": "customFields",
       "link": "/preferences/customFields",
       "categories": [
-        ""
+        "marketing",
+        "configuration"
       ],
       "description": "Custom fields allow you to create data fields in almost any record type in onCourse to store data that onCourse may not already have a field for."
     },
@@ -247,7 +248,7 @@
       "key": "dataCollectionForms",
       "link": "/preferences/collectionForms",
       "categories": [
-        "marketing"
+        "sales"
       ],
       "description": "Organise your data collection questions into different forms covering different processes. Create separate forms for Enrolments, Applications, Surveys, Parents, Payers and more."
     },
@@ -256,7 +257,7 @@
       "key": "dataCollectionRules",
       "link": "/preferences/collectionRules",
       "categories": [
-        "marketing"
+        "sales"
       ],
       "description": "Set the rules around which data collection forms are used for which student process. Apply different forms for Enrolments, Applications, Waiting Lists and more. "
     },
@@ -274,7 +275,8 @@
       "key": "discounts",
       "link": "/discount",
       "categories": [
-        ""
+        "marketing",
+        "accounting"
       ],
       "description": "Create discounts and apply them to classes to offer savings on enrolment. "
     },
@@ -299,9 +301,10 @@
     {
       "title": "Enrolments",
       "key": "enrolments",
-      "link": "",
+      "link": "/enrolment",
       "categories": [
-        ""
+        "education",
+        "sales"
       ],
       "description": "A list of all the enrolments you've taken in your system."
     },
@@ -310,7 +313,7 @@
       "key": "exportAVETMISS8",
       "link": "/avetmiss-export",
       "categories": [
-        "compliance"
+        "accreditation"
       ],
       "description": "Export records into the AVETMISS 8 format for the purpose of reporting to govenrment funding agencies."
     },
@@ -337,7 +340,7 @@
       "key": "fundingContract",
       "link": "/preferences/fundingContracts",
       "categories": [
-        ""
+        "accreditation"
       ],
       "description": "Create custom funding contracts for any source of funding that supports the student enrolment, and enable/disable default funding contracts."
     },
@@ -346,7 +349,7 @@
       "key": "holidays",
       "link": "/preferences/holidays",
       "categories": [
-        ""
+        "scheduling"
       ],
       "description": "Set the holiday periods your business will be closed for"
     },
@@ -376,25 +379,26 @@
         "accounting",
         "sales"
       ],
-      "description": ""
+      "description": "The list of all invoice records in your system"
     },
     {
       "title": "Leads",
       "key": "leads",
       "link": "/lead",
       "categories": [
+        "marketing",
         "sales"
       ],
-      "description": ""
+      "description": "Create and manage all of your sales leads"
     },
     {
       "title": "Memberships",
       "key": "memberships",
       "link": "/membership",
       "categories": [
-        ""
+        "marketing",
       ],
-      "description": ""
+      "description": "A list of all the memberships available for purchase from you"
     },
     {
       "title": "Message templates",
@@ -403,16 +407,18 @@
       "categories": [
         "automation"
       ],
-      "description": ""
+      "description": "Create and maintain all of the pre-designed message templates that are sent out from your system"
     },
     {
       "title": "Messages",
       "key": "messages",
       "link": "/message",
       "categories": [
-        ""
+        "marketing",
+        "sales",
+        "education"
       ],
-      "description": ""
+      "description": "A list of every email and SMS message sent from your onCourse system"
     },
     {
       "title": "onCourse news",
@@ -421,16 +427,17 @@
       "categories": [
         "help"
       ],
-      "description": ""
+      "description": "Catch up on the latest updates and news from onCourse HQ"
     },
     {
       "title": "Outcomes",
       "key": "outcomes",
       "link": "/outcome",
       "categories": [
-        "education"
+        "education",
+        "accreditation"
       ],
-      "description": ""
+      "description": "A list of every outcome for every enrolment in your system"
     },
     {
       "title": "Payment types",
@@ -439,7 +446,7 @@
       "categories": [
         "Accounting"
       ],
-      "description": ""
+      "description": "A list of the different types of payments you accept via onCourse"
     },
     {
       "title": "Payments In",
@@ -449,7 +456,7 @@
         "accounting",
         "sales"
       ],
-      "description": ""
+      "description": "A list of all the attempted payments from your customers to you"
     },
     {
       "title": "Payments Out",
@@ -459,7 +466,7 @@
         "accounting",
         "sales"
       ],
-      "description": ""
+      "description": "A list of all the payments and refunds made from onCourse out to customers"
     },
     {
       "title": "Report backgrounds",
@@ -468,7 +475,7 @@
       "categories": [
         "automation"
       ],
-      "description": ""
+      "description": "Your uploaded backgrounds for use in reports generated from your system"
     },
     {
       "title": "PDF reports",
@@ -486,16 +493,17 @@
       "categories": [
         "system"
       ],
-      "description": ""
+      "description": "Gives you access to the various preferences you can set for your system"
     },
     {
       "title": "Prior learnings",
       "key": "priorLearnings",
       "link": "/priorLearning",
       "categories": [
-        "education"
+        "education",
+        "accreditation"
       ],
-      "description": ""
+      "description": "A list of all the prior learning records created for all of your students"
     },
     {
       "title": "Products",
@@ -504,25 +512,26 @@
       "categories": [
         ""
       ],
-      "description": ""
+      "description": "Manage the product items you sell"
     },
     {
       "title": "Qualifications",
       "key": "qualifications",
       "link": "/qualification",
       "categories": [
-        "compliance"
+        "accreditation"
       ],
-      "description": ""
+      "description": "A list of all the current Qualifications available in your system"
     },
     {
       "title": "Quotes",
       "key": "quotes",
       "link": "/invoice?filter=@Quote",
       "categories": [
-        ""
+        "sales",
+        "accounting"
       ],
-      "description": ""
+      "description": "Shows a list of all the quotes saved in your system"
     },
     {
       "title": "Release notes",
@@ -531,7 +540,7 @@
       "categories": [
         "help"
       ],
-      "description": ""
+      "description": "A history of the onCourse release notes, detailing changes, fixes and new features every time there's a new update"
     },
     {
       "title": "Rooms",
@@ -540,16 +549,16 @@
       "categories": [
         "scheduling"
       ],
-      "description": ""
+      "description": "A list of all the room records within every site created in your system"
     },
     {
       "title": "Sales",
       "key": "sales",
       "link": "/sale",
       "categories": [
-        ""
+        "Sales"
       ],
-      "description": ""
+      "description": "A list of all the product, voucher and membership sales in your system"
     },
     {
       "title": "Scripts",
@@ -558,183 +567,186 @@
       "categories": [
         "automation"
       ],
-      "description": ""
+      "description": "The onCourse script library. Add scripts to your system, then tun them on or off for use"
     },
     {
       "title": "Security",
       "key": "security",
       "link": "/security",
       "categories": [
-        "system"
+        "configuration"
       ],
-      "description": ""
+      "description": "Create and manage your basic security settings, your onCourse users, user roles and create and manage API tokens"
     },
     {
       "title": "Sellable items relation types",
       "key": "sellableItemsRelationTypes",
-      "link": "",
+      "link": "/preferences/sellableItemsRelationTypes",
       "categories": [
-        "scheduling"
+        "marketing"
       ],
-      "description": ""
+      "description": "Create and manage the types of relationships between course and product groupings"
     },
     {
       "title": "Send support request...",
       "key": "sendSupportRequest",
-      "link": "",
+      "link": "https://ish-group.atlassian.net/servicedesk/customer/portal/4",
       "categories": [
         "help"
       ],
-      "description": ""
+      "description": "Send a request through to onCourse Support"
     },
     {
       "title": "Sites",
       "key": "sites",
-      "link": "",
+      "link": "/site",
       "categories": [
         "scheduling"
       ],
-      "description": ""
+      "description": "A collection of all the site records created in your system"
     },
     {
       "title": "Student Feedback",
       "key": "studentFeedback",
-      "link": "",
+      "link": "/contact?filter=@Students",
       "categories": [
         "marketing"
       ],
-      "description": ""
+      "description": "Any feedback left by the student completing a survey via the SkillsonCourse Portal will display in a list here"
     },
     {
       "title": "Students",
       "key": "students",
-      "link": "",
+      "link": "/tags",
       "categories": [
-        "customers"
+        "marketing"
       ],
-      "description": "A list of your student contacts."
+      "description": "A list of your student contacts. Specifically, students are contacts who have at least one enrolment in your system"
     },
     {
       "title": "Tags",
       "key": "tags",
-      "link": "",
+      "link": "/preferences/taxTypes",
       "categories": [
-        "system"
+        "configuration"
       ],
-      "description": ""
+      "description": "Shows all the tag groups and tags you've added to your system"
     },
     {
       "title": "Tax types",
       "key": "taxTypes",
       "link": "",
       "categories": [
-        "sccounting"
+        "accounting"
       ],
-      "description": ""
+      "description": "Create and manage the tax types available for use in your system"
     },
     {
       "title": "Timetable",
       "key": "timetable",
-      "link": "",
+      "link": "/timetable",
       "categories": [
         "scheduling"
       ],
-      "description": ""
+      "description": "A read-only timetable view. View times for students, classes, tutors, sites, rooms and more"
     },
     {
       "title": "Traineeship Courses",
       "key": "traineeshipCourses",
-      "link": "",
+      "link": "/course?filter=@Traineeships,@Enabled,@Enabled_and_visible_online",
       "categories": [
-        "scheduling",
-        "compliance"
+        "education",
+        "accreditation"
       ],
-      "description": ""
+      "description": "Shows all the courses set as a Traineeship in you system"
     },
     {
       "title": "Traineeships",
       "key": "traineeships",
-      "link": "",
+      "link": "/class?filter=@Traineeships,@Current_classes,@Future_classes,@Self_paced_classes",
       "categories": [
-        "scheduling",
-        "compliance"
+        "education",
+        "accreditation"
       ],
-      "description": ""
+      "description": "Shows all the Trainesship classes in your system"
     },
     {
       "title": "Transactions",
       "key": "transactions",
-      "link": "",
+      "link": "/transaction",
       "categories": [
         "accounting"
       ],
-      "description": ""
+      "description": "A record of every transaction between onCourse accounts in your system"
     },
     {
       "title": "Tutor pay",
       "key": "tutorPay",
-      "link": "",
-      "categories": [
-        "accounting, payroll"
-      ],
-      "description": ""
-    },
-    {
-      "title": "Tutor pay rates",
-      "key": "tutorPayRates",
-      "link": "",
+      "link": "/payslip",
       "categories": [
         "accounting",
         "payroll"
       ],
-      "description": ""
+      "description": "Shows every tutor payslip created in your system"
+    },
+    {
+      "title": "Tutor pay rates",
+      "key": "tutorPayRates",
+      "link": "/preferences/tutorRoles/222",
+      "categories": [
+        "accounting",
+        "payroll"
+      ],
+      "description": "Manage the different tutor roles and pay rates in your system"
     },
     {
       "title": "Tutors",
       "key": "tutors",
-      "link": "",
+      "link": "/contact?filter=@Tutors",
       "categories": [
         "sales",
         "marketing"
       ],
-      "description": ""
+      "description": "A collection of your contacts who are designated as Tutors"
     },
     {
       "title": "Units Of Competency",
       "key": "unitsOfCompetency",
-      "link": "",
+      "link": "/module?filter=@Offered",
       "categories": [
-        "compliance"
+        "accreditation"
       ],
-      "description": ""
+      "description": "All of the available units of competency that can be set as course modules"
     },
     {
       "title": "Voucher Types",
       "key": "voucherTypes",
-      "link": "",
+      "link": "/voucher?filter=@Active",
       "categories": [
-        "sales"
+        "sales",
+        "marketing"
       ],
-      "description": ""
+      "description": "All the types of vouchers available to sell from your system"
     },
     {
       "title": "Waiting lists",
       "key": "waitingLists",
-      "link": "",
+      "link": "/waitingList",
       "categories": [
         "scheduling",
-        "sales"
+        "sales",
+        "marketing"
       ],
-      "description": ""
+      "description": "Any time a student has added themselves to a course waiting list will appear here"
     },
     {
       "title": "Website setup",
       "key": "websiteSetup",
-      "link": "",
+      "link": "https://provisioning.ish.com.au/",
       "categories": [
-        ""
+        "configuration"
       ],
-      "description": ""
+      "description": "Manage your onCourse billing options and your onCourse websites, including Google analytica and Google tag manager"
     }
   ]
 }
