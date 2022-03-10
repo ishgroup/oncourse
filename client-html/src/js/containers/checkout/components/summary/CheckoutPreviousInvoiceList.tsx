@@ -26,8 +26,9 @@ import { summaryListStyles } from "../../styles/summaryListStyles";
 import CheckoutAppBar from "../CheckoutAppBar";
 import { CheckoutPreviousInvoice, PreviousInvoiceState } from "../../../../model/checkout";
 import { BooleanArgFunction } from "../../../../model/common/CommonFunctions";
-import RestartButton from "../RestartButton";
 import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+
+export const CheckoutPreviousInvoiceListFormRole: string = "CheckoutPreviousInvoiceListform";
 
 interface InvoiceItemRowProps {
   classes: any;
@@ -48,7 +49,7 @@ const InvoiceItemRow: React.FC<InvoiceItemRowProps> = (
 ) => (
   <Grid item xs={12} container alignItems="center" direction="row" className={classes.tableTab}>
     <div className={clsx("centeredFlex flex-fill", classes.itemTitle)}>
-      <StyledCheckbox checked={item.checked} onChange={toggleInvoiceItem} />
+      <StyledCheckbox name={`previousInvoiceCheckbox[${item.id}]`} checked={item.checked} onChange={toggleInvoiceItem} />
       <Typography variant="body1" className={clsx("mr-1", !item.checked && "disabled")}>
         {`${item.invoiceDate && format(new Date(item.invoiceDate), D_MMM_YYYY)} invoice ${item.invoiceNumber}`}
       </Typography>
@@ -62,8 +63,7 @@ const InvoiceItemRow: React.FC<InvoiceItemRowProps> = (
           ? item.overdue
             ? <span className="errorColor">overdue</span>
             : (item.dateDue && `due ${format(new Date(item.dateDue), D_MMM_YYYY)}`)
-          : ""
-        }
+          : ""}
       </Typography>
       <div className={clsx("money text-end ml-3", classes.summaryItemPrice, !item.checked && "disabled")}>
         {formatCurrency(
@@ -75,7 +75,7 @@ const InvoiceItemRow: React.FC<InvoiceItemRowProps> = (
       </div>
     </div>
   </Grid>
-  );
+);
 
 interface Props {
   classes?: any;
@@ -101,7 +101,7 @@ const CheckoutPreviousInvoiceList: React.FC<Props> = props => {
   } = props;
 
   return (
-    <div className="appFrame flex-fill root">
+    <form autoComplete="off" className="appFrame flex-fill root" role={CheckoutPreviousInvoiceListFormRole}>
       <AppBarContainer
         hideHelpMenu
         hideSubmitButton
@@ -118,6 +118,7 @@ const CheckoutPreviousInvoiceList: React.FC<Props> = props => {
             }}
             control={(
               <StyledCheckbox
+                name="isPayDueAmounts"
                 checked={previousInvoices.payDueAmounts}
                 onChange={e => setPayDue(e.target.checked)}
               />
@@ -171,7 +172,7 @@ const CheckoutPreviousInvoiceList: React.FC<Props> = props => {
           </Paper>
         </div>
       </AppBarContainer>
-    </div>
+    </form>
   );
 };
 

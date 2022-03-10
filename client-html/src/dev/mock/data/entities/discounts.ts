@@ -4,7 +4,7 @@ export function mockDiscounts() {
   this.getDiscounts = () => this.discounts;
 
   this.getDiscount = id => {
-    const row = this.discounts.rows.find(row => row.id == id);
+    const row = this.discounts.rows.find(discount => Number(discount.id) === Number(id));
     return {
       id: row.id,
       validFrom: row.values[0],
@@ -20,8 +20,8 @@ export function mockDiscounts() {
         { id: 1, contactFullName: "Jackson1" },
         { id: 2, contactFullName: "Jackson2" }
       ],
-      cosAccount: 41,
-      description: null,
+      cosAccount: 1,
+      description: "",
       discountConcessionTypes: [
         {
           allowOnWeb: true,
@@ -88,7 +88,7 @@ export function mockDiscounts() {
       limitPreviousEnrolment: false,
       minEnrolments: 1,
       minValue: 0,
-      predictedStudentsPercentage: 0,
+      predictedStudentsPercentage: 0.1,
       rounding: "Nearest dollar",
       studentAge: null,
       studentAgeUnder: null,

@@ -11,6 +11,10 @@ export function mockTaxTypes(): Tax[] {
       {
         id: "2",
         values: ["2", "N", "0.0000", "false"]
+      },
+      {
+        id: "204",
+        values: ["204", "VAT", "0.1500", "false"]
       }
     ];
 

@@ -80,10 +80,7 @@ module.exports = {
         "implicit-arrow-linebreak": "off",
         // "linebreak-style": "off",
         "max-len": [
-            "error",
-            {
-                "code": 140
-            }
+            "off",
         ],
         "new-parens": "off",
         "newline-per-chained-call": "off",
@@ -126,6 +123,7 @@ module.exports = {
         "react/no-did-update-set-state": "off",
         "react/jsx-props-no-spreading": "off",
         "react/jsx-boolean-value": "off",
+        "react/jsx-props-no-multi-spaces": "off",
         "semi": "error",
         "space-before-function-paren": "off",
         "space-in-parens": [

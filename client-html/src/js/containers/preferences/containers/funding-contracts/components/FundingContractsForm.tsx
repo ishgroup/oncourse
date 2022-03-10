@@ -35,6 +35,8 @@ import { getManualLink } from "../../../../../common/utils/getManualLink";
 
 const manualUrl = getManualLink("generalPrefs-fundingContractsPrefs");
 
+export const FUNDING_CONTRACTS_FORM: string = "FundingContractsForm";
+
 interface Props {
   values: any;
   fundingContracts: FundingSource[];
@@ -71,7 +73,7 @@ class FundingContractsForm extends React.Component<Props, any> {
   constructor(props) {
     super(props);
     if (props.fundingContracts) {
-      props.dispatch(initialize("FundingContractsForm", { fundingContracts: props.fundingContracts }));
+      props.dispatch(initialize(FUNDING_CONTRACTS_FORM, { fundingContracts: props.fundingContracts }));
     }
   }
 
@@ -79,7 +81,7 @@ class FundingContractsForm extends React.Component<Props, any> {
   UNSAFE_componentWillReceiveProps(nextProps: Props) {
     // Initializing form with values
     if (nextProps.fundingContracts && !this.props.initialized) {
-      this.props.dispatch(initialize("FundingContractsForm", { fundingContracts: nextProps.fundingContracts }));
+      this.props.dispatch(initialize(FUNDING_CONTRACTS_FORM, { fundingContracts: nextProps.fundingContracts }));
     }
     if (!this.isPending) {
       return;
@@ -98,7 +100,7 @@ class FundingContractsForm extends React.Component<Props, any> {
   }
 
   onAddNew = () => {
-    this.props.dispatch(arrayInsert("FundingContractsForm", "fundingContracts", 0, Initial));
+    this.props.dispatch(arrayInsert(FUNDING_CONTRACTS_FORM, "fundingContracts", 0, Initial));
     const domNode = document.getElementById("fundingContracts[0].name");
     if (domNode) domNode.scrollIntoView({ behavior: "smooth" });
   };
@@ -131,7 +133,7 @@ class FundingContractsForm extends React.Component<Props, any> {
         const {
           nextLocation, history, setNextLocation, dispatch
         } = this.props;
-        dispatch(initialize("FundingContractsForm", { fundingContracts: this.props.fundingContracts }));
+        dispatch(initialize(FUNDING_CONTRACTS_FORM, { fundingContracts: this.props.fundingContracts }));
 
         nextLocation && history.push(nextLocation);
         setNextLocation('');
@@ -165,13 +167,13 @@ class FundingContractsForm extends React.Component<Props, any> {
         if (item.id) {
           onDelete(item.id);
         } else {
-          dispatch(arrayRemove("FundingContractsForm", "fundingContracts", index));
+          dispatch(arrayRemove(FUNDING_CONTRACTS_FORM, "fundingContracts", index));
           this.resolvePromise(true);
         }
       })
         .then(clientSideDelete => {
           if (!clientSideDelete) {
-            dispatch(initialize("FundingContractsForm", { fundingContracts: this.props.fundingContracts }));
+            dispatch(initialize(FUNDING_CONTRACTS_FORM, { fundingContracts: this.props.fundingContracts }));
           }
         })
         .catch(() => {
@@ -188,7 +190,7 @@ class FundingContractsForm extends React.Component<Props, any> {
     } = this.props;
 
     return (
-      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
+      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)} role={FUNDING_CONTRACTS_FORM}>
         <RouteChangeConfirm form={form} when={dirty} />
         <AppBarContainer
           values={values}
@@ -220,7 +222,7 @@ class FundingContractsForm extends React.Component<Props, any> {
 }
 
 const mapStateToProps = (state: State) => ({
-  values: getFormValues("FundingContractsForm")(state),
+  values: getFormValues(FUNDING_CONTRACTS_FORM)(state),
   fundingContracts: state.preferences.fundingContracts,
   timestamps: state.preferences.fundingContracts && getTimestamps(state.preferences.fundingContracts),
   fetch: state.fetch,
@@ -232,5 +234,5 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 export default reduxForm({
   onSubmitFail,
-  form: "FundingContractsForm"
+  form: FUNDING_CONTRACTS_FORM
 })(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withRouter(FundingContractsForm))) as React.ComponentClass<any>;

@@ -6,7 +6,7 @@
   <EmailTemplate id="2" keyCode="legacy.2" name="Tax Invoice" subject="Tax Invoice" bodyPlain="test" bodyHtml="test"
                  createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <Script id="1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0" name="send_invoice" enabled="1"
+  <Script id="1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0" name="send_invoice" enabled="2"
           triggerType="2" entityClass="Invoice" entityEventType="1" script="
   def invoice = args.entity&#xA;
 
@@ -20,7 +20,7 @@
     invoice.setConfirmationStatus(ConfirmationStatus.SENT)&#xA;
     args.context.commitChanges()&#xA;
   }"/>
-  <Script id="2" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0" name="send_enrolment" enabled="1"
+  <Script id="2" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0" name="send_enrolment" enabled="2"
           triggerType="2" entityClass="Enrolment" entityEventType="4" script="
   def enrolment = args.entity&#xA;
 

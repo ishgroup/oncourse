@@ -114,8 +114,8 @@ const QueryCardContent = props => {
         </Collapse>
       </Grid>
 
-      <Grid item={true} container xs={12} className="mb-2">
-        <Grid xs={6}>
+      <Grid item container xs={12} className="mb-2">
+        <Grid item xs={6}>
           <FormField
             name={`${name}.queryClosureReturnValue`}
             type="text"
@@ -125,7 +125,7 @@ const QueryCardContent = props => {
           />
         </Grid>
 
-        <Grid xs={6} className="d-flex p-2" alignItems="flex-end">
+        <Grid item xs={6} className="d-flex p-2" alignItems="flex-end">
           {queryResultsPending && !hideQueryResults && <CircularProgress size={24} thickness={4} />}
           {!queryResultsPending && !hideQueryResults && (
           <Typography variant="caption" color="textSecondary">

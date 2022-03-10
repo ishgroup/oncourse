@@ -1,11 +1,18 @@
-import { ActionsObservable } from "redux-observable";
+import { ActionsObservable, Epic } from "redux-observable";
 import { filter, toArray } from "rxjs/operators";
 import { mockedAPI, store } from "../TestEntry";
 import { FETCH_FINISH, FETCH_START } from "../../js/common/actions";
 
+interface Props {
+  action: any;
+  epic: Epic<any, any>,
+  processData: (mockedApi: any) => any;
+  beforeProcess?: () => void;
+}
+
 export const DefaultEpic = ({
   action, epic, processData, beforeProcess = () => {}
-}) => {
+}: Props) => {
   // Redux action to trigger epic
   const action$ = ActionsObservable.of(typeof action === "function" ? action(mockedAPI) : action );
 

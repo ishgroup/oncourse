@@ -20,7 +20,6 @@ import { CourseExtended } from "../../../../model/entities/Course";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { mapSelectItems } from "../../../../common/utils/common";
 import CourseAvailableClassChart from "./CourseAvailableClassChart";
-import { makeAppStyles } from "../../../../common/styles/makeStyles";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
@@ -33,12 +32,6 @@ interface CourseGeneralTabProps extends EditViewProps<CourseExtended> {
   dispatch: any;
   form: string;
 }
-
-const useStyles = makeAppStyles(() => ({
-  chartWrapper: {
-    height: "250px",
-  },
-}));
 
 const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
   ({
@@ -53,8 +46,6 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
     dispatch,
     form
   }) => {
-    const classes = useStyles();
-
     const onCalendarClick = useCallback(() => {
       openInternalLink(`/timetable/search?query=courseClass.course.id=${values.id}`);
     }, [values.id]);
@@ -138,9 +129,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
           />
         </Grid>
 
-        <Grid item xs={12} className={classes.chartWrapper}>
-          <CourseAvailableClassChart courseId={values.id} isNew={isNew} />
-        </Grid>
+        <CourseAvailableClassChart courseId={values.id} isNew={isNew} />
 
         <Grid item xs={12} className="mb-2">
           <TimetableButton onClick={onCalendarClick} />
@@ -221,14 +210,6 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
             dirty={dirty}
             showConfirm={showConfirm}
             twoColumn={twoColumn}
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <FormField
-            type="multilineText"
-            name="brochureDescription"
-            label="Print brochure description"
           />
         </Grid>
 
