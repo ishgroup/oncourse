@@ -233,8 +233,11 @@ class GroovyScriptService {
 
     Set<Script> getScriptsForEntity(Class<?> entityClass, LifecycleEvent event) {
         def scripts = scriptTriggerMap?.get(event)?.get(entityClass)
-        if(entityClass in List.of(Article.class as Class<?>, Voucher.class, Membership.class))
-            scripts.addAll(scriptTriggerMap?.get(event)?.get(ProductItem.class))
+        if (entityClass in List.of(Article.class as Class<?>, Voucher.class, Membership.class)) {
+            def salesScripts = scriptTriggerMap?.get(event)?.get(ProductItem.class)
+            if (salesScripts)
+                scripts?.addAll(salesScripts)
+        }
 
         if (scripts) {
             return Collections.unmodifiableSet(scripts)
