@@ -1,5 +1,6 @@
+import { EmailTemplate } from "@api/model";
 import { _toRequestType, FULFILLED } from "../../../../../common/actions/ActionUtils";
-import { EmailTemplate } from "../../../../../../../build/generated-sources/swagger-js/api";
+import { CatalogItemType } from "../../../../../model/common/Catalog";
 
 export const GET_EMAIL_TEMPLATES_LIST = _toRequestType("get/email-templates/list");
 export const GET_EMAIL_TEMPLATES_LIST_FULFILLED = FULFILLED(GET_EMAIL_TEMPLATES_LIST);
@@ -46,4 +47,9 @@ export const removeEmailTemplate = (id: number) => ({
 export const getEmailTemplate = (id: number) => ({
   type: GET_EMAIL_TEMPLATE,
   payload: id
+});
+
+export const getEmailTemplatesListFulfilled = (emailTemplates: CatalogItemType[]) => ({
+  type: GET_EMAIL_TEMPLATES_LIST_FULFILLED,
+  payload: { emailTemplates }
 });

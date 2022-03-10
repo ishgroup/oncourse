@@ -1,9 +1,0 @@
-name: onCourse custom field types import
-keyCode: ish.onCourse.import.customFieldTypes.json
-body: customFieldTypesImport.groovy
-enabled: true
-description: Import custom field types 
-variables:
-  - name: customFieldTypes
-    label: Custom field types
-    dataType: FILE

@@ -1,7 +1,0 @@
-name: coassemble enrol
-keyCode: ish.script.coassembleEnrolment
-body: ish.script.coassembleEnrolment.groovy
-enabled: false
-triggerType: ONCOURSE_EVENT
-onCourseEventType: ENROLMENT_SUCCESSFUL
-description: Enrol user to Coassemble course upon onCourse enrolment. Coassemble course must have the same title as onCourse course name

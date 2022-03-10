@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.priorLearning.xml
-entityClass: PriorLearning
-body: ish.onCourse.priorLearning.xml.groovy
-name: Prior Learning XML export
-outputType: xml
