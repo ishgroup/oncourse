@@ -29,7 +29,7 @@ const useStyles = makeAppStyles(theme => ({
   appBar: {
     backgroundColor: theme.palette.background.default,
     height: APP_BAR_HEIGHT,
-    padding: theme.spacing(0, 2),
+    padding: theme.spacing(0, 3),
     position: "absolute",
     width: "100%",
     display: "flex",
@@ -100,10 +100,8 @@ const DashboardHeader = (
   const systemUser = useAppSelector(state => state.systemUser);
 
   useEffect(() => {
-    if (!systemUser?.firstName) {
-      dispatch(getSystemUserData());
-    }
-  }, [systemUser]);
+    dispatch(getSystemUserData());
+  }, []);
     
   return (
     <header className={classes.appBar}>
