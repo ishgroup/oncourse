@@ -298,14 +298,6 @@ databaseChangeLog:
         - addNotNullConstraint:
             columnDataType: datetime
             columnName: createdOn
-            tableName: MessageTemplate
-        - addNotNullConstraint:
-            columnDataType: datetime
-            columnName: modifiedOn
-            tableName: MessageTemplate
-        - addNotNullConstraint:
-            columnDataType: datetime
-            columnName: createdOn
             tableName: Tutor
         - addNotNullConstraint:
             columnDataType: datetime
