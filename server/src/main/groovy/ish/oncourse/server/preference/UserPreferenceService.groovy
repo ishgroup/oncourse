@@ -166,6 +166,8 @@ class UserPreferenceService {
                 return AccountUtil.getDefaultVoucherExpenseAccount(preferenceController.objectContext, Account.class)?.id?.toString()
             case PreferenceEnumDTO.ONCOURSE_SERVER_TIMEZONE_DEFAULT:
                 return preferenceController.getOncourseServerDefaultTimezone()
+            case PreferenceEnumDTO.TUTORIAL_SKIP_SYSTEMUSER:
+                return preferenceController.getTutorialSkipSystemUser()
             case PreferenceEnumDTO.NEWS_READ:
                 return getReadNews()
             default:
