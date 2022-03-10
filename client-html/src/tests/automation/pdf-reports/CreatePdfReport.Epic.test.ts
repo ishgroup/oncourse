@@ -10,7 +10,7 @@ describe("Create pdf report epic tests", () => {
     action: createAutomationPdfReport({
       name: "name 21",
       keyCode: "keyCode 21",
-      enabled: true
+      status: "Enabled"
     }),
     epic: EpicCreatePdfReport,
     processData: () => [

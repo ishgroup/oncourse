@@ -266,7 +266,7 @@ const ListRoot = React.memo<NestedListProps>(({
         {!hideHeader && (
           <div>
             <div className="centeredFlex">
-              <Typography className="heading pt-1 pb-1">
+              <Typography className="secondaryHeading pt-1 pb-1">
                 {rows.length}
                 {" "}
                 {title}

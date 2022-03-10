@@ -30,7 +30,7 @@ class ClassDefaults extends React.Component<Props, any> {
           data={classDefaults}
           enums={{ DeliveryMode, ClassFundingSource }}
           category={Categories.classDefaults}
-          form={<ClassDefaultsForm />}
+          form={formRoleName => <ClassDefaultsForm formRoleName={formRoleName} />}
         />
       </div>
     );

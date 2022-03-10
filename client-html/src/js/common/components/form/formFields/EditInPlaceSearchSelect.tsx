@@ -476,11 +476,17 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                 variant="standard"
                 error={meta?.invalid}
               >
-                {labelContent && <InputLabel shrink={true} error={meta?.invalid || hasError}>{labelContent}</InputLabel>}
+                {labelContent && (
+                  <InputLabel shrink={true} error={meta?.invalid || hasError} htmlFor={`input-${input.name}`}>
+                    {labelContent}
+                  </InputLabel>
+                )}
                 <Input
                   {...InputProps}
+                  id={`input-${input.name}`}
+                  name={input.name}
                   disabled={disabled}
-                  placeholder={placeholder || (!isEditing && "No value")}
+                  placeholder={placeholder || (!isEditing ? "No value" : "")}
                   autoFocus={inline}
                   onChange={handleInputChange}
                   onFocus={onFocus}

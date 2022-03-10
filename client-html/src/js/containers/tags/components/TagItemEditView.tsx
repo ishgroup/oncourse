@@ -21,7 +21,7 @@ import Lock from "@mui/icons-material/Lock";
 import { Tag, TagStatus } from "@api/model";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { FormEditorField } from "../../../common/components/markdown-editor/FormEditor";
-import { validateSingleMandatoryField, validateTagName } from "../../../common/utils/validation";
+import { validateSingleMandatoryField, validateAqlFilterOrTagName } from "../../../common/utils/validation";
 import ColorPicker from "../../../common/components/color-picker/ColorPicker";
 import { State } from "../../../reducers/state";
 import { NoArgFunction } from "../../../model/common/CommonFunctions";
@@ -142,7 +142,7 @@ const TagItemEditView = React.memo<Props>(props => {
                 validate={[
                   validateSingleMandatoryField,
                   parent ? validateNameWithPath : validateRootName,
-                  validateTagName
+                  validateAqlFilterOrTagName
                 ]}
                 disabled={values.system}
               />

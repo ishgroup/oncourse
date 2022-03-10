@@ -3,11 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Application, ApplicationStatus } from "@api/model";
 import { Grid, IconButton } from "@mui/material";
 import Launch from "@mui/icons-material/Launch";
+import { change } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
@@ -20,6 +21,9 @@ import { LinkAdornment } from "../../../../common/components/form/FieldAdornment
 import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import EntityService from "../../../../common/services/EntityService";
+import history from "../../../../constants/History";
+import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 
 interface ApplicationGeneralProps extends EditViewProps<Application> {
   classes?: any;
@@ -39,8 +43,42 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
     values,
     isNew,
     form,
+    dispatch,
     syncErrors
   } = props;
+  
+  useEffect(() => {
+    if (history.location.search && isNew) {
+      const params = new URLSearchParams(history.location.search);
+      const leadId = params.get('leadId');
+      
+      if (leadId) {
+        EntityService.getPlainRecords(
+          "Lead",
+          "customer.id,customer.fullName,items.course.id,items.course.name",
+          `id is ${leadId}`,
+          1
+        )
+        .then(res => {
+          const contactId = JSON.parse(res.rows[0].values[0]);
+          const studentName = res.rows[0].values[1];
+          const courseId = JSON.parse(res.rows[0].values[2])[0];
+          const courseName = res.rows[0].values[3]?.replace(/[[\]]|,.+/g, "");
+          dispatch(change(form, "contactId", contactId));
+          dispatch(change(form, "studentName", studentName));
+          dispatch(change(form, "courseId", courseId));
+          dispatch(change(form, "courseName", courseName));
+        })
+        .catch(err => instantFetchErrorHandler(dispatch, err));
+        
+        params.delete('leadId');
+        history.replace({
+          pathname: history.location.pathname,
+          search: decodeURIComponent(params.toString())
+        });
+      }
+    }
+  }, []);
 
   const gridItemProps = {
     xs: twoColumn ? 6 : 12,

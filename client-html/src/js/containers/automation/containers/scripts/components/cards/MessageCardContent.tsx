@@ -22,10 +22,11 @@ import EmailTemplateService from "../../../email-templates/services/EmailTemplat
 import { ScriptComponent, ScriptExtended } from "../../../../../../model/scripts";
 import { renderAutomationItems } from "../../../../utils";
 import { validateEmail } from "../../../../../../common/utils/validation";
+import { CatalogItemType } from "../../../../../../model/common/Catalog";
 
 interface Props {
   name: string;
-  emailTemplates: any;
+  emailTemplates: CatalogItemType[];
   field: ScriptComponent;
   dispatch: Dispatch;
   form: string;
@@ -43,7 +44,7 @@ const MessageCardContent = React.memo<Props>(props => {
   const messageTemplateItems = useMemo(
     () => (emailTemplates
       ? emailTemplates.filter(t => t.keyCode).map(t => ({
-         value: t.keyCode, label: t.name, hasIcon: t.hasIcon, id: t.id,
+         value: t.keyCode, label: t.title, hasIcon: t.keyCode.startsWith("ish."), id: t.id,
         }))
       : []), [emailTemplates],
   );
