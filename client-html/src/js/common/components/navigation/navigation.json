@@ -50,6 +50,11 @@
       "key": "payroll",
       "description": " Powerful payroll capabilities within onCourse software bind your payroll directly with scheduling, so you can be sure you’re paying the correct number of hours every time. With centralised pay rates and roles, managing your payroll couldn’t be easier. Pay fixed amounts, per session, per enrolment, per timetabled hour, per student contact hour or any unit you define.<ul><li>Budgeting</li><li>Payroll</li><li>Tutor roles</li><li>Third-Party Integrations</li><li>Collision Detection</li><li>Tutor Pay Rates</li><ul>"
     },
+    {
+      "title": "Document Management",
+      "key": "documents",
+      "description": " Powerful payroll capabilities within onCourse software bind your payroll directly with scheduling, so you can be sure you’re paying the correct number of hours every time. With centralised pay rates and roles, managing your payroll couldn’t be easier. Pay fixed amounts, per session, per enrolment, per timetabled hour, per student contact hour or any unit you define.<ul><li>Budgeting</li><li>Payroll</li><li>Tutor roles</li><li>Third-Party Integrations</li><li>Collision Detection</li><li>Tutor Pay Rates</li><ul>"
+    }
   ],
   "features": [
     {
@@ -57,7 +62,9 @@
       "key": "quickEnrol",
       "link": "/checkout",
       "categories": [
-      ]
+        "sales"
+      ],
+      "description": "Where you process all sales through onCourse."
     },
     {
       "title": "Accounts",
@@ -294,7 +301,7 @@
       "key": "documents",
       "link": "/document",
       "categories": [
-        ""
+        "documents"
       ],
       "description": "A list of all the documents you've uploaded to your system."
     },
@@ -351,7 +358,7 @@
       "categories": [
         "scheduling"
       ],
-      "description": "Set the holiday periods your business will be closed for"
+      "description": "Set the holiday periods your business will be closed for."
     },
     {
       "title": "Import templates",
@@ -360,7 +367,7 @@
       "categories": [
         "automation"
       ],
-      "description": ""
+      "description": "The collection of import templates available in your system."
     },
     {
       "title": "Integrations",
@@ -369,7 +376,7 @@
       "categories": [
         "automation"
       ],
-      "description": ""
+      "description": "A list of the third-party integrations available to you in your system."
     },
     {
       "title": "Invoices",
@@ -379,7 +386,7 @@
         "accounting",
         "sales"
       ],
-      "description": "The list of all invoice records in your system"
+      "description": "The list of all invoice records in your system."
     },
     {
       "title": "Leads",
@@ -389,7 +396,7 @@
         "marketing",
         "sales"
       ],
-      "description": "Create and manage all of your sales leads"
+      "description": "Create and manage all of your sales leads here."
     },
     {
       "title": "Memberships",
@@ -398,7 +405,7 @@
       "categories": [
         "marketing",
       ],
-      "description": "A list of all the memberships available for purchase from you"
+      "description": "A list of all the memberships available for purchase from you."
     },
     {
       "title": "Message templates",
@@ -407,7 +414,7 @@
       "categories": [
         "automation"
       ],
-      "description": "Create and maintain all of the pre-designed message templates that are sent out from your system"
+      "description": "Create and maintain all of the pre-designed message templates that are sent out from your system."
     },
     {
       "title": "Messages",
@@ -418,7 +425,7 @@
         "sales",
         "education"
       ],
-      "description": "A list of every email and SMS message sent from your onCourse system"
+      "description": "A list of every email and SMS message sent from your onCourse system."
     },
     {
       "title": "onCourse news",
@@ -427,7 +434,7 @@
       "categories": [
         "help"
       ],
-      "description": "Catch up on the latest updates and news from onCourse HQ"
+      "description": "Catch up on the latest updates and news from onCourse HQ."
     },
     {
       "title": "Outcomes",
@@ -437,7 +444,7 @@
         "education",
         "accreditation"
       ],
-      "description": "A list of every outcome for every enrolment in your system"
+      "description": "A list of every outcome for every enrolment in your system."
     },
     {
       "title": "Payment types",
@@ -446,7 +453,7 @@
       "categories": [
         "Accounting"
       ],
-      "description": "A list of the different types of payments you accept via onCourse"
+      "description": "A list of the different types of payments you accept via onCourse."
     },
     {
       "title": "Payments In",
@@ -456,7 +463,7 @@
         "accounting",
         "sales"
       ],
-      "description": "A list of all the attempted payments from your customers to you"
+      "description": "A list of all the attempted payments from your customers to you."
     },
     {
       "title": "Payments Out",
@@ -466,7 +473,7 @@
         "accounting",
         "sales"
       ],
-      "description": "A list of all the payments and refunds made from onCourse out to customers"
+      "description": "A list of all the payments and refunds made from onCourse out to customers."
     },
     {
       "title": "Report backgrounds",
@@ -475,7 +482,7 @@
       "categories": [
         "automation"
       ],
-      "description": "Your uploaded backgrounds for use in reports generated from your system"
+      "description": "Your uploaded backgrounds for use in reports generated from your system."
     },
     {
       "title": "PDF reports",
@@ -484,7 +491,7 @@
       "categories": [
         "automation"
       ],
-      "description": ""
+      "description": "The collection of PDR reports available to you in your system."
     },
     {
       "title": "Preferences",
@@ -493,7 +500,7 @@
       "categories": [
         "system"
       ],
-      "description": "Gives you access to the various preferences you can set for your system"
+      "description": "Gives you access to the various preferences you can set for your system."
     },
     {
       "title": "Prior learnings",
@@ -510,7 +517,8 @@
       "key": "products",
       "link": "/product",
       "categories": [
-        ""
+        "sales",
+        "marketing"
       ],
       "description": "Manage the product items you sell"
     },
@@ -608,7 +616,7 @@
     {
       "title": "Student Feedback",
       "key": "studentFeedback",
-      "link": "/contact?filter=@Students",
+      "link": "/survey",
       "categories": [
         "marketing"
       ],
@@ -617,7 +625,7 @@
     {
       "title": "Students",
       "key": "students",
-      "link": "/tags",
+      "link": "/contact?filter=@Students",
       "categories": [
         "marketing"
       ],
@@ -626,7 +634,7 @@
     {
       "title": "Tags",
       "key": "tags",
-      "link": "/preferences/taxTypes",
+      "link": "/tags",
       "categories": [
         "configuration"
       ],
@@ -635,7 +643,7 @@
     {
       "title": "Tax types",
       "key": "taxTypes",
-      "link": "",
+      "link": "/preferences/taxTypes",
       "categories": [
         "accounting"
       ],
