@@ -13,12 +13,12 @@
     {
       "title": "Accounting",
       "key": "accounting",
-      "description": "Financial management is at the core of onCourse software with fully-integrated budgeting, a complete general ledger, built-in ecommerce and payment gateway, banking, reconciliation, integrations with popular financial software and a host of tools and reporting to make managing your finances easy.<ul><li>Class budgets</li><li>Banking and Reconciliation</li><li>General Ledger</li><li>Payment Plans and Reminders</li><li></li><li>Built-In Financial Reports</li><li>Payment Card Processing</li><li>Accounts & Transactions</li><ul>"
+      "description": "Financial management is at the core of onCourse software with fully-integrated budgeting, a complete general ledger, built-in ecommerce and payment gateway, banking, reconciliation, integrations with popular financial software and a host of tools and reporting to make managing your finances easy.<ul><li>Class budgets</li><li>Banking and Reconciliation</li><li>General Ledger</li><li>Payment Plans and Reminders</li><li>Built-In Financial Reports</li><li>Payment Card Processing</li><li>Accounts & Transactions</li><ul>"
     },
     {
       "title": "Sales",
       "key": "sales",
-      "description": "Set up virtually any product, issue gift vouchers or offer memberships using onCourse software. Sell products to supplement student learning, such as textbooks or audio, issue gift vouchers for special occasions or offer memberships to your high-value customers with a special discount on enrolment.<ul><li>Flexible Products</li><li>Cart & Checkout</li><li>Abandoned Carts</li><li>Discounts</li><li></li><li>Promotional Codes</li><li>Corporate Pass</li><li>Data Collection Rules & Forms</li><ul>"
+      "description": "Set up virtually any product, issue gift vouchers or offer memberships using onCourse software. Sell products to supplement student learning, such as textbooks or audio, issue gift vouchers for special occasions or offer memberships to your high-value customers with a special discount on enrolment.<ul><li>Flexible Products</li><li>Cart & Checkout</li><li>Abandoned Carts</li><li>Discounts</li><li>Promotional Codes</li><li>Corporate Pass</li><li>Data Collection Rules & Forms</li><ul>"
     },
     {
       "title": "Configuration",
@@ -403,7 +403,7 @@
       "key": "memberships",
       "link": "/membership",
       "categories": [
-        "marketing",
+        "marketing"
       ],
       "description": "A list of all the memberships available for purchase from you."
     },

@@ -72,25 +72,9 @@ class ListLinksGroup extends React.PureComponent<any, any> {
     }
   };
 
-  getListItems = items => {
-    const {
-      entity, entityDisplayName, checkSelectedResult
-    } = this.props;
-    return items.map((v, i) => (
-      <ListLinkItem
-        key={i}
-        item={v}
-        openLink={this.openLink}
-        entity={entityDisplayName}
-        selected={checkSelectedResult(entity, "id", v.id)}
-        id={getResultId(i, `${entity}-${v.id}`)}
-      />
-    ));
-  };
-
   render() {
     const {
-      classes, entityDisplayName, items, showFirst
+      classes, entityDisplayName, items, showFirst, checkSelectedResult, entity
     } = this.props;
     const { collapsed } = this.state;
 
@@ -101,6 +85,7 @@ class ListLinksGroup extends React.PureComponent<any, any> {
       firstItems = items.slice(0, showFirst);
       lastItems = items.slice(showFirst);
     }
+
     return (
       <>
         <div className="d-flex align-items-center">
@@ -126,14 +111,41 @@ class ListLinksGroup extends React.PureComponent<any, any> {
         <List disablePadding>
           {showFirst ? (
             <>
+              {firstItems.map((v, i) => (
+                <ListLinkItem
+                  key={i}
+                  item={v}
+                  openLink={this.openLink}
+                  entity={entityDisplayName}
+                  selected={checkSelectedResult(entity, "id", v.id)}
+                  id={getResultId(i, `${entity}-${v.id}`)}
+                />
+              ))}
               <Collapse in={collapsed}>
-                {this.getListItems(items)}
-              </Collapse>
-              <Collapse in={!collapsed}>
-                {this.getListItems(firstItems)}
+                {lastItems.map((v, i) => (
+                  <ListLinkItem
+                    key={i}
+                    item={v}
+                    openLink={this.openLink}
+                    entity={entityDisplayName}
+                    selected={checkSelectedResult(entity, "id", v.id)}
+                    id={getResultId(i, `${entity}-${v.id}`)}
+                  />
+                ))}
               </Collapse>
             </>
-          ) : this.getListItems(items)}
+          ) : (
+            items.map((v, i) => (
+              <ListLinkItem
+                key={i}
+                item={v}
+                openLink={this.openLink}
+                entity={entityDisplayName}
+                selected={checkSelectedResult(entity, "id", v.id)}
+                id={getResultId(i, `${entity}-${v.id}`)}
+              />
+            ))
+          )}
         </List>
       </>
     );

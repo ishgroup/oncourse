@@ -1,6 +1,5 @@
-import { Category } from "@api/model";
 
-export const getEntityDisplayName = (entity: string): Category => {
+export const getEntityDisplayName = (entity: string): string => {
   switch (entity) {
     case "Audit": {
       return "Audit Logging";

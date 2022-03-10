@@ -3,7 +3,6 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Category } from "@api/model";
 import { IAction } from "../../../actions/IshAction";
 import {
   GET_EMAIL_TEMPLATES_WITH_KEYCODE_FULFILLED,
@@ -149,7 +148,7 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
       if (editRecord && editRecord.id) {
         latestActivityStorageHandler(
           { name, date: new Date().toISOString(), id: editRecord.id },
-          state.records.entity as Category
+          state.records.entity
         );
       }
 

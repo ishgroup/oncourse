@@ -30,7 +30,7 @@ const styles = theme => createStyles({
   },
   topBar: {
     display: "flex",
-    padding: theme.spacing(2, 2, 0, 2),
+    padding: theme.spacing(3, 2, 0, 2),
     position: "relative",
     alignItems: "center"
   },
@@ -122,7 +122,7 @@ const Favorites: React.FC<Props> = props => {
         <List classes={{ root: classes.root }}>{renderFavorites}</List>
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid item xs={12} className="mt-1 mb-2">
         <Divider variant="middle" />
       </Grid>
     </Grid>

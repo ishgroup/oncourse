@@ -454,7 +454,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
                   execMenuOpened={execMenuOpened}
                   setExecMenuOpened={setExecMenuOpened}
                 />
-                <Divider variant="middle" />
+                <Divider variant="middle" className="mb-2" />
                 <SidebarLatestActivity showConfirm={showConfirmHandler} checkSelectedResult={checkSelectedResult} />
               </div>
             </Collapse>

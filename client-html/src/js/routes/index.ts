@@ -9,7 +9,6 @@
  * See the GNU Affero General Public License for more details.
  */
 
-import { Category } from "@api/model";
 import BatchPayment from "../containers/batch-payment/BatchPayment";
 import PreferencesApp from "../containers/preferences/index";
 import AuditsApp from "../containers/audits/index";
@@ -88,7 +87,7 @@ export interface Route<T> {
   group?: RouteGroupTypes;
 }
 
-export type MainRoute = Route<Category | SystemCategories>;
+export type MainRoute = Route<string | SystemCategories>;
 
 export interface RouteGroup {
   title: RouteGroupTypes;

@@ -17,7 +17,7 @@ import {
 import { connect } from "react-redux";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
-import { Category, CheckoutSaleRelation, ColumnWidth } from "@api/model";
+import { CheckoutSaleRelation, ColumnWidth } from "@api/model";
 import debounce from "lodash.debounce";
 import Button from "@mui/material/Button";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../constants/Config";
@@ -642,7 +642,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         if (findIndex !== -1) {
           latestActivityStorageHandler(
             { name: contactEditRecord.name, date: new Date().toISOString(), id: contactEditRecord.id },
-            "Contacts" as Category
+            "Contacts"
           );
 
           updated[findIndex] = contactEditRecord;

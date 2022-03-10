@@ -19,6 +19,7 @@ import { DASHBOARD_FAVORITES_KEY, FAVORITE_SCRIPTS_KEY } from "../../../constant
 import { setUserPreference } from "../../actions";
 import { AnyArgFunction, BooleanArgFunction, NumberArgFunction } from "../../../model/common/CommonFunctions";
 import { openInternalLink } from "../../utils/links";
+import { getPrivisioningLink } from "../../../routes/routesMapping";
 
 const useStyles = makeAppStyles(theme => ({
   description: {
@@ -110,7 +111,7 @@ const NavigationCategory = (
   };
 
   const onOpen = (link: string) => {
-    showConfirm(() => openInternalLink(link));
+    showConfirm(() => openInternalLink(getPrivisioningLink(link)));
   };
 
   return (

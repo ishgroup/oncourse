@@ -11,6 +11,7 @@ import ListItem from "@mui/material/ListItem";
 import { openInternalLink } from "../../../utils/links";
 import itemStyles from "./itemStyles";
 import { DashboardItem } from "../../../../model/dashboard";
+import { getPrivisioningLink } from "../../../../routes/routesMapping";
 
 interface Props {
   item: DashboardItem;
@@ -24,7 +25,7 @@ const FavoriteItem = (props: Props) => {
     showConfirm, classes, item, isEditing
   } = props;
 
-  const openLink = () => showConfirm(() => openInternalLink(item.url));
+  const openLink = () => showConfirm(() => openInternalLink(getPrivisioningLink(item.url)));
 
   const isQuickEnroll = item.category === "quickEnrol";
 
