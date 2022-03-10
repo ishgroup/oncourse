@@ -1,7 +1,7 @@
 databaseChangeLog:
 
 - changeSet:
-    id: 109-1
+    id: 111-1
     author: dmitryl
     preConditions:
       - onFail: HALT
