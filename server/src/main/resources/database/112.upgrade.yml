@@ -1,7 +1,7 @@
 databaseChangeLog:
 
   - changeSet:
-      id: 109-1
+      id: 112-1
       author: dmitriy
       preConditions:
         - onFail: HALT
@@ -13,7 +13,7 @@ databaseChangeLog:
             tableName: MessageTemplate
 
   - changeSet:
-      id: 109-2
+      id: 112-2
       author: dmitriy
       preConditions:
         - onFail: HALT
