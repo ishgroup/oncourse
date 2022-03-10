@@ -11,15 +11,3 @@ databaseChangeLog:
       changes:
         - dropTable:
             tableName: MessageTemplate
-
-  - changeSet:
-      id: 112-2
-      author: dmitriy
-      preConditions:
-        - onFail: HALT
-        - and:
-            - tableExists:
-                tableName: QueuedRecord
-      changes:
-        - sql:
-            "DELETE FROM QueuedRecord WHERE tableName='MessageTemplate'"
