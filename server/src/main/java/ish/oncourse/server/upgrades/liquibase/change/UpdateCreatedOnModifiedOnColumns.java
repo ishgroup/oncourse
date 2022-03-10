@@ -47,7 +47,6 @@ public class UpdateCreatedOnModifiedOnColumns extends IshTaskChange {
             "Language",
             "Discount_CourseClass",
             "DocumentVersion",
-            "MessageTemplate",
             "Tutor",
             "EmailTemplate",
             "Discount_Membership_RelationType",
