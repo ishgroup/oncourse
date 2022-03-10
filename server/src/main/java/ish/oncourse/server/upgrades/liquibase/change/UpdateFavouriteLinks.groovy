@@ -38,7 +38,7 @@ class UpdateFavouriteLinks extends IshTaskChange {
                 .select(context)
         preferences.each {
             it.setValueString(
-                    it.valueString.split(JOIN_DELIMETER).collect {toLowerCamelCase(it)}.join(JOIN_DELIMETER)
+                    it?.valueString?.split(JOIN_DELIMETER)?.collect {toLowerCamelCase(it)}?.join(JOIN_DELIMETER)
             )
         }
         context.commitChanges()
