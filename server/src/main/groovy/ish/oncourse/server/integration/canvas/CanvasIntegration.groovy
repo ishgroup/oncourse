@@ -272,7 +272,7 @@ class CanvasIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to create course, course code: ${courseCode}, course name: ${courseName} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to create course, course code: ${courseCode}, course name: ${courseName}, course id: ${courseId} ${resp.getStatusLine()}")
             }
         }
     }
@@ -409,7 +409,7 @@ class CanvasIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to create section, course id: ${courseId}, section name: ${code} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to create section, course id: ${courseId}, section name: ${code}, course class id: ${courseClassId} ${resp.getStatusLine()}")
             }
         }
     }
