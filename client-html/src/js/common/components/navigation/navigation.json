@@ -756,7 +756,7 @@
       "categories": [
         "configuration"
       ],
-      "description": "Manage your onCourse billing options and your onCourse websites, including Google analytica and Google tag manager."
+      "description": "Manage your onCourse billing options and your onCourse websites, including Google analytics and Google tag manager."
     }
   ]
 }
