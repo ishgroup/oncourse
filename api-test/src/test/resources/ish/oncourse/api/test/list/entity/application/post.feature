@@ -61,7 +61,7 @@ Feature: Main feature for all POST requests with path 'list/entity/application'
         "enrolBy":"2033-01-01",
         "createdBy":"onCourse Administrator",
         "reason":"Some reason 100",
-        "documents":[{"attachedRecordsCount":"#ignore", "id":200,"name":"defaultPrivateDocument","versionId":null,"added":"#ignore","tags":[],"thumbnail":null,"versions":[{"id":200,"added":"#ignore","createdBy":"onCourse Administrator","fileName":"defaultPrivateDocument.txt","mimeType":"text/plain","size":"22 b","url":null,"thumbnail":null}],"description":"Private description","access":"Private","shared":true,"createdOn":"#ignore","modifiedOn":"#ignore","removed":false,"attachmentRelations":"#ignore"}],
+        "documents":[{"attachedRecordsCount":"#ignore", "id":200,"name":"defaultPrivateDocument","versionId":null,"added":"#ignore","tags":[],"thumbnail":null,"urlWithoutVersionId":null,"versions":[{"id":200,"added":"#ignore","createdBy":"onCourse Administrator","fileName":"defaultPrivateDocument.txt","mimeType":"text/plain","size":"22 b","url":null,"thumbnail":null}],"description":"Private description","access":"Private","shared":true,"createdOn":"#ignore","modifiedOn":"#ignore","removed":false,"attachmentRelations":"#ignore"}],
         "tags":[{"id":224,"name":"app2","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
         "customFields":{},
         "createdOn":"#ignore",
