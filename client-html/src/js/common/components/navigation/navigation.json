@@ -53,7 +53,7 @@
     {
       "title": "Document Management",
       "key": "documents",
-      "description": " Powerful payroll capabilities within onCourse software bind your payroll directly with scheduling, so you can be sure you’re paying the correct number of hours every time. With centralised pay rates and roles, managing your payroll couldn’t be easier. Pay fixed amounts, per session, per enrolment, per timetabled hour, per student contact hour or any unit you define.<ul><li>Budgeting</li><li>Payroll</li><li>Tutor roles</li><li>Third-Party Integrations</li><li>Collision Detection</li><li>Tutor Pay Rates</li><ul>"
+      "description": " Powerful payroll capabilities within onCourse software bind your payroll directly with scheduling, so you can be sure you’re paying the correct number of hours every time. With centralised pay rates and roles, managing your payroll couldn’t be easier. Pay fixed amounts, per session, per enrolment, per timetabled hour, per student contact hour or any unit you define.<ul><li>Share documents online</li><li>Share documents via SkillsonCourse</li><li>Add private documents</li><ul>"
     }
   ],
   "features": [
@@ -64,7 +64,7 @@
       "categories": [
         "sales"
       ],
-      "description": "Where you process all sales through onCourse."
+      "description": "Where you process all the sales and payments through onCourse."
     },
     {
       "title": "Accounts",
@@ -92,7 +92,7 @@
         "education",
         "accreditation"
       ],
-      "description": "A list of the various assessment submissions saved in your system."
+      "description": "The various assessment submission records saved in your system."
     },
     {
       "title": "Assessment tasks",
@@ -102,7 +102,7 @@
         "education",
         "accreditation"
       ],
-      "description": "A list of assessment tasks uploaded to your system. They are available to be added to classes."
+      "description": "A list of assessment tasks uploaded to your system. These are available to be added to classes."
     },
     {
       "title": "Audit Logging",
@@ -111,7 +111,7 @@
       "categories": [
         "configuration"
       ],
-      "description": "A recorded log of every action taken in your onCourse system. Also used to power the 'Automation Status' section on the dashboard."
+      "description": "A recorded log of every basic action taken in your onCourse system. Also used to power the 'Automation Status' section on the dashboard."
     },
     {
       "title": "Automation",
@@ -120,7 +120,7 @@
       "categories": [
         "automation"
       ],
-      "description": "Where to access your reports, export templates, message templates, scripts and more."
+      "description": "The main hub for onCourse automations where you access your reports, export templates, message templates, scripts and more."
     },
     {
       "title": "Banking Deposits",
@@ -139,7 +139,7 @@
         "accounting",
         "sales"
       ],
-      "description": "Review and process all outstanding invoices and payment plans. In one batch, charge customer credit cards.",
+      "description": "Review and process outstanding invoices and payment plans. In one batch, charge customer credit cards.",
       "links_extra": [
         {
           "title": "%s owing invoices",
@@ -154,7 +154,7 @@
       "categories": [
         "accreditation"
       ],
-      "description": "Manage the certification of students who have achieved competency in their outcomes, including issuing and revoking certificates. "
+      "description": "Manage the certification of students who have achieved competency in their outcomes, including issuing and revoking certificates."
     },
     {
       "title": "Change my password",
@@ -173,7 +173,7 @@
         "scheduling",
         "education"
       ],
-      "description": "A list of all the classes in your onCourse system."
+      "description": "All the classes that have been created in your onCourse system."
     },
     {
       "title": "Community support",
@@ -191,7 +191,7 @@
       "categories": [
         "marketing"
       ],
-      "description": "A list of your contacts that are set as being a company."
+      "description": "A list of your contacts that are listed as a company."
     },
     {
       "title": "Concession types",
@@ -201,7 +201,7 @@
         "marketing",
         "configuration"
       ],
-      "description": "The concession types available to your customers in onCourse."
+      "description": "Create and manage the concession types available to your customers in onCourse."
     },
     {
       "title": "Contact relation types",
@@ -248,14 +248,15 @@
         "marketing",
         "configuration"
       ],
-      "description": "Custom fields allow you to create data fields in almost any record type in onCourse to store data that onCourse may not already have a field for."
+      "description": "Custom fields allow you to create data fields in almost any record type in onCourse, used to store data that onCourse may not already have a field for."
     },
     {
       "title": "Data collection forms",
       "key": "dataCollectionForms",
       "link": "/preferences/collectionForms",
       "categories": [
-        "sales"
+        "sales",
+        "marketing"
       ],
       "description": "Organise your data collection questions into different forms covering different processes. Create separate forms for Enrolments, Applications, Surveys, Parents, Payers and more."
     },
@@ -264,9 +265,10 @@
       "key": "dataCollectionRules",
       "link": "/preferences/collectionRules",
       "categories": [
-        "sales"
+        "sales",
+        "marketing"
       ],
-      "description": "Set the rules around which data collection forms are used for which student process. Apply different forms for Enrolments, Applications, Waiting Lists and more. "
+      "description": "Set the rules around which data collection forms are used for which student process. Apply different forms for Enrolments, Applications, Waiting Lists, Parents, Payers, and more."
     },
     {
       "title": "Deposit banking",
@@ -285,7 +287,7 @@
         "marketing",
         "accounting"
       ],
-      "description": "Create discounts and apply them to classes to offer savings on enrolment. "
+      "description": "Create discounts and apply them to classes to offer savings on enrolment."
     },
     {
       "title": "Documentation",
@@ -313,7 +315,7 @@
         "education",
         "sales"
       ],
-      "description": "A list of all the enrolments you've taken in your system."
+      "description": "Shows a list of all the enrolments you've taken in your system."
     },
     {
       "title": "Export AVETMISS 8...",
@@ -331,7 +333,7 @@
       "categories": [
         "automation"
       ],
-      "description": "Create export templates allowing you to export your onCourse data into a format readable in other applications. Formats include CSV, XML, JSON, PDF and more."
+      "description": "Create and manage export templates allowing you to export your onCourse data into a format readable in other applications. Available formats include CSV, XML, JSON, PDF and more."
     },
     {
       "title": "Finalise period",
@@ -349,7 +351,7 @@
       "categories": [
         "accreditation"
       ],
-      "description": "Create custom funding contracts for any source of funding that supports the student enrolment, and enable/disable default funding contracts."
+      "description": "Create custom funding contracts for any source of funding that supports the student enrolment, and manage available default funding contracts."
     },
     {
       "title": "Holidays",
@@ -358,7 +360,7 @@
       "categories": [
         "scheduling"
       ],
-      "description": "Set the holiday periods your business will be closed for."
+      "description": "Set the holiday and shutdown periods your business will be closed for."
     },
     {
       "title": "Import templates",
@@ -367,7 +369,7 @@
       "categories": [
         "automation"
       ],
-      "description": "The collection of import templates available in your system."
+      "description": "Use or manage the collection of import templates available in your system."
     },
     {
       "title": "Integrations",
@@ -386,7 +388,7 @@
         "accounting",
         "sales"
       ],
-      "description": "The list of all invoice records in your system."
+      "description": "The list of all the invoices that have been created in your system."
     },
     {
       "title": "Leads",
@@ -396,7 +398,7 @@
         "marketing",
         "sales"
       ],
-      "description": "Create and manage all of your sales leads here."
+      "description": "Create and manage all of your sales leads here. Convert leads directly to an application or a sale."
     },
     {
       "title": "Memberships",
@@ -405,7 +407,7 @@
       "categories": [
         "marketing"
       ],
-      "description": "A list of all the memberships available for purchase from you."
+      "description": "Create and manage all the memberships available for purchase from you."
     },
     {
       "title": "Message templates",
@@ -414,7 +416,7 @@
       "categories": [
         "automation"
       ],
-      "description": "Create and maintain all of the pre-designed message templates that are sent out from your system."
+      "description": "Create and maintain all of the pre-designed message templates that are available to be sent out from your system."
     },
     {
       "title": "Messages",
@@ -425,7 +427,7 @@
         "sales",
         "education"
       ],
-      "description": "A list of every email and SMS message sent from your onCourse system."
+      "description": "A list of every email and SMS message sent to a contact via the onCourse messaging system."
     },
     {
       "title": "onCourse news",
@@ -444,16 +446,16 @@
         "education",
         "accreditation"
       ],
-      "description": "A list of every outcome for every enrolment in your system."
+      "description": "A list of all the outcomes associated with enrolments in your system."
     },
     {
       "title": "Payment types",
       "key": "paymentTypes",
       "link": "/preferences/paymentTypes",
       "categories": [
-        "Accounting"
+        "accounting"
       ],
-      "description": "A list of the different types of payments you accept via onCourse."
+      "description": "A list of the different types of payments you accept from within the onCourse checkout."
     },
     {
       "title": "Payments In",
@@ -473,7 +475,7 @@
         "accounting",
         "sales"
       ],
-      "description": "A list of all the payments and refunds made from onCourse out to customers."
+      "description": "A list of all the attempted payments and refunds made from onCourse out to customers."
     },
     {
       "title": "Report backgrounds",
@@ -482,7 +484,7 @@
       "categories": [
         "automation"
       ],
-      "description": "Your uploaded backgrounds for use in reports generated from your system."
+      "description": "Your uploaded PDF backgrounds, for use in reports generated from your system."
     },
     {
       "title": "PDF reports",
@@ -491,7 +493,7 @@
       "categories": [
         "automation"
       ],
-      "description": "The collection of PDR reports available to you in your system."
+      "description": "The collection of PDF reports available to you in your system."
     },
     {
       "title": "Preferences",
@@ -500,7 +502,7 @@
       "categories": [
         "system"
       ],
-      "description": "Gives you access to the various preferences you can set for your system."
+      "description": "Gives you access to the various global preferences you can set for your system."
     },
     {
       "title": "Prior learnings",
@@ -510,7 +512,7 @@
         "education",
         "accreditation"
       ],
-      "description": "A list of all the prior learning records created for all of your students"
+      "description": "A list of all the prior learning records created for all of your students."
     },
     {
       "title": "Products",
@@ -520,7 +522,7 @@
         "sales",
         "marketing"
       ],
-      "description": "Manage the product items you sell"
+      "description": "Create and manage the product items you sell."
     },
     {
       "title": "Qualifications",
@@ -529,7 +531,7 @@
       "categories": [
         "accreditation"
       ],
-      "description": "A list of all the current Qualifications available in your system"
+      "description": "A list of all the current Qualifications available to set to a course in your system. Create your own if required."
     },
     {
       "title": "Quotes",
@@ -539,7 +541,7 @@
         "sales",
         "accounting"
       ],
-      "description": "Shows a list of all the quotes saved in your system"
+      "description": "Shows a list of all the quotes saved in your system. Convert them to an invoice to confirm a sale."
     },
     {
       "title": "Release notes",
@@ -548,7 +550,7 @@
       "categories": [
         "help"
       ],
-      "description": "A history of the onCourse release notes, detailing changes, fixes and new features every time there's a new update"
+      "description": "A history of the onCourse release notes, detailing changes, fixes and new features every time there's a new update."
     },
     {
       "title": "Rooms",
@@ -557,16 +559,16 @@
       "categories": [
         "scheduling"
       ],
-      "description": "A list of all the room records within every site created in your system"
+      "description": "A list of the rooms within every site created in your system."
     },
     {
       "title": "Sales",
       "key": "sales",
       "link": "/sale",
       "categories": [
-        "Sales"
+        "sales"
       ],
-      "description": "A list of all the product, voucher and membership sales in your system"
+      "description": "A list of all the product, voucher and membership sales in your system."
     },
     {
       "title": "Scripts",
@@ -575,7 +577,7 @@
       "categories": [
         "automation"
       ],
-      "description": "The onCourse script library. Add scripts to your system, then tun them on or off for use"
+      "description": "The onCourse script library. Add scripts to your system, then turn them on or off as required."
     },
     {
       "title": "Security",
@@ -584,7 +586,7 @@
       "categories": [
         "configuration"
       ],
-      "description": "Create and manage your basic security settings, your onCourse users, user roles and create and manage API tokens"
+      "description": "Create and manage your basic security settings, your onCourse users, user roles and create and manage API tokens."
     },
     {
       "title": "Sellable items relation types",
@@ -593,7 +595,7 @@
       "categories": [
         "marketing"
       ],
-      "description": "Create and manage the types of relationships between course and product groupings"
+      "description": "Create and manage the types of relationships between course and product groupings."
     },
     {
       "title": "Send support request...",
@@ -602,7 +604,7 @@
       "categories": [
         "help"
       ],
-      "description": "Send a request through to onCourse Support"
+      "description": "Send a request through to onCourse Support using our support portal."
     },
     {
       "title": "Sites",
@@ -611,7 +613,7 @@
       "categories": [
         "scheduling"
       ],
-      "description": "A collection of all the site records created in your system"
+      "description": "A collection of all the site records created in your system."
     },
     {
       "title": "Student Feedback",
@@ -620,7 +622,7 @@
       "categories": [
         "marketing"
       ],
-      "description": "Any feedback left by the student completing a survey via the SkillsonCourse Portal will display in a list here"
+      "description": "Feedback left by the students completing a survey via the SkillsonCourse Portal will display in a list here."
     },
     {
       "title": "Students",
@@ -629,7 +631,7 @@
       "categories": [
         "marketing"
       ],
-      "description": "A list of your student contacts. Specifically, students are contacts who have at least one enrolment in your system"
+      "description": "A list of your student contacts. Specifically, students are contacts who have at least one enrolment in your system."
     },
     {
       "title": "Tags",
@@ -638,7 +640,7 @@
       "categories": [
         "configuration"
       ],
-      "description": "Shows all the tag groups and tags you've added to your system"
+      "description": "Shows all the tag groups and tags you've added to your system."
     },
     {
       "title": "Tax types",
@@ -647,7 +649,7 @@
       "categories": [
         "accounting"
       ],
-      "description": "Create and manage the tax types available for use in your system"
+      "description": "Create and manage the tax types available for use in your system."
     },
     {
       "title": "Timetable",
@@ -656,7 +658,7 @@
       "categories": [
         "scheduling"
       ],
-      "description": "A read-only timetable view. View times for students, classes, tutors, sites, rooms and more"
+      "description": "A customisable, read-only timetable view. View times for students, classes, tutors, sites, rooms and more."
     },
     {
       "title": "Traineeship Courses",
@@ -666,7 +668,7 @@
         "education",
         "accreditation"
       ],
-      "description": "Shows all the courses set as a Traineeship in you system"
+      "description": "Shows all the courses set as a Traineeship in you system."
     },
     {
       "title": "Traineeships",
@@ -676,7 +678,7 @@
         "education",
         "accreditation"
       ],
-      "description": "Shows all the Trainesship classes in your system"
+      "description": "Shows all the Trainesship classes in your system."
     },
     {
       "title": "Transactions",
@@ -685,7 +687,7 @@
       "categories": [
         "accounting"
       ],
-      "description": "A record of every transaction between onCourse accounts in your system"
+      "description": "A record of every transaction between onCourse accounts in your system."
     },
     {
       "title": "Tutor pay",
@@ -695,7 +697,7 @@
         "accounting",
         "payroll"
       ],
-      "description": "Shows every tutor payslip created in your system"
+      "description": "A list of every tutor payslip created in your system. Review and approve payroll for your tutors."
     },
     {
       "title": "Tutor pay rates",
@@ -705,7 +707,7 @@
         "accounting",
         "payroll"
       ],
-      "description": "Manage the different tutor roles and pay rates in your system"
+      "description": "Manage the different tutor roles and their associated pay rates in your system."
     },
     {
       "title": "Tutors",
@@ -715,7 +717,7 @@
         "sales",
         "marketing"
       ],
-      "description": "A collection of your contacts who are designated as Tutors"
+      "description": "See all the contacts in your system who are listed as Tutors."
     },
     {
       "title": "Units Of Competency",
@@ -724,7 +726,7 @@
       "categories": [
         "accreditation"
       ],
-      "description": "All of the available units of competency that can be set as course modules"
+      "description": "All of the available units of competency that can be set as course modules. Create new modules if required."
     },
     {
       "title": "Voucher Types",
@@ -734,7 +736,7 @@
         "sales",
         "marketing"
       ],
-      "description": "All the types of vouchers available to sell from your system"
+      "description": "All the types of vouchers available to sell from your system."
     },
     {
       "title": "Waiting lists",
@@ -745,7 +747,7 @@
         "sales",
         "marketing"
       ],
-      "description": "Any time a student has added themselves to a course waiting list will appear here"
+      "description": "A collection of the waiting list records created by potential students either from your websute, or added manually by a user into onCourse."
     },
     {
       "title": "Website setup",
@@ -754,7 +756,7 @@
       "categories": [
         "configuration"
       ],
-      "description": "Manage your onCourse billing options and your onCourse websites, including Google analytica and Google tag manager"
+      "description": "Manage your onCourse billing options and your onCourse websites, including Google analytica and Google tag manager."
     }
   ]
 }
