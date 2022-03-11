@@ -14,9 +14,12 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import ArrowUpwardRoundedIcon from '@mui/icons-material/ArrowUpwardRounded';
 import { alpha } from "@mui/material/styles";
+import { Grid } from "@mui/material";
 import { makeAppStyles } from "../../../../../common/styles/makeStyles";
-import IconDots from "../../../../../../images/icon-dots.png";
 import { openInternalLink } from "../../../../../common/utils/links";
+import { useAppDispatch } from "../../../../../common/utils/hooks";
+import { setUserPreference } from "../../../../../common/actions";
+import { SYSTEM_USER_TUTORIAL_SKIP } from "../../../../../constants/Config";
 
 const useStyles = makeAppStyles(theme => ({
   root: {
@@ -39,21 +42,20 @@ const useStyles = makeAppStyles(theme => ({
     color: theme.palette.text.primary,
   },
   content: {
+    display: "flex",
     margin: theme.spacing(4, 0),
   },
-  contentText: {
-    color: theme.palette.text.grey,
+  description: {
+    [theme.breakpoints.up('lg')]: {
+      paddingLeft: theme.spacing(2),
+    },
   },
   skipButton: {
     color: theme.palette.text.primary,
   },
   letsDoItIcon: {
     transform: "rotate(45deg)",
-  },
-  dotsBackground: {
-    background: `transparent url(${IconDots}) 0 0`,
-    backgroundSize: 25,
-  },
+  }
 }));
 
 interface Props {
@@ -61,46 +63,65 @@ interface Props {
 }
 
 const TutorialPanel = ({ tutorial }: Props) => {
+  const dispatch = useAppDispatch();
+  
   const classes = useStyles();
+  
+  const onSkip = () => dispatch(setUserPreference({
+    key: SYSTEM_USER_TUTORIAL_SKIP,
+    value: new Date().toString()
+  }));
 
   return tutorial ? (
     <div className={classes.root}>
       <div className="d-flex align-items-center">
         <Typography variant="h3" component="div" className={clsx("text-truncate text-nowrap pr-2", classes.title)}>
-          Create your first course
+          {tutorial.title}
         </Typography>
         <div className="flex-fill" />
         <Typography
           variant="body2"
           component="div"
           className={clsx("cursor-pointer fontWeight600", classes.manualLink)}
-          onClick={() => openInternalLink(tutorial.documentation)}
+          onClick={() => openInternalLink(`https://www.ish.com.au/onCourse/doc${tutorial.documentation}`)}
         >
           Read documentation
         </Typography>
       </div>
       <div className={clsx("d-flex", classes.content)}>
-        {tutorial.video && (
-          <iframe
-            allow="fullscreen"
-            width="220px"
-            height="150"
-            src={`https://www.youtube.com/embed/${tutorial.video}`}
-            title="video"
-            className="mw-100 mt-2 mb-2 mr-4"
-          />
-        )}
-        <Typography variant="body2" component="div" className={classes.contentText}>
-          <div dangerouslySetInnerHTML={{ __html: tutorial.content }} />
-        </Typography>
+        <Grid container>
+          {tutorial.video && (
+            <Grid item xs={12} lg={4}>
+              <iframe
+                width="100%"
+                allow="fullscreen"
+                src={`https://www.youtube.com/embed/${tutorial.video}`}
+                title="video"
+                className="mw-100 mt-2 mb-2 mr-4"
+              />
+            </Grid>
+          )}
+          <Grid item xs={12} lg={true} className={classes.description}>
+            <Typography variant="body2" color="textSecondary" dangerouslySetInnerHTML={{ __html: tutorial.content }} />
+          </Grid>
+        </Grid>
       </div>
       <Divider className="mt-3 mb-3" />
       <Stack spacing={2} direction="row">
         {tutorial.canSkip && (
-          <Button variant="text" className={classes.skipButton}>Skip</Button>
+          <Button variant="text" className={classes.skipButton} onClick={onSkip}>Skip</Button>
         )}
         <div className="flex-fill" />
-        <Button onClick={() => openInternalLink(tutorial.link)} variant="text" endIcon={<ArrowUpwardRoundedIcon className={classes.letsDoItIcon} />} color="primary">
+        <Button 
+          onClick={() => openInternalLink(tutorial.link)}
+          color="primary"
+          variant="text" 
+          endIcon={(
+            <ArrowUpwardRoundedIcon 
+              className={classes.letsDoItIcon}
+            />
+          )}
+        >
           Let’s do it
         </Button>
       </Stack>

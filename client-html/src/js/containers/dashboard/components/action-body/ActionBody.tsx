@@ -38,6 +38,7 @@ interface Props {
   preferencesCategoryWidth?: string;
   preferencesNewsLatestReadDate?: string;
   drawerOpened?: boolean;
+  skipSystemUser?: boolean;
 }
 
 const dashboardFeedWidth = 370;
@@ -56,7 +57,7 @@ class ActionBody extends React.PureComponent<Props, any> {
       statisticsColumnWidth: props.preferencesCategoryWidth
         ? Number(props.preferencesCategoryWidth)
         : window.screen.width - dashboardFeedWidth,
-      tutorial: null
+      tutorialKey: null
     };
   }
   
@@ -126,35 +127,35 @@ class ActionBody extends React.PureComponent<Props, any> {
         case "course": {
           const courseResponse = await EntityService.getPlainRecords("Course", "id", "id not is null", 1);
           if (!courseResponse.rows.length) {
-            return tutorials[tutorialKey];
+            return tutorialKey;
           }
           break;
         }
         case "site": {
-          const siteResponse = await EntityService.getPlainRecords("Site", "id", "id not is null", 1);
-          if (!siteResponse.rows.length) {
-            return tutorials[tutorialKey];
+          const siteResponse = await EntityService.getPlainRecords("Site", "id", "id not is null", 2);
+          if (siteResponse.rows.length === 1) {
+            return tutorialKey;
           }
           break;
         }
         case "tutor": {
           const tutorResponse = await EntityService.getPlainRecords("Contact", "id", "id not is null and isTutor is true", 1);
           if (!tutorResponse.rows.length) {
-            return tutorials[tutorialKey];
+            return tutorialKey;
           }
           break;
         }
         case "courseclass": {
           const courseClassResponse = await EntityService.getPlainRecords("CourseClass", "id", "id not is null", 1);
           if (!courseClassResponse.rows.length) {
-            return tutorials[tutorialKey];
+            return tutorialKey;
           }
           break;
         }
         case "systemuser": {
-          const systemUserResponse = await EntityService.getPlainRecords("SystemUser", "id", "id not is null", 1);
+          const systemUserResponse = await EntityService.getPlainRecords("SystemUser", "id,login", "id not is null", 1);
           if (!systemUserResponse.rows.length) {
-            return tutorials[tutorialKey];
+            return tutorialKey;
           }
           break;
         }
@@ -164,23 +165,22 @@ class ActionBody extends React.PureComponent<Props, any> {
   }
 
   checkTutorials = async () => {
-    const { tutorial } = this.state;
-    if (!tutorial) {
-      const tutorialDraft = await this.getTutorial();
-      
-      if (!tutorialDraft) {
-        clearInterval(this.interval);
-      }
+    const tutorialKey = await this.getTutorial();
 
-      this.setState({
-        tutorial: tutorialDraft
-      });
+    if (!tutorialKey) {
+      clearInterval(this.interval);
     }
+
+    this.setState({
+      tutorialKey
+    });
   }
 
   render() {
-    const { classes } = this.props;
-    const { statisticsColumnWidth, tutorial } = this.state;
+    const { classes, skipSystemUser } = this.props;
+    const { statisticsColumnWidth, tutorialKey } = this.state;
+
+    const showTutorial = !(skipSystemUser && tutorialKey === "systemuser");
 
     return (
       <Grid container wrap="nowrap" className={classes.root}>
@@ -193,10 +193,12 @@ class ActionBody extends React.PureComponent<Props, any> {
           ignoreScreenWidth
         >
           <Grid item xs>
-            <TutorialPanel
-              tutorial={tutorial}
-            />
-            <Statistics setUpdateChart={this.setUpdateChart} hideChart={Boolean(tutorial)} />
+            {showTutorial && (
+              <TutorialPanel
+                tutorial={tutorials[tutorialKey]}
+              />
+            )}
+            <Statistics setUpdateChart={this.setUpdateChart} hideChart={showTutorial} />
           </Grid>
         </ResizableWrapper>
         <Grid

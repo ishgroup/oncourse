@@ -258,7 +258,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
                 <FormField type="text" name="postcode" label="Postcode" />
               </Grid>
               <Grid item xs={12}>
-                {countries && (
+                {Boolean(countries?.length) && (
                   <FormField
                     type="searchSelect"
                     selectValueMark="id"

@@ -70,6 +70,8 @@ export const DASHBOARD_THEME_KEY: PreferenceEnum = "html.global.theme";
 
 export const SYSTEM_USER_ADMINISTRATION_CENTER: PreferenceEnum = "systemUser.defaultAdministrationCentre.name";
 
+export const SYSTEM_USER_TUTORIAL_SKIP: PreferenceEnum = "tutorial.skip.systemuser";
+
 export const GOOGLE_ANALYTICS_CLIENT_ID_KEY: PreferenceEnum = "google.analytics.cid";
 
 export const GOOGLE_ANALYTICS_COMPAIN_ID_KEY: PreferenceEnum = "google.analytics.ci";
