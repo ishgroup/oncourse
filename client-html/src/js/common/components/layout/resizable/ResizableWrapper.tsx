@@ -4,7 +4,6 @@ import { withStyles, createStyles } from "@mui/styles";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import clsx from "clsx";
 import { ListSideBarDefaultWidth } from "../../list-view/ListView";
-import IconDots from "../../../../../images/icon-dots.png";
 
 const styles = theme =>
   createStyles({
@@ -34,11 +33,7 @@ const styles = theme =>
         background: `${theme.palette.secondary.main}`,
         overflow: "visible"
       }
-    },
-    dotsBackground: {
-      background: `transparent url(${IconDots}) 0 0`,
-      backgroundSize: 25,
-    },
+    }
   });
 
 interface Props {
@@ -51,7 +46,6 @@ interface Props {
   className?: any;
   ignoreScreenWidth?: boolean;
   children?: any;
-  showDotsBackground?: boolean;
 }
 
 const ResizableWrapper = (props: Props) => {
@@ -64,8 +58,7 @@ const ResizableWrapper = (props: Props) => {
     maxWidth,
     children,
     className,
-    ignoreScreenWidth,
-    showDotsBackground
+    ignoreScreenWidth
   } = props;
 
     return useMediaQuery('(min-width:992px)') || ignoreScreenWidth ? (
@@ -80,7 +73,7 @@ const ResizableWrapper = (props: Props) => {
         handleClasses={{ right: classes.resizeLine }}
         handleComponent={{ right: <div className={props.classes.line} /> }}
       >
-        <div className={clsx(classes.sideBarWrapper, { [classes.dotsBackground]: showDotsBackground })}>{children}</div>
+        <div className={classes.sideBarWrapper}>{children}</div>
       </Resizable>
     ) : (
       children

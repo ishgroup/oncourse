@@ -8,19 +8,28 @@
 
 import React from "react";
 import clsx from "clsx";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import ArrowUpwardRoundedIcon from '@mui/icons-material/ArrowUpwardRounded';
-import { AppTheme } from "../../../../../model/common/Theme";
+import { alpha } from "@mui/material/styles";
+import { makeAppStyles } from "../../../../../common/styles/makeStyles";
+import IconDots from "../../../../../../images/icon-dots.png";
+import { openInternalLink } from "../../../../../common/utils/links";
 
-const styles = (theme: AppTheme) => createStyles({
+const useStyles = makeAppStyles(theme => ({
   root: {
-    padding: theme.spacing(6, 8),
+    margin: theme.spacing(3),
+    padding: theme.spacing(4),
+    background: theme.palette.background.paper,
+    position: "relative",
+    borderRadius: theme.spacing(1),
+    border: "2px solid",
+    borderColor: alpha(theme.palette.text.disabled, 0.1),
+    "&:not(:last-child)": {
+      marginBottom: theme.spacing(2),
+    },
   },
   title: {
     fontSize: theme.spacing(4.875),
@@ -41,64 +50,62 @@ const styles = (theme: AppTheme) => createStyles({
   letsDoItIcon: {
     transform: "rotate(45deg)",
   },
-});
+  dotsBackground: {
+    background: `transparent url(${IconDots}) 0 0`,
+    backgroundSize: 25,
+  },
+}));
 
 interface Props {
-  classes?: any;
-  tutorial: any;
+  tutorial?: any;
 }
 
-const TutorialPanel: React.FC<Props> = props => {
-  const {
-    classes,
-    tutorial,
-  } = props;
+const TutorialPanel = ({ tutorial }: Props) => {
+  const classes = useStyles();
 
-  return (
+  return tutorial ? (
     <div className={classes.root}>
-      <Box sx={{ width: '100%', bgcolor: 'background.paper' }} className="p-4">
-        <div className="d-flex align-items-center">
-          <Typography variant="h3" component="div" className={clsx("text-truncate text-nowrap pr-2", classes.title)}>
-            Create your first course
-          </Typography>
-          <div className="flex-fill" />
-          <Typography
-            variant="body2"
-            component="div"
-            className={clsx("cursor-pointer fontWeight600", classes.manualLink)}
-            onClick={() => {}}
-          >
-            Read documentation
-          </Typography>
-        </div>
-        <div className={clsx("d-flex", classes.content)}>
-          {tutorial.video && (
-            <iframe
-              allow="fullscreen"
-              width="220px"
-              height="150"
-              src={`https://www.youtube.com/embed/${tutorial.video}`}
-              title="video"
-              className="mw-100 mt-2 mb-2 mr-4"
-            />
-          )}
-          <Typography variant="body2" component="div" className={classes.contentText}>
-            <Box component="div" display="block" dangerouslySetInnerHTML={{ __html: tutorial.content }} />
-          </Typography>
-        </div>
-        <Divider className="mt-3 mb-3" />
-        <Stack spacing={2} direction="row">
-          {tutorial.canSkip && (
-            <Button variant="text" className={classes.skipButton}>Skip</Button>
-          )}
-          <div className="flex-fill" />
-          <Button variant="text" endIcon={<ArrowUpwardRoundedIcon className={classes.letsDoItIcon} />} color="primary">
-            Let’s do it
-          </Button>
-        </Stack>
-      </Box>
+      <div className="d-flex align-items-center">
+        <Typography variant="h3" component="div" className={clsx("text-truncate text-nowrap pr-2", classes.title)}>
+          Create your first course
+        </Typography>
+        <div className="flex-fill" />
+        <Typography
+          variant="body2"
+          component="div"
+          className={clsx("cursor-pointer fontWeight600", classes.manualLink)}
+          onClick={() => openInternalLink(tutorial.documentation)}
+        >
+          Read documentation
+        </Typography>
+      </div>
+      <div className={clsx("d-flex", classes.content)}>
+        {tutorial.video && (
+          <iframe
+            allow="fullscreen"
+            width="220px"
+            height="150"
+            src={`https://www.youtube.com/embed/${tutorial.video}`}
+            title="video"
+            className="mw-100 mt-2 mb-2 mr-4"
+          />
+        )}
+        <Typography variant="body2" component="div" className={classes.contentText}>
+          <div dangerouslySetInnerHTML={{ __html: tutorial.content }} />
+        </Typography>
+      </div>
+      <Divider className="mt-3 mb-3" />
+      <Stack spacing={2} direction="row">
+        {tutorial.canSkip && (
+          <Button variant="text" className={classes.skipButton}>Skip</Button>
+        )}
+        <div className="flex-fill" />
+        <Button onClick={() => openInternalLink(tutorial.link)} variant="text" endIcon={<ArrowUpwardRoundedIcon className={classes.letsDoItIcon} />} color="primary">
+          Let’s do it
+        </Button>
+      </Stack>
     </div>
-  );
+  ) : null;
 };
 
-export default withStyles(styles)(TutorialPanel);
+export default TutorialPanel;

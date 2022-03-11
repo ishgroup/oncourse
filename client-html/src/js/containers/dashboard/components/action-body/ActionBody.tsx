@@ -15,6 +15,8 @@ import { DASHBOARD_CATEGORY_WIDTH_KEY } from "../../../../constants/Config";
 import Statistics from "./components/Statistics";
 import NewsRender from "../../../../common/components/news/NewsRender";
 import TutorialPanel from "./components/TutorialPanel";
+import tutorials from "./tutorials.json";
+import EntityService from "../../../../common/services/EntityService";
 
 const styles = (theme: AppTheme) => createStyles({
   root: {
@@ -44,6 +46,8 @@ class ActionBody extends React.PureComponent<Props, any> {
   private updateChart;
 
   private drawerUpdated = true;
+  
+  private interval = null;
 
   constructor(props) {
     super(props);
@@ -51,8 +55,18 @@ class ActionBody extends React.PureComponent<Props, any> {
     this.state = {
       statisticsColumnWidth: props.preferencesCategoryWidth
         ? Number(props.preferencesCategoryWidth)
-        : window.screen.width - dashboardFeedWidth
+        : window.screen.width - dashboardFeedWidth,
+      tutorial: null
     };
+  }
+  
+  componentDidMount() {
+    this.interval = setInterval(this.checkTutorials, 10000);
+    this.checkTutorials();
+  }
+  
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   UNSAFE_componentWillReceiveProps(nextProps: Readonly<Props>): void {
@@ -106,9 +120,67 @@ class ActionBody extends React.PureComponent<Props, any> {
     }
   };
 
+  getTutorial = async () => {
+    for (const tutorialKey in tutorials) {
+      switch (tutorialKey) {
+        case "course": {
+          const courseResponse = await EntityService.getPlainRecords("Course", "id", "id not is null", 1);
+          if (!courseResponse.rows.length) {
+            return tutorials[tutorialKey];
+          }
+          break;
+        }
+        case "site": {
+          const siteResponse = await EntityService.getPlainRecords("Site", "id", "id not is null", 1);
+          if (!siteResponse.rows.length) {
+            return tutorials[tutorialKey];
+          }
+          break;
+        }
+        case "tutor": {
+          const tutorResponse = await EntityService.getPlainRecords("Contact", "id", "id not is null and isTutor is true", 1);
+          if (!tutorResponse.rows.length) {
+            return tutorials[tutorialKey];
+          }
+          break;
+        }
+        case "courseclass": {
+          const courseClassResponse = await EntityService.getPlainRecords("CourseClass", "id", "id not is null", 1);
+          if (!courseClassResponse.rows.length) {
+            return tutorials[tutorialKey];
+          }
+          break;
+        }
+        case "systemuser": {
+          const systemUserResponse = await EntityService.getPlainRecords("SystemUser", "id", "id not is null", 1);
+          if (!systemUserResponse.rows.length) {
+            return tutorials[tutorialKey];
+          }
+          break;
+        }
+      }
+    }
+    return null;
+  }
+
+  checkTutorials = async () => {
+    const { tutorial } = this.state;
+    if (!tutorial) {
+      const tutorialDraft = await this.getTutorial();
+      
+      if (!tutorialDraft) {
+        clearInterval(this.interval);
+      }
+
+      this.setState({
+        tutorial: tutorialDraft
+      });
+    }
+  }
+
   render() {
     const { classes } = this.props;
-    const { statisticsColumnWidth } = this.state;
+    const { statisticsColumnWidth, tutorial } = this.state;
 
     return (
       <Grid container wrap="nowrap" className={classes.root}>
@@ -119,21 +191,12 @@ class ActionBody extends React.PureComponent<Props, any> {
           onResize={this.handleStatisticsResize}
           sidebarWidth={statisticsColumnWidth}
           ignoreScreenWidth
-          // showDotsBackground
         >
           <Grid item xs>
-            {/*<TutorialPanel
-              tutorial={{
-                "entity": "Course",
-                "title": "Getting starting with onCourse",
-                "documentation": "/manual/#courses",
-                "link": "/course/new",
-                "canSkip": false,
-                "video": "q8m9kIYW1Cw",
-                "content": "<p>Let's get started by creating our first course. For now, your new course will need a name and a code as well as a data collection rule detailing the questions asked of people enrolling. Choose one of the built-in rules for now.</p><p>Under the marketing section, go ahead and add a web description for your course. You don't need to mention pricing, schedules or trainers... we'll do all that later. Just put in a description to get people excited about your offering.</p><p>Courses are the product you offer, not the specific event that students or customers are purchasing. We'll set that up later.</p><p>When you are done with your course, hit save at the top right.</p>",
-              }}
-            />*/}
-            <Statistics setUpdateChart={this.setUpdateChart} />
+            <TutorialPanel
+              tutorial={tutorial}
+            />
+            <Statistics setUpdateChart={this.setUpdateChart} hideChart={Boolean(tutorial)} />
           </Grid>
         </ResizableWrapper>
         <Grid
