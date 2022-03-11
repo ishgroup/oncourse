@@ -455,7 +455,7 @@ class CanvasIntegration implements PluginTrait {
         tutors.each { tutor ->
             Map userResp = getUserByEmail(tutor.email) as Map
             List teachers = responseToJson(userResp) as List
-            teachers = teachers.findAll {tutor.fullName.equals(it["name"])} as List
+            teachers = teachers.findAll {tutor.email.equals(it["login_id"])} as List
             if (teachers.size() > 1) {
                 logger.warn("More than one teacher found with this email: ${tutor.email} and name: ${tutor.name}. Enrol teachers to the course is impossible")
                 return
