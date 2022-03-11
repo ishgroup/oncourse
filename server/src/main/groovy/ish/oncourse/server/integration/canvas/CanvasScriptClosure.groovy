@@ -111,6 +111,7 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
         if (enrolment.student.contact.email) {
             Map userResp = integration.getUserByEmail(enrolment.student.contact.email) as Map
             List userJson = integration.responseToJson(userResp) as List
+            userJson = userJson.findAll {enrolment.student.contact.email.equals(it["login_id"])}
             String password = null
             if(create_password)
                 password = RandomStringUtils.random( PASSWORD_LENGTH, 0, POSSIBLE_PASSWORD_CHARS.length-1, false, false, POSSIBLE_PASSWORD_CHARS, new SecureRandom())
@@ -122,7 +123,7 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
                     course = integration.createNewCourseFromBlueprint(course_blueprint, course_code, enrolment.courseClass.course.name, enrolment.courseClass.course.id.toString()) as List
                 }
                 else {
-                    throw new IllegalArgumentException("Illegal state: There are no courses with specified code ${course_code} and blueprint course is not presented from script.")
+                    throw new IllegalArgumentException("Illegal state: There are no courses with specified code ${course_code} and blueprint course is not presented in script.")
                 }
             }
             if (course.size() > 1) {
