@@ -60,9 +60,10 @@ const useStyles = makeAppStyles(theme => ({
 
 interface Props {
   tutorial?: any;
+  customLink?: string;
 }
 
-const TutorialPanel = ({ tutorial }: Props) => {
+const TutorialPanel = ({ tutorial, customLink }: Props) => {
   const dispatch = useAppDispatch();
   
   const classes = useStyles();
@@ -113,7 +114,7 @@ const TutorialPanel = ({ tutorial }: Props) => {
         )}
         <div className="flex-fill" />
         <Button 
-          onClick={() => openInternalLink(tutorial.link)}
+          onClick={() => openInternalLink(customLink || tutorial.link)}
           color="primary"
           variant="text" 
           endIcon={(

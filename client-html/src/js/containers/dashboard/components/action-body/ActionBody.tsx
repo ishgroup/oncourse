@@ -57,7 +57,8 @@ class ActionBody extends React.PureComponent<Props, any> {
       statisticsColumnWidth: props.preferencesCategoryWidth
         ? Number(props.preferencesCategoryWidth)
         : window.screen.width - dashboardFeedWidth,
-      tutorialKey: null
+      tutorialKey: null,
+      customLink: null
     };
   }
   
@@ -132,8 +133,14 @@ class ActionBody extends React.PureComponent<Props, any> {
           break;
         }
         case "site": {
-          const siteResponse = await EntityService.getPlainRecords("Site", "id", "id not is null", 2);
-          if (siteResponse.rows.length === 1) {
+          const siteResponse = await EntityService.getPlainRecords("Site", "id,name", "id not is null", 2);
+          if (!siteResponse.rows.length) {
+            return tutorialKey;
+          }
+          if (siteResponse.rows.length === 1 && siteResponse.rows[0].values[1] === "Default site") {
+            this.setState({
+              customLink: `/site/${siteResponse.rows[0].values[0]}`
+            });
             return tutorialKey;
           }
           break;
@@ -153,8 +160,8 @@ class ActionBody extends React.PureComponent<Props, any> {
           break;
         }
         case "systemuser": {
-          const systemUserResponse = await EntityService.getPlainRecords("SystemUser", "id,login", "id not is null", 1);
-          if (!systemUserResponse.rows.length) {
+          const systemUserResponse = await EntityService.getPlainRecords("SystemUser", "id", "id not is null", 2);
+          if (systemUserResponse.rows.length === 1) {
             return tutorialKey;
           }
           break;
@@ -171,14 +178,15 @@ class ActionBody extends React.PureComponent<Props, any> {
       clearInterval(this.interval);
     }
 
-    this.setState({
-      tutorialKey
-    });
+    this.setState(prev => ({
+      tutorialKey,
+      customLink: tutorialKey === "site" ? prev.customLink : null
+    }));
   }
 
   render() {
     const { classes, skipSystemUser } = this.props;
-    const { statisticsColumnWidth, tutorialKey } = this.state;
+    const { statisticsColumnWidth, tutorialKey, customLink } = this.state;
 
     const showTutorial = !(skipSystemUser && tutorialKey === "systemuser");
 
@@ -196,6 +204,7 @@ class ActionBody extends React.PureComponent<Props, any> {
             {showTutorial && (
               <TutorialPanel
                 tutorial={tutorials[tutorialKey]}
+                customLink={customLink}
               />
             )}
             <Statistics setUpdateChart={this.setUpdateChart} hideChart={showTutorial} />
