@@ -230,8 +230,10 @@ class TagFunctions {
             return new ValidationErrorDTO(tag.id?.toString(), 'name', 'Name should be unique.')
         }
 
-        if (validateTagName(tag)) {
-            return new ValidationErrorDTO(null, 'name', 'Filter name can only contain letters, numbers, \'-\', \'_\' and spaces.')
+        Set<String> notValidNames = new HashSet<>()
+        validateNamesOfNewTag(tag , notValidNames)
+        if (notValidNames.size() > 0) {
+            return new ValidationErrorDTO(null, 'name', "\'${notValidNames[0]}\' has forbidden symbols. The tag name can only contain letters, numbers, \'-\', \'_\' and spaces.")
         }
 
         if (validateTagNameUniqueness(tag)) {
@@ -291,8 +293,14 @@ class TagFunctions {
         tag.childTags.collect { validateTagNameUniqueness(it) }.contains(true) || tag.childTags.size() != tag.childTags*.name.unique().size()
     }
 
-    static boolean validateTagName(TagDTO tag) {
-        tag.childTags.collect { validateTagName(it) }.contains(true) || !isNameValid(tag.name)
+    static boolean validateNamesOfNewTag(TagDTO tag, Set notValidNames) {
+        tag.childTags.each { validateNamesOfNewTag(it, notValidNames) }
+        if ((!isNameValid(tag.name) && tag.id == null)){
+            notValidNames.add(tag.name)
+            return true
+        } else {
+            return false
+        }
     }
 
     static boolean validateUrlPathUniqueness(TagDTO tag) {
