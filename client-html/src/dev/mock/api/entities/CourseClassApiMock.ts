@@ -9,6 +9,8 @@ export function CourseClassApiMock(mock) {
     return promiseResolve(config, this.db.getCourseClass(id));
   });
 
+  this.api.onDelete(new RegExp("/v1/list/entity/courseClass/\\d+")).reply(config => promiseResolve(config, {}));
+
   this.api.onPost("/v1/list/entity/courseClass").reply(config => promiseResolve(config, this.db.getCourseClassesTotalRows()));
 
   this.api.onPost("/v1/list/entity/courseClass/cancel").reply(config => promiseResolve(config, {}));
