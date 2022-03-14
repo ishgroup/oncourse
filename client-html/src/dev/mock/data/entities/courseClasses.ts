@@ -78,6 +78,8 @@ export function mockCourseClasses() {
 
   this.getCourseClasses = () => this.courseClasses;
 
+  this.getCourseClassesTotalRows = (): String => String(this.getCourseClasses().rows.length);
+
   this.getPlainCourseClassList = params => {
     let rows: any[];
     const columns = params.columns;
