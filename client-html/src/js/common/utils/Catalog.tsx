@@ -6,7 +6,9 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import React from "react";
 import { DataRow } from "@api/model";
+import LockOutlined from "@mui/icons-material/LockOutlined";
 import { CatalogItemType } from "../../model/common/Catalog";
 
 export const CATALOG_ITEM_COLUMNS = "name,category,automationStatus,automationTags,shortDescription,keyCode";
@@ -19,5 +21,6 @@ export const mapListToCatalogItem = (r: DataRow): CatalogItemType => ({
   enabled: r.values[2] === "Enabled",
   tags: r.values[3],
   shortDescription: r.values[4],
-  keyCode: r.values[5]
+  keyCode: r.values[5],
+  titleAdornment: r.values[5]?.startsWith("ish.") ? <LockOutlined className="lightGrayIconButton" /> : null
 });
