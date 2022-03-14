@@ -77,7 +77,7 @@ class TagRelation extends _TagRelation implements Queueable {
 	void validateForSave(@Nonnull ValidationResult result) {
 		super.validateForSave(result)
 
-		if (getTag() != null && Boolean.TRUE == getTag().getIsVocabulary()) {
+		if (getTag() != null && getTag().getParentTag() == null) {
 			result.addFailure(ValidationFailure.validationFailure(this, TAG_PROPERTY, "Tag relations cannot be directly related to a tag group."))
 		}
 

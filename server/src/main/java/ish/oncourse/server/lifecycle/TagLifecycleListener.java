@@ -32,7 +32,7 @@ public class TagLifecycleListener {
 
     @PreUpdate(Tag.class)
     public void postAdd(Tag obj) {
-        if (obj.getParentTag() == null && obj.getIsVocabulary()) {
+        if (obj.getParentTag() == null && obj.getParentTag() == null) {
             var context = obj.getContext();
 
             var nameChangeHandler = new TagNameChangeHandler(context);
@@ -52,7 +52,7 @@ public class TagLifecycleListener {
 
     @PreRemove(Tag.class)
     public void preRemove(Tag obj) {
-        if (obj.getParentTag() == null && obj.getIsVocabulary()) {
+        if (obj.getParentTag() == null) {
             var context = obj.getContext();
 
             var relatedFields = ObjectSelect

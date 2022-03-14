@@ -16,6 +16,7 @@ import ish.util.EntityPathUtils;
 import org.apache.cayenne.exp.parser.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Node, that redefines parent node of empty literal and adds comparision with empty string in expression
@@ -36,26 +37,10 @@ public class LazyEmptyNode extends LazyExpressionNode {
             return null;
         }
 
-        SimpleNode pathNode = null;
-
-        int pathNodeIndex = 0;
-        if (!(args.get(0) instanceof ASTObjPath || args.get(0) instanceof LazyCustomFieldNode))
-            pathNodeIndex++;
-
-        if (args.get(pathNodeIndex) instanceof LazyCustomFieldNode) {
-            return parent;
-        }
-
-        if (parent instanceof LazyRelationshipComparisonNode) {
-            if (parent.jjtGetNumChildren() == 0) {
-                parent.jjtAddChild(args.get(pathNodeIndex), 0);
-            }
-            parent = ((LazyRelationshipComparisonNode) parent).resolveSelf(ctx);
-            pathNode = (SimpleNode) parent.jjtGetChild(0);
-        }
+        SimpleNode pathNode = resolvePathNode(parent, args, ctx);
 
         if (pathNode == null)
-            pathNode = args.get(pathNodeIndex);
+            return parent;
 
         AggregateConditionNode root;
         ConditionNode astConditionNode;
@@ -71,7 +56,6 @@ public class LazyEmptyNode extends LazyExpressionNode {
         }
 
         String basePath = resolvePathFor(pathNode);
-
         Entity entity = EntityPathUtils.resolvePath(basePath, ctx);
 
         if (entity != null) {
@@ -85,16 +69,34 @@ public class LazyEmptyNode extends LazyExpressionNode {
         ExpressionUtil.addChild(parent, new ASTScalar(null), args.size() - 1);
         ExpressionUtil.addChild(root, parent, 0);
 
-        ASTObjPath emptyExpPathNode = new ASTObjPath(((ASTObjPath) pathNode).getPath());
-        ExpressionUtil.addChild(astConditionNode, emptyExpPathNode, 0);
-
-        ASTScalar emptyStrNode = new ASTScalar();
-        emptyStrNode.setValue("");
-
-        ExpressionUtil.addChild(astConditionNode, emptyStrNode, 1);
-
+        customizeConditionNode(astConditionNode, pathNode);
         ExpressionUtil.addChild(root, astConditionNode, 1);
         return root;
+    }
+
+    private SimpleNode resolvePathNode(SimpleNode parent, List<SimpleNode> args, CompilationContext ctx){
+        SimpleNode pathNode = null;
+
+        int pathNodeIndex = 0;
+        if (!(args.get(0) instanceof ASTObjPath || args.get(0) instanceof LazyCustomFieldNode))
+            pathNodeIndex++;
+
+        if (args.get(pathNodeIndex) instanceof LazyCustomFieldNode) {
+            return null;
+        }
+
+        if (parent instanceof LazyRelationshipComparisonNode) {
+            if (parent.jjtGetNumChildren() == 0) {
+                parent.jjtAddChild(args.get(pathNodeIndex), 0);
+            }
+            parent = ((LazyRelationshipComparisonNode) parent).resolveSelf(ctx);
+            pathNode = (SimpleNode) parent.jjtGetChild(0);
+        }
+
+        if (pathNode == null)
+            return args.get(pathNodeIndex);
+
+        return pathNode;
     }
 
     private String resolvePathFor(SimpleNode node) {
@@ -102,10 +104,32 @@ public class LazyEmptyNode extends LazyExpressionNode {
             throw new IllegalArgumentException();
         }
 
+        String path;
+
         if (node instanceof BasePathProvider)
-            return ((BasePathProvider) node).resolveBasePath();
+            path = ((BasePathProvider) node).resolveBasePath();
         else
-            return ((ASTPath) node).getPath();
+            path = ((ASTPath) node).getPath();
+
+        if(node instanceof ASTPath){
+            Map<String, String> pathAliases = node.getPathAliases();
+            for(var aliasEntry:pathAliases.entrySet()){
+                path = path.replaceAll(aliasEntry.getKey(), aliasEntry.getValue());
+            }
+        }
+
+        return path;
+    }
+
+    private void customizeConditionNode(ConditionNode baseNode, SimpleNode pathNode){
+        ASTObjPath emptyExpPathNode = new ASTObjPath(((ASTObjPath) pathNode).getPath());
+        emptyExpPathNode.setPathAliases(pathNode.getPathAliases());
+        ExpressionUtil.addChild(baseNode, emptyExpPathNode, 0);
+
+        ASTScalar emptyStrNode = new ASTScalar();
+        emptyStrNode.setValue("");
+
+        ExpressionUtil.addChild(baseNode, emptyStrNode, 1);
     }
 
     @Override

@@ -361,7 +361,6 @@ class CourseClassTest extends TestWithDatabase {
 
         Tag tag = cayenneContext.newObject(Tag.class)
         tag.setName("Tag")
-        tag.setIsVocabulary(true)
         tag.addToTagRequirements(tag.createTagRequirement(CourseClass.class))
         tag.setNodeType(NodeType.TAG)
 

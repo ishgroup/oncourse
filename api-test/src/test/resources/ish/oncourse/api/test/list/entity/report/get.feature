@@ -34,7 +34,7 @@ Feature: Main feature for all GET requests with path 'list/entity/report'
         "id":"#(~~id)",
         "name":"Certificate",
         "entity":"Certificate",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"ish.onCourse.certificate",
         "description":"onCourse includes AQF recommended templates for full Qualification Certificates, Statements of Attainment and transcripts. Certificates can only be generated from units that are recorded as part of onCourse enrolments.This report prints in Portrait format.",
         "body":"#present",
@@ -45,7 +45,10 @@ Feature: Main feature for all GET requests with path 'list/entity/report'
         "variables":[],
         "options":[],
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -80,7 +83,7 @@ Feature: Main feature for all GET requests with path 'list/entity/report'
         "id":"#(~~id)",
         "name":"Classes",
         "entity":"CourseClass",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"ish.onCourse.classListReport",
         "description":"To obtain an overview of all classes status within a given time period, such as a term.This report prints in Landscape format.",
         "body":"#present",
@@ -91,7 +94,10 @@ Feature: Main feature for all GET requests with path 'list/entity/report'
         "variables":[],
         "options":[],
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 

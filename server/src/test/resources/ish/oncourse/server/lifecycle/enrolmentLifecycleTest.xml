@@ -64,7 +64,7 @@
   <WaitingList id="2" studentCount="1" studentId="1" courseId="2" createdOn="2021-12-21 12:00:10.0"
                modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <Node id="1" isVocabulary="1" isWebVisible="1" nodeType="1" name="Subjects" specialType="1" parentId="[null]"
+  <Node id="1" isWebVisible="1" nodeType="1" name="Subjects" specialType="1" parentId="[null]"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <NodeRequirement id="1" entityIdentifier="16" isRequired="0" manyTermsAllowed="1" nodeId="1"

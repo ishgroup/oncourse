@@ -69,9 +69,6 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 		if (getWeight() == null) {
 			setWeight(1)
 		}
-		if (getIsVocabulary() == null) {
-			setIsVocabulary(false)
-		}
 	}
 
 	/**
@@ -282,7 +279,7 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 	@Override
 	void validateForSave(@Nonnull ValidationResult result) {
 		super.validateForSave(result)
-		if (getTagRequirements().size() > 0 && !getIsVocabulary()) {
+		if (getTagRequirements().size() > 0 && getParentTag() != null) {
 			result.addFailure(new ValidationFailure(this, TAG_REQUIREMENTS.getName(), "Only parent tags cann have requirements."));
 		}
 	}
@@ -343,15 +340,6 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 	@Override
 	Date getCreatedOn() {
 		return super.getCreatedOn()
-	}
-
-		/**
-	 * @return
-	 */
-	@Nonnull
-	@Override
-	Boolean getIsVocabulary() {
-		return super.getIsVocabulary()
 	}
 
 	/**

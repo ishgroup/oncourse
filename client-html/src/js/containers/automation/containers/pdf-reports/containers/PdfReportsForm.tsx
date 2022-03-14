@@ -298,7 +298,7 @@ const PdfReportsForm = React.memo<Props>(
                   label="PDF background"
                   name="backgroundId"
                   selectValueMark="id"
-                  selectLabelMark="name"
+                  selectLabelMark="title"
                   items={pdfBackgrounds}
                   onChange={onBackgroundIdChange}
                   className="mb-2"
@@ -339,7 +339,14 @@ const PdfReportsForm = React.memo<Props>(
               </Grid>
               <Grid item xs={5}>
                 <div>
-                  <FormField type="switch" name="enabled" label="Enabled" color="primary" fullWidth />
+                  <FormField
+                    label="Enabled"
+                    type="switch"
+                    name="status"
+                    color="primary"
+                    format={v => v === "Enabled"}
+                    parse={v => v ? "Enabled" : "Installed but Disabled"}
+                  />
                 </div>
                 <div className="mt-3 pt-1 pb-2">
                   <Bindings

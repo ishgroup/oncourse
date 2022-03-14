@@ -18,7 +18,7 @@ import ContactSelectItemRenderer from "../../../../contacts/components/ContactSe
 import { decimalDivide, decimalMul, decimalPlus } from "../../../../../../common/utils/numbers/decimalCalculation";
 import { getCurrentTax } from "../../../../taxes/utils";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
-import { PayRateTypes } from "./BudgetCostModal";
+import { PayRateTypes, validatePayRateTypes } from "./BudgetCostModal";
 import { greaterThanNullValidation } from "../../../../../../common/utils/validation";
 import { normalizeNumberToZero } from "../../../../../../common/utils/numbers/numbersNormalizing";
 
@@ -119,6 +119,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
             label="Type"
             items={PayRateTypes}
             onChange={onRepetitionChange}
+            validate={validatePayRateTypes}
           />
         </Grid>
         {hasCountField && (
