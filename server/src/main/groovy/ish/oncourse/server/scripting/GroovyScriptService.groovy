@@ -20,6 +20,7 @@ import ish.common.types.SystemEventType
 import ish.common.types.TriggerType
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.ISHDataContext
+import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
 import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.cayenne.SystemUser
@@ -28,6 +29,7 @@ import ish.oncourse.server.export.ExportService
 import ish.oncourse.server.imports.ImportService
 import ish.oncourse.server.integration.EventService
 import ish.oncourse.server.integration.GroovyScriptEventListener
+import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.messaging.MessageService
 import ish.oncourse.server.print.PrintService
 import ish.oncourse.server.querying.QueryService
@@ -138,6 +140,9 @@ class GroovyScriptService {
 
     @Inject
     private EventService eventService
+
+    @Inject
+    private LicenseService licenseService
 
     @Inject
     GroovyScriptService(ICayenneService cayenneService, ISchedulerService schedulerService,
@@ -448,6 +453,12 @@ class GroovyScriptService {
         logger.warn("Running script {}. Parameters: {}", script.getName(), parameters.asMap())
         if (script == null) {
             throw new IllegalArgumentException("Script cannot be null.")
+        }
+
+        def isLicenseCustomScripting = licenseService.getLisense(PreferenceEnumDTO.LICENSE_SCRIPTING.toString())
+        if (script.keyCode != null && !script.keyCode.contains("ish.") && !isLicenseCustomScripting) {
+            logger.warn("Script {} can not be run, have no license to run custom scripts.", script.getName())
+            return ScriptResult.failure("Have no license to run custom scripts.")
         }
 
         def engine = engineManager.getEngineByName(GROOVY_SCRIPT_ENGINE)

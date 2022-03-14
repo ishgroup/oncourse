@@ -985,7 +985,6 @@
 		<db-attribute name="contents" type="CLOB" length="32000"/>
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="isVocabulary" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="isWebVisible" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="512"/>
@@ -3123,7 +3122,6 @@
 		<obj-attribute name="contents" type="java.lang.String" db-attribute-path="contents"/>
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
-		<obj-attribute name="isVocabulary" type="java.lang.Boolean" db-attribute-path="isVocabulary"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
@@ -4572,12 +4570,6 @@
 	<db-relationship name="paylines" source="Payslip" target="PayLine" toMany="true">
 		<db-attribute-pair source="id" target="payslipId"/>
 	</db-relationship>
-	<db-relationship name="paymentInLines" source="Payslip" target="PaymentInLine" toMany="true">
-		<db-attribute-pair source="id" target="payslipId"/>
-	</db-relationship>
-	<db-relationship name="paymentOutLines" source="Payslip" target="PaymentOutLine" toMany="true">
-		<db-attribute-pair source="id" target="payslipId"/>
-	</db-relationship>
 	<db-relationship name="taggingRelations" source="Payslip" target="NodeRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
 	</db-relationship>
@@ -5415,8 +5407,6 @@
 	<obj-relationship name="paymentOut" source="PaymentOutLine" target="PaymentOut" deleteRule="Nullify" db-relationship-path="paymentOut"/>
 	<obj-relationship name="contact" source="Payslip" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="paylines" source="Payslip" target="PayLine" deleteRule="Cascade" db-relationship-path="paylines"/>
-	<obj-relationship name="paymentInLines" source="Payslip" target="PaymentInLine" deleteRule="Deny" db-relationship-path="paymentInLines"/>
-	<obj-relationship name="paymentOutLines" source="Payslip" target="PaymentOutLine" deleteRule="Deny" db-relationship-path="paymentOutLines"/>
 	<obj-relationship name="taggingRelations" source="Payslip" target="PayslipTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
 	<obj-relationship name="taggedPayslip" source="PayslipTagRelation" target="Payslip" deleteRule="Nullify" db-relationship-path="taggedPayslip"/>
 	<obj-relationship name="user" source="Preference" target="SystemUser" deleteRule="Nullify" db-relationship-path="user"/>
