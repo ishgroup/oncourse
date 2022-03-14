@@ -211,7 +211,7 @@ export const getClassCostTypes = (
 
 export const processCourseClassApiActions = async (s: State, createdClassId?: number) => {
   const unprocessedAsyncActions = s.actionsQueue.queuedActions;
-  const savedTutorsIds = s.form[LIST_EDIT_VIEW_FORM_NAME].values.tutors.map(t => t.id);
+  const savedTutorsIds = s.form[LIST_EDIT_VIEW_FORM_NAME] ? s.form[LIST_EDIT_VIEW_FORM_NAME].values.tutors.map(t => t.id) : [];
   const sessionUpdateAction = unprocessedAsyncActions.find(s => s.entity === "Session");
 
   const tutorCreateActions = unprocessedAsyncActions.filter(
