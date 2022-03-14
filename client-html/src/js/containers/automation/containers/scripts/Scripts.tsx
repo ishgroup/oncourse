@@ -23,7 +23,7 @@ import { setNextLocation, showConfirm } from "../../../../common/actions";
 
 const ScheduleTypeItems = Object.keys(ScheduleType).map(mapSelectItems);
 
-const Initial: Script = { enabled: false, content: "", keyCode: null };
+const Initial: Script = { status: "Installed but Disabled", content: "", keyCode: null };
 
 const ScriptsBase = React.memo<any>(props => {
   const {
@@ -45,18 +45,16 @@ const ScriptsBase = React.memo<any>(props => {
   const [isNew, setIsNew] = useState(false);
 
   useEffect(() => {
-    const newId = id === "new";
-
     if (!id && scripts.length) {
       history.push(`/automation/script/${scripts[0].id}`);
       return;
     }
 
-    if (newId && !isNew) {
+    if (id === "new" && !isNew) {
       setIsNew(true);
       dispatch(initialize(SCRIPT_EDIT_VIEW_FORM_NAME, Initial));
     }
-    if (!newId && id) {
+    if (id && !Number.isNaN(Number(id))) {
       getScriptItem(id);
       if (isNew) {
         setIsNew(false);

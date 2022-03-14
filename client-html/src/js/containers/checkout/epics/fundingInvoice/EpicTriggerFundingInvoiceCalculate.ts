@@ -192,11 +192,12 @@ export const EpicTriggerFundingInvoiceCalculate: Epic<any, any, State> = (action
         await items.map(i => async () => {
           if (i.checked
             && i.type === "course"
+            && i.class
             && i.class.relatedFundingSourceId !== null
           ) {
             if (added[i.class.relatedFundingSourceId]) {
               const sourceInvoice = fundingInvoicesUpdated
-                .find(r => r.relatedFundingSourceId === i.class.relatedFundingSourceId);
+                .find(r => r.relatedFundingSourceId === i.class?.relatedFundingSourceId);
 
               if (sourceInvoice.item.enrolment.items.some(invIt => invIt.class.id === i.class.id)) {
                 return;

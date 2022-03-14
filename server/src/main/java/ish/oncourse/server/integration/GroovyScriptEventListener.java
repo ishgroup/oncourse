@@ -11,6 +11,7 @@
 package ish.oncourse.server.integration;
 
 import com.google.inject.Inject;
+import ish.common.types.AutomationStatus;
 import ish.common.types.SystemEventType;
 import ish.common.types.TriggerType;
 import ish.oncourse.common.SystemEvent;
@@ -55,7 +56,7 @@ public class GroovyScriptEventListener implements OnCourseEventListener {
 	private List<Script> getScriptsForEventType(SystemEventType eventType) {
 		ObjectContext context = cayenneService.getNewContext();
 
-		return ObjectSelect.query(Script.class).where(Script.ENABLED.eq(true)
+		return ObjectSelect.query(Script.class).where(Script.AUTOMATION_STATUS.eq(AutomationStatus.ENABLED)
 				.andExp(Script.TRIGGER_TYPE.eq(TriggerType.ONCOURSE_EVENT).andExp(Script.SYSTEM_EVENT_TYPE.eq(eventType))))
 				.select(context);
 	}

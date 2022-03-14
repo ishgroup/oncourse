@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.certificate.xml
-entityClass: Certificate
-body: ish.onCourse.certificate.xml.groovy
-name: Certificate XML export
-outputType: xml
