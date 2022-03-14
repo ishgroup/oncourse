@@ -9,7 +9,7 @@
  * See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.server.integration.surveygizmo
+package ish.oncourse.server.integration.alchemer
 
 import groovy.transform.CompileDynamic
 import groovyx.net.http.ContentType
@@ -22,7 +22,7 @@ import org.apache.logging.log4j.Logger
 
 @CompileDynamic
 @Plugin(type = 4)
-class SurveyGizmoIntegration implements PluginTrait {
+class AlchemerIntegration implements PluginTrait {
 	public static final String SURVEYGIZMO_USER = "user"
 	public static final String SURVEYGIZMO_PASSWORD = "password"
 	public static final String SURVEYGIZMO_SURVEY_ID = "surveyId"
@@ -38,7 +38,7 @@ class SurveyGizmoIntegration implements PluginTrait {
 
 	private static Logger logger = LogManager.logger
 
-	SurveyGizmoIntegration(Map args) {
+	AlchemerIntegration(Map args) {
 		loadConfig(args)
 
 		this.user = configuration.getIntegrationProperty(SURVEYGIZMO_USER).value

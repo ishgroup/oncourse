@@ -76,7 +76,7 @@
     <systemEventType />
   </script>
   <script id='1674'>
-    <name>SurveyGizmo send invite on enrolment</name>
+    <name>Alchemer send invite on enrolment</name>
     <script>import ish.integrations.*
 
       def run(args) {
@@ -88,7 +88,7 @@
       }.each { integration -&gt;
       def tag = integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_COURSE_TAG)?.value?.trim()
       if (tag == null || enrolment.courseClass.course.hasTag(tag)) {
-      surveyGizmo {
+      alchemer {
       name integration.name
       template "survey invitation"
       reply preference.email.from
@@ -105,7 +105,7 @@
     <cronSchedule />
     <entityClass />
     <entityEventType />
-    <description>Send SurveyGizmo invite upon enrolment</description>
+    <description>Send Alchemer invite upon enrolment</description>
     <systemEventType>ENROLMENT_SUCCESSFUL</systemEventType>
   </script>
   <script id='1675'>
@@ -1489,7 +1489,7 @@
     <systemEventType />
   </script>
   <script id='1708'>
-    <name>SurveyGizmo send invite on enrolment completion</name>
+    <name>Alchemer send invite on enrolment completion</name>
     <script>import ish.integrations.*
 
       def run(args) {
@@ -1511,7 +1511,7 @@
 
       enrolmentsJustEnded.each { enrolment -&gt;
       if (tag == null || enrolment.courseClass.course.hasTag(tag)) {
-      surveyGizmo {
+      alchemer {
       name integration.name
       template "survey invitation"
       reply preference.email.from
@@ -1529,7 +1529,7 @@
     <cronSchedule>0 0 9 * * ?</cronSchedule>
     <entityClass />
     <entityEventType />
-    <description>Send SurveyGizmo invite upon enrolment completion</description>
+    <description>Send Alchemer invite upon enrolment completion</description>
     <systemEventType />
   </script>
   <script id='1709'>

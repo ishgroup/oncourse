@@ -11,18 +11,18 @@ import FormField from "../../../../../../common/components/form/formFields/FormF
 import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 
-class SurveyGizmoBaseForm extends React.Component<any, any> {
+class AlchemerBaseForm extends React.Component<any, any> {
   constructor(props) {
     super(props);
 
     // Initializing form with values
-    props.dispatch(initialize("SurveyGizmoForm", props.item));
+    props.dispatch(initialize("AlchemerForm", props.item));
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.item.id !== this.props.item.id) {
       // Reinitializing form with values
-      this.props.dispatch(initialize("SurveyGizmoForm", this.props.item));
+      this.props.dispatch(initialize("AlchemerForm", this.props.item));
     }
   }
 
@@ -63,6 +63,6 @@ class SurveyGizmoBaseForm extends React.Component<any, any> {
 }
 
 export const AlchemerForm = reduxForm({
-  form: "SurveyGizmoForm",
+  form: "AlchemerForm",
   onSubmitFail
-})(connect<any, any, any>(null, null)(SurveyGizmoBaseForm));
+})(connect<any, any, any>(null, null)(AlchemerBaseForm));
