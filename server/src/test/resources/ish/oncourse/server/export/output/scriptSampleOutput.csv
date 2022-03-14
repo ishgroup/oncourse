@@ -33,7 +33,7 @@ mailchimp unsubscribe,"def run(args) {
 	}
 }
 ",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,ENTITY_EVENT,,ContactTagRelation,REMOVE,Unsubscribe contact from a mailchimp list,
-SurveyGizmo send invite on enrolment,"import ish.integrations.*
+Alchemer send invite on enrolment,"import ish.integrations.*
 
 def run(args) {
 	def enrolment = args.value
@@ -44,7 +44,7 @@ def run(args) {
 	}.each { integration ->
 		def tag = integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_COURSE_TAG)?.value?.trim()
 		if (tag == null	|| enrolment.courseClass.course.hasTag(tag)) {
-			surveyGizmo {
+			alchemer {
 				name integration.name
 				template ""survey invitation""
 				reply preference.email.from
@@ -53,7 +53,7 @@ def run(args) {
 		}
 	}
 }
-",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,ONCOURSE_EVENT,,,,Send SurveyGizmo invite upon enrolment,ENROLMENT_SUCCESSFUL
+",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,ONCOURSE_EVENT,,,,Send Alchemer invite upon enrolment,ENROLMENT_SUCCESSFUL
 send product purchased email,"def run(args) {
     def article = args.entity
 
@@ -944,7 +944,7 @@ send student class commencement notice,"def run(args) {
         }
     }
 }",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 9 * * ?,,,"Send an email to the student with information about when their class is starting, the day before it starts",
-SurveyGizmo send invite on enrolment completion,"import ish.integrations.*
+Alchemer send invite on enrolment completion,"import ish.integrations.*
 
 def run(args) {
 	def yesterdayStart = new Date() - 1
@@ -964,7 +964,7 @@ def run(args) {
 
 		enrolmentsJustEnded.each { enrolment ->
 			if (tag == null	|| enrolment.courseClass.course.hasTag(tag)) {
-				surveyGizmo {
+				alchemer {
 					name integration.name
 					template ""survey invitation""
 					reply preference.email.from
@@ -974,7 +974,7 @@ def run(args) {
 		}
 	}
 }
-",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 9 * * ?,,,Send SurveyGizmo invite upon enrolment completion,
+",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 9 * * ?,,,Send Alchemer invite upon enrolment completion,
 cancelled class notice for tutor,"def run(args) {
     def courseClass = args.entity
 
