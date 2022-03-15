@@ -82,11 +82,11 @@
       def run(args) {
       def enrolment = args.value
 
-      ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.SURVEYGIZMO))
+      ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.ALCHEMER))
       .select(args.context).findAll { integration -&gt;
-      integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_SEND_ON_ENROLMENT_SUCCESS)?.value?.toBoolean()
+      integration.getProperty(IntegrationsConfiguration.ALCHEMER_SEND_ON_ENROLMENT_SUCCESS)?.value?.toBoolean()
       }.each { integration -&gt;
-      def tag = integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_COURSE_TAG)?.value?.trim()
+      def tag = integration.getProperty(IntegrationsConfiguration.ALCHEMER_COURSE_TAG)?.value?.trim()
       if (tag == null || enrolment.courseClass.course.hasTag(tag)) {
       alchemer {
       name integration.name
@@ -1503,11 +1503,11 @@
       .where(Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE_TIME).between(yesterdayStart,
       yesterdayEnd)).select(args.context)
 
-      ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.SURVEYGIZMO))
+      ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.ALCHEMER))
       .select(args.context).findAll { integration -&gt;
-      integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_SEND_ON_ENROLMENT_COMPLETION)?.value?.toBoolean()
+      integration.getProperty(IntegrationsConfiguration.ALCHEMER_SEND_ON_ENROLMENT_COMPLETION)?.value?.toBoolean()
       }.each { integration -&gt;
-      def tag = integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_COURSE_TAG)?.value?.trim()
+      def tag = integration.getProperty(IntegrationsConfiguration.ALCHEMER_COURSE_TAG)?.value?.trim()
 
       enrolmentsJustEnded.each { enrolment -&gt;
       if (tag == null || enrolment.courseClass.course.hasTag(tag)) {
