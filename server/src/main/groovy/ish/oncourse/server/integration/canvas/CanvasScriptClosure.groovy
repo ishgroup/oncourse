@@ -168,6 +168,7 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
             }
 
             integration.enrolUser(student["id"], section["id"])
+            integration.checkIfUserSuspendedAndUnsuspend(student["id"])
 
             if (add_tutors) {
                 integration.enrolTeachers(enrolment.courseClass.tutorRoles.tutor.contact, course["id"][0])
