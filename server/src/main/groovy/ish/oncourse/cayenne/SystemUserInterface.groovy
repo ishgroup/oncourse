@@ -8,10 +8,10 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details.
  */
-package ish.oncourse.cayenne;
+package ish.oncourse.cayenne
 
 /**
  */
-public interface SystemUserInterface {
-	String DEFAULT_ISH_USER = "ish";
+interface SystemUserInterface {
+	String DEFAULT_ISH_USER = "ish"
 }

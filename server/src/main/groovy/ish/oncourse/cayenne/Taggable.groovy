@@ -8,18 +8,21 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details.
  */
-package ish.oncourse.cayenne.glue;
+package ish.oncourse.cayenne
 
-import ish.oncourse.cayenne.PaymentLineInterface;
-import org.apache.cayenne.PersistentObject;
-
+import ish.oncourse.API
+import ish.oncourse.server.cayenne.Tag
 /**
+ * Entities which implement this interface may have TagRequirement, for example Student, Tutor but real TagRelation always created for Contact entity
  */
-public abstract class PaymentLine extends PersistentObject implements PaymentLineInterface {
+@API
+interface Taggable {
 
-	/**
-	 *
-	 */
+	String TAGGING_RELATIONS_PROPERTY = "taggingRelations"
+	String TAG_IDS = "tagIds"
 
+	Long getId()
+	List<? extends Tag> getTags()
+	List<Long> getTagIds()
 
 }

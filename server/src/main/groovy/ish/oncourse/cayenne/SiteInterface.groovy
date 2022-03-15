@@ -8,24 +8,14 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details.
  */
-package ish.oncourse.cayenne;
-
-import ish.oncourse.API;
-import ish.oncourse.server.cayenne.Tag;
-
-import java.util.List;
+package ish.oncourse.cayenne
 
 /**
- * Entities which implement this interface may have TagRequirement, for example Student, Tutor but real TagRelation always created for Contact entity
  */
-@API
-public interface Taggable {
+interface SiteInterface {
+	String getStreet();
 
-	String TAGGING_RELATIONS_PROPERTY = "taggingRelations";
-	String TAG_IDS = "tagIds";
+	String getSuburb();
 
-	Long getId();
-	List<? extends Tag> getTags();
-	List<Long> getTagIds();
-
+	String getPostcode();
 }

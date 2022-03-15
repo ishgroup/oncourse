@@ -8,21 +8,20 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details.
  */
-package ish.oncourse.cayenne;
+package ish.oncourse.cayenne
 
-import ish.common.types.PaymentStatus;
-import ish.math.Money;
+import ish.common.types.PaymentStatus
+import ish.math.Money
 
-import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDate
 
-public interface FinancialItem {
+interface FinancialItem {
 
-	String DATE = "date";
-	String CREATED_ON = "createdOn";
-	String DESCRIPTION = "description";
-	String TOTAL = "total";
-	String AMOUNT = "amount";
+	String DATE = "date"
+	String CREATED_ON = "createdOn"
+	String DESCRIPTION = "description"
+	String TOTAL = "total"
+	String AMOUNT = "amount"
 
 	FinancialItemType getFinancialItemType();
 

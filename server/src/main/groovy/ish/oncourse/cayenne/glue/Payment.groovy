@@ -8,20 +8,20 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details.
  */
-package ish.oncourse.cayenne.glue;
+package ish.oncourse.cayenne.glue
 
-import ish.math.Money;
-import ish.oncourse.cayenne.AccountInterface;
-import ish.oncourse.cayenne.PaymentInterface;
-import ish.oncourse.cayenne.SiteInterface;
-import ish.oncourse.cayenne.SystemUserInterface;
-import org.apache.cayenne.PersistentObject;
+import ish.math.Money
+import ish.oncourse.cayenne.AccountInterface
+import ish.oncourse.cayenne.PaymentInterface
+import ish.oncourse.cayenne.SiteInterface
+import ish.oncourse.cayenne.SystemUserInterface
+import org.apache.cayenne.PersistentObject
 
 /**
  * An abstract entity gathering all the code shared between PaymentIn and PaymentOut entities
  *
  */
-public abstract class Payment extends PersistentObject implements PaymentInterface {
+abstract class Payment extends PersistentObject implements PaymentInterface {
 
 	/**
 	 *
@@ -29,13 +29,13 @@ public abstract class Payment extends PersistentObject implements PaymentInterfa
 
 
 	// methods in fact identical between payments
-	public abstract void setAdministrationCentre(SiteInterface administrationCentre);
+	abstract void setAdministrationCentre(SiteInterface administrationCentre);
 
-	public abstract void setCreatedBy(SystemUserInterface createdByUser);
+	abstract void setCreatedBy(SystemUserInterface createdByUser);
 
-	public abstract void setAmount(Money amount);
+	abstract void setAmount(Money amount);
 
 	// methods different between payments
-	public abstract void setAccount(AccountInterface account);
+	abstract void setAccount(AccountInterface account);
 
 }
