@@ -162,6 +162,87 @@ class CanvasIntegration implements PluginTrait {
     }
 
     /**
+     * Check whether user is suspended and then unsuspend it in Canvas
+     *
+     * @param user id from Canvas
+     */
+    protected checkIfUserSuspendedAndUnsuspend(userId) {
+        Map userLogins = getUserLogins(userId) as Map
+        List userLoginsJson = responseToJson(userLogins) as List
+        if (userLoginsJson["workflow_state"].contains("suspended")) {
+            unsuspendUser(userId)
+        }
+    }
+
+    /**
+     * Get list of user's logins for the given account.
+     *
+     * @param user id from Canvas
+     */
+    protected getUserLogins(userId) {
+        def client = new RESTClient(baseUrl)
+        client.headers["Authorization"] = "Bearer ${authHeader}"
+        client.request(Method.GET, ContentType.URLENC) {
+            uri.path = "/api/v1/users/${userId}/logins"
+            //ignore pagination
+            uri.query = [
+                    per_page: '10000',
+            ]
+
+            response.success = { resp, result ->
+                return result
+            }
+            response.failure = { resp, result ->
+                throw new IllegalStateException("Failed to retreive logins by user id:${userId} ${resp.getStatusLine()}")
+            }
+        }
+    }
+
+    /**
+     * Suspend all logins for this user that the calling user has permission to
+     *
+     * @param user id from Canvas
+     */
+    protected suspendUser(userId) {
+        editUserEvent(userId, "suspend")
+    }
+
+    /**
+     * Unsuspend all logins for this user that the calling user has permission to
+     *
+     * @param user id from Canvas
+     */
+    protected unsuspendUser(userId) {
+        editUserEvent(userId, "unsuspend")
+    }
+
+    /**
+     * Suspend or unsuspend all logins for this user that the calling user has permission to
+     *
+     * @param user id from Canvas
+     * @param event (allowed values: "suspend", "unsuspend")
+     */
+    private editUserEvent(userId, event) {
+        def client = new RESTClient(baseUrl)
+        client.headers["Authorization"] = "Bearer ${authHeader}"
+        client.request(Method.PUT, ContentType.JSON) {
+            uri.path = "/api/v1/users/${userId}"
+            body = [
+                    user: [
+                            event: event
+                    ]
+            ]
+
+            response.success = { resp, result ->
+                return result
+            }
+            response.failure = { resp, result ->
+                throw new IllegalStateException("Failed to edit user, user id:${userId} event:${event} ${resp.getStatusLine()}")
+            }
+        }
+    }
+
+    /**
      * Get all courses from Canvas
      *
      * @return collection of courses
