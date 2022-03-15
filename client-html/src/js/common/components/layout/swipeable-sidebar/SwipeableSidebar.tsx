@@ -42,7 +42,7 @@ import navigation from "../../navigation/navigation.json";
 
 export const SWIPEABLE_SIDEBAR_WIDTH: number = 350;
 
-export const CATEGORY_SIDEBAR_WIDTH: number = 850;
+export const CATEGORY_SIDEBAR_WIDTH: number = 1250;
 
 const styles = (theme: AppTheme) =>
   createStyles({

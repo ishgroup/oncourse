@@ -20,6 +20,7 @@ import { setUserPreference } from "../../actions";
 import { AnyArgFunction, BooleanArgFunction, NumberArgFunction } from "../../../model/common/CommonFunctions";
 import { openInternalLink } from "../../utils/links";
 import { getPrivisioningLink } from "../../../routes/routesMapping";
+import StructureGraph from "../../../containers/dashboard/StructureGraph";
 
 const useStyles = makeAppStyles(theme => ({
   description: {
@@ -122,7 +123,11 @@ const NavigationCategory = (
           <Close />
         </IconButton>
       </div>
-      <Typography className={classes.description} variant="body2" dangerouslySetInnerHTML={{ __html: category?.description }} />
+      <div className="d-flex">
+        <Typography className={classes.description} variant="body2" dangerouslySetInnerHTML={{ __html: category?.description }} />
+        <StructureGraph />
+      </div>
+
       <div className="heading mb-2">
         Features
       </div>
