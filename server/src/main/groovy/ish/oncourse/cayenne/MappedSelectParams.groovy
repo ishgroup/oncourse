@@ -8,14 +8,20 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details.
  */
-package ish.oncourse.cayenne;
+package ish.oncourse.cayenne
 
-/**
- */
-public interface SiteInterface {
-	String getStreet();
+interface MappedSelectParams {
 
-	String getSuburb();
 
-	String getPostcode();
+    String ENTITY_COUNT_QUERY = "EntityCount"
+    String MAX_QUERY = "MaxQuery"
+    String SUM_QUERY = "SumQuery"
+
+    String FIELD_NAME = "fieldName"
+    String ENTITY_NAME_PARAMETER = "entityName"
+    String WHERE_CLAUSE_PARAMETER = "whereClause"
+
+    String COUNT_COLUMN = "C"
+    String AMOUNT_SUM_COLUMN = "AMOUNT_SUM"
+
 }
