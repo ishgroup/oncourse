@@ -188,7 +188,7 @@ class ActionBody extends React.PureComponent<Props, any> {
     const { classes, skipSystemUser } = this.props;
     const { statisticsColumnWidth, tutorialKey, customLink } = this.state;
 
-    const showTutorial = !(skipSystemUser && tutorialKey === "systemuser");
+    const showTutorial = skipSystemUser && tutorialKey === "systemuser" ? false : Boolean(tutorialKey);
 
     return (
       <Grid container wrap="nowrap" className={classes.root}>
