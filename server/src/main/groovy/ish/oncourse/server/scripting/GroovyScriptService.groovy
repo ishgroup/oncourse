@@ -56,6 +56,7 @@ import org.reflections.Reflections
 
 import javax.script.*
 import java.util.concurrent.*
+import java.util.regex.Pattern
 
 import static ish.common.types.TriggerType.*
 import static ish.oncourse.server.integration.PluginService.PLUGIN_PACKAGE
@@ -484,10 +485,53 @@ class GroovyScriptService {
             return ScriptResult.success(result)
         } catch (ScriptException e) {
             logger.error("Execution failed for '{}'.", script.getName(), e)
-            return ScriptResult.failure(e.getMessage())
+            return ScriptResult.failure(e.getMessage() + addErrorLineIfExist(e))
         }
     }
 
+    private static String addErrorLineIfExist(Exception e) {
+        def defaultLinesCount = DEFAULT_IMPORTS.lines().count() + PREPARE_API.lines().count() + PREPARE_LOGGER.lines().count()
+        def errorLine = parseErrorLineFromStackTrace(e)
+        if (errorLine != null) {
+            def lineInScript = errorLine - defaultLinesCount
+            return "\nError in line: " + lineInScript
+        } else {
+            def errorLineExceptionMessage = parseErrorLineFromExceptionMesssage(e)
+            if (errorLineExceptionMessage != null) {
+                def lineInScript = errorLineExceptionMessage - defaultLinesCount
+                return "\nError in line: " + lineInScript
+            } else {
+                return ""
+            }
+        }
+    }
+
+    private static Throwable rootCause(Exception e) {
+        Throwable throwable = e
+        while (throwable.cause != null) throwable = throwable.cause
+        return throwable
+    }
+
+    private static Integer parseErrorLineFromStackTrace(Exception e) {
+        def cause = rootCause(e)
+        def groovyStackTrace = cause.stackTrace.find {
+            it.fileName ==~ /^Script\d+\.groovy$/
+        }
+        return groovyStackTrace != null ? groovyStackTrace.lineNumber : null
+    }
+
+    private static Integer parseErrorLineFromExceptionMesssage(Exception e){
+        def pattern = Pattern.compile("Script\\d+\\.groovy: (\\d+?):")
+        def matcher = pattern.matcher(e.getMessage())
+        if (matcher.find())
+        {
+            def group = matcher.group(1)
+            def line = Integer.valueOf(group)
+            return line
+        } else {
+            return null
+        }
+    }
 
     void runScript(Script script) throws ExecutionException {
         runScript(script, ScriptParameters.empty())
