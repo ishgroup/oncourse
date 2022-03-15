@@ -14,6 +14,7 @@ package ish.oncourse.server.lifecycle;
 import ish.oncourse.server.cayenne.Tag;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.ObjectId;
+import org.apache.cayenne.graph.ArcId;
 import org.apache.cayenne.graph.GraphChangeHandler;
 
 import java.util.HashMap;
@@ -44,10 +45,10 @@ public class TagNameChangeHandler implements GraphChangeHandler {
     }
 
     @Override
-    public void arcCreated(Object nodeId, Object targetNodeId, Object arcId) {}
+    public void arcCreated(Object nodeId, Object targetNodeId, ArcId arcId) {}
 
     @Override
-    public void arcDeleted(Object nodeId, Object targetNodeId, Object arcId) {}
+    public void arcDeleted(Object nodeId, Object targetNodeId, ArcId arcId) {}
 
     public String getOldValueFor(ObjectId tagId) {
         return changes.get(tagId) != null ? changes.get(tagId).getOldValue() : null;
