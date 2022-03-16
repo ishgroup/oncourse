@@ -226,6 +226,21 @@ class CourseClassMixin {
 		}
 	}
 
+	static Money getTotalInvoiced(CourseClass courseClass){
+		return reduceFilteredSum(courseClass.successEnrolmentsInvoiceLines, { InvoiceLine it -> !it.finalPriceToPayExTax.isNegative() })
+	}
+
+	static Money getTotalCredits(CourseClass courseClass){
+		return reduceFilteredSum(courseClass.successEnrolmentsInvoiceLines, { InvoiceLine it -> it.finalPriceToPayExTax.isNegative() })
+	}
+
+
+	private static Money reduceFilteredSum(List<InvoiceLine> invoiceLines, Closure<Boolean> filter){
+		return invoiceLines.findAll {filter(it)}.inject(Money.ZERO) {
+			Money total, InvoiceLine il ->  (total as Money).add((il.finalPriceToPayExTax as Money))
+		}.add(invoiceLines.findAll {filter(it)}.inject(Money.ZERO) { Money total, InvoiceLine il -> (total as Money).add(il.finalPriceToPayExTax as Money) })
+	}
+
 	/**
 	*
 	* @return Integer number of successful enrolments in this CourseClass
@@ -354,18 +369,6 @@ class CourseClassMixin {
 	static getTotalIncomeAmount(CourseClass self) {
 		return self.successAndQueuedEnrolments*.invoiceLines.flatten().inject(Money.ZERO) {
 			Money total, InvoiceLine il -> total.add(il.finalPriceToPayExTax)
-		}.add(self.invoiceLines.inject(Money.ZERO) { Money total, InvoiceLine il -> total.add(il.finalPriceToPayExTax) })
-	}
-
-	static getTotalInvoiced(CourseClass self){
-		return self.successAndQueuedEnrolments*.invoiceLines.flatten().findAll {it.finalPriceToPayExTax > 0}.inject(Money.ZERO) {
-			Money total, InvoiceLine il ->  total.add(il.finalPriceToPayExTax)
-		}.add(self.invoiceLines.inject(Money.ZERO) { Money total, InvoiceLine il -> total.add(il.finalPriceToPayExTax) })
-	}
-
-	static getTotalCredits(CourseClass self){
-		return self.successAndQueuedEnrolments*.invoiceLines.flatten().findAll {it.finalPriceToPayExTax < 0}.inject(Money.ZERO) {
-			Money total, InvoiceLine il ->  total.add(il.finalPriceToPayExTax)
 		}.add(self.invoiceLines.inject(Money.ZERO) { Money total, InvoiceLine il -> total.add(il.finalPriceToPayExTax) })
 	}
 
