@@ -88,7 +88,7 @@ const NavigationCategory = (
   const category = useMemo(() => navigation.categories.find(c => c.key === selected), [selected]);
   
   const features = useMemo(() => (category 
-    ? navigation.features.filter(f => f.categories.includes(category.key)) 
+    ? navigation.features.filter(f => category.features.includes(f.key))
     : []), [category]);
   
   const updateFavorites = (key, type: "category" | "automation") => {
