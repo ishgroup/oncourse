@@ -157,7 +157,7 @@ class CourseClassMixin {
 	/**
 	* @return all enrolments with a CANCELLED or REFUNDED status
 	*/
-	@API
+	@Deprecated
 	static getClassTotalFeeIncomeExTaxForRefundedAndCancelledEnrolments(CourseClass self) {
 		return getService(CourseClassService).getClassTotalFeeIncomeExTaxForRefundedAndCancelledEnrolments(self)
 	}
@@ -354,6 +354,18 @@ class CourseClassMixin {
 	static getTotalIncomeAmount(CourseClass self) {
 		return self.successAndQueuedEnrolments*.invoiceLines.flatten().inject(Money.ZERO) {
 			Money total, InvoiceLine il -> total.add(il.finalPriceToPayExTax)
+		}.add(self.invoiceLines.inject(Money.ZERO) { Money total, InvoiceLine il -> total.add(il.finalPriceToPayExTax) })
+	}
+
+	static getTotalInvoiced(CourseClass self){
+		return self.successAndQueuedEnrolments*.invoiceLines.flatten().findAll {it.finalPriceToPayExTax > 0}.inject(Money.ZERO) {
+			Money total, InvoiceLine il ->  total.add(il.finalPriceToPayExTax)
+		}.add(self.invoiceLines.inject(Money.ZERO) { Money total, InvoiceLine il -> total.add(il.finalPriceToPayExTax) })
+	}
+
+	static getTotalCredits(CourseClass self){
+		return self.successAndQueuedEnrolments*.invoiceLines.flatten().findAll {it.finalPriceToPayExTax < 0}.inject(Money.ZERO) {
+			Money total, InvoiceLine il ->  total.add(il.finalPriceToPayExTax)
 		}.add(self.invoiceLines.inject(Money.ZERO) { Money total, InvoiceLine il -> total.add(il.finalPriceToPayExTax) })
 	}
 

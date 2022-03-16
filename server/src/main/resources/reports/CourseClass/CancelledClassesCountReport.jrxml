@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CancelledClassesCountReport" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="786" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="005cd7bb-9877-4113-b189-63647141629e">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CancelledClassesCountReport" language="groovy" pageWidth="1042" pageHeight="595" orientation="Landscape" columnWidth="986" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="005cd7bb-9877-4113-b189-63647141629e">
 	<property name="name" value="Cancelled Classes Count"/>
 	<property name="entity" value="CourseClass"/>
 	<property name="isSubreport" value="false"/>
@@ -104,13 +104,21 @@
 		<band height="20" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="mm"/>
 			<rectangle>
-				<reportElement x="0" y="0" width="786" height="20" backcolor="#E6E7F0" uuid="8731433d-654b-4fd8-b1fc-3d17b7088752">
+				<reportElement x="0" y="0" width="986" height="20" backcolor="#E6E7F0" uuid="8731433d-654b-4fd8-b1fc-3d17b7088752">
 					<property name="com.jaspersoft.studio.unit.height" value="mm"/>
 				</reportElement>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
 				</graphicElement>
 			</rectangle>
+			<staticText>
+				<reportElement key="staticText-6" style="header 3" x="3" y="2" width="158" height="14" uuid="f0219c7c-baf3-4599-a846-81178041533f"/>
+				<text><![CDATA[Course Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" style="header 3" x="162" y="2" width="67" height="14" uuid="e5999b8f-3b78-4435-84a6-cdfca17fd935"/>
+				<text><![CDATA[Code]]></text>
+			</staticText>
 			<staticText>
 				<reportElement key="staticText-2" style="header 3" x="229" y="2" width="108" height="14" uuid="27f805c5-91a5-4cdb-a56b-6aa68a84559b">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -126,34 +134,42 @@
 				<text><![CDATA[Site/Room]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-8" style="header 3 (right)" x="670" y="2" width="49" height="14" uuid="02781c38-b8cf-4885-9376-54a2703a05b1"/>
-				<text><![CDATA[Enrolled]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-9" style="header 3 (right)" x="720" y="2" width="56" height="14" uuid="90c386d0-ab08-4ede-b274-7170e7eef77b"/>
-				<text><![CDATA[Income]]></text>
-			</staticText>
-			<staticText>
 				<reportElement key="staticText-10" style="header 3 (right)" x="604" y="2" width="30" height="14" uuid="7d01633d-e046-40a1-b1f0-ee4afa3a1e6d"/>
 				<text><![CDATA[Max]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-6" style="header 3" x="3" y="2" width="158" height="14" uuid="f0219c7c-baf3-4599-a846-81178041533f"/>
-				<text><![CDATA[Course Name]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-6" style="header 3" x="162" y="2" width="67" height="14" uuid="e5999b8f-3b78-4435-84a6-cdfca17fd935"/>
-				<text><![CDATA[Code]]></text>
-			</staticText>
-			<staticText>
 				<reportElement key="staticText-10" style="header 3 (right)" x="637" y="2" width="30" height="14" uuid="3c842a13-af1a-4b06-85bb-2e6971470b28"/>
 				<text><![CDATA[Min]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-8" style="header 3 (right)" x="670" y="2" width="49" height="14" uuid="02781c38-b8cf-4885-9376-54a2703a05b1"/>
+				<text><![CDATA[Enrolled]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-8" style="header 3 (right)" x="720" y="2" width="49" height="14" uuid="02781c38-b8cf-4885-9376-54a2703a05b1"/>
+				<text><![CDATA[Cancelled]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-9" style="header 3 (right)" x="780" y="2" width="76" height="14" uuid="90c386d0-ab08-4ede-b274-7170e7eef77b"/>
+				<text><![CDATA[Invoiced total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-9" style="header 3 (right)" x="860" y="2" width="56" height="14" uuid="90c386d0-ab08-4ede-b274-7170e7eef77b"/>
+				<text><![CDATA[Credits total]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
 			<printWhenExpression><![CDATA[new Boolean($F{courseClass}.isCancelled)]]></printWhenExpression>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-7" style="data field" x="3" y="2" width="158" height="13" uuid="9aedca03-67c3-46bd-b833-031b25f47cda"/>
+				<textFieldExpression><![CDATA[$F{courseClass}.course.name]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-7" style="data field" x="162" y="2" width="67" height="13" uuid="2d35e7a7-fb6b-4521-834c-75f5aa9b8031"/>
+				<textFieldExpression><![CDATA[$F{courseClass}.uniqueCode]]></textFieldExpression>
+			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-2" style="data field (day)" x="229" y="2" width="108" height="13" uuid="bdd466b4-404d-46a7-88a6-de430f05fc1c"/>
 				<textFieldExpression><![CDATA[$F{courseClass}.startDateTime?.format("d MMM yyyy h:mma", $F{courseClass}.timeZone)]]></textFieldExpression>
@@ -165,14 +181,6 @@
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-7" style="data field" x="445" y="1" width="156" height="14" uuid="ac7d99c9-804e-44e1-93e7-79116426b4b7"/>
 				<textFieldExpression><![CDATA[($F{courseClass}.room?.site?.name ?: "Not set") + "/" + ($F{courseClass}.room?.name ?: "Not set")]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-7" style="data field" x="162" y="2" width="67" height="13" uuid="2d35e7a7-fb6b-4521-834c-75f5aa9b8031"/>
-				<textFieldExpression><![CDATA[$F{courseClass}.uniqueCode]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-7" style="data field" x="3" y="2" width="158" height="13" uuid="9aedca03-67c3-46bd-b833-031b25f47cda"/>
-				<textFieldExpression><![CDATA[$F{courseClass}.course.name]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-7" style="data field (numeric)" x="604" y="1" width="30" height="14" uuid="9aa2d046-2271-4b01-8c8c-d92e37a4de61"/>
@@ -187,8 +195,16 @@
 				<textFieldExpression><![CDATA[$F{courseClass}.refundedAndCancelledEnrolments.size()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-7" style="data field (money)" x="720" y="2" width="56" height="13" uuid="9e63fc18-0b41-440a-b36e-a769f9c39419"/>
-				<textFieldExpression><![CDATA[$F{courseClass}.classTotalFeeIncomeExTaxForRefundedAndCancelledEnrolments]]></textFieldExpression>
+				<reportElement key="textField-7" style="data field (numeric)" x="720" y="2" width="49" height="13" uuid="bed552bd-8b3b-401c-b462-039a8cf30442"/>
+				<textFieldExpression><![CDATA[$F{courseClass}.cancelledEnrolments.size()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-7" style="data field (money)" x="780" y="2" width="76" height="13" uuid="9e63fc18-0b41-440a-b36e-a769f9c39419"/>
+				<textFieldExpression><![CDATA[$F{courseClass}.totalInvoiced]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-7" style="data field (money)" x="860" y="2" width="56" height="13" uuid="9e63fc18-0b41-440a-b36e-a769f9c39419"/>
+				<textFieldExpression><![CDATA[$F{courseClass}.totalCredits]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
