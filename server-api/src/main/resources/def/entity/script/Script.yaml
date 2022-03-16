@@ -25,11 +25,11 @@ properties:
     description: Script description
     required: false
     example: send students a confirmation on enrolment
-  enabled:
-    type: boolean
-    description: Script status
+  status:
+    $ref: '../automation/AutomationStatus.yaml'
+    description: Automation status
     required: true
-    example: true
+    example: Enabled
   trigger:
     $ref: './ScriptTrigger.yaml'
     description: Script trigger
@@ -46,8 +46,8 @@ properties:
   lastRun:
     type: array
     items:
-      type: string
-      description: ISO date string
+      $ref: './LastRun.yaml'
+      description: ISO date string and status
   createdOn:
     type: string
     format: date-time
@@ -68,3 +68,18 @@ properties:
       $ref: '../automation/Binding.yaml'
     required: false
     description: Script options list
+  shortDescription:
+    type: string
+    require: false
+    description: Message template short description
+    example: descr
+  automationTags:
+    type: string
+    require: false
+    description: automation tags separated by commas
+    example: new,income
+  category:
+    type: string
+    require: false
+    description: automation category
+    example: imports

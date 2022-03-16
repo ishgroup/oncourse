@@ -3,7 +3,7 @@ package ish.oncourse.server.querying
 import groovy.transform.CompileStatic
 import ish.TestWithDatabase
 import ish.DatabaseSetup
-import ish.common.types.TaskResultType
+import ish.common.types.AutomationStatus
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.scripting.GroovyScriptService
@@ -217,12 +217,12 @@ class QuerySpecWithRelativeDatesTest extends TestWithDatabase {
     }
 
 
-
+    
     void executeQuery(String query, String expectedResult) throws Exception {
         GroovyScriptService scriptService = injector.getInstance(GroovyScriptService)
 
         Script script = cayenneContext.newObject(Script.class)
-        script.setEnabled(true)
+        script.setAutomationStatus(AutomationStatus.ENABLED)
 
         script.setScript("def result = query {\n" +
                 "       entity \"Student\"\n" +
@@ -234,8 +234,8 @@ class QuerySpecWithRelativeDatesTest extends TestWithDatabase {
 
         ScriptResult result = scriptService.runScript(script, ScriptParameters.empty(), cayenneContext)
 
-        if (result.getType() == TaskResultType.SUCCESS)
-            Assertions.assertEquals(expectedResult, new String(result.getData()))
+        if (result.getType() == ScriptResult.ResultType.SUCCESS)
+            Assertions.assertEquals(expectedResult, result.getResultValue().toString())
         else
             Assertions.fail("Incorrect syntax: " + result.error)
     }

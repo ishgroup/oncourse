@@ -80,15 +80,43 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
         <FullScreenStickyHeader
           opened={isNew || Object.keys(syncErrors).includes("name")}
           twoColumn={twoColumn}
-          title={<span>{values && values.name}</span>}
+          title={twoColumn ? (
+            <div className="d-inline-flex-center">
+              <span>
+                {values && values.code}
+              </span>
+              <span className="ml-2">
+                {values && values.name}
+              </span>
+            </div>
+          ) : (
+            <div>
+              <div>
+                {values && values.code}
+              </div>
+              <div className="mt-2">
+                {values && values.name}
+              </div>
+            </div>
+          )}
           fields={(
-            <Grid item {...gridItemProps}>
-              <FormField
-                name="name"
-                label="Name"
-                required
-                fullWidth
-              />
+            <Grid container columnSpacing={3} rowSpacing={2}>
+              <Grid item xs={twoColumn ? 2 : 12}>
+                <FormField
+                  label="SKU"
+                  name="code"
+                  required
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={twoColumn ? 4 : 12}>
+                <FormField
+                  label="Name"
+                  name="name"
+                  required
+                  fullWidth
+                />
+              </Grid>
             </Grid>
           )}
         />
@@ -98,14 +126,6 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           type="tags"
           name="tags"
           tags={tags}
-        />
-      </Grid>
-      <Grid item {...gridItemProps}>
-        <FormField
-          type="text"
-          name="code"
-          label="SKU"
-          required
         />
       </Grid>
 
@@ -182,7 +202,6 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
         entityName="ArticleProduct"
         fieldName="customFields"
         entityValues={values}
-        dispatch={dispatch}
         form={form}
         gridItemProps={gridItemProps}
       />
@@ -216,17 +235,6 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           rootEntity={rootEntity}
         />
       </Grid>
-      <CustomFields
-        entityName="ArticleProduct"
-        fieldName="customFields"
-        entityValues={values}
-        dispatch={dispatch}
-        form={form}
-        gridItemProps={{
-          xs: twoColumn ? 6 : 12,
-          lg: twoColumn ? 4 : 12
-        }}
-      />
     </Grid>
   );
 };

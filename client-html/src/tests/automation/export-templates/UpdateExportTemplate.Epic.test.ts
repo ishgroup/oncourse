@@ -14,7 +14,7 @@ describe("Update export template epic tests", () => {
       id: 1,
       name: "name 1",
       keyCode: "keyCode 1",
-      enabled: false
+      status: "Installed but Disabled",
     }),
     epic: EpicUpdateExportTemplate,
     processData: () => [

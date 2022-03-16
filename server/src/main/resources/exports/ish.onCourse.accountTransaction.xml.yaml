@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.accountTransaction.xml
-entityClass: AccountTransaction
-body: ish.onCourse.accountTransaction.xml.groovy
-name: Account Transaction XML export
-outputType: xml

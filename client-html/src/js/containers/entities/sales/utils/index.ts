@@ -35,5 +35,3 @@ export const getSaleEntityName = (type: ProductType) => {
       return type;
   }
 };
-
-export const getSaleDisplayName = (type: ProductType) => `Sale (${type})`;

@@ -12,9 +12,7 @@
 package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
-import ish.common.types.TaskResultType
-import ish.oncourse.server.cluster.ClusteredExecutorManager
-import ish.oncourse.server.cluster.TaskResult
+import ish.oncourse.server.api.v1.model.LastRunDTO
 import ish.oncourse.types.AuditAction
 import ish.common.types.EntityEvent
 import ish.common.types.SystemEventType
@@ -33,12 +31,14 @@ import static ish.oncourse.server.api.v1.model.TriggerTypeDTO.*
 import ish.oncourse.server.cayenne.Audit
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
+import ish.oncourse.server.concurrent.ExecutorManager
 import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.scripting.ScriptParameters
 import ish.oncourse.server.scripting.validation.ScriptValidator
 import ish.oncourse.server.users.SystemUserService
 import ish.scripting.CronExpressionType
 import ish.scripting.ScriptResult
+import static ish.scripting.ScriptResult.ResultType.FAILURE
 import ish.util.DateFormatter
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
@@ -64,7 +64,7 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
     private SystemUserService systemUserService
 
     @Inject
-    private ClusteredExecutorManager executorManager
+    private ExecutorManager executorManager
 
     @Context
     private HttpServletResponse response
@@ -168,17 +168,25 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
             st
         }
 
-        List<String> lastRunList = ObjectSelect.columnQuery(Audit, Audit.CREATED)
+        List<LastRunDTO> lastRunList = ObjectSelect.columnQuery(Audit, Audit.CREATED, Audit.ACTION)
                 .where(Audit.ENTITY_IDENTIFIER.eq(dbScript.class.simpleName))
                 .and(Audit.ENTITY_ID.eq(dbScript.id))
                 .and(Audit.ACTION.in(AuditAction.SCRIPT_EXECUTED, AuditAction.SCRIPT_FAILED))
                 .orderBy(Audit.CREATED.desc())
                 .limit(LAST_RUN_FETCH_LIMIT)
                 .select(cayenneService.newContext)
-                .collect { DateFormatter.formatDateISO8601(it) }
-
+                .collect { convertArray(it) }
+        
         scriptDTO.lastRun = lastRunList
         scriptDTO
+    }
+
+    private static LastRunDTO convertArray(Object[]arr){
+        new LastRunDTO().with{ it ->
+            it.date = DateFormatter.formatDateISO8601(arr[0] as Date)
+            it.status = (arr[1] as AuditAction).displayName
+            it
+        }
     }
 
     @Override
@@ -323,9 +331,9 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
         }
     }
 
-    TaskResult getResult(String proccessId) {
+    ScriptResult getResult (String proccessId) {
         try {
-            return executorManager.getResult(proccessId) as TaskResult
+            return executorManager.getResult(proccessId) as ScriptResult
         } catch (Exception e) {
             logger.catching(e)
             validator.throwClientErrorException("ScriptExecutionResultGetting", e.message)
@@ -341,7 +349,7 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
             scriptParameters.add(name, value)
         }
 
-        return executorManager.submit(new Callable<ScriptResult>() {
+        return executorManager.submit(new Callable() {
             @Override
             ScriptResult call() throws Exception {
                 ScriptResult result = null
@@ -350,7 +358,7 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
                 } else {
                     for (CayenneDataObject record : records) {
                         result = groovyScriptService.runAndWait(script, new ScriptParameters(scriptParameters).fillDefaultParameters(record))
-                        if (result.type == TaskResultType.FAILURE) {
+                        if (result.type == FAILURE) {
                             return result
                         }
                     }
@@ -367,6 +375,5 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
         Script dbScript = super.updateInternal(dto) as Script
         updateTrigger(dto, dbScript)
         dbScript.getContext().commitChanges()
-        dbScript
     }
 }
