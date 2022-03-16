@@ -32,7 +32,7 @@ import java.util.List
  */
 @API
 @QueueableEntity
-class Voucher extends _Voucher implements ExpandableTrait, AttachableTrait, Taggable {
+class Voucher extends _Voucher implements ExpandableTrait, AttachableTrait {
 
 
 
@@ -249,10 +249,5 @@ class Voucher extends _Voucher implements ExpandableTrait, AttachableTrait, Tagg
 	@Override
 	Class<? extends AttachmentRelation> getRelationClass() {
 		return VoucherAttachmentRelation
-	}
-
-	@Override
-	Class<? extends TagRelation> getTagRelationClass() {
-		return VoucherTagRelation
 	}
 }

@@ -459,7 +459,6 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         <Uneditable
           label="Source"
           value={values.source}
-          money
         />
       </Grid>
 

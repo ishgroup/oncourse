@@ -74,10 +74,10 @@ class EntityFunctions {
         return query
     }
 
-    static Expression createTagGroupExpression(String alias, String realPath, List<Long> tagIds, String entity) {
+    static Expression createTagGroupExpression(String alias, List<String> realPaths, List<Long> tagIds, String entity) {
 
         SimpleNode taggedNode = new ASTAnd()
-        Map aliases = Collections.singletonMap(alias, realPath)
+        Map aliases = Collections.singletonMap(alias, realPaths.first())
 
 
         ASTObjPath entityPath = new ASTObjPath(alias + "+." + TagRelation.ENTITY_IDENTIFIER.name)
@@ -116,9 +116,11 @@ class EntityFunctions {
 
             String alias = "${Tag.ALIAS}${aliasCounter++}"
 
-            String path = tagGroup.path != null ? "${tagGroup.path}+.${Tag.TAG_PATH}" : Tag.TAG_PATH
+            List<String> paths = tagGroup.path != null
+                    ? tagGroup.path.split("\\|").collect {it+"+.${Tag.TAG_PATH}"}
+                    : List.of(Tag.TAG_PATH)
 
-            Expression expr = createTagGroupExpression(alias, path, tagGroup.tagIds, tagGroup.entity?:entity)
+            Expression expr = createTagGroupExpression(alias, paths, tagGroup.tagIds, tagGroup.entity?:entity)
 
             if (result == null) {
                 result = expr

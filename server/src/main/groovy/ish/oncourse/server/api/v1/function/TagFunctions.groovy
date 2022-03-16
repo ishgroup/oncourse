@@ -40,6 +40,7 @@ import ish.oncourse.server.cayenne.Membership
 import ish.oncourse.server.cayenne.MembershipProduct
 import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.Payslip
+import ish.oncourse.server.cayenne.ProductItem
 import ish.oncourse.server.cayenne.Quote
 import ish.oncourse.server.cayenne.QuoteLine
 import ish.oncourse.server.cayenne.Room
@@ -57,6 +58,7 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.PrefetchTreeNode
 
+import java.util.regex.Pattern
 import java.util.stream.Collectors
 
 import static org.apache.commons.lang3.StringUtils.EMPTY
@@ -110,18 +112,25 @@ class TagFunctions {
         put(Tutor.simpleName, TaggableClasses.TUTOR)
         put(WaitingList.simpleName, TaggableClasses.WAITING_LIST)
         put(CourseClass.simpleName, TaggableClasses.COURSE_CLASS)
-        put(Message.simpleName, TaggableClasses.MESSAGE)
-        put(Article.simpleName, TaggableClasses.ARTICLE)
-        put(Voucher.simpleName, TaggableClasses.VOUCHER)
-        put(Membership.simpleName, TaggableClasses.MEMBERSHIP)
+        put(ProductItem.simpleName, TaggableClasses.PRODUCT_ITEM)
+        put(Article.simpleName, TaggableClasses.PRODUCT_ITEM)
+        put(Voucher.simpleName, TaggableClasses.PRODUCT_ITEM)
+        put(Membership.simpleName, TaggableClasses.PRODUCT_ITEM)
         put(ArticleProduct.simpleName, TaggableClasses.ARTICLE_PRODUCT)
         put(VoucherProduct.simpleName, TaggableClasses.VOUCHER_PRODUCT)
         put(MembershipProduct.simpleName, TaggableClasses.MEMBERSHIP_PRODUCT)
     }}
 
+    private static final BidiMap<String, TaggableClasses> taggableClassesForRequirements = new BidiMap<String, TaggableClasses>() {{
+        put(Article.simpleName, TaggableClasses.ARTICLE)
+        put(Voucher.simpleName, TaggableClasses.VOUCHER)
+        put(Membership.simpleName, TaggableClasses.MEMBERSHIP)
+    }}
+
     private static final Map<TaggableClasses, TaggableClasses[]> additionalTaggableClasses =
             new HashMap<TaggableClasses, TaggableClasses[]>() {{
         put(TaggableClasses.CONTACT, [TaggableClasses.STUDENT, TaggableClasses.TUTOR] as TaggableClasses[])
+        put(TaggableClasses.PRODUCT_ITEM, [TaggableClasses.ARTICLE, TaggableClasses.VOUCHER, TaggableClasses.MEMBERSHIP] as TaggableClasses[])
     }}
 
     static TagDTO toRestTag(Tag dbTag, Map<Long, Integer> childCountMap, boolean isParent = true) {
@@ -214,11 +223,17 @@ class TagFunctions {
 
         Tag dbTag = ObjectSelect.query(Tag)
                 .where(Tag.NAME.eq(tag.name))
-                .and(Tag.IS_VOCABULARY.isTrue())
+                .and(Tag.PARENT_TAG.isNull())
                 .selectOne(context)
 
         if (dbTag != null && dbTag.id != tag.id) {
             return new ValidationErrorDTO(tag.id?.toString(), 'name', 'Name should be unique.')
+        }
+
+        Set<String> notValidNames = new HashSet<>()
+        validateNamesOfNewTag(tag , notValidNames)
+        if (notValidNames.size() > 0) {
+            return new ValidationErrorDTO(null, 'name', "\'${notValidNames[0]}\' has forbidden symbols. The tag name can only contain letters, numbers, \'-\', \'_\' and spaces.")
         }
 
         if (validateTagNameUniqueness(tag)) {
@@ -278,10 +293,24 @@ class TagFunctions {
         tag.childTags.collect { validateTagNameUniqueness(it) }.contains(true) || tag.childTags.size() != tag.childTags*.name.unique().size()
     }
 
+    static boolean validateNamesOfNewTag(TagDTO tag, Set notValidNames) {
+        tag.childTags.each { validateNamesOfNewTag(it, notValidNames) }
+        if ((!isNameValid(tag.name) && tag.id == null)){
+            notValidNames.add(tag.name)
+            return true
+        } else {
+            return false
+        }
+    }
+
     static boolean validateUrlPathUniqueness(TagDTO tag) {
         tag.childTags.collect { validateUrlPathUniqueness(it) }.contains(true) || tag.childTags*.urlPath.findAll().size() != tag.childTags*.urlPath.findAll().unique().size()
     }
 
+    private static boolean isNameValid(String name) {
+        Pattern p = Pattern.compile("^([\\w_ -])+")
+        return p.matcher(name).matches()
+    }
 
     static Tag toDbTag(ObjectContext context, TagDTO tag, Tag dbTag, boolean isParent = true, Map<Long, Tag> childTagsToRemove = getAllChildTags(dbTag)) {
 
@@ -317,7 +346,6 @@ class TagFunctions {
             dbTag.isWebVisible = tag.status == TagStatusDTO.SHOW_ON_WEBSITE
             dbTag.shortName = trimToNull(tag.urlPath)
             dbTag.nodeType = NodeType.TAG
-            dbTag.isVocabulary = isParent
             dbTag.weight = tag.weight
             dbTag.colour = tag.color
         }
@@ -383,6 +411,12 @@ class TagFunctions {
         prefetch
     }
 
+    static TaggableClasses getRequirementTaggableClassForName(String entityName){
+        return taggableClassesForRequirements.containsKey(entityName)
+                ? taggableClassesForRequirements.get(entityName)
+                : getTaggableClassForName(entityName);
+    }
+
     static TaggableClasses getTaggableClassForName(String entityName) {
         taggableClassesBidiMap.get(entityName)
     }
@@ -426,7 +460,7 @@ class TagFunctions {
                         "Tag with id = " + tagId + " doesn\'t exist.")
             }
 
-            if(tag.isVocabulary) {
+            if(tag.parentTag == null) {
                 return new ValidationErrorDTO(null, 'tags',
                         "Tag relations cannot be directly related to a tag group.")
             }

@@ -7,41 +7,34 @@ import { Epic } from "redux-observable";
 
 import { DataResponse } from "@api/model";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import { GET_EMAIL_TEMPLATES_LIST, GET_EMAIL_TEMPLATES_LIST_FULFILLED } from "../actions/index";
+import {
+  GET_EMAIL_TEMPLATES_LIST,
+  getEmailTemplatesListFulfilled
+} from "../actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import EntityService from "../../../../../common/services/EntityService";
 import history from "../../../../../constants/History";
-import { CommonListItem } from "../../../../../model/common/sidebar";
+import { CATALOG_ITEM_COLUMNS, mapListToCatalogItem } from "../../../../../common/utils/Catalog";
+import { CatalogItemType } from "../../../../../model/common/Catalog";
 
 const request: EpicUtils.Request<any, { selectFirst: boolean; keyCodeToSelect: string }> = {
   type: GET_EMAIL_TEMPLATES_LIST,
-  getData: () => EntityService.getPlainRecords("EmailTemplate", "name,keyCode,enabled", "keyCode not is null", null, null, "id", true),
+  getData: () => EntityService.getPlainRecords("EmailTemplate", CATALOG_ITEM_COLUMNS, "keyCode not is null", null, null, "id", true),
   processData: (response: DataResponse, s, p) => {
-    const emailTemplates: CommonListItem[] = response.rows.map(r => ({
-      id: Number(r.id),
-      name: r.values[0],
-      keyCode: r.values[1],
-      hasIcon: r.values[1] && r.values[1].startsWith("ish."),
-      grayOut: r.values[2] === "false"
-    }));
+    const emailTemplates: CatalogItemType[] = response.rows.map(mapListToCatalogItem);
 
-    emailTemplates.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
+    emailTemplates.sort((a, b) => (a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1));
 
     if (p) {
       if (p.selectFirst) {
         history.push(`/automation/email-templates`);
       }
       if (p.keyCodeToSelect) {
-        history.push(`/automation/email-templates/${emailTemplates.find(t => t.keyCode === p.keyCodeToSelect).id}`);
+        history.push(`/automation/email-template/${emailTemplates.find(t => t.keyCode === p.keyCodeToSelect).id}`);
       }
     }
 
-    return [
-      {
-        type: GET_EMAIL_TEMPLATES_LIST_FULFILLED,
-        payload: { emailTemplates }
-      }
-    ];
+    return [getEmailTemplatesListFulfilled(emailTemplates)];
   },
   processError: response => FetchErrorHandler(response, "Failed to get email templates list")
 };

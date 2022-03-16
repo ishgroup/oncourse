@@ -21,7 +21,7 @@ import ish.oncourse.server.cayenne.glue._Article
  */
 @API
 @QueueableEntity
-class Article extends _Article implements ExpandableTrait, AttachableTrait, Taggable {
+class Article extends _Article implements ExpandableTrait, AttachableTrait {
 
 
     @Override
@@ -42,10 +42,5 @@ class Article extends _Article implements ExpandableTrait, AttachableTrait, Tagg
     @Override
     Class<? extends AttachmentRelation> getRelationClass() {
         return ArticleAttachmentRelation
-    }
-
-    @Override
-    Class<? extends TagRelation> getTagRelationClass() {
-        return ArticleTagRelation
     }
 }

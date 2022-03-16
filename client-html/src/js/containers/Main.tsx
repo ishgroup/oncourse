@@ -31,7 +31,7 @@ import { currentTheme, getTheme } from "../common/themes/ishTheme";
 import { ThemeContext } from "./ThemeContext";
 import {
   APPLICATION_THEME_STORAGE_NAME,
-  DASHBOARD_THEME_KEY, READ_NEWS,
+  DASHBOARD_THEME_KEY, LICENSE_SCRIPTING_KEY, READ_NEWS,
   SYSTEM_USER_ADMINISTRATION_CENTER
 } from "../constants/Config";
 import { DefaultThemeKey, ThemeValues } from "../model/common/Theme";
@@ -294,7 +294,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onInit: () => {
     dispatch(getGoogleTagManagerParameters());
     dispatch(getCurrency());
-    dispatch(getUserPreferences([SYSTEM_USER_ADMINISTRATION_CENTER, READ_NEWS]));
+    dispatch(getUserPreferences([SYSTEM_USER_ADMINISTRATION_CENTER, READ_NEWS, LICENSE_SCRIPTING_KEY]));
     dispatch(getDashboardBlogPosts());
   }
 });

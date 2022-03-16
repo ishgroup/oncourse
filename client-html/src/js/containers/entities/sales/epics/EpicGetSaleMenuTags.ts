@@ -22,7 +22,7 @@ const getTags = async () => {
   
   const unique = {};
   const result = [];
-  
+
   [
     ...getMenuTags(articleTags, [], null, null, "Article"), 
     ...getMenuTags(voucherTags, [], null, null, "Voucher"), 
@@ -30,10 +30,8 @@ const getTags = async () => {
   ].forEach(tag => {
     if (!unique[tag.tagBody.id]) {
       unique[tag.tagBody.id] = true;
+      tag.entity = "ProductItem";
       result.push(tag);
-    } else {
-      const resultTag = result.find(t => t.tagBody.id === tag.tagBody.id);
-      resultTag.entity = resultTag.entity + "|" + tag.entity;
     }
   });
   

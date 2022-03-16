@@ -21,20 +21,20 @@ import Typography from "@mui/material/Typography";
 import Edit from "@mui/icons-material/Edit";
 import clsx from "clsx";
 import React, { useState } from "react";
-import ReactMarkdown from "react-markdown";
+import markdown2html from '@ckeditor/ckeditor5-markdown-gfm/src/markdown2html/markdown2html.js';
 import { Field, WrappedFieldProps } from "redux-form";
 import HtmlEditor from "./HtmlEditor";
-import MarkdownEditor from "./MarkdownEditor";
 import { useStyles } from "./style";
 import {
   addContentMarker, CONTENT_MODES, getContentMarker, getEditorModeLabel, removeContentMarker
 } from "./utils";
+import WysiwygEditor from "./WysiwygEditor";
 
 const EditorResolver = ({ contentMode, draftContent, onChange }) => {
   switch (contentMode) {
     case "md": {
       return (
-        <MarkdownEditor
+        <WysiwygEditor
           value={draftContent}
           onChange={onChange}
         />
@@ -56,7 +56,6 @@ const EditorResolver = ({ contentMode, draftContent, onChange }) => {
 
 interface Props {
   disabled?: boolean;
-  hideLabel?: boolean;
   fieldClasses?: any;
   label?: string;
 }
@@ -161,29 +160,29 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
               onChange={onChange}
             />
           </div>
-        ) : (
-          <Typography
-            variant="body1"
-            component="div"
-            onClick={onEditButtonFocus}
-            className={clsx( classes.editable, {
-              [fieldClasses.placeholder ? fieldClasses.placeholder : "placeholderContent"]: !value,
-              [fieldClasses.text]: value,
-            })}
-          >
-            <span className={clsx(contentMode === "md" ? classes.previewFrame : "centeredFlex overflow-hidden")}>
-              {
-                value
-                  ? contentMode === "md"
-                    ? <ReactMarkdown source={removeContentMarker(value)} />
-                    : removeContentMarker(value)
-                  : "No value"
-              }
-            </span>
-            {!disabled
-            && <Edit color="primary" className={classes.hoverIcon} />}
-          </Typography>
-        )}
+          ) : (
+            <Typography
+              variant="body1"
+              component="div"
+              onClick={onEditButtonFocus}
+              className={clsx( classes.editable, {
+                [fieldClasses.placeholder ? fieldClasses.placeholder : "placeholderContent"]: !value,
+                [fieldClasses.text]: value,
+              })}
+            >
+              <span className={clsx(contentMode === "md" ? classes.previewFrame : "centeredFlex overflow-hidden")}>
+                {
+                  value
+                    ? contentMode === "md"
+                      ? <div dangerouslySetInnerHTML={{ __html: markdown2html(removeContentMarker(value)) }} />
+                      : removeContentMarker(value)
+                    : "No value"
+                }
+              </span>
+              {!disabled
+              && <Edit color="primary" className={classes.hoverIcon} />}
+            </Typography>
+          )}
         <FormHelperText>
           <span className="shakingError">
             {meta.error}

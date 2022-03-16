@@ -19,7 +19,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         {
         "name":"put Report01",
         "entity":"AccountTransaction",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"put1",
         "description":"some description",
         "body":"someBody",
@@ -55,7 +55,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "id":"#(id)",
         "name":"put Report01 UPD",
         "entity":"Site",
-        "enabled":false,
+        "status":"Not Installed",
         "keyCode":"put1",
         "description":"some description UPD",
         "body":"someBody UPD",
@@ -82,7 +82,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "id":"#(~~id)",
         "name":"put Report01 UPD",
         "entity":"Site",
-        "enabled":false,
+        "status":"Not Installed",
         "keyCode":"put1",
         "description":"some description UPD",
         "body":"someBody UPD",
@@ -112,7 +112,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         {
         "name":"put Report02",
         "entity":"AccountTransaction",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"put2",
         "description":"some description",
         "body":"someBody",
@@ -121,7 +121,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "sortOn":"amount",
         "preview":null,
         "variables":[{"name":"varName1", "label":"varLabel1", "type":"Record"},{"name":"varName2", "label":"varLabel2", "type":"Date"}],
-        "options":[{"name":"optName1","type":"Date","value":"2019-01-01"}]
+        "options":[{"name":"optName1","type":"Date","value":"2019-01-01"}],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -153,7 +156,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "id":"#(id)",
         "name":"put Report02 UPD",
         "entity":"Site",
-        "enabled":false,
+        "status":"Not Installed",
         "keyCode":"put2",
         "description":"some description UPD",
         "body":"someBody UPD",
@@ -162,7 +165,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "sortOn":"name",
         "preview":null,
         "variables":[{"name":"varName1UPD", "label":"varLabel1UPD", "type":"Date time"}],
-        "options":[{"name":"optName1UPD","type":"Date","value":"2025-05-05"}]
+        "options":[{"name":"optName1UPD","type":"Date","value":"2025-05-05"}],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -180,7 +186,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "id":"#(~~id)",
         "name":"put Report02 UPD",
         "entity":"Site",
-        "enabled":false,
+        "status":"Not Installed",
         "keyCode":"put2",
         "description":"some description UPD",
         "body":"someBody UPD",
@@ -191,7 +197,11 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "variables":[{"name":"varName1UPD", "label":"varLabel1UPD", "type":"Date time","value":null,"system":null,"valueDefault":null}],
         "options":[{"name":"optName1UPD","label":null,"type":"Date","value":"2025-05-05","system":null,"valueDefault":null}],
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
+
         }
         """
 
@@ -214,7 +224,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         {
         "name":"put Report03",
         "entity":"AccountTransaction",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"put3",
         "description":"some description",
         "body":"someBody",
@@ -223,7 +233,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "sortOn":"amount",
         "preview":null,
         "variables":[],
-        "options":[]
+        "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -255,7 +268,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "id":"#(id)",
         "name":"put Report03 UPD",
         "entity":"Site",
-        "enabled":false,
+        "status":"Not Installed",
         "keyCode":"put3",
         "description":"some description UPD",
         "body":"someBody UPD",
@@ -264,7 +277,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "sortOn":"name",
         "preview":null,
         "variables":[],
-        "options":[]
+        "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -293,7 +309,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         {
         "name":"put Report04",
         "entity":"AccountTransaction",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"put4",
         "description":"some description",
         "body":"someBody",
@@ -302,7 +318,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "sortOn":"amount",
         "preview":null,
         "variables":[],
-        "options":[]
+        "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -329,7 +348,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "id":"#(id)",
         "name":"",
         "entity":"Site",
-        "enabled":false,
+        "status":"Not Installed",
         "keyCode":"put4",
         "description":"some description UPD",
         "body":"someBody UPD",
@@ -338,7 +357,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "sortOn":"name",
         "preview":null,
         "variables":[],
-        "options":[]
+        "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -363,7 +385,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         {
         "name":"put Report05",
         "entity":"AccountTransaction",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"put5",
         "description":"some description",
         "body":"someBody",
@@ -372,7 +394,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "sortOn":"amount",
         "preview":null,
         "variables":[],
-        "options":[]
+        "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -399,7 +424,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "id":"#(id)",
         "name":"put Report05",
         "entity":"AccountTransaction",
-        "enabled":false,
+        "status":"Not Installed",
         "keyCode":"",
         "description":"some description",
         "body":"someBody",
@@ -408,7 +433,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "sortOn":"name",
         "preview":null,
         "variables":[],
-        "options":[]
+        "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -433,7 +461,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         {
         "name":"put Report06",
         "entity":"AccountTransaction",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"put6",
         "description":"some description",
         "body":"someBody",
@@ -442,7 +470,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "sortOn":"amount",
         "preview":null,
         "variables":[],
-        "options":[]
+        "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -469,7 +500,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "id":"#(id)",
         "name":"put Report06",
         "entity":"Site",
-        "enabled":false,
+        "status":"Not Installed",
         "keyCode":"other",
         "description":"some description",
         "body":"someBody",
@@ -478,7 +509,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "sortOn":"name",
         "preview":null,
         "variables":[],
-        "options":[]
+        "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -503,7 +537,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         {
         "name":"put Report07",
         "entity":"AccountTransaction",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"put7",
         "description":"some description",
         "body":"someBody",
@@ -512,7 +546,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "sortOn":"amount",
         "preview":null,
         "variables":[],
-        "options":[]
+        "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -539,7 +576,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "id":"#(id)",
         "name":"put Report07",
         "entity":null,
-        "enabled":false,
+        "status":"Not Installed",
         "keyCode":"put7",
         "description":"some description",
         "body":"someBody UPD",
@@ -548,7 +585,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "sortOn":"name",
         "preview":null,
         "variables":[],
-        "options":[]
+        "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -573,7 +613,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         {
         "name":"put Report08",
         "entity":"AccountTransaction",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"put8",
         "description":"some description",
         "body":"someBody",
@@ -582,7 +622,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "sortOn":"amount",
         "preview":null,
         "variables":[],
-        "options":[]
+        "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -609,7 +652,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "id":"#(id)",
         "name":"put Report08",
         "entity":"Site",
-        "enabled":false,
+        "status":"Not Installed",
         "keyCode":"put8",
         "description":"some description",
         "body":"",
@@ -618,7 +661,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "sortOn":"name",
         "preview":null,
         "variables":[],
-        "options":[]
+        "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -643,7 +689,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         {
         "name":"put Report11",
         "entity":"AccountTransaction",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"put11",
         "description":"some description",
         "body":"someBody",
@@ -652,7 +698,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "sortOn":"amount",
         "preview":null,
         "variables":[],
-        "options":[]
+        "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -679,7 +728,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "id":"#(id)",
         "name":"A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A1",
         "entity":"Site",
-        "enabled":false,
+        "status":"Not Installed",
         "keyCode":"put11",
         "description":"some description",
         "body":"someBody",
@@ -688,7 +737,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "sortOn":"name",
         "preview":null,
         "variables":[],
-        "options":[]
+        "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -713,7 +765,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         {
         "name":"put Report03",
         "entity":"AccountTransaction",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"put3",
         "description":"some description",
         "body":"someBody",
@@ -722,7 +774,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "sortOn":"amount",
         "preview":null,
         "variables":[],
-        "options":[]
+        "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -749,7 +804,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "id":"#(id)",
         "name":"put Report03 UPD",
         "entity":"A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42",
-        "enabled":false,
+        "status":"Not Installed",
         "keyCode":"put3",
         "description":"some description UPD",
         "body":"someBody UPD",
@@ -758,7 +813,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "sortOn":"name",
         "preview":null,
         "variables":[],
-        "options":[]
+        "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -794,7 +852,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "id":1,
         "name":"Certificate UPD",
         "entity":"Site",
-        "enabled":false,
+        "status":"Not Installed",
         "keyCode":"ish.onCourse.certificate",
         "description":"UPD onCourse includes AQF recommended templates for full Qualification Certificates, Statements of Attainment and transcripts. Certificates can only be generated from units that are recorded as part of onCourse enrolments.This report prints in Portrait format.",
         "body":"UPD",
@@ -804,6 +862,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "preview":null,
         "variables":[],
         "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -823,7 +884,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "id":99999,
         "name":"put Report03 UPD",
         "entity":"Site",
-        "enabled":false,
+        "status":"Not Installed",
         "keyCode":"put3",
         "description":"some description UPD",
         "body":"someBody UPD",
@@ -832,7 +893,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "sortOn":"name",
         "preview":null,
         "variables":[],
-        "options":[]
+        "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 

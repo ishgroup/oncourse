@@ -3,7 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Diff, FundingSource, SearchQuery, Sorting, Tag } from "@api/model";
+import {
+ Diff, FundingSource, SearchQuery, Sorting, Tag 
+} from "@api/model";
 import Drawer from "@mui/material/Drawer";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
@@ -12,10 +14,14 @@ import ListItem from "@mui/material/ListItem";
 import withStyles from "@mui/styles/withStyles";
 import Typography from "@mui/material/Typography";
 import { Help } from "@mui/icons-material";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+ useEffect, useMemo, useState
+} from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { change, Field, reduxForm, reset } from "redux-form";
+import {
+ change, Field, reduxForm, reset 
+} from "redux-form";
 import Button from "@mui/material/Button";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { PreferencesState } from "../../../../../containers/preferences/reducers/state";
@@ -59,7 +65,7 @@ interface BulkEditProps {
   getEntityTags?: (entity: string) => void;
   showConfirm?: ShowConfirmCaller;
   reset?: any;
-  getCustomBulkEditFields?: any;
+  getCustomBulkEditFields?: () => Promise<any>;
 }
 
 const BulkEditForm: React.FC<BulkEditProps> = props => {
@@ -88,7 +94,11 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
   const [selectAll, setSelectAll] = useState(false);
   const [bulkEditFields, setBulkEditFields] = useState(null);
   const [selectedKeyCode, setSelectedKeyCode] = useState(null);
-  const [usedKeys, setUsedKeys] = useState({});
+
+  const getBulkEditFieldData = ():BulkEditField => {
+    if (!bulkEditFields || !selectedKeyCode) return null;
+    return bulkEditFields.find(field => field.keyCode === selectedKeyCode);
+  };
 
   useEffect(() => {
     if (rootEntity) {
@@ -104,22 +114,26 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
   }, [rootEntity]);
 
   useEffect(() => {
-    if (showBulkEditDrawer && getCustomBulkEditFields) {
-      const getCustomFields = async () => {
-        const fields = await getCustomBulkEditFields();
-
-        setBulkEditFields(fields);
-      };
-
-      getCustomFields();
+    if (getCustomBulkEditFields) {
+      getCustomBulkEditFields().then(fields => setBulkEditFields(fields));
     }
-  }, [selection, showBulkEditDrawer]);
+  }, [getCustomBulkEditFields]);
 
-  const onClose = useCallback(() => {
+  useEffect(() => {
+    if (showBulkEditDrawer && bulkEditFields?.length) {
+      bulkEditFields.forEach(field => {
+        if (field.hasOwnProperty("defaultValue")) {
+          dispatch(change("BulkEditForm", field.keyCode, field.defaultValue));
+        }
+      });
+    }
+  }, [showBulkEditDrawer, bulkEditFields]);
+
+  const onClose = () => {
     reset();
     setSelectAll(false);
     toggleBulkEditDrawer();
-  }, []);
+  };
 
   const onSave = values => {
     const ids = selectAll ? null : selection.map(s => Number(s));
@@ -141,47 +155,35 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
     });
   };
 
-  const getBulkEditFieldData = useCallback(():BulkEditField => {
-    if (!bulkEditFields || !selectedKeyCode) return null;
-    return bulkEditFields.find(field => field.keyCode === selectedKeyCode);
-  }, [bulkEditFields, selectedKeyCode]);
+  const tags = useMemo(() => {
+    if (rootEntity === "ProductItem" && entityTags) {
+      const unique = {};
+      const productItemTags = [];
 
-  const tags = useMemo(
-    () => {
-      if (rootEntity === "ProductItem" && entityTags) {
-        const unique = {};
-        const productItemTags = [];
-        
-        [
-          ...entityTags["Article"] || [],
-          ...entityTags["Voucher"] || [],
-          ...entityTags["Membership"] || [],
-        ].forEach(t => {
-          if (!unique[t.id]) {
-            unique[t.id] = true;
-            productItemTags.push(t);
-          }
-        });
-        
-        return productItemTags;
-      }
-      return (entityTags && rootEntity && entityTags[rootEntity]) || [];
-    },
-    [entityTags, rootEntity]
-  );
+      [
+        ...entityTags["Article"] || [],
+        ...entityTags["Voucher"] || [],
+        ...entityTags["Membership"] || [],
+      ].forEach(t => {
+        if (!unique[t.id]) {
+          unique[t.id] = true;
+          productItemTags.push(t);
+        }
+      });
+
+      return productItemTags;
+    }
+    return (entityTags && rootEntity && entityTags[rootEntity]) || [];
+  }, [entityTags, rootEntity]);
 
   const BulkEditFieldRendered = useMemo(() => {
-    if (!selectedKeyCode) {
+    const field = getBulkEditFieldData();
+
+    if (!field) {
       return null;
     }
 
-    const field = getBulkEditFieldData();
-    let fieldProps = {};
-
-    if (field.hasOwnProperty("defaultValue") && !usedKeys[field.keyCode]) {
-      setUsedKeys({ ...usedKeys, [field.keyCode]: true });
-      dispatch(change("BulkEditForm", field.keyCode, field.defaultValue));
-    }
+    let fieldProps;
 
     // eslint-disable-next-line default-case
     switch (field.type) {
@@ -262,7 +264,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           {...fieldProps}
         />
       );
-  }, [entityTags, rootEntity, usedKeys, bulkEditFields, selectedKeyCode]);
+  }, [tags, entityTags, rootEntity, bulkEditFields, selectedKeyCode]);
 
   return (
     <Drawer

@@ -68,6 +68,7 @@ class BankingApiImpl implements BankingApi {
 	private static String ERROR_NO_PAYMENTS_SELECTED = "No payments selected for deposit banking."
 	private static String ERROR_PAYMENT_BANKING_IS_SET = "Can not set banking for some payment(s) (already set)."
 	private static String ERROR_PAYMENT_IS_NOT_RECONCILABLE = "You may not change reconcilable status for not reconcilable payment(s)."
+	private static String ERROR_DATE_BANKED_AFTER_DATE_PAID = "Date banked must be after or equal to date paid."
 
 	@Inject
 	ICayenneService cayenneService
@@ -113,10 +114,12 @@ class BankingApiImpl implements BankingApi {
 		paymentsIn.each { it ->
 			checkForBadRequest(validateSameAccount(it, accountId))
 			checkForBadRequest(validatePaymentIsNotBanked(it))
+			checkForBadRequest(validateDateBankedAndPaymentDate(mb.settlementDate, it.paymentDate))
 		}
 		paymentsOut.each { it ->
 			checkForBadRequest(validateSameAccount(it, accountId))
 			checkForBadRequest(validatePaymentIsNotBanked(it))
+			checkForBadRequest(validateDateBankedAndPaymentDate(mb.settlementDate, it.paymentDate))
 		}
 
 		Banking newBanking = null
@@ -348,5 +351,12 @@ class BankingApiImpl implements BankingApi {
 	private static void removePaymentFromBanking(PaymentInterface pi) {
 		pi.reconciled = false
 		pi.banking = null
+	}
+
+	private static ValidationErrorDTO validateDateBankedAndPaymentDate (LocalDate dateBanked, LocalDate paymentDate) {
+		if (dateBanked != null && paymentDate != null && dateBanked.isBefore(paymentDate)) {
+			return new ValidationErrorDTO("---", "settlementDate", ERROR_DATE_BANKED_AFTER_DATE_PAID)
+		}
+		return null
 	}
 }
