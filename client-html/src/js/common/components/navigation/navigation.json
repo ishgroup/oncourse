@@ -617,7 +617,7 @@
     {
       "title": "Tutor pay rates",
       "key": "tutorPayRates",
-      "link": "/preferences/tutorRoles/222",
+      "link": "/preferences/tutorRoles",
       "description": "Manage the different tutor roles and their associated pay rates in your system."
     },
     {

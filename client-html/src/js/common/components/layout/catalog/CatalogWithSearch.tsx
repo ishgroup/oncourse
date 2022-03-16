@@ -47,6 +47,7 @@ const Row = memo<any>(
             <Delete fontSize="inherit" />
           </IconButton>
         )}
+        grayOut={!item.enabled}
         showDot
         hoverSecondary
       />
