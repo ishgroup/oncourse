@@ -492,7 +492,7 @@ class TagFunctions {
                 .where(Tag.ID.in(tagIds))
                 .select(context)
                 .each { tag ->
-                        Tag root = tag.root
+                        Tag root = tag.getRoot()
                     if (!rootTagsUsed[root]) {
                         rootTagsUsed.put(root, 1)
                     } else {
