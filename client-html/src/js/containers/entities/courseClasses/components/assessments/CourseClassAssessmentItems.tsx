@@ -554,7 +554,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
         <div>
           <div className="heading">Assessment Submission</div>
           <Typography component="div" className="mt-2 mb-3" variant="caption" color="textSecondary">
-            Please save new assessment before editinig submissions
+            Please save new assessment before editing submissions
           </Typography>
         </div>
       )}
