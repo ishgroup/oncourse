@@ -100,8 +100,8 @@ class CustomFieldTypeFunctions {
         if (!type.fieldKey || type.name.empty) {
             return new ValidationErrorDTO(type.id, 'fieldKey', "Custom field key should be specified")
         }
-        if (!type.fieldKey.matches(/^[a-zA-Z0-9]*$/)) {
-            return new ValidationErrorDTO(type.id, 'fieldKey', "The custom field key can contains alphanumeric symbols only")
+        if (!type.fieldKey.matches(/^[a-zA-Z0-9_]*$/)) {
+            return new ValidationErrorDTO(type.id, 'fieldKey', "The custom field key can contains alphanumeric symbols and underscores")
         }
 
         if (!type.entityType) {

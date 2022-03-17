@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.attendance.csv
-entityClass: CourseClass
-body: ish.onCourse.attendance.csv.groovy
-name: Attendance CSV
-outputType: csv

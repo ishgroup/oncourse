@@ -148,7 +148,8 @@ const CourseClassBulkChangeSessionForm = props => {
     getRooms,
     rooms,
     bulkValues,
-    sessions
+    sessions,
+    budget
   } = props;
 
   const [laterDate, setLaterDate] = useState<string>(null);
@@ -321,7 +322,7 @@ const CourseClassBulkChangeSessionForm = props => {
               <Grid item xs={12}>
                 {tutors.length > 0 && (
                   <BulkItemWrapper classes={classes} title="Tutors" name="tutors" noCollapse>
-                    <div className={classes.sessionTutors}>
+                    <div>
                       <Field
                         name="tutorAttendances"
                         component={CourseClassTutorRooster}
@@ -329,6 +330,8 @@ const CourseClassBulkChangeSessionForm = props => {
                         tutors={tutors}
                         onDeleteTutor={onDeleteTutor}
                         onAddTutor={onAddTutor}
+                        sessionDuration={durationValue}
+                        budget={budget}
                       />
                     </div>
                   </BulkItemWrapper>

@@ -16,7 +16,7 @@ import {
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import {
-  ClashType, SessionWarning, Site, TutorAttendance,
+  ClashType, CourseClassTutor, SessionWarning, Site, TutorAttendance,
 } from "@api/model";
 import ErrorMessage from "../../../../../common/components/form/fieldMessage/ErrorMessage";
 import FormField from "../../../../../common/components/form/formFields/FormField";
@@ -27,7 +27,7 @@ import { State } from "../../../../../reducers/state";
 import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
 import { openRoomLink } from "../../../rooms/utils";
 import { TimetableSession } from "../../../../../model/timetable";
-import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
+import { ClassCostExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 import CourseClassTutorRooster from "./CourseClassTutorRooster";
 import { setShiftedTutorAttendances } from "../../utils";
 
@@ -40,6 +40,8 @@ interface Props {
   sites?: Site[];
   triggerDebounseUpdate?: any;
   warnings: SessionWarning[];
+  budget: ClassCostExtended[];
+  addTutorWage: (tutor: CourseClassTutor, wage?: ClassCostExtended) => void;
 }
 
 const roomLabel = room => {
@@ -58,7 +60,9 @@ const CourseClassSessionFields: React.FC<Props> = ({
   session,
   tutors,
   triggerDebounseUpdate,
-  warnings
+  warnings,
+  budget,
+  addTutorWage
 }) => {
   const isMounted = useRef(false);
 
@@ -265,6 +269,8 @@ const CourseClassSessionFields: React.FC<Props> = ({
           tutors={tutors}
           onDeleteTutor={onDeleteTutor}
           onAddTutor={onAddTutor}
+          budget={budget}
+          addTutorWage={addTutorWage}
         />
       </Grid>
       <Grid item xs={12} className="secondaryHeading">

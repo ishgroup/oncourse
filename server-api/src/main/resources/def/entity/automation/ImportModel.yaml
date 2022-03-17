@@ -25,11 +25,11 @@ properties:
     type: string
     required: true
     description: import script
-  enabled:
-    type: boolean
-    description: Import status
+  status:
+    $ref: './AutomationStatus.yaml'
+    description: Automation status
     required: true
-    example: true
+    example: Enabled
   variables:
     type: array
     items:
@@ -53,3 +53,18 @@ properties:
     require: true
     description: import description
     example: description
+  shortDescription:
+    type: string
+    require: false
+    description: Message template short description
+    example: descr
+  automationTags:
+    type: string
+    require: false
+    description: automation tags separated by commas
+    example: new,income
+  category:
+    type: string
+    require: false
+    description: automation category
+    example: imports
