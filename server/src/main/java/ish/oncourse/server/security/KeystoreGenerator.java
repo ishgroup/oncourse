@@ -10,26 +10,21 @@
  */
 package ish.oncourse.server.security;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bouncycastle.asn1.x509.Extension;
-import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
-import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.X509ExtensionUtils;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.cert.jcajce.JcaX509ExtensionUtils;
 import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.generators.RSAKeyPairGenerator;
 import org.bouncycastle.crypto.params.RSAKeyGenerationParameters;
 import org.bouncycastle.crypto.params.RSAKeyParameters;
 import org.bouncycastle.crypto.params.RSAPrivateCrtKeyParameters;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 
 import javax.security.auth.x500.X500Principal;
@@ -37,7 +32,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.math.BigInteger;
-import java.security.*;
+import java.security.KeyFactory;
+import java.security.KeyStore;
+import java.security.SecureRandom;
+import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPublicKeySpec;
@@ -57,7 +55,7 @@ public final class KeystoreGenerator {
 	/**
 	 * Name of keystore
 	 */
-	static final String KEYSTORE = "onCourseSSL.keystore";
+	static final String KEYSTORE = "onCourseSSL.pem";
 
 	/**
 	 * Alias for keystore entry
@@ -129,13 +127,11 @@ public final class KeystoreGenerator {
 			// add requried certificate
 			generateIshClientServerCertificate(ks, algorithm, alias, keyPassword);
 			// save on disk
-			var fos = new FileOutputStream(name);
-			try {
+			try (var fos = new FileOutputStream(name)) {
 				logger.debug("store the keyStore to file {}", name);
 				ks.store(fos, keystorePassword.toCharArray());
 			} finally {
 				logger.debug("KeyStore file exist, load from disk");
-				IOUtils.closeQuietly(fos);
 			}
 		}
 		// file exist, load from disk
@@ -151,12 +147,8 @@ public final class KeystoreGenerator {
 	protected static KeyStore loadKeystore(String location, String password) throws Exception {
 		var ks = KeyStore.getInstance(KEYSTORE_TYPE);
 
-		FileInputStream fis = null;
-		try {
-			fis = new FileInputStream(location);
-			ks.load(fis, password.toCharArray());
-		} finally {
-			IOUtils.closeQuietly(fis);
+		try (FileInputStream fis = new FileInputStream(location)) {
+			ks.load(fis,password.toCharArray());
 		}
 		return ks;
 	}
