@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.payslipMicropay.csv
-entityClass: Payslip
-body: ish.onCourse.payslipMicropay.csv.groovy
-name: Payslip MicroPay export
-outputType: csv

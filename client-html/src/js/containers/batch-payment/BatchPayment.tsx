@@ -526,7 +526,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
               />
             </div>
 
-            <div className={clsx("overflow-auto flex-fill", classes.list)}>
+            <div className={clsx("flex-fill", classes.list)}>
               <FieldArray
                 name="contacts"
                 component={ContactRenderer}

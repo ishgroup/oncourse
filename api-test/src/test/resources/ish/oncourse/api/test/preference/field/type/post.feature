@@ -281,7 +281,6 @@ Feature: Main feature for all POST requests with path 'preference/field/type'
              | '123()key'  |
              | '123[]key'  |
              | '123{}key'  |
-             | '123_key'   |
              | '123=key'   |
              | '123+key'   |
              | '123-key'   |

@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.qualification.csv
-entityClass: Qualification
-body: ish.onCourse.qualification.csv.groovy
-name: Qualification CSV export
-outputType: csv

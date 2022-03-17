@@ -17,8 +17,11 @@ import {
   preventNegativeOrLogEnter
 } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { mapSelectItems } from "../../../../../common/utils/common";
+import { valiadateSelectItemAvailable } from "../../../../../common/utils/validation";
 
-const repetitionTypes = Object.keys(ClassCostRepetitionType).filter(t => t !== "Discount").map(mapSelectItems);
+const repetitionTypes = Object.keys(ClassCostRepetitionType).filter(t => !["Discount", "Per student contact hour"].includes(t)).map(mapSelectItems);
+
+const validateRepetition = val => valiadateSelectItemAvailable(val, repetitionTypes);
 
 const validatePercentage = value => (!value && value !== 0 ? "Field is mandatory" : undefined);
 
@@ -53,6 +56,7 @@ const PayRateItem = props => {
               name={`${item}.type`}
               label="Type"
               items={repetitionTypes}
+              validate={validateRepetition}
             />
           </Grid>
           <Grid item xs={2} className="d-flex">

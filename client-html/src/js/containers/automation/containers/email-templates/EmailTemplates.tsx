@@ -22,7 +22,7 @@ const initialDefault: EmailTemplate = {
   subject: null,
   plainBody: "",
   body: null,
-  enabled: false,
+  status: "Installed but Disabled",
   variables: [],
   options: [],
   type: null
@@ -50,7 +50,7 @@ const EmailTemplates = React.memo<any>(props => {
 
   const validateNewTemplateName = useCallback(name => {
       if (isNew) {
-        const matches = emailTemplates.filter(t => t.name.trim() === name.trim());
+        const matches = emailTemplates.filter(t => t.title.trim() === name.trim());
         return matches.length ? "Name must be unique" : undefined;
       }
       return undefined;
