@@ -227,18 +227,17 @@ class CourseClassMixin {
 	}
 
 	static Money getTotalInvoiced(CourseClass courseClass){
-		return reduceFilteredSum(courseClass.enrolmentsInvoiceLines, { InvoiceLine it -> !it.finalPriceToPayExTax.isNegative() })
+		Money total = courseClass.enrolmentsInvoiceLines
+				.findAll { it -> !it.discountedPriceTotalIncTax.isNegative() }
+				.sum { it -> it.discountedPriceTotalIncTax } as Money
+		return total != null ? total : Money.ZERO
 	}
 
 	static Money getTotalCredits(CourseClass courseClass){
-		return reduceFilteredSum(courseClass.enrolmentsInvoiceLines, { InvoiceLine it -> it.finalPriceToPayExTax.isNegative() })
-	}
-
-
-	private static Money reduceFilteredSum(List<InvoiceLine> invoiceLines, Closure<Boolean> filter){
-		return invoiceLines.findAll {filter(it)}.inject(Money.ZERO) {
-			Money total, InvoiceLine il ->  (total as Money).add((il.finalPriceToPayExTax as Money))
-		}.add(invoiceLines.findAll {filter(it)}.inject(Money.ZERO) { Money total, InvoiceLine il -> (total as Money).add(il.finalPriceToPayExTax as Money) })
+		Money total = courseClass.enrolmentsInvoiceLines
+				.findAll { it -> it.discountedPriceTotalIncTax.isNegative() }
+				.sum { it -> it.discountedPriceTotalIncTax } as Money
+		return total != null ? total : Money.ZERO
 	}
 
 	/**
