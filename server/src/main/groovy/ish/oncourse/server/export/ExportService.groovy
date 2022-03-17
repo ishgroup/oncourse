@@ -13,6 +13,7 @@ package ish.oncourse.server.export
 
 import com.google.inject.Inject
 import groovy.json.JsonBuilder
+import groovy.json.StreamingJsonBuilder
 import groovy.transform.CompileDynamic
 import groovy.xml.MarkupBuilder
 import ish.export.ExportParameter
@@ -71,7 +72,9 @@ class ExportService {
 
 		ExportResult result = new ExportResult()
 
-		result.setResult(performExport(template, exportables).toString().bytes)
+		def out = new StringWriter()
+		out << performExport(template, exportables)
+		result.setResult(out.toString().bytes)
 
 		return result
 	}
@@ -94,7 +97,8 @@ class ExportService {
 		if (clipboardExport) {
 			csv.delimiter = '\t' as char
 		}
-		def json = new JsonBuilder(writer)
+
+		def json = new StreamingJsonBuilder(writer)
 
 		template.options.each { opt ->
 			bindings.put(opt.name, opt.objectValue)
