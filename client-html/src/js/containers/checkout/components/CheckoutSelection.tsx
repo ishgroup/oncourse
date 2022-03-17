@@ -942,34 +942,33 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     [selectedDiscount]
   );
 
-  const onClassSelect = useCallback(
-    (selectedClass: CheckoutCourseClass) => {
-      const updatedCourse: CheckoutCourse = {
-        ...selectedCourse,
-        price: selectedClass.price,
-        animate: true,
-        discount: null,
-        discounts: [],
-        discountExTax: 0,
-        studyReason: "Not stated",
-        class: { ...selectedClass }
-      };
+  const onClassSelect = (selectedClass: CheckoutCourseClass) => {
+    const updatedCourse: CheckoutCourse = {
+      ...selectedCourse,
+      price: selectedClass.price,
+      animate: true,
+      discount: null,
+      discounts: [],
+      discountExTax: 0,
+      studyReason: "Not stated",
+      class: { ...selectedClass }
+    };
 
-      if (selectedItems.some(i => i.id === updatedCourse.id)) {
-        updateSelectedClass(updatedCourse);
-      } else {
-        addSelectedItem(updatedCourse);
-      }
+    debugger;
 
-      setSelectedCourse(updatedCourse);
-      getClassPaymentPlans(updatedCourse);
-      openSidebarDrawer();
-      setTimeout(() => {
-        checkoutUpdateSummaryClassesDiscounts();
-      }, 500);
-    },
-    [selectedCourse]
-  );
+    if (selectedItems.some(i => i.id === updatedCourse.id)) {
+      updateSelectedClass(updatedCourse);
+    } else {
+      addSelectedItem(updatedCourse);
+    }
+
+    setSelectedCourse(updatedCourse);
+    getClassPaymentPlans(updatedCourse);
+    openSidebarDrawer();
+    setTimeout(() => {
+      checkoutUpdateSummaryClassesDiscounts();
+    }, 500);
+  };
 
   const handleFundingInvoiceClick = () => {
     handleChangeStep(CheckoutCurrentStep.fundingInvoice);
