@@ -27,7 +27,8 @@ import {
 export const PDF_REPORT_FORM_NAME = "PdfReportForm";
 
 const initialDefault: ExportTemplate = {
-  variables: []
+  variables: [],
+  status: "Installed but Disabled"
 };
 
 const PdfReports = React.memo<any>(props => {

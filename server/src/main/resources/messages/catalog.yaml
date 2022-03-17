@@ -1,0 +1,568 @@
+- name: VET Course completion survey
+  type: email
+  entityClass: Enrolment
+  keyCode: ish.email.VETCourseCompletionSurvey
+  txtTemplate: ish.email.VETCourseCompletionSurvey.txt
+  htmlTemplate: ish.email.VETCourseCompletionSurvey.html
+  subject: "VET Course completion survey"
+  options:
+    - name: header_keycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footer_keycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: alert students of assessment release
+  type: email
+  keyCode: ish.email.alertStudentsOfAssessmentRelease
+  txtTemplate: ish.email.alertStudentsOfAssessmentRelease.txt
+  htmlTemplate: ish.email.alertStudentsOfAssessmentRelease.html
+  subject: Assessments Released
+  description: An email with notification to student to inform them that assessments are now available in the SkillsOnCourse portal
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: alert students of related class
+  type: email
+  keyCode: ish.email.alertStudentsOfRelatedClass
+  txtTemplate: ish.email.alertStudentsOfRelatedClass.txt
+  htmlTemplate: ish.email.alertStudentsOfRelatedClass.html
+  subject: Next Steps
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: alert tutors of assessment release
+  type: email
+  keyCode: ish.email.alertTutorsOfAssessmentRelease
+  txtTemplate: ish.email.alertTutorsOfAssessmentRelease.txt
+  htmlTemplate: ish.email.alertTutorsOfAssessmentRelease.html
+  subject: Assessment Released
+  description: An email with notification to tutor to inform them that assessments are now available in the SkillsOnCourse portal
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Certificate available
+  type: email
+  keyCode: ish.email.availableCertificate
+  txtTemplate: ish.email.availableCertificate.txt
+  htmlTemplate: ish.email.availableCertificate.html
+  subject: Certificate available
+  entityClass: Enrolment
+  description: An email to the student containing the link to the certificate
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Birthday voucher email
+  type: email
+  keyCode: ish.email.birthdayVoucher
+  txtTemplate: ish.email.birthdayVoucher.txt
+  htmlTemplate: ish.email.birthdayVoucher.html
+  subject: Happy Birthday!
+  entityClass: Contact
+  description: An email with a birthday voucher as a gift
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Class Cancellation
+  type: email
+  keyCode: ish.email.classCancellation
+  txtTemplate: ish.email.classCancellation.txt
+  htmlTemplate: ish.email.classCancellation.html
+  subject: Class cancellation
+  entityClass: Enrolment
+  description: An email to the student with information about class cancellation
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Class Confirmed
+  type: email
+  keyCode: ish.email.classConfirmed
+  txtTemplate: ish.email.classConfirmed.txt
+  htmlTemplate: ish.email.classConfirmed.html
+  subject: Class confirmed. ${courseClass.code} ${courseClass.course.name}.
+  entityClass: Enrolment
+  description: An email to students when course class is confirmed
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Course completion survey
+  type: email
+  keyCode: ish.email.courseCompletionSurvey
+  txtTemplate: ish.email.courseCompletionSurvey.txt
+  htmlTemplate: ish.email.courseCompletionSurvey.html
+  subject: Course completion survey
+  entityClass: Enrolment
+  description: Send email with the completion survey to student who completed a course recently.
+  options:
+    - name: header_keycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footer_keycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Enrolment application accepted
+  type: email
+  keyCode: ish.email.enrolmentApplicationAccepted
+  txtTemplate: ish.email.enrolmentApplicationAccepted.txt
+  htmlTemplate: ish.email.enrolmentApplicationAccepted.html
+  subject: Approval to enrol in ${application.course.name}
+  entityClass: Application
+  description: An email about whether their application has been offered
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Enrolment application received
+  type: email
+  keyCode: ish.email.enrolmentApplicationReceived
+  txtTemplate: ish.email.enrolmentApplicationReceived.txt
+  htmlTemplate: ish.email.enrolmentApplicationReceived.html
+  subject: Enrolment application received
+  entityClass: Application
+  description: An email to the student when their application has been received
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Enrolment application rejected
+  type: email
+  keyCode: ish.email.enrolmentApplicationRejected
+  txtTemplate: ish.email.enrolmentApplicationRejected.txt
+  htmlTemplate: ish.email.enrolmentApplicationRejected.html
+  subject: Your application for ${application.course.name}
+  entityClass: Application
+  description: An email about whether their application has been rejected
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Enrolment Confirmation
+  type: email
+  keyCode: ish.email.enrolmentConfirmation
+  txtTemplate: ish.email.enrolmentConfirmation.txt
+  htmlTemplate: ish.email.enrolmentConfirmation.html
+  subject: Enrolment confirmation ${enrolment.invoiceLine.invoice.invoiceNumber}
+  entityClass: Enrolment
+  description: Enrolment confirmation email to the student
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Enrolment notification
+  type: email
+  keyCode: ish.email.enrolmentTutorNotification
+  txtTemplate: ish.email.enrolmentTutorNotification.txt
+  htmlTemplate: ish.email.enrolmentTutorNotification.html
+  subject: Enrolment notification from ${enrolment.courseClass.course.name} ${enrolment.courseClass.course.code}-${enrolment.courseClass.code}
+  description: An enrolment notification email to tutors attached to classes.
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Simple footer
+  type: email
+  keyCode: ish.email.footer
+  txtTemplate: ish.email.footer.txt
+  htmlTemplate: ish.email.footer.html
+  description: Simple email template footer
+  variables:
+    - name: subject
+      label: Subject
+      dataType: TEXT
+  options:
+    - name: footer_text
+      dataType: TEXT
+      value: ''
+  
+  
+- name: Simple header
+  type: email
+  keyCode: ish.email.header
+  txtTemplate: ish.email.header.txt
+  htmlTemplate: ish.email.header.html
+  description: Simple email template header
+  variables:
+    - name: subject
+      label: Subject
+      dataType: TEXT
+  options:
+    - name: logo_url
+      dataType: TEXT
+      value: ''
+  
+  
+- name: Membership Notification Renewal
+  type: email
+  keyCode: ish.email.membershipNotificationRenewal
+  txtTemplate: ish.email.membershipNotificationRenewal.txt
+  htmlTemplate: ish.email.membershipNotificationRenewal.html
+  subject: Membership Renewal
+  entityClass: Membership
+  description: An email with notification that membership will expire in the next 7 days
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Notification of documents pending for deletion
+  type: email
+  keyCode: ish.email.notificationWithDocumentsList
+  txtTemplate: ish.email.notificationWithDocumentsList.txt
+  htmlTemplate: ish.email.notificationWithDocumentsList.html
+  subject: A list documents to be deleted next Sunday
+  entityClass: DocumentVersion
+  description: An email to the system admin with a list of documents to be deleted in the next weekly purge of deleted documents. Documents which have been in the bin for more than 30 days will be deleted.
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+  
+- name: Payment Receipt
+  type: email
+  keyCode: ish.email.paymentReceipt
+  txtTemplate: ish.email.paymentReceipt.txt
+  htmlTemplate: ish.email.paymentReceipt.html
+  subject: ${Preferences.get("college.name")} payment Receipt
+  entityClass: PaymentIn
+  description: Email with a payment receipt to the payer
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Payment reminder
+  type: email
+  keyCode: ish.email.paymentReminder
+  txtTemplate: ish.email.paymentReminder.txt
+  htmlTemplate: ish.email.paymentReminder.html
+  subject: Invoice ${invoice.invoiceNumber} Payment Reminder
+  entityClass: Invoice
+  description: An email reminder with payment due date to the payer.
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Contractor pay processed
+  type: email
+  keyCode: ish.email.payrollContractorNotification
+  txtTemplate: ish.email.payrollContractorNotification.txt
+  htmlTemplate: ish.email.payrollContractorNotification.html
+  subject: Contractor pay processed
+  entityClass: Payslip
+  description: Notification of processed contractor pay
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Tutor pay processed
+  type: email
+  keyCode: ish.email.payrollTutorNotification
+  txtTemplate: ish.email.payrollTutorNotification.txt
+  htmlTemplate: ish.email.payrollTutorNotification.html
+  subject: Tutor pay processed
+  entityClass: Payslip
+  description: Notification of processed tutor pay
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+    - name: remittanceTerms
+      dataType: TEXT
+      value: '3'
+  
+- name: Quote
+  type: email
+  keyCode: ish.email.quote
+  txtTemplate: ish.email.quote.txt
+  htmlTemplate: ish.email.quote.html
+  subject: Quote ${quote.quoteNumber}
+  entityClass: Quote
+  description: Email to the payer with their quote
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Refund advice
+  type: email
+  keyCode: ish.email.refundAdvice
+  txtTemplate: ish.email.refundAdvice.txt
+  htmlTemplate: ish.email.refundAdvice.html
+  subject: ${Preferences.get("college.name")} Refund Advice
+  entityClass: PaymentOut
+  description: An email to the payer about a refund that has been processed
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Simple Email
+  entityClass: Contact
+  type: email
+  keyCode: ish.email.simple
+  subject: ${subjectTxt}
+  txtTemplate: ish.email.simple.txt
+  htmlTemplate: ish.email.simple.html
+  description: Simple email template with minimal styling
+  variables:
+    - name: subjectTxt
+      label: Subject
+      dataType: TEXT
+    - name: body
+      label: Body
+      dataType: TEXT
+  options:
+    - name: header_keycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footer_keycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+  
+- name: Student notice of class commencement
+  type: email
+  keyCode: ish.email.studentNoticeOfClassCommencement
+  txtTemplate: ish.email.studentNoticeOfClassCommencement.txt
+  htmlTemplate: ish.email.studentNoticeOfClassCommencement.html
+  subject: "Reminder: Class starting soon"
+  entityClass: Enrolment
+  description: An email to the student with information about when their class is starting
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: survey invitation
+  type: email
+  keyCode: ish.email.surveyInvitation
+  txtTemplate: ish.email.surveyInvitation.txt
+  subject: Survey invitation
+  
+- name: Tax Invoice
+  type: email
+  keyCode: ish.email.taxInvoice
+  txtTemplate: ish.email.taxInvoice.txt
+  htmlTemplate: ish.email.taxInvoice.html
+  subject: Invoice ${invoice.invoiceNumber}
+  entityClass: Invoice
+  description: Email to the payer with their invoice
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Tutor notice of class cancellation
+  type: email
+  keyCode: ish.email.tutorNoticeOfClassCancellation
+  txtTemplate: ish.email.tutorNoticeOfClassCancellation.txt
+  htmlTemplate: ish.email.tutorNoticeOfClassCancellation.html
+  subject: "${Preferences.get(\"college.name\")} ${courseClass.course.name} class was cancelled"
+  description: An email to the tutor with information about class cancellation
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Tutor notice of class commencement
+  type: email
+  entityClass: CourseClassTutor
+  keyCode: ish.email.tutorNoticeOfClassCommencement
+  txtTemplate: ish.email.tutorNoticeOfClassCommencement.txt
+  htmlTemplate: ish.email.tutorNoticeOfClassCommencement.html
+  subject: "Reminder: ${Preferences.get('college.name')} ${record.courseClass.course.name} class starting soon"
+  options:
+    - name: header_keycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footer_keycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Tutor notice of session commencement
+  type: email
+  entityClass: TutorAttendance
+  keyCode: ish.email.tutorNoticeOfSessionCommencement
+  txtTemplate: ish.email.tutorNoticeOfSessionCommencement.txt
+  htmlTemplate: ish.email.tutorNoticeOfSessionCommencement.html
+  subject: "Reminder: ${Preferences.get('college.name')} ${record.session.courseClass.course.name} class starting soon"
+  options:
+    - name: header_keycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footer_keycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Tutor notice of unmarked attendance
+  type: email
+  keyCode: ish.email.tutorNoticeOfUnmarkedAttendance
+  txtTemplate: ish.email.tutorNoticeOfUnmarkedAttendance.txt
+  htmlTemplate: ish.email.tutorNoticeOfUnmarkedAttendance.html
+  subject: Notice of unmarked attendance
+  description: An email for notice tutor of unmarked attendance for last week
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: USI reminder email
+  type: email
+  keyCode: ish.email.usiReminder
+  txtTemplate: ish.email.usiReminder.txt
+  htmlTemplate: ish.email.usiReminder.html
+  subject: "Urgent: USI information required"
+  entityClass: Enrolment
+  description: An email to the student remindering them to supply their USI number.
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Voucher Email
+  type: email
+  keyCode: ish.email.voucherEmailTemplate
+  txtTemplate: ish.email.voucherEmailTemplate.txt
+  htmlTemplate: ish.email.voucherEmailTemplate.html
+  subject: Voucher ${voucher.voucherProduct.name}
+  entityCLass: Voucher
+  description: Email to the student with information about a voucher they have purchased
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Waiting List reminder
+  type: email
+  keyCode: ish.email.waitingListReminder
+  txtTemplate: ish.email.waitingListReminder.txt
+  htmlTemplate: ish.email.waitingListReminder.html
+  subject: Waiting list reminder
+  entityClass: WaitingList
+  description: An email to the student if they are on the waiting list with information about upcoming classes scheduled
+  variables:
+    - name: courseClasses
+      label: courseClasses
+      dataType: OBJECT
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+  
+- name: Simple SMS
+  entityClass: Contact
+  type: sms
+  keyCode: ish.sms.simple
+  txtTemplate: ish.sms.simple.txt
+  description: Send unformatted SMS
+  variables:
+    - name: message
+      label: Message
+      dataType: TEXT
+  
+  

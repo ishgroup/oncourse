@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.audit.xml
-entityClass: Audit
-body: ish.onCourse.audit.xml.groovy
-name: Audit XML export
-outputType: xml

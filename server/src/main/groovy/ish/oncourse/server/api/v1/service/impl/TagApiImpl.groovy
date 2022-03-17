@@ -65,7 +65,7 @@ class TagApiImpl implements TagApi {
                     .collectEntries { [ (it[0]) : it[1] ]}
 
 
-            Expression expr = Tag.IS_VOCABULARY.isTrue()
+            Expression expr = Tag.PARENT_TAG.isNull()
                     .andExp(Tag.NODE_TYPE.ne(NodeType.WEBPAGE))
             if (entityName) {
                 TaggableClasses taggableClass = getRequirementTaggableClassForName(entityName)

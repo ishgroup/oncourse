@@ -68,7 +68,6 @@ import ish.oncourse.server.cayenne.WaitingList
 import ish.oncourse.server.entity.mixins.ApplicationMixin
 import ish.oncourse.server.entity.mixins.BankingMixin
 import ish.oncourse.server.entity.mixins.PaymentInMixin
-import org.apache.cayenne.query.PrefetchTreeNode
 
 @CompileStatic
 class DefaultUserPreference {
@@ -98,7 +97,7 @@ class DefaultUserPreference {
     private static final TableModelDTO SCRIPT_MODEL = new TableModelDTO().with {
         it.columns = [
                 new ColumnDTO(title: 'Name', attribute: Script.NAME.name, sortable: true, width: W400, visible: true),
-                new ColumnDTO(title: 'Enabled', attribute: Script.ENABLED.name, sortable: true, width: W100, visible: true, type: ColumnTypeDTO.BOOLEAN),
+                new ColumnDTO(title: 'Enabled', attribute: Script.ENABLED_KEY, sortable: true, width: W100, visible: true, type: ColumnTypeDTO.BOOLEAN),
                 new ColumnDTO(title: 'Next run', attribute: 'nextRun', sortable: false, width: W300, visible: true),
         ]
         it.sortings = [

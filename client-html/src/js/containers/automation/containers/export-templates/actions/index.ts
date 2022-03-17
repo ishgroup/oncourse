@@ -1,5 +1,6 @@
 import { _toRequestType, FULFILLED } from "../../../../../common/actions/ActionUtils";
 import { ExportTemplate } from "@api/model";
+import { CatalogItemType } from "../../../../../model/common/Catalog";
 
 export const GET_EXPORT_TEMPLATES_LIST = _toRequestType("get/export-templates/list");
 export const GET_EXPORT_TEMPLATES_LIST_FULFILLED = FULFILLED(GET_EXPORT_TEMPLATES_LIST);
@@ -46,4 +47,10 @@ export const getExportTemplate = (id: number) => ({
 export const getExportTemplatesList = (selectFirst?: boolean, keyCodeToSelect?: string) => ({
   type: GET_EXPORT_TEMPLATES_LIST,
   payload: { selectFirst, keyCodeToSelect }
+});
+
+
+export const getExportTemplatesListFulfilled = (exportTemplates: CatalogItemType[]) => ({
+  type: GET_EXPORT_TEMPLATES_LIST_FULFILLED,
+  payload: { exportTemplates }
 });
