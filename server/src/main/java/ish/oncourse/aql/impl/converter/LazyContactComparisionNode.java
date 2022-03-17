@@ -46,7 +46,8 @@ class LazyContactComparisionNode extends LazyEntityComparisonNode {
         var firstNameNode = createComparisionNode(pathString + Contact.FIRST_NAME.getName(), value.getFirstName());
         var lastNameNode = createComparisionNode(pathString + Contact.LAST_NAME.getName(), value.getLastName());
         var companyNameNode = createComparisionNode(pathString + Contact.LAST_NAME.getName(), value.getCompanyName());
-        var studentNumberNode = createComparisionNode(pathString + Contact.STUDENT.dot(Student.STUDENT_NUMBER).getName(), value.getStudentNumber(), Op.EQ);
+        // '+.' - syntacsis to use LEFT JOIN instead of INNER JOIN by default. See: https://cayenne.apache.org/docs/3.0/qualifier-expressions.html
+        var studentNumberNode = createComparisionNode(pathString + Contact.STUDENT.getName() + "+." + Student.STUDENT_NUMBER.getName(), value.getStudentNumber(), Op.EQ);
         var isValidStudentNumber = tryParseLong(value.getStudentNumber());
 
         var idx = 0;
