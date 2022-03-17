@@ -470,8 +470,8 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		return CourseClassMixin.getTotalCredits(this)
 	}
 
-	List<InvoiceLine> getSuccessEnrolmentsInvoiceLines(){
-		return successAndQueuedEnrolments*.invoiceLines.flatten() as List<InvoiceLine>
+	List<InvoiceLine> getEnrolmentsInvoiceLines(){
+		return enrolments*.invoiceLines.flatten() as List<InvoiceLine>
 	}
 
 	/**
