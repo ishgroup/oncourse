@@ -52,11 +52,11 @@ const CheckoutContactSearch = React.memo<Props>(props => {
     let search = `~"${value}"`;
     
     if (/\d+/g.test(value)) {
-      search = getContactPhoneAqlSearch(value);
+      search += " or " + getContactPhoneAqlSearch(value);
     }
 
     if (/@/.test(value)) {
-      search = `email starts with "${value}"`;
+      search += `or email starts with "${value}"`;
     }
     
     setContactsSearch(value ? search : "");
