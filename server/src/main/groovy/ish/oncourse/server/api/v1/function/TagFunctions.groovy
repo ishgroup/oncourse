@@ -58,7 +58,6 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.PrefetchTreeNode
 
-import java.util.regex.Pattern
 import java.util.stream.Collectors
 
 import static org.apache.commons.lang3.StringUtils.EMPTY
@@ -233,7 +232,7 @@ class TagFunctions {
         Set<String> notValidNames = new HashSet<>()
         validateNamesOfNewTag(tag , notValidNames)
         if (notValidNames.size() > 0) {
-            return new ValidationErrorDTO(null, 'name', "\'${notValidNames[0]}\' has forbidden symbols. The tag name can only contain letters, numbers, \'-\', \'_\' and spaces.")
+            return new ValidationErrorDTO(null, 'name', "\'${notValidNames[0]}\' has forbidden symbols. The tag name can not contain \", \\, #.")
         }
 
         if (validateTagNameUniqueness(tag)) {
@@ -308,8 +307,7 @@ class TagFunctions {
     }
 
     private static boolean isNameValid(String name) {
-        Pattern p = Pattern.compile("^([\\w_ -])+")
-        return p.matcher(name).matches()
+        return !(name.contains("\"") || name.contains("\\") || name.contains("#"))
     }
 
     static Tag toDbTag(ObjectContext context, TagDTO tag, Tag dbTag, boolean isParent = true, Map<Long, Tag> childTagsToRemove = getAllChildTags(dbTag)) {
