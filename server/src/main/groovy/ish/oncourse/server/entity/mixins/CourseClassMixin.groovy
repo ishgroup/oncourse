@@ -227,11 +227,11 @@ class CourseClassMixin {
 	}
 
 	static Money getTotalInvoiced(CourseClass courseClass){
-		return reduceFilteredSum(courseClass.successEnrolmentsInvoiceLines, { InvoiceLine it -> !it.finalPriceToPayExTax.isNegative() })
+		return reduceFilteredSum(courseClass.enrolmentsInvoiceLines, { InvoiceLine it -> !it.finalPriceToPayExTax.isNegative() })
 	}
 
 	static Money getTotalCredits(CourseClass courseClass){
-		return reduceFilteredSum(courseClass.successEnrolmentsInvoiceLines, { InvoiceLine it -> it.finalPriceToPayExTax.isNegative() })
+		return reduceFilteredSum(courseClass.enrolmentsInvoiceLines, { InvoiceLine it -> it.finalPriceToPayExTax.isNegative() })
 	}
 
 
