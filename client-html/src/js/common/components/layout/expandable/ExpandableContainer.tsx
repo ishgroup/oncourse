@@ -29,7 +29,19 @@ const styles = (theme: AppTheme) =>
     controls: {
       position: "relative",
       paddingRight: theme.spacing(5)
-    }
+    },
+    header: {
+      opacity: 0.6,
+      cursor: 'pointer',
+      willChange: "opacity",
+      "&$expanded": {
+        opacity: 1,
+      },
+      "&:hover": {
+        opacity: 0.8,
+      }
+    },
+    expanded: {}
   });
 
 interface Props {
@@ -96,7 +108,7 @@ const ExpandableContainer: React.FC<Props> = ({
       <div ref={headerRef}>
         <div className={clsx("centeredFlex", onAdd ? "mb-2" : "mb-3", classes.controls)}>
           <div className="centeredFlex">
-            <div className="heading">{header}</div>
+            <div className={clsx("heading", classes.header, isExpanded && classes.expanded)} onClick={toggleExpand}>{header}</div>
             {onAdd && (
               <AddButton onClick={onAdd} />
             )}
