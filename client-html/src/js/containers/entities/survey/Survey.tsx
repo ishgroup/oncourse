@@ -18,7 +18,6 @@ import {
 import { FilterGroup } from "../../../model/common/ListView";
 import ListView from "../../../common/components/list-view/ListView";
 import SurveyEditView from "./components/SurveyEditView";
-import { Classes } from "../../../model/entities/CourseClass";
 
 interface StudentFeedbackProps {
   getStudentFeedbackRecord?: () => void;
@@ -61,7 +60,7 @@ const filterGroups: FilterGroup[] = [
 
 const findRelatedGroup: any[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Survey and entityId" },
-  { title: "Classes", list: Classes.path, expression: "enrolments.surveys.id" },
+  { title: "Classes", list: "class", expression: "enrolments.surveys.id" },
   { title: "Courses", list: "course", expression: "courseClasses.enrolments.surveys.id " },
   { title: "Rooms", list: "room", expression: "courseClasses.enrolments.surveys.id" },
   { title: "Sites", list: "site", expression: "rooms.courseClasses.enrolments.surveys.id" },

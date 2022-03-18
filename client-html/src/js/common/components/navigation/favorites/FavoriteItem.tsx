@@ -8,32 +8,26 @@ import clsx from "clsx";
 import withStyles from "@mui/styles/withStyles";
 import Typography from "@mui/material/Typography";
 import ListItem from "@mui/material/ListItem";
-import Favorite from "@mui/icons-material/Favorite";
-import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
-import { CategoryItem } from "@api/model";
-import { AnyArgFunction } from "../../../../../../model/common/CommonFunctions";
-import { openInternalLink } from "../../../../../utils/links";
+import { openInternalLink } from "../../../utils/links";
 import itemStyles from "./itemStyles";
+import { DashboardItem } from "../../../../model/dashboard";
+import { getPrivisioningLink } from "../../../../routes/routesMapping";
 
 interface Props {
-  item: CategoryItem;
-  toggleFavorite: AnyArgFunction;
+  item: DashboardItem;
   isEditing?: boolean;
-  favorite?: boolean;
   classes?: any;
   showConfirm?: (onConfirm: any) => void;
 }
 
 const FavoriteItem = (props: Props) => {
   const {
-    showConfirm, classes, item, isEditing, toggleFavorite, favorite
+    showConfirm, classes, item, isEditing
   } = props;
 
-  const openLink = () => showConfirm(() => openInternalLink(item.url));
+  const openLink = () => showConfirm(() => openInternalLink(getPrivisioningLink(item.url)));
 
-  const handleIconClick = () => toggleFavorite(item.category);
-
-  const isQuickEnroll = item.category === "Checkout (Quick Enrol)";
+  const isQuickEnroll = item.category === "quickEnrol";
 
   return (
     <ListItem
@@ -44,20 +38,12 @@ const FavoriteItem = (props: Props) => {
         "d-none": isEditing && isQuickEnroll
       })}
     >
-      {isEditing ? (
-        favorite ? (
-          <Favorite onClick={handleIconClick} className={clsx(classes.listItemIcon, classes.listItemIconActive)} />
-        ) : (
-          <FavoriteBorder onClick={handleIconClick} className={clsx(classes.listItemIcon, "invisible")} />
-        )
-      ) : null}
-
       <Typography
         variant={!isEditing && isQuickEnroll ? "subtitle2" : "body2"}
         onClick={openLink}
         className={clsx("linkDecoration", classes.listItemContent, { [classes.quickEnrollItem]: isQuickEnroll })}
       >
-        {item.category}
+        {item.name}
       </Typography>
     </ListItem>
   );

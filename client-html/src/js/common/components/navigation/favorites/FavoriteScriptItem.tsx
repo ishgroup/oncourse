@@ -3,18 +3,14 @@ import clsx from "clsx";
 import withStyles from "@mui/styles/withStyles";
 import Typography from "@mui/material/Typography";
 import ListItem from "@mui/material/ListItem";
-import Favorite from "@mui/icons-material/Favorite";
-import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import { Script } from "@api/model";
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import { AnyArgFunction } from "../../../../../../model/common/CommonFunctions";
+import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import itemStyles from "./itemStyles";
 
 interface Props {
   item: Script;
-  toggleFavorite: AnyArgFunction;
   isEditing?: boolean;
-  favorite?: boolean;
   classes?: any;
   setScriptIdSelected?: AnyArgFunction;
   setExecMenuOpened?: AnyArgFunction;
@@ -22,15 +18,13 @@ interface Props {
 
 const FavoriteScriptItem = (props: Props) => {
   const {
-    classes, item, isEditing, toggleFavorite, favorite, setScriptIdSelected, setExecMenuOpened
+    classes, item, isEditing, setScriptIdSelected, setExecMenuOpened
   } = props;
 
   const openExecScriptModal = scriptId => {
     setScriptIdSelected(scriptId);
     setExecMenuOpened(true);
   };
-
-  const handleIconClick = () => toggleFavorite(item.id);
 
   return (
     <ListItem
@@ -40,14 +34,6 @@ const FavoriteScriptItem = (props: Props) => {
         [classes.listItemEditing]: isEditing
       })}
     >
-      {isEditing ? (
-        favorite ? (
-          <Favorite onClick={handleIconClick} className={clsx(classes.listItemIcon, classes.listItemIconActive)} />
-        ) : (
-          <FavoriteBorder onClick={handleIconClick} className={clsx(classes.listItemIcon, "invisible")} />
-        )
-      ) : null}
-
       <Typography
         variant="body2"
         onClick={() => openExecScriptModal(item.id)}
