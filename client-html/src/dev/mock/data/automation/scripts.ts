@@ -97,11 +97,11 @@ export function mockScripts() {
     const rows = generateArraysOfRecords(20, [
       { name: "id", type: "number" },
       { name: "name", type: "string" },
-      { name: "enabled", type: "string" },
+      { name: "description", type: "string" },
       { name: "keyCode", type: "string" }
     ]).map(l => ({
       id: l.id,
-      values: [l.name, l.enabled, l.keyCode]
+      values: [l.name, l.description, l.keyCode]
     }));
 
     const columns = [];
