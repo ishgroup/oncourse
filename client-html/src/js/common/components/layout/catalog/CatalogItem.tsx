@@ -63,10 +63,11 @@ const CatalogItem = (
 ) => {
   const { 
     id,
+    tags,
     title,
     titleAdornment,
-    tags,
-    shortDescription
+    shortDescription,
+    hideShortDescription
   } = item;
   
   const classes = useStyles();
@@ -95,7 +96,7 @@ const CatalogItem = (
               {tags?.split(",").map(t => <InfoPill key={t} label={t} />)}
             </div>
           )}
-          secondary={shortDescription || "No description"}
+          secondary={!hideShortDescription && (shortDescription || "No description")}
         />
       </ListItem>
       <Divider light />
