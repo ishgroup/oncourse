@@ -6,6 +6,7 @@
 import React, {
  useCallback, useRef, useMemo
 } from "react";
+import { darken } from '@mui/material/styles';
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
@@ -31,14 +32,10 @@ const styles = (theme: AppTheme) =>
       paddingRight: theme.spacing(5)
     },
     header: {
-      opacity: 0.6,
       cursor: 'pointer',
-      willChange: "opacity",
-      "&$expanded": {
-        opacity: 1,
-      },
+      willChange: "color",
       "&:hover": {
-        opacity: 0.8,
+        color: darken(theme.heading.color as any, 0.4),
       }
     },
     expanded: {}
