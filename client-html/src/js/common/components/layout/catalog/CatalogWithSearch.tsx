@@ -34,7 +34,7 @@ const Row = memo<any>(
       <CatalogItem
         item={item}
         onOpen={onOpen}
-        secondaryAction={(
+        secondaryAction={item.keyCode?.startsWith("ish.") ? (
           <IconButton
             onMouseDown={e => e.stopPropagation()}
             onClick={e => {
@@ -46,7 +46,7 @@ const Row = memo<any>(
           >
             <Delete fontSize="inherit" />
           </IconButton>
-        )}
+        ) : null}
         grayOut={!item.enabled}
         showDot
         hoverSecondary
@@ -146,7 +146,6 @@ const CatalogWithSearch = React.memo<Props>((
       installed: [],
       categories: {
       },
-      custom: []
     };
 
     items
@@ -160,8 +159,6 @@ const CatalogWithSearch = React.memo<Props>((
           result.categories[i.category] = [];
         }
         result.categories[i.category].push(i);
-      } else {
-        result.custom.push(i);
       }
     });
 
@@ -227,25 +224,6 @@ const CatalogWithSearch = React.memo<Props>((
                   ))}
                 </ExpandableContainer>
               ))}
-              {Boolean(filteredItems.custom.length) && (
-                <ExpandableContainer
-                  index={categoryKeys.length}
-                  header="Custom"
-                  expanded={search ? [categoryKeys.length] : expanded}
-                  setExpanded={setExpanded}
-                  noDivider
-                >
-                  {filteredItems.custom.map(i => (
-                    <CatalogItem
-                      item={i}
-                      onOpen={() => toggleInstall(i)}
-                      key={i.id}
-                      secondaryAction={i.installed && <Typography variant="caption">Added</Typography>}
-                      disabled={i.installed}
-                    />
-                  ))}
-                </ExpandableContainer>
-              )}
             </div>
           </div>
         </Fade>
