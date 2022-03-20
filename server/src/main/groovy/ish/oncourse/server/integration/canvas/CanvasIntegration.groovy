@@ -107,6 +107,7 @@ class CanvasIntegration implements PluginTrait {
             uri.path = "/api/v1/accounts/${accountId}/users"
             uri.query = [
                     search_term: email,
+                    per_page: '100000',
             ]
 
             response.success = { resp, result ->
@@ -157,6 +158,50 @@ class CanvasIntegration implements PluginTrait {
             }
             response.failure = { resp, result ->
                 throw new IllegalStateException("Failed to created a new user name:${fullName} email:${email} ${resp.getStatusLine()}")
+            }
+        }
+    }
+
+    /**
+     * Get list unsuspended user from Canvas
+     *
+     * @return list user objects
+     */
+    protected List getUnsuspendedUsers() {
+        Map usersResp = getUserByEmail(null) as Map
+        List users = responseToJson(usersResp) as List
+        List unsuspendedUsers = new ArrayList<>()
+        users.each { it ->
+            Map userLogins = getUserLogins(it["id"]) as Map
+            List userLoginsJson = responseToJson(userLogins) as List
+            if (userLoginsJson["workflow_state"].contains("active")) {
+                unsuspendedUsers.add(it)
+            }
+        }
+        return unsuspendedUsers
+    }
+
+    /**
+     * Get user's enrolments from Canvas
+     *
+     * @param user id from Canvas
+     * @return enrolments
+     */
+    protected getEnrolments(userId) {
+        def client = new RESTClient(baseUrl)
+        client.headers["Authorization"] = "Bearer ${authHeader}"
+        client.request(Method.GET, ContentType.URLENC) {
+            uri.path = "/api/v1/users/${userId}/enrollments"
+            //ignore pagination
+            uri.query = [
+                    per_page: '100000',
+            ]
+
+            response.success = { resp, result ->
+                return result
+            }
+            response.failure = { resp, result ->
+                throw new IllegalStateException("Failed to retreive enrolments by user id:${userId} ${resp.getStatusLine()}")
             }
         }
     }
