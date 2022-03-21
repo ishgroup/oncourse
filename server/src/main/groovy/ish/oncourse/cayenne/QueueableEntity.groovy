@@ -8,16 +8,14 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details.
  */
-package ish.oncourse.cayenne;
+package ish.oncourse.cayenne
 
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Inherited
+import java.lang.annotation.Retention
+import java.lang.annotation.RetentionPolicy
 
-/**
- */
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-public @interface QueueableEntity {
+@interface QueueableEntity {
 
 }

@@ -8,15 +8,13 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details.
  */
-package ish.oncourse.cayenne;
+package ish.oncourse.cayenne
 
-import ish.oncourse.API;
-import org.apache.cayenne.ExtendedEnumeration;
-
-import java.io.Serializable;
+import ish.oncourse.API
+import org.apache.cayenne.ExtendedEnumeration
 
 @API
-public enum TaggableClasses implements Serializable, ExtendedEnumeration {
+enum TaggableClasses implements Serializable, ExtendedEnumeration {
 	@API
 	COURSE(1),
 	@API
@@ -67,14 +65,14 @@ public enum TaggableClasses implements Serializable, ExtendedEnumeration {
 	PRODUCT_ITEM(26);
 
 
-	private Integer persistentValue;
+	private Integer persistentValue
 
 	TaggableClasses(Integer value) {
-		this.persistentValue = value;
+		this.persistentValue = value
 	}
 
-	public Integer getDatabaseValue() {
-		return this.persistentValue;
+	Integer getDatabaseValue() {
+		return this.persistentValue
 	}
 
 }

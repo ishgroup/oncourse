@@ -16,6 +16,7 @@ import ish.oncourse.server.cayenne.PaymentIn;
 import ish.oncourse.server.cayenne.PaymentOut;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.ObjectId;
+import org.apache.cayenne.graph.ArcId;
 import org.apache.cayenne.graph.GraphChangeHandler;
 
 import java.util.HashMap;
@@ -50,7 +51,7 @@ public class BankingChangeHandler implements GraphChangeHandler {
 	}
 
 	@Override
-	public void arcCreated(Object nodeId, Object targetNodeId, Object arcId) {
+	public void arcCreated(Object nodeId, Object targetNodeId, ArcId arcId) {
 		if (isBankin(targetNodeId) && isPayment(nodeId)) {
 			var change = changes.get(nodeId);
 			if (change == null) {
@@ -70,7 +71,7 @@ public class BankingChangeHandler implements GraphChangeHandler {
 	}
 
 	@Override
-	public void arcDeleted(Object nodeId, Object targetNodeId, Object arcId) {
+	public void arcDeleted(Object nodeId, Object targetNodeId, ArcId arcId) {
 
 		if (isBankin(targetNodeId) && isPayment(nodeId)) {
 			var change = changes.get(nodeId);
