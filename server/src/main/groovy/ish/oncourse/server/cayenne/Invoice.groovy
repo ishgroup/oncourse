@@ -174,6 +174,10 @@ class Invoice extends _Invoice implements InvoiceInterface {
         return super.getDebtorsAccount()
     }
 
+    CourseClass getAnyCourseClass(){
+        return invoiceLines.find {it.enrolment?.courseClass != null}?.enrolment?.courseClass
+    }
+
     /**
      *
      * @return map of products, related to this invoice, with their profound quantities
@@ -182,7 +186,7 @@ class Invoice extends _Invoice implements InvoiceInterface {
         Map<Product, BigDecimal> result = new HashMap<>()
         invoiceLines.each { def invoiceLine ->
             invoiceLine.productItems.each { def productItem ->
-                result.merge(productItem.product, invoiceLine.quantity, { first, second -> first.add(second) })
+                result.putIfAbsent(productItem.product, invoiceLine.quantity)
             }
         }
         return result.entrySet().toList()
