@@ -11,7 +11,7 @@ buildscript {
 		cayenneVersion = '4.1'
 		jettyVersion = '10.0.7'
 		mariadbVersion = '2.7.4'
-		groovyVersion = '2.5.13'
+		groovyVersion = '2.5.15'
 		bouncycastleVersion = '1.67'
 		bootiqueVersion = '2.0.RC1'
 		cfxVersion = '3.3.5'
