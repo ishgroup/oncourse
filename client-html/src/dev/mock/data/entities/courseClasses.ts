@@ -1482,7 +1482,7 @@ export function mockCourseClasses() {
       "roleId": 0,
       "tutorName": "Eliatan Hill",
       "roleName": "General Tutor",
-      "confirmedOn": null,
+      "confirmedOn": "",
       "isInPublicity": true
     }
   ];
