@@ -37,6 +37,7 @@ import { EntityItems } from "../../../../../model/entities/common";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
+import InfoPill from "../../../../../common/components/layout/InfoPill";
 
 const manualUrl = getManualLink("reports");
 const getAuditsUrl = (id: number) => `audit?search=~"Report" and entityId == ${id}`;
@@ -231,7 +232,14 @@ const PdfReportsForm = React.memo<Props>(
             getAuditsUrl={getAuditsUrl}
             disabled={!isNew && !dirty}
             invalid={invalid}
-            title={isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
+            title={(
+              <div className="centeredFlex">
+                {isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
+                {[...values.automationTags?.split(",") || [],
+                  ...isInternal ? [] : ["custom"]
+                ].map(t => <InfoPill key={t} label={t} />)}
+              </div>
+            )}
             disableInteraction={isInternal}
             opened={isNew || Object.keys(syncErrors).includes("name")}
             fields={(

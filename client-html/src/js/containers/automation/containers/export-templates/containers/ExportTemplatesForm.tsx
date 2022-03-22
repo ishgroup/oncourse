@@ -30,6 +30,7 @@ import { mapSelectItems } from "../../../../../common/utils/common";
 import { EntityItems, EntityName } from "../../../../../model/entities/common";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
+import InfoPill from "../../../../../common/components/layout/InfoPill";
 
 const manualUrl = getManualLink("advancedSetup_Export");
 const getAuditsUrl = (id: number) => `audit?search=~"ExportTemplate" and entityId == ${id}`;
@@ -140,7 +141,14 @@ const ExportTemplatesForm = React.memo<Props>(
             getAuditsUrl={getAuditsUrl}
             disabled={!dirty}
             invalid={invalid}
-            title={isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
+            title={(
+              <div className="centeredFlex">
+                {isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
+                {[...values.automationTags?.split(",") || [],
+                  ...isInternal ? [] : ["custom"]
+                ].map(t => <InfoPill key={t} label={t} />)}
+              </div>
+            )}
             disableInteraction={isInternal}
             opened={isNew || Object.keys(syncErrors).includes("name")}
             fields={(
