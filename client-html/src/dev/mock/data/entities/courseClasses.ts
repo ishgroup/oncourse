@@ -665,8 +665,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-06-20T23:00:00.000Z",
       "end": "2023-06-21T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -689,8 +689,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-06-20T23:00:00.000Z",
       "end": "2023-06-21T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -713,8 +713,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-06-21T23:00:00.000Z",
       "end": "2023-06-22T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -737,8 +737,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-06-22T23:00:00.000Z",
       "end": "2023-06-23T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -761,8 +761,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-06-23T23:00:00.000Z",
       "end": "2023-06-24T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -785,8 +785,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-06-24T23:00:00.000Z",
       "end": "2023-06-25T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -809,8 +809,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-06-27T23:00:00.000Z",
       "end": "2023-06-28T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -833,8 +833,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-06-28T23:00:00.000Z",
       "end": "2023-06-29T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -857,8 +857,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-06-29T23:00:00.000Z",
       "end": "2023-06-30T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -881,8 +881,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-06-30T23:00:00.000Z",
       "end": "2023-07-01T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -905,8 +905,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-07-01T23:00:00.000Z",
       "end": "2023-07-02T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -929,8 +929,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-07-04T23:00:00.000Z",
       "end": "2023-07-05T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -953,8 +953,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-07-05T23:00:00.000Z",
       "end": "2023-07-06T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -977,8 +977,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-07-06T23:00:00.000Z",
       "end": "2023-07-07T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -1001,8 +1001,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-07-07T23:00:00.000Z",
       "end": "2023-07-08T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -1025,8 +1025,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-07-08T23:00:00.000Z",
       "end": "2023-07-09T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -1049,8 +1049,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-07-11T23:00:00.000Z",
       "end": "2023-07-12T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -1073,8 +1073,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-07-12T23:00:00.000Z",
       "end": "2023-07-13T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -1097,8 +1097,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-07-13T23:00:00.000Z",
       "end": "2023-07-14T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -1121,8 +1121,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-07-14T23:00:00.000Z",
       "end": "2023-07-15T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
   ];

@@ -30,7 +30,8 @@ export const mockedEditView = (props: Props) => {
       rootEntity: entity,
       form: LIST_EDIT_VIEW_FORM_NAME,
       hasSelected: true,
-      creatingNew: false
+      creatingNew: false,
+      toogleFullScreenEditView: jest.fn(),
     }),
     render: pr => render({ ...pr, formRoleName: editViewFormRole }),
     state,
