@@ -73,6 +73,7 @@ const EmailTemplates = React.memo<any>(props => {
       isNew={isNew}
       validateTemplateCopyName={validateTemplateCopyName}
       validateNewTemplateName={validateNewTemplateName}
+      emailTemplates={emailTemplates}
       {...rest}
     />
 );

@@ -415,6 +415,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
           form={form}
           submitSucceeded={submitSucceeded}
           rootEntity={rootEntity}
+          customAqlEntities={["Course", "Product"]}
         />
       </Grid>
 

@@ -472,7 +472,9 @@ const ScriptsForm = React.memo<Props>(props => {
           title={(
             <div className="centeredFlex">
               {values.name}
-              {values.automationTags?.split(",").map(t => <InfoPill key={t} label={t} />)}
+              {[...values.automationTags?.split(",") || [],
+                ...isInternal ? [] : ["custom"]
+              ].map(t => <InfoPill key={t} label={t} />)}
             </div>
           )}
           disableInteraction={isInternal}

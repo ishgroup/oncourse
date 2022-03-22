@@ -86,7 +86,7 @@ const CatalogItem = (
           classes={{
             root: clsx(classes.root, grayOut && "disabled"),
             primary: classes.primaryText,
-            secondary: classes.secondaryText,
+            secondary: classes.secondaryText
           }}
           primary={(
             <div className="centeredFlex">

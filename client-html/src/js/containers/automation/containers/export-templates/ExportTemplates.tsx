@@ -65,6 +65,7 @@ const ExportTemplates = React.memo<any>(props => {
 const mapStateToProps = (state: State) => ({
   values: getFormValues(EXPORT_TEMPLATES_FORM_NAME)(state),
   syncErrors: getFormSyncErrors(EXPORT_TEMPLATES_FORM_NAME)(state),
+  emailTemplates: state.automation.emailTemplate.emailTemplates,
   nextLocation: state.nextLocation
 });
 
