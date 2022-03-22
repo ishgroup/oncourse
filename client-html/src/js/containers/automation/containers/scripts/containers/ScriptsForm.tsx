@@ -472,9 +472,9 @@ const ScriptsForm = React.memo<Props>(props => {
           title={(
             <div className="centeredFlex">
               {values.name}
-              {(values.automationTags?.split(",") || [])
-                .concat(values.keyCode.startsWith("ish.") ? undefined : "custom")
-                .map(t => <InfoPill key={t} label={t} />)}
+              {[...values.automationTags?.split(",") || [],
+                ...values.keyCode.startsWith("ish.") ? [] : ["custom"]
+              ].map(t => <InfoPill key={t} label={t} />)}
             </div>
           )}
           disableInteraction={isInternal}
