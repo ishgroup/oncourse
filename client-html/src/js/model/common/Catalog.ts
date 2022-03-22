@@ -23,7 +23,7 @@ export interface CatalogItemType {
 
 export interface CatalogData {
   installed: CatalogItemType[],
-  custom: CatalogItemType[];
+  other: CatalogItemType[],
   categories: {
     [key: string]: CatalogItemType[]
   }
