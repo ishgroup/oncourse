@@ -3,7 +3,6 @@
  */
 package ish.oncourse.server.scripting
 
-import ish.CayenneIshTestCase
 import ish.common.types.TaskResultType
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Contact

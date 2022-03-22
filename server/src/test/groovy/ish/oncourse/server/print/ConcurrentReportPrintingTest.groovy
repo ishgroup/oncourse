@@ -4,7 +4,6 @@
 
 package ish.oncourse.server.print
 
-import ish.CayenneIshTestCase
 import ish.common.types.TaskResultType
 import groovy.transform.CompileStatic
 import ish.TestWithDatabase
@@ -159,8 +158,8 @@ class ConcurrentReportPrintingTest extends TestWithDatabase {
         }
 
             for (Map.Entry<PrintRequest, PrintWorker> e : reportsToRun.entrySet()) {
-			Assertions.assertEquals(String.format("Printing failed for %s", e.getKey().getReportCode()), PrintResult.ResultType.SUCCESS, e.getValue().getResult().getType())
-            Assertions.assertNotNull(String.format("Empty printing result for %s",  e.getKey().getReportCode()), e.getValue().getResult().getData())
+			Assertions.assertEquals(TaskResultType.SUCCESS, e.getValue().getResult().getType(),String.format("Printing failed for %s", e.getKey().getReportCode()))
+            Assertions.assertNotNull(new String(e.getValue().getResult().getData()), String.format("Empty printing result for %s",  e.getKey().getReportCode()))
 
 
             FileUtils.writeByteArrayToFile(new File("build/test-data/concurrentReportTestOutput/"+e.getKey().getReportCode()+".pdf"), e.getValue().getResult().getData())
