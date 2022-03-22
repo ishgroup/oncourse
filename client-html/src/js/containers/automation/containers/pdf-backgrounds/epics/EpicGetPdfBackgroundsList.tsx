@@ -24,6 +24,7 @@ const request: EpicUtils.Request<any, { selectFirst: boolean; filenameToSelect: 
       title: r.values[0],
       installed: true,
       enabled: true,
+      hideShortDescription: true,
       titleAdornment: r.values[1] === "true" ? <CropPortraitIcon className="lightGrayIconButton" /> : <CropLandscapeIcon className="lightGrayIconButton" />
     }));
 

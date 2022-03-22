@@ -5,7 +5,7 @@
 
 import { Epic } from "redux-observable";
 import {
- Column, DataResponse, DataRow, Script 
+ DataResponse, DataRow, Script
 } from "@api/model";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import { GET_ON_DEMAND_SCRIPTS, GET_ON_DEMAND_SCRIPTS_FULFILLED } from "../../../common/actions";
@@ -14,13 +14,17 @@ import EntityService from "../../../common/services/EntityService";
 
 const request: EpicUtils.Request<DataResponse> = {
   type: GET_ON_DEMAND_SCRIPTS,
-  getData: () => EntityService.getRecords(
+  getData: () => EntityService.getPlainRecords(
     "Script",
+    "name,shortDescription",
     `( entityClass == null ) && ( triggerType == ON_DEMAND ) && ( automationStatus == ENABLED )`
   ),
   processData: records => {
-    const nameIndex = records.columns.findIndex((col: Column) => col.attribute === "name");
-    const scripts: Script[] = records.rows.map((row: DataRow) => ({ id: Number(row.id), name: row.values[nameIndex] } as Script));
+    const scripts: Script[] = records.rows.map((row: DataRow) => ({
+      id: Number(row.id),
+      name: row.values[0],
+      description: row.values[1]
+    }));
 
     return [
       {

@@ -746,3 +746,19 @@ databaseChangeLog:
         - customChange: {
           "class": "ish.oncourse.server.upgrades.liquibase.change.CleanCheckoutsWithReplication"
         }
+  - changeSet:
+      id: 110-1
+      author: dmitriy
+      comment: upgrade favourite links preference with new values format
+      changes:
+        - customChange: {
+          "class": "ish.oncourse.server.upgrades.liquibase.change.UpdateFavouriteLinks"
+        }
+  - changeSet:
+      id: 113-1
+      author: dmitriy
+      comment: increase filterColumnWidth values for tables preferences to 240 where required
+      changes:
+        - customChange: {
+          "class": "ish.oncourse.server.upgrades.liquibase.change.UpdateFilterColumnWidth"
+        }

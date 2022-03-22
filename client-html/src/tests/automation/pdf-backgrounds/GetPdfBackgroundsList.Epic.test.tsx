@@ -22,6 +22,7 @@ describe("Get pdf backgrounds list epic tests", () => {
         title: r.values[0],
         installed: true,
         enabled: true,
+        hideShortDescription: true,
         titleAdornment: r.values[1] === "true" ? <CropPortraitIcon className="lightGrayIconButton" /> : <CropLandscapeIcon className="lightGrayIconButton" />
       }));
 

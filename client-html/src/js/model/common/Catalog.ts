@@ -18,6 +18,7 @@ export interface CatalogItemType {
   tags?: string;
   shortDescription?: ReactNode;
   keyCode?: string;
+  hideShortDescription?: boolean;
 }
 
 export interface CatalogData {
