@@ -1,6 +1,5 @@
 package ish.oncourse.server.querying
 
-import ish.CayenneIshTestCase
 import ish.common.types.TaskResultType
 import ish.oncourse.server.ICayenneService
 import groovy.transform.CompileStatic
