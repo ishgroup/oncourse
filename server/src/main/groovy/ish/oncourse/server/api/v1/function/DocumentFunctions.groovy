@@ -66,6 +66,9 @@ class DocumentFunctions {
             document.createdOn = LocalDateUtils.dateToTimeValue(dbDocument.createdOn)
             document.modifiedOn = LocalDateUtils.dateToTimeValue(dbDocument.modifiedOn)
             document.attachmentRelations = toRestDocumentAttachmentRelations(dbDocument.attachmentRelations)
+            if (s3Service) {
+                document.urlWithoutVersionId = s3Service.getFileUrl(dbDocument.fileUUID, null, dbDocument.webVisibility)
+            }
             document
         }
     }
@@ -84,6 +87,9 @@ class DocumentFunctions {
                 s3Service = new AmazonS3Service(documentService)
             }
             document.versions = dbDocument.versions.collect { toRestDocumentVersionMinimized(it, s3Service) }.sort {it.added}.reverse()
+            if (s3Service) {
+                document.urlWithoutVersionId = s3Service.getFileUrl(dbDocument.fileUUID, null, dbDocument.webVisibility)
+            }
             document
         }
     }

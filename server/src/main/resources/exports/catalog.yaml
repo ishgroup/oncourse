@@ -157,6 +157,13 @@
   outputType: xml
 
 
+- keyCode: ish.onCourse.contact.json
+  entityClass: Contact
+  body: ish.onCourse.contact.json.groovy
+  name: Contact JSON export
+  outputType: json
+
+
 - keyCode: ish.onCourse.corporatePass.csv
   entityClass: CorporatePass
   body: ish.onCourse.corporatePass.csv.groovy

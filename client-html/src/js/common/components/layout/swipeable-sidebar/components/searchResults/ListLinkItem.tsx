@@ -22,7 +22,7 @@ const styles = theme => createStyles({
   },
   listItem: {
     justifyContent: "space-between",
-    padding: "4px 6px"
+    padding: "4px 6px 4px 0"
   },
   favoriteScriptIcon: {
     fontSize: theme.spacing(2),

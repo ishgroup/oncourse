@@ -6,11 +6,10 @@
 import { IAction } from "../../../../actions/IshAction";
 import { SwipeableDrawer } from "../../../../../model/common/drawer/SwipeableDrawerModel";
 import { SET_SWIPEABLE_DRAWER_DIRTY_FORM, TOGGLE_SWIPEABLE_DRAWER } from "../actions";
-import { VARIANTS } from "../utils";
 
 const initial: SwipeableDrawer = {
   opened: false,
-  variant: VARIANTS.temporary,
+  variant: "temporary",
   isDirty: false,
   resetEditView: () => {}
 };

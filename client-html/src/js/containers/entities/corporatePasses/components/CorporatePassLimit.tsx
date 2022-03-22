@@ -16,7 +16,6 @@ import {
  clearCourseClassSales, clearSales, getCourseClassSales, getSales
 } from "../../sales/actions";
 import { entityForLink } from "../../common/utils";
-import { Classes } from "../../../../model/entities/CourseClass";
 
 const styles = createStyles({
   dataRowClass: {
@@ -47,7 +46,7 @@ const transform = (sale: Sale): NestedListItem => ({
     secondaryText: sale.code,
     link:
       sale.type === SaleType.Class
-        ? `/${Classes.path}?search=id is ${sale.id}`
+        ? `/class?search=id is ${sale.id}`
         : `/${entityForLink(sale.type)}/${sale.id}`,
     active: typeof sale.active === "boolean" ? sale.active : true
   });
