@@ -773,7 +773,7 @@
       dataType: TEXT
       value: ""
 
-- name: SurveyGizmo send invite on enrolment completion
+- name: Alchemer send invite on enrolment completion
   keyCode: ish.script.surveygizmoSendInviteOnCompletion
   body: ish.script.surveygizmoSendInviteOnCompletion.groovy
   status: NOT_INSTALLED
@@ -791,7 +791,7 @@
       dataType: TEXT
       value: ""
 
-- name: SurveyGizmo send invite on enrolment
+- name: Alchemer send invite on enrolment
   keyCode: ish.script.surveygizmoSendInviteOnEnrolment
   body: ish.script.surveygizmoSendInviteOnEnrolment.groovy
   status: NOT_INSTALLED
