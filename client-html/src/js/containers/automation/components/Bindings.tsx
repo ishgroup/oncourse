@@ -150,7 +150,7 @@ const BindingsItem = React.memo<BindingsItemProps>(({
           <span className="w-100 centeredFlex">
             <span className="text-truncate text-nowrap">{item.name}</span>
             {" "}
-            <Typography variant="caption" color="textSecondary">
+            <Typography variant="caption" color="textSecondary" noWrap>
               (
               {item.type}
               )
