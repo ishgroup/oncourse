@@ -7,7 +7,7 @@ import React, {
  useCallback, useEffect, useMemo, useRef, useState
 } from "react";
 import {
-  change, Form, initialize, InjectedFormProps
+  change, FieldArray, Form, initialize, InjectedFormProps
 } from "redux-form";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import FileCopy from "@mui/icons-material/FileCopy";
@@ -23,7 +23,7 @@ import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import Bindings from "../../../components/Bindings";
+import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
@@ -36,6 +36,7 @@ import Uneditable from "../../../../../common/components/form/Uneditable";
 import { EntityItems } from "../../../../../model/entities/common";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { CatalogItemType } from "../../../../../model/common/Catalog";
 
 const manualUrl = getManualLink("reports");
 const getAuditsUrl = (id: number) => `audit?search=~"Report" and entityId == ${id}`;
@@ -53,6 +54,7 @@ interface Props extends InjectedFormProps<Report> {
   history: any;
   syncErrors: any;
   nextLocation: string;
+  emailTemplates?: CatalogItemType[];
   setNextLocation: (nextLocation: string) => void;
 }
 
@@ -94,7 +96,8 @@ const PdfReportsForm = React.memo<Props>(
     history,
     nextLocation,
     setNextLocation,
-     syncErrors
+    emailTemplates,
+    syncErrors
   }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
     const [modalOpened, setModalOpened] = useState<boolean>(false);
@@ -271,71 +274,89 @@ const PdfReportsForm = React.memo<Props>(
             )}
           >
             <Grid container>
-              <Grid item xs={7} className="pr-3">
-                <div className="heading">Type</div>
-                <FormField
-                  name="entity"
-                  type="select"
-                  items={EntityItems}
-                  disabled={isInternal}
-                  className="mb-2"
-                  required
+              <Grid item container columnSpacing={3} rowSpacing={2} xs={7} className="pr-3">
+                <Grid item xs={12}>
+                  <div className="heading">Type</div>
+                  <FormField
+                    name="entity"
+                    type="select"
+                    items={EntityItems}
+                    disabled={isInternal}
+                    required
+                  />
+                </Grid>
+                
+                <FieldArray
+                  name="options"
+                  itemsType="component"
+                  component={BindingsRenderer}
+                  emailTemplates={emailTemplates}
+                  rerenderOnEveryChange
                 />
 
-                <FormField label="Sort On" name="sortOn" type="text" disabled={isInternal} className="mb-2" />
+                <Grid item xs={12}>
+                  <FormField label="Sort On" name="sortOn" type="text" disabled={isInternal} />
+                </Grid>
+                
+                <Grid item xs={12}>
+                  <FormField
+                    type="text"
+                    label="Description"
+                    name="description"
+                    disabled={isInternal}
+                    multiline
+                  />
+                </Grid>
 
-                <FormField
-                  type="text"
-                  label="Description"
-                  name="description"
-                  disabled={isInternal}
-                  className="mb-2"
-                  multiline
-                />
+                <Grid item xs={12}>
+                  <FormField
+                    type="select"
+                    label="PDF background"
+                    name="backgroundId"
+                    selectValueMark="id"
+                    selectLabelMark="title"
+                    items={pdfBackgrounds}
+                    onChange={onBackgroundIdChange}
+                    allowEmpty
+                  />
+                </Grid>
 
-                <FormField
-                  type="select"
-                  label="PDF background"
-                  name="backgroundId"
-                  selectValueMark="id"
-                  selectLabelMark="title"
-                  items={pdfBackgrounds}
-                  onChange={onBackgroundIdChange}
-                  className="mb-2"
-                  allowEmpty
-                />
+                <Grid item xs={12}>
+                  <FormField
+                    type="text"
+                    label="Keycode"
+                    name="keyCode"
+                    validate={isNew || !isInternal ? validateKeycode : undefined}
+                    disabled={!isNew}
+                    required
+                  />
+                </Grid>
 
-                <FormField
-                  type="text"
-                  label="Keycode"
-                  name="keyCode"
-                  validate={isNew || !isInternal ? validateKeycode : undefined}
-                  disabled={!isNew}
-                  className="mb-2"
-                  required
-                />
-
-                {!isNew && (
-                  <div className="pt-2">
+                <Grid item xs={12}>
+                  {!isNew && (
                     <Button variant="outlined" color="secondary" onClick={handleEdit} disabled={isInternal}>
                       Edit
                     </Button>
-                  </div>
-                )}
-
-                <div className="pt-2">
+                  )}
+                </Grid>
+                
+                <Grid item xs={12}>
                   <Button variant="outlined" color="secondary" onClick={handleUploadClick} disabled={isInternal}>
                     Upload New Version
                   </Button>
-                </div>
+                </Grid>
 
-                {chosenFileName && <Uneditable value={chosenFileName} label="Chosen file" className="mt-1" />}
+                <Grid item xs={12}>
+                  {chosenFileName && <Uneditable value={chosenFileName} label="Chosen file" />}
+                </Grid>
 
-                {isNew && !values.body && (
-                  <Typography id="body" variant="caption" color="error" className="mt-1 shakingError" paragraph>
-                    Report body is required. Press &quot;Upload New Version&quot; to attach xml
-                  </Typography>
-                )}
+                <Grid item xs={12}>
+                  {isNew && !values.body && (
+                    <Typography id="body" variant="caption" color="error" className="shakingError" paragraph>
+                      Report body is required. Press &quot;Upload New Version&quot; to attach xml
+                    </Typography>
+                  )}
+                </Grid>
               </Grid>
               <Grid item xs={5}>
                 <div>
@@ -345,7 +366,7 @@ const PdfReportsForm = React.memo<Props>(
                     name="status"
                     color="primary"
                     format={v => v === "Enabled"}
-                    parse={v => v ? "Enabled" : "Installed but Disabled"}
+                    parse={v => (v ? "Enabled" : "Installed but Disabled")}
                   />
                 </div>
                 <div className="mt-3 pt-1 pb-2">

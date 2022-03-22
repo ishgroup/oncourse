@@ -6,7 +6,7 @@
 import React, {
   useCallback, useEffect, useMemo, useState
 } from "react";
-import { Form, initialize, InjectedFormProps } from "redux-form";
+import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import FileCopy from "@mui/icons-material/FileCopy";
 import Grid from "@mui/material/Grid";
@@ -19,7 +19,7 @@ import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import ScriptCard from "../../scripts/components/cards/CardBase";
-import Bindings from "../../../components/Bindings";
+import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import AvailableFrom, { mapAvailableFrom } from "../../../components/AvailableFrom";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
@@ -29,6 +29,7 @@ import { validateKeycode } from "../../../utils";
 import { mapSelectItems } from "../../../../../common/utils/common";
 import { EntityItems, EntityName } from "../../../../../model/entities/common";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { CatalogItemType } from "../../../../../model/common/Catalog";
 
 const manualUrl = getManualLink("advancedSetup_Export");
 const getAuditsUrl = (id: number) => `audit?search=~"ExportTemplate" and entityId == ${id}`;
@@ -47,11 +48,12 @@ interface Props extends InjectedFormProps {
   syncErrors: any,
   nextLocation: string,
   setNextLocation: (nextLocation: string) => void,
+  emailTemplates?: CatalogItemType[]
 }
 
 const ExportTemplatesForm = React.memo<Props>(
   ({
-    dirty, form, handleSubmit, isNew, invalid, values, syncErrors,
+    dirty, form, handleSubmit, isNew, invalid, values, syncErrors, emailTemplates,
      dispatch, onCreate, onUpdate, onUpdateInternal, onDelete, history, nextLocation, setNextLocation
   }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
@@ -183,7 +185,7 @@ const ExportTemplatesForm = React.memo<Props>(
           >
             <Grid container columnSpacing={3}>
               <Grid item xs={9} className="pr-3">
-                <Grid container columnSpacing={3}>
+                <Grid container columnSpacing={3} rowSpacing={2}>
                   <Grid item xs={6}>
                     <div className="heading">Type</div>
                     <FormField
@@ -204,6 +206,13 @@ const ExportTemplatesForm = React.memo<Props>(
                       required
                     />
                   </Grid>
+                  <FieldArray
+                    name="options"
+                    itemsType="component"
+                    component={BindingsRenderer}
+                    emailTemplates={emailTemplates}
+                    rerenderOnEveryChange
+                  />
                 </Grid>
 
                 <ScriptCard

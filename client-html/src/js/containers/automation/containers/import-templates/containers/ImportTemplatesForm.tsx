@@ -7,7 +7,7 @@ import PlayArrow from "@mui/icons-material/PlayArrow";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { Form, initialize, InjectedFormProps } from "redux-form";
+import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import FileCopy from "@mui/icons-material/FileCopy";
 import Grid from "@mui/material/Grid";
@@ -20,7 +20,7 @@ import FormField from "../../../../../common/components/form/formFields/FormFiel
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import ScriptCard from "../../scripts/components/cards/CardBase";
-import Bindings from "../../../components/Bindings";
+import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import { usePrevious } from "../../../../../common/utils/hooks";
@@ -32,6 +32,7 @@ import ExecuteImportModal from "../components/ExecuteImportModal";
 import { State } from "../../../../../reducers/state";
 import { setNextLocation } from "../../../../../common/actions";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { CatalogItemType } from "../../../../../model/common/Catalog";
 
 const manualUrl = getManualLink("advancedSetup_Import");
 const getAuditsUrl = (id: number) => `audit?search=~"ImportTemplate" and entityId == ${id}`;
@@ -48,11 +49,12 @@ interface Props extends InjectedFormProps {
   onDelete: NumberArgFunction;
   nextLocation?: string,
   setNextLocation?: (nextLocation: string) => void,
+  emailTemplates?: CatalogItemType[]
 }
 
 const ImportTemplatesForm = React.memo<Props>(
   ({
-    dirty, form, handleSubmit, isNew, invalid, values, dispatch, syncErrors,
+    dirty, form, handleSubmit, isNew, invalid, values, dispatch, syncErrors, emailTemplates,
      onCreate, onUpdate, onUpdateInternal, onDelete, nextLocation, history, setNextLocation
   }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
@@ -209,7 +211,14 @@ const ImportTemplatesForm = React.memo<Props>(
               </>
             )}
           >
-            <Grid container columnSpacing={3}>
+            <Grid container columnSpacing={3} rowSpacing={2}>
+              <FieldArray
+                name="options"
+                itemsType="component"
+                component={BindingsRenderer}
+                emailTemplates={emailTemplates}
+                rerenderOnEveryChange
+              />
               <Grid item xs={9} className="pr-3">
                 <ScriptCard
                   heading="Script"

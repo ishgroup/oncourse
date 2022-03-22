@@ -14,7 +14,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { FileCopy } from "@mui/icons-material";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import { Dispatch } from "redux";
-import { Form, initialize, InjectedFormProps } from "redux-form";
+import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import FormField from "../../../../../common/components/form/formFields/FormField";
@@ -24,12 +24,13 @@ import { usePrevious } from "../../../../../common/utils/hooks";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { NumberArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
 import AvailableFrom, { mapMessageAvailableFrom } from "../../../components/AvailableFrom";
-import Bindings from "../../../components/Bindings";
+import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import { MessageTemplateEntityItems, MessageTemplateEntityName } from "../../../constants";
 import { validateKeycode } from "../../../utils";
 import ScriptCard from "../../scripts/components/cards/CardBase";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { CatalogItemType } from "../../../../../model/common/Catalog";
 
 const manualUrl = getManualLink("emailTemplates");
 const getAuditsUrl = (id: number) => `audit?search=~"EmailTemplate" and entityId == ${id}`;
@@ -50,6 +51,7 @@ interface Props extends InjectedFormProps {
   syncErrors: any;
   nextLocation: string;
   setNextLocation: (nextLocation: string) => void;
+  emailTemplates?: CatalogItemType[];
 }
 
 const validatePlainBody = (v, allValues) => ((allValues.type !== 'Email' || !allValues.body) ? validateSingleMandatoryField(v) : undefined);
@@ -77,6 +79,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
     nextLocation,
     setNextLocation,
     syncErrors,
+    emailTemplates
   } = props;
 
   const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
@@ -214,7 +217,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
         >
           <Grid container>
             <Grid item xs={9} className="pr-3">
-              <Grid container columnSpacing={3} className="mb-3">
+              <Grid container columnSpacing={3} rowSpacing={2} className="mb-3">
                 <Grid item xs={6}>
                   <div className="heading">Type</div>
                   <FormField
@@ -235,6 +238,13 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                     select
                   />
                 </Grid>
+                <FieldArray
+                  name="options"
+                  itemsType="component"
+                  component={BindingsRenderer}
+                  emailTemplates={emailTemplates}
+                  rerenderOnEveryChange
+                />
               </Grid>
 
               {values.type === 'Email' && (
