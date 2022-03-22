@@ -55,7 +55,9 @@ export const getCustomColumnsMap = (columns: string): (dataRow: DataRow) => any 
 };
 
 export const createAndDownloadFile = (data: any, type: string, name: string) => {
-  const url = window.URL.createObjectURL(type === "json" ? new Blob([JSON.stringify(data)]) : new Blob([data]));
+  const url = window.URL.createObjectURL(type === "json"
+    ? new Blob([JSON.stringify(data, null, 2)])
+    : new Blob([data]));
   const link = document.createElement("a");
   const fileName = name + "-" + formatDateTime(new Date(), "yyyMMddkkmmss");
 

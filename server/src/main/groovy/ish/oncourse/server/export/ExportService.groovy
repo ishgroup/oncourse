@@ -34,6 +34,8 @@ import org.apache.cayenne.query.ObjectSelect
 import javax.script.ScriptEngineManager
 import javax.script.SimpleBindings
 
+import static ish.oncourse.server.export.Formatter.formatOutput
+
 @CompileDynamic
 class ExportService {
 
@@ -74,9 +76,8 @@ class ExportService {
 
 		ExportResult result = new ExportResult()
 
-		def out = new StringWriter()
-		out << performExport(template, exportables)
-		result.setResult(out.toString().bytes)
+		String out = performExport(template, exportables)
+		result.setResult().(out.bytes)
 
 		return result
 	}
@@ -127,7 +128,7 @@ class ExportService {
 				String.format(GroovyScriptService.PREPARE_LOGGER, template.name) +
 				template.script, bindings)
 
-		return writer
+		return formatOutput(writer.toString(), template.outputType)
 	}
 
 	/**
