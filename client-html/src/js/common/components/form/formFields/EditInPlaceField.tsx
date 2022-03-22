@@ -110,9 +110,8 @@ const styles = theme => createStyles({
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    paddingBottom: "4px",
-    right: "-46%",
-    maxWidth: "100%"
+    maxWidth: "100%",
+    marginRight: theme.spacing(0.5)
   },
   placeholderContent: {
     opacity: 0.15,
@@ -501,18 +500,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         })
       : [...items]);
 
-    const labelContent = labelAdornment ? (
-      <span>
-        {label}
-        {' '}
-        <span>
-          {labelAdornment}
-        </span>
-      </span>
-    ) : (
-      label
-    );
-
     let selectItems;
 
     if (categoryKey) {
@@ -648,13 +635,16 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
               label && (
                 <InputLabel
                   classes={{
-                    root: clsx(fieldClasses.label, classes.label, !label && classes.labelTopZeroOffset),
+                    root: clsx(fieldClasses.label, "d-flex", "overflow-visible", !label && classes.labelTopZeroOffset),
                   }}
                   {...InputLabelProps}
                   shrink={Boolean(label || input.value)}
                   htmlFor={`input-${input.name}`}
                 >
-                  {labelContent}
+                  <span className={classes.label}>
+                    {label}
+                  </span>
+                  {labelAdornment}
                 </InputLabel>
               )
             }
@@ -747,7 +737,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
             })}
           >
             <div className={clsx(isInline ? "d-inline" : classes.fitWidth)}>
-              {isInline && !hideLabel && label && labelContent}
+              {isInline && !hideLabel && label}
 
               {isInline && (
                 <ButtonBase
