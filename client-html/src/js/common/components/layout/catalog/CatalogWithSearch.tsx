@@ -146,6 +146,7 @@ const CatalogWithSearch = React.memo<Props>((
       installed: [],
       categories: {
       },
+      other: []
     };
 
     items
@@ -159,6 +160,8 @@ const CatalogWithSearch = React.memo<Props>((
           result.categories[i.category] = [];
         }
         result.categories[i.category].push(i);
+      } else {
+        result.other.push(i);
       }
     });
 
@@ -224,6 +227,25 @@ const CatalogWithSearch = React.memo<Props>((
                   ))}
                 </ExpandableContainer>
               ))}
+              {Boolean(filteredItems.other.length) && (
+                <ExpandableContainer
+                  index={categoryKeys.length}
+                  header="Other"
+                  expanded={search ? [categoryKeys.length] : expanded}
+                  setExpanded={setExpanded}
+                  noDivider
+                >
+                  {filteredItems.other.map(i => (
+                    <CatalogItem
+                      item={i}
+                      onOpen={() => toggleInstall(i)}
+                      key={i.id}
+                      secondaryAction={i.installed && <Typography variant="caption">Added</Typography>}
+                      disabled={i.installed}
+                    />
+                  ))}
+                </ExpandableContainer>
+              )}
             </div>
           </div>
         </Fade>
