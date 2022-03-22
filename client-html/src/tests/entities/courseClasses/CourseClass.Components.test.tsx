@@ -7,20 +7,34 @@ describe("Virtual rendered CourseClassEditView", () => {
   mockedEditView({
     entity: "CourseClass",
     EditView: CourseClassEditView,
-    record: mockecApi => ({
-      ...mockecApi.db.getCourseClass(1),
-      trainingPlan: [],
-      sessions: [],
-      tutors: [],
-      budget: [],
-      studentAttendance: [],
+    record: mockedApi => ({
+      ...mockedApi.db.getCourseClass(1),
+      trainingPlan: mockedApi.db.getCourseClassTrainingPlan(),
+      sessions: mockedApi.db.getCourseClassTimetable(),
+      tutors: mockedApi.db.getCourseClassTutors(),
+      budget: mockedApi.db.getCourseClassBudget(),
+      studentAttendance: mockedApi.db.getCourseClassAttendanceStudents(),
       notes: [],
-      assessments: [],
+      assessments: mockedApi.db.getCourseClassAssessment(),
+    }),
+    state: mockedApi => ({
+      taxes: { items: mockedApi.db.getPlainTaxesFormatted() }
     }),
     render: ({
       screen, initialValues, formRoleName, fireEvent
     }) => {
       fireEvent.click(screen.getByTestId("expand-button-2"));
+
+      const tutors = {};
+
+      initialValues.tutors.forEach((tutor, index) => {
+        fireEvent.click(screen.getByTestId(`expand-button-course-class-tutor-${index}`));
+
+        tutors[`tutors[${index}].contactId`] = tutor.tutorName;
+        tutors[`tutors[${index}].roleId`] = tutor.roleName;
+        tutors[`tutors[${index}].confirmedOn`] = tutor.confirmedOn;
+        tutors[`tutors[${index}].isInPublicity`] = tutor.isInPublicity;
+      });
 
       expect(screen.getByRole(formRoleName)).toHaveFormValues({
         courseId: initialValues.courseName,
@@ -44,6 +58,8 @@ describe("Virtual rendered CourseClassEditView", () => {
         classroomHours: initialValues.classroomHours,
         studentContactHours: initialValues.studentContactHours,
         reportableHours: initialValues.reportableHours,
+
+        ...tutors,
         // expiryDate: format(new Date(initialValues.expiryDate), III_DD_MMM_YYYY).toString(),
       });
     }
