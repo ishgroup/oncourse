@@ -80,6 +80,7 @@ const CourseClassExpandableSession = React.memo<Props>(props => {
       expanded={isExpanded}
       onChange={onChange}
       keepPaper={!session.id}
+      expandButtonId={`course-class-session-${session.id || session.temporaryId}`}
       classes={{
         expansionPanelRoot: "w-100",
         expandIcon: "invisible",
