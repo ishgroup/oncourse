@@ -16,6 +16,7 @@ import ish.oncourse.server.AuditListener
 import ish.oncourse.server.CayenneListenersService
 import ish.oncourse.server.accounting.AccountTransactionService
 import ish.oncourse.server.api.v1.function.SessionValidator
+import ish.oncourse.server.cluster.ClusteredExecutorManager
 import ish.oncourse.server.db.SanityCheckService
 import ish.oncourse.server.deduplication.ContactMergeService
 import ish.oncourse.server.duplicate.DuplicateClassService
@@ -84,6 +85,7 @@ class TestModule implements Module {
         binder.bind(ExportService.class).in(Scopes.SINGLETON)
         binder.bind(DuplicateCourseService.class).in(Scopes.SINGLETON)
         binder.bind(DuplicateClassService.class).in(Scopes.SINGLETON)
+        binder.bind(ClusteredExecutorManager.class).in(Scopes.SINGLETON)
 
         binder.bind(DataPopulation.class).in(Scopes.SINGLETON)
         binder.bind(ImportService.class).in(Scopes.SINGLETON)
