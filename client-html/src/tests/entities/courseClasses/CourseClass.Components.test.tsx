@@ -1,5 +1,3 @@
-import { format } from "date-fns";
-import { III_DD_MMM_YYYY } from "../../../js/common/utils/dates/format";
 import { mockedEditView } from "../../common/MockedEditView.Components";
 import CourseClassEditView from "../../../js/containers/entities/courseClasses/components/CourseClassEditView";
 
@@ -18,7 +16,8 @@ describe("Virtual rendered CourseClassEditView", () => {
       assessments: mockedApi.db.getCourseClassAssessment(),
     }),
     state: mockedApi => ({
-      taxes: { items: mockedApi.db.getPlainTaxesFormatted() }
+      taxes: { items: mockedApi.db.getPlainTaxesFormatted() },
+      export: { contracts: mockedApi.db.getAvetmissExportPlainListFormatted() },
     }),
     render: ({
       screen, initialValues, formRoleName, fireEvent
@@ -47,6 +46,7 @@ describe("Virtual rendered CourseClassEditView", () => {
 
         suppressAvetmissExport: initialValues.suppressAvetmissExport,
         deliveryMode: initialValues.deliveryMode,
+        relatedFundingSourceId: initialValues.relatedFundingSourceId.toString(),
         fundingSource: initialValues.fundingSource,
         vetFundingSourceStateID: initialValues.vetFundingSourceStateID,
         detBookingId: initialValues.detBookingId,
@@ -60,7 +60,6 @@ describe("Virtual rendered CourseClassEditView", () => {
         reportableHours: initialValues.reportableHours,
 
         ...tutors,
-        // expiryDate: format(new Date(initialValues.expiryDate), III_DD_MMM_YYYY).toString(),
       });
     }
   });
