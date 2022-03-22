@@ -23,7 +23,7 @@ export function mockCourseClasses() {
       createdOn: value[10],
       modifiedOn: value[10],
       deposit: 95.45,
-      detBookingId: null,
+      detBookingId: "",
       expectedHours: 0,
       feeExcludeGST: 95.45,
       finalDetExport: null,

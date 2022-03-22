@@ -85,6 +85,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
     <ExpandableItem
       expanded={index === expandedIndex}
       onChange={onChange}
+      expandButtonId={`course-class-tutor-${index}`}
       buttonsContent={(
         <div className="centeredFlex zIndex1 text-nowrap">
           <Button color="primary" onClick={onWageClick} disabled={(!tutor.roleId && tutor.roleId !== 0) || !tutor.contactId}>
