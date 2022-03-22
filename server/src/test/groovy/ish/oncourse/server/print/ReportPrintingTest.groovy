@@ -182,8 +182,8 @@ class ReportPrintingTest extends TestWithDatabase {
 			Thread.sleep(200)
         }
 
-		Assertions.assertEquals(String.format("Printing failed for %s", report.getName()), TaskResult.ResultType.SUCCESS, worker.getResult().getType())
-        Assertions.assertNotNull(String.format("Empty printing result for %s", report.getName()), worker.getResult().getData())
+		Assertions.assertEquals( TaskResultType.SUCCESS, worker.getResult().getType(),String.format("Printing failed for %s", report.getName()))
+        Assertions.assertNotNull(worker.getResult().getData(), String.format("Empty printing result for %s", report.getName()))
 
         FileUtils.writeByteArrayToFile(new File("build/test-data/printing/"+reportFolder+"/"+report.getName()+"-"+sourceEntity+".pdf"), worker.getResult().getData())
     }
