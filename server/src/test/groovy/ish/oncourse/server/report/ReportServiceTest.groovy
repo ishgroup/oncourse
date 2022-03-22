@@ -262,8 +262,8 @@ class ReportServiceTest extends TestWithDatabase {
 		if (worker.getResult().getType() != TaskResultType.SUCCESS) {
 			logger.warn("print has failed : {}", worker.getResult())
         }
-		Assertions.assertEquals(String.format("Printing failed for %s", report.getName()), TaskResultType.SUCCESS, worker.getResult().getType())
-        Assertions.assertNotNull(String.format("Empty printing result for %s", report.getName()), worker.getResult().getData())
+		Assertions.assertEquals(TaskResultType.SUCCESS, worker.getResult().getType(),String.format("Printing failed for %s", report.getName()))
+        Assertions.assertNotNull(worker.getResult().getData(),String.format("Empty printing result for %s", report.getName()))
 
         FileUtils.writeByteArrayToFile(new File("build/test-data/ReportPrintServiceTest/testCustomFontReport.pdf"), worker.getResult().getData())
     }
@@ -308,8 +308,8 @@ class ReportServiceTest extends TestWithDatabase {
 			Thread.sleep(200)
         }
 
-        Assertions.assertEquals(String.format("Printing failed for %s", report.getName()), TaskResultType.FAILURE, worker.getResult().getType())
-        Assertions.assertNotNull(String.format("Empty error for %s", report.getName()), worker.getResult().getError())
+        Assertions.assertEquals(TaskResultType.FAILURE, worker.getResult().getType(), String.format("Printing failed for %s", report.getName()))
+        Assertions.assertNotNull(worker.getResult().getError(), String.format("Empty error for %s", report.getName()))
     }
 
 
@@ -368,6 +368,9 @@ class ReportServiceTest extends TestWithDatabase {
         Assertions.assertEquals(PrintResult.ResultType.FAILED, worker.getResult().getResultType(), String.format("Printing failed for %s", report.getName()))
         Assertions.assertNotNull(worker.getResult().getError(), String.format("Empty error for %s", report.getName()))
         context.deleteObject(report)
+        Assertions.assertEquals(TaskResultType.FAILURE, worker.getResult().getType(), String.format("Printing failed for %s", report.getName()))
+        Assertions.assertNotNull(worker.getResult().getError(), String.format("Empty error for %s", report.getName()))
+        cayenneContext.deleteObject(report)
     }
 
 
@@ -401,8 +404,8 @@ class ReportServiceTest extends TestWithDatabase {
 			Thread.sleep(200)
         }
 
-        Assertions.assertEquals(String.format("Printing failed for %s", report.getName()), TaskResultType.FAILURE, worker.getResult().getType())
-        Assertions.assertNotNull(String.format("Empty error for %s", report.getName()), worker.getResult().getError())
+        Assertions.assertEquals(TaskResultType.FAILURE, worker.getResult().getType(), String.format("Printing failed for %s", report.getName()))
+        Assertions.assertNotNull(worker.getResult().getError(), String.format("Empty error for %s", report.getName()))
     }
 
     static List<File> getAllReportsFromFolder(File folder) {
