@@ -11,6 +11,7 @@ import withStyles from "@mui/styles/withStyles";
 import ListItem from "@mui/material/ListItem";
 import Typography from "@mui/material/Typography";
 import { openInternalLink } from "../../../../../utils/links";
+import { getPrivisioningLink } from "../../../../../../routes/routesMapping";
 
 const styles = theme => createStyles({
   chips: {
@@ -40,7 +41,7 @@ const ListLinkItem = props => {
 
   return (
     <ListItem
-      onClick={openLink ? () => openLink(item.id) : () => showConfirm(() => openInternalLink(url))}
+      onClick={openLink ? () => openLink(item.id) : () => showConfirm(() => openInternalLink(getPrivisioningLink(url)))}
       disableGutters
       className={classes.listItem}
       dense
