@@ -6,25 +6,15 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { ReactNode } from "react";
+package ish.oncourse.server.export
 
-export interface CatalogItemType {
-  id: number;
-  title: string;
-  category?: string;
-  titleAdornment?: ReactNode;
-  installed?: boolean;
-  enabled?: boolean;
-  tags?: string;
-  shortDescription?: ReactNode;
-  keyCode?: string;
-  hideShortDescription?: boolean;
-}
+import groovy.json.JsonOutput
+import ish.oncourse.types.OutputType
 
-export interface CatalogData {
-  installed: CatalogItemType[],
-  other: CatalogItemType[],
-  categories: {
-    [key: string]: CatalogItemType[]
-  }
+class Formatter {
+    private static Map<OutputType, Closure<String>> formatters = [(OutputType.JSON) : { String str -> JsonOutput.prettyPrint(str) }]
+
+    static String formatOutput(String output, OutputType outputType){
+        formatters.getOrDefault(outputType, Closure.IDENTITY)(output)
+    }
 }

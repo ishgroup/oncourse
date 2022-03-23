@@ -12,7 +12,6 @@
 package ish.oncourse.server.lifecycle;
 
 import org.apache.cayenne.ObjectId;
-import org.apache.cayenne.graph.ArcId;
 import org.apache.cayenne.graph.GraphChangeHandler;
 import org.apache.cayenne.graph.GraphDiff;
 
@@ -81,13 +80,13 @@ public class GraphDiffParser {
                 // noop (??)
             }
 
-            public void arcDeleted(Object nodeId, Object targetNodeId, ArcId arcId) {
+            public void arcDeleted(Object nodeId, Object targetNodeId, Object arcId) {
                 // record the fact of relationship change... TODO: analyze relationship
                 // semantics and record changset values
                 getChange(nodeId, arcId.toString(), null);
             }
 
-            public void arcCreated(Object nodeId, Object targetNodeId, ArcId arcId) {
+            public void arcCreated(Object nodeId, Object targetNodeId, Object arcId) {
                 // record the fact of relationship change... TODO: analyze relationship
                 // semantics and record changset values
                 getChange(nodeId, arcId.toString(), null);

@@ -38,6 +38,7 @@ const TriggerCardContent = props => {
         type="select"
         name="trigger.type"
         label="Trigger type"
+        className="flex-fill"
         items={
           isScheduleOrOnDemand && isInternal
           ? [{ label: "On demand", value: "On demand" }, { label: "Schedule", value: "Schedule" }]
@@ -54,7 +55,7 @@ const TriggerCardContent = props => {
           name="trigger.entityName"
           label="Entity name"
           required={values?.trigger?.type !== "On demand"}
-          className="pl-2"
+          className="pl-2 flex-fill"
           disabled={isInternal}
           items={entities}
           allowEmpty={!(values?.trigger?.type !== "On demand")}
@@ -68,7 +69,7 @@ const TriggerCardContent = props => {
           type="select"
           name="trigger.entityAttribute"
           label="Entity attribute"
-          className="pl-2"
+          className="pl-2 flex-fill"
           disabled={isInternal}
           items={Object.keys(Entities[values.trigger.entityName]).map(mapSelectItems)}
           allowEmpty
@@ -83,7 +84,7 @@ const TriggerCardContent = props => {
             label={`Schedule type ${(timeZone ? '(' + timeZone + ' time)' : '' )}`}
             items={ScheduleTypeItems}
             required
-            className="pl-2"
+            className="pl-2 flex-fill"
             autoWidth
           />
 
@@ -92,7 +93,7 @@ const TriggerCardContent = props => {
               type="text"
               name="trigger.cron.custom"
               label="Cron Schedule"
-              className="pl-2"
+              className="pl-2 flex-fill"
               labelAdornment={(
                 <span>
                   <a target="_blank" href="http://www.cronmaker.com/" rel="noreferrer">
