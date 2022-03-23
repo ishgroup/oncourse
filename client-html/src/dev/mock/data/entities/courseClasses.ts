@@ -1,4 +1,4 @@
-import { CourseClass } from "@api/model";
+import { ClassCost, CourseClass } from "@api/model";
 import { generateArraysOfRecords, getEntityResponse } from "../../mockUtils";
 import { CourseClass as CourseClassQueryModel } from "../../../../../build/generated-sources/aql-model/queryLanguageModel";
 import * as Models from "../../../../../build/generated-sources/aql-model/queryLanguageModel";
@@ -183,10 +183,10 @@ export function mockCourseClasses() {
     });
   };
 
-  this.getCourseClassBudget = () => [
+  this.getCourseClassBudget = (classId: number): ClassCost[] => [
     {
       "id": 6455,
-      "courseClassid": 2104,
+      "courseClassid": classId,
       "taxId": 1,
       "accountId": null,
       "invoiceId": null,
@@ -210,12 +210,12 @@ export function mockCourseClasses() {
       "paymentPlan": [
 
       ],
-      "courseClassTutorId": 1426,
+      "courseClassTutorId": classId,
       "tutorRole": "General Tutor"
     },
     {
       "id": 7017,
-      "courseClassid": 2104,
+      "courseClassid": classId,
       "taxId": 1,
       "accountId": null,
       "invoiceId": null,
@@ -290,7 +290,7 @@ export function mockCourseClasses() {
     },
     {
       "id": 7257,
-      "courseClassid": 2104,
+      "courseClassid": classId,
       "taxId": 1,
       "accountId": 15,
       "invoiceId": null,
@@ -342,7 +342,7 @@ export function mockCourseClasses() {
     },
     {
       "id": 7862,
-      "courseClassid": 2104,
+      "courseClassid": classId,
       "taxId": 1,
       "accountId": null,
       "invoiceId": null,
@@ -417,7 +417,7 @@ export function mockCourseClasses() {
     },
     {
       "id": 8209,
-      "courseClassid": 2104,
+      "courseClassid": classId,
       "taxId": 1,
       "accountId": null,
       "invoiceId": null,
@@ -492,7 +492,7 @@ export function mockCourseClasses() {
     },
     {
       "id": 28007,
-      "courseClassid": 2104,
+      "courseClassid": classId,
       "taxId": 1,
       "accountId": null,
       "invoiceId": null,
@@ -567,7 +567,7 @@ export function mockCourseClasses() {
     },
     {
       "id": 28574,
-      "courseClassid": 2104,
+      "courseClassid": classId,
       "taxId": 1,
       "accountId": null,
       "invoiceId": null,
@@ -652,9 +652,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -676,9 +674,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -700,9 +696,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -724,9 +718,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -748,9 +740,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -772,9 +762,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -796,9 +784,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -820,9 +806,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -844,9 +828,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -868,9 +850,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -892,9 +872,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -916,9 +894,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -940,9 +916,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -964,9 +938,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -988,9 +960,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -1012,9 +982,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -1036,9 +1004,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -1060,9 +1026,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -1084,9 +1048,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -1108,9 +1070,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -1474,12 +1434,12 @@ export function mockCourseClasses() {
     }
   ];
 
-  this.getCourseClassTutors = () => [
+  this.getCourseClassTutors = classId => [
     {
-      "id": 2315,
-      "classId": 1866,
-      "contactId": 182,
-      "roleId": 0,
+      "id": classId,
+      classId,
+      "contactId": classId,
+      "roleId": 1,
       "tutorName": "Eliatan Hill",
       "roleName": "General Tutor",
       "confirmedOn": "",

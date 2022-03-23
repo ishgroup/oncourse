@@ -7,7 +7,7 @@ describe("Get duplicate traineeship budget epic tests", () => {
     action: () => getDuplicateCourseClassesBudget(3),
     epic: EpicGetDuplicateTraineeshipBudget,
     processData: mockedApi => {
-      const budget = mockedApi.db.getCourseClassBudget();
+      const budget = mockedApi.db.getCourseClassBudget("3");
       const studentFee = budget.find(b => b.invoiceToStudent);
 
       if (studentFee && studentFee.paymentPlan.length) {

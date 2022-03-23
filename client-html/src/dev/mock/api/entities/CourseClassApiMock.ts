@@ -19,7 +19,10 @@ export function CourseClassApiMock(mock) {
 
   this.api.onPost("/v1/list/entity/courseClass/cancel").reply(config => promiseResolve(config, {}));
 
-  this.api.onGet(new RegExp("/v1/list/entity/courseClass/budget/\\d+")).reply(config => promiseResolve(config, this.db.getCourseClassBudget()));
+  this.api.onGet(new RegExp("/v1/list/entity/courseClass/budget/\\d+")).reply(config => {
+    const id = getParamsId(config);
+    return promiseResolve(config, this.db.getCourseClassBudget(id));
+  });
 
   this.api.onPut(new RegExp("/v1/list/entity/courseClass/budget/\\d+")).reply(config => promiseResolve(config, {}));
 
@@ -27,7 +30,10 @@ export function CourseClassApiMock(mock) {
 
   this.api.onPost(new RegExp("/v1/list/entity/courseClass/timetable/\\d+")).reply(config => promiseResolve(config, this.db.getCourseClassTimetableSessions()));
 
-  this.api.onGet(new RegExp("/v1/list/entity/courseClass/tutor/\\d+")).reply(config => promiseResolve(config, this.db.getCourseClassTutors()));
+  this.api.onGet(new RegExp("/v1/list/entity/courseClass/tutor/\\d+")).reply(config => {
+    const id = getParamsId(config);
+    return promiseResolve(config, this.db.getCourseClassTutors(id));
+  });
 
   this.api.onGet(new RegExp("/v1/list/entity/courseClass/assessment/\\d+")).reply(config => promiseResolve(config, this.db.getCourseClassAssessment()));
 
