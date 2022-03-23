@@ -450,7 +450,7 @@ Feature: Main feature for all POST requests with path 'list/entity/report'
         "sortOn":"amount",
         "preview":null,
         "variables":[{"name":"varName3", "label":"varLabel3", "type":"Date"}],
-        "options":[{"name":"optName3","type":"Date time","value":"2019-01-03"}],
+        "options":[{"name":"optName3","type":"Date","value":"2019-01-03"}],
         "shortDescription":null,
         "automationTags":null,
         "category":null
