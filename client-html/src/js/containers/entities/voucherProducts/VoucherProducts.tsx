@@ -146,32 +146,30 @@ const VoucherProducts: React.FC<VoucherProductsProps> = props => {
   }, []);
 
   return (
-    <div>
-      <ListView
-        listProps={{
+    <ListView
+      listProps={{
           primaryColumn: "name",
           secondaryColumn: "sku"
         }}
-        editViewProps={{
+      editViewProps={{
           manualLink,
           asyncValidate: notesAsyncValidate,
           asyncBlurFields: ["notes[].message"],
           hideTitle: true
         }}
-        EditViewContent={VoucherProductEditView}
-        CogwheelAdornment={BulkEditCogwheelOption}
-        getEditRecord={getVoucherProductRecord}
-        rootEntity="VoucherProduct"
-        onInit={onInitCustom}
-        onCreate={onCreate}
-        onSave={onSave}
-        findRelated={findRelatedGroup}
-        filterGroupsInitial={filterGroups}
-        preformatBeforeSubmit={preformatBeforeSubmit}
-        defaultDeleteDisabled
-        noListTags
-      />
-    </div>
+      EditViewContent={VoucherProductEditView}
+      CogwheelAdornment={BulkEditCogwheelOption}
+      getEditRecord={getVoucherProductRecord}
+      rootEntity="VoucherProduct"
+      onInit={onInitCustom}
+      onCreate={onCreate}
+      onSave={onSave}
+      findRelated={findRelatedGroup}
+      filterGroupsInitial={filterGroups}
+      preformatBeforeSubmit={preformatBeforeSubmit}
+      defaultDeleteDisabled
+      noListTags
+    />
   );
 };
 
