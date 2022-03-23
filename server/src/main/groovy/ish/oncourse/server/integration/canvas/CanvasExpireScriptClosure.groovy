@@ -17,8 +17,12 @@ import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.scripting.ScriptClosure
 import ish.oncourse.server.scripting.ScriptClosureTrait
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.StringUtils
+
+import java.text.Format
+import java.text.SimpleDateFormat
 
 /**
  * Integration allows us to establish interaction between Canvas LMS and onCourse enrol system.
@@ -28,27 +32,38 @@ import org.apache.commons.lang3.StringUtils
  * susped the Canvas user if all enrolments are past their end date.
  * ```
  * canvas_expire {
- *     ends new Date()
+ *     ends "enrolment.customFieldEndDate"
  * }
  * ```
- * Setting 'ends' is Date and if end dates of all user's enrollments are before 'ends' date => suspend the Canvas user
+ * Setting 'ends' is String. If ends == null use 'enrolment.courseClass.endDateTime'. If 'ends' dates of all user's enrollments are expired and not null => suspend the Canvas user
  */
 @API
 @CompileStatic
 @ScriptClosure(key = "canvas_expire", integration = CanvasIntegration)
 class CanvasExpireScriptClosure implements ScriptClosureTrait<CanvasIntegration>{
-    Date ends
 
-    def ends(Date ends){
+    private static final Format format = new SimpleDateFormat("yyyy-MM-dd")
+
+    String ends
+
+    def ends(String ends){
         this.ends = ends
     }
 
     @Override
     Object execute(CanvasIntegration integration) {
         integration.initAuthHeader()
-        ObjectContext context = integration.cayenneService.newContext
-        Date expireDate = ends != null ? ends : new Date()
 
+        ends = ends != null ? ends : "enrolment.courseClass.endDateTime"
+        String pathToEndsDate
+        if (ends.startsWith("enrolment.")) {
+            pathToEndsDate = ends.replaceFirst("enrolment\\.", "")
+        } else {
+            throw new IllegalArgumentException("Wrong 'ends' variable: '${ends}'.")
+        }
+
+        ObjectContext context = integration.cayenneService.newContext
+        def expressionNotExpireOrNullDate = createExpression(integration, pathToEndsDate, context)
         def unsuspendedUsers = integration.getUnsuspendedUsers()
         unsuspendedUsers.each { user ->
             List enrolmentsCanvas = integration.getAllUserEnrolments(user["id"])
@@ -59,19 +74,32 @@ class CanvasExpireScriptClosure implements ScriptClosureTrait<CanvasIntegration>
 
             if (StringUtils.isNumeric(user["sis_user_id"] as CharSequence)) {
                 Long sisUserId = user["sis_user_id"] as Long
-                def enrolmentsDbMatchedCanvas = ObjectSelect.query(Enrolment)
+                def enrolmentsDbMatchedCanvasCount = ObjectSelect.query(Enrolment)
                         .where(Enrolment.STUDENT.dot(Student.CONTACT).dot(Contact.ID).eq(sisUserId)
                                 .andExp(Enrolment.COURSE_CLASS.dot(CourseClass.ID).in(enrolmentSisSectionIds)))
-                        .select(context)
-                def isAllEnrolmentsExpired = !enrolmentsDbMatchedCanvas
-                        .collect { it.courseClass.endDateTime != null && expireDate.after(it.courseClass.endDateTime) }
-                        .contains(false)
-                if (enrolmentsDbMatchedCanvas.size() > 0 && isAllEnrolmentsExpired) {
+                        .selectCount(context)
+                def activeEnrolmentsOrNullEndDateCount = ObjectSelect.query(Enrolment)
+                        .where(Enrolment.STUDENT.dot(Student.CONTACT).dot(Contact.ID).eq(sisUserId)
+                                .andExp(Enrolment.COURSE_CLASS.dot(CourseClass.ID).in(enrolmentSisSectionIds))
+                                .andExp(expressionNotExpireOrNullDate)
+                        )
+                        .selectCount(context)
+                if (enrolmentsDbMatchedCanvasCount > 0 && activeEnrolmentsOrNullEndDateCount == 0) {
                     integration.suspendUser(user["id"])
                 }
             }
         }
 
         return null
+    }
+
+    private static Expression createExpression(CanvasIntegration integration, String pathToEndsDate, ObjectContext context) {
+        Date expireDate = new Date()
+        String aqlQuery = pathToEndsDate + " > " + format.format(expireDate) + " or " + pathToEndsDate + " is null"
+        def result = integration.antlrAqlService.compile(aqlQuery, Enrolment.class, context)
+        if (result.errors) {
+            throw new IllegalArgumentException("Can not compile aql query: '${aqlQuery}'. ${result.errors.message}")
+        }
+        return result.cayenneExpression.get()
     }
 }
