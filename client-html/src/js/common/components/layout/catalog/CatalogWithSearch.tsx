@@ -160,7 +160,7 @@ const CatalogWithSearch = React.memo<Props>((
           result.categories[i.category] = [];
         }
         result.categories[i.category].push(i);
-      } else if (i.keyCode.startsWith("ish.")) {
+      } else if (i.keyCode?.startsWith("ish.")) {
         result.other.push(i);
       }
     });
