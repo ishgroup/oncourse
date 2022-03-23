@@ -120,6 +120,36 @@ class CanvasIntegration implements PluginTrait {
     }
 
     /**
+     * Get all users from Canvas
+     *
+     * @return users
+     */
+    protected List getAllUsers() {
+        getAllWithoutPagination({ nextPageUrl -> getUsersWithPagination(nextPageUrl) })
+    }
+
+    /**
+     * Get users from Canvas by url
+     *
+     * @param nextPageUrl url with params 'per_page' and 'page'
+     * @return users
+     */
+    protected getUsersWithPagination(nextPageUrl) {
+        def url = nextPageUrl != null ? nextPageUrl : "https://nida-au.test.instructure.com/api/v1/accounts/${accountId}/users?page=1&per_page=100"
+        def client = new RESTClient(url)
+
+        client.headers["Authorization"] = "Bearer ${authHeader}"
+        client.request(Method.GET, ContentType.URLENC) {
+            response.success = { resp, result ->
+                return [ "resp": resp, "result": result]
+            }
+            response.failure = { resp, result ->
+                throw new IllegalStateException("Failed to retreive users by account id:${accountId} ${resp.getStatusLine()}")
+            }
+        }
+    }
+
+    /**
      * Creates a new student user in Canvas from the students full name and email
      *
      * @param fullName full name of the onCourse student
@@ -168,13 +198,11 @@ class CanvasIntegration implements PluginTrait {
      * @return list user objects
      */
     protected List getUnsuspendedUsers() {
-        Map usersResp = getUserByEmail(null) as Map
-        List users = responseToJson(usersResp) as List
+        List users = getAllUsers()
         List unsuspendedUsers = new ArrayList<>()
         users.each { it ->
-            Map userLogins = getUserLogins(it["id"]) as Map
-            List userLoginsJson = responseToJson(userLogins) as List
-            if (userLoginsJson["workflow_state"].contains("active")) {
+            List userLogins = getAllUserLogins(it["id"])
+            if (userLogins["workflow_state"].contains("active")) {
                 unsuspendedUsers.add(it)
             }
         }
@@ -182,23 +210,29 @@ class CanvasIntegration implements PluginTrait {
     }
 
     /**
-     * Get user's enrolments from Canvas
+     * Get all user's enrolments from Canvas
      *
      * @param user id from Canvas
      * @return enrolments
      */
-    protected getEnrolments(userId) {
-        def client = new RESTClient(baseUrl)
+    protected List getAllUserEnrolments(userId) {
+        getAllWithoutPagination({ nextPageUrl -> getEnrolmentsWithPagination(nextPageUrl, userId) })
+    }
+
+    /**
+     * Get user's enrolments from Canvas by url
+     *
+     * @param nextPageUrl url with params 'per_page' and 'page'
+     * @param user id from Canvas
+     * @return enrolments
+     */
+    protected getEnrolmentsWithPagination(nextPageUrl, userId) {
+        def url = nextPageUrl != null ? nextPageUrl : "https://nida-au.test.instructure.com/api/v1/users/${userId}/enrollments?page=1&per_page=100"
+        def client = new RESTClient(url)
         client.headers["Authorization"] = "Bearer ${authHeader}"
         client.request(Method.GET, ContentType.URLENC) {
-            uri.path = "/api/v1/users/${userId}/enrollments"
-            //ignore pagination
-            uri.query = [
-                    per_page: '100000',
-            ]
-
             response.success = { resp, result ->
-                return result
+                return [ "resp": resp, "result": result]
             }
             response.failure = { resp, result ->
                 throw new IllegalStateException("Failed to retreive enrolments by user id:${userId} ${resp.getStatusLine()}")
@@ -212,9 +246,8 @@ class CanvasIntegration implements PluginTrait {
      * @param user id from Canvas
      */
     protected checkIfUserSuspendedAndUnsuspend(userId) {
-        Map userLogins = getUserLogins(userId) as Map
-        List userLoginsJson = responseToJson(userLogins) as List
-        if (userLoginsJson["workflow_state"].contains("suspended")) {
+        List userLogins = getAllUserLogins(userId)
+        if (userLogins["workflow_state"].contains("suspended")) {
             unsuspendUser(userId)
         }
     }
@@ -224,18 +257,24 @@ class CanvasIntegration implements PluginTrait {
      *
      * @param user id from Canvas
      */
-    protected getUserLogins(userId) {
-        def client = new RESTClient(baseUrl)
+    protected getAllUserLogins(userId) {
+        getAllWithoutPagination({ nextPageUrl -> getUserLoginsWithPagination(nextPageUrl, userId) })
+    }
+
+    /**
+     * Get list of user's logins for the given account by url
+     *
+     * @param nextPageUrl url with params 'per_page' and 'page'
+     * @param user id from Canvas
+     */
+    protected getUserLoginsWithPagination(nextPageUrl, userId) {
+        def url = nextPageUrl != null ? nextPageUrl : "https://nida-au.test.instructure.com/api/v1/users/${userId}/logins?page=1&per_page=100"
+        def client = new RESTClient(url)
         client.headers["Authorization"] = "Bearer ${authHeader}"
         client.request(Method.GET, ContentType.URLENC) {
-            uri.path = "/api/v1/users/${userId}/logins"
-            //ignore pagination
-            uri.query = [
-                    per_page: '10000',
-            ]
 
             response.success = { resp, result ->
-                return result
+                return [ "resp": resp, "result": result]
             }
             response.failure = { resp, result ->
                 throw new IllegalStateException("Failed to retreive logins by user id:${userId} ${resp.getStatusLine()}")
@@ -471,30 +510,36 @@ class CanvasIntegration implements PluginTrait {
         }
     }
     /**
-     * Get all sections for a Canvas course
+     * Get sections for a Canvas course by url
      *
      * @param courseId course to retreive sections from
+     * @param nextPageUrl url with params 'per_page' and 'page'
      * @return collection of sections
      */
-    def getSectionsByCourse(courseId) {
-        def client = new RESTClient(baseUrl)
+    def getSectionsByCourseWithPagination(nextPageUrl, courseId) {
+        def url = nextPageUrl != null ? nextPageUrl : "https://nida-au.test.instructure.com/api/v1/courses/${courseId}/sections?page=1&per_page=100"
+        def client = new RESTClient(url)
 
         client.headers["Authorization"] = "Bearer ${authHeader}"
-        def result = client.request(Method.GET, ContentType.URLENC) {
-            uri.path = "/api/v1/courses/${courseId}/sections"
-            //ignore pagination
-            uri.query = [
-                    per_page: '10000',
-            ]
+        client.request(Method.GET, ContentType.URLENC) {
             response.success = { resp, result ->
-                return result
+                return [ "resp": resp, "result": result]
             }
 
             response.failure = { resp, result ->
                 throw new IllegalStateException("Failed to get sections for course, course id:${courseId} ${resp.getStatusLine()}")
             }
         }
-        return responseToJson(result)
+    }
+
+    /**
+     * Get all sections for a Canvas course
+     *
+     * @param courseId course to retreive sections from
+     * @return collection of sections
+     */
+    def getAllSectionsByCourse(courseId) {
+        getAllWithoutPagination({ nextPageUrl -> getSectionsByCourseWithPagination(nextPageUrl, courseId) })
     }
 
     /**
@@ -505,7 +550,7 @@ class CanvasIntegration implements PluginTrait {
      * @return
      */
     def getSection(uniqueCode, courseId) {
-        def sections = getSectionsByCourse(courseId)
+        def sections = getAllSectionsByCourse(courseId)
 
         return sections.find { s ->
             s.name == uniqueCode
@@ -621,6 +666,20 @@ class CanvasIntegration implements PluginTrait {
                 throw new IllegalStateException("Failed to enrol teacher: ${teachertId} into course: ${courseId} ${resp.getStatusLine()}")
             }
         }
+    }
+
+    protected List getAllWithoutPagination(getWithPagination) {
+        def ResponseAndResult = getWithPagination(null)
+        HttpResponseDecorator response = ResponseAndResult["resp"] as HttpResponseDecorator
+        List allObjects = responseToJson(ResponseAndResult["result"] as Map) as List
+        def nextPage = response.getHeaders('Link')[0].elements.find { it.parameters.find {it.value == 'next'}}
+        while (nextPage) {
+            ResponseAndResult = getWithPagination((nextPage.name + "=" + nextPage.value).replaceAll("<|>", ""))
+            response = ResponseAndResult["resp"] as HttpResponseDecorator
+            allObjects.addAll(responseToJson(ResponseAndResult["result"] as Map) as List)
+            nextPage = response.getHeaders('Link')[0].elements.find { it.parameters.find {it.value == 'next'}}
+        }
+        return allObjects
     }
 
     @OnSave
