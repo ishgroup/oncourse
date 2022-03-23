@@ -51,8 +51,7 @@ class CanvasExpireScriptClosure implements ScriptClosureTrait<CanvasIntegration>
 
         def unsuspendedUsers = integration.getUnsuspendedUsers()
         unsuspendedUsers.each { user ->
-            Map enrolmentsResp = integration.getEnrolments(user["id"]) as Map
-            List enrolmentsCanvas = integration.responseToJson(enrolmentsResp) as List
+            List enrolmentsCanvas = integration.getAllUserEnrolments(user["id"])
             List<Long> enrolmentSisSectionIds = enrolmentsCanvas["sis_section_id"].findAll { StringUtils.isNumeric(it as CharSequence) }
             if (enrolmentSisSectionIds.isEmpty()) {
                 return

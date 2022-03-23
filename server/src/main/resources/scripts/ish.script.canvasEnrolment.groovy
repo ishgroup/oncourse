@@ -6,7 +6,4 @@ if (tagName == "" || record.courseClass.course.hasTag(tagName, true)) {
         create_section true
         create_student true
     }
-    canvas_expire {
-        ends new Date()
-    }
 }
