@@ -61,7 +61,7 @@ class CanvasBaseForm extends React.Component<any, any> {
 
     window.open(
       // eslint-disable-next-line max-len
-      `https://${values.fields.baseUrl}/login/oauth2/auth?client_id=${values.fields.clientToken}&response_type=code&state=${JSON.stringify(values)}&redirect_uri=${window.location.href}`,
+      `https://${values.fields.baseUrl}/login/oauth2/auth?client_id=${values.fields.clientToken}&response_type=code&state=${JSON.stringify(values)}&redirect_uri=${window.location.href}?type=8`,
       "_self"
     );
   };
@@ -89,14 +89,15 @@ class CanvasBaseForm extends React.Component<any, any> {
             )
           }
 
-          <FormField disabled={configured} type="text" name="fields.baseUrl" label="Base url" className="mb-2" />
-          <FormField disabled={configured} type="text" name="fields.accountId" label="Account id" className="mb-2" />
-          <FormField disabled={configured} type="text" name="fields.clientToken" label="Client id" className="mb-2" />
+          <FormField disabled={configured} type="text" name="fields.baseUrl" label="Base url" required className="mb-2" />
+          <FormField disabled={configured} type="text" name="fields.accountId" label="Account id" required className="mb-2" />
+          <FormField disabled={configured} type="text" name="fields.clientToken" label="Client id" required className="mb-2" />
           <FormField
             disabled={configured}
             type="password"
             name="fields.clientSecret"
             label="Client secret"
+            required
             className="mb-2"
           />
           {values && values.fields && values.fields.baseUrl && values.fields.clientToken && values.fields.clientSecret ? (
@@ -127,7 +128,7 @@ class CanvasBaseForm extends React.Component<any, any> {
                 </>
               )
           ) : (
-            <Typography variant="caption">Fill all fields to proceed proceed with authorising</Typography>
+            <Typography variant="caption">Fill all fields to proceed with authorization</Typography>
           )}
         </AppBarContent>
       </form>
