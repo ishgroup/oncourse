@@ -3,7 +3,7 @@
     {
       "title": "Scheduling",
       "key": "scheduling",
-      "description": "Make scheduling courses and events a breeze with onCourse scheduling. Whether you offer classroom, self-paced or virtual courses, onCourse has the power to manage even the most complex scheduling requirements. Whether you offer classroom, self-paced or virtual courses, onCourse has the power to manage even the most complex scheduling requirements.<p>Make course scheduling a pleasure and free your organisation from costly mistakes.</p> <ul><li>Collision Detection</li><li>Course Duplication</li><li>Availability Rules</li><li>Capacity Management</li><li>Worldwide Time-zone Support</li><li>Automation</li><li>Timetable Views</li><ul>",
+      "description": "Make scheduling courses and events a breeze with onCourse scheduling. Whether you offer classroom, self-paced or virtual courses, onCourse has the power to manage even the most complex scheduling requirements. Whether you offer classroom, self-paced or virtual courses, onCourse has the power to manage even the most complex scheduling requirements.<ul><li>Collision Detection</li><li>Course Duplication</li><li>Availability Rules</li><li>Capacity Management</li><li>Worldwide Time-zone Support</li><li>Automation</li><li>Timetable Views</li><ul>",
       "features": [
         "classes",
         "holidays",
@@ -17,7 +17,7 @@
     {
       "title": "Automation",
       "key": "automation",
-      "description": "onCourse includes a powerful scripting engine that allows you to automate just about any process. Send automated emails or SMS messages, update records, integrate with third-party tools such as analytics or email marketing, export data to finance systems or your LMS. Scripts turn your student management system into a completely customisable tool with your business workflows built right in.<ul><li>Scripting</li><li>Data Imports and Exports</li><li>Message Templates</li><li>Build-in PDF Reports</li><li>Third-party Integrations</li><ul>",
+      "description": "onCourse includes a powerful scripting engine that allows you to automate just about any process. Send automated emails or SMS messages, update records, integrate with third-party tools such as analytics or email marketing, export data to finance systems or your LMS. Automations turn your student management system into a completely customisable tool with your business workflows built right in.<ul><li>Scripting</li><li>Data Imports and Exports</li><li>Message Templates</li><li>Build-in PDF Reports</li><li>Third-party Integrations</li><ul>",
       "features": [
         "automation",
         "exportTemplates",
@@ -172,7 +172,7 @@
     {
       "title": "Document Management",
       "key": "documents",
-      "description": " Powerful payroll capabilities within onCourse software bind your payroll directly with scheduling, so you can be sure you’re paying the correct number of hours every time. With centralised pay rates and roles, managing your payroll couldn’t be easier. Pay fixed amounts, per session, per enrolment, per timetabled hour, per student contact hour or any unit you define.<ul><li>Share documents online</li><li>Share documents via SkillsonCourse</li><li>Add private documents</li><ul>",
+      "description": "Attach a file to virtually anything and make compliance simple with complete version control included - you’ll never lose a critical piece of information again. Whether it’s documents, images or video, onCourse software provides unlimited storage space for all kinds of files, so you’ll never run out of disk space.<ul><li>Share documents online</li><li>Share documents via SkillsonCourse</li><li>Add private documents</li><li>Version control</li><ul>",
       "features": [
         "documents"
       ]
@@ -180,7 +180,7 @@
     {
       "title": "CRM",
       "key": "crm",
-      "description": " Powerful payroll capabilities within onCourse software bind your payroll directly with scheduling, so you can be sure you’re paying the correct number of hours every time. With centralised pay rates and roles, managing your payroll couldn’t be easier. Pay fixed amounts, per session, per enrolment, per timetabled hour, per student contact hour or any unit you define.<ul><li>Share documents online</li><li>Share documents via SkillsonCourse</li><li>Add private documents</li><ul>",
+      "description": "The onCourse CRM platform is a highly customisable student management system, marketing platform and automation software that helps you manage the entire customer journey. onCourse is the most comprehensive education CRM software available today, making it a powerful tool for effective customer relationship management and creating happy customers!<ul><li>Leads</li><li>Contacts</li><li>Applications</li><li>Messages</li><li>Quotes</li><li>Waiting Lists</li><li>Sales</li><li>Companies</li><li>Corporate Pass</li><ul>",
       "features": [
         "corporatePass",
         "discounts",
@@ -533,7 +533,7 @@
     {
       "title": "Scripts",
       "key": "scripts",
-      "link": "/automation/script",
+      "link": "/automation/scripts",
       "description": "The onCourse script library. Add scripts to your system, then turn them on or off as required."
     },
     {

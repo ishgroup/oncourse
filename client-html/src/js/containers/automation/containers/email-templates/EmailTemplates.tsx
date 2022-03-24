@@ -43,7 +43,7 @@ const EmailTemplates = React.memo<any>(props => {
 
   const isNew = useMemo(() => id === "new", [id]);
 
-  const validateTemplateCopyName = useCallback(name => (emailTemplates.some(t => t.name.trim() === name.trim())
+  const validateTemplateCopyName = useCallback(name => (emailTemplates.some(t => t.name?.trim() === name.trim())
     ? "Name must be unique"
     : undefined),
   [emailTemplates]);
