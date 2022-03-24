@@ -22,7 +22,7 @@ Feature: Main feature for all PUT requests with path 'tag'
             "name":"tagName100",
             "status":"Show on website",
             "urlPath":"urlPath",
-            "content":"Any text",
+            "content":'Any text {render:"textile"}',
             "weight":1,
             "requirements":[{"type":"Payslip","mandatory":true,"limitToOneTag":true,"system":false}],
             "childTags":
@@ -30,14 +30,14 @@ Feature: Main feature for all PUT requests with path 'tag'
                     "name":"childTag1",
                     "status":"Show on website",
                     "urlPath":"urlPath1",
-                    "content":"Any text1",
+                    "content":'Any text1 {render:"textile"}',
                     "weight":1,
                 },
                 {
                     "name":"childTag2",
                     "status":"Show on website",
                     "urlPath":"urlPath2",
-                    "content":"Any text2",
+                    "content":'Any text2 {render:"textile"}',
                     "weight":2,
                 }]
         }
