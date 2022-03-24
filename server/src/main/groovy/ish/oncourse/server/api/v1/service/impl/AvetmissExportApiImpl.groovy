@@ -14,7 +14,7 @@ package ish.oncourse.server.api.v1.service.impl
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.common.io.Files
 import com.google.inject.Inject
-import groovy.json.JsonOutput
+import groovy.json.JsonGenerator
 import groovy.json.JsonSlurper
 import ish.common.types.OutcomeStatus
 import ish.common.types.TaskResultType
@@ -23,11 +23,7 @@ import ish.oncourse.entity.services.CertificateService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.v1.function.avetmiss.AvetmissExportPreviewBuilder
-import ish.oncourse.server.api.v1.model.AvetmissExportFlavourDTO
-import ish.oncourse.server.api.v1.model.AvetmissExportOutcomeDTO
-import ish.oncourse.server.api.v1.model.AvetmissExportRequestDTO
-import ish.oncourse.server.api.v1.model.AvetmissExportSettingsDTO
-import ish.oncourse.server.api.v1.model.ValidationErrorDTO
+import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.AvetmissExportApi
 import ish.oncourse.server.cayenne.FundingUpload
 import ish.oncourse.server.cayenne.FundingUploadOutcome
@@ -195,7 +191,12 @@ class AvetmissExportApiImpl implements AvetmissExportApi {
                         settings.flavour.dbType,
                         cayenneService.newContext)
 
-                def json = JsonOutput.toJson(new AvetmissExportPreviewBuilder(outcomes).build())
+                def generator = new JsonGenerator.Options()
+                        .addConverter(AvetmissExportOutcomeStatusDTO){ value -> value.toString()}
+                        .addConverter(AvetmissExportTypeDTO){ value -> value.toString()}
+                        .addConverter(AvetmissExportOutcomeCategoryDTO){ value -> value.toString()}
+                        .build()
+                def json = generator.toJson(new AvetmissExportPreviewBuilder(outcomes).build())
 
                 TaskResult output = new TaskResult(TaskResultType.SUCCESS);
                 output.setData(json.bytes)
