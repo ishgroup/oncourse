@@ -13,7 +13,7 @@ describe("Virtual rendered CourseClassEditView", () => {
       budget: mockedApi.db.getCourseClassBudget("1"),
       studentAttendance: mockedApi.db.getCourseClassAttendanceStudents(),
       notes: [],
-      assessments: mockedApi.db.getCourseClassAssessment(),
+      assessments: mockedApi.db.getCourseClassAssessment(1),
     }),
     state: mockedApi => ({
       taxes: { items: mockedApi.db.getPlainTaxesFormatted() },

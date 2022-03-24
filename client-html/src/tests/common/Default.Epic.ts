@@ -8,16 +8,25 @@ import TestStore from "../../js/constants/Store";
 interface Props {
   action: any;
   epic: Epic<any, any>,
-  processData: (mockedApi: any) => any;
+  processData: (mockedApi: any, state?: any) => any;
   beforeProcess?: () => void;
-  store?: Object;
+  store?: ({ mockedApi, values }) => Object;
+  initialValues?: ({ mockedApi }) => Object;
 }
 
 export const DefaultEpic = ({
-  action, epic, processData, beforeProcess = () => {}, store = {}
+  action,
+  epic,
+  processData,
+  beforeProcess = () => {},
+  store,
+  initialValues
 }: Props) => {
+  const formValues = typeof initialValues === "function" ? initialValues({ mockedApi: mockedAPI }) : {};
+  const customStore = typeof store === "function" ? store({ mockedApi: mockedAPI, values: formValues }) : {};
+
   // Initialize / override default state
-  const state = new StateObservable(new Subject(), { ...TestStore.getState(), ...store });
+  const state = new StateObservable(new Subject(), { ...TestStore.getState(), ...customStore });
 
   // Redux action to trigger epic
   const action$ = ActionsObservable.of(typeof action === "function" ? action(mockedAPI) : action );
@@ -36,5 +45,5 @@ export const DefaultEpic = ({
         toArray()
       )
       .toPromise()
-  ).resolves.toEqual(processData(mockedAPI));
+  ).resolves.toEqual(processData(mockedAPI, state?.value));
 };

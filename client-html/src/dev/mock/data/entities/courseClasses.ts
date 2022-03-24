@@ -1447,7 +1447,23 @@ export function mockCourseClasses() {
     }
   ];
 
-  this.getCourseClassAssessment = () => [];
+  this.getCourseClassAssessment = classId => [
+    {
+      "id": 1,
+      "assessmentId": classId,
+      "courseClassId": classId,
+      "assessmentCode": `code ${classId}`,
+      "assessmentName": `name ${classId}`,
+      "gradingTypeId": 1,
+      "contactIds": [
+        classId
+      ],
+      "moduleIds": [],
+      "releaseDate": null,
+      "dueDate": "2021-06-10T07:04:19.000Z",
+      "submissions": []
+    }
+  ];
 
   this.getCourseClassAttendanceStudents = () => [
     {

@@ -35,7 +35,12 @@ export function CourseClassApiMock(mock) {
     return promiseResolve(config, this.db.getCourseClassTutors(id));
   });
 
-  this.api.onGet(new RegExp("/v1/list/entity/courseClass/assessment/\\d+")).reply(config => promiseResolve(config, this.db.getCourseClassAssessment()));
+  this.api.onGet(new RegExp("/v1/list/entity/courseClass/assessment/\\d+")).reply(config => {
+    const id = getParamsId(config);
+    return promiseResolve(config, this.db.getCourseClassAssessment(id));
+  });
+
+  this.api.onPut(new RegExp("/v1/list/entity/courseClass/assessment/\\d+")).reply(config => promiseResolve(config, {}));
 
   this.api.onGet(new RegExp("/v1/list/entity/courseClass/attendance/student/\\d+")).reply(config => promiseResolve(config, this.db.getCourseClassAttendanceStudents()));
 
