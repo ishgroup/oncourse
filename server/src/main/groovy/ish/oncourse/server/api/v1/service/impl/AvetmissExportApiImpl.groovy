@@ -35,6 +35,7 @@ import ish.oncourse.server.export.avetmiss.AvetmissExportResult
 import ish.oncourse.server.export.avetmiss8.Avetmiss8ExportRunner
 import ish.oncourse.server.users.SystemUserService
 import ish.oncourse.types.FundingStatus
+import ish.oncourse.types.OutputType
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.apache.logging.log4j.LogManager
@@ -198,7 +199,8 @@ class AvetmissExportApiImpl implements AvetmissExportApi {
                         .build()
                 def json = generator.toJson(new AvetmissExportPreviewBuilder(outcomes).build())
 
-                TaskResult output = new TaskResult(TaskResultType.SUCCESS);
+                TaskResult output = new TaskResult(TaskResultType.SUCCESS)
+                output.setResultOutputType(OutputType.JSON)
                 output.setData(json.bytes)
                 output
             }
@@ -224,6 +226,11 @@ class AvetmissExportApiImpl implements AvetmissExportApi {
         try {
             TaskResult result = executorManager.getResult(processId) as TaskResult
             def jsonSlurper = new JsonSlurper()
+            while(result.type == TaskResultType.IN_PROGRESS){
+                Thread.sleep(10000)
+                result = executorManager.getResult(processId) as TaskResult
+            }
+            assert result.type != TaskResultType.IN_PROGRESS
             jsonSlurper.parse(result.data) as List<AvetmissExportOutcomeDTO>
         } catch (Exception e) {
             logger.catching(e)
