@@ -11,19 +11,24 @@ import React from "react";
 import { alpha } from "@mui/material/styles";
 import { makeAppStyles } from "../../styles/makeStyles";
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles<Props>(theme => ({
   chip: {
     textTransform: "uppercase",
     fontWeight: 600,
     fontSize: "12px",
     marginLeft: theme.spacing(1),
-    color: theme.palette.success.light,
-    backgroundColor: alpha(theme.palette.success.light, 0.15)
+    color: ({ color }) => theme.palette[color].light,
+    backgroundColor: ({ color }) => alpha(theme.palette[color].light, 0.15)
   }
 }));
 
-const InfoPill = ({ label }) => {
-  const classes = useStyles();
+interface Props {
+  label: string;
+  color?: "success" | "primary";
+}
+
+const InfoPill = ({ label, color = label === "custom" ? "primary" : "success" }: Props) => {
+  const classes = useStyles({ label, color });
   
   return <Chip className={classes.chip} label={label} size="small" />;
 };
