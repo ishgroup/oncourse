@@ -11,7 +11,7 @@
 package ish.oncourse.server.integration
 
 import com.google.inject.Injector
-import ish.oncourse.aql.impl.AntlrAqlService
+import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.IntegrationConfiguration
@@ -53,7 +53,7 @@ trait PluginTrait {
 	Injector injector
 	IntegrationConfiguration configuration
 	ObjectContext context
-	AntlrAqlService antlrAqlService
+	AqlService antlrAqlService
 
 	/**
 	 * Name of the integration configuration for this plugin
@@ -79,7 +79,7 @@ trait PluginTrait {
 			templateService = injector.getInstance(TemplateService)
 			preferenceController = injector.getInstance(PreferenceController)
 			licenseService = injector.getInstance(LicenseService)
-			antlrAqlService = injector.getInstance(AntlrAqlService)
+			antlrAqlService = injector.getInstance(AqlService)
 		}
 
 				// check to see whether this plugin with initialised with a configuration
