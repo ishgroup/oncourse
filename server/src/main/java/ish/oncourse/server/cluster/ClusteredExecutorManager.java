@@ -108,7 +108,9 @@ public class ClusteredExecutorManager {
     public void interrupt(String key) {
         // TODO need to make this method to support cluster environment
         localTasks.computeIfPresent(key, (k, task) -> {
-            task.getLocalTask().cancel(true);
+            var localTask = task.getLocalTask();
+            if(localTask != null)
+                localTask.cancel(true);
             return null;
         });
     }
