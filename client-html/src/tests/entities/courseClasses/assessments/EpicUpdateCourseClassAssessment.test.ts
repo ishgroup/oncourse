@@ -9,4 +9,3 @@ describe("Update course class assessment epic tests", () => {
     processData: () => []
   }));
 });
-
