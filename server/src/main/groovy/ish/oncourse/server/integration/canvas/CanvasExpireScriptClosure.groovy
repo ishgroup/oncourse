@@ -35,6 +35,16 @@ import java.text.SimpleDateFormat
  *     ends "enrolment.customFieldEndDate"
  * }
  * ```
+ * ```
+ * canvas_expire {
+ *     ends "enrolment.courseClass.customFieldEndDate"
+ * }
+ * ```
+ * ```
+ * canvas_expire {
+ *     ends "enrolment.courseClass.endDateTime"
+ * }
+ * ```
  * Setting 'ends' is String. If ends == null use 'enrolment.courseClass.endDateTime'. If 'ends' dates of all user's enrollments are expired and not null => suspend the Canvas user
  */
 @API

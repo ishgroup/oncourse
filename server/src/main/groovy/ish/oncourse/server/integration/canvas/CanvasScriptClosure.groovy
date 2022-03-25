@@ -44,6 +44,27 @@ import java.security.SecureRandom
  * Setting 'create_password' will generate random password for student to canvas and save to customField of Contact with key like create_password parameter
  * Setting 'course_blueprint' use if the course does not already exist in Canvas with the code provided, will create a new course from the blueprint specified.
  * Setting 'add_tutors' to true will enrol tutors from enrolment's class into the Canvas course as teachers
+ *
+ * ````
+ * def student = [
+ *           user: [
+ *                   name: "David Smith",
+ *                   time_zone: "Hawaii"
+ *               ],
+ *          communication_channel: [
+ *                   skip_confirmation: true
+ *               ],
+ *           enable_sis_reactivation: true
+ *           ]
+ * canvas {
+ *     enrolment e
+ *     course_code "My-Canvas-Course"
+ *     section_code "key." + e.courseClass.uniqueCode
+ * 	   create_section true
+ * 	   create_student true
+ * 	   student_attributes student
+ * }
+ * ````
  * Setting 'student_attributes' map adds any valid parameters for Canvas user. Default parameters will be overwritten
  */
 @API
@@ -127,7 +148,7 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
                 }
             }
             if (course.size() > 1) {
-                throw new IllegalArgumentException("Illegal state: There are find more that one course for specified course code: ${course_code}. " +
+                throw new IllegalArgumentException("Illegal state: Found more that one course for specified course code: ${course_code}. " +
                         "Please, specify more unique course code.")
             }
 
