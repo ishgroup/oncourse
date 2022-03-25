@@ -138,6 +138,8 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
                 password = RandomStringUtils.random( PASSWORD_LENGTH, 0, POSSIBLE_PASSWORD_CHARS.length-1, false, false, POSSIBLE_PASSWORD_CHARS, new SecureRandom())
 
             List course = integration.getCourse(course_code) as List
+//            Leave courses with equal course code. E.g. when integration.getCourse("dc1") can return 2 courses with course_code = 'dc1' and 'foundc1', because its both contains 'dc1'
+            course = course.findAll {course_code.equals(it["course_code"])}
 
             if (course.size() == 0) {
                 if (course_blueprint != null) {
