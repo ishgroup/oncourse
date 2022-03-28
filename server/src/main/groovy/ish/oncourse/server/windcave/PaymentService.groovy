@@ -260,6 +260,6 @@ class PaymentService {
     }
 
     private String getTransactionType() {
-        preferenceController.purchaseWithoutAuth ? PURCHASE_TYPE : AUTH_TYPE
+        preferenceController.isPurchaseWithoutAuth() ? PURCHASE_TYPE : AUTH_TYPE
     }
 }

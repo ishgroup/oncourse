@@ -16,7 +16,6 @@ import { State } from "../../../../reducers/state";
 import { clearCourseClassSales, getCourseClassSales } from "../../sales/actions";
 import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 import { validateSingleMandatoryField, validateNonNegative } from "../../../../common/utils/validation";
-import { Classes } from "../../../../model/entities/CourseClass";
 
 /**
  * @param sale
@@ -26,7 +25,7 @@ const courseClassToNestedListItem = (sale: Sale): NestedListItem => ({
   entityId: sale.id,
   primaryText: sale.name,
   secondaryText: sale.code,
-  link: `/${Classes.path}?search=id is ${sale.id}`,
+  link: `/class?search=id is ${sale.id}`,
   active: sale.active
 });
 

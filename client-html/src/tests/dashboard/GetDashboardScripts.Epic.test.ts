@@ -9,8 +9,11 @@ describe("Get dashboard scripts epic tests", () => {
     epic: EpicGetDashboardScripts,
     processData: mockedApi => {
       const records = mockedApi.db.getScripts();
-      const nameIndex = records.columns.findIndex((col: Column) => col.attribute === "name");
-      const scripts: Script[] = records.rows.map((row: DataRow) => ({ id: Number(row.id), name: row.values[nameIndex] } as Script));
+      const scripts: Script[] = records.rows.map((row: DataRow) => ({
+        id: Number(row.id),
+        name: row.values[0],
+        description: row.values[1]
+      }));
 
       return [
         {

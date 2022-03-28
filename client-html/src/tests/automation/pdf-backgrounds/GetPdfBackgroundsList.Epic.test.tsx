@@ -22,7 +22,8 @@ describe("Get pdf backgrounds list epic tests", () => {
         title: r.values[0],
         installed: true,
         enabled: true,
-        titleAdornment: r.values[1] === "true" ? <CropPortraitIcon className="ml-0-5 disabled" /> : <CropLandscapeIcon className="ml-0-5 disabled" />
+        hideShortDescription: true,
+        titleAdornment: r.values[1] === "true" ? <CropPortraitIcon className="lightGrayIconButton" /> : <CropLandscapeIcon className="lightGrayIconButton" />
       }));
 
       pdfBackgrounds.sort((a, b) => (a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1));

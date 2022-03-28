@@ -14,7 +14,6 @@ import ListView from "../../../common/components/list-view/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { fundingUploadsPath } from "../../../constants/Api";
 import { FilterGroup } from "../../../model/common/ListView";
-import { Classes } from "../../../model/entities/CourseClass";
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 import {
  createOutcome, deleteOutcome, getOutcome, getOutcomeTags, updateOutcome
@@ -99,7 +98,7 @@ const filterGroups: FilterGroup[] = [
 
 const findRelatedGroup: any = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Outcome and entityId" },
-  { title: "Classes", list: Classes.path, expression: "enrolments.outcomes.id" },
+  { title: "Classes", list: "class", expression: "enrolments.outcomes.id" },
   { title: "Enrolments", list: "enrolment", expression: "outcomes.id" },
   { title: "Students", list: "contact", expression: "student.enrolments.outcomes.id" },
   { title: "Certificates", list: "certificate", expression: "certificateOutcomes.outcome.id" }
