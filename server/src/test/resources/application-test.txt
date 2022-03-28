@@ -11,7 +11,7 @@ jdbc:
     driverClassName: org.mariadb.jdbc.Driver
     connectionTestQuery: SELECT 1
     maximumPoolSize: 100
-    minimumIdle: 2
+    minimumIdle: 1
     registerMbeans: true
     idleTimeout: 300000
 
@@ -21,7 +21,7 @@ jdbc:
     driverClassName: org.mariadb.jdbc.Driver
     connectionTestQuery: SELECT 1
     maximumPoolSize: 100
-    minimumIdle: 2
+    minimumIdle: 1
     registerMbeans: true
     idleTimeout: 300000
 
