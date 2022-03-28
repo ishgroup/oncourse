@@ -212,6 +212,9 @@ class AvetmissExportApiImpl implements AvetmissExportApi {
         try {
             // TODO: change API to send byte[] directly
             def result = executorManager.getResult(processId) as TaskResult
+            if(result.data == null){
+                return null
+            }
             def file = new File(result.getName())
             Files.write(result.data, file)
             file
