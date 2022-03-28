@@ -11,7 +11,7 @@
 
 package ish.oncourse.server;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import io.bootique.annotation.BQConfig;
 import ish.math.Country;
 import ish.math.CurrencyFormat;

@@ -10,7 +10,7 @@
  */
 package ish.oncourse.server.security;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;

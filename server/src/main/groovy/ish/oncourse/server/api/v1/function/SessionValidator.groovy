@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.v1.function
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.CayenneService
 import ish.oncourse.server.api.dao.ContactDao
@@ -79,9 +79,9 @@ class SessionValidator {
             Date start = LocalDateUtils.timeValueToDate(s.start)
             Date end = LocalDateUtils.timeValueToDate(s.end)
 
-            //validate persisted objects 
+            //validate persisted objects
             result += validateSession(s, start, end, context, classId)
-            
+
             //looking for clashes among other class sessions
             if (sessions.minus(s).any {isClashed(s.start, s.end, it.start, it.end)}) {
                 SessionWarningDTO warning = new SessionWarningDTO()
@@ -142,17 +142,17 @@ class SessionValidator {
 
         return result
     }
-    
+
 
     private List<SessionWarningDTO> validateSession(SessionDTO sessionDto, Date sessionStart, Date  sessionEnd, ObjectContext context, Long classId) {
         List<SessionWarningDTO> sessionWarning = []
-        
+
 
         sessionDto.tutorAttendances.each { ta ->
             Contact contact = contactDao.getById(context, ta.contactId)
             Date rosterStart = LocalDateUtils.timeValueToDate(ta.start)
             Date rosterEnd = LocalDateUtils.timeValueToDate(ta.end)
-            
+
             List<TutorAttendance> rosterClashes = getTutorSessionClashes(rosterStart,rosterEnd, ta.contactId, classId)
             if (!rosterClashes.empty) {
                 SessionWarningDTO warning = new SessionWarningDTO()
@@ -252,7 +252,7 @@ class SessionValidator {
                 (selfStart <= start && selfEnd >= end) ||
                 (selfStart >= start && selfEnd <= end)
     }
-    
+
 
     private List<TutorAttendance> getTutorSessionClashes(Date start, Date end, Long contactId, Long classId) {
 
@@ -265,7 +265,7 @@ class SessionValidator {
         if (classId) {
             filter = filter.andExp(TutorAttendance.SESSION.dot(Session.COURSE_CLASS).dot(CourseClass.ID).ne(classId))
         }
-        //time clash quilifier 
+        //time clash quilifier
         filter = filter.andExp(
                 TutorAttendance.START_DATETIME.gt(start).andExp(TutorAttendance.START_DATETIME.lt(end))
                         .orExp(TutorAttendance.END_DATETIME.gt(start).andExp(TutorAttendance.END_DATETIME.lt(end)))
@@ -279,7 +279,7 @@ class SessionValidator {
                 .limit(3)
                 .select(cayenneService.newContext)
     }
-    
+
     private List<Session> getRoomSessionClashes(Date start, Date end, Long roomId, Long classId) {
 
         Expression filter = Session.ROOM.dot(Room.ID).eq(roomId)
@@ -293,7 +293,7 @@ class SessionValidator {
                         .orExp(Session.START_DATETIME.lte(start).andExp(Session.END_DATETIME.gte(end)))
                         .orExp(Session.START_DATETIME.gte(start).andExp(Session.END_DATETIME.lte(end)))
         )
-        
+
         return ObjectSelect.query(Session)
                 .where(filter)
                 .prefetch(Session.COURSE_CLASS.dot(CourseClass.COURSE).joint())

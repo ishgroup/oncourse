@@ -11,8 +11,6 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import com.google.inject.Inject
-import com.google.inject.Provider
 import com.nulabinc.zxcvbn.Strength
 import com.nulabinc.zxcvbn.Zxcvbn
 import ish.oncourse.server.ICayenneService
@@ -22,6 +20,8 @@ import ish.oncourse.server.http.HttpFactory
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.messaging.MailDeliveryService
 
+import javax.inject.Inject
+import javax.inject.Provider
 import javax.mail.MessagingException
 
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
@@ -59,7 +59,7 @@ class UserApiImpl implements UserApi {
     private PreferenceController preferenceController
     @Inject
     private Provider<HttpFactory> httpFactoryProvider
-    
+
     @Override
     List<UserDTO> get() {
         UserDao.getList(cayenneService.newContext)
@@ -195,7 +195,7 @@ class UserApiImpl implements UserApi {
     private void sendInvitationToUser(SystemUser whoBeChanged) {
         SystemUser whoChange = systemUserService.currentUser
         String hostName = licenseService.currentHostName
-        HttpFactory httpFactory = httpFactoryProvider.get() 
+        HttpFactory httpFactory = httpFactoryProvider.get()
         try {
             whoBeChanged.invitationToken = sendInvitationEmailToNewSystemUser(whoChange, whoBeChanged, preferenceController, mailDeliveryService, hostName, httpFactory.ip, httpFactory.port)
         } catch (MessagingException | IllegalArgumentException ex) {

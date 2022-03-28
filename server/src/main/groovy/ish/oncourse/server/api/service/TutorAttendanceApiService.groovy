@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.api.dao.CourseClassTutorDao
 import ish.oncourse.server.api.dao.TutorAttendanceDao
@@ -84,7 +84,7 @@ class TutorAttendanceApiService extends EntityApiService<TutorAttendanceDTO, Tut
         if (dto.actualPayableDurationMinutes == null) {
             validator.throwClientErrorException(id, 'actualPayableDurationMinutes', "Roster end is required")
         }
-        
+
         if (id != null) {
             TutorAttendance attendance = getEntityAndValidateExistence(context, dto.id)
 
@@ -94,7 +94,7 @@ class TutorAttendanceApiService extends EntityApiService<TutorAttendanceDTO, Tut
         }
     }
 
-    
+
 
     @Override
     void validateModelBeforeRemove(TutorAttendance cayenneModel) {
@@ -114,7 +114,7 @@ class TutorAttendanceApiService extends EntityApiService<TutorAttendanceDTO, Tut
         List<TutorAttendance> attendancesToDelete = session.sessionTutors.findAll {!(it.id in attendanceDTOList*.id) }
         attendancesToDelete.each {validateModelBeforeRemove(it)}
         context.deleteObjects(attendancesToDelete)
-        
+
         attendanceDTOList.each { dto ->
             TutorAttendance attendance
 

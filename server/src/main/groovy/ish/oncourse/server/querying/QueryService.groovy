@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.querying
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.aql.AqlService
 import ish.oncourse.aql.CompilationResult
 import ish.oncourse.server.CayenneService

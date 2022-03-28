@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.dao
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.common.types.PaymentStatus
 import ish.common.types.PaymentType
 import ish.math.Money

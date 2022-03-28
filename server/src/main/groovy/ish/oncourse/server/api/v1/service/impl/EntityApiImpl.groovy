@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.transform.CompileDynamic
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService

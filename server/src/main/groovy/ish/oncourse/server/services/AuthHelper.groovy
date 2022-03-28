@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.services
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import com.nimbusds.jose.JWSAlgorithm
 import com.nimbusds.jose.JWSHeader
 import com.nimbusds.jose.JWSSigner

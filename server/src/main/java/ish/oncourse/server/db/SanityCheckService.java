@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.db;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import ish.common.types.AccountType;
 import ish.oncourse.DefaultAccount;
 import ish.oncourse.server.ICayenneService;

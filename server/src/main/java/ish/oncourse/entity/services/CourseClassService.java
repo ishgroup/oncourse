@@ -10,7 +10,6 @@
  */
 package ish.oncourse.entity.services;
 
-import com.google.inject.Inject;
 import ish.budget.ClassBudgetUtil;
 import ish.common.types.EnrolmentStatus;
 import ish.math.Money;
@@ -29,6 +28,7 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
 
+import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.util.*;
 

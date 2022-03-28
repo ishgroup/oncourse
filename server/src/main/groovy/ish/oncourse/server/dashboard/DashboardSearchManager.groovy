@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.dashboard
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.server.api.v1.model.SearchGroupDTO
 
 class DashboardSearchManager {

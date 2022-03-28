@@ -11,9 +11,10 @@
 
 package ish.oncourse.server;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.name.Named;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Provider;
+
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
@@ -54,7 +55,7 @@ public class DataPopulationCommand  extends CommandWithMetadata {
             dataPopulation.run();
             logger.warn("initialize script triggers...");
             groovyScriptServiceProvider.get().initTriggers();
-        } catch (Exception e) { 
+        } catch (Exception e) {
             logger.catching(e);
             return CommandOutcome.failed(1, "Error happened in Data Population Command", e);
 

@@ -1,24 +1,22 @@
 /*
- * Copyright ish group pty ltd 2020.
+ * Copyright ish group pty ltd 2021.
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of the
- * GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License for more details.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 package ish.oncourse.server.integration
 
-import com.google.inject.Binder
-import com.google.inject.Inject
-import com.google.inject.Injector
 import groovy.transform.CompileStatic
 import io.bootique.cayenne.CayenneModule
+import io.bootique.di.Binder
+import io.bootique.di.Injector
 import org.reflections.Reflections
 import org.reflections.scanners.ResourcesScanner
+import org.reflections.scanners.Scanners
 
+import javax.inject.Inject
 import java.lang.reflect.Method
 import java.util.regex.Pattern
 
@@ -47,7 +45,7 @@ class PluginService {
         }
         getMethods(OnConfigure)?.each {it.invoke(null, binder)}
     }
-    
+
     /**
      * Check if only one integration instance of certain type can be created
      *
@@ -71,7 +69,7 @@ class PluginService {
     static Method onSave(int type) {
         return getPluginClass(type)?.getMethods()?.find {it.getAnnotation(OnSave)}
     }
-    
+
     /**
      * Looking for 'getProps' integration getter
      *
@@ -90,7 +88,7 @@ class PluginService {
      * @return Method getProps integration method
      */
     static Set<String> getPluggableResources(String resourcePath, String filePattern) {
-        return new Reflections(resourcePath, new ResourcesScanner()).getResources(Pattern.compile(filePattern))
+        return new Reflections(resourcePath, Scanners.Resources).getResources(Pattern.compile(filePattern))
     }
 
 
@@ -100,7 +98,7 @@ class PluginService {
     List<Method> onStart() {
         getMethods(OnStart)?.each { it.invoke(it.declaringClass.newInstance(injector: injector))}
     }
-    
+
     private static List<Method> getMethods(Class annotation) {
         return (PLUGIN_CLASSES*.methods?.flatten() as List<Method>)
                 ?.findAll { Method m -> m.getAnnotation(annotation) }

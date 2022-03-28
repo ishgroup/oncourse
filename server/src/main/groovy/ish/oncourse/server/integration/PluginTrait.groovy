@@ -10,8 +10,8 @@
  */
 package ish.oncourse.server.integration
 
-import com.google.inject.Injector
 import ish.oncourse.aql.AqlService
+import io.bootique.di.Injector
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.IntegrationConfiguration

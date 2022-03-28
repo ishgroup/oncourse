@@ -10,8 +10,8 @@
  */
 package ish.oncourse.server.integration;
 
-import com.google.inject.Inject;
 import ish.common.types.AutomationStatus;
+import javax.inject.Inject;
 import ish.common.types.SystemEventType;
 import ish.common.types.TriggerType;
 import ish.oncourse.common.SystemEvent;

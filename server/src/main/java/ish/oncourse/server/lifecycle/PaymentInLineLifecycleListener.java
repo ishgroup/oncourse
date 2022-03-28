@@ -10,7 +10,7 @@
  */
 package ish.oncourse.server.lifecycle;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import ish.oncourse.server.PreferenceController;
 import ish.oncourse.server.cayenne.Account;
 import ish.oncourse.server.cayenne.PaymentInLine;

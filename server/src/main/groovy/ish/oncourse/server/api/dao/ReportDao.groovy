@@ -11,8 +11,8 @@
 
 package ish.oncourse.server.api.dao
 
-import com.google.inject.Inject
 import ish.common.types.AutomationStatus
+import javax.inject.Inject
 import ish.oncourse.server.CayenneService
 import ish.oncourse.server.api.v1.function.export.ExportFunctions
 import ish.oncourse.server.cayenne.Report

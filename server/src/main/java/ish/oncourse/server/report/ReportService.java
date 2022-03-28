@@ -10,8 +10,8 @@
  */
 package ish.oncourse.server.report;
 
-import com.google.inject.Inject;
 import ish.common.types.AutomationStatus;
+import javax.inject.Inject;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.Report;
 import ish.report.ImportReportResult;

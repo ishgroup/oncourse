@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.api.dao.CourseClassDao
 import ish.oncourse.server.api.dao.CourseClassTutorDao
@@ -37,10 +37,10 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
 
     @Inject
     private CourseClassDao classDao
-    
+
     @Inject
     private TutorAttendanceApiService attendanceApiService
-    
+
 
     @Inject
     private RoomDao roomDao

@@ -11,12 +11,13 @@
 
 package ish.oncourse.server.messaging
 
-import com.google.inject.Inject
-import com.google.inject.name.Named
+import javax.inject.Inject
 import com.sun.mail.smtp.SMTPMessage
 import groovy.transform.CompileDynamic
 import ish.oncourse.server.AngelModule
-import ish.oncourse.server.PreferenceController
+
+import javax.inject.Named
+
 import static javax.mail.Message.RecipientType
 import org.apache.commons.lang3.StringUtils
 
@@ -57,7 +58,7 @@ class MailDeliveryService {
         message.setHeader(EMAIL_HEADER, "onCourse ${angelVersion}".toString())
         message.sentDate = param.sentDate
         message.content = param.getContent.get()
-        
+
         if (SMTPService.Mode.mock != smtpService.mode) {
             Transport.send(message)
         }

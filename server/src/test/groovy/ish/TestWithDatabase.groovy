@@ -1,8 +1,9 @@
 package ish
 
-import com.google.inject.Binder
-import com.google.inject.Inject
-import com.google.inject.Module
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
+
+import javax.inject.Inject
 import groovy.transform.CompileStatic
 import io.bootique.cayenne.CayenneModule
 import io.bootique.jdbc.DataSourceListener
@@ -85,7 +86,7 @@ abstract class TestWithDatabase extends TestWithBootique {
                 .app("--config=classpath:application-test.yml")
                 .module(AngelModule.class)
                 .module(JdbcModule.class)
-                .module(new Module() {
+                .module(new BQModule() {
                     @Override
                     void configure(Binder binder) {
                         JdbcModule.extend(binder).addDataSourceListener(new DataSourceListener() {
@@ -105,7 +106,7 @@ abstract class TestWithDatabase extends TestWithBootique {
                 })
                 .module(JdbcHikariCPModule.class)
                 .module(CayenneModule.class)
-                .module(new Module() {
+                .module(new BQModule() {
                     @Override
                     void configure(Binder binder) {
                         CayenneModule.extend(binder).addModule(new org.apache.cayenne.di.Module() {

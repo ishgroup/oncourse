@@ -11,8 +11,8 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
 import ish.oncourse.server.api.v1.model.LastRunDTO
+import javax.inject.Inject
 import ish.oncourse.types.AuditAction
 import ish.common.types.EntityEvent
 import ish.common.types.SystemEventType
@@ -176,7 +176,7 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
                 .limit(LAST_RUN_FETCH_LIMIT)
                 .select(cayenneService.newContext)
                 .collect { convertArray(it) }
-        
+
         scriptDTO.lastRun = lastRunList
         scriptDTO
     }

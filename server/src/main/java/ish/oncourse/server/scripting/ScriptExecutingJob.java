@@ -10,7 +10,7 @@
  */
 package ish.oncourse.server.scripting;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.Enrolment;
 import ish.oncourse.server.cayenne.Script;

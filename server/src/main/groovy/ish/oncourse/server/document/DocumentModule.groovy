@@ -8,16 +8,14 @@
 
 package ish.oncourse.server.document
 
-import com.google.inject.Provides
-import com.google.inject.Singleton
 import io.bootique.ConfigModule
 import io.bootique.config.ConfigurationFactory
+import io.bootique.di.Provides
 import ish.oncourse.server.ICayenneService
 
 class DocumentModule extends ConfigModule {
 
-    @Singleton
-    @Provides
+        @Provides
     DocumentService createDocumentService(ICayenneService cayenneService, ConfigurationFactory configFactory) {
         return configFactory
                 .config(DocumentService.class, defaultConfigPrefix())

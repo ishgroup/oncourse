@@ -11,8 +11,8 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import com.google.inject.Inject
 import ish.common.types.AutomationStatus
+import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.service.EmailTemplateApiService
 import ish.oncourse.server.api.v1.model.EmailTemplateDTO

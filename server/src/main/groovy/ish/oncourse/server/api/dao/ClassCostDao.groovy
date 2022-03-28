@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.dao
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.common.types.ClassCostFlowType
 import ish.common.types.ClassCostRepetitionType
 import ish.math.Money

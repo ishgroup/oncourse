@@ -11,7 +11,8 @@
 
 package ish.oncourse.server.services;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
+
 import ish.oncourse.server.ICayenneService;
 import ish.util.TimeZoneUtil;
 import org.apache.cayenne.access.DataContext;
