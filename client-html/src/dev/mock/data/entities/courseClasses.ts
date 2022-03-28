@@ -1472,7 +1472,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1482,7 +1482,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1492,7 +1492,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1502,7 +1502,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1512,7 +1512,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1522,7 +1522,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1532,7 +1532,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1542,7 +1542,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1552,7 +1552,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1562,7 +1562,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1572,7 +1572,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1582,7 +1582,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1592,7 +1592,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1602,7 +1602,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1612,7 +1612,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1622,7 +1622,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1632,7 +1632,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1642,7 +1642,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1652,7 +1652,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1662,7 +1662,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1672,7 +1672,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1682,7 +1682,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1692,7 +1692,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1702,7 +1702,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1712,7 +1712,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1722,7 +1722,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1732,7 +1732,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1742,7 +1742,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1752,7 +1752,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Attended",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1762,7 +1762,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1772,7 +1772,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1782,7 +1782,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1792,7 +1792,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1802,7 +1802,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1812,7 +1812,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1822,7 +1822,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1832,7 +1832,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1842,7 +1842,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1852,7 +1852,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1862,7 +1862,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1872,7 +1872,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     }
