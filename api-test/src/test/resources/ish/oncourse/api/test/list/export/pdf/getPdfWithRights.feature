@@ -31,7 +31,7 @@ Feature: Re-usable feature to get PDF with access rights
                }
              }
              """
-        * sleep(1)
+        * sleep(2)
 
         Given path ishPath + '/' + processId
         And param entityName = entity
