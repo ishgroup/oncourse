@@ -22,7 +22,17 @@ Feature: Main feature for all PUT requests with path 'export/avetmiss8'
         Then status 200
 
         * def processId = $
-
+#       <-----> Pause:
+        * def sleep =
+             """
+             function(seconds){
+               for(i = 0; i <= seconds; i++)
+               {
+                 java.lang.Thread.sleep(i*1000);
+               }
+             }
+             """
+        * sleep(2)
         Given path ishPathControl + '/' + processId
         When method GET
         Then status 200
@@ -46,6 +56,17 @@ Feature: Main feature for all PUT requests with path 'export/avetmiss8'
         Then status 200
 
         * def processId = $
+#       <-----> Pause:
+        * def sleep =
+             """
+             function(seconds){
+               for(i = 0; i <= seconds; i++)
+               {
+                 java.lang.Thread.sleep(i*1000);
+               }
+             }
+             """
+        * sleep(2)
 
         Given path ishPathControl + '/' + processId
         When method GET
@@ -76,12 +97,24 @@ Feature: Main feature for all PUT requests with path 'export/avetmiss8'
         Then status 200
 
         * def processId = $
+#       <-----> Pause:
+        * def sleep =
+             """
+             function(seconds){
+               for(i = 0; i <= seconds; i++)
+               {
+                 java.lang.Thread.sleep(i*1000);
+               }
+             }
+             """
+        * sleep(2)
 
         Given path ishPathControl + '/' + processId
         When method GET
         Then status 200
 
         * match $ == {"status":"#ignore","message":null}
+
 
         Given path ishPath + '/' + processId
         When method GET

@@ -19,7 +19,17 @@ Feature: Main feature for all GET requests with path 'export/avetmiss8'
         And request avetmissExport
         When method PUT
         Then status 200
-
+#       <-----> Pause:
+        * def sleep =
+             """
+             function(seconds){
+               for(i = 0; i <= seconds; i++)
+               {
+                 java.lang.Thread.sleep(i*1000);
+               }
+             }
+             """
+        * sleep(2)
         * def processId = $
 
         Given path ishPath + '/' + processId
