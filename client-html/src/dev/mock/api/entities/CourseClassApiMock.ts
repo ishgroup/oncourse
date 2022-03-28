@@ -43,6 +43,8 @@ export function CourseClassApiMock(mock) {
 
   this.api.onPost("/v1/list/entity/courseClass/tutor").reply(config => promiseResolve(config, {}));
 
+  this.api.onPut(new RegExp("/v1/list/entity/courseClass/tutor/\\d+")).reply(config => promiseResolve(config, {}));
+
   this.api.onGet(new RegExp("/v1/list/entity/courseClass/assessment/\\d+")).reply(config => {
     const id = getParamsId(config);
     return promiseResolve(config, this.db.getCourseClassAssessment(id));
