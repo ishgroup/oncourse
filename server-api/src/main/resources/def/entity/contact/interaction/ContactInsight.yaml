@@ -1,0 +1,6 @@
+type: object
+properties:
+  overview:
+    $ref: './ContactOverview.yaml'
+  activity:
+    $ref: './ContactActivity.yaml'

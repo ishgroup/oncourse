@@ -1,0 +1,15 @@
+type: object
+properties:
+  lastContacted:
+    type: string
+    format: date
+    required: false
+    description: Contact interaction date
+    example: 1991-07-20
+  inactiveDays:
+    type: integer
+    required: false
+  links:
+    type: array
+    items:
+      $ref: './ContactInteraction.yaml'

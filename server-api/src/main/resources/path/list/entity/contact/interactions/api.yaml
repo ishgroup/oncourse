@@ -1,0 +1,25 @@
+get:
+  operationId: getInteraction
+  description: Return contact interaction info
+  tags:
+    - ContactInteraction
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of contact interaction to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/contact/interaction/ContactInsight.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: CONTACT
+    errorMessage: Sorry, you have no permissions to get info about contact. Please contact your administrator
