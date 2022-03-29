@@ -9,16 +9,25 @@ properties:
   enrolments:
     type: array
     items:
-      type: number
-  applications:
+      type: integer
+      format: int64
+  closeApplications:
     type: array
     items:
-      type: number
+      type: integer
+      format: int64
+  openApplications:
+    type: array
+    items:
+      type: integer
+      format: int64
   openLeads:
     type: array
     items:
-      type: number
+      type: integer
+      format: int64
   closeLeads:
     type: array
     items:
-      type: number
+      type: integer
+      format: int64
