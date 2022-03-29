@@ -1,5 +1,11 @@
 type: object
 properties:
+  email:
+    type: string
+    required: true
+  fullName:
+    type: string
+    required: true
   overview:
     $ref: './ContactOverview.yaml'
   activity:

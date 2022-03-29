@@ -48,6 +48,8 @@ class ContactInteractionApiImpl implements ContactInteractionApi{
         contactOverview.closeLeads(contact.leads.findAll{it.status == LeadStatus.CLOSED}.collect{it.id})
 
         def contactInsight = new ContactInsightDTO()
+        contactInsight.fullName = contact?.fullName
+        contactInsight.email = contact?.email
         contactInsight.activity(contactActivityDto)
         contactInsight.overview(contactOverview)
         contactInsight
