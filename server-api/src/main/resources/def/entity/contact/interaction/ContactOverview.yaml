@@ -1,0 +1,24 @@
+type: object
+properties:
+  spent:
+    type: number
+    required: false
+  owing:
+    type: number
+    required: false
+  enrolments:
+    type: array
+    items:
+      type: number
+  applications:
+    type: array
+    items:
+      type: number
+  openLeads:
+    type: array
+    items:
+      type: number
+  closeLeads:
+    type: array
+    items:
+      type: number

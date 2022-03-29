@@ -1,0 +1,21 @@
+type: object
+properties:
+  name:
+    type: string
+    required: true
+  entity:
+    type: string
+    required: true
+  date:
+    type: string
+    format: date
+    required: false
+    description: Contact interaction date
+    example: 1991-07-20
+  description:
+    type: string
+    required: false
+  links:
+    type: array
+    items:
+      $ref: './ContactInteractionLink.yaml'
