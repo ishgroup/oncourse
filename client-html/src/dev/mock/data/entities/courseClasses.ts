@@ -292,7 +292,7 @@ export function mockCourseClasses() {
       "id": 7257,
       "courseClassid": classId,
       "taxId": 1,
-      "accountId": 15,
+      "accountId": 1,
       "invoiceId": null,
       "description": "Student enrolment fee",
       "invoiceToStudent": true,

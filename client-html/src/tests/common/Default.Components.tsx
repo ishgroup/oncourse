@@ -10,7 +10,7 @@ interface Props {
   View: (props: any) => any;
   record: (mockedApi: any) => object;
   render: ({
-    screen, initialValues, mockedApi, fireEvent
+    screen, initialValues, mockedApi, fireEvent, viewProps
   }) => any;
   defaultProps?: ({ entity, initialValues, mockedApi }) => object;
   beforeFn?: () => void;
@@ -58,6 +58,7 @@ export const defaultComponents = (props: Props) => {
       initialValues,
       mockedApi: mockedAPI,
       fireEvent: testFireEvent,
+      viewProps,
     });
   });
 };
