@@ -8,6 +8,7 @@ properties:
     example: 1991-07-20
   inactiveDays:
     type: integer
+    format: int64
     required: false
   links:
     type: array
