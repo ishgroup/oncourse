@@ -1,5 +1,8 @@
 type: object
 properties:
+  firstSeen:
+    type: string
+    required: true
   spent:
     type: number
     required: false
