@@ -25,27 +25,27 @@ import java.text.Format
 import java.text.SimpleDateFormat
 
 /**
- * Integration allows us to establish interaction between Canvas LMS and onCourse enrol system.
+ * This automation component will iterate through all currently unsuspended users in Canvas and match their
+ * enrolments to enrolments in onCourse.Suspend the Canvas user if all their enrolments have completed.
  *
- * This closure will iterate through all currently unsuspended users in Canvas and match their enrolments to enrolments in onCourse.
- * For each of those enrolments, look at the enrolment end date (by default this is the class end date) and
- * susped the Canvas user if all enrolments are past their end date.
+ * ```
+ * canvas_expire { }
+ * ```
+ *
+ * By default the enrolment will be deemed to have ended when the class is complete. If you want to specify a
+ * different end date you can do that with a simple expression like this:
  * ```
  * canvas_expire {
  *     ends "enrolment.customFieldEndDate"
  * }
  * ```
+ *
+ * Or with an expression like this:
  * ```
  * canvas_expire {
- *     ends "enrolment.courseClass.customFieldEndDate"
+ *     ends "enrolment.courseClass.endDateTime + 10"
  * }
  * ```
- * ```
- * canvas_expire {
- *     ends "enrolment.courseClass.endDateTime"
- * }
- * ```
- * Setting 'ends' is String. If ends == null use 'enrolment.courseClass.endDateTime'. If 'ends' dates of all user's enrollments are expired and not null => suspend the Canvas user
  */
 @API
 @CompileStatic
