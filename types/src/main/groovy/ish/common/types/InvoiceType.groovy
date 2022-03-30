@@ -16,7 +16,7 @@ import ish.oncourse.API
 import ish.oncourse.cayenne.PersistentObjectI
 
 @API
-enum InvoiceType implements DisplayableExtendedEnumeration<Integer> {
+public enum InvoiceType implements DisplayableExtendedEnumeration<Integer> {
 
 
     /**
