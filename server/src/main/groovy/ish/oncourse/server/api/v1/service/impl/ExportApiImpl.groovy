@@ -108,7 +108,8 @@ class ExportApiImpl implements ExportApi {
     byte[] get(String entityName, String processId) {
         try {
             TaskResult result = clusteredExecutorManager.getResult(processId)
-            response.setContentType(result.getResultOutputType().mimeType)
+            if(result.data != null)
+                response.setContentType(result.getResultOutputType().mimeType)
             result.getData()
         } catch (Exception e) {
             logger.catching(e)
