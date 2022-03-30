@@ -10,75 +10,40 @@
  */
 package ish.scripting;
 
-import ish.oncourse.types.OutputType;
+import ish.common.types.TaskResultType;
+import ish.oncourse.server.cluster.TaskResult;
 
 import java.io.Serializable;
 
-public class ScriptResult implements Serializable {
+public class ScriptResult extends TaskResult implements Serializable {
 
-	private ResultType resultType;
+	private Object localResult;
 
-	private String name;
-	private String error;
-	private Object resultValue;
-	private OutputType resultOutputType;
+	public ScriptResult(TaskResultType resultType) {
+		super(resultType);
+	}
 
 	public static ScriptResult success(Object resultValue) {
-		ScriptResult result = new ScriptResult(ResultType.SUCCESS);
-		result.setResultValue(resultValue == null ? null : resultValue);
-
+		ScriptResult result = new ScriptResult(TaskResultType.SUCCESS);
+		if(resultValue instanceof byte[]) {
+			result.setData((byte[]) resultValue);
+		} else if(resultValue instanceof String) {
+			result.setData(((String) resultValue).getBytes());
+		} else if(resultValue != null) {
+			// TODO process all other result types
+			result.setData(resultValue.toString().getBytes());
+		}
+		result.localResult = resultValue;
 		return result;
 	}
 
 	public static ScriptResult failure(String error) {
-		ScriptResult result = new ScriptResult(ResultType.FAILURE);
+		ScriptResult result = new ScriptResult(TaskResultType.FAILURE);
 		result.setError(error);
-
 		return result;
 	}
 
-	private ScriptResult(ResultType type) {
-		this.resultType = type;
-	}
-
-	private void setError(String error) {
-		this.error = error;
-	}
-
-	private void setResultValue(Object resultValue) {
-		this.resultValue = resultValue;
-	}
-
-	public void setResultOutputType(OutputType resultOutputType) {
-		this.resultOutputType = resultOutputType;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public ResultType getType() {
-		return resultType;
-	}
-
-	public Object getResultValue() {
-		return resultValue;
-	}
-
-	public OutputType getResultOutputType() {
-		return resultOutputType;
-	}
-
-	public String getError() {
-		return error;
-	}
-
-	public enum ResultType {
-		SUCCESS,
-		FAILURE
+	public Object getLocalResult() {
+		return localResult;
 	}
 }
