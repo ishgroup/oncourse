@@ -49,10 +49,12 @@ const QueryCardContent = props => {
           setQueryResults(res.rows.length);
           setQueryResultsPending(false);
           setQueryHideResults(false);
+          onValidateQuery(true, query);
         })
         .catch(() => {
           setQueryHideResults(true);
           setQueryResultsPending(false);
+          onValidateQuery(false, query);
         });
       }
     }, 600),
@@ -60,8 +62,9 @@ const QueryCardContent = props => {
   );
 
   useEffect(() => {
+    onValidateQuery(true);
     debounseSearch(isValidQuery, field.entity, field.query, queryResultsPending);
-  }, [field.query]);
+  }, [field.query, field.entity]);
 
   const validateQueryClosureReturnValue = useCallback(value => {
     if (!value) return "";
@@ -95,8 +98,8 @@ const QueryCardContent = props => {
         <Collapse
           in={queryAvailable}
           classes={{
-              wrapper: field.entity ? "overflow-visible" : undefined
-            }}
+            wrapper: field.entity ? "overflow-visible" : undefined
+          }}
         >
           <div className={classes.queryField}>
             <FormField
@@ -106,9 +109,7 @@ const QueryCardContent = props => {
               placeholder="All records"
               rootEntity={field.entity}
               disabled={!field.entity || disabled}
-              onValidateQuery={onValidateQuery}
               validate={validateExpression}
-              isValidQuery={isValidQuery}
             />
           </div>
         </Collapse>

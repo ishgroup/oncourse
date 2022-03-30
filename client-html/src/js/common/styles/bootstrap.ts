@@ -26,6 +26,9 @@ export const bootstrap = (theme: AppTheme) => ({
   ".fs2": {
     fontSize: theme.spacing(2)
   },
+  ".fs3": {
+    fontSize: theme.spacing(3)
+  },
   ".fs4": {
     fontSize: theme.spacing(4)
   },
@@ -478,5 +481,8 @@ export const bootstrap = (theme: AppTheme) => ({
   },
   ".lh-1": {
     lineHeight: 1,
+  },
+  ".text-decoration-underline": {
+    textDecoration: "underline",
   },
 });

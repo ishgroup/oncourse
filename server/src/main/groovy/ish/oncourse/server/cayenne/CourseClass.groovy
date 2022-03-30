@@ -22,6 +22,7 @@ import ish.oncourse.function.CalculateCourseClassNominalHours
 import ish.oncourse.function.CalculateCourseClassReportableHours
 import ish.oncourse.server.cayenne.glue._CourseClass
 import ish.oncourse.server.cayenne.glue._Session
+import ish.oncourse.server.entity.mixins.CourseClassMixin
 import ish.util.MoneyUtil
 import ish.validation.ValidationFailure
 import org.apache.cayenne.PersistenceState
@@ -454,6 +455,23 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		}
 
 		return list.size()
+	}
+
+	int getCancelledEnrolmentCount() {
+		List<Enrolment> list = getCancelledEnrolments()
+		return list == null ? 0 : list.size()
+	}
+
+	Money getTotalInvoiced(){
+		return CourseClassMixin.getTotalInvoiced(this)
+	}
+
+	Money getTotalCredits(){
+		return CourseClassMixin.getTotalCredits(this)
+	}
+
+	List<InvoiceLine> getEnrolmentsInvoiceLines(){
+		return enrolments*.invoiceLines.flatten() as List<InvoiceLine>
 	}
 
 	/**

@@ -11,7 +11,6 @@ import ExpandIcon from "@mui/icons-material/ExpandMore";
 import clsx from "clsx";
 import { Session } from "@api/model";
 import CalendarSession from "./CalendarSession";
-import { Classes } from "../../../../../../model/entities/CourseClass";
 
 const numberOfClasses = (length: number) => (length > 1 ? `${length} classes` : `${length} class`);
 
@@ -22,7 +21,7 @@ interface Props {
   setTagsExpanded: any;
 }
 
-const onCodeClick = classId => window.open(`/${Classes.path}?search=id is ${classId}`, "_self");
+const onCodeClick = classId => window.open(`/class?search=id is ${classId}`, "_self");
 
 const CalendarSessionHour = React.memo<Props>(({
  classes, sessions, tagsExpanded, setTagsExpanded

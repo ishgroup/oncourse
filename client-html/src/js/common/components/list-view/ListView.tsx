@@ -444,7 +444,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       }
 
       if (prevUrlSearch.get("search") !== searchString) {
-        this.onQuerySearchChange(searchString);
+        // this.onQuerySearchChange(searchString);
         setListUserAQLSearch(searchString);
       }
     }
@@ -1099,7 +1099,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
           manualLink={editViewProps.manualLink}
           getCustomBulkEditFields={getCustomBulkEditFields}
         />
-
 
         {hasFilters && (
           <ResizableWrapper
