@@ -57,7 +57,8 @@ const ImportTemplates = React.memo<any>(props => {
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues(IMPORT_TEMPLATES_FORM_NAME)(state),
-  syncErrors: getFormSyncErrors(IMPORT_TEMPLATES_FORM_NAME)(state)
+  syncErrors: getFormSyncErrors(IMPORT_TEMPLATES_FORM_NAME)(state),
+  emailTemplates: state.automation.emailTemplate.emailTemplates,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

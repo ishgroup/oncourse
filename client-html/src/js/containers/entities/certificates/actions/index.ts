@@ -4,13 +4,14 @@
  */
 
 import { Certificate, CertificateValidationRequest } from "@api/model";
-import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
+import { _toRequestType, FULFILLED, REJECTED } from "../../../../common/actions/ActionUtils";
 
 export const GET_CERTIFICATE_ITEM = _toRequestType("get/certificate");
 export const GET_CERTIFICATE_ITEM_FULFILLED = FULFILLED(GET_CERTIFICATE_ITEM);
 
 export const GET_CERTIFICATE_OUTCOMES = _toRequestType("get/certificate/outcome");
 export const GET_CERTIFICATE_OUTCOMES_FULFILLED = FULFILLED(GET_CERTIFICATE_OUTCOMES);
+export const GET_CERTIFICATE_OUTCOMES_REJECTED = REJECTED(GET_CERTIFICATE_OUTCOMES);
 
 export const DELETE_CERTIFICATE_ITEM = _toRequestType("delete/certificate");
 export const DELETE_CERTIFICATE_ITEM_FULFILLED = FULFILLED(DELETE_CERTIFICATE_ITEM);

@@ -261,7 +261,8 @@ export const IntegrationsCatalog = ({ history }: RouteComponentProps) => {
   })) || [], [integrations]);
 
   const onOpen = id => {
-    history.push(`/automation/integration/${id}`);
+    const type = integrations.find(i => i.id === id)?.type;
+    history.push(`/automation/integration/${type}/${id}`);
   };
 
   const onClickNew = () => {
