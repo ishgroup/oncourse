@@ -51,6 +51,25 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
     if (history.location.search && isNew) {
       const params = new URLSearchParams(history.location.search);
       const leadId = params.get('leadId');
+      const contactId = params.get('contactId');
+      const contactName = params.get('contactName');
+      
+      const clearParams = () => {
+        history.replace({
+          pathname: history.location.pathname,
+          search: decodeURIComponent(params.toString())
+        });
+      };
+
+      if (contactId) {
+        dispatch(change(form, "contactId", Number(contactId)));
+        params.delete('contactId');
+      }
+
+      if (contactName) {
+        dispatch(change(form, "studentName", contactName));
+        params.delete('contactName');
+      }
       
       if (leadId) {
         EntityService.getPlainRecords(
@@ -69,13 +88,13 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           dispatch(change(form, "courseId", courseId));
           dispatch(change(form, "courseName", courseName));
         })
-        .catch(err => instantFetchErrorHandler(dispatch, err));
-        
-        params.delete('leadId');
-        history.replace({
-          pathname: history.location.pathname,
-          search: decodeURIComponent(params.toString())
+        .catch(err => instantFetchErrorHandler(dispatch, err))
+        .finally(() => {
+          params.delete('leadId');
+          clearParams();
         });
+      } else {
+        clearParams();
       }
     }
   }, []);
