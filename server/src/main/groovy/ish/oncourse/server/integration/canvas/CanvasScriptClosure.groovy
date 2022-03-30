@@ -22,12 +22,28 @@ import org.apache.commons.lang.RandomStringUtils
 import java.security.SecureRandom
 
 /**
- * Integration allows us to establish interaction between Canvas LMS and onCourse enrol system.
+ * This integration allows you to link onCourse to the Canvas LMS.
  *
- * 1. Add enrolments to Enrolments automatically as they are enrolled in onCourse.
+ * Add enrolments to Enrolments automatically as they are enrolled in onCourse.
+ *
  * ```
- * Canvas {
- *     name "Canvas integration 1"
+ * canvas {
+ *     enrolment e
+ *     course_code "My-Canvas-Course"
+ *     section_code "key." + e.courseClass.uniqueCode
+ * 	   create_section true
+ * 	   create_student true
+ * }
+ * ```
+ * You can specify:
+ * * create_section: create a new Canvas section from the equivalent onCourse Class if one does not already exist
+ * inside your Canvas instance.
+ * * create_student: create a new Canvas User profile for the enrolled student if one does not exist in your Canvas
+ * instance. If this is false and the user does not exist in Canvas then nothing will happen.
+ *
+ * Additional options are available:
+ * ```
+ * canvas {
  *     enrolment e
  *     course_code "My-Canvas-Course"
  *     section_code "key." + e.courseClass.uniqueCode
@@ -39,11 +55,18 @@ import java.security.SecureRandom
  * 	   add_tutors true
  * }
  * ```
- * Setting 'create_section' to true will create a new Canvas sections from the equivalent onCourse Class if one does not already exist inside your Canvas instance.
- * Setting 'create_student' to true will create a new Canvas User profile for the enrolled student if one does not exist in your Canvas instance.
- * Setting 'create_password' will generate random password for student to canvas and save to customField of Contact with key like create_password parameter
- * Setting 'course_blueprint' use if the course does not already exist in Canvas with the code provided, will create a new course from the blueprint specified.
- * Setting 'add_tutors' to true will enrol tutors from enrolment's class into the Canvas course as teachers
+ *
+ * * authentication_provider_id: this sets the auth provider in Canvas to a non standard value
+ * * create_password: will generate random password for studento canvas and save to your nominated customField of the
+ * onCourse student. Be aware this is not secure since the password is not encrypted in onCourse, however it can be
+ * useful for supporting students who need help logging in, or if you want to send the student their login details
+ * from inside onCourse.
+ * * course_blueprint: if the course does not already exist in Canvas with the code provided, will create a new course
+ * from the blueprint specified.
+ * * add_tutors: will enrol tutors from the enrolment's class into the Canvas course as teachers.
+ *
+ *
+ * Additional data can be sent to Canvas like this:
  *
  * ````
  * def student = [
@@ -65,7 +88,7 @@ import java.security.SecureRandom
  * 	   student_attributes student
  * }
  * ````
- * Setting 'student_attributes' map adds any valid parameters for Canvas user. Default parameters will be overwritten
+ * Consult the Cnavas manual for the fields you can send through to Canvas and how to use them. You can set any student/user attributes in Canvas.
  */
 @API
 @CompileStatic
