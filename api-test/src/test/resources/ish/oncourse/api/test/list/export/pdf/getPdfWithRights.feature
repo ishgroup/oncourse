@@ -21,20 +21,10 @@ Feature: Re-usable feature to get PDF with access rights
 
         * match $ == {"status":"#ignore","message":null}
 
-#       <-----> Pause:
-        * def sleep =
-             """
-             function(seconds){
-               for(i = 0; i <= seconds; i++)
-               {
-                 java.lang.Thread.sleep(i*1000);
-               }
-             }
-             """
-        * sleep(3)
-
+        * configure retry = { count: 5, interval: 1500 }
         Given path ishPath + '/' + processId
         And param entityName = entity
+        And retry until responseStatus != 204
         When method GET
         Then status 200
         And match $ contains 'PDF'

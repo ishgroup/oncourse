@@ -211,17 +211,7 @@ Feature: Main feature for all GET requests with path 'list/export/pdf'
         | 'Enrolment'           | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(enrolmentPdfExportId)","overlay":null,"variables":{},"createPreview":false}        |
         | 'VoucherProduct'      | {"search":"id == \"1002\"","filter":"","tagGroups":[],"sorting":[],"report":"#(voucherProductPdfExportId)","overlay":null,"variables":{},"createPreview":false}|
         | 'Contact'             | {"search":"id == \"2\"","filter":"","tagGroups":[],"sorting":[],"report":"#(contactPdfExportId)","overlay":null,"variables":{},"createPreview":false}          |
-#       <-----> Pause:
-        * def sleep =
-             """
-             function(seconds){
-               for(i = 0; i <= seconds; i++)
-               {
-                 java.lang.Thread.sleep(i*1000);
-               }
-             }
-             """
-        * sleep(1)
+
         * call read('getPdfWithRights.feature') getEntityPdf
 
 
