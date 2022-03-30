@@ -17,14 +17,12 @@ import ActionBody from "./components/action-body/ActionBody";
 import { getUserPreferences, showConfirm, setUserPreference } from "../../common/actions";
 import {
   DASHBOARD_CATEGORY_WIDTH_KEY,
-  DASHBOARD_THEME_KEY,
-  APPLICATION_THEME_STORAGE_NAME
+  DASHBOARD_THEME_KEY, SYSTEM_USER_TUTORIAL_SKIP,
 } from "../../constants/Config";
 import { AppTheme, ThemeValues } from "../../model/common/Theme";
 import { toggleSwipeableDrawer } from "../../common/components/layout/swipeable-sidebar/actions";
 import { VARIANTS } from "../../common/components/layout/swipeable-sidebar/utils";
 import { SWIPEABLE_SIDEBAR_WIDTH } from "../../common/components/layout/swipeable-sidebar/SwipeableSidebar";
-import { LSGetItem } from "../../common/utils/storage";
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -94,6 +92,7 @@ class Dashboard extends React.PureComponent<any, any> {
             preferencesCategoryWidth={preferences[DASHBOARD_CATEGORY_WIDTH_KEY]}
             setDashboardColumnWidth={setDashboardColumnWidth}
             drawerOpened={drawerOpened}
+            skipSystemUser={Boolean(preferences[SYSTEM_USER_TUTORIAL_SKIP])}
           />
         </Grid>
       </Grid>
@@ -109,7 +108,7 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   dispatch,
-  getDashboardPreferences: () => dispatch(getUserPreferences([DASHBOARD_CATEGORY_WIDTH_KEY])),
+  getDashboardPreferences: () => dispatch(getUserPreferences([DASHBOARD_CATEGORY_WIDTH_KEY, SYSTEM_USER_TUTORIAL_SKIP])),
   setDashboardColumnWidth: (key: PreferenceEnum, value: string) => dispatch(setUserPreference({ key, value })),
   setPreferencesTheme: (value: ThemeValues) => dispatch(setUserPreference({ key: DASHBOARD_THEME_KEY, value })),
   openConfirm: props => dispatch(showConfirm(props)),

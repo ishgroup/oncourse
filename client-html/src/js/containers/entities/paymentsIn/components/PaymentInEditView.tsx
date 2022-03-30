@@ -71,7 +71,7 @@ const isDateLocked = (lockedDate: any, settlementDate: any) => {
   }
   return (
     compareAsc(
-      addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1),
+      addDays(new Date(lockedDate.lockedDate), 1),
       new Date(settlementDate)
     ) > 0
   );
@@ -101,7 +101,7 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
       if (!initialValues || initialValues.dateBanked === settlementDate) {
         return undefined;
       }
-      const date = new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth);
+      const date = new Date(lockedDate.lockedDate);
       return compareAsc(addDays(date, 1), new Date(settlementDate)) > 0
         ? `Date must be after ${formatDate(date, D_MMM_YYYY)}`
         : undefined;
@@ -205,7 +205,7 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
               validate={[validateSettlementDate, validateSettlementDateBanked]}
               minDate={
                 lockedDate
-                  ? addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1)
+                  ? addDays(new Date(lockedDate.lockedDate), 1)
                   : undefined
               }
             />

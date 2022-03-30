@@ -7,9 +7,7 @@ import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import clsx from "clsx";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import {
- List, ListItem, ListItemText, Checkbox, Collapse
-} from "@mui/material";
+import { Checkbox, Collapse, List, ListItem, ListItemText } from "@mui/material";
 import { openInternalLink } from "../../../../utils/links";
 import { NestedListItem, NestedListPanelItem } from "../NestedList";
 
@@ -144,8 +142,8 @@ class PaperPanel extends PureComponent<PaperPanelProps, PaperPanelState> {
 
   render() {
     const {
- panelItems, panelCaption, item, onChangePanelItem, classes
-} = this.props;
+      panelItems, panelCaption, item, onChangePanelItem, classes
+    } = this.props;
 
     const { panelExpanded } = this.state;
 

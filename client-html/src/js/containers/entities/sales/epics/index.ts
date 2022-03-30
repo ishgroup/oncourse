@@ -5,7 +5,6 @@ import { EpicUpdateSale } from "./EpicUpdateSale";
 import { EpicCancelSale } from "./EpicCancelSale";
 import { EpicGetSaleDetails } from "./EpicGetSaleDetails";
 import { EpicSetToDelivered } from "./EpicSetToDelivered";
-import { EpicGetCourseClassSales } from "./EpicGetCourseClassSales";
 import { EpicGetSaleMenuTags } from "./EpicGetSaleMenuTags";
 
 export const EpicSales = combineEpics(
@@ -15,6 +14,5 @@ export const EpicSales = combineEpics(
   EpicCancelSale,
   EpicGetSaleDetails,
   EpicSetToDelivered,
-  EpicGetSaleMenuTags,
-  EpicGetCourseClassSales
+  EpicGetSaleMenuTags
 );
