@@ -12,9 +12,7 @@ import Typography from "@mui/material/Typography";
 import clsx from "clsx";
 import { format } from "date-fns";
 import QRCode from "qrcode.react";
-import React, {
- useCallback, useEffect, useMemo
-} from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { arrayRemove, change } from "redux-form";
@@ -43,6 +41,7 @@ interface Props extends EditViewProps {
   setCertificateOutcomesSearch?: StringArgFunction;
   studentOutcomes?: CertificateOutcome[];
   studentOutcomesLoading?: boolean;
+  studentOutcomesError?: boolean;
   classes?: any;
 }
 
@@ -99,6 +98,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
     clearCertificateOutcomes,
     studentOutcomes,
     studentOutcomesLoading,
+    studentOutcomesError,
     setCertificateOutcomesSearch,
     submitSucceeded,
     syncErrors
@@ -472,6 +472,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
             onDelete={deleteOutcome}
             onToggleSearch={onToggleOutcomesSearch}
             resetSearch={submitSucceeded}
+            aqlQueryError={studentOutcomesError}
           />
         </Grid>
 
@@ -491,7 +492,8 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
 
 const mapStateToProps = (state: State) => ({
   studentOutcomes: state.certificates.outcomes.items,
-  studentOutcomesLoading: state.certificates.outcomes.loading
+  studentOutcomesLoading: state.certificates.outcomes.loading,
+  studentOutcomesError: state.certificates.outcomes.loading
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

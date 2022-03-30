@@ -13,7 +13,16 @@ import clsx from "clsx";
 import { createStyles, withStyles } from "@mui/styles";
 import { Edit, ExpandMore } from "@mui/icons-material";
 import {
-  ButtonBase, InputAdornment, Typography, Select, InputLabel, Input, FormHelperText, FormControl, MenuItem, ListItem
+  ButtonBase,
+  FormControl,
+  FormHelperText,
+  Input,
+  InputAdornment,
+  InputLabel,
+  ListItem,
+  MenuItem,
+  Select,
+  Typography
 } from "@mui/material";
 
 const styles = theme => createStyles({
@@ -85,13 +94,7 @@ const styles = theme => createStyles({
       justifyContent: "flex-end"
     }
   },
-  rightAligned: {
-    "& $label": {
-      left: "unset",
-      right: 0,
-      transformOrigin: '100% 0'
-    }
-  },
+  rightAligned: {},
   readonly: {
     fontWeight: 300,
     pointerEvents: "none"
@@ -112,6 +115,13 @@ const styles = theme => createStyles({
     textOverflow: "ellipsis",
     maxWidth: "100%",
     marginRight: theme.spacing(0.5)
+  },
+  rightLabel: {
+    left: "unset",
+    right: theme.spacing(-2),
+    "& $label": {
+      marginRight: 0
+    }
   },
   placeholderContent: {
     opacity: 0.15,
@@ -433,6 +443,22 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
     );
   };
 
+  getSelectValue = () => {
+    const {
+      input, multiple, returnType, selectLabelCondition, selectValueMark
+    } = this.props;
+
+    return multiple
+      ? input.value || []
+      : returnType === "object"
+        ? selectLabelCondition
+          ? selectLabelCondition(input.value)
+          : input.value ? input.value[selectValueMark] : ""
+        : [undefined, null].includes(input.value)
+          ? ""
+          : input.value;
+  }
+
   render() {
     const {
       classes,
@@ -540,7 +566,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         : [...selectItems, selectAdornment.content];
     }
 
-    if (((items && !items.some(i => !i[selectValueMark])) || !items) && (allowEmpty || !input.value) && (!multiple || !items.length)) {
+    if (((items && !items.some(i => [undefined, null].includes(i[selectValueMark]))) || !items) && (allowEmpty || !input.value) && (!multiple || !items.length)) {
       selectItems = [
         <MenuItem
           key="empty"
@@ -635,7 +661,13 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
               label && (
                 <InputLabel
                   classes={{
-                    root: clsx(fieldClasses.label, "d-flex", "overflow-visible", !label && classes.labelTopZeroOffset),
+                    root: clsx(
+                      fieldClasses.label,
+                      "d-flex",
+                      "overflow-visible",
+                      !label && classes.labelTopZeroOffset,
+                      rightAligned && classes.rightLabel
+                    ),
                   }}
                   {...InputLabelProps}
                   shrink={Boolean(label || input.value)}
@@ -655,13 +687,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                   <Select
                     id={`input-${input.name}`}
                     name={input.name}
-                    value={multiple
-                      ? input.value || []
-                      : returnType === "object"
-                        ? selectLabelCondition
-                          ? selectLabelCondition(input.value)
-                          : input.value ? input.value[selectValueMark] : ""
-                        : input.value || ""}
+                    value={this.getSelectValue()}
                     inputRef={this.setInputNode}
                     inputProps={{
                       classes: {
@@ -670,7 +696,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                       }
                     }}
                     classes={{
-                      select: clsx(classes.muiSelect ,fieldClasses.text, isInline && classes.inlineSelect),
+                      select: clsx(classes.muiSelect, fieldClasses.text, isInline && classes.inlineSelect),
                     }}
                     multiple={multiple}
                     autoWidth={autoWidth}
@@ -721,6 +747,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
               )}
             <FormHelperText
               classes={{
+                root: clsx(rightAligned && "text-end"),
                 error: "shakingError"
               }}
             >
