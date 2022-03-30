@@ -95,14 +95,15 @@ const styles = (theme: AppTheme) =>
     categoryRoot: {
       top: 0,
       zIndex: 1,
-      width: `${CATEGORY_SIDEBAR_WIDTH}px`,
+      minWidth: `${CATEGORY_SIDEBAR_WIDTH}px`,
+      maxWidth: `calc(100vw - ${SWIPEABLE_SIDEBAR_WIDTH}px - 10%)`,
       height: "100%",
       position: "fixed",
       display: "flex",
       background: theme.palette.background.default,
       transition: "transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms",
       left: `${SWIPEABLE_SIDEBAR_WIDTH}px`,
-      transform: `translateX(-${CATEGORY_SIDEBAR_WIDTH + SWIPEABLE_SIDEBAR_WIDTH}px)`
+      transform: "translateX(-100%)"
     },
     categoryVisible: {
       transform: "translateX(1px)"
