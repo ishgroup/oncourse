@@ -72,12 +72,14 @@ public class ClusteredExecutorManager {
     public ProcessStatusDTO getStatus(String key) {
         // save DB lookup for the local task
         TaskResultType taskStatus;
-        if(isLocal(key)) {
-            taskStatus = localTasks.get(key).getStatus();
-        } else {
+        ExecutorManagerTask localTask = localTasks.get(key);
+
+        if(localTask == null){
             taskStatus = ObjectSelect.columnQuery(ExecutorManagerTask.class, ExecutorManagerTask.STATUS)
                     .where(ExecutorManagerTask.KEY.eq(key))
                     .selectFirst(cayenneService.getNewContext());
+        }else{
+            taskStatus = localTask.getStatus();
         }
 
         if(taskStatus == null) {
@@ -126,11 +128,7 @@ public class ClusteredExecutorManager {
     }
 
     private void onTaskComplete(TaskResult result, String key) {
-        if(!isLocal(key)) {
-            return;
-        }
-
-        ExecutorManagerTask task = localTasks.get(key);
+        var task = localTasks.get(key);
         if(task == null) {
             return;
         }
