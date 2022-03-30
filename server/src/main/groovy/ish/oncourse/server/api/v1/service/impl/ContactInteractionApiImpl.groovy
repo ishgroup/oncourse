@@ -11,16 +11,16 @@ package ish.oncourse.server.api.v1.service.impl
 import com.google.inject.Inject
 import ish.common.types.ApplicationStatus
 import ish.common.types.LeadStatus
+import ish.math.Money
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.ContactDao
-import ish.oncourse.server.api.dao.UserDao
-import ish.oncourse.server.api.v1.model.ContactActivityDTO
 import ish.oncourse.server.api.v1.model.ContactInsightDTO
 import ish.oncourse.server.api.v1.model.ContactOverviewDTO
 import ish.oncourse.server.api.v1.service.ContactInteractionApi
+import ish.oncourse.server.cayenne.InvoiceLine
+import ish.oncourse.server.document.DocumentService
 
-import java.time.Duration
-import java.time.Instant
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.getProfilePicture
 
 class ContactInteractionApiImpl implements ContactInteractionApi{
     @Inject
@@ -29,28 +29,38 @@ class ContactInteractionApiImpl implements ContactInteractionApi{
     @Inject
     private ICayenneService cayenneService
 
+    @Inject
+    private DocumentService documentService
+
     @Override
     ContactInsightDTO getInteraction(Long id) {
         def context = cayenneService.newReadonlyContext
         def contact = contactDao.getById(context, id)
-        def user = UserDao.getByEmail(context, contact.email)
 
-        def contactActivityDto = new ContactActivityDTO()
-        contactActivityDto.lastContacted(user.lastAccess.toLocalDate())
-        contactActivityDto.inactiveDays(Duration.between(Instant.now(),user.lastAccess.toInstant()).toDays())
-        //TODO: intercections initializing
 
         def contactOverview = new ContactOverviewDTO()
+        contactOverview.firstSeen = contact.createdOn
+        contactOverview.owing = (contact.student?.enrolments*.invoiceLines.flatten() as List<InvoiceLine>)
+                .collect {it.invoice.amountOwing}.sum() as Money
+        contactOverview.spent = (contact.student?.enrolments*.invoiceLines.flatten() as List<InvoiceLine>)
+                .collect {it.invoice.amountPaid}.sum() as Money
         contactOverview.enrolments(contact.student?.enrolments?.collect {it.id})
         contactOverview.openApplications(contact?.student?.applications?.findAll {it.status != ApplicationStatus.REJECTED && it.status != ApplicationStatus.WITHDRAWN}?.collect {it.id})
         contactOverview.closeApplications(contact?.student?.applications?.findAll {it.status == ApplicationStatus.REJECTED || it.status == ApplicationStatus.WITHDRAWN}?.collect {it.id})
         contactOverview.openLeads(contact.leads.findAll{it.status == LeadStatus.OPEN}.collect{it.id})
         contactOverview.closeLeads(contact.leads.findAll{it.status == LeadStatus.CLOSED}.collect{it.id})
 
+
         def contactInsight = new ContactInsightDTO()
         contactInsight.fullName = contact?.fullName
         contactInsight.email = contact?.email
-        contactInsight.activity(contactActivityDto)
+        contactInsight.fax = contact?.fax
+        contactInsight.homePhone = contact?.homePhone
+        contactInsight.workPhone = contact?.workPhone
+        contactInsight.mobilePhone = contact?.mobilePhone
+        contactInsight.profilePicture = getProfilePicture(contact, documentService)
+
+        //TODO: intercections initializing
         contactInsight.overview(contactOverview)
         contactInsight
     }
