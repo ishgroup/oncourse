@@ -19,20 +19,12 @@ Feature: Main feature for all GET requests with path 'export/avetmiss8'
         And request avetmissExport
         When method PUT
         Then status 200
-#       <-----> Pause:
-        * def sleep =
-             """
-             function(seconds){
-               for(i = 0; i <= seconds; i++)
-               {
-                 java.lang.Thread.sleep(i*1000);
-               }
-             }
-             """
-        * sleep(2)
+
+        * configure retry = { count: 4, timeout: 1000}
         * def processId = $
 
         Given path ishPath + '/' + processId
+        And retry until responseStatus != 204
         When method GET
         Then status 200
 #        And match $ contains '.txt'
