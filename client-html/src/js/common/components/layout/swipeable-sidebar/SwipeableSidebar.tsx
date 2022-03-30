@@ -96,7 +96,7 @@ const styles = (theme: AppTheme) =>
       top: 0,
       zIndex: 1,
       minWidth: `${CATEGORY_SIDEBAR_WIDTH}px`,
-      maxWidth: `calc(100vw - ${SWIPEABLE_SIDEBAR_WIDTH}px - 10%)`,
+      maxWidth: `calc(100vw - ${SWIPEABLE_SIDEBAR_WIDTH}px - 20%)`,
       height: "100%",
       position: "fixed",
       display: "flex",
@@ -427,6 +427,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
                   setExecMenuOpened={setExecMenuOpened}
                   setScriptIdSelected={setScriptIdSelected}
                   groupedSortedItems={groupedSortedItems}
+                  setSelected={setSelected}
                 />
               </div>
               <div className={showUserSearch ? "d-none" : ""}>
@@ -472,17 +473,18 @@ const SwipeableSidebar: React.FC<Props> = props => {
           )
         }
         >
-          {/* <NavigationCategory */}
-          {/*  selected={selected} */}
-          {/*  favorites={favorites} */}
-          {/*  favoriteScripts={favoriteScripts} */}
-          {/*  onClose={() => setSelected(null)} */}
-          {/*  showConfirm={showConfirmHandler} */}
-          {/*  setScriptIdSelected={setScriptIdSelected} */}
-          {/*  setExecMenuOpened={setExecMenuOpened} */}
-          {/* /> */}
-
-          <ContactInsight id={6} onClose={() => setSelected(null)} />
+          {isNaN(parseInt(selected)) ? (
+            <NavigationCategory
+              selected={selected}
+              favorites={favorites}
+              favoriteScripts={favoriteScripts}
+              onClose={() => setSelected(null)}
+              showConfirm={showConfirmHandler}
+              setScriptIdSelected={setScriptIdSelected}
+              setExecMenuOpened={setExecMenuOpened}
+            />
+          ) : <ContactInsight id={parseInt(selected)} onClose={() => setSelected(null)} />}
+          
         </div>
       </SwipeableDrawer>
 
