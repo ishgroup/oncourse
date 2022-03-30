@@ -1,8 +1,0 @@
-name: send product purchased email
-keyCode: ish.script.productPurchasedWebScript
-body: ish.script.productPurchasedWebScript.groovy
-enabled: true
-triggerType: ENTITY_EVENT
-entityClass: Article
-entityEventType: CREATE
-description: email notification when someone purchases a product through the onCourse website

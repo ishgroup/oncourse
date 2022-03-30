@@ -196,6 +196,7 @@ public class CourseClassService {
 	 * @param courseClass
 	 * @return total fee income ex tax for refunded and cancelled classes
 	 */
+	@Deprecated
 	public Money getClassTotalFeeIncomeExTaxForRefundedAndCancelledEnrolments(CourseClass courseClass) {
 		Money result = Money.ZERO;
 		List<Enrolment> canceledRefundedEnrolmentList = (List<Enrolment>) CourseClassUtil.getRefundedAndCancelledEnrolments(courseClass.getEnrolments());

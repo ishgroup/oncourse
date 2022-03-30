@@ -24,10 +24,6 @@ import {
 import { AccountExtended } from "./Account";
 import { TimetableSession } from "../timetable";
 
-export enum Classes {
-  path = "class"
-}
-
 export interface CourseClassRoom {
   id: number;
   name: string;

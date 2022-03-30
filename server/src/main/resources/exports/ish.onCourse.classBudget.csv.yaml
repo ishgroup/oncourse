@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.classBudget.csv
-entityClass: CourseClass
-body: ish.onCourse.classBudget.csv.groovy
-name: Class Budget Summary CSV export
-outputType: csv

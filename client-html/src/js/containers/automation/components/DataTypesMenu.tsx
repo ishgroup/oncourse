@@ -115,24 +115,21 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
             <Paper className={classes.paper} elevation={8}>
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <DialogContent className="overflow-hidden">
-                  {labelType && (
-                    <FormField
-                      type="text"
-                      label="Label"
-                      name="label"
-                      ref={nameRef}
-                      className="mb-2"
-                      required
-                      fullWidth
-                    />
-                  )}
+                  <FormField
+                    type="text"
+                    label="Label"
+                    name="label"
+                    ref={nameRef}
+                    className="mb-2"
+                    required
+                    fullWidth
+                  />
 
                   <FormField
                     type="text"
                     label="Name"
                     name="name"
                     validate={validateBindingName}
-                    ref={labelType ? undefined : nameRef}
                     required
                     fullWidth
                   />

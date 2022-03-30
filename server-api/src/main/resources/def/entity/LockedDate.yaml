@@ -1,0 +1,6 @@
+type: object
+properties:
+  lockedDate:
+    type: string
+    format: date
+    example: 2021-07-20

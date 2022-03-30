@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.discount.xml
-entityClass: Discount
-body: ish.onCourse.discount.xml.groovy
-name: Discount XML export
-outputType: xml

@@ -18,7 +18,7 @@ import {
   differenceInMinutes,
   subDays
 } from "date-fns";
-import { SessionWarning, TutorAttendance } from "@api/model";
+import { CourseClassTutor, SessionWarning, TutorAttendance } from "@api/model";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import { connect } from "react-redux";
@@ -35,7 +35,7 @@ import { TimetableMonth, TimetableSession } from "../../../../../model/timetable
 import { getAllMonthsWithSessions } from "../../../../timetable/utils";
 import CalendarMonthBase from "../../../../timetable/components/calendar/components/month/CalendarMonthBase";
 import CalendarDayBase from "../../../../timetable/components/calendar/components/day/CalendarDayBase";
-import { CourseClassExtended, SessionRepeatTypes } from "../../../../../model/entities/CourseClass";
+import { ClassCostExtended, CourseClassExtended, SessionRepeatTypes } from "../../../../../model/entities/CourseClass";
 import ExpandableContainer from "../../../../../common/components/layout/expandable/ExpandableContainer";
 import history from "../../../../../constants/History";
 import { setCourseClassSessionsWarnings } from "../../actions";
@@ -99,6 +99,7 @@ interface Props extends Partial<EditViewProps<CourseClassExtended>> {
   sessionWarnings?: SessionWarning[];
   sessionSelection?: any[];
   bulkSessionModalOpened?: boolean;
+  addTutorWage: (tutor: CourseClassTutor, wage?: ClassCostExtended) => void;
 }
 
 let pendingSessionActionArgs = null;
@@ -167,7 +168,8 @@ const CourseClassTimetableTab = ({
   isNew,
   sessionWarnings,
   sessionSelection,
-  bulkSessionModalOpened
+  bulkSessionModalOpened,
+  addTutorWage
 }: Props) => {
   const [expandedSession, setExpandedSession] = useState(null);
   const [copyDialogAnchor, setCopyDialogAnchor] = useState(null);
@@ -542,6 +544,7 @@ const CourseClassTimetableTab = ({
 
         session.start = startDate.toISOString();
         session.end = endDate.toISOString();
+        setShiftedTutorAttendances(originalSession, session);
       } else if (bulkValue.durationChecked && bulkValue.duration !== 0) {
         session.end = addMinutes(new Date(session.start), bulkValue.duration).toISOString();
       } else if (bulkValue.payableDurationChecked && bulkValue.payableDuration !== 0) {
@@ -672,6 +675,8 @@ const CourseClassTimetableTab = ({
                       warnings={warnings}
                       setOpenCopyDialog={setOpenCopyDialog}
                       openCopyDialog={openCopyDialog}
+                      budget={values.budget}
+                      addTutorWage={addTutorWage}
                     />
                   );
                 })}
@@ -680,7 +685,7 @@ const CourseClassTimetableTab = ({
           })}
       </CalendarMonthBase>
       )),
-    [months, values.tutors, sessionSelection, sessionWarnings, openCopyDialog]
+    [months, values.tutors, values.budget, sessionSelection, sessionWarnings, openCopyDialog]
   );
 
   const selfPacedField = (
@@ -709,6 +714,7 @@ const CourseClassTimetableTab = ({
           opened={bulkSessionModalOpened}
           sessions={values.sessions}
           tutors={values.tutors}
+          budget={values.budget}
         />
       )}
       {values.isDistantLearningCourse ? (
