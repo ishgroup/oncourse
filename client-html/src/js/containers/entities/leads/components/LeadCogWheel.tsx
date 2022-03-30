@@ -26,12 +26,17 @@ const LeadCogWheel = memo<any>(props => {
   
   const dispatch = useAppDispatch();
   
-  const [hasRelations, setHasRelations] = useState(false);
+  const [hasProductRelations, setHasProductRelations] = useState(false);
+  const [hasCourseRelations, setHasCourseRelations] = useState(false);
 
   const noSelectedOrNew = useMemo(() => selection.length !== 1 || selection[0] === "NEW", [selection]);
 
   const onQuickEnrolment = useCallback(() => {
     window.open(`/checkout?leadId=${selection[0]}`, "_self");
+  }, [selection]);
+
+  const onQuickApplication = useCallback(() => {
+    window.open(`/application/new?leadId=${selection[0]}`, "_self");
   }, [selection]);
 
   useEffect(
@@ -45,7 +50,8 @@ const LeadCogWheel = memo<any>(props => {
         .then(lead => {
           const leadCourseIds = JSON.parse(lead.rows[0].values[0]);
           const productIds = JSON.parse(lead.rows[0].values[1]);
-          setHasRelations(Boolean(leadCourseIds.length || productIds.length));
+          setHasCourseRelations(Boolean(leadCourseIds.length));
+          setHasProductRelations(Boolean(productIds.length));
         })
         .catch(e => instantFetchErrorHandler(dispatch, e));
       }
@@ -56,7 +62,10 @@ const LeadCogWheel = memo<any>(props => {
   return (
     <>
       <BulkEditCogwheelOption {...props} />
-      <MenuItem className={menuItemClass} onClick={onQuickEnrolment} disabled={!hasQePermissions || noSelectedOrNew || !hasRelations}>
+      <MenuItem className={menuItemClass} onClick={onQuickApplication} disabled={noSelectedOrNew || !hasCourseRelations}>
+        Convert lead to application...
+      </MenuItem>
+      <MenuItem className={menuItemClass} onClick={onQuickEnrolment} disabled={!hasQePermissions || noSelectedOrNew || !(hasProductRelations || hasCourseRelations)}>
         Convert lead to sale...
       </MenuItem>
     </>

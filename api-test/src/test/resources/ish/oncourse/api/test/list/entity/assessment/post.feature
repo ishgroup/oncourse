@@ -72,7 +72,8 @@ Feature: Main feature for all POST requests with path 'list/entity/assessment'
                     {"fileName":"defaultPrivateDocument.txt","thumbnail":null,"size":"22 b","added":"#ignore","createdBy":"onCourse Administrator","id":200,"mimeType":"text\/plain","url":null}
                 ],
             "name":"defaultPrivateDocument",
-            "id":200}]
+            "id":200,
+            "urlWithoutVersionId":null}]
         }
         """
 

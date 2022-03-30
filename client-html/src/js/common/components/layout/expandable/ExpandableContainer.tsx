@@ -6,6 +6,7 @@
 import React, {
  useCallback, useRef, useMemo
 } from "react";
+import { darken } from '@mui/material/styles';
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
@@ -29,7 +30,15 @@ const styles = (theme: AppTheme) =>
     controls: {
       position: "relative",
       paddingRight: theme.spacing(5)
-    }
+    },
+    header: {
+      cursor: 'pointer',
+      willChange: "color",
+      "&:hover": {
+        color: darken(theme.heading.color as any, 0.4),
+      }
+    },
+    expanded: {}
   });
 
 interface Props {
@@ -43,6 +52,7 @@ interface Props {
   onAdd?: any;
   classes?: any;
   mountAll?: boolean;
+  noDivider?: boolean;
 }
 
 const ExpandableContainer: React.FC<Props> = ({
@@ -56,6 +66,7 @@ const ExpandableContainer: React.FC<Props> = ({
   setExpanded,
   index,
   mountAll,
+  noDivider
 }) => {
   const headerRef = useRef<any>();
 
@@ -90,11 +101,11 @@ const ExpandableContainer: React.FC<Props> = ({
 
   return (
     <>
-      <Divider className={onAdd ? "mb-2" : "mb-3"} />
+      <Divider className={clsx(onAdd ? "mb-2" : "mb-3", noDivider && "invisible")} />
       <div ref={headerRef}>
         <div className={clsx("centeredFlex", onAdd ? "mb-2" : "mb-3", classes.controls)}>
           <div className="centeredFlex">
-            <div className="heading">{header}</div>
+            <div className={clsx("heading", classes.header, isExpanded && classes.expanded)} onClick={toggleExpand}>{header}</div>
             {onAdd && (
               <AddButton onClick={onAdd} />
             )}

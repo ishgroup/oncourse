@@ -8,18 +8,16 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { getFormValues } from "redux-form";
 import { Discount, EntityRelationType } from "@api/model";
-import {
-    updateEntityRelationTypes,
-    deleteEntityRelationType,
-    getEntityRelationTypes
-} from "../../actions";
+import { deleteEntityRelationType, getEntityRelationTypes, updateEntityRelationTypes } from "../../actions";
 import { State } from "../../../../reducers/state";
 import { Fetch } from "../../../../model/common/Fetch";
 import EntityRelationTypesForm from "./components/EntityRelationTypesForm";
 import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
 import { showConfirm } from "../../../../common/actions";
-import { getDiscounts } from "../../../entities/discounts/actions";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import { mapPlainDiscounts } from "../../../entities/discounts/utils";
+import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../common/actions/CommonPlainRecordsActions";
+import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 
 interface Props {
     getTypes: () => void;
@@ -82,13 +80,16 @@ const mapStateToProps = (state: State) => ({
     data: getFormValues("EntityRelationTypesForm")(state),
     entityRelationTypes: state.preferences.entityRelationTypes,
     timestamps: state.preferences.entityRelationTypes && getTimestamps(state.preferences.entityRelationTypes),
-    discounts: state.discounts.items,
+    discounts: state.plainSearchRecords["Discount"].items.map(mapPlainDiscounts),
     fetch: state.fetch
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     getTypes: () => dispatch(getEntityRelationTypes()),
-    getDiscounts: () => dispatch(getDiscounts("")),
+    getDiscounts: () => {
+        dispatch(setCommonPlainSearch("Discount", ""));
+        dispatch(getCommonPlainRecords("Discount", 0, "name,discountType,discountDollar,discountPercent", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+    },
     updateEntityRelationTypes: (entityRelationTypes: EntityRelationType[]) =>
       dispatch(updateEntityRelationTypes(entityRelationTypes)),
     deleteEntityRelationType: (id: string) => dispatch(deleteEntityRelationType(id)),

@@ -7,14 +7,11 @@
  */
 
 import { Epic } from "redux-observable";
-
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import LoginService from "../services/LoginService";
 import {
-  FETCH_SUCCESS,
   GET_SYSTEM_USER_DATA,
-  POST_UPDATE_PASSWORD_FULFILLED,
-  POST_UPDATE_PASSWORD_REQUEST, setSystemUserData
+  setSystemUserData
 } from "../../../common/actions";
 import LoginServiceErrorsHandler from "../services/LoginServiceErrorsHandler";
 
@@ -22,7 +19,7 @@ const request: EpicUtils.Request = {
   type: GET_SYSTEM_USER_DATA,
   getData: () => LoginService.getUser(),
   processData: user => [setSystemUserData(user)],
-  processError: response => LoginServiceErrorsHandler(response, "Failed to update password")
+  processError: response => LoginServiceErrorsHandler(response, "Failed to get system user")
 };
 
 export const EpicGetUser: Epic<any, any> = EpicUtils.Create(request);

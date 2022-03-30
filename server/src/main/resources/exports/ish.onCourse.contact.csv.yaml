@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.contact.csv
-entityClass: Contact
-body: ish.onCourse.contact.csv.groovy
-name: Contact CSV export
-outputType: csv

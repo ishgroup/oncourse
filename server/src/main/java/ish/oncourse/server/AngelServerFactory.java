@@ -265,6 +265,7 @@ public class AngelServerFactory {
                 user.setPassword(null);
                 user.setPasswordLastChanged(null);
                 user.setLoginAttemptNumber(0);
+                user.setIsActive(true);
             } else {
                 user = UserDao.createSystemUser(context, Boolean.TRUE);
                 user.setEmail(email);
