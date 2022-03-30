@@ -38,6 +38,7 @@ const Navigation = (
       <div className="secondaryColor pt-2 pr-2 pl-2 pb-1">
         {navigation.categories.map(category => (
           <SideBarHeader
+            key={category.key}
             selected={selected === category.key}
             label={category.title}
             onClick={getSelect(category.key)}

@@ -123,8 +123,25 @@ const LeadGeneral = (props: Props) => {
       const courseIds = params.get('courseIds');
       const contactId = params.get('contactId');
       const contactName = params.get('contactName');
+      
+      const clearParams = () => {
+        history.replace({
+          pathname: history.location.pathname,
+          search: decodeURIComponent(params.toString())
+        });
+      };
+      
+      if (contactId) {
+        dispatch(change(form, "contactId", Number(contactId)));
+        params.delete('contactId');
+      }
 
-      if (courseIds && contactId && contactName) {
+      if (contactName) {
+        dispatch(change(form, "contactName", contactName));
+        params.delete('contactName');
+      }
+
+      if (courseIds) {
         EntityService.getPlainRecords(
           'Course',
           RELATION_COURSE_COLUMNS,
@@ -132,20 +149,15 @@ const LeadGeneral = (props: Props) => {
         ).then(({ rows }) => {
           const items = rows.map(getCustomColumnsMap(RELATION_COURSE_COLUMNS));
           const relatedSellables = formatRelatedSalables(items, 'Course').map(mapRelatedSalables);
-          dispatch(change(form, "contactId", Number(contactId)));
-          dispatch(change(form, "contactName", contactName));
           dispatch(change(form, "relatedSellables", relatedSellables));
         })
         .catch(res => instantFetchErrorHandler(dispatch, res))
         .finally(() => {
           params.delete('courseIds');
-          params.delete('contactId');
-          params.delete('contactName');
-          history.replace({
-            pathname: history.location.pathname,
-            search: decodeURIComponent(params.toString())
-          });
+          clearParams();
         });
+      } else {
+        clearParams();
       }
     }
   }, []);
