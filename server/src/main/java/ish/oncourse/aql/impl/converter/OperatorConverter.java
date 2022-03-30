@@ -155,6 +155,10 @@ class OperatorConverter implements Converter<AqlParser.OperatorPredicateContext>
                 case NOT_STARTS_WITH:
                 case NOT_ENDS_WITH:
                     return new ASTNotLikeIgnoreCase();
+                case GT:
+                    return new ASTGreater();
+                case LT:
+                    return new ASTLess();
 
             }
             return null;

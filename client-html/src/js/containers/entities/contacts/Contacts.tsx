@@ -44,7 +44,6 @@ import tutor from "../../../../images/tutor.png";
 import company from "../../../../images/company.png";
 import tutorStudent from "../../../../images/student-tutor.png";
 import person from "../../../../images/person.png";
-import { Classes } from "../../../model/entities/CourseClass";
 import SendMessageEditView from "../messages/components/SendMessageEditView";
 import { getContactFullName } from "./utils";
 
@@ -158,8 +157,8 @@ const findRelatedGroup: any[] = [
   { title: "Applications", list: "application", expression: "student.contact.id" },
   { title: "Audits", list: "audit", expression: "entityIdentifier == Contact and entityId" },
   { title: "Certificates", list: "certificate", expression: "student.contact.id" },
-  { title: "Classes enrolled", list: Classes.path, expression: "enrolments.student.contact.id" },
-  { title: "Classes taught", list: Classes.path, expression: "tutorRoles.tutor.contact.id" },
+  { title: "Classes enrolled", list: "class", expression: "enrolments.student.contact.id" },
+  { title: "Classes taught", list: "class", expression: "tutorRoles.tutor.contact.id" },
   {
     title: "Documents",
     list: "document",
@@ -174,6 +173,7 @@ const findRelatedGroup: any[] = [
   { title: "Payments in", list: "paymentIn", expression: "payer.id" },
   { title: "Payments out", list: "paymentOut", expression: "payee.id" },
   { title: "Payslips", list: "payslip", expression: "contact.id" },
+  { title: "Sales", list: "sale", expression: "purchasedBy.id" },
   { title: "Transactions", list: "transaction", expression: "contact.id" },
   { title: "Waiting lists", list: "waitingList", expression: "student.contact.id" }
 ];

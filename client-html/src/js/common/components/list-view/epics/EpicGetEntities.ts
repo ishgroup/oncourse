@@ -4,13 +4,14 @@
  */
 
 import { Epic } from "redux-observable";
-import * as EpicUtils from "../../../epics/EpicUtils";
+import { Request, Create } from "../../../epics/EpicUtils";
 import EntityService from "../../../services/EntityService";
-import { GET_RECORDS_FULFILLED, GET_RECORDS_REQUEST, setListSelection } from "../actions/index";
+import { GET_RECORDS_FULFILLED, GET_RECORDS_REQUEST, setListSearchError, setListSelection } from "../actions";
 import { State } from "../../../../reducers/state";
 import { GetRecordsArgs } from "../../../../model/common/ListView";
+import FetchErrorHandler from "../../../api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, GetRecordsArgs> = {
+const request: Request<any, GetRecordsArgs> = {
   type: GET_RECORDS_REQUEST,
   getData: (payload, state) => EntityService.getList(payload, state),
   processData: ([records, searchQuery], state: State, payload) => {
@@ -33,7 +34,14 @@ const request: EpicUtils.Request<any, GetRecordsArgs> = {
           : []
         : [])
     ];
+  },
+  processError: response => {
+    if (response && response.status === 400 && response.data.errorMessage.includes("Invalid search expression")) {
+      return [setListSearchError(true)];
+    }
+
+    return FetchErrorHandler(response);
   }
 };
 
-export const EpicGetEntities: Epic<any, any> = EpicUtils.Create(request);
+export const EpicGetEntities: Epic<any, any> = Create(request);

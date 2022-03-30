@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.auditLogging.csv
-entityClass: Audit
-body: ish.onCourse.auditLogging.csv.groovy
-name: Audit Logging CSV export
-outputType: csv

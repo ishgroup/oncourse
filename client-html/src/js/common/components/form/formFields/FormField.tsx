@@ -83,7 +83,7 @@ const FormFieldBase = React.forwardRef<any, Props>(({
     case "dateTime":
       return <EditInPlaceDateTimeField ref={ref} {...rest} type="datetime" />;
     case "aql":
-      return <EditInPlaceQuerySelect ref={ref} {...rest} />;
+      return <EditInPlaceQuerySelect ref={ref} {...rest as any} />;
     case "headerText":
       return <HeaderTextField ref={ref} {...rest} />;
     case "code":

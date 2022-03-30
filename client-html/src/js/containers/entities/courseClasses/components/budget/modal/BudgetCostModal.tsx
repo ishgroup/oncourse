@@ -22,8 +22,11 @@ import DiscountContent from "./DiscountContent";
 import { ClassCostExtended, CourseClassExtended } from "../../../../../../model/entities/CourseClass";
 import TutorPayContent from "./TutorPayContent";
 import { mapSelectItems } from "../../../../../../common/utils/common";
+import { valiadateSelectItemAvailable } from "../../../../../../common/utils/validation";
 
 export const PayRateTypes = Object.keys(ClassCostRepetitionType).filter(t => t !== "Discount").map(mapSelectItems);
+
+export const validatePayRateTypes = val => valiadateSelectItemAvailable(val, PayRateTypes);
 
 interface CourseClassCostModalProps {
   opened?: boolean;

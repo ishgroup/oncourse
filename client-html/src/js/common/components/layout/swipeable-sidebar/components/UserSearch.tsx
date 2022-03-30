@@ -5,12 +5,37 @@
 
 import React from "react";
 import debounce from "lodash.debounce";
+import clsx from "clsx";
+import { createStyles, withStyles } from "@mui/styles";
 import Input from "@mui/material/Input";
 import Search from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
 import Close from "@mui/icons-material/Close";
+import { AppTheme } from "../../../../../model/common/Theme";
 
-const UserSearch: React.FC<any> = ({ getSearchResults, placeholder = "Find anything..." }) => {
+const styles = (theme: AppTheme) => createStyles({
+  inputRoot: {
+    "&::before": {
+      borderBottom: "2px solid #bfbfbf !important",
+    }
+  },
+  input: {
+    padding: "13px 0",
+  },
+  inputStartAdornment: {
+    color: theme.palette.primary.main,
+  },
+});
+
+const UserSearch: React.FC<any> = props => {
+  const {
+    classes,
+    getSearchResults,
+    placeholder = "Find anything...",
+    setFocusOnSearchInput,
+    focusOnSearchInput
+  } = props;
+
   const [userSearch, setUserSearch] = React.useState("");
   const searchRef = React.useRef("");
 
@@ -30,6 +55,15 @@ const UserSearch: React.FC<any> = ({ getSearchResults, placeholder = "Find anyth
   const clear = React.useCallback(() => {
     setUserSearch("");
     getSearchResults("");
+    setFocusOnSearchInput(false);
+  }, []);
+
+  const onFocus = React.useCallback(() => {
+   setFocusOnSearchInput(true);
+  }, []);
+
+  const onBlur = React.useCallback(() => {
+    setFocusOnSearchInput(false);
   }, []);
 
   return (
@@ -39,18 +73,25 @@ const UserSearch: React.FC<any> = ({ getSearchResults, placeholder = "Find anyth
         value={userSearch}
         onChange={onUserSearchChange}
         placeholder={placeholder}
-        startAdornment={<Search className="inputAdornmentIcon textSecondaryColor mr-1" />}
+        startAdornment={(
+          <Search className={clsx("inputAdornmentIcon mr-1 fs3",
+            focusOnSearchInput ? classes.inputStartAdornment : "textGreyColor700")}
+          />
+        )}
         endAdornment={
-          userSearch && (
+          focusOnSearchInput && (
             <IconButton className="closeAndClearButton" onClick={clear}>
               <Close className="inputAdornmentIcon" />
             </IconButton>
           )
         }
         className="w-100"
+        classes={{ root: classes.inputRoot, input: classes.input }}
+        onFocus={onFocus}
+        onBlur={onBlur}
       />
     </div>
   );
 };
 
-export default UserSearch;
+export default withStyles(styles)(UserSearch);

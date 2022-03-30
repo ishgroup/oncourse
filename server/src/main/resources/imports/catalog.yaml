@@ -1,0 +1,121 @@
+- name: onCourse AVETMISS outcome import
+  keyCode: ish.onCourse.import.avetmiss.outcome
+  body: avetmissOutcomeImport.groovy
+  enabled: true
+  short: Import students and outcomes from AVETMISS files
+  description: Supply NAT060, NAT080, NAT085 and NAT120 files to import students and outcomes into onCourse. This import will always try to create new students in onCourse without matching any previously imported.
+  category: accreditation
+  variables:
+    - name: avetmiss120
+      label: Avetmiss120
+      dataType: FILE
+    - name: avetmiss60
+      label: Avetmiss60
+      dataType: FILE
+    - name: avetmiss80
+      label: Avetmiss80
+      dataType: FILE
+    - name: avetmiss85
+      label: Avetmiss85
+      dataType: FILE
+  
+- name: onCourse AVETMISS outcome update import
+  keyCode: ish.onCourse.import.update.avetmiss.outcome
+  body: avetmissOutcomeUpdateImport.groovy
+  enabled: true
+  short: Import and update students and outcomes from AVETMISS files
+  description: Supply NAT060, NAT080, NAT085 and NAT120 files to import students and outcomes into onCourse. This import will try to find existing students and outcomes to see if they have already been imported and then skip those records.
+  category: accreditation
+  variables:
+    - name: avetmiss120
+      label: Avetmiss120
+      dataType: FILE
+    - name: avetmiss60
+      label: Avetmiss60
+      dataType: FILE
+    - name: avetmiss80
+      label: Avetmiss80
+      dataType: FILE
+    - name: avetmiss85
+      label: Avetmiss85
+      dataType: FILE
+  
+- name: onCourse AVETMISS student import
+  keyCode: ish.onCourse.import.avetmiss.student
+  body: avetmissStudentImport.groovy
+  enabled: true
+  short: Import students from AVETMISS files
+  description: Supply NAT080 and NAT085 files to import students into onCourse. This import will always try to create new students in onCourse without matching any previously imported.
+  category: accreditation
+  variables:
+    - name: avetmiss80
+      label: Avetmiss80
+      dataType: FILE
+    - name: avetmiss85
+      label: Avetmiss85
+      dataType: FILE
+  
+- name: onCourse AVETMISS student update import
+  keyCode: ish.onCourse.import.update.avetmiss.student
+  body: avetmissStudentUpdateImport.groovy
+  enabled: true
+  short: Import and update students from AVETMISS files
+  description: Supply NAT080 and NAT085 files to import students into onCourse.  This import will try to find existing students to see if they have already been imported and then skip those records.
+  category: accreditation
+  variables:
+    - name: avetmiss80
+      label: Avetmiss80
+      dataType: FILE
+    - name: avetmiss85
+      label: Avetmiss85
+      dataType: FILE
+  
+- name: onCourse contact csv import
+  keyCode: ish.onCourse.import.contact.csv
+  body: contactCsvImport.groovy
+  enabled: true
+  short: Import contacts from csv file
+  description: Import contacts from csv file
+  category: configuration
+  variables:
+    - name: contactFile
+      label: File with contacts
+      dataType: FILE
+  
+- name: onCourse contact update subscriptions csv import
+  keyCode: ish.onCourse.import.contactUpdateSubscriptions.csv
+  body: contactUpdateSubscriptionsCsvImport.groovy
+  enabled: true
+  short: Update marketing preferences with contact import
+  description: Import contacts to update subscriptions from csv file
+  category: marketing
+  variables:
+    - name: contactFile
+      label: File with contacts
+      dataType: FILE
+  
+- name: onCourse custom field types import
+  keyCode: ish.onCourse.import.customFieldTypes.json
+  body: customFieldTypesImport.groovy
+  enabled: true
+  short: Import custom field types
+  description: Import custom field types into your onCourse system
+  category: configuration
+  variables:
+    - name: customFieldTypes
+      label: Custom field types
+      dataType: FILE
+  
+  
+- name: onCourse paymentIn csv import
+  keyCode: ish.onCourse.import.paymentIn.csv
+  body: paymentInCsvImport.groovy
+  enabled: true
+  short: Import payments from a CSV file
+  description: Import paymentIn from a csv file
+  category: accounting
+  variables:
+    - name: importFile
+      label: File with paymentIns
+      dataType: FILE
+  

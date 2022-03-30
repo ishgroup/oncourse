@@ -158,7 +158,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
 
   const currentIcon = iconSwitcher(documentVersion.mimeType);
 
-  const validUrl = values && Array.isArray(values.versions) && ( values.versions[0].url);
+  const validUrl = values && values.urlWithoutVersionId;
 
   const thumbnail = values && Array.isArray(values.versions) && ( values.versions[0].thumbnail);
 

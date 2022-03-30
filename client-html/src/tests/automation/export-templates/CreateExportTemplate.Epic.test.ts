@@ -13,7 +13,7 @@ describe("Create export template epic tests", () => {
       id: 21,
       name: "name 21",
       keyCode: "keyCode 21",
-      enabled: true
+      status: "Enabled",
     }),
     epic: EpicCreateExportTemplate,
     processData: () => [
