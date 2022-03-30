@@ -102,22 +102,6 @@ class Payslip extends _Payslip {
 		return super.getPaylines()
 	}
 
-	/**
-	 * @return paymentInLines attached to this payslip
-	 */
-	@Nonnull @API @Override
-	List<PaymentInLine> getPaymentInLines() {
-		return super.getPaymentInLines()
-	}
-
-	/**
-	 * @return paymentOutLines attached to this payslip
-	 */
-	@Nonnull @API @Override
-	List<PaymentOutLine> getPaymentOutLines() {
-		return super.getPaymentOutLines()
-	}
-
 	@Nullable @Override
 	String getSummaryDescription() {
 		if(getContact() == null) {

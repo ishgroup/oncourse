@@ -120,6 +120,7 @@ const findRelatedGroup: any[] = [
   { title: "Classes", list: "class", expression: "enrolments.abstractInvoiceLines.abstractInvoice.id" },
   { title: "Payment In", list: "paymentIn", expression: "paymentInLines.invoice.id" },
   { title: "Payment Out", list: "paymentOut", expression: "paymentOutLines.invoice.id" },
+  { title: "Sales", list: "sale", expression: "invoiceLine.invoice.id" },
   { title: "Transactions", list: "transaction", expression: "invoice.id" },
   { title: "Voucher redeemed", list: "sale", expression: "redeemedInvoice.id" }
 ];

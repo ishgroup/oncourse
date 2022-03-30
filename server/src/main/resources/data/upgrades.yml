@@ -727,3 +727,38 @@ databaseChangeLog:
             columnDataType: datetime
             columnName: modifiedOn
             tableName: Survey
+  - changeSet:
+      id: 97-1
+      author: dmitriy
+      comment: remove symbols from contacts phones which are not in [+0-9]
+      changes:
+        - sql: "UPDATE Contact SET homePhone = REGEXP_REPLACE(homePhone,'[^0-9+]',''), 
+                                   mobilePhone = REGEXP_REPLACE(mobilePhone,'[^0-9+]',''), 
+                                   workPhone = REGEXP_REPLACE(workPhone,'[^0-9+]','')"
+  - changeSet:
+      id: 109-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: Checkout
+      changes:
+        - customChange: {
+          "class": "ish.oncourse.server.upgrades.liquibase.change.CleanCheckoutsWithReplication"
+        }
+  - changeSet:
+      id: 110-1
+      author: dmitriy
+      comment: upgrade favourite links preference with new values format
+      changes:
+        - customChange: {
+          "class": "ish.oncourse.server.upgrades.liquibase.change.UpdateFavouriteLinks"
+        }
+  - changeSet:
+      id: 113-1
+      author: dmitriy
+      comment: increase filterColumnWidth values for tables preferences to 240 where required
+      changes:
+        - customChange: {
+          "class": "ish.oncourse.server.upgrades.liquibase.change.UpdateFilterColumnWidth"
+        }

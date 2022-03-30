@@ -17,7 +17,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { ForbiddenTagNames, Tag } from "@api/model";
 import FormField from "../../../common/components/form/formFields/FormField";
-import { validateSingleMandatoryField, validateTagName } from "../../../common/utils/validation";
+import { validateSingleMandatoryField, validateAqlFilterOrTagName } from "../../../common/utils/validation";
 import { State } from "../../../reducers/state";
 import RouteChangeConfirm from "../../../common/components/dialog/confirm/RouteChangeConfirm";
 import TagRequirementsMenu from "../components/TagRequirementsMenu";
@@ -465,7 +465,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
                   name="name"
                   label="Name"
                   margin="none"
-                  validate={[validateSingleMandatoryField,this.validateRootTagName, validateTagName]}
+                  validate={[validateSingleMandatoryField,this.validateRootTagName, validateAqlFilterOrTagName]}
                   disabled={rootTag.system}
                 />
               </Grid>

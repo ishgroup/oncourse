@@ -169,7 +169,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
 
     const lastVersion = item && getLatestDocumentItem(item.versions);
 
-    const validUrl = lastVersion && lastVersion.url;
+    const validUrl = item && item.urlWithoutVersionId;
 
     return (
       <Dialog

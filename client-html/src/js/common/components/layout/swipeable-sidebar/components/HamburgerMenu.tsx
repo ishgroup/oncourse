@@ -11,6 +11,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import { State } from "../../../../../reducers/state";
 import { toggleSwipeableDrawer } from "../actions";
+import Divider from "@mui/material/Divider";
+import { getTheme } from "../../../../themes/ishTheme";
+import onCourseLogoDark from "../../../../../../images/onCourseLogoDark.png";
+import onCourseLogoLight from "../../../../../../images/onCourseLogoLight.png";
 
 interface Props {
   opened?: boolean;
@@ -20,17 +24,28 @@ interface Props {
 
 const HamburgerMenu = React.memo<Props>(props => {
   const { opened, toggleSwipeableDrawer } = props;
+
+  const theme = getTheme();
+
   return (
-    <IconButton
-      color="inherit"
-      aria-label="Open drawer"
-      edge="start"
-      onClick={toggleSwipeableDrawer}
-      size="large"
-      className="relative zIndex2"
-    >
-      {opened ? <CloseIcon /> : <MenuIcon />}
-    </IconButton>
+    <div className="centeredFlex mr-3">
+      <IconButton
+        color="inherit"
+        aria-label="Open drawer"
+        edge="start"
+        onClick={toggleSwipeableDrawer}
+        size="large"
+        className="relative zIndex2"
+      >
+        {opened ? <CloseIcon /> : <MenuIcon />}
+      </IconButton>
+      <Divider orientation="vertical" variant="middle" flexItem />
+      <img
+        src={theme.palette.mode === "dark" ? onCourseLogoLight : onCourseLogoDark}
+        alt="Logo"
+        height={36}
+      />
+    </div>
   );
 });
 

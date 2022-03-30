@@ -17,7 +17,7 @@ import Lock from "@mui/icons-material/Lock";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../../common/components/form/Uneditable";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
-import { PayRateTypes } from "./BudgetCostModal";
+import { PayRateTypes, validatePayRateTypes } from "./BudgetCostModal";
 import { greaterThanNullValidation, validateSingleMandatoryField } from "../../../../../../common/utils/validation";
 import {
   formatCurrency,
@@ -167,6 +167,7 @@ const TutorPayContent: React.FC<Props> = ({
                 label="Type"
                 items={PayRateTypes}
                 onChange={onRepetitionChange}
+                validate={validatePayRateTypes}
               />
 
               {typeof repetitionType === "string" && repetitionType !== values.repetitionType && (

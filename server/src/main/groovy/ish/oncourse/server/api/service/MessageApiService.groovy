@@ -495,7 +495,7 @@ class MessageApiService extends EntityApiService<MessageDTO, Message, MessageDao
         def columnSelect = parseSearchQuery(objectSelect, context, aql, entityName, request.search, request.filter, request.tagGroups)
                 .column(Property.create("id", Long))
 
-        if (template != null && !template.entity.equals(entityName) && AbstractEntitiesUtil.isAbstract(entityName)) {
+        if (template != null && template.entity != null && !template.entity.equals(entityName) && AbstractEntitiesUtil.isAbstract(entityName)) {
             Expression isCurrentInheritorExp = AbstractEntitiesUtil.getIsCurrentInheritorExp(entityName, template.entity)
             columnSelect = columnSelect.and(isCurrentInheritorExp)
         }

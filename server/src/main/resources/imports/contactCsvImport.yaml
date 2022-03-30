@@ -1,9 +1,0 @@
-name: onCourse contact csv import
-keyCode: ish.onCourse.import.contact.csv
-body: contactCsvImport.groovy
-enabled: true
-description: Import contacts from csv file
-variables:
-  - name: contactFile
-    label: File with contacts
-    dataType: FILE

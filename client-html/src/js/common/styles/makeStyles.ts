@@ -6,11 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { makeStyles } from "@mui/styles";
-import { Styles, WithStylesOptions } from "@mui/styles/withStyles";
+import {
+ makeStyles, Styles, WithStylesOptions, ClassNameMap 
+} from "@mui/styles";
 import { AppTheme } from '../../model/common/Theme';
 
-export const makeAppStyles = (  
-  styles: Styles<AppTheme, {}, string>,
+export const makeAppStyles = <
+  Props extends object = {},
+  ClassKey extends string = string>(  
+  styles: Styles<AppTheme, Props, ClassKey>,
   options?: Omit<WithStylesOptions<AppTheme>, 'withTheme'>
-) => makeStyles<AppTheme>(styles, options);
+): keyof Props extends never
+  ? (props?: any) => ClassNameMap<ClassKey>
+  : (props: Props) => ClassNameMap<ClassKey> => makeStyles<AppTheme>(styles, options);

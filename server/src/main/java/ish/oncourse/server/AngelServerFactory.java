@@ -265,6 +265,7 @@ public class AngelServerFactory {
                 user.setPassword(null);
                 user.setPasswordLastChanged(null);
                 user.setLoginAttemptNumber(0);
+                user.setIsActive(true);
             } else {
                 user = UserDao.createSystemUser(context, Boolean.TRUE);
                 user.setEmail(email);
@@ -276,7 +277,7 @@ public class AngelServerFactory {
             try {
                 String invitationToken = sendInvitationEmailToNewSystemUser(null, user, preferenceController, mailDeliveryService, hostName, ipAddress, port);
                 user.setInvitationToken(invitationToken);
-                user.setInvitationTokenExpiryDate(DateUtils.addDays(new Date(), 1));
+                user.setInvitationTokenExpiryDate(DateUtils.addDays(new Date(), 7));
             } catch (MessagingException ex) {
                 LOGGER.catching(ex);
                 LOGGER.warn("An invitation to user {} wasn't sent. Check you SMTP settings.", line);

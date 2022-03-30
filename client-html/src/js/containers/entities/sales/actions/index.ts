@@ -1,17 +1,11 @@
-import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
 import {
-  ProductItem,
-  ProductItemCancel,
-  ProductItemStatus,
-  ProductType,
-  SaleType
+ ProductItem, ProductItemCancel, ProductItemStatus, ProductType, SaleType 
 } from "@api/model";
+import { _toRequestType, FULFILLED, REJECTED } from "../../../../common/actions/ActionUtils";
 
 export const GET_SALES = _toRequestType("get/sales");
 export const GET_SALES_FULFILLED = FULFILLED(GET_SALES);
-
-export const GET_COURSE_CLASS_SALES = _toRequestType("get/courseClassSales");
-export const GET_COURSE_CLASS_SALES_FULFILLED = FULFILLED(GET_COURSE_CLASS_SALES);
+export const GET_SALES_REJECTED = REJECTED(GET_SALES);
 
 export const GET_SALE = _toRequestType("get/sale");
 export const GET_SALE_FULFILLED = FULFILLED(GET_SALE);
@@ -62,19 +56,13 @@ export const getSales = (search: string, entities: SaleType[] = ["Product", "Mem
   payload: { search, entities }
 });
 
-export const getCourseClassSales = (search: string) => ({
-  type: GET_COURSE_CLASS_SALES,
-  payload: search
-});
-
 export const clearSales = pending => ({
   type: CLEAR_SALES,
   payload: { pending, items: null }
 });
 
-export const clearCourseClassSales = pending => ({
-  type: CLEAR_COURSE_CLASS_SALES,
-  payload: { pending, courseClassItems: null }
+export const getSalesRejected = () => ({
+  type: GET_SALES_REJECTED,
 });
 
 export const updateSale = (id: string, productItem: ProductItem) => ({
