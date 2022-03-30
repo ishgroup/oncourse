@@ -39,6 +39,7 @@ import { useAppSelector } from "../../../utils/hooks";
 import ExecuteScriptModal from "../../../../containers/automation/containers/scripts/components/ExecuteScriptModal";
 import { DashboardItem } from "../../../../model/dashboard";
 import navigation from "../../navigation/navigation.json";
+import ContactInsight from "../../../../containers/entities/contacts/components/contact-insight/ContactInsight";
 
 export const SWIPEABLE_SIDEBAR_WIDTH: number = 350;
 
@@ -368,7 +369,9 @@ const SwipeableSidebar: React.FC<Props> = props => {
   }, [isFormDirty, resetEditView]);
 
   const groupedSortedItems = useMemo<DashboardItem[]>(() => [
-      ...navigation.features.map(f => ({ category: f.key, url: f.link, name: f.title, id: null })),
+      ...navigation.features.map(f => ({
+ category: f.key, url: f.link, name: f.title, id: null
+})),
       ...((hasScriptsPermissions && scripts as DashboardItem[]) || [])]
       .sort(sortItems),
     [navigation.features, scripts]);
@@ -468,15 +471,17 @@ const SwipeableSidebar: React.FC<Props> = props => {
           )
         }
         >
-          <NavigationCategory
-            selected={selected}
-            favorites={favorites}
-            favoriteScripts={favoriteScripts}
-            onClose={() => setSelected(null)}
-            showConfirm={showConfirmHandler}
-            setScriptIdSelected={setScriptIdSelected}
-            setExecMenuOpened={setExecMenuOpened}
-          />
+          {/* <NavigationCategory */}
+          {/*  selected={selected} */}
+          {/*  favorites={favorites} */}
+          {/*  favoriteScripts={favoriteScripts} */}
+          {/*  onClose={() => setSelected(null)} */}
+          {/*  showConfirm={showConfirmHandler} */}
+          {/*  setScriptIdSelected={setScriptIdSelected} */}
+          {/*  setExecMenuOpened={setExecMenuOpened} */}
+          {/* /> */}
+
+          <ContactInsight id={6} onClose={() => setSelected(null)} />
         </div>
       </SwipeableDrawer>
 
