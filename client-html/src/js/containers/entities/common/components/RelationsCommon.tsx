@@ -55,6 +55,10 @@ interface Props {
     filter: (relation: EntityRelationTypeRendered) => boolean;
   },
   dataRowClass?: string;
+  coursesError?: boolean;
+  salesError?: boolean;
+  qualificationsError?: boolean;
+  modulesError?: boolean;
 }
 
 const RelationsCommon: React.FC<Props> = (
@@ -85,7 +89,11 @@ const RelationsCommon: React.FC<Props> = (
     rootEntity,
     relationTypesFilter,
     customAqlEntities,
-    dataRowClass = "grid-temp-col-3-fr"
+    dataRowClass = "grid-temp-col-3-fr",
+    coursesError,
+    salesError,
+    qualificationsError,
+    modulesError
   }
 ) => {
   const relationTypes = useMemo<EntityRelationTypeRendered[]>(() =>
@@ -219,6 +227,7 @@ const RelationsCommon: React.FC<Props> = (
       resetSearch={submitSucceeded}
       dataRowClass={dataRowClass}
       aqlEntities={customAqlEntities || aqlEntities}
+      aqlQueryError={coursesError || salesError || qualificationsError || modulesError}
       CustomCell={relationCell}
     />
 );
@@ -227,12 +236,16 @@ const RelationsCommon: React.FC<Props> = (
 const mapStateToProps = (state: State) => ({
   courses: state.plainSearchRecords["Course"].items,
   coursesPending: state.plainSearchRecords["Course"].loading,
+  coursesError: state.plainSearchRecords["Course"].error,
   sales: state.sales.items,
   salesPending: state.sales.pending,
+  salesError: state.sales.error,
   qualifications: state.plainSearchRecords["Qualification"].items,
   qualificationsPending: state.plainSearchRecords["Qualification"].loading,
+  qualificationsError: state.plainSearchRecords["Qualification"].error,
   modules: state.plainSearchRecords["Module"].items,
   modulesPending: state.plainSearchRecords["Module"].loading,
+  modulesError: state.plainSearchRecords["Module"].error,
   entityRelationTypes: state.preferences.entityRelationTypes
 });
 

@@ -295,8 +295,6 @@ paths:
     $ref: './path/user/active/api.yaml'
   /user/preference:
     $ref: './path/user/preference/api.yaml'
-  /user/preference/category:
-    $ref: './path/user/preference/category/api.yaml'
   /user/checkPassword:
     $ref: './path/user/checkPassword/api.yaml'
   /user/requireComplexPass:

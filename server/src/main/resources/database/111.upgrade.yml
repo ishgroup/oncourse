@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: 111-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: Script
+            columnName: enabled
+        - columnExists:
+            tableName: Import
+            columnName: enabled
+        - columnExists:
+            tableName: EmailTemplate
+            columnName: enabled
+        - columnExists:
+            tableName: ExportTemplate
+            columnName: enabled
+        - columnExists:
+            tableName: Report
+            columnName: enabled
+      changes:
+        - sql:
+            - "UPDATE Script SET enabled = CASE WHEN enabled=1 AND keyCode LIKE 'ish.%' THEN 0
+                                                WHEN enabled=0 AND keyCode NOT LIKE 'ish.%' THEN 1
+                                                ELSE enabled 
+                                                END"
+        - sql:
+            - "UPDATE Report SET enabled = CASE WHEN enabled=1 AND keyCode LIKE 'ish.%' THEN 0
+                                                WHEN enabled=0 AND keyCode NOT LIKE 'ish.%' THEN 1
+                                                ELSE enabled 
+                                                END"
+        - sql:
+            - "UPDATE EmailTemplate SET enabled = CASE WHEN enabled=1 AND keyCode LIKE 'ish.%' THEN 0
+                                                       WHEN enabled=0 AND keyCode NOT LIKE 'ish.%' THEN 1
+                                                       ELSE enabled 
+                                                       END"
+        - sql:
+            - "UPDATE ExportTemplate SET enabled = CASE WHEN enabled=1 AND keyCode LIKE 'ish.%' THEN 0
+                                                        WHEN enabled=0 AND keyCode NOT LIKE 'ish.%' THEN 1
+                                                        ELSE enabled 
+                                                        END"
+        - sql:
+            - "UPDATE Import SET enabled = CASE WHEN enabled=1 AND keyCode LIKE 'ish.%' THEN 0
+                                                WHEN enabled=0 AND keyCode NOT LIKE 'ish.%' THEN 1
+                                                ELSE enabled 
+                                                END"

@@ -17,7 +17,6 @@ import {
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
-import { Grid } from "@mui/material";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 
 interface MembershipDiscountsProps extends EditViewProps<MembershipProduct>{
@@ -25,6 +24,7 @@ interface MembershipDiscountsProps extends EditViewProps<MembershipProduct>{
   searchDiscounts?: (search: string) => void;
   clearDiscountsSearch?: (pending: boolean) => void;
   discountsPending?: boolean;
+  discountsError?: boolean;
   contactRelationTypes?: NestedListPanelItem[];
 }
 
@@ -87,6 +87,7 @@ const MembershipProductDiscounts: React.FC<MembershipDiscountsProps> = props => 
     searchDiscounts,
     clearDiscountsSearch,
     discountsPending,
+    discountsError,
     submitSucceeded,
     contactRelationTypes,
     dispatch,
@@ -109,6 +110,7 @@ const MembershipProductDiscounts: React.FC<MembershipDiscountsProps> = props => 
           onSearch={searchDiscounts}
           clearSearchResult={clearDiscountsSearch}
           pending={discountsPending}
+          aqlQueryError={discountsError}
           onAdd={onAddDiscounts(props)}
           onDelete={onDeleteDiscount(props)}
           onDeleteAll={onDeleteAllDiscounts(props)}
@@ -163,7 +165,11 @@ const mapStateToProps = (state: State) => ({
       return 0;
     }),
   discountsPending: state.plainSearchRecords["Discount"].loading,
-  contactRelationTypes: state.plainSearchRecords["ContactRelationType"].items.map(r => ({ id: r.id, description: r.toContactName }))
+  discountsError: state.plainSearchRecords["Discount"].error,
+  contactRelationTypes: state.plainSearchRecords["ContactRelationType"].items.map(r => ({
+    id: r.id,
+    description: r.toContactName
+  }))
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
