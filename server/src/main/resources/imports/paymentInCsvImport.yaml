@@ -1,9 +1,0 @@
-name: onCourse paymentIn csv import
-keyCode: ish.onCourse.import.paymentIn.csv
-body: paymentInCsvImport.groovy
-enabled: true
-description: Import paymentIn from csv file
-variables:
-  - name: importFile
-    label: File with paymentIns
-    dataType: FILE

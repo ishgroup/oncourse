@@ -40,10 +40,14 @@ class MYOBBaseForm extends React.Component<any, any> {
     if (search && !hideConfig) {
       const params = new URLSearchParams(search);
       const values = JSON.parse(params.get("values"));
+
+      if (!values) return;
+
       const url = values.url;
       const file = values.file;
       const owner = values.owner;
       const password = values.password;
+      const name = values.name;
       const code = params.get("code");
 
       this.updateValue('url', "myobBaseUrl", url);
@@ -51,6 +55,7 @@ class MYOBBaseForm extends React.Component<any, any> {
       this.updateValue('file', "myobFileName", file);
 
       this.props.dispatch(change("MYOBForm", "fields.myobPassword", password));
+      this.props.dispatch(change("MYOBForm", "name", name));
       params.delete('values');
 
       if (code) {
@@ -101,6 +106,7 @@ class MYOBBaseForm extends React.Component<any, any> {
     const filename = values.fields.myobFileName;
     const owner = values.fields.myobUser;
     const password = values.fields.myobPassword;
+    const name = values.name;
 
     this.setState({
       loading: true
@@ -112,6 +118,7 @@ class MYOBBaseForm extends React.Component<any, any> {
     this.checkAndSet(map, 'owner', owner);
 
     map.set('password', password);
+    map.set('name', name);
 
     let params = "";
     if (map.size !== 0) {
@@ -119,7 +126,7 @@ class MYOBBaseForm extends React.Component<any, any> {
       params = "?values=" + JSON.stringify(result);
     }
 
-    const state = encodeURI(`${window.location.href}${values.id ? "" : `/${values.name}`}${params}`);
+    const state = encodeURI(`${window.location.href}${params}`);
 
     window.open(
       // eslint-disable-next-line max-len

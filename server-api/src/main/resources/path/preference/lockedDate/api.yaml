@@ -7,8 +7,7 @@ get:
     '200':
       description: Success response.
       schema:
-        type: string
-        format: date
+        $ref: './def/entity/LockedDate.yaml'
     default:
       description: Unexpected error
   x-permission:

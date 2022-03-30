@@ -20,15 +20,12 @@ import { Integration, IntegrationProp } from "@api/model";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import IntegrationDescription from "./IntegrationDescription";
 import { IntegrationSchema } from "../../../../../model/automation/integrations/IntegrationSchema";
-import * as IntegrationTypes from "../../../../../model/automation/integrations/IntegrationTypes";
-import * as IntegrationForms from "./forms/index";
-import IntegrationImages from "../IntegrationImages";
+import IntegrationTypes from "../IntegrationTypes";
 import { State } from "../../../../../reducers/state";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { createIntegration, deleteIntegrationItem, updateIntegration } from "../../../actions";
 import { setNextLocation, showConfirm } from "../../../../../common/actions";
-import { getByType } from "../utils";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
@@ -72,21 +69,27 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
 
   constructor(props) {
     super(props);
+    
+    const {
+     match, integrations
+    } = props;
+
+    const type = match.params.type;
 
     this.state = {
       isPending: false,
       integrationItem:
-        props.match.params.action === "new"
-          ? { id: "", type: props.match.params.type, fields: {} }
-          : props.integrations
-          ? this.getIntegrationItem(props)
-          : null
+        match.params.id === "new"
+          ? { id: "", type, fields: {} }
+          : integrations
+            ? this.getIntegrationItem(props)
+            : null
     };
   }
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.match.params.action === "edit" && nextProps.integrations) {
+    if (nextProps.match.params.id !== "new" && nextProps.integrations) {
       this.setState({
         integrationItem: this.getIntegrationItem(nextProps)
       });
@@ -108,12 +111,12 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
   }
 
   getIntegrationItem(source) {
-    return source.integrations.find(item => item.name === decodeURIComponent(source.location.pathname.split("/")[5]));
+    return source.integrations.find(item => String(item.id) === this.props.match.params.id);
   }
 
   handleDelete = () => {
     const {
-     onDelete, history, integrations, openConfirm
+     onDelete, history, openConfirm
     } = this.props;
 
     const item = this.state.integrationItem;
@@ -131,18 +134,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
         onDelete(item.id);
       })
         .then(() => {
-          if (integrations[0].id === item.id) {
-            integrations.length > 1
-              ? history.push(
-                  `/automation/integrations/edit/${integrations[1].type}/${encodeURIComponent(integrations[1].name)}`
-                )
-              : history.push("/automation/integrations");
-            return;
-          }
-
-          history.push(
-            `/automation/integrations/edit/${integrations[0].type}/${encodeURIComponent(integrations[0].name)}`
-          );
+          history.push("/automation/integrations")
         })
         .catch(() => {
           this.isPending = false;
@@ -170,10 +162,9 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
       return undefined;
     }
     let match;
-    if (this.props.match.params.action === "new") {
+    if (this.props.match.params.id === "new") {
       match = this.props.integrations.find(item => item.name === value.trim());
-    }
-    if (this.props.match.params.action === "edit") {
+    } else {
       match = this.props.integrations
         .filter(item => item.name !== this.state.integrationItem.name)
         .find(item => item.name === value.trim());
@@ -200,11 +191,9 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
       this.resolvePromise = resolve;
       this.rejectPromise = reject;
 
-      if (this.props.match.params.action === "new") {
+      if (this.props.match.params.id === "new") {
         onCreate(data);
-      }
-
-      if (this.props.match.params.action === "edit") {
+      } else {
         onUpdate(encodedID, data);
       }
     })
@@ -214,7 +203,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
           history.push(nextLocation);
           setNextLocation('');
         } else {
-          history.push(`/automation/integrations/edit/${integration.type}/${encodeURIComponent(integration.name)}`);
+          history.push(`/automation/integration/${integration.id}`);
         }
       })
       .catch(error => {
@@ -239,7 +228,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
       match, dirty, invalid, syncErrors
     } = this.props;
     const item = this.state.integrationItem;
-    const isNew = match.params.action === "new";
+    const isNew = match.params.id === "new";
 
     const { isPending } = this.state;
 
@@ -285,14 +274,17 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
   };
 
   render() {
-    const {
-     classes, match
-    } = this.props;
+    const { classes } = this.props;
 
-    const TypeForm = getByType(match.params.type, IntegrationForms);
     const item = this.state.integrationItem;
 
-    const descriptionItem = getByType(match.params.type, IntegrationTypes);
+    if (!item) {
+      return null;
+    }
+
+    const typeItem = IntegrationTypes[item.type];
+    const TypeForm = typeItem.form;
+    const image = typeItem.image;
 
     return (
       <Grid container className={classes.root}>
@@ -311,14 +303,12 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
           <div>
             <img
               alt="integrationLogo"
-              src={getByType(match.params.type, IntegrationImages)}
+              src={image}
               width={200}
               className={clsx("mb-2", classes.image)}
             />
           </div>
-          {descriptionItem && (
-            <IntegrationDescription item={descriptionItem} />
-          )}
+          <IntegrationDescription item={typeItem} />
         </Grid>
       </Grid>
     );
@@ -334,7 +324,7 @@ export const parseIntegrationSchema = (schema: IntegrationSchema): Integration =
   }
 
   return {
-    id: schema.id,
+    id: String(schema.id),
     type: Number(schema.type),
     name: schema.name,
     verificationCode: schema.verificationCode,

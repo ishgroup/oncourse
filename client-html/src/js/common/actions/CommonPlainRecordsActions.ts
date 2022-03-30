@@ -3,13 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { _toRequestType, FULFILLED } from "./ActionUtils";
+import { _toRequestType, FULFILLED, REJECTED } from "./ActionUtils";
 import { PlainSearchEntity } from "../../model/common/Plain";
 
 export const SET_COMMON_PLAIN_RECORD_SEARCH = "set/common/plain/record/search";
 export const CLEAR_COMMON_PLAIN_RECORDS = "clear/common/plain/records";
 export const GET_COMMON_PLAIN_RECORDS = _toRequestType("get/common/plain/records");
 export const GET_COMMON_PLAIN_RECORDS_FULFILLED = FULFILLED(GET_COMMON_PLAIN_RECORDS);
+export const GET_COMMON_PLAIN_RECORDS_REJECTED = REJECTED(GET_COMMON_PLAIN_RECORDS);
 
 export const setCommonPlainSearch = (
   key: PlainSearchEntity,
@@ -31,12 +32,17 @@ export const getCommonPlainRecords = (
 ) => ({
   type: GET_COMMON_PLAIN_RECORDS,
   payload: {
-   key, offset, columns, ascending, sort, pageSize
+    key, offset, columns, ascending, sort, pageSize
   }
 });
 
 export const clearCommonPlainRecords = (key: string, loading?: boolean) => ({
   type: CLEAR_COMMON_PLAIN_RECORDS,
   payload: { key, loading }
+});
+
+export const getCommonPlainRecordsRejected = (key: string) => ({
+  type: GET_COMMON_PLAIN_RECORDS_REJECTED,
+  payload: { key }
 });
 

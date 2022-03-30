@@ -23,7 +23,7 @@ const initialDefault: ExportTemplate = {
   keyCode: null,
   entity: null,
   body: null,
-  enabled: false,
+  status: "Installed but Disabled",
   variables: [],
   options: []
 };
@@ -57,7 +57,8 @@ const ImportTemplates = React.memo<any>(props => {
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues(IMPORT_TEMPLATES_FORM_NAME)(state),
-  syncErrors: getFormSyncErrors(IMPORT_TEMPLATES_FORM_NAME)(state)
+  syncErrors: getFormSyncErrors(IMPORT_TEMPLATES_FORM_NAME)(state),
+  emailTemplates: state.automation.emailTemplate.emailTemplates,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

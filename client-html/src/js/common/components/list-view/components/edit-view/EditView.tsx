@@ -8,12 +8,14 @@ import { createStyles, withStyles } from "@mui/styles";
 import { getFormSyncErrors, getFormValues, reduxForm } from "redux-form";
 import Typography from "@mui/material/Typography";
 import { connect } from "react-redux";
+import clsx from "clsx";
 import { State } from "../../../../../reducers/state";
 import FormSubmitButton from "../../../form/FormSubmitButton";
 import { pushGTMEvent } from "../../../google-tag-manager/actions";
 import { EditViewContainerProps } from "../../../../../model/common/ListView";
 import { TAB_LIST_SCROLL_TARGET_ID } from "../../../../../constants/Config";
-import clsx from "clsx";
+
+export const editViewFormRole: string = "editView-form";
 
 const styles = theme =>
   createStyles({
@@ -78,7 +80,13 @@ class EditView extends React.PureComponent<EditViewContainerProps, any> {
     const noTabList = document.getElementById(TAB_LIST_SCROLL_TARGET_ID) === null;
 
     return (
-      <form className={clsx(classes.root, noTabList && "fullHeightWithoutAppBar")} onSubmit={handleSubmit} autoComplete="off" noValidate>
+      <form
+        className={clsx(classes.root, noTabList && "fullHeightWithoutAppBar")}
+        onSubmit={handleSubmit}
+        autoComplete="off"
+        noValidate
+        role={editViewFormRole}
+      >
         {!hasSelected && (
           <div className="noRecordsMessage">
             <Typography variant="h6" color="inherit" align="center">

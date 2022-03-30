@@ -4,7 +4,7 @@
  */
 
 import React, {
- useEffect, useMemo, useRef, Fragment, useState
+  useEffect, useMemo, useRef, Fragment, useState
 } from "react";
 import clsx from "clsx";
 import Grid from "@mui/material/Grid";
@@ -12,10 +12,10 @@ import Typography from "@mui/material/Typography";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import withStyles from "@mui/styles/withStyles";
-import { getTimetableSessionsByIds, getTimetableSessionsTags } from "../../../../actions/index";
+import { getTimetableSessionsByIds, getTimetableSessionsTags } from "../../../../actions";
 import styles from "../styles";
-import { gapHoursDayPeriodsBase, getGapHours } from "../../../../utils/index";
-import { CalendarMode, TimetableDay } from "../../../../../../model/timetable/index";
+import { gapHoursDayPeriodsBase, getGapHours } from "../../../../utils";
+import { CalendarMode, TimetableDay } from "../../../../../../model/timetable";
 import CalendarSessionHour from "../session/CalendarSessionHour";
 import CalendarSession from "../session/CalendarSession";
 import CalendarDayBase from "./CalendarDayBase";
@@ -37,10 +37,10 @@ interface CompactModeDayProps extends TimetableDay {
 
 const EmptyGapDay: React.FunctionComponent<any> = React.memo(
   ({
- classes, selectedDayPeriods, hasSelectedDayPeriods, updated, hasSessions
-}) => (
-  <>
-    {gapHoursDayPeriodsBase.map((p, i) => {
+     classes, selectedDayPeriods, hasSelectedDayPeriods, updated, hasSessions
+  }) => (
+    <>
+      {gapHoursDayPeriodsBase.map((p, i) => {
         if (hasSelectedDayPeriods && !selectedDayPeriods[i]) {
           return null;
         }
@@ -72,7 +72,7 @@ const EmptyGapDay: React.FunctionComponent<any> = React.memo(
           </Grid>
         );
       })}
-  </>
+    </>
   )
 );
 
@@ -198,7 +198,9 @@ const CalendarDayWrapper: React.FunctionComponent<CompactModeDayProps> = React.m
       dayNodesObserver.observer.observe(dayNodeRef.current);
     }
 
-    return () => dayNodesObserver.observer.unobserve(dayNodeRef.current);
+    return () => {
+      if (dayNodeRef.current) dayNodesObserver.observer.unobserve(dayNodeRef.current);
+    };
   }, [dayNodesObserver, dayNodeRef.current]);
 
   const renderedDays = useMemo(
@@ -244,9 +246,11 @@ const CalendarDayWrapper: React.FunctionComponent<CompactModeDayProps> = React.m
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    updateSessionsDetails: (ids: number[], monthIndex?: number, dayIndex?: number) => dispatch(getTimetableSessionsByIds(ids, monthIndex, dayIndex)),
-    getSessionsTags: (ids: number[], monthIndex?: number, dayIndex?: number) => dispatch(getTimetableSessionsTags(ids, monthIndex, dayIndex))
-  });
+  updateSessionsDetails: (ids: number[], monthIndex?: number, dayIndex?: number) =>
+    dispatch(getTimetableSessionsByIds(ids, monthIndex, dayIndex)),
+  getSessionsTags: (ids: number[], monthIndex?: number, dayIndex?: number) =>
+    dispatch(getTimetableSessionsTags(ids, monthIndex, dayIndex))
+});
 
 export const CalendarDay = connect<any, any, any>(
   null,

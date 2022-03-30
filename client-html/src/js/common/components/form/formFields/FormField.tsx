@@ -20,6 +20,7 @@ import EditInPlaceRemoteDataSearchSelect from "./EditInPlaceRemoteDataSearchSele
 import EditInPlaceSearchSelect from "./EditInPlaceSearchSelect";
 import { FormSwitch } from "./Switch";
 import { validateTagsList } from "../simpleTagListComponent/validateTagsList";
+import EditInPlacePhoneField from "./EditInPlacePhoneField";
 
 const EditInPlaceTypes = createStringEnum([
   "text",
@@ -42,7 +43,8 @@ const EditInPlaceTypes = createStringEnum([
   "checkbox",
   "switch",
   "stub",
-  "tags"
+  "tags",
+  "phone"
 ]);
 
 interface Props {
@@ -56,6 +58,8 @@ const FormFieldBase = React.forwardRef<any, Props>(({
  ...rest
 }, ref) => {
   switch (type) {
+    case "phone":
+      return <EditInPlacePhoneField ref={ref} {...rest} />;
     case "duration":
       return <EditInPlaceDurationField ref={ref} {...rest} />;
     case "file":
@@ -79,7 +83,7 @@ const FormFieldBase = React.forwardRef<any, Props>(({
     case "dateTime":
       return <EditInPlaceDateTimeField ref={ref} {...rest} type="datetime" />;
     case "aql":
-      return <EditInPlaceQuerySelect ref={ref} {...rest} />;
+      return <EditInPlaceQuerySelect ref={ref} {...rest as any} />;
     case "headerText":
       return <HeaderTextField ref={ref} {...rest} />;
     case "code":

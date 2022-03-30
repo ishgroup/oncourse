@@ -269,7 +269,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
               name={`${item}.fieldKey`}
               label="Custom field key"
               fullWidth
-              disabled={field.id}
+              disabled={!!field.id}
               className={classes.field}
               required
             />
@@ -281,7 +281,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
               name={`${item}.dataType`}
               label="Data Type"
               items={DataTypes}
-              disabled={field.id}
+              disabled={!!field.id}
               onChange={onDataTypeChange}
               className={classes.field}
               fullWidth
@@ -296,7 +296,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
               selectLabelCondition={entityTypeCondition}
               label="Record Type"
               items={EntityTypes}
-              disabled={field.id}
+              disabled={!!field.id}
               className={classes.field}
               sort
               fullWidth
@@ -351,7 +351,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
                 type="text"
                 name={`${item}.pattern`}
                 label="Pattern"
-                disabled={field.id}
+                disabled={!!field.id}
                 className={classes.field}
                 validate={validateRegex}
                 required

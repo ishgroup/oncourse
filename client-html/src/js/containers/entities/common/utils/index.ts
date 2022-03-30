@@ -3,8 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Course, EntityRelationType, Module, Qualification, Sale, SaleType } from "@api/model";
-import { Classes } from "../../../../model/entities/CourseClass";
+import {
+ Course, EntityRelationType, Module, Qualification, Sale, SaleType 
+} from "@api/model";
 import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
 
 export const entityForLink = (type: SaleType) => {
@@ -58,7 +59,7 @@ export const formatRelatedSalables = (relatedItems, type?: SaleType) => relatedI
     primaryText: item.name,
     secondaryText: item.code,
     link: entityName === SaleType.Class
-      ? `/${Classes.path}?search=id is ${entityId}`
+      ? `/class?search=id is ${entityId}`
       : `/${entityForLink(entityName)}/${entityId}`,
     active: typeof r.active === "boolean"
       ? r.active
@@ -92,3 +93,16 @@ export const formattedEntityRelationTypes = (types: EntityRelationType[]): Entit
 };
 
 export const salesSort = (a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+
+export const mapRelatedSalables = (s): Sale & { tempId: any } => ({
+  id: s.entityId,
+  tempId: s.entityId,
+  name: s.primaryText,
+  code: s.secondaryText,
+  active: s.active,
+  type: s.entityName,
+  expiryDate: null,
+  entityFromId: s.entityId,
+  entityToId: null,
+  relationId: -1
+});

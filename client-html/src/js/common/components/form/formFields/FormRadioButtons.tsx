@@ -5,7 +5,9 @@
 
 import React from "react";
 import { withStyles } from "@mui/styles";
-import { FormControl, FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import {
+  FormControl, FormControlLabel, Radio, RadioGroup
+} from "@mui/material";
 import Typography from "@mui/material/Typography";
 
 const styles = theme => ({
@@ -22,7 +24,7 @@ const FormRadioButtons = props => {
     classes,
     items,
     disabled,
-    input: { value, onChange },
+    input: { value, onChange, name },
     labelPath = "label",
     valuePath = "value",
     color = "primary",
@@ -38,13 +40,14 @@ const FormRadioButtons = props => {
               <FormControlLabel
                 key={n}
                 value={i[valuePath]}
-                control={<Radio color={color} />}
+                control={<Radio color={color} id={`input-${n}-${name}`} name={name} />}
                 label={(
                   <Typography component="span" variant="body2">
                     {i[labelPath]}
                   </Typography>
                 )}
                 disabled={disabled}
+                htmlFor={`input-${n}-${name}`}
               />
             ))}
         </RadioGroup>

@@ -1,15 +1,16 @@
+import { Site } from "@api/model";
 import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockSites() {
   this.getSites = () => this.sites;
 
-  this.getSite = id => {
-    const row = this.sites.rows.find(row => row.id == id);
+  this.getSite = (id: any): Site => {
+    const row = this.sites.rows.find(site => Number(site.id) === Number(id));
     return {
-      country: this.countries.find(c => c.id == `20${row.id}`),
+      country: this.countries.find(c => Number(c.id) === Number(`20${row.id}`)),
       createdOn: "2021-02-01T06:09:45.466Z",
       documents: [],
-      drivingDirections: null,
+      drivingDirections: "",
       id: row.id,
       isAdministrationCentre: true,
       isShownOnWeb: row.values[3],
@@ -19,9 +20,8 @@ export function mockSites() {
       longitude: 151.2107548,
       modifiedOn: "2021-02-01T06:09:45.466Z",
       name: row.values[0],
-      notes: [],
       postcode: row.values[2],
-      publicTransportDirections: null,
+      publicTransportDirections: "",
       rooms: [
         {
           createdOn: "2021-02-01T06:09:45.466Z",
@@ -32,15 +32,14 @@ export function mockSites() {
           kioskUrl: `https://ishoncourse.oncourse.cc/room/kiosk/${row.id}`,
           modifiedOn: "2021-02-01T06:09:45.466Z",
           name: `room ${row.id}`,
-          notes: [],
           rules: [],
-          seatedCapacity: `${row.id}`,
+          seatedCapacity: Number(`${row.id}`),
           siteId: row.id,
           tags: []
         }
       ],
       rules: [],
-      specialInstructions: null,
+      specialInstructions: "",
       state: "",
       street: `street ${row.id}`,
       suburb: row.values[1],

@@ -6,6 +6,7 @@ package ish.oncourse.server.scripting
 import groovy.transform.CompileStatic
 import ish.TestWithDatabase
 import ish.DatabaseSetup
+import ish.common.types.AutomationStatus
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.services.ISchedulerService
@@ -42,7 +43,7 @@ class GroovyScriptServiceTest extends TestWithDatabase {
         GroovyScriptService scriptService = injector.getInstance(GroovyScriptService.class)
 
         Script script = cayenneContext.newObject(Script.class)
-        script.setEnabled(true)
+        script.setAutomationStatus(AutomationStatus.ENABLED)
         script.setScript("logger.error('script test') \n test()\n " +
                 "void test() {logger.error('script method test')}")
         ScriptResult result = scriptService.runScript(script, ScriptParameters.empty(), cayenneService.getNewContext())
@@ -55,7 +56,7 @@ class GroovyScriptServiceTest extends TestWithDatabase {
         GroovyScriptService scriptService = injector.getInstance(GroovyScriptService.class)
 
         Script script = cayenneContext.newObject(Script.class)
-        script.setEnabled(true)
+        script.setAutomationStatus(AutomationStatus.ENABLED)
         script.setScript("return args.context != null")
 
         ScriptResult result = scriptService.runScript(script, ScriptParameters.empty(), cayenneService.getNewContext())
@@ -70,7 +71,7 @@ class GroovyScriptServiceTest extends TestWithDatabase {
         GroovyScriptService scriptService = injector.getInstance(GroovyScriptService.class)
 
         Script script = cayenneContext.newObject(Script.class)
-        script.setEnabled(true)
+        script.setAutomationStatus(AutomationStatus.ENABLED)
         script.setScript("def run(args) { return context != null")
 
         ScriptResult result = scriptService.runScript(script, ScriptParameters.empty(), cayenneService.getNewContext())
@@ -86,7 +87,7 @@ class GroovyScriptServiceTest extends TestWithDatabase {
         GroovyScriptService scriptService = injector.getInstance(GroovyScriptService.class)
 
         Script script = cayenneContext.newObject(Script.class)
-        script.setEnabled(true)
+        script.setAutomationStatus(AutomationStatus.ENABLED)
         script.setScript("return args.test")
 
         ScriptResult result = scriptService

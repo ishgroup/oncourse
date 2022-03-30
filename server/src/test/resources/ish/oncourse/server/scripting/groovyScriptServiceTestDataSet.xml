@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-  <Script id="1" triggerType="1" name="script1" enabled="1" schedule="0 * * * * ?"
+  <Script id="1" triggerType="1" name="script1" enabled="2" schedule="0 * * * * ?"
           script="def run(arguments, context) { return context != null }"
           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Script id="2" triggerType="1" name="script2" enabled="0" schedule="0 0 * * * ?"
           script="def run(arguments, context) { return context != null }"
           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Script id="3" triggerType="2" name="script3" enabled="1" entityEventType="2" entityClass="Contact"
+  <Script id="3" triggerType="2" name="script3" enabled="2" entityEventType="2" entityClass="Contact"
           script="def run(arguments, context) { return context != null }"
           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Script id="4" triggerType="2" name="script4" enabled="1" entityEventType="1" entityClass="Course"
+  <Script id="4" triggerType="2" name="script4" enabled="2" entityEventType="1" entityClass="Course"
           script="def run(arguments, context) { return context != null }"
           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Script id="5" triggerType="2" name="script5" enabled="0" entityEventType="2" entityClass="Contact"
