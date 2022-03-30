@@ -50,7 +50,6 @@ import { getActiveFundingContracts } from "../../avetmiss-export/actions";
 import { State } from "../../../reducers/state";
 import { openInternalLink } from "../../../common/utils/links";
 import { checkPermissions } from "../../../common/actions";
-import { Classes } from "../../../model/entities/CourseClass";
 import { getGradingTypes } from "../../preferences/actions";
 
 const nameCondition = (val: Enrolment) => defaultContactName(val.studentName);
@@ -147,7 +146,7 @@ const filterGroups: FilterGroup[] = [
 
 const findRelatedGroup: any = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Enrolment and entityId" },
-  { title: "Classes", list: Classes.path, expression: "enrolments.id" },
+  { title: "Classes", list: "class", expression: "enrolments.id" },
   {
     title: "Documents",
     list: "document",
