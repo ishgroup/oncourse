@@ -13,10 +13,6 @@ import { change, WrappedFieldMetaProps } from "redux-form";
 import { format as formatDate } from "date-fns";
 import clsx from "clsx";
 import { DatePicker, TimePicker as Time } from "@mui/lab";
-import CreateIcon from '@mui/icons-material/Create';
-import ButtonBase from "@mui/material/ButtonBase";
-import ListItemText from "@mui/material/ListItemText";
-import Typography from "@mui/material/Typography";
 import { InputProps } from "@mui/material/Input";
 import { CodeCompletionCore } from "antlr4-c3";
 import { ANTLRInputStream, CommonTokenStream } from "antlr4ts";
@@ -33,7 +29,6 @@ import {
   FILTER_TAGS_REGEX,
   SIMPLE_SEARCH_QUOTES_AND_NO_WHITESPACE_REGEX,
   SIMPLE_SEARCH_QUOTES_REGEX,
-  SIMPLE_SEARCH_REGEX,
   TAGS_REGEX
 } from "../../../../constants/Config";
 import { FieldClasses } from "../../../../model/common/Fields";
@@ -237,7 +232,6 @@ interface State {
   value: object[];
   options: Suggestion[];
   menuIsOpen: boolean;
-  error: boolean;
   pickerOpened: "DATE" | "TIME";
   inputValue: string;
   searchValue: string;
@@ -245,7 +239,7 @@ interface State {
 }
 
 interface Props {
-  onValidateQuery?: (valid: boolean, input?: string) => void;
+  ref?: any;
   setInputNode: HTMLTagArgFunction;
   className: string;
   rootEntity: string;
@@ -256,11 +250,10 @@ interface Props {
   disabled?: boolean;
   disableUnderline?: boolean;
   disableErrorText?: boolean;
-  isValidQuery?: boolean;
   clearOnUnmount?: boolean;
   inline?: boolean;
   hideLabel?: boolean;
-  meta?: WrappedFieldMetaProps;
+  meta?: Partial<WrappedFieldMetaProps>;
   InputProps?: InputProps;
   filterTags?: Suggestion[];
   tags?: Suggestion[];
@@ -284,10 +277,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
 
   private operatorsFilter: string;
 
-  private hasQueryError: boolean;
-
-  private hasFilterTagsError: boolean;
-
   private simpleSearchChecked: boolean;
 
   private autoQuotesAdded: boolean;
@@ -299,7 +288,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
       value: [],
       options: [],
       menuIsOpen: false,
-      error: false,
       pickerOpened: null,
       inputValue: (props.input && props.input.value) || "",
       searchValue: "",
@@ -330,7 +318,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
 
   componentDidUpdate(prev) {
     const {
-     input, rootEntity, inline, meta
+     input, rootEntity
     } = this.props;
 
     if (prev.rootEntity !== rootEntity) {
@@ -356,16 +344,13 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
         inputValue: input.value
       });
     }
-
   }
 
   getAutocomplete = (input, position?) => {
     const { parser } = this.parseInputString(input);
     const {
-     rootEntity, filterTags, tags, customFields, onValidateQuery
+      rootEntity, filterTags, tags, customFields
     } = this.props;
-
-    const { error, inputValue } = this.state;
 
     const core = new CodeCompletionCore(parser);
     core.showRuleStack = true;
@@ -417,16 +402,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
       v => !["AND", "OR", "'+'", "'-'", "'%'", "'*'", "'/'", "','", "Time12", "Time24"].includes(v.token)
     );
 
-    // make all incomplete queries invalid
-    if (inputValue && inputValue.match(/\s/) && !error && hasSuggestionsForIncomplete) {
-      this.setState({
-        error: true
-      });
-      if (onValidateQuery) {
-        onValidateQuery(false, inputValue);
-      }
-    }
-
     if (hasSuggestionsForIncomplete) {
       variants = variants.filter(v => !["AND", "OR"].includes(v.token));
     }
@@ -434,40 +409,11 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     return variants;
   };
 
-  validateFilterTagsNames = input => {
-    const { filterTags, tags } = this.props;
-
-    let error = false;
-
-    const filterTagsMatch = input.match(FILTER_TAGS_REGEX);
-
-    const tagsMatch = input.match(TAGS_REGEX);
-
-    if (filterTagsMatch) {
-      filterTagsMatch.forEach(i => {
-        const parsed = i.replace(/[@,"]/g, "");
-
-        error = !filterTags.find(f => f.value === parsed);
-      });
-    }
-
-    if (tagsMatch) {
-      tagsMatch.forEach(i => {
-        const parsed = i.replace(/[#,"]/g, "");
-
-        error = !tags.find(f => f.value === parsed);
-      });
-    }
-
-    return error;
-  };
-
   parseInputString = val => {
     if (!val) {
       val = "";
     }
     const simpleSearchQuotesMatch = val.match(SIMPLE_SEARCH_QUOTES_REGEX);
-    const simpleSearchMatch = val.match(SIMPLE_SEARCH_REGEX);
     const tagMatch = val.match(TAGS_REGEX);
     const filterMatch = val.match(FILTER_TAGS_REGEX);
 
@@ -481,44 +427,11 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
       input = input.replace(FILTER_TAGS_REGEX, v => `@"${v.replace("@", "")}"`);
     }
 
-    const { error } = this.state;
-    const { onValidateQuery, filterTags, tags } = this.props;
-
     const chars = new ANTLRInputStream(input);
     const lexer = new AqlLexer(chars);
     const tokens = new CommonTokenStream(lexer);
     const parser = new AqlParser(tokens);
     parser.query();
-
-    let parserErrors = simpleSearchMatch || !val ? 0 : parser.numberOfSyntaxErrors;
-
-    if ((filterTags || tags) && (!error || this.hasFilterTagsError) && !parserErrors) {
-      if (this.validateFilterTagsNames(input)) {
-        this.hasFilterTagsError = true;
-
-        parserErrors = 1;
-      } else {
-        this.hasFilterTagsError = false;
-      }
-    }
-
-    if (!error && parserErrors) {
-      this.hasQueryError = true;
-      this.setState({
-        error: true
-      });
-    }
-
-    if (error && !parserErrors) {
-      this.hasQueryError = false;
-      this.setState({
-        error: false
-      });
-    }
-
-    if (onValidateQuery) {
-      onValidateQuery(!parserErrors, input);
-    }
 
     return { tokens, parser } as any;
   };
@@ -573,7 +486,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
   onBlur = () => {
     if (this.state.pickerOpened) return;
 
-    const { inline, input, onBlur } = this.props;
+    const { onBlur } = this.props;
 
     if (onBlur) {
       onBlur();
@@ -582,10 +495,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     this.setState({
       menuIsOpen: false,
     });
-
-    if (!inline) {
-      input.onBlur(this.state.inputValue);
-    }
   };
 
   onFocus = e => {
@@ -696,7 +605,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
   };
 
   handleChange = (e, value, action) => {
-    const { inline, input, onValidateQuery } = this.props;
+    const { inline, input } = this.props;
 
     if (action === "clear" || action === "remove-option") {
       this.operatorsFilter = "";
@@ -711,10 +620,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
 
       if (!inline) {
         input.onChange("");
-      }
-
-      if (onValidateQuery) {
-        onValidateQuery(true);
       }
 
       return;
@@ -767,28 +672,25 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
         this.setCaret();
         this.updateAutocomplete(inputValue);
         this.performSearch();
+        if (!inline) input.onChange(inputValue);
       }
     );
   };
 
   handleInputChange = e => {
+    const { input, inline } = this.props;
+
     const value = e.target.value;
 
     if (!value && !value.match(/\s/)) {
       this.simpleSearchChecked = false;
     }
 
-    const { onValidateQuery } = this.props;
-
     const {
       tokens: { tokens }
     } = this.parseInputString(value);
 
     if (!value) {
-      if (onValidateQuery) {
-        onValidateQuery(true);
-      }
-
       this.setState(
         {
           inputValue: "",
@@ -804,9 +706,9 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
             },
             this.performSearch
           );
+          if (!inline) input.onChange("");
         }
       );
-
       return;
     }
 
@@ -821,6 +723,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
         this.setMenuPosition(this.inputNode.selectionStart);
         this.updateAutocomplete(value);
         this.performSearch();
+        if (!inline) input.onChange(value);
       }
     );
   };
@@ -1120,7 +1023,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
       value: [],
       options: this.getAutocomplete("", 0),
       menuIsOpen: false,
-      error: false,
       pickerOpened: null,
       inputValue: "",
       searchValue: "",
@@ -1131,7 +1033,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
   performSearch = () => {
     const { performSearch } = this.props;
 
-    if (performSearch && !this.hasQueryError) {
+    if (performSearch) {
       performSearch();
     }
   };
@@ -1177,22 +1079,18 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
       input,
       meta,
       label,
-      hideLabel,
-      editableComponent,
       disabled,
       className,
       inline,
       placeholder,
-      labelAdornment,
       endAdornment,
       disableUnderline,
       disableErrorText,
       fieldClasses = {},
-      isValidQuery
     } = this.props;
 
     const {
-     error, menuIsOpen, options, value, inputValue, pickerOpened
+      menuIsOpen, options, value, inputValue, pickerOpened
     } = this.state;
 
     const filteredOptions = options.filter(this.filterOptions);
@@ -1245,6 +1143,9 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
                 {...params}
                 variant="standard"
                 onKeyDown={this.onKeyDown}
+                InputLabelProps={{
+                  shrink: true
+                }}
                 InputProps={{
                   ...params.InputProps,
                   disableUnderline,
@@ -1259,10 +1160,10 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
                   ...params.inputProps,
                   value: inputValue
                 }}
-                error={!isValidQuery && ((meta && meta.invalid) || error)}
+                error={meta?.invalid}
                 helperText={(
                   <span className="shakingError">
-                    {!disableErrorText && !isValidQuery && (meta && meta.invalid ? meta.error : error ? "Expression is invalid" : "")}
+                    {!disableErrorText && (meta?.invalid ? meta.error || "Expression is invalid" : "")}
                   </span>
                 )}
                 onChange={this.handleInputChange}
@@ -1286,4 +1187,4 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
 
 export default withStyles(theme => ({ ...selectStyles(theme), ...queryStyles(theme) }))(
   EditInPlaceQuerySelect
-) as any;
+) as React.FC<Props>;

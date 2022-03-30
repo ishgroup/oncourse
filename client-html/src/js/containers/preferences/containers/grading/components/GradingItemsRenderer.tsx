@@ -99,7 +99,7 @@ const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & Props
             {
               fields.map((f, index) => (
                 <li key={index} className={hoverClasses.container}>
-                  <Typography variant="body2" color="inherit" noWrap>
+                  <Typography variant="body2" color="inherit" noWrap component="div">
                     <FormField
                       type="text"
                       name={`${f}.name`}
@@ -114,7 +114,6 @@ const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & Props
                       name={`${f}.lowerBound`}
                       formatting="inline"
                       validate={validateMinMax}
-                      hideArrows
                       required
                     />
                     {parent.entryType === "choice list" && "%"}

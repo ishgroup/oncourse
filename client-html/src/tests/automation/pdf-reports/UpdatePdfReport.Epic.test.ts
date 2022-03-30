@@ -13,7 +13,7 @@ describe("Update pdf report epic tests", () => {
       id: 1,
       name: "name 1",
       keyCode: "keyCode 1",
-      enabled: false
+      status: "Installed but Disabled",
     }),
     epic: EpicUpdatePdfReport,
     processData: () => [

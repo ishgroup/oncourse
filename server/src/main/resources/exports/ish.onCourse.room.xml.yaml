@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.room.xml
-entityClass: Room
-body: ish.onCourse.room.xml.groovy
-name: Room XML export
-outputType: xml

@@ -96,7 +96,8 @@ const findRelatedGroup: any[] = [
     title: "Invoices",
     list: "invoice",
     expression: "(invoiceLines.productItems.status  ==  ACTIVE) and invoiceLines.productItems.product.id"
-  }
+  },
+  { title: "Sales", list: "sale", expression: "type is ARTICLE AND product.id" },
 ];
 
 const manualLink = getManualLink("product");

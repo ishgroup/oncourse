@@ -62,7 +62,7 @@ class VoucherProduct extends _VoucherProduct implements AttachableTrait, Notable
 		if (!underpaymentAccount) {
 			result.addFailure(ValidationFailure.validationFailure(this, UNDERPAYMENT_ACCOUNT.getName(), "Underpayment account required."))
 		}
-		
+
 		if (StringUtils.trimToNull(getName()) == null) {
 			result.addFailure(ValidationFailure.validationFailure(this, NAME.getName(), "Name cannot be empty."))
 		}
@@ -82,8 +82,7 @@ class VoucherProduct extends _VoucherProduct implements AttachableTrait, Notable
 	 *
 	 * @return the maximum number of enrolments which can be redeemed with this voucher
 	 */
-	@API
-	@Override
+	@API @Override
 	Integer getMaxCoursesRedemption() {
 		return super.getMaxCoursesRedemption()
 	}
@@ -105,7 +104,7 @@ class VoucherProduct extends _VoucherProduct implements AttachableTrait, Notable
 	}
 
 	/**
-	 * VoucherProducts are a liability when created. This method can return the account of the general ledger these liabilities are created in
+	 * Vouchers are a liability when created. This method can return the account of the general ledger these liabilities are created in
 	 * @return the account joined to this voucher product
 	 */
 	@Nonnull
@@ -116,16 +115,24 @@ class VoucherProduct extends _VoucherProduct implements AttachableTrait, Notable
 	}
 
 	/**
+	 * Vouchers which are redeemed for a value different to their sale price need to put the underpayment into an appropriate expense account.
+	 * @return the account joined to this voucher product
+	 */
+	@Override @API
+	Account getUnderpaymentAccount() {
+		return super.getUnderpaymentAccount()
+	}
+
+	/**
 	 * If getMaxCoursesRedemption() is not null, then this function will return a list of courses which can be redeemed
 	 * using this voucher. If getMaxCoursesRedemption() is not null and this list is empty, then the voucher
 	 * can be used against any enrollable class.
 	 *
 	 * @return a list of courses into which the student can enrol
 	 */
-	@Nonnull
-	@Override
-	List<VoucherProductCourse> getVoucherProductCourses() {
-		return super.getVoucherProductCourses()
+	@Nonnull @API
+	List<Course> getCourses() {
+		return super.voucherProductCourses*.course.flatten() as List<Course>
 	}
 
 	@Override

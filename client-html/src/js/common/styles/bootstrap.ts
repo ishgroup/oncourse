@@ -26,6 +26,9 @@ export const bootstrap = (theme: AppTheme) => ({
   ".fs2": {
     fontSize: theme.spacing(2)
   },
+  ".fs3": {
+    fontSize: theme.spacing(3)
+  },
   ".fs4": {
     fontSize: theme.spacing(4)
   },
@@ -158,14 +161,32 @@ export const bootstrap = (theme: AppTheme) => ({
   ".m-3": {
     margin: theme.spacing(3)
   },
+  ".mt-5": {
+    marginTop: theme.spacing(5)
+  },
+  ".mt-4": {
+    marginTop: theme.spacing(4)
+  },
   ".mt-3": {
     marginTop: theme.spacing(3)
   },
   ".ml-3": {
     marginLeft: theme.spacing(3)
   },
+  ".mr-5": {
+    marginRight: theme.spacing(5)
+  },
+  ".mr-4": {
+    marginRight: theme.spacing(4)
+  },
   ".mr-3": {
     marginRight: theme.spacing(3)
+  },
+  ".mb-5": {
+    marginBottom: theme.spacing(5)
+  },
+  ".mb-4": {
+    marginBottom: theme.spacing(4)
   },
   ".mb-3": {
     marginBottom: theme.spacing(3)
@@ -341,7 +362,7 @@ export const bootstrap = (theme: AppTheme) => ({
     outline: "none"
   },
   ".disabled": {
-    opacity: 0.6,
+    opacity: theme.palette.action.disabledOpacity,
     pointerEvents: "none"
   },
   ".text-op065": {
@@ -402,6 +423,9 @@ export const bootstrap = (theme: AppTheme) => ({
   ".mw-100": {
     maxWidth: "100%"
   },
+  ".w-50": {
+    width: "50%"
+  },
   ".mw-800": {
     maxWidth: theme.spacing(100)
   },
@@ -457,5 +481,8 @@ export const bootstrap = (theme: AppTheme) => ({
   },
   ".lh-1": {
     lineHeight: 1,
+  },
+  ".text-decoration-underline": {
+    textDecoration: "underline",
   },
 });

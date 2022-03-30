@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.api.v1.function
 
+import ish.common.types.DataType
 import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.CustomField
 import ish.oncourse.server.cayenne.CustomFieldType
@@ -30,7 +31,7 @@ class CustomFieldFunctions {
         context.deleteObjects(dbCustomFields.findAll { !customFieldsToSave.contains(it.customFieldType.key) })
         customFields.each { k, v ->
             CustomField cf = dbCustomFields.find { it.customFieldType.key == k }
-            
+
             if (cf) {
                 cf.value = trimToNull(v)
             } else if (v) {
@@ -41,6 +42,39 @@ class CustomFieldFunctions {
             }
         }
         dbObject.modifiedOn = new Date()
+    }
+
+    static void addCustomFieldWithoutCommit(String key, String value, ExpandableTrait entity, ObjectContext context) {
+        CustomField cf = entity.customFields.find { it.customFieldType.key == key }
+
+        if (cf) {
+            cf.value = trimToNull(value)
+        } else if (value) {
+            cf = context.newObject(entity.getCustomFieldClass())
+            cf.relatedObject = entity
+            cf.customFieldType = getOrCreateCustomFieldType(context, entity, key)
+            cf.value = trimToNull(value)
+        }
+    }
+
+    static CustomFieldType getOrCreateCustomFieldType(ObjectContext objectContext, ExpandableTrait entity, String customFieldKey) {
+        CustomFieldType cft = getCustomFieldType(objectContext, entity.class.simpleName, customFieldKey)
+        if (cft) {
+            return cft
+        } else {
+            return createCustomFieldType(objectContext, entity, customFieldKey)
+        }
+    }
+
+    static CustomFieldType createCustomFieldType(ObjectContext objectContext, ExpandableTrait entity, String customFieldKey) {
+        CustomFieldType cft = objectContext.newObject(CustomFieldType)
+        cft.entityIdentifier = entity.class.simpleName
+        cft.name = customFieldKey
+        cft.key = customFieldKey
+        cft.isMandatory = false
+        cft.dataType = DataType.TEXT
+        cft.sortOrder = ObjectSelect.query(CustomFieldType).selectCount(objectContext)
+        return cft
     }
 
     static List<CustomFieldType> getCustomFieldTypes(ObjectContext objectContext, String entityName) {

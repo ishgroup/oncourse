@@ -56,7 +56,7 @@ const filterGroups: FilterGroup[] = [
 
 const findRelatedGroup: any = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Message and entityId" },
-  { title: "Contacts", list: "contact", expression: "messages.message.id" }
+  { title: "Contacts", list: "contact", expression: "messages.id" }
 ];
 
 const primaryColumnCondition = row => row["recipientsString"] || "No recipients";

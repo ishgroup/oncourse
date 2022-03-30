@@ -71,16 +71,27 @@ const isDateLocked = (lockedDate: any, settlementDate: any) => {
   }
   return (
     compareAsc(
-      addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1),
+      addDays(new Date(lockedDate.lockedDate), 1),
       new Date(settlementDate)
     ) > 0
   );
 };
 
+const validateSettlementDateBanked = (settlementDate, allValues) => {
+  if (!settlementDate) {
+    return undefined;
+  }
+  if (compareAsc(new Date(settlementDate), new Date(allValues.datePayed)) < 0) {
+    return `Date banked must be after or equal to date paid`;
+  }
+
+  return undefined;
+};
+
 const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
   const {
- twoColumn, values, lockedDate, initialValues, adminSites
-} = props;
+   twoColumn, values, lockedDate, initialValues, adminSites
+  } = props;
 
   const validateSettlementDate = useCallback(
     settlementDate => {
@@ -90,7 +101,7 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
       if (!initialValues || initialValues.dateBanked === settlementDate) {
         return undefined;
       }
-      const date = new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth);
+      const date = new Date(lockedDate.lockedDate);
       return compareAsc(addDays(date, 1), new Date(settlementDate)) > 0
         ? `Date must be after ${formatDate(date, D_MMM_YYYY)}`
         : undefined;
@@ -122,7 +133,7 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
           selectLabelCondition={getAdminCenterLabel}
           items={adminSites || []}
           labelAdornment={<LinkAdornment link={values && values.administrationCenterId} linkHandler={openSiteLink} />}
-          disabled={initialValues.dateBanked}
+          disabled={!!initialValues.dateBanked}
         />
       </Grid>
       <Grid item {...gridItemProps}>
@@ -191,10 +202,10 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
               type="date"
               name="dateBanked"
               label="Date banked"
-              validate={validateSettlementDate}
+              validate={[validateSettlementDate, validateSettlementDateBanked]}
               minDate={
                 lockedDate
-                  ? addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1)
+                  ? addDays(new Date(lockedDate.lockedDate), 1)
                   : undefined
               }
             />

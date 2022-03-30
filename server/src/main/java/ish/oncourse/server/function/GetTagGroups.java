@@ -55,7 +55,7 @@ public class GetTagGroups implements GetTagGroupsInterface {
 
     private List<Tag> get(List<TaggableClasses> taggableClasses) {
         return ObjectSelect.query(Tag.class)
-                .where(Tag.IS_VOCABULARY.isTrue())
+                .where(Tag.PARENT_TAG.isNull())
                 .and(Tag.TAG_REQUIREMENTS.dot(TagRequirement.ENTITY_IDENTIFIER).in(taggableClasses))
                 .prefetch(Tag.CHILD_TAGS.joint())
                 .prefetch(Tag.CHILD_TAGS.dot(Tag.CHILD_TAGS).joint())

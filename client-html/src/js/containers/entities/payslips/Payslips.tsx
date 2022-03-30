@@ -26,6 +26,7 @@ import { State } from "../../../reducers/state";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import SendMessageEditView from "../messages/components/SendMessageEditView";
+import { FilterGroup } from "../../../model/common/ListView";
 
 const Initial: Payslip = {
   status: "New",
@@ -36,6 +37,34 @@ const Initial: Payslip = {
   tags: [],
   paylines: []
 };
+
+const filterGroups: FilterGroup[] = [
+  {
+    title: "STATUS",
+    filters: [
+      {
+        name: "New",
+        expression: "status is HOLLOW",
+        active: false
+      },
+      {
+        name: "Completed",
+        expression: "status is COMPLETED",
+        active: false
+      },
+      {
+        name: "Approved",
+        expression: "status is APPROVED",
+        active: false
+      },
+      {
+        name: "Paid/Exported",
+        expression: "status is FINALISED",
+        active: false
+      }
+    ]
+  },
+];
 
 const findRelatedGroup: any[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Payslip and entityId" },
@@ -108,6 +137,7 @@ class Payslips extends React.Component<any, any> {
           onCreate={this.onCreate}
           nestedEditFields={nestedEditFields}
           findRelated={findRelatedGroup}
+          filterGroupsInitial={filterGroups}
           CogwheelAdornment={PayslipCogwheelOptions}
         />
       </div>

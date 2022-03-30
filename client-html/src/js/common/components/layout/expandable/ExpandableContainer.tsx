@@ -6,6 +6,7 @@
 import React, {
  useCallback, useRef, useMemo
 } from "react";
+import { darken } from '@mui/material/styles';
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
@@ -14,6 +15,7 @@ import clsx from "clsx";
 import Divider from "@mui/material/Divider";
 import { AppTheme } from "../../../../model/common/Theme";
 import AddButton from "../../icons/AddButton";
+import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -28,7 +30,15 @@ const styles = (theme: AppTheme) =>
     controls: {
       position: "relative",
       paddingRight: theme.spacing(5)
-    }
+    },
+    header: {
+      cursor: 'pointer',
+      willChange: "color",
+      "&:hover": {
+        color: darken(theme.heading.color as any, 0.4),
+      }
+    },
+    expanded: {}
   });
 
 interface Props {
@@ -42,6 +52,7 @@ interface Props {
   onAdd?: any;
   classes?: any;
   mountAll?: boolean;
+  noDivider?: boolean;
 }
 
 const ExpandableContainer: React.FC<Props> = ({
@@ -55,6 +66,7 @@ const ExpandableContainer: React.FC<Props> = ({
   setExpanded,
   index,
   mountAll,
+  noDivider
 }) => {
   const headerRef = useRef<any>();
 
@@ -83,19 +95,27 @@ const ExpandableContainer: React.FC<Props> = ({
     [isExpanded, expanded, index]
   );
 
+  const iconButtonProps = IS_JEST ? {
+    'data-testid': `expand-button-${index}`,
+  } : {};
+
   return (
     <>
-      <Divider className={onAdd ? "mb-2" : "mb-3"} />
+      <Divider className={clsx(onAdd ? "mb-2" : "mb-3", noDivider && "invisible")} />
       <div ref={headerRef}>
         <div className={clsx("centeredFlex", onAdd ? "mb-2" : "mb-3", classes.controls)}>
           <div className="centeredFlex">
-            <div className="heading">{header}</div>
+            <div className={clsx("heading", classes.header, isExpanded && classes.expanded)} onClick={toggleExpand}>{header}</div>
             {onAdd && (
               <AddButton onClick={onAdd} />
             )}
           </div>
           {headerAdornment}
-          <IconButton onClick={toggleExpand} className={clsx(classes.expandButton, isExpanded && classes.expandButtonExpanded)}>
+          <IconButton
+            onClick={toggleExpand}
+            className={clsx(classes.expandButton, isExpanded && classes.expandButtonExpanded)}
+            {...iconButtonProps}
+          >
             <ExpandMore />
           </IconButton>
         </div>

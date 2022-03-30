@@ -69,7 +69,7 @@ const isDateLocked = (lockedDate: any, settlementDate: any) => {
   }
   return (
     compareAsc(
-      addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1),
+      addDays(new Date(lockedDate.lockedDate), 1),
       new Date(settlementDate)
     ) > 0
   );
@@ -87,7 +87,7 @@ const isDatePayedLocked = (lockedDate: any, datePayed: any, settlementDate: any)
   }
   return (
     compareAsc(
-      addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1),
+      addDays(new Date(lockedDate.lockedDate), 1),
       new Date(datePayed)
     ) > 0
   );
@@ -125,7 +125,7 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
   const validateLockedDate = useCallback(
     settlementDate => {
       if (!lockedDate || !settlementDate ) return undefined;
-      const lockedDateValue = new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth);
+      const lockedDateValue = new Date(lockedDate.lockedDate);
       return compareAsc(lockedDateValue, new Date(settlementDate)) === 1
         ? `You must choose date after "Transaction locked" date (${format(lockedDateValue, D_MMM_YYYY)})`
         : undefined;
@@ -175,7 +175,7 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
           selectLabelCondition={getAdminCenterLabel}
           items={adminSites || []}
           labelAdornment={<LinkAdornment link={values && values.administrationCenterId} linkHandler={openSiteLink} />}
-          disabled={initialValues.dateBanked}
+          disabled={!!initialValues.dateBanked}
         />
       </Grid>
       <Grid item {...gridItemProps}>
@@ -211,7 +211,7 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
               validate={[validateSettlementDatePayed, validateLockedDate]}
               minDate={
                 lockedDate
-                  ? addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1)
+                  ? addDays(new Date(lockedDate.lockedDate), 1)
                   : undefined
               }
             />
@@ -228,7 +228,7 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
               validate={[validateSettlementDateBanked, validateLockedDate]}
               minDate={
               lockedDate
-                ? addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1)
+                ? addDays(new Date(lockedDate.lockedDate), 1)
                 : undefined
             }
             />

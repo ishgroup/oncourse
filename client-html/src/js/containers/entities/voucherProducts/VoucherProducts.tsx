@@ -77,7 +77,7 @@ const filterGroups: FilterGroup[] = [
         name: "Inactive",
         expression: "isOnSale == false",
         active: false
-      }
+      },
     ]
   }
 ];
@@ -86,7 +86,8 @@ const findRelatedGroup: any[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == VoucherProduct and entityId" },
   { title: "Contacts purchased", list: "contact", expression: "invoices.invoiceLines.productItems.product.id" },
   { title: "Courses", list: "course", expression: "voucherProductCourses.voucherProduct.id" },
-  { title: "Vouchers", list: "sale", expression: "product.id" }
+  { title: "Sales", list: "sale", expression: "type is VOUCHER AND product.id" },
+  { title: "Vouchers", list: "sale", expression: "product.id" },
 ];
 
 const preformatBeforeSubmit = (value: VoucherProduct): VoucherProduct => {
@@ -145,32 +146,30 @@ const VoucherProducts: React.FC<VoucherProductsProps> = props => {
   }, []);
 
   return (
-    <div>
-      <ListView
-        listProps={{
+    <ListView
+      listProps={{
           primaryColumn: "name",
           secondaryColumn: "sku"
         }}
-        editViewProps={{
+      editViewProps={{
           manualLink,
           asyncValidate: notesAsyncValidate,
           asyncBlurFields: ["notes[].message"],
           hideTitle: true
         }}
-        EditViewContent={VoucherProductEditView}
-        CogwheelAdornment={BulkEditCogwheelOption}
-        getEditRecord={getVoucherProductRecord}
-        rootEntity="VoucherProduct"
-        onInit={onInitCustom}
-        onCreate={onCreate}
-        onSave={onSave}
-        findRelated={findRelatedGroup}
-        filterGroupsInitial={filterGroups}
-        preformatBeforeSubmit={preformatBeforeSubmit}
-        defaultDeleteDisabled
-        noListTags
-      />
-    </div>
+      EditViewContent={VoucherProductEditView}
+      CogwheelAdornment={BulkEditCogwheelOption}
+      getEditRecord={getVoucherProductRecord}
+      rootEntity="VoucherProduct"
+      onInit={onInitCustom}
+      onCreate={onCreate}
+      onSave={onSave}
+      findRelated={findRelatedGroup}
+      filterGroupsInitial={filterGroups}
+      preformatBeforeSubmit={preformatBeforeSubmit}
+      defaultDeleteDisabled
+      noListTags
+    />
   );
 };
 

@@ -27,9 +27,6 @@ import { setUserPreference } from "../../actions";
 import { setReadNewsLocal } from "../list-view/actions";
 
 const styles = (theme: AppTheme) => createStyles({
-  postsWrapper: {
-    padding: theme.spacing(3),
-  },
   postWrapper: {
     background: theme.palette.background.paper,
     position: "relative",
@@ -170,7 +167,7 @@ const NewsItemRender = props => {
 
 const NewsRender = props => {
   const {
-    blogPosts, classes, page, preferences, setReadNews, fullScreenEditView, setReadNewsLocal, newsOffset
+    blogPosts, classes, page, preferences, setReadNews, fullScreenEditView, setReadNewsLocal, showPlaceholder, newsOffset, className
   } = props;
 
   const lastLoginOn = localStorage.getItem("lastLoginOn");
@@ -188,7 +185,7 @@ const NewsRender = props => {
   }, [blogPosts, page, preferences]);
 
   return postsForRender.length ? (
-    <Box className={classes.postsWrapper} sx={{ marginTop: newsOffset }}>
+    <Box className={className} sx={{ marginTop: newsOffset }}>
       {postsForRender.map(post => (
         <NewsItemRender
           key={post.id}
@@ -201,6 +198,12 @@ const NewsRender = props => {
         />
       ))}
     </Box>
+  ) : showPlaceholder ? (
+    <div className="noRecordsMessage">
+      <Typography variant="h6" color="inherit" align="center">
+        No unread news
+      </Typography>
+    </div>
   ) : null;
 };
 
