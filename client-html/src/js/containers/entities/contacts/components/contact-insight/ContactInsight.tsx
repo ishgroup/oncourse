@@ -514,10 +514,26 @@ const ContactInsight = (
         >
           <div className="mt-3 pt-1">
             <Stack spacing={1} direction="row" className="mt-4 mb-2">
-              <Chip label="Create lead" className="fontWeight600" onClick={() => {}} />
-              <Chip label="Create application" className="fontWeight600" onClick={() => {}} />
-              <Chip label="Receive payment" className="fontWeight600" onClick={() => {}} />
-              <Chip label="Create sale" className="fontWeight600" onClick={() => {}} />
+              <Chip
+                label="Create lead"
+                className="fontWeight600"
+                onClick={() => openInternalLink(`/lead/new?contactId=${id}&contactName=${data.fullName}`)}
+              />
+              <Chip
+                label="Create application"
+                className="fontWeight600"
+                onClick={() => openInternalLink(`/application/new?contactId=${id}&contactName=${data.fullName}`)}
+              />
+              <Chip
+                label="Receive payment"
+                className="fontWeight600"
+                onClick={() => openInternalLink(`/checkout?contactId=${id}`)}
+              />
+              <Chip
+                label="Create sale"
+                className="fontWeight600"
+                onClick={() => openInternalLink(`/checkout?contactId=${id}`)}
+              />
             </Stack>
             <Divider className="mt-4 mb-4" />
             <Grid container columnSpacing={3} rowSpacing={2}>
