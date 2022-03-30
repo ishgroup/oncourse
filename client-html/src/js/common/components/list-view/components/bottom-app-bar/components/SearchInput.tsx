@@ -283,13 +283,6 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
     );
   };
 
-  onValidateQuery = isValidQuery => {
-    this.setState({
-      isValidQuery,
-      hasQueryValue: Boolean(this.inputNode.value)
-    });
-  };
-
   getAqlExpression = (value: string, setUsersSearch?: boolean) => {
     const {
       filterGroups, tags, setListUserAQLSearch
@@ -521,7 +514,6 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
                 tags={tagsSuggestions || []}
                 filterTags={filtersSuggestions || []}
                 customFields={customFieldsSuggestions || []}
-                onValidateQuery={this.onValidateQuery}
                 setInputNode={this.setInputNode}
                 rootEntity={rootEntity}
                 className="flex-fill"

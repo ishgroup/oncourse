@@ -4,7 +4,7 @@
  */
 
 import {
- StatisticData, CategoryItem, SearchGroup, Script
+ StatisticData, SearchGroup
 } from "@api/model";
 
 export interface DashboardState {
@@ -16,9 +16,11 @@ export interface DashboardState {
     updating: boolean;
     results: SearchGroup[];
   };
-  categories: CategoryItem[];
-  scripts: Script[];
-  favoriteScripts: number[];
+  scripts: {
+    name: string;
+    description: string;
+    id: number;
+  }[];
   upgradePlanLink?: string;
   userSearch?: string;
   blogPosts?: any;

@@ -13,3 +13,10 @@ export interface LatestActivityState {
   started?: string;
   data?: LatestActivityDataGroup[];
 }
+
+export interface DashboardItem {
+  url?: string;
+  category?: string;
+  name?: string;
+  id?: number;
+}
