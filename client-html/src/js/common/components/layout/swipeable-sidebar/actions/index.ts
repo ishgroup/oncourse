@@ -6,7 +6,10 @@
 import { VARIANTS } from "../utils";
 
 export const TOGGLE_SWIPEABLE_DRAWER = "common/swipeableDrawer/toggle";
+
 export const SET_SWIPEABLE_DRAWER_DIRTY_FORM = "common/set/swipeableDrawer/dirty/form";
+
+export const SET_SWIPEABLE_DRAWER_SELECTION = "common/set/swipeableDrawer/selection";
 
 export const toggleSwipeableDrawer = (variant = VARIANTS.temporary) => ({
   type: TOGGLE_SWIPEABLE_DRAWER,
@@ -16,4 +19,9 @@ export const toggleSwipeableDrawer = (variant = VARIANTS.temporary) => ({
 export const setSwipeableDrawerDirtyForm = (isDirty?: boolean, resetEditView?: any) => ({
   type: SET_SWIPEABLE_DRAWER_DIRTY_FORM,
   payload: { isDirty, resetEditView }
+});
+
+export const setSwipeableDrawerSelection = (selected: number | string) => ({
+  type: SET_SWIPEABLE_DRAWER_SELECTION,
+  payload: { selected }
 });

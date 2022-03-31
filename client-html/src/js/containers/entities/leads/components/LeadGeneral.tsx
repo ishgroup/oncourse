@@ -16,15 +16,16 @@ import {
 } from "@api/model";
 import Chip from "@mui/material/Chip";
 import clsx from "clsx";
-import { IconButton } from "@mui/material";
-import Launch from "@mui/icons-material/Launch";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import {
- contactLabelCondition, defaultContactName, getContactName, openContactLink 
+  ContactLinkAdornment,
+  HeaderContactTitle
+} from "../../../../common/components/form/FieldAdornments";
+import {
+ contactLabelCondition, defaultContactName, getContactName
 } from "../../contacts/utils";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
@@ -170,12 +171,7 @@ const LeadGeneral = (props: Props) => {
           disableInteraction={!isNew}
           twoColumn={twoColumn}
           title={(
-            <div className="d-inline-flex-center">
-              {values && defaultContactName(values.contactName)}
-              <IconButton disabled={!values?.contactId} size="small" color="primary" onClick={() => openContactLink(values?.contactId)}>
-                <Launch fontSize="inherit" />
-              </IconButton>
-            </div>
+            <HeaderContactTitle name={values?.contactName} id={values?.contactId} />
           )}
           fields={(
             <Grid item xs={twoColumn ? 6 : 12}>
@@ -190,7 +186,9 @@ const LeadGeneral = (props: Props) => {
                 onInnerValueChange={onContactChange}
                 itemRenderer={ContactSelectItemRenderer}
                 disabled={!isNew}
-                labelAdornment={<LinkAdornment link={values.contactId} linkHandler={openContactLink} />}
+                labelAdornment={
+                  <ContactLinkAdornment id={values?.contactId} />
+                }
                 rowHeight={55}
                 required
               />
