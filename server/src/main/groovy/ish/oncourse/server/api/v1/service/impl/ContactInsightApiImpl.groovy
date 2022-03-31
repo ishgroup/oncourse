@@ -15,14 +15,17 @@ import ish.math.Money
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.v1.model.ContactInsightDTO
+import ish.oncourse.server.api.v1.model.ContactInteractionDTO
 import ish.oncourse.server.api.v1.model.ContactOverviewDTO
-import ish.oncourse.server.api.v1.service.ContactInteractionApi
+import ish.oncourse.server.api.v1.service.ContactInsightApi
+import ish.oncourse.server.cayenne.AssessmentSubmission
+import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.InvoiceLine
 import ish.oncourse.server.document.DocumentService
 
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.getProfilePicture
 
-class ContactInteractionApiImpl implements ContactInteractionApi{
+class ContactInsightApiImpl implements ContactInsightApi{
     @Inject
     private ContactDao contactDao
 
@@ -33,7 +36,7 @@ class ContactInteractionApiImpl implements ContactInteractionApi{
     private DocumentService documentService
 
     @Override
-    ContactInsightDTO getInteraction(Long id) {
+    ContactInsightDTO getInsight(Long id) {
         def context = cayenneService.newReadonlyContext
         def contact = contactDao.getById(context, id)
 
@@ -60,8 +63,27 @@ class ContactInteractionApiImpl implements ContactInteractionApi{
         contactInsight.mobilePhone = contact?.mobilePhone
         contactInsight.profilePicture = getProfilePicture(contact, documentService)
 
-        //TODO: intercections initializing
+        contactInsight.interactions = interactionsOf(contact)
         contactInsight.overview(contactOverview)
         contactInsight
+    }
+
+    private static List<ContactInteractionDTO> interactionsOf(Contact contact){
+        def interactions = new ArrayList<ContactInteractionDTO>()
+        interactions.addAll(contact?.student?.enrolments?.collect {it.toInteraction()})
+        interactions.addAll(contact?.student?.applications?.collect {it.toInteraction()})
+        interactions.addAll(contact?.student?.waitingLists?.collect{it.toInteraction()})
+        interactions.addAll(contact?.leads?.collect{it.toInteraction()})
+        interactions.addAll(contact?.paymentsIn?.collect{it.toInteraction()})
+        interactions.addAll(contact?.paymentsOut?.collect{it.toInteraction()})
+        interactions.addAll(contact?.invoices?.collect{it.toInteraction()})
+        interactions.addAll(contact?.quotes?.collect{it.toInteraction()})
+        interactions.addAll((contact?.student?.enrolments*.assessmentSubmissions?.flatten() as List<AssessmentSubmission>)?.collect{it.toInteraction()})
+        interactions.addAll(contact?.student?.certificates?.collect{it.toInteraction()})
+        interactions.addAll(contact?.payslips?.collect{it.toInteraction()})
+        interactions.addAll(contact?.productItems?.collect{it.toInteraction()})
+        interactions.addAll(contact?.noteRelations*.note.collect{it.toInteraction()})
+        interactions.addAll()
+        interactions
     }
 }
