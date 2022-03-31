@@ -1,20 +1,20 @@
 get:
-  operationId: getInteraction
-  description: Return contact interaction info
+  operationId: getInsight
+  description: Return contact insight info
   tags:
-    - ContactInteraction
+    - ContactInsight
   parameters:
     - name: id
       in: path
       type: integer
       format: int64
       required: true
-      description: Unique identifier of contact interaction to fetch
+      description: Unique identifier of contact
   responses:
     '200':
       description: Success response
       schema:
-        $ref: './def/entity/contact/interaction/ContactInsight.yaml'
+        $ref: './def/entity/contact/insight/ContactInsight.yaml'
     '400':
       description: Bad request error.
     default:
