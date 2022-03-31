@@ -47,7 +47,7 @@ import static java.lang.String.format
  */
 @API
 @QueueableEntity
-class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface, Queueable, NotableTrait, ExpandableTrait, AttachableTrait {
+class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface, Queueable, NotableTrait, ExpandableTrait, AttachableTrait, InteractableTrait {
 
 	public static final String IS_VET_PROPERTY = 'vet'
 	static final String DISPLAY_STATUS_PROP = 'displayStatus'
@@ -406,7 +406,11 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 		return super.getCreatedOn()
 	}
 
-	/**
+	@Override
+	String getInteractionName() {
+		return courseClass.course.name
+	}
+/**
 	 * @return
 	 */
 	@API

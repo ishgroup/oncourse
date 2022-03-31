@@ -44,7 +44,7 @@ import java.time.LocalDate
  */
 @API
 @QueueableEntity
-class PaymentOut extends _PaymentOut implements PaymentOutInterface, Queueable {
+class PaymentOut extends _PaymentOut implements PaymentOutInterface, Queueable, InteractableTrait {
 
 	private static final Logger logger = LogManager.getLogger()
 
@@ -370,6 +370,11 @@ class PaymentOut extends _PaymentOut implements PaymentOutInterface, Queueable {
 	@Override
 	Date getCreatedOn() {
 		return super.getCreatedOn()
+	}
+
+	@Override
+	String getInteractionName() {
+		return amount.toPlainString()
 	}
 
 	@Override

@@ -29,7 +29,7 @@ import javax.annotation.Nonnull
  */
 @API
 @QueueableEntity
-class Document extends _Document implements DocumentTrait, Queueable {
+class Document extends _Document implements DocumentTrait, Queueable, InteractableTrait {
 
 
 	public static final String LINK_PROPERTY = "link"
@@ -76,7 +76,11 @@ class Document extends _Document implements DocumentTrait, Queueable {
 		return super.getCreatedOn()
 	}
 
-	/**
+	@Override
+	String getInteractionName() {
+		return name
+	}
+/**
 	 * @return text description of this document
 	 */
 	@API
