@@ -23,6 +23,7 @@ import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton';
 import Collapse from "@mui/material/Collapse";
 import { CircularProgress } from "@mui/material";
 import Close from "@mui/icons-material/Close";
@@ -38,10 +39,13 @@ import EditInPlaceField from "../../../../../common/components/form/formFields/E
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { getPhoneMask } from "../../../../../constants/PhoneMasks";
 import EditInPlaceDateTimeField from "../../../../../common/components/form/formFields/EditInPlaceDateTimeField";
-import { useAppSelector } from "../../../../../common/utils/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../../common/utils/hooks";
 import { getPluralSuffix } from "../../../../../common/utils/strings";
 import { countLines } from "../../../../../common/utils/DOM";
 import HoverLink from "../../../../../common/components/layout/HoverLink";
+import ContactsService from "../../services/ContactsService";
+import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import NotesService from "../../../../../common/components/form/notes/services/NotesService";
 
 const mock: ContactInsight = {
   email: "palaven@tut.by",
@@ -455,16 +459,53 @@ const ContactInsight = (
   const [addNote, setAddNote] = useState<boolean>(false);
   const [showLast, setShowLast] = useState<boolean>(false);
   const [data, setData] = useState<ContactInsight>(null);
-  const [noteValue, setNoteValue] = useState<string>(null);
+  const [noteLoading, setNoteLoading] = useState<boolean>(false);
+  const [noteValue, setNoteValue] = useState<string>("");
   const [dateValue, setDateValue] = useState<string>(null);
   
   const currencySymbol = useAppSelector(state => state.currency.shortCurrencySymbol);
+  
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setTimeout(() => {
       setData(mock);
     }, 1000);
   }, []);
+  
+  const updateInsight = () => {
+    setData(null);
+    ContactsService.getInteraction(id)
+      .then(setData)
+      .catch(res => instantFetchErrorHandler(dispatch, res));
+  };
+
+  // useEffect(() => {
+  //   if (id) {
+  //     updateInsight();
+  //   }
+  //   return () => setData(null);
+  // }, [id]);
+  
+  const sendMessage = () => {
+    const newNote = {
+     message: noteValue, entityName: "Contact", entityId: id, interactionDate: dateValue
+    };
+
+    setNoteLoading(true);
+
+    NotesService
+      .validateCreate("Contact", id, newNote)
+      .then(() => NotesService.create("Contact", id, newNote))
+      .catch(res => instantFetchErrorHandler(dispatch, res))
+      .finally(() => {
+        setNoteLoading(false);
+        setAddNote(false);
+        setNoteValue("");
+        setDateValue(null);
+        // updateInsight();
+      });
+  };
 
   const classes = useStyles();
 
@@ -673,7 +714,9 @@ const ContactInsight = (
                             />
                             <div className="flex-fill" />
                             <div className="d-flex">
-                              <Button
+                              <LoadingButton
+                                loading={noteLoading}
+                                onClick={sendMessage}
                                 type="submit"
                                 variant="contained"
                                 color="primary"
@@ -682,7 +725,7 @@ const ContactInsight = (
                                 disableElevation
                               >
                                 Save
-                              </Button>
+                              </LoadingButton>
                             </div>
                           </Stack>
                         </Box>
