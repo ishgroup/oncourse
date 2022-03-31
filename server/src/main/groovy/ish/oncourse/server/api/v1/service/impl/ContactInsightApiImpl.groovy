@@ -42,11 +42,9 @@ class ContactInsightApiImpl implements ContactInsightApi{
 
 
         def contactOverview = new ContactOverviewDTO()
-        contactOverview.firstSeen = contact.createdOn
-        contactOverview.owing = (contact.student?.enrolments*.invoiceLines.flatten() as List<InvoiceLine>)
-                .collect {it.invoice.amountOwing}.sum() as Money
-        contactOverview.spent = (contact.student?.enrolments*.invoiceLines.flatten() as List<InvoiceLine>)
-                .collect {it.invoice.amountPaid}.sum() as Money
+        contactOverview.firstSeen = contact.createdOn.toLocalDate()
+        contactOverview.owing = contact.student?.invoices*.amountOwing.sum() as Money ?: Money.ZERO
+        contactOverview.spent = contact.student?.invoices*.amountPaid.sum() as Money ?: Money.ZERO
         contactOverview.enrolments(contact.student?.enrolments?.collect {it.id})
         contactOverview.openApplications(contact?.student?.applications?.findAll {it.status != ApplicationStatus.REJECTED && it.status != ApplicationStatus.WITHDRAWN}?.collect {it.id})
         contactOverview.closeApplications(contact?.student?.applications?.findAll {it.status == ApplicationStatus.REJECTED || it.status == ApplicationStatus.WITHDRAWN}?.collect {it.id})
