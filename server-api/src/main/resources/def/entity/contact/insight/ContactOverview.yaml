@@ -2,6 +2,7 @@ type: object
 properties:
   firstSeen:
     type: string
+    format: date
     required: true
   spent:
     type: number
