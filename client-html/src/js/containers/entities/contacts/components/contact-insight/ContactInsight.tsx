@@ -46,6 +46,8 @@ import HoverLink from "../../../../../common/components/layout/HoverLink";
 import ContactsService from "../../services/ContactsService";
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import NotesService from "../../../../../common/components/form/notes/services/NotesService";
+import { setListNestedEditRecord } from "../../../../../common/components/list-view/actions";
+import { sendMessage } from "../../../messages/actions";
 
 const mock: ContactInsight = {
   email: "palaven@tut.by",
@@ -467,27 +469,27 @@ const ContactInsight = (
   
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    setTimeout(() => {
-      setData(mock);
-    }, 1000);
-  }, []);
-  
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setData(mock);
+  //   }, 1000);
+  // }, []);
+  //
   const updateInsight = () => {
     setData(null);
-    ContactsService.getInteraction(id)
+    ContactsService.getInsight(id)
       .then(setData)
       .catch(res => instantFetchErrorHandler(dispatch, res));
   };
 
-  // useEffect(() => {
-  //   if (id) {
-  //     updateInsight();
-  //   }
-  //   return () => setData(null);
-  // }, [id]);
+  useEffect(() => {
+    if (id) {
+      updateInsight();
+    }
+    return () => setData(null);
+  }, [id]);
   
-  const sendMessage = () => {
+  const onSendNote = () => {
     const newNote = {
      message: noteValue, entityName: "Contact", entityId: id, interactionDate: dateValue
     };
@@ -503,8 +505,12 @@ const ContactInsight = (
         setAddNote(false);
         setNoteValue("");
         setDateValue(null);
-        // updateInsight();
+        updateInsight();
       });
+  };
+
+  const onSendMessage = () => {
+    dispatch(setListNestedEditRecord("SendMessage", { selection: [id] }, model => dispatch(sendMessage(model)), true));
   };
 
   const classes = useStyles();
@@ -659,7 +665,7 @@ const ContactInsight = (
                   {data.homePhone && <PhoneLabel label="home" phone={data.homePhone} />}
                   {data.mobilePhone && <PhoneLabel label="mobile" phone={data.mobilePhone} />}
                   {data.fax && <PhoneLabel label="fax" phone={data.fax} />}
-                  <Chip label="Send Message" className="fontWeight600 mt-1" onClick={() => {}} />
+                  <Chip label="Send Message" className="fontWeight600 mt-1" onClick={onSendMessage} />
                 </div>
               </Grid>
               <Grid item sm={12} md={8}>
@@ -716,7 +722,7 @@ const ContactInsight = (
                             <div className="d-flex">
                               <LoadingButton
                                 loading={noteLoading}
-                                onClick={sendMessage}
+                                onClick={onSendNote}
                                 type="submit"
                                 variant="contained"
                                 color="primary"
