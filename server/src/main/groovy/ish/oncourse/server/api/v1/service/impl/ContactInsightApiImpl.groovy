@@ -20,7 +20,6 @@ import ish.oncourse.server.api.v1.model.ContactOverviewDTO
 import ish.oncourse.server.api.v1.service.ContactInsightApi
 import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.InvoiceLine
 import ish.oncourse.server.document.DocumentService
 
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.getProfilePicture
@@ -81,7 +80,8 @@ class ContactInsightApiImpl implements ContactInsightApi{
         interactions.addAll(contact?.payslips?.collect{it.toInteraction()})
         interactions.addAll(contact?.productItems?.collect{it.toInteraction()})
         interactions.addAll(contact?.noteRelations*.note.collect{it.toInteraction()})
-        interactions.addAll()
+        interactions.addAll(contact?.documents?.collect {it.toInteraction()})
+        interactions.sort {it.date}
         interactions
     }
 }
