@@ -13,7 +13,7 @@ import navigation from "./navigation.json";
 import SideBarHeader from "../layout/side-bar-list/SideBarHeader";
 
 interface Props {
-  selected: string,
+  selected: string | number,
   execMenuOpened: boolean,
   scriptIdSelected: number,
   setSelected: StringArgFunction,

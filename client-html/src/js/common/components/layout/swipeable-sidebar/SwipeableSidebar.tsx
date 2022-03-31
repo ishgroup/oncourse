@@ -24,7 +24,7 @@ import { getEntityDisplayName } from "../../../utils/getEntityDisplayName";
 import {
  checkPermissions, getOnDemandScripts, getUserPreferences, showConfirm 
 } from "../../../actions";
-import { toggleSwipeableDrawer } from "./actions";
+import { setSwipeableDrawerSelection, toggleSwipeableDrawer } from "./actions";
 import UserSearch from "./components/UserSearch";
 import SearchResults from "./components/searchResults/SearchResults";
 import SidebarLatestActivity from "./components/SidebarLatestActivity";
@@ -40,6 +40,7 @@ import ExecuteScriptModal from "../../../../containers/automation/containers/scr
 import { DashboardItem } from "../../../../model/dashboard";
 import navigation from "../../navigation/navigation.json";
 import ContactInsight from "../../../../containers/entities/contacts/components/contact-insight/ContactInsight";
+import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 
 export const SWIPEABLE_SIDEBAR_WIDTH: number = 350;
 
@@ -132,7 +133,8 @@ interface Props {
   getScriptsPermissions: any;
   scripts: any;
   hasScriptsPermissions: any;
-  theme?: AppTheme;
+  selected?: number | string;
+  setSelected?: AnyArgFunction;
 }
 
 const sortItems = (a, b) => {
@@ -162,14 +164,15 @@ const SwipeableSidebar: React.FC<Props> = props => {
     variant,
     getScriptsPermissions,
     scripts,
-    hasScriptsPermissions
+    hasScriptsPermissions,
+    selected,
+    setSelected
   } = props;
 
   const [controlResults, setControlResults] = useState([]);
   const [resultIndex, setResultIndex] = useState(-1);
   const [scriptIdSelected, setScriptIdSelected] = useState(null);
   const [execMenuOpened, setExecMenuOpened] = useState(false);
-  const [selected, setSelected] = useState(null);
   const [focusOnSearchInput, setFocusOnSearchInput] = React.useState<boolean>(false);
 
   const favoritesString = useAppSelector(state => state.userPreferences[PreferenceEnum[DASHBOARD_FAVORITES_KEY]]);
@@ -473,7 +476,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
           )
         }
         >
-          {isNaN(parseInt(selected)) ? (
+          {typeof selected === "string" ? (
             <NavigationCategory
               selected={selected}
               favorites={favorites}
@@ -483,7 +486,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
               setScriptIdSelected={setScriptIdSelected}
               setExecMenuOpened={setExecMenuOpened}
             />
-          ) : <ContactInsight id={parseInt(selected)} onClose={() => setSelected(null)} />}
+          ) : <ContactInsight id={selected} onClose={() => setSelected(null)} />}
           
         </div>
       </SwipeableDrawer>
@@ -499,6 +502,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
 };
 
 const mapsStateToProps = (state: State) => ({
+  selected: state.swipeableDrawer.selected,
   isFormDirty: state.swipeableDrawer.isDirty,
   resetEditView: state.swipeableDrawer.resetEditView,
   opened: state.swipeableDrawer.opened,
@@ -510,6 +514,7 @@ const mapsStateToProps = (state: State) => ({
 });
 
 const mapStateToDispatch = (dispatch: Dispatch<any>) => ({
+  setSelected: selection => dispatch(setSwipeableDrawerSelection(selection)),
   toggleSwipeableDrawer: () => dispatch(toggleSwipeableDrawer()),
   getSearchResults: (search: string) => dispatch(getDashboardSearch(search)),
   getScripts: () => dispatch(getOnDemandScripts()),
