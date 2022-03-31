@@ -87,7 +87,7 @@ Feature: Main feature for all POST requests with path 'list/export'
         And request {"entityName":"Qualification","template":"#(qualificationCsvExportId)","search":"id == \"4\"","sorting":[{"attribute":"nationalCode","ascending":true,"complexAttribute":[]}]}
         When method POST
         Then status 403
-        And match $.errorMessage == "You have not permission to export XML and CSV."
+        And match $.errorMessage == "You have no permission to export XML and CSV."
 
 
     Scenario: (+) Get XML processId by admin
@@ -165,4 +165,4 @@ Feature: Main feature for all POST requests with path 'list/export'
         And request {"entityName":"Qualification","template":"#(qualificationXmlExportId)","search":"id == \"3\"","sorting":[{"attribute":"nationalCode","ascending":true}]}
         When method POST
         Then status 403
-        And match $.errorMessage == "You have not permission to export XML and CSV."
+        And match $.errorMessage == "You have no permission to export XML and CSV."

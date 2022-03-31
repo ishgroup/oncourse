@@ -191,7 +191,7 @@ class ExportFunctions {
     static void checkPermissionToExportXMLAndCSV(IPermissionService permissionService) {
         boolean isUserCanExportXML = permissionService.currentUserCan(KeyCode.SPECIAL_EXPORT_XML, Mask.ALL)
         if (!isUserCanExportXML) {
-            ValidationErrorDTO error = new ValidationErrorDTO(null, null, "You have not permission to export XML and CSV.")
+            ValidationErrorDTO error = new ValidationErrorDTO(null, null, "You have no permission to export XML and CSV.")
             throwForbiddenErrorException(error)
         }
     }
