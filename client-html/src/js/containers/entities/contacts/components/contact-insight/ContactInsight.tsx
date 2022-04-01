@@ -9,7 +9,7 @@
 import React, {
   useCallback, useEffect, useRef, useState
 } from "react";
-import { ContactInsight, ContactInteraction } from "@api/model";
+import { ContactInsight, ContactInteraction, EmailTemplate } from "@api/model";
 import NumberFormat from "react-number-format";
 import Launch from "@mui/icons-material/Launch";
 import IconButton from "@mui/material/IconButton";
@@ -46,8 +46,10 @@ import HoverLink from "../../../../../common/components/layout/HoverLink";
 import ContactsService from "../../services/ContactsService";
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import NotesService from "../../../../../common/components/form/notes/services/NotesService";
-import { setListNestedEditRecord } from "../../../../../common/components/list-view/actions";
-import { sendMessage } from "../../../messages/actions";
+import SendMessageEditView from "../../../messages/components/SendMessageEditView";
+import { getUserPreferences, openSendMessage } from "../../../../../common/actions";
+import { EMAIL_FROM_KEY } from "../../../../../constants/Config";
+import EmailTemplateService from "../../../../automation/containers/email-templates/services/EmailTemplateService";
 
 const mock: ContactInsight = {
   email: "palaven@tut.by",
@@ -464,17 +466,26 @@ const ContactInsight = (
   const [noteLoading, setNoteLoading] = useState<boolean>(false);
   const [noteValue, setNoteValue] = useState<string>("");
   const [dateValue, setDateValue] = useState<string>(null);
-  
+  const [emailTemplates, setEmailTemplates] = useState<EmailTemplate[]>(null);
+
   const currencySymbol = useAppSelector(state => state.currency.shortCurrencySymbol);
-  
+  const recepients = useAppSelector(state => state.list.recepients);
+  const emailFrom = useAppSelector(state => state.userPreferences[EMAIL_FROM_KEY]);
+  const fetchPending = useAppSelector(state => state.fetch.pending);
+  const sendMessageOpened = useAppSelector(state => state.sendMessage.open);
+
   const dispatch = useAppDispatch();
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setData(mock);
-  //   }, 1000);
-  // }, []);
-  //
+  useEffect(() => {
+    dispatch(getUserPreferences([EMAIL_FROM_KEY]));
+
+    EmailTemplateService.getEmailTemplatesWithKeyCode("Contact")
+      .then(setEmailTemplates)
+      .catch(res => instantFetchErrorHandler(dispatch,res))
+  }, []);
+
+
+
   const updateInsight = () => {
     setData(null);
     ContactsService.getInsight(id)
@@ -483,12 +494,10 @@ const ContactInsight = (
   };
 
   useEffect(() => {
-    if (id) {
-      updateInsight();
-    }
+    id ? updateInsight() : setData(null);
     return () => setData(null);
   }, [id]);
-  
+
   const onSendNote = () => {
     const newNote = {
      message: noteValue, entityName: "Contact", entityId: id, interactionDate: dateValue
@@ -510,7 +519,7 @@ const ContactInsight = (
   };
 
   const onSendMessage = () => {
-    dispatch(setListNestedEditRecord("SendMessage", { selection: [id] }, model => dispatch(sendMessage(model)), true));
+    dispatch(openSendMessage());
   };
 
   const classes = useStyles();
@@ -518,14 +527,16 @@ const ContactInsight = (
   const Avatar = useCallback(aProps => (
     <AvatarRenderer
       meta={{}}
-      input={{}}
+      input={{
+        value: data.profilePicture
+      }}
       showConfirm={() => {}}
-      email={data.email}
+      email={data?.email}
       {...aProps}
       twoColumn
       disabled
     />
-  ), [data?.email]);
+  ), [data]);
   
   const onNoteFocus = () => {
     setAddNote(true);
@@ -538,6 +549,18 @@ const ContactInsight = (
 
   return (
     <div className="relative w-100">
+      <SendMessageEditView
+        selection={[String(id)]}
+        templates={emailTemplates}
+        recipientsMessageData={recepients}
+        emailFrom={emailFrom}
+        listSearchQuery={null}
+        filteredCount={1}
+        submitting={fetchPending}
+        opened={sendMessageOpened}
+        listEntity="Contact"
+      />
+
       { data ? (
         <AppBarContainer
           opened={false}

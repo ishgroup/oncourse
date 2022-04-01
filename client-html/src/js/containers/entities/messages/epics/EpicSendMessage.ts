@@ -4,9 +4,8 @@
  */
 
 import { Epic } from "redux-observable";
-import { closeListNestedEditRecord } from "../../../../common/components/list-view/actions";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { FETCH_SUCCESS } from "../../../../common/actions";
+import { closeSendMessage, FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { MessageExtended } from "../../../../model/common/Message";
 import { SEND_MESSAGE } from "../actions";
@@ -21,7 +20,7 @@ const request: EpicUtils.Request<any, MessageExtended> = {
         type: FETCH_SUCCESS,
         payload: { message: "All messages sent" }
       },
-      closeListNestedEditRecord(0)
+      closeSendMessage()
     ],
   processError: response => FetchErrorHandler(response, "Messages sending failed")
 };

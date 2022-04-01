@@ -35,7 +35,6 @@ import {
 import EntityService from "../../../common/services/EntityService";
 import { getWindowHeight, getWindowWidth, stubFunction } from "../../../common/utils/common";
 import { defaultContactName } from "../contacts/utils";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
 import OutcomeService from "../outcomes/services/OutcomeService";
 import { getEnrolment, updateEnrolment } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
@@ -162,8 +161,7 @@ const findRelatedGroup: any = [
 ];
 
 const nestedEditFields = {
-  Contact: props => <ContactEditView {...props} />,
-  SendMessage: props => <SendMessageEditView {...props} />
+  Contact: props => <ContactEditView {...props} />
 };
 
 const defaultFields: Array<keyof Enrolment> = ["fundingSource", "vetFundingSourceStateID", "vetPurchasingContractID"];
@@ -317,7 +315,6 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
         EditViewContent={EnrolmentEditView}
         getEditRecord={getEnrolmentRecord}
         rootEntity="Enrolment"
-        nestedEditFields={nestedEditFields}
         onInit={() => setInitNew(true)}
         customOnCreate={customOnCreate}
         onBeforeSave={onBeforeSave}
@@ -326,6 +323,7 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         CogwheelAdornment={EnrolmentCogWheel}
+        nestedEditFields={nestedEditFields}
         defaultDeleteDisabled
         alwaysFullScreenCreateView
       />
