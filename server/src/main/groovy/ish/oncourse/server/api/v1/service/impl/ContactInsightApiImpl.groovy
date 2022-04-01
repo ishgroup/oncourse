@@ -81,7 +81,7 @@ class ContactInsightApiImpl implements ContactInsightApi{
         interactions.addAll(contact?.productItems?.collect{it.toInteraction()})
         interactions.addAll(contact?.noteRelations*.note.collect{it.toInteraction()})
         interactions.addAll(contact?.documents?.collect {it.toInteraction()})
-        interactions.sort {it.date}
+        interactions.sort {a,b-> b.date<=>a.date}
         interactions
     }
 }
