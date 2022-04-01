@@ -28,7 +28,6 @@ export const InputSection = React.memo<any>(props => {
     onBlur,
     onAddEvent,
     toggleSearch,
-    validateAql,
     inputRef,
     aqlComponentRef,
     titleCaption,
@@ -36,7 +35,7 @@ export const InputSection = React.memo<any>(props => {
     disabled,
     setSelectedEntity,
     aqlEntity,
-    isValidAqlQuery,
+    aqlQueryError,
     searchTags,
     secondaryHeading,
     disableAddAll,
@@ -107,8 +106,7 @@ export const InputSection = React.memo<any>(props => {
             classes={classes}
             toggleSearch={toggleSearch}
             aqlEntity={aqlEntity}
-            validateAql={validateAql}
-            isValidAqlQuery={isValidAqlQuery}
+            aqlQueryError={aqlQueryError}
             aqlComponentRef={aqlComponentRef}
             className={classes.inputMargin}
             searchTags={searchTags}
@@ -145,7 +143,6 @@ export const InputSectionWithToggle = React.memo<any>(props => {
     onAddEvent,
     toggleSearch,
     onSwitchToggle,
-    validateAql,
     inputRef,
     aqlComponentRef,
     titleCaption,
@@ -154,7 +151,7 @@ export const InputSectionWithToggle = React.memo<any>(props => {
     disabled,
     setSelectedEntity,
     aqlEntity,
-    isValidAqlQuery,
+    aqlQueryError,
     searchTags,
     secondaryHeading,
     disableAddAll,
@@ -207,8 +204,7 @@ export const InputSectionWithToggle = React.memo<any>(props => {
             className={clsx("w-100", classes.topOffset)}
             aqlEntity={aqlEntity}
             setSelectedEntity={setSelectedEntity}
-            validateAql={validateAql}
-            isValidAqlQuery={isValidAqlQuery}
+            aqlQueryError={aqlQueryError}
             aqlComponentRef={aqlComponentRef}
             searchTags={searchTags}
             disableAddAll={disableAddAll}

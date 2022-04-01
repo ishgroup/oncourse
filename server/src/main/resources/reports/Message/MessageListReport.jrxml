@@ -127,7 +127,7 @@ $F{message}?.postDescription ?: ""]]></textFieldExpression>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-11" style="data field" x="11" y="2" width="100" height="13" uuid="d749ff9c-c50b-4d2c-9bc5-94c8db4e0fa0"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{message}.contacts*.fullName.unique().join(" ")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{message}.contact*.fullName.unique().join(" ")]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
