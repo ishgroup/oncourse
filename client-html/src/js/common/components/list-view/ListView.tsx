@@ -1036,7 +1036,10 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       fullScreenEditView,
       searchQuery,
       getCustomBulkEditFields,
-      filterEntity
+      filterEntity,
+      emailTemplatesWithKeyCode,
+      scripts,
+      recepients
     } = this.props;
 
     const {
@@ -1159,6 +1162,9 @@ class ListView extends React.PureComponent<Props, ComponentState> {
             )}
           </div>
           <BottomAppBar
+            recepients={recepients}
+            scripts={scripts}
+            emailTemplatesWithKeyCode={emailTemplatesWithKeyCode}
             createButtonDisabled={createButtonDisabled}
             searchMenuItemsRenderer={searchMenuItemsRenderer}
             querySearch={querySearch}
