@@ -70,7 +70,7 @@ Thank you for you enrolment to our course ${record.courseClass.course.name}!&amp
 Common cost is ${money}
 &amp;lt;/p&amp;gt;" SUBJECT="Hello ${record.student.contact.fullName}" ENTITY="Enrolment"/>
   <EmailTemplate ID="2" TYPE="2" KEYCODE="test.sms" CREATEDON="2020-12-24 20:40:30.0" MODIFIEDON="2020-12-24 20:40:30.0"
-                 NAME="Test SMS template" ENABLED="1" BODYPLAIN="Hi, ${record.student.contact.fullName}. ${text}"
+                 NAME="Test SMS template" ENABLED="1" BODYPLAIN="Hi, ${record.student.contact.fullName}, from ${author.fullName}. ${text}"
                  ENTITY="Enrolment"/>
 
   <Enrolment COURSECLASS_ID="1" CREATEDON="2020-12-24 20:41:25.0" ID="1" MODIFIEDON="2020-12-24 20:41:25.0" SOURCE="O"
