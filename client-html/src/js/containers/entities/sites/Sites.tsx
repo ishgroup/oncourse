@@ -89,7 +89,8 @@ const findRelatedGroup: any[] = [
     expression: "attachmentRelations.entityIdentifier == Site and attachmentRelations.entityRecordId"
   },
   { title: "Rooms", list: "room", expression: "site.id" },
-  { title: "Student feedback", list: "survey", expression: "enrolment.courseClass.room.site.id" }
+  { title: "Student feedback", list: "survey", expression: "enrolment.courseClass.room.site.id" },
+  { title: "Timetable", list: "timetable", expression: "session.room.site.id" }
 ];
 
 const secondaryColumnCondition = rows => {

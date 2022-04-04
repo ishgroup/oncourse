@@ -147,6 +147,7 @@ const findRelatedGroup: any[] = [
     ]
   },
   { title: "Student feedback", list: "survey", expression: "enrolment.courseClass.course.id" },
+  { title: "Timetable", list: "timetable", expression: "session.courseClass.course.id" },
   { title: "Tutors", list: "contact", expression: "tutor.courseClassRoles.courseClass.course.id" },
   { title: "Units of competency", list: "module", expression: "courses.id" },
   { title: "Voucher types", list: "voucher", expression: "voucherProductCourses.course.id" },

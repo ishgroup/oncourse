@@ -71,12 +71,13 @@ const findRelatedGroup: any[] = [
     list: "document",
     expression: "attachmentRelations.entityIdentifier == Room and attachmentRelations.entityRecordId"
   },
-  { title: "Student feedback", list: "survey", expression: "enrolment.courseClass.room.id" }
+  { title: "Student feedback", list: "survey", expression: "enrolment.courseClass.room.id" },
+  { title: "Timetable", list: "timetable", expression: "session.room.id" }
 ];
 
 class Rooms extends React.Component<any, any> {
   componentDidMount() {
-    this.props.getFilters();
+     this.props.getFilters();
     this.props.getTags();
     this.props.getSites();
   }
