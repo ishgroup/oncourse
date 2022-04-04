@@ -39,7 +39,7 @@ const QueryCardContent = props => {
 
   const debounseSearch = useCallback<any>(
     debounce((isValid, entity, query, queryResultsPending) => {
-      if (isValid && !queryResultsPending) {
+      if (entity && isValid && !queryResultsPending) {
         setQueryResultsPending(true);
         EntityService.getPlainRecords(
           entity,
