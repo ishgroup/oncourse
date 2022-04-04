@@ -48,7 +48,7 @@ class Note extends _Note implements InteractableTrait{
 
 	@Override
 	String getInteractionName() {
-		return systemUser.fullName
+		return systemUser?.fullName
 	}
 /**
 	 * @return the date and time this record was modified
