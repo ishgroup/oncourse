@@ -30,7 +30,7 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class Survey extends _Survey implements Queueable, ExpandableTrait, InteractableTrait {
+class Survey extends _Survey implements Queueable, ExpandableTrait, ContactActivityTrait {
 
 
     @Override

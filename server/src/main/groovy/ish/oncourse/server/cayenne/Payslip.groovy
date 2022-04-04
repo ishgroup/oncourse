@@ -28,7 +28,7 @@ import javax.annotation.Nullable
  * specifies an end-date and paylines are only generated for payments until that date.
  */
 @API
-class Payslip extends _Payslip implements InteractableTrait{
+class Payslip extends _Payslip implements ContactActivityTrait{
 	public static final String BUDGET_TOTAL_KEY = "budgetAmount";
 	public static final String PAID_TOTAL_KEY = "actualAmount";
 

@@ -48,7 +48,7 @@ import java.time.LocalDate
  */
 @API
 @QueueableEntity
-class PaymentIn extends _PaymentIn implements PaymentInInterface, Queueable, InteractableTrait {
+class PaymentIn extends _PaymentIn implements PaymentInInterface, Queueable, ContactActivityTrait {
 
 
 

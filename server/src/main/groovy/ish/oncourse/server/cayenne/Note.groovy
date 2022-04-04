@@ -22,7 +22,7 @@ import javax.annotation.Nonnull
  * a comprehensive audit trail.
  */
 @API
-class Note extends _Note implements InteractableTrait{
+class Note extends _Note implements ContactActivityTrait{
 
 
 

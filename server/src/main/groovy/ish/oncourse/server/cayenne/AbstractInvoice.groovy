@@ -28,7 +28,7 @@ import javax.annotation.Nonnull
 import javax.annotation.Nullable
 import java.time.LocalDate
 
-abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterface, Queueable, NotableTrait, AttachableTrait, InteractableTrait {
+abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterface, Queueable, NotableTrait, AttachableTrait, ContactActivityTrait {
 
 	private static final Logger logger = LogManager.getLogger()
 
