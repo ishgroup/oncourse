@@ -20,6 +20,7 @@ import ish.oncourse.server.api.v1.model.ContactOverviewDTO
 import ish.oncourse.server.api.v1.service.ContactInsightApi
 import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.cayenne.Contact
+import ish.oncourse.server.cayenne.InteractableTrait
 import ish.oncourse.server.document.DocumentService
 
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.getProfilePicture
@@ -67,21 +68,25 @@ class ContactInsightApiImpl implements ContactInsightApi{
 
     private static List<ContactInteractionDTO> interactionsOf(Contact contact){
         def interactions = new ArrayList<ContactInteractionDTO>()
-        interactions.addAll(contact?.student?.enrolments?.collect {it.toInteraction()})
-        interactions.addAll(contact?.student?.applications?.collect {it.toInteraction()})
-        interactions.addAll(contact?.student?.waitingLists?.collect{it.toInteraction()})
-        interactions.addAll(contact?.leads?.collect{it.toInteraction()})
-        interactions.addAll(contact?.paymentsIn?.collect{it.toInteraction()})
-        interactions.addAll(contact?.paymentsOut?.collect{it.toInteraction()})
-        interactions.addAll(contact?.invoices?.collect{it.toInteraction()})
-        interactions.addAll(contact?.quotes?.collect{it.toInteraction()})
-        interactions.addAll((contact?.student?.enrolments*.assessmentSubmissions?.flatten() as List<AssessmentSubmission>)?.collect{it.toInteraction()})
-        interactions.addAll(contact?.student?.certificates?.collect{it.toInteraction()})
-        interactions.addAll(contact?.payslips?.collect{it.toInteraction()})
-        interactions.addAll(contact?.productItems?.collect{it.toInteraction()})
-        interactions.addAll(contact?.noteRelations*.note.collect{it.toInteraction()})
-        interactions.addAll(contact?.documents?.collect {it.toInteraction()})
+        interactions.addAll(interactionsOfList(contact?.student?.enrolments))
+        interactions.addAll(interactionsOfList(contact?.student?.applications))
+        interactions.addAll(interactionsOfList(contact?.student?.waitingLists))
+        interactions.addAll(interactionsOfList(contact?.leads))
+        interactions.addAll(interactionsOfList(contact?.paymentsIn))
+        interactions.addAll(interactionsOfList(contact?.paymentsOut))
+        interactions.addAll(interactionsOfList(contact?.invoices))
+        interactions.addAll(interactionsOfList(contact?.quotes))
+        interactions.addAll(interactionsOfList((contact?.student?.enrolments*.assessmentSubmissions?.flatten() as List<AssessmentSubmission>)))
+        interactions.addAll(interactionsOfList(contact?.student?.certificates))
+        interactions.addAll(interactionsOfList(contact?.payslips))
+        interactions.addAll(interactionsOfList(contact?.productItems))
+        interactions.addAll(interactionsOfList(contact?.noteRelations*.note))
+        interactions.addAll(interactionsOfList(contact?.documents))
         interactions.sort {a,b-> b.date<=>a.date}
         interactions
+    }
+
+    private static List<ContactInteractionDTO> interactionsOfList(List<? extends InteractableTrait> records){
+        records?.collect {it.toInteraction()} ?: new ArrayList<ContactInteractionDTO>()
     }
 }
