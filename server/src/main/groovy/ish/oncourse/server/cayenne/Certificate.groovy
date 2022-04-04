@@ -281,7 +281,6 @@ class Certificate extends _Certificate implements Queueable, AttachableTrait, In
 	 *
 	 * @return the qualification
 	 */
-	@Nonnull
 	@API
 	@Override
 	Qualification getQualification() {
