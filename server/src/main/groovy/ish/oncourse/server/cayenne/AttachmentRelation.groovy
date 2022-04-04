@@ -22,7 +22,7 @@ import javax.annotation.Nonnull
  * Object representing relation between a record and document version.
  */
 @QueueableEntity
-abstract class AttachmentRelation extends _AttachmentRelation implements Queueable, InteractableTrait {
+abstract class AttachmentRelation extends _AttachmentRelation implements Queueable, ContactActivityTrait {
 
 
 

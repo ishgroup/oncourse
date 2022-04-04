@@ -41,7 +41,7 @@ import static ish.oncourse.cayenne.MappedSelectParams.*
  */
 @API
 @QueueableEntity
-class Certificate extends _Certificate implements Queueable, AttachableTrait, InteractableTrait {
+class Certificate extends _Certificate implements Queueable, AttachableTrait, ContactActivityTrait {
 	private static final Logger logger = LogManager.getLogger()
 
 	public static final SUCCESSFUL_OUTCOMES_PROPERTY = "successful_outcomes";

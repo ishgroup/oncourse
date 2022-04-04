@@ -33,7 +33,7 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class Message extends _Message implements Queueable, InteractableTrait {
+class Message extends _Message implements Queueable, ContactActivityTrait {
 
     public static final String IS_EMAIL_PROPERTY = "isEmail"
     public static final String IS_SMS_PROPERTY = "isSms"

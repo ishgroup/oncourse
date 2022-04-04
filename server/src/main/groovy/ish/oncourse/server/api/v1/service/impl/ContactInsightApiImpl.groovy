@@ -23,9 +23,8 @@ import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.cayenne.AttachmentRelation
 import ish.oncourse.server.cayenne.Certificate
 import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.InteractableTrait
+import ish.oncourse.server.cayenne.ContactActivityTrait
 import ish.oncourse.server.cayenne.Invoice
 import ish.oncourse.server.cayenne.Lead
 import ish.oncourse.server.cayenne.Note
@@ -163,7 +162,7 @@ class ContactInsightApiImpl implements ContactInsightApi {
         expression
     }
 
-    private static List<ContactInteractionDTO> interactionsOfList(List<? extends InteractableTrait> records) {
+    private static List<ContactInteractionDTO> interactionsOfList(List<? extends ContactActivityTrait> records) {
         records?.collect { it.toInteraction() } ?: new ArrayList<ContactInteractionDTO>()
     }
 }

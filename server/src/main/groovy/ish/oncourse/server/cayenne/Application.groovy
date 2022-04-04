@@ -38,7 +38,7 @@ import javax.annotation.Nonnull
  */
 @API
 @QueueableEntity
-class Application extends _Application implements Queueable, NotableTrait, ExpandableTrait, AttachableTrait, InteractableTrait {
+class Application extends _Application implements Queueable, NotableTrait, ExpandableTrait, AttachableTrait, ContactActivityTrait {
 
 
 	@Override

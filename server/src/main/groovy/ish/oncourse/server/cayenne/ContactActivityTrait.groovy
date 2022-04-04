@@ -12,7 +12,7 @@ import ish.oncourse.server.api.v1.model.ContactInteractionDTO
 
 import java.time.LocalDate
 
-trait InteractableTrait {
+trait ContactActivityTrait {
     abstract Date getCreatedOn()
 
     abstract Long getId()

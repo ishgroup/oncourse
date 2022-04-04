@@ -22,7 +22,7 @@ import javax.annotation.Nullable
 //TODO docs
 @API
 @QueueableEntity
-class AssessmentSubmission extends _AssessmentSubmission implements Queueable, NotableTrait, AttachableTrait, AssessmentSubmissionInterface, InteractableTrait {
+class AssessmentSubmission extends _AssessmentSubmission implements Queueable, NotableTrait, AttachableTrait, AssessmentSubmissionInterface, ContactActivityTrait {
 
 	public static final String STUDENT_NAME_PROPERTY = "studentName"
 	public static final String CLASS_NAME_PROPERTY = "courseClassName"
