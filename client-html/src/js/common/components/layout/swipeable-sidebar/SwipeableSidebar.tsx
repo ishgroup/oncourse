@@ -99,7 +99,7 @@ const styles = (theme: AppTheme) =>
       top: 0,
       zIndex: 1,
       minWidth: `${CATEGORY_SIDEBAR_WIDTH}px`,
-      maxWidth: `calc(100vw - ${SWIPEABLE_SIDEBAR_WIDTH}px - 20%)`,
+      width: `calc(100vw - ${SWIPEABLE_SIDEBAR_WIDTH}px - 20%)`,
       height: "100%",
       position: "fixed",
       display: "flex",

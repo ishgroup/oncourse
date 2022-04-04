@@ -7,7 +7,7 @@
  */
 
 import React, {
-  useCallback, useEffect, useRef, useState
+  useCallback, useEffect, useMemo, useRef, useState
 } from "react";
 import { ContactInsight, ContactInteraction, EmailTemplate } from "@api/model";
 import NumberFormat from "react-number-format";
@@ -86,7 +86,7 @@ const PhoneLabel = ({ phone, label }) => (
   </div>
 );
 
-const getEntityLabel = (entity: string, name: string) => {
+const getEntityLabel = (entity: string, name: string, currencySymbol?: string) => {
   switch (entity) {
     case "Message": {
       return (
@@ -108,7 +108,9 @@ const getEntityLabel = (entity: string, name: string) => {
         </span>
       );
     }
-    case "Sale": {
+    case "Voucher":
+    case "Membership":
+    case "Article": {
       return (
         <span>
           <span className="fontWeight600">Purchased </span>
@@ -144,7 +146,7 @@ const getEntityLabel = (entity: string, name: string) => {
           created
         </span>
       );
-    case "Assessment":
+    case "AssessmentSubmission":
       return (
         <span>
           Submitted
@@ -165,7 +167,8 @@ const getEntityLabel = (entity: string, name: string) => {
       );
     case "Invoice":
       return (
-        <span>
+        <span className="money">
+          {currencySymbol}
           {name}
           {' '}
           <span className="fontWeight600">invoice </span>
@@ -174,7 +177,8 @@ const getEntityLabel = (entity: string, name: string) => {
       );
     case "PaymentIn":
       return (
-        <span>
+        <span className="money">
+          {currencySymbol}
           {name}
           {' '}
           <span className="fontWeight600">payment</span>
@@ -182,7 +186,8 @@ const getEntityLabel = (entity: string, name: string) => {
       );
     case "PaymentOut":
       return (
-        <span>
+        <span className="money">
+          {currencySymbol}
           {name}
           {' '}
           <span className="fontWeight600">refund </span>
@@ -237,7 +242,7 @@ const getEntityLabel = (entity: string, name: string) => {
   }
 };
 
-const Interaction = (interaction: ContactInteraction) => {
+const Interaction = (interaction: ContactInteraction & { currencySymbol?: string }) => {
   const [clamped, setClamped] = useState(true);
   const [descriptionLines, setSescriptionLines] = useState(null);
   
@@ -254,7 +259,7 @@ const Interaction = (interaction: ContactInteraction) => {
           <Stack spacing={2} direction="row" className="mb-2">
             <HoverLink link={interaction.entity !== "Note" && `/${interaction.entity[0].toLowerCase()}${interaction.entity.slice(1)}/${interaction.id}`}>
               <div className="text-truncate text-nowrap">
-                {getEntityLabel(interaction.entity, interaction.name)}
+                {getEntityLabel(interaction.entity, interaction.name, interaction.currencySymbol)}
               </div>
             </HoverLink>
             <div className="flex-fill" />
@@ -402,8 +407,16 @@ const ContactInsight = (
     }
   };
 
-  const firstInteractions = data?.interactions.slice(0, SHOW_FIRST);
-  const lastInteractions = data?.interactions.slice(SHOW_FIRST);
+  const firstInteractions = useMemo(() => data?.interactions
+    .slice(0, SHOW_FIRST)
+    .map((int, n) => <Interaction key={n + int.id} {...int} currencySymbol={currencySymbol} />), 
+    [data?.interactions, currencySymbol]);
+
+  const lastInteractions = useMemo(() => data?.interactions
+    .slice(SHOW_FIRST)
+    .map((int, n) => <Interaction key={SHOW_FIRST + n + int.id} {...int} currencySymbol={currencySymbol} />),
+    [data?.interactions, currencySymbol]);
+
   const hasLastInteractions = Boolean(lastInteractions?.length);
 
   return (
@@ -622,12 +635,12 @@ const ContactInsight = (
                   </Box>
                   <Box component="div" className="mt-1">
                     <List sx={{ width: '100%', padding: 0 }}>
-                      {firstInteractions.map((int, n) => <Interaction key={n + int.id} {...int} />)}
+                      {firstInteractions}
                     </List>
                     {hasLastInteractions && (
                       <Collapse in={showLast} mountOnEnter>
                         <List sx={{ width: '100%', padding: 0 }}>
-                          {lastInteractions.map((int, n) => <Interaction key={SHOW_FIRST + n + int.id} {...int} />)}
+                          {lastInteractions}
                         </List>
                       </Collapse>
                     )}
