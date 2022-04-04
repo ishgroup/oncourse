@@ -193,7 +193,7 @@ class Certificate extends _Certificate implements Queueable, AttachableTrait, In
 
 	@Override
 	String getInteractionName() {
-		return qualification.title
+		return qualification?.title
 	}
 /**
 	 * @return true if this certificate is for a full qualification (or accredited course)
