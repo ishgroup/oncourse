@@ -71,11 +71,10 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
     super(props);
     
     const {
-     match, location, history, integrations
+     match, integrations
     } = props;
 
-    const searchParams = new URLSearchParams(location.search);
-    const type = searchParams.get("type");
+    const type = match.params.type;
 
     this.state = {
       isPending: false,
@@ -86,13 +85,6 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
             ? this.getIntegrationItem(props)
             : null
     };
-    
-    if (type) {
-      history.replace({
-        pathname: location.pathname,
-        search: ""
-      });
-    }
   }
 
   // eslint-disable-next-line camelcase

@@ -85,7 +85,7 @@ interface PaymentHeaderFieldProps {
   setDisablePayment?: BooleanArgFunction;
   selectedDiscount?: CheckoutItem;
   setSelectedDiscount?: (item: CheckoutItem) => void;
-  lockedDate?: string;
+  lockedDate?: any;
   getLockedDate?: any;
   getPaymentDateChangePermissions?: any;
   canChangePaymentDate?: boolean;
@@ -308,7 +308,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
         return undefined;
       }
 
-      const date = new Date(lockedDate);
+      const date = new Date(lockedDate.lockedDate);
 
       return compareAsc(addDays(date, 1), new Date(dateChanged)) > 0
         ? `Date must be after ${format(date, D_MMM_YYYY)}`

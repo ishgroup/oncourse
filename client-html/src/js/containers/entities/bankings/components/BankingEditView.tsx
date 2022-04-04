@@ -5,7 +5,9 @@
 
 import * as React from "react";
 import clsx from "clsx";
-import { change, FieldArray, getFormInitialValues } from "redux-form";
+import {
+ change, FieldArray, getFormInitialValues
+} from "redux-form";
 import { addDays, compareAsc, format as formatDate } from "date-fns";
 import { Payment } from "@api/model";
 import { connect } from "react-redux";
@@ -29,8 +31,6 @@ import { openSiteLink } from "../../sites/utils";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import Uneditable from "../../../../common/components/form/Uneditable";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 
 const disabledHandler = (p: Payment) => {
   if (!p) {
@@ -106,11 +106,7 @@ const paymentColumnsMinified: NestedTableColumn[] = [
   }
 ];
 
-interface Props {
-  openNestedView: AnyArgFunction;
-}
-
-class BankingEditView extends React.PureComponent<Props & EditViewProps & ReturnType<typeof mapStateToProps>, any> {
+class BankingEditView extends React.PureComponent<any, any> {
   isAllPaymentsReconciled = () => {
     const { values } = this.props;
     if (values && values.payments && values.payments.length) {
@@ -142,7 +138,7 @@ class BankingEditView extends React.PureComponent<Props & EditViewProps & Return
     }
     return (
       compareAsc(
-        new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth),
+        new Date(lockedDate.lockedDate),
         new Date(editRecord.settlementDate)
       ) > 0
     );
@@ -153,7 +149,7 @@ class BankingEditView extends React.PureComponent<Props & EditViewProps & Return
     if (!lockedDate || !editRecord || editRecord.settlementDate === value) {
       return undefined;
     }
-    const date = new Date(lockedDate);
+    const date = new Date(lockedDate.lockedDate);
     const dateString = date.toISOString();
     return validateMinMaxDate(
       value,
@@ -253,7 +249,7 @@ class BankingEditView extends React.PureComponent<Props & EditViewProps & Return
               validate={[validateSingleMandatoryField, this.validateSettlementDate]}
               minDate={
                   lockedDate
-                    ? addDays(new Date(lockedDate), 1)
+                    ? addDays(new Date(lockedDate.lockedDate), 1)
                     : undefined
                 }
             />
@@ -297,4 +293,4 @@ const mapStateToProps = (state: State) => ({
   initial: getFormInitialValues(LIST_EDIT_VIEW_FORM_NAME)(state)
 });
 
-export default connect(mapStateToProps)(BankingEditView);
+export default connect<any, any, any>(mapStateToProps, null)(BankingEditView);
