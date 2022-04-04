@@ -60,7 +60,8 @@ class JsonExportsTest extends TestWithDatabase {
         Assertions.assertEquals(sampleExportSplit.length, resultExportSplit.length)
 
         for (int i = 0; i < sampleExportSplit.length; i++) {
-            Assertions.assertEquals(sampleExportSplit[i].trim(), resultExportSplit[i].trim())
+            if(!(sampleExportSplit[i].contains("createdOn") || sampleExportSplit[i].contains("modifiedOn")))
+                Assertions.assertEquals(sampleExportSplit[i].trim(), resultExportSplit[i].trim())
         }
     }
 }
