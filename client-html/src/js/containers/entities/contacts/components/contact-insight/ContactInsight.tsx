@@ -51,147 +51,6 @@ import { getUserPreferences, openSendMessage } from "../../../../../common/actio
 import { EMAIL_FROM_KEY } from "../../../../../constants/Config";
 import EmailTemplateService from "../../../../automation/containers/email-templates/services/EmailTemplateService";
 
-const mock: ContactInsight = {
-  email: "palaven@tut.by",
-  fullName: "Angel De LaMuerte",
-  fax: "0492415186",
-  homePhone: "0492415186",
-  mobilePhone: "0492415186",
-  workPhone: "0492415186",
-  profilePicture: null,
-  overview: {
-    firstSeen: "2018-02-03",
-    spent: 2200,
-    owing: 130,
-    enrolments: [9459, 1245, 1244],
-    openApplications: [],
-    closeApplications: [],
-    openLeads: [],
-    closeLeads: []
-  },
-  interactions: [
-    {
-      id: 674,
-      entity: "Note",
-      name: "Ari",
-      date: "2022-03-27",
-      description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus at atque consequatur dicta doloremque eligendi explicabo id impedit ipsa ipsam iure modi nesciunt praesentium quaerat quasi sequi tenetur totam, voluptates.\n"
-    },
-    {
-      id: 645674,
-      entity: "Message",
-      name: "Email",
-      date: "2022-03-26",
-      description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus at atque consequatur dicta doloremque eligendi explicabo id impedit ipsa ipsam iure modi nesciunt praesentium quaerat quasi sequi tenetur totam, voluptates.\n"
-    },
-    {
-      id: 679274,
-      entity: "Message",
-      name: "SMS",
-      date: "2022-03-24",
-      description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus at atque consequatur dicta doloremque eligendi explicabo id impedit ipsa ipsam iure modi nesciunt praesentium quaerat quasi sequi tenetur totam, voluptates.\n"
-    },
-    {
-      id: 5653,
-      entity: "Application",
-      name: "Woodworking for experts",
-      date: "2022-03-23",
-      description: null
-    },
-    {
-      id: 3567,
-      entity: "WaitingList",
-      name: "Lathe technique",
-      date: "2022-03-20",
-      description: null
-    },
-    {
-      id: 37865,
-      entity: "Quote",
-      name: "$110",
-      date: "2022-03-14",
-      description: null
-    },
-    {
-      id: 666,
-      entity: "Lead",
-      name: null,
-      date: "2022-03-19",
-      description: null
-    },
-    {
-      id: 34543,
-      entity: "Enrolment",
-      name: "Advanced Diploma of Acting for Contemporary Screen",
-      date: "2022-03-14",
-      description: null
-    },
-    {
-      id: 9544,
-      entity: "Assessment",
-      name: "Woodwork",
-      date: "2022-03-13",
-      description: null
-    },
-    {
-      id: 3467865243,
-      entity: "PaymentIn",
-      name: "$100",
-      date: "2022-03-14",
-      description: null
-    },
-    {
-      id: 3427865243,
-      entity: "PaymentOut",
-      name: "$120",
-      date: "2022-03-14",
-      description: null
-    },
-    {
-      id: 3427865,
-      entity: "Invoice",
-      name: "$140",
-      date: "2022-03-14",
-      description: null
-    },
-    {
-      id: 343568065,
-      entity: "Certificate",
-      name: "Woodwork Level IV",
-      date: "2022-03-11",
-      description: null
-    },
-    {
-      id: 568065,
-      entity: "Survey",
-      name: "Woodwork",
-      date: "2022-03-11",
-      description: null
-    },
-    {
-      id: 5680,
-      entity: "Payslip",
-      name: null,
-      date: "2022-03-11",
-      description: null
-    },
-    {
-      id: 5684560,
-      entity: "Sale",
-      name: "French handbook",
-      date: "2022-03-11",
-      description: null
-    },
-    {
-      id: 568466560,
-      entity: "Document",
-      name: "Tutor resume",
-      date: "2022-03-11",
-      description: null
-    }
-  ]
-};
-
 const useStyles = makeAppStyles(theme => ({
   closeIcon: {
     position: "absolute",
@@ -481,10 +340,8 @@ const ContactInsight = (
 
     EmailTemplateService.getEmailTemplatesWithKeyCode("Contact")
       .then(setEmailTemplates)
-      .catch(res => instantFetchErrorHandler(dispatch,res))
+      .catch(res => instantFetchErrorHandler(dispatch, res));
   }, []);
-
-
 
   const updateInsight = () => {
     setData(null);
@@ -539,8 +396,10 @@ const ContactInsight = (
   ), [data]);
   
   const onNoteFocus = () => {
-    setAddNote(true);
-    setDateValue(new Date().toISOString());
+    if (!addNote) {
+      setAddNote(true);
+      setDateValue(new Date().toISOString());
+    }
   };
 
   const firstInteractions = data?.interactions.slice(0, SHOW_FIRST);
@@ -726,9 +585,9 @@ const ContactInsight = (
                                 onBlur: stubFunction,
                                 value: dateValue
                               }}
-                              type="date"
+                              type="datetime"
                               label="Date"
-                              formatDate={DD_MM_YYYY_SLASHED}
+                              formatDateTime={DD_MM_YYYY_SLASHED}
                             />
                             <EditInPlaceDateTimeField
                               meta={{}}
