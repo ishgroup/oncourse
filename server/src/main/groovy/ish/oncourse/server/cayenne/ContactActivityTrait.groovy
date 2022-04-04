@@ -9,6 +9,7 @@
 package ish.oncourse.server.cayenne
 
 import ish.oncourse.server.api.v1.model.ContactInteractionDTO
+import ish.util.LocalDateUtils
 
 import java.time.LocalDate
 
@@ -31,7 +32,7 @@ trait ContactActivityTrait {
 
     ContactInteractionDTO toInteraction(){
         ContactInteractionDTO contactInteractionDTO = new ContactInteractionDTO()
-        contactInteractionDTO.setDate(interactionDate.toLocalDate())
+        contactInteractionDTO.setDate(LocalDateUtils.dateToValue(interactionDate))
         contactInteractionDTO.setEntity(entityName)
         contactInteractionDTO.setId(id)
         contactInteractionDTO.setDescription(interactionDescription)
