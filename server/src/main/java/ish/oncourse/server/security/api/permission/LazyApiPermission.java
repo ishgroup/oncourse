@@ -96,6 +96,7 @@ public class LazyApiPermission extends ApiPermission {
         KEY_CODE_MAP.put(FundingSource.class.getSimpleName().toLowerCase(), KeyCode.COURSE);
         KEY_CODE_MAP.put(CustomFieldType.class.getSimpleName().toLowerCase(), KeyCode.CONTACT);
         KEY_CODE_MAP.put(Assessment.class.getSimpleName().toLowerCase(), KeyCode.ASSESSMENT);
+        KEY_CODE_MAP.put(AssessmentClass.class.getSimpleName().toLowerCase(), KeyCode.ASSESSMENT);
         KEY_CODE_MAP.put(AssessmentSubmission.class.getSimpleName().toLowerCase(), KeyCode.ASSESSMENT);
         KEY_CODE_MAP.put(SystemUser.class.getSimpleName().toLowerCase(), KeyCode.SYSTEMUSER);
     }
