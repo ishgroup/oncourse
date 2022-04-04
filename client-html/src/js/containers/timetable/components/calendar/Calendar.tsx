@@ -8,7 +8,6 @@ import React, {
 } from "react";
 import { createStyles, withStyles } from "@mui/styles";
 import AutoSizer from "react-virtualized-auto-sizer";
-import { SearchRequest } from "@api/model";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import {
@@ -17,14 +16,14 @@ import {
 import clsx from "clsx";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import { State } from "../../../../reducers/state";
-import { clearTimetableMonths, findTimetableSessions } from "../../actions";
+import { clearTimetableMonths, findTimetableSessions, setTimetableUsersSearch } from "../../actions";
 import { TimetableContext } from "../../Timetable";
 import { DD_MMM_YYYY_MINUSED } from "../../../../common/utils/dates/format";
 import { animateListScroll, attachDayNodesObserver } from "../../utils";
 import CalendarMonth from "./components/month/CalendarMonth";
 import CalendarModesSwitcher from "../modesSwitcher/CalendarModesSwitcher";
-import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import DynamicSizeList from "../../../../common/components/form/DynamicSizeList";
 
 const styles = theme => createStyles({
@@ -61,14 +60,13 @@ const styles = theme => createStyles({
     }
   });
 
-interface Props {
+interface Props extends RouteComponentProps {
   classes?: any;
   months?: any;
   search?: string;
   sessionsLoading?: boolean;
   selectedMonthSessionDays?: number[];
-  getSessions?: (request: SearchRequest) => void;
-  clearTimetableMonths?: AnyArgFunction;
+  dispatch?: Dispatch;
 }
 
 const MonthRenderer = React.forwardRef<any, any>(({
@@ -120,7 +118,7 @@ const scrollToCalendarDay = (day: Date, list, index, dayNodesObserver) => {
   }
 };
 
-const Calendar: React.FunctionComponent<Props> = React.memo(props => {
+const Calendar = React.memo<Props>(props => {
   const {
    targetDay, setTargetDay, selectedWeekDays, selectedDayPeriods, calendarMode
   } = useContext(
@@ -131,11 +129,14 @@ const Calendar: React.FunctionComponent<Props> = React.memo(props => {
     search,
     classes,
     months,
-    getSessions,
     selectedMonthSessionDays,
-    clearTimetableMonths,
-    sessionsLoading
+    sessionsLoading,
+    location,
+    history,
+    dispatch,
   } = props;
+  
+  const params = useMemo(() => new URLSearchParams(location.search), [location.search]);
 
   const [dayNodesObserver, setDayNodesObserver] = useState<any>();
   const [tagsExpanded, setTagsExpanded] = useState(true);
@@ -158,13 +159,37 @@ const Calendar: React.FunctionComponent<Props> = React.memo(props => {
 
     const endMonth = endOfMonth(addMonths(startMonth, 1));
 
-    getSessions({ from: startMonth.toISOString(), to: endMonth.toISOString(), search });
-  }, [search, getSessions]);
+    dispatch(findTimetableSessions({ from: startMonth.toISOString(), to: endMonth.toISOString(), search }));
+  }, [search]);
 
   const onRowsRendered = useCallback(args => onRendered({
    ...args, months, loadNextMonths, sessionsLoading
   }), [months, loadNextMonths, sessionsLoading]);
 
+  // Search effects
+  useEffect(() => {
+    const searchString = params.get("search");
+    const title = params.get("title");
+
+    if (title) {
+      window.document.title = title;
+    }
+
+    if (searchString) {
+      dispatch(setTimetableUsersSearch(decodeURIComponent(searchString)));
+    }
+  }, [params]);
+
+  useEffect(() => {
+    if (search) {
+      params.set("search", encodeURIComponent(search));
+      history.replace({
+        search: params.toString()
+      });
+    }
+  }, [search]);
+
+  // Layout effects
   useEffect(() => {
     if (!dayNodesObserver && listEl.current) {
       setDayNodesObserver(attachDayNodesObserver(listEl.current._outerRef, targetDayHandler));
@@ -190,7 +215,7 @@ const Calendar: React.FunctionComponent<Props> = React.memo(props => {
       listEl.current.scrollToItem(targetDayMonthIndex);
       scrollToDayHandler(targetDayMonthIndex);
     } else {
-      clearTimetableMonths();
+      dispatch(clearTimetableMonths());
       scrollToTargetDayOnRender = targetDay;
       loadNextMonths(targetDay);
     }
@@ -263,11 +288,10 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  getSessions: (request: SearchRequest) => dispatch(findTimetableSessions(request)),
-  clearTimetableMonths: () => dispatch(clearTimetableMonths())
+  dispatch
 });
 
 export default connect<any, any, any>(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(Calendar));
+)(withStyles(styles)(withRouter(Calendar)));

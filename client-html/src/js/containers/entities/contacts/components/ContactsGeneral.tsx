@@ -224,7 +224,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
 
   const onCalendarClick = () => {
     openInternalLink(
-      `/timetable/search?query=attendance.student.contact.id=${values.id}&title=Timetable for ${getContactFullName(
+      `/timetable?search=attendance.student.contact.id=${values.id}&title=Timetable for ${getContactFullName(
         values
       )}`
     );

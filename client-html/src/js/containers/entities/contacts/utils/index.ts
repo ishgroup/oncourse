@@ -59,14 +59,14 @@ export const getNestedTutorClassItem = (status: CourseClassStatus, count: number
         name: "Current",
         count,
         link: `/class?search=tutorRoles.tutor.id is ${id}&filter=@Current_classes`,
-        timetableLink: `/timetable/search?query=courseClass.tutorRoles.tutor.id=${id} and courseClass.startDateTime < tomorrow and courseClass.endDateTime >= today and courseClass.isCancelled is false`
+        timetableLink: `/timetable?search=courseClass.tutorRoles.tutor.id=${id} and courseClass.startDateTime < tomorrow and courseClass.endDateTime >= today and courseClass.isCancelled is false`
       };
     case "Future":
       return {
         name: "Future",
         count,
         link: `/class?search=tutorRoles.tutor.id is ${id}&filter=@Future_classes`,
-        timetableLink: `/timetable/search?query=courseClass.tutorRoles.tutor.id=${id} and courseClass.startDateTime >= tomorrow and courseClass.endDateTime >= tomorrow and courseClass.isCancelled is false`
+        timetableLink: `/timetable?search=courseClass.tutorRoles.tutor.id=${id} and courseClass.startDateTime >= tomorrow and courseClass.endDateTime >= tomorrow and courseClass.isCancelled is false`
       };
     case "Self Paced":
       return {
@@ -85,7 +85,7 @@ export const getNestedTutorClassItem = (status: CourseClassStatus, count: number
         name: "Finished",
         count,
         link: `/class?search=tutorRoles.tutor.id is ${id}&filter=@Finished_classes`,
-        timetableLink: `/timetable/search?query=courseClass.tutorRoles.tutor.id=${id} and courseClass.isCancelled is false and courseClass.endDateTime before today`
+        timetableLink: `/timetable?search=courseClass.tutorRoles.tutor.id=${id} and courseClass.isCancelled is false and courseClass.endDateTime before today`
       };
     case "Cancelled":
       return {

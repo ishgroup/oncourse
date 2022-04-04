@@ -47,7 +47,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
     form
   }) => {
     const onCalendarClick = useCallback(() => {
-      openInternalLink(`/timetable/search?query=courseClass.course.id=${values.id}`);
+      openInternalLink(`/timetable?search=courseClass.course.id=${values.id}`);
     }, [values.id]);
 
     const onIsTraineeshipChange = useCallback(

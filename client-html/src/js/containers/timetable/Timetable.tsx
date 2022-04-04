@@ -1,4 +1,6 @@
-import React, { createContext, useMemo, useReducer } from "react";
+import React, {
+ createContext, useReducer
+} from "react";
 import { withStyles } from "@mui/styles";
 import createStyles from "@mui/styles/createStyles";
 import { isSameMonth, setDate, startOfMonth } from "date-fns";
@@ -6,10 +8,8 @@ import TimetableSideBar from "./components/timetable-side-bar/TimetableSideBar";
 import Calendar from "./components/calendar/Calendar";
 import { TimetableContextState } from "../../model/timetable";
 import SearchBar from "./components/search-bar/SearchBar";
-import store from "../../constants/Store";
-import { setTimetableSearch } from "./actions";
 
-const styles = theme =>
+const styles = () =>
   createStyles({
     container: {
       height: "100vh",
@@ -75,39 +75,18 @@ export const TimetableContextProvider = props => {
   );
 };
 
-const Timetable = ({ classes }) => {
-  const hasSearch = useMemo(() => {
-    if (window.location.search) {
-      const search = new URLSearchParams(window.location.search);
-
-      const hasQuery = search.has("query");
-
-      if (hasQuery) {
-        store.dispatch(setTimetableSearch(search.get("query")));
-      }
-
-      if (search.has("title")) {
-        window.document.title = search.get("title");
-      }
-
-      return hasQuery;
-    }
-    return false;
-  }, [window.location.search]);
-
-  return (
-    <TimetableContextProvider>
-      <div className={`d-grid relative ${classes.container}`}>
-        <div className="paperBackgroundColor">
-          <TimetableSideBar hasSearch={hasSearch} />
-        </div>
-        <div className={classes.calendar}>
-          <Calendar />
-          {!hasSearch && <SearchBar />}
-        </div>
+const Timetable = ({ classes }) => (
+  <TimetableContextProvider>
+    <div className={`d-grid relative ${classes.container}`}>
+      <div className="paperBackgroundColor">
+        <TimetableSideBar />
       </div>
-    </TimetableContextProvider>
+      <div className={classes.calendar}>
+        <Calendar />
+        <SearchBar />
+      </div>
+    </div>
+  </TimetableContextProvider>
   );
-};
 
 export default withStyles(styles)(Timetable);
