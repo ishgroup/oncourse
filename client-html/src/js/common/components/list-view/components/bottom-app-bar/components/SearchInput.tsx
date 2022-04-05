@@ -469,7 +469,7 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
     } = this.props;
 
     const {
-      querySaveMenuAnchor
+      querySaveMenuAnchor,
       expanded,
       tagsSuggestions,
       filtersSuggestions,
