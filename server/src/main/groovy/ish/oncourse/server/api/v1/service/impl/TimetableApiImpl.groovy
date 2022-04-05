@@ -15,7 +15,11 @@ import com.google.inject.Inject
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.SessionDao
+import ish.oncourse.server.cayenne.glue.CayenneDataObject
+import ish.util.EntityUtil
+
 import static ish.oncourse.server.api.function.EntityFunctions.addAqlExp
+import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
 import static ish.oncourse.server.api.v1.function.TimetableFunctions.getDateRangeExpression
 import static ish.oncourse.server.api.v1.function.TimetableFunctions.toRestSession
 import ish.oncourse.server.api.v1.model.SearchRequestDTO
@@ -58,10 +62,13 @@ class TimetableApiImpl implements TimetableApi {
         ObjectContext context = cayenneService.newReadonlyContext
         Expression dateFilter = getDateRangeExpression(request.from,request.to)
 
-        ObjectSelect query = ObjectSelect.query(Session).where(dateFilter) &
+        Class<? extends CayenneDataObject> clzz = EntityUtil.entityClassForName(Session.simpleName)
+        ObjectSelect objectSelect = ObjectSelect.query(clzz)
+        def query = parseSearchQuery(objectSelect, context, aql, null, request.search, request.filter, null)
+
+        query = query.where(dateFilter) &
                 Session.COURSE_CLASS.dot(CourseClass.IS_CANCELLED).isFalse()
 
-        query = addAqlExp(request.search, Session, context, query, aql)
         query = query.orderBy(Session.START_DATETIME.asc(), Session.ID.asc())
         return query.columns(Session.ID, Session.START_DATETIME, Session.END_DATETIME)
                 .select(context)
