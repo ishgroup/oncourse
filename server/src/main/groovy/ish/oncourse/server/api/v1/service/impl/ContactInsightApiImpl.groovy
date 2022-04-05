@@ -39,6 +39,7 @@ import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.Property
 import org.apache.cayenne.exp.parser.ASTTrue
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.PrefetchTreeNode
 
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.getProfilePicture
 
@@ -100,6 +101,9 @@ class ContactInsightApiImpl implements ContactInsightApi {
     private List<ContactInteractionDTO> interactionsOf(Contact contact) {
         def student = contact?.student
         def enrolments = student?.enrolments
+        def certificates = student?.certificates
+        def payslips = contact?.payslips
+        def productItems = contact?.productItems
         def assessmentSubmissions = enrolments*.assessmentSubmissions?.flatten() as List<AssessmentSubmission>
         def interactions = new ArrayList<ContactInteractionDTO>()
         interactions.addAll(interactionsOfList(enrolments))
@@ -111,28 +115,33 @@ class ContactInsightApiImpl implements ContactInsightApi {
         interactions.addAll(interactionsOfList(contact?.invoices))
         interactions.addAll(interactionsOfList(contact?.quotes))
         interactions.addAll(interactionsOfList(assessmentSubmissions))
-        interactions.addAll(interactionsOfList(student?.certificates))
-        interactions.addAll(interactionsOfList(contact?.payslips))
-        interactions.addAll(interactionsOfList(contact?.productItems))
+        interactions.addAll(interactionsOfList(certificates))
+        interactions.addAll(interactionsOfList(payslips))
+        interactions.addAll(interactionsOfList(productItems))
 
+        entitiesWithAttachments.put(Contact.class.simpleName, List.of(contact?.id))
         entitiesWithAttachments.put(PaymentIn.class.simpleName, contact?.paymentsIn?.collect { it.id })
         entitiesWithAttachments.put(PaymentOut.class.simpleName, contact?.paymentsOut?.collect { it.id })
         entitiesWithAttachments.put(Quote.class.simpleName, contact?.quotes?.collect { it.id })
         entitiesWithAttachments.put(AssessmentSubmission.class.simpleName, assessmentSubmissions?.collect { it.id })
-        entitiesWithAttachments.put(Certificate.class.simpleName, assessmentSubmissions?.collect { it.id })
-        entitiesWithAttachments.put(Payslip.class.simpleName, assessmentSubmissions?.collect { it.id })
-        entitiesWithAttachments.put(ProductItem.class.simpleName, assessmentSubmissions?.collect { it.id })
+        entitiesWithAttachments.put(Certificate.class.simpleName, certificates?.collect { it.id })
+        entitiesWithAttachments.put(Payslip.class.simpleName, payslips?.collect { it.id })
+        entitiesWithAttachments.put(ProductItem.class.simpleName, productItems?.collect { it.id })
 
 
         def notes = ObjectSelect.query(Note)
                 .where(buildNotesExpression())
+                .prefetch(Note.SYSTEM_USER.path().toString(), PrefetchTreeNode.DISJOINT_BY_ID_PREFETCH_SEMANTICS)
                 .select(cayenneService.newReadonlyContext)
         def attachmentRelations = ObjectSelect.query(AttachmentRelation)
                 .where(buildDocumentsExpression())
+                .prefetch(AttachmentRelation.DOCUMENT.path().toString(), PrefetchTreeNode.DISJOINT_BY_ID_PREFETCH_SEMANTICS)
                 .select(cayenneService.newReadonlyContext)
 
 
         interactions.addAll(interactionsOfList(notes))
+        interactions.addAll(interactionsOfList(contact?.noteRelations*.note))
+        interactions.addAll(interactionsOfList(contact?.attachmentRelations))
         interactions.addAll(interactionsOfList(attachmentRelations))
         interactions.sort { a, b -> b.date <=> a.date }
 
