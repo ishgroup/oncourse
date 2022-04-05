@@ -16,7 +16,11 @@ import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.SessionDao
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
+import ish.util.DurationFormatter
 import ish.util.EntityUtil
+
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 import static ish.oncourse.server.api.function.EntityFunctions.addAqlExp
 import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
@@ -35,6 +39,8 @@ import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.FunctionExpressionFactory
 import org.apache.cayenne.exp.Property
 import org.apache.cayenne.query.ObjectSelect
+
+import static java.lang.Math.round
 
 class TimetableApiImpl implements TimetableApi {
 
@@ -88,10 +94,13 @@ class TimetableApiImpl implements TimetableApi {
     }
 
     @Override
-    List<Integer> getDates(Integer month, Integer year, String search) {
+    List<Double> getDates(Integer month, Integer year, String search) {
         ObjectContext context = cayenneService.newReadonlyContext
 
-        Date startOfMonth = new GregorianCalendar(year, month, 1).time
+        def calendar = new GregorianCalendar(year, month, 1)
+        int monthSize = calendar.toYearMonth().lengthOfMonth()
+
+        Date startOfMonth = calendar.time
         Date endOfMonth = (month == Calendar.DECEMBER ? new GregorianCalendar(++year, 0, 1): new GregorianCalendar(year, ++month, 1)).time
 
         ObjectSelect query = ObjectSelect.query(Session)
@@ -104,8 +113,16 @@ class TimetableApiImpl implements TimetableApi {
         Property<Integer> dayOfMonth = Property
                 .create(FunctionExpressionFactory.dayOfMonthExp(Session.START_DATETIME.path()), Integer.class)
 
-        query.columns(dayOfMonth, Property.COUNT).select(context).collect{it[0] as Integer}
-
+        def result = new double[monthSize]
+        def queryResult = query.columns(dayOfMonth, Property.COUNT, Session.START_DATETIME, Session.END_DATETIME).select(context)
+        def maxHours = queryResult.max {sessionLine -> DurationFormatter.durationInHoursBetween(sessionLine[2] as Date, sessionLine[3] as Date)}[0] as Integer
+        queryResult.each { sessionLine ->
+            result[(sessionLine[0] as Integer) - 1] += DurationFormatter.durationInHoursBetween(sessionLine[2] as Date, sessionLine[3] as Date).doubleValue()
+        }
+        result
+                .collect {
+            new BigDecimal((maxHours as Integer).doubleValue() / it.doubleValue()).setScale(2, RoundingMode.HALF_UP).doubleValue()
+        }
     }
 
     @Override
