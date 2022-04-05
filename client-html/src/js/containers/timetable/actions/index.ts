@@ -1,5 +1,5 @@
-import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
 import { Filter, SearchRequest } from "@api/model";
+import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
 import { CoreFilter, SavingFilterState } from "../../../model/common/ListView";
 
 export const FIND_TIMETABLE_SESSIONS = _toRequestType("find/timetable/session");
@@ -27,7 +27,6 @@ export const CLEAR_TIMETABLE_MONTHS = "clear/timetable/months";
 
 export const SET_TIMETABLE_SEARCH = "set/timetable/search";
 export const SET_TIMETABLE_SEARCH_ERROR = "set/timetable/search/error";
-export const SET_TIMETABLE_USERS_SEARCH = "set/timetable/usersSearch";
 export const SET_TIMETABLE_SAVING_FILTER = "set/timetable/savingFilter";
 
 export const setTimetableFilters = (filters?: CoreFilter[]) => ({
@@ -66,11 +65,6 @@ export const setTimetableSearchError = (searchError: boolean) => ({
 export const setTimetableSearch = (search: string) => ({
   type: SET_TIMETABLE_SEARCH,
   payload: { search }
-});
-
-export const setTimetableUsersSearch = (usersSearch: string) => ({
-  type: SET_TIMETABLE_USERS_SEARCH,
-  payload: { usersSearch }
 });
 
 export const findTimetableSessions = (request: SearchRequest) => ({

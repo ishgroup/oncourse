@@ -18,13 +18,19 @@ import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { State } from "../../../../reducers/state";
-import { clearTimetableMonths, findTimetableSessions, setTimetableUsersSearch } from "../../actions";
+import {
+  clearTimetableMonths,
+  findTimetableSessions,
+  getTimetableSessionsDays,
+  setTimetableSearch
+} from "../../actions";
 import { TimetableContext } from "../../Timetable";
 import { DD_MMM_YYYY_MINUSED } from "../../../../common/utils/dates/format";
 import { animateListScroll, attachDayNodesObserver } from "../../utils";
 import CalendarMonth from "./components/month/CalendarMonth";
 import CalendarModesSwitcher from "../modesSwitcher/CalendarModesSwitcher";
 import DynamicSizeList from "../../../../common/components/form/DynamicSizeList";
+import { usePrevious } from "../../../../common/utils/hooks";
 
 const styles = theme => createStyles({
     root: {
@@ -120,10 +126,10 @@ const scrollToCalendarDay = (day: Date, list, index, dayNodesObserver) => {
 
 const Calendar = React.memo<Props>(props => {
   const {
-   targetDay, setTargetDay, selectedWeekDays, selectedDayPeriods, calendarMode
+   targetDay, setTargetDay, selectedMonth, selectedWeekDays, selectedDayPeriods, calendarMode
   } = useContext(
-      TimetableContext
-    );
+    TimetableContext
+  );
 
   const {
     search,
@@ -133,15 +139,28 @@ const Calendar = React.memo<Props>(props => {
     sessionsLoading,
     location,
     history,
+    match: { url },
     dispatch,
   } = props;
-  
-  const params = useMemo(() => new URLSearchParams(location.search), [location.search]);
 
   const [dayNodesObserver, setDayNodesObserver] = useState<any>();
   const [tagsExpanded, setTagsExpanded] = useState(true);
 
   const listEl = useRef(null);
+
+  const prevSearch = usePrevious(search,"");
+  const prevLocationSearch = usePrevious(location.search,"");
+
+  const updateHistory = (pathname, search) => {
+    const newUrl = window.location.origin + pathname + search;
+
+    if (newUrl !== window.location.href) {
+      history.push({
+        pathname,
+        search
+      });
+    }
+  };
 
   const targetDayHandler = (day: Date) => {
     if (listEl.current && listEl.current.state.isScrolling) {
@@ -154,13 +173,13 @@ const Calendar = React.memo<Props>(props => {
   };
 
   // fetch next two months
-  const loadNextMonths = useCallback( baseDate => {
+  const loadNextMonths = baseDate => {
     const startMonth = startOfMonth(baseDate);
 
     const endMonth = endOfMonth(addMonths(startMonth, 1));
 
-    dispatch(findTimetableSessions({ from: startMonth.toISOString(), to: endMonth.toISOString(), search }));
-  }, [search]);
+    dispatch(findTimetableSessions({ from: startMonth.toISOString(), to: endMonth.toISOString() }));
+  };
 
   const onRowsRendered = useCallback(args => onRendered({
    ...args, months, loadNextMonths, sessionsLoading
@@ -168,26 +187,61 @@ const Calendar = React.memo<Props>(props => {
 
   // Search effects
   useEffect(() => {
-    const searchString = params.get("search");
+    const params = new URLSearchParams(location.search);
     const title = params.get("title");
+    const searchString = params.get("search");
 
     if (title) {
       window.document.title = title;
     }
 
-    if (searchString) {
-      dispatch(setTimetableUsersSearch(decodeURIComponent(searchString)));
+    if (searchString && !search) {
+      dispatch(setTimetableSearch(decodeURIComponent(searchString)));
     }
-  }, [params]);
+  }, []);
 
   useEffect(() => {
-    if (search) {
-      params.set("search", encodeURIComponent(search));
-      history.replace({
-        search: params.toString()
-      });
+    const params = new URLSearchParams(location.search);
+
+    if (prevSearch !== search) {
+      if (search) {
+        params.set("search", encodeURIComponent(search));
+      } else {
+        params.delete("search");
+      }
+      const paramsString = decodeURIComponent(params.toString());
+      updateHistory(url, paramsString ? "?" + paramsString : "");
     }
-  }, [search]);
+
+    if (prevLocationSearch !== location.search) {
+      const prevUrlSearch = new URLSearchParams(prevLocationSearch);
+      const filtersUrlString = params.get("filter");
+      const searchString = params.get("search");
+
+      // if (prevUrlSearch.get("filter") !== filtersUrlString) {
+      //   const filtersString = getFiltersNameString(filterGroups);
+      //   if (filtersString !== filtersUrlString) {
+      //     const updated = [...filterGroups];
+      //     this.setActiveFiltersBySearch(filtersUrlString, filterGroups);
+      //     this.onChangeFilters(updated, "filters");
+      //   }
+      // }
+
+      if (prevUrlSearch.get("search") !== searchString) {
+        dispatch(setTimetableSearch(searchString ? decodeURIComponent(searchString) : ""));
+      }
+    }
+  }, [search, url, prevSearch, prevLocationSearch, location.search]);
+
+  useEffect(() => {
+    if (search !== prevSearch) {
+      const startMonth = startOfMonth(selectedMonth);
+      const endMonth = endOfMonth(addMonths(startMonth, 1));
+
+      dispatch(getTimetableSessionsDays(selectedMonth.getMonth(), selectedMonth.getFullYear()));
+      dispatch(findTimetableSessions({ from: startMonth.toISOString(), to: endMonth.toISOString() }));
+    }
+  }, [search, prevSearch]);
 
   // Layout effects
   useEffect(() => {

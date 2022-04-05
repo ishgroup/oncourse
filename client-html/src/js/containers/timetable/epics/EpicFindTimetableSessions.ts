@@ -8,7 +8,10 @@ import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchEr
 
 const request: EpicUtils.Request<Session[], { request: SearchRequest }> = {
   type: FIND_TIMETABLE_SESSIONS,
-  getData: ({ request }) => TimetableService.findTimetableSessions(request),
+  getData: ({ request }, state) => {
+    request.search = state.timetable.search;
+    return TimetableService.findTimetableSessions(request);
+  },
   processData: (sessions, s, { request: { from } }) => {
     const months = getMonthsWithinYear(sessions, new Date(from));
 

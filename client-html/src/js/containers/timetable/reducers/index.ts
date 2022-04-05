@@ -7,7 +7,6 @@ import {
   GET_TIMETABLE_SESSIONS_BY_IDS_FULFILLED,
   GET_TIMETABLE_SESSIONS_DAYS_FULFILLED,
   SET_TIMETABLE_SEARCH,
-  SET_TIMETABLE_USERS_SEARCH,
   SET_TIMETABLE_SAVING_FILTER,
   SET_TIMETABLE_FILTERS,
   GET_TIMETABLE_SESSIONS_TAGS_FULFILLED,
@@ -19,7 +18,6 @@ const TimetableInitialState: TimetableState = {
   filters: [],
   sessionsLoading: false,
   search: "",
-  usersSearch: "",
   searchError: false,
   savingFilter: null
 };
@@ -105,7 +103,6 @@ export const timetableReducer = (
 
     case SET_TIMETABLE_SEARCH:
     case SET_TIMETABLE_SEARCH_ERROR:
-    case SET_TIMETABLE_USERS_SEARCH:
     case SET_TIMETABLE_SAVING_FILTER:
     case GET_TIMETABLE_SESSIONS_DAYS_FULFILLED: {
       return {

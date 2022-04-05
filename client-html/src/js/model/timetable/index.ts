@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Session, TutorAttendance } from "@api/model";
+import { Session } from "@api/model";
 import { AnyArgFunction, DateArgFunction, StringArgFunction } from "../common/CommonFunctions";
 import { CoreFilter, SavingFilterState } from "../common/ListView";
 
@@ -14,7 +14,6 @@ export interface TimetableState {
   selectedMonthSessionDays?: string[];
   sessionsLoading?: boolean;
   search?: string;
-  usersSearch?: string;
   searchError?: boolean;
   filters: CoreFilter[];
   savingFilter?: SavingFilterState;

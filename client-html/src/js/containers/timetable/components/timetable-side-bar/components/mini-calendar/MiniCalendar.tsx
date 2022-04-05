@@ -16,7 +16,7 @@ interface Props {
   selectedMonthSessionDays?: number[];
 }
 
-const MiniCalendar: React.FunctionComponent<Props> = ({ classes, getSessionsDays, selectedMonthSessionDays }) => {
+const MiniCalendar: React.FunctionComponent<Props> = ({ getSessionsDays, selectedMonthSessionDays }) => {
   const {
  setSelectedWeekDays, selectedMonth, setSelectedMonth, selectedWeekDays 
 } = useContext(TimetableContext);
@@ -65,7 +65,7 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getSessionsDays: (month: number, year: number) => dispatch(getTimetableSessionsDays(month, year))
-  });
+  getSessionsDays: (month: number, year: number) => dispatch(getTimetableSessionsDays(month, year))
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(MiniCalendar);
