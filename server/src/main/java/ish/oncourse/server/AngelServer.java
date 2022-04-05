@@ -28,6 +28,7 @@ import ish.oncourse.server.modules.ApiCayenneLayerModule;
 import ish.oncourse.server.modules.ApiImplementationModule;
 import ish.oncourse.server.modules.ApiServiceModule;
 import ish.oncourse.server.modules.CustomServicesModule;
+import ish.oncourse.server.modules.MonitoringModule;
 import ish.oncourse.server.modules.ServiceModule;
 import ish.oncourse.server.security.api.PermissionModule;
 
@@ -61,6 +62,7 @@ public class AngelServer {
                 .module(LicenseModule.class)
                 .module(SMTPModule.class)
                 .module(DocumentModule.class)
+                .module(MonitoringModule.class)
                 .exec()
                 .exit();
     }
