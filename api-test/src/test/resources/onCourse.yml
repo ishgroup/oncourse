@@ -11,3 +11,7 @@ smtp:
   host: 127.0.0.1
   port: 11111
   mode: mock
+
+monitoring:
+  user: monitoring
+  password: 4h5hgejhkwjh
