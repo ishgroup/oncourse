@@ -64,7 +64,7 @@ class NoteFunctions {
             cayenneModel.changedBy = context.localObject(currentUser)
         }
 
-        cayenneModel.interactionDate = note.interactionDate.toDate()
+        cayenneModel.interactionDate = note.interactionDate?.toDate() ?: note.created.toDate()
 
         if (!cayenneModel.noteRelations) {
             cayenneModel.context.newObject(relationClass).with { relation ->
