@@ -9,6 +9,7 @@
 package ish.oncourse.server.monitoring
 
 import io.bootique.annotation.BQConfigProperty
+import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.servlet.ISessionManager
 import ish.oncourse.server.http.HttpFactory
@@ -37,7 +38,7 @@ class MonitoringServiceFactory {
         this.password = password
     }
 
-    MonitoringService createMonitoringService(ISessionManager sessionManager, PreferenceController preferenceController, LicenseService licenseService, HttpFactory httpFactory) {
-        return new MonitoringServiceImpl(sessionManager, preferenceController, licenseService, httpFactory, user, password)
+    MonitoringService createMonitoringService(ISessionManager sessionManager, PreferenceController preferenceController, LicenseService licenseService, HttpFactory httpFactory, ICayenneService cayenneService) {
+        return new MonitoringServiceImpl(sessionManager, preferenceController, licenseService, httpFactory, cayenneService, user, password)
     }
 }
