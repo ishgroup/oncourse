@@ -12,12 +12,15 @@ import com.sun.management.OperatingSystemMXBean
 import groovy.transform.CompileStatic
 import ish.oncourse.API
 import ish.oncourse.common.ResourcesUtil
+import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.servlet.ISessionManager
+import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.http.HttpFactory
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.monitoring.MonitoringModel
 import ish.oncourse.server.monitoring.MonitoringService
+import org.apache.cayenne.query.ObjectSelect
 import org.eclipse.jetty.security.ConstraintMapping
 import org.eclipse.jetty.security.ConstraintSecurityHandler
 import org.eclipse.jetty.security.HashLoginService
@@ -44,12 +47,14 @@ class MonitoringServiceImpl implements MonitoringService {
     private final PreferenceController preferenceController
     private final LicenseService licenseService
     private final HttpFactory httpFactory
+    private final ICayenneService cayenneService
 
-    MonitoringServiceImpl(ISessionManager sessionManager, PreferenceController preferenceController, LicenseService licenseService, HttpFactory httpFactory, String user, String password) {
+    MonitoringServiceImpl(ISessionManager sessionManager, PreferenceController preferenceController, LicenseService licenseService, HttpFactory httpFactory, ICayenneService cayenneService, String user, String password) {
         this.sessionManager = sessionManager
         this.preferenceController = preferenceController
         this.licenseService = licenseService
         this.httpFactory = httpFactory
+        this.cayenneService = cayenneService
         userName = user
         this.password = password
     }
@@ -119,9 +124,12 @@ class MonitoringServiceImpl implements MonitoringService {
         return properties
     }
 
-    private static Map getOnCourseProperties() {
+    private Map getOnCourseProperties() {
+        def context = cayenneService.getNewReadonlyContext()
+        def enrolmentsCount = ObjectSelect.query(Enrolment.class).selectCount(context)
         Map properties = new HashMap()
         properties.put("version", ResourcesUtil.getReleaseVersionString())
+        properties.put("enrolments.count", enrolmentsCount)
         return properties
     }
 
