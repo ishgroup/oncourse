@@ -408,6 +408,7 @@ class MessageApiService extends EntityApiService<MessageDTO, Message, MessageDao
                 case MessageTypeDTO.SMS:
                     plainBindings.put(templateService.RECORD, entity)
                     plainBindings.put(templateService.TO, recipient)
+                    plainBindings.put(templateService.AUTHOR, user)
                     return templateService.renderPlain(template, plainBindings)
             }
         }
