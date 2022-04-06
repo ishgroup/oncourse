@@ -60,8 +60,8 @@ class ContactInsightApiImpl implements ContactInsightApi {
         def context = cayenneService.newReadonlyContext
         def contact = contactDao.getById(context, id)
         def student = contact.student
-        def invoices = contact.student?.invoices
-        def applications = contact.student?.applications
+        def invoices = contact.invoices
+        def applications = student?.applications
         def enrolments = student?.enrolments
 
         def contactOverview = new ContactOverviewDTO()
