@@ -15,6 +15,7 @@ import com.google.inject.TypeLiteral
 import io.bootique.ConfigModule
 import io.bootique.config.ConfigurationFactory
 import io.bootique.jetty.MappedServlet
+import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.servlet.ISessionManager
 import ish.oncourse.server.http.HttpFactory
@@ -32,10 +33,10 @@ class MonitoringModule extends ConfigModule {
 
     @Singleton
     @Provides
-    MonitoringService createMonitoringService(ISessionManager sessionManager, PreferenceController preferenceController, LicenseService licenseService, HttpFactory httpFactory, ConfigurationFactory configFactory) {
+    MonitoringService createMonitoringService(ISessionManager sessionManager, PreferenceController preferenceController, LicenseService licenseService, HttpFactory httpFactory, ICayenneService cayenneService, ConfigurationFactory configFactory) {
         return configFactory
                 .config(MonitoringServiceFactory.class, defaultConfigPrefix())
-                .createMonitoringService(sessionManager, preferenceController, licenseService, httpFactory)
+                .createMonitoringService(sessionManager, preferenceController, licenseService, httpFactory, cayenneService)
     }
 
     @Singleton
