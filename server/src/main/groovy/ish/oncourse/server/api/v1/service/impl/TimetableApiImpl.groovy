@@ -120,7 +120,7 @@ class TimetableApiImpl implements TimetableApi {
 
         def resultAsObj = ArrayUtils.toObject(result)
         def maxHours = resultAsObj.collect {it}.max()
-        resultAsObj.collect {
+        resultAsObj.collect {maxHours == 0 ? 0 :
             new BigDecimal( it / maxHours.doubleValue()).setScale(2, RoundingMode.HALF_UP).doubleValue()
         }
     }
