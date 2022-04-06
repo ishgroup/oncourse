@@ -330,7 +330,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
   const getPreview = (val, selection, listSearchQuery) => {
     MessageService.getMessagePreview(
       val.recipientsCount,
-      getMessageRequestModel(val, selection, listSearchQuery),
+      getMessageRequestModel(val, selection, listSearchQuery || {}),
       val.messageType
       )
       .then(r => {
@@ -509,7 +509,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
   const filteredTemplatesByVaribleCount = useMemo<EmailTemplate[]>(() =>
     templates?.filter(template => template.variables.filter(variable => variable.type === DataType.Object).length === 0) || [], [templates]);
 
-  const onSubmit = model => dispatch(sendMessage(model));
+  const onSubmit = model => dispatch(sendMessage(model, selection));
 
   return (
     <Dialog

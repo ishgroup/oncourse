@@ -12,9 +12,9 @@ import { SEND_MESSAGE } from "../actions";
 import MessageService from "../services/MessageService";
 import { getMessageRequestModel } from "../utils";
 
-const request: EpicUtils.Request<any, MessageExtended> = {
+const request: EpicUtils.Request<any, { model: MessageExtended, selection: string[] }> = {
   type: SEND_MESSAGE,
-  getData: (model, s) => MessageService.sendMessage(model.recipientsCount, getMessageRequestModel(model, s.list.selection, s.list.searchQuery), model.messageType),
+  getData: ({ model, selection }, s) => MessageService.sendMessage(model.recipientsCount, getMessageRequestModel(model, selection, s.list.searchQuery), model.messageType),
   processData: () => [
       {
         type: FETCH_SUCCESS,
