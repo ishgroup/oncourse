@@ -19,7 +19,6 @@ jdbc:
     removeAbandonedTimeout: 300
     removeAbandoned: true
     logAbandoned: true
-    jmxEnabled: true
 
   angel-test-creation:
     url: ${dbUrl}
@@ -35,7 +34,6 @@ jdbc:
     removeAbandonedTimeout: 300
     removeAbandoned: true
     logAbandoned: true
-    jmxEnabled: true
 
 cayenne:
   datasource: angel-test
