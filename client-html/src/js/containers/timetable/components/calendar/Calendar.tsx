@@ -266,7 +266,7 @@ const Calendar = React.memo<Props>(props => {
     const targetDayMonthIndex = months.findIndex(m => isSameMonth(m.month, targetDay));
 
     if (targetDayMonthIndex !== -1) {
-      if (calendarMode === "Compact" && !selectedMonthSessionDays[targetDay.getDate() - 1] !== 0) {
+      if (calendarMode === "Compact" && !(selectedMonthSessionDays[targetDay.getDate() - 1] !== 0)) {
         return;
       }
       listEl.current.scrollToItem(targetDayMonthIndex);
