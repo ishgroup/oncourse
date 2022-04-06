@@ -15,17 +15,6 @@ import com.google.inject.Inject
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.SessionDao
-import ish.oncourse.server.cayenne.glue.CayenneDataObject
-import ish.util.DurationFormatter
-import ish.util.EntityUtil
-
-import java.math.RoundingMode
-import java.text.DecimalFormat
-
-import static ish.oncourse.server.api.function.EntityFunctions.addAqlExp
-import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
-import static ish.oncourse.server.api.v1.function.TimetableFunctions.getDateRangeExpression
-import static ish.oncourse.server.api.v1.function.TimetableFunctions.toRestSession
 import ish.oncourse.server.api.v1.model.SearchRequestDTO
 import ish.oncourse.server.api.v1.model.SessionDTO
 import ish.oncourse.server.api.v1.service.TimetableApi
@@ -33,14 +22,23 @@ import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Room
 import ish.oncourse.server.cayenne.Session
 import ish.oncourse.server.cayenne.Tutor
-import static ish.util.LocalDateUtils.dateToTimeValue
+import ish.oncourse.server.cayenne.glue.CayenneDataObject
+import ish.util.DurationFormatter
+import ish.util.EntityUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.FunctionExpressionFactory
 import org.apache.cayenne.exp.Property
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.commons.lang.ArrayUtils
 
-import static java.lang.Math.round
+import java.math.RoundingMode
+
+import static ish.oncourse.server.api.function.EntityFunctions.addAqlExp
+import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
+import static ish.oncourse.server.api.v1.function.TimetableFunctions.getDateRangeExpression
+import static ish.oncourse.server.api.v1.function.TimetableFunctions.toRestSession
+import static ish.util.LocalDateUtils.dateToTimeValue
 
 class TimetableApiImpl implements TimetableApi {
 
@@ -113,15 +111,17 @@ class TimetableApiImpl implements TimetableApi {
         Property<Integer> dayOfMonth = Property
                 .create(FunctionExpressionFactory.dayOfMonthExp(Session.START_DATETIME.path()), Integer.class)
 
-        def result = new double[monthSize]
+        double[] result = new double[monthSize]
         def queryResult = query.columns(dayOfMonth, Property.COUNT, Session.START_DATETIME, Session.END_DATETIME).select(context)
-        def maxHours = queryResult.max {sessionLine -> DurationFormatter.durationInHoursBetween(sessionLine[2] as Date, sessionLine[3] as Date)}[0] as Integer
+
         queryResult.each { sessionLine ->
             result[(sessionLine[0] as Integer) - 1] += DurationFormatter.durationInHoursBetween(sessionLine[2] as Date, sessionLine[3] as Date).doubleValue()
         }
-        result
-                .collect {
-            new BigDecimal((maxHours as Integer).doubleValue() / it.doubleValue()).setScale(2, RoundingMode.HALF_UP).doubleValue()
+
+        def resultAsObj = ArrayUtils.toObject(result)
+        def maxHours = resultAsObj.collect {it}.max()
+        resultAsObj.collect {
+            new BigDecimal( it / maxHours.doubleValue()).setScale(2, RoundingMode.HALF_UP).doubleValue()
         }
     }
 
