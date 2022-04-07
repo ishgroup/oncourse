@@ -239,14 +239,10 @@ public class AngelServerFactory {
         Yaml yaml = new Yaml();
         Path systemUsersFile = Paths.get(YAML_SYSTEM_USERS_FILE);
         List<Map<String, Object>> users;
-        try {
-            InputStream inputStream = new FileInputStream(systemUsersFile.toFile());
+        try (InputStream inputStream = new FileInputStream(systemUsersFile.toFile())) {
             users = yaml.load(inputStream);
         } catch (FileNotFoundException e) {
             LOGGER.warn("File with system users not found.");
-            return;
-        } catch (Exception e) {
-            LOGGER.warn("Can not parse system users file.", e);
             return;
         }
 
