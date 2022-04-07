@@ -21,7 +21,6 @@ Feature: Main feature for all PUT requests with path 'export/avetmiss8'
         When method PUT
         Then status 200
 
-        * configure retry = { count: 4, timeout: 1500}
         * def processId = $
         Given path ishPathControl + '/' + processId
         When method GET
@@ -30,7 +29,6 @@ Feature: Main feature for all PUT requests with path 'export/avetmiss8'
         * match $ == {"status":"#ignore","message":null}
 
         Given path ishPath + '/' + processId
-        And retry until responseStatus != 204
         When method GET
         Then status 200
 #        And match $ contains '.txt'
@@ -47,17 +45,14 @@ Feature: Main feature for all PUT requests with path 'export/avetmiss8'
         Then status 200
 
         * def processId = $
-        * configure retry = { count: 4, timeout: 1500}
 
         Given path ishPathControl + '/' + processId
-        And retry until responseStatus != 204
         When method GET
         Then status 200
 
         * match $ == {"status":"#ignore","message":null}
 
         Given path ishPath + '/' + processId
-        And retry until responseStatus != 204
         When method GET
         Then status 200
 #        And match $ contains '.txt'
@@ -79,11 +74,9 @@ Feature: Main feature for all PUT requests with path 'export/avetmiss8'
         When method PUT
         Then status 200
 
-        * configure retry = { count: 4, timeout: 1500}
         * def processId = $
 
         Given path ishPathControl + '/' + processId
-        And retry until responseStatus != 204
         When method GET
         Then status 200
 
@@ -91,7 +84,6 @@ Feature: Main feature for all PUT requests with path 'export/avetmiss8'
 
 
         Given path ishPath + '/' + processId
-        And retry until responseStatus != 204
         When method GET
         Then status 200
 #        And match $ contains '.txt'

@@ -20,11 +20,9 @@ Feature: Main feature for all GET requests with path 'export/avetmiss8'
         When method PUT
         Then status 200
 
-        * configure retry = { count: 4, timeout: 1000}
         * def processId = $
 
         Given path ishPath + '/' + processId
-        And retry until responseStatus != 204
         When method GET
         Then status 200
 #        And match $ contains '.txt'

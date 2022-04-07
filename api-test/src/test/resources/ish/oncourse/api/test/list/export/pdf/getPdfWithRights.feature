@@ -21,10 +21,8 @@ Feature: Re-usable feature to get PDF with access rights
 
         * match $ == {"status":"#ignore","message":null}
 
-        * configure retry = { count: 5, interval: 1500 }
-        Given path ishPath + '/' + processId
+        Given path ishPath + '/' + proxyId
         And param entityName = entity
-        And retry until responseStatus != 204
         When method GET
         Then status 200
         And match $ contains 'PDF'
