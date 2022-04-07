@@ -1,47 +1,39 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { useCallback, useContext, useEffect } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import clsx from "clsx";
-import { Filter, SearchRequest } from "@api/model";
-import { addMonths, endOfMonth, startOfMonth } from "date-fns";
+import { Filter } from "@api/model";
 import FilterGroup from "../../../../../../common/components/list-view/components/side-bar/components/FilterGroup";
 import { CoreFilter, SavingFilterState } from "../../../../../../model/common/ListView";
 import { State } from "../../../../../../reducers/state";
 import {
-  clearTimetableMonths,
   deleteTimetableFilter,
-  findTimetableSessions,
   getTimetableFilters,
-  getTimetableSessionsDays,
   saveTimetableFilter,
   setTimetableFilters,
   setTimetableSavingFilter,
-  setTimetableSearch
 } from "../../../../actions";
 import { StubFilterItemBase } from "../../../../../../common/components/list-view/components/side-bar/components/StubFilterItem";
-import { AnyArgFunction, StringArgFunction } from "../../../../../../model/common/CommonFunctions";
+import { AnyArgFunction } from "../../../../../../model/common/CommonFunctions";
 import { TimetableContext } from "../../../../Timetable";
 import { Fetch } from "../../../../../../model/common/Fetch";
-import { getFiltersString } from "../../../../../../common/components/list-view/utils/listFiltersUtils";
 
 interface Props {
-  classes?: any;
   filters?: CoreFilter[];
   savingFilter?: Filter;
-  fetch?: Fetch;
-  getSessions?: (request: SearchRequest) => void;
   saveFilter?: (filter: Filter) => void;
   setSavingFilter?: (savingFilter?: SavingFilterState) => void;
   setTimetableFilters?: (filters?: CoreFilter[]) => void;
-  getTimetableSessionsDays?: (month: number, year: number) => void;
-  setTimetableSearch?: StringArgFunction;
+  fetch: Fetch;
   getTimetableFilters?: AnyArgFunction;
-  clearTimetableMonths?: AnyArgFunction;
   deleteTimetableFilter?: (id: number, currentMonth: Date) => void;
 }
 
@@ -52,12 +44,8 @@ const CustomFilters = React.memo<Props>(
     setSavingFilter,
     saveFilter,
     getTimetableFilters,
-    getTimetableSessionsDays,
     setTimetableFilters,
     deleteTimetableFilter,
-    getSessions,
-    setTimetableSearch,
-    clearTimetableMonths,
     fetch
   }) => {
     useEffect(() => {
@@ -66,27 +54,11 @@ const CustomFilters = React.memo<Props>(
 
     const { selectedMonth } = useContext(TimetableContext);
 
-    const onFiltersUpdate = useCallback(
-      (filter, active) => {
-        clearTimetableMonths();
-        const filterIndex = Number(filter.split("/")[1]);
-
-        const updatedFilters = filters.map((f, i) => ({ ...f, active: i === filterIndex ? active : f.active }));
-
-        const search = getFiltersString([{ filters: updatedFilters }]);
-
-        setTimetableFilters(updatedFilters);
-        setTimetableSearch(search);
-
-        const startMonth = startOfMonth(selectedMonth);
-
-        const endMonth = endOfMonth(addMonths(startMonth, 1));
-
-        getSessions({ from: startMonth.toISOString(), to: endMonth.toISOString(), search });
-        getTimetableSessionsDays(selectedMonth.getMonth(), selectedMonth.getFullYear());
-      },
-      [filters, selectedMonth]
-    );
+    const onFiltersUpdate = (filter, active) => {
+      const filterIndex = Number(filter.split("/")[1]);
+      const updatedFilters = filters.map((f, i) => ({ ...f, active: i === filterIndex ? active : f.active }));
+      setTimetableFilters(updatedFilters);
+    };
 
     const onDeleteFilter = useCallback(
       id => {
@@ -130,14 +102,10 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  getSessions: (request: SearchRequest) => dispatch(findTimetableSessions(request)),
-  setTimetableSearch: (search: string) => dispatch(setTimetableSearch(search)),
   saveFilter: (filter: Filter) => dispatch(saveTimetableFilter(filter)),
   setSavingFilter: (savingFilter?: SavingFilterState) => dispatch(setTimetableSavingFilter(savingFilter)),
   deleteTimetableFilter: (id: number, currentMonth: Date) => dispatch(deleteTimetableFilter(id, currentMonth)),
   setTimetableFilters: (filters?: CoreFilter[]) => dispatch(setTimetableFilters(filters)),
-  getTimetableSessionsDays: (month: number, year: number) => dispatch(getTimetableSessionsDays(month, year)),
-  clearTimetableMonths: () => dispatch(clearTimetableMonths()),
   getTimetableFilters: () => dispatch(getTimetableFilters())
 });
 

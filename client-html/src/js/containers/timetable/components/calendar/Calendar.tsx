@@ -24,7 +24,7 @@ import { State } from "../../../../reducers/state";
 import {
   clearTimetableMonths,
   findTimetableSessions,
-  getTimetableSessionsDays,
+  getTimetableSessionsDays, setTimetableFilters,
   setTimetableSearch
 } from "../../actions";
 import { TimetableContext } from "../../Timetable";
@@ -34,6 +34,11 @@ import CalendarMonth from "./components/month/CalendarMonth";
 import CalendarModesSwitcher from "../modesSwitcher/CalendarModesSwitcher";
 import DynamicSizeList from "../../../../common/components/form/DynamicSizeList";
 import { usePrevious } from "../../../../common/utils/hooks";
+import {
+  getFiltersNameString,
+  setActiveFiltersBySearch
+} from "../../../../common/components/list-view/utils/listFiltersUtils";
+import { CoreFilter } from "../../../../model/common/ListView";
 
 const styles = theme => createStyles({
     root: {
@@ -73,6 +78,7 @@ interface Props extends RouteComponentProps {
   classes?: any;
   months?: any;
   search?: string;
+  filters?: CoreFilter[];
   sessionsLoading?: boolean;
   selectedMonthSessionDays?: number[];
   dispatch?: Dispatch;
@@ -142,6 +148,7 @@ const Calendar = React.memo<Props>(props => {
     sessionsLoading,
     location,
     history,
+    filters,
     match: { url },
     dispatch,
   } = props;
@@ -151,16 +158,20 @@ const Calendar = React.memo<Props>(props => {
 
   const listEl = useRef(null);
 
-  const prevSearch = usePrevious(search,"");
-  const prevLocationSearch = usePrevious(location.search,"");
+  const prevSearch = usePrevious(search, "");
+  const prevLocationSearch = usePrevious(location.search, "");
 
-  const updateHistory = (pathname, search) => {
-    const newUrl = window.location.origin + pathname + search;
+  const updateHistory = searchParams => {
+    const paramsString = decodeURIComponent(searchParams.toString());
+
+    const updatedSearch = paramsString ? "?" + paramsString : "";
+
+    const newUrl = window.location.origin + url + updatedSearch;
 
     if (newUrl !== window.location.href) {
       history.push({
-        pathname,
-        search
+        pathname: url,
+        search: updatedSearch
       });
     }
   };
@@ -178,9 +189,7 @@ const Calendar = React.memo<Props>(props => {
   // fetch next two months
   const loadNextMonths = baseDate => {
     const startMonth = startOfMonth(baseDate);
-
     const endMonth = endOfMonth(addMonths(startMonth, 1));
-
     dispatch(findTimetableSessions({ from: startMonth.toISOString(), to: endMonth.toISOString() }));
   };
 
@@ -192,16 +201,42 @@ const Calendar = React.memo<Props>(props => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const title = params.get("title");
-    const searchString = params.get("search");
 
     if (title) {
       window.document.title = title;
     }
-
-    if (searchString && !search) {
-      dispatch(setTimetableSearch(decodeURIComponent(searchString)));
-    }
   }, []);
+
+  useEffect(() => {
+    if (filters.length) {
+      const params = new URLSearchParams(location.search);
+      const filtersString = getFiltersNameString([{ filters }]) || null;
+      const filtersUrlString = params.get("filter");
+
+      if (filtersString !== filtersUrlString) {
+        const updated = [...filters];
+        setActiveFiltersBySearch(filtersUrlString, [{ filters: updated }]);
+        dispatch(setTimetableFilters(updated));
+      }
+    }
+  }, [location.search, filters.length]);
+
+  useEffect(() => {
+    if (filters.length) {
+      const params = new URLSearchParams(location.search);
+      const filtersString = getFiltersNameString([{ filters }]) || null;
+      const filtersUrlString = params.get("filter");
+
+      if (filtersString !== filtersUrlString) {
+        if (filtersString) {
+          params.set("filter", filtersString);
+        } else {
+          params.delete("filter");
+        }
+        updateHistory(params);
+      }
+    }
+  }, [filters]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -212,23 +247,12 @@ const Calendar = React.memo<Props>(props => {
       } else {
         params.delete("search");
       }
-      const paramsString = decodeURIComponent(params.toString());
-      updateHistory(url, paramsString ? "?" + paramsString : "");
+      updateHistory(params);
     }
 
     if (prevLocationSearch !== location.search) {
       const prevUrlSearch = new URLSearchParams(prevLocationSearch);
-      const filtersUrlString = params.get("filter");
       const searchString = params.get("search");
-
-      // if (prevUrlSearch.get("filter") !== filtersUrlString) {
-      //   const filtersString = getFiltersNameString(filterGroups);
-      //   if (filtersString !== filtersUrlString) {
-      //     const updated = [...filterGroups];
-      //     this.setActiveFiltersBySearch(filtersUrlString, filterGroups);
-      //     this.onChangeFilters(updated, "filters");
-      //   }
-      // }
 
       if (prevUrlSearch.get("search") !== searchString) {
         dispatch(setTimetableSearch(searchString ? decodeURIComponent(searchString) : ""));
@@ -237,14 +261,14 @@ const Calendar = React.memo<Props>(props => {
   }, [search, url, prevSearch, prevLocationSearch, location.search]);
 
   useEffect(() => {
-    if (search !== prevSearch) {
+    if (location.search !== prevLocationSearch) {
       const startMonth = startOfMonth(selectedMonth);
       const endMonth = endOfMonth(addMonths(startMonth, 1));
 
       dispatch(getTimetableSessionsDays(selectedMonth.getMonth(), selectedMonth.getFullYear()));
       dispatch(findTimetableSessions({ from: startMonth.toISOString(), to: endMonth.toISOString() }));
     }
-  }, [search, prevSearch]);
+  }, [location.search, prevLocationSearch]);
 
   // Layout effects
   useEffect(() => {
@@ -340,6 +364,7 @@ const Calendar = React.memo<Props>(props => {
 const mapStateToProps = (state: State) => ({
   search: state.timetable.search,
   months: state.timetable.months,
+  filters: state.timetable.filters,
   sessionsLoading: state.timetable.sessionsLoading,
   selectedMonthSessionDays: state.timetable.selectedMonthSessionDays
 });
