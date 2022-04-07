@@ -34,7 +34,6 @@ import org.apache.commons.lang.ArrayUtils
 
 import java.math.RoundingMode
 
-import static ish.oncourse.server.api.function.EntityFunctions.addAqlExp
 import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
 import static ish.oncourse.server.api.v1.function.TimetableFunctions.getDateRangeExpression
 import static ish.oncourse.server.api.v1.function.TimetableFunctions.toRestSession
@@ -92,7 +91,7 @@ class TimetableApiImpl implements TimetableApi {
     }
 
     @Override
-    List<Double> getDates(Integer month, Integer year, String search) {
+    List<Double> getDates(Integer month, Integer year, String search, String filter) {
         ObjectContext context = cayenneService.newReadonlyContext
 
         def calendar = new GregorianCalendar(year, month, 1)
@@ -101,12 +100,13 @@ class TimetableApiImpl implements TimetableApi {
         Date startOfMonth = calendar.time
         Date endOfMonth = (month == Calendar.DECEMBER ? new GregorianCalendar(++year, 0, 1): new GregorianCalendar(year, ++month, 1)).time
 
-        ObjectSelect query = ObjectSelect.query(Session)
-                .where(Session.START_DATETIME.between(startOfMonth, endOfMonth)) &
+        Class<? extends CayenneDataObject> clzz = EntityUtil.entityClassForName(Session.simpleName)
+        ObjectSelect objectSelect = ObjectSelect.query(clzz)
+        def query = parseSearchQuery(objectSelect, context, aql, null, search, filter, null)
+
+        query = query.where(Session.START_DATETIME.between(startOfMonth, endOfMonth)) &
                 Session.COURSE_CLASS.dot(CourseClass.IS_CANCELLED).isFalse()
 
-
-        query = addAqlExp(search, Session, context, query, aql)
 
         Property<Integer> dayOfMonth = Property
                 .create(FunctionExpressionFactory.dayOfMonthExp(Session.START_DATETIME.path()), Integer.class)
