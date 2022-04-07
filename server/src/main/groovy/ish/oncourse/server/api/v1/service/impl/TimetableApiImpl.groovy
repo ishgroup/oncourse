@@ -91,7 +91,7 @@ class TimetableApiImpl implements TimetableApi {
     }
 
     @Override
-    List<Double> getDates(Integer month, Integer year, String search, String filter) {
+    List<Double> getDates(Integer month, Integer year, SearchRequestDTO request) {
         ObjectContext context = cayenneService.newReadonlyContext
 
         def calendar = new GregorianCalendar(year, month, 1)
@@ -102,7 +102,7 @@ class TimetableApiImpl implements TimetableApi {
 
         Class<? extends CayenneDataObject> clzz = EntityUtil.entityClassForName(Session.simpleName)
         ObjectSelect objectSelect = ObjectSelect.query(clzz)
-        def query = parseSearchQuery(objectSelect, context, aql, null, search, filter, null)
+        def query = parseSearchQuery(objectSelect, context, aql, null, request.search, request.filter, null)
 
         query = query.where(Session.START_DATETIME.between(startOfMonth, endOfMonth)) &
                 Session.COURSE_CLASS.dot(CourseClass.IS_CANCELLED).isFalse()

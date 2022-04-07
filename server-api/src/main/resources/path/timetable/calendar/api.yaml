@@ -16,18 +16,12 @@ post:
       required: true
       type: integer
       example: 2019
-    - name: search
+    - name: request
       in: body
-      description: AQL search expression
-      required: false
+      description: search request object
+      required: true
       schema:
-        type: string
-    - name: filter
-      in: body
-      description: AQL search expression
-      required: false
-      schema:
-        type: string
+        $ref: './def/entity/timetable/SearchRequest.yaml'
   responses:
     '200':
       description: Success response.
