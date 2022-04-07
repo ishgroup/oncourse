@@ -9,16 +9,19 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { change } from "redux-form";
-import { Grid, IconButton } from "@mui/material";
-import Launch from "@mui/icons-material/Launch";
+import { Grid } from "@mui/material";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
 import { courseFilterCondition, openCourseLink } from "../../courses/utils";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
+import {
+  ContactLinkAdornment,
+  HeaderContactTitle,
+  LinkAdornment
+} from "../../../../common/components/form/FieldAdornments";
+import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
@@ -52,12 +55,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
             disableInteraction={!isNew}
             twoColumn={twoColumn}
             title={(
-              <div className="d-inline-flex-center">
-                {values && defaultContactName(values.studentName)}
-                <IconButton disabled={!values?.contactId} size="small" color="primary" onClick={() => openContactLink(values?.contactId)}>
-                  <Launch fontSize="inherit" />
-                </IconButton>
-              </div>
+              <HeaderContactTitle name={values?.studentName} id={values?.contactId} />
             )}
             fields={(
               <Grid item {...gridItemProps}>
@@ -71,7 +69,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
                   selectLabelCondition={contactLabelCondition}
                   defaultDisplayValue={values && defaultContactName(values.studentName)}
                   labelAdornment={
-                    <LinkAdornment linkHandler={openContactLink} link={values.contactId} disabled={!values.contactId} />
+                    <ContactLinkAdornment id={values?.contactId} />
                   }
                   itemRenderer={ContactSelectItemRenderer}
                   rowHeight={55}

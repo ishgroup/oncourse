@@ -16,15 +16,16 @@ import {
 } from "@api/model";
 import Chip from "@mui/material/Chip";
 import clsx from "clsx";
-import { IconButton } from "@mui/material";
-import Launch from "@mui/icons-material/Launch";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import {
- contactLabelCondition, defaultContactName, getContactName, openContactLink 
+  ContactLinkAdornment,
+  HeaderContactTitle
+} from "../../../../common/components/form/FieldAdornments";
+import {
+ contactLabelCondition, defaultContactName, getContactName
 } from "../../contacts/utils";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
@@ -123,8 +124,25 @@ const LeadGeneral = (props: Props) => {
       const courseIds = params.get('courseIds');
       const contactId = params.get('contactId');
       const contactName = params.get('contactName');
+      
+      const clearParams = () => {
+        history.replace({
+          pathname: history.location.pathname,
+          search: decodeURIComponent(params.toString())
+        });
+      };
+      
+      if (contactId) {
+        dispatch(change(form, "contactId", Number(contactId)));
+        params.delete('contactId');
+      }
 
-      if (courseIds && contactId && contactName) {
+      if (contactName) {
+        dispatch(change(form, "contactName", contactName));
+        params.delete('contactName');
+      }
+
+      if (courseIds) {
         EntityService.getPlainRecords(
           'Course',
           RELATION_COURSE_COLUMNS,
@@ -132,20 +150,15 @@ const LeadGeneral = (props: Props) => {
         ).then(({ rows }) => {
           const items = rows.map(getCustomColumnsMap(RELATION_COURSE_COLUMNS));
           const relatedSellables = formatRelatedSalables(items, 'Course').map(mapRelatedSalables);
-          dispatch(change(form, "contactId", Number(contactId)));
-          dispatch(change(form, "contactName", contactName));
           dispatch(change(form, "relatedSellables", relatedSellables));
         })
         .catch(res => instantFetchErrorHandler(dispatch, res))
         .finally(() => {
           params.delete('courseIds');
-          params.delete('contactId');
-          params.delete('contactName');
-          history.replace({
-            pathname: history.location.pathname,
-            search: decodeURIComponent(params.toString())
-          });
+          clearParams();
         });
+      } else {
+        clearParams();
       }
     }
   }, []);
@@ -158,12 +171,7 @@ const LeadGeneral = (props: Props) => {
           disableInteraction={!isNew}
           twoColumn={twoColumn}
           title={(
-            <div className="d-inline-flex-center">
-              {values && defaultContactName(values.contactName)}
-              <IconButton disabled={!values?.contactId} size="small" color="primary" onClick={() => openContactLink(values?.contactId)}>
-                <Launch fontSize="inherit" />
-              </IconButton>
-            </div>
+            <HeaderContactTitle name={values?.contactName} id={values?.contactId} />
           )}
           fields={(
             <Grid item xs={twoColumn ? 6 : 12}>
@@ -178,7 +186,9 @@ const LeadGeneral = (props: Props) => {
                 onInnerValueChange={onContactChange}
                 itemRenderer={ContactSelectItemRenderer}
                 disabled={!isNew}
-                labelAdornment={<LinkAdornment link={values.contactId} linkHandler={openContactLink} />}
+                labelAdornment={
+                  <ContactLinkAdornment id={values?.contactId} />
+                }
                 rowHeight={55}
                 required
               />

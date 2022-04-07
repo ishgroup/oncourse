@@ -2,15 +2,11 @@ import MenuItem from "@mui/material/MenuItem";
 import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { sendMessage } from "../../../../../../containers/entities/messages/actions";
-import { setListNestedEditRecord } from "../../../actions";
+import { openSendMessage } from "../../../../../actions";
 
 interface SendMessageMenuProps {
-  classes: any;
   selection: string[];
   entity: string;
-  getMessageTemplates: any;
-  getEmailFrom: () => void;
   openSendMessageEditView: any;
   closeAll: () => void;
 }
@@ -35,8 +31,8 @@ const SendMessageMenu: React.FC<SendMessageMenuProps> = props => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  openSendMessageEditView: (record: any) => dispatch(
-    setListNestedEditRecord("SendMessage", record, model => dispatch(sendMessage(model)), true)
+  openSendMessageEditView: () => dispatch(
+    openSendMessage()
   )
 });
 

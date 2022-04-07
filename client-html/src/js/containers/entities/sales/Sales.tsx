@@ -7,7 +7,6 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { ProductItem, TableModel } from "@api/model";
 import { clearListState, getFilters } from "../../../common/components/list-view/actions";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
 import { getSale, getSalesManuTags, updateSale } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
@@ -17,9 +16,8 @@ import SalesCogwheel from "./components/cogwheel/SalesCogwheel";
 import { getPlainAccounts } from "../accounts/actions";
 import { getPlainTaxes } from "../taxes/actions";
 import { Dispatch } from "redux";
-import { getEntityTags, getListTags } from "../../tags/actions";
+import { getEntityTags } from "../../tags/actions";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
-import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 
 interface SalesProps {
   getSaleRecord?: () => void;
@@ -103,10 +101,6 @@ const findRelatedGroup: any[] = [
 
 const manualLink = getManualLink("sales");
 
-const nestedEditFields = {
-  SendMessage: props => <SendMessageEditView {...props} />
-};
-
 const Sales: React.FC<SalesProps> = props => {
   const {
     updateTableModel,
@@ -142,7 +136,6 @@ const Sales: React.FC<SalesProps> = props => {
           asyncBlurFields: ["notes[].message"],
           nameCondition: values => (values ? values.productName : "")
         }}
-        nestedEditFields={nestedEditFields}
         updateTableModel={updateTableModel}
         EditViewContent={SalesEditView}
         CogwheelAdornment={SalesCogwheel}

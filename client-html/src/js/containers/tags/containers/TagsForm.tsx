@@ -36,6 +36,7 @@ import { ShowConfirmCaller } from "../../../model/common/Confirm";
 import AddButton from "../../../common/components/icons/AddButton";
 import { onSubmitFail } from "../../../common/utils/highlightFormClassErrors";
 import AppBarContainer from "../../../common/components/layout/AppBarContainer";
+import { getPluralSuffix } from "../../../common/utils/strings";
 
 const styles = () => ({
   noTransform: {
@@ -338,7 +339,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
 
     const confirmMessage = item.childrenCount
       ? `Deleting this tag will automatically delete ${item.childrenCount} 
-    children tag${item.childrenCount === 1 ? "" : "s"}. ${
+    children tag${getPluralSuffix(item.childrenCount)}. ${
           item.taggedRecordsCount ? item.taggedRecordsCount + " records will be untagged. " : ""
         }After saving the records it cannot be undone`
       : "You are about to delete tag. After saving the records it cannot be undone";
