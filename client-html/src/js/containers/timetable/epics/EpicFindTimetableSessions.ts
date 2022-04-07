@@ -13,15 +13,17 @@ import { FIND_TIMETABLE_SESSIONS, FIND_TIMETABLE_SESSIONS_FULFILLED, setTimetabl
 import TimetableService from "../services/TimetableService";
 import { getMonthsWithinYear } from "../utils";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { getFiltersString } from "../../../common/components/list-view/utils/listFiltersUtils";
 
 const request: EpicUtils.Request<Session[], { request: SearchRequest }> = {
   type: FIND_TIMETABLE_SESSIONS,
-  getData: ({ request }, state) => {
-    request.search = state.timetable.search;
+  getData: ({ request }, { timetable: { search, filters } }) => {
+    request.search = search;
+    request.filter = getFiltersString([{ filters }]);
     return TimetableService.findTimetableSessions(request);
   },
   processData: (sessions, s, { request: { from } }) => {
-    const months = getMonthsWithinYear(sessions, new Date(from));
+    const months = sessions.length ? getMonthsWithinYear(sessions, new Date(from)) : [];
 
     return [
       {

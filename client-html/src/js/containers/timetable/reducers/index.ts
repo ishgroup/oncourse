@@ -44,7 +44,7 @@ export const timetableReducer = (
     }
 
     case FIND_TIMETABLE_SESSIONS_FULFILLED: {
-      const months = state.months.concat(action.payload.months);
+      const months = action.payload.months.length ? state.months.concat(action.payload.months) : [];
 
       months.sort((a, b) => (a.month > b.month ? 1 : -1));
 

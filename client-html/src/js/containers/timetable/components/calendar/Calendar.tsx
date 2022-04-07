@@ -159,7 +159,9 @@ const Calendar = React.memo<Props>(props => {
   const listEl = useRef(null);
 
   const prevSearch = usePrevious(search, "");
-  const prevLocationSearch = usePrevious(location.search, "");
+
+  const params = new URLSearchParams(location.search);
+  const prevParams = usePrevious(params, params);
 
   const updateHistory = searchParams => {
     const paramsString = decodeURIComponent(searchParams.toString());
@@ -199,17 +201,35 @@ const Calendar = React.memo<Props>(props => {
 
   // Search effects
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
     const title = params.get("title");
 
     if (title) {
       window.document.title = title;
     }
+
+    const targetDayUrlString = params.get("selectedDate");
+
+    if (targetDayUrlString) {
+      setTargetDay(new Date(targetDayUrlString));
+    }
+
+    const searchString = params.get("search");
+
+    dispatch(setTimetableSearch(searchString ? decodeURIComponent(searchString) : ""));
   }, []);
 
   useEffect(() => {
+    const targetDayUrlString = params.get("selectedDate");
+    const targetDayString = format(targetDay, DD_MMM_YYYY_MINUSED);
+
+    if (targetDayUrlString !== targetDayString) {
+      params.set("selectedDate", targetDayString);
+      updateHistory(params);
+    }
+  }, [targetDay]);
+
+  useEffect(() => {
     if (filters.length) {
-      const params = new URLSearchParams(location.search);
       const filtersString = getFiltersNameString([{ filters }]) || null;
       const filtersUrlString = params.get("filter");
 
@@ -219,11 +239,10 @@ const Calendar = React.memo<Props>(props => {
         dispatch(setTimetableFilters(updated));
       }
     }
-  }, [location.search, filters.length]);
+  }, [filters.length]);
 
   useEffect(() => {
     if (filters.length) {
-      const params = new URLSearchParams(location.search);
       const filtersString = getFiltersNameString([{ filters }]) || null;
       const filtersUrlString = params.get("filter");
 
@@ -239,8 +258,6 @@ const Calendar = React.memo<Props>(props => {
   }, [filters]);
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-
     if (prevSearch !== search) {
       if (search) {
         params.set("search", encodeURIComponent(search));
@@ -249,26 +266,23 @@ const Calendar = React.memo<Props>(props => {
       }
       updateHistory(params);
     }
-
-    if (prevLocationSearch !== location.search) {
-      const prevUrlSearch = new URLSearchParams(prevLocationSearch);
-      const searchString = params.get("search");
-
-      if (prevUrlSearch.get("search") !== searchString) {
-        dispatch(setTimetableSearch(searchString ? decodeURIComponent(searchString) : ""));
-      }
-    }
-  }, [search, url, prevSearch, prevLocationSearch, location.search]);
+  }, [search, prevSearch]);
 
   useEffect(() => {
-    if (location.search !== prevLocationSearch) {
+    const currentSearch = decodeURIComponent(params.get("search"));
+    const prevSearch = decodeURIComponent(prevParams.get("search"));
+
+    const currentFilters = params.get("filter");
+    const prevFilters = prevParams.get("filter");
+
+    if (currentSearch !== prevSearch || currentFilters !== prevFilters) {
       const startMonth = startOfMonth(selectedMonth);
       const endMonth = endOfMonth(addMonths(startMonth, 1));
 
       dispatch(getTimetableSessionsDays(selectedMonth.getMonth(), selectedMonth.getFullYear()));
       dispatch(findTimetableSessions({ from: startMonth.toISOString(), to: endMonth.toISOString() }));
     }
-  }, [location.search, prevLocationSearch]);
+  }, [params, prevParams]);
 
   // Layout effects
   useEffect(() => {

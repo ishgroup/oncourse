@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useMemo } from "react";
+import React from "react";
 import { Button } from "@mui/material";
 import { isSameDay } from "date-fns";
 import clsx from "clsx";
@@ -65,8 +65,8 @@ const CalendarDay = React.memo((props: Props) => {
   const classes = useStyles();
 
   const theme = useAppTheme();
-  const isSame = useMemo(() => isSameDay(targetDay, date), [targetDay, date]);
-  const isToday = useMemo(() => isSameDay(new Date(), date), [date]);
+  const isSame = isSameDay(targetDay, date);
+  const isToday = isSameDay(new Date(), date);
 
   return (
     <Button
@@ -74,7 +74,7 @@ const CalendarDay = React.memo((props: Props) => {
       onClick={() => setTargetDay(date)}
       disabled={disabled}
       style={{
-        ...status === "current" && selectedMonthSessionDays[day - 1] !== 0
+        ...selectedMonthSessionDays.length && status === "current" && selectedMonthSessionDays[day - 1] !== 0
           ? { backgroundColor: alpha(theme.palette.primary.main, selectedMonthSessionDays[day - 1]) }  
           : {},
         ...isToday ? { fontWeight: "900" } : {}

@@ -15,12 +15,13 @@ import {
 } from "../actions";
 import TimetableService from "../services/TimetableService";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { getFiltersString } from "../../../common/components/list-view/utils/listFiltersUtils";
 
-const request: EpicUtils.Request<number[], { month: number; year: number; search: string }> = {
+const request: EpicUtils.Request<number[], { month: number; year: number }> = {
   type: GET_TIMETABLE_SESSIONS_DAYS,
   hideLoadIndicator: true,
-  getData: ({ month, year }, { timetable: { search } }) =>
-    TimetableService.getTimetableSessionsDays(month, year, search),
+  getData: ({ month, year }, { timetable: { search, filters } }) =>
+    TimetableService.getTimetableSessionsDays(month, year, { search, filter: getFiltersString([{ filters }]) } ),
   processData: (selectedMonthSessionDays, s) => [
       {
         type: GET_TIMETABLE_SESSIONS_DAYS_FULFILLED,
