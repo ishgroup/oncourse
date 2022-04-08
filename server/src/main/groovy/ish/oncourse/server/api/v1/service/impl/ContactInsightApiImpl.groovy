@@ -18,26 +18,11 @@ import ish.oncourse.server.api.v1.model.ContactInsightDTO
 import ish.oncourse.server.api.v1.model.ContactInteractionDTO
 import ish.oncourse.server.api.v1.model.ContactOverviewDTO
 import ish.oncourse.server.api.v1.service.ContactInsightApi
-import ish.oncourse.server.cayenne.Application
-import ish.oncourse.server.cayenne.AssessmentSubmission
-import ish.oncourse.server.cayenne.AttachmentRelation
-import ish.oncourse.server.cayenne.Certificate
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.ContactActivityTrait
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.Lead
-import ish.oncourse.server.cayenne.Note
-import ish.oncourse.server.cayenne.NoteRelation
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentOut
-import ish.oncourse.server.cayenne.Payslip
-import ish.oncourse.server.cayenne.ProductItem
-import ish.oncourse.server.cayenne.Quote
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.document.DocumentService
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.Property
-import org.apache.cayenne.exp.parser.ASTTrue
+import org.apache.cayenne.exp.parser.ASTFalse
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.PrefetchTreeNode
 
@@ -157,7 +142,7 @@ class ContactInsightApiImpl implements ContactInsightApi {
     }
 
     private static Expression buildRelationExpression(Property<String>entityIdentifierProperty, Property<Long> entityIdProperty){
-        Expression expression = new ASTTrue()
+        Expression expression = new ASTFalse()
         for (def entry : entitiesWithAttachments.entrySet()) {
             if(entry.getValue() && !entry.getValue().isEmpty()) {
                 expression = expression.orExp(
