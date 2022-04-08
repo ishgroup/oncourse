@@ -44,7 +44,6 @@ import tutor from "../../../../images/tutor.png";
 import company from "../../../../images/company.png";
 import tutorStudent from "../../../../images/student-tutor.png";
 import person from "../../../../images/person.png";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
 import { getContactFullName } from "./utils";
 
 export type ContactType = "STUDENT" | "TUTOR" | "COMPANY" | "TUTOR_STUDENT";
@@ -204,10 +203,6 @@ const getContactTypeImage = (type: ContactType) => {
 
 const customColumnFormats = {
   contactType: v => (v ? <img src={getContactTypeImage(v)} alt={v} /> : null)
-};
-
-const nestedEditFields = {
-  SendMessage: props => <SendMessageEditView {...props} />
 };
 
 export const getDisabledSubmitCondition = (isVerifyingUSI, usiVerificationResult): boolean => (
@@ -377,7 +372,6 @@ const Contacts: React.FC<ContactsProps> = props => {
         hideTitle: true
       }}
       EditViewContent={ContactEditView}
-      nestedEditFields={nestedEditFields}
       getEditRecord={getContactRecord}
       rootEntity="Contact"
       onCreate={onContactCreate}

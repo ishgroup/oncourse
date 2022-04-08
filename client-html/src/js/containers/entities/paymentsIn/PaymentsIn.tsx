@@ -10,7 +10,6 @@ import { Dispatch } from "redux";
 import { PaymentIn } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
 import { getWindowHeight, getWindowWidth } from "../../../common/utils/common";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
 import { getPaymentIn, updatePaymentIn } from "./actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import PaymentInsEditView from "./components/PaymentInEditView";
@@ -79,10 +78,6 @@ const nameCondition = (paymentIn: PaymentIn) => paymentIn.paymentInType;
 const openCheckout = () => window.open("/checkout", "_self");
 const openBatchPayment = () => window.open("/batchPayment", "_self");
 
-const nestedEditFields = {
-  SendMessage: props => <SendMessageEditView {...props} />
-};
-
 const PaymentsIn = ({
     getFilters,
     getLockedDate,
@@ -115,7 +110,6 @@ const PaymentsIn = ({
             manualLink,
             nameCondition
           }}
-          nestedEditFields={nestedEditFields}
           EditViewContent={PaymentInsEditView}
           getEditRecord={getPaymentInRecord}
           rootEntity="PaymentIn"
