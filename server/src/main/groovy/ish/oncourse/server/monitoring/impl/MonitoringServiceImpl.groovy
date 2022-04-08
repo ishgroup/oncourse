@@ -40,8 +40,8 @@ import java.time.Instant
 @API
 @CompileStatic
 class MonitoringServiceImpl implements MonitoringService {
-    private static String userName
-    private static String password
+    private String userName
+    private String password
 
     private final ISessionManager sessionManager
     private final PreferenceController preferenceController
@@ -133,30 +133,18 @@ class MonitoringServiceImpl implements MonitoringService {
         return properties
     }
 
-    static SecurityHandler basicAuth(String monitoringPath) {
-        HashLoginService loginService = new HashLoginService()
-        UserStore userStore = new UserStore()
-        userStore.addUser(userName, Credential.getCredential(password), null)
+    @Override
+    boolean isEnable() {
+        return userName != null && password != null
+    }
 
-        loginService.setUserStore(userStore)
-        loginService.setName("Monitoring")
+    @Override
+    String getUserName() {
+        return userName
+    }
 
-        Constraint constraint = new Constraint()
-        constraint.setName(Constraint.__BASIC_AUTH)
-//        ** role means being authenticated is sufficient, not necessary to check roles
-        constraint.setRoles("**")
-        constraint.setAuthenticate(true)
-
-        ConstraintMapping constraintMapping = new ConstraintMapping()
-        constraintMapping.setConstraint(constraint)
-        constraintMapping.setPathSpec(monitoringPath)
-
-        ConstraintSecurityHandler constraintSecurityHandler = new ConstraintSecurityHandler()
-        constraintSecurityHandler.setAuthenticator(new BasicAuthenticator())
-        constraintSecurityHandler.setRealmName("Monitoring")
-        constraintSecurityHandler.addConstraintMapping(constraintMapping)
-        constraintSecurityHandler.setLoginService(loginService)
-
-        return constraintSecurityHandler
+    @Override
+    String getPassword() {
+        return password
     }
 }
