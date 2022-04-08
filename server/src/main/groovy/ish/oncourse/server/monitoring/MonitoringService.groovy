@@ -12,4 +12,10 @@ interface MonitoringService {
 
     MonitoringModel getMonitoringMetrics()
 
+    boolean isEnable()
+
+    String getUserName()
+
+    String getPassword()
+
 }

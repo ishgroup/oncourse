@@ -31,10 +31,14 @@ class MonitoringServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse response) throws IOException {
-		def mapper = new ObjectMapper()
-		response.setContentType("application/json")
-		response.setCharacterEncoding("UTF-8")
-		MonitoringModel monitoringMetrics = monitoringService.getMonitoringMetrics()
-		response.getWriter().print(mapper.writeValueAsString(monitoringMetrics))
+		if (monitoringService.isEnable()) {
+			def mapper = new ObjectMapper()
+			response.setContentType("application/json")
+			response.setCharacterEncoding("UTF-8")
+			MonitoringModel monitoringMetrics = monitoringService.getMonitoringMetrics()
+			response.getWriter().print(mapper.writeValueAsString(monitoringMetrics))
+		} else {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND)
+		}
 	}
 }
