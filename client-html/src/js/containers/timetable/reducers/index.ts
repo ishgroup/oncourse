@@ -10,14 +10,13 @@ import { TimetableState } from "../../../model/timetable";
 import { IAction } from "../../../common/actions/IshAction";
 import {
   CLEAR_TIMETABLE_MONTHS,
-  FIND_TIMETABLE_SESSIONS,
   FIND_TIMETABLE_SESSIONS_FULFILLED,
   GET_TIMETABLE_SESSIONS_BY_IDS_FULFILLED,
   GET_TIMETABLE_SESSIONS_DAYS_FULFILLED,
-  SET_TIMETABLE_SEARCH,
-  SET_TIMETABLE_SAVING_FILTER,
-  SET_TIMETABLE_FILTERS,
   GET_TIMETABLE_SESSIONS_TAGS_FULFILLED,
+  SET_TIMETABLE_FILTERS,
+  SET_TIMETABLE_SAVING_FILTER,
+  SET_TIMETABLE_SEARCH,
   SET_TIMETABLE_SEARCH_ERROR
 } from "../actions";
 
@@ -25,7 +24,8 @@ const TimetableInitialState: TimetableState = {
   months: [],
   selectedMonthSessionDays: [],
   filters: [],
-  sessionsLoading: false,
+  filtersLoading: true,
+  sessionsLoading: true,
   search: "",
   searchError: false,
   savingFilter: null
@@ -36,13 +36,6 @@ export const timetableReducer = (
   action: IAction<any>
 ): TimetableState => {
   switch (action.type) {
-    case FIND_TIMETABLE_SESSIONS: {
-      return {
-        ...state,
-        sessionsLoading: true
-      };
-    }
-
     case FIND_TIMETABLE_SESSIONS_FULFILLED: {
       const months = action.payload.months.length ? state.months.concat(action.payload.months) : [];
 
@@ -123,6 +116,7 @@ export const timetableReducer = (
     case SET_TIMETABLE_FILTERS: {
       return {
         ...state,
+        filtersLoading: false,
         filters: action.payload.filters
       };
     }

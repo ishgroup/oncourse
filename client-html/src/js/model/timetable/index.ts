@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import { Session } from "@api/model";
@@ -10,13 +13,14 @@ import { CoreFilter, SavingFilterState } from "../common/ListView";
 export type CalendarMode = "Compact" | "Gap(Days)" | "Gap(Hours)";
 
 export interface TimetableState {
-  months?: TimetableMonth[];
-  selectedMonthSessionDays?: string[];
-  sessionsLoading?: boolean;
-  search?: string;
+  months: TimetableMonth[];
+  selectedMonthSessionDays: string[];
+  sessionsLoading: boolean;
+  search: string;
   searchError?: boolean;
   filters: CoreFilter[];
-  savingFilter?: SavingFilterState;
+  filtersLoading: boolean;
+  savingFilter: SavingFilterState;
 }
 
 export interface TimetableMonth {

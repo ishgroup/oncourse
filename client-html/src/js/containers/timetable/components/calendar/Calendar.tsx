@@ -6,16 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
- useCallback, useContext, useEffect, useMemo, useRef, useState
-} from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { createStyles, withStyles } from "@mui/styles";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import {
- addMonths, endOfMonth, format, isSameMonth, startOfMonth
-} from "date-fns";
+import { addMonths, endOfMonth, format, isSameMonth, startOfMonth } from "date-fns";
 import clsx from "clsx";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
@@ -24,7 +20,8 @@ import { State } from "../../../../reducers/state";
 import {
   clearTimetableMonths,
   findTimetableSessions,
-  getTimetableSessionsDays, setTimetableFilters,
+  getTimetableSessionsDays,
+  setTimetableFilters,
   setTimetableSearch
 } from "../../actions";
 import { TimetableContext } from "../../Timetable";
@@ -135,7 +132,7 @@ const scrollToCalendarDay = (day: Date, list, index, dayNodesObserver) => {
 
 const Calendar = React.memo<Props>(props => {
   const {
-   targetDay, setTargetDay, selectedMonth, selectedWeekDays, selectedDayPeriods, calendarMode
+   targetDay, setTargetDay, selectedMonth, selectedWeekDays, selectedDayPeriods, calendarMode, setCalendarMode
   } = useContext(
     TimetableContext
   );
@@ -163,8 +160,8 @@ const Calendar = React.memo<Props>(props => {
   const params = new URLSearchParams(location.search);
   const prevParams = usePrevious(params, params);
 
-  const updateHistory = searchParams => {
-    const paramsString = decodeURIComponent(searchParams.toString());
+  const updateHistory = () => {
+    const paramsString = decodeURIComponent(params.toString());
 
     const updatedSearch = paramsString ? "?" + paramsString : "";
 
@@ -212,11 +209,25 @@ const Calendar = React.memo<Props>(props => {
     if (targetDayUrlString) {
       setTargetDay(new Date(targetDayUrlString));
     }
-
+    
     const searchString = params.get("search");
-
     dispatch(setTimetableSearch(searchString ? decodeURIComponent(searchString) : ""));
+
+    const calendarModeUrl = params.get("calendarMode");
+    
+    if (calendarModeUrl) {
+      setCalendarMode(calendarModeUrl);
+    }
   }, []);
+
+  useEffect(() => {
+    const calendarModeUrl = params.get("calendarMode");
+
+    if (calendarModeUrl !== calendarMode) {
+      params.set("calendarMode", calendarMode);
+      updateHistory();
+    }
+  }, [calendarMode]);
 
   useEffect(() => {
     const targetDayUrlString = params.get("selectedDate");
@@ -224,7 +235,7 @@ const Calendar = React.memo<Props>(props => {
 
     if (targetDayUrlString !== targetDayString) {
       params.set("selectedDate", targetDayString);
-      updateHistory(params);
+      updateHistory();
     }
   }, [targetDay]);
 
@@ -252,7 +263,7 @@ const Calendar = React.memo<Props>(props => {
         } else {
           params.delete("filter");
         }
-        updateHistory(params);
+        updateHistory();
       }
     }
   }, [filters]);
@@ -264,7 +275,7 @@ const Calendar = React.memo<Props>(props => {
       } else {
         params.delete("search");
       }
-      updateHistory(params);
+      updateHistory();
     }
   }, [search, prevSearch]);
 
@@ -314,7 +325,7 @@ const Calendar = React.memo<Props>(props => {
       scrollToTargetDayOnRender = targetDay;
       loadNextMonths(targetDay);
     }
-  }, [targetDay, listEl.current]);
+  }, [targetDay, listEl.current?.state?.isScrolling]);
 
   useEffect(() => {
     scrollToDayHandler(months.findIndex(m => isSameMonth(m.month, targetDay)));
