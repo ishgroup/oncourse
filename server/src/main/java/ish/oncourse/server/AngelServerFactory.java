@@ -45,7 +45,6 @@ import org.yaml.snakeyaml.Yaml;
 import javax.mail.MessagingException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -235,7 +234,7 @@ public class AngelServerFactory {
         LOGGER.warn("Server ready.");
     }
 
-    private void createSystemUsers(DataContext context, String hostName, String ipAddress, Integer port, PreferenceController preferenceController, MailDeliveryService mailDeliveryService) throws IOException {
+    private void createSystemUsers(DataContext context, String hostName, String ipAddress, Integer port, PreferenceController preferenceController, MailDeliveryService mailDeliveryService) {
         Yaml yaml = new Yaml();
         Path systemUsersFile = Paths.get(YAML_SYSTEM_USERS_FILE);
         List<Map<String, Object>> users;
@@ -243,6 +242,9 @@ public class AngelServerFactory {
             users = yaml.load(inputStream);
         } catch (FileNotFoundException e) {
             LOGGER.warn("File with system users not found.");
+            return;
+        } catch (Exception e) {
+            LOGGER.error("Can not parse system users file.", e);
             return;
         }
 
