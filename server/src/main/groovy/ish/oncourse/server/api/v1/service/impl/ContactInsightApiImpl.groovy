@@ -125,8 +125,6 @@ class ContactInsightApiImpl implements ContactInsightApi {
 
 
         interactions.addAll(interactionsOfList(notes))
-        interactions.addAll(interactionsOfList(contact?.noteRelations*.note))
-        interactions.addAll(interactionsOfList(contact?.attachmentRelations))
         interactions.addAll(interactionsOfList(attachmentRelations))
         interactions.sort { a, b -> b.date <=> a.date }
 
