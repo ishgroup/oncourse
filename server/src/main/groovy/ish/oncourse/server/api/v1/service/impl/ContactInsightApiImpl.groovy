@@ -37,6 +37,7 @@ import ish.oncourse.server.cayenne.Quote
 import ish.oncourse.server.document.DocumentService
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.Property
+import org.apache.cayenne.exp.parser.ASTFalse
 import org.apache.cayenne.exp.parser.ASTTrue
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.PrefetchTreeNode
@@ -157,7 +158,7 @@ class ContactInsightApiImpl implements ContactInsightApi {
     }
 
     private static Expression buildRelationExpression(Property<String>entityIdentifierProperty, Property<Long> entityIdProperty){
-        Expression expression = new ASTTrue()
+        Expression expression = new ASTFalse()
         for (def entry : entitiesWithAttachments.entrySet()) {
             if(entry.getValue() && !entry.getValue().isEmpty()) {
                 expression = expression.orExp(
