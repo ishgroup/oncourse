@@ -16,8 +16,6 @@ import io.bootique.jetty.server.ConnectorDescriptor;
 import io.bootique.jetty.server.ServerFactory;
 import io.bootique.jetty.server.ServerLifecycleLogger;
 import io.bootique.jetty.server.ServletContextHandlerExtender;
-import ish.oncourse.server.monitoring.impl.MonitoringServiceImpl;
-import ish.oncourse.server.monitoring.servlet.MonitoringServlet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.server.NetworkConnector;
@@ -43,8 +41,6 @@ public class AngelServerFactory extends ServerFactory {
 
         ThreadPool threadPool = createThreadPool();
         ServletContextHandler contextHandler = createHandler(servlets, filters, listeners);
-//        add basic-auth for monitoring servlet with endpoint '/monitoring'
-        contextHandler.setSecurityHandler(MonitoringServiceImpl.basicAuth(MonitoringServlet.MONITORING_PATH));
 
         Server server = new Server(threadPool);
         server.setStopAtShutdown(true);

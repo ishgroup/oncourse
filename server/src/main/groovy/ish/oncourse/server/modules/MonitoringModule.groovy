@@ -23,6 +23,7 @@ import ish.oncourse.server.jetty.AngelJettyModule
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.monitoring.MonitoringService
 import ish.oncourse.server.monitoring.MonitoringServiceFactory
+import ish.oncourse.server.monitoring.MonitoringServletContextHandlerExtender
 import ish.oncourse.server.monitoring.servlet.MonitoringServlet
 
 class MonitoringModule extends ConfigModule {
@@ -45,9 +46,16 @@ class MonitoringModule extends ConfigModule {
         return new MappedServlet<>(new MonitoringServlet(monitoringService), Collections.singleton(MonitoringServlet.MONITORING_PATH), MonitoringServlet.class.getSimpleName())
     }
 
+    @Singleton
+    @Provides
+    MonitoringServletContextHandlerExtender createMonitoringServletContextHandlerExtender(MonitoringService monitoringService) {
+        return new MonitoringServletContextHandlerExtender(monitoringService)
+    }
+
     @Override
     void configure(Binder binder) {
         AngelJettyModule.extend(binder)
         .addMappedServlet(MONITORING_SERVLET)
+        .addContextHandlerExtender(MonitoringServletContextHandlerExtender)
     }
 }

@@ -18,7 +18,3 @@ smtp:
   mode: starttls
   username: your_email@gmail.com
   password: your_email_password
-
-monitoring:
-    user: monitoring
-    password: 4h5hgejhkwjh
