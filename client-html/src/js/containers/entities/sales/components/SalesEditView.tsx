@@ -21,7 +21,7 @@ import { EEE_D_MMM_YYYY } from "../../../../common/utils/dates/format";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import { contactLabelCondition } from "../../contacts/utils";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { ContactLinkAdornment, LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { buildUrl, getSaleEntityName, productUrl } from "../utils";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import FullScreenStickyHeader
@@ -129,11 +129,13 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
         <Uneditable
           value={values.purchasedByName}
           label="Purchased by"
-          url={buildUrl(values.purchasedById, "Contacts")}
+          labelAdornment={
+            <ContactLinkAdornment id={values.purchasedById} />
+          }
         />
       </Grid>
       <Grid item {...gridItemProps}>
-        <Uneditable value={formatSaleDate(values.purchasedOn)} label="Purchased on" />
+        <Uneditable value={formatSaleDate(values.purchasedOn)} label="Purchased on"  />
       </Grid>
 
       <Grid item container columnSpacing={3} rowSpacing={2} xs={12}>

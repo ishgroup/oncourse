@@ -42,7 +42,6 @@ import {
   setListSelection,
 } from "../../../common/components/list-view/actions";
 import EnrolmentService from "../enrolments/services/EnrolmentService";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
 import OutcomeService from "../outcomes/services/OutcomeService";
 import CourseClassCogWheel from "./components/CourseClassCogWheel";
 import CourseClassEditView from "./components/CourseClassEditView";
@@ -404,10 +403,6 @@ const customColumnFormats = {
   sessionsCount: formatSelfPacedSessions
 };
 
-const nestedEditFields = {
-  SendMessage: props => <SendMessageEditView {...props} />
-};
-
 const defaultFields: Array<keyof CourseClass> = [
   "fundingSource",
   "deliveryMode",
@@ -658,7 +653,6 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
           keepDirtyOnReinitialize: true
         }}
         EditViewContent={CourseClassEditView}
-        nestedEditFields={nestedEditFields}
         getEditRecord={getCourseClass}
         rootEntity="CourseClass"
         onInit={onInit}

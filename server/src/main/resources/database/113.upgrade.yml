@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: 113-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - not:
+          - columnExists:
+              tableName: Note
+              columnName: interactionDate
+      changes:
+        - addColumn:
+            tableName: Note
+            columns:
+              - column:
+                  name: interactionDate
+                  type: datetime
+        - sql: "UPDATE Note SET interactionDate=createdOn"
+        - addNotNullConstraint:
+            columnDataType: datetime
+            columnName: interactionDate
+            tableName: Note

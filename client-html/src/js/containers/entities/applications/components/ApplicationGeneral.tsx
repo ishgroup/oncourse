@@ -6,18 +6,21 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Application, ApplicationStatus } from "@api/model";
-import { Grid, IconButton } from "@mui/material";
-import Launch from "@mui/icons-material/Launch";
+import { Grid } from "@mui/material";
 import { change } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
+import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
 import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
 import { courseFilterCondition, openCourseLink } from "../../courses/utils";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import {
+  ContactLinkAdornment,
+  HeaderContactTitle,
+  LinkAdornment
+} from "../../../../common/components/form/FieldAdornments";
 import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
@@ -51,6 +54,25 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
     if (history.location.search && isNew) {
       const params = new URLSearchParams(history.location.search);
       const leadId = params.get('leadId');
+      const contactId = params.get('contactId');
+      const contactName = params.get('contactName');
+      
+      const clearParams = () => {
+        history.replace({
+          pathname: history.location.pathname,
+          search: decodeURIComponent(params.toString())
+        });
+      };
+
+      if (contactId) {
+        dispatch(change(form, "contactId", Number(contactId)));
+        params.delete('contactId');
+      }
+
+      if (contactName) {
+        dispatch(change(form, "studentName", contactName));
+        params.delete('contactName');
+      }
       
       if (leadId) {
         EntityService.getPlainRecords(
@@ -69,13 +91,13 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           dispatch(change(form, "courseId", courseId));
           dispatch(change(form, "courseName", courseName));
         })
-        .catch(err => instantFetchErrorHandler(dispatch, err));
-        
-        params.delete('leadId');
-        history.replace({
-          pathname: history.location.pathname,
-          search: decodeURIComponent(params.toString())
+        .catch(err => instantFetchErrorHandler(dispatch, err))
+        .finally(() => {
+          params.delete('leadId');
+          clearParams();
         });
+      } else {
+        clearParams();
       }
     }
   }, []);
@@ -93,12 +115,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           disableInteraction={!isNew}
           twoColumn={twoColumn}
           title={(
-            <div className="d-inline-flex-center">
-              {values && defaultContactName(values.studentName)}
-              <IconButton disabled={!values?.contactId} size="small" color="primary" onClick={() => openContactLink(values?.contactId)}>
-                <Launch fontSize="inherit" />
-              </IconButton>
-            </div>
+            <HeaderContactTitle name={values?.studentName} id={values?.contactId} />
           )}
           fields={(
             <Grid item {...gridItemProps}>
@@ -113,11 +130,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
                 disabled={!isNew}
                 defaultDisplayValue={values && defaultContactName(values.studentName)}
                 labelAdornment={(
-                  <LinkAdornment
-                    linkHandler={openContactLink}
-                    link={values && values.contactId}
-                    disabled={!values || !values.contactId}
-                  />
+                  <ContactLinkAdornment id={values?.contactId} />
                 )}
                 itemRenderer={ContactSelectItemRenderer}
                 rowHeight={55}
