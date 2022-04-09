@@ -74,6 +74,9 @@ public class PrintTransformationsFactory {
 			return null;
 		}
 
+		inputEntity = StringUtils.capitalize(inputEntity);
+		outputEntity = StringUtils.capitalize(outputEntity);
+
 		try {
 
 			PrintTransformation transform = null;
