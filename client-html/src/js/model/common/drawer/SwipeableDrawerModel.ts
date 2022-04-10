@@ -3,9 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { VARIANTS } from "../../../common/components/layout/swipeable-sidebar/utils";
+
 export interface SwipeableDrawer {
   opened: boolean;
-  variant?: string;
+  variant?: keyof typeof VARIANTS;
   isDirty?: boolean;
+  selected?: number | string;
   resetEditView?: () => void;
 }

@@ -48,7 +48,7 @@ import java.time.LocalDate
  */
 @API
 @QueueableEntity
-class PaymentIn extends _PaymentIn implements PaymentInInterface, Queueable {
+class PaymentIn extends _PaymentIn implements PaymentInInterface, Queueable, ContactActivityTrait {
 
 
 
@@ -408,6 +408,11 @@ class PaymentIn extends _PaymentIn implements PaymentInInterface, Queueable {
 	@Override
 	Date getCreatedOn() {
 		return super.getCreatedOn()
+	}
+
+	@Override
+	String getInteractionName() {
+		return amount.toPlainString()
 	}
 
 	@Override

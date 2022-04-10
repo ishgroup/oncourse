@@ -12,7 +12,6 @@ import { CHECKOUT_CONTACT_COLUMNS, CheckoutPage } from "../../constants";
 import SelectedContactRenderer from "./SelectedContactRenderer";
 import HeaderField from "../HeaderField";
 import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../common/actions/CommonPlainRecordsActions";
-import { getContactPhoneAqlSearch } from "../../../entities/contacts/utils";
 
 export interface Props {
   setActiveField: (field: string) => void;
@@ -48,18 +47,8 @@ const CheckoutContactSearch = React.memo<Props>(props => {
     summary
   } = props;
 
-  const onSetContactsSearch = React.useCallback<any>(debounce((name, value: string) => {
-    let search = `~"${value}"`;
-    
-    if (/\d+/g.test(value)) {
-      search = getContactPhoneAqlSearch(value);
-    }
-
-    if (/@/.test(value)) {
-      search = `email starts with "${value}"`;
-    }
-    
-    setContactsSearch(value ? search : "");
+  const onSetContactsSearch = React.useCallback<any>(debounce((name, value) => {
+    setContactsSearch(value ? `~"${value}"` : "");
     if (value) {
       getContacts(0);
     }

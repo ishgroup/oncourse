@@ -29,7 +29,7 @@ Feature: Main feature for all POST requests with path 'list/entity/note'
         And param entityId = 2
         When method GET
         Then status 200
-        And match $ contains [{"id":"#number","created":"#ignore","modified":"#ignore","message":"create note1","createdBy":"onCourse Administrator","modifiedBy":null,"entityName":"Course","entityId":2}]
+        And match $ contains [{"id":"#number","created":"#ignore","interactionDate":"#ignore","modified":"#ignore","message":"create note1","createdBy":"onCourse Administrator","modifiedBy":null,"entityName":"Course","entityId":2}]
 
         * def noteId = get[0] response[?(@.message == 'create note1')].id
         * print "noteId = " + noteId
@@ -64,7 +64,7 @@ Feature: Main feature for all POST requests with path 'list/entity/note'
         And param entityId = 2
         When method GET
         Then status 200
-        And match $ contains [{"id":"#number","created":"#ignore","modified":"#ignore","message":"create note2","createdBy":"UserWithRightsDelete UserWithRightsDelete","modifiedBy":null,"entityName":"Course","entityId":2}]
+        And match $ contains [{"id":"#number","created":"#ignore","interactionDate":"#ignore","modified":"#ignore","message":"create note2","createdBy":"UserWithRightsDelete UserWithRightsDelete","modifiedBy":null,"entityName":"Course","entityId":2}]
 
         * def noteId = get[0] response[?(@.message == 'create note2')].id
         * print "noteId = " + noteId

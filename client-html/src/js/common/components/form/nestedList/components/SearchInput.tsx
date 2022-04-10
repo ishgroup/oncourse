@@ -52,8 +52,7 @@ const SearchInput = React.memo<any>(props => {
     autoFocus,
     aqlEntity,
     aqlEntities,
-    validateAql,
-    isValidAqlQuery,
+    aqlQueryError,
     aqlComponentRef,
     searchTags,
     searchType,
@@ -121,14 +120,13 @@ const SearchInput = React.memo<any>(props => {
         className={className}
         placeholder={searchPlaceholder || (aqlEntity ? `${aqlPlaceholderPrefix} ${getAqlLabel(aqlEntity)}` : null)}
         input={{
-          value: searchExpression,
-          meta: {
-            invalid: !isValidAqlQuery,
-            error: !isValidAqlQuery && "Expression is invalid"
-          }
+          value: searchExpression
+        }}
+        meta={{
+          invalid: aqlQueryError,
+          error: aqlQueryError && "Expression is invalid"
         }}
         performSearch={onAqlSearchChange}
-        onValidateQuery={validateAql}
         onFocus={onFocus}
         onBlur={onBlur}
         endAdornment={InputAdornment}

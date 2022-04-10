@@ -120,13 +120,17 @@ interface Props {
   closeButtonText?: string;
   onCloseClick?: () => void;
   hamburgerMenu?: boolean;
+  Avatar?: React.FC<{
+    avatarSize: number,
+    disabled: boolean
+  }>
 }
 
 const AppBarContainer = (props: Props) => {
   const {
     title, actions, hideHelpMenu, children, noDrawer, noTitle, noScrollSpy, values, manualUrl, getAuditsUrl, disabled, invalid, fields,
     disableInteraction, hideSubmitButton, disabledScrolling, createdOn, modifiedOn, onAddMenu, customAddMenu, submitButtonText,
-    onCloseClick, hamburgerMenu, opened, containerClass, closeButtonText
+    onCloseClick, hamburgerMenu, opened, containerClass, closeButtonText, Avatar
   } = props;
   
   const dispatch = useAppDispatch();
@@ -191,6 +195,7 @@ const AppBarContainer = (props: Props) => {
                 opened={opened}
                 title={title}
                 fields={fields}
+                Avatar={Avatar}
                 disableInteraction={disableInteraction}
                 twoColumn
               />

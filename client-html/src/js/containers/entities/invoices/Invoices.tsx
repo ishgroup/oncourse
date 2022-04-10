@@ -12,7 +12,6 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
 import {
   createInvoice,
   deleteQuote,
@@ -137,8 +136,7 @@ const nameCondition = (invoice: Invoice) => {
 };
 
 const nestedEditFields = {
-  PaymentOut: props => <AddPaymentOutEditView {...props} />,
-  SendMessage: props => <SendMessageEditView {...props} />
+  PaymentOut: props => <AddPaymentOutEditView {...props} />
 };
 
 const manualLink = getManualLink("invoice");
@@ -247,7 +245,6 @@ const Invoices = React.memo<any>(({
           asyncValidate: notesAsyncValidate,
           asyncBlurFields: ["notes[].message"]
         }}
-        nestedEditFields={nestedEditFields}
         getEditRecord={getInvoiceRecord}
         rootEntity="AbstractInvoice"
         filterEntity="Invoice"

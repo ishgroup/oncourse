@@ -1,5 +1,4 @@
 import { StringKeyObject } from "../CommomObjects";
-import { Category } from "@api/model";
 
 export interface CommonListItem extends StringKeyObject<boolean | string | number> {
   id: number;
@@ -21,5 +20,5 @@ export interface SidebarSharedProps {
   activeFiltersConditions: CommonListFilterCondition[];
   history: any;
   search: string;
-  category: Category;
+  category: string;
 }

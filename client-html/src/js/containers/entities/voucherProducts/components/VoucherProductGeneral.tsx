@@ -46,6 +46,7 @@ interface VoucherProductGeneralProps extends EditViewProps<VoucherProduct> {
   foundCourses?: Course[];
   submitSucceeded?: any;
   getMinMaxFee?: (ids: string) => void;
+  coursesError?: boolean;
   dataCollectionRules?: PreferencesState["dataCollectionRules"];
 }
 
@@ -170,6 +171,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
     pendingCourses,
     submitSucceeded,
     getMinMaxFee,
+    coursesError,
     dispatch,
     form,
     rootEntity,
@@ -342,6 +344,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
             searchType="withToggle"
             disabled={values && values.soldVouchersCount > 0}
             aqlEntities={["Course"]}
+            aqlQueryError={coursesError}
           />
         </div>
         <Typography color="inherit" component="div">
@@ -415,6 +418,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
           form={form}
           submitSucceeded={submitSucceeded}
           rootEntity={rootEntity}
+          customAqlEntities={["Course", "Product"]}
         />
       </Grid>
 
@@ -452,6 +456,7 @@ const mapStateToProps = (state: State) => ({
   minFee: state.voucherProducts.minFee,
   maxFee: state.voucherProducts.maxFee,
   foundCourses: state.plainSearchRecords["Course"].items,
+  coursesError: state.plainSearchRecords["Course"].error,
   pendingCourses: state.plainSearchRecords["Course"].loading,
   dataCollectionRules: state.preferences.dataCollectionRules
 });

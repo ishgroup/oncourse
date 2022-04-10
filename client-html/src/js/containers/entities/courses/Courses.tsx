@@ -15,7 +15,6 @@ import ListView from "../../../common/components/list-view/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { FilterGroup } from "../../../model/common/ListView";
 import { CourseExtended } from "../../../model/entities/Course";
-import { Classes } from "../../../model/entities/CourseClass";
 import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
 import { getListTags } from "../../tags/actions";
 import { createCourse, deleteCourse, getCourse, updateCourse } from "./actions";
@@ -106,7 +105,7 @@ const filterGroups: FilterGroup[] = [
 const findRelatedGroup: any[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Course and entityId" },
   { title: "Applications", list: "application", expression: "course.id" },
-  { title: "Classes", list: Classes.path, expression: "course.id" },
+  { title: "Classes", list: "class", expression: "course.id" },
   {
     title: "Current students",
     list: "contact",
