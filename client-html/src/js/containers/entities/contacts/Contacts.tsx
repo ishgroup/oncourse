@@ -1,5 +1,5 @@
 /*
- * Copyright ish group pty ltd 2021.
+ * Copyright ish group pty ltd 2022.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
@@ -7,9 +7,7 @@
  */
 
 import { isBefore } from "date-fns";
-import React, {
-  Dispatch, useCallback, useEffect, useState
-} from "react";
+import React, { Dispatch, useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
 import Typography from "@mui/material/Typography";
@@ -31,9 +29,7 @@ import {
 } from "./actions";
 import ContactEditView from "./components/ContactEditView";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import {
-  getContactRelationTypes, getCountries, getLanguages, getPaymentTypes
-} from "../../preferences/actions";
+import { getContactRelationTypes, getCountries, getLanguages, getPaymentTypes } from "../../preferences/actions";
 import { getDefaultInvoiceTerms } from "../invoices/actions";
 import ContactCogWheel from "./components/ContactCogWheel";
 import { checkPermissions } from "../../../common/actions";
@@ -174,8 +170,8 @@ const findRelatedGroup: any[] = [
   { title: "Payments out", list: "paymentOut", expression: "payee.id" },
   { title: "Payslips", list: "payslip", expression: "contact.id" },
   { title: "Sales", list: "sale", expression: "purchasedBy.id" },
-  { title: "Student timetable", list: "timetable", expression: "session.courseClass.enrolments.student.id" },
-  { title: "Tutor timetable", list: "timetable", expression: "session.tutor.contact.id" },
+  { title: "Student timetable", list: "timetable", expression: "courseClass.enrolments.student.id" },
+  { title: "Tutor timetable", list: "timetable", expression: "tutor.contact.id" },
   { title: "Transactions", list: "transaction", expression: "contact.id" },
   { title: "Waiting lists", list: "waitingList", expression: "student.contact.id" }
 ];

@@ -44,7 +44,6 @@ export const setTimetableFilters = (filters?: CoreFilter[]) => ({
   payload: { filters }
 });
 
-
 export const setTimetableMonths = (months?: TimetableMonth[], loadMore?: boolean) => ({
   type: SET_TIMETABLE_MONTHS,
   payload: { months, loadMore }

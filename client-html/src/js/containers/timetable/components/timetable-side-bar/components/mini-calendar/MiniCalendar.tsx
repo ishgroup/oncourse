@@ -6,8 +6,8 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useContext, useEffect } from "react";
-import { format, addMonths } from "date-fns";
+import React, { useContext } from "react";
+import { addMonths, format } from "date-fns";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import CalendarHeader from "./components/CalendarHeader";
@@ -29,19 +29,16 @@ const MiniCalendar: React.FunctionComponent<Props> = ({ getSessionsDays, selecte
    setSelectedWeekDays, selectedMonth, setSelectedMonth, selectedWeekDays
   } = useContext(TimetableContext);
 
-  useEffect(
-    () => {
-      getSessionsDays(selectedMonth.getMonth(), selectedMonth.getFullYear());
-    },
-    [selectedMonth]
-  );
-
   const previousMonth = () => {
-    setSelectedMonth(addMonths(selectedMonth, -1));
+    const prev = addMonths(selectedMonth, -1);
+    setSelectedMonth(prev);
+    getSessionsDays(prev.getMonth(), prev.getFullYear());
   };
 
   const nextMonth = () => {
-    setSelectedMonth(addMonths(selectedMonth, 1));
+    const next = addMonths(selectedMonth, 1);
+    setSelectedMonth(next);
+    getSessionsDays(next.getMonth(), next.getFullYear());
   };
 
   const switchWeekDays = dayId => {

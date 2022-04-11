@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import * as React from "react";
@@ -11,15 +14,9 @@ import { Room } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
-import {
-  createRoom, getRoom, removeRoom, updateRoom
-} from "./actions";
+import { createRoom, getRoom, removeRoom, updateRoom } from "./actions";
 import RoomEditView from "./components/RoomEditView";
-import {
-  setListEditRecord,
-  clearListState,
-  getFilters,
- } from "../../../common/components/list-view/actions";
+import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { getListTags } from "../../tags/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
@@ -72,7 +69,7 @@ const findRelatedGroup: any[] = [
     expression: "attachmentRelations.entityIdentifier == Room and attachmentRelations.entityRecordId"
   },
   { title: "Student feedback", list: "survey", expression: "enrolment.courseClass.room.id" },
-  { title: "Timetable", list: "timetable", expression: "session.room.id" }
+  { title: "Timetable", list: "timetable", expression: "room.id" }
 ];
 
 class Rooms extends React.Component<any, any> {

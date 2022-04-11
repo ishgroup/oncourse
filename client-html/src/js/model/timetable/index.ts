@@ -14,6 +14,8 @@ export type CalendarMode = "Compact" | "Gap(Days)" | "Gap(Hours)";
 
 export type CalendarTagsState = "Tag names" | "Tag dots" | "Tag off";
 
+export type CalendarGroupingState = "Group by tutor" | "Group by room" | "No grouping";
+
 export interface TimetableState {
   months: TimetableMonth[];
   selectedMonthSessionDays: string[];
@@ -46,6 +48,7 @@ export interface TimetableDay {
 
 export interface TimetableContextState {
   calendarMode: CalendarMode;
+  calendarGrouping: CalendarGroupingState;
   tagsState: CalendarTagsState;
   targetDay: Date;
   selectedMonth: Date;

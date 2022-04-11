@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useContext, useEffect } from "react";
+import React, { useCallback, useContext } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import clsx from "clsx";
@@ -16,13 +16,11 @@ import { CoreFilter, SavingFilterState } from "../../../../../../model/common/Li
 import { State } from "../../../../../../reducers/state";
 import {
   deleteTimetableFilter,
-  getTimetableFilters,
   saveTimetableFilter,
   setTimetableFilters,
   setTimetableSavingFilter,
 } from "../../../../actions";
 import { StubFilterItemBase } from "../../../../../../common/components/list-view/components/side-bar/components/StubFilterItem";
-import { AnyArgFunction } from "../../../../../../model/common/CommonFunctions";
 import { TimetableContext } from "../../../../Timetable";
 import { Fetch } from "../../../../../../model/common/Fetch";
 
@@ -33,7 +31,6 @@ interface Props {
   setSavingFilter?: (savingFilter?: SavingFilterState) => void;
   setTimetableFilters?: (filters?: CoreFilter[]) => void;
   fetch: Fetch;
-  getTimetableFilters?: AnyArgFunction;
   deleteTimetableFilter?: (id: number, currentMonth: Date) => void;
 }
 
@@ -43,15 +40,10 @@ const CustomFilters = React.memo<Props>(
     savingFilter,
     setSavingFilter,
     saveFilter,
-    getTimetableFilters,
     setTimetableFilters,
     deleteTimetableFilter,
     fetch
   }) => {
-    useEffect(() => {
-      getTimetableFilters();
-    }, [getTimetableFilters]);
-
     const { selectedMonth } = useContext(TimetableContext);
 
     const onFiltersUpdate = (filter, active) => {
@@ -105,8 +97,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   saveFilter: (filter: Filter) => dispatch(saveTimetableFilter(filter)),
   setSavingFilter: (savingFilter?: SavingFilterState) => dispatch(setTimetableSavingFilter(savingFilter)),
   deleteTimetableFilter: (id: number, currentMonth: Date) => dispatch(deleteTimetableFilter(id, currentMonth)),
-  setTimetableFilters: (filters?: CoreFilter[]) => dispatch(setTimetableFilters(filters)),
-  getTimetableFilters: () => dispatch(getTimetableFilters())
+  setTimetableFilters: (filters?: CoreFilter[]) => dispatch(setTimetableFilters(filters))
 });
 
 export default connect<any, any, any>(

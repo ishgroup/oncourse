@@ -7,3 +7,7 @@
  */
 
 export const LS_TIMETABLE_TAGS_MODE = "lsTimetableTagsMode";
+
+export const LS_TIMETABLE_CALENDAR_MODE = "lsTimetableCalendarMode";
+
+export const LS_TIMETABLE_GROUPING_MODE = "lsTimetableGroupingMode";

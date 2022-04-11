@@ -142,8 +142,7 @@ const Calendar = React.memo<Props>(props => {
     selectedMonth,
     selectedWeekDays,
     selectedDayPeriods,
-    calendarMode,
-    setCalendarMode,
+    calendarMode
   } = useContext(
     TimetableContext
   );
@@ -213,7 +212,7 @@ const Calendar = React.memo<Props>(props => {
         hasSessions: false
       }
     ], true));
-
+    
     dispatch(findTimetableSessions({ from: startMonth.toISOString(), to: endOfMonth(endMonth).toISOString() }));
   };
 
@@ -227,27 +226,17 @@ const Calendar = React.memo<Props>(props => {
 
     if (title) {
       window.document.title = title;
+      params.delete("title");
     }
 
     const searchString = params.get("search");
     dispatch(setTimetableSearch(searchString ? decodeURIComponent(searchString) : ""));
 
-    const calendarModeUrl = params.get("calendarMode");
-
-    if (calendarModeUrl) {
-      setCalendarMode(calendarModeUrl);
-    }
-
-    const targetDayUrlString = params.get("selectedDate");
-
-    let tardetDateInitial = targetDay;
-
-    if (targetDayUrlString) {
-      tardetDateInitial = new Date(targetDayUrlString);
-      setTargetDay(tardetDateInitial);
-    }
-
-    loadNextMonths(tardetDateInitial);
+    loadNextMonths(targetDay);
+    
+    const startMonth = startOfMonth(targetDay);
+    
+    dispatch(getTimetableSessionsDays(startMonth.getMonth(), startMonth.getFullYear()));
   }, []);
 
   useEffect(() => {
