@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-  <Node CREATEDON="2007-07-17 14:22:43.32" MODIFIEDON="2008-03-31 12:44:29.521" NAME="Subjects"
+<!--  <Node CREATEDON="2007-07-17 14:22:43.32" MODIFIEDON="2008-03-31 12:44:29.521" NAME="Subjects"
         NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" SPECIALTYPE="1" ID="200"/>
   <Node CREATEDON="2007-07-17 14:22:43.323" NAME="Creative Arts"
         NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1"
         CONTENTS="Creative Arts comprises of a whole host of activities and hobbies that are related to making things with one&apos;s own hands and skill."
-        ID="215" PARENTID="200"/>
+        ID="215" PARENTID="200"/>-->
 
   <Note id="100" note="firstCourseNote1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
   <Note id="200" note="secondCourseNote1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>

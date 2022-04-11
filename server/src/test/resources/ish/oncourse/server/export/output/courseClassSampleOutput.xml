@@ -45,8 +45,7 @@
       <minimumPlaces>1</minimumPlaces>
       <budgetedPlaces>10</budgetedPlaces>
       <notes>firstCourseClassNote1
-        secondCourseClassNote1
-      </notes>
+        secondCourseClassNote1</notes>
       <startDateTime>2013-01-01T00:00:00Z</startDateTime>
       <webDescription />
       <accountCode>11500</accountCode>
@@ -147,8 +146,7 @@
       <minimumPlaces>1</minimumPlaces>
       <budgetedPlaces>10</budgetedPlaces>
       <notes>firstCourseClassNote2
-        secondCourseClassNote2
-      </notes>
+secondCourseClassNote2</notes>
       <startDateTime>2013-01-01T00:00:00Z</startDateTime>
       <webDescription />
       <accountCode>11500</accountCode>
@@ -258,8 +256,7 @@
       <minimumPlaces>1</minimumPlaces>
       <budgetedPlaces>10</budgetedPlaces>
       <notes>firstCourseClassNote3
-        secondCourseClassNote3
-      </notes>
+        secondCourseClassNote3</notes>
       <startDateTime>2013-01-01T00:00:00Z</startDateTime>
       <webDescription />
       <accountCode>11500</accountCode>
@@ -315,8 +312,7 @@
       <minimumPlaces>1</minimumPlaces>
       <budgetedPlaces>10</budgetedPlaces>
       <notes>firstCourseClassNote4
-        secondCourseClassNote4
-      </notes>
+        secondCourseClassNote4</notes>
       <startDateTime>2013-01-01T00:00:00Z</startDateTime>
       <webDescription />
       <accountCode>11500</accountCode>
