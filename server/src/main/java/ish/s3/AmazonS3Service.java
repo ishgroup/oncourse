@@ -155,25 +155,29 @@ public class AmazonS3Service {
 
     public String getFileUrl(String uniqueKey, String versionId, AttachmentInfoVisibility visibility, Long expireTimeout) {
         String url = null;
-        if (AttachmentInfoVisibility.PUBLIC.equals(visibility) || AttachmentInfoVisibility.LINK.equals(visibility)) {
-            return null;
+        if (!AttachmentInfoVisibility.PUBLIC.equals(visibility) && !AttachmentInfoVisibility.LINK.equals(visibility)) {
+            var expiration = Duration.ofSeconds(expireTimeout);
+            GetObjectRequest request = GetObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(uniqueKey)
+                    .versionId(versionId)
+                    .build();
+            GetObjectPresignRequest getObjectPresignRequest = GetObjectPresignRequest.builder()
+                    .signatureDuration(expiration)
+                    .getObjectRequest(request)
+                    .build();
+            PresignedGetObjectRequest presignedGetObjectRequest = presigner.presignGetObject(getObjectPresignRequest);
+            url = presignedGetObjectRequest.url().toString();
+        } else {
+            GetUrlRequest request = GetUrlRequest.builder()
+                    .bucket(bucketName)
+                    .key(uniqueKey)
+                    .versionId(versionId)
+                    .build();
+            url = s3Client.utilities().getUrl(request).toString();
         }
 
-        var expiration = Duration.ofSeconds(expireTimeout);
-
-        GetObjectRequest request = GetObjectRequest.builder()
-                .bucket(bucketName)
-                .key(uniqueKey)
-                .versionId(versionId)
-                .build();
-
-        GetObjectPresignRequest getObjectPresignRequest = GetObjectPresignRequest.builder()
-                .signatureDuration(expiration)
-                .getObjectRequest(request)
-                .build();
-
-        PresignedGetObjectRequest presignedGetObjectRequest = presigner.presignGetObject(getObjectPresignRequest);
-        return presignedGetObjectRequest.url().toString();
+        return url;
     }
 
     /**
