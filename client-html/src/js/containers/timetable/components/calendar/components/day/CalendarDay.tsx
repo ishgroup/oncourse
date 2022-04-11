@@ -1,11 +1,12 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
-  useEffect, useMemo, useRef, Fragment, useState
-} from "react";
+import React, { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -15,7 +16,7 @@ import withStyles from "@mui/styles/withStyles";
 import { getTimetableSessionsByIds, getTimetableSessionsTags } from "../../../../actions";
 import styles from "../styles";
 import { gapHoursDayPeriodsBase, getGapHours } from "../../../../utils";
-import { CalendarMode, TimetableDay } from "../../../../../../model/timetable";
+import { CalendarMode, CalendarTagsState, TimetableDay } from "../../../../../../model/timetable";
 import CalendarSessionHour from "../session/CalendarSessionHour";
 import CalendarSession from "../session/CalendarSession";
 import CalendarDayBase from "./CalendarDayBase";
@@ -31,8 +32,7 @@ interface CompactModeDayProps extends TimetableDay {
   classes: any;
   calendarMode: CalendarMode;
   selectedDayPeriods: boolean[];
-  tagsExpanded: any;
-  setTagsExpanded: any;
+  tagsState: CalendarTagsState;
 }
 
 const EmptyGapDay: React.FunctionComponent<any> = React.memo(
@@ -84,8 +84,7 @@ const GapDay: React.FunctionComponent<any> = React.memo(
     updated,
     hasSessions,
     tagsUpdated,
-    tagsExpanded,
-    setTagsExpanded
+    tagsState,
   }) => {
     const hasSelectedDayPeriods = selectedDayPeriods.includes(true);
 
@@ -122,8 +121,7 @@ const GapDay: React.FunctionComponent<any> = React.memo(
                             key={h.title + h.sessions.length}
                             classes={classes}
                             sessions={h.sessions}
-                            tagsExpanded={tagsExpanded}
-                            setTagsExpanded={setTagsExpanded}
+                            tagsState={tagsState}
                           />
                         ) : (
                           <Typography className="text-disabled">available</Typography>
@@ -163,9 +161,8 @@ const CalendarDayWrapper: React.FunctionComponent<CompactModeDayProps> = React.m
     classes,
     calendarMode,
     selectedDayPeriods,
-    tagsExpanded,
+    tagsState,
     tagsUpdated,
-    setTagsExpanded,
     getSessionsTags
   } = props;
 
@@ -191,7 +188,7 @@ const CalendarDayWrapper: React.FunctionComponent<CompactModeDayProps> = React.m
 
   const dayNodeRef = useRef(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (dayNodesObserver && dayNodeRef.current) {
       dayNodeRef.current.setInView = setInView;
       dayNodeRef.current.isInView = inView;
@@ -199,7 +196,7 @@ const CalendarDayWrapper: React.FunctionComponent<CompactModeDayProps> = React.m
     }
 
     return () => {
-      if (dayNodeRef.current) dayNodesObserver.observer.unobserve(dayNodeRef.current);
+      if (dayNodeRef.current && dayNodesObserver) dayNodesObserver.observer.unobserve(dayNodeRef.current);
     };
   }, [dayNodesObserver, dayNodeRef.current]);
 
@@ -209,15 +206,14 @@ const CalendarDayWrapper: React.FunctionComponent<CompactModeDayProps> = React.m
           <CalendarSession
             key={s.id}
             inView={inView}
-            tagsExpanded={tagsExpanded}
-            setTagsExpanded={setTagsExpanded}
+            tagsState={tagsState}
             {...s}
           />
         ))
       ) : (
         <Typography className="text-disabled dayOffset">available</Typography>
       )),
-    [sessions, updated, selectedDayPeriods, tagsExpanded, inView]
+    [sessions, updated, selectedDayPeriods, tagsState, inView]
   );
 
   return (
@@ -235,8 +231,7 @@ const CalendarDayWrapper: React.FunctionComponent<CompactModeDayProps> = React.m
           updated={updated}
           hasSessions={sessions.length}
           tagsUpdated={tagsUpdated}
-          tagsExpanded={tagsExpanded}
-          setTagsExpanded={setTagsExpanded}
+          tagsState={tagsState}
         />
       ) : (
         renderedDays

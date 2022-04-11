@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createStyles, withStyles } from "@mui/styles";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { Dispatch } from "redux";
@@ -16,19 +16,21 @@ import clsx from "clsx";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import debounce from "lodash.debounce";
 import { State } from "../../../../reducers/state";
 import {
   clearTimetableMonths,
   findTimetableSessions,
   getTimetableSessionsDays,
   setTimetableFilters,
+  setTimetableMonths,
   setTimetableSearch
 } from "../../actions";
 import { TimetableContext } from "../../Timetable";
 import { DD_MMM_YYYY_MINUSED } from "../../../../common/utils/dates/format";
-import { animateListScroll, attachDayNodesObserver } from "../../utils";
+import { animateListScroll, attachDayNodesObserver, getFormattedMonthDays } from "../../utils";
 import CalendarMonth from "./components/month/CalendarMonth";
-import CalendarModesSwitcher from "../modesSwitcher/CalendarModesSwitcher";
+import CalendarModesSwitcher from "./components/switchers/CalendarModesSwitcher";
 import DynamicSizeList from "../../../../common/components/form/DynamicSizeList";
 import { usePrevious } from "../../../../common/utils/hooks";
 import {
@@ -36,6 +38,7 @@ import {
   setActiveFiltersBySearch
 } from "../../../../common/components/list-view/utils/listFiltersUtils";
 import { CoreFilter } from "../../../../model/common/ListView";
+import CalendarTagsSwitcher from "./components/switchers/CalendarTagsSwitcher";
 
 const styles = theme => createStyles({
     root: {
@@ -50,6 +53,8 @@ const styles = theme => createStyles({
       outline: "none"
     },
     modesSwitcher: {
+      display: "flex",
+      flexDirection: "column",
       position: "absolute",
       right: theme.spacing(5),
       top: theme.spacing(3),
@@ -90,18 +95,18 @@ const MonthRenderer = React.forwardRef<any, any>(({
     isScrolling={isScrolling}
     style={style}
     dayNodesObserver={data.dayNodesObserver}
-    tagsExpanded={data.tagsExpanded}
-    setTagsExpanded={data.setTagsExpanded}
     {...data.months[index]}
   />
 ));
 
-let scrollToTargetDayOnRender: Date = null;
-
 const onRendered = ({
-  visibleStopIndex, months, loadNextMonths, sessionsLoading
+  visibleStartIndex,
+  visibleStopIndex,
+  months,
+  loadNextMonths,
+  sessionsLoading
 }) => {
-  if (visibleStopIndex + 1 === months.length && !sessionsLoading) {
+  if (visibleStartIndex === visibleStopIndex && visibleStopIndex + 1 === months.length && !sessionsLoading) {
     const currentMonth = months[months.length - 1].month;
 
     const nextMonthsStart = addMonths(currentMonth, 1);
@@ -114,12 +119,12 @@ const onRendered = ({
   }
 };
 
-const scrollToCalendarDay = (day: Date, list, index, dayNodesObserver) => {
+const scrollToCalendarDay = debounce((day: Date, list, index, dayNodesObserver) => {
   const dayId = format(day, DD_MMM_YYYY_MINUSED);
 
   const dayNode = document.getElementById(dayId);
 
-  if (dayNode) {
+  if (dayNode && dayNodesObserver) {
     animateListScroll(
       list,
       dayNode.parentElement.offsetTop + list._instanceProps.itemMetadataMap[index].offset - 32,
@@ -128,11 +133,17 @@ const scrollToCalendarDay = (day: Date, list, index, dayNodesObserver) => {
       dayNodesObserver
     );
   }
-};
+}, 100);
 
 const Calendar = React.memo<Props>(props => {
   const {
-   targetDay, setTargetDay, selectedMonth, selectedWeekDays, selectedDayPeriods, calendarMode, setCalendarMode
+    targetDay,
+    setTargetDay,
+    selectedMonth,
+    selectedWeekDays,
+    selectedDayPeriods,
+    calendarMode,
+    setCalendarMode,
   } = useContext(
     TimetableContext
   );
@@ -151,7 +162,7 @@ const Calendar = React.memo<Props>(props => {
   } = props;
 
   const [dayNodesObserver, setDayNodesObserver] = useState<any>();
-  const [tagsExpanded, setTagsExpanded] = useState(true);
+  const [scrollToTargetDayOnRender, setScrollToTargetDayOnRender] = useState(null);
 
   const listEl = useRef(null);
 
@@ -188,13 +199,27 @@ const Calendar = React.memo<Props>(props => {
   // fetch next two months
   const loadNextMonths = baseDate => {
     const startMonth = startOfMonth(baseDate);
-    const endMonth = endOfMonth(addMonths(startMonth, 1));
-    dispatch(findTimetableSessions({ from: startMonth.toISOString(), to: endMonth.toISOString() }));
+    const endMonth = startOfMonth(addMonths(startMonth, 1));
+
+    dispatch(setTimetableMonths([
+      {
+        month: startMonth,
+        days: getFormattedMonthDays(startMonth),
+        hasSessions: false
+      },
+      {
+        month: endMonth,
+        days: getFormattedMonthDays(endMonth),
+        hasSessions: false
+      }
+    ], true));
+
+    dispatch(findTimetableSessions({ from: startMonth.toISOString(), to: endOfMonth(endMonth).toISOString() }));
   };
 
-  const onRowsRendered = useCallback(args => onRendered({
+  const onRowsRendered = args => onRendered({
    ...args, months, loadNextMonths, sessionsLoading
-  }), [months, loadNextMonths, sessionsLoading]);
+  });
 
   // Search effects
   useEffect(() => {
@@ -204,20 +229,25 @@ const Calendar = React.memo<Props>(props => {
       window.document.title = title;
     }
 
-    const targetDayUrlString = params.get("selectedDate");
-
-    if (targetDayUrlString) {
-      setTargetDay(new Date(targetDayUrlString));
-    }
-    
     const searchString = params.get("search");
     dispatch(setTimetableSearch(searchString ? decodeURIComponent(searchString) : ""));
 
     const calendarModeUrl = params.get("calendarMode");
-    
+
     if (calendarModeUrl) {
       setCalendarMode(calendarModeUrl);
     }
+
+    const targetDayUrlString = params.get("selectedDate");
+
+    let tardetDateInitial = targetDay;
+
+    if (targetDayUrlString) {
+      tardetDateInitial = new Date(targetDayUrlString);
+      setTargetDay(tardetDateInitial);
+    }
+
+    loadNextMonths(tardetDateInitial);
   }, []);
 
   useEffect(() => {
@@ -287,16 +317,14 @@ const Calendar = React.memo<Props>(props => {
     const prevFilters = prevParams.get("filter");
 
     if (currentSearch !== prevSearch || currentFilters !== prevFilters) {
-      const startMonth = startOfMonth(selectedMonth);
-      const endMonth = endOfMonth(addMonths(startMonth, 1));
-
       dispatch(getTimetableSessionsDays(selectedMonth.getMonth(), selectedMonth.getFullYear()));
-      dispatch(findTimetableSessions({ from: startMonth.toISOString(), to: endMonth.toISOString() }));
+      loadNextMonths(selectedMonth);
+      setScrollToTargetDayOnRender(targetDay);
     }
   }, [params, prevParams]);
 
   // Layout effects
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!dayNodesObserver && listEl.current) {
       setDayNodesObserver(attachDayNodesObserver(listEl.current._outerRef, targetDayHandler));
     }
@@ -307,7 +335,7 @@ const Calendar = React.memo<Props>(props => {
     };
   }, [listEl.current, dayNodesObserver]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!listEl.current || listEl.current.state.isScrolling) {
       return;
     }
@@ -318,32 +346,31 @@ const Calendar = React.memo<Props>(props => {
       if (calendarMode === "Compact" && !(selectedMonthSessionDays[targetDay.getDate() - 1] !== 0)) {
         return;
       }
-      listEl.current.scrollToItem(targetDayMonthIndex);
       scrollToDayHandler(targetDayMonthIndex);
     } else {
       dispatch(clearTimetableMonths());
-      scrollToTargetDayOnRender = targetDay;
+      setScrollToTargetDayOnRender(targetDay);
       loadNextMonths(targetDay);
     }
-  }, [targetDay, listEl.current?.state?.isScrolling]);
+  }, [targetDay, dayNodesObserver]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     scrollToDayHandler(months.findIndex(m => isSameMonth(m.month, targetDay)));
   }, [selectedWeekDays, selectedDayPeriods, calendarMode]);
 
-  useEffect(() => {
-    if (scrollToTargetDayOnRender && months.length) {
+  useLayoutEffect(() => {
+    if (dayNodesObserver && scrollToTargetDayOnRender && months.length) {
       const targetDayMonthIndex = months.findIndex(m => isSameMonth(m.month, scrollToTargetDayOnRender));
       scrollToDayHandler(targetDayMonthIndex);
-      scrollToTargetDayOnRender = null;
+      setScrollToTargetDayOnRender(null);
     }
-  }, [months]);
+  }, [months, scrollToTargetDayOnRender, dayNodesObserver]);
 
-  const hasSessions = useMemo(() => months.some(m => m.hasSessions), [months]);
+  const hasSessions = useMemo(() => (calendarMode === "Compact" ? months.some(m => m.hasSessions) : true), [months, calendarMode]);
 
   const itemData = useMemo(() => ({
-   months, dayNodesObserver, tagsExpanded, setTagsExpanded
-  }), [months, dayNodesObserver, tagsExpanded, setTagsExpanded]);
+   months, dayNodesObserver
+  }), [months, dayNodesObserver]);
 
   return (
     <div className={classes.root}>
@@ -360,7 +387,6 @@ const Calendar = React.memo<Props>(props => {
       <div className={`${classes.centered} ${months.length === 0 && sessionsLoading ? "" : classes.hidden}`}>
         <CircularProgress size={40} thickness={5} />
       </div>
-
       <AutoSizer>
         {({ width, height }) => (
           <DynamicSizeList
@@ -378,10 +404,12 @@ const Calendar = React.memo<Props>(props => {
           >
             {MonthRenderer}
           </DynamicSizeList>
-          )}
+        )}
       </AutoSizer>
-
-      <CalendarModesSwitcher className={classes.modesSwitcher} />
+      <div className={classes.modesSwitcher}>
+        <CalendarModesSwitcher TimetableContext={TimetableContext} />
+        <CalendarTagsSwitcher className="mt-2" TimetableContext={TimetableContext} />
+      </div>
     </div>
   );
 });

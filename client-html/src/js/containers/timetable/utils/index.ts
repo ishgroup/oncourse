@@ -1,12 +1,13 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import { Session } from "@api/model";
-import {
- format, getDaysInMonth, setDate, setHours, startOfMonth
-} from "date-fns";
+import { format, getDaysInMonth, setDate, setHours, startOfMonth } from "date-fns";
 import {
   AfternoonIcon,
   EveningIcon,
@@ -16,7 +17,7 @@ import { HA } from "../../../common/utils/dates/format";
 import { TimetableMonth, TimetableSession } from "../../../model/timetable";
 import { appendTimezone } from "../../../common/utils/dates/formatTimezone";
 
-const getFormattedMonthDays = (startDate: Date) => Array.from(Array(getDaysInMonth(startDate)), (v, i) => i + 1).map(d => ({
+export const getFormattedMonthDays = (startDate: Date) => Array.from(Array(getDaysInMonth(startDate)), (v, i) => i + 1).map(d => ({
   day: setDate(startDate, d),
   sessions: [],
   updated: false,

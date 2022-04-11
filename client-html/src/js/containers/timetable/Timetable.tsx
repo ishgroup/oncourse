@@ -36,6 +36,7 @@ todayInitial.setHours(0, 0, 0, 0);
 
 export const timetableContextStateInitial: TimetableContextState = {
   calendarMode: "Compact",
+  tagsState: "Tag names",
   targetDay: todayInitial,
   selectedMonth: setDate(todayInitial, 1),
   selectedWeekDays: Array(7).fill(false),
@@ -44,7 +45,7 @@ export const timetableContextStateInitial: TimetableContextState = {
 
 const timetableReducer: React.Reducer<TimetableContextState, any> = (state, action) => {
   switch (action.type) {
-    case "setTargetDay":
+    case "targetDay":
       return {
         ...state,
         selectedMonth: isSameMonth(action.payload, state.selectedMonth)
@@ -52,26 +53,19 @@ const timetableReducer: React.Reducer<TimetableContextState, any> = (state, acti
           : startOfMonth(action.payload),
         targetDay: action.payload
       };
-    case "setSelectedMonth":
-      return { ...state, selectedMonth: action.payload };
-    case "setSelectedWeekDays":
-      return { ...state, selectedWeekDays: action.payload };
-    case "setSelectedDayPeriods":
-      return { ...state, selectedDayPeriods: action.payload };
-    case "setCalendarMode":
-      return { ...state, calendarMode: action.payload };
     default: {
-      throw new Error();
+      return { ...state, [action.type]: action.payload };
     }
   }
 };
 
 const getActionCreators = dispatch => ({
-  setTargetDay: payload => dispatch({ type: "setTargetDay", payload }),
-  setCalendarMode: payload => dispatch({ type: "setCalendarMode", payload }),
-  setSelectedMonth: payload => dispatch({ type: "setSelectedMonth", payload }),
-  setSelectedWeekDays: payload => dispatch({ type: "setSelectedWeekDays", payload }),
-  setSelectedDayPeriods: payload => dispatch({ type: "setSelectedDayPeriods", payload })
+  setTargetDay: payload => dispatch({ type: "targetDay", payload }),
+  setTagsState: payload => dispatch({ type: "tagsState", payload }),
+  setCalendarMode: payload => dispatch({ type: "calendarMode", payload }),
+  setSelectedMonth: payload => dispatch({ type: "selectedMonth", payload }),
+  setSelectedWeekDays: payload => dispatch({ type: "selectedWeekDays", payload }),
+  setSelectedDayPeriods: payload => dispatch({ type: "selectedDayPeriods", payload }),
 });
 
 export const TimetableContextProvider = props => {

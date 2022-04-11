@@ -7,10 +7,12 @@
  */
 
 import { Session } from "@api/model";
-import { AnyArgFunction, DateArgFunction, StringArgFunction } from "../common/CommonFunctions";
+import { AnyArgFunction, DateArgFunction } from "../common/CommonFunctions";
 import { CoreFilter, SavingFilterState } from "../common/ListView";
 
 export type CalendarMode = "Compact" | "Gap(Days)" | "Gap(Hours)";
+
+export type CalendarTagsState = "Tag names" | "Tag dots" | "Tag off";
 
 export interface TimetableState {
   months: TimetableMonth[];
@@ -44,13 +46,15 @@ export interface TimetableDay {
 
 export interface TimetableContextState {
   calendarMode: CalendarMode;
+  tagsState: CalendarTagsState;
   targetDay: Date;
   selectedMonth: Date;
   selectedWeekDays: boolean[];
   selectedDayPeriods: boolean[];
   setSelectedWeekDays?: (arg: boolean[]) => void;
   setSelectedDayPeriods?: (arg: boolean[]) => void;
-  setCalendarMode?: StringArgFunction;
+  setCalendarMode?: AnyArgFunction<CalendarMode>;
+  setTagsState?: AnyArgFunction<CalendarTagsState>;
   setPrevious?: AnyArgFunction;
   setNext?: AnyArgFunction;
   setTargetDay?: DateArgFunction;
