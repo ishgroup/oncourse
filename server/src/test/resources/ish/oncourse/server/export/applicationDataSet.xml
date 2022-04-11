@@ -126,6 +126,10 @@
            dateDue="2013-01-01 00:00:00" debtorsAccountId="1" invoiceDate="2013-01-01 00:00:00" source="O"
            createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" confirmationStatus="2"/>
 
+  <Invoice id="2" allowAutoPay="1" type="1" overdue="0.00" invoiceNumber="1" amoutOwing="0.00" contactId="1"
+           dateDue="2013-01-01 00:00:00" debtorsAccountId="1" invoiceDate="2013-01-01 00:00:00" source="O"
+           createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" confirmationStatus="2"/>
+
   <InvoiceLine id="2" invoiceId="1" accountId="2" enrolmentId="1" prepaidFeesAccountId="5" prepaidFeesRemaining="33.00"
                discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1"
                title="test invoiceline" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
