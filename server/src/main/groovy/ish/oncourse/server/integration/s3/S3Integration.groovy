@@ -8,18 +8,18 @@
 
 package ish.oncourse.server.integration.s3
 
-import com.amazonaws.auth.AWSStaticCredentialsProvider
-import com.amazonaws.auth.BasicAWSCredentials
-import com.amazonaws.services.s3.AmazonS3
-import com.amazonaws.services.s3.AmazonS3ClientBuilder
-import com.amazonaws.services.s3.model.AccessControlList
-import com.amazonaws.services.s3.model.GroupGrantee
-import com.amazonaws.services.s3.model.ObjectMetadata
-import com.amazonaws.services.s3.model.Permission
-import com.amazonaws.services.s3.model.PutObjectRequest
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
 import ish.oncourse.server.messaging.DocumentParam
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
+import software.amazon.awssdk.core.sync.RequestBody
+import software.amazon.awssdk.regions.Region
+import software.amazon.awssdk.services.s3.S3Client
+import software.amazon.awssdk.services.s3.model.GetUrlRequest
+import software.amazon.awssdk.services.s3.model.PutObjectAclRequest
+import software.amazon.awssdk.services.s3.model.PutObjectRequest
+import software.amazon.awssdk.services.s3.model.PutObjectResponse
 
 import java.nio.file.Files
 
@@ -48,11 +48,11 @@ class S3Integration implements PluginTrait {
     }
     
     String store(Object blob, String name) {
-
-        AmazonS3 s3 = AmazonS3ClientBuilder
-                .standard()
-                .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(account, key)))
-                .withRegion(region)
+        AwsBasicCredentials credentials = AwsBasicCredentials.create(account, key)
+        Region region = Region.of(this.region)
+        S3Client s3 = S3Client.builder()
+                .region(region)
+                .credentialsProvider(StaticCredentialsProvider.create(credentials))
                 .build()
 
         DocumentParam documentParam
@@ -64,22 +64,28 @@ class S3Integration implements PluginTrait {
         }
         byte[] bytes = documentParam.contentInBytes
 
-        InputStream is = new ByteArrayInputStream(bytes)
-
-        ObjectMetadata metadata = new ObjectMetadata()
-        String otherContentType = Files.probeContentType(of(name))
-        metadata.contentType = otherContentType
-        metadata.contentLength = bytes.length
-        metadata.contentDisposition = "inline;filename=\"$name\""
         String uuid = UUID.randomUUID().toString()
+        PutObjectRequest objectRequest = PutObjectRequest.builder()
+                .bucket(bucket)
+                .key(uuid)
+                .contentType(Files.probeContentType(of(name)))
+                .contentLength((long) bytes.length)
+                .contentDisposition(String.format("inline;filename=\"$name\"", name))
+                .build() as PutObjectRequest
+        PutObjectResponse response = s3.putObject(objectRequest, RequestBody.fromBytes(bytes))
+        String version = response.versionId()
 
-        PutObjectRequest request = new PutObjectRequest(bucket, uuid, is, metadata)
-        String version = s3.putObject(request).versionId
+        def objectAclRequest = PutObjectAclRequest.builder()
+                .bucket(bucket)
+                .key(uuid)
+                .versionId(version)
+                .acl("public-read")
+        s3.putObjectAcl(objectAclRequest.build() as PutObjectAclRequest)
 
-        AccessControlList objectAcl = s3.getObjectAcl(bucket, uuid, version)
-        objectAcl.grantPermission(GroupGrantee.AllUsers, Permission.Read)
-        s3.setObjectAcl(bucket, uuid, version, objectAcl)
-        return s3.getUrl(bucket, uuid).toString()
-         
+        GetUrlRequest request = GetUrlRequest.builder()
+                .bucket(bucket)
+                .key(uuid)
+                .build()
+        return s3.utilities().getUrl(request)
     }
 }
