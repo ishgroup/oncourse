@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='utf-8'?>
+<data>
+  <lead id='1'>
+    <modifiedOn>2012-05-09T21:00:00</modifiedOn>
+    <createdOn>2012-05-09T21:00:00</createdOn>
+    <studentCount>8</studentCount>
+    <contact id='1' />
+    <estimatedValue />
+    <nextActionOn />
+    <status>Open</status>
+    <notes>first note1
+      second note1</notes>
+    <course id='1' />
+    <assignedTo>test@mail.com</assignedTo>
+  </lead>
+  <lead id='2'>
+    <modifiedOn>2012-05-09T21:00:00</modifiedOn>
+    <createdOn>2012-05-09T21:00:00</createdOn>
+    <studentCount>3</studentCount>
+    <contact id='2' />
+    <estimatedValue />
+    <nextActionOn />
+    <status>Closed</status>
+    <notes>first note2
+      second note2</notes>
+    <course id='2' />
+    <product id='1' />
+    <assignedTo>test@mail.com</assignedTo>
+  </lead>
+  <course id='1'>
+    <modifiedOn>2012-12-31T21:00:00</modifiedOn>
+    <createdOn>2012-12-31T21:00:00</createdOn>
+    <allowWaitingLists>false</allowWaitingLists>
+    <code>TEST</code>
+    <currentlyOffered>true</currentlyOffered>
+    <isWebVisible>true</isWebVisible>
+    <isSufficientForQualification>true</isSufficientForQualification>
+    <isVET>true</isVET>
+    <name>Test Course</name>
+    <printedBrochureDescription>Printed Brochure text</printedBrochureDescription>
+    <reportableHours>2,00</reportableHours>
+    <webDescription>some text</webDescription>
+  </course>
+  <course id='2'>
+    <modifiedOn>2013-01-31T21:00:00</modifiedOn>
+    <createdOn>2013-01-31T21:00:00</createdOn>
+    <allowWaitingLists>true</allowWaitingLists>
+    <code>TST1</code>
+    <currentlyOffered>true</currentlyOffered>
+    <isWebVisible>false</isWebVisible>
+    <isSufficientForQualification>false</isSufficientForQualification>
+    <isVET>false</isVET>
+    <name>Test Course 2</name>
+    <printedBrochureDescription>Description</printedBrochureDescription>
+    <reportableHours>3,40</reportableHours>
+    <webDescription>description</webDescription>
+  </course>
+  <product id='1'>
+    <modifiedOn>2010-10-12T12:50:36</modifiedOn>
+    <createdOn>2010-10-12T12:50:36</createdOn>
+    <isWebVisible>true</isWebVisible>
+    <isOnSale>true</isOnSale>
+    <name>Industry Membership</name>
+    <prive>₽1,800.00</prive>
+    <description>contact 1 product</description>
+  </product>
+  <contact id='1'>
+    <modifiedOn>2012-05-09T21:00:00</modifiedOn>
+    <createdOn>2012-05-09T21:00:00</createdOn>
+    <allowEmail>true</allowEmail>
+    <allowPost>false</allowPost>
+    <allowSms>true</allowSms>
+    <deliveryStatusEmail>0</deliveryStatusEmail>
+    <deliveryStatusPost>0</deliveryStatusPost>
+    <deliveryStatusSms>0</deliveryStatusSms>
+    <email>test@test.test</email>
+    <fax />
+    <firstName>Test</firstName>
+    <homePhone>331110000</homePhone>
+    <company>false</company>
+    <male>true</male>
+    <lastName>Student</lastName>
+    <message />
+    <mobilePhone>331110000</mobilePhone>
+    <notes />
+    <postcode>1001</postcode>
+    <state>NSW</state>
+    <street>Main</street>
+    <suburb>Sydney</suburb>
+    <tfn />
+    <uniqueCode>ST1UNIQUE</uniqueCode>
+    <workPhone>331110000</workPhone>
+    <title />
+    <tutor>
+      <dateStarted />
+      <dateFinished />
+      <resume />
+      <dateFinished />
+    </tutor>
+  </contact>
+  <contact id='2'>
+    <modifiedOn>2012-05-19T21:00:00</modifiedOn>
+    <createdOn>2012-05-19T21:00:00</createdOn>
+    <allowEmail>true</allowEmail>
+    <allowPost>false</allowPost>
+    <allowSms>false</allowSms>
+    <deliveryStatusEmail>0</deliveryStatusEmail>
+    <deliveryStatusPost>0</deliveryStatusPost>
+    <deliveryStatusSms>0</deliveryStatusSms>
+    <email>tutor@tutor.tutor</email>
+    <fax />
+    <firstName>Test</firstName>
+    <homePhone>331110001</homePhone>
+    <company>false</company>
+    <male>true</male>
+    <lastName>Tutor</lastName>
+    <message />
+    <mobilePhone>331110001</mobilePhone>
+    <notes />
+    <postcode>1002</postcode>
+    <state>NSW</state>
+    <street>1st</street>
+    <suburb>Sydney</suburb>
+    <tfn />
+    <uniqueCode>TUT1UNIQUE</uniqueCode>
+    <workPhone>331110001</workPhone>
+    <title />
+    <tutor>
+      <dateStarted />
+      <dateFinished />
+      <resume />
+      <dateFinished />
+    </tutor>
+  </contact>
+</data>
