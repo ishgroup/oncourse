@@ -13,17 +13,10 @@ import ish.export.ExportResult
 import ish.oncourse.common.ResourceProperty
 import ish.oncourse.common.ResourceType
 import ish.oncourse.common.ResourcesUtil
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.ExportTemplate
-import ish.oncourse.server.cayenne.ExportTemplateAutomationBinding
-import ish.oncourse.server.cayenne.PaymentMethod
-import ish.oncourse.server.cayenne.Tax
 import ish.oncourse.server.integration.PluginService
 import ish.oncourse.server.upgrades.DataPopulation
 import ish.oncourse.server.upgrades.DataPopulationUtils
 import org.apache.cayenne.exp.ExpressionFactory
-import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.io.IOUtils
 import org.apache.commons.lang3.StringUtils
 import org.dbunit.database.IDatabaseConnection
@@ -33,15 +26,13 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.dbunit.operation.DatabaseOperation
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.params.provider.Arguments
 import org.yaml.snakeyaml.Yaml
 
 import java.time.LocalDate
 
 @CompileStatic
-@DatabaseSetup
+@DatabaseSetup(value = "ish/oncourse/server/export/initialDataSet.xml")
 class AllExportTemplatesTest extends TestWithDatabase {
     private static final String UTC_TIMEZONE_ID = "UTC"
 
@@ -49,12 +40,20 @@ class AllExportTemplatesTest extends TestWithDatabase {
     private static final String SS_BULK_UPLOAD_KEYCODE = "ish.onCourse.ssBulkUpload.csv"
     private static final String LINE_SEPARATOR = StringUtils.LF
 
+    // We need to save previous data set to delete data related to it only, because in other case we will catch exception with foreign keys
+    private ReplacementDataSet lastDataset
+
+    // Are needed to clean additional data, received from direct SQL queries into statements
+    private List<String> additionalTablesToClean = new ArrayList<>()
+    // Additional required parameters for scripts
+    private static Map<String, Map<String, Object>> additionalVariables = [
+            "ish.oncourse.agedDebtorCsvExport.csv": ["atDate": LocalDate.of(2013, 03, 04) as Object, "detail": null] as Map<String, Object>
+    ]
+
     void setup(String testDataFile) {
-        //cleanUpDB()
         // set default timezone to UTC to receive same export output regardless of
         // default timezone of building machine
         TimeZone.setDefault(TimeZone.getTimeZone(UTC_TIMEZONE_ID))
-
 
         try {
             InputStream st = AllExportTemplatesTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/export/" + testDataFile)
@@ -66,27 +65,47 @@ class AllExportTemplatesTest extends TestWithDatabase {
             rDataSet.addReplacementObject("[null]", null)
 
             IDatabaseConnection testDatabaseConnection = (dbExtension as TestWithDatabaseExtension).getTestDatabaseConnection()
+            def statement = testDatabaseConnection.connection.createStatement()
+
+            if (lastDataset != null) {
+                if (!additionalTablesToClean.empty) {
+                    additionalTablesToClean.each { statement.execute("DELETE from ${it}") }
+                    statement.connection.commit()
+                    additionalTablesToClean = new ArrayList<>()
+                }
+                try {
+                    DatabaseOperation.DELETE_ALL.execute(testDatabaseConnection, lastDataset)
+                } catch (Exception e) {
+                    Assertions.fail(e.getMessage() + " : " + testDataFile)
+                }
+
+            }
+
             DatabaseOperation.CLEAN_INSERT.execute(testDatabaseConnection, rDataSet)
             testDatabaseConnection.connection.commit()
-            //cayenneContext = cayenneService.newContext
-           // executeDatabaseOperation(rDataSet)
+
+            /* We need this code because we cannot create xml data node with `Lead` name and cannot use
+               Lead name into MySQL queries because it is reserved word */
+            if (testDataFile.equals("leadDataSet.xml")) {
+                statement.execute("insert into `Lead` (id, studentCount, createdOn, modifiedOn, contactId, studentNotes, status, assignedToUserId) values (1, 8, '2012-05-10 00:00:00', '2012-05-10 00:00:00', 1, 'First student notes', 1, 1)")
+                statement.execute("insert into `Lead` (id, studentCount, createdOn, modifiedOn, contactId, studentNotes, status, assignedToUserId) values (2, 3, '2012-05-10 00:00:00', '2012-05-10 00:00:00', 2, 'Second student notes', 0, 1)")
+                statement.execute("insert into LeadItem (id, leadId, createdOn, modifiedOn, courseId, productId) values (1, 1, '2015-01-24 18:00:00', '2015-01-24 18:00:00', 1, NULL)")
+                statement.execute("insert into LeadItem (id, leadId, createdOn, modifiedOn, courseId, productId) values (2, 2, '2015-01-24 18:00:00', '2015-01-24 18:00:00', 2, 1)")
+                statement.execute("insert into LeadItem (id, leadId, createdOn, modifiedOn, courseId, productId) values (3, 1, '2015-01-24 18:00:00', '2015-01-24 18:00:00', 1, NULL)")
+                statement.connection.commit()
+
+                additionalTablesToClean = List.of("LeadItem", "Lead")
+            }
+
+            lastDataset = rDataSet
+
             DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
-
             dataPopulation.run()
+            cayenneContext.commitChanges()
 
-            fillBindingsManually()
         } catch (Exception e) {
-            Assertions.fail(e.getMessage())
+            Assertions.fail(e.getMessage() + " : " + testDataFile)
         }
-    }
-
-    void fillBindingsManually() {
-        ExportTemplateAutomationBinding agedDebtorsBinding = ObjectSelect
-                .query(ExportTemplateAutomationBinding.class).where(ExportTemplateAutomationBinding.RELATED_OBJECT.dot(ExportTemplate.KEY_CODE).eq("ish.oncourse.agedDebtorCsvExport.csv"))
-                .selectFirst(cayenneContext)
-        agedDebtorsBinding.value = '2019-06-30'
-
-        cayenneContext.commitChanges()
     }
 
     @AfterEach
@@ -95,37 +114,8 @@ class AllExportTemplatesTest extends TestWithDatabase {
         TimeZone.setDefault(null)
     }
 
-    @BeforeEach
-    void temp(){}
-
-    Collection<Arguments> values() throws Exception {
-
-        List<Arguments> result = new ArrayList<>()
-        def pathsList = PluginService.getPluggableResources(ResourceType.EXPORT.getResourcePath(), ResourceType.EXPORT.getFilePattern())
-        List<Map<String, Object>> resourcesList = new ArrayList<>()
-
-        for (String propFile : pathsList) {
-            def resourceAsStream = ResourcesUtil.getResourceAsInputStream(propFile)
-            Yaml yaml = new Yaml()
-            def sources = yaml.load(resourceAsStream)
-            resourcesList.addAll(sources as List<Map<String,Object>>)
-
-            for(Map<String,Object>props:resourcesList){
-                DataPopulationUtils.updateExport(cayenneContext, props)
-                String keyCode = (String) props.get(ResourceProperty.KEY_CODE.getDisplayName())
-                String entityName = ((String) props.get(ResourceProperty.ENTITY_CLASS.getDisplayName()))
-                String outputExtention = keyCode.split("\\.").last()
-                String dataSet = keyCode.split("\\.")[2] + "DataSet.xml"
-                String output = keyCode.split("\\.")[2] + "SampleOutput." + outputExtention
-
-                result.add(Arguments.of(keyCode, entityName, dataSet, output))
-            }
-        }
-        return result
-    }
-
     @Test
-    void testAllExports(){
+    void testAllExports() {
         def pathsList = PluginService.getPluggableResources(ResourceType.EXPORT.getResourcePath(), ResourceType.EXPORT.getFilePattern())
         List<Map<String, Object>> resourcesList = new ArrayList<>()
 
@@ -133,31 +123,25 @@ class AllExportTemplatesTest extends TestWithDatabase {
             def resourceAsStream = ResourcesUtil.getResourceAsInputStream(propFile)
             Yaml yaml = new Yaml()
             def sources = yaml.load(resourceAsStream)
-            resourcesList.addAll(sources as List<Map<String,Object>>)
+            resourcesList.addAll(sources as List<Map<String, Object>>)
 
-            int count = 0
-            for(Map<String,Object>props:resourcesList){
+            for (Map<String, Object> props : resourcesList) {
                 DataPopulationUtils.updateExport(cayenneContext, props)
                 String keyCode = (String) props.get(ResourceProperty.KEY_CODE.getDisplayName())
                 String entityName = ((String) props.get(ResourceProperty.ENTITY_CLASS.getDisplayName()))
                 String outputExtention = keyCode.split("\\.").last()
                 String dataSet = keyCode.split("\\.")[2] + "DataSet.xml"
                 String output = keyCode.split("\\.")[2] + "SampleOutput." + outputExtention
-                if(count>2)
-                    testExport(keyCode, entityName, dataSet, output)
-                count++
+
+                testExport(keyCode, entityName, dataSet, output)
             }
         }
     }
 
 
-    /*@Test
-    @ParameterizedTest(name = "{1}-{0}")
-    @MethodSource("values")*/
     void testExport(String keyCode, String entityName, String dataSet, String output) throws Exception {
         setup(dataSet)
-        //cleanUpDB()
-        //def records = ObjectSelect.query(Account).select(cayenneContext)
+
         // exclude exports for Script entity - IshTestCase updates scripts from resources after table wipe
         if (entityName != "Script") {
             ExportParameter param = new ExportParameter()
@@ -168,17 +152,17 @@ class AllExportTemplatesTest extends TestWithDatabase {
 
             ExportService export = injector.getInstance(ExportService.class)
 
-            ExportResult result = export.export(param)
+            ExportResult result = export.export(param, additionalVariables.get(keyCode))
 
+            def inputStream = AllExportTemplatesTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/export/output/" + output)
 
-            byte[] sampleExport = IOUtils.toByteArray(AllExportTemplatesTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/export/output/" + output))
+            byte[] sampleExport = IOUtils.toByteArray(inputStream)
 
             String sampleExportString = StringUtils.replace(new String(sampleExport), StringUtils.CR, StringUtils.EMPTY)
             String resultExportString = StringUtils.replace(new String(result.getResult()), StringUtils.CR, StringUtils.EMPTY)
 
             String[] sampleExportSplit = sampleExportString.split(LINE_SEPARATOR)
             String[] resultExportSplit = resultExportString.split(LINE_SEPARATOR)
-
 
             Assertions.assertEquals(sampleExportSplit.length, resultExportSplit.length)
 
