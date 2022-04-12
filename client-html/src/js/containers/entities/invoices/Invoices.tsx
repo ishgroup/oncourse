@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { useCallback, useEffect, useState } from "react";
@@ -12,7 +15,6 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
 import {
   createInvoice,
   deleteQuote,
@@ -137,8 +139,7 @@ const nameCondition = (invoice: Invoice) => {
 };
 
 const nestedEditFields = {
-  PaymentOut: props => <AddPaymentOutEditView {...props} />,
-  SendMessage: props => <SendMessageEditView {...props} />
+  PaymentOut: props => <AddPaymentOutEditView {...props} />
 };
 
 const manualLink = getManualLink("invoice");
@@ -247,7 +248,6 @@ const Invoices = React.memo<any>(({
           asyncValidate: notesAsyncValidate,
           asyncBlurFields: ["notes[].message"]
         }}
-        nestedEditFields={nestedEditFields}
         getEditRecord={getInvoiceRecord}
         rootEntity="AbstractInvoice"
         filterEntity="Invoice"
@@ -259,6 +259,7 @@ const Invoices = React.memo<any>(({
         defaultDeleteDisabled={defaultDeleteDisabled}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
+        nestedEditFields={nestedEditFields}
         EditViewContent={InvoicesEditView}
         CogwheelAdornment={InvoiceCogwheel}
         alwaysFullScreenCreateView

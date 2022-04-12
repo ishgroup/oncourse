@@ -12,8 +12,8 @@ import { ClassCostRepetitionType } from "@api/model";
 import { Divider } from "@mui/material";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
-import { contactLabelCondition, openContactLink } from "../../../../contacts/utils";
-import { LinkAdornment } from "../../../../../../common/components/form/FieldAdornments";
+import { contactLabelCondition } from "../../../../contacts/utils";
+import { ContactLinkAdornment } from "../../../../../../common/components/form/FieldAdornments";
 import ContactSelectItemRenderer from "../../../../contacts/components/ContactSelectItemRenderer";
 import { decimalDivide, decimalMul, decimalPlus } from "../../../../../../common/utils/numbers/decimalCalculation";
 import { getCurrentTax } from "../../../../taxes/utils";
@@ -104,7 +104,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
           selectLabelCondition={contactLabelCondition}
           defaultDisplayValue={values.contactName}
           labelAdornment={
-            <LinkAdornment linkHandler={openContactLink} link={values.contactId} disabled={!values.contactId} />
+            <ContactLinkAdornment id={values?.contactId} />
           }
           itemRenderer={ContactSelectItemRenderer}
           rowHeight={55}

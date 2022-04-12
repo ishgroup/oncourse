@@ -38,7 +38,7 @@ import javax.annotation.Nonnull
  */
 @API
 @QueueableEntity
-class Application extends _Application implements Queueable, NotableTrait, ExpandableTrait, AttachableTrait {
+class Application extends _Application implements Queueable, NotableTrait, ExpandableTrait, AttachableTrait, ContactActivityTrait {
 
 
 	@Override
@@ -86,7 +86,11 @@ class Application extends _Application implements Queueable, NotableTrait, Expan
 		return super.getCreatedOn()
 	}
 
-	/**
+	@Override
+	String getInteractionName() {
+		return course.name
+	}
+/**
 	 * The Application can sometimes be valid for a specific length of time.
 	 *
 	 * @return date until when students can apply
