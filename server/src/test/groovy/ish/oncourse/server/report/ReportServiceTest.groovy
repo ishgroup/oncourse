@@ -177,7 +177,6 @@ class ReportServiceTest extends TestWithDatabase {
 
         final PrintRequest request = new PrintRequest()
         request.setReportCode(report.getKeyCode())
-        request.setEntity(report.getEntity())
 
         final List<PersistentObjectI> recordsToPrint = new ArrayList<>()
         Map<String, List<Long>> mapOfIds = new HashMap<>()
@@ -235,7 +234,6 @@ class ReportServiceTest extends TestWithDatabase {
 
         final PrintRequest request = new PrintRequest()
         request.setReportCode(report.getKeyCode())
-        request.setEntity(report.getEntity())
 
         final List<PersistentObjectI> recordsToPrint = new ArrayList<>()
         Map<String, List<Long>> mapOfIds = new HashMap<>()
@@ -300,7 +298,6 @@ class ReportServiceTest extends TestWithDatabase {
 
         final PrintRequest request = new PrintRequest()
         request.setReportCode(report.getKeyCode())
-        request.setEntity(report.getEntity())
 
         final List<PersistentObjectI> recordsToPrint = new ArrayList<>()
         Map<String, List<Long>> mapOfIds = new HashMap<>()
@@ -351,7 +348,6 @@ class ReportServiceTest extends TestWithDatabase {
 
         final PrintRequest request = new PrintRequest()
         request.setReportCode(report.getKeyCode())
-        request.setEntity(report.getEntity())
 
         final List<PersistentObjectI> recordsToPrint = new ArrayList<>()
         Map<String, List<Long>> mapOfIds = new HashMap<>()

@@ -137,7 +137,6 @@ class ReportPrintingTest extends TestWithDatabase {
 
         final PrintRequest request = new PrintRequest()
         request.setReportCode(report.getKeyCode())
-        request.setEntity(sourceEntity)
 
         request.setValueForKey(AdditionalParameters.DATERANGE_FROM.toString(), DATE_FORMAT.parse("2012-01-01"))
         request.setValueForKey(AdditionalParameters.DATERANGE_TO.toString(), DATE_FORMAT.parse("2013-01-01"))

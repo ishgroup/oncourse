@@ -1031,6 +1031,7 @@
 		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="interactionDate" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="note" type="CLOB" isMandatory="true" length="32000"/>
 		<db-attribute name="systemUserId" type="BIGINT"/>
 	</db-entity>
@@ -2665,6 +2666,7 @@
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
+		<obj-attribute name="interactionDate" type="java.util.Date" db-attribute-path="interactionDate"/>
 		<obj-attribute name="note" type="java.lang.String" db-attribute-path="note"/>
 	</obj-entity>
 	<obj-entity name="NoteRelation" abstract="true" className="ish.oncourse.server.cayenne.NoteRelation" clientClassName="ish.oncourse.cayenne.NoteRelation" dbEntityName="NoteRelation" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">

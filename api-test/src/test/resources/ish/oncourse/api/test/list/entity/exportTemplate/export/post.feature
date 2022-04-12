@@ -20,7 +20,7 @@ Feature: Main feature for all POST requests with path 'list/entity/exportTemplat
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["Class outcomes CSV export"])].id
+        * def id = get[0] response.rows[?(@.values == ["Class outcomes CSV"])].id
         * print "id = " + id
 
         Given path ishPath + '/' + id
@@ -90,7 +90,7 @@ Feature: Main feature for all POST requests with path 'list/entity/exportTemplat
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["Class outcomes CSV export"])].id
+        * def id = get[0] response.rows[?(@.values == ["Class outcomes CSV"])].id
         * print "id = " + id
 
 #       <--->  Login as notadmin

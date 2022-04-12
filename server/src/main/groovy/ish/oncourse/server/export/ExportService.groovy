@@ -13,11 +13,13 @@ package ish.oncourse.server.export
 
 import com.google.inject.Inject
 import groovy.json.JsonBuilder
+import groovy.json.JsonGenerator
 import groovy.json.StreamingJsonBuilder
 import groovy.transform.CompileDynamic
 import groovy.xml.MarkupBuilder
 import ish.export.ExportParameter
 import ish.export.ExportResult
+import ish.math.Money
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.ExportTemplate
@@ -98,8 +100,11 @@ class ExportService {
 		if (clipboardExport) {
 			csv.delimiter = '\t' as char
 		}
+		def generator = new JsonGenerator.Options()
+				.addConverter(Money){value -> value.toPlainString()}
+				.build()
+		def json = new StreamingJsonBuilder(writer,generator)
 
-		def json = new StreamingJsonBuilder(writer)
 
 		template.options.each { opt ->
 			bindings.put(opt.name, opt.objectValue)

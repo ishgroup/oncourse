@@ -12,7 +12,6 @@ import { initialize } from "redux-form";
 import { Dispatch } from "redux";
 import { Lead } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { getEntityTags, getListTags } from "../../tags/actions";
 import { createLead, getLead, removeLead, updateLead } from "./actions";
@@ -81,10 +80,6 @@ const findRelatedGroup: any[] = [
   },
 ];
 
-const nestedEditFields = {
-  SendMessage: props => <SendMessageEditView {...props} />
-};
-
 const manualLink = getManualLink("leads");
 
 const setRowClasses = ({ status }) => (status === "Closed" ? "text-op05" : undefined);
@@ -131,7 +126,6 @@ const Leads = props => {
           hideTitle: true
         }}
         updateTableModel={updateTableModel}
-        nestedEditFields={nestedEditFields}
         EditViewContent={LeadEditView}
         getEditRecord={getLeadRecord}
         rootEntity="Lead"

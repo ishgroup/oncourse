@@ -38,6 +38,8 @@ class NoteDao implements CayenneLayer<Note> {
             note.systemUser = context.localObject(createdBy)
         }
 
+        note.interactionDate = new Date()
+
         ContactNoteRelation relation = context.newObject(ContactNoteRelation)
         relation.setNote(note)
         relation.setNotedContact(context.localObject(relatedContact))

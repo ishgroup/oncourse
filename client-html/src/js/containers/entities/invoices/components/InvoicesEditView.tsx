@@ -22,7 +22,7 @@ import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { State } from "../../../../reducers/state";
 import { getListNestedEditRecord } from "../../../../common/components/list-view/actions";
-import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
+import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
 import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
 import { getInvoiceClosestPaymentDueDate } from "../utils";
@@ -34,7 +34,7 @@ import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { InvoiceLineWithTotal, InvoiceWithTotalLine } from "../../../../model/entities/Invoice";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import { setSelectedContact } from "../actions";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { ContactLinkAdornment, LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { usePrevious } from "../../../../common/utils/hooks";
 import { leadLabelCondition, openLeadLink } from "../../leads/utils";
@@ -311,7 +311,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
           selectLabelCondition={contactLabelCondition}
           defaultDisplayValue={values && defaultContactName(values.contactName)}
           labelAdornment={
-            <LinkAdornment linkHandler={openContactLink} link={values.contactId} disabled={!values.contactId} />
+            <ContactLinkAdornment id={values?.contactId} />
           }
           onInnerValueChange={onContactChange}
           itemRenderer={ContactSelectItemRenderer}

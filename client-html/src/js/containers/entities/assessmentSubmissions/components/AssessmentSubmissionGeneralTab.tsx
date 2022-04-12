@@ -7,21 +7,19 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { FormControlLabel, Grid, IconButton } from "@mui/material";
+import { FormControlLabel, Grid } from "@mui/material";
 import { change } from "redux-form";
 import { AssessmentSubmission } from "@api/model";
 import clsx from "clsx";
-import Launch from "@mui/icons-material/Launch";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import {
- defaultContactName, getContactName, openContactLink
-} from "../../contacts/utils";
+import { getContactName } from "../../contacts/utils";
 import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import EntityService from "../../../../common/services/EntityService";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { HeaderContactTitle } from "../../../../common/components/form/FieldAdornments";
 
 const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmission>> = props => {
   const {
@@ -69,12 +67,7 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
           disableInteraction
           twoColumn={twoColumn}
           title={(
-            <div className="d-inline-flex-center">
-              {values && defaultContactName(values.studentName)}
-              <IconButton disabled={!values?.studentId} size="small" color="primary" onClick={() => openContactLink(values?.studentId)}>
-                <Launch fontSize="inherit" />
-              </IconButton>
-            </div>
+            <HeaderContactTitle name={values?.studentName} id={values?.studentId} />
           )}
         />
       </Grid>

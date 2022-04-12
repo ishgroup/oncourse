@@ -33,13 +33,12 @@ class PrintWorkerTest extends TestWithDatabase {
 
 
         PrintRequest request = new PrintRequest()
-        request.setEntity("Site")
         request.setReportCode("test")
         request.setIds(ids)
 
         PrintWorker pw = new PrintWorker(request, cayenneService, documentService)
 
-        List<PersistentObjectI> records = pw.transformRecords(ids.get("Site"), null, null)
+        List<PersistentObjectI> records = pw.transformRecords(ids.get("Site"),"Site", null, null)
 
         for (PersistentObjectI po : records) {
             Assertions.assertTrue(po instanceof Site)
@@ -58,7 +57,6 @@ class PrintWorkerTest extends TestWithDatabase {
 
 
         PrintRequest request = new PrintRequest()
-        request.setEntity("Room")
         request.setReportCode("test")
         request.setIds(ids)
 
@@ -67,7 +65,7 @@ class PrintWorkerTest extends TestWithDatabase {
         PrintWorker pw = new PrintWorker(request, cayenneService, documentService)
         Assertions.assertEquals(2000, trans.getBatchSize() + trans.getTransformationFilterParamsCount())
         Assertions.assertEquals(trans.getTransformationFilterParamsCount(), 1)
-        List<PersistentObjectI> records = pw.transformRecords(ids.get("Site"), trans, null)
+        List<PersistentObjectI> records = pw.transformRecords(ids.get("Site"), "Room", trans, null)
 
 
         for (PersistentObjectI po : records) {
@@ -86,7 +84,6 @@ class PrintWorkerTest extends TestWithDatabase {
         ids.put("Site", siteIds)
 
         PrintRequest request = new PrintRequest()
-        request.setEntity("Site")
         request.setReportCode("test")
         request.setIds(ids)
 
@@ -102,7 +99,7 @@ class PrintWorkerTest extends TestWithDatabase {
         PrintWorker pw = new PrintWorker(request, cayenneService, documentService)
         Assertions.assertEquals(2000, trans.getBatchSize() + trans.getTransformationFilterParamsCount())
         Assertions.assertEquals(trans.getTransformationFilterParamsCount(), 2)
-        List<PersistentObjectI> records = pw.transformRecords(ids.get("Site"), trans, null)
+        List<PersistentObjectI> records = pw.transformRecords(ids.get("Site"), "Site", trans, null)
 
 
         for (PersistentObjectI po : records) {
@@ -124,7 +121,6 @@ class PrintWorkerTest extends TestWithDatabase {
 
 
         PrintRequest request = new PrintRequest()
-        request.setEntity("Room")
         request.setReportCode("test")
         request.setIds(ids)
 
@@ -138,7 +134,7 @@ class PrintWorkerTest extends TestWithDatabase {
         PrintWorker pw = new PrintWorker(request, cayenneService, documentService)
         Assertions.assertEquals(2000, trans.getBatchSize() + trans.getTransformationFilterParamsCount())
         Assertions.assertEquals(trans.getTransformationFilterParamsCount(), 2)
-        List<PersistentObjectI> records = pw.transformRecords(ids.get("Site"), trans, null)
+        List<PersistentObjectI> records = pw.transformRecords(ids.get("Site"), "Room", trans, null)
 
         for (PersistentObjectI po : records) {
             Assertions.assertTrue(po instanceof Room)

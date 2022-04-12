@@ -55,6 +55,7 @@ const LeadInvoiceTab = props => {
         rerenderOnEveryChange
         sortBy={(a, b) => b.invoiceNumber - a.invoiceNumber}
         calculateHeight
+        primaryHeader
       />
     </div>
   );

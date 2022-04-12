@@ -24,16 +24,16 @@ import ish.print.PrintResult;
 import ish.print.PrintTransformationsFactory;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.query.ObjectSelect;
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
 import java.io.IOException;
 import java.rmi.server.UID;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.*;
+
+import static ish.print.PrintRequestTransformationsFiller.fillWithTransformations;
 
 /**
  * Service for printing PDF reports.
@@ -132,16 +132,8 @@ public class PrintService {
 		request.setBackground(reportSpec.getBackground());
 		request.addParameters(reportSpec.getParam());
 		request.setCreatePreview(reportSpec.getGeneratePreview());
-		if (reportSpec.getEntity() != null) {
-			request.setEntity(reportSpec.getEntity());
-		} else {
-			// try guessing entity class by first record
-			if (reportSpec.getEntityRecords() != null && !reportSpec.getEntityRecords().isEmpty()) {
-				var record = reportSpec.getEntityRecords().get(0);
-				request.setEntity(record.getClass().getSimpleName());
-			} else {
-				throw new IllegalArgumentException("No records specified.");
-			}
+		if (reportSpec.getEntityRecords() == null || reportSpec.getEntityRecords().isEmpty()) {
+			throw new IllegalArgumentException("No records specified.");
 		}
 
 		Report report;
@@ -151,11 +143,7 @@ public class PrintService {
 			throw new IllegalArgumentException("No report with such key code exist: " + request.getReportCode());
 		}
 
-		var defaultTransformation = PrintTransformationsFactory.getPrintTransformationFor(request.getEntity(), report.getEntity(), request.getReportCode());
-
-		if (defaultTransformation != null) {
-			request.addPrintTransformation(request.getEntity(), defaultTransformation);
-		}
+		fillWithTransformations(request, reportSpec.getEntityRecords(), report.getEntity(), request.getReportCode());
 
 		try {
 			PrintResult result = print(request).get();

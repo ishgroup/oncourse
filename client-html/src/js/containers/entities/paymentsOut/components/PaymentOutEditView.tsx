@@ -18,9 +18,9 @@ import Uneditable from "../../../../common/components/form/Uneditable";
 import { State } from "../../../../reducers/state";
 import { SiteState } from "../../sites/reducers/state";
 import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { ContactLinkAdornment, LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { defaultContactName, openContactLink } from "../../contacts/utils";
+import { defaultContactName } from "../../contacts/utils";
 
 const invoiceColumns: NestedTableColumn[] = [
   {
@@ -69,7 +69,7 @@ const isDateLocked = (lockedDate: any, settlementDate: any) => {
   }
   return (
     compareAsc(
-      addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1),
+      addDays(new Date(lockedDate.lockedDate), 1),
       new Date(settlementDate)
     ) > 0
   );
@@ -87,7 +87,7 @@ const isDatePayedLocked = (lockedDate: any, datePayed: any, settlementDate: any)
   }
   return (
     compareAsc(
-      addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1),
+      addDays(new Date(lockedDate.lockedDate), 1),
       new Date(datePayed)
     ) > 0
   );
@@ -125,7 +125,7 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
   const validateLockedDate = useCallback(
     settlementDate => {
       if (!lockedDate || !settlementDate ) return undefined;
-      const lockedDateValue = new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth);
+      const lockedDateValue = new Date(lockedDate.lockedDate);
       return compareAsc(lockedDateValue, new Date(settlementDate)) === 1
         ? `You must choose date after "Transaction locked" date (${format(lockedDateValue, D_MMM_YYYY)})`
         : undefined;
@@ -163,7 +163,9 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
         <Uneditable
           value={defaultContactName(values.payeeName)}
           label="Payment to"
-          labelAdornment={<LinkAdornment link={values && values.payeeId} linkHandler={openContactLink} />}
+          labelAdornment={
+            <ContactLinkAdornment id={values?.payeeId} />
+          }
         />
       </Grid>
       <Grid item {...gridItemProps}>
@@ -211,7 +213,7 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
               validate={[validateSettlementDatePayed, validateLockedDate]}
               minDate={
                 lockedDate
-                  ? addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1)
+                  ? addDays(new Date(lockedDate.lockedDate), 1)
                   : undefined
               }
             />
@@ -228,7 +230,7 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
               validate={[validateSettlementDateBanked, validateLockedDate]}
               minDate={
               lockedDate
-                ? addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1)
+                ? addDays(new Date(lockedDate.lockedDate), 1)
                 : undefined
             }
             />
