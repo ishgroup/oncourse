@@ -102,6 +102,7 @@ const getActionCreators = dispatch => ({
   setSelectedMonth: payload => dispatch({ type: "selectedMonth", payload }),
   setSelectedWeekDays: payload => dispatch({ type: "selectedWeekDays", payload }),
   setSelectedDayPeriods: payload => dispatch({ type: "selectedDayPeriods", payload }),
+  setCalendarGrouping: payload => dispatch({ type: "calendarGrouping", payload }),
 });
 
 export const TimetableContextProvider = props => {

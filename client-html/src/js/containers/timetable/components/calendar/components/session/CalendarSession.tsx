@@ -68,6 +68,8 @@ const styles = (theme: Theme) => createStyles({
 
 interface SessionBaseProps extends Session {
   inView: boolean;
+  hideTutors?: boolean;
+  hideRooms?: boolean;
   tags?: any;
   tagsState?: CalendarTagsState;
   classes?: any;
@@ -97,7 +99,9 @@ const CalendarSession: React.FC<SessionBaseProps> = props => {
     clashes,
     hours,
     startLabel,
-    warningMessage
+    warningMessage,
+    hideTutors,
+    hideRooms
   } = props;
 
   const onNameClick = useCallback(() => openCourseClassLink(classId), [classId]);
@@ -186,27 +190,32 @@ const CalendarSession: React.FC<SessionBaseProps> = props => {
             </Typography>
 
             <div className={classes.secondLine}>
-              <Typography variant="caption" noWrap color={clashes && clashes.includes("Tutor") ? "error" : undefined}>
-                with
-                {" "}
-                {tutors.length ? (
-                  <span>{tutors.map((el, id) => (id === 0 ? el : ` ${el}`)).toString()}</span>
-                ) : (
-                  <span className={classes.warningColor}>No tutor set</span>
-                )}
-              </Typography>
-
-              <Typography variant="caption" noWrap>
-                {room ? (
-                  <span>
-                    <span className={clashes && clashes.includes("Room") ? "errorColor" : undefined}>{room}</span>
-                    <span>,</span>
-                    <span className={clashes && clashes.includes("Site") ? "errorColor" : undefined}>{site}</span>
-                  </span>
-                ) : (
-                  <span className={classes.warningColor}>No room set</span>
-                )}
-              </Typography>
+              {!hideTutors && (
+                <Typography variant="caption" noWrap color={clashes && clashes.includes("Tutor") ? "error" : undefined}>
+                  {tutors.length ? (
+                    <span>
+                      with
+                      {" "}
+                      {tutors.map((el, id) => (id === 0 ? el : ` ${el}`)).toString()}
+                    </span>
+                  ) : (
+                    <span className={classes.warningColor}>No tutor set</span>
+                  )}
+                </Typography>
+              )}
+              {!hideRooms && (
+                <Typography variant="caption" noWrap>
+                  {room ? (
+                    <span>
+                      <span className={clashes && clashes.includes("Room") ? "errorColor" : undefined}>{room}</span>
+                      <span>,</span>
+                      <span className={clashes && clashes.includes("Site") ? "errorColor" : undefined}>{site}</span>
+                    </span>
+                  ) : (
+                    <span className={classes.warningColor}>No room set</span>
+                  )}
+                </Typography>
+              )}
             </div>
 
             {renderedTags}

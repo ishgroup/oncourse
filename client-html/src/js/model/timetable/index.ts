@@ -16,6 +16,12 @@ export type CalendarTagsState = "Tag names" | "Tag dots" | "Tag off";
 
 export type CalendarGroupingState = "Group by tutor" | "Group by room" | "No grouping";
 
+export interface CalendarGrouping {
+  tutor?: string;
+  room?: string;
+  sessions: Session[];
+}
+
 export interface TimetableState {
   months: TimetableMonth[];
   selectedMonthSessionDays: string[];
@@ -57,7 +63,8 @@ export interface TimetableContextState {
   setSelectedWeekDays?: (arg: boolean[]) => void;
   setSelectedDayPeriods?: (arg: boolean[]) => void;
   setCalendarMode?: AnyArgFunction<CalendarMode>;
-  setTagsState?: AnyArgFunction<CalendarTagsState>;
+  setCalendarGrouping?: AnyArgFunction<CalendarMode>;
+  setTagsState?: AnyArgFunction<CalendarGroupingState>;
   setPrevious?: AnyArgFunction;
   setNext?: AnyArgFunction;
   setTargetDay?: DateArgFunction;

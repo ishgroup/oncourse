@@ -11,3 +11,7 @@ export const LS_TIMETABLE_TAGS_MODE = "lsTimetableTagsMode";
 export const LS_TIMETABLE_CALENDAR_MODE = "lsTimetableCalendarMode";
 
 export const LS_TIMETABLE_GROUPING_MODE = "lsTimetableGroupingMode";
+
+export const NO_TUTORS_LABEL = "No tutor set";
+
+export const NO_ROOM_LABEL = "No room set";

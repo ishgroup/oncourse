@@ -10,11 +10,20 @@ import React, { useCallback, useContext } from "react";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import { TimetableContextState } from "../../../../../../model/timetable";
 
 const CalendarModesSwitcher = ({ className = null, TimetableContext }) => {
-  const { calendarMode, setCalendarMode } = useContext(TimetableContext);
+  const {
+ calendarMode, calendarGrouping, setCalendarMode, setCalendarGrouping 
+} = useContext<TimetableContextState>(TimetableContext);
 
-  const onChange = useCallback(e => setCalendarMode(e.target.value), [setCalendarMode]);
+  const onChange = useCallback(e => {
+    setCalendarMode(e.target.value);
+    
+    if (e.target.value === "Gap(Hours)" && calendarGrouping !== "No grouping") {
+      setCalendarGrouping("No grouping");
+    }
+  }, [setCalendarMode, setCalendarGrouping, calendarGrouping]);
 
   return (
     <FormControl className={className} variant="standard">

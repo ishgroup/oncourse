@@ -39,6 +39,7 @@ import {
 } from "../../../../common/components/list-view/utils/listFiltersUtils";
 import { CoreFilter } from "../../../../model/common/ListView";
 import CalendarTagsSwitcher from "./components/switchers/CalendarTagsSwitcher";
+import CalendarGroupingsSwitcher from "./components/switchers/CalendarGroupingsSwitcher";
 
 const styles = theme => createStyles({
     root: {
@@ -398,6 +399,7 @@ const Calendar = React.memo<Props>(props => {
       <div className={classes.modesSwitcher}>
         <CalendarModesSwitcher TimetableContext={TimetableContext} />
         <CalendarTagsSwitcher className="mt-2" TimetableContext={TimetableContext} />
+        <CalendarGroupingsSwitcher className="mt-2" TimetableContext={TimetableContext} />
       </div>
     </div>
   );

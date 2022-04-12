@@ -37,7 +37,7 @@ const CalendarMonth: React.FunctionComponent<CompactModeMonthProps> = props => {
   } = props;
 
   const {
-   selectedWeekDays, selectedDayPeriods, calendarMode, tagsState
+   selectedWeekDays, selectedDayPeriods, calendarMode, tagsState, calendarGrouping
   } = useContext(TimetableContext);
 
   const [renderedDays, setRenderedDays] = useState([]);
@@ -73,11 +73,12 @@ const CalendarMonth: React.FunctionComponent<CompactModeMonthProps> = props => {
           calendarMode={calendarMode}
           selectedDayPeriods={selectedDayPeriods}
           tagsState={tagsState}
+          calendarGrouping={calendarGrouping}
         />
       ) : null;
     });
     setRenderedDays(rendered.filter(r => r));
-  }, [days, isScrolling, month, index, hasSessions, selectedDayPeriods, selectedWeekDays, calendarMode, tagsState]);
+  }, [days, isScrolling, month, index, hasSessions, selectedDayPeriods, selectedWeekDays, calendarMode, calendarGrouping, tagsState]);
 
   return renderedDays.length ? (
     <CalendarMonthBase month={month} style={style} parentRef={parentRef}>

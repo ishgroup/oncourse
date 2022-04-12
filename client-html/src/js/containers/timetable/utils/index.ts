@@ -7,15 +7,18 @@
  */
 
 import { Session } from "@api/model";
-import { format, getDaysInMonth, setDate, setHours, startOfMonth } from "date-fns";
+import {
+ format, getDaysInMonth, setDate, setHours, startOfMonth 
+} from "date-fns";
 import {
   AfternoonIcon,
   EveningIcon,
   MorningIcon
 } from "../components/timetable-side-bar/components/day-period-filter/DayPeriodIcons";
 import { HA } from "../../../common/utils/dates/format";
-import { TimetableMonth, TimetableSession } from "../../../model/timetable";
+import { CalendarGrouping, CalendarGroupingState, TimetableMonth, TimetableSession } from "../../../model/timetable";
 import { appendTimezone } from "../../../common/utils/dates/formatTimezone";
+import { NO_ROOM_LABEL, NO_TUTORS_LABEL } from "../TimetableConstants";
 
 export const getFormattedMonthDays = (startDate: Date) => Array.from(Array(getDaysInMonth(startDate)), (v, i) => i + 1).map(d => ({
   day: setDate(startDate, d),
@@ -360,6 +363,61 @@ export const getGapHours = (sessions: Session[]) => {
       }
     })
   }));
+};
+
+export const getGroupings = (sessions: Session[], grouping: CalendarGroupingState): CalendarGrouping[] => {
+  const groupings = [];
+
+  if (grouping === "Group by tutor") {
+    const indexes = {};
+    let baseIndex = 0;
+    sessions.forEach(s => {
+      s.tutors.forEach(t => {
+        if (!indexes[t]) {
+          indexes[t] = baseIndex;
+          baseIndex++;
+          groupings.push({
+            tutor: t,
+            sessions: [s]
+          });
+        } else {
+          groupings[indexes[t]].sessions.push(s);
+        }
+      });
+      if (!s.tutors.length) {
+        if (!indexes[NO_TUTORS_LABEL]) {
+          indexes[NO_TUTORS_LABEL] = baseIndex;
+          baseIndex++;
+          groupings.push({
+            tutor: NO_TUTORS_LABEL,
+            sessions: [s]
+          });
+        } else {
+          groupings[indexes[NO_TUTORS_LABEL]].sessions.push(s);
+        }
+      }
+    });
+  }
+
+  if (grouping === "Group by room") {
+    const indexes = {};
+    let baseIndex = 0;
+    sessions.forEach(s => {
+      const baseKey = s.room || NO_ROOM_LABEL;
+      if (!indexes[baseKey]) {
+        indexes[baseKey] = baseIndex;
+        baseIndex++;
+        groupings.push({
+          room: baseKey,
+          sessions: [s]
+        });
+      } else {
+        groupings[indexes[baseKey]].sessions.push(s);
+      }
+    });
+  }
+
+  return groupings;
 };
 
 export const testPeriod = (session: Session, periods: boolean[]): boolean => {
