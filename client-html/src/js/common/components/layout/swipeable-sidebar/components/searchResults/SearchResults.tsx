@@ -37,7 +37,8 @@ const SearchResults = props => {
     searchResults,
     checkSelectedResult,
     setExecMenuOpened,
-    setScriptIdSelected
+    setScriptIdSelected,
+    setSelected
   } = props;
 
   return (
@@ -88,11 +89,11 @@ const SearchResults = props => {
               checkSelectedResult={checkSelectedResult}
               items={r.items.map(item => {
                 const name = getHighlightedPartLabel(item.name, userSearch);
-
                 return { ...item, name };
               })}
               userSearch={userSearch}
               showConfirm={showConfirm}
+              setSelected={setSelected}
             />
           </div>
         ))}

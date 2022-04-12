@@ -31,7 +31,7 @@ import static ish.persistence.CommonExpressionFactory.previousMidnight
  */
 @API
 @QueueableEntity
-class ProductItem extends _ProductItem implements Queueable, NotableTrait {
+class ProductItem extends _ProductItem implements Queueable, NotableTrait, ContactActivityTrait {
 
 	private static final Logger logger = LogManager.getLogger()
 
@@ -67,7 +67,11 @@ class ProductItem extends _ProductItem implements Queueable, NotableTrait {
 		return super.getCreatedOn()
 	}
 
-	/**
+	@Override
+	String getInteractionName() {
+		return product.name
+	}
+/**
 	 * @return date when product item (e.g. membership) expires
 	 */
 	@API

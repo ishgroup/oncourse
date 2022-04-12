@@ -31,6 +31,7 @@ import org.apache.logging.log4j.Logger;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CancelClassHelper {
@@ -166,6 +167,7 @@ public class CancelClassHelper {
         var uniqueCode = courseCLass.getUniqueCode();
         var dateToCancel = LocalDate.now().format(DateTimeFormatter.ofPattern("d/M/yyyy"));
         var newNote = NoteUtil.createNewNote(courseCLass, CourseClassNoteRelation.class);
+        newNote.setInteractionDate(new Date());
         newNote.setNote(String.format("class : %s\n cancelled : %s", uniqueCode, dateToCancel));
     }
 

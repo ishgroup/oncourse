@@ -139,7 +139,7 @@ class MessagingBaseForm extends React.Component<any, any> {
                   size="small"
                   variant="text"
                   className={classes.subheadingButton}
-                  onClick={() => openInternalLink("/message?filter=@Email&search=messagePersons.status is QUEUED")}
+                  onClick={() => openInternalLink("/message?filter=@Email&search=status is QUEUED")}
                   endIcon={<ExitToApp color="secondary" className={classes.buttonIcon} />}
                 />
               </Typography>
@@ -237,7 +237,7 @@ class MessagingBaseForm extends React.Component<any, any> {
                   size="small"
                   variant="text"
                   className={classes.subheadingButton}
-                  onClick={() => openInternalLink("/message?filter=@SMS&search=messagePersons.status is QUEUED")}
+                  onClick={() => openInternalLink("/message?filter=@SMS&search=status is QUEUED")}
                   endIcon={<ExitToApp color="secondary" className={classes.buttonIcon} />}
                 />
               </Typography>
