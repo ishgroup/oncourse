@@ -164,7 +164,7 @@ class DynamicSizeList extends React.Component<any> {
   handleNewMeasurements = (index, newSize) => {
     const itemSizeDelta = newSize - this.getItemSize(index);
 
-    if (itemSizeDelta !== 0) {
+    if (itemSizeDelta > 0) {
       this.rowSizes[index] = newSize;
 
       const ref = this.listRef.current;
