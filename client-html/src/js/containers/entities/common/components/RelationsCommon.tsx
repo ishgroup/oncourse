@@ -23,6 +23,7 @@ import {
 import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
 import { EntityName } from "../../../../model/entities/common";
 import { RELATION_COURSE_COLUMNS } from "../entityConstants";
+import { getPluralSuffix } from "../../../../common/utils/strings";
 
 interface Props {
   values: any;
@@ -183,7 +184,7 @@ const RelationsCommon: React.FC<Props> = (
     <NestedList
       name={name}
       validate={validate ? [validate, validateRelations] : validateRelations}
-      title={`${listValues.length || ""} relation${listValues.length === 1 ? "" : "s"}`}
+      title={`${listValues.length || ""} relation${getPluralSuffix(listValues.length)}`}
       formId={values.id}
       values={listValues}
       searchValues={searchValues}

@@ -93,7 +93,6 @@ class ConcurrentReportPrintingTest extends TestWithDatabase {
 
             final PrintRequest request = new PrintRequest()
             request.setReportCode(report.getKeyCode())
-            request.setEntity(report.getEntity())
 
             request.setValueForKey(AdditionalParameters.LOCALDATERANGE_FROM.toString(), LocalDate.parse("2012-01-01"))
             request.setValueForKey(AdditionalParameters.LOCALDATERANGE_TO.toString(), LocalDate.parse("2013-01-01"))

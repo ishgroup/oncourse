@@ -12,6 +12,7 @@
 package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
+import ish.oncourse.server.security.api.IPermissionService
 import ish.oncourse.types.OutputType
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
@@ -19,6 +20,7 @@ import ish.oncourse.server.api.service.ExportTemplateApiService
 import static ish.oncourse.server.api.v1.function.CommonFunctions.badRequest
 import static ish.oncourse.server.api.v1.function.export.ExportFunctions.getSelectedRecordIds
 import static ish.oncourse.server.api.v1.function.export.ExportFunctions.getSelectedRecords
+import static ish.oncourse.server.api.v1.function.export.ExportFunctions.checkPermissionToExportXMLAndCSV
 import ish.oncourse.server.api.v1.function.export.TransformationIterable
 import ish.oncourse.server.api.v1.model.ExportRequestDTO
 import ish.oncourse.server.api.v1.service.ExportApi
@@ -56,12 +58,16 @@ class ExportApiImpl implements ExportApi {
     @Inject
     private AqlService aqlService
 
+    @Inject
+    private IPermissionService permissionService
+
     @Context
     private HttpServletResponse response
 
     @Override
     String execute(String entityName, ExportRequestDTO request) {
 
+        checkPermissionToExportXMLAndCSV(permissionService)
 
         ExportTemplate template = service.getEntityAndValidateExistence(cayenneService.newContext, request.template)
         Map<String, Object> variables = service.getVariablesMap(request.variables, template)

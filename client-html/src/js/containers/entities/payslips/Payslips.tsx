@@ -25,7 +25,6 @@ import { checkPermissions } from "../../../common/actions";
 import { State } from "../../../reducers/state";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
 import { FilterGroup } from "../../../model/common/ListView";
 
 const Initial: Payslip = {
@@ -72,10 +71,6 @@ const findRelatedGroup: any[] = [
   { title: "Classes", list: "class", expression: "costs.paylines.payslip.id" }
 ];
 const nameCondition = (values: Payslip) => defaultContactName(values.tutorFullName);
-
-const nestedEditFields = {
-  SendMessage: props => <SendMessageEditView {...props} />
-};
 
 const manualLink = getManualLink("payroll");
 
@@ -135,7 +130,6 @@ class Payslips extends React.Component<any, any> {
           onDelete={onDelete}
           onSave={onSave}
           onCreate={this.onCreate}
-          nestedEditFields={nestedEditFields}
           findRelated={findRelatedGroup}
           filterGroupsInitial={filterGroups}
           CogwheelAdornment={PayslipCogwheelOptions}

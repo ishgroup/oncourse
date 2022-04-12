@@ -12,7 +12,6 @@ import { initialize } from "redux-form";
 import { Dispatch } from "redux";
 import { WaitingList } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
 import WaitingListEditView from "./components/WaitingListEditView";
 import {
   clearListState,
@@ -43,10 +42,6 @@ const findRelatedGroup: any[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == WaitingList and entityId" },
   { title: "Contacts", list: "contact", expression: "student.waitingLists.id" }
 ];
-
-const nestedEditFields = {
-  SendMessage: props => <SendMessageEditView {...props} />
-};
 
 const manualLink = getManualLink("waitingLists");
 
@@ -82,7 +77,6 @@ class WaitingLists extends React.Component<any, any> {
             hideTitle: true
           }}
           updateTableModel={updateTableModel}
-          nestedEditFields={nestedEditFields}
           EditViewContent={WaitingListEditView}
           getEditRecord={getWaitingListRecord}
           rootEntity="WaitingList"

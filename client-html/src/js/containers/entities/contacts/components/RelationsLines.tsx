@@ -9,8 +9,8 @@ import Grid from "@mui/material/Grid";
 import { change } from "redux-form";
 import { Contact } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { defaultContactName, getContactFullName, openContactLink } from "../utils";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { defaultContactName, getContactFullName } from "../utils";
+import { ContactLinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import ContactSelectItemRenderer from "./ContactSelectItemRenderer";
 
 const RelationsHeaderBase: React.FunctionComponent<any> = React.memo((props: any) => {
@@ -99,7 +99,7 @@ export const RelationsContent: React.FunctionComponent<any> = React.memo((props:
           defaultDisplayValue={defaultContactName(row.relatedContactName)}
           onInnerValueChange={onRelatedContactChange}
           labelAdornment={
-            <LinkAdornment linkHandler={openContactLink} link={row.relatedContactId} disabled={!row.relatedContactId} />
+            <ContactLinkAdornment id={row?.relatedContactId} />
           }
           itemRenderer={ContactSelectItemRenderer}
           rowHeight={55}

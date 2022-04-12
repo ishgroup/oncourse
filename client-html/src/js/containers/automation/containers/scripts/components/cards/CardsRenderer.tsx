@@ -188,8 +188,9 @@ const ScriptCardItem = React.memo<ScriptItemProps & WrappedFieldArrayProps>(prop
       detail = component.template && component.templateEntity ? component.templateEntity.name : null;
       if (emailTemplates && emailTemplates.length && values && values.options) {
         const templateKeyCode = values.options.filter(o => o.name === component.template);
-        if (templateKeyCode.length > 0) {
-          detail = emailTemplates.find(t => t.keyCode === templateKeyCode[0].value).name;
+        const emailTemplate = templateKeyCode.length && emailTemplates.find(t => t.keyCode === templateKeyCode[0].value);
+        if (emailTemplate) {
+          detail = emailTemplate.name;
         }
       }
     }

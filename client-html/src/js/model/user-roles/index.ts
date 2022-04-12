@@ -111,7 +111,7 @@ const Categories: UserPermissionCategory[] = [
     permissions: [
       { name: "Class duplication/rollover", checkbox: true },
       { name: "Class cancellation", checkbox: true },
-      { name: "Exporting to XML", checkbox: true },
+      { name: "Exporting to XML and CSV", checkbox: true },
       { name: "Creating certificate from class", checkbox: true },
       { name: "Contact merging", checkbox: true },
       { name: "Enrolment cancellation and transferring", checkbox: true },

@@ -402,7 +402,7 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_EXPORT_XML(72, "Exporting to XML", ALL - VIEW),
+	SPECIAL_EXPORT_XML(72, "Exporting to XML and CSV", ALL - VIEW),
 
 	/**
 	 * Database value: 73

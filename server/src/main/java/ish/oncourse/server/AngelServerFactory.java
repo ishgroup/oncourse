@@ -40,17 +40,16 @@ import org.apache.logging.log4j.Logger;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
+import org.yaml.snakeyaml.Yaml;
 
 import javax.mail.MessagingException;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.Random;
-import java.util.stream.Stream;
+import java.util.*;
 
 import static ish.oncourse.server.api.v1.function.UserFunctions.sendInvitationEmailToNewSystemUser;
 import static ish.oncourse.server.services.ISchedulerService.*;
@@ -63,8 +62,7 @@ public class AngelServerFactory {
 
     private static final Logger LOGGER =  LogManager.getLogger();
 
-    public final static String TXT_SYSTEM_USERS_FILE = "createAdminUsers.txt";
-    public final static String CSV_SYSTEM_USERS_FILE = "createAdminUsers.csv";
+    public final static String YAML_SYSTEM_USERS_FILE = "createAdminUsers.yaml";
     public static boolean QUIT_SIGNAL_CAUGHT = false;
 
 
@@ -236,28 +234,28 @@ public class AngelServerFactory {
         LOGGER.warn("Server ready.");
     }
 
-    private void createSystemUsers(DataContext context, String hostName, String ipAddress, Integer port, PreferenceController preferenceController, MailDeliveryService mailDeliveryService) throws IOException {
-        Path systemUsersFile = Paths.get(CSV_SYSTEM_USERS_FILE);
-        if (!systemUsersFile.toFile().exists()) {
-            systemUsersFile = Paths.get(TXT_SYSTEM_USERS_FILE);
-        }
-        Stream<String> lines;
-        try {
-             lines = Files.lines(systemUsersFile);
-        } catch (NoSuchFileException ignored) {
+    private void createSystemUsers(DataContext context, String hostName, String ipAddress, Integer port, PreferenceController preferenceController, MailDeliveryService mailDeliveryService) {
+        Yaml yaml = new Yaml();
+        Path systemUsersFile = Paths.get(YAML_SYSTEM_USERS_FILE);
+        List<Map<String, Object>> users;
+        try (InputStream inputStream = new FileInputStream(systemUsersFile.toFile())) {
+            users = yaml.load(inputStream);
+        } catch (FileNotFoundException e) {
             LOGGER.warn("File with system users not found.");
             return;
+        } catch (Exception e) {
+            LOGGER.error("Can not parse system users file.", e);
+            return;
         }
-        lines.forEach(line -> {
-            String[] lineData = line.split("(, )+|([ ,\t])+");
 
-            if (lineData.length != 3) {
-                LOGGER.warn("Incorrect row format. User wasn't created.");
+        users.forEach(userYaml -> {
+            if (userYaml.get("first") == null || userYaml.get("last") == null || userYaml.get("email") == null) {
+                LOGGER.warn("Incorrect user format. User {} wasn't created.", userYaml);
                 return;
             }
-            String email = parseEmail(lineData[2]);
+            String email = parseEmail(String.valueOf(userYaml.get("email")));
             if (email == null) {
-                LOGGER.warn("Specified email for user {} is not valid.", line);
+                LOGGER.warn("Specified email for user {} is not valid.", userYaml.get("email"));
                 return;
             }
             SystemUser user = UserDao.getByEmail(context, email);
@@ -271,8 +269,8 @@ public class AngelServerFactory {
                 user.setEmail(email);
             }
 
-            user.setFirstName(lineData[0]);
-            user.setLastName(lineData[1]);
+            user.setFirstName(String.valueOf(userYaml.get("first")));
+            user.setLastName(String.valueOf(userYaml.get("last")));
 
             try {
                 String invitationToken = sendInvitationEmailToNewSystemUser(null, user, preferenceController, mailDeliveryService, hostName, ipAddress, port);
@@ -280,13 +278,13 @@ public class AngelServerFactory {
                 user.setInvitationTokenExpiryDate(DateUtils.addDays(new Date(), 7));
             } catch (MessagingException ex) {
                 LOGGER.catching(ex);
-                LOGGER.warn("An invitation to user {} wasn't sent. Check you SMTP settings.", line);
+                LOGGER.warn("An invitation to user {} wasn't sent. Check you SMTP settings.", userYaml);
                 return;
             }
 
             context.commitChanges();
 
-            LOGGER.warn("System user {} has been added successfully.", line);
+            LOGGER.warn("System user {} has been added successfully.", userYaml);
         });
 
         if (systemUsersFile.toFile().delete()) {

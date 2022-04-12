@@ -13,7 +13,6 @@ import zIndex from "@mui/material/styles/zIndex";
 import { ExitToApp } from "@mui/icons-material";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
 import { getActivePaymentOutMethods, getPaymentOut, updatePaymentOut } from "./actions";
 import { getPlainAccounts } from "../accounts/actions";
 import { clearListState, getFilters, } from "../../../common/components/list-view/actions";
@@ -45,10 +44,6 @@ const styles = theme => createStyles({
     fontSize: "1.2rem"
   }
 });
-
-const nestedEditFields = {
-  SendMessage: props => <SendMessageEditView {...props} />
-};
 
 const filterGroups: FilterGroup[] = [
   {
@@ -114,7 +109,6 @@ class PaymentsOut extends React.Component<any, any> {
             manualLink,
             nameCondition
           }}
-          nestedEditFields={nestedEditFields}
           EditViewContent={PaymentsOutEditView}
           getEditRecord={getPaymentOutRecord}
           rootEntity="PaymentOut"
