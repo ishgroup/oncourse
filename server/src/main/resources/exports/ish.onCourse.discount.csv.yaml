@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.discount.csv
-entityClass: Discount
-body: ish.onCourse.discount.csv.groovy
-name: Discount CSV export
-outputType: csv

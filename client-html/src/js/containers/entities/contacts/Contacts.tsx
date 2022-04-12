@@ -44,8 +44,6 @@ import tutor from "../../../../images/tutor.png";
 import company from "../../../../images/company.png";
 import tutorStudent from "../../../../images/student-tutor.png";
 import person from "../../../../images/person.png";
-import { Classes } from "../../../model/entities/CourseClass";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
 import { getContactFullName } from "./utils";
 
 export type ContactType = "STUDENT" | "TUTOR" | "COMPANY" | "TUTOR_STUDENT";
@@ -158,8 +156,8 @@ const findRelatedGroup: any[] = [
   { title: "Applications", list: "application", expression: "student.contact.id" },
   { title: "Audits", list: "audit", expression: "entityIdentifier == Contact and entityId" },
   { title: "Certificates", list: "certificate", expression: "student.contact.id" },
-  { title: "Classes enrolled", list: Classes.path, expression: "enrolments.student.contact.id" },
-  { title: "Classes taught", list: Classes.path, expression: "tutorRoles.tutor.contact.id" },
+  { title: "Classes enrolled", list: "class", expression: "enrolments.student.contact.id" },
+  { title: "Classes taught", list: "class", expression: "tutorRoles.tutor.contact.id" },
   {
     title: "Documents",
     list: "document",
@@ -174,6 +172,7 @@ const findRelatedGroup: any[] = [
   { title: "Payments in", list: "paymentIn", expression: "payer.id" },
   { title: "Payments out", list: "paymentOut", expression: "payee.id" },
   { title: "Payslips", list: "payslip", expression: "contact.id" },
+  { title: "Sales", list: "sale", expression: "purchasedBy.id" },
   { title: "Transactions", list: "transaction", expression: "contact.id" },
   { title: "Waiting lists", list: "waitingList", expression: "student.contact.id" }
 ];
@@ -204,10 +203,6 @@ const getContactTypeImage = (type: ContactType) => {
 
 const customColumnFormats = {
   contactType: v => (v ? <img src={getContactTypeImage(v)} alt={v} /> : null)
-};
-
-const nestedEditFields = {
-  SendMessage: props => <SendMessageEditView {...props} />
 };
 
 export const getDisabledSubmitCondition = (isVerifyingUSI, usiVerificationResult): boolean => (
@@ -377,7 +372,6 @@ const Contacts: React.FC<ContactsProps> = props => {
         hideTitle: true
       }}
       EditViewContent={ContactEditView}
-      nestedEditFields={nestedEditFields}
       getEditRecord={getContactRecord}
       rootEntity="Contact"
       onCreate={onContactCreate}

@@ -4,53 +4,32 @@
  */
 
 import React from "react";
-import { connect } from "react-redux";
 import clsx from "clsx";
 import withStyles from "@mui/styles/withStyles";
 import createStyles from "@mui/styles/createStyles";
-import Chip from "@mui/material/Chip";
 import List from "@mui/material/List";
 import Collapse from "@mui/material/Collapse";
+import Typography from "@mui/material/Typography";
 import { openInternalLink } from "../../../../../utils/links";
 import ListLinkItem from "./ListLinkItem";
-import { State } from "../../../../../../reducers/state";
 import { getResultId } from "../../utils";
+import navigation from "../../../../navigation/navigation.json";
 
 const styles = theme =>
   createStyles({
-    chip: {
-      color: theme.palette.text.primary,
-      height: "18px",
-      width: "min-content",
-      marginTop: "4px",
-      justifySelf: "end",
-      whiteSpace: "nowrap",
-      maxWidth: 140
-    },
-    chipWrapper: {
-      position: "absolute",
-      left: 0
-    },
-    chipOffset: {
-      position: "relative",
-      left: "-100%"
-    },
-    collapseChip: {
-      backgroundColor: "inherit",
-      "&:hover": {
-        backgroundColor: theme.palette.grey[200]
-      },
-      "&:active": {
-        backgroundColor: "inherit"
-      },
-      "&:focus": {
-        backgroundColor: "inherit"
-      }
-    },
-    collapseChipLabel: {
+    showMoreText: {
       color: theme.palette.primary.main,
-      fontWeight: "bolder"
-    }
+      width: "min-content",
+      margin: theme.spacing(2.5, 0),
+      whiteSpace: "nowrap",
+      maxWidth: 140,
+      fontSize: theme.spacing(1.375),
+      fontWeight: 600,
+      padding: theme.spacing(0, 0.75),
+    },
+    heading: {
+      margin: theme.spacing(4, 0, 2),
+    },
   });
 
 class ListLinksGroup extends React.PureComponent<any, any> {
@@ -66,13 +45,13 @@ class ListLinksGroup extends React.PureComponent<any, any> {
 
   openEntity = () => {
     const {
-      showConfirm, categories, entityDisplayName, userSearch
+      showConfirm, entityDisplayName, userSearch
     } = this.props;
 
-    const category = categories.find(c => c.category === entityDisplayName);
+    const category = navigation.features.find(c => c.title === entityDisplayName);
 
     if (category) {
-      const url = category.url.indexOf("?") !== -1 ? category.url.slice(0, category.url.indexOf("?")) : category.url;
+      const url = category.link.indexOf("?") !== -1 ? category.link.slice(0, category.link.indexOf("?")) : category.link;
 
       showConfirm(() => openInternalLink(
         url + (userSearch ? `?search=~"${userSearch}"` : "")
@@ -81,21 +60,27 @@ class ListLinksGroup extends React.PureComponent<any, any> {
   };
 
   openLink = id => {
-    const { showConfirm, entityDisplayName, categories } = this.props;
-    const category = categories.find(c => c.category === entityDisplayName);
+    const { showConfirm, entityDisplayName, entity, setSelected } = this.props;
+
+    if (entity === "Contact") {
+      setSelected(id);
+      return;
+    }
+
+    const category = navigation.features.find(c => c.title === entityDisplayName);
 
     if (category) {
-      const url = category.url.indexOf("?") !== -1 ? category.url.slice(0, category.url.indexOf("?")) : category.url;
+      const url = category.link.indexOf("?") !== -1 ? category.link.slice(0, category.link.indexOf("?")) : category.link;
 
       showConfirm(() => openInternalLink(
-        !id || !isNaN(Number(id)) ? url + (id ? `/${id}` : "") : id
+        !id || !Number.isNaN(Number(id)) ? url + (id ? `/${id}` : "") : id
       ));
     }
   };
 
   render() {
     const {
-      entity, classes, entityDisplayName, items, showFirst, withOffset, checkSelectedResult
+      classes, entityDisplayName, items, showFirst, checkSelectedResult, entity
     } = this.props;
     const { collapsed } = this.state;
 
@@ -106,41 +91,44 @@ class ListLinksGroup extends React.PureComponent<any, any> {
       firstItems = items.slice(0, showFirst);
       lastItems = items.slice(showFirst);
     }
+
     return (
       <>
-        <div className={clsx("d-grid", { [classes.chipWrapper]: withOffset })}>
-          <Chip
+        <div className="d-flex align-items-center">
+          <Typography
             onClick={() => this.openEntity()}
-            label={entityDisplayName}
-            className={clsx("mr-1", classes.chip, { [classes.chipOffset]: withOffset })}
-          />
+            className={clsx("heading cursor-pointer mr-1", classes.heading)}
+          >
+            {entityDisplayName}
+          </Typography>
           {showFirst && Boolean(lastItems.length) && (
-            <Chip
-              onClick={this.toggleCollapsed}
-              className={clsx("mr-1", classes.chip, classes.chipOffset)}
-              label={`${lastItems.length} ${collapsed ? "less" : "more"}`}
-              classes={{ clickable: classes.collapseChip, label: classes.collapseChipLabel }}
-            />
+            <>
+              <div className="flex-fill" />
+              <Typography
+                onClick={this.toggleCollapsed}
+                className={clsx("cursor-pointer", classes.showMoreText)}
+              >
+                {`View ${lastItems.length} ${collapsed ? "less" : "more"}`}
+              </Typography>
+            </>
           )}
         </div>
 
         <List disablePadding>
           {showFirst ? (
             <>
+              {firstItems.map((v, i) => (
+                <ListLinkItem
+                  key={i}
+                  item={v}
+                  openLink={this.openLink}
+                  entity={entityDisplayName}
+                  selected={checkSelectedResult(entity, "id", v.id)}
+                  id={getResultId(i, `${entity}-${v.id}`)}
+                />
+              ))}
               <Collapse in={collapsed}>
-                {items.map((v, i) => (
-                  <ListLinkItem
-                    key={i}
-                    item={v}
-                    openLink={this.openLink}
-                    entity={entityDisplayName}
-                    selected={checkSelectedResult(entity, "id", v.id)}
-                    id={getResultId(i, `${entity}-${v.id}`)}
-                  />
-                ))}
-              </Collapse>
-              <Collapse in={!collapsed}>
-                {firstItems.map((v, i) => (
+                {lastItems.map((v, i) => (
                   <ListLinkItem
                     key={i}
                     item={v}
@@ -170,8 +158,4 @@ class ListLinksGroup extends React.PureComponent<any, any> {
   }
 }
 
-const mapStateToProps = (state: State) => ({
-  categories: state.dashboard.categories
-});
-
-export default connect<any, any, any>(mapStateToProps, null)(withStyles(styles)(ListLinksGroup));
+export default withStyles(styles)(ListLinksGroup);

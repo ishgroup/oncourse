@@ -4,7 +4,6 @@
  */
 
 import React from "react";
-import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import withStyles from "@mui/styles/withStyles";
 import createStyles from "@mui/styles/createStyles";
@@ -13,48 +12,49 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { getHighlightedPartLabel } from "../../../../../utils/formatting";
 import { getEntityDisplayName } from "../../../../../utils/getEntityDisplayName";
 import { State } from "../../../../../../reducers/state";
-import { IAction } from "../../../../../actions/IshAction";
-import { getDashboardCategories } from "../../../../../../containers/dashboard/actions";
 import ListLinkItem from "./ListLinkItem";
 import ListLinksGroup from "./ListLinksGroup";
 import { getResultId } from "../../utils";
+import navigation from "../../../../navigation/navigation.json";
 
-const styles = theme =>
-  createStyles({
-    root: {
-      padding: `${theme.spacing(2)} ${theme.spacing(2)} 228px ${theme.spacing(2)}`
-    }
-  });
+const styles = theme => createStyles({
+  root: {
+    padding: `${theme.spacing(2)} ${theme.spacing(2)} 228px ${theme.spacing(2)}`
+  },
+  divider: {
+    margin: theme.spacing(2, 0, 1.25),
+  }
+});
 
 const SearchResults = props => {
   const {
     showConfirm,
     classes,
     userSearch,
-    categories,
     scripts,
     hasScriptsPermissions,
     updating,
     searchResults,
     checkSelectedResult,
     setExecMenuOpened,
-    setScriptIdSelected
+    setScriptIdSelected,
+    setSelected
   } = props;
 
   return (
     <List disablePadding className={classes.root}>
       {userSearch
-        && categories
-          .filter(c => c.category.toLowerCase().includes(userSearch.toLowerCase()))
+        && navigation.features
+          .filter(c => c.title.toLowerCase().includes(userSearch.toLowerCase()))
           .map((c, i) => (
             <ListLinkItem
               key={i}
-              url={c.url}
-              selected={checkSelectedResult("category", "url", c.url)}
+              url={c.link}
+              selected={checkSelectedResult("category", "url", c.link)}
               item={{
-                name: getHighlightedPartLabel(c.category, userSearch)
+                name: getHighlightedPartLabel(c.title, userSearch)
               }}
-              id={getResultId(i, c.category)}
+              id={getResultId(i, c.title)}
               showConfirm={showConfirm}
             />
           ))}
@@ -81,20 +81,19 @@ const SearchResults = props => {
       {!updating
         && searchResults
         && searchResults.map((r, index) => (
-          <div className="d-flex relative" key={index}>
+          <div className="relative" key={index}>
             <ListLinksGroup
-              withOffset
               showFirst={3}
               entity={r.entity}
               entityDisplayName={getEntityDisplayName(r.entity)}
               checkSelectedResult={checkSelectedResult}
               items={r.items.map(item => {
                 const name = getHighlightedPartLabel(item.name, userSearch);
-
                 return { ...item, name };
               })}
               userSearch={userSearch}
               showConfirm={showConfirm}
+              setSelected={setSelected}
             />
           </div>
         ))}
@@ -103,15 +102,10 @@ const SearchResults = props => {
 };
 
 const mapStateToProps = (state: State) => ({
-  categories: state.dashboard.categories,
   scripts: state.dashboard.scripts,
   hasScriptsPermissions: state.access["ADMIN"],
   searchResults: state.dashboard.searchResults.results,
   updating: state.dashboard.searchResults.updating
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<IAction<any>>) => ({
-  getCategories: () => dispatch(getDashboardCategories())
-});
-
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SearchResults));
+export default connect(mapStateToProps)(withStyles(styles)(SearchResults));

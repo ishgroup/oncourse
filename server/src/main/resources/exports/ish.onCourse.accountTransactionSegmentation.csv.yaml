@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.accountTransactionSegmentation.csv
-entityClass: AccountTransaction
-body: ish.onCourse.accountTransactionSegmentation.csv.groovy
-name: Account Transaction Segmentation CSV export
-outputType: csv

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-  <Node CREATEDON="2007-07-17 14:22:43.32" ISVOCABULARY="1" MODIFIEDON="2008-03-31 12:44:29.521" NAME="Subjects"
+  <Node CREATEDON="2007-07-17 14:22:43.32" MODIFIEDON="2008-03-31 12:44:29.521" NAME="Subjects"
         NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" SPECIALTYPE="1" ID="200"/>
-  <Node CREATEDON="2007-07-17 14:22:43.323" ISVOCABULARY="0" MODIFIEDON="2007-11-20 18:35:05.486" NAME="Creative Arts"
+  <Node CREATEDON="2007-07-17 14:22:43.323" NAME="Creative Arts"
         NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1"
         CONTENTS="Creative Arts comprises of a whole host of activities and hobbies that are related to making things with one&apos;s own hands and skill."
         ID="215" PARENTID="200"/>

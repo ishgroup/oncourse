@@ -1,0 +1,46 @@
+{
+  "course": {
+    "entity": "Course",
+    "title": "Getting starting with onCourse",
+    "documentation": "/manual/#courses",
+    "link": "/course/new",
+    "canSkip": false,
+    "video": "q8m9kIYW1Cw",
+    "content": "<p>Let's get started by creating our first course. For now, your new course will need a name and a code as well as a data collection rule detailing the questions asked of people enrolling. Choose one of the built-in rules for now.</p><p>Under the marketing section, go ahead and add a web description for your course. You don't need to mention pricing, schedules or trainers... we'll do all that later. Just put in a description to get people excited about your offering.</p><p>Courses are the product you offer, not the specific event that students or customers are purchasing. We'll set that up later.</p><p>When you are done with your course, hit save at the top right.</p>"
+  },
+  "site": {
+    "entity": "Site",
+    "title": "Where are you?",
+    "documentation": "/manual/#sitesRooms-workingWith",
+    "link": "/site/new",
+    "canSkip": false,
+    "video": "LtNbcrRsJIc",
+    "content": "<p>Let's create a location to deliver training. That location might be virtual (such as for online courses) or a physical place. If you have a campus, you might create a new site for each building. Make sure you create at least one room in your site since we'll need that later when we start setting up classes.</p><p>If your site is virtual, you should still create at least one room.</p>"
+  },
+  "tutor": {
+    "entity": "Tutor",
+    "title": "Who is delivering your courses?",
+    "documentation": "/manual/#contacts",
+    "link": "/contact/new?filter=@Tutors",
+    "canSkip": false,
+    "video": "ZO48UZc1pd8",
+    "content": "<p>Next, let's add a trainer. In onCourse they are called tutors and that covers anyone from lecturers to co-ordinators and classroom assistants. For now, just put in a name and check the 'tutor' checkbox. Its probably helpful to add an email address and put in anything else you'll find useful.</p><p>This window is a good place to attach documents like working-with-children checks or academic qualifications. You can also add a resume which will appear on your website.</p>"
+  },
+  "courseclass": {
+    "entity": "CourseClass",
+    "title": "Let's add a class",
+    "documentation": "/manual/#classes",
+    "link": "/class/new",
+    "canSkip": false,
+    "video": "oQUEBMXe1SA",
+    "content": "<p>Well done. We are ready now to add the event, performance or class which people will purchase. No matter whether it is a once-off performance or webinar, or a multi-year class, this is where you'll set that up.</p><p>Start by entering the course code of the course you set up earlier. Then in the Tutors section type in the name of any tutor in your system. Type in their name any way you like 'Jane Smith', or 'Smith' or 'Smith, Jane': - onCourse will figure it out.</p><p>Before you continue, hit save at the top right. This will store the details in the system and allow you to start adding a timetable.</p>"
+  },
+  "systemuser": {
+    "title": "Invite a colleague.",
+    "documentation": "/manual/#users-settings",
+    "link": "/security/users/new",
+    "canSkip": true,
+    "video": "pcv-PIZrNmc",
+    "content": "<p>Need one of your colleagues to work with you in onCourse? Invite another user by creating an account in seconds.</p><p>There are no licensing limits to the number of user accounts in onCourse, only to the number of users logged in at once.</p><p>Enter their details, set their access level, then click 'Invite'</p>"
+  }
+}

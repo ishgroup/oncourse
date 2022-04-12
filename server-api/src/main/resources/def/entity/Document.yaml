@@ -49,3 +49,5 @@ properties:
     type: string
     format: date-time
     description: date and time when record was modified
+  urlWithoutVersionId:
+    type: string

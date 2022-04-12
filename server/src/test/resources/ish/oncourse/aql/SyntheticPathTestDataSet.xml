@@ -143,27 +143,27 @@
   <CustomField id="6" entityIdentifier="Contact" foreignId="1" customFieldTypeId="4" value="dateContact1"
                createdOn="2017-04-17 19:22:59" modifiedOn="2017-04-17 19:23:29"/>
 
-  <Node id="1" isVocabulary="1" isWebVisible="1" name="ContactTag" nodeType="1" createdOn="2021-12-21 12:00:10.0"
+  <Node id="1" isWebVisible="1" name="ContactTag" nodeType="1" createdOn="2021-12-21 12:00:10.0"
         modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRequirement id="1" entityIdentifier="8" isRequired="0" manyTermsAllowed="1" nodeId="1"
                    createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="1" entityIdentifier="8" entityRecordId="1" nodeId="1" createdOn="2021-12-21 12:00:10.0"
                 modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <Node id="2" isVocabulary="1" isWebVisible="1" name="StudentTag" nodeType="1" createdOn="2021-12-21 12:00:10.0"
+  <Node id="2" isWebVisible="1" name="StudentTag" nodeType="1" createdOn="2021-12-21 12:00:10.0"
         modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRequirement id="2" entityIdentifier="3" isRequired="0" manyTermsAllowed="1" nodeId="2"
                    createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="3" isVocabulary="0" isWebVisible="1" name="StudentChildTag" nodeType="1" parentId="2"
+  <Node id="3" IsWebVisible="1" name="StudentChildTag" nodeType="1" parentId="2"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="2" entityIdentifier="3" entityRecordId="1" nodeId="3" createdOn="2021-12-21 12:00:10.0"
                 modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <Node id="4" isVocabulary="1" isWebVisible="1" name="CourseTag" nodeType="1" createdOn="2021-12-21 12:00:10.0"
+  <Node id="4" isWebVisible="1" name="CourseTag" nodeType="1" createdOn="2021-12-21 12:00:10.0"
         modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRequirement id="3" entityIdentifier="1" isRequired="0" manyTermsAllowed="1" nodeId="4"
                    createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="5" isVocabulary="0" isWebVisible="1" name="CourseChildTag" nodeType="1" parentId="4"
+  <Node id="5" IsWebVisible="1" name="CourseChildTag" nodeType="1" parentId="4"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="3" entityIdentifier="1" entityRecordId="100" nodeId="5" createdOn="2021-12-21 12:00:10.0"
                 modifiedOn="2021-12-21 12:00:10.0"/>
@@ -257,10 +257,10 @@
            smsText="message for contact 2" contactId="2"/>
 
   <!-- notes -->
-  <Note id="1" note="contact 1 note" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <Note id="1" note="contact 1 note" createdOn="2015-03-09 17:00:51.0" interactionDate="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
   <NoteRelation id="1" noteId="1" entityRecordId="1" entityIdentifier="Contact" createdOn="2015-03-09 17:00:51.0"
                 modifiedOn="2015-03-09 17:20:32.0"/>
-  <Note id="2" note="contact 2 note" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <Note id="2" note="contact 2 note" createdOn="2015-03-09 17:00:51.0" interactionDate="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
   <NoteRelation id="2" noteId="2" entityRecordId="2" entityIdentifier="Contact" createdOn="2015-03-09 17:00:51.0"
                 modifiedOn="2015-03-09 17:20:32.0"/>
 

@@ -35,7 +35,6 @@ import {
 import EntityService from "../../../common/services/EntityService";
 import { getWindowHeight, getWindowWidth, stubFunction } from "../../../common/utils/common";
 import { defaultContactName } from "../contacts/utils";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
 import OutcomeService from "../outcomes/services/OutcomeService";
 import { getEnrolment, updateEnrolment } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
@@ -50,7 +49,6 @@ import { getActiveFundingContracts } from "../../avetmiss-export/actions";
 import { State } from "../../../reducers/state";
 import { openInternalLink } from "../../../common/utils/links";
 import { checkPermissions } from "../../../common/actions";
-import { Classes } from "../../../model/entities/CourseClass";
 import { getGradingTypes } from "../../preferences/actions";
 
 const nameCondition = (val: Enrolment) => defaultContactName(val.studentName);
@@ -147,7 +145,7 @@ const filterGroups: FilterGroup[] = [
 
 const findRelatedGroup: any = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Enrolment and entityId" },
-  { title: "Classes", list: Classes.path, expression: "enrolments.id" },
+  { title: "Classes", list: "class", expression: "enrolments.id" },
   {
     title: "Documents",
     list: "document",
@@ -163,8 +161,7 @@ const findRelatedGroup: any = [
 ];
 
 const nestedEditFields = {
-  Contact: props => <ContactEditView {...props} />,
-  SendMessage: props => <SendMessageEditView {...props} />
+  Contact: props => <ContactEditView {...props} />
 };
 
 const defaultFields: Array<keyof Enrolment> = ["fundingSource", "vetFundingSourceStateID", "vetPurchasingContractID"];
@@ -318,7 +315,6 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
         EditViewContent={EnrolmentEditView}
         getEditRecord={getEnrolmentRecord}
         rootEntity="Enrolment"
-        nestedEditFields={nestedEditFields}
         onInit={() => setInitNew(true)}
         customOnCreate={customOnCreate}
         onBeforeSave={onBeforeSave}
@@ -327,6 +323,7 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         CogwheelAdornment={EnrolmentCogWheel}
+        nestedEditFields={nestedEditFields}
         defaultDeleteDisabled
         alwaysFullScreenCreateView
       />

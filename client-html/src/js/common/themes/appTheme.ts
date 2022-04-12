@@ -70,8 +70,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
         backgroundColor: '#4b6390'
       },
       listItemRoot: {
-        color: "#c9d0de",
-        selectedColor: "#fff",
+        color: "#fff"
       },
     },
     table: {
@@ -151,8 +150,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
         backgroundColor: '#302A22'
       },
       listItemRoot: {
-        color: "#fff",
-        selectedColor: "#fff",
+        color: "#fff"
       },
     },
     table: {
@@ -233,7 +231,6 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
       },
       listItemRoot: {
         color: "#000",
-        selectedColor: "#000",
       },
     },
     table: {
@@ -311,8 +308,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
         backgroundColor: '#292929'
       },
       listItemRoot: {
-        color: "#fff",
-        selectedColor: "#fff",
+        color: "#fff"
       },
     },
     table: {

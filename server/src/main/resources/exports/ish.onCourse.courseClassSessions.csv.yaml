@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.courseClassSessions.csv
-entityClass: CourseClass
-body: ish.onCourse.courseClassSessions.csv.groovy
-name: CourseClass Sessions CSV export
-outputType: csv

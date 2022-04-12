@@ -215,6 +215,8 @@ paths:
     $ref: './path/list/entity/waitingList/api.yaml'
   /list/entity/contact:
     $ref: './path/list/entity/contact/api.yaml'
+  /list/entity/contact/insight:
+    $ref: './path/list/entity/contact/insight/api.yaml'
   /list/entity/contact/merge:
     $ref: './path/list/entity/contact/merge/api.yaml'
   /list/entity/contact/usi:
@@ -295,8 +297,6 @@ paths:
     $ref: './path/user/active/api.yaml'
   /user/preference:
     $ref: './path/user/preference/api.yaml'
-  /user/preference/category:
-    $ref: './path/user/preference/category/api.yaml'
   /user/checkPassword:
     $ref: './path/user/checkPassword/api.yaml'
   /user/requireComplexPass:

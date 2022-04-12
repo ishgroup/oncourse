@@ -14,8 +14,12 @@ package ish.oncourse.server.api.v1.service.impl
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.common.types.EnrolmentStatus
+import ish.common.types.KeyCode
+import ish.common.types.Mask
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.function.DateFunctions
+import ish.oncourse.server.security.api.IPermissionService
+
 import static ish.oncourse.server.api.v1.function.DashboardFunctions.toStatisticItem
 import ish.oncourse.server.api.v1.model.SearchGroupDTO
 import ish.oncourse.server.api.v1.model.StatisticDataDTO
@@ -50,6 +54,9 @@ class DashboardApiImpl implements DashboardApi {
     @Inject
     private DashboardSearchManager dashboardSearchManager
 
+    @Inject
+    private IPermissionService permissionService
+
     @Override
     List<SearchGroupDTO> getSearchResults(String search) {
         if (search ==~ NO_PERCENT_SIGN) {
@@ -64,6 +71,7 @@ class DashboardApiImpl implements DashboardApi {
         Date today = new Date()
 
         Date startOfPeriod = LocalDate.now().minusDays(27).atStartOfDay().toDate()
+        boolean isUserCanViewIncoice = permissionService.currentUserCan(KeyCode.INVOICE, Mask.VIEW)
 
         new StatisticDataDTO().with { sd ->
 
@@ -76,9 +84,11 @@ class DashboardApiImpl implements DashboardApi {
             List<BigDecimal> revenueValues = (0..27).collect { revenuePerDayMap[(startOfPeriod + it).format(YYYYMMDD)] ?: 0.0 }
 
             sd.enrolmentsChartLine = enrolmentValues
-            sd.revenueChartLine = revenueValues
             sd.studentsCount = enrolmentsCountPerDayMap.values().sum() as Integer
-            sd.moneyCount = revenuePerDayMap.values().sum() as BigDecimal
+            if (isUserCanViewIncoice) {
+                sd.revenueChartLine = revenueValues
+                sd.moneyCount = (revenuePerDayMap.values().sum() as BigDecimal) ?: BigDecimal.ZERO
+            }
 
             sd.latestEnrolments = ObjectSelect.query(Enrolment)
                     .where(Enrolment.STATUS.in(EnrolmentStatus.STATUSES_LEGIT))

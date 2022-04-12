@@ -6,6 +6,7 @@
 import React, { useCallback, useMemo } from "react";
 import Typography from "@mui/material/Typography";
 import Delete from "@mui/icons-material/Delete";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import IconButton from "@mui/material/IconButton";
 import { Binding } from "@api/model";
 import {
@@ -15,7 +16,6 @@ import { Dispatch } from "redux";
 import clsx from "clsx";
 import { makeStyles } from "@mui/styles";
 import Grid from "@mui/material/Grid";
-import { CommonListItem } from "../../../model/common/sidebar";
 import { SelectItemDefault } from "../../../model/entities/common";
 import { IMPORT_TEMPLATES_FORM_NAME } from "../containers/import-templates/ImportTemplates";
 import { SCRIPT_EDIT_VIEW_FORM_NAME } from "../containers/scripts/constants";
@@ -25,6 +25,8 @@ import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
 import { renderAutomationItems } from "../utils";
 import { AppTheme } from "../../../model/common/Theme";
 import AddButton from "../../../common/components/icons/AddButton";
+import { useHoverShowStyles } from "../../../common/styles/hooks";
+import { CatalogItemType } from "../../../model/common/Catalog";
 
 export type BindingsItemType = "component" | "label";
 
@@ -33,14 +35,23 @@ interface BindingsItemProps {
   type: BindingsItemType;
   field?: string;
   onDelete?: any;
+  infoLink?: string;
   index?: string;
   emailTemplateItems?: SelectItemDefault[];
+  gridProps?: any;
+  highlightable?: boolean;
+  noLabel?: boolean;
 }
 
 // @ts-ignore
 const useStyles = makeStyles((theme: AppTheme) => ({
   labelTypeWrapper: {
-    maxHeight: "24px"
+    fontWeight: 400,
+    paddingTop: theme.spacing(1),
+    maxHeight: "24px",
+    "&$highlightable:hover": {
+      color: theme.palette.primary.main
+    }
   },
   itemLabel: {
     marginTop: theme.spacing(0.5)
@@ -55,29 +66,48 @@ const useStyles = makeStyles((theme: AppTheme) => ({
   },
   dateDelete: {
     marginBottom: theme.spacing(1.25)
-  }
+  },
+  highlightable: {}
 }));
 
+const showOnForm = (item, field) => {
+  const fieldNodes = document.querySelectorAll(`[id^='${field}.value'],[id^='input-${field}.value']`);
+
+  if (item.type === "Checkbox") {
+    fieldNodes.forEach(node => {
+      node.closest("label")?.classList.add("animated", "shake", "primaryColor");
+      node.closest("label")?.querySelector("svg")?.classList.add("primaryColor");
+    });
+
+    setTimeout(() => {
+      fieldNodes.forEach(node => {
+        node.closest("label")?.classList.remove("animated", "shake", "primaryColor");
+        node.closest("label")?.querySelector("svg")?.classList.remove("primaryColor");
+      });
+    }, 1000);
+    return;
+  }
+
+  fieldNodes.forEach(node => {
+    node.querySelector("label")?.classList.add("primaryColor");
+    node.querySelector("input")?.classList.add("primaryColor");
+    node.classList.add("animated", "shake", "primaryColor");
+  });
+
+  setTimeout(() => {
+    fieldNodes.forEach(node => {
+      node.querySelector("label")?.classList.remove("primaryColor");
+      node.querySelector("input")?.classList.remove("primaryColor");
+      node.classList.remove("animated", "shake", "primaryColor");
+    });
+  }, 1000);
+};
+
 const BindingsItem = React.memo<BindingsItemProps>(({
-    item, index, onDelete, type, field, emailTemplateItems
+    item, index, onDelete, infoLink, type, field, emailTemplateItems, highlightable, noLabel, gridProps = {}
   }) => {
   const classes = useStyles();
-
-  const buttonClass = useMemo(() => {
-    switch (item.type) {
-      default:
-      case "Text": {
-        return clsx("mb-1", classes.textDelete);
-      }
-      case "Checkbox": {
-        return classes.checkboxDelete;
-      }
-      case "Date":
-      case "Date time": {
-        return classes.dateDelete;
-      }
-    }
-  }, [item.type]);
+  const hoverClasses = useHoverShowStyles();
 
   const fieldProps: any = useMemo(() => {
     const props = {};
@@ -99,54 +129,94 @@ const BindingsItem = React.memo<BindingsItemProps>(({
   }, [item, emailTemplateItems]);
 
   return type === "label" ? (
-    <Grid item xs={12} className="centeredFlex">
-      <div className="flex-fill">
-        {item.label && (
-          <Typography variant="caption" color="textSecondary" className={classes.itemLabel}>
+    <Grid item xs={12} className={clsx("centeredFlex", hoverClasses.container)}>
+      <div className="flex-fill w-100">
+        {!noLabel && item.label && (
+          <Typography
+            variant="caption"
+            color="textSecondary"
+            component="div"
+            className={clsx("text-truncate text-nowrap", classes.itemLabel)}
+          >
             {item.label}
           </Typography>
         )}
         <Typography
-          variant="body2"
+          variant="body1"
           component="div"
-          className={clsx("centeredFlex pb-0-5", classes.labelTypeWrapper)}
+          onMouseEnter={highlightable ? () => showOnForm(item, field) : null}
+          className={clsx("centeredFlex pb-0-5", classes.labelTypeWrapper, highlightable && classes.highlightable)}
         >
-          <span>
-            {item.name}
+          <span className="w-100 centeredFlex">
+            <span className="text-truncate text-nowrap">{item.name}</span>
             {" "}
-            <Typography variant="caption" color="textSecondary">
+            <Typography variant="caption" color="textSecondary" noWrap>
               (
               {item.type}
               )
             </Typography>
+            {infoLink && (
+              <IconButton size="small" role={index} onClick={() => window.open(infoLink, "_blank")}>
+                <HelpOutlineIcon fontSize="inherit" />
+              </IconButton>
+            )}
           </span>
         </Typography>
       </div>
       {onDelete && (
-        <IconButton className="lightGrayIconButton" role={index} onClick={onDelete}>
+        <IconButton size="small" className={clsx("lightGrayIconButton", hoverClasses.target)} role={index} onClick={onDelete}>
           <Delete fontSize="inherit" />
         </IconButton>
       )}
     </Grid>
   ) : (
-    <Grid item xs={12} className="centeredFlex">
+    <Grid item xs={6} {...gridProps}>
       <Field
-        label={item.name}
+        label={item.label || item.name}
         name={`${field}.value`}
         type={item.type}
         component={DataTypeRenderer}
-        className="flex-fill"
         {...fieldProps}
       />
-
-      {onDelete && (
-        <IconButton className={clsx("lightGrayIconButton", buttonClass)} role={index} onClick={onDelete}>
-          <Delete fontSize="inherit" />
-        </IconButton>
-      )}
     </Grid>
   );
 });
+
+export const BindingsRenderer = props => {
+    const {
+     fields, disabled, handleDelete, itemsType, emailTemplates, highlightable, noLabel
+    } = props;
+
+  const emailTemplateItems = useMemo(
+    () => (emailTemplates
+      ? emailTemplates.filter(t => t.keyCode).map(t => ({
+        value: t.keyCode, label: t.title, hasIcon: t.keyCode.startsWith("ish."), id: t.id,
+      }))
+      : []), [emailTemplates],
+  );
+
+  return fields.map((i, n) => (
+    <BindingsItem
+      type={itemsType}
+      key={n}
+      field={i}
+      item={fields.get(n)}
+      index={String(n)}
+      onDelete={!disabled && handleDelete}
+      emailTemplateItems={emailTemplateItems}
+      highlightable={highlightable}
+      noLabel={noLabel}
+    />
+  ));
+};
+
+const getInfoLink = (type: string) => {
+  if (!type || type === "Context") {
+    return null;
+  }
+
+  return `https://www.ish.com.au/onCourse/doc/dsl/#${type}`;
+};
 
 interface BindingsProps {
   name: string;
@@ -156,7 +226,7 @@ interface BindingsProps {
   defaultVariables?: { type: string; name: string }[];
   dispatch: Dispatch;
   itemsType: BindingsItemType;
-  emailTemplates?: CommonListItem[];
+  emailTemplates?: CatalogItemType[];
 }
 
 const Bindings = React.memo<BindingsProps>( props => {
@@ -170,13 +240,6 @@ const Bindings = React.memo<BindingsProps>( props => {
   const isVariablesBindingType = useMemo(() => (name === "variables"), [name]);
   const isImportAutomation = useMemo(() => (form === IMPORT_TEMPLATES_FORM_NAME), [form]);
   const isScriptsAutomation = useMemo(() => (form === SCRIPT_EDIT_VIEW_FORM_NAME), [form]);
-  const emailTemplateItems = useMemo(
-    () => (emailTemplates
-      ? emailTemplates.filter(t => t.keyCode).map(t => ({
-        value: t.keyCode, label: t.name, hasIcon: t.hasIcon, id: t.id,
-      }))
-      : []), [emailTemplates],
-  );
 
   const handleClick = useCallback(event => {
     setAnchorEl(event.currentTarget);
@@ -202,25 +265,6 @@ const Bindings = React.memo<BindingsProps>( props => {
     [form, name]
   );
 
-  const itemsRenderer = useCallback(
-    props => {
-      const { fields } = props;
-
-      return fields.map((i, n) => (
-        <BindingsItem
-          type={itemsType}
-          key={n}
-          field={i}
-          item={fields.get(n)}
-          index={String(n)}
-          onDelete={!disabled && handleDelete}
-          emailTemplateItems={emailTemplateItems}
-        />
-      ));
-    },
-    [disabled, handleDelete, itemsType, name, form, emailTemplateItems]
-  );
-
   return (
     <div>
       <DataTypesMenu
@@ -235,16 +279,30 @@ const Bindings = React.memo<BindingsProps>( props => {
         isScriptsAutomation={isScriptsAutomation}
       />
 
-      <div className="centeredFlex pb-1">
-        <div className="heading">{label}</div>
-        {!disabled && (
-          <AddButton className="p-0 ml-1" onClick={handleClick} />
+      <Grid container>
+        {defaultVariables && (
+          <Grid item xs={12} className="mb-3">
+            <Typography variant="caption">Built in variables</Typography>
+            {defaultVariables.map((i, n) => <BindingsItem key={n} item={i as Binding} type="label" infoLink={getInfoLink(i.type)} />)}
+          </Grid>
         )}
-      </div>
-
-      <Grid container rowSpacing={2}>
-        {defaultVariables && defaultVariables.map((i, n) => <BindingsItem key={n} item={i as Binding} type="label" />)}
-        <FieldArray name={name} component={itemsRenderer} rerenderOnEveryChange />
+        <Grid item xs={12} className="centeredFlex pb-1">
+          <Typography variant="caption">{label}</Typography>
+          {!disabled && (
+            <AddButton className="p-0 ml-1" onClick={handleClick} />
+          )}
+        </Grid>
+        <FieldArray 
+          name={name} 
+          component={BindingsRenderer}
+          disabled={disabled} 
+          handleDelete={handleDelete} 
+          itemsType="label"
+          emailTemplates={emailTemplates}
+          highlightable={isOptionsBindingType}
+          noLabel={isOptionsBindingType}
+          rerenderOnEveryChange 
+        />
       </Grid>
     </div>
   );

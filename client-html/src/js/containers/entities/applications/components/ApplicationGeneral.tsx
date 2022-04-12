@@ -3,23 +3,30 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Application, ApplicationStatus } from "@api/model";
-import { Grid, IconButton } from "@mui/material";
-import Launch from "@mui/icons-material/Launch";
+import { Grid } from "@mui/material";
+import { change } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
+import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
 import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
 import { courseFilterCondition, openCourseLink } from "../../courses/utils";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import {
+  ContactLinkAdornment,
+  HeaderContactTitle,
+  LinkAdornment
+} from "../../../../common/components/form/FieldAdornments";
 import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import EntityService from "../../../../common/services/EntityService";
+import history from "../../../../constants/History";
+import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 
 interface ApplicationGeneralProps extends EditViewProps<Application> {
   classes?: any;
@@ -39,8 +46,61 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
     values,
     isNew,
     form,
+    dispatch,
     syncErrors
   } = props;
+  
+  useEffect(() => {
+    if (history.location.search && isNew) {
+      const params = new URLSearchParams(history.location.search);
+      const leadId = params.get('leadId');
+      const contactId = params.get('contactId');
+      const contactName = params.get('contactName');
+      
+      const clearParams = () => {
+        history.replace({
+          pathname: history.location.pathname,
+          search: decodeURIComponent(params.toString())
+        });
+      };
+
+      if (contactId) {
+        dispatch(change(form, "contactId", Number(contactId)));
+        params.delete('contactId');
+      }
+
+      if (contactName) {
+        dispatch(change(form, "studentName", contactName));
+        params.delete('contactName');
+      }
+      
+      if (leadId) {
+        EntityService.getPlainRecords(
+          "Lead",
+          "customer.id,customer.fullName,items.course.id,items.course.name",
+          `id is ${leadId}`,
+          1
+        )
+        .then(res => {
+          const contactId = JSON.parse(res.rows[0].values[0]);
+          const studentName = res.rows[0].values[1];
+          const courseId = JSON.parse(res.rows[0].values[2])[0];
+          const courseName = res.rows[0].values[3]?.replace(/[[\]]|,.+/g, "");
+          dispatch(change(form, "contactId", contactId));
+          dispatch(change(form, "studentName", studentName));
+          dispatch(change(form, "courseId", courseId));
+          dispatch(change(form, "courseName", courseName));
+        })
+        .catch(err => instantFetchErrorHandler(dispatch, err))
+        .finally(() => {
+          params.delete('leadId');
+          clearParams();
+        });
+      } else {
+        clearParams();
+      }
+    }
+  }, []);
 
   const gridItemProps = {
     xs: twoColumn ? 6 : 12,
@@ -55,12 +115,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           disableInteraction={!isNew}
           twoColumn={twoColumn}
           title={(
-            <div className="d-inline-flex-center">
-              {values && defaultContactName(values.studentName)}
-              <IconButton disabled={!values?.contactId} size="small" color="primary" onClick={() => openContactLink(values?.contactId)}>
-                <Launch fontSize="inherit" />
-              </IconButton>
-            </div>
+            <HeaderContactTitle name={values?.studentName} id={values?.contactId} />
           )}
           fields={(
             <Grid item {...gridItemProps}>
@@ -75,11 +130,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
                 disabled={!isNew}
                 defaultDisplayValue={values && defaultContactName(values.studentName)}
                 labelAdornment={(
-                  <LinkAdornment
-                    linkHandler={openContactLink}
-                    link={values && values.contactId}
-                    disabled={!values || !values.contactId}
-                  />
+                  <ContactLinkAdornment id={values?.contactId} />
                 )}
                 itemRenderer={ContactSelectItemRenderer}
                 rowHeight={55}

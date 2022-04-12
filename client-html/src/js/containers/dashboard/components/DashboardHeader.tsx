@@ -19,7 +19,7 @@ import {
 import HamburgerMenu from "../../../common/components/layout/swipeable-sidebar/components/HamburgerMenu";
 import { VARIANTS } from "../../../common/components/layout/swipeable-sidebar/utils";
 import DashboardService from "../services/DashboardService";
-import { LSRemoveItem } from "../../../common/utils/storage";
+import {  LSRemoveItem } from "../../../common/utils/storage";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
 import { useAppSelector } from "../../../common/utils/hooks";
 import { makeAppStyles } from "../../../common/styles/makeStyles";
@@ -28,9 +28,8 @@ import { getSystemUserData } from "../../../common/actions";
 const useStyles = makeAppStyles(theme => ({
   appBar: {
     backgroundColor: theme.palette.background.default,
-    zIndex: theme.zIndex.appBar,
     height: APP_BAR_HEIGHT,
-    padding: theme.spacing(0, 2),
+    padding: theme.spacing(0, 3),
     position: "absolute",
     width: "100%",
     display: "flex",
@@ -101,10 +100,8 @@ const DashboardHeader = (
   const systemUser = useAppSelector(state => state.systemUser);
 
   useEffect(() => {
-    if (!systemUser?.firstName) {
-      dispatch(getSystemUserData());
-    }
-  }, [systemUser]);
+    dispatch(getSystemUserData());
+  }, []);
     
   return (
     <header className={classes.appBar}>

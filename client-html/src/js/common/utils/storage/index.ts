@@ -1,4 +1,3 @@
-import { Category } from "@api/model";
 import { LatestActivityItem, LatestActivityState } from "../../../model/dashboard";
 import { DASHBOARD_ACTIVITY_STORAGE_NAME } from "../../../constants/Config";
 
@@ -27,7 +26,7 @@ export const LSRemoveItem = (key: string) => {
   }
 };
 
-export const latestActivityStorageHandler = (item: LatestActivityItem, entity: Category) => {
+export const latestActivityStorageHandler = (item: LatestActivityItem, entity: string) => {
   const today = new Date();
 
   let activitySate: LatestActivityState = LSGetItem(DASHBOARD_ACTIVITY_STORAGE_NAME) as LatestActivityState;

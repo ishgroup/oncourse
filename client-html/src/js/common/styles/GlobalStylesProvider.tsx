@@ -333,6 +333,9 @@ const globalStyles = (theme: AppTheme) =>
       ".primaryColor": {
         color: theme.palette.primary.main
       },
+      ".secondaryColor": {
+        color: theme.palette.secondary.main
+      },
       ".warningColor": {
         color: theme.palette.warning.light
       },
@@ -402,6 +405,9 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".textSecondaryColor": {
         color: theme.palette.text.secondary
+      },
+      ".textGreyColor700": {
+        color: theme.palette.text.grey
       },
       ".iconColor": {
         color: theme.palette.text.secondary,

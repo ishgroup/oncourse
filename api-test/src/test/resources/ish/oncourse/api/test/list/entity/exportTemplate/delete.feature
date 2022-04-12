@@ -21,7 +21,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/exportTempl
         "keyCode":"delete01",
         "entity":"AccountTransaction",
         "body":"someBody",
-        "enabled":true,
+        "status":"Enabled",
         "variables":[],
         "options":[],
         "outputType":"xml"
@@ -66,7 +66,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/exportTempl
         "keyCode":"delete02",
         "entity":"AccountTransaction",
         "body":"someBody",
-        "enabled":true,
+        "status":"Enabled",
         "variables":[],
         "options":[],
         "outputType":"xml"
@@ -116,7 +116,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/exportTempl
         "keyCode":"delete03",
         "entity":"AccountTransaction",
         "body":"someBody",
-        "enabled":true,
+        "status":"Enabled",
         "variables":[],
         "options":[],
         "outputType":"xml"
@@ -169,7 +169,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/exportTempl
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["Room CSV export"])].id
+        * def id = get[0] response.rows[?(@.values == ["Room CSV"])].id
         * print "id = " + id
 
         Given path ishPath + '/' + id
