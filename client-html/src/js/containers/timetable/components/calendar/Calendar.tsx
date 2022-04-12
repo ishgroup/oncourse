@@ -6,12 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import React, {
+ useContext, useEffect, useMemo, useRef, useState
+} from "react";
 import { createStyles, withStyles } from "@mui/styles";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { addMonths, endOfMonth, format, isSameMonth, startOfMonth } from "date-fns";
+import {
+ addMonths, endOfMonth, format, isSameMonth, startOfMonth 
+} from "date-fns";
 import clsx from "clsx";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
@@ -40,6 +44,8 @@ import {
 import { CoreFilter } from "../../../../model/common/ListView";
 import CalendarTagsSwitcher from "./components/switchers/CalendarTagsSwitcher";
 import CalendarGroupingsSwitcher from "./components/switchers/CalendarGroupingsSwitcher";
+import EntityService from "../../../../common/services/EntityService";
+import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 
 const styles = theme => createStyles({
     root: {
@@ -233,11 +239,25 @@ const Calendar = React.memo<Props>(props => {
     const searchString = params.get("search");
     dispatch(setTimetableSearch(searchString ? decodeURIComponent(searchString) : ""));
 
+    if (searchString && !params.get("selectedDate")) {
+      EntityService.getPlainRecords(
+        "Session",
+        "startDatetime",
+        `${searchString}`,
+        1,
+        0,
+        "startDatetime",
+        true
+      )
+        .then(res => {
+          if (res.rows.length) {
+            setTargetDay(new Date(res.rows[0].values[0]));
+          }
+        })
+        .catch(e => instantFetchErrorHandler(dispatch, e));
+    }
+
     loadNextMonths(targetDay);
-    
-    const startMonth = startOfMonth(targetDay);
-    
-    dispatch(getTimetableSessionsDays(startMonth.getMonth(), startMonth.getFullYear()));
   }, []);
 
   useEffect(() => {
@@ -307,14 +327,17 @@ const Calendar = React.memo<Props>(props => {
     const prevFilters = prevParams.get("filter");
 
     if (currentSearch !== prevSearch || currentFilters !== prevFilters) {
-      dispatch(getTimetableSessionsDays(selectedMonth.getMonth(), selectedMonth.getFullYear()));
       loadNextMonths(selectedMonth);
       setScrollToTargetDayOnRender(targetDay);
     }
   }, [params, prevParams]);
 
+  useEffect(() => {
+    dispatch(getTimetableSessionsDays(selectedMonth.getMonth(), selectedMonth.getFullYear()));
+  }, [selectedMonth, search, filters]);
+
   // Layout effects
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!dayNodesObserver && listEl.current) {
       setDayNodesObserver(attachDayNodesObserver(listEl.current._outerRef, targetDayHandler));
     }
@@ -325,7 +348,7 @@ const Calendar = React.memo<Props>(props => {
     };
   }, [listEl.current, dayNodesObserver]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!listEl.current || listEl.current.state.isScrolling) {
       return;
     }
@@ -344,11 +367,11 @@ const Calendar = React.memo<Props>(props => {
     }
   }, [targetDay, dayNodesObserver]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     scrollToDayHandler(months.findIndex(m => isSameMonth(m.month, targetDay)));
   }, [selectedWeekDays, selectedDayPeriods, calendarMode]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (dayNodesObserver && scrollToTargetDayOnRender && months.length) {
       const targetDayMonthIndex = months.findIndex(m => isSameMonth(m.month, scrollToTargetDayOnRender));
       scrollToDayHandler(targetDayMonthIndex);

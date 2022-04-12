@@ -8,23 +8,20 @@
 
 import React, { useContext } from "react";
 import { addMonths, format } from "date-fns";
-import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import CalendarHeader from "./components/CalendarHeader";
 import CalendarWeekPanel from "./components/CalendarWeekPanel";
 import CalendarBody from "./components/CalendarBody";
 import { TimetableContext } from "../../../../Timetable";
 import { State } from "../../../../../../reducers/state";
-import { getTimetableSessionsDays } from "../../../../actions";
 
 interface Props {
   classes?: any;
-  getSessionsDays?: (month: number, year: number) => void;
   setTimetableSearch?: (search: string) => void;
   selectedMonthSessionDays?: number[];
 }
 
-const MiniCalendar: React.FunctionComponent<Props> = ({ getSessionsDays, selectedMonthSessionDays }) => {
+const MiniCalendar: React.FunctionComponent<Props> = ({ selectedMonthSessionDays }) => {
   const {
    setSelectedWeekDays, selectedMonth, setSelectedMonth, selectedWeekDays
   } = useContext(TimetableContext);
@@ -32,13 +29,11 @@ const MiniCalendar: React.FunctionComponent<Props> = ({ getSessionsDays, selecte
   const previousMonth = () => {
     const prev = addMonths(selectedMonth, -1);
     setSelectedMonth(prev);
-    getSessionsDays(prev.getMonth(), prev.getFullYear());
   };
 
   const nextMonth = () => {
     const next = addMonths(selectedMonth, 1);
     setSelectedMonth(next);
-    getSessionsDays(next.getMonth(), next.getFullYear());
   };
 
   const switchWeekDays = dayId => {
@@ -69,8 +64,4 @@ const mapStateToProps = (state: State) => ({
   selectedMonthSessionDays: state.timetable.selectedMonthSessionDays || []
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  getSessionsDays: (month: number, year: number) => dispatch(getTimetableSessionsDays(month, year))
-});
-
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(MiniCalendar);
+export default connect<any, any, any>(mapStateToProps)(MiniCalendar);

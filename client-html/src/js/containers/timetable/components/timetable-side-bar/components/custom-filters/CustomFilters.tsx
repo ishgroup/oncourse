@@ -60,7 +60,7 @@ const CustomFilters = React.memo<Props>(
     );
 
     return (
-      <div className={clsx("p-2", fetch.pending && "disabled")}>
+      <div className={clsx("p-2", fetch.pending && "pointer-events-none")}>
         {savingFilter && !filters.length && <div className="heading mt-2">Custom Filters</div>}
 
         {filters.length ? (
