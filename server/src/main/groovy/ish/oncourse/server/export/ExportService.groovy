@@ -65,7 +65,7 @@ class ExportService {
 	 * @param expParam export specification
 	 * @return {@link ExportResult} object containing resulting export data
 	 */
-	ExportResult export(ExportParameter expParam) {
+	ExportResult export(ExportParameter expParam, Map<String, Object> variables = [:]) {
 		def entity = expParam.entity
 
 		def exportables = expParam.expression == null && expParam.ids.size() > 0 ?
@@ -77,7 +77,7 @@ class ExportService {
 
 		ExportResult result = new ExportResult()
 
-		String out = performExport(template, exportables)
+		String out = performExport(template, exportables, variables)
 		result.setResult(out.bytes)
 
 		return result
