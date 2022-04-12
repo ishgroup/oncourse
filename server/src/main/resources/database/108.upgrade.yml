@@ -1,0 +1,50 @@
+databaseChangeLog:
+
+- changeSet:
+    id: 108-1
+    author: dmitrij
+    preConditions:
+      - onFail: HALT
+      - not:
+          - columnExists:
+              tableName: Checkout
+              columnName: payerId
+          - columnExists:
+              tableName: Checkout
+              columnName: totalValue
+    changes:
+      - addColumn:
+          tableName: Checkout
+          columns:
+            - column:
+                name: payerId
+                type: BIGINT
+            - column:
+                name: totalValue
+                type: DECIMAL
+
+- changeSet:
+    id: 108-2
+    author: dmitriy
+    preConditions:
+      - onFail: HALT
+      - not:
+          - foreignKeyConstraintExists:
+              foreignKeyName: fk_Checkout_Payer
+    changes:
+      - addForeignKeyConstraint:
+          baseColumnNames: payerId
+          baseTableName: Checkout
+          constraintName: fk_Checkout_Payer
+          referencedColumnNames: id
+          referencedTableName: Contact
+
+- changeSet:
+    id: 108-3
+    author: dmitriy
+    preConditions:
+      - onFail: HALT
+      - tableExists:
+          tableName: Checkout
+    changes:
+      - sql: "DELETE FROM Checkout"
