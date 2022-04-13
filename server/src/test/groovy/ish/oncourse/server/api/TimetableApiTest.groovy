@@ -128,12 +128,12 @@ class TimetableApiTest extends TestWithDatabase {
     void getDateTest() {
 
         Assertions.assertArrayEquals([30, 31].toArray(), api.getDates(2, 2019, null).toArray())
-        Assertions.assertArrayEquals([30].toArray(), api.getDates(2, 2019, 'room.id=200').toArray())
-        Assertions.assertArrayEquals([30, 31].toArray(), api.getDates(2, 2019, 'room.site.id=200').toArray())
+        Assertions.assertArrayEquals([30].toArray(), api.getDates(2, 2019, new SearchRequestDTO().with {it.search = 'room.id=200'; it}).toArray())
+        Assertions.assertArrayEquals([30, 31].toArray(), api.getDates(2, 2019, new SearchRequestDTO().with {it.search = 'room.site.id=200'; it}).toArray())
 
         Assertions.assertArrayEquals((1..11).toArray(), api.getDates(3, 2019, null).toArray())
-        Assertions.assertArrayEquals([11].toArray(), api.getDates(3, 2019, 'room.id=204').toArray())
-        Assertions.assertArrayEquals([11].toArray(), api.getDates(3, 2019, 'room.site.id=203').toArray())
+        Assertions.assertArrayEquals([11].toArray(), api.getDates(3, 2019, new SearchRequestDTO().with {it.search = 'room.id=204'; it}).toArray())
+        Assertions.assertArrayEquals([11].toArray(), api.getDates(3, 2019, new SearchRequestDTO().with {it.search = 'room.id=203'; it}).toArray())
 
         Assertions.assertArrayEquals([1, 2, 3, 4, 5, 8, 9, 10, 30].toArray(), api.getDates(4, 2019, null).toArray())
 
