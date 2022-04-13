@@ -190,7 +190,7 @@ public class PrintWorker implements Runnable {
 						for (var sourceId : entry.getValue()) {
 
 							// apply path transform, filter and sort
-							var printables = transformRecords(Collections.singletonList(sourceId), printTransformation, startingReport.getSortOn());
+							var printables = transformRecords(Collections.singletonList(sourceId), entry.getKey(), printTransformation, startingReport.getSortOn());
 
 							// work with once source record at a time
 							var filledReports = fillReports(reports, printables);
@@ -205,7 +205,7 @@ public class PrintWorker implements Runnable {
 					} else {
 
 						// apply path transform, filter and sort
-						var printables = transformRecords(entry.getValue(), printTransformation, startingReport.getSortOn());
+						var printables = transformRecords(entry.getValue(), entry.getKey(), printTransformation, startingReport.getSortOn());
 
 						// work with one transformed record at a time
 						for (var printable : printables) {
@@ -225,7 +225,7 @@ public class PrintWorker implements Runnable {
 				} else {
 					// work with all source record ids at the time
 					// apply path transform, filter and sort
-					var printables = transformRecords(entry.getValue(), printTransformation, startingReport.getSortOn());
+					var printables = transformRecords(entry.getValue(), entry.getKey(), printTransformation, startingReport.getSortOn());
 					progress = 33d;
 					//fill report(s)
 					var filledReports = fillReports(reports, printables);
@@ -297,7 +297,8 @@ public class PrintWorker implements Runnable {
 	 * @param recordIds to transform
 	 * @return tansformed, filtered, wrapped, sorted list of PrintableObjetcs, ready to print
 	 */
-	protected List<PersistentObjectI> transformRecords(List<Long> recordIds, PrintTransformation transform, String sortOn) throws Exception {
+	protected List<PersistentObjectI> transformRecords(List<Long> recordIds, String entityName,
+													   PrintTransformation transform, String sortOn) throws Exception {
 		try {
 			logger.info("transforming records, at start: {}, transform: {}", recordIds.size(), transform);
 			List<PersistentObjectI>  printList;
@@ -308,7 +309,7 @@ public class PrintWorker implements Runnable {
 	
 			} else {
 				Map<String, List<Long>> tempMap = new HashMap<>();
-				tempMap.put(printRequest.getEntity(), recordIds);
+				tempMap.put(entityName, recordIds);
 				printList = getRecords(tempMap);
 				logger.info("fetching records : {}", printList.size());
 			}

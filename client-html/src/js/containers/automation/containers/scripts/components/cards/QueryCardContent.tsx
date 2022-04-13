@@ -13,6 +13,7 @@ import FormField from "../../../../../../common/components/form/formFields/FormF
 import { mapSelectItems } from "../../../../../../common/utils/common";
 import EntityService from "../../../../../../common/services/EntityService";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../../../constants/Config";
+import { getPluralSuffix } from "../../../../../../common/utils/strings";
 
 const records = Object.keys(Entities)
   .filter(i => Entities[i].constructor.name !== "Enum")
@@ -133,7 +134,7 @@ const QueryCardContent = props => {
             {queryResults === PLAIN_LIST_MAX_PAGE_SIZE ? `more than ${queryResults}` : queryResults}
             {' '}
             record
-            {queryResults === 1 ? "" : "s"}
+            {getPluralSuffix(queryResults)}
             {' '}
             found
           </Typography>

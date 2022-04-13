@@ -4,18 +4,18 @@
  */
 
 import { Dispatch } from "redux";
-import { SHOW_MESSAGE } from "../../actions/index";
+import { SHOW_MESSAGE } from "../../actions";
 import { ServerResponse } from "../../../model/common/apiHandlers";
 
 const instantFetchErrorHandler = (
   dispatch: Dispatch,
   response: ServerResponse,
-  customMessage: string = "Something went wrong. Changes won't be saved"
+  customMessage: string = "Something went wrong"
 ) => {
   if (!response) {
     dispatch({
       type: SHOW_MESSAGE,
-      payload: { message: customMessage || "Something went wrong" }
+      payload: { message: customMessage }
     });
     return;
   }

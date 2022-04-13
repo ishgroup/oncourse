@@ -14,9 +14,9 @@ import {
 import FormField from "../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { ContactLinkAdornment, LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import {
-  contactLabelCondition, defaultContactName, getContactFullName, openContactLink
+  contactLabelCondition, defaultContactName, getContactFullName
 } from "../../contacts/utils";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
@@ -145,7 +145,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
             selectLabelCondition={getContactFullName}
             defaultDisplayValue={values && defaultContactName(values.contactName)}
             labelAdornment={
-              <LinkAdornment linkHandler={openContactLink} link={values.contactId} disabled={!values.contactId} />
+              <ContactLinkAdornment id={values?.contactId} />
             }
             itemRenderer={ContactSelectItemRenderer}
             required

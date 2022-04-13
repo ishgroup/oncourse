@@ -157,7 +157,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
             dto.abandonedCarts = cayenneModel.abandonedCarts.collect{toRestCart(it)}
             dto.tags = cayenneModel.tags.collect{ toRestTagMinimized(it) }
             dto.memberships = cayenneModel.memberships.collect {  productItemApiService.toRestModel(it) }
-            dto.profilePicture = getProfilePicture(cayenneModel)
+            dto.profilePicture = getProfilePicture(cayenneModel, documentService)
 
             dto.relations += cayenneModel.toContacts.collect{ toRestToContactRelation(it as ContactRelation) }
             dto.relations += cayenneModel.fromContacts.collect{ toRestFromContactRelation(it as ContactRelation)}
@@ -638,14 +638,6 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
             dto.relationId = rel.relationType.id
             dto
         }
-    }
-
-    private DocumentDTO getProfilePicture(Contact contact) {
-        Document profilePictureDocument = getProfilePictureDocument(contact)
-        if (profilePictureDocument) {
-            return toRestDocument(profilePictureDocument, profilePictureDocument.currentVersion.id, documentService)
-        }
-        null
     }
 
     UsiVerificationResultDTO verifyUsi(String firstName, String lastName, LocalDate dateOfBirth, String usiCode) {
