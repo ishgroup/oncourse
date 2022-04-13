@@ -40,10 +40,10 @@
            workPhone="331110001" mobilePhone="331110001" street="1st" postcode="1002" suburb="Sydney" state="NSW"
            uniqueCode="TUT1UNIQUE" isStudent="0" isTutor="1" email="tutor@tutor.tutor"/>
 
-  <Note id="1" note="firstContactNote1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="2" note="secondContactNote1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="3" note="firstContactNote2" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="4" note="secondContactNote2" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="1" note="firstContactNote1" interactionDate="2015-01-24 18:00:00"  createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="2" note="secondContactNote1" interactionDate="2015-01-24 18:00:00" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="3" note="firstContactNote2" interactionDate="2015-01-24 18:00:00" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="4" note="secondContactNote2" interactionDate="2015-01-24 18:00:00" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
 
   <NoteRelation id="1" noteId="1" entityRecordId="1" entityIdentifier="Contact" createdOn="2015-01-24 18:00:00"
                 modifiedOn="2015-01-24 18:00:00"/>
@@ -65,10 +65,10 @@
            shippingAddress="Shipping Address 2..." createdByUserId="1" createdOn="2012-05-10 00:00:00"
            modifiedOn="2012-05-10 00:00:00" confirmationStatus="2"/>
 
-  <Note id="5" note="firstInvoiceNote1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="6" note="secondInvoiceNote1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="7" note="firstInvoiceNote2" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="8" note="secondInvoiceNote2" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="5" note="firstInvoiceNote1" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="6" note="secondInvoiceNote1" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="7" note="firstInvoiceNote2" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="8" note="secondInvoiceNote2" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
 
   <NoteRelation id="5" noteId="5" entityRecordId="1" entityIdentifier="Invoice" createdOn="2015-01-24 18:00:00"
                 modifiedOn="2015-01-24 18:00:00"/>

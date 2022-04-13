@@ -12,10 +12,10 @@
   <Room id="2" siteId="2" name="Room 2" seatedCapacity="10" directions="Directions..." facilities="Facilities..."
         createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01"/>
 
-  <Note id="1" note="firstRoomNote1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="2" note="secondRoomNote1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="3" note="firstRoomNote2" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="4" note="secondRoomNote2" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="1" note="firstRoomNote1" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="2" note="secondRoomNote1" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="3" note="firstRoomNote2" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="4" note="secondRoomNote2" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
 
   <NoteRelation id="1" noteId="1" entityRecordId="1" entityIdentifier="Room" createdOn="2015-01-24 18:00:00"
                 modifiedOn="2015-01-24 18:00:00"/>

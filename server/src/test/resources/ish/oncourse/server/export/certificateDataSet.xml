@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-  <Note id="100" note="some notes" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="200" note="second note" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="100" note="some notes" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="200" note="second note" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
 
   <NoteRelation id="100" noteId="100" entityRecordId="100" entityIdentifier="Contact" createdOn="2015-01-24 18:00:00"
                 modifiedOn="2015-01-24 18:00:00"/>
