@@ -1,3 +1,3 @@
 name,code,modifiedOn,createdOn,discountPercent,discountMax,discountMin,discountDollar,rounding,publicDescription,validFrom,validTo,studentAge,studentConcessionObsolete,studentEnrolledWithinDays,studentPostcode
-test discount 1,tst1,2013-01-01T00:00:00Z,2013-01-01T00:00:00Z,0.20,,,,No Rounding,some text,2013-01-01,2013-02-01,20,,30,1001
-test discount 2,tst2,2013-01-01T00:00:00Z,2013-01-01T00:00:00Z,,,,20.00,No Rounding,,2013-01-01,2013-02-01,,,,1002
+test discount 1,tst1,2013-01-01T00:00:00+10:00,2013-01-01T00:00:00+10:00,0.20,,,,No Rounding,some text,2013-01-01,2013-02-01,20,,30,1001
+test discount 2,tst2,2013-01-01T00:00:00+10:00,2013-01-01T00:00:00+10:00,,,,20.00,No Rounding,,2013-01-01,2013-02-01,,,,1002

@@ -1,5 +1,5 @@
 default qualification,default qualifications national code,field of education,modifiedOn,createdOn,is offered,national code,training package,nominal hours,title,specialization,credit points,expiry days,is custom,type
-,,,,,true,TEST1,,,Test module 1,,,,,Module
-,,,,,true,TEST2,,,Test module 2,,,,,Module
-,,,,,true,TEST3,,,Test module 3,,,,,Module
-,,,,,true,TEST4,,,Test module 4,,,,,Module
+,,,2021-12-21,2021-12-21,true,TEST1,,,Test module 1,,,,,Module
+,,,2021-12-21,2021-12-21,true,TEST2,,,Test module 2,,,,,Module
+,,,2021-12-21,2021-12-21,true,TEST3,,,Test module 3,,,,,Module
+,,,2021-12-21,2021-12-21,true,TEST4,,,Test module 4,,,,,Module

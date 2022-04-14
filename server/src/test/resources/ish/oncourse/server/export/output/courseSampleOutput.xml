@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
   <course id='1'>
-    <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-    <createdOn>2013-01-01T00:00:00Z</createdOn>
+    <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+    <createdOn>2013-01-01T00:00:00+10:00</createdOn>
     <allowWaitingLists>false</allowWaitingLists>
     <code>TEST</code>
     <currentlyOffered>true</currentlyOffered>
@@ -16,8 +16,8 @@
     <webDescription>some text</webDescription>
   </course>
   <course id='2'>
-    <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
-    <createdOn>2013-02-01T00:00:00Z</createdOn>
+    <modifiedOn>2013-02-01T00:00:00+10:00</modifiedOn>
+    <createdOn>2013-02-01T00:00:00+10:00</createdOn>
     <allowWaitingLists>true</allowWaitingLists>
     <code>TST1</code>
     <currentlyOffered>true</currentlyOffered>

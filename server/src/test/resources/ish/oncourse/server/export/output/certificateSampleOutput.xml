@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
   <contact id='100'>
-    <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
-    <createdOn>2012-05-10T00:00:00Z</createdOn>
+    <modifiedOn>2012-05-10T00:00:00+10:00</modifiedOn>
+    <createdOn>2012-05-10T00:00:00+10:00</createdOn>
     <allowEmail>true</allowEmail>
     <allowPost>false</allowPost>
     <allowSms>true</allowSms>
@@ -41,8 +41,8 @@
       <yearSchoolCompleted>2009</yearSchoolCompleted>
     </student>
     <certificate id='100'>
-      <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
-      <createdOn>2012-05-10T00:00:00Z</createdOn>
+      <modifiedOn>2012-05-10T00:00:00+10:00</modifiedOn>
+      <createdOn>2012-05-10T00:00:00+10:00</createdOn>
       <fullQualification>true</fullQualification>
       <printed>2013-01-01</printed>
       <firstName>Test</firstName>
@@ -51,8 +51,8 @@
     </certificate>
   </contact>
   <contact id='200'>
-    <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
-    <createdOn>2012-05-10T00:00:00Z</createdOn>
+    <modifiedOn>2012-05-10T00:00:00+10:00</modifiedOn>
+    <createdOn>2012-05-10T00:00:00+10:00</createdOn>
     <allowEmail>true</allowEmail>
     <allowPost>false</allowPost>
     <allowSms>true</allowSms>
@@ -90,8 +90,8 @@
       <yearSchoolCompleted>2009</yearSchoolCompleted>
     </student>
     <certificate id='200'>
-      <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
-      <createdOn>2012-05-10T00:00:00Z</createdOn>
+      <modifiedOn>2012-05-10T00:00:00+10:00</modifiedOn>
+      <createdOn>2012-05-10T00:00:00+10:00</createdOn>
       <fullQualification>false</fullQualification>
       <printed>2013-01-01</printed>
       <firstName>TestFirstName</firstName>
