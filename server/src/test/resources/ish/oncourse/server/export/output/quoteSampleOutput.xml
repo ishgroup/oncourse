@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
   <contact id='100'>
-    <modifiedOn>2012-05-09T21:00:00+10:00</modifiedOn>
-    <createdOn>2012-05-09T21:00:00+10:00</createdOn>
+    <modifiedOn>2012-05-10T00:00:00+10:00</modifiedOn>
+    <createdOn>2012-05-10T00:00:00+10:00</createdOn>
     <allowEmail>true</allowEmail>
     <allowPost>false</allowPost>
     <allowSms>true</allowSms>
@@ -29,8 +29,8 @@
     <workPhone>331110000</workPhone>
     <title />
     <quote id='100'>
-      <modifiedOn>2012-05-09T21:00:00+10:00</modifiedOn>
-      <createdOn>2012-05-09T21:00:00+10:00</createdOn>
+      <modifiedOn>2012-05-10T00:00:00+10:00</modifiedOn>
+      <createdOn>2012-05-10T00:00:00+10:00</createdOn>
       <amountOwing>0.00</amountOwing>
       <billToAddress>Address 1</billToAddress>
       <dateDue>2013-03-01</dateDue>
@@ -114,8 +114,8 @@
     <workPhone>331110001</workPhone>
     <title />
     <quote id='200'>
-      <modifiedOn>2012-05-09T21:00:00+10:00</modifiedOn>
-      <createdOn>2012-05-09T21:00:00+10:00</createdOn>
+      <modifiedOn>2012-05-10T00:00:00+10:00</modifiedOn>
+      <createdOn>2012-05-10T00:00:00+10:00</createdOn>
       <amountOwing>0.00</amountOwing>
       <billToAddress>Address 2</billToAddress>
       <dateDue>2013-03-01</dateDue>
