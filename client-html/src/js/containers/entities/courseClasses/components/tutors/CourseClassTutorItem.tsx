@@ -9,7 +9,6 @@ import Button from "@mui/material/Button";
 import { createStyles, withStyles } from "@mui/styles";
 import { CourseClassTutor } from "@api/model";
 import { format } from "date-fns";
-import Grid from "@mui/material/Grid";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -19,8 +18,8 @@ import ExpandableItem from "../../../../../common/components/layout/expandable/E
 import { openInternalLink } from "../../../../../common/utils/links";
 import { AppTheme } from "../../../../../model/common/Theme";
 import { DD_MM_YYYY_SLASHED, EEE_D_MMM_YYYY } from "../../../../../common/utils/dates/format";
-import { contactLabelCondition, defaultContactName, openContactLink } from "../../../contacts/utils";
-import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
+import { contactLabelCondition, defaultContactName } from "../../../contacts/utils";
+import { ContactLinkAdornment, LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
 import ContactSelectItemRenderer from "../../../contacts/components/ContactSelectItemRenderer";
 import { CourseClassTutorsTabProps } from "./CourseClassTutorsTab";
 import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
@@ -144,11 +143,11 @@ const CourseClassTutorItem: React.FC<Props> = ({
         </div>
       )}
       detailsContent={(
-          <div>
-            <FormField
-              type="remoteDataSearchSelect"
-              name={`tutors[${index}].contactId`}
-              props={{
+        <div>
+          <FormField
+            type="remoteDataSearchSelect"
+            name={`tutors[${index}].contactId`}
+            props={{
                 label: "Contact",
                 entity: "Contact",
                 aqlFilter: `isTutor is true and (tutor.dateFinished > ${today} or tutor.dateFinished is null)`,
@@ -156,61 +155,61 @@ const CourseClassTutorItem: React.FC<Props> = ({
                 selectLabelCondition: contactLabelCondition,
                 defaultDisplayValue: defaultContactName(tutor.tutorName),
                 labelAdornment: (
-                  <LinkAdornment linkHandler={openContactLink} link={tutor.contactId} disabled={!tutor.contactId} />
+                  <ContactLinkAdornment id={tutor?.contactId} />
                 ),
                 itemRenderer: ContactSelectItemRenderer,
                 onInnerValueChange: onTutorIdChange,
                 disabled: tutor.id,
                 rowHeight: 48
               }}
-              onInnerValueChange={onTutorIdChange}
-              className="mb-2"
-              required
-            />
+            onInnerValueChange={onTutorIdChange}
+            className="mb-2"
+            required
+          />
 
-            {nameWarning && <WarningMessage warning={nameWarning} />}
+          {nameWarning && <WarningMessage warning={nameWarning} />}
 
-            <FormField
-              type="searchSelect"
-              name={`tutors[${index}].roleId`}
-              label="Role"
-              selectValueMark="id"
-              selectLabelMark="name"
-              normalize={normalizeNumber}
-              defaultDisplayValue={tutor.roleName}
-              items={tutorRoles}
-              onInnerValueChange={onRoleIdChange}
-              disabled={tutor.id || hasWage}
-              labelAdornment={(
-                <LinkAdornment
-                  linkHandler={openTutorRoleLink}
-                  link={tutor.roleId}
-                  disabled={!tutor.roleId && tutor.roleId !== 0}
-                />
+          <FormField
+            type="searchSelect"
+            name={`tutors[${index}].roleId`}
+            label="Role"
+            selectValueMark="id"
+            selectLabelMark="name"
+            normalize={normalizeNumber}
+            defaultDisplayValue={tutor.roleName}
+            items={tutorRoles}
+            onInnerValueChange={onRoleIdChange}
+            disabled={tutor.id || hasWage}
+            labelAdornment={(
+              <LinkAdornment
+                linkHandler={openTutorRoleLink}
+                link={tutor.roleId}
+                disabled={!tutor.roleId && tutor.roleId !== 0}
+              />
               )}
-              alwaysDisplayDefault
-              className="mb-2"
-              required
-            />
-            {!tutor.id && hasWage
+            alwaysDisplayDefault
+            className="mb-2"
+            required
+          />
+          {!tutor.id && hasWage
               && (
               <WarningMessage
                 warning="Tutor wage should be removed before changing role"
               />
             )}
-            <FormField
-              type="date"
-              name={`tutors[${index}].confirmedOn`}
-              label="Confirmed On"
-              className="mb-2"
-            />
+          <FormField
+            type="date"
+            name={`tutors[${index}].confirmedOn`}
+            label="Confirmed On"
+            className="mb-2"
+          />
 
-            <FormControlLabel
-              className="checkbox"
-              control={<FormField type="checkbox" name={`tutors[${index}].isInPublicity`} />}
-              label="Make tutor visible on web site"
-            />
-          </div>
+          <FormControlLabel
+            className="checkbox"
+            control={<FormField type="checkbox" name={`tutors[${index}].isInPublicity`} />}
+            label="Make tutor visible on web site"
+          />
+        </div>
       )}
     />
   );

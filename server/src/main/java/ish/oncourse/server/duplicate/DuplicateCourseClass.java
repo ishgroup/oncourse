@@ -156,6 +156,7 @@ public class DuplicateCourseClass {
                 note.setNote(oldNote.getNote());
                 note.setSystemUser(oldNote.getSystemUser());
                 note.setCreatedOn(oldNote.getCreatedOn());
+                note.setInteractionDate(oldNote.getInteractionDate());
                 if (oldNote.getChangedBy() != null) {
                     note.setChangedBy(oldNote.getChangedBy());
                 }

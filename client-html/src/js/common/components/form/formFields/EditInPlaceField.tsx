@@ -24,8 +24,9 @@ import {
   Select,
   Typography
 } from "@mui/material";
+import { AppTheme } from "../../../../model/common/Theme";
 
-const styles = theme => createStyles({
+const styles = (theme: AppTheme) => createStyles({
   inputEndAdornment: {
     display: "flex",
     fontSize: "18px",
@@ -182,6 +183,9 @@ const styles = theme => createStyles({
     right: "-14px",
     bottom: "4px"
   },
+  selectMenu: {
+    zIndex: theme.zIndex.snackbar
+  },
   selectIcon: {
     fontSize: "24px",
     color: theme.palette.divider,
@@ -238,10 +242,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
     if (node) {
       this.inputNode = node;
     }
-  };
-
-  setContainerNode = node => {
-    this.containerNode = node;
   };
 
   edit = e => {
@@ -708,7 +708,10 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                     onChange={this.onSelectChange}
                     IconComponent={() => (!disabled && <ExpandMore className={classes.selectIconInput} onClick={this.onFocus} />)}
                     MenuProps={{
-                      anchorOrigin: { vertical: 'top', horizontal: 'left' }
+                      anchorOrigin: { vertical: 'top', horizontal: 'left' },
+                      classes: {
+                        root: classes.selectMenu
+                      }
                     }}
                     displayEmpty
                     fullWidth
