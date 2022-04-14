@@ -34,7 +34,7 @@ import java.time.LocalDate
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/export/initialDataSet.xml")
 class AllExportTemplatesTest extends TestWithDatabase {
-    private static final String UTC_TIMEZONE_ID = "UTC-3"
+    private static final String UTC_TIMEZONE_ID = "UTC"
 
     private static final String PAYSLIP_MICROPAY_KEYCODE = "ish.onCourse.payslipMicropay.csv"
     private static final String SS_BULK_UPLOAD_KEYCODE = "ish.onCourse.ssBulkUpload.csv"
@@ -109,7 +109,7 @@ class AllExportTemplatesTest extends TestWithDatabase {
 
     @Test
     void testAllExports() {
-        TimeZone.setDefault(null)
+        TimeZone.setDefault(TimeZone.getTimeZone(UTC_TIMEZONE_ID))
 
         def pathsList = PluginService.getPluggableResources(ResourceType.EXPORT.getResourcePath(), ResourceType.EXPORT.getFilePattern())
         List<Map<String, Object>> resourcesList = new ArrayList<>()
