@@ -1,3 +1,3 @@
-Class name,Code,Start,End,Enrol maximum,Enrol budget,Enrol actual,Class fee,Income maximum,Income budget,Income actual,Expenses maximum,Expenses budget,Expenses actual,Profit maximum,Profit budget,Profit actual
-AAA,AAA-1,2012-04-01,2012-04-10,10,0,10,55.00,375.00,0.00,500.00,0.00,0.00,0.00,375.00,0.00,500.00
-AAA,AAA-2,2012-04-09,2012-04-11,10,5,6,110.00,800.00,400.00,520.00,150.00,150.00,150.00,650.00,250.00,370.00
+Class name,Code,Start,End,Enrol maximum,Enrol budget,Enrol actual,Enrol cancelled,Class fee,Income maximum,Income budget,Income actual,Expenses maximum,Expenses budget,Expenses actual,Profit maximum,Profit budget,Profit actual,Invoiced total,Credits total
+AAA,AAA-1,2012-04-01,2012-04-10,10,0,10,0,55.00,375.00,0.00,500.00,0.00,0.00,0.00,375.00,0.00,500.00,550.00,0.00
+AAA,AAA-2,2012-04-09,2012-04-11,10,5,6,0,110.00,800.00,400.00,520.00,150.00,150.00,150.00,650.00,250.00,370.00,572.00,0.00
