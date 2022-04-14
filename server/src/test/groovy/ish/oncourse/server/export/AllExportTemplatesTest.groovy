@@ -33,7 +33,7 @@ import java.time.LocalDate
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/export/initialDataSet.xml")
 class AllExportTemplatesTest extends TestWithDatabase {
-    private static final String UTC_TIMEZONE_ID = "Australia/Canberra"
+    private static TimeZone previousTimezone
 
     private static final String PAYSLIP_MICROPAY_KEYCODE = "ish.onCourse.payslipMicropay.csv"
     private static final String SS_BULK_UPLOAD_KEYCODE = "ish.onCourse.ssBulkUpload.csv"
@@ -108,6 +108,7 @@ class AllExportTemplatesTest extends TestWithDatabase {
 
     @Test
     void testAllExports() {
+        previousTimezone = TimeZone.getDefault()
         TimeZone.setDefault(null)
 
         def pathsList = PluginService.getPluggableResources(ResourceType.EXPORT.getResourcePath(), ResourceType.EXPORT.getFilePattern())
@@ -130,6 +131,7 @@ class AllExportTemplatesTest extends TestWithDatabase {
                 testExport(keyCode, entityName, dataSet, output)
             }
         }
+        TimeZone.setDefault(previousTimezone)
     }
 
 
