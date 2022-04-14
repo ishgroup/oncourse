@@ -108,7 +108,7 @@ class AllExportTemplatesTest extends TestWithDatabase {
 
     @Test
     void testAllExports() {
-        TimeZone.setDefault(TimeZone.getTimeZone(UTC_TIMEZONE_ID))
+        TimeZone.setDefault(null)
 
         def pathsList = PluginService.getPluggableResources(ResourceType.EXPORT.getResourcePath(), ResourceType.EXPORT.getFilePattern())
         List<Map<String, Object>> resourcesList = new ArrayList<>()
