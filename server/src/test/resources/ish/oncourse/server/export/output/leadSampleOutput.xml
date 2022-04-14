@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
   <lead id='1'>
-    <modifiedOn>2012-05-09T21:00:00</modifiedOn>
-    <createdOn>2012-05-09T21:00:00</createdOn>
+    <modifiedOn>2012-05-10T00:00:00</modifiedOn>
+    <createdOn>2012-05-10T00:00:00</createdOn>
     <studentCount>8</studentCount>
     <contact id='1' />
     <estimatedValue />
@@ -14,8 +14,8 @@
     <assignedTo>test@mail.com</assignedTo>
   </lead>
   <lead id='2'>
-    <modifiedOn>2012-05-09T21:00:00</modifiedOn>
-    <createdOn>2012-05-09T21:00:00</createdOn>
+    <modifiedOn>2012-05-10T00:00:00</modifiedOn>
+    <createdOn>2012-05-10T00:00:00</createdOn>
     <studentCount>3</studentCount>
     <contact id='2' />
     <estimatedValue />
@@ -65,8 +65,8 @@
     <description>contact 1 product</description>
   </product>
   <contact id='1'>
-    <modifiedOn>2012-05-09T21:00:00</modifiedOn>
-    <createdOn>2012-05-09T21:00:00</createdOn>
+    <modifiedOn>2012-05-10T00:00:00</modifiedOn>
+    <createdOn>2012-05-10T00:00:00</createdOn>
     <allowEmail>true</allowEmail>
     <allowPost>false</allowPost>
     <allowSms>true</allowSms>
@@ -99,8 +99,8 @@
     </tutor>
   </contact>
   <contact id='2'>
-    <modifiedOn>2012-05-19T21:00:00</modifiedOn>
-    <createdOn>2012-05-19T21:00:00</createdOn>
+    <modifiedOn>2012-05-20T00:00:00</modifiedOn>
+    <createdOn>2012-05-20T00:00:00</createdOn>
     <allowEmail>true</allowEmail>
     <allowPost>false</allowPost>
     <allowSms>false</allowSms>
