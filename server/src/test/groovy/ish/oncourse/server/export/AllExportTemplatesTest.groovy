@@ -34,7 +34,7 @@ import java.time.LocalDate
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/export/initialDataSet.xml")
 class AllExportTemplatesTest extends TestWithDatabase {
-    private static final String UTC_TIMEZONE_ID = "UTC"
+    private static final String UTC_TIMEZONE_ID = "UTC-3"
 
     private static final String PAYSLIP_MICROPAY_KEYCODE = "ish.onCourse.payslipMicropay.csv"
     private static final String SS_BULK_UPLOAD_KEYCODE = "ish.onCourse.ssBulkUpload.csv"
@@ -53,7 +53,6 @@ class AllExportTemplatesTest extends TestWithDatabase {
     void setup(String testDataFile) {
         // set default timezone to UTC to receive same export output regardless of
         // default timezone of building machine
-        TimeZone.setDefault(TimeZone.getTimeZone(UTC_TIMEZONE_ID))
 
         try {
             InputStream st = AllExportTemplatesTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/export/" + testDataFile)
@@ -108,14 +107,10 @@ class AllExportTemplatesTest extends TestWithDatabase {
         }
     }
 
-    @AfterEach
-    void tearDown() {
-        // reset timezone back to JMV's original
-        TimeZone.setDefault(null)
-    }
-
     @Test
     void testAllExports() {
+        TimeZone.setDefault(null)
+
         def pathsList = PluginService.getPluggableResources(ResourceType.EXPORT.getResourcePath(), ResourceType.EXPORT.getFilePattern())
         List<Map<String, Object>> resourcesList = new ArrayList<>()
 
