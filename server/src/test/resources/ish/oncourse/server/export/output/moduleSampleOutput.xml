@@ -4,8 +4,8 @@
     <defaultQualification />
     <defaultQualificationNationalCode />
     <fieldOfEducation />
-    <modifiedOn />
-    <createdOn />
+    <modifiedOn>2021-12-21T12:00:10+11:00</modifiedOn>
+    <createdOn>2021-12-21T12:00:10+11:00</createdOn>
     <isOffered>true</isOffered>
     <nationalCode>TEST1</nationalCode>
     <trainingPackage />
@@ -21,8 +21,8 @@
     <defaultQualification />
     <defaultQualificationNationalCode />
     <fieldOfEducation />
-    <modifiedOn />
-    <createdOn />
+    <modifiedOn>2021-12-21T12:00:10+11:00</modifiedOn>
+    <createdOn>2021-12-21T12:00:10+11:00</createdOn>
     <isOffered>true</isOffered>
     <nationalCode>TEST2</nationalCode>
     <trainingPackage />
@@ -38,8 +38,8 @@
     <defaultQualification />
     <defaultQualificationNationalCode />
     <fieldOfEducation />
-    <modifiedOn />
-    <createdOn />
+    <modifiedOn>2021-12-21T12:00:10+11:00</modifiedOn>
+    <createdOn>2021-12-21T12:00:10+11:00</createdOn>
     <isOffered>true</isOffered>
     <nationalCode>TEST3</nationalCode>
     <trainingPackage />
@@ -55,8 +55,8 @@
     <defaultQualification />
     <defaultQualificationNationalCode />
     <fieldOfEducation />
-    <modifiedOn />
-    <createdOn />
+    <modifiedOn>2021-12-21T12:00:10+11:00</modifiedOn>
+    <createdOn>2021-12-21T12:00:10+11:00</createdOn>
     <isOffered>true</isOffered>
     <nationalCode>TEST4</nationalCode>
     <trainingPackage />

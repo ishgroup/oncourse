@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
   <priorLearning id='1'>
-    <createdOn />
-    <modifiedOn />
+    <createdOn>2021-12-21T12:00:10+11:00</createdOn>
+    <modifiedOn>2021-12-21T12:00:10+11:00</modifiedOn>
     <title>Student 1 prior learning</title>
     <notes />
     <externalRef>WPE</externalRef>
@@ -35,8 +35,8 @@
     </qualification>
   </priorLearning>
   <priorLearning id='2'>
-    <createdOn />
-    <modifiedOn />
+    <createdOn>2021-12-21T12:00:10+11:00</createdOn>
+    <modifiedOn>2021-12-21T12:00:10+11:00</modifiedOn>
     <title>Student 2 prior learning</title>
     <notes />
     <externalRef>WPA</externalRef>

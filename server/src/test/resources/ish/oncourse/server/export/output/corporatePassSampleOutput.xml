@@ -1,24 +1,24 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
   <CorporatePass id='1'>
-    <modifiedOn />
-    <createdOn />
+    <modifiedOn>2021-12-21T12:00:10+11:00</modifiedOn>
+    <createdOn>2021-12-21T12:00:10+11:00</createdOn>
     <expiryDate />
     <invoiceEmail />
     <contactFirstName>Test</contactFirstName>
     <contactLastName>Student</contactLastName>
   </CorporatePass>
   <CorporatePass id='2'>
-    <modifiedOn />
-    <createdOn />
+    <modifiedOn>2021-12-21T12:00:10+11:00</modifiedOn>
+    <createdOn>2021-12-21T12:00:10+11:00</createdOn>
     <expiryDate />
     <invoiceEmail />
     <contactFirstName>Test</contactFirstName>
     <contactLastName>Student</contactLastName>
   </CorporatePass>
   <CorporatePass id='3'>
-    <modifiedOn />
-    <createdOn />
+    <modifiedOn>2021-12-21T12:00:10+11:00</modifiedOn>
+    <createdOn>2021-12-21T12:00:10+11:00</createdOn>
     <expiryDate />
     <invoiceEmail />
     <contactFirstName>Test</contactFirstName>

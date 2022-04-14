@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
   <contact id='100'>
-    <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
-    <createdOn>2012-05-10T00:00:00Z</createdOn>
+    <modifiedOn>2012-05-10T00:00:00+10:00</modifiedOn>
+    <createdOn>2012-05-10T00:00:00+10:00</createdOn>
     <allowEmail>true</allowEmail>
     <allowPost>false</allowPost>
     <allowSms>true</allowSms>
-    <birthDate>Tue Jan 01 12:00:00 UTC 1991</birthDate>
+    <birthDate>Tue. Jan. 01 12:00:00 UTC 1991</birthDate>
     <deliveryStatusEmail>0</deliveryStatusEmail>
     <deliveryStatusPost>0</deliveryStatusPost>
     <deliveryStatusSms>0</deliveryStatusSms>
@@ -29,15 +29,15 @@
     <workPhone>331110000</workPhone>
     <title />
     <tutorPay id='100'>
-      <modifiedOn>2012-05-20T00:00:00Z</modifiedOn>
-      <createdOn>2012-05-20T00:00:00Z</createdOn>
+      <modifiedOn>2012-05-20T00:00:00+10:00</modifiedOn>
+      <createdOn>2012-05-20T00:00:00+10:00</createdOn>
       <status>Paid/Exported</status>
       <payline>
-        <modifiedOn>2012-05-20T00:00:00Z</modifiedOn>
-        <createdOn>2012-05-20T00:00:00Z</createdOn>
+        <modifiedOn>2012-05-20T00:00:00+10:00</modifiedOn>
+        <createdOn>2012-05-20T00:00:00+10:00</createdOn>
         <budgetedQuantity>2.00</budgetedQuantity>
         <budgetedValue>71.00</budgetedValue>
-        <dateFor>2013-01-01T12:00:00Z</dateFor>
+        <dateFor>2013-01-01T12:00:00+10:00</dateFor>
         <description>Description...</description>
         <quantity>2.00</quantity>
         <taxValue>0.00</taxValue>
@@ -49,19 +49,19 @@
           <repetitionType>Per timetabled hour</repetitionType>
         </classCost>
         <session>
-          <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-          <createdOn>2013-01-01T00:00:00Z</createdOn>
-          <start>2013-01-01T00:00:00Z</start>
-          <end>2013-01-02T00:00:00Z</end>
+          <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+          <createdOn>2013-01-01T00:00:00+10:00</createdOn>
+          <start>2013-01-01T00:00:00+10:00</start>
+          <end>2013-01-02T00:00:00+10:00</end>
           <classCode>ATT1-123</classCode>
         </session>
       </payline>
       <payline>
-        <modifiedOn>2012-05-20T00:00:00Z</modifiedOn>
-        <createdOn>2012-05-20T00:00:00Z</createdOn>
+        <modifiedOn>2012-05-20T00:00:00+10:00</modifiedOn>
+        <createdOn>2012-05-20T00:00:00+10:00</createdOn>
         <budgetedQuantity>2.00</budgetedQuantity>
         <budgetedValue>71.00</budgetedValue>
-        <dateFor>2013-01-01T12:00:00Z</dateFor>
+        <dateFor>2013-01-01T12:00:00+10:00</dateFor>
         <description>Description...</description>
         <quantity>2.00</quantity>
         <taxValue>0.00</taxValue>
@@ -73,10 +73,10 @@
           <repetitionType>Per timetabled hour</repetitionType>
         </classCost>
         <session>
-          <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-          <createdOn>2013-01-01T00:00:00Z</createdOn>
-          <start>2013-01-01T00:00:00Z</start>
-          <end>2013-01-02T00:00:00Z</end>
+          <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+          <createdOn>2013-01-01T00:00:00+10:00</createdOn>
+          <start>2013-01-01T00:00:00+10:00</start>
+          <end>2013-01-02T00:00:00+10:00</end>
           <classCode>ATT1-123</classCode>
         </session>
       </payline>

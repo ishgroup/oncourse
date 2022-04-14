@@ -1,4 +1,4 @@
 Course code,Course name,created,Student count,Notes,Student notes,Title,First name,Last name,Email,Street,Suburb,State,Post code,Mobile phone,Home phone,Work phone,Birth date
-TEST,Test Course,2012-05-10T00:00:00Z,1,Notes 1...,Student Notes 1...,,Test,Student,test@test.test,Main,Sydney,NSW,1001,331110000,331110000,331110000,1991-01-01
-TST1,Test Course 2,2012-05-10T00:00:00Z,2,Notes 2...,Student Notes 2...,,Test,Student,test@test.test,Main,Sydney,NSW,1001,331110000,331110000,331110000,1991-01-01
-TEST,Test Course,2012-05-10T00:00:00Z,1,Notes 3...,Student Notes 3...,,Test2,Student2,test@test.test,Main,Sydney,NSW,1001,331110000,331110000,331110000,1991-01-01
+TEST,Test Course,2012-05-10T00:00:00+10:00,1,Notes 1...,Student Notes 1...,,Test,Student,test@test.test,Main,Sydney,NSW,1001,331110000,331110000,331110000,1991-01-01
+TST1,Test Course 2,2012-05-10T00:00:00+10:00,2,Notes 2...,Student Notes 2...,,Test,Student,test@test.test,Main,Sydney,NSW,1001,331110000,331110000,331110000,1991-01-01
+TEST,Test Course,2012-05-10T00:00:00+10:00,1,Notes 3...,Student Notes 3...,,Test2,Student2,test@test.test,Main,Sydney,NSW,1001,331110000,331110000,331110000,1991-01-01

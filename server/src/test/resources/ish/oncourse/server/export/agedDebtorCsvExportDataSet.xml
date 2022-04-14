@@ -12,14 +12,14 @@
               password="test" canEditCMS="1" canEditTara="1" createdOn="2012-05-10 00:00:00"
               modifiedOn="2012-05-10 00:00:00" defaultAdministrationCentreId="100" PASSWORDUPDATEREQUIRED="0"/>
 
-  <Note id="100" note="firstContactNote1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="200" note="secondContactNote1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="300" note="firstContactNote2" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="400" note="secondContactNote2" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="500" note="firstInvoiceNote1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="600" note="secondInvoiceNote1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="700" note="firstInvoiceNote2" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="800" note="secondInvoiceNote2" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="100" note="firstContactNote1" interactionDate="2015-01-24 18:00:00" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="200" note="secondContactNote1" interactionDate="2015-01-24 18:00:00" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="300" note="firstContactNote2" interactionDate="2015-01-24 18:00:00" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="400" note="secondContactNote2" interactionDate="2015-01-24 18:00:00" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="500" note="firstInvoiceNote1" interactionDate="2015-01-24 18:00:00" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="600" note="secondInvoiceNote1" interactionDate="2015-01-24 18:00:00" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="700" note="firstInvoiceNote2" interactionDate="2015-01-24 18:00:00" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="800" note="secondInvoiceNote2" interactionDate="2015-01-24 18:00:00" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
 
   <NoteRelation id="100" noteid="100" entityRecordid="100" entityIdentifier="Contact" createdOn="2015-01-24 18:00:00"
                 modifiedOn="2015-01-24 18:00:00"/>

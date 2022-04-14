@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
   <contact id='100'>
-    <modifiedOn>2012-05-09T21:00:00Z</modifiedOn>
-    <createdOn>2012-05-09T21:00:00Z</createdOn>
+    <modifiedOn>2012-05-10T00:00:00+10:00</modifiedOn>
+    <createdOn>2012-05-10T00:00:00+10:00</createdOn>
     <allowEmail>true</allowEmail>
     <allowPost>false</allowPost>
     <allowSms>true</allowSms>
@@ -29,8 +29,8 @@
     <workPhone>331110000</workPhone>
     <title />
     <quote id='100'>
-      <modifiedOn>2012-05-09T21:00:00Z</modifiedOn>
-      <createdOn>2012-05-09T21:00:00Z</createdOn>
+      <modifiedOn>2012-05-10T00:00:00+10:00</modifiedOn>
+      <createdOn>2012-05-10T00:00:00+10:00</createdOn>
       <amountOwing>0.00</amountOwing>
       <billToAddress>Address 1</billToAddress>
       <dateDue>2013-03-01</dateDue>
@@ -48,8 +48,8 @@
       <createdByUserName>admin admin</createdByUserName>
       <customerReference />
       <quoteLine id='100'>
-        <modifiedOn>2012-12-31T21:00:00Z</modifiedOn>
-        <createdOn>2012-12-31T21:00:00Z</createdOn>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
         <price>
           <amount>110.00</amount>
           <taxAmount>10.00</taxAmount>
@@ -66,8 +66,8 @@
         <accountType>asset</accountType>
       </quoteLine>
       <quoteLine id='200'>
-        <modifiedOn>2012-12-31T21:00:00Z</modifiedOn>
-        <createdOn>2012-12-31T21:00:00Z</createdOn>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
         <price>
           <amount>110.00</amount>
           <taxAmount>10.00</taxAmount>
@@ -86,8 +86,8 @@
     </quote>
   </contact>
   <contact id='200'>
-    <modifiedOn>2012-05-19T21:00:00Z</modifiedOn>
-    <createdOn>2012-05-19T21:00:00Z</createdOn>
+    <modifiedOn>2012-05-20T00:00:00+10:00</modifiedOn>
+    <createdOn>2012-05-20T00:00:00+10:00</createdOn>
     <allowEmail>true</allowEmail>
     <allowPost>false</allowPost>
     <allowSms>false</allowSms>
@@ -114,8 +114,8 @@
     <workPhone>331110001</workPhone>
     <title />
     <quote id='200'>
-      <modifiedOn>2012-05-09T21:00:00Z</modifiedOn>
-      <createdOn>2012-05-09T21:00:00Z</createdOn>
+      <modifiedOn>2012-05-10T00:00:00+10:00</modifiedOn>
+      <createdOn>2012-05-10T00:00:00+10:00</createdOn>
       <amountOwing>0.00</amountOwing>
       <billToAddress>Address 2</billToAddress>
       <dateDue>2013-03-01</dateDue>
@@ -133,8 +133,8 @@
       <createdByUserName>admin admin</createdByUserName>
       <customerReference />
       <quoteLine id='300'>
-        <modifiedOn>2012-12-31T21:00:00Z</modifiedOn>
-        <createdOn>2012-12-31T21:00:00Z</createdOn>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
         <price>
           <amount>110.00</amount>
           <taxAmount>10.00</taxAmount>

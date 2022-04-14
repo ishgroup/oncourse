@@ -246,10 +246,10 @@
                   contactId="2"/>-->
 
   <!-- notes -->
-  <Note id="1" note="contact 1 note" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <Note id="1" note="contact 1 note" interactionDate="2015-03-09 17:00:51.0" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
   <NoteRelation id="1" noteId="1" entityRecordId="1" entityIdentifier="Contact" createdOn="2015-03-09 17:00:51.0"
                 modifiedOn="2015-03-09 17:20:32.0"/>
-  <Note id="2" note="contact 2 note" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <Note id="2" note="contact 2 note" interactionDate="2015-03-09 17:00:51.0" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
   <NoteRelation id="2" noteId="2" entityRecordId="2" entityIdentifier="Contact" createdOn="2015-03-09 17:00:51.0"
                 modifiedOn="2015-03-09 17:20:32.0"/>
 
