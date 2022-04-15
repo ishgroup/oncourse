@@ -27,11 +27,9 @@ import ish.oncourse.server.messaging.EmailDequeueJob;
 import ish.oncourse.server.messaging.MailDeliveryService;
 import ish.oncourse.server.services.ISchedulerService;
 import ish.oncourse.server.services.*;
-import ish.oncourse.server.report.JRRuntimeConfig;
 import ish.oncourse.server.security.CertificateUpdateWatcher;
 import ish.persistence.Preferences;
 import ish.util.RuntimeUtil;
-import net.sf.jasperreports.engine.DefaultJasperReportsContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.cxf.staxutils.StaxUtils;
@@ -71,19 +69,11 @@ public class AngelServerFactory {
         ResourcesUtil.initialiseLogging(true);
         RuntimeUtil.assertDefaultLocale();
 
-        // ensure that Jasper writes temp files to a directory with write permissions
-        System.setProperty("jasper.reports.compile.temp", System.getProperty("java.io.tmpdir"));
-
-        initJRGroovyCompiler();
-
         /**
          * We need to increase 'org.apache.cxf.stax.maxChildElements' property to 100000 because
          * willow side can replicate more than 50000 (default value for the property) records.
          */
         System.setProperty(StaxUtils.MAX_CHILD_ELEMENTS, "100000");
-
-        // set the location of default Ish jasperreports properties file
-        System.setProperty(DefaultJasperReportsContext.PROPERTIES_FILE, "jasperreports.properties");
 
         // this.applicationThread = Thread.currentThread();
         LOGGER.debug("AngelServer constructing... [{}:{}]", Thread.currentThread().getThreadGroup().getName(), Thread.currentThread().getName());
@@ -227,8 +217,6 @@ public class AngelServerFactory {
             LOGGER.error("Failed to initialize monitoring MBean.", e);
         }
 
-        initJRGroovyCompiler();
-
         pluginService.onStart();
 
         LOGGER.warn("Server ready.");
@@ -303,10 +291,6 @@ public class AngelServerFactory {
             return specifiedEmail;
         }
         return null;
-    }
-
-    private void initJRGroovyCompiler() {
-        new JRRuntimeConfig().config();
     }
 
 }

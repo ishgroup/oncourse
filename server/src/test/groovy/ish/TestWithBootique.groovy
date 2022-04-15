@@ -16,7 +16,6 @@ import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.server.AngelModule
 import ish.oncourse.server.integration.PluginService
 import ish.oncourse.server.modules.TestModule
-import ish.oncourse.server.report.JRRuntimeConfig
 import net.sf.jasperreports.engine.DefaultJasperReportsContext
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.cayenne.datasource.DriverDataSource
@@ -64,7 +63,7 @@ abstract class TestWithBootique {
     void setupOnceRoot() throws Exception {
         System.setProperty(DefaultJasperReportsContext.PROPERTIES_FILE, "jasperreports.properties")
         //set JRGroovy compiler as default for tests
-        new JRRuntimeConfig().config()
+        System.setProperty("jasper.reports.compiler.class", "net.sf.jasperreports.compilers.JRGroovyCompiler")
 
         if (!loggingInitialised) {
             ResourcesUtil.initialiseLogging(false)
