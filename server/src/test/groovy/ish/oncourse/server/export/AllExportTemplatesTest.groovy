@@ -171,9 +171,15 @@ class AllExportTemplatesTest extends TestWithDatabase {
                 if (!(PAYSLIP_MICROPAY_KEYCODE.equals(keyCode) && i == 0)) {
                     def resultStr = resultExportSplit[i].trim()
                     def sampleStr = sampleExportSplit[i].trim()
+                    resultStr = removeTimezonesFrom(resultStr)
+                    sampleStr = removeTimezonesFrom(sampleStr)
                     Assertions.assertEquals(sampleStr, resultStr)
                 }
             }
         }
+    }
+
+    private static String removeTimezonesFrom(String outputStr){
+        outputStr.replaceAll("\\d{1,2}\\+\\d{1,2}:\\d{1,2}","")
     }
 }
