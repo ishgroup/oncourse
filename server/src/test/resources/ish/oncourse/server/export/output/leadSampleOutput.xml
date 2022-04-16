@@ -42,8 +42,8 @@
     <webDescription>some text</webDescription>
   </course>
   <course id='2'>
-    <modifiedOn>2013-01-31T21:00:00</modifiedOn>
-    <createdOn>2013-01-31T21:00:00</createdOn>
+    <modifiedOn>2013-02-01T00:00:00</modifiedOn>
+    <createdOn>2013-02-01T00:00:00</createdOn>
     <allowWaitingLists>true</allowWaitingLists>
     <code>TST1</code>
     <currentlyOffered>true</currentlyOffered>
