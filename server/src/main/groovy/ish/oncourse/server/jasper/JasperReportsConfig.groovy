@@ -6,26 +6,28 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.server.modules
+package ish.oncourse.server.jasper
 
-import com.google.inject.Binder
-import com.google.inject.Module
 import net.sf.jasperreports.engine.DefaultJasperReportsContext
 
-class JasperReportModule implements Module {
+class JasperReportsConfig {
 
     private static final String JASPER_REPORTS_COMPILER_CLASS_SYSTEM_PROPERTY = "jasper.reports.compiler.class"
     private static final String JR_GROOVY_COMPILER_CLASS_NAME = "net.sf.jasperreports.compilers.JRGroovyCompiler"
 
-    @Override
-    void configure(Binder binder) {
+    static void configure() {
         // ensure that Jasper writes temp files to a directory with write permissions
         System.setProperty("jasper.reports.compile.temp", System.getProperty("java.io.tmpdir"))
 
-        // configures default compiler for jasperreport
-        System.setProperty(JASPER_REPORTS_COMPILER_CLASS_SYSTEM_PROPERTY, JR_GROOVY_COMPILER_CLASS_NAME)
+        configureGroovyCompiler()
 
         // set the location of default Ish jasperreports properties file
         System.setProperty(DefaultJasperReportsContext.PROPERTIES_FILE, "jasperreports.properties")
     }
+
+    // configures default compiler for jasperreport
+    static void configureGroovyCompiler() {
+        System.setProperty(JASPER_REPORTS_COMPILER_CLASS_SYSTEM_PROPERTY, JR_GROOVY_COMPILER_CLASS_NAME)
+    }
+
 }

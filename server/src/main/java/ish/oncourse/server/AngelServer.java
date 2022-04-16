@@ -57,7 +57,7 @@ public class AngelServer {
                 .module(LicenseModule.class)
                 .module(SMTPModule.class)
                 .module(DocumentModule.class)
-                .module(JasperReportModule.class)
+                .module(JasperReportsModule.class)
                 .exec()
                 .exit();
     }
