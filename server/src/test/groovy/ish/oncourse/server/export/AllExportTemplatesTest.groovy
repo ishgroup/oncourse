@@ -180,6 +180,7 @@ class AllExportTemplatesTest extends TestWithDatabase {
     }
 
     private static String removeTimezonesFrom(String outputStr){
-        outputStr.replaceAll("\\d{1,2}\\+\\d{1,2}:\\d{1,2}","")
+        outputStr = outputStr.replaceAll("T\\d{1,2}:\\d{1,2}:\\d{1,2}\\+\\d{1,2}:\\d{1,2}","")
+        outputStr.replaceAll("\\d{1,2}:\\d{1,2}:\\d{1,2} \\w{3,5} \\d{4}","")
     }
 }
