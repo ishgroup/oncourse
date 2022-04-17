@@ -6,7 +6,7 @@
     <allowEmail>true</allowEmail>
     <allowPost>false</allowPost>
     <allowSms>true</allowSms>
-    <birthDate>Tue Jan 01 12:00:00 UTC 1991</birthDate>
+    <birthDate>Tue. Jan. 01 12:00:00 UTC 1991</birthDate>
     <deliveryStatusEmail>0</deliveryStatusEmail>
     <deliveryStatusPost>0</deliveryStatusPost>
     <deliveryStatusSms>0</deliveryStatusSms>
