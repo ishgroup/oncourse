@@ -19,6 +19,8 @@ import ish.oncourse.server.upgrades.DataPopulationUtils
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.commons.io.IOUtils
 import org.apache.commons.lang3.StringUtils
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import org.dbunit.database.IDatabaseConnection
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
@@ -30,6 +32,10 @@ import org.yaml.snakeyaml.Yaml
 
 import java.time.LocalDate
 
+/**
+ * This test depends on your computer locale (for example, it can fail with money format, pm/PM, am/AM and so on)
+ * It checks only printing of exports for all of them, which are into /exports folder of server resources
+ */
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/export/initialDataSet.xml")
 class AllExportTemplatesTest extends TestWithDatabase {
@@ -38,6 +44,8 @@ class AllExportTemplatesTest extends TestWithDatabase {
     private static final String PAYSLIP_MICROPAY_KEYCODE = "ish.onCourse.payslipMicropay.csv"
     private static final String SS_BULK_UPLOAD_KEYCODE = "ish.onCourse.ssBulkUpload.csv"
     private static final String LINE_SEPARATOR = StringUtils.LF
+
+    private static final Logger logger = LogManager.getLogger()
 
     // We need to save previous data set to delete data related to it only, because in other case we will catch exception with foreign keys
     private ReplacementDataSet lastDataset
@@ -50,9 +58,6 @@ class AllExportTemplatesTest extends TestWithDatabase {
     ]
 
     void setup(String testDataFile) {
-        // set default timezone to UTC to receive same export output regardless of
-        // default timezone of building machine
-
         try {
             InputStream st = AllExportTemplatesTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/export/" + testDataFile)
             FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
@@ -136,6 +141,7 @@ class AllExportTemplatesTest extends TestWithDatabase {
 
 
     void testExport(String keyCode, String entityName, String dataSet, String output) throws Exception {
+        logger.warn("Testing: "+keyCode+" "+dataSet+" "+output)
         setup(dataSet)
 
         // exclude exports for Script entity - IshTestCase updates scripts from resources after table wipe
@@ -179,6 +185,17 @@ class AllExportTemplatesTest extends TestWithDatabase {
         }
     }
 
+    /**
+     * We need this because of git tests timezone and xml datasets. We can set from code only timezone of datetime
+     * we print, but cannot configure timezone of string we read from our datasets. So timezone and all values, which
+     * contain hours value, are removed from checks. With date everything is ok
+     * REGEXES:
+     * 1. T12:10:00+05:00 or T12:10:00Z
+     * 2. 12:10:00 MSK 2008
+     * 3. ' 12:00'
+     * @param outputStr
+     * @return
+     */
     private static String removeTimezonesFrom(String outputStr){
         outputStr = outputStr.replaceAll("T\\d{1,2}:\\d{1,2}:\\d{1,2}(\\+\\d{1,2}:\\d{1,2}|Z)","")
         outputStr = outputStr.replaceAll("\\d{1,2}:\\d{1,2}:\\d{1,2} \\w{3,5} \\d{4}","")
