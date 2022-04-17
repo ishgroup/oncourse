@@ -1,6 +1,6 @@
 id,createdOn,modifiedOn,sku,name,priceExTax,maxCoursesRedemption,expiryDays
-1,2012-05-10T17:59:42Z,2012-05-15T16:29:23Z,234,test membership product,10.00,3,365
-2,2012-05-10T17:59:42Z,2012-05-15T16:29:23Z,1234,test membership product qwerty,10.00,,365
-3,2012-05-10T17:59:42Z,2012-05-15T16:29:23Z,456,test membership product part 2,11.00,,365
-4,2012-05-10T17:59:42Z,2012-05-15T16:29:23Z,123,my test membership product tae,10.00,,365
-5,2012-05-10T17:59:42Z,2012-05-15T16:29:23Z,aaaa,test voucher product,10.00,1,365
+1,2012-05-10T17:59:42+09:00,2012-05-15T16:29:23+09:00,234,test membership product,10.00,3,365
+2,2012-05-10T17:59:42+09:00,2012-05-15T16:29:23+09:00,1234,test membership product qwerty,10.00,,365
+3,2012-05-10T17:59:42+09:00,2012-05-15T16:29:23+09:00,456,test membership product part 2,11.00,,365
+4,2012-05-10T17:59:42+09:00,2012-05-15T16:29:23+09:00,123,my test membership product tae,10.00,,365
+5,2012-05-10T17:59:42+09:00,2012-05-15T16:29:23+09:00,aaaa,test voucher product,10.00,1,365
