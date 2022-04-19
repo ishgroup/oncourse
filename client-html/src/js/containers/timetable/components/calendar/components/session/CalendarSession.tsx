@@ -67,7 +67,6 @@ const styles = (theme: Theme) => createStyles({
   });
 
 interface SessionBaseProps extends Session {
-  inView: boolean;
   hideTutors?: boolean;
   hideRooms?: boolean;
   tags?: any;
@@ -87,7 +86,6 @@ const CalendarSession: React.FC<SessionBaseProps> = props => {
     site,
     tutors,
     classes,
-    inView,
     classId,
     start,
     end,
@@ -177,7 +175,7 @@ const CalendarSession: React.FC<SessionBaseProps> = props => {
       </div>
 
       <div>
-        {name && inView ? (
+        {name ? (
           <>
             <Typography
               component="div"

@@ -39,7 +39,6 @@ const DuplicateCourseClassTimetable: React.FunctionComponent<Props> = ({ months,
                       key={s.id}
                       {...s}
                       tagsState="Tag names"
-                      inView
                     />
                   ))}
                 </CalendarDayBase>

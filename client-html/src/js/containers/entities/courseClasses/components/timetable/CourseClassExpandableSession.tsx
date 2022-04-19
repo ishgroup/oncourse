@@ -91,7 +91,7 @@ const CourseClassExpandableSession = React.memo<Props>(props => {
           { [classes.visibleActionButtons]: openCopyDialog.session.id === session.id }
         )
       }}
-      collapsedContent={<CalendarSession key={session.id} clashes={clashes} {...session} disableLink inView />}
+      collapsedContent={<CalendarSession key={session.id} clashes={clashes} {...session} disableLink />}
       buttonsContent={(
         <div className={clsx("d-flex align-items-baseline zIndex2 relative", classes.sessionActionButtonWrapper)}>
           <div className="centeredFlex">

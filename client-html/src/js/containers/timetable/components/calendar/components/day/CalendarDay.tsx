@@ -6,9 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
- Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState 
-} from "react";
+import React, { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -161,7 +159,6 @@ interface GroupingDayProps {
   classes: any;
   groupings: CalendarGrouping[];
   hasSessions: boolean;
-  inView: boolean;
   tagsState: CalendarTagsState;
   groupingState: CalendarGroupingState;
 }
@@ -172,21 +169,41 @@ const GroupingDay = React.memo<GroupingDayProps>(
      groupings,
      hasSessions,
      tagsState,
-     inView,
      groupingState
    }) => (hasSessions && groupings.length ? (
      <>
        {groupings.map((g, i) => (
          <Grid container columnSpacing={3} key={i}>
-           <Grid item xs={2}>
-             <Typography
-               variant="body2"
-               className={clsx({
-                  "text-disabled": g.tutor === NO_TUTORS_LABEL || g.room === NO_ROOM_LABEL
-                })}
-             >
-               {g.tutor || g.room}
-             </Typography>
+           <Grid item xs={2} className={classes.gapDayOffsetTop}>
+             {g.sessions.some(s => s.name) ? (
+               <>
+                 <Typography
+                   component="div"
+                   variant="body2"
+                   className={clsx({
+                 "text-disabled": g.tutor === NO_TUTORS_LABEL || g.room === NO_ROOM_LABEL
+               })}
+                 >
+                   {g.tutor || g.room}
+                 </Typography>
+                 {g.site && (
+                 <Typography
+                   component="div"
+                   variant="body2"
+                 >
+                   {g.site}
+                 </Typography>
+               )}
+               </>
+              ) : (
+                <Typography
+                  component="div"
+                  variant="body2"
+                  className="text-disabled"
+                >
+                  Loading...
+                </Typography>
+              )}
            </Grid>
 
            <Grid item xs={10} className={classes.groupedDayWrapper}>
@@ -194,7 +211,6 @@ const GroupingDay = React.memo<GroupingDayProps>(
                 g.sessions.map(s => (
                   <CalendarSession
                     key={s.id}
-                    inView={inView}
                     tagsState={tagsState}
                     hideTutors={groupingState === "Group by tutor"}
                     hideRooms={groupingState === "Group by room"}
@@ -279,7 +295,6 @@ const CalendarDayWrapper: React.FunctionComponent<CompactModeDayProps> = React.m
         sessions.map(s => (
           <CalendarSession
             key={s.id}
-            inView={inView}
             tagsState={tagsState}
             {...s}
           />
@@ -287,7 +302,7 @@ const CalendarDayWrapper: React.FunctionComponent<CompactModeDayProps> = React.m
       ) : (
         <Typography className="text-disabled dayOffset">available</Typography>
       )),
-    [sessions, updated, selectedDayPeriods, tagsState, calendarGrouping, inView]
+    [sessions, updated, selectedDayPeriods, tagsState, calendarGrouping]
   );
 
   return (
@@ -313,7 +328,6 @@ const CalendarDayWrapper: React.FunctionComponent<CompactModeDayProps> = React.m
           <GroupingDay
             groupingState={calendarGrouping}
             hasSessions={Boolean(sessions.length)}
-            inView={inView}
             classes={classes}
             groupings={groupings}
             tagsState={tagsState}

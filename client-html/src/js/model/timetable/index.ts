@@ -19,6 +19,7 @@ export type CalendarGroupingState = "Group by tutor" | "Group by room" | "No gro
 export interface CalendarGrouping {
   tutor?: string;
   room?: string;
+  site?: string;
   sessions: Session[];
 }
 

@@ -7,9 +7,7 @@
  */
 
 import { Session } from "@api/model";
-import {
- format, getDaysInMonth, setDate, setHours, startOfMonth 
-} from "date-fns";
+import { format, getDaysInMonth, setDate, setHours, startOfMonth } from "date-fns";
 import {
   AfternoonIcon,
   EveningIcon,
@@ -403,16 +401,20 @@ export const getGroupings = (sessions: Session[], grouping: CalendarGroupingStat
     const indexes = {};
     let baseIndex = 0;
     sessions.forEach(s => {
-      const baseKey = s.room || NO_ROOM_LABEL;
-      if (!indexes[baseKey]) {
-        indexes[baseKey] = baseIndex;
+      const baseRoom = s.room || NO_ROOM_LABEL;
+      const baseSite = s.site;
+      const siteRoomKey = `${s.site}-${s.room}`;
+
+      if (!indexes[siteRoomKey]) {
+        indexes[siteRoomKey] = baseIndex;
         baseIndex++;
         groupings.push({
-          room: baseKey,
+          room: baseRoom,
+          site: baseSite,
           sessions: [s]
         });
       } else {
-        groupings[indexes[baseKey]].sessions.push(s);
+        groupings[indexes[siteRoomKey]].sessions.push(s);
       }
     });
   }

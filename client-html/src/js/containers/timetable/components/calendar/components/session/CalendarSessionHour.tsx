@@ -43,7 +43,7 @@ const CalendarSessionHour = React.memo<Props>(({
 
   const renderedSessions = useMemo(
     () => sessions.map(s => (
-      <CalendarSession key={s.id} tagsState={tagsState} inView {...s} />
+      <CalendarSession key={s.id} tagsState={tagsState} {...s} />
       )),
     [sessions, tagsState]
   );
