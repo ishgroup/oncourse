@@ -95,8 +95,9 @@ const ExpandableContainer: React.FC<Props> = ({
     [isExpanded, expanded, index]
   );
 
+  const buttonId = `expand-button-${index}`;
   const iconButtonProps = IS_JEST ? {
-    'data-testid': `expand-button-${index}`,
+    'data-testid': buttonId,
   } : {};
 
   return (
@@ -114,6 +115,7 @@ const ExpandableContainer: React.FC<Props> = ({
           <IconButton
             onClick={toggleExpand}
             className={clsx(classes.expandButton, isExpanded && classes.expandButtonExpanded)}
+            id={buttonId}
             {...iconButtonProps}
           >
             <ExpandMore />
