@@ -63,7 +63,7 @@ class TimetableApiImpl implements TimetableApi {
     List<SessionDTO> find(SearchRequestDTO request) {
 
         ObjectContext context = cayenneService.newReadonlyContext
-        Expression dateFilter = getDateRangeExpression(request.from,request.to)
+        Expression dateFilter = getDateRangeExpression(request.from, request.to)
 
         Class<? extends CayenneDataObject> clzz = EntityUtil.entityClassForName(Session.simpleName)
         ObjectSelect objectSelect = ObjectSelect.query(clzz)
@@ -76,18 +76,18 @@ class TimetableApiImpl implements TimetableApi {
         return query.columns(Session.ID, Session.START_DATETIME, Session.END_DATETIME)
                 .select(context)
                 .collect {
-                    new SessionDTO(id: it[0] as Long, start: dateToTimeValue(it[1] as Date), end:  dateToTimeValue(it[2] as Date))
+                    new SessionDTO(id: it[0] as Long, start: dateToTimeValue(it[1] as Date), end: dateToTimeValue(it[2] as Date))
                 }
     }
 
     @Override
     List<SessionDTO> get(String idsParam) {
-        if(idsParam == null || idsParam.isEmpty()) {
+        if (idsParam == null || idsParam.isEmpty()) {
             return Collections.emptyList()
         }
-        List<Long> ids = idsParam.split(',').collect {Long.valueOf(it)}
+        List<Long> ids = idsParam.split(',').collect { Long.valueOf(it) }
         fetchSessions(Session.ID.in(ids))
-                .collect {toRestSession(it)}
+                .collect { toRestSession(it) }
     }
 
     @Override
@@ -98,7 +98,7 @@ class TimetableApiImpl implements TimetableApi {
         int monthSize = calendar.toYearMonth().lengthOfMonth()
 
         Date startOfMonth = calendar.time
-        Date endOfMonth = (month == Calendar.DECEMBER ? new GregorianCalendar(++year, 0, 1): new GregorianCalendar(year, ++month, 1)).time
+        Date endOfMonth = (month == Calendar.DECEMBER ? new GregorianCalendar(++year, 0, 1) : new GregorianCalendar(year, ++month, 1)).time
 
         Class<? extends CayenneDataObject> clzz = EntityUtil.entityClassForName(Session.simpleName)
         ObjectSelect objectSelect = ObjectSelect.query(clzz)
@@ -115,21 +115,22 @@ class TimetableApiImpl implements TimetableApi {
         def queryResult = query.columns(dayOfMonth, Property.COUNT, Session.START_DATETIME, Session.END_DATETIME).select(context)
 
         queryResult.each { sessionLine ->
-            result[(sessionLine[0] as Integer) - 1] += DurationFormatter.durationInHoursBetween(sessionLine[2] as Date, sessionLine[3] as Date).doubleValue()
+            result[(sessionLine[0] as Integer) - 1] += (sessionLine[1] as Integer) * DurationFormatter.durationInHoursBetween(sessionLine[2] as Date, sessionLine[3] as Date).doubleValue()
         }
 
         def resultAsObj = ArrayUtils.toObject(result)
-        def maxHours = resultAsObj.collect {it}.max()
-        resultAsObj.collect {maxHours == 0 ? 0 :
-            new BigDecimal( it / maxHours.doubleValue()).setScale(2, RoundingMode.HALF_UP).doubleValue()
+        def maxHours = resultAsObj.collect { it }.max()
+        resultAsObj.collect {
+            maxHours == 0 ? 0 :
+                    new BigDecimal(it / maxHours.doubleValue()).setScale(2, RoundingMode.HALF_UP).doubleValue()
         }
     }
 
     @Override
     List<SessionDTO> getForClasses(String classIds) {
-        List<Long> ids = classIds.split(',').collect {Long.valueOf(it)}
+        List<Long> ids = classIds.split(',').collect { Long.valueOf(it) }
         fetchSessions(Session.COURSE_CLASS.dot(CourseClass.ID).in(ids))
-                .collect {toRestSession(it)}
+                .collect { toRestSession(it) }
     }
 
     @Override
