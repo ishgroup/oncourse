@@ -8,7 +8,9 @@ import TagItem from "./TagItem";
 import uniqid from "../../../common/utils/uniqid";
 
 const TagItemsRenderer = React.memo<any>(props => {
-  const { fields, onDelete, openTagEditView } = props;
+  const {
+ fields, onDelete, openTagEditView, changeVisibility 
+} = props;
 
   return fields.map((i, index) => {
     const field = fields.get(index);
@@ -21,6 +23,7 @@ const TagItemsRenderer = React.memo<any>(props => {
         key={uniqid()}
         onDelete={onDelete}
         openTagEditView={openTagEditView}
+        changeVisibility={changeVisibility}
       />
     );
   });

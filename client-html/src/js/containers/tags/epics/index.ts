@@ -5,7 +5,6 @@ import { EpicDeleteTag } from "./EpicDeleteTag";
 import { EpicUpdateTag } from "./EpicUpdateTag";
 import { EpicGetListTags } from "./EpicGetListTags";
 import { EpicGetEntityTags } from "./EpicGetEntityTags";
-import { EpicUpdateTagEditViewState } from "./EpicUpdateTagEditViewState";
 
 export const EpicTags = combineEpics(
   EpicGetAllTags,
@@ -13,6 +12,5 @@ export const EpicTags = combineEpics(
   EpicDeleteTag,
   EpicUpdateTag,
   EpicGetListTags,
-  EpicGetEntityTags,
-  EpicUpdateTagEditViewState
+  EpicGetEntityTags
 );
