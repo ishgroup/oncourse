@@ -115,7 +115,6 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
             dto.id = cayenneModel.id
             dto.student = toRestStudent(cayenneModel.student)
             dto.tutor = toRestTutor(cayenneModel.tutor)
-            dto.abn = cayenneModel.abn
             dto.birthDate = cayenneModel.birthDate
             dto.country = CountryFunctions.toRestCountry(cayenneModel.country)
             dto.fax = cayenneModel.fax
@@ -180,7 +179,6 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         if (cayenneModel.tutor != null) {
             cayenneModel.isTutor = true
         }
-        cayenneModel.abn = dto.abn
         cayenneModel.birthDate = dto.birthDate
         cayenneModel.country = countryDao.getById(context, dto?.country?.id)
         cayenneModel.fax = dto.fax
@@ -336,8 +334,9 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
             }
         }
 
-        if (isNotBlank(dto.abn) && !isNumericSpace(dto.abn)) {
-                validator.throwClientErrorException(Contact.ABN.name, 'Business Number (ABN) should be numeric.')
+        String abn = dto.customFields.getOrDefault("ABN","")
+        if (isNotBlank(abn) && !isNumericSpace(abn)) {
+            validator.throwClientErrorException("abn", 'Business Number (ABN) should be numeric.')
         }
 
         if (isNotBlank(dto.tfn) && !isNumericSpace(dto.tfn)) {
@@ -450,7 +449,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         checkStringLength(dto.lastName, 128, validator, Contact.LAST_NAME.name, 'Last name length should be less than 128 characters.')
         checkStringLength(dto.middleName, 128, validator, Contact.MIDDLE_NAME.name, 'Middle name length should be less than 128 characters.')
         checkStringLength(dto.email, 128, validator, Contact.EMAIL.name, 'Email length should be less than 128 characters.')
-        checkStringLength(dto.abn, 50, validator, Contact.ABN.name, 'Business Number (ABN) should be less than 50 characters.')
+        checkStringLength(dto.customFields.get("ABN"), 50, validator, "ABN", 'Business Number (ABN) should be less than 50 characters.')
         checkStringLength(dto.homePhone, 20, validator, Contact.HOME_PHONE.name, 'Home phone should be less than 20 characters.')
         checkStringLength(dto.mobilePhone, 20, validator, Contact.MOBILE_PHONE.name, 'Mobile phone should be less than 20 characters.')
         checkStringLength(dto.workPhone, 20, validator, Contact.WORK_PHONE.name, 'Work phone should be less than 20 characters.')
