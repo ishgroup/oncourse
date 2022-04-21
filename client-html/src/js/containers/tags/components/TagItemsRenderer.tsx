@@ -4,12 +4,33 @@
  */
 
 import React from "react";
+import { Tag } from "@api/model";
+import { WrappedFieldArrayProps } from "redux-form";
 import TagItem from "./TagItem";
 import uniqid from "../../../common/utils/uniqid";
+import { FormTagProps } from "../../../model/tags";
 
-const TagItemsRenderer = React.memo<any>(props => {
+const preventRerenderFields: (keyof Tag)[] = ['name', 'status', 'urlPath', 'content', 'color'];
+
+const shouldUpdate = (prevProps, currentProps) => {
+  const prevTags: Tag[] = prevProps.fields.getAll();
+  const newTags: Tag[] = currentProps.fields.getAll();
+
+  prevTags.forEach((t, i) => {
+    // @ts-ignore
+    preventRerenderFields.forEach(f => {
+      if (newTags[i] && t[f] !== newTags[i][f]) {
+        return true;
+      }
+    });
+  });
+  
+  return false;
+};
+
+const TagItemsRenderer = React.memo<Partial<FormTagProps> & WrappedFieldArrayProps>(props => {
   const {
- fields, onDelete, openTagEditView, changeVisibility 
+ fields, onDelete, changeVisibility, classes, validatTagsNames, validateName, validateShortName, validateRootTagName
 } = props;
 
   return fields.map((i, index) => {
@@ -19,14 +40,18 @@ const TagItemsRenderer = React.memo<any>(props => {
       <TagItem
         parent={i}
         index={index}
+        validatTagsNames={validatTagsNames}
+        validateName={validateName}
+        validateShortName={validateShortName}
+        validateRootTagName={validateRootTagName}
         item={field}
-        key={uniqid()}
+        classes={classes}
+        key={field.id || uniqid()}
         onDelete={onDelete}
-        openTagEditView={openTagEditView}
         changeVisibility={changeVisibility}
       />
     );
-  });
-});
+  }) as any;
+}, shouldUpdate);
 
 export default TagItemsRenderer;
