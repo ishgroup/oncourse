@@ -6,7 +6,9 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+ useCallback, useEffect, useMemo, useRef, useState 
+} from "react";
 import ButtonBase from "@mui/material/ButtonBase";
 import Popper from "@mui/material/Popper";
 import { AlphaPicker, HuePicker } from "react-color";
@@ -15,6 +17,7 @@ import { createStyles, withStyles } from "@mui/styles";
 import Paper from "@mui/material/Paper";
 import Grow from "@mui/material/Grow";
 import { WrappedFieldProps } from "redux-form";
+import { stopEventPropagation } from "../../utils/events";
 
 interface ColorPickerWrapperProps {
   input?: WrappedFieldProps["input"];
@@ -49,8 +52,8 @@ const styles = createStyles(({
     }
   },
   colorPickerButton: {
-    width: spacing(3),
-    height: spacing(3),
+    width: "14px",
+    height: "14px",
     borderRadius: "100%",
     transition: transitions.create("transform", {
       duration: transitions.duration.shorter,
@@ -176,7 +179,7 @@ const ColorPickerWrapper = React.memo<ColorPickerWrapperProps>(({ classes, theme
   const color = useMemo(() => (input.value ? "#" + input.value : theme.palette.primary.main), [theme, input.value]);
 
   return (
-    <>
+    <div className="d-flex" onClick={stopEventPropagation}>
       <ButtonBase onClick={handleClick} className={classes.colorPickerButton} style={{ backgroundColor: color }} />
       <Popper open={Boolean(anchorEl)} anchorEl={anchorEl} placement="top" className={classes.popper} transition>
         {({ TransitionProps }) => (
@@ -189,7 +192,7 @@ const ColorPickerWrapper = React.memo<ColorPickerWrapperProps>(({ classes, theme
           />
         )}
       </Popper>
-    </>
+    </div>
   );
 });
 

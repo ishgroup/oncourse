@@ -16,3 +16,22 @@ export interface MenuTag {
   queryPrefix?: string;
   indeterminate?: boolean;
 }
+
+export interface FormTag extends Tag {
+  parent: string;
+  dragIndex: number;
+}
+
+export interface FormTagProps {
+  classes: any;
+  onDelete: any;
+  changeVisibility: any;
+  item: FormTag;
+  validatTagsNames: any;
+  validateName: any;
+  validateRootTagName: any;
+  validateShortName: any;
+  index?: number;
+  parent?: string;
+  key?: string;
+}

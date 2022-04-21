@@ -15,6 +15,8 @@ import {
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { ForbiddenTagNames, Tag } from "@api/model";
+import { createStyles, withStyles } from "@mui/styles";
+import { alpha } from "@mui/material/styles";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { validateAqlFilterOrTagName, validateSingleMandatoryField } from "../../../common/utils/validation";
 import { State } from "../../../reducers/state";
@@ -32,13 +34,76 @@ import AddButton from "../../../common/components/icons/AddButton";
 import { onSubmitFail } from "../../../common/utils/highlightFormClassErrors";
 import AppBarContainer from "../../../common/components/layout/AppBarContainer";
 import { getPluralSuffix } from "../../../common/utils/strings";
+import TagItem from "../components/TagItem";
+import { AppTheme } from "../../../model/common/Theme";
+import { FormTag } from "../../../model/tags";
+
+const styles = (theme: AppTheme) => createStyles({
+  dragIcon: {
+    margin: theme.spacing(0, 2),
+    color: theme.palette.action.focus,
+    "&:hover": {
+      color: theme.palette.action.active
+    }
+  },
+  actionButton: {
+    marginRight: "10px"
+  },
+  actionIcon: {
+    color: theme.palette.action.focus,
+    fontSize: "20px"
+  },
+  actionIconInactive: {
+    color: theme.palette.action.hover,
+    fontSize: "20px"
+  },
+  card: {
+    borderRadius: `${theme.shape.borderRadius}px`,
+    padding: theme.spacing(0.25, 0),
+    margin: theme.spacing(1, 0),
+    cursor: "pointer",
+    backgroundColor: alpha(theme.palette.text.primary, 0.025),
+    "&:hover $actionIcon": {
+      color: theme.palette.action.active
+    },
+    "&:hover $actionIconInactive": {
+      color: theme.palette.action.focus
+    }
+  },
+  cardGrid: {
+    gridTemplateColumns: "auto auto 1fr 1fr auto auto auto",
+    display: "grid",
+    alignItems: "center",
+  },
+  dragOver: {
+    boxShadow: theme.shadows[2]
+  },
+  tagColorDot: {
+    width: "1em",
+    height: "1em",
+    borderRadius: "100%"
+  },
+  legend: {
+    gridTemplateColumns: "1fr 1fr 108px",
+    display: "grid",
+    alignItems: "center",
+    paddingLeft: "94px"
+  },
+  fieldEditable: {
+    paddingRight: theme.spacing(2),
+    position: "relative",
+    top: 2
+  },
+  nameEditable: {
+    fontSize: "14px",
+    fontWeight: 500
+  },
+  urlEditable: {
+    fontSize: "14px",
+  }
+});
 
 const manualUrl = getManualLink("tagging");
-
-interface FormTag extends Tag {
-  parent: string;
-  dragIndex: number;
-}
 
 interface Props {
   rootTag?: FormTag;
@@ -126,7 +191,7 @@ const getPathByDragIndex = (index, tags) => {
   return parent;
 };
 
-const validatTagsNames = val => (val.some(i => !i.name) ? "Name is mandatory" : undefined);
+const validatTagsNames = val => (val?.some(i => !i.name) ? "Name is mandatory" : undefined);
 
 class TagsFormBase extends React.PureComponent<FormProps, any> {
   private resolvePromise;
@@ -358,13 +423,13 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
   };
 
   validateTagName = (value, v, props, path) => {
-    const { values } = this.props;
+    const { values } = props;
 
     const group = getDeepValue(values, path.replace(/\[[0-9]+]$/, ""));
 
     const match = group.filter(i => i.name && i.id !== v.id && i.name.trim() === value.trim());
 
-    return match.length ? "The tag name is not unique within its parent tag" : undefined;
+    return match.length === 2 ? "The tag name is not unique within its parent tag" : undefined;
   };
 
   validateTagShortName = (value, v, path) => {
@@ -429,7 +494,8 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
       openConfirm,
       dispatch,
       syncErrors,
-      form
+      form,
+      classes
     } = this.props;
 
     return (
@@ -514,24 +580,32 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
               <Divider className="mt-2 mb-2" />
 
               <div className="centeredFlex">
-                <Typography className="heading">Tags</Typography>
+                <div className="heading">Tags</div>
                 <AddButton onClick={this.addTag} />
+              </div>
+
+              <div className={classes.legend}>
+                <Typography variant="caption" color="textSecondary">Name</Typography>
+                <Typography variant="caption" color="textSecondary">URL path</Typography>
+                <Typography variant="caption" color="textSecondary" textAlign="center">Website visibility</Typography>
               </div>
 
               <DragDropContext onDragEnd={this.onDragEnd}>
                 <Droppable droppableId="ROOT" isCombineEnabled>
                   {provided => (
                     <div ref={provided.innerRef}>
-                      {/* {values && ( */}
-                      {/*  getAllTags([values]).map(tag => ( */}
-                      {/*    <TagItem */}
-                      {/*      item={tag} */}
-                      {/*      onDelete={this.removeChildTag} */}
-                      {/*      changeVisibility={this.changeVisibility} */}
-                      {/*      validatTagsNames={validatTagsNames} */}
-                      {/*    /> */}
-                      {/*  )) */}
-                      {/* )} */}
+                      {values && (
+                        <TagItem
+                          item={values}
+                          classes={classes}
+                          validatTagsNames={validatTagsNames}
+                          onDelete={this.removeChildTag}
+                          validateName={this.validateTagName}
+                          validateShortName={this.validateTagShortName}
+                          validateRootTagName={this.validateRootTagName}
+                          changeVisibility={this.changeVisibility}
+                        />
+                      )}
                       {provided.placeholder}
                     </div>
                     )}
@@ -552,7 +626,7 @@ const mapStateToProps = (state: State) => ({
   nextLocation: state.nextLocation,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   onUpdate: (id: number, tag: Tag) => dispatch(updateTag(id, tag)),
   onCreate: (tag: Tag) => dispatch(createTag(tag)),
   onDelete: (id: number) => dispatch(deleteTag(id)),
@@ -563,6 +637,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 const TagsForm = reduxForm({
   form: "TagsForm",
   onSubmitFail
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withRouter(TagsFormBase)));
+})(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(TagsFormBase))));
 
 export default TagsForm as ComponentClass<Props>;
