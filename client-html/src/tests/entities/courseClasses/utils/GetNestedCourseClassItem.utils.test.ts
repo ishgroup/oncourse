@@ -11,7 +11,7 @@ describe("CourseClass getNestedCourseClassItem utils tests", () => {
       count,
       link: `/class?search=course.id is ${id}&filter=@Current_classes`,
       // eslint-disable-next-line max-len
-      timetableLink: `/timetable/search?query=courseClass.course.id=${id} and courseClass.startDateTime < tomorrow and courseClass.endDateTime >= today and courseClass.isCancelled is false`
+      timetableLink: `/timetable/search?search=courseClass.course.id=${id} and courseClass.startDateTime < tomorrow and courseClass.endDateTime >= today and courseClass.isCancelled is false`
     });
   });
 });
