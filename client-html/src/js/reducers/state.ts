@@ -81,7 +81,7 @@ export interface State {
   currency: Currency;
   usiSoftwareId: string;
   banking: BankingState;
-  lockedDate: Date;
+  lockedDate: string;
   discounts: DiscountsState;
   sales: SaleState;
   timetable: TimetableState;
