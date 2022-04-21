@@ -57,7 +57,7 @@ const TagItem = React.memo<FormTagProps>(props => {
 
   const validateShortNameWithPath = useCallback((value, values) => validateShortName(value, values, parent), [parent]);
 
-  const urlPlaceholder = "/" + item.name?.toLowerCase().replace(" ", "+");
+  const urlPlaceholder = "/" + item.name?.toLowerCase().replaceAll(" ", "+");
 
   return (
     <>
