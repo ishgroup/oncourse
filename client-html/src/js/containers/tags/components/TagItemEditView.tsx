@@ -4,12 +4,12 @@
  */
 
 import React, {
-  useCallback, useEffect, useMemo, useState
+ useCallback, useEffect, useMemo, useState 
 } from "react";
 import Dialog from "@mui/material/Dialog";
 import Grid from "@mui/material/Grid";
 import {
-  change, Field, getFormSyncErrors, getFormValues, reduxForm, Validator
+ change, Field, getFormSyncErrors, getFormValues, reduxForm, Validator 
 } from "redux-form";
 import { connect } from "react-redux";
 import Slide from "@mui/material/Slide";
@@ -21,7 +21,7 @@ import Lock from "@mui/icons-material/Lock";
 import { Tag, TagStatus } from "@api/model";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { FormEditorField } from "../../../common/components/markdown-editor/FormEditor";
-import { validateSingleMandatoryField, validateAqlFilterOrTagName } from "../../../common/utils/validation";
+import { validateAqlFilterOrTagName, validateSingleMandatoryField } from "../../../common/utils/validation";
 import ColorPicker from "../../../common/components/color-picker/ColorPicker";
 import { State } from "../../../reducers/state";
 import { NoArgFunction } from "../../../model/common/CommonFunctions";
@@ -206,8 +206,7 @@ const TagItemEditView = React.memo<Props>(props => {
 const mapStateToProps = (state: State) => ({
   values: getFormValues("TagItemForm")(state),
   syncErrors: getFormSyncErrors("TagItemForm")(state),
-  open: state.tags.editView.open,
-  parent: state.tags.editView.parent
+
 });
 
 export default (reduxForm({

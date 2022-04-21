@@ -124,6 +124,7 @@ module.exports = {
         "react/jsx-props-no-spreading": "off",
         "react/jsx-boolean-value": "off",
         "react/jsx-props-no-multi-spaces": "off",
+        "react/jsx-indent": [2, 2, {indentLogicalExpressions: true, checkAttributes: true}],
         "semi": "error",
         "space-before-function-paren": "off",
         "space-in-parens": [
