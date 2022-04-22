@@ -46,12 +46,12 @@ public class LiquibaseLoggerAdapter extends AbstractLogger {
 
     @Override
     public void severe(String message) {
-        logger.error(filterMessage(message));
+        logger.debug(filterMessage(message));
     }
 
     @Override
     public void severe(String message, Throwable e) {
-        logger.error(filterMessage(message), e);
+        logger.debug(filterMessage(message), e);
     }
 
     @Override
