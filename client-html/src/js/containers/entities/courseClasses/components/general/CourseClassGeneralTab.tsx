@@ -1,11 +1,12 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
- useCallback, useEffect, useMemo, useState 
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
 import { connect } from "react-redux";
 import { change } from "redux-form";
@@ -277,7 +278,7 @@ const CourseClassGeneralTab = React.memo<Props>(
           <Grid item xs={twoColumn && !showAllWeeks ? 6 : 12}>
             <div className="heading pb-2 pt-3">Restrictions</div>
             <Typography variant="body2" color="inherit" component="div" className="pb-1">
-              Students must be over
+              Students must be at least
               <FormField
                 type="number"
                 name="minStudentAge"
@@ -292,7 +293,7 @@ const CourseClassGeneralTab = React.memo<Props>(
             </Typography>
 
             <Typography variant="body2" color="inherit" component="div" className="pb-2">
-              Students must be under
+              Students must be no older than
               <FormField
                 type="number"
                 name="maxStudentAge"

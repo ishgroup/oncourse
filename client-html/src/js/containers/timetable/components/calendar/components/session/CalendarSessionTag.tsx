@@ -1,6 +1,15 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 import React from "react";
 import { Theme } from "@mui/material";
 import withStyles from "@mui/styles/withStyles";
+import { CalendarTagsState } from "../../../../../../model/timetable";
 
 const styles = (theme: Theme) => ({
   "@global": {
@@ -30,16 +39,16 @@ const styles = (theme: Theme) => ({
 interface SessionTagProps {
   classes?: any;
   color: string;
-  tagsExpanded: boolean;
+  tagsState?: CalendarTagsState;
   name: string;
 }
 
 const CalendarSessionTag: React.FC<SessionTagProps> = ({
-  classes, color, tagsExpanded, name
+  classes, color, tagsState, name
 }) => (
   <span className="d-inline-flex align-items-center mr-1">
     <span className="tagColorDot" style={{ background: color }} />
-    <span className={classes.tagName} style={{ width: tagsExpanded ? "calc(100% - 20px)" : "0px" }}>
+    <span className={classes.tagName} style={{ width: tagsState === "Tag names" ? "calc(100% - 20px)" : "0px" }}>
       #
       {name}
     </span>

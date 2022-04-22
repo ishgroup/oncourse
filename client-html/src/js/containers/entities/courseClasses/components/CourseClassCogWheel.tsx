@@ -71,7 +71,7 @@ const CourseClassCogWheel = memo<any>(props => {
     const { columns, rows } = data;
     const filteredColumns = columns.filter(c => c.visible || c.system);
     const rowValueIndex = filteredColumns.findIndex( c => c.attribute === "isCancelled");
-    const rowValues = rows.find(row => row.id === id).values;
+    const rowValues = rows.find(row => Number(row.id) === Number(id)).values;
 
     return !(rowValues[rowValueIndex] === "true");
   };

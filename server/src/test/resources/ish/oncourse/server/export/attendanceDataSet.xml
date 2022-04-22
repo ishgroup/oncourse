@@ -196,10 +196,10 @@
 
   <CourseClass code="4" courseId="200" createdOn="2014-10-17 22:44:15.0" endDateTime="2015-01-10 23:42:33.0"
                feeExGst="400.00" id="204" incomeAccountId="15" isCancelled="0" isDistantLearningCourse="0"
-               isShownOnWeb="0" maximumPlaces="10" minimumPlaces="1" minutesPerSession="60"
-               modifiedOn="2014-10-17 23:10:57.0" roomId="205" sessionCount="10" startDateTime="2015-01-01 22:42:33.0"
+               isShownOnWeb="0" maximumPlaces="10" minimumPlaces="1"
+               modifiedOn="2014-10-17 23:10:57.0" roomId="205" startDateTime="2015-01-01 22:42:33.0"
                taxId="1" willowId="5034373" deliveryMode="1" fundingSource="3" budgetedPlaces="0"
-               sessionsSkipWeekends="0" sessionrepeatType="6" sessionrepeatInterval="1" isClassFeeApplicationOnly="0"
+               isClassFeeApplicationOnly="0"
                taxAdjustment="0.00" deposit="400.00" isActive="1" suppressAvetmissExport="0" attendanceType="9"/>
 
   <CourseSession courseClass_Id="204" createdOn="2014-10-17 22:44:15.0" endDatetime="2015-01-01 23:42:33.0" id="240"

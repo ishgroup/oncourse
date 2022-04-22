@@ -1058,7 +1058,6 @@ class InvoiceUtilTest extends TestWithDatabase {
         course.setFeeHelpClass(Boolean.FALSE)
 
         CourseClass cc = cayenneContext.newObject(CourseClass.class)
-        cc.setSessionsCount(0)
         cc.setMinimumPlaces(4)
         cc.setMaximumPlaces(5)
         cc.setCode("testCourse")
