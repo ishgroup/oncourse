@@ -22,7 +22,7 @@ import javax.annotation.Nullable
 //TODO docs
 @API
 @QueueableEntity
-class AssessmentSubmission extends _AssessmentSubmission implements Queueable, NotableTrait, AttachableTrait, AssessmentSubmissionInterface {
+class AssessmentSubmission extends _AssessmentSubmission implements Queueable, NotableTrait, AttachableTrait, AssessmentSubmissionInterface, ContactActivityTrait {
 
 	public static final String STUDENT_NAME_PROPERTY = "studentName"
 	public static final String CLASS_NAME_PROPERTY = "courseClassName"
@@ -55,7 +55,11 @@ class AssessmentSubmission extends _AssessmentSubmission implements Queueable, N
 		return super.getCreatedOn()
 	}
 
-	/**
+	@Override
+	String getInteractionName() {
+		return assessmentClass.courseClass.course.name
+	}
+/**
 	 * @return the date and time this record was modified
 	 */
 	@Nonnull

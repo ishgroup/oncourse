@@ -16,8 +16,8 @@ export const mockedAPI: any = initMockDB();
 
 export const store = new StateObservable(new Subject(), TestStore.getState());
 
-export const TestEntry = ({ children }) => (
-  <Provider store={TestStore as any}>
+export const TestEntry = ({ children, state = {} }) => (
+  <Provider store={{ ...TestStore, getState: () => ({ ...TestStore.getState(), ...state }) } as any}>
     <RootComponent>
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />

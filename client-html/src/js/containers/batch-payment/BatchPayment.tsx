@@ -44,6 +44,7 @@ import { getBachCheckoutModel } from "./utils";
 import { makeAppStyles } from "../../common/styles/makeStyles";
 import AppBarContainer from "../../common/components/layout/AppBarContainer";
 import { getManualLink } from "../../common/utils/getManualLink";
+import { getPluralSuffix } from "../../common/utils/strings";
 
 const useStyles = makeAppStyles(theme => ({
   checkbox: {
@@ -504,7 +505,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
           setProcessing(false);
         } : null}
         closeButtonText="Cancel"
-        submitButtonText={processing ? "Processing..." : `Process ${checkedContacts.length} payment${checkedContacts.length === 1 ? "" : "s"}`}
+        submitButtonText={processing ? "Processing..." : `Process ${checkedContacts.length} payment${getPluralSuffix(checkedContacts.length)}`}
         containerClass="flex-column p-3 h-100"
       >
         {!contactsLoading && (

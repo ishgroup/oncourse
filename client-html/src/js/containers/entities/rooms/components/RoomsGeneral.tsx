@@ -33,7 +33,7 @@ class RoomsGeneral extends React.PureComponent<any, any> {
     const { values, sites } = this.props;
     const site = sites.find(el => el.value === values.siteId);
     openInternalLink(
-      `/timetable/search?query=room.id=${values.id}&title=Timetable for ${values.name}, ${
+      `/timetable?search=room.id=${values.id}&title=Timetable for ${values.name}, ${
         site ? site.label : ""
       }`
     );

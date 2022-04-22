@@ -102,10 +102,6 @@ public class DuplicateCourseClass {
         newClass.setMinimumPlaces(oldClass.getMinimumPlaces());
         newClass.setMaxStudentAge(oldClass.getMaxStudentAge());
         newClass.setMinStudentAge(oldClass.getMinStudentAge());
-        newClass.setMinutesPerSession(oldClass.getMinutesPerSession());
-        newClass.setSessionsSkipWeekends(oldClass.getSessionsSkipWeekends());
-        newClass.setSessionRepeatType(oldClass.getSessionRepeatType());
-        newClass.setSessionsCount(oldClass.getSessionsCount());
         newClass.setWebDescription(oldClass.getWebDescription());
         newClass.setReportableHours(oldClass.getReportableHours());
 
@@ -156,6 +152,7 @@ public class DuplicateCourseClass {
                 note.setNote(oldNote.getNote());
                 note.setSystemUser(oldNote.getSystemUser());
                 note.setCreatedOn(oldNote.getCreatedOn());
+                note.setInteractionDate(oldNote.getInteractionDate());
                 if (oldNote.getChangedBy() != null) {
                     note.setChangedBy(oldNote.getChangedBy());
                 }

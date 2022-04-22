@@ -13,7 +13,7 @@ Feature: Feature which checks exports implementation and their coverage
         * def excludedForCsvXml = excludedForCsvXml: ["contact", "articleProduct", "assessment", "definedTutorRole", "document", "emailTemplate", "exportTemplate", "membershipProduct", "outcome", "sales", "report", "reportOverlay", "note", "import", "priorLearning"]
         * def csvXmlEntities = JavaFunctions.getListEntitiesAndExclude(excludedForCsvXml)
         * print csvXmlEntities
-        * def excludedForPdf = excludedForPdf: ["contact", "articleProduct", "assessment", "assessmentSubmission", "definedTutorRole", "document", "emailTemplate", "exportTemplate", "membershipProduct", "sales", "report", "reportOverlay", "note", "import", "priorLearning"]
+        * def excludedForPdf = excludedForPdf: ["contact", "articleProduct", "assessment", "assessmentSubmission", "definedTutorRole", "document", "emailTemplate", "exportTemplate", "membershipProduct", "sales", "report", "reportOverlay", "note", "import", "priorLearning", "corporatepass"]
         * def pdfEntities = JavaFunctions.getListEntitiesAndExclude(excludedForPdf)
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright ish group pty ltd 2021.
+ * Copyright ish group pty ltd 2022.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
@@ -7,9 +7,7 @@
  */
 
 import { isBefore } from "date-fns";
-import React, {
-  Dispatch, useCallback, useEffect, useState
-} from "react";
+import React, { Dispatch, useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
 import Typography from "@mui/material/Typography";
@@ -31,9 +29,7 @@ import {
 } from "./actions";
 import ContactEditView from "./components/ContactEditView";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import {
-  getContactRelationTypes, getCountries, getLanguages, getPaymentTypes
-} from "../../preferences/actions";
+import { getContactRelationTypes, getCountries, getLanguages, getPaymentTypes } from "../../preferences/actions";
 import { getDefaultInvoiceTerms } from "../invoices/actions";
 import ContactCogWheel from "./components/ContactCogWheel";
 import { checkPermissions } from "../../../common/actions";
@@ -44,7 +40,6 @@ import tutor from "../../../../images/tutor.png";
 import company from "../../../../images/company.png";
 import tutorStudent from "../../../../images/student-tutor.png";
 import person from "../../../../images/person.png";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
 import { getContactFullName } from "./utils";
 
 export type ContactType = "STUDENT" | "TUTOR" | "COMPANY" | "TUTOR_STUDENT";
@@ -174,6 +169,8 @@ const findRelatedGroup: any[] = [
   { title: "Payments out", list: "paymentOut", expression: "payee.id" },
   { title: "Payslips", list: "payslip", expression: "contact.id" },
   { title: "Sales", list: "sale", expression: "purchasedBy.id" },
+  { title: "Student timetable", list: "timetable", expression: "courseClass.enrolments.student.id" },
+  { title: "Tutor timetable", list: "timetable", expression: "tutor.contact.id" },
   { title: "Transactions", list: "transaction", expression: "contact.id" },
   { title: "Waiting lists", list: "waitingList", expression: "student.contact.id" }
 ];
@@ -204,10 +201,6 @@ const getContactTypeImage = (type: ContactType) => {
 
 const customColumnFormats = {
   contactType: v => (v ? <img src={getContactTypeImage(v)} alt={v} /> : null)
-};
-
-const nestedEditFields = {
-  SendMessage: props => <SendMessageEditView {...props} />
 };
 
 export const getDisabledSubmitCondition = (isVerifyingUSI, usiVerificationResult): boolean => (
@@ -377,7 +370,6 @@ const Contacts: React.FC<ContactsProps> = props => {
         hideTitle: true
       }}
       EditViewContent={ContactEditView}
-      nestedEditFields={nestedEditFields}
       getEditRecord={getContactRecord}
       rootEntity="Contact"
       onCreate={onContactCreate}

@@ -22,13 +22,10 @@ import {
   PaymentSource,
   Tag
 } from "@api/model";
-import { IconButton } from "@mui/material";
-import Launch from "@mui/icons-material/Launch";
 import clsx from "clsx";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { formatFundingSourceId } from "../../common/utils";
-import { defaultContactName, openContactLink } from "../../contacts/utils";
 import {
   validateAssociatedCourseIdentifier,
   validateCharacter,
@@ -47,6 +44,7 @@ import Uneditable from "../../../../common/components/form/Uneditable";
 import EnrolmentSubmissions from "./EnrolmentSubmissions";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { HeaderContactTitle } from "../../../../common/components/form/FieldAdornments";
 
 const validateCricosConfirmation = value => validateCharacter(value, 32, "Confirmation of Enrolment");
 
@@ -133,13 +131,8 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
           disableInteraction
           twoColumn={twoColumn}
           title={(
-            <div className="d-inline-flex-center">
-              {values && defaultContactName(values.studentName)}
-              <IconButton disabled={!values?.studentContactId} size="small" color="primary" onClick={() => openContactLink(values?.studentContactId)}>
-                <Launch fontSize="inherit" />
-              </IconButton>
-            </div>
-            )}
+            <HeaderContactTitle name={values?.studentName} id={values?.studentContactId} />
+          )}
         />
       </Grid>
       <Grid item xs={12}>

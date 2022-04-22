@@ -14,7 +14,10 @@ package ish.print;
 import ish.print.transformations.*;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+
+import static ish.util.ParentEntitiesUtil.isChildOf;
 
 /**
  */
@@ -66,18 +69,21 @@ public class PrintTransformationsFactory {
 
 	);
 
-	public static PrintTransformation getPrintTransformationFor(String inputEnity, String outputEntity, String reportCode) {
-		if (StringUtils.isEmpty(inputEnity) || StringUtils.isEmpty(outputEntity)) {
+	public static PrintTransformation getPrintTransformationFor(String inputEntity, String outputEntity, String reportCode) {
+		if (StringUtils.isEmpty(inputEntity) || StringUtils.isEmpty(outputEntity)) {
 			return null;
 		}
+
+		inputEntity = StringUtils.capitalize(inputEntity);
+		outputEntity = StringUtils.capitalize(outputEntity);
 
 		try {
 
 			PrintTransformation transform = null;
 
 			// try to find defined transformation for entitues
-			if (TRANSFORMATION_MAP.get(inputEnity) != null) {
-				transform = TRANSFORMATION_MAP.get(inputEnity).get(outputEntity);
+			if (TRANSFORMATION_MAP.get(inputEntity) != null) {
+				transform = TRANSFORMATION_MAP.get(inputEntity).get(outputEntity);
 			}
 
 			if (transform != null) {
@@ -86,15 +92,17 @@ public class PrintTransformationsFactory {
 				}
 			}
 
-			if (!inputEnity.equals(outputEntity)) {
-
+			if (!inputEntity.equals(outputEntity)) {
 				// try to create a generic transform, works only for entities with a simple relationship
 
+				if(isChildOf(inputEntity, outputEntity))
+					return null;
+
 				transform = new PrintTransformation();
-				transform.setInputEntityName(inputEnity);
+				transform.setInputEntityName(inputEntity);
 				transform.setOutputEntityName(outputEntity);
 
-				String relName = inputEnity.substring(0,1).toLowerCase() + inputEnity.substring(1);
+				String relName = inputEntity.substring(0,1).toLowerCase() + inputEntity.substring(1);
 				transform.setTransformationFilter(relName+".id in $sourceIds");
 
 				return transform;

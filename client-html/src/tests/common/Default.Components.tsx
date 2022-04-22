@@ -10,17 +10,24 @@ interface Props {
   View: (props: any) => any;
   record: (mockedApi: any) => object;
   render: ({
-    screen, initialValues, mockedApi, fireEvent
+    screen, initialValues, mockedApi, fireEvent, viewProps
   }) => any;
   defaultProps?: ({ entity, initialValues, mockedApi }) => object;
   beforeFn?: () => void;
+  state?: (mockedApi: any) => object;
 }
 
-export const defaultComponents: ({
-  entity, View, record, render, defaultProps, beforeFn,
-}: Props) => void = ({
-  entity, View, record, render, defaultProps, beforeFn,
-}) => {
+export const defaultComponents = (props: Props) => {
+  const {
+    entity,
+    View,
+    record,
+    render,
+    defaultProps,
+    beforeFn,
+    state
+  } = props;
+
   const initialValues = record(mockedAPI);
 
   let viewProps = { initialValues, values: initialValues };
@@ -39,7 +46,7 @@ export const defaultComponents: ({
 
   it(`${entity} components should render with given values`, async () => {
     await waitFor(() => testRender(
-      <TestEntry>
+      <TestEntry state={state ? { ...state(mockedAPI) } : {}}>
         <MockedEditView />
       </TestEntry>,
     ), {
@@ -51,6 +58,7 @@ export const defaultComponents: ({
       initialValues,
       mockedApi: mockedAPI,
       fireEvent: testFireEvent,
+      viewProps,
     });
   });
 };

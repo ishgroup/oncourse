@@ -1,5 +1,5 @@
 /*
- * Copyright ish group pty ltd 2021.
+ * Copyright ish group pty ltd 2022.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
@@ -80,7 +80,12 @@ import { ConfirmProps, ShowConfirmCaller } from "../../../model/common/Confirm";
 import { EntityName, FindEntityState } from "../../../model/entities/common";
 import { saveCategoryAQLLink } from "../../utils/links";
 import ReactTableList, { TableListProps } from "./components/list/ReactTableList";
-import { getActiveTags, getFiltersNameString, getTagsUpdatedByIds } from "./utils/listFiltersUtils";
+import {
+  getActiveTags,
+  getFiltersNameString,
+  getTagsUpdatedByIds,
+  setActiveFiltersBySearch
+} from "./utils/listFiltersUtils";
 import { setSwipeableDrawerDirtyForm } from "../layout/swipeable-sidebar/actions";
 import { LSGetItem } from "../../utils/storage";
 import { getCustomFieldTypes } from "../../../containers/entities/customFieldTypes/actions";
@@ -427,7 +432,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
         const filtersString = getFiltersNameString(filterGroups);
         if (filtersString !== filtersUrlString) {
           const updated = [...filterGroups];
-          this.setActiveFiltersBySearch(filtersUrlString, filterGroups);
+          setActiveFiltersBySearch(filtersUrlString, filterGroups);
           this.onChangeFilters(updated, "filters");
         }
       }
@@ -464,18 +469,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     this.props.clearListState();
   }
 
-  setActiveFiltersBySearch = (search: string, filters: FilterGroup[]) => {
-    const filterNames = search ? search.replace(/[@_]/g, " ")
-        .split(",")
-        .map(f => f.trim()) : [];
-    filters.forEach(g => {
-        g.filters.forEach(f => {
-          // eslint-disable-next-line no-param-reassign
-          f.active = filterNames.includes(f.name);
-        });
-      });
-  };
-
   synchronizeAllFilters = () => {
     const {
       setListUserAQLSearch,
@@ -495,7 +488,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       const tagsSearch = searchParams.get("tag");
 
       if (filtersSearch) {
-        this.setActiveFiltersBySearch(filtersSearch, targetFilters);
+        setActiveFiltersBySearch(filtersSearch, targetFilters);
       }
       this.onChangeFilters(targetFilters, "filters");
 
@@ -1036,7 +1029,10 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       fullScreenEditView,
       searchQuery,
       getCustomBulkEditFields,
-      filterEntity
+      filterEntity,
+      emailTemplatesWithKeyCode,
+      scripts,
+      recepients
     } = this.props;
 
     const {
@@ -1158,6 +1154,9 @@ class ListView extends React.PureComponent<Props, ComponentState> {
             )}
           </div>
           <BottomAppBar
+            recepients={recepients}
+            scripts={scripts}
+            emailTemplatesWithKeyCode={emailTemplatesWithKeyCode}
             createButtonDisabled={createButtonDisabled}
             searchMenuItemsRenderer={searchMenuItemsRenderer}
             querySearch={querySearch}

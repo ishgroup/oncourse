@@ -79,7 +79,7 @@ const ContactsTutor: React.FC<ContactsTutorProps> = props => {
       openInternalLink(`/timetable`);
     } else {
       openInternalLink(
-        `/timetable/search?query=tutor.id=${tutorId}&title=Tutor timetable for ${getContactFullName(values)}`
+        `/timetable?search=tutor.id=${tutorId}&title=Tutor timetable for ${getContactFullName(values)}`
       );
     }
   };
