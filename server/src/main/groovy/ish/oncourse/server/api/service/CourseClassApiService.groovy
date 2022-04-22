@@ -169,7 +169,6 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         dto.minStudentAge = cc.minStudentAge
         dto.roomId = cc.room?.id
         dto.virtualSiteId = (cc.room?.site?.isVirtual ? cc.room.site.id : null) as Long
-        dto.sessionsCount = cc.sessionsCount
         dto.startDateTime = LocalDateUtils.dateToTimeValue(cc.startDateTime)
         dto.endDateTime =  LocalDateUtils.dateToTimeValue(cc.endDateTime)
         dto.suppressAvetmissExport = cc.suppressAvetmissExport

@@ -685,7 +685,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
               ? (
                 <div className={clsx(isInline && "d-inline", label && 'mt-2', classes.selectMainWrapper)}>
                   <Select
-                    id={`input-${input.name}`}
+                    id={`input-select-${input.name}`}
                     name={input.name}
                     value={this.getSelectValue()}
                     inputRef={this.setInputNode}
@@ -693,7 +693,8 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                       classes: {
                         root: classes.textFieldBorderModified,
                         underline: fieldClasses.underline
-                      }
+                      },
+                      id: `input-${input.name}`
                     }}
                     classes={{
                       select: clsx(classes.muiSelect, fieldClasses.text, isInline && classes.inlineSelect),
