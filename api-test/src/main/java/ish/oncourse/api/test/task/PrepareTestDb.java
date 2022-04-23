@@ -37,6 +37,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class PrepareTestDb {
 
@@ -60,6 +62,8 @@ public class PrepareTestDb {
             InputStream st = new FileInputStream(tempDatasetPath);
             FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().setCaseSensitiveTableNames(false).setColumnSensing(true).build(st);
             DatabaseOperation.REFRESH.execute(testDatabaseConnection, dataSet);
+
+            fillAbns(connection);
 
             try (var statement = connection.createStatement()) {
                 statement.execute("UPDATE `SequenceSupport` " +
@@ -128,5 +132,30 @@ public class PrepareTestDb {
         DOMSource source = new DOMSource(document);
         StreamResult result = new StreamResult(new File(filePath));
         transformer.transform(source, result);
+    }
+
+    private static void fillAbns(Connection connection){
+        try(var statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("SELECT id FROM CustomFieldType cft WHERE cft.fieldKey='ABN'");
+            long customFieldTypeId = 1004;
+            if(resultSet.next()){
+                customFieldTypeId = resultSet.getLong(1);
+            }else{
+                statement.execute("INSERT INTO CustomFieldType (id,isMandatory,createdOn,modifiedOn,name,fieldKey,entityIdentifier,sortOrder) " +
+                        "VALUES ("+customFieldTypeId+",1,'2019-09-20 20:50:36.83000000','2019-09-20 20:50:36.83000000','ABN','ABN','Contact',0)");
+            }
+
+            statement.execute("INSERT INTO CustomField (customFieldTypeId,id,createdOn,modifiedOn,value,foreignId,entityIdentifier) " +
+                    "VALUES ("+customFieldTypeId+",2015,'2019-09-20 20:50:36.83000000','2019-09-20 20:50:36.83000000','111',21,'Contact')");
+            statement.execute("INSERT INTO CustomField (customFieldTypeId,id,createdOn,modifiedOn,value,foreignId,entityIdentifier) " +
+                    "VALUES ("+customFieldTypeId+",2016,'2019-09-20 20:50:36.83000000','2019-09-20 20:50:36.83000000','222',22,'Contact')");
+            statement.execute("INSERT INTO CustomField (customFieldTypeId,id,createdOn,modifiedOn,value,foreignId,entityIdentifier) " +
+                    "VALUES ("+customFieldTypeId+",2017,'2019-09-20 20:50:36.83000000','2019-09-20 20:50:36.83000000','555',24,'Contact')");
+            statement.execute("INSERT INTO CustomField (customFieldTypeId,id,createdOn,modifiedOn,value,foreignId,entityIdentifier) " +
+                    "VALUES ("+customFieldTypeId+",2018,'2019-09-20 20:50:36.83000000','2019-09-20 20:50:36.83000000','777',27,'Contact')");
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
