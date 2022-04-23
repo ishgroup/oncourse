@@ -20,7 +20,6 @@ Feature: Main feature for all GET requests with path 'list/entity/contact/merge'
         And match $.mergeLines contains only 
         """
     [
-    {"key":"Contact.abn","label":"Abn","a":"555","b":"111"},
     {"key":"Contact.birthDate","label":"Birth date","a":"1972-05-05","b":"1995-05-04"},
     {"key":"Contact.email","label":"Email","a":"merge4@gmail.com","b":"merge1@gmail.com"},
     {"key":"Contact.fax","label":"Fax","a":"tA","b":"a"},
@@ -43,6 +42,7 @@ Feature: Main feature for all GET requests with path 'list/entity/contact/merge'
     {"key":"Contact.taxOverride","label":"Tax Override","a":null,"b":"N"},
     {"key":"Contact.country","label":"Country","a":"Australia","b":"Australia"},
     {"key":"tags","label":"Tags","a":"#contacts1","b":"#contacts1"},
+    {"a":"555","b":"111","label":"ABN","key":"customField.ABN"},
     {"key":"customField.cf2","label":"contact field2","a":"tA","b":"aa"},
     {"key":"customField.cf1","label":"contact field1","a":"tA","b":"aa"},
     {"key":"Tutor.dateFinished","label":"Date finished","a":"#present","b":"#present"},
@@ -82,7 +82,6 @@ Feature: Main feature for all GET requests with path 'list/entity/contact/merge'
         {
         "mergeLines":
             [
-            {"key":"Contact.abn","label":"Abn","a":"777","b":null},
             {"key":"Contact.email","label":"Email","a":"merge8@gmail.com","b":"merge9@gmail.com"},
             {"key":"Contact.fax","label":"Fax","a":"444777124","b":"444777124"},
             {"key":"Contact.homePhone","label":"Home phone","a":"444777001","b":"444777002"},
@@ -98,6 +97,7 @@ Feature: Main feature for all GET requests with path 'list/entity/contact/merge'
             {"key":"Contact.country","label":"Country","a":"Australia","b":"Australia"},
             {"key":"tags","label":"Tags","a":"#contacts1","b":""},
             {"key":"customField.cf2","label":"contact field2","a":"Co1","b":null},
+            {"a":"777","b":null,"label":"ABN","key":"customField.ABN"},
             {"key":"customField.cf1","label":"contact field1","a":"Co1","b":"Co2"}
             ],
         "infoLines":
