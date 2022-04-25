@@ -1,34 +1,34 @@
-get:
+post:
   operationId: getDates
   description: Looking for any monthly dates which has an timetabled events
   tags:
   - Timetable
   parameters:
-  - name: month
-    in: path
-    description: Month index stating from 0 (Jan)
-    required: true
-    type: integer
-    example: 0
-  - name: year
-    in: path
-    description: calendar year
-    required: true
-    type: integer
-    example: 2019
-  - name: search
-    in: query
-    description: AQL search expression
-    required: false
-    type: string
-    example: room.site.id = 200
+    - name: month
+      in: path
+      description: Month index stating from 0 (Jan)
+      required: true
+      type: integer
+      example: 0
+    - name: year
+      in: path
+      description: calendar year
+      required: true
+      type: integer
+      example: 2019
+    - name: request
+      in: body
+      description: search request object
+      required: true
+      schema:
+        $ref: './def/entity/timetable/SearchRequest.yaml'
   responses:
     '200':
       description: Success response.
       schema:
         type: array
         items:
-          type: integer
+          type: number
     default:
       description: Unexpected error
   x-permission:
