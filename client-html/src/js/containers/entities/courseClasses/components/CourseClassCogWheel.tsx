@@ -20,6 +20,7 @@ import DuplicateCourseClassModal from "./duplicate-courseClass/DuplicateCourseCl
 import DuplicateTraineeshipModal from "./duplicate-courseClass/DuplicateTraineeshipModal";
 import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../common/actions/CommonPlainRecordsActions";
 import { courseClassCancelPath, courseClassTimetablePath } from "../../../../constants/Api";
+import { getPluralSuffix } from "../../../../common/utils/strings";
 
 const CourseClassCogWheel = memo<any>(props => {
   const {
@@ -70,7 +71,7 @@ const CourseClassCogWheel = memo<any>(props => {
     const { columns, rows } = data;
     const filteredColumns = columns.filter(c => c.visible || c.system);
     const rowValueIndex = filteredColumns.findIndex( c => c.attribute === "isCancelled");
-    const rowValues = rows.find(row => row.id === id).values;
+    const rowValues = rows.find(row => Number(row.id) === Number(id)).values;
 
     return !(rowValues[rowValueIndex] === "true");
   };
@@ -165,7 +166,7 @@ const CourseClassCogWheel = memo<any>(props => {
       <PayslipGenerateCogwheelAction
         entity="CourseClass"
         generateLabel={`Generate tutor pay${
-          selection.length ? ` for ${selection.length} class${selection.length <= 1 ? "" : "s"}` : ""
+          selection.length ? ` for ${selection.length} class${getPluralSuffix(selection.length)}` : ""
         }`}
         closeMenu={closeMenu}
         showConfirm={showConfirm}

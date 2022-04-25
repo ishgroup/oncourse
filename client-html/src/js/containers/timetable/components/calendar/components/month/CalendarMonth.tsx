@@ -1,17 +1,18 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
- useCallback, useContext, useMemo, useState
-} from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import { format, getDay } from "date-fns";
-import { TimetableMonth } from "../../../../../../model/timetable/index";
+import { TimetableMonth } from "../../../../../../model/timetable";
 import { DD_MMM_YYYY_MINUSED } from "../../../../../../common/utils/dates/format";
 import { CalendarDay } from "../day/CalendarDay";
 import { TimetableContext } from "../../../../Timetable";
-import { filterSessionsByPeriod } from "../../../../utils/index";
+import { filterSessionsByPeriod } from "../../../../utils";
 import CalendarMonthBase from "./CalendarMonthBase";
 
 interface CompactModeMonthProps extends TimetableMonth {
@@ -20,8 +21,6 @@ interface CompactModeMonthProps extends TimetableMonth {
   dayNodesObserver: any;
   index: number;
   isScrolling: boolean;
-  tagsExpanded: any;
-  setTagsExpanded: any;
   parentRef?: any;
 }
 
@@ -34,12 +33,12 @@ const CalendarMonth: React.FunctionComponent<CompactModeMonthProps> = props => {
     isScrolling,
     style,
     dayNodesObserver,
-    tagsExpanded,
-    setTagsExpanded,
     parentRef
   } = props;
 
-  const { selectedWeekDays, selectedDayPeriods, calendarMode } = useContext(TimetableContext);
+  const {
+   selectedWeekDays, selectedDayPeriods, calendarMode, tagsState, calendarGrouping
+  } = useContext(TimetableContext);
 
   const [renderedDays, setRenderedDays] = useState([]);
 
@@ -73,13 +72,13 @@ const CalendarMonth: React.FunctionComponent<CompactModeMonthProps> = props => {
           sessions={daySessions}
           calendarMode={calendarMode}
           selectedDayPeriods={selectedDayPeriods}
-          tagsExpanded={tagsExpanded}
-          setTagsExpanded={setTagsExpanded}
+          tagsState={tagsState}
+          calendarGrouping={calendarGrouping}
         />
       ) : null;
     });
     setRenderedDays(rendered.filter(r => r));
-  }, [days, isScrolling, month, index, hasSessions, selectedDayPeriods, selectedWeekDays, calendarMode, tagsExpanded]);
+  }, [days, isScrolling, month, index, hasSessions, selectedDayPeriods, selectedWeekDays, calendarMode, calendarGrouping, tagsState]);
 
   return renderedDays.length ? (
     <CalendarMonthBase month={month} style={style} parentRef={parentRef}>

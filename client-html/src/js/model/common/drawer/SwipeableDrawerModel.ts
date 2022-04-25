@@ -9,5 +9,6 @@ export interface SwipeableDrawer {
   opened: boolean;
   variant?: keyof typeof VARIANTS;
   isDirty?: boolean;
+  selected?: number | string;
   resetEditView?: () => void;
 }

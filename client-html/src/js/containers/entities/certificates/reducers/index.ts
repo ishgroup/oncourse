@@ -1,15 +1,16 @@
+import { CertificateOutcome } from "@api/model";
 import { IAction } from "../../../../common/actions/IshAction";
 import { PlainEntityState } from "../../../../model/common/Plain";
-import { CertificateOutcome } from "@api/model";
 import {
   CLEAR_CERTIFICATE_OUTCOMES,
   GET_CERTIFICATE_OUTCOMES,
   GET_CERTIFICATE_OUTCOMES_FULFILLED,
+  GET_CERTIFICATE_OUTCOMES_REJECTED,
+  GET_CERTIFICATES_REVOKE_STATUS,
   SET_CERTIFICATE_OUTCOMES_SEARCH,
-  VALIDATE_CERTIFICATES,
-  SET_CERTIFICATES_VALIDATION_STATUS,
   SET_CERTIFICATES_REVOKE_STATUS,
-  GET_CERTIFICATES_REVOKE_STATUS
+  SET_CERTIFICATES_VALIDATION_STATUS,
+  VALIDATE_CERTIFICATES
 } from "../actions";
 
 export interface CertificatesState {
@@ -23,11 +24,12 @@ const initial: CertificatesState = {
   outcomes: {
     items: [],
     search: "",
-    loading: false
+    loading: false,
+    error: false
   },
   validationStatus: null,
   checkingRevokeStatus: false,
-  hasRevoked: false
+  hasRevoked: false,
 };
 
 export const certificatesReducer = (state: CertificatesState = initial, action: IAction<any>): CertificatesState => {
@@ -37,7 +39,19 @@ export const certificatesReducer = (state: CertificatesState = initial, action: 
         ...state,
         outcomes: {
           ...state.outcomes,
+          error: false,
           loading: true
+        }
+      };
+    }
+
+    case GET_CERTIFICATE_OUTCOMES_REJECTED: {
+      return {
+        ...state,
+        outcomes: {
+          ...state.outcomes,
+          error: true,
+          loading: false
         }
       };
     }
@@ -49,7 +63,8 @@ export const certificatesReducer = (state: CertificatesState = initial, action: 
         ...state,
         outcomes: {
           ...state.outcomes,
-          ...action.payload
+          ...action.payload,
+          error: false
         }
       };
     }

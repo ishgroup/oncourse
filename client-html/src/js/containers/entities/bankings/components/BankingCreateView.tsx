@@ -147,10 +147,11 @@ class BankingCreateView extends React.PureComponent<any, any> {
 
   validateSettlementDate = (value: any) => {
     const { lockedDate, editRecord } = this.props;
+
     if (!lockedDate || !editRecord || editRecord.settlementDate === value) {
       return undefined;
     }
-    const date = new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth);
+    const date = new Date(lockedDate);
     const dateString = date.toISOString();
     return validateMinMaxDate(
       value,
@@ -245,7 +246,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
               validate={this.validateSettlementDate}
               minDate={
                 lockedDate
-                  ? addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1)
+                  ? addDays(new Date(lockedDate), 1)
                   : undefined
               }
               disabled={hasNoAccounts}

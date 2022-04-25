@@ -1,11 +1,12 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import {
- Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Typography 
-} from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Typography } from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
@@ -42,13 +43,10 @@ import {
   setListSelection,
 } from "../../../common/components/list-view/actions";
 import EnrolmentService from "../enrolments/services/EnrolmentService";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
 import OutcomeService from "../outcomes/services/OutcomeService";
 import CourseClassCogWheel from "./components/CourseClassCogWheel";
 import CourseClassEditView from "./components/CourseClassEditView";
-import {
- createCourseClass, deleteCourseClass, getCourseClass, getCourseClassTags, updateCourseClass 
-} from "./actions";
+import { createCourseClass, deleteCourseClass, getCourseClass, getCourseClassTags, updateCourseClass } from "./actions";
 import { BooleanArgFunction, NoArgFunction, NumberArgFunction } from "../../../model/common/CommonFunctions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getGradingTypes, getTutorRoles } from "../../preferences/actions";
@@ -164,7 +162,6 @@ const Initial: CourseClassExtended = {
   minStudentAge: null,
   minimumPlaces: null,
   reportableHours: 0,
-  sessionsCount: null,
   suppressAvetmissExport: false,
   vetCourseSiteID: null,
   vetFundingSourceStateID: null,
@@ -265,6 +262,7 @@ const findRelatedGroup: any[] = [
   { title: "Payslips", list: "payslip", expression: "paylines.classCost.courseClass.id" },
   { title: "Student feedback", list: "survey", expression: "enrolment.courseClass.id" },
   { title: "Submissions", list: "assessmentSubmission", expression: "assessmentClass.courseClass.id" },
+  { title: "Timetable", list: "timetable", expression: "courseClass.id" },
   { title: "Tutors", list: "contact", expression: "tutor.courseClassRoles.courseClass.id" },
   {
     title: "Withdrawn students",
@@ -402,10 +400,6 @@ const customColumnFormats = {
   startDateTime: formatSelfPaced,
   endDateTime: formatSelfPaced,
   sessionsCount: formatSelfPacedSessions
-};
-
-const nestedEditFields = {
-  SendMessage: props => <SendMessageEditView {...props} />
 };
 
 const defaultFields: Array<keyof CourseClass> = [
@@ -658,7 +652,6 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
           keepDirtyOnReinitialize: true
         }}
         EditViewContent={CourseClassEditView}
-        nestedEditFields={nestedEditFields}
         getEditRecord={getCourseClass}
         rootEntity="CourseClass"
         onInit={onInit}

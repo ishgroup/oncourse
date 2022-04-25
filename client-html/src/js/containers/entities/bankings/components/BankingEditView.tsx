@@ -138,7 +138,7 @@ class BankingEditView extends React.PureComponent<any, any> {
     }
     return (
       compareAsc(
-        new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth),
+        new Date(lockedDate),
         new Date(editRecord.settlementDate)
       ) > 0
     );
@@ -149,7 +149,7 @@ class BankingEditView extends React.PureComponent<any, any> {
     if (!lockedDate || !editRecord || editRecord.settlementDate === value) {
       return undefined;
     }
-    const date = new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth);
+    const date = new Date(lockedDate);
     const dateString = date.toISOString();
     return validateMinMaxDate(
       value,
@@ -249,7 +249,7 @@ class BankingEditView extends React.PureComponent<any, any> {
               validate={[validateSingleMandatoryField, this.validateSettlementDate]}
               minDate={
                   lockedDate
-                    ? addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1)
+                    ? addDays(new Date(lockedDate), 1)
                     : undefined
                 }
             />
