@@ -4,6 +4,7 @@
  */
 
 import { Tag } from "@api/model";
+import { NumberArgFunction } from "../common/CommonFunctions";
 
 export interface MenuTag {
   active: boolean;
@@ -18,20 +19,19 @@ export interface MenuTag {
 }
 
 export interface FormTag extends Tag {
-  parent: string;
-  dragIndex: number;
+  parent?: string;
+  orderChanged?: boolean;
+  childTags?: FormTag[];
 }
 
 export interface FormTagProps {
   classes: any;
   onDelete: any;
   changeVisibility: any;
+  isEditing: boolean;
+  setIsEditing: NumberArgFunction;
   item: FormTag;
-  validatTagsNames: any;
-  validateName: any;
-  validateRootTagName: any;
-  validateShortName: any;
   index?: number;
-  parent?: string;
-  key?: string;
+  snapshot?: any;
+  provided?: any;
 }

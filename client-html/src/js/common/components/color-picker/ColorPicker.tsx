@@ -17,6 +17,7 @@ import { createStyles, withStyles } from "@mui/styles";
 import Paper from "@mui/material/Paper";
 import Grow from "@mui/material/Grow";
 import { WrappedFieldProps } from "redux-form";
+import clsx from "clsx";
 import { stopEventPropagation } from "../../utils/events";
 
 interface ColorPickerWrapperProps {
@@ -59,8 +60,8 @@ const styles = createStyles(({
       duration: transitions.duration.shorter,
       easing: transitions.easing.easeInOut
     }),
-    "&:hover": {
-      transform: "scale(1.1)"
+    "&:hover,&$opened": {
+      transform: "scale(2)"
     }
   },
   popper: {
@@ -83,7 +84,8 @@ const styles = createStyles(({
     "& > div > div:first-child > div": {
       background: "none !important"
     }
-  }
+  },
+  opened: {}
 }));
 
 const ColorPickerBase = React.memo<ColorPickerBaseProps>(
@@ -180,7 +182,7 @@ const ColorPickerWrapper = React.memo<ColorPickerWrapperProps>(({ classes, theme
 
   return (
     <div className="d-flex" onClick={stopEventPropagation}>
-      <ButtonBase onClick={handleClick} className={classes.colorPickerButton} style={{ backgroundColor: color }} />
+      <ButtonBase onClick={handleClick} className={clsx(classes.colorPickerButton, anchorEl && classes.opened)} style={{ backgroundColor: color }} />
       <Popper open={Boolean(anchorEl)} anchorEl={anchorEl} placement="top" className={classes.popper} transition>
         {({ TransitionProps }) => (
           <ColorPickerBase
