@@ -7,7 +7,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import clsx from "clsx";
 import TreeView from "@mui/lab/TreeView";
 import makeStyles from "@mui/styles/makeStyles";
-import { Draggable } from "react-beautiful-dnd";
+import { Draggable } from "react-beautiful-dnd-next";
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import ListTagItem from "./ListTagItem";
 import { MenuTag } from "../../../../../../model/tags";
