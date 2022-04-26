@@ -102,7 +102,7 @@ export function mockEnrolments() {
           { name: "courseName", type: "string" }
         ]).map(l => ({
           id: l.id,
-          values: [l.createdOn, "Active", l.fullName, l.contactId]
+          values: ["2022-03-15T06:11:46.050Z", "Active", l.fullName, l.contactId]
         }));
       } else if (columnList.includes("status")) {
         ids.forEach(id => {
