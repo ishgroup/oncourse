@@ -229,7 +229,8 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".avetmissButton": {
         "&:hover": {
-          backgroundColor: darken(theme.palette.primary.main, 0.1)
+          backgroundColor: darken(theme.palette.primary.main, 0.1),
+          color: theme.palette.primary.contrastText
         }
       },
       ".hoverGrayIcon": {
