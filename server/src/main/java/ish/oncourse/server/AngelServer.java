@@ -58,6 +58,7 @@ public class AngelServer {
                 .module(SMTPModule.class)
                 .module(DocumentModule.class)
                 .module(JasperReportsModule.class)
+                .module(MonitoringModule.class)
                 .exec()
                 .exit();
     }

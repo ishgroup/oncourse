@@ -109,7 +109,8 @@ class LazyCustomFieldNode extends LazyExpressionNode {
                 String idsInSql = customfieldsIds.stream()
                         .map(Objects::toString)
                         .collect(Collectors.joining(","));
-
+                if(idsInSql.isEmpty())
+                    return new ASTFalse();
                 String sql = String.format("SELECT DISTINCT p.id from ProductItem p " +
                         "LEFT JOIN CustomField cf ON cf.foreignId = p.id and customFieldTypeId = %d " +
                         "WHERE cf.id in (%s)", fieldKeyId, idsInSql);
