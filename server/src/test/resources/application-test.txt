@@ -12,7 +12,6 @@ jdbc:
     connectionTestQuery: SELECT 1
     maximumPoolSize: 100
     minimumIdle: 1
-    registerMbeans: true
     idleTimeout: 300000
 
   angel-test-creation:
@@ -22,7 +21,6 @@ jdbc:
     connectionTestQuery: SELECT 1
     maximumPoolSize: 100
     minimumIdle: 1
-    registerMbeans: true
     idleTimeout: 300000
 
 cayenne:
