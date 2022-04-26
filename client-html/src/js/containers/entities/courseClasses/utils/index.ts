@@ -46,7 +46,7 @@ export const getNestedCourseClassItem = (status: CourseClassStatus, count: numbe
         count,
         link: `/class?search=course.id is ${id}&filter=@Current_classes`,
         // eslint-disable-next-line max-len
-        timetableLink: `/timetable/search?query=courseClass.course.id=${id} and courseClass.startDateTime < tomorrow and courseClass.endDateTime >= today and courseClass.isCancelled is false`
+        timetableLink: `/timetable/search?search=courseClass.course.id=${id} and courseClass.startDateTime < tomorrow and courseClass.endDateTime >= today and courseClass.isCancelled is false`
       };
     case "Future":
       return {
@@ -54,7 +54,7 @@ export const getNestedCourseClassItem = (status: CourseClassStatus, count: numbe
         count,
         link: `/class?search=course.id is ${id}&filter=@Future_classes`,
         // eslint-disable-next-line max-len
-        timetableLink: `/timetable/search?query=courseClass.course.id=${id} and courseClass.startDateTime >= tomorrow and courseClass.endDateTime >= tomorrow and courseClass.isCancelled is false`
+        timetableLink: `/timetable/search?search=courseClass.course.id=${id} and courseClass.startDateTime >= tomorrow and courseClass.endDateTime >= tomorrow and courseClass.isCancelled is false`
       };
     case "Self Paced":
       return {
@@ -74,7 +74,7 @@ export const getNestedCourseClassItem = (status: CourseClassStatus, count: numbe
         count,
         link: `/class?search=course.id is ${id}&filter=@Finished_classes`,
         // eslint-disable-next-line max-len
-        timetableLink: `/timetable/search?query=courseClass.course.id=${id} and courseClass.isCancelled is false and courseClass.endDateTime before today`
+        timetableLink: `/timetable?search=courseClass.course.id=${id} and courseClass.isCancelled is false and courseClass.endDateTime before today`
       };
     case "Cancelled":
       return {

@@ -10,8 +10,8 @@ import { Dispatch } from "redux";
 import { IAction } from "../../actions/IshAction";
 import { State } from "../../../reducers/state";
 
-export const usePrevious = <T = any>(value: any) => {
-  const ref = useRef<T>();
+export const usePrevious = <T = any>(value: any, initial?: any) => {
+  const ref = useRef<T>(initial);
 
   useEffect(() => {
     ref.current = value;

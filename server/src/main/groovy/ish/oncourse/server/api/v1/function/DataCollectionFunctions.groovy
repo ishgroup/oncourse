@@ -28,8 +28,8 @@ import ish.common.types.DeliverySchedule
 import ish.common.types.FieldConfigurationType
 import ish.common.types.NodeType
 import static ish.oncourse.common.field.FieldProperty.*
-import static ish.oncourse.common.field.PropertyGetSetFactory.CUSTOM_FIELD_PROPERTY_PATTERN
-import static ish.oncourse.common.field.PropertyGetSetFactory.TAG_PATTERN
+import static ish.oncourse.common.field.PropertyGetSetFields.CUSTOM_FIELD_PROPERTY_PATTERN
+import static ish.oncourse.common.field.PropertyGetSetFields.TAG_PATTERN
 import ish.oncourse.server.api.v1.model.DataCollectionFormDTO
 import ish.oncourse.server.api.v1.model.DataCollectionRuleDTO
 import ish.oncourse.server.api.v1.model.DataCollectionTypeDTO

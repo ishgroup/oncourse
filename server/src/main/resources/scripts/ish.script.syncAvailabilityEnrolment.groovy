@@ -1,4 +1,4 @@
-if (record.courseClass.sessionsCount == 1 && record.courseClass.startDateTime != null &&
+if (record.courseClass.sessions.size() == 1 && record.courseClass.startDateTime != null &&
         record.courseClass.endDateTime != null && !record.courseClass.tutorRoles.isEmpty()) {
 
     String startDate = record.courseClass.startDateTime.format("yyyy-MM-dd HH:mm")
