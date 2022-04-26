@@ -8,7 +8,7 @@ import io.bootique.cayenne.CayenneModule
 import io.bootique.jdbc.DataSourceListener
 import io.bootique.jdbc.JdbcModule
 import io.bootique.jdbc.managed.ManagedDataSourceStarter
-import io.bootique.jdbc.tomcat.JdbcTomcatModule
+import io.bootique.jdbc.hikaricp.JdbcHikariCPModule
 import ish.common.types.PaymentType
 import ish.oncourse.server.AngelModule
 import ish.oncourse.server.ICayenneService
@@ -103,7 +103,7 @@ abstract class TestWithDatabase extends TestWithBootique {
                         })
                     }
                 })
-                .module(JdbcTomcatModule.class)
+                .module(JdbcHikariCPModule.class)
                 .module(CayenneModule.class)
                 .module(new Module() {
                     @Override
