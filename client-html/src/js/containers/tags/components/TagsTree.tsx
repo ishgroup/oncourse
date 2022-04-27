@@ -12,9 +12,9 @@ import { ItemId } from "@atlaskit/tree/types";
 import Tree from "./TagTreeBasis";
 import { FormTag, FormTagProps } from "../../../model/tags";
 import TagItem from "./TagItem";
-import uniqid from "../../../common/utils/uniqid";
 import { AnyArgFunction, NumberArgFunction } from "../../../model/common/CommonFunctions";
 import { getDeepValue } from "../../../common/utils/common";
+import { usePrevious } from "../../../common/utils/hooks";
 
 const PADDING_PER_LEVEL = 16;
 
@@ -74,6 +74,42 @@ const setParents = (data: TreeData) => {
 
 const errorKeys: (keyof Tag)[] = ["urlPath", "name", "content"];
 
+const RenderedItem = ({
+  item,
+  provided,
+  snapshot,
+  syncErrors,
+  classes,
+  onDelete,
+  changeVisibility,
+  setEditingId,
+  editingId
+}) => {
+  const hasErrors = Object.keys(getDeepValue(syncErrors, item.data.parent) || {}).some(key => errorKeys.includes(key as any));
+
+  useEffect(() => {
+    if (hasErrors && editingId !== item.data.id) {
+      setEditingId(item.data.id);
+    }
+  }, [hasErrors, editingId, item.data.id]);
+
+  return (
+    <div className={classes.cardRoot} ref={provided.innerRef} {...provided.draggableProps} data-draggable-id={item.data.id}>
+      <TagItem
+        item={item.data}
+        classes={classes}
+        key={item.data.id}
+        onDelete={onDelete}
+        changeVisibility={changeVisibility}
+        provided={provided}
+        snapshot={snapshot}
+        setIsEditing={setEditingId}
+        isEditing={hasErrors || item.data.id === editingId}
+      />
+    </div>
+  );
+};
+
 const TagsTree = React.memo<TagsTreeProps>(props => {
   const {
     rootTag, 
@@ -117,25 +153,19 @@ const TagsTree = React.memo<TagsTreeProps>(props => {
     item,
     provided,
     snapshot
-  }: RenderItemParams) => {
-    const hasErrors = Object.keys(getDeepValue(syncErrors, item.data.parent) || {}).some(key => errorKeys.includes(key as any));
-
-    return (
-      <div className={classes.cardRoot} ref={provided.innerRef} {...provided.draggableProps} data-draggable-id={item.data.id}>
-        <TagItem
-          item={item.data}
-          classes={classes}
-          key={item.data.id || uniqid()}
-          onDelete={onDelete}
-          changeVisibility={changeVisibility}
-          provided={provided}
-          snapshot={snapshot}
-          setIsEditing={setEditingId}
-          isEditing={hasErrors || item.data.id === editingId}
-        />
-      </div>
-    );
-  }, [editingId, syncErrors]);
+  }: RenderItemParams) => (
+    <RenderedItem
+      item={item as any}
+      provided={provided}
+      snapshot={snapshot}
+      syncErrors={syncErrors}
+      classes={classes}
+      onDelete={onDelete}
+      changeVisibility={changeVisibility}
+      setEditingId={setEditingId}
+      editingId={editingId}
+    />
+), [editingId, syncErrors]);
 
   return treeState ? (
     <div>

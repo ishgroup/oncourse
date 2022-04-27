@@ -9,6 +9,7 @@ import Divider from "@mui/material/Divider";
 import { withRouter } from "react-router";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import {
+  arrayInsert,
   arrayRemove,
   change,
   Field,
@@ -287,7 +288,7 @@ class TagsFormBase extends React.PureComponent<FormProps, FormState> {
   };
 
   addTag = () => {
-    const { values, dispatch } = this.props;
+    const { dispatch } = this.props;
 
     const newTag: FormTag = {
       id: ("new" + this.counter) as any,
@@ -296,7 +297,6 @@ class TagsFormBase extends React.PureComponent<FormProps, FormState> {
       system: false,
       urlPath: null,
       content: "",
-      parent: "ROOT",
       weight: 1,
       taggedRecordsCount: 0,
       created: null,
@@ -306,11 +306,7 @@ class TagsFormBase extends React.PureComponent<FormProps, FormState> {
       color: COLORS[Math.floor(Math.random() * COLORS.length)],
     };
 
-    const clone = JSON.parse(JSON.stringify(values));
-
-    clone && clone.childTags && clone.childTags.splice(0, 0, newTag);
-
-    dispatch(change("TagsForm", "childTags", clone.childTags));
+    dispatch(arrayInsert("TagsForm", "childTags", 0, newTag));
 
     this.counter++;
   };
@@ -505,7 +501,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 const TagsForm = reduxForm({
   form: "TagsForm",
   onSubmitFail,
-  validate
+  validate,
+  shouldError: () => true
 })(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(TagsFormBase))));
 
 export default TagsForm as ComponentClass<Props>;
