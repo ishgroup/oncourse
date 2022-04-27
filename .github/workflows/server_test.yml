@@ -97,7 +97,7 @@ jobs:
 
   server-integrations:
     runs-on: ubuntu-18.04
-    timeout-minutes: 60
+    timeout-minutes: 80
     strategy:
       matrix:
         java: [11]
