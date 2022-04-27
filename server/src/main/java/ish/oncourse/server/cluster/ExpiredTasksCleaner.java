@@ -43,8 +43,9 @@ public class ExpiredTasksCleaner implements Job {
     }
 
     void execute() throws JobExecutionException {
+        Connection connection = null;
         try {
-            Connection connection = cayenneService.getDataSource().getConnection();
+            connection = cayenneService.getDataSource().getConnection();
             PreparedStatement statement = connection.prepareStatement("DELETE FROM ExecutorManagerTask" +
                     " WHERE (timestampdiff(hour, createdOn, current_timestamp)>? AND status=?)" +
                     " OR (timestampdiff(hour, modifiedOn, current_timestamp)>? AND (status=? OR status=?))");
@@ -56,6 +57,14 @@ public class ExpiredTasksCleaner implements Job {
             statement.execute();
         } catch (SQLException throwables) {
             throw new JobExecutionException(throwables);
+        } finally {
+            try {
+                if (connection != null && !connection.isClosed()) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
