@@ -17,6 +17,7 @@ import ish.oncourse.server.cayenne.PaymentMethod
 import ish.oncourse.server.db.SanityCheckService
 import ish.oncourse.server.integration.PluginService
 import ish.oncourse.server.modules.ApiCayenneLayerModule
+import ish.persistence.RecordNotFoundException
 import ish.util.AccountUtil
 import org.apache.cayenne.Persistent
 import org.apache.cayenne.access.DataContext
@@ -163,7 +164,13 @@ abstract class TestWithDatabase extends TestWithBootique {
         DataContext newContext = injector.getInstance(ICayenneService).getNewNonReplicatingContext()
 
         List<PaymentMethod> methods = ObjectSelect.query(PaymentMethod).select(newContext)
-        Account bankAccount = AccountUtil.getDefaultBankAccount(newContext, Account)
+        Account bankAccount = null
+        try{
+            bankAccount = AccountUtil.getDefaultBankAccount(newContext, Account)
+        } catch(RecordNotFoundException ignored){
+            validateAccountAndTaxDefaults()
+            bankAccount = AccountUtil.getDefaultBankAccount(newContext, Account)
+        }
 
         for (PaymentType type : PaymentType.values()) {
             if (PaymentMethod.NAME.eq(type.getDisplayName()).filterObjects(methods).isEmpty()) {
