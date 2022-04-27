@@ -64,10 +64,12 @@ const styles = (theme: AppTheme) => createStyles({
     color: theme.palette.action.hover,
     fontSize: "20px"
   },
+  cardRoot: {
+    paddingTop: theme.spacing(1),
+  },
   card: {
+    zIndex: 1,
     borderRadius: `${theme.shape.borderRadius}px`,
-    padding: theme.spacing(0.25, 0),
-    margin: theme.spacing(1, 0),
     cursor: "pointer",
     backgroundColor: alpha(theme.palette.text.primary, 0.025),
     "&:hover $actionIcon": {
@@ -94,7 +96,8 @@ const styles = (theme: AppTheme) => createStyles({
     gridTemplateColumns: "1fr 1fr 108px",
     display: "grid",
     alignItems: "center",
-    paddingLeft: "94px"
+    paddingLeft: "94px",
+    marginBottom: theme.spacing(1)
   },
   fieldEditable: {
     paddingRight: theme.spacing(2),
@@ -107,6 +110,13 @@ const styles = (theme: AppTheme) => createStyles({
   },
   urlEditable: {
     fontSize: "14px",
+  },
+  placeholder: {
+    border: `2px dashed ${theme.palette.action.focus}`,
+    borderRadius: `${theme.shape.borderRadius}px`,
+    position: "absolute",
+    boxSizing: "border-box",
+    zIndex: 0
   }
 });
 
@@ -241,7 +251,7 @@ class TagsFormBase extends React.PureComponent<FormProps, FormState> {
 
     delete clone.dragIndex;
     delete clone.parent;
-    delete clone.orderChanged;
+    delete clone.refreshFlag;
 
     const tags = { ...clone, childTags: setWeight(clone.childTags) };
 
@@ -305,13 +315,13 @@ class TagsFormBase extends React.PureComponent<FormProps, FormState> {
     this.counter++;
   };
 
-  changeVisibility = (parent, index, item: Tag) => {
-    const { dispatch } = this.props;
-
-    dispatch(change("TagsForm", parent ? parent + ".status" : "status", item.status === "Private" ? "Show on website" : "Private"));
+  changeVisibility = (item: FormTag) => {
+    const { dispatch, values } = this.props;
+    dispatch(change("TagsForm", item.parent ? item.parent + ".status" : "status", item.status === "Private" ? "Show on website" : "Private"));
+    dispatch(change("TagsForm", "refreshFlag", !values.refreshFlag));
   }
 
-  removeChildTag = (parent, index, item) => {
+  removeChildTag = (item: FormTag) => {
     const { dispatch, values, openConfirm } = this.props;
 
     const confirmMessage = item.childrenCount
@@ -324,11 +334,12 @@ class TagsFormBase extends React.PureComponent<FormProps, FormState> {
     const onConfirm = () => {
       const clone = JSON.parse(JSON.stringify(values));
 
-      const removePath = getDeepValue(clone, parent.replace(/\[[0-9]+]$/, ""));
+      const removePath = getDeepValue(clone, item.parent.replace(/\[[0-9]+]$/, ""));
 
-      removePath && removePath.splice(index, 1);
+      removePath && removePath.splice(Number(item.parent.match(/\[(\d)]$/)[1]), 1);
 
       dispatch(change("TagsForm", "childTags", clone.childTags));
+      dispatch(change("TagsForm", "refreshFlag", !values.refreshFlag));
     };
 
     openConfirm({ onConfirm, confirmMessage, confirmButtonText: "DELETE" });
@@ -338,7 +349,7 @@ class TagsFormBase extends React.PureComponent<FormProps, FormState> {
     const { dispatch, values } = this.props;
 
     dispatch(change("TagsForm", "childTags", treeDataToTags(tagsTree)));
-    dispatch(change("TagsForm", "orderChanged", !values.orderChanged));
+    dispatch(change("TagsForm", "refreshFlag", !values.refreshFlag));
   };
 
   removeRequirement = index => {
