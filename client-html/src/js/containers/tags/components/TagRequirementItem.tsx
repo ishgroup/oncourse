@@ -10,6 +10,7 @@ import { ToogleCheckbox } from "../../../common/components/form/ToogleCheckbox";
 import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
 import { AppTheme } from "../../../model/common/Theme";
+import { useHoverShowStyles } from "../../../common/styles/hooks";
 
 const styles = (theme: AppTheme) => createStyles({
   deleteIcon: {
@@ -62,8 +63,10 @@ const TagRequirementItem: React.FC<Props> = props => {
   
   const header = useMemo(() => GetTagRequirementDisplayName(item.type), [item.type]);
 
+  const hoverClasses = useHoverShowStyles();
+
   return (
-    <div className={classes.root}>
+    <div className={clsx(classes.root, hoverClasses.container)}>
       <Typography variant="subtitle1" className="flex-fill">
         {header}
       </Typography>
@@ -91,7 +94,7 @@ const TagRequirementItem: React.FC<Props> = props => {
       />
 
       <IconButton
-        className={clsx("dndActionIconButton", {
+        className={clsx("dndActionIconButton", hoverClasses.target, {
           "invisible": disabled
         })}
         onClick={() => onDelete(index)}

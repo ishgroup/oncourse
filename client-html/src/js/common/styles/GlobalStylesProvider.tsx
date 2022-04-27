@@ -244,7 +244,7 @@ const globalStyles = (theme: AppTheme) =>
         }
       },
       ".dndActionIcon": {
-        fill: theme.palette.action.hover,
+        fill: theme.palette.action.focus,
         "&:hover": {
           fill: theme.palette.action.active
         }

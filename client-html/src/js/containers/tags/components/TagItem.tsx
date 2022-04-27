@@ -88,8 +88,8 @@ const TagItem = React.memo<FormTagProps>(({
               />
             )
             : (
-              <Typography variant="body2" fontWeight="500" color={item.name ? undefined : "error"} noWrap>
-                {item.name || "Name is mandatory"}
+              <Typography variant="body2" fontWeight="500" noWrap>
+                {item.name}
               </Typography>
             )}
         </div>
@@ -129,7 +129,7 @@ const TagItem = React.memo<FormTagProps>(({
         </IconButton>
 
         <IconButton
-          className={clsx("dndActionIconButton", {
+          className={clsx("dndActionIconButton", hoverClasses.target, {
             "invisible": !item.parent
           })}
           onClick={onDeleteClick}
