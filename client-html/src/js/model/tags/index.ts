@@ -20,7 +20,7 @@ export interface MenuTag {
 
 export interface FormTag extends Tag {
   parent?: string;
-  orderChanged?: boolean;
+  refreshFlag?: boolean;
   childTags?: FormTag[];
 }
 
@@ -31,7 +31,6 @@ export interface FormTagProps {
   isEditing: boolean;
   setIsEditing: NumberArgFunction;
   item: FormTag;
-  index?: number;
   snapshot?: any;
   provided?: any;
 }

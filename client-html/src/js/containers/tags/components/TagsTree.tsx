@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useState } from "react";
-import Tree, {
+import {
   moveItemOnTree,
-  TreeData,
   RenderItemParams,
-  TreeSourcePosition,
-  TreeDestinationPosition, TreeItem
+  TreeData,
+  TreeDestinationPosition,
+  TreeItem,
+  TreeSourcePosition
 } from '@atlaskit/tree';
 import { Tag } from "@api/model";
 import { ItemId } from "@atlaskit/tree/types";
+import Tree from "./TagTreeBasis";
 import { FormTag, FormTagProps } from "../../../model/tags";
 import TagItem from "./TagItem";
 import uniqid from "../../../common/utils/uniqid";
@@ -29,7 +31,7 @@ const shouldNotUpdate = (prevProps: TagsTreeProps, currentProps: TagsTreeProps) 
     return false;
   }
 
-  if (prevProps.rootTag.orderChanged !== currentProps.rootTag.orderChanged) {
+  if (prevProps.rootTag.refreshFlag !== currentProps.rootTag.refreshFlag) {
     return false;
   }
 
@@ -66,6 +68,7 @@ const setItemParent = (id: string | number, index, items: Record<ItemId, TreeIte
 };
 
 const setParents = (data: TreeData) => {
+  data.items[data.rootId].data.refreshFlag = false;
   data.items[data.rootId].children.forEach((id, index) => setItemParent(id, index, data.items));
 };
 
@@ -94,13 +97,16 @@ const TagsTree = React.memo<TagsTreeProps>(props => {
       setParents(newState);
       setTreeState(newState);
     }
-  }, [rootTag.id, rootTag.orderChanged, editingId]);
+  }, [rootTag.id, rootTag.refreshFlag, editingId, syncErrors]);
   
   const onDragEnd = (
     source: TreeSourcePosition,
     destination?: TreeDestinationPosition,
   ) => {
-    if (!destination || (typeof destination.index !== "number" && String(source.parentId) === String(destination.parentId))) {
+    if (!destination 
+      || (source.parentId === destination.parentId && source.index === destination.index )
+      || (typeof destination.index !== "number" && String(source.parentId) === String(destination.parentId))
+    ) {
       return;
     }
 
@@ -113,9 +119,9 @@ const TagsTree = React.memo<TagsTreeProps>(props => {
     snapshot
   }: RenderItemParams) => {
     const hasErrors = Object.keys(getDeepValue(syncErrors, item.data.parent) || {}).some(key => errorKeys.includes(key as any));
-    
+
     return (
-      <div ref={provided.innerRef} {...provided.draggableProps}>
+      <div className={classes.cardRoot} ref={provided.innerRef} {...provided.draggableProps} data-draggable-id={item.data.id}>
         <TagItem
           item={item.data}
           classes={classes}
@@ -145,6 +151,8 @@ const TagsTree = React.memo<TagsTreeProps>(props => {
       />
       <div className="ml-2">
         <Tree
+          // @ts-ignore
+          classes={classes}
           tree={treeState}
           renderItem={renderItem}
           onDragEnd={onDragEnd}
