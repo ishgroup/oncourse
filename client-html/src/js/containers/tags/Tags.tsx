@@ -84,6 +84,5 @@ const mapStateToProps = (state: State) => ({
 });
 
 export default connect<any, any, any>(
-  mapStateToProps,
-  null
+  mapStateToProps
 )(withTheme(Tags));

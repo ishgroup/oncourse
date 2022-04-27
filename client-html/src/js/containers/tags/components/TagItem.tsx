@@ -27,7 +27,6 @@ const TagItem = React.memo<FormTagProps>(({
   classes,
   onDelete,
   changeVisibility,
-  index,
   item,
   snapshot,
   provided,
@@ -38,13 +37,13 @@ const TagItem = React.memo<FormTagProps>(({
 
   const onDeleteClick = useCallback(e => {
     stopEventPropagation(e);
-    onDelete(index, item);
-  }, [item, index]);
+    onDelete(item);
+  }, [item]);
 
   const onVisibilityClick = useCallback(e => {
     stopEventPropagation(e);
-    changeVisibility(index, item);
-  }, [item, index]);
+    changeVisibility(item);
+  }, [item]);
 
   const hoverClasses = useHoverShowStyles();
 
@@ -59,12 +58,12 @@ const TagItem = React.memo<FormTagProps>(({
       className={clsx(classes.card, hoverClasses.container, {
         [clsx("paperBackgroundColor", classes.dragOver)]: snapshot.isDragging || Boolean(snapshot.combineTargetFor)
       })}
-      onClick={onEditClick}
+      onClick={isEditing ? null : onEditClick}
     >
       <div className={classes.cardGrid}>
         <div {...provided.dragHandleProps}>
           <DragIndicator
-            className={clsx("d-flex", classes.dragIcon)}
+            className={clsx("d-flex", classes.dragIcon, !item.parent && "pointer-events-none")}
           />
         </div>
 
@@ -119,7 +118,7 @@ const TagItem = React.memo<FormTagProps>(({
           )}
         </div>
 
-        <IconButton className={clsx("dndActionIconButton", hoverClasses.target)}>
+        <IconButton className={clsx("dndActionIconButton", hoverClasses.target)} onClick={onEditClick}>
           <Edit className={classes.actionIcon} />
         </IconButton>
 
