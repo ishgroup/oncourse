@@ -26,6 +26,7 @@ import getCaretCoordinates from "../../../utils/getCaretCoordinates";
 import { getMenuTags } from "../../list-view/utils/listFiltersUtils";
 import { selectStyles } from "../formFields/SelectCustomComponents";
 import AddTagMenu from "./AddTagMenu";
+import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 
 const styles = theme =>
   createStyles({
@@ -144,9 +145,11 @@ const endTagRegex = /#\s*[^\w\d]*$/;
 const getCurrentInputString = (input, formTags: Tag[]) => {
   let substr = input;
 
-  formTags && formTags.forEach(t => {
-    substr = substr.replace("#" + t.name, "").trim();
-  });
+  if (formTags) {
+    formTags.forEach(t => {
+      substr = substr.replace("#" + t.name, "").trim();
+    });
+  }
 
   if (substr) {
     return substr.trim().replace(/#/g, "");
@@ -445,29 +448,41 @@ const SimpleTagList: React.FC<Props> = props => {
                   {label}
                 </InputLabel>
               )}
-              <Input
-                {...InputProps}
-                disabled={disabled}
-                placeholder={placeholder}
-                onChange={handleInputChange}
-                onFocus={onFocus}
-                onBlur={onBlur}
-                inputRef={inputNode}
-                classes={{
-                  underline: fieldClasses.underline,
-                  input: clsx(disabled && classes.readonly, fieldClasses.text),
-                }}
-                inputProps={{
-                  ...inputProps,
-                  value: inputValue
-                }}
-                endAdornment={!disabled && (
-                  <InputAdornment className={classes.inputEndAdornment} position="end">
-                    <Edit color="primary" />
-                  </InputAdornment>
-                )}
-                multiline
-              />
+              {IS_JEST
+                ? (
+                  <Input
+                    {...InputProps}
+                    className="d-none"
+                    inputProps={{
+                      ...inputProps,
+                      value: inputValue
+                    }}
+                  />
+                ) : (
+                  <Input
+                    {...InputProps}
+                    disabled={disabled}
+                    placeholder={placeholder}
+                    onChange={handleInputChange}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
+                    inputRef={inputNode}
+                    classes={{
+                      underline: fieldClasses.underline,
+                      input: clsx(disabled && classes.readonly, fieldClasses.text),
+                    }}
+                    inputProps={{
+                      ...inputProps,
+                      value: inputValue
+                    }}
+                    endAdornment={!disabled && (
+                      <InputAdornment className={classes.inputEndAdornment} position="end">
+                        <Edit color="primary" />
+                      </InputAdornment>
+                    )}
+                    multiline
+                  />
+              )}
               <FormHelperText
                 classes={{
                   error: "shakingError"
