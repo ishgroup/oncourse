@@ -10,17 +10,10 @@ jdbc:
   angel:
     type: uri
     driverClassName: org.mariadb.jdbc.Driver
-    testWhileIdle: true
-    validationQuery: SELECT 1
-    validationInterval: 30000
-    timeBetweenEvictionRunsMillis: 3000
-    maxActive: 100
-    maxIdle: 5
-    minIdle: 2
-    removeAbandonedTimeout: 1000
-    removeAbandoned: true
-    logAbandoned: true
-    jmxEnabled: true
+    connectionTestQuery: SELECT 1
+    maximumPoolSize: 100
+    minimumIdle: 2
+    idleTimeout: 1000000
 
 cayenne:
   datasource: angel

@@ -8,30 +8,16 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details.
  */
+package ish.oncourse.common.field;
 
-package ish.oncourse.server.monitoring;
+public class PropertyGetSetFields {
 
-public interface ApplicationInfoMBean {
+	public static final String SET = "set";
+	public static final String GET = "get";
+	public static final String CUSTOM_FIELD_PROPERTY_PATTERN = "customField.";
+	public static final String TAG_PATTERN = "tag/";
+	public static final String TAG_S_PATTERN = "singleTag/";
+	public static final String TAG_M_PATTERN = "multipleTag/";
+	public static final String MAILING_LIST_FIELD_PATTERN = "mailingList/";
 
-	/**
-	 * Returns number of users currently logged in.
-	 */
-	int getLoggedInUsersCount();
-
-	/**
-	 * Returns server's SSL port.
-	 */
-	int getSslPort();
-
-	/**
-	 * Returns IP address jetty is listening to.
-	 */
-	String getIpAddress();
-
-	/**
-	 * Returns total number of Enrolment records existing in the system regardless of their status.
-	 */
-	int getEnrolmentsCount();
-
-	String getVersion();
 }

@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 import { TagGroup, Tag } from "@api/model";
 import { MenuTag } from "../../../../model/tags";
@@ -25,6 +28,18 @@ export const getFiltersString = (filterGroups: FilterGroup[]) => filterGroups
   })
   .filter(v => v.trim())
   .join(" and ");
+
+export const setActiveFiltersBySearch = (search: string, filters: FilterGroup[]) => {
+  const filterNames = search ? search.replace(/[@_]/g, " ")
+    .split(",")
+    .map(f => f.trim()) : [];
+  filters.forEach(g => {
+    g.filters.forEach(f => {
+      // eslint-disable-next-line no-param-reassign
+      f.active = filterNames.includes(f.name);
+    });
+  });
+};
 
 export const getActiveTags = (tags: MenuTag[], res?: MenuTag[]): MenuTag[] => {
   const result = res || [];
