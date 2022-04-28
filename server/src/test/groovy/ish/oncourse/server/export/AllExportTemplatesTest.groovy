@@ -119,6 +119,8 @@ class AllExportTemplatesTest extends TestWithDatabase {
         def pathsList = PluginService.getPluggableResources(ResourceType.EXPORT.getResourcePath(), ResourceType.EXPORT.getFilePattern())
         List<Map<String, Object>> resourcesList = new ArrayList<>()
 
+        int counter = 0;
+
         for (String propFile : pathsList) {
             def resourceAsStream = ResourcesUtil.getResourceAsInputStream(propFile)
             Yaml yaml = new Yaml()
@@ -126,14 +128,21 @@ class AllExportTemplatesTest extends TestWithDatabase {
             resourcesList.addAll(sources as List<Map<String, Object>>)
 
             for (Map<String, Object> props : resourcesList) {
-                DataPopulationUtils.updateExport(cayenneContext, props)
-                String keyCode = (String) props.get(ResourceProperty.KEY_CODE.getDisplayName())
-                String entityName = ((String) props.get(ResourceProperty.ENTITY_CLASS.getDisplayName()))
-                String outputExtention = keyCode.split("\\.").last()
-                String dataSet = keyCode.split("\\.")[2] + "DataSet.xml"
-                String output = keyCode.split("\\.")[2] + "SampleOutput." + outputExtention
+                if(counter % 2 == 0){
+                    DataPopulationUtils.updateExport(cayenneContext, props)
+                    String keyCode = (String) props.get(ResourceProperty.KEY_CODE.getDisplayName())
+                    String entityName = ((String) props.get(ResourceProperty.ENTITY_CLASS.getDisplayName()))
+                    String outputExtention = keyCode.split("\\.").last()
+                    String dataSet = keyCode.split("\\.")[2] + "DataSet.xml"
+                    String output = keyCode.split("\\.")[2] + "SampleOutput." + outputExtention
 
-                testExport(keyCode, entityName, dataSet, output)
+                    def temp = System.currentTimeMillis()
+                    testExport(keyCode, entityName, dataSet, output)
+                    def now = System.currentTimeMillis()
+                    logger.warn("TIME: "+(now-temp))
+                }
+
+                counter++
             }
         }
         TimeZone.setDefault(previousTimezone)
