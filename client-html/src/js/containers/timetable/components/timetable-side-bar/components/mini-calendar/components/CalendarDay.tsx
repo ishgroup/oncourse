@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
+import React, { useMemo } from "react";
 import { Button } from "@mui/material";
 import { isSameDay } from "date-fns";
 import clsx from "clsx";
@@ -67,18 +67,38 @@ const CalendarDay = React.memo((props: Props) => {
   const theme = useAppTheme();
   const isSame = isSameDay(targetDay, date);
   const isToday = isSameDay(new Date(), date);
+  
+  const style = useMemo(() => {
+    let result;
+
+    const dayIndexValue = selectedMonthSessionDays[day - 1];
+    
+    if (selectedMonthSessionDays.length && status === "current" && dayIndexValue !== 0) {
+      const backgroundColor = alpha(theme.palette.primary.main, dayIndexValue);
+
+      result = {
+        ...result || {},
+        backgroundColor,
+        color: theme.palette.getContrastText(backgroundColor)
+      };
+    }
+    
+    if (isToday) {
+      result = {
+        ...result || {},
+        fontWeight: "900"
+      };
+    }
+    
+    return result;
+  }, [isToday, status, selectedMonthSessionDays, day, theme]);
 
   return (
     <Button
       className={clsx(classes.root, isSame && classes.same)}
       onClick={() => setTargetDay(date)}
       disabled={disabled}
-      style={{
-        ...selectedMonthSessionDays.length && status === "current" && selectedMonthSessionDays[day - 1] !== 0
-          ? { backgroundColor: alpha(theme.palette.primary.main, selectedMonthSessionDays[day - 1]) }  
-          : {},
-        ...isToday ? { fontWeight: "900" } : {}
-      }}
+      style={style}
     >
       {day}
     </Button>
