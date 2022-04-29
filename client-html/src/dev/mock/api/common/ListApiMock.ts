@@ -313,6 +313,10 @@ export function listApiMock() {
         return promiseResolve(config, this.db.getPlainRooms(config.params));
       }
 
+      case "SystemUser": {
+        return promiseResolve(config, this.db.getPlainSystemUser(config.params));
+      }
+
       default: {
         return promiseResolve(config, {});
       }
