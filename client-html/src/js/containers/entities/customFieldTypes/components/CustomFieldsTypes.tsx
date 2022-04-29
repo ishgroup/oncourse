@@ -12,6 +12,7 @@ import { change } from "redux-form";
 import { CustomFieldType } from "@api/model";
 import { connect } from "react-redux";
 import { GridProps } from "@mui/material/Grid";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import {
   validateEmail,
   validatePattern,
@@ -40,15 +41,13 @@ const customFieldComponentResolver = (type: CustomFieldType, onCreateOption) => 
     case "Date": {
       fieldType = "date";
       componentProps = {
-        type: "date",
         validate
       };
       break;
     }
     case "Date time": {
-      fieldType = "datetime";
+      fieldType = "dateTime";
       componentProps = {
-        type: "datetime",
         validate
       };
       break;
@@ -68,7 +67,7 @@ const customFieldComponentResolver = (type: CustomFieldType, onCreateOption) => 
     }
     case "List": {
       const isCreatable = type.defaultValue && type.defaultValue.includes("*");
-      fieldType = isCreatable ? "searchSelect" : "text";
+      fieldType = isCreatable ? "searchSelect" : "select";
       componentProps = {
         allowEmpty: !type.mandatory,
         validate,
@@ -181,13 +180,22 @@ const CustomField: React.FC<CustomFieldProps> = ({
   const { fieldType, componentProps } = useMemo(() => customFieldComponentResolver(type, onCreate), [type]);
 
   return (
-    <FormField
-      name={`${fieldName}.${type.fieldKey}`}
-      label={type.name}
-      type={fieldType}
-      items={items}
-      {...componentProps}
-    />
+    fieldType === "checkbox"
+    ? (
+      <FormControlLabel
+        control={<FormField type="checkbox" name={`${fieldName}.${type.fieldKey}`} color="primary" {...componentProps} />}
+        label={type.name}
+      />
+      )
+      : (
+        <FormField
+          name={`${fieldName}.${type.fieldKey}`}
+          label={type.name}
+          type={fieldType}
+          items={items}
+          {...componentProps}
+        />
+      )
   );
 };
 
