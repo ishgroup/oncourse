@@ -24,7 +24,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/qualificati
 
         Given path ishPathList
         And param entity = 'Qualification'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["CODE01","someTitle","someLevel",null,"false"])].id
@@ -37,7 +38,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/qualificati
 #       <---> Verification of deleting
         Given path ishPathList
         And param entity = 'Qualification'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] !contains ["CODE01"]
 
@@ -61,7 +63,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/qualificati
 
         Given path ishPathList
         And param entity = 'Qualification'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["CODE01","someTitle","someLevel",null,"false"])].id
@@ -74,7 +77,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/qualificati
 #       <---> Verification of deleting
         Given path ishPathList
         And param entity = 'Qualification'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] !contains ["CODE01"]
 
@@ -103,7 +107,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/qualificati
 
         Given path ishPathList
         And param entity = 'Qualification'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["CODE01","someTitle","someLevel",null,"false"])].id
