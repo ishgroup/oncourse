@@ -59,10 +59,6 @@ class EntityService {
     return this.entityApi.updateTableModel(entity, model);
   }
 
-  public getRecords(entity: string, search: string): Promise<DataResponse> {
-    return this.entityApi.get(entity, search, PLAIN_LIST_MAX_PAGE_SIZE, 0);
-  }
-
   public getPlainRecords(
     entity: string,
     columns: string,
