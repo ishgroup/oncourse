@@ -34,7 +34,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/room'
 
         Given path ishPathList
         And param entity = 'Room'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["[]",null,"testRoom10","site1","100"])].id
@@ -47,7 +48,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/room'
 #       <---> Verification of deleting:
         Given path ishPathList
         And param entity = 'Room'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] !contains ["testRoom10"]
 
@@ -76,7 +78,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/room'
 
         Given path ishPathList
         And param entity = 'Room'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["[]",null,"testRoom11","site1","100"])].id
@@ -94,7 +97,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/room'
 #       <---> Verification of deleting:
         Given path ishPathList
         And param entity = 'Room'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] !contains ["testRoom11"]
 
@@ -123,7 +127,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/room'
 
         Given path ishPathList
         And param entity = 'Room'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["[]",null,"testRoom12","site1","100"])].id
