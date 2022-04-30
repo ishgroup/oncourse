@@ -5,16 +5,17 @@
 
 import React, { useMemo } from "react";
 import { connect } from "react-redux";
-import {
-  Typography, Grid, List, createStyles
-} from "@mui/material";
+import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
+import List from "@mui/material/List";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 import { Script } from "@api/model";
 import { State } from "../../../../reducers/state";
+import { DashboardItem } from "../../../../model/dashboard";
 import FavoriteItem from "./FavoriteItem";
 import FavoriteScriptItem from "./FavoriteScriptItem";
-import { DashboardItem } from "../../../../model/dashboard";
-import Divider from "@mui/material/Divider";
 
 const styles = theme => createStyles({
   root: {
