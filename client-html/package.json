@@ -52,6 +52,7 @@
     "fork-ts-checker-webpack-plugin": "6.*",
     "html-webpack-plugin": "5.*",
     "jest": "26.*",
+    "jest-canvas-mock": "^2.4.0",
     "jest-junit": "12.*",
     "jest-transform-stub": "2.*",
     "mini-css-extract-plugin": "1.*",

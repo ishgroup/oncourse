@@ -448,41 +448,29 @@ const SimpleTagList: React.FC<Props> = props => {
                   {label}
                 </InputLabel>
               )}
-              {IS_JEST
-                ? (
-                  <Input
-                    {...InputProps}
-                    className="d-none"
-                    inputProps={{
-                      ...inputProps,
-                      value: inputValue
-                    }}
-                  />
-                ) : (
-                  <Input
-                    {...InputProps}
-                    disabled={disabled}
-                    placeholder={placeholder}
-                    onChange={handleInputChange}
-                    onFocus={onFocus}
-                    onBlur={onBlur}
-                    inputRef={inputNode}
-                    classes={{
-                      underline: fieldClasses.underline,
-                      input: clsx(disabled && classes.readonly, fieldClasses.text),
-                    }}
-                    inputProps={{
-                      ...inputProps,
-                      value: inputValue
-                    }}
-                    endAdornment={!disabled && (
-                      <InputAdornment className={classes.inputEndAdornment} position="end">
-                        <Edit color="primary" />
-                      </InputAdornment>
-                    )}
-                    multiline
-                  />
-              )}
+              <Input
+                {...InputProps}
+                disabled={disabled}
+                placeholder={placeholder}
+                onChange={handleInputChange}
+                onFocus={onFocus}
+                onBlur={onBlur}
+                inputRef={inputNode}
+                classes={{
+                  underline: fieldClasses.underline,
+                  input: clsx(disabled && classes.readonly, fieldClasses.text),
+                }}
+                inputProps={{
+                  ...inputProps,
+                  value: inputValue
+                }}
+                endAdornment={!disabled && (
+                  <InputAdornment className={classes.inputEndAdornment} position="end">
+                    <Edit color="primary" />
+                  </InputAdornment>
+                )}
+                multiline={!IS_JEST}
+              />
               <FormHelperText
                 classes={{
                   error: "shakingError"

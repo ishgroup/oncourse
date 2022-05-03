@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Typography } from "@mui/material";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
@@ -91,6 +91,20 @@ interface NestedListState {
   searchTags?: Suggestion[];
   selectedAqlEntity?: string;
 }
+
+const InnerFormField = React.memo((props: any) => {
+  const {
+    input: { name },
+    meta: { error },
+    setFormError
+  } = props;
+
+  useEffect(() => {
+    if (setFormError) setFormError(error);
+  }, [error]);
+
+  return <div className="invisible" id={name} />;
+});
 
 class NestedList extends React.Component<Props, NestedListState> {
   private readonly inputRef: any;
@@ -189,7 +203,7 @@ class NestedList extends React.Component<Props, NestedListState> {
     },
     () => setTimeout(() => this.inputRef.current && this.inputRef.current.focus(), 300));
     this.aqlComponentRef.current.reset();
-  }
+  };
 
   triggerSearch = () => {
     const { onSearch, searchType } = this.props;
@@ -288,7 +302,7 @@ class NestedList extends React.Component<Props, NestedListState> {
       },
       () => this.aqlComponentRef.current && this.aqlComponentRef.current.reset()
     );
-  }
+  };
 
   onSearchChange = event => {
     const { clearSearchResult } = this.props;
@@ -453,18 +467,6 @@ class NestedList extends React.Component<Props, NestedListState> {
     }
   });
 
-  renderInnerFormField = React.memo((props: any) => {
-    const {
-      meta: { error }
-    } = props;
-
-    this.setState({
-      formError: error
-    });
-
-    return <div className="invisible" id={this.props.name} />;
-  });
-
   render() {
     const {
       classes,
@@ -491,7 +493,14 @@ class NestedList extends React.Component<Props, NestedListState> {
 
     return (
       <>
-        {name && <Field name={name} validate={validate} component={this.renderInnerFormField} />}
+        {name && (
+          <Field
+            name={name}
+            validate={validate}
+            component={InnerFormField}
+            setFormError={formError => this.setState({ formError })}
+          />
+        )}
 
         <this.renderSearchType {...{ ...this.props, ...this.state, searchValuesToShow }} />
 
