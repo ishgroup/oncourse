@@ -60,7 +60,6 @@ const CourseClassGeneralTab = React.memo<Props>(
     tutorRoles
   }) => {
     const [classCodeError, setClassCodeError] = useState(null);
-    const [showAllWeeks, setShowAllWeeks] = useState(false);
 
     useEffect(() => {
       if (isNew && !values.code) {
@@ -273,9 +272,9 @@ const CourseClassGeneralTab = React.memo<Props>(
           className="pt-2 pl-3 pr-3"
           columnSpacing={3}
           rowSpacing={2}
-          direction={twoColumn && !showAllWeeks ? undefined : "column-reverse"}
+          direction={twoColumn ? undefined : "column-reverse"}
         >
-          <Grid item xs={twoColumn && !showAllWeeks ? 6 : 12}>
+          <Grid item xs={twoColumn ? 6 : 12}>
             <div className="heading pb-2 pt-3">Restrictions</div>
             <Typography variant="body2" color="inherit" component="div" className="pb-1">
               Students must be at least
@@ -340,9 +339,6 @@ const CourseClassGeneralTab = React.memo<Props>(
             maxEnrolments={values.maximumPlaces}
             targetEnrolments={enrolmentsToProfitAllCount}
             openBudget={openBudget}
-            showAllWeeks={showAllWeeks}
-            setShowAllWeeks={setShowAllWeeks}
-            twoColumn={twoColumn}
             hasBudged={values.budget.some(b => b.invoiceToStudent && b.perUnitAmountIncTax > 0)}
           />
 

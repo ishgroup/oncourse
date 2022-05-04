@@ -26,14 +26,12 @@ import { State } from "../../../../../reducers/state";
 import { getCourseClassEnrolments, setCourseClassEnrolments } from "../../actions";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import { AppTheme } from "../../../../../model/common/Theme";
-import ChartViewSwitcher from "./ChartViewSwitcher";
 
 interface Props {
   classId: number;
   classStart: string;
   minEnrolments: number;
   maxEnrolments: number;
-  twoColumn: boolean;
   hasBudged: boolean;
   targetEnrolments?: number;
   getEnrolments?: NumberArgFunction;
@@ -42,16 +40,14 @@ interface Props {
   clearEnrolments?: any;
   theme?: AppTheme;
   openBudget?: any;
-  setShowAllWeeks?: any;
-  showAllWeeks?: boolean;
 }
 
 const CustomizedTooltip = props => {
   const {
- active, payload, data, showAllWeeks
+ active, payload, data
 } = props;
 
-  return active && payload[0] && (showAllWeeks ? true : payload[0].payload.week !== 0) ? (
+  return active && payload[0] ? (
     <Paper className="p-1">
       <Typography component="div" variant="body2" noWrap>
         <span className="mr-1">Total enrolments:</span>
@@ -117,17 +113,6 @@ const chartMargin = {
  top: 8, right: 30, left: 20, bottom: 0
 };
 
-const tickFormatterFirstSix = tick => {
-  switch (tick) {
-    case 0:
-      return "";
-    case "start":
-      return tick;
-    default:
-      return tick - 1;
-  }
-};
-
 const tickFormatterAll = tick => {
   switch (tick) {
     case 0:
@@ -148,7 +133,7 @@ const CustomizedAxisTick = ({
 );
 
 const useStyles = makeStyles(() => ({
-  showAllWeeks: show => (show ? { maxWidth: "unset" } : { maxWidth: "400px" }),
+  showAllWeeks: { maxWidth: "unset" }
 }));
 
 const CourseClassEnrolmentsChart = React.memo<Props>(
@@ -164,12 +149,8 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
     classStart,
     theme,
     openBudget,
-    setShowAllWeeks,
-    showAllWeeks,
-    twoColumn,
     hasBudged
   }) => {
-    const [data, setData] = useState<ChartWeeks>(initialData);
     const [allWeeksData, setAllWeeksData] = useState<ChartWeeks>(initialData);
     const [todayWeek, setTodayWeek] = useState(null);
     const [allWeeksTodayWeek, setAllWeeksTodayWeek] = useState(null);
@@ -178,17 +159,12 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
     const maxLabelEl = useRef<SVGAElement>();
     const minLabelEl = useRef<SVGAElement>();
 
-    const classes = useStyles(showAllWeeks);
-
-    const clearData = useCallback(() => {
-      setData(prev => prev.map(({ week }) => ({ week, enrolments: 0, value: 0 })));
-    }, []);
+    const classes = useStyles();
 
     const onChartHover = useCallback(() => setShowLabels(true), []);
     const onChartLeave = useCallback(() => setShowLabels(false), []);
 
     useEffect(() => {
-      clearData();
       clearEnrolments();
       if (todayWeek) {
         setTodayWeek(null);
@@ -251,9 +227,7 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
       weeks[1].week = "start";
 
       weeks = weeks.reverse();
-
-      setData(weeks);
-
+      
       weeks = [...Array(Math.abs(enrolmentsWeeks + 1) || 1).keys()].map((v, week) => ({
         week,
         enrolments: 0,
@@ -350,7 +324,7 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
     }
 
     return (
-      <Grid item xs={twoColumn && !showAllWeeks ? 6 : 12}>
+      <Grid item xs={12}>
         <div
           onMouseEnter={onChartHover}
           onMouseLeave={onChartLeave}
@@ -360,12 +334,12 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
             width="100%"
             height={250}
           >
-            <AreaChart data={showAllWeeks ? allWeeksData : data} margin={chartMargin}>
+            <AreaChart data={allWeeksData} margin={chartMargin}>
               <XAxis
                 dataKey="week"
                 tickLine={false}
                 tick={props => (
-                  <CustomizedAxisTick {...props} formatter={showAllWeeks ? tickFormatterAll : tickFormatterFirstSix} />
+                  <CustomizedAxisTick {...props} formatter={tickFormatterAll} />
                 )}
                 minTickGap={12}
               />
@@ -377,7 +351,7 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
               />
               <Tooltip
                 wrapperStyle={{ zIndex: 1 }}
-                content={props => <CustomizedTooltip {...props} data={data} showAllWeeks={showAllWeeks} />}
+                content={props => <CustomizedTooltip {...props} data={allWeeksData} />}
               />
               <ReferenceLine
                 y={minEnrolments}
@@ -417,13 +391,13 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
                 )}
               />
               <ReferenceLine
-                x={showAllWeeks ? (startWeekIndex !== allWeeksData.length - 1 ? startWeekIndex : 0) : "start"}
+                x={(startWeekIndex !== allWeeksData.length - 1 ? startWeekIndex : 0)}
                 isFront
                 stroke={green[600]}
                 strokeWidth={2}
               />
               <ReferenceLine
-                x={showAllWeeks ? allWeeksTodayWeek : todayWeek}
+                x={allWeeksTodayWeek}
                 isFront
                 stroke={theme.palette.secondary.main}
                 strokeWidth={2}
@@ -431,10 +405,6 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
               />
             </AreaChart>
           </ResponsiveContainer>
-  
-          {Boolean(enrolments.length) && (
-            <ChartViewSwitcher showAllWeeks={showAllWeeks} setShowAllWeeks={setShowAllWeeks} theme={theme} />
-          )}
   
           {maxLabelButton}
           {minLabelButton}
