@@ -87,7 +87,7 @@ const styles = (theme: AppTheme) => createStyles({
     color: theme.palette.text.primaryEditable,
     fontWeight: 400,
     "&:hover, &:hover $placeholderContent, &:hover $editButton": {
-      opacity: 0.15
+      opacity: 0.35
     },
     "&$rightAligned": {
       display: "flex",
@@ -125,7 +125,7 @@ const styles = (theme: AppTheme) => createStyles({
     }
   },
   placeholderContent: {
-    opacity: 0.15,
+    opacity: 0.25,
     fontWeight: 400,
   },
   chip: {
