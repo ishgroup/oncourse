@@ -15,7 +15,8 @@ Feature: Main feature for all GET requests with path 'list/entity/invoice'
 
         Given path ishPathList
         And param entity = 'AbstractInvoice'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].id contains ["1","2","101","3","4","5","6"]
 
@@ -131,7 +132,8 @@ Feature: Main feature for all GET requests with path 'list/entity/invoice'
 
         Given path ishPathList
         And param entity = 'AbstractInvoice'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].id contains ["1","2","101","3","4","5","6"]
 
@@ -147,7 +149,8 @@ Feature: Main feature for all GET requests with path 'list/entity/invoice'
 
         Given path ishPathList
         And param entity = 'Invoice'
-        When method GET
+        And request {}
+        When method POST
         Then status 403
         And match $.errorMessage == "Sorry, you have no permissions to view this entity. Please contact your administrator"
 

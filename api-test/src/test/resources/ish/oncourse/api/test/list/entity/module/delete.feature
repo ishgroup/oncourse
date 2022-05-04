@@ -24,7 +24,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/module'
 
         Given path ishPathList
         And param entity = 'Module'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["2","1","true"])].id
@@ -36,7 +37,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/module'
 #       <---> Verification of deleting
         Given path ishPathList
         And param entity = 'Module'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] !contains ["2"]
 
@@ -55,7 +57,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/module'
 
         Given path ishPathList
         And param entity = 'Module'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["2","1","true"])].id
@@ -77,7 +80,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/module'
 
         Given path ishPathList
         And param entity = 'Module'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] !contains ["2"]
 
@@ -95,7 +99,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/module'
 
         Given path ishPathList
         And param entity = 'Module'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["2","1","true"])].id

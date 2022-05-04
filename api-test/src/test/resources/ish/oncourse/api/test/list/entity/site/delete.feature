@@ -47,7 +47,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/site'
 
         Given path ishPathList
         And param entity = 'Site'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["someSite10","Adelaide","5000","true"]
 
@@ -61,7 +62,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/site'
 #       <---> Verification of deleting:
         Given path ishPathList
         And param entity = 'Site'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] !contains ["someSite10"]
 
@@ -103,7 +105,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/site'
 
         Given path ishPathList
         And param entity = 'Site'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["someSite11","Adelaide","5000","true"]
 
@@ -122,7 +125,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/site'
 #       <---> Verification deleting:
         Given path ishPathList
         And param entity = 'Site'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] !contains ["someSite11"]
 
@@ -164,7 +168,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/site'
 
         Given path ishPathList
         And param entity = 'Site'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["someSite12","Adelaide","5000","true"]
 

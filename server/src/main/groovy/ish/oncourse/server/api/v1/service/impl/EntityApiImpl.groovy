@@ -55,12 +55,6 @@ class EntityApiImpl implements EntityApi {
     @Inject
     private AqlService aql
 
-
-    @Override
-    DataResponseDTO get(String entity, String search, BigDecimal pageSize, BigDecimal offset) {
-        return getAll(entity, new SearchQueryDTO(search: search, pageSize: pageSize, offset: offset))
-    }
-
     @Override
     DataResponseDTO getAll(String entity, SearchQueryDTO request) {
         DataResponseDTO response = createResponse(entity, request.search, request.pageSize, request.offset)

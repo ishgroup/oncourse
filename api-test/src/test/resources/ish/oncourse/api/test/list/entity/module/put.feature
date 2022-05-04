@@ -37,7 +37,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
 
         Given path ishPathList
         And param entity = 'Module'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["someCode"]
 
@@ -118,7 +119,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
 
         Given path ishPathList
         And param entity = 'Module'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["someCode"]
 
@@ -199,7 +201,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
 
         Given path ishPathList
         And param entity = 'Module'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["someCode"]
 
@@ -279,7 +282,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
 
         Given path ishPathList
         And param entity = 'Module'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["someCode"]
 
@@ -414,7 +418,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
 
         Given path ishPathList
         And param entity = 'Module'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["someCode"]
 
@@ -482,7 +487,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
 
         Given path ishPathList
         And param entity = 'Module'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["someCode"]
 
@@ -544,7 +550,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
 
         Given path ishPathList
         And param entity = 'Module'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["code123"]
 
@@ -606,7 +613,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
 
         Given path ishPathList
         And param entity = 'Module'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["someCode1"]
 
@@ -719,7 +727,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
 
         Given path ishPathList
         And param entity = 'Module'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["YYY"]
 
@@ -781,7 +790,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
 
         Given path ishPathList
         And param entity = 'Module'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["XXX"]
 
