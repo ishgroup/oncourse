@@ -52,6 +52,7 @@ class Tags extends React.Component<any, any> {
       history.push("/tags/" + tags[0].id);
       return;
     }
+
     history.push("/tags");
   };
 
@@ -83,6 +84,5 @@ const mapStateToProps = (state: State) => ({
 });
 
 export default connect<any, any, any>(
-  mapStateToProps,
-  null
+  mapStateToProps
 )(withTheme(Tags));
