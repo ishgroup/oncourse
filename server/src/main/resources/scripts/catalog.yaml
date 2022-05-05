@@ -421,6 +421,13 @@
     - name: certificateReportTemplate
       dataType: TEXT
       value: "ish.oncourse.nonVetCertificate"
+    - name: attendanceRequired
+      dataType: BOOLEAN
+      value: "false"
+    - name: attendanceThreshold
+      label: Min allowed value of enrolments attendance
+      dataType: NUMBER
+      value: "80"
     - name: certificateReportBackground
       dataType: TEXT
       value: "certificate_attendance_backgound.pdf"
