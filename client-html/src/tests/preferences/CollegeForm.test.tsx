@@ -19,9 +19,11 @@ describe("Virtual rendered College Form component", () => {
         [PreferencesModel.CollegeABN.uniqueKey]: mockedApi.db.preference[PreferencesModel.CollegeABN.uniqueKey],
       });
 
-      expect(screen.getByRole(preferencesFormRole)).toHaveFormValues(collegeFormData);
-
       fireEvent.click(screen.getByTestId('appbar-submit-button'));
+
+      setTimeout(() => {
+        expect(screen.getByRole(preferencesFormRole)).toHaveFormValues(collegeFormData);
+      }, 500);
     }
   });
 });
