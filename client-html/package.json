@@ -75,6 +75,7 @@
     "zip-webpack-plugin": "4.*"
   },
   "dependencies": {
+    "@atlaskit/tree": "^8.6.0",
     "@bugsnag/js": "7.*",
     "@bugsnag/plugin-react": "7.*",
     "@ckeditor/ckeditor5-autoformat": "latest",
@@ -122,7 +123,7 @@
     "react": "17.*",
     "react-ace": "9.*",
     "react-awesome-gravatar": "2.*",
-    "react-beautiful-dnd": "13.*",
+    "react-beautiful-dnd-next": "^11.0.5",
     "react-color": "2.*",
     "react-dom": "17.*",
     "react-dropzone": "11.*",

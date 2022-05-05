@@ -1,13 +1,24 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
+import React, {
+ useCallback, useEffect, useMemo, useRef, useState 
+} from "react";
 import ButtonBase from "@mui/material/ButtonBase";
 import Popper from "@mui/material/Popper";
-import { HuePicker, AlphaPicker } from "react-color";
+import { AlphaPicker, HuePicker } from "react-color";
 import { ClickAwayListener, Theme } from "@mui/material";
 import { createStyles, withStyles } from "@mui/styles";
 import Paper from "@mui/material/Paper";
 import Grow from "@mui/material/Grow";
 import { WrappedFieldProps } from "redux-form";
-import { usePrevious } from "../../utils/hooks";
+import clsx from "clsx";
+import { stopEventPropagation } from "../../utils/events";
 
 interface ColorPickerWrapperProps {
   input?: WrappedFieldProps["input"];
@@ -16,12 +27,14 @@ interface ColorPickerWrapperProps {
 }
 
 interface ColorPickerBaseProps extends ColorPickerWrapperProps {
-  color: string;
+  color: any;
   TransitionProps: any;
   setAnchorEl: any;
 }
 
-const styles = createStyles(({ spacing, transitions, palette, zIndex }: Theme) => ({
+const styles = createStyles(({
+ spacing, transitions, palette, zIndex 
+}: Theme) => ({
   paper: {
     width: 200,
     padding: spacing(2),
@@ -40,15 +53,15 @@ const styles = createStyles(({ spacing, transitions, palette, zIndex }: Theme) =
     }
   },
   colorPickerButton: {
-    width: spacing(3),
-    height: spacing(3),
+    width: "14px",
+    height: "14px",
     borderRadius: "100%",
     transition: transitions.create("transform", {
       duration: transitions.duration.shorter,
       easing: transitions.easing.easeInOut
     }),
-    "&:hover": {
-      transform: "scale(1.1)"
+    "&:hover,&$opened": {
+      transform: "scale(2)"
     }
   },
   popper: {
@@ -71,19 +84,19 @@ const styles = createStyles(({ spacing, transitions, palette, zIndex }: Theme) =
     "& > div > div:first-child > div": {
       background: "none !important"
     }
-  }
+  },
+  opened: {}
 }));
 
 const ColorPickerBase = React.memo<ColorPickerBaseProps>(
-  ({ classes, color, input: { value, onChange }, TransitionProps, setAnchorEl }) => {
-    const [hueColor, setHueColor] = useState(null);
-    const [alfaColor, setAlfaColor] = useState(null);
+  ({
+ classes, color, input: { value, onChange }, TransitionProps, setAnchorEl 
+}) => {
+    const [hueColor, setHueColor] = useState(color);
+    const [alfaColor, setAlfaColor] = useState(color);
 
     const hueRef = useRef<any>();
-    const alfaRef = useRef<any>();
-
-    const prevHue = usePrevious(hueColor);
-
+    
     const onHueChange = useCallback(color => {
       setHueColor(color.hsv);
       setAlfaColor(color.hsv);
@@ -91,10 +104,12 @@ const ColorPickerBase = React.memo<ColorPickerBaseProps>(
 
     const onAlfaChange = useCallback(
       color => {
-        setHueColor({ h: color.hsv.h, s: color.hsv.a, v: color.hsv.v, a: 1 });
+        setHueColor({
+         h: color.hsv.h, s: color.hsv.a, v: color.hsv.v, a: 1
+        });
         setAlfaColor(color.hsv);
       },
-      [hueRef.current]
+      []
     );
 
     const handleClickAway = useCallback(() => {
@@ -112,23 +127,17 @@ const ColorPickerBase = React.memo<ColorPickerBaseProps>(
 
     useEffect(
       () => {
-        if (!alfaColor && hueColor) {
-          const hueHsv = hueRef.current.state.hsv;
-
-          setAlfaColor({ h: hueHsv.h, s: 1, v: hueHsv.v, a: hueHsv.s });
-        }
+        const hueHsv = hueRef.current.state.hsv;
+        setAlfaColor({
+         h: hueHsv.h, s: 1, v: hueHsv.v, a: hueHsv.s
+        });
       },
-      [alfaColor, hueColor]
+      [hueRef.current]
     );
-
-    useEffect(
-      () => {
-        if (prevHue && prevHue !== hueColor) {
-          onChange(hueRef.current.state.hex.replace("#", ""));
-        }
-      },
-      [hueColor, prevHue]
-    );
+    
+    const onChangeComplete = () => {
+      onChange(hueRef.current.state.hex.replace("#", ""));
+    };
 
     return (
       <ClickAwayListener onClickAway={handleClickAway}>
@@ -137,17 +146,18 @@ const ColorPickerBase = React.memo<ColorPickerBaseProps>(
             <Paper className={classes.paper}>
               <HuePicker
                 ref={hueRef}
-                color={hueColor || color}
-                onChangeComplete={onHueChange}
+                color={hueColor}
+                onChange={onHueChange}
+                onChangeComplete={onChangeComplete}
                 width={168}
                 className={classes.bottomOffset}
               />
               <AlphaPicker
-                ref={alfaRef}
                 className={classes.customAlfa}
-                color={alfaColor || color}
+                color={alfaColor}
                 width={168}
-                onChangeComplete={onAlfaChange}
+                onChange={onAlfaChange}
+                onChangeComplete={onChangeComplete}
               />
             </Paper>
             <div className={classes.corner} />
@@ -171,8 +181,8 @@ const ColorPickerWrapper = React.memo<ColorPickerWrapperProps>(({ classes, theme
   const color = useMemo(() => (input.value ? "#" + input.value : theme.palette.primary.main), [theme, input.value]);
 
   return (
-    <>
-      <ButtonBase onClick={handleClick} className={classes.colorPickerButton} style={{ backgroundColor: color }} />
+    <div className="d-flex" onClick={stopEventPropagation}>
+      <ButtonBase onClick={handleClick} className={clsx(classes.colorPickerButton, anchorEl && classes.opened)} style={{ backgroundColor: color }} />
       <Popper open={Boolean(anchorEl)} anchorEl={anchorEl} placement="top" className={classes.popper} transition>
         {({ TransitionProps }) => (
           <ColorPickerBase
@@ -184,7 +194,7 @@ const ColorPickerWrapper = React.memo<ColorPickerWrapperProps>(({ classes, theme
           />
         )}
       </Popper>
-    </>
+    </div>
   );
 });
 
