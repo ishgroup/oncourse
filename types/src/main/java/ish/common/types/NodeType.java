@@ -12,11 +12,12 @@ package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
 
-@Deprecated
+
 public enum NodeType implements DisplayableExtendedEnumeration<Integer> {
 
 	TAG(1, "Tag"),
-	WEBPAGE(2, "Web page");
+	WEBPAGE(2, "Web page"),
+	CHECKLIST(3, "Checklist");
 
 	private String displayName;
 	private int value;

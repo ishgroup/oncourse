@@ -118,7 +118,7 @@ class DataCollectionFunctions {
                     .collect { new FieldTypeDTO(uniqueKey: "${CUSTOM_FIELD_PROPERTY_PATTERN}${it.entityIdentifier.toLowerCase()}.${it.key}", label: it.name) }
 
             List<FieldTypeDTO> tagFieldTypes = ObjectSelect.query(Tag.class)
-                    .where(Tag.NODE_TYPE.eq(NodeType.TAG))
+                    .where(Tag.NODE_TYPE.ne(NodeType.WEBPAGE))
                     .and(Tag.PARENT_TAG.isNull())
                     .and(Tag.SPECIAL_TYPE.isNull())
                     .select(context)
