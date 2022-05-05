@@ -22,6 +22,7 @@ import ish.oncourse.server.api.v1.model.TagDTO
 import ish.oncourse.server.api.v1.model.TagRequirementDTO
 import ish.oncourse.server.api.v1.model.TagRequirementTypeDTO
 import ish.oncourse.server.api.v1.model.TagStatusDTO
+import ish.oncourse.server.api.v1.model.TagTypeDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.validation.TagValidation
 import ish.oncourse.server.cayenne.AbstractInvoice
@@ -139,6 +140,7 @@ class TagFunctions {
             tag.status = dbTag.isWebVisible ? TagStatusDTO.SHOW_ON_WEBSITE : TagStatusDTO.PRIVATE
             tag.urlPath = dbTag.shortName
             tag.content = dbTag.contents
+            tag.type = TagTypeDTO.fromValue(dbTag.nodeType.displayName)
             tag.system = dbTag.specialType != null
             tag.created = dbTag.createdOn?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
             tag.modified = dbTag.modifiedOn?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
@@ -172,6 +174,7 @@ class TagFunctions {
         new TagDTO().with { tag ->
             tag.id = dbTag.id
             tag.name = dbTag.name
+            tag.type = TagTypeDTO.TAG
             tag
         }
     }
@@ -348,6 +351,7 @@ class TagFunctions {
             dbTag.colour = tag.color
         }
         dbTag.contents = trimToNull(tag.content)
+        dbTag.nodeType = NodeType.valueOf(tag.type.toString())
 
         tag.childTags.each { child ->
             Tag childTag = child.id ? childTagsToRemove.remove(child.id) : context.newObject(Tag)
