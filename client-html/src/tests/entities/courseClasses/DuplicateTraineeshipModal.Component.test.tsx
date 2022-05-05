@@ -21,7 +21,28 @@ describe("Virtual rendered DuplicateTraineeshipModal of Class list view", () => 
       opened: true,
       sessions: mockedApi.db.getCourseClassTimetable(),
       selection: mockedApi.db.getCourseClassSelectedSessions(),
-      setDialogOpened: stubFunction
+      setDialogOpened: stubFunction,
+      closeMenu: stubFunction
+    }),
+    state: () => ({
+      form: {
+        [DUPLICATE_TRAINEESHIP_FORM]: {
+          values: {
+            daysTo: 0,
+            toDate: new Date().toISOString(),
+            applyDiscounts: true,
+            copyAssessments: true,
+            copyCosts: true,
+            copyNotes: true,
+            copyOnlyMandatoryTags: true,
+            copyPayableTimeForSessions: true,
+            copySitesAndRooms: true,
+            copyTrainingPlans: true,
+            copyTutors: true,
+            copyVetData: true,
+          }
+        }
+      }
     }),
     render: ({ screen, fireEvent }) => {
       expect(screen.getByText("Duplicate traineeship class")).toBeTruthy();
@@ -38,6 +59,7 @@ describe("Virtual rendered DuplicateTraineeshipModal of Class list view", () => 
       fireEvent.click(screen.getByLabelText("Class notes"));
 
       expect(screen.getByRole(DUPLICATE_TRAINEESHIP_FORM)).toHaveFormValues({
+        daysTo: 0,
         copyTutors: true,
         copySitesAndRooms: true,
         copyCosts: true,
@@ -49,8 +71,6 @@ describe("Virtual rendered DuplicateTraineeshipModal of Class list view", () => 
         copyOnlyMandatoryTags: true,
         copyNotes: true,
       });
-
-      fireEvent.click(screen.getByText("Duplicate and enrol"));
     }
   });
 });
