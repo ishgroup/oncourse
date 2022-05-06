@@ -989,6 +989,7 @@
 		<db-attribute name="specialType" type="SMALLINT"/>
 		<db-attribute name="weight" type="INTEGER"/>
 		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="displayRule" type="VARCHAR" length="512"/>
 	</db-entity>
 	<db-entity name="NodeRelation">
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
@@ -3122,6 +3123,7 @@
 		<obj-attribute name="specialType" type="ish.common.types.NodeSpecialType" db-attribute-path="specialType"/>
 		<obj-attribute name="weight" type="java.lang.Integer" db-attribute-path="weight"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+		<obj-attribute name="displayRule" type="java.lang.String" db-attribute-path="displayRule"/>
 	</obj-entity>
 	<obj-entity name="TagAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.TagAttachmentRelation" clientClassName="ish.oncourse.cayenne.TagAttachmentRelation">
 		<qualifier><![CDATA[entityIdentifier = "Tag"]]></qualifier>

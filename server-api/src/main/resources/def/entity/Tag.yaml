@@ -40,6 +40,9 @@ properties:
     type: string
     format: date-time
     description: date and time when record was modified
+  displayRule:
+    type: string
+    description: aql display rule of this tag
   requirements:
     type: array
     items:

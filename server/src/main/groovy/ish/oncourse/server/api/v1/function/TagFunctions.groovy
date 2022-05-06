@@ -147,6 +147,7 @@ class TagFunctions {
             tag.taggedRecordsCount = getTaggedRecordsCount(dbTag, childCountMap)
             tag.childrenCount = getChildrenCount(dbTag)
             tag.color = dbTag.colour
+            tag.displayRule = dbTag.displayRule
             if (isParent) {
                 tag.requirements = dbTag.tagRequirements.collect { req ->
                     new TagRequirementDTO().with { tagRequirement ->
@@ -344,6 +345,7 @@ class TagFunctions {
     private static void _toDbTag(ObjectContext context, TagDTO tag, Tag dbTag, boolean isParent = true, List<TaggableClasses> deletedEntityList, Map<Long, Tag> childTagsToRemove = getAllChildTags(dbTag)) {
         if (!dbTag.specialType) {
             dbTag.name = trimToNull(tag.name)
+            dbTag.displayRule = tag.displayRule
             dbTag.isWebVisible = tag.status == TagStatusDTO.SHOW_ON_WEBSITE
             dbTag.shortName = trimToNull(tag.urlPath)
             dbTag.nodeType = NodeType.TAG
