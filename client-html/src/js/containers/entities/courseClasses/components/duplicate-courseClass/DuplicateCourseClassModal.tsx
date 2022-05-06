@@ -77,7 +77,7 @@ const initialValues: CourseClassDuplicate & { toDate: string } = {
   applyDiscounts: true,
   copyCosts: true,
   copySitesAndRooms: true,
-  copyPayableTimeForSessions: true,
+  tutorRosterOverrides: true,
   copyVetData: true,
   copyNotes: true,
   copyAssessments: true,
@@ -335,7 +335,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                       disabled={fetching}
                     />
                   )}
-                  label="Tutors for each session"
+                  label="Tutors"
                 />
                 <FormControlLabel
                   classes={{
@@ -392,9 +392,9 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                     root: "checkbox"
                   }}
                   control={(
-                    <FormField type="checkbox" name="copyPayableTimeForSessions" color="secondary" disabled={fetching} />
+                    <FormField type="checkbox" name="tutorRosterOverrides" color="secondary" disabled={fetching} />
                   )}
-                  label="Payable time"
+                  label="Tutor roster overrides"
                 />
                 <FormControlLabel
                   classes={{
