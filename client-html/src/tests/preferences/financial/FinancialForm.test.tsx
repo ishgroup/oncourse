@@ -26,10 +26,12 @@ describe("Virtual rendered FinancialForm", () => {
         [PreferencesModel.AccountDefaultCurrency.uniqueKey]: mockedAPI.db.preference[PreferencesModel.AccountDefaultCurrency.uniqueKey].toString(),
         [PreferencesModel.AccountInvoiceTerms.uniqueKey]: Number(mockedAPI.db.preference[PreferencesModel.AccountInvoiceTerms.uniqueKey]),
       });
-
-      expect(screen.getByRole(preferencesFormRole)).toHaveFormValues(avetmissFormData);
-
+      
       fireEvent.click(screen.getByTestId('appbar-submit-button'));
+
+      setTimeout(() => {
+        expect(screen.getByRole(preferencesFormRole)).toHaveFormValues(avetmissFormData);
+      }, 500);
     }
   });
 });
