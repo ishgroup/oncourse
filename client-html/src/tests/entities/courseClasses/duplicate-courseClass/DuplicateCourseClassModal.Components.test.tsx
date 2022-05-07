@@ -34,7 +34,7 @@ describe("Virtual rendered DuplicateCourseClassModal of Class list view", () => 
       closeMenu: jest.fn(),
     }),
     render: ({
-      screen, fireEvent, viewProps, initialValues
+      screen, viewProps, initialValues
     }) => {
       const selection = viewProps.selection;
       expect(screen.getByText(`Duplicate ${selection.length} class${selection.length === 1 ? "" : "es"}`)).toBeTruthy();
@@ -55,8 +55,6 @@ describe("Virtual rendered DuplicateCourseClassModal of Class list view", () => 
         copyAssessments: initialValues.copyAssessments,
         copyOnlyMandatoryTags: initialValues.copyOnlyMandatoryTags
       });
-
-      fireEvent.click(screen.getByText("Duplicate"));
     }
   });
 });
