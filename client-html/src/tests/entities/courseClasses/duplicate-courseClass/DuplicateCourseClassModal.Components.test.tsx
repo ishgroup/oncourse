@@ -34,12 +34,14 @@ describe("Virtual rendered DuplicateCourseClassModal of Class list view", () => 
       closeMenu: jest.fn(),
     }),
     render: ({
-      screen, viewProps, initialValues
+      screen, fireEvent, viewProps, initialValues
     }) => {
       const selection = viewProps.selection;
       expect(screen.getByText(`Duplicate ${selection.length} class${selection.length === 1 ? "" : "es"}`)).toBeTruthy();
 
       const earliestDate = new Date(viewProps.sessions[0].start);
+
+      fireEvent.click(screen.getByText("Duplicate"));
 
       setTimeout(() => {
         expect(screen.getByRole(DUPLICATE_COURSE_CLASS_FORM)).toHaveFormValues({

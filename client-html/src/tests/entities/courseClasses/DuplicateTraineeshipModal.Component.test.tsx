@@ -58,19 +58,23 @@ describe("Virtual rendered DuplicateTraineeshipModal of Class list view", () => 
       fireEvent.click(screen.getByLabelText("Tags"));
       fireEvent.click(screen.getByLabelText("Class notes"));
 
-      expect(screen.getByRole(DUPLICATE_TRAINEESHIP_FORM)).toHaveFormValues({
-        daysTo: 0,
-        copyTutors: true,
-        copySitesAndRooms: true,
-        copyCosts: true,
-        copyTrainingPlans: true,
-        applyDiscounts: true,
-        copyPayableTimeForSessions: true,
-        copyVetData: true,
-        copyAssessments: true,
-        copyOnlyMandatoryTags: true,
-        copyNotes: true,
-      });
+      fireEvent.click(screen.getByText("Duplicate and enrol"));
+
+      setTimeout(() => {
+        expect(screen.getByRole(DUPLICATE_TRAINEESHIP_FORM)).toHaveFormValues({
+          daysTo: 0,
+          copyTutors: true,
+          copySitesAndRooms: true,
+          copyCosts: true,
+          copyTrainingPlans: true,
+          applyDiscounts: true,
+          copyPayableTimeForSessions: true,
+          copyVetData: true,
+          copyAssessments: true,
+          copyOnlyMandatoryTags: true,
+          copyNotes: true,
+        });
+      }, 500);
     }
   });
 });
