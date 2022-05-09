@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { connect } from "react-redux";
 import {
-  reduxForm, getFormValues, InjectedFormProps, Form
+  reduxForm, getFormValues, InjectedFormProps
 } from "redux-form";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -22,6 +22,7 @@ import LockOpen from "@mui/icons-material/LockOpen";
 import Lock from "@mui/icons-material/Lock";
 import { CourseClassTutor } from "@api/model";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Button from "@mui/material/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
 import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
@@ -45,7 +46,6 @@ import {
   III_DD_MMM_YYYY_HH_MM_SS
 } from "../../../../../common/utils/dates/format";
 import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
-import Button from "@mui/material/Button";
 
 const getDifferenceInMinutes = (start: string, end: string): number => {
   const startDate = new Date(start);
@@ -364,7 +364,7 @@ const AttendanceActionModalForm: React.FC<AttendanceActionModalProps & InjectedF
       disableRestoreFocus
     >
       <DialogContent>
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <StudentAttendanceContent
             change={change}
             values={values}
@@ -372,7 +372,7 @@ const AttendanceActionModalForm: React.FC<AttendanceActionModalProps & InjectedF
             bindedSession={bindedSession}
             setHasError={setHasError}
           />
-        </Form>
+        </form>
       </DialogContent>
 
       <DialogActions className="p-3">
