@@ -422,7 +422,6 @@ const SwipeableSidebar: React.FC<Props> = props => {
           <UserSearch
             getSearchResults={getSearchResults}
             setFocusOnSearchInput={setFocusOnSearchInput}
-            focusOnSearchInput={(focusOnSearchInput || showUserSearch)}
           />
           <div>
             <Collapse in={(focusOnSearchInput && !showUserSearch)}>

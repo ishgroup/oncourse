@@ -31,12 +31,13 @@ import TagRequirementItem from "../components/TagRequirementItem";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import TagItemEditView from "../components/TagItemEditView";
 import { setNextLocation, showConfirm } from "../../../common/actions";
-import { COLORS, getAllTags } from "../utils";
+import { COLORS } from "../utils";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
 import AddButton from "../../../common/components/icons/AddButton";
 import { onSubmitFail } from "../../../common/utils/highlightFormClassErrors";
 import AppBarContainer from "../../../common/components/layout/AppBarContainer";
 import { getPluralSuffix } from "../../../common/utils/strings";
+import { CatalogItemType } from "../../../model/common/Catalog";
 
 const styles = () => ({
   noTransform: {
@@ -52,9 +53,8 @@ interface FormTag extends Tag {
 }
 
 interface Props {
-  rootTag?: FormTag;
-  tags?: FormTag[];
   isNew?: boolean;
+  tags?: CatalogItemType[];
   redirectOnDelete?: () => void;
   openConfirm?: ShowConfirmCaller;
 }
@@ -114,13 +114,6 @@ const checkParentDrop = (values, path, dragID) => {
   return match;
 };
 
-const setDragIndex = tags => {
-  tags.forEach((i, index) => {
-    i.dragIndex = index;
-    delete i.parent;
-  });
-};
-
 const getPathByDragIndex = (index, tags) => {
   let parent = "";
 
@@ -140,7 +133,7 @@ const getPathByDragIndex = (index, tags) => {
 
 const validatTagsNames = val => (val.some(i => !i.name) ? "Name is mandatory" : undefined);
 
-class TagsFormBase extends React.PureComponent<FormProps, any> {
+class TagsFormBase extends React.PureComponent<FormProps> {
   private resolvePromise;
 
   private rejectPromise;
@@ -160,22 +153,14 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
     // Initializing form with values
 
     if (props.rootTag) {
-      setDragIndex(getAllTags([props.rootTag]));
-
       props.dispatch(initialize("TagsForm", props.rootTag));
     }
   }
 
   componentDidUpdate(prevProps) {
     const {
-      rootTag, submitSucceeded, fetch, nextLocation, setNextLocation, dirty, history
+      fetch, nextLocation, setNextLocation, dirty, history
     } = this.props;
-
-    if (rootTag && (!prevProps.rootTag || prevProps.rootTag.id !== rootTag.id || submitSucceeded)) {
-      setDragIndex(getAllTags([rootTag]));
-
-      this.props.dispatch(initialize("TagsForm", rootTag));
-    }
 
     if (this.isPending && fetch && fetch.success === false) {
       this.isPending = false;
@@ -297,7 +282,6 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
 
       combine ? insertPath.push(insertValue) : insertPath && insertPath.splice(insertIndex, 0, insertValue);
 
-      setDragIndex(getAllTags([clone]));
       dispatch(change("TagsForm", "childTags", clone.childTags));
     }
   };
@@ -327,8 +311,6 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
 
     clone && clone.childTags && clone.childTags.splice(0, 0, newTag);
 
-    setDragIndex(getAllTags([clone]));
-
     dispatch(change("TagsForm", "childTags", clone.childTags));
 
     this.counter++;
@@ -350,8 +332,6 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
       const removePath = getDeepValue(clone, parent.replace(/\[[0-9]+]$/, ""));
 
       removePath && removePath.splice(index, 1);
-
-      setDragIndex(getAllTags([clone]));
 
       dispatch(change("TagsForm", "childTags", clone.childTags));
     };
@@ -414,9 +394,9 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
   };
 
   validateRootTagName = value => {
-    const { tags, rootTag } = this.props;
+    const { tags, values } = this.props;
 
-    const matches = tags.filter(i => i.name.trim() === value.trim() && rootTag.id !== i.id);
+    const matches = tags.filter(i => i.title.trim() === value.trim() && values?.id !== i.id);
 
     return matches.length > 0 ? "The tag name is not unique" : undefined;
   };
@@ -430,7 +410,6 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
       handleSubmit,
       dirty,
       invalid,
-      rootTag,
       values,
       openTagEditView,
       closeTagEditView,
@@ -441,7 +420,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
       form
     } = this.props;
 
-    return (
+    return values ? (
       <>
         <Form onSubmit={handleSubmit(this.onSave)} className={className}>
           {!this.disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
@@ -455,9 +434,9 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
             title={(isNew && (!values || !values.name || values.name.trim().length === 0))
               ? "New"
               : values && values.name.trim()}
-            createdOn={() => (rootTag.created ? new Date(rootTag.created) : null)}
-            modifiedOn={() => (rootTag.modified ? new Date(rootTag.modified) : null)}
-            disableInteraction={rootTag.system}
+            createdOn={() => (values.created ? new Date(values.created) : null)}
+            modifiedOn={() => (values.modified ? new Date(values.modified) : null)}
+            disableInteraction={values.system}
             opened={isNew || Object.keys(syncErrors).includes("name")}
             containerClass="p-3"
             fields={(
@@ -467,15 +446,15 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
                   label="Name"
                   margin="none"
                   validate={[validateSingleMandatoryField,this.validateRootTagName, validateAqlFilterOrTagName]}
-                  disabled={rootTag.system}
+                  disabled={values.system}
                 />
               </Grid>
             )}
-            actions={!isNew && !rootTag.system && (
+            actions={!isNew && !values.system && (
               <AppBarActions
                 actions={[
                   {
-                    action: () => this.onDelete(rootTag.id),
+                    action: () => this.onDelete(values.id),
                     icon: <DeleteForever />,
                     confirmText: "Tag will be deleted permanently",
                     tooltip: "Delete Tag",
@@ -498,7 +477,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
                           items={values.requirements}
                           rootID={values.id}
                           validate={this.validateRequirements}
-                          system={rootTag.system}
+                          system={values.system}
                         />
                       )}
                     </div>
@@ -559,7 +538,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
           onClose={closeTagEditView}
         />
       </>
-    );
+    ) : null;
   }
 }
 

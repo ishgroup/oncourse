@@ -6,17 +6,18 @@
 import React from "react";
 import debounce from "lodash.debounce";
 import clsx from "clsx";
-import { createStyles, withStyles } from "@mui/styles";
 import Input from "@mui/material/Input";
 import Search from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
 import Close from "@mui/icons-material/Close";
-import { AppTheme } from "../../../../../model/common/Theme";
+import { BooleanArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
+import { makeAppStyles } from "../../../../styles/makeStyles";
 
-const styles = (theme: AppTheme) => createStyles({
+const useStyles = makeAppStyles(theme => ({
   inputRoot: {
     "&::before": {
-      borderBottom: "2px solid #bfbfbf !important",
+      borderBottom: "2px solid #bfbfbf",
+      borderWidth: "2px"
     }
   },
   input: {
@@ -25,19 +26,24 @@ const styles = (theme: AppTheme) => createStyles({
   inputStartAdornment: {
     color: theme.palette.primary.main,
   },
-});
+}));
 
-const UserSearch: React.FC<any> = props => {
-  const {
-    classes,
-    getSearchResults,
-    placeholder = "Find anything...",
-    setFocusOnSearchInput,
-    focusOnSearchInput
-  } = props;
+interface Props {
+  getSearchResults: StringArgFunction;
+  placeholder?: string;
+  setFocusOnSearchInput?: BooleanArgFunction;
+}
 
+const UserSearch = ({
+  getSearchResults,
+  placeholder = "Find anything...",
+  setFocusOnSearchInput 
+}: Props) => {
   const [userSearch, setUserSearch] = React.useState("");
+  const [focused, setFocused] = React.useState(false);
   const searchRef = React.useRef("");
+
+  const classes = useStyles();
 
   const debounseSearch = React.useCallback(
     debounce(() => {
@@ -55,15 +61,18 @@ const UserSearch: React.FC<any> = props => {
   const clear = React.useCallback(() => {
     setUserSearch("");
     getSearchResults("");
-    setFocusOnSearchInput(false);
+    setFocusOnSearchInput && setFocusOnSearchInput(false);
+    setFocused(false);
   }, []);
 
   const onFocus = React.useCallback(() => {
-   setFocusOnSearchInput(true);
+    setFocusOnSearchInput && setFocusOnSearchInput(true);
+    setFocused(true);
   }, []);
 
   const onBlur = React.useCallback(() => {
-    setFocusOnSearchInput(false);
+    setFocusOnSearchInput && setFocusOnSearchInput(false);
+    setFocused(false);
   }, []);
 
   return (
@@ -75,12 +84,12 @@ const UserSearch: React.FC<any> = props => {
         placeholder={placeholder}
         startAdornment={(
           <Search className={clsx("inputAdornmentIcon mr-1 fs3",
-            focusOnSearchInput ? classes.inputStartAdornment : "textGreyColor700")}
+            focused ? classes.inputStartAdornment : "textGreyColor700")}
           />
         )}
         endAdornment={
-          focusOnSearchInput && (
-            <IconButton className="closeAndClearButton" onClick={clear}>
+          (
+            <IconButton className={clsx("closeAndClearButton", !userSearch && "invisible")} onClick={clear}>
               <Close className="inputAdornmentIcon" />
             </IconButton>
           )
@@ -94,4 +103,4 @@ const UserSearch: React.FC<any> = props => {
   );
 };
 
-export default withStyles(styles)(UserSearch);
+export default UserSearch;

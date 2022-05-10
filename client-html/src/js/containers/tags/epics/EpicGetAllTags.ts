@@ -5,19 +5,24 @@
 
 import { Epic } from "redux-observable";
 
-import * as EpicUtils from "../../../common/epics/EpicUtils";
-import TagsService from "../services/TagsService";
-import { GET_ALL_TAGS_FULFILLED, GET_ALL_TAGS_REQUEST } from "../actions";
 import { Tag } from "@api/model";
-import history from "../../../constants/History";
+import * as EpicUtils from "../../../common/epics/EpicUtils";
+import { GET_ALL_TAGS_FULFILLED, GET_ALL_TAGS_REQUEST } from "../actions";
+import { CatalogItemType } from "../../../model/common/Catalog";
+import EntityService from "../../../common/services/EntityService";
 
 const request: EpicUtils.Request = {
   type: GET_ALL_TAGS_REQUEST,
-  getData: () => TagsService.getTags(),
-  processData: (allTags: Tag[]) => {
-    if (history.location.pathname === "/tags" && allTags.length) {
-      history.push(`/tags/${allTags[0].id}`);
-    }
+  getData: () => EntityService.getPlainRecords("Tag", "name", null, null, null, "name", true),
+  processData: response => {
+    const allTags: CatalogItemType[] = response.rows.map(r => ({
+      id: Number(r.id),
+      title: r.values[0],
+      installed: true,
+      enabled: true,
+      hideDot: true,
+      hideShortDescription: true
+    }));
 
     return [
       {
