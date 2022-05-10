@@ -12,6 +12,7 @@ package ish.oncourse.server.cayenne.glue;
 
 
 import com.google.inject.Inject;
+import ish.common.types.NodeType;
 import ish.oncourse.API;
 import ish.oncourse.cayenne.Taggable;
 import ish.oncourse.cayenne.TaggableClasses;
@@ -83,7 +84,25 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 		List<Tag> result = new ArrayList<>();
 		for (TagRelation relation : getTaggingRelations()) {
 			if (relation.getTag() != null) {
-				result.add(relation.getTag());
+				if(relation.getTag().getNodeType().equals(NodeType.TAG))
+					result.add(relation.getTag());
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Get all checklists related to this object.
+	 *
+	 * @return List of related checklists
+	 */
+	@API
+	public List<? extends Tag> getChecklists() {
+		List<Tag> result = new ArrayList<>();
+		for (TagRelation relation : getTaggingRelations()) {
+			if (relation.getTag() != null) {
+				if(relation.getTag().getNodeType().equals(NodeType.CHECKLIST))
+					result.add(relation.getTag());
 			}
 		}
 		return result;
