@@ -6,15 +6,15 @@ databaseChangeLog:
       preConditions:
         - onFail: HALT
         - tableExists:
-            tableName: Node
+            tableName: NodeRequirement
         - and:
             - not:
                 - columnExists:
-                    tableName: Node
+                    tableName: NodeRequirement
                     columnName: displayRule
       changes:
         - addColumn:
-            tableName: Node
+            tableName: NodeRequirement
             columns:
               - column:
                   name: displayRule

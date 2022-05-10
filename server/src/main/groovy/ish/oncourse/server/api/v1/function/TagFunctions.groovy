@@ -147,7 +147,6 @@ class TagFunctions {
             tag.taggedRecordsCount = getTaggedRecordsCount(dbTag, childCountMap)
             tag.childrenCount = getChildrenCount(dbTag)
             tag.color = dbTag.colour
-            tag.displayRule = dbTag.displayRule
             if (isParent) {
                 tag.requirements = dbTag.tagRequirements.collect { req ->
                     new TagRequirementDTO().with { tagRequirement ->
@@ -155,6 +154,7 @@ class TagFunctions {
                         tagRequirement.type = tagRequirementBidiMap.get(req.entityIdentifier)
                         tagRequirement.mandatory = req.isRequired
                         tagRequirement.limitToOneTag = !req.manyTermsAllowed
+                        tagRequirement.displayRule = req.displayRule
                         tagRequirement.system = tag.system && (
                                 (dbTag.specialType == NodeSpecialType.SUBJECTS && tagRequirement.type == TagRequirementTypeDTO.COURSE) ||
                                 (dbTag.specialType == NodeSpecialType.ASSESSMENT_METHOD && tagRequirement.type == TagRequirementTypeDTO.ASSESSMENT) ||
@@ -321,6 +321,7 @@ class TagFunctions {
             TagRequirement tagRequirement = r.id ? requirementMap.remove(r.id) : context.newObject(TagRequirement)
             tagRequirement.entityIdentifier = tagRequirementBidiMap.getByValue(r.type)
             tagRequirement.isRequired = r.mandatory
+            tagRequirement.displayRule = r.displayRule
             tagRequirement.manyTermsAllowed = !r.limitToOneTag
             tagRequirement.tag = dbTag
         }
@@ -345,7 +346,6 @@ class TagFunctions {
     private static void _toDbTag(ObjectContext context, TagDTO tag, Tag dbTag, boolean isParent = true, List<TaggableClasses> deletedEntityList, Map<Long, Tag> childTagsToRemove = getAllChildTags(dbTag)) {
         if (!dbTag.specialType) {
             dbTag.name = trimToNull(tag.name)
-            dbTag.displayRule = tag.displayRule
             dbTag.isWebVisible = tag.status == TagStatusDTO.SHOW_ON_WEBSITE
             dbTag.shortName = trimToNull(tag.urlPath)
             dbTag.nodeType = NodeType.TAG
