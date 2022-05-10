@@ -16,6 +16,8 @@ import ish.common.types.NodeType
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.function.CayenneFunctions
+import org.apache.cayenne.query.SelectById
+
 import static ish.oncourse.server.api.v1.function.TagFunctions.getAdditionalTaggableClasses
 import static ish.oncourse.server.api.v1.function.TagFunctions.getRequirementTaggableClassForName
 import static ish.oncourse.server.api.v1.function.TagFunctions.getTagGroupPrefetch
@@ -37,7 +39,8 @@ import javax.ws.rs.core.Response
 
 class TagApiImpl implements TagApi {
 
-    @Inject private ICayenneService cayenneService
+    @Inject
+    private ICayenneService cayenneService
 
     @Override
     void create(TagDTO tag) {
@@ -56,36 +59,53 @@ class TagApiImpl implements TagApi {
     }
 
     @Override
-       List<TagDTO> get(String entityName) {
-            ObjectContext context = cayenneService.newContext
+    TagDTO getTag(Long id) {
+        ObjectContext context = cayenneService.newContext
 
-            Map<Long, Integer> childCountMap = ObjectSelect.query(Tag)
-                    .columns(Tag.ID, Tag.TAG_RELATIONS.count())
-                    .select(context)
-                    .collectEntries { [ (it[0]) : it[1] ]}
+        Map<Long, Integer> childCountMap = ObjectSelect.query(Tag)
+                .columns(Tag.ID, Tag.TAG_RELATIONS.count())
+                .select(context)
+                .collectEntries { [(it[0]): it[1]] }
+
+        def tag = SelectById.query(Tag, id).selectOne(context)
+        if (tag == null) {
+            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity("Record with id = "+id+" doesn't exist.").build())
+        }
+
+        toRestTag(tag, childCountMap)
+    }
+
+    @Override
+    List<TagDTO> get(String entityName) {
+        ObjectContext context = cayenneService.newContext
+
+        Map<Long, Integer> childCountMap = ObjectSelect.query(Tag)
+                .columns(Tag.ID, Tag.TAG_RELATIONS.count())
+                .select(context)
+                .collectEntries { [(it[0]): it[1]] }
 
 
-            Expression expr = Tag.PARENT_TAG.isNull()
-                    .andExp(Tag.NODE_TYPE.ne(NodeType.WEBPAGE))
-            if (entityName) {
-                TaggableClasses taggableClass = getRequirementTaggableClassForName(entityName)
-                TaggableClasses[] additionalTags = getAdditionalTaggableClasses(taggableClass)
-                Expression tagExpr = Tag.TAG_REQUIREMENTS
-                        .dot(TagRequirement.ENTITY_IDENTIFIER).eq(getRequirementTaggableClassForName(entityName))
-                for(TaggableClasses currTagClass : additionalTags) {
-                    tagExpr = tagExpr.orExp(Tag.TAG_REQUIREMENTS
-                            .dot(TagRequirement.ENTITY_IDENTIFIER).eq(currTagClass))
-                }
-
-                expr = expr.andExp(tagExpr)
+        Expression expr = Tag.PARENT_TAG.isNull()
+                .andExp(Tag.NODE_TYPE.eq(NodeType.WEBPAGE))
+        if (entityName) {
+            TaggableClasses taggableClass = getRequirementTaggableClassForName(entityName)
+            TaggableClasses[] additionalTags = getAdditionalTaggableClasses(taggableClass)
+            Expression tagExpr = Tag.TAG_REQUIREMENTS
+                    .dot(TagRequirement.ENTITY_IDENTIFIER).eq(getRequirementTaggableClassForName(entityName))
+            for (TaggableClasses currTagClass : additionalTags) {
+                tagExpr = tagExpr.orExp(Tag.TAG_REQUIREMENTS
+                        .dot(TagRequirement.ENTITY_IDENTIFIER).eq(currTagClass))
             }
-            ObjectSelect.query(Tag)
-                    .where(expr)
-                    .prefetch(tagGroupPrefetch)
-                    .orderBy(Tag.NAME.asc())
-                    .select(cayenneService.newContext)
-                    .collect { toRestTag(it, childCountMap) }
-       }
+
+            expr = expr.andExp(tagExpr)
+        }
+        ObjectSelect.query(Tag)
+                .where(expr)
+                .prefetch(tagGroupPrefetch)
+                .orderBy(Tag.NAME.asc())
+                .select(cayenneService.newContext)
+                .collect { toRestTag(it, childCountMap) }
+    }
 
     @Override
     void remove(Long id) {

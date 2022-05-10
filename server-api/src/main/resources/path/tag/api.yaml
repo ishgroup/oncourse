@@ -1,21 +1,20 @@
 get:
-  operationId: get
-  description: list of all root tags
+  operationId: getTag
+  description: get current tag
   tags:
   - Tag
   parameters:
-  - name: entityName
-    in: query
-    required: false
-    type: string
-    description: entity type identifier, null param returns all tags
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of contact record to fetch
   responses:
     '200':
       description: Success response.
       schema:
-        type: array
-        items:
-          $ref: './def/entity/Tag.yaml'
+        $ref: './def/entity/Tag.yaml'
     default:
       description: Unexpected error
   x-permission:
