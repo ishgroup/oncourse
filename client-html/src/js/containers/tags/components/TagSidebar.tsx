@@ -3,7 +3,7 @@ import CollapseMenuList from "../../../common/components/layout/side-bar-list/Co
 import { State } from "../../../reducers/state";
 import { connect } from "react-redux";
 
-const SideBar = React.memo<any>(({ search, match, history, tags, activeFiltersConditions }) => (
+const SideBar = React.memo<any>(({ search, history, tags, activeFiltersConditions }) => (
   <CollapseMenuList
     name="Tag Groups"
     basePath="/tags/"
@@ -15,7 +15,7 @@ const SideBar = React.memo<any>(({ search, match, history, tags, activeFiltersCo
       activeFiltersConditions,
       category: "Tags"
     }}
-    disableCollapse
+    defaultCollapsed
   />
 ));
 

@@ -96,7 +96,7 @@ const RouteContentWrapper = props => {
   return <route.main {...props} routes={route.routes} />;
 };
 
-const RouteWithSubRoutes = route => (
+const RouteRenderer = route => (
   <Route
     path={route.path}
     exact={route.exact}
@@ -267,9 +267,9 @@ export class MainBase extends React.PureComponent<Props, any> {
               />
               <Switch>
                 {isLogged ? (
-                  routes.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)
+                  routes.map((route, i) => <RouteRenderer key={i} {...route} />)
                 ) : (
-                  loginRoute.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)
+                  loginRoute.map((route, i) => <RouteRenderer key={i} {...route} />)
                 )}
               </Switch>
               <ConfirmProvider />

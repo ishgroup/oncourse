@@ -2,7 +2,7 @@ import React, {
   useCallback, useEffect, useMemo, useState
 } from "react";
 import clsx from "clsx";
-import { ColumnWidth } from "@api/model";
+import { Route, Switch } from "react-router-dom";
 import { ListSideBarDefaultWidth } from "../../list-view/ListView";
 import ResizableWrapper from "../resizable/ResizableWrapper";
 import Drawer from "../Drawer";
@@ -13,23 +13,25 @@ import { VARIANTS } from "../swipeable-sidebar/utils";
 import SidebarSearch from "./components/SidebarSearch";
 import { CommonListFilter } from "../../../../model/common/sidebar";
 import FiltersList from "./components/FiltersList";
+import { MainRoute } from "../../../../routes";
 
 interface Props {
   leftColumnWidth: number;
   onInit?: AnyArgFunction;
   updateColumnsWidth: NumberArgFunction;
   SideBar: React.ComponentType<any>;
-  AppFrame: React.ComponentType<any>;
+  AppFrame?: React.ComponentType<any>;
   history: any;
   match: any;
   filters?: CommonListFilter[];
   noSearch?: boolean;
   appFrameClass?: string;
+  routes?: MainRoute[];
 }
 
-export const SidebarWithSearch = React.memo<Props>(props => {
+export const SidebarWithSearch = (props: Props) => {
   const {
-    leftColumnWidth, updateColumnsWidth, onInit, history, match, SideBar, AppFrame, noSearch, filters = [], appFrameClass
+    leftColumnWidth, updateColumnsWidth, onInit, history, match, SideBar, AppFrame, noSearch, routes, filters = [], appFrameClass
   } = props;
 
   const [sidebarWidth, setSidebarWidth] = useState(leftColumnWidth || ListSideBarDefaultWidth);
@@ -84,8 +86,15 @@ export const SidebarWithSearch = React.memo<Props>(props => {
 
       <div className={clsx("appFrame", appFrameClass)}>
         <LoadingIndicator />
-        <AppFrame match={match} />
+        {AppFrame ? <AppFrame match={match} routes={routes} />
+          : (
+            <Switch>
+              {routes.map((route, index) => (
+                <Route exact key={index} path={route.path} render={props => <route.main {...props} />} />
+              ))}
+            </Switch>
+        )}
       </div>
     </div>
   );
-});
+};

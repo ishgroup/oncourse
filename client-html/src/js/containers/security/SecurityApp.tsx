@@ -11,7 +11,7 @@ import { State } from "../../reducers/state";
 import { LICENSE_ACCESS_CONTROL_KEY } from "../../constants/Config";
 import { getUserPreferences } from "../../common/actions";
 import { SidebarWithSearch } from "../../common/components/layout/sidebar-with-search/SidebarWithSearch";
-import SecutityAppFrame from "./components/SecutityAppFrame";
+import securityRoutes from "./routes";
 
 const SecurityApp = React.memo<any>(
   ({
@@ -42,7 +42,7 @@ const SecurityApp = React.memo<any>(
         updateColumnsWidth={updateColumnsWidth}
         onInit={onInit}
         SideBar={SideBar}
-        AppFrame={SecutityAppFrame}
+        routes={securityRoutes}
         history={history}
         match={match}
       />
