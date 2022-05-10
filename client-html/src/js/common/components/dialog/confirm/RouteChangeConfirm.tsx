@@ -15,6 +15,7 @@ import Button from "@mui/material/Button";
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import { closeConfirm, showConfirm, setNextLocation } from "../../../actions";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import { State } from "../../../../reducers/state";
 
 interface Props {
   when: boolean;
@@ -24,19 +25,15 @@ interface Props {
   showConfirm?: ShowConfirmCaller;
   closeConfirm?: () => void;
   setNextLocation?: (nextLocation: string) => void;
-  isInvalid?: (form: string) => boolean;
+  isInvalid?: boolean;
+  nextLocation?: string;
 }
 
-interface State {
-  nextLocation?: any;
-}
-
-class RouteChangeConfirm extends React.Component<Props & RouteComponentProps, State> {
+class RouteChangeConfirm extends React.Component<Props & RouteComponentProps> {
   private unblock: () => void;
 
   constructor(props) {
     super(props);
-    this.state = { nextLocation: null };
   }
 
   shouldComponentUpdate(nextProps: Readonly<Props & RouteComponentProps>): boolean {
@@ -45,11 +42,7 @@ class RouteChangeConfirm extends React.Component<Props & RouteComponentProps, St
       form,
     } = this.props;
 
-    if (nextProps.form !== form || nextProps.isInvalid(nextProps.form) !== isInvalid(form)) {
-      return true;
-    }
-
-    return false;
+    return nextProps.form !== form || nextProps.isInvalid !== isInvalid;
   }
 
   componentDidMount() {
@@ -71,25 +64,24 @@ class RouteChangeConfirm extends React.Component<Props & RouteComponentProps, St
       submitForm,
       closeConfirm,
       setNextLocation,
+      when
     } = this.props;
 
     this.unblock = history.block(nextLocation => {
       const isCurrent = nextLocation.pathname === location.pathname;
 
-      if (this.props.when && !isCurrent) {
+      if (when && !isCurrent) {
         nextLocation.pathname && setNextLocation(nextLocation.pathname);
-
-        const isInvalidForm = isInvalid(form);
-
+        
         const confirmButton = (
           <Button
             classes={{
               disabled: "saveButtonEditViewDisabled"
             }}
-            startIcon={isInvalidForm && <ErrorOutline color="error" />}
+            startIcon={isInvalid && <ErrorOutline color="error" />}
             variant="contained"
             color="primary"
-            disabled={isInvalidForm}
+            disabled={isInvalid}
             onClick={() => {
               submitForm(form);
               closeConfirm();
@@ -102,18 +94,15 @@ class RouteChangeConfirm extends React.Component<Props & RouteComponentProps, St
         showConfirm(
           {
             onCancelCustom: this.onConfirm,
-            onCancel: this.onCancel,
             confirmMessage: message,
             cancelButtonText: "DISCARD CHANGES",
             confirmCustomComponent: confirmButton
           }
         );
 
-        this.setState({
-          nextLocation
-        });
+        setNextLocation(nextLocation.pathname);
       }
-      return !this.props.when as any;
+      return !when as any;
     });
   }
 
@@ -122,18 +111,14 @@ class RouteChangeConfirm extends React.Component<Props & RouteComponentProps, St
   }
 
   navigateToNextLocation() {
-    this.unblock();
-    this.props.history.push(this.state.nextLocation.pathname);
-  }
+    const { nextLocation } = this.props;
 
-  onCancel = () => {
-    this.setState({ nextLocation: null });
-    this.props.setNextLocation('');
-  };
+    this.unblock();
+    this.props.history.push(nextLocation);
+  }
 
   onConfirm = () => {
     this.navigateToNextLocation();
-    this.props.setNextLocation('');
   };
 
   render() {
@@ -141,8 +126,9 @@ class RouteChangeConfirm extends React.Component<Props & RouteComponentProps, St
   }
 }
 
-const mapStateToProps = (state: State) => ({
-  isInvalid: (form: string) => isInvalid(form)(state),
+const mapStateToProps = (state: State, ownProps) => ({
+  isInvalid: isInvalid(ownProps.form)(state),
+  nextLocation: state.nextLocation
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
