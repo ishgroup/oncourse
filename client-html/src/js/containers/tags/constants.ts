@@ -6,4 +6,23 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { FormTag } from "../../model/tags";
+import { COLORS } from "./utils";
+
 export const TAGS_FORM_NAME = "TagsForm";
+
+export const EmptyTag: FormTag = {
+  id: null,
+  name: "",
+  status: "Private",
+  system: false,
+  urlPath: null,
+  content: "",
+  weight: 1,
+  taggedRecordsCount: 0,
+  created: null,
+  modified: null,
+  requirements: [],
+  childTags: [],
+  color: COLORS[Math.floor(Math.random() * COLORS.length)],
+};

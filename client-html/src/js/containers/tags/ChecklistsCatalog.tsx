@@ -15,11 +15,11 @@ export const ChecklistsCatalog = ({ history }: RouteComponentProps) => {
   const allTags = useAppSelector(state => state.tags.allTags);
 
   const onOpen = id => {
-    history.push(`/tags/tagGroup/${id}`);
+    history.push(`/tags/checklist/${id}`);
   };
 
   const onClickNew = () => {
-    history.push("/tags/tagGroup/new");
+    history.push("/tags/checklist/new");
   };
 
   return (

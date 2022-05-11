@@ -8,7 +8,7 @@
 
 import TagsCatalog from "./TagsCatalog";
 import ChecklistsCatalog from "./ChecklistsCatalog";
-import TagsForm from "./containers/TagsForm";
+import { ChecklistsForm, TagsForm } from "./containers";
 
 const tagRoutes = [
   {
@@ -33,7 +33,7 @@ const tagRoutes = [
     path: "/tags/checklist/:id",
     url: "/tags/checklist",
     noMenuLink: true,
-    main: ChecklistsCatalog
+    main: ChecklistsForm
   },
 ];
 

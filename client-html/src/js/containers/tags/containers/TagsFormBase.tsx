@@ -3,19 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect } from "react";
-import { Grid, Typography } from "@mui/material";
-import Divider from "@mui/material/Divider";
-import DeleteForever from "@mui/icons-material/DeleteForever";
+import React from "react";
 import {
   arrayInsert,
   arrayRemove,
   change,
-  Field,
-  Form,
   getFormSyncErrors,
   getFormValues,
-  initialize,
   reduxForm
 } from "redux-form";
 import { connect } from "react-redux";
@@ -24,29 +18,18 @@ import { Tag } from "@api/model";
 import { createStyles, withStyles } from "@mui/styles";
 import { alpha } from "@mui/material/styles";
 import { TreeData } from "@atlaskit/tree";
-import FormField from "../../../common/components/form/formFields/FormField";
 import { State } from "../../../reducers/state";
-import RouteChangeConfirm from "../../../common/components/dialog/confirm/RouteChangeConfirm";
-import TagRequirementsMenu from "../components/TagRequirementsMenu";
 import { getDeepValue } from "../../../common/utils/common";
-import { createTag, deleteTag, getTagRequest, updateTag } from "../actions";
-import AppBarActions from "../../../common/components/form/AppBarActions";
-import TagRequirementItem from "../components/TagRequirementItem";
-import { getManualLink } from "../../../common/utils/getManualLink";
+import { createTag, deleteTag, updateTag } from "../actions";
 import { setNextLocation, showConfirm } from "../../../common/actions";
-import { COLORS } from "../utils";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
-import AddButton from "../../../common/components/icons/AddButton";
 import { onSubmitFail } from "../../../common/utils/highlightFormClassErrors";
-import AppBarContainer from "../../../common/components/layout/AppBarContainer";
 import { getPluralSuffix } from "../../../common/utils/strings";
 import { AppTheme } from "../../../model/common/Theme";
 import { FormTag } from "../../../model/tags";
-import TagsTree from "../components/TagsTree";
 import { validate } from "../utils/validation";
 import { CatalogItemType } from "../../../model/common/Catalog";
-import { useAppDispatch } from "../../../common/utils/hooks";
-import { TAGS_FORM_NAME } from "../constants";
+import { EmptyTag, TAGS_FORM_NAME } from "../constants";
 
 const styles = (theme: AppTheme) => createStyles({
   dragIcon: {
@@ -123,7 +106,6 @@ const styles = (theme: AppTheme) => createStyles({
   }
 });
 
-const manualUrl = getManualLink("tagging");
 
 interface Props {
   isNew?: boolean;
@@ -182,36 +164,20 @@ const treeItemDataToTag = (id: number | string, tree: TreeData): Tag => {
 
 const treeDataToTags = (tree: TreeData): Tag[] => tree.items[tree.rootId].children.map(id => treeItemDataToTag(id, tree));
 
-const emptyTag: FormTag = {
-  id: null,
-  name: "",
-  status: "Private",
-  system: false,
-  urlPath: null,
-  content: "",
-  weight: 1,
-  taggedRecordsCount: 0,
-  created: null,
-  modified: null,
-  requirements: [],
-  childTags: [],
-  color: COLORS[Math.floor(Math.random() * COLORS.length)],
-};
-
 interface FormState {
   editingId: number;
 }
 
-class TagsFormBase extends React.PureComponent<FormProps, FormState> {
-  private resolvePromise;
+export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
+  resolvePromise;
 
-  private rejectPromise;
+  rejectPromise;
 
-  private isPending;
+  isPending;
 
-  private disableConfirm;
+  disableConfirm;
 
-  private counter;
+  counter;
 
   state = {
     editingId: null
@@ -293,7 +259,7 @@ class TagsFormBase extends React.PureComponent<FormProps, FormState> {
     const { dispatch } = this.props;
 
     const newTag: FormTag = {
-      ...emptyTag,
+      ...EmptyTag,
       id: ("new" + this.counter) as any,
     };
 
@@ -344,133 +310,6 @@ class TagsFormBase extends React.PureComponent<FormProps, FormState> {
   };
 
   validateRequirements = value => (value.length ? undefined : "At least one table should be selected before the tag record can be saved");
-
-  render() {
-    const {
-      className,
-      handleSubmit,
-      dirty,
-      invalid,
-      values,
-      isNew,
-      openConfirm,
-      dispatch,
-      syncErrors,
-      form,
-      classes
-    } = this.props;
-
-    const { editingId } = this.state;
-
-    return values ? (
-      <Form onSubmit={handleSubmit(this.onSave)} className={className}>
-        {!this.disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
-
-        <AppBarContainer
-          values={values}
-          manualUrl={manualUrl}
-          getAuditsUrl='audit?search=~"Tag"'
-          disabled={!dirty}
-          invalid={invalid}
-          title={(isNew && (!values || !values.name || values.name.trim().length === 0))
-              ? "New"
-              : values && values.name.trim()}
-          createdOn={() => (values.created ? new Date(values.created) : null)}
-          modifiedOn={() => (values.modified ? new Date(values.modified) : null)}
-          disableInteraction={values.system}
-          opened={isNew || Object.keys(syncErrors).includes("name")}
-          containerClass="p-3"
-          fields={(
-            <Grid item xs={8}>
-              <FormField
-                name="name"
-                label="Name"
-                margin="none"
-                disabled={values.system}
-              />
-            </Grid>
-          )}
-          actions={!isNew && !values.system && (
-            <AppBarActions
-              actions={[
-                {
-                  action: () => this.onDelete(values.id),
-                  icon: <DeleteForever />,
-                  confirmText: "Tag will be deleted permanently",
-                  tooltip: "Delete Tag",
-                  confirmButtonText: "DELETE"
-                }
-              ]}
-            />
-          )}
-        >
-          <Grid container>
-            <Grid item sm={12} lg={11} xl={8}>
-              <Grid container columnSpacing={3}>
-                <Grid item xs={12} md={8}>
-                  <div className="centeredFlex">
-                    {values && (
-                      <Field
-                        name="requirements"
-                        label="Available for"
-                        component={TagRequirementsMenu}
-                        items={values.requirements}
-                        rootID={values.id}
-                        validate={this.validateRequirements}
-                        system={values.system}
-                      />
-                    )}
-                  </div>
-
-                  {values
-                    && values.requirements.map((i, index) => (
-                      <TagRequirementItem
-                        parent={`requirements[${index}]`}
-                        key={index}
-                        item={i}
-                        index={index}
-                        onDelete={this.removeRequirement}
-                        disabled={values.system}
-                        openConfirm={openConfirm}
-                        dispatch={dispatch}
-                      />
-                    ))}
-                </Grid>
-
-                <Grid item xs={false} md={4} />
-              </Grid>
-
-              <Divider className="mt-2 mb-2" />
-
-              <div className="centeredFlex">
-                <div className="heading">Tags</div>
-                <AddButton onClick={this.addTag} />
-              </div>
-
-              <div className={classes.legend}>
-                <Typography variant="caption" color="textSecondary">Name</Typography>
-                <Typography variant="caption" color="textSecondary">URL path</Typography>
-                <Typography variant="caption" color="textSecondary" textAlign="center">Website visibility</Typography>
-              </div>
-
-              {values && (
-                <TagsTree
-                  rootTag={values}
-                  classes={classes}
-                  onDelete={this.removeChildTag}
-                  changeVisibility={this.changeVisibility}
-                  setEditingId={this.setEditingId}
-                  onDrop={this.onDrop}
-                  editingId={editingId}
-                  syncErrors={syncErrors}
-                />
-              )}
-            </Grid>
-          </Grid>
-        </AppBarContainer>
-      </Form>
-    ) : null;
-  }
 }
 
 const mapStateToProps = (state: State) => ({
@@ -489,23 +328,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
-const TagsForm: any = reduxForm<Tag, FormProps>({
+export const TagsFormWrapper = reduxForm({
   form: TAGS_FORM_NAME,
   onSubmitFail,
   validate,
   shouldError: () => true
-})(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(TagsFormBase)));
-
-export default ({ match: { params: { id } }, history }) => {
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (id === "new") {
-      dispatch(initialize(TAGS_FORM_NAME, emptyTag));
-    } else {
-      dispatch(getTagRequest(id));
-    }
-  }, [id]);
-
-  return <TagsForm history={history} />;
-};
+})(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((props: any) => <props.Root {...props} />))) as any;
