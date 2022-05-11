@@ -346,7 +346,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
         <Grid item xs={12}>
           <Card className={classes.card}>
             <Grid container columnSpacing={3} rowSpacing={2} className="p-3 pb-0">
-              <Grid xs={twoColumn ? 3 : 12}>
+              <Grid item xs={twoColumn ? 3 : 12}>
                 <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Training Plan</div>
                 <Tooltip
                   placement="top-start"
@@ -372,7 +372,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                   </div>
                 </Tooltip>
               </Grid>
-              <Grid xs={twoColumn ? 3 : 12}>
+              <Grid item xs={twoColumn ? 3 : 12}>
                 <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Actual</div>
                 <Tooltip placement="top-start" title="First session related to this outcome where student was not marked as absent">
                   <div className="pb-2">
@@ -403,7 +403,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                   </div>
                 </Tooltip>
               </Grid>
-              <Grid xs={twoColumn ? 3 : 12}>
+              <Grid item xs={twoColumn ? 3 : 12}>
                 <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Override</div>
                 <Grid item className={clsx(classes.width240, classes.dateWrapper)}>
                   <div className="pb-2">
