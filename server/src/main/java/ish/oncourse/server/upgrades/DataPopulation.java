@@ -132,7 +132,7 @@ public class DataPopulation implements Runnable {
 			try {
 				DataPopulationUtils.updateMessage(context, props);
 			} catch (Exception e) {
-				logger.error("{} {} was not importes", ResourceType.MESSAGING.getDisplayName(), props.get(ResourceProperty.NAME.getDisplayName()), e);
+				logger.error("{} {} was not imported", ResourceType.MESSAGING.getDisplayName(), props.get(ResourceProperty.NAME.getDisplayName()), e);
 			}
 		});
 		removeFromDbDeletedResources(context, emailYamls, ResourceType.MESSAGING);
@@ -143,7 +143,7 @@ public class DataPopulation implements Runnable {
 			try {
 				DataPopulationUtils.updateExport(context, props);
 			} catch (Exception e) {
-				logger.error("{} {} was not importes", ResourceType.EXPORT.getDisplayName(), props.get(ResourceProperty.NAME.getDisplayName()), e);
+				logger.error("{} {} was not imported", ResourceType.EXPORT.getDisplayName(), props.get(ResourceProperty.NAME.getDisplayName()), e);
 			}
 		});
 		removeFromDbDeletedResources(context, exports, ResourceType.EXPORT);
