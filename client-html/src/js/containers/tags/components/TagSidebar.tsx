@@ -25,9 +25,9 @@ const useStyles = makeAppStyles(theme => ({
 
 const getSelected = (history: History) => {
   switch (true) {
-    case history.location.pathname.startsWith("/tags/tagGroups"):
+    case history.location.pathname.startsWith("/tags/tagGroup"):
       return 1;
-    case history.location.pathname.startsWith("/tags/checklists"):
+    case history.location.pathname.startsWith("/tags/checklist"):
       return 2;
     default:
       return 0;

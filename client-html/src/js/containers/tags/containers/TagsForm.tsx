@@ -3,10 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { ComponentClass } from "react";
+import React, { useEffect } from "react";
 import { Grid, Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
-import { withRouter } from "react-router";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import {
   arrayInsert,
@@ -30,7 +29,7 @@ import { State } from "../../../reducers/state";
 import RouteChangeConfirm from "../../../common/components/dialog/confirm/RouteChangeConfirm";
 import TagRequirementsMenu from "../components/TagRequirementsMenu";
 import { getDeepValue } from "../../../common/utils/common";
-import { createTag, deleteTag, updateTag } from "../actions";
+import { createTag, deleteTag, getTagRequest, updateTag } from "../actions";
 import AppBarActions from "../../../common/components/form/AppBarActions";
 import TagRequirementItem from "../components/TagRequirementItem";
 import { getManualLink } from "../../../common/utils/getManualLink";
@@ -46,6 +45,8 @@ import { FormTag } from "../../../model/tags";
 import TagsTree from "../components/TagsTree";
 import { validate } from "../utils/validation";
 import { CatalogItemType } from "../../../model/common/Catalog";
+import { useAppDispatch } from "../../../common/utils/hooks";
+import { TAGS_FORM_NAME } from "../constants";
 
 const styles = (theme: AppTheme) => createStyles({
   dragIcon: {
@@ -125,9 +126,8 @@ const styles = (theme: AppTheme) => createStyles({
 const manualUrl = getManualLink("tagging");
 
 interface Props {
-  rootTag?: FormTag;
   isNew?: boolean;
-  tags?: CatalogItemType[];
+  tags: CatalogItemType[];
   redirectOnDelete?: () => void;
   openConfirm?: ShowConfirmCaller;
 }
@@ -182,6 +182,22 @@ const treeItemDataToTag = (id: number | string, tree: TreeData): Tag => {
 
 const treeDataToTags = (tree: TreeData): Tag[] => tree.items[tree.rootId].children.map(id => treeItemDataToTag(id, tree));
 
+const emptyTag: FormTag = {
+  id: null,
+  name: "",
+  status: "Private",
+  system: false,
+  urlPath: null,
+  content: "",
+  weight: 1,
+  taggedRecordsCount: 0,
+  created: null,
+  modified: null,
+  requirements: [],
+  childTags: [],
+  color: COLORS[Math.floor(Math.random() * COLORS.length)],
+};
+
 interface FormState {
   editingId: number;
 }
@@ -206,22 +222,12 @@ class TagsFormBase extends React.PureComponent<FormProps, FormState> {
 
     // New Tags counter
     this.counter = 1;
-
-    // Initializing form with values
-
-    if (props.rootTag) {
-      props.dispatch(initialize("TagsForm", props.rootTag));
-    }
   }
 
   componentDidUpdate(prevProps) {
     const {
-      rootTag, submitSucceeded, fetch
+      fetch
     } = this.props;
-
-    if (rootTag && (!prevProps.rootTag || prevProps.rootTag.id !== rootTag.id || submitSucceeded)) {
-      this.props.dispatch(initialize("TagsForm", rootTag));
-    }
 
     if (this.isPending && fetch && fetch.success === false) {
       this.isPending = false;
@@ -287,30 +293,19 @@ class TagsFormBase extends React.PureComponent<FormProps, FormState> {
     const { dispatch } = this.props;
 
     const newTag: FormTag = {
+      ...emptyTag,
       id: ("new" + this.counter) as any,
-      name: "",
-      status: "Private",
-      system: false,
-      urlPath: null,
-      content: "",
-      weight: 1,
-      taggedRecordsCount: 0,
-      created: null,
-      modified: null,
-      requirements: [],
-      childTags: [],
-      color: COLORS[Math.floor(Math.random() * COLORS.length)],
     };
 
-    dispatch(arrayInsert("TagsForm", "childTags", 0, newTag));
+    dispatch(arrayInsert(TAGS_FORM_NAME, "childTags", 0, newTag));
 
     this.counter++;
   };
 
   changeVisibility = (item: FormTag) => {
     const { dispatch, values } = this.props;
-    dispatch(change("TagsForm", item.parent ? item.parent + ".status" : "status", item.status === "Private" ? "Show on website" : "Private"));
-    dispatch(change("TagsForm", "refreshFlag", !values.refreshFlag));
+    dispatch(change(TAGS_FORM_NAME, item.parent ? item.parent + ".status" : "status", item.status === "Private" ? "Show on website" : "Private"));
+    dispatch(change(TAGS_FORM_NAME, "refreshFlag", !values.refreshFlag));
   }
 
   removeChildTag = (item: FormTag) => {
@@ -330,8 +325,8 @@ class TagsFormBase extends React.PureComponent<FormProps, FormState> {
 
       removePath && removePath.splice(Number(item.parent.match(/\[(\d)]$/)[1]), 1);
 
-      dispatch(change("TagsForm", "childTags", clone.childTags));
-      dispatch(change("TagsForm", "refreshFlag", !values.refreshFlag));
+      dispatch(change(TAGS_FORM_NAME, "childTags", clone.childTags));
+      dispatch(change(TAGS_FORM_NAME, "refreshFlag", !values.refreshFlag));
     };
 
     openConfirm({ onConfirm, confirmMessage, confirmButtonText: "DELETE" });
@@ -340,12 +335,12 @@ class TagsFormBase extends React.PureComponent<FormProps, FormState> {
   onDrop = (tagsTree: TreeData) => {
     const { dispatch, values } = this.props;
 
-    dispatch(change("TagsForm", "childTags", treeDataToTags(tagsTree)));
-    dispatch(change("TagsForm", "refreshFlag", !values.refreshFlag));
+    dispatch(change(TAGS_FORM_NAME, "childTags", treeDataToTags(tagsTree)));
+    dispatch(change(TAGS_FORM_NAME, "refreshFlag", !values.refreshFlag));
   };
 
   removeRequirement = index => {
-    this.props.dispatch(arrayRemove("TagsForm", "requirements", index));
+    this.props.dispatch(arrayRemove(TAGS_FORM_NAME, "requirements", index));
   };
 
   validateRequirements = value => (value.length ? undefined : "At least one table should be selected before the tag record can be saved");
@@ -356,7 +351,6 @@ class TagsFormBase extends React.PureComponent<FormProps, FormState> {
       handleSubmit,
       dirty,
       invalid,
-      rootTag,
       values,
       isNew,
       openConfirm,
@@ -368,7 +362,7 @@ class TagsFormBase extends React.PureComponent<FormProps, FormState> {
 
     const { editingId } = this.state;
 
-    return (
+    return values ? (
       <Form onSubmit={handleSubmit(this.onSave)} className={className}>
         {!this.disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
@@ -381,9 +375,9 @@ class TagsFormBase extends React.PureComponent<FormProps, FormState> {
           title={(isNew && (!values || !values.name || values.name.trim().length === 0))
               ? "New"
               : values && values.name.trim()}
-          createdOn={() => (rootTag.created ? new Date(rootTag.created) : null)}
-          modifiedOn={() => (rootTag.modified ? new Date(rootTag.modified) : null)}
-          disableInteraction={rootTag.system}
+          createdOn={() => (values.created ? new Date(values.created) : null)}
+          modifiedOn={() => (values.modified ? new Date(values.modified) : null)}
+          disableInteraction={values.system}
           opened={isNew || Object.keys(syncErrors).includes("name")}
           containerClass="p-3"
           fields={(
@@ -392,15 +386,15 @@ class TagsFormBase extends React.PureComponent<FormProps, FormState> {
                 name="name"
                 label="Name"
                 margin="none"
-                disabled={rootTag.system}
+                disabled={values.system}
               />
             </Grid>
           )}
-          actions={!isNew && !rootTag.system && (
+          actions={!isNew && !values.system && (
             <AppBarActions
               actions={[
                 {
-                  action: () => this.onDelete(rootTag.id),
+                  action: () => this.onDelete(values.id),
                   icon: <DeleteForever />,
                   confirmText: "Tag will be deleted permanently",
                   tooltip: "Delete Tag",
@@ -423,7 +417,7 @@ class TagsFormBase extends React.PureComponent<FormProps, FormState> {
                         items={values.requirements}
                         rootID={values.id}
                         validate={this.validateRequirements}
-                        system={rootTag.system}
+                        system={values.system}
                       />
                     )}
                   </div>
@@ -475,13 +469,14 @@ class TagsFormBase extends React.PureComponent<FormProps, FormState> {
           </Grid>
         </AppBarContainer>
       </Form>
-    );
+    ) : null;
   }
 }
 
 const mapStateToProps = (state: State) => ({
-  values: getFormValues("TagsForm")(state),
-  syncErrors: getFormSyncErrors("TagsForm")(state),
+  values: getFormValues(TAGS_FORM_NAME)(state),
+  syncErrors: getFormSyncErrors(TAGS_FORM_NAME)(state),
+  tags: state.tags.allTags,
   fetch: state.fetch,
   nextLocation: state.nextLocation
 });
@@ -494,11 +489,23 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
-const TagsForm = reduxForm({
-  form: "TagsForm",
+const TagsForm: any = reduxForm<Tag, FormProps>({
+  form: TAGS_FORM_NAME,
   onSubmitFail,
   validate,
   shouldError: () => true
-})(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(TagsFormBase))));
+})(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(TagsFormBase)));
 
-export default TagsForm as ComponentClass<Props>;
+export default ({ match: { params: { id } }, history }) => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (id === "new") {
+      dispatch(initialize(TAGS_FORM_NAME, emptyTag));
+    } else {
+      dispatch(getTagRequest(id));
+    }
+  }, [id]);
+
+  return <TagsForm history={history} />;
+};

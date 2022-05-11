@@ -79,7 +79,7 @@ const validateChildTags = (tag: Tag, errors: Tag[]) => {
 
 export const validate = (values: Tag, props: DecoratedFormProps<Tag, { tags: Tag[] }>): any => {
   const errors: Tag = {};
-  const { tags } = props;
+  const { tags = [] } = props;
 
   if (!values) {
     return errors;

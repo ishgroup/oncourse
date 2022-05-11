@@ -4,6 +4,10 @@ import { TagApi, Tag } from "@api/model";
 class TagsService {
   readonly tagApi = new TagApi(new DefaultHttpService());
 
+  public getTag(id: number): Promise<Tag> {
+    return this.tagApi.getTag(id);
+  }
+
   public getTags(entityName?: string): Promise<Tag[]> {
     return this.tagApi.get(entityName);
   }

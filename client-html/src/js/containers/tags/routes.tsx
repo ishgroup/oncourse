@@ -18,7 +18,7 @@ const tagRoutes = [
     main: TagsCatalog
   },
   {
-    path: "/tags/tagGroup/:id?",
+    path: "/tags/tagGroup/:id",
     url: "/tags/tagGroup",
     noMenuLink: true,
     main: TagsForm
@@ -30,7 +30,7 @@ const tagRoutes = [
     main: ChecklistsCatalog
   },
   {
-    path: "/tags/checklist/:id?",
+    path: "/tags/checklist/:id",
     url: "/tags/checklist",
     noMenuLink: true,
     main: ChecklistsCatalog

@@ -90,7 +90,7 @@ export const SidebarWithSearch = (props: Props) => {
           : (
             <Switch>
               {routes.map((route, index) => (
-                <Route exact key={index} path={route.path} render={props => <route.main {...props} />} />
+                <Route exact key={index} path={route.path} component={route.main} />
               ))}
             </Switch>
         )}

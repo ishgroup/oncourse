@@ -14,13 +14,17 @@ export const UPDATE_TAG_REQUEST = _toRequestType("put/tag");
 export const UPDATE_TAG_REQUEST_FULFILLED = FULFILLED(UPDATE_TAG_REQUEST);
 
 export const GET_TAG_REQUEST = _toRequestType("get/tag");
-export const GET_TAG_REQUEST_FULFILLED = FULFILLED(GET_TAG_REQUEST);
 
 export const CREATE_TAG_REQUEST = _toRequestType("post/tag");
 export const CREATE_TAG_REQUEST_FULFILLED = FULFILLED(CREATE_TAG_REQUEST);
 
 export const DELETE_TAG_REQUEST = _toRequestType("delete/tag");
 export const DELETE_TAG_REQUEST_FULFILLED = FULFILLED(DELETE_TAG_REQUEST);
+
+export const getTagRequest = (id: number) => ({
+  type: GET_TAG_REQUEST,
+  payload: id
+});
 
 export const deleteTag = (id: number) => ({
   type: DELETE_TAG_REQUEST,

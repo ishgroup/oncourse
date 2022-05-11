@@ -21,7 +21,7 @@ const requirements = Object.keys(TagRequirementType).map(
     } as TagRequirement)
 );
 
-const styles = theme => ({
+const styles = () => ({
   menu: {
     marginLeft: "52px"
   }
@@ -135,6 +135,7 @@ class TagRequirementsMenu extends React.Component<any, any> {
     const {
       classes,
       label,
+      input: { name },
       meta: { invalid, error },
       disabled,
       system
@@ -158,7 +159,7 @@ class TagRequirementsMenu extends React.Component<any, any> {
           </Menu>
         )}
 
-        <div>
+        <div id={name}>
           <div className="centeredFlex">
             <Typography
               className={clsx("heading", {
@@ -181,7 +182,7 @@ class TagRequirementsMenu extends React.Component<any, any> {
           </div>
 
           {error && (
-            <Typography variant="caption" color="error">
+            <Typography className="shakingError" variant="caption" color="error" component="div">
               {error}
             </Typography>
           )}
