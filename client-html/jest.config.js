@@ -34,4 +34,5 @@ module.exports = {
     "ace-builds": "<rootDir>/node_modules/ace-builds",
     "\\.css$|@ckeditor": "<rootDir>/src/dev/mock/importMock.ts",
   },
+  testTimeout: 30000
 };
