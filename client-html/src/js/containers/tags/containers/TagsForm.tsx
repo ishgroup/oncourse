@@ -4,32 +4,36 @@
  */
 
 import React, { ComponentClass } from "react";
-import { Typography, Grid } from "@mui/material";
-import { withStyles } from "@mui/styles";
+import { Grid, Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { withRouter } from "react-router";
 import DeleteForever from "@mui/icons-material/DeleteForever";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import {
-  Form, Field, initialize, change, arrayRemove, reduxForm, getFormValues, getFormSyncErrors
+  arrayInsert,
+  arrayRemove,
+  change,
+  Field,
+  Form,
+  getFormSyncErrors,
+  getFormValues,
+  initialize,
+  reduxForm
 } from "redux-form";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { ForbiddenTagNames, Tag } from "@api/model";
+import { Tag } from "@api/model";
+import { createStyles, withStyles } from "@mui/styles";
+import { alpha } from "@mui/material/styles";
+import { TreeData } from "@atlaskit/tree";
 import FormField from "../../../common/components/form/formFields/FormField";
-import { validateSingleMandatoryField, validateAqlFilterOrTagName } from "../../../common/utils/validation";
 import { State } from "../../../reducers/state";
 import RouteChangeConfirm from "../../../common/components/dialog/confirm/RouteChangeConfirm";
 import TagRequirementsMenu from "../components/TagRequirementsMenu";
-import TagItem from "../components/TagItem";
 import { getDeepValue } from "../../../common/utils/common";
-import {
-  createTag, deleteTag, updateTag, updateTagEditViewState
-} from "../actions";
+import { createTag, deleteTag, updateTag } from "../actions";
 import AppBarActions from "../../../common/components/form/AppBarActions";
 import TagRequirementItem from "../components/TagRequirementItem";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import TagItemEditView from "../components/TagItemEditView";
 import { setNextLocation, showConfirm } from "../../../common/actions";
 import { COLORS } from "../utils";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
@@ -37,22 +41,91 @@ import AddButton from "../../../common/components/icons/AddButton";
 import { onSubmitFail } from "../../../common/utils/highlightFormClassErrors";
 import AppBarContainer from "../../../common/components/layout/AppBarContainer";
 import { getPluralSuffix } from "../../../common/utils/strings";
+import { AppTheme } from "../../../model/common/Theme";
+import { FormTag } from "../../../model/tags";
+import TagsTree from "../components/TagsTree";
+import { validate } from "../utils/validation";
 import { CatalogItemType } from "../../../model/common/Catalog";
 
-const styles = () => ({
-  noTransform: {
-    transform: "none !important"
+const styles = (theme: AppTheme) => createStyles({
+  dragIcon: {
+    margin: theme.spacing(0, 2),
+    color: theme.palette.action.focus,
+    "&:hover": {
+      color: theme.palette.action.active
+    }
+  },
+  actionButton: {
+    marginRight: "10px"
+  },
+  actionIcon: {
+    color: theme.palette.action.focus,
+    fontSize: "20px"
+  },
+  actionIconInactive: {
+    color: theme.palette.action.hover,
+    fontSize: "20px"
+  },
+  cardRoot: {
+    paddingTop: theme.spacing(1),
+  },
+  card: {
+    zIndex: 1,
+    borderRadius: `${theme.shape.borderRadius}px`,
+    cursor: "pointer",
+    backgroundColor: alpha(theme.palette.text.primary, 0.025),
+    "&:hover $actionIcon": {
+      color: theme.palette.action.active
+    },
+    "&:hover $actionIconInactive": {
+      color: theme.palette.action.focus
+    }
+  },
+  cardGrid: {
+    gridTemplateColumns: "auto auto 1fr 1fr auto auto auto",
+    display: "grid",
+    alignItems: "center",
+  },
+  dragOver: {
+    boxShadow: theme.shadows[2]
+  },
+  tagColorDot: {
+    width: "1em",
+    height: "1em",
+    borderRadius: "100%"
+  },
+  legend: {
+    gridTemplateColumns: "1fr 1fr 108px",
+    display: "grid",
+    alignItems: "center",
+    paddingLeft: "94px",
+    marginBottom: theme.spacing(1)
+  },
+  fieldEditable: {
+    paddingRight: theme.spacing(2),
+    position: "relative",
+    top: 2
+  },
+  nameEditable: {
+    fontSize: "14px",
+    fontWeight: 500
+  },
+  urlEditable: {
+    fontSize: "14px",
+  },
+  placeholder: {
+    border: `2px dashed ${theme.palette.action.focus}`,
+    borderRadius: `${theme.shape.borderRadius}px`,
+    position: "absolute",
+    boxSizing: "border-box",
+    zIndex: 0
   }
 });
 
 const manualUrl = getManualLink("tagging");
 
-interface FormTag extends Tag {
-  parent: string;
-  dragIndex: number;
-}
-
 interface Props {
+  rootTag?: FormTag;
   isNew?: boolean;
   tags?: CatalogItemType[];
   redirectOnDelete?: () => void;
@@ -60,7 +133,7 @@ interface Props {
 }
 
 interface FormProps extends Props {
-  values: any;
+  values: FormTag;
   classes: any;
   dispatch: any;
   className: string;
@@ -80,7 +153,6 @@ interface FormProps extends Props {
   history: any;
   nextLocation: string;
   setNextLocation: (nextLocation: string) => void;
-  theme?: any;
   syncErrors?: any;
 }
 
@@ -100,40 +172,21 @@ const setWeight = items =>
     }
 
     return item;
-  });
+});
 
-const checkParentDrop = (values, path, dragID) => {
-  const match = getDeepValue(values, path).id === dragID;
-
-  const regex = /.childTags\[[0-9]+]$/;
-
-  if (!match && path.match(regex)) {
-    return checkParentDrop(values, path.replace(regex, ""), dragID);
-  }
-
-  return match;
+const treeItemDataToTag = (id: number | string, tree: TreeData): Tag => {
+  const tag = tree.items[id].data;
+  tag.childTags = tree.items[id].children.map(id => treeItemDataToTag(id, tree));
+  return tag;
 };
 
-const getPathByDragIndex = (index, tags) => {
-  let parent = "";
+const treeDataToTags = (tree: TreeData): Tag[] => tree.items[tree.rootId].children.map(id => treeItemDataToTag(id, tree));
 
-  tags.forEach(t => {
-    if (!parent && t.dragIndex === index) {
-      parent = t.parent;
-      return;
-    }
+interface FormState {
+  editingId: number;
+}
 
-    if (!parent && t.childTags.length) {
-      parent = getPathByDragIndex(index, t.childTags);
-    }
-  });
-
-  return parent;
-};
-
-const validatTagsNames = val => (val.some(i => !i.name) ? "Name is mandatory" : undefined);
-
-class TagsFormBase extends React.PureComponent<FormProps> {
+class TagsFormBase extends React.PureComponent<FormProps, FormState> {
   private resolvePromise;
 
   private rejectPromise;
@@ -143,6 +196,10 @@ class TagsFormBase extends React.PureComponent<FormProps> {
   private disableConfirm;
 
   private counter;
+
+  state = {
+    editingId: null
+  }
 
   constructor(props) {
     super(props);
@@ -159,8 +216,12 @@ class TagsFormBase extends React.PureComponent<FormProps> {
 
   componentDidUpdate(prevProps) {
     const {
-      fetch, nextLocation, setNextLocation, dirty, history
+      rootTag, submitSucceeded, fetch
     } = this.props;
+
+    if (rootTag && (!prevProps.rootTag || prevProps.rootTag.id !== rootTag.id || submitSucceeded)) {
+      this.props.dispatch(initialize("TagsForm", rootTag));
+    }
 
     if (this.isPending && fetch && fetch.success === false) {
       this.isPending = false;
@@ -170,11 +231,12 @@ class TagsFormBase extends React.PureComponent<FormProps> {
       this.isPending = false;
       this.resolvePromise();
     }
+  }
 
-    if (nextLocation && !dirty && !this.isPending) {
-      history.push(nextLocation);
-      setNextLocation('');
-    }
+  setEditingId = editingId => {
+    this.setState({
+      editingId
+    });
   }
 
   onSave = values => {
@@ -186,6 +248,7 @@ class TagsFormBase extends React.PureComponent<FormProps> {
 
     delete clone.dragIndex;
     delete clone.parent;
+    delete clone.refreshFlag;
 
     const tags = { ...clone, childTags: setWeight(clone.childTags) };
 
@@ -220,74 +283,8 @@ class TagsFormBase extends React.PureComponent<FormProps> {
     });
   };
 
-  onDragEnd = args => {
-    const { combine, draggableId, destination } = args;
-
-    const { values, dispatch } = this.props;
-
-    if (destination || combine) {
-      const destinationPath = combine
-        ? combine.draggableId === "ROOT"
-          ? ""
-          : combine.draggableId
-        : getPathByDragIndex(destination.index, values.childTags);
-
-      if (
-        destinationPath.length > draggableId.length
-        && checkParentDrop(values, destinationPath, getDeepValue(values, draggableId).id)
-      ) {
-        // parent dropped inside itself or children
-        return;
-      }
-
-      if (
-        !combine
-        && destinationPath.replace(/childTags\[[0-9]+]$/, "") !== draggableId.replace(/childTags\[[0-9]+]$/, "")
-      ) {
-        // dropped inside different parent
-        return;
-      }
-
-      const clone = JSON.parse(JSON.stringify(values));
-
-      const insertPath = getDeepValue(
-        clone,
-        combine
-          ? destinationPath
-            ? destinationPath + ".childTags"
-            : "childTags"
-          : destinationPath.replace(/\[[0-9]+]$/, "")
-      );
-
-      const insertValue = getDeepValue(clone, draggableId);
-      let destinationPathIndex = -1;
-
-      if (!combine) {
-        const destinationPathMatch = destinationPath.match(/\[[0-9]+]$/);
-        if (destinationPathMatch && destinationPathMatch.length > 0) {
-          destinationPathIndex = Number(destinationPathMatch[0].replace(/[\[\]]/g, ""));
-        }
-      }
-
-      const insertIndex = !combine && destinationPathIndex;
-
-      const removePath = getDeepValue(clone, draggableId.replace(/\[[0-9]+]$/, ""));
-
-      const draggableIdMatch = draggableId.match(/\[[0-9]+]$/);
-
-      if (draggableIdMatch && draggableIdMatch.length > 0) {
-        const removeIndex = Number(draggableIdMatch[0].replace(/[\[\]]/g, ""));
-        removePath && removePath.splice(removeIndex, 1);
-      }
-
-      combine ? insertPath.push(insertValue) : insertPath && insertPath.splice(insertIndex, 0, insertValue);
-
-      dispatch(change("TagsForm", "childTags", clone.childTags));
-    }
-  };
-
   addTag = () => {
-    const { values, dispatch } = this.props;
+    const { dispatch } = this.props;
 
     const newTag: FormTag = {
       id: ("new" + this.counter) as any,
@@ -296,8 +293,6 @@ class TagsFormBase extends React.PureComponent<FormProps> {
       system: false,
       urlPath: null,
       content: "",
-      parent: "ROOT",
-      dragIndex: 0,
       weight: 1,
       taggedRecordsCount: 0,
       created: null,
@@ -307,16 +302,18 @@ class TagsFormBase extends React.PureComponent<FormProps> {
       color: COLORS[Math.floor(Math.random() * COLORS.length)],
     };
 
-    const clone = JSON.parse(JSON.stringify(values));
-
-    clone && clone.childTags && clone.childTags.splice(0, 0, newTag);
-
-    dispatch(change("TagsForm", "childTags", clone.childTags));
+    dispatch(arrayInsert("TagsForm", "childTags", 0, newTag));
 
     this.counter++;
   };
 
-  removeChildTag = (parent, index, item) => {
+  changeVisibility = (item: FormTag) => {
+    const { dispatch, values } = this.props;
+    dispatch(change("TagsForm", item.parent ? item.parent + ".status" : "status", item.status === "Private" ? "Show on website" : "Private"));
+    dispatch(change("TagsForm", "refreshFlag", !values.refreshFlag));
+  }
+
+  removeChildTag = (item: FormTag) => {
     const { dispatch, values, openConfirm } = this.props;
 
     const confirmMessage = item.childrenCount
@@ -329,216 +326,156 @@ class TagsFormBase extends React.PureComponent<FormProps> {
     const onConfirm = () => {
       const clone = JSON.parse(JSON.stringify(values));
 
-      const removePath = getDeepValue(clone, parent.replace(/\[[0-9]+]$/, ""));
+      const removePath = getDeepValue(clone, item.parent.replace(/\[[0-9]+]$/, ""));
 
-      removePath && removePath.splice(index, 1);
+      removePath && removePath.splice(Number(item.parent.match(/\[(\d)]$/)[1]), 1);
 
       dispatch(change("TagsForm", "childTags", clone.childTags));
+      dispatch(change("TagsForm", "refreshFlag", !values.refreshFlag));
     };
 
     openConfirm({ onConfirm, confirmMessage, confirmButtonText: "DELETE" });
+  };
+
+  onDrop = (tagsTree: TreeData) => {
+    const { dispatch, values } = this.props;
+
+    dispatch(change("TagsForm", "childTags", treeDataToTags(tagsTree)));
+    dispatch(change("TagsForm", "refreshFlag", !values.refreshFlag));
   };
 
   removeRequirement = index => {
     this.props.dispatch(arrayRemove("TagsForm", "requirements", index));
   };
 
-  validateTagName = (value, v, props, path) => {
-    const { values } = this.props;
-
-    const group = getDeepValue(values, path.replace(/\[[0-9]+]$/, ""));
-
-    const match = group.filter(i => i.name && i.id !== v.id && i.name.trim() === value.trim());
-
-    return match.length ? "The tag name is not unique within its parent tag" : undefined;
-  };
-
-  validateTagShortName = (value, v, path) => {
-    const { values } = this.props;
-
-    if (!value) return undefined;
-
-    if (ForbiddenTagNames[value.toLowerCase()]) {
-      return "This name is reserved by the onCourse system and cannot be used.";
-    }
-
-    if (value.includes('"')) {
-      return "Double quotes are not permitted in the short name.";
-    }
-
-    if (value.includes("+")) {
-      return "Plus sign is not permitted in the short name.";
-    }
-
-    if (value.includes("\\")) {
-      return "Backslash is not permitted in the short name.";
-    }
-
-    if (value.includes("/")) {
-      return "Forward slash is not permitted in the short name.";
-    }
-
-    if (value.startsWith("template-") || value.match(/\/[0-9]/)) {
-      return "This short name is not allowed.";
-    }
-
-    if (!path) {
-      return undefined;
-    }
-
-    const group = getDeepValue(values, path.replace(/\[[0-9]+]$/, ""));
-
-    const match = group && group.filter(i => i.id !== v.id && i.urlPath && i.urlPath.trim() === value.trim());
-
-    return match.length ? "The node name is not unique" : undefined;
-  };
-
-  validateRootTagName = value => {
-    const { tags, values } = this.props;
-
-    const matches = tags.filter(i => i.title.trim() === value.trim() && values?.id !== i.id);
-
-    return matches.length > 0 ? "The tag name is not unique" : undefined;
-  };
-
   validateRequirements = value => (value.length ? undefined : "At least one table should be selected before the tag record can be saved");
 
   render() {
     const {
-      classes,
       className,
       handleSubmit,
       dirty,
       invalid,
+      rootTag,
       values,
-      openTagEditView,
-      closeTagEditView,
       isNew,
       openConfirm,
       dispatch,
       syncErrors,
-      form
+      form,
+      classes
     } = this.props;
 
-    return values ? (
-      <>
-        <Form onSubmit={handleSubmit(this.onSave)} className={className}>
-          {!this.disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
+    const { editingId } = this.state;
 
-          <AppBarContainer
-            values={values}
-            manualUrl={manualUrl}
-            getAuditsUrl='audit?search=~"Tag"'
-            disabled={!dirty}
-            invalid={invalid}
-            title={(isNew && (!values || !values.name || values.name.trim().length === 0))
+    return (
+      <Form onSubmit={handleSubmit(this.onSave)} className={className}>
+        {!this.disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
+
+        <AppBarContainer
+          values={values}
+          manualUrl={manualUrl}
+          getAuditsUrl='audit?search=~"Tag"'
+          disabled={!dirty}
+          invalid={invalid}
+          title={(isNew && (!values || !values.name || values.name.trim().length === 0))
               ? "New"
               : values && values.name.trim()}
-            createdOn={() => (values.created ? new Date(values.created) : null)}
-            modifiedOn={() => (values.modified ? new Date(values.modified) : null)}
-            disableInteraction={values.system}
-            opened={isNew || Object.keys(syncErrors).includes("name")}
-            containerClass="p-3"
-            fields={(
-              <Grid item xs={8}>
-                <FormField
-                  name="name"
-                  label="Name"
-                  margin="none"
-                  validate={[validateSingleMandatoryField,this.validateRootTagName, validateAqlFilterOrTagName]}
-                  disabled={values.system}
-                />
-              </Grid>
-            )}
-            actions={!isNew && !values.system && (
-              <AppBarActions
-                actions={[
-                  {
-                    action: () => this.onDelete(values.id),
-                    icon: <DeleteForever />,
-                    confirmText: "Tag will be deleted permanently",
-                    tooltip: "Delete Tag",
-                    confirmButtonText: "DELETE"
-                  }
-                ]}
+          createdOn={() => (rootTag.created ? new Date(rootTag.created) : null)}
+          modifiedOn={() => (rootTag.modified ? new Date(rootTag.modified) : null)}
+          disableInteraction={rootTag.system}
+          opened={isNew || Object.keys(syncErrors).includes("name")}
+          containerClass="p-3"
+          fields={(
+            <Grid item xs={8}>
+              <FormField
+                name="name"
+                label="Name"
+                margin="none"
+                disabled={rootTag.system}
               />
-            )}
-          >
-            <Grid container>
-              <Grid item sm={12} lg={11} xl={8}>
-                <Grid container columnSpacing={3}>
-                  <Grid item xs={12} md={8}>
-                    <div className="centeredFlex">
-                      {values && (
-                        <Field
-                          name="requirements"
-                          label="Available for"
-                          component={TagRequirementsMenu}
-                          items={values.requirements}
-                          rootID={values.id}
-                          validate={this.validateRequirements}
-                          system={values.system}
-                        />
-                      )}
-                    </div>
+            </Grid>
+          )}
+          actions={!isNew && !rootTag.system && (
+            <AppBarActions
+              actions={[
+                {
+                  action: () => this.onDelete(rootTag.id),
+                  icon: <DeleteForever />,
+                  confirmText: "Tag will be deleted permanently",
+                  tooltip: "Delete Tag",
+                  confirmButtonText: "DELETE"
+                }
+              ]}
+            />
+          )}
+        >
+          <Grid container>
+            <Grid item sm={12} lg={11} xl={8}>
+              <Grid container columnSpacing={3}>
+                <Grid item xs={12} md={8}>
+                  <div className="centeredFlex">
+                    {values && (
+                      <Field
+                        name="requirements"
+                        label="Available for"
+                        component={TagRequirementsMenu}
+                        items={values.requirements}
+                        rootID={values.id}
+                        validate={this.validateRequirements}
+                        system={rootTag.system}
+                      />
+                    )}
+                  </div>
 
-                    {values
-                      && values.requirements.map((i, index) => (
-                        <TagRequirementItem
-                          parent={`requirements[${index}]`}
-                          key={index}
-                          item={i}
-                          index={index}
-                          onDelete={this.removeRequirement}
-                          disabled={values.system}
-                          openConfirm={openConfirm}
-                          dispatch={dispatch}
-                        />
-                      ))}
-                  </Grid>
-
-                  <Grid item xs={false} md={4} />
+                  {values
+                    && values.requirements.map((i, index) => (
+                      <TagRequirementItem
+                        parent={`requirements[${index}]`}
+                        key={index}
+                        item={i}
+                        index={index}
+                        onDelete={this.removeRequirement}
+                        disabled={values.system}
+                        openConfirm={openConfirm}
+                        dispatch={dispatch}
+                      />
+                    ))}
                 </Grid>
 
-                <Divider className="mt-2 mb-2" />
-
-                <div className="centeredFlex">
-                  <Typography className="heading">Tags</Typography>
-                  <AddButton onClick={this.addTag} />
-                </div>
-
-                <DragDropContext onDragEnd={this.onDragEnd}>
-                  <Droppable droppableId="ROOT" isCombineEnabled>
-                    {provided => (
-                      <div ref={provided.innerRef}>
-                        {values && (
-                          <TagItem
-                            noTransformClass={classes.noTransform}
-                            item={values}
-                            onDelete={this.removeChildTag}
-                            openTagEditView={openTagEditView}
-                            validatTagsNames={validatTagsNames}
-                          />
-                        )}
-
-                        {provided.placeholder}
-                      </div>
-                    )}
-                  </Droppable>
-                </DragDropContext>
+                <Grid item xs={false} md={4} />
               </Grid>
-            </Grid>
-          </AppBarContainer>
-        </Form>
 
-        <TagItemEditView
-          validateName={this.validateTagName}
-          validateShortName={this.validateTagShortName}
-          validateRootName={this.validateRootTagName}
-          onClose={closeTagEditView}
-        />
-      </>
-    ) : null;
+              <Divider className="mt-2 mb-2" />
+
+              <div className="centeredFlex">
+                <div className="heading">Tags</div>
+                <AddButton onClick={this.addTag} />
+              </div>
+
+              <div className={classes.legend}>
+                <Typography variant="caption" color="textSecondary">Name</Typography>
+                <Typography variant="caption" color="textSecondary">URL path</Typography>
+                <Typography variant="caption" color="textSecondary" textAlign="center">Website visibility</Typography>
+              </div>
+
+              {values && (
+                <TagsTree
+                  rootTag={values}
+                  classes={classes}
+                  onDelete={this.removeChildTag}
+                  changeVisibility={this.changeVisibility}
+                  setEditingId={this.setEditingId}
+                  onDrop={this.onDrop}
+                  editingId={editingId}
+                  syncErrors={syncErrors}
+                />
+              )}
+            </Grid>
+          </Grid>
+        </AppBarContainer>
+      </Form>
+    );
   }
 }
 
@@ -546,22 +483,22 @@ const mapStateToProps = (state: State) => ({
   values: getFormValues("TagsForm")(state),
   syncErrors: getFormSyncErrors("TagsForm")(state),
   fetch: state.fetch,
-  nextLocation: state.nextLocation,
+  nextLocation: state.nextLocation
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   onUpdate: (id: number, tag: Tag) => dispatch(updateTag(id, tag)),
   onCreate: (tag: Tag) => dispatch(createTag(tag)),
   onDelete: (id: number) => dispatch(deleteTag(id)),
-  openTagEditView: (item: Tag, parent: string) => dispatch(updateTagEditViewState(item, true, parent)),
-  closeTagEditView: () => dispatch(updateTagEditViewState({}, false, null)),
   openConfirm: props => dispatch(showConfirm(props)),
   setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
 const TagsForm = reduxForm({
   form: "TagsForm",
-  onSubmitFail
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(withRouter(TagsFormBase))));
+  onSubmitFail,
+  validate,
+  shouldError: () => true
+})(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(TagsFormBase))));
 
 export default TagsForm as ComponentClass<Props>;

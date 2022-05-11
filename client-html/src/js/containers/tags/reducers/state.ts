@@ -6,8 +6,4 @@ export interface TagsState {
   entityTags: {
     [key: string]: Tag[];
   };
-  editView: {
-    open: boolean;
-    parent: string;
-  };
 }

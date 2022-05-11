@@ -10,7 +10,7 @@
  */
 
 import {
-  FormControl, FormHelperText, InputLabel, Input
+ FormControl, FormHelperText, Input, InputLabel 
 } from "@mui/material";
 import ButtonBase from "@mui/material/ButtonBase";
 import ClickAwayListener from '@mui/material/ClickAwayListener';
@@ -26,7 +26,7 @@ import { Field, WrappedFieldProps } from "redux-form";
 import HtmlEditor from "./HtmlEditor";
 import { useStyles } from "./style";
 import {
-  addContentMarker, CONTENT_MODES, getContentMarker, getEditorModeLabel, removeContentMarker
+ addContentMarker, CONTENT_MODES, getContentMarker, getEditorModeLabel, removeContentMarker 
 } from "./utils";
 import WysiwygEditor from "./WysiwygEditor";
 
@@ -58,6 +58,7 @@ interface Props {
   disabled?: boolean;
   fieldClasses?: any;
   label?: string;
+  placeholder?: string;
 }
 
 const FormEditor: React.FC<Props & WrappedFieldProps> = (
@@ -66,6 +67,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
     meta,
     disabled,
     label,
+    placeholder,
     fieldClasses = {}
   }
 ) => {
@@ -120,7 +122,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
                 classes.editorArea,
                 { "ace-wrapper": contentMode === "html" || contentMode === "textile" },
                 label && "mt-2"
-              )
+            )
             }
           >
             <div className="content-mode-wrapper">
@@ -146,7 +148,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
                     onClick={() => {
                         setContentMode(mode.id);
                         modeMenuClose();
-                      }}
+                    }}
                     selected={contentMode === mode.id}
                   >
                     {mode.title}
@@ -176,7 +178,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
                     ? contentMode === "md"
                       ? <div dangerouslySetInnerHTML={{ __html: markdown2html(removeContentMarker(value)) }} />
                       : removeContentMarker(value)
-                    : "No value"
+                    : placeholder || "No value"
                 }
               </span>
               {!disabled
@@ -204,10 +206,11 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
   );
 };
 
-export const FormEditorField = ({ name, label }) => (
+export const FormEditorField = ({ name, label, placeholder }: { name: string, label?: string, placeholder?: string }) => (
   <Field
     name={name}
     label={label}
+    placeholder={placeholder}
     component={FormEditor}
   />
 );
