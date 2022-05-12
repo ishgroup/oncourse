@@ -29,6 +29,7 @@ import AddButton from "../../../common/components/icons/AddButton";
 import TagsTree from "../components/TagsTree";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import ColorPicker from "../../../common/components/color-picker/ColorPicker";
+import ChecklistRequirementItem from "../components/ChecklistRequirementItem";
 
 const manualUrl = getManualLink("tagging");
 
@@ -239,7 +240,7 @@ class ChecklistsFormRenderer extends TagsFormBase {
                     {values && (
                       <Field
                         name="requirements"
-                        label="Available for"
+                        label="Checklist visible on"
                         component={TagRequirementsMenu}
                         items={values.requirements}
                         rootID={values.id}
@@ -250,17 +251,15 @@ class ChecklistsFormRenderer extends TagsFormBase {
                   </div>
 
                   {values
-                  && values.requirements?.map((i, index) => (
-                    <TagRequirementItem
-                      parent={`requirements[${index}]`}
-                      key={index}
-                      item={i}
-                      index={index}
-                      onDelete={this.removeRequirement}
-                      disabled={values.system}
-                      openConfirm={openConfirm}
-                      dispatch={dispatch}
-                    />
+                    && values.requirements?.map((i, index) => (
+                      <ChecklistRequirementItem
+                        parent={`requirements[${index}]`}
+                        key={index}
+                        item={i}
+                        index={index}
+                        onDelete={this.removeRequirement}
+                        disabled={values.system}
+                      />
                   ))}
                 </Grid>
 

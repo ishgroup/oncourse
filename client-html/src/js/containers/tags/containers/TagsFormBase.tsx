@@ -309,7 +309,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
     this.props.dispatch(arrayRemove(TAGS_FORM_NAME, "requirements", index));
   };
 
-  validateRequirements = value => (value.length ? undefined : "At least one table should be selected before the tag record can be saved");
+  validateRequirements = value => (value.length ? undefined : "At least one table should be selected before record can be saved");
 }
 
 const mapStateToProps = (state: State) => ({
