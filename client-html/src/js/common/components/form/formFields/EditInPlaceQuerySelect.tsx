@@ -427,6 +427,8 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
       input = input.replace(FILTER_TAGS_REGEX, v => `@"${v.replace("@", "")}"`);
     }
 
+    input = input.length ? input : `#""`;
+
     const chars = new ANTLRInputStream(input);
     const lexer = new AqlLexer(chars);
     const tokens = new CommonTokenStream(lexer);
