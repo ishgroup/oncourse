@@ -16,8 +16,7 @@ import ish.common.util.DisplayableExtendedEnumeration;
 public enum NodeType implements DisplayableExtendedEnumeration<Integer> {
 
 	TAG(1, "Tag"),
-	WEBPAGE(2, "Web page"),
-	CHECKLIST(3, "Checklist");
+	CHECKLIST(2, "Checklist");
 
 	private String displayName;
 	private int value;
