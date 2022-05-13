@@ -34,7 +34,6 @@ const useStyles = makeAppStyles(theme => ({
     alignItems: "center",
   },
   collapse: {
-    margin: theme.spacing(2, 0),
     gridColumn: "1/4"
   }
 }));
@@ -62,18 +61,18 @@ const ChecklistRequirementItem = (props: Props) => {
   
   const debounseSearch = useCallback<any>(
     debounce((entity, query) => {
-        EntityService.getPlainRecords(
-          entity,
-          "id",
-          query,
-          1
-        )
-          .then(() => {
-            setIsValidQuery(true);
-          })
-          .catch(() => {
-            setIsValidQuery(false);
-          });
+      EntityService.getPlainRecords(
+        entity,
+        "id",
+        query,
+        1
+      )
+        .then(() => {
+          setIsValidQuery(true);
+        })
+        .catch(() => {
+          setIsValidQuery(false);
+        });
     }, 600),
     []
   );
@@ -113,6 +112,7 @@ const ChecklistRequirementItem = (props: Props) => {
           label="Display when"
           rootEntity={item.type}
           validate={validateExpression}
+          className="mt-2 mb-2"
         />
       </Collapse>
     </div>

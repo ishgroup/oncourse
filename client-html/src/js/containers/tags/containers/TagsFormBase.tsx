@@ -70,6 +70,11 @@ const styles = (theme: AppTheme) => createStyles({
     display: "grid",
     alignItems: "center",
   },
+  checklistCardGrid: {
+    gridTemplateColumns: "auto 1fr auto",
+    display: "grid",
+    alignItems: "center",
+  },
   dragOver: {
     boxShadow: theme.shadows[2]
   },

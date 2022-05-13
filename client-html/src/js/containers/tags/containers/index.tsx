@@ -8,7 +8,8 @@
 
 import React, { useEffect } from "react";
 import {
- Field, Form, initialize
+  arrayInsert,
+  Field, Form, initialize
 } from "redux-form";
 import { Grid, Typography } from "@mui/material";
 import DeleteForever from "@mui/icons-material/DeleteForever";
@@ -26,10 +27,11 @@ import AppBarActions from "../../../common/components/form/AppBarActions";
 import TagRequirementsMenu from "../components/TagRequirementsMenu";
 import TagRequirementItem from "../components/TagRequirementItem";
 import AddButton from "../../../common/components/icons/AddButton";
-import TagsTree from "../components/TagsTree";
+import { ChecklistTree, TagTree } from "../components/Trees";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import ColorPicker from "../../../common/components/color-picker/ColorPicker";
 import ChecklistRequirementItem from "../components/ChecklistRequirementItem";
+import { FormTag } from "../../../model/tags";
 
 const manualUrl = getManualLink("tagging");
 
@@ -114,7 +116,7 @@ class TagsFormRenderer extends TagsFormBase {
                   && values.requirements?.map((i, index) => (
                     <TagRequirementItem
                       parent={`requirements[${index}]`}
-                      key={index}
+                      key={i.type}
                       item={i}
                       index={index}
                       onDelete={this.removeRequirement}
@@ -142,7 +144,7 @@ class TagsFormRenderer extends TagsFormBase {
               </div>
 
               {values && (
-                <TagsTree
+                <TagTree
                   rootTag={values}
                   classes={classes}
                   onDelete={this.removeChildTag}
@@ -162,6 +164,20 @@ class TagsFormRenderer extends TagsFormBase {
 }
 
 class ChecklistsFormRenderer extends TagsFormBase {
+  addTag = () => {
+    const { dispatch } = this.props;
+
+    const newTag: FormTag = {
+      ...EmptyTag,
+      color: null,
+      id: ("new" + this.counter) as any,
+    };
+
+    dispatch(arrayInsert(TAGS_FORM_NAME, "childTags", 0, newTag));
+
+    this.counter++;
+  };
+
   render() {
     const {
       className,
@@ -170,8 +186,6 @@ class ChecklistsFormRenderer extends TagsFormBase {
       invalid,
       values,
       isNew,
-      openConfirm,
-      dispatch,
       syncErrors,
       form,
       classes
@@ -254,7 +268,7 @@ class ChecklistsFormRenderer extends TagsFormBase {
                     && values.requirements?.map((i, index) => (
                       <ChecklistRequirementItem
                         parent={`requirements[${index}]`}
-                        key={index}
+                        key={i.type}
                         item={i}
                         index={index}
                         onDelete={this.removeRequirement}
@@ -272,6 +286,18 @@ class ChecklistsFormRenderer extends TagsFormBase {
                 <div className="heading">Add a task</div>
                 <AddButton onClick={this.addTag} />
               </div>
+
+              {values && (
+                <ChecklistTree
+                  rootTag={values}
+                  classes={classes}
+                  onDelete={this.removeChildTag}
+                  setEditingId={this.setEditingId}
+                  onDrop={this.onDrop}
+                  editingId={editingId}
+                  syncErrors={syncErrors}
+                />
+              )}
             </Grid>
           </Grid>
         </AppBarContainer>
