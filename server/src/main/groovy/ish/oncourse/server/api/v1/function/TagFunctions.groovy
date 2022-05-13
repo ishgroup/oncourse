@@ -14,6 +14,7 @@ package ish.oncourse.server.api.v1.function
 import groovy.transform.CompileStatic
 import ish.common.types.NodeSpecialType
 import ish.common.types.NodeType
+import ish.oncourse.aql.AqlService
 import ish.oncourse.cayenne.Taggable
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.function.GetTagGroupsInterface
@@ -54,13 +55,16 @@ import ish.oncourse.server.cayenne.Tutor
 import ish.oncourse.server.cayenne.Voucher
 import ish.oncourse.server.cayenne.VoucherProduct
 import ish.oncourse.server.cayenne.WaitingList
+import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
 import ish.oncourse.server.function.GetTagGroups
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.exp.Property
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.PrefetchTreeNode
 
 import java.util.stream.Collectors
 
+import static ish.oncourse.server.api.function.EntityFunctions.addAqlExp
 import static org.apache.commons.lang3.StringUtils.EMPTY
 import static org.apache.commons.lang3.StringUtils.trimToNull
 
@@ -70,68 +74,76 @@ import java.time.ZoneOffset
 @CompileStatic
 class TagFunctions {
 
-    private static final BidiMap<TaggableClasses, TagRequirementTypeDTO> tagRequirementBidiMap = new BidiMap<TaggableClasses, TagRequirementTypeDTO>() {{
-        put(TaggableClasses.APPLICATION, TagRequirementTypeDTO.APPLICATION)
-        put(TaggableClasses.ASSESSMENT, TagRequirementTypeDTO.ASSESSMENT)
-        put(TaggableClasses.CONTACT, TagRequirementTypeDTO.CONTACT)
-        put(TaggableClasses.COURSE, TagRequirementTypeDTO.COURSE)
-        put(TaggableClasses.DOCUMENT, TagRequirementTypeDTO.DOCUMENT)
-        put(TaggableClasses.ENROLMENT, TagRequirementTypeDTO.ENROLMENT)
-        put(TaggableClasses.INVOICE, TagRequirementTypeDTO.INVOICE)
-        put(TaggableClasses.LEAD, TagRequirementTypeDTO.LEAD)
-        put(TaggableClasses.PAYSLIP, TagRequirementTypeDTO.PAYSLIP)
-        put(TaggableClasses.ROOM, TagRequirementTypeDTO.ROOM)
-        put(TaggableClasses.SITE, TagRequirementTypeDTO.SITE)
-        put(TaggableClasses.STUDENT, TagRequirementTypeDTO.STUDENT)
-        put(TaggableClasses.TUTOR, TagRequirementTypeDTO.TUTOR)
-        put(TaggableClasses.WAITING_LIST, TagRequirementTypeDTO.WAITINGLIST)
-        put(TaggableClasses.COURSE_CLASS, TagRequirementTypeDTO.COURSECLASS)
-        put(TaggableClasses.ARTICLE, TagRequirementTypeDTO.ARTICLE)
-        put(TaggableClasses.VOUCHER, TagRequirementTypeDTO.VOUCHER)
-        put(TaggableClasses.MEMBERSHIP, TagRequirementTypeDTO.MEMBERSHIP)
-        put(TaggableClasses.ARTICLE_PRODUCT, TagRequirementTypeDTO.ARTICLEPRODUCT)
-        put(TaggableClasses.VOUCHER_PRODUCT, TagRequirementTypeDTO.VOUCHERPRODUCT)
-        put(TaggableClasses.MEMBERSHIP_PRODUCT, TagRequirementTypeDTO.MEMBERSHIPPRODUCT)
-    }}
+    private static final BidiMap<TaggableClasses, TagRequirementTypeDTO> tagRequirementBidiMap = new BidiMap<TaggableClasses, TagRequirementTypeDTO>() {
+        {
+            put(TaggableClasses.APPLICATION, TagRequirementTypeDTO.APPLICATION)
+            put(TaggableClasses.ASSESSMENT, TagRequirementTypeDTO.ASSESSMENT)
+            put(TaggableClasses.CONTACT, TagRequirementTypeDTO.CONTACT)
+            put(TaggableClasses.COURSE, TagRequirementTypeDTO.COURSE)
+            put(TaggableClasses.DOCUMENT, TagRequirementTypeDTO.DOCUMENT)
+            put(TaggableClasses.ENROLMENT, TagRequirementTypeDTO.ENROLMENT)
+            put(TaggableClasses.INVOICE, TagRequirementTypeDTO.INVOICE)
+            put(TaggableClasses.LEAD, TagRequirementTypeDTO.LEAD)
+            put(TaggableClasses.PAYSLIP, TagRequirementTypeDTO.PAYSLIP)
+            put(TaggableClasses.ROOM, TagRequirementTypeDTO.ROOM)
+            put(TaggableClasses.SITE, TagRequirementTypeDTO.SITE)
+            put(TaggableClasses.STUDENT, TagRequirementTypeDTO.STUDENT)
+            put(TaggableClasses.TUTOR, TagRequirementTypeDTO.TUTOR)
+            put(TaggableClasses.WAITING_LIST, TagRequirementTypeDTO.WAITINGLIST)
+            put(TaggableClasses.COURSE_CLASS, TagRequirementTypeDTO.COURSECLASS)
+            put(TaggableClasses.ARTICLE, TagRequirementTypeDTO.ARTICLE)
+            put(TaggableClasses.VOUCHER, TagRequirementTypeDTO.VOUCHER)
+            put(TaggableClasses.MEMBERSHIP, TagRequirementTypeDTO.MEMBERSHIP)
+            put(TaggableClasses.ARTICLE_PRODUCT, TagRequirementTypeDTO.ARTICLEPRODUCT)
+            put(TaggableClasses.VOUCHER_PRODUCT, TagRequirementTypeDTO.VOUCHERPRODUCT)
+            put(TaggableClasses.MEMBERSHIP_PRODUCT, TagRequirementTypeDTO.MEMBERSHIPPRODUCT)
+        }
+    }
 
-    public static final BidiMap<String, TaggableClasses> taggableClassesBidiMap = new BidiMap<String, TaggableClasses>() {{
-        put(Application.simpleName ,TaggableClasses.APPLICATION)
-        put(Assessment.simpleName, TaggableClasses.ASSESSMENT)
-        put(Contact.simpleName, TaggableClasses.CONTACT)
-        put(Course.simpleName, TaggableClasses.COURSE)
-        put(Document.simpleName, TaggableClasses.DOCUMENT)
-        put(Enrolment.simpleName, TaggableClasses.ENROLMENT)
-        put(AbstractInvoice.simpleName, TaggableClasses.INVOICE)
-        put(Invoice.simpleName, TaggableClasses.INVOICE)
-        put(Quote.simpleName, TaggableClasses.INVOICE)
-        put(Lead.simpleName, TaggableClasses.LEAD)
-        put(Payslip.simpleName, TaggableClasses.PAYSLIP)
-        put(Room.simpleName, TaggableClasses.ROOM)
-        put(Site.simpleName, TaggableClasses.SITE)
-        put(Student.simpleName, TaggableClasses.STUDENT)
-        put(Tutor.simpleName, TaggableClasses.TUTOR)
-        put(WaitingList.simpleName, TaggableClasses.WAITING_LIST)
-        put(CourseClass.simpleName, TaggableClasses.COURSE_CLASS)
-        put(ProductItem.simpleName, TaggableClasses.PRODUCT_ITEM)
-        put(Article.simpleName, TaggableClasses.PRODUCT_ITEM)
-        put(Voucher.simpleName, TaggableClasses.PRODUCT_ITEM)
-        put(Membership.simpleName, TaggableClasses.PRODUCT_ITEM)
-        put(ArticleProduct.simpleName, TaggableClasses.ARTICLE_PRODUCT)
-        put(VoucherProduct.simpleName, TaggableClasses.VOUCHER_PRODUCT)
-        put(MembershipProduct.simpleName, TaggableClasses.MEMBERSHIP_PRODUCT)
-    }}
+    public static final BidiMap<String, TaggableClasses> taggableClassesBidiMap = new BidiMap<String, TaggableClasses>() {
+        {
+            put(Application.simpleName, TaggableClasses.APPLICATION)
+            put(Assessment.simpleName, TaggableClasses.ASSESSMENT)
+            put(Contact.simpleName, TaggableClasses.CONTACT)
+            put(Course.simpleName, TaggableClasses.COURSE)
+            put(Document.simpleName, TaggableClasses.DOCUMENT)
+            put(Enrolment.simpleName, TaggableClasses.ENROLMENT)
+            put(AbstractInvoice.simpleName, TaggableClasses.INVOICE)
+            put(Invoice.simpleName, TaggableClasses.INVOICE)
+            put(Quote.simpleName, TaggableClasses.INVOICE)
+            put(Lead.simpleName, TaggableClasses.LEAD)
+            put(Payslip.simpleName, TaggableClasses.PAYSLIP)
+            put(Room.simpleName, TaggableClasses.ROOM)
+            put(Site.simpleName, TaggableClasses.SITE)
+            put(Student.simpleName, TaggableClasses.STUDENT)
+            put(Tutor.simpleName, TaggableClasses.TUTOR)
+            put(WaitingList.simpleName, TaggableClasses.WAITING_LIST)
+            put(CourseClass.simpleName, TaggableClasses.COURSE_CLASS)
+            put(ProductItem.simpleName, TaggableClasses.PRODUCT_ITEM)
+            put(Article.simpleName, TaggableClasses.PRODUCT_ITEM)
+            put(Voucher.simpleName, TaggableClasses.PRODUCT_ITEM)
+            put(Membership.simpleName, TaggableClasses.PRODUCT_ITEM)
+            put(ArticleProduct.simpleName, TaggableClasses.ARTICLE_PRODUCT)
+            put(VoucherProduct.simpleName, TaggableClasses.VOUCHER_PRODUCT)
+            put(MembershipProduct.simpleName, TaggableClasses.MEMBERSHIP_PRODUCT)
+        }
+    }
 
-    private static final BidiMap<String, TaggableClasses> taggableClassesForRequirements = new BidiMap<String, TaggableClasses>() {{
-        put(Article.simpleName, TaggableClasses.ARTICLE)
-        put(Voucher.simpleName, TaggableClasses.VOUCHER)
-        put(Membership.simpleName, TaggableClasses.MEMBERSHIP)
-    }}
+    private static final BidiMap<String, TaggableClasses> taggableClassesForRequirements = new BidiMap<String, TaggableClasses>() {
+        {
+            put(Article.simpleName, TaggableClasses.ARTICLE)
+            put(Voucher.simpleName, TaggableClasses.VOUCHER)
+            put(Membership.simpleName, TaggableClasses.MEMBERSHIP)
+        }
+    }
 
     private static final Map<TaggableClasses, TaggableClasses[]> additionalTaggableClasses =
-            new HashMap<TaggableClasses, TaggableClasses[]>() {{
-        put(TaggableClasses.CONTACT, [TaggableClasses.STUDENT, TaggableClasses.TUTOR] as TaggableClasses[])
-        put(TaggableClasses.PRODUCT_ITEM, [TaggableClasses.ARTICLE, TaggableClasses.VOUCHER, TaggableClasses.MEMBERSHIP] as TaggableClasses[])
-    }}
+            new HashMap<TaggableClasses, TaggableClasses[]>() {
+                {
+                    put(TaggableClasses.CONTACT, [TaggableClasses.STUDENT, TaggableClasses.TUTOR] as TaggableClasses[])
+                    put(TaggableClasses.PRODUCT_ITEM, [TaggableClasses.ARTICLE, TaggableClasses.VOUCHER, TaggableClasses.MEMBERSHIP] as TaggableClasses[])
+                }
+            }
 
     static TagDTO toRestTag(Tag dbTag, Map<Long, Integer> childCountMap, boolean isParent = true) {
         new TagDTO().with { tag ->
@@ -157,8 +169,8 @@ class TagFunctions {
                         tagRequirement.displayRule = req.displayRule
                         tagRequirement.system = tag.system && (
                                 (dbTag.specialType == NodeSpecialType.SUBJECTS && tagRequirement.type == TagRequirementTypeDTO.COURSE) ||
-                                (dbTag.specialType == NodeSpecialType.ASSESSMENT_METHOD && tagRequirement.type == TagRequirementTypeDTO.ASSESSMENT) ||
-                                (dbTag.specialType == NodeSpecialType.PAYROLL_WAGE_INTERVALS && tagRequirement.type == TagRequirementTypeDTO.TUTOR)
+                                        (dbTag.specialType == NodeSpecialType.ASSESSMENT_METHOD && tagRequirement.type == TagRequirementTypeDTO.ASSESSMENT) ||
+                                        (dbTag.specialType == NodeSpecialType.PAYROLL_WAGE_INTERVALS && tagRequirement.type == TagRequirementTypeDTO.TUTOR)
                         )
 
                         tagRequirement
@@ -188,7 +200,7 @@ class TagFunctions {
 
     static int getChildrenCount(Tag dbTag) {
         int count = dbTag.childTags.size()
-        count += dbTag.childTags.collect { getChildrenCount(it) }.sum() as Integer  ?: 0
+        count += dbTag.childTags.collect { getChildrenCount(it) }.sum() as Integer ?: 0
         count
     }
 
@@ -201,13 +213,13 @@ class TagFunctions {
             String errorMessage = 'Tag group can not be deleted'
             switch (dbTag.specialType) {
                 case NodeSpecialType.SUBJECTS:
-                    errorMessage+= ' This tag group represents the categories of courses on your web site and cannot be deleted.'
+                    errorMessage += ' This tag group represents the categories of courses on your web site and cannot be deleted.'
                     break
                 case NodeSpecialType.ASSESSMENT_METHOD:
-                    errorMessage+= ' This tag group is required for the assessments.'
+                    errorMessage += ' This tag group is required for the assessments.'
                     break
                 case NodeSpecialType.PAYROLL_WAGE_INTERVALS:
-                    errorMessage+= ' This tag group is required for the onCourse tutor pay feature.'
+                    errorMessage += ' This tag group is required for the onCourse tutor pay feature.'
                     break
                 default:
                     break
@@ -234,7 +246,7 @@ class TagFunctions {
         }
 
         Set<String> notValidNames = new HashSet<>()
-        validateNamesOfNewTag(tag , notValidNames)
+        validateNamesOfNewTag(tag, notValidNames)
         if (notValidNames.size() > 0) {
             return new ValidationErrorDTO(null, 'name', "\'${notValidNames[0]}\' has forbidden symbols. The tag name can not contain \", \\, #.")
         }
@@ -282,7 +294,7 @@ class TagFunctions {
         if (root) {
             if (tag.requirements.size() < 1) {
                 return new ValidationErrorDTO(tag.id?.toString(), 'requirements', 'At least one requirement should be set for root tag.')
-            } else if (tag.requirements.stream().anyMatch{rq -> rq.type == null}) {
+            } else if (tag.requirements.stream().anyMatch { rq -> rq.type == null }) {
                 return new ValidationErrorDTO(tag.id?.toString(), 'requirements', 'Invalid requirement type.')
             }
         } else if (!tag.requirements.empty) {
@@ -298,7 +310,7 @@ class TagFunctions {
 
     static boolean validateNamesOfNewTag(TagDTO tag, Set notValidNames) {
         tag.childTags.each { validateNamesOfNewTag(it, notValidNames) }
-        if ((!isNameValid(tag.name) && tag.id == null)){
+        if ((!isNameValid(tag.name) && tag.id == null)) {
             notValidNames.add(tag.name)
             return true
         } else {
@@ -402,7 +414,7 @@ class TagFunctions {
     static List<Tag> getAllLeafTags(Tag tag) {
         List<Tag> result = new ArrayList<>()
         if (tag.childTags != null && tag.childTags.size() > 0) {
-            result.addAll(tag.childTags.each {t -> getAllLeafTags(t)})
+            result.addAll(tag.childTags.each { t -> getAllLeafTags(t) })
         } else {
             result.add(tag)
         }
@@ -415,10 +427,30 @@ class TagFunctions {
         prefetch
     }
 
-    static TaggableClasses getRequirementTaggableClassForName(String entityName){
+    static TaggableClasses getRequirementTaggableClassForName(String entityName) {
         return taggableClassesForRequirements.containsKey(entityName)
                 ? taggableClassesForRequirements.get(entityName)
                 : getTaggableClassForName(entityName);
+    }
+
+    static List<Tag> allowedChecklistsFor(TaggableCayenneDataObject taggable, AqlService aql, ObjectContext context) {
+        def checklists = ObjectSelect.query(Tag)
+                .where(Tag.TAG_REQUIREMENTS.dot(TagRequirement.ENTITY_IDENTIFIER).eq(taggableClassesForRequirements.get(taggable.entityName))
+                        .andExp(Tag.NODE_TYPE.eq(NodeType.CHECKLIST)))
+                .prefetch(Tag.TAG_REQUIREMENTS.joint())
+                .select(context)
+        checklists.findAll {checklistAllowed(it, taggable, aql)}
+    }
+
+    private static boolean checklistAllowed(Tag checklist, TaggableCayenneDataObject taggable, AqlService aql) {
+        def tagRequirement = checklist.tagRequirements.find { it.entityIdentifier.equals(taggableClassesForRequirements.get(taggable.entityName)) }
+        if (tagRequirement?.displayRule == null)
+            return true
+        def query = ObjectSelect.query(taggable.getClass() as Class<? extends TaggableCayenneDataObject>)
+                .where(Property.create("ID", Long).eq(taggable.getId()))
+        query = addAqlExp(tagRequirement.displayRule, taggable.getClass(), taggable.context, query, aql)
+        return query.selectOne(taggable.context) != null
+
     }
 
     static TaggableClasses getTaggableClassForName(String entityName) {
@@ -446,25 +478,25 @@ class TagFunctions {
                 .where(Tag.ID.in(tags.findAll() { !tagsToSkip.contains(it) }))
                 .select(context)
                 .each { dbTag ->
-            context.newObject(relationClass).with { relation ->
-            relation.tag = dbTag
-            relation.taggedRelation = relatedObject
-            relation
-            }
-        }
+                    context.newObject(relationClass).with { relation ->
+                        relation.tag = dbTag
+                        relation.taggedRelation = relatedObject
+                        relation
+                    }
+                }
     }
 
     static ValidationErrorDTO validateTagForSave(Class clazz, ObjectContext context, List<Long> tagIds) {
-        for(Long tagId : tagIds) {
+        for (Long tagId : tagIds) {
             Tag tag = ObjectSelect.query(Tag)
                     .where(Tag.ID.eq(tagId))
                     .selectOne(context)
-            if(tag == null) {
+            if (tag == null) {
                 return new ValidationErrorDTO(null, 'tags',
                         "Tag with id = " + tagId + " doesn\'t exist.")
             }
 
-            if(tag.parentTag == null) {
+            if (tag.parentTag == null) {
                 return new ValidationErrorDTO(null, 'tags',
                         "Tag relations cannot be directly related to a tag group.")
             }
@@ -474,7 +506,7 @@ class TagFunctions {
                 currTag = currTag.getParentTag()
             }
             TagRequirement tagRequirement = currTag.getTagRequirement(clazz)
-            if(tagRequirement == null) {
+            if (tagRequirement == null) {
                 return new ValidationErrorDTO(null, 'tags',
                         "Tag with id = " + tagId + " is used for other entities.")
             }
@@ -484,7 +516,7 @@ class TagFunctions {
     static ValidationErrorDTO validateRelationsForSave(Class clazz, ObjectContext context, List<Long> tagIds, TaggableClasses... taggableClasses) {
         List<Tag> nonMultipleTags = new ArrayList<>()
         Map<Tag, Integer> rootTagsUsed = new HashMap<>()
-        GetTagGroupsInterface getTagGroups =  GetTagGroups.valueOf(context, taggableClasses)
+        GetTagGroupsInterface getTagGroups = GetTagGroups.valueOf(context, taggableClasses)
 
         (taggableClasses.collect { getTagGroups.get(it) }.flatten() as List<Tag>).each { Tag tag ->
 
@@ -504,7 +536,7 @@ class TagFunctions {
                 .where(Tag.ID.in(tagIds))
                 .select(context)
                 .each { tag ->
-                        Tag root = tag.getRoot()
+                    Tag root = tag.getRoot()
                     if (!rootTagsUsed[root]) {
                         rootTagsUsed.put(root, 1)
                     } else {
@@ -514,12 +546,12 @@ class TagFunctions {
                     }
                 }
 
-        Tag unassignedRootTad = rootTagsUsed.keySet().find {root -> rootTagsUsed[root] == null || rootTagsUsed[root] == 0 }
+        Tag unassignedRootTad = rootTagsUsed.keySet().find { root -> rootTagsUsed[root] == null || rootTagsUsed[root] == 0 }
         if (unassignedRootTad) {
             return new ValidationErrorDTO(null, 'tags', "Tag $unassignedRootTad.name is mandatory. Modify your tag settings before removing this tag.")
         }
 
-        Tag duplicatedRootTad = nonMultipleTags.find {root -> !root.isMultipleFor(clazz) && rootTagsUsed[root] != null && rootTagsUsed[root] > 1 }
+        Tag duplicatedRootTad = nonMultipleTags.find { root -> !root.isMultipleFor(clazz) && rootTagsUsed[root] != null && rootTagsUsed[root] > 1 }
         if (duplicatedRootTad) {
             return new ValidationErrorDTO(null, 'tags', "The $duplicatedRootTad.name tag group can be set only once.")
         }
