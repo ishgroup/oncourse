@@ -14,6 +14,7 @@ export const TAGS_FORM_NAME = "TagsForm";
 export const EmptyTag: FormTag = {
   id: null,
   name: "",
+  type: "Tag",
   status: "Private",
   system: false,
   urlPath: null,

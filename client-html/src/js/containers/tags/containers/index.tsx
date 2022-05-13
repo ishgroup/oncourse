@@ -171,6 +171,7 @@ class ChecklistsFormRenderer extends TagsFormBase {
     const newTag: FormTag = {
       ...EmptyTag,
       color: null,
+      type: "Checklist",
       id: ("new" + this.counter) as any,
     };
 
@@ -313,7 +314,10 @@ export const ChecklistsForm = ({ match: { params: { id } }, history }) => {
 
   useEffect(() => {
     if (id === "new") {
-      dispatch(initialize(TAGS_FORM_NAME, EmptyTag));
+      dispatch(initialize(TAGS_FORM_NAME, {
+        ...EmptyTag,
+        type: "Checklist"
+      }));
     } else {
       dispatch(getTagRequest(id));
     }
