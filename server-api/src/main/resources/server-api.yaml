@@ -35,6 +35,8 @@ tags:
 paths:
   /access:
     $ref: './path/access/api.yml'
+  /checklist:
+    $ref: './path/checklist/api.yaml'
   /checkout:
     $ref: './path/checkout/api.yaml'
   /checkout/status:
