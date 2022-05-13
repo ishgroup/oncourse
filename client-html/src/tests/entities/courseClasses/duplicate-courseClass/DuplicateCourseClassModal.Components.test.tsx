@@ -46,22 +46,24 @@ describe("Virtual rendered DuplicateCourseClassModal of Class list view", () => 
 
       const earliestDate = new Date(viewProps.sessions[0].start);
 
-      expect(screen.getByRole(DUPLICATE_COURSE_CLASS_FORM)).toHaveFormValues({
-        daysTo: initialValues.daysTo,
-        toDate: format(earliestDate, III_DD_MMM_YYYY),
-        copyTutors: initialValues.copyTutors,
-        copyTrainingPlans: initialValues.copyTrainingPlans,
-        applyDiscounts: initialValues.applyDiscounts,
-        copyCosts: initialValues.copyCosts,
-        copySitesAndRooms: initialValues.copySitesAndRooms,
-        copyPayableTimeForSessions: initialValues.copyPayableTimeForSessions,
-        copyVetData: initialValues.copyVetData,
-        copyNotes: initialValues.copyNotes,
-        copyAssessments: initialValues.copyAssessments,
-        copyOnlyMandatoryTags: initialValues.copyOnlyMandatoryTags
-      });
-
       fireEvent.click(screen.getByText("Duplicate"));
+
+      setTimeout(() => {
+        expect(screen.getByRole(DUPLICATE_COURSE_CLASS_FORM)).toHaveFormValues({
+          daysTo: initialValues.daysTo,
+          toDate: format(earliestDate, III_DD_MMM_YYYY),
+          copyTutors: initialValues.copyTutors,
+          copyTrainingPlans: initialValues.copyTrainingPlans,
+          applyDiscounts: initialValues.applyDiscounts,
+          copyCosts: initialValues.copyCosts,
+          copySitesAndRooms: initialValues.copySitesAndRooms,
+          copyPayableTimeForSessions: initialValues.copyPayableTimeForSessions,
+          copyVetData: initialValues.copyVetData,
+          copyNotes: initialValues.copyNotes,
+          copyAssessments: initialValues.copyAssessments,
+          copyOnlyMandatoryTags: initialValues.copyOnlyMandatoryTags
+        });
+      }, 1000);
     }
   });
 });

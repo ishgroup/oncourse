@@ -65,22 +65,24 @@ describe("Virtual rendered DuplicateTraineeshipModal of Class list view", () => 
       fireEvent.click(screen.getByLabelText("Tags"));
       fireEvent.click(screen.getByLabelText("Class notes"));
 
-      expect(screen.getByRole(DUPLICATE_TRAINEESHIP_FORM)).toHaveFormValues({
-        daysTo: initialValues.daysTo,
-        toDate: format(initialValues.toDate, III_DD_MMM_YYYY),
-        copyTutors: initialValues.copyTutors,
-        copySitesAndRooms: initialValues.copySitesAndRooms,
-        copyCosts: initialValues.copyCosts,
-        copyTrainingPlans: initialValues.copyTrainingPlans,
-        applyDiscounts: initialValues.applyDiscounts,
-        copyPayableTimeForSessions: initialValues.copyPayableTimeForSessions,
-        copyVetData: initialValues.copyVetData,
-        copyAssessments: initialValues.copyAssessments,
-        copyOnlyMandatoryTags: initialValues.copyOnlyMandatoryTags,
-        copyNotes: initialValues.copyNotes,
-      });
-
       fireEvent.click(screen.getByText("Duplicate and enrol"));
+
+      setTimeout(() => {
+        expect(screen.getByRole(DUPLICATE_TRAINEESHIP_FORM)).toHaveFormValues({
+          daysTo: initialValues.daysTo,
+          toDate: format(initialValues.toDate, III_DD_MMM_YYYY),
+          copyTutors: initialValues.copyTutors,
+          copySitesAndRooms: initialValues.copySitesAndRooms,
+          copyCosts: initialValues.copyCosts,
+          copyTrainingPlans: initialValues.copyTrainingPlans,
+          applyDiscounts: initialValues.applyDiscounts,
+          copyPayableTimeForSessions: initialValues.copyPayableTimeForSessions,
+          copyVetData: initialValues.copyVetData,
+          copyAssessments: initialValues.copyAssessments,
+          copyOnlyMandatoryTags: initialValues.copyOnlyMandatoryTags,
+          copyNotes: initialValues.copyNotes,
+        });
+      }, 1000);
     }
   });
 });
