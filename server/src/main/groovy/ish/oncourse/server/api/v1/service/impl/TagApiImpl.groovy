@@ -86,7 +86,7 @@ class TagApiImpl implements TagApi {
 
 
         Expression expr = Tag.PARENT_TAG.isNull()
-                .andExp(Tag.NODE_TYPE.eq(NodeType.WEBPAGE))
+                .andExp(Tag.NODE_TYPE.eq(NodeType.TAG))
         if (entityName) {
             TaggableClasses taggableClass = getRequirementTaggableClassForName(entityName)
             TaggableClasses[] additionalTags = getAdditionalTaggableClasses(taggableClass)
