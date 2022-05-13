@@ -111,9 +111,7 @@ const styles = (theme: AppTheme) => createStyles({
   }
 });
 
-
 interface Props {
-  isNew?: boolean;
   tags: CatalogItemType[];
   redirectOnDelete?: () => void;
   openConfirm?: ShowConfirmCaller;
@@ -149,6 +147,7 @@ const setWeight = items =>
 
     delete item.dragIndex;
     delete item.parent;
+    delete item.refreshFlag;
 
     if (item.id.toString().includes("new")) {
       item.id = null;
@@ -217,7 +216,9 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
   }
 
   onSave = values => {
-    const { onUpdate, onCreate, isNew } = this.props;
+    const { onUpdate, onCreate } = this.props;
+
+    const isNew = !values.id;
 
     const clone = JSON.parse(JSON.stringify(values));
 

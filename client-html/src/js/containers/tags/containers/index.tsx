@@ -43,13 +43,14 @@ class TagsFormRenderer extends TagsFormBase {
       dirty,
       invalid,
       values,
-      isNew,
       openConfirm,
       dispatch,
       syncErrors,
       form,
       classes
     } = this.props;
+
+    const isNew = !values?.id;
 
     const { editingId } = this.state;
 
@@ -185,13 +186,14 @@ class ChecklistsFormRenderer extends TagsFormBase {
       dirty,
       invalid,
       values,
-      isNew,
       syncErrors,
       form,
       classes
     } = this.props;
 
     const { editingId } = this.state;
+
+    const isNew = !values?.id;
 
     return values ? (
       <Form onSubmit={handleSubmit(this.onSave)} className={className}>
