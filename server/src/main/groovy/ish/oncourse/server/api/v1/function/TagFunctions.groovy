@@ -145,7 +145,14 @@ class TagFunctions {
                 }
             }
 
-    static TagDTO toRestTag(Tag dbTag, Map<Long, Integer> childCountMap, boolean isParent = true) {
+    private static Map<Long,Integer> childCountMapOf(ObjectContext context){
+        return ObjectSelect.query(Tag)
+                .columns(Tag.ID, Tag.TAG_RELATIONS.count())
+                .select(context)
+                .collectEntries { [(it[0]): it[1]] }
+    }
+
+    static TagDTO toRestTag(Tag dbTag, Map<Long, Integer> childCountMap = childCountMapOf(dbTag.context), boolean isParent = true) {
         new TagDTO().with { tag ->
             tag.id = dbTag.id
             tag.name = dbTag.name

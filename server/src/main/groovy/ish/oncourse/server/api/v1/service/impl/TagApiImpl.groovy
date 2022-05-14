@@ -57,7 +57,7 @@ class TagApiImpl implements TagApi {
         Class<? extends CayenneDataObject> objectClass = EntityUtil.entityClassForName(entityName)
         def taggable = id != null ? EntityUtil.getObjectsByIds(cayenneService.newReadonlyContext, objectClass, List.of(id)).first() : null
         new ChecklistsDTO().with {
-            it.allowedChecklists = TagFunctions.allowedChecklistsFor(taggable as TaggableCayenneDataObject, aqlService, cayenneService.newReadonlyContext).collect {toRestTagMinimized(it)}
+            it.allowedChecklists = TagFunctions.allowedChecklistsFor(taggable as TaggableCayenneDataObject, aqlService, cayenneService.newReadonlyContext).collect {toRestTag(it)}
             it.checkedChecklists = taggable != null ? (taggable as TaggableCayenneDataObject).getChecklists().collect {it.id} : new ArrayList<Long>()
             it
         }
@@ -83,17 +83,12 @@ class TagApiImpl implements TagApi {
     TagDTO getTag(Long id) {
         ObjectContext context = cayenneService.newContext
 
-        Map<Long, Integer> childCountMap = ObjectSelect.query(Tag)
-                .columns(Tag.ID, Tag.TAG_RELATIONS.count())
-                .select(context)
-                .collectEntries { [(it[0]): it[1]] }
-
         def tag = SelectById.query(Tag, id).selectOne(context)
         if (tag == null) {
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity("Record with id = "+id+" doesn't exist.").build())
         }
 
-        toRestTag(tag, childCountMap)
+        toRestTag(tag)
     }
 
     @Override
