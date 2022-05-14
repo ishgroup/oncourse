@@ -12,7 +12,7 @@ import { useAppSelector } from "../../common/utils/hooks";
 import CatalogWithSearch from "../../common/components/layout/catalog/CatalogWithSearch";
 
 export const ChecklistsCatalog = ({ history }: RouteComponentProps) => {
-  const allTags = useAppSelector(state => state.tags.allTags);
+  const allChecklists = useAppSelector(state => state.tags.allChecklists);
 
   const onOpen = id => {
     history.push(`/tags/checklist/${id}`);
@@ -24,7 +24,7 @@ export const ChecklistsCatalog = ({ history }: RouteComponentProps) => {
 
   return (
     <CatalogWithSearch
-      items={allTags}
+      items={allChecklists}
       title="Checklists"
       itemsListTitle="Checklists"
       onOpen={onOpen}

@@ -4,33 +4,24 @@
  */
 
 import { Epic } from "redux-observable";
-
+import { Tag } from "@api/model";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import TagsService from "../services/TagsService";
-import { Tag } from "@api/model";
-import { CREATE_TAG_REQUEST, CREATE_TAG_REQUEST_FULFILLED } from "../actions";
+import { CREATE_TAG_REQUEST, getAllTags } from "../actions";
 import { FETCH_SUCCESS } from "../../../common/actions";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request = {
+const request: EpicUtils.Request<Tag[], Tag> = {
   type: CREATE_TAG_REQUEST,
-  getData: payload => TagsService.create(payload.tag),
-  retrieveData: () => TagsService.getTags(),
-  processData: (allTags: Tag[]) => {
-    return [
-      {
-        type: CREATE_TAG_REQUEST_FULFILLED,
-        payload: { allTags }
-      },
+  getData: tag => TagsService.create(tag),
+  processData: (r, s, tag) => [
       {
         type: FETCH_SUCCESS,
-        payload: { message: "Tag was successfully created" }
-      }
-    ];
-  },
-  processError: response => {
-    return FetchErrorHandler(response, "Error. Tag was not created");
-  }
+        payload: { message: `${tag.type} was successfully created` }
+      },
+      getAllTags()
+    ],
+  processError: response => FetchErrorHandler(response, "Error. Tag was not created")
 };
 
 export const EpicCreateTag: Epic<any, any> = EpicUtils.Create(request);

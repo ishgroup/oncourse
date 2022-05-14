@@ -4,11 +4,9 @@
  */
 
 import { Epic } from "redux-observable";
-
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import TagsService from "../services/TagsService";
-import { Tag } from "@api/model";
-import { UPDATE_TAG_REQUEST, UPDATE_TAG_REQUEST_FULFILLED } from "../actions";
+import { getAllTags, UPDATE_TAG_REQUEST } from "../actions";
 import { FETCH_SUCCESS } from "../../../common/actions";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
@@ -16,16 +14,13 @@ const request: EpicUtils.Request = {
   type: UPDATE_TAG_REQUEST,
   getData: payload => TagsService.updateTag(payload.id, payload.tag),
   retrieveData: () => TagsService.getTags(),
-  processData: (allTags: Tag[]) => {
+  processData: () => {
     return [
-      {
-        type: UPDATE_TAG_REQUEST_FULFILLED,
-        payload: { allTags }
-      },
       {
         type: FETCH_SUCCESS,
         payload: { message: "Tag was successfully updated" }
-      }
+      },
+      getAllTags()
     ];
   },
   processError: response => {
