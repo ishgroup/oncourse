@@ -435,7 +435,7 @@ class TagFunctions {
 
     static List<Tag> allowedChecklistsFor(TaggableCayenneDataObject taggable, AqlService aql, ObjectContext context) {
         def checklists = ObjectSelect.query(Tag)
-                .where(Tag.TAG_REQUIREMENTS.dot(TagRequirement.ENTITY_IDENTIFIER).eq(taggableClassesForRequirements.get(taggable.entityName))
+                .where(Tag.TAG_REQUIREMENTS.dot(TagRequirement.ENTITY_IDENTIFIER).eq(taggableClassesBidiMap.get(taggable.entityName))
                         .andExp(Tag.NODE_TYPE.eq(NodeType.CHECKLIST)))
                 .prefetch(Tag.TAG_REQUIREMENTS.joint())
                 .select(context)
