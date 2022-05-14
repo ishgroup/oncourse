@@ -14,6 +14,7 @@ package ish.oncourse.server.cayenne.glue;
 import com.google.inject.Inject;
 import ish.common.types.NodeType;
 import ish.oncourse.API;
+import ish.oncourse.aql.AqlService;
 import ish.oncourse.cayenne.Taggable;
 import ish.oncourse.cayenne.TaggableClasses;
 import ish.oncourse.entity.services.TagService;
@@ -40,6 +41,9 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 
 	@Inject
 	private transient TagService tagService;
+
+	@Inject
+	private AqlService aqlService;
 	/**
 	 *
 	 */
@@ -58,7 +62,7 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 	/**
 	 * Get firts 3   related tags colors.
 	 *
-	 * @return List of colors
+	 * @return List of tag ids
 	 */
 	public List<Long> getTagIds() {
 		TaggableClasses taggable = TagFunctions.taggableClassesBidiMap.get(this.getClass().getSimpleName());
@@ -71,6 +75,42 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 		} else {
 			return Collections.emptyList();
 		}
+
+	}
+
+	/**
+	 * Get related tag colors
+	 *
+	 * @return List of colors
+	 */
+	public List<String> getTagColors() {
+		TaggableClasses taggable = TagFunctions.taggableClassesBidiMap.get(this.getClass().getSimpleName());
+		if (taggable != null) {
+			return ObjectSelect.columnQuery(Tag.class, Tag.COLOUR)
+					.where(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_IDENTIFIER)
+							.eq(taggable.getDatabaseValue()))
+					.and(Tag.NODE_TYPE.eq(NodeType.TAG))
+					.and(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_ANGEL_ID).eq(getId()))
+					.select(this.getContext());
+		} else {
+			return Collections.emptyList();
+		}
+
+	}
+
+	/**
+	 * Get related checklists colors
+	 *
+	 * @return List of colors
+	 */
+	public String getChecklistsColor() {
+		var checklists = getChecklists();
+		if(checklists.isEmpty())
+			return "";
+		String color = checklists.get(0).getColour();
+		int allowedChecklistsNumber = TagFunctions.allowedChecklistsFor(this, aqlService, objectContext).size();
+		int checkedChecklistsNumber = getChecklists().size();
+		return color+"|"+(double)checkedChecklistsNumber/allowedChecklistsNumber;
 
 	}
 
