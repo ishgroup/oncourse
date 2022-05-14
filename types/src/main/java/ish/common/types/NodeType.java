@@ -40,4 +40,13 @@ public enum NodeType implements DisplayableExtendedEnumeration<Integer> {
 	public String toString() {
 		return getDisplayName();
 	}
+
+	public static NodeType fromDisplayName(String text) {
+		for (NodeType b : NodeType.values()) {
+			if (String.valueOf(b.displayName).equals(text)) {
+				return b;
+			}
+		}
+		return null;
+	}
 }

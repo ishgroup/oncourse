@@ -365,7 +365,7 @@ class TagFunctions {
             dbTag.colour = tag.color
         }
         dbTag.contents = trimToNull(tag.content)
-        dbTag.nodeType = NodeType.valueOf(tag.type.toString())
+        dbTag.nodeType = NodeType.fromDisplayName(tag.type.toString())
 
         tag.childTags.each { child ->
             Tag childTag = child.id ? childTagsToRemove.remove(child.id) : context.newObject(Tag)
