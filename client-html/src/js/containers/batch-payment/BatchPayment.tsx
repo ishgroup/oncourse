@@ -29,7 +29,7 @@ import FormField from "../../common/components/form/formFields/FormField";
 import { Switch } from "../../common/components/form/formFields/Switch";
 import DynamicSizeList from "../../common/components/form/DynamicSizeList";
 import { LinkAdornment } from "../../common/components/form/FieldAdornments";
-import LoadingIndicator from "../../common/components/layout/LoadingIndicator";
+import LoadingIndicator from "../../common/components/progress/LoadingIndicator";
 import EntityService from "../../common/services/EntityService";
 import { D_MMM_YYYY } from "../../common/utils/dates/format";
 import { formatRelativeDate } from "../../common/utils/dates/formatRelative";

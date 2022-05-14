@@ -6,7 +6,7 @@ import { Route, Switch } from "react-router-dom";
 import { ListSideBarDefaultWidth } from "../../list-view/ListView";
 import ResizableWrapper from "../resizable/ResizableWrapper";
 import Drawer from "../Drawer";
-import LoadingIndicator from "../LoadingIndicator";
+import LoadingIndicator from "../../progress/LoadingIndicator";
 import { AnyArgFunction, NumberArgFunction } from "../../../../model/common/CommonFunctions";
 import HamburgerMenu from "../swipeable-sidebar/components/HamburgerMenu";
 import { VARIANTS } from "../swipeable-sidebar/utils";

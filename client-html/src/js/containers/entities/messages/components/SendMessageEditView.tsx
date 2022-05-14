@@ -52,7 +52,7 @@ import { validateSingleMandatoryField } from "../../../../common/utils/validatio
 import { getMessageRequestModel } from "../utils";
 import { openInternalLink, saveCategoryAQLLink } from "../../../../common/utils/links";
 import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
-import LoadingIndicator from "../../../../common/components/layout/LoadingIndicator";
+import LoadingIndicator from "../../../../common/components/progress/LoadingIndicator";
 import { closeSendMessage, getEmailTemplatesWithKeyCode, getUserPreferences } from "../../../../common/actions";
 import { sendMessage } from "../actions";
 import { getManualLink } from "../../../../common/utils/getManualLink";

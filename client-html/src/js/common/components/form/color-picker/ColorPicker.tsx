@@ -19,7 +19,7 @@ import Grow from "@mui/material/Grow";
 import { WrappedFieldProps } from "redux-form";
 import clsx from "clsx";
 import { PopperPlacementType } from "@mui/base/PopperUnstyled/PopperUnstyled";
-import { stopEventPropagation } from "../../utils/events";
+import { stopEventPropagation } from "../../../utils/events";
 
 interface ColorPickerWrapperProps {
   input?: WrappedFieldProps["input"];

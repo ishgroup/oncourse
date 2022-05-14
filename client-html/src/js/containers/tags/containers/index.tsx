@@ -29,7 +29,7 @@ import TagRequirementItem from "../components/TagRequirementItem";
 import AddButton from "../../../common/components/icons/AddButton";
 import { ChecklistTree, TagTree } from "../components/Trees";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import ColorPicker from "../../../common/components/color-picker/ColorPicker";
+import ColorPicker from "../../../common/components/form/color-picker/ColorPicker";
 import ChecklistRequirementItem from "../components/ChecklistRequirementItem";
 import { FormTag } from "../../../model/tags";
 

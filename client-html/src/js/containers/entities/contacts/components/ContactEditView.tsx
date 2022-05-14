@@ -7,7 +7,7 @@ import React, { useCallback, useState } from "react";
 import { connect } from "react-redux";
 import { useTheme } from "@mui/styles";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
+import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
 import ContactsGeneral from "./ContactsGeneral";
 import ContactsFinancial from "./ContactsFinancial";
 import ContactsMessages from "./ContactsMessages";

@@ -30,7 +30,7 @@ import ShareContainer from "./components/share/ShareContainer";
 import BulkEditContainer from "./components/bulk-edit/BulkEditContainer";
 import { State } from "../../../reducers/state";
 import { Fetch } from "../../../model/common/Fetch";
-import LoadingIndicator from "../layout/LoadingIndicator";
+import LoadingIndicator from "../progress/LoadingIndicator";
 import FullScreenEditView from "./components/full-screen-edit-view/FullScreenEditView";
 import {
   clearListState,

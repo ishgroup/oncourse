@@ -1,5 +1,5 @@
 import {
- TagApi, Tag, Checklists
+  TagApi, Tag, Checklists
 } from "@api/model";
 import { DefaultHttpService } from "../../../common/services/HttpService";
 
