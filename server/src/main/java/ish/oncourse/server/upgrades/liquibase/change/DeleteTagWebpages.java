@@ -37,8 +37,15 @@ public class DeleteTagWebpages extends IshTaskChange {
                     .where(Tag.NODE_TYPE.eq(NodeType.CHECKLIST))
                     .limit(1000)
                     .select(context);
-            context.deleteObjects(tags);
-            context.commitChanges();
-        } while (!tags.isEmpty());
+            if(tags != null) {
+                for (var tag : tags) {
+                    context.deleteObjects(tag.getTagRequirements());
+                    context.deleteObjects(tag.getTagRelations());
+                    context.deleteObjects(tag.getAllChildren().values());
+                    context.deleteObjects(tag);
+                    context.commitChanges();
+                }
+            }
+        } while (tags != null && !tags.isEmpty());
     }
 }
