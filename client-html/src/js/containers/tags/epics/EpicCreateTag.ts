@@ -21,7 +21,7 @@ const request: EpicUtils.Request<Tag[], Tag> = {
       },
       getAllTags()
     ],
-  processError: response => FetchErrorHandler(response, "Error. Tag was not created")
+  processError: (r, t) => FetchErrorHandler(r, `Error. ${t.type} was not created`)
 };
 
 export const EpicCreateTag: Epic<any, any> = EpicUtils.Create(request);

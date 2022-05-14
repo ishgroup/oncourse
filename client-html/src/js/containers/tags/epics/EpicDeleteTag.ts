@@ -13,14 +13,14 @@ import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchEr
 const request: EpicUtils.Request = {
   type: DELETE_TAG_REQUEST,
   getData: payload => TagsService.remove(payload.id),
-  processData: () => [
+  processData: (v, s, p) => [
     {
       type: FETCH_SUCCESS,
-      payload: { message: "Tag was successfully deleted" }
+      payload: { message: `${p.type} was successfully deleted` }
     },
     getAllTags()
   ],
-  processError: response => FetchErrorHandler(response, "Error. Tag was not deleted")
+  processError: (r, t) => FetchErrorHandler(r, `Error. ${t.type} was not deleted`)
 };
 
 export const EpicDeleteTag: Epic<any, any> = EpicUtils.Create(request);

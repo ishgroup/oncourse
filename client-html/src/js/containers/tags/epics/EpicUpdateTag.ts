@@ -13,19 +13,14 @@ import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchEr
 const request: EpicUtils.Request = {
   type: UPDATE_TAG_REQUEST,
   getData: payload => TagsService.updateTag(payload.id, payload.tag),
-  retrieveData: () => TagsService.getTags(),
-  processData: () => {
-    return [
+  processData: (r, s, p) => [
       {
         type: FETCH_SUCCESS,
-        payload: { message: "Tag was successfully updated" }
+        payload: { message: `${p.tag.type} was successfully updated` }
       },
       getAllTags()
-    ];
-  },
-  processError: response => {
-    return FetchErrorHandler(response, "Error. Tag was not updated");
-  }
+    ],
+  processError: (r, t) => FetchErrorHandler(r, `Error. ${t.type} was not updated`)
 };
 
 export const EpicUpdateTag: Epic<any, any> = EpicUtils.Create(request);

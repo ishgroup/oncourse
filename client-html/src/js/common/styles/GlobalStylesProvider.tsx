@@ -123,6 +123,11 @@ const globalStyles = (theme: AppTheme) =>
       ".editViewHeadingOffset": {
         marginTop: `-${theme.spacing(2)}`
       },
+      ".cardBorders": {
+        borderRadius: theme.spacing(1),
+        border: "2px solid",
+        borderColor: alpha(theme.palette.text.disabled, 0.1),
+      },
       ".heading": {
         textTransform: "uppercase",
         fontFamily: theme.typography.fontFamily,

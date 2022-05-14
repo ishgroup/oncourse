@@ -6,7 +6,9 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+ useCallback, useEffect, useMemo, useState 
+} from "react";
 import clsx from "clsx";
 import { connect } from "react-redux";
 import { change } from "redux-form";
@@ -36,6 +38,7 @@ import { getClassCostTypes } from "../../utils";
 import CustomFields from "../../../customFieldTypes/components/CustomFieldsTypes";
 import FullScreenStickyHeader
   from "../../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { EntityChecklists } from "../../../../tags/components/EntityChecklists";
 
 interface Props extends Partial<EditViewProps<CourseClassExtended>> {
   tags?: Tag[];
@@ -216,7 +219,7 @@ const CourseClassGeneralTab = React.memo<Props>(
                   {values.courseCode ? `${values.courseCode}-${values.code || ""}` : null}
                 </Grid>
               </Grid>
-            )}
+              )}
               fields={(
                 <Grid container columnSpacing={3} rowSpacing={2}>
                   <Grid item xs={twoColumn ? 6 : 12}>
@@ -246,25 +249,29 @@ const CourseClassGeneralTab = React.memo<Props>(
                       onFocus: stubFunction,
                       onBlur: stubFunction,
                       value: values.courseCode ? `${values.courseCode}-${values.code || ""}` : null
-                    }}
+                      }}
                       meta={{
                       error: classCodeError,
                       invalid: Boolean(classCodeError)
-                    }}
+                      }}
                       disabled={!values.courseCode}
                     />
                   </Grid>
                 </Grid>
-            )}
+              )}
             />
           </Grid>
           {Boolean(values.isCancelled) && (
             <div className={clsx("backgroundText errorColorFade-0-2", twoColumn ? "fs10" : "fs8")}>Cancelled</div>
           )}
 
-          <Grid item xs={12}>
+          <Grid item xs={twoColumn ? 8 : 12}>
             <FormField type="stub" name="code" required />
             <FormField type="tags" name="tags" tags={tags} />
+          </Grid>
+
+          <Grid item xs={twoColumn ? 4 : 12}>
+            <EntityChecklists entity="CourseClass" entityId={values.id} />
           </Grid>
         </Grid>
 
