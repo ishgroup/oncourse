@@ -1,15 +1,13 @@
 import {
- TagApi, Tag, ChecklistApi, Checklists 
+ TagApi, Tag, Checklists
 } from "@api/model";
 import { DefaultHttpService } from "../../../common/services/HttpService";
 
 class TagsService {
   readonly tagApi = new TagApi(new DefaultHttpService());
 
-  readonly checklistApi = new ChecklistApi(new DefaultHttpService());
-
   public getChecklists(entityName: string, id: number): Promise<Checklists> {
-    return this.checklistApi.get(entityName, id);
+    return this.tagApi.getChecklists(entityName, id);
   }  
   
   public getTag(id: number): Promise<Tag> {

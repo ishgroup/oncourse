@@ -13,9 +13,15 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import ish.common.types.NodeType
+import ish.oncourse.aql.AqlService
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.function.CayenneFunctions
+import ish.oncourse.server.api.v1.function.TagFunctions
+import ish.oncourse.server.api.v1.model.ChecklistsDTO
+import ish.oncourse.server.cayenne.glue.CayenneDataObject
+import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
+import ish.util.EntityUtil
 import org.apache.cayenne.query.SelectById
 
 import static ish.oncourse.server.api.v1.function.TagFunctions.getAdditionalTaggableClasses
@@ -23,6 +29,7 @@ import static ish.oncourse.server.api.v1.function.TagFunctions.getRequirementTag
 import static ish.oncourse.server.api.v1.function.TagFunctions.getTagGroupPrefetch
 import static ish.oncourse.server.api.v1.function.TagFunctions.toDbTag
 import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTag
+import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.validateForDelete
 import static ish.oncourse.server.api.v1.function.TagFunctions.validateForSave
 import ish.oncourse.server.api.v1.model.TagDTO
@@ -41,6 +48,20 @@ class TagApiImpl implements TagApi {
 
     @Inject
     private ICayenneService cayenneService
+
+    @Inject
+    private AqlService aqlService
+
+    @Override
+    ChecklistsDTO getChecklists(String entityName, Long id) {
+        Class<? extends CayenneDataObject> objectClass = EntityUtil.entityClassForName(entityName)
+        def taggable = id != null ? EntityUtil.getObjectsByIds(cayenneService.newReadonlyContext, objectClass, List.of(id)).first() : null
+        new ChecklistsDTO().with {
+            it.allowedChecklists = TagFunctions.allowedChecklistsFor(taggable as TaggableCayenneDataObject, aqlService, cayenneService.newReadonlyContext).collect {toRestTagMinimized(it)}
+            it.checkedChecklists = taggable != null ? (taggable as TaggableCayenneDataObject).getChecklists().collect {it.id} : new ArrayList<Long>()
+            it
+        }
+    }
 
     @Override
     void create(TagDTO tag) {

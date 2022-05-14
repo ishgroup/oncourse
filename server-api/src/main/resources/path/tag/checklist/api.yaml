@@ -1,8 +1,8 @@
 get:
-  operationId: get
+  operationId: getChecklists
   description: list of all root checklists
   tags:
-    - Checklist
+    - Tag
   parameters:
     - name: entityName
       in: query
