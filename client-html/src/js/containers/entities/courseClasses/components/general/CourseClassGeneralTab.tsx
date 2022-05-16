@@ -63,7 +63,7 @@ const CourseClassGeneralTab = React.memo<Props>(
     tutorRoles
   }) => {
     const [classCodeError, setClassCodeError] = useState(null);
-    const [showAllWeeks, setShowAllWeeks] = useState(false);
+    const [showAllWeeks, setShowAllWeeks] = useState(true);
 
     useEffect(() => {
       if (isNew && !values.code) {
@@ -264,15 +264,6 @@ const CourseClassGeneralTab = React.memo<Props>(
           {Boolean(values.isCancelled) && (
             <div className={clsx("backgroundText errorColorFade-0-2", twoColumn ? "fs10" : "fs8")}>Cancelled</div>
           )}
-
-          <Grid item xs={twoColumn ? 8 : 12}>
-            <FormField type="stub" name="code" required />
-            <FormField type="tags" name="tags" tags={tags} />
-          </Grid>
-
-          <Grid item xs={twoColumn ? 4 : 12}>
-            <EntityChecklists entity="CourseClass" entityId={values.id} />
-          </Grid>
         </Grid>
 
         <Grid
@@ -280,9 +271,11 @@ const CourseClassGeneralTab = React.memo<Props>(
           className="pt-2 pl-3 pr-3"
           columnSpacing={3}
           rowSpacing={2}
-          direction={twoColumn && !showAllWeeks ? undefined : "column-reverse"}
         >
-          <Grid item xs={twoColumn && !showAllWeeks ? 6 : 12}>
+          <Grid item xs={twoColumn ? 8 : 12}>
+            <FormField type="stub" name="code" required />
+            <FormField type="tags" name="tags" tags={tags} />
+            
             <div className="heading pb-2 pt-3">Restrictions</div>
             <Typography variant="body2" color="inherit" component="div" className="pb-1">
               Students must be at least
@@ -340,18 +333,24 @@ const CourseClassGeneralTab = React.memo<Props>(
             />
           </Grid>
 
-          <CourseClassEnrolmentsChart
-            classId={values.id}
-            classStart={values.startDateTime}
-            minEnrolments={values.minimumPlaces}
-            maxEnrolments={values.maximumPlaces}
-            targetEnrolments={enrolmentsToProfitAllCount}
-            openBudget={openBudget}
-            showAllWeeks={showAllWeeks}
-            setShowAllWeeks={setShowAllWeeks}
-            twoColumn={twoColumn}
-            hasBudged={values.budget.some(b => b.invoiceToStudent && b.perUnitAmountIncTax > 0)}
-          />
+          <Grid item xs={twoColumn ? 4 : 12}>
+            <EntityChecklists className="mr-4" entity="CourseClass" form={form} entityId={values.id} checked={values.checklists} />
+          </Grid>
+
+          <Grid item xs={12}>
+            <CourseClassEnrolmentsChart
+              classId={values.id}
+              classStart={values.startDateTime}
+              minEnrolments={values.minimumPlaces}
+              maxEnrolments={values.maximumPlaces}
+              targetEnrolments={enrolmentsToProfitAllCount}
+              openBudget={openBudget}
+              showAllWeeks={showAllWeeks}
+              setShowAllWeeks={setShowAllWeeks}
+              twoColumn={twoColumn}
+              hasBudged={values.budget.some(b => b.invoiceToStudent && b.perUnitAmountIncTax > 0)}
+            />
+          </Grid>
 
           <CustomFields
             entityName="CourseClass"

@@ -154,7 +154,7 @@ const setWeight = items =>
     }
 
     if (item.childTags.length) {
-      item = { ...item, childTags: setWeight(item.childTags) };
+      item = { ...item, childTags: setWeight([...item.childTags]) };
     }
 
     return item;
@@ -178,8 +178,6 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
   rejectPromise;
 
   isPending;
-
-  disableConfirm;
 
   counter;
 
@@ -219,16 +217,14 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
     const { onUpdate, onCreate } = this.props;
 
     const isNew = !values.id;
+    
+    const tags = { ...values, childTags: setWeight([...values.childTags]) };
 
-    const clone = JSON.parse(JSON.stringify(values));
+    delete tags.dragIndex;
+    delete tags.parent;
+    delete tags.refreshFlag;
 
-    if (!clone.weight) clone.weight = 1;
-
-    delete clone.dragIndex;
-    delete clone.parent;
-    delete clone.refreshFlag;
-
-    const tags = { ...clone, childTags: setWeight(clone.childTags) };
+    if (!tags.weight) tags.weight = 1;
 
     this.isPending = true;
 
@@ -248,7 +244,6 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
     const { onDelete, redirectOnDelete } = this.props;
 
     this.isPending = true;
-    this.disableConfirm = true;
 
     return new Promise((resolve, reject) => {
       this.resolvePromise = resolve;
@@ -257,7 +252,6 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
       onDelete(id);
     }).then(() => {
       redirectOnDelete();
-      this.disableConfirm = false;
     });
   };
 

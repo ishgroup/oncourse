@@ -46,8 +46,9 @@ export const updateTag = (id: number, tag: Tag) => ({
   payload: { id, tag }
 });
 
-export const getAllTags = () => ({
-  type: GET_ALL_TAGS_REQUEST
+export const getAllTags = (nameToSelect?: string) => ({
+  type: GET_ALL_TAGS_REQUEST,
+  payload: { nameToSelect }
 });
 
 export const getListTags = (entityName: string) => ({

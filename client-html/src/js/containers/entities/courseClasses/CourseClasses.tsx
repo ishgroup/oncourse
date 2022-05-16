@@ -271,8 +271,8 @@ const findRelatedGroup: any[] = [
   }
 ];
 
-const preformatBeforeSubmit = (value: CourseClassExtended): Course => {
-  const submitted = { ...value };
+const preformatBeforeSubmit = (value: CourseClassExtended): CourseClass => {
+  const submitted: CourseClassExtended = { ...value };
 
   delete submitted.tutors;
   delete submitted.sessions;
@@ -282,6 +282,7 @@ const preformatBeforeSubmit = (value: CourseClassExtended): Course => {
   delete submitted.assessments;
   delete submitted.trainingPlan;
   delete submitted.openedSession;
+  delete submitted.checklists;
 
   return submitted;
 };

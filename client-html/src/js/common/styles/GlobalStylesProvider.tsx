@@ -151,6 +151,13 @@ const globalStyles = (theme: AppTheme) =>
         color: theme.heading.color,
         lineHeight: 1.45
       },
+      ".headingHover": {
+        cursor: 'pointer',
+        willChange: "color",
+        "&:hover": {
+          color: darken(theme.heading.color as any, 0.4),
+        }
+      },
       ".checkbox": {
         height: "35px",
         overflow: "hidden"

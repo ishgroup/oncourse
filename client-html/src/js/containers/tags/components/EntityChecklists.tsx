@@ -3,75 +3,190 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect, useState } from "react";
+import React, {
+  Fragment,
+  useCallback, useEffect, useMemo, useState
+} from "react";
 import {
-  Card,
-  IconButton 
+  Card, CircularProgress, Collapse, Divider,
+  IconButton, Link, Menu, MenuItem, Typography
 } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Tag } from "@api/model";
-import { makeAppStyles } from "../../../common/styles/makeStyles";
+import { change } from "redux-form";
+import debounce from "lodash.debounce";
+import clsx from "clsx";
 import TagsService from "../services/TagsService";
 import { useAppDispatch } from "../../../common/utils/hooks";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import StaticProgress from "../../../common/components/progress/StaticProgress";
 import { ColoredCheckBox } from "../../../common/components/form/ColoredCheckBox";
-
-const useStyles = makeAppStyles(theme => ({
-
-}));
+import { BooleanArgFunction } from "../../../model/common/CommonFunctions";
+import { openInternalLink } from "../../../common/utils/links";
 
 interface ChecklistItemProps {
-  item: Tag
+  item: Tag;
+  onCheck: any;
+  onCheckAll: BooleanArgFunction;
+  checkedIds: Record<number, boolean>;
+  collapsedIds: Record<number, boolean>;
 }
 
-const ChecklistItem = ({ item }: ChecklistItemProps) => (
-  <div>
-    <div className="centeredFlex">
-      <div className="heading centeredFlex flex-fill">
-        {item.name}
-        <IconButton size="small" color="inherit">
-          <KeyboardArrowDownIcon color="inherit" />
-        </IconButton>
+const ChecklistItem = ({
+ item, onCheck, onCheckAll, checkedIds, collapsedIds 
+}: ChecklistItemProps) => {
+  const [menuAnchor, setMenuAnchor] = useState(null);
+  const [expandItems, setExpandItems] = useState(true);
+  const [expandAll, setExpandAll] = useState(false);
+  
+  const checkedFraction = useMemo(() => {
+    const checkedCount = item.childTags.reduce((p, c) => (checkedIds[c.id] ? ++p : p), 0);
+    return (checkedCount / item.childTags.length) * 100;
+  }, [checkedIds, item.childTags]);
+  
+  const allChecked = checkedFraction === 100;
+
+  const onMenuClose = () => setMenuAnchor(null);
+
+  const onShowCompleted = () => setExpandAll(prev => !prev);
+  
+  const onMarkAllComplete = () => onCheckAll(!allChecked);
+  
+  const onEditClick = () => openInternalLink(`/tags/checklist/${item.id}`);
+  
+  return (
+    <div className="flex-fill">
+      <Menu
+        anchorEl={menuAnchor}
+        open={Boolean(menuAnchor)}
+        onClose={onMenuClose}
+        MenuListProps={{
+        'aria-labelledby': 'basic-button',
+        }}
+      >
+        <MenuItem onClick={onEditClick}>Edit checklist</MenuItem>
+        <MenuItem onClick={onShowCompleted}>{expandAll ? "Hide completed tasks" : "Show completed tasks"}</MenuItem>
+        <MenuItem onClick={onMarkAllComplete}>
+          Mark all tasks
+          {allChecked ? " in" : " "}
+          complete
+        </MenuItem>
+      </Menu>
+    
+      <div className="centeredFlex mb-1">
+        <div className="heading headingHover centeredFlex flex-fill" onClick={() => setExpandItems(prev => !prev)}>
+          {item.name}
+          <IconButton 
+            size="small" 
+            color="inherit"
+            sx={{
+              transform: expandItems ? "rotate(180deg)" : "none",
+              transition: theme => theme.transitions.create(['transform'])
+            }}
+          >
+            <KeyboardArrowDownIcon color="inherit" />
+          </IconButton>
+        </div>
+
+        <div className="centeredFlex">
+          <StaticProgress color={item.color} value={checkedFraction} className="pt-0-5 pr-0-5" />
+          <IconButton size="small" className="text-disabled" onClick={e => setMenuAnchor(e.target)}>
+            <MoreVertIcon />
+          </IconButton>
+        </div>
       </div>
 
-      <div className="centeredFlex">
-        <StaticProgress color={item.color} value={70} className="pt-0-5 pr-0-5" />
-        <IconButton size="small">
-          <MoreVertIcon />
-        </IconButton>
-      </div>
+      <Collapse in={expandItems}>
+        {item.childTags.map(ct => (
+          <Collapse in={expandAll || !collapsedIds[ct.id]}>
+            <ColoredCheckBox
+              label={ct.name}
+              color={item.color}
+              input={{ onChange: e => onCheck(ct.id, e.target.checked), value: checkedIds[ct.id] } as any}
+              meta={{} as any}
+              key={ct.id}
+            />
+          </Collapse>
+        ))}
+      </Collapse>
     </div>
-
-    {item.childTags.map(ct => <ColoredCheckBox label={ct.name} color={ct.color} input={{} as any} meta={{} as any} key={ct.id} />)}
-
-  </div>
 );
+};
 
 interface EntityChecklistsProps {
   entity: string;
+  form: string;
   entityId: number;
+  checked: number[];
+  className?: string;
 }
 
 export const EntityChecklists = ({
- entity, entityId
+ entity, className, form, entityId, checked = []
 }: EntityChecklistsProps) => {
   const [checklists, setChecklists] = useState<Tag[]>([]);
-  
+  const [collapsedIds, setCollapsedIds] = useState<Record<number, boolean>>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
   const dispatch = useAppDispatch();
   
-  const classes = useStyles();
+  const checkedIds = useMemo(() => checked.reduce((p, c) => {
+    p[c] = true;
+    return p;
+  }, {}), [checked]);
   
+  const setCollapsedIdsDebounced = useCallback(debounce(setCollapsedIds, 2000), []);
+
   useEffect(() => {
+    setCollapsedIdsDebounced(checkedIds);
+  }, [checkedIds]);
+
+  useEffect(() => {
+    setLoading(true);
     TagsService.getChecklists(entity, entityId)
-      .then(res => setChecklists(res.allowedChecklists))
-      .catch(res => instantFetchErrorHandler(dispatch, res));
+      .then(res => {
+        setChecklists(res.allowedChecklists);
+        setLoading(false);
+      })
+      .catch(res => {
+        instantFetchErrorHandler(dispatch, res);
+        setLoading(false);
+      });
   }, [entity, entityId]);
   
-  return checklists.length ? (
-    <Card className="cardBorders p-3" elevation={0}>
-      {checklists.map(c => <ChecklistItem item={c} key={c.id} />)}
+  const onCheck = (id, v) => {
+    dispatch(change(form, "checklists", v ? [...checked, id] : checked.filter(cId => cId !== id)));
+  };
+
+  const onCheckAll = (item: Tag, v) => {
+    dispatch(change(form, "checklists", v ? [...checked, ...item.childTags.map(ct => ct.id)] : checked.filter(cId => !item.childTags.some(ct => ct.id === cId))));
+  };
+  
+  return (
+    <Card className={clsx("flex-column cardBorders p-3", className)} elevation={0}>
+      {loading
+      ? <CircularProgress size={40} thickness={4} className="ml-auto mr-auto" />
+      : checklists.map((c, index) => (
+        <Fragment key={c.id}>
+          <ChecklistItem
+            item={c}
+            checkedIds={checkedIds}
+            collapsedIds={collapsedIds}
+            onCheck={onCheck}
+            onCheckAll={v => onCheckAll(c, v)}
+          />
+          {index < checklists.length - 1 && <Divider light className="mt-2 mb-2" />}
+        </Fragment>
+      ))}
+
+      {!loading && !checklists.length && (
+        <Typography variant="caption" color="textSecondary">
+          No checklists were found.
+          {" "}
+          <Link href="/tags/checklist/new" target="_blank">Create one?</Link>
+        </Typography>
+      )}
     </Card>
-  ) : null;
+);
 };

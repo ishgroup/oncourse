@@ -16,7 +16,7 @@ import {
   CourseClassTutor,
   createStringEnum,
   Note,
-  StudentAttendance,
+  StudentAttendance, Tag,
   Tax,
   TrainingPlan,
   TutorAttendanceType
@@ -62,6 +62,7 @@ export interface CourseClassExtended extends CourseClass {
   notes?: Note[];
   assessments?: AssessmentClassExtended[];
   openedSession?: TimetableSession;
+  checklists?: number[];
 }
 
 export interface BudgetCostModalContentProps {
@@ -142,7 +143,7 @@ export type AttandanceChangeType =
   | "allTrainingPlans"
   | "bySession";
 
-export type AttendanceGridType =  "Student" | "Training plan";
+export type AttendanceGridType = "Student" | "Training plan";
 
 export const tutorStatusRoles: TutorAttendanceType[] = [
   "Confirmed for payroll",

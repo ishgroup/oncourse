@@ -4,20 +4,24 @@
  */
 
 import { Epic } from "redux-observable";
+import { initialize } from "redux-form";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import TagsService from "../services/TagsService";
 import { getAllTags, UPDATE_TAG_REQUEST } from "../actions";
 import { FETCH_SUCCESS } from "../../../common/actions";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { TAGS_FORM_NAME } from "../constants";
 
 const request: EpicUtils.Request = {
   type: UPDATE_TAG_REQUEST,
   getData: payload => TagsService.updateTag(payload.id, payload.tag),
-  processData: (r, s, p) => [
+  retrieveData: payload => TagsService.getTag(payload.id),
+  processData: r => [
       {
         type: FETCH_SUCCESS,
-        payload: { message: `${p.tag.type} was successfully updated` }
+        payload: { message: `${r.type} was successfully updated` }
       },
+      initialize(TAGS_FORM_NAME, r),
       getAllTags()
     ],
   processError: (r, t) => FetchErrorHandler(r, `Error. ${t.type} was not updated`)

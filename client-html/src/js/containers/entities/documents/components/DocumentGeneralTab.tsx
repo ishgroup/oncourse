@@ -12,18 +12,6 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import React, { useCallback, useRef } from "react";
 import clsx from "clsx";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faCog,
-  faFile,
-  faFileAlt,
-  faFileArchive,
-  faFileExcel,
-  faFileImage,
-  faFilePdf,
-  faFilePowerpoint,
-  faFileWord
-} from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
 import { arrayInsert, change, } from "redux-form";
 import { createStyles, withStyles } from "@mui/styles";
@@ -46,8 +34,6 @@ import DocumentShare from "../../../../common/components/form/documents/componen
 import { showMessage } from "../../../../common/actions";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-
-library.add(faFileImage, faFilePdf, faFileExcel, faFileWord, faFilePowerpoint, faFileArchive, faFileAlt, faFile, faCog);
 
 const styles = (theme: AppTheme) => createStyles({
   previewPaper: {

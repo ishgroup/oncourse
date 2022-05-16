@@ -33,6 +33,7 @@ const request: EpicUtils.Request<any, number> = {
     courseClass.trainingPlan = [];
     courseClass.budget = [];
     courseClass.notes = [];
+    courseClass.checklists = [];
 
     const relatedActions = [
       {

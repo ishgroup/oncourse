@@ -10,6 +10,8 @@ import TagsService from "../services/TagsService";
 import { CREATE_TAG_REQUEST, getAllTags } from "../actions";
 import { FETCH_SUCCESS } from "../../../common/actions";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { initialize } from "redux-form";
+import { TAGS_FORM_NAME } from "../constants";
 
 const request: EpicUtils.Request<Tag[], Tag> = {
   type: CREATE_TAG_REQUEST,
@@ -19,7 +21,8 @@ const request: EpicUtils.Request<Tag[], Tag> = {
         type: FETCH_SUCCESS,
         payload: { message: `${tag.type} was successfully created` }
       },
-      getAllTags()
+      initialize(TAGS_FORM_NAME, tag),
+      getAllTags(tag.name)
     ],
   processError: (r, t) => FetchErrorHandler(r, `Error. ${t.type} was not created`)
 };

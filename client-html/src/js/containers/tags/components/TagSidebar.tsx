@@ -56,13 +56,13 @@ const TagSidebar = ({
       <SideBarHeader
         selected={selected === 1}
         label="Tag groups"
-        onClick={selectHandler("/tags/tagGroups/", 1)}
+        onClick={selectHandler("/tags/tagGroups", 1)}
       />
 
       <SideBarHeader
         selected={selected === 2}
         label="Checklists"
-        onClick={selectHandler("/tags/checklists/", 2)}
+        onClick={selectHandler("/tags/checklists", 2)}
       />
     </div>
   );
