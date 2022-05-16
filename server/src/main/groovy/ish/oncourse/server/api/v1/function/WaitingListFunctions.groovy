@@ -40,7 +40,7 @@ class WaitingListFunctions {
             wl.studentName = dbWaitingList.student.contact.with { it.getFullName() }
             wl.courseId = dbWaitingList.course.id
             wl.courseName = dbWaitingList.course.with { "$it.name $it.code" }
-            wl.tags = dbWaitingList.tags.collect { it.id }
+            wl.tags = dbWaitingList.allTags.collect { it.id }
             wl.sites = dbWaitingList.sites.collect { toRestSiteMinimized(it)}
             wl.customFields = dbWaitingList.customFields.collectEntries { [(it.customFieldType.key) : it.value] }
             wl.createdOn = LocalDateUtils.dateToTimeValue(dbWaitingList.createdOn)

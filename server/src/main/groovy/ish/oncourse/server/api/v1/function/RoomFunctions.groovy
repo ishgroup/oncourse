@@ -50,7 +50,7 @@ class RoomFunctions {
             room.directions = dbRoom.directions
             room.facilities = dbRoom.facilities
             room.kioskUrl = getKioskUrl(preferenceController.collegeURL, 'room', dbRoom.id)
-            room.tags = dbRoom.tags.collect { it.id }
+            room.tags = dbRoom.allTags.collect { it.id }
             room.documents = dbRoom.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             room.rules = dbRoom.unavailableRuleRelations*.rule.collect{ toRestHoliday(it as UnavailableRule) }
             room.siteTimeZone = dbRoom.site.localTimezone

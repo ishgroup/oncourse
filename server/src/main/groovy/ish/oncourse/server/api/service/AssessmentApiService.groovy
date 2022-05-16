@@ -55,7 +55,7 @@ class AssessmentApiService extends TaggableApiService<AssessmentDTO, Assessment,
             assessment.id = cayenneModel.id
             assessment.code = cayenneModel.code
             assessment.name = cayenneModel.name
-            assessment.tags = cayenneModel.tags.collect { it.id }
+            assessment.tags = cayenneModel.allTags.collect { it.id }
             assessment.active = cayenneModel.active
             assessment.description = cayenneModel.description
             assessment.gradingTypeId = cayenneModel.gradingType?.id

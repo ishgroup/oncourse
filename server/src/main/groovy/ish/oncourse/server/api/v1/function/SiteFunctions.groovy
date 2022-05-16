@@ -65,7 +65,7 @@ class SiteFunctions {
             site.drivingDirections = dbSite.drivingDirections
             site.publicTransportDirections = dbSite.publicTransportDirections
             site.specialInstructions = dbSite.specialInstructions
-            site.tags = dbSite.tags.collect { it.id }
+            site.tags = dbSite.allTags.collect { it.id }
             site.rooms = dbSite.rooms.collect { RoomFunctions.toRestRoomMinimized(it) }
             site.documents = dbSite.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             site.rules = dbSite.unavailableRuleRelations*.rule.collect{ toRestHoliday(it as UnavailableRule) }
