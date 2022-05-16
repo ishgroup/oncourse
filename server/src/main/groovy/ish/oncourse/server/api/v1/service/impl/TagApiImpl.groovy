@@ -58,7 +58,6 @@ class TagApiImpl implements TagApi {
         def taggable = id != null ? EntityUtil.getObjectsByIds(cayenneService.newReadonlyContext, objectClass, List.of(id)).first() : null
         new ChecklistsDTO().with {
             it.allowedChecklists = TagFunctions.allowedChecklistsFor(taggable as TaggableCayenneDataObject, aqlService, cayenneService.newReadonlyContext).collect {toRestTag(it)}
-            it.checkedChecklists = taggable != null ? (taggable as TaggableCayenneDataObject).getChecklists().collect {it.id} : new ArrayList<Long>()
             it
         }
     }

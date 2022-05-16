@@ -132,6 +132,22 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 	}
 
 	/**
+	 * Get all tags and checked checklists related to this object.
+	 *
+	 * @return List of related tags
+	 */
+	@API
+	public List<Tag> getAllTags() {
+		List<Tag> result = new ArrayList<>();
+		for (TagRelation relation : getTaggingRelations()) {
+			if (relation.getTag() != null) {
+				result.add(relation.getTag());
+			}
+		}
+		return result;
+	}
+
+	/**
 	 * Get all checklists related to this object.
 	 *
 	 * @return List of related checklists

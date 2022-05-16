@@ -4,8 +4,3 @@ properties:
     type: array
     items:
       $ref: './Tag.yaml'
-  checkedChecklists:
-    type: array
-    items:
-      type: integer
-      format: int64
