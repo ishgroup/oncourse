@@ -18,7 +18,6 @@ import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.function.CayenneFunctions
 import ish.oncourse.server.api.v1.function.TagFunctions
-import ish.oncourse.server.api.v1.model.ChecklistsDTO
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
 import ish.util.EntityUtil
@@ -29,7 +28,6 @@ import static ish.oncourse.server.api.v1.function.TagFunctions.getRequirementTag
 import static ish.oncourse.server.api.v1.function.TagFunctions.getTagGroupPrefetch
 import static ish.oncourse.server.api.v1.function.TagFunctions.toDbTag
 import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTag
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.validateForDelete
 import static ish.oncourse.server.api.v1.function.TagFunctions.validateForSave
 import ish.oncourse.server.api.v1.model.TagDTO
@@ -53,13 +51,12 @@ class TagApiImpl implements TagApi {
     private AqlService aqlService
 
     @Override
-    ChecklistsDTO getChecklists(String entityName, Long id) {
+    List<TagDTO> getChecklists(String entityName, Long id) {
         Class<? extends CayenneDataObject> objectClass = EntityUtil.entityClassForName(entityName)
         def taggable = id != null ? EntityUtil.getObjectsByIds(cayenneService.newReadonlyContext, objectClass, List.of(id)).first() : null
-        new ChecklistsDTO().with {
-            it.allowedChecklists = TagFunctions.allowedChecklistsFor(taggable as TaggableCayenneDataObject, aqlService, cayenneService.newReadonlyContext).collect {toRestTag(it)}
-            it
-        }
+        if(taggable == null)
+            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity("taggable entity with id {$id} and type {$entityName} not found").build())
+        TagFunctions.allowedChecklistsFor(taggable as TaggableCayenneDataObject, aqlService, cayenneService.newReadonlyContext).collect { toRestTag(it) }
     }
 
     @Override
@@ -84,7 +81,7 @@ class TagApiImpl implements TagApi {
 
         def tag = SelectById.query(Tag, id).selectOne(context)
         if (tag == null) {
-            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity("Record with id = "+id+" doesn't exist.").build())
+            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity("Record with id = " + id + " doesn't exist.").build())
         }
 
         toRestTag(tag)

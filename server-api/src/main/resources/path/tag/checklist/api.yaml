@@ -19,7 +19,9 @@ get:
     '200':
       description: Success response.
       schema:
-        $ref: './def/entity/Checklists.yaml'
+        type: array
+        items:
+          $ref: './def/entity/Tag.yaml'
     default:
       description: Unexpected error
   x-permission:

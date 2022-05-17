@@ -146,7 +146,7 @@ export const EntityChecklists = ({
     setLoading(true);
     TagsService.getChecklists(entity, entityId)
       .then(res => {
-        setChecklists(res.allowedChecklists);
+        setChecklists(res);
         setLoading(false);
       })
       .catch(res => {

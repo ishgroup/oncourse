@@ -1,6 +1,0 @@
-type: object
-properties:
-  allowedChecklists:
-    type: array
-    items:
-      $ref: './Tag.yaml'
