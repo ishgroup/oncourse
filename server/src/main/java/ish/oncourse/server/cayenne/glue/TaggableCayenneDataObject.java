@@ -91,6 +91,7 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 							.eq(taggable.getDatabaseValue()))
 					.and(Tag.NODE_TYPE.eq(NodeType.TAG))
 					.and(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_ANGEL_ID).eq(getId()))
+					.limit(3)
 					.select(this.getContext());
 		} else {
 			return Collections.emptyList();
