@@ -282,7 +282,6 @@ const preformatBeforeSubmit = (value: CourseClassExtended): CourseClass => {
   delete submitted.assessments;
   delete submitted.trainingPlan;
   delete submitted.openedSession;
-  delete submitted.checklists;
 
   return submitted;
 };

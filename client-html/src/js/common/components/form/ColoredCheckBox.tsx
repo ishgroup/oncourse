@@ -45,6 +45,7 @@ export const ColoredCheckBox = ({
       </ButtonBase>
       <Typography 
         variant="caption"
+        fontWeight="400"
         sx={{
           marginLeft: 1,
           textDecoration: input.value ? "line-through" : "unset",

@@ -16,7 +16,7 @@ interface StaticProgressProps {
 }
 
 const StaticProgress = ({ className, color, value }: StaticProgressProps) => (
-  <Box className={className} sx={{ position: 'relative' }}>
+  <Box className={className} sx={{ position: 'relative', display: "flex", alignItems: "center" }}>
     <CircularProgress
       variant="determinate"
       sx={{

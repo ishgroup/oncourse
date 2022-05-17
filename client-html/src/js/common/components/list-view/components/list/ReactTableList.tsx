@@ -209,7 +209,7 @@ const Table: React.FC<ListTableProps> = ({
                 onClick={e => onRowCheckboxSelect(e, row.id, state)}
               />
               <TagDotRenderer
-                colors={row.values[COLUMN_WITH_COLORS] && row.values[COLUMN_WITH_COLORS].replace("[", "").replace("]", "").split(", ")}
+                colors={row.values[COLUMN_WITH_COLORS]?.replace(/[\[\]]/g, "").split(", ")}
                 dotsWrapperStyle={classes.listDots}
               />
             </>

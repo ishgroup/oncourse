@@ -334,7 +334,13 @@ const CourseClassGeneralTab = React.memo<Props>(
           </Grid>
 
           <Grid item xs={twoColumn ? 4 : 12}>
-            <EntityChecklists className="mr-4" entity="CourseClass" form={form} entityId={values.id} checked={values.checklists} />
+            <EntityChecklists
+              className="mr-4"
+              entity="CourseClass"
+              form={form}
+              entityId={values.id}
+              checked={values.tags}
+            />
           </Grid>
 
           <Grid item xs={12}>

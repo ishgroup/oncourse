@@ -16,7 +16,7 @@ import {
   CourseClassTutor,
   createStringEnum,
   Note,
-  StudentAttendance, Tag,
+  StudentAttendance,
   Tax,
   TrainingPlan,
   TutorAttendanceType
@@ -62,7 +62,6 @@ export interface CourseClassExtended extends CourseClass {
   notes?: Note[];
   assessments?: AssessmentClassExtended[];
   openedSession?: TimetableSession;
-  checklists?: number[];
 }
 
 export interface BudgetCostModalContentProps {

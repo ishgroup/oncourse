@@ -90,7 +90,7 @@ const ChecklistItem = ({
         </div>
 
         <div className="centeredFlex">
-          <StaticProgress color={item.color} value={checkedFraction} className="pt-0-5 pr-0-5" />
+          <StaticProgress color={item.color} value={checkedFraction} />
           <IconButton size="small" className="text-disabled" onClick={e => setMenuAnchor(e.target)}>
             <MoreVertIcon />
           </IconButton>
@@ -135,7 +135,7 @@ export const EntityChecklists = ({
     p[c] = true;
     return p;
   }, {}), [checked]);
-  
+
   const setCollapsedIdsDebounced = useCallback(debounce(setCollapsedIds, 2000), []);
 
   useEffect(() => {
@@ -156,11 +156,11 @@ export const EntityChecklists = ({
   }, [entity, entityId]);
   
   const onCheck = (id, v) => {
-    dispatch(change(form, "checklists", v ? [...checked, id] : checked.filter(cId => cId !== id)));
+    dispatch(change(form, "tags", v ? [...checked, id] : checked.filter(cId => cId !== id)));
   };
 
   const onCheckAll = (item: Tag, v) => {
-    dispatch(change(form, "checklists", v ? [...checked, ...item.childTags.map(ct => ct.id)] : checked.filter(cId => !item.childTags.some(ct => ct.id === cId))));
+    dispatch(change(form, "tags", v ? [...checked, ...item.childTags.map(ct => ct.id)] : checked.filter(cId => !item.childTags.some(ct => ct.id === cId))));
   };
   
   return (
@@ -181,11 +181,12 @@ export const EntityChecklists = ({
       ))}
 
       {!loading && !checklists.length && (
-        <Typography variant="caption" color="textSecondary">
-          No checklists were found.
-          {" "}
-          <Link href="/tags/checklist/new" target="_blank">Create one?</Link>
-        </Typography>
+        <div className="centeredFlex">
+          <Typography className="flex-fill" variant="caption">
+            <Link color="inherit" href="/tags/checklist/new" target="_blank">Create a checklist now</Link>
+          </Typography>
+          <StaticProgress color={null} value={0} />
+        </div>
       )}
     </Card>
 );
