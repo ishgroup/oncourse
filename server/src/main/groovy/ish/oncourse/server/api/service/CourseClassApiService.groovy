@@ -203,7 +203,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         dto.inProgressOutcomesCount = outcomes.findAll { it.status == OutcomeStatus.STATUS_NOT_SET }.size()
         dto.withdrawnOutcomesCount = outcomes.findAll { it.status == OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN }.size()
         dto.otherOutcomesCount = dto.allOutcomesCount  - dto.passOutcomesCount - dto.failedOutcomesCount - dto.inProgressOutcomesCount - dto.withdrawnOutcomesCount
-        dto.tags = cc.tags.collect { it.id }
+        dto.tags = cc.allTags.collect { it.id }
         return dto
     }
 
