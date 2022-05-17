@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable } from "react-beautiful-dnd-next";
 import { connect } from "react-redux";
 import { DataResponse, TableModel } from "@api/model";
 import { Dispatch } from "redux";

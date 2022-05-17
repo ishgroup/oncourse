@@ -1,11 +1,7 @@
-import React, {
-  useCallback, useEffect, useState
-} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import clsx from "clsx";
 import makeStyles from "@mui/styles/makeStyles";
-import {
- ClickAwayListener, Collapse, Typography, Grid
-} from "@mui/material";
+import { ClickAwayListener, Collapse, Grid, Typography } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 import { AppTheme } from "../../../../../model/common/Theme";
 import { APP_BAR_HEIGHT, STICKY_HEADER_EVENT } from "../../../../../constants/Config";
@@ -164,10 +160,10 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
           columnSpacing={3}
         >
           {Avatar && (
-          <Avatar
-            avatarSize={showTitleOnly && !opened ? 40 : 90}
-            disabled={showTitleOnly}
-          />
+            <Avatar
+              avatarSize={showTitleOnly && !opened ? 40 : 90}
+              disabled={showTitleOnly}
+            />
           )}
           <Grid
             columnSpacing={3}
