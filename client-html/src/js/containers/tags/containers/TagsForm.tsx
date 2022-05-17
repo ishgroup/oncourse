@@ -215,7 +215,7 @@ class TagsFormBase extends React.PureComponent<FormProps, FormState> {
 
   componentDidUpdate(prevProps) {
     const {
-      rootTag, submitSucceeded, fetch, nextLocation, setNextLocation, dirty, history
+      rootTag, submitSucceeded, fetch
     } = this.props;
 
     if (rootTag && (!prevProps.rootTag || prevProps.rootTag.id !== rootTag.id || submitSucceeded)) {
@@ -229,11 +229,6 @@ class TagsFormBase extends React.PureComponent<FormProps, FormState> {
     if (this.isPending && fetch && fetch.success) {
       this.isPending = false;
       this.resolvePromise();
-    }
-
-    if (nextLocation && !dirty && !this.isPending) {
-      history.push(nextLocation);
-      setNextLocation('');
     }
   }
 
@@ -487,7 +482,7 @@ const mapStateToProps = (state: State) => ({
   values: getFormValues("TagsForm")(state),
   syncErrors: getFormSyncErrors("TagsForm")(state),
   fetch: state.fetch,
-  nextLocation: state.nextLocation,
+  nextLocation: state.nextLocation
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
