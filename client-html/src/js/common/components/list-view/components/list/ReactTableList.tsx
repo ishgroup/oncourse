@@ -528,6 +528,7 @@ const ListRoot = React.memo<TableListProps>(({
     () => {
       let firstVisibleIndex;
       let checklistsVisible;
+      let tagsVisible;
 
       records.columns.forEach((c, i) => {
         if (typeof firstVisibleIndex !== "number" && c.visible && ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(c.attribute)) {
@@ -535,6 +536,9 @@ const ListRoot = React.memo<TableListProps>(({
         }
         if (typeof checklistsVisible !== "boolean" && c.attribute === CHECKLISTS_COLUMN) {
           checklistsVisible = c.visible;
+        }
+        if (typeof tagsVisible !== "boolean" && c.attribute === COLUMN_WITH_COLORS) {
+          tagsVisible = c.visible;
         }
       });
 
@@ -553,7 +557,8 @@ const ListRoot = React.memo<TableListProps>(({
           disableVisibility: [primaryColumn, secondaryColumn].includes(c.attribute),
           Cell: RenderCell,
           firstVisibleIndex,
-          checklistsVisible
+          checklistsVisible,
+          tagsVisible
         }));
 
       if (firstColumnName) {

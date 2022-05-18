@@ -354,7 +354,7 @@ const CourseClassGeneralTab = React.memo<Props>(
               showAllWeeks={showAllWeeks}
               setShowAllWeeks={setShowAllWeeks}
               twoColumn={twoColumn}
-              hasBudged={values.budget.some(b => b.invoiceToStudent && b.perUnitAmountIncTax > 0)}
+              hasBudged={values.budget?.some(b => b.invoiceToStudent && b.perUnitAmountIncTax > 0)}
             />
           </Grid>
 

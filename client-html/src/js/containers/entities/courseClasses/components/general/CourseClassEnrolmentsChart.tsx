@@ -240,7 +240,9 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
           return;
         }
 
-        weeks[diff].enrolments++;
+        if (weeks[diff]) {
+          weeks[diff].enrolments++;
+        }
 
         for (let i = diff; i >= 0; i--) {
           weeks[i].value++;
