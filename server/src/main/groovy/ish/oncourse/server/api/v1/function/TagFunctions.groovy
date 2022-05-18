@@ -444,6 +444,7 @@ class TagFunctions {
         def checklists = ObjectSelect.query(Tag)
                 .where(Tag.TAG_REQUIREMENTS.dot(TagRequirement.ENTITY_IDENTIFIER).eq(taggableClassesBidiMap.get(taggable.entityName))
                         .andExp(Tag.NODE_TYPE.eq(NodeType.CHECKLIST)))
+                .orderBy(Tag.CREATED_ON.name)
                 .prefetch(Tag.TAG_REQUIREMENTS.joint())
                 .select(context)
         checklists.findAll {checklistAllowed(it, taggable, aql)}

@@ -25,10 +25,8 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectQuery;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -107,17 +105,16 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 	public String getChecklistsColor() {
 		var checklists = getChecklists();
 		if(checklists.isEmpty())
-			return "";
+			return null;
 		var firstChecklist = checklists.get(0);
 		var firstParent = firstChecklist.getParentTag();
 		if(firstParent == null)
 			firstParent = firstChecklist;
 		String color = firstParent.getColour();
 		var childChecklists = firstParent.getAllChildren().values();
-		int allChildsNumber = childChecklists.size() + 1;
+		int allChildsNumber = childChecklists.size();
 		long checkedChecklistsNumber = childChecklists.stream().filter(checklists::contains).count();
 		return color+"|"+(double)checkedChecklistsNumber/allChildsNumber;
-
 	}
 
 	/**
@@ -167,7 +164,7 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 					result.add(relation.getTag());
 			}
 		}
-		return result;
+		return result.stream().sorted(Comparator.comparing(Tag::getCreatedOn)).collect(Collectors.toList());
 	}
 
 	/**
