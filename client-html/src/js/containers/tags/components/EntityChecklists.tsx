@@ -122,19 +122,21 @@ interface EntityChecklistsProps {
   className?: string;
 }
 
+const getCheckedIds = (checked: number[]) => checked.reduce((p, c) => {
+  p[c] = true;
+  return p;
+}, {});
+
 export const EntityChecklists = ({
  entity, className, form, entityId, checked = []
 }: EntityChecklistsProps) => {
   const [checklists, setChecklists] = useState<Tag[]>([]);
-  const [collapsedIds, setCollapsedIds] = useState<Record<number, boolean>>([]);
+  const [collapsedIds, setCollapsedIds] = useState<Record<number, boolean>>(getCheckedIds(checked));
   const [loading, setLoading] = useState<boolean>(true);
 
   const dispatch = useAppDispatch();
   
-  const checkedIds = useMemo(() => checked.reduce((p, c) => {
-    p[c] = true;
-    return p;
-  }, {}), [checked]);
+  const checkedIds = useMemo(() => getCheckedIds(checked), [checked]);
 
   const setCollapsedIdsDebounced = useCallback(debounce(setCollapsedIds, 2000), []);
 
@@ -189,5 +191,5 @@ export const EntityChecklists = ({
         </div>
       )}
     </Card>
-);
+  );
 };

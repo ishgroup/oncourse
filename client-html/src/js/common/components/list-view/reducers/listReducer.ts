@@ -34,7 +34,6 @@ import {
   SET_RECIPIENTS_MESSAGE_DATA,
   CLEAR_RECIPIENTS_MESSAGE_DATA,
   SET_LIST_EDIT_RECORD_FETCHING,
-  SET_SHOW_COLORED_DOTS,
   UPDATE_TAGS_ORDER,
 } from "../actions";
 import { latestActivityStorageHandler } from "../../../utils/storage";
@@ -170,13 +169,6 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
       return {
         ...state,
         nestedEditRecords: [...state.nestedEditRecords, action.payload]
-      };
-    }
-
-    case SET_SHOW_COLORED_DOTS: {
-      return {
-        ...state,
-        showColoredDots: action.payload,
       };
     }
 

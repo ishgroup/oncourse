@@ -21,7 +21,7 @@ import {
   LIST_THREE_COLUMN_ROW_HEIGHT,
   LIST_TWO_COLUMN_ROW_HEIGHT
 } from "../../../../../../constants/Config";
-import { COLUMN_WITH_COLORS } from "../utils";
+import { CHECKLISTS_COLUMN, COLUMN_WITH_COLORS } from "../utils";
 
 const ListRow = memo<any>(({ data, index, style }) => {
   const {
@@ -70,7 +70,7 @@ const ListRow = memo<any>(({ data, index, style }) => {
             {row.original.primary}
           </Typography>
         </div>
-      ) : row.cells.filter(cell => cell.column.id !== COLUMN_WITH_COLORS).map(cell => (
+      ) : row.cells.filter(cell => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(cell.column.id)).map(cell => (
         <div
           {...cell.getCellProps()}
           className={clsx(classes.bodyCell, cell.column.cellClass)}

@@ -3,7 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Diff, Filter, LayoutType, MessageType, SearchQuery, TableModel } from "@api/model";
+import {
+ Diff, Filter, LayoutType, MessageType, SearchQuery, TableModel 
+} from "@api/model";
 import { MessageData } from "../../../../model/common/Message";
 import { _toRequestType, FULFILLED } from "../../../actions/ActionUtils";
 import { MenuTag } from "../../../../model/tags";
@@ -43,8 +45,6 @@ export const BULK_CHANGE_RECORDS = _toRequestType("post/listView/bulkChange");
 export const CLEAR_LIST_STATE = "clear/listView";
 
 export const SET_LIST_CORE_FILTERS = "set/listView/coreFilters";
-
-export const SET_SHOW_COLORED_DOTS = "set/listView/coloredDots";
 
 export const SET_LIST_SEARCH = "set/listView/search";
 
@@ -98,11 +98,6 @@ export const setListUserAQLSearch = (userAQLSearch: string) => ({
 export const setListLayout = (layout: LayoutType) => ({
   type: SET_LIST_LAYOUT,
   payload: layout
-});
-
-export const setShowColoredDots = (show: boolean) => ({
-  type: SET_SHOW_COLORED_DOTS,
-  payload: show,
 });
 
 export const setListMenuTags = (menuTags: MenuTag[]) => ({

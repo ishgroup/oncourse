@@ -19,7 +19,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd-next"
 import { Column, DataResponse, TableModel } from "@api/model";
 import InfiniteLoaderList from "./components/InfiniteLoaderList";
 import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
-import { COLUMN_WITH_COLORS, getTableRows } from "./utils";
+import { CHECKLISTS_COLUMN, COLUMN_WITH_COLORS, getTableRows } from "./utils";
 import { StyledCheckbox } from "../../../form/formFields/CheckboxField";
 import { CustomColumnFormats } from "../../../../../model/common/ListView";
 import ColumnChooser from "./components/ColumnChooser";
@@ -39,8 +39,6 @@ interface ListTableProps extends Partial<TableListProps>{
   columns: any;
   data: any;
   sorting: any;
-  showColoredDots: boolean;
-  setShowColoredDots: (value: boolean) => void;
   onChangeColumns: (arg: StringKeyObject<any>, listUpdate?: boolean) => void;
   onChangeColumnsOrder: (arg: string[]) => void;
 }
@@ -59,8 +57,6 @@ const Table: React.FC<ListTableProps> = ({
   selection,
   getContainerNode,
   onChangeColumnsOrder,
-  setShowColoredDots,
-  showColoredDots,
   mainContentWidth
 }) => {
   const [isDraggingColumn, setColumnIsDragging] = useState(false);
@@ -68,14 +64,6 @@ const Table: React.FC<ListTableProps> = ({
   const isMountedRef = useRef(false);
   const isResizingRef = useRef(false);
   const tableRef = useRef<any>();
-
-  useEffect(() => {
-    const tagsColumn = columns.find(column => column.id === COLUMN_WITH_COLORS);
-
-    if (tagsColumn && tagsColumn.visible && !showColoredDots) {
-      setShowColoredDots(true);
-    }
-  }, []);
 
   useEffect(() => {
     if (tableRef.current) {
@@ -208,10 +196,12 @@ const Table: React.FC<ListTableProps> = ({
                 className={classes.selectionCheckbox}
                 onClick={e => onRowCheckboxSelect(e, row.id, state)}
               />
-              <TagDotRenderer
-                colors={row.values[COLUMN_WITH_COLORS]?.replace(/[\[\]]/g, "").split(", ")}
-                dotsWrapperStyle={classes.listDots}
-              />
+              {row.values[COLUMN_WITH_COLORS] && (
+                <TagDotRenderer
+                  colors={row.values[COLUMN_WITH_COLORS]?.replace(/[[\]]/g, "").split(", ")}
+                  dotsWrapperStyle={classes.listDots}
+                />
+              )}
             </>
           )
         },
@@ -334,7 +324,7 @@ const Table: React.FC<ListTableProps> = ({
           onDragEnd={args => onColumnOrderChange({
             ...args,
             fields: state.columnOrder,
-            headers: headerGroup.headers.filter(column => column.id !== COLUMN_WITH_COLORS)
+            headers: headerGroup.headers.filter(column => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(column.id))
           })}
         >
           <Droppable key={headerGroup.getHeaderGroupProps().key} droppableId="droppable" direction="horizontal">
@@ -344,7 +334,7 @@ const Table: React.FC<ListTableProps> = ({
                 ref={provided.innerRef}
                 className={classes.headerRow}
               >
-                {headerGroup.headers.filter(column => column.id !== COLUMN_WITH_COLORS).map((column, columnIndex) => {
+                {headerGroup.headers.filter(column => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(column.id)).map((column, columnIndex) => {
                   const disabledCell = ["selection", "chooser"].includes(column.id);
                   return (
                     <Typography
@@ -455,7 +445,7 @@ const Table: React.FC<ListTableProps> = ({
       style={threeColumn ? { overflowX: "hidden" } : null}
       onScroll={onScroll}
     >
-      {!threeColumn && <ColumnChooser columns={allColumns} classes={classes} setShowColoredDots={setShowColoredDots} />}
+      {!threeColumn && <ColumnChooser columns={allColumns} classes={classes} />}
       <div {...getTableBodyProps()} className="flex-fill">
         {List}
       </div>
@@ -474,19 +464,21 @@ export interface TableListProps {
   customColumnFormats?: CustomColumnFormats;
   setRowClasses?: AnyArgFunction<string>;
   threeColumn?: boolean;
-  showColoredDots?: boolean;
   primaryColumn: string;
   secondaryColumn: string;
   primaryColumnCondition?: (tableRow: any) => any;
   secondaryColumnCondition?: (tableRow: any) => any;
   onRowDoubleClick?: (id: string) => void;
-  setShowColoredDots?: (id: boolean) => void;
   onSelectionChange?: any;
   selection?: string[];
   firstColumnName?: string;
   getContainerNode?: AnyArgFunction;
   updateColumns?: (columns: Column[]) => void;
 }
+
+const RenderCell = ({ cell: { value }, visibleColumns: { index } }) => {
+  return String(value);
+};
 
 const ListRoot = React.memo<TableListProps>(({
   records,
@@ -505,10 +497,8 @@ const ListRoot = React.memo<TableListProps>(({
   onSelectionChange,
   selection,
   firstColumnName,
-  setShowColoredDots,
   getContainerNode,
   updateColumns,
-  showColoredDots,
   sidebarWidth,
   mainContentWidth
 }) => {
@@ -527,7 +517,8 @@ const ListRoot = React.memo<TableListProps>(({
         disableSortBy: !c.sortable,
         complexAttribute: c.sortFields,
         disableVisibility: [primaryColumn,
-          secondaryColumn].includes(c.attribute)
+          secondaryColumn].includes(c.attribute),
+        Cell: RenderCell
       }));
 
       if (firstColumnName) {
@@ -597,8 +588,6 @@ const ListRoot = React.memo<TableListProps>(({
         onSelectionChange={onSelectionChange}
         selection={selection}
         getContainerNode={getContainerNode}
-        setShowColoredDots={setShowColoredDots}
-        showColoredDots={showColoredDots}
         sidebarWidth={sidebarWidth}
         mainContentWidth={mainContentWidth}
       />

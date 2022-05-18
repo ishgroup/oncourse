@@ -231,7 +231,7 @@ const SimpleTagList: React.FC<Props> = props => {
   const tagMenuNode = useRef<any>();
 
   const menuTags = useMemo(
-    () => (tags && input.value ? getMenuTags(tags.filter(t => t.childrenCount > 0), input.value.map(id => getFullTag(id, tags))) : []),
+    () => (tags && input.value ? getMenuTags(tags.filter(t => t.childrenCount > 0), input.value.map(id => getFullTag(id, tags)).filter(t => t)) : []),
     [tags, input.value]
   );
 
