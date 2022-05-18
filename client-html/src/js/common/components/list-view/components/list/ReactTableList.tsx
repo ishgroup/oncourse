@@ -26,6 +26,7 @@ import ColumnChooser from "./components/ColumnChooser";
 import { StringKeyObject } from "../../../../../model/common/CommomObjects";
 import styles from "./styles";
 import TagDotRenderer from "./components/TagDotRenderer";
+import StaticProgress from "../../../progress/StaticProgress";
 
 const COLUMN_MIN_WIDTH = 55;
 
@@ -476,7 +477,28 @@ export interface TableListProps {
   updateColumns?: (columns: Column[]) => void;
 }
 
-const RenderCell = ({ cell: { value }, visibleColumns: { index } }) => {
+const RenderCell = props => {
+  const { cell: { value }, column: { index, firstVisibleIndex, checklistsVisible }, row: { values } } = props;
+  
+  if (checklistsVisible && index === firstVisibleIndex && values[CHECKLISTS_COLUMN]) {
+    const [color, progress] = values[CHECKLISTS_COLUMN].split("|");
+    
+    return (
+      <div className="centeredFlex overflow-hidden">
+        <span className="text-truncate">
+          {String(value)}
+        </span>
+
+        <StaticProgress
+          className="ml-0-5"
+          color={color}
+          value={parseFloat(progress) * 100}
+          size={18}
+        />
+      </div>
+    );
+  }
+
   return String(value);
 };
 
@@ -504,22 +526,35 @@ const ListRoot = React.memo<TableListProps>(({
 }) => {
   const columns = useMemo(
     () => {
+      let firstVisibleIndex;
+      let checklistsVisible;
+
+      records.columns.forEach((c, i) => {
+        if (typeof firstVisibleIndex !== "number" && c.visible && ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(c.attribute)) {
+          firstVisibleIndex = i;
+        }
+        if (typeof checklistsVisible !== "boolean" && c.attribute === CHECKLISTS_COLUMN) {
+          checklistsVisible = c.visible;
+        }
+      });
+
       const result = records.columns.map((c, i) => ({
-        index: i,
-        id: c.attribute,
-        Header: <span className="text-truncate text-nowrap">{c.title}</span>,
-        accessor: row => row[`${c.attribute}`],
-        visible: c.visible,
-        width: c.width + 24,
-        cellClass: c.type === "Money" ? "money text-end justify-content-end" : null,
-        colClass: c.type === "Money" ? "justify-content-end" : null,
-        minWidth: COLUMN_MIN_WIDTH,
-        disableSortBy: !c.sortable,
-        complexAttribute: c.sortFields,
-        disableVisibility: [primaryColumn,
-          secondaryColumn].includes(c.attribute),
-        Cell: RenderCell
-      }));
+          index: i,
+          id: c.attribute,
+          Header: <span className="text-truncate text-nowrap">{c.title}</span>,
+          accessor: row => row[`${c.attribute}`],
+          visible: c.visible,
+          width: c.width + 24,
+          cellClass: c.type === "Money" ? "money text-end justify-content-end" : null,
+          colClass: c.type === "Money" ? "justify-content-end" : null,
+          minWidth: COLUMN_MIN_WIDTH,
+          disableSortBy: !c.sortable,
+          complexAttribute: c.sortFields,
+          disableVisibility: [primaryColumn, secondaryColumn].includes(c.attribute),
+          Cell: RenderCell,
+          firstVisibleIndex,
+          checklistsVisible
+        }));
 
       if (firstColumnName) {
         result.sort(

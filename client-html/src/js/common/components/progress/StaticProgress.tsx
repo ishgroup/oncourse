@@ -10,20 +10,22 @@ import { Box, CircularProgress } from "@mui/material";
 import React from "react";
 
 interface StaticProgressProps {
-  color: string,
-  value: number
+  color: string;
+  value: number;
+  size?: number;
+  thickness?: number;
   className?: string;
 }
 
-const StaticProgress = ({ className, color, value }: StaticProgressProps) => (
+const StaticProgress = ({ className, color, value, size = 24, thickness = 8 }: StaticProgressProps) => (
   <Box className={className} sx={{ position: 'relative', display: "flex", alignItems: "center" }}>
     <CircularProgress
       variant="determinate"
       sx={{
         color: theme => theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
       }}
-      size={24}
-      thickness={8}
+      size={size}
+      thickness={thickness}
       value={100}
     />
     <CircularProgress
@@ -34,8 +36,8 @@ const StaticProgress = ({ className, color, value }: StaticProgressProps) => (
         position: 'absolute',
         left: 0
       }}
-      size={24}
-      thickness={8}
+      size={size}
+      thickness={thickness}
       value={value}
     />
   </Box>
