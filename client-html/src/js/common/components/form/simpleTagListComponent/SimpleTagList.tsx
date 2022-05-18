@@ -371,7 +371,7 @@ const SimpleTagList: React.FC<Props> = props => {
   }, [input.value, tags]);
 
   useEffect(() => {
-    setCurrentInputString(getCurrentInputString(inputValue, input.value, allMenuTags));
+    setCurrentInputString(getCurrentInputString(inputValue, input.value || [], allMenuTags));
   }, [inputValue, input.value, allMenuTags]);
 
   const popperAdapter = useCallback(params => {
