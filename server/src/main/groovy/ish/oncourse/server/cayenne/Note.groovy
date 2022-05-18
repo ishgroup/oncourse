@@ -31,7 +31,13 @@ class Note extends _Note implements ContactActivityTrait{
 		super.postAdd()
 	}
 
-	/**
+	@Override
+	protected void prePersist() {
+		super.prePersist()
+		if(interactionDate == null)
+			interactionDate = createdOn
+	}
+/**
 	 * @return the date and time this record was created
 	 */
 	@Nonnull
