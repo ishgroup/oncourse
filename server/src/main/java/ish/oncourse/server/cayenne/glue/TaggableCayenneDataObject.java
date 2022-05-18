@@ -108,10 +108,15 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 		var checklists = getChecklists();
 		if(checklists.isEmpty())
 			return "";
-		String color = checklists.get(0).getColour();
-		int allowedChecklistsNumber = TagFunctions.allowedChecklistsFor(this, aqlService, objectContext).size();
-		int checkedChecklistsNumber = getChecklists().size();
-		return color+"|"+(double)checkedChecklistsNumber/allowedChecklistsNumber;
+		var firstChecklist = checklists.get(0);
+		var firstParent = firstChecklist.getParentTag();
+		if(firstParent == null)
+			firstParent = firstChecklist;
+		String color = firstParent.getColour();
+		var childChecklists = firstParent.getAllChildren().values();
+		int allChildsNumber = childChecklists.size() + 1;
+		long checkedChecklistsNumber = childChecklists.stream().filter(checklists::contains).count();
+		return color+"|"+(double)checkedChecklistsNumber/allChildsNumber;
 
 	}
 
