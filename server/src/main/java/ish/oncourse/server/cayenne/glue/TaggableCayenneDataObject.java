@@ -113,7 +113,11 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 		String color = firstParent.getColour();
 		var childChecklists = firstParent.getAllChildren().values();
 		int allChildsNumber = childChecklists.size();
-		long checkedChecklistsNumber = childChecklists.stream().filter(checklists::contains).count();
+		long checkedChecklistsNumber = 0;
+		for(var checklist:childChecklists){
+			if(checklists.contains(checklist))
+				checkedChecklistsNumber++;
+		}
 		return color+"|"+(double)checkedChecklistsNumber/allChildsNumber;
 	}
 
@@ -164,7 +168,13 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 					result.add(relation.getTag());
 			}
 		}
-		return result.stream().sorted(Comparator.comparing(Tag::getCreatedOn)).collect(Collectors.toList());
+		result.sort(new Comparator<Tag>() {
+			@Override
+			public int compare(Tag o1, Tag o2) {
+				return o1.getCreatedOn().compareTo(o2.getCreatedOn());
+			}
+		});
+		return result;
 	}
 
 	/**
