@@ -479,14 +479,14 @@ export interface TableListProps {
 
 const RenderCell = props => {
   const { cell: { value }, column: { index, firstVisibleIndex, checklistsVisible }, row: { values } } = props;
-  
+
   if (checklistsVisible && index === firstVisibleIndex && values[CHECKLISTS_COLUMN]) {
     const [color, progress] = values[CHECKLISTS_COLUMN].split("|");
     
     return (
       <div className="centeredFlex overflow-hidden">
         <span className="text-truncate">
-          {String(value)}
+          {value}
         </span>
 
         <StaticProgress
@@ -499,7 +499,7 @@ const RenderCell = props => {
     );
   }
 
-  return String(value);
+  return value;
 };
 
 const ListRoot = React.memo<TableListProps>(({
@@ -531,7 +531,7 @@ const ListRoot = React.memo<TableListProps>(({
       let tagsVisible;
 
       records.columns.forEach((c, i) => {
-        if (typeof firstVisibleIndex !== "number" && c.visible && ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(c.attribute)) {
+        if (c.attribute === firstColumnName || (typeof firstVisibleIndex !== "number" && c.visible && ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(c.attribute))) {
           firstVisibleIndex = i;
         }
         if (typeof checklistsVisible !== "boolean" && c.attribute === CHECKLISTS_COLUMN) {
