@@ -129,7 +129,7 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
 
       <Grid item xs={twoColumn ? 4 : 12}>
         <EntityChecklists
-          entity={type}
+          entity={customFieldType}
           form={form}
           entityId={values.id}
           checked={values.tags}
