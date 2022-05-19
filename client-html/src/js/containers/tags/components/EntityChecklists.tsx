@@ -145,6 +145,10 @@ export const EntityChecklists = ({
   }, [checkedIds]);
 
   useEffect(() => {
+    setCollapsedIds(getCheckedIds(checked));
+  }, [entityId]);
+
+  useEffect(() => {
     setLoading(true);
     TagsService.getChecklists(entity, entityId)
       .then(res => {
@@ -185,7 +189,7 @@ export const EntityChecklists = ({
       {!loading && !checklists.length && (
         <div className="centeredFlex">
           <Typography className="flex-fill" variant="caption">
-            <Link color="inherit" href="/tags/checklist/new" target="_blank">Create a checklist now</Link>
+            <Link color="inherit" href={`/tags/checklist/new?entity=${entity}`} target="_blank">Create a checklist now</Link>
           </Typography>
           <StaticProgress color={null} value={0} />
         </div>

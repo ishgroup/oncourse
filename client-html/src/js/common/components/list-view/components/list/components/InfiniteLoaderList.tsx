@@ -75,7 +75,6 @@ const ListRow = memo<any>(({ data, index, style }) => {
             {row.cells[1].column.tagsVisible && (
               <TagDotRenderer
                 colors={row.values[COLUMN_WITH_COLORS]?.replace(/[[\]]/g, "").split(", ")}
-                dotsWrapperStyle={classes.listDots}
               />
             )}
             {row.cells[1].column.checklistsVisible && row.values[CHECKLISTS_COLUMN] && (

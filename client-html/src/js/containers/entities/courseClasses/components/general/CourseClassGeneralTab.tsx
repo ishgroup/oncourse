@@ -335,7 +335,7 @@ const CourseClassGeneralTab = React.memo<Props>(
 
           <Grid item xs={twoColumn ? 4 : 12}>
             <EntityChecklists
-              className="mr-4"
+              className={twoColumn ? "mr-4" : null}
               entity="CourseClass"
               form={form}
               entityId={values.id}

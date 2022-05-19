@@ -34,6 +34,7 @@ import DocumentShare from "../../../../common/components/form/documents/componen
 import { showMessage } from "../../../../common/actions";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 const styles = (theme: AppTheme) => createStyles({
   previewPaper: {
@@ -292,6 +293,14 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
             </Grid>
 
             <Grid item xs={twoColumn ? 4 : 12} className="mb-3">
+              <EntityChecklists
+                className="mb-3"
+                entity="Document"
+                form={form}
+                entityId={values.id}
+                checked={values.tags}
+              />
+
               <div className="heading mb-2">
                 History
               </div>

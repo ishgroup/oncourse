@@ -29,12 +29,12 @@ const useStyles = makeAppStyles(theme => ({
 }));
 
 const TagDotRenderer = ({
- colors, dotsWrapperStyle
+ colors, className = null
 }) => {
   const classes = useStyles();
 
   return (
-    <div className={clsx("centeredFlex", dotsWrapperStyle)}>
+    <div className={clsx("centeredFlex", className)}>
       {colors.map((color: string, index) => (
         <div key={color + index} className={clsx(classes.tagColorDotExtraSmall, "mr-0-5")} style={{ background: "#" + color }} />
       ))}

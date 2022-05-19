@@ -14,6 +14,7 @@ import {
 import { Grid, Typography } from "@mui/material";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import Divider from "@mui/material/Divider";
+import { TagRequirement } from "@api/model";
 import { useAppDispatch } from "../../../common/utils/hooks";
 import { EmptyTag, TAGS_FORM_NAME } from "../constants";
 import {
@@ -318,6 +319,27 @@ export const ChecklistsForm = ({ match: { params: { id } }, history }) => {
         ...EmptyTag,
         type: "Checklist"
       }));
+
+      const params = new URLSearchParams(history.location.search);
+
+      const entity = params.get("entity");
+
+      if (entity) {
+        params.delete("entity");
+        
+        dispatch(arrayInsert(TAGS_FORM_NAME, "requirements", 0, {
+          id: null,
+          type: entity === "AbstractInvoice" ? "Invoice" : entity,
+          mandatory: false,
+          limitToOneTag: false,
+          system: false
+        } as TagRequirement));
+
+        history.replace({
+          pathname: history.location.pathname,
+          search: decodeURIComponent(params.toString())
+        });
+      }
     } else {
       dispatch(getTagRequest(id));
     }

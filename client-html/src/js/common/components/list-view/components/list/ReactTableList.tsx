@@ -200,7 +200,7 @@ const Table: React.FC<ListTableProps> = ({
               {row.values[COLUMN_WITH_COLORS] && (
                 <TagDotRenderer
                   colors={row.values[COLUMN_WITH_COLORS]?.replace(/[[\]]/g, "").split(", ")}
-                  dotsWrapperStyle={classes.listDots}
+                  className={classes.listDots}
                 />
               )}
             </>

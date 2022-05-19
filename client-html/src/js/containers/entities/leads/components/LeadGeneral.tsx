@@ -41,6 +41,7 @@ import history from "../../../../constants/History";
 import { RELATION_COURSE_COLUMNS } from "../../common/entityConstants";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { formatRelatedSalables, mapRelatedSalables } from "../../common/utils";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 const statusItems = Object.keys(LeadStatus).map(mapSelectItems);
 
@@ -196,34 +197,44 @@ const LeadGeneral = (props: Props) => {
           )}
         />
       </Grid>
-      <Grid item xs={twoColumn ? 6 : 12}>
-        {!isNew
-          && (
+      <Grid item container rowSpacing={2} xs={twoColumn ? 6 : 12}>
+        <Grid item xs={12}>
           <FormField
-            type="searchSelect"
-            name="assignToId"
-            label="Assigned to"
-            selectValueMark="id"
-            selectLabelCondition={contactLabelCondition}
-            defaultDisplayValue={defaultContactName(values.assignTo)}
-            disabled={!users}
-            items={users}
-            required
+            type="tags"
+            name="tags"
+            tags={tags}
           />
+        </Grid>
+        {!isNew
+        && (
+          <Grid item xs={12}>
+            <FormField
+              type="searchSelect"
+              name="assignToId"
+              label="Assigned to"
+              selectValueMark="id"
+              selectLabelCondition={contactLabelCondition}
+              defaultDisplayValue={defaultContactName(values.assignTo)}
+              disabled={!users}
+              items={users}
+              required
+            />
+          </Grid>
         )}
+        <Grid item xs={12}>
+          <FormField type="number" name="studentCount" label="Number of students" />
+        </Grid>
+        <Grid item xs={12}>
+          <FormField type="dateTime" name="nextActionOn" label="Next action on" />
+        </Grid>
       </Grid>
       <Grid item xs={twoColumn ? 6 : 12}>
-        <FormField
-          type="tags"
-          name="tags"
-          tags={tags}
+        <EntityChecklists
+          entity="Lead"
+          form={form}
+          entityId={values.id}
+          checked={values.tags}
         />
-      </Grid>
-      <Grid item xs={twoColumn ? 6 : 12}>
-        <FormField type="number" name="studentCount" label="Number of students" />
-      </Grid>
-      <Grid item xs={twoColumn ? 6 : 12}>
-        <FormField type="dateTime" name="nextActionOn" label="Next action on" />
       </Grid>
       <Grid item xs={twoColumn ? 6 : 12}>
         <div className="centeredFlex">
