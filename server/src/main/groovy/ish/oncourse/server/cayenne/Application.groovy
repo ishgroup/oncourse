@@ -192,7 +192,7 @@ class Application extends _Application implements Queueable, NotableTrait, Expan
 
 	@Override
 	Class<? extends TagRelation> getTagRelationClass() {
-		return WaitingListTagRelation.class
+		return ApplicationTagRelation.class
 	}
 
 	@Override

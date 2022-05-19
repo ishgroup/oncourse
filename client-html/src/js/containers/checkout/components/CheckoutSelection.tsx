@@ -954,8 +954,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
       class: { ...selectedClass }
     };
 
-    debugger;
-
     if (selectedItems.some(i => i.id === updatedCourse.id)) {
       updateSelectedClass(updatedCourse);
     } else {
