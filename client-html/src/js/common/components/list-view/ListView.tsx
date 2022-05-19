@@ -1096,7 +1096,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
             ignoreScreenWidth
             onResizeStop={this.handleResizeCallBack}
             sidebarWidth={sidebarWidth}
-            minWidth="10%"
+            minWidth="265px"
             maxWidth="65%"
           >
             <ThemeProvider theme={sideBarTheme}>

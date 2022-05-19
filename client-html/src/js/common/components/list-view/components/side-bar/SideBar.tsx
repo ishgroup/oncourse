@@ -8,6 +8,7 @@ import ListTagGroups from "./components/ListTagGroups";
 import HamburgerMenu from "../../../layout/swipeable-sidebar/components/HamburgerMenu";
 import { VARIANTS } from "../../../layout/swipeable-sidebar/utils";
 import { FilterGroup } from "../../../../../model/common/ListView";
+import FiltersSwitcher from "./components/FiltersSwitcher";
 
 const styles = theme =>
   createStyles({
@@ -66,6 +67,9 @@ const SideBar: React.FC<Props> = props => {
         <HamburgerMenu variant={VARIANTS.temporary} />
       </div>
       <nav className={clsx(classes.root, fetching && "disabled")}>
+
+        <FiltersSwitcher />
+
         {filterGroups.map((i, index) => (
           <FilterGroupComp
             key={index}
