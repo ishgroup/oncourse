@@ -19,57 +19,20 @@ import ish.oncourse.cayenne.Taggable
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.function.GetTagGroupsInterface
 import ish.oncourse.server.api.BidiMap
-import ish.oncourse.server.api.v1.model.TagDTO
-import ish.oncourse.server.api.v1.model.TagRequirementDTO
-import ish.oncourse.server.api.v1.model.TagRequirementTypeDTO
-import ish.oncourse.server.api.v1.model.TagStatusDTO
-import ish.oncourse.server.api.v1.model.TagTypeDTO
-import ish.oncourse.server.api.v1.model.ValidationErrorDTO
+import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.validation.TagValidation
-import ish.oncourse.server.cayenne.AbstractInvoice
-import ish.oncourse.server.cayenne.Application
-import ish.oncourse.server.cayenne.Article
-import ish.oncourse.server.cayenne.ArticleProduct
-import ish.oncourse.server.cayenne.Assessment
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Document
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.Lead
-import ish.oncourse.server.cayenne.Membership
-import ish.oncourse.server.cayenne.MembershipProduct
-import ish.oncourse.server.cayenne.Message
-import ish.oncourse.server.cayenne.Payslip
-import ish.oncourse.server.cayenne.ProductItem
-import ish.oncourse.server.cayenne.Quote
-import ish.oncourse.server.cayenne.QuoteLine
-import ish.oncourse.server.cayenne.Room
-import ish.oncourse.server.cayenne.Site
-import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.Tag
-import ish.oncourse.server.cayenne.TagRelation
-import ish.oncourse.server.cayenne.TagRequirement
-import ish.oncourse.server.cayenne.Tutor
-import ish.oncourse.server.cayenne.Voucher
-import ish.oncourse.server.cayenne.VoucherProduct
-import ish.oncourse.server.cayenne.WaitingList
-import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.function.GetTagGroups
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Property
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.PrefetchTreeNode
 
+import java.time.ZoneOffset
 import java.util.stream.Collectors
 
 import static ish.oncourse.server.api.function.EntityFunctions.addAqlExp
-import static org.apache.commons.lang3.StringUtils.EMPTY
 import static org.apache.commons.lang3.StringUtils.trimToNull
-
-import java.time.ZoneOffset
-
 
 @CompileStatic
 class TagFunctions {
@@ -440,24 +403,15 @@ class TagFunctions {
                 : getTaggableClassForName(entityName);
     }
 
-    static List<Tag> allowedChecklistsFor(TaggableCayenneDataObject taggable, AqlService aql, ObjectContext context) {
-        def checklists = ObjectSelect.query(Tag)
-                .where(Tag.TAG_REQUIREMENTS.dot(TagRequirement.ENTITY_IDENTIFIER).eq(taggableClassesBidiMap.get(taggable.entityName))
-                        .andExp(Tag.NODE_TYPE.eq(NodeType.CHECKLIST)))
-                .orderBy(Tag.CREATED_ON.name)
-                .prefetch(Tag.TAG_REQUIREMENTS.joint())
-                .select(context)
-        checklists.findAll {checklistAllowed(it, taggable, aql)}
-    }
+    static boolean checklistAllowed(Tag checklist, List<TaggableClasses> taggableClasses, Long id, AqlService aql) {
+        def tagRequirement = checklist.tagRequirements.find { taggableClasses.contains(it.entityIdentifier) }
 
-    private static boolean checklistAllowed(Tag checklist, TaggableCayenneDataObject taggable, AqlService aql) {
-        def tagRequirement = checklist.tagRequirements.find { it.entityIdentifier.equals(taggableClassesForRequirements.get(taggable.entityName)) }
         if (tagRequirement?.displayRule == null)
             return true
-        def query = ObjectSelect.query(taggable.getClass() as Class<? extends TaggableCayenneDataObject>)
-                .where(Property.create("ID", Long).eq(taggable.getId()))
-        query = addAqlExp(tagRequirement.displayRule, taggable.getClass(), taggable.context, query, aql)
-        return query.selectOne(taggable.context) != null
+        def query = ObjectSelect.query(tagRequirement.getEntityClass())
+                .where(Property.create("ID", Long).eq(id))
+        query = addAqlExp(tagRequirement.displayRule, tagRequirement.getEntityClass(), tagRequirement.context, query, aql)
+        return query.selectOne(tagRequirement.context) != null
 
     }
 

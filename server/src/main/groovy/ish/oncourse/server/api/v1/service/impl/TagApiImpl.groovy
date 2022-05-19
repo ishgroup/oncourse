@@ -17,19 +17,6 @@ import ish.oncourse.aql.AqlService
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.function.CayenneFunctions
-import ish.oncourse.server.api.v1.function.TagFunctions
-import ish.oncourse.server.cayenne.glue.CayenneDataObject
-import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
-import ish.util.EntityUtil
-import org.apache.cayenne.query.SelectById
-
-import static ish.oncourse.server.api.v1.function.TagFunctions.getAdditionalTaggableClasses
-import static ish.oncourse.server.api.v1.function.TagFunctions.getRequirementTaggableClassForName
-import static ish.oncourse.server.api.v1.function.TagFunctions.getTagGroupPrefetch
-import static ish.oncourse.server.api.v1.function.TagFunctions.toDbTag
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTag
-import static ish.oncourse.server.api.v1.function.TagFunctions.validateForDelete
-import static ish.oncourse.server.api.v1.function.TagFunctions.validateForSave
 import ish.oncourse.server.api.v1.model.TagDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.TagApi
@@ -37,10 +24,14 @@ import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.cayenne.TagRequirement
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
+import org.apache.cayenne.exp.parser.ASTTrue
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.SelectById
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
+
+import static ish.oncourse.server.api.v1.function.TagFunctions.*
 
 class TagApiImpl implements TagApi {
 
@@ -52,11 +43,14 @@ class TagApiImpl implements TagApi {
 
     @Override
     List<TagDTO> getChecklists(String entityName, Long id) {
-        Class<? extends CayenneDataObject> objectClass = EntityUtil.entityClassForName(entityName)
-        def taggable = id != null ? EntityUtil.getObjectsByIds(cayenneService.newReadonlyContext, objectClass, List.of(id)).first() : null
-        if(taggable == null)
-            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity("taggable entity with id {$id} and type {$entityName} not found").build())
-        TagFunctions.allowedChecklistsFor(taggable as TaggableCayenneDataObject, aqlService, cayenneService.newReadonlyContext).collect { toRestTag(it) }
+        def taggableClassesForEntity = taggableClassesFor(entityName)
+        def expr = tagExprFor(NodeType.CHECKLIST, taggableClassesForEntity)
+        def checklists = ObjectSelect.query(Tag)
+                .where(expr)
+                .prefetch(tagGroupPrefetch)
+                .orderBy(Tag.CREATED_ON.name)
+                .select(cayenneService.newContext)
+        checklists.findAll {checklistAllowed(it, taggableClassesForEntity, id, aqlService)}.collect {toRestTag(it)}
     }
 
     @Override
@@ -97,26 +91,39 @@ class TagApiImpl implements TagApi {
                 .collectEntries { [(it[0]): it[1]] }
 
 
-        Expression expr = Tag.PARENT_TAG.isNull()
-                .andExp(Tag.NODE_TYPE.eq(NodeType.TAG))
+        def taggableClassesForEntity = new ArrayList<TaggableClasses>()
         if (entityName) {
-            TaggableClasses taggableClass = getRequirementTaggableClassForName(entityName)
-            TaggableClasses[] additionalTags = getAdditionalTaggableClasses(taggableClass)
-            Expression tagExpr = Tag.TAG_REQUIREMENTS
-                    .dot(TagRequirement.ENTITY_IDENTIFIER).eq(getRequirementTaggableClassForName(entityName))
-            for (TaggableClasses currTagClass : additionalTags) {
-                tagExpr = tagExpr.orExp(Tag.TAG_REQUIREMENTS
-                        .dot(TagRequirement.ENTITY_IDENTIFIER).eq(currTagClass))
-            }
-
-            expr = expr.andExp(tagExpr)
+            taggableClassesForEntity = taggableClassesFor(entityName)
         }
+        def expr = tagExprFor(NodeType.TAG, taggableClassesForEntity)
         ObjectSelect.query(Tag)
                 .where(expr)
                 .prefetch(tagGroupPrefetch)
                 .orderBy(Tag.NAME.asc())
                 .select(cayenneService.newContext)
                 .collect { toRestTag(it, childCountMap) }
+    }
+
+    private static Expression tagExprFor(NodeType nodeType, List<TaggableClasses> taggableClasses){
+        Tag.PARENT_TAG.isNull()
+                .andExp(Tag.NODE_TYPE.eq(nodeType))
+                .andExp(buildTagExprFor(taggableClasses))
+    }
+
+    private static Expression buildTagExprFor(List<TaggableClasses> taggableClasses){
+        if(taggableClasses.isEmpty())
+            return new ASTTrue()
+        Expression tagExpr = Tag.TAG_REQUIREMENTS
+                .dot(TagRequirement.ENTITY_IDENTIFIER).in(taggableClasses)
+        tagExpr
+    }
+
+    private static List<TaggableClasses> taggableClassesFor(String entityName){
+        TaggableClasses taggableClass = getRequirementTaggableClassForName(entityName)
+        TaggableClasses[] additionalTags = getAdditionalTaggableClasses(taggableClass)
+        def classes = additionalTags.collect {it}
+        classes.add(taggableClass)
+        return classes
     }
 
     @Override
