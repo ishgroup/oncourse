@@ -50,7 +50,9 @@ class TagApiImpl implements TagApi {
                 .prefetch(tagGroupPrefetch)
                 .orderBy(Tag.CREATED_ON.name)
                 .select(cayenneService.newContext)
-        checklists.findAll {checklistAllowed(it, taggableClassesForEntity, id, aqlService)}.collect {toRestTag(it)}
+        if(id != null)
+            checklists = checklists.findAll {checklistAllowed(it, taggableClassesForEntity, id, aqlService)}
+        checklists.collect {toRestTag(it)}
     }
 
     @Override
