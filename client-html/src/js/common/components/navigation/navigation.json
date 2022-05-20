@@ -79,6 +79,7 @@
         "customFields",
         "discounts",
         "auditLogging",
+        "checklists",
         "concessionTypes",
         "contactRelationTypes",
         "dataCollectionForms",
@@ -313,6 +314,12 @@
       "key": "corporatePass",
       "link": "/corporatePass",
       "description": "A list of the corporate passes created in your system."
+    },
+    {
+      "title": "Checklists",
+      "key": "checklists",
+      "link": "/checklists",
+      "description": "Create and manage the checklists in your system."
     },
     {
       "title": "Courses",
