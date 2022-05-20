@@ -92,7 +92,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.modifiedOn = LocalDateUtils.dateToTimeValue(course.modifiedOn)
             courseDTO.name = course.name
             courseDTO.code = course.code
-            courseDTO.tags = course.tags.collect { it.id }
+            courseDTO.tags = course.allTags.collect { it.id }
             courseDTO.enrolmentType = ENROLMENT_TYPE_MAP[course.enrolmentType]
             courseDTO.allowWaitingLists = course.allowWaitingLists
             courseDTO.dataCollectionRuleId = course.fieldConfigurationSchema.id
