@@ -54,6 +54,8 @@ export interface CogwhelAdornmentProps {
 
 export interface ListState {
   menuTags: MenuTag[];
+  checkedChecklists?: MenuTag[];
+  uncheckedChecklists?: MenuTag[];
   menuTagsLoaded?: boolean;
   filterGroups: FilterGroup[];
   filterGroupsLoaded?: boolean;

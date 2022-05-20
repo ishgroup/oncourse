@@ -524,9 +524,9 @@ const SwipeableSidebar: React.FC<Props> = props => {
           listSearchQuery={isContactIdSelected ? {} : listSearchQuery}
           selectionOnly={isContactIdSelected}
         />
-)     }
+) }
     </>
-) ;
+);
 };
 
 const mapsStateToProps = (state: State) => ({

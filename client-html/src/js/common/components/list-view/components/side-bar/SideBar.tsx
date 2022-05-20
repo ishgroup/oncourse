@@ -2,6 +2,7 @@ import * as React from "react";
 import withStyles from "@mui/styles/withStyles";
 import { createStyles } from "@mui/material";
 import clsx from "clsx";
+import { useState } from "react";
 import FilterGroupComp from "./components/FilterGroup";
 import StubFilterItem from "./components/StubFilterItem";
 import ListTagGroups from "./components/ListTagGroups";
@@ -9,6 +10,8 @@ import HamburgerMenu from "../../../layout/swipeable-sidebar/components/Hamburge
 import { VARIANTS } from "../../../layout/swipeable-sidebar/utils";
 import { FilterGroup } from "../../../../../model/common/ListView";
 import FiltersSwitcher from "./components/FiltersSwitcher";
+import ChecklistsFilters from "./components/ChecklistsFilters";
+import { MenuTag } from "../../../../../model/tags";
 
 const styles = theme =>
   createStyles({
@@ -45,6 +48,8 @@ const SideBar: React.FC<Props> = props => {
    classes, onChangeFilters, filterGroups, deleteFilter, rootEntity, filterEntity, savingFilter, fetching
   } = props;
 
+  const [filterBy, setFilterBy] = useState(0);
+
   const hasCustomFilters = filterGroups.some(i => i.title === "Custom Filters");
 
   const UpdateFilters = (index, value) => {
@@ -61,6 +66,10 @@ const SideBar: React.FC<Props> = props => {
     onChangeFilters(clone, "filters");
   };
 
+  const updateChecklists = (updated: MenuTag) => {
+    console.log(updated)
+  }
+
   return (
     <div>
       <div className={clsx("pl-2", classes.hamburgerMenu)}>
@@ -68,25 +77,36 @@ const SideBar: React.FC<Props> = props => {
       </div>
       <nav className={clsx(classes.root, fetching && "disabled")}>
 
-        <FiltersSwitcher />
+        <FiltersSwitcher value={filterBy} setValue={setFilterBy} />
 
-        {filterGroups.map((i, index) => (
-          <FilterGroupComp
-            key={index}
-            groupIndex={index}
-            deleteFilter={deleteFilter}
-            rootEntity={rootEntity}
-            onUpdate={UpdateFilters}
-            title={i.title}
-            filters={i.filters}
+        <div className={filterBy !== 0 && "d-none"}>
+          {filterGroups.map((i, index) => (
+            <FilterGroupComp
+              key={index}
+              groupIndex={index}
+              deleteFilter={deleteFilter}
+              rootEntity={rootEntity}
+              onUpdate={UpdateFilters}
+              title={i.title}
+              filters={i.filters}
+            />
+          ))}
+
+          {savingFilter && !hasCustomFilters && <div className="heading mt-2">Custom Filters</div>}
+
+          {savingFilter && <StubFilterItem rootEntity={rootEntity} savingFilter={savingFilter} filterEntity={filterEntity} />}
+
+          <ListTagGroups onChangeTagGroups={onChangeFilters} rootEntity={rootEntity} />
+        </div>
+
+        <div className={filterBy !== 1 && "d-none"}>
+          <ChecklistsFilters
+            checkedChecklists={[]}
+            uncheckedChecklists={[]}
+            updateChecked={null}
+            updateUnChecked={null}
           />
-        ))}
-
-        {savingFilter && !hasCustomFilters && <div className="heading mt-2">Custom Filters</div>}
-
-        {savingFilter && <StubFilterItem rootEntity={rootEntity} savingFilter={savingFilter} filterEntity={filterEntity} />}
-
-        <ListTagGroups onChangeTagGroups={onChangeFilters} rootEntity={rootEntity} />
+        </div>
       </nav>
     </div>
   );

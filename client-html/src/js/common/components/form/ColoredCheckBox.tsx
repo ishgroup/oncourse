@@ -25,7 +25,7 @@ export const ColoredCheckBox = ({
   
   return (
     <div
-      className={clsx("centeredFlex mb-1 cursor-pointer", className)}
+      className={clsx("centeredFlex cursor-pointer", className)}
       onClick={onClick}
     >
       <input type="checkbox" ref={inputRef} checked={input.value} hidden onChange={input.onChange} />

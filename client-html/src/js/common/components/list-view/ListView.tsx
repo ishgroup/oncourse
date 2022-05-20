@@ -45,7 +45,6 @@ import {
   setListEntity,
   setListFullScreenEditView,
   setListLayout,
-  setListMenuTags,
   setListSelection,
   setListUserAQLSearch,
   setSearch,
@@ -53,7 +52,7 @@ import {
 } from "./actions";
 import NestedEditView from "./components/full-screen-edit-view/NestedEditView";
 import {
- closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm 
+ closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm
 } from "../../actions";
 import ResizableWrapper from "../layout/resizable/ResizableWrapper";
 import { MenuTag } from "../../../model/tags";
@@ -143,7 +142,6 @@ interface Props extends Partial<ListState> {
   filterGroupsInitial?: FilterGroup[];
   onSearch?: StringArgFunction;
   setFilterGroups?: (filterGroups: FilterGroup[]) => void;
-  setListMenuTags?: (tags: MenuTag[]) => void;
   deleteFilter?: (id: number, entity: string, checked: boolean) => void;
   exportTemplates?: ExportTemplate[];
   pdfReports?: Report[];
@@ -603,7 +601,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
   onChangeFilters = (filters: FilterGroup[] | MenuTag[], type: string) => {
     const {
-     setFilterGroups, setListMenuTags, location: { search }, match: { url }
+     setFilterGroups, location: { search }, match: { url }
     } = this.props;
 
     const searchParams = new URLSearchParams(search);
@@ -619,7 +617,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     }
 
     if (type === "tags") {
-      setListMenuTags(filters as MenuTag[]);
       const tagsString = getActiveTags(filters as MenuTag[]).map(t => t.tagBody.id).toString();
       if (tagsString) {
         searchParams.set("tag", tagsString);
@@ -1210,7 +1207,6 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   updateColumns: (columns: Column[]) => dispatch(setListColumns(columns)),
   deleteFilter: (id: number, entity: string, checked: boolean) => dispatch(deleteCustomFilter(id, entity, checked)),
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
-  setListMenuTags: (tags: MenuTag[]) => dispatch(setListMenuTags(tags)),
   setListUserAQLSearch: (userAQLSearch: string) => dispatch(setListUserAQLSearch(userAQLSearch)),
   getScripts: () => dispatch(getScripts(ownProps.rootEntity)),
   getCustomFieldTypes: (entity: EntityName) => dispatch(getCustomFieldTypes(entity)),

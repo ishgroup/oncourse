@@ -101,6 +101,7 @@ const ChecklistItem = ({
         {item.childTags.map(ct => (
           <Collapse in={expandAll || !collapsedIds[ct.id]}>
             <ColoredCheckBox
+              className="mb-1"
               label={ct.name}
               color={item.color}
               input={{ onChange: e => onCheck(ct.id, e.target.checked), value: checkedIds[ct.id] } as any}

@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useState } from "react";
+import React from "react";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from "@mui/material/Typography";
@@ -25,9 +25,7 @@ const useStyles = makeAppStyles(theme => ({
   }
 }));
 
-export default function FiltersSwitcher() {
-  const [value, setValue] = useState(0);
-
+export default function FiltersSwitcher({ setValue, value }) {
   const classes = useStyles();
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
