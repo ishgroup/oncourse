@@ -303,7 +303,7 @@ class TagFunctions {
             TagRequirement tagRequirement = r.id ? requirementMap.remove(r.id) : context.newObject(TagRequirement)
             tagRequirement.entityIdentifier = tagRequirementBidiMap.getByValue(r.type)
             tagRequirement.isRequired = r.mandatory
-            tagRequirement.displayRule = r.displayRule
+            tagRequirement.displayRule = r.displayRule?.empty ? null : r.displayRule
             tagRequirement.manyTermsAllowed = !r.limitToOneTag
             tagRequirement.tag = dbTag
         }
