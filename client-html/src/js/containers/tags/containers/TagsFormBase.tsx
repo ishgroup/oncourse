@@ -30,6 +30,7 @@ import { FormTag } from "../../../model/tags";
 import { validate } from "../utils/validation";
 import { CatalogItemType } from "../../../model/common/Catalog";
 import { EmptyTag, TAGS_FORM_NAME } from "../constants";
+import { getAllTags } from "../utils";
 
 const styles = (theme: AppTheme) => createStyles({
   dragIcon: {
@@ -160,13 +161,13 @@ const setWeight = items =>
     return item;
 });
 
-const treeItemDataToTag = (id: number | string, tree: TreeData): Tag => {
-  const tag = tree.items[id].data;
-  tag.childTags = tree.items[id].children.map(id => treeItemDataToTag(id, tree));
+const treeItemDataToTag = (id: number | string, tree: TreeData, allTags: Tag[]): Tag => {
+  const tag = { ...allTags.find(t => t.id === id) };
+  tag.childTags = tree.items[id].children.map(id => treeItemDataToTag(id, tree, allTags));
   return tag;
 };
 
-const treeDataToTags = (tree: TreeData): Tag[] => tree.items[tree.rootId].children.map(id => treeItemDataToTag(id, tree));
+const treeDataToTags = (tree: TreeData, allTags: Tag[]): Tag[] => tree.items[tree.rootId].children.map(id => treeItemDataToTag(id, tree, allTags));
 
 interface FormState {
   editingId: number;
@@ -300,8 +301,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
 
   onDrop = (tagsTree: TreeData) => {
     const { dispatch, values } = this.props;
-
-    dispatch(change(TAGS_FORM_NAME, "childTags", treeDataToTags(tagsTree)));
+    dispatch(change(TAGS_FORM_NAME, "childTags", treeDataToTags(tagsTree, getAllTags([values]))));
     dispatch(change(TAGS_FORM_NAME, "refreshFlag", !values.refreshFlag));
   };
 
