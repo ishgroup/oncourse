@@ -103,6 +103,11 @@ class EntityFunctions {
         Expression inExp = forbidden ? new ASTNotIn(idPath, new ASTList(tagIds)) : new ASTIn(idPath, new ASTList(tagIds))
         ExpressionUtil.addChild(taggedNode, inExp, 1)
 
+        if(forbidden){
+            //we require it to show entities without tags for checklists request, because of aql specific
+            taggedNode = taggedNode.orExp(new ASTEqual(new ASTObjPath(alias+ "+"), null)) as SimpleNode
+        }
+
         return taggedNode
     }
 
@@ -147,7 +152,7 @@ class EntityFunctions {
             query = addAqlExp(filter, query.getEntityType(), context, query, aql)
         }
 
-        if (tagGroups && !tagGroups.empty) {
+        if (tagGroups && !tagGroups.empty || checklists && ! checklists.empty) {
             query = addTagsExpression(tagGroups,  query, entity, checklists)
         }
 
