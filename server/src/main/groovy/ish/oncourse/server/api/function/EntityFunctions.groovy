@@ -113,18 +113,18 @@ class EntityFunctions {
         Expression result = null
 
         tagGroups.each { tagGroup ->
-            processGroup(result, tagGroup, entity, false, aliasCounter++)
+            result = processGroup(result, tagGroup, entity, false, aliasCounter++)
         }
 
         forbiddenChecklists.each { tagGroup ->
-            processGroup(result, tagGroup, entity, true, aliasCounter++)
+            result = processGroup(result, tagGroup, entity, true, aliasCounter++)
         }
 
         query = query & result
         return query
     }
 
-    private static void processGroup(Expression result, TagGroupDTO tagGroup, String entity, boolean forbidden, int aliasCounter){
+    private static Expression processGroup(Expression result, TagGroupDTO tagGroup, String entity, boolean forbidden, int aliasCounter){
         String alias = "${Tag.ALIAS}${aliasCounter}"
 
         List<String> paths = tagGroup.path != null
@@ -138,6 +138,7 @@ class EntityFunctions {
         } else {
             result = result.andExp(expr)
         }
+        return result
     }
 
     static ObjectSelect<CayenneDataObject> parseSearchQuery(ObjectSelect<CayenneDataObject> query, ObjectContext context, AqlService aql, String entity, String search, String filter, List<TagGroupDTO> tagGroups, List<TagGroupDTO> checklists = new ArrayList<>()) {
