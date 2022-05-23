@@ -2,7 +2,7 @@ import { DefaultEpic } from "../../common/Default.Epic";
 import { getContactTags } from "../../../js/containers/entities/contacts/actions";
 import { EpicGetContactTags } from "../../../js/containers/entities/contacts/epics/EpicGetContactTags";
 import { getMenuTags } from "../../../js/common/components/list-view/utils/listFiltersUtils";
-import { GET_ENTITY_TAGS_REQUEST_FULFILLED, GET_LIST_TAGS_FULFILLED } from "../../../js/containers/tags/actions";
+import { GET_ENTITY_TAGS_REQUEST_FULFILLED } from "../../../js/containers/tags/actions";
 import { SET_LIST_MENU_TAGS } from "../../../js/common/components/list-view/actions";
 
 describe("Get contact tags epic tests", () => {
@@ -29,9 +29,6 @@ describe("Get contact tags epic tests", () => {
       const menuTags = contactMenuTags.concat(enrolledTags, teachingTags);
 
       return [
-        {
-          type: GET_LIST_TAGS_FULFILLED
-        },
         {
           type: SET_LIST_MENU_TAGS,
           payload: { menuTags }

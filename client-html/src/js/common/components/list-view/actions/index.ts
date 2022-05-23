@@ -100,9 +100,9 @@ export const setListLayout = (layout: LayoutType) => ({
   payload: layout
 });
 
-export const setListMenuTags = (menuTags: MenuTag[]) => ({
+export const setListMenuTags = (menuTags: MenuTag[], checkedChecklists: MenuTag[], uncheckedChecklists: MenuTag[]) => ({
   type: SET_LIST_MENU_TAGS,
-  payload: { menuTags }
+  payload: { menuTags, checkedChecklists, uncheckedChecklists }
 });
 
 export const getRecords = (

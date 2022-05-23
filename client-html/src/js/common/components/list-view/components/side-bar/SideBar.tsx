@@ -11,7 +11,6 @@ import { VARIANTS } from "../../../layout/swipeable-sidebar/utils";
 import { FilterGroup } from "../../../../../model/common/ListView";
 import FiltersSwitcher from "./components/FiltersSwitcher";
 import ChecklistsFilters from "./components/ChecklistsFilters";
-import { MenuTag } from "../../../../../model/tags";
 
 const styles = theme =>
   createStyles({
@@ -66,10 +65,6 @@ const SideBar: React.FC<Props> = props => {
     onChangeFilters(clone, "filters");
   };
 
-  const updateChecklists = (updated: MenuTag) => {
-    console.log(updated)
-  }
-
   return (
     <div>
       <div className={clsx("pl-2", classes.hamburgerMenu)}>
@@ -101,10 +96,8 @@ const SideBar: React.FC<Props> = props => {
 
         <div className={filterBy !== 1 && "d-none"}>
           <ChecklistsFilters
-            checkedChecklists={[]}
-            uncheckedChecklists={[]}
-            updateChecked={null}
-            updateUnChecked={null}
+            updateChecked={filters => onChangeFilters(filters, "checkedChecklists")}
+            updateUnChecked={filters => onChangeFilters(filters, "uncheckedChecklists")}
           />
         </div>
       </nav>

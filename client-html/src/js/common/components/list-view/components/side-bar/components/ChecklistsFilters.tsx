@@ -12,10 +12,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ButtonBase, Collapse } from "@mui/material";
 import clsx from "clsx";
 import ListTagGroup from "./ListTagGroup";
-import { MenuTag } from "../../../../../../model/tags";
 import { makeAppStyles } from "../../../../../styles/makeStyles";
 import { ColoredCheckBox } from "../../../../form/ColoredCheckBox";
 import { stubFunction } from "../../../../../utils/common";
+import { useAppSelector } from "../../../../../utils/hooks";
 
 const useStyles = makeAppStyles(theme => ({
   expandable: {
@@ -41,22 +41,21 @@ const useStyles = makeAppStyles(theme => ({
 }));
 
 interface Props {
-  checkedChecklists: MenuTag[];
-  uncheckedChecklists: MenuTag[];
   updateChecked: any;
   updateUnChecked: any;
 }
 
 const ChecklistsFilters = (
-  { 
-    checkedChecklists,
-    uncheckedChecklists,
+  {
     updateChecked, 
     updateUnChecked 
 }: Props
 ) => {
   const [expanded, setExpanded] = useState(null);
   const classes = useStyles();
+
+  const checkedChecklists = useAppSelector(state => state.list.checkedChecklists);
+  const uncheckedChecklists = useAppSelector(state => state.list.uncheckedChecklists);
 
   return (
     <div className="pr-2">
@@ -86,8 +85,9 @@ const ChecklistsFilters = (
               dndKey={index}
               rootTag={t}
               classes={{}}
-              updateActive={updateChecked}
+              updateActive={active => updateChecked([active])}
               showColoredDots={false}
+              dndEnabled={false}
             />
           );
         })}
@@ -115,8 +115,9 @@ const ChecklistsFilters = (
               dndKey={index}
               rootTag={t}
               classes={{}}
-              updateActive={updateUnChecked}
+              updateActive={active => updateUnChecked([active])}
               showColoredDots={false}
+              dndEnabled={false}
             />
           );
         })}

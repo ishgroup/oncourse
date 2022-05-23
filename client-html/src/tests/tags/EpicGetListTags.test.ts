@@ -1,7 +1,6 @@
 import { DefaultEpic } from "../common/Default.Epic";
 import {
   GET_ENTITY_TAGS_REQUEST_FULFILLED,
-  GET_LIST_TAGS_FULFILLED,
   getListTags
 } from "../../js/containers/tags/actions";
 import { EpicGetListTags } from "../../js/containers/tags/epics/EpicGetListTags";
@@ -19,9 +18,6 @@ describe("Get list tags epic tests", () => {
       const menuTags = getMenuTags(tags, []);
 
       return [
-        {
-          type: GET_LIST_TAGS_FULFILLED
-        },
         {
           type: SET_LIST_MENU_TAGS,
           payload: { menuTags }

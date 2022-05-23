@@ -5,13 +5,9 @@ export const GET_ALL_TAGS_REQUEST = _toRequestType("get/tags");
 export const GET_ALL_TAGS_FULFILLED = FULFILLED(GET_ALL_TAGS_REQUEST);
 
 export const GET_LIST_TAGS_REQUEST = _toRequestType("get/listView/tag");
-export const GET_LIST_TAGS_FULFILLED = FULFILLED(GET_LIST_TAGS_REQUEST);
 
 export const GET_ENTITY_TAGS_REQUEST = _toRequestType("get/entity/tag");
 export const GET_ENTITY_TAGS_REQUEST_FULFILLED = FULFILLED(GET_ENTITY_TAGS_REQUEST);
-
-export const GET_ENTITY_CHECKLISTS_REQUEST = _toRequestType("get/entity/checklist");
-export const GET_ENTITY_CHECKLISTS_REQUEST_FULFILLED = FULFILLED(GET_ENTITY_CHECKLISTS_REQUEST);
 
 export const UPDATE_TAG_REQUEST = _toRequestType("put/tag");
 
@@ -24,11 +20,6 @@ export const DELETE_TAG_REQUEST = _toRequestType("delete/tag");
 export const getTagRequest = (id: number) => ({
   type: GET_TAG_REQUEST,
   payload: id
-});
-
-export const getEntityChecklists = (entityName: string, id: number) => ({
-  type: GET_ENTITY_CHECKLISTS_REQUEST,
-  payload: { entityName, id }
 });
 
 export const deleteTag = (id: number) => ({

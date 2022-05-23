@@ -2,7 +2,7 @@ import { DefaultEpic } from "../../common/Default.Epic";
 import { getCourseClassTags } from "../../../js/containers/entities/courseClasses/actions";
 import { EpicGetCourseClassTags } from "../../../js/containers/entities/courseClasses/epics/EpicGetCourseClassTags";
 import { getMenuTags } from "../../../js/common/components/list-view/utils/listFiltersUtils";
-import { GET_LIST_TAGS_FULFILLED, GET_ENTITY_TAGS_REQUEST_FULFILLED } from "../../../js/containers/tags/actions";
+import { GET_ENTITY_TAGS_REQUEST_FULFILLED } from "../../../js/containers/tags/actions";
 import { SET_LIST_MENU_TAGS } from "../../../js/common/components/list-view/actions";
 
 describe("Get course class tags epic tests", () => {
@@ -17,9 +17,6 @@ describe("Get course class tags epic tests", () => {
         .concat(getMenuTags(courseTags, [], "Courses", null, "Course", "course"));
 
       return [
-        {
-          type: GET_LIST_TAGS_FULFILLED
-        },
         {
           type: SET_LIST_MENU_TAGS,
           payload: { menuTags }

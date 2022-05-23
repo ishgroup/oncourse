@@ -3,7 +3,7 @@ import { SET_LIST_MENU_TAGS } from "../../../js/common/components/list-view/acti
 import { getOutcomeTags } from "../../../js/containers/entities/outcomes/actions";
 import { EpicGetOutcomeTags } from "../../../js/containers/entities/outcomes/epics/EpicGetOutcomeTags";
 import { getMenuTags } from "../../../js/common/components/list-view/utils/listFiltersUtils";
-import { GET_ENTITY_TAGS_REQUEST_FULFILLED, GET_LIST_TAGS_FULFILLED } from "../../../js/containers/tags/actions";
+import { GET_ENTITY_TAGS_REQUEST_FULFILLED } from "../../../js/containers/tags/actions";
 
 describe("Get outcome tags epic tests", () => {
   it("EpicGetOutcomeTags should returns correct values", () => DefaultEpic({
@@ -14,9 +14,6 @@ describe("Get outcome tags epic tests", () => {
       const menuTags = getMenuTags(tags, [], null, null, "Enrolment", "enrolment");
 
       return [
-        {
-          type: GET_LIST_TAGS_FULFILLED
-        },
         {
           type: SET_LIST_MENU_TAGS,
           payload: { menuTags }

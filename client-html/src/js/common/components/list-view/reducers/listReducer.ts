@@ -43,6 +43,10 @@ import { getUpdated } from "../utils/listFiltersUtils";
 class State implements ListState {
   menuTags = [];
 
+  checkedChecklists = [];
+
+  uncheckedChecklists = [];
+
   menuTagsLoaded = false;
 
   filterGroups = [];
@@ -320,14 +324,16 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
     }
 
     case SET_LIST_MENU_TAGS: {
-      const { menuTags } = action.payload;
+      const { menuTags, checkedChecklists, uncheckedChecklists } = action.payload;
 
       state.records.offset = 0;
 
       return {
         ...state,
         menuTagsLoaded: true,
-        menuTags: getUpdated(menuTags, null, null, null)
+        menuTags: getUpdated(menuTags, null, null, null),
+        checkedChecklists: getUpdated(checkedChecklists, null, null, null),
+        uncheckedChecklists: getUpdated(uncheckedChecklists, null, null, null),
       };
     }
 

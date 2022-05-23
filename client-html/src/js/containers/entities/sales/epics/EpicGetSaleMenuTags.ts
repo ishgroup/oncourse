@@ -10,7 +10,6 @@ import { Epic } from "redux-observable";
 import { SET_LIST_MENU_TAGS } from "../../../../common/components/list-view/actions";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { GET_SALE_MENU_TAGS } from "../actions";
-import { GET_LIST_TAGS_FULFILLED } from "../../../tags/actions";
 import TagsService from "../../../tags/services/TagsService";
 import { getMenuTags } from "../../../../common/components/list-view/utils/listFiltersUtils";
 import { MenuTag } from "../../../../model/tags";
@@ -42,9 +41,6 @@ const request: EpicUtils.Request = {
   type: GET_SALE_MENU_TAGS,
   getData: () => getTags(),
   processData: (menuTags: MenuTag[]) => [
-      {
-        type: GET_LIST_TAGS_FULFILLED
-      },
       {
         type: SET_LIST_MENU_TAGS,
         payload: { menuTags }

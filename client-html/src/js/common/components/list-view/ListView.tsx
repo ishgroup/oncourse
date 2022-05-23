@@ -44,7 +44,7 @@ import {
   setListEditRecordFetching,
   setListEntity,
   setListFullScreenEditView,
-  setListLayout,
+  setListLayout, setListMenuTags,
   setListSelection,
   setListUserAQLSearch,
   setSearch,
@@ -142,6 +142,7 @@ interface Props extends Partial<ListState> {
   filterGroupsInitial?: FilterGroup[];
   onSearch?: StringArgFunction;
   setFilterGroups?: (filterGroups: FilterGroup[]) => void;
+  setListMenuTags?: ({ tags, checkedChecklists, uncheckedChecklists }: { tags: MenuTag[], checkedChecklists: MenuTag[], uncheckedChecklists: MenuTag[] }) => void;
   deleteFilter?: (id: number, entity: string, checked: boolean) => void;
   exportTemplates?: ExportTemplate[];
   pdfReports?: Report[];
@@ -316,6 +317,8 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       filterGroupsLoaded,
       noListTags,
       preferences,
+      checkedChecklists,
+      uncheckedChecklists
     } = this.props;
 
     const { threeColumn } = this.state;
@@ -420,7 +423,9 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       const currentUrlSearch = new URLSearchParams(location.search);
 
       const filtersUrlString = currentUrlSearch.get("filter");
-      const tagsUrlString = currentUrlSearch.get("tag");
+      const tagsUrlString = currentUrlSearch.get("tags");
+      const checkedChecklistsUrlString = currentUrlSearch.get("checkedChecklists");
+      const uncheckedChecklistsUrlString = currentUrlSearch.get("uncheckedChecklists");
       const searchString = currentUrlSearch.get("search");
 
       if (prevUrlSearch.get("filter") !== filtersUrlString) {
@@ -432,10 +437,10 @@ class ListView extends React.PureComponent<Props, ComponentState> {
         }
       }
 
-      if (prevUrlSearch.get("tag") !== tagsUrlString) {
-        const tagsString = getActiveTags(menuTags).map(t => t.tagBody.id).toString();
-
-        if (tagsString !== tagsUrlString) {
+      // Update tags by url
+      if (prevUrlSearch.get("tags") !== tagsUrlString) {
+        const activeString = getActiveTags(menuTags).map(t => t.tagBody.id).toString();
+        if (activeString !== tagsUrlString) {
           const tagIds = tagsUrlString ? tagsUrlString
             .split(",")
             .map(f => Number(f)) : [];
@@ -443,8 +448,30 @@ class ListView extends React.PureComponent<Props, ComponentState> {
         }
       }
 
+      // Update checked tags by url
+      if (prevUrlSearch.get("checkedChecklists") !== checkedChecklistsUrlString) {
+        const activeString = getActiveTags(checkedChecklists).map(t => t.tagBody.id).toString();
+        if (activeString !== checkedChecklistsUrlString) {
+          const ids = checkedChecklistsUrlString ? checkedChecklistsUrlString
+            .split(",")
+            .map(f => Number(f)) : [];
+          this.onChangeFilters(getTagsUpdatedByIds(checkedChecklists, ids), "checkedChecklists");
+        }
+      }
+
+      // Update tags by url
+      if (prevUrlSearch.get("uncheckedChecklists") !== uncheckedChecklistsUrlString) {
+        const activeString = getActiveTags(uncheckedChecklists).map(t => t.tagBody.id).toString();
+        if (activeString !== uncheckedChecklistsUrlString) {
+          const ids = uncheckedChecklistsUrlString ? uncheckedChecklistsUrlString
+            .split(",")
+            .map(f => Number(f)) : [];
+          this.onChangeFilters(getTagsUpdatedByIds(uncheckedChecklists, ids), "uncheckedChecklists");
+        }
+      }
+
+      // Update filters by url
       if (prevUrlSearch.get("search") !== searchString) {
-        // this.onQuerySearchChange(searchString);
         setListUserAQLSearch(searchString);
       }
     }
@@ -470,6 +497,8 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       filterGroupsInitial = [],
       filterGroups,
       menuTags,
+      checkedChecklists,
+      uncheckedChecklists,
       onSearch
     } = this.props;
 
@@ -480,18 +509,37 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
       const search = this.getUrlSearch(searchParams);
       const filtersSearch = searchParams.get("filter");
-      const tagsSearch = searchParams.get("tag");
+      const tagsSearch = searchParams.get("tags");
+      const checkedChecklistsUrlString = searchParams.get("checkedChecklists");
+      const uncheckedChecklistsUrlString = searchParams.get("uncheckedChecklists");
 
       if (filtersSearch) {
         setActiveFiltersBySearch(filtersSearch, targetFilters);
       }
       this.onChangeFilters(targetFilters, "filters");
 
+      // Sync tags by search
       if (tagsSearch && menuTags) {
         const tagIds = tagsSearch
           .split(",")
           .map(f => Number(f));
         this.onChangeFilters(getTagsUpdatedByIds(menuTags, tagIds), "tags");
+      }
+
+      // Sync checked checklists by search
+      if (checkedChecklistsUrlString && checkedChecklists) {
+        const ids = checkedChecklistsUrlString
+          .split(",")
+          .map(f => Number(f));
+        this.onChangeFilters(getTagsUpdatedByIds(checkedChecklists, ids), "checkedChecklists");
+      }
+
+      // Sync unchecked checklists by search
+      if (uncheckedChecklistsUrlString && uncheckedChecklists) {
+        const ids = uncheckedChecklistsUrlString
+          .split(",")
+          .map(f => Number(f));
+        this.onChangeFilters(getTagsUpdatedByIds(uncheckedChecklists, ids), "uncheckedChecklists");
       }
 
       if (search) {
@@ -601,7 +649,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
   onChangeFilters = (filters: FilterGroup[] | MenuTag[], type: string) => {
     const {
-     setFilterGroups, location: { search }, match: { url }
+     setFilterGroups, setListMenuTags, location: { search }, match: { url }, menuTags, checkedChecklists, uncheckedChecklists
     } = this.props;
 
     const searchParams = new URLSearchParams(search);
@@ -616,15 +664,20 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       }
     }
 
-    if (type === "tags") {
+    if (["tags", "checkedChecklists", "uncheckedChecklists"].includes(type)) {
+      setListMenuTags({
+        tags: menuTags,
+        checkedChecklists, 
+        uncheckedChecklists,
+        ...{ [type]: filters as MenuTag[] }
+      });
       const tagsString = getActiveTags(filters as MenuTag[]).map(t => t.tagBody.id).toString();
       if (tagsString) {
-        searchParams.set("tag", tagsString);
+        searchParams.set(type, tagsString);
       } else {
-        searchParams.delete("tag");
+        searchParams.delete(type);
       }
     }
-
     const resultErlSearchString = decodeURIComponent(searchParams.toString());
     this.updateHistory(url, resultErlSearchString ? "?" + resultErlSearchString : "" );
   };
@@ -1207,6 +1260,7 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   updateColumns: (columns: Column[]) => dispatch(setListColumns(columns)),
   deleteFilter: (id: number, entity: string, checked: boolean) => dispatch(deleteCustomFilter(id, entity, checked)),
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
+  setListMenuTags: ({ tags, checkedChecklists, uncheckedChecklists }) => dispatch(setListMenuTags(tags, checkedChecklists, uncheckedChecklists)),
   setListUserAQLSearch: (userAQLSearch: string) => dispatch(setListUserAQLSearch(userAQLSearch)),
   getScripts: () => dispatch(getScripts(ownProps.rootEntity)),
   getCustomFieldTypes: (entity: EntityName) => dispatch(getCustomFieldTypes(entity)),
