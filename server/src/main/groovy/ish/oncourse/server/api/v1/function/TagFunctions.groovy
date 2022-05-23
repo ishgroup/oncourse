@@ -409,7 +409,7 @@ class TagFunctions {
         if (tagRequirement?.displayRule == null)
             return true
         def query = ObjectSelect.query(tagRequirement.getEntityClass())
-                .where(Property.create("ID", Long).eq(id))
+                .where(Property.create("id", Long).eq(id))
         query = addAqlExp(tagRequirement.displayRule, tagRequirement.getEntityClass(), tagRequirement.context, query, aql)
         return query.selectOne(tagRequirement.context) != null
 
