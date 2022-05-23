@@ -283,7 +283,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
     children tag${getPluralSuffix(item.childrenCount)}. ${
           item.taggedRecordsCount ? item.taggedRecordsCount + " records will be untagged. " : ""
         }After saving the records it cannot be undone`
-      : "You are about to delete tag. After saving the records it cannot be undone";
+      : `You are about to delete ${item.type === "Checklist" ? "checklist item" : "tag"}. After saving the records it cannot be undone`;
 
     const onConfirm = () => {
       const clone = JSON.parse(JSON.stringify(values));
