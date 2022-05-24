@@ -22,9 +22,7 @@ class PluginsPrefsService {
 
         switch (key) {
             case "plugins.names":
-                return plugins.keySet().join(",")
-            case "plugins.versions":
-                return plugins.values().join(",")
+                return plugins.entrySet().collect { it -> it.key + "|" + it.value }.join(",")
             default:
                 return null
         }
