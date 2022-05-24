@@ -31,10 +31,7 @@ interface Props extends InjectedFormProps {
   onCreate: (fileName: string, overlay: File) => void;
   onUpdate: (fileName: string, id: number, overlay: File) => void;
   onDelete: (id: number) => void;
-  history: any;
   syncErrors: any;
-  nextLocation: string;
-  setNextLocation: (nextLocation: string) => void;
 }
 
 const PdfBackgroundsForm = React.memo<Props>(
@@ -48,9 +45,6 @@ const PdfBackgroundsForm = React.memo<Props>(
      onUpdate,
      onDelete,
      form,
-     history,
-     nextLocation,
-     setNextLocation,
      syncErrors
     }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
@@ -101,13 +95,6 @@ const PdfBackgroundsForm = React.memo<Props>(
       }
     }, [values.id, prevId]);
 
-    useEffect(() => {
-      if (!dirty && nextLocation) {
-        history.push(nextLocation);
-        setNextLocation('');
-      }
-    }, [nextLocation, dirty]);
-
     const handleFileSelect = () => {
       const file = fileRef.current.files[0];
       if (file) {
@@ -120,8 +107,8 @@ const PdfBackgroundsForm = React.memo<Props>(
       <>
         <Form onSubmit={handleSubmit(handleSave)}>
           <input type="file" ref={fileRef} onChange={handleFileSelect} className="d-none" />
-          {(dirty || isNew || fileIsChosen) && (
-            <RouteChangeConfirm form={form} when={(dirty || isNew || fileIsChosen) && !disableRouteConfirm} />
+          {(!disableRouteConfirm || fileIsChosen) && (
+            <RouteChangeConfirm form={form} when={dirty || isNew} />
           )}
 
           <AppBarContainer

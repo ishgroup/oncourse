@@ -52,11 +52,8 @@ interface Props extends InjectedFormProps<Report> {
   onDelete: NumberArgFunction;
   pdfBackgrounds: CommonListItem[];
   openConfirm: ShowConfirmCaller;
-  history: any;
   syncErrors: any;
-  nextLocation: string;
   emailTemplates?: CatalogItemType[];
-  setNextLocation: (nextLocation: string) => void;
 }
 
 const reader = new FileReader();
@@ -94,9 +91,6 @@ const PdfReportsForm = React.memo<Props>(
     pdfBackgrounds,
     openConfirm,
     initialValues,
-    history,
-    nextLocation,
-    setNextLocation,
     emailTemplates,
     syncErrors
   }) => {
@@ -209,13 +203,6 @@ const PdfReportsForm = React.memo<Props>(
       }
     }, [values.id, prevId, disableRouteConfirm]);
 
-    useEffect(() => {
-      if (!dirty && nextLocation) {
-        history.push(nextLocation);
-        setNextLocation('');
-      }
-    }, [nextLocation, dirty]);
-
     return (
       <>
         <Form onSubmit={handleSubmit(handleSave)}>
@@ -224,7 +211,7 @@ const PdfReportsForm = React.memo<Props>(
 
           <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialodClose} onSave={onDialodSave} />
 
-          {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
+          {!disableRouteConfirm && <RouteChangeConfirm form={form} when={dirty || isNew} />}
 
           <AppBarContainer
             values={values}

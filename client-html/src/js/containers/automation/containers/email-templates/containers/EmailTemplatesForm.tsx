@@ -14,7 +14,9 @@ import Tooltip from "@mui/material/Tooltip";
 import { FileCopy } from "@mui/icons-material";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import { Dispatch } from "redux";
-import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
+import {
+ FieldArray, Form, initialize, InjectedFormProps 
+} from "redux-form";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import FormField from "../../../../../common/components/form/formFields/FormField";
@@ -48,10 +50,7 @@ interface Props extends InjectedFormProps {
   onDelete: NumberArgFunction;
   validateTemplateCopyName: StringArgFunction;
   validateNewTemplateName: StringArgFunction;
-  history: any;
   syncErrors: any;
-  nextLocation: string;
-  setNextLocation: (nextLocation: string) => void;
   emailTemplates?: CatalogItemType[];
 }
 
@@ -76,9 +75,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
     onDelete,
     validateTemplateCopyName,
     validateNewTemplateName,
-    history,
-    nextLocation,
-    setNextLocation,
     syncErrors,
     emailTemplates
   } = props;
@@ -147,13 +143,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
     }
   }, [values.id, prevId, disableRouteConfirm]);
 
-  useEffect(() => {
-    if (!dirty && nextLocation) {
-      history.push(nextLocation);
-      setNextLocation('');
-    }
-  }, [nextLocation, dirty]);
-
   return (
     <>
       <SaveAsNewAutomationModal
@@ -165,7 +154,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
       />
 
       <Form onSubmit={handleSubmit(handleSave)}>
-        {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
+        {!disableRouteConfirm && <RouteChangeConfirm form={form} when={dirty || isNew} />}
 
         <AppBarContainer
           values={values}
@@ -256,7 +245,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
               </Grid>
 
               {values.type === 'Email' && (
-                <Grid container >
+                <Grid container>
                   <Grid item xs={6}>
                     <div className="heading">Subject</div>
                     <FormField
@@ -330,7 +319,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                   name="status"
                   color="primary"
                   format={v => v === "Enabled"}
-                  parse={v => v ? "Enabled" : "Installed but Disabled"}
+                  parse={v => (v ? "Enabled" : "Installed but Disabled")}
                 />
               </div>
               <div className="mt-3 pt-1">

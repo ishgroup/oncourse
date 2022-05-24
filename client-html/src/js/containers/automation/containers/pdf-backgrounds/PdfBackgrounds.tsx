@@ -11,7 +11,6 @@ import { withRouter } from "react-router";
 import { ExportTemplate } from "@api/model";
 import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
 import { State } from "../../../../reducers/state";
-import { setNextLocation } from "../../../../common/actions";
 import PdfReportsForm from "./containers/PdfBackgroundsForm";
 import { usePrevious } from "../../../../common/utils/hooks";
 import {
@@ -20,7 +19,6 @@ import {
   removeAutomationPdfBackground,
   updateAutomationPdfBackground
 } from "./actions";
-import { PDF_REPORT_FORM_NAME } from "../pdf-reports/PdfReports";
 
 export const PDF_BACKGROUND_FORM_NAME = "PdfBackgroundsForm";
 
@@ -54,7 +52,6 @@ const PdfBackgrounds = React.memo<any>(props => {
 const mapStateToProps = (state: State) => ({
   values: getFormValues(PDF_BACKGROUND_FORM_NAME)(state),
   syncErrors: getFormSyncErrors(PDF_BACKGROUND_FORM_NAME)(state),
-  nextLocation: state.nextLocation,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -63,7 +60,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(updateAutomationPdfBackground(fileName, id, overlay)),
   onDelete: (id: number) => dispatch(removeAutomationPdfBackground(id)),
   getPdfBackground: (id: number) => dispatch(getAutomationPdfBackground(id)),
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
 export default reduxForm({

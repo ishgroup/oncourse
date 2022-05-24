@@ -45,17 +45,14 @@ interface Props extends InjectedFormProps {
   onUpdateInternal: (template: ExportTemplate) => void;
   onUpdate: (template: ExportTemplate) => void;
   onDelete: NumberArgFunction;
-  history: any,
   syncErrors: any,
-  nextLocation: string,
-  setNextLocation: (nextLocation: string) => void,
   emailTemplates?: CatalogItemType[]
 }
 
 const ExportTemplatesForm = React.memo<Props>(
   ({
     dirty, form, handleSubmit, isNew, invalid, values, syncErrors, emailTemplates,
-     dispatch, onCreate, onUpdate, onUpdateInternal, onDelete, history, nextLocation, setNextLocation
+     dispatch, onCreate, onUpdate, onUpdateInternal, onDelete
   }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
 
@@ -121,19 +118,12 @@ const ExportTemplatesForm = React.memo<Props>(
       }
     }, [values.id, prevId, disableRouteConfirm]);
 
-    useEffect(() => {
-      if (!dirty && nextLocation) {
-        history.push(nextLocation);
-        setNextLocation('');
-      }
-    }, [nextLocation, dirty]);
-
     return (
       <>
         <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialogClose} onSave={onDialogSave} />
 
         <Form onSubmit={handleSubmit(handleSave)}>
-          {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
+          {!disableRouteConfirm && <RouteChangeConfirm form={form} when={dirty || isNew} />}
 
           <AppBarContainer
             values={values}

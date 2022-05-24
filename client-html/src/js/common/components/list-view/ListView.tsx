@@ -760,12 +760,8 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
   showConfirm = (props: ConfirmProps) => {
     const {
-     closeConfirm, openConfirm, isInvalid, fullScreenEditView, submitForm
+     closeConfirm, openConfirm, isInvalid, submitForm
     } = this.props;
-
-    const afterSubmitButtonHandler = () => {
-      fullScreenEditView ? this.toggleFullWidthView() : this.onSelection(this.state.newSelection);
-    };
 
     const confirmButton = (
       <Button
@@ -780,7 +776,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
         onClick={() => {
           submitForm();
           this.ignoreCheckDirtyOnSelection = true;
-          setTimeout(afterSubmitButtonHandler, 1000);
           closeConfirm();
         }}
       >
@@ -793,7 +788,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
         {
           cancelButtonText: "DISCARD CHANGES",
           confirmCustomComponent: confirmButton,
-          onCancel: props.onConfirm
+          onCancelCustom: props.onConfirm
         },
       );
     } else {
