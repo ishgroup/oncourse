@@ -4,17 +4,19 @@
  */
 
 import { Epic } from "redux-observable";
-
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import { CREATE_AUTOMATION_PDF_BACKGROUND, getAutomationPdfBackgroundsList } from "../actions/index";
+import { CREATE_AUTOMATION_PDF_BACKGROUND, getAutomationPdfBackgroundsList } from "../actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import ReportOverlayService from "../services/ReportOverlayService";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
+import { initialize } from "redux-form";
+import { PDF_BACKGROUND_FORM_NAME } from "../PdfBackgrounds";
 
 const request: EpicUtils.Request<any, { fileName: string; overlay: File }> = {
   type: CREATE_AUTOMATION_PDF_BACKGROUND,
   getData: ({ fileName, overlay }) => ReportOverlayService.addOverlay(fileName, overlay),
   processData: (r, s, p) => [
+      initialize(PDF_BACKGROUND_FORM_NAME, p.overlay),
       getAutomationPdfBackgroundsList(false, p.fileName),
       {
         type: FETCH_SUCCESS,
