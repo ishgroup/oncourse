@@ -15,6 +15,7 @@ const styles: any = () => ({
   },
   listItem: {
     paddingBottom: 0,
+    paddingLeft: 0,
     "&:nth-child(2)": {
       paddingTop: 0
     }
@@ -43,7 +44,7 @@ class Licences extends React.Component<any, any> {
   }
 
   render() {
-    const { licences } = this.props;
+    const { licences, plugins, classes } = this.props;
 
     const inactive = licences
       && Object.keys(licences)
@@ -94,6 +95,28 @@ class Licences extends React.Component<any, any> {
               {inactive}
             </List>
           )}
+
+          {
+            plugins && plugins["plugins.names"] && (
+              <List
+                className="mt-1"
+                subheader={(
+                  <ListSubheader disableSticky className="heading pl-0">
+                    Enabled Plugins
+                  </ListSubheader>
+                )}
+              >
+                {plugins["plugins.names"].split(",").map(item => {
+                  const splitted = item.split("|");
+                  return (
+                    <ListItem key={item} className={classes.listItem}>
+                      <ListItemText primary={`${splitted[0]} ${splitted[1]}`} />
+                    </ListItem>
+                  );
+                })}
+              </List>
+            )
+          }
         </AppBarContainer>
       </div>
     );
@@ -101,7 +124,8 @@ class Licences extends React.Component<any, any> {
 }
 
 const mapStateToProps = (state: State) => ({
-  licences: state.preferences.licences
+  licences: state.preferences.licences,
+  plugins: state.preferences.plugins
 });
 
 const Styled = withStyles(styles)(Licences);
