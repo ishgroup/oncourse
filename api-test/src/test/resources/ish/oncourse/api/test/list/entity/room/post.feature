@@ -22,7 +22,7 @@ Feature: Main feature for all POST requests with path 'list/entity/room'
         "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
-        "tags":[{"id":212,"name":"1","status":"Private","system":false,"urlPath":null,"content":null,"weight":null,"taggedRecordsCount":0,"childrenCount":0,"requirements":[],"childTags":[]}],
+        "tags":[212],
         "documents":[],
         "rules":[{"id":null,"startDate":"2020-02-01","endDate":"2020-02-05","repeatEnd":"after","repeat":"day","repeatEndAfter":"5","startDateTime":null,"endDateTime":null}]}
         """
@@ -56,23 +56,7 @@ Feature: Main feature for all POST requests with path 'list/entity/room'
         "facilities":"someFacilities",
         "created":"#ignore",
         "modified":"#ignore",
-        "tags":
-            [{
-            "id":212,
-            "name":"1",
-            "status":null,
-            "system":null,
-            "urlPath":null,
-            "content":null,
-            "color":null,
-            "weight":null,
-            "taggedRecordsCount":null,
-            "childrenCount":null,
-            "created":null,
-            "modified":null,
-            "requirements":[],
-            "childTags":[]
-            }],
+        "tags":[212],
         "documents":[],
         "rules":[{"id":"#ignore","description":null,"startDate":"2020-02-01","endDate":"2020-02-05","startDateTime":null,"endDateTime":null,"repeat":"day","repeatEnd":"after","repeatEndAfter":5,"repeatOn":null,"created":"#ignore","modified":"#ignore"}],
         "createdOn":"#ignore",

@@ -19,7 +19,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/assessment'
         {
         "code":"code051",
         "name":"delete assessment 51",
-        "tags":[{"id":195}],
+        "tags":[195],
         "active":true,
         "description":"some description 51",
         "documents":[{"id":200}]
@@ -61,7 +61,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/assessment'
         {
         "code":"code052",
         "name":"delete assessment 52",
-        "tags":[{"id":195}],
+        "tags":[195],
         "active":true,
         "description":"some description 52",
         "documents":[{"id":200}]

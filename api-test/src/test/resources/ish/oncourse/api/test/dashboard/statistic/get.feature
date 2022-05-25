@@ -23,7 +23,7 @@ Feature: Main feature for all GET requests with path 'dashboard/statistic'
         "studentCount":99,
         "contactId":3,
         "courseId":2,
-        "tags":[{"id":221}],
+        "tags":[221],
         "sites":[{"id":200}],
         "customFields":{}
         }
@@ -66,7 +66,7 @@ Feature: Main feature for all GET requests with path 'dashboard/statistic'
         "studentCount":991,
         "contactId":3,
         "courseId":2,
-        "tags":[{"id":221}],
+        "tags":[221],
         "sites":[{"id":200}],
         "customFields":{}
         }
