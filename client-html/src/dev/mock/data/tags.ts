@@ -1,19 +1,37 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 import { Tag } from "@api/model";
-import { generateArraysOfRecords } from "../mockUtils";
+import { generateArraysOfRecords, getEntityResponse } from "../mockUtils";
 
 export function mockTags(): Tag[] {
-  this.getTag = id => {
-    const tags = this.tags.find(tag => Number(tag.id) === Number(id));
-    return tags;
-  };
+  this.getTag = id => this.tags.find(tag => Number(tag.id) === Number(id));
 
-  this.getTags = () => {
-    return this.tags;
-  };
+  this.getTags = () => this.tags;
 
   this.removeTag = id => {
     this.tags = this.tags.filter(tag => Number(tag.id) !== Number(id));
   };
+
+  this.getPlainTags = () => getEntityResponse({
+      entity: "Tag",
+      rows: [
+        {
+          id: 1,
+          values: ["Tag1"]
+        },
+        {
+          id: 2,
+          values: ["Tag2"]
+        }
+      ],
+      plain: true
+    });
 
   const ofRecord = [
     { name: "id", type: "number" },
@@ -36,6 +54,7 @@ export function mockTags(): Tag[] {
     id: l.id,
     name: l.name,
     status: "Show on website",
+    type: "Tag",
     system: false,
     urlPath: null,
     content: null,
@@ -56,11 +75,12 @@ export function mockTags(): Tag[] {
     system: false,
     type: "WaitingList"
   }];
-
-  const tags = generateArraysOfRecords(2, ofRecord).map(l => ({
+  
+  return generateArraysOfRecords(2, ofRecord).map(l => ({
     id: l.id,
     name: l.name,
     status: "Show on website",
+    type: "Tag",
     system: false,
     urlPath: null,
     content: null,
@@ -73,6 +93,4 @@ export function mockTags(): Tag[] {
     requirements,
     childTags
   }));
-
-  return tags;
 }
