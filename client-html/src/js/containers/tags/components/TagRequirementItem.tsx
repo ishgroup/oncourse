@@ -11,6 +11,7 @@ import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName"
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
 import { AppTheme } from "../../../model/common/Theme";
 import { useHoverShowStyles } from "../../../common/styles/hooks";
+import { TagRequirement } from "@api/model";
 
 const styles = (theme: AppTheme) => createStyles({
   deleteIcon: {
@@ -27,7 +28,7 @@ const styles = (theme: AppTheme) => createStyles({
 interface Props {
   classes: any;
   disabled: boolean;
-  item: any;
+  item: TagRequirement;
   parent: any;
   onDelete: any;
   index: number;
@@ -67,7 +68,7 @@ const TagRequirementItem: React.FC<Props> = props => {
 
   return (
     <div className={clsx(classes.root, hoverClasses.container)}>
-      <Typography variant="subtitle1" className="flex-fill">
+      <Typography variant="h5" className="flex-fill" fontSize="1.3rem">
         {header}
       </Typography>
 

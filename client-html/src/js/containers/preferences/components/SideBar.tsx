@@ -40,7 +40,7 @@ const DataCollectionTypesMenu = React.memo<any>(({ anchorEl, history, onClose })
 
 const SideBar = React.memo<any>(
   ({
- search, history, collectionForms, collectionRules, activeFiltersConditions, tutorRoles, accessLicense, onInit
+ search, history, match, collectionForms, collectionRules, activeFiltersConditions, tutorRoles, accessLicense, onInit
 }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     useEffect(onInit, []);
@@ -58,9 +58,9 @@ const SideBar = React.memo<any>(
 
     const sharedProps = useMemo<SidebarSharedProps>(
       () => ({
- history, search, activeFiltersConditions, category: "Preferences"
-}),
-      [history, search, activeFiltersConditions]
+       history, search, match, activeFiltersConditions, category: "Preferences"
+      }),
+      [history, search, activeFiltersConditions, match]
     );
 
     const preferencesItems = routes

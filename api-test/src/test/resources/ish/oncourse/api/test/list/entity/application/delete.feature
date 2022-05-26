@@ -282,7 +282,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/application
         "enrolBy":"2033-01-01",
         "reason":"Some reason 100",
         "documents":[{"id":200}],
-        "tags":[{"id":224}],
+        "tags":[224],
         "customFields":{}
         }
         """
@@ -320,7 +320,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/application
         "enrolBy":"2033-01-01",
         "reason":"Some reason 100",
         "documents":[],
-        "tags":[{"id":224}],
+        "tags":[224],
         "customFields":{}
         }
         """

@@ -31,9 +31,6 @@ const styles = (theme: AppTheme) => createStyles({
     background: theme.palette.background.paper,
     position: "relative",
     padding: theme.spacing(3),
-    borderRadius: theme.spacing(1),
-    border: "2px solid",
-    borderColor: alpha(theme.palette.text.disabled, 0.1),
     "&:not(:last-child)": {
       marginBottom: theme.spacing(2),
     },
@@ -98,7 +95,7 @@ const NewsItemRender = props => {
     <ListItem
       id={`post-${post.id}`}
       alignItems="flex-start"
-      className={classes.postWrapper}
+      className={clsx("cardBorders", classes.postWrapper)}
     >
       <div className={clsx("w-100 d-block", fullScreenEditView && post.video && "d-flex")}>
         {post.video && (

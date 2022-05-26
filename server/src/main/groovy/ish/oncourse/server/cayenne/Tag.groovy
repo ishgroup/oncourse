@@ -268,6 +268,8 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 				case NodeSpecialType.ASSESSMENT_METHOD:
 					message = "This tag group is required for the assessments.";
 					break;
+				case NodeSpecialType.HOME_WEBPAGE:
+					return
 				default:
 					throw new IllegalArgumentException("Unknown special type for tag");
 			}

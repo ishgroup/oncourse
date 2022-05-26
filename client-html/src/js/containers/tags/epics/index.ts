@@ -5,8 +5,10 @@ import { EpicDeleteTag } from "./EpicDeleteTag";
 import { EpicUpdateTag } from "./EpicUpdateTag";
 import { EpicGetListTags } from "./EpicGetListTags";
 import { EpicGetEntityTags } from "./EpicGetEntityTags";
+import { EpicGetTag } from "./EpicGetTag";
 
 export const EpicTags = combineEpics(
+  EpicGetTag,
   EpicGetAllTags,
   EpicCreateTag,
   EpicDeleteTag,
