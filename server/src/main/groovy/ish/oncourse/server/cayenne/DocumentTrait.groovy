@@ -40,7 +40,7 @@ trait DocumentTrait {
             student = (studentRelation as StudentAttachmentRelation).attachedStudent
         else
             student = (studentRelation as ContactAttachmentRelation).attachedContact.student
-        return "Id: ${student.id} | Name: ${student.contact.name}"
+        return "Id: ${student.studentNumber} | Name: ${student.contact.name}"
     }
 
 
