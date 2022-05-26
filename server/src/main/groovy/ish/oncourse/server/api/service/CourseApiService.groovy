@@ -92,7 +92,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.modifiedOn = LocalDateUtils.dateToTimeValue(course.modifiedOn)
             courseDTO.name = course.name
             courseDTO.code = course.code
-            courseDTO.tags = course.tags.collect { toRestTagMinimized(it) }
+            courseDTO.tags = course.allTags.collect { it.id }
             courseDTO.enrolmentType = ENROLMENT_TYPE_MAP[course.enrolmentType]
             courseDTO.allowWaitingLists = course.allowWaitingLists
             courseDTO.dataCollectionRuleId = course.fieldConfigurationSchema.id
@@ -180,7 +180,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         course.isSufficientForQualification = courseDTO.isSufficientForQualification
         course.isVET = courseDTO.isVET
 
-        updateTags(course, course.taggingRelations, courseDTO.tags*.id, CourseTagRelation, course.context)
+        updateTags(course, course.taggingRelations, courseDTO.tags, CourseTagRelation, course.context)
         updateDocuments(course, course.attachmentRelations, courseDTO.documents, CourseAttachmentRelation, course.context)
         updateModules(course, courseDTO.modules)
         course.reportableHours = courseDTO.reportableHours
@@ -324,10 +324,10 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             }
         }
 
-        TagFunctions.validateTagForSave(Course, context, courseDTO.tags*.id)
+        TagFunctions.validateTagForSave(Course, context, courseDTO.tags)
                 ?.with { validator.throwClientErrorException(it) }
 
-        TagFunctions.validateRelationsForSave(Course, context, courseDTO.tags*.id, TaggableClasses.COURSE)
+        TagFunctions.validateRelationsForSave(Course, context, courseDTO.tags, TaggableClasses.COURSE)
                 ?.with { validator.throwClientErrorException(it) }
 
         validateCustomFields(context, Course.class.simpleName, courseDTO.customFields, id as String, validator)

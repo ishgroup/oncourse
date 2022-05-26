@@ -19,13 +19,14 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd-next"
 import { Column, DataResponse, TableModel } from "@api/model";
 import InfiniteLoaderList from "./components/InfiniteLoaderList";
 import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
-import { COLUMN_WITH_COLORS, getTableRows } from "./utils";
+import { CHECKLISTS_COLUMN, COLUMN_WITH_COLORS, getTableRows } from "./utils";
 import { StyledCheckbox } from "../../../form/formFields/CheckboxField";
 import { CustomColumnFormats } from "../../../../../model/common/ListView";
 import ColumnChooser from "./components/ColumnChooser";
 import { StringKeyObject } from "../../../../../model/common/CommomObjects";
 import styles from "./styles";
 import TagDotRenderer from "./components/TagDotRenderer";
+import StaticProgress from "../../../progress/StaticProgress";
 
 const COLUMN_MIN_WIDTH = 55;
 
@@ -39,8 +40,6 @@ interface ListTableProps extends Partial<TableListProps>{
   columns: any;
   data: any;
   sorting: any;
-  showColoredDots: boolean;
-  setShowColoredDots: (value: boolean) => void;
   onChangeColumns: (arg: StringKeyObject<any>, listUpdate?: boolean) => void;
   onChangeColumnsOrder: (arg: string[]) => void;
 }
@@ -59,8 +58,6 @@ const Table: React.FC<ListTableProps> = ({
   selection,
   getContainerNode,
   onChangeColumnsOrder,
-  setShowColoredDots,
-  showColoredDots,
   mainContentWidth
 }) => {
   const [isDraggingColumn, setColumnIsDragging] = useState(false);
@@ -68,14 +65,6 @@ const Table: React.FC<ListTableProps> = ({
   const isMountedRef = useRef(false);
   const isResizingRef = useRef(false);
   const tableRef = useRef<any>();
-
-  useEffect(() => {
-    const tagsColumn = columns.find(column => column.id === COLUMN_WITH_COLORS);
-
-    if (tagsColumn && tagsColumn.visible && !showColoredDots) {
-      setShowColoredDots(true);
-    }
-  }, []);
 
   useEffect(() => {
     if (tableRef.current) {
@@ -208,10 +197,12 @@ const Table: React.FC<ListTableProps> = ({
                 className={classes.selectionCheckbox}
                 onClick={e => onRowCheckboxSelect(e, row.id, state)}
               />
-              <TagDotRenderer
-                colors={row.values[COLUMN_WITH_COLORS] && row.values[COLUMN_WITH_COLORS].replace("[", "").replace("]", "").split(", ")}
-                dotsWrapperStyle={classes.listDots}
-              />
+              {row.values[COLUMN_WITH_COLORS] && (
+                <TagDotRenderer
+                  colors={row.values[COLUMN_WITH_COLORS]?.replace(/[[\]]/g, "").split(", ")}
+                  className={classes.listDots}
+                />
+              )}
             </>
           )
         },
@@ -334,7 +325,7 @@ const Table: React.FC<ListTableProps> = ({
           onDragEnd={args => onColumnOrderChange({
             ...args,
             fields: state.columnOrder,
-            headers: headerGroup.headers.filter(column => column.id !== COLUMN_WITH_COLORS)
+            headers: headerGroup.headers.filter(column => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(column.id))
           })}
         >
           <Droppable key={headerGroup.getHeaderGroupProps().key} droppableId="droppable" direction="horizontal">
@@ -344,7 +335,7 @@ const Table: React.FC<ListTableProps> = ({
                 ref={provided.innerRef}
                 className={classes.headerRow}
               >
-                {headerGroup.headers.filter(column => column.id !== COLUMN_WITH_COLORS).map((column, columnIndex) => {
+                {headerGroup.headers.filter(column => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(column.id)).map((column, columnIndex) => {
                   const disabledCell = ["selection", "chooser"].includes(column.id);
                   return (
                     <Typography
@@ -455,7 +446,7 @@ const Table: React.FC<ListTableProps> = ({
       style={threeColumn ? { overflowX: "hidden" } : null}
       onScroll={onScroll}
     >
-      {!threeColumn && <ColumnChooser columns={allColumns} classes={classes} setShowColoredDots={setShowColoredDots} />}
+      {!threeColumn && <ColumnChooser columns={allColumns} classes={classes} />}
       <div {...getTableBodyProps()} className="flex-fill">
         {List}
       </div>
@@ -474,19 +465,42 @@ export interface TableListProps {
   customColumnFormats?: CustomColumnFormats;
   setRowClasses?: AnyArgFunction<string>;
   threeColumn?: boolean;
-  showColoredDots?: boolean;
   primaryColumn: string;
   secondaryColumn: string;
   primaryColumnCondition?: (tableRow: any) => any;
   secondaryColumnCondition?: (tableRow: any) => any;
   onRowDoubleClick?: (id: string) => void;
-  setShowColoredDots?: (id: boolean) => void;
   onSelectionChange?: any;
   selection?: string[];
   firstColumnName?: string;
   getContainerNode?: AnyArgFunction;
   updateColumns?: (columns: Column[]) => void;
 }
+
+const RenderCell = props => {
+  const { cell: { value }, column: { index, firstVisibleIndex, checklistsVisible }, row: { values } } = props;
+
+  if (checklistsVisible && index === firstVisibleIndex && values[CHECKLISTS_COLUMN]) {
+    const [color, progress] = values[CHECKLISTS_COLUMN].split("|");
+    
+    return (
+      <div className="centeredFlex overflow-hidden">
+        <span className="text-truncate">
+          {value}
+        </span>
+
+        <StaticProgress
+          className="ml-0-5"
+          color={color}
+          value={parseFloat(progress) * 100}
+          size={18}
+        />
+      </div>
+    );
+  }
+
+  return value;
+};
 
 const ListRoot = React.memo<TableListProps>(({
   records,
@@ -505,30 +519,47 @@ const ListRoot = React.memo<TableListProps>(({
   onSelectionChange,
   selection,
   firstColumnName,
-  setShowColoredDots,
   getContainerNode,
   updateColumns,
-  showColoredDots,
   sidebarWidth,
   mainContentWidth
 }) => {
   const columns = useMemo(
     () => {
+      let firstVisibleIndex;
+      let checklistsVisible;
+      let tagsVisible;
+
+      records.columns.forEach((c, i) => {
+        if (c.attribute === firstColumnName || (typeof firstVisibleIndex !== "number" && c.visible && ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(c.attribute))) {
+          firstVisibleIndex = i;
+        }
+        if (typeof checklistsVisible !== "boolean" && c.attribute === CHECKLISTS_COLUMN) {
+          checklistsVisible = c.visible;
+        }
+        if (typeof tagsVisible !== "boolean" && c.attribute === COLUMN_WITH_COLORS) {
+          tagsVisible = c.visible;
+        }
+      });
+
       const result = records.columns.map((c, i) => ({
-        index: i,
-        id: c.attribute,
-        Header: <span className="text-truncate text-nowrap">{c.title}</span>,
-        accessor: row => row[`${c.attribute}`],
-        visible: c.visible,
-        width: c.width + 24,
-        cellClass: c.type === "Money" ? "money text-end justify-content-end" : null,
-        colClass: c.type === "Money" ? "justify-content-end" : null,
-        minWidth: COLUMN_MIN_WIDTH,
-        disableSortBy: !c.sortable,
-        complexAttribute: c.sortFields,
-        disableVisibility: [primaryColumn,
-          secondaryColumn].includes(c.attribute)
-      }));
+          index: i,
+          id: c.attribute,
+          Header: <span className="text-truncate text-nowrap">{c.title}</span>,
+          accessor: row => row[`${c.attribute}`],
+          visible: c.visible,
+          width: c.width + 24,
+          cellClass: c.type === "Money" ? "money text-end justify-content-end" : null,
+          colClass: c.type === "Money" ? "justify-content-end" : null,
+          minWidth: COLUMN_MIN_WIDTH,
+          disableSortBy: !c.sortable,
+          complexAttribute: c.sortFields,
+          disableVisibility: [primaryColumn, secondaryColumn].includes(c.attribute),
+          Cell: RenderCell,
+          firstVisibleIndex,
+          checklistsVisible,
+          tagsVisible
+        }));
 
       if (firstColumnName) {
         result.sort(
@@ -597,8 +628,6 @@ const ListRoot = React.memo<TableListProps>(({
         onSelectionChange={onSelectionChange}
         selection={selection}
         getContainerNode={getContainerNode}
-        setShowColoredDots={setShowColoredDots}
-        showColoredDots={showColoredDots}
         sidebarWidth={sidebarWidth}
         mainContentWidth={mainContentWidth}
       />

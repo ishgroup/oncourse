@@ -350,4 +350,14 @@ class Tutor extends _Tutor implements Queueable, Taggable, AttachableTrait {
 	List<Long> getTagIds() {
 		return contact.tagIds
 	}
+
+	@Override
+	List<String> getTagColors() {
+		return contact.getTagColors()
+	}
+
+	@Override
+	String getChecklistsColor() {
+		return contact.getChecklistsColor()
+	}
 }

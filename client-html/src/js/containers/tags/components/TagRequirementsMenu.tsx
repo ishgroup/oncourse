@@ -1,9 +1,8 @@
-import React, { ComponentClass } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import {
   Typography, Menu, MenuItem
 } from "@mui/material";
-import { withStyles } from "@mui/styles";
 import { TagRequirement, TagRequirementType } from "@api/model";
 import clsx from "clsx";
 import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName";
@@ -21,12 +20,6 @@ const requirements = Object.keys(TagRequirementType).map(
     } as TagRequirement)
 );
 
-const styles = theme => ({
-  menu: {
-    marginLeft: "52px"
-  }
-});
-
 class TagRequirementsMenu extends React.Component<any, any> {
   constructor(props) {
     super(props);
@@ -37,7 +30,7 @@ class TagRequirementsMenu extends React.Component<any, any> {
   }
 
   handleAddFieldClick = e => {
-    this.setState({ anchorEl: e.currentTarget });
+    this.setState({ anchorEl: e.target });
   };
 
   handleAddFieldClose = () => {
@@ -127,14 +120,14 @@ class TagRequirementsMenu extends React.Component<any, any> {
       }
     }
 
-    onChange([item, ...items]);
+    onChange([...items, item]);
   };
 
   render() {
     const { anchorEl, filteredItems } = this.state;
     const {
-      classes,
       label,
+      input: { name },
       meta: { invalid, error },
       disabled,
       system
@@ -148,7 +141,6 @@ class TagRequirementsMenu extends React.Component<any, any> {
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             onClose={this.handleAddFieldClose}
-            className={classes.menu}
           >
             {filteredItems.map((i, n) => (
               <MenuItem key={n} onClick={() => this.addRequirement(i)}>
@@ -158,7 +150,7 @@ class TagRequirementsMenu extends React.Component<any, any> {
           </Menu>
         )}
 
-        <div>
+        <div id={name}>
           <div className="centeredFlex">
             <Typography
               className={clsx("heading", {
@@ -180,8 +172,8 @@ class TagRequirementsMenu extends React.Component<any, any> {
             />
           </div>
 
-          {error && (
-            <Typography variant="caption" color="error">
+          {typeof error === "string" && (
+            <Typography className="shakingError" variant="caption" color="error" component="div">
               {error}
             </Typography>
           )}
@@ -195,4 +187,4 @@ const mapStateToProps = (state: State) => ({
   allTags: state.tags.allTags,
 });
 
-export default connect(mapStateToProps, null)(withStyles(styles)(TagRequirementsMenu) as ComponentClass<any>);
+export default connect(mapStateToProps)(TagRequirementsMenu);

@@ -6,11 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 import React, {
- useCallback, useEffect, useMemo, useState 
+ useCallback, useMemo
 } from "react";
 import { createStringEnum } from "@api/model";
 import { BaseFieldProps, Field, WrappedFieldProps } from "redux-form";
-import debounce from "lodash.debounce";
 import { validateSingleMandatoryField } from "../../../utils/validation";
 import SimpleTagList from "../simpleTagListComponent/SimpleTagList";
 import { CheckboxField } from "./CheckboxField";
@@ -152,7 +151,7 @@ const FormField:React.FC<BaseProps> = React.forwardRef<any, BaseProps>(({
   type,
   ...rest
   }, ref) => {
-  const validateTags = useCallback((...args: [any, any, any]) => validateTagsList(tags && tags.length > 0 ? tags : [], ...args), [tags]);
+  const validateTags = useCallback((...args: [any, any, any]) => validateTagsList(tags || [], ...args), [tags]);
   
   const validateResolver = useMemo(() => {
     const result = [];

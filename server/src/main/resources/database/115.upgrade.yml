@@ -1,0 +1,21 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 115-1
+      author: dmitry
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: NodeRequirement
+        - and:
+            - not:
+                - columnExists:
+                    tableName: NodeRequirement
+                    columnName: displayRule
+      changes:
+        - addColumn:
+            tableName: NodeRequirement
+            columns:
+              - column:
+                  name: displayRule
+                  type: VARCHAR(512)
