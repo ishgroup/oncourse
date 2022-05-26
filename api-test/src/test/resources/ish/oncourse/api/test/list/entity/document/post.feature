@@ -35,7 +35,7 @@ Feature: Main feature for all POST requests with path 'list/entity/document'
         When method GET
         Then status 200
         And match $.name == "testDoc2"
-        And match $.tags[*].id == [216]
+        And match $.tags[*] == [216]
         And match $.description == "some description"
         And match $.access == "Private"
         And match $.shared == true

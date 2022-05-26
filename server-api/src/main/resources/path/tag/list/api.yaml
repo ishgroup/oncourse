@@ -1,0 +1,24 @@
+get:
+  operationId: get
+  description: list of all root tags
+  tags:
+    - Tag
+  parameters:
+    - name: entityName
+      in: query
+      required: false
+      type: string
+      description: entity type identifier, null param returns all tags
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/Tag.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: TAG
+    errorMessage: Sorry, you have no permissions to get tags. Please contact your administrator

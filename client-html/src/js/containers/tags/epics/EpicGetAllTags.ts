@@ -1,28 +1,49 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import { Epic } from "redux-observable";
-
-import * as EpicUtils from "../../../common/epics/EpicUtils";
-import TagsService from "../services/TagsService";
-import { GET_ALL_TAGS_FULFILLED, GET_ALL_TAGS_REQUEST } from "../actions";
 import { Tag } from "@api/model";
+import * as EpicUtils from "../../../common/epics/EpicUtils";
+import { GET_ALL_TAGS_FULFILLED, GET_ALL_TAGS_REQUEST } from "../actions";
+import { CatalogItemType } from "../../../model/common/Catalog";
+import EntityService from "../../../common/services/EntityService";
 import history from "../../../constants/History";
+import { plainTagToCatalogItem } from "../utils";
 
 const request: EpicUtils.Request = {
   type: GET_ALL_TAGS_REQUEST,
-  getData: () => TagsService.getTags(),
-  processData: (allTags: Tag[]) => {
-    if (history.location.pathname === "/tags" && allTags.length) {
-      history.push(`/tags/${allTags[0].id}`);
-    }
+  getData: async ({ nameToSelect }) => {
+    const tagsResponse = await EntityService.getPlainRecords("Tag", "name", "nodeType = TAG and parentTag = null", null, null, "name", true);
+    const checklistsResponse = await EntityService.getPlainRecords("Tag", "name", "nodeType = CHECKLIST and parentTag = null", null, null, "name", true);
 
+    const allTags: CatalogItemType[] = tagsResponse.rows.map(plainTagToCatalogItem);
+    const allChecklists: CatalogItemType[] = checklistsResponse.rows.map(plainTagToCatalogItem);
+    
+    return { allTags, allChecklists, nameToSelect };
+  },
+  processData: ({ allTags, allChecklists, nameToSelect }) => {
+
+    if (nameToSelect) {
+      const tag = allTags.find(t => t.title === nameToSelect);
+      if (tag) {
+        history.push(`/tags/tagGroup/${tag.id}`);
+      } else {
+        const checklist = allChecklists.find(t => t.title === nameToSelect);
+        if (checklist) {
+          history.push(`/tags/checklist/${checklist.id}`);
+        }
+      }
+    }
+    
     return [
       {
         type: GET_ALL_TAGS_FULFILLED,
-        payload: { allTags }
+        payload: { allTags, allChecklists }
       }
     ];
   }

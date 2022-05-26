@@ -20,6 +20,7 @@ import TimetableButton from "../../../../common/components/buttons/TimetableButt
 import { openSiteLink } from "../../sites/utils";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 const normalizeSeatedCapacity = value => ((value && value >= 0) || value === 0 ? Number(value) : null);
 
@@ -73,11 +74,11 @@ class RoomsGeneral extends React.PureComponent<any, any> {
                 label="Name"
                 required
               />
-              )}
+            )}
           />
         </Grid>
-        <Grid item container xs={layoutArray[0].xs} columnSpacing={3} className="flex-nowrap align-items-center mb-1">
-          <Grid item xs={12}>
+        <Grid item container xs={layoutArray[0].xs} columnSpacing={3} rowSpacing={2}>
+          <Grid item xs={twoColumn ? 8 : 12}>
             <FormField
               type="tags"
               name="tags"
@@ -85,12 +86,23 @@ class RoomsGeneral extends React.PureComponent<any, any> {
             />
           </Grid>
 
-          <Grid item className="centeredFlex">
-            <IconButton href={values.kioskUrl} disabled={!values.kioskUrl} target="_blank">
-              <ScreenShare />
-            </IconButton>
+          <Grid item xs={twoColumn ? 4 : 12}>
+            <div className="centeredFlex">
+              <EntityChecklists
+                className="flex-fill"
+                entity="Room"
+                form={form}
+                entityId={values.id}
+                checked={values.tags}
+              />
 
-            <Typography variant="caption">Kiosk</Typography>
+              <div className="centeredFlex ml-2">
+                <IconButton href={values.kioskUrl} disabled={!values.kioskUrl} target="_blank">
+                  <ScreenShare />
+                </IconButton>
+                <Typography variant="caption">Kiosk</Typography>
+              </div>
+            </div>
           </Grid>
         </Grid>
 
@@ -112,13 +124,13 @@ class RoomsGeneral extends React.PureComponent<any, any> {
 
             <Grid item xs={layoutArray[4].xs}>
               {sites && (
-              <FormField
-                type="select"
-                name="siteId"
-                label="Site"
-                selectLabelMark="name"
-                selectValueMark="id"
-                labelAdornment={
+                <FormField
+                  type="select"
+                  name="siteId"
+                  label="Site"
+                  selectLabelMark="name"
+                  selectValueMark="id"
+                  labelAdornment={
                   isNew ? undefined : (
                     <LinkAdornment
                       link={values && values.siteId}
@@ -127,10 +139,10 @@ class RoomsGeneral extends React.PureComponent<any, any> {
                     />
                   )
                 }
-                items={sites}
-                onInnerValueChange={this.onSiteChange}
-                required
-              />
+                  items={sites}
+                  onInnerValueChange={this.onSiteChange}
+                  required
+                />
                 )}
             </Grid>
           </Grid>

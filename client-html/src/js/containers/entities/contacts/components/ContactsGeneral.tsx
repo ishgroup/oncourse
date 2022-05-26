@@ -28,6 +28,7 @@ import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 const TutorInitial: Tutor = {
   wwChildrenStatus: "Not checked"
@@ -314,12 +315,20 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
           </ButtonGroup>
         </Grid>
       </Grid>
-      <Grid container columnSpacing={3} className="flex-nowrap align-items-center mb-1">
-        <Grid item xs={12}>
+      <Grid container columnSpacing={3} rowSpacing={2}>
+        <Grid item xs={twoColumn ? 8 : 12}>
           <FormField
             type="tags"
             name="tags"
             tags={filteredTags}
+          />
+        </Grid>
+        <Grid item xs={twoColumn ? 4 : 12}>
+          <EntityChecklists
+            entity="Contact"
+            form={form}
+            entityId={values.id}
+            checked={values.tags}
           />
         </Grid>
       </Grid>

@@ -27,10 +27,10 @@ export interface FormTag extends Tag {
 export interface FormTagProps {
   classes: any;
   onDelete: any;
-  changeVisibility: any;
-  isEditing: boolean;
-  setIsEditing: NumberArgFunction;
   item: FormTag;
+  isEditing?: boolean;
+  setIsEditing?: NumberArgFunction;
+  changeVisibility?: any;
   snapshot?: any;
   provided?: any;
 }

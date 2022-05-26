@@ -12,18 +12,6 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import React, { useCallback, useRef } from "react";
 import clsx from "clsx";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faCog,
-  faFile,
-  faFileAlt,
-  faFileArchive,
-  faFileExcel,
-  faFileImage,
-  faFilePdf,
-  faFilePowerpoint,
-  faFileWord
-} from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
 import { arrayInsert, change, } from "redux-form";
 import { createStyles, withStyles } from "@mui/styles";
@@ -46,8 +34,7 @@ import DocumentShare from "../../../../common/components/form/documents/componen
 import { showMessage } from "../../../../common/actions";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-
-library.add(faFileImage, faFilePdf, faFileExcel, faFileWord, faFilePowerpoint, faFileArchive, faFileAlt, faFile, faCog);
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 const styles = (theme: AppTheme) => createStyles({
   previewPaper: {
@@ -306,6 +293,14 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
             </Grid>
 
             <Grid item xs={twoColumn ? 4 : 12} className="mb-3">
+              <EntityChecklists
+                className="mb-3"
+                entity="Document"
+                form={form}
+                entityId={values.id}
+                checked={values.tags}
+              />
+
               <div className="heading mb-2">
                 History
               </div>

@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import TabsList from "../../../../common/components/layout/TabsList";
+import TabsList from "../../../../common/components/navigation/TabsList";
 import RoomsGeneral from "./RoomsGeneral";
 import AvailabilityFormComponent from "../../../../common/components/form/availabilityComponent/AvailabilityFormComponent";
 

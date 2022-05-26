@@ -40,6 +40,7 @@ import { usePrevious } from "../../../../common/utils/hooks";
 import { leadLabelCondition, openLeadLink } from "../../leads/utils";
 import LeadSelectItemRenderer from "../../leads/components/LeadSelectItemRenderer";
 import Uneditable from "../../../../common/components/form/Uneditable";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 interface Props extends EditViewProps {
   currency: Currency;
@@ -265,11 +266,20 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="p-3 saveButtonTableOffset defaultBackgroundColor">
-      <Grid item xs={12}>
+      <Grid item xs={twoColumn ? 8 : 12}>
         <FormField
           type="tags"
           name="tags"
           tags={tags}
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <EntityChecklists
+          entity="AbstractInvoice"
+          form={form}
+          entityId={values.id}
+          checked={values.tags}
         />
       </Grid>
 
