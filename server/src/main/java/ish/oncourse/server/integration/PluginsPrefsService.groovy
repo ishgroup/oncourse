@@ -40,10 +40,11 @@ class PluginsPrefsService {
         while (resources.hasMoreElements()) {
             try {
                 def url = resources.nextElement()
-                if (url.path.contains("ish/oncourse/commercial/plugin")) {
+                if (url.path.contains("plugins")) {
                     def pathParts = url.path.split("/")
-                    def pluginName = pathParts[pathParts.length - 5]
-                    def pluginVersion = pathParts[pathParts.length - 4]
+                    def jarName = pathParts[pathParts.length - 1]
+                    def pluginVersion = jarName.split("-").last()
+                    def pluginName = jarName.substring(0, jarName.lastIndexOf("-"))
                     plugins.put(pluginName, pluginVersion)
                 }
             } catch (IOException e) {
