@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import * as React from "react";
@@ -223,15 +226,12 @@ class FormContainer extends React.Component<Props & RouteComponentProps, any> {
   }
 }
 
-const getFormName = form => form && Object.keys(form)[0];
-
 const mapStateToProps = (state: State) => ({
   fetch: state.fetch,
-  formName: getFormName(state.form),
   nextLocation: state.nextLocation
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   dispatch,
   onInit: category => dispatch(getPreferences(category)),
   onSubmit: (category, fields) => dispatch(savePreferences(category, fields)),
@@ -239,4 +239,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(FormContainer)));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(FormContainer)));

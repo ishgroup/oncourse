@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { useEffect, useMemo } from "react";
@@ -11,6 +14,7 @@ import { withRouter } from "react-router";
 import { ExportTemplate } from "@api/model";
 import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
 import { State } from "../../../../reducers/state";
+import { setNextLocation } from "../../../../common/actions";
 import ExportTemplatesForm from "./containers/ExportTemplatesForm";
 import {
   createExportTemplate,
@@ -65,6 +69,7 @@ const mapStateToProps = (state: State) => ({
   values: getFormValues(EXPORT_TEMPLATES_FORM_NAME)(state),
   syncErrors: getFormSyncErrors(EXPORT_TEMPLATES_FORM_NAME)(state),
   emailTemplates: state.automation.emailTemplate.emailTemplates,
+  nextLocation: state.nextLocation
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -73,6 +78,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onUpdateInternal: (template: ExportTemplate) => dispatch(updateInternalExportTemplate(template)),
   onDelete: (id: number) => dispatch(removeExportTemplate(id)),
   getExportTemplate: (id: number) => dispatch(getExportTemplate(id)),
+  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
 export default reduxForm({
