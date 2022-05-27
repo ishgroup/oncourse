@@ -295,7 +295,7 @@ const CourseClassBudgetTab = React.memo<Props>(
     const [popoverAnchor, setPopoverAnchor] = React.useState(null);
     const [tutorsMenuOpened, setTutorsMenuOpened] = React.useState(false);
 
-    const classFee = useMemo(() => getClassFeeTotal(values.budget, taxes), [taxes, values.budget]);
+    const classFee = useMemo(() => getClassFeeTotal(values.budget || [], taxes), [taxes, values.budget]);
 
     const classCostTypes = useMemo(
       () =>

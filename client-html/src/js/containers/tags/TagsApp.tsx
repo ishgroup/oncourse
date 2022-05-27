@@ -8,7 +8,7 @@ import { SidebarWithSearch } from "../../common/components/layout/sidebar-with-s
 import { getColumnsWidth, updateColumnsWidth } from "../preferences/actions";
 import { getAllTags } from "./actions";
 import TagSidebar from "./components/TagSidebar";
-import Tags from "./Tags";
+import tagRoutes from "./routes";
 
 const TagsApp = React.memo<any>(
   ({
@@ -33,15 +33,22 @@ const TagsApp = React.memo<any>(
       onSetSwipeableDrawerDirtyForm(dirty || isNew, formName);
     }, [isNew, dirty, formName]);
 
+    useEffect(() => {
+      if (pathname === "/tags") {
+        history.replace("/tags/tagGroups");
+      }
+    }, []);
+
     return (
       <SidebarWithSearch
         leftColumnWidth={tagLeftColumnWidth}
         updateColumnsWidth={updateColumnsWidth}
         onInit={onInit}
         SideBar={TagSidebar}
-        AppFrame={Tags}
+        routes={tagRoutes}
         history={history}
         match={match}
+        noSearch
       />
     );
   }
