@@ -1164,16 +1164,16 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
                 }}
                 error={meta?.invalid}
                 helperText={(
-                  <span className="shakingError">
+                  <div className="shakingError">
                     {!disableErrorText && (meta?.invalid ? meta.error || "Expression is invalid" : "")}
-                  </span>
+                  </div>
                 )}
                 onChange={this.handleInputChange}
                 inputRef={this.setInputNode}
                 onFocus={this.onFocus}
                 onBlur={this.onBlur}
                 label={label}
-                placeholder={placeholder}
+                placeholder={placeholder || "No value"}
               />
             )}
             popupIcon={stubComponent()}

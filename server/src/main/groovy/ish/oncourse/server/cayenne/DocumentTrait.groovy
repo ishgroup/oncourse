@@ -27,6 +27,23 @@ trait DocumentTrait {
         return attachmentRelations.size()
     }
 
+
+    String getAttachedStudentInfo() {
+        def studentRelation = attachmentRelations
+                .find {it ->
+                    it instanceof StudentAttachmentRelation || it instanceof ContactAttachmentRelation && (it as ContactAttachmentRelation).contact.student != null
+                }
+        if (studentRelation == null)
+            return null
+        Student student
+        if (studentRelation instanceof StudentAttachmentRelation)
+            student = (studentRelation as StudentAttachmentRelation).attachedStudent
+        else
+            student = (studentRelation as ContactAttachmentRelation).attachedContact.student
+        return "No.: ${student.studentNumber} | Name: ${student.contact.name}"
+    }
+
+
     /**
      * Returns S3Service as a singleton
      * Uses double checked locking & volatile singleton model

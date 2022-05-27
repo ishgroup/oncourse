@@ -91,8 +91,8 @@ class CollectionRuleFormContainer extends React.Component<Props, any> {
 
   render() {
     const {
- onUpdate, onDelete, onAddNew, collectionRules, collectionForms, match, value, fetch, history
-} = this.props;
+     onUpdate, onDelete, onAddNew, collectionRules, collectionForms, match, value, fetch, history
+    } = this.props;
 
     const item = collectionRules && this.getForm(collectionRules, match);
 

@@ -6,7 +6,7 @@
 import React from "react";
 import { Account, MembershipProduct, Tax } from "@api/model";
 import { connect } from "react-redux";
-import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
+import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
 import { AccessState } from "../../../../common/reducers/accessReducer";
 import { plainCorporatePassPath } from "../../../../constants/Api";
 import { State } from "../../../../reducers/state";

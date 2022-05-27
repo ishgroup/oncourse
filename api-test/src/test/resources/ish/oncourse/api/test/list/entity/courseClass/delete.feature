@@ -63,7 +63,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/courseClass
         "summaryDiscounts":null,
         "enrolmentsToProfitLeftCount":null,
         "successAndQueuedEnrolmentsCount":null,
-        "tags":[{"id":231}],
+        "tags":[231],
         "documents":[{"id":200}],
         "isTraineeship":false
         }
@@ -148,7 +148,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/courseClass
         "summaryDiscounts":null,
         "enrolmentsToProfitLeftCount":null,
         "successAndQueuedEnrolmentsCount":null,
-        "tags":[{"id":231}],
+        "tags":[231],
         "documents":[{"id":200}],
         "isTraineeship":false
         }
@@ -238,7 +238,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/courseClass
         "summaryDiscounts":null,
         "enrolmentsToProfitLeftCount":null,
         "successAndQueuedEnrolmentsCount":null,
-        "tags":[{"id":231}],
+        "tags":[231],
         "documents":[{"id":200}],
         "isTraineeship":false
         }

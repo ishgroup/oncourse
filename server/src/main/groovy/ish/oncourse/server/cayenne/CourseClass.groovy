@@ -1103,7 +1103,8 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	List<Tag> getTags() {
 		List<Tag> tagList = new ArrayList<>(getTaggingRelations().size())
 		for (CourseClassTagRelation relation : getTaggingRelations()) {
-			tagList.add(relation.getTag())
+			if(relation.tag?.nodeType?.equals(NodeType.TAG))
+				tagList.add(relation.getTag())
 		}
 		return tagList
 	}

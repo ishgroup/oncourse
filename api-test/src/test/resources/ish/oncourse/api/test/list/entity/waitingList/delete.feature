@@ -22,7 +22,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/waitingList
         "studentCount":20,
         "contactId":3,
         "courseId":2,
-        "tags":[{"id":221}],
+        "tags":[221],
         "sites":[{"id":200}],
         "customFields":{}
         }
@@ -68,7 +68,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/waitingList
         "studentCount":21,
         "contactId":3,
         "courseId":2,
-        "tags":[{"id":221}],
+        "tags":[221],
         "sites":[{"id":200}],
         "customFields":{}
         }
@@ -119,7 +119,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/waitingList
         "studentCount":22,
         "contactId":3,
         "courseId":2,
-        "tags":[{"id":221}],
+        "tags":[221],
         "sites":[{"id":200}],
         "customFields":{}
         }
