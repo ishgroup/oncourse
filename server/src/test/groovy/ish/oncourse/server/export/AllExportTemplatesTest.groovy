@@ -162,8 +162,10 @@ class AllExportTemplatesTest extends TestWithDatabase {
             param.setExpression(ExpressionFactory.expTrue())
 
             ExportService export = injector.getInstance(ExportService.class)
-
+            Thread thread = new MyThread(keyCode)
+            thread.start()
             ExportResult result = export.export(param, additionalVariables.get(keyCode))
+            thread.setInterrupted(true)
 
             def inputStream = AllExportTemplatesTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/export/output/" + output)
 
@@ -209,5 +211,27 @@ class AllExportTemplatesTest extends TestWithDatabase {
         outputStr = outputStr.replaceAll("T\\d{1,2}:\\d{1,2}:\\d{1,2}(\\+\\d{1,2}:\\d{1,2}|Z)","")
         outputStr = outputStr.replaceAll("\\d{1,2}:\\d{1,2}:\\d{1,2} \\w{3,5} \\d{4}","")
         outputStr.replaceAll(" \\d{1,2}:\\d{1,2}","")
+    }
+
+    class MyThread extends Thread{
+        private final String name
+        private boolean interrupted = false
+        public MyThread(String name){
+            super()
+            this.name = name
+        }
+
+        void setInterrupted(boolean interrupted) {
+            this.interrupted = interrupted
+        }
+
+        public void run(){
+            for(int i = 0;i<1000;i++){
+                sleep(1000)
+                if(interrupted)
+                    return
+            }
+            throw new RuntimeException(name)
+        }
     }
 }
