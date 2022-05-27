@@ -155,7 +155,6 @@ export default (theme: AppTheme) => createStyles({
   listDots: {
     height: "19px",
     margin: 0,
-    display: "flex",
   },
   selected: {},
   resizer: {

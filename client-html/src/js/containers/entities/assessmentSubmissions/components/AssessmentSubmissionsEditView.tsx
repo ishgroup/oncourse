@@ -7,7 +7,7 @@
  */
 
 import React from "react";
-import TabsList from "../../../../common/components/layout/TabsList";
+import TabsList from "../../../../common/components/navigation/TabsList";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import AssessmentSubmissionGeneralTab from "./AssessmentSubmissionGeneralTab";
 import AssessmentSubmissionDocuments from "./AssessmentSubmissionDocument";

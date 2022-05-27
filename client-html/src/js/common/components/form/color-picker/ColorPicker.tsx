@@ -18,12 +18,14 @@ import Paper from "@mui/material/Paper";
 import Grow from "@mui/material/Grow";
 import { WrappedFieldProps } from "redux-form";
 import clsx from "clsx";
-import { stopEventPropagation } from "../../utils/events";
+import { PopperPlacementType } from "@mui/base/PopperUnstyled/PopperUnstyled";
+import { stopEventPropagation } from "../../../utils/events";
 
 interface ColorPickerWrapperProps {
   input?: WrappedFieldProps["input"];
   classes?: any;
   theme?: Theme;
+  placement?: PopperPlacementType;
 }
 
 interface ColorPickerBaseProps extends ColorPickerWrapperProps {
@@ -40,6 +42,7 @@ const styles = createStyles(({
     padding: spacing(2),
     position: "relative",
     bottom: "12px",
+    background: palette.background.paper,
     "&:after": {
       bottom: "0px",
       left: "50%",
@@ -50,6 +53,28 @@ const styles = createStyles(({
       background: palette.background.paper,
       content: "''",
       zIndex: 1
+    },
+    "&:before": {
+      content: "''",
+      bottom: "-6px",
+      left: "50%",
+      width: "12px",
+      height: "12px",
+      position: "absolute",
+      transform: "translateX(-50%) rotate(45deg)",
+      background: palette.background.paper,
+      boxShadow: "1px 1px 2px 0px rgba(0,0,0,0.2), 2px 1px 2px -1px rgba(0,0,0,0.12), 1px 1px 1px 0px rgba(0,0,0,0.12);"
+    }
+  },
+  paperPlaceBottom: {
+    marginTop: spacing(3),
+    "&:after": {
+      bottom: "unset",
+      top: "0px"
+    },
+    "&:before": {
+      bottom: "unset",
+      top: "-6px",
     }
   },
   colorPickerButton: {
@@ -67,16 +92,6 @@ const styles = createStyles(({
   popper: {
     zIndex: zIndex.tooltip
   },
-  corner: {
-    bottom: "6px",
-    left: "50%",
-    width: "12px",
-    height: "12px",
-    position: "absolute",
-    transform: "translateX(-50%) rotate(45deg)",
-    background: palette.background.paper,
-    boxShadow: "1px 1px 2px 0px rgba(0,0,0,0.2), 2px 1px 2px -1px rgba(0,0,0,0.12), 1px 1px 1px 0px rgba(0,0,0,0.12);"
-  },
   bottomOffset: {
     marginBottom: spacing(1.25)
   },
@@ -90,7 +105,7 @@ const styles = createStyles(({
 
 const ColorPickerBase = React.memo<ColorPickerBaseProps>(
   ({
- classes, color, input: { value, onChange }, TransitionProps, setAnchorEl 
+ classes, color, input: { value, onChange }, TransitionProps, setAnchorEl, placement 
 }) => {
     const [hueColor, setHueColor] = useState(color);
     const [alfaColor, setAlfaColor] = useState(color);
@@ -143,7 +158,7 @@ const ColorPickerBase = React.memo<ColorPickerBaseProps>(
       <ClickAwayListener onClickAway={handleClickAway}>
         <Grow {...TransitionProps} timeout={200}>
           <div>
-            <Paper className={classes.paper}>
+            <Paper className={clsx(classes.paper, placement === "bottom" && classes.paperPlaceBottom)}>
               <HuePicker
                 ref={hueRef}
                 color={hueColor}
@@ -160,7 +175,6 @@ const ColorPickerBase = React.memo<ColorPickerBaseProps>(
                 onChangeComplete={onChangeComplete}
               />
             </Paper>
-            <div className={classes.corner} />
           </div>
         </Grow>
       </ClickAwayListener>
@@ -168,7 +182,9 @@ const ColorPickerBase = React.memo<ColorPickerBaseProps>(
   }
 );
 
-const ColorPickerWrapper = React.memo<ColorPickerWrapperProps>(({ classes, theme, input }) => {
+const ColorPickerWrapper = React.memo<ColorPickerWrapperProps>(({
+ classes, theme, input, placement = "top" 
+}) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleClick = useCallback(
@@ -179,11 +195,17 @@ const ColorPickerWrapper = React.memo<ColorPickerWrapperProps>(({ classes, theme
   );
 
   const color = useMemo(() => (input.value ? "#" + input.value : theme.palette.primary.main), [theme, input.value]);
-
+  
   return (
     <div className="d-flex" onClick={stopEventPropagation}>
       <ButtonBase onClick={handleClick} className={clsx(classes.colorPickerButton, anchorEl && classes.opened)} style={{ backgroundColor: color }} />
-      <Popper open={Boolean(anchorEl)} anchorEl={anchorEl} placement="top" className={classes.popper} transition>
+      <Popper
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        placement={placement}
+        className={classes.popper}
+        transition
+      >
         {({ TransitionProps }) => (
           <ColorPickerBase
             classes={classes}
@@ -191,6 +213,7 @@ const ColorPickerWrapper = React.memo<ColorPickerWrapperProps>(({ classes, theme
             input={input}
             TransitionProps={TransitionProps}
             setAnchorEl={setAnchorEl}
+            placement={placement}
           />
         )}
       </Popper>

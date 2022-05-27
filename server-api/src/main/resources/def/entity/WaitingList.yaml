@@ -22,7 +22,8 @@ properties:
   tags:
     type: array
     items:
-      $ref: './Tag.yaml'
+      type: integer
+      format: int64
   sites:
     type: array
     items:

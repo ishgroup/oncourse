@@ -16,7 +16,7 @@ import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import { State } from "../../../../../reducers/state";
 import FormSubmitButton from "../../../form/FormSubmitButton";
-import LoadingIndicator from "../../../layout/LoadingIndicator";
+import LoadingIndicator from "../../../progress/LoadingIndicator";
 import { pushGTMEvent } from "../../../google-tag-manager/actions";
 import { EditViewContainerProps } from "../../../../../model/common/ListView";
 import AppBarHelpMenu from "../../../form/AppBarHelpMenu";

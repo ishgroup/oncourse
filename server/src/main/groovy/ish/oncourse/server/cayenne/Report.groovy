@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.types.NodeType
 import ish.oncourse.API
 import ish.oncourse.server.cayenne.glue._Report
 import ish.oncourse.server.print.AbstractReportDataSource
@@ -277,7 +278,8 @@ class Report extends _Report implements AutomationTrait {
     List<Tag> getTags() {
         List<Tag> tagList = new ArrayList<>(getTaggingRelations().size())
         for (ReportTagRelation relation : getTaggingRelations()) {
-            tagList.add(relation.getTag())
+            if(relation.tag?.nodeType?.equals(NodeType.TAG))
+                tagList.add(relation.getTag())
         }
         return tagList
     }

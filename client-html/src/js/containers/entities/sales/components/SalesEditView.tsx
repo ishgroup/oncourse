@@ -30,6 +30,7 @@ import { useAppSelector } from "../../../../common/utils/hooks";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import { EditViewProps } from "../../../../model/common/ListView";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 interface SalesGeneralViewProps extends EditViewProps<ProductItem> {
 }
@@ -118,13 +119,23 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
             )}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={twoColumn ? 8 : 12}>
         <FormField
           type="tags"
           name="tags"
           tags={tags}
         />
       </Grid>
+
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <EntityChecklists
+          entity={customFieldType}
+          form={form}
+          entityId={values.id}
+          checked={values.tags}
+        />
+      </Grid>
+
       <Grid item {...gridItemProps}>
         <Uneditable
           value={values.purchasedByName}

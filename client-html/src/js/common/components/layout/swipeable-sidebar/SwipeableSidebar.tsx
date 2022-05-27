@@ -422,7 +422,6 @@ const SwipeableSidebar: React.FC<Props> = props => {
           <UserSearch
             getSearchResults={getSearchResults}
             setFocusOnSearchInput={setFocusOnSearchInput}
-            focusOnSearchInput={(focusOnSearchInput || showUserSearch)}
           />
           <div>
             <Collapse in={(focusOnSearchInput && !showUserSearch)}>
@@ -491,7 +490,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
           clsx(
             classes.categoryRoot,
             opened && selected !== null && classes.categoryVisible
-          )
+        )
         }
         >
           {isContactIdSelected ? (
@@ -517,13 +516,15 @@ const SwipeableSidebar: React.FC<Props> = props => {
         />
       )}
 
-      <SendMessageEditView
-        selection={isContactIdSelected ? [String(selected)] : listSelection}
-        filteredCount={isContactIdSelected ? 1 : listFilteredCount}
-        listEntity={isContactIdSelected ? "Contact" : listEntity}
-        listSearchQuery={isContactIdSelected ? {} : listSearchQuery}
-        selectionOnly={isContactIdSelected}
-      />
+      {opened && (
+        <SendMessageEditView
+          selection={isContactIdSelected ? [String(selected)] : listSelection}
+          filteredCount={isContactIdSelected ? 1 : listFilteredCount}
+          listEntity={isContactIdSelected ? "Contact" : listEntity}
+          listSearchQuery={isContactIdSelected ? {} : listSearchQuery}
+          selectionOnly={isContactIdSelected}
+        />
+) }
     </>
 );
 };
