@@ -11,6 +11,8 @@ package ish.oncourse.server.integration
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import java.util.jar.Manifest
+
 class PluginsPrefsService {
     private static final Logger logger = LogManager.getLogger();
 
@@ -40,12 +42,14 @@ class PluginsPrefsService {
         while (resources.hasMoreElements()) {
             try {
                 def url = resources.nextElement()
-                if (url.path.contains("plugins")) {
-                    def pathParts = url.path.split("/")
-                    def jarName = pathParts[pathParts.length - 1]
-                    def pluginVersion = jarName.split("-").last()
-                    def pluginName = jarName.substring(0, jarName.lastIndexOf("-"))
-                    plugins.put(pluginName, pluginVersion)
+                Manifest manifest = new Manifest(url.openStream())
+                def attributes = manifest.getMainAttributes()
+                def specification = attributes.getValue("Specification-Title") as String
+                if(specification && specification.equals("OnCourse plugins")){
+                    def pluginName = attributes.getValue("Implementation-Title")
+                    def pluginVersion = attributes.getValue("Implementation-Version")
+                    if(pluginName)
+                        plugins.put(pluginName, pluginVersion)
                 }
             } catch (IOException e) {
                 logger.error("Error with plugins info loading: " + e.getMessage())
