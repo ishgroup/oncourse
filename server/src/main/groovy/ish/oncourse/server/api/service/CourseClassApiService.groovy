@@ -169,7 +169,6 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         dto.minStudentAge = cc.minStudentAge
         dto.roomId = cc.room?.id
         dto.virtualSiteId = (cc.room?.site?.isVirtual ? cc.room.site.id : null) as Long
-        dto.sessionsCount = cc.sessionsCount
         dto.startDateTime = LocalDateUtils.dateToTimeValue(cc.startDateTime)
         dto.endDateTime =  LocalDateUtils.dateToTimeValue(cc.endDateTime)
         dto.suppressAvetmissExport = cc.suppressAvetmissExport
@@ -204,7 +203,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         dto.inProgressOutcomesCount = outcomes.findAll { it.status == OutcomeStatus.STATUS_NOT_SET }.size()
         dto.withdrawnOutcomesCount = outcomes.findAll { it.status == OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN }.size()
         dto.otherOutcomesCount = dto.allOutcomesCount  - dto.passOutcomesCount - dto.failedOutcomesCount - dto.inProgressOutcomesCount - dto.withdrawnOutcomesCount
-        dto.tags = cc.tags.collect { toRestTagMinimized(it) }
+        dto.tags = cc.allTags.collect { it.id }
         return dto
     }
 
@@ -255,7 +254,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         courseClass.initialDETexport = dto.initialDetExport
         courseClass.midwayDETexport = dto.midwayDetExport
         courseClass.finalDETexport = dto.finalDetExport
-        updateTags(courseClass, courseClass.taggingRelations, dto.tags*.id, CourseClassTagRelation, courseClass.context)
+        updateTags(courseClass, courseClass.taggingRelations, dto.tags, CourseClassTagRelation, courseClass.context)
         DocumentFunctions.updateDocuments(courseClass, courseClass.attachmentRelations, dto.documents, CourseClassAttachmentRelation, context)
         updateCustomFields(courseClass.context, courseClass, dto.customFields, CourseClassCustomField)
         courseClass

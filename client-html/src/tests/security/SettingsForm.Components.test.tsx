@@ -25,9 +25,11 @@ describe("Virtual rendered SecuritySettingsForm", () => {
         [PreferencesModel.SecurityTFAStatus.uniqueKey]: mockedApi.db.preference[PreferencesModel.SecurityTFAStatus.uniqueKey].toString(),
       });
 
-      expect(screen.getByRole(preferencesFormRole)).toHaveFormValues(securityFormData);
-
       fireEvent.click(screen.getByTestId('appbar-submit-button'));
+
+      setTimeout(() => {
+        expect(screen.getByRole(preferencesFormRole)).toHaveFormValues(securityFormData);
+      }, 500);
     }
   });
 });

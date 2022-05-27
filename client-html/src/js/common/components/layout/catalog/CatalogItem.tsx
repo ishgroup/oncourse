@@ -77,7 +77,7 @@ const CatalogItem = (
     <>
       <ListItem
         button
-        className={clsx("p-0", hoverClasses.container)}
+        className={clsx(hideShortDescription ? "pl-0 pr-0" : "p-0", hoverClasses.container)}
         onClick={() => onOpen(id)}
         secondaryAction={<span className={clsx(hoverSecondary && hoverClasses.target)}>{secondaryAction}</span>}
         disabled={disabled}
@@ -101,7 +101,7 @@ const CatalogItem = (
       </ListItem>
       <Divider light />
     </>
-);
+  );
 };
 
 export default CatalogItem;

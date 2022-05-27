@@ -31,7 +31,6 @@ import ish.oncourse.server.cluster.ClusteredExecutorManager;
 import ish.oncourse.server.db.AngelCayenneModule;
 import ish.oncourse.server.integration.EventService;
 import ish.oncourse.server.integration.PluginService;
-import ish.oncourse.server.jmx.RegisterMBean;
 import ish.oncourse.server.lifecycle.ClassPublishListener;
 import ish.oncourse.server.lifecycle.PayslipApprovedListener;
 import ish.oncourse.server.lifecycle.PayslipPaidListener;
@@ -58,8 +57,6 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.utils.ConnectionProvider;
 import org.quartz.utils.DBConnectionManager;
 
-import javax.management.MalformedObjectNameException;
-import javax.management.NotCompliantMBeanException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -196,22 +193,6 @@ public class AngelModule extends ConfigModule {
     @Provides
     AngelServerFactory createAngelServerFactory(ConfigurationFactory configFactory) {
         return configFactory.config(AngelServerFactory.class, configPrefix);
-    }
-
-    @Singleton
-    @Provides
-    RegisterMBean createRegisterMBean(Injector injector) {
-        try {
-            return new RegisterMBean(
-                    injector.getInstance(ICayenneService.class),
-                    injector.getInstance(ISessionManager.class),
-                    injector.getInstance(Key.get(String.class, Names.named(ANGEL_VERSION))),
-                    injector.getInstance(PreferenceController.class));
-        } catch (MalformedObjectNameException | NotCompliantMBeanException e) {
-            logger.catching(e);
-        }
-
-        return null;
     }
 
     @Singleton

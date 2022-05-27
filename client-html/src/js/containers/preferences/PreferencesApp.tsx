@@ -18,22 +18,21 @@ import {
   getTutorRoles,
   updateColumnsWidth
 } from "./actions";
-import AppFrame from "./components/AppFrame";
 import SideBar from "./components/SideBar";
+import preferencesRoutes from "./routes";
 
-const PreferencesApp = React.memo<any>(
-  ({
-     onInit,
-     history,
-     match,
-     updateColumnsWidth,
-     preferenceLeftColumnWidth,
-     location: {
-       pathname
-     },
-    formName,
-    dirty,
-    onSetSwipeableDrawerDirtyForm
+const PreferencesApp = ({
+   onInit,
+   history,
+   match,
+   updateColumnsWidth,
+   preferenceLeftColumnWidth,
+   location: {
+     pathname
+   },
+  formName,
+  dirty,
+  onSetSwipeableDrawerDirtyForm
   }) => {
     const isNew = useMemo(() => {
       const pathArray = pathname.split("/");
@@ -50,13 +49,12 @@ const PreferencesApp = React.memo<any>(
         updateColumnsWidth={updateColumnsWidth}
         onInit={onInit}
         SideBar={SideBar}
-        AppFrame={AppFrame}
+        routes={preferencesRoutes}
         history={history}
         match={match}
       />
     );
-  }
-);
+  };
 
 const getFormName = form => form && Object.keys(form)[0];
 

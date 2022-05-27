@@ -31,13 +31,6 @@ const styles = (theme: AppTheme) =>
       position: "relative",
       paddingRight: theme.spacing(5)
     },
-    header: {
-      cursor: 'pointer',
-      willChange: "color",
-      "&:hover": {
-        color: darken(theme.heading.color as any, 0.4),
-      }
-    },
     expanded: {}
   });
 
@@ -95,8 +88,9 @@ const ExpandableContainer: React.FC<Props> = ({
     [isExpanded, expanded, index]
   );
 
+  const buttonId = `expand-button-${index}`;
   const iconButtonProps = IS_JEST ? {
-    'data-testid': `expand-button-${index}`,
+    'data-testid': buttonId,
   } : {};
 
   return (
@@ -105,7 +99,7 @@ const ExpandableContainer: React.FC<Props> = ({
       <div ref={headerRef}>
         <div className={clsx("centeredFlex", onAdd ? "mb-2" : "mb-3", classes.controls)}>
           <div className="centeredFlex">
-            <div className={clsx("heading", classes.header, isExpanded && classes.expanded)} onClick={toggleExpand}>{header}</div>
+            <div className={clsx("heading headingHover", isExpanded && classes.expanded)} onClick={toggleExpand}>{header}</div>
             {onAdd && (
               <AddButton onClick={onAdd} />
             )}
@@ -114,6 +108,7 @@ const ExpandableContainer: React.FC<Props> = ({
           <IconButton
             onClick={toggleExpand}
             className={clsx(classes.expandButton, isExpanded && classes.expandButtonExpanded)}
+            id={buttonId}
             {...iconButtonProps}
           >
             <ExpandMore />

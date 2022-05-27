@@ -58,7 +58,7 @@ class DocumentFunctions {
             document.name = dbDocument.name
             document.versionId = versionId
             document.added = LocalDateUtils.dateToTimeValue(dbDocument.added)
-            document.tags = dbDocument.tags.collect { toRestTagMinimized(it) }
+            document.tags = dbDocument.allTags.collect { it.id }
 
             DocumentVersion dbVersion = versionId ? dbDocument.versions.find { it.id == versionId } : dbDocument.versions.max{ v1, v2 -> v1.timestamp.compareTo(v2.timestamp)}
             document.thumbnail = dbVersion.thumbnail

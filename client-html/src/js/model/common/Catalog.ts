@@ -19,6 +19,7 @@ export interface CatalogItemType {
   shortDescription?: ReactNode;
   keyCode?: string;
   hideShortDescription?: boolean;
+  hideDot?: boolean;
 }
 
 export interface CatalogData {

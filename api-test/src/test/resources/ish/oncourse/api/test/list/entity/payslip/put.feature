@@ -48,7 +48,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/payslip'
         "tutorFullName":"tutor2, tutor2",
         "publicNotes":"some public notes50_upd",
         "privateNotes":"some private notes50_upd",
-        "tags":[{"id":218}],
+        "tags":[218],
         "paylines":[{"description":"someDescription_upd","value":120.00,"quantity":1}]
         }
         """
@@ -71,7 +71,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/payslip'
         "status":"New",
         "tutorId":5,
         "tutorFullName":"tutor2",
-        "tags":[{"id":218,"name":"ps1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
+        "tags":[218],
         "paylines":[{"id":"#number","dateFor":"#ignore","description":"someDescription_upd","className":null,"type":null,"budgetedQuantity":null,"budgetedValue":null,"quantity":1.0000,"value":120.00}],
         }
         """
