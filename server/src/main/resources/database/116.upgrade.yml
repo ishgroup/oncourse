@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 115-1
+      id: 116-1
       author: ntimofeev
       preConditions:
         - onFail: MARK_RAN
