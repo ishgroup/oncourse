@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import PlayArrow from "@mui/icons-material/PlayArrow";
@@ -34,6 +37,7 @@ import { formatRelativeDate } from "../../../../../common/utils/dates/formatRela
 import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL } from "../../../../../common/utils/dates/format";
 import ExecuteImportModal from "../components/ExecuteImportModal";
 import { State } from "../../../../../reducers/state";
+import { setNextLocation } from "../../../../../common/actions";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
 import InfoPill from "../../../../../common/components/layout/InfoPill";
@@ -335,5 +339,9 @@ const mapStateToProps = (state: State) => ({
   nextLocation: state.nextLocation
 });
 
-export default connect<any, any, any>(mapStateToProps)((props:Props) => (props.values
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+});
+
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)((props:Props) => (props.values
   ? <ImportTemplatesForm {...props} /> : null));
