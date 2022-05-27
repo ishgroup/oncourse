@@ -128,19 +128,17 @@ class AllExportTemplatesTest extends TestWithDatabase {
             resourcesList.addAll(sources as List<Map<String, Object>>)
 
             for (Map<String, Object> props : resourcesList) {
-                if(counter % 2 == 0){
-                    DataPopulationUtils.updateExport(cayenneContext, props)
-                    String keyCode = (String) props.get(ResourceProperty.KEY_CODE.getDisplayName())
-                    String entityName = ((String) props.get(ResourceProperty.ENTITY_CLASS.getDisplayName()))
-                    String outputExtention = keyCode.split("\\.").last()
-                    String dataSet = keyCode.split("\\.")[2] + "DataSet.xml"
-                    String output = keyCode.split("\\.")[2] + "SampleOutput." + outputExtention
+                DataPopulationUtils.updateExport(cayenneContext, props)
+                String keyCode = (String) props.get(ResourceProperty.KEY_CODE.getDisplayName())
+                String entityName = ((String) props.get(ResourceProperty.ENTITY_CLASS.getDisplayName()))
+                String outputExtention = keyCode.split("\\.").last()
+                String dataSet = keyCode.split("\\.")[2] + "DataSet.xml"
+                String output = keyCode.split("\\.")[2] + "SampleOutput." + outputExtention
 
-                    def temp = System.currentTimeMillis()
-                    testExport(keyCode, entityName, dataSet, output)
-                    def now = System.currentTimeMillis()
-                    logger.warn("TIME: "+(now-temp))
-                }
+                def temp = System.currentTimeMillis()
+                testExport(keyCode, entityName, dataSet, output)
+                def now = System.currentTimeMillis()
+                logger.warn("TIME: " + (now - temp))
 
                 counter++
             }
@@ -150,7 +148,7 @@ class AllExportTemplatesTest extends TestWithDatabase {
 
 
     void testExport(String keyCode, String entityName, String dataSet, String output) throws Exception {
-        logger.warn("Testing: "+keyCode+" "+dataSet+" "+output)
+        logger.warn("Testing: " + keyCode + " " + dataSet + " " + output)
         setup(dataSet)
 
         // exclude exports for Script entity - IshTestCase updates scripts from resources after table wipe
@@ -205,9 +203,9 @@ class AllExportTemplatesTest extends TestWithDatabase {
      * @param outputStr
      * @return
      */
-    private static String removeTimezonesFrom(String outputStr){
-        outputStr = outputStr.replaceAll("T\\d{1,2}:\\d{1,2}:\\d{1,2}(\\+\\d{1,2}:\\d{1,2}|Z)","")
-        outputStr = outputStr.replaceAll("\\d{1,2}:\\d{1,2}:\\d{1,2} \\w{3,5} \\d{4}","")
-        outputStr.replaceAll(" \\d{1,2}:\\d{1,2}","")
+    private static String removeTimezonesFrom(String outputStr) {
+        outputStr = outputStr.replaceAll("T\\d{1,2}:\\d{1,2}:\\d{1,2}(\\+\\d{1,2}:\\d{1,2}|Z)", "")
+        outputStr = outputStr.replaceAll("\\d{1,2}:\\d{1,2}:\\d{1,2} \\w{3,5} \\d{4}", "")
+        outputStr.replaceAll(" \\d{1,2}:\\d{1,2}", "")
     }
 }
