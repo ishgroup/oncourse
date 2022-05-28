@@ -90,11 +90,11 @@ const AvatarRenderer: React.FC<any> = props => {
   }, []);
 
   const upload = useCallback(() => {
-    fileRef.current.click();
+    fileRef?.current?.click();
   }, []);
 
   const handleFileSelect = () => {
-    const file = fileRef.current.files[0];
+    const file = fileRef?.current?.files[0];
 
     if (file) {
       const error = validateImageFormat(file);
