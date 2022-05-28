@@ -324,7 +324,8 @@ export function listApiMock() {
 
       case "SystemUser": {
         return promiseResolve(config, this.db.getPlainSystemUser(config.params));
-        
+      }
+
       case "Tag": {
         return promiseResolve(config, this.db.getPlainTags(config.params));
       }
