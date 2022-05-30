@@ -18,7 +18,7 @@ export function mockUserPreferences(): mockedUserPreferencesDB {
   };
 
   return {
-    "html.dashboard.category.width": 300,
+    "html.dashboard.category.width": 558,
     "html.global.theme": "default",
     "google.analytics.cid": "dbcbdffcb3b601c2bdeb1391a5015499",
     "google.analytics.ci": "63 083 009 205",

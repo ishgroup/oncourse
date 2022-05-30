@@ -95,6 +95,7 @@ import { mockCheckout } from "./data/checkout";
 import { mockGradingTypes } from "./data/preference/grading";
 import { mockSecurityRoles } from "./data/security/roles";
 import { mockSecurityUsers } from "./data/security/users";
+import { mockSystemUser } from "./data/systemUsers";
 
 export class MockDB {
   integrations: any;
@@ -243,6 +244,8 @@ export class MockDB {
 
   securityUsers: any;
 
+  systemUsers: any;
+
   constructor() {
     this.init();
   }
@@ -351,6 +354,8 @@ export class MockDB {
     // Secutiry
     this.securityRoles = mockSecurityRoles.call(this);
     this.securityUsers = mockSecurityUsers.call(this);
+
+    this.systemUsers = mockSystemUser.call(this);
   }
 
   getList(entity: string) {

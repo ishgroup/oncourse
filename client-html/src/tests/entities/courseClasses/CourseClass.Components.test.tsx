@@ -15,7 +15,7 @@ describe("Virtual rendered CourseClassEditView", () => {
       notes: [],
       assessments: mockedApi.db.getCourseClassAssessment(1),
     }),
-    state: mockedApi => ({
+    state: ({ mockedApi }) => ({
       taxes: { items: mockedApi.db.getPlainTaxesFormatted() },
       export: { contracts: mockedApi.db.getAvetmissExportPlainListFormatted() },
     }),

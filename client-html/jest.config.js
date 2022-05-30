@@ -11,7 +11,8 @@ module.exports = {
     },
   },
   setupFiles: [
-    "<rootDir>/src/tests/tests.setup.ts"
+    "<rootDir>/src/tests/tests.setup.ts",
+    "jest-canvas-mock"
   ],
   transform: {
     ".+\\.(css|styl|less|sass|scss|png|jpg|gif|svg|ttf|woff|woff2)$": "jest-transform-stub",
@@ -33,4 +34,5 @@ module.exports = {
     "ace-builds": "<rootDir>/node_modules/ace-builds",
     "\\.css$|@ckeditor": "<rootDir>/src/dev/mock/importMock.ts",
   },
+  testTimeout: 30000
 };
