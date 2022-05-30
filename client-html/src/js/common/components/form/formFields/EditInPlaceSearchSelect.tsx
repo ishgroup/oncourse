@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import CircularProgress from "@mui/material/CircularProgress";
@@ -538,52 +541,52 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
         </SelectContext.Provider>
       </div>
       {formatting === "inline" && (
-      <div
-        className={clsx({
+        <div
+          className={clsx({
           "d-none": !inHeader || (inHeader && (inline || isEditing || (meta && meta.invalid)))
         })}
-      >
-        <div className="mw-100 text-truncate">
-          {!hideLabel && label && (
-          <Typography
-            variant="caption"
-            color="textSecondary"
-            style={colors ? { color: `${colors.subheader}` } : {}}
-            noWrap
-          >
-            {label}
-            {' '}
-            {labelAdornment && <span>{labelAdornment}</span>}
-          </Typography>
+        >
+          <div className="mw-100 text-truncate">
+            {!hideLabel && label && (
+              <Typography
+                variant="caption"
+                color="textSecondary"
+                style={colors ? { color: `${colors.subheader}` } : {}}
+                noWrap
+              >
+                {label}
+                {' '}
+                {labelAdornment && <span>{labelAdornment}</span>}
+              </Typography>
           )}
 
-          <ListItemText
-            classes={{
+            <ListItemText
+              classes={{
               root: "pl-0 mb-0 mt-0",
               primary: clsx("d-flex", formatting === "inline" && classes.inline)
-            }}
-            primary={(
-              <>
-                <ButtonBase
-                  onFocus={onEditButtonFocus}
-                  className={clsx(classes.editable, fieldClasses.text, "overflow-hidden d-flex hoverIconContainer", {
+              }}
+              primary={(
+                <>
+                  <ButtonBase
+                    onFocus={onEditButtonFocus}
+                    className={clsx(classes.editable, fieldClasses.text, "overflow-hidden d-flex hoverIconContainer", {
                     [classes.readonly]: disabled
                   })}
-                  component="div"
-                >
-                  <span className={clsx("text-truncate", fieldClasses.text)}>
-                    {displayedValue}
-                  </span>
-                  {!disabled && (
-                  <ExpandMore className={clsx("hoverIcon", classes.editIcon, fieldClasses.editIcon)} />
+                    component="div"
+                  >
+                    <span className={clsx("text-truncate", fieldClasses.text)}>
+                      {displayedValue}
+                    </span>
+                    {!disabled && (
+                      <ExpandMore className={clsx("hoverIcon", classes.editIcon, fieldClasses.editIcon)} />
                   )}
-                </ButtonBase>
-                {endAdornment}
-              </>
-            )}
-          />
+                  </ButtonBase>
+                  {endAdornment}
+                </>
+              )}
+            />
+          </div>
         </div>
-      </div>
     )}
     </div>
   );
