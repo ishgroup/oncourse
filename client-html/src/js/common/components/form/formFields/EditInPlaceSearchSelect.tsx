@@ -110,6 +110,7 @@ interface Props extends WrappedFieldProps {
   sortPropKey?: string;
   inHeader?: boolean;
   hasError?: boolean;
+  inputRef?: any;
 }
 
 const SelectContext = React.createContext<any>({});
@@ -121,6 +122,7 @@ const ListBoxAdapter = React.forwardRef<any, any>(({ children, ...other }, ref) 
     loadMoreRows,
     classes,
     fieldClasses = {},
+    loading
   } = useContext(SelectContext);
 
   return (
@@ -130,6 +132,7 @@ const ListBoxAdapter = React.forwardRef<any, any>(({ children, ...other }, ref) 
       loadMoreRows={loadMoreRows}
       classes={classes}
       fieldClasses={fieldClasses}
+      loading={loading}
       ref={ref}
       {...other}
     >
@@ -195,7 +198,8 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     sort,
     sortPropKey,
     inHeader,
-    hasError
+    hasError,
+                                                                        inputRef
   }) => {
   const sortedItems = useMemo(() => items && (sort
     ? [...items].sort(typeof sort === "function"
@@ -449,7 +453,8 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
           fieldClasses,
           inline,
           items,
-          popperAnchor
+          popperAnchor,
+          loading
         }}
         >
           <Autocomplete
@@ -495,7 +500,12 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                   onFocus={onFocus}
                   onBlur={onBlur}
                   onClick={onEditButtonFocus}
-                  inputRef={inputNode}
+                  inputRef={rf => {
+                    inputNode.current = rf;
+                    if (inputRef) {
+                      inputRef.current = rf;
+                    }
+                  }}
                   disableUnderline={inline}
                   classes={{
                     underline: fieldClasses.underline,

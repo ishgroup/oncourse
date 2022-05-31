@@ -8,7 +8,7 @@
 
 import { Course } from "@api/model";
 import React, {
- useCallback, useEffect, useMemo, useState
+  useCallback, useEffect, useMemo, useRef, useState
 } from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
@@ -133,7 +133,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
     selectedLineEnrolments,
     getInvoiceLineEnrolments,
     clearInvoiceLineEnrolments,
-    incomeAndCosAccounts,
+    accountTypes,
     courseClasses,
     selectedContact,
     type
@@ -141,8 +141,9 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
 
   const [postDiscounts, setPostDiscounts] = useState(false);
   const [useAllAccounts, setUseAllAccounts] = useState(false);
-
   const [courseClassEnrolments, setCourseClassEnrolments] = useState([]);
+
+  const accountRef = useRef<any>();
 
   const prevCourseClassId = usePrevious(row.courseClassId);
   
@@ -206,11 +207,11 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
     [row.taxEach, row.quantity]
   );
 
-  const incomeAccountOptions = useMemo(() => incomeAndCosAccounts[0]?.concat({
+  const incomeAccountOptions = useMemo(() => accountTypes.income?.concat({
     id: USE_ALL_ACCOUNTS_FLAG,
     description: "Other...",
     accountCode: ""
-  }) || [], [incomeAndCosAccounts]);
+  }) || [], [accountTypes]);
 
   const courseLinkHandler = useCallback(() => {
     openCourseLink(row.courseId);
@@ -311,6 +312,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
     if (v === USE_ALL_ACCOUNTS_FLAG) {
       setTimeout(() => {
         dispatch(change(form, `${item}.incomeAccountId`, null));
+        accountRef.current.focus();
       }, 300);
       setUseAllAccounts(true);
       return;
@@ -321,7 +323,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
       : accountLabelCondition(incomeAccountOptions.find(a => a.id === v))));
 
     if (selectedContact && selectedContact["taxOverride.id"]) return;
-    const selectedAccount = incomeAndCosAccounts[0].find(item => item.id === v);
+    const selectedAccount = accountTypes.income.find(item => item.id === v);
     const selectedAccountTaxId = selectedAccount && selectedAccount["tax.id"];
 
     selectedAccountTaxId && dispatch(change(form, `${item}.taxId`, Number(selectedAccountTaxId)));
@@ -388,36 +390,20 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 12}>
-        {useAllAccounts ? (
-          <FormField
-            type="remoteDataSearchSelect"
-            entity="Account"
-            aqlFilter="isEnabled is true"
-            aqlColumns="accountCode,description"
-            name={`${item}.incomeAccountId`}
-            label="Income account"
-            disabled={type !== "Quote" && !isNew}
-            defaultDisplayValue={row.incomeAccountName}
-            selectValueMark="id"
-            selectLabelCondition={accountLabelCondition}
-            onChange={onIncomeAccountChange}
-            required
-          />
-        ) : (
-          <FormField
-            type="searchSelect"
-            name={`${item}.incomeAccountId`}
-            label="Income account"
-            disabled={type !== "Quote" && !isNew}
-            items={incomeAccountOptions}
-            defaultDisplayValue={row.incomeAccountName}
-            selectValueMark="id"
-            selectLabelCondition={accountLabelCondition}
-            autoWidth={false}
-            onChange={onIncomeAccountChange}
-            required
-          />
-        )}
+        <FormField
+          type="searchSelect"
+          name={`${item}.incomeAccountId`}
+          label="Income account"
+          disabled={type !== "Quote" && !isNew}
+          items={useAllAccounts ? accountTypes.all : incomeAccountOptions}
+          defaultDisplayValue={row.incomeAccountName}
+          selectValueMark="id"
+          selectLabelCondition={accountLabelCondition}
+          autoWidth={false}
+          onChange={onIncomeAccountChange}
+          inputRef={accountRef}
+          required
+        />
       </Grid>
 
       <Grid item xs={twoColumn ? 8 : 12}>
