@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import clsx from "clsx";
@@ -18,7 +21,7 @@ import { Dispatch } from "redux";
 import { initialize } from "redux-form";
 import { Typography } from "@mui/material";
 import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
-import { decimalMul } from "../../../../common/utils/numbers/decimalCalculation";
+import { decimalMinus, decimalMul, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { StringArgFunction } from "../../../../model/common/CommonFunctions";
 import { getRoundingByType } from "../../discounts/utils";
 import { getCurrentTax } from "../../taxes/utils";
@@ -50,6 +53,7 @@ import { appendTimezone } from "../../../../common/utils/dates/formatTimezone";
 import { discountsSort } from "./budget/utils";
 import { makeAppStyles } from "../../../../common/styles/makeStyles";
 import { getTutorPayInitial } from "./tutors/utils";
+import { getClassCostTypes } from "../utils";
 
 const itemsBase: TabsListItem[] = [
   {
@@ -487,6 +491,59 @@ const CourseClassEditView: React.FC<Props> = ({
     [tutorRoles, twoColumn, values.taxId, values.id, expandedBudget]
   );
 
+
+  const classCostTypes = useMemo(
+    () =>
+      getClassCostTypes(
+        values.budget,
+        values.maximumPlaces,
+        values.budgetedPlaces,
+        values.successAndQueuedEnrolmentsCount,
+        values.sessions,
+        values.tutors,
+        tutorRoles,
+      ),
+    [
+      values.budget,
+      values.maximumPlaces,
+      values.budgetedPlaces,
+      values.successAndQueuedEnrolmentsCount,
+      values.sessions,
+      values.tutors,
+      tutorRoles
+    ]
+  );
+
+  const netValues = useMemo(() => {
+    const max = decimalMinus(
+      decimalPlus(classCostTypes.customInvoices.max, classCostTypes.income.max),
+      classCostTypes.discount.max
+    );
+
+    const projected = decimalMinus(
+      decimalPlus(classCostTypes.customInvoices.projected, classCostTypes.income.projected),
+      classCostTypes.discount.projected
+    );
+
+    const actual = decimalMinus(
+      decimalPlus(classCostTypes.customInvoices.actual, classCostTypes.income.actual),
+      classCostTypes.discount.actual
+    );
+
+    return {
+      income: {
+        max,
+        projected,
+        actual
+      },
+      profit: {
+        max: decimalMinus(max, classCostTypes.cost.max),
+        projected: decimalMinus(projected, classCostTypes.cost.projected),
+        actual: decimalMinus(actual, classCostTypes.cost.actual)
+      }
+    };
+  }, [classCostTypes]);
+
   return (
     <TabsList
       items={items}
@@ -515,7 +572,9 @@ const CourseClassEditView: React.FC<Props> = ({
         expandedBudget,
         expandBudgetItem,
         addTutorWage,
-        currentTax
+        currentTax,
+        classCostTypes,
+        netValues
       }}
     />
   );
