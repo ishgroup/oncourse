@@ -1,3 +1,11 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 import * as React from "react";
 import { connect } from "react-redux";
 import { withStyles } from "@mui/styles";
@@ -78,7 +86,7 @@ class Licences extends React.Component<any, any> {
             <List
               className="mt-1"
               subheader={(
-                <ListSubheader disableSticky className="heading">
+                <ListSubheader disableSticky className="heading mb-2">
                   Inactive Features
                   <a href="http://www.ish.com.au/oncourse/signup" target="_blank" className="link" rel="noreferrer">
                     <Button
@@ -101,7 +109,7 @@ class Licences extends React.Component<any, any> {
               <List
                 className="mt-1"
                 subheader={(
-                  <ListSubheader disableSticky className="heading pl-0">
+                  <ListSubheader disableSticky className="heading pl-0 mb-2">
                     Enabled Plugins
                   </ListSubheader>
                 )}
