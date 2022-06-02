@@ -173,7 +173,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
         enrolment.studentLoanStatus = dto.studentLoanStatus.getDbType()
 
         updateSubmissions(submissionApiService, this, dto.submissions, enrolment.assessmentSubmissions, context)
-        TagFunctions.updateTags(enrolment, enrolment.taggingRelations, dto.tags, EnrolmentTagRelation, context)
+        TagFunctions.updateTags(enrolment, enrolment.taggingRelations, dto.tags, EnrolmentTagRelation, context, cayenneService.newNonReplicatingContext)
         DocumentFunctions.updateDocuments(enrolment, enrolment.attachmentRelations, dto.documents, EnrolmentAttachmentRelation, context)
         CustomFieldFunctions.updateCustomFields(context, enrolment, dto.customFields, EnrolmentCustomField)
         return enrolment

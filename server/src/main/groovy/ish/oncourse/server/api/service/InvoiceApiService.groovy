@@ -200,7 +200,7 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
         if (abstractInvoice instanceof Invoice) {
             updateInvoiceDueDates(abstractInvoice as Invoice, invoiceDTO.paymentPlans)
         }
-        updateTags(abstractInvoice, abstractInvoice.taggingRelations, invoiceDTO.tags, AbstractInvoiceTagRelation.class, abstractInvoice.context)
+        updateTags(abstractInvoice, abstractInvoice.taggingRelations, invoiceDTO.tags, AbstractInvoiceTagRelation.class, abstractInvoice.context,cayenneService.newNonReplicatingContext)
         abstractInvoice
     }
 

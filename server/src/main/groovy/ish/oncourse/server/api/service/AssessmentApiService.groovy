@@ -76,7 +76,7 @@ class AssessmentApiService extends TaggableApiService<AssessmentDTO, Assessment,
                 gradingApiService.getEntityAndValidateExistence(cayenneModel.context, restModel.gradingTypeId) :
                 null as GradingType
 
-        updateTags(cayenneModel, cayenneModel.taggingRelations, restModel.tags, AssessmentTagRelation, cayenneModel.context)
+        updateTags(cayenneModel, cayenneModel.taggingRelations, restModel.tags, AssessmentTagRelation, cayenneModel.context,cayenneService.newNonReplicatingContext)
         updateDocuments(cayenneModel, cayenneModel.attachmentRelations, restModel.documents, AssessmentAttachmentRelation, cayenneModel.context)
 
         cayenneModel

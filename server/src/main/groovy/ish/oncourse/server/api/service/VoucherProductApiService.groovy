@@ -158,7 +158,7 @@ class VoucherProductApiService extends TaggableApiService<VoucherProductDTO, Vou
                 null as FieldConfigurationScheme
         updateCorporatePassesByIds(voucherProduct, voucherProductDTO.corporatePasses*.id.findAll(), corporatePassProductDao, corporatePassDao)
         updateDocuments(voucherProduct, voucherProduct.attachmentRelations, voucherProductDTO.documents, VoucherProductAttachmentRelation, context)
-        updateTags(voucherProduct, voucherProduct.taggingRelations, voucherProductDTO.tags, VoucherProductTagRelation, context)
+        updateTags(voucherProduct, voucherProduct.taggingRelations, voucherProductDTO.tags, VoucherProductTagRelation, context, cayenneService.newNonReplicatingContext)
         updateCustomFields(voucherProduct.context, voucherProduct, voucherProductDTO.customFields, voucherProduct.customFieldClass)
         updateCourses(voucherProduct, voucherProductDTO.courses)
         if (voucherProduct.newRecord) {

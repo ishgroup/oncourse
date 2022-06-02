@@ -21,6 +21,7 @@ import ish.common.types.TypesUtil
 import ish.math.Money
 import ish.oncourse.cayenne.Taggable
 import ish.oncourse.cayenne.TaggableClasses
+import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.AccountDao
 import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.dao.ProductItemDAO
@@ -241,7 +242,7 @@ class ProductItemApiService extends TaggableApiService<ProductItemDTO, ProductIt
             case ProductTypeDTO.VOUCHER:
                 updateCustomFields(productItem.context, productItem as ExpandableTrait, productItemDTO.customFields, (productItem as ExpandableTrait).customFieldClass)
                 updateDocuments(productItem as AttachableTrait, (productItem as AttachableTrait).attachmentRelations, productItemDTO.documents, (productItem as AttachableTrait).relationClass, productItem.context)
-                updateTags(productItem as Taggable, productItem.taggingRelations, productItemDTO.tags, productItem.tagRelationClass, productItem.context)
+                updateTags(productItem as Taggable, productItem.taggingRelations, productItemDTO.tags, productItem.tagRelationClass, productItem.context, cayenneService.newNonReplicatingContext)
                 break
         }
         if (productItem.status == ProductStatus.ACTIVE) {

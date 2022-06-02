@@ -180,7 +180,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         course.isSufficientForQualification = courseDTO.isSufficientForQualification
         course.isVET = courseDTO.isVET
 
-        updateTags(course, course.taggingRelations, courseDTO.tags, CourseTagRelation, course.context)
+        updateTags(course, course.taggingRelations, courseDTO.tags, CourseTagRelation, course.context, cayenneService.newNonReplicatingContext)
         updateDocuments(course, course.attachmentRelations, courseDTO.documents, CourseAttachmentRelation, course.context)
         updateModules(course, courseDTO.modules)
         course.reportableHours = courseDTO.reportableHours
