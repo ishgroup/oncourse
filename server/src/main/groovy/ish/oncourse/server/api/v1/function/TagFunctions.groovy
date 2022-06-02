@@ -428,11 +428,27 @@ class TagFunctions {
     }
 
 
-    static void updateTags(Taggable relatedObject, List<? extends TagRelation> tagRelations, List<Long> tags, Class<? extends TagRelation> relationClass, ObjectContext context) {
+    static void removeTagRelations(Collection<? extends TagRelation>tagRelations, ObjectContext context, ObjectContext nonReplContext){
+        if(tagRelations != null){
+            def nonReplicateRelations = tagRelations.findAll {it.tag.nodeType == NodeType.CHECKLIST}
+            def checklistsRels = ObjectSelect.query(TagRelation)
+                    .where(TagRelation.ID.in(nonReplicateRelations*.id.collect()))
+                    .select(nonReplContext)
+            nonReplContext.deleteObjects(checklistsRels)
+            nonReplContext.commitChanges()
+            context.deleteObjects(tagRelations.findAll {it.tag.nodeType != NodeType.CHECKLIST})
+            context.commitChanges()
+        }
+    }
+
+
+    static void updateTags(Taggable relatedObject, List<? extends TagRelation> tagRelations, List<Long> tags,
+                           Class<? extends TagRelation> relationClass, ObjectContext context, ObjectContext nonReplContext) {
 
         Map<Boolean, List<TagRelation>> map = (tagRelations.groupBy { tags.contains(it.tag.id) } as Map<Boolean, List<TagRelation>>)
 
-        map[Boolean.FALSE]?.each { context.deleteObjects(it) }
+        def relationsToDelete = map[Boolean.FALSE]
+        removeTagRelations(relationsToDelete, context, nonReplContext)
 
         List<Long> tagsToSkip = map[true] ? map[true]*.tag.id : []
 

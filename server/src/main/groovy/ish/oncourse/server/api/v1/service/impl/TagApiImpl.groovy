@@ -18,6 +18,7 @@ import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.function.CayenneFunctions
 import ish.oncourse.server.api.v1.model.TagDTO
+import ish.oncourse.server.api.v1.model.TagTypeDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.TagApi
 import ish.oncourse.server.cayenne.Tag
@@ -139,13 +140,23 @@ class TagApiImpl implements TagApi {
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
         }
 
-        context.deleteObjects(dbTag)
-        context.commitChanges()
+        if(dbTag.nodeType == NodeType.CHECKLIST){
+            // we cannot check during replication if we need to replicate relation/requirement
+            // because related tag is already null due to cascade deleting. So, if we delete checklists,
+            // we remove it and all its relations from replication manually
+            def nonReplContext = cayenneService.newNonReplicatingContext
+            def nonReplTag = CayenneFunctions.getRecordById(nonReplContext, Tag, id)
+            nonReplContext.deleteObjects(nonReplTag)
+            nonReplContext.commitChanges()
+        } else {
+            context.deleteObjects(dbTag)
+            context.commitChanges()
+        }
     }
 
     @Override
     void update(Long id, TagDTO tag) {
-        ObjectContext context = cayenneService.newContext
+        ObjectContext context = tag.type == TagTypeDTO.CHECKLIST ? cayenneService.newNonReplicatingContext : cayenneService.newContext
 
         Tag dbTag = CayenneFunctions
                 .getRecordById(context, Tag, id, tagGroupPrefetch)

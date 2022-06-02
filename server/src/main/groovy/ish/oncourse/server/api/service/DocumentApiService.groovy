@@ -44,7 +44,8 @@ class DocumentApiService extends TaggableApiService<DocumentDTO, Document, Docum
         cayenneModel.description = trimToNull(restModel.description)
         cayenneModel.webVisibility = restModel.access.dbType
 
-        updateTags(cayenneModel, cayenneModel.taggingRelations, restModel.tags, DocumentTagRelation, cayenneModel.context)
+        updateTags(cayenneModel, cayenneModel.taggingRelations, restModel.tags, DocumentTagRelation,
+                cayenneModel.context, cayenneService.newNonReplicatingContext)
         cayenneModel
     }
 
