@@ -840,7 +840,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
         {
           cancelButtonText: "DISCARD CHANGES",
           confirmCustomComponent: confirmButton,
-          onCancel: props.onConfirm
+          onCancelCustom: props.onConfirm
         },
       );
     } else {

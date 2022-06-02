@@ -39,15 +39,15 @@ class MYOBBaseForm extends React.Component<any, any> {
 
     if (search && !hideConfig) {
       const params = new URLSearchParams(search);
-      const values = JSON.parse(params.get("values"));
+      const values = JSON.parse(JSON.stringify(params.get("values")));
 
-      if (!values) return;
+      if (!values || typeof values !== "object") return;
 
       const url = values.url;
       const file = values.file;
       const owner = values.owner;
       const password = values.password;
-      const name = values.name;
+      const fName = values.name;
       const code = params.get("code");
 
       this.updateValue('url', "myobBaseUrl", url);
@@ -55,7 +55,7 @@ class MYOBBaseForm extends React.Component<any, any> {
       this.updateValue('file', "myobFileName", file);
 
       this.props.dispatch(change("MYOBForm", "fields.myobPassword", password));
-      this.props.dispatch(change("MYOBForm", "name", name));
+      this.props.dispatch(change("MYOBForm", "name", fName));
       params.delete('values');
 
       if (code) {

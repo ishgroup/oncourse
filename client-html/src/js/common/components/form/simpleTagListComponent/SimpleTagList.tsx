@@ -26,6 +26,7 @@ import getCaretCoordinates from "../../../utils/getCaretCoordinates";
 import { getMenuTags } from "../../list-view/utils/listFiltersUtils";
 import { selectStyles } from "../formFields/SelectCustomComponents";
 import AddTagMenu from "./AddTagMenu";
+import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 
 const styles = theme =>
   createStyles({
@@ -144,7 +145,7 @@ const endTagRegex = /#\s*[^\w\d]*$/;
 const getCurrentInputString = (input, formTagIds: number[] = [], allMenuTags: MenuTag[] = []) => {
   let substr = input;
 
-  formTagIds.forEach(id => {
+  formTagIds?.forEach(id => {
     const tag = allMenuTags.find(t => t.tagBody.id === id);
     if (tag) {
       substr = substr.replace("#" + tag.tagBody.name, "").trim();
@@ -471,7 +472,7 @@ const SimpleTagList: React.FC<Props> = props => {
                     <Edit color="primary" />
                   </InputAdornment>
                 )}
-                multiline
+                multiline={!IS_JEST}
               />
               <FormHelperText
                 classes={{

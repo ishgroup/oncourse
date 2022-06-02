@@ -164,7 +164,7 @@ class BankingEditView extends React.PureComponent<any, any> {
     const shortCurrencySymbol = currency != null ? currency.shortCurrencySymbol : "$";
     if (!values || !values.payments) {
       return (
-        <Typography variant="body1" className="placeholderContent">
+        <Typography component="span" variant="body1" className="placeholderContent">
           No value
         </Typography>
       );
@@ -174,7 +174,7 @@ class BankingEditView extends React.PureComponent<any, any> {
       new Decimal(0)
     );
     return (
-      <Typography variant="body1" className="money">
+      <Typography component="span" variant="body1" className="money">
         {formatCurrency(total, shortCurrencySymbol)}
       </Typography>
     );

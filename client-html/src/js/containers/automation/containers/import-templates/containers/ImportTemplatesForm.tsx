@@ -1,13 +1,20 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import PlayArrow from "@mui/icons-material/PlayArrow";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+ useCallback, useEffect, useMemo, useState 
+} from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
+import {
+ FieldArray, Form, initialize, InjectedFormProps 
+} from "redux-form";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import FileCopy from "@mui/icons-material/FileCopy";
 import Grid from "@mui/material/Grid";
@@ -49,14 +56,13 @@ interface Props extends InjectedFormProps {
   onUpdate: (template: ImportModel) => void;
   onDelete: NumberArgFunction;
   nextLocation?: string,
-  setNextLocation?: (nextLocation: string) => void,
   emailTemplates?: CatalogItemType[]
 }
 
 const ImportTemplatesForm = React.memo<Props>(
   ({
     dirty, form, handleSubmit, isNew, invalid, values, dispatch, syncErrors, emailTemplates,
-     onCreate, onUpdate, onUpdateInternal, onDelete, nextLocation, history, setNextLocation
+     onCreate, onUpdate, onUpdateInternal, onDelete
   }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
     const [modalOpened, setModalOpened] = useState<boolean>(false);
@@ -117,13 +123,6 @@ const ImportTemplatesForm = React.memo<Props>(
       }
     }, [values.id, prevId, disableRouteConfirm]);
 
-    useEffect(() => {
-      if (!dirty && nextLocation) {
-        history.push(nextLocation);
-        setNextLocation('');
-      }
-    }, [nextLocation, dirty]);
-
     const handleRun = () => {
       setImportIdSelected(values.id);
       setExecMenuOpened(true);
@@ -142,8 +141,7 @@ const ImportTemplatesForm = React.memo<Props>(
         />
 
         <Form onSubmit={handleSubmit(handleSave)}>
-          {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
-
+          {!disableRouteConfirm && <RouteChangeConfirm form={form} when={dirty || isNew} />}
           <AppBarContainer
             values={values}
             manualUrl={manualUrl}
@@ -271,7 +269,7 @@ const ImportTemplatesForm = React.memo<Props>(
                     name="status"
                     color="primary"
                     format={v => v === "Enabled"}
-                    parse={v => v ? "Enabled" : "Installed but Disabled"}
+                    parse={v => (v ? "Enabled" : "Installed but Disabled")}
                   />
                 </div>
                 <div className="mt-3 pt-1">

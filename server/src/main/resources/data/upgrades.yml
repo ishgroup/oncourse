@@ -764,7 +764,7 @@ databaseChangeLog:
         }
 
   - changeSet:
-      id: 115-2
+      id: 115-3
       author: dmitry
       preConditions:
         - onFail: HALT

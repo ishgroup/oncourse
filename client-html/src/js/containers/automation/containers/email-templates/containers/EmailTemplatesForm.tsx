@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, {
@@ -14,7 +17,9 @@ import Tooltip from "@mui/material/Tooltip";
 import { FileCopy } from "@mui/icons-material";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import { Dispatch } from "redux";
-import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
+import {
+ FieldArray, Form, initialize, InjectedFormProps 
+} from "redux-form";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import FormField from "../../../../../common/components/form/formFields/FormField";
@@ -165,7 +170,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
       />
 
       <Form onSubmit={handleSubmit(handleSave)}>
-        {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
+        {!disableRouteConfirm && <RouteChangeConfirm form={form} when={dirty || isNew} />}
 
         <AppBarContainer
           values={values}
@@ -256,7 +261,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
               </Grid>
 
               {values.type === 'Email' && (
-                <Grid container >
+                <Grid container>
                   <Grid item xs={6}>
                     <div className="heading">Subject</div>
                     <FormField
@@ -330,7 +335,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                   name="status"
                   color="primary"
                   format={v => v === "Enabled"}
-                  parse={v => v ? "Enabled" : "Installed but Disabled"}
+                  parse={v => (v ? "Enabled" : "Installed but Disabled")}
                 />
               </div>
               <div className="mt-3 pt-1">

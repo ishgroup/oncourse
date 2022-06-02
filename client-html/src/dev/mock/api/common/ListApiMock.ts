@@ -185,6 +185,10 @@ export function listApiMock() {
     const { entity, search } = config.params;
 
     switch (entity) {
+      case "Audit": {
+        return promiseResolve(config, this.db.getPlainAudits(config.params));
+      }
+
       case "ReportOverlay": {
         return promiseResolve(config, this.db.getPlainReportOverlays());
       }
@@ -278,7 +282,7 @@ export function listApiMock() {
       }
 
       case "Script": {
-        return promiseResolve(config, this.db.getPlainScripts());
+        return promiseResolve(config, this.db.getPlainScripts(config.params));
       }
 
       case "ExportTemplate": {
@@ -316,6 +320,10 @@ export function listApiMock() {
 
       case "Room": {
         return promiseResolve(config, this.db.getPlainRooms(config.params));
+      }
+
+      case "SystemUser": {
+        return promiseResolve(config, this.db.getPlainSystemUser(config.params));
       }
 
       case "Tag": {
