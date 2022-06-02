@@ -53,7 +53,7 @@ class TagsFormRenderer extends TagsFormBase {
 
     const isNew = !values?.id;
 
-    const { editingId } = this.state;
+    const { editingIds } = this.state;
 
     return values ? (
       <Form onSubmit={handleSubmit(this.onSave)} className={className}>
@@ -153,7 +153,7 @@ class TagsFormRenderer extends TagsFormBase {
                   changeVisibility={this.changeVisibility}
                   setEditingId={this.setEditingId}
                   onDrop={this.onDrop}
-                  editingId={editingId}
+                  editingIds={editingIds}
                   syncErrors={syncErrors}
                 />
               )}
@@ -193,7 +193,7 @@ class ChecklistsFormRenderer extends TagsFormBase {
       classes
     } = this.props;
 
-    const { editingId } = this.state;
+    const { editingIds } = this.state;
 
     const isNew = !values?.id;
 
@@ -298,7 +298,7 @@ class ChecklistsFormRenderer extends TagsFormBase {
                   onDelete={this.removeChildTag}
                   setEditingId={this.setEditingId}
                   onDrop={this.onDrop}
-                  editingId={editingId}
+                  editingIds={editingIds}
                   syncErrors={syncErrors}
                 />
               )}
