@@ -25,6 +25,7 @@ import ish.oncourse.server.api.dao.TagDao
 import ish.oncourse.server.api.function.DateFunctions
 import ish.oncourse.server.api.v1.function.ContactMergeFunctions
 import ish.oncourse.server.api.v1.function.EntityFunctions
+import ish.oncourse.server.api.v1.function.TagFunctions
 import ish.oncourse.server.api.v1.model.InfoLineDTO
 import ish.oncourse.server.api.v1.model.MergeLineDTO
 import ish.oncourse.server.cayenne.Contact
@@ -242,7 +243,7 @@ class ContactMergeService {
 
         Closure moveContactTagsToA = { ObjectContext context, Contact cA, Contact cB ->
             List<ContactTagRelation> tagRelationsA = new ArrayList<>(cA.taggingRelations)
-            context.deleteObjects(tagRelationsA)
+            TagFunctions.removeTagRelations(tagRelationsA, context, cayenneService.newNonReplicatingContext)
             List<ContactTagRelation> tagRelationsB = new ArrayList<>(cB.taggingRelations)
             tagRelationsB.each { tr -> tr.taggedContact = cA }
         }
