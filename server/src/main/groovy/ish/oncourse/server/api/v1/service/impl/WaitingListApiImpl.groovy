@@ -43,7 +43,7 @@ class WaitingListApiImpl implements WaitingListApi {
         checkForBadRequest(validateForSave(waitingList, context))
 
         WaitingList newWaitingList = context.newObject(WaitingList)
-        toDbWaitingList(waitingList, newWaitingList, context, cayenneService.newNonReplicatingContext)
+        toDbWaitingList(waitingList, newWaitingList, context)
 
         context.commitChanges()
     }
@@ -75,7 +75,7 @@ class WaitingListApiImpl implements WaitingListApi {
         checkForBadRequest(validateEntityExistence(id, entity))
         checkForBadRequest(validateForSave(waitingListDTO, context, id))
 
-        toDbWaitingList(waitingListDTO, entity, context, cayenneService.newNonReplicatingContext)
+        toDbWaitingList(waitingListDTO, entity, context)
         context.commitChanges()
     }
 

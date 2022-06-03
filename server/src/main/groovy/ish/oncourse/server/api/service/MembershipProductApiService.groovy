@@ -137,7 +137,7 @@ class MembershipProductApiService extends TaggableApiService<MembershipProductDT
                 null as FieldConfigurationScheme
         updateCorporatePasses(membershipProduct, membershipProductDTO.corporatePasses, corporatePassProductDao, corporatePassDao)
         updateDocuments(membershipProduct, membershipProduct.attachmentRelations, membershipProductDTO.documents, MembershipProductAttachmentRelation, context)
-        updateTags(membershipProduct, membershipProduct.taggingRelations, membershipProductDTO.tags, MembershipProductTagRelation, context, cayenneService.newNonReplicatingContext)
+        updateTags(membershipProduct, membershipProduct.taggingRelations, membershipProductDTO.tags, MembershipProductTagRelation, context)
         updateCustomFields(membershipProduct.context, membershipProduct, membershipProductDTO.customFields, membershipProduct.customFieldClass)
         updateDiscountMemberships(membershipProduct, membershipProductDTO.membershipDiscounts)
         membershipProduct

@@ -151,8 +151,7 @@ class DocumentFunctions {
         list
     }
 
-    static Document createDocument(String name, String description, DocumentVisibilityDTO access, List<Long> tags,
-                                   Boolean shared, ObjectContext context, ObjectContext nonReplContext) {
+    static Document createDocument(String name, String description, DocumentVisibilityDTO access, List<Long> tags, Boolean shared, ObjectContext context) {
         Date timestamp = new Date()
         Document dbDocument = context.newObject(Document)
         dbDocument.added = timestamp
@@ -161,7 +160,7 @@ class DocumentFunctions {
         dbDocument.description = trimToNull(description)
         dbDocument.isShared = shared
 
-        updateTags(dbDocument, dbDocument.taggingRelations, tags, DocumentTagRelation, context, nonReplContext)
+        updateTags(dbDocument, dbDocument.taggingRelations, tags, DocumentTagRelation, context)
 
         dbDocument
     }

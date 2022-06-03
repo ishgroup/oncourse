@@ -70,14 +70,14 @@ class RoomFunctions {
         }
     }
 
-    static Room toDbRoom(RoomDTO room, Room dbRoom, ObjectContext context, SystemUser currentUser, ObjectContext nonReplContext) {
+    static Room toDbRoom(RoomDTO room, Room dbRoom, ObjectContext context, SystemUser currentUser) {
         dbRoom.name = trimToNull(room.name)
         dbRoom.seatedCapacity = room.seatedCapacity
         dbRoom.site = CayenneFunctions.getRecordById(context, Site, room.siteId)
         dbRoom.directions = trimToNull(room.directions)
         dbRoom.facilities = trimToNull(room.facilities)
 
-        updateTags(dbRoom, dbRoom.taggingRelations, room.tags, RoomTagRelation, context, nonReplContext)
+        updateTags(dbRoom, dbRoom.taggingRelations, room.tags, RoomTagRelation, context)
         updateAvailabilityRules(dbRoom, dbRoom.unavailableRuleRelations*.rule, room.rules, RoomUnavailableRuleRelation)
         updateDocuments(dbRoom, dbRoom.attachmentRelations, room.documents, RoomAttachmentRelation, context)
 

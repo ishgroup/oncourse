@@ -107,7 +107,7 @@ class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
 
         updateLeadItems(cayenneModel, dtoModel.relatedSellables)
         updateSites(dtoModel.sites, cayenneModel)
-        updateTags(cayenneModel, cayenneModel.taggingRelations, dtoModel.tags, LeadTagRelation.class, context,cayenneService.newNonReplicatingContext)
+        updateTags(cayenneModel, cayenneModel.taggingRelations, dtoModel.tags, LeadTagRelation.class, context)
         updateDocuments(cayenneModel, cayenneModel.attachmentRelations, dtoModel.documents, LeadAttachmentRelation.class, context)
         updateCustomFields(context, cayenneModel, dtoModel.customFields, LeadCustomField.class)
         return cayenneModel

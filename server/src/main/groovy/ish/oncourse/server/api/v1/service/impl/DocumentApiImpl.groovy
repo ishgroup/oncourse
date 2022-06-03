@@ -65,7 +65,7 @@ class DocumentApiImpl implements DocumentApi {
         checkForBadRequest(validateForSave(fileName, name,  visibility, tagIds, shared, context))
         checkForBadRequest(validateVersionForSave(content.getBytes(), context))
 
-        Document dbDocument = createDocument(name, description, visibility, tagIds, shared,  context, cayenneService.newNonReplicatingContext)
+        Document dbDocument = createDocument(name, description, visibility, tagIds, shared,  context)
         dbDocument.fileUUID = UUID.randomUUID().toString()
         DocumentVersion version = createDocumentVersion(dbDocument, content.getBytes(), fileName, context, documentService, systemUserService.currentUser)
         context.commitChanges()

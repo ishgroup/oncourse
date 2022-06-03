@@ -75,7 +75,7 @@ class SiteFunctions {
         }
     }
 
-    static Site toDbSite(SiteDTO site, Site dbSite, ObjectContext context, SystemUser currentUser, ObjectContext nonReplContext) {
+    static Site toDbSite(SiteDTO site, Site dbSite, ObjectContext context, SystemUser currentUser) {
         dbSite.isAdministrationCentre = site.isAdministrationCentre
         dbSite.isVirtual = site.isVirtual
         dbSite.isShownOnWeb = site.isShownOnWeb
@@ -96,7 +96,7 @@ class SiteFunctions {
         dbSite.specialInstructions = trimToNull(site.specialInstructions)
 
         updateRooms(dbSite, site.rooms)
-        updateTags(dbSite, dbSite.taggingRelations, site.tags, SiteTagRelation, context, nonReplContext)
+        updateTags(dbSite, dbSite.taggingRelations, site.tags, SiteTagRelation, context)
         updateAvailabilityRules(dbSite, dbSite.unavailableRuleRelations*.rule, site.rules, SiteUnavailableRuleRelation)
         updateDocuments(dbSite, dbSite.attachmentRelations, site.documents, SiteAttachmentRelation, context)
 
