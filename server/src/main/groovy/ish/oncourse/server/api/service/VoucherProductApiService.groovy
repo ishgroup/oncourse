@@ -126,7 +126,7 @@ class VoucherProductApiService extends TaggableApiService<VoucherProductDTO, Vou
                 }
             }
             voucherProductDTO.documents = voucherProduct.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
-            voucherProductDTO.tags = voucherProduct.tags.collect{ it.id }
+            voucherProductDTO.tags = voucherProduct.allTags.collect{ it.id }
             voucherProductDTO.soldVouchersCount = voucherProduct.getProductItems().size()
             voucherProductDTO.relatedSellables = (EntityRelationDao.getRelatedFrom(voucherProduct.context, Product.simpleName, voucherProduct.id).collect { toRestFromEntityRelation(it) } +
                     EntityRelationDao.getRelatedTo(voucherProduct.context, Product.simpleName, voucherProduct.id).collect { toRestToEntityRelation(it) })
