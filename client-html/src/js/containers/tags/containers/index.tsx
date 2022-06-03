@@ -86,8 +86,8 @@ class TagsFormRenderer extends TagsFormBase {
             <AppBarActions
               actions={[
                 {
-                  action: () => this.onDelete(values.id),
-                  icon: <DeleteForever />,
+                  action: () => this.onDelete(values),
+                  icon: <DeleteForever/>,
                   confirmText: "Tag will be deleted permanently",
                   tooltip: "Delete Tag",
                   confirmButtonText: "DELETE"
@@ -240,8 +240,8 @@ class ChecklistsFormRenderer extends TagsFormBase {
             <AppBarActions
               actions={[
                 {
-                  action: () => this.onDelete(values.id),
-                  icon: <DeleteForever />,
+                  action: () => this.onDelete(values),
+                  icon: <DeleteForever/>,
                   confirmText: "Tag will be deleted permanently",
                   tooltip: "Delete Tag",
                   confirmButtonText: "DELETE"
