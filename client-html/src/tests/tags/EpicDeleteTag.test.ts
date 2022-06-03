@@ -16,7 +16,7 @@ import { EpicDeleteTag } from "../../js/containers/tags/epics/EpicDeleteTag";
 
 describe("Delete tag epic tests", () => {
   it("EpicDeleteTag should returns correct values", () => DefaultEpic({
-    action: deleteTag({} as any),
+    action: deleteTag({ id: 1 } as any),
     epic: EpicDeleteTag,
     processData: () => {
       const tag = {} as any;
