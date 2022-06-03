@@ -12,6 +12,7 @@
 package ish.oncourse.server.cayenne
 
 import ish.common.types.NodeSpecialType
+import ish.common.types.NodeType
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.cayenne.Taggable
@@ -89,7 +90,11 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 		return result
 	}
 
-	/**
+	@Override
+	boolean isAsyncReplicationAllowed() {
+		return nodeType != NodeType.CHECKLIST
+	}
+/**
 	 * @param type
 	 */
 	void destroyNodeRequirement(final Class<? extends Taggable> type) {
