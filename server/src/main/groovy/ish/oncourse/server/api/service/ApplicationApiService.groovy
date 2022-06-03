@@ -102,7 +102,7 @@ class ApplicationApiService extends TaggableApiService<ApplicationDTO, Applicati
             application.student = contactDao.getById(application.context, applicationDTO.contactId).student
         }
 
-        updateTags(application, application.taggingRelations, applicationDTO.tags, ApplicationTagRelation, application.context, cayenneService.newNonReplicatingContext)
+        updateTags(application, application.taggingRelations, applicationDTO.tags, ApplicationTagRelation, application.context)
         updateDocuments(application, application.attachmentRelations, applicationDTO.documents, ApplicationAttachmentRelation, application.context)
         updateCustomFields(application.context, application, applicationDTO.customFields, ApplicationCustomField)
         application

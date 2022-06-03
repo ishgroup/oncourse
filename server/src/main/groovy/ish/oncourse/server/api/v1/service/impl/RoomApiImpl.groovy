@@ -75,7 +75,7 @@ class RoomApiImpl implements RoomApi {
         checkForBadRequest(validateForSave(room, context))
 
         Room newRoom = context.newObject(Room)
-        toDbRoom(room, newRoom, context, context.localObject(systemUserService.currentUser), cayenneService.newNonReplicatingContext)
+        toDbRoom(room, newRoom, context, context.localObject(systemUserService.currentUser))
 
         context.commitChanges()
     }
@@ -90,7 +90,7 @@ class RoomApiImpl implements RoomApi {
         checkForBadRequest(validateEntityExistence(id, entity))
         checkForBadRequest(validateForSave(room, context, id))
 
-        toDbRoom(room, entity, context, context.localObject(systemUserService.currentUser),cayenneService.newNonReplicatingContext)
+        toDbRoom(room, entity, context, context.localObject(systemUserService.currentUser))
         context.commitChanges()
     }
 

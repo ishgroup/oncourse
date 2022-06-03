@@ -70,7 +70,7 @@ class PayslipApiService extends TaggableApiService<PayslipDTO, Payslip, PayslipD
         dbModel.payType = dto.payType.getDbType()
         dbModel.notes = trimToNull(dto.publicNotes)
         dbModel.privateNotes = trimToNull(dto.privateNotes)
-        updateTags(dbModel, dbModel.taggingRelations, dto.tags, PayslipTagRelation, context, cayenneService.newNonReplicatingContext)
+        updateTags(dbModel, dbModel.taggingRelations, dto.tags, PayslipTagRelation, context)
         updatePayLines(dbModel, dto.paylines)
 
         dbModel

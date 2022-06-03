@@ -132,7 +132,7 @@ class ArticleProductApiService extends TaggableApiService<ArticleProductDTO, Art
                 null as FieldConfigurationScheme
         updateCorporatePassesByIds(articleProduct, articleProductDTO.corporatePasses*.id.findAll(), corporatePassProductDao, corporatePassDao)
         updateDocuments(articleProduct, articleProduct.attachmentRelations, articleProductDTO.documents, ArticleProductAttachmentRelation, context)
-        updateTags(articleProduct, articleProduct.taggingRelations, articleProductDTO.tags, ArticleProductTagRelation, context, cayenneService.newNonReplicatingContext)
+        updateTags(articleProduct, articleProduct.taggingRelations, articleProductDTO.tags, ArticleProductTagRelation, context)
         updateCustomFields(articleProduct.context, articleProduct, articleProductDTO.customFields, articleProduct.customFieldClass)
         articleProduct
     }

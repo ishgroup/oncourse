@@ -50,12 +50,12 @@ class WaitingListFunctions {
     }
 
     static WaitingList toDbWaitingList(WaitingListDTO waitingListDTO, WaitingList waitingList,
-                                                                   ObjectContext context, ObjectContext nonReplContext) {
+                                                                   ObjectContext context) {
         waitingList.notes = trimToNull(waitingListDTO.privateNotes)
         waitingList.studentCount = waitingListDTO.studentCount
         waitingList.student = getRecordById(context, Contact, waitingListDTO.contactId).student
         waitingList.course = getRecordById(context, Course, waitingListDTO.courseId)
-        updateTags(waitingList, waitingList.taggingRelations, waitingListDTO.tags, WaitingListTagRelation, context, nonReplContext)
+        updateTags(waitingList, waitingList.taggingRelations, waitingListDTO.tags, WaitingListTagRelation, context)
         updateSites(context, waitingList, waitingListDTO.sites)
         updateCustomFields(context, waitingList, waitingListDTO.customFields, WaitingListCustomField)
         waitingList

@@ -211,7 +211,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         cayenneModel.taxOverride = dto.taxId != null ? taxDao.getById(context, dto.taxId) : null as Tax
         updateCustomFields(context, cayenneModel, dto.customFields, ContactCustomField)
         updateDocuments(cayenneModel, cayenneModel.attachmentRelations, dto.documents, ContactAttachmentRelation, context)
-        updateTags(cayenneModel, cayenneModel.taggingRelations, dto.tags, ContactTagRelation, context, cayenneService.newNonReplicatingContext)
+        updateTags(cayenneModel, cayenneModel.taggingRelations, dto.tags, ContactTagRelation, context)
         updateProfilePicture(cayenneModel, dto.profilePicture)
         updateContactRelations(context, cayenneModel, dto.relations)
         updateAvailabilityRules(cayenneModel, cayenneModel.unavailableRuleRelations*.rule, dto.rules, ContactUnavailableRuleRelation)

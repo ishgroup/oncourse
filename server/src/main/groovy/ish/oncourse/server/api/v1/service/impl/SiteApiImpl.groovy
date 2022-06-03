@@ -74,7 +74,7 @@ class SiteApiImpl implements SiteApi {
         checkForBadRequest(validateForSave(site, context, false))
 
         Site newSite = context.newObject(Site)
-        toDbSite(site, newSite, context, context.localObject(systemUserService.currentUser), cayenneService.newNonReplicatingContext)
+        toDbSite(site, newSite, context, context.localObject(systemUserService.currentUser))
 
         context.commitChanges()
     }
@@ -89,7 +89,7 @@ class SiteApiImpl implements SiteApi {
         checkForBadRequest(validateEntityExistence(id, entity))
         checkForBadRequest(validateForSave(site, context, true, id))
 
-        toDbSite(site, entity, context, context.localObject(systemUserService.currentUser), cayenneService.newNonReplicatingContext)
+        toDbSite(site, entity, context, context.localObject(systemUserService.currentUser))
         context.commitChanges()
     }
 
