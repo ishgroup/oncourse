@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React from "react";
@@ -170,7 +173,7 @@ const treeItemDataToTag = (id: number | string, tree: TreeData, allTags: Tag[]):
 const treeDataToTags = (tree: TreeData, allTags: Tag[]): Tag[] => tree.items[tree.rootId].children.map(id => treeItemDataToTag(id, tree, allTags));
 
 interface FormState {
-  editingId: number;
+  editingIds: number[];
 }
 
 export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
@@ -183,7 +186,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
   counter;
 
   state = {
-    editingId: null
+    editingIds: []
   }
 
   constructor(props) {
@@ -210,7 +213,9 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
 
   setEditingId = editingId => {
     this.setState({
-      editingId
+      editingIds: this.state.editingIds.includes(editingId)
+        ? this.state.editingIds.filter(id => id !== editingId)
+        : this.state.editingIds.concat(editingId)
     });
   }
 
@@ -265,6 +270,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
     };
 
     dispatch(arrayInsert(TAGS_FORM_NAME, "childTags", 0, newTag));
+    this.setEditingId(newTag.id);
 
     this.counter++;
   };
