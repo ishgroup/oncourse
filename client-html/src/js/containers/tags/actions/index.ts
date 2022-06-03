@@ -22,9 +22,9 @@ export const getTagRequest = (id: number) => ({
   payload: id
 });
 
-export const deleteTag = (id: number) => ({
+export const deleteTag = (tag: Tag) => ({
   type: DELETE_TAG_REQUEST,
-  payload: { id }
+  payload: tag
 });
 
 export const createTag = (tag: Tag) => ({
