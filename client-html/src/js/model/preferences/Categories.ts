@@ -1,6 +1,7 @@
 export enum Categories {
   college,
   licences,
+  plugins,
   messaging,
   classDefaults,
   ldap,

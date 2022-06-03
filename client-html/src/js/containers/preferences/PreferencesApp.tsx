@@ -81,6 +81,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getTutorRoles());
     dispatch(getGradingTypes());
     dispatch(getPreferences(Categories.licences));
+    dispatch(getPreferences(Categories.plugins));
   },
   updateColumnsWidth: (preferenceLeftColumnWidth: number) => dispatch(updateColumnsWidth({ preferenceLeftColumnWidth })),
   onSetSwipeableDrawerDirtyForm: (isDirty: boolean, formName: string) => dispatch(
