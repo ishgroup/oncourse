@@ -247,7 +247,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
   };
 
   onDelete = (tag: Tag) => {
-    const {onDelete, redirectOnDelete} = this.props;
+    const { onDelete, redirectOnDelete } = this.props;
 
     this.isPending = true;
 
@@ -334,9 +334,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
-export const TagsFormWrapper = reduxForm({
+export const TagsFormWrapper = reduxForm<any, any, any>({
   form: TAGS_FORM_NAME,
   onSubmitFail,
   validate,
   shouldError: () => true
-})(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((props: any) => <props.Root {...props} />))) as any;
+})(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((props: any) => <props.Root {...props} />)));

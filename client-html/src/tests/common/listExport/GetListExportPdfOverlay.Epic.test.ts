@@ -1,4 +1,3 @@
-import { ActionsObservable } from "redux-observable";
 import { store, mockedAPI } from "../../TestEntry";
 import { FETCH_FINISH, FETCH_START } from "../../../js/common/actions";
 import {
@@ -17,10 +16,10 @@ describe("Get list export pdf overlay epic tests", () => {
     }));
 
     // Redux action to trigger epic
-    const action$ = ActionsObservable.of({ type: GET_OVERLAY_ITEMS });
+    // const action$ = ActionsObservable.of({ type: GET_OVERLAY_ITEMS });
 
     // Initializing epic instance
-    const epic$ = EpicGetOverlays(action$, store, {});
+    const epic$ = EpicGetOverlays(null, store, {});
 
     // Testing epic to be resolved with expected array of actions
     return expect(

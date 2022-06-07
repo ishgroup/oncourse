@@ -4,7 +4,6 @@
  */
 
 import { store, mockedAPI } from "../TestEntry";
-import { ActionsObservable } from "redux-observable";
 import { GET_USER_PREFERENCES_FULFILLED, FETCH_FINISH, FETCH_START } from "../../js/common/actions";
 import {
   GOOGLE_ANALYTICS_CLIENT_ID_KEY,
@@ -30,10 +29,10 @@ describe("Get google analytics parameters epics tests", () => {
     ]);
 
     // Redux action to trigger epic
-    const action$ = ActionsObservable.of({ type: GET_TAG_MANAGER_PARAMETERS });
+    // const action$ = ActionsObservable.of({ type: GET_TAG_MANAGER_PARAMETERS });
 
     // Initializing epic instance
-    const epic$ = EpicGetGoogleAnalyticsParameters(action$, store, {});
+    const epic$ = EpicGetGoogleAnalyticsParameters(null, store, {});
 
     // Testing epic to be resolved with expected array of actions
     return expect(

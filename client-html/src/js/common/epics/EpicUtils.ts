@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ActionsObservable, Epic, ofType, StateObservable } from "redux-observable";
+import { Epic, ofType, StateObservable } from "redux-observable";
 import { concat, from, Observable } from "rxjs";
 import { catchError, delay, flatMap, mergeMap } from "rxjs/operators";
 import { IAction } from "../actions/IshAction";
@@ -38,7 +38,7 @@ export const processError = (data: any, type: string, processError: any, payload
     ...(processError ? processError(data, payload) : FetchErrorHandler(data))
   ];
 
-export const CreateWithTimeout = <V, P>(request: DelayedRequest<V, P>): Epic<any, any, any> => (action$: ActionsObservable<any>, state$: StateObservable<State>): Observable<any> => action$.pipe(
+export const CreateWithTimeout = <V, P>(request: DelayedRequest<V, P>): Epic<any, any, any> => (action$: Observable<any>, state$: StateObservable<State>): Observable<any> => action$.pipe(
       ofType(request.type),
       delay(request.delay),
       mergeMap(action =>
@@ -64,7 +64,7 @@ export const CreateWithTimeout = <V, P>(request: DelayedRequest<V, P>): Epic<any
         ))
     );
 
-export const Create = <V, P>(request: Request<V, P>): Epic<any, any, any, any> => (action$: ActionsObservable<any>, state$: StateObservable<State>): Observable<any> => action$.pipe(
+export const Create = <V, P>(request: Request<V, P>): Epic<any, any> => (action$: Observable<any>, state$: StateObservable<State>): Observable<any> => action$.pipe(
       ofType(request.type),
       mergeMap(action =>
         concat(

@@ -80,7 +80,7 @@ interface Props {
   disableAddAll?: boolean;
   validate?: Validator | Validator[];
   entityTags?: any;
-  CustomCell?: React.ReactNode;
+  CustomCell?: any;
 }
 
 interface NestedListState {

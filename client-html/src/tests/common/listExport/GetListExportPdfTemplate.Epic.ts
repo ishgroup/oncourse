@@ -1,5 +1,4 @@
 
-import { ActionsObservable } from "redux-observable";
 import { store, mockedAPI } from "../../TestEntry";
 import { FETCH_FINISH, FETCH_START } from "../../../js/common/actions";
 import {
@@ -15,10 +14,10 @@ export const GetListExportPdfTemplate = (entityName: string) => {
   const data = mockedAPI.db.getPdfTemplate(entityName);
 
   // Redux action to trigger epic
-  const action$ = ActionsObservable.of({ type: GET_PDF_REPORTS, payload: entityName });
+  // const action$ = ActionsObservable.of({ type: GET_PDF_REPORTS, payload: entityName });
 
   // Initializing epic instance
-  const epic$ = EpicGetShareList(action$, store, {});
+  const epic$ = EpicGetShareList(null, store, {});
 
   // Testing epic to be resolved with expected array of actions
   return expect(
