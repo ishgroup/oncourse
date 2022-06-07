@@ -4,7 +4,6 @@
  */
 
 import { store } from "../TestEntry";
-import { ActionsObservable } from "redux-observable";
 import { PreferenceEnum } from "@api/model";
 import { FETCH_FINISH, FETCH_START, SET_USER_PREFERENCE } from "../../js/common/actions";
 import { EpicGetUserPreferences } from "../../js/common/epics/EpicGetUserPreferences";
@@ -12,10 +11,10 @@ import { filter, toArray } from "rxjs/operators";
 
 export const SetPreferences = (keys: PreferenceEnum[]) => {
   // Redux action to trigger epic
-  const action$ = ActionsObservable.of({ type: SET_USER_PREFERENCE, payload: keys });
+  // const action$ = ActionsObservable.of({ type: SET_USER_PREFERENCE, payload: keys });
 
   // Initializing epic instance
-  const epic$ = EpicGetUserPreferences(action$, store, {});
+  const epic$ = EpicGetUserPreferences(null, store, {});
 
   // Testing epic to be resolved with expected array of actions
   return expect(
