@@ -11,7 +11,9 @@ import {
   SurveyMonkeyFields,
   XeroFields,
   AmazonS3Fields,
-  AzureFields, ServiceNSWFields
+  AzureFields,
+  ServiceNSWFields,
+  KronosFields
 } from "./IntegrationsFields";
 
 export interface IntegrationSchema {
@@ -36,6 +38,7 @@ export interface IntegrationSchema {
     | AmazonS3Fields
     | AzureFields
     | ServiceNSWFields
+    | KronosFields
 }
 
 export interface IntegrationTypeSchema {
