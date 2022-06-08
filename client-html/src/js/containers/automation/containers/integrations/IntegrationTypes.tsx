@@ -21,6 +21,7 @@ import usi from "../../../../../images/usi.png";
 import tsci from "../../../../../images/vet_student_loans.png";
 import googleclassroom from "../../../../../images/google_classroom.png";
 import coassemble from "../../../../../images/coassemble.png";
+import kronos from "../../../../../images/kronos.png";
 import talentlms from "../../../../../images/talentlms.png";
 import learndash from "../../../../../images/learndash.png";
 import amazons3 from "../../../../../images/amazons3.png";
@@ -39,6 +40,7 @@ import { UsiForm } from "./components/forms/UsiForm";
 import { VetStudentLoansForm } from "./components/forms/VetStudentLoansForm";
 import { GoogleClassroomForm } from "./components/forms/GoogleClassroomForm";
 import { CoassembleForm } from "./components/forms/CoassembleForm";
+import { KronosForm } from "./components/forms/KronosForm";
 import { TalentLMSForm } from "./components/forms/TalentLMSForm";
 import { LearnDashForm } from "./components/forms/LearnDashForm";
 import { AmazonS3Form } from "./components/forms/AmazonS3Form";
@@ -195,7 +197,14 @@ const types: IntegrationTypesModel = {
         </a>
       </span>
     )
-  }
+  },
+  19: {
+    name: "Kronos",
+    form: KronosForm,
+    image: kronos,
+    description:
+      "Test discription KRONOS"
+  },
 };
 
 export default types;
