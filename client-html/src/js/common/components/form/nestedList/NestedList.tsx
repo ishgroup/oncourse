@@ -352,14 +352,6 @@ class NestedList extends React.Component<Props, NestedListState> {
     );
   };
 
-  onBlur = () => {
-    const { searchValues } = this.props;
-
-    if (!searchValues?.length) {
-      this.toggleSearch();
-    }
-  };
-
   onFocus = () => {
     if (!this.state.searchEnabled) {
       this.setState({
@@ -407,7 +399,6 @@ class NestedList extends React.Component<Props, NestedListState> {
             onAqlSearchChange={this.onAqlSearchChange}
             onSearchEscape={this.onSearchEscape}
             onFocus={this.onFocus}
-            onBlur={this.onBlur}
             onAddEvent={this.onAddEvent}
             toggleSearch={this.toggleSearch}
             onSwitchToggle={this.onSwitchToggle}
@@ -445,7 +436,6 @@ class NestedList extends React.Component<Props, NestedListState> {
             onAqlSearchChange={this.onAqlSearchChange}
             onSearchEscape={this.onSearchEscape}
             onFocus={this.onFocus}
-            onBlur={this.onBlur}
             onAddEvent={this.onAddEvent}
             toggleSearch={this.toggleSearch}
             inputRef={this.inputRef}
