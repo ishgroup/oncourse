@@ -43,7 +43,6 @@ const SearchInput = React.memo<any>(props => {
     onSearchChange,
     onAqlSearchChange,
     onSearchEscape,
-    onBlur,
     onAddEvent,
     onAqlSearchClear,
     inputRef,
@@ -128,7 +127,6 @@ const SearchInput = React.memo<any>(props => {
         }}
         performSearch={onAqlSearchChange}
         onFocus={onFocus}
-        onBlur={onBlur}
         endAdornment={InputAdornment}
         menuHeight={300}
       />
@@ -142,7 +140,6 @@ const SearchInput = React.memo<any>(props => {
       className={className}
       onChange={onSearchChange}
       onKeyDown={onSearchEscape}
-      onBlur={onBlur}
       onFocus={onFocus}
       endAdornment={InputAdornment}
       autoFocus={searchExpression ? false : autoFocus}
