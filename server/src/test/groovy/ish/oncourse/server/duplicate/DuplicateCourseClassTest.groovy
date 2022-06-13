@@ -90,8 +90,22 @@ class DuplicateCourseClassTest extends TestWithDatabase {
         Assertions.assertEquals(courseClass.getTutorRoles().size(), newClass.getTutorRoles().size())
         Assertions.assertEquals(courseClass.getTutorRoles().get(0).getDefinedTutorRole(), newClass.getTutorRoles().get(0).getDefinedTutorRole())
         Assertions.assertEquals(courseClass.getTutorRoles().get(0).getTutor(), newClass.getTutorRoles().get(0).getTutor())
-        Assertions.assertEquals(courseClass.getTutorRoles().get(0).getSessionsTutors().size(), newClass.getTutorRoles().get(0).getSessionsTutors().size())
+        Assertions.assertEquals(0, newClass.getTutorRoles().get(0).getSessionsTutors().size())
 
+        ClassDuplicationRequest rosterRequest = new ClassDuplicationRequest()
+        rosterRequest.setDaysTo(daysTo)
+        rosterRequest.setCopyTutors(true)
+        rosterRequest.setCopyTrainingPlans(false)
+        rosterRequest.setApplyDiscounts(false)
+        rosterRequest.setCopyCosts(false)
+        rosterRequest.setCopySitesAndRooms(false)
+        rosterRequest.setTutorRosterOverrides(true)
+        rosterRequest.setCopyNotes(true)
+        rosterRequest.setCopyVetData(false)
+        rosterRequest.setCopyAssessments(false)
+
+        CourseClass newClass2 = DuplicateCourseClass.valueOf(courseClass, rosterRequest, courseClassService, cayenneContext, courseClassDao, null).duplicate()
+        Assertions.assertEquals(courseClass.getTutorRoles().get(0).getSessionsTutors().size(), newClass2.getTutorRoles().get(0).getSessionsTutors().size())
 
         ClassDuplicationRequest allFalseRequest = new ClassDuplicationRequest()
         allFalseRequest.setDaysTo(daysTo)
@@ -105,9 +119,9 @@ class DuplicateCourseClassTest extends TestWithDatabase {
         allFalseRequest.setCopyVetData(false)
         allFalseRequest.setCopyAssessments(false)
 
-        CourseClass newClass2 = DuplicateCourseClass.valueOf(courseClass, allFalseRequest, courseClassService, cayenneContext, courseClassDao, null).duplicate()
+        CourseClass newClass3 = DuplicateCourseClass.valueOf(courseClass, allFalseRequest, courseClassService, cayenneContext, courseClassDao, null).duplicate()
 
-        Assertions.assertEquals(0, newClass2.getTutorRoles().size())
+        Assertions.assertEquals(0, newClass3.getTutorRoles().size())
     }
 
 
