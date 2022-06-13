@@ -8,7 +8,6 @@ import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import { DASHBOARD_ACTIVITY_STORAGE_NAME } from "../../../../../constants/Config";
 import { getEntityDisplayName } from "../../../../utils/getEntityDisplayName";
 import ListLinksGroup from "./searchResults/ListLinksGroup";
