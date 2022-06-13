@@ -130,7 +130,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(setListEditRecord(Initial));
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
   },
-  getSites: () => dispatch(getCommonPlainRecords("Site", 0, "name,localTimezone", null, null, PLAIN_LIST_MAX_PAGE_SIZE)),
+  getSites: () => dispatch(getCommonPlainRecords("Site", 0, "name,localTimezone", true, "name", PLAIN_LIST_MAX_PAGE_SIZE)),
   getFilters: () => dispatch(getFilters("Room")),
   getTags: () => {
     dispatch(getListTags("Room"));
