@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.types.NodeType
 import ish.common.types.TypesUtil
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
@@ -30,7 +31,10 @@ import java.util.Date
 @API
 @QueueableEntity
 class TagRelation extends _TagRelation implements Queueable {
-
+	@Override
+	boolean isAsyncReplicationAllowed() {
+		return tag?.nodeType != NodeType.CHECKLIST
+	}
 
 
 	/**

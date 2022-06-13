@@ -136,7 +136,7 @@ interface FormProps extends Props {
   asyncErrors: any;
   onUpdate: (id: number, tag: Tag) => void;
   onCreate: (tag: Tag) => void;
-  onDelete: (id: number) => void;
+  onDelete: (tag: Tag) => void;
   openTagEditView: (item: Tag) => void;
   closeTagEditView: () => void;
   history: any;
@@ -246,8 +246,8 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
     });
   };
 
-  onDelete = id => {
-    const { onDelete, redirectOnDelete } = this.props;
+  onDelete = (tag: Tag) => {
+    const {onDelete, redirectOnDelete} = this.props;
 
     this.isPending = true;
 
@@ -255,7 +255,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
       this.resolvePromise = resolve;
       this.rejectPromise = reject;
 
-      onDelete(id);
+      onDelete(tag);
     }).then(() => {
       redirectOnDelete();
     });
@@ -329,7 +329,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   onUpdate: (id: number, tag: Tag) => dispatch(updateTag(id, tag)),
   onCreate: (tag: Tag) => dispatch(createTag(tag)),
-  onDelete: (id: number) => dispatch(deleteTag(id)),
+  onDelete: (tag: Tag) => dispatch(deleteTag(tag)),
   openConfirm: props => dispatch(showConfirm(props)),
   setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });

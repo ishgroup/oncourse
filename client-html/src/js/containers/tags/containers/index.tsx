@@ -8,7 +8,7 @@
 
 import React, { useEffect } from "react";
 import {
-  arrayInsert,
+  arrayInsert, arrayPush,
   Field, Form, initialize
 } from "redux-form";
 import { Grid, Typography } from "@mui/material";
@@ -86,8 +86,8 @@ class TagsFormRenderer extends TagsFormBase {
             <AppBarActions
               actions={[
                 {
-                  action: () => this.onDelete(values.id),
-                  icon: <DeleteForever />,
+                  action: () => this.onDelete(values),
+                  icon: <DeleteForever/>,
                   confirmText: "Tag will be deleted permanently",
                   tooltip: "Delete Tag",
                   confirmButtonText: "DELETE"
@@ -176,7 +176,7 @@ class ChecklistsFormRenderer extends TagsFormBase {
       id: ("new" + this.counter) as any,
     };
 
-    dispatch(arrayInsert(TAGS_FORM_NAME, "childTags", 0, newTag));
+    dispatch(arrayPush(TAGS_FORM_NAME, "childTags", newTag));
 
     this.counter++;
   };
@@ -240,8 +240,8 @@ class ChecklistsFormRenderer extends TagsFormBase {
             <AppBarActions
               actions={[
                 {
-                  action: () => this.onDelete(values.id),
-                  icon: <DeleteForever />,
+                  action: () => this.onDelete(values),
+                  icon: <DeleteForever/>,
                   confirmText: "Tag will be deleted permanently",
                   tooltip: "Delete Tag",
                   confirmButtonText: "DELETE"

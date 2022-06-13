@@ -14,7 +14,7 @@ import AutoSizer from "react-virtualized-auto-sizer";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import {
- addMonths, endOfMonth, format, isSameMonth, startOfMonth 
+  addMonths, endOfMonth, format, isAfter, isSameMonth, startOfMonth
 } from "date-fns";
 import clsx from "clsx";
 import Typography from "@mui/material/Typography";
@@ -142,6 +142,39 @@ const scrollToCalendarDay = debounce((day: Date, list, index, dayNodesObserver) 
   }
 }, 100);
 
+const initDateAsync = async (searchString, setTargetDay) => {
+  const firstSession = await EntityService.getPlainRecords(
+    "Session",
+    "startDatetime",
+    `${searchString}`,
+    1,
+    0,
+    "startDatetime",
+    true
+  );
+
+  const lastSession = await EntityService.getPlainRecords(
+    "Session",
+    "startDatetime",
+    `${searchString}`,
+    1,
+    0,
+    "startDatetime",
+    false
+  );
+  
+  if (firstSession.rows.length && lastSession.rows.length) {
+    const endDate = new Date(lastSession.rows[0].values[0]);
+    const firstDate = new Date(firstSession.rows[0].values[0]);
+
+    if (isAfter(new Date(), endDate) || isAfter(firstDate, new Date())) {
+      setTargetDay(firstDate);
+    } else {
+      setTargetDay(new Date());
+    }
+  }
+};
+
 const Calendar = React.memo<Props>(props => {
   const {
     targetDay,
@@ -240,21 +273,11 @@ const Calendar = React.memo<Props>(props => {
     dispatch(setTimetableSearch(searchString ? decodeURIComponent(searchString) : ""));
 
     if (searchString && !params.get("selectedDate")) {
-      EntityService.getPlainRecords(
-        "Session",
-        "startDatetime",
-        `${searchString}`,
-        1,
-        0,
-        "startDatetime",
-        true
-      )
-        .then(res => {
-          if (res.rows.length) {
-            setTargetDay(new Date(res.rows[0].values[0]));
-          }
-        })
-        .catch(e => instantFetchErrorHandler(dispatch, e));
+      try {
+        initDateAsync(searchString, setTargetDay);
+      } catch (e) {
+        instantFetchErrorHandler(dispatch, e);
+      }
     }
 
     loadNextMonths(targetDay);
