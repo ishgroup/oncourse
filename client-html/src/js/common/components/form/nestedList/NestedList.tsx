@@ -258,12 +258,6 @@ class NestedList extends React.Component<Props, NestedListState> {
       if (typeof onToggleSearch === "function") {
         onToggleSearch();
       }
-
-      if (!aqlEntities) {
-        setTimeout(() => {
-          this.inputRef.current.focus();
-        }, 300);
-      }
     }
 
     if (searchEnabled) {
@@ -273,8 +267,6 @@ class NestedList extends React.Component<Props, NestedListState> {
     if (aqlEntities) {
       if (searchEnabled) {
         this.aqlComponentRef.current.reset();
-      } else {
-        setTimeout(() => this.inputRef.current && this.inputRef.current.focus(), 300);
       }
     }
 
@@ -345,8 +337,6 @@ class NestedList extends React.Component<Props, NestedListState> {
         if (!checked) {
           this.props.onDeleteAll();
           this.toggleSearch();
-        } else {
-          setTimeout(() => this.inputRef.current && this.inputRef.current.focus(), 300);
         }
       }
     );
