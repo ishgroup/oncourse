@@ -203,7 +203,7 @@ const types: IntegrationTypesModel = {
     form: KronosForm,
     image: kronos,
     description:
-      "Test discription KRONOS"
+      "With this integration you can send your tutor session rosters directly to your Kronos Workforce Ready system."
   },
 };
 
