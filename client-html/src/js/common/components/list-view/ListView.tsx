@@ -125,7 +125,7 @@ interface Props extends Partial<ListState> {
   onSave?: any;
   onBeforeSave?: any;
   onDelete?: any;
-  onCreate?: any;
+  onCreate?: (record: any) => void;
   classes?: any;
   isDirty?: boolean;
   isInvalid?: boolean;

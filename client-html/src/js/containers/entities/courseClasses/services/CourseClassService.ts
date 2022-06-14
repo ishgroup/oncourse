@@ -26,7 +26,7 @@ class CourseClassService {
     return this.courseClassApi.update(id, courseClass);
   }
 
-  public createCourseClass(courseClass: CourseClass): Promise<any> {
+  public createCourseClass(courseClass: CourseClass): Promise<number> {
     return this.courseClassApi.create(courseClass);
   }
 
