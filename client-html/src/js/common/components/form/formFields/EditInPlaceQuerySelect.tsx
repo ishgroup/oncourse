@@ -1164,9 +1164,9 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
                 }}
                 error={meta?.invalid}
                 helperText={(
-                  <div className="shakingError">
+                  <span className="d-block shakingError">
                     {!disableErrorText && (meta?.invalid ? meta.error || "Expression is invalid" : "")}
-                  </div>
+                  </span>
                 )}
                 onChange={this.handleInputChange}
                 inputRef={this.setInputNode}

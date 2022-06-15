@@ -60,7 +60,7 @@ const RoomEditView = props => {
       manualLink,
       rootEntity,
       onEditViewScroll
-    }}
+      }}
     />
 );
 };
