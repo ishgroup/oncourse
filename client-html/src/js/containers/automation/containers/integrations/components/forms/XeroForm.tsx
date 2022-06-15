@@ -12,7 +12,6 @@ import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Button from "@mui/material/Button";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
 import { State } from "../../../../../../reducers/state";
@@ -108,15 +107,13 @@ class XeroBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-      AppBarContent, dirty, handleSubmit, values = {}, form
+      AppBarContent, handleSubmit, values = {}
     } = this.props;
 
     const { hideConfig, loading } = this.state;
 
     return (
       <form onSubmit={handleSubmit(this.beforeSubmit)}>
-        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-
         <AppBarContent disableName={Boolean(values?.id)}>
           {values?.fields?.active === "true" ? (
             <>

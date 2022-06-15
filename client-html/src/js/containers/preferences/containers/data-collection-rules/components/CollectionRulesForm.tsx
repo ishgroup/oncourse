@@ -72,10 +72,6 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
   constructor(props) {
     super(props);
 
-    this.state = {
-      disableConfirm: false
-    };
-
     if (props.item) {
       props.dispatch(initialize(DATA_COLLECTION_RULES_FORM, props.item));
     } else {
@@ -176,10 +172,6 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
 
     this.promisePending = true;
 
-    this.setState({
-      disableConfirm: true
-    });
-
     return new Promise((resolve, reject) => {
       this.resolvePromise = resolve;
       this.rejectPromise = reject;
@@ -188,15 +180,9 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
     })
       .then(() => {
         this.redirectOnDelete(id);
-        this.setState({
-          disableConfirm: false
-        });
       })
       .catch(() => {
         this.promisePending = false;
-        this.setState({
-          disableConfirm: false
-        });
       });
   };
 
@@ -204,12 +190,11 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
     const {
       classes, handleSubmit, match, value, dirty, form, onSubmit, invalid, syncErrors
     } = this.props;
-    const { disableConfirm } = this.state;
     const isNew = match.params.action === "new";
 
     return (
       <form className="container" autoComplete="off" onSubmit={handleSubmit(onSubmit)} role={DATA_COLLECTION_RULES_FORM}>
-        {!disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <AppBarContainer
           values={value}

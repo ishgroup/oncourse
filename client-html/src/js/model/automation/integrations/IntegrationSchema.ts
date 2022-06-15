@@ -42,6 +42,7 @@ export interface IntegrationTypeSchema {
   name: string;
   image: string;
   form: React.ComponentType<any>;
+  formName: string;
   description: React.ReactNode;
 }
 

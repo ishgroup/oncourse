@@ -12,7 +12,6 @@ import { Dispatch } from "redux";
 import { withRouter } from "react-router";
 import { getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-form";
 import { EmailTemplate } from "@api/model";
-import { setNextLocation } from "../../../../common/actions";
 import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
 import { usePrevious } from "../../../../common/utils/hooks";
 import { State } from "../../../../reducers/state";
@@ -100,7 +99,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onUpdateInternal: (template: EmailTemplate) => dispatch(updateInternalEmailTemplate(template)),
   onDelete: (id: number) => dispatch(removeEmailTemplate(id)),
   getEmailTemplate: (id: number) => dispatch(getEmailTemplate(id)),
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
 export default reduxForm({
