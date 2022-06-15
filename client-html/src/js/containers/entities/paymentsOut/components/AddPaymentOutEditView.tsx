@@ -24,7 +24,7 @@ import { defaultCurrencySymbol } from "../../common/bankingPaymentUtils";
 import { PaymentOutModel } from "../reducers/state";
 import { SiteState } from "../../sites/reducers/state";
 import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { ContactLinkAdornment, LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 
 const addPaymentOutColumnsBase: NestedTableColumn[] = [
   {
@@ -169,7 +169,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
   const validateLockedDate = useCallback(
     settlementDate => {
       if (!lockedDate || !settlementDate) return undefined;
-      const lockedDateValue = new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth);
+      const lockedDateValue = new Date(lockedDate);
       return compareAsc(lockedDateValue, new Date(settlementDate)) === 1
         ? `You must choose date after "Transaction locked" date (${formatDate(lockedDateValue, D_MMM_YYYY)})`
         : undefined;
@@ -361,7 +361,9 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
     <div className="p-3 h-100 flex-column">
       <Grid container columnSpacing={3} rowSpacing={2}>
         <Grid item xs={12}>
-          <Uneditable value={values.payeeName} label="Payment to" url={`/contact/${values.payeeId}`} />
+          <Uneditable value={values.payeeName} label="Payment to" labelAdornment={
+            <ContactLinkAdornment id={values.payeeId} />
+          } />
         </Grid>
 
         <Grid item xs={4}>

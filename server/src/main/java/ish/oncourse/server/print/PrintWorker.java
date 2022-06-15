@@ -32,6 +32,11 @@ import ish.util.MapsUtil;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
+import net.sf.jasperreports.engine.export.type.PdfFieldBorderStyleEnum;
+import net.sf.jasperreports.export.PdfExporterConfiguration;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.Ordering;
@@ -52,6 +57,8 @@ import java.rmi.server.UID;
 import java.util.*;
 
 import static ish.util.ImageHelper.generatePdfPreview;
+import static net.sf.jasperreports.engine.export.JRPdfExporter.PDF_FIELD_BORDER_STYLE;
+import static net.sf.jasperreports.engine.style.PropertyStyleProvider.STYLE_PROPERTY_PEN_LINE_WIDTH;
 
 /**
  * Worker which is serving specific {@link PrintRequest} identified by unique id.
@@ -183,7 +190,7 @@ public class PrintWorker implements Runnable {
 						for (var sourceId : entry.getValue()) {
 
 							// apply path transform, filter and sort
-							var printables = transformRecords(Collections.singletonList(sourceId), printTransformation, startingReport.getSortOn());
+							var printables = transformRecords(Collections.singletonList(sourceId), entry.getKey(), printTransformation, startingReport.getSortOn());
 
 							// work with once source record at a time
 							var filledReports = fillReports(reports, printables);
@@ -198,7 +205,7 @@ public class PrintWorker implements Runnable {
 					} else {
 
 						// apply path transform, filter and sort
-						var printables = transformRecords(entry.getValue(), printTransformation, startingReport.getSortOn());
+						var printables = transformRecords(entry.getValue(), entry.getKey(), printTransformation, startingReport.getSortOn());
 
 						// work with one transformed record at a time
 						for (var printable : printables) {
@@ -218,7 +225,7 @@ public class PrintWorker implements Runnable {
 				} else {
 					// work with all source record ids at the time
 					// apply path transform, filter and sort
-					var printables = transformRecords(entry.getValue(), printTransformation, startingReport.getSortOn());
+					var printables = transformRecords(entry.getValue(), entry.getKey(), printTransformation, startingReport.getSortOn());
 					progress = 33d;
 					//fill report(s)
 					var filledReports = fillReports(reports, printables);
@@ -290,7 +297,8 @@ public class PrintWorker implements Runnable {
 	 * @param recordIds to transform
 	 * @return tansformed, filtered, wrapped, sorted list of PrintableObjetcs, ready to print
 	 */
-	protected List<PersistentObjectI> transformRecords(List<Long> recordIds, PrintTransformation transform, String sortOn) throws Exception {
+	protected List<PersistentObjectI> transformRecords(List<Long> recordIds, String entityName,
+													   PrintTransformation transform, String sortOn) throws Exception {
 		try {
 			logger.info("transforming records, at start: {}, transform: {}", recordIds.size(), transform);
 			List<PersistentObjectI>  printList;
@@ -301,7 +309,7 @@ public class PrintWorker implements Runnable {
 	
 			} else {
 				Map<String, List<Long>> tempMap = new HashMap<>();
-				tempMap.put(printRequest.getEntity(), recordIds);
+				tempMap.put(entityName, recordIds);
 				printList = getRecords(tempMap);
 				logger.info("fetching records : {}", printList.size());
 			}
@@ -383,11 +391,13 @@ public class PrintWorker implements Runnable {
 			var exportOutput = new ByteArrayOutputStream();
 
 			var exporter = new JRPdfExporter();
-			exporter.setParameter(JRExporterParameter.JASPER_PRINT_LIST, printJobs);
-			exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, exportOutput);
-			exporter.setParameter(JRPdfExporterParameter.IS_COMPRESSED, Boolean.TRUE);
+			exporter.setExporterInput(SimpleExporterInput.getInstance(printJobs));
+			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(exportOutput));
 
-
+			SimplePdfExporterConfiguration conf = new SimplePdfExporterConfiguration();
+			conf.setCompressed(true);
+			exporter.setConfiguration(conf);
+		
 			exporter.exportReport();
 			if (overlay != null) {
 				exportOutput = PdfUtil.overlayPDFs(exportOutput, overlay.getOverlay());

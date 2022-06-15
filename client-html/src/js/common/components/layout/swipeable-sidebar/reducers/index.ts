@@ -5,12 +5,13 @@
 
 import { IAction } from "../../../../actions/IshAction";
 import { SwipeableDrawer } from "../../../../../model/common/drawer/SwipeableDrawerModel";
-import { SET_SWIPEABLE_DRAWER_DIRTY_FORM, TOGGLE_SWIPEABLE_DRAWER } from "../actions";
+import { SET_SWIPEABLE_DRAWER_DIRTY_FORM, SET_SWIPEABLE_DRAWER_SELECTION, TOGGLE_SWIPEABLE_DRAWER } from "../actions";
 
 const initial: SwipeableDrawer = {
   opened: false,
   variant: "temporary",
   isDirty: false,
+  selected: null,
   resetEditView: () => {}
 };
 
@@ -29,7 +30,14 @@ export const swipeableDrawerReducer = (state: SwipeableDrawer = initial, action:
         ...state,
         isDirty: action.payload.isDirty,
         resetEditView: action.payload.resetEditView
-      }
+      };
+    }
+    
+    case SET_SWIPEABLE_DRAWER_SELECTION: {
+      return {
+        ...state,
+        ...action.payload
+      };
     }
 
     default:

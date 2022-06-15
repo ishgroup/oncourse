@@ -26,7 +26,7 @@ import javax.annotation.Nonnull
  */
 @API
 @QueueableEntity
-class WaitingList extends _WaitingList implements Queueable, ExpandableTrait {
+class WaitingList extends _WaitingList implements Queueable, ExpandableTrait, ContactActivityTrait {
 
 
 
@@ -39,8 +39,11 @@ class WaitingList extends _WaitingList implements Queueable, ExpandableTrait {
 		return super.getCreatedOn()
 	}
 
-
-	/**
+	@Override
+	String getInteractionName() {
+		return course.name
+	}
+/**
 	 * @return the date and time this record was modified
 	 */
 	@API

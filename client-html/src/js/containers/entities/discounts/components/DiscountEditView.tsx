@@ -5,7 +5,7 @@
 
 import React from "react";
 import { connect } from "react-redux";
-import TabsList from "../../../../common/components/layout/TabsList";
+import TabsList from "../../../../common/components/navigation/TabsList";
 import { plainCorporatePassPath } from "../../../../constants/Api";
 import { State } from "../../../../reducers/state";
 import CorporatePassCommon from "../../common/components/CorporatePassCommon";

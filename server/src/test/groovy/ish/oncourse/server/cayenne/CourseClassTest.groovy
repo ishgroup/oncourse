@@ -10,7 +10,6 @@ import ish.common.types.*
 import ish.duplicate.ClassDuplicationRequest
 import ish.math.Money
 import ish.math.MoneyRounding
-import ish.oncourse.entity.services.CertificateService
 import ish.oncourse.entity.services.CourseClassService
 import ish.oncourse.generator.DataGenerator
 import ish.oncourse.server.duplicate.DuplicateClassService
@@ -22,8 +21,6 @@ import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.*
 import org.apache.cxf.common.util.StringUtils
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 @DatabaseSetup
@@ -125,7 +122,7 @@ class CourseClassTest extends TestWithDatabase {
                 request.setApplyDiscounts(true)
                 request.setCopyCosts(true)
                 request.setCopySitesAndRooms(true)
-                request.setCopyPayableTimeForSessions(true)
+                request.setTutorRosterOverrides(true)
                 request.setCopyNotes(false)
                 DuplicateClassService service = injector.getInstance(DuplicateClassService.class)
                 Long id = service.duplicateClasses(request).newIds[0]
@@ -276,7 +273,7 @@ class CourseClassTest extends TestWithDatabase {
         request.setApplyDiscounts(false)
         request.setCopyCosts(false)
         request.setCopySitesAndRooms(false)
-        request.setCopyPayableTimeForSessions(false)
+        request.setTutorRosterOverrides(false)
         request.setCopyNotes(true)
         DuplicateClassService service = injector.getInstance(DuplicateClassService.class)
         service.duplicateClasses(request)
@@ -325,7 +322,7 @@ class CourseClassTest extends TestWithDatabase {
         request.setApplyDiscounts(false)
         request.setCopyCosts(false)
         request.setCopySitesAndRooms(false)
-        request.setCopyPayableTimeForSessions(false)
+        request.setTutorRosterOverrides(false)
         request.setCopyNotes(true)
         service = injector.getInstance(DuplicateClassService.class)
         service.duplicateClasses(request)
@@ -402,7 +399,7 @@ class CourseClassTest extends TestWithDatabase {
         request.setApplyDiscounts(true)
         request.setCopyCosts(true)
         request.setCopySitesAndRooms(true)
-        request.setCopyPayableTimeForSessions(true)
+        request.setTutorRosterOverrides(true)
         request.setCopyNotes(false)
         service = injector.getInstance(DuplicateClassService.class)
         service.duplicateClasses(request)
@@ -441,7 +438,7 @@ class CourseClassTest extends TestWithDatabase {
         request.setApplyDiscounts(true)
         request.setCopyCosts(true)
         request.setCopySitesAndRooms(true)
-        request.setCopyPayableTimeForSessions(false)
+        request.setTutorRosterOverrides(false)
         request.setCopyNotes(false)
         service = injector.getInstance(DuplicateClassService.class)
         service.duplicateClasses(request)
@@ -494,7 +491,6 @@ class CourseClassTest extends TestWithDatabase {
         cayenneContext.commitChanges()
 
         CourseClass cc = cayenneContext.newObject(CourseClass.class)
-        cc.setSessionsCount(0)
         cc.setMinimumPlaces(4)
         cc.setMaximumPlaces(5)
         cc.setCode("111")
@@ -537,7 +533,6 @@ class CourseClassTest extends TestWithDatabase {
         tax.setPayableToAccount(account)
 
         CourseClass cc = cayenneContext.newObject(CourseClass.class)
-        cc.setSessionsCount(0)
         cc.setMinimumPlaces(4)
         cc.setMaximumPlaces(5)
         cc.setCode("testCourse")
@@ -576,13 +571,13 @@ class CourseClassTest extends TestWithDatabase {
 
         Assertions.assertEquals(gc1.getTime(), cc.getStartDateTime(), "Checking startDateTime for CourseClasse ")
         Assertions.assertNull(cc.getEndDateTime(), "Checking endDateTime for CourseClasse ")
-        Assertions.assertEquals(new Integer(0), cc.getSessionsCount(), "Checking sessionCount for CourseClasse ")
+        Assertions.assertEquals(new Integer(1), cc.getSessions().size(), "Checking count of sessions for CourseClasse ")
 
         cayenneContext.commitChanges()
 
         Assertions.assertEquals(session.getStartDatetime(), cc.getStartDateTime(), "Checking startDateTime for CourseClasse ")
         Assertions.assertEquals(session.getEndDatetime(), cc.getEndDateTime(), "Checking endDateTime for CourseClasse ")
-        Assertions.assertEquals(new Integer(1), cc.getSessionsCount(), "Checking sessionCount for CourseClasse ")
+        Assertions.assertEquals(new Integer(1), cc.getSessions().size(), "Checking count of sessions for CourseClasse ")
 
         // reload committed class from db since different dbs handle dates differently and actually stored
         // value may differ from what we tried to store (e.g. MySQL timestamp doesn't store milliseconds
@@ -646,14 +641,14 @@ class CourseClassTest extends TestWithDatabase {
 
         secondSession.setCourseClass(cc)
 
-        Assertions.assertEquals(new Integer(1), cc.getSessionsCount(), "Checking sessionCount for CourseClasse ")
+        Assertions.assertEquals(new Integer(2), cc.getSessions().size(), "Checking count of sessions for CourseClasse ")
 
         cayenneContext.commitChanges()
 
         Assertions.assertTrue(startTimeForSecondSession.after(startTimeForFirstSession))
         Assertions.assertEquals(session.getStartDatetime(), cc.getStartDateTime(), "Checking startDateTime for CourseClasse ")
         Assertions.assertEquals(session.getEndDatetime(), cc.getEndDateTime(), "Checking endDateTime for CourseClasse ")
-        Assertions.assertEquals(new Integer(2), cc.getSessionsCount(), "Checking sessionCount for CourseClasse ")
+        Assertions.assertEquals(new Integer(2), cc.getSessions().size(), "Checking count of sessions for CourseClasse ")
 
         // add new session with startDateTime before startDateTime in CourseClasse
         gc.add(GregorianCalendar.DATE, -2)
@@ -671,7 +666,7 @@ class CourseClassTest extends TestWithDatabase {
         Assertions.assertTrue(startTimeForNextSession.before(startTimeForFirstSession))
         Assertions.assertEquals(nextSession.getStartDatetime(), cc.getStartDateTime(), "Checking startDateTime for CourseClasse ")
         Assertions.assertEquals(nextSession.getEndDatetime(), cc.getEndDateTime(), "Checking endDateTime for CourseClasse ")
-        Assertions.assertEquals(new Integer(3), cc.getSessionsCount(), "Checking sessionCount for CourseClasse ")
+        Assertions.assertEquals(new Integer(3), cc.getSessions().size(), "Checking count of sessions for CourseClasse ")
 
         // remove 3th session
         cayenneContext.deleteObjects(nextSession)
@@ -679,7 +674,7 @@ class CourseClassTest extends TestWithDatabase {
 
         Assertions.assertEquals(session.getStartDatetime(), cc.getStartDateTime(), "Checking startDateTime for CourseClasse ")
         Assertions.assertEquals(session.getEndDatetime(), cc.getEndDateTime(), "Checking endDateTime for CourseClasse ")
-        Assertions.assertEquals(new Integer(2), cc.getSessionsCount(), "Checking sessionCount for CourseClasse ")
+        Assertions.assertEquals(new Integer(2), cc.getSessions().size(), "Checking count of sessions for CourseClasse ")
 
         // remove second and first session
         cayenneContext.deleteObjects(secondSession)
@@ -690,7 +685,7 @@ class CourseClassTest extends TestWithDatabase {
 
         Assertions.assertEquals(session.getStartDatetime(), cc.getStartDateTime(), "Checking startDateTime for CourseClasse ")
         Assertions.assertEquals(session.getEndDatetime(), cc.getEndDateTime(), "Checking endDateTime for CourseClasse ")
-        Assertions.assertEquals(new Integer(0), cc.getSessionsCount(), "Checking sessionCount for CourseClasse ")
+        Assertions.assertEquals(new Integer(0), cc.getSessions().size(), "Checking count of sessions for CourseClasse ")
 
     }
 
@@ -723,7 +718,6 @@ class CourseClassTest extends TestWithDatabase {
         tax.setPayableToAccount(account)
 
         CourseClass cc = cayenneContext.newObject(CourseClass.class)
-        cc.setSessionsCount(0)
         cc.setMinimumPlaces(4)
         cc.setMaximumPlaces(5)
         cc.setCode("testCourse1")

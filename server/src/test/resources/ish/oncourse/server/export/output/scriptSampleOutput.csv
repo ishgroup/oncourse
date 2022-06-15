@@ -187,7 +187,7 @@ send payment receipt,"def run(args) {
 Synchronise availability (enrolment),"def run(args) {
 	def Enrolment enrolment = args.value
 
-	if (enrolment.courseClass.sessionsCount == 1 && enrolment.courseClass.startDateTime != null &&
+	if (enrolment.courseClass.sessions.size() == 1 && enrolment.courseClass.startDateTime != null &&
 			enrolment.courseClass.endDateTime != null && !enrolment.courseClass.tutorRoles.isEmpty()) {
 
 		def classes = ObjectSelect.query(CourseClass)
@@ -767,7 +767,7 @@ send refund advice,"def run(args) {
 Synchronise availability (cancellation),"def run(args) {
 	def Enrolment enrolment = args.value
 
-	if (enrolment.courseClass.sessionsCount == 1 && enrolment.courseClass.startDateTime != null &&
+	if (enrolment.courseClass.sessions.size() == 1 && enrolment.courseClass.startDateTime != null &&
 			enrolment.courseClass.endDateTime != null && !enrolment.courseClass.tutorRoles.isEmpty()) {
 
 		def classes = ObjectSelect.query(CourseClass)

@@ -313,7 +313,7 @@
     <script>def run(args) {
       def Enrolment enrolment = args.value
 
-      if (enrolment.courseClass.sessionsCount == 1 &amp;&amp; enrolment.courseClass.startDateTime != null &amp;&amp;
+      if (enrolment.courseClass.sessions.size() == 1 &amp;&amp; enrolment.courseClass.startDateTime != null &amp;&amp;
       enrolment.courseClass.endDateTime != null &amp;&amp; !enrolment.courseClass.tutorRoles.isEmpty()) {
 
       def classes = ObjectSelect.query(CourseClass)
@@ -1203,7 +1203,7 @@
     <script>def run(args) {
       def Enrolment enrolment = args.value
 
-      if (enrolment.courseClass.sessionsCount == 1 &amp;&amp; enrolment.courseClass.startDateTime != null &amp;&amp;
+      if (enrolment.courseClass.sessions.size() == 1 &amp;&amp; enrolment.courseClass.startDateTime != null &amp;&amp;
       enrolment.courseClass.endDateTime != null &amp;&amp; !enrolment.courseClass.tutorRoles.isEmpty()) {
 
       def classes = ObjectSelect.query(CourseClass)

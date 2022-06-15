@@ -20,9 +20,13 @@ interface Taggable {
 
 	String TAGGING_RELATIONS_PROPERTY = "taggingRelations"
 	String TAG_IDS = "tagIds"
+	String TAG_COLORS = "tagColors"
+	String CHECKLIST_COLORS = "checklistsColor"
 
 	Long getId()
 	List<? extends Tag> getTags()
 	List<Long> getTagIds()
+	List<String> getTagColors()
+	String getChecklistsColor()
 
 }

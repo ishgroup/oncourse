@@ -26,6 +26,7 @@ import getCaretCoordinates from "../../../utils/getCaretCoordinates";
 import { getMenuTags } from "../../list-view/utils/listFiltersUtils";
 import { selectStyles } from "../formFields/SelectCustomComponents";
 import AddTagMenu from "./AddTagMenu";
+import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 
 const styles = theme =>
   createStyles({
@@ -141,11 +142,14 @@ interface Props extends WrappedFieldProps {
 
 const endTagRegex = /#\s*[^\w\d]*$/;
 
-const getCurrentInputString = (input, formTags: Tag[]) => {
+const getCurrentInputString = (input, formTagIds: number[] = [], allMenuTags: MenuTag[] = []) => {
   let substr = input;
 
-  formTags && formTags.forEach(t => {
-    substr = substr.replace("#" + t.name, "").trim();
+  formTagIds?.forEach(id => {
+    const tag = allMenuTags.find(t => t.tagBody.id === id);
+    if (tag) {
+      substr = substr.replace("#" + tag.tagBody.name, "").trim();
+    }
   });
 
   if (substr) {
@@ -175,8 +179,11 @@ const getFullTag = (tagId: number, tags: Tag[]) => {
   }
 };
 
-const getInputString = (tags: Tag[], allTags: Tag[]) => (tags?.length && allTags?.length
-  ? tags.reduce((acc, tag) => (getFullTag(tag.id, allTags) ? `${acc}#${tag.name} ` : acc), "")
+const getInputString = (tagIds: number[], allTags: Tag[]) => (tagIds?.length && allTags?.length
+  ? tagIds.reduce((acc, id) => {
+    const tag = getFullTag(id, allTags);
+    return (tag ? `${acc}#${tag.name} ` : acc);
+  }, "")
   : "");
 
 const SimpleTagList: React.FC<Props> = props => {
@@ -201,7 +208,7 @@ const SimpleTagList: React.FC<Props> = props => {
     if (!inputValue || !tags || !tags.length) return "";
 
     const arrayOfTags = input?.value?.length
-      && input.value.map((tag: Tag) => getFullTag(tag.id, tags)).filter(t => t);
+      && input.value.map(id => getFullTag(id, tags)).filter(t => t);
 
     if (!arrayOfTags?.length) return "";
 
@@ -225,7 +232,7 @@ const SimpleTagList: React.FC<Props> = props => {
   const tagMenuNode = useRef<any>();
 
   const menuTags = useMemo(
-    () => (tags && input.value ? getMenuTags(tags.filter(t => t.childrenCount > 0), input.value) : []),
+    () => (tags && input.value ? getMenuTags(tags.filter(t => t.childrenCount > 0), input.value.map(id => getFullTag(id, tags)).filter(t => t)) : []),
     [tags, input.value]
   );
 
@@ -248,17 +255,16 @@ const SimpleTagList: React.FC<Props> = props => {
       if (!t.children.length) {
         const index = current.findIndex(c => c === t.tagBody.name);
         if (index !== -1) {
-          const addedTagsMatch = input.value.find(v => v.name === t.tagBody.name);
+          const addedTagsMatch = input.value.find(id => getFullTag(id, tags)?.name === t.tagBody.name);
           if (addedTagsMatch && addedTagsMatch.id !== t.tagBody.id) {
             return;
           }
-          updated.push(t.tagBody);
+          updated.push(t.tagBody.id);
           current.splice(index, 1);
         }
       }
     });
 
-    updated.sort((a, b) => current.indexOf(a.name) - current.indexOf(b.name));
     input.onChange(updated);
     setInputValue(getInputString(updated, tags));
   };
@@ -266,12 +272,12 @@ const SimpleTagList: React.FC<Props> = props => {
   const onTagAdd = (tag: MenuTag) => {
     const updated = [...input.value];
 
-    const index = updated.findIndex(t => t.id === tag.tagBody.id);
+    const index = updated.findIndex(id => id === tag.tagBody.id);
 
     if (index !== -1) {
       updated.splice(index, 1);
     } else {
-      updated.push(tag.tagBody);
+      updated.push(tag.tagBody.id);
     }
 
     input.onChange(updated);
@@ -281,7 +287,7 @@ const SimpleTagList: React.FC<Props> = props => {
     }, 100);
   };
 
-  const filterOptions = item => !item.children.length && !input.value.some(v => v.id === item.tagBody.id) && item.tagBody.name
+  const filterOptions = item => !item.children.length && !input.value.some(id => id === item.tagBody.id) && item.tagBody.name
     .toLowerCase()
     .trim()
     .startsWith(currentInputString.toLowerCase().trim());
@@ -366,8 +372,8 @@ const SimpleTagList: React.FC<Props> = props => {
   }, [input.value, tags]);
 
   useEffect(() => {
-    setCurrentInputString(getCurrentInputString(inputValue, input.value));
-  }, [inputValue, input.value]);
+    setCurrentInputString(getCurrentInputString(inputValue, input.value || [], allMenuTags));
+  }, [inputValue, input.value, allMenuTags]);
 
   const popperAdapter = useCallback(params => {
     if (currentInputString) {
@@ -466,7 +472,7 @@ const SimpleTagList: React.FC<Props> = props => {
                     <Edit color="primary" />
                   </InputAdornment>
                 )}
-                multiline
+                multiline={!IS_JEST}
               />
               <FormHelperText
                 classes={{

@@ -33,7 +33,7 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class Message extends _Message implements Queueable {
+class Message extends _Message implements Queueable, ContactActivityTrait {
 
     public static final String IS_EMAIL_PROPERTY = "isEmail"
     public static final String IS_SMS_PROPERTY = "isSms"
@@ -131,7 +131,16 @@ class Message extends _Message implements Queueable {
         return super.getCreatedOn()
     }
 
-    /**
+    @Override
+    String getInteractionDescription() {
+        return smsText != null ? smsText : emailBody
+    }
+
+    @Override
+    String getInteractionName() {
+        return type.displayName
+    }
+/**
      * If this message is an email, this returns the plaintext body. Although it is possible to send an email with an
      * html part only, it is recommended that you always send a plaintext part as well in order to support all users
      * with different devices.

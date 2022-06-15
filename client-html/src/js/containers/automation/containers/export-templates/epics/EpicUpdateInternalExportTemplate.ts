@@ -10,9 +10,8 @@ import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import {
   GET_EXPORT_TEMPLATE,
   GET_EXPORT_TEMPLATES_LIST,
-  UPDATE_INTERNAL_EXPORT_TEMPLATE,
-  UPDATE_INTERNAL_EXPORT_TEMPLATE_FULFILLED
-} from "../actions/index";
+  UPDATE_INTERNAL_EXPORT_TEMPLATE
+} from "../actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import ExportTemplatesService from "../services/ExportTemplatesService";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
@@ -21,9 +20,6 @@ const request: EpicUtils.Request<{ exportTemplate: ExportTemplate }, { exportTem
   type: UPDATE_INTERNAL_EXPORT_TEMPLATE,
   getData: ({ exportTemplate }) => ExportTemplatesService.updateInternal(exportTemplate),
   processData: (v, s, { exportTemplate: { id } }) => [
-      {
-        type: UPDATE_INTERNAL_EXPORT_TEMPLATE_FULFILLED
-      },
       {
         type: GET_EXPORT_TEMPLATE,
         payload: id

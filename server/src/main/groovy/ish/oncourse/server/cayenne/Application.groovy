@@ -13,6 +13,7 @@ package ish.oncourse.server.cayenne
 
 import ish.common.types.ApplicationStatus
 import ish.common.types.ConfirmationStatus
+import ish.common.types.NodeType
 import ish.common.types.PaymentSource
 import ish.math.Money
 import ish.oncourse.API
@@ -38,7 +39,7 @@ import javax.annotation.Nonnull
  */
 @API
 @QueueableEntity
-class Application extends _Application implements Queueable, NotableTrait, ExpandableTrait, AttachableTrait {
+class Application extends _Application implements Queueable, NotableTrait, ExpandableTrait, AttachableTrait, ContactActivityTrait {
 
 
 	@Override
@@ -86,7 +87,11 @@ class Application extends _Application implements Queueable, NotableTrait, Expan
 		return super.getCreatedOn()
 	}
 
-	/**
+	@Override
+	String getInteractionName() {
+		return course.name
+	}
+/**
 	 * The Application can sometimes be valid for a specific length of time.
 	 *
 	 * @return date until when students can apply
@@ -179,14 +184,15 @@ class Application extends _Application implements Queueable, NotableTrait, Expan
 	List<Tag> getTags() {
 		List<Tag> tagList = new ArrayList<>(getTaggingRelations().size())
 		for (ApplicationTagRelation relation : getTaggingRelations()) {
-			tagList.add(relation.getTag())
+			if(relation.tag?.nodeType?.equals(NodeType.TAG))
+				tagList.add(relation.getTag())
 		}
 		return tagList
 	}
 
 	@Override
 	Class<? extends TagRelation> getTagRelationClass() {
-		return WaitingListTagRelation.class
+		return ApplicationTagRelation.class
 	}
 
 	@Override

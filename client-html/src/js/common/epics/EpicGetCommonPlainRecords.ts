@@ -7,7 +7,11 @@ import { Epic } from "redux-observable";
 import { DataResponse } from "@api/model";
 import EntityService from "../services/EntityService";
 import { getCustomColumnsMap } from "../utils/common";
-import { GET_COMMON_PLAIN_RECORDS, GET_COMMON_PLAIN_RECORDS_FULFILLED } from "../actions/CommonPlainRecordsActions";
+import {
+  GET_COMMON_PLAIN_RECORDS,
+  GET_COMMON_PLAIN_RECORDS_FULFILLED,
+  getCommonPlainRecordsRejected
+} from "../actions/CommonPlainRecordsActions";
 import * as EpicUtils from "./EpicUtils";
 
 const request: EpicUtils.Request<
@@ -35,11 +39,12 @@ const request: EpicUtils.Request<
       {
         type: GET_COMMON_PLAIN_RECORDS_FULFILLED,
         payload: {
-         key, items, offset, pageSize
+          key, items, offset, pageSize
         }
       }
     ];
-  }
+  },
+  processError: (e, { key }) => [getCommonPlainRecordsRejected(key)]
 };
 
 export const EpicGetCommonPlainRecords: Epic<any, any> = EpicUtils.Create(request);

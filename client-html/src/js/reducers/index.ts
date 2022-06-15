@@ -55,6 +55,7 @@ import { swipeableDrawerReducer } from "../common/components/layout/swipeable-si
 import { enrolmentsReducer } from "../containers/entities/enrolments/reducers";
 import { commonPlainRecordSearchReducer } from "../common/reducers/commonPlainRecordSearchReducer";
 import { State } from "./state";
+import { sendMessageReducer } from "../common/reducers/sendMessageReducer";
 
 export const combinedReducers = combineReducers<State>({
   access: accessReducer,
@@ -106,5 +107,6 @@ export const combinedReducers = combineReducers<State>({
   userPreferences: userPreferencesReducer,
   usiSoftwareId: usiSoftwareIdReducer,
   voucherProducts: voucherProductReducer,
-  systemUser: systemUserReducer
+  systemUser: systemUserReducer,
+  sendMessage: sendMessageReducer
 });

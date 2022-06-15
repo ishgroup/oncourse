@@ -25,10 +25,8 @@ export const InputSection = React.memo<any>(props => {
     onAqlSearchChange,
     onSearchEscape,
     onFocus,
-    onBlur,
     onAddEvent,
     toggleSearch,
-    validateAql,
     inputRef,
     aqlComponentRef,
     titleCaption,
@@ -36,7 +34,7 @@ export const InputSection = React.memo<any>(props => {
     disabled,
     setSelectedEntity,
     aqlEntity,
-    isValidAqlQuery,
+    aqlQueryError,
     searchTags,
     secondaryHeading,
     disableAddAll,
@@ -101,14 +99,12 @@ export const InputSection = React.memo<any>(props => {
             onAqlSearchChange={onAqlSearchChange}
             onSearchEscape={onSearchEscape}
             onFocus={onFocus}
-            onBlur={onBlur}
             onAddEvent={onAddEvent}
             inputRef={inputRef}
             classes={classes}
             toggleSearch={toggleSearch}
             aqlEntity={aqlEntity}
-            validateAql={validateAql}
-            isValidAqlQuery={isValidAqlQuery}
+            aqlQueryError={aqlQueryError}
             aqlComponentRef={aqlComponentRef}
             className={classes.inputMargin}
             searchTags={searchTags}
@@ -141,11 +137,9 @@ export const InputSectionWithToggle = React.memo<any>(props => {
     onAqlSearchChange,
     onSearchEscape,
     onFocus,
-    onBlur,
     onAddEvent,
     toggleSearch,
     onSwitchToggle,
-    validateAql,
     inputRef,
     aqlComponentRef,
     titleCaption,
@@ -154,7 +148,7 @@ export const InputSectionWithToggle = React.memo<any>(props => {
     disabled,
     setSelectedEntity,
     aqlEntity,
-    isValidAqlQuery,
+    aqlQueryError,
     searchTags,
     secondaryHeading,
     disableAddAll,
@@ -203,12 +197,10 @@ export const InputSectionWithToggle = React.memo<any>(props => {
             classes={classes}
             toggleSearch={toggleSearch}
             onFocus={onFocus}
-            onBlur={onBlur}
             className={clsx("w-100", classes.topOffset)}
             aqlEntity={aqlEntity}
             setSelectedEntity={setSelectedEntity}
-            validateAql={validateAql}
-            isValidAqlQuery={isValidAqlQuery}
+            aqlQueryError={aqlQueryError}
             aqlComponentRef={aqlComponentRef}
             searchTags={searchTags}
             disableAddAll={disableAddAll}

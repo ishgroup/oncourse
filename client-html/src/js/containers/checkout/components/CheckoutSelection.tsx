@@ -39,7 +39,7 @@ import {
   getContactTags
 } from "../../entities/contacts/actions";
 import { getListNestedEditRecord, setListEditRecord } from "../../../common/components/list-view/actions";
-import LoadingIndicator from "../../../common/components/layout/LoadingIndicator";
+import LoadingIndicator from "../../../common/components/progress/LoadingIndicator";
 import { EditViewProps } from "../../../model/common/ListView";
 import { NoArgFunction } from "../../../model/common/CommonFunctions";
 import { FETCH_FINISH, openDrawer, showConfirm } from "../../../common/actions";
@@ -953,8 +953,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
       studyReason: "Not stated",
       class: { ...selectedClass }
     };
-
-    debugger;
 
     if (selectedItems.some(i => i.id === updatedCourse.id)) {
       updateSelectedClass(updatedCourse);
