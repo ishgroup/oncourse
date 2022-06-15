@@ -177,7 +177,7 @@ export const EpicTriggerFundingInvoiceCalculate: Epic<any, any, State> = (action
           const updated = JSON.parse(JSON.stringify(fi));
 
           updated.item.enrolment.items = fi.item.enrolment.items.filter(i =>
-            summaryList.some(li => li.items.some(l => l.checked && l.type === "course" && l.class.id === i.class.id)));
+            summaryList.some(li => li.items.some(l => l.checked && l.type === "course" && l.class?.id === i.class?.id)));
 
           if (updated.item.enrolment.items.length) {
             fundingInvoicesUpdated.push(updated);

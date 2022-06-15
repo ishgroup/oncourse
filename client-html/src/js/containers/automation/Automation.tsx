@@ -14,7 +14,6 @@ import { SidebarWithSearch } from "../../common/components/layout/sidebar-with-s
 import { setSwipeableDrawerDirtyForm } from "../../common/components/layout/swipeable-sidebar/actions";
 import { getColumnsWidth, updateColumnsWidth, getPreferencesByKeys } from "../preferences/actions";
 import SideBar from "./components/AutomationSideBar";
-import AutomatiomAppFrame from "./components/AutomationAppFrame";
 import { getIntegrations } from "./actions";
 import { getScriptsList, getTimeZone } from "./containers/scripts/actions";
 import { getExportTemplatesList } from "./containers/export-templates/actions";
@@ -23,6 +22,7 @@ import { getAutomationPdfBackgroundsList } from "./containers/pdf-backgrounds/ac
 import { getEmailTemplatesList } from "./containers/email-templates/actions";
 import { getImportTemplatesList } from "./containers/import-templates/actions";
 import { NumberArgFunction } from "../../model/common/CommonFunctions";
+import automationRoutes from "./routes";
 
 interface Props extends RouteComponentProps {
   formName: string;
@@ -59,7 +59,7 @@ const Automation = React.memo<Props>(props => {
   }, [isNew, dirty, formName]);
 
   return (
-    <SidebarWithSearch {...props} SideBar={SideBar} AppFrame={AutomatiomAppFrame} noSearch appFrameClass="w-50" />
+    <SidebarWithSearch {...props} SideBar={SideBar} routes={automationRoutes} noSearch appFrameClass="w-50" />
   );
 });
 

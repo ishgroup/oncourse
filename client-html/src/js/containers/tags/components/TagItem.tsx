@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { useCallback } from "react";
@@ -19,7 +22,7 @@ import { FormEditorField } from "../../../common/components/markdown-editor/Form
 import { stopEventPropagation } from "../../../common/utils/events";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { FormTagProps } from "../../../model/tags";
-import ColorPicker from "../../../common/components/color-picker/ColorPicker";
+import ColorPicker from "../../../common/components/form/color-picker/ColorPicker";
 
 const getFieldName = (parent, name) => (parent ? parent + `.${name}` : name);
 
@@ -33,7 +36,7 @@ const TagItem = React.memo<FormTagProps>(({
   isEditing,
   setIsEditing
 }) => {
-  const onEditClick = () => setIsEditing(isEditing ? null : item.id);
+  const onEditClick = () => setIsEditing(item.id);
 
   const onDeleteClick = useCallback(e => {
     stopEventPropagation(e);

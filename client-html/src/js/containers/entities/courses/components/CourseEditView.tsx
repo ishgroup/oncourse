@@ -7,7 +7,7 @@ import React, { useMemo } from "react";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import { useSelector } from "react-redux";
-import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
+import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
 import CourseClassesTab from "./CourseClassesTab";
 import CourseGeneralTab from "./CourseGeneralTab";
 import CourseMarketingTab from "./CourseMarketingTab";

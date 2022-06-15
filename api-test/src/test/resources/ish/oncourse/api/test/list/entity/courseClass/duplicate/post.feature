@@ -15,7 +15,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/d
 
     Scenario: (+) Duplicate CourseClass by admin
 
-        * def duplicateCourseClass = {"classIds":[6], "daysTo":1, "copyTutors":true, "copyTrainingPlans":true, "applyDiscounts":true, "copyCosts":true, "copySitesAndRooms":true, "copyPayableTimeForSessions":true, "copyVetData":true, "copyNotes":false, "copyAssessments":true, "copyOnlyMandatoryTags":true}
+        * def duplicateCourseClass = {"classIds":[6], "daysTo":1, "copyTutors":true, "copyTrainingPlans":true, "applyDiscounts":true, "copyCosts":true, "copySitesAndRooms":true, "tutorRosterOverrides":true, "copyVetData":true, "copyNotes":false, "copyAssessments":true, "copyOnlyMandatoryTags":true}
 
         Given path ishPath
         And request duplicateCourseClass
@@ -64,7 +64,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/d
         
 #       <--->
 
-        * def duplicateCourseClass = {"classIds":[6], "daysTo":1, "copyTutors":true, "copyTrainingPlans":true, "applyDiscounts":true, "copyCosts":true, "copySitesAndRooms":true, "copyPayableTimeForSessions":true, "copyVetData":true, "copyNotes":false, "copyAssessments":true, "copyOnlyMandatoryTags":true}
+        * def duplicateCourseClass = {"classIds":[6], "daysTo":1, "copyTutors":true, "copyTrainingPlans":true, "applyDiscounts":true, "copyCosts":true, "copySitesAndRooms":true, "tutorRosterOverrides":true, "copyVetData":true, "copyNotes":false, "copyAssessments":true, "copyOnlyMandatoryTags":true}
 
         Given path ishPath
         And request duplicateCourseClass
@@ -116,7 +116,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/d
         
 #       <--->
 
-        * def duplicateCourseClass = {"classIds":[6], "daysTo":1, "copyTutors":true, "copyTrainingPlans":true, "applyDiscounts":true, "copyCosts":true, "copySitesAndRooms":true, "copyPayableTimeForSessions":true, "copyVetData":true, "copyNotes":false, "copyAssessments":true, "copyOnlyMandatoryTags":true}
+        * def duplicateCourseClass = {"classIds":[6], "daysTo":1, "copyTutors":true, "copyTrainingPlans":true, "applyDiscounts":true, "copyCosts":true, "copySitesAndRooms":true, "tutorRosterOverrides":true, "copyVetData":true, "copyNotes":false, "copyAssessments":true, "copyOnlyMandatoryTags":true}
 
         Given path ishPath
         And request duplicateCourseClass
@@ -128,7 +128,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/d
 
     Scenario: (-) Duplicate not existing CourseClass
 
-        * def duplicateCourseClass = {"classIds":[99999], "daysTo":1, "copyTutors":true, "copyTrainingPlans":true, "applyDiscounts":true, "copyCosts":true, "copySitesAndRooms":true, "copyPayableTimeForSessions":true, "copyVetData":true, "copyNotes":false, "copyAssessments":true, "copyOnlyMandatoryTags":true}
+        * def duplicateCourseClass = {"classIds":[99999], "daysTo":1, "copyTutors":true, "copyTrainingPlans":true, "applyDiscounts":true, "copyCosts":true, "copySitesAndRooms":true, "tutorRosterOverrides":true, "copyVetData":true, "copyNotes":false, "copyAssessments":true, "copyOnlyMandatoryTags":true}
 
         Given path ishPath
         And request duplicateCourseClass

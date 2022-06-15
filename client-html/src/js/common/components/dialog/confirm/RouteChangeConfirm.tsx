@@ -36,15 +36,6 @@ class RouteChangeConfirm extends React.Component<Props & RouteComponentProps> {
     super(props);
   }
 
-  shouldComponentUpdate(nextProps: Readonly<Props & RouteComponentProps>): boolean {
-    const {
-      isInvalid,
-      form,
-    } = this.props;
-
-    return nextProps.form !== form || nextProps.isInvalid !== isInvalid;
-  }
-
   componentDidMount() {
     this.setUnblockFunction();
   }
@@ -93,7 +84,7 @@ class RouteChangeConfirm extends React.Component<Props & RouteComponentProps> {
 
         showConfirm(
           {
-            onCancelCustom: this.onConfirm,
+            onCancelCustom: this.onCancelCustom,
             confirmMessage: message,
             cancelButtonText: "DISCARD CHANGES",
             confirmCustomComponent: confirmButton
@@ -110,16 +101,15 @@ class RouteChangeConfirm extends React.Component<Props & RouteComponentProps> {
     this.unblock();
   }
 
+  onCancelCustom = () => {
+    this.navigateToNextLocation();
+  }
+
   navigateToNextLocation() {
     const { nextLocation } = this.props;
-
     this.unblock();
     this.props.history.push(nextLocation);
   }
-
-  onConfirm = () => {
-    this.navigateToNextLocation();
-  };
 
   render() {
     return null;

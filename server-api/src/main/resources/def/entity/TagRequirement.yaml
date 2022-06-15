@@ -21,3 +21,6 @@ properties:
     required: true
     description: True if tag shows on website
     example: true
+  displayRule:
+    type: string
+    description: aql display rule of checklists, related to entity of this type

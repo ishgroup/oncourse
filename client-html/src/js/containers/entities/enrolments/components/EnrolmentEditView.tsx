@@ -1,5 +1,5 @@
 import React from "react";
-import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
+import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
 import EnrolmentGeneralTab from "./EnrolmentGeneralTab";
 import EnrolmentVetStudentLoans from "./EnrolmentVetStudentLoans";
 import EnrolmentAttachmentsTab from "./EnrolmentAttachmentsTab";

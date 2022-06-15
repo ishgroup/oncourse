@@ -14,6 +14,8 @@ describe("Virtual rendered ArticleProductEditView", () => {
         feeExTax: initialValues.feeExTax.toString(),
         totalFee: initialValues.totalFee.toString(),
         status: initialValues.status,
+        dataCollectionRuleId: initialValues.dataCollectionRuleId.toString(),
+        description: initialValues.description,
       });
     }
   });

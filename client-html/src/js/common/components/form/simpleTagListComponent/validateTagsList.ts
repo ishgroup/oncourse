@@ -28,13 +28,13 @@ export const validateTagsList = (tags: Tag[], value, allValues, props) => {
 
   if (value) {
     value.forEach(i => {
-      const match = tags.find(t => isParent(t, i.id));
+      const match = tags.find(t => isParent(t, i));
 
       if (match) {
         if (usedRootTags[match.id]) {
-          usedRootTags[match.id].push(i);
+          usedRootTags[match.id].push(match);
         } else {
-          usedRootTags[match.id] = [i];
+          usedRootTags[match.id] = [match];
         }
       }
     });
