@@ -17,7 +17,7 @@ describe("Create integration epic tests", () => {
         { key: "serviceName", value: "newint" } as IntegrationProp,
         { key: "courseTag", value: "Moodle" } as IntegrationProp
       ]
-    }),
+    }, "MoodleForm"),
     epic: EpicCreateIntegration,
     processData: () => [
       getIntegrations(),

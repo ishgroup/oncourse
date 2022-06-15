@@ -163,13 +163,10 @@ class FormContainer extends React.Component<Props & RouteComponentProps, any> {
     })
       .then(() => {
         const {
-          dispatch, data, formName, nextLocation, setNextLocation, history
+          dispatch, data, formName
         } = this.props;
 
         dispatch(initialize(formName, this.formatData(data)));
-
-        nextLocation && history.push(nextLocation);
-        setNextLocation('');
       })
       .catch(error => {
         this.isValidating = false;

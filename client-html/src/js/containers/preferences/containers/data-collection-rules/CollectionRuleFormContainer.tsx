@@ -51,7 +51,7 @@ class CollectionRuleFormContainer extends React.Component<Props, any> {
 
   onSave = (value: DataCollectionRule) => {
     const {
-      onUpdate, onAddNew, match, history, initialize, nextLocation, setNextLocation
+      onUpdate, onAddNew, match, history, initialize, nextLocation
     } = this.props;
 
     const isNew = match.params.action === "new";
@@ -72,9 +72,9 @@ class CollectionRuleFormContainer extends React.Component<Props, any> {
         this.skipValidation = true;
         initialize(value);
 
-        nextLocation && history.push(nextLocation);
-        setNextLocation('');
-
+        if (nextLocation) {
+          history.push(nextLocation);
+        }
         this.skipValidation = false;
       })
       .catch(error => {

@@ -8,7 +8,6 @@
 
 import React from "react";
 import { initialize, reduxForm } from "redux-form";
-import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 
@@ -29,12 +28,11 @@ class AzureFormBase extends React.Component<any, any> {
 
   render() {
     const {
-      handleSubmit, onSubmit, AppBarContent, dirty, form
+      handleSubmit, onSubmit, AppBarContent
     } = this.props;
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
         <AppBarContent>
           <FormField type="text" name="fields.account" label="Account" required className="mb-2" />
           <FormField type="text" name="fields.key" label="Key" required className="mb-2" />
