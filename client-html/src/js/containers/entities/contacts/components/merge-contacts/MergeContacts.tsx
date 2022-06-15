@@ -24,7 +24,7 @@ import Button from "@mui/material/Button";
 import { MergeData, MergeLine, MergeRequest } from "@api/model";
 import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
 import { State } from "../../../../../reducers/state";
-import LoadingIndicator from "../../../../../common/components/layout/LoadingIndicator";
+import LoadingIndicator from "../../../../../common/components/progress/LoadingIndicator";
 import { Switch } from "../../../../../common/components/form/formFields/Switch";
 import { getMergeContacts, postMergeContacts } from "../../actions";
 import { getContactName } from "../../utils";

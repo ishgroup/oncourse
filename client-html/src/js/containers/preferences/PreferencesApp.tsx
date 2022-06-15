@@ -1,3 +1,11 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 /**
  * preferences app layout
  * */
@@ -13,27 +21,27 @@ import { setSwipeableDrawerDirtyForm } from "../../common/components/layout/swip
 import {
   getColumnsWidth,
   getDataCollectionForms,
-  getDataCollectionRules, getGradingTypes,
+  getDataCollectionRules,
+  getGradingTypes,
   getPreferences,
   getTutorRoles,
   updateColumnsWidth
 } from "./actions";
-import AppFrame from "./components/AppFrame";
 import SideBar from "./components/SideBar";
+import preferencesRoutes from "./routes";
 
-const PreferencesApp = React.memo<any>(
-  ({
-     onInit,
-     history,
-     match,
-     updateColumnsWidth,
-     preferenceLeftColumnWidth,
-     location: {
-       pathname
-     },
-    formName,
-    dirty,
-    onSetSwipeableDrawerDirtyForm
+const PreferencesApp = ({
+   onInit,
+   history,
+   match,
+   updateColumnsWidth,
+   preferenceLeftColumnWidth,
+   location: {
+     pathname
+   },
+  formName,
+  dirty,
+  onSetSwipeableDrawerDirtyForm
   }) => {
     const isNew = useMemo(() => {
       const pathArray = pathname.split("/");
@@ -50,13 +58,12 @@ const PreferencesApp = React.memo<any>(
         updateColumnsWidth={updateColumnsWidth}
         onInit={onInit}
         SideBar={SideBar}
-        AppFrame={AppFrame}
+        routes={preferencesRoutes}
         history={history}
         match={match}
       />
     );
-  }
-);
+  };
 
 const getFormName = form => form && Object.keys(form)[0];
 
@@ -74,6 +81,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getTutorRoles());
     dispatch(getGradingTypes());
     dispatch(getPreferences(Categories.licences));
+    dispatch(getPreferences(Categories.plugins));
   },
   updateColumnsWidth: (preferenceLeftColumnWidth: number) => dispatch(updateColumnsWidth({ preferenceLeftColumnWidth })),
   onSetSwipeableDrawerDirtyForm: (isDirty: boolean, formName: string) => dispatch(

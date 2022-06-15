@@ -9,8 +9,7 @@ import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import {
   GET_EXPORT_TEMPLATE,
   GET_EXPORT_TEMPLATES_LIST,
-  UPDATE_EXPORT_TEMPLATE,
-  UPDATE_EXPORT_TEMPLATE_FULFILLED
+  UPDATE_EXPORT_TEMPLATE
 } from "../actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import ExportTemplatesService from "../services/ExportTemplatesService";
@@ -20,9 +19,6 @@ const request: EpicUtils.Request<{ importTemplate: ImportModel }, { exportTempla
   type: UPDATE_EXPORT_TEMPLATE,
   getData: ({ exportTemplate }) => ExportTemplatesService.update(exportTemplate.id, exportTemplate),
   processData: (v, s, { exportTemplate: { id } }) => [
-      {
-        type: UPDATE_EXPORT_TEMPLATE_FULFILLED
-      },
       {
         type: GET_EXPORT_TEMPLATE,
         payload: id

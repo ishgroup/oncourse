@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.types.NodeType
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.cayenne.Taggable
@@ -89,6 +90,11 @@ class TagRequirement extends _TagRequirement implements Queueable {
 			}
 		}
 		return null
+	}
+
+	@Override
+	boolean isAsyncReplicationAllowed() {
+		return tag?.nodeType != NodeType.CHECKLIST
 	}
 
 	@Override

@@ -65,7 +65,7 @@ class SiteFunctions {
             site.drivingDirections = dbSite.drivingDirections
             site.publicTransportDirections = dbSite.publicTransportDirections
             site.specialInstructions = dbSite.specialInstructions
-            site.tags = dbSite.tags.collect { toRestTagMinimized(it) }
+            site.tags = dbSite.allTags.collect { it.id }
             site.rooms = dbSite.rooms.collect { RoomFunctions.toRestRoomMinimized(it) }
             site.documents = dbSite.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             site.rules = dbSite.unavailableRuleRelations*.rule.collect{ toRestHoliday(it as UnavailableRule) }
@@ -96,7 +96,7 @@ class SiteFunctions {
         dbSite.specialInstructions = trimToNull(site.specialInstructions)
 
         updateRooms(dbSite, site.rooms)
-        updateTags(dbSite, dbSite.taggingRelations, site.tags*.id, SiteTagRelation, context)
+        updateTags(dbSite, dbSite.taggingRelations, site.tags, SiteTagRelation, context)
         updateAvailabilityRules(dbSite, dbSite.unavailableRuleRelations*.rule, site.rules, SiteUnavailableRuleRelation)
         updateDocuments(dbSite, dbSite.attachmentRelations, site.documents, SiteAttachmentRelation, context)
 
@@ -179,7 +179,7 @@ class SiteFunctions {
         }
 
 
-        return error ?: TagFunctions.validateRelationsForSave(Site, context, site.tags*.id,  TaggableClasses.SITE)
+        return error ?: TagFunctions.validateRelationsForSave(Site, context, site.tags,  TaggableClasses.SITE)
     }
 
     private static void updateRooms(Site site, List<RoomDTO> rooms) {

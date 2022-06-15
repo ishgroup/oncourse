@@ -287,7 +287,7 @@ export const usiSoftwareIdReducer = (state: string = null, action: IAction<strin
   }
 };
 
-export const lockedDateReducer = (state: Date = null, action: IAction<any>): Date => {
+export const lockedDateReducer = (state: string = null, action: IAction<any>): string => {
   switch (action.type) {
     case GET_ACCOUNT_TRANSACTION_LOCKED_DATE_FULFILLED: {
       const { lockedDate } = action.payload;

@@ -46,6 +46,9 @@ public class HttpFactory {
     public String getIp() {
         return ip;
     }
+    public String getPath() {
+        return path;
+    }
 
     public HttpFactory serverProvider(Provider<Server> serverProvider) {
         this.serverProvider = serverProvider;

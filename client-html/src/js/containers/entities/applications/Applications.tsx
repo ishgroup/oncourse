@@ -20,7 +20,6 @@ import {
 } from "../../../common/components/list-view/actions";
 import { getListTags } from "../../tags/actions";
 import { defaultContactName } from "../contacts/utils";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
 import {
   getApplication, updateApplication, createApplication, removeApplication
 } from "./actions";
@@ -117,10 +116,6 @@ const findRelatedGroup: any[] = [
   { title: "Enrolments", list: "enrolment", expression: "student.applications.id" }
 ];
 
-const nestedEditFields = {
-  SendMessage: props => <SendMessageEditView {...props} />
-};
-
 class Applications extends React.Component<ApplicationsProps, any> {
   componentDidMount() {
     this.props.getTags();
@@ -150,7 +145,6 @@ class Applications extends React.Component<ApplicationsProps, any> {
             nameCondition,
             hideTitle: true
           }}
-          nestedEditFields={nestedEditFields}
           EditViewContent={ApplicationEditView}
           CogwheelAdornment={BulkEditCogwheelOption}
           getEditRecord={getApplicationRecord}
@@ -161,7 +155,6 @@ class Applications extends React.Component<ApplicationsProps, any> {
           onSave={onSave}
           findRelated={findRelatedGroup}
           filterGroupsInitial={filterGroups}
-
         />
       </div>
     );

@@ -13,22 +13,24 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { Contact, PayslipPayType, PayslipStatus } from "@api/model";
 import Typography from "@mui/material/Typography";
-import { IconButton } from "@mui/material";
-import Launch from "@mui/icons-material/Launch";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { getListNestedEditRecord } from "../../../../common/components/list-view/actions";
 import { getEntityTags } from "../../../tags/actions";
 import PayslipPaylineRenderrer from "./PayslipPaylineRenderrer";
-import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
+import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import {
+  ContactLinkAdornment,
+  HeaderContactTitle
+} from "../../../../common/components/form/FieldAdornments";
 import { PayLineWithDefer } from "../../../../model/entities/Payslip";
 import { mapSelectItems } from "../../../../common/utils/common";
 import AddButton from "../../../../common/components/icons/AddButton";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 const getLayoutArray = (threeColumn: boolean): { [key: string]: boolean | GridSize }[] => (threeColumn
     ? [
@@ -121,7 +123,8 @@ class PayslipsEditView extends React.PureComponent<any, any> {
       tags,
       twoColumn,
       currency,
-      syncErrors
+      syncErrors,
+      form
     } = this.props;
 
     const total = values && values.paylines.reduce(this.calculateTotal, 0);
@@ -140,12 +143,7 @@ class PayslipsEditView extends React.PureComponent<any, any> {
             disableInteraction={!isNew}
             twoColumn={twoColumn}
             title={(
-              <div className="d-inline-flex-center">
-                {values && defaultContactName(values.tutorFullName)}
-                <IconButton disabled={!values?.tutorId} size="small" color="primary" onClick={() => openContactLink(values?.tutorId)}>
-                  <Launch fontSize="inherit" />
-                </IconButton>
-              </div>
+              <HeaderContactTitle name={values?.tutorFullName} id={values?.tutorId} />
             )}
             fields={(
               <Grid item xs={twoColumn ? 6 : 12}>
@@ -159,7 +157,7 @@ class PayslipsEditView extends React.PureComponent<any, any> {
                   selectLabelCondition={contactLabelCondition}
                   defaultDisplayValue={values && defaultContactName(values.tutorFullName)}
                   labelAdornment={
-                    <LinkAdornment linkHandler={openContactLink} link={values.tutorId} disabled={!values.tutorId} />
+                    <ContactLinkAdornment id={values?.tutorId} />
                   }
                   disabled={!isNew}
                   onInnerValueChange={this.onTutorIdChange}
@@ -182,11 +180,20 @@ class PayslipsEditView extends React.PureComponent<any, any> {
           />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={twoColumn ? 8 : 12}>
           <FormField
             type="tags"
             name="tags"
             tags={tags}
+          />
+        </Grid>
+
+        <Grid item xs={twoColumn ? 4 : 12}>
+          <EntityChecklists
+            entity="Payslip"
+            form={form}
+            entityId={values.id}
+            checked={values.tags}
           />
         </Grid>
 

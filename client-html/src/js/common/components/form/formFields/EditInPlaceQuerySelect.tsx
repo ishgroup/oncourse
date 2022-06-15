@@ -427,6 +427,8 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
       input = input.replace(FILTER_TAGS_REGEX, v => `@"${v.replace("@", "")}"`);
     }
 
+    input = input.length ? input : `#""`;
+
     const chars = new ANTLRInputStream(input);
     const lexer = new AqlLexer(chars);
     const tokens = new CommonTokenStream(lexer);
@@ -1162,7 +1164,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
                 }}
                 error={meta?.invalid}
                 helperText={(
-                  <span className="shakingError">
+                  <span className="d-block shakingError">
                     {!disableErrorText && (meta?.invalid ? meta.error || "Expression is invalid" : "")}
                   </span>
                 )}
@@ -1171,7 +1173,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
                 onFocus={this.onFocus}
                 onBlur={this.onBlur}
                 label={label}
-                placeholder={placeholder}
+                placeholder={placeholder || "No value"}
               />
             )}
             popupIcon={stubComponent()}

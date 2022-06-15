@@ -1,5 +1,5 @@
 import * as React from "react";
-import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
+import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
 import WaitingListGeneral from "./WaitingListGeneral";
 import WaitingListNotes from "./WaitingListNotes";
 import WaitingListSites from "./WaitingListSites";

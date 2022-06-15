@@ -13,7 +13,7 @@ package ish.oncourse.server.api.v1.function
 
 import ish.oncourse.server.api.v1.model.DataTypeDTO
 
-import static ish.oncourse.common.field.PropertyGetSetFactory.CUSTOM_FIELD_PROPERTY_PATTERN
+import static ish.oncourse.common.field.PropertyGetSetFields.CUSTOM_FIELD_PROPERTY_PATTERN
 import ish.oncourse.server.api.v1.model.CustomFieldTypeDTO
 import ish.oncourse.server.api.v1.model.EntityTypeDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO

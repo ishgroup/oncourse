@@ -9,6 +9,7 @@ import Grid from "@mui/material/Grid";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import { buildUrl, productUrl } from "../../sales/utils";
+import { ContactLinkAdornment } from "../../../../common/components/form/FieldAdornments";
 
 export const MembershipHeader: React.FunctionComponent<any> = ({ row }) => (
   <div className="w-100 d-grid gridTemplateColumns-1fr">
@@ -35,7 +36,9 @@ export const MembershipContent: React.FunctionComponent<any> = ({ row, item, two
         <Uneditable
           value={row.purchasedByName}
           label="Purchased by"
-          url={buildUrl(row.purchasedById, "Contacts")}
+          labelAdornment={
+            <ContactLinkAdornment id={row.purchasedById} />
+          }
         />
       </Grid>
       <Grid item xs={gridSpacing}>

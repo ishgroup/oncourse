@@ -27,7 +27,7 @@ public class ClassDuplicationRequest implements Serializable {
 	private boolean applyDiscounts;
 	private boolean copyCosts;
 	private boolean copySitesAndRooms;
-	private boolean copyPayableTimeForSessions;
+	private boolean tutorRosterOverrides;
 	private boolean copyVetData;
 	private boolean copyNotes;
 	private boolean copyAssessments;
@@ -105,12 +105,12 @@ public class ClassDuplicationRequest implements Serializable {
 		this.copySitesAndRooms = copySitesAndRooms;
 	}
 
-	public boolean isCopyPayableTimeForSessions() {
-		return copyPayableTimeForSessions;
+	public boolean isTutorRosterOverrides() {
+		return tutorRosterOverrides;
 	}
 
-	public void setCopyPayableTimeForSessions(boolean copyPayableTimeForSessions) {
-		this.copyPayableTimeForSessions = copyPayableTimeForSessions;
+	public void setTutorRosterOverrides(boolean tutorRosterOverrides) {
+		this.tutorRosterOverrides = tutorRosterOverrides;
 	}
 
 	public boolean isCopyVetData() {

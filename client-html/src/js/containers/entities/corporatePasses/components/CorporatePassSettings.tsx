@@ -8,14 +8,15 @@ import Grid from "@mui/material/Grid";
 import { change } from "redux-form";
 import { Contact } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
+import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import {
+  ContactLinkAdornment,
+  HeaderContactTitle
+} from "../../../../common/components/form/FieldAdornments";
 import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { IconButton } from "@mui/material";
-import Launch from "@mui/icons-material/Launch";
 
 class CorporatePassSettings extends React.PureComponent<EditViewProps, any> {
   onContactChange = (value: Contact) => {
@@ -40,12 +41,7 @@ class CorporatePassSettings extends React.PureComponent<EditViewProps, any> {
             disableInteraction={!isNew}
             twoColumn={twoColumn}
             title={(
-              <div className="d-inline-flex-center">
-                {values && defaultContactName(values.contactFullName)}
-                <IconButton disabled={!values?.contactId} size="small" color="primary" onClick={() => openContactLink(values?.contactId)}>
-                  <Launch fontSize="inherit" />
-                </IconButton>
-              </div>
+              <HeaderContactTitle name={values?.contactFullName} id={values?.contactId} />
             )}
             fields={(
               <Grid item xs={twoColumn ? 6 : 12}>
@@ -58,11 +54,7 @@ class CorporatePassSettings extends React.PureComponent<EditViewProps, any> {
                   selectLabelCondition={contactLabelCondition}
                   defaultDisplayValue={values && defaultContactName(values.contactFullName)}
                   labelAdornment={(
-                    <LinkAdornment
-                      linkHandler={openContactLink}
-                      link={values && values.contactId}
-                      disabled={!values || !values.contactId}
-                    />
+                    <ContactLinkAdornment id={values?.contactId} />
                   )}
                   onInnerValueChange={this.onContactChange}
                   itemRenderer={ContactSelectItemRenderer}

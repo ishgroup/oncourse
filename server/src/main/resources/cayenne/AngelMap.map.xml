@@ -413,14 +413,9 @@
 		<db-attribute name="midwayDETexport" type="VARCHAR" length="20"/>
 		<db-attribute name="minStudentAge" type="INTEGER"/>
 		<db-attribute name="minimumPlaces" type="INTEGER" isMandatory="true"/>
-		<db-attribute name="minutesPerSession" type="INTEGER" length="10" scale="2"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 		<db-attribute name="reportableHours" type="REAL"/>
 		<db-attribute name="roomId" type="BIGINT"/>
-		<db-attribute name="sessionCount" type="INTEGER" isMandatory="true"/>
-		<db-attribute name="sessionrepeatInterval" type="INTEGER"/>
-		<db-attribute name="sessionrepeatType" type="INTEGER"/>
-		<db-attribute name="sessionsSkipWeekends" type="SMALLINT"/>
 		<db-attribute name="startDateTime" type="TIMESTAMP"/>
 		<db-attribute name="suppressAvetmissExport" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="taxAdjustment" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
@@ -1013,12 +1008,14 @@
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 		<db-attribute name="nodeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="displayRule" type="VARCHAR" length="512"/>
 	</db-entity>
 	<db-entity name="Note">
 		<db-attribute name="changedById" type="BIGINT"/>
 		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="interactionDate" type="TIMESTAMP" isMandatory="false"/>
 		<db-attribute name="note" type="CLOB" isMandatory="true" length="32000"/>
 		<db-attribute name="systemUserId" type="BIGINT"/>
 	</db-entity>
@@ -2100,13 +2097,8 @@
 		<obj-attribute name="midwayDETexport" type="java.lang.String" db-attribute-path="midwayDETexport"/>
 		<obj-attribute name="minStudentAge" type="java.lang.Integer" db-attribute-path="minStudentAge"/>
 		<obj-attribute name="minimumPlaces" type="java.lang.Integer" db-attribute-path="minimumPlaces"/>
-		<obj-attribute name="minutesPerSession" type="java.lang.Integer" db-attribute-path="minutesPerSession"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="reportableHours" type="java.math.BigDecimal" db-attribute-path="reportableHours"/>
-		<obj-attribute name="sessionRepeatInterval" type="java.lang.Integer" db-attribute-path="sessionrepeatInterval"/>
-		<obj-attribute name="sessionRepeatType" type="ish.common.types.SessionRepetitionType" db-attribute-path="sessionrepeatType"/>
-		<obj-attribute name="sessionsCount" type="java.lang.Integer" db-attribute-path="sessionCount"/>
-		<obj-attribute name="sessionsSkipWeekends" type="java.lang.Boolean" db-attribute-path="sessionsSkipWeekends"/>
 		<obj-attribute name="startDateTime" type="java.util.Date" db-attribute-path="startDateTime"/>
 		<obj-attribute name="suppressAvetmissExport" type="java.lang.Boolean" db-attribute-path="suppressAvetmissExport"/>
 		<obj-attribute name="taxAdjustment" type="ish.math.Money" db-attribute-path="taxAdjustment"/>
@@ -2642,6 +2634,7 @@
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
+		<obj-attribute name="interactionDate" type="java.util.Date" db-attribute-path="interactionDate"/>
 		<obj-attribute name="note" type="java.lang.String" db-attribute-path="note"/>
 	</obj-entity>
 	<obj-entity name="NoteRelation" abstract="true" className="ish.oncourse.server.cayenne.NoteRelation" clientClassName="ish.oncourse.cayenne.NoteRelation" dbEntityName="NoteRelation" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
@@ -3156,6 +3149,7 @@
 		<obj-attribute name="manyTermsAllowed" type="java.lang.Boolean" db-attribute-path="manyTermsAllowed"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+		<obj-attribute name="displayRule" type="java.lang.String" db-attribute-path="displayRule"/>
 	</obj-entity>
 	<obj-entity name="Tax" className="ish.oncourse.server.cayenne.Tax" clientClassName="ish.oncourse.cayenne.Tax" dbEntityName="Tax" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>

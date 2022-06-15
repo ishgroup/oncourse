@@ -24,7 +24,7 @@ export const removeMessage = (id: string) => ({
   payload: id
 });
 
-export const sendMessage = (model: MessageExtended) => ({
+export const sendMessage = (model: MessageExtended, selection: string[]) => ({
   type: SEND_MESSAGE,
-  payload: model
+  payload: { model, selection }
 });
