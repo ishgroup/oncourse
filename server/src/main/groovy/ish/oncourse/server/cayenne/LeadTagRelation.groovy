@@ -33,7 +33,7 @@ class LeadTagRelation extends _LeadTagRelation {
         super.setTaggedLead((Lead) object)
     }
 
-    boolean isAsyncReplicationAllowed() {
+    boolean logicAllowsReplication() {
         return false
     }
 }

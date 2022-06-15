@@ -117,7 +117,7 @@ class Module extends _Module implements Queueable, ModuleInterface {
 	}
 
 	@Override
-	boolean isAsyncReplicationAllowed() {
+	boolean logicAllowsReplication() {
 		return Boolean.TRUE == getIsCustom()
 	}
 

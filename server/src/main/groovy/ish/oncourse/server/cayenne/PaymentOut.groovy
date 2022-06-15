@@ -293,7 +293,7 @@ class PaymentOut extends _PaymentOut implements PaymentOutInterface, Queueable, 
 	 * @return isAsyncReplicationAllowed
 	 */
 	@Override
-	boolean isAsyncReplicationAllowed() {
+	boolean logicAllowsReplication() {
 		return getStatus() != null && PaymentStatus.QUEUED != getStatus() && PaymentStatus.IN_TRANSACTION != getStatus() &&
 				PaymentStatus.CARD_DETAILS_REQUIRED != getStatus()
 	}

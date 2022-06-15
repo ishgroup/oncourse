@@ -19,6 +19,7 @@ import javax.annotation.Nullable
  * A persistent object which can be replicated to Willow
  */
 trait Queueable {
+	private boolean replicationAllowed = true
     @Nonnull
 	abstract Long getId();
 
@@ -27,8 +28,16 @@ trait Queueable {
 	@Nullable
 	abstract Long getWillowId();
 
-	boolean isAsyncReplicationAllowed() {
-		return true
+	boolean isAsyncReplicationAllowed(){
+		return replicationAllowed && logicAllowsReplication()
+	}
+
+	void setAsyncReplicationAllowed(boolean value){
+		this.replicationAllowed = value
+	}
+
+	boolean logicAllowsReplication() {
+		return replicationAllowed
 	}
 	
 	// The following are from Persistent but still handy

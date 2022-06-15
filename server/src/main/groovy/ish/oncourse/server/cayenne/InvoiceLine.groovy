@@ -48,18 +48,18 @@ class InvoiceLine extends _InvoiceLine {
      * @return isAsyncReplicationAllowed
      */
     @Override
-    boolean isAsyncReplicationAllowed() {
+    boolean logicAllowsReplication() {
 
         // If invoice is not yet linked to any payments.
         Enrolment enrol = getEnrolment()
         if (enrol != null) {
             ObjectIdQuery q = new ObjectIdQuery(enrol.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH)
             enrol = (Enrolment) Cayenne.objectForQuery(getObjectContext(), q)
-            if (!enrol.isAsyncReplicationAllowed()) {
+            if (!enrol.logicAllowsReplication()) {
                 return false
             }
         }
-        return getInvoice() == null || getInvoice().isAsyncReplicationAllowed()
+        return getInvoice() == null || getInvoice().logicAllowsReplication()
     }
 
     /**

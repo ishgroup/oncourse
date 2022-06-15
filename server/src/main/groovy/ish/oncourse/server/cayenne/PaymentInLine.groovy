@@ -21,7 +21,6 @@ import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
-import java.util.Date
 
 /**
  * Payment line links payment with one or multiple invoices which are getting paid for.
@@ -104,8 +103,8 @@ class PaymentInLine extends _PaymentInLine implements PaymentInLineInterface, Qu
 	 * @return isAsyncReplicationAllowed
 	 */
 	@Override
-	boolean isAsyncReplicationAllowed() {
-		return getPaymentIn() != null && getPaymentIn().isAsyncReplicationAllowed()
+	boolean logicAllowsReplication() {
+		return getPaymentIn() != null && getPaymentIn().logicAllowsReplication()
 	}
 
 	/**

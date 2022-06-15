@@ -31,10 +31,7 @@ import ish.oncourse.server.api.servlet.SessionManager;
 import ish.oncourse.server.db.AngelCayenneModule;
 import ish.oncourse.server.integration.EventService;
 import ish.oncourse.server.integration.PluginService;
-import ish.oncourse.server.lifecycle.ClassPublishListener;
-import ish.oncourse.server.lifecycle.PayslipApprovedListener;
-import ish.oncourse.server.lifecycle.PayslipPaidListener;
-import ish.oncourse.server.lifecycle.ScriptTriggeringCommitListener;
+import ish.oncourse.server.lifecycle.*;
 import ish.oncourse.server.modules.AngelJobFactory;
 import ish.oncourse.server.preference.UserPreferenceService;
 import ish.oncourse.server.scripting.GroovyScriptService;
@@ -116,6 +113,12 @@ public class AngelModule extends ConfigModule {
 
     @Singleton
     @Provides
+    RelationsChangeListener provideRelationsChangeListener(EventService eventService) {
+        return new RelationsChangeListener();
+    }
+
+    @Singleton
+    @Provides
     EventService provideEventService() {
         return new EventService();
     }
@@ -125,8 +128,9 @@ public class AngelModule extends ConfigModule {
     CommitLogModuleExt provideCommitLogModuleExt(ClassPublishListener classPublishListener,
                                                  PayslipApprovedListener payslipApprovedListener,
                                                  PayslipPaidListener paidListener,
-                                                 ScriptTriggeringCommitListener scriptTriggeringCommitListener) {
-        return new CommitLogModuleExt(classPublishListener, payslipApprovedListener, paidListener, scriptTriggeringCommitListener);
+                                                 ScriptTriggeringCommitListener scriptTriggeringCommitListener,
+                                                 RelationsChangeListener relationsChangeListener) {
+        return new CommitLogModuleExt(classPublishListener, payslipApprovedListener, paidListener, scriptTriggeringCommitListener, relationsChangeListener);
     }
 
     @Override

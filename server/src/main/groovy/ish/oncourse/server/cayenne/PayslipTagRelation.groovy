@@ -23,7 +23,7 @@ class PayslipTagRelation extends _PayslipTagRelation {
 
 	//don't allow add to replication this record because Payslip entity is not Queueable
 	@Override
-	boolean isAsyncReplicationAllowed() {
+	boolean logicAllowsReplication() {
 		return false
 	}
 
