@@ -113,12 +113,6 @@ public class AngelModule extends ConfigModule {
 
     @Singleton
     @Provides
-    RelationsChangeListener provideRelationsChangeListener(EventService eventService) {
-        return new RelationsChangeListener();
-    }
-
-    @Singleton
-    @Provides
     EventService provideEventService() {
         return new EventService();
     }
@@ -128,9 +122,8 @@ public class AngelModule extends ConfigModule {
     CommitLogModuleExt provideCommitLogModuleExt(ClassPublishListener classPublishListener,
                                                  PayslipApprovedListener payslipApprovedListener,
                                                  PayslipPaidListener paidListener,
-                                                 ScriptTriggeringCommitListener scriptTriggeringCommitListener,
-                                                 RelationsChangeListener relationsChangeListener) {
-        return new CommitLogModuleExt(classPublishListener, payslipApprovedListener, paidListener, scriptTriggeringCommitListener, relationsChangeListener);
+                                                 ScriptTriggeringCommitListener scriptTriggeringCommitListener){
+        return new CommitLogModuleExt(classPublishListener, payslipApprovedListener, paidListener, scriptTriggeringCommitListener);
     }
 
     @Override
