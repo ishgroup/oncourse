@@ -7,7 +7,6 @@ import { getFormValues, initialize, SubmissionError } from "redux-form";
 import { State } from "../../../../reducers/state";
 import CollectionRulesForm from "./components/CollectionRulesForm";
 import { updateDataCollectionRule, removeDataCollectionRule, createDataCollectionRule } from "../../actions";
-import { setNextLocation } from "../../../../common/actions";
 import { Fetch } from "../../../../model/common/Fetch";
 
 interface Params {
@@ -25,7 +24,6 @@ interface Props extends RouteComponentProps <Params> {
   fetch: Fetch;
   initialize: (data) => void;
   nextLocation: string;
-  setNextLocation: (nextLocation: string) => void
 }
 
 class CollectionRuleFormContainer extends React.Component<Props, any> {
@@ -123,12 +121,11 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    onUpdate: (id: string, rule: DataCollectionRule) => dispatch(updateDataCollectionRule(id, rule)),
-    onDelete: (id: string) => dispatch(removeDataCollectionRule(id)),
-    onAddNew: (rule: DataCollectionRule) => dispatch(createDataCollectionRule(rule)),
-    initialize: initData => dispatch(initialize("CollectionRulesForm", initData)),
-    setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-  });
+  onUpdate: (id: string, rule: DataCollectionRule) => dispatch(updateDataCollectionRule(id, rule)),
+  onDelete: (id: string) => dispatch(removeDataCollectionRule(id)),
+  onAddNew: (rule: DataCollectionRule) => dispatch(createDataCollectionRule(rule)),
+  initialize: initData => dispatch(initialize("CollectionRulesForm", initData))
+});
 
 export default connect<any, any, any>(
   mapStateToProps,

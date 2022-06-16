@@ -19,7 +19,7 @@ import {
 } from "./actions";
 import { SCRIPT_EDIT_VIEW_FORM_NAME } from "./constants";
 import { mapSelectItems } from "../../../../common/utils/common";
-import { setNextLocation, showConfirm } from "../../../../common/actions";
+import { showConfirm } from "../../../../common/actions";
 
 const ScheduleTypeItems = Object.keys(ScheduleType).map(mapSelectItems);
 
@@ -96,8 +96,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onSave: (id, script, method, viewMode) => dispatch(saveScriptItem(id, script, method, viewMode)),
   onCreate: (script, viewMode) => dispatch(createScriptItem(script, viewMode)),
   onDelete: (id: number) => dispatch(deleteScriptItem(id)),
-  openConfirm: props => dispatch(showConfirm(props)),
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+  openConfirm: props => dispatch(showConfirm(props))
 });
 
 export default reduxForm({

@@ -185,7 +185,6 @@ interface Props {
   hasUpdateAccess: boolean;
   history: any;
   nextLocation: string;
-  setNextLocation: (nextLocation: string) => void;
   classes?: any;
   dirty?: boolean;
   created?: Date;
@@ -246,7 +245,6 @@ const ScriptsForm = React.memo<Props>(props => {
     emailTemplates,
     history,
     nextLocation,
-    setNextLocation,
     timeZone,
     syncErrors
   } = props;
@@ -329,7 +327,6 @@ const ScriptsForm = React.memo<Props>(props => {
   useEffect(() => {
     if (!dirty && nextLocation) {
       history.push(nextLocation);
-      setNextLocation('');
     }
   }, [nextLocation, dirty]);
 
