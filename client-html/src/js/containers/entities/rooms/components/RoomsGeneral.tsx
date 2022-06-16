@@ -111,7 +111,7 @@ class RoomsGeneral extends React.PureComponent<any, any> {
         </Grid>
 
         <Grid item xs={layoutArray[1].xs}>
-          <Grid container columnSpacing={3}>
+          <Grid container columnSpacing={3} rowSpacing={2}>
             <Grid item xs={layoutArray[3].xs}>
               <FormField
                 type="text"
@@ -125,7 +125,7 @@ class RoomsGeneral extends React.PureComponent<any, any> {
             <Grid item xs={layoutArray[4].xs}>
               {sites && (
                 <FormField
-                  type="select"
+                  type="searchSelect"
                   name="siteId"
                   label="Site"
                   selectLabelMark="name"
