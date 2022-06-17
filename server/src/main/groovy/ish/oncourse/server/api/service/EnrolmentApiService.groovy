@@ -70,7 +70,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
         new EnrolmentDTO().with { enrolmentDTO ->
             enrolmentDTO.feeHelpClass = enrolment.courseClass.course.feeHelpClass
             enrolmentDTO.id = enrolment.id
-            enrolmentDTO.tags = enrolment.tags.collect { toRestTagMinimized(it) }
+            enrolmentDTO.tags = enrolment.allTags.collect { it.id }
             enrolment.student.contact.with { contact ->
                 enrolmentDTO.studentContactId = contact.id
                 enrolmentDTO.studentName = contact.getFullName()
@@ -173,7 +173,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
         enrolment.studentLoanStatus = dto.studentLoanStatus.getDbType()
 
         updateSubmissions(submissionApiService, this, dto.submissions, enrolment.assessmentSubmissions, context)
-        TagFunctions.updateTags(enrolment, enrolment.taggingRelations, dto.tags*.id, EnrolmentTagRelation, context)
+        TagFunctions.updateTags(enrolment, enrolment.taggingRelations, dto.tags, EnrolmentTagRelation, context)
         DocumentFunctions.updateDocuments(enrolment, enrolment.attachmentRelations, dto.documents, EnrolmentAttachmentRelation, context)
         CustomFieldFunctions.updateCustomFields(context, enrolment, dto.customFields, EnrolmentCustomField)
         return enrolment

@@ -33,7 +33,7 @@ describe("Virtual rendered BudgetCostModal of Class edit view", () => {
       onSubmit: jest.fn(),
       form: COURSE_CLASS_COST_DIALOG_FORM,
     }),
-    state: mockedApi => ({
+    state: ({ mockedApi }) => ({
       preferences: { tutorRoles: mockedApi.db.getPlainTutorRoles().rows.map(getCustomColumnsMap("name,description,active,currentPayrate.oncostRate,currentPayrate.rate,currentPayrate.type")) },
       plainSearchRecords: {
         Account: { items: mockedApi.db.getPlainAccounts().rows.map(getCustomColumnsMap("description,accountCode,type,tax.id")) }

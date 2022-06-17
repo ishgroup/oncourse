@@ -103,7 +103,7 @@ class MembershipProductApiService extends TaggableApiService<MembershipProductDT
             membershipProductDTO.modifiedOn = membershipProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             membershipProductDTO.dataCollectionRuleId = membershipProduct.fieldConfigurationScheme?.id
             membershipProductDTO.documents = membershipProduct.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
-            membershipProductDTO.tags = membershipProduct.tags.collect{ toRestTagMinimized(it) }
+            membershipProductDTO.tags = membershipProduct.allTags.collect{ it.id }
             membershipProductDTO.customFields = membershipProduct.customFields.collectEntries {[(it.customFieldType.key) : it.value] }
             membershipProductDTO
         }
@@ -137,7 +137,7 @@ class MembershipProductApiService extends TaggableApiService<MembershipProductDT
                 null as FieldConfigurationScheme
         updateCorporatePasses(membershipProduct, membershipProductDTO.corporatePasses, corporatePassProductDao, corporatePassDao)
         updateDocuments(membershipProduct, membershipProduct.attachmentRelations, membershipProductDTO.documents, MembershipProductAttachmentRelation, context)
-        updateTags(membershipProduct, membershipProduct.taggingRelations, membershipProductDTO.tags*.id, MembershipProductTagRelation, context)
+        updateTags(membershipProduct, membershipProduct.taggingRelations, membershipProductDTO.tags, MembershipProductTagRelation, context)
         updateCustomFields(membershipProduct.context, membershipProduct, membershipProductDTO.customFields, membershipProduct.customFieldClass)
         updateDiscountMemberships(membershipProduct, membershipProductDTO.membershipDiscounts)
         membershipProduct

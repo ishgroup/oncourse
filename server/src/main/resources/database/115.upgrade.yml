@@ -1,0 +1,35 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 115-1
+      author: dmitry
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: NodeRequirement
+        - and:
+            - not:
+                - columnExists:
+                    tableName: NodeRequirement
+                    columnName: displayRule
+      changes:
+        - addColumn:
+            tableName: NodeRequirement
+            columns:
+              - column:
+                  name: displayRule
+                  type: VARCHAR(512)
+
+  - changeSet:
+      id: 115-2
+      author: dmitry
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: NodeRequirement
+        - and:
+            - tableExists:
+                tableName: NodeRelation
+      changes:
+        - sql: 'DELETE FROM NodeRelation WHERE entityIdentifier=5 OR entityIdentifier=11'
+        - sql: 'DELETE FROM NodeRequirement WHERE entityIdentifier=5 OR entityIdentifier=11'

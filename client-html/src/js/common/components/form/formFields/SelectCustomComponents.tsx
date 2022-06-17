@@ -1,18 +1,23 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import useTheme from "@mui/styles/useTheme";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import React from "react";
+import React, { useEffect } from "react";
 import ListSubheader from '@mui/material/ListSubheader';
+import InfiniteLoader from "react-window-infinite-loader";
 import { areEqual, FixedSizeList as List } from 'react-window';
 import { createStyles } from "@mui/styles";
 import { green } from "@mui/material/colors";
 import clsx from "clsx";
-import { AppTheme } from "../../../../model/common/Theme";
 import { Typography } from "@mui/material";
+import { AppTheme } from "../../../../model/common/Theme";
+import { usePrevious } from "../../../utils/hooks";
 
 export const selectStyles = theme => createStyles({
     root: {},
@@ -108,8 +113,6 @@ export const selectStyles = theme => createStyles({
     },
   });
 
-const listRef = React.createRef<any>();
-
 export const ListRow = React.memo<any>(({ data, index, style }) => {
   const inlineStyle = {
     ...style,
@@ -130,16 +133,26 @@ const OuterElementType = React.forwardRef<any, any>((props, ref) => {
   return <div ref={ref} {...props} {...outerProps} />;
 });
 
+const listRef = React.createRef<any>();
+
 export const ListboxComponent = React.forwardRef<any, any>((props, ref) => {
   const {
-   children, rowHeight, remoteRowCount, loadMoreRows, classes, fieldClasses, ...other
+   children, rowHeight, remoteRowCount, loadMoreRows, classes, loading, fieldClasses, ...other
   } = props;
 
   const itemData = React.Children.toArray(children);
   const theme = useTheme() as AppTheme;
   const smUp = useMediaQuery(theme.breakpoints.up('sm'), { noSsr: true });
-  const itemCount = itemData.length;
   const itemSize = rowHeight || (smUp ? 36 : 48);
+  const itemCount = remoteRowCount > children.length ? children.length + 3 : children.length;
+
+  const prevCount = usePrevious(itemCount);
+
+  useEffect(() => {
+    if (prevCount) {
+      listRef.current.scrollToItem(prevCount);
+    }
+  }, [children.length]);
 
   const getChildSize = child => {
     if (React.isValidElement(child) && child.type === ListSubheader) {
@@ -156,32 +169,34 @@ export const ListboxComponent = React.forwardRef<any, any>((props, ref) => {
     return itemData.map(getChildSize).reduce((a, b) => a + b, 0);
   };
 
-  const onScroll = ({ scrollOffset }) => {
-    const allHeight = itemData.length * itemSize;
+  const loadMoreItems = () => (loading ? undefined : loadMoreRows(itemData.length));
 
-    const scrolledPercent = scrollOffset / (allHeight / 100);
-
-    if (remoteRowCount > 0 && scrolledPercent > 70) {
-      loadMoreRows(itemData.length);
-    }
-  };
+  const isItemLoaded = index => index < children.length;
 
   return (
     <div ref={ref}>
       <OuterElementContext.Provider value={other}>
-        <List
-          onScroll={onScroll}
-          height={getHeight() + 2 * 8}
-          width="100%"
-          ref={listRef}
-          className={clsx(classes.menuList, fieldClasses.selectMenu)}
-          itemData={itemData}
-          outerElementType={OuterElementType}
-          itemSize={itemSize}
+        <InfiniteLoader
+          isItemLoaded={isItemLoaded}
           itemCount={itemCount}
+          loadMoreItems={loadMoreItems}
         >
-          {ListRow}
-        </List>
+          {({ onItemsRendered }) => (
+            <List
+              height={getHeight() + 2 * 8}
+              width="100%"
+              ref={listRef}
+              className={clsx(classes.menuList, fieldClasses.selectMenu)}
+              itemData={itemData}
+              outerElementType={OuterElementType}
+              onItemsRendered={onItemsRendered}
+              itemSize={itemSize}
+              itemCount={itemCount}
+            >
+              {ListRow}
+            </List>
+          )}
+        </InfiniteLoader>
       </OuterElementContext.Provider>
     </div>
   );

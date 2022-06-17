@@ -60,9 +60,11 @@ class ListLinksGroup extends React.PureComponent<any, any> {
   };
 
   openLink = id => {
-    const { showConfirm, entityDisplayName, entity, setSelected } = this.props;
+    const {
+ showConfirm, entityDisplayName, entity, setSelected 
+} = this.props;
 
-    if (entity === "Contact") {
+    if (entity === "Contact" && typeof setSelected === "function") {
       setSelected(id);
       return;
     }

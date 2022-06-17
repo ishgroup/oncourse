@@ -21,7 +21,7 @@ import { PayrollRequest } from "@api/model";
 import LoadingButton from "@mui/lab/LoadingButton";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
-import LoadingIndicator from "../../../../common/components/layout/LoadingIndicator";
+import LoadingIndicator from "../../../../common/components/progress/LoadingIndicator";
 import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
 import { openInternalLink } from "../../../../common/utils/links";
 import Button from "@mui/material/Button";

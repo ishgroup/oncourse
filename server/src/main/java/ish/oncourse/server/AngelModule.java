@@ -21,6 +21,7 @@ import io.bootique.config.ConfigurationFactory;
 import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedServlet;
 import io.bootique.jetty.command.ServerCommand;
+import ish.oncourse.server.integration.PluginsPrefsService;
 import ish.oncourse.server.jetty.AngelJettyModule;
 import ish.oncourse.common.ResourcesUtil;
 import ish.oncourse.server.api.servlet.ApiFilter;
@@ -156,6 +157,7 @@ public class AngelModule extends ConfigModule {
         binder.bind(CertificateUpdateWatcher.class).in(Scopes.SINGLETON);
         binder.bind(ICayenneService.class).to(CayenneService.class).in(Scopes.SINGLETON);
         binder.bind(PreferenceController.class);
+        binder.bind(PluginsPrefsService.class);
         binder.bind(UserPreferenceService.class);
         binder.bind(String.class).annotatedWith(Names.named(ANGEL_VERSION)).toInstance(getVersion());
         binder.bind(EmailService.class).in(Scopes.SINGLETON);

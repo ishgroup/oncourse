@@ -6,7 +6,7 @@
 import React, {
   useCallback, useMemo
 } from "react";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd-next";
 import Grid from "@mui/material/Grid";
 import { FormControlLabel } from "@mui/material";
 import { WrappedFieldArrayProps } from "redux-form";

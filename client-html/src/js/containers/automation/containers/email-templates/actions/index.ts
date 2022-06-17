@@ -6,7 +6,6 @@ export const GET_EMAIL_TEMPLATES_LIST = _toRequestType("get/email-templates/list
 export const GET_EMAIL_TEMPLATES_LIST_FULFILLED = FULFILLED(GET_EMAIL_TEMPLATES_LIST);
 
 export const CREATE_EMAIL_TEMPLATE = _toRequestType("post/email-templates/list");
-export const CREATE_EMAIL_TEMPLATE_FULFILLED = FULFILLED(CREATE_EMAIL_TEMPLATE);
 
 export const UPDATE_EMAIL_TEMPLATE = _toRequestType("put/email-templates/list");
 export const UPDATE_EMAIL_TEMPLATE_FULFILLED = FULFILLED(UPDATE_EMAIL_TEMPLATE);

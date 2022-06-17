@@ -271,8 +271,8 @@ const findRelatedGroup: any[] = [
   }
 ];
 
-const preformatBeforeSubmit = (value: CourseClassExtended): Course => {
-  const submitted = { ...value };
+const preformatBeforeSubmit = (value: CourseClassExtended): CourseClass => {
+  const submitted: CourseClassExtended = { ...value };
 
   delete submitted.tutors;
   delete submitted.sessions;
@@ -583,35 +583,37 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
     const outcomeFieldsToUpdate = changedFields.filter(f => f.updateForOutcome);
     const enrolmentFieldsToUpdate = changedFields.filter(f => f.updateForEnrolment);
 
-    if (outcomeFieldsToUpdate.length) {
-      EntityService.getPlainRecords("Outcome", "id", `enrolment.courseClass.id is ${values.id}`)
-        .then(res => {
-          const ids = res.rows.map(r => Number(r.id));
-          return OutcomeService.bulkChange({
-            ids,
-            diff: outcomeFieldsToUpdate.reduce((p, o) => {
-              p[o.name] = o.value;
-              return p;
-            }, {})
-          });
-        })
-        .catch(res => instantFetchErrorHandler(dispatch, res, "Failed to update related outcomes"));
-    }
+    if (values) {
+      if (outcomeFieldsToUpdate.length) {
+        EntityService.getPlainRecords("Outcome", "id", `enrolment.courseClass.id is ${values.id}`)
+          .then(res => {
+            const ids = res.rows.map(r => Number(r.id));
+            return OutcomeService.bulkChange({
+              ids,
+              diff: outcomeFieldsToUpdate.reduce((p, o) => {
+                p[o.name] = o.value;
+                return p;
+              }, {})
+            });
+          })
+          .catch(res => instantFetchErrorHandler(dispatch, res, "Failed to update related outcomes"));
+      }
 
-    if (enrolmentFieldsToUpdate.length) {
-      EntityService.getPlainRecords("Enrolment", "id", `courseClass.id is ${values.id}`)
-        .then(res => {
-          const ids = res.rows.map(r => Number(r.id));
+      if (enrolmentFieldsToUpdate.length) {
+        EntityService.getPlainRecords("Enrolment", "id", `courseClass.id is ${values.id}`)
+          .then(res => {
+            const ids = res.rows.map(r => Number(r.id));
 
-          return EnrolmentService.bulkChange({
-            ids,
-            diff: enrolmentFieldsToUpdate.reduce((p, o) => {
-              p[o.name] = o.value;
-              return p;
-            }, {})
-          });
-        })
-        .catch(res => instantFetchErrorHandler(dispatch, res, "Failed to update related enrolments"));
+            return EnrolmentService.bulkChange({
+              ids,
+              diff: enrolmentFieldsToUpdate.reduce((p, o) => {
+                p[o.name] = o.value;
+                return p;
+              }, {})
+            });
+          })
+          .catch(res => instantFetchErrorHandler(dispatch, res, "Failed to update related enrolments"));
+      }
     }
 
     setChangedFields([]);

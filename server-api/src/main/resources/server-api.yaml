@@ -281,6 +281,10 @@ paths:
     $ref: './path/role/api.yaml'
   /tag:
     $ref: './path/tag/api.yaml'
+  /tag/list:
+    $ref: './path/tag/list/api.yaml'
+  /tag/checklist:
+    $ref: './path/tag/checklist/api.yaml'
   /timetable/calendar:
     $ref: './path/timetable/calendar/api.yaml'
   /timetable/session:

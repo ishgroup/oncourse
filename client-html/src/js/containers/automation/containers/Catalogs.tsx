@@ -257,7 +257,8 @@ export const IntegrationsCatalog = ({ history }: RouteComponentProps) => {
     installed: true,
     enabled: true,
     tag: null,
-    shortDescription: IntegrationTypes[i.type].description
+    shortDescription: IntegrationTypes[i.type].description,
+    hideDot: true
   })) || [], [integrations]);
 
   const onOpen = id => {
@@ -301,7 +302,6 @@ export const ScriptsCatalog = ({ history }: RouteComponentProps) => {
         category: "Advanced",
         shortDescription: "Create a new automation from scratch"
       }}
-
       toggleInstall={toggleInstall}
       items={scripts}
       title="Automations"
