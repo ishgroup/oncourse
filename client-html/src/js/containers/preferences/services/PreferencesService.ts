@@ -41,6 +41,7 @@ import * as ModelMaintenance from "../../../model/preferences/Maintenance";
 import * as ModelAvetmiss from "../../../model/preferences/Avetmiss";
 import * as ModelFinancial from "../../../model/preferences/Financial";
 import * as ModelSecurity from "../../../model/preferences/security";
+import * as ModelPlugins from "../../../model/preferences/Plugins";
 
 class PreferencesService {
   readonly defaultApi = new DefaultHttpService();
@@ -275,6 +276,10 @@ class PreferencesService {
 
       case Categories.licences: {
         return Object.keys(ModelLicences).map(item => ModelLicences[item].uniqueKey);
+      }
+
+      case Categories.plugins: {
+        return Object.keys(ModelPlugins).map(item => ModelPlugins[item].uniqueKey);
       }
 
       case Categories.messaging: {

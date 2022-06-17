@@ -28,9 +28,7 @@ import ish.oncourse.server.cayenne.CourseClass;
 import ish.oncourse.server.cayenne.CourseClassNoteRelation;
 import ish.oncourse.server.cayenne.CourseClassPaymentPlanLine;
 import ish.oncourse.server.cayenne.CourseClassTutor;
-import ish.oncourse.server.cayenne.Discount;
 import ish.oncourse.server.cayenne.DiscountCourseClass;
-import ish.oncourse.server.cayenne.Module;
 import ish.oncourse.server.cayenne.Note;
 import ish.oncourse.server.cayenne.SessionModule;
 import ish.oncourse.server.cayenne.Tax;
@@ -38,14 +36,12 @@ import ish.oncourse.server.cayenne.TutorAttendance;
 import ish.oncourse.server.cayenne.Session;
 import ish.util.*;
 import org.apache.cayenne.access.DataContext;
-import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectById;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.TimeZone;
 
 import static java.util.Calendar.HOUR_OF_DAY;
@@ -102,10 +98,6 @@ public class DuplicateCourseClass {
         newClass.setMinimumPlaces(oldClass.getMinimumPlaces());
         newClass.setMaxStudentAge(oldClass.getMaxStudentAge());
         newClass.setMinStudentAge(oldClass.getMinStudentAge());
-        newClass.setMinutesPerSession(oldClass.getMinutesPerSession());
-        newClass.setSessionsSkipWeekends(oldClass.getSessionsSkipWeekends());
-        newClass.setSessionRepeatType(oldClass.getSessionRepeatType());
-        newClass.setSessionsCount(oldClass.getSessionsCount());
         newClass.setWebDescription(oldClass.getWebDescription());
         newClass.setReportableHours(oldClass.getReportableHours());
 
@@ -156,6 +148,7 @@ public class DuplicateCourseClass {
                 note.setNote(oldNote.getNote());
                 note.setSystemUser(oldNote.getSystemUser());
                 note.setCreatedOn(oldNote.getCreatedOn());
+                note.setInteractionDate(oldNote.getInteractionDate());
                 if (oldNote.getChangedBy() != null) {
                     note.setChangedBy(oldNote.getChangedBy());
                 }
@@ -175,24 +168,22 @@ public class DuplicateCourseClass {
                     newSession.setEndDatetime(DateTimeUtil.addDaysDaylightSafe(oldSession.getEndDatetime(), request.getDaysTo()));
                 }
 
-                if (request.isCopyTutors()) {
+                if (request.isTutorRosterOverrides()) {
                     // create tutor attendance records
                     for (var cct : newClass.getTutorRoles()) {
                         var tutorAttendance = context.newObject(TutorAttendance.class);
                         tutorAttendance.setSession(newSession);
                         tutorAttendance.setCourseClassTutor(cct);
                         tutorAttendance.setAttendanceType(AttendanceType.UNMARKED);
-                        if (request.isCopyPayableTimeForSessions()) {
-                            oldSession.getSessionTutors().stream()
-                                    .filter(a -> a.getCourseClassTutor().getTutor().equalsIgnoreContext(cct.getTutor())
-                                            && a.getCourseClassTutor().getDefinedTutorRole() == cct.getDefinedTutorRole())
-                                    .findFirst().ifPresent(oldAttendance -> { 
-                                        tutorAttendance.setStartDatetime(DateTimeUtil.addDaysDaylightSafe(oldAttendance.getStartDatetime(), request.getDaysTo()));
-                                        tutorAttendance.setEndDatetime(DateTimeUtil.addDaysDaylightSafe(oldAttendance.getEndDatetime(), request.getDaysTo()));
-                                        tutorAttendance.setActualPayableDurationMinutes(oldAttendance.getActualPayableDurationMinutes());
-                                    });
-                        }
-                        if(tutorAttendance.getStartDatetime() == null){
+                        oldSession.getSessionTutors().stream()
+                                .filter(a -> a.getCourseClassTutor().getTutor().equalsIgnoreContext(cct.getTutor())
+                                        && a.getCourseClassTutor().getDefinedTutorRole() == cct.getDefinedTutorRole())
+                                .findFirst().ifPresent(oldAttendance -> {
+                                    tutorAttendance.setStartDatetime(DateTimeUtil.addDaysDaylightSafe(oldAttendance.getStartDatetime(), request.getDaysTo()));
+                                    tutorAttendance.setEndDatetime(DateTimeUtil.addDaysDaylightSafe(oldAttendance.getEndDatetime(), request.getDaysTo()));
+                                    tutorAttendance.setActualPayableDurationMinutes(oldAttendance.getActualPayableDurationMinutes());
+                                });
+                        if (tutorAttendance.getStartDatetime() == null) {
                             tutorAttendance.setStartDatetime(newSession.getStartDatetime());
                             tutorAttendance.setEndDatetime(newSession.getEndDatetime());
                             tutorAttendance.setActualPayableDurationMinutes(DurationFormatter.durationInMinutesBetween(newSession.getStartDatetime(), newSession.getEndDatetime()));

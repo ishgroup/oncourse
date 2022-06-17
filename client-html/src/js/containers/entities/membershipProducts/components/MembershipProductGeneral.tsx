@@ -23,6 +23,7 @@ import FullScreenStickyHeader
 import { EditViewProps } from "../../../../model/common/ListView";
 import { useAppSelector } from "../../../../common/utils/hooks";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 interface MembershipProductGeneralProps extends EditViewProps<MembershipProduct>{
   accounts?: Account[];
@@ -179,11 +180,20 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         />
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid item xs={twoColumn ? 8 : 12}>
         <FormField
           type="tags"
           name="tags"
           tags={tags}
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <EntityChecklists
+          entity="MembershipProduct"
+          form={form}
+          entityId={values.id}
+          checked={values.tags}
         />
       </Grid>
 

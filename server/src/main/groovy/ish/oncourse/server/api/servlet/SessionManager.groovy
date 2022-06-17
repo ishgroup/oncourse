@@ -93,7 +93,9 @@ class SessionManager implements ISessionManager {
         session.setAttribute(IS_LOGIN, true)
         session.setMaxInactiveInterval(timeoutSec)
 
-        logger.warn("User '${user.email?:user.login}' logged in from '$request.remoteAddr' via browser.")
+        String remote = request.getHeader('X-Forwarded-For')
+        
+        logger.warn("User '${user.email?:user.login}' logged in ${remote?"from $remote":""} via browser.")
     }
 
     void logout(HttpServletRequest request) {

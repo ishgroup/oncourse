@@ -78,6 +78,17 @@ export function mockAvetmissExport() {
     return response;
   };
 
+  this.getAvetmissExportPlainListFormatted = () => {
+    const contracts: any[] = this.getAvetmissExportPlainList().rows.map(({ id, values }) => ({
+      id: Number(id),
+      name: values[0],
+      flavour: values[1]
+    }));
+
+    contracts.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
+    return contracts;
+  };
+
   this.getAvetmissExportUploads = () => generateArraysOfRecords(50, [
     { name: "id", type: "number" },
     { name: "created", type: "Datetime" },

@@ -21,7 +21,9 @@ import {
   LIST_THREE_COLUMN_ROW_HEIGHT,
   LIST_TWO_COLUMN_ROW_HEIGHT
 } from "../../../../../../constants/Config";
-import { COLUMN_WITH_COLORS } from "../utils";
+import { CHECKLISTS_COLUMN, COLUMN_WITH_COLORS } from "../utils";
+import TagDotRenderer from "./TagDotRenderer";
+import StaticProgress from "../../../../progress/StaticProgress";
 
 const ListRow = memo<any>(({ data, index, style }) => {
   const {
@@ -63,14 +65,29 @@ const ListRow = memo<any>(({ data, index, style }) => {
     >
       {threeColumn ? (
         <div>
-          <Typography variant="subtitle2" color="textSecondary" noWrap>
+          <Typography variant="subtitle2" color="textSecondary" component="div" noWrap>
             {row.original.secondary}
           </Typography>
-          <Typography variant="body1" noWrap>
-            {row.original.primary}
+          <Typography variant="body1" component="div" className="centeredFlex" noWrap>
+            <span className="flex-fill">
+              {row.original.primary}
+            </span>
+            {row.cells[1].column.tagsVisible && (
+              <TagDotRenderer
+                colors={row.values[COLUMN_WITH_COLORS]?.replace(/[[\]]/g, "").split(", ")}
+              />
+            )}
+            {row.cells[1].column.checklistsVisible && row.values[CHECKLISTS_COLUMN] && (
+              <StaticProgress
+                className="ml-1"
+                color={row.values[CHECKLISTS_COLUMN].split("|")[0]}
+                value={parseFloat(row.values[CHECKLISTS_COLUMN].split("|")[1]) * 100}
+                size={18}
+              />
+            )}
           </Typography>
         </div>
-      ) : row.cells.filter(cell => cell.column.id !== COLUMN_WITH_COLORS).map(cell => (
+      ) : row.cells.filter(cell => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(cell.column.id)).map(cell => (
         <div
           {...cell.getCellProps()}
           className={clsx(classes.bodyCell, cell.column.cellClass)}

@@ -41,7 +41,7 @@ import static ish.oncourse.cayenne.MappedSelectParams.*
  */
 @API
 @QueueableEntity
-class Certificate extends _Certificate implements Queueable, AttachableTrait {
+class Certificate extends _Certificate implements Queueable, AttachableTrait, ContactActivityTrait {
 	private static final Logger logger = LogManager.getLogger()
 
 	public static final SUCCESSFUL_OUTCOMES_PROPERTY = "successful_outcomes";
@@ -191,8 +191,11 @@ class Certificate extends _Certificate implements Queueable, AttachableTrait {
 		return super.getCreatedOn()
 	}
 
-
-	/**
+	@Override
+	String getInteractionName() {
+		return qualification?.title
+	}
+/**
 	 * @return true if this certificate is for a full qualification (or accredited course)
 	 *
 	 */
@@ -278,7 +281,6 @@ class Certificate extends _Certificate implements Queueable, AttachableTrait {
 	 *
 	 * @return the qualification
 	 */
-	@Nonnull
 	@API
 	@Override
 	Qualification getQualification() {

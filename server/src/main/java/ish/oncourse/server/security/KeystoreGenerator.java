@@ -24,19 +24,24 @@ import org.bouncycastle.crypto.generators.RSAKeyPairGenerator;
 import org.bouncycastle.crypto.params.RSAKeyGenerationParameters;
 import org.bouncycastle.crypto.params.RSAKeyParameters;
 import org.bouncycastle.crypto.params.RSAPrivateCrtKeyParameters;
+import org.bouncycastle.jcajce.provider.asymmetric.x509.CertificateFactory;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
+import org.bouncycastle.util.io.pem.PemObject;
+import org.bouncycastle.util.io.pem.PemReader;
 
 import javax.security.auth.x500.X500Principal;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.math.BigInteger;
 import java.security.KeyFactory;
 import java.security.KeyStore;
 import java.security.SecureRandom;
 import java.security.Security;
+import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.Date;
@@ -115,9 +120,9 @@ public final class KeystoreGenerator {
 
 	// ------------ methods below are not to be used, they are protected for unit test purposes.-------
 
-	protected static KeyStore getClientServerKeystore(String name, String algorithm, String alias, String keystorePassword, String keyPassword)
+	protected static KeyStore getClientServerKeystore(String path, String algorithm, String alias, String keystorePassword, String keyPassword)
 			throws Exception {
-		if (!new File(name).exists()) {
+		if (!new File(path).exists()) {
 			logger.debug("KeyStore file is not present, create new instance");
 			// KeyStore file is not present, create new instance
 			var ks = KeyStore.getInstance(KEYSTORE_TYPE);
@@ -126,16 +131,16 @@ public final class KeystoreGenerator {
 			ks.load(null, null);
 			// add requried certificate
 			generateIshClientServerCertificate(ks, algorithm, alias, keyPassword);
+
 			// save on disk
-			try (var fos = new FileOutputStream(name)) {
-				logger.debug("store the keyStore to file {}", name);
-				ks.store(fos, keystorePassword.toCharArray());
-			} finally {
-				logger.debug("KeyStore file exist, load from disk");
+			try (JcaPEMWriter pemWriter = new JcaPEMWriter(new OutputStreamWriter(new FileOutputStream(path)))) {
+				pemWriter.writeObject(new PemObject("RSA PRIVATE KEY", ks.getKey(alias, keyPassword.toCharArray()).getEncoded()));
+				pemWriter.writeObject(new PemObject("CERTIFICATE", ks.getCertificate(alias).getEncoded()));
 			}
+
 		}
 		// file exist, load from disk
-		return loadKeystore(name, keystorePassword);
+		return loadKeystore(path, alias, keystorePassword);
 	}
 
 	/**
@@ -144,13 +149,30 @@ public final class KeystoreGenerator {
 	 * @return KeyStore
 	 * @throws Exception
 	 */
-	protected static KeyStore loadKeystore(String location, String password) throws Exception {
-		var ks = KeyStore.getInstance(KEYSTORE_TYPE);
+	protected static KeyStore loadKeystore(String location, String alias, String password) throws Exception {
 
-		try (FileInputStream fis = new FileInputStream(location)) {
-			ks.load(fis,password.toCharArray());
+		var ks = KeyStore.getInstance(KEYSTORE_TYPE);
+		ks.load(null, null);
+
+		KeyFactory factory = KeyFactory.getInstance("RSA");
+
+		try (FileReader keyReader = new FileReader(location);
+			 PemReader pemReader = new PemReader(keyReader)) {
+
+			PemObject pemObject = pemReader.readPemObject();
+			byte[] content = pemObject.getContent();
+			PKCS8EncodedKeySpec privKeySpec = new PKCS8EncodedKeySpec(content);
+			var privateKey = (RSAPrivateKey) factory.generatePrivate(privKeySpec);
+
+			try (FileInputStream fis = new FileInputStream(location)) {
+				CertificateFactory factoryl = new CertificateFactory();
+				Certificate[] serverChain = new Certificate[]{factoryl.engineGenerateCertificate(fis)};
+				ks.setEntry(alias, new KeyStore.PrivateKeyEntry(privateKey, serverChain),
+						new KeyStore.PasswordProtection(password.toCharArray())
+				);
+			}
+			return ks;
 		}
-		return ks;
 	}
 
 	/**

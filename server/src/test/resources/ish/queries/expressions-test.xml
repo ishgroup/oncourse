@@ -105,7 +105,7 @@
           feeHelpClass="0" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="2002" entityIdentifier="1" entityRecordId="10" nodeId="102"
                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Note id="1" note="Regions_1" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <Note id="1" note="Regions_1" createdOn="2015-03-09 17:00:51.0" interactionDate="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
   <NoteRelation id="1" noteId="1" entityRecordId="10" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0"
                 modifiedOn="2015-03-09 17:20:32.0"/>
 
@@ -119,8 +119,8 @@
                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="2004" entityIdentifier="1" entityRecordId="12" nodeId="103"
                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Note id="2" note="Regions_2" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
-  <Note id="3" note="Regions_2" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <Note id="2" note="Regions_2" createdOn="2015-03-09 17:00:51.0" interactionDate="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <Note id="3" note="Regions_2" createdOn="2015-03-09 17:00:51.0" interactionDate="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
   <NoteRelation id="2" noteId="2" entityRecordId="11" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0"
                 modifiedOn="2015-03-09 17:20:32.0"/>
   <NoteRelation id="3" noteId="3" entityRecordId="12" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0"
@@ -132,7 +132,7 @@
           feeHelpClass="0" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="2006" entityIdentifier="1" entityRecordId="13" nodeId="27"
                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Note id="4" note="Subjects_3_4" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <Note id="4" note="Subjects_3_4" createdOn="2015-03-09 17:00:51.0" interactionDate="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
   <NoteRelation id="4" noteId="4" entityRecordId="13" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0"
                 modifiedOn="2015-03-09 17:20:32.0"/>
 
@@ -144,7 +144,7 @@
                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="2008" entityIdentifier="1" entityRecordId="14" nodeId="104"
                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Note id="5" note="Regions_3 Subjects_3_5" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <Note id="5" note="Regions_3 Subjects_3_5" createdOn="2015-03-09 17:00:51.0" interactionDate="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
   <NoteRelation id="5" noteId="5" entityRecordId="14" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0"
                 modifiedOn="2015-03-09 17:20:32.0"/>
 
@@ -154,7 +154,7 @@
           feeHelpClass="0" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="2009" entityIdentifier="1" entityRecordId="15" nodeId="20"
                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Note id="6" note="Subjects_2_2" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <Note id="6" note="Subjects_2_2" createdOn="2015-03-09 17:00:51.0" interactionDate="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
   <NoteRelation id="6" noteId="6" entityRecordId="15" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0"
                 modifiedOn="2015-03-09 17:20:32.0"/>
 
@@ -163,7 +163,7 @@
           feeHelpClass="0" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="2010" entityIdentifier="1" entityRecordId="16" nodeId="18"
                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Note id="7" note="Subjects_2_1_1" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <Note id="7" note="Subjects_2_1_1" createdOn="2015-03-09 17:00:51.0" interactionDate="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
   <NoteRelation id="7" noteId="7" entityRecordId="16" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0"
                 modifiedOn="2015-03-09 17:20:32.0"/>
 
@@ -174,7 +174,7 @@
                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="2012" entityIdentifier="1" entityRecordId="17" nodeId="107"
                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Note id="8" note="Subjects_2_2 Regions_4" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <Note id="8" note="Subjects_2_2 Regions_4" createdOn="2015-03-09 17:00:51.0" interactionDate="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
   <NoteRelation id="8" noteId="8" entityRecordId="17" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0"
                 modifiedOn="2015-03-09 17:20:32.0"/>
 

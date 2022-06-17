@@ -34,7 +34,7 @@ const styles = theme => createStyles({
 
 const RecipientsSelectionSwitcher: React.FunctionComponent<any> = props => {
   const {
-    classes, selectedRecords, allRecords, selectAll, setSelectAll, disabled
+    classes, selectedRecords, allRecords, selectAll, setSelectAll, disabled, selectionOnly
   } = props;
 
   const allRecordsText = allRecords !== null ? `${allRecords} found record${allRecords > 1 ? "s" : ""}` : "All records";
@@ -69,16 +69,17 @@ const RecipientsSelectionSwitcher: React.FunctionComponent<any> = props => {
           </Typography>
         </ButtonBase>
       )}
-
-      <ButtonBase
-        disabled={disabled}
-        className={clsx(classes.select, selectAll ? classes.highlightSelect : "")}
-        onClick={setAll}
-      >
-        <Typography className={clsx(classes.selectTypography, selectAll ? classes.highlightedSelectTypography : "")}>
-          {allRecordsText}
-        </Typography>
-      </ButtonBase>
+      {!selectionOnly && (
+        <ButtonBase
+          disabled={disabled}
+          className={clsx(classes.select, selectAll ? classes.highlightSelect : "")}
+          onClick={setAll}
+        >
+          <Typography className={clsx(classes.selectTypography, selectAll ? classes.highlightedSelectTypography : "")}>
+            {allRecordsText}
+          </Typography>
+        </ButtonBase>
+      )}
     </div>
   );
 };

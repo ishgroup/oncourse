@@ -76,7 +76,7 @@
 	<field name="course.qualification.nationalCode" class="java.lang.String"/>
 	<field name="course.qualification.level" class="java.lang.String"/>
 	<field name="course.qualification.title" class="java.lang.String"/>
-	<field name="sessionsCount" class="java.lang.Integer"/>
+	<field name="sessions" class="java.util.List"/>
 	<title>
 		<band height="115" splitType="Stretch"/>
 	</title>
@@ -148,7 +148,7 @@
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-17" style="data field (numeric)" x="617" y="81" width="73" height="15" uuid="bba42740-2ee5-4c7b-b9c2-93550e8b336c"/>
-				<textFieldExpression><![CDATA[$F{sessionsCount}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{sessions}.size()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-1" style="Label" x="535" y="81" width="77" height="15" uuid="03fc89fe-c7f5-4316-a2ae-9d7ba6b60e90"/>

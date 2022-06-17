@@ -74,6 +74,9 @@ export const CLOSE_DRAWER = "common/drawer/close";
 export const OPEN_CONFIRM = "common/confirm/open";
 export const CLOSE_CONFIRM = "common/confirm/close";
 
+export const OPEN_SEND_MESSAGE = "common/sendMessage/open";
+export const CLOSE_SEND_MESSAGE = "common/sendMessage/close";
+
 export const SHOW_MESSAGE = "common/message/show";
 export const CLEAR_MESSAGE = "common/message/clear";
 
@@ -144,13 +147,14 @@ export const closeConfirm = () => ({
   type: CLOSE_CONFIRM
 });
 
-export const setLastLocation = () => ({
-  type: SET_LAST_LOCATION
+export const openSendMessage = () => ({
+  type: OPEN_SEND_MESSAGE
 });
 
-export const clearLastLocation = () => ({
-  type: CLEAR_LAST_LOCATION
+export const closeSendMessage = () => ({
+  type: CLOSE_SEND_MESSAGE
 });
+
 
 export const checkPassword = (value: string, host?: string, port?: number) => ({
   type: CHECK_PASSWORD_REQUEST,

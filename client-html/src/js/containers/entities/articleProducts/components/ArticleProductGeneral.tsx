@@ -5,7 +5,9 @@
 
 import React, { useCallback } from "react";
 import { change, FieldArray } from "redux-form";
-import { Account, ArticleProduct, ProductStatus, Tag, Tax } from "@api/model";
+import {
+ Account, ArticleProduct, ProductStatus, Tag, Tax 
+} from "@api/model";
 import { connect } from "react-redux";
 import { Grid } from "@mui/material";
 import { Decimal } from "decimal.js-light";
@@ -20,6 +22,7 @@ import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 interface ArticleProductGeneralProps extends EditViewProps<ArticleProduct> {
   accounts?: Account[];
@@ -60,7 +63,6 @@ const handleChangeAccount = (values: ArticleProduct, taxes: Tax[], accounts: Acc
   }
 };
 
-
 const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
   const {
     twoColumn, accounts, isNew, taxes, showConfirm, tags, values, dispatch, form, syncErrors, submitSucceeded, rootEntity, dataCollectionRules
@@ -71,7 +73,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
     lg: twoColumn ? 4 : 12
   } as any;
 
-  const validateIncomeAccount = useCallback(value => (accounts.find((item: Account) => item.id === value) ? undefined : `Income account is mandatory`), [accounts])
+  const validateIncomeAccount = useCallback(value => (accounts.find((item: Account) => item.id === value) ? undefined : `Income account is mandatory`), [accounts]);
 
   return (
 
@@ -121,11 +123,21 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           )}
         />
       </Grid>
-      <Grid item xs={12}>
+
+      <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 8 : 12}>
         <FormField
           type="tags"
           name="tags"
           tags={tags}
+        />
+      </Grid>
+
+      <Grid item {...gridItemProps}>
+        <EntityChecklists
+          entity="ArticleProduct"
+          form={form}
+          entityId={values.id}
+          checked={values.tags}
         />
       </Grid>
 

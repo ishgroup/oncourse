@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDateTime
+import java.util.function.Function
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/api/TimetableApiTest.xml")
@@ -126,18 +127,30 @@ class TimetableApiTest extends TestWithDatabase {
     
     @Test
     void getDateTest() {
+        double[] daysArr = new double[31]
+        daysArr[29] = 1
+        daysArr[30] = 1
 
-        Assertions.assertArrayEquals([30, 31].toArray(), api.getDates(2, 2019, null).toArray())
-        Assertions.assertArrayEquals([30].toArray(), api.getDates(2, 2019, 'room.id=200').toArray())
-        Assertions.assertArrayEquals([30, 31].toArray(), api.getDates(2, 2019, 'room.site.id=200').toArray())
+        Assertions.assertArrayEquals(daysArr.collect{it}.toArray(), api.getDates(2, 2019, null).toArray())
 
-        Assertions.assertArrayEquals((1..11).toArray(), api.getDates(3, 2019, null).toArray())
-        Assertions.assertArrayEquals([11].toArray(), api.getDates(3, 2019, 'room.id=204').toArray())
-        Assertions.assertArrayEquals([11].toArray(), api.getDates(3, 2019, 'room.site.id=203').toArray())
+        daysArr[30] = 0
+        Assertions.assertArrayEquals(daysArr.collect{it}.toArray(), api.getDates(2, 2019, new SearchRequestDTO().with {it.search = 'room.id=200'; it}).toArray())
+        daysArr[30] = 1
+        Assertions.assertArrayEquals(daysArr.collect{it}.toArray(), api.getDates(2, 2019, new SearchRequestDTO().with {it.search = 'room.site.id=200'; it}).toArray())
 
-        Assertions.assertArrayEquals([1, 2, 3, 4, 5, 8, 9, 10, 30].toArray(), api.getDates(4, 2019, null).toArray())
+        daysArr = [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1.0, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        Assertions.assertArrayEquals(daysArr.collect{it}.toArray(), api.getDates(3, 2019, null).toArray())
+        daysArr = new double[30]
 
-        Assertions.assertArrayEquals([].toArray(), api.getDates(5, 2019, null).toArray())
+        daysArr[10] = 1
+        Assertions.assertArrayEquals(daysArr.collect{it}.toArray(), api.getDates(3, 2019, new SearchRequestDTO().with {it.search = 'room.id=204'; it}).toArray())
+        daysArr[1] = 1
+        daysArr[10] = 0
+        Assertions.assertArrayEquals(daysArr.collect{it}.toArray(), api.getDates(3, 2019, new SearchRequestDTO().with {it.search = 'room.id=203'; it}).toArray())
 
+        daysArr = [0.67, 0.67, 0.67, 0.67, 0.67, 0.0, 0.0, 0.67, 1.0, 0.67, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.67, 0.0]
+        Assertions.assertArrayEquals(daysArr.collect{it}.toArray(), api.getDates(4, 2019, null).toArray())
+
+        Assertions.assertArrayEquals(new double[30].collect{it}.toArray(), api.getDates(5, 2019, null).toArray())
     }
 }

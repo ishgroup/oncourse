@@ -11,10 +11,10 @@
            workPhone="331110001" mobilePhone="331110001" street="1st" postcode="1002" suburb="Sydney" state="NSW"
            uniqueCode="TUT1UNIQUE" isStudent="0" isTutor="1" email="tutor@tutor.tutor"/>
 
-  <Note id="1" note="first note1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="2" note="second note1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="3" note="first note2" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="4" note="second note2" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="1" note="first note1" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="2" note="second note1" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="3" note="first note2" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="4" note="second note2" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
 
   <NoteRelation id="1" noteId="1" entityRecordId="1" entityIdentifier="Contact" createdOn="2015-01-24 18:00:00"
                 modifiedOn="2015-01-24 18:00:00"/>

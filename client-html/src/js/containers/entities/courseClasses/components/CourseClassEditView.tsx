@@ -17,7 +17,7 @@ import IconButton from "@mui/material/IconButton";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
 import { Typography } from "@mui/material";
-import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
+import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
 import { decimalMul } from "../../../../common/utils/numbers/decimalCalculation";
 import { StringArgFunction } from "../../../../model/common/CommonFunctions";
 import { getRoundingByType } from "../../discounts/utils";
