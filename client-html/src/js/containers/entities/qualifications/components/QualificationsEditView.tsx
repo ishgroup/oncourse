@@ -8,7 +8,6 @@ import { FormControlLabel } from "@mui/material";
 import { QualificationType } from "@api/model";
 import Grid from "@mui/material/Grid";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { sortDefaultSelectItems } from "../../../../common/utils/common";
 
 const qualificationTypes = Object.keys(QualificationType)
@@ -51,7 +50,7 @@ const QualificationsEditView: React.FC<any> = (props: any) => {
             name="type"
             label="Type"
             items={qualificationTypes}
-            validate={isNew || isCustom ? validateSingleMandatoryField : undefined}
+            required={isNew || isCustom}
           />
         </Grid>
         <Grid item xs={12}>
@@ -60,7 +59,6 @@ const QualificationsEditView: React.FC<any> = (props: any) => {
             disabled={isDisabled}
             name="qualLevel"
             label="Level"
-            validate={isNew || isCustom ? validateSingleMandatoryField : undefined}
           />
         </Grid>
         <Grid item xs={12}>
@@ -69,7 +67,7 @@ const QualificationsEditView: React.FC<any> = (props: any) => {
             disabled={isDisabled}
             name="title"
             label="Title"
-            validate={isNew || isCustom ? validateSingleMandatoryField : undefined}
+            required={isNew || isCustom}
           />
         </Grid>
         <Grid item xs={12}>
@@ -78,7 +76,7 @@ const QualificationsEditView: React.FC<any> = (props: any) => {
             disabled={!isNew}
             name="nationalCode"
             label="National code"
-            validate={isNew || isCustom ? validateSingleMandatoryField : undefined}
+            required={isNew || isCustom}
           />
         </Grid>
       </Grid>
