@@ -62,7 +62,7 @@ const RoomEditView = props => {
       onEditViewScroll
       }}
     />
-);
+ );
 };
 
 export default RoomEditView;
