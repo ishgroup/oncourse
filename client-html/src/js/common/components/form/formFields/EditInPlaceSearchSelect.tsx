@@ -302,7 +302,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
   const edit = () => {
     setIsEditing(true);
     setTimeout(() => {
-      inputNode.current.focus();
+      inputNode?.current?.focus();
     }, 50);
   };
 
