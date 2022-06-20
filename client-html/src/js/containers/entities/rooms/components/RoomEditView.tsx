@@ -64,7 +64,7 @@ const RoomEditView = props => {
         syncErrors
       }}
     />
-);
+ );
 };
 
 export default RoomEditView;

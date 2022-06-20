@@ -10,18 +10,18 @@ import { connect } from "react-redux";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 
-class SurveyGizmoBaseForm extends React.Component<any, any> {
+class AlchemerBaseForm extends React.Component<any, any> {
   constructor(props) {
     super(props);
 
     // Initializing form with values
-    props.dispatch(initialize("SurveyGizmoForm", props.item));
+    props.dispatch(initialize("AlchemerForm", props.item));
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.item.id !== this.props.item.id) {
       // Reinitializing form with values
-      this.props.dispatch(initialize("SurveyGizmoForm", this.props.item));
+      this.props.dispatch(initialize("AlchemerForm", this.props.item));
     }
   }
 
@@ -34,8 +34,8 @@ class SurveyGizmoBaseForm extends React.Component<any, any> {
       <form onSubmit={handleSubmit(onSubmit)}>
 
         <AppBarContent>
-          <FormField name="fields.user" label="User" type="text" className="mb-2" />
-          <FormField name="fields.password" label="Password" type="password" className="mb-2" />
+          <FormField name="fields.apiToken" label="Api token" type="text" className="mb-2" />
+          <FormField name="fields.apiTokenSecret" label="Api token secret" type="text" className="mb-2" />
           <FormField name="fields.surveyId" label="Survey ID" type="text" className="mb-2" />
           <FormField
             name="fields.courseTag"
@@ -61,6 +61,6 @@ class SurveyGizmoBaseForm extends React.Component<any, any> {
 }
 
 export const AlchemerForm = reduxForm({
-  form: "SurveyGizmoForm",
+  form: "AlchemerForm",
   onSubmitFail
-})(connect<any, any, any>(null, null)(SurveyGizmoBaseForm));
+})(connect<any, any, any>(null, null)(AlchemerBaseForm));
