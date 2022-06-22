@@ -704,6 +704,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Start date', attribute: Outcome.START_DATE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'End date', attribute: Outcome.END_DATE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Delivery mode', attribute: Outcome.DELIVERY_MODE.name, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Printed certificate', attribute: Outcome.PRINTED_CERTIFICATE_KEY, sortable: false, width: W200, visible: false),
                 /*new ColumnDTO(title: '% of present attendance', attribute: Outcome.PRESENT_ATTENDENCE_PERCENT_KEY, sortable: false, width: W200, visible: false),
                 new ColumnDTO(title: '% of marked asssessments', attribute: Outcome.MARKED_ASSESSMENT_PERCENT_KEY, sortable: false, width: W200, visible: false),*/
         ]
