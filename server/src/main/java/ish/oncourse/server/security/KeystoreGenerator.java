@@ -13,6 +13,7 @@ package ish.oncourse.server.security;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.cert.X509ExtensionUtils;
@@ -26,10 +27,11 @@ import org.bouncycastle.crypto.params.RSAKeyParameters;
 import org.bouncycastle.crypto.params.RSAPrivateCrtKeyParameters;
 import org.bouncycastle.jcajce.provider.asymmetric.x509.CertificateFactory;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.openssl.PEMKeyPair;
+import org.bouncycastle.openssl.PEMParser;
+import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
 import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
-import org.bouncycastle.util.io.pem.PemObject;
-import org.bouncycastle.util.io.pem.PemReader;
 
 import javax.security.auth.x500.X500Principal;
 import java.io.*;
@@ -40,10 +42,9 @@ import java.security.SecureRandom;
 import java.security.Security;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPublicKeySpec;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -51,7 +52,6 @@ import java.util.Date;
  * SSL connection.<BR>
  * The keytool does not allow to extract the private key, for this and other reasons we are not going to store the keys in db, but in keystore next to the
  * application.
- *
  */
 public final class KeystoreGenerator {
 
@@ -132,12 +132,20 @@ public final class KeystoreGenerator {
 			// add requried certificate
 			generateIshClientServerCertificate(ks, algorithm, alias, keyPassword);
 
-			// save on disk
+			// save on disk on .PEM format
 			try (JcaPEMWriter pemWriter = new JcaPEMWriter(new OutputStreamWriter(new FileOutputStream(path)))) {
-				pemWriter.writeObject(new PemObject("RSA PRIVATE KEY", ks.getKey(alias, keyPassword.toCharArray()).getEncoded()));
-				pemWriter.writeObject(new PemObject("CERTIFICATE", ks.getCertificate(alias).getEncoded()));
-			}
+				pemWriter.writeObject(ks.getKey(alias, keyPassword.toCharArray()));
+				Arrays.stream(ks.getCertificateChain(alias)).forEach(certificate ->
+				{
+					try {
+						pemWriter.writeObject(certificate);
+					} catch (IOException e) {
+						e.printStackTrace();
+						throw new RuntimeException("Can not create SSL Certificate. Server shut down...");
+				}
+			});
 
+			}
 		}
 		// file exist, load from disk
 		return loadKeystore(path, alias, keystorePassword);
@@ -154,19 +162,16 @@ public final class KeystoreGenerator {
 		var ks = KeyStore.getInstance(KEYSTORE_TYPE);
 		ks.load(null, null);
 
-		KeyFactory factory = KeyFactory.getInstance("RSA");
 
-		try (FileReader keyReader = new FileReader(location);
-			 PemReader pemReader = new PemReader(keyReader)) {
-
-			PemObject pemObject = pemReader.readPemObject();
-			byte[] content = pemObject.getContent();
-			PKCS8EncodedKeySpec privKeySpec = new PKCS8EncodedKeySpec(content);
-			var privateKey = (RSAPrivateKey) factory.generatePrivate(privKeySpec);
+		try (FileReader keyReader = new FileReader(location)) {
+			PEMParser pemParser = new PEMParser(keyReader);
+			JcaPEMKeyConverter converter = new JcaPEMKeyConverter();
+			PrivateKeyInfo privateKeyInfo = ((PEMKeyPair) pemParser.readObject()).getPrivateKeyInfo();
+			var privateKey = converter.getPrivateKey(privateKeyInfo);
 
 			try (FileInputStream fis = new FileInputStream(location)) {
-				CertificateFactory factoryl = new CertificateFactory();
-				Certificate[] serverChain = new Certificate[]{factoryl.engineGenerateCertificate(fis)};
+				CertificateFactory certificateFactory = new CertificateFactory();
+				Certificate[] serverChain = new Certificate[]{certificateFactory.engineGenerateCertificate(fis)};
 				ks.setEntry(alias, new KeyStore.PrivateKeyEntry(privateKey, serverChain),
 						new KeyStore.PasswordProtection(password.toCharArray())
 				);
@@ -216,6 +221,7 @@ public final class KeystoreGenerator {
 
 		X509ExtensionUtils x509ExtensionUtils = new JcaX509ExtensionUtils();
 		var ski = x509ExtensionUtils.createSubjectKeyIdentifier(SubjectPublicKeyInfo.getInstance(pubKey.getEncoded()));
+		var aki = x509ExtensionUtils.createAuthorityKeyIdentifier(SubjectPublicKeyInfo.getInstance(pubKey.getEncoded()));
 		certBuilder.addExtension(Extension.subjectKeyIdentifier, false, ski);
 
 		var contentSigner = new JcaContentSignerBuilder("MD5WithRSA").build(privKey);
