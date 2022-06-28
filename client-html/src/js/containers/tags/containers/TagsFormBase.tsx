@@ -294,7 +294,10 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
 
       const removePath = getDeepValue(clone, item.parent.replace(/\[[0-9]+]$/, ""));
 
-      removePath && removePath.splice(Number(item.parent.match(/\[(\d)]$/)[1]), 1);
+      if (removePath) {
+        const deleteItem = item.parent.match(/\[(\d)]$/);
+        if (deleteItem && deleteItem.length > 0) removePath.splice(Number(deleteItem[1]), 1);
+      }
 
       dispatch(change(TAGS_FORM_NAME, "childTags", clone.childTags));
       dispatch(change(TAGS_FORM_NAME, "refreshFlag", !values.refreshFlag));
