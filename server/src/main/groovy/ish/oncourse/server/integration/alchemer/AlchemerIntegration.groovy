@@ -9,7 +9,7 @@
  * See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.server.integration.surveygizmo
+package ish.oncourse.server.integration.alchemer
 
 import groovy.transform.CompileDynamic
 import groovyx.net.http.ContentType
@@ -22,28 +22,28 @@ import org.apache.logging.log4j.Logger
 
 @CompileDynamic
 @Plugin(type = 4)
-class SurveyGizmoIntegration implements PluginTrait {
-	public static final String SURVEYGIZMO_USER = "user"
-	public static final String SURVEYGIZMO_PASSWORD = "password"
-	public static final String SURVEYGIZMO_SURVEY_ID = "surveyId"
-	public static final String SURVEYGIZMO_COURSE_TAG = "courseTag"
-	public static final String SURVEYGIZMO_SEND_ON_ENROLMENT_SUCCESS = "sendOnEnrolmentSuccess"
-	public static final String SURVEYGIZMO_SEND_ON_ENROLMENT_COMPLETION = "sendOnEnrolmentCompletion"
+class AlchemerIntegration implements PluginTrait {
+	public static final String ALCHEMER_API_TOKEN = "apiToken"
+	public static final String ALCHEMER_API_TOKEN_SECRET = "apiTokenSecret"
+	public static final String ALCHEMER_SURVEY_ID = "surveyId"
+	public static final String ALCHEMER_COURSE_TAG = "courseTag"
+	public static final String ALCHEMER_SEND_ON_ENROLMENT_SUCCESS = "sendOnEnrolmentSuccess"
+	public static final String ALCHEMER_SEND_ON_ENROLMENT_COMPLETION = "sendOnEnrolmentCompletion"
 
-	static final String BASE_URL = "https://restapi.surveygizmo.com/v4/"
+	static final String BASE_URL = "https://api.alchemer.com/v5/"
 
-	def user
-	def password
+	def apiToken
+	def apiTokenSecret
 	def surveyId
 
 	private static Logger logger = LogManager.logger
 
-	SurveyGizmoIntegration(Map args) {
+	AlchemerIntegration(Map args) {
 		loadConfig(args)
 
-		this.user = configuration.getIntegrationProperty(SURVEYGIZMO_USER).value
-		this.password = configuration.getIntegrationProperty(SURVEYGIZMO_PASSWORD).value
-		this.surveyId = configuration.getIntegrationProperty(SURVEYGIZMO_SURVEY_ID).value
+		this.apiToken = configuration.getIntegrationProperty(ALCHEMER_API_TOKEN).value
+		this.apiTokenSecret = configuration.getIntegrationProperty(ALCHEMER_API_TOKEN_SECRET).value
+		this.surveyId = configuration.getIntegrationProperty(ALCHEMER_SURVEY_ID).value
 	}
 
 	/**
@@ -53,17 +53,20 @@ class SurveyGizmoIntegration implements PluginTrait {
 	protected String createCampaign(String name) {
 		def httpClient = new RESTClient(BASE_URL)
 
-		httpClient.request(Method.GET, ContentType.JSON) {
-			uri.path = "survey/${surveyId}/surveycampaign/"
+		httpClient.request(Method.PUT, ContentType.JSON) {
+			uri.path = "survey/${surveyId}/surveycampaign"
 			uri.query = [
-			        _method: "PUT",
-					"user:pass": "${user}:${password}",
 					type: "email",
-					name: name
+					name: name,
+					api_token: apiToken,
+					api_token_secret: apiTokenSecret
 			]
 
 			response.success = { resp, result ->
 				return result.data.id
+			}
+			response.failure = {resp, result ->
+				logger.error(result["message"])
 			}
 		} as String
 	}
@@ -75,7 +78,8 @@ class SurveyGizmoIntegration implements PluginTrait {
 			uri.path = "survey/${surveyId}/surveycampaign/${campaignId}/contact/"
 			uri.query = [
 			        _method: "PUT",
-					"user:pass": "${user}:${password}",
+					"api_token": apiToken,
+					"api_token_secret": apiTokenSecret,
 					semailaddress: email,
 					sfirstName: firstName,
 					slastName: lastName,
@@ -84,6 +88,9 @@ class SurveyGizmoIntegration implements PluginTrait {
 
 			response.success = { resp, result ->
 				return result.result_ok == true
+			}
+			response.failure = {resp, result ->
+				logger.error(result["message"])
 			}
 		}
 	}
@@ -95,7 +102,8 @@ class SurveyGizmoIntegration implements PluginTrait {
 			uri.path = "survey/${surveyId}/surveycampaign/${campaignId}/emailmessage/"
 			uri.query = [
 			        _method: "PUT",
-					"user:pass": "${user}:${password}",
+					"api_token": apiToken,
+					"api_token_secret": apiTokenSecret,
 					type: "message",
 					"from[email]": replyTo,
 					replies: replyTo,
@@ -108,6 +116,9 @@ class SurveyGizmoIntegration implements PluginTrait {
 
 			response.success = { resp, result ->
 				return result
+			}
+			response.failure = {resp, result ->
+				logger.error(result["message"])
 			}
 		}
 	}
