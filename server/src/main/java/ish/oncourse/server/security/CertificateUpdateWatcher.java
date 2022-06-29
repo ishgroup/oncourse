@@ -10,7 +10,7 @@
  */
 package ish.oncourse.server.security;
 
-import com.google.inject.Inject;
+import ish.oncourse.server.modules.SslContextHolder;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
@@ -27,19 +27,14 @@ import static ish.oncourse.server.security.KeystoreGenerator.KEYSTORE_PASSWORD;
 public class CertificateUpdateWatcher implements Job {
 
     private Long lastUpdate = new Date().getTime();
-    private SslContextFactory.Server sslContextFactory;
-
-    @Inject
-    public CertificateUpdateWatcher(SslContextFactory.Server sslContextFactory) {
-        this.sslContextFactory = sslContextFactory;
-    }
+    private final SslContextFactory.Server sslContextFactory = SslContextHolder.get();
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         try {
             var keyStore = new File(KEYSTORE);
-            Long modified = keyStore.lastModified();
-            if (modified > lastUpdate) {
+            long modified = keyStore.lastModified();
+            if (modified > lastUpdate || modified == 0) {
                 updateCertificate();
                 lastUpdate = modified;
             }
