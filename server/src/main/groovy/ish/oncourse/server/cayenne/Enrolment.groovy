@@ -224,6 +224,10 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 		return null
 	}
 
+	Integer getClassAttendancePercent(){
+		courseClass.getAttendancePercentForStudent(student)
+	}
+
 	@Override
 	void setPersistenceState(final int persistenceState) {
 		logger.debug("changing persistence state from: {} to: {}",
