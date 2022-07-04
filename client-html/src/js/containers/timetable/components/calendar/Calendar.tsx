@@ -31,7 +31,7 @@ import {
   setTimetableSearch
 } from "../../actions";
 import { TimetableContext } from "../../Timetable";
-import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
+import { DD_MMM_YYYY_MINUSED } from "../../../../common/utils/dates/format";
 import { animateListScroll, attachDayNodesObserver, getFormattedMonthDays } from "../../utils";
 import CalendarMonth from "./components/month/CalendarMonth";
 import CalendarModesSwitcher from "./components/switchers/CalendarModesSwitcher";
@@ -127,7 +127,7 @@ const onRendered = ({
 };
 
 const scrollToCalendarDay = debounce((day: Date, list, index, dayNodesObserver) => {
-  const dayId = format(day, YYYY_MM_DD_MINUSED);
+  const dayId = format(day, DD_MMM_YYYY_MINUSED);
 
   const dayNode = document.getElementById(dayId);
 
@@ -294,7 +294,7 @@ const Calendar = React.memo<Props>(props => {
 
   useEffect(() => {
     const targetDayUrlString = params.get("selectedDate");
-    const targetDayString = format(targetDay, YYYY_MM_DD_MINUSED);
+    const targetDayString = format(targetDay, DD_MMM_YYYY_MINUSED);
 
     if (targetDayUrlString !== targetDayString) {
       params.set("selectedDate", targetDayString);
