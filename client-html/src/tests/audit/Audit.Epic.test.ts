@@ -8,6 +8,7 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../js/common/components/list-view/c
 import { FETCH_FINISH, FETCH_START } from "../../js/common/actions";
 import { EpicGetAudit } from "../../js/containers/audits/epics/EpicGetAudit";
 import { toArray, filter } from "rxjs/operators";
+import { from } from "rxjs";
 
 describe("Audit Epics tests", () => {
   test("EpicGetAudit should return correct actions", () => {
@@ -15,10 +16,10 @@ describe("Audit Epics tests", () => {
     const item = mockedAPI.db.getAudit(1);
 
     // Redux action to trigger epic
-    // const action$ = ActionsObservable.of({ type: GET_AUDIT_ITEM_REQUEST, payload: 1 });
+    const action$ = from([{ type: GET_AUDIT_ITEM_REQUEST, payload: 1 }]);
 
     // Initializing epic instance
-    const epic$ = EpicGetAudit(null, store, {});
+    const epic$ = EpicGetAudit(action$, store, {});
 
     // Testing epic to be resolved with expected array of actions
     return expect(
