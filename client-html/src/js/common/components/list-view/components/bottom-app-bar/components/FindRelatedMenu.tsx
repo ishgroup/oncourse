@@ -3,7 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { Fragment, useCallback, useMemo, useState } from "react";
+import React, {
+ Fragment, useCallback, useMemo, useState 
+} from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { FindRelatedItem } from "../../../../../../model/common/ListView";
@@ -22,11 +24,15 @@ const FindRelatedMenu = React.memo<Props>(({ findRelated, handleRelatedLinkClick
 
   const menuOpened = useMemo(() => Boolean(menuAnchor), [menuAnchor]);
 
+  findRelated.sort((a, b) => (a.title > b.title ? 1 : -1));
+
   return (
     <>
       {findRelated
         ? findRelated.map((findRelatedItem, index) => {
             if (findRelatedItem.items) {
+              findRelatedItem.items.sort((a, b) => (a.title > b.title ? 1 : -1));
+              
               return (
                 <Fragment key={index + findRelatedItem.title}>
                   <MenuItem
