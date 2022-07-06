@@ -5,7 +5,7 @@
 
 import React, { useCallback } from "react";
 import { change } from "redux-form";
-import { Account, ExpiryType, MembershipProduct, ProductStatus, Tax } from "@api/model";
+import { Account, ExpiryType, MembershipProduct, ProductStatus, Tag, Tax } from "@api/model";
 import { connect } from "react-redux";
 import { Grid } from "@mui/material";
 import { Decimal } from "decimal.js-light";
@@ -28,6 +28,7 @@ import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 interface MembershipProductGeneralProps extends EditViewProps<MembershipProduct>{
   accounts?: Account[];
   taxes?: Tax[];
+  tags?: Tag[];
   dataCollectionRules?: PreferencesState["dataCollectionRules"];
 }
 
@@ -124,11 +125,9 @@ const handleChangeAccount = (values: MembershipProduct, taxes: Tax[], accounts: 
 
 const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props => {
   const {
-    twoColumn, accounts, taxes, values, dispatch, form, dataCollectionRules, isNew, syncErrors
+    twoColumn, accounts, taxes, values, dispatch, form, dataCollectionRules, isNew, syncErrors, tags
   } = props;
   const initialIndexExpiry = getInitialIndexExpiry(values);
-
-  const tags = useAppSelector(state => state.tags.entityTags["MembershipProduct"]);
 
   const validateIncomeAccount = useCallback(value => (accounts.find((item: Account) => item.id === value) ? undefined : `Income account is mandatory`), [accounts])
 
@@ -300,7 +299,8 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
 const mapStateToProps = (state: State) => ({
   dataCollectionRules: state.preferences.dataCollectionRules,
   accounts: state.plainSearchRecords.Account.items,
-  taxes: state.taxes.items
+  taxes: state.taxes.items,
+  tags: state.tags.entityTags["MembershipProduct"]
 });
 
 export default connect<any, any, any>(mapStateToProps)(MembershipProductGeneral);

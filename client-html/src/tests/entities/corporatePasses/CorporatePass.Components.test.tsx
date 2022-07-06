@@ -3,7 +3,7 @@ import { III_DD_MMM_YYYY } from "../../../js/common/utils/dates/format";
 import CorporatePassEditView from "../../../js/containers/entities/corporatePasses/components/CorporatePassEditView";
 import { mockedEditView } from "../../common/MockedEditView.Components";
 
-describe("Virtual rendered CorporatePassEditView", () => {
+describe.skip("Virtual rendered CorporatePassEditView", () => {
   mockedEditView({
     entity: "CorporatePass",
     EditView: CorporatePassEditView,
