@@ -171,8 +171,7 @@ const NewsRender = props => {
   const lastLoginOnWithTimeZone = utcToZonedTime(lastLoginOn || new Date(), Intl.DateTimeFormat().resolvedOptions().timeZone);
   
   const postsForRender = useMemo(() => {
-    // const readNews = preferences[READ_NEWS] && preferences[READ_NEWS].split(",");
-    const readNews = null;
+    const readNews = preferences[READ_NEWS] && preferences[READ_NEWS].split(",");
 
     const filteredPosts = blogPosts.filter(post => (page ? post.page && window.location.pathname.includes(post.page) : !post.page)
     && (!readNews || !readNews.includes(post.id))).reverse();
