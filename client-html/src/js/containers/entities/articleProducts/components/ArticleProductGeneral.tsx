@@ -148,6 +148,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           label="Income account"
           validate={validateIncomeAccount}
           onChange={handleChangeAccount(values, taxes, accounts, dispatch, form)}
+          debounced={false}
           items={accounts}
           selectValueMark="id"
           selectLabelCondition={a => `${a.accountCode}, ${a.description}`}
@@ -161,6 +162,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           label="Fee ex tax"
           validate={validateNonNegative}
           onChange={handleChangeFeeExTax(values, taxes, dispatch, form)}
+          debounced={false}
           required
         />
       </Grid>
@@ -171,6 +173,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           label="Total fee"
           validate={validateNonNegative}
           onChange={handleChangeFeeIncTax(values, taxes, dispatch, form)}
+          debounced={false}
         />
       </Grid>
       <Grid item {...gridItemProps}>
@@ -179,6 +182,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           label="Tax"
           name="taxId"
           onChange={handleChangeTax(values, taxes, dispatch, form)}
+          debounced={false}
           items={taxes}
           selectValueMark="id"
           selectLabelCondition={tax => tax.code}

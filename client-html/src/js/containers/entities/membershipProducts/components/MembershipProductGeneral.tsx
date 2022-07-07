@@ -203,6 +203,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           label="Income account"
           validate={validateIncomeAccount}
           onChange={handleChangeAccount(values, taxes, accounts, dispatch, form)}
+          debounced={false}
           items={accounts}
           selectValueMark="id"
           selectLabelCondition={a => `${a.accountCode}, ${a.description}`}
@@ -229,6 +230,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           name="feeExTax"
           validate={[validateSingleMandatoryField, validateNonNegative]}
           onChange={handleChangeFeeExTax(values, taxes, dispatch, form)}
+          debounced={false}
           props={{
             label: "Fee ex tax"
           }}
@@ -240,6 +242,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           name="totalFee"
           validate={validateNonNegative}
           onChange={handleChangeFeeIncTax(values, taxes, dispatch, form)}
+          debounced={false}
           props={{
             label: "Total fee"
           }}
@@ -250,6 +253,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           type="select"
           name="taxId"
           onChange={handleChangeTax(values, taxes, dispatch, form)}
+          debounced={false}
           required
           props={{
             label: "Tax",
