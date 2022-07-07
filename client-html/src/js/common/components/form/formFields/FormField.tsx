@@ -57,7 +57,7 @@ interface Props extends Partial<WrappedFieldProps> {
   type?: keyof typeof EditInPlaceTypes;
   required?: boolean;
 
-  // Performance optimization property that handles field value rendering outside of Redux Form lificircle.
+  // Performance optimization property that handles field value rendering outside of Redux Form life circle.
   // It is true by default
   // Should be set to false when Redux Form lificircle handlers are used (onChange,onBlur and etc)
   debounced?: boolean;
