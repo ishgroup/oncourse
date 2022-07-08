@@ -374,6 +374,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                             dispatch(change("UsersForm", "role", null));
                           }
                         }}
+                        debounced={false}
                       />
                     )}
                     label="Admin"

@@ -374,6 +374,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
             items={paymentTypes}
             validate={[validateSingleMandatoryField, validatePaymentMethodField]}
             onChange={handlePaymentMethodChange}
+            debounced={false}
           />
         </Grid>
 
