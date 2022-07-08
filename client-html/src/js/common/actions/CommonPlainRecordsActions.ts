@@ -28,11 +28,12 @@ export const getCommonPlainRecords = (
   columns?: string,
   ascending?: boolean,
   sort?: string,
-  pageSize?: number
+  pageSize?: number,
+  customColumnMap?: any,
 ) => ({
   type: GET_COMMON_PLAIN_RECORDS,
   payload: {
-    key, offset, columns, ascending, sort, pageSize
+    key, offset, columns, ascending, sort, pageSize, customColumnMap
   }
 });
 
