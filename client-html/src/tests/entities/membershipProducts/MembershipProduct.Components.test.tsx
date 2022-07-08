@@ -1,7 +1,7 @@
 import MembershipProductEditView from "../../../js/containers/entities/membershipProducts/components/MembershipProductEditView";
 import { mockedEditView } from "../../common/MockedEditView.Components";
 
-describe.skip("Virtual rendered MembershipProductEditView", () => {
+describe("Virtual rendered MembershipProductEditView", () => {
   mockedEditView({
     entity: "MembershipProduct",
     EditView: MembershipProductEditView,
