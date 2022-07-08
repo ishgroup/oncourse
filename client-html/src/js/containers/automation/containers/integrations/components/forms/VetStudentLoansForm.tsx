@@ -9,7 +9,6 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { getFormValues, initialize, reduxForm } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 import { State } from "../../../../../../reducers/state";
 
@@ -30,19 +29,15 @@ class VetStudentLoans extends React.Component<any, any> {
   render() {
     const {
       AppBarContent,
-      dirty,
       handleSubmit,
       onSubmit,
       values,
-      form
     } = this.props;
 
     const hasNameAndID = values && values.fields.deviceName && values.fields.organisationId;
 
     return values ? (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-
         <AppBarContent>
           <FormField
             name="fields.deviceName"

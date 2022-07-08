@@ -125,7 +125,7 @@ interface Props extends Partial<ListState> {
   onSave?: any;
   onBeforeSave?: any;
   onDelete?: any;
-  onCreate?: any;
+  onCreate?: (record: any) => void;
   classes?: any;
   isDirty?: boolean;
   isInvalid?: boolean;
@@ -172,14 +172,14 @@ interface Props extends Partial<ListState> {
     keepDirtyOnReinitialize?: boolean;
     hideTitle?: EditViewContainerProps["hideTitle"];
   };
-  CogwheelAdornment?: React.ReactNode;
+  CogwheelAdornment?: any;
   location?: any;
   history?: any;
   match?: any;
   sendGAEvent?: (event: GAEventTypes, screen: string, time?: number) => void;
   alwaysFullScreenCreateView?: any;
   currency?: Currency;
-  CustomFindRelatedMenu?: React.ReactNode;
+  CustomFindRelatedMenu?: any;
   ShareContainerAlertComponent?: any;
   searchMenuItemsRenderer?: ListAqlMenuItemsRenderer;
   customOnCreate?: any;

@@ -3,9 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ActionsObservable, Epic, ofType } from "redux-observable";
+import { Epic, ofType } from "redux-observable";
 import { debounce, mergeMap } from "rxjs/operators";
-import { interval } from "rxjs";
+import { interval, Observable } from "rxjs";
 import { State } from "../../../../reducers/state";
 import {
   CHECKOUT_ADD_CONTACT, CHECKOUT_ADD_ITEM, CHECKOUT_REMOVE_CONTACT, CHECKOUT_REMOVE_ITEM, CHECKOUT_UPDATE_RELATED_ITEMS
@@ -16,7 +16,7 @@ import {
   CHECKOUT_UPDATE_SUMMARY_PRICES
 } from "../../actions/checkoutSummary";
 
-export const EpicTriggerPricesUpdate: Epic<any, any, State> = (action$: ActionsObservable<any>, state$): any =>
+export const EpicTriggerPricesUpdate: Epic<any, any, State> = (action$: Observable<any>, state$): any =>
   action$.pipe(
     ofType(
       CHECKOUT_ADD_ITEM,

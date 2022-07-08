@@ -126,11 +126,7 @@ const onRendered = ({
   }
 };
 
-const scrollToCalendarDay = debounce((day: Date, list, index, dayNodesObserver) => {
-  const dayId = format(day, DD_MMM_YYYY_MINUSED);
-
-  const dayNode = document.getElementById(dayId);
-
+const scrollToCalendarDay = debounce((dayNode, list, index, dayNodesObserver) => {
   if (dayNode && dayNodesObserver) {
     animateListScroll(
       list,
@@ -201,7 +197,7 @@ const Calendar = React.memo<Props>(props => {
   } = props;
 
   const [dayNodesObserver, setDayNodesObserver] = useState<any>();
-  const [scrollToTargetDayOnRender, setScrollToTargetDayOnRender] = useState(null);
+  const [scrollToTargetDayOnRender, setScrollToTargetDayOnRender] = useState(targetDay);
 
   const listEl = useRef(null);
 
@@ -231,8 +227,9 @@ const Calendar = React.memo<Props>(props => {
     }
   };
 
-  const scrollToDayHandler = targetDayMonthIndex => {
-    scrollToCalendarDay(targetDay, listEl.current, targetDayMonthIndex, dayNodesObserver);
+  const scrollToDayHandler = (targetDayMonthIndex, node?) => {
+    const dayNode = node || document.getElementById(format(targetDay, DD_MMM_YYYY_MINUSED));
+    scrollToCalendarDay(dayNode, listEl.current, targetDayMonthIndex, dayNodesObserver);
   };
 
   // fetch next two months
@@ -378,7 +375,7 @@ const Calendar = React.memo<Props>(props => {
 
     const targetDayMonthIndex = months.findIndex(m => isSameMonth(m.month, targetDay));
 
-    if (targetDayMonthIndex !== -1) {
+    if (targetDayMonthIndex > -1 && targetDayMonthIndex < 2) {
       if (calendarMode === "Compact" && !(selectedMonthSessionDays[targetDay.getDate() - 1] !== 0)) {
         return;
       }
@@ -395,12 +392,13 @@ const Calendar = React.memo<Props>(props => {
   }, [selectedWeekDays, selectedDayPeriods, calendarMode]);
 
   useEffect(() => {
-    if (dayNodesObserver && scrollToTargetDayOnRender && months.length) {
+    const dayNode = document.getElementById(format(targetDay, DD_MMM_YYYY_MINUSED));
+    if (dayNode && dayNodesObserver && scrollToTargetDayOnRender && months.length) {
       const targetDayMonthIndex = months.findIndex(m => isSameMonth(m.month, scrollToTargetDayOnRender));
-      scrollToDayHandler(targetDayMonthIndex);
+      scrollToDayHandler(targetDayMonthIndex, dayNode);
       setScrollToTargetDayOnRender(null);
     }
-  }, [months, scrollToTargetDayOnRender, dayNodesObserver]);
+  }, [months, targetDay, scrollToTargetDayOnRender, dayNodesObserver]);
 
   const hasSessions = useMemo(() => (calendarMode === "Compact" ? months.some(m => m.hasSessions) : true), [months, calendarMode]);
 

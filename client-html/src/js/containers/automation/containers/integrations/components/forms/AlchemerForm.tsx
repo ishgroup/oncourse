@@ -8,7 +8,6 @@ import { FormControlLabel } from "@mui/material";
 import { initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 
 class AlchemerBaseForm extends React.Component<any, any> {
@@ -28,12 +27,11 @@ class AlchemerBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-     AppBarContent, handleSubmit, onSubmit, dirty, form
+     AppBarContent, handleSubmit, onSubmit
     } = this.props;
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
         <AppBarContent>
           <FormField name="fields.apiToken" label="Api token" type="text" className="mb-2" />

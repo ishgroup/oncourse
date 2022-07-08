@@ -4,7 +4,7 @@
  */
 
 import { IAction } from "../../../common/actions/IshAction";
-import { GET_INTEGRATIONS_FULFILLED, UPDATE_INTEGRATION_ITEM_FULFILLED, } from "../actions";
+import { GET_INTEGRATIONS_FULFILLED, } from "../actions";
 import { GET_SCRIPTS_LIST_FULFILLED, GET_TIMEZONE_FULFILLED } from "../containers/scripts/actions";
 import { GET_EXPORT_TEMPLATES_LIST_FULFILLED } from "../containers/export-templates/actions";
 import { GET_AUTOMATION_PDF_REPORTS_LIST_FULFILLED } from "../containers/pdf-reports/actions";
@@ -66,8 +66,7 @@ const Initial: AutomationState = {
 
 export const automationReducer = (state: AutomationState = Initial, action: IAction<any>): any => {
   switch (action.type) {
-    case GET_INTEGRATIONS_FULFILLED:
-    case UPDATE_INTEGRATION_ITEM_FULFILLED: {
+    case GET_INTEGRATIONS_FULFILLED: {
       const { integrations } = action.payload;
 
       return {

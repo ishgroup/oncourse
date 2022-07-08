@@ -16,7 +16,7 @@ import { Dispatch } from "redux";
 import { ExportTemplate, Report } from "@api/model";
 import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
 import { State } from "../../../../reducers/state";
-import { setNextLocation, showConfirm } from "../../../../common/actions";
+import { showConfirm } from "../../../../common/actions";
 import PdfReportsForm from "./containers/PdfReportsForm";
 import { usePrevious } from "../../../../common/utils/hooks";
 import {
@@ -73,7 +73,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   openConfirm: props => dispatch(showConfirm(props)),
   getPdfReport: (id: number) => dispatch(getAutomationPdfReport(id)),
   onUpdateInternal: report => dispatch(updateInternalAutomationPdfReport(report)),
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
 const validatePdfReportBody = (values: Report) => {

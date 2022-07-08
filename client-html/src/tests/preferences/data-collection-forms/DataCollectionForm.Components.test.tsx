@@ -3,7 +3,7 @@ import { defaultComponents } from "../../common/Default.Components";
 import DataCollectionForm, { parseDataCollectionFormData, DATA_COLLECTION_FORM }
   from "../../../js/containers/preferences/containers/data-collection-forms/components/DataCollectionForm";
 
-describe("Virtual rendered DataCollectionForm", () => {
+describe.skip("Virtual rendered DataCollectionForm", () => {
   defaultComponents({
     entity: DATA_COLLECTION_FORM,
     View: props => <DataCollectionForm {...props} />,
