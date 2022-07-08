@@ -36,7 +36,7 @@ const request: EpicUtils.Request<
     let items = rows.map(getCustomColumnsMap(columns));
 
     if (typeof customColumnMap === "function") {
-      items = items.map(customColumnMap);
+      items = customColumnMap(items);
     }
 
     return [
