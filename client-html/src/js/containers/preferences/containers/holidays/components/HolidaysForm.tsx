@@ -40,7 +40,6 @@ interface Props {
   holidays: Holiday[];
   onSave: (items: Holiday[]) => void;
   onDelete: (id: number) => void;
-  timestamps: Date[];
   initialized: boolean;
   invalid: boolean;
   dirty: boolean;
@@ -184,8 +183,10 @@ class HolidaysBaseForm extends React.Component<Props, any> {
 
   render() {
     const {
-      handleSubmit, values, dirty, invalid, timestamps, dispatch, form
+      handleSubmit, values, dirty, invalid, holidays, dispatch, form
     } = this.props;
+
+    const timestamps = holidays && getTimestamps(holidays);
     const created = timestamps && timestamps[0];
     const modified = timestamps && timestamps[1];
 
@@ -225,7 +226,6 @@ class HolidaysBaseForm extends React.Component<Props, any> {
 }
 
 const mapStateToProps = (state: State) => ({
-  timestamps: state.preferences.holidays && getTimestamps(state.preferences.holidays),
   holidays: state.preferences.holidays,
   values: getFormValues(HOLIDAYS_FORM)(state),
   fetch: state.fetch,

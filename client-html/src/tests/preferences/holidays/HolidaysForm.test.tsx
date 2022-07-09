@@ -6,7 +6,7 @@ import { III_DD_MMM_YYYY_HH_MM } from "../../../js/common/utils/dates/format";
 import Holidays from "../../../js/containers/preferences/containers/holidays/Holidays";
 import { HOLIDAYS_FORM } from "../../../js/containers/preferences/containers/holidays/components/HolidaysForm";
 
-describe.skip("Virtual rendered HolidaysForm", () => {
+describe("Virtual rendered HolidaysForm", () => {
   defaultComponents({
     entity: HOLIDAYS_FORM,
     View: props => <Holidays {...props} />,
