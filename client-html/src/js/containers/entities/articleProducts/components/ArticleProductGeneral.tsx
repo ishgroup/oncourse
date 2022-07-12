@@ -38,7 +38,7 @@ const productStatusItems = Object.keys(ProductStatus).map(value => ({ value }));
 const handleChangeFeeExTax = (values: ArticleProduct, taxes: Tax[], dispatch, form) => value => {
   const tax = taxes.find(item => item.id === values.taxId);
   const taxRate = tax ? tax.rate : 0;
-  dispatch(change(form, "totalFee", new Decimal(value * (1 + taxRate)).toDecimalPlaces(2).toNumber()));
+  dispatch(change(form, "totalFee", new Decimal((value || 0) * (1 + taxRate)).toDecimalPlaces(2).toNumber()));
 };
 
 const handleChangeFeeIncTax = (values: ArticleProduct, taxes: Tax[], dispatch, form) => value => {
