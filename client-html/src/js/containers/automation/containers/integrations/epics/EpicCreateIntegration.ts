@@ -4,6 +4,7 @@
  */
 
 import { Epic } from "redux-observable";
+import { initialize } from "redux-form";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
@@ -13,13 +14,16 @@ import { CREATE_INTEGRATION_ITEM_REQUEST, getIntegrations } from "../../../actio
 const request: EpicUtils.Request = {
   type: CREATE_INTEGRATION_ITEM_REQUEST,
   getData: payload => IntegrationService.createIntegration(payload.item),
-  processData: () => [
-    getIntegrations(),
-    {
-      type: FETCH_SUCCESS,
-      payload: { message: "New Integration was successfully created" }
-    }
-  ],
+  processData: (v, s, { form, item }) => {
+    return [
+      initialize(form, item),
+      getIntegrations(item.name),
+      {
+        type: FETCH_SUCCESS,
+        payload: { message: "New Integration was successfully created" }
+      }
+    ];
+  },
   processError: response => FetchErrorHandler(response, "Error. Integration was not created")
 };
 

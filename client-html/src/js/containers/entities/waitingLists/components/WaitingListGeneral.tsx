@@ -112,6 +112,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
             labelAdornment={<LinkAdornment link={values.courseId} linkHandler={openCourseLink} />}
             itemRenderer={CourseItemRenderer}
             onChange={this.handlerCourseChange}
+            debounced={false}
             rowHeight={55}
             required
           />

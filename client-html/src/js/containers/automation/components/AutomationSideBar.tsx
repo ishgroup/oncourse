@@ -3,11 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useCallback, useState
-} from "react";
+import React from "react";
 import { History } from "history";
-import debounce from "lodash.debounce";
 import SideBarHeader from "../../../common/components/layout/side-bar-list/SideBarHeader";
 import { makeAppStyles } from "../../../common/styles/makeStyles";
 
@@ -47,62 +44,56 @@ const getSelected = (history: History) => {
 const AutomationSideBar = ({
     history
   }: Props) => {
-  const [selected, setSelected] = useState(() => getSelected(history));
+  const selectHandler = route => () => {
+    history.push(route);
+  };
+
+  const selected = getSelected(history);
 
   const classes = useStyles();
-
-  // Animation timeout
-  const updateHistory = useCallback(debounce(route => {
-    history.push(route);
-  }, 250), []);
-  
-  const selectHandler = (route, index) => () => {
-    setSelected(index);
-    updateHistory(route);
-  };
 
   return (
     <div className={classes.root}>
       <SideBarHeader
         selected={selected === 1}
         label="Automations"
-        onClick={selectHandler("/automation/scripts", 1)}
+        onClick={selectHandler("/automation/scripts")}
       />
 
       <SideBarHeader
         selected={selected === 2}
         label="Import Templates"
-        onClick={selectHandler("/automation/import-templates/", 2)}
+        onClick={selectHandler("/automation/import-templates/")}
       />
 
       <SideBarHeader
         selected={selected === 3}
         label="Export Templates"
-        onClick={selectHandler("/automation/export-templates/", 3)}
+        onClick={selectHandler("/automation/export-templates/")}
       />
 
       <SideBarHeader
         selected={selected === 4}
         label="Message Templates"
-        onClick={selectHandler("/automation/email-templates/", 4)}
+        onClick={selectHandler("/automation/email-templates/")}
       />
 
       <SideBarHeader
         selected={selected === 5}
         label="PDF Backgrounds"
-        onClick={selectHandler("/automation/pdf-backgrounds/", 5)}
+        onClick={selectHandler("/automation/pdf-backgrounds/")}
       />
 
       <SideBarHeader
         selected={selected === 6}
         label="PDF Reports"
-        onClick={selectHandler("/automation/pdf-reports/", 6)}
+        onClick={selectHandler("/automation/pdf-reports/")}
       />
 
       <SideBarHeader
         selected={selected === 7}
         label="Integrations"
-        onClick={selectHandler("/automation/integrations", 7)}
+        onClick={selectHandler("/automation/integrations")}
       />
     </div>
   );

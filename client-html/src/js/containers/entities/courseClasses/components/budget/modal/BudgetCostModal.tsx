@@ -197,6 +197,6 @@ const mapStateToProps = (state: State) => ({
   defaultOnCostRate: state.courseClass.defaultOnCostRate
 });
 
-export default reduxForm<any, CourseClassCostModalProps>({
+export default reduxForm<any, any, any>({
   form: COURSE_CLASS_COST_DIALOG_FORM
-})(connect(mapStateToProps, null)(BudgetCostModal));
+})(connect(mapStateToProps)(BudgetCostModal));

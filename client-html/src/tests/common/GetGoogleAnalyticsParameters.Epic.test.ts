@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { from, filter, toArray } from "rxjs";
 import { store, mockedAPI } from "../TestEntry";
-import { ActionsObservable } from "redux-observable";
 import { GET_USER_PREFERENCES_FULFILLED, FETCH_FINISH, FETCH_START } from "../../js/common/actions";
 import {
   GOOGLE_ANALYTICS_CLIENT_ID_KEY,
@@ -17,7 +17,6 @@ import {
   GET_TAG_MANAGER_PARAMETERS,
   GET_GOOGLE_TAG_MANAGER_PARAMETERS_FULFILLED
 } from "../../js/common/components/google-tag-manager/actions";
-import { filter, toArray } from "rxjs/operators";
 
 describe("Get google analytics parameters epics tests", () => {
   it("EpicGetUserPreferences should return correct actions", () => {
@@ -30,7 +29,7 @@ describe("Get google analytics parameters epics tests", () => {
     ]);
 
     // Redux action to trigger epic
-    const action$ = ActionsObservable.of({ type: GET_TAG_MANAGER_PARAMETERS });
+    const action$ = from([{ type: GET_TAG_MANAGER_PARAMETERS }]);
 
     // Initializing epic instance
     const epic$ = EpicGetGoogleAnalyticsParameters(action$, store, {});

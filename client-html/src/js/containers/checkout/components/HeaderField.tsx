@@ -55,6 +55,7 @@ interface Props {
   showArrowButton?: boolean;
   disabled?: boolean;
   validate?: Validator;
+  children?: React.ReactNode;
 }
 
 const HeaderField: React.FC<Props> = props => {

@@ -113,6 +113,7 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
           label="Assessor"
           items={tutors}
           onChange={onAssessorChange}
+          debounced={false}
           allowEmpty
         />
       </Grid>

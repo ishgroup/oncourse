@@ -9,7 +9,7 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import {
-  arrayInsert, arrayRemove, FieldArray, getFormValues, InjectedFormProps, reduxForm
+  arrayInsert, arrayRemove, FieldArray, getFormValues, InjectedFormProps, reduxForm, Form
 } from "redux-form";
 import { Dispatch } from "redux";
 import Alert from "@mui/lab/Alert";
@@ -74,7 +74,7 @@ const ApiTokensBase:React.FC<Props> = (
   };
 
   return (
-    <form className="mt-2" noValidate autoComplete="off" onSubmit={handleSubmit(onSave)}>
+    <Form className="mt-2" noValidate autoComplete="off" onSubmit={handleSubmit(onSave)}>
       <RouteChangeConfirm form={form} when={dirty} />
 
       <AppBarContainer
@@ -107,7 +107,7 @@ const ApiTokensBase:React.FC<Props> = (
           </Grid>
         </Grid>
       </AppBarContainer>
-    </form>
+    </Form>
   );
 };
 
