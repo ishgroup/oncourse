@@ -119,6 +119,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
             label="Type"
             items={PayRateTypes}
             onChange={onRepetitionChange}
+            debounced={false}
             validate={validatePayRateTypes}
           />
         </Grid>
@@ -138,6 +139,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
             name="perUnitAmountExTax"
             label={isIncome ? "Amount" : costLabel}
             onChange={onFeeExTaxChange}
+            debounced={false}
           />
         </Grid>
         <Grid item xs={3}>
@@ -148,6 +150,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
             selectValueMark="id"
             selectLabelMark="code"
             onChange={onTaxIdChange}
+            debounced={false}
             items={taxes}
           />
         </Grid>
@@ -158,6 +161,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
             label="Amount inc tax"
             normalize={normalizeNumberToZero}
             onChange={onFeeIncTaxChange}
+            debounced={false}
           />
         </Grid>
       </Grid>
