@@ -3,7 +3,7 @@ import { defaultComponents } from "../../common/Default.Components";
 import DataCollectionForm, { parseDataCollectionFormData, DATA_COLLECTION_FORM }
   from "../../../js/containers/preferences/containers/data-collection-forms/components/DataCollectionForm";
 
-describe.skip("Virtual rendered DataCollectionForm", () => {
+describe("Virtual rendered DataCollectionForm", () => {
   defaultComponents({
     entity: DATA_COLLECTION_FORM,
     View: props => <DataCollectionForm {...props} />,
@@ -32,6 +32,14 @@ describe.skip("Virtual rendered DataCollectionForm", () => {
         }
       };
     },
+    state: ({ viewProps }) => ({
+      form: {
+        [DATA_COLLECTION_FORM]: { values: viewProps.values }
+      },
+      preferences: {
+        dataCollectionForms: viewProps.values.items
+      }
+    }),
     render: ({ screen, initialValues, fireEvent }) => {
       const form = initialValues[0];
       const items = parseDataCollectionFormData(form);
