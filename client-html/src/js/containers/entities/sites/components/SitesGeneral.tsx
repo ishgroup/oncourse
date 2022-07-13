@@ -147,7 +147,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
     const layoutArray = getLayoutArray(twoColumn);
 
     return (
-      <Grid container className="pt-3 pl-3 pr-3">
+      <Grid container columnSpacing={3} rowSpacing={2} className="pt-3 pl-3 pr-3">
         <CoordinatesValueUpdater
           dispatch={dispatch}
           latPath="latitude"
@@ -156,7 +156,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
           form={form}
         />
 
-        <Grid item xs={layoutArray[2].xs} className="mb-2">
+        <Grid item xs={layoutArray[2].xs}>
           <FullScreenStickyHeader
             opened={!values.id || Object.keys(syncErrors).includes("name")}
             twoColumn={twoColumn}
@@ -249,7 +249,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
         )}
 
         <Collapse in={!values.isVirtual}>
-          <Grid container columnSpacing={3}>
+          <Grid container columnSpacing={3} className="pr-3 pl-3">
             <Grid container item xs={layoutArray[2].xs} columnSpacing={3} rowSpacing={2}>
               <Grid item xs={12}>
                 <FormField
