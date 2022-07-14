@@ -1,3 +1,4 @@
+import { initialize } from "redux-form";
 import ImportTemplatesService from "../../automation/containers/import-templates/services/ImportTemplatesService";
 import ModuleService from "../modules/services/ModuleService";
 import QualificationService from "../qualifications/services/QualificationService";
@@ -12,7 +13,6 @@ import CorporatePassService from "../corporatePasses/services/CorporatePassServi
 import BankingService from "../bankings/services/BankingService";
 import AuditsService from "../../audits/services/AuditsService";
 import DiscountService from "../discounts/services/DiscountService";
-import { ApiMethods } from "../../../model/common/apiHandlers";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import InvoiceService from "../invoices/services/InvoiceService";
 import WaitingListService from "../waitingLists/services/WaitingListService";
@@ -31,8 +31,16 @@ import { PayLineWithDefer } from "../../../model/entities/Payslip";
 import CourseClassService from "../courseClasses/services/CourseClassService";
 import OutcomeService from "../outcomes/services/OutcomeService";
 import CourseService from "../courses/services/CourseService";
+import { EntityName } from "../../../model/entities/common";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import { processCustomFields } from "../customFieldTypes/utils";
 
-export const getEntityItemById = (entity: string, id: number, method?: ApiMethods): Promise<any> => {
+const defaultUnknown = () => {
+  console.error("Unknown entity name");
+  return null;
+};
+
+export const getEntityItemById = (entity: EntityName, id: number): Promise<any> => {
   switch (entity) {
     case "Audit": {
       return AuditsService.getAuditItem(id);
@@ -154,11 +162,11 @@ export const getEntityItemById = (entity: string, id: number, method?: ApiMethod
     }
 
     default:
-      return null;
+      return defaultUnknown();
   }
 };
 
-export const updateEntityItemById = (entity: string, id: number, item: any, method?: ApiMethods): Promise<any> => {
+export const updateEntityItemById = (entity: EntityName, id: number, item: any): Promise<any> => {
   switch (entity) {
     case "Module": {
       return ModuleService.updateModule(id, item);
@@ -256,14 +264,54 @@ export const updateEntityItemById = (entity: string, id: number, item: any, meth
     }
 
     default:
-      return null;
+      return defaultUnknown();
   }
 };
 
-export const updateEntityItemByIdErrorHandler = (response: any, entity: string, form: string, item: any) => {
+export const createEntityItem = (entity: EntityName, item: any): Promise<any> => {
+  processCustomFields(item);
+
+  switch (entity) {
+    case "Account": {
+      return AccountService.createAccount(item);
+    }
+    case "Site": {
+      if (item.isAdministrationCentre === undefined) {
+        item.isAdministrationCentre = false;
+      }
+
+      if (item.isShownOnWeb === undefined) {
+        item.isShownOnWeb = false;
+      }
+
+      if (item.isVirtual === undefined) {
+        item.isVirtual = false;
+      }
+
+      return SiteService.createSite(item);
+    }
+    default:
+      return defaultUnknown();
+  }
+};
+
+export const deleteEntityItemById = (entity: EntityName, id: number): Promise<any> => {
+  switch (entity) {
+    case "Account": {
+      return AccountService.removeAccount(id);
+    }
+    default:
+      return defaultUnknown();
+  }
+};
+
+export const updateEntityItemByIdErrorHandler = (response: any, entity: EntityName, item: any, form?: string) => {
   switch (entity) {
     default: {
-      return FetchErrorHandler(response, `${entity} was not updated`);
+      return [
+        ...FetchErrorHandler(response, `${entity} was not updated`),
+        initialize(form || LIST_EDIT_VIEW_FORM_NAME, item)
+      ];
     }
   }
 };

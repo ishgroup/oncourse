@@ -1,29 +1,21 @@
 import { initialize } from "redux-form";
 import { DefaultEpic } from "../../common/Default.Epic";
-import { EpicCreateAccount } from "../../../js/containers/entities/accounts/epics/EpicCreateAccount";
-import { createAccount } from "../../../js/containers/entities/accounts/actions";
+import { EpicCreateEntityRecord } from "../../../js/containers/entities/common/epics/EpicCreateEntityRecord";
+import { createEntityRecord } from "../../../js/containers/entities/common/actions";
 import { FETCH_SUCCESS } from "../../../js/common/actions";
-import {
-  clearListNestedEditRecord,
-  GET_RECORDS_REQUEST,
-  setListSelection
-} from "../../../js/common/components/list-view/actions";
+import { getRecords, setListSelection } from "../../../js/common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../js/common/components/list-view/constants";
 
 describe("Create account epic tests", () => {
   it("EpicCreateAccount should returns correct values", () => DefaultEpic({
-    action: mockedApi => createAccount(mockedApi.db.createNewAccount()),
-    epic: EpicCreateAccount,
+    action: mockedApi => createEntityRecord("Account", mockedApi.db.createNewAccount()),
+    epic: EpicCreateEntityRecord,
     processData: () => [
       {
         type: FETCH_SUCCESS,
-        payload: { message: "Account Record created" }
+        payload: { message: "Account record created" }
       },
-      {
-        type: GET_RECORDS_REQUEST,
-        payload: { entity: "Account", listUpdate: true }
-      },
-      clearListNestedEditRecord(0),
+      getRecords("Account", true),
       setListSelection([]),
       initialize(LIST_EDIT_VIEW_FORM_NAME, null)
     ]

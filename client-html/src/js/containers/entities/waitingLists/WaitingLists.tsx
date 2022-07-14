@@ -13,15 +13,9 @@ import { Dispatch } from "redux";
 import { WaitingList } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
 import WaitingListEditView from "./components/WaitingListEditView";
-import {
-  clearListState,
-  getFilters,
-  setListEditRecord,
- } from "../../../common/components/list-view/actions";
+import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { getEntityTags, getListTags } from "../../tags/actions";
-import {
-  createWaitingList, getWaitingList, removeWaitingList, updateWaitingList
-} from "./actions";
+import { getWaitingList, removeWaitingList, updateWaitingList } from "./actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { State } from "../../../reducers/state";
 import WaitingListCogWheel from "./components/WaitingListCogWheel";
@@ -81,7 +75,6 @@ class WaitingLists extends React.Component<any, any> {
           getEditRecord={getWaitingListRecord}
           rootEntity="WaitingList"
           onInit={onInit}
-          onCreate={onCreate}
           onDelete={onDelete}
           onSave={onSave}
           findRelated={findRelatedGroup}
@@ -113,7 +106,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearListState: () => dispatch(clearListState()),
   getWaitingListRecord: (id: string) => dispatch(getWaitingList(id)),
   onSave: (id: string, waitingList: WaitingList) => dispatch(updateWaitingList(id, waitingList)),
-  onCreate: (waitingList: WaitingList) => dispatch(createWaitingList(waitingList)),
   onDelete: (id: string) => dispatch(removeWaitingList(id))
 });
 

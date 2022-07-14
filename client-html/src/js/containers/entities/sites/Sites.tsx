@@ -13,7 +13,7 @@ import { initialize } from "redux-form";
 import { Site } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
-import { createSite, getSite, removeSite, updateSite } from "./actions";
+import { getSite, removeSite, updateSite } from "./actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import { getListTags } from "../../tags/actions";
 import SiteEditView from "./components/SiteEditView";
@@ -135,22 +135,6 @@ class Sites extends React.Component<any, any> {
     this.props.onSave(id, item);
   };
 
-  onCreate = (item: Site) => {
-    if (item.isAdministrationCentre === undefined) {
-      item.isAdministrationCentre = false;
-    }
-
-    if (item.isShownOnWeb === undefined) {
-      item.isShownOnWeb = false;
-    }
-
-    if (item.isVirtual === undefined) {
-      item.isVirtual = false;
-    }
-
-    this.props.onCreate(item);
-  };
-
   onInit = () => {
     const { defaultTimezone, defaultCountry, dispatch } = this.props;
     Initial.timezone = defaultTimezone;
@@ -185,7 +169,6 @@ class Sites extends React.Component<any, any> {
           rootEntity="Site"
           onInit={this.onInit}
           onDelete={onDelete}
-          onCreate={this.onCreate}
           onSave={this.onSave}
           findRelated={findRelatedGroup}
           filterGroupsInitial={filterGroups}
@@ -220,7 +203,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearListState: () => dispatch(clearListState()),
   getSiteRecord: (id: string) => dispatch(getSite(id)),
   onSave: (id: string, site: Site) => dispatch(updateSite(id, site)),
-  onCreate: (site: Site) => dispatch(createSite(site)),
   onDelete: (id: string) => dispatch(removeSite(id))
 });
 

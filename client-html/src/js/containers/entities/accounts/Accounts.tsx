@@ -11,14 +11,8 @@ import { Account } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
 import AccountsEditView from "./components/AccountsEditView";
-import {
-  setListEditRecord,
-  getFilters,
- clearListState
-} from "../../../common/components/list-view/actions";
-import {
-  getAccount, updateAccount, createAccount, removeAccount
-} from "./actions";
+import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
+import { createAccount, getAccount, removeAccount, updateAccount } from "./actions";
 import { getTaxTypes } from "../../preferences/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
@@ -95,7 +89,6 @@ class Accounts extends React.Component<any, any> {
           getEditRecord={getAccountRecord}
           rootEntity="Account"
           onInit={onInit}
-          onCreate={onCreate}
           onDelete={onDelete}
           onSave={onSave}
           filterGroupsInitial={filterGroups}

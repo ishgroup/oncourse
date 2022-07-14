@@ -14,9 +14,7 @@ import { Room } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
-import {
- createRoom, getRoom, removeRoom, updateRoom 
-} from "./actions";
+import { getRoom, removeRoom, updateRoom } from "./actions";
 import RoomEditView from "./components/RoomEditView";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { getListTags } from "../../tags/actions";
@@ -77,7 +75,7 @@ const findRelatedGroup: any[] = [
 
 class Rooms extends React.Component<any, any> {
   componentDidMount() {
-     this.props.getFilters();
+    this.props.getFilters();
     this.props.getTags();
     this.props.getSites();
   }
@@ -92,7 +90,7 @@ class Rooms extends React.Component<any, any> {
 
   render() {
     const {
-      getRoomRecord, onCreate, onDelete, onSave, updateTableModel, onInit
+      getRoomRecord, onDelete, onSave, updateTableModel, onInit
     } = this.props;
 
     return (
@@ -114,7 +112,6 @@ class Rooms extends React.Component<any, any> {
           getEditRecord={getRoomRecord}
           rootEntity="Room"
           onInit={onInit}
-          onCreate={onCreate}
           onDelete={onDelete}
           onSave={onSave}
           filterGroupsInitial={filterGroups}
@@ -138,7 +135,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearListState: () => dispatch(clearListState()),
   getRoomRecord: (id: string) => dispatch(getRoom(id)),
   onSave: (id: string, room: Room) => dispatch(updateRoom(id, room)),
-  onCreate: (room: Room) => dispatch(createRoom(room)),
   onDelete: (id: string) => dispatch(removeRoom(id))
 });
 

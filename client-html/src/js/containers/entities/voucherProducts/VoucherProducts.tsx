@@ -10,7 +10,7 @@ import { Account, TableModel, VoucherProduct } from "@api/model";
 import { Dispatch } from "redux";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
 import { plainCorporatePassPath } from "../../../constants/Api";
-import { createVoucherProduct, getVoucherProduct, updateVoucherProduct } from "./actions";
+import { getVoucherProduct, updateVoucherProduct } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
 import VoucherProductEditView from "./components/VoucherProductEditView";
 import { FilterGroup } from "../../../model/common/ListView";
@@ -32,7 +32,6 @@ interface VoucherProductsProps {
   getVoucherProductRecord?: () => void;
   getTagsForClassesSearch?: () => void;
   onInit?: (initial: VoucherProduct) => void;
-  onCreate?: (voucherProduct: VoucherProduct) => void;
   onSave?: (id: string, voucherProduct: VoucherProduct) => void;
   getFilters?: () => void;
   getRelationTypes?: () => void;
@@ -106,7 +105,6 @@ const VoucherProducts: React.FC<VoucherProductsProps> = props => {
   const {
     getVoucherProductRecord,
     onInit,
-    onCreate,
     onSave,
     getFilters,
     clearListState,
@@ -162,7 +160,6 @@ const VoucherProducts: React.FC<VoucherProductsProps> = props => {
       getEditRecord={getVoucherProductRecord}
       rootEntity="VoucherProduct"
       onInit={onInitCustom}
-      onCreate={onCreate}
       onSave={onSave}
       findRelated={findRelatedGroup}
       filterGroupsInitial={filterGroups}
@@ -191,7 +188,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearListState: () => dispatch(clearListState()),
   getVoucherProductRecord: (id: string) => dispatch(getVoucherProduct(id)),
   onSave: (id: string, voucherProduct: VoucherProduct) => dispatch(updateVoucherProduct(id, voucherProduct)),
-  onCreate: (voucherProduct: VoucherProduct) => dispatch(createVoucherProduct(voucherProduct)),
   checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" })),
   getRelationTypes: () => dispatch(getEntityRelationTypes()),
   getDataCollectionRules: () => dispatch(getDataCollectionRules()),

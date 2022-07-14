@@ -8,16 +8,12 @@
 
 import React from "react";
 import { withRouter } from "react-router-dom";
-import {
- getFormSyncErrors, initialize, isDirty, isInvalid, submit 
-} from "redux-form";
+import { getFormSyncErrors, initialize, isDirty, isInvalid, submit } from "redux-form";
 import { ThemeProvider } from "@mui/material/styles";
 import { createStyles, withStyles } from "@mui/styles";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import {
- Column, Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel 
-} from "@api/model";
+import { Column, Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel } from "@api/model";
 import { createTheme } from '@mui/material';
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import Button from "@mui/material/Button";
@@ -44,16 +40,15 @@ import {
   setListEditRecordFetching,
   setListEntity,
   setListFullScreenEditView,
-  setListLayout, setListMenuTags,
+  setListLayout,
+  setListMenuTags,
   setListSelection,
   setListUserAQLSearch,
   setSearch,
   updateTableModel,
 } from "./actions";
 import NestedEditView from "./components/full-screen-edit-view/NestedEditView";
-import {
- closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm
-} from "../../actions";
+import { closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm } from "../../actions";
 import ResizableWrapper from "../layout/resizable/ResizableWrapper";
 import { MenuTag } from "../../../model/tags";
 import { pushGTMEvent } from "../google-tag-manager/actions";
@@ -87,6 +82,7 @@ import {
 import { setSwipeableDrawerDirtyForm } from "../layout/swipeable-sidebar/actions";
 import { LSGetItem } from "../../utils/storage";
 import { getCustomFieldTypes } from "../../../containers/entities/customFieldTypes/actions";
+import { createEntityRecord } from "../../../containers/entities/common/actions";
 
 export const ListSideBarDefaultWidth = 200;
 export const ListMainContentDefaultWidth = 774;
@@ -113,6 +109,10 @@ const sideBarTheme = theme => createTheme({
   }
 });
 
+interface OwnProps {
+  onCreate?: (item: any) => void;
+} 
+
 interface Props extends Partial<ListState> {
   listProps: TableListProps;
   getEditRecord: (id: string) => void;
@@ -125,7 +125,6 @@ interface Props extends Partial<ListState> {
   onSave?: any;
   onBeforeSave?: any;
   onDelete?: any;
-  onCreate?: (record: any) => void;
   classes?: any;
   isDirty?: boolean;
   isInvalid?: boolean;
@@ -217,7 +216,7 @@ interface ComponentState {
   newSelection: string[] | null;
 }
 
-class ListView extends React.PureComponent<Props, ComponentState> {
+class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
   private containerNode;
 
   private searchComponentNode: React.RefObject<any>;
@@ -1276,7 +1275,8 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   getListViewPreferences: () => dispatch(getUserPreferences([LISTVIEW_MAIN_CONTENT_WIDTH])),
   setListviewMainContentWidth: (value: string) => dispatch(setUserPreference({ key: LISTVIEW_MAIN_CONTENT_WIDTH, value })),
   submitForm: () => dispatch(submit(LIST_EDIT_VIEW_FORM_NAME)),
-  closeConfirm: () => dispatch(closeConfirm())
+  closeConfirm: () => dispatch(closeConfirm()),
+  onCreate: (item: any) => dispatch(createEntityRecord(item, ownProps.rootEntity))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(ListView))) as React.FC<Props>;

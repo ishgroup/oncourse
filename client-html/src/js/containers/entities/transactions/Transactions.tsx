@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
 import ListView from "../../../common/components/list-view/ListView";
-import { createTransaction, getTransaction } from "./actions";
+import { getTransaction } from "./actions";
 import { Account, Transaction } from "@api/model";
 import { FilterGroup } from "../../../model/common/ListView";
 import TransactionsEditView from "./components/TransactionsEditView";
@@ -95,7 +95,7 @@ class Transactions extends React.Component<any, any> {
 
   render() {
     const {
-      onCreate, getTransactionRecord, updateTableModel
+      getTransactionRecord, updateTableModel
     } = this.props;
 
     return (
@@ -115,7 +115,6 @@ class Transactions extends React.Component<any, any> {
             nameCondition: this.getTransactionAccountName
           }}
           onInit={this.onInit}
-          onCreate={onCreate}
           onDelete={() => null}
           onSave={() => null}
           findRelated={findRelatedGroup}
@@ -140,8 +139,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getFilters("AccountTransaction"));
   },
   getAccounts: () => getPlainAccounts(dispatch),
-  clearListState: () => dispatch(clearListState()),
-  onCreate: (transaction: Transaction) => dispatch(createTransaction(transaction))
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(
