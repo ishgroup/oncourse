@@ -28,7 +28,6 @@ import { State } from "../../../../../reducers/state";
 import getTimestamps from "../../../../../common/utils/timestamps/getTimestamps";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { ApiMethods } from "../../../../../model/common/apiHandlers";
-import { setNextLocation } from "../../../../../common/actions";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
@@ -53,7 +52,6 @@ interface Props {
   fetch?: Fetch;
   history?: any;
   nextLocation?: string;
-  setNextLocation?: (nextLocation: string) => void;
 }
 
 const Initial: FundingSource = {
@@ -131,12 +129,12 @@ class FundingContractsForm extends React.Component<Props, any> {
     })
       .then(() => {
         const {
-          nextLocation, history, setNextLocation, dispatch
+          nextLocation, history, dispatch
         } = this.props;
         dispatch(initialize(FUNDING_CONTRACTS_FORM, { fundingContracts: this.props.fundingContracts }));
 
         nextLocation && history.push(nextLocation);
-        setNextLocation('');
+
       })
       .catch(error => {
         this.isPending = false;
@@ -228,11 +226,8 @@ const mapStateToProps = (state: State) => ({
   fetch: state.fetch,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-});
 
 export default reduxForm({
   onSubmitFail,
   form: FUNDING_CONTRACTS_FORM
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withRouter(FundingContractsForm))) as React.ComponentClass<any>;
+})(connect<any, any, any>(mapStateToProps, null)(withRouter(FundingContractsForm))) as React.ComponentClass<any>;

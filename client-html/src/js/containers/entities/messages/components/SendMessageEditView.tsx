@@ -667,6 +667,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   getEmailFrom: () => dispatch(getUserPreferences([EMAIL_FROM_KEY])),
 });
 
-export default reduxForm<MessageExtended, MessageEditViewProps>({
+export default reduxForm<any, any, any>({
   form: "SendMessageForm",
 })(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SendMessageEditView)));

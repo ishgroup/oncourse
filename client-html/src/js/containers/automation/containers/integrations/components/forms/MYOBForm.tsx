@@ -9,7 +9,6 @@ import { connect } from "react-redux";
 import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
 import { State } from "../../../../../../reducers/state";
@@ -151,14 +150,12 @@ class MYOBBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-      handleSubmit, onSubmit, AppBarContent, values = {}, dirty, form
+      handleSubmit, onSubmit, AppBarContent, values = {}
     } = this.props;
     const { hideConfig, loading } = this.state;
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-
         <AppBarContent>
           <FormField name="fields.myobBaseUrl" label="Base URL" type="text" className="mb-2" required />
           <FormField name="fields.myobFileName" label="File name" type="text" className="mb-2" required />

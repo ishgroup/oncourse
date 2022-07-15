@@ -3,16 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { store } from "../TestEntry";
-import { ActionsObservable } from "redux-observable";
 import { PreferenceEnum } from "@api/model";
+import { filter, toArray, from } from "rxjs";
+import { store } from "../TestEntry";
 import { FETCH_FINISH, FETCH_START, SET_USER_PREFERENCE } from "../../js/common/actions";
 import { EpicGetUserPreferences } from "../../js/common/epics/EpicGetUserPreferences";
-import { filter, toArray } from "rxjs/operators";
 
 export const SetPreferences = (keys: PreferenceEnum[]) => {
   // Redux action to trigger epic
-  const action$ = ActionsObservable.of({ type: SET_USER_PREFERENCE, payload: keys });
+  const action$ = from([{ type: SET_USER_PREFERENCE, payload: keys }]);
 
   // Initializing epic instance
   const epic$ = EpicGetUserPreferences(action$, store, {});

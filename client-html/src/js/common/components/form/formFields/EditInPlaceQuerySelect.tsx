@@ -213,6 +213,7 @@ const completeSuggestions = (
       break;
     }
   }
+
   return variants.map(i => ({
     token,
     value: i,
@@ -356,7 +357,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     core.showRuleStack = true;
     core.ignoredTokens = new Set([AqlLexer.EOF, AqlLexer.SEPARATOR, AqlLexer.T__17]);
     const candidates = core.collectCandidates(
-      typeof position === "number" ? position : this.inputNode ? this.inputNode.selectionStart : 0
+      typeof position === "number" ? position : 0
     );
     const keywords: any = [];
 
@@ -372,6 +373,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
 
       return this.getAutocomplete(input + ".", position);
     }
+
     for (const candidate of candidates.tokens) {
       const suggestions = completeSuggestions(
         parser.vocabulary.getDisplayName(candidate[0]),
@@ -544,10 +546,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     }
   };
 
-  getValue = classes => (
-    this.state.inputValue || <span className={clsx(classes.editable, "overflow-hidden")}>{this.props.placeholder || "No value"}</span>
-  );
-
   getInlineMenuStyles = () => {
     const { caretCoordinates } = this.state;
     const { classes } = this.props;
@@ -689,7 +687,8 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     }
 
     const {
-      tokens: { tokens }
+      tokens: { tokens },
+      parser
     } = this.parseInputString(value);
 
     if (!value) {
@@ -767,7 +766,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
       this.setState({
         searchValue: this.state.searchValue.replace(/"/g, "")
       });
-
       return;
     }
 
@@ -776,7 +774,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
         searchValue: "",
         options: filterTags || []
       });
-
       return;
     }
 
@@ -785,7 +782,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
         searchValue: "",
         options: tags || []
       });
-
       return;
     }
 
@@ -847,7 +843,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
         },
         () => {
           this.setState({
-            options: this.getAutocomplete(value)
+            options: this.getAutocomplete(value, this.inputNode?.selectionStart)
           });
         }
       );
@@ -891,7 +887,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
               options: this.getAutocomplete(lastToken.text)
             });
           }
-
           return;
         }
 

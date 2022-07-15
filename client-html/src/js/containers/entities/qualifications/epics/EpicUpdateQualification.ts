@@ -8,12 +8,8 @@ import { Epic } from "redux-observable";
 import { initialize } from "redux-form";
 import { Qualification } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import {
-  GET_QUALIFICATION_ITEM,
-  UPDATE_QUALIFICATION_ITEM,
-  UPDATE_QUALIFICATION_ITEM_FULFILLED
-} from "../actions/index";
-import { FETCH_SUCCESS } from "../../../../common/actions/index";
+import { getQualification, UPDATE_QUALIFICATION_ITEM } from "../actions";
+import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { updateEntityItemById } from "../../common/entityItemsService";
@@ -24,9 +20,6 @@ const request: EpicUtils.Request<any, { id: number; qualification: Qualification
   getData: ({ id, qualification }) => updateEntityItemById("Qualification", id, qualification),
   processData: (v, s, { id }) => [
       {
-        type: UPDATE_QUALIFICATION_ITEM_FULFILLED
-      },
-      {
         type: FETCH_SUCCESS,
         payload: { message: "Qualification was updated" }
       },
@@ -34,15 +27,12 @@ const request: EpicUtils.Request<any, { id: number; qualification: Qualification
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Qualification", listUpdate: true, savedID: id }
       },
-      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [] : [{
-        type: GET_QUALIFICATION_ITEM,
-        payload: id
-      }]
+      getQualification(id)
     ],
   processError: (response, { qualification }) => [
-      ...FetchErrorHandler(response, "Qualification was not updated"),
-      initialize(LIST_EDIT_VIEW_FORM_NAME, qualification)
-    ]
+    ...FetchErrorHandler(response, "Qualification was not updated"),
+    initialize(LIST_EDIT_VIEW_FORM_NAME, qualification)
+  ]
 };
 
 export const EpicUpdateQualification: Epic<any, any> = EpicUtils.Create(request);

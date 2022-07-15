@@ -7,7 +7,6 @@ import { getFormValues, initialize, SubmissionError } from "redux-form";
 import { State } from "../../../../reducers/state";
 import CollectionRulesForm from "./components/CollectionRulesForm";
 import { updateDataCollectionRule, removeDataCollectionRule, createDataCollectionRule } from "../../actions";
-import { setNextLocation } from "../../../../common/actions";
 import { Fetch } from "../../../../model/common/Fetch";
 
 interface Params {
@@ -25,7 +24,6 @@ interface Props extends RouteComponentProps <Params> {
   fetch: Fetch;
   initialize: (data) => void;
   nextLocation: string;
-  setNextLocation: (nextLocation: string) => void
 }
 
 class CollectionRuleFormContainer extends React.Component<Props, any> {
@@ -51,7 +49,7 @@ class CollectionRuleFormContainer extends React.Component<Props, any> {
 
   onSave = (value: DataCollectionRule) => {
     const {
-      onUpdate, onAddNew, match, history, initialize, nextLocation, setNextLocation
+      onUpdate, onAddNew, match, history, initialize, nextLocation
     } = this.props;
 
     const isNew = match.params.action === "new";
@@ -72,9 +70,9 @@ class CollectionRuleFormContainer extends React.Component<Props, any> {
         this.skipValidation = true;
         initialize(value);
 
-        nextLocation && history.push(nextLocation);
-        setNextLocation('');
-
+        if (nextLocation) {
+          history.push(nextLocation);
+        }
         this.skipValidation = false;
       })
       .catch(error => {
@@ -123,12 +121,11 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    onUpdate: (id: string, rule: DataCollectionRule) => dispatch(updateDataCollectionRule(id, rule)),
-    onDelete: (id: string) => dispatch(removeDataCollectionRule(id)),
-    onAddNew: (rule: DataCollectionRule) => dispatch(createDataCollectionRule(rule)),
-    initialize: initData => dispatch(initialize("CollectionRulesForm", initData)),
-    setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-  });
+  onUpdate: (id: string, rule: DataCollectionRule) => dispatch(updateDataCollectionRule(id, rule)),
+  onDelete: (id: string) => dispatch(removeDataCollectionRule(id)),
+  onAddNew: (rule: DataCollectionRule) => dispatch(createDataCollectionRule(rule)),
+  initialize: initData => dispatch(initialize("CollectionRulesForm", initData))
+});
 
 export default connect<any, any, any>(
   mapStateToProps,

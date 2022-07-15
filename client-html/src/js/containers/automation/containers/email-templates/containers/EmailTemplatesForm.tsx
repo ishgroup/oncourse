@@ -83,7 +83,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
     validateNewTemplateName,
     history,
     nextLocation,
-    setNextLocation,
     syncErrors,
     emailTemplates
   } = props;
@@ -155,7 +154,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
   useEffect(() => {
     if (!dirty && nextLocation) {
       history.push(nextLocation);
-      setNextLocation('');
     }
   }, [nextLocation, dirty]);
 

@@ -103,7 +103,7 @@ const ListRow = memo<any>(({ data, index, style }) => {
 const StickyListContext = createContext(null);
 StickyListContext.displayName = "StickyListContext";
 
-const innerElementType = forwardRef<any>(({ children, ...rest }, ref) => (
+const innerElementType = forwardRef<any, { children?: React.ReactNode }>(({ children, ...rest }, ref) => (
   <StickyListContext.Consumer>
     {({ header }) => (
       <div ref={ref} {...rest}>
