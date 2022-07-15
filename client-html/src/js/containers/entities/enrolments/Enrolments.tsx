@@ -319,7 +319,6 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
         customOnCreate={customOnCreate}
         onBeforeSave={onBeforeSave}
         onSave={onSave}
-        onCreate={stubFunction}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         CogwheelAdornment={EnrolmentCogWheel}

@@ -9,8 +9,6 @@ import { _toRequestType, FULFILLED, REJECTED } from "../../../../common/actions/
 export const GET_MERGE_CONTACTS = _toRequestType("get/mergeContacts");
 export const GET_MERGE_CONTACTS_FULFILLED = FULFILLED(GET_MERGE_CONTACTS);
 
-export const CREATE_CONTACT = _toRequestType("post/contact");
-
 export const DELETE_CONTACT = _toRequestType("delete/contact");
 
 export const POST_MERGE_CONTACTS = _toRequestType("post/mergeContacts");
@@ -82,11 +80,6 @@ export const deleteContact = (id: number) => ({
 export const getContactsStoredCc = (id: number) => ({
   type: GET_CONTACTS_STORED_CC,
   payload: id
-});
-
-export const createContact = (contact: Contact) => ({
-  type: CREATE_CONTACT,
-  payload: contact
 });
 
 export const updateContact = (id: string, contact: Contact) => ({

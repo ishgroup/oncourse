@@ -15,9 +15,6 @@ export const DELETE_QUALIFICATION_ITEM_FULFILLED = FULFILLED(DELETE_QUALIFICATIO
 export const UPDATE_QUALIFICATION_ITEM = _toRequestType("put/qualification");
 export const UPDATE_QUALIFICATION_ITEM_FULFILLED = FULFILLED(UPDATE_QUALIFICATION_ITEM);
 
-export const CREATE_QUALIFICATION_ITEM = _toRequestType("post/qualification");
-export const CREATE_QUALIFICATION_ITEM_FULFILLED = FULFILLED(CREATE_QUALIFICATION_ITEM);
-
 export const getQualification = (id: string) => ({
   type: GET_QUALIFICATION_ITEM,
   payload: id
@@ -31,9 +28,4 @@ export const removeQualification = (id: string) => ({
 export const updateQualification = (id: string, qualification: Qualification) => ({
   type: UPDATE_QUALIFICATION_ITEM,
   payload: { id, qualification }
-});
-
-export const createQualification = (qualification: Qualification) => ({
-  type: CREATE_QUALIFICATION_ITEM,
-  payload: { qualification }
 });

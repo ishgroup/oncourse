@@ -15,9 +15,6 @@ export const DELETE_ROOM_ITEM_FULFILLED = FULFILLED(DELETE_ROOM_ITEM);
 export const UPDATE_ROOM_ITEM = _toRequestType("put/room");
 export const UPDATE_ROOM_ITEM_FULFILLED = FULFILLED(UPDATE_ROOM_ITEM);
 
-export const CREATE_ROOM_ITEM = _toRequestType("post/room");
-export const CREATE_ROOM_ITEM_FULFILLED = FULFILLED(CREATE_ROOM_ITEM);
-
 export const GET_ROOM_DELETE_VALIDATION = _toRequestType("get/list/entity/room/validation");
 export const GET_ROOM_DELETE_VALIDATION_FULFILLED = FULFILLED(GET_ROOM_DELETE_VALIDATION);
 
@@ -39,10 +36,5 @@ export const removeRoom = (id: string) => ({
 export const updateRoom = (id: string, room: Room) => ({
   type: UPDATE_ROOM_ITEM,
   payload: { id, room }
-});
-
-export const createRoom = (room: Room) => ({
-  type: CREATE_ROOM_ITEM,
-  payload: { room }
 });
 

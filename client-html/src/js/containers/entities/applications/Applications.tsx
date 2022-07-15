@@ -21,7 +21,7 @@ import {
 import { getListTags } from "../../tags/actions";
 import { defaultContactName } from "../contacts/utils";
 import {
-  getApplication, updateApplication, createApplication, removeApplication
+  getApplication, updateApplication, removeApplication
 } from "./actions";
 import ApplicationEditView from "./components/ApplicationEditView";
 import { FilterGroup } from "../../../model/common/ListView";
@@ -34,7 +34,6 @@ import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption"
 interface ApplicationsProps {
   getApplicationRecord?: () => void;
   onInit?: () => void;
-  onCreate?: (application: Application) => void;
   onDelete?: (id: string) => void;
   onSave?: (id: string, application: Application) => void;
   getFilters?: () => void;
@@ -128,7 +127,7 @@ class Applications extends React.Component<ApplicationsProps, any> {
 
   render() {
     const {
-      getApplicationRecord, onCreate, onDelete, onSave, onInit
+      getApplicationRecord, onDelete, onSave, onInit
     } = this.props;
 
     return (
@@ -150,7 +149,6 @@ class Applications extends React.Component<ApplicationsProps, any> {
           getEditRecord={getApplicationRecord}
           rootEntity="Application"
           onInit={onInit}
-          onCreate={onCreate}
           onDelete={onDelete}
           onSave={onSave}
           findRelated={findRelatedGroup}
@@ -176,7 +174,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearListState: () => dispatch(clearListState()),
   getApplicationRecord: (id: string) => dispatch(getApplication(id)),
   onSave: (id: string, application: Application) => dispatch(updateApplication(id, application)),
-  onCreate: (application: Application) => dispatch(createApplication(application)),
   onDelete: (id: string) => dispatch(removeApplication(id)),
 });
 

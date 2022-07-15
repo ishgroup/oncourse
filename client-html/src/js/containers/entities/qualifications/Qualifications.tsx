@@ -9,7 +9,7 @@ import { initialize } from "redux-form";
 import { Dispatch } from "redux";
 import ListView from "../../../common/components/list-view/ListView";
 import {
-  createQualification, getQualification, removeQualification, updateQualification
+  getQualification, removeQualification, updateQualification
 } from "./actions";
 import { Qualification } from "@api/model";
 import { FilterGroup } from "../../../model/common/ListView";
@@ -121,14 +121,6 @@ class Qualifications extends React.Component<any, any> {
     this.props.onSave(id, item);
   };
 
-  onCreate = (item: Qualification) => {
-    if (item.isOffered === undefined) {
-      item.isOffered = false;
-    }
-
-    this.props.onCreate(item);
-  };
-
   render() {
     const {
       onDelete, getQualificationRecord, onInit
@@ -150,7 +142,6 @@ class Qualifications extends React.Component<any, any> {
           rootEntity="Qualification"
           onDelete={onDelete}
           onInit={onInit}
-          onCreate={this.onCreate}
           onSave={this.onSave}
           findRelated={findRelatedGroup}
           filterGroupsInitial={filterGroups}
@@ -172,7 +163,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearListState: () => dispatch(clearListState()),
   getQualificationRecord: (id: string) => dispatch(getQualification(id)),
   onSave: (id: string, qualification: Qualification) => dispatch(updateQualification(id, qualification)),
-  onCreate: (qualification: Qualification) => dispatch(createQualification(qualification)),
   onDelete: (id: string) => dispatch(removeQualification(id))
 });
 

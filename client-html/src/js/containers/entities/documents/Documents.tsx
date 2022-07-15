@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import withStyles from "@mui/styles/withStyles";
 import createStyles from "@mui/styles/createStyles";
 import Delete from "@mui/icons-material/Delete";
@@ -32,7 +32,7 @@ import { State } from "../../../reducers/state";
 import { getEntityTags, getListTags } from "../../tags/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import { createDocument, getDocument, updateDocument } from "./actions";
+import { getDocument, updateDocument } from "./actions";
 import DocumentEditView from "./components/DocumentEditView";
 import BinCogwheel from "./components/BinCogwheel";
 
@@ -64,7 +64,6 @@ interface DocumentProps {
   getFilters?: () => void;
   clearListState?: () => void;
   getTags?: () => void;
-  onCreate: (document: Document) => void;
   classes?: any;
   setListCreatingNew?: BooleanArgFunction;
   updateSelection?: (selection: string[]) => void;
@@ -193,7 +192,6 @@ const Documents: React.FC<DocumentProps> = props => {
     getFilters,
     clearListState,
     getTags,
-    onCreate,
     classes,
     setListCreatingNew,
     updateSelection,
@@ -273,12 +271,6 @@ const Documents: React.FC<DocumentProps> = props => {
     ) : v)
   });
 
-  const onDocumentCreate = doc => {
-    const docModel = { ...doc };
-    onCreate(docModel);
-    setManuallyOpenModal(false);
-  };
-
   const customOnCreate = () => {
     setOpenFileModal(true);
     setIsDragging(true);
@@ -341,7 +333,6 @@ const Documents: React.FC<DocumentProps> = props => {
         rootEntity="Document"
         onInit={onInit}
         customOnCreate={customOnCreate}
-        onCreate={onDocumentCreate}
         onSave={onSave}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
@@ -378,7 +369,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearListState: () => dispatch(clearListState()),
   getDocumentRecord: (id: number) => dispatch(getDocument(id)),
   onSave: (id: string, document) => dispatch(updateDocument(id, document)),
-  onCreate: document => dispatch(createDocument(document)),
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),

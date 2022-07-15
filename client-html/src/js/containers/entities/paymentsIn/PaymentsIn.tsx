@@ -115,7 +115,6 @@ const PaymentsIn = ({
           rootEntity="PaymentIn"
           onInit={() => setCreateCreateMenuOpen(true)}
           onSave={onSave}
-          onCreate={() => undefined}
           findRelated={[
             { title: "Audits", list: "audit", expression: "entityIdentifier == PaymentIn and entityId" },
             { title: "Contacts", list: "contact", expression: "paymentsIn.id" },

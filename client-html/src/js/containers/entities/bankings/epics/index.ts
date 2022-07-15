@@ -6,7 +6,6 @@ import { EpicGetDepositPayments } from "./EpicGetDepositPayments";
 import { EpicGetDepositAccounts } from "./EpicGetDepositAccounts";
 import { EpicInitDeposit } from "./EpicInitDeposit";
 import { EpicUpdateBanking } from "./EpicUpdateBanking";
-import { EpicCreateBanking } from "./EpicCreateBanking";
 
 export const EpicBankings = combineEpics(
   EpicGetBanking,
@@ -15,6 +14,5 @@ export const EpicBankings = combineEpics(
   EpicGetDepositPayments,
   EpicGetDepositAccounts,
   EpicInitDeposit,
-  EpicUpdateBanking,
-  EpicCreateBanking
+  EpicUpdateBanking
 );

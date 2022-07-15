@@ -16,18 +16,20 @@ import { createEntityItem, updateEntityItemByIdErrorHandler } from "../entityIte
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import { CREATE_ENTITY_RECORD_REQUEST } from "../actions";
 
+export const getProcessDataActions = (entity) => [
+  {
+    type: FETCH_SUCCESS,
+    payload: { message: `${entity} record created` }
+  },
+  getRecords(entity, true),
+  setListSelection([]),
+  initialize(LIST_EDIT_VIEW_FORM_NAME, null)
+]
+
 const request: Request<any, { item: any, entity: EntityName }> = {
   type: CREATE_ENTITY_RECORD_REQUEST,
   getData: ({ item, entity }) => createEntityItem(entity, item),
-  processData: (v, s, { entity }) => [
-      {
-        type: FETCH_SUCCESS,
-        payload: { message: `${entity} record created` }
-      },
-      getRecords(entity, true),
-      setListSelection([]),
-      initialize(LIST_EDIT_VIEW_FORM_NAME, null)
-    ],
+  processData: (v, s, { entity }) => getProcessDataActions(entity),
   processError: (response, { item, entity }) => updateEntityItemByIdErrorHandler(response, entity, item)
 };
 

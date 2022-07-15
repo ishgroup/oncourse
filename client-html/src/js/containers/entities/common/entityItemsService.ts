@@ -34,6 +34,11 @@ import CourseService from "../courses/services/CourseService";
 import { EntityName } from "../../../model/entities/common";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { processCustomFields } from "../customFieldTypes/utils";
+import { formatRelationsBeforeSave } from "../contacts/Contacts";
+import DocumentsService from "../../../common/components/form/documents/services/DocumentsService";
+import LeadService from "../leads/services/LeadService";
+import membershipProductService from "../membershipProducts/services/MembershipProductService";
+import PriorLearningService from "../priorLearnings/services/PriorLearningService";
 
 const defaultUnknown = () => {
   console.error("Unknown entity name");
@@ -272,24 +277,133 @@ export const createEntityItem = (entity: EntityName, item: any): Promise<any> =>
   processCustomFields(item);
 
   switch (entity) {
-    case "Account": {
+    case "Account":
       return AccountService.createAccount(item);
+    case "Application":
+      return ApplicationService.createApplication(item);
+    case "Certificate":
+      return CertificateService.createCertificate(item);
+    case "CorporatePass":
+      return CorporatePassService.createCorporatePass(item);
+    case "Discount":
+      return DiscountService.createDiscount(item);
+    case "Invoice":
+    case "AbstractInvoice":
+      return InvoiceService.createInvoice(preformatInvoice(item));
+    case "Lead":
+      return LeadService.createLead(item);
+    case "MembershipProduct":
+      return membershipProductService.createMembershipProduct(item);
+    case "Outcome":
+      return OutcomeService.create(item);
+    case "PriorLearning":
+      return PriorLearningService.createPriorLearning(item);
+    case "Room":
+      return RoomService.createRoom(item);
+
+    case "Document": {
+      const {
+        name,
+        description,
+        shared,
+        access,
+        content,
+        tags,
+        versions,
+        id
+      } = item;
+      
+      if (id) {
+        return DocumentsService.updateDocumentItem(id, item);
+      }
+
+      return DocumentsService.createDocument(
+        name,
+        description,
+        shared,
+        access,
+        content,
+        tags,
+        (Array.isArray(versions) && versions[0].fileName) || content.name
+      );
     }
+
     case "Site": {
       if (item.isAdministrationCentre === undefined) {
         item.isAdministrationCentre = false;
       }
-
       if (item.isShownOnWeb === undefined) {
         item.isShownOnWeb = false;
       }
-
       if (item.isVirtual === undefined) {
         item.isVirtual = false;
       }
-
       return SiteService.createSite(item);
     }
+
+    case "Qualification": {
+      if (item.isOffered === undefined) {
+        item.isOffered = false;
+      }
+      return QualificationService.createQualification(item);
+    }
+
+    case "Payslip": {
+      const paylines = JSON.parse(JSON.stringify(item.paylines));
+
+      paylines.forEach(i => {
+        delete i.deferred;
+      });
+
+      const tags = JSON.parse(JSON.stringify(item.tags));
+
+      tags.forEach(t => {
+        delete t.active;
+      });
+
+      return PayslipService.createPayslip({ ...item, paylines, tags });
+    }
+
+    case "Module": {
+      if (item.isOffered === undefined) {
+        item.isOffered = false;
+      }
+
+      if (item.type === undefined) {
+        item.type = "UNIT OF COMPETENCY";
+      }
+
+      return ModuleService.createModule(item);
+    }
+
+    case "Contact": {
+      const { student, relations } = item;
+
+      if (student) delete item.student.education;
+
+      item.relations = formatRelationsBeforeSave(relations);
+
+      if (item.isCompany) delete item.firstName;
+
+      return ContactsService.createContact(item);
+    }
+
+    case "Banking": {
+      const newBanking = { ...item };
+      if (item && item.payments) {
+        newBanking.payments = item.payments
+          // @ts-ignore
+          .filter(v => v.selected)
+          .map(v => {
+            const newPayment = { ...v };
+            // @ts-ignore
+            delete newPayment.selected;
+            return newPayment;
+          });
+      }
+      return BankingService.createBanking(newBanking);
+    }
+    
     default:
       return defaultUnknown();
   }

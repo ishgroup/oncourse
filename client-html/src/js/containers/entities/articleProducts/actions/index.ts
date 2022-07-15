@@ -10,8 +10,6 @@ export const GET_ARTICLE_PRODUCT_ITEM = _toRequestType("get/articleProduct");
 
 export const UPDATE_ARTICLE_PRODUCT_ITEM = _toRequestType("put/articleProduct");
 
-export const CREATE_ARTICLE_PRODUCT_ITEM = _toRequestType("post/articleProduct");
-
 export const getArticleProduct = (id: string) => ({
   type: GET_ARTICLE_PRODUCT_ITEM,
   payload: id
@@ -20,9 +18,4 @@ export const getArticleProduct = (id: string) => ({
 export const updateArticleProduct = (id: string, articleProduct: ArticleProduct) => ({
   type: UPDATE_ARTICLE_PRODUCT_ITEM,
   payload: { id, articleProduct }
-});
-
-export const createArticleProduct = (articleProduct: ArticleProduct) => ({
-  type: CREATE_ARTICLE_PRODUCT_ITEM,
-  payload: { articleProduct }
 });

@@ -19,7 +19,7 @@ import { defaultContactName } from "../contacts/utils";
 import CorporatePassEditView from "./components/CorporatePassEditView";
 import { FilterGroup } from "../../../model/common/ListView";
 import {
-  createCorporatePass, getCorporatePass, removeCorporatePass, updateCorporatePass
+  getCorporatePass, removeCorporatePass, updateCorporatePass
 } from "./actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
@@ -93,7 +93,7 @@ class CorporatePasses extends React.Component<any, any> {
 
   render() {
     const {
-      getCorporatePassRecord, onCreate, onDelete, onInit
+      getCorporatePassRecord, onDelete, onInit
     } = this.props;
 
     return (
@@ -108,7 +108,6 @@ class CorporatePasses extends React.Component<any, any> {
           getEditRecord={getCorporatePassRecord}
           rootEntity="CorporatePass"
           onInit={onInit}
-          onCreate={onCreate}
           onDelete={onDelete}
           onSave={this.onSave}
           findRelated={findRelatedGroup}
@@ -137,7 +136,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getFilters: () => dispatch(getFilters("CorporatePass")),
   getCorporatePassRecord: (id: string) => dispatch(getCorporatePass(id)),
   onSave: (id: string, corporatePass: CorporatePass) => dispatch(updateCorporatePass(id, corporatePass)),
-  onCreate: (corporatePass: CorporatePass) => dispatch(createCorporatePass(corporatePass)),
   onDelete: (id: string) => dispatch(removeCorporatePass(id)),
   clearListState: () => dispatch(clearListState()),
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups))

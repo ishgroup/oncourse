@@ -16,7 +16,6 @@ import Menu from "@mui/material/Menu";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
 import {
-  createInvoice,
   deleteQuote,
   getDefaultInvoiceTerms,
   getInvoice,
@@ -154,7 +153,6 @@ const Invoices = React.memo<any>(({
   getAdministrationSites,
   getQePermissions,
   clearListState,
-  onCreate,
   onSave,
   getInvoiceRecord,
   setListCreatingNew,
@@ -251,7 +249,6 @@ const Invoices = React.memo<any>(({
         getEditRecord={getInvoiceRecord}
         rootEntity="AbstractInvoice"
         filterEntity="Invoice"
-        onCreate={onCreate}
         onSave={onSave}
         onInit={onInit}
         customOnCreate={customOnCreate}
@@ -326,7 +323,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearListState: () => dispatch(clearListState()),
   getInvoiceRecord: (id: string) => dispatch(getInvoice(id)),
   onSave: (id: string, invoice: Invoice) => dispatch(updateInvoice(id, invoice)),
-  onCreate: (invoice: Invoice) => dispatch(createInvoice(invoice)),
   onDelete: (id: string) => dispatch(removeInvoice(id)),
   onDeleteQuote: (id: string) => dispatch(deleteQuote(id)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),

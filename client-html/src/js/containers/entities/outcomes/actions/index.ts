@@ -14,8 +14,6 @@ export const UPDATE_OUTCOME_ITEM = _toRequestType("put/outcome");
 
 export const DELETE_OUTCOME_ITEM = _toRequestType("delete/outcome");
 
-export const CREATE_OUTCOME_ITEM = _toRequestType("post/outcome");
-
 export const getOutcome = (id: string) => ({
   type: GET_OUTCOME_ITEM,
   payload: id
@@ -28,11 +26,6 @@ export const getOutcomeTags = () => ({
 export const updateOutcome = (id: string, outcome: Outcome) => ({
   type: UPDATE_OUTCOME_ITEM,
   payload: { id, outcome }
-});
-
-export const createOutcome = (outcome: Outcome) => ({
-  type: CREATE_OUTCOME_ITEM,
-  payload: { outcome }
 });
 
 export const deleteOutcome = (id: string) => ({

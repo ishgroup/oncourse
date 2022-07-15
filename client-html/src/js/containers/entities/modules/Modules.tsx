@@ -10,7 +10,7 @@ import { initialize } from "redux-form";
 import { Module } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
 import {
-  createModule, getModule, removeModule, updateModule
+  getModule, removeModule, updateModule
 } from "./actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import ModulesEditView from "./components/ModulesEditView";
@@ -92,18 +92,6 @@ class Modules extends React.Component<any, any> {
     this.props.onSave(id, item);
   };
 
-  onCreate = (item: Module) => {
-    if (item.isOffered === undefined) {
-      item.isOffered = false;
-    }
-
-    if (item.type === undefined) {
-      item.type = "UNIT OF COMPETENCY";
-    }
-
-    this.props.onCreate(item);
-  };
-
   render() {
     const {
       getModuleRecord, onDelete, onInit
@@ -124,7 +112,6 @@ class Modules extends React.Component<any, any> {
           getEditRecord={getModuleRecord}
           rootEntity="Module"
           onInit={onInit}
-          onCreate={this.onCreate}
           onDelete={onDelete}
           onSave={this.onSave}
           findRelated={findRelatedGroup}
@@ -147,7 +134,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearListState: () => dispatch(clearListState()),
   getModuleRecord: (id: string) => dispatch(getModule(id)),
   onSave: (id: string, module: Module) => dispatch(updateModule(id, module)),
-  onCreate: (module: Module) => dispatch(createModule(module)),
   onDelete: (id: string) => dispatch(removeModule(id))
 });
 

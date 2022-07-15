@@ -7,20 +7,20 @@ import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../epics/EpicUtils";
 import { State } from "../../../../reducers/state";
-import { GET_LIST_NESTED_EDIT_RECORD, GET_RECORDS_REQUEST, UPDATE_LIST_NESTED_EDIT_RECORD } from "../actions/index";
+import { GET_LIST_NESTED_EDIT_RECORD, GET_RECORDS_REQUEST, UPDATE_LIST_NESTED_EDIT_RECORD } from "../actions";
 import { FETCH_SUCCESS } from "../../../actions";
 import {
   updateEntityItemById,
   updateEntityItemByIdErrorHandler
 } from "../../../../containers/entities/common/entityItemsService";
-import { ApiMethods } from "../../../../model/common/apiHandlers";
+import { EntityName } from "../../../../model/entities/common";
 
 const request: EpicUtils.Request<
   any,
-  { entity: string; id: number; record: any; index: number; listRootEntity: string; method?: ApiMethods }
+  { entity: EntityName; id: number; record: any; index: number; listRootEntity: string; }
 > = {
   type: UPDATE_LIST_NESTED_EDIT_RECORD,
-  getData: payload => updateEntityItemById(payload.entity, payload.id, payload.record, payload.method),
+  getData: payload => updateEntityItemById(payload.entity, payload.id, payload.record),
   processData: (record: any, state: State, {
  entity, id, index, listRootEntity 
 }) => [

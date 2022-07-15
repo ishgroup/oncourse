@@ -8,12 +8,16 @@
 
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { getFormSyncErrors, initialize, isDirty, isInvalid, submit } from "redux-form";
+import {
+ getFormSyncErrors, initialize, isDirty, isInvalid, submit 
+} from "redux-form";
 import { ThemeProvider } from "@mui/material/styles";
 import { createStyles, withStyles } from "@mui/styles";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { Column, Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel } from "@api/model";
+import {
+ Column, Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel 
+} from "@api/model";
 import { createTheme } from '@mui/material';
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import Button from "@mui/material/Button";
@@ -48,7 +52,9 @@ import {
   updateTableModel,
 } from "./actions";
 import NestedEditView from "./components/full-screen-edit-view/NestedEditView";
-import { closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm } from "../../actions";
+import {
+ closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm 
+} from "../../actions";
 import ResizableWrapper from "../layout/resizable/ResizableWrapper";
 import { MenuTag } from "../../../model/tags";
 import { pushGTMEvent } from "../google-tag-manager/actions";
@@ -182,6 +188,7 @@ interface Props extends Partial<ListState> {
   ShareContainerAlertComponent?: any;
   searchMenuItemsRenderer?: ListAqlMenuItemsRenderer;
   customOnCreate?: any;
+  customOnCreateAction?: any;
   preformatBeforeSubmit?: AnyArgFunction;
   userAQLSearch?: string;
   listSearch?: string;
@@ -1276,7 +1283,9 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   setListviewMainContentWidth: (value: string) => dispatch(setUserPreference({ key: LISTVIEW_MAIN_CONTENT_WIDTH, value })),
   submitForm: () => dispatch(submit(LIST_EDIT_VIEW_FORM_NAME)),
   closeConfirm: () => dispatch(closeConfirm()),
-  onCreate: (item: any) => dispatch(createEntityRecord(item, ownProps.rootEntity))
+  onCreate: (item: any) => dispatch( ownProps.customOnCreateAction 
+    ? ownProps.customOnCreateAction(item) 
+    : createEntityRecord(item, ownProps.rootEntity))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(ListView))) as React.FC<Props>;

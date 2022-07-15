@@ -19,7 +19,7 @@ import {
  } from "../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import {
-  createPriorLearning, deletePriorLearning, getPriorLearning, updatePriorLearning
+  deletePriorLearning, getPriorLearning, updatePriorLearning
 } from "./actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 
@@ -69,7 +69,6 @@ const PriorLearnings: React.FC<PriorLearningsProps> = props => {
     getPriorLearningRecord,
     onInit,
     onSave,
-    onCreate,
     getFilters,
     clearListState,
     onDelete,
@@ -100,7 +99,6 @@ const PriorLearnings: React.FC<PriorLearningsProps> = props => {
       rootEntity="PriorLearning"
       onInit={onInit}
       onSave={onSave}
-      onCreate={onCreate}
       onDelete={onDelete}
       filterGroupsInitial={filterGroups}
       findRelated={findRelatedGroup}
@@ -120,7 +118,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getPriorLearningRecord: (id: string) => dispatch(getPriorLearning(id)),
   onSave: (id: string, priorLearning: PriorLearning) => dispatch(updatePriorLearning(id, priorLearning)),
   onDelete: (id: string) => dispatch(deletePriorLearning(id)),
-  onCreate: (priorLearning: PriorLearning) => dispatch(createPriorLearning(priorLearning)),
   checkPermissions: () => dispatch(checkPermissions({ path: fundingUploadsPath, method: "GET" }))
 });
 

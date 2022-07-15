@@ -10,7 +10,7 @@ import { Account, MembershipProduct, Tax } from "@api/model";
 import { Dispatch } from "redux";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { plainContactRelationTypePath, plainCorporatePassPath } from "../../../constants/Api";
-import { createMembershipProduct, getMembershipProduct, updateMembershipProduct } from "./actions";
+import { getMembershipProduct, updateMembershipProduct } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
 import MembershipProductEditView from "./components/MembershipProductEditView";
 import { FilterGroup } from "../../../model/common/ListView";
@@ -30,7 +30,6 @@ import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption"
 interface MembershipProductsProps {
   getMembershipProductRecord?: () => void;
   onInit?: (initial: MembershipProduct) => void;
-  onCreate?: (membershipProduct: MembershipProduct) => void;
   onSave?: (id: string, membershipProduct: MembershipProduct) => void;
   getRecords?: () => void;
   getFilters?: () => void;
@@ -120,7 +119,6 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
   const {
     getMembershipProductRecord,
     onInit,
-    onCreate,
     onSave,
     getFilters,
     clearListState,
@@ -182,7 +180,6 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
         getEditRecord={getMembershipProductRecord}
         rootEntity="MembershipProduct"
         onInit={() => setInitNew(true)}
-        onCreate={onCreate}
         onSave={onSave}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
@@ -213,7 +210,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearListState: () => dispatch(clearListState()),
   getMembershipProductRecord: (id: string) => dispatch(getMembershipProduct(id)),
   onSave: (id: string, membershipProduct: MembershipProduct) => dispatch(updateMembershipProduct(id, membershipProduct)),
-  onCreate: (membershipProduct: MembershipProduct) => dispatch(createMembershipProduct(membershipProduct)),
   checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" })),
   getRelationTypes: () => dispatch(getEntityRelationTypes()),
   getDataCollectionRules: () => dispatch(getDataCollectionRules()),

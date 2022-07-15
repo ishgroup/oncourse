@@ -15,7 +15,7 @@ import {
 } from "../../../common/components/list-view/actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import {
-  getBanking, updateBanking, createBanking, removeBanking, initDeposit
+  getBanking, updateBanking, removeBanking, initDeposit
 } from "./actions";
 import BankingEditViewResolver from "./components/BankingEditViewResolver";
 import BankingCogwheelOptions from "./components/BankingCogwheelOptions";
@@ -55,24 +55,6 @@ class BankingListView extends React.Component<any, null> {
     this.props.clearListState();
   }
 
-  onCreateNewBanking = (banking: Banking) => {
-    const { onCreate } = this.props;
-
-    if (banking && banking.payments) {
-      const newBanking = { ...banking };
-      newBanking.payments = banking.payments
-        // @ts-ignore
-        .filter(v => v.selected)
-        .map(v => {
-          const newPayment = { ...v };
-          // @ts-ignore
-          delete newPayment.selected;
-          return newPayment;
-        });
-      return onCreate(newBanking);
-    }
-  };
-
   render() {
     const {
       getBankingRecord, onDelete, onSave, onInit
@@ -88,7 +70,6 @@ class BankingListView extends React.Component<any, null> {
           getEditRecord={getBankingRecord}
           rootEntity="Banking"
           onInit={onInit}
-          onCreate={this.onCreateNewBanking}
           editViewProps={{
             manualLink,
             hideTitle: true
@@ -128,7 +109,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getBanking(id));
   },
   onSave: (id: string, banking: Banking) => dispatch(updateBanking(id, banking)),
-  onCreate: (banking: Banking) => dispatch(createBanking(banking)),
   onDelete: (id: string) => dispatch(removeBanking(id))
 });
 

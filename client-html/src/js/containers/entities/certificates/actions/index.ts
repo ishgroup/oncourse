@@ -19,9 +19,6 @@ export const DELETE_CERTIFICATE_ITEM_FULFILLED = FULFILLED(DELETE_CERTIFICATE_IT
 export const UPDATE_CERTIFICATE_ITEM = _toRequestType("put/certificate");
 export const UPDATE_CERTIFICATE_ITEM_FULFILLED = FULFILLED(UPDATE_CERTIFICATE_ITEM);
 
-export const CREATE_CERTIFICATE_ITEM = _toRequestType("post/certificate");
-export const CREATE_CERTIFICATE_ITEM_FULFILLED = FULFILLED(CREATE_CERTIFICATE_ITEM);
-
 export const VALIDATE_CERTIFICATES = _toRequestType("post/validateCertificates");
 export const SET_CERTIFICATES_VALIDATION_STATUS = "set/certificate/print/validation";
 
@@ -87,9 +84,4 @@ export const removeCertificate = (id: string) => ({
 export const updateCertificate = (id: string, certificate: Certificate) => ({
   type: UPDATE_CERTIFICATE_ITEM,
   payload: { id, certificate }
-});
-
-export const createCertificate = (certificate: Certificate) => ({
-  type: CREATE_CERTIFICATE_ITEM,
-  payload: { certificate }
 });

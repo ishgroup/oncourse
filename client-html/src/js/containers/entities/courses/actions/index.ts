@@ -6,8 +6,6 @@
 import { Course } from "@api/model";
 import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
 
-export const CREATE_COURSE = _toRequestType("post/course");
-
 export const GET_COURSE = _toRequestType("get/course");
 export const GET_COURSE_FULFILLED = FULFILLED(GET_COURSE);
 
@@ -17,10 +15,6 @@ export const DELETE_COURSE = _toRequestType("delete/course");
 
 export const DUPLICATE_COURSE = _toRequestType("post/duplicate");
 
-export const createCourse = (course: Course) => ({
-  type: CREATE_COURSE,
-  payload: { course }
-});
 
 export const getCourse = (id: string) => ({
   type: GET_COURSE,

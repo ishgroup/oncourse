@@ -15,9 +15,6 @@ export const DELETE_SITE_ITEM_FULFILLED = FULFILLED(DELETE_SITE_ITEM);
 export const UPDATE_SITE_ITEM = _toRequestType("put/site");
 export const UPDATE_SITE_ITEM_FULFILLED = FULFILLED(UPDATE_SITE_ITEM);
 
-export const CREATE_SITE_ITEM = _toRequestType("post/site");
-export const CREATE_SITE_ITEM_FULFILLED = FULFILLED(CREATE_SITE_ITEM);
-
 export const GET_ADMINISTRATION_SITES = _toRequestType("get/site/administration");
 export const GET_ADMINISTRATION_SITES_FULFILLED = FULFILLED(GET_ADMINISTRATION_SITES);
 
@@ -37,11 +34,6 @@ export const removeSite = (id: string) => ({
 export const updateSite = (id: string, site: Site) => ({
   type: UPDATE_SITE_ITEM,
   payload: { id, site }
-});
-
-export const createSite = (site: Site) => ({
-  type: CREATE_SITE_ITEM,
-  payload: { site }
 });
 
 export const getAdministrationSites = () => ({

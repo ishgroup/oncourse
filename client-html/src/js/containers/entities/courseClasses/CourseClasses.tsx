@@ -89,7 +89,6 @@ interface CourseClassesProps {
   onFirstRender?: NoArgFunction;
   onInit?: NoArgFunction;
   onUpdate?: (id: number, courseClass: CourseClass) => void;
-  onCreate?: (courseClass: CourseClass) => void;
   onDelete?: NumberArgFunction;
   clearListState?: NoArgFunction;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
@@ -455,7 +454,6 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
   const {
     onFirstRender,
     onDelete,
-    onCreate,
     onUpdate,
     getCourseClass,
     userPreferences,
@@ -658,7 +656,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
         rootEntity="CourseClass"
         onInit={onInit}
         onDelete={onDelete}
-        onCreate={onCreate}
+        customOnCreateAction={createCourseClass}
         onSave={onUpdate}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
@@ -789,7 +787,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   getCourseClass: (id: string) => dispatch(getCourseClass(id)),
   onUpdate: (id: number, courseClass: CourseClass) => dispatch(updateCourseClass(id, courseClass)),
   onDelete: (id: number) => dispatch(deleteCourseClass(id)),
-  onCreate: (courseClass: CourseClass) => dispatch(createCourseClass(courseClass)),
   clearListState: () => dispatch(clearListState()),
   setListCreatingNew: creatingNew => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: selection => dispatch(setListSelection(selection)),

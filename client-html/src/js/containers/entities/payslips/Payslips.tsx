@@ -15,7 +15,7 @@ import {
 } from "../../../common/components/list-view/actions";
 import { defaultContactName } from "../contacts/utils";
 import {
-  createPayslip, updatePayslip, removePayslip, getPayslip
+  updatePayslip, removePayslip, getPayslip
 } from "./actions";
 import PayslipsEditView from "./components/PayslipsEditView";
 import ListView from "../../../common/components/list-view/ListView";
@@ -90,22 +90,6 @@ class Payslips extends React.Component<any, any> {
     return false;
   }
 
-  onCreate = value => {
-    const paylines = JSON.parse(JSON.stringify(value.paylines));
-
-    paylines.forEach(i => {
-      delete i.deferred;
-    });
-
-    const tags = JSON.parse(JSON.stringify(value.tags));
-
-    tags.forEach(t => {
-      delete t.active;
-    });
-
-    this.props.onCreate({ ...value, paylines, tags });
-  };
-
   render() {
     const {
       onDelete, onSave, getPayslipRecord, onInit
@@ -129,7 +113,6 @@ class Payslips extends React.Component<any, any> {
           onInit={onInit}
           onDelete={onDelete}
           onSave={onSave}
-          onCreate={this.onCreate}
           findRelated={findRelatedGroup}
           filterGroupsInitial={filterGroups}
           CogwheelAdornment={PayslipCogwheelOptions}
@@ -153,7 +136,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getPayslipRecord: (id: string) => dispatch(getPayslip(id)),
   clearListState: () => dispatch(clearListState()),
   onSave: (id: string, payslip: Payslip) => dispatch(updatePayslip(id, payslip)),
-  onCreate: (payslip: Payslip) => dispatch(createPayslip(payslip)),
   onDelete: (id: string) => dispatch(removePayslip(id)),
   getGenerateAccess: () => dispatch(checkPermissions({ path: "/a/v1/list/option/payroll?entity=Payslip", method: "PUT" })),
   getConfirmAccess: () => dispatch(

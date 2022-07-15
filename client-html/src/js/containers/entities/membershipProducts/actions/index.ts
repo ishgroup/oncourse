@@ -12,9 +12,6 @@ export const GET_MEMBERSHIP_PRODUCT_ITEM_FULFILLED = FULFILLED(GET_MEMBERSHIP_PR
 export const UPDATE_MEMBERSHIP_PRODUCT_ITEM = _toRequestType("put/membershipProduct");
 export const UPDATE_MEMBERSHIP_PRODUCT_ITEM_FULFILLED = FULFILLED(UPDATE_MEMBERSHIP_PRODUCT_ITEM);
 
-export const CREATE_MEMBERSHIP_PRODUCT_ITEM = _toRequestType("post/membershipProduct");
-export const CREATE_MEMBERSHIP_PRODUCT_ITEM_FULFILLED = FULFILLED(CREATE_MEMBERSHIP_PRODUCT_ITEM);
-
 export const getMembershipProduct = (id: string) => ({
   type: GET_MEMBERSHIP_PRODUCT_ITEM,
   payload: id
@@ -23,9 +20,4 @@ export const getMembershipProduct = (id: string) => ({
 export const updateMembershipProduct = (id: string, membershipProduct: MembershipProduct) => ({
   type: UPDATE_MEMBERSHIP_PRODUCT_ITEM,
   payload: { id, membershipProduct }
-});
-
-export const createMembershipProduct = (membershipProduct: MembershipProduct) => ({
-  type: CREATE_MEMBERSHIP_PRODUCT_ITEM,
-  payload: { membershipProduct }
 });

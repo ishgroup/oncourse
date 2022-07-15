@@ -10,9 +10,6 @@ export const DELETE_BANKING_ITEM_FULFILLED = FULFILLED(DELETE_BANKING_ITEM);
 export const UPDATE_BANKING_ITEM = _toRequestType("put/banking");
 export const UPDATE_BANKING_ITEM_FULFILLED = FULFILLED(UPDATE_BANKING_ITEM);
 
-export const CREATE_BANKING_ITEM = _toRequestType("post/banking");
-export const CREATE_BANKING_ITEM_FULFILLED = FULFILLED(CREATE_BANKING_ITEM);
-
 export const POST_RECONCILE_BANKING = _toRequestType("post/banking/reconcile");
 export const POST_RECONCILE_BANKING_FULFILLED = FULFILLED(POST_RECONCILE_BANKING);
 
@@ -25,8 +22,6 @@ export const GET_DEPOSIT_ACCOUNTS_FULFILLED = FULFILLED(GET_DEPOSIT_ACCOUNTS);
 export const INIT_DEPOSIT = "init/deposit";
 
 export const UPDATE_BANKING_ACCOUNT_ID = "action/banking/update/accountId";
-
-export const UPDATE_BANKING_SITE_ID = "action/banking/update/administrationCenterId";
 
 export const getBanking = (id: string) => ({
   type: GET_BANKING_ITEM,
@@ -41,11 +36,6 @@ export const removeBanking = (id: string) => ({
 export const updateBanking = (id: string, banking: Banking) => ({
   type: UPDATE_BANKING_ITEM,
   payload: { id, banking }
-});
-
-export const createBanking = (banking: Banking) => ({
-  type: CREATE_BANKING_ITEM,
-  payload: { banking }
 });
 
 export const reconcileBanking = (ids: number[]) => ({

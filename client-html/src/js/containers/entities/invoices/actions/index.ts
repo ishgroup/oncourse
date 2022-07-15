@@ -27,9 +27,6 @@ export const DELETE_INVOICE_ITEM = _toRequestType("delete/invoice");
 export const UPDATE_INVOICE_ITEM = _toRequestType("put/invoice");
 export const UPDATE_INVOICE_ITEM_FULFILLED = FULFILLED(UPDATE_INVOICE_ITEM);
 
-export const CREATE_INVOICE_ITEM = _toRequestType("post/invoice");
-export const CREATE_INVOICE_ITEM_FULFILLED = FULFILLED(CREATE_INVOICE_ITEM);
-
 export const DUPLICATE_AND_REVERSE_INVOICE_ITEM = _toRequestType("get/invoice/duplicate");
 export const DUPLICATE_QUOTE = _toRequestType("get/quote/duplicate");
 
@@ -105,11 +102,6 @@ export const removeInvoice = (id: string) => ({
 export const updateInvoice = (id: string, invoice: Invoice) => ({
   type: UPDATE_INVOICE_ITEM,
   payload: { id, invoice }
-});
-
-export const createInvoice = (invoice: Invoice) => ({
-  type: CREATE_INVOICE_ITEM,
-  payload: { invoice }
 });
 
 export const duplicateAndReverseInvoice = (id: number) => ({

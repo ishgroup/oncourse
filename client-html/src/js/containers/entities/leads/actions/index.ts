@@ -18,16 +18,7 @@ export const DELETE_LEAD_ITEM_FULFILLED = FULFILLED(DELETE_LEAD_ITEM);
 export const UPDATE_LEAD_ITEM = _toRequestType("put/lead");
 export const UPDATE_LEAD_ITEM_FULFILLED = FULFILLED(UPDATE_LEAD_ITEM);
 
-export const CREATE_LEAD_ITEM = _toRequestType("post/lead");
-export const CREATE_LEAD_ITEM_FULFILLED = FULFILLED(CREATE_LEAD_ITEM);
-
 export const GET_LEAD_DELETE_VALIDATION = _toRequestType("get/list/entity/lead/validation");
-export const GET_LEAD_DELETE_VALIDATION_FULFILLED = FULFILLED(GET_LEAD_DELETE_VALIDATION);
-
-export const validateDeleteLead = (id: string, callback: any) => ({
-  type: GET_LEAD_DELETE_VALIDATION,
-  payload: { id, callback }
-});
 
 export const getLead = (id: string) => ({
   type: GET_LEAD_ITEM,
@@ -42,9 +33,4 @@ export const removeLead = (id: string) => ({
 export const updateLead = (id: string, lead: Lead) => ({
   type: UPDATE_LEAD_ITEM,
   payload: { id, lead }
-});
-
-export const createLead = (lead: Lead) => ({
-  type: CREATE_LEAD_ITEM,
-  payload: { lead }
 });

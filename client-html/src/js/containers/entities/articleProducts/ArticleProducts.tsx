@@ -13,7 +13,7 @@ import { plainCorporatePassPath } from "../../../constants/Api";
 import ArticleProductEditView from "./components/ArticleProductEditView";
 import { FilterGroup } from "../../../model/common/ListView";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import { createArticleProduct, getArticleProduct, updateArticleProduct } from "./actions";
+import { getArticleProduct, updateArticleProduct } from "./actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { State } from "../../../reducers/state";
 import { getPlainTaxes } from "../taxes/actions";
@@ -29,7 +29,6 @@ import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption"
 interface ArticleProductsProps {
   getArticleProductRecord?: () => void;
   onInit?: (initial: ArticleProduct) => void;
-  onCreate?: (articleProduct: ArticleProduct) => void;
   onDelete?: (id: string) => void;
   onSave?: (id: string, articleProduct: ArticleProduct) => void;
   getFilters?: () => void;
@@ -121,7 +120,6 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
   const {
     getArticleProductRecord,
     onInit,
-    onCreate,
     onSave,
     getFilters,
     getDefaultIncomeAccount,
@@ -183,7 +181,6 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
         getEditRecord={getArticleProductRecord}
         rootEntity="ArticleProduct"
         onInit={() => setInitNew(true)}
-        onCreate={onCreate}
         onSave={onSave}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
@@ -208,7 +205,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearListState: () => dispatch(clearListState()),
   getArticleProductRecord: (id: string) => dispatch(getArticleProduct(id)),
   onSave: (id: string, articleProduct: ArticleProduct) => dispatch(updateArticleProduct(id, articleProduct)),
-  onCreate: (articleProduct: ArticleProduct) => dispatch(createArticleProduct(articleProduct)),
   checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" })),
   getRelationTypes: () => dispatch(getEntityRelationTypes()),
   getDataCollectionRules: () => dispatch(getDataCollectionRules()),

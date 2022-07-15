@@ -10,11 +10,6 @@ export const UPDATE_DOCUMENT_ITEM_FULFILLED = FULFILLED(UPDATE_DOCUMENT_ITEM);
 export const DELETE_DOCUMENT_ITEM = _toRequestType("delete/document");
 export const RESTORE_DOCUMENT = _toRequestType("patch/document");
 
-export const CREATE_DOCUMENT_ITEM = _toRequestType("post/document");
-export const CREATE_DOCUMENT_ITEM_FULFILLED = FULFILLED(CREATE_DOCUMENT_ITEM);
-
-export const GET_DOCUMENT_ITEMS = _toRequestType("get/document");
-
 export const restoreDocument = (diff: Diff) => ({
   type: RESTORE_DOCUMENT,
   payload: diff
@@ -34,17 +29,3 @@ export const updateDocument = (id: string, document: Document) => ({
   type: UPDATE_DOCUMENT_ITEM,
   payload: { id, document }
 });
-
-export const createDocument = (document: Document) => {
-  const { id } = document;
-  if (id) {
-    return ({
-      type: UPDATE_DOCUMENT_ITEM,
-      payload: { id, document }
-    });
-  }
-  return ({
-    type: CREATE_DOCUMENT_ITEM,
-    payload: { document }
-  });
-};

@@ -4,14 +4,14 @@
  */
 
 import { Epic } from "redux-observable";
-
 import { initialize } from "redux-form";
 import * as EpicUtils from "../../../epics/EpicUtils";
 import { State } from "../../../../reducers/state";
-import { GET_LIST_NESTED_EDIT_RECORD, SET_LIST_NESTED_EDIT_RECORD } from "../actions/index";
+import { GET_LIST_NESTED_EDIT_RECORD, SET_LIST_NESTED_EDIT_RECORD } from "../actions";
 import { getEntityItemById } from "../../../../containers/entities/common/entityItemsService";
+import { EntityName } from "../../../../model/entities/common";
 
-const request: EpicUtils.Request<any, { entity: string; id: number; index?: number; threeColumn?: boolean }> = {
+const request: EpicUtils.Request<any, { entity: EntityName; id: number; index?: number; threeColumn?: boolean }> = {
   type: GET_LIST_NESTED_EDIT_RECORD,
   getData: ({ entity, id, threeColumn }, state) => {
     if (threeColumn && entity === state.list.records.entity) {

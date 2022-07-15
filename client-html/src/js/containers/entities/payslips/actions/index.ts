@@ -10,9 +10,6 @@ export const DELETE_PAYSLIP_ITEM_FULFILLED = FULFILLED(DELETE_PAYSLIP_ITEM);
 export const UPDATE_PAYSLIP_ITEM = _toRequestType("put/payslip");
 export const UPDATE_PAYSLIP_ITEM_FULFILLED = FULFILLED(UPDATE_PAYSLIP_ITEM);
 
-export const CREATE_PAYSLIP_ITEM = _toRequestType("post/payslip");
-export const CREATE_PAYSLIP_ITEM_FULFILLED = FULFILLED(CREATE_PAYSLIP_ITEM);
-
 export const POST_PAYSLIP_EXECUTE = _toRequestType("post/payslip/execute");
 export const POST_PAYSLIP_EXECUTE_FULFILLED = FULFILLED(POST_PAYSLIP_EXECUTE);
 
@@ -29,11 +26,6 @@ export const removePayslip = (id: string) => ({
 export const updatePayslip = (id: string, payslip: Payslip) => ({
   type: UPDATE_PAYSLIP_ITEM,
   payload: { id, payslip }
-});
-
-export const createPayslip = (payslip: Payslip) => ({
-  type: CREATE_PAYSLIP_ITEM,
-  payload: { payslip }
 });
 
 export const executePayslip = (ids: number[], status: PayslipStatus) => ({

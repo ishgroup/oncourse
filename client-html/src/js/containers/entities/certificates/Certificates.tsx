@@ -16,7 +16,7 @@ import {
 import { FilterGroup } from "../../../model/common/ListView";
 import { defaultContactName } from "../contacts/utils";
 import {
-  getCertificate, updateCertificate, createCertificate, removeCertificate
+  getCertificate, updateCertificate, removeCertificate
 } from "./actions";
 import CertificateEditView from "./components/CertificateEditView";
 import { getManualLink } from "../../../common/utils/getManualLink";
@@ -27,7 +27,6 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/c
 interface CertificatesProps {
   getCertificateRecord?: () => void;
   onInit?: () => void;
-  onCreate?: (certificate: Certificate) => void;
   onDelete?: (id: string) => void;
   onSave?: (id: string, certificate: Certificate) => void;
   getFilters?: () => void;
@@ -97,7 +96,6 @@ const Certificates: React.FC<CertificatesProps> = props => {
   const {
     getCertificateRecord,
     onInit,
-    onCreate,
     onSave,
     getFilters,
     onDelete
@@ -128,7 +126,6 @@ const Certificates: React.FC<CertificatesProps> = props => {
         getEditRecord={getCertificateRecord}
         rootEntity="Certificate"
         onInit={onInit}
-        onCreate={onCreate}
         onSave={onSave}
         onDelete={onDelete}
         findRelated={findRelatedGroup}
@@ -151,7 +148,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearListState: () => dispatch(clearListState()),
   getCertificateRecord: (id: string) => dispatch(getCertificate(id)),
   onSave: (id: string, certificate: Certificate) => dispatch(updateCertificate(id, certificate)),
-  onCreate: (certificate: Certificate) => dispatch(createCertificate(certificate)),
   onDelete: (id: string) => dispatch(removeCertificate(id))
 });
 

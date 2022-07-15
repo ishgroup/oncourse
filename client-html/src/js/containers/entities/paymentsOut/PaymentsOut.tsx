@@ -114,7 +114,6 @@ class PaymentsOut extends React.Component<any, any> {
           rootEntity="PaymentOut"
           onInit={() => this.openCreateNewDialog()}
           onSave={onSave}
-          onCreate={() => undefined}
           filterGroupsInitial={filterGroups}
           findRelated={[
             { title: "Contacts", list: "contact", expression: "paymentsOut.id" },

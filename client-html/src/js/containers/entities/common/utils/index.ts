@@ -7,6 +7,25 @@ import {
  Course, EntityRelationType, Module, Qualification, Sale, SaleType 
 } from "@api/model";
 import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
+import { EntityName } from "../../../../model/entities/common";
+
+export const mapEntityDisplayName = (entity: EntityName, count?: number) => {
+  switch (entity) {
+    case "VoucherProduct":
+      return "Voucher type";
+    case "MembershipProduct":
+      return "Membership type";
+    case "ArticleProduct":
+      return "Product";
+    case "Voucher":
+    case "Membership":
+      return `Sale${count > 1 ? "s" : ""} (${entity})`;
+    case "Article":
+      return `Sale${count > 1 ? "s" : ""} (Product)`;
+    default:
+      return `${entity}${count > 1 ? entity[entity.length - 1] === "s" ? "es" : "s" : ""}`;
+  }
+};
 
 export const entityForLink = (type: SaleType) => {
   switch (type) {
