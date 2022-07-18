@@ -5,6 +5,7 @@
 
 import { combineEpics } from "redux-observable";
 import { EpicCommon } from "./common/epics";
+import { EpicListEntityRecord } from "./containers/entities/common/epics";
 import { EpicPreferences } from "./containers/preferences/epics";
 import { EpicAudits } from "./containers/audits/epics";
 import { EpicLogin } from "./containers/login/epics";
@@ -63,6 +64,7 @@ import { EpicAssessmentSubmissions } from "./containers/entities/assessmentSubmi
 
 // Creating ES6 Set Object to guarantee unique value of each import
 const importSet = new Set([
+  EpicListEntityRecord,
   EpicPdfBackgrounds,
   EpicPdfReports,
   EpicFanalise,
