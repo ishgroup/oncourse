@@ -148,7 +148,7 @@ class Avetmiss080Factory extends AvetmissFactory {
 
         def indigenousStatus = student.getIndigenousStatus()
 
-        if (student.getCountryOfBirth() == null || indigenousStatus == null) {
+        if (indigenousStatus == null) {
             line.setIndigenous(0)
         } else if (indigenousStatus == AvetmissStudentIndigenousStatus.NEITHER) {
             line.setIndigenous(4)
