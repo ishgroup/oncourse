@@ -325,6 +325,7 @@ const PdfReportsForm = React.memo<Props>(
                     selectLabelMark="title"
                     items={pdfBackgrounds}
                     onChange={onBackgroundIdChange}
+                    debounced={false}
                     allowEmpty
                   />
                 </Grid>
