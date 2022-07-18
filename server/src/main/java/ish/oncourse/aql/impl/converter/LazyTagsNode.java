@@ -8,6 +8,7 @@
 
 package ish.oncourse.aql.impl.converter;
 
+import ish.common.types.NodeType;
 import ish.oncourse.aql.impl.CompilationContext;
 import ish.oncourse.aql.impl.ExpressionUtil;
 import ish.oncourse.cayenne.TaggableClasses;
@@ -31,10 +32,12 @@ import java.util.List;
 public class LazyTagsNode extends LazyExprNodeWithBasePathResolver {
 
     private final ASTObjPath objPath;
+    private final NodeType nodeType;
 
 
-    public LazyTagsNode(ASTObjPath objPath) {
+    public LazyTagsNode(ASTObjPath objPath, NodeType nodeType) {
         this.objPath = objPath;
+        this.nodeType = nodeType;
     }
 
     @Override
@@ -82,6 +85,10 @@ public class LazyTagsNode extends LazyExprNodeWithBasePathResolver {
         String identPath = relationsPath + "+." + "entityIdentifier";
         ASTEqual identifierEqNode = new ASTEqual(new ASTObjPath(identPath), taggableClasses.getDatabaseValue());
         ExpressionUtil.addChild(and, identifierEqNode, 1);
+
+        String nodeTypePath = basePathWithJoin + ".nodeType";
+        ASTEqual nodeTypeEqNode = new ASTEqual(new ASTObjPath(nodeTypePath),nodeType.getDatabaseValue());
+        ExpressionUtil.addChild(and, nodeTypeEqNode, 2);
 
         return and;
     }
