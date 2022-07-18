@@ -33,6 +33,7 @@ in ish.oncourse.aql.model.EntityFactory in server module.
         <attribute name="class" ref="CourseClass"/>
         <attribute name="tags" ref="Tag"/>
         <attribute name="isClassCompleted" ref="Boolean"/>
+        <attribute name="checklists" ref="Tag"/>
     </entity>
     <entity name="PaymentOut">
         <attribute name="accountTransactions" ref="AccountTransaction"/>
@@ -86,6 +87,7 @@ in ish.oncourse.aql.model.EntityFactory in server module.
         <attribute name="classes" ref="CourseClass"/>
         <attribute name="isActive" ref="Boolean"/>
         <attribute name="tags" ref="Tag"/>
+        <attribute name="checklists" ref="Tag"/>
     </entity>
     <entity name="Contact">
         <attribute name="accountTransactions" ref="AccountTransaction"/>
@@ -100,10 +102,12 @@ in ish.oncourse.aql.model.EntityFactory in server module.
         <attribute name="allRelatedContactsToCourse" ref="Course"/>
         <attribute name="allRelatedContactsToAssessment" ref="Assessment"/>
         <attribute name="tags" ref="Tag"/>
+        <attribute name="checklists" ref="Tag"/>
     </entity>
     <entity name="Student">
         <attribute name="outcomes" ref="Outcome"/>
         <attribute name="tags" ref="Tag"/>
+        <attribute name="checklists" ref="Tag"/>
     </entity>
     <entity name="Outcome">
         <attribute name="vet" ref="Boolean"/>
@@ -114,45 +118,58 @@ in ish.oncourse.aql.model.EntityFactory in server module.
     </entity>
     <entity name="Application">
         <attribute name="tags" ref="Tag"/>
+        <attribute name="checklists" ref="Tag"/>
     </entity>
     <entity name="Assessment">
         <attribute name="tags" ref="Tag"/>
+        <attribute name="checklists" ref="Tag"/>
     </entity>
     <entity name="Document">
         <attribute name="tags" ref="Tag"/>
+        <attribute name="checklists" ref="Tag"/>
     </entity>
     <entity name="Invoice">
         <attribute name="tags" ref="Tag"/>
+        <attribute name="checklists" ref="Tag"/>
     </entity>
     <entity name="Faculty">
         <attribute name="tags" ref="Tag"/>
     </entity>
     <entity name="Lead">
         <attribute name="tags" ref="Tag"/>
+        <attribute name="checklists" ref="Tag"/>
     </entity>
     <entity name="Message">
         <attribute name="tags" ref="Tag"/>
+        <attribute name="checklists" ref="Tag"/>
     </entity>
     <entity name="Payslip">
         <attribute name="tags" ref="Tag"/>
+        <attribute name="checklists" ref="Tag"/>
     </entity>
     <entity name="Quote">
         <attribute name="tags" ref="Tag"/>
+        <attribute name="checklists" ref="Tag"/>
     </entity>
     <entity name="Report">
         <attribute name="tags" ref="Tag"/>
+        <attribute name="checklists" ref="Tag"/>
     </entity>
     <entity name="Room">
         <attribute name="tags" ref="Tag"/>
+        <attribute name="checklists" ref="Tag"/>
         <attribute name="classes" ref="CourseClass"/>
     </entity>
     <entity name="Site">
         <attribute name="tags" ref="Tag"/>
+        <attribute name="checklists" ref="Tag"/>
     </entity>
     <entity name="Tutor">
         <attribute name="tags" ref="Tag"/>
+        <attribute name="checklists" ref="Tag"/>
     </entity>
     <entity name="WaitingList">
         <attribute name="tags" ref="Tag"/>
+        <attribute name="checklists" ref="Tag"/>
     </entity>
 </attributes>
