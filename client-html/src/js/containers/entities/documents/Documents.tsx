@@ -25,7 +25,6 @@ import {
   setFilterGroups,
   setListCreatingNew,
   setListEditRecord,
-  setListFullScreenEditView,
   setListSelection
 } from "../../../common/components/list-view/actions";
 import { State } from "../../../reducers/state";
@@ -73,7 +72,6 @@ interface DocumentProps {
   match?: any;
   threeColumn?: boolean;
   fullScreenEditView?: boolean;
-  setListFullScreenEditView?: BooleanArgFunction;
 }
 
 let Initial: Document = {
@@ -201,8 +199,7 @@ const Documents: React.FC<DocumentProps> = props => {
     threeColumn,
     history,
     location,
-    match: { params, url },
-    setListFullScreenEditView
+    match: { params, url }
   } = props;
 
   const [openFileModal, setOpenFileModal] = React.useState<boolean>(false);
@@ -228,7 +225,7 @@ const Documents: React.FC<DocumentProps> = props => {
     updateHistory(params.id ? url.replace(`/${params.id}`, "/new") : url + "/new", location.search);
     setTimeout(() => {
       onInit();
-    });
+    }, 200);
   };
 
   const fileDragEvent = (e, openAddDialog) => {
@@ -292,7 +289,6 @@ const Documents: React.FC<DocumentProps> = props => {
         setCreateNew();
         setOpenFileModal(false);
         setIsDragging(false);
-        setListFullScreenEditView(false);
       });
     }
   };
@@ -381,7 +377,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
-  setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView))
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Documents));
