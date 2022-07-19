@@ -231,6 +231,7 @@ const StudentFeeContent: React.FC<Props> = ({
           selectValueMark="id"
           selectLabelMark="code"
           onChange={onTaxIdChange}
+          debounced={false}
           items={taxes || []}
           required
         />
@@ -243,6 +244,7 @@ const StudentFeeContent: React.FC<Props> = ({
           label="Account"
           selectLabelCondition={accountLabelCondition}
           onChange={onAccountIdChange}
+          debounced={false}
           items={accounts || []}
         />
       </Grid>

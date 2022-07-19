@@ -14,7 +14,7 @@ import { Fetch } from "../../../../model/common/Fetch";
 import TaxTypesForm from "./components/TaxTypesForm";
 import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
 import { sortDefaultSelectItems } from "../../../../common/utils/common";
-import { setNextLocation, showConfirm } from "../../../../common/actions";
+import { showConfirm } from "../../../../common/actions";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import { getPlainAccounts } from "../../../entities/accounts/actions";
 
@@ -31,7 +31,6 @@ interface Props {
   openConfirm: ShowConfirmCaller;
   history: any;
   nextLocation: string;
-  setNextLocation: (nextLocation: string) => void;
 }
 
 class TaxTypes extends React.Component<Props, any> {
@@ -43,7 +42,7 @@ class TaxTypes extends React.Component<Props, any> {
   render() {
     const {
  taxTypes, data, accounts, updateTaxTypes, deleteTaxType, fetch, timestamps, openConfirm,
-      nextLocation, setNextLocation
+      nextLocation
 } = this.props;
     const created = timestamps && timestamps[0];
     const modified = timestamps && timestamps[1];
@@ -80,7 +79,6 @@ class TaxTypes extends React.Component<Props, any> {
       fetch,
       taxTypes,
       nextLocation,
-      setNextLocation,
       onUpdate: updateTaxTypes,
       onDelete: deleteTaxType
     });
@@ -103,7 +101,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getAccounts: () => getPlainAccounts(dispatch),
   updateTaxTypes: (taxTypes: Tax[]) => dispatch(updateTaxTypes(taxTypes)),
   deleteTaxType: (id: string) => dispatch(deleteTaxType(id)),
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
   openConfirm: props => dispatch(showConfirm(props))
 });
 

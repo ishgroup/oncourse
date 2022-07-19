@@ -15,7 +15,7 @@ import { SidebarSharedProps } from "../../../model/common/sidebar";
 
 library.add(faEnvelopeOpenText);
 
-const UserIconRenderer: React.FC<{ item: User }> = ({ item, ...rest }) => {
+const UserIconRenderer = ({ item, ...rest }: { item: User }) => {
   const icons = [];
   if (item.tfaEnabled) {
     icons.push(<ScreenLockPortrait {...rest} key={item.id + "tfa"} />);

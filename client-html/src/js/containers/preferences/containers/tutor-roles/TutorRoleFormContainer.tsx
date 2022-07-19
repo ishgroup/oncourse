@@ -15,7 +15,7 @@ import {
  createTutorRole, getTutorRole, removeTutorRole, updateTutorRole
 } from "../../actions";
 import TutorRolesForm from "./components/TutorRolesForm";
-import { setNextLocation, showConfirm } from "../../../../common/actions";
+import { showConfirm } from "../../../../common/actions";
 
 export const TUTOR_ROLES_FORM_NAME: string = "TutorRolesForm";
 
@@ -38,7 +38,6 @@ const TutorRoleFormContainer = React.memo<any>(props => {
     onDelete,
     tutorRoles,
     nextLocation,
-    setNextLocation,
     history,
     isDirty,
     ...rest
@@ -59,7 +58,6 @@ const TutorRoleFormContainer = React.memo<any>(props => {
 
     if (nextLocation && !isDirty) {
       history.push(nextLocation);
-      setNextLocation('');
     }
   }, [id, prevId, nextLocation, isDirty]);
 
@@ -107,8 +105,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onDelete: (id: string, tutorRoles: DefinedTutorRole[]) => dispatch(removeTutorRole(id, tutorRoles)),
   onCreate: (role: DefinedTutorRole) => dispatch(createTutorRole(role)),
   getTutorRole: (id: string) => dispatch(getTutorRole(id)),
-  showConfirm: props => dispatch(showConfirm(props)),
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+  showConfirm: props => dispatch(showConfirm(props))
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withRouter(TutorRoleFormContainer));

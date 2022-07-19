@@ -28,7 +28,6 @@ import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/
 import getTimestamps from "../../../../../common/utils/timestamps/getTimestamps";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { setNextLocation } from "../../../../../common/actions";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
@@ -41,7 +40,6 @@ interface Props {
   holidays: Holiday[];
   onSave: (items: Holiday[]) => void;
   onDelete: (id: number) => void;
-  timestamps: Date[];
   initialized: boolean;
   invalid: boolean;
   dirty: boolean;
@@ -52,7 +50,6 @@ interface Props {
   history: any;
   openConfirm?: ShowConfirmCaller;
   nextLocation?: string,
-  setNextLocation?: (nextLocation: string) => void,
 }
 
 class HolidaysBaseForm extends React.Component<Props, any> {
@@ -133,11 +130,10 @@ class HolidaysBaseForm extends React.Component<Props, any> {
       this.props.onSave(this.getTouchedAndNew(value.holidays));
     })
       .then(() => {
-        const { history, nextLocation, setNextLocation } = this.props;
+        const { history, nextLocation } = this.props;
         this.props.dispatch(initialize(HOLIDAYS_FORM, { holidays: this.props.holidays }));
 
         nextLocation && history.push(nextLocation);
-        setNextLocation('');
       })
       .catch(error => {
         this.isPending = false;
@@ -187,8 +183,10 @@ class HolidaysBaseForm extends React.Component<Props, any> {
 
   render() {
     const {
-      handleSubmit, values, dirty, invalid, timestamps, dispatch, form
+      handleSubmit, values, dirty, invalid, holidays, dispatch, form
     } = this.props;
+
+    const timestamps = holidays && getTimestamps(holidays);
     const created = timestamps && timestamps[0];
     const modified = timestamps && timestamps[1];
 
@@ -228,21 +226,16 @@ class HolidaysBaseForm extends React.Component<Props, any> {
 }
 
 const mapStateToProps = (state: State) => ({
-  timestamps: state.preferences.holidays && getTimestamps(state.preferences.holidays),
   holidays: state.preferences.holidays,
   values: getFormValues(HOLIDAYS_FORM)(state),
   fetch: state.fetch,
   nextLocation: state.nextLocation
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-});
-
 const HolidaysForm = reduxForm({
   onSubmitFail,
   form: HOLIDAYS_FORM
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(
+})(connect<any, any, any>(mapStateToProps, null)(
   withRouter(HolidaysBaseForm)
 ));
 

@@ -221,20 +221,20 @@ const Documents: React.FC<DocumentProps> = props => {
     }
   };
 
-  const setCreateNew = React.useCallback(() => {
+  const setCreateNew = () => {
     updateHistory(params.id ? url.replace(`/${params.id}`, "/new") : url + "/new", location.search);
 
     setListCreatingNew(true);
     updateSelection(["new"]);
     onInit();
-  }, [params, location, url]);
+  };
 
-  const fileDragEvent = React.useCallback((e, openAddDialog) => {
+  const fileDragEvent = (e, openAddDialog) => {
     e.stopPropagation();
     e.preventDefault();
     setIsDragging(openAddDialog);
     setOpenFileModal(openAddDialog);
-  }, []);
+  };
 
   const addDialogRefEvents = () => {
     if (dialogRef.current !== null && !draggingEventAdded) {
@@ -255,7 +255,7 @@ const Documents: React.FC<DocumentProps> = props => {
     };
   }, []);
 
-  const getCustomColumnFormats = useCallback(() => ({
+  const getCustomColumnFormats = () => ({
     link: v => (v ? (
       <div className={classes.linkBtnWrapper}>
         <Button
@@ -271,13 +271,13 @@ const Documents: React.FC<DocumentProps> = props => {
         </Button>
       </div>
     ) : v)
-  }), [classes]);
+  });
 
-  const onDocumentCreate = useCallback(doc => {
+  const onDocumentCreate = doc => {
     const docModel = { ...doc };
     onCreate(docModel);
     setManuallyOpenModal(false);
-  }, []);
+  };
 
   const customOnCreate = () => {
     setOpenFileModal(true);
@@ -285,7 +285,7 @@ const Documents: React.FC<DocumentProps> = props => {
     setManuallyOpenModal(true);
   };
 
-  const handleDocumentUpload = React.useCallback(files => {
+  const handleDocumentUpload = files => {
     if (files.length) {
       handleFileSelect(files, () => {
         setCreateNew();
@@ -294,14 +294,14 @@ const Documents: React.FC<DocumentProps> = props => {
         setListFullScreenEditView(false);
       });
     }
-  }, [params, location, url]);
+  };
 
-  const onDocumentModalClose = React.useCallback(() => {
+  const onDocumentModalClose = () => {
     setOpenFileModal(false);
     setIsDragging(false);
     setManuallyOpenModal(false);
     updateHistory(url.replace("/new", ""), location.search);
-  }, [url, location]);
+  };
 
   React.useEffect(() => {
     if (!manuallyOpenModal) {

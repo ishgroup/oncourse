@@ -5,11 +5,11 @@
 
 import * as React from "react";
 import { FormControlLabel } from "@mui/material";
-import { QualificationType } from "@api/model";
+import { Qualification, QualificationType } from "@api/model";
 import Grid from "@mui/material/Grid";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { sortDefaultSelectItems } from "../../../../common/utils/common";
+import { EditViewProps } from "../../../../model/common/ListView";
 
 const qualificationTypes = Object.keys(QualificationType)
   .filter(i => Number.isNaN(Number(i)))
@@ -20,22 +20,22 @@ const qualificationTypes = Object.keys(QualificationType)
 
 qualificationTypes.sort(sortDefaultSelectItems);
 
-const QualificationsEditView: React.FC<any> = (props: any) => {
+const QualificationsEditView = (props: EditViewProps<Qualification>) => {
   const {
     isNew, values, updateDeleteCondition, twoColumn
   } = props;
 
-  const [isCustom, setIsCustom] = React.useState<boolean>(false);
+  if (!values) {
+    return null;
+  }
 
   React.useEffect(() => {
-    const isCustomDelete = values && values.isCustom === true;
-    setIsCustom(isCustomDelete);
     if (updateDeleteCondition) {
-      updateDeleteCondition(isCustomDelete);
+      updateDeleteCondition(values.isCustom);
     }
-  }, [values && values.isCustom, updateDeleteCondition]);
+  }, [values.isCustom, updateDeleteCondition]);
 
-  const isDisabled = isNew ? false : !isCustom;
+  const isDisabled = isNew ? false : !values.isCustom;
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="pt-2 pl-3 pr-3">
@@ -51,7 +51,7 @@ const QualificationsEditView: React.FC<any> = (props: any) => {
             name="type"
             label="Type"
             items={qualificationTypes}
-            validate={isNew || isCustom ? validateSingleMandatoryField : undefined}
+            required={isNew || values.isCustom}
           />
         </Grid>
         <Grid item xs={12}>
@@ -60,7 +60,7 @@ const QualificationsEditView: React.FC<any> = (props: any) => {
             disabled={isDisabled}
             name="qualLevel"
             label="Level"
-            validate={isNew || isCustom ? validateSingleMandatoryField : undefined}
+            required={!['Skill set', 'Local skill set'].includes(values.type) && (isNew || values.isCustom)}
           />
         </Grid>
         <Grid item xs={12}>
@@ -69,7 +69,7 @@ const QualificationsEditView: React.FC<any> = (props: any) => {
             disabled={isDisabled}
             name="title"
             label="Title"
-            validate={isNew || isCustom ? validateSingleMandatoryField : undefined}
+            required={isNew || values.isCustom}
           />
         </Grid>
         <Grid item xs={12}>
@@ -78,7 +78,7 @@ const QualificationsEditView: React.FC<any> = (props: any) => {
             disabled={!isNew}
             name="nationalCode"
             label="National code"
-            validate={isNew || isCustom ? validateSingleMandatoryField : undefined}
+            required={isNew || values.isCustom}
           />
         </Grid>
       </Grid>

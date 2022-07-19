@@ -24,7 +24,7 @@ import { TreeData } from "@atlaskit/tree";
 import { State } from "../../../reducers/state";
 import { getDeepValue } from "../../../common/utils/common";
 import { createTag, deleteTag, updateTag } from "../actions";
-import { setNextLocation, showConfirm } from "../../../common/actions";
+import { showConfirm } from "../../../common/actions";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
 import { onSubmitFail } from "../../../common/utils/highlightFormClassErrors";
 import { getPluralSuffix } from "../../../common/utils/strings";
@@ -140,8 +140,6 @@ interface FormProps extends Props {
   openTagEditView: (item: Tag) => void;
   closeTagEditView: () => void;
   history: any;
-  nextLocation: string;
-  setNextLocation: (nextLocation: string) => void;
   syncErrors?: any;
 }
 
@@ -247,7 +245,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
   };
 
   onDelete = (tag: Tag) => {
-    const {onDelete, redirectOnDelete} = this.props;
+    const { onDelete, redirectOnDelete } = this.props;
 
     this.isPending = true;
 
@@ -327,8 +325,7 @@ const mapStateToProps = (state: State) => ({
   values: getFormValues(TAGS_FORM_NAME)(state),
   syncErrors: getFormSyncErrors(TAGS_FORM_NAME)(state),
   tags: state.tags.allTags,
-  fetch: state.fetch,
-  nextLocation: state.nextLocation
+  fetch: state.fetch
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -336,12 +333,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   onCreate: (tag: Tag) => dispatch(createTag(tag)),
   onDelete: (tag: Tag) => dispatch(deleteTag(tag)),
   openConfirm: props => dispatch(showConfirm(props)),
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
-export const TagsFormWrapper = reduxForm({
+export const TagsFormWrapper = reduxForm<any, any, any>({
   form: TAGS_FORM_NAME,
   onSubmitFail,
   validate,
   shouldError: () => true
-})(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((props: any) => <props.Root {...props} />))) as any;
+})(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((props: any) => <props.Root {...props} />)));

@@ -27,7 +27,6 @@ import { State } from "../../../../../reducers/state";
 import { createDataCollectionForm, deleteDataCollectionForm, updateDataCollectionForm } from "../../../actions";
 import renderCollectionFormFields from "./CollectionFormFieldsRenderer";
 import CollectionFormFieldTypesMenu from "./CollectionFormFieldTypesMenu";
-import { setNextLocation } from "../../../../../common/actions";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("dataCollection");
@@ -121,9 +120,6 @@ class DataCollectionWrapper extends React.Component<any, any> {
 
   constructor(props) {
     super(props);
-    this.state = {
-      disableConfirm: false
-    };
 
     if (props.match.params.action === "edit" && props.collectionForms) {
       const currentForm = this.getCollectionForm(props);
@@ -300,7 +296,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
       }
     })
       .then(() => {
-        const { nextLocation, history, setNextLocation } = this.props;
+        const { nextLocation, history } = this.props;
         const updated = this.props.collectionForms.find(item => item.name === value.form.name);
         const items = parseDataCollectionFormData(updated);
         const updatedData = {
@@ -312,7 +308,6 @@ class DataCollectionWrapper extends React.Component<any, any> {
 
         if (nextLocation) {
           history.push(nextLocation);
-          setNextLocation('');
         } else {
           history.push(`/preferences/collectionForms/edit/${formatted.type}/${encodeURIComponent(updated.id)}`);
         }
@@ -335,10 +330,6 @@ class DataCollectionWrapper extends React.Component<any, any> {
   onDelete = id => {
     this.isPending = true;
 
-    this.setState({
-      disableConfirm: true
-    });
-
     return new Promise((resolve, reject) => {
       this.resolvePromise = resolve;
       this.rejectPromise = reject;
@@ -347,15 +338,9 @@ class DataCollectionWrapper extends React.Component<any, any> {
     })
       .then(() => {
         this.redirectOnDelete(id);
-        this.setState({
-          disableConfirm: false
-        });
       })
       .catch(() => {
         this.isPending = false;
-        this.setState({
-          disableConfirm: false
-        });
       });
   };
 
@@ -423,7 +408,6 @@ class DataCollectionWrapper extends React.Component<any, any> {
       classes, dispatch, values, handleSubmit, match, dirty, history, valid, form, syncErrors
     } = this.props;
 
-    const { disableConfirm } = this.state;
     const isNew = match.params.action === "new";
 
     const type = this.props.match.params.type;
@@ -432,7 +416,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
     return (
       <div ref={this.getFormRef}>
         <Form className="container" onSubmit={handleSubmit(this.onSave)} role={DATA_COLLECTION_FORM}>
-          {!disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
+          <RouteChangeConfirm form={form} when={dirty} />
           <AppBarContainer
             values={values}
             manualUrl={manualUrl}
@@ -441,7 +425,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
             invalid={!valid}
             title={(isNew && (!values || !values.form.name || values.form.name.trim().length === 0))
               ? "New"
-              : values && values.form.name.trim()}
+              : values?.form?.name?.trim()}
             hideHelpMenu={isNew}
             createdOn={v => new Date(v.form.created)}
             modifiedOn={v => new Date(v.form.modified)}
@@ -551,8 +535,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onUpdate: (id, form) => dispatch(updateDataCollectionForm(id, form)),
   onCreate: form => dispatch(createDataCollectionForm(form)),
-  onDelete: id => dispatch(deleteDataCollectionForm(id)),
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+  onDelete: id => dispatch(deleteDataCollectionForm(id))
 });
 
 const DataCollectionForm = reduxForm({
