@@ -33,7 +33,7 @@ export const updateEntityRecord = (id: number, entity: EntityName) => ({
   payload: { id, entity }
 });
 
-export const getEntityRecordRequest = (id: number, entity: EntityName) => ({
-  type: GET_ENTITY_RECORD_REQUEST,
+export const deleteEntityRecord = (id: number, entity: EntityName) => ({
+  type: DELETE_ENTITY_RECORD_REQUEST,
   payload: { id, entity }
 });

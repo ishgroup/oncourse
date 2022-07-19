@@ -15,7 +15,7 @@ import {
 } from "../../../common/components/list-view/actions";
 import { defaultContactName } from "../contacts/utils";
 import {
-  updatePayslip, removePayslip, getPayslip
+  updatePayslip, getPayslip
 } from "./actions";
 import PayslipsEditView from "./components/PayslipsEditView";
 import ListView from "../../../common/components/list-view/ListView";
@@ -92,32 +92,29 @@ class Payslips extends React.Component<any, any> {
 
   render() {
     const {
-      onDelete, onSave, getPayslipRecord, onInit
+      onSave, getPayslipRecord, onInit
     } = this.props;
 
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "contact.fullName",
-            secondaryColumn: "createdOn"
-          }}
-          editViewProps={{
-            nameCondition,
-            manualLink,
-            hideTitle: true
-          }}
-          EditViewContent={PayslipsEditView}
-          getEditRecord={getPayslipRecord}
-          rootEntity="Payslip"
-          onInit={onInit}
-          onDelete={onDelete}
-          onSave={onSave}
-          findRelated={findRelatedGroup}
-          filterGroupsInitial={filterGroups}
-          CogwheelAdornment={PayslipCogwheelOptions}
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "contact.fullName",
+          secondaryColumn: "createdOn"
+        }}
+        editViewProps={{
+          nameCondition,
+          manualLink,
+          hideTitle: true
+        }}
+        EditViewContent={PayslipsEditView}
+        getEditRecord={getPayslipRecord}
+        rootEntity="Payslip"
+        onInit={onInit}
+        onSave={onSave}
+        findRelated={findRelatedGroup}
+        filterGroupsInitial={filterGroups}
+        CogwheelAdornment={PayslipCogwheelOptions}
+      />
     );
   }
 }
@@ -136,7 +133,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getPayslipRecord: (id: string) => dispatch(getPayslip(id)),
   clearListState: () => dispatch(clearListState()),
   onSave: (id: string, payslip: Payslip) => dispatch(updatePayslip(id, payslip)),
-  onDelete: (id: string) => dispatch(removePayslip(id)),
   getGenerateAccess: () => dispatch(checkPermissions({ path: "/a/v1/list/option/payroll?entity=Payslip", method: "PUT" })),
   getConfirmAccess: () => dispatch(
     checkPermissions({ path: "/a/v1/list/option/payroll?entity=Payslip&bulkConfirmTutorWages=true", method: "POST" })

@@ -9,9 +9,6 @@ import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtil
 export const GET_SITE_ITEM = _toRequestType("get/site");
 export const GET_SITE_ITEM_FULFILLED = FULFILLED(GET_SITE_ITEM);
 
-export const DELETE_SITE_ITEM = _toRequestType("delete/site");
-export const DELETE_SITE_ITEM_FULFILLED = FULFILLED(DELETE_SITE_ITEM);
-
 export const UPDATE_SITE_ITEM = _toRequestType("put/site");
 export const UPDATE_SITE_ITEM_FULFILLED = FULFILLED(UPDATE_SITE_ITEM);
 
@@ -23,11 +20,6 @@ export const GET_VIRTUAL_SITES_FULFILLED = FULFILLED(GET_VIRTUAL_SITES);
 
 export const getSite = (id: string) => ({
   type: GET_SITE_ITEM,
-  payload: id
-});
-
-export const removeSite = (id: string) => ({
-  type: DELETE_SITE_ITEM,
   payload: id
 });
 
@@ -43,4 +35,3 @@ export const getAdministrationSites = () => ({
 export const getVirtualSites = () => ({
   type: GET_VIRTUAL_SITES
 });
-

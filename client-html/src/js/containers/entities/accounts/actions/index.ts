@@ -11,17 +11,10 @@ import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 
 export const GET_ACCOUNT_ITEM = _toRequestType("get/account");
 
-export const DELETE_ACCOUNT_ITEM = _toRequestType("delete/account");
-
 export const UPDATE_ACCOUNT_ITEM = _toRequestType("put/account");
 
 export const getAccount = (id: string) => ({
   type: GET_ACCOUNT_ITEM,
-  payload: id
-});
-
-export const removeAccount = (id: string) => ({
-  type: DELETE_ACCOUNT_ITEM,
   payload: id
 });
 

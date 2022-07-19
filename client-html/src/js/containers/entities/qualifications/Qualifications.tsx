@@ -9,7 +9,7 @@ import { initialize } from "redux-form";
 import { Dispatch } from "redux";
 import ListView from "../../../common/components/list-view/ListView";
 import {
-  getQualification, removeQualification, updateQualification
+  getQualification, updateQualification
 } from "./actions";
 import { Qualification } from "@api/model";
 import { FilterGroup } from "../../../model/common/ListView";
@@ -119,7 +119,7 @@ class Qualifications extends React.Component<any, any> {
 
   render() {
     const {
-      onDelete, getQualificationRecord, onInit
+      getQualificationRecord, onInit
     } = this.props;
 
     return (
@@ -136,7 +136,6 @@ class Qualifications extends React.Component<any, any> {
           EditViewContent={QualificationsEditView}
           getEditRecord={getQualificationRecord}
           rootEntity="Qualification"
-          onDelete={onDelete}
           onInit={onInit}
           onSave={this.onSave}
           findRelated={findRelatedGroup}
@@ -159,7 +158,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearListState: () => dispatch(clearListState()),
   getQualificationRecord: (id) => dispatch(getQualification(id)),
   onSave: (id: string, qualification: Qualification) => dispatch(updateQualification(id, qualification)),
-  onDelete: (id: string) => dispatch(removeQualification(id))
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Qualifications);

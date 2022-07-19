@@ -115,7 +115,6 @@ class Transactions extends React.Component<any, any> {
             nameCondition: this.getTransactionAccountName
           }}
           onInit={this.onInit}
-          onDelete={() => null}
           onSave={() => null}
           findRelated={findRelatedGroup}
           filterGroupsInitial={filterGroups}

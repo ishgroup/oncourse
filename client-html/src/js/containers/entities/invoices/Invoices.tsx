@@ -16,10 +16,8 @@ import Menu from "@mui/material/Menu";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
 import {
-  deleteQuote,
   getDefaultInvoiceTerms,
   getInvoice,
-  removeInvoice,
   updateInvoice
 } from "./actions";
 import { FilterGroup } from "../../../model/common/ListView";
@@ -156,7 +154,6 @@ const Invoices = React.memo<any>(({
   onSave,
   getInvoiceRecord,
   setListCreatingNew,
-  onDeleteQuote,
   selection,
   history,
   updateSelection,
@@ -252,7 +249,6 @@ const Invoices = React.memo<any>(({
         onSave={onSave}
         onInit={onInit}
         customOnCreate={customOnCreate}
-        onDelete={onDeleteQuote}
         defaultDeleteDisabled={defaultDeleteDisabled}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
@@ -323,8 +319,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearListState: () => dispatch(clearListState()),
   getInvoiceRecord: (id: string) => dispatch(getInvoice(id)),
   onSave: (id: string, invoice: Invoice) => dispatch(updateInvoice(id, invoice)),
-  onDelete: (id: string) => dispatch(removeInvoice(id)),
-  onDeleteQuote: (id: string) => dispatch(deleteQuote(id)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
   getTags: () => dispatch(getListTags("AbstractInvoice")),

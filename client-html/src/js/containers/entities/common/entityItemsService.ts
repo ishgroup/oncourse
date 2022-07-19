@@ -39,6 +39,7 @@ import DocumentsService from "../../../common/components/form/documents/services
 import LeadService from "../leads/services/LeadService";
 import membershipProductService from "../membershipProducts/services/MembershipProductService";
 import PriorLearningService from "../priorLearnings/services/PriorLearningService";
+import AssessmentService from "../assessments/services/AssessmentService";
 
 const defaultUnknown = () => {
   console.error("Unknown entity name");
@@ -281,6 +282,10 @@ export const createEntityItem = (entity: EntityName, item: any): Promise<any> =>
       return AccountService.createAccount(item);
     case "Application":
       return ApplicationService.createApplication(item);
+    case "Assessment":
+      return AssessmentService.createAssessment(item);
+    case "ArticleProduct":
+      return ArticleProductService.createArticleProduct(item);
     case "Certificate":
       return CertificateService.createCertificate(item);
     case "CorporatePass":
@@ -300,6 +305,10 @@ export const createEntityItem = (entity: EntityName, item: any): Promise<any> =>
       return PriorLearningService.createPriorLearning(item);
     case "Room":
       return RoomService.createRoom(item);
+    case "WaitingList":
+      return WaitingListService.createWaitingList(item);
+    case "Course":
+      return CourseService.create(item);
 
     case "Document": {
       const {

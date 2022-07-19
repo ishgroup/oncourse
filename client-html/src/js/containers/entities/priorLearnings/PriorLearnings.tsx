@@ -19,7 +19,7 @@ import {
  } from "../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import {
-  deletePriorLearning, getPriorLearning, updatePriorLearning
+  getPriorLearning, updatePriorLearning
 } from "./actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 
@@ -34,7 +34,6 @@ interface PriorLearningsProps {
   clearListState?: () => void;
   checkPermissions?: () => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
-  onDelete?: (id: string) => void;
 }
 
 const Initial: PriorLearning = {};
@@ -71,7 +70,6 @@ const PriorLearnings: React.FC<PriorLearningsProps> = props => {
     onSave,
     getFilters,
     clearListState,
-    onDelete,
     checkPermissions
   } = props;
 
@@ -99,7 +97,6 @@ const PriorLearnings: React.FC<PriorLearningsProps> = props => {
       rootEntity="PriorLearning"
       onInit={onInit}
       onSave={onSave}
-      onDelete={onDelete}
       filterGroupsInitial={filterGroups}
       findRelated={findRelatedGroup}
       alwaysFullScreenCreateView
@@ -117,7 +114,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearListState: () => dispatch(clearListState()),
   getPriorLearningRecord: (id: string) => dispatch(getPriorLearning(id)),
   onSave: (id: string, priorLearning: PriorLearning) => dispatch(updatePriorLearning(id, priorLearning)),
-  onDelete: (id: string) => dispatch(deletePriorLearning(id)),
   checkPermissions: () => dispatch(checkPermissions({ path: fundingUploadsPath, method: "GET" }))
 });
 

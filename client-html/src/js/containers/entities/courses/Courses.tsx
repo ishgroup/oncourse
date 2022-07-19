@@ -20,7 +20,7 @@ import { FilterGroup } from "../../../model/common/ListView";
 import { CourseExtended } from "../../../model/entities/Course";
 import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
 import { getListTags } from "../../tags/actions";
-import { deleteCourse, getCourse, updateCourse } from "./actions";
+import { getCourse, updateCourse } from "./actions";
 import CourseCogWheel from "./components/CourseCogWheel";
 import CourseEditView from "./components/CourseEditView";
 
@@ -35,7 +35,6 @@ interface CoursesProps {
   getFilters?: () => void;
   getPermissions?: () => void;
   onGet?: (id: string) => void;
-  onDelete?: (id: string) => void;
   onUpdate: (id: string, course: Course) => void;
   clearListState?: () => void;
   getTags?: () => void;
@@ -189,7 +188,6 @@ const Courses: React.FC<CoursesProps> = props => {
     getDataCollectionRules,
     onGet,
     onUpdate,
-    onDelete,
     getFilters,
     clearListState,
     onInit,
@@ -227,7 +225,6 @@ const Courses: React.FC<CoursesProps> = props => {
       onInit={onInit}
       getEditRecord={onGet}
       onSave={onUpdate}
-      onDelete={onDelete}
       findRelated={findRelatedGroup}
       filterGroupsInitial={filterGroups}
       preformatBeforeSubmit={preformatBeforeSubmit}
@@ -251,7 +248,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getDataCollectionRules: () => dispatch(getDataCollectionRules()),
   getFilters: () => dispatch(getFilters(ENTITY_NAME)),
   onGet: (id: string) => dispatch(getCourse(id)),
-  onDelete: (id: string) => dispatch(deleteCourse(id)),
   onUpdate: (id: string, course: CourseExtended) => dispatch(updateCourse(id, course)),
   clearListState: () => dispatch(clearListState()),
   getRelationTypes: () => dispatch(getEntityRelationTypes())

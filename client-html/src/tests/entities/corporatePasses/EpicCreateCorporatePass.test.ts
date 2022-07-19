@@ -4,7 +4,7 @@ import { createEntityRecord } from "../../../js/containers/entities/common/actio
 
 describe("Create corporate pass epic tests", () => {
   it("EpicCreateCorporatePass should returns correct values", () => DefaultEpic({
-    action: mockedApi => createEntityRecord("CorporatePass", mockedApi.db.createNewCorporatePasses()),
+    action: mockedApi => createEntityRecord(mockedApi.db.createNewCorporatePasses(), "CorporatePass"),
     epic: EpicCreateEntityRecord,
     processData: () => getProcessDataActions("CorporatePass")
   }));

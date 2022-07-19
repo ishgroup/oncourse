@@ -46,8 +46,8 @@ import EnrolmentService from "../enrolments/services/EnrolmentService";
 import OutcomeService from "../outcomes/services/OutcomeService";
 import CourseClassCogWheel from "./components/CourseClassCogWheel";
 import CourseClassEditView from "./components/CourseClassEditView";
-import { createCourseClass, deleteCourseClass, getCourseClass, getCourseClassTags, updateCourseClass } from "./actions";
-import { BooleanArgFunction, NoArgFunction, NumberArgFunction } from "../../../model/common/CommonFunctions";
+import { createCourseClass, getCourseClass, getCourseClassTags, updateCourseClass } from "./actions";
+import { BooleanArgFunction, NoArgFunction } from "../../../model/common/CommonFunctions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getGradingTypes, getTutorRoles } from "../../preferences/actions";
 import { getPlainAccounts } from "../accounts/actions";
@@ -89,7 +89,6 @@ interface CourseClassesProps {
   onFirstRender?: NoArgFunction;
   onInit?: NoArgFunction;
   onUpdate?: (id: number, courseClass: CourseClass) => void;
-  onDelete?: NumberArgFunction;
   clearListState?: NoArgFunction;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
   getCourseClass?: (id: string) => void;
@@ -453,7 +452,6 @@ const getDefaultFieldName = (field: keyof CourseClass) => {
 const CourseClasses: React.FC<CourseClassesProps> = props => {
   const {
     onFirstRender,
-    onDelete,
     onUpdate,
     getCourseClass,
     userPreferences,
@@ -655,7 +653,6 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
         getEditRecord={getCourseClass}
         rootEntity="CourseClass"
         onInit={onInit}
-        onDelete={onDelete}
         customOnCreateAction={createCourseClass}
         onSave={onUpdate}
         findRelated={findRelatedGroup}
@@ -786,7 +783,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
   getCourseClass: (id: string) => dispatch(getCourseClass(id)),
   onUpdate: (id: number, courseClass: CourseClass) => dispatch(updateCourseClass(id, courseClass)),
-  onDelete: (id: number) => dispatch(deleteCourseClass(id)),
   clearListState: () => dispatch(clearListState()),
   setListCreatingNew: creatingNew => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: selection => dispatch(setListSelection(selection)),

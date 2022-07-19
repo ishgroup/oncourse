@@ -15,7 +15,7 @@ import {
 } from "../../../common/components/list-view/actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import {
-  getBanking, updateBanking, removeBanking, initDeposit
+  getBanking, updateBanking, initDeposit
 } from "./actions";
 import BankingEditViewResolver from "./components/BankingEditViewResolver";
 import BankingCogwheelOptions from "./components/BankingCogwheelOptions";
@@ -57,7 +57,7 @@ class BankingListView extends React.Component<any, null> {
 
   render() {
     const {
-      getBankingRecord, onDelete, onSave, onInit
+      getBankingRecord, onSave, onInit
     } = this.props;
     return (
       <div>
@@ -74,7 +74,6 @@ class BankingListView extends React.Component<any, null> {
             manualLink,
             hideTitle: true
           }}
-          onDelete={onDelete}
           onSave={onSave}
           filterGroupsInitial={filterGroups}
           findRelated={[
@@ -108,8 +107,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getBankingRecord: (id: string) => {
     dispatch(getBanking(id));
   },
-  onSave: (id: string, banking: Banking) => dispatch(updateBanking(id, banking)),
-  onDelete: (id: string) => dispatch(removeBanking(id))
+  onSave: (id: string, banking: Banking) => dispatch(updateBanking(id, banking))
 });
 
 export default connect<any, any, any>(

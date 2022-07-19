@@ -15,16 +15,17 @@ import { EntityName } from "../../../../model/entities/common";
 import { createEntityItem, updateEntityItemByIdErrorHandler } from "../entityItemsService";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import { CREATE_ENTITY_RECORD_REQUEST } from "../actions";
+import { mapEntityDisplayName } from "../utils";
 
-export const getProcessDataActions = (entity) => [
+export const getProcessDataActions = entity => [
   {
     type: FETCH_SUCCESS,
-    payload: { message: `${entity} record created` }
+    payload: { message: `${mapEntityDisplayName(entity)} record created` }
   },
   getRecords(entity, true),
   setListSelection([]),
   initialize(LIST_EDIT_VIEW_FORM_NAME, null)
-]
+];
 
 const request: Request<any, { item: any, entity: EntityName }> = {
   type: CREATE_ENTITY_RECORD_REQUEST,

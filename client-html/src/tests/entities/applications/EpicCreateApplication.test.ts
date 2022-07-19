@@ -5,7 +5,7 @@ import { createEntityRecord } from "../../../js/containers/entities/common/actio
 
 describe("Create application epic tests", () => {
   it("EpicCreateApplication should returns correct values", () => DefaultEpic({
-    action: mockedApi => createEntityRecord("Application", mockedApi.db.mockedCreateApplication()),
+    action: mockedApi => createEntityRecord(mockedApi.db.mockedCreateApplication(), "Application"),
     epic: EpicCreateEntityRecord,
     processData: () => getProcessDataActions("Application")
   }));

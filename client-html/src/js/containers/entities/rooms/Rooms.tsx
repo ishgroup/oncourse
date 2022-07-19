@@ -14,7 +14,7 @@ import { Room } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
-import { getRoom, removeRoom, updateRoom } from "./actions";
+import { getRoom, updateRoom } from "./actions";
 import RoomEditView from "./components/RoomEditView";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { getListTags } from "../../tags/actions";
@@ -90,34 +90,31 @@ class Rooms extends React.Component<any, any> {
 
   render() {
     const {
-      getRoomRecord, onDelete, onSave, updateTableModel, onInit
+      getRoomRecord, onSave, updateTableModel, onInit
     } = this.props;
 
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "name",
-            secondaryColumn: "site.name"
-          }}
-          editViewProps={{
-            manualLink,
-            asyncValidate: notesAsyncValidate,
-            asyncBlurFields: ["notes[].message"],
-            hideTitle: true
-          }}
-          updateTableModel={updateTableModel}
-          CogwheelAdornment={BulkEditCogwheelOption}
-          EditViewContent={RoomEditView}
-          getEditRecord={getRoomRecord}
-          rootEntity="Room"
-          onInit={onInit}
-          onDelete={onDelete}
-          onSave={onSave}
-          filterGroupsInitial={filterGroups}
-          findRelated={findRelatedGroup}
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "name",
+          secondaryColumn: "site.name"
+        }}
+        editViewProps={{
+          manualLink,
+          asyncValidate: notesAsyncValidate,
+          asyncBlurFields: ["notes[].message"],
+          hideTitle: true
+        }}
+        updateTableModel={updateTableModel}
+        CogwheelAdornment={BulkEditCogwheelOption}
+        EditViewContent={RoomEditView}
+        getEditRecord={getRoomRecord}
+        rootEntity="Room"
+        onInit={onInit}
+        onSave={onSave}
+        filterGroupsInitial={filterGroups}
+        findRelated={findRelatedGroup}
+      />
     );
   }
 }
@@ -135,7 +132,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearListState: () => dispatch(clearListState()),
   getRoomRecord: (id: string) => dispatch(getRoom(id)),
   onSave: (id: string, room: Room) => dispatch(updateRoom(id, room)),
-  onDelete: (id: string) => dispatch(removeRoom(id))
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Rooms);

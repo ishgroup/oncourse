@@ -13,7 +13,7 @@ import { initialize } from "redux-form";
 import { Site } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
-import { getSite, removeSite, updateSite } from "./actions";
+import { getSite, updateSite } from "./actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import { getListTags } from "../../tags/actions";
 import SiteEditView from "./components/SiteEditView";
@@ -146,7 +146,7 @@ class Sites extends React.Component<any, any> {
 
   render() {
     const {
-      getSiteRecord, onDelete
+      getSiteRecord
     } = this.props;
 
     return (
@@ -168,7 +168,6 @@ class Sites extends React.Component<any, any> {
           getEditRecord={getSiteRecord}
           rootEntity="Site"
           onInit={this.onInit}
-          onDelete={onDelete}
           onSave={this.onSave}
           findRelated={findRelatedGroup}
           filterGroupsInitial={filterGroups}
@@ -203,7 +202,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearListState: () => dispatch(clearListState()),
   getSiteRecord: (id: string) => dispatch(getSite(id)),
   onSave: (id: string, site: Site) => dispatch(updateSite(id, site)),
-  onDelete: (id: string) => dispatch(removeSite(id))
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Sites);

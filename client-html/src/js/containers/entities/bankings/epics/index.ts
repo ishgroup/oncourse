@@ -1,6 +1,5 @@
 import { combineEpics } from "redux-observable";
 import { EpicGetBanking } from "./EpicGetBanking";
-import { EpicDeleteBanking } from "./EpicDeleteBanking";
 import { EpicReconcileBanking } from "./EpicReconcileBanking";
 import { EpicGetDepositPayments } from "./EpicGetDepositPayments";
 import { EpicGetDepositAccounts } from "./EpicGetDepositAccounts";
@@ -9,7 +8,6 @@ import { EpicUpdateBanking } from "./EpicUpdateBanking";
 
 export const EpicBankings = combineEpics(
   EpicGetBanking,
-  EpicDeleteBanking,
   EpicReconcileBanking,
   EpicGetDepositPayments,
   EpicGetDepositAccounts,

@@ -4,7 +4,7 @@ import { createEntityRecord } from "../../../js/containers/entities/common/actio
 
 describe("Create priorLearning epic tests", () => {
   it("EpicCreatePriorLearning should returns correct values", () => DefaultEpic({
-    action: mockedApi => createEntityRecord("PriorLearning", mockedApi.db.getPriorLearning(1)),
+    action: mockedApi => createEntityRecord(mockedApi.db.getPriorLearning(1), "PriorLearning"),
     epic: EpicCreateEntityRecord,
     processData: () => getProcessDataActions("PriorLearning")
   }));

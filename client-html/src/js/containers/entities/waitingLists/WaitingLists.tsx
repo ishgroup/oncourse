@@ -55,7 +55,7 @@ class WaitingLists extends React.Component<any, any> {
 
   render() {
     const {
-      getWaitingListRecord, onCreate, onDelete, onSave, updateTableModel, onInit
+      getWaitingListRecord, onSave, updateTableModel, onInit
     } = this.props;
 
     return (
@@ -75,7 +75,6 @@ class WaitingLists extends React.Component<any, any> {
           getEditRecord={getWaitingListRecord}
           rootEntity="WaitingList"
           onInit={onInit}
-          onDelete={onDelete}
           onSave={onSave}
           findRelated={findRelatedGroup}
           CogwheelAdornment={WaitingListCogWheel}

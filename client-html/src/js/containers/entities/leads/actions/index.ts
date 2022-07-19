@@ -12,21 +12,12 @@ import { Lead } from "@api/model";
 export const GET_LEAD_ITEM = _toRequestType("get/lead");
 export const GET_LEAD_ITEM_FULFILLED = FULFILLED(GET_LEAD_ITEM);
 
-export const DELETE_LEAD_ITEM = _toRequestType("delete/lead");
-export const DELETE_LEAD_ITEM_FULFILLED = FULFILLED(DELETE_LEAD_ITEM);
-
 export const UPDATE_LEAD_ITEM = _toRequestType("put/lead");
 export const UPDATE_LEAD_ITEM_FULFILLED = FULFILLED(UPDATE_LEAD_ITEM);
 
-export const GET_LEAD_DELETE_VALIDATION = _toRequestType("get/list/entity/lead/validation");
 
 export const getLead = (id: string) => ({
   type: GET_LEAD_ITEM,
-  payload: id
-});
-
-export const removeLead = (id: string) => ({
-  type: DELETE_LEAD_ITEM,
   payload: id
 });
 

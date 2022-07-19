@@ -12,7 +12,7 @@ import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
 import AccountsEditView from "./components/AccountsEditView";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import { getAccount, removeAccount, updateAccount } from "./actions";
+import { getAccount, updateAccount } from "./actions";
 import { getTaxTypes } from "../../preferences/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
@@ -70,32 +70,29 @@ class Accounts extends React.Component<any, any> {
 
   render() {
     const {
-      getAccountRecord, onDelete, onSave, onInit
+      getAccountRecord, onSave, onInit
     } = this.props;
 
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "description",
-            secondaryColumn: "accountCode"
-          }}
-          editViewProps={{
-            nameCondition,
-            manualLink,
-            hideTitle: true
-          }}
-          EditViewContent={AccountsEditView}
-          getEditRecord={getAccountRecord}
-          rootEntity="Account"
-          onInit={onInit}
-          onDelete={onDelete}
-          onSave={onSave}
-          filterGroupsInitial={filterGroups}
-          findRelated={findRelatedGroup}
-          noListTags
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "description",
+          secondaryColumn: "accountCode"
+        }}
+        editViewProps={{
+          nameCondition,
+          manualLink,
+          hideTitle: true
+        }}
+        EditViewContent={AccountsEditView}
+        getEditRecord={getAccountRecord}
+        rootEntity="Account"
+        onInit={onInit}
+        onSave={onSave}
+        filterGroupsInitial={filterGroups}
+        findRelated={findRelatedGroup}
+        noListTags
+      />
     );
   }
 }
@@ -111,8 +108,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   clearListState: () => dispatch(clearListState()),
   getAccountRecord: (id: string) => dispatch(getAccount(id)),
-  onSave: (id: string, account: Account) => dispatch(updateAccount(id, account)),
-  onDelete: (id: string) => dispatch(removeAccount(id))
+  onSave: (id: string, account: Account) => dispatch(updateAccount(id, account))
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Accounts);

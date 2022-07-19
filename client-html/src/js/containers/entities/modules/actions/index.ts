@@ -9,19 +9,11 @@ import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtil
 export const GET_MODULE_ITEM = _toRequestType("get/module");
 export const GET_MODULE_ITEM_FULFILLED = FULFILLED(GET_MODULE_ITEM);
 
-export const DELETE_MODULE_ITEM = _toRequestType("delete/module");
-export const DELETE_MODULE_ITEM_FULFILLED = FULFILLED(DELETE_MODULE_ITEM);
-
 export const UPDATE_MODULE_ITEM = _toRequestType("put/module");
 export const UPDATE_MODULE_ITEM_FULFILLED = FULFILLED(UPDATE_MODULE_ITEM);
 
 export const getModule = (id: string) => ({
   type: GET_MODULE_ITEM,
-  payload: id
-});
-
-export const removeModule = (id: string) => ({
-  type: DELETE_MODULE_ITEM,
   payload: id
 });
 

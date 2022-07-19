@@ -20,7 +20,6 @@ import ListView from "../../../common/components/list-view/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import {
-  deleteContact,
   getContact,
   getContactsConcessionTypes,
   getContactsRelationTypes,
@@ -52,7 +51,6 @@ interface ContactsProps {
   onSave?: (id: string, contact: Contact) => void;
   getRecords?: () => void;
   getFilters?: () => void;
-  onDelete?: (id: number) => void;
   clearListState?: () => void;
   getTags?: () => void;
   getContactRecord?: (id: string) => void;
@@ -239,7 +237,6 @@ const setRowClasses = row => {
 
 const Contacts: React.FC<ContactsProps> = props => {
   const {
-    onDelete,
     getFilters,
     clearListState,
     onInit,
@@ -362,7 +359,6 @@ const Contacts: React.FC<ContactsProps> = props => {
       rootEntity="Contact"
       onInit={onInit}
       onSave={onContactSave}
-      onDelete={onDelete}
       findRelated={findRelatedItems}
       filterGroupsInitial={filterGroups}
       CogwheelAdornment={ContactCogWheel}
@@ -390,7 +386,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getDefaultTerms: () => dispatch(getDefaultInvoiceTerms()),
   getTaxTypes: () => dispatch(getContactsTaxTypes()),
   getContactRecord: (id: number) => dispatch(getContact(id)),
-  onDelete: (id: number) => dispatch(deleteContact(id)),
   onSave: (id: string, contact: Contact) => dispatch(updateContact(id, contact)),
   clearListState: () => dispatch(clearListState()),
   getPermissions: () => {

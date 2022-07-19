@@ -8,7 +8,6 @@ import { EpicPostContraInvoices } from "./EpicPostContraInvoices";
 import { EpicDuplicateAndReverseInvoice } from "./EpicDuplicateAndReverseInvoice";
 import { EpicGetAmountOwing } from "./EpicGetAmountOwing";
 import { EpicGetDefaultInvoiceTerms } from "./EpicGetDefaultInvoiceTerms";
-import { EpicDeleteQuote } from "./EpicDeleteQuote";
 import { EpicDuplicateQuote } from "./EpicDuplicateQuote";
 
 export const EpicInvoice = combineEpics(
@@ -22,6 +21,5 @@ export const EpicInvoice = combineEpics(
   EpicDuplicateAndReverseInvoice,
   EpicGetAmountOwing,
   EpicGetDefaultInvoiceTerms,
-  EpicDeleteQuote,
   EpicDuplicateQuote,
 );

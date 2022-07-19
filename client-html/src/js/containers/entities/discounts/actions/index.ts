@@ -4,9 +4,6 @@ import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtil
 export const GET_DISCOUNT_ITEM = _toRequestType("get/discount");
 export const GET_DISCOUNT_ITEM_FULFILLED = FULFILLED(GET_DISCOUNT_ITEM);
 
-export const DELETE_DISCOUNT_ITEM = _toRequestType("delete/discount");
-export const DELETE_DISCOUNT_ITEM_FULFILLED = FULFILLED(DELETE_DISCOUNT_ITEM);
-
 export const UPDATE_DISCOUNT_ITEM = _toRequestType("put/discount");
 export const UPDATE_DISCOUNT_ITEM_FULFILLED = FULFILLED(UPDATE_DISCOUNT_ITEM);
 
@@ -18,11 +15,6 @@ export const GET_DISCOUNT_COS_ACCOUNTS_FULFILLED = FULFILLED(GET_DISCOUNT_COS_AC
 
 export const getDiscount = (id: string) => ({
   type: GET_DISCOUNT_ITEM,
-  payload: id
-});
-
-export const removeDiscount = (id: string) => ({
-  type: DELETE_DISCOUNT_ITEM,
   payload: id
 });
 

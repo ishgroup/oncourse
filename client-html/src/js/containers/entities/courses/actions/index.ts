@@ -11,10 +11,7 @@ export const GET_COURSE_FULFILLED = FULFILLED(GET_COURSE);
 
 export const UPDATE_COURSE = _toRequestType("put/course");
 
-export const DELETE_COURSE = _toRequestType("delete/course");
-
 export const DUPLICATE_COURSE = _toRequestType("post/duplicate");
-
 
 export const getCourse = (id: string) => ({
   type: GET_COURSE,
@@ -24,11 +21,6 @@ export const getCourse = (id: string) => ({
 export const updateCourse = (id: string, course: Course) => ({
   type: UPDATE_COURSE,
   payload: { id, course }
-});
-
-export const deleteCourse = (id: string) => ({
-  type: DELETE_COURSE,
-  payload: id
 });
 
 export const duplicateCourses = (ids: number[]) => ({

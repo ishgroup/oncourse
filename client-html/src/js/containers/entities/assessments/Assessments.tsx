@@ -10,7 +10,7 @@ import { Assessment } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
 import {
-  getAssessment, removeAssessment, updateAssessment
+  getAssessment, updateAssessment
 } from "./actions";
 import AssessmentEditView from "./components/AssessmentEditView";
 import ListView from "../../../common/components/list-view/ListView";
@@ -29,7 +29,6 @@ interface AssessmentsProps {
   onSave?: (id: string, assessment: Assessment) => void;
   getFilters?: () => void;
   clearListState?: () => void;
-  onDelete?: (id: string) => void;
   getTags?: () => void;
   getGradingTypes?: () => void;
 }
@@ -81,7 +80,6 @@ const Assessments: React.FC<AssessmentsProps> = props => {
   const {
     getAssessmentRecord,
     onInit,
-    onDelete,
     onSave,
     getFilters,
     getGradingTypes,
@@ -116,7 +114,6 @@ const Assessments: React.FC<AssessmentsProps> = props => {
       getEditRecord={getAssessmentRecord}
       rootEntity="Assessment"
       onInit={onInit}
-      onDelete={onDelete}
       onSave={onSave}
       findRelated={findRelatedGroup}
       filterGroupsInitial={filterGroups}
@@ -134,8 +131,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getFilters: () => dispatch(getFilters("Assessment")),
   clearListState: () => dispatch(clearListState()),
   getAssessmentRecord: (id: string) => dispatch(getAssessment(id)),
-  onSave: (id: string, assessment: Assessment) => dispatch(updateAssessment(id, assessment)),
-  onDelete: (id: string) => dispatch(removeAssessment(id))
+  onSave: (id: string, assessment: Assessment) => dispatch(updateAssessment(id, assessment))
 });
 
 export default connect<any, any, any>(

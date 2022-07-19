@@ -16,7 +16,7 @@ import { fundingUploadsPath } from "../../../constants/Api";
 import { FilterGroup } from "../../../model/common/ListView";
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 import {
- deleteOutcome, getOutcome, getOutcomeTags, updateOutcome
+ getOutcome, getOutcomeTags, updateOutcome
 } from "./actions";
 import OutcomeEditView from "./components/OutcomeEditView";
 
@@ -28,7 +28,6 @@ interface OutcomesProps {
   getTags?: () => void;
   clearListState?: () => void;
   checkPermissions?: () => void;
-  onDelete?: (id: string) => void;
 }
 
 export const OutcomeInitial: Outcome = {
@@ -126,7 +125,6 @@ const Outcomes: React.FC<OutcomesProps> = props => {
   const {
     getOutcomeRecord,
     onInit,
-    onDelete,
     onSave,
     getFilters,
     getTags,
@@ -159,7 +157,6 @@ const Outcomes: React.FC<OutcomesProps> = props => {
       getEditRecord={getOutcomeRecord}
       rootEntity="Outcome"
       onInit={onInit}
-      onDelete={onDelete}
       onSave={onSave}
       findRelated={findRelatedGroup}
       filterGroupsInitial={filterGroups}
@@ -181,7 +178,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearListState: () => dispatch(clearListState()),
   getOutcomeRecord: (id: string) => dispatch(getOutcome(id)),
   onSave: (id: string, outcome: Outcome) => dispatch(updateOutcome(id, outcome)),
-  onDelete: (id: string) => dispatch(deleteOutcome(id)),
   checkPermissions: () => dispatch(checkPermissions({ path: fundingUploadsPath, method: "GET" }))
 });
 

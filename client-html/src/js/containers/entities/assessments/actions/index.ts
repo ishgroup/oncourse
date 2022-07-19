@@ -9,20 +9,11 @@ import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtil
 export const GET_ASSESSMENT_ITEM = _toRequestType("get/assessment");
 export const GET_ASSESSMENT_ITEM_FULFILLED = FULFILLED(GET_ASSESSMENT_ITEM);
 
-export const DELETE_ASSESSMENT_ITEM = _toRequestType("delete/assessment");
-export const DELETE_ASSESSMENT_ITEM_FULFILLED = FULFILLED(DELETE_ASSESSMENT_ITEM);
-
 export const UPDATE_ASSESSMENT_ITEM = _toRequestType("put/assessment");
 export const UPDATE_ASSESSMENT_ITEM_FULFILLED = FULFILLED(UPDATE_ASSESSMENT_ITEM);
 
-
 export const getAssessment = (id: string) => ({
   type: GET_ASSESSMENT_ITEM,
-  payload: id
-});
-
-export const removeAssessment = (id: string) => ({
-  type: DELETE_ASSESSMENT_ITEM,
   payload: id
 });
 

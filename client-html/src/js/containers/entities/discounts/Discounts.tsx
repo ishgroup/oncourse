@@ -22,7 +22,6 @@ import {
 import {
   getDiscount,
   updateDiscount,
-  removeDiscount,
   getDiscountContactRelationTypes,
   getDiscountCosAccounts
 } from "./actions";
@@ -125,7 +124,6 @@ class Discounts extends React.PureComponent<any, any> {
   render() {
     const {
       getDiscountRecord,
-      onDelete,
       onInit,
       onSave
     } = this.props;
@@ -147,7 +145,6 @@ class Discounts extends React.PureComponent<any, any> {
           getEditRecord={getDiscountRecord}
           rootEntity="Discount"
           onInit={onInit}
-          onDelete={onDelete}
           onSave={onSave}
           findRelated={findRelatedGroup}
           filterGroupsInitial={filterGroups}
@@ -177,7 +174,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearListState: () => dispatch(clearListState()),
   getDiscountRecord: (id: string) => dispatch(getDiscount(id)),
   onSave: (id: string, discount: Discount) => dispatch(updateDiscount(id, discount)),
-  onDelete: (id: string) => dispatch(removeDiscount(id)),
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
   checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" }))
 });

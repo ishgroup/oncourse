@@ -17,11 +17,9 @@ import { EpicGetContactPriorLearnings } from "./EpicGetContactPriorLearnings";
 import { EpicGetContactOutcomes } from "./EpicGetContactOutcomes";
 import { EpicGetContactCertificates } from "./EpicGetContactCertificates";
 import { EpicUpdateContact } from "./EpicUpdateContact";
-import { EpicDeleteContact } from "./EpicDeleteContact";
 import { EpicGetContactsStoredCC } from "./EpicGetContactsStoredCC";
 
 export const EpicContacts = combineEpics(
-  EpicDeleteContact,
   EpicGetMergeContacts,
   EpicPostMergeContacts,
   EpicGetContact,

@@ -14,7 +14,7 @@ import { Lead } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { getEntityTags, getListTags } from "../../tags/actions";
-import { getLead, removeLead, updateLead } from "./actions";
+import { getLead, updateLead } from "./actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { State } from "../../../reducers/state";
 import LeadCogWheel from "./components/LeadCogWheel";
@@ -86,7 +86,7 @@ const setRowClasses = ({ status }) => (status === "Closed" ? "text-op05" : undef
 
 const Leads = props => {
   const {
-    getLeadRecord, onDelete, onSave, updateTableModel, onInit
+    getLeadRecord, onSave, updateTableModel, onInit
   } = props;
 
   useEffect(() => {
@@ -130,7 +130,6 @@ const Leads = props => {
         getEditRecord={getLeadRecord}
         rootEntity="Lead"
         onInit={onInit}
-        onDelete={onDelete}
         onSave={onSave}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
@@ -163,7 +162,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   clearListState: () => dispatch(clearListState()),
   getLeadRecord: (id: string) => dispatch(getLead(id)),
   onSave: (id: string, lead: Lead) => dispatch(updateLead(id, lead)),
-  onDelete: (id: string) => dispatch(removeLead(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Leads);

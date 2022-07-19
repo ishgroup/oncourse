@@ -13,7 +13,7 @@ import { clearListState, getFilters } from "../../../common/components/list-view
 import { getListTags } from "../../tags/actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import AssessmentSubmissionEditView from "./components/AssessmentSubmissionsEditView";
-import { getAssessmentSubmissionsItem, removeAssessmentSubmissionsItem, updateAssessmentSubmissionsItem } from "./actions";
+import { getAssessmentSubmissionsItem, updateAssessmentSubmissionsItem } from "./actions";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 import { State } from "../../../reducers/state";
@@ -50,7 +50,7 @@ const nameCondition = (val: AssessmentSubmissionModel) => val.studentName;
 
 const AssessmentSubmission = (props: any) => {
   const {
-    clearListState, getAssessmentSubmissionsItem, getFilters, getTags, onDelete, onSave, selection, dispatch,
+    clearListState, getAssessmentSubmissionsItem, getFilters, getTags, onSave, selection, dispatch,
   } = props;
 
   useEffect(() => {
@@ -122,7 +122,6 @@ const AssessmentSubmission = (props: any) => {
       filterGroupsInitial={filterGroups}
       findRelated={findRelatedGroup}
       onSave={onSave}
-      onDelete={onDelete}
       CogwheelAdornment={BulkEditCogwheelOption}
       getCustomBulkEditFields={getCustomBulkEditFields}
     />
@@ -140,8 +139,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getFilters: () => dispatch(getFilters("AssessmentSubmission")),
   getTags: () => dispatch(getListTags("AssessmentSubmission")),
   onSave: (id: number, assessmentSubmission: AssessmentSubmissionModel) => (
-    dispatch(updateAssessmentSubmissionsItem(id, assessmentSubmission))),
-  onDelete: (id: number) => dispatch(removeAssessmentSubmissionsItem(id))
+    dispatch(updateAssessmentSubmissionsItem(id, assessmentSubmission)))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssessmentSubmission);

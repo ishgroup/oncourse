@@ -13,9 +13,6 @@ export const GET_CERTIFICATE_OUTCOMES = _toRequestType("get/certificate/outcome"
 export const GET_CERTIFICATE_OUTCOMES_FULFILLED = FULFILLED(GET_CERTIFICATE_OUTCOMES);
 export const GET_CERTIFICATE_OUTCOMES_REJECTED = REJECTED(GET_CERTIFICATE_OUTCOMES);
 
-export const DELETE_CERTIFICATE_ITEM = _toRequestType("delete/certificate");
-export const DELETE_CERTIFICATE_ITEM_FULFILLED = FULFILLED(DELETE_CERTIFICATE_ITEM);
-
 export const UPDATE_CERTIFICATE_ITEM = _toRequestType("put/certificate");
 export const UPDATE_CERTIFICATE_ITEM_FULFILLED = FULFILLED(UPDATE_CERTIFICATE_ITEM);
 
@@ -74,11 +71,6 @@ export const clearCertificateOutcomes = (loading?: boolean) => ({
 export const setCertificateOutcomesSearch = (search: string) => ({
   type: SET_CERTIFICATE_OUTCOMES_SEARCH,
   payload: { search }
-});
-
-export const removeCertificate = (id: string) => ({
-  type: DELETE_CERTIFICATE_ITEM,
-  payload: id
 });
 
 export const updateCertificate = (id: string, certificate: Certificate) => ({

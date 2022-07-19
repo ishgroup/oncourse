@@ -88,7 +88,7 @@ import {
 import { setSwipeableDrawerDirtyForm } from "../layout/swipeable-sidebar/actions";
 import { LSGetItem } from "../../utils/storage";
 import { getCustomFieldTypes } from "../../../containers/entities/customFieldTypes/actions";
-import { createEntityRecord } from "../../../containers/entities/common/actions";
+import { createEntityRecord, deleteEntityRecord } from "../../../containers/entities/common/actions";
 
 export const ListSideBarDefaultWidth = 200;
 export const ListMainContentDefaultWidth = 774;
@@ -117,7 +117,8 @@ const sideBarTheme = theme => createTheme({
 
 interface OwnProps {
   onCreate?: (item: any) => void;
-} 
+  onDelete?: (id: number) => void;
+}
 
 interface Props extends Partial<ListState> {
   listProps: TableListProps;
@@ -130,7 +131,6 @@ interface Props extends Partial<ListState> {
   editRecord?: any;
   onSave?: any;
   onBeforeSave?: any;
-  onDelete?: any;
   classes?: any;
   isDirty?: boolean;
   isInvalid?: boolean;
@@ -1285,7 +1285,8 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   closeConfirm: () => dispatch(closeConfirm()),
   onCreate: (item: any) => dispatch( ownProps.customOnCreateAction 
     ? ownProps.customOnCreateAction(item) 
-    : createEntityRecord(item, ownProps.rootEntity))
+    : createEntityRecord(item, ownProps.rootEntity)),
+  onDelete: (id: number) => dispatch(deleteEntityRecord(id, ownProps.rootEntity))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(ListView))) as React.FC<Props>;
