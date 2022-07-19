@@ -199,7 +199,10 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getMembershipProductContactRelationTypes: () => {
     dispatch(checkPermissions({ path: plainContactRelationTypePath, method: "GET" },
      [
-       getCommonPlainRecords("ContactRelationType", 0, "toContactName", true, null, PLAIN_LIST_MAX_PAGE_SIZE)
+       getCommonPlainRecords("ContactRelationType", 0, "toContactName", true, null, PLAIN_LIST_MAX_PAGE_SIZE, items => items.map(r => ({
+         id: r.id,
+         description: r.toContactName
+       })))
      ]));
   },
   getDefaultIncomeAccount: () => dispatch(getUserPreferences([ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID])),

@@ -14,11 +14,7 @@ import {
 import { Qualification } from "@api/model";
 import { FilterGroup } from "../../../model/common/ListView";
 import QualificationsEditView from "./components/QualificationsEditView";
-import {
-  clearListState,
-  getFilters,
-  setListEditRecord
-} from "../../../common/components/list-view/actions";
+import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 
@@ -161,7 +157,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getFilters("Qualification"));
   },
   clearListState: () => dispatch(clearListState()),
-  getQualificationRecord: (id: string) => dispatch(getQualification(id)),
+  getQualificationRecord: (id) => dispatch(getQualification(id)),
   onSave: (id: string, qualification: Qualification) => dispatch(updateQualification(id, qualification)),
   onDelete: (id: string) => dispatch(removeQualification(id))
 });

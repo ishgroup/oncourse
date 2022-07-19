@@ -1,7 +1,7 @@
 import { mockedEditView } from "../../common/MockedEditView.Components";
 import CourseClassEditView from "../../../js/containers/entities/courseClasses/components/CourseClassEditView";
 
-describe.skip("Virtual rendered CourseClassEditView", () => {
+describe("Virtual rendered CourseClassEditView", () => {
   mockedEditView({
     entity: "CourseClass",
     EditView: CourseClassEditView,
