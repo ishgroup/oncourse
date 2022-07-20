@@ -27,6 +27,8 @@ import org.apache.cayenne.query.SelectById;
 
 import java.util.List;
 
+import static ish.common.types.SystemEventType.*;
+
 /**
  * {@link SystemEvent} listener triggering script execution.
  */
@@ -50,13 +52,25 @@ public class GroovyScriptEventListener implements OnCourseEventListener {
 
 		for (var script : scriptsToExecute){
 			var value = transformEventValue(event.getValue());
-			if(event.getEventType().equals(SystemEventType.CHECKLIST_TICKED)){
-				if(!((TagRelation)value).getTaggedRelation().getClass().getSimpleName().equals(script.getEntityClass())){
+			var eventType = event.getEventType();
+			if(eventType.equals(CHECKLIST_TICKED) || eventType.equals(CHECKLIST_COMPLETED)){
+				if(!correctChecklistPinned((TagRelation) value, script)){
 					continue;
 				}
 			}
 			groovyScriptService.runScript(script, ScriptParameters.from(VALUE_BINDING_NAME, value).fillDefaultParameters(value));
 		}
+	}
+
+	private boolean correctChecklistPinned(TagRelation value, Script script){
+		if(script.getEntityClass() != null){
+			if(!value.getTaggedRelation().getClass().getSimpleName().equals(script.getEntityClass()))
+				return false;
+		}
+		if(script.getEntityAttribute() != null){
+			return value.getTag().getId().equals(Long.parseLong(script.getEntityAttribute()));
+		}
+		return true;
 	}
 
 	private List<Script> getScriptsForEventType(SystemEventType eventType) {
