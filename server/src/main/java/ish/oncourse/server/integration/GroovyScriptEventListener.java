@@ -17,6 +17,7 @@ import ish.common.types.TriggerType;
 import ish.oncourse.common.SystemEvent;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.Script;
+import ish.oncourse.server.cayenne.TagRelation;
 import ish.oncourse.server.scripting.GroovyScriptService;
 import ish.oncourse.server.scripting.ScriptParameters;
 import org.apache.cayenne.ObjectContext;
@@ -47,8 +48,13 @@ public class GroovyScriptEventListener implements OnCourseEventListener {
 	public void dispatchEvent(SystemEvent event) {
 		var scriptsToExecute = getScriptsForEventType(event.getEventType());
 
-		for (var script : scriptsToExecute) {
+		for (var script : scriptsToExecute){
 			var value = transformEventValue(event.getValue());
+			if(event.getEventType().equals(SystemEventType.CHECKLIST_TICKED)){
+				if(!((TagRelation)value).getTaggedRelation().getClass().getSimpleName().equals(script.getEntityClass())){
+					continue;
+				}
+			}
 			groovyScriptService.runScript(script, ScriptParameters.from(VALUE_BINDING_NAME, value).fillDefaultParameters(value));
 		}
 	}
