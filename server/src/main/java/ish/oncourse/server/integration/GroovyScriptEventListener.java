@@ -67,8 +67,8 @@ public class GroovyScriptEventListener implements OnCourseEventListener {
 			if(!value.getTaggedRelation().getClass().getSimpleName().equals(script.getEntityClass()))
 				return false;
 		}
-		if(script.getEntityAttribute() != null){
-			return value.getTag().getId().equals(Long.parseLong(script.getEntityAttribute()));
+		if(script.getEntityAttribute() != null && value.getTag().getParentTag() != null){
+			return value.getTag().getParentTag().getId().equals(Long.parseLong(script.getEntityAttribute()));
 		}
 		return true;
 	}
