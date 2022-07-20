@@ -72,6 +72,7 @@ interface DocumentProps {
   match?: any;
   threeColumn?: boolean;
   fullScreenEditView?: boolean;
+  editRecord?: any;
 }
 
 let Initial: Document = {
@@ -164,26 +165,6 @@ const openDocumentURL = (e: React.MouseEvent<any>, url: string) => {
 
 const setRowClasses = ({ active }) => (active === "No" ? "text-op05" : undefined);
 
-const handleFileSelect = (files, setCreateNew) => {
-  const file = files[0];
-
-  if (file) {
-    DocumentsService.searchDocument(file).then(res => {
-      if (res) {
-        // open edit view with that document
-        Initial = res;
-        setCreateNew();
-      } else {
-        getInitialDocument(file).then(document => {
-          // open edit view with newly created document
-          Initial = document;
-          setCreateNew();
-        });
-      }
-    });
-  }
-};
-
 const Documents: React.FC<DocumentProps> = props => {
   const {
     getDocumentRecord,
@@ -196,9 +177,10 @@ const Documents: React.FC<DocumentProps> = props => {
     classes,
     setListCreatingNew,
     updateSelection,
-    threeColumn,
     history,
     location,
+    editRecord,
+    threeColumn,
     match: { params, url }
   } = props;
 
@@ -207,6 +189,26 @@ const Documents: React.FC<DocumentProps> = props => {
   const [draggingEventAdded, setSraggingEventAdded] = React.useState<boolean>(false);
 
   const dialogRef: any = React.useRef<any>(null);
+
+  const handleFileSelect = (files, handleCreate) => {
+    const file = files[0];
+
+    if (file) {
+      DocumentsService.searchDocument(file).then(res => {
+        if (res) {
+          // open edit view with that document
+          Initial = res;
+          handleCreate();
+        } else {
+          getInitialDocument(file).then(document => {
+            // open edit view with newly created document
+            Initial = document;
+            handleCreate();
+          });
+        }
+      });
+    }
+  };
 
   const updateHistory = (pathname, search) => {
     const newUrl = window.location.origin + pathname + search;
@@ -220,12 +222,15 @@ const Documents: React.FC<DocumentProps> = props => {
   };
 
   const setCreateNew = () => {
-    setListCreatingNew(true);
-    updateSelection(["new"]);
-    updateHistory(params.id ? url.replace(`/${params.id}`, "/new") : url + "/new", location.search);
-    setTimeout(() => {
+    updateHistory(params.id ? url.replace(`/${params.id}`, "/new") : url + "/new", window.location.search);
+
+    const processCreate = () => {
+      setListCreatingNew(true);
+      updateSelection(["new"]);
       onInit();
-    }, 200);
+    };
+
+    threeColumn ? setTimeout(processCreate) : processCreate();
   };
 
   const fileDragEvent = (e, openAddDialog) => {
@@ -278,7 +283,7 @@ const Documents: React.FC<DocumentProps> = props => {
   };
 
   const customOnCreate = () => {
-    if (threeColumn && params.id === "new") return;
+    if (editRecord && params.id === "new") return;
     setOpenFileModal(true);
     setIsDragging(true);
   };
@@ -357,6 +362,7 @@ const Documents: React.FC<DocumentProps> = props => {
 
 const mapStateToProps = (state: State) => ({
   fullScreenEditView: state.list.fullScreenEditView,
+  editRecord: state.list.editRecord,
   threeColumn: state.list.records.layout === "Three column"
 });
 

@@ -62,9 +62,9 @@ const FileUploaderDialog: React.FC<Props> = (props => {
     fileRef, accept, disabled, classes, dialog, onChange, onClose, opened, backdropEnabled, isBackdropDragging
   } = props;
 
-  const onFileDrop = React.useCallback((acceptedfiles, fileRejections) => {
+  const onFileDrop = (acceptedfiles, fileRejections) => {
     if (onChange) onChange(acceptedfiles, fileRejections);
-  }, []);
+  };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: onFileDrop,
