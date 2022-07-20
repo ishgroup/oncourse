@@ -53,7 +53,7 @@ public class GroovyScriptEventListener implements OnCourseEventListener {
 		for (var script : scriptsToExecute){
 			var value = transformEventValue(event.getValue());
 			var eventType = event.getEventType();
-			if(eventType.equals(CHECKLIST_TICKED) || eventType.equals(CHECKLIST_COMPLETED)){
+			if(eventType.equals(CHECKLIST_TASK_CHECKED) || eventType.equals(CHECKLIST_COMPLETED)){
 				if(!correctChecklistPinned((TagRelation) value, script)){
 					continue;
 				}
