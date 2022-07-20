@@ -47,7 +47,15 @@ class TagRelation extends _TagRelation implements Queueable {
 	@Override
 	protected void postPersist() {
 		if(tag.nodeType.equals(NodeType.CHECKLIST)){
-			eventService.postEvent(SystemEvent.valueOf(SystemEventType.CHECKLIST_TICKED, this));
+			def allTagChilds = tag.parentTag.allChildren.values().collect {it.id}
+			def recordTagIds = taggedRelation.tagIds
+			eventService.postEvent(SystemEvent.valueOf(SystemEventType.CHECKLIST_TICKED, this))
+			allTagChilds.each{
+				if(!recordTagIds.contains(it)){
+					return
+				}
+			}
+			eventService.postEvent(SystemEvent.valueOf(SystemEventType.CHECKLIST_COMPLETED, this))
 		}
 	}
 /**
