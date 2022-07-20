@@ -85,6 +85,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
                       label="Entry Type"
                       items={GradingEntryTypes}
                       onChange={val => onTypeChange(val, item)}
+                      debounced={false}
                       fullWidth
                     />
                   </Grid>
