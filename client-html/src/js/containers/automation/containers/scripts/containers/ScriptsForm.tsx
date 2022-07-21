@@ -592,7 +592,7 @@ const ScriptsForm = React.memo<Props>(props => {
                         expanded={isTriggerExpanded}
                         customHeading
                       >
-                        {Boolean(values) && (
+                        {Boolean(values?.trigger) && (
                           <TriggerCardContent
                             classes={classes}
                             dispatch={dispatch}
