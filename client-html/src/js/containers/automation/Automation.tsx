@@ -23,6 +23,7 @@ import { getEmailTemplatesList } from "./containers/email-templates/actions";
 import { getImportTemplatesList } from "./containers/import-templates/actions";
 import { NumberArgFunction } from "../../model/common/CommonFunctions";
 import automationRoutes from "./routes";
+import { getAllTags } from "../tags/actions";
 
 interface Props extends RouteComponentProps {
   formName: string;
@@ -83,6 +84,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getAutomationPdfReportsList());
     dispatch(getAutomationPdfBackgroundsList());
     dispatch(getTimeZone());
+    dispatch(getAllTags());
   },
   updateColumnsWidth: (automationLeftColumnWidth: number) => {
     dispatch(updateColumnsWidth({ automationLeftColumnWidth }));

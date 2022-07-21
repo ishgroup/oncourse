@@ -89,6 +89,7 @@ const mapStateToProps = (state: State) => ({
   emailTemplates: state.automation.emailTemplate.emailTemplates,
   nextLocation: state.nextLocation,
   timeZone: state.automation.timeZone,
+  checklists: state.tags.allChecklists
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
