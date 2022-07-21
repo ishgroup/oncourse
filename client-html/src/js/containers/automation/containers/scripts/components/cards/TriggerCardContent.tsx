@@ -16,6 +16,7 @@ import { mapSelectItems } from "../../../../../../common/utils/common";
 import { SelectItemDefault } from "../../../../../../model/entities/common";
 import { CatalogItemType } from "../../../../../../model/common/Catalog";
 import TagsService from "../../../../../tags/services/TagsService";
+import instantFetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 
 const AllEntities = [...AQL_ENTITY_ITEMS, { label: "ContactTagRelation", value: "ContactTagRelation" }];
 
@@ -74,14 +75,16 @@ const TriggerCardContent = (props: Props) => {
 
   useEffect(() => {
     if (typeof values.trigger.parameterId === "number") {
-      TagsService.getTag(values.trigger.parameterId).then(checklist => {
-        const updatedEntities = checklist.requirements.map(r => ({ value: r.type, label: r.type }));
-        setEntityItems(updatedEntities);
-
-        if (values.trigger.entityName && !updatedEntities.some(e => e.value === values.trigger.entityName)) {
-          dispatch(change(form, "trigger.entityName", null));
-        }
-      });
+      TagsService.getTag(values.trigger.parameterId)
+        .then(checklist => {
+          const updatedEntities = checklist.requirements.map(r => ({ value: r.type, label: r.type }));
+          setEntityItems(updatedEntities);
+  
+          if (values.trigger.entityName && !updatedEntities.some(e => e.value === values.trigger.entityName)) {
+            dispatch(change(form, "trigger.entityName", null));
+          }
+        })
+        .catch(e => instantFetchErrorHandler(dispatch, e));
     } else {
       setEntityItems(ChecklistsTriggers.includes(values?.trigger?.type)
         ? TagableEntities
