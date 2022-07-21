@@ -292,6 +292,8 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
                 dbScript.entityClass = scriptDTO.trigger.entityName
                 if(scriptDTO.trigger.parameterId)
                     dbScript.entityAttribute = String.valueOf(scriptDTO.trigger.parameterId)
+                else
+                    dbScript.entityAttribute = null
                 break
             case CHECKLIST_COMPLETED:
                 dbScript.triggerType = TriggerType.ONCOURSE_EVENT
@@ -299,6 +301,8 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
                 dbScript.entityClass = scriptDTO.trigger.entityName
                 if(scriptDTO.trigger.parameterId)
                     dbScript.entityAttribute = String.valueOf(scriptDTO.trigger.parameterId)
+                else
+                    dbScript.entityAttribute = null
                 break
         }
 

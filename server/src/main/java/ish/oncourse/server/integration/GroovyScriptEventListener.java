@@ -63,7 +63,7 @@ public class GroovyScriptEventListener implements OnCourseEventListener {
 	}
 
 	private boolean correctChecklistPinned(TagRelation value, Script script){
-		if(script.getEntityClass() != null){
+		if(script.getEntityClass() != null && !script.getEntityClass().isEmpty()){
 			if(!value.getTaggedRelation().getClass().getSimpleName().equals(script.getEntityClass()))
 				return false;
 		}
