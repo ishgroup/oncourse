@@ -50,12 +50,9 @@ class TagRelation extends _TagRelation implements Queueable {
 			def allTagChilds = tag.parentTag.allChildren.values().collect {it.id}
 			def recordTagIds = taggedRelation.tagIds
 			eventService.postEvent(SystemEvent.valueOf(SystemEventType.CHECKLIST_TASK_CHECKED, this))
-			allTagChilds.each{
-				if(!recordTagIds.contains(it)){
-					return
-				}
-			}
-			eventService.postEvent(SystemEvent.valueOf(SystemEventType.CHECKLIST_COMPLETED, this))
+			if(!recordTagIds.containsAll(allTagChilds))
+				return
+			eventService .postEvent(SystemEvent.valueOf(SystemEventType.CHECKLIST_COMPLETED, this))
 		}
 	}
 /**
