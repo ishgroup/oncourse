@@ -100,13 +100,18 @@ public class LazyTaggingRelationsNode extends LazyExprNodeWithBasePathResolver {
         var other = args.subList(1, args.size());
         var idx = 0;
         for (var child : other) {
+            //rewrite this
+            if (child instanceof ASTObjPath && ((ASTObjPath) child).getPath().contains("taggingRelations.tag.")) {
+                String path = ((ASTObjPath) child).getPath();
+                child = new ASTObjPath(path.replace(".tag.", "+.tag+."));
+            }
             ExpressionUtil.addChild(parent, child, idx++);
         }
 
         var and = new ASTAnd();
         and.jjtAddChild(parent, 0);
 
-        String identPath = entityPath + TAGGING_RELATIONS + "." + "entityIdentifier";
+        String identPath = entityPath + TAGGING_RELATIONS + "+." + "entityIdentifier";
         ASTEqual identifierEqNode = new ASTEqual(new ASTObjPath(identPath), taggableClasses.getDatabaseValue());
         ExpressionUtil.addChild(and, identifierEqNode, 1);
 
