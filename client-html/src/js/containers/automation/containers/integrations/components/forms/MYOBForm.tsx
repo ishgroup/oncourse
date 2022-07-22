@@ -40,7 +40,7 @@ class MYOBBaseForm extends React.Component<any, any> {
       const params = new URLSearchParams(search);
       const values = JSON.parse(JSON.stringify(params.get("values")));
 
-      if (!values || typeof values !== "object") return;
+      if (!values) return;
 
       const url = values.url;
       const file = values.file;
