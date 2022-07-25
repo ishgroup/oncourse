@@ -6,9 +6,6 @@
 import { Certificate, CertificateValidationRequest } from "@api/model";
 import { _toRequestType, FULFILLED, REJECTED } from "../../../../common/actions/ActionUtils";
 
-export const GET_CERTIFICATE_ITEM = _toRequestType("get/certificate");
-export const GET_CERTIFICATE_ITEM_FULFILLED = FULFILLED(GET_CERTIFICATE_ITEM);
-
 export const GET_CERTIFICATE_OUTCOMES = _toRequestType("get/certificate/outcome");
 export const GET_CERTIFICATE_OUTCOMES_FULFILLED = FULFILLED(GET_CERTIFICATE_OUTCOMES);
 export const GET_CERTIFICATE_OUTCOMES_REJECTED = REJECTED(GET_CERTIFICATE_OUTCOMES);
@@ -51,11 +48,6 @@ export const setCertificatesRevokeStatus = (hasRevoked: boolean) => ({
 export const revokeCertificate = (ids: number[], reason: string) => ({
   type: REVOKE_CERTIFICATE_ITEM,
   payload: { ids, reason }
-});
-
-export const getCertificate = (id: string) => ({
-  type: GET_CERTIFICATE_ITEM,
-  payload: id
 });
 
 export const getCertificateOutcomes = (studentId: number) => ({

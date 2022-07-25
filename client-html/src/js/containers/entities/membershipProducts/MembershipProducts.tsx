@@ -10,7 +10,7 @@ import { Account, MembershipProduct, Tax } from "@api/model";
 import { Dispatch } from "redux";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { plainContactRelationTypePath, plainCorporatePassPath } from "../../../constants/Api";
-import { getMembershipProduct, updateMembershipProduct } from "./actions";
+import { updateMembershipProduct } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
 import MembershipProductEditView from "./components/MembershipProductEditView";
 import { FilterGroup } from "../../../model/common/ListView";
@@ -28,7 +28,6 @@ import { notesAsyncValidate } from "../../../common/components/form/notes/utils"
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 
 interface MembershipProductsProps {
-  getMembershipProductRecord?: () => void;
   onInit?: (initial: MembershipProduct) => void;
   onSave?: (id: string, membershipProduct: MembershipProduct) => void;
   getRecords?: () => void;
@@ -117,7 +116,6 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
   const [initNew, setInitNew] = useState(false);
 
   const {
-    getMembershipProductRecord,
     onInit,
     onSave,
     getFilters,
@@ -177,7 +175,6 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
         }}
         EditViewContent={MembershipProductEditView}
         CogwheelAdornment={BulkEditCogwheelOption}
-        getEditRecord={getMembershipProductRecord}
         rootEntity="MembershipProduct"
         onInit={() => setInitNew(true)}
         onSave={onSave}
@@ -211,7 +208,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getTags: () => dispatch(getListTags("MembershipProduct")),
   getFilters: () => dispatch(getFilters("MembershipProduct")),
   clearListState: () => dispatch(clearListState()),
-  getMembershipProductRecord: (id: string) => dispatch(getMembershipProduct(id)),
   onSave: (id: string, membershipProduct: MembershipProduct) => dispatch(updateMembershipProduct(id, membershipProduct)),
   checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" })),
   getRelationTypes: () => dispatch(getEntityRelationTypes()),

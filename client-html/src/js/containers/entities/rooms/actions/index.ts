@@ -6,12 +6,6 @@
 import { Room } from "@api/model";
 import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
 
-export const GET_ROOM_ITEM = _toRequestType("get/room");
-export const GET_ROOM_ITEM_FULFILLED = FULFILLED(GET_ROOM_ITEM);
-
-export const DELETE_ROOM_ITEM = _toRequestType("delete/room");
-export const DELETE_ROOM_ITEM_FULFILLED = FULFILLED(DELETE_ROOM_ITEM);
-
 export const UPDATE_ROOM_ITEM = _toRequestType("put/room");
 export const UPDATE_ROOM_ITEM_FULFILLED = FULFILLED(UPDATE_ROOM_ITEM);
 
@@ -23,18 +17,7 @@ export const validateDeleteRoom = (id: string, callback: any) => ({
   payload: { id, callback }
 });
 
-export const getRoom = (id: string) => ({
-  type: GET_ROOM_ITEM,
-  payload: id
-});
-
-export const removeRoom = (id: string) => ({
-  type: DELETE_ROOM_ITEM,
-  payload: id
-});
-
 export const updateRoom = (id: string, room: Room) => ({
   type: UPDATE_ROOM_ITEM,
   payload: { id, room }
 });
-

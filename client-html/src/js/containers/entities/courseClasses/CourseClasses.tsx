@@ -91,7 +91,6 @@ interface CourseClassesProps {
   onUpdate?: (id: number, courseClass: CourseClass) => void;
   clearListState?: NoArgFunction;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
-  getCourseClass?: (id: string) => void;
   dispatch?: Dispatch;
   values?: CourseClass;
   initialValues?: CourseClass;
@@ -453,7 +452,6 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
   const {
     onFirstRender,
     onUpdate,
-    getCourseClass,
     userPreferences,
     setListCreatingNew,
     updateSelection,
@@ -650,10 +648,10 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
           keepDirtyOnReinitialize: true
         }}
         EditViewContent={CourseClassEditView}
-        getEditRecord={getCourseClass}
         rootEntity="CourseClass"
         onInit={onInit}
         customOnCreateAction={createCourseClass}
+        customGetAction={getCourseClass}
         onSave={onUpdate}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
@@ -781,7 +779,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     );
     dispatch(getCommonPlainRecords("Site", 0, "name,localTimezone,isVirtual", true, "name", PLAIN_LIST_MAX_PAGE_SIZE));
   },
-  getCourseClass: (id: string) => dispatch(getCourseClass(id)),
   onUpdate: (id: number, courseClass: CourseClass) => dispatch(updateCourseClass(id, courseClass)),
   clearListState: () => dispatch(clearListState()),
   setListCreatingNew: creatingNew => dispatch(setListCreatingNew(creatingNew)),

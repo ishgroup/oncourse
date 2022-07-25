@@ -12,7 +12,7 @@ import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
 import AccountsEditView from "./components/AccountsEditView";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import { getAccount, updateAccount } from "./actions";
+import { updateAccount } from "./actions";
 import { getTaxTypes } from "../../preferences/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
@@ -70,7 +70,7 @@ class Accounts extends React.Component<any, any> {
 
   render() {
     const {
-      getAccountRecord, onSave, onInit
+      onSave, onInit
     } = this.props;
 
     return (
@@ -85,7 +85,6 @@ class Accounts extends React.Component<any, any> {
           hideTitle: true
         }}
         EditViewContent={AccountsEditView}
-        getEditRecord={getAccountRecord}
         rootEntity="Account"
         onInit={onInit}
         onSave={onSave}
@@ -107,7 +106,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getFilters("Account"));
   },
   clearListState: () => dispatch(clearListState()),
-  getAccountRecord: (id: string) => dispatch(getAccount(id)),
   onSave: (id: string, account: Account) => dispatch(updateAccount(id, account))
 });
 

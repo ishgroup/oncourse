@@ -6,16 +6,9 @@
 import { Outcome } from "@api/model";
 import { _toRequestType } from "../../../../common/actions/ActionUtils";
 
-export const GET_OUTCOME_ITEM = _toRequestType("get/outcome");
-
 export const GET_OUTCOME_TAGS = _toRequestType("get/outcome/tags");
 
 export const UPDATE_OUTCOME_ITEM = _toRequestType("put/outcome");
-
-export const getOutcome = (id: string) => ({
-  type: GET_OUTCOME_ITEM,
-  payload: id
-});
 
 export const getOutcomeTags = () => ({
   type: GET_OUTCOME_TAGS,

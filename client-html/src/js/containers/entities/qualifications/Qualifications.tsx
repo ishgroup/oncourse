@@ -7,11 +7,9 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
 import { Dispatch } from "redux";
-import ListView from "../../../common/components/list-view/ListView";
-import {
-  getQualification, updateQualification
-} from "./actions";
 import { Qualification } from "@api/model";
+import ListView from "../../../common/components/list-view/ListView";
+import { updateQualification } from "./actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import QualificationsEditView from "./components/QualificationsEditView";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
@@ -118,9 +116,7 @@ class Qualifications extends React.Component<any, any> {
   };
 
   render() {
-    const {
-      getQualificationRecord, onInit
-    } = this.props;
+    const { onInit } = this.props;
 
     return (
       <div>
@@ -134,7 +130,6 @@ class Qualifications extends React.Component<any, any> {
             nameCondition
           }}
           EditViewContent={QualificationsEditView}
-          getEditRecord={getQualificationRecord}
           rootEntity="Qualification"
           onInit={onInit}
           onSave={this.onSave}
@@ -156,7 +151,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getFilters("Qualification"));
   },
   clearListState: () => dispatch(clearListState()),
-  getQualificationRecord: (id) => dispatch(getQualification(id)),
   onSave: (id: string, qualification: Qualification) => dispatch(updateQualification(id, qualification)),
 });
 

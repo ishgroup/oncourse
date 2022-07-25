@@ -4,14 +4,10 @@
  */
 
 import { combineEpics } from "redux-observable";
-import { EpicGetRoom } from "./EpicGetRoom";
 import { EpicUpdateRoom } from "./EpicUpdateRoom";
-import { EpicDeleteRoom } from "./EpicDeleteRoom";
 import { EpicValidateDeleteRoom } from "./EpicValidateDeleteRoom";
 
 export const EpicRoom = combineEpics(
-  EpicGetRoom,
   EpicUpdateRoom,
-  EpicDeleteRoom,
   EpicValidateDeleteRoom
 );

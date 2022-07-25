@@ -8,16 +8,8 @@
 
 import { AssessmentSubmission } from "@api/model";
 
-export const GET_ASSESSMENT_SUBMISSIONS_ITEM = "GET_ASSESSMENT_SUBMISSIONS_ITEM";
-export const GET_ASSESSMENT_SUBMISSIONS_ITEM_FULFILLED = "GET_ASSESSMENT_SUBMISSIONS_ITEM_FULFILLED";
-
 export const UPDATE_ASSESSMENT_SUBMISSIONS_ITEM = "UPDATE_ASSESSMENT_SUBMISSIONS_ITEM";
 export const UPDATE_ASSESSMENT_SUBMISSIONS_ITEM_FULFILLED = "UPDATE_ASSESSMENT_SUBMISSIONS_ITEM_FULFILLED";
-
-export const getAssessmentSubmissionsItem = (id: number) => ({
-  type: GET_ASSESSMENT_SUBMISSIONS_ITEM,
-  payload: id
-});
 
 export const updateAssessmentSubmissionsItem = (id: number, assessmentSubmission: AssessmentSubmission) => ({
   type: UPDATE_ASSESSMENT_SUBMISSIONS_ITEM,

@@ -9,9 +9,7 @@ import { initialize } from "redux-form";
 import { Assessment } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import {
-  getAssessment, updateAssessment
-} from "./actions";
+import { updateAssessment } from "./actions";
 import AssessmentEditView from "./components/AssessmentEditView";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
@@ -24,7 +22,6 @@ import { getGradingTypes } from "../../preferences/actions";
 const manualLink = getManualLink("assessment");
 
 interface AssessmentsProps {
-  getAssessmentRecord?: () => void;
   onInit?: () => void;
   onSave?: (id: string, assessment: Assessment) => void;
   getFilters?: () => void;
@@ -78,7 +75,6 @@ const setRowClasses = ({ active }) => (active === "Yes" ? undefined : "text-op05
 
 const Assessments: React.FC<AssessmentsProps> = props => {
   const {
-    getAssessmentRecord,
     onInit,
     onSave,
     getFilters,
@@ -111,7 +107,6 @@ const Assessments: React.FC<AssessmentsProps> = props => {
       }}
       EditViewContent={AssessmentEditView}
       CogwheelAdornment={BulkEditCogwheelOption}
-      getEditRecord={getAssessmentRecord}
       rootEntity="Assessment"
       onInit={onInit}
       onSave={onSave}
@@ -130,7 +125,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getTags: () => dispatch(getListTags("Assessment")),
   getFilters: () => dispatch(getFilters("Assessment")),
   clearListState: () => dispatch(clearListState()),
-  getAssessmentRecord: (id: string) => dispatch(getAssessment(id)),
   onSave: (id: string, assessment: Assessment) => dispatch(updateAssessment(id, assessment))
 });
 

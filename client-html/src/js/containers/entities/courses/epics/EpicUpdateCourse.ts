@@ -14,8 +14,9 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { processCustomFields } from "../../customFieldTypes/utils";
-import { GET_COURSE, UPDATE_COURSE } from "../actions";
+import { UPDATE_COURSE } from "../actions";
 import { ENTITY_NAME as CoursesEntity } from "../Courses";
+import { getEntityRecord } from "../../common/actions";
 
 const request: EpicUtils.Request<any, { id: number; course: Course }> = {
   type: UPDATE_COURSE,
@@ -34,10 +35,9 @@ const request: EpicUtils.Request<any, { id: number; course: Course }> = {
         type: GET_RECORDS_REQUEST,
         payload: { entity: CoursesEntity, listUpdate: true, savedID: id }
       },
-      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
-        type: GET_COURSE,
-        payload: id
-      }] : []
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [
+        getEntityRecord(id, CoursesEntity)
+      ] : []
     ],
   processError: (response, { course }) => [
       ...FetchErrorHandler(response, `${CoursesEntity} was not updated`),

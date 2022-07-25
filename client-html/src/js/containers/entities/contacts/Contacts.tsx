@@ -53,7 +53,6 @@ interface ContactsProps {
   getFilters?: () => void;
   clearListState?: () => void;
   getTags?: () => void;
-  getContactRecord?: (id: string) => void;
   getCountries?: () => void;
   getLanguages?: () => void;
   getContactsRelationTypes?: () => void;
@@ -242,7 +241,6 @@ const Contacts: React.FC<ContactsProps> = props => {
     onInit,
     onSave,
     getTags,
-    getContactRecord,
     getCountries,
     getLanguages,
     getContactsRelationTypes,
@@ -355,7 +353,7 @@ const Contacts: React.FC<ContactsProps> = props => {
         hideTitle: true
       }}
       EditViewContent={ContactEditView}
-      getEditRecord={getContactRecord}
+      customGetAction={getContact}
       rootEntity="Contact"
       onInit={onInit}
       onSave={onContactSave}
@@ -385,7 +383,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getContactsConcessionTypes: () => dispatch(getContactsConcessionTypes()),
   getDefaultTerms: () => dispatch(getDefaultInvoiceTerms()),
   getTaxTypes: () => dispatch(getContactsTaxTypes()),
-  getContactRecord: (id: number) => dispatch(getContact(id)),
   onSave: (id: string, contact: Contact) => dispatch(updateContact(id, contact)),
   clearListState: () => dispatch(clearListState()),
   getPermissions: () => {

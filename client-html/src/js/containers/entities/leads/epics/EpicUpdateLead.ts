@@ -11,13 +11,14 @@ import { initialize } from "redux-form";
 import { Lead } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { processCustomFields } from "../../customFieldTypes/utils";
-import { GET_LEAD_ITEM, UPDATE_LEAD_ITEM, UPDATE_LEAD_ITEM_FULFILLED } from "../actions";
+import { UPDATE_LEAD_ITEM, UPDATE_LEAD_ITEM_FULFILLED } from "../actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { clearActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import LeadService from "../services/LeadService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
+import { getEntityRecord } from "../../common/actions";
 
 const request: EpicUtils.Request<any, { id: number; lead: Lead & { notes: any } }> = {
   type: UPDATE_LEAD_ITEM,
@@ -40,10 +41,9 @@ const request: EpicUtils.Request<any, { id: number; lead: Lead & { notes: any } 
       type: GET_RECORDS_REQUEST,
       payload: { entity: "Lead", listUpdate: true, savedID: id }
     },
-    ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
-      type: GET_LEAD_ITEM,
-      payload: id
-    }] : []
+    ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [
+      getEntityRecord(id, "Lead")
+    ] : []
   ],
   processError: (response, { lead }) => [
       ...FetchErrorHandler(response, "Lead was not updated"),

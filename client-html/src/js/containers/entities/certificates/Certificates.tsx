@@ -15,9 +15,7 @@ import {
 } from "../../../common/components/list-view/actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import { defaultContactName } from "../contacts/utils";
-import {
-  getCertificate, updateCertificate
-} from "./actions";
+import { updateCertificate } from "./actions";
 import CertificateEditView from "./components/CertificateEditView";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import USIAlert from "./components/USIAlert";
@@ -25,7 +23,6 @@ import RevokeCertificateCogwheel from "./components/RevokeCertificateCogwheel";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 
 interface CertificatesProps {
-  getCertificateRecord?: () => void;
   onInit?: () => void;
   onSave?: (id: string, certificate: Certificate) => void;
   getFilters?: () => void;
@@ -93,7 +90,6 @@ const secondaryColumnCondition = rows => rows["qualification.title"] || "No Qual
 
 const Certificates: React.FC<CertificatesProps> = props => {
   const {
-    getCertificateRecord,
     onInit,
     onSave,
     getFilters
@@ -121,7 +117,6 @@ const Certificates: React.FC<CertificatesProps> = props => {
         }}
         EditViewContent={CertificateEditView}
         CogwheelAdornment={RevokeCertificateCogwheel}
-        getEditRecord={getCertificateRecord}
         rootEntity="Certificate"
         onInit={onInit}
         onSave={onSave}
@@ -143,7 +138,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getFilters("Certificate"));
   },
   clearListState: () => dispatch(clearListState()),
-  getCertificateRecord: (id: string) => dispatch(getCertificate(id)),
   onSave: (id: string, certificate: Certificate) => dispatch(updateCertificate(id, certificate))
 });
 

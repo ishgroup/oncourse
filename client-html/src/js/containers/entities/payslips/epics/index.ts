@@ -4,13 +4,11 @@
  */
 
 import { combineEpics } from "redux-observable";
-import { EpicGetPayslip } from "./EpicGetPayslip";
 import { EpicUpdatePayslipItem } from "./EpicUpdatePayslipItem";
 import { EpicExecutePayslip } from "./EpicExecutePayslip";
 import { EpicOnPayslipGenerated } from "./EpicOnPayslipGenerated";
 
 export const EpicPayslip = combineEpics(
-  EpicGetPayslip,
   EpicUpdatePayslipItem,
   EpicExecutePayslip,
   EpicOnPayslipGenerated

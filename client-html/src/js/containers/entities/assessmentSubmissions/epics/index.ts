@@ -7,10 +7,8 @@
  */
 
 import { combineEpics } from "redux-observable";
-import { EpicGetAssessmentSubmissionItem } from "./EpicGetAssessmentsSubmissionItem";
 import { EpicUpdateAssessmentSubmissionItem } from "./EpicUpdateAssessmentSubmission";
 
 export const EpicAssessmentSubmissions = combineEpics(
-  EpicGetAssessmentSubmissionItem,
   EpicUpdateAssessmentSubmissionItem
 );

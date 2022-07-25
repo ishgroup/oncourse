@@ -145,34 +145,28 @@ class Sites extends React.Component<any, any> {
   };
 
   render() {
-    const {
-      getSiteRecord
-    } = this.props;
-
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "name",
-            secondaryColumn: "suburb",
-            secondaryColumnCondition
-          }}
-          editViewProps={{
-            manualLink,
-            asyncValidate: notesAsyncValidate,
-            asyncBlurFields: ["notes[].message"],
-            hideTitle: true
-          }}
-          CogwheelAdornment={BulkEditCogwheelOption}
-          EditViewContent={SiteEditView}
-          getEditRecord={getSiteRecord}
-          rootEntity="Site"
-          onInit={this.onInit}
-          onSave={this.onSave}
-          findRelated={findRelatedGroup}
-          filterGroupsInitial={filterGroups}
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "name",
+          secondaryColumn: "suburb",
+          secondaryColumnCondition
+        }}
+        editViewProps={{
+          manualLink,
+          asyncValidate: notesAsyncValidate,
+          asyncBlurFields: ["notes[].message"],
+          hideTitle: true
+        }}
+        CogwheelAdornment={BulkEditCogwheelOption}
+        EditViewContent={SiteEditView}
+        customGetAction={getSite}
+        rootEntity="Site"
+        onInit={this.onInit}
+        onSave={this.onSave}
+        findRelated={findRelatedGroup}
+        filterGroupsInitial={filterGroups}
+      />
     );
   }
 }
@@ -200,7 +194,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getCountries());
   },
   clearListState: () => dispatch(clearListState()),
-  getSiteRecord: (id: string) => dispatch(getSite(id)),
   onSave: (id: string, site: Site) => dispatch(updateSite(id, site)),
 });
 

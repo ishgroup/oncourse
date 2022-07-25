@@ -25,7 +25,7 @@ import SurveyService from "../survey/services/SurveyService";
 import ArticleProductService from "../articleProducts/service/ArticleProductService";
 import MessageService from "../messages/services/MessageService";
 import { formatToDateOnly } from "../../../common/utils/dates/datesNormalizing";
-import { preformatInvoice } from "../invoices/utils";
+import { getInvoiceClosestPaymentDueDate, preformatInvoice, sortInvoicePaymentPlans } from "../invoices/utils";
 import ContactsService from "../contacts/services/ContactsService";
 import { PayLineWithDefer } from "../../../model/entities/Payslip";
 import CourseClassService from "../courseClasses/services/CourseClassService";
@@ -40,6 +40,12 @@ import LeadService from "../leads/services/LeadService";
 import membershipProductService from "../membershipProducts/services/MembershipProductService";
 import PriorLearningService from "../priorLearnings/services/PriorLearningService";
 import AssessmentService from "../assessments/services/AssessmentService";
+import AssessmentSubmissionService from "../assessmentSubmissions/service/AssessmentSubmissionService";
+import { mapEntityDisplayName } from "./utils";
+import EnrolmentService from "../enrolments/services/EnrolmentService";
+import { EnrolmentExtended } from "../../../model/entities/Enrolment";
+import EntityService from "../../../common/services/EntityService";
+import { getContactName } from "../contacts/utils";
 
 const defaultUnknown = () => {
   console.error("Unknown entity name");
@@ -48,40 +54,96 @@ const defaultUnknown = () => {
 
 export const getEntityItemById = (entity: EntityName, id: number): Promise<any> => {
   switch (entity) {
-    case "Audit": {
+    case "Audit":
       return AuditsService.getAuditItem(id);
-    }
-
-    case "Module": {
+    case "Assessment":
+      return AssessmentService.getAssessment(id);
+    case "AssessmentSubmission":
+      return AssessmentSubmissionService.getAssessmentSubmission(id);
+    case "Module":
       return ModuleService.getModule(id);
-    }
-
-    case "Qualification": {
+    case "Qualification":
       return QualificationService.getQualification(id);
-    }
-
-    case "Room": {
+    case "Room":
       return RoomService.getRoom(id);
-    }
-
-    case "Site": {
+    case "Site":
       return SiteService.getSite(id);
-    }
-
-    case "Account": {
+    case "Account":
       return AccountService.getAccount(id);
-    }
-
-    case "Invoice": {
-      return InvoiceService.getInvoice(id);
-    }
-
-    case "PaymentIn": {
+    case "PaymentIn":
       return PaymentInService.getPaymentIn(id);
-    }
-
-    case "PaymentOut": {
+    case "PaymentOut":
       return PaymentOutService.getPaymentOut(id);
+    case "AccountTransaction":
+      return TransactionService.getTransaction(id);
+    case "CorporatePass":
+      return CorporatePassService.getCorporatePass(id);
+    case "Import":
+      return ImportTemplatesService.get(id);
+    case "Banking":
+      return BankingService.getBanking(id);
+    case "WaitingList":
+      return WaitingListService.getWaitingList(id);
+    case "Application":
+      return ApplicationService.getApplication(id);
+    case "MembershipProduct":
+      return MembershipProductService.getMembershipProduct(id);
+    case "VoucherProduct":
+      return VoucherProductService.getVoucherProduct(id);
+    case "ArticleProduct":
+      return ArticleProductService.getArticleProduct(id);
+    case "Certificate":
+      return CertificateService.getCertificate(id);
+    case "Sale":
+    case "ProductItem":
+      return SaleService.getSale(id);
+    case "PriorLearning":
+      return PriorLearningService.getPriorLearning(id);
+    case "Survey":
+      return SurveyService.getSurveyItem(id);
+    case "Message":
+      return MessageService.getMessage(id);
+    case "Contact":
+      return ContactsService.getContact(id);
+    case "CourseClass":
+      return CourseClassService.getCourseClass(id);
+    case "Outcome":
+      return OutcomeService.getOutcome(id);
+    case "Course":
+      return CourseService.getCourse(id);
+
+    case "AbstractInvoice":
+    case "Invoice": {
+      return InvoiceService.getInvoice(id).then(invoice => {
+        invoice.paymentPlans.sort(sortInvoicePaymentPlans);
+        getInvoiceClosestPaymentDueDate(invoice);
+        
+        return invoice;
+      });
+    }
+    
+    case "Enrolment": {
+      return EnrolmentService.getEnrolment(id).then(async (en: EnrolmentExtended) => {
+        for (const a of en.assessments) {
+          await EntityService.getPlainRecords(
+            "Contact",
+            "firstName,lastName",
+            `tutor.assessmentClassTutors.assessmentClass.courseClass.id is ${en.courseClassId} and tutor.assessmentClassTutors.assessmentClass.assessment.id is ${a.id}`
+          )
+            .then(res => {
+              a.tutors = res.rows.map(r => ({
+                contactId: Number(r.id),
+                tutorName: getContactName({ firstName: r.values[0], lastName: r.values[1] })
+              }));
+            });
+        }
+
+        if (en.relatedFundingSourceId === null) {
+          en.relatedFundingSourceId = -1;
+        }
+
+        return en;
+      });
     }
 
     case "Payslip": {
@@ -94,77 +156,13 @@ export const getEntityItemById = (entity: EntityName, id: number): Promise<any> 
       });
     }
 
-    case "AccountTransaction": {
-      return TransactionService.getTransaction(id);
-    }
-
-    case "CorporatePass": {
-      return CorporatePassService.getCorporatePass(id);
-    }
-
-    case "Import": {
-      return ImportTemplatesService.get(id);
-    }
-
-    case "Banking": {
-      return BankingService.getBanking(id);
-    }
-
     case "Discount": {
-      return DiscountService.getDiscount(id);
-    }
-
-    case "WaitingList": {
-      return WaitingListService.getWaitingList(id);
-    }
-
-    case "Application": {
-      return ApplicationService.getApplication(id);
-    }
-
-    case "MembershipProduct": {
-      return MembershipProductService.getMembershipProduct(id);
-    }
-
-    case "VoucherProduct": {
-      return VoucherProductService.getVoucherProduct(id);
-    }
-
-    case "ArticleProduct": {
-      return ArticleProductService.getArticleProduct(id);
-    }
-
-    case "Certificate": {
-      return CertificateService.getCertificate(id);
-    }
-
-    case "Sale":
-    case "ProductItem": {
-      return SaleService.getSale(id);
-    }
-
-    case "Survey": {
-      return SurveyService.getSurveyItem(id);
-    }
-
-    case "Message": {
-      return MessageService.getMessage(id);
-    }
-
-    case "Contact": {
-      return ContactsService.getContact(id);
-    }
-
-    case "CourseClass": {
-      return CourseClassService.getCourseClass(id);
-    }
-
-    case "Outcome": {
-      return OutcomeService.getOutcome(id);
-    }
-
-    case "Course": {
-      return CourseService.getCourse(id);
+      return DiscountService.getDiscount(id).then(discount => {
+        discount.discountMemberships.forEach(el => {
+          el.contactRelations = el.contactRelations.sort();
+        });
+        return discount;
+      });
     }
 
     default:
@@ -420,21 +418,61 @@ export const createEntityItem = (entity: EntityName, item: any): Promise<any> =>
 
 export const deleteEntityItemById = (entity: EntityName, id: number): Promise<any> => {
   switch (entity) {
-    case "Account": {
+    case "Account":
       return AccountService.removeAccount(id);
-    }
+    case "Application":
+      return ApplicationService.removeApplication(id);
+    case "Assessment":
+      return AssessmentService.removeAssessment(id);
+    case "AssessmentSubmission":
+      return AssessmentSubmissionService.removeAssessmentSubmission(id);
+    case "Banking":
+      return BankingService.removeBanking(id);
+    case "Certificate":
+      return CertificateService.removeCertificate(id);
+    case "Contact":
+      return ContactsService.deleteContact(id);
+    case "CorporatePass":
+      return CorporatePassService.removeCorporatePass(id);
+    case "CourseClass":
+      return CourseClassService.deleteCourseClass(id);
+    case "Course":
+      return CourseService.remove(id);
+    case "Discount":
+      return DiscountService.removeDiscount(id);
+    case "Document":
+      return DocumentsService.deleteDocumentItem(id);
+    case "Invoice":
+    case "AbstractInvoice":
+      return InvoiceService.deleteQuote(id);
+    case "Lead":
+      return LeadService.removeLead(id);
+    case "Message":
+      return MessageService.removeMessage(id);
+    case "Module":
+      return ModuleService.removeModule(id);
+    case "Outcome":
+      return OutcomeService.removeOutcome(id);
+    case "Payslip":
+      return PayslipService.removePayslip(id);
+    case "PriorLearning":
+      return PriorLearningService.removePriorLearning(id);
+    case "Qualification":
+      return QualificationService.removeQualification(id);
+    case "Room":
+      return RoomService.removeRoom(id);
+    case "Site":
+      return SiteService.removeSite(id);
+    case "WaitingList":
+      return WaitingListService.removeWaitingList(id);
     default:
       return defaultUnknown();
   }
 };
 
-export const updateEntityItemByIdErrorHandler = (response: any, entity: EntityName, item: any, form?: string) => {
-  switch (entity) {
-    default: {
-      return [
-        ...FetchErrorHandler(response, `${entity} was not updated`),
-        initialize(form || LIST_EDIT_VIEW_FORM_NAME, item)
-      ];
-    }
-  }
-};
+export const updateEntityItemByIdErrorHandler = (response: any, entity: EntityName, item: any, form?: string) => [
+  ...FetchErrorHandler(response, `${mapEntityDisplayName(entity)} was not updated`),
+  initialize(form || LIST_EDIT_VIEW_FORM_NAME, item)
+];
+
+export const getEntityItemByIdErrorHandler = (response: any) => [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, null)];

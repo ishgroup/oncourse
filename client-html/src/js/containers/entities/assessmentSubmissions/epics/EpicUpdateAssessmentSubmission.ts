@@ -12,7 +12,6 @@ import { AssessmentSubmission } from "@api/model";
 import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import {
-  GET_ASSESSMENT_SUBMISSIONS_ITEM,
   UPDATE_ASSESSMENT_SUBMISSIONS_ITEM,
   UPDATE_ASSESSMENT_SUBMISSIONS_ITEM_FULFILLED
 } from "../actions";
@@ -21,6 +20,7 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import AssessmentSubmissionService from "../service/AssessmentSubmissionService";
+import { getEntityRecord } from "../../common/actions";
 
 const request: EpicUtils.Request<any, { id: number; assessmentSubmission: AssessmentSubmission & { notes: any } }> = {
   type: UPDATE_ASSESSMENT_SUBMISSIONS_ITEM,
@@ -42,10 +42,9 @@ const request: EpicUtils.Request<any, { id: number; assessmentSubmission: Assess
       type: GET_RECORDS_REQUEST,
       payload: { entity: "AssessmentSubmission", listUpdate: true, savedID: id }
     },
-    ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
-      type: GET_ASSESSMENT_SUBMISSIONS_ITEM,
-      payload: id
-    }] : []
+    ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [
+      getEntityRecord(id, "AssessmentSubmission")
+    ] : []
   ],
   processError: (response, { assessmentSubmission }) => (
     [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, assessmentSubmission)]

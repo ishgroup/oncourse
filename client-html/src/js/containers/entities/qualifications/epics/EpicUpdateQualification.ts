@@ -8,12 +8,13 @@ import { Epic } from "redux-observable";
 import { initialize } from "redux-form";
 import { Qualification } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { getQualification, UPDATE_QUALIFICATION_ITEM } from "../actions";
+import { UPDATE_QUALIFICATION_ITEM } from "../actions";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { updateEntityItemById } from "../../common/entityItemsService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { getEntityRecord } from "../../common/actions";
 
 const request: EpicUtils.Request<any, { id: number; qualification: Qualification }> = {
   type: UPDATE_QUALIFICATION_ITEM,
@@ -27,7 +28,7 @@ const request: EpicUtils.Request<any, { id: number; qualification: Qualification
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Qualification", listUpdate: true, savedID: id }
       },
-      getQualification(id)
+      getEntityRecord(id, "Qualification")
     ],
   processError: (response, { qualification }) => [
     ...FetchErrorHandler(response, "Qualification was not updated"),

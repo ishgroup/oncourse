@@ -1,9 +1,6 @@
 import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
 import { PaymentOut } from "@api/model";
 
-export const GET_PAYMENT_OUT_ITEM = _toRequestType("get/paymentOut");
-export const GET_PAYMENT_OUT_ITEM_FULFILLED = FULFILLED(GET_PAYMENT_OUT_ITEM);
-
 export const POST_PAYMENT_OUT_ITEM = _toRequestType("post/paymentOut");
 export const POST_PAYMENT_OUT_ITEM_FULFILLED = FULFILLED(POST_PAYMENT_OUT_ITEM);
 
@@ -24,11 +21,6 @@ export const GET_ADD_PAYMENT_OUT_VALUES_FULFILLED = FULFILLED(GET_ADD_PAYMENT_OU
 
 export const GET_PAYMENT_OUT_CUSTOM_VALUES = _toRequestType("get/paymentOut/customValues");
 export const GET_PAYMENT_OUT_CUSTOM_VALUES_FULFILLED = FULFILLED(GET_PAYMENT_OUT_CUSTOM_VALUES);
-
-export const getPaymentOut = (id: string) => ({
-  type: GET_PAYMENT_OUT_ITEM,
-  payload: id
-});
 
 export const postPaymentOut = (paymentOut: PaymentOut) => ({
   type: POST_PAYMENT_OUT_ITEM,

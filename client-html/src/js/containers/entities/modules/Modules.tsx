@@ -9,9 +9,7 @@ import { Dispatch } from "redux";
 import { initialize } from "redux-form";
 import { Module } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
-import {
-  getModule, updateModule
-} from "./actions";
+import { updateModule } from "./actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import ModulesEditView from "./components/ModulesEditView";
 import {
@@ -94,7 +92,7 @@ class Modules extends React.Component<any, any> {
 
   render() {
     const {
-      getModuleRecord, onInit
+      onInit
     } = this.props;
 
     return (
@@ -108,7 +106,6 @@ class Modules extends React.Component<any, any> {
           manualLink,
         }}
         EditViewContent={ModulesEditView}
-        getEditRecord={getModuleRecord}
         rootEntity="Module"
         onInit={onInit}
         onSave={this.onSave}
@@ -129,7 +126,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getFilters("Module"));
   },
   clearListState: () => dispatch(clearListState()),
-  getModuleRecord: (id: string) => dispatch(getModule(id)),
   onSave: (id: string, module: Module) => dispatch(updateModule(id, module)),
 });
 

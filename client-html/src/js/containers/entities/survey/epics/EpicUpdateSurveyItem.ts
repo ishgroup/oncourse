@@ -8,12 +8,13 @@ import { initialize } from "redux-form";
 import { SurveyItem } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { processCustomFields } from "../../customFieldTypes/utils";
-import { GET_STUDENT_SURVEY_ITEM, UPDATE_SURVEY_ITEM, UPDATE_SURVEY_ITEM_FULFILLED } from "../actions";
+import { UPDATE_SURVEY_ITEM, UPDATE_SURVEY_ITEM_FULFILLED } from "../actions";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { updateEntityItemById } from "../../common/entityItemsService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { getEntityRecord } from "../../common/actions";
 
 const request: EpicUtils.Request<any, { id: number; survey: SurveyItem }> = {
   type: UPDATE_SURVEY_ITEM,
@@ -33,10 +34,9 @@ const request: EpicUtils.Request<any, { id: number; survey: SurveyItem }> = {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Survey", listUpdate: true, savedID: id }
       },
-      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
-        type: GET_STUDENT_SURVEY_ITEM,
-        payload: id
-      }] : []
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [
+        getEntityRecord(id, "Survey")
+      ] : []
     ],
   processError: (response, { survey }) => [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, survey)]
 };

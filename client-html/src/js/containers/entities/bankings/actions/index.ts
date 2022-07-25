@@ -1,9 +1,6 @@
 import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
 import { Banking } from "@api/model";
 
-export const GET_BANKING_ITEM = _toRequestType("get/banking");
-export const GET_BANKING_ITEM_FULFILLED = FULFILLED(GET_BANKING_ITEM);
-
 export const UPDATE_BANKING_ITEM = _toRequestType("put/banking");
 export const UPDATE_BANKING_ITEM_FULFILLED = FULFILLED(UPDATE_BANKING_ITEM);
 
@@ -19,11 +16,6 @@ export const GET_DEPOSIT_ACCOUNTS_FULFILLED = FULFILLED(GET_DEPOSIT_ACCOUNTS);
 export const INIT_DEPOSIT = "init/deposit";
 
 export const UPDATE_BANKING_ACCOUNT_ID = "action/banking/update/accountId";
-
-export const getBanking = (id: string) => ({
-  type: GET_BANKING_ITEM,
-  payload: id
-});
 
 export const updateBanking = (id: string, banking: Banking) => ({
   type: UPDATE_BANKING_ITEM,

@@ -8,12 +8,13 @@ import { Epic } from "redux-observable";
 import { initialize } from "redux-form";
 import { PaymentIn } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_PAYMENT_IN_ITEM, UPDATE_PAYMENT_IN_ITEM, UPDATE_PAYMENT_IN_ITEM_FULFILLED } from "../actions";
+import { UPDATE_PAYMENT_IN_ITEM, UPDATE_PAYMENT_IN_ITEM_FULFILLED } from "../actions";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { updateEntityItemById } from "../../common/entityItemsService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { getEntityRecord } from "../../common/actions";
 
 const request: EpicUtils.Request<any, { id: number; paymentIn: PaymentIn }> = {
   type: UPDATE_PAYMENT_IN_ITEM,
@@ -30,10 +31,9 @@ const request: EpicUtils.Request<any, { id: number; paymentIn: PaymentIn }> = {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "PaymentIn", listUpdate: true, savedID: id }
       },
-      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
-        type: GET_PAYMENT_IN_ITEM,
-        payload: id
-      }] : []
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [
+        getEntityRecord(id, "PaymentIn")
+      ] : []
     ],
   processError: (response, { paymentIn }) => [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, paymentIn)]
 };

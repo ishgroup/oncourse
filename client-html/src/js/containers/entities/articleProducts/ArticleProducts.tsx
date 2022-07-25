@@ -13,7 +13,7 @@ import { plainCorporatePassPath } from "../../../constants/Api";
 import ArticleProductEditView from "./components/ArticleProductEditView";
 import { FilterGroup } from "../../../model/common/ListView";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import { getArticleProduct, updateArticleProduct } from "./actions";
+import { updateArticleProduct } from "./actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { State } from "../../../reducers/state";
 import { getPlainTaxes } from "../taxes/actions";
@@ -27,7 +27,6 @@ import { notesAsyncValidate } from "../../../common/components/form/notes/utils"
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 
 interface ArticleProductsProps {
-  getArticleProductRecord?: () => void;
   onInit?: (initial: ArticleProduct) => void;
   onDelete?: (id: string) => void;
   onSave?: (id: string, articleProduct: ArticleProduct) => void;
@@ -118,7 +117,6 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
   const [initNew, setInitNew] = useState(false);
 
   const {
-    getArticleProductRecord,
     onInit,
     onSave,
     getFilters,
@@ -178,7 +176,6 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
         }}
         EditViewContent={ArticleProductEditView}
         CogwheelAdornment={BulkEditCogwheelOption}
-        getEditRecord={getArticleProductRecord}
         rootEntity="ArticleProduct"
         onInit={() => setInitNew(true)}
         onSave={onSave}
@@ -203,7 +200,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getTags: () => dispatch(getListTags("ArticleProduct")),
   getFilters: () => dispatch(getFilters("ArticleProduct")),
   clearListState: () => dispatch(clearListState()),
-  getArticleProductRecord: (id: string) => dispatch(getArticleProduct(id)),
   onSave: (id: string, articleProduct: ArticleProduct) => dispatch(updateArticleProduct(id, articleProduct)),
   checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" })),
   getRelationTypes: () => dispatch(getEntityRelationTypes()),

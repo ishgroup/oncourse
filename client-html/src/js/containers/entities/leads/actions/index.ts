@@ -9,17 +9,8 @@
 import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
 import { Lead } from "@api/model";
 
-export const GET_LEAD_ITEM = _toRequestType("get/lead");
-export const GET_LEAD_ITEM_FULFILLED = FULFILLED(GET_LEAD_ITEM);
-
 export const UPDATE_LEAD_ITEM = _toRequestType("put/lead");
 export const UPDATE_LEAD_ITEM_FULFILLED = FULFILLED(UPDATE_LEAD_ITEM);
-
-
-export const getLead = (id: string) => ({
-  type: GET_LEAD_ITEM,
-  payload: id
-});
 
 export const updateLead = (id: string, lead: Lead) => ({
   type: UPDATE_LEAD_ITEM,

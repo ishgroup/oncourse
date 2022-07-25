@@ -1,5 +1,4 @@
 import { combineEpics } from "redux-observable";
-import { EpicGetInvoice } from "./EpicGetInvoice";
 import { EpicUpdateInvoiceItem } from "./EpicUpdateInvoiceItem";
 import { EpicGetInvoiceLineCourse } from "./EpicGetInvoiceLineCourse";
 import { EpicGetInvoiceLineEnrolments } from "./EpicGetInvoiceLineEnrolments";
@@ -11,7 +10,6 @@ import { EpicGetDefaultInvoiceTerms } from "./EpicGetDefaultInvoiceTerms";
 import { EpicDuplicateQuote } from "./EpicDuplicateQuote";
 
 export const EpicInvoice = combineEpics(
-  EpicGetInvoice,
   EpicUpdateInvoiceItem,
   EpicGetInvoiceLineCourse,
   EpicGetInvoiceLineEnrolments,

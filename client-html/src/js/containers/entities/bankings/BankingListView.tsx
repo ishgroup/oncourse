@@ -14,9 +14,7 @@ import {
   setListEditRecord,
 } from "../../../common/components/list-view/actions";
 import { FilterGroup } from "../../../model/common/ListView";
-import {
-  getBanking, updateBanking, initDeposit
-} from "./actions";
+import { updateBanking, initDeposit } from "./actions";
 import BankingEditViewResolver from "./components/BankingEditViewResolver";
 import BankingCogwheelOptions from "./components/BankingCogwheelOptions";
 import { getAccountTransactionLockedDate, getCurrency } from "../../preferences/actions";
@@ -57,7 +55,7 @@ class BankingListView extends React.Component<any, null> {
 
   render() {
     const {
-      getBankingRecord, onSave, onInit
+      onSave, onInit
     } = this.props;
     return (
       <div>
@@ -67,7 +65,6 @@ class BankingListView extends React.Component<any, null> {
             secondaryColumn: "type"
           }}
           EditViewContent={BankingEditViewResolver}
-          getEditRecord={getBankingRecord}
           rootEntity="Banking"
           onInit={onInit}
           editViewProps={{
@@ -104,9 +101,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getLockedDate: () => dispatch(getAccountTransactionLockedDate()),
   clearListState: () => dispatch(clearListState()),
-  getBankingRecord: (id: string) => {
-    dispatch(getBanking(id));
-  },
   onSave: (id: string, banking: Banking) => dispatch(updateBanking(id, banking))
 });
 

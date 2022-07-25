@@ -7,7 +7,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { ProductItem, TableModel } from "@api/model";
 import { clearListState, getFilters } from "../../../common/components/list-view/actions";
-import { getSale, getSalesManuTags, updateSale } from "./actions";
+import { getSalesManuTags, updateSale } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
 import SalesEditView from "./components/SalesEditView";
@@ -104,7 +104,6 @@ const manualLink = getManualLink("sales");
 const Sales: React.FC<SalesProps> = props => {
   const {
     updateTableModel,
-    getSaleRecord,
     onInit,
     getFilters,
     getAccounts,
@@ -139,7 +138,6 @@ const Sales: React.FC<SalesProps> = props => {
         updateTableModel={updateTableModel}
         EditViewContent={SalesEditView}
         CogwheelAdornment={SalesCogwheel}
-        getEditRecord={getSaleRecord}
         rootEntity="ProductItem"
         onInit={onInit}
         onSave={onSave}
@@ -164,8 +162,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getFilters: () => dispatch(getFilters("ProductItem")),
   onSave: (id: string, productItem: ProductItem) => dispatch(updateSale(id, productItem)),
-  clearListState: () => dispatch(clearListState()),
-  getSaleRecord: (id: string) => dispatch(getSale(id))
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Sales);

@@ -17,7 +17,6 @@ import { notesAsyncValidate } from "../../../common/components/form/notes/utils"
 import ListView from "../../../common/components/list-view/ListView";
 import {
   getDefaultInvoiceTerms,
-  getInvoice,
   updateInvoice
 } from "./actions";
 import { FilterGroup } from "../../../model/common/ListView";
@@ -152,7 +151,6 @@ const Invoices = React.memo<any>(({
   getQePermissions,
   clearListState,
   onSave,
-  getInvoiceRecord,
   setListCreatingNew,
   selection,
   history,
@@ -243,7 +241,6 @@ const Invoices = React.memo<any>(({
           asyncValidate: notesAsyncValidate,
           asyncBlurFields: ["notes[].message"]
         }}
-        getEditRecord={getInvoiceRecord}
         rootEntity="AbstractInvoice"
         filterEntity="Invoice"
         onSave={onSave}
@@ -317,7 +314,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getAccountTransactionLockedDate());
   },
   clearListState: () => dispatch(clearListState()),
-  getInvoiceRecord: (id: string) => dispatch(getInvoice(id)),
   onSave: (id: string, invoice: Invoice) => dispatch(updateInvoice(id, invoice)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),

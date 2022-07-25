@@ -15,13 +15,10 @@ import { getManualLink } from "../../../common/utils/getManualLink";
 import { fundingUploadsPath } from "../../../constants/Api";
 import { FilterGroup } from "../../../model/common/ListView";
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
-import {
- getOutcome, getOutcomeTags, updateOutcome
-} from "./actions";
+import { getOutcomeTags, updateOutcome } from "./actions";
 import OutcomeEditView from "./components/OutcomeEditView";
 
 interface OutcomesProps {
-  getOutcomeRecord?: () => void;
   onInit?: () => void;
   onSave?: (id: string, outcome: Outcome) => void;
   getFilters?: () => void;
@@ -123,7 +120,6 @@ const manualLink = getManualLink("delivery_outcomes");
 
 const Outcomes: React.FC<OutcomesProps> = props => {
   const {
-    getOutcomeRecord,
     onInit,
     onSave,
     getFilters,
@@ -154,7 +150,6 @@ const Outcomes: React.FC<OutcomesProps> = props => {
         hideTitle: true
       }}
       EditViewContent={OutcomeEditView}
-      getEditRecord={getOutcomeRecord}
       rootEntity="Outcome"
       onInit={onInit}
       onSave={onSave}
@@ -176,7 +171,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getFilters: () => dispatch(getFilters("Outcome")),
   clearListState: () => dispatch(clearListState()),
-  getOutcomeRecord: (id: string) => dispatch(getOutcome(id)),
   onSave: (id: string, outcome: Outcome) => dispatch(updateOutcome(id, outcome)),
   checkPermissions: () => dispatch(checkPermissions({ path: fundingUploadsPath, method: "GET" }))
 });

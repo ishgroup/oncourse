@@ -33,10 +33,10 @@ import {
   clearListState,
 } from "../../../common/components/list-view/actions";
 import EntityService from "../../../common/services/EntityService";
-import { getWindowHeight, getWindowWidth, stubFunction } from "../../../common/utils/common";
+import { getWindowHeight, getWindowWidth } from "../../../common/utils/common";
 import { defaultContactName } from "../contacts/utils";
 import OutcomeService from "../outcomes/services/OutcomeService";
-import { getEnrolment, updateEnrolment } from "./actions";
+import { updateEnrolment } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
@@ -56,7 +56,6 @@ const nameCondition = (val: Enrolment) => defaultContactName(val.studentName);
 const manualLink = getManualLink("processingEnrolments");
 
 interface EnrolmentsProps {
-  getEnrolmentRecord?: () => void;
   onInit?: (initial: Enrolment) => void;
   onSave?: (id: number, enrolment: Enrolment) => void;
   getFilters?: () => void;
@@ -184,7 +183,6 @@ const getDefaultFieldName = (field: keyof Enrolment) => {
 
 const Enrolments: React.FC<EnrolmentsProps> = props => {
   const {
-    getEnrolmentRecord,
     onInit,
     onSave,
     getFilters,
@@ -313,7 +311,6 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
           hideTitle: true
         }}
         EditViewContent={EnrolmentEditView}
-        getEditRecord={getEnrolmentRecord}
         rootEntity="Enrolment"
         onInit={() => setInitNew(true)}
         customOnCreate={customOnCreate}
@@ -418,7 +415,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getFilters: () => dispatch(getFilters("Enrolment")),
   getFundingContracts: () => dispatch(getActiveFundingContracts(true)),
   clearListState: () => dispatch(clearListState()),
-  getEnrolmentRecord: (id: string) => dispatch(getEnrolment(id)),
   onSave: (id: number, enrolment: Enrolment) => dispatch(updateEnrolment(id, enrolment)),
   getPermissions: () => {
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));

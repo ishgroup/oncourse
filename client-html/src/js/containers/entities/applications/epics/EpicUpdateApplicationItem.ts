@@ -9,12 +9,13 @@ import { Application } from "@api/model";
 import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { processCustomFields } from "../../customFieldTypes/utils";
-import { GET_APPLICATION_ITEM, UPDATE_APPLICATION_ITEM, UPDATE_APPLICATION_ITEM_FULFILLED } from "../actions";
+import { UPDATE_APPLICATION_ITEM, UPDATE_APPLICATION_ITEM_FULFILLED } from "../actions";
 import { clearActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import ApplicationService from "../service/ApplicationService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { getEntityRecord } from "../../common/actions";
 
 const request: EpicUtils.Request<any, { id: number; application: Application & { notes: any } }> = {
   type: UPDATE_APPLICATION_ITEM,
@@ -37,10 +38,9 @@ const request: EpicUtils.Request<any, { id: number; application: Application & {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Application", listUpdate: true, savedID: id }
       },
-      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
-        type: GET_APPLICATION_ITEM,
-        payload: id
-      }] : []
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [
+        getEntityRecord(id, "Application")
+      ] : []
     ],
   processError: (response, { application }) => [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, application)]
 };

@@ -4,16 +4,16 @@
  */
 
 import { Epic } from "redux-observable";
-
 import { initialize } from "redux-form";
 import { Outcome } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_OUTCOME_ITEM, UPDATE_OUTCOME_ITEM } from "../actions/index";
-import { FETCH_SUCCESS } from "../../../../common/actions/index";
+import { UPDATE_OUTCOME_ITEM } from "../actions";
+import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import OutcomeService from "../services/OutcomeService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { getEntityRecord } from "../../common/actions";
 
 const request: EpicUtils.Request<any, { id: number; outcome: Outcome }> = {
   type: UPDATE_OUTCOME_ITEM,
@@ -27,10 +27,9 @@ const request: EpicUtils.Request<any, { id: number; outcome: Outcome }> = {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Outcome", listUpdate: true, savedID: id }
       },
-      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
-        type: GET_OUTCOME_ITEM,
-        payload: id
-      }] : []
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [
+        getEntityRecord(id, "Outcome")
+      ] : []
     ],
   processError: (response, { outcome }) => [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, outcome)]
 };

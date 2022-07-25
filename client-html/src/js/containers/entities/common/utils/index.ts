@@ -4,10 +4,15 @@
  */
 
 import {
- Course, EntityRelationType, Module, Qualification, Sale, SaleType 
+  Account,
+  Course, EntityRelationType, Module, Qualification, Sale, SaleType
 } from "@api/model";
+import { format } from "date-fns";
 import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
 import { EntityName } from "../../../../model/entities/common";
+import { EEE_D_MMM_YYYY } from "../../../../common/utils/dates/format";
+import { defaultContactName } from "../../contacts/utils";
+import { State } from "../../../../reducers/state";
 
 export const mapEntityDisplayName = (entity: EntityName, count?: number) => {
   switch (entity) {
@@ -24,6 +29,64 @@ export const mapEntityDisplayName = (entity: EntityName, count?: number) => {
       return `Sale${count > 1 ? "s" : ""} (Product)`;
     default:
       return `${entity}${count > 1 ? entity[entity.length - 1] === "s" ? "es" : "s" : ""}`;
+  }
+};
+
+export const mapEntityListDisplayName = (entity: EntityName, item: any, state: State) => {
+  switch (entity) {
+    case "Account":
+      return `${item.accountCode} ${item.description}`;
+    case "Application":
+      return item.courseName;
+    case "AssessmentSubmission":
+      return item.id;
+    case "Banking":
+      return `${format(new Date(item.settlementDate), EEE_D_MMM_YYYY)}${item.adminSite ? " for " + item.adminSite : ""}`;
+    case "CorporatePass":
+      return defaultContactName(item.contactFullName);
+    case "Certificate":
+      return item.studentName;
+    case "Course":
+      return `${item.name} ${item.code}`;
+    case "Outcome":
+    case "Enrolment":
+      return item.studentName;
+    case "Invoice":
+    case "AbstractInvoice":
+      return item.invoiceNumber;
+    case "Lead":
+      return item.contactName;
+    case "Message":
+      return `${item.sentToContactFullname} (${item.subject})`;
+    case "Qualification":
+    case "PriorLearning":
+    case "Module":
+      return item.title;
+    case "PaymentIn":
+      return item.payerName;
+    case "PaymentOut":
+      return item.payeeName;
+    case "Payslip":
+      return item.tutorFullName;
+    case "ProductItem":
+      return item.productName;
+    case "Survey":
+      return item.studentName + " - " + item.className;
+    case "AccountTransaction": {
+      let name: any = item.fromAccount;
+
+      if (state.plainSearchRecords.Account.items) {
+        const account = state.plainSearchRecords.Account.items.find((acc: Account) => acc.id === item.fromAccount);
+
+        if (account) {
+          name = `${account.description} ${account.accountCode}`;
+        }
+      }
+
+      return name;
+    }
+    default:
+      return item.name;
   }
 };
 

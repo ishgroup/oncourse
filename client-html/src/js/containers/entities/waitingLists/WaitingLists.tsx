@@ -15,7 +15,7 @@ import ListView from "../../../common/components/list-view/ListView";
 import WaitingListEditView from "./components/WaitingListEditView";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { getEntityTags, getListTags } from "../../tags/actions";
-import { getWaitingList, removeWaitingList, updateWaitingList } from "./actions";
+import { updateWaitingList } from "./actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { State } from "../../../reducers/state";
 import WaitingListCogWheel from "./components/WaitingListCogWheel";
@@ -55,7 +55,7 @@ class WaitingLists extends React.Component<any, any> {
 
   render() {
     const {
-      getWaitingListRecord, onSave, updateTableModel, onInit
+      onSave, updateTableModel, onInit
     } = this.props;
 
     return (
@@ -72,7 +72,6 @@ class WaitingLists extends React.Component<any, any> {
           }}
           updateTableModel={updateTableModel}
           EditViewContent={WaitingListEditView}
-          getEditRecord={getWaitingListRecord}
           rootEntity="WaitingList"
           onInit={onInit}
           onSave={onSave}
@@ -103,9 +102,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getFilters: () => dispatch(getFilters("WaitingList")),
   getTags: () => dispatch(getListTags("WaitingList")),
   clearListState: () => dispatch(clearListState()),
-  getWaitingListRecord: (id: string) => dispatch(getWaitingList(id)),
-  onSave: (id: string, waitingList: WaitingList) => dispatch(updateWaitingList(id, waitingList)),
-  onDelete: (id: string) => dispatch(removeWaitingList(id))
+  onSave: (id: string, waitingList: WaitingList) => dispatch(updateWaitingList(id, waitingList))
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(WaitingLists);

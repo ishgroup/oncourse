@@ -7,10 +7,8 @@
  */
 
 import { combineEpics } from "redux-observable";
-import { EpicGetLead } from "./EpicGetLead";
 import { EpicUpdateLead } from "./EpicUpdateLead";
 
 export const EpicLead = combineEpics(
-  EpicGetLead,
   EpicUpdateLead
 );

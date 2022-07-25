@@ -9,12 +9,13 @@ import { initialize } from "redux-form";
 import { Invoice } from "@api/model";
 import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_INVOICE_ITEM, UPDATE_INVOICE_ITEM, UPDATE_INVOICE_ITEM_FULFILLED } from "../actions";
+import { UPDATE_INVOICE_ITEM, UPDATE_INVOICE_ITEM_FULFILLED } from "../actions";
 import { clearActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { updateEntityItemById } from "../../common/entityItemsService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { getEntityRecord } from "../../common/actions";
 
 const request: EpicUtils.Request<any, { id: number; invoice: Invoice & { notes: any } }> = {
   type: UPDATE_INVOICE_ITEM,
@@ -36,10 +37,9 @@ const request: EpicUtils.Request<any, { id: number; invoice: Invoice & { notes: 
         type: GET_RECORDS_REQUEST,
         payload: { entity: "AbstractInvoice", listUpdate: true, savedID: id }
       },
-      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
-          type: GET_INVOICE_ITEM,
-          payload: id
-        }] : []
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [
+        getEntityRecord(id, "AbstractInvoice")
+      ] : []
     ],
   processError: (response, { invoice }) => [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, invoice)]
 };

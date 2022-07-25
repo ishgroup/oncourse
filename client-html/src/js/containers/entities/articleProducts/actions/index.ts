@@ -6,14 +6,7 @@
 import { ArticleProduct } from "@api/model";
 import { _toRequestType } from "../../../../common/actions/ActionUtils";
 
-export const GET_ARTICLE_PRODUCT_ITEM = _toRequestType("get/articleProduct");
-
 export const UPDATE_ARTICLE_PRODUCT_ITEM = _toRequestType("put/articleProduct");
-
-export const getArticleProduct = (id: string) => ({
-  type: GET_ARTICLE_PRODUCT_ITEM,
-  payload: id
-});
 
 export const updateArticleProduct = (id: string, articleProduct: ArticleProduct) => ({
   type: UPDATE_ARTICLE_PRODUCT_ITEM,

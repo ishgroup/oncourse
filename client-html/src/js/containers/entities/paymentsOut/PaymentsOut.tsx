@@ -13,7 +13,7 @@ import zIndex from "@mui/material/styles/zIndex";
 import { ExitToApp } from "@mui/icons-material";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
-import { getActivePaymentOutMethods, getPaymentOut, updatePaymentOut } from "./actions";
+import { getActivePaymentOutMethods, updatePaymentOut } from "./actions";
 import { getPlainAccounts } from "../accounts/actions";
 import { clearListState, getFilters, } from "../../../common/components/list-view/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
@@ -95,7 +95,7 @@ class PaymentsOut extends React.Component<any, any> {
 
   render() {
     const {
-      getPaymentOutRecord, onSave, classes
+      onSave, classes
     } = this.props;
 
     return (
@@ -110,7 +110,6 @@ class PaymentsOut extends React.Component<any, any> {
             nameCondition
           }}
           EditViewContent={PaymentsOutEditView}
-          getEditRecord={getPaymentOutRecord}
           rootEntity="PaymentOut"
           onInit={() => this.openCreateNewDialog()}
           onSave={onSave}
@@ -168,7 +167,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getAdministrationSites: () => dispatch(getAdministrationSites()),
   getAccounts: () => getPlainAccounts(dispatch),
   clearListState: () => dispatch(clearListState()),
-  getPaymentOutRecord: (id: string) => dispatch(getPaymentOut(id)),
   getActivePaymentOutMethods: () => dispatch(getActivePaymentOutMethods()),
   onSave: (id: string, paymentOut: PaymentOutModel) => dispatch(updatePaymentOut(id, paymentOut))
 });

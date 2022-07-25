@@ -7,12 +7,13 @@ import { Epic } from "redux-observable";
 import { initialize } from "redux-form";
 import { Module } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_MODULE_ITEM, UPDATE_MODULE_ITEM, UPDATE_MODULE_ITEM_FULFILLED } from "../actions";
+import { UPDATE_MODULE_ITEM, UPDATE_MODULE_ITEM_FULFILLED } from "../actions";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { updateEntityItemById } from "../../common/entityItemsService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { getEntityRecord } from "../../common/actions";
 
 const request: EpicUtils.Request<any, { id: number; module: Module }> = {
   type: UPDATE_MODULE_ITEM,
@@ -29,10 +30,9 @@ const request: EpicUtils.Request<any, { id: number; module: Module }> = {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Module", listUpdate: true, savedID: id }
       },
-      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
-        type: GET_MODULE_ITEM,
-        payload: id
-      }] : []
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [
+        getEntityRecord(id, "Module")
+      ] : []
     ],
   processError: (response, { module }) => [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, module)]
 };

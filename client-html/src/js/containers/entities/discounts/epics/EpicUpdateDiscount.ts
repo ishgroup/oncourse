@@ -6,11 +6,12 @@
 import { Epic } from "redux-observable";
 import { Discount } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_DISCOUNT_ITEM, UPDATE_DISCOUNT_ITEM, UPDATE_DISCOUNT_ITEM_FULFILLED } from "../actions";
+import { UPDATE_DISCOUNT_ITEM, UPDATE_DISCOUNT_ITEM_FULFILLED } from "../actions";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { updateEntityItemById } from "../../common/entityItemsService";
+import { getEntityRecord } from "../../common/actions";
 
 const request: EpicUtils.Request<any, { id: number; discount: Discount }> = {
   type: UPDATE_DISCOUNT_ITEM,
@@ -27,10 +28,9 @@ const request: EpicUtils.Request<any, { id: number; discount: Discount }> = {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Discount", listUpdate: true, savedID: id }
       },
-      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
-        type: GET_DISCOUNT_ITEM,
-        payload: id
-      }] : []
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [
+        getEntityRecord(id, "Discount")
+      ] : []
     ],
   processError: response => [...FetchErrorHandler(response)]
 };

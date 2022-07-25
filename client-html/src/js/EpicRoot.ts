@@ -24,7 +24,6 @@ import { EpicDocuments } from "./common/components/form/documents/epics";
 import { EpicInvoice } from "./containers/entities/invoices/epics";
 import { EpicPaymentIn } from "./containers/entities/paymentsIn/epics";
 import { EpicPaymentOut } from "./containers/entities/paymentsOut/epics";
-import { EpicTransaction } from "./containers/entities/transactions/epics";
 import { EpicPayslip } from "./containers/entities/payslips/epics";
 import { EpicPayrolls } from "./containers/entities/payrolls/epics";
 import { EpicAccounts } from "./containers/entities/accounts/epics";
@@ -92,7 +91,6 @@ const importSet = new Set([
   EpicInvoice,
   EpicPaymentIn,
   EpicPaymentOut,
-  EpicTransaction,
   EpicPayslip,
   EpicTaxes,
   EpicPayrolls,

@@ -7,9 +7,6 @@ export const GET_SALES = _toRequestType("get/sales");
 export const GET_SALES_FULFILLED = FULFILLED(GET_SALES);
 export const GET_SALES_REJECTED = REJECTED(GET_SALES);
 
-export const GET_SALE = _toRequestType("get/sale");
-export const GET_SALE_FULFILLED = FULFILLED(GET_SALE);
-
 export const UPDATE_SALE = _toRequestType("update/sale");
 export const UPDATE_SALE_FULFILLED = FULFILLED(UPDATE_SALE);
 
@@ -29,11 +26,6 @@ export const GET_SALE_MENU_TAGS = "get/sale/tags";
 
 export const setSaleDelivered = (id: number) => ({
   type: SET_SALE_DELIVERED,
-  payload: { id }
-});
-
-export const getSale = (id: string) => ({
-  type: GET_SALE,
   payload: { id }
 });
 

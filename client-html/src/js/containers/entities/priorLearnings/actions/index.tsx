@@ -1,16 +1,8 @@
 import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
 import { PriorLearning } from "@api/model";
 
-export const GET_PRIOR_LEARNING_ITEM = _toRequestType("get/priorLearning");
-export const GET_PRIOR_LEARNING_ITEM_FULFILLED = FULFILLED(GET_PRIOR_LEARNING_ITEM);
-
 export const UPDATE_PRIOR_LEARNING_ITEM = _toRequestType("put/priorLearning");
 export const UPDATE_PRIOR_LEARNING_ITEM_FULFILLED = FULFILLED(UPDATE_PRIOR_LEARNING_ITEM);
-
-export const getPriorLearning = (id: string) => ({
-  type: GET_PRIOR_LEARNING_ITEM,
-  payload: id
-});
 
 export const updatePriorLearning = (id: string, priorLearning: PriorLearning) => ({
   type: UPDATE_PRIOR_LEARNING_ITEM,

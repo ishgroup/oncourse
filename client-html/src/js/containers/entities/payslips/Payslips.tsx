@@ -14,9 +14,7 @@ import {
   setListEditRecord
 } from "../../../common/components/list-view/actions";
 import { defaultContactName } from "../contacts/utils";
-import {
-  updatePayslip, getPayslip
-} from "./actions";
+import { updatePayslip } from "./actions";
 import PayslipsEditView from "./components/PayslipsEditView";
 import ListView from "../../../common/components/list-view/ListView";
 import { getListTags } from "../../tags/actions";
@@ -92,7 +90,7 @@ class Payslips extends React.Component<any, any> {
 
   render() {
     const {
-      onSave, getPayslipRecord, onInit
+      onSave, onInit
     } = this.props;
 
     return (
@@ -107,7 +105,6 @@ class Payslips extends React.Component<any, any> {
           hideTitle: true
         }}
         EditViewContent={PayslipsEditView}
-        getEditRecord={getPayslipRecord}
         rootEntity="Payslip"
         onInit={onInit}
         onSave={onSave}
@@ -130,7 +127,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getFilters: () => dispatch(getFilters("Payslip")),
   getTags: () => dispatch(getListTags("Payslip")),
-  getPayslipRecord: (id: string) => dispatch(getPayslip(id)),
   clearListState: () => dispatch(clearListState()),
   onSave: (id: string, payslip: Payslip) => dispatch(updatePayslip(id, payslip)),
   getGenerateAccess: () => dispatch(checkPermissions({ path: "/a/v1/list/option/payroll?entity=Payslip", method: "PUT" })),

@@ -9,12 +9,13 @@ import { Enrolment } from "@api/model";
 import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { processCustomFields } from "../../customFieldTypes/utils";
-import { GET_ENROLMENT_ITEM, UPDATE_ENROLMENT_ITEM, UPDATE_ENROLMENT_ITEM_FULFILLED } from "../actions";
+import { UPDATE_ENROLMENT_ITEM, UPDATE_ENROLMENT_ITEM_FULFILLED } from "../actions";
 import { clearActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import EnrolmentService from "../services/EnrolmentService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { getEntityRecord } from "../../common/actions";
 
 const request: EpicUtils.Request<any, { id: number; enrolment: Enrolment & { notes: any } }> = {
   type: UPDATE_ENROLMENT_ITEM,
@@ -42,10 +43,9 @@ const request: EpicUtils.Request<any, { id: number; enrolment: Enrolment & { not
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Enrolment", listUpdate: true, savedID: id }
       },
-      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
-        type: GET_ENROLMENT_ITEM,
-        payload: id
-      }] : []
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [
+        getEntityRecord(id, "Enrolment")
+      ] : []
     ],
   processError: (response, { enrolment }) => [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, enrolment)]
 };

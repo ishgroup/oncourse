@@ -88,7 +88,7 @@ import {
 import { setSwipeableDrawerDirtyForm } from "../layout/swipeable-sidebar/actions";
 import { LSGetItem } from "../../utils/storage";
 import { getCustomFieldTypes } from "../../../containers/entities/customFieldTypes/actions";
-import { createEntityRecord, deleteEntityRecord } from "../../../containers/entities/common/actions";
+import { createEntityRecord, deleteEntityRecord, getEntityRecord } from "../../../containers/entities/common/actions";
 
 export const ListSideBarDefaultWidth = 200;
 export const ListMainContentDefaultWidth = 774;
@@ -118,11 +118,11 @@ const sideBarTheme = theme => createTheme({
 interface OwnProps {
   onCreate?: (item: any) => void;
   onDelete?: (id: number) => void;
+  getEditRecord?: (id: number) => void;
 }
 
 interface Props extends Partial<ListState> {
   listProps: TableListProps;
-  getEditRecord: (id: string) => void;
   rootEntity: EntityName;
   EditViewContent: any;
   onLoadMore?: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => void;
@@ -189,6 +189,7 @@ interface Props extends Partial<ListState> {
   searchMenuItemsRenderer?: ListAqlMenuItemsRenderer;
   customOnCreate?: any;
   customOnCreateAction?: any;
+  customGetAction?: any;
   preformatBeforeSubmit?: AnyArgFunction;
   userAQLSearch?: string;
   listSearch?: string;
@@ -564,7 +565,7 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
     this.filtersSynchronized = true;
   };
 
-  onGetEditRecord = (id: string) => {
+  onGetEditRecord = id => {
     const { sendGAEvent, getEditRecord, rootEntity } = this.props;
 
     sendGAEvent("screenview", `${rootEntity}EditView`);
@@ -1286,7 +1287,10 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   onCreate: (item: any) => dispatch( ownProps.customOnCreateAction 
     ? ownProps.customOnCreateAction(item) 
     : createEntityRecord(item, ownProps.rootEntity)),
-  onDelete: (id: number) => dispatch(deleteEntityRecord(id, ownProps.rootEntity))
+  onDelete: (id: number) => dispatch(deleteEntityRecord(id, ownProps.rootEntity)),
+  getEditRecord: (id: number) => dispatch(ownProps.customGetAction 
+    ? ownProps.customGetAction(id) 
+    : getEntityRecord(id, ownProps.rootEntity))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(ListView))) as React.FC<Props>;

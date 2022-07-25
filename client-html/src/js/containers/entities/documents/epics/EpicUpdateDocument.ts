@@ -7,7 +7,8 @@ import { processNotesAsyncQueue } from "../../../../common/components/form/notes
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_DOCUMENT_EDIT, UPDATE_DOCUMENT_ITEM, UPDATE_DOCUMENT_ITEM_FULFILLED } from "../actions";
+import { UPDATE_DOCUMENT_ITEM, UPDATE_DOCUMENT_ITEM_FULFILLED } from "../actions";
+import { getEntityRecord } from "../../common/actions";
 
 const request: EpicUtils.Request<any, { id: number; document: Document & { notes: any } }> = {
   type: UPDATE_DOCUMENT_ITEM,
@@ -26,10 +27,9 @@ const request: EpicUtils.Request<any, { id: number; document: Document & { notes
       type: GET_RECORDS_REQUEST,
       payload: { entity: "Document", listUpdate: true, savedID: id }
     },
-    ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
-      type: GET_DOCUMENT_EDIT,
-      payload: id
-    }] : []
+    ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [
+      getEntityRecord(id, "Document")
+    ] : []
   ],
   processError: (response, { document }) => [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, document)]
 };

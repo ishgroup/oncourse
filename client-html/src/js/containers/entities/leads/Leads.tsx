@@ -14,7 +14,7 @@ import { Lead } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { getEntityTags, getListTags } from "../../tags/actions";
-import { getLead, updateLead } from "./actions";
+import { updateLead } from "./actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { State } from "../../../reducers/state";
 import LeadCogWheel from "./components/LeadCogWheel";
@@ -86,7 +86,7 @@ const setRowClasses = ({ status }) => (status === "Closed" ? "text-op05" : undef
 
 const Leads = props => {
   const {
-    getLeadRecord, onSave, updateTableModel, onInit
+    onSave, updateTableModel, onInit
   } = props;
 
   useEffect(() => {
@@ -127,7 +127,6 @@ const Leads = props => {
         }}
         updateTableModel={updateTableModel}
         EditViewContent={LeadEditView}
-        getEditRecord={getLeadRecord}
         rootEntity="Lead"
         onInit={onInit}
         onSave={onSave}
@@ -160,7 +159,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   getFilters: () => dispatch(getFilters("Lead")),
   getTags: () => dispatch(getListTags("Lead")),
   clearListState: () => dispatch(clearListState()),
-  getLeadRecord: (id: string) => dispatch(getLead(id)),
   onSave: (id: string, lead: Lead) => dispatch(updateLead(id, lead)),
 });
 

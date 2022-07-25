@@ -7,10 +7,9 @@ import { Epic } from "redux-observable";
 import { Site } from "@api/model";
 import { initialize } from "redux-form";
 import { getNoteItems } from "../../../../common/components/form/notes/actions";
-
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_SITE_ITEM, GET_SITE_ITEM_FULFILLED, UPDATE_SITE_ITEM } from "../actions/index";
-import { SET_LIST_EDIT_RECORD } from "../../../../common/components/list-view/actions/index";
+import { GET_SITE_ITEM, GET_SITE_ITEM_FULFILLED, UPDATE_SITE_ITEM } from "../actions";
+import { SET_LIST_EDIT_RECORD } from "../../../../common/components/list-view/actions";
 import { getEntityItemById } from "../../common/entityItemsService";
 import GoogleApiService from "../../../../common/components/google-maps/services/GoogleApiService";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";

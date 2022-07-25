@@ -2,9 +2,6 @@ import { Course, CourseClass, Invoice } from "@api/model";
 import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
 import { ContraInvoice, ContraInvoiceFormData } from "../reducers/state";
 
-export const GET_INVOICE_ITEM = _toRequestType("get/invoice");
-export const GET_INVOICE_ITEM_FULFILLED = FULFILLED(GET_INVOICE_ITEM);
-
 export const GET_DEFAULT_INVOICE_TERMS = _toRequestType("get/invoice/contra");
 export const GET_DEFAULT_INVOICE_TERMS_FULFILLED = FULFILLED(GET_DEFAULT_INVOICE_TERMS);
 
@@ -78,11 +75,6 @@ export const setInvoiceLineCourse = (selectedLineCourse: Course, selectedLineCou
 export const setInvoiceLineEnrolments = (selectedLineEnrolments: string[]) => ({
   type: SET_INVOICE_LINE_ENROLMENTS,
   payload: { selectedLineEnrolments }
-});
-
-export const getInvoice = (id: string) => ({
-  type: GET_INVOICE_ITEM,
-  payload: id
 });
 
 export const updateInvoice = (id: string, invoice: Invoice) => ({

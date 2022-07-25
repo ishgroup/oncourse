@@ -8,13 +8,14 @@ import { Epic } from "redux-observable";
 import { initialize } from "redux-form";
 import { PaymentOut } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_PAYMENT_OUT_ITEM, UPDATE_PAYMENT_OUT_ITEM, UPDATE_PAYMENT_OUT_ITEM_FULFILLED } from "../actions";
+import { UPDATE_PAYMENT_OUT_ITEM, UPDATE_PAYMENT_OUT_ITEM_FULFILLED } from "../actions";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { updateEntityItemById } from "../../common/entityItemsService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { PaymentOutModel } from "../reducers/state";
+import { getEntityRecord } from "../../common/actions";
 
 const request: EpicUtils.Request<any, { id: number; paymentOut: PaymentOutModel }> = {
   type: UPDATE_PAYMENT_OUT_ITEM,
@@ -31,10 +32,9 @@ const request: EpicUtils.Request<any, { id: number; paymentOut: PaymentOutModel 
         type: GET_RECORDS_REQUEST,
         payload: { entity: "PaymentOut", listUpdate: true, savedID: id }
       },
-      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
-        type: GET_PAYMENT_OUT_ITEM,
-        payload: id
-      }] : []
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [
+        getEntityRecord(id, "PaymentOut")
+      ] : []
     ],
   processError: (response, { paymentOut }) => [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, paymentOut)]
 };
