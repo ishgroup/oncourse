@@ -149,7 +149,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	}
 
 	int getAttendancePercentForStudent(Student student){
-		def studentAttendances = student.attendances.findAll { it.session.courseClass.id == id && it.attendanceType != AttendanceType.UNMARKED }
+		def studentAttendances = student.attendances.findAll { it.session.courseClass.id == id && it.attendanceType != AttendanceType.UNMARKED && it.session.endDatetime.before(new Date()) }
 		if(studentAttendances.isEmpty())
 			return 100
 		def attendancesDuration = ((studentAttendances.collect {getDurationByType(it)}.sum() as Integer) * 100)
