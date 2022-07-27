@@ -13,8 +13,12 @@ package ish.oncourse.aql.model;
 
 import ish.common.types.DataType;
 import ish.oncourse.aql.model.attribute.*;
+import ish.oncourse.aql.model.attribute.tagging.ChecklistsAttribute;
+import ish.oncourse.aql.model.attribute.tagging.TagsAttribute;
 import ish.oncourse.aql.model.attribute.tagging.relations.*;
+import ish.oncourse.server.api.v1.function.TagFunctions;
 import ish.oncourse.server.cayenne.CustomFieldType;
+import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.map.ObjEntity;
@@ -111,6 +115,9 @@ public class EntityFactory {
             CourseClassAbstractInvoiceLines.class,
             TaxAbstractInvoiceLines.class,
             AccountAbstractInvoiceLines.class
+            TaggingRelationsWaitingList.class,
+            TagsAttribute.class,
+            ChecklistsAttribute.class
     );
 
     private final ObjectContext context;
@@ -150,6 +157,10 @@ public class EntityFactory {
         var entityName = entity.getName();
         var syntheticAttributesForEntity
                 = syntheticAttributes.getOrDefault(entity.getJavaClassName(), Collections.emptyList());
+        if(entityIsTaggable(entityName)){
+            var taggableAttributes = syntheticAttributes.getOrDefault(TaggableCayenneDataObject.class.getName(), Collections.emptyList());
+            syntheticAttributesForEntity.addAll(taggableAttributes);
+        }
         if(ENTITIES_WITH_CUSTOM_FIELDS.contains(entityName)) {
             return new Entity(this, entity, customFieldLookup(entityName), syntheticAttributesForEntity);
         }
@@ -177,6 +188,10 @@ public class EntityFactory {
             customFields.put((String) field[0], marker);
         });
         return customFields;
+    }
+
+    private boolean entityIsTaggable(String entityName){
+        return TagFunctions.taggableClassesBidiMap.containsKey(entityName);
     }
 
 }
