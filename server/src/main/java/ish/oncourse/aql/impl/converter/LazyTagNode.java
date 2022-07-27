@@ -11,6 +11,7 @@
 
 package ish.oncourse.aql.impl.converter;
 
+import ish.common.types.NodeType;
 import ish.oncourse.aql.impl.CompilationContext;
 import ish.oncourse.aql.impl.ExpressionUtil;
 import ish.oncourse.aql.model.Entity;
@@ -96,8 +97,13 @@ public class LazyTagNode extends LazyExprNodeWithBasePathResolver {
         var entityIdentifier = new ASTEqual(entityPath, tagEntity.getDatabaseValue());
         var tagName = new ASTEqual(namePath, tag);
 
+        var tagNodePath = new ASTObjPath(path + aliasName + ".tag+.nodeType");
+        tagNodePath.setPathAliases(map);
+        var tagNodeType = new ASTEqual(tagNodePath, NodeType.TAG.getDatabaseValue());
+
         ExpressionUtil.addChild(taggedNode, entityIdentifier, 0);
-        ExpressionUtil.addChild(taggedNode, tagName, 1);
+        ExpressionUtil.addChild(taggedNode, tagNodeType, 1);
+        ExpressionUtil.addChild(taggedNode, tagName, 2);
 
         return taggedNode;
     }
