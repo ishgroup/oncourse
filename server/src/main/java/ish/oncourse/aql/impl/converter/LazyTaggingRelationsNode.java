@@ -8,6 +8,7 @@
 
 package ish.oncourse.aql.impl.converter;
 
+import ish.common.types.NodeType;
 import ish.oncourse.aql.impl.CompilationContext;
 import ish.oncourse.aql.impl.ExpressionUtil;
 import ish.oncourse.aql.model.Entity;
@@ -114,6 +115,11 @@ public class LazyTaggingRelationsNode extends LazyExprNodeWithBasePathResolver {
         String identPath = entityPath + TAGGING_RELATIONS + "+." + "entityIdentifier";
         ASTEqual identifierEqNode = new ASTEqual(new ASTObjPath(identPath), taggableClasses.getDatabaseValue());
         ExpressionUtil.addChild(and, identifierEqNode, 1);
+
+        // add check if it is tag or checklist
+        String nodeTypePath = entityPath + TAGGING_RELATIONS + "+." + "tag" + ".nodeType";
+        ASTEqual nodeTypeEqNode = new ASTEqual(new ASTObjPath(nodeTypePath), NodeType.TAG);
+        ExpressionUtil.addChild(and, nodeTypeEqNode, idx);
 
         return and;
     }

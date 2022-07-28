@@ -45,17 +45,18 @@ public class LazyTagsNode extends LazyExprNodeWithBasePathResolver {
         }
         String basePath = astObjPath.getPath();
         var lastPointIndex = basePath.lastIndexOf("tags");
-        String relationsPath = basePath.substring(0, lastPointIndex);
+        String entityPath = basePath.substring(0, lastPointIndex);
 
-        var taggedEntity = EntityPathUtils.resolvePathToTaggable(relationsPath, ctx);
+        var taggedEntity = EntityPathUtils.resolvePathToTaggable(entityPath, ctx);
         if (taggedEntity == null) {
             return null;
         }
 
         TaggableClasses taggableClasses = TaggableUtil.resolveTaggableClass(taggedEntity);
 
-        ASTAnd notEmptyExpr = buildNotEmptyExpr(parent, relationsPath, args, taggableClasses);
+        ASTAnd notEmptyExpr = buildTagChecksExpr(entityPath, taggableClasses);
 
+        // tags is empty || tags is null expressions
         if (parent instanceof ASTEqual && (basePath.endsWith(TAGS) || basePath.endsWith(CHECKLISTS))) {
             List<Long> notEmptyIds = ObjectSelect.columnQuery(taggedEntity.getJavaClass(), Property.create("id", Long.class))
                     .where(notEmptyExpr)
@@ -67,16 +68,7 @@ public class LazyTagsNode extends LazyExprNodeWithBasePathResolver {
             return new ASTNotIn(new ASTObjPath("id"), new ASTList(notEmptyIds));
         }
 
-        var other = args.subList(1, args.size());
-        var parentIdx = 0;
-        for (var child : other) {
-            //rewrite this
-            if (child instanceof ASTObjPath) {
-                child = updatePath(child);
-            }
-            ExpressionUtil.addChild(parent, child, parentIdx++);
-        }
-
+        parent = processAsAlias(parent, args);
         notEmptyExpr.jjtAddChild(parent, notEmptyExpr.jjtGetNumChildren());
         return notEmptyExpr;
     }
@@ -86,23 +78,37 @@ public class LazyTagsNode extends LazyExprNodeWithBasePathResolver {
         return this;
     }
 
-    private ASTAnd buildNotEmptyExpr(SimpleNode parent, String relationsPath, List<SimpleNode> args, TaggableClasses taggableClasses) {
+    private SimpleNode processAsAlias(SimpleNode parent, List<SimpleNode> args){
+        var other = args.subList(1, args.size());
+        var parentIdx = 0;
+        for (var child : other) {
+            //replace first alias (tags/checklists) with cayenne path
+            if (child instanceof ASTObjPath) {
+                child = updatePath(child);
+            }
+            ExpressionUtil.addChild(parent, child, parentIdx++);
+        }
+        return parent;
+    }
+
+    private ASTAnd buildTagChecksExpr(String entityPath, TaggableClasses taggableClasses) {
         var idx = 0;
 
         var and = new ASTAnd();
-       // and.jjtAddChild(parent, idx++);
+
+        // add check if tag is not null
         var notEmpty = new ASTNotEqual();
-        String basePathWithJoin = relationsPath + TAGGING_RELATIONS + "+." + "tag";
+        String basePathWithJoin = entityPath + TAGGING_RELATIONS + "+." + "tag";
         notEmpty.jjtAddChild(new ASTObjPath(basePathWithJoin), 0);
         notEmpty.jjtAddChild(new ASTScalar(null), 1);
         and.jjtAddChild(notEmpty, idx++);
 
-
-
-        String identPath = relationsPath + TAGGING_RELATIONS + "+." + "entityIdentifier";
+        // add check if tag is for this entity type
+        String identPath = entityPath + TAGGING_RELATIONS + "+." + "entityIdentifier";
         ASTEqual identifierEqNode = new ASTEqual(new ASTObjPath(identPath), taggableClasses.getDatabaseValue());
         ExpressionUtil.addChild(and, identifierEqNode, idx++);
 
+        // add check if it is tag or checklist
         String nodeTypePath = basePathWithJoin + ".nodeType";
         ASTEqual nodeTypeEqNode = new ASTEqual(new ASTObjPath(nodeTypePath), nodeType.getDatabaseValue());
         ExpressionUtil.addChild(and, nodeTypeEqNode, idx);
@@ -114,9 +120,9 @@ public class LazyTagsNode extends LazyExprNodeWithBasePathResolver {
         String path = ((ASTObjPath) child).getPath();
         String newPath = path;
         if (nodeType == NodeType.TAG && path.contains(TAGS + ".")) {
-            newPath = path.replace(TAGS + ".", "taggingRelations+.tag+.");
+            newPath = path.replaceFirst(TAGS + ".", "taggingRelations+.tag+.");
         } else if (path.contains(CHECKLISTS + ".")) {
-            newPath = path.replace(CHECKLISTS + ".", "taggingRelations+.tag+.");
+            newPath = path.replaceFirst(CHECKLISTS + ".", "taggingRelations+.tag+.");
         }
 
         return new ASTObjPath(newPath);
