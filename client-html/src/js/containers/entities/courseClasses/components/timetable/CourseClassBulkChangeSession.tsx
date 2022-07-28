@@ -10,7 +10,7 @@ import clsx from "clsx";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import {
-  arrayPush, arrayRemove, change, Field, getFormValues, initialize, reduxForm, submit
+  arrayPush, arrayRemove, change, Field, getFormValues, initialize, reduxForm, submit, Form
 } from "redux-form";
 import Dialog from "@mui/material/Dialog";
 import Grid from "@mui/material/Grid";
@@ -27,6 +27,7 @@ import { TutorAttendance } from "@api/model";
 import {
   addDays, differenceInMinutes, format as formatDate, subDays
 } from "date-fns";
+import LoadingButton from "@mui/lab/LoadingButton";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
 import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
@@ -155,6 +156,7 @@ const CourseClassBulkChangeSessionForm = props => {
 
   const [laterDate, setLaterDate] = useState<string>(null);
   const [earlierDate, setEarlierDate] = useState<string>(null);
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
   const classTimezone = useMemo(() => {
     if (!sessions) {
@@ -236,7 +238,12 @@ const CourseClassBulkChangeSessionForm = props => {
   }, []);
 
   const submitChanges = () => {
-    dispatch(submit(form));
+    setSubmitting(true);
+    // timeout for fileds that get chaged on blur
+    setTimeout(() => {
+      dispatch(submit(form));
+      setSubmitting(false);
+    }, 1000);
   };
 
   const onDeleteTutor = (index: number) => {
@@ -302,7 +309,7 @@ const CourseClassBulkChangeSessionForm = props => {
         paper: classes.paperDialog
       }}
     >
-      <form autoComplete="off" noValidate onSubmit={handleSubmit} role={COURSE_CLASS_BULK_UPDATE_FORM}>
+      <Form onSubmit={handleSubmit} role={COURSE_CLASS_BULK_UPDATE_FORM}>
         <DialogContent
           classes={{
             root: classes.bulkChangeDialogContent
@@ -480,17 +487,18 @@ const CourseClassBulkChangeSessionForm = props => {
           <Button color="primary" onClick={onClose}>
             Cancel
           </Button>
-          <Button
+          <LoadingButton
             {...updateButtonProps}
             variant="contained"
             color="primary"
             onClick={submitChanges}
+            loading={submitting}
             disabled={invalid || !dirty || Boolean(asyncValidating)}
           >
             Update
-          </Button>
+          </LoadingButton>
         </DialogActions>
-      </form>
+      </Form>
     </Dialog>
   );
 };
