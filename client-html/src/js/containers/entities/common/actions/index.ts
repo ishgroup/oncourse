@@ -28,9 +28,9 @@ export const createEntityRecord = (item: any, entity: EntityName) => ({
   payload: { item, entity }
 });
 
-export const updateEntityRecord = (id: number, entity: EntityName) => ({
+export const updateEntityRecord = (id: number, entity: EntityName, item: any) => ({
   type: UPDATE_ENTITY_RECORD_REQUEST,
-  payload: { id, entity }
+  payload: { id, entity, item }
 });
 
 export const deleteEntityRecord = (id: number, entity: EntityName) => ({

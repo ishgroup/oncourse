@@ -13,7 +13,6 @@ import { plainCorporatePassPath } from "../../../constants/Api";
 import ArticleProductEditView from "./components/ArticleProductEditView";
 import { FilterGroup } from "../../../model/common/ListView";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import { updateArticleProduct } from "./actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { State } from "../../../reducers/state";
 import { getPlainTaxes } from "../taxes/actions";
@@ -29,7 +28,6 @@ import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption"
 interface ArticleProductsProps {
   onInit?: (initial: ArticleProduct) => void;
   onDelete?: (id: string) => void;
-  onSave?: (id: string, articleProduct: ArticleProduct) => void;
   getFilters?: () => void;
   getTags?: () => void;
   clearListState?: () => void;
@@ -118,7 +116,6 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
 
   const {
     onInit,
-    onSave,
     getFilters,
     getDefaultIncomeAccount,
     getTaxes,
@@ -178,7 +175,6 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
         CogwheelAdornment={BulkEditCogwheelOption}
         rootEntity="ArticleProduct"
         onInit={() => setInitNew(true)}
-        onSave={onSave}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         preformatBeforeSubmit={preformatBeforeSubmit}
@@ -200,7 +196,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getTags: () => dispatch(getListTags("ArticleProduct")),
   getFilters: () => dispatch(getFilters("ArticleProduct")),
   clearListState: () => dispatch(clearListState()),
-  onSave: (id: string, articleProduct: ArticleProduct) => dispatch(updateArticleProduct(id, articleProduct)),
   checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" })),
   getRelationTypes: () => dispatch(getEntityRelationTypes()),
   getDataCollectionRules: () => dispatch(getDataCollectionRules()),

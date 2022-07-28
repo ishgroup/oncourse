@@ -88,7 +88,12 @@ import {
 import { setSwipeableDrawerDirtyForm } from "../layout/swipeable-sidebar/actions";
 import { LSGetItem } from "../../utils/storage";
 import { getCustomFieldTypes } from "../../../containers/entities/customFieldTypes/actions";
-import { createEntityRecord, deleteEntityRecord, getEntityRecord } from "../../../containers/entities/common/actions";
+import {
+  createEntityRecord,
+  deleteEntityRecord,
+  getEntityRecord,
+  updateEntityRecord
+} from "../../../containers/entities/common/actions";
 
 export const ListSideBarDefaultWidth = 200;
 export const ListMainContentDefaultWidth = 774;
@@ -119,6 +124,7 @@ interface OwnProps {
   onCreate?: (item: any) => void;
   onDelete?: (id: number) => void;
   getEditRecord?: (id: number) => void;
+  onSave?: (item: any) => void;
 }
 
 interface Props extends Partial<ListState> {
@@ -129,7 +135,6 @@ interface Props extends Partial<ListState> {
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
   selection?: string[];
   editRecord?: any;
-  onSave?: any;
   onBeforeSave?: any;
   classes?: any;
   isDirty?: boolean;
@@ -190,6 +195,7 @@ interface Props extends Partial<ListState> {
   customOnCreate?: any;
   customOnCreateAction?: any;
   customGetAction?: any;
+  customUpdateAction?: any;
   preformatBeforeSubmit?: AnyArgFunction;
   userAQLSearch?: string;
   listSearch?: string;
@@ -1284,10 +1290,13 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   setListviewMainContentWidth: (value: string) => dispatch(setUserPreference({ key: LISTVIEW_MAIN_CONTENT_WIDTH, value })),
   submitForm: () => dispatch(submit(LIST_EDIT_VIEW_FORM_NAME)),
   closeConfirm: () => dispatch(closeConfirm()),
-  onCreate: (item: any) => dispatch( ownProps.customOnCreateAction 
-    ? ownProps.customOnCreateAction(item) 
+  onCreate: (item: any) => dispatch( ownProps.customOnCreateAction
+    ? ownProps.customOnCreateAction(item)
     : createEntityRecord(item, ownProps.rootEntity)),
   onDelete: (id: number) => dispatch(deleteEntityRecord(id, ownProps.rootEntity)),
+  onSave: (item: any) => dispatch( ownProps.customUpdateAction
+    ? ownProps.customUpdateAction(item)
+    : updateEntityRecord(item.id, ownProps.rootEntity, item)),
   getEditRecord: (id: number) => dispatch(ownProps.customGetAction 
     ? ownProps.customGetAction(id) 
     : getEntityRecord(id, ownProps.rootEntity))

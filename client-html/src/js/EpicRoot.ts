@@ -40,8 +40,6 @@ import { EpicSales } from "./containers/entities/sales/epics";
 import { EpicLead } from "./containers/entities/leads/epics";
 import { EpicWaitingList } from "./containers/entities/waitingLists/epics";
 import { EpicTimetable } from "./containers/timetable/epics";
-import { EpicApplication } from "./containers/entities/applications/epics";
-import { EpicArticleProduct } from "./containers/entities/articleProducts/epics";
 import { EpicVoucherProduct } from "./containers/entities/voucherProducts/epics";
 import { EpicMembershipProduct } from "./containers/entities/membershipProducts/epics";
 import { EpicCertificate } from "./containers/entities/certificates/epics";
@@ -49,7 +47,6 @@ import { EpicStudentFeedback } from "./containers/entities/survey/epics";
 import { EpicCustomFieldTypes } from "./containers/entities/customFieldTypes/epics";
 import { EpicTaxes } from "./containers/entities/taxes/epics";
 import { EpicOutcome } from "./containers/entities/outcomes/epics";
-import { EpicAssessment } from "./containers/entities/assessments/epics";
 import { EpicEnrolment } from "./containers/entities/enrolments/epics";
 import { EpicMessage } from "./containers/entities/messages/epics";
 import { EpicAutomation } from "./containers/automation/epics";
@@ -105,15 +102,12 @@ const importSet = new Set([
   EpicSales,
   EpicLead,
   EpicWaitingList,
-  EpicApplication,
-  EpicArticleProduct,
   EpicVoucherProduct,
   EpicMembershipProduct,
   EpicCertificate,
   EpicStudentFeedback,
   EpicCustomFieldTypes,
   EpicOutcome,
-  EpicAssessment,
   EpicAssessmentSubmissions,
   EpicEnrolment,
   EpicPriorLearning,

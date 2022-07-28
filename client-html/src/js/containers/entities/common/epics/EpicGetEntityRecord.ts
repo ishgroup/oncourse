@@ -20,8 +20,9 @@ import { GET_ENTITY_RECORD_REQUEST } from "../actions";
 import { mapEntityListDisplayName } from "../utils";
 import { getNoteItems } from "../../../../common/components/form/notes/actions";
 import { clearActionsQueue } from "../../../../common/actions";
+import { State } from "../../../../reducers/state";
 
-export const getProcessDataActions = (item, entity, state) => [
+export const getProcessDataActions = (item: any, entity: EntityName, state: State) => [
   {
     type: SET_LIST_EDIT_RECORD,
     payload: { editRecord: item, name: mapEntityListDisplayName(entity, item, state) }

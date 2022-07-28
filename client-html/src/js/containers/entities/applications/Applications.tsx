@@ -20,9 +20,6 @@ import {
 } from "../../../common/components/list-view/actions";
 import { getListTags } from "../../tags/actions";
 import { defaultContactName } from "../contacts/utils";
-import {
-  updateApplication
-} from "./actions";
 import ApplicationEditView from "./components/ApplicationEditView";
 import { FilterGroup } from "../../../model/common/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
@@ -34,7 +31,6 @@ import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption"
 interface ApplicationsProps {
   getApplicationRecord?: () => void;
   onInit?: () => void;
-  onSave?: (id: string, application: Application) => void;
   getFilters?: () => void;
   getTags?: () => void;
   clearListState?: () => void;
@@ -126,32 +122,29 @@ class Applications extends React.Component<ApplicationsProps, any> {
 
   render() {
     const {
-      onSave, onInit
+      onInit
     } = this.props;
 
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "course.name",
-            secondaryColumn: "student.contact.fullName"
-          }}
-          editViewProps={{
-            manualLink,
-            asyncValidate: notesAsyncValidate,
-            asyncBlurFields: ["notes[].message"],
-            nameCondition,
-            hideTitle: true
-          }}
-          EditViewContent={ApplicationEditView}
-          CogwheelAdornment={BulkEditCogwheelOption}
-          rootEntity="Application"
-          onInit={onInit}
-          onSave={onSave}
-          findRelated={findRelatedGroup}
-          filterGroupsInitial={filterGroups}
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "course.name",
+          secondaryColumn: "student.contact.fullName"
+        }}
+        editViewProps={{
+          manualLink,
+          asyncValidate: notesAsyncValidate,
+          asyncBlurFields: ["notes[].message"],
+          nameCondition,
+          hideTitle: true
+        }}
+        EditViewContent={ApplicationEditView}
+        CogwheelAdornment={BulkEditCogwheelOption}
+        rootEntity="Application"
+        onInit={onInit}
+        findRelated={findRelatedGroup}
+        filterGroupsInitial={filterGroups}
+      />
     );
   }
 }
@@ -169,7 +162,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getFilters: () => dispatch(getFilters("Application")),
   getTags: () => dispatch(getListTags("Application")),
   clearListState: () => dispatch(clearListState()),
-  onSave: (id: string, application: Application) => dispatch(updateApplication(id, application))
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Applications);

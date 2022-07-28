@@ -105,16 +105,20 @@ export const setListMenuTags = (menuTags: MenuTag[], checkedChecklists: MenuTag[
 });
 
 export const getRecords = (
-  entity: string,
-  listUpdate?: boolean,
-  viewAll?: boolean,
-  startIndex?: number,
-  stopIndex?: number,
-  resolve?: AnyArgFunction
+  {
+    entity,
+    viewAll,
+    listUpdate,
+    savedID,
+    ignoreSelection,
+    startIndex,
+    stopIndex,
+    resolve,
+  }: GetRecordsArgs
 ): IAction<GetRecordsArgs> => ({
   type: GET_RECORDS_REQUEST,
   payload: {
-    entity, listUpdate, viewAll, startIndex, stopIndex, resolve
+    entity, listUpdate, savedID, ignoreSelection, viewAll, startIndex, stopIndex, resolve
   }
 });
 

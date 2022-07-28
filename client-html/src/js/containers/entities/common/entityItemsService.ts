@@ -54,70 +54,81 @@ const defaultUnknown = () => {
 
 export const getEntityItemById = (entity: EntityName, id: number): Promise<any> => {
   switch (entity) {
+    case "Account":
+      return AccountService.getAccount(id);
+    case "AccountTransaction":
+      return TransactionService.getTransaction(id);
+    case "Application":
+      return ApplicationService.getApplication(id);
     case "Audit":
       return AuditsService.getAuditItem(id);
     case "Assessment":
       return AssessmentService.getAssessment(id);
     case "AssessmentSubmission":
       return AssessmentSubmissionService.getAssessmentSubmission(id);
+    case "ArticleProduct":
+      return ArticleProductService.getArticleProduct(id);
+    case "Banking":
+      return BankingService.getBanking(id);
+    case "Certificate":
+      return CertificateService.getCertificate(id);
+    case "Contact":
+      return ContactsService.getContact(id);
+    case "CorporatePass":
+      return CorporatePassService.getCorporatePass(id);
+    case "Course":
+      return CourseService.getCourse(id);
+    case "MembershipProduct":
+      return MembershipProductService.getMembershipProduct(id);
+    case "Message":
+      return MessageService.getMessage(id);
     case "Module":
       return ModuleService.getModule(id);
-    case "Qualification":
-      return QualificationService.getQualification(id);
-    case "Room":
-      return RoomService.getRoom(id);
-    case "Site":
-      return SiteService.getSite(id);
-    case "Account":
-      return AccountService.getAccount(id);
+    case "Outcome":
+      return OutcomeService.getOutcome(id);
     case "PaymentIn":
       return PaymentInService.getPaymentIn(id);
     case "PaymentOut":
       return PaymentOutService.getPaymentOut(id);
-    case "AccountTransaction":
-      return TransactionService.getTransaction(id);
-    case "CorporatePass":
-      return CorporatePassService.getCorporatePass(id);
-    case "Import":
-      return ImportTemplatesService.get(id);
-    case "Banking":
-      return BankingService.getBanking(id);
-    case "WaitingList":
-      return WaitingListService.getWaitingList(id);
-    case "Application":
-      return ApplicationService.getApplication(id);
-    case "MembershipProduct":
-      return MembershipProductService.getMembershipProduct(id);
-    case "VoucherProduct":
-      return VoucherProductService.getVoucherProduct(id);
-    case "ArticleProduct":
-      return ArticleProductService.getArticleProduct(id);
-    case "Certificate":
-      return CertificateService.getCertificate(id);
+
+    case "Payslip": {
+      return PayslipService.getPayslip(id).then(response => {
+        response.paylines.forEach((p: PayLineWithDefer) => {
+          p.deferred = true;
+        });
+
+        return response;
+      });
+    }
+
+    case "PriorLearning":
+      return PriorLearningService.getPriorLearning(id);
+    case "Qualification":
+      return QualificationService.getQualification(id);
+    case "Room":
+      return RoomService.getRoom(id);
     case "Sale":
     case "ProductItem":
       return SaleService.getSale(id);
-    case "PriorLearning":
-      return PriorLearningService.getPriorLearning(id);
+    case "Site":
+      return SiteService.getSite(id);
     case "Survey":
       return SurveyService.getSurveyItem(id);
-    case "Message":
-      return MessageService.getMessage(id);
-    case "Contact":
-      return ContactsService.getContact(id);
+    case "VoucherProduct":
+      return VoucherProductService.getVoucherProduct(id);
+    case "WaitingList":
+      return WaitingListService.getWaitingList(id);
+    case "Import":
+      return ImportTemplatesService.get(id);
     case "CourseClass":
       return CourseClassService.getCourseClass(id);
-    case "Outcome":
-      return OutcomeService.getOutcome(id);
-    case "Course":
-      return CourseService.getCourse(id);
 
     case "AbstractInvoice":
     case "Invoice": {
       return InvoiceService.getInvoice(id).then(invoice => {
         invoice.paymentPlans.sort(sortInvoicePaymentPlans);
         getInvoiceClosestPaymentDueDate(invoice);
-        
+
         return invoice;
       });
     }
@@ -146,16 +157,6 @@ export const getEntityItemById = (entity: EntityName, id: number): Promise<any> 
       });
     }
 
-    case "Payslip": {
-      return PayslipService.getPayslip(id).then(response => {
-        response.paylines.forEach((p: PayLineWithDefer) => {
-          p.deferred = true;
-        });
-
-        return response;
-      });
-    }
-
     case "Discount": {
       return DiscountService.getDiscount(id).then(discount => {
         discount.discountMemberships.forEach(el => {
@@ -171,34 +172,30 @@ export const getEntityItemById = (entity: EntityName, id: number): Promise<any> 
 };
 
 export const updateEntityItemById = (entity: EntityName, id: number, item: any): Promise<any> => {
+  processCustomFields(item);
+  delete item.notes;
   switch (entity) {
-    case "Module": {
-      return ModuleService.updateModule(id, item);
-    }
-
-    case "Qualification": {
-      return QualificationService.updateQualification(id, item);
-    }
-
-    case "Room": {
-      return RoomService.updateRoom(id, item);
-    }
-
-    case "Site": {
-      return SiteService.updateSite(id, item);
-    }
-
-    case "Contact": {
-      return ContactsService.updateContact(id, item);
-    }
-
-    case "Account": {
+    case "Account":
       return AccountService.updateAccount(id, item);
-    }
+    case "Application":
+      return ApplicationService.updateApplication(id, item);
+    case "ArticleProduct":
+      return ArticleProductService.updateArticleProduct(id, item);
+    case "Assessment":
+      return AssessmentService.updateAssessment(id, item);
 
-    case "Invoice": {
+    case "Module":
+      return ModuleService.updateModule(id, item);
+    case "Qualification":
+      return QualificationService.updateQualification(id, item);
+    case "Room":
+      return RoomService.updateRoom(id, item);
+    case "Site":
+      return SiteService.updateSite(id, item);
+    case "Contact":
+      return ContactsService.updateContact(id, item);
+    case "Invoice":
       return InvoiceService.updateInvoice(id, preformatInvoice(item));
-    }
 
     case "Payslip": {
       const paylines = JSON.parse(JSON.stringify(item.paylines.filter(p => p.deferred)));
@@ -210,62 +207,33 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
       return PayslipService.updatePayslip(id, { ...item, paylines });
     }
 
-    case "CorporatePass": {
+    case "CorporatePass":
       return CorporatePassService.updateCorporatePass(id, item);
-    }
-
-    case "Banking": {
+    case "Banking":
       return BankingService.updateBanking(id, item);
-    }
-
-    case "Discount": {
+    case "Discount":
       return DiscountService.updateDiscount(id, item);
-    }
-
-    case "WaitingList": {
+    case "WaitingList":
       return WaitingListService.updateWaitingList(id, item);
-    }
 
-    case "Application": {
-      return ApplicationService.updateApplication(id, item);
-    }
-
-    case "MembershipProduct": {
+    case "MembershipProduct":
       return MembershipProductService.updateMembershipProduct(id, item);
-    }
-
-    case "VoucherProduct": {
+    case "VoucherProduct":
       return VoucherProductService.updateVoucherProduct(id, item);
-    }
 
-    case "ArticleProduct": {
-      return ArticleProductService.updateArticleProduct(id, item);
-    }
-
-    case "Certificate": {
+    case "Certificate":
       return CertificateService.updateCertificate(id, item);
-    }
-
     case "Sale":
-    case "ProductItem": {
+    case "ProductItem":
       return SaleService.updateSale(id, item);
-    }
-
-    case "Survey": {
+    case "Survey":
       return SurveyService.updateSurveyItem(id, item);
-    }
-
-    case "PaymentIn": {
+    case "PaymentIn":
       return PaymentInService.updatePaymentIn(id, formatToDateOnly(item.dateBanked), item.administrationCenterId);
-    }
-
-    case "PaymentOut": {
+    case "PaymentOut":
       return PaymentOutService.updatePaymentOut(id, item);
-    }
-
-    case "Course": {
+    case "Course":
       return CourseService.update(id, item);
-    }
 
     default:
       return defaultUnknown();
@@ -472,6 +440,11 @@ export const deleteEntityItemById = (entity: EntityName, id: number): Promise<an
 
 export const updateEntityItemByIdErrorHandler = (response: any, entity: EntityName, item: any, form?: string) => [
   ...FetchErrorHandler(response, `${mapEntityDisplayName(entity)} was not updated`),
+  initialize(form || LIST_EDIT_VIEW_FORM_NAME, item)
+];
+
+export const createEntityItemByIdErrorHandler = (response: any, entity: EntityName, item: any, form?: string) => [
+  ...FetchErrorHandler(response, `${mapEntityDisplayName(entity)} was not created`),
   initialize(form || LIST_EDIT_VIEW_FORM_NAME, item)
 ];
 

@@ -13,11 +13,13 @@ import { getRecords, setListSelection } from "../../../../common/components/list
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { EntityName } from "../../../../model/entities/common";
 import { createEntityItem, updateEntityItemByIdErrorHandler } from "../entityItemsService";
-import { FETCH_SUCCESS } from "../../../../common/actions";
+import { executeActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import { CREATE_ENTITY_RECORD_REQUEST } from "../actions";
 import { mapEntityDisplayName } from "../utils";
+import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
 
-export const getProcessDataActions = entity => [
+export const getProcessDataActions = (entity: EntityName) => [
+  executeActionsQueue(),
   {
     type: FETCH_SUCCESS,
     payload: { message: `${mapEntityDisplayName(entity)} record created` }
@@ -30,6 +32,7 @@ export const getProcessDataActions = entity => [
 const request: Request<any, { item: any, entity: EntityName }> = {
   type: CREATE_ENTITY_RECORD_REQUEST,
   getData: ({ item, entity }) => createEntityItem(entity, item),
+  retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
   processData: (v, s, { entity }) => getProcessDataActions(entity),
   processError: (response, { item, entity }) => updateEntityItemByIdErrorHandler(response, entity, item)
 };

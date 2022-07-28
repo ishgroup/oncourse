@@ -17,7 +17,7 @@ import { FETCH_SUCCESS } from "../../../../common/actions";
 import { DELETE_ENTITY_RECORD_REQUEST } from "../actions";
 import { mapEntityDisplayName } from "../utils";
 
-export const getProcessDataActions = entity => [
+export const getProcessDataActions = (entity: EntityName) => [
   {
     type: FETCH_SUCCESS,
     payload: { message: `${mapEntityDisplayName(entity)} record deleted` }
