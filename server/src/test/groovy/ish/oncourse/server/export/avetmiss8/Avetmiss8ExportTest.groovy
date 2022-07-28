@@ -218,7 +218,7 @@ class Avetmiss8ExportTest extends TestWithDatabase {
                 for (int i = 0; i < expected.size(); i++) {
                     String expectedLine = expected.get(i)
                     expectedLine = expectedLine.replaceAll("now_plus_7_days", now_plus_7_days)
-                    Assertions.assertEquals(actual.get(i), expectedLine, filename)
+                    Assertions.assertEquals(actual.get(i).trim(), expectedLine.trim(), filename)
                 }
             } catch (Exception e) {
                 Assertions.fail(e)
