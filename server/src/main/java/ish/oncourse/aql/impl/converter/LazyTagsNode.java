@@ -33,7 +33,7 @@ import java.util.Map;
  */
 public class LazyTagsNode extends LazyExprNodeWithBasePathResolver {
     private final NodeType nodeType;
-    private static final Map<String,String> aliases = new HashMap<>() {{
+    private static final Map<String, String> aliases = new HashMap<>() {{
         put(TAGS, "taggingRelations+.tag");
         put(CHECKLISTS, "taggingRelations+.tag");
     }};
@@ -61,16 +61,20 @@ public class LazyTagsNode extends LazyExprNodeWithBasePathResolver {
 
         ASTAnd notEmptyExpr = buildTagChecksExpr(entityPath, taggableClasses);
 
-        // tags is empty || tags is null expressions
-        if (parent instanceof ASTEqual && (basePath.endsWith(TAGS) || basePath.endsWith(CHECKLISTS))) {
-            List<Long> notEmptyIds = ObjectSelect.columnQuery(taggedEntity.getJavaClass(), Property.create("id", Long.class))
-                    .where(notEmptyExpr)
-                    .select(ctx.getContext());
+        if (basePath.endsWith(TAGS) || basePath.endsWith(CHECKLISTS)) {
+            // tags is empty || tags is null expressions
+            if (parent instanceof ASTEqual) {
+                List<Long> notEmptyIds = ObjectSelect.columnQuery(taggedEntity.getJavaClass(), Property.create("id", Long.class))
+                        .where(notEmptyExpr)
+                        .select(ctx.getContext());
 
-            if(notEmptyIds.isEmpty())
-                return new ASTTrue();
+                if (notEmptyIds.isEmpty())
+                    return new ASTTrue();
 
-            return new ASTNotIn(new ASTObjPath("id"), new ASTList(notEmptyIds));
+                return new ASTNotIn(new ASTObjPath("id"), new ASTList(notEmptyIds));
+            } else if (parent instanceof ASTNotEqual) {
+                return notEmptyExpr;
+            }
         }
 
         parent = processAsAlias(parent, args);
@@ -83,7 +87,7 @@ public class LazyTagsNode extends LazyExprNodeWithBasePathResolver {
         return this;
     }
 
-    private SimpleNode processAsAlias(SimpleNode parent, List<SimpleNode> args){
+    private SimpleNode processAsAlias(SimpleNode parent, List<SimpleNode> args) {
         var other = args.subList(1, args.size());
         var parentIdx = 0;
         for (var child : other) {
