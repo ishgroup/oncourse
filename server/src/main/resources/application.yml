@@ -11,7 +11,7 @@ jdbc:
     type: uri
     driverClassName: org.mariadb.jdbc.Driver
     connectionTestQuery: SELECT 1
-    maximumPoolSize: 50
+    maximumPoolSize: 150
     registerMbeans: true
 
 cayenne:
