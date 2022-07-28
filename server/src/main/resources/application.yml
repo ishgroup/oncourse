@@ -12,6 +12,8 @@ jdbc:
     driverClassName: org.mariadb.jdbc.Driver
     connectionTestQuery: SELECT 1
     maximumPoolSize: 150
+    connectionTimeout: 15000
+    maxLifetime: 1000000
     registerMbeans: true
 
 cayenne:
