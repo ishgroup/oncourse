@@ -5,14 +5,12 @@ jetty:
       type: https2
 
 jdbc:
-  angel-test:
-    jdbcUrl: ${dbUrl}
-    username: root
+  angel:
+    type: uri
     driverClassName: org.mariadb.jdbc.Driver
     connectionTestQuery: SELECT 1
-    maximumPoolSize: 100
-    minimumIdle: 1
-    idleTimeout: 300000
+    maximumPoolSize: 50
+    registerMbeans: true
 
   angel-test-creation:
     jdbcUrl: ${dbUrl}
