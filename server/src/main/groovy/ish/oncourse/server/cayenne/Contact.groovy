@@ -861,6 +861,15 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	}
 
 	/**
+	 * @return Total paid amount for all contact invoices
+	 */
+	@Nonnull
+	@API
+	Money getTotalInvoiced() {
+		return invoices*.amountPaid?.sum() as Money ?: Money.ZERO
+	}
+
+	/**
 	 * @return The list of tags assigned to this contact
 	 */
 	@Nonnull

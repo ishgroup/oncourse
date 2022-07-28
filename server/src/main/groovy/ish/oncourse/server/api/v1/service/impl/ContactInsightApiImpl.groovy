@@ -52,8 +52,8 @@ class ContactInsightApiImpl implements ContactInsightApi {
 
         def contactOverview = new ContactOverviewDTO()
         contactOverview.firstSeen = LocalDateUtils.dateToTimeValue(contact.createdOn)
-        contactOverview.owing = (invoices*.amountOwing?.sum() as Money ?: Money.ZERO).toBigDecimal()
-        contactOverview.spent = (invoices*.amountPaid?.sum() as Money ?: Money.ZERO).toBigDecimal()
+        contactOverview.owing = contact.totalOwing.toBigDecimal()
+        contactOverview.spent = contact.totalInvoiced.toBigDecimal()
         contactOverview.enrolments(enrolments?.collect { it.id } ?: new ArrayList<Long>())
         contactOverview.openApplications(applications
                 ?.findAll { it.status != ApplicationStatus.REJECTED && it.status != ApplicationStatus.WITHDRAWN }
