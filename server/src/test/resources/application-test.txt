@@ -5,8 +5,9 @@ jetty:
       type: https2
 
 jdbc:
-  angel:
-    type: uri
+  angel-test:
+    jdbcUrl: ${dbUrl}
+    username: root
     driverClassName: org.mariadb.jdbc.Driver
     connectionTestQuery: SELECT 1
     maximumPoolSize: 50
@@ -17,9 +18,7 @@ jdbc:
     username: root
     driverClassName: org.mariadb.jdbc.Driver
     connectionTestQuery: SELECT 1
-    maximumPoolSize: 100
-    minimumIdle: 1
-    idleTimeout: 300000
+    maximumPoolSize: 50
 
 cayenne:
   datasource: angel-test
