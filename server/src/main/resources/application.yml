@@ -11,9 +11,11 @@ jdbc:
     type: uri
     driverClassName: org.mariadb.jdbc.Driver
     connectionTestQuery: SELECT 1
-    maximumPoolSize: 100
+    maximumPoolSize: 150
     minimumIdle: 2
     idleTimeout: 1000000
+    connectionTimeout: 15000
+    registerMbeans: true
 
 cayenne:
   datasource: angel
