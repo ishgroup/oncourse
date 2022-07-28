@@ -10,7 +10,7 @@ jdbc:
     username: root
     driverClassName: org.mariadb.jdbc.Driver
     connectionTestQuery: SELECT 1
-    maximumPoolSize: 100
+    maximumPoolSize: 99
     registerMbeans: true
 
   angel-test-creation:
