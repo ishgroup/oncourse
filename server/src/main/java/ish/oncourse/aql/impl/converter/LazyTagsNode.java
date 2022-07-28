@@ -18,7 +18,9 @@ import org.apache.cayenne.exp.Property;
 import org.apache.cayenne.exp.parser.*;
 import org.apache.cayenne.query.ObjectSelect;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Node, that redefines parent node of tags predicates and adds entityIdentifier checking to request
@@ -31,7 +33,10 @@ import java.util.List;
  */
 public class LazyTagsNode extends LazyExprNodeWithBasePathResolver {
     private final NodeType nodeType;
-
+    private static final Map<String,String> aliases = new HashMap<>() {{
+        put(TAGS, "taggingRelations+.tag");
+        put(CHECKLISTS, "taggingRelations+.tag");
+    }};
 
     public LazyTagsNode(NodeType nodeType) {
         this.nodeType = nodeType;
@@ -125,6 +130,8 @@ public class LazyTagsNode extends LazyExprNodeWithBasePathResolver {
             newPath = path.replaceFirst(CHECKLISTS + ".", "taggingRelations+.tag+.");
         }
 
-        return new ASTObjPath(newPath);
+        var newObjPath = new ASTObjPath(newPath);
+        newObjPath.setPathAliases(aliases);
+        return newObjPath;
     }
 }
