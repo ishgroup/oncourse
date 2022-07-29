@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static ish.oncourse.aql.NodeUtils.inverseNodeByIds;
+
 /**
  * Node, that redefines parent node of tags predicates and adds entityIdentifier checking to request
  * <p>
@@ -64,14 +66,7 @@ public class LazyTagsNode extends LazyExprNodeWithBasePathResolver {
         if (basePath.endsWith(TAGS) || basePath.endsWith(CHECKLISTS)) {
             // tags is empty || tags is null expressions
             if (parent instanceof ASTEqual) {
-                List<Long> notEmptyIds = ObjectSelect.columnQuery(taggedEntity.getJavaClass(), Property.create("id", Long.class))
-                        .where(notEmptyExpr)
-                        .select(ctx.getContext());
-
-                if (notEmptyIds.isEmpty())
-                    return new ASTTrue();
-
-                return new ASTNotIn(new ASTObjPath("id"), new ASTList(notEmptyIds));
+                return inverseNodeByIds(notEmptyExpr, taggedEntity, ctx);
             } else if (parent instanceof ASTNotEqual) {
                 return notEmptyExpr;
             }

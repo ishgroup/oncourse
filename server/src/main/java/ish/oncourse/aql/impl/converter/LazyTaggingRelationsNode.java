@@ -21,6 +21,8 @@ import org.apache.cayenne.query.ObjectSelect;
 
 import java.util.List;
 
+import static ish.oncourse.aql.NodeUtils.inverseNodeByIds;
+
 /**
  * Node, that redefines parent node of taggingRelations predicates (e.g. taggingRelations is not null, taggingRelations is empty,
  * taggingRelations.tag.name is "Writing", taggingRelations.tag.name like "Wri", taggingRelations.tag.createdOn last year)
@@ -87,11 +89,7 @@ public class LazyTaggingRelationsNode extends LazyExprNodeWithBasePathResolver {
         ExpressionUtil.addChild(notEmptyExpr, identifierEqNode, 1);
 
         if (parent instanceof ASTEqual) {
-            List<Long> notEmptyIds = ObjectSelect.columnQuery(taggedEntity.getJavaClass(), Property.create("id", Long.class))
-                    .where(notEmptyExpr)
-                    .select(ctx.getContext());
-
-            return new ASTNotIn(new ASTObjPath("id"), new ASTList(notEmptyIds));
+            return inverseNodeByIds(notEmptyExpr, taggedEntity, ctx);
         }
 
         return notEmptyExpr;
