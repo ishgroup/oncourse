@@ -99,7 +99,7 @@ public class LazyTaggingRelationsNode extends LazyExprNodeWithBasePathResolver {
         var other = args.subList(1, args.size());
         var idx = 0;
         for (var child : other) {
-            //rewrite this
+            //if request contains join we need to replace it with left join to avoid interception with other requests into query
             if (child instanceof ASTObjPath && ((ASTObjPath) child).getPath().contains("taggingRelations.tag.")) {
                 String path = ((ASTObjPath) child).getPath();
                 child = new ASTObjPath(path.replace(".tag.", "+.tag+."));
