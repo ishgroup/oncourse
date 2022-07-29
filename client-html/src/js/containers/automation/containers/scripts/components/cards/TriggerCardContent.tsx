@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import Help from "@mui/icons-material/Help";
 import * as Entities from "@aql/queryLanguageModel";
@@ -44,12 +44,8 @@ const TriggerCardContent = (props: Props) => {
   const {
     TriggerTypeItems, ScheduleTypeItems, enableEntityNameField, values, isInternal, dispatch, form, timeZone, checklists
   } = props;
-  
-  const [entityItems, setEntityItems] = useState(AllEntities);
 
-  const isScheduleOrOnDemand = useMemo(() => Boolean(
-    (values.trigger && values.trigger.type === "On demand") || (values.trigger && values.trigger.type === "Schedule")
-  ), [values.trigger.type]);
+  const [entityItems, setEntityItems] = useState(AllEntities);
 
   const onTriggerChange = (e, newType: TriggerType) => {
     if (
@@ -94,6 +90,8 @@ const TriggerCardContent = (props: Props) => {
 
   const entityNotRequired = [...ChecklistsTriggers, "On demand"].includes(values.trigger.type);
 
+  const isScheduleOrOnDemand = ["On demand", "Schedule"].includes(values.trigger.type);
+
   return (
     <div className="pt-2 centeredFlex mb-2">
       <FormField
@@ -106,7 +104,7 @@ const TriggerCardContent = (props: Props) => {
           ? [{ label: "On demand", value: "On demand" }, { label: "Schedule", value: "Schedule" }]
           : TriggerTypeItems
         }
-        disabled={(isInternal && !isScheduleOrOnDemand) || (values.trigger.type === "On demand" && values.entity)}
+        disabled={isInternal && !isScheduleOrOnDemand}
         onChange={onTriggerChange}
         debounced={false}
         required
@@ -168,7 +166,7 @@ const TriggerCardContent = (props: Props) => {
             autoWidth
           />
 
-          {values.trigger.cron.scheduleType === "Custom" && (
+          {values.trigger.cron?.scheduleType === "Custom" && (
             <FormField
               type="text"
               name="trigger.cron.custom"
