@@ -14,9 +14,7 @@ import ish.oncourse.aql.impl.ExpressionUtil;
 import ish.oncourse.cayenne.TaggableClasses;
 import ish.util.EntityPathUtils;
 import ish.util.TaggableUtil;
-import org.apache.cayenne.exp.Property;
 import org.apache.cayenne.exp.parser.*;
-import org.apache.cayenne.query.ObjectSelect;
 
 import java.util.HashMap;
 import java.util.List;
@@ -86,7 +84,7 @@ public class LazyTagsNode extends LazyExprNodeWithBasePathResolver {
         var other = args.subList(1, args.size());
         var parentIdx = 0;
         for (var child : other) {
-            //replace first alias (tags/checklists) with cayenne path
+            //replace first alias (tags/checklists) with cayenne path; replace join with left join to avoid interceptions
             if (child instanceof ASTObjPath) {
                 child = updatePath(child);
             }
