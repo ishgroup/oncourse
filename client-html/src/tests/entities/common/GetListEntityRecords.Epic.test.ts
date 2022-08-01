@@ -16,7 +16,7 @@ const payload = {
   startIndex: null,
   stopIndex: null,
   resolve: null
-}
+};
 
 describe("Get account entities epic tests", () => {
   it("GetAccountEntities should returns correct actions", () => DefaultEpic({
@@ -36,7 +36,18 @@ describe("Get account entities epic tests", () => {
       return [
         {
           type: GET_RECORDS_FULFILLED,
-          payload: { records, payload, searchQuery: records.search }
+          payload: {
+            records,
+            payload,
+            searchQuery: {
+              filter: "",
+              offset: 0,
+              pageSize: 50,
+              search: "",
+              tagGroups: [],
+              uncheckedChecklists: [],
+            }
+          }
         },
         ...(!ignoreSelection && !listUpdate && state.list.selection[0] !== "NEW"
           ? savedID && records.rows.find(r => String(r.id) === String(savedID))

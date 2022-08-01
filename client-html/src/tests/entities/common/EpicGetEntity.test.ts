@@ -4,7 +4,7 @@ import { getEntityRecord } from "../../../js/containers/entities/common/actions"
 
 describe("Get Entity epic tests", () => {
   it("EpicGetEntity should returns correct values", () => DefaultEpic({
-    action: mockedApi => getEntityRecord(mockedApi.db.getAccount(1), "Account"),
+    action: () => getEntityRecord(1, "Account"),
     epic: EpicGetEntityRecord,
     processData: (mockedApi, state) => getProcessDataActions(mockedApi.db.getAccount(1), "Account", state)
   }));
