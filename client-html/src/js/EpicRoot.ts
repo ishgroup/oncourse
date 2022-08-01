@@ -13,8 +13,6 @@ import { EpicScripts } from "./containers/automation/containers/scripts/epics";
 import { EpicSecurity } from "./containers/security/epics";
 import { EpicTags } from "./containers/tags/epics";
 import { EpicAvetmissExport } from "./containers/avetmiss-export/epics";
-import { EpicQualification } from "./containers/entities/qualifications/epics";
-import { EpicModule } from "./containers/entities/modules/epics";
 import { EpicShare } from "./common/components/list-view/components/share/epics";
 import { EpicRoom } from "./containers/entities/rooms/epics";
 import { EpicSite } from "./containers/entities/sites/epics";
@@ -26,10 +24,8 @@ import { EpicPaymentIn } from "./containers/entities/paymentsIn/epics";
 import { EpicPaymentOut } from "./containers/entities/paymentsOut/epics";
 import { EpicPayslip } from "./containers/entities/payslips/epics";
 import { EpicPayrolls } from "./containers/entities/payrolls/epics";
-import { EpicAccounts } from "./containers/entities/accounts/epics";
 import { EpicDashboard } from "./containers/dashboard/epics";
 import { EpicGoogleAnalytics } from "./common/components/google-tag-manager/epics";
-import { EpicCorporatePasses } from "./containers/entities/corporatePasses/epics";
 import { EpicBankings } from "./containers/entities/bankings/epics";
 import { EpicContacts } from "./containers/entities/contacts/epics";
 import { EpicCourses } from "./containers/entities/courses/epics";
@@ -37,13 +33,9 @@ import { EpicCourseClass } from "./containers/entities/courseClasses/epics";
 import { EpicDiscounts } from "./containers/entities/discounts/epics";
 import { EpicEditDocument } from "./containers/entities/documents/epics";
 import { EpicSales } from "./containers/entities/sales/epics";
-import { EpicLead } from "./containers/entities/leads/epics";
-import { EpicWaitingList } from "./containers/entities/waitingLists/epics";
 import { EpicTimetable } from "./containers/timetable/epics";
 import { EpicVoucherProduct } from "./containers/entities/voucherProducts/epics";
-import { EpicMembershipProduct } from "./containers/entities/membershipProducts/epics";
 import { EpicCertificate } from "./containers/entities/certificates/epics";
-import { EpicStudentFeedback } from "./containers/entities/survey/epics";
 import { EpicCustomFieldTypes } from "./containers/entities/customFieldTypes/epics";
 import { EpicTaxes } from "./containers/entities/taxes/epics";
 import { EpicOutcome } from "./containers/entities/outcomes/epics";
@@ -54,9 +46,7 @@ import { EpicFanalise } from "./containers/finalise-period/epics";
 import { EpicPdfReports } from "./containers/automation/containers/pdf-reports/epics";
 import { EpicPdfBackgrounds } from "./containers/automation/containers/pdf-backgrounds/epics";
 import { EpicNotes } from "./common/components/form/notes/epics";
-import { EpicPriorLearning } from "./containers/entities/priorLearnings/epics";
 import { EpicCheckout } from "./containers/checkout/epics";
-import { EpicAssessmentSubmissions } from "./containers/entities/assessmentSubmissions/epics";
 
 // Creating ES6 Set Object to guarantee unique value of each import
 const importSet = new Set([
@@ -76,8 +66,6 @@ const importSet = new Set([
   EpicSecurity,
   EpicTags,
   EpicAvetmissExport,
-  EpicQualification,
-  EpicModule,
   EpicRoom,
   EpicSite,
   EpicList,
@@ -91,8 +79,6 @@ const importSet = new Set([
   EpicPayslip,
   EpicTaxes,
   EpicPayrolls,
-  EpicAccounts,
-  EpicCorporatePasses,
   EpicBankings,
   EpicContacts,
   EpicCourses,
@@ -100,17 +86,11 @@ const importSet = new Set([
   EpicDiscounts,
   EpicEditDocument,
   EpicSales,
-  EpicLead,
-  EpicWaitingList,
   EpicVoucherProduct,
-  EpicMembershipProduct,
   EpicCertificate,
-  EpicStudentFeedback,
   EpicCustomFieldTypes,
   EpicOutcome,
-  EpicAssessmentSubmissions,
   EpicEnrolment,
-  EpicPriorLearning,
   EpicMessage,
   EpicCheckout
 ]);

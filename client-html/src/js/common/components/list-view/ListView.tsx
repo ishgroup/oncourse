@@ -726,7 +726,7 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       return;
     }
 
-    onSave(selection[0], value);
+    onSave(value);
   };
 
   onDelete = id => {
@@ -1282,7 +1282,11 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView)),
   updateTableModel: (model: TableModel, listUpdate?: boolean) => dispatch(updateTableModel(ownProps.rootEntity, model, listUpdate)),
-  onLoadMore: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => dispatch(getRecords(ownProps.rootEntity, true, false, startIndex, stopIndex, resolve)),
+  onLoadMore: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => dispatch(getRecords(
+    {
+     entity: ownProps.rootEntity, listUpdate: true, ignoreSelection: false, startIndex, stopIndex, resolve
+    }
+  )),
   onSearch: search => dispatch(setSearch(search, ownProps.rootEntity)),
   setListEditRecordFetching: () => dispatch(setListEditRecordFetching()),
   onSwipeableDrawerDirtyForm: (isDirty: boolean, resetEditView: any) => dispatch(setSwipeableDrawerDirtyForm(isDirty, resetEditView)),
@@ -1294,9 +1298,7 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
     ? ownProps.customOnCreateAction(item)
     : createEntityRecord(item, ownProps.rootEntity)),
   onDelete: (id: number) => dispatch(deleteEntityRecord(id, ownProps.rootEntity)),
-  onSave: (item: any) => dispatch( ownProps.customUpdateAction
-    ? ownProps.customUpdateAction(item)
-    : updateEntityRecord(item.id, ownProps.rootEntity, item)),
+  onSave: (item: any) => dispatch(updateEntityRecord(item.id, ownProps.rootEntity, item)),
   getEditRecord: (id: number) => dispatch(ownProps.customGetAction 
     ? ownProps.customGetAction(id) 
     : getEntityRecord(id, ownProps.rootEntity))

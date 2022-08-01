@@ -15,7 +15,6 @@ import {
 } from "../../../common/components/list-view/actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import { defaultContactName } from "../contacts/utils";
-import { updateCertificate } from "./actions";
 import CertificateEditView from "./components/CertificateEditView";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import USIAlert from "./components/USIAlert";
@@ -24,7 +23,6 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/c
 
 interface CertificatesProps {
   onInit?: () => void;
-  onSave?: (id: string, certificate: Certificate) => void;
   getFilters?: () => void;
   clearListState?: () => void;
 }
@@ -91,7 +89,6 @@ const secondaryColumnCondition = rows => rows["qualification.title"] || "No Qual
 const Certificates: React.FC<CertificatesProps> = props => {
   const {
     onInit,
-    onSave,
     getFilters
   } = props;
 
@@ -103,29 +100,26 @@ const Certificates: React.FC<CertificatesProps> = props => {
   }, []);
 
   return (
-    <div>
-      <ListView
-        listProps={{
-          primaryColumn: "student.contact.fullName",
-          secondaryColumn: "qualification.title",
-          secondaryColumnCondition
-        }}
-        editViewProps={{
-          manualLink,
-          nameCondition,
-          hideTitle: true
-        }}
-        EditViewContent={CertificateEditView}
-        CogwheelAdornment={RevokeCertificateCogwheel}
-        rootEntity="Certificate"
-        onInit={onInit}
-        onSave={onSave}
-        findRelated={findRelatedGroup}
-        ShareContainerAlertComponent={USIAlert}
-        filterGroupsInitial={filterGroups}
-        noListTags
-      />
-    </div>
+    <ListView
+      listProps={{
+        primaryColumn: "student.contact.fullName",
+        secondaryColumn: "qualification.title",
+        secondaryColumnCondition
+      }}
+      editViewProps={{
+        manualLink,
+        nameCondition,
+        hideTitle: true
+      }}
+      EditViewContent={CertificateEditView}
+      CogwheelAdornment={RevokeCertificateCogwheel}
+      rootEntity="Certificate"
+      onInit={onInit}
+      findRelated={findRelatedGroup}
+      ShareContainerAlertComponent={USIAlert}
+      filterGroupsInitial={filterGroups}
+      noListTags
+    />
   );
 };
 
@@ -137,8 +131,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getFilters: () => {
     dispatch(getFilters("Certificate"));
   },
-  clearListState: () => dispatch(clearListState()),
-  onSave: (id: string, certificate: Certificate) => dispatch(updateCertificate(id, certificate))
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Certificates);

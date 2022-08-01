@@ -36,7 +36,6 @@ import EntityService from "../../../common/services/EntityService";
 import { getWindowHeight, getWindowWidth } from "../../../common/utils/common";
 import { defaultContactName } from "../contacts/utils";
 import OutcomeService from "../outcomes/services/OutcomeService";
-import { updateEnrolment } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
@@ -50,6 +49,7 @@ import { State } from "../../../reducers/state";
 import { openInternalLink } from "../../../common/utils/links";
 import { checkPermissions } from "../../../common/actions";
 import { getGradingTypes } from "../../preferences/actions";
+import { updateEntityItemById } from "../common/entityItemsService";
 
 const nameCondition = (val: Enrolment) => defaultContactName(val.studentName);
 
@@ -315,7 +315,6 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
         onInit={() => setInitNew(true)}
         customOnCreate={customOnCreate}
         onBeforeSave={onBeforeSave}
-        onSave={onSave}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         CogwheelAdornment={EnrolmentCogWheel}
@@ -415,7 +414,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getFilters: () => dispatch(getFilters("Enrolment")),
   getFundingContracts: () => dispatch(getActiveFundingContracts(true)),
   clearListState: () => dispatch(clearListState()),
-  onSave: (id: number, enrolment: Enrolment) => dispatch(updateEnrolment(id, enrolment)),
+  onSave: (id: number, enrolment: Enrolment) => dispatch(updateEntityItemById("Enrolment", id, enrolment)),
   getPermissions: () => {
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
   }

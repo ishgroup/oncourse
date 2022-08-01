@@ -1,8 +1,8 @@
 import { EpicUpdateEntityRecord, getProcessDataActions } from "../../../js/containers/entities/common/epics/EpicUpdateEntityRecord";
 import { updateEntityRecord } from "../../../js/containers/entities/common/actions";
 
-describe("Update account epic tests", () => {
-  it("EpicUpdateAccountItem should returns correct values", () => ({
+describe("Update Entity epic tests", () => {
+  it("EpicUpdateEntity should returns correct values", () => ({
     action: mockedApi => {
       const account = mockedApi.db.getAccount();
       return updateEntityRecord(account.id, "Account", account)

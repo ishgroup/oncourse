@@ -14,7 +14,6 @@ import { Room } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
-import { updateRoom } from "./actions";
 import RoomEditView from "./components/RoomEditView";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { getListTags } from "../../tags/actions";
@@ -90,7 +89,7 @@ class Rooms extends React.Component<any, any> {
 
   render() {
     const {
-      onSave, updateTableModel, onInit
+      updateTableModel, onInit
     } = this.props;
 
     return (
@@ -110,7 +109,6 @@ class Rooms extends React.Component<any, any> {
         EditViewContent={RoomEditView}
         rootEntity="Room"
         onInit={onInit}
-        onSave={onSave}
         filterGroupsInitial={filterGroups}
         findRelated={findRelatedGroup}
       />
@@ -128,8 +126,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getTags: () => {
     dispatch(getListTags("Room"));
   },
-  clearListState: () => dispatch(clearListState()),
-  onSave: (id: string, room: Room) => dispatch(updateRoom(id, room)),
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Rooms);

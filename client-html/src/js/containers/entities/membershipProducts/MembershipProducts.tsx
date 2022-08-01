@@ -10,7 +10,6 @@ import { Account, MembershipProduct, Tax } from "@api/model";
 import { Dispatch } from "redux";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { plainContactRelationTypePath, plainCorporatePassPath } from "../../../constants/Api";
-import { updateMembershipProduct } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
 import MembershipProductEditView from "./components/MembershipProductEditView";
 import { FilterGroup } from "../../../model/common/ListView";
@@ -29,7 +28,6 @@ import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption"
 
 interface MembershipProductsProps {
   onInit?: (initial: MembershipProduct) => void;
-  onSave?: (id: string, membershipProduct: MembershipProduct) => void;
   getRecords?: () => void;
   getFilters?: () => void;
   getTags?: () => void;
@@ -117,7 +115,6 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
 
   const {
     onInit,
-    onSave,
     getFilters,
     clearListState,
     getAccounts,
@@ -177,7 +174,6 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
         CogwheelAdornment={BulkEditCogwheelOption}
         rootEntity="MembershipProduct"
         onInit={() => setInitNew(true)}
-        onSave={onSave}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         preformatBeforeSubmit={preformatBeforeSubmit}
@@ -208,7 +204,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getTags: () => dispatch(getListTags("MembershipProduct")),
   getFilters: () => dispatch(getFilters("MembershipProduct")),
   clearListState: () => dispatch(clearListState()),
-  onSave: (id: string, membershipProduct: MembershipProduct) => dispatch(updateMembershipProduct(id, membershipProduct)),
   checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" })),
   getRelationTypes: () => dispatch(getEntityRelationTypes()),
   getDataCollectionRules: () => dispatch(getDataCollectionRules()),

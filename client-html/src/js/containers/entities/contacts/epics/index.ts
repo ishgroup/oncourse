@@ -16,14 +16,12 @@ import { EpicGetContactEnrolments } from "./EpicGetContactEnrolments";
 import { EpicGetContactPriorLearnings } from "./EpicGetContactPriorLearnings";
 import { EpicGetContactOutcomes } from "./EpicGetContactOutcomes";
 import { EpicGetContactCertificates } from "./EpicGetContactCertificates";
-import { EpicUpdateContact } from "./EpicUpdateContact";
 import { EpicGetContactsStoredCC } from "./EpicGetContactsStoredCC";
 
 export const EpicContacts = combineEpics(
   EpicGetMergeContacts,
   EpicPostMergeContacts,
   EpicGetContact,
-  EpicUpdateContact,
   EpicGetContactEnrolments,
   EpicGetContactPriorLearnings,
   EpicGetContactOutcomes,

@@ -10,7 +10,6 @@ import React, { Dispatch, useEffect } from "react";
 import { connect } from "react-redux";
 import { CustomFieldType, SurveyItem, TableModel } from "@api/model";
 import { defaultContactName } from "../contacts/utils";
-import { updateSurveyItem } from "./actions";
 import {
   getFilters,
   clearListState
@@ -21,7 +20,6 @@ import SurveyEditView from "./components/SurveyEditView";
 
 interface StudentFeedbackProps {
   onInit?: (initial: SurveyItem) => void;
-  onSave?: (id: string, studentFeedback: SurveyItem) => void;
   getFilters?: () => void;
   clearListState?: () => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
@@ -69,7 +67,6 @@ const findRelatedGroup: any[] = [
 
 const StudentFeedbackComp: React.FC<StudentFeedbackProps> = props => {
   const {
-    onSave,
     getFilters,
   } = props;
 
@@ -93,7 +90,6 @@ const StudentFeedbackComp: React.FC<StudentFeedbackProps> = props => {
         }}
         EditViewContent={SurveyEditView}
         rootEntity="Survey"
-        onSave={onSave}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         defaultDeleteDisabled
@@ -105,8 +101,7 @@ const StudentFeedbackComp: React.FC<StudentFeedbackProps> = props => {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getFilters: () => dispatch(getFilters("Survey")),
-  clearListState: () => dispatch(clearListState()),
-  onSave: (id: string, surveyItem: SurveyItem) => dispatch(updateSurveyItem(id, surveyItem)),
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(StudentFeedbackComp);

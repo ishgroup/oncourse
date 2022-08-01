@@ -122,7 +122,7 @@ class AuditsApp extends React.Component<any, any> {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getRecords: () => {
-    dispatch(getRecords("Audit"));
+    dispatch(getRecords({ entity: "Audit" }));
   },
   getFilters: () => {
     dispatch(getFilters("Audit"));

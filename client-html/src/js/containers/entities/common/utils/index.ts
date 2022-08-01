@@ -28,7 +28,7 @@ export const mapEntityDisplayName = (entity: EntityName, count?: number) => {
     case "Article":
       return `Sale${count > 1 ? "s" : ""} (Product)`;
     default:
-      return `${entity}${count > 1 ? entity[entity.length - 1] === "s" ? "es" : "s" : ""}`;
+      return `${entity.split(/(?=[A-Z])/).join(" ").toLowerCase().capitalize()}${count > 1 ? entity[entity.length - 1] === "s" ? "es" : "s" : ""}`;
   }
 };
 
@@ -85,6 +85,9 @@ export const mapEntityListDisplayName = (entity: EntityName, item: any, state: S
 
       return name;
     }
+    case "WaitingList":
+      return item.courseName;
+
     default:
       return item.name;
   }

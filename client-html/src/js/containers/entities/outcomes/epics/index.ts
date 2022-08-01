@@ -4,10 +4,8 @@
  */
 
 import { combineEpics } from "redux-observable";
-import { EpicUpdateOutcomeItem } from "./EpicUpdateOutcomeItem";
 import { EpicGetOutcomeTags } from "./EpicGetOutcomeTags";
 
 export const EpicOutcome = combineEpics(
-  EpicUpdateOutcomeItem,
   EpicGetOutcomeTags
 );

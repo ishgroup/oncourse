@@ -18,14 +18,12 @@ import {
   setListEditRecord,
  } from "../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import { updatePriorLearning } from "./actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 
 const nameCondition = (val: PriorLearning) => val.title;
 
 interface PriorLearningsProps {
   onInit?: () => void;
-  onSave?: (id: string, priorLearning: PriorLearning) => void;
   onCreate?: (priorLearning: PriorLearning) => void;
   getFilters?: () => void;
   clearListState?: () => void;
@@ -63,7 +61,6 @@ const manualLink = getManualLink("delivery_rpl");
 const PriorLearnings: React.FC<PriorLearningsProps> = props => {
   const {
     onInit,
-    onSave,
     getFilters,
     clearListState,
     checkPermissions
@@ -91,7 +88,6 @@ const PriorLearnings: React.FC<PriorLearningsProps> = props => {
       EditViewContent={PriorLearningEditView}
       rootEntity="PriorLearning"
       onInit={onInit}
-      onSave={onSave}
       filterGroupsInitial={filterGroups}
       findRelated={findRelatedGroup}
       alwaysFullScreenCreateView
@@ -107,7 +103,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getFilters: () => dispatch(getFilters("PriorLearning")),
   clearListState: () => dispatch(clearListState()),
-  onSave: (id: string, priorLearning: PriorLearning) => dispatch(updatePriorLearning(id, priorLearning)),
   checkPermissions: () => dispatch(checkPermissions({ path: fundingUploadsPath, method: "GET" }))
 });
 

@@ -9,7 +9,6 @@ import { initialize } from "redux-form";
 import { Dispatch } from "redux";
 import { Qualification } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
-import { updateQualification } from "./actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import QualificationsEditView from "./components/QualificationsEditView";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
@@ -107,37 +106,26 @@ class Qualifications extends React.Component<any, any> {
     return false;
   }
 
-  onSave = (id: string, item: Qualification) => {
-    if (item.isOffered === undefined) {
-      item.isOffered = false;
-    }
-
-    this.props.onSave(id, item);
-  };
-
   render() {
     const { onInit } = this.props;
 
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "title",
-            secondaryColumn: "nationalCode"
-          }}
-          editViewProps={{
-            manualLink,
-            nameCondition
-          }}
-          EditViewContent={QualificationsEditView}
-          rootEntity="Qualification"
-          onInit={onInit}
-          onSave={this.onSave}
-          findRelated={findRelatedGroup}
-          filterGroupsInitial={filterGroups}
-          noListTags
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "title",
+          secondaryColumn: "nationalCode"
+        }}
+        editViewProps={{
+          manualLink,
+          nameCondition
+        }}
+        EditViewContent={QualificationsEditView}
+        rootEntity="Qualification"
+        onInit={onInit}
+        findRelated={findRelatedGroup}
+        filterGroupsInitial={filterGroups}
+        noListTags
+      />
     );
   }
 }
@@ -151,7 +139,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getFilters("Qualification"));
   },
   clearListState: () => dispatch(clearListState()),
-  onSave: (id: string, qualification: Qualification) => dispatch(updateQualification(id, qualification)),
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Qualifications);

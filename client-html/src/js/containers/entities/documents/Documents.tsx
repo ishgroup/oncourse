@@ -32,7 +32,6 @@ import { State } from "../../../reducers/state";
 import { getEntityTags, getListTags } from "../../tags/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import { updateDocument } from "./actions";
 import DocumentEditView from "./components/DocumentEditView";
 import BinCogwheel from "./components/BinCogwheel";
 
@@ -58,7 +57,6 @@ const styles = () => createStyles({
 
 interface DocumentProps {
   onInit?: () => void;
-  onSave?: (id: string, document: Document) => void;
   getRecords?: () => void;
   getFilters?: () => void;
   clearListState?: () => void;
@@ -186,7 +184,6 @@ const handleFileSelect = (files, setCreateNew) => {
 const Documents: React.FC<DocumentProps> = props => {
   const {
     onInit,
-    onSave,
     getFilters,
     clearListState,
     getTags,
@@ -330,7 +327,6 @@ const Documents: React.FC<DocumentProps> = props => {
         rootEntity="Document"
         onInit={onInit}
         customOnCreate={customOnCreate}
-        onSave={onSave}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         defaultDeleteDisabled
@@ -364,7 +360,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getListTags("Document"));
   },
   clearListState: () => dispatch(clearListState()),
-  onSave: (id: string, document) => dispatch(updateDocument(id, document)),
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),

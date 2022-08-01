@@ -5,13 +5,11 @@
 
 import { combineEpics } from "redux-observable";
 import { EpicGetSite } from "./EpicGetSite";
-import { EpicUpdateSite } from "./EpicUpdateSite";
 import { EpicGetAdminSites } from "./EpicGetAdminSites";
 import { EpicGetVirtualSites } from "./EpicGetVirtualSites";
 
 export const EpicSite = combineEpics(
   EpicGetSite,
-  EpicUpdateSite,
   EpicGetAdminSites,
   EpicGetVirtualSites
 );

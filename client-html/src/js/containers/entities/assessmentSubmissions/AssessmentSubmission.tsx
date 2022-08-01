@@ -13,7 +13,6 @@ import { clearListState, getFilters } from "../../../common/components/list-view
 import { getListTags } from "../../tags/actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import AssessmentSubmissionEditView from "./components/AssessmentSubmissionsEditView";
-import { updateAssessmentSubmissionsItem } from "./actions";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 import { State } from "../../../reducers/state";
@@ -50,7 +49,7 @@ const nameCondition = (val: AssessmentSubmissionModel) => val.studentName;
 
 const AssessmentSubmission = (props: any) => {
   const {
-    clearListState, getFilters, getTags, onSave, selection, dispatch,
+    clearListState, getFilters, getTags, selection, dispatch,
   } = props;
 
   useEffect(() => {
@@ -120,7 +119,6 @@ const AssessmentSubmission = (props: any) => {
       rootEntity="AssessmentSubmission"
       filterGroupsInitial={filterGroups}
       findRelated={findRelatedGroup}
-      onSave={onSave}
       CogwheelAdornment={BulkEditCogwheelOption}
       getCustomBulkEditFields={getCustomBulkEditFields}
     />
@@ -135,9 +133,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   dispatch,
   clearListState: () => dispatch(clearListState()),
   getFilters: () => dispatch(getFilters("AssessmentSubmission")),
-  getTags: () => dispatch(getListTags("AssessmentSubmission")),
-  onSave: (id: number, assessmentSubmission: AssessmentSubmissionModel) => (
-    dispatch(updateAssessmentSubmissionsItem(id, assessmentSubmission)))
+  getTags: () => dispatch(getListTags("AssessmentSubmission"))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssessmentSubmission);

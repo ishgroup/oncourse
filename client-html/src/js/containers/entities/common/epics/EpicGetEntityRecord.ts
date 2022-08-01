@@ -21,21 +21,22 @@ import { mapEntityListDisplayName } from "../utils";
 import { getNoteItems } from "../../../../common/components/form/notes/actions";
 import { clearActionsQueue } from "../../../../common/actions";
 import { State } from "../../../../reducers/state";
+import { NOTE_ENTITIES } from "../../../../constants/Config";
 
 export const getProcessDataActions = (item: any, entity: EntityName, state: State) => [
   {
     type: SET_LIST_EDIT_RECORD,
     payload: { editRecord: item, name: mapEntityListDisplayName(entity, item, state) }
   },
-  getNoteItems(entity, item.id, LIST_EDIT_VIEW_FORM_NAME),
-  initialize(LIST_EDIT_VIEW_FORM_NAME, entity),
+  ...NOTE_ENTITIES.includes(entity) ? [getNoteItems(entity, item.id, LIST_EDIT_VIEW_FORM_NAME)] : [],
+  initialize(LIST_EDIT_VIEW_FORM_NAME, item),
   ...(state.actionsQueue.queuedActions.length ? [clearActionsQueue()] : [])
 ];
 
-const request: Request<any, { item: any, entity: EntityName }> = {
+const request: Request<any, { id: number, entity: EntityName }> = {
   type: GET_ENTITY_RECORD_REQUEST,
-  getData: ({ item, entity }) => getEntityItemById(entity, item),
-  processData: (v, s, { item, entity }) => getProcessDataActions(item, entity, s),
+  getData: ({ id, entity }) => getEntityItemById(entity, id),
+  processData: (item, s, { entity }) => getProcessDataActions(item, entity, s),
   processError: response => getEntityItemByIdErrorHandler(response)
 };
 

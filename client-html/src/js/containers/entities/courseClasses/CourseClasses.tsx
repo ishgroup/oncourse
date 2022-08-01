@@ -652,7 +652,6 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
         onInit={onInit}
         customOnCreateAction={createCourseClass}
         customGetAction={getCourseClass}
-        onSave={onUpdate}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         CogwheelAdornment={CourseClassCogWheel}

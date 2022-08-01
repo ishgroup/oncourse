@@ -24,7 +24,7 @@ export const getProcessDataActions = (entity: EntityName) => [
     type: FETCH_SUCCESS,
     payload: { message: `${mapEntityDisplayName(entity)} record created` }
   },
-  getRecords(entity, true),
+  getRecords({ entity, listUpdate: true }),
   setListSelection([]),
   initialize(LIST_EDIT_VIEW_FORM_NAME, null)
 ];

@@ -10,7 +10,6 @@ import { Account, TableModel, VoucherProduct } from "@api/model";
 import { Dispatch } from "redux";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
 import { plainCorporatePassPath } from "../../../constants/Api";
-import { updateVoucherProduct } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
 import VoucherProductEditView from "./components/VoucherProductEditView";
 import { FilterGroup } from "../../../model/common/ListView";
@@ -31,7 +30,6 @@ import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption"
 interface VoucherProductsProps {
   getTagsForClassesSearch?: () => void;
   onInit?: (initial: VoucherProduct) => void;
-  onSave?: (id: string, voucherProduct: VoucherProduct) => void;
   getFilters?: () => void;
   getRelationTypes?: () => void;
   getTags?: () => void;
@@ -103,7 +101,6 @@ const preformatBeforeSubmit = (value: VoucherProduct): VoucherProduct => {
 const VoucherProducts: React.FC<VoucherProductsProps> = props => {
   const {
     onInit,
-    onSave,
     getFilters,
     clearListState,
     getDefaultAccounts,
@@ -157,7 +154,6 @@ const VoucherProducts: React.FC<VoucherProductsProps> = props => {
       CogwheelAdornment={BulkEditCogwheelOption}
       rootEntity="VoucherProduct"
       onInit={onInitCustom}
-      onSave={onSave}
       findRelated={findRelatedGroup}
       filterGroupsInitial={filterGroups}
       preformatBeforeSubmit={preformatBeforeSubmit}
@@ -183,7 +179,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getUserPreferences([ACCOUNT_DEFAULT_VOUCHER_UNDERPAYMENT_ID]));
   },
   clearListState: () => dispatch(clearListState()),
-  onSave: (id: string, voucherProduct: VoucherProduct) => dispatch(updateVoucherProduct(id, voucherProduct)),
   checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" })),
   getRelationTypes: () => dispatch(getEntityRelationTypes()),
   getDataCollectionRules: () => dispatch(getDataCollectionRules()),

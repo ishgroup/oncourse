@@ -3,15 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Certificate, CertificateValidationRequest } from "@api/model";
+import { CertificateValidationRequest } from "@api/model";
 import { _toRequestType, FULFILLED, REJECTED } from "../../../../common/actions/ActionUtils";
 
 export const GET_CERTIFICATE_OUTCOMES = _toRequestType("get/certificate/outcome");
 export const GET_CERTIFICATE_OUTCOMES_FULFILLED = FULFILLED(GET_CERTIFICATE_OUTCOMES);
 export const GET_CERTIFICATE_OUTCOMES_REJECTED = REJECTED(GET_CERTIFICATE_OUTCOMES);
-
-export const UPDATE_CERTIFICATE_ITEM = _toRequestType("put/certificate");
-export const UPDATE_CERTIFICATE_ITEM_FULFILLED = FULFILLED(UPDATE_CERTIFICATE_ITEM);
 
 export const VALIDATE_CERTIFICATES = _toRequestType("post/validateCertificates");
 export const SET_CERTIFICATES_VALIDATION_STATUS = "set/certificate/print/validation";
@@ -63,9 +60,4 @@ export const clearCertificateOutcomes = (loading?: boolean) => ({
 export const setCertificateOutcomesSearch = (search: string) => ({
   type: SET_CERTIFICATE_OUTCOMES_SEARCH,
   payload: { search }
-});
-
-export const updateCertificate = (id: string, certificate: Certificate) => ({
-  type: UPDATE_CERTIFICATE_ITEM,
-  payload: { id, certificate }
 });

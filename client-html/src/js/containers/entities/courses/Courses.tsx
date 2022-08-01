@@ -20,7 +20,6 @@ import { FilterGroup } from "../../../model/common/ListView";
 import { CourseExtended } from "../../../model/entities/Course";
 import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
 import { getListTags } from "../../tags/actions";
-import { updateCourse } from "./actions";
 import CourseCogWheel from "./components/CourseCogWheel";
 import CourseEditView from "./components/CourseEditView";
 
@@ -34,7 +33,6 @@ interface CoursesProps {
   onInit?: () => void;
   getFilters?: () => void;
   getPermissions?: () => void;
-  onUpdate: (id: string, course: Course) => void;
   clearListState?: () => void;
   getTags?: () => void;
   values?: CourseExtended;
@@ -185,7 +183,6 @@ const setRowClasses = ({ currentlyOffered, isShownOnWeb }) => {
 const Courses: React.FC<CoursesProps> = props => {
   const {
     getDataCollectionRules,
-    onUpdate,
     getFilters,
     clearListState,
     onInit,
@@ -221,7 +218,6 @@ const Courses: React.FC<CoursesProps> = props => {
       EditViewContent={CourseEditView}
       rootEntity={ENTITY_NAME}
       onInit={onInit}
-      onSave={onUpdate}
       findRelated={findRelatedGroup}
       filterGroupsInitial={filterGroups}
       preformatBeforeSubmit={preformatBeforeSubmit}
@@ -244,7 +240,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getDataCollectionRules: () => dispatch(getDataCollectionRules()),
   getFilters: () => dispatch(getFilters(ENTITY_NAME)),
-  onUpdate: (id: string, course: CourseExtended) => dispatch(updateCourse(id, course)),
   clearListState: () => dispatch(clearListState()),
   getRelationTypes: () => dispatch(getEntityRelationTypes())
 });

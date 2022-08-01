@@ -166,14 +166,19 @@ export const getEntityItemById = (entity: EntityName, id: number): Promise<any> 
       });
     }
 
+    case "Document":
+      return DocumentsService.getDocumentItem(id);
+
     default:
       return defaultUnknown();
   }
 };
 
 export const updateEntityItemById = (entity: EntityName, id: number, item: any): Promise<any> => {
-  processCustomFields(item);
   delete item.notes;
+
+  processCustomFields(item);
+
   switch (entity) {
     case "Account":
       return AccountService.updateAccount(id, item);
@@ -183,19 +188,59 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
       return ArticleProductService.updateArticleProduct(id, item);
     case "Assessment":
       return AssessmentService.updateAssessment(id, item);
+    case "AssessmentSubmission":
+      return AssessmentSubmissionService.updateAssessmentSubmission(id, item);
+    case "Banking":
+      return BankingService.updateBanking(id, item);
+    case "Certificate":
+      return CertificateService.updateCertificate(id, item);
 
-    case "Module":
-      return ModuleService.updateModule(id, item);
-    case "Qualification":
-      return QualificationService.updateQualification(id, item);
-    case "Room":
-      return RoomService.updateRoom(id, item);
-    case "Site":
-      return SiteService.updateSite(id, item);
-    case "Contact":
+    case "Contact": {
+      const { student, relations } = item;
+
+      if (student) delete item.student.education;
+
+      item.relations = formatRelationsBeforeSave(relations);
+
+      if (item.isCompany) delete item.firstName;
+
       return ContactsService.updateContact(id, item);
+    }
+
+    case "CorporatePass":
+      return CorporatePassService.updateCorporatePass(id, item);
+    case "Course":
+      return CourseService.update(id, item);
+    case "Discount":
+      return DiscountService.updateDiscount(id, item);
+    case "Document":
+      return DocumentsService.updateDocumentItem(id, item);
+    case "Enrolment":
+      return EnrolmentService.updateEnrolment(id, item);
     case "Invoice":
       return InvoiceService.updateInvoice(id, preformatInvoice(item));
+    case "Lead":
+      return LeadService.updateLead(id, item)
+    case "MembershipProduct":
+      return MembershipProductService.updateMembershipProduct(id, item);
+
+    case "Module": {
+      if (item.isOffered === undefined) {
+        item.isOffered = false;
+      }
+
+      if (item.type === undefined) {
+        item.type = "UNIT OF COMPETENCY";
+      }
+      return ModuleService.updateModule(id, item);
+    }
+
+    case "Outcome":
+      return OutcomeService.updateOutcome(id, item);
+    case "PaymentIn":
+      return PaymentInService.updatePaymentIn(id, formatToDateOnly(item.dateBanked), item.administrationCenterId);
+    case "PaymentOut":
+      return PaymentOutService.updatePaymentOut(id, item);
 
     case "Payslip": {
       const paylines = JSON.parse(JSON.stringify(item.paylines.filter(p => p.deferred)));
@@ -207,33 +252,43 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
       return PayslipService.updatePayslip(id, { ...item, paylines });
     }
 
-    case "CorporatePass":
-      return CorporatePassService.updateCorporatePass(id, item);
-    case "Banking":
-      return BankingService.updateBanking(id, item);
-    case "Discount":
-      return DiscountService.updateDiscount(id, item);
-    case "WaitingList":
-      return WaitingListService.updateWaitingList(id, item);
+    case "PriorLearning":
+      return PriorLearningService.updatePriorLearning(id, item);
 
-    case "MembershipProduct":
-      return MembershipProductService.updateMembershipProduct(id, item);
-    case "VoucherProduct":
-      return VoucherProductService.updateVoucherProduct(id, item);
+    case "Qualification": {
+      if (item.isOffered === undefined) {
+        item.isOffered = false;
+      }
+      return QualificationService.updateQualification(id, item);
+    }
 
-    case "Certificate":
-      return CertificateService.updateCertificate(id, item);
+    case "Room":
+      return RoomService.updateRoom(id, item);
     case "Sale":
     case "ProductItem":
       return SaleService.updateSale(id, item);
+
+    case "Site": {
+      if (item.isAdministrationCentre === undefined) {
+        item.isAdministrationCentre = false;
+      }
+
+      if (item.isShownOnWeb === undefined) {
+        item.isShownOnWeb = false;
+      }
+
+      if (item.isVirtual === undefined) {
+        item.isVirtual = false;
+      }
+      return SiteService.updateSite(id, item);
+    }
+
     case "Survey":
       return SurveyService.updateSurveyItem(id, item);
-    case "PaymentIn":
-      return PaymentInService.updatePaymentIn(id, formatToDateOnly(item.dateBanked), item.administrationCenterId);
-    case "PaymentOut":
-      return PaymentOutService.updatePaymentOut(id, item);
-    case "Course":
-      return CourseService.update(id, item);
+    case "WaitingList":
+      return WaitingListService.updateWaitingList(id, item);
+    case "VoucherProduct":
+      return VoucherProductService.updateVoucherProduct(id, item);
 
     default:
       return defaultUnknown();

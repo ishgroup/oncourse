@@ -1,4 +1,4 @@
-import { Course, CourseClass, Invoice } from "@api/model";
+import { Course, CourseClass } from "@api/model";
 import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
 import { ContraInvoice, ContraInvoiceFormData } from "../reducers/state";
 
@@ -16,9 +16,6 @@ export const SET_INVOICE_LINE_COURSE = "set/invoice/line/course";
 
 export const GET_INVOICE_LINE_ENROLMENTS = _toRequestType("get/invoice/line/enrolments");
 export const SET_INVOICE_LINE_ENROLMENTS = "set/invoice/line/enrolments";
-
-export const UPDATE_INVOICE_ITEM = _toRequestType("put/invoice");
-export const UPDATE_INVOICE_ITEM_FULFILLED = FULFILLED(UPDATE_INVOICE_ITEM);
 
 export const DUPLICATE_AND_REVERSE_INVOICE_ITEM = _toRequestType("get/invoice/duplicate");
 export const DUPLICATE_QUOTE = _toRequestType("get/quote/duplicate");
@@ -75,11 +72,6 @@ export const setInvoiceLineCourse = (selectedLineCourse: Course, selectedLineCou
 export const setInvoiceLineEnrolments = (selectedLineEnrolments: string[]) => ({
   type: SET_INVOICE_LINE_ENROLMENTS,
   payload: { selectedLineEnrolments }
-});
-
-export const updateInvoice = (id: string, invoice: Invoice) => ({
-  type: UPDATE_INVOICE_ITEM,
-  payload: { id, invoice }
 });
 
 export const duplicateAndReverseInvoice = (id: number) => ({

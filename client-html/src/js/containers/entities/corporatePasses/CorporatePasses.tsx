@@ -18,7 +18,6 @@ import ListView from "../../../common/components/list-view/ListView";
 import { defaultContactName } from "../contacts/utils";
 import CorporatePassEditView from "./components/CorporatePassEditView";
 import { FilterGroup } from "../../../model/common/ListView";
-import { updateCorporatePass } from "./actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getEntityTags } from "../../tags/actions";
@@ -83,37 +82,30 @@ class CorporatePasses extends React.Component<any, any> {
     return false;
   }
 
-  onSave = (id: string, item: CorporatePass) => {
-    this.props.onSave(id, item);
-  };
-
   render() {
     const {
       onInit
     } = this.props;
 
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "contact.fullName",
-            secondaryColumn: "expiryDate",
-            secondaryColumnCondition
-          }}
-          EditViewContent={CorporatePassEditView}
-          rootEntity="CorporatePass"
-          onInit={onInit}
-          onSave={this.onSave}
-          findRelated={findRelatedGroup}
-          filterGroupsInitial={filterGroups}
-          editViewProps={{
-            nameCondition: pass => defaultContactName(pass.contactFullName),
-            manualLink,
-            hideTitle: true
-          }}
-          noListTags
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "contact.fullName",
+          secondaryColumn: "expiryDate",
+          secondaryColumnCondition
+        }}
+        EditViewContent={CorporatePassEditView}
+        rootEntity="CorporatePass"
+        onInit={onInit}
+        findRelated={findRelatedGroup}
+        filterGroupsInitial={filterGroups}
+        editViewProps={{
+          nameCondition: pass => defaultContactName(pass.contactFullName),
+          manualLink,
+          hideTitle: true
+        }}
+        noListTags
+      />
     );
   }
 }
@@ -128,7 +120,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getEntityTags("Course"));
   },
   getFilters: () => dispatch(getFilters("CorporatePass")),
-  onSave: (id: string, corporatePass: CorporatePass) => dispatch(updateCorporatePass(id, corporatePass)),
   clearListState: () => dispatch(clearListState()),
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups))
 });

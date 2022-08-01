@@ -7,9 +7,7 @@
  */
 
 import { isBefore } from "date-fns";
-import React, {
- Dispatch, useCallback, useEffect, useState 
-} from "react";
+import React, { Dispatch, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
 import Typography from "@mui/material/Typography";
@@ -24,8 +22,7 @@ import {
   getContactsConcessionTypes,
   getContactsRelationTypes,
   getContactsTaxTypes,
-  getContactTags,
-  updateContact
+  getContactTags
 } from "./actions";
 import ContactEditView from "./components/ContactEditView";
 import { getManualLink } from "../../../common/utils/getManualLink";
@@ -48,7 +45,6 @@ export type ContactType = "STUDENT" | "TUTOR" | "COMPANY" | "TUTOR_STUDENT";
 
 interface ContactsProps {
   onInit?: () => void;
-  onSave?: (id: string, contact: Contact) => void;
   getRecords?: () => void;
   getFilters?: () => void;
   clearListState?: () => void;
@@ -239,7 +235,6 @@ const Contacts: React.FC<ContactsProps> = props => {
     getFilters,
     clearListState,
     onInit,
-    onSave,
     getTags,
     getCountries,
     getLanguages,
@@ -318,19 +313,6 @@ const Contacts: React.FC<ContactsProps> = props => {
     };
   }, []);
 
-  const onContactSave = useCallback((id: string, contact) => {
-    const contactModel = { ...contact };
-    const { student, relations } = contactModel;
-
-    if (student) delete contactModel.student.education;
-
-    contactModel.relations = formatRelationsBeforeSave(relations);
-
-    if (contactModel.isCompany) delete contactModel.firstName;
-
-    onSave(id, contactModel);
-  }, []);
-
   const getContactFullNameWithTitle = (values: Contact) =>
     `${!values.isCompany && values.title && values.title.trim().length > 0 ? `${values.title} ` : ""}${!values.isCompany ? getContactFullName(values) : values.lastName}`;
 
@@ -356,7 +338,6 @@ const Contacts: React.FC<ContactsProps> = props => {
       customGetAction={getContact}
       rootEntity="Contact"
       onInit={onInit}
-      onSave={onContactSave}
       findRelated={findRelatedItems}
       filterGroupsInitial={filterGroups}
       CogwheelAdornment={ContactCogWheel}
@@ -383,7 +364,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getContactsConcessionTypes: () => dispatch(getContactsConcessionTypes()),
   getDefaultTerms: () => dispatch(getDefaultInvoiceTerms()),
   getTaxTypes: () => dispatch(getContactsTaxTypes()),
-  onSave: (id: string, contact: Contact) => dispatch(updateContact(id, contact)),
   clearListState: () => dispatch(clearListState()),
   getPermissions: () => {
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));

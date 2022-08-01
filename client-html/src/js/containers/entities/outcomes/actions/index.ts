@@ -3,18 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Outcome } from "@api/model";
 import { _toRequestType } from "../../../../common/actions/ActionUtils";
 
 export const GET_OUTCOME_TAGS = _toRequestType("get/outcome/tags");
 
-export const UPDATE_OUTCOME_ITEM = _toRequestType("put/outcome");
-
 export const getOutcomeTags = () => ({
   type: GET_OUTCOME_TAGS,
-});
-
-export const updateOutcome = (id: string, outcome: Outcome) => ({
-  type: UPDATE_OUTCOME_ITEM,
-  payload: { id, outcome }
 });

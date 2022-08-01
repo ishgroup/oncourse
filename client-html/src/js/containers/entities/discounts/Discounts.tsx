@@ -20,7 +20,6 @@ import {
   setFilterGroups
 } from "../../../common/components/list-view/actions";
 import {
-  updateDiscount,
   getDiscountContactRelationTypes,
   getDiscountCosAccounts
 } from "./actions";
@@ -122,8 +121,7 @@ class Discounts extends React.PureComponent<any, any> {
 
   render() {
     const {
-      onInit,
-      onSave
+      onInit
     } = this.props;
 
     return (
@@ -142,7 +140,6 @@ class Discounts extends React.PureComponent<any, any> {
           EditViewContent={DiscountEditView}
           rootEntity="Discount"
           onInit={onInit}
-          onSave={onSave}
           findRelated={findRelatedGroup}
           filterGroupsInitial={filterGroups}
           noListTags
@@ -169,7 +166,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getEntityTags("Course"));
   },
   clearListState: () => dispatch(clearListState()),
-  onSave: (id: string, discount: Discount) => dispatch(updateDiscount(id, discount)),
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
   checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" }))
 });

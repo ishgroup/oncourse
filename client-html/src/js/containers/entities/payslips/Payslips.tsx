@@ -14,7 +14,6 @@ import {
   setListEditRecord
 } from "../../../common/components/list-view/actions";
 import { defaultContactName } from "../contacts/utils";
-import { updatePayslip } from "./actions";
 import PayslipsEditView from "./components/PayslipsEditView";
 import ListView from "../../../common/components/list-view/ListView";
 import { getListTags } from "../../tags/actions";
@@ -90,7 +89,7 @@ class Payslips extends React.Component<any, any> {
 
   render() {
     const {
-      onSave, onInit
+      onInit
     } = this.props;
 
     return (
@@ -107,7 +106,6 @@ class Payslips extends React.Component<any, any> {
         EditViewContent={PayslipsEditView}
         rootEntity="Payslip"
         onInit={onInit}
-        onSave={onSave}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         CogwheelAdornment={PayslipCogwheelOptions}
@@ -128,7 +126,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getFilters: () => dispatch(getFilters("Payslip")),
   getTags: () => dispatch(getListTags("Payslip")),
   clearListState: () => dispatch(clearListState()),
-  onSave: (id: string, payslip: Payslip) => dispatch(updatePayslip(id, payslip)),
   getGenerateAccess: () => dispatch(checkPermissions({ path: "/a/v1/list/option/payroll?entity=Payslip", method: "PUT" })),
   getConfirmAccess: () => dispatch(
     checkPermissions({ path: "/a/v1/list/option/payroll?entity=Payslip&bulkConfirmTutorWages=true", method: "POST" })

@@ -13,7 +13,7 @@ import { initialize } from "redux-form";
 import { Site } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
-import { getSite, updateSite } from "./actions";
+import { getSite } from "./actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import { getListTags } from "../../tags/actions";
 import SiteEditView from "./components/SiteEditView";
@@ -119,22 +119,6 @@ class Sites extends React.Component<any, any> {
     this.props.clearListState();
   }
 
-  onSave = (id: string, item: Site) => {
-    if (item.isAdministrationCentre === undefined) {
-      item.isAdministrationCentre = false;
-    }
-
-    if (item.isShownOnWeb === undefined) {
-      item.isShownOnWeb = false;
-    }
-
-    if (item.isVirtual === undefined) {
-      item.isVirtual = false;
-    }
-
-    this.props.onSave(id, item);
-  };
-
   onInit = () => {
     const { defaultTimezone, defaultCountry, dispatch } = this.props;
     Initial.timezone = defaultTimezone;
@@ -163,7 +147,6 @@ class Sites extends React.Component<any, any> {
         customGetAction={getSite}
         rootEntity="Site"
         onInit={this.onInit}
-        onSave={this.onSave}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
       />
@@ -193,8 +176,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getCountries: () => {
     dispatch(getCountries());
   },
-  clearListState: () => dispatch(clearListState()),
-  onSave: (id: string, site: Site) => dispatch(updateSite(id, site)),
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Sites);

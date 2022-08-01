@@ -23,9 +23,9 @@ export const getProcessDataActions = (entity: EntityName, state: State, id: numb
     type: FETCH_SUCCESS,
     payload: { message: `${mapEntityDisplayName(entity)} record updated` }
   },
-  getRecords(entity, true),
+  getRecords({ entity, listUpdate: true, savedID: id }),
   ...state.list.fullScreenEditView || state.list.records.layout === "Three column" ? [
-    getEntityRecord(id, "Account")
+    getEntityRecord(id, entity)
   ] : []
 ];
 

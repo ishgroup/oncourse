@@ -7,7 +7,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { ProductItem, TableModel } from "@api/model";
 import { clearListState, getFilters } from "../../../common/components/list-view/actions";
-import { getSalesManuTags, updateSale } from "./actions";
+import { getSalesManuTags } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
 import SalesEditView from "./components/SalesEditView";
@@ -28,7 +28,6 @@ interface SalesProps {
   getAccounts?: () => void;
   clearListState?: () => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
-  onSave?: (id: string, productItem: ProductItem) => void;
 }
 
 const filterGroups: FilterGroup[] = [
@@ -108,7 +107,6 @@ const Sales: React.FC<SalesProps> = props => {
     getFilters,
     getAccounts,
     getTaxes,
-    onSave,
     getTags
   } = props;
 
@@ -123,30 +121,27 @@ const Sales: React.FC<SalesProps> = props => {
   }, []);
 
   return (
-    <div>
-      <ListView
-        listProps={{
-          primaryColumn: "product.name",
-          secondaryColumn: "invoiceLine.invoice.contact.fullName"
-        }}
-        editViewProps={{
-          manualLink,
-          asyncValidate: notesAsyncValidate,
-          asyncBlurFields: ["notes[].message"],
-          nameCondition: values => (values ? values.productName : "")
-        }}
-        updateTableModel={updateTableModel}
-        EditViewContent={SalesEditView}
-        CogwheelAdornment={SalesCogwheel}
-        rootEntity="ProductItem"
-        onInit={onInit}
-        onSave={onSave}
-        findRelated={findRelatedGroup}
-        filterGroupsInitial={filterGroups}
-        defaultDeleteDisabled
-        noListTags
-      />
-    </div>
+    <ListView
+      listProps={{
+        primaryColumn: "product.name",
+        secondaryColumn: "invoiceLine.invoice.contact.fullName"
+      }}
+      editViewProps={{
+        manualLink,
+        asyncValidate: notesAsyncValidate,
+        asyncBlurFields: ["notes[].message"],
+        nameCondition: values => (values ? values.productName : "")
+      }}
+      updateTableModel={updateTableModel}
+      EditViewContent={SalesEditView}
+      CogwheelAdornment={SalesCogwheel}
+      rootEntity="ProductItem"
+      onInit={onInit}
+      findRelated={findRelatedGroup}
+      filterGroupsInitial={filterGroups}
+      defaultDeleteDisabled
+      noListTags
+    />
   );
 };
 
@@ -161,7 +156,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getEntityTags("Membership"));
   },
   getFilters: () => dispatch(getFilters("ProductItem")),
-  onSave: (id: string, productItem: ProductItem) => dispatch(updateSale(id, productItem)),
   clearListState: () => dispatch(clearListState())
 });
 

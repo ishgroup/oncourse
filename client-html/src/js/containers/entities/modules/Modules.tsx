@@ -9,7 +9,6 @@ import { Dispatch } from "redux";
 import { initialize } from "redux-form";
 import { Module } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
-import { updateModule } from "./actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import ModulesEditView from "./components/ModulesEditView";
 import {
@@ -78,18 +77,6 @@ class Modules extends React.Component<any, any> {
     return false;
   }
 
-  onSave = (id: string, item: Module) => {
-    if (item.isOffered === undefined) {
-      item.isOffered = false;
-    }
-
-    if (item.type === undefined) {
-      item.type = "UNIT OF COMPETENCY";
-    }
-
-    this.props.onSave(id, item);
-  };
-
   render() {
     const {
       onInit
@@ -108,7 +95,6 @@ class Modules extends React.Component<any, any> {
         EditViewContent={ModulesEditView}
         rootEntity="Module"
         onInit={onInit}
-        onSave={this.onSave}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         noListTags
@@ -125,8 +111,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getFilters: () => {
     dispatch(getFilters("Module"));
   },
-  clearListState: () => dispatch(clearListState()),
-  onSave: (id: string, module: Module) => dispatch(updateModule(id, module)),
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Modules);
