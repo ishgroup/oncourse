@@ -15,6 +15,12 @@ properties:
     description: entity attribute
     required: false
     example: code
+  parameterId:
+    type: integer
+    format: int64
+    description: id of parameter, which can be useful during script execution or check
+    required: false
+    example: 123
   cron:
     $ref: './Schedule.yaml'
     description: cron

@@ -686,10 +686,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
       this.simpleSearchChecked = false;
     }
 
-    const {
-      tokens: { tokens },
-      parser
-    } = this.parseInputString(value);
+    const { tokens: { tokens } } = this.parseInputString(value);
 
     if (!value) {
       this.setState(
@@ -983,7 +980,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
       }
 
       case 27: {
-        this.inputNode.blur();
+        this.inputNode?.blur();
       }
     }
   };
