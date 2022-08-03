@@ -13,12 +13,11 @@ export const DELETE_QUALIFICATION_ITEM = _toRequestType("delete/qualification");
 export const DELETE_QUALIFICATION_ITEM_FULFILLED = FULFILLED(DELETE_QUALIFICATION_ITEM);
 
 export const UPDATE_QUALIFICATION_ITEM = _toRequestType("put/qualification");
-export const UPDATE_QUALIFICATION_ITEM_FULFILLED = FULFILLED(UPDATE_QUALIFICATION_ITEM);
 
 export const CREATE_QUALIFICATION_ITEM = _toRequestType("post/qualification");
 export const CREATE_QUALIFICATION_ITEM_FULFILLED = FULFILLED(CREATE_QUALIFICATION_ITEM);
 
-export const getQualification = (id: string) => ({
+export const getQualification = (id: number) => ({
   type: GET_QUALIFICATION_ITEM,
   payload: id
 });

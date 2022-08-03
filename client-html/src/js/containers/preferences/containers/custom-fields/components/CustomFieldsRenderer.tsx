@@ -283,6 +283,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
               items={DataTypes}
               disabled={!!field.id}
               onChange={onDataTypeChange}
+              debounced={false}
               className={classes.field}
               fullWidth
               required
