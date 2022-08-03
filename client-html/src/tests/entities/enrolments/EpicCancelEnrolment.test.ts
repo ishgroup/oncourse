@@ -4,7 +4,11 @@ import { FETCH_SUCCESS } from "../../../js/common/actions";
 import { GET_RECORDS_REQUEST, setListSelection } from "../../../js/common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../js/common/components/list-view/constants";
 import { EpicCancelEnrolment } from "../../../js/containers/entities/enrolments/epics/EpicCancelEnrolment";
-import { cancelEnrolment, setEnrolmentsProcessing } from "../../../js/containers/entities/enrolments/actions";
+import {
+  cancelEnrolment,
+  setEnrolmentsDialog,
+  setEnrolmentsProcessing
+} from "../../../js/containers/entities/enrolments/actions";
 
 describe("Cancel/ transfer enrolment epic tests", () => {
   it("EpicCancelEnrolment should returns correct values", () => DefaultEpic({
@@ -36,6 +40,7 @@ describe("Cancel/ transfer enrolment epic tests", () => {
         },
         setEnrolmentsProcessing(false),
         setListSelection([]),
+        setEnrolmentsDialog(null),
         initialize(LIST_EDIT_VIEW_FORM_NAME, null)
       ];
     }
