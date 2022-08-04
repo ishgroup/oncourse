@@ -13,8 +13,7 @@ package ish.oncourse.aql.model;
 
 import ish.common.types.DataType;
 import ish.oncourse.aql.model.attribute.*;
-import ish.oncourse.aql.model.attribute.tagging.ChecklistsAttribute;
-import ish.oncourse.aql.model.attribute.tagging.TagsAttribute;
+import ish.oncourse.aql.model.attribute.tagging.*;
 import ish.oncourse.aql.model.attribute.tagging.relations.*;
 import ish.oncourse.server.api.v1.function.TagFunctions;
 import ish.oncourse.server.cayenne.CustomFieldType;
@@ -117,7 +116,10 @@ public class EntityFactory {
             AccountAbstractInvoiceLines.class
             TaggingRelationsWaitingList.class,
             TagsAttribute.class,
-            ChecklistsAttribute.class
+            CheckedTasksAttribute.class,
+            UncheckedTasksAttribute.class,
+            CompletedChecklistsAttribute.class,
+            UncompletedChecklistsAttribute.class
     );
 
     private final ObjectContext context;
