@@ -12,11 +12,14 @@
 package ish.oncourse.server.cayenne
 
 import ish.common.types.NodeType
+import ish.common.types.SystemEventType
 import ish.common.types.TypesUtil
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.cayenne.Taggable
 import ish.oncourse.cayenne.TaggableClasses
+import ish.oncourse.common.SystemEvent
+import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
 import ish.oncourse.server.cayenne.glue._TagRelation
 import ish.validation.ValidationFailure
 import org.apache.cayenne.validation.ValidationResult
@@ -36,6 +39,37 @@ class TagRelation extends _TagRelation implements Queueable {
 		return tag?.nodeType != NodeType.CHECKLIST
 	}
 
+	@Override
+	protected void postPersist() {
+		if(tag.nodeType.equals(NodeType.CHECKLIST) && tag.parentTag != null){
+			if(checklistCompleted() && !taggedRelation.tagIds.contains(tag.parentTag.id)) {
+				def relation = context.newObject(TagRelation.class)
+				relation.tag = tag.parentTag
+				relation.taggedRelation = taggedRelation
+				relation.entityIdentifier = entityIdentifier
+				relation.entityAngelId = taggedRelation.id
+				context.commitChanges()
+			}
+		}
+	}
+
+	@Override
+	protected void preRemove() {
+		if(tag != null) {
+			if (tag.nodeType.equals(NodeType.CHECKLIST) && tag.parentTag != null) {
+				if (taggedRelation.tagIds.contains(tag.parentTag.id)) {
+					(taggedRelation as TaggableCayenneDataObject).removeTag(tag.parentTag)
+					context.commitChanges()
+				}
+			}
+		}
+	}
+
+	private boolean checklistCompleted(){
+		def allTagChilds = tag.parentTag.allChildren.values().collect {it.id}
+		def recordTagIds = taggedRelation.tagIds
+		return recordTagIds.containsAll(allTagChilds)
+	}
 
 	/**
 	 * To be overridden returning a constant from the TaggableClasses enum.
@@ -81,7 +115,7 @@ class TagRelation extends _TagRelation implements Queueable {
 	void validateForSave(@Nonnull ValidationResult result) {
 		super.validateForSave(result)
 
-		if (getTag() != null && getTag().getParentTag() == null) {
+		if (getTag() != null && getTag().getParentTag() == null && getTag().nodeType == NodeType.TAG) {
 			result.addFailure(ValidationFailure.validationFailure(this, TAG_PROPERTY, "Tag relations cannot be directly related to a tag group."))
 		}
 
