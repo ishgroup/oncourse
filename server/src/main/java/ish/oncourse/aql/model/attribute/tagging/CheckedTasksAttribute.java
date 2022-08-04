@@ -19,13 +19,12 @@ import org.apache.cayenne.exp.parser.SimpleNode;
 
 import java.util.Optional;
 
-import static ish.oncourse.aql.model.attribute.tagging.TaggableAttribute.TAGS;
+import static ish.oncourse.aql.model.attribute.tagging.TaggableAttribute.CHECKED_TASKS;
 
-public class  TagsAttribute implements SyntheticAttributeDescriptor {
-
+public class CheckedTasksAttribute implements SyntheticAttributeDescriptor {
     EntityFactory factory;
 
-    public TagsAttribute(EntityFactory factory) {
+    public CheckedTasksAttribute(EntityFactory factory) {
         this.factory = factory;
     }
 
@@ -36,12 +35,12 @@ public class  TagsAttribute implements SyntheticAttributeDescriptor {
 
     @Override
     public String getAttributeName() {
-        return TAGS.toString();
+        return CHECKED_TASKS.toString();
     }
 
     @Override
     public SimpleNode spawnNode() {
-        return new LazyTaggableAttributeNode(TAGS);
+        return new LazyTaggableAttributeNode(CHECKED_TASKS);
     }
 
     @Override

@@ -8,8 +8,7 @@
 
 package ish.oncourse.aql.model.attribute.tagging;
 
-import ish.common.types.NodeType;
-import ish.oncourse.aql.impl.converter.LazyTagsNode;
+import ish.oncourse.aql.impl.converter.LazyTaggableAttributeNode;
 import ish.oncourse.aql.model.Entity;
 import ish.oncourse.aql.model.EntityFactory;
 import ish.oncourse.aql.model.SyntheticAttributeDescriptor;
@@ -20,10 +19,12 @@ import org.apache.cayenne.exp.parser.SimpleNode;
 
 import java.util.Optional;
 
-public class ChecklistsAttribute implements SyntheticAttributeDescriptor {
+import static ish.oncourse.aql.model.attribute.tagging.TaggableAttribute.UNCHECKED_TASKS;
+
+public class UncheckedTasksAttribute implements SyntheticAttributeDescriptor {
     EntityFactory factory;
 
-    public ChecklistsAttribute(EntityFactory factory) {
+    public UncheckedTasksAttribute(EntityFactory factory) {
         this.factory = factory;
     }
 
@@ -34,12 +35,12 @@ public class ChecklistsAttribute implements SyntheticAttributeDescriptor {
 
     @Override
     public String getAttributeName() {
-        return "checklists";
+        return UNCHECKED_TASKS.toString();
     }
 
     @Override
     public SimpleNode spawnNode() {
-        return new LazyTagsNode(NodeType.CHECKLIST);
+        return new LazyTaggableAttributeNode(UNCHECKED_TASKS);
     }
 
     @Override
