@@ -270,11 +270,6 @@ const Documents: React.FC<DocumentProps> = props => {
     ) : v)
   });
 
-  const onDocumentCreate = doc => {
-    const docModel = { ...doc };
-    onCreate(docModel);
-  };
-
   const customOnCreate = () => {
     if (editRecord && params.id === "new") return;
     setOpenFileModal(true);
