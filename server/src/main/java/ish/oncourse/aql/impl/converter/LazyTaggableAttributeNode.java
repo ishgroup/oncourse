@@ -8,22 +8,20 @@
 
 package ish.oncourse.aql.impl.converter;
 
-import ish.common.types.NodeType;
 import ish.oncourse.aql.impl.CompilationContext;
 import ish.oncourse.aql.impl.ExpressionUtil;
+import ish.oncourse.aql.model.attribute.tagging.TaggableAttribute;
 import ish.oncourse.cayenne.TaggableClasses;
 import ish.util.EntityPathUtils;
 import ish.util.TaggableUtil;
 import org.apache.cayenne.exp.parser.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static ish.oncourse.aql.NodeUtils.inverseNodeByIds;
 
 /**
- * Node, that redefines parent node of tags predicates and adds entityIdentifier checking to request
+ * Node, that redefines parent node of tags predicates and adds entityIdentifier, nodetype and parent tag if required checking to request
  * <p>
  *                 _op__(not eq)          ->                  _____________________and______________________________
  *                  /      \                                 /                   \                                  \
@@ -31,15 +29,12 @@ import static ish.oncourse.aql.NodeUtils.inverseNodeByIds;
  *                                                                        /            \                             \                              \
  *                                          taggingRelations.entityIdentifier      TaggableClasses.databaseValue      taggingRelations.tag.nodeType  nodeType
  */
-public class LazyTagsNode extends LazyExprNodeWithBasePathResolver {
-    private final NodeType nodeType;
-    private static final Map<String, String> aliases = new HashMap<>() {{
-        put(TAGS, "taggingRelations+.tag");
-        put(CHECKLISTS, "taggingRelations+.tag");
-    }};
+public class LazyTaggableAttributeNode extends LazyExprNodeWithBasePathResolver {
 
-    public LazyTagsNode(NodeType nodeType) {
-        this.nodeType = nodeType;
+    private final TaggableAttribute attribute;
+
+    public LazyTaggableAttributeNode(TaggableAttribute currentAttribute) {
+        this.attribute = currentAttribute;
     }
 
     @Override
@@ -49,7 +44,11 @@ public class LazyTagsNode extends LazyExprNodeWithBasePathResolver {
             parent = ((LazyRelationshipComparisonNode) parent).resolveSelf(astObjPath, ctx);
         }
         String basePath = astObjPath.getPath();
-        var lastPointIndex = basePath.lastIndexOf("tags");
+        int lastPointIndex = 0;
+
+        if(attribute.getCurrentAlias() != null)
+            lastPointIndex = basePath.indexOf(attribute.getCurrentAlias());
+
         String entityPath = basePath.substring(0, lastPointIndex);
 
         var taggedEntity = EntityPathUtils.resolvePathToTaggable(entityPath, ctx);
@@ -61,7 +60,7 @@ public class LazyTagsNode extends LazyExprNodeWithBasePathResolver {
 
         ASTAnd notEmptyExpr = buildTagChecksExpr(entityPath, taggableClasses);
 
-        if (basePath.endsWith(TAGS) || basePath.endsWith(CHECKLISTS)) {
+        if (basePath.endsWith(TAGS) || basePath.endsWith(CHECKED_TASKS)) {
             // tags is empty || tags is null expressions
             if (parent instanceof ASTEqual) {
                 return inverseNodeByIds(notEmptyExpr, taggedEntity, ctx);
@@ -72,6 +71,10 @@ public class LazyTagsNode extends LazyExprNodeWithBasePathResolver {
 
         parent = processAsAlias(parent, args);
         notEmptyExpr.jjtAddChild(parent, notEmptyExpr.jjtGetNumChildren());
+
+        if(NOT_COMPLETED_CHECKLISTS.equals(attribute.getCurrentAlias())){
+            return inverseNodeByIds(parent, taggedEntity, ctx);
+        }
         return notEmptyExpr;
     }
 
@@ -112,23 +115,28 @@ public class LazyTagsNode extends LazyExprNodeWithBasePathResolver {
 
         // add check if it is tag or checklist
         String nodeTypePath = basePathWithJoin + ".nodeType";
-        ASTEqual nodeTypeEqNode = new ASTEqual(new ASTObjPath(nodeTypePath), nodeType.getDatabaseValue());
+        ASTEqual nodeTypeEqNode = new ASTEqual(new ASTObjPath(nodeTypePath), attribute.getNodeType().getDatabaseValue());
         ExpressionUtil.addChild(and, nodeTypeEqNode, idx);
 
+        // add check for parentTag for completed checklists
+        if(TaggableAttribute.COMPLETED_CHECKLISTS.equals(attribute)) {
+            String completedChecklistPath = basePathWithJoin + ".parentTag";
+            ASTEqual completedChecklistNode = new ASTEqual(new ASTObjPath(completedChecklistPath), null);
+            ExpressionUtil.addChild(and, completedChecklistNode, idx);
+        }
         return and;
     }
 
     private ASTObjPath updatePath(SimpleNode child) {
         String path = ((ASTObjPath) child).getPath();
         String newPath = path;
-        if (nodeType == NodeType.TAG && path.contains(TAGS + ".")) {
-            newPath = path.replaceFirst(TAGS + ".", "taggingRelations+.tag+.");
-        } else if (path.contains(CHECKLISTS + ".")) {
-            newPath = path.replaceFirst(CHECKLISTS + ".", "taggingRelations+.tag+.");
+
+        if(path.contains(attribute.getCurrentAlias() + ".")){
+            newPath = path.replaceFirst(attribute.getCurrentAlias() + ".", "taggingRelations+.tag+.");
         }
 
         var newObjPath = new ASTObjPath(newPath);
-        newObjPath.setPathAliases(aliases);
+        newObjPath.setPathAliases(attribute.getPathAliases());
         return newObjPath;
     }
 }
