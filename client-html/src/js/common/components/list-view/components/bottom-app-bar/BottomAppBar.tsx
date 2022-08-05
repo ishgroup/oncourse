@@ -176,7 +176,6 @@ class BottomAppBar extends React.PureComponent<any, any> {
 
   handleRelatedLinkClick = (item: FindRelatedItem) => {
     const { rootEntity, selection } = this.props;
-    this.handleClose();
 
     if (item.list) {
       let searchParam = "";
@@ -189,12 +188,14 @@ class BottomAppBar extends React.PureComponent<any, any> {
         searchParam = item.customExpression;
       }
 
-      openInternalLink(`/${item.list}?search=${searchParam}`);
+      openInternalLink(searchParam ? `/${item.list}?search=${searchParam}` : `/${item.list}`);
     } else {
       window.location.href = `/find/related?destList=${item.destination}&sourceList=${rootEntity}&ids=${selection.join(
         ","
       )}`;
     }
+
+    this.handleClose();
   };
 
   handleDeleteClick = () => {

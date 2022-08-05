@@ -174,6 +174,7 @@ const TutorPayContent: React.FC<Props> = ({
                 label="Type"
                 items={PayRateTypes}
                 onChange={onRepetitionChange}
+                debounced={false}
                 validate={validatePayRateTypes}
               />
 

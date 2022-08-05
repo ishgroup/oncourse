@@ -50,6 +50,7 @@ class Outcome extends _Outcome implements Queueable, OutcomeTrait, OutcomeInterf
 	public static final String TRAINING_PLAN_END_DATE_PROPERTY = "trainingPlanEndDate"
 	public static final String PRESENT_ATTENDENCE_PERCENT_KEY = "presentAttendancePercent"
 	public static final String MARKED_ASSESSMENT_PERCENT_KEY = "markedAssessmentPercent"
+	public static final String PRINTED_CERTIFICATE_KEY = "printedCertificate"
 
 	public static final String CODE = "code";
 	public static final String NAME = "name";
@@ -406,6 +407,14 @@ class Outcome extends _Outcome implements Queueable, OutcomeTrait, OutcomeInterf
 	@API
 	LocalDate getActualEndDate() {
 		return LocalDateUtils.dateToValue(calculateEndDate(new AttendanceTakenProcessor()))
+	}
+
+	/**
+	 * @return 'Yes' if outcome linked to at least 1 printed and non-revoked certificate
+	 */
+	@API
+	String getPrintedCertificate() {
+		return (certificateOutcomes?.certificate?.find { it.printedOn && it.revokedOn == null } != null) ? "Yes" : ""
 	}
 
 	Date calculateStartDate(AttendanceProcessor attendanceProcessor) {

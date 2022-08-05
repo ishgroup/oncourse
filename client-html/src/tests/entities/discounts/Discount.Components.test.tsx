@@ -3,7 +3,7 @@ import DiscountEditView from "../../../js/containers/entities/discounts/componen
 import { mockedEditView } from "../../common/MockedEditView.Components";
 import { III_DD_MMM_YYYY } from "../../../js/common/utils/dates/format";
 
-describe.skip("Virtual rendered DiscountEditView", () => {
+describe("Virtual rendered DiscountEditView", () => {
   mockedEditView({
     entity: "Discount",
     EditView: DiscountEditView,
