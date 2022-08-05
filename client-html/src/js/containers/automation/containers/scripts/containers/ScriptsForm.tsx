@@ -163,7 +163,6 @@ const styles = (theme: AppTheme) =>
 
 const entityNameTypes: TriggerType[] = [
   'On demand',
-  'Schedule',
   'On create',
   'On edit',
   'On create and edit',
