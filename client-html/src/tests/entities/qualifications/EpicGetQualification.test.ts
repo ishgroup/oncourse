@@ -10,7 +10,7 @@ import {
 
 describe("Get qualification epic tests", () => {
   it("EpicGetQualification should returns correct values", () => DefaultEpic({
-    action: getQualification("1"),
+    action: getQualification(1),
     epic: EpicGetQualification,
     processData: mockedApi => {
       const qualification = mockedApi.db.getQualification(1);

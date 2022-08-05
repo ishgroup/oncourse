@@ -97,7 +97,7 @@ const OwnApiNotes = React.memo<Props>(
         dispatch(addActionToQueue(postNoteItem(newNote), "POST", "Note", temporaryId));
         setTimeout(() => {
           const domNode = document.getElementById("notes[0].message");
-          window.scrollTo({
+          if (domNode)  window.scrollTo({
             top: domNode.offsetTop - APP_BAR_HEIGHT,
             behavior: 'smooth'
           });

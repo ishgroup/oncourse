@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 class IntegrationApiTest extends TestWithDatabase {
-    public static final String SURVEYGIZMO_USER = "user"
-    public static final String SURVEYGIZMO_PASSWORD = "password"
-    public static final String SURVEYGIZMO_SURVEY_ID = "surveyId"
+    public static final String ALCHEMER_API_TOKEN = "apiToken"
+    public static final String ALCHEMER_API_TOKEN_SECRET = "apiTokenSecret"
+    public static final String ALCHEMER_SURVEY_ID = "surveyId"
 
     @Test
     void test() {
@@ -22,9 +22,9 @@ class IntegrationApiTest extends TestWithDatabase {
         integrationApi.cayenneService = cayenneService
 
         Assertions.assertEquals(0, integrationApi.get().size())
-        List<IntegrationPropDTO> fields = [new IntegrationPropDTO(key: SURVEYGIZMO_USER, value: 'user'),
-                                           new IntegrationPropDTO(key: SURVEYGIZMO_PASSWORD, value: 'pass'),
-                                           new IntegrationPropDTO(key: SURVEYGIZMO_SURVEY_ID, value: 'surveyId'),
+        List<IntegrationPropDTO> fields = [new IntegrationPropDTO(key: ALCHEMER_API_TOKEN, value: 'user'),
+                                           new IntegrationPropDTO(key: ALCHEMER_API_TOKEN_SECRET, value: 'pass'),
+                                           new IntegrationPropDTO(key: ALCHEMER_SURVEY_ID, value: 'surveyId'),
         ]
         IntegrationDTO data = new IntegrationDTO(name: 'integration', type: new BigDecimal(4), props: fields)
 

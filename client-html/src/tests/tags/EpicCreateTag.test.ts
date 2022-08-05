@@ -21,11 +21,11 @@ describe("Create tag epic tests", () => {
       const tag = mockedApi.db.getTag(1);
       
       return [
+        initialize(TAGS_FORM_NAME, tag),
         {
           type: FETCH_SUCCESS,
           payload: { message: `${tag.type} was successfully created` }
         },
-        initialize(TAGS_FORM_NAME, tag),
         getAllTags(tag.name)
       ];
     }

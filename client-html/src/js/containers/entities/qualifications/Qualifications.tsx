@@ -8,17 +8,11 @@ import { connect } from "react-redux";
 import { initialize } from "redux-form";
 import { Dispatch } from "redux";
 import ListView from "../../../common/components/list-view/ListView";
-import {
-  createQualification, getQualification, removeQualification, updateQualification
-} from "./actions";
+import { createQualification, getQualification, removeQualification, updateQualification } from "./actions";
 import { Qualification } from "@api/model";
 import { FilterGroup } from "../../../model/common/ListView";
 import QualificationsEditView from "./components/QualificationsEditView";
-import {
-  clearListState,
-  getFilters,
-  setListEditRecord
-} from "../../../common/components/list-view/actions";
+import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 
@@ -170,7 +164,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getFilters("Qualification"));
   },
   clearListState: () => dispatch(clearListState()),
-  getQualificationRecord: (id: string) => dispatch(getQualification(id)),
+  getQualificationRecord: (id) => dispatch(getQualification(id)),
   onSave: (id: string, qualification: Qualification) => dispatch(updateQualification(id, qualification)),
   onCreate: (qualification: Qualification) => dispatch(createQualification(qualification)),
   onDelete: (id: string) => dispatch(removeQualification(id))

@@ -57,7 +57,7 @@ class TagsFormRenderer extends TagsFormBase {
 
     return values ? (
       <Form onSubmit={handleSubmit(this.onSave)} className={className}>
-        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <AppBarContainer
           values={values}
@@ -199,7 +199,7 @@ class ChecklistsFormRenderer extends TagsFormBase {
 
     return values ? (
       <Form onSubmit={handleSubmit(this.onSave)} className={className}>
-        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <AppBarContainer
           values={values}
