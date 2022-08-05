@@ -133,7 +133,7 @@ const Sales: React.FC<SalesProps> = props => {
         editViewProps={{
           manualLink,
           asyncValidate: notesAsyncValidate,
-          asyncBlurFields: ["notes[].message"],
+          asyncChangeFields: ["notes[].message"],
           nameCondition: values => (values ? values.productName : "")
         }}
         updateTableModel={updateTableModel}

@@ -8,16 +8,12 @@
 
 import React from "react";
 import { withRouter } from "react-router-dom";
-import {
- getFormSyncErrors, initialize, isDirty, isInvalid, submit 
-} from "redux-form";
+import { getFormSyncErrors, initialize, isAsyncValidating, isDirty, isInvalid, submit } from "redux-form";
 import { ThemeProvider } from "@mui/material/styles";
 import { createStyles, withStyles } from "@mui/styles";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import {
- Column, Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel 
-} from "@api/model";
+import { Column, Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel } from "@api/model";
 import { createTheme } from '@mui/material';
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import Button from "@mui/material/Button";
@@ -44,16 +40,15 @@ import {
   setListEditRecordFetching,
   setListEntity,
   setListFullScreenEditView,
-  setListLayout, setListMenuTags,
+  setListLayout,
+  setListMenuTags,
   setListSelection,
   setListUserAQLSearch,
   setSearch,
   updateTableModel,
 } from "./actions";
 import NestedEditView from "./components/full-screen-edit-view/NestedEditView";
-import {
- closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm
-} from "../../actions";
+import { closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm } from "../../actions";
 import ResizableWrapper from "../layout/resizable/ResizableWrapper";
 import { MenuTag } from "../../../model/tags";
 import { pushGTMEvent } from "../google-tag-manager/actions";
@@ -87,6 +82,7 @@ import {
 import { setSwipeableDrawerDirtyForm } from "../layout/swipeable-sidebar/actions";
 import { LSGetItem } from "../../utils/storage";
 import { getCustomFieldTypes } from "../../../containers/entities/customFieldTypes/actions";
+import { shouldAsyncValidate } from "./utils/listFormUtils";
 
 export const ListSideBarDefaultWidth = 200;
 export const ListMainContentDefaultWidth = 774;
@@ -164,7 +160,6 @@ interface Props extends Partial<ListState> {
     manualLink?: EditViewContainerProps["manualLink"];
     validate?: any;
     asyncValidate?: any;
-    shouldAsyncValidate?: AnyArgFunction<boolean>;
     asyncBlurFields?: string[];
     asyncChangeFields?: string[];
     disabledSubmitCondition?: boolean;
@@ -204,6 +199,7 @@ interface Props extends Partial<ListState> {
   deleteWithoutConfirmation?: boolean;
   getCustomBulkEditFields?: any;
   getCustomFieldTypes?: (entity: EntityName) => void;
+  isAsyncValidating?: boolean;
 }
 
 interface ComponentState {
@@ -1077,7 +1073,8 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       filterEntity,
       emailTemplatesWithKeyCode,
       scripts,
-      recepients
+      recepients,
+      isAsyncValidating
     } = this.props;
 
     const {
@@ -1090,6 +1087,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       <div className={classes.root}>
         <FullScreenEditView
           {...editViewProps}
+          shouldAsyncValidate={shouldAsyncValidate}
           rootEntity={rootEntity}
           form={LIST_EDIT_VIEW_FORM_NAME}
           fullScreenEditView={fullScreenEditView}
@@ -1165,7 +1163,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
         <div className="flex-fill d-flex flex-column overflow-hidden user-select-none">
           <div className="flex-fill d-flex relative">
-            <LoadingIndicator transparentBackdrop allowInteractions />
+            <LoadingIndicator customLoading={isAsyncValidating} transparentBackdrop allowInteractions />
             {threeColumn ? (
               <ResizableWrapper
                 onResizeStop={this.handleResizeMainContentCallBack}
@@ -1183,6 +1181,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
               <div className="d-flex flex-fill overflow-hidden">
                 <EditView
                   {...editViewProps}
+                  shouldAsyncValidate={shouldAsyncValidate}
                   form={LIST_EDIT_VIEW_FORM_NAME}
                   rootEntity={rootEntity}
                   EditViewContent={EditViewContent}
@@ -1239,6 +1238,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 const mapStateToProps = (state: State) => ({
   fetch: state.fetch,
   currency: state.currency,
+  isAsyncValidating: isAsyncValidating(LIST_EDIT_VIEW_FORM_NAME)(state),
   isDirty: isDirty(LIST_EDIT_VIEW_FORM_NAME)(state),
   isInvalid: isInvalid(LIST_EDIT_VIEW_FORM_NAME)(state),
   syncErrors: getFormSyncErrors(LIST_EDIT_VIEW_FORM_NAME)(state),

@@ -13,7 +13,11 @@ import { clearListState, getFilters } from "../../../common/components/list-view
 import { getListTags } from "../../tags/actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import AssessmentSubmissionEditView from "./components/AssessmentSubmissionsEditView";
-import { getAssessmentSubmissionsItem, removeAssessmentSubmissionsItem, updateAssessmentSubmissionsItem } from "./actions";
+import {
+  getAssessmentSubmissionsItem,
+  removeAssessmentSubmissionsItem,
+  updateAssessmentSubmissionsItem
+} from "./actions";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 import { State } from "../../../reducers/state";
@@ -113,7 +117,7 @@ const AssessmentSubmission = (props: any) => {
       editViewProps={{
         nameCondition,
         asyncValidate: notesAsyncValidate,
-        asyncBlurFields: ["notes[].message"],
+        asyncChangeFields: ["notes[].message"],
         hideTitle: true
       }}
       EditViewContent={AssessmentSubmissionEditView}
