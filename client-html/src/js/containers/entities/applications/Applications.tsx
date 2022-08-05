@@ -13,16 +13,10 @@ import { format as formatDate } from "date-fns";
 import { Application } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
-import {
-  setListEditRecord,
-  getFilters,
- clearListState
-} from "../../../common/components/list-view/actions";
+import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
 import { getListTags } from "../../tags/actions";
 import { defaultContactName } from "../contacts/utils";
-import {
-  getApplication, updateApplication, createApplication, removeApplication
-} from "./actions";
+import { createApplication, getApplication, removeApplication, updateApplication } from "./actions";
 import ApplicationEditView from "./components/ApplicationEditView";
 import { FilterGroup } from "../../../model/common/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
@@ -141,7 +135,7 @@ class Applications extends React.Component<ApplicationsProps, any> {
           editViewProps={{
             manualLink,
             asyncValidate: notesAsyncValidate,
-            asyncBlurFields: ["notes[].message"],
+            asyncChangeFields: ["notes[].message"],
             nameCondition,
             hideTitle: true
           }}
