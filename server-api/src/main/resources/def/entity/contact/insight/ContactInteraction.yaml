@@ -13,7 +13,7 @@ properties:
     required: true
   date:
     type: string
-    format: date
+    format: date-time
     required: false
     description: Contact interaction date
     example: 1991-07-20

@@ -7,6 +7,7 @@ import React from "react";
 import { format as formatDateTime } from "date-fns";
 import { DataRow } from "@api/model";
 import { SelectItemDefault } from "../../../model/entities/common";
+import { IS_JEST } from "../../../constants/EnvironmentConstants";
 
 export const getDeepValue = (source, path) => {
   if (path.match(/[.,[]/)) {
@@ -84,8 +85,8 @@ export const getWindowWidth = () => window.innerWidth || document.documentElemen
 
 export const getWindowHeight = () => window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight || 1080;
 
-export const isInStandaloneMode = () =>
+export const isInStandaloneMode = () => (IS_JEST ? false : (
   (window.matchMedia('(display-mode: standalone)').matches)
   // @ts-ignore
   || (window.navigator.standalone)
-  || document.referrer.includes('android-app://');
+  || document.referrer.includes('android-app://')));

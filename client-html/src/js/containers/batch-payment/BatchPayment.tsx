@@ -292,8 +292,8 @@ const ContactRenderer = ({
           estimatedItemSize={56}
           itemData={{
           items,
-          ...rest,
-        }}
+            ...rest,
+          }}
         >
           {RowRenderer}
         </DynamicSizeList>

@@ -15,6 +15,7 @@ import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.api.v1.model.ContactInteractionDTO
 import ish.oncourse.server.cayenne.glue._AttachmentRelation
+import ish.util.LocalDateUtils
 
 import javax.annotation.Nonnull
 
@@ -93,7 +94,7 @@ abstract class AttachmentRelation extends _AttachmentRelation implements Queueab
 
 	ContactInteractionDTO toInteraction(){
 		ContactInteractionDTO contactInteractionDTO = new ContactInteractionDTO()
-		contactInteractionDTO.setDate(interactionDate.toLocalDate())
+		contactInteractionDTO.setDate(LocalDateUtils.dateToTimeValue(interactionDate))
 		contactInteractionDTO.setEntity(document.entityName)
 		contactInteractionDTO.setId(document.id)
 		contactInteractionDTO.setDescription(interactionDescription)

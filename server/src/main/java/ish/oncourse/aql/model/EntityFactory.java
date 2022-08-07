@@ -12,6 +12,7 @@
 package ish.oncourse.aql.model;
 
 import ish.oncourse.aql.model.attribute.*;
+import ish.oncourse.aql.model.attribute.tagging.relations.*;
 import ish.oncourse.server.cayenne.CustomFieldType;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.Persistent;
@@ -83,7 +84,25 @@ public class EntityFactory {
             ProductItemProductType.class,
             FundingSourceName.class,
             StudentsTutorsCourses.class,
-            StudentsTutorsAssessments.class
+            StudentsTutorsAssessments.class,
+            TaggingRelationsAbstractInvoice.class,
+            TaggingRelationsApplication.class,
+            TaggingRelationsArticleProduct.class,
+            TaggingRelationsAssessment.class,
+            TaggingRelationsContact.class,
+            TaggingRelationsCourse.class,
+            TaggingRelationsCourseClass.class,
+            TaggingRelationsDocument.class,
+            TaggingRelationsEnrolment.class,
+            TaggingRelationsLead.class,
+            TaggingRelationsMembershipProduct.class,
+            TaggingRelationsPayslip.class,
+            TaggingRelationsProductItem.class,
+            TaggingRelationsReport.class,
+            TaggingRelationsRoom.class,
+            TaggingRelationsSite.class,
+            TaggingRelationsVoucherProduct.class,
+            TaggingRelationsWaitingList.class
     );
 
     private final ObjectContext context;
