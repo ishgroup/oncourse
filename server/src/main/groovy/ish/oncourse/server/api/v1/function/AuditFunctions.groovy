@@ -13,6 +13,7 @@ package ish.oncourse.server.api.v1.function
 
 import ish.oncourse.server.api.v1.model.AuditDTO
 import ish.oncourse.server.cayenne.Audit
+import ish.util.LocalDateUtils
 
 import java.time.ZoneOffset
 
@@ -25,7 +26,7 @@ class AuditFunctions {
         restAudit.setMessage(dbAudit.message)
         restAudit.setEntityId(String.valueOf(dbAudit.entityId))
         restAudit.setEntityIdentifier(dbAudit.entityIdentifier)
-        restAudit.setCreated(dbAudit.created.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime())
+        restAudit.setCreated(LocalDateUtils.dateToTimeValue(dbAudit.created))
         if (dbAudit.systemUser != null) {
             restAudit.setSystemUser(dbAudit.systemUser.getFirstName() + " " + dbAudit.getSystemUser().getLastName())
         }
