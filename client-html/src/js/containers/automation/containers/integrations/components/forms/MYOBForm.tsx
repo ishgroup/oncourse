@@ -4,7 +4,9 @@
  */
 
 import * as React from "react";
-import { change, getFormValues, initialize, reduxForm } from "redux-form";
+import {
+ change, getFormValues, initialize, reduxForm 
+} from "redux-form";
 import { connect } from "react-redux";
 import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -38,7 +40,7 @@ class MYOBBaseForm extends React.Component<any, any> {
 
     if (search && !hideConfig) {
       const params = new URLSearchParams(search);
-      const values = JSON.parse(JSON.stringify(params.get("values")));
+      const values = JSON.parse(params.get("values"));
 
       if (!values || typeof values !== "object") return;
 
@@ -76,7 +78,6 @@ class MYOBBaseForm extends React.Component<any, any> {
     const {
       item, dispatch, dirty
     } = this.props;
-
 
     if (prevProps.item.id !== item.id) {
       // Reinitializing form with values
@@ -165,7 +166,7 @@ class MYOBBaseForm extends React.Component<any, any> {
           {values?.fields?.active === "true" ? (
             <>
               <Typography variant="caption" component="div">
-                { `You are connected to Myob` }
+                You are connected to Myob
               </Typography>
               <LoadingButton
                 variant="contained"

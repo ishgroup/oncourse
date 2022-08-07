@@ -11,6 +11,7 @@ import { FETCH_SUCCESS } from "../../../../../common/actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { getIntegrations, UPDATE_INTEGRATION_ITEM_REQUEST } from "../../../actions";
 import history from "../../../../../constants/History";
+import { parseIntegrations } from "../utils";
 
 const request: EpicUtils.Request = {
   type: UPDATE_INTEGRATION_ITEM_REQUEST,
@@ -20,7 +21,7 @@ const request: EpicUtils.Request = {
       history.push(state.nextLocation);
     }
     return [
-      initialize(form, item),
+      initialize(form, parseIntegrations([item])[0]),
       getIntegrations(),
       { type: FETCH_SUCCESS, payload: { message: "Integration was successfully updated" } }
     ];
