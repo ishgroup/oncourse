@@ -38,7 +38,6 @@ interface Props {
   openConfirm: ShowConfirmCaller;
   history: any;
   nextLocation: string;
-  setNextLocation: (nextLocation: string) => void;
 }
 
 class TaxTypesBaseForm extends React.Component<Props, any> {
@@ -70,12 +69,11 @@ class TaxTypesBaseForm extends React.Component<Props, any> {
 
   componentDidUpdate() {
     const {
-      dirty, nextLocation, setNextLocation, history
+      dirty, nextLocation, history
     } = this.props;
 
     if (nextLocation && !dirty) {
       history.push(nextLocation);
-      setNextLocation('');
     }
   }
 

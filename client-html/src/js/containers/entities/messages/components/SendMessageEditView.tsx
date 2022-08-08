@@ -280,11 +280,11 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
     other: true
   });
   
-  useEffect(() => {
+  const checkAttachedShadow = () => {
     if (htmlRef.current && !htmlRef.current.shadowRoot) {
       htmlRef.current.attachShadow({ mode: 'open' });
     }
-  }, [htmlRef.current]);
+  };
 
   useEffect(() => {
     if (listEntity) {
@@ -325,7 +325,17 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
     dispatch(change(form, "sendToOtherContacts", selected.other));
   }, [selected && selected.other]);
 
-
+  useEffect(() => {
+    if ( htmlRef.current) {
+      checkAttachedShadow();
+      if (values.messageType === "Email") {
+        htmlRef.current.shadowRoot.innerHTML = preview;
+      } else {
+        htmlRef.current.shadowRoot.innerHTML = "";
+      }
+    }
+  }, [values, preview, htmlRef.current?.shadowRoot]);
+  
   const isEmailView = useMemo(() => values.messageType === "Email", [values.messageType]);
 
   const getTemplateById = useCallback(id => templates.find(t => t.id === id), [templates]);
@@ -336,16 +346,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
       getMessageRequestModel(val, selection, listSearchQuery || {}),
       val.messageType
       )
-      .then(r => {
-        setPreview(r);
-          if (htmlRef.current) {
-            if (val.messageType === "Email") {
-              htmlRef.current.shadowRoot.innerHTML = r;
-            } else {
-              htmlRef.current.shadowRoot.innerHTML = "";
-            }
-          }
-      })
+      .then(setPreview)
       .catch(e => instantFetchErrorHandler(dispatch, e));
   };
 
@@ -357,7 +358,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
     if (!invalid && values.bindings && values.recipientsCount && values.messageType) {
       getPreviewDebounced(values, selection, listSearchQuery);
     }
-  }, [values]);
+  }, [values, selection, listSearchQuery, invalid]);
 
   const onTemplateChange = (e, value, previousValue) => {
     if (value && value !== previousValue) {
@@ -369,7 +370,8 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
         dispatch(change(form, "bindings", selectedTemplate.variables.map(v =>
           ({ ...v, value: v.type === "Checkbox" ? false : v.type === "Text" ? "" : v.value }))));
 
-        if (htmlRef.current && htmlRef.current.shadowRoot) {
+        if (htmlRef.current) {
+          checkAttachedShadow();
           htmlRef.current.shadowRoot.innerHTML = "";
         }
 
@@ -667,6 +669,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   getEmailFrom: () => dispatch(getUserPreferences([EMAIL_FROM_KEY])),
 });
 
-export default reduxForm<MessageExtended, MessageEditViewProps>({
+export default reduxForm<any, any, any>({
   form: "SendMessageForm",
 })(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SendMessageEditView)));

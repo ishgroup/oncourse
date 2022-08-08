@@ -14,7 +14,6 @@ import { withRouter } from "react-router";
 import { ExportTemplate } from "@api/model";
 import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
 import { State } from "../../../../reducers/state";
-import { setNextLocation } from "../../../../common/actions";
 import ExportTemplatesForm from "./containers/ExportTemplatesForm";
 import {
   createExportTemplate,
@@ -77,8 +76,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onUpdate: (template: ExportTemplate) => dispatch(updateExportTemplate(template)),
   onUpdateInternal: (template: ExportTemplate) => dispatch(updateInternalExportTemplate(template)),
   onDelete: (id: number) => dispatch(removeExportTemplate(id)),
-  getExportTemplate: (id: number) => dispatch(getExportTemplate(id)),
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+  getExportTemplate: (id: number) => dispatch(getExportTemplate(id))
 });
 
 export default reduxForm({

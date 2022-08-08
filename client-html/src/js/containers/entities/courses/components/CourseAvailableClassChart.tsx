@@ -109,7 +109,7 @@ const CourseAvailableClassChart = (props: any) => {
   const classes = useStyles();
 
   useEffect(() => {
-    if (isNew) return null;
+    if (isNew) return;
 
     EntityService.getPlainRecords(
       "CourseClass",

@@ -57,6 +57,7 @@ class RoomsGeneral extends React.PureComponent<any, any> {
       tags,
       sites,
       twoColumn,
+      syncErrors
     } = this.props;
 
     const layoutArray = getLayoutArray(twoColumn);
@@ -65,6 +66,7 @@ class RoomsGeneral extends React.PureComponent<any, any> {
       <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
         <Grid item xs={layoutArray[2].xs}>
           <FullScreenStickyHeader
+            opened={!values.id || Object.keys(syncErrors).includes("name")}
             twoColumn={twoColumn}
             title={values && values.name}
             fields={(

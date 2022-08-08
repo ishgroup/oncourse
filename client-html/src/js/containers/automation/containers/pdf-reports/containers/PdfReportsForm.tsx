@@ -59,7 +59,6 @@ interface Props extends InjectedFormProps<Report> {
   syncErrors: any;
   nextLocation: string;
   emailTemplates?: CatalogItemType[];
-  setNextLocation: (nextLocation: string) => void;
 }
 
 const reader = new FileReader();
@@ -99,7 +98,6 @@ const PdfReportsForm = React.memo<Props>(
     initialValues,
     history,
     nextLocation,
-    setNextLocation,
     emailTemplates,
     syncErrors
   }) => {
@@ -215,7 +213,6 @@ const PdfReportsForm = React.memo<Props>(
     useEffect(() => {
       if (!dirty && nextLocation) {
         history.push(nextLocation);
-        setNextLocation('');
       }
     }, [nextLocation, dirty]);
 
@@ -328,6 +325,7 @@ const PdfReportsForm = React.memo<Props>(
                     selectLabelMark="title"
                     items={pdfBackgrounds}
                     onChange={onBackgroundIdChange}
+                    debounced={false}
                     allowEmpty
                   />
                 </Grid>

@@ -37,7 +37,6 @@ interface Props extends InjectedFormProps {
   history: any;
   syncErrors: any;
   nextLocation: string;
-  setNextLocation: (nextLocation: string) => void;
 }
 
 const PdfBackgroundsForm = React.memo<Props>(
@@ -53,7 +52,6 @@ const PdfBackgroundsForm = React.memo<Props>(
      form,
      history,
      nextLocation,
-     setNextLocation,
      syncErrors
     }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
@@ -107,7 +105,6 @@ const PdfBackgroundsForm = React.memo<Props>(
     useEffect(() => {
       if (!dirty && nextLocation) {
         history.push(nextLocation);
-        setNextLocation('');
       }
     }, [nextLocation, dirty]);
 

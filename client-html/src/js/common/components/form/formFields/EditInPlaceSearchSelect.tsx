@@ -346,7 +346,6 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
 
   const handleChange = (e, value, reason) => {
     if (reason === "clear") {
-      onClear();
       return;
     }
 
@@ -373,6 +372,8 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
   };
 
   const handleInputChange = e => {
+    setSearchValue(e.target.value);
+
     if (onInputChange) {
       onInputChange(e.target.value);
     }
@@ -380,8 +381,6 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     if (remoteData && !e.target.value) {
       onClearRows();
     }
-
-    setSearchValue(e.target.value);
   };
 
   const getOptionLabel = option => (selectLabelCondition ? selectLabelCondition(option) : option[selectLabelMark]) || "";
@@ -407,7 +406,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     if (selectLabelCondition) {
       response = returnType === "object" ? selectLabelCondition(input.value) : formattedDisplayValue || defaultDisplayValue;
     } else if (returnType === "object") {
-      response = input.value[selectLabelMark];
+      response = input.value && input.value[selectLabelMark];
     } else {
       const selected = sortedItems.find(i => getOptionSelected(i, input.value));
       response = selected ? selected[selectLabelMark] : defaultDisplayValue || input.value;
