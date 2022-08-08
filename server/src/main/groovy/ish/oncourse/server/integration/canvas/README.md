@@ -5,7 +5,7 @@ Integration allows us to establish interaction between Canvas LMS and onCourse e
    1. Fill in the fields
       - Key Name
       - Owner Email
-      - Redirect URIs (your onCourse uri:  [https://YOUR.ONCOURSE.xx/automation/integration/new](https://YOUR.ONCOURSE.xx/automation/integration/new))
+      - Redirect URIs (your onCourse uri:  [https://YOUR.ONCOURSE.xx/automation/integration/8/new](https://YOUR.ONCOURSE.xx/automation/integration/8/new))
    2. Save
    3. Make State 'ON'
 
