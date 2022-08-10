@@ -9,9 +9,7 @@ import { initialize } from "redux-form";
 import { Assessment } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import {
-  createAssessment, getAssessment, removeAssessment, updateAssessment
-} from "./actions";
+import { createAssessment, getAssessment, removeAssessment, updateAssessment } from "./actions";
 import AssessmentEditView from "./components/AssessmentEditView";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
@@ -110,7 +108,7 @@ const Assessments: React.FC<AssessmentsProps> = props => {
       editViewProps={{
         manualLink,
         asyncValidate: notesAsyncValidate,
-        asyncBlurFields: ["notes[].message"],
+        asyncChangeFields: ["notes[].message"],
         hideTitle: true
       }}
       EditViewContent={AssessmentEditView}
