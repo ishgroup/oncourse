@@ -32,11 +32,13 @@ function customizeSourceEditing( editor ) {
   editor.plugins.get("SourceEditing").on('change:isSourceEditingMode', () => {
     const sourceEdit = document.querySelector('.ck-source-editing-button');
 
-    const root = createRoot(sourceEdit);
+    if (sourceEdit) {
+      const root = createRoot(sourceEdit);
 
-    root.render(
-      <SourceEditingSwitch />,
-    );
+      root.render(
+        <SourceEditingSwitch/>,
+      );
+    }
   });
 }
 
