@@ -8,7 +8,7 @@
 
 import React from "react";
 import {
-  arrayInsert,
+  arrayInsert, arrayPush,
   arrayRemove,
   change,
   getFormSyncErrors,
@@ -267,7 +267,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
       id: ("new" + this.counter) as any,
     };
 
-    dispatch(arrayInsert(TAGS_FORM_NAME, "childTags", 0, newTag));
+    dispatch(arrayPush(TAGS_FORM_NAME, "childTags", newTag));
     this.setEditingId(newTag.id);
 
     this.counter++;
