@@ -19,7 +19,6 @@ import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { createRoot } from 'react-dom/client';
 import CodeIcon from '@mui/icons-material/Code';
-import { removeContentMarker } from "./utils";
 
 const SourceEditingSwitch = () => (
   <div className="ck_source_edit_custom">
@@ -120,7 +119,7 @@ const WysiwygEditor: React.FC<Props> = ({
     <CKEditor
       editor={ClassicEditor}
       config={config}
-      data={removeContentMarker(value)}
+      data={value}
       onChange={onChangeHandler}
       onReady={onReady}
     />
