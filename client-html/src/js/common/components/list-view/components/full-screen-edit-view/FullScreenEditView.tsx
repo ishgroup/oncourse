@@ -212,7 +212,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
         }}
         disableEnforceFocus
       >
-        <LoadingIndicator position="fixed" />
+        <LoadingIndicator position="fixed" customLoading={asyncValidating} />
         <form onSubmit={handleSubmit} autoComplete="off" noValidate>
           <AppBar
             elevation={0}

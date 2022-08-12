@@ -12,14 +12,14 @@ import { Dispatch } from "redux";
 import CreateCertificateMenu from "../../../../common/components/list-view/components/bottom-app-bar/components/CreateCertificateMenu";
 import EntityService from "../../../../common/services/EntityService";
 import { State } from "../../../../reducers/state";
-import AvetmissExportModal, { manualAvetmisConfirm } from "../../../avetmiss-export/components/modal/AvetmissExportModal";
+import AvetmissExportModal from "../../../avetmiss-export/components/modal/AvetmissExportModal";
 import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
 import PayslipGenerateCogwheelAction from "../../payslips/components/PayslipGenerateCogwheelAction";
 import CancelCourseClassModal from "./cancel/CancelCourseClassModal";
 import DuplicateCourseClassModal from "./duplicate-courseClass/DuplicateCourseClassModal";
 import DuplicateTraineeshipModal from "./duplicate-courseClass/DuplicateTraineeshipModal";
 import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../common/actions/CommonPlainRecordsActions";
-import { courseClassCancelPath, courseClassTimetablePath } from "../../../../constants/Api";
+import { courseClassCancelPath } from "../../../../constants/Api";
 import { getPluralSuffix } from "../../../../common/utils/strings";
 
 const CourseClassCogWheel = memo<any>(props => {
@@ -88,15 +88,11 @@ const CourseClassCogWheel = memo<any>(props => {
       const status = e.target.getAttribute("role");
 
       if (status === "Avetmiss-Export") {
-        return manualAvetmisConfirm(() => {
-            EntityService.getPlainRecords(
-              "Enrolment",
-              "outcomes.id",
-              `courseClass.id in (${selection.toString()}) and outcomes.id not is null`
-            ).then(res => setSelectedClassesEnrolmentsCount(res.rows.length));
-            setDialogOpened(status);
-          },
-          showConfirm);
+        EntityService.getPlainRecords(
+          "Enrolment",
+          "outcomes.id",
+          `courseClass.id in (${selection.toString()}) and outcomes.id not is null`
+        ).then(res => setSelectedClassesEnrolmentsCount(res.rows.length));
       }
 
       setDialogOpened(status);

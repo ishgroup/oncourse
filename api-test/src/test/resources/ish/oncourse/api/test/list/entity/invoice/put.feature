@@ -520,7 +520,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
           "total": 300.0,
           "sendEmail": false,
           "modifiedOn": "#ignore",
-          "overdue": 0.0,
+          "overdue": 100.0,
           "invoiceLines": [
             {
               "courseClassId": 1,
@@ -646,7 +646,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
           "total": 300.0,
           "sendEmail": false,
           "modifiedOn": "#ignore",
-          "overdue": 0.0,
+          "overdue": 100.0,
           "invoiceLines": [
             {
               "courseClassId": 1,
@@ -772,7 +772,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
           "total": 300.0,
           "sendEmail": false,
           "modifiedOn": "#ignore",
-          "overdue": 0.0,
+          "overdue": 100.0,
           "invoiceLines": [
             {
               "courseClassId": 1,
