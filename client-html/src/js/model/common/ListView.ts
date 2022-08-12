@@ -17,7 +17,7 @@ import { EntityName } from "../entities/common";
 
 export interface CoreFilter extends Filter {
   active?: boolean;
-  customLabel?: React.ReactNode;
+  customLabel?: () => React.ReactNode;
 }
 
 export interface FilterGroup {

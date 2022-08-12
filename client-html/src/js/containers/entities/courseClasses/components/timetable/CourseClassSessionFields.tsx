@@ -195,6 +195,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
                 : `Virtual start (${Intl.DateTimeFormat().resolvedOptions().timeZone})`)
               : "Start"}`}
           onChange={onStartDateChange}
+          debounced={false}
           timezone={session.siteTimezone}
           className={warningTypes.Session.length || warningTypes.UnavailableRule.length ? "errorColor" : undefined}
           persistValue
@@ -222,6 +223,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
           name={`sessions[${session.index}].end`}
           timezone={session.siteTimezone}
           onChange={onEndDateChange}
+          debounced={false}
           type="time"
           label="End"
         />

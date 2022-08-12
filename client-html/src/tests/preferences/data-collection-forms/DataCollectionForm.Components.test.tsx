@@ -32,6 +32,14 @@ describe("Virtual rendered DataCollectionForm", () => {
         }
       };
     },
+    state: ({ viewProps }) => ({
+      form: {
+        [DATA_COLLECTION_FORM]: { values: viewProps.values }
+      },
+      preferences: {
+        dataCollectionForms: viewProps.values.items
+      }
+    }),
     render: ({ screen, initialValues, fireEvent }) => {
       const form = initialValues[0];
       const items = parseDataCollectionFormData(form);

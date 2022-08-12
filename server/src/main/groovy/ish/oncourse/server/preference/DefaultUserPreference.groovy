@@ -704,6 +704,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Start date', attribute: Outcome.START_DATE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'End date', attribute: Outcome.END_DATE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Delivery mode', attribute: Outcome.DELIVERY_MODE.name, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Printed certificate', attribute: Outcome.PRINTED_CERTIFICATE_KEY, sortable: false, width: W200, visible: false),
                 /*new ColumnDTO(title: '% of present attendance', attribute: Outcome.PRESENT_ATTENDENCE_PERCENT_KEY, sortable: false, width: W200, visible: false),
                 new ColumnDTO(title: '% of marked asssessments', attribute: Outcome.MARKED_ASSESSMENT_PERCENT_KEY, sortable: false, width: W200, visible: false),*/
         ]
@@ -828,7 +829,7 @@ class DefaultUserPreference {
 
     private static final MESSAGE_MODEL = new TableModelDTO().with() {
         it.columns = [
-                new ColumnDTO(title: 'Date time', attribute: Message.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
+                new ColumnDTO(title: 'Date time', attribute: Message.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
                 new ColumnDTO(title: 'Sent by', attribute: Message.CREATED_BY.dot(SystemUser.LOGIN).name, sortable: false, width: W200, visible: true),
                 new ColumnDTO(title: 'Recipients', attribute: Message.RECIPIENTS_STRING_PROPERTY, sortable: false, width: W200, visible: true),
                 new ColumnDTO(title: 'SMS', attribute: Message.IS_SMS_PROPERTY, sortable: false, width: W200, visible: true, type: ColumnTypeDTO.BOOLEAN),
@@ -872,7 +873,7 @@ class DefaultUserPreference {
                                      CourseClass.CODE.name]),
                 new ColumnDTO(title: 'Starts', attribute: CourseClass.START_DATE_TIME.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
                 new ColumnDTO(title: 'Ends', attribute: CourseClass.END_DATE_TIME.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
-                new ColumnDTO(title: 'Sessions', attribute: CourseClass.SESSIONS_COUNT, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Sessions', attribute: CourseClass.SESSIONS_COUNT, sortable: false, width: W200, visible: true),
                 new ColumnDTO(title: 'Fee', attribute: CourseClass.FEE_INC_GST, sortable: false, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
                 new ColumnDTO(title: 'Tutor', attribute: CourseClass.TUTORS_ABRIDGED_PROP, sortable: false, width: W200, visible: true),
                 new ColumnDTO(title: 'Site name', attribute: CourseClass.ROOM.dot(Room.SITE).dot(Site.NAME).name, sortable: true, width: W200, visible: true, sortFields: [CourseClass.ROOM.outer().dot(Room.SITE).outer().dot(Site.NAME).name]),

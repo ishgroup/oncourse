@@ -27,5 +27,5 @@ export const bugsnagClient = IS_JEST
   });
 
 export const ErrorBoundary = IS_JEST
-  ? props => <>{props.children}</>
+  ? (props: { children?: React.ReactNode }) => <>{props.children}</>
   : bugsnagClient.getPlugin("react").createErrorBoundary(React);

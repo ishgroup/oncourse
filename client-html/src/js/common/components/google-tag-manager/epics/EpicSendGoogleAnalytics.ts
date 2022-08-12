@@ -3,14 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ActionsObservable, Epic } from "redux-observable";
+import { ofType, Epic } from "redux-observable";
+import { mergeMap } from "rxjs/operators";
+import { Observable } from "rxjs";
 import { State } from "../../../../reducers/state";
 import { initGAEvent } from "../services/GoogleAnalyticsService";
 import { INIT_GOOGLE_TAG_MANAGER_EVENT } from "../actions";
-import { mergeMap } from "rxjs/operators";
 
-export const EpicSendGoogleAnalytics: Epic<any, State> = (action$: ActionsObservable<any>): any => {
-  return action$.ofType(INIT_GOOGLE_TAG_MANAGER_EVENT).pipe(
+export const EpicSendGoogleAnalytics: Epic<any, State> = (action$: Observable<any>): any => action$.pipe(
+    ofType(INIT_GOOGLE_TAG_MANAGER_EVENT),
     mergeMap(action => {
       const { event, screen, time } = action.payload;
 
@@ -18,4 +19,3 @@ export const EpicSendGoogleAnalytics: Epic<any, State> = (action$: ActionsObserv
       return [];
     })
   );
-};

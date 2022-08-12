@@ -14,9 +14,7 @@ import { Room } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
-import {
- createRoom, getRoom, removeRoom, updateRoom 
-} from "./actions";
+import { createRoom, getRoom, removeRoom, updateRoom } from "./actions";
 import RoomEditView from "./components/RoomEditView";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { getListTags } from "../../tags/actions";
@@ -105,7 +103,7 @@ class Rooms extends React.Component<any, any> {
           editViewProps={{
             manualLink,
             asyncValidate: notesAsyncValidate,
-            asyncBlurFields: ["notes[].message"],
+            asyncChangeFields: ["notes[].message"],
             hideTitle: true
           }}
           updateTableModel={updateTableModel}

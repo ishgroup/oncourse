@@ -221,7 +221,7 @@ const Courses: React.FC<CoursesProps> = props => {
       editViewProps={{
         manualLink,
         asyncValidate: notesAsyncValidate,
-        asyncBlurFields: ["notes[].message"],
+        asyncChangeFields: ["notes[].message"],
         hideTitle: true
       }}
       EditViewContent={CourseEditView}

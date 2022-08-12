@@ -175,7 +175,7 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
         editViewProps={{
           manualLink,
           asyncValidate: notesAsyncValidate,
-          asyncBlurFields: ["notes[].message"],
+          asyncChangeFields: ["notes[].message"],
           hideTitle: true
         }}
         EditViewContent={ArticleProductEditView}

@@ -17,7 +17,7 @@ import LinkImage from '@ckeditor/ckeditor5-link/src/linkimage';
 import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption';
 import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ReactDOM from "react-dom";
+import { createRoot } from 'react-dom/client';
 import CodeIcon from '@mui/icons-material/Code';
 import { removeContentMarker } from "./utils";
 
@@ -31,10 +31,14 @@ const SourceEditingSwitch = () => (
 function customizeSourceEditing( editor ) {
   editor.plugins.get("SourceEditing").on('change:isSourceEditingMode', () => {
     const sourceEdit = document.querySelector('.ck-source-editing-button');
-    ReactDOM.render(
-      <SourceEditingSwitch />,
-      sourceEdit
-    );
+
+    if (sourceEdit) {
+      const root = createRoot(sourceEdit);
+
+      root.render(
+        <SourceEditingSwitch/>,
+      );
+    }
   });
 }
 
@@ -102,9 +106,11 @@ const WysiwygEditor: React.FC<Props> = ({
 }) => {
   const onReady = () => {
     const sourceEdit = document.querySelector('.ck-source-editing-button');
-    ReactDOM.render(
-      <SourceEditingSwitch />,
-      sourceEdit
+
+    const root = createRoot(sourceEdit);
+
+    root.render(
+      <SourceEditingSwitch />
     );
   };
 

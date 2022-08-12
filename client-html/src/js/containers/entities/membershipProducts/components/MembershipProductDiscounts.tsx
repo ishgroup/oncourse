@@ -153,29 +153,25 @@ const MembershipProductDiscounts: React.FC<MembershipDiscountsProps> = props => 
 };
 
 const mapStateToProps = (state: State) => ({
-  foundDiscounts: state.plainSearchRecords["Discount"].items
-    .map(d => ({ discountId: d.id, discountName: d.name }))
-    .sort((a, b) => {
-      if (a.discountId < b.discountId) {
-        return -1;
-      }
-      if (a.discountId > b.discountId) {
-        return 1;
-      }
-      return 0;
-    }),
+  foundDiscounts: state.plainSearchRecords["Discount"].items,
   discountsPending: state.plainSearchRecords["Discount"].loading,
   discountsError: state.plainSearchRecords["Discount"].error,
-  contactRelationTypes: state.plainSearchRecords["ContactRelationType"].items.map(r => ({
-    id: r.id,
-    description: r.toContactName
-  }))
+  contactRelationTypes: state.plainSearchRecords["ContactRelationType"].items
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   searchDiscounts: (search: string) => {
     dispatch(setCommonPlainSearch("Discount", `${search} and (validTo == null or validTo >= today)`));
-    dispatch(getCommonPlainRecords("Discount", 0, "name", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(getCommonPlainRecords("Discount", 0, "name", null, null, PLAIN_LIST_MAX_PAGE_SIZE, items => items.map(d => ({ discountId: d.id, discountName: d.name }))
+      .sort((a, b) => {
+        if (a.discountId < b.discountId) {
+          return -1;
+        }
+        if (a.discountId > b.discountId) {
+          return 1;
+        }
+        return 0;
+      })));
   },
   clearDiscountsSearch: (pending: boolean) => dispatch(clearCommonPlainRecords("Discount", pending))
 });

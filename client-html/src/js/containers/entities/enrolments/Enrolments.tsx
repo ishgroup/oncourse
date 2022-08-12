@@ -12,26 +12,18 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Typography from "@mui/material/Typography";
-import React, {
-   useCallback, useEffect, useState
-} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import {
- getFormInitialValues, getFormValues, initialize
-} from "redux-form";
+import { getFormInitialValues, getFormValues, initialize } from "redux-form";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import { Enrolment, CustomFieldType } from "@api/model";
+import { CustomFieldType, Enrolment } from "@api/model";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import Button from "@mui/material/Button";
 import { StyledCheckbox } from "../../../common/components/form/formFields/CheckboxField";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
-import {
-  setListEditRecord,
-  getFilters,
-  clearListState,
-} from "../../../common/components/list-view/actions";
+import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import EntityService from "../../../common/services/EntityService";
 import { getWindowHeight, getWindowWidth, stubFunction } from "../../../common/utils/common";
 import { defaultContactName } from "../contacts/utils";
@@ -309,7 +301,7 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
           manualLink,
           nameCondition,
           asyncValidate: notesAsyncValidate,
-          asyncBlurFields: ["notes[].message"],
+          asyncChangeFields: ["notes[].message"],
           hideTitle: true
         }}
         EditViewContent={EnrolmentEditView}
