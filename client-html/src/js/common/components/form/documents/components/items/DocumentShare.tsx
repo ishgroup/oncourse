@@ -255,7 +255,7 @@ const DocumentShare:React.FC<Props> = ({
             <Typography
               component="div"
             >
-              {`${relationsCount} ${mapEntityDisplayName(entity, relationsCount)}`}
+              {`${relationsCount} ${mapEntityDisplayName(entity, null, relationsCount)}`}
               <IconButton
                 size="small"
                 color="secondary"

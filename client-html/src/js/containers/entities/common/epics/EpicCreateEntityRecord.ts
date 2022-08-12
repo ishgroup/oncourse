@@ -12,7 +12,7 @@ import { Create, Request } from "../../../../common/epics/EpicUtils";
 import { getRecords, setListSelection } from "../../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { EntityName } from "../../../../model/entities/common";
-import { createEntityItem, updateEntityItemByIdErrorHandler } from "../entityItemsService";
+import { createEntityItem, createEntityItemByIdErrorHandler } from "../entityItemsService";
 import { executeActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import { CREATE_ENTITY_RECORD_REQUEST } from "../actions";
 import { mapEntityDisplayName } from "../utils";
@@ -34,7 +34,7 @@ const request: Request<any, { item: any, entity: EntityName }> = {
   getData: ({ item, entity }) => createEntityItem(entity, item),
   retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
   processData: (v, s, { entity }) => getProcessDataActions(entity),
-  processError: (response, { item, entity }) => updateEntityItemByIdErrorHandler(response, entity, item)
+  processError: (response, { item, entity }) => createEntityItemByIdErrorHandler(response, entity, item)
 };
 
 export const EpicCreateEntityRecord: Epic = Create(request);

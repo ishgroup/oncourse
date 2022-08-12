@@ -12,7 +12,7 @@ import { Create, Request } from "../../../../common/epics/EpicUtils";
 import { getRecords, setListSelection } from "../../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { EntityName } from "../../../../model/entities/common";
-import { deleteEntityItemById } from "../entityItemsService";
+import { deleteEntityItemById, deleteEntityItemByIdErrorHandler, } from "../entityItemsService";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import { DELETE_ENTITY_RECORD_REQUEST } from "../actions";
 import { mapEntityDisplayName } from "../utils";
@@ -30,7 +30,8 @@ export const getProcessDataActions = (entity: EntityName) => [
 const request: Request<any, { entity: EntityName, id: number }> = {
   type: DELETE_ENTITY_RECORD_REQUEST,
   getData: ({ entity, id }) => deleteEntityItemById(entity, id),
-  processData: (v, s, { entity }) => getProcessDataActions(entity)
+  processData: (v, s, { entity }) => getProcessDataActions(entity),
+  processError: (response, { entity }) => deleteEntityItemByIdErrorHandler(response, entity)
 };
 
 export const EpicDeleteEntityRecord: Epic = Create(request);

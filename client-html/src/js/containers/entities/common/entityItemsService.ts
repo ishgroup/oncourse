@@ -18,6 +18,7 @@ import InvoiceService from "../invoices/services/InvoiceService";
 import WaitingListService from "../waitingLists/services/WaitingListService";
 import ApplicationService from "../applications/service/ApplicationService";
 import MembershipProductService from "../membershipProducts/services/MembershipProductService";
+import membershipProductService from "../membershipProducts/services/MembershipProductService";
 import VoucherProductService from "../voucherProducts/services/VoucherProductService";
 import CertificateService from "../certificates/services/CertificateService";
 import SaleService from "../sales/services/SaleService";
@@ -37,7 +38,6 @@ import { processCustomFields } from "../customFieldTypes/utils";
 import { formatRelationsBeforeSave } from "../contacts/Contacts";
 import DocumentsService from "../../../common/components/form/documents/services/DocumentsService";
 import LeadService from "../leads/services/LeadService";
-import membershipProductService from "../membershipProducts/services/MembershipProductService";
 import PriorLearningService from "../priorLearnings/services/PriorLearningService";
 import AssessmentService from "../assessments/services/AssessmentService";
 import AssessmentSubmissionService from "../assessmentSubmissions/service/AssessmentSubmissionService";
@@ -122,6 +122,8 @@ export const getEntityItemById = (entity: EntityName, id: number): Promise<any> 
       return ImportTemplatesService.get(id);
     case "CourseClass":
       return CourseClassService.getCourseClass(id);
+    case "Lead":
+      return LeadService.getLead(id);
 
     case "AbstractInvoice":
     case "Invoice": {
@@ -217,10 +219,11 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
       return DocumentsService.updateDocumentItem(id, item);
     case "Enrolment":
       return EnrolmentService.updateEnrolment(id, item);
+    case "AbstractInvoice":
     case "Invoice":
       return InvoiceService.updateInvoice(id, preformatInvoice(item));
     case "Lead":
-      return LeadService.updateLead(id, item)
+      return LeadService.updateLead(id, item);
     case "MembershipProduct":
       return MembershipProductService.updateMembershipProduct(id, item);
 
@@ -307,6 +310,8 @@ export const createEntityItem = (entity: EntityName, item: any): Promise<any> =>
       return AssessmentService.createAssessment(item);
     case "ArticleProduct":
       return ArticleProductService.createArticleProduct(item);
+    case "AccountTransaction":
+      return TransactionService.createTransaction(item);
     case "Certificate":
       return CertificateService.createCertificate(item);
     case "CorporatePass":
@@ -326,6 +331,8 @@ export const createEntityItem = (entity: EntityName, item: any): Promise<any> =>
       return PriorLearningService.createPriorLearning(item);
     case "Room":
       return RoomService.createRoom(item);
+    case "VoucherProduct":
+      return VoucherProductService.createVoucherProduct(item);
     case "WaitingList":
       return WaitingListService.createWaitingList(item);
     case "Course":
@@ -502,5 +509,7 @@ export const createEntityItemByIdErrorHandler = (response: any, entity: EntityNa
   ...FetchErrorHandler(response, `${mapEntityDisplayName(entity)} was not created`),
   initialize(form || LIST_EDIT_VIEW_FORM_NAME, item)
 ];
+
+export const deleteEntityItemByIdErrorHandler = (response: any, entity: EntityName) => FetchErrorHandler(response, `${mapEntityDisplayName(entity)} was not deleted`);
 
 export const getEntityItemByIdErrorHandler = (response: any) => [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, null)];

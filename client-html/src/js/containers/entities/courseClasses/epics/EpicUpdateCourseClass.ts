@@ -35,7 +35,7 @@ const request: EpicUtils.Request<any, { id: number; courseClass: CourseClass }> 
       ...actions.map(a => a.actionBody),
       {
         type: FETCH_SUCCESS,
-        payload: { message: "Class updated" }
+        payload: { message: "Class record updated" }
       },
       {
         type: GET_RECORDS_REQUEST,
