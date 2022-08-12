@@ -129,6 +129,7 @@ const AssessmentSubmission = (props: any) => {
       onDelete={onDelete}
       CogwheelAdornment={BulkEditCogwheelOption}
       getCustomBulkEditFields={getCustomBulkEditFields}
+      createButtonDisabled
     />
   );
 };
