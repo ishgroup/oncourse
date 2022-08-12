@@ -38,6 +38,14 @@ class KronosIntegration implements PluginTrait {
     String CID
     String authToken
 
+    static Map kronosSkills = new HashMap()
+    static Map kronosCostCenters = new HashMap()
+    static Map kronosEmployees = new HashMap()
+
+    static String kronosScheduleName
+    static Integer kronosScheduleId
+    static String kronosScheduleTimeZone
+
     KronosIntegration(Map args) {
         loadConfig(args)
 
@@ -70,7 +78,7 @@ class KronosIntegration implements PluginTrait {
                 authToken = result["token"]
             }
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to get access token  ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to get access token (username, password, company) - (${username}, ${password}, ${companyShortName}): ${resp.getStatusLine()}, ${result}")
             }
         }
 
@@ -78,23 +86,187 @@ class KronosIntegration implements PluginTrait {
     }
 
     /**
-     * Return only those employees who the authenticated user can see.
-     * The list of returned fields depends on security and company settings.
-     * Employees from Kronos via API v1
-     *
-     * @return employees
+     * Find Skill from stored kronosSkills, if not find -> reinit Map kronosSkills from Kronos and try to find one more time.
      */
-    protected getAllEmployeesV1() {
+    protected findSkillId(String skillName) {
+        def skillId = kronosSkills.get(skillName)
+        if (!skillId) {
+//            Integration store data, but users can update or add data to Kronos -> that is why reinit data to get actual from Kronos and try to find one more time.
+            initSkills()
+            skillId = kronosSkills.get(skillName)
+            return skillId
+        }
+        return skillId
+    }
+
+    /**
+     * Find Cost Center from stored kronosCostCenters, if not find -> reinit Map kronosCostCenters from Kronos and try to find one more time.
+     */
+    protected findCostCenterId(String costCenterName) {
+        def costCenterId = kronosCostCenters.get(costCenterName)
+        if (!costCenterId) {
+//            Integration store data, but users can update or add data to Kronos -> that is why reinit data to get actual from Kronos and try to find one more time.
+            initCostCenters()
+            costCenterId = kronosCostCenters.get(costCenterName)
+            return costCenterId
+        }
+        return costCenterId
+    }
+
+    /**
+     * Find Account Id from stored kronosEmployees, if not find -> reinit Map kronosEmployees from Kronos and try to find one more time.
+     */
+    protected findAccountId(String employeeId) {
+        def accountId = kronosEmployees.get(employeeId)
+        if (!accountId) {
+//            Integration store data, but users can update or add data to Kronos -> that is why reinit data to get actual from Kronos and try to find one more time.
+            initEmployees()
+            accountId = kronosEmployees.get(employeeId)
+            return accountId
+        }
+        return accountId
+    }
+
+    /**
+     * Get list of Skills from Kronos and store skill names and skill ids in kronosSkills Map<name,id>.
+     */
+    protected void initSkills() {
+        Map skillsFromKronos = getCompanySkills() as Map
+        List<Map> items = skillsFromKronos["items"] as List<Map>
+        if (!items){
+            throw new IllegalStateException("Kronos Company ${companyShortName} doesn't have skills")
+        }
+        kronosSkills = new HashMap()
+        for (Map skill : items) {
+            kronosSkills.put(skill["name"], skill["id"])
+        }
+    }
+
+    /**
+     * Get list of Cost Centers from Kronos and store Cost Center names and Cost Center ids in kronosCostCenters Map<name,id>.
+     */
+    protected void initCostCenters() {
+        Map costCentersFromKronos = getCompanyCostCenters() as Map
+        List<Map> centers = costCentersFromKronos["cost_centers"] as List<Map>
+        if (!centers){
+            throw new IllegalStateException("Kronos Company ${companyShortName} doesn't have Cost Centers")
+        }
+        kronosCostCenters = new HashMap()
+        for (Map center : centers) {
+            kronosCostCenters.put(center["name"], center["id"])
+        }
+    }
+
+    /**
+     * Get list of Employees from Kronos and store Employee employee_id and Employee ids in kronosCostCenters Map<employee_id,id>.
+     */
+    protected void initEmployees() {
+        Map employeesFromKronos = getAllEmployees() as Map
+        List<Map> items = employeesFromKronos["employees"] as List<Map>
+        if (!items){
+            throw new IllegalStateException("Kronos Company ${companyShortName} doesn't have employees")
+        }
+        kronosEmployees = new HashMap()
+        for (Map employee : items) {
+            kronosEmployees.put(employee["employee_id"], employee["id"])
+        }
+    }
+
+    /**
+     * Get Schedule from Kronos and store Schedule fields.
+     */
+    protected void initSchedule(String scheduleName) {
+        Map resultFromKronos = getCompanySchedules() as Map
+        List<Map> schedulesFromKronos = resultFromKronos["schedules"] as List<Map>
+        if (!schedulesFromKronos) {
+            setStoredScheduleValuesToNull()
+            throw new IllegalStateException("Kronos Company ${companyShortName} doesn't have Schedules")
+        }
+        List<Map> schedulesByName = schedulesFromKronos.findAll { it["name"] == scheduleName }
+        if (schedulesByName.size() == 0) {
+            setStoredScheduleValuesToNull()
+            throw new IllegalStateException("Kronos Company ${companyShortName} doesn't have Schedules with name '${scheduleName}'.")
+        }
+        if (schedulesByName.size() > 1) {
+            setStoredScheduleValuesToNull()
+            throw new IllegalStateException("Kronos Company ${companyShortName} have more then 1 Schedules with name '${scheduleName}'.")
+        }
+        kronosScheduleName = schedulesByName.get(0)["name"]
+        kronosScheduleId = schedulesByName.get(0)["id"]
+        kronosScheduleTimeZone = schedulesByName.get(0)["time_zone"]["display_name"]
+    }
+
+    private static void setStoredScheduleValuesToNull() {
+        kronosScheduleName = null
+        kronosScheduleId = null
+        kronosScheduleTimeZone = null
+    }
+
+    /**
+     * Return list of defined skills in the company.
+     * Skills from Kronos via API v2
+     *
+     * @return skills
+     */
+    protected getCompanySkills() {
         def client = new RESTClient(KRONOS_REST_URL)
         client.headers["Authentication"] = "Bearer ${authToken}"
         client.request(Method.GET) {
-            uri.path = "/ta/rest/v1/employees/"
+            uri.path = "/ta/rest/v2/companies/${CID}/lookup/skills"
 
             response.success = { resp, result ->
                 return result
             }
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed  ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to get Skills (company cid) - (${CID}): ${resp.getStatusLine()}, ${result}")
+            }
+        }
+    }
+
+    /**
+     * Allows existing cost centers to be returned. Response is a flat list.
+     * Relationships can be traced using parent_id field. Root does not have parent_id field.
+     * All visible cost centers will be return even if their parent has visible set to false.
+     * To view cost centers, user must have a Cost Center Definitions view permission.
+     * Cost Centers from Kronos via API v2
+     *
+     * @return cost centers
+     */
+    protected getCompanyCostCenters() {
+        def client = new RESTClient(KRONOS_REST_URL)
+        client.headers["Authentication"] = "Bearer ${authToken}"
+        client.request(Method.GET) {
+            uri.path = "/ta/rest/v2/companies/${CID}/config/cost-centers"
+            uri.query = [
+                    tree_index: 0,
+            ]
+
+            response.success = { resp, result ->
+                return result
+            }
+            response.failure = { resp, result ->
+                throw new IllegalStateException("Failed to get Cost Centers (company cid) - (${CID}): ${resp.getStatusLine()}, ${result}")
+            }
+        }
+    }
+
+    /**
+     * Returns the the list of Schedules
+     * Advanced Scheduler (SCHEDULE) Subsystem must be enabled in company setup.
+     *
+     * @return schedules
+     */
+    protected getCompanySchedules() {
+        def client = new RESTClient(KRONOS_REST_URL)
+        client.headers["Authentication"] = "Bearer ${authToken}"
+        client.request(Method.GET) {
+            uri.path = "/ta/rest/v2/companies/${CID}/schedules"
+
+            response.success = { resp, result ->
+                return result
+            }
+            response.failure = { resp, result ->
+                throw new IllegalStateException("Failed to get schedules (company cid) - (${CID}): ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -106,7 +278,7 @@ class KronosIntegration implements PluginTrait {
      *
      * @return employees
      */
-    protected getAllEmployeesV2() {
+    protected getAllEmployees() {
         def client = new RESTClient(KRONOS_REST_URL)
         client.headers["Authentication"] = "Bearer ${authToken}"
         client.request(Method.GET) {
@@ -116,7 +288,7 @@ class KronosIntegration implements PluginTrait {
                 return result
             }
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed  ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to get Employees (company cid) - (${CID}): ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -128,7 +300,7 @@ class KronosIntegration implements PluginTrait {
      *
      * @return employee
      */
-    protected getEmployee(id) {
+    protected getEmployeeById(id) {
         def client = new RESTClient(KRONOS_REST_URL)
         client.headers["Authentication"] = "Bearer ${authToken}"
         client.request(Method.GET) {
@@ -141,8 +313,59 @@ class KronosIntegration implements PluginTrait {
                 if (resp.getProperties()["status"] == HTTP_NOT_FOUND && result?.errors?.code?.get(0) == ACCOUNT_NOT_FOUND_CODE) {
                     return null
                 } else {
-                    throw new IllegalStateException("Failed to get employee with id ${id} ${resp.getStatusLine()}")
+                    throw new IllegalStateException("Failed to get employee with id ${id} (company cid) - (${CID}): ${resp.getStatusLine()}, ${result}")
                 }
+            }
+        }
+    }
+
+    /**
+     * Create a new shift in Kronos
+     *
+     */
+    def createNewShift(accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, scheduleId) {
+        def client = new RESTClient(KRONOS_REST_URL)
+        client.headers["Authentication"] = "Bearer ${authToken}"
+        client.request(Method.POST, ContentType.JSON) {
+            uri.path = "/ta/rest/v2/companies/${CID}/schedules/${scheduleId}/shifts/collection"
+            body = [
+                    shifts: [
+                            [
+                                    account: [
+                                            account_id: accountId
+                                    ],
+                                    date: date,
+                                    type: "FIXED",
+                                    shift_start: shiftStart,
+                                    shift_end: shiftEnd,
+                                    cost_centers: [
+                                            [
+                                                    index: 1,
+                                                    value: [
+                                                            id: costCenter1Id,
+                                                    ]
+                                            ],
+                                            [
+                                                    index: 3,
+                                                    value: [
+                                                            id: costCenter3Id,
+                                                    ]
+                                            ]
+                                    ],
+                                    skill: [
+                                            schedulable: true,
+                                            id: skillId,
+                                    ],
+                            ],
+                    ]
+                    ]
+            response.success = { resp, result ->
+                return result
+            }
+
+            response.failure = { resp, result ->
+                throw new IllegalStateException("Failed to create shift (company cid, accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, scheduleId) - " +
+                        "(${CID}, ${accountId}, ${date}, ${shiftStart}, ${shiftEnd}, ${costCenter1Id}, ${costCenter3Id}, ${skillId}, ${scheduleId}): ${resp.getStatusLine()}, ${result}")
             }
         }
     }
