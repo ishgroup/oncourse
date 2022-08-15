@@ -1,8 +1,8 @@
 import * as React from "react";
+import { useState } from "react";
 import withStyles from "@mui/styles/withStyles";
 import { createStyles } from "@mui/material";
 import clsx from "clsx";
-import { useState } from "react";
 import FilterGroupComp from "./components/FilterGroup";
 import StubFilterItem from "./components/StubFilterItem";
 import ListTagGroups from "./components/ListTagGroups";
@@ -74,7 +74,7 @@ const SideBar: React.FC<Props> = props => {
 
         <FiltersSwitcher value={filterBy} setValue={setFilterBy} />
 
-        <div className={filterBy !== 0 && "d-none"}>
+        <div className={clsx(filterBy !== 0 && "d-none")}>
           {filterGroups.map((i, index) => (
             <FilterGroupComp
               key={index}
@@ -94,7 +94,7 @@ const SideBar: React.FC<Props> = props => {
           <ListTagGroups onChangeTagGroups={onChangeFilters} rootEntity={rootEntity} />
         </div>
 
-        <div className={filterBy !== 1 && "d-none"}>
+        <div className={clsx(filterBy !== 1 && "d-none")}>
           <ChecklistsFilters
             updateChecked={filters => onChangeFilters(filters, "checkedChecklists")}
             updateUnChecked={filters => onChangeFilters(filters, "uncheckedChecklists")}
