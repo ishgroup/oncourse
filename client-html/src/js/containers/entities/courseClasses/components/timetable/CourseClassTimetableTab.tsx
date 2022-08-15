@@ -455,6 +455,9 @@ const CourseClassTimetableTab = ({
 
     sessionSelection.forEach(sid => {
       const originalSession = updated.find(s => s.id === sid || s.temporaryId === sid);
+
+      if (!originalSession) return;
+
       const session: TimetableSession = JSON.parse(JSON.stringify(originalSession));
       const startDate = new Date(session.start);
       const endDate = new Date(session.end);
