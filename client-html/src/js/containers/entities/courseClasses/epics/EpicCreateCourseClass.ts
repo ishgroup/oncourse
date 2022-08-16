@@ -39,7 +39,7 @@ const request: Request<QueuedAction[], { courseClass: CourseClass }> = {
     },
     {
       type: FETCH_SUCCESS,
-      payload: { message: "Class record created" }
+      payload: { message: "Class created" }
     },
   ],
   processError: response => FetchErrorHandler(response, "Class was not created")
