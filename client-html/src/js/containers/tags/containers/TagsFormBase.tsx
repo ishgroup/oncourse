@@ -255,7 +255,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
 
       onDelete(tag);
     }).then(() => {
-      redirectOnDelete();
+      if (redirectOnDelete) redirectOnDelete();
     });
   };
 
