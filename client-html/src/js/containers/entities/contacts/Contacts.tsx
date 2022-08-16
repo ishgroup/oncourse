@@ -331,7 +331,7 @@ const Contacts: React.FC<ContactsProps> = props => {
         nameCondition: getContactFullNameWithTitle,
         disabledSubmitCondition: getDisabledSubmitCondition(isVerifyingUSI, usiVerificationResult),
         asyncValidate: notesAsyncValidate,
-        asyncBlurFields: ["notes[].message"],
+        asyncChangeFields: ["notes[].message"],
         hideTitle: true
       }}
       EditViewContent={ContactEditView}

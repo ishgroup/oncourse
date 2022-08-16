@@ -112,7 +112,7 @@ const AssessmentSubmission = (props: any) => {
       editViewProps={{
         nameCondition,
         asyncValidate: notesAsyncValidate,
-        asyncBlurFields: ["notes[].message"],
+        asyncChangeFields: ["notes[].message"],
         hideTitle: true
       }}
       EditViewContent={AssessmentSubmissionEditView}
@@ -121,6 +121,7 @@ const AssessmentSubmission = (props: any) => {
       findRelated={findRelatedGroup}
       CogwheelAdornment={BulkEditCogwheelOption}
       getCustomBulkEditFields={getCustomBulkEditFields}
+      createButtonDisabled
     />
   );
 };

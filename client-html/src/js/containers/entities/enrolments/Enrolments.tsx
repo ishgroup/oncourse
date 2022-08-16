@@ -299,7 +299,7 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
           manualLink,
           nameCondition,
           asyncValidate: notesAsyncValidate,
-          asyncBlurFields: ["notes[].message"],
+          asyncChangeFields: ["notes[].message"],
           hideTitle: true
         }}
         EditViewContent={EnrolmentEditView}

@@ -139,7 +139,7 @@ class Sites extends React.Component<any, any> {
         editViewProps={{
           manualLink,
           asyncValidate: notesAsyncValidate,
-          asyncBlurFields: ["notes[].message"],
+          asyncChangeFields: ["notes[].message"],
           hideTitle: true
         }}
         CogwheelAdornment={BulkEditCogwheelOption}

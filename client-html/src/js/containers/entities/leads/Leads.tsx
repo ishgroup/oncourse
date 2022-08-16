@@ -121,7 +121,7 @@ const Leads = props => {
         editViewProps={{
           manualLink,
           asyncValidate: notesAsyncValidate,
-          asyncBlurFields: ["notes[].message"],
+          asyncChangeFields: ["notes[].message"],
           hideTitle: true
         }}
         updateTableModel={updateTableModel}

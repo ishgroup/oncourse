@@ -23,8 +23,8 @@ import {
   Outcome,
   TableModel
 } from "@api/model";
-import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import Button from "@mui/material/Button";
+import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { StyledCheckbox } from "../../../common/components/form/formFields/CheckboxField";
 import ListView from "../../../common/components/list-view/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
@@ -333,18 +333,6 @@ const asyncValidate = (values: CourseClassExtended, dispatch, props, blurredFiel
   return Promise.resolve();
 };
 
-const shouldAsyncValidate = ({ trigger, pristine, initialized }) => {
-  switch (trigger) {
-    case "blur":
-    case "change":
-      return true;
-    case "submit":
-      return !pristine || !initialized;
-    default:
-      return false;
-  }
-};
-
 const setRowClasses = ({ isCancelled, isShownOnWeb, isActive }) => {
   if (isActive === "Yes" && isShownOnWeb === "Yes") return undefined;
   if (isActive === "Yes") return "text-op065";
@@ -627,7 +615,6 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
           manualLink,
           nameCondition,
           asyncValidate,
-          shouldAsyncValidate,
           asyncBlurFields: [
             "tutors[].confirmedOn",
             "tutors[].roleId",
@@ -635,13 +622,13 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
             "assessments[].assessmentCode",
             "assessments[].assessmentName",
             "assessments[].dueDate",
-            "assessments[].releaseDate",
-            "notes[].message"
+            "assessments[].releaseDate"
           ],
           asyncChangeFields: [
             "tutors[].isInPublicity",
             "assessments[].contactIds",
-            "assessments[].submissions"
+            "assessments[].submissions",
+            "notes[].message"
           ],
           hideTitle: true,
           enableReinitialize: true,

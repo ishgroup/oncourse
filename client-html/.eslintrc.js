@@ -106,6 +106,7 @@ module.exports = {
         "no-shadow": "off",
         "no-var": "error",
         "object-shorthand": "error",
+        "object-curly-newline": "off",
         "one-var": [
             "error",
             "never"

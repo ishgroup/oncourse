@@ -15,7 +15,7 @@ import ish.common.util.DisplayableExtendedEnumeration
 import ish.oncourse.API
 
 @API
-enum Gender implements DisplayableExtendedEnumeration<Integer> {
+public enum Gender implements DisplayableExtendedEnumeration<Integer> {
 
     /**
      * Database value: 0

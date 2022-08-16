@@ -20,7 +20,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Edit from "@mui/icons-material/Edit";
 import clsx from "clsx";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import markdown2html from '@ckeditor/ckeditor5-markdown-gfm/src/markdown2html/markdown2html.js';
 import { Field, WrappedFieldProps } from "redux-form";
 import HtmlEditor from "./HtmlEditor";
@@ -85,16 +85,12 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
   };
 
   const onEditButtonFocus = () => {
-    onChange(removeContentMarker(value));
     setIsEditing(true);
   };
 
   const onClickAway = e => {
     const isBalloon = e.target.closest(".ck-balloon-panel");
     if (isEditing && !isBalloon) {
-      if (value.trim()) {
-        onChange(addContentMarker(value, contentMode));
-      }
       setIsEditing(false);
     }
   };
@@ -146,20 +142,21 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
                     id={mode.id}
                     key={mode.id}
                     onClick={() => {
-                        setContentMode(mode.id);
-                        modeMenuClose();
+                      setContentMode(mode.id);
+                      onChange(addContentMarker(removeContentMarker(value), mode.id));
+                      modeMenuClose();
                     }}
                     selected={contentMode === mode.id}
                   >
                     {mode.title}
                   </MenuItem>
-                  ))}
+                ))}
               </Menu>
             </div>
             <EditorResolver
               contentMode={contentMode}
-              draftContent={value}
-              onChange={onChange}
+              draftContent={removeContentMarker(value)}
+              onChange={v => onChange(addContentMarker(removeContentMarker(v), contentMode))}
             />
           </div>
           ) : (
@@ -198,7 +195,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
             root: "d-none"
           }}
           inputProps={{
-            value
+            value: removeContentMarker(value)
           }}
         />
       </FormControl>
