@@ -22,7 +22,7 @@ export const getProcessDataActions = (entity: EntityName) => [
   executeActionsQueue(),
   {
     type: FETCH_SUCCESS,
-    payload: { message: `${mapEntityDisplayName(entity)} record created` }
+    payload: { message: `${mapEntityDisplayName(entity)} created` }
   },
   getRecords({ entity, listUpdate: true }),
   setListSelection([]),

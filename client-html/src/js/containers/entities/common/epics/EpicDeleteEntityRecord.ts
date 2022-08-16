@@ -20,7 +20,7 @@ import { mapEntityDisplayName } from "../utils";
 export const getProcessDataActions = (entity: EntityName) => [
   {
     type: FETCH_SUCCESS,
-    payload: { message: `${mapEntityDisplayName(entity)} record deleted` }
+    payload: { message: `${mapEntityDisplayName(entity)} deleted` }
   },
   getRecords({ entity, listUpdate: true }),
   setListSelection([]),

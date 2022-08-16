@@ -3,7 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Account, Course, EntityRelationType, Module, Qualification, Sale, SaleType } from "@api/model";
+import {
+ Account, Course, EntityRelationType, Module, Qualification, Sale, SaleType 
+} from "@api/model";
 import { format } from "date-fns";
 import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
 import { EntityName } from "../../../../model/entities/common";
@@ -11,26 +13,30 @@ import { EEE_D_MMM_YYYY } from "../../../../common/utils/dates/format";
 import { defaultContactName } from "../../contacts/utils";
 import { State } from "../../../../reducers/state";
 
-export const mapEntityDisplayName = (entity: EntityName, item?: any, count?: number) => {
+export const mapEntityDisplayName = (entity: EntityName) => {
   switch (entity) {
     case "VoucherProduct":
-      return "Voucher type";
+      return "Voucher";
     case "MembershipProduct":
-      return "Membership type";
+      return "Membership";
     case "ArticleProduct":
       return "Product";
+    case "Article":
+    case "ProductItem":
     case "Voucher":
     case "Membership":
-      return `Sale${count > 1 ? "s" : ""} (${entity})`;
-    case "Article":
-      return `Sale${count > 1 ? "s" : ""} (Product)`;
+      return "Sale";
     case "AbstractInvoice":
     case "Invoice":
       return "Invoice";
     case "CourseClass":
       return "Class";
+    case "PaymentIn":
+      return "Payment In";
+    case "PaymentOut":
+      return "Payment Out";
     default:
-      return `${entity.split(/(?=[A-Z])/).join(" ").toLowerCase().capitalize()}${count > 1 ? entity[entity.length - 1] === "s" ? "es" : "s" : ""}`;
+      return entity.split(/(?=[A-Z])/).join(" ").toLowerCase().capitalize();
   }
 };
 
