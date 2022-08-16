@@ -21,7 +21,7 @@ describe("Create course class epic tests", () => {
       },
       {
         type: FETCH_SUCCESS,
-        payload: { message: "New class created" }
+        payload: { message: "Class created" }
       },
     ]
   }));
