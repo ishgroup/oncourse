@@ -15,7 +15,7 @@ import { areEqual, FixedSizeList as List } from 'react-window';
 import { createStyles } from "@mui/styles";
 import { green } from "@mui/material/colors";
 import clsx from "clsx";
-import { ListItem, ListItemText, Typography } from "@mui/material";
+import { ListItem } from "@mui/material";
 import { AppTheme } from "../../../../model/common/Theme";
 
 export const selectStyles = theme => createStyles({
@@ -117,14 +117,13 @@ export const ListRow = React.memo<any>(({ data, index, style }) => {
     ...style,
     top: (style.top as number) + 8,
     paddingLeft: 0,
-    paddingRight: 0
+    paddingRight: 0,
+    whiteSpace: "nowrap"
   };
 
   return (
     <ListItem button style={inlineStyle}>
-      <Typography noWrap>
-        {data[index]}
-      </Typography>
+      {data[index]}
     </ListItem>
   );
 }, areEqual);
