@@ -65,6 +65,8 @@ in ish.oncourse.aql.model.EntityFactory in server module.
         <attribute name="type" ref="ish.common.types.ProductType"/>
         <attribute name="allRelatedCourses" ref="Course"/>
         <attribute name="allRelatedProducts" ref="Product"/>
+        <attribute name="tags" ref="Tag"/>
+        <attribute name="taggingRelations" ref="TagRelation"/>
     </entity>
     <entity name="ProductItem">
         <attribute name="redeemedInvoice" ref="Invoice"/>
