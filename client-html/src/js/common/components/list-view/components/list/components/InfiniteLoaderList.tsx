@@ -69,11 +69,12 @@ const ListRow = memo<any>(({ data, index, style }) => {
             {row.original.secondary}
           </Typography>
           <Typography variant="body1" component="div" className="centeredFlex" noWrap>
-            <span className="flex-fill">
+            <span className="flex-fill text-truncate">
               {row.original.primary}
             </span>
             {row.cells[1].column.tagsVisible && (
               <TagDotRenderer
+                className="ml-1"
                 colors={row.values[COLUMN_WITH_COLORS]?.replace(/[[\]]/g, "").split(", ")}
               />
             )}
