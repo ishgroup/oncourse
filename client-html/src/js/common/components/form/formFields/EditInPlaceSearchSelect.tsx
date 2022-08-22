@@ -467,7 +467,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
               hasPopupIcon: classes.hasPopup,
               hasClearIcon: classes.hasClear,
               inputRoot: classes.inputWrapper,
-              option: "w-100"
+              option: "w-100 text-break-spaces"
             }}
             renderOption={renderOption}
             getOptionLabel={getOptionLabel}
