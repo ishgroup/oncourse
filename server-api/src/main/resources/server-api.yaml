@@ -195,6 +195,8 @@ paths:
     $ref: './path/list/entity/report/api.yaml'
   /list/entity/reportOverlay:
     $ref: './path/list/entity/reportOverlay/api.yaml'
+  /list/entity/reportOverlay/original:
+    $ref: './path/list/entity/reportOverlay/original/api.yaml'
   /list/entity/room:
     $ref: './path/list/entity/room/api.yaml'
   /list/entity/room/validation:
