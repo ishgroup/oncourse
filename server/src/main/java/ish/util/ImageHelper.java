@@ -154,6 +154,16 @@ public class ImageHelper {
 	 * @return - binary content of generated preview, null - if transformation can't be performed
 	 */
 	public static byte[] generatePdfPreview(byte[] pdfContent) {
+		return generatePdfQualityPreview(pdfContent, 3);
+	}
+
+/**
+	 * Generates 400x564 (A4 format demention) preview from pdf byte array.
+	 *
+	 * @param pdfContent - pdf byte array
+	 * @return - binary content of generated preview, null - if transformation can't be performed
+	 */
+	public static byte[] generatePdfQualityPreview(byte[] pdfContent, float scale) {
 
 		try (PDDocument doc = PDDocument.load(pdfContent)) {
 
@@ -162,7 +172,7 @@ public class ImageHelper {
 			int height = landscape ? PDF_PREVIEW_WIDTH : PDF_PREVIEW_HEIGHT;
 
 			PDFRenderer renderer = new PDFRenderer(doc);
-			BufferedImage image = renderer.renderImage(0,3);
+			BufferedImage image = renderer.renderImage(0,scale);
 			Image tmp = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
 			BufferedImage dimg = new BufferedImage(width, height, BufferedImage.TYPE_USHORT_565_RGB);
 			Graphics2D g2d = dimg.createGraphics();
