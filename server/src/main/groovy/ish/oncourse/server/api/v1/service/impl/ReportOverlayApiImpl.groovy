@@ -107,4 +107,11 @@ class  ReportOverlayApiImpl implements ReportOverlayApi {
         }
         return null
     }
+
+    @Override
+    byte[] getOriginal(Long id) {
+        ReportOverlay report = SelectById.query(ReportOverlay, id)
+                .selectOne(cayenneService.newContext)
+        return report?.overlay
+    }
 }
