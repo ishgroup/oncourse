@@ -154,38 +154,40 @@ public class ImageHelper {
 	 * @return - binary content of generated preview, null - if transformation can't be performed
 	 */
 	public static byte[] generatePdfPreview(byte[] pdfContent) {
-		return generatePdfQualityPreview(pdfContent, 3);
+		return generatePdfQualityPreview(pdfContent, 3, true);
 	}
 
-/**
+	/**
 	 * Generates 400x564 (A4 format demention) preview from pdf byte array.
 	 *
 	 * @param pdfContent - pdf byte array
 	 * @return - binary content of generated preview, null - if transformation can't be performed
 	 */
-	public static byte[] generatePdfQualityPreview(byte[] pdfContent, float scale) {
-
+	public static byte[] generatePdfQualityPreview(byte[] pdfContent, float scale, boolean sizeScaleRequired) {
 		try (PDDocument doc = PDDocument.load(pdfContent)) {
-
-			boolean landscape = !isPortrait(doc.getPage(0));
-			int width = landscape ? PDF_PREVIEW_HEIGHT : PDF_PREVIEW_WIDTH;
-			int height = landscape ? PDF_PREVIEW_WIDTH : PDF_PREVIEW_HEIGHT;
-
 			PDFRenderer renderer = new PDFRenderer(doc);
-			BufferedImage image = renderer.renderImage(0,scale);
-			Image tmp = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-			BufferedImage dimg = new BufferedImage(width, height, BufferedImage.TYPE_USHORT_565_RGB);
-			Graphics2D g2d = dimg.createGraphics();
-			g2d.drawImage(tmp, 0, 0, null);
-			g2d.dispose();
-
-			return getAsByteArray(dimg, PDF_PREVIEW_FORMAT);
+			BufferedImage image = renderer.renderImage(0, scale);
+			if(sizeScaleRequired) {
+				boolean landscape = !isPortrait(doc.getPage(0));
+				int width = landscape ? PDF_PREVIEW_HEIGHT : PDF_PREVIEW_WIDTH;
+				int height = landscape ? PDF_PREVIEW_WIDTH : PDF_PREVIEW_HEIGHT;
+				Image tmp = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+				image = new BufferedImage(width, height, BufferedImage.TYPE_USHORT_565_RGB);
+				Graphics2D g2d = image.createGraphics();
+				g2d.drawImage(tmp, 0, 0, null);
+				g2d.dispose();
+			}
+			return getAsByteArray(image, PDF_PREVIEW_FORMAT);
 		} catch (Exception e) {
 			logger.error("Unable to generate preiew" );
 			logger.catching(e);
 			return null;
 		}
+	}
 
+	public static BufferedImage getDefaultBackgroundImage(float scale, PDDocument doc) throws IOException {
+		PDFRenderer renderer = new PDFRenderer(doc);
+		return renderer.renderImage(0, scale);
 	}
 
 	public static Boolean isPortrait(PDPage page) {
