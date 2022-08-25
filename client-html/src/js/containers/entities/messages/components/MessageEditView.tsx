@@ -17,6 +17,7 @@ import { format } from "date-fns";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import { III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
 import { defaultContactName } from "../../contacts/utils";
+import { ContactLinkAdornment } from "../../../../common/components/form/FieldAdornments";
 
 interface MessageEditViewProps {
   values?: Message;
@@ -61,7 +62,9 @@ const MessageEditView = React.memo<MessageEditViewProps>(props => {
           <Uneditable
             value={defaultContactName(values.sentToContactFullname)}
             label="Sent to"
-            url={`/contact?search=messages.message.id=${values.id}`}
+            labelAdornment={(
+              <ContactLinkAdornment id={values?.contactId} />
+            )}
           />
         </Grid>
         <Grid item xs={twoColumn ? 2 : 6}>
