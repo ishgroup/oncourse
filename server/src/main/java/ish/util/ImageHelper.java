@@ -158,9 +158,9 @@ public class ImageHelper {
 	}
 
 	/**
-	 * Generates 400x564 (A4 format demention) preview from pdf byte array.
+	 * Generates 400x564 (if sizeScaleRequired) (A4 format demention) preview from pdf byte array.
 	 *
-	 * @param pdfContent - pdf byte array
+	 * @param pdfContent - pdf or image byte array
 	 * @return - binary content of generated preview, null - if transformation can't be performed
 	 */
 	public static byte[] generatePdfQualityPreview(byte[] pdfContent, float scale, boolean sizeScaleRequired) {
@@ -179,15 +179,19 @@ public class ImageHelper {
 			}
 			return getAsByteArray(image, PDF_PREVIEW_FORMAT);
 		} catch (Exception e) {
-			logger.error("Unable to generate preiew" );
-			logger.catching(e);
-			return null;
+			try{
+				//check if background was image instead of pdf
+				ByteArrayInputStream bis = new ByteArrayInputStream(pdfContent);
+				BufferedImage image = ImageIO.read(bis);
+				if(image == null)
+					throw new IOException();
+				return getAsByteArray(image, PDF_PREVIEW_FORMAT);
+			} catch (IOException ex) {
+				logger.error("Unable to generate pdf preiew" );
+				logger.catching(e);
+				return null;
+			}
 		}
-	}
-
-	public static BufferedImage getDefaultBackgroundImage(float scale, PDDocument doc) throws IOException {
-		PDFRenderer renderer = new PDFRenderer(doc);
-		return renderer.renderImage(0, scale);
 	}
 
 	public static Boolean isPortrait(PDPage page) {
