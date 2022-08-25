@@ -114,6 +114,7 @@ class MessageApiService extends EntityApiService<MessageDTO, Message, MessageDao
             messageDTO.sentToContactFullname = message.getContact().getFullName()
             messageDTO.subject = message.emailSubject
             messageDTO.message = message.emailBody
+            messageDTO.contactId = message.contact?.id
             messageDTO.sms = message.smsText
             messageDTO.postDescription = message.postDescription
             messageDTO.htmlMessage = message.emailHtmlBody
