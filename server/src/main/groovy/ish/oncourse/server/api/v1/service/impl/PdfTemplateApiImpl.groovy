@@ -54,6 +54,6 @@ class PdfTemplateApiImpl implements PdfTemplateApi {
 
     @Override
     byte[] getHighQualityPreview(Long id) {
-        return ImageHelper.generateQualityPreview(apiService.getPreview(id), 1, false)
+        return ImageHelper.generateQualityPreview(apiService.getPreview(id), 1, true)
     }
 }
