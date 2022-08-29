@@ -121,11 +121,25 @@ const PdfBackgroundsForm = React.memo<Props>(
       if (file) {
         setFileIsChosen(true);
         setChosenFileName(file.name);
-
+        
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {
-          dispatch(change(form, "preview", (reader.result as string).replace("data:image/jpeg;base64,", "")));
+          const image = new Image();
+          image.src = reader.result as string;
+          image.onload = () => {
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+
+            canvas.width = 165;
+            canvas.height = 240;
+            ctx.drawImage(image,
+              0, 0, image.width, image.height,
+              0, 0, canvas.width, canvas.height
+            );
+
+            dispatch(change(form, "preview", (canvas.toDataURL() as string).replace("data:image/png;base64,", "")));
+          };
         };
         reader.onerror = e => {
           console.error(e);
