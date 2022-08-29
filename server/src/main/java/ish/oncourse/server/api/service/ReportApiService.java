@@ -22,6 +22,7 @@ import ish.oncourse.server.report.ReportBuilder;
 import ish.print.PrintTransformationsFactory;
 import ish.print.transformations.PrintTransformation;
 import ish.util.LocalDateUtils;
+import org.apache.cayenne.query.ObjectSelect;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -118,6 +119,10 @@ public class ReportApiService extends AutomationApiService<ReportDTO, Report, Re
         }
         report.getContext().commitChanges();
         return report;
+    }
+
+    public byte[] getPreview(Long id){
+        return ObjectSelect.columnQuery(Report.class, Report.PREVIEW).where(Report.ID.eq(id)).selectOne(cayenneService.getNewContext());
     }
 
     protected ReportDTO createDto() {
