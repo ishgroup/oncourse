@@ -355,10 +355,10 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
   }, 600), []);
 
   useEffect(() => {
-    if (!invalid && values.bindings && values.recipientsCount && values.messageType) {
+    if (opened && !invalid && values.bindings && values.recipientsCount && values.messageType) {
       getPreviewDebounced(values, selection, listSearchQuery);
     }
-  }, [values, selection, listSearchQuery, invalid]);
+  }, [values, selection, listSearchQuery, invalid, opened]);
 
   const onTemplateChange = (e, value, previousValue) => {
     if (value && value !== previousValue) {
