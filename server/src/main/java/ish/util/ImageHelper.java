@@ -153,7 +153,7 @@ public class ImageHelper {
 	 * @return - binary content of generated preview, null - if transformation can't be performed
 	 */
 	public static byte[] generatePdfPreview(byte[] pdfContent) {
-		return generateQualityPreview(pdfContent, 3);
+		return generateQualityPreview(pdfContent, 2, true);
 	}
 
 	/**
@@ -162,45 +162,42 @@ public class ImageHelper {
 	 * @param pdfContent - pdf or image byte array
 	 * @return - binary content of generated preview, null - if transformation can't be performed
 	 */
-	public static byte[] generateQualityPreview(byte[] pdfContent, float scale) {
+	public static byte[] generateQualityPreview(byte[] pdfContent, float scale, boolean a4FormatRequired) {
 		BufferedImage image;
-		try{
-			PDDocument doc = byteArrayAsPDDDoc(pdfContent);
-			if(doc != null){
-				try {
-					PDFRenderer renderer = new PDFRenderer(doc);
-					image = renderer.renderImage(0, scale);
-				} catch (IOException e) {
-					image = getAsBufferedImage(pdfContent);
-				}
-			} else {
+		boolean landscape;
+		try(PDDocument doc = PDDocument.load(pdfContent)){
+			PDFRenderer renderer = new PDFRenderer(doc);
+			image = renderer.renderImage(0, scale);
+			landscape = !isPortrait(doc.getPage(0));
+		} catch (Exception e) {
+			try {
 				image = getAsBufferedImage(pdfContent);
+				if (image == null)
+					throw new Exception();
+				landscape = image.getWidth() > image.getHeight();
+			} catch (Exception ex) {
+				logger.error("Unable to load background" );
+				logger.catching(e);
+				return null;
 			}
+		}
 
-			if(image == null)
-				throw new Exception();
 
-			boolean landscape = doc == null ? image.getWidth() > image.getHeight() : !isPortrait(doc.getPage(0));
-			int width = landscape ? PDF_PREVIEW_HEIGHT : PDF_PREVIEW_WIDTH;
-			int height = landscape ? PDF_PREVIEW_WIDTH : PDF_PREVIEW_HEIGHT;
+		int width = landscape ? PDF_PREVIEW_HEIGHT : PDF_PREVIEW_WIDTH;
+		int height = landscape ? PDF_PREVIEW_WIDTH : PDF_PREVIEW_HEIGHT;
+
+		if(a4FormatRequired) {
 			Image tmp = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
 			image = new BufferedImage(width, height, BufferedImage.TYPE_USHORT_565_RGB);
 			Graphics2D g2d = image.createGraphics();
 			g2d.drawImage(tmp, 0, 0, null);
 			g2d.dispose();
-
+		}
+		try {
 			return getAsByteArray(image, PDF_PREVIEW_FORMAT);
-		} catch (Exception e) {
+		} catch (IOException e) {
 			logger.error("Unable to generate pdf preiew" );
 			logger.catching(e);
-			return null;
-		}
-	}
-
-	private static PDDocument byteArrayAsPDDDoc(byte[] data){
-		try (PDDocument doc = PDDocument.load(data)) {
-			return doc;
-		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -213,21 +210,19 @@ public class ImageHelper {
 	}
 
 	public static Boolean isPortrait(byte[] content) {
-		var doc = byteArrayAsPDDDoc(content);
-		if(doc != null){
+		try(PDDocument doc = PDDocument.load(content)) {
 			return isPortrait(doc.getPage(0));
-		} else {
+		} catch (IOException e) {
 			try {
 				var image = getAsBufferedImage(content);
-				if(image == null)
+				if (image == null)
 					throw new IOException();
 				return image.getHeight() > image.getWidth();
-			} catch (IOException e) {
-				logger.error("Unable to read image or pdf doc." );
+			} catch (IOException ex) {
+				logger.error("Unable to read image or pdf doc.");
 				logger.catching(e);
 				return null;
 			}
-
 		}
 	}
 }
