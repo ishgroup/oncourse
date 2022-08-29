@@ -475,7 +475,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
               </Grid>
             )}
             <Grid item xs={12}>
-              <Grid container>
+              <Grid container columnSpacing={3} rowSpacing={2}>
                 <Grid item xs={12}>
                   <FormField
                     type="select"

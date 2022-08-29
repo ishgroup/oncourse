@@ -119,6 +119,13 @@ const PdfBackgroundsForm = React.memo<Props>(
     const handleFileSelect = () => {
       const file = fileRef.current.files[0];
       if (file) {
+
+        // Set file size limit to 5mb
+        if ((file.size / 1024 / 1024) > 5 ) {
+          dispatch(showMessage({ message: "File size exceeds 5 MiB" }));
+          return;
+        }
+
         setFileIsChosen(true);
         setChosenFileName(file.name);
         
@@ -143,7 +150,7 @@ const PdfBackgroundsForm = React.memo<Props>(
         };
         reader.onerror = e => {
           console.error(e);
-          dispatch(showMessage(e as any));
+          dispatch(showMessage({ message: e as any }));
         };
       }
     };
