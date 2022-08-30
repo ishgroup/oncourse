@@ -49,7 +49,11 @@ public class ImageHelper {
 
 	public static byte[] scaleImageToPreviewSize(byte[] imgSrc) {
 		try {
+			if(imgSrc == null)
+				return null;
 			var image = getAsBufferedImage(imgSrc);
+			if(image == null)
+				return imgSrc;
 			int width = image.getWidth() > image.getHeight() ? PDF_PREVIEW_HEIGHT : PDF_PREVIEW_WIDTH;
 			int height = image.getWidth() > image.getHeight() ? PDF_PREVIEW_WIDTH : PDF_PREVIEW_HEIGHT;
 			var scaledImage = scaleImageToSize(width, height, image, false);
@@ -210,7 +214,7 @@ public class ImageHelper {
 			int width = landscape ? PDF_PREVIEW_HEIGHT : PDF_PREVIEW_WIDTH;
 			int height = landscape ? PDF_PREVIEW_WIDTH : PDF_PREVIEW_HEIGHT;
 
-			if(!cutRequired){
+			if(!cutRequired && image.getWidth() > width && image.getHeight() > height){
 				width*=3;
 				height*=3;
 			}
