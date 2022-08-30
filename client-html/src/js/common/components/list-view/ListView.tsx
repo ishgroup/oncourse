@@ -90,7 +90,7 @@ import {
 } from "../../../containers/entities/common/actions";
 import { shouldAsyncValidate } from "./utils/listFormUtils";
 
-export const ListSideBarDefaultWidth = 200;
+export const ListSideBarDefaultWidth = 265;
 export const ListMainContentDefaultWidth = 774;
 
 const styles = () => createStyles({
