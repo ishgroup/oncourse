@@ -47,6 +47,19 @@ public class ImageHelper {
 		return scaleImageToSize(nMaxWidth, nMaxHeight, imgSrc, false);
 	}
 
+	public static byte[] scaleImageToPreviewSize(byte[] imgSrc) {
+		try {
+			var image = getAsBufferedImage(imgSrc);
+			int width = image.getWidth() > image.getHeight() ? PDF_PREVIEW_HEIGHT : PDF_PREVIEW_WIDTH;
+			int height = image.getWidth() > image.getHeight() ? PDF_PREVIEW_WIDTH : PDF_PREVIEW_HEIGHT;
+			var scaledImage = scaleImageToSize(width, height, image, false);
+			return imageAsPdfPreviewByteArray(scaledImage);
+		} catch (IOException e) {
+			logger.error("Preview of pdf report was not an image on formatting stage");
+			return null;
+		}
+	}
+
 	public static BufferedImage scaleImageToSize(int nMaxWidth, int nMaxHeight, BufferedImage imgSrc, boolean returnNewImage) {
 		int nHeight = imgSrc.getHeight();
 		int nWidth = imgSrc.getWidth();
@@ -153,7 +166,18 @@ public class ImageHelper {
 	 * @return - binary content of generated preview, null - if transformation can't be performed
 	 */
 	public static byte[] generatePdfPreview(byte[] pdfContent) {
-		return generateQualityPreview(pdfContent, 2, true);
+		return generateQualityPreview(pdfContent, 2, true, true);
+	}
+
+
+	/**
+	 * Generates 400x564 (A4 format demention) preview from pdf byte array.
+	 *
+	 * @param pdfContent - pdf byte array
+	 * @return - binary content of generated preview, null - if transformation can't be performed
+	 */
+	public static byte[] generateHighQualityPdfPreview(byte[] pdfContent) {
+		return generateQualityPreview(pdfContent, 4, true, false);
 	}
 
 	/**
@@ -162,7 +186,7 @@ public class ImageHelper {
 	 * @param pdfContent - pdf or image byte array
 	 * @return - binary content of generated preview, null - if transformation can't be performed
 	 */
-	public static byte[] generateQualityPreview(byte[] pdfContent, float scale, boolean a4FormatRequired) {
+	public static byte[] generateQualityPreview(byte[] pdfContent, float scale, boolean a4FormatRequired, boolean cutRequired) {
 		BufferedImage image;
 		boolean landscape;
 		try(PDDocument doc = PDDocument.load(pdfContent)){
@@ -182,17 +206,26 @@ public class ImageHelper {
 			}
 		}
 
-
-		int width = landscape ? PDF_PREVIEW_HEIGHT : PDF_PREVIEW_WIDTH;
-		int height = landscape ? PDF_PREVIEW_WIDTH : PDF_PREVIEW_HEIGHT;
-
 		if(a4FormatRequired) {
+			int width = landscape ? PDF_PREVIEW_HEIGHT : PDF_PREVIEW_WIDTH;
+			int height = landscape ? PDF_PREVIEW_WIDTH : PDF_PREVIEW_HEIGHT;
+
+			if(!cutRequired){
+				width*=3;
+				height*=3;
+			}
+
 			Image tmp = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
 			image = new BufferedImage(width, height, BufferedImage.TYPE_USHORT_565_RGB);
 			Graphics2D g2d = image.createGraphics();
 			g2d.drawImage(tmp, 0, 0, null);
 			g2d.dispose();
 		}
+
+		return imageAsPdfPreviewByteArray(image);
+	}
+
+	private static byte[] imageAsPdfPreviewByteArray(BufferedImage image){
 		try {
 			return getAsByteArray(image, PDF_PREVIEW_FORMAT);
 		} catch (IOException e) {

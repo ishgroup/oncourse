@@ -48,7 +48,7 @@ public class ReportApiService extends AutomationApiService<ReportDTO, Report, Re
         }
         dto.setSubreport(dbReport.getIsVisible());
         dto.setSortOn(dbReport.getSortOn());
-        dto.setPreview(dbReport.getPreview());
+        dto.setPreview(ish.util.ImageHelper.scaleImageToPreviewSize(dbReport.getPreview()));
         return dto;
     }
 
