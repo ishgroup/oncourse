@@ -1097,6 +1097,8 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
 
     return (
       <div className={classes.root}>
+        <LoadingIndicator customLoading={isAsyncValidating} transparentBackdrop allowInteractions />
+
         <FullScreenEditView
           {...editViewProps}
           shouldAsyncValidate={shouldAsyncValidate}
@@ -1175,7 +1177,6 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
 
         <div className="flex-fill d-flex flex-column overflow-hidden user-select-none">
           <div className="flex-fill d-flex relative">
-            <LoadingIndicator customLoading={isAsyncValidating} transparentBackdrop allowInteractions />
             {threeColumn ? (
               <ResizableWrapper
                 onResizeStop={this.handleResizeMainContentCallBack}
