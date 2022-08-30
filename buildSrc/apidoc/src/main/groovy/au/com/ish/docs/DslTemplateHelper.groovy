@@ -102,8 +102,8 @@ class DslTemplateHelper {
         def result = text.stripMargin("*").stripIndent()
 
         // convert javadoc code notation to dsl notaion
-        result = result.replaceAll(~/\{@code.+?}/, {
-            return (it as String).replaceFirst(~/\{@code /, "`").replaceFirst(~/}$/, "`").toString()
+        result = result.replaceAll(~/\{@code\s+.+?}/, {
+            return (it as String).replaceFirst(~/\{@code\s+/, "`").replaceFirst(~/}$/, "`").toString()
         })
 
         return result
