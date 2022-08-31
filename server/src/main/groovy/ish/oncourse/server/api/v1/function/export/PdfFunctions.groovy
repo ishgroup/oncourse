@@ -49,7 +49,7 @@ class PdfFunctions {
     static ValidationErrorDTO validateAddOverlay(Long id = null, String fileName, File overlay, ObjectContext context) {
         if (!overlay) {
             return new ValidationErrorDTO(null, 'data', 'Data not found.')
-        } else if (FileUtils.readFileToByteArray(overlay).length > 2 * 1024 * 1024) { //file over 2Mb
+        } else if (FileUtils.readFileToByteArray(overlay).length > 5 * 1024 * 1024) { //file over 2Mb
             return new ValidationErrorDTO(null, 'data', 'Files over 2Mb cannot be used as print background.')
         }
 
