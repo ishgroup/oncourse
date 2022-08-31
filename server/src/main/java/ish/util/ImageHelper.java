@@ -181,7 +181,7 @@ public class ImageHelper {
 	 * @return - binary content of generated preview, null - if transformation can't be performed
 	 */
 	public static byte[] generateHighQualityPdfPreview(byte[] pdfContent) {
-		return generateQualityPreview(pdfContent, 4, true, false);
+		return generateQualityPreview(pdfContent, 10, true, false);
 	}
 
 	/**
@@ -215,8 +215,8 @@ public class ImageHelper {
 			int height = landscape ? PDF_PREVIEW_WIDTH : PDF_PREVIEW_HEIGHT;
 
 			if(!cutRequired && image.getWidth() > width && image.getHeight() > height){
-				width*=3;
-				height*=3;
+				width*=3.5;
+				height*=3.5;
 			}
 
 			Image tmp = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
