@@ -138,8 +138,10 @@ const PdfBackgroundsForm = React.memo<Props>(
             const canvas = document.createElement("canvas");
             const ctx = canvas.getContext("2d");
 
-            canvas.width = 165;
-            canvas.height = 240;
+            const isPortrait = image.height > image.width;
+
+            canvas.width = isPortrait ? 165 : 240;
+            canvas.height = isPortrait ? 240 : 165;
             ctx.drawImage(image,
               0, 0, image.width, image.height,
               0, 0, canvas.width, canvas.height
