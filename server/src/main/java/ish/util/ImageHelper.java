@@ -13,9 +13,12 @@ package ish.util;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
 import javax.imageio.ImageIO;
@@ -40,11 +43,53 @@ public class ImageHelper {
 
 	private static final int PDF_PREVIEW_WIDTH = 165;
 	private static final int PDF_PREVIEW_HEIGHT = 240;
+	private static final int A4_PIXELS_WIDTH = 595;
+	private static final int A4_PIZELS_HEIGHT = 845;
 	private static final String PDF_PREVIEW_FORMAT = "png";
 
 
 	public static BufferedImage scaleImageToSize(int nMaxWidth, int nMaxHeight, BufferedImage imgSrc) {
 		return scaleImageToSize(nMaxWidth, nMaxHeight, imgSrc, false);
+	}
+
+	public static byte[] convertImageToPdf(byte[] imageSrc) throws IOException {
+		var image = getAsBufferedImage(imageSrc);
+		if(image == null)
+			return null;
+		final PDDocument doc = new PDDocument();
+		PDPageContentStream contentStream;
+
+		int width = image.getWidth();
+		int height = image.getHeight();
+
+		width = width < height ? A4_PIXELS_WIDTH : A4_PIZELS_HEIGHT;
+		height = image.getWidth() < height ? A4_PIZELS_HEIGHT : A4_PIXELS_WIDTH;
+
+		var scaledImage = smoothScaleImageTo(width, height, image);
+		imageSrc = getAsByteArray(scaledImage, PDF_PREVIEW_FORMAT);
+
+		PDPage page = new PDPage(new PDRectangle(width, height));
+		doc.addPage(page);
+
+		PDImageXObject pdImage = PDImageXObject.createFromByteArray(doc, imageSrc, null);
+		contentStream = new PDPageContentStream(doc, page, PDPageContentStream.AppendMode.APPEND, true, true);
+
+		contentStream.drawImage(pdImage, 0, 0, pdImage.getWidth(), pdImage.getHeight());
+
+		IOUtils.closeQuietly(contentStream);
+
+		var stream = new ByteArrayOutputStream();
+		doc.save(stream);
+		return stream.toByteArray();
+	}
+
+	private static BufferedImage smoothScaleImageTo(int width, int height, BufferedImage image){
+		Image tmp = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+		var scaledImage = new BufferedImage(width, height, BufferedImage.TYPE_USHORT_565_RGB);
+		Graphics2D g2d = scaledImage.createGraphics();
+		g2d.drawImage(tmp, 0, 0, null);
+		g2d.dispose();
+		return scaledImage;
 	}
 
 	public static byte[] scaleImageToPreviewSize(byte[] imgSrc) {
@@ -219,11 +264,7 @@ public class ImageHelper {
 				height*=3.5;
 			}
 
-			Image tmp = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-			image = new BufferedImage(width, height, BufferedImage.TYPE_USHORT_565_RGB);
-			Graphics2D g2d = image.createGraphics();
-			g2d.drawImage(tmp, 0, 0, null);
-			g2d.dispose();
+			image = smoothScaleImageTo(width, height, image);
 		}
 
 		return imageAsPdfPreviewByteArray(image);
