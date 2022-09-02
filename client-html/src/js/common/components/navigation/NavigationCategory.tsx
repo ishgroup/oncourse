@@ -108,7 +108,7 @@ const NavigationCategory = (
     }
   };
 
-  const onOpen = (link: string) => () => openInternalLink(getPrivisioningLink(link));
+  const onOpen = (link: string) => openInternalLink(getPrivisioningLink(link));
 
   return (
     <div className="flex-fill p-3 overflow-y-auto">
