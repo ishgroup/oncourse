@@ -17,15 +17,14 @@ interface Props {
   item: DashboardItem;
   isEditing?: boolean;
   classes?: any;
-  showConfirm?: (onConfirm: any) => void;
 }
 
 const FavoriteItem = (props: Props) => {
   const {
-    showConfirm, classes, item, isEditing
+    classes, item, isEditing
   } = props;
 
-  const openLink = () => showConfirm(() => openInternalLink(getPrivisioningLink(item.url)));
+  const openLink = () => () => openInternalLink(getPrivisioningLink(item.url));
 
   const isQuickEnroll = item.category === "quickEnrol";
 
