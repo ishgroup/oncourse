@@ -6,13 +6,9 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 // eslint-disable-next-line import/no-extraneous-dependencies
-import React, {
-  useCallback, useEffect, useMemo, useState, Fragment, useRef
-} from "react";
+import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Dispatch } from "redux";
-import {
-  change, DecoratedFormProps, Field, FieldArray, getFormValues, initialize, reduxForm
-} from "redux-form";
+import { change, DecoratedFormProps, Field, FieldArray, getFormValues, initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import debounce from "lodash.debounce";
 import clsx from "clsx";
@@ -25,20 +21,14 @@ import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
 import OpenInNew from "@mui/icons-material/OpenInNew";
-import {
-  Binding, DataType,
-  EmailTemplate, MessageType, Recipients, SearchQuery
-} from "@api/model";
+import { Binding, DataType, EmailTemplate, MessageType, Recipients, SearchQuery } from "@api/model";
 import { Dialog } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
 import Slide from "@mui/material/Slide";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import DataTypeRenderer from "../../../../common/components/form/DataTypeRenderer";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import {
-  clearRecipientsMessageData,
-  getRecipientsMessageData
-} from "../../../../common/components/list-view/actions";
+import { clearRecipientsMessageData, getRecipientsMessageData } from "../../../../common/components/list-view/actions";
 import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
 import { AnyArgFunction, NoArgFunction, StringArgFunction } from "../../../../model/common/CommonFunctions";
 import { MessageData, MessageExtended } from "../../../../model/common/Message";
@@ -57,6 +47,7 @@ import { closeSendMessage, getEmailTemplatesWithKeyCode, getUserPreferences } fr
 import { sendMessage } from "../actions";
 import { getManualLink } from "../../../../common/utils/getManualLink";
 import { EMAIL_FROM_KEY } from "../../../../constants/Config";
+import { SEND_MESSAGE_FORM_NAME } from "../../../../constants/Forms";
 
 const styles = theme => createStyles({
   previewContent: {
@@ -640,7 +631,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
 });
 
 const mapStateToProps = (state: State) => ({
-  values: getFormValues("SendMessageForm")(state),
+  values: getFormValues(SEND_MESSAGE_FORM_NAME)(state),
   emailFrom: state.userPreferences[EMAIL_FROM_KEY],
   submitting: state.fetch.pending,
   opened: state.sendMessage.open,
@@ -670,5 +661,5 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 });
 
 export default reduxForm<any, any, any>({
-  form: "SendMessageForm",
+  form: SEND_MESSAGE_FORM_NAME,
 })(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SendMessageEditView)));
