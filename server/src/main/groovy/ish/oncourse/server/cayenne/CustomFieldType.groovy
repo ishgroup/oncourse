@@ -27,6 +27,10 @@ import java.util.Date
 class CustomFieldType extends _CustomFieldType implements Queueable {
 
 
+	@Override
+	boolean isAsyncReplicationAllowed() {
+		return !getEntityIdentifier().equals(TutorAttendance.class.simpleName)
+	}
 
 	/**
 	 * @return the date and time this record was created
