@@ -14,7 +14,9 @@ const request: EpicUtils.Request<any, { values: CancelEnrolment, type: string }>
   type: CANCEL_ENROLMENT,
   getData: ({ values }) => EnrolmentService.cancelEnrolment(values),
   processData: (v, s, { type, values: { enrolmentIds } }) => {
-    openInternalLink(`/checkout?enrolmentId=${enrolmentIds}`);
+    if (type === "transfer") {
+      openInternalLink(`/checkout?enrolmentId=${enrolmentIds}`);
+    }
     return [
       {
         type: FETCH_SUCCESS,

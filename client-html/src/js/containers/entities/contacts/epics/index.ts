@@ -4,7 +4,6 @@
  */
 
 import { combineEpics } from "redux-observable";
-import { EpicCreateContact } from "./EpicCreateContact";
 import { EpicGetContact } from "./EpicGetContact";
 import { EpicGetMergeContacts } from "./EpicGetMergeContacts";
 import { EpicPostMergeContacts } from "./EpicPostMergeContacts";
@@ -17,17 +16,12 @@ import { EpicGetContactEnrolments } from "./EpicGetContactEnrolments";
 import { EpicGetContactPriorLearnings } from "./EpicGetContactPriorLearnings";
 import { EpicGetContactOutcomes } from "./EpicGetContactOutcomes";
 import { EpicGetContactCertificates } from "./EpicGetContactCertificates";
-import { EpicUpdateContact } from "./EpicUpdateContact";
-import { EpicDeleteContact } from "./EpicDeleteContact";
 import { EpicGetContactsStoredCC } from "./EpicGetContactsStoredCC";
 
 export const EpicContacts = combineEpics(
-  EpicDeleteContact,
-  EpicCreateContact,
   EpicGetMergeContacts,
   EpicPostMergeContacts,
   EpicGetContact,
-  EpicUpdateContact,
   EpicGetContactEnrolments,
   EpicGetContactPriorLearnings,
   EpicGetContactOutcomes,

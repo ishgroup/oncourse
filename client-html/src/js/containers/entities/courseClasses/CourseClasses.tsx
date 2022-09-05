@@ -46,8 +46,8 @@ import EnrolmentService from "../enrolments/services/EnrolmentService";
 import OutcomeService from "../outcomes/services/OutcomeService";
 import CourseClassCogWheel from "./components/CourseClassCogWheel";
 import CourseClassEditView from "./components/CourseClassEditView";
-import { createCourseClass, deleteCourseClass, getCourseClass, getCourseClassTags, updateCourseClass } from "./actions";
-import { BooleanArgFunction, NoArgFunction, NumberArgFunction } from "../../../model/common/CommonFunctions";
+import { createCourseClass, getCourseClass, getCourseClassTags, updateCourseClass } from "./actions";
+import { BooleanArgFunction, NoArgFunction } from "../../../model/common/CommonFunctions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getGradingTypes, getTutorRoles } from "../../preferences/actions";
 import { getPlainAccounts } from "../accounts/actions";
@@ -89,11 +89,8 @@ interface CourseClassesProps {
   onFirstRender?: NoArgFunction;
   onInit?: NoArgFunction;
   onUpdate?: (id: number, courseClass: CourseClass) => void;
-  onCreate?: (courseClass: CourseClass) => void;
-  onDelete?: NumberArgFunction;
   clearListState?: NoArgFunction;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
-  getCourseClass?: (id: string) => void;
   dispatch?: Dispatch;
   values?: CourseClass;
   initialValues?: CourseClass;
@@ -442,10 +439,7 @@ const getDefaultFieldName = (field: keyof CourseClass) => {
 const CourseClasses: React.FC<CourseClassesProps> = props => {
   const {
     onFirstRender,
-    onDelete,
-    onCreate,
     onUpdate,
-    getCourseClass,
     userPreferences,
     setListCreatingNew,
     updateSelection,
@@ -641,12 +635,10 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
           keepDirtyOnReinitialize: true
         }}
         EditViewContent={CourseClassEditView}
-        getEditRecord={getCourseClass}
         rootEntity="CourseClass"
         onInit={onInit}
-        onDelete={onDelete}
-        onCreate={onCreate}
-        onSave={onUpdate}
+        customOnCreateAction={createCourseClass}
+        customGetAction={getCourseClass}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         CogwheelAdornment={CourseClassCogWheel}
@@ -773,10 +765,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     );
     dispatch(getCommonPlainRecords("Site", 0, "name,localTimezone,isVirtual", true, "name", PLAIN_LIST_MAX_PAGE_SIZE));
   },
-  getCourseClass: (id: string) => dispatch(getCourseClass(id)),
   onUpdate: (id: number, courseClass: CourseClass) => dispatch(updateCourseClass(id, courseClass)),
-  onDelete: (id: number) => dispatch(deleteCourseClass(id)),
-  onCreate: (courseClass: CourseClass) => dispatch(createCourseClass(courseClass)),
   clearListState: () => dispatch(clearListState()),
   setListCreatingNew: creatingNew => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: selection => dispatch(setListSelection(selection)),

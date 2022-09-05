@@ -19,16 +19,15 @@ import { getFormInitialValues, getFormValues, initialize } from "redux-form";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { CustomFieldType, Enrolment } from "@api/model";
-import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import Button from "@mui/material/Button";
+import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { StyledCheckbox } from "../../../common/components/form/formFields/CheckboxField";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import EntityService from "../../../common/services/EntityService";
-import { getWindowHeight, getWindowWidth, stubFunction } from "../../../common/utils/common";
+import { getWindowHeight, getWindowWidth } from "../../../common/utils/common";
 import { defaultContactName } from "../contacts/utils";
 import OutcomeService from "../outcomes/services/OutcomeService";
-import { getEnrolment, updateEnrolment } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
@@ -42,13 +41,13 @@ import { State } from "../../../reducers/state";
 import { openInternalLink } from "../../../common/utils/links";
 import { checkPermissions } from "../../../common/actions";
 import { getGradingTypes } from "../../preferences/actions";
+import { updateEntityRecord } from "../common/actions";
 
 const nameCondition = (val: Enrolment) => defaultContactName(val.studentName);
 
 const manualLink = getManualLink("processingEnrolments");
 
 interface EnrolmentsProps {
-  getEnrolmentRecord?: () => void;
   onInit?: (initial: Enrolment) => void;
   onSave?: (id: number, enrolment: Enrolment) => void;
   getFilters?: () => void;
@@ -176,7 +175,6 @@ const getDefaultFieldName = (field: keyof Enrolment) => {
 
 const Enrolments: React.FC<EnrolmentsProps> = props => {
   const {
-    getEnrolmentRecord,
     onInit,
     onSave,
     getFilters,
@@ -257,7 +255,7 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
     if (changedValues.length) {
       setChangedFields(changedValues);
     } else {
-      onSave(onSaveArgs[1].id, onSaveArgs[1]);
+      onSave(onSaveArgs[0], onSaveArgs[1]);
     }
   };
 
@@ -305,13 +303,10 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
           hideTitle: true
         }}
         EditViewContent={EnrolmentEditView}
-        getEditRecord={getEnrolmentRecord}
         rootEntity="Enrolment"
         onInit={() => setInitNew(true)}
         customOnCreate={customOnCreate}
         onBeforeSave={onBeforeSave}
-        onSave={onSave}
-        onCreate={stubFunction}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         CogwheelAdornment={EnrolmentCogWheel}
@@ -411,8 +406,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getFilters: () => dispatch(getFilters("Enrolment")),
   getFundingContracts: () => dispatch(getActiveFundingContracts(true)),
   clearListState: () => dispatch(clearListState()),
-  getEnrolmentRecord: (id: string) => dispatch(getEnrolment(id)),
-  onSave: (id: number, enrolment: Enrolment) => dispatch(updateEnrolment(id, enrolment)),
+  onSave: (id: number, enrolment: Enrolment) => dispatch(updateEntityRecord(id, "Enrolment", enrolment)),
   getPermissions: () => {
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
   }

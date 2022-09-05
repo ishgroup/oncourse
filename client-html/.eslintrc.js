@@ -84,6 +84,7 @@ module.exports = {
         ],
         "new-parens": "off",
         "newline-per-chained-call": "off",
+        "no-case-declarations": "off",
         "no-restricted-syntax": "off",
         "no-await-in-loop": "off",
         "no-prototype-builtins": "off",

@@ -318,6 +318,11 @@ class ContactMergeService {
         context.deleteObject(b)
         context.commitChanges()
 
+//        Call context.commitChanges() one more time after first context.commitChanges(), because if mergeDeliveryStatusAndAllowMarketing(a, b) will be called in all of changes before first context.commitChanges() deliveryStatusEmail and deliveryStatusSMS could be 0,
+//        because contact B can have messages, then messages will be updated (id), entity message has method preUpdate() where getContact().setDeliveryStatusEmail(0) and getContact().setDeliveryStatusSms(0).
+        mergeDeliveryStatusAndAllowMarketing(a, b)
+        context.commitChanges()
+
         if (studentNumber != null) {
             a.student.studentNumber = studentNumber
             context.commitChanges()
@@ -364,5 +369,14 @@ class ContactMergeService {
 
     private static String getStudentNumberAttributeChoice(Map<String, String> mergeAttributes) {
         mergeAttributes.get(Student.simpleName + '.' + Student.STUDENT_NUMBER.name).toUpperCase()
+    }
+
+    private static void mergeDeliveryStatusAndAllowMarketing(Contact cA, Contact cB) {
+        cA.allowEmail = cA.allowEmail && cB.allowEmail
+        cA.allowPost = cA.allowPost && cB.allowPost
+        cA.allowSms = cA.allowSms && cB.allowSms
+        cA.deliveryStatusEmail = Math.max(cA.deliveryStatusEmail, cB.deliveryStatusEmail)
+        cA.deliveryStatusPost = Math.max(cA.deliveryStatusPost, cB.deliveryStatusPost)
+        cA.deliveryStatusSms = Math.max(cA.deliveryStatusSms, cB.deliveryStatusSms)
     }
 }

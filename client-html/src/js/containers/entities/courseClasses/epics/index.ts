@@ -17,7 +17,6 @@ import { EpicCancelCourseClass } from "./EpicCancelCourseClass";
 import { EpicGetCourseClassTags } from "./EpicGetCourseClassTags";
 import { EpicUpdateCourseClass } from "./EpicUpdateCourseClass";
 import { EpicCreateCourseClass } from "./EpicCreateCourseClass";
-import { EpicDeleteCourseClass } from "./EpicDeleteCourseClass";
 import { EpicGetCourseClassSessionsWarnings } from "./EpicGetCourseClassSessionsWarnings";
 import { EpicGetDuplicateTraineeshipBudget } from "./EpicGetDuplicateTraineeshipBudget";
 
@@ -35,7 +34,6 @@ export const EpicCourseClass = combineEpics(
   EpicGetCourseClassTags,
   EpicUpdateCourseClass,
   EpicCreateCourseClass,
-  EpicDeleteCourseClass,
   EpicGetCourseClassSessionsWarnings,
   EpicGetDuplicateTraineeshipBudget
 );

@@ -79,9 +79,14 @@ import {
   getTagsUpdatedByIds,
   setActiveFiltersBySearch
 } from "./utils/listFiltersUtils";
-import { setSwipeableDrawerDirtyForm } from "../layout/swipeable-sidebar/actions";
 import { LSGetItem } from "../../utils/storage";
 import { getCustomFieldTypes } from "../../../containers/entities/customFieldTypes/actions";
+import {
+  createEntityRecord,
+  deleteEntityRecord,
+  getEntityRecord,
+  updateEntityRecord
+} from "../../../containers/entities/common/actions";
 import { shouldAsyncValidate } from "./utils/listFormUtils";
 
 export const ListSideBarDefaultWidth = 200;
@@ -109,19 +114,22 @@ const sideBarTheme = theme => createTheme({
   }
 });
 
+interface OwnProps {
+  onCreate?: (item: any) => void;
+  onDelete?: (id: number) => void;
+  getEditRecord?: (id: number) => void;
+  onSave?: (item: any) => void;
+}
+
 interface Props extends Partial<ListState> {
   listProps: TableListProps;
-  getEditRecord: (id: string) => void;
   rootEntity: EntityName;
   EditViewContent: any;
   onLoadMore?: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
   selection?: string[];
   editRecord?: any;
-  onSave?: any;
   onBeforeSave?: any;
-  onDelete?: any;
-  onCreate?: (record: any) => void;
   classes?: any;
   isDirty?: boolean;
   isInvalid?: boolean;
@@ -178,6 +186,9 @@ interface Props extends Partial<ListState> {
   ShareContainerAlertComponent?: any;
   searchMenuItemsRenderer?: ListAqlMenuItemsRenderer;
   customOnCreate?: any;
+  customOnCreateAction?: any;
+  customGetAction?: any;
+  customUpdateAction?: any;
   preformatBeforeSubmit?: AnyArgFunction;
   userAQLSearch?: string;
   listSearch?: string;
@@ -187,7 +198,6 @@ interface Props extends Partial<ListState> {
   searchQuery?: SearchQuery;
   setListEditRecordFetching?: any;
   search?: string;
-  onSwipeableDrawerDirtyForm?: (isDirty: boolean, resetEditView: any) => void;
   deleteDisabledCondition?: (props) => boolean;
   noListTags?: boolean;
   setEntity?: (entity: EntityName) => void;
@@ -213,7 +223,7 @@ interface ComponentState {
   newSelection: string[] | null;
 }
 
-class ListView extends React.PureComponent<Props, ComponentState> {
+class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
   private containerNode;
 
   private searchComponentNode: React.RefObject<any>;
@@ -554,7 +564,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     this.filtersSynchronized = true;
   };
 
-  onGetEditRecord = (id: string) => {
+  onGetEditRecord = id => {
     const { sendGAEvent, getEditRecord, rootEntity } = this.props;
 
     sendGAEvent("screenview", `${rootEntity}EditView`);
@@ -709,7 +719,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       return;
     }
 
-    onSave(selection[0], value);
+    onSave(value);
   };
 
   onDelete = id => {
@@ -1269,14 +1279,25 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView)),
   updateTableModel: (model: TableModel, listUpdate?: boolean) => dispatch(updateTableModel(ownProps.rootEntity, model, listUpdate)),
-  onLoadMore: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => dispatch(getRecords(ownProps.rootEntity, true, false, startIndex, stopIndex, resolve)),
+  onLoadMore: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => dispatch(getRecords(
+    {
+     entity: ownProps.rootEntity, listUpdate: true, ignoreSelection: false, startIndex, stopIndex, resolve
+    }
+  )),
   onSearch: search => dispatch(setSearch(search, ownProps.rootEntity)),
   setListEditRecordFetching: () => dispatch(setListEditRecordFetching()),
-  onSwipeableDrawerDirtyForm: (isDirty: boolean, resetEditView: any) => dispatch(setSwipeableDrawerDirtyForm(isDirty, resetEditView)),
   getListViewPreferences: () => dispatch(getUserPreferences([LISTVIEW_MAIN_CONTENT_WIDTH])),
   setListviewMainContentWidth: (value: string) => dispatch(setUserPreference({ key: LISTVIEW_MAIN_CONTENT_WIDTH, value })),
   submitForm: () => dispatch(submit(LIST_EDIT_VIEW_FORM_NAME)),
-  closeConfirm: () => dispatch(closeConfirm())
+  closeConfirm: () => dispatch(closeConfirm()),
+  onCreate: (item: any) => dispatch( ownProps.customOnCreateAction
+    ? ownProps.customOnCreateAction(item)
+    : createEntityRecord(item, ownProps.rootEntity)),
+  onDelete: (id: number) => dispatch(deleteEntityRecord(id, ownProps.rootEntity)),
+  onSave: (item: any) => dispatch(updateEntityRecord(item.id, ownProps.rootEntity, item)),
+  getEditRecord: (id: number) => dispatch(ownProps.customGetAction 
+    ? ownProps.customGetAction(id) 
+    : getEntityRecord(id, ownProps.rootEntity))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(ListView))) as React.FC<Props>;

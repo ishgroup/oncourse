@@ -104,6 +104,9 @@ const styles = theme =>
       "&:hover:before": {
         borderBottom: `1px solid ${theme.palette.primary.main}`
       },
+      "&$invalid:hover:before, &$invalid:before": {
+        borderBottom: `2px solid ${theme.palette.error.main}`
+      },
     },
     tagColorDotSmall: {
       width: theme.spacing(2),
@@ -126,7 +129,8 @@ const styles = theme =>
     },
     placeholder: {
       opacity: 0.15
-    }
+    },
+    invalid: {}
   });
 
 interface Props extends WrappedFieldProps {
@@ -522,6 +526,7 @@ const SimpleTagList: React.FC<Props> = props => {
             onClick={edit}
             className={clsx( classes.editable, {
               [fieldClasses.text]: inputValue,
+              [classes.invalid]: meta && meta.invalid
             })}
           >
             <span className={clsx("centeredFlex flex-wrap", {
