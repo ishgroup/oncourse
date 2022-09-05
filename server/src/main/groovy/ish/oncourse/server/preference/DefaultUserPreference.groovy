@@ -646,7 +646,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Type', attribute: ProductItem.TYPE_STRING_DEFENITION, sortable: false, width: W200, visible: true),
                 new ColumnDTO(title: 'SKU', attribute: ProductItem.PRODUCT.dot(Product.SKU).name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Expires', attribute: ProductItem.EXPIRY_DATE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
-                new ColumnDTO(title: 'Status', attribute: ProductItem.DISPLAYABLE_STATUS, sortFields: [ProductItem.STATUS.name], sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Status', attribute: ProductItem.DISPLAYABLE_STATUS, sortFields: [ProductItem.STATUS.name], sortable: true, width: W200, system: true, visible: true),
                 new ColumnDTO(
                         title: 'Purchased by',
                         attribute: ProductItem.INVOICE_LINE.dot(InvoiceLine.INVOICE)
