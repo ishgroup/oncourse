@@ -36,12 +36,12 @@ const styles = theme => createStyles({
 
 const ListLinkItem = props => {
   const {
-    showConfirm, classes, item, url, openLink, selected, id
+    classes, item, url, openLink, selected, id
   } = props;
 
   return (
     <ListItem
-      onClick={openLink ? () => openLink(item.id) : () => showConfirm(() => openInternalLink(getPrivisioningLink(url)))}
+      onClick={openLink ? () => openLink(item.id) : () => () => openInternalLink(getPrivisioningLink(url))}
       disableGutters
       className={classes.listItem}
       dense

@@ -14,7 +14,6 @@
  * */
 
 import React, { useEffect } from "react";
-import { isDirty } from "redux-form";
 import { Route, Switch, withRouter } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -24,14 +23,15 @@ import createCache from '@emotion/cache';
 import { Dispatch } from "redux";
 import { BrowserWarning } from "../common/components/dialog/BrowserWarning";
 import { EnvironmentConstants } from "../constants/EnvironmentConstants";
-import store from "../constants/Store";
 import { loginRoute, routes } from "../routes";
 import MessageProvider from "../common/components/dialog/message/MessageProvider";
 import { currentTheme, getTheme } from "../common/themes/ishTheme";
 import { ThemeContext } from "./ThemeContext";
 import {
   APPLICATION_THEME_STORAGE_NAME,
-  DASHBOARD_THEME_KEY, LICENSE_SCRIPTING_KEY, READ_NEWS,
+  DASHBOARD_THEME_KEY,
+  LICENSE_SCRIPTING_KEY,
+  READ_NEWS,
   SYSTEM_USER_ADMINISTRATION_CENTER
 } from "../constants/Config";
 import { DefaultThemeKey, ThemeValues } from "../model/common/Theme";
@@ -46,45 +46,12 @@ import Message from "../common/components/dialog/message/Message";
 import SwipeableSidebar from "../common/components/layout/swipeable-sidebar/SwipeableSidebar";
 import { LSGetItem, LSRemoveItem, LSSetItem } from "../common/utils/storage";
 import { getDashboardBlogPosts } from "./dashboard/actions";
+import { getFormNames, isDirty } from "redux-form";
 
 export const muiCache = createCache({
   key: 'mui',
   prepend: true,
 });
-
-const isAnyFormDirty = (state: State) => {
-  const forms = Object.getOwnPropertyNames(state.form);
-
-  if (forms.length) {
-    let response = false;
-
-    forms.forEach(n => {
-      if (n === "NestedEditViewForm") {
-        state.form["NestedEditViewForm"].forEach((n, i) => {
-          response = isDirty(`NestedEditViewForm[${i}]`)(state);
-        });
-      } else {
-        response = isDirty(n)(state);
-      }
-    });
-
-    return response;
-  }
-  return false;
-};
-
-const onWindowClose = e => {
-  if (process.env.NODE_ENV !== EnvironmentConstants.production) {
-    return;
-  }
-
-  const isFormsDirty = isAnyFormDirty(store.getState());
-
-  if (isFormsDirty) {
-    e.preventDefault();
-    e.returnValue = "All unsaved data will be lost. Are you sure want to close window ?";
-  }
-};
 
 const RouteContentWrapper = props => {
   const { route: { title }, route } = props;
@@ -113,6 +80,7 @@ interface Props {
   preferencesTheme: ThemeValues;
   onInit: AnyArgFunction;
   isLogged: boolean;
+  isAnyFormDirty: boolean;
   isLoggedIn: AnyArgFunction;
   match: any;
 }
@@ -137,6 +105,19 @@ export class MainBase extends React.PureComponent<Props, any> {
         : DefaultThemeKey,
       theme: getTheme()
     });
+  };
+
+  onWindowClose = e => {
+    const { isAnyFormDirty } = this.props;
+
+    if (process.env.NODE_ENV !== EnvironmentConstants.production) {
+      return;
+    }
+
+    if (isAnyFormDirty) {
+      e.preventDefault();
+      e.returnValue = "All unsaved data will be lost. Are you sure want to close window ?";
+    }
   };
 
   UNSAFE_componentWillMount() {
@@ -182,13 +163,13 @@ export class MainBase extends React.PureComponent<Props, any> {
     }
 
     window.addEventListener("storage", this.updateStateFromStorage);
-    window.addEventListener("beforeunload", onWindowClose, true);
+    window.addEventListener("beforeunload", this.onWindowClose, true);
   }
 
   componentWillUnmount() {
     LSRemoveItem(APPLICATION_THEME_STORAGE_NAME);
     window.removeEventListener("storage", this.updateStateFromStorage);
-    window.removeEventListener("beforeunload", onWindowClose);
+    window.removeEventListener("beforeunload", this.onWindowClose);
   }
 
   componentDidUpdate(prevProps) {
@@ -285,7 +266,8 @@ export class MainBase extends React.PureComponent<Props, any> {
 
 const mapStateToProps = (state: State) => ({
   isLogged: state.preferences.isLogged,
-  preferencesTheme: state.userPreferences[DASHBOARD_THEME_KEY]
+  preferencesTheme: state.userPreferences[DASHBOARD_THEME_KEY],
+  isAnyFormDirty: getFormNames()(state).reduce((p,name) => isDirty(name)(state) || p, false)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
