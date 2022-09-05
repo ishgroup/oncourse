@@ -115,7 +115,7 @@ const preformatBeforeSubmit = (value: ArticleProduct): ArticleProduct => {
 };
 
 const setRowClasses = ({ isOnSale }) => {
-  if (isOnSale === "false") return "text-op05";
+  if (isOnSale === "No") return "text-op05";
   return undefined;
 };
 
