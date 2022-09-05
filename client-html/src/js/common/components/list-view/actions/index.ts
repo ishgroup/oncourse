@@ -3,9 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
- Diff, Filter, LayoutType, MessageType, SearchQuery, TableModel 
-} from "@api/model";
+import { Diff, Filter, LayoutType, MessageType, SearchQuery, TableModel } from "@api/model";
 import { MessageData } from "../../../../model/common/Message";
 import { _toRequestType, FULFILLED } from "../../../actions/ActionUtils";
 import { MenuTag } from "../../../../model/tags";
@@ -19,6 +17,7 @@ export const GET_LIST_NESTED_EDIT_RECORD = _toRequestType("get/listView/nestedEd
 
 export const UPDATE_LIST_NESTED_EDIT_RECORD = _toRequestType("post/listView/nestedEditRecord");
 
+// Common list actions
 export const GET_RECORDS_REQUEST = _toRequestType("get/records");
 export const GET_RECORDS_FULFILLED = FULFILLED(GET_RECORDS_REQUEST);
 
@@ -106,16 +105,20 @@ export const setListMenuTags = (menuTags: MenuTag[], checkedChecklists: MenuTag[
 });
 
 export const getRecords = (
-  entity: string,
-  listUpdate?: boolean,
-  viewAll?: boolean,
-  startIndex?: number,
-  stopIndex?: number,
-  resolve?: AnyArgFunction
+  {
+    entity,
+    viewAll,
+    listUpdate,
+    savedID,
+    ignoreSelection,
+    startIndex,
+    stopIndex,
+    resolve,
+  }: GetRecordsArgs
 ): IAction<GetRecordsArgs> => ({
   type: GET_RECORDS_REQUEST,
   payload: {
-    entity, listUpdate, viewAll, startIndex, stopIndex, resolve
+    entity, listUpdate, savedID, ignoreSelection, viewAll, startIndex, stopIndex, resolve
   }
 });
 

@@ -10,7 +10,6 @@ import { Dispatch } from "redux";
 import { PaymentIn } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
 import { getWindowHeight, getWindowWidth } from "../../../common/utils/common";
-import { getPaymentIn, updatePaymentIn } from "./actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import PaymentInsEditView from "./components/PaymentInEditView";
 import {
@@ -84,8 +83,6 @@ const PaymentsIn = ({
     getAdministrationSites,
     getQePermissions,
     clearListState,
-    getPaymentInRecord,
-    onSave,
     hasQePermissions
   }) => {
   const [createMenuOpen, setCreateCreateMenuOpen] = useState(false);
@@ -111,11 +108,8 @@ const PaymentsIn = ({
             nameCondition
           }}
           EditViewContent={PaymentInsEditView}
-          getEditRecord={getPaymentInRecord}
           rootEntity="PaymentIn"
           onInit={() => setCreateCreateMenuOpen(true)}
-          onSave={onSave}
-          onCreate={() => undefined}
           findRelated={[
             { title: "Audits", list: "audit", expression: "entityIdentifier == PaymentIn and entityId" },
             { title: "Contacts", list: "contact", expression: "paymentsIn.id" },
@@ -183,8 +177,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getAdministrationSites: () => dispatch(getAdministrationSites()),
   clearListState: () => dispatch(clearListState()),
-  getPaymentInRecord: (id: string) => dispatch(getPaymentIn(id)),
-  onSave: (id: string, paymentIn: PaymentIn) => dispatch(updatePaymentIn(id, paymentIn)),
   getQePermissions: () => dispatch(checkPermissions({ keyCode: "PAYMENT_IN_CREATE" }))
 });
 

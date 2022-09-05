@@ -8,9 +8,7 @@ import { CourseClass } from "@api/model";
 import { Create, Request } from "../../../../common/epics/EpicUtils";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import {
-  GET_RECORDS_REQUEST
-} from "../../../../common/components/list-view/actions";
+import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { processCustomFields } from "../../customFieldTypes/utils";
 import { CREATE_COURSE_CLASS } from "../actions";
 import CourseClassService from "../services/CourseClassService";
@@ -41,7 +39,7 @@ const request: Request<QueuedAction[], { courseClass: CourseClass }> = {
     },
     {
       type: FETCH_SUCCESS,
-      payload: { message: "New class created" }
+      payload: { message: "Class created" }
     },
   ],
   processError: response => FetchErrorHandler(response, "Class was not created")

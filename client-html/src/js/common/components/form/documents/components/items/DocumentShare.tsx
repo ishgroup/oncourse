@@ -46,6 +46,7 @@ import {
   isSingleContactAttachment
 } from "../utils";
 import { makeAppStyles } from "../../../../../styles/makeStyles";
+import { mapEntityDisplayName } from "../../../../../../containers/entities/common/utils";
 
 const typesAllowedForWebsite = ["Course", "Contact"];
 
@@ -140,24 +141,6 @@ const mapEntityName = (entity: string) => {
       return "sale";
     default:
       return entity.toLowerCase();
-  }
-};
-
-const mapEntityDisplayName = (entity: string, count: number) => {
-  switch (entity) {
-    case "VoucherProduct":
-      return "Voucher type";
-    case "MembershipProduct":
-      return "Membership type";
-    case "ArticleProduct":
-      return "Product";
-    case "Voucher":
-    case "Membership":
-      return `Sale${count > 1 ? "s" : ""} (${entity})`;
-    case "Article":
-      return `Sale${count > 1 ? "s" : ""} (Product)`;
-    default:
-      return `${entity}${count > 1 ? entity[entity.length - 1] === "s" ? "es" : "s" : ""}`;
   }
 };
 
@@ -272,7 +255,7 @@ const DocumentShare:React.FC<Props> = ({
             <Typography
               component="div"
             >
-              {`${relationsCount} ${mapEntityDisplayName(entity, relationsCount)}`}
+              {`${relationsCount} ${mapEntityDisplayName(entity)}${relationsCount > 1 ? entity[entity.length - 1] === "s" ? "es" : "s" : ""}`}
               <IconButton
                 size="small"
                 color="secondary"

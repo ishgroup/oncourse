@@ -1,6 +1,5 @@
 import { IAction } from "../../../../common/actions/IshAction";
 import {
-  GET_PAYMENT_OUT_CUSTOM_VALUES_FULFILLED,
   GET_ADD_PAYMENT_OUT_VALUES_FULFILLED,
   GET_ACTIVE_PAYMENT_OUT_METHODS_FULFILLED,
   GET_REFUNDABLE_PAYMENTS_FULFILLED
@@ -27,13 +26,6 @@ export const paymentOutReducer = (state: PaymentOutState = {}, action: IAction<a
       return {
         ...state,
         refundablePayments: action.payload
-      };
-    }
-
-    case GET_PAYMENT_OUT_CUSTOM_VALUES_FULFILLED: {
-      return {
-        ...state,
-        customValues: action.payload
       };
     }
 

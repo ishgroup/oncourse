@@ -588,6 +588,8 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
   };
 
   handlePickerChange = (type, date) => {
+    if (!date) return;
+
     const dateTime = type === "DATE" ? formatDate(date, DD_MM_YYYY_SLASHED) + " " : formatDate(date, HH_MM_COLONED) + " ";
 
     const inputValue = this.state.inputValue + dateTime;

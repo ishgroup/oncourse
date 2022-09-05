@@ -1,12 +1,6 @@
-import { CancelEnrolment, Enrolment } from "@api/model";
+import { CancelEnrolment } from "@api/model";
 import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
 import { EnrolmentDialogs } from "../../../../model/entities/Enrolment";
-
-export const GET_ENROLMENT_ITEM = _toRequestType("get/enrolment");
-export const GET_ENROLMENT_ITEM_FULFILLED = FULFILLED(GET_ENROLMENT_ITEM);
-
-export const UPDATE_ENROLMENT_ITEM = _toRequestType("put/enrolment");
-export const UPDATE_ENROLMENT_ITEM_FULFILLED = FULFILLED(UPDATE_ENROLMENT_ITEM);
 
 export const GET_ENROLMENT_INVOICE_LINES = _toRequestType("get/enrolment/invoiceLines");
 export const SET_ENROLMENT_INVOICE_LINES = "set/enrolment/invoiceLines";
@@ -25,16 +19,6 @@ export const setEnrolmentsDialog = (dialogOpened: EnrolmentDialogs) => ({
 export const setEnrolmentsProcessing = (processing: boolean) => ({
   type: SET_ENROLMENTS_PROCESSING,
   payload: { processing }
-});
-
-export const getEnrolment = (id: string) => ({
-  type: GET_ENROLMENT_ITEM,
-  payload: id
-});
-
-export const updateEnrolment = (id: number, enrolment: Enrolment) => ({
-  type: UPDATE_ENROLMENT_ITEM,
-  payload: { id, enrolment }
 });
 
 export const getEnrolmentInvoiceLines = (id: string) => ({
