@@ -10,8 +10,9 @@ package ish.oncourse.server.integration.kronos
 
 import groovy.transform.CompileStatic
 import ish.oncourse.API
-import ish.oncourse.server.cayenne.CourseClassTutor
+import ish.oncourse.server.api.v1.function.CustomFieldFunctions
 import ish.oncourse.server.cayenne.Session
+import ish.oncourse.server.cayenne.TutorAttendance
 import ish.oncourse.server.scripting.ScriptClosure
 import ish.oncourse.server.scripting.ScriptClosureTrait
 import org.apache.logging.log4j.LogManager
@@ -36,8 +37,11 @@ import java.text.SimpleDateFormat
 @ScriptClosure(key = "kronos", integration = KronosIntegration)
 class KronosScriptClosure implements ScriptClosureTrait<KronosIntegration> {
 
-    private static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssXXX"
+    private static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
     private static final String DATE_FORMAT = "yyyy-MM-dd"
+
+    private static final String KRONOS_SHIFT_ID_CUSTOM_FIELD_KEY = "kronosShiftId"
+    private static final String KRONOS_SCHEDULE_ID_CUSTOM_FIELD_KEY = "kronosScheduleId"
 
     private static Logger logger = LogManager.logger
 
@@ -85,33 +89,55 @@ class KronosScriptClosure implements ScriptClosureTrait<KronosIntegration> {
         //TODO how add to create shift Kronos API request
         String shiftNote = session.courseClass.uniqueCode
 
-        List<CourseClassTutor> validatedTutors = validateSessionTutors(session.tutorRoles)
+        List<TutorAttendance> validatedTutors = validateSessionTutors(session.sessionTutors)
         if (!validatedTutors) {
-            logger.warn("Session with id ${session.id} doesn't have any validated tutors: doesn't have definedTutorRole's names or descriptions, payroll references. Session will not be added to Kronos.")
+            logger.warn("Session with id ${session.id} doesn't have any valid TutorAttendances: doesn't have definedTutorRole's names or descriptions, payroll references. Session will not be added to Kronos.")
             return null
         }
 
-        for (CourseClassTutor courseClassTutor : validatedTutors) {
-            String costCenter3 = courseClassTutor.definedTutorRole.name
+        for (TutorAttendance tutorAttendance : validatedTutors) {
+            String costCenter3 = tutorAttendance.courseClassTutor.definedTutorRole.name
             def costCenter3Id = integration.findCostCenterId(costCenter3)
             if (!costCenter3Id) {
-                logger.warn("Session's with id ${session.id} CourseClassTutor with id ${courseClassTutor.id}: Cost Center with name '${costCenter3}' (onCourse courseClassTutor.definedTutorRole.name) don't exist in Kronos. Tutor will not be added to Kronos.")
+                logger.warn("Session's with id ${session.id} TutorAttendance with id ${tutorAttendance.id}: Cost Center with name '${costCenter3}' (onCourse courseClassTutor.definedTutorRole.name) don't exist in Kronos. Tutor will not be added to Kronos.")
                 continue
             }
-            String skill = courseClassTutor.definedTutorRole.description
+            String skill = tutorAttendance.courseClassTutor.definedTutorRole.description
             def skillId = integration.findSkillId(skill)
             if (!skillId) {
-                logger.warn("Session's with id ${session.id} CourseClassTutor with id ${courseClassTutor.id}: Skill with name '${skill}' (onCourse courseClassTutor.definedTutorRole.description) don't exist in Kronos. Tutor will not be added to Kronos.")
+                logger.warn("Session's with id ${session.id} TutorAttendance with id ${tutorAttendance.id}: Skill with name '${skill}' (onCourse courseClassTutor.definedTutorRole.description) don't exist in Kronos. Tutor will not be added to Kronos.")
                 continue
             }
-            String employeeId = courseClassTutor.tutor.payrollRef
+            String employeeId = tutorAttendance.courseClassTutor.tutor.payrollRef
             def accountId = integration.findAccountId(employeeId)
             if (!accountId) {
-                logger.warn("Session's with id ${session.id} CourseClassTutor with id ${courseClassTutor.id}: Employee with employee_id '${employeeId}' (onCourse courseClassTutor.courseClassTutor.payrollRef) don't exist in Kronos. Tutor will not be added to Kronos.")
+                logger.warn("Session's with id ${session.id} TutorAttendance with id ${tutorAttendance.id}: Employee with employee_id '${employeeId}' (onCourse courseClassTutor.courseClassTutor.payrollRef) don't exist in Kronos. Tutor will not be added to Kronos.")
                 continue
             }
-    //TODO Don't throw exception if shift didn't create? Maybe return ['success'/'failure', resp, result] and make check 'success' or 'failure' then write log (warn/info): 'Shift was successfully created in Kronos' or 'Failed: Shift wasn't created in Kronos: [resp, result]'
-            def shift = integration.createNewShift(accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, KronosIntegration.kronosScheduleId)
+            def resultKronosShift
+            def shiftIdByCustomField = getCustomFieldValue(tutorAttendance, KRONOS_SHIFT_ID_CUSTOM_FIELD_KEY)
+            def scheduleIdByCustomField = getCustomFieldValue(tutorAttendance, KRONOS_SCHEDULE_ID_CUSTOM_FIELD_KEY)
+            if (shiftIdByCustomField) {
+                if (scheduleIdByCustomField != KronosIntegration.kronosScheduleId.toString()) {
+                    logger.error("Schedule id '${KronosIntegration.kronosScheduleId}' different from custom field schedule id '${scheduleIdByCustomField}'. Shift will not be updated in Kronos. Additional information: start date ${shiftStart} and end date ${shiftEnd}.")
+                    continue
+                }
+                resultKronosShift = integration.updateShift(shiftIdByCustomField, accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, KronosIntegration.kronosScheduleId)
+            }
+            else {
+                //TODO Don't throw exception if shift didn't create? Maybe return ['success'/'failure', resp, result] and make check 'success' or 'failure' then write log (warn/info): 'Shift was successfully created in Kronos' or 'Failed: Shift wasn't created in Kronos: [resp, result]'
+                resultKronosShift = integration.createNewShift(accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, KronosIntegration.kronosScheduleId)
+            }
+            if (resultKronosShift["created"]) {
+                logger.warn("Shift was successfully created. Kronos Schedule id '${scheduleIdByCustomField}'")
+                def kronosShiftId = integration.getKronosShiftIdBySessionFields(KronosIntegration.kronosScheduleId, accountId, shiftStart, shiftEnd, skillId, costCenter1Id, costCenter3Id, tutorAttendance.id)
+                saveCustomFields(tutorAttendance, kronosShiftId.toString(), KronosIntegration.kronosScheduleId.toString())
+                logger.warn("Shift with kronos shift id '${kronosShiftId}' was saved custom fields. Kronos Schedule id '${KronosIntegration.kronosScheduleId}'.")
+            } else if (resultKronosShift["updated"]) {
+                logger.warn("Shift with kronos shift id '${shiftIdByCustomField}' was successfully updated. Kronos Schedule id '${scheduleIdByCustomField}'.")
+            }
+            println resultKronosShift
+            println tutorAttendance
         }
 
         return null
@@ -138,26 +164,26 @@ class KronosScriptClosure implements ScriptClosureTrait<KronosIntegration> {
         return isValid
     }
 
-    private List<CourseClassTutor> validateSessionTutors(List<CourseClassTutor> courseClassTutors) {
-        if (!courseClassTutors) {
+    private List<TutorAttendance> validateSessionTutors(List<TutorAttendance> tutorAttendances) {
+        if (!tutorAttendances) {
             logger.warn("Session with id ${session.id} doesn't have any tutors. Session will not be added to Kronos.")
             return null
         }
-        List<CourseClassTutor> validatedTutors = new ArrayList<>()
-        for (CourseClassTutor courseClassTutor : courseClassTutors) {
-            if (!courseClassTutor.tutor.payrollRef) {
-                logger.warn("Session's with id ${session.id} CourseClassTutor with id ${courseClassTutor.id} doesn't have a payroll reference. Tutor will not be added to Kronos.")
+        List<TutorAttendance> validatedTutors = new ArrayList<>()
+        for (TutorAttendance tutorAttendance : tutorAttendances) {
+            if (!tutorAttendance.courseClassTutor.tutor.payrollRef) {
+                logger.warn("Session's with id ${session.id} TutorAttendance with id ${tutorAttendance.id} doesn't have a payroll reference. Tutor will not be added to Kronos.")
                 continue
             }
-            if (!courseClassTutor.definedTutorRole.name) {
-                logger.warn("Session's with id ${session.id} CourseClassTutor with id ${courseClassTutor.id} doesn't have a definedTutorRole's name. Tutor will not be added to Kronos.")
+            if (!tutorAttendance.courseClassTutor.definedTutorRole.name) {
+                logger.warn("Session's with id ${session.id} TutorAttendance with id ${tutorAttendance.id} doesn't have a definedTutorRole name. Tutor will not be added to Kronos.")
                 continue
             }
-            if (!courseClassTutor.definedTutorRole.description) {
-                logger.warn("Session's with id ${session.id} CourseClassTutor with id ${courseClassTutor.id} doesn't have a definedTutorRole's description. Tutor will not be added to Kronos.")
+            if (!tutorAttendance.courseClassTutor.definedTutorRole.description) {
+                logger.warn("Session's with id ${session.id} TutorAttendance with id ${tutorAttendance.id} doesn't have a definedTutorRole description. Tutor will not be added to Kronos.")
                 continue
             }
-            validatedTutors.add(courseClassTutor)
+            validatedTutors.add(tutorAttendance)
         }
         return validatedTutors
     }
@@ -172,5 +198,20 @@ class KronosScriptClosure implements ScriptClosureTrait<KronosIntegration> {
         TimeZone tZone = TimeZone.getTimeZone(timeZone)
         sdf.setTimeZone(tZone)
         return sdf.format(date)
+    }
+
+    private static getCustomFieldValue(TutorAttendance tutorAttendance, String customFieldKey) {
+        try {
+            tutorAttendance.getCustomFieldValue(customFieldKey)
+        } catch (MissingPropertyException ex) {
+            logger.warn("TutorAttendanceCustomField '${customFieldKey}' doesn't exist yet. Will be added the first time when will add a shift to Kronos and save TutorAttendanceCustomField with key '${customFieldKey}'. Exception message: ${ex.getMessage()}")
+            return null
+        }
+    }
+
+    private static void saveCustomFields(TutorAttendance tutorAttendance, String kronosShiftId, String kronosScheduleId) {
+        CustomFieldFunctions.addCustomFieldWithoutCommit(KRONOS_SHIFT_ID_CUSTOM_FIELD_KEY, kronosShiftId, tutorAttendance, tutorAttendance.context)
+        CustomFieldFunctions.addCustomFieldWithoutCommit(KRONOS_SCHEDULE_ID_CUSTOM_FIELD_KEY, kronosScheduleId, tutorAttendance, tutorAttendance.context)
+        tutorAttendance.context.commitChanges()
     }
 }
