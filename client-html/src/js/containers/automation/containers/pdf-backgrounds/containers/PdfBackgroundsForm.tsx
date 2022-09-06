@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, {
@@ -34,7 +37,6 @@ interface Props extends InjectedFormProps {
   history: any;
   syncErrors: any;
   nextLocation: string;
-  setNextLocation: (nextLocation: string) => void;
 }
 
 const PdfBackgroundsForm = React.memo<Props>(
@@ -50,7 +52,6 @@ const PdfBackgroundsForm = React.memo<Props>(
      form,
      history,
      nextLocation,
-     setNextLocation,
      syncErrors
     }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
@@ -104,7 +105,6 @@ const PdfBackgroundsForm = React.memo<Props>(
     useEffect(() => {
       if (!dirty && nextLocation) {
         history.push(nextLocation);
-        setNextLocation('');
       }
     }, [nextLocation, dirty]);
 
@@ -120,8 +120,8 @@ const PdfBackgroundsForm = React.memo<Props>(
       <>
         <Form onSubmit={handleSubmit(handleSave)}>
           <input type="file" ref={fileRef} onChange={handleFileSelect} className="d-none" />
-          {(dirty || isNew || fileIsChosen) && (
-            <RouteChangeConfirm form={form} when={(dirty || isNew || fileIsChosen) && !disableRouteConfirm} />
+          {(!disableRouteConfirm || fileIsChosen) && (
+            <RouteChangeConfirm form={form} when={dirty || isNew} />
           )}
 
           <AppBarContainer

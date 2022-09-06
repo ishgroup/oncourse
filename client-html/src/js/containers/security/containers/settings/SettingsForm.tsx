@@ -190,6 +190,7 @@ class SettingsForm extends React.Component<any, any> {
                         onChange={(e, v) => {
                           if (Number(v) === 0) e.preventDefault();
                         }}
+                        debounced={false}
                         onKeyPress={ev => {
                           if (ev.key.match(/[+\-e]/)) {
                             ev.preventDefault();
@@ -228,6 +229,7 @@ class SettingsForm extends React.Component<any, any> {
                             ev.preventDefault();
                           }
                         }}
+                        debounced={false}
                         disabled={!enableTOTPScheduleField}
                         hidePlaceholderInEditMode
                       />
@@ -257,6 +259,7 @@ class SettingsForm extends React.Component<any, any> {
                       ev.preventDefault();
                     }
                   }}
+                  debounced={false}
                   hidePlaceholderInEditMode
                 />
                 incorrect login attempts

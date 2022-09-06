@@ -136,12 +136,10 @@ export const clearActionsQueue = () => ({
   type: CLEAR_ACTIONS_QUEUE
 });
 
-export const showConfirm: ShowConfirmCaller = (payload) => {
-  return {
+export const showConfirm: ShowConfirmCaller = payload => ({
     type: OPEN_CONFIRM,
     payload
-  };
-};
+  });
 
 export const closeConfirm = () => ({
   type: CLOSE_CONFIRM
@@ -154,7 +152,6 @@ export const openSendMessage = () => ({
 export const closeSendMessage = () => ({
   type: CLOSE_SEND_MESSAGE
 });
-
 
 export const checkPassword = (value: string, host?: string, port?: number) => ({
   type: CHECK_PASSWORD_REQUEST,
@@ -270,7 +267,6 @@ export const setNextLocation = (nextLocation: string) => ({
   type: NEXT_LOCATION,
   payload: nextLocation
 });
-
 
 export const getSystemUserData = () => ({
   type: GET_SYSTEM_USER_DATA,

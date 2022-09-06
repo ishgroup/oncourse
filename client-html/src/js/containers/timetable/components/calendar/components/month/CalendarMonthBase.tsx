@@ -32,6 +32,7 @@ interface MonthBaseProps {
   fullWidth?: boolean;
   parentRef?: any;
   showYear?: boolean;
+  children?: React.ReactNode;
 }
 
 const CalendarMonthBase: React.FC<MonthBaseProps> = props => {

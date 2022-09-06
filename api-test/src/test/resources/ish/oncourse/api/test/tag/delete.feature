@@ -5,6 +5,7 @@ Feature: Main feature for all DELETE requests with path 'tag'
         * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'tag'
+        * def ishListPath = 'tag/list'
         * def ishPathLogin = 'login'
         
         
@@ -12,7 +13,7 @@ Feature: Main feature for all DELETE requests with path 'tag'
     Scenario: (+) Delete not system tag group by admin
 
 #       <----->  Add a new tag group for deleting:
-        * def newTagGroup = {"name":"tagName001","status":"Private","system":false,"urlPath":null,"content":null,"weight":1,"requirements":[{"type":"Assessment","mandatory":false,"limitToOneTag":true,"system":false}],"childTags":[]}
+        * def newTagGroup = {"name":"tagName001","status":"Private","type":"Tag","system":false,"urlPath":null,"content":null,"weight":1,"requirements":[{"type":"Assessment","mandatory":false,"limitToOneTag":true,"system":false}],"childTags":[]}
 
         Given path ishPath
         And request newTagGroup
@@ -20,7 +21,7 @@ Feature: Main feature for all DELETE requests with path 'tag'
         Then status 204
 #       <----->
 
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         * def id = get[0] response[?(@.name == 'tagName001')].id
@@ -37,7 +38,7 @@ Feature: Main feature for all DELETE requests with path 'tag'
 
         
 
-        * def newTagGroup = {"name":"tagName600","status":"Private","system":false,"urlPath":null,"content":null,"weight":1,"requirements":[{"type":"Assessment","mandatory":false,"limitToOneTag":true,"system":false}],"childTags":[]}
+        * def newTagGroup = {"name":"tagName600","status":"Private","type":"Tag","system":false,"urlPath":null,"content":null,"weight":1,"requirements":[{"type":"Assessment","mandatory":false,"limitToOneTag":true,"system":false}],"childTags":[]}
 
         Given path ishPath
         And request newTagGroup
@@ -45,7 +46,7 @@ Feature: Main feature for all DELETE requests with path 'tag'
         Then status 204
 
 #       Delete created tag group by notadmin:
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         * def id = get[0] response[?(@.name == 'tagName600')].id
@@ -55,7 +56,7 @@ Feature: Main feature for all DELETE requests with path 'tag'
         Then status 204
 
 #       >>> Assertion:
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name !contains "tagName600"
@@ -69,7 +70,7 @@ Feature: Main feature for all DELETE requests with path 'tag'
 
         
 
-        * def newTagGroup = {"name":"tagName601","status":"Private","system":false,"urlPath":null,"content":null,"weight":1,"requirements":[{"type":"Assessment","mandatory":false,"limitToOneTag":true,"system":false}],"childTags":[]}
+        * def newTagGroup = {"name":"tagName601","type":"Tag","status":"Private","system":false,"urlPath":null,"content":null,"weight":1,"requirements":[{"type":"Assessment","mandatory":false,"limitToOneTag":true,"system":false}],"childTags":[]}
 
         Given path ishPath
         And request newTagGroup
@@ -82,7 +83,7 @@ Feature: Main feature for all DELETE requests with path 'tag'
         
 
 #       >>> Delete created tag group by notadmin with permissions: Hide-View-Print-Edit-Create:
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         * def id = get[0] response[?(@.name == 'tagName601')].id
@@ -106,7 +107,7 @@ Feature: Main feature for all DELETE requests with path 'tag'
     Scenario: (-) Delete not system tag group by notadmin with permissions: Hide-View-Print-Edit
 
 #       <--->  Create new tag group for deleting:
-        * def newTagGroup = {"name":"tagName602","status":"Private","system":false,"urlPath":null,"content":null,"weight":1,"requirements":[{"type":"Assessment","mandatory":false,"limitToOneTag":true,"system":false}],"childTags":[]}
+        * def newTagGroup = {"name":"tagName602","type":"Tag","status":"Private","system":false,"urlPath":null,"content":null,"weight":1,"requirements":[{"type":"Assessment","mandatory":false,"limitToOneTag":true,"system":false}],"childTags":[]}
 
         Given path ishPath
         And request newTagGroup
@@ -119,7 +120,7 @@ Feature: Main feature for all DELETE requests with path 'tag'
         
 
 #       >>> Delete created tag group by notadmin with permissions Hide-View-Print-Edit:
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         * def id = get[0] response[?(@.name == 'tagName602')].id
@@ -143,7 +144,7 @@ Feature: Main feature for all DELETE requests with path 'tag'
     Scenario: (-) Delete not system tag group by notadmin with permissions: Hide-View-Print
 
 #       <--->  Create new tag group for deleting:
-        * def newTagGroup = {"name":"tagName603","status":"Private","system":false,"urlPath":null,"content":null,"weight":1,"requirements":[{"type":"Assessment","mandatory":false,"limitToOneTag":true,"system":false}],"childTags":[]}
+        * def newTagGroup = {"name":"tagName603","status":"Private","type":"Tag","system":false,"urlPath":null,"content":null,"weight":1,"requirements":[{"type":"Assessment","mandatory":false,"limitToOneTag":true,"system":false}],"childTags":[]}
 
         Given path ishPath
         And request newTagGroup
@@ -156,7 +157,7 @@ Feature: Main feature for all DELETE requests with path 'tag'
         
 
 #       >>> Delete created tag group by notadmin with permissions Hide-View-Print:
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         * def id = get[0] response[?(@.name == 'tagName603')].id
@@ -180,7 +181,7 @@ Feature: Main feature for all DELETE requests with path 'tag'
     Scenario: (-) Delete not system tag group by notadmin with permissions: Hide-View
 
 #       <--->  Create new tag group for deleting:
-        * def newTagGroup = {"name":"tagName604","status":"Private","system":false,"urlPath":null,"content":null,"weight":1,"requirements":[{"type":"Assessment","mandatory":false,"limitToOneTag":true,"system":false}],"childTags":[]}
+        * def newTagGroup = {"name":"tagName604","status":"Private","type":"Tag","system":false,"urlPath":null,"content":null,"weight":1,"requirements":[{"type":"Assessment","mandatory":false,"limitToOneTag":true,"system":false}],"childTags":[]}
 
         Given path ishPath
         And request newTagGroup
@@ -193,7 +194,7 @@ Feature: Main feature for all DELETE requests with path 'tag'
         
 
 #       >>> Delete created tag group by notadmin with permissions Hide-View:
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         * def id = get[0] response[?(@.name == 'tagName604')].id
@@ -217,7 +218,7 @@ Feature: Main feature for all DELETE requests with path 'tag'
     Scenario: (-) Delete not system tag group by notadmin with permissions: Hide
 
 #       <--->  Create new tag group for deleting:
-        * def newTagGroup = {"name":"tagName605","status":"Private","system":false,"urlPath":null,"content":null,"weight":1,"requirements":[{"type":"Assessment","mandatory":false,"limitToOneTag":true,"system":false}],"childTags":[]}
+        * def newTagGroup = {"name":"tagName605","status":"Private","type":"Tag","system":false,"urlPath":null,"content":null,"weight":1,"requirements":[{"type":"Assessment","mandatory":false,"limitToOneTag":true,"system":false}],"childTags":[]}
 
         Given path ishPath
         And request newTagGroup
@@ -230,7 +231,7 @@ Feature: Main feature for all DELETE requests with path 'tag'
         
 
 #       >>> Delete created tag group by notadmin with permission Hide:
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         * def id = get[0] response[?(@.name == 'tagName605')].id
@@ -253,7 +254,7 @@ Feature: Main feature for all DELETE requests with path 'tag'
 
     Scenario: (-) Delete system tag group by admin
 
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         * def id = get[0] response[?(@.name == 'Assessment method')].id

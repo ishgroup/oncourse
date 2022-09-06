@@ -159,7 +159,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
                 ),
                 itemRenderer: ContactSelectItemRenderer,
                 onInnerValueChange: onTutorIdChange,
-                disabled: tutor.id,
+                disabled: Boolean(tutor.id),
                 rowHeight: 48
               }}
             onInnerValueChange={onTutorIdChange}
@@ -179,7 +179,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
             defaultDisplayValue={tutor.roleName}
             items={tutorRoles}
             onInnerValueChange={onRoleIdChange}
-            disabled={tutor.id || hasWage}
+            disabled={Boolean(tutor.id || hasWage)}
             labelAdornment={(
               <LinkAdornment
                 linkHandler={openTutorRoleLink}

@@ -5,7 +5,7 @@
 
 import React, { useMemo, useState } from "react";
 import clsx from "clsx";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd-next";
 import { change, Field } from "redux-form";
 import Card from "@mui/material/Card";
 import Collapse from "@mui/material/Collapse";
@@ -283,6 +283,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
               items={DataTypes}
               disabled={!!field.id}
               onChange={onDataTypeChange}
+              debounced={false}
               className={classes.field}
               fullWidth
               required

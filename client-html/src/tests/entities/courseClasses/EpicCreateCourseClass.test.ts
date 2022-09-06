@@ -17,15 +17,12 @@ describe("Create course class epic tests", () => {
     processData: mockedApi => [
       {
         type: GET_RECORDS_REQUEST,
-        payload: { entity: "CourseClass", ignoreSelection: true }
+        payload: { entity: "CourseClass" }
       },
       {
         type: FETCH_SUCCESS,
-        payload: { message: "New class created" }
+        payload: { message: "Class created" }
       },
-      setListCreatingNew(false),
-      setListSelection([mockedApi.db.getCourseClassesTotalRows()]),
-      setListFullScreenEditView(true),
     ]
   }));
 });

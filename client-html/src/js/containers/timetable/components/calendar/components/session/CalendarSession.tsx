@@ -206,8 +206,12 @@ const CalendarSession: React.FC<SessionBaseProps> = props => {
                   {room ? (
                     <span>
                       <span className={clashes && clashes.includes("Room") ? "errorColor" : undefined}>{room}</span>
-                      <span>,</span>
-                      <span className={clashes && clashes.includes("Site") ? "errorColor" : undefined}>{site}</span>
+                      {site && (
+                        <span className={clashes && clashes.includes("Site") ? "errorColor" : undefined}>
+                          {", "}
+                          {site}
+                        </span>
+                      )}
                     </span>
                   ) : (
                     <span className={classes.warningColor}>No room set</span>

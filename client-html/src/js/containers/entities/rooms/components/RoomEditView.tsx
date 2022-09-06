@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import TabsList from "../../../../common/components/layout/TabsList";
+import TabsList from "../../../../common/components/navigation/TabsList";
 import RoomsGeneral from "./RoomsGeneral";
 import AvailabilityFormComponent from "../../../../common/components/form/availabilityComponent/AvailabilityFormComponent";
 
@@ -40,29 +40,31 @@ const RoomEditView = props => {
     manualLink,
     rootEntity,
     onEditViewScroll,
+    syncErrors
   } = props;
 
   return (
     <TabsList
       items={values ? items : []}
       itemProps={{
-      isNew,
-      isNested,
-      nestedIndex,
-      values,
-      classes,
-      dispatch,
-      dirty,
-      form,
-      twoColumn,
-      openNestedEditView,
-      showConfirm,
-      manualLink,
-      rootEntity,
-      onEditViewScroll
-    }}
+        isNew,
+        isNested,
+        nestedIndex,
+        values,
+        classes,
+        dispatch,
+        dirty,
+        form,
+        twoColumn,
+        openNestedEditView,
+        showConfirm,
+        manualLink,
+        rootEntity,
+        onEditViewScroll,
+        syncErrors
+      }}
     />
-);
+ );
 };
 
 export default RoomEditView;

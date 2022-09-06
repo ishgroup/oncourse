@@ -6,12 +6,6 @@
 import { prefixer } from "./prefixer";
 
 export const keyframes = (name, content, otherStyle = {}) => ({
-  [`@-webkit-keyframes ${name}`]: {
-    ...content
-  },
-  [`@-moz-keyframes ${name}`]: {
-    ...content
-  },
   [`@keyframes ${name}`]: {
     ...content
   },

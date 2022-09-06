@@ -24,6 +24,7 @@ import {
 import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 class WaitingListGeneral extends React.PureComponent<any, any> {
   handlerCourseChange = courseId => {
@@ -79,11 +80,19 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
             )}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={twoColumn ? 8 : 12}>
           <FormField
             type="tags"
             name="tags"
             tags={tags}
+          />
+        </Grid>
+        <Grid item xs={twoColumn ? 4 : 12}>
+          <EntityChecklists
+            entity="WaitingList"
+            form={form}
+            entityId={values.id}
+            checked={values.tags}
           />
         </Grid>
         <Grid item xs={12}>
@@ -103,6 +112,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
             labelAdornment={<LinkAdornment link={values.courseId} linkHandler={openCourseLink} />}
             itemRenderer={CourseItemRenderer}
             onChange={this.handlerCourseChange}
+            debounced={false}
             rowHeight={55}
             required
           />

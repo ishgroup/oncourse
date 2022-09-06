@@ -5,10 +5,11 @@
 
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_PAYMENT_IN_ITEM, REVERSE_PAYMENT_IN_ITEM, REVERSE_PAYMENT_IN_ITEM_FULFILLED } from "../actions";
+import { REVERSE_PAYMENT_IN_ITEM, REVERSE_PAYMENT_IN_ITEM_FULFILLED } from "../actions";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import PaymentInService from "../services/PaymentInService";
+import { getEntityRecord } from "../../common/actions";
 
 const request: EpicUtils.Request<any, number> = {
   type: REVERSE_PAYMENT_IN_ITEM,
@@ -25,10 +26,7 @@ const request: EpicUtils.Request<any, number> = {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "PaymentIn", listUpdate: true, savedID: id }
       },
-      {
-        type: GET_PAYMENT_IN_ITEM,
-        payload: id
-      }
+      getEntityRecord(id, "PaymentIn")
     ]
 };
 

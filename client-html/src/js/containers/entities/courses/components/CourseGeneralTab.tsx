@@ -22,6 +22,7 @@ import { mapSelectItems } from "../../../../common/utils/common";
 import CourseAvailableClassChart from "./CourseAvailableClassChart";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 const CourseEnrolmentTypes = Object.keys(CourseEnrolmentType).map(mapSelectItems);
 const CourseStatusTypes = Object.keys(CourseStatus).map(mapSelectItems);
@@ -86,16 +87,16 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
                   {values && values.name}
                 </span>
               </div>
-              ) : (
+            ) : (
+              <div>
                 <div>
-                  <div>
-                    {values && values.code}
-                  </div>
-                  <div className="mt-2">
-                    {values && values.name}
-                  </div>
+                  {values && values.code}
                 </div>
-              )}
+                <div className="mt-2">
+                  {values && values.name}
+                </div>
+              </div>
+            )}
             fields={(
               <Grid container columnSpacing={3} rowSpacing={2}>
                 <Grid item xs={twoColumn ? 2 : 12}>
@@ -117,15 +118,25 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
                   />
                 </Grid>
               </Grid>
-              )}
+            )}
           />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={twoColumn ? 8 : 12}>
           <FormField
             type="tags"
             name="tags"
             tags={tags}
+          />
+        </Grid>
+
+        <Grid item xs={twoColumn ? 4 : 12}>
+          <EntityChecklists
+            className={twoColumn ? "mr-4" : null}
+            entity="Course"
+            form={form}
+            entityId={values.id}
+            checked={values.tags}
           />
         </Grid>
 
@@ -136,27 +147,27 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
         </Grid>
 
         {!values.isTraineeship && (
-        <>
-          <Grid item xs={twoColumn ? 4 : 12}>
-            <FormField
-              type="select"
-              name="enrolmentType"
-              label="Enrolment type"
-              items={CourseEnrolmentTypes}
-              disabled={values.isTraineeship}
-            />
-          </Grid>
-          <Grid item xs={twoColumn ? 4 : 12}>
-            <FormField
-              type="select"
-              name="status"
-              label="Status"
-              items={CourseStatusTypes}
-              disabled={values.isTraineeship}
-            />
-          </Grid>
-        </>
-          )}
+          <>
+            <Grid item xs={twoColumn ? 4 : 12}>
+              <FormField
+                type="select"
+                name="enrolmentType"
+                label="Enrolment type"
+                items={CourseEnrolmentTypes}
+                disabled={values.isTraineeship}
+              />
+            </Grid>
+            <Grid item xs={twoColumn ? 4 : 12}>
+              <FormField
+                type="select"
+                name="status"
+                label="Status"
+                items={CourseStatusTypes}
+                disabled={values.isTraineeship}
+              />
+            </Grid>
+          </>
+        )}
         <Grid item xs={twoColumn ? 4 : 12}>
           <FormField
             type="select"
@@ -181,7 +192,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
                 disabled={!isNew}
                 onChange={onIsTraineeshipChange}
               />
-              )}
+            )}
             label="Traineeship"
           />
         </Grid>
@@ -195,14 +206,14 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
         </Grid>
 
         {values.isTraineeship && (
-        <Grid item xs={12} className="centeredFlex">
-          <FormControlLabel
-            className="checkbox"
-            control={<FormField type="checkbox" name="currentlyOffered" />}
-            label="Currently offered"
-          />
-        </Grid>
-          )}
+          <Grid item xs={12} className="centeredFlex">
+            <FormControlLabel
+              className="checkbox"
+              control={<FormField type="checkbox" name="currentlyOffered"/>}
+              label="Currently offered"
+            />
+          </Grid>
+        )}
 
         <Grid item xs={12}>
           <NestedEntity
@@ -219,9 +230,9 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
           entityValues={values}
           form={form}
           gridItemProps={{
-              xs: twoColumn ? 6 : 12,
-              lg: twoColumn ? 4 : 12
-            }}
+            xs: twoColumn ? 6 : 12,
+            lg: twoColumn ? 4 : 12
+          }}
         />
       </Grid>
     );

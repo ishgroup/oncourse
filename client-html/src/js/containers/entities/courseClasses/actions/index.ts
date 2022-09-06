@@ -18,8 +18,6 @@ export const UPDATE_COURSE_CLASS = _toRequestType("put/courseClass");
 
 export const CREATE_COURSE_CLASS = _toRequestType("post/courseClass");
 
-export const DELETE_COURSE_CLASS = _toRequestType("delete/courseClass");
-
 export const DUPLICATE_COURSE_CLASS = _toRequestType("get/courseClass/duplicate");
 export const DUPLICATE_COURSE_CLASS_FULFILLED = FULFILLED(DUPLICATE_COURSE_CLASS);
 
@@ -73,11 +71,6 @@ export const getCourseClass = (id: string) => ({
 export const updateCourseClass = (id: number, courseClass: CourseClass) => ({
   type: UPDATE_COURSE_CLASS,
   payload: { id, courseClass }
-});
-
-export const deleteCourseClass = (id: number) => ({
-  type: DELETE_COURSE_CLASS,
-  payload: { id }
 });
 
 export const createCourseClass = (courseClass: CourseClass) => ({

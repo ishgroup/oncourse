@@ -23,8 +23,8 @@ import {
   Outcome,
   TableModel
 } from "@api/model";
-import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import Button from "@mui/material/Button";
+import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { StyledCheckbox } from "../../../common/components/form/formFields/CheckboxField";
 import ListView from "../../../common/components/list-view/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
@@ -46,8 +46,8 @@ import EnrolmentService from "../enrolments/services/EnrolmentService";
 import OutcomeService from "../outcomes/services/OutcomeService";
 import CourseClassCogWheel from "./components/CourseClassCogWheel";
 import CourseClassEditView from "./components/CourseClassEditView";
-import { createCourseClass, deleteCourseClass, getCourseClass, getCourseClassTags, updateCourseClass } from "./actions";
-import { BooleanArgFunction, NoArgFunction, NumberArgFunction } from "../../../model/common/CommonFunctions";
+import { createCourseClass, getCourseClass, getCourseClassTags, updateCourseClass } from "./actions";
+import { BooleanArgFunction, NoArgFunction } from "../../../model/common/CommonFunctions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getGradingTypes, getTutorRoles } from "../../preferences/actions";
 import { getPlainAccounts } from "../accounts/actions";
@@ -89,11 +89,8 @@ interface CourseClassesProps {
   onFirstRender?: NoArgFunction;
   onInit?: NoArgFunction;
   onUpdate?: (id: number, courseClass: CourseClass) => void;
-  onCreate?: (courseClass: CourseClass) => void;
-  onDelete?: NumberArgFunction;
   clearListState?: NoArgFunction;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
-  getCourseClass?: (id: string) => void;
   dispatch?: Dispatch;
   values?: CourseClass;
   initialValues?: CourseClass;
@@ -271,8 +268,8 @@ const findRelatedGroup: any[] = [
   }
 ];
 
-const preformatBeforeSubmit = (value: CourseClassExtended): Course => {
-  const submitted = { ...value };
+const preformatBeforeSubmit = (value: CourseClassExtended): CourseClass => {
+  const submitted: CourseClassExtended = { ...value };
 
   delete submitted.tutors;
   delete submitted.sessions;
@@ -334,18 +331,6 @@ const asyncValidate = (values: CourseClassExtended, dispatch, props, blurredFiel
     }
   }
   return Promise.resolve();
-};
-
-const shouldAsyncValidate = ({ trigger, pristine, initialized }) => {
-  switch (trigger) {
-    case "blur":
-    case "change":
-      return true;
-    case "submit":
-      return !pristine || !initialized;
-    default:
-      return false;
-  }
 };
 
 const setRowClasses = ({ isCancelled, isShownOnWeb, isActive }) => {
@@ -454,10 +439,7 @@ const getDefaultFieldName = (field: keyof CourseClass) => {
 const CourseClasses: React.FC<CourseClassesProps> = props => {
   const {
     onFirstRender,
-    onDelete,
-    onCreate,
     onUpdate,
-    getCourseClass,
     userPreferences,
     setListCreatingNew,
     updateSelection,
@@ -583,35 +565,37 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
     const outcomeFieldsToUpdate = changedFields.filter(f => f.updateForOutcome);
     const enrolmentFieldsToUpdate = changedFields.filter(f => f.updateForEnrolment);
 
-    if (outcomeFieldsToUpdate.length) {
-      EntityService.getPlainRecords("Outcome", "id", `enrolment.courseClass.id is ${values.id}`)
-        .then(res => {
-          const ids = res.rows.map(r => Number(r.id));
-          return OutcomeService.bulkChange({
-            ids,
-            diff: outcomeFieldsToUpdate.reduce((p, o) => {
-              p[o.name] = o.value;
-              return p;
-            }, {})
-          });
-        })
-        .catch(res => instantFetchErrorHandler(dispatch, res, "Failed to update related outcomes"));
-    }
+    if (values) {
+      if (outcomeFieldsToUpdate.length) {
+        EntityService.getPlainRecords("Outcome", "id", `enrolment.courseClass.id is ${values.id}`)
+          .then(res => {
+            const ids = res.rows.map(r => Number(r.id));
+            return OutcomeService.bulkChange({
+              ids,
+              diff: outcomeFieldsToUpdate.reduce((p, o) => {
+                p[o.name] = o.value;
+                return p;
+              }, {})
+            });
+          })
+          .catch(res => instantFetchErrorHandler(dispatch, res, "Failed to update related outcomes"));
+      }
 
-    if (enrolmentFieldsToUpdate.length) {
-      EntityService.getPlainRecords("Enrolment", "id", `courseClass.id is ${values.id}`)
-        .then(res => {
-          const ids = res.rows.map(r => Number(r.id));
+      if (enrolmentFieldsToUpdate.length) {
+        EntityService.getPlainRecords("Enrolment", "id", `courseClass.id is ${values.id}`)
+          .then(res => {
+            const ids = res.rows.map(r => Number(r.id));
 
-          return EnrolmentService.bulkChange({
-            ids,
-            diff: enrolmentFieldsToUpdate.reduce((p, o) => {
-              p[o.name] = o.value;
-              return p;
-            }, {})
-          });
-        })
-        .catch(res => instantFetchErrorHandler(dispatch, res, "Failed to update related enrolments"));
+            return EnrolmentService.bulkChange({
+              ids,
+              diff: enrolmentFieldsToUpdate.reduce((p, o) => {
+                p[o.name] = o.value;
+                return p;
+              }, {})
+            });
+          })
+          .catch(res => instantFetchErrorHandler(dispatch, res, "Failed to update related enrolments"));
+      }
     }
 
     setChangedFields([]);
@@ -631,7 +615,6 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
           manualLink,
           nameCondition,
           asyncValidate,
-          shouldAsyncValidate,
           asyncBlurFields: [
             "tutors[].confirmedOn",
             "tutors[].roleId",
@@ -639,25 +622,23 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
             "assessments[].assessmentCode",
             "assessments[].assessmentName",
             "assessments[].dueDate",
-            "assessments[].releaseDate",
-            "notes[].message"
+            "assessments[].releaseDate"
           ],
           asyncChangeFields: [
             "tutors[].isInPublicity",
             "assessments[].contactIds",
-            "assessments[].submissions"
+            "assessments[].submissions",
+            "notes[].message"
           ],
           hideTitle: true,
           enableReinitialize: true,
           keepDirtyOnReinitialize: true
         }}
         EditViewContent={CourseClassEditView}
-        getEditRecord={getCourseClass}
         rootEntity="CourseClass"
         onInit={onInit}
-        onDelete={onDelete}
-        onCreate={onCreate}
-        onSave={onUpdate}
+        customOnCreateAction={createCourseClass}
+        customGetAction={getCourseClass}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         CogwheelAdornment={CourseClassCogWheel}
@@ -784,10 +765,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     );
     dispatch(getCommonPlainRecords("Site", 0, "name,localTimezone,isVirtual", true, "name", PLAIN_LIST_MAX_PAGE_SIZE));
   },
-  getCourseClass: (id: string) => dispatch(getCourseClass(id)),
   onUpdate: (id: number, courseClass: CourseClass) => dispatch(updateCourseClass(id, courseClass)),
-  onDelete: (id: number) => dispatch(deleteCourseClass(id)),
-  onCreate: (courseClass: CourseClass) => dispatch(createCourseClass(courseClass)),
   clearListState: () => dispatch(clearListState()),
   setListCreatingNew: creatingNew => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: selection => dispatch(setListSelection(selection)),

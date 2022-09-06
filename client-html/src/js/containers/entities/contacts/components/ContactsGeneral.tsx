@@ -7,7 +7,9 @@
  */
 
 import React, { useCallback, useEffect, useMemo } from "react";
-import { Contact, Student, Tag, Tutor } from "@api/model";
+import {
+  Contact, Student, Tag, Tutor
+} from "@api/model";
 import { change, Field, getFormInitialValues } from "redux-form";
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
@@ -28,6 +30,7 @@ import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 const TutorInitial: Tutor = {
   wwChildrenStatus: "Not checked"
@@ -223,22 +226,17 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     setIsTutor(isInitiallyTutor);
   }, [isInitiallyCompany, isInitiallyStudent, isInitiallyTutor]);
 
-  const onCalendarClick = () => {
-    if (isStudent) {
-      openInternalLink(
-        `/timetable?search=attendance.student.contact.id=${values.id}&title=Timetable for ${getContactFullName(
-          values
-        )}`
-      );
-    }
-    if (isTutor) {
-      openInternalLink(
-        `/timetable?search=tutor.contact.id=${values.id}&title=Timetable for ${getContactFullName(
-          values
-        )}`
-      );
-    }
-  };
+  const onStudentCalendarClick = () => openInternalLink(
+    `/timetable?search=attendance.student.contact.id=${values.id}&title=Timetable for ${getContactFullName(
+      values
+    )}`
+  );
+
+  const onTutorCalendarClick = () => openInternalLink(
+    `/timetable?search=tutor.contact.id=${values.id}&title=Timetable for ${getContactFullName(
+      values
+    )}`
+  );
 
   const filteredTags = useMemo(() => {
     if (Array.isArray(tags)) {
@@ -258,16 +256,6 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
 
     return [];
   }, [tags, isStudent, isTutor, isCompany]);
-  
-  const timetableTitle = useMemo(() => {
-    if (isStudent) {
-      return "Student timetable";
-    }
-    if (isTutor) {
-      return "Tutor timetable";
-    }
-    return "Timetable";
-  }, [isStudent, isTutor]);
 
   return (
     <div className="pt-3 pl-3 pr-3">
@@ -314,21 +302,39 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
           </ButtonGroup>
         </Grid>
       </Grid>
-      <Grid container columnSpacing={3} className="flex-nowrap align-items-center mb-1">
-        <Grid item xs={12}>
+      <Grid container columnSpacing={3} rowSpacing={2}>
+        <Grid item xs={twoColumn ? 8 : 12}>
           <FormField
             type="tags"
             name="tags"
             tags={filteredTags}
           />
         </Grid>
+        <Grid item xs={twoColumn ? 4 : 12}>
+          <EntityChecklists
+            entity="Contact"
+            form={form}
+            entityId={values.id}
+            checked={values.tags}
+          />
+        </Grid>
       </Grid>
-      {(isStudent || isTutor) && (
+      {isStudent && (
         <>
-          <Divider className="mt-3 mb-2" />
+          <Divider className="mt-3 mb-2"/>
           <Grid container columnSpacing={3} className="pt-0-5 pb-0-5">
             <Grid item xs={12}>
-              <TimetableButton onClick={onCalendarClick} title={timetableTitle} />
+              <TimetableButton onClick={onStudentCalendarClick} title="Student timetable"/>
+            </Grid>
+          </Grid>
+        </>
+      )}
+      {isTutor && (
+        <>
+          <Divider className="mt-3 mb-2"/>
+          <Grid container columnSpacing={3} className="pt-0-5 pb-0-5">
+            <Grid item xs={12}>
+              <TimetableButton onClick={onTutorCalendarClick} title="Tutor timetable"/>
             </Grid>
           </Grid>
         </>

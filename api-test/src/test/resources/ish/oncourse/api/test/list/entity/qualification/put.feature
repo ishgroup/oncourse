@@ -427,24 +427,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/qualification'
         Then status 400
         And match $.errorMessage == "Type is required."
 
-#       <--->  Update custom Qualification to empty qualLevel:
-        * def qualificationToUpdate =
-        """
-        {
-        "type":"Qualification",
-        "qualLevel":"",
-        "title":"someTitle",
-        "nationalCode":"CODE02",
-        "isOffered":false
-        }
-        """
-
-        Given path ishPath + '/' + id
-        And request qualificationToUpdate
-        When method PUT
-        Then status 400
-        And match $.errorMessage == "Level is required."
-
 #       <--->  Scenario have been finished. Now find and remove created object from DB:
         Given path ishPath + '/' + id
         When method DELETE

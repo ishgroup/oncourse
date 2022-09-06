@@ -17,7 +17,7 @@ import { EntityName } from "../entities/common";
 
 export interface CoreFilter extends Filter {
   active?: boolean;
-  customLabel?: React.ReactNode;
+  customLabel?: () => React.ReactNode;
 }
 
 export interface FilterGroup {
@@ -54,6 +54,8 @@ export interface CogwhelAdornmentProps {
 
 export interface ListState {
   menuTags: MenuTag[];
+  checkedChecklists?: MenuTag[];
+  uncheckedChecklists?: MenuTag[];
   menuTagsLoaded?: boolean;
   filterGroups: FilterGroup[];
   filterGroupsLoaded?: boolean;

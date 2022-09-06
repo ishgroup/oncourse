@@ -28,10 +28,12 @@ describe("Virtual rendered LDAPForm", () => {
         [PreferencesModel.LdapGroupAttribute.uniqueKey]: mockedAPI.db.preference[PreferencesModel.LdapGroupAttribute.uniqueKey],
         [PreferencesModel.LdapGroupSearchFilter.uniqueKey]: mockedAPI.db.preference[PreferencesModel.LdapGroupSearchFilter.uniqueKey],
       });
-
-      expect(screen.getByRole(preferencesFormRole)).toHaveFormValues(ldapFormData);
-
+      
       fireEvent.click(screen.getByTestId('appbar-submit-button'));
+      
+      setTimeout(() => {
+        expect(screen.getByRole(preferencesFormRole)).toHaveFormValues(ldapFormData);
+      }, 500);
     }
   });
 });

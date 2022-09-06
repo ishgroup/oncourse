@@ -23,7 +23,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/payslip'
         "tutorFullName":"tutor2, tutor2",
         "publicNotes":"some public notes299",
         "privateNotes":"some private notes299",
-        "tags":[{"id":218}],
+        "tags":[218],
         "paylines":[{"description":"someDescription299","value":44.00,"quantity":1}]
         }
         """
@@ -64,7 +64,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/payslip'
         "tutorFullName":"tutor2, tutor2",
         "publicNotes":"some public notes300",
         "privateNotes":"some private notes300",
-        "tags":[{"id":218}],
+        "tags":[218],
         "paylines":[{"description":"someDescription300","value":44.00,"quantity":1}]
         }
         """
@@ -93,7 +93,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/payslip'
         And param entity = 'Payslip'
         When method GET
         Then status 200
-        And match $.rows[7].values[4] == "Completed"
+        And match $.rows[7].values[5] == "Completed"
 #       <----->
 
         Given path ishPath + '/' + id

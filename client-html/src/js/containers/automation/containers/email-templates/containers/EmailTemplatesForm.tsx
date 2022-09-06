@@ -1,11 +1,12 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
-  useCallback, useEffect, useMemo, useState
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { EmailTemplate, MessageType } from "@api/model";
 import { Grow } from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -78,7 +79,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
     validateNewTemplateName,
     history,
     nextLocation,
-    setNextLocation,
     syncErrors,
     emailTemplates
   } = props;
@@ -150,7 +150,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
   useEffect(() => {
     if (!dirty && nextLocation) {
       history.push(nextLocation);
-      setNextLocation('');
     }
   }, [nextLocation, dirty]);
 
@@ -165,7 +164,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
       />
 
       <Form onSubmit={handleSubmit(handleSave)}>
-        {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
+        {!disableRouteConfirm && <RouteChangeConfirm form={form} when={dirty || isNew} />}
 
         <AppBarContainer
           values={values}
@@ -175,7 +174,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
           invalid={invalid}
           title={(
             <div className="centeredFlex">
-              {isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
+              {isNew && (!values.name || values.name?.trim().length === 0) ? "New" : values.name?.trim()}
               {[...values.automationTags?.split(",") || [],
                 ...isInternal ? [] : ["custom"]
               ].map(t => <InfoPill key={t} label={t} />)}
@@ -256,7 +255,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
               </Grid>
 
               {values.type === 'Email' && (
-                <Grid container >
+                <Grid container>
                   <Grid item xs={6}>
                     <div className="heading">Subject</div>
                     <FormField
@@ -330,7 +329,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                   name="status"
                   color="primary"
                   format={v => v === "Enabled"}
-                  parse={v => v ? "Enabled" : "Installed but Disabled"}
+                  parse={v => (v ? "Enabled" : "Installed but Disabled")}
                 />
               </div>
               <div className="mt-3 pt-1">
