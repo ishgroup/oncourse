@@ -319,6 +319,54 @@ class KronosIntegration implements PluginTrait {
         }
     }
 
+    protected getKronosShiftIdBySessionFields(scheduleId, accountId, shiftStart, shiftEnd, skillId, costCenter1Id, costCenter3Id, tutorAttendanceId) {
+        Map shiftsFromKronos = getShiftsByScheduleId(scheduleId) as Map
+        List<Map> shifts = shiftsFromKronos["shifts"] as List<Map>
+        if (!shifts){
+            throw new IllegalStateException("Kronos Company ${companyShortName} ScheduleId ${scheduleId} doesn't have shifts")
+        }
+        List shiftIds = new ArrayList()
+        for (Map shift : shifts) {
+            if (shift["account"]["account_id"] == accountId && shift["shift_start"] == shiftStart && shift["shift_end"] == shiftEnd && shift["skill"]["id"] == skillId) {
+                List<Map> costCenters = shift["cost_centers"] as List<Map>
+                def costCenter1 = costCenters.findAll { it["index"] == 1 && it["value"]["id"] == costCenter1Id }
+                def costCenter3 = costCenters.findAll { it["index"] == 3 && it["value"]["id"] == costCenter3Id}
+                if (costCenter1.size() == 1 && costCenter3.size() == 1) {
+                    shiftIds.add(shift["id"])
+                }
+            }
+        }
+        if (shiftIds.size() > 1) {
+            throw new IllegalStateException("Kronos Company ${companyShortName} Schedule with id ${scheduleId} have more then 1 shift with given fields. Custom Field won't add to TutorAttendance with id ${tutorAttendanceId}")
+        }
+        if (shiftIds.size() > 1) {
+            throw new IllegalStateException("Kronos Company ${companyShortName} Schedule with id ${scheduleId} have no one shift with given fields. Custom Field won't add to TutorAttendance with id ${tutorAttendanceId}")
+        }
+        return shiftIds.get(0)
+    }
+
+    /**
+     * Gets the list of Shifts being housed in a Schedule
+     * Advanced Scheduler (SCHEDULE) Subsystem must be enabled in company setup.
+     * Shifts from Kronos via API v2
+     *
+     * @return Shifts
+     */
+    protected getShiftsByScheduleId(scheduleId) {
+        def client = new RESTClient(KRONOS_REST_URL)
+        client.headers["Authentication"] = "Bearer ${authToken}"
+        client.request(Method.GET) {
+            uri.path = "/ta/rest/v2/companies/${CID}/schedules/${scheduleId}/shifts"
+
+            response.success = { resp, result ->
+                return result
+            }
+            response.failure = { resp, result ->
+                throw new IllegalStateException("Failed to get shifts (company cid, scheduleId) - (${CID}, ${scheduleId}): ${resp.getStatusLine()}, ${result}")
+            }
+        }
+    }
+
     /**
      * Create a new shift in Kronos
      *
@@ -360,12 +408,64 @@ class KronosIntegration implements PluginTrait {
                     ]
                     ]
             response.success = { resp, result ->
-                return result
+                return [created: true, response: resp, result: result]
             }
 
             response.failure = { resp, result ->
                 throw new IllegalStateException("Failed to create shift (company cid, accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, scheduleId) - " +
                         "(${CID}, ${accountId}, ${date}, ${shiftStart}, ${shiftEnd}, ${costCenter1Id}, ${costCenter3Id}, ${skillId}, ${scheduleId}): ${resp.getStatusLine()}, ${result}")
+            }
+        }
+    }
+
+    /**
+     * Update shift in Kronos
+     *
+     */
+    def updateShift(shiftId, accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, scheduleId) {
+        def client = new RESTClient(KRONOS_REST_URL)
+        client.headers["Authentication"] = "Bearer ${authToken}"
+        client.request(Method.PUT, ContentType.JSON) {
+            uri.path = "/ta/rest/v2/companies/${CID}/schedules/${scheduleId}/shifts/collection"
+            body = [
+                    shifts: [
+                            [
+                                    id: shiftId,
+                                    account: [
+                                            account_id: accountId
+                                    ],
+                                    date: date,
+                                    type: "FIXED",
+                                    shift_start: shiftStart,
+                                    shift_end: shiftEnd,
+                                    cost_centers: [
+                                            [
+                                                    index: 1,
+                                                    value: [
+                                                            id: costCenter1Id,
+                                                    ]
+                                            ],
+                                            [
+                                                    index: 3,
+                                                    value: [
+                                                            id: costCenter3Id,
+                                                    ]
+                                            ]
+                                    ],
+                                    skill: [
+                                            schedulable: true,
+                                            id: skillId,
+                                    ],
+                            ],
+                    ]
+            ]
+            response.success = { resp, result ->
+                return [updated: true, response: resp, result: result]
+            }
+
+            response.failure = { resp, result ->
+                throw new IllegalStateException("Failed to update shift (company cid, shift id, accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, scheduleId) - " +
+                        "(${CID}, ${shiftId}, ${accountId}, ${date}, ${shiftStart}, ${shiftEnd}, ${costCenter1Id}, ${costCenter3Id}, ${skillId}, ${scheduleId}): ${resp.getStatusLine()}, ${result}")
             }
         }
     }
