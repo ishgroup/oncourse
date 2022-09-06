@@ -12,6 +12,7 @@
 package ish.oncourse.server.api.dao
 
 import com.google.inject.Inject
+import ish.common.types.NodeType
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.SessionModule
 import org.apache.cayenne.query.ObjectSelect
@@ -35,7 +36,7 @@ class SessionDao implements ClassRelatedDao<Session> {
             "left join Site s on s.id = r.siteId\n" +
             "left join NodeRelation nr on nr.entityRecordId = cc.id or nr.entityRecordId = c.id or nr.entityRecordId = r.id or nr.entityRecordId = s.id\n" +
             "left join Node n on nr.nodeId = n.id\n" +
-            "where cs.id in (%s)"
+            "where cs.id in (%s) AND n.nodeType = " + NodeType.TAG.databaseValue
 
     @Override
     Session newObject(ObjectContext context) {
