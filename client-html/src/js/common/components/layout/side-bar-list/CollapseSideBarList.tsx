@@ -78,9 +78,8 @@ interface Props {
   plusIconFullPath?: string;
   ItemIcon?: React.ComponentType<any>;
   classes?: any;
-  disableCollapse?: boolean;
   defaultCollapsed?: boolean;
-  ItemIconRenderer?: React.ReactNode;
+  ItemIconRenderer?: any;
 }
 
 const CollapseMenuListBase = React.memo<Props>(
@@ -97,7 +96,6 @@ const CollapseMenuListBase = React.memo<Props>(
     sharedProps: {
       search, history, activeFiltersConditions, category
     },
-    disableCollapse,
     defaultCollapsed,
     ItemIconRenderer
   }) => {
@@ -171,11 +169,8 @@ const CollapseMenuListBase = React.memo<Props>(
     }, [search, data, activeFiltersConditions]);
 
     useEffect(() => {
-      if (history.location?.pathname?.replaceAll('/', '') === basePath?.replaceAll('/', '') && filtered.length) {
+      if (filtered.length && history.location?.pathname?.replaceAll('/', '') === basePath?.replaceAll('/', '')) {
         history.push(linkCondition ? linkCondition(filtered[0]) : basePath + filtered[0].id);
-        if (collapsed) setCollapsed(false);
-      } else if (history.location?.pathname?.replaceAll('/', '').includes(basePath?.replaceAll('/', ''))) {
-        if (collapsed) setCollapsed(false);
       }
     }, [history.location.pathname, basePath, linkCondition, filtered]);
 
@@ -184,7 +179,7 @@ const CollapseMenuListBase = React.memo<Props>(
         <ListItem
           disableGutters
           className={classes.listHeadingPadding}
-          button={!disableCollapse as any}
+          button
           onClick={onClickCollapse}
         >
           <div className={clsx("heading", classes.listLabelPadding)}>
@@ -192,8 +187,7 @@ const CollapseMenuListBase = React.memo<Props>(
               {name}
               <IconButton
                 className={clsx(classes.collapseButton, "d-inline-flex", {
-                  [classes.collapseButtonReversed]: collapsed,
-                  "invisible": disableCollapse
+                  [classes.collapseButtonReversed]: collapsed
                 })}
               >
                 <ExpandMore />
@@ -208,7 +202,7 @@ const CollapseMenuListBase = React.memo<Props>(
           )}
         </ListItem>
 
-        <Collapse in={disableCollapse || Boolean(search) || !collapsed} mountOnEnter unmountOnExit>
+        <Collapse in={Boolean(search) || !collapsed} mountOnEnter unmountOnExit>
           {filtered.map((item, index) => {
             const to = linkCondition ? linkCondition(item) : basePath + item.id;
 

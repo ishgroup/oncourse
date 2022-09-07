@@ -31,6 +31,7 @@ import javax.ws.rs.core.Response
 import java.nio.file.Files
 import java.nio.file.Path
 
+import static ish.oncourse.server.api.v1.function.ContactFunctions.getProfilePictureDocument
 import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.util.Constants.BILLING_APP_LINK
@@ -43,13 +44,21 @@ class DocumentFunctions {
 
     private static final Logger logger = LogManager.getLogger(DocumentFunctions)
 
+    static DocumentDTO getProfilePicture(Contact contact, DocumentService documentService) {
+        Document profilePictureDocument = getProfilePictureDocument(contact)
+        if (profilePictureDocument) {
+            return toRestDocument(profilePictureDocument, profilePictureDocument.currentVersion.id, documentService)
+        }
+        null
+    }
+
     static DocumentDTO toRestDocument(Document dbDocument, Long versionId, DocumentService documentService) {
         new DocumentDTO().with { document ->
             document.id = dbDocument.id
             document.name = dbDocument.name
             document.versionId = versionId
             document.added = LocalDateUtils.dateToTimeValue(dbDocument.added)
-            document.tags = dbDocument.tags.collect { toRestTagMinimized(it) }
+            document.tags = dbDocument.allTags.collect { it.id }
 
             DocumentVersion dbVersion = versionId ? dbDocument.versions.find { it.id == versionId } : dbDocument.versions.max{ v1, v2 -> v1.timestamp.compareTo(v2.timestamp)}
             document.thumbnail = dbVersion.thumbnail

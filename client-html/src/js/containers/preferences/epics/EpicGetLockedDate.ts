@@ -14,11 +14,11 @@ const request: EpicUtils.Request = {
   getData: () => {
     return PreferencesService.getLockedDate();
   },
-  processData: (lockedDate: Date) => {
+  processData: (lockedDate) => {
     return [
       {
         type: GET_ACCOUNT_TRANSACTION_LOCKED_DATE_FULFILLED,
-        payload: { lockedDate }
+        payload: lockedDate
       }
     ];
   }

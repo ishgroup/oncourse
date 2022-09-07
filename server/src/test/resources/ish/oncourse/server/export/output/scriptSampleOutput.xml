@@ -76,19 +76,19 @@
     <systemEventType />
   </script>
   <script id='1674'>
-    <name>SurveyGizmo send invite on enrolment</name>
+    <name>Alchemer send invite on enrolment</name>
     <script>import ish.integrations.*
 
       def run(args) {
       def enrolment = args.value
 
-      ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.SURVEYGIZMO))
+      ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.ALCHEMER))
       .select(args.context).findAll { integration -&gt;
-      integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_SEND_ON_ENROLMENT_SUCCESS)?.value?.toBoolean()
+      integration.getProperty(IntegrationsConfiguration.ALCHEMER_SEND_ON_ENROLMENT_SUCCESS)?.value?.toBoolean()
       }.each { integration -&gt;
-      def tag = integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_COURSE_TAG)?.value?.trim()
+      def tag = integration.getProperty(IntegrationsConfiguration.ALCHEMER_COURSE_TAG)?.value?.trim()
       if (tag == null || enrolment.courseClass.course.hasTag(tag)) {
-      surveyGizmo {
+      alchemer {
       name integration.name
       template "survey invitation"
       reply preference.email.from
@@ -105,7 +105,7 @@
     <cronSchedule />
     <entityClass />
     <entityEventType />
-    <description>Send SurveyGizmo invite upon enrolment</description>
+    <description>Send Alchemer invite upon enrolment</description>
     <systemEventType>ENROLMENT_SUCCESSFUL</systemEventType>
   </script>
   <script id='1675'>
@@ -313,7 +313,7 @@
     <script>def run(args) {
       def Enrolment enrolment = args.value
 
-      if (enrolment.courseClass.sessionsCount == 1 &amp;&amp; enrolment.courseClass.startDateTime != null &amp;&amp;
+      if (enrolment.courseClass.sessions.size() == 1 &amp;&amp; enrolment.courseClass.startDateTime != null &amp;&amp;
       enrolment.courseClass.endDateTime != null &amp;&amp; !enrolment.courseClass.tutorRoles.isEmpty()) {
 
       def classes = ObjectSelect.query(CourseClass)
@@ -1203,7 +1203,7 @@
     <script>def run(args) {
       def Enrolment enrolment = args.value
 
-      if (enrolment.courseClass.sessionsCount == 1 &amp;&amp; enrolment.courseClass.startDateTime != null &amp;&amp;
+      if (enrolment.courseClass.sessions.size() == 1 &amp;&amp; enrolment.courseClass.startDateTime != null &amp;&amp;
       enrolment.courseClass.endDateTime != null &amp;&amp; !enrolment.courseClass.tutorRoles.isEmpty()) {
 
       def classes = ObjectSelect.query(CourseClass)
@@ -1489,7 +1489,7 @@
     <systemEventType />
   </script>
   <script id='1708'>
-    <name>SurveyGizmo send invite on enrolment completion</name>
+    <name>Alchemer send invite on enrolment completion</name>
     <script>import ish.integrations.*
 
       def run(args) {
@@ -1503,15 +1503,15 @@
       .where(Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE_TIME).between(yesterdayStart,
       yesterdayEnd)).select(args.context)
 
-      ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.SURVEYGIZMO))
+      ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.ALCHEMER))
       .select(args.context).findAll { integration -&gt;
-      integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_SEND_ON_ENROLMENT_COMPLETION)?.value?.toBoolean()
+      integration.getProperty(IntegrationsConfiguration.ALCHEMER_SEND_ON_ENROLMENT_COMPLETION)?.value?.toBoolean()
       }.each { integration -&gt;
-      def tag = integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_COURSE_TAG)?.value?.trim()
+      def tag = integration.getProperty(IntegrationsConfiguration.ALCHEMER_COURSE_TAG)?.value?.trim()
 
       enrolmentsJustEnded.each { enrolment -&gt;
       if (tag == null || enrolment.courseClass.course.hasTag(tag)) {
-      surveyGizmo {
+      alchemer {
       name integration.name
       template "survey invitation"
       reply preference.email.from
@@ -1529,7 +1529,7 @@
     <cronSchedule>0 0 9 * * ?</cronSchedule>
     <entityClass />
     <entityEventType />
-    <description>Send SurveyGizmo invite upon enrolment completion</description>
+    <description>Send Alchemer invite upon enrolment completion</description>
     <systemEventType />
   </script>
   <script id='1709'>

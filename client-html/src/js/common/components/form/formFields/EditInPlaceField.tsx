@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 /**
@@ -24,8 +27,9 @@ import {
   Select,
   Typography
 } from "@mui/material";
+import { AppTheme } from "../../../../model/common/Theme";
 
-const styles = theme => createStyles({
+const styles = (theme: AppTheme) => createStyles({
   inputEndAdornment: {
     display: "flex",
     fontSize: "18px",
@@ -86,7 +90,8 @@ const styles = theme => createStyles({
     color: theme.palette.text.primaryEditable,
     fontWeight: 400,
     "&:hover, &:hover $placeholderContent, &:hover $editButton": {
-      opacity: 0.15
+      opacity: 0.35,
+      color: theme.palette.primary.main
     },
     "&$rightAligned": {
       display: "flex",
@@ -124,7 +129,7 @@ const styles = theme => createStyles({
     }
   },
   placeholderContent: {
-    opacity: 0.15,
+    opacity: 0.25,
     fontWeight: 400,
   },
   chip: {
@@ -182,6 +187,9 @@ const styles = theme => createStyles({
     right: "-14px",
     bottom: "4px"
   },
+  selectMenu: {
+    zIndex: theme.zIndex.snackbar
+  },
   selectIcon: {
     fontSize: "24px",
     color: theme.palette.divider,
@@ -238,10 +246,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
     if (node) {
       this.inputNode = node;
     }
-  };
-
-  setContainerNode = node => {
-    this.containerNode = node;
   };
 
   edit = e => {
@@ -685,7 +689,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
               ? (
                 <div className={clsx(isInline && "d-inline", label && 'mt-2', classes.selectMainWrapper)}>
                   <Select
-                    id={`input-${input.name}`}
+                    id={`input-select-${input.name}`}
                     name={input.name}
                     value={this.getSelectValue()}
                     inputRef={this.setInputNode}
@@ -693,7 +697,8 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                       classes: {
                         root: classes.textFieldBorderModified,
                         underline: fieldClasses.underline
-                      }
+                      },
+                      id: `input-${input.name}`
                     }}
                     classes={{
                       select: clsx(classes.muiSelect, fieldClasses.text, isInline && classes.inlineSelect),
@@ -707,7 +712,10 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                     onChange={this.onSelectChange}
                     IconComponent={() => (!disabled && <ExpandMore className={classes.selectIconInput} onClick={this.onFocus} />)}
                     MenuProps={{
-                      anchorOrigin: { vertical: 'top', horizontal: 'left' }
+                      anchorOrigin: { vertical: 'top', horizontal: 'left' },
+                      classes: {
+                        root: classes.selectMenu
+                      }
                     }}
                     displayEmpty
                     fullWidth

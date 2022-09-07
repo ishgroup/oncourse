@@ -14,9 +14,6 @@ import {
   setListEditRecord
 } from "../../../common/components/list-view/actions";
 import { defaultContactName } from "../contacts/utils";
-import {
-  createPayslip, updatePayslip, removePayslip, getPayslip
-} from "./actions";
 import PayslipsEditView from "./components/PayslipsEditView";
 import ListView from "../../../common/components/list-view/ListView";
 import { getListTags } from "../../tags/actions";
@@ -25,7 +22,6 @@ import { checkPermissions } from "../../../common/actions";
 import { State } from "../../../reducers/state";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
 import { FilterGroup } from "../../../model/common/ListView";
 
 const Initial: Payslip = {
@@ -73,10 +69,6 @@ const findRelatedGroup: any[] = [
 ];
 const nameCondition = (values: Payslip) => defaultContactName(values.tutorFullName);
 
-const nestedEditFields = {
-  SendMessage: props => <SendMessageEditView {...props} />
-};
-
 const manualLink = getManualLink("payroll");
 
 class Payslips extends React.Component<any, any> {
@@ -95,52 +87,29 @@ class Payslips extends React.Component<any, any> {
     return false;
   }
 
-  onCreate = value => {
-    const paylines = JSON.parse(JSON.stringify(value.paylines));
-
-    paylines.forEach(i => {
-      delete i.deferred;
-    });
-
-    const tags = JSON.parse(JSON.stringify(value.tags));
-
-    tags.forEach(t => {
-      delete t.active;
-    });
-
-    this.props.onCreate({ ...value, paylines, tags });
-  };
-
   render() {
     const {
-      onDelete, onSave, getPayslipRecord, onInit
+      onInit
     } = this.props;
 
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "contact.fullName",
-            secondaryColumn: "createdOn"
-          }}
-          editViewProps={{
-            nameCondition,
-            manualLink,
-            hideTitle: true
-          }}
-          EditViewContent={PayslipsEditView}
-          getEditRecord={getPayslipRecord}
-          rootEntity="Payslip"
-          onInit={onInit}
-          onDelete={onDelete}
-          onSave={onSave}
-          onCreate={this.onCreate}
-          nestedEditFields={nestedEditFields}
-          findRelated={findRelatedGroup}
-          filterGroupsInitial={filterGroups}
-          CogwheelAdornment={PayslipCogwheelOptions}
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "contact.fullName",
+          secondaryColumn: "createdOn"
+        }}
+        editViewProps={{
+          nameCondition,
+          manualLink,
+          hideTitle: true
+        }}
+        EditViewContent={PayslipsEditView}
+        rootEntity="Payslip"
+        onInit={onInit}
+        findRelated={findRelatedGroup}
+        filterGroupsInitial={filterGroups}
+        CogwheelAdornment={PayslipCogwheelOptions}
+      />
     );
   }
 }
@@ -156,11 +125,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getFilters: () => dispatch(getFilters("Payslip")),
   getTags: () => dispatch(getListTags("Payslip")),
-  getPayslipRecord: (id: string) => dispatch(getPayslip(id)),
   clearListState: () => dispatch(clearListState()),
-  onSave: (id: string, payslip: Payslip) => dispatch(updatePayslip(id, payslip)),
-  onCreate: (payslip: Payslip) => dispatch(createPayslip(payslip)),
-  onDelete: (id: string) => dispatch(removePayslip(id)),
   getGenerateAccess: () => dispatch(checkPermissions({ path: "/a/v1/list/option/payroll?entity=Payslip", method: "PUT" })),
   getConfirmAccess: () => dispatch(
     checkPermissions({ path: "/a/v1/list/option/payroll?entity=Payslip&bulkConfirmTutorWages=true", method: "POST" })

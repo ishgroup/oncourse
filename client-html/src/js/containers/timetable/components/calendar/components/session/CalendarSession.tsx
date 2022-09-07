@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import Chip from "@mui/material/Chip";
@@ -13,10 +16,10 @@ import { createStyles, Theme } from "@mui/material";
 import { differenceInMinutes, format } from "date-fns";
 import WarningMessage from "../../../../../../common/components/form/fieldMessage/WarningMessage";
 import CalendarSessionTag from "./CalendarSessionTag";
-import { stopEventPropagation } from "../../../../../../common/utils/events";
 import { openCourseClassLink } from "../../../../../entities/courseClasses/utils";
 import { formatDurationMinutes } from "../../../../../../common/utils/dates/formatString";
 import { appendTimezone } from "../../../../../../common/utils/dates/formatTimezone";
+import { CalendarTagsState } from "../../../../../../model/timetable";
 
 const styles = (theme: Theme) => createStyles({
     "@global": {
@@ -59,26 +62,17 @@ const styles = (theme: Theme) => createStyles({
       display: "flex"
     },
     tagsWrapper: {
-      cursor: "pointer",
-      marginTop: "2px",
-      "&:hover": {
-        textDecoration: "underline",
-        color: theme.palette.secondary.main
-      },
-      "&:hover .tagColorDot": {
-        transform: "scale(1.2)"
-      }
+      marginTop: "2px"
     }
   });
 
 interface SessionBaseProps extends Session {
-  inView: boolean;
+  hideTutors?: boolean;
+  hideRooms?: boolean;
   tags?: any;
-  tagsExpanded?: boolean;
+  tagsState?: CalendarTagsState;
   classes?: any;
-  setTagsExpanded?: any;
   disableLink?: boolean;
-  disableTags?: boolean;
   clashes?: ClashType[];
   hours?: number;
   startLabel?: string;
@@ -92,29 +86,23 @@ const CalendarSession: React.FC<SessionBaseProps> = props => {
     site,
     tutors,
     classes,
-    inView,
     classId,
-    setTagsExpanded,
     start,
     end,
     tags,
-    tagsExpanded,
+    tagsState,
     id,
     siteTimezone,
     disableLink,
-    disableTags,
     clashes,
     hours,
     startLabel,
-    warningMessage
+    warningMessage,
+    hideTutors,
+    hideRooms
   } = props;
 
   const onNameClick = useCallback(() => openCourseClassLink(classId), [classId]);
-
-  const onTagsClick = useCallback(e => {
-    stopEventPropagation(e);
-    setTagsExpanded(prev => !prev);
-  }, []);
 
   const sessionDuration = useMemo(() => {
     const startDate = siteTimezone ? appendTimezone(new Date(start), siteTimezone) : new Date(start);
@@ -137,30 +125,40 @@ const CalendarSession: React.FC<SessionBaseProps> = props => {
           .replace(/\s/, "")
           .toLowerCase()}
         </span>
-);
+      );
     },
     [start, siteTimezone]
   );
 
   const renderedTags = useMemo(() => {
-    if (disableTags) {
+    if (!tagsState || tagsState === "Tag off") {
       return null;
     }
 
     const tagsKeys = tags && Object.keys(tags);
-
-    return tagsKeys ? (
-      tagsKeys.length ? (
-        tagsKeys.map(t => (
-          <CalendarSessionTag key={id + t} color={"#" + tags[t]} name={t} tagsExpanded={tagsExpanded} />
-        ))
-      ) : null
-    ) : (
-      <Typography variant="caption" component="span" className="text-disabled">
-        Loading...
+    
+    return (
+      <Typography color="textSecondary" variant="caption" component="div">
+        <div className={classes.tagsWrapper}>
+          {tagsKeys ? (
+          tagsKeys.length ? (
+            tagsKeys.map(t => (
+              <CalendarSessionTag key={id + t} color={"#" + tags[t]} name={t} tagsState={tagsState} />
+            ))
+          ) : (
+            <Typography variant="caption" component="span" className="placeholderContent">
+              No Tags
+            </Typography>
+          )
+        ) : (
+          <Typography variant="caption" component="span" className="text-disabled">
+            Loading...
+          </Typography>
+        )}
+        </div>
       </Typography>
     );
-  }, [tags, tagsExpanded, disableTags]);
+  }, [tags, tagsState]);
 
   const hasClash = clashes && Boolean(clashes.length);
 
@@ -177,7 +175,7 @@ const CalendarSession: React.FC<SessionBaseProps> = props => {
       </div>
 
       <div>
-        {name && inView ? (
+        {name ? (
           <>
             <Typography
               component="div"
@@ -190,40 +188,39 @@ const CalendarSession: React.FC<SessionBaseProps> = props => {
             </Typography>
 
             <div className={classes.secondLine}>
-              <Typography variant="caption" noWrap color={clashes && clashes.includes("Tutor") ? "error" : undefined}>
-                with
-                {" "}
-                {tutors.length ? (
-                  <span>{tutors.map((el, id) => (id === 0 ? el : ` ${el}`)).toString()}</span>
-                ) : (
-                  <span className={classes.warningColor}>No tutor set</span>
-                )}
-              </Typography>
-
-              <Typography variant="caption" noWrap>
-                {room ? (
-                  <span>
-                    <span className={clashes && clashes.includes("Room") ? "errorColor" : undefined}>{room}</span>
-                    <span>,</span>
-                    <span className={clashes && clashes.includes("Site") ? "errorColor" : undefined}>{site}</span>
-                  </span>
-                ) : (
-                  <span className={classes.warningColor}>No room set</span>
-                )}
-              </Typography>
+              {!hideTutors && (
+                <Typography variant="caption" noWrap color={clashes && clashes.includes("Tutor") ? "error" : undefined}>
+                  {tutors.length ? (
+                    <span>
+                      with
+                      {" "}
+                      {tutors.map((el, id) => (id === 0 ? el : ` ${el}`)).toString()}
+                    </span>
+                  ) : (
+                    <span className={classes.warningColor}>No tutor set</span>
+                  )}
+                </Typography>
+              )}
+              {!hideRooms && (
+                <Typography variant="caption" noWrap>
+                  {room ? (
+                    <span>
+                      <span className={clashes && clashes.includes("Room") ? "errorColor" : undefined}>{room}</span>
+                      {site && (
+                        <span className={clashes && clashes.includes("Site") ? "errorColor" : undefined}>
+                          {", "}
+                          {site}
+                        </span>
+                      )}
+                    </span>
+                  ) : (
+                    <span className={classes.warningColor}>No room set</span>
+                  )}
+                </Typography>
+              )}
             </div>
 
-            {disableTags ? null : renderedTags ? (
-              <Typography color="textSecondary" variant="caption" component="div">
-                <div className={classes.tagsWrapper} onClick={onTagsClick}>
-                  {renderedTags}
-                </div>
-              </Typography>
-            ) : (
-              <Typography variant="caption" component="span" className="placeholderContent">
-                No Tags
-              </Typography>
-            )}
+            {renderedTags}
 
             {warningMessage && <WarningMessage warning={warningMessage} className="m-0" />}
           </>

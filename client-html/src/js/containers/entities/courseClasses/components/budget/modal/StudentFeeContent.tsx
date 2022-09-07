@@ -3,7 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback, useEffect, useMemo, useState
+} from "react";
 import { arrayInsert, arrayRemove, change } from "redux-form";
 import { CourseClassPaymentPlan, Tax } from "@api/model";
 import Grid from "@mui/material/Grid";
@@ -27,6 +29,7 @@ import { stubFunction } from "../../../../../../common/utils/common";
 import { getCurrentTax } from "../../../../taxes/utils";
 import { getPaymentPlansTotal } from "../utils";
 import AddButton from "../../../../../../common/components/icons/AddButton";
+import { IS_JEST } from "../../../../../../constants/EnvironmentConstants";
 
 const StudentFeePaymentPlan: React.FC<any> = ({
  index, item, onDelete, onBlur, classStart
@@ -42,6 +45,9 @@ const StudentFeePaymentPlan: React.FC<any> = ({
   ]);
 
   const name = `paymentPlan[${index}]`;
+  const fieldAmountProps = IS_JEST ? {
+    'data-testid': `${name}.amount`
+  } : {};
 
   return (
     <>
@@ -55,7 +61,7 @@ const StudentFeePaymentPlan: React.FC<any> = ({
         />
       </Grid>
       <Grid item xs={4}>
-        <FormField type="money" name={`${name}.amount`} label="Amount" />
+        <FormField type="money" name={`${name}.amount`} label="Amount" {...fieldAmountProps} />
       </Grid>
 
       <Grid item xs={1}>
@@ -225,6 +231,7 @@ const StudentFeeContent: React.FC<Props> = ({
           selectValueMark="id"
           selectLabelMark="code"
           onChange={onTaxIdChange}
+          debounced={false}
           items={taxes || []}
           required
         />
@@ -237,6 +244,7 @@ const StudentFeeContent: React.FC<Props> = ({
           label="Account"
           selectLabelCondition={accountLabelCondition}
           onChange={onAccountIdChange}
+          debounced={false}
           items={accounts || []}
         />
       </Grid>

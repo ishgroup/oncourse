@@ -1,3 +1,11 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 import React, { useEffect, useMemo, useRef } from "react";
 import { Message } from "@api/model";
 import { Dispatch } from "redux";
@@ -9,6 +17,7 @@ import { format } from "date-fns";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import { III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
 import { defaultContactName } from "../../contacts/utils";
+import { ContactLinkAdornment } from "../../../../common/components/form/FieldAdornments";
 
 interface MessageEditViewProps {
   values?: Message;
@@ -53,7 +62,9 @@ const MessageEditView = React.memo<MessageEditViewProps>(props => {
           <Uneditable
             value={defaultContactName(values.sentToContactFullname)}
             label="Sent to"
-            url={`/contact?search=messages.message.id=${values.id}`}
+            labelAdornment={(
+              <ContactLinkAdornment id={values?.contactId} />
+            )}
           />
         </Grid>
         <Grid item xs={twoColumn ? 2 : 6}>
@@ -84,7 +95,7 @@ const MessageEditView = React.memo<MessageEditViewProps>(props => {
           </Typography>
           <Card>
             <CardContent>
-              <div className="overflow-auto" ref={htmlRef} dangerouslySetInnerHTML={{ __html: values.htmlMessage }} />
+              <div className="overflow-auto" ref={htmlRef} />
             </CardContent>
           </Card>
         </Grid>

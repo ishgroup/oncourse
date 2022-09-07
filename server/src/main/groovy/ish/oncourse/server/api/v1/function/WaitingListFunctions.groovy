@@ -40,7 +40,7 @@ class WaitingListFunctions {
             wl.studentName = dbWaitingList.student.contact.with { it.getFullName() }
             wl.courseId = dbWaitingList.course.id
             wl.courseName = dbWaitingList.course.with { "$it.name $it.code" }
-            wl.tags = dbWaitingList.tags.collect { toRestTagMinimized(it) }
+            wl.tags = dbWaitingList.allTags.collect { it.id }
             wl.sites = dbWaitingList.sites.collect { toRestSiteMinimized(it)}
             wl.customFields = dbWaitingList.customFields.collectEntries { [(it.customFieldType.key) : it.value] }
             wl.createdOn = LocalDateUtils.dateToTimeValue(dbWaitingList.createdOn)
@@ -55,7 +55,7 @@ class WaitingListFunctions {
         waitingList.studentCount = waitingListDTO.studentCount
         waitingList.student = getRecordById(context, Contact, waitingListDTO.contactId).student
         waitingList.course = getRecordById(context, Course, waitingListDTO.courseId)
-        updateTags(waitingList, waitingList.taggingRelations, waitingListDTO.tags*.id, WaitingListTagRelation, context)
+        updateTags(waitingList, waitingList.taggingRelations, waitingListDTO.tags, WaitingListTagRelation, context)
         updateSites(context, waitingList, waitingListDTO.sites)
         updateCustomFields(context, waitingList, waitingListDTO.customFields, WaitingListCustomField)
         waitingList
@@ -100,7 +100,7 @@ class WaitingListFunctions {
             return new ValidationErrorDTO(dbWListId?.toString(), 'privateNotes', 'Private notes can not be more than 32000 chars.')
         }
 
-        validateRelationsForSave(WaitingList, context, waitingListDTO.tags*.id,  TaggableClasses.WAITING_LIST) ?:
+        validateRelationsForSave(WaitingList, context, waitingListDTO.tags,  TaggableClasses.WAITING_LIST) ?:
                 CustomFieldFunctions.getCustomFieldTypes(context, WaitingList.class.simpleName)
                         .findAll { it.isMandatory }
                         .collect { it -> isBlank(waitingListDTO.customFields[it.key]) ? new ValidationErrorDTO(dbWListId?.toString(), 'customFields', "$it.name is required.") : null }

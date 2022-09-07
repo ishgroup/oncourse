@@ -21,10 +21,9 @@ const relationTypesFilter = {
     && rel.shoppingCart === "Add but do not allow removal"
 };
 
-const CourseMarketingTab: React.FC<EditViewProps<Course> & { classes: any }> = props => {
+const CourseMarketingTab: React.FC<EditViewProps<Course>> = props => {
   const {
     twoColumn,
-    classes,
     dispatch,
     form,
     showConfirm,
@@ -56,7 +55,6 @@ const CourseMarketingTab: React.FC<EditViewProps<Course> & { classes: any }> = p
           name="documents"
           label="Documents"
           entity="Course"
-          classes={classes}
           component={DocumentsRenderer}
           xsGrid={12}
           mdGrid={twoColumn ? 4 : 12}

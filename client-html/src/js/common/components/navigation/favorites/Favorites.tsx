@@ -5,16 +5,17 @@
 
 import React, { useMemo } from "react";
 import { connect } from "react-redux";
-import {
-  Typography, Grid, List, createStyles
-} from "@mui/material";
+import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
+import List from "@mui/material/List";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 import { Script } from "@api/model";
 import { State } from "../../../../reducers/state";
+import { DashboardItem } from "../../../../model/dashboard";
 import FavoriteItem from "./FavoriteItem";
 import FavoriteScriptItem from "./FavoriteScriptItem";
-import { DashboardItem } from "../../../../model/dashboard";
-import Divider from "@mui/material/Divider";
 
 const styles = theme => createStyles({
   root: {
@@ -71,7 +72,6 @@ interface Props {
   favoriteScripts: string[];
   groupedSortedItems: DashboardItem[];
   classes?: any;
-  showConfirm?: (onConfirm: any) => void;
   setScriptIdSelected?: any;
   setExecMenuOpened?: any;
 }
@@ -80,7 +80,6 @@ const isCategoryType = item => !!item.category;
 
 const Favorites: React.FC<Props> = props => {
   const {
-    showConfirm,
     classes,
     scripts,
     favorites,
@@ -99,7 +98,6 @@ const Favorites: React.FC<Props> = props => {
         <FavoriteItem
           key={v.category}
           item={v}
-          showConfirm={showConfirm}
         />
       )
       : (

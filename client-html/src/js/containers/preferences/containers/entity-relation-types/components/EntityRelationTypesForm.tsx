@@ -17,7 +17,6 @@ import EntityRelationTypesRenderer from "./EntityRelationTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { State } from "../../../../../reducers/state";
-import { setNextLocation } from "../../../../../common/actions";
 import { cardsFormStyles } from "../../../styles/formCommonStyles";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
@@ -42,8 +41,7 @@ interface Props {
   onUpdate: (entityRelationTypes: EntityRelationType[]) => void;
   openConfirm?: ShowConfirmCaller;
   history?: any,
-  nextLocation?: string,
-  setNextLocation?: (nextLocation: string) => void,
+  nextLocation?: string
 }
 
 class EntityRelationTypesBaseForm extends React.Component<Props, any> {
@@ -96,12 +94,11 @@ class EntityRelationTypesBaseForm extends React.Component<Props, any> {
       this.props.onUpdate(this.getTouchedAndNew(value.types));
     })
       .then(() => {
-        const { nextLocation, history, setNextLocation } = this.props;
+        const { nextLocation, history } = this.props;
 
         this.props.dispatch(initialize(ENTITY_RELATION_TYPES_FORM, { types: this.props.entityRelationTypes }));
 
         nextLocation && history.push(nextLocation);
-        setNextLocation('');
       })
       .catch(error => {
         this.isPending = false;
@@ -211,14 +208,10 @@ const mapStateToProps = (state: State) => ({
   nextLocation: state.nextLocation
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-});
-
 const EntityRelationTypesForm = reduxForm({
   onSubmitFail,
   form: ENTITY_RELATION_TYPES_FORM
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(
+})(connect<any, any, any>(mapStateToProps, null)(
   withStyles(cardsFormStyles)(withRouter(EntityRelationTypesBaseForm) as any)
 ));
 

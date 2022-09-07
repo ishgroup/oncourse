@@ -25,7 +25,7 @@ import { State } from "../../../../../../reducers/state";
 import { StringArgFunction } from "../../../../../../model/common/CommonFunctions";
 import { setIndeterminate } from "../../../utils/listFiltersUtils";
 import {
- setFilterGroups, setListMenuTags, setListSavingFilter, setListUserAQLSearch 
+ setFilterGroups, setListSavingFilter, setListUserAQLSearch
 } from "../../../actions";
 import { MenuTag } from "../../../../../../model/tags";
 import { FilterGroup, ListAqlMenuItemsRenderer, SavingFilterState } from "../../../../../../model/common/ListView";
@@ -96,7 +96,6 @@ interface Props {
   filterGroups: FilterGroup[];
   setListUserAQLSearch: StringArgFunction;
   onQuerySearch: StringArgFunction;
-  setListMenuTags: (tags: MenuTag[]) => void;
   setFilterGroups: (groups: FilterGroup[]) => void;
   setListSavingFilter: (saving: SavingFilterState) => void;
   classes?: any;
@@ -112,8 +111,6 @@ interface Props {
 }
 
 interface SearchInputState {
-  isValidQuery: boolean;
-  hasQueryValue: boolean;
   expanded: boolean;
   querySaveMenuAnchor: HTMLElement;
   tagsSuggestions: Suggestion[];
@@ -180,9 +177,7 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
     super(props);
 
     this.state = {
-      isValidQuery: true,
       querySaveMenuAnchor: null,
-      hasQueryValue: false,
       expanded: props.alwaysExpanded,
       tagsSuggestions: null,
       filtersSuggestions: null,
@@ -384,11 +379,6 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
 
   searchByQuery = () => {
     const { onQuerySearch, savingFilter, setListSavingFilter } = this.props;
-    const { isValidQuery } = this.state;
-
-    if (!isValidQuery) {
-      return;
-    }
 
     if (savingFilter) {
       setListSavingFilter(null);
@@ -460,11 +450,6 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
 
     this.queryComponentNode.reset();
 
-    this.setState({
-      hasQueryValue: false,
-      isValidQuery: true
-    });
-
     if (!alwaysExpanded && expanded) {
       this.setExpanded(false);
     }
@@ -483,8 +468,6 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
     } = this.props;
 
     const {
-      isValidQuery,
-      hasQueryValue,
       querySaveMenuAnchor,
       expanded,
       tagsSuggestions,
@@ -529,7 +512,7 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
                 disableErrorText
               />
 
-              {(hasQueryValue || userAQLSearch) && (
+              {userAQLSearch && (
                 <IconButton
                   className={clsx(classes.inputIcon, expanded && classes.shiftedIcon)}
                   onClick={this.clear}
@@ -553,16 +536,16 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
 
               {expanded && (
                 <IconButton
-                  disabled={!isValidQuery || !hasQueryValue || searchServerError}
+                  disabled={!userAQLSearch || searchServerError}
                   className={classes.inputIcon}
                   onClick={this.openQuerySaveMenu}
                   onMouseEnter={this.onActionIconOver}
                   onMouseLeave={this.onActionIconOut}
                 >
-                  {isValidQuery && !searchServerError ? (
-                    <BookmarkBorder className={hasQueryValue ? classes.bookmarkIconValid : undefined} />
-                  ) : (
+                  {searchServerError ? (
                     <BookmarkTwoTone color="error" />
+                  ) : (
+                    <BookmarkBorder className={userAQLSearch ? classes.bookmarkIconValid : undefined} />
                   )}
                 </IconButton>
               )}
@@ -597,7 +580,6 @@ const mapStateToProps = (state: State, ownProps: Props) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setListSavingFilter: (savingFilter?: SavingFilterState) => dispatch(setListSavingFilter(savingFilter)),
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
-  setListMenuTags: (tags: MenuTag[]) => dispatch(setListMenuTags(tags)),
   setListUserAQLSearch: (userAQLSearch: string) => dispatch(setListUserAQLSearch(userAQLSearch))
 });
 

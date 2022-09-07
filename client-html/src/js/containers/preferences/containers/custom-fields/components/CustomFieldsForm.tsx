@@ -20,7 +20,6 @@ import { getCustomFields } from "../../../actions";
 import { Fetch } from "../../../../../model/common/Fetch";
 import uniqid from "../../../../../common/utils/uniqid";
 import { State } from "../../../../../reducers/state";
-import { setNextLocation } from "../../../../../common/actions";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("generalPrefs_customFields");
@@ -74,8 +73,7 @@ interface Props {
   onDelete: (id: string) => void;
   onUpdate: (customFields: CustomFieldType[]) => void;
   history?: any,
-  nextLocation?: string,
-  setNextLocation?: (nextLocation: string) => void,
+  nextLocation?: string
 }
 
 class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
@@ -129,14 +127,13 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
     })
       .then(() => {
         const {
-          nextLocation, history, setNextLocation, data
+          nextLocation, history, data
         } = this.props;
 
         this.props.dispatch(initialize(CUSTOM_FIELDS_FORM, data));
         this.props.dispatch(getCustomFields());
 
         nextLocation && history.push(nextLocation);
-        setNextLocation('');
       })
       .catch(error => {
         this.isPending = false;
@@ -248,14 +245,10 @@ const mapStateToProps = (state: State) => ({
   nextLocation: state.nextLocation
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-});
-
 const CustomFieldsForm = reduxForm({
   onSubmitFail,
   form: CUSTOM_FIELDS_FORM
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(
+})(connect<any, any, any>(mapStateToProps, null)(
   withStyles(theme => ({ ...formCommonStyles(theme), ...styles(theme) }))(withRouter(CustomFieldsBaseForm) as any)
 ));
 

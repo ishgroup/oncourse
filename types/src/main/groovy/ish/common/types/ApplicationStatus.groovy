@@ -21,7 +21,7 @@ import ish.oncourse.API
  *
  */
 @API
-enum ApplicationStatus implements DisplayableExtendedEnumeration<Integer> {
+public enum ApplicationStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * Database value: 0

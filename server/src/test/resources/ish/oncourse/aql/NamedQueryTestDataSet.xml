@@ -52,14 +52,14 @@
           isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1"
           feeHelpClass="0" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <CourseClass id="1" code="123" fundingSource="3" taxId="1" sessionCount="3" taxAdjustment="0.0" minimumPlaces="1"
+  <CourseClass id="1" code="123" fundingSource="3" taxId="1" taxAdjustment="0.0" minimumPlaces="1"
                maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1"
                isCancelled="0" isActive="1" incomeAccountId="100" deliveryMode="1" courseId="1"
                feeExGst="200.00" suppressAvetmissExport="0" roomId="1"
                budgetedPlaces="10" attendanceType="0" createdOn="2021-12-21 12:00:10.0"
                modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <CourseClass id="2" code="123" fundingSource="3" taxId="1" sessionCount="3" taxAdjustment="0.0" minimumPlaces="1"
+  <CourseClass id="2" code="123" fundingSource="3" taxId="1" taxAdjustment="0.0" minimumPlaces="1"
                maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1"
                isCancelled="0" isActive="1" incomeAccountId="100" deliveryMode="1" courseId="1"
                feeExGst="200.00" suppressAvetmissExport="0" roomId="1"

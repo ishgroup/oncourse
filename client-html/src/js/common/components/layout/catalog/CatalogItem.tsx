@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
+import React, { useCallback } from "react";
 import {
   ListItem, ListItemText, Divider
 } from "@mui/material";
@@ -73,12 +73,16 @@ const CatalogItem = (
   const classes = useStyles();
   const hoverClasses = useHoverShowStyles();
 
+  const onItemClick = useCallback(() => {
+    if (onOpen) onOpen(id);
+  }, [id]);
+
   return (
     <>
       <ListItem
         button
-        className={clsx("p-0", hoverClasses.container)}
-        onClick={() => onOpen(id)}
+        className={clsx(hideShortDescription ? "pl-0 pr-0" : "p-0", hoverClasses.container)}
+        onClick={onItemClick}
         secondaryAction={<span className={clsx(hoverSecondary && hoverClasses.target)}>{secondaryAction}</span>}
         disabled={disabled}
       >
@@ -101,7 +105,7 @@ const CatalogItem = (
       </ListItem>
       <Divider light />
     </>
-);
+  );
 };
 
 export default CatalogItem;

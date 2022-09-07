@@ -23,7 +23,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
         "studentCount":30,
         "contactId":3,
         "courseId":2,
-        "tags":[{"id":221}],
+        "tags":[221],
         "sites":[{"id":200}],
         "customFields":{}
         }
@@ -104,7 +104,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
         "studentCount":32,
         "contactId":3,
         "courseId":2,
-        "tags":[{"id":221}],
+        "tags":[221],
         "sites":[{"id":200}],
         "customFields":{}
         }
@@ -139,7 +139,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
             "studentCount":33,
             "contactId":3,
             "courseId":2,
-            "tags":[{"id":222}],
+            "tags":[222],
             "sites":[{"id":201}],
             "customFields":{}
             }
@@ -164,7 +164,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
             "studentName":"stud2",
             "courseId":2,
             "courseName":"Course2 course2",
-            "tags":[{"id":222,"name":"waitingList 2","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
+            "tags":[222],
             "sites":[{"id":201,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"kioskUrl":null,"name":"site1","street":null,"suburb":"Adelaide","state":null,"postcode":"5000","country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}],
             "customFields":{},
             "createdOn":"#ignore",
@@ -194,7 +194,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
         "studentCount":34,
         "contactId":3,
         "courseId":2,
-        "tags":[{"id":221}],
+        "tags":[221],
         "sites":[{"id":200}],
         "customFields":{}
         }
@@ -229,7 +229,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
             "studentCount":35,
             "contactId":3,
             "courseId":2,
-            "tags":[{"id":222}],
+            "tags":[222],
             "sites":[{"id":201}],
             "customFields":{}
             }
@@ -263,7 +263,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
         "studentCount":36,
         "contactId":3,
         "courseId":2,
-        "tags":[{"id":221}],
+        "tags":[221],
         "sites":[{"id":200}],
         "customFields":{}
         }
@@ -293,7 +293,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
             "studentCount":36,
             "contactId":null,
             "courseId":2,
-            "tags":[{"id":221}],
+            "tags":[221],
             "sites":[{"id":200}],
             "customFields":{}
             }
@@ -323,7 +323,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
         "studentCount":37,
         "contactId":3,
         "courseId":2,
-        "tags":[{"id":221}],
+        "tags":[221],
         "sites":[{"id":200}],
         "customFields":{}
         }
@@ -353,7 +353,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
             "studentCount":37,
             "contactId":99999,
             "courseId":2,
-            "tags":[{"id":221}],
+            "tags":[221],
             "sites":[{"id":200}],
             "customFields":{}
             }
@@ -383,7 +383,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
         "studentCount":38,
         "contactId":3,
         "courseId":2,
-        "tags":[{"id":221}],
+        "tags":[221],
         "sites":[{"id":200}],
         "customFields":{}
         }
@@ -413,7 +413,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
             "studentCount":38,
             "contactId":1,
             "courseId":2,
-            "tags":[{"id":221}],
+            "tags":[221],
             "sites":[{"id":200}],
             "customFields":{}
             }
@@ -443,7 +443,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
         "studentCount":39,
         "contactId":3,
         "courseId":2,
-        "tags":[{"id":221}],
+        "tags":[221],
         "sites":[{"id":200}],
         "customFields":{}
         }
@@ -473,7 +473,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
             "studentCount":39,
             "contactId":3,
             "courseId":null,
-            "tags":[{"id":221}],
+            "tags":[221],
             "sites":[{"id":200}],
             "customFields":{}
             }
@@ -503,7 +503,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
         "studentCount":40,
         "contactId":3,
         "courseId":2,
-        "tags":[{"id":221}],
+        "tags":[221],
         "sites":[{"id":200}],
         "customFields":{}
         }
@@ -533,7 +533,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
             "studentCount":40,
             "contactId":3,
             "courseId":99999,
-            "tags":[{"id":221}],
+            "tags":[221],
             "sites":[{"id":200}],
             "customFields":{}
             }
@@ -587,7 +587,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
         "studentCount":41,
         "contactId":3,
         "courseId":2,
-        "tags":[{"id":221}],
+        "tags":[221],
         "sites":[{"id":200}],
         "customFields":{"age":"18","passportNumber":"1234567890"}
         }
@@ -617,7 +617,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
             "studentCount":41,
             "contactId":3,
             "courseId":2,
-            "tags":[{"id":221}],
+            "tags":[221],
             "sites":[{"id":200}],
             "customFields":{"age":"18","passportNumber":""}
             }

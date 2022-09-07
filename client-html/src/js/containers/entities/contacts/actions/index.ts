@@ -3,24 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Contact, MergeRequest } from "@api/model";
+import { MergeRequest } from "@api/model";
 import { _toRequestType, FULFILLED, REJECTED } from "../../../../common/actions/ActionUtils";
 
 export const GET_MERGE_CONTACTS = _toRequestType("get/mergeContacts");
 export const GET_MERGE_CONTACTS_FULFILLED = FULFILLED(GET_MERGE_CONTACTS);
-
-export const CREATE_CONTACT = _toRequestType("post/contact");
-
-export const DELETE_CONTACT = _toRequestType("delete/contact");
 
 export const POST_MERGE_CONTACTS = _toRequestType("post/mergeContacts");
 export const POST_MERGE_CONTACTS_FULFILLED = FULFILLED(POST_MERGE_CONTACTS);
 
 export const GET_CONTACT = _toRequestType("get/contact");
 export const GET_CONTACT_FULFILLED = FULFILLED(GET_CONTACT);
-
-export const UPDATE_CONTACT = _toRequestType("update/contact");
-export const UPDATE_CONTACT_FULFILLED = FULFILLED(UPDATE_CONTACT);
 
 export const GET_CONTACT_TAGS = _toRequestType("get/contact/tags");
 
@@ -57,8 +50,6 @@ export const VERIFY_USI_REJECTED = REJECTED(VERIFY_USI);
 export const CLEAR_USI_VERIFICATION_RESULT = "clear/contacts/usiVerificationResult";
 export const CLEAR_CONTACT_EDUCATION = "clear/contact/education";
 
-export const GET_CONTACTS_MESSAGE_DATA = _toRequestType("get/contacts/messageData");
-
 export const postMergeContacts = (request: MergeRequest) => ({
   type: POST_MERGE_CONTACTS,
   payload: request
@@ -74,24 +65,9 @@ export const getContact = (id: number) => ({
   payload: id
 });
 
-export const deleteContact = (id: number) => ({
-  type: DELETE_CONTACT,
-  payload: id
-});
-
 export const getContactsStoredCc = (id: number) => ({
   type: GET_CONTACTS_STORED_CC,
   payload: id
-});
-
-export const createContact = (contact: Contact) => ({
-  type: CREATE_CONTACT,
-  payload: contact
-});
-
-export const updateContact = (id: string, contact: Contact) => ({
-  type: UPDATE_CONTACT,
-  payload: { id, contact }
 });
 
 export const getContactTags = () => ({

@@ -13,13 +13,11 @@ import {
   clearListState,
 } from "../../../common/components/list-view/actions";
 import { FilterGroup } from "../../../model/common/ListView";
-import { getMessage, removeMessage } from "./actions";
 import MessageEditView from "./components/MessageEditView";
 import ListView from "../../../common/components/list-view/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 
 interface MessagesProps {
-  getMessageRecord?: () => void;
   onInit?: () => void;
   getFilters?: () => void;
   clearListState?: () => void;
@@ -63,9 +61,7 @@ const primaryColumnCondition = row => row["recipientsString"] || "No recipients"
 
 const Messages: React.FC<MessagesProps> = props => {
   const {
-    getMessageRecord,
     onInit,
-    onDelete,
     getFilters,
     clearListState
   } = props;
@@ -88,10 +84,8 @@ const Messages: React.FC<MessagesProps> = props => {
         nameCondition: values => (values ? values.subject : "")
       }}
       EditViewContent={MessageEditView}
-      getEditRecord={getMessageRecord}
       rootEntity="Message"
       onInit={onInit}
-      onDelete={onDelete}
       filterGroupsInitial={filterGroups}
       findRelated={findRelatedGroup}
       noListTags
@@ -105,9 +99,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
   },
   getFilters: () => dispatch(getFilters("Message")),
-  clearListState: () => dispatch(clearListState()),
-  getMessageRecord: (id: string) => dispatch(getMessage(id)),
-  onDelete: (id: string) => dispatch(removeMessage(id))
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Messages);

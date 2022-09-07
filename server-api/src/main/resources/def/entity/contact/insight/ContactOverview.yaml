@@ -1,0 +1,37 @@
+type: object
+properties:
+  firstSeen:
+    type: string
+    format: date-time
+    required: true
+  spent:
+    type: number
+    required: false
+  owing:
+    type: number
+    required: false
+  enrolments:
+    type: array
+    items:
+      type: integer
+      format: int64
+  closeApplications:
+    type: array
+    items:
+      type: integer
+      format: int64
+  openApplications:
+    type: array
+    items:
+      type: integer
+      format: int64
+  openLeads:
+    type: array
+    items:
+      type: integer
+      format: int64
+  closeLeads:
+    type: array
+    items:
+      type: integer
+      format: int64

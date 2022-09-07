@@ -28,7 +28,6 @@ const styles = theme => createStyles({
 
 const SearchResults = props => {
   const {
-    showConfirm,
     classes,
     userSearch,
     scripts,
@@ -37,7 +36,8 @@ const SearchResults = props => {
     searchResults,
     checkSelectedResult,
     setExecMenuOpened,
-    setScriptIdSelected
+    setScriptIdSelected,
+    setSelected
   } = props;
 
   return (
@@ -54,7 +54,6 @@ const SearchResults = props => {
                 name: getHighlightedPartLabel(c.title, userSearch)
               }}
               id={getResultId(i, c.title)}
-              showConfirm={showConfirm}
             />
           ))}
       {userSearch
@@ -88,11 +87,10 @@ const SearchResults = props => {
               checkSelectedResult={checkSelectedResult}
               items={r.items.map(item => {
                 const name = getHighlightedPartLabel(item.name, userSearch);
-
                 return { ...item, name };
               })}
               userSearch={userSearch}
-              showConfirm={showConfirm}
+              setSelected={setSelected}
             />
           </div>
         ))}

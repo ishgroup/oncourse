@@ -1,0 +1,25 @@
+get:
+  operationId: getInsight
+  description: Return contact insight info
+  tags:
+    - ContactInsight
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of contact
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/contact/insight/ContactInsight.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: CONTACT
+    errorMessage: Sorry, you have no permissions to get info about contact. Please contact your administrator

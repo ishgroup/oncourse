@@ -17,6 +17,7 @@ export const GET_LIST_NESTED_EDIT_RECORD = _toRequestType("get/listView/nestedEd
 
 export const UPDATE_LIST_NESTED_EDIT_RECORD = _toRequestType("post/listView/nestedEditRecord");
 
+// Common list actions
 export const GET_RECORDS_REQUEST = _toRequestType("get/records");
 export const GET_RECORDS_FULFILLED = FULFILLED(GET_RECORDS_REQUEST);
 
@@ -43,8 +44,6 @@ export const BULK_CHANGE_RECORDS = _toRequestType("post/listView/bulkChange");
 export const CLEAR_LIST_STATE = "clear/listView";
 
 export const SET_LIST_CORE_FILTERS = "set/listView/coreFilters";
-
-export const SET_SHOW_COLORED_DOTS = "set/listView/coloredDots";
 
 export const SET_LIST_SEARCH = "set/listView/search";
 
@@ -100,27 +99,26 @@ export const setListLayout = (layout: LayoutType) => ({
   payload: layout
 });
 
-export const setShowColoredDots = (show: boolean) => ({
-  type: SET_SHOW_COLORED_DOTS,
-  payload: show,
-});
-
-export const setListMenuTags = (menuTags: MenuTag[]) => ({
+export const setListMenuTags = (menuTags: MenuTag[], checkedChecklists: MenuTag[], uncheckedChecklists: MenuTag[]) => ({
   type: SET_LIST_MENU_TAGS,
-  payload: { menuTags }
+  payload: { menuTags, checkedChecklists, uncheckedChecklists }
 });
 
 export const getRecords = (
-  entity: string,
-  listUpdate?: boolean,
-  viewAll?: boolean,
-  startIndex?: number,
-  stopIndex?: number,
-  resolve?: AnyArgFunction
+  {
+    entity,
+    viewAll,
+    listUpdate,
+    savedID,
+    ignoreSelection,
+    startIndex,
+    stopIndex,
+    resolve,
+  }: GetRecordsArgs
 ): IAction<GetRecordsArgs> => ({
   type: GET_RECORDS_REQUEST,
   payload: {
-    entity, listUpdate, viewAll, startIndex, stopIndex, resolve
+    entity, listUpdate, savedID, ignoreSelection, viewAll, startIndex, stopIndex, resolve
   }
 });
 

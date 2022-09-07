@@ -13,8 +13,7 @@ import zIndex from "@mui/material/styles/zIndex";
 import { ExitToApp } from "@mui/icons-material";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
-import { getActivePaymentOutMethods, getPaymentOut, updatePaymentOut } from "./actions";
+import { getActivePaymentOutMethods } from "./actions";
 import { getPlainAccounts } from "../accounts/actions";
 import { clearListState, getFilters, } from "../../../common/components/list-view/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
@@ -45,10 +44,6 @@ const styles = theme => createStyles({
     fontSize: "1.2rem"
   }
 });
-
-const nestedEditFields = {
-  SendMessage: props => <SendMessageEditView {...props} />
-};
 
 const filterGroups: FilterGroup[] = [
   {
@@ -100,7 +95,7 @@ class PaymentsOut extends React.Component<any, any> {
 
   render() {
     const {
-      getPaymentOutRecord, onSave, classes
+      classes
     } = this.props;
 
     return (
@@ -114,13 +109,9 @@ class PaymentsOut extends React.Component<any, any> {
             manualLink,
             nameCondition
           }}
-          nestedEditFields={nestedEditFields}
           EditViewContent={PaymentsOutEditView}
-          getEditRecord={getPaymentOutRecord}
           rootEntity="PaymentOut"
           onInit={() => this.openCreateNewDialog()}
-          onSave={onSave}
-          onCreate={() => undefined}
           filterGroupsInitial={filterGroups}
           findRelated={[
             { title: "Contacts", list: "contact", expression: "paymentsOut.id" },
@@ -175,9 +166,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getAdministrationSites: () => dispatch(getAdministrationSites()),
   getAccounts: () => getPlainAccounts(dispatch),
   clearListState: () => dispatch(clearListState()),
-  getPaymentOutRecord: (id: string) => dispatch(getPaymentOut(id)),
-  getActivePaymentOutMethods: () => dispatch(getActivePaymentOutMethods()),
-  onSave: (id: string, paymentOut: PaymentOutModel) => dispatch(updatePaymentOut(id, paymentOut))
+  getActivePaymentOutMethods: () => dispatch(getActivePaymentOutMethods())
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(withStyles(styles, { withTheme: true })(PaymentsOut));

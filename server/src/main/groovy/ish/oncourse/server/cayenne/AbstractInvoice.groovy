@@ -28,7 +28,7 @@ import javax.annotation.Nonnull
 import javax.annotation.Nullable
 import java.time.LocalDate
 
-abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterface, Queueable, NotableTrait, AttachableTrait {
+abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterface, Queueable, NotableTrait, AttachableTrait, ContactActivityTrait {
 
 	private static final Logger logger = LogManager.getLogger()
 
@@ -424,6 +424,11 @@ abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterf
 	@Override
 	Class<? extends TagRelation> getTagRelationClass() {
 		return AbstractInvoiceTagRelation.class
+	}
+
+	@Override
+	String getInteractionName() {
+		return totalIncTax.toPlainString()
 	}
 }
 

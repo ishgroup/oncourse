@@ -1,11 +1,14 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { useCallback, useEffect, useMemo } from "react";
 import {
- Contact, Student, Tag, Tutor
+  Contact, Student, Tag, Tutor
 } from "@api/model";
 import { change, Field, getFormInitialValues } from "redux-form";
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
@@ -27,6 +30,7 @@ import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 const TutorInitial: Tutor = {
   wwChildrenStatus: "Not checked"
@@ -222,13 +226,17 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     setIsTutor(isInitiallyTutor);
   }, [isInitiallyCompany, isInitiallyStudent, isInitiallyTutor]);
 
-  const onCalendarClick = () => {
-    openInternalLink(
-      `/timetable/search?query=attendance.student.contact.id=${values.id}&title=Timetable for ${getContactFullName(
-        values
-      )}`
-    );
-  };
+  const onStudentCalendarClick = () => openInternalLink(
+    `/timetable?search=attendance.student.contact.id=${values.id}&title=Timetable for ${getContactFullName(
+      values
+    )}`
+  );
+
+  const onTutorCalendarClick = () => openInternalLink(
+    `/timetable?search=tutor.contact.id=${values.id}&title=Timetable for ${getContactFullName(
+      values
+    )}`
+  );
 
   const filteredTags = useMemo(() => {
     if (Array.isArray(tags)) {
@@ -294,21 +302,39 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
           </ButtonGroup>
         </Grid>
       </Grid>
-      <Grid container columnSpacing={3} className="flex-nowrap align-items-center mb-1">
-        <Grid item xs={12}>
+      <Grid container columnSpacing={3} rowSpacing={2}>
+        <Grid item xs={twoColumn ? 8 : 12}>
           <FormField
             type="tags"
             name="tags"
             tags={filteredTags}
           />
         </Grid>
+        <Grid item xs={twoColumn ? 4 : 12}>
+          <EntityChecklists
+            entity="Contact"
+            form={form}
+            entityId={values.id}
+            checked={values.tags}
+          />
+        </Grid>
       </Grid>
       {isStudent && (
         <>
-          <Divider className="mt-3 mb-2" />
+          <Divider className="mt-3 mb-2"/>
           <Grid container columnSpacing={3} className="pt-0-5 pb-0-5">
             <Grid item xs={12}>
-              <TimetableButton onClick={onCalendarClick} />
+              <TimetableButton onClick={onStudentCalendarClick} title="Student timetable"/>
+            </Grid>
+          </Grid>
+        </>
+      )}
+      {isTutor && (
+        <>
+          <Divider className="mt-3 mb-2"/>
+          <Grid container columnSpacing={3} className="pt-0-5 pb-0-5">
+            <Grid item xs={12}>
+              <TimetableButton onClick={onTutorCalendarClick} title="Tutor timetable"/>
             </Grid>
           </Grid>
         </>

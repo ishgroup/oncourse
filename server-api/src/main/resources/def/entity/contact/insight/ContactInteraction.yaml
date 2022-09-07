@@ -1,0 +1,22 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+    example: 200
+  name:
+    type: string
+    required: true
+  entity:
+    type: string
+    required: true
+  date:
+    type: string
+    format: date-time
+    required: false
+    description: Contact interaction date
+    example: 1991-07-20
+  description:
+    type: string
+    required: false

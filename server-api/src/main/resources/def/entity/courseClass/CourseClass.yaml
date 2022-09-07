@@ -70,8 +70,6 @@ properties:
     type: integer
   minimumPlaces:
     type: integer
-  sessionsCount:
-    type: integer
   # vet fields
   suppressAvetmissExport:
     type: boolean
@@ -138,7 +136,8 @@ properties:
   tags:
     type: array
     items:
-      $ref: '../Tag.yaml'
+      type: integer
+      format: int64
   documents:
     type: array
     items:

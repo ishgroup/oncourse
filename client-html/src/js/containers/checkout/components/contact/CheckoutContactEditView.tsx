@@ -6,10 +6,7 @@
 import React, { useCallback } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import {
-  reduxForm, getFormSyncErrors, getFormValues, InjectedFormProps
-} from "redux-form";
-import Button from "@mui/material/Button";
+import { getFormSyncErrors, getFormValues, InjectedFormProps, reduxForm } from "redux-form";
 import { Contact } from "@api/model";
 import { notesAsyncValidate } from "../../../../common/components/form/notes/utils";
 import { State } from "../../../../reducers/state";
@@ -138,7 +135,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 const CheckoutContactEditView = reduxForm({
   form: CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME,
   asyncValidate: notesAsyncValidate,
-  asyncBlurFields: ["notes[].message"],
+  asyncChangeFields: ["notes[].message"],
   onSubmitFail
 })(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(QuickEnrolContactEditViewForm));
 

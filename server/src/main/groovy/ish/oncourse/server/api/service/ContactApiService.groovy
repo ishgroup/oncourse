@@ -155,9 +155,9 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
                         toRestDocumentMinimized(d, d.currentVersion.id, documentService)
                     }
             dto.abandonedCarts = cayenneModel.abandonedCarts.collect{toRestCart(it)}
-            dto.tags = cayenneModel.tags.collect{ toRestTagMinimized(it) }
+            dto.tags = cayenneModel.allTags.collect{ it.id }
             dto.memberships = cayenneModel.memberships.collect {  productItemApiService.toRestModel(it) }
-            dto.profilePicture = getProfilePicture(cayenneModel)
+            dto.profilePicture = getProfilePicture(cayenneModel, documentService)
 
             dto.relations += cayenneModel.toContacts.collect{ toRestToContactRelation(it as ContactRelation) }
             dto.relations += cayenneModel.fromContacts.collect{ toRestFromContactRelation(it as ContactRelation)}
@@ -211,7 +211,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         cayenneModel.taxOverride = dto.taxId != null ? taxDao.getById(context, dto.taxId) : null as Tax
         updateCustomFields(context, cayenneModel, dto.customFields, ContactCustomField)
         updateDocuments(cayenneModel, cayenneModel.attachmentRelations, dto.documents, ContactAttachmentRelation, context)
-        updateTags(cayenneModel, cayenneModel.taggingRelations, dto.tags*.id, ContactTagRelation, context)
+        updateTags(cayenneModel, cayenneModel.taggingRelations, dto.tags, ContactTagRelation, context)
         updateProfilePicture(cayenneModel, dto.profilePicture)
         updateContactRelations(context, cayenneModel, dto.relations)
         updateAvailabilityRules(cayenneModel, cayenneModel.unavailableRuleRelations*.rule, dto.rules, ContactUnavailableRuleRelation)
@@ -638,14 +638,6 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
             dto.relationId = rel.relationType.id
             dto
         }
-    }
-
-    private DocumentDTO getProfilePicture(Contact contact) {
-        Document profilePictureDocument = getProfilePictureDocument(contact)
-        if (profilePictureDocument) {
-            return toRestDocument(profilePictureDocument, profilePictureDocument.currentVersion.id, documentService)
-        }
-        null
     }
 
     UsiVerificationResultDTO verifyUsi(String firstName, String lastName, LocalDate dateOfBirth, String usiCode) {

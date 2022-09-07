@@ -1,9 +1,13 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import * as React from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import clsx from "clsx";
@@ -11,20 +15,17 @@ import { createStyles, withStyles } from "@mui/styles";
 import { darken } from "@mui/material/styles";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Divider from "@mui/material/Divider";
-import { useEffect, useMemo, useState } from "react";
 import { Backdrop } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
 import Typography from "@mui/material/Typography";
-import { PreferenceEnum } from "@api/model";
+import { PreferenceEnum, SearchQuery } from "@api/model";
 import { AppTheme } from "../../../../model/common/Theme";
 import { State } from "../../../../reducers/state";
 import { getDashboardSearch } from "../../../../containers/dashboard/actions";
 import { openInternalLink } from "../../../utils/links";
 import { getEntityDisplayName } from "../../../utils/getEntityDisplayName";
-import {
- checkPermissions, getOnDemandScripts, getUserPreferences, showConfirm 
-} from "../../../actions";
-import { toggleSwipeableDrawer } from "./actions";
+import { checkPermissions, getOnDemandScripts, getUserPreferences, showConfirm } from "../../../actions";
+import { setSwipeableDrawerSelection, toggleSwipeableDrawer } from "./actions";
 import UserSearch from "./components/UserSearch";
 import SearchResults from "./components/searchResults/SearchResults";
 import SidebarLatestActivity from "./components/SidebarLatestActivity";
@@ -39,6 +40,9 @@ import { useAppSelector } from "../../../utils/hooks";
 import ExecuteScriptModal from "../../../../containers/automation/containers/scripts/components/ExecuteScriptModal";
 import { DashboardItem } from "../../../../model/dashboard";
 import navigation from "../../navigation/navigation.json";
+import ContactInsight from "../../../../containers/entities/contacts/components/contact-insight/ContactInsight";
+import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
+import SendMessageEditView from "../../../../containers/entities/messages/components/SendMessageEditView";
 
 export const SWIPEABLE_SIDEBAR_WIDTH: number = 350;
 
@@ -55,6 +59,7 @@ const styles = (theme: AppTheme) =>
     drawerWidth: {
       width: SWIPEABLE_SIDEBAR_WIDTH,
       maxWidth: SWIPEABLE_SIDEBAR_WIDTH,
+      flex: 1,
       zIndex: 2,
       position: "relative",
       background: theme.palette.background.paper,
@@ -94,14 +99,15 @@ const styles = (theme: AppTheme) =>
     categoryRoot: {
       top: 0,
       zIndex: 1,
-      width: `${CATEGORY_SIDEBAR_WIDTH}px`,
+      minWidth: `${CATEGORY_SIDEBAR_WIDTH}px`,
+      width: `calc(100vw - ${SWIPEABLE_SIDEBAR_WIDTH}px - 20%)`,
       height: "100%",
       position: "fixed",
       display: "flex",
       background: theme.palette.background.default,
       transition: "transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms",
       left: `${SWIPEABLE_SIDEBAR_WIDTH}px`,
-      transform: `translateX(-${CATEGORY_SIDEBAR_WIDTH + SWIPEABLE_SIDEBAR_WIDTH}px)`
+      transform: "translateX(-100%)"
     },
     categoryVisible: {
       transform: "translateX(1px)"
@@ -114,7 +120,6 @@ const styles = (theme: AppTheme) =>
 
 interface Props {
   form: string;
-  isFormDirty: boolean;
   resetEditView: any;
   showConfirm: ShowConfirmCaller;
   classes: any;
@@ -130,7 +135,12 @@ interface Props {
   getScriptsPermissions: any;
   scripts: any;
   hasScriptsPermissions: any;
-  theme?: AppTheme;
+  selected?: number | string;
+  setSelected?: AnyArgFunction;
+  listEntity?: string;
+  listSelection?: string[];
+  listFilteredCount?: number;
+  listSearchQuery?: SearchQuery;
 }
 
 const sortItems = (a, b) => {
@@ -145,7 +155,6 @@ const sortItems = (a, b) => {
 const SwipeableSidebar: React.FC<Props> = props => {
   const {
     form,
-    isFormDirty,
     resetEditView,
     showConfirm,
     classes,
@@ -160,14 +169,19 @@ const SwipeableSidebar: React.FC<Props> = props => {
     variant,
     getScriptsPermissions,
     scripts,
-    hasScriptsPermissions
+    hasScriptsPermissions,
+    selected,
+    setSelected,
+    listSelection,
+    listFilteredCount,
+    listEntity,
+    listSearchQuery
   } = props;
 
   const [controlResults, setControlResults] = useState([]);
   const [resultIndex, setResultIndex] = useState(-1);
   const [scriptIdSelected, setScriptIdSelected] = useState(null);
   const [execMenuOpened, setExecMenuOpened] = useState(false);
-  const [selected, setSelected] = useState(null);
   const [focusOnSearchInput, setFocusOnSearchInput] = React.useState<boolean>(false);
 
   const favoritesString = useAppSelector(state => state.userPreferences[PreferenceEnum[DASHBOARD_FAVORITES_KEY]]);
@@ -187,6 +201,12 @@ const SwipeableSidebar: React.FC<Props> = props => {
       getFavoriteScripts();
     }
   }, [hasScriptsPermissions]);
+  
+  useEffect(() => {
+    if (!opened) {
+      setSelected(null);
+    }
+  }, [opened]);
 
   const toggleDrawer = open => event => {
     if (event && event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) {
@@ -343,7 +363,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
     };
   }, [controlResults, resultIndex]);
 
-  const checkSelectedResult = React.useCallback(
+  const checkSelectedResult = useCallback(
     (type, field, value) => {
       if (controlResults && resultIndex >= 0) {
         const selectedResult = controlResults[resultIndex];
@@ -354,25 +374,16 @@ const SwipeableSidebar: React.FC<Props> = props => {
     [controlResults, resultIndex]
   );
 
-  const showConfirmHandler = React.useCallback(onConfirm => {
-    if (isFormDirty && resetEditView) {
-      showConfirm(
-        {
-          onConfirm,
-          cancelButtonText: "DISCARD CHANGES"
-        }
-      );
-    } else {
-      onConfirm();
-    }
-  }, [isFormDirty, resetEditView]);
-
   const groupedSortedItems = useMemo<DashboardItem[]>(() => [
-      ...navigation.features.map(f => ({ category: f.key, url: f.link, name: f.title, id: null })),
-      ...((hasScriptsPermissions && scripts as DashboardItem[]) || [])]
-      .sort(sortItems),
+    ...navigation.features.map(f => ({
+     category: f.key, url: f.link, name: f.title, id: null
+    })),
+    ...((hasScriptsPermissions && scripts as DashboardItem[]) || [])]
+    .sort(sortItems),
     [navigation.features, scripts]);
-
+  
+  const isContactIdSelected = selected && typeof selected === "number";
+  
   return (
     <>
       <SwipeableDrawer
@@ -397,7 +408,6 @@ const SwipeableSidebar: React.FC<Props> = props => {
           <UserSearch
             getSearchResults={getSearchResults}
             setFocusOnSearchInput={setFocusOnSearchInput}
-            focusOnSearchInput={(focusOnSearchInput || showUserSearch)}
           />
           <div>
             <Collapse in={(focusOnSearchInput && !showUserSearch)}>
@@ -419,10 +429,10 @@ const SwipeableSidebar: React.FC<Props> = props => {
                   classes={{ root: classes.searchResultsRoot }}
                   userSearch={userSearch}
                   checkSelectedResult={checkSelectedResult}
-                  showConfirm={showConfirmHandler}
                   setExecMenuOpened={setExecMenuOpened}
                   setScriptIdSelected={setScriptIdSelected}
                   groupedSortedItems={groupedSortedItems}
+                  setSelected={setSelected}
                 />
               </div>
               <div className={showUserSearch ? "d-none" : ""}>
@@ -437,8 +447,6 @@ const SwipeableSidebar: React.FC<Props> = props => {
                 <Favorites
                   classes={{ topBar: classes.favoritesTopBar }}
                   groupedSortedItems={groupedSortedItems}
-                  showConfirm={showConfirmHandler}
-                  isFormDirty={isFormDirty}
                   setScriptIdSelected={setScriptIdSelected}
                   execMenuOpened={execMenuOpened}
                   setExecMenuOpened={setExecMenuOpened}
@@ -455,7 +463,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
                   setExecMenuOpened={setExecMenuOpened}
                 />
                 <Divider variant="middle" className="mb-2" />
-                <SidebarLatestActivity showConfirm={showConfirmHandler} checkSelectedResult={checkSelectedResult} />
+                <SidebarLatestActivity checkSelectedResult={checkSelectedResult} />
               </div>
             </Collapse>
           </div>
@@ -465,18 +473,21 @@ const SwipeableSidebar: React.FC<Props> = props => {
           clsx(
             classes.categoryRoot,
             opened && selected !== null && classes.categoryVisible
-          )
+        )
         }
         >
+          {isContactIdSelected ? (
+            <ContactInsight id={selected as number} onClose={() => setSelected(null)} />
+        ) : (
           <NavigationCategory
-            selected={selected}
+            selected={selected as string}
             favorites={favorites}
             favoriteScripts={favoriteScripts}
             onClose={() => setSelected(null)}
-            showConfirm={showConfirmHandler}
             setScriptIdSelected={setScriptIdSelected}
             setExecMenuOpened={setExecMenuOpened}
           />
+        )}
         </div>
       </SwipeableDrawer>
 
@@ -486,12 +497,24 @@ const SwipeableSidebar: React.FC<Props> = props => {
           onClick={toggleDrawer(false)}
         />
       )}
+
+      <SendMessageEditView
+        selection={isContactIdSelected ? [String(selected)] : listSelection}
+        filteredCount={isContactIdSelected ? 1 : listFilteredCount}
+        listEntity={isContactIdSelected ? "Contact" : listEntity}
+        listSearchQuery={isContactIdSelected ? {} : listSearchQuery}
+        selectionOnly={isContactIdSelected}
+      />
     </>
 );
 };
 
 const mapsStateToProps = (state: State) => ({
-  isFormDirty: state.swipeableDrawer.isDirty,
+  listFilteredCount: state.list.records.filteredCount,
+  listSelection: state.list.selection,
+  listEntity: state.list.records.entity,
+  listSearchQuery: state.list.searchQuery,
+  selected: state.swipeableDrawer.selected,
   resetEditView: state.swipeableDrawer.resetEditView,
   opened: state.swipeableDrawer.opened,
   variant: state.swipeableDrawer.variant,
@@ -502,6 +525,7 @@ const mapsStateToProps = (state: State) => ({
 });
 
 const mapStateToDispatch = (dispatch: Dispatch<any>) => ({
+  setSelected: selection => dispatch(setSwipeableDrawerSelection(selection)),
   toggleSwipeableDrawer: () => dispatch(toggleSwipeableDrawer()),
   getSearchResults: (search: string) => dispatch(getDashboardSearch(search)),
   getScripts: () => dispatch(getOnDemandScripts()),

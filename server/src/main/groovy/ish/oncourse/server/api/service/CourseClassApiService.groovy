@@ -31,7 +31,6 @@ import ish.oncourse.server.document.DocumentService
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import ish.oncourse.server.api.v1.function.DocumentFunctions
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import ish.oncourse.server.api.v1.model.CancelCourseClassDTO
 import ish.oncourse.server.api.v1.model.ClassFundingSourceDTO
@@ -169,7 +168,6 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         dto.minStudentAge = cc.minStudentAge
         dto.roomId = cc.room?.id
         dto.virtualSiteId = (cc.room?.site?.isVirtual ? cc.room.site.id : null) as Long
-        dto.sessionsCount = cc.sessionsCount
         dto.startDateTime = LocalDateUtils.dateToTimeValue(cc.startDateTime)
         dto.endDateTime =  LocalDateUtils.dateToTimeValue(cc.endDateTime)
         dto.suppressAvetmissExport = cc.suppressAvetmissExport
@@ -204,7 +202,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         dto.inProgressOutcomesCount = outcomes.findAll { it.status == OutcomeStatus.STATUS_NOT_SET }.size()
         dto.withdrawnOutcomesCount = outcomes.findAll { it.status == OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN }.size()
         dto.otherOutcomesCount = dto.allOutcomesCount  - dto.passOutcomesCount - dto.failedOutcomesCount - dto.inProgressOutcomesCount - dto.withdrawnOutcomesCount
-        dto.tags = cc.tags.collect { toRestTagMinimized(it) }
+        dto.tags = cc.allTags.collect { it.id }
         return dto
     }
 
@@ -255,7 +253,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         courseClass.initialDETexport = dto.initialDetExport
         courseClass.midwayDETexport = dto.midwayDetExport
         courseClass.finalDETexport = dto.finalDetExport
-        updateTags(courseClass, courseClass.taggingRelations, dto.tags*.id, CourseClassTagRelation, courseClass.context)
+        updateTags(courseClass, courseClass.taggingRelations, dto.tags, CourseClassTagRelation, courseClass.context)
         DocumentFunctions.updateDocuments(courseClass, courseClass.attachmentRelations, dto.documents, CourseClassAttachmentRelation, context)
         updateCustomFields(courseClass.context, courseClass, dto.customFields, CourseClassCustomField)
         courseClass
@@ -397,8 +395,8 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         if (courseClassDuplicate.copySitesAndRooms == null) {
             validator.throwClientErrorException('copySitesAndRooms', 'copySitesAndRooms is required')
         }
-        if (courseClassDuplicate.copyPayableTimeForSessions == null) {
-            validator.throwClientErrorException('copyPayableTimeForSessions', 'copyPayableTimeForSessions is required')
+        if (courseClassDuplicate.tutorRosterOverrides == null) {
+            validator.throwClientErrorException('tutorRosterOverrides', 'tutorRosterOverrides is required')
         }
         if (courseClassDuplicate.copyVetData == null) {
             validator.throwClientErrorException('copyVetData', 'copyVetData is required')
@@ -423,7 +421,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
             req.applyDiscounts = courseClassDuplicate.applyDiscounts
             req.copyCosts = courseClassDuplicate.copyCosts
             req.copySitesAndRooms = courseClassDuplicate.copySitesAndRooms
-            req.copyPayableTimeForSessions = courseClassDuplicate.copyPayableTimeForSessions
+            req.tutorRosterOverrides = courseClassDuplicate.tutorRosterOverrides
             req.copyVetData = courseClassDuplicate.copyVetData
             req.copyNotes = courseClassDuplicate.copyNotes
             req.copyAssessments = courseClassDuplicate.copyAssessments

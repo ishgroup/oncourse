@@ -44,7 +44,8 @@ class CollectionFormFieldTypesMenu extends React.Component<Props, any> {
     this.props.getTypes(this.props.formType);
   }
 
-  componentWillReceiveProps(nextProps) {
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.fieldTypes) {
       this.setState({
         filteredTypes: this.filterFieldTypes(nextProps.fieldTypes, nextProps.items)

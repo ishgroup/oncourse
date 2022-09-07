@@ -7,7 +7,6 @@ import * as React from "react";
 import { alpha, darken } from '@mui/material/styles';
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
-import { grey } from "@mui/material/colors";
 import getOS from "../utils/getOS";
 import { AppTheme } from "../../model/common/Theme";
 import InterRomanVar from "../../../fonts/inter/Inter-Roman.var.woff2";
@@ -124,6 +123,11 @@ const globalStyles = (theme: AppTheme) =>
       ".editViewHeadingOffset": {
         marginTop: `-${theme.spacing(2)}`
       },
+      ".cardBorders": {
+        borderRadius: theme.spacing(1),
+        border: "2px solid",
+        borderColor: alpha(theme.palette.text.disabled, 0.1),
+      },
       ".heading": {
         textTransform: "uppercase",
         fontFamily: theme.typography.fontFamily,
@@ -146,6 +150,13 @@ const globalStyles = (theme: AppTheme) =>
         fontWeight: 600,
         color: theme.heading.color,
         lineHeight: 1.45
+      },
+      ".headingHover": {
+        cursor: 'pointer',
+        willChange: "color",
+        "&:hover": {
+          color: darken(theme.heading.color as any, 0.4),
+        }
       },
       ".checkbox": {
         height: "35px",
@@ -230,7 +241,8 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".avetmissButton": {
         "&:hover": {
-          backgroundColor: darken(theme.palette.primary.main, 0.1)
+          backgroundColor: darken(theme.palette.primary.main, 0.1),
+          color: theme.palette.primary.contrastText
         }
       },
       ".hoverGrayIcon": {
@@ -244,7 +256,7 @@ const globalStyles = (theme: AppTheme) =>
         }
       },
       ".dndActionIcon": {
-        fill: theme.palette.action.hover,
+        fill: theme.palette.action.focus,
         "&:hover": {
           fill: theme.palette.action.active
         }
@@ -283,7 +295,7 @@ const globalStyles = (theme: AppTheme) =>
         marginRight: "100px"
       },
       ".addButtonColor": {
-        color: theme.palette.mode === "light" ? "#f7941d" : darken(grey[400], 0.1)
+        color: theme.addButtonColor.color
       },
       ".labelOffset": {
         marginLeft: "-14px"

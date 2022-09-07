@@ -4,29 +4,29 @@
  */
 
 import { Epic } from "redux-observable";
-
+import { initialize } from "redux-form";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import IntegrationService from "../services";
-import { FETCH_SUCCESS } from "../../../../../common/actions/index";
+import { FETCH_SUCCESS } from "../../../../../common/actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { parseIntegrations } from "../utils/index";
-import { UPDATE_INTEGRATION_ITEM_FULFILLED, UPDATE_INTEGRATION_ITEM_REQUEST } from "../../../actions";
+import { getIntegrations, UPDATE_INTEGRATION_ITEM_REQUEST } from "../../../actions";
+import history from "../../../../../constants/History";
+import { parseIntegrations } from "../utils";
 
 const request: EpicUtils.Request = {
   type: UPDATE_INTEGRATION_ITEM_REQUEST,
   getData: payload => IntegrationService.updateIntegration(payload.id, payload.item),
-  retrieveData: () => IntegrationService.getIntegrations(),
-  processData: response => {
-    const integrations = parseIntegrations(response);
-
+  processData: (response, state, { form, item }) => {
+    if (state.nextLocation) {
+      history.push(state.nextLocation);
+    }
     return [
-      { type: UPDATE_INTEGRATION_ITEM_FULFILLED, payload: { integrations } },
+      initialize(form, parseIntegrations([item])[0]),
+      getIntegrations(),
       { type: FETCH_SUCCESS, payload: { message: "Integration was successfully updated" } }
     ];
   },
-  processError: response => {
-    return FetchErrorHandler(response, "Error. Integration was not updated");
-  }
+  processError: response => FetchErrorHandler(response, "Error. Integration was not updated")
 };
 
 export const EpicUpdateIntegration: Epic<any, any> = EpicUtils.Create(request);
