@@ -15,6 +15,8 @@ import groovyx.net.http.RESTClient
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
 
+import java.text.SimpleDateFormat
+
 @CompileDynamic
 @Plugin(type = 19)
 class KronosIntegration implements PluginTrait {
@@ -41,10 +43,9 @@ class KronosIntegration implements PluginTrait {
     static Map kronosSkills = new HashMap()
     static Map kronosCostCenters = new HashMap()
     static Map kronosEmployees = new HashMap()
+    static List<KronosSchedule> kronosSchedules = new ArrayList<>()
 
-    static String kronosScheduleName
-    static Integer kronosScheduleId
-    static String kronosScheduleTimeZone
+    static final SimpleDateFormat dateFormat =  new SimpleDateFormat("yyyy-MM-dd")
 
     KronosIntegration(Map args) {
         loadConfig(args)
@@ -158,7 +159,7 @@ class KronosIntegration implements PluginTrait {
     }
 
     /**
-     * Get list of Employees from Kronos and store Employee employee_id and Employee ids in kronosCostCenters Map<employee_id,id>.
+     * Get list of Employees from Kronos and store Employee employee_id and Employee ids in kronosEmployees Map<employee_id,id>.
      */
     protected void initEmployees() {
         Map employeesFromKronos = getAllEmployees() as Map
@@ -173,33 +174,82 @@ class KronosIntegration implements PluginTrait {
     }
 
     /**
-     * Get Schedule from Kronos and store Schedule fields.
+     * Find Schedule Id from stored kronosSchedules, if not find -> reinit List kronosSchedules from Kronos and try to find one more time.
      */
-    protected void initSchedule(String scheduleName) {
+    protected findScheduleId(String scheduleName, String sessionDate) {
+        Date date = dateFormat.parse(sessionDate)
+        def schedules = kronosSchedules.findAll { it -> it.scheduleStart <= date && it.scheduleEnd > date}
+        if (schedules.size() < 1) {
+//            Integration store data, but users can update or add data to Kronos -> that is why reinit data to get actual from Kronos and try to find one more time.
+            initKronosSchedules(scheduleName)
+            schedules = kronosSchedules.findAll { it -> it.scheduleStart <= date && it.scheduleEnd > date}
+            if (schedules.size() < 1) {
+                throw new IllegalStateException("Kronos Company ${companyShortName} have no Schedule with name '${scheduleName}', which contains the date '${sessionDate}'.")
+            }
+        }
+        if (schedules.size() > 1) {
+            throw new IllegalStateException("Kronos Company ${companyShortName} have more then one Schedules with name '${scheduleName}' and contains the date '${sessionDate}'. Here are the schedules with their ids: '${schedules.id}'.")
+        }
+        return schedules[0].id
+    }
+
+    /**
+     * Get list of Schedules by Schedule Name from Kronos and store Shedule name, id, schedule_start and schedule_end in kronosSchedules List<KronosSchedule>.
+     */
+    protected void initKronosSchedules(String scheduleName) {
         Map resultFromKronos = getCompanySchedules() as Map
         List<Map> schedulesFromKronos = resultFromKronos["schedules"] as List<Map>
         if (!schedulesFromKronos) {
-            setStoredScheduleValuesToNull()
-            throw new IllegalStateException("Kronos Company ${companyShortName} doesn't have Schedules")
+            throw new IllegalStateException("Kronos Company ${companyShortName} doesn't have Schedules.")
         }
         List<Map> schedulesByName = schedulesFromKronos.findAll { it["name"] == scheduleName }
         if (schedulesByName.size() == 0) {
-            setStoredScheduleValuesToNull()
             throw new IllegalStateException("Kronos Company ${companyShortName} doesn't have Schedules with name '${scheduleName}'.")
         }
-        if (schedulesByName.size() > 1) {
-            setStoredScheduleValuesToNull()
-            throw new IllegalStateException("Kronos Company ${companyShortName} have more then 1 Schedules with name '${scheduleName}'.")
+        kronosSchedules = new ArrayList()
+        for (Map schedule : schedulesByName) {
+            kronosSchedules.add(new KronosSchedule(schedule["name"] as String, schedule["id"] as String, schedule["schedule_start"] as String, schedule["schedule_end"] as String, schedule["time_zone"]["display_name"] as String))
         }
-        kronosScheduleName = schedulesByName.get(0)["name"]
-        kronosScheduleId = schedulesByName.get(0)["id"]
-        kronosScheduleTimeZone = schedulesByName.get(0)["time_zone"]["display_name"]
     }
 
-    private static void setStoredScheduleValuesToNull() {
-        kronosScheduleName = null
-        kronosScheduleId = null
-        kronosScheduleTimeZone = null
+    /**
+     * Find Time Zone from stored kronosScheduleSetting, if not find -> reinit List kronosScheduleSetting from Kronos and try to find one more time.
+     */
+    protected String findTimeZone(String scheduleSettingName) {
+        Map resultFromKronos = getCompanyScheduleSettings() as Map
+        List<Map> scheduleSettingsFromKronos = resultFromKronos["settings"] as List<Map>
+        if (!scheduleSettingsFromKronos) {
+            throw new IllegalStateException("Kronos Company ${companyShortName} doesn't have Schedule Settings.")
+        }
+        def scheduleSettingsByName = scheduleSettingsFromKronos.findAll { it["name"] == scheduleSettingName}
+        if (scheduleSettingsByName.size() < 1) {
+            throw new IllegalStateException("Kronos Company ${companyShortName} have no Schedule Settings with name '${scheduleSettingName}'.")
+        }
+        if (scheduleSettingsByName.size() > 1) {
+            throw new IllegalStateException("Kronos Company ${companyShortName} have more then one Schedule Settings with name '${scheduleSettingName}'. Here are the schedules with their ids: '${scheduleSettingName["id"]}'.")
+        }
+        return scheduleSettingsByName[0]["time_zone"]["display_name"]
+    }
+
+    /**
+     * Retrieves the list of Schedule Settings. Required to create a Schedule in the System.
+     * Advanced Scheduler (SCHEDULE) Subsystem must be enabled in company setup.
+     *
+     * @return schedule settings
+     */
+    protected getCompanyScheduleSettings() {
+        def client = new RESTClient(KRONOS_REST_URL)
+        client.headers["Authentication"] = "Bearer ${authToken}"
+        client.request(Method.GET) {
+            uri.path = "/ta/rest/v2/companies/${CID}/schedules/settings"
+
+            response.success = { resp, result ->
+                return result
+            }
+            response.failure = { resp, result ->
+                throw new IllegalStateException("Failed to get schedule settings (company cid) - (${CID}): ${resp.getStatusLine()}, ${result}")
+            }
+        }
     }
 
     /**
@@ -467,6 +517,39 @@ class KronosIntegration implements PluginTrait {
                 throw new IllegalStateException("Failed to update shift (company cid, shift id, accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, scheduleId) - " +
                         "(${CID}, ${shiftId}, ${accountId}, ${date}, ${shiftStart}, ${shiftEnd}, ${costCenter1Id}, ${costCenter3Id}, ${skillId}, ${scheduleId}): ${resp.getStatusLine()}, ${result}")
             }
+        }
+    }
+
+    private static class KronosSchedule {
+
+        private String name
+        private String id
+        private Date scheduleStart
+        private Date scheduleEnd
+        private String timeZone
+
+        KronosSchedule(String name, String id, String scheduleStart, String scheduleEnd, String timeZone) {
+            this.name = name
+            this.id = id
+            this.scheduleStart = dateFormat.parse(scheduleStart)
+            this.scheduleEnd = dateFormat.parse(scheduleEnd)
+            this.timeZone = timeZone
+        }
+
+        String getName() {
+            return name
+        }
+
+        String getId() {
+            return id
+        }
+
+        Date getScheduleStart() {
+            return scheduleStart
+        }
+
+        Date getScheduleEnd() {
+            return scheduleEnd
         }
     }
 }
