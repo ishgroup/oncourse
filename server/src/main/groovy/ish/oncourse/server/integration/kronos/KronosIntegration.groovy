@@ -129,6 +129,26 @@ class KronosIntegration implements PluginTrait {
     }
 
     /**
+     * Find Schedule Id from stored kronosSchedules, if not find -> reinit List kronosSchedules from Kronos and try to find one more time.
+     */
+    protected findScheduleId(String scheduleName, String sessionDate) {
+        Date date = dateFormat.parse(sessionDate)
+        def schedules = kronosSchedules.findAll { it -> it.scheduleStart <= date && it.scheduleEnd > date}
+        if (schedules.size() < 1) {
+//            Integration store data, but users can update or add data to Kronos -> that is why reinit data to get actual from Kronos and try to find one more time.
+            initKronosSchedules(scheduleName)
+            schedules = kronosSchedules.findAll { it -> it.scheduleStart <= date && it.scheduleEnd > date}
+            if (schedules.size() < 1) {
+                throw new IllegalStateException("Kronos Company ${companyShortName} have no Schedule with name '${scheduleName}', which contains the date '${sessionDate}'.")
+            }
+        }
+        if (schedules.size() > 1) {
+            throw new IllegalStateException("Kronos Company ${companyShortName} have more then one Schedules with name '${scheduleName}' and contains the date '${sessionDate}'. Here are the schedules with their ids: '${schedules.id}'.")
+        }
+        return schedules[0].id
+    }
+
+    /**
      * Get list of Skills from Kronos and store skill names and skill ids in kronosSkills Map<name,id>.
      */
     protected void initSkills() {
@@ -171,26 +191,6 @@ class KronosIntegration implements PluginTrait {
         for (Map employee : items) {
             kronosEmployees.put(employee["employee_id"], employee["id"])
         }
-    }
-
-    /**
-     * Find Schedule Id from stored kronosSchedules, if not find -> reinit List kronosSchedules from Kronos and try to find one more time.
-     */
-    protected findScheduleId(String scheduleName, String sessionDate) {
-        Date date = dateFormat.parse(sessionDate)
-        def schedules = kronosSchedules.findAll { it -> it.scheduleStart <= date && it.scheduleEnd > date}
-        if (schedules.size() < 1) {
-//            Integration store data, but users can update or add data to Kronos -> that is why reinit data to get actual from Kronos and try to find one more time.
-            initKronosSchedules(scheduleName)
-            schedules = kronosSchedules.findAll { it -> it.scheduleStart <= date && it.scheduleEnd > date}
-            if (schedules.size() < 1) {
-                throw new IllegalStateException("Kronos Company ${companyShortName} have no Schedule with name '${scheduleName}', which contains the date '${sessionDate}'.")
-            }
-        }
-        if (schedules.size() > 1) {
-            throw new IllegalStateException("Kronos Company ${companyShortName} have more then one Schedules with name '${scheduleName}' and contains the date '${sessionDate}'. Here are the schedules with their ids: '${schedules.id}'.")
-        }
-        return schedules[0].id
     }
 
     /**
