@@ -71,15 +71,14 @@ class KronosScriptClosure implements ScriptClosureTrait<KronosIntegration> {
             return null
         }
 
-        //TODO get correct timezone to use it below
-        String timeZone = integration.findTimeZone(scheduleName)
+        Map scheduleSetting = integration.getScheduleSettingByName(scheduleName)
+        String timeZone = integration.findTimeZone(scheduleSetting)
 
         String date = dateInTimeZoneAndFormat(session.startDatetime, DATE_FORMAT, timeZone)
         String shiftStart = dateInTimeZoneAndFormat(session.startDatetime, DATE_TIME_FORMAT, timeZone)
         String shiftEnd = dateInTimeZoneAndFormat(session.endDatetime, DATE_TIME_FORMAT, timeZone)
 
-        //TODO ??? search by schedule setting id and ScheduleName???
-        String scheduleId = integration.findScheduleId(scheduleName, date)
+        String scheduleId = integration.findScheduleId(scheduleName, scheduleSetting["id"], date)
 
         String costCenter1 = firstThreeDigitsAccountCode(session.courseClass.incomeAccount.accountCode)
         def costCenter1Id = integration.findCostCenterId(costCenter1)

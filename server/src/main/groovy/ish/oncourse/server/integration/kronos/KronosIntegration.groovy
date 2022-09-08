@@ -43,6 +43,7 @@ class KronosIntegration implements PluginTrait {
     static Map kronosSkills = new HashMap()
     static Map kronosCostCenters = new HashMap()
     static Map kronosEmployees = new HashMap()
+    static Map kronosTimeZones = new HashMap()
     static List<KronosSchedule> kronosSchedules = new ArrayList<>()
 
     static final SimpleDateFormat dateFormat =  new SimpleDateFormat("yyyy-MM-dd")
@@ -131,21 +132,35 @@ class KronosIntegration implements PluginTrait {
     /**
      * Find Schedule Id from stored kronosSchedules, if not find -> reinit List kronosSchedules from Kronos and try to find one more time.
      */
-    protected findScheduleId(String scheduleName, String sessionDate) {
+    protected findScheduleId(String scheduleName, scheduleSettingId, String sessionDate) {
         Date date = dateFormat.parse(sessionDate)
         def schedules = kronosSchedules.findAll { it -> it.scheduleStart <= date && it.scheduleEnd > date}
         if (schedules.size() < 1) {
 //            Integration store data, but users can update or add data to Kronos -> that is why reinit data to get actual from Kronos and try to find one more time.
-            initKronosSchedules(scheduleName)
+            initKronosSchedules(scheduleName, scheduleSettingId)
             schedules = kronosSchedules.findAll { it -> it.scheduleStart <= date && it.scheduleEnd > date}
             if (schedules.size() < 1) {
-                throw new IllegalStateException("Kronos Company ${companyShortName} have no Schedule with name '${scheduleName}', which contains the date '${sessionDate}'.")
+                throw new IllegalStateException("Kronos Company ${companyShortName} have no Schedule with name !!!!!!!'${scheduleName}', which contains the date '${sessionDate}'.")
             }
         }
         if (schedules.size() > 1) {
-            throw new IllegalStateException("Kronos Company ${companyShortName} have more then one Schedules with name '${scheduleName}' and contains the date '${sessionDate}'. Here are the schedules with their ids: '${schedules.id}'.")
+            throw new IllegalStateException("Kronos Company ${companyShortName} have more then one Schedules with name !!!!!!!!!'${scheduleName}' and contains the date '${sessionDate}'. Here are the schedules with their ids: '${schedules.id}'.")
         }
         return schedules[0].id
+    }
+
+    /**
+     * Find Time Zone from stored kronosTimeZones, if not find -> reinit Map kronosTimeZones from Kronos and try to find one more time.
+     */
+    protected findTimeZoneName(timeZoneId) {
+        def timeZoneName = kronosTimeZones.get(timeZoneId)
+        if (!timeZoneName) {
+//            Integration store data, but users can update or add data to Kronos -> that is why reinit data to get actual from Kronos and try to find one more time.
+            initTimeZones()
+            timeZoneName = kronosTimeZones.get(timeZoneId)
+            return timeZoneName
+        }
+        return timeZoneName
     }
 
     /**
@@ -196,26 +211,53 @@ class KronosIntegration implements PluginTrait {
     /**
      * Get list of Schedules by Schedule Name from Kronos and store Shedule name, id, schedule_start and schedule_end in kronosSchedules List<KronosSchedule>.
      */
-    protected void initKronosSchedules(String scheduleName) {
+    protected void initKronosSchedules(String scheduleName, scheduleSettingId) {
         Map resultFromKronos = getCompanySchedules() as Map
         List<Map> schedulesFromKronos = resultFromKronos["schedules"] as List<Map>
         if (!schedulesFromKronos) {
             throw new IllegalStateException("Kronos Company ${companyShortName} doesn't have Schedules.")
         }
-        List<Map> schedulesByName = schedulesFromKronos.findAll { it["name"] == scheduleName }
-        if (schedulesByName.size() == 0) {
-            throw new IllegalStateException("Kronos Company ${companyShortName} doesn't have Schedules with name '${scheduleName}'.")
+        List<Map> schedulesByNameAndSettindId = schedulesFromKronos.findAll { it["name"] == scheduleName && it["settings_id"] == scheduleSettingId }
+        if (schedulesByNameAndSettindId.size() == 0) {
+            throw new IllegalStateException("Kronos Company ${companyShortName} doesn't have Schedules with name '${scheduleName}' and settings_id '${scheduleSettingId}'.")
         }
         kronosSchedules = new ArrayList()
-        for (Map schedule : schedulesByName) {
+        for (Map schedule : schedulesByNameAndSettindId) {
             kronosSchedules.add(new KronosSchedule(schedule["name"] as String, schedule["id"] as String, schedule["schedule_start"] as String, schedule["schedule_end"] as String, schedule["time_zone"]["display_name"] as String))
         }
     }
 
     /**
-     * Find Time Zone from stored kronosScheduleSetting, if not find -> reinit List kronosScheduleSetting from Kronos and try to find one more time.
+     * Get list of TimeZones from Kronos and store TimeZones timezone id and time zone java name in kronosTimeZones Map<id,javaName>.
      */
-    protected String findTimeZone(String scheduleSettingName) {
+    protected void initTimeZones() {
+        Map timeZonesFromKronos = getCompanyTimeZones() as Map
+        List<Map> timeZones = timeZonesFromKronos["items"] as List<Map>
+        if (!timeZones){
+            throw new IllegalStateException("Kronos Company ${companyShortName} doesn't have time zones")
+        }
+        kronosTimeZones = new HashMap()
+        for (Map timeZone : timeZones) {
+            kronosTimeZones.put(timeZone["id"], timeZone["java_name"])
+        }
+    }
+
+    /**
+     * Find Time Zone from scheduleSetting a convert it id for java time zone
+     */
+    protected String findTimeZone(scheduleSetting) {
+        def timeZoneId = scheduleSetting["time_zone"]["id"]
+        String timeZoneName = findTimeZoneName(timeZoneId)
+        if (!timeZoneName) {
+            throw new IllegalStateException("Kronos Company ${companyShortName} with Schedule Settings name '${scheduleSetting["name"]}' doesn't have correct Time Zone, Time Zone id is '${timeZoneId}'")
+        }
+        return timeZoneName
+    }
+
+    /**
+     * Get Schedule Setting from Kronos by Schedule Setting Name
+     */
+    protected Map getScheduleSettingByName(String scheduleSettingName){
         Map resultFromKronos = getCompanyScheduleSettings() as Map
         List<Map> scheduleSettingsFromKronos = resultFromKronos["settings"] as List<Map>
         if (!scheduleSettingsFromKronos) {
@@ -228,7 +270,7 @@ class KronosIntegration implements PluginTrait {
         if (scheduleSettingsByName.size() > 1) {
             throw new IllegalStateException("Kronos Company ${companyShortName} have more then one Schedule Settings with name '${scheduleSettingName}'. Here are the schedules with their ids: '${scheduleSettingName["id"]}'.")
         }
-        return scheduleSettingsByName[0]["time_zone"]["display_name"]
+        return scheduleSettingsByName[0]
     }
 
     /**
@@ -339,6 +381,26 @@ class KronosIntegration implements PluginTrait {
             }
             response.failure = { resp, result ->
                 throw new IllegalStateException("Failed to get Employees (company cid) - (${CID}): ${resp.getStatusLine()}, ${result}")
+            }
+        }
+    }
+
+    /**
+     * Endpoint to fetch list of defined timezones
+     *
+     * @return timezones
+     */
+    protected getCompanyTimeZones() {
+        def client = new RESTClient(KRONOS_REST_URL)
+        client.headers["Authentication"] = "Bearer ${authToken}"
+        client.request(Method.GET) {
+            uri.path = "/ta/rest/v2/companies/${CID}/lookup/timezones"
+
+            response.success = { resp, result ->
+                return result
+            }
+            response.failure = { resp, result ->
+                throw new IllegalStateException("Failed to get time zones (company cid) - (${CID}): ${resp.getStatusLine()}, ${result}")
             }
         }
     }
