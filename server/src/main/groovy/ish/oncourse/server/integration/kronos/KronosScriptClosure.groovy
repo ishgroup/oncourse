@@ -71,14 +71,16 @@ class KronosScriptClosure implements ScriptClosureTrait<KronosIntegration> {
             return null
         }
 
-        //TODO rewrite storing schedule logic after agreement with James
-        if (!KronosIntegration.kronosScheduleId || !scheduleName.equals(KronosIntegration.kronosScheduleName)) {
-            integration.initSchedule(scheduleName)
-        }
+        //TODO get correct timezone to use it below
+        String timeZone = integration.findTimeZone(scheduleName)
 
-        String date = dateInTimeZoneAndFormat(session.startDatetime, DATE_FORMAT, KronosIntegration.kronosScheduleTimeZone)
-        String shiftStart = dateInTimeZoneAndFormat(session.startDatetime, DATE_TIME_FORMAT, KronosIntegration.kronosScheduleTimeZone)
-        String shiftEnd = dateInTimeZoneAndFormat(session.endDatetime, DATE_TIME_FORMAT, KronosIntegration.kronosScheduleTimeZone)
+        String date = dateInTimeZoneAndFormat(session.startDatetime, DATE_FORMAT, timeZone)
+        String shiftStart = dateInTimeZoneAndFormat(session.startDatetime, DATE_TIME_FORMAT, timeZone)
+        String shiftEnd = dateInTimeZoneAndFormat(session.endDatetime, DATE_TIME_FORMAT, timeZone)
+
+        //TODO ??? search by schedule setting id and ScheduleName???
+        String scheduleId = integration.findScheduleId(scheduleName, date)
+
         String costCenter1 = firstThreeDigitsAccountCode(session.courseClass.incomeAccount.accountCode)
         def costCenter1Id = integration.findCostCenterId(costCenter1)
         if (!costCenter1Id) {
@@ -118,21 +120,21 @@ class KronosScriptClosure implements ScriptClosureTrait<KronosIntegration> {
             def shiftIdByCustomField = getCustomFieldValue(tutorAttendance, KRONOS_SHIFT_ID_CUSTOM_FIELD_KEY)
             def scheduleIdByCustomField = getCustomFieldValue(tutorAttendance, KRONOS_SCHEDULE_ID_CUSTOM_FIELD_KEY)
             if (shiftIdByCustomField) {
-                if (scheduleIdByCustomField != KronosIntegration.kronosScheduleId.toString()) {
-                    logger.error("Schedule id '${KronosIntegration.kronosScheduleId}' different from custom field schedule id '${scheduleIdByCustomField}'. Shift will not be updated in Kronos. Additional information: start date ${shiftStart} and end date ${shiftEnd}.")
+                if (scheduleIdByCustomField != scheduleId) {
+                    logger.error("Schedule id '${scheduleId}' different from custom field schedule id '${scheduleIdByCustomField}'. Shift will not be updated in Kronos. Additional information: start date ${shiftStart} and end date ${shiftEnd}.")
                     continue
                 }
-                resultKronosShift = integration.updateShift(shiftIdByCustomField, accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, KronosIntegration.kronosScheduleId)
+                resultKronosShift = integration.updateShift(shiftIdByCustomField, accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, scheduleId)
             }
             else {
                 //TODO Don't throw exception if shift didn't create? Maybe return ['success'/'failure', resp, result] and make check 'success' or 'failure' then write log (warn/info): 'Shift was successfully created in Kronos' or 'Failed: Shift wasn't created in Kronos: [resp, result]'
-                resultKronosShift = integration.createNewShift(accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, KronosIntegration.kronosScheduleId)
+                resultKronosShift = integration.createNewShift(accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, scheduleId)
             }
             if (resultKronosShift["created"]) {
                 logger.warn("Shift was successfully created. Kronos Schedule id '${scheduleIdByCustomField}'")
-                def kronosShiftId = integration.getKronosShiftIdBySessionFields(KronosIntegration.kronosScheduleId, accountId, shiftStart, shiftEnd, skillId, costCenter1Id, costCenter3Id, tutorAttendance.id)
-                saveCustomFields(tutorAttendance, kronosShiftId.toString(), KronosIntegration.kronosScheduleId.toString())
-                logger.warn("Shift with kronos shift id '${kronosShiftId}' was saved custom fields. Kronos Schedule id '${KronosIntegration.kronosScheduleId}'.")
+                def kronosShiftId = integration.getKronosShiftIdBySessionFields(scheduleId, accountId, shiftStart, shiftEnd, skillId, costCenter1Id, costCenter3Id, tutorAttendance.id)
+                saveCustomFields(tutorAttendance, kronosShiftId.toString(), scheduleId)
+                logger.warn("Shift with kronos shift id '${kronosShiftId}' was saved custom fields. Kronos Schedule id '${scheduleId}'.")
             } else if (resultKronosShift["updated"]) {
                 logger.warn("Shift with kronos shift id '${shiftIdByCustomField}' was successfully updated. Kronos Schedule id '${scheduleIdByCustomField}'.")
             }
