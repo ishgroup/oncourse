@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import { ClassFundingSource, CourseEnrolmentType, CourseStatus, DeliveryMode, OutcomeStatus } from "@api/model";
@@ -79,6 +82,18 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
           label: "Reportable hours",
           name: "Reportable hours",
           type: "Number"
+        },
+        {
+          keyCode: "startDate",
+          label: "Start date override",
+          name: "Start date override",
+          type: "Date"
+        },
+        {
+          keyCode: "endDate",
+          label: "End date override",
+          name: "End date override",
+          type: "Date"
         }
       ];
     }
