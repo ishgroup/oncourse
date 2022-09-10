@@ -140,11 +140,11 @@ class KronosIntegration implements PluginTrait {
             initKronosSchedules(scheduleName, scheduleSettingId)
             schedules = kronosSchedules.findAll { it -> it.scheduleStart <= date && it.scheduleEnd > date}
             if (schedules.size() < 1) {
-                throw new IllegalStateException("Kronos Company ${companyShortName} have no Schedule with name !!!!!!!'${scheduleName}', which contains the date '${sessionDate}'.")
+                throw new IllegalStateException("Kronos Company '${companyShortName}' have no Schedule with name '${scheduleName}' and settings_id '${scheduleSettingId}', which contains the date '${sessionDate}'.")
             }
         }
         if (schedules.size() > 1) {
-            throw new IllegalStateException("Kronos Company ${companyShortName} have more then one Schedules with name !!!!!!!!!'${scheduleName}' and contains the date '${sessionDate}'. Here are the schedules with their ids: '${schedules.id}'.")
+            throw new IllegalStateException("Kronos Company '${companyShortName}' have more then one Schedules with name '${scheduleName}' and settings_id '${scheduleSettingId}' and contains the date '${sessionDate}'. Here are the schedules with their ids: '${schedules.id}'.")
         }
         return schedules[0].id
     }
@@ -170,7 +170,7 @@ class KronosIntegration implements PluginTrait {
         Map skillsFromKronos = getCompanySkills() as Map
         List<Map> items = skillsFromKronos["items"] as List<Map>
         if (!items){
-            throw new IllegalStateException("Kronos Company ${companyShortName} doesn't have skills")
+            throw new IllegalStateException("Kronos Company '${companyShortName}' doesn't have any Skills")
         }
         kronosSkills = new HashMap()
         for (Map skill : items) {
@@ -185,7 +185,7 @@ class KronosIntegration implements PluginTrait {
         Map costCentersFromKronos = getCompanyCostCenters() as Map
         List<Map> centers = costCentersFromKronos["cost_centers"] as List<Map>
         if (!centers){
-            throw new IllegalStateException("Kronos Company ${companyShortName} doesn't have Cost Centers")
+            throw new IllegalStateException("Kronos Company '${companyShortName}' doesn't have any Cost Centers")
         }
         kronosCostCenters = new HashMap()
         for (Map center : centers) {
@@ -200,7 +200,7 @@ class KronosIntegration implements PluginTrait {
         Map employeesFromKronos = getAllEmployees() as Map
         List<Map> items = employeesFromKronos["employees"] as List<Map>
         if (!items){
-            throw new IllegalStateException("Kronos Company ${companyShortName} doesn't have employees")
+            throw new IllegalStateException("Kronos Company '${companyShortName}' doesn't have any Employees")
         }
         kronosEmployees = new HashMap()
         for (Map employee : items) {
@@ -215,15 +215,15 @@ class KronosIntegration implements PluginTrait {
         Map resultFromKronos = getCompanySchedules() as Map
         List<Map> schedulesFromKronos = resultFromKronos["schedules"] as List<Map>
         if (!schedulesFromKronos) {
-            throw new IllegalStateException("Kronos Company ${companyShortName} doesn't have Schedules.")
+            throw new IllegalStateException("Kronos Company '${companyShortName}' doesn't have any Schedules.")
         }
         List<Map> schedulesByNameAndSettindId = schedulesFromKronos.findAll { it["name"] == scheduleName && it["settings_id"] == scheduleSettingId }
         if (schedulesByNameAndSettindId.size() == 0) {
-            throw new IllegalStateException("Kronos Company ${companyShortName} doesn't have Schedules with name '${scheduleName}' and settings_id '${scheduleSettingId}'.")
+            throw new IllegalStateException("Kronos Company '${companyShortName}' doesn't have Schedules with name '${scheduleName}' and settings_id '${scheduleSettingId}'.")
         }
         kronosSchedules = new ArrayList()
         for (Map schedule : schedulesByNameAndSettindId) {
-            kronosSchedules.add(new KronosSchedule(schedule["name"] as String, schedule["id"] as String, schedule["schedule_start"] as String, schedule["schedule_end"] as String, schedule["time_zone"]["display_name"] as String))
+            kronosSchedules.add(new KronosSchedule(schedule["name"] as String, schedule["id"] as String, schedule["schedule_start"] as String, schedule["schedule_end"] as String))
         }
     }
 
@@ -234,7 +234,7 @@ class KronosIntegration implements PluginTrait {
         Map timeZonesFromKronos = getCompanyTimeZones() as Map
         List<Map> timeZones = timeZonesFromKronos["items"] as List<Map>
         if (!timeZones){
-            throw new IllegalStateException("Kronos Company ${companyShortName} doesn't have time zones")
+            throw new IllegalStateException("Kronos Company '${companyShortName}' doesn't have time zones")
         }
         kronosTimeZones = new HashMap()
         for (Map timeZone : timeZones) {
@@ -249,7 +249,7 @@ class KronosIntegration implements PluginTrait {
         def timeZoneId = scheduleSetting["time_zone"]["id"]
         String timeZoneName = findTimeZoneName(timeZoneId)
         if (!timeZoneName) {
-            throw new IllegalStateException("Kronos Company ${companyShortName} with Schedule Settings name '${scheduleSetting["name"]}' doesn't have correct Time Zone, Time Zone id is '${timeZoneId}'")
+            throw new IllegalStateException("Kronos Company '${companyShortName}' with Schedule Settings name '${scheduleSetting["name"]}' doesn't have correct Time Zone, Time Zone id is '${timeZoneId}'")
         }
         return timeZoneName
     }
@@ -261,14 +261,14 @@ class KronosIntegration implements PluginTrait {
         Map resultFromKronos = getCompanyScheduleSettings() as Map
         List<Map> scheduleSettingsFromKronos = resultFromKronos["settings"] as List<Map>
         if (!scheduleSettingsFromKronos) {
-            throw new IllegalStateException("Kronos Company ${companyShortName} doesn't have Schedule Settings.")
+            throw new IllegalStateException("Kronos Company '${companyShortName}' doesn't have Schedule Settings.")
         }
         def scheduleSettingsByName = scheduleSettingsFromKronos.findAll { it["name"] == scheduleSettingName}
         if (scheduleSettingsByName.size() < 1) {
-            throw new IllegalStateException("Kronos Company ${companyShortName} have no Schedule Settings with name '${scheduleSettingName}'.")
+            throw new IllegalStateException("Kronos Company '${companyShortName}' have no Schedule Settings with name '${scheduleSettingName}'.")
         }
         if (scheduleSettingsByName.size() > 1) {
-            throw new IllegalStateException("Kronos Company ${companyShortName} have more then one Schedule Settings with name '${scheduleSettingName}'. Here are the schedules with their ids: '${scheduleSettingName["id"]}'.")
+            throw new IllegalStateException("Kronos Company '${companyShortName}' have more then one Schedule Settings with name '${scheduleSettingName}'. Here are the schedules with their ids: '${scheduleSettingName["id"]}'.")
         }
         return scheduleSettingsByName[0]
     }
@@ -289,7 +289,7 @@ class KronosIntegration implements PluginTrait {
                 return result
             }
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to get schedule settings (company cid) - (${CID}): ${resp.getStatusLine()}, ${result}")
+                throw new IllegalStateException("Failed to get Schedule Settings (company cid) - (${CID}): ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -358,7 +358,7 @@ class KronosIntegration implements PluginTrait {
                 return result
             }
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to get schedules (company cid) - (${CID}): ${resp.getStatusLine()}, ${result}")
+                throw new IllegalStateException("Failed to get Schedules (company cid) - (${CID}): ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -400,33 +400,7 @@ class KronosIntegration implements PluginTrait {
                 return result
             }
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to get time zones (company cid) - (${CID}): ${resp.getStatusLine()}, ${result}")
-            }
-        }
-    }
-
-    /**
-     * Returns the core Employee record containing the bulk of the information about employee.
-     * Additionally the response contains links to additional APIs to return additional related data such as Pay Information or Demographics.
-     * Employee from Kronos via API v2
-     *
-     * @return employee
-     */
-    protected getEmployeeById(id) {
-        def client = new RESTClient(KRONOS_REST_URL)
-        client.headers["Authentication"] = "Bearer ${authToken}"
-        client.request(Method.GET) {
-            uri.path = "/ta/rest/v2/companies/${CID}/employees/${id}"
-
-            response.success = { resp, result ->
-                return result
-            }
-            response.failure = { resp, result ->
-                if (resp.getProperties()["status"] == HTTP_NOT_FOUND && result?.errors?.code?.get(0) == ACCOUNT_NOT_FOUND_CODE) {
-                    return null
-                } else {
-                    throw new IllegalStateException("Failed to get employee with id ${id} (company cid) - (${CID}): ${resp.getStatusLine()}, ${result}")
-                }
+                throw new IllegalStateException("Failed to get Time Zones (company cid) - (${CID}): ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -435,7 +409,7 @@ class KronosIntegration implements PluginTrait {
         Map shiftsFromKronos = getShiftsByScheduleId(scheduleId) as Map
         List<Map> shifts = shiftsFromKronos["shifts"] as List<Map>
         if (!shifts){
-            throw new IllegalStateException("Kronos Company ${companyShortName} ScheduleId ${scheduleId} doesn't have shifts")
+            throw new IllegalStateException("Kronos Company '${companyShortName}' ScheduleId ${scheduleId} doesn't have shifts")
         }
         List shiftIds = new ArrayList()
         for (Map shift : shifts) {
@@ -449,10 +423,10 @@ class KronosIntegration implements PluginTrait {
             }
         }
         if (shiftIds.size() > 1) {
-            throw new IllegalStateException("Kronos Company ${companyShortName} Schedule with id ${scheduleId} have more then 1 shift with given fields. Custom Field won't add to TutorAttendance with id ${tutorAttendanceId}")
+            throw new IllegalStateException("Kronos Company '${companyShortName}' Schedule with id '${scheduleId}' have more then 1 shift with given fields. Custom Field won't add to TutorAttendance with id '${tutorAttendanceId}'")
         }
         if (shiftIds.size() > 1) {
-            throw new IllegalStateException("Kronos Company ${companyShortName} Schedule with id ${scheduleId} have no one shift with given fields. Custom Field won't add to TutorAttendance with id ${tutorAttendanceId}")
+            throw new IllegalStateException("Kronos Company '${companyShortName}' Schedule with id '${scheduleId}' have no one shift with given fields. Custom Field won't add to TutorAttendance with id '${tutorAttendanceId}'")
         }
         return shiftIds.get(0)
     }
@@ -524,8 +498,8 @@ class KronosIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to create shift (company cid, accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, scheduleId) - " +
-                        "(${CID}, ${accountId}, ${date}, ${shiftStart}, ${shiftEnd}, ${costCenter1Id}, ${costCenter3Id}, ${skillId}, ${scheduleId}): ${resp.getStatusLine()}, ${result}")
+                throw new IllegalStateException("Failed to create shift (company cid, scheduleId, accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId) - " +
+                        "(${CID}, ${scheduleId}, ${accountId}, ${date}, ${shiftStart}, ${shiftEnd}, ${costCenter1Id}, ${costCenter3Id}, ${skillId}): ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -576,8 +550,8 @@ class KronosIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to update shift (company cid, shift id, accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, scheduleId) - " +
-                        "(${CID}, ${shiftId}, ${accountId}, ${date}, ${shiftStart}, ${shiftEnd}, ${costCenter1Id}, ${costCenter3Id}, ${skillId}, ${scheduleId}): ${resp.getStatusLine()}, ${result}")
+                throw new IllegalStateException("Failed to update shift (company cid, scheduleId, shiftId, accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId) - " +
+                        "(${CID}, ${scheduleId}, ${shiftId}, ${accountId}, ${date}, ${shiftStart}, ${shiftEnd}, ${costCenter1Id}, ${costCenter3Id}, ${skillId}): ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -588,14 +562,12 @@ class KronosIntegration implements PluginTrait {
         private String id
         private Date scheduleStart
         private Date scheduleEnd
-        private String timeZone
 
-        KronosSchedule(String name, String id, String scheduleStart, String scheduleEnd, String timeZone) {
+        KronosSchedule(String name, String id, String scheduleStart, String scheduleEnd) {
             this.name = name
             this.id = id
             this.scheduleStart = dateFormat.parse(scheduleStart)
             this.scheduleEnd = dateFormat.parse(scheduleEnd)
-            this.timeZone = timeZone
         }
 
         String getName() {

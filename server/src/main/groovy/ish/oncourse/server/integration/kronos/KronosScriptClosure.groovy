@@ -67,8 +67,7 @@ class KronosScriptClosure implements ScriptClosureTrait<KronosIntegration> {
             throw new IllegalArgumentException("Session can't be null. Please initialize the session in kronos script closure.")
         }
         if (!isValidSessionFields()) {
-            logger.warn("Session with id ${session.id} has invalid values: startDateTime, endDatetime, accountCode, uniqueCode. Session will not be added to Kronos.")
-            return null
+            throw new IllegalArgumentException("Session with id '${session.id}' has invalid values: startDateTime, endDatetime, accountCode, uniqueCode. Session will not be added to Kronos.")
         }
 
         Map scheduleSetting = integration.getScheduleSettingByName(scheduleName)
@@ -83,8 +82,7 @@ class KronosScriptClosure implements ScriptClosureTrait<KronosIntegration> {
         String costCenter1 = firstThreeDigitsAccountCode(session.courseClass.incomeAccount.accountCode)
         def costCenter1Id = integration.findCostCenterId(costCenter1)
         if (!costCenter1Id) {
-            logger.warn("Session with id ${session.id}: Cost Center with name '${costCenter1}' (onCourse session.courseClass.incomeAccount.accountCode) don't exist in Kronos. Session will not be added to Kronos.")
-            return null
+            throw new IllegalArgumentException("Session with id '${session.id}': Cost Center with name '${costCenter1}' (onCourse session.courseClass.incomeAccount.accountCode) don't exist in Kronos. Session will not be added to Kronos.")
         }
 
         //TODO how add to create shift Kronos API request
@@ -92,36 +90,31 @@ class KronosScriptClosure implements ScriptClosureTrait<KronosIntegration> {
 
         List<TutorAttendance> validatedTutors = validateSessionTutors(session.sessionTutors)
         if (!validatedTutors) {
-            logger.warn("Session with id ${session.id} doesn't have any valid TutorAttendances: doesn't have definedTutorRole's names or descriptions, payroll references. Session will not be added to Kronos.")
-            return null
+            throw new IllegalArgumentException("Session with id '${session.id}' doesn't have any valid TutorAttendances(sessionTutors): doesn't have definedTutorRole's names or descriptions, payroll references. Session will not be added to Kronos.")
         }
 
         for (TutorAttendance tutorAttendance : validatedTutors) {
             String costCenter3 = tutorAttendance.courseClassTutor.definedTutorRole.name
             def costCenter3Id = integration.findCostCenterId(costCenter3)
             if (!costCenter3Id) {
-                logger.warn("Session's with id ${session.id} TutorAttendance with id ${tutorAttendance.id}: Cost Center with name '${costCenter3}' (onCourse courseClassTutor.definedTutorRole.name) don't exist in Kronos. Tutor will not be added to Kronos.")
-                continue
+                throw new IllegalArgumentException("Session's with id '${session.id}' TutorAttendance(sessionTutor) with id '${tutorAttendance.id}': Cost Center with name '${costCenter3}' (onCourse courseClassTutor.definedTutorRole.name) don't exist in Kronos. Tutor will not be added to Kronos.")
             }
             String skill = tutorAttendance.courseClassTutor.definedTutorRole.description
             def skillId = integration.findSkillId(skill)
             if (!skillId) {
-                logger.warn("Session's with id ${session.id} TutorAttendance with id ${tutorAttendance.id}: Skill with name '${skill}' (onCourse courseClassTutor.definedTutorRole.description) don't exist in Kronos. Tutor will not be added to Kronos.")
-                continue
+                throw new IllegalArgumentException("Session's with id '${session.id}' TutorAttendance(sessionTutor) with id '${tutorAttendance.id}': Skill with name '${skill}' (onCourse courseClassTutor.definedTutorRole.description) don't exist in Kronos. Tutor will not be added to Kronos.")
             }
             String employeeId = tutorAttendance.courseClassTutor.tutor.payrollRef
             def accountId = integration.findAccountId(employeeId)
             if (!accountId) {
-                logger.warn("Session's with id ${session.id} TutorAttendance with id ${tutorAttendance.id}: Employee with employee_id '${employeeId}' (onCourse courseClassTutor.courseClassTutor.payrollRef) don't exist in Kronos. Tutor will not be added to Kronos.")
-                continue
+                throw new IllegalArgumentException("Session's with id '${session.id}' TutorAttendance(sessionTutor) with id '${tutorAttendance.id}': Employee with employee_id '${employeeId}' (onCourse courseClassTutor.courseClassTutor.payrollRef) don't exist in Kronos. Tutor will not be added to Kronos.")
             }
             def resultKronosShift
             def shiftIdByCustomField = getCustomFieldValue(tutorAttendance, KRONOS_SHIFT_ID_CUSTOM_FIELD_KEY)
             def scheduleIdByCustomField = getCustomFieldValue(tutorAttendance, KRONOS_SCHEDULE_ID_CUSTOM_FIELD_KEY)
             if (shiftIdByCustomField) {
                 if (scheduleIdByCustomField != scheduleId) {
-                    logger.error("Schedule id '${scheduleId}' different from custom field schedule id '${scheduleIdByCustomField}'. Shift will not be updated in Kronos. Additional information: start date ${shiftStart} and end date ${shiftEnd}.")
-                    continue
+                    throw new IllegalArgumentException("Schedule id '${scheduleId}' different from custom field schedule id '${scheduleIdByCustomField}'. Shift will not be updated in Kronos. Additional information: start date '${shiftStart}' and end date '${shiftEnd}'.")
                 }
                 resultKronosShift = integration.updateShift(shiftIdByCustomField, accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, scheduleId)
             }
@@ -130,59 +123,49 @@ class KronosScriptClosure implements ScriptClosureTrait<KronosIntegration> {
                 resultKronosShift = integration.createNewShift(accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, scheduleId)
             }
             if (resultKronosShift["created"]) {
-                logger.warn("Shift was successfully created. Kronos Schedule id '${scheduleIdByCustomField}'")
+                logger.warn("Shift was successfully created. Kronos Schedule id '${scheduleId}'")
                 def kronosShiftId = integration.getKronosShiftIdBySessionFields(scheduleId, accountId, shiftStart, shiftEnd, skillId, costCenter1Id, costCenter3Id, tutorAttendance.id)
                 saveCustomFields(tutorAttendance, kronosShiftId.toString(), scheduleId)
-                logger.warn("Shift with kronos shift id '${kronosShiftId}' was saved custom fields. Kronos Schedule id '${scheduleId}'.")
+                logger.warn("TutorAttendance(sessionTutor) with kronos shift id '${kronosShiftId}' was saved custom fields. Kronos Schedule id '${scheduleId}'.")
             } else if (resultKronosShift["updated"]) {
-                logger.warn("Shift with kronos shift id '${shiftIdByCustomField}' was successfully updated. Kronos Schedule id '${scheduleIdByCustomField}'.")
+                logger.warn("Kronos shift with id '${shiftIdByCustomField}' was successfully updated. Kronos Schedule id '${scheduleIdByCustomField}'.")
             }
-            println resultKronosShift
-            println tutorAttendance
         }
+        logger.warn("Session id '${session.id}' successfully created with all of its TutorAttedances (ids) - (${validatedTutors.id}). Kronos Schedule id '${scheduleId}'.")
 
         return null
     }
 
     private boolean isValidSessionFields() {
-        boolean isValid = true
         if (!session.startDatetime) {
-            logger.warn("Session with id ${session.id} doesn't have startDateTime, it's null. Session will not be added to Kronos.")
-            isValid = false
+            throw new IllegalArgumentException("Session with id '${session.id}' doesn't have startDateTime, it's null. Session will not be added to Kronos.")
         }
         if (!session.endDatetime) {
-            logger.warn("Session with id ${session.id} doesn't have endDatetime, it's null. Session will not be added to Kronos.")
-            isValid = false
+            throw new IllegalArgumentException("Session with id '${session.id}' doesn't have endDatetime, it's null. Session will not be added to Kronos.")
         }
         if (!session.courseClass.incomeAccount.accountCode) {
-            logger.warn("Session with id ${session.id} doesn't have accountCode in incomeAccount in courseClass, it's null or empty. Session will not be added to Kronos.")
-            isValid = false
+            throw new IllegalArgumentException("Session with id '${session.id}' doesn't have accountCode in incomeAccount in courseClass, it's null or empty. Session will not be added to Kronos.")
         }
         if (!session.courseClass.getUniqueCode()) {
-            logger.warn("Session with id ${session.id} doesn't have uniqueCode, it's null or empty. Session will not be added to Kronos.")
-            isValid = false
+            throw new IllegalArgumentException("Session with id '${session.id}' doesn't have uniqueCode, it's null or empty. Session will not be added to Kronos.")
         }
-        return isValid
+        return true
     }
 
     private List<TutorAttendance> validateSessionTutors(List<TutorAttendance> tutorAttendances) {
         if (!tutorAttendances) {
-            logger.warn("Session with id ${session.id} doesn't have any tutors. Session will not be added to Kronos.")
-            return null
+            throw new IllegalArgumentException("Session with id '${session.id}' doesn't have any TutorAttendances(sessionTutors). Session will not be added to Kronos.")
         }
         List<TutorAttendance> validatedTutors = new ArrayList<>()
         for (TutorAttendance tutorAttendance : tutorAttendances) {
             if (!tutorAttendance.courseClassTutor.tutor.payrollRef) {
-                logger.warn("Session's with id ${session.id} TutorAttendance with id ${tutorAttendance.id} doesn't have a payroll reference. Tutor will not be added to Kronos.")
-                continue
+                throw new IllegalArgumentException("Session's with id '${session.id}' TutorAttendance(sessionTutor) with id '${tutorAttendance.id}' doesn't have a payroll reference. Tutor will not be added to Kronos.")
             }
             if (!tutorAttendance.courseClassTutor.definedTutorRole.name) {
-                logger.warn("Session's with id ${session.id} TutorAttendance with id ${tutorAttendance.id} doesn't have a definedTutorRole name. Tutor will not be added to Kronos.")
-                continue
+                throw new IllegalArgumentException("Session's with id '${session.id}' TutorAttendance(sessionTutor) with id '${tutorAttendance.id}' doesn't have a definedTutorRole name. Tutor will not be added to Kronos.")
             }
             if (!tutorAttendance.courseClassTutor.definedTutorRole.description) {
-                logger.warn("Session's with id ${session.id} TutorAttendance with id ${tutorAttendance.id} doesn't have a definedTutorRole description. Tutor will not be added to Kronos.")
-                continue
+                throw new IllegalArgumentException("Session's with id '${session.id}' TutorAttendance(sessionTutor) with id '${tutorAttendance.id}' doesn't have a definedTutorRole description. Tutor will not be added to Kronos.")
             }
             validatedTutors.add(tutorAttendance)
         }
