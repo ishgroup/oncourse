@@ -10,6 +10,7 @@ import { State } from "../../../../reducers/state";
 import { GET_LIST_NESTED_EDIT_RECORD, SET_LIST_NESTED_EDIT_RECORD } from "../actions";
 import { getEntityItemById } from "../../../../containers/entities/common/entityItemsService";
 import { EntityName } from "../../../../model/entities/common";
+import { NESTED_EDIT_VIEW_FORM_NAME } from "../../../../constants/Forms";
 
 const request: EpicUtils.Request<any, { entity: EntityName; id: number; index?: number; threeColumn?: boolean }> = {
   type: GET_LIST_NESTED_EDIT_RECORD,
@@ -20,7 +21,7 @@ const request: EpicUtils.Request<any, { entity: EntityName; id: number; index?: 
     return getEntityItemById(entity, id);
   },
   processData: (record: any, state: State, { index, entity }) => (typeof index === "number"
-      ? [initialize(`NestedEditViewForm[${index}]`, record)]
+      ? [initialize(`${NESTED_EDIT_VIEW_FORM_NAME}[${index}]`, record)]
       : [
           {
             type: SET_LIST_NESTED_EDIT_RECORD,
@@ -30,7 +31,7 @@ const request: EpicUtils.Request<any, { entity: EntityName; id: number; index?: 
               opened: true
             }
           },
-          initialize(`NestedEditViewForm[${state.list.nestedEditRecords.length || 0}]`, record)
+          initialize(`${NESTED_EDIT_VIEW_FORM_NAME}[${state.list.nestedEditRecords.length || 0}]`, record)
         ])
 };
 

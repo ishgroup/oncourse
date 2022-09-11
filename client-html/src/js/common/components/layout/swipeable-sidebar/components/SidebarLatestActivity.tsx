@@ -24,7 +24,7 @@ const styles = (theme: AppTheme) => createStyles({
 });
 
 const SidebarLatestActivity: React.FC<any> = props => {
-  const { showConfirm, classes, checkSelectedResult } = props;
+  const { classes, checkSelectedResult } = props;
   const [activities, setActivities] = React.useState(JSON.parse(LSGetItem(DASHBOARD_ACTIVITY_STORAGE_NAME) || "null"));
 
   const updateActivity = React.useCallback(() => {
@@ -55,7 +55,6 @@ const SidebarLatestActivity: React.FC<any> = props => {
                 entityDisplayName={getEntityDisplayName(v.entity)}
                 entity={v.entity}
                 items={v.items}
-                showConfirm={showConfirm}
                 checkSelectedResult={checkSelectedResult}
               />
             </div>

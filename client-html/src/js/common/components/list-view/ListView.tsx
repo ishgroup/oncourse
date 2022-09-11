@@ -79,7 +79,6 @@ import {
   getTagsUpdatedByIds,
   setActiveFiltersBySearch
 } from "./utils/listFiltersUtils";
-import { setSwipeableDrawerDirtyForm } from "../layout/swipeable-sidebar/actions";
 import { LSGetItem } from "../../utils/storage";
 import { getCustomFieldTypes } from "../../../containers/entities/customFieldTypes/actions";
 import {
@@ -199,7 +198,6 @@ interface Props extends Partial<ListState> {
   searchQuery?: SearchQuery;
   setListEditRecordFetching?: any;
   search?: string;
-  onSwipeableDrawerDirtyForm?: (isDirty: boolean, resetEditView: any) => void;
   deleteDisabledCondition?: (props) => boolean;
   noListTags?: boolean;
   setEntity?: (entity: EntityName) => void;
@@ -1289,7 +1287,6 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   )),
   onSearch: search => dispatch(setSearch(search, ownProps.rootEntity)),
   setListEditRecordFetching: () => dispatch(setListEditRecordFetching()),
-  onSwipeableDrawerDirtyForm: (isDirty: boolean, resetEditView: any) => dispatch(setSwipeableDrawerDirtyForm(isDirty, resetEditView)),
   getListViewPreferences: () => dispatch(getUserPreferences([LISTVIEW_MAIN_CONTENT_WIDTH])),
   setListviewMainContentWidth: (value: string) => dispatch(setUserPreference({ key: LISTVIEW_MAIN_CONTENT_WIDTH, value })),
   submitForm: () => dispatch(submit(LIST_EDIT_VIEW_FORM_NAME)),

@@ -33,7 +33,7 @@ Feature: Main feature for all PUT requests with path 'login'
 
     Scenario: (+) Authorize as 2fa user
 
-        * def loginBody = {login: '2fa', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * def loginBody = {login: '2fa_notadmin1', password: 'password', kickOut: 'true', skipTfa: 'true'}
         Given path ishPath
         And request loginBody
         When method PUT
