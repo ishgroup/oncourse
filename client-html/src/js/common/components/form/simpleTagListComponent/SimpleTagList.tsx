@@ -104,6 +104,9 @@ const styles = theme =>
       "&:hover:before": {
         borderBottom: `1px solid ${theme.palette.primary.main}`
       },
+      "&$invalid:hover:before, &$invalid:before": {
+        borderBottom: `2px solid ${theme.palette.error.main}`
+      },
     },
     tagColorDotSmall: {
       width: theme.spacing(2),
@@ -126,7 +129,8 @@ const styles = theme =>
     },
     placeholder: {
       opacity: 0.15
-    }
+    },
+    invalid: {}
   });
 
 interface Props extends WrappedFieldProps {
@@ -200,6 +204,7 @@ const SimpleTagList: React.FC<Props> = props => {
   } = props;
 
   const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const [activeTag, setActiveTag] = useState<MenuTag>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [currentInputString, setCurrentInputString] = useState("");
@@ -221,12 +226,6 @@ const SimpleTagList: React.FC<Props> = props => {
       </span>
     ));
   }, [tags, input.value, inputValue]);
-
-  useEffect(() => {
-    if (meta.invalid && !isEditing) {
-      setIsEditing(true);
-    }
-  }, [meta.invalid]);
 
   const inputNode = useRef<any>();
   const tagMenuNode = useRef<any>();
@@ -326,6 +325,7 @@ const SimpleTagList: React.FC<Props> = props => {
   const exit = () => {
     setMenuIsOpen(false);
     setIsEditing(false);
+    setActiveTag(null);
 
     if (endTagRegex.test(inputValue)) {
       setTimeout(() => {
@@ -375,6 +375,21 @@ const SimpleTagList: React.FC<Props> = props => {
     setCurrentInputString(getCurrentInputString(inputValue, input.value || [], allMenuTags));
   }, [inputValue, input.value, allMenuTags]);
 
+  useEffect(() => {
+    if (meta.invalid && !isEditing) {
+      setIsEditing(true);
+    }
+  }, [meta.invalid]);
+
+  useEffect(() => {
+    if (activeTag) {
+      const activeUpdated = allMenuTags.find(t => t.tagBody.id === activeTag.tagBody.id);
+      if (activeUpdated) {
+        setActiveTag(activeUpdated);
+      }
+    }
+  }, [allMenuTags]);
+
   const popperAdapter = useCallback(params => {
     if (currentInputString) {
       return <div {...params} />;
@@ -400,9 +415,11 @@ const SimpleTagList: React.FC<Props> = props => {
       <AddTagMenu
         tags={menuTags}
         handleAdd={onTagAdd}
+        activeTag={activeTag}
+        setActiveTag={setActiveTag}
       />
     </div>
-  ), [menuTags, onTagAdd]);
+  ), [menuTags, activeTag, setActiveTag, onTagAdd]);
 
   return (
     <div className={className} id={input.name}>
@@ -509,6 +526,7 @@ const SimpleTagList: React.FC<Props> = props => {
             onClick={edit}
             className={clsx( classes.editable, {
               [fieldClasses.text]: inputValue,
+              [classes.invalid]: meta && meta.invalid
             })}
           >
             <span className={clsx("centeredFlex flex-wrap", {

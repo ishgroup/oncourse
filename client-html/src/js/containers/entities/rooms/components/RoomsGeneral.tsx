@@ -57,6 +57,7 @@ class RoomsGeneral extends React.PureComponent<any, any> {
       tags,
       sites,
       twoColumn,
+      syncErrors
     } = this.props;
 
     const layoutArray = getLayoutArray(twoColumn);
@@ -65,6 +66,7 @@ class RoomsGeneral extends React.PureComponent<any, any> {
       <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
         <Grid item xs={layoutArray[2].xs}>
           <FullScreenStickyHeader
+            opened={!values.id || Object.keys(syncErrors).includes("name")}
             twoColumn={twoColumn}
             title={values && values.name}
             fields={(
@@ -111,7 +113,7 @@ class RoomsGeneral extends React.PureComponent<any, any> {
         </Grid>
 
         <Grid item xs={layoutArray[1].xs}>
-          <Grid container columnSpacing={3}>
+          <Grid container columnSpacing={3} rowSpacing={2}>
             <Grid item xs={layoutArray[3].xs}>
               <FormField
                 type="text"
@@ -125,7 +127,7 @@ class RoomsGeneral extends React.PureComponent<any, any> {
             <Grid item xs={layoutArray[4].xs}>
               {sites && (
                 <FormField
-                  type="select"
+                  type="searchSelect"
                   name="siteId"
                   label="Site"
                   selectLabelMark="name"

@@ -80,7 +80,7 @@ interface Props {
   disableAddAll?: boolean;
   validate?: Validator | Validator[];
   entityTags?: any;
-  CustomCell?: React.ReactNode;
+  CustomCell?: any;
 }
 
 interface NestedListState {
@@ -258,12 +258,6 @@ class NestedList extends React.Component<Props, NestedListState> {
       if (typeof onToggleSearch === "function") {
         onToggleSearch();
       }
-
-      if (!aqlEntities) {
-        setTimeout(() => {
-          this.inputRef.current.focus();
-        }, 300);
-      }
     }
 
     if (searchEnabled) {
@@ -273,8 +267,6 @@ class NestedList extends React.Component<Props, NestedListState> {
     if (aqlEntities) {
       if (searchEnabled) {
         this.aqlComponentRef.current.reset();
-      } else {
-        setTimeout(() => this.inputRef.current && this.inputRef.current.focus(), 300);
       }
     }
 
@@ -345,19 +337,9 @@ class NestedList extends React.Component<Props, NestedListState> {
         if (!checked) {
           this.props.onDeleteAll();
           this.toggleSearch();
-        } else {
-          setTimeout(() => this.inputRef.current && this.inputRef.current.focus(), 300);
         }
       }
     );
-  };
-
-  onBlur = () => {
-    const { searchValues } = this.props;
-
-    if (!searchValues?.length) {
-      this.toggleSearch();
-    }
   };
 
   onFocus = () => {
@@ -407,7 +389,6 @@ class NestedList extends React.Component<Props, NestedListState> {
             onAqlSearchChange={this.onAqlSearchChange}
             onSearchEscape={this.onSearchEscape}
             onFocus={this.onFocus}
-            onBlur={this.onBlur}
             onAddEvent={this.onAddEvent}
             toggleSearch={this.toggleSearch}
             onSwitchToggle={this.onSwitchToggle}
@@ -445,7 +426,6 @@ class NestedList extends React.Component<Props, NestedListState> {
             onAqlSearchChange={this.onAqlSearchChange}
             onSearchEscape={this.onSearchEscape}
             onFocus={this.onFocus}
-            onBlur={this.onBlur}
             onAddEvent={this.onAddEvent}
             toggleSearch={this.toggleSearch}
             inputRef={this.inputRef}

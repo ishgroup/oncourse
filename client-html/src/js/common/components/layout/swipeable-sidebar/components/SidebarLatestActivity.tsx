@@ -8,7 +8,6 @@ import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import { DASHBOARD_ACTIVITY_STORAGE_NAME } from "../../../../../constants/Config";
 import { getEntityDisplayName } from "../../../../utils/getEntityDisplayName";
 import ListLinksGroup from "./searchResults/ListLinksGroup";
@@ -25,7 +24,7 @@ const styles = (theme: AppTheme) => createStyles({
 });
 
 const SidebarLatestActivity: React.FC<any> = props => {
-  const { showConfirm, classes, checkSelectedResult } = props;
+  const { classes, checkSelectedResult } = props;
   const [activities, setActivities] = React.useState(JSON.parse(LSGetItem(DASHBOARD_ACTIVITY_STORAGE_NAME) || "null"));
 
   const updateActivity = React.useCallback(() => {
@@ -56,7 +55,6 @@ const SidebarLatestActivity: React.FC<any> = props => {
                 entityDisplayName={getEntityDisplayName(v.entity)}
                 entity={v.entity}
                 items={v.items}
-                showConfirm={showConfirm}
                 checkSelectedResult={checkSelectedResult}
               />
             </div>

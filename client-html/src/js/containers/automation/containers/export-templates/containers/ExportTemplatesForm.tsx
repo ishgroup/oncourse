@@ -51,14 +51,13 @@ interface Props extends InjectedFormProps {
   history: any,
   syncErrors: any,
   nextLocation: string,
-  setNextLocation: (nextLocation: string) => void,
   emailTemplates?: CatalogItemType[]
 }
 
 const ExportTemplatesForm = React.memo<Props>(
   ({
     dirty, form, handleSubmit, isNew, invalid, values, syncErrors, emailTemplates,
-     dispatch, onCreate, onUpdate, onUpdateInternal, onDelete, history, nextLocation, setNextLocation
+     dispatch, onCreate, onUpdate, onUpdateInternal, onDelete, history, nextLocation
   }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
 
@@ -127,7 +126,6 @@ const ExportTemplatesForm = React.memo<Props>(
     useEffect(() => {
       if (!dirty && nextLocation) {
         history.push(nextLocation);
-        setNextLocation('');
       }
     }, [nextLocation, dirty]);
 
@@ -244,7 +242,7 @@ const ExportTemplatesForm = React.memo<Props>(
 
                 <FormField
                   type="text"
-                  label="Key Code"
+                  label="Key code"
                   name="keyCode"
                   validate={isNew || !isInternal ? validateKeycode : undefined}
                   disabled={!isNew}

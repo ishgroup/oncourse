@@ -57,7 +57,8 @@ class MessageFunctions {
             "PaymentIn" : ["Contact" : Contact.PAYMENTS_IN.dot(PaymentIn.ID)],
             "PaymentOut" : ["Contact" : Contact.PAYMENTS_OUT.dot(PaymentOut.ID)],
             "WaitingList" : ["Contact" :  Contact.STUDENT.dot(Student.WAITING_LISTS).dot(WaitingList.ID)],
-            "Payslip" : ["Contact" :  Contact.PAYSLIPS.dot(Payslip.ID)]
+            "Payslip" : ["Contact" :  Contact.PAYSLIPS.dot(Payslip.ID)],
+            "Checkout" : ["Contact" : Contact.ABANDONED_CARTS.dot(Checkout.ID)],
     ]
 
     static Function<CayenneDataObject, Contact> getRecipientFunction(Class<? extends CayenneDataObject> clazz) {
@@ -96,6 +97,8 @@ class MessageFunctions {
                 return { e -> (e as Payslip).contact }
             case Lead:
                 return { e -> (e as Lead).customer }
+            case Checkout:
+                return { e -> (e as Checkout).payer }
             default:
                 null
         }

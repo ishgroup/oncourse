@@ -72,7 +72,6 @@ interface Props {
   favoriteScripts: string[];
   groupedSortedItems: DashboardItem[];
   classes?: any;
-  showConfirm?: (onConfirm: any) => void;
   setScriptIdSelected?: any;
   setExecMenuOpened?: any;
 }
@@ -81,7 +80,6 @@ const isCategoryType = item => !!item.category;
 
 const Favorites: React.FC<Props> = props => {
   const {
-    showConfirm,
     classes,
     scripts,
     favorites,
@@ -100,7 +98,6 @@ const Favorites: React.FC<Props> = props => {
         <FavoriteItem
           key={v.category}
           item={v}
-          showConfirm={showConfirm}
         />
       )
       : (

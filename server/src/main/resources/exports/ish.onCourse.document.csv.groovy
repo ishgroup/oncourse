@@ -11,6 +11,6 @@ records.each { Document document ->
             "isRemoved"     : document.isRemoved,
             "Added"         : document.added,
             "FileUUID"      : document.fileUUID,
-            "Attached student" : document.attachedStudentInfo
+            "Attached student" : document.attachedForFirstEnrolmentStudentInfo
     ]
 }

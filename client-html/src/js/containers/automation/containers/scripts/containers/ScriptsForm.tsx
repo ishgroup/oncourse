@@ -161,7 +161,15 @@ const styles = (theme: AppTheme) =>
     },
   });
 
-const entityNameTypes = Object.keys(TriggerType).slice(0, 6).filter(t => t !== "Schedule");
+const entityNameTypes: TriggerType[] = [
+  'On demand',
+  'On create',
+  'On edit',
+  'On create and edit',
+  'On delete',
+  'Checklist task checked',
+  'Checklist completed'
+];
 
 const TriggerTypeItems = Object.keys(TriggerType).map(mapSelectItems);
 
@@ -185,7 +193,6 @@ interface Props {
   hasUpdateAccess: boolean;
   history: any;
   nextLocation: string;
-  setNextLocation: (nextLocation: string) => void;
   classes?: any;
   dirty?: boolean;
   created?: Date;
@@ -202,6 +209,7 @@ interface Props {
   emailTemplates?: CatalogItemType[];
   timeZone?: string;
   syncErrors?: any;
+  checklists?: CatalogItemType[];
 }
 
 const getInitComponentBody = (componentName: ScriptComponentType): ScriptComponent | Promise<ScriptComponent> => {
@@ -246,9 +254,9 @@ const ScriptsForm = React.memo<Props>(props => {
     emailTemplates,
     history,
     nextLocation,
-    setNextLocation,
     timeZone,
-    syncErrors
+    syncErrors,
+    checklists
   } = props;
 
   const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
@@ -329,7 +337,6 @@ const ScriptsForm = React.memo<Props>(props => {
   useEffect(() => {
     if (!dirty && nextLocation) {
       history.push(nextLocation);
-      setNextLocation('');
     }
   }, [nextLocation, dirty]);
 
@@ -397,7 +404,7 @@ const ScriptsForm = React.memo<Props>(props => {
     [values, values && values.trigger, values && values.trigger && values.trigger.type, isSystemTrigger, isScheduleTrigger],
   );
 
-  const enableEntityNameField = entityNameTypes.indexOf(values && values.trigger && values.trigger.type) > -1;
+  const enableEntityNameField = entityNameTypes.indexOf(values?.trigger?.type) > -1;
 
   const isTriggerExpanded = useMemo(() => triggerExpand
       || !values?.trigger?.type
@@ -584,16 +591,20 @@ const ScriptsForm = React.memo<Props>(props => {
                         expanded={isTriggerExpanded}
                         customHeading
                       >
-                        <TriggerCardContent
-                          classes={classes}
-                          dispatch={dispatch}
-                          TriggerTypeItems={TriggerTypeItems}
-                          ScheduleTypeItems={ScheduleTypeItems}
-                          enableEntityNameField={enableEntityNameField}
-                          values={values}
-                          isInternal={isInternal}
-                          timeZone={timeZone}
-                        />
+                        {Boolean(values?.trigger) && (
+                          <TriggerCardContent
+                            classes={classes}
+                            dispatch={dispatch}
+                            TriggerTypeItems={TriggerTypeItems}
+                            ScheduleTypeItems={ScheduleTypeItems}
+                            enableEntityNameField={enableEntityNameField}
+                            values={values}
+                            isInternal={isInternal}
+                            timeZone={timeZone}
+                            checklists={checklists}
+                            form={form}
+                          />
+                        )}
                       </ScriptCard>
                     </div>
 

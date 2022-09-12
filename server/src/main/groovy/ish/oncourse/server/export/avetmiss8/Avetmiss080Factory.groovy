@@ -148,7 +148,7 @@ class Avetmiss080Factory extends AvetmissFactory {
 
         def indigenousStatus = student.getIndigenousStatus()
 
-        if (student.getCountryOfBirth() == null || indigenousStatus == null) {
+        if (indigenousStatus == null) {
             line.setIndigenous(0)
         } else if (indigenousStatus == AvetmissStudentIndigenousStatus.NEITHER) {
             line.setIndigenous(4)
@@ -160,11 +160,6 @@ class Avetmiss080Factory extends AvetmissFactory {
             line.setIndigenous(2)
         } else {
             line.setIndigenous(0)
-        }
-
-        // next is stupid AVETMISS validation error that indigenous people can only be born in Australia
-        if (student.getCountryOfBirth() != null && !student.getCountryOfBirth().isAustralia()) {
-            line.setIndigenous(4)
         }
 
         // ------------------

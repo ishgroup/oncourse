@@ -4,6 +4,7 @@ import { Router } from "react-router-dom";
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import StylesProviderCustom from "./common/styles/StylesProviderCustom";
 import history from "./constants/History";
+import "./constants/Prototype";
 
 const RootComponent = ({ children }) => (
   <StylesProviderCustom>

@@ -7,7 +7,7 @@ import {
   MicropowerFields,
   MoodleFields,
   MYOBFields,
-  SurveyGizmoFields,
+  AlchemerFields,
   SurveyMonkeyFields,
   XeroFields,
   AmazonS3Fields,
@@ -28,7 +28,7 @@ export interface IntegrationSchema {
     | MoodleFields
     | MailchimpFields
     | MYOBFields
-    | SurveyGizmoFields
+    | AlchemerFields
     | SurveyMonkeyFields
     | XeroFields
     | CanvasFields
@@ -45,6 +45,7 @@ export interface IntegrationTypeSchema {
   name: string;
   image: string;
   form: React.ComponentType<any>;
+  formName: string;
   description: React.ReactNode;
 }
 

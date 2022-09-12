@@ -8,9 +8,8 @@
 
 import PlayArrow from "@mui/icons-material/PlayArrow";
 import React, {
- useCallback, useEffect, useMemo, useState 
+ useCallback, useMemo, useState
 } from "react";
-import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import {
  FieldArray, Form, initialize, InjectedFormProps 
@@ -30,14 +29,11 @@ import ScriptCard from "../../scripts/components/cards/CardBase";
 import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
-import { usePrevious } from "../../../../../common/utils/hooks";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { validateKeycode } from "../../../utils";
 import { formatRelativeDate } from "../../../../../common/utils/dates/formatRelative";
 import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL } from "../../../../../common/utils/dates/format";
 import ExecuteImportModal from "../components/ExecuteImportModal";
-import { State } from "../../../../../reducers/state";
-import { setNextLocation } from "../../../../../common/actions";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
 import InfoPill from "../../../../../common/components/layout/InfoPill";
@@ -55,7 +51,6 @@ interface Props extends InjectedFormProps {
   onUpdateInternal: (template: ImportModel) => void;
   onUpdate: (template: ImportModel) => void;
   onDelete: NumberArgFunction;
-  nextLocation?: string,
   emailTemplates?: CatalogItemType[]
 }
 
@@ -64,7 +59,6 @@ const ImportTemplatesForm = React.memo<Props>(
     dirty, form, handleSubmit, isNew, invalid, values, dispatch, syncErrors, emailTemplates,
      onCreate, onUpdate, onUpdateInternal, onDelete
   }) => {
-    const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
     const [modalOpened, setModalOpened] = useState<boolean>(false);
     const [execMenuOpened, setExecMenuOpened] = useState(false);
     const [importIdSelected, setImportIdSelected] = useState(null);
@@ -78,7 +72,6 @@ const ImportTemplatesForm = React.memo<Props>(
 
     const onDialogSave = useCallback(
       ({ keyCode }) => {
-        setDisableRouteConfirm(true);
         onCreate({ ...values, id: null, keyCode });
         onDialodClose();
       },
@@ -87,16 +80,12 @@ const ImportTemplatesForm = React.memo<Props>(
 
     const isInternal = useMemo(() => values.keyCode && values.keyCode.startsWith("ish."), [values.keyCode]);
 
-    const prevId = usePrevious(values.id);
-
     const handleDelete = useCallback(() => {
-      setDisableRouteConfirm(true);
       onDelete(values.id);
     }, [values.id]);
 
     const handleSave = useCallback(
       val => {
-        setDisableRouteConfirm(true);
         if (isNew) {
           onCreate(val);
           return;
@@ -117,11 +106,6 @@ const ImportTemplatesForm = React.memo<Props>(
       [values]
     );
 
-    useEffect(() => {
-      if (disableRouteConfirm && values.id !== prevId) {
-        setDisableRouteConfirm(false);
-      }
-    }, [values.id, prevId, disableRouteConfirm]);
 
     const handleRun = () => {
       setImportIdSelected(values.id);
@@ -141,7 +125,7 @@ const ImportTemplatesForm = React.memo<Props>(
         />
 
         <Form onSubmit={handleSubmit(handleSave)}>
-          {!disableRouteConfirm && <RouteChangeConfirm form={form} when={dirty || isNew} />}
+          <RouteChangeConfirm form={form} when={dirty || isNew} />
           <AppBarContainer
             values={values}
             manualUrl={manualUrl}
@@ -244,7 +228,7 @@ const ImportTemplatesForm = React.memo<Props>(
 
                 <FormField
                   type="text"
-                  label="Key Code"
+                  label="Key code"
                   name="keyCode"
                   validate={isNew || !isInternal ? validateKeycode : undefined}
                   disabled={!isNew}
@@ -335,13 +319,4 @@ const ImportTemplatesForm = React.memo<Props>(
   }
 );
 
-const mapStateToProps = (state: State) => ({
-  nextLocation: state.nextLocation
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-});
-
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)((props:Props) => (props.values
-  ? <ImportTemplatesForm {...props} /> : null));
+export default (props:Props) => (props.values ? <ImportTemplatesForm {...props} /> : null);

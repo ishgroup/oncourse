@@ -37,7 +37,7 @@ class KeystoreGeneratorTest  {
             "-keyalg",
             TEST_KEYSTORE_ALGORITHM,
             "-dname",
-            KeystoreGenerator.DNAME,
+            KeystoreGenerator.ROOT_DNAME,
             "-storepass",
             TEST_KEYSTORE_PASS,
             "-keypass",
@@ -63,7 +63,7 @@ class KeystoreGeneratorTest  {
         try {
             Assertions.assertFalse(new File(TEST_KEYSTORE_NAME).exists())
 
-            KeyStore ks = KeystoreGenerator.getClientServerKeystore(TEST_KEYSTORE_NAME, TEST_KEYSTORE_ALGORITHM, TEST_ALIAS, TEST_KEYSTORE_PASS, TEST_KEY_PASS)
+            KeyStore ks = KeystoreGenerator.getClientServerKeystore(TEST_KEYSTORE_NAME, TEST_ALIAS, TEST_KEYSTORE_PASS)
             Assertions.assertNotNull(ks)
             Assertions.assertNotNull(ks.getKey(TEST_ALIAS, TEST_KEY_PASS.toCharArray()))
             Assertions.assertNotNull(ks.getCertificate(TEST_ALIAS))

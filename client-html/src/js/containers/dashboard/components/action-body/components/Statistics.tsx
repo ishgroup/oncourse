@@ -137,7 +137,7 @@ const TotalStatisticInfo = props => {
 const ChartTooltip = args => {
   const { payload, active } = args;
 
-  return active ? (
+  return active && payload ? (
     <Paper className="p-1">
       {payload.map((i, n) => (
         <Typography key={n} noWrap>
