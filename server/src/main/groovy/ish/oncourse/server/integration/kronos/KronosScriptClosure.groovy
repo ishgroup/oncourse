@@ -119,19 +119,18 @@ class KronosScriptClosure implements ScriptClosureTrait<KronosIntegration> {
                 resultKronosShift = integration.updateShift(shiftIdByCustomField, accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, scheduleId)
             }
             else {
-                //TODO Don't throw exception if shift didn't create? Maybe return ['success'/'failure', resp, result] and make check 'success' or 'failure' then write log (warn/info): 'Shift was successfully created in Kronos' or 'Failed: Shift wasn't created in Kronos: [resp, result]'
                 resultKronosShift = integration.createNewShift(accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, scheduleId)
             }
             if (resultKronosShift["created"]) {
-                logger.warn("Shift was successfully created. Kronos Schedule id '${scheduleId}'")
+                logger.info("Shift was successfully created. Kronos Schedule id '${scheduleId}'")
                 def kronosShiftId = integration.getKronosShiftIdBySessionFields(scheduleId, accountId, shiftStart, shiftEnd, skillId, costCenter1Id, costCenter3Id, tutorAttendance.id)
                 saveCustomFields(tutorAttendance, kronosShiftId.toString(), scheduleId)
-                logger.warn("TutorAttendance(sessionTutor) with kronos shift id '${kronosShiftId}' was saved custom fields. Kronos Schedule id '${scheduleId}'.")
+                logger.info("TutorAttendance(sessionTutor) with kronos shift id '${kronosShiftId}' was saved custom fields. Kronos Schedule id '${scheduleId}'.")
             } else if (resultKronosShift["updated"]) {
-                logger.warn("Kronos shift with id '${shiftIdByCustomField}' was successfully updated. Kronos Schedule id '${scheduleIdByCustomField}'.")
+                logger.info("Kronos shift with id '${shiftIdByCustomField}' was successfully updated. Kronos Schedule id '${scheduleIdByCustomField}'.")
             }
         }
-        logger.warn("Session id '${session.id}' successfully created with all of its TutorAttedances (ids) - (${validatedTutors.id}). Kronos Schedule id '${scheduleId}'.")
+        logger.info("Session id '${session.id}' successfully created with all of its TutorAttedances (ids) - (${validatedTutors.id}). Kronos Schedule id '${scheduleId}'.")
 
         return null
     }
