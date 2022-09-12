@@ -21,6 +21,8 @@ import org.apache.logging.log4j.Logger
 import java.text.SimpleDateFormat
 
 /**
+ * Add sessions (as TutorAttendances) to Kronos Shift automatically as they are created/editet in onCourse.
+ *
  * Fields mapping from onCourse to Kronos:
  * Schedule name >> "Ish Schedules"
  * Date >> session date
@@ -31,6 +33,18 @@ import java.text.SimpleDateFormat
  * Cost Center 3 >> courseClassTutor.definedTutorRole.name
  * Skill >> courseClassTutor.definedTutorRole.description
  * Shift Note >> courseClasscode
+ *
+ *
+ * ```
+ * canvas {
+ *     scheduleName "Weekly Test Schedule"
+ *     session record
+ * }
+ * ```
+ *
+ * scheduleName: added Shifts to Kronos Schedules with name 'scheduleName'. Kronos should have a Schedule with this name
+ * and period on the date from the session
+ *
  */
 @API
 @CompileStatic
