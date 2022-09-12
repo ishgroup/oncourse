@@ -28,7 +28,6 @@ const styles = theme => createStyles({
 
 const SearchResults = props => {
   const {
-    showConfirm,
     classes,
     userSearch,
     scripts,
@@ -55,7 +54,6 @@ const SearchResults = props => {
                 name: getHighlightedPartLabel(c.title, userSearch)
               }}
               id={getResultId(i, c.title)}
-              showConfirm={showConfirm}
             />
           ))}
       {userSearch
@@ -92,7 +90,6 @@ const SearchResults = props => {
                 return { ...item, name };
               })}
               userSearch={userSearch}
-              showConfirm={showConfirm}
               setSelected={setSelected}
             />
           </div>
