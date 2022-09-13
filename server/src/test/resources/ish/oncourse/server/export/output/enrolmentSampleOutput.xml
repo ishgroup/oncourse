@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
   <course id='100'>
-    <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
-    <createdOn>2013-01-01T00:00:00Z</createdOn>
+    <modifiedOn>2013-02-01T00:00:00+10:00</modifiedOn>
+    <createdOn>2013-01-01T00:00:00+10:00</createdOn>
     <allowWaitingLists>true</allowWaitingLists>
     <code>ATT1</code>
     <currentlyOffered>true</currentlyOffered>
@@ -15,11 +15,11 @@
     <reportableHours>3.00</reportableHours>
     <webDescription />
     <courseClass id='100'>
-      <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
-      <createdOn>2013-01-01T00:00:00Z</createdOn>
+      <modifiedOn>2013-02-01T00:00:00+10:00</modifiedOn>
+      <createdOn>2013-01-01T00:00:00+10:00</createdOn>
       <code>123</code>
       <deliveryMode>Classroom</deliveryMode>
-      <endDateTime>2013-01-02T00:00:00Z</endDateTime>
+      <endDateTime>2013-01-02T00:00:00+10:00</endDateTime>
       <price>
         <amount>110.00</amount>
         <taxAmount>10.00</taxAmount>
@@ -46,12 +46,12 @@
       <budgetedPlaces>10</budgetedPlaces>
       <notes>firstCourseClassNote1
         secondCourseClassNote1</notes>
-      <startDateTime>2013-01-01T00:00:00Z</startDateTime>
+      <startDateTime>2013-01-01T00:00:00+10:00</startDateTime>
       <webDescription />
       <accountCode>11500</accountCode>
       <enrolment id='100'>
-        <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
+        <modifiedOn>2013-02-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
         <source>office</source>
         <status>Active</status>
         <vetClientID />
@@ -60,8 +60,8 @@
     </courseClass>
   </course>
   <course id='200'>
-    <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
-    <createdOn>2013-01-01T00:00:00Z</createdOn>
+    <modifiedOn>2013-02-01T00:00:00+10:00</modifiedOn>
+    <createdOn>2013-01-01T00:00:00+10:00</createdOn>
     <allowWaitingLists>true</allowWaitingLists>
     <code>ATT2</code>
     <currentlyOffered>true</currentlyOffered>
@@ -74,11 +74,11 @@
     <reportableHours>3.00</reportableHours>
     <webDescription />
     <courseClass id='200'>
-      <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
-      <createdOn>2013-01-01T00:00:00Z</createdOn>
+      <modifiedOn>2013-02-01T00:00:00+10:00</modifiedOn>
+      <createdOn>2013-01-01T00:00:00+10:00</createdOn>
       <code>124</code>
       <deliveryMode>Classroom</deliveryMode>
-      <endDateTime>2013-01-02T00:00:00Z</endDateTime>
+      <endDateTime>2013-01-02T00:00:00+10:00</endDateTime>
       <price>
         <amount>110.00</amount>
         <taxAmount>10.00</taxAmount>
@@ -105,12 +105,12 @@
       <budgetedPlaces>10</budgetedPlaces>
       <notes>firstCourseClassNote2
         secondCourseClassNote2</notes>
-      <startDateTime>2013-01-01T00:00:00Z</startDateTime>
+      <startDateTime>2013-01-01T00:00:00+10:00</startDateTime>
       <webDescription />
       <accountCode>11500</accountCode>
       <enrolment id='200'>
-        <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
+        <modifiedOn>2013-02-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
         <source>web</source>
         <status>Active</status>
         <vetClientID />
@@ -119,8 +119,8 @@
     </courseClass>
   </course>
   <contact id='100'>
-    <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
-    <createdOn>2013-01-01T00:00:00Z</createdOn>
+    <modifiedOn>2013-02-01T00:00:00+10:00</modifiedOn>
+    <createdOn>2013-01-01T00:00:00+10:00</createdOn>
     <allowEmail>true</allowEmail>
     <allowPost>true</allowPost>
     <allowSms>true</allowSms>

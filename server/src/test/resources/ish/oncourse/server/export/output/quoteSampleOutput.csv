@@ -1,0 +1,5 @@
+modifiedOn,createdOn,contactLastName,contactFirstName,total,totalIncTax,totalTax,amountOwing,billToAddress,dateDue,invoiceDate,title,description,privateNotes,publicNotes,shippingAddress,createdBy,source
+2012-05-10T00:00:00+10:00,2012-05-10T00:00:00+10:00,Student,Test,200.00,220.00,20.00,0.00,Address 1,2013-03-01,2013-02-01,,Description 1...,"firstInvoiceNote1
+secondInvoiceNote1",Public notes 1...,Shipping Address 1...,admin admin,office
+2012-05-10T00:00:00+10:00,2012-05-10T00:00:00+10:00,Tutor,Test,100.00,110.00,10.00,0.00,Address 2,2013-03-01,2013-02-01,,Description 2...,"firstInvoiceNote2
+secondInvoiceNote2",Public notes 2...,Shipping Address 2...,admin admin,web

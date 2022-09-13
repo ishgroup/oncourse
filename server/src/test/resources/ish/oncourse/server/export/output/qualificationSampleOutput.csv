@@ -1,3 +1,3 @@
 title,nationalCode,modifiedOn,createdOn,isAccreditedCourse,level,nominalHours,reviewDate,anzsco,fieldOfEducation,isOffered,newApprenticeship
-Qualification 1,QUALCODE1,2013-01-01T00:00:00Z,2013-01-01T00:00:00Z,Accredited course,Level 1,3.50,2013-01-01,ANZSC1,field1,true,text1
-Qualification 2,QUALCODE2,2013-01-01T00:00:00Z,2013-01-01T00:00:00Z,Accredited course,Level 2,2.00,2013-01-01,ANZSC2,field2,true,text2
+Qualification 1,QUALCODE1,2013-01-01T00:00:00+10:00,2013-01-01T00:00:00+10:00,Accredited course,Level 1,3.50,2013-01-01,ANZSC1,field1,true,text1
+Qualification 2,QUALCODE2,2013-01-01T00:00:00+10:00,2013-01-01T00:00:00+10:00,Accredited course,Level 2,2.00,2013-01-01,ANZSC2,field2,true,text2

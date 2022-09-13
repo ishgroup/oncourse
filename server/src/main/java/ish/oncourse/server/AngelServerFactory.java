@@ -18,6 +18,7 @@ import ish.math.CurrencyFormat;
 import ish.oncourse.common.ResourcesUtil;
 import ish.oncourse.server.api.dao.UserDao;
 import ish.oncourse.server.cayenne.SystemUser;
+import ish.oncourse.server.cluster.ExpiredTasksCleaner;
 import ish.oncourse.server.db.SchemaUpdateService;
 import ish.oncourse.server.http.HttpFactory;
 import ish.oncourse.server.integration.PluginService;
@@ -187,6 +188,13 @@ public class AngelServerFactory {
             schedulerService.scheduleCronJob(PermanentlyDeleteDocumentsJob.class,
                     PERMANENTLY_DELETE_DOCUMENTS_ID, BACKGROUND_JOBS_GROUP_ID,
                     PERMANENTLY_DELETE_DOCUMENTS_INTERVAL,
+                    prefController.getOncourseServerDefaultTimezone(),
+                    false,
+                    false);
+
+            schedulerService.scheduleCronJob(ExpiredTasksCleaner.class,
+                    EXPIRED_TASKS_CLEANER_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
+                    EXPIRED_TASKS_CLEANER_JOB_INTERVAL,
                     prefController.getOncourseServerDefaultTimezone(),
                     false,
                     false);

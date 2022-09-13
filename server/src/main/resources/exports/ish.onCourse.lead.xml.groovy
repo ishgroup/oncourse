@@ -112,17 +112,19 @@ xml.data() {
             uniqueCode(c.uniqueCode)
             workPhone(c.workPhone)
             title(c.title)
-            student() {
-                disabilityType(c.student.disabilityType.displayName)
-                englishProficiency(c.student.englishProficiency.displayName)
-                highestSchoolLevel(c.student.highestSchoolLevel.displayName)
-                indigenousStatus(c.student.indigenousStatus.displayName)
-                isOverseasClient(c.student.isOverseasClient)
-                isStillAtSchool(c.student.isStillAtSchool)
-                labourForceStatus(c.student.labourForceStatus.displayName)
-                priorEducationCode(c.student.priorEducationCode.displayName)
-                studentNumber(c.student.studentNumber)
-                yearSchoolCompleted(c.student.yearSchoolCompleted)
+            if(c.student) {
+                student() {
+                    disabilityType(c.student.disabilityType.displayName)
+                    englishProficiency(c.student.englishProficiency.displayName)
+                    highestSchoolLevel(c.student.highestSchoolLevel.displayName)
+                    indigenousStatus(c.student.indigenousStatus.displayName)
+                    isOverseasClient(c.student.isOverseasClient)
+                    isStillAtSchool(c.student.isStillAtSchool)
+                    labourForceStatus(c.student.labourForceStatus.displayName)
+                    priorEducationCode(c.student.priorEducationCode.displayName)
+                    studentNumber(c.student.studentNumber)
+                    yearSchoolCompleted(c.student.yearSchoolCompleted)
+                }
             }
             tutor() {
                 dateStarted(c.tutor?.dateStarted?.format("yyyy-MM-dd"))

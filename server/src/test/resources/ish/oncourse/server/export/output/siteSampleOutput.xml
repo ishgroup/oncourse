@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
   <site id='1'>
-    <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
-    <createdOn>2013-01-01T00:00:00Z</createdOn>
+    <modifiedOn>2013-02-01T00:00:00+10:00</modifiedOn>
+    <createdOn>2013-01-01T00:00:00+10:00</createdOn>
     <drivingDirections />
     <isAdministrationCentre>false</isAdministrationCentre>
     <latitude>53.90000000</latitude>
@@ -15,8 +15,8 @@
     <suburb>Sydney</suburb>
   </site>
   <site id='2'>
-    <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
-    <createdOn>2013-01-01T00:00:00Z</createdOn>
+    <modifiedOn>2013-02-01T00:00:00+10:00</modifiedOn>
+    <createdOn>2013-01-01T00:00:00+10:00</createdOn>
     <drivingDirections />
     <isAdministrationCentre>false</isAdministrationCentre>
     <latitude>-33.90000000</latitude>

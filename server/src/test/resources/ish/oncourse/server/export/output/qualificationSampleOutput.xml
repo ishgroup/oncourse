@@ -3,8 +3,8 @@
   <qualification id='1'>
     <title>Qualification 1</title>
     <nationalCode>QUALCODE1</nationalCode>
-    <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-    <createdOn>2013-01-01T00:00:00Z</createdOn>
+    <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+    <createdOn>2013-01-01T00:00:00+10:00</createdOn>
     <isAccreditedCourse>Accredited course</isAccreditedCourse>
     <level>Level 1</level>
     <nominalHours>3.50</nominalHours>
@@ -17,8 +17,8 @@
   <qualification id='2'>
     <title>Qualification 2</title>
     <nationalCode>QUALCODE2</nationalCode>
-    <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-    <createdOn>2013-01-01T00:00:00Z</createdOn>
+    <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+    <createdOn>2013-01-01T00:00:00+10:00</createdOn>
     <isAccreditedCourse>Accredited course</isAccreditedCourse>
     <level>Level 2</level>
     <nominalHours>2.00</nominalHours>
