@@ -41,6 +41,8 @@ import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
 import InfoPill from "../../../../../common/components/layout/InfoPill";
+import FullscreenIcon from "@mui/icons-material/Fullscreen";
+import { reportFullScreenPreview } from "../actions";
 
 const manualUrl = getManualLink("reports");
 const getAuditsUrl = (id: number) => `audit?search=~"Report" and entityId == ${id}`;
@@ -200,6 +202,10 @@ const PdfReportsForm = React.memo<Props>(
       },
       [form, initialValues.backgroundId]
     );
+
+    const handleFullScreenPreview = () => {
+      dispatch(reportFullScreenPreview(values.id));
+    }
 
     useEffect(() => {
       if (values.id !== prevId) {
@@ -402,7 +408,18 @@ const PdfReportsForm = React.memo<Props>(
                   {!isNew && (
                     <FilePreview
                       label="Preview"
-                      actions={[{ actionLabel: "Clear preview", onAction: handleClearPreview, icon: <DeleteOutlineRoundedIcon /> }]}
+                      actions={[
+                        {
+                          actionLabel: "Clear preview",
+                          onAction: handleClearPreview,
+                          icon: <DeleteOutlineRoundedIcon />
+                        },
+                        {
+                          actionLabel: "Full size preview",
+                          onAction: handleFullScreenPreview,
+                          icon: <FullscreenIcon />
+                        }
+                      ]}
                       data={values.preview}
                     />
                   )}

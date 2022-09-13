@@ -4,7 +4,6 @@
  */
 
 import { Epic } from "redux-observable";
-
 import { Report } from "@api/model";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { CREATE_AUTOMATION_PDF_REPORT, getAutomationPdfReportsList } from "../actions";
