@@ -56,6 +56,7 @@ const styles = (theme: AppTheme) => createStyles({
   },
   active: {},
   avatarRoot: {
+    maxWidth: "100%",
     transition: theme.transitions.create("all", {
       duration: theme.transitions.duration.complex,
       easing: theme.transitions.easing.easeInOut

@@ -134,6 +134,26 @@ class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, 
 	}
 
 	/**
+	 * @return tutor attendance start date time (roster start date time)
+	 */
+	@Nonnull
+	@API
+	@Override
+	Date getStartDatetime() {
+		return super.getStartDatetime()
+	}
+
+	/**
+	 * @return tutor attendance end date time (roster end date time)
+	 */
+	@Nonnull
+	@API
+	@Override
+	Date getEndDatetime() {
+		return super.getEndDatetime()
+	}
+
+	/**
 	 * @return actual payable duration in hours
 	 */
 	BigDecimal getActualPayableDurationHours() {
