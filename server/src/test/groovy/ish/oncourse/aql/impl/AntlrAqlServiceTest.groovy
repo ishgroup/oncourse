@@ -563,7 +563,7 @@ class AntlrAqlServiceTest {
     void testContact() {
         CompilationResult result = service
                 .compile("~ 'Lei Ste'", null, getMockContext("Contact"))
-        assertValid("(lastName likeIgnoreCase 'Lei Ste%') or (firstName likeIgnoreCase 'Lei%' and lastName likeIgnoreCase 'Ste%')", result)
+        assertValid("(lastName likeIgnoreCase 'Lei Ste%') or (((lastName likeIgnoreCase 'Ste%') or (middleName likeIgnoreCase 'Ste%')) and (firstName likeIgnoreCase 'Lei%'))", result)
     }
 
     @Test
@@ -588,7 +588,7 @@ class AntlrAqlServiceTest {
                 .compile("contact = 'John Smith'"
                         , null, getMockContext(Contact.class, "contact", "contact"))
 
-        assertValid("(contact.lastName = 'John Smith') or (contact.firstName = 'John' and contact.lastName = 'Smith')", result)
+        assertValid("(contact.lastName = 'John Smith') or (((contact.lastName = 'Smith') or (contact.middleName = 'Smith')) and (contact.firstName = 'John'))", result)
     }
 
     @Test
