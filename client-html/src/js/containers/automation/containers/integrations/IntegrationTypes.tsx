@@ -201,6 +201,7 @@ const types: IntegrationTypesModel = {
   19: {
     name: "Kronos",
     form: KronosForm,
+    formName: "KronosForm",
     image: kronos,
     description:
       "With this integration you can send your tutor session rosters directly to your Kronos Workforce Ready system."
