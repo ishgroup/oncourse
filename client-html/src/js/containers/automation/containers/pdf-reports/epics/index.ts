@@ -5,6 +5,7 @@ import { EpicCreatePdfReport } from "./EpicCreatePdfReport";
 import { EpicRemovePdfReport } from "./EpicRemovePdfReport";
 import { EpicUpdatePdfReport } from "./EpicUpdatePdfReport";
 import { EpicUpdateInternalPdfReport } from "./EpicUpdateInternalPdfReport";
+import { EpicGetFullScreenPreview } from "./EpicGetFullScreenPreview";
 
 export const EpicPdfReports = combineEpics(
   EpicGetPdfReportsList,
@@ -12,5 +13,6 @@ export const EpicPdfReports = combineEpics(
   EpicCreatePdfReport,
   EpicRemovePdfReport,
   EpicUpdatePdfReport,
-  EpicUpdateInternalPdfReport
+  EpicUpdateInternalPdfReport,
+  EpicGetFullScreenPreview
 );

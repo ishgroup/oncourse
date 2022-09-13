@@ -15,6 +15,13 @@ export const REMOVE_AUTOMATION_PDF_REPORT = _toRequestType("delete/pdf-reports/l
 
 export const GET_AUTOMATION_PDF_REPORT = _toRequestType("get/pdf-reports/item");
 
+export const SHOW_REPORT_FULL_SCREEN_PREVIEW = _toRequestType("get/pdf-reports/fullPreview");
+
+export const reportFullScreenPreview = (reportId: number) => ({
+  type: SHOW_REPORT_FULL_SCREEN_PREVIEW,
+  payload: reportId
+});
+
 export const updateAutomationPdfReport = (report: Report) => ({
   type: UPDATE_AUTOMATION_PDF_REPORT,
   payload: { report }

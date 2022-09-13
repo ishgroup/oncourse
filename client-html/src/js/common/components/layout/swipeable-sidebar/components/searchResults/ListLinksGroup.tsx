@@ -132,7 +132,7 @@ class ListLinksGroup extends React.PureComponent<any, any> {
                   id={getResultId(i, `${entity}-${v.id}`)}
                 />
               ))}
-              <Collapse in={collapsed}>
+              <Collapse in={collapsed} mountOnEnter unmountOnExit>
                 {lastItems.map((v, i) => (
                   <ListLinkItem
                     key={i}
