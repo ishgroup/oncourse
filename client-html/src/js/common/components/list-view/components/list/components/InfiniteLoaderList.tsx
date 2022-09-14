@@ -135,10 +135,12 @@ export default ({
   header
 }) => {
 
-  const itemCount = useMemo(() => (rows.length + (recordsLeft >= LIST_PAGE_SIZE ? LIST_PAGE_SIZE : recordsLeft === 1 ? 0 : recordsLeft)),
+  const itemCount = useMemo(() => (rows.length + (recordsLeft >= LIST_PAGE_SIZE ? LIST_PAGE_SIZE : recordsLeft === 1 ? 0 : recordsLeft)) + (threeColumn ? 0 : HEADER_ROWS_COUNT),
     [threeColumn, recordsLeft, rows.length]);
 
-  const isItemLoaded = index => rows[index];
+  const isItemLoaded = index => {
+    return index >= rows.length && recordsLeft === 0 ? true : rows[index];
+  };
 
   const loadMoreItems = (startIndex, stopIndex) => new Promise(resolve => onLoadMore(startIndex, stopIndex, resolve));
 
