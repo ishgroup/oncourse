@@ -36,6 +36,7 @@ import ish.oncourse.server.scripting.ScriptClosureTrait
  *     template myTemplate
  *     reply "info@acme.com"
  * }
+ * ```
  **/
 @CompileDynamic
 @API

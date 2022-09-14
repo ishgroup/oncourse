@@ -15,6 +15,7 @@ import com.google.inject.Inject
 import ish.oncourse.server.api.service.ReportApiService
 import ish.oncourse.server.api.v1.model.ReportDTO
 import ish.oncourse.server.api.v1.service.PdfTemplateApi
+import ish.util.ImageHelper
 
 class PdfTemplateApiImpl implements PdfTemplateApi {
 
@@ -49,5 +50,10 @@ class PdfTemplateApiImpl implements PdfTemplateApi {
     @Override
     void updateInternal(ReportDTO report) {
         apiService.updateInternal(report)
+    }
+
+    @Override
+    byte[] getHighQualityPreview(Long id) {
+        return ImageHelper.generateHighQualityPdfPreview(apiService.getPreview(id))
     }
 }

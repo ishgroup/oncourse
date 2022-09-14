@@ -1,11 +1,11 @@
 import { DefaultEpic } from "../../common/Default.Epic";
 import { GET_RECORDS_REQUEST } from "../../../js/common/components/list-view/actions";
 import {
-  GET_PAYMENT_IN_ITEM,
   reverse,
   REVERSE_PAYMENT_IN_ITEM_FULFILLED
 } from "../../../js/containers/entities/paymentsIn/actions";
 import { EpicReversePaymentIn } from "../../../js/containers/entities/paymentsIn/epics/EpicReversePaymentIn";
+import { getEntityRecord } from "../../../js/containers/entities/common/actions";
 import { FETCH_SUCCESS } from "../../../js/common/actions";
 
 describe("Create reverse paymentIn epic tests", () => {
@@ -26,10 +26,7 @@ describe("Create reverse paymentIn epic tests", () => {
           type: GET_RECORDS_REQUEST,
           payload: { entity: "PaymentIn", listUpdate: true, savedID: id }
         },
-        {
-          type: GET_PAYMENT_IN_ITEM,
-          payload: id
-        }
+        getEntityRecord(id, "PaymentIn")
       ];
     }
   }));

@@ -7,6 +7,7 @@
  */
 
 import * as React from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import clsx from "clsx";
@@ -14,7 +15,6 @@ import { createStyles, withStyles } from "@mui/styles";
 import { darken } from "@mui/material/styles";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Divider from "@mui/material/Divider";
-import { useEffect, useMemo, useState } from "react";
 import { Backdrop } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
 import Typography from "@mui/material/Typography";
@@ -24,9 +24,7 @@ import { State } from "../../../../reducers/state";
 import { getDashboardSearch } from "../../../../containers/dashboard/actions";
 import { openInternalLink } from "../../../utils/links";
 import { getEntityDisplayName } from "../../../utils/getEntityDisplayName";
-import {
- checkPermissions, getOnDemandScripts, getUserPreferences, showConfirm 
-} from "../../../actions";
+import { checkPermissions, getOnDemandScripts, getUserPreferences, showConfirm } from "../../../actions";
 import { setSwipeableDrawerSelection, toggleSwipeableDrawer } from "./actions";
 import UserSearch from "./components/UserSearch";
 import SearchResults from "./components/searchResults/SearchResults";
@@ -122,7 +120,6 @@ const styles = (theme: AppTheme) =>
 
 interface Props {
   form: string;
-  isFormDirty: boolean;
   resetEditView: any;
   showConfirm: ShowConfirmCaller;
   classes: any;
@@ -158,7 +155,6 @@ const sortItems = (a, b) => {
 const SwipeableSidebar: React.FC<Props> = props => {
   const {
     form,
-    isFormDirty,
     resetEditView,
     showConfirm,
     classes,
@@ -367,7 +363,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
     };
   }, [controlResults, resultIndex]);
 
-  const checkSelectedResult = React.useCallback(
+  const checkSelectedResult = useCallback(
     (type, field, value) => {
       if (controlResults && resultIndex >= 0) {
         const selectedResult = controlResults[resultIndex];
@@ -377,19 +373,6 @@ const SwipeableSidebar: React.FC<Props> = props => {
     },
     [controlResults, resultIndex]
   );
-
-  const showConfirmHandler = React.useCallback(onConfirm => {
-    if (isFormDirty && resetEditView) {
-      showConfirm(
-        {
-          onConfirm,
-          cancelButtonText: "DISCARD CHANGES"
-        }
-      );
-    } else {
-      onConfirm();
-    }
-  }, [isFormDirty, resetEditView]);
 
   const groupedSortedItems = useMemo<DashboardItem[]>(() => [
     ...navigation.features.map(f => ({
@@ -446,7 +429,6 @@ const SwipeableSidebar: React.FC<Props> = props => {
                   classes={{ root: classes.searchResultsRoot }}
                   userSearch={userSearch}
                   checkSelectedResult={checkSelectedResult}
-                  showConfirm={showConfirmHandler}
                   setExecMenuOpened={setExecMenuOpened}
                   setScriptIdSelected={setScriptIdSelected}
                   groupedSortedItems={groupedSortedItems}
@@ -465,8 +447,6 @@ const SwipeableSidebar: React.FC<Props> = props => {
                 <Favorites
                   classes={{ topBar: classes.favoritesTopBar }}
                   groupedSortedItems={groupedSortedItems}
-                  showConfirm={showConfirmHandler}
-                  isFormDirty={isFormDirty}
                   setScriptIdSelected={setScriptIdSelected}
                   execMenuOpened={execMenuOpened}
                   setExecMenuOpened={setExecMenuOpened}
@@ -483,7 +463,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
                   setExecMenuOpened={setExecMenuOpened}
                 />
                 <Divider variant="middle" className="mb-2" />
-                <SidebarLatestActivity showConfirm={showConfirmHandler} checkSelectedResult={checkSelectedResult} />
+                <SidebarLatestActivity checkSelectedResult={checkSelectedResult} />
               </div>
             </Collapse>
           </div>
@@ -504,7 +484,6 @@ const SwipeableSidebar: React.FC<Props> = props => {
             favorites={favorites}
             favoriteScripts={favoriteScripts}
             onClose={() => setSelected(null)}
-            showConfirm={showConfirmHandler}
             setScriptIdSelected={setScriptIdSelected}
             setExecMenuOpened={setExecMenuOpened}
           />
@@ -536,7 +515,6 @@ const mapsStateToProps = (state: State) => ({
   listEntity: state.list.records.entity,
   listSearchQuery: state.list.searchQuery,
   selected: state.swipeableDrawer.selected,
-  isFormDirty: state.swipeableDrawer.isDirty,
   resetEditView: state.swipeableDrawer.resetEditView,
   opened: state.swipeableDrawer.opened,
   variant: state.swipeableDrawer.variant,

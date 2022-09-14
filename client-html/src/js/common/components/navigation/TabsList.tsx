@@ -157,8 +157,11 @@ const TabsList = React.memo<Props & RouteComponentProps>((
 
     // scrolled to bottom
     if (e.target.scrollTop + e.target.offsetHeight === e.target.scrollHeight) {
-      setSelected(scrollNodes.current[scrollNodes.current.length - 1].id);
-      return;
+      const newSelected = scrollNodes.current[scrollNodes.current.length - 1];
+      if (newSelected) {
+        setSelected(newSelected.id);
+        return;
+      }
     }
 
     const selectedIndex = scrollNodes.current.findIndex(sn => sn.id === selected);

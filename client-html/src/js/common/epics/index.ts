@@ -16,12 +16,12 @@ import { EpicGetCommonPlainRecords } from "./EpicGetCommonPlainRecords";
 
 export const EpicCommon = combineEpics(
   EpicGetScripts,
-  EpicGetEmailTemplatesWithKeyCode,
   EpicManageProcess,
   EpicInterruptProcess,
   EpicCheckPermission,
   EpicSetUserPreference,
   EpicGetUserPreferences,
   EpicExecuteActionsQueue,
-  EpicGetCommonPlainRecords
+  EpicGetCommonPlainRecords,
+  EpicGetEmailTemplatesWithKeyCode,
 );

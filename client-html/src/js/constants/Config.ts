@@ -4,6 +4,7 @@
  */
 
 import { PreferenceEnum } from "@api/model";
+import { EntityName } from "../model/entities/common";
 
 export const SIMPLE_SEARCH_REGEX = /(^[^~\s."#]+$)/;
 
@@ -109,13 +110,24 @@ export const SERVER_TIMEZONE: PreferenceEnum = "oncourse.server.timezone.default
 
 export const ADMIN_EMAIL_KEY = 'email.admin';
 
-// extending String with capitalize method
-const stringProto = String.prototype as any;
-
-stringProto.capitalize = function () {
-  return this.charAt(0).toUpperCase() + this.slice(1);
-};
-
 export const TAB_LIST_SCROLL_TARGET_ID = "TabsListScrollTarget";
 
 export const NESTED_TABLE_ROW_HEIGHT = 27;
+
+export const NOTE_ENTITIES: EntityName[] = [
+  "Application",
+  "ArticleProduct",
+  "AssessmentSubmission",
+  "Assessment",
+  "Contact",
+  "Course",
+  "CourseClass",
+  "Enrolment",
+  "AbstractInvoice",
+  "Lead",
+  "ProductItem",
+  "MembershipProduct",
+  "VoucherProduct",
+  "Room",
+  "Site"
+];

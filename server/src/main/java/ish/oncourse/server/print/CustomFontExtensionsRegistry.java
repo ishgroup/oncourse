@@ -11,7 +11,7 @@
 package ish.oncourse.server.print;
 
 import com.lowagie.text.FontFactory;
-import net.sf.jasperreports.engine.fonts.FontFace;
+import net.sf.jasperreports.engine.DefaultJasperReportsContext;
 import net.sf.jasperreports.engine.fonts.FontFamily;
 import net.sf.jasperreports.engine.fonts.SimpleFontFace;
 import net.sf.jasperreports.engine.fonts.SimpleFontFamily;
@@ -101,37 +101,23 @@ public class CustomFontExtensionsRegistry extends AbstractFontExtensionsRegistry
 
 		// register fonts recursively with itext
 		FontFactory.registerDirectory(folder.getAbsolutePath(), true);
-
 		// register fonts with jasper
 		for (final var fontFile : folder.listFiles()) {
 
 			try {
+				var family = new SimpleFontFamily();
+				var normalFace = new SimpleFontFace(DefaultJasperReportsContext.getInstance());
+				normalFace.setTtf(fontFile.getAbsolutePath(), false);
+				family.setNormalFace(normalFace);
 				var font = Font.createFont(Font.TRUETYPE_FONT, fontFile);
-				final FontFace face = new SimpleFontFace(font) {
-					@Override
-					public String getFile() {
-						return fontFile.getAbsolutePath();
-					}
-				};
 
-				var family = new SimpleFontFamily() {
-					@Override
-					public FontFace getNormalFace() {
-						return face;
-					}
-
-					@Override
-					public String getNormalPdfFont() {
-						return face.getName();
-					}
-				};
 				family.setPdfEmbedded(true);
 				logger.warn("registering font {} as {} and name {}", fontFile, font.getFamily(), font.getName());
 				fontFamilies.add(family);
 
 			} catch (Exception e) {
 				// ignore the error since we just hit a font we couldn't parse
-                logger.warn("can't register font {}. Reason: {}", fontFile, e.getMessage());
+				logger.warn("can't register font {}. Reason: {}", fontFile, e.getMessage());
 			}
 
 		}

@@ -31,7 +31,6 @@ import { State } from "../../../reducers/state";
 import { getEntityTags, getListTags } from "../../tags/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import { createDocument, getDocument, updateDocument } from "./actions";
 import DocumentEditView from "./components/DocumentEditView";
 import BinCogwheel from "./components/BinCogwheel";
 
@@ -56,14 +55,11 @@ const styles = () => createStyles({
 });
 
 interface DocumentProps {
-  getDocumentRecord?: () => void;
   onInit?: () => void;
-  onSave?: (id: string, document: Document) => void;
   getRecords?: () => void;
   getFilters?: () => void;
   clearListState?: () => void;
   getTags?: () => void;
-  onCreate: (document: Document) => void;
   classes?: any;
   setListCreatingNew?: BooleanArgFunction;
   updateSelection?: (selection: string[]) => void;
@@ -167,13 +163,10 @@ const setRowClasses = ({ active }) => (active === "No" ? "text-op05" : undefined
 
 const Documents: React.FC<DocumentProps> = props => {
   const {
-    getDocumentRecord,
     onInit,
-    onSave,
     getFilters,
     clearListState,
     getTags,
-    onCreate,
     classes,
     setListCreatingNew,
     updateSelection,
@@ -277,11 +270,6 @@ const Documents: React.FC<DocumentProps> = props => {
     ) : v)
   });
 
-  const onDocumentCreate = doc => {
-    const docModel = { ...doc };
-    onCreate(docModel);
-  };
-
   const customOnCreate = () => {
     if (editRecord && params.id === "new") return;
     setOpenFileModal(true);
@@ -336,12 +324,9 @@ const Documents: React.FC<DocumentProps> = props => {
         }}
         CogwheelAdornment={BinCogwheel}
         EditViewContent={DocumentEditView}
-        getEditRecord={getDocumentRecord}
         rootEntity="Document"
         onInit={onInit}
         customOnCreate={customOnCreate}
-        onCreate={onDocumentCreate}
-        onSave={onSave}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         defaultDeleteDisabled
@@ -377,9 +362,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getListTags("Document"));
   },
   clearListState: () => dispatch(clearListState()),
-  getDocumentRecord: (id: number) => dispatch(getDocument(id)),
-  onSave: (id: string, document) => dispatch(updateDocument(id, document)),
-  onCreate: document => dispatch(createDocument(document)),
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
