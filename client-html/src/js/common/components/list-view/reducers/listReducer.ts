@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import { IAction } from "../../../actions/IshAction";
@@ -30,7 +33,6 @@ import {
   SET_LIST_SEARCH_ERROR,
   SET_LIST_CREATING_NEW,
   SET_LIST_FULL_SCREEN_EDIT_VIEW,
-  SET_LIST_COLUMNS,
   SET_RECIPIENTS_MESSAGE_DATA,
   CLEAR_RECIPIENTS_MESSAGE_DATA,
   SET_LIST_EDIT_RECORD_FETCHING,
@@ -274,18 +276,6 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
         records: {
           ...state.records,
           entity: action.payload
-        }
-      };
-    }
-
-    case SET_LIST_COLUMNS: {
-      const { columns } = action.payload;
-
-      return {
-        ...state,
-        records: {
-          ...state.records,
-          columns
         }
       };
     }

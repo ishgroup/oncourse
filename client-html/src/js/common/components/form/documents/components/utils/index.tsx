@@ -1,19 +1,18 @@
 /*
- * Copyright ish group pty ltd 2020.
+ * Copyright ish group pty ltd 2022.
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of the
- * GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License for more details.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
+
+import React from "react";
 import { compareAsc, parseISO } from "date-fns";
 import { DocumentAttachmentRelation, DocumentVisibility } from "@api/model";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { StringKeyObject } from "../../../../../../model/common/CommomObjects";
 import { DocumentExtended } from "../../../../../../model/common/Documents";
 import { DocumentShareOption } from "../../../../../../model/entities/Document";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const formatDocumentSize = (size: number): string => {
   if (size < Math.pow(1024, 2)) {
@@ -42,61 +41,34 @@ export const getDocumentThumbnail = (file: File): Promise<string> => {
   return new Promise(resolve => resolve(""));
 };
 
-export const iconSwitcher = iconType => {
-  switch (iconType) {
-    case "image/jpeg": {
-      return props => FontAwesomeIcon({ fixedWidth: true, icon: "file-image", className: props.classes.wh100 });
-    }
-
-    case "image/gif": {
-      return props => FontAwesomeIcon({ fixedWidth: true, icon: "file-image", className: props.classes.wh100 });
-    }
-
-    case "image/png": {
-      return props => FontAwesomeIcon({ fixedWidth: true, icon: "file-image", className: props.classes.wh100 });
-    }
-
-    case "image/bmp": {
-      return props => FontAwesomeIcon({ fixedWidth: true, icon: "file-image", className: props.classes.wh100 });
-    }
-
-    case "image/tiff": {
-      return props => FontAwesomeIcon({ fixedWidth: true, icon: "file-image", className: props.classes.wh100 });
-    }
-
-    case "application/pdf": {
-      return props => FontAwesomeIcon({ fixedWidth: true, icon: "file-pdf", className: props.classes.wh100 });
-    }
-
-    case "application/msword": {
-      return props => FontAwesomeIcon({ fixedWidth: true, icon: "file-word", className: props.classes.wh100 });
-    }
-
-    case "application/vnd.ms-excel": {
-      return props => FontAwesomeIcon({ fixedWidth: true, icon: "file-excel", className: props.classes.wh100 });
-    }
-
-    case "application/vnd.ms-powerpoint": {
-      return props => FontAwesomeIcon({ fixedWidth: true, icon: "file-powerpoint", className: props.classes.wh100 });
-    }
-
-    case "application/zip": {
-      return props => FontAwesomeIcon({ fixedWidth: true, icon: "file-archive", className: props.classes.wh100 });
-    }
-
-    case "application/x-gzip": {
-      return props => FontAwesomeIcon({ fixedWidth: true, icon: "file-archive", className: props.classes.wh100 });
-    }
-
-    case "application/txt": {
-      return props => FontAwesomeIcon({ fixedWidth: true, icon: "file-alt", className: props.classes.wh100 });
-    }
-
-    default: {
-      return props => FontAwesomeIcon({ fixedWidth: true, icon: "file", className: props.classes.wh100 });
-    }
+const getIcon = type => {
+  switch (type) {
+    case "image/tiff":
+    case "image/bmp":
+    case "image/png":
+    case "image/gif":
+    case "image/jpeg": 
+      return "file-image";
+    case "application/pdf": 
+      return "file-pdf";
+    case "application/msword": 
+      return "file-word";
+    case "application/vnd.ms-excel": 
+      return "file-excel";
+    case "application/vnd.ms-powerpoint":
+      return "file-powerpoint";
+    case "application/zip":
+      return "file-archive";
+    case "application/x-gzip":
+      return "file-archive";
+    case "application/txt":
+      return "file-alt";
+    default:
+      return "file";
   }
 };
+
+export const FileTypeIcon = ({ mimeType }) => <FontAwesomeIcon icon={getIcon(mimeType)} fixedWidth className="w-100 h-100" />;
 
 export const getInitialDocument = (file: File): Promise<DocumentExtended> => {
   const today = new Date().toISOString();
@@ -169,7 +141,7 @@ export const getDocumentShareSummary = (
         break;
       }
       if (attachmentRelations.length) {
-        label += ", some students and tutors in skillsOnCourse portal"
+        label += ", some students and tutors in skillsOnCourse portal";
       }
       break;
     }
@@ -180,7 +152,7 @@ export const getDocumentShareSummary = (
   return label;
 };
 
-export const getAvailableOptions = (relations: StringKeyObject<DocumentAttachmentRelation[]>): {[O in DocumentShareOption]?: boolean} => (
+export const getAvailableOptions = (relations: StringKeyObject<DocumentAttachmentRelation[]>): { [O in DocumentShareOption]?: boolean } => (
   {
     "PortalSharing":
       !Object.keys(relations).length
