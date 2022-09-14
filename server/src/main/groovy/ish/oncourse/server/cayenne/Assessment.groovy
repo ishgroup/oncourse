@@ -25,7 +25,7 @@ import javax.annotation.Nullable
 //TODO docs
 @API
 @QueueableEntity
-class Assessment extends _Assessment  implements Queueable, NotableTrait, AttachableTrait {
+class Assessment extends _Assessment  implements Queueable, NotableTrait, AttachableTrait, TaggableTrait {
 
 
 	public static final String NAME_KEY = "name";

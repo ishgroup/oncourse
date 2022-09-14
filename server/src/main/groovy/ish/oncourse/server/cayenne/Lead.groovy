@@ -10,7 +10,7 @@ package ish.oncourse.server.cayenne
 
 import ish.oncourse.server.cayenne.glue._Lead
 
-class Lead extends _Lead implements AttachableTrait, NotableTrait, ExpandableTrait, LeadTrait, ContactActivityTrait {
+class Lead extends _Lead implements AttachableTrait, NotableTrait, ExpandableTrait, LeadTrait, ContactActivityTrait, TaggableTrait {
 
     @Override
     void addToAttachmentRelations(AttachmentRelation relation) {

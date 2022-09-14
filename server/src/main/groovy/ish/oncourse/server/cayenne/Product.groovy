@@ -35,7 +35,7 @@ import javax.swing.text.DefaultFormatter
  */
 @API
 @QueueableEntity
-class Product extends _Product implements Queueable, Taggable{
+class Product extends _Product implements Queueable{
 
 	private static final Logger logger = LogManager.getLogger()
 
@@ -279,18 +279,5 @@ class Product extends _Product implements Queueable, Taggable{
 	@Override
 	Tax getTax() {
 		return super.getTax()
-	}
-
-	/**
-		This methods must be overrided into inheritors classes
-	 */
-	@Override
-	Class<? extends TagRelation> getTagRelationClass() {
-		return null
-	}
-
-	@Override
-	List<? extends TagRelation> getTaggingRelations() {
-		return null
 	}
 }

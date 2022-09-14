@@ -22,9 +22,7 @@ import org.apache.cayenne.Persistent
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectQuery
 
-trait TaggableTrait {
-    public static final String BULK_TAG_PROPERTY = "bulkTag";
-    public static final String BULK_UNTAG_PROPERTY = "bulkUntag";
+trait TaggableTrait implements Taggable{
 
     @Inject
     private transient TagService tagService;

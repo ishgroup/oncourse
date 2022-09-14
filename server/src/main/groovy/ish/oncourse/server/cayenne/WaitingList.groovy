@@ -26,7 +26,7 @@ import javax.annotation.Nonnull
  */
 @API
 @QueueableEntity
-class WaitingList extends _WaitingList implements Queueable, ExpandableTrait, ContactActivityTrait {
+class WaitingList extends _WaitingList implements Queueable, ExpandableTrait, ContactActivityTrait, TaggableTrait {
 
 
 

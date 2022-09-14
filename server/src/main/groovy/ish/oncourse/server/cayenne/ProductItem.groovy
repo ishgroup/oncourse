@@ -31,7 +31,7 @@ import static ish.persistence.CommonExpressionFactory.previousMidnight
  */
 @API
 @QueueableEntity
-class ProductItem extends _ProductItem implements Queueable, NotableTrait, ContactActivityTrait {
+class ProductItem extends _ProductItem implements Queueable, NotableTrait, ContactActivityTrait, TaggableTrait {
 
 	private static final Logger logger = LogManager.getLogger()
 

@@ -38,7 +38,7 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait, CourseTrait, AttachableTrait {
+class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait, CourseTrait, AttachableTrait, TaggableTrait {
 
 	public static final int COURSE_CODE_MAX_LENGTH = 32;
 	public static final int COURSE_NAME_MAX_LENGTH = 200;
