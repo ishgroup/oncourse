@@ -89,7 +89,7 @@ import {
 } from "../../../containers/entities/common/actions";
 import { shouldAsyncValidate } from "./utils/listFormUtils";
 
-export const ListSideBarDefaultWidth = 200;
+export const ListSideBarDefaultWidth = 265;
 export const ListMainContentDefaultWidth = 774;
 
 const styles = () => createStyles({
@@ -1095,6 +1095,8 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
 
     return (
       <div className={classes.root}>
+        <LoadingIndicator customLoading={isAsyncValidating} transparentBackdrop allowInteractions />
+
         <FullScreenEditView
           {...editViewProps}
           shouldAsyncValidate={shouldAsyncValidate}
@@ -1173,7 +1175,6 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
 
         <div className="flex-fill d-flex flex-column overflow-hidden user-select-none">
           <div className="flex-fill d-flex relative">
-            <LoadingIndicator customLoading={isAsyncValidating} transparentBackdrop allowInteractions />
             {threeColumn ? (
               <ResizableWrapper
                 onResizeStop={this.handleResizeMainContentCallBack}
