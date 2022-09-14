@@ -1084,7 +1084,7 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
 
     return (
       <div className={classes.root}>
-        <LoadingIndicator customLoading={isAsyncValidating} transparentBackdrop allowInteractions />
+        <LoadingIndicator transparentBackdrop allowInteractions />
 
         <FullScreenEditView
           {...editViewProps}
