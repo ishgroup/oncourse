@@ -4,11 +4,13 @@ import { EpicCreatePdfBackground } from "./EpicCreatePdfBackground";
 import { EpicGetPdfBackground } from "./EpicGetPdfBackground";
 import { EpicRemovePdfBackground } from "./EpicRemovePdfBackground";
 import { EpicUpdatePdfBackground } from "./EpicUpdatePdfBackground";
+import { EpicGetPdfBackgroundCopy } from "./EpicGetPdfBackgroundCopy";
 
 export const EpicPdfBackgrounds = combineEpics(
   EpicUpdatePdfBackground,
   EpicGetPdfBackgroundsList,
   EpicCreatePdfBackground,
   EpicGetPdfBackground,
-  EpicRemovePdfBackground
+  EpicRemovePdfBackground,
+  EpicGetPdfBackgroundCopy
 );
