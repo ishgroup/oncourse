@@ -290,8 +290,9 @@ class Session extends _Session implements SessionTrait, SessionInterface, Queuea
 	}
 
 	/**
-	 * @return
+	 * @return list of tutors attendances, related to this session
 	 */
+	@API
 	@Nonnull
 	@Override
 	List<TutorAttendance> getSessionTutors() {
