@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import * as React from "react";
@@ -24,7 +27,10 @@ import { getAdministrationSites } from "../sites/actions";
 
 const manualLink = getManualLink("processingEnrolments_PaymentOut");
 
-const nameCondition = (paymentOut: PaymentOutModel) => paymentOut.type;
+const nameCondition = (paymentOut: PaymentOutModel) => {
+  console.log(paymentOut);
+  return  paymentOut.type
+};
 
 const getWindowWidth = () => window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth || 1920;
 
@@ -139,7 +145,7 @@ class PaymentsOut extends React.Component<any, any> {
         >
           <div className={classes.dialog}>
             <Link
-              href={`${window.location.origin}/invoice?search=amountOwing < 0`}
+              href={`${window.location.origin}/invoice?filter=@Credit_notes`}
               target="_blank"
               color="textSecondary"
               underline="none"

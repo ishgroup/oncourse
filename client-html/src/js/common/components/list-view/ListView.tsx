@@ -1066,7 +1066,7 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
     } = this.state;
 
     const hasFilters = Boolean(filterGroups.length || menuTags.length || savingFilter);
-    
+
     const table = <ReactTableList
       {...listProps}
       mainContentWidth={mainContentWidth}
@@ -1080,6 +1080,7 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       onSelectionChange={this.onSelection}
       onChangeModel={this.onChangeModel}
       getContainerNode={this.getContainerNode}
+      sidebarWidth={sidebarWidth}
     />;
 
     return (
