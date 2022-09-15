@@ -61,13 +61,6 @@ export default (theme: AppTheme) => createStyles({
   draggingCell: {
     left: 0
   },
-  listHeaderCell: {
-    "&:hover": {
-      "& $tableSortLabel": {
-        opacity: 0.5
-      }
-    }
-  },
   headerCellItem: {
     padding: theme.spacing(2, 1),
     zIndex: 1
@@ -86,34 +79,38 @@ export default (theme: AppTheme) => createStyles({
       easing: theme.transitions.easing.easeInOut
     }),
     "&:hover": {
-      paddingLeft: 24,
+      paddingLeft: theme.spacing(3),
+      paddingRight: theme.spacing(3),
       "& $dragIndicator": {
         visibility: "visible",
         fill: theme.palette.action.active
       }
+    },
+    "&$activeRight": {
+      paddingRight: theme.spacing(3)
     },
     "& $visibleDragIndicator": {
       visibility: "visible",
       fill: theme.palette.action.active
     }
   },
-  dragOver: {
+  activeRight: {},
+  isDragging: {
     padding: theme.spacing(2, 0),
-    paddingLeft: 24,
+    paddingLeft: theme.spacing(3),
     boxShadow: theme.shadows[2],
     background: theme.palette.background.paper
   },
   dragIndicator: {
     position: "absolute",
     top: "50%",
-    left: 0,
-    width: 24,
-    height: 24,
+    left: -4,
+    width: theme.spacing(3),
+    height: theme.spacing(3),
     transform: "translateY(-50%)",
     visibility: "hidden"
   },
   visibleDragIndicator: {},
-  tableSortLabel: {},
   bodyCell: {
     padding: theme.spacing(0.5, 1),
     whiteSpace: "nowrap",
@@ -214,5 +211,9 @@ export default (theme: AppTheme) => createStyles({
   },
   hideOverflowY: {
     overflowY: "hidden"
+  },
+  rightSort: {
+    position: "absolute",
+    right: theme.spacing(-3)
   }
 });

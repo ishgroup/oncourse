@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { useCallback, useEffect, useMemo } from "react";
@@ -225,7 +228,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
 
   useEffect(() => {
     const invoiceIndex = values.invoices?.findIndex(i => i.id === Number(selection[0]));
-    if (invoiceIndex !== -1) {
+    if (invoiceIndex !== -1 && values.invoices[invoiceIndex]) {
       const amount = Math.abs(values.invoices[invoiceIndex].amountOwing);
       const amountToAllocate = getAmountToAllocate(values.invoices, amount);
       dispatch(change(form, "amount", amount));
