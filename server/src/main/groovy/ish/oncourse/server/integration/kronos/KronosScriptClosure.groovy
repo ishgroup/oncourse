@@ -36,7 +36,7 @@ import java.text.SimpleDateFormat
  *
  *
  * ```
- * canvas {
+ * kronos {
  *     scheduleName "Weekly Test Schedule"
  *     session record
  * }
@@ -96,7 +96,7 @@ class KronosScriptClosure implements ScriptClosureTrait<KronosIntegration> {
         String costCenter1 = firstThreeDigitsAccountCode(session.courseClass.incomeAccount.accountCode)
         def costCenter1Id = integration.findCostCenterId(costCenter1)
         if (!costCenter1Id) {
-            throw new IllegalArgumentException("Session with id '${session.id}': Cost Center with name '${costCenter1}' (onCourse session.courseClass.incomeAccount.accountCode) don't exist in Kronos. Session will not be added to Kronos.")
+            throw new IllegalArgumentException("Session with id '${session.id}': Cost Center with name '${costCenter1}' (onCourse session.courseClass.incomeAccount.accountCode) doesn't exist in Kronos. Session will not be added to Kronos.")
         }
 
         //TODO how add to create shift Kronos API request
@@ -111,17 +111,17 @@ class KronosScriptClosure implements ScriptClosureTrait<KronosIntegration> {
             String costCenter3 = tutorAttendance.courseClassTutor.definedTutorRole.name
             def costCenter3Id = integration.findCostCenterId(costCenter3)
             if (!costCenter3Id) {
-                throw new IllegalArgumentException("Session's with id '${session.id}' TutorAttendance(sessionTutor) with id '${tutorAttendance.id}': Cost Center with name '${costCenter3}' (onCourse courseClassTutor.definedTutorRole.name) don't exist in Kronos. Tutor will not be added to Kronos.")
+                throw new IllegalArgumentException("Session's with id '${session.id}' TutorAttendance(sessionTutor) with id '${tutorAttendance.id}': Cost Center with name '${costCenter3}' (onCourse courseClassTutor.definedTutorRole.name) doesn't exist in Kronos. Tutor will not be added to Kronos.")
             }
             String skill = tutorAttendance.courseClassTutor.definedTutorRole.description
             def skillId = integration.findSkillId(skill)
             if (!skillId) {
-                throw new IllegalArgumentException("Session's with id '${session.id}' TutorAttendance(sessionTutor) with id '${tutorAttendance.id}': Skill with name '${skill}' (onCourse courseClassTutor.definedTutorRole.description) don't exist in Kronos. Tutor will not be added to Kronos.")
+                throw new IllegalArgumentException("Session's with id '${session.id}' TutorAttendance(sessionTutor) with id '${tutorAttendance.id}': Skill with name '${skill}' (onCourse courseClassTutor.definedTutorRole.description) doesn't exist in Kronos. Tutor will not be added to Kronos.")
             }
             String employeeId = tutorAttendance.courseClassTutor.tutor.payrollRef
             def accountId = integration.findAccountId(employeeId)
             if (!accountId) {
-                throw new IllegalArgumentException("Session's with id '${session.id}' TutorAttendance(sessionTutor) with id '${tutorAttendance.id}': Employee with employee_id '${employeeId}' (onCourse courseClassTutor.courseClassTutor.payrollRef) don't exist in Kronos. Tutor will not be added to Kronos.")
+                throw new IllegalArgumentException("Session's with id '${session.id}' TutorAttendance(sessionTutor) with id '${tutorAttendance.id}': Employee with employee_id '${employeeId}' (onCourse courseClassTutor.courseClassTutor.payrollRef) doesn't exist in Kronos. Tutor will not be added to Kronos.")
             }
             def resultKronosShift
             def shiftIdByCustomField = getCustomFieldValue(tutorAttendance, KRONOS_SHIFT_ID_CUSTOM_FIELD_KEY)
