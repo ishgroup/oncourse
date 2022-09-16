@@ -46,6 +46,13 @@ export default (theme: AppTheme) => createStyles({
     background: theme.palette.background.paper,
     borderBottom: `1px solid ${theme.palette.divider}`,
   },
+  headerRow: {
+    display: "flex",
+    background: theme.palette.background.paper,
+  },
+  noSort: {
+    lineHeight: "1.1rem"
+  },
   headerCell: {
     fontSize: '0.75rem',
     position: "relative",
@@ -58,36 +65,32 @@ export default (theme: AppTheme) => createStyles({
       color: theme.palette.divider
     }
   },
-  draggingCell: {
-    left: 0
-  },
-  headerCellItem: {
-    padding: theme.spacing(2, 1),
-    zIndex: 1
-  },
-  headerRow: {
-    display: "flex",
-    background: theme.palette.background.paper,
-  },
-  noSort: {
-    lineHeight: "1.1rem"
-  },
   draggableCellItem: {
-    position: "relative",
+    fontSize: '0.75rem',
+    padding: theme.spacing(2, 1),
     transition: theme.transitions.create("padding", {
       duration: theme.transitions.duration.standard,
       easing: theme.transitions.easing.easeInOut
     }),
     "&:hover": {
       paddingLeft: theme.spacing(3),
-      paddingRight: theme.spacing(3),
       "& $dragIndicator": {
         visibility: "visible",
         fill: theme.palette.action.active
       }
     },
-    "&$activeRight": {
+    "&:hover $resizer": {
+      opacity: 1
+    },
+    "&:hover:not($activeRight) $canSort": {
+      transition: theme.transitions.create("padding", {
+        duration: theme.transitions.duration.standard,
+        easing: theme.transitions.easing.easeInOut
+      }),
       paddingRight: theme.spacing(3)
+    },
+    "&$activeRight $rightSort": {
+      position: "static"
     },
     "& $visibleDragIndicator": {
       visibility: "visible",
@@ -95,16 +98,19 @@ export default (theme: AppTheme) => createStyles({
     }
   },
   activeRight: {},
+  canSort: {},
   isDragging: {
-    padding: theme.spacing(2, 0),
-    paddingLeft: theme.spacing(3),
+    padding: theme.spacing(2, 3),
     boxShadow: theme.shadows[2],
-    background: theme.palette.background.paper
+    background: theme.palette.background.paper,
+    "& $canSort": {
+      paddingRight: theme.spacing(3)
+    },
   },
   dragIndicator: {
     position: "absolute",
     top: "50%",
-    left: -4,
+    left: theme.spacing(-3),
     width: theme.spacing(3),
     height: theme.spacing(3),
     transform: "translateY(-50%)",
@@ -163,7 +169,7 @@ export default (theme: AppTheme) => createStyles({
   selected: {},
   resizer: {
     top: "50%",
-    right: "-3px",
+    right: "3px",
     width: "3px",
     height: "50%",
     transform: "translateY(-50%)",
@@ -214,6 +220,13 @@ export default (theme: AppTheme) => createStyles({
   },
   rightSort: {
     position: "absolute",
-    right: theme.spacing(-3)
+    right: 0
+  },
+  rightDrag: {
+    position: "relative",
+    left: 0
+  },
+  rightAligned: {
+    padding: theme.spacing(1.5, 1)
   }
 });
