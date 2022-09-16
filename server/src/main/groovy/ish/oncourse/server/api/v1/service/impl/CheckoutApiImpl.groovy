@@ -347,7 +347,6 @@ class CheckoutApiImpl implements CheckoutApi {
                         hanbleError(VALIDATION_ERROR, [new CheckoutValidationErrorDTO(error: "Credit card transaction has wrong type")])
                     }
 
-                    save(checkout)
                     sessionAttributes = paymentService.completeTransaction(sessionAttributes.transactionId, amount, merchantReference)
 
                     if (sessionAttributes.authorised) {
@@ -378,7 +377,7 @@ class CheckoutApiImpl implements CheckoutApi {
             line.invoice.updateDateDue()
             line.invoice.updateOverdue()
         }
-        checkout.context.commitChanges()
+        save(checkout)
         fillResponce(dtoResponse, checkout)
     }
 

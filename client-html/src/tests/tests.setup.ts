@@ -1,5 +1,5 @@
 /*
- * Copyright ish group pty ltd 2021.
+ * Copyright ish group pty ltd 2022.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
@@ -21,3 +21,10 @@ global.console = {
   info: jest.fn(),
   debug: jest.fn(),
 };
+
+// mock ResizeObserver
+global.ResizeObserver = jest.fn().mockImplementation(() => ({
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+  disconnect: jest.fn(),
+}))

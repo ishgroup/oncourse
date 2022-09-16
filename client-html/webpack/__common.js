@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 const webpack = require("webpack");
@@ -111,7 +114,6 @@ const _common = (dirname, options) => {
       }),
     ],
     devServer: {
-      inline: true,
       port: 8100
     },
     devtool: false,
@@ -134,26 +136,6 @@ const _styleModule = dirname => [
       ],
     },
     {
-      test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
-      use: ['raw-loader'],
-    },
-    {
-      test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
-      use: [
-        MiniCssExtractPlugin.loader,
-        'css-loader',
-        {
-          loader: 'postcss-loader',
-          options: styles.getPostCssConfig( {
-            themeImporter: {
-              themePath: require.resolve( '@ckeditor/ckeditor5-theme-lark' ),
-            },
-            minify: true,
-          } ),
-        },
-      ],
-    },
-    {
       test: /\.s?css$/,
       use: [MiniCssExtractPlugin.loader, 'css-loader'],
       exclude: [
@@ -169,6 +151,36 @@ const _styleModule = dirname => [
         path.resolve(dirname, "node_modules/ace-builds"),
       ],
     },
+  {
+    test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
+    use: [ 'raw-loader' ]
+  },
+  {
+    test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
+    use: [
+      {
+        loader: 'style-loader',
+        options: {
+          injectType: 'singletonStyleTag',
+          attributes: {
+            'data-cke': true
+          }
+        }
+      },
+      'css-loader',
+      {
+        loader: 'postcss-loader',
+        options: {
+          postcssOptions: styles.getPostCssConfig( {
+            themeImporter: {
+              themePath: require.resolve( '@ckeditor/ckeditor5-theme-lark' )
+            },
+            minify: true
+          } )
+        }
+      }
+    ]
+  }
   ];
 
 /**
