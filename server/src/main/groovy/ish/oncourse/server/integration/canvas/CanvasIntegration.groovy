@@ -393,14 +393,14 @@ class CanvasIntegration implements PluginTrait {
         List coursesByBlueprintCode = getCourse(courseBlueprint) as List
         def blueprintCourses = coursesByBlueprintCode.findAll { it["blueprint"] == true}
         if (blueprintCourses.size() == 0) {
-            throw new IllegalArgumentException("Illegal state: There are no blueprint courses with specified code ${courseBlueprint}")
+            throw new IllegalArgumentException("Illegal state: There are no blueprint courses with specified code ${courseBlueprint}, when get courses using account_id ${accountId}")
         }
         if (blueprintCourses.size() > 1) {
             throw new IllegalArgumentException("Illegal state: There are find more that one blueprint course for specified course code: ${courseBlueprint}. " +
                     "Please, specify more unique course code.")
         }
         def course = createNewCourse(courseCode, courseName, courseId)
-        def resultOfUpdate = updateAssociatedCourses(blueprintCourses["id"][0], List.of(course["id"]))
+        def resultOfUpdate = updateAssociatedCourses(blueprintCourses["id"][0], blueprintCourses["account_id"][0], List.of(course["id"]), course["account_id"])
         if (resultOfUpdate["success"] == true) {
             migrateFromBlueprintCourse(blueprintCourses["id"][0])
             return getCourse(courseCode)
@@ -471,7 +471,7 @@ class CanvasIntegration implements PluginTrait {
      * @param courseIdsToAdd courses ids from Canvas to add as associated courses
      * @return success status
      */
-    def updateAssociatedCourses(int blueprintCourseId, List courseIdsToAdd) {
+    def updateAssociatedCourses(int blueprintCourseId, int blueprintCourseAccountId, List courseIdsToAdd, courseAccountIdsToAdd) {
         def client = new RESTClient(baseUrl)
         client.headers["Authorization"] = "Bearer ${authHeader}"
         client.request(Method.PUT, ContentType.JSON) {
@@ -484,7 +484,8 @@ class CanvasIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to update associated courses, blueprint course id: ${blueprintCourseId}, course ids ${courseIdsToAdd} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to update associated courses, blueprint course id: ${blueprintCourseId}, course ids ${courseIdsToAdd} ${resp.getStatusLine()}, ${result}. " +
+                        "Blueprint course account_id = ${blueprintCourseAccountId}, account_ids of the added courses = ${courseAccountIdsToAdd}. Course account should be same or sub-account of blueprint course.")
             }
         }
     }
