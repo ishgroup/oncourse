@@ -16,21 +16,26 @@ import zIndex from "@mui/material/styles/zIndex";
 import { ExitToApp } from "@mui/icons-material";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
-import { getActivePaymentOutMethods } from "./actions";
+import { getActivePaymentOutMethods, getAddPaymentOutContact } from "./actions";
 import { getPlainAccounts } from "../accounts/actions";
-import { clearListState, getFilters, } from "../../../common/components/list-view/actions";
+import {
+  clearListState,
+  getFilters,
+  setListCreatingNew,
+  setListSelection,
+} from "../../../common/components/list-view/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getAccountTransactionLockedDate } from "../../preferences/actions";
 import PaymentsOutEditView from "./components/PaymentOutEditView";
 import { PaymentOutModel } from "./reducers/state";
 import { getAdministrationSites } from "../sites/actions";
+import { PaymentOut } from "@api/model";
+import { getAmountOwing, setContraInvoices } from "../invoices/actions";
+import AddPaymentOutEditView from "./components/AddPaymentOutEditView";
 
 const manualLink = getManualLink("processingEnrolments_PaymentOut");
 
-const nameCondition = (paymentOut: PaymentOutModel) => {
-  console.log(paymentOut);
-  return  paymentOut.type
-};
+const nameCondition = (paymentOut: PaymentOutModel) => paymentOut.type;
 
 const getWindowWidth = () => window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth || 1920;
 
@@ -85,12 +90,35 @@ class PaymentsOut extends React.Component<any, any> {
 
   componentWillUnmount() {
     this.props.clearListState();
+    this.props.clearContraInvoices();
+  }
+
+  onCreateNew() {
+    const {
+      location, onInit, setListCreatingNew, updateSelection
+    } = this.props;
+
+    this.closeCreateNewDialog();
+
+    const urlParams = new URLSearchParams(location.search);
+
+    setListCreatingNew(true);
+    updateSelection(["new"]);
+    onInit(urlParams.get("invoiceId"));
   }
 
   openCreateNewDialog() {
-    this.setState({
-      createNewDialogOpen: true
-    });
+    const {
+      match: { params }
+    } = this.props;
+
+    if (params.id === "new" && window.location.search?.includes("invoiceId")) {
+      this.onCreateNew();
+    } else {
+      this.setState({
+        createNewDialogOpen: true
+      });
+    }
   }
 
   closeCreateNewDialog() {
@@ -115,9 +143,8 @@ class PaymentsOut extends React.Component<any, any> {
             manualLink,
             nameCondition
           }}
-          EditViewContent={PaymentsOutEditView}
+          EditViewContent={props => props.isNew ?  <AddPaymentOutEditView {...props}/> : <PaymentsOutEditView {...props}/>}
           rootEntity="PaymentOut"
-          onInit={() => this.openCreateNewDialog()}
           filterGroupsInitial={filterGroups}
           findRelated={[
             { title: "Contacts", list: "contact", expression: "paymentsOut.id" },
@@ -126,7 +153,7 @@ class PaymentsOut extends React.Component<any, any> {
             { title: "Audits", list: "audit", expression: "entityIdentifier == PaymentOut and entityId" }
           ]}
           defaultDeleteDisabled
-          customOnCreate
+          customOnCreate={() => this.openCreateNewDialog()}
           noListTags
         />
         <Popover
@@ -163,6 +190,10 @@ class PaymentsOut extends React.Component<any, any> {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  onInit: id => {
+    dispatch(getAddPaymentOutContact(id));
+    dispatch(getAmountOwing(id));
+  },
   getLockedDate: () => {
     dispatch(getAccountTransactionLockedDate());
   },
@@ -172,7 +203,10 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getAdministrationSites: () => dispatch(getAdministrationSites()),
   getAccounts: () => getPlainAccounts(dispatch),
   clearListState: () => dispatch(clearListState()),
-  getActivePaymentOutMethods: () => dispatch(getActivePaymentOutMethods())
+  getActivePaymentOutMethods: () => dispatch(getActivePaymentOutMethods()),
+  setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
+  updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
+  clearContraInvoices: () => dispatch(setContraInvoices(null)),
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(withStyles(styles, { withTheme: true })(PaymentsOut));

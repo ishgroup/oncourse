@@ -1,5 +1,5 @@
 /*
- * Copyright ish group pty ltd 2021.
+ * Copyright ish group pty ltd 2022.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
@@ -150,10 +150,6 @@ const findRelatedGroup: any = [
   { title: "Certificates", list: "certificate", expression: "certificateOutcomes.outcome.enrolment.id" },
 
 ];
-
-const nestedEditFields = {
-  Contact: props => <ContactEditView {...props} />
-};
 
 const defaultFields: Array<keyof Enrolment> = ["fundingSource", "vetFundingSourceStateID", "vetPurchasingContractID"];
 
@@ -310,7 +306,6 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         CogwheelAdornment={EnrolmentCogWheel}
-        nestedEditFields={nestedEditFields}
         defaultDeleteDisabled
         alwaysFullScreenCreateView
       />

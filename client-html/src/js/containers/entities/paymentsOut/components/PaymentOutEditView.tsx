@@ -274,6 +274,6 @@ const mapStateToProps = (state: State, props) => ({
   adminSites: state.sites.adminSites
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(
+export default connect<any, any, any>(mapStateToProps)(
   (props: any) => (props.values ? <PaymentOutEditView {...props} /> : null)
 );

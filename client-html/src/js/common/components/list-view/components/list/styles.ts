@@ -98,14 +98,19 @@ export default (theme: AppTheme) => createStyles({
     }
   },
   activeRight: {},
+  rightAlighed: {},
   canSort: {},
   isDragging: {
-    padding: theme.spacing(2, 3),
     boxShadow: theme.shadows[2],
     background: theme.palette.background.paper,
-    "& $canSort": {
-      paddingRight: theme.spacing(3)
+    transition: "none",
+    paddingLeft: theme.spacing(3),
+    "&$rightAlighed:not($activeRight)": {
+      paddingRight: theme.spacing(4)
     },
+    "&$rightAlighed:has( $noSort)": {
+      paddingRight: theme.spacing(1)
+    }
   },
   dragIndicator: {
     position: "absolute",
@@ -221,12 +226,5 @@ export default (theme: AppTheme) => createStyles({
   rightSort: {
     position: "absolute",
     right: 0
-  },
-  rightDrag: {
-    position: "relative",
-    left: 0
-  },
-  rightAligned: {
-    padding: theme.spacing(1.5, 1)
   }
 });
