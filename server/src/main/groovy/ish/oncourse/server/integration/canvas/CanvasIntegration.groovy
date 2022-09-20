@@ -80,7 +80,7 @@ class CanvasIntegration implements PluginTrait {
                 authHeader =  responseToJson(result)["access_token"]
             }
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to refresh access token  ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to refresh access token  ${resp.getStatusLine()}, ${result}")
             }
         }
 
@@ -114,7 +114,7 @@ class CanvasIntegration implements PluginTrait {
                 return result
             }
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to retreive user by email:${email} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to retreive user by email:${email} ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -144,7 +144,7 @@ class CanvasIntegration implements PluginTrait {
                 return [ "resp": resp, "result": result]
             }
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to retreive users by account id:${accountId} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to retreive users by account id:${accountId} ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -187,7 +187,7 @@ class CanvasIntegration implements PluginTrait {
                 return result
             }
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to created a new user name:${fullName} email:${email} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to created a new user name:${fullName} email:${email} ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -235,7 +235,7 @@ class CanvasIntegration implements PluginTrait {
                 return [ "resp": resp, "result": result]
             }
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to retreive enrolments by user id:${userId} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to retreive enrolments by user id:${userId} ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -277,7 +277,7 @@ class CanvasIntegration implements PluginTrait {
                 return [ "resp": resp, "result": result]
             }
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to retreive logins by user id:${userId} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to retreive logins by user id:${userId} ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -321,7 +321,7 @@ class CanvasIntegration implements PluginTrait {
                 return result
             }
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to edit user, user id:${userId} event:${event} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to edit user, user id:${userId} event:${event} ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -346,7 +346,7 @@ class CanvasIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to retreive all courses ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to retreive all courses ${resp.getStatusLine()}, ${result}")
             }
         }
 
@@ -373,7 +373,7 @@ class CanvasIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to retreive all courses ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to retreive all courses ${resp.getStatusLine()}, ${result}")
             }
         }
 
@@ -437,7 +437,7 @@ class CanvasIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to create course, course code: ${courseCode}, course name: ${courseName}, course id: ${courseId} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to create course, course code: ${courseCode}, course name: ${courseName}, course id: ${courseId} ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -506,7 +506,7 @@ class CanvasIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to migrate associated courses, blueprint course id: ${blueprintCourseId} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to migrate associated courses, blueprint course id: ${blueprintCourseId} ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -528,7 +528,7 @@ class CanvasIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to get sections for course, course id:${courseId} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to get sections for course, course id:${courseId} ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -581,7 +581,7 @@ class CanvasIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to create section, course id: ${courseId}, section name: ${code}, course class id: ${courseClassId} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to create section, course id: ${courseId}, section name: ${code}, course class id: ${courseClassId} ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -610,7 +610,7 @@ class CanvasIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to enrol student: ${studentId} into section: ${sectionId} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to enrol student: ${studentId} into section: ${sectionId} ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -664,7 +664,7 @@ class CanvasIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to enrol teacher: ${teachertId} into course: ${courseId} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to enrol teacher: ${teachertId} into course: ${courseId} ${resp.getStatusLine()}, ${result}")
             }
         }
     }
