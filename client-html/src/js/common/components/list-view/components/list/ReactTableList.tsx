@@ -352,11 +352,12 @@ const Table: React.FC<ListTableProps> = ({
           onDragStart={() => setColumnIsDragging(true)}
         >
           <Droppable key={headerGroup.getHeaderGroupProps().key} droppableId="droppable" direction="horizontal">
-            {provided => (
+            {(provided, snapshot) => (
               <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
                 className={classes.headerRow}
+                style={{...snapshot.isDraggingOver ? { pointerEvents: "none" } : {}}}
               >
                 {headerGroup.headers.filter(column => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(column.id)).map((column, columnIndex) => {
                   const disabledCell = ["selection", "chooser"].includes(column.id);
@@ -369,7 +370,6 @@ const Table: React.FC<ListTableProps> = ({
                     >
                       {(provided, snapshot) => {
                         const isDragging = snapshot.isDragging;
-
                         return (
                             <div
                               ref={provided.innerRef}
@@ -385,7 +385,7 @@ const Table: React.FC<ListTableProps> = ({
                                  "text-truncate text-nowrap",
                                   {
                                     [classes.isDragging]: isDragging,
-                                    [classes.rightAligned]: column.type === "Money",
+                                    [classes.rightAlighed]: column.type === "Money",
                                     [classes.activeRight]: column.type === "Money" && column.isSorted
                                   })
                                }
@@ -400,15 +400,14 @@ const Table: React.FC<ListTableProps> = ({
                                   className={column.cellClass}
                                 >
                                   {!disabledCell && (
-                                    <span  {...provided.dragHandleProps}>
+                                    <span  {...provided.dragHandleProps} className="relative">
                                       <DragIndicator
                                         className={
                                           clsx(
                                             "dndActionIcon",
                                             classes.dragIndicator,
                                             {
-                                              [classes.visibleDragIndicator]: isDragging,
-                                              [classes.rightDrag]: column.type === "Money"
+                                              [classes.visibleDragIndicator]: isDragging
                                             },
                                           )
                                         }
@@ -417,7 +416,7 @@ const Table: React.FC<ListTableProps> = ({
                                   )}
                                   <TableSortLabel
                                     {...column.getSortByToggleProps()}
-                                    hideSortIcon={!column.canSort}
+                                    hideSortIcon={isDragging || !column.canSort}
                                     active={column.isSorted}
                                     direction={column.isSortedDesc ? "desc" : "asc"}
                                     classes={{
@@ -442,7 +441,6 @@ const Table: React.FC<ListTableProps> = ({
                     </Draggable>
                   );
                 })}
-                {provided.placeholder}
               </div>
             )}
           </Droppable>

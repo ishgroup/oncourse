@@ -126,17 +126,27 @@ const ListTagGroup: React.FC<Props> = (
             >
               <div
                 className={clsx(
-                  "centeredFlex text-truncate text-nowrap outline-none",
+                  "p-0",
                   customStyles.draggableCellItem,
                   { "pl-3": isDragging },
                 )}
               >
-                <DragIndicator
-                  className={
-                    clsx("dndActionIcon", customStyles.dragIndicator, { [customStyles.visibleDragIndicator]: isDragging })
-                  }
-                />
-                {heading}
+                <div className="d-flex">
+                  <span className="relative">
+                    <DragIndicator
+                      className={
+                        clsx(
+                          "dndActionIcon",
+                          customStyles.dragIndicator,
+                          {
+                            [customStyles.visibleDragIndicator]: isDragging
+                          },
+                        )
+                      }
+                    />
+                  </span>
+                  {heading}
+                </div>
               </div>
               {tree}
             </div>
