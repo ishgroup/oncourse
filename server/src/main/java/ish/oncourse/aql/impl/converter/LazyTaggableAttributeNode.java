@@ -60,7 +60,7 @@ public class LazyTaggableAttributeNode extends LazyExprNodeWithBasePathResolver 
 
         ASTAnd notEmptyExpr = buildTagChecksExpr(entityPath, taggableClasses);
 
-        if (basePath.endsWith(TAGS) || basePath.endsWith(CHECKED_TASKS)) {
+        if (basePath.endsWith(TAGS) || basePath.endsWith(CHECKED_TASKS) || basePath.endsWith(COMPLETED_CHECKLISTS)) {
             // tags is empty || tags is null expressions
             if (parent instanceof ASTEqual) {
                 return inverseNodeByIds(notEmptyExpr, taggedEntity, ctx);
@@ -72,8 +72,8 @@ public class LazyTaggableAttributeNode extends LazyExprNodeWithBasePathResolver 
         parent = processAsAlias(parent, args);
         notEmptyExpr.jjtAddChild(parent, notEmptyExpr.jjtGetNumChildren());
 
-        if(NOT_COMPLETED_CHECKLISTS.equals(attribute.getCurrentAlias())){
-            return inverseNodeByIds(parent, taggedEntity, ctx);
+        if(NOT_COMPLETED_CHECKLISTS.equals(attribute.getCurrentAlias()) || UNCHECKED_TASKS.equals(attribute.getCurrentAlias())){
+            return inverseNodeByIds(notEmptyExpr, taggedEntity, ctx);
         }
         return notEmptyExpr;
     }
@@ -116,14 +116,22 @@ public class LazyTaggableAttributeNode extends LazyExprNodeWithBasePathResolver 
         // add check if it is tag or checklist
         String nodeTypePath = basePathWithJoin + ".nodeType";
         ASTEqual nodeTypeEqNode = new ASTEqual(new ASTObjPath(nodeTypePath), attribute.getNodeType().getDatabaseValue());
-        ExpressionUtil.addChild(and, nodeTypeEqNode, idx);
+        ExpressionUtil.addChild(and, nodeTypeEqNode, idx++);
 
         // add check for parentTag for completed checklists
-        if(TaggableAttribute.COMPLETED_CHECKLISTS.equals(attribute)) {
+        if(TaggableAttribute.COMPLETED_CHECKLISTS.equals(attribute) || TaggableAttribute.UNCOMPLETED_CHECKLISTS.equals(attribute)) {
             String completedChecklistPath = basePathWithJoin + ".parentTag";
             ASTEqual completedChecklistNode = new ASTEqual(new ASTObjPath(completedChecklistPath), null);
+            ExpressionUtil.addChild(and, completedChecklistNode, idx++);
+        }
+
+        // add check for parentTag for completed checklists
+        if(TaggableAttribute.UNCHECKED_TASKS.equals(attribute)) {
+            String completedChecklistPath = basePathWithJoin + ".parentTag";
+            ASTNotEqual completedChecklistNode = new ASTNotEqual(new ASTObjPath(completedChecklistPath), null);
             ExpressionUtil.addChild(and, completedChecklistNode, idx);
         }
+
         return and;
     }
 
@@ -133,6 +141,8 @@ public class LazyTaggableAttributeNode extends LazyExprNodeWithBasePathResolver 
 
         if(path.contains(attribute.getCurrentAlias() + ".")){
             newPath = path.replaceFirst(attribute.getCurrentAlias() + ".", "taggingRelations+.tag+.");
+        } else if(path.contains(attribute.getCurrentAlias())){
+            newPath = path.replaceFirst(attribute.getCurrentAlias(), "taggingRelations+.tag");
         }
 
         var newObjPath = new ASTObjPath(newPath);
