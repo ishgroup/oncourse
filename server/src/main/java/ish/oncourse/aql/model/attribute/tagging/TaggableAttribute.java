@@ -18,7 +18,7 @@ public enum TaggableAttribute {
     CHECKED_TASKS("checkedTasks", "taggingRelations+.tag", NodeType.CHECKLIST),
     UNCHECKED_TASKS("uncheckedTasks", "taggingRelations+.tag", NodeType.CHECKLIST),
     COMPLETED_CHECKLISTS("completedChecklists", "taggingRelations+.tag+.parentTag", NodeType.CHECKLIST),
-    UNCOMPLETED_CHECKLISTS("uncompletedChecklists", "taggingRelations+.tag+.parentTag", NodeType.CHECKLIST);
+    UNCOMPLETED_CHECKLISTS("notCompletedChecklists", "taggingRelations+.tag+.parentTag", NodeType.CHECKLIST);
 
     private String currentAlias;
     private String realPath;
