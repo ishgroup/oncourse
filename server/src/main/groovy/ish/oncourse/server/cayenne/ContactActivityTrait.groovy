@@ -32,7 +32,7 @@ trait ContactActivityTrait {
 
     ContactInteractionDTO toInteraction(){
         ContactInteractionDTO contactInteractionDTO = new ContactInteractionDTO()
-        contactInteractionDTO.setDate(LocalDateUtils.dateToValue(interactionDate))
+        contactInteractionDTO.setDate(LocalDateUtils.dateToTimeValue(interactionDate))
         contactInteractionDTO.setEntity(entityName)
         contactInteractionDTO.setId(id)
         contactInteractionDTO.setDescription(interactionDescription)

@@ -3,6 +3,9 @@ import { initialize } from "redux-form";
 import { DefaultEpic } from "../../common/Default.Epic";
 import { FETCH_SUCCESS } from "../../../js/common/actions";
 import { createIntegration, getIntegrations } from "../../../js/containers/automation/actions";
+import {
+  parseIntegrations
+} from "../../../js/containers/automation/containers/integrations/utils";
 import { EpicCreateIntegration } from "../../../js/containers/automation/containers/integrations/epics/EpicCreateIntegration";
 
 const integration = {
@@ -23,7 +26,7 @@ describe("Create integration epic tests", () => {
     action: createIntegration(integration, "MoodleForm"),
     epic: EpicCreateIntegration,
     processData: () => [
-      initialize("MoodleForm", integration),
+      initialize("MoodleForm", parseIntegrations([integration])[0]),
       getIntegrations(integration.name),
       {
         type: FETCH_SUCCESS,

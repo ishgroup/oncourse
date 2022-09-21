@@ -11,6 +11,7 @@ import { onSubmitFail } from "../../../../utils/highlightFormClassErrors";
 import FullScreenEditView from "./FullScreenEditView";
 import { clearListNestedEditRecord, closeListNestedEditRecord, updateListNestedEditRecord } from "../../actions";
 import { ApiMethods } from "../../../../../model/common/apiHandlers";
+import { NESTED_EDIT_VIEW_FORM_NAME } from "../../../../../constants/Forms";
 
 class NestedEditView extends React.Component<any, any> {
   onClose = index => {
@@ -100,7 +101,7 @@ class NestedEditView extends React.Component<any, any> {
         nameCondition={nameCondition}
         key={index + r.record.id}
         rootEntity={r.entity}
-        form={`NestedEditViewForm[${index}]`}
+        form={`${NESTED_EDIT_VIEW_FORM_NAME}[${index}]`}
         fullScreenEditView={r.opened}
         toogleFullScreenEditView={() => this.onClose(index)}
         EditViewContent={

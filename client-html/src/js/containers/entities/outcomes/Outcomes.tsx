@@ -15,21 +15,15 @@ import { getManualLink } from "../../../common/utils/getManualLink";
 import { fundingUploadsPath } from "../../../constants/Api";
 import { FilterGroup } from "../../../model/common/ListView";
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
-import {
- createOutcome, deleteOutcome, getOutcome, getOutcomeTags, updateOutcome
-} from "./actions";
+import { getOutcomeTags } from "./actions";
 import OutcomeEditView from "./components/OutcomeEditView";
 
 interface OutcomesProps {
-  getOutcomeRecord?: () => void;
   onInit?: () => void;
-  onSave?: (id: string, outcome: Outcome) => void;
-  onCreate?: (outcome: Outcome) => void;
   getFilters?: () => void;
   getTags?: () => void;
   clearListState?: () => void;
   checkPermissions?: () => void;
-  onDelete?: (id: string) => void;
 }
 
 export const OutcomeInitial: Outcome = {
@@ -125,14 +119,10 @@ const manualLink = getManualLink("delivery_outcomes");
 
 const Outcomes: React.FC<OutcomesProps> = props => {
   const {
-    getOutcomeRecord,
     onInit,
-    onDelete,
-    onSave,
     getFilters,
     getTags,
     clearListState,
-    onCreate,
     checkPermissions
   } = props;
 
@@ -158,12 +148,8 @@ const Outcomes: React.FC<OutcomesProps> = props => {
         hideTitle: true
       }}
       EditViewContent={OutcomeEditView}
-      getEditRecord={getOutcomeRecord}
       rootEntity="Outcome"
       onInit={onInit}
-      onDelete={onDelete}
-      onSave={onSave}
-      onCreate={onCreate}
       findRelated={findRelatedGroup}
       filterGroupsInitial={filterGroups}
       createButtonDisabled
@@ -182,10 +168,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getFilters: () => dispatch(getFilters("Outcome")),
   clearListState: () => dispatch(clearListState()),
-  getOutcomeRecord: (id: string) => dispatch(getOutcome(id)),
-  onSave: (id: string, outcome: Outcome) => dispatch(updateOutcome(id, outcome)),
-  onCreate: (outcome: Outcome) => dispatch(createOutcome(outcome)),
-  onDelete: (id: string) => dispatch(deleteOutcome(id)),
   checkPermissions: () => dispatch(checkPermissions({ path: fundingUploadsPath, method: "GET" }))
 });
 

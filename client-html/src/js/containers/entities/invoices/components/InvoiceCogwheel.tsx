@@ -3,7 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { memo, NamedExoticComponent, useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+ memo, NamedExoticComponent, useCallback, useEffect, useMemo, useState 
+} from "react";
 import MenuItem from "@mui/material/MenuItem";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
@@ -66,7 +68,6 @@ const InvoiceCogwheel: NamedExoticComponent = memo<Props>(props => {
     selectedInvoiceAmountOwing,
     getAmountOwing,
     getAddPaymentOutContact,
-    onCreate,
     closeMenu,
     showConfirm,
     isFormDirty,
@@ -176,7 +177,7 @@ const InvoiceCogwheel: NamedExoticComponent = memo<Props>(props => {
     const paymentOut = getPaymentOutFromModel(record);
     dispatch(postPaymentOut(paymentOut));
     formProps.toogleFullScreenEditView();
-    dispatch(getRecords("AbstractInvoice"));
+    dispatch(getRecords({ entity: "AbstractInvoice" }));
   };
 
   const onClick = useCallback(e => {

@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, {
@@ -76,6 +79,7 @@ const styles = theme =>
       marginLeft: theme.spacing(1)
     },
     editable: {
+      cursor: "text",
       position: "relative",
       display: "inline-flex",
       color: theme.palette.text.primaryEditable,
@@ -104,6 +108,9 @@ const styles = theme =>
       "&:hover:before": {
         borderBottom: `1px solid ${theme.palette.primary.main}`
       },
+      "&$invalid:hover:before, &$invalid:before": {
+        borderBottom: `2px solid ${theme.palette.error.main}`
+      },
     },
     tagColorDotSmall: {
       width: theme.spacing(2),
@@ -126,7 +133,8 @@ const styles = theme =>
     },
     placeholder: {
       opacity: 0.15
-    }
+    },
+    invalid: {}
   });
 
 interface Props extends WrappedFieldProps {
@@ -345,10 +353,12 @@ const SimpleTagList: React.FC<Props> = props => {
   };
 
   const onTagListBlur = () => {
-    if (document.activeElement !== inputNode.current) {
-      exit();
-      synchronizeTags();
-    }
+    setTimeout(() => {
+      if (document.activeElement !== inputNode.current) {
+        exit();
+        synchronizeTags();
+      }
+    }, 60);
   };
 
   const handleChange = (e, value, action) => {
@@ -522,6 +532,7 @@ const SimpleTagList: React.FC<Props> = props => {
             onClick={edit}
             className={clsx( classes.editable, {
               [fieldClasses.text]: inputValue,
+              [classes.invalid]: meta && meta.invalid
             })}
           >
             <span className={clsx("centeredFlex flex-wrap", {

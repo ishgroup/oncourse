@@ -8,16 +8,12 @@
 
 import React from "react";
 import { withRouter } from "react-router-dom";
-import {
- getFormSyncErrors, initialize, isDirty, isInvalid, submit 
-} from "redux-form";
+import { getFormSyncErrors, initialize, isDirty, isInvalid, submit } from "redux-form";
 import { ThemeProvider } from "@mui/material/styles";
 import { createStyles, withStyles } from "@mui/styles";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import {
- Column, Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel 
-} from "@api/model";
+import { Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel } from "@api/model";
 import { createTheme } from '@mui/material';
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import Button from "@mui/material/Button";
@@ -38,22 +34,20 @@ import {
   getListNestedEditRecord,
   getRecords,
   setFilterGroups,
-  setListColumns,
   setListCreatingNew,
   setListEditRecord,
   setListEditRecordFetching,
   setListEntity,
   setListFullScreenEditView,
-  setListLayout, setListMenuTags,
+  setListLayout,
+  setListMenuTags,
   setListSelection,
   setListUserAQLSearch,
   setSearch,
   updateTableModel,
 } from "./actions";
 import NestedEditView from "./components/full-screen-edit-view/NestedEditView";
-import {
- closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm
-} from "../../actions";
+import { closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm } from "../../actions";
 import ResizableWrapper from "../layout/resizable/ResizableWrapper";
 import { MenuTag } from "../../../model/tags";
 import { pushGTMEvent } from "../google-tag-manager/actions";
@@ -84,11 +78,17 @@ import {
   getTagsUpdatedByIds,
   setActiveFiltersBySearch
 } from "./utils/listFiltersUtils";
-import { setSwipeableDrawerDirtyForm } from "../layout/swipeable-sidebar/actions";
 import { LSGetItem } from "../../utils/storage";
 import { getCustomFieldTypes } from "../../../containers/entities/customFieldTypes/actions";
+import {
+  createEntityRecord,
+  deleteEntityRecord,
+  getEntityRecord,
+  updateEntityRecord
+} from "../../../containers/entities/common/actions";
+import { shouldAsyncValidate } from "./utils/listFormUtils";
 
-export const ListSideBarDefaultWidth = 200;
+export const ListSideBarDefaultWidth = 265;
 export const ListMainContentDefaultWidth = 774;
 
 const styles = () => createStyles({
@@ -113,19 +113,22 @@ const sideBarTheme = theme => createTheme({
   }
 });
 
+interface OwnProps {
+  onCreate?: (item: any) => void;
+  onDelete?: (id: number) => void;
+  getEditRecord?: (id: number) => void;
+  onSave?: (item: any) => void;
+}
+
 interface Props extends Partial<ListState> {
   listProps: TableListProps;
-  getEditRecord: (id: string) => void;
   rootEntity: EntityName;
   EditViewContent: any;
   onLoadMore?: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
   selection?: string[];
   editRecord?: any;
-  onSave?: any;
   onBeforeSave?: any;
-  onDelete?: any;
-  onCreate?: (record: any) => void;
   classes?: any;
   isDirty?: boolean;
   isInvalid?: boolean;
@@ -147,7 +150,6 @@ interface Props extends Partial<ListState> {
   exportTemplates?: ExportTemplate[];
   pdfReports?: Report[];
   updateLayout?: (layout: LayoutType) => void;
-  updateColumns?: (columns: Column[]) => void;
   updateSelection?: (selection: string[]) => void;
   setListUserAQLSearch?: (userAQLSearch: string) => void;
   getScripts?: NoArgFunction;
@@ -164,7 +166,6 @@ interface Props extends Partial<ListState> {
     manualLink?: EditViewContainerProps["manualLink"];
     validate?: any;
     asyncValidate?: any;
-    shouldAsyncValidate?: AnyArgFunction<boolean>;
     asyncBlurFields?: string[];
     asyncChangeFields?: string[];
     disabledSubmitCondition?: boolean;
@@ -183,6 +184,9 @@ interface Props extends Partial<ListState> {
   ShareContainerAlertComponent?: any;
   searchMenuItemsRenderer?: ListAqlMenuItemsRenderer;
   customOnCreate?: any;
+  customOnCreateAction?: any;
+  customGetAction?: any;
+  customUpdateAction?: any;
   preformatBeforeSubmit?: AnyArgFunction;
   userAQLSearch?: string;
   listSearch?: string;
@@ -192,7 +196,6 @@ interface Props extends Partial<ListState> {
   searchQuery?: SearchQuery;
   setListEditRecordFetching?: any;
   search?: string;
-  onSwipeableDrawerDirtyForm?: (isDirty: boolean, resetEditView: any) => void;
   deleteDisabledCondition?: (props) => boolean;
   noListTags?: boolean;
   setEntity?: (entity: EntityName) => void;
@@ -217,7 +220,7 @@ interface ComponentState {
   newSelection: string[] | null;
 }
 
-class ListView extends React.PureComponent<Props, ComponentState> {
+class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
   private containerNode;
 
   private searchComponentNode: React.RefObject<any>;
@@ -558,7 +561,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     this.filtersSynchronized = true;
   };
 
-  onGetEditRecord = (id: string) => {
+  onGetEditRecord = id => {
     const { sendGAEvent, getEditRecord, rootEntity } = this.props;
 
     sendGAEvent("screenview", `${rootEntity}EditView`);
@@ -713,7 +716,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       return;
     }
 
-    onSave(selection[0], value);
+    onSave(value);
   };
 
   onDelete = id => {
@@ -1018,32 +1021,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     return searchParam.getAll("search")[0];
   };
 
-  renderTableList = () => {
-    const {
-      listProps, onLoadMore, selection, records, recordsLeft, currency, updateColumns
-    } = this.props;
-
-    const { threeColumn, mainContentWidth } = this.state;
-
-    return (
-      <ReactTableList
-        {...listProps}
-        mainContentWidth={mainContentWidth}
-        onLoadMore={onLoadMore}
-        selection={selection}
-        records={records}
-        recordsLeft={recordsLeft}
-        threeColumn={threeColumn}
-        updateColumns={updateColumns}
-        shortCurrencySymbol={currency.shortCurrencySymbol}
-        onRowDoubleClick={this.onRowDoubleClick}
-        onSelectionChange={this.onSelection}
-        onChangeModel={this.onChangeModel}
-        getContainerNode={this.getContainerNode}
-      />
-    );
-  }
-
   render() {
     const {
       classes,
@@ -1077,7 +1054,11 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       filterEntity,
       emailTemplatesWithKeyCode,
       scripts,
-      recepients
+      recepients,
+      listProps,
+      onLoadMore,
+      recordsLeft,
+      currency
     } = this.props;
 
     const {
@@ -1085,11 +1066,29 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     } = this.state;
 
     const hasFilters = Boolean(filterGroups.length || menuTags.length || savingFilter);
+    
+    const table = <ReactTableList
+      {...listProps}
+      mainContentWidth={mainContentWidth}
+      onLoadMore={onLoadMore}
+      selection={selection}
+      records={records}
+      recordsLeft={recordsLeft}
+      threeColumn={threeColumn}
+      shortCurrencySymbol={currency.shortCurrencySymbol}
+      onRowDoubleClick={this.onRowDoubleClick}
+      onSelectionChange={this.onSelection}
+      onChangeModel={this.onChangeModel}
+      getContainerNode={this.getContainerNode}
+    />;
 
     return (
       <div className={classes.root}>
+        <LoadingIndicator transparentBackdrop allowInteractions />
+
         <FullScreenEditView
           {...editViewProps}
+          shouldAsyncValidate={shouldAsyncValidate}
           rootEntity={rootEntity}
           form={LIST_EDIT_VIEW_FORM_NAME}
           fullScreenEditView={fullScreenEditView}
@@ -1165,7 +1164,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
         <div className="flex-fill d-flex flex-column overflow-hidden user-select-none">
           <div className="flex-fill d-flex relative">
-            <LoadingIndicator transparentBackdrop allowInteractions />
             {threeColumn ? (
               <ResizableWrapper
                 onResizeStop={this.handleResizeMainContentCallBack}
@@ -1175,14 +1173,15 @@ class ListView extends React.PureComponent<Props, ComponentState> {
                 maxWidth="65%"
                 classes={{ sideBarWrapper: classes.resizableItemList }}
               >
-                {this.renderTableList()}
+                {table}
               </ResizableWrapper>
-            ) : this.renderTableList() }
+            ) : table }
 
             {threeColumn && !fullScreenEditView && (
               <div className="d-flex flex-fill overflow-hidden">
                 <EditView
                   {...editViewProps}
+                  shouldAsyncValidate={shouldAsyncValidate}
                   form={LIST_EDIT_VIEW_FORM_NAME}
                   rootEntity={rootEntity}
                   EditViewContent={EditViewContent}
@@ -1257,7 +1256,6 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   clearListState: () => dispatch(clearListState()),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
   updateLayout: (layout: LayoutType) => dispatch(setListLayout(layout)),
-  updateColumns: (columns: Column[]) => dispatch(setListColumns(columns)),
   deleteFilter: (id: number, entity: string, checked: boolean) => dispatch(deleteCustomFilter(id, entity, checked)),
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
   setListMenuTags: ({ tags, checkedChecklists, uncheckedChecklists }) => dispatch(setListMenuTags(tags, checkedChecklists, uncheckedChecklists)),
@@ -1269,14 +1267,25 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView)),
   updateTableModel: (model: TableModel, listUpdate?: boolean) => dispatch(updateTableModel(ownProps.rootEntity, model, listUpdate)),
-  onLoadMore: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => dispatch(getRecords(ownProps.rootEntity, true, false, startIndex, stopIndex, resolve)),
+  onLoadMore: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => dispatch(getRecords(
+    {
+     entity: ownProps.rootEntity, listUpdate: true, ignoreSelection: false, startIndex, stopIndex, resolve
+    }
+  )),
   onSearch: search => dispatch(setSearch(search, ownProps.rootEntity)),
   setListEditRecordFetching: () => dispatch(setListEditRecordFetching()),
-  onSwipeableDrawerDirtyForm: (isDirty: boolean, resetEditView: any) => dispatch(setSwipeableDrawerDirtyForm(isDirty, resetEditView)),
   getListViewPreferences: () => dispatch(getUserPreferences([LISTVIEW_MAIN_CONTENT_WIDTH])),
   setListviewMainContentWidth: (value: string) => dispatch(setUserPreference({ key: LISTVIEW_MAIN_CONTENT_WIDTH, value })),
   submitForm: () => dispatch(submit(LIST_EDIT_VIEW_FORM_NAME)),
-  closeConfirm: () => dispatch(closeConfirm())
+  closeConfirm: () => dispatch(closeConfirm()),
+  onCreate: (item: any) => dispatch( ownProps.customOnCreateAction
+    ? ownProps.customOnCreateAction(item)
+    : createEntityRecord(item, ownProps.rootEntity)),
+  onDelete: (id: number) => dispatch(deleteEntityRecord(id, ownProps.rootEntity)),
+  onSave: (item: any) => dispatch(updateEntityRecord(item.id, ownProps.rootEntity, item)),
+  getEditRecord: (id: number) => dispatch(ownProps.customGetAction 
+    ? ownProps.customGetAction(id) 
+    : getEntityRecord(id, ownProps.rootEntity))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(ListView))) as React.FC<Props>;

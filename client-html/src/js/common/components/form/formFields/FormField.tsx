@@ -79,11 +79,11 @@ const FormFieldBase = React.forwardRef<any, Props>(({
     ...rest.input || {},
     value,
     onChange: e => {
-      setValue(e.target ? e.target.value : e);
+      setValue(e?.target ? e.target.value : e);
       debounceChange(e); 
     },
     onBlur: e => {
-      setValue(e.target ? e.target.value : e);
+      setValue(e?.target ? e.target.value : e);
       debounceBlur(e);
     },
   }), [value, rest.input]);

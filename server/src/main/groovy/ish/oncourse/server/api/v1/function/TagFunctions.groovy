@@ -140,7 +140,8 @@ class TagFunctions {
                         tagRequirement.system = tag.system && (
                                 (dbTag.specialType == NodeSpecialType.SUBJECTS && tagRequirement.type == TagRequirementTypeDTO.COURSE) ||
                                         (dbTag.specialType == NodeSpecialType.ASSESSMENT_METHOD && tagRequirement.type == TagRequirementTypeDTO.ASSESSMENT) ||
-                                        (dbTag.specialType == NodeSpecialType.PAYROLL_WAGE_INTERVALS && tagRequirement.type == TagRequirementTypeDTO.TUTOR)
+                                        (dbTag.specialType == NodeSpecialType.PAYROLL_WAGE_INTERVALS && tagRequirement.type == TagRequirementTypeDTO.TUTOR) ||
+                                        (dbTag.specialType == NodeSpecialType.TERMS && tagRequirement.type == TagRequirementTypeDTO.COURSECLASS)
                         )
 
                         tagRequirement
@@ -184,6 +185,9 @@ class TagFunctions {
             switch (dbTag.specialType) {
                 case NodeSpecialType.SUBJECTS:
                     errorMessage += ' This tag group represents the categories of courses on your web site and cannot be deleted.'
+                    break
+                case NodeSpecialType.TERMS:
+                    errorMessage += ' This tag group represents the categories of classes on your web site and cannot be deleted.'
                     break
                 case NodeSpecialType.ASSESSMENT_METHOD:
                     errorMessage += ' This tag group is required for the assessments.'

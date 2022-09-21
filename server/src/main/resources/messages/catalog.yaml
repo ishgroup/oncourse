@@ -642,4 +642,21 @@
       label: Message
       dataType: TEXT
 
+- name: Abandoned cart reminder
+  type: email
+  keyCode: ish.email.abandonedCartReminder
+  txtTemplate: ish.email.abandonedCartReminder.txt
+  htmlTemplate: ish.email.abandonedCartReminder.html
+  subject: ${preference.college.name} shopping basket reminder
+  entityClass: Checkout
+  description: An email with a link to resume an abandoned checkout
+  tags:
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+
 

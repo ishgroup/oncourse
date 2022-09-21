@@ -6,11 +6,12 @@
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_BANKING_ITEM, POST_RECONCILE_BANKING, POST_RECONCILE_BANKING_FULFILLED } from "../actions";
+import { POST_RECONCILE_BANKING, POST_RECONCILE_BANKING_FULFILLED } from "../actions";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import BankingService from "../services/BankingService";
+import { getEntityRecord } from "../../common/actions";
 
 const request: EpicUtils.Request<any, { ids: number[] }> = {
   type: POST_RECONCILE_BANKING,
@@ -27,10 +28,7 @@ const request: EpicUtils.Request<any, { ids: number[] }> = {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Banking", listUpdate: true }
       },
-      {
-        type: GET_BANKING_ITEM,
-        payload: ids[0]
-      }
+      getEntityRecord(ids[0], "Banking")
     ],
   processError: response => FetchErrorHandler(response)
 };

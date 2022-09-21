@@ -11,11 +11,11 @@ import CreateCertificateMenu
   from "../../../../common/components/list-view/components/bottom-app-bar/components/CreateCertificateMenu";
 import EntityService from "../../../../common/services/EntityService";
 import { State } from "../../../../reducers/state";
-import AvetmissExportModal, { manualAvetmisConfirm } from "../../../avetmiss-export/components/modal/AvetmissExportModal";
+import AvetmissExportModal from "../../../avetmiss-export/components/modal/AvetmissExportModal";
 import { getPlainAccounts } from "../../accounts/actions";
 import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
 import { getPlainTaxes } from "../../taxes/actions";
-import { getEnrolmentInvoiceLines } from "../actions";
+import { getEnrolmentInvoiceLines, setEnrolmentsDialog } from "../actions";
 import CancelEnrolmentModal from "./modal/CancelEnrolmentModal";
 import TransferEnrolmentModal from "./modal/TransferEnrolmentModal";
 
@@ -29,10 +29,10 @@ const EnrolmentCogWheel = React.memo<any>(props => {
     getTaxes,
     dispatch,
     hasQePermissions,
-    showConfirm
+    dialogOpened,
+    setDialogOpened
   } = props;
 
-  const [dialogOpened, setDialogOpened] = useState(null);
   const [enrolmentActionsEnabled, setEnrolmentActionsEnabled] = useState(false);
 
   useEffect(() => {
@@ -67,14 +67,6 @@ const EnrolmentCogWheel = React.memo<any>(props => {
 
   const onClick = useCallback(e => {
     const status = e && e.target.getAttribute("role");
-
-    if (status === "Avetmiss-Export") {
-      return manualAvetmisConfirm(() => {
-        setDialogOpened(status);
-        },
-        showConfirm);
-    }
-
     setDialogOpened(status);
   }, []);
 
@@ -133,14 +125,16 @@ const EnrolmentCogWheel = React.memo<any>(props => {
 const mapStateToProps = (state: State) => ({
   search: state.list.searchQuery,
   invoices: state.enrolments.invoiceLines,
+  dialogOpened: state.enrolments.dialogOpened,
   hasQePermissions: state.access["ENROLMENT_CREATE"]
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-    dispatch,
-    getEnrolmentInvoiceLines: (id: string) => dispatch(getEnrolmentInvoiceLines(id)),
-    getAccounts: () => getPlainAccounts(dispatch),
-    getTaxes: () => dispatch(getPlainTaxes())
-  });
+  dispatch,
+  getEnrolmentInvoiceLines: (id: string) => dispatch(getEnrolmentInvoiceLines(id)),
+  getAccounts: () => getPlainAccounts(dispatch),
+  getTaxes: () => dispatch(getPlainTaxes()),
+  setDialogOpened: dialog => dispatch(setEnrolmentsDialog(dialog))
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(EnrolmentCogWheel);

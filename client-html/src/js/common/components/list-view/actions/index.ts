@@ -1,11 +1,12 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import {
- Diff, Filter, LayoutType, MessageType, SearchQuery, TableModel 
-} from "@api/model";
+import { Diff, Filter, LayoutType, MessageType, SearchQuery, TableModel } from "@api/model";
 import { MessageData } from "../../../../model/common/Message";
 import { _toRequestType, FULFILLED } from "../../../actions/ActionUtils";
 import { MenuTag } from "../../../../model/tags";
@@ -19,6 +20,7 @@ export const GET_LIST_NESTED_EDIT_RECORD = _toRequestType("get/listView/nestedEd
 
 export const UPDATE_LIST_NESTED_EDIT_RECORD = _toRequestType("post/listView/nestedEditRecord");
 
+// Common list actions
 export const GET_RECORDS_REQUEST = _toRequestType("get/records");
 export const GET_RECORDS_FULFILLED = FULFILLED(GET_RECORDS_REQUEST);
 
@@ -49,8 +51,6 @@ export const SET_LIST_CORE_FILTERS = "set/listView/coreFilters";
 export const SET_LIST_SEARCH = "set/listView/search";
 
 export const SET_LIST_ENTITY = "set/listView/entity";
-
-export const SET_LIST_COLUMNS = "set/listView/columns";
 
 export const SET_LIST_SEARCH_ERROR = "set/listView/search/error";
 
@@ -106,16 +106,20 @@ export const setListMenuTags = (menuTags: MenuTag[], checkedChecklists: MenuTag[
 });
 
 export const getRecords = (
-  entity: string,
-  listUpdate?: boolean,
-  viewAll?: boolean,
-  startIndex?: number,
-  stopIndex?: number,
-  resolve?: AnyArgFunction
+  {
+    entity,
+    viewAll,
+    listUpdate,
+    savedID,
+    ignoreSelection,
+    startIndex,
+    stopIndex,
+    resolve,
+  }: GetRecordsArgs
 ): IAction<GetRecordsArgs> => ({
   type: GET_RECORDS_REQUEST,
   payload: {
-    entity, listUpdate, viewAll, startIndex, stopIndex, resolve
+    entity, listUpdate, savedID, ignoreSelection, viewAll, startIndex, stopIndex, resolve
   }
 });
 
@@ -153,11 +157,6 @@ export const setListEditRecordFetching = () => ({
   type: SET_LIST_EDIT_RECORD_FETCHING
 });
 
-export const updateTagsOrder = (tagsOrder: number[]) => ({
-  type: UPDATE_TAGS_ORDER,
-  payload: tagsOrder,
-});
-
 export const updateTableModel = (entity: string, model: TableModel, listUpdate?: boolean) => ({
   type: UPDATE_TABLE_MODEL_REQUEST,
   payload: { entity, model, listUpdate }
@@ -181,11 +180,6 @@ export const setFilterGroups = filterGroups => ({
 export const setSearch = (search: string, entity: string) => ({
   type: SET_LIST_SEARCH,
   payload: { search, entity }
-});
-
-export const setListColumns = columns => ({
-  type: SET_LIST_COLUMNS,
-  payload: { columns }
 });
 
 export const setListSearchError = (searchError: boolean) => ({

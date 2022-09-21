@@ -71,10 +71,30 @@ class LazyContactComparisionNode extends LazyEntityComparisonNode {
             ExpressionUtil.addChild(or, companyNameNode, idx++);
         }
 
-        if(firstNameNode != null && lastNameNode != null) {
+        if (firstNameNode != null && lastNameNode != null && value.getMiddleName() != null) {
+            var middleNameNode = createComparisionNode(pathString + Contact.MIDDLE_NAME.getName(), value.getMiddleName());
             var and = new ASTAnd();
             ExpressionUtil.addChild(and, firstNameNode, 0);
-            ExpressionUtil.addChild(and, lastNameNode, 1);
+            ExpressionUtil.addChild(and, middleNameNode, 1);
+            ExpressionUtil.addChild(and, lastNameNode, 2);
+            ExpressionUtil.addChild(or, and, idx++);
+        }
+        else if (firstNameNode != null && lastNameNode != null) {
+            var and = new ASTAnd();
+            var subOr = new ASTOr();
+            if (param.contains(",")) {
+                var middleNameNode = createComparisionNode(pathString + Contact.MIDDLE_NAME.getName(), value.getFirstName());
+                ExpressionUtil.addChild(subOr, firstNameNode, 0);
+                ExpressionUtil.addChild(subOr, middleNameNode, 1);
+                ExpressionUtil.addChild(and, subOr, 0);
+                ExpressionUtil.addChild(and, lastNameNode, 1);
+            } else {
+                var middleNameNode = createComparisionNode(pathString + Contact.MIDDLE_NAME.getName(), value.getLastName());
+                ExpressionUtil.addChild(subOr, lastNameNode, 0);
+                ExpressionUtil.addChild(subOr, middleNameNode, 1);
+                ExpressionUtil.addChild(and, subOr, 0);
+                ExpressionUtil.addChild(and, firstNameNode, 1);
+            }
             ExpressionUtil.addChild(or, and, idx++);
         } else if(firstNameNode != null) {
             ExpressionUtil.addChild(or, firstNameNode, idx++);
@@ -124,6 +144,7 @@ class LazyContactComparisionNode extends LazyEntityComparisonNode {
 
         private final Op op;
         private String firstName;
+        private String middleName;
         private String lastName;
         private String studentNumber;
         private String companyName;
@@ -145,14 +166,31 @@ class LazyContactComparisionNode extends LazyEntityComparisonNode {
 
             var separator = nameString.indexOf(',');
             if(separator >= 0) {
-                firstName = trimToNull(nameString.substring(separator + 1));
                 lastName = trimToNull(nameString.substring(0, separator));
-                companyName = trimToNull(nameString.substring(0, separator));
+                String substring = nameString.substring(separator + 1);
+                var substringSeparator = substring.indexOf(',');
+                if (substringSeparator >= 0) {
+                    firstName = trimToNull(substring.substring(0, substringSeparator));
+                    middleName = trimToNull(substring.substring(substringSeparator + 1));
+                    companyName = trimToNull(nameString.substring(0, separator));
+                } else {
+                    firstName = trimToNull(nameString.substring(separator + 1));
+                    companyName = trimToNull(nameString.substring(0, separator));
+                }
             } else {
                 separator = nameString.indexOf(' ');
                 if (separator >= 0) {
                     firstName = trimToNull(nameString.substring(0, separator));
-                    lastName = trimToNull(nameString.substring(separator + 1));
+                    String substring = nameString.substring(separator + 1);
+//                    Remove spaces to correct parse with more than 1 space beetween firstName and MiddleName. E.g. "Flynn   Alexander Hill". Remove spaces to correct parse with more than 1 space after MiddleName/LastName. E.g. "Flynn Alexander  "
+                    substring = substring.trim();
+                    var substringSeparator = substring.indexOf(' ');
+                    if (substringSeparator >= 0) {
+                        middleName = trimToNull(substring.substring(0, substringSeparator));
+                        lastName = trimToNull(substring.substring(substringSeparator + 1));
+                    } else {
+                        lastName = trimToNull(nameString.substring(separator + 1));
+                    }
                 } else {
                     firstName = null;
                     lastName = trimToNull(nameString);
@@ -183,6 +221,13 @@ class LazyContactComparisionNode extends LazyEntityComparisonNode {
                 return lastName;
             }
             return lastName == null ? null : lastName + "%";
+        }
+
+        public String getMiddleName() {
+            if(op == Op.EQ || op == Op.NE) {
+                return middleName;
+            }
+            return middleName == null ? null : middleName + "%";
         }
 
         public String getStudentNumber() {

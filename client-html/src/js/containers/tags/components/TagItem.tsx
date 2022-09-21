@@ -132,12 +132,13 @@ const TagItem = React.memo<FormTagProps>(({
         </IconButton>
 
         <IconButton
-          className={clsx("dndActionIconButton", hoverClasses.target, {
-            "invisible": !item.parent
+          className={clsx("dndActionIconButton", {
+            "invisible": !item.parent,
+            [hoverClasses.target]: item.parent
           })}
           onClick={onDeleteClick}
         >
-          <Delete className={classes.actionIcon} />
+          <Delete className={classes.actionIcon}/>
         </IconButton>
       </div>
 

@@ -23,7 +23,7 @@ import { showConfirm } from "../../../../common/actions";
 
 const ScheduleTypeItems = Object.keys(ScheduleType).map(mapSelectItems);
 
-const Initial: Script = { status: "Installed but Disabled", content: "", keyCode: null };
+const Initial: Script = { status: "Installed but Disabled", content: "", keyCode: null, trigger: { cron: {} } };
 
 const ScriptsBase = React.memo<any>(props => {
   const {
@@ -89,6 +89,7 @@ const mapStateToProps = (state: State) => ({
   emailTemplates: state.automation.emailTemplate.emailTemplates,
   nextLocation: state.nextLocation,
   timeZone: state.automation.timeZone,
+  checklists: state.tags.allChecklists
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

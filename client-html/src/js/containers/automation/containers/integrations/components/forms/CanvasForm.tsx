@@ -60,7 +60,7 @@ class CanvasBaseForm extends React.Component<any, any> {
 
     window.open(
       // eslint-disable-next-line max-len
-      `https://${values.fields.baseUrl}/login/oauth2/auth?client_id=${values.fields.clientToken}&response_type=code&state=${JSON.stringify(values)}&redirect_uri=${window.location.href}?type=8`,
+      `https://${values.fields.baseUrl}/login/oauth2/auth?client_id=${values.fields.clientToken}&response_type=code&state=${JSON.stringify(values)}&redirect_uri=${window.location.href}`,
       "_self"
     );
   };
