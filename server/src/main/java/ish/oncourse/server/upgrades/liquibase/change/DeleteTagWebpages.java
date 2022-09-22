@@ -11,11 +11,10 @@
 package ish.oncourse.server.upgrades.liquibase.change;
 
 import ish.common.types.NodeType;
-import ish.oncourse.server.cayenne.Checkout;
+import ish.liquibase.IshTaskChange;
 import ish.oncourse.server.cayenne.Tag;
 import ish.oncourse.server.db.SchemaUpdateService;
 import liquibase.database.Database;
-import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.CustomChangeException;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.ObjectSelect;

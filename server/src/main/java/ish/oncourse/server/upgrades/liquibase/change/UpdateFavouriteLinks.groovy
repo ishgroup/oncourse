@@ -10,11 +10,10 @@ package ish.oncourse.server.upgrades.liquibase.change
 
 import com.google.common.base.CaseFormat
 import com.google.inject.Inject
+import ish.liquibase.IshTaskChange
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
 import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.db.SchemaUpdateService
-import ish.oncourse.server.preference.UserPreferenceService
 import ish.oncourse.server.services.ISystemUserService
 import liquibase.database.Database
 import liquibase.exception.CustomChangeException
