@@ -196,6 +196,11 @@ export const setListEntity = (entity: EntityName) => ({
   payload: entity
 });
 
+export const setListFullScreenEditView = (fullScreenEditView: boolean) => ({
+  type: SET_LIST_FULL_SCREEN_EDIT_VIEW,
+  payload: fullScreenEditView
+});
+
 export const setReadNewsLocal = (id: string) => ({
   type: SET_READ_NEWS_LOCAL,
   payload: id,
