@@ -14,6 +14,7 @@ import {
   updateEntityItemByIdErrorHandler
 } from "../../../../containers/entities/common/entityItemsService";
 import { EntityName } from "../../../../model/entities/common";
+import { NESTED_EDIT_VIEW_FORM_NAME } from "../../../../constants/Forms";
 
 const request: EpicUtils.Request<
   any,
@@ -42,7 +43,7 @@ const request: EpicUtils.Request<
       }
     ],
   processError: (response, { entity, index, record }) =>
-    updateEntityItemByIdErrorHandler(response, entity, `NestedEditViewForm[${index}]`, record)
+    updateEntityItemByIdErrorHandler(response, entity, `${NESTED_EDIT_VIEW_FORM_NAME}[${index}]`, record)
 };
 
 export const EpicUpdateListNestedRecord: Epic<any, any> = EpicUtils.Create(request);

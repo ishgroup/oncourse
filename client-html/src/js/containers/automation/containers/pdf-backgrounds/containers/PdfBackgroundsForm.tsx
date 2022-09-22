@@ -9,13 +9,13 @@
 import React, {
   useCallback, useEffect, useRef, useState
 } from "react";
-import { Form, InjectedFormProps } from "redux-form";
+import { change, Form, InjectedFormProps } from "redux-form";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import Grid from "@mui/material/Grid";
 import { ReportOverlay } from "@api/model";
 import { Dispatch } from "redux";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
@@ -24,16 +24,19 @@ import { getManualLink } from "../../../../../common/utils/getManualLink";
 import FilePreview from "../../../../../common/components/form/FilePreview";
 import Uneditable from "../../../../../common/components/form/Uneditable";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { showMessage } from "../../../../../common/actions";
 
 const manualUrl = getManualLink("reports_background");
 
 interface Props extends InjectedFormProps {
   isNew: boolean;
+  loading: boolean;
   values: ReportOverlay;
   dispatch: Dispatch;
   onCreate: (fileName: string, overlay: File) => void;
   onUpdate: (fileName: string, id: number, overlay: File) => void;
   onDelete: (id: number) => void;
+  getPdfBackgroundCopy: (id: number, name: string) => void;
   history: any;
   syncErrors: any;
   nextLocation: string;
@@ -52,7 +55,10 @@ const PdfBackgroundsForm = React.memo<Props>(
      form,
      history,
      nextLocation,
-     syncErrors
+     syncErrors,
+     getPdfBackgroundCopy,
+     loading,
+     dispatch
     }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
     const [fileIsChosen, setFileIsChosen] = useState(false);
@@ -90,6 +96,8 @@ const PdfBackgroundsForm = React.memo<Props>(
 
     const handleUploadClick = useCallback(() => fileRef.current.click(), []);
 
+    const handleDownloadClick = () => getPdfBackgroundCopy(values.id, values.name);
+
     useEffect(() => {
       if (disableRouteConfirm && values.id !== prevId) {
         setDisableRouteConfirm(false);
@@ -111,8 +119,41 @@ const PdfBackgroundsForm = React.memo<Props>(
     const handleFileSelect = () => {
       const file = fileRef.current.files[0];
       if (file) {
+
+        // Set file size limit to 5mb
+        if ((file.size / 1024 / 1024) > 5 ) {
+          dispatch(showMessage({ message: "File size exceeds 5 MiB" }));
+          return;
+        }
+
         setFileIsChosen(true);
         setChosenFileName(file.name);
+        
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          const image = new Image();
+          image.src = reader.result as string;
+          image.onload = () => {
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+
+            const isPortrait = image.height >= image.width;
+
+            canvas.width = isPortrait ? 165 : 240;
+            canvas.height = isPortrait ? 240 : 165;
+            ctx.drawImage(image,
+              0, 0, image.width, image.height,
+              0, 0, canvas.width, canvas.height
+            );
+
+            dispatch(change(form, "preview", (canvas.toDataURL() as string).replace("data:image/png;base64,", "")));
+          };
+        };
+        reader.onerror = e => {
+          console.error(e);
+          dispatch(showMessage({ message: e as any }));
+        };
       }
     };
 
@@ -162,22 +203,37 @@ const PdfBackgroundsForm = React.memo<Props>(
               </>
             )}
           >
-            <Grid container columnSpacing={3}>
+            <Grid container columnSpacing={3} rowSpacing={2}>
               <Grid item xs={12}>
                 <FilePreview data={values.preview} label="Preview" />
-
-                <Button variant="outlined" color="secondary" className="mt-2" onClick={handleUploadClick}>
+              </Grid>
+              {(isNew || chosenFileName) && (
+                <Grid item xs={12}>
+                  <Uneditable value={chosenFileName} error={!chosenFileName && "File must be added"} label="Chosen file" className="mt-1" />
+                </Grid>
+              )}
+              
+              <Grid item xs={12}>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={handleUploadClick}
+                >
                   Upload New Version
                 </Button>
-
-                {chosenFileName && <Uneditable value={chosenFileName} label="Chosen file" className="mt-1" />}
-
-                {!chosenFileName && !values.preview ? (
-                  <Typography color="error" variant="body2" className="mt-1" paragraph>
-                    File must be added
-                  </Typography>
-                ) : null}
               </Grid>
+              {Boolean(values.preview) && (
+                <Grid item xs={12}>
+                  <LoadingButton
+                    loading={loading}
+                    variant="outlined"
+                    color="secondary"
+                    onClick={handleDownloadClick}
+                  >
+                    Download copy
+                  </LoadingButton>
+                </Grid>
+              )}
             </Grid>
           </AppBarContainer>
         </Form>

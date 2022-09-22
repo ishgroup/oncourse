@@ -6,25 +6,6 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+export const NESTED_EDIT_VIEW_FORM_NAME = "NestedEditViewForm";
 
-// Disable useLayoutEffect warnings
-jest.mock('react', () => ({
-  ...jest.requireActual('react') as any,
-  useLayoutEffect: jest.requireActual('react').useEffect,
-}));
-
-// Show only console errors
-global.console = {
-  ...global.console,
-  log: jest.fn(),
-  warn: jest.fn(),
-  info: jest.fn(),
-  debug: jest.fn(),
-};
-
-// mock ResizeObserver
-global.ResizeObserver = jest.fn().mockImplementation(() => ({
-  observe: jest.fn(),
-  unobserve: jest.fn(),
-  disconnect: jest.fn(),
-}))
+export const SEND_MESSAGE_FORM_NAME = "SendMessageForm";

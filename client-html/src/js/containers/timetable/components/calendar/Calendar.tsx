@@ -127,7 +127,7 @@ const onRendered = ({
 };
 
 const scrollToCalendarDay = debounce((dayNode, list, index, dayNodesObserver) => {
-  if (dayNode && dayNodesObserver) {
+  if (dayNode && dayNodesObserver && list._instanceProps.itemMetadataMap[index]) {
     animateListScroll(
       list,
       dayNode.parentElement.offsetTop + list._instanceProps.itemMetadataMap[index].offset - 32,

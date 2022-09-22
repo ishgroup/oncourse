@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, {
@@ -16,7 +19,7 @@ import Typography from "@mui/material/Typography";
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import clsx from "clsx";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd-next";
-import { Column, DataResponse, TableModel } from "@api/model";
+import { DataResponse, TableModel } from "@api/model";
 import InfiniteLoaderList from "./components/InfiniteLoaderList";
 import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
 import { CHECKLISTS_COLUMN, COLUMN_WITH_COLORS, getTableRows } from "./utils";
@@ -27,6 +30,7 @@ import { StringKeyObject } from "../../../../../model/common/CommomObjects";
 import styles from "./styles";
 import TagDotRenderer from "./components/TagDotRenderer";
 import StaticProgress from "../../../progress/StaticProgress";
+import { usePrevious } from "../../../../utils/hooks";
 
 const COLUMN_MIN_WIDTH = 55;
 
@@ -36,13 +40,28 @@ const listRef = React.createRef<any>();
 
 const getRowId = row => row.id;
 
-interface ListTableProps extends Partial<TableListProps>{
+interface ListTableProps extends Partial<TableListProps> {
   columns: any;
   data: any;
   sorting: any;
   onChangeColumns: (arg: StringKeyObject<any>, listUpdate?: boolean) => void;
   onChangeColumnsOrder: (arg: string[]) => void;
 }
+
+const isNewColumnsEquals = (newCol: string[], prevCol: string[]) => {
+  let isEquals = true;
+
+  if (newCol?.length !== prevCol?.length) return false;
+  
+  for (const col of newCol) {
+    if (!prevCol?.includes(col)) {
+      isEquals = false;
+      break;
+    }
+  }
+  
+  return isEquals;
+};
 
 const Table: React.FC<ListTableProps> = ({
   columns,
@@ -257,8 +276,10 @@ const Table: React.FC<ListTableProps> = ({
     }
   }, [isDraggingColumn]);
 
+  const prevHiddenColumns = usePrevious(state.hiddenColumns);
+
   useEffect(() => {
-    if (isMountedRef.current && listRef.current) {
+    if (isMountedRef.current && listRef.current && !isNewColumnsEquals(state.hiddenColumns, prevHiddenColumns)) {
       onHiddenChange(state.hiddenColumns);
     }
   }, [state.hiddenColumns]);
@@ -427,7 +448,6 @@ const Table: React.FC<ListTableProps> = ({
       threeColumn={threeColumn}
       onRowDoubleClick={onRowDoubleClick}
       mainContentWidth={mainContentWidth}
-      onMouseOver={() => {}}
       header={!threeColumn && Header}
     />
   ) : (
@@ -474,7 +494,6 @@ export interface TableListProps {
   selection?: string[];
   firstColumnName?: string;
   getContainerNode?: AnyArgFunction;
-  updateColumns?: (columns: Column[]) => void;
 }
 
 const RenderCell = props => {
@@ -520,7 +539,6 @@ const ListRoot = React.memo<TableListProps>(({
   selection,
   firstColumnName,
   getContainerNode,
-  updateColumns,
   sidebarWidth,
   mainContentWidth
 }) => {
@@ -543,23 +561,23 @@ const ListRoot = React.memo<TableListProps>(({
       });
 
       const result = records.columns.map((c, i) => ({
-          index: i,
-          id: c.attribute,
-          Header: <span className="text-truncate text-nowrap">{c.title}</span>,
-          accessor: row => row[`${c.attribute}`],
-          visible: c.visible,
-          width: c.width + 24,
-          cellClass: c.type === "Money" ? "money text-end justify-content-end" : null,
-          colClass: c.type === "Money" ? "justify-content-end" : null,
-          minWidth: COLUMN_MIN_WIDTH,
-          disableSortBy: !c.sortable,
-          complexAttribute: c.sortFields,
-          disableVisibility: [primaryColumn, secondaryColumn].includes(c.attribute),
-          Cell: RenderCell,
-          firstVisibleIndex,
-          checklistsVisible,
-          tagsVisible
-        }));
+        index: i,
+        id: c.attribute,
+        Header: <span className="text-truncate text-nowrap">{c.title}</span>,
+        accessor: row => row[`${c.attribute}`],
+        visible: c.visible,
+        width: c.width,
+        cellClass: c.type === "Money" ? "money text-end justify-content-end" : null,
+        colClass: c.type === "Money" ? "justify-content-end" : null,
+        minWidth: COLUMN_MIN_WIDTH,
+        disableSortBy: !c.sortable,
+        complexAttribute: c.sortFields,
+        disableVisibility: [primaryColumn, secondaryColumn].includes(c.attribute),
+        Cell: RenderCell,
+        firstVisibleIndex,
+        checklistsVisible,
+        tagsVisible
+      }));
 
       if (firstColumnName) {
         result.sort(
@@ -596,10 +614,6 @@ const ListRoot = React.memo<TableListProps>(({
       }
       return c;
     });
-
-    if (!listUpdate) {
-      updateColumns(columns);
-    }
 
     onChangeModel({
       columns

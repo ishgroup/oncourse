@@ -80,7 +80,7 @@ dependencies {
 	implementation "org.mariadb.jdbc:mariadb-java-client:$mariadbVersion"
 
 	implementation 'commons-lang:commons-lang:2.6' // this exists only to support some old reports. To be removed when all reports upgraded.
-	implementation ('net.sf.jasperreports:jasperreports:6.17.0') {
+	implementation ('net.sf.jasperreports:jasperreports:6.20.0') {
 		exclude group: 'com.lowagie', module: 'itext'
 	}
 	api 'com.lowagie:itext:2.1.7'
