@@ -37,6 +37,7 @@ import {
   setListEditRecord,
   setListEditRecordFetching,
   setListEntity,
+  setListFullScreenEditView,
   setListLayout,
   setListMenuTags,
   setListSelection,
@@ -1237,6 +1238,7 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   getCustomFieldTypes: (entity: EntityName) => dispatch(getCustomFieldTypes(entity)),
   openConfirm: props => dispatch(showConfirm(props)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
+  setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView)),
   updateTableModel: (model: TableModel, listUpdate?: boolean) => dispatch(updateTableModel(ownProps.rootEntity, model, listUpdate)),
   onLoadMore: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => dispatch(getRecords(
     {
