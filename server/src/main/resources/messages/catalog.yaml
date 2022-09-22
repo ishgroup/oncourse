@@ -595,7 +595,7 @@
   txtTemplate: ish.email.voucherEmailTemplate.txt
   htmlTemplate: ish.email.voucherEmailTemplate.html
   subject: Voucher ${voucher.voucherProduct.name}
-  entityCLass: Voucher
+  entityClass: Voucher
   short: Email to the student with information about a voucher they have purchased.
   description: Email to the student with information about a voucher they have purchased, including price and voucher code. Can be sent manually from the Sales window when voucher sale is selected.
   category: sales
