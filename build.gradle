@@ -81,6 +81,9 @@ subprojects {
 		api "org.codehaus.groovy:groovy-templates:$groovyVersion"
 		api "org.codehaus.groovy:groovy-xml:$groovyVersion"
 		api "org.codehaus.groovy:groovy-dateutil:$groovyVersion"
+		api ("org.liquibase:liquibase-core:4.1.0") {
+			exclude group: "ch.qos.logback"
+		}
 
 		implementation 'javax.annotation:javax.annotation-api:1.3.2'
 
