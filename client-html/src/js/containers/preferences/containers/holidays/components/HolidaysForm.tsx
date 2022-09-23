@@ -5,7 +5,6 @@
 
 import * as React from "react";
 import Grid from "@mui/material/Grid";
-import { Dispatch } from "redux";
 import isEqual from "lodash.isequal";
 import { withRouter } from "react-router";
 import {
@@ -21,7 +20,7 @@ import {
 import { connect } from "react-redux";
 import { Holiday, RepeatEndEnum, RepeatEnum } from "@api/model";
 import { addHours } from "date-fns";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../reducers/state";
 import AvailabilityRenderer from "../../../../../common/components/form/availabilityComponent/AvailabilityRenderer";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";

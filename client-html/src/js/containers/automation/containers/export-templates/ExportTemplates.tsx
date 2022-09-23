@@ -12,7 +12,7 @@ import { getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-f
 import { Dispatch } from "redux";
 import { withRouter } from "react-router";
 import { ExportTemplate } from "@api/model";
-import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../reducers/state";
 import ExportTemplatesForm from "./containers/ExportTemplatesForm";
 import {
