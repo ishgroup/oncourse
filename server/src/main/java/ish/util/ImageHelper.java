@@ -10,6 +10,8 @@
  */
 package ish.util;
 
+import ish.oncourse.server.api.v1.model.PreferenceEnumDTO;
+import ish.oncourse.server.preference.UserPreferenceService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -225,8 +227,34 @@ public class ImageHelper {
 	 * @param pdfContent - pdf byte array
 	 * @return - binary content of generated preview, null - if transformation can't be performed
 	 */
+	public static byte[] generateHighQualityPdfPreview(byte[] pdfContent, int quality) {
+		return generateQualityPreview(pdfContent, quality, true, false);
+	}
+
+
+	/**
+	 * Generates 400x564 (A4 format demention) preview from pdf byte array.
+	 *
+	 * @param pdfContent - pdf byte array
+	 * @return - binary content of generated preview, null - if transformation can't be performed
+	 */
 	public static byte[] generateHighQualityPdfPreview(byte[] pdfContent) {
-		return generateQualityPreview(pdfContent, 10, true, false);
+		return generateHighQualityPdfPreview(pdfContent, 10);
+	}
+
+	public static int getHighQualityScale(UserPreferenceService userPreferenceService){
+		var highQualityScaleStr = userPreferenceService.get(PreferenceEnumDTO.IMAGE_HIGHQUALITY_SCALE);
+		if(highQualityScaleStr != null){
+			try {
+				var highQualityScale = Integer.parseInt(highQualityScaleStr);
+				if(highQualityScale <= 0)
+					highQualityScale = 2;
+				if(highQualityScale > 10)
+					highQualityScale = 10;
+				return highQualityScale;
+			} catch(Exception ignore){}
+		}
+		return 10;
 	}
 
 	/**

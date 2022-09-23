@@ -13,14 +13,19 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.server.api.service.ReportApiService
+import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
 import ish.oncourse.server.api.v1.model.ReportDTO
 import ish.oncourse.server.api.v1.service.PdfTemplateApi
+import ish.oncourse.server.preference.UserPreferenceService
 import ish.util.ImageHelper
 
 class PdfTemplateApiImpl implements PdfTemplateApi {
 
     @Inject
     private ReportApiService apiService
+
+    @Inject
+    private UserPreferenceService userPreferenceService
 
     @Override
     void create(ReportDTO report) {
@@ -54,6 +59,9 @@ class PdfTemplateApiImpl implements PdfTemplateApi {
 
     @Override
     byte[] getHighQualityPreview(Long id) {
-        return ImageHelper.generateHighQualityPdfPreview(apiService.getPreview(id))
+        return ImageHelper.generateHighQualityPdfPreview(
+                apiService.getPreview(id),
+                ImageHelper.getHighQualityScale(userPreferenceService)
+        )
     }
 }
