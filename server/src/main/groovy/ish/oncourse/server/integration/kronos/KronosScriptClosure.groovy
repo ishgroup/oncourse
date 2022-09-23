@@ -30,8 +30,8 @@ import java.text.SimpleDateFormat
  * End Time >> session tutor rostered end time
  * Employee ID >> tutor.payrollRef
  * Cost Center 1 >> First 3 digits of courseClass.incomeAccount
- * Cost Center 3 >> courseClassTutor.definedTutorRole.name
- * Skill >> courseClassTutor.definedTutorRole.description
+ * Cost Center 3 >> courseClassTutor.definedTutorRole.description
+ * Skill >> courseClassTutor.definedTutorRole.name
  * Shift Note >> courseClasscode
  *
  *
@@ -108,15 +108,15 @@ class KronosScriptClosure implements ScriptClosureTrait<KronosIntegration> {
         }
 
         for (TutorAttendance tutorAttendance : validatedTutors) {
-            String costCenter3 = tutorAttendance.courseClassTutor.definedTutorRole.name
+            String costCenter3 = tutorAttendance.courseClassTutor.definedTutorRole.description
             def costCenter3Id = integration.findCostCenterId(costCenter3)
             if (!costCenter3Id) {
-                throw new IllegalArgumentException("Session's with id '${session.id}' TutorAttendance(sessionTutor) with id '${tutorAttendance.id}': Cost Center with name '${costCenter3}' (onCourse courseClassTutor.definedTutorRole.name) doesn't exist in Kronos. Tutor will not be added to Kronos.")
+                throw new IllegalArgumentException("Session's with id '${session.id}' TutorAttendance(sessionTutor) with id '${tutorAttendance.id}': Cost Center with name '${costCenter3}' (onCourse courseClassTutor.definedTutorRole.description) doesn't exist in Kronos. Tutor will not be added to Kronos.")
             }
-            String skill = tutorAttendance.courseClassTutor.definedTutorRole.description
+            String skill = tutorAttendance.courseClassTutor.definedTutorRole.name
             def skillId = integration.findSkillId(skill)
             if (!skillId) {
-                throw new IllegalArgumentException("Session's with id '${session.id}' TutorAttendance(sessionTutor) with id '${tutorAttendance.id}': Skill with name '${skill}' (onCourse courseClassTutor.definedTutorRole.description) doesn't exist in Kronos. Tutor will not be added to Kronos.")
+                throw new IllegalArgumentException("Session's with id '${session.id}' TutorAttendance(sessionTutor) with id '${tutorAttendance.id}': Skill with name '${skill}' (onCourse courseClassTutor.definedTutorRole.name) doesn't exist in Kronos. Tutor will not be added to Kronos.")
             }
             String employeeId = tutorAttendance.courseClassTutor.tutor.payrollRef
             def accountId = integration.findAccountId(employeeId)
