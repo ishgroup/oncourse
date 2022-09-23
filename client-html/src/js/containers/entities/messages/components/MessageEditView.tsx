@@ -31,7 +31,6 @@ interface MessageEditViewProps {
   rootEntity?: string;
   twoColumn?: boolean;
   showConfirm?: any;
-  openNestedEditView?: any;
   manualLink?: string;
 }
 

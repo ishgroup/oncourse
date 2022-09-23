@@ -77,7 +77,8 @@ const Table: React.FC<ListTableProps> = ({
   selection,
   getContainerNode,
   onChangeColumnsOrder,
-  mainContentWidth
+  mainContentWidth,
+  sidebarWidth
 }) => {
   const [isDraggingColumn, setColumnIsDragging] = useState(false);
 
@@ -328,13 +329,13 @@ const Table: React.FC<ListTableProps> = ({
 
   const getItemStyle = (isDragging, draggableStyle) => {
     if (isDragging) {
-      setColumnIsDragging(true);
       if (listRef.current && listRef.current.scrollTop) listRef.current.scrollTop = 0;
       if (tableRef.current && tableRef.current.scrollTop) tableRef.current.scrollTop = 0;
     }
     return {
       userSelect: 'none',
       ...draggableStyle,
+      ...isDragging ? { left: draggableStyle.left - sidebarWidth + tableRef.current.scrollLeft } : {}
     };
   };
 
@@ -348,85 +349,98 @@ const Table: React.FC<ListTableProps> = ({
             fields: state.columnOrder,
             headers: headerGroup.headers.filter(column => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(column.id))
           })}
+          onDragStart={() => setColumnIsDragging(true)}
         >
           <Droppable key={headerGroup.getHeaderGroupProps().key} droppableId="droppable" direction="horizontal">
-            {provided => (
+            {(provided, snapshot) => (
               <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
                 className={classes.headerRow}
+                style={{...snapshot.isDraggingOver ? { pointerEvents: "none" } : {}}}
               >
                 {headerGroup.headers.filter(column => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(column.id)).map((column, columnIndex) => {
                   const disabledCell = ["selection", "chooser"].includes(column.id);
                   return (
-                    <Typography
-                      {...column.getHeaderProps()}
-                      className={clsx(classes.headerCell, classes.listHeaderCell)}
-                      variant="subtitle2"
-                      color="textSecondary"
-                      component="div"
+                    <Draggable
+                      key={columnIndex}
+                      draggableId={columnIndex.toString()}
+                      index={columnIndex}
+                      isDragDisabled={disabledCell}
                     >
-                      <div
-                        className={clsx("centeredFlex", column.cellClass)}
-                      >
-                        <Draggable
-                          key={columnIndex}
-                          draggableId={columnIndex.toString()}
-                          index={columnIndex}
-                          isDragDisabled={disabledCell}
-                        >
-                          {(provided, snapshot) => {
-                            const isDragging = snapshot.isDragging;
-                            return (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                style={getItemStyle(
-                                  snapshot.isDragging,
-                                  provided.draggableProps.style
-                                )}
-                                className={clsx(
-                                  "centeredFlex text-truncate text-nowrap outline-none",
-                                  classes.draggableCellItem,
-                                  { [classes.dragOver]: isDragging }
-                                )}
+                      {(provided, snapshot) => {
+                        const isDragging = snapshot.isDragging;
+                        return (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              style={getItemStyle(
+                                snapshot.isDragging,
+                                provided.draggableProps.style
+                              )}
+                            >
+                              <div {...column.getHeaderProps()}
+                               className={clsx(
+                                classes.draggableCellItem,
+                                 "text-truncate text-nowrap",
+                                  {
+                                    [classes.isDragging]: isDragging,
+                                    [classes.rightAlighed]: column.type === "Money",
+                                    [classes.activeRight]: column.type === "Money" && column.isSorted
+                                  })
+                               }
                               >
-                                {!disabledCell && (
-                                  <DragIndicator
-                                    className={
-                                      clsx("dndActionIcon", classes.dragIndicator, { [classes.visibleDragIndicator]: isDragging })
-                                    }
-                                  />
-                                )}
-                                {column.render("Header")}
-                                &nbsp;
+                                <Typography
+                                  variant="subtitle2"
+                                  color="textSecondary"
+                                  component="div"
+                                  fontSize="inherit"
+                                  position="relative"
+                                  display="flex"
+                                  className={column.cellClass}
+                                >
+                                  {!disabledCell && (
+                                    <span  {...provided.dragHandleProps} className="relative">
+                                      <DragIndicator
+                                        className={
+                                          clsx(
+                                            "dndActionIcon",
+                                            classes.dragIndicator,
+                                            {
+                                              [classes.visibleDragIndicator]: isDragging
+                                            },
+                                          )
+                                        }
+                                      />
+                                    </span>
+                                  )}
+                                  <TableSortLabel
+                                    {...column.getSortByToggleProps()}
+                                    hideSortIcon={isDragging || !column.canSort}
+                                    active={column.isSorted}
+                                    direction={column.isSortedDesc ? "desc" : "asc"}
+                                    classes={{
+                                      root: clsx(
+                                        column.canSort ? classes.canSort : classes.noSort,
+                                        column.colClass,
+                                        "overflow-hidden"
+                                      ),
+                                      icon: column.type === "Money" && column.canSort && classes.rightSort
+                                    }}
+                                    component="span"
+                                  >
+                                    {column.render("Header")}
+                                    &nbsp;
+                                  </TableSortLabel>
+                                </Typography>
+                                {!isDraggingColumn && column.canResize && <div {...column.getResizerProps()} className={classes.resizer} />}
                               </div>
-                            );
-                          }}
-                        </Draggable>
-                        {!isDraggingColumn && (
-                          <TableSortLabel
-                            {...column.getSortByToggleProps()}
-                            hideSortIcon={!column.canSort}
-                            active={column.isSorted}
-                            direction={column.isSortedDesc ? "desc" : "asc"}
-                            classes={{
-                              root: clsx(
-                                !column.canSort && classes.noSort,
-                                column.colClass
-                              ),
-                              icon: classes.tableSortLabel
-                            }}
-                            component="span"
-                          />
-                        )}
-                        {!isDraggingColumn && column.canResize && <div {...column.getResizerProps()} className={classes.resizer} />}
-                      </div>
-                    </Typography>
+                            </div>
+                        );
+                      }}
+                    </Draggable>
                   );
                 })}
-                {provided.placeholder}
               </div>
             )}
           </Droppable>
@@ -567,8 +581,8 @@ const ListRoot = React.memo<TableListProps>(({
         accessor: row => row[`${c.attribute}`],
         visible: c.visible,
         width: c.width,
+        type: c.type,
         cellClass: c.type === "Money" ? "money text-end justify-content-end" : null,
-        colClass: c.type === "Money" ? "justify-content-end" : null,
         minWidth: COLUMN_MIN_WIDTH,
         disableSortBy: !c.sortable,
         complexAttribute: c.sortFields,
