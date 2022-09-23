@@ -30,6 +30,7 @@ import java.awt.image.RenderedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 /**
  *
@@ -229,6 +230,10 @@ public class ImageHelper {
 		return generateQualityPreview(pdfContent, 10, true, false);
 	}
 
+	public static List<byte[]> generateOriginalHighQuality(byte[] pdfContent) {
+		return null;
+	}
+
 	/**
 	 * Generates 400x564 (A4 format demention) preview from pdf or image byte array.
 	 *
@@ -236,11 +241,13 @@ public class ImageHelper {
 	 * @return - binary content of generated preview, null - if transformation can't be performed
 	 */
 	public static byte[] generateQualityPreview(byte[] pdfContent, float scale, boolean a4FormatRequired, boolean cutRequired) {
-		BufferedImage image;
+		BufferedImage image = null;
 		boolean landscape;
 		try(PDDocument doc = PDDocument.load(pdfContent)){
 			PDFRenderer renderer = new PDFRenderer(doc);
-			image = renderer.renderImage(0, scale);
+			for(int pageIndex = 0; pageIndex<doc.getNumberOfPages(); pageIndex++) {
+				image = renderer.renderImage(pageIndex, scale);
+			}
 			landscape = !isPortrait(doc.getPage(0));
 		} catch (Exception e) {
 			try {
@@ -255,6 +262,10 @@ public class ImageHelper {
 			}
 		}
 
+		return processImageToPreview(image, a4FormatRequired, cutRequired, landscape);
+	}
+
+	private static byte[] processImageToPreview(BufferedImage image, boolean a4FormatRequired, boolean cutRequired, boolean landscape){
 		if(a4FormatRequired) {
 			int width = landscape ? PDF_PREVIEW_HEIGHT : PDF_PREVIEW_WIDTH;
 			int height = landscape ? PDF_PREVIEW_WIDTH : PDF_PREVIEW_HEIGHT;

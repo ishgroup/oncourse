@@ -16,8 +16,10 @@ get:
     '200':
       description: Success response.
       schema:
-        type: string
-        format: byte
+        type: array
+        items:
+          type: string
+          format: byte
     default:
       description: Unexpected error
   x-permission:

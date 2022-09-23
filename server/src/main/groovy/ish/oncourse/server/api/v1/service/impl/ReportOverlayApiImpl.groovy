@@ -111,7 +111,7 @@ class  ReportOverlayApiImpl implements ReportOverlayApi {
     }
 
     @Override
-    byte[] getOriginal(Long id) {
+    List<byte[]> getOriginal(Long id) {
         ReportOverlay report = SelectById.query(ReportOverlay, id)
                 .selectOne(cayenneService.newContext)
         return ImageHelper.generateQualityPreview(report?.overlay, 4, false, false)
