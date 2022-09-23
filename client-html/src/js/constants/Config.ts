@@ -123,7 +123,7 @@ export const NOTE_ENTITIES: EntityName[] = [
   "Course",
   "CourseClass",
   "Enrolment",
-  "Invoice",
+  "AbstractInvoice",
   "Lead",
   "ProductItem",
   "MembershipProduct",

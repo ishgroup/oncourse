@@ -228,7 +228,7 @@ const ImportTemplatesForm = React.memo<Props>(
 
                 <FormField
                   type="text"
-                  label="Key Code"
+                  label="Key code"
                   name="keyCode"
                   validate={isNew || !isInternal ? validateKeycode : undefined}
                   disabled={!isNew}

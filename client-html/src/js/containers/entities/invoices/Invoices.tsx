@@ -33,7 +33,6 @@ import { getPlainTaxes } from "../taxes/actions";
 import InvoiceCogwheel from "./components/InvoiceCogwheel";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { formatToDateOnly } from "../../../common/utils/dates/datesNormalizing";
-import AddPaymentOutEditView from "../paymentsOut/components/AddPaymentOutEditView";
 import { getAdministrationSites } from "../sites/actions";
 import { checkPermissions } from "../../../common/actions";
 import { getAccountTransactionLockedDate } from "../../preferences/actions";
@@ -123,7 +122,7 @@ const findRelatedGroup: any[] = [
 ];
 
 const nameCondition = (invoice: Invoice) => {
-  let result = "";
+  let result;
   if (invoice.type === "Invoice") {
     result = invoice.invoiceNumber ? "Invoice #" + invoice.invoiceNumber : "New";
   } else {
@@ -131,10 +130,6 @@ const nameCondition = (invoice: Invoice) => {
   }
 
   return result;
-};
-
-const nestedEditFields = {
-  PaymentOut: props => <AddPaymentOutEditView {...props} />
 };
 
 const manualLink = getManualLink("invoice");
@@ -246,7 +241,6 @@ const Invoices = React.memo<any>(({
         defaultDeleteDisabled={defaultDeleteDisabled}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
-        nestedEditFields={nestedEditFields}
         EditViewContent={InvoicesEditView}
         CogwheelAdornment={InvoiceCogwheel}
         alwaysFullScreenCreateView
