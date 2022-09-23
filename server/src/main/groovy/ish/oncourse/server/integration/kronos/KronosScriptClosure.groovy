@@ -107,6 +107,7 @@ class KronosScriptClosure implements ScriptClosureTrait<KronosIntegration> {
             throw new IllegalArgumentException("Session with id '${session.id}' doesn't have any valid TutorAttendances(sessionTutors): doesn't have definedTutorRole's names or descriptions, payroll references. Session will not be added to Kronos.")
         }
 
+        List resultShiftIds = new ArrayList()
         for (TutorAttendance tutorAttendance : validatedTutors) {
             String costCenter3 = tutorAttendance.courseClassTutor.definedTutorRole.description
             def costCenter3Id = integration.findCostCenterId(costCenter3)
@@ -136,15 +137,17 @@ class KronosScriptClosure implements ScriptClosureTrait<KronosIntegration> {
                 resultKronosShift = integration.createNewShift(accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, scheduleId)
             }
             if (resultKronosShift["created"]) {
-                logger.info("Shift was successfully created. Kronos Schedule id '${scheduleId}'")
+                logger.info("Kronos Shift was successfully created. Kronos Schedule id '${scheduleId}'")
                 def kronosShiftId = integration.getKronosShiftIdBySessionFields(scheduleId, accountId, shiftStart, shiftEnd, skillId, costCenter1Id, costCenter3Id, tutorAttendance.id)
                 saveCustomFields(tutorAttendance, kronosShiftId.toString(), scheduleId)
-                logger.info("TutorAttendance(sessionTutor) with kronos shift id '${kronosShiftId}' was saved custom fields. Kronos Schedule id '${scheduleId}'.")
+                logger.info("TutorAttendance(sessionTutor) with Kronos Shift id '${kronosShiftId}' was saved custom fields. Kronos Schedule id '${scheduleId}'.")
+                resultShiftIds.add(kronosShiftId)
             } else if (resultKronosShift["updated"]) {
-                logger.info("Kronos shift with id '${shiftIdByCustomField}' was successfully updated. Kronos Schedule id '${scheduleIdByCustomField}'.")
+                logger.info("Kronos Shift with id '${shiftIdByCustomField}' was successfully updated. Kronos Schedule id '${scheduleIdByCustomField}'.")
+                resultShiftIds.add(shiftIdByCustomField)
             }
         }
-        logger.info("Session id '${session.id}' successfully created with all of its TutorAttedances (ids) - (${validatedTutors.id}). Kronos Schedule id '${scheduleId}'.")
+        logger.warn("Session with id '${session.id}' successfully created/updated with all of its TutorAttedances (ids) - (${validatedTutors.id}), Shifts (ids) - (${resultShiftIds}). Kronos Schedule id '${scheduleId}'.")
 
         return null
     }
