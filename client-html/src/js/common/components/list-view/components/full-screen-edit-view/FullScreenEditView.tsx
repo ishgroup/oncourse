@@ -86,7 +86,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
 
   componentDidUpdate(prevProps) {
     const {
-      pending, dispatch, rootEntity, isNested
+      pending, dispatch, rootEntity
     } = this.props;
 
     if (window.performance.getEntriesByName("EditViewStart").length && prevProps.pending && !pending) {
@@ -98,26 +98,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       window.performance.clearMarks("EditViewStart");
       window.performance.clearMarks("EditViewEnd");
       window.performance.clearMeasures("EditView");
-    }
-
-    if (
-      isNested
-      && window.performance.getEntriesByName("NestedEditViewStart").length
-      && prevProps.pending
-      && !pending
-    ) {
-      window.performance.mark("NestedEditViewEnd");
-      window.performance.measure("NestedEditView", "NestedEditViewStart", "NestedEditViewEnd");
-      dispatch(
-        pushGTMEvent(
-          "timing",
-          `${rootEntity}EditView`,
-          window.performance.getEntriesByName("NestedEditView")[0].duration
-        )
-      );
-      window.performance.clearMarks("NestedEditViewStart");
-      window.performance.clearMarks("NestedEditViewEnd");
-      window.performance.clearMeasures("NestedEditViewView");
     }
   }
 
@@ -178,7 +158,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       nestedIndex,
       nameCondition,
       showConfirm,
-      openNestedEditView,
       manualLink,
       submitSucceeded,
       syncErrors,
@@ -274,7 +253,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
               dispatch={dispatch}
               dirty={dirty}
               showConfirm={showConfirm}
-              openNestedEditView={openNestedEditView}
               toogleFullScreenEditView={toogleFullScreenEditView}
             />
           </div>

@@ -25,9 +25,6 @@ import {
   SET_LIST_ENTITY,
   SET_LIST_SELECTION,
   SET_LIST_USER_AQL_SEARCH,
-  SET_LIST_NESTED_EDIT_RECORD,
-  CLEAR_LIST_NESTED_EDIT_RECORD,
-  CLOSE_LIST_NESTED_EDIT_RECORD,
   GET_PLAIN_RECORDS_REQUEST_FULFILLED,
   SET_LIST_MENU_TAGS,
   SET_LIST_SEARCH_ERROR,
@@ -86,8 +83,6 @@ class State implements ListState {
   editRecord = null;
 
   recepients = null;
-
-  nestedEditRecords = [];
 
   selection = [];
 
@@ -168,13 +163,6 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
       return {
         ...state,
         editRecordFetching: true
-      };
-    }
-
-    case SET_LIST_NESTED_EDIT_RECORD: {
-      return {
-        ...state,
-        nestedEditRecords: [...state.nestedEditRecords, action.payload]
       };
     }
 
@@ -324,28 +312,6 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
         menuTags: getUpdated(menuTags, null, null, null),
         checkedChecklists: getUpdated(checkedChecklists, null, null, null),
         uncheckedChecklists: getUpdated(uncheckedChecklists, null, null, null),
-      };
-    }
-
-    case CLOSE_LIST_NESTED_EDIT_RECORD: {
-      const { index } = action.payload;
-
-      if (state.nestedEditRecords[index]) state.nestedEditRecords[index].opened = false;
-
-      return {
-        ...state,
-        nestedEditRecords: [...state.nestedEditRecords]
-      };
-    }
-
-    case CLEAR_LIST_NESTED_EDIT_RECORD: {
-      const { index } = action.payload;
-
-      state.nestedEditRecords.splice(index, 1);
-
-      return {
-        ...state,
-        nestedEditRecords: [...state.nestedEditRecords]
       };
     }
 
