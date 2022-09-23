@@ -14,6 +14,8 @@ package ish.oncourse.server.api.v1.service.impl
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
+import ish.oncourse.server.preference.UserPreferenceService
 import ish.util.ImageHelper
 
 import static ish.oncourse.server.api.v1.function.export.PdfFunctions.toDbOverlay

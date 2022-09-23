@@ -18,6 +18,7 @@ import ish.oncourse.server.cayenne.Document;
 import ish.oncourse.server.cayenne.Report;
 import ish.oncourse.server.cayenne.ReportOverlay;
 import ish.oncourse.server.document.DocumentService;
+import ish.oncourse.server.preference.UserPreferenceService;
 import ish.oncourse.server.report.PdfUtil;
 import ish.persistence.CommonPreferenceController;
 import ish.persistence.Preferences;
@@ -28,6 +29,7 @@ import ish.print.PrintResult.ResultType;
 import ish.print.transformations.PrintTransformation;
 import ish.s3.AmazonS3Service;
 import ish.util.EntityUtil;
+import ish.util.ImageHelper;
 import ish.util.MapsUtil;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
@@ -57,6 +59,7 @@ import java.rmi.server.UID;
 import java.util.*;
 
 import static ish.util.ImageHelper.generateHighQualityPdfPreview;
+import static ish.util.ImageHelper.getHighQualityScale;
 import static net.sf.jasperreports.engine.export.JRPdfExporter.PDF_FIELD_BORDER_STYLE;
 import static net.sf.jasperreports.engine.style.PropertyStyleProvider.STYLE_PROPERTY_PEN_LINE_WIDTH;
 
@@ -72,6 +75,7 @@ public class PrintWorker implements Runnable {
 	private ICayenneService cayenneService;
 	private DocumentService documentService;
 	private PrintRequest printRequest;
+	private UserPreferenceService userPreferenceService;
 
 	private Map<String, JasperReport> compiledReports = new LinkedHashMap<>();
 	private Map<String, byte[]> images = new LinkedHashMap<>();
@@ -87,11 +91,13 @@ public class PrintWorker implements Runnable {
 
 	private String reportName;
 
-	public PrintWorker(PrintRequest printRequest, ICayenneService cayenneService, DocumentService documentService) {
+	public PrintWorker(PrintRequest printRequest, ICayenneService cayenneService, DocumentService documentService,
+					   UserPreferenceService userPreferenceService) {
 		this.uid = printRequest.getUID();
 		this.printRequest = printRequest;
 		this.cayenneService = cayenneService;
 		this.documentService = documentService;
+		this.userPreferenceService = userPreferenceService;
 
 		progress = 0d;
 		result = ResultType.IN_PROGRESS;
@@ -259,7 +265,9 @@ public class PrintWorker implements Runnable {
 		if (printRequest.isCreatePreview() && startingReport != null && pdfResult != null && pdfResult.length != 0 ) {
 			ObjectContext cc = cayenneService.getNewContext();
 			var localReport = cc.localObject(startingReport);
-			localReport.setPreview(generateHighQualityPdfPreview(pdfResult));
+			localReport.setPreview(
+					generateHighQualityPdfPreview(pdfResult, getHighQualityScale(userPreferenceService))
+			);
 			cc.commitChanges();
 		}
 
