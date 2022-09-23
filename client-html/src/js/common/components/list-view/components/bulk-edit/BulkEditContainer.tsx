@@ -332,7 +332,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           <Grid item xs className={classes.menuColumn}>
             <form autoComplete="off" onSubmit={handleSubmit(onSave)} className={classes.form}>
               <Grid container className={classes.formContent}>
-                <Grid item xs={12}>
+                <Grid item xs={12} md={6}>
                   {BulkEditFieldRendered}
                 </Grid>
               </Grid>
