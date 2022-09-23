@@ -9,7 +9,7 @@
 import React from "react";
 import { initialize, reduxForm } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 
 class AzureFormBase extends React.Component<any, any> {
   constructor(props) {
