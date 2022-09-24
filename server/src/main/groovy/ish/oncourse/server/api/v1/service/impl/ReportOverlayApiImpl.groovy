@@ -15,6 +15,7 @@ import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.ICayenneService
 import ish.util.ImageHelper
+import ish.util.ImageRequest
 
 import static ish.oncourse.server.api.v1.function.export.PdfFunctions.toDbOverlay
 import static ish.oncourse.server.api.v1.function.export.PdfFunctions.toRestOverlay
@@ -114,6 +115,6 @@ class  ReportOverlayApiImpl implements ReportOverlayApi {
     List<byte[]> getOriginal(Long id) {
         ReportOverlay report = SelectById.query(ReportOverlay, id)
                 .selectOne(cayenneService.newContext)
-        return ImageHelper.generateQualityPreview(report?.overlay, 4, false, false)
+        return ImageHelper.generateOriginalHighQuality(report?.overlay);
     }
 }
