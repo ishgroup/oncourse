@@ -451,7 +451,6 @@ class DataCollectionWrapper extends React.Component<any, any> {
                       this.onDelete(id);
                     },
                     icon: <DeleteForever />,
-
                     confirmText: "Form will be deleted permanently",
                     tooltip: "Delete form",
                     confirmButtonText: "DELETE"

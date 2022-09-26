@@ -61,7 +61,7 @@ const ApiTokenItem: React.FC<ItemsProps> = (
 
   return (
     <Card className="mb-2 p-3">
-      <Grid container columnSpacing={3}>
+      <Grid container columnSpacing={3} rowSpacing={2}>
         <Grid item xs={6}>
           <FormField
             label="Act as user"
