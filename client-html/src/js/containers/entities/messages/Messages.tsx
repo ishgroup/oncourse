@@ -5,17 +5,14 @@
 
 import React, { Dispatch, useEffect } from "react";
 import { connect } from "react-redux";
-import { initialize } from "redux-form";
 import { Message } from "@api/model";
 import {
-  setListEditRecord,
   getFilters,
   clearListState,
 } from "../../../common/components/list-view/actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import MessageEditView from "./components/MessageEditView";
 import ListView from "../../../common/components/list-view/ListView";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 
 interface MessagesProps {
   onInit?: () => void;
@@ -23,16 +20,6 @@ interface MessagesProps {
   clearListState?: () => void;
   onDelete?: (id: string) => void;
 }
-
-const Initial: Message = {
-  createdOn: null,
-  creatorKey: null,
-  id: 0,
-  message: null,
-  modifiedOn: null,
-  sentToContactFullname: null,
-  subject: null
-};
 
 const filterGroups: FilterGroup[] = [
   {
@@ -85,19 +72,15 @@ const Messages: React.FC<MessagesProps> = props => {
       }}
       EditViewContent={MessageEditView}
       rootEntity="Message"
-      onInit={onInit}
       filterGroupsInitial={filterGroups}
       findRelated={findRelatedGroup}
+      createButtonDisabled
       noListTags
     />
   );
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  onInit: () => {
-    dispatch(setListEditRecord(Initial));
-    dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
-  },
   getFilters: () => dispatch(getFilters("Message")),
   clearListState: () => dispatch(clearListState())
 });
