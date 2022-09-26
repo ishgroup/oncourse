@@ -1,3 +1,11 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 import { initialize } from "redux-form";
 import ImportTemplatesService from "../../automation/containers/import-templates/services/ImportTemplatesService";
 import ModuleService from "../modules/services/ModuleService";
@@ -46,6 +54,7 @@ import EnrolmentService from "../enrolments/services/EnrolmentService";
 import { EnrolmentExtended } from "../../../model/entities/Enrolment";
 import EntityService from "../../../common/services/EntityService";
 import { getContactName } from "../contacts/utils";
+import { getPaymentOutFromModel } from "../paymentsOut/utils";
 
 const defaultUnknown = () => {
   console.error("Unknown entity name");
@@ -337,6 +346,8 @@ export const createEntityItem = (entity: EntityName, item: any): Promise<any> =>
       return WaitingListService.createWaitingList(item);
     case "Course":
       return CourseService.create(item);
+    case "PaymentOut":
+      return PaymentOutService.postPaymentOut(getPaymentOutFromModel(item));
 
     case "Document": {
       const {
