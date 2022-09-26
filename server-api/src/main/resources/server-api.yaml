@@ -205,6 +205,8 @@ paths:
     $ref: './path/list/entity/room/validation/api.yaml'
   /list/entity/script:
     $ref: './path/list/entity/script/api.yaml'
+  /list/entity/script/config:
+    $ref: './path/list/entity/script/config/api.yaml'
   /list/entity/script/execute:
     $ref: './path/list/entity/script/execute/api.yaml'
   /list/entity/script/execute/pdf:
