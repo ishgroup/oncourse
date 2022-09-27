@@ -15,12 +15,16 @@ import com.google.inject.Inject
 import ish.oncourse.server.api.service.ReportApiService
 import ish.oncourse.server.api.v1.model.ReportDTO
 import ish.oncourse.server.api.v1.service.PdfTemplateApi
+import ish.oncourse.server.report.IReportService
 import ish.util.ImageHelper
 
 class PdfTemplateApiImpl implements PdfTemplateApi {
 
     @Inject
     private ReportApiService apiService
+
+    @Inject
+    private IReportService reportService;
 
     @Override
     void create(ReportDTO report) {
@@ -45,6 +49,11 @@ class PdfTemplateApiImpl implements PdfTemplateApi {
     @Override
     void update(Long id, ReportDTO report) {
         apiService.update(id, report)
+    }
+
+    @Override
+    void updateConfigs(String scriptConfigs) {
+        reportService.importReport(scriptConfigs)
     }
 
     @Override

@@ -11,8 +11,10 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
+
 import com.google.inject.Inject
 import ish.oncourse.server.report.IReportService
+import ish.oncourse.server.upgrades.DataPopulationUtils
 import ish.oncourse.types.OutputType
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
@@ -21,15 +23,13 @@ import ish.oncourse.server.api.v1.model.ExecuteScriptRequestDTO
 import ish.oncourse.server.api.v1.model.ScriptDTO
 import ish.oncourse.server.api.v1.service.ScriptApi
 import ish.oncourse.server.api.validation.EntityValidator
-import ish.report.ImportReportResult
 import ish.scripting.ScriptResult
-import org.apache.commons.io.IOUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.yaml.snakeyaml.Yaml
 
 import javax.servlet.http.HttpServletResponse
 import javax.ws.rs.core.Context
-import java.nio.charset.Charset
 import java.time.LocalDateTime
 
 
@@ -42,9 +42,6 @@ class ScriptApiImpl implements ScriptApi {
 
     @Inject
     private AqlService aqlService
-
-    @Inject
-    private IReportService reportService;
 
     @Inject
     private ScriptApiService service
@@ -104,6 +101,10 @@ class ScriptApiImpl implements ScriptApi {
 
     @Override
     void updateConfigs(Long id, String script) {
-        reportService.importReport(script)
+        def resourceAsStream = new ByteArrayInputStream(script.getBytes())
+        Yaml yaml = new Yaml()
+        def loaded = yaml.load(resourceAsStream)
+        def props = (Map<String, Object>) loaded
+        DataPopulationUtils.updateScript(cayenneService.newContext, props)
     }
 }

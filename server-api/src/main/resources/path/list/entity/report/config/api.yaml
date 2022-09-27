@@ -1,0 +1,23 @@
+put:
+  operationId: updateConfigs
+  description: Update an existing report
+  tags:
+    - PdfTemplate
+  parameters:
+    - name: scriptConfigs
+      in: body
+      schema:
+        type: string
+      required: true
+      description: lines of yaml file to upgrade report configs
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: REPORT
+    errorMessage: Sorry, you have no permissions to update report. Please contact your administrator
