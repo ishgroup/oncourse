@@ -24,7 +24,6 @@ import FormField from "../../../../common/components/form/formFields/FormField";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { State } from "../../../../reducers/state";
-import { getListNestedEditRecord } from "../../../../common/components/list-view/actions";
 import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
 import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
@@ -495,7 +494,6 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  openNestedEditView: (entity: string, id: number) => dispatch(getListNestedEditRecord(entity, id)),
   setSelectedContact: (selectedContact: any) => dispatch(setSelectedContact(selectedContact))
 });
 
