@@ -19,7 +19,11 @@ import ish.oncourse.server.api.v1.model.ExportTemplateDTO;
 import ish.oncourse.server.api.v1.model.OutputTypeDTO;
 import ish.oncourse.server.api.validation.EntityValidator;
 import ish.oncourse.server.cayenne.ExportTemplate;
+import ish.oncourse.server.upgrades.DataPopulationUtils;
 import org.apache.cayenne.ObjectContext;
+
+import java.util.Map;
+import java.util.function.BiConsumer;
 
 public class ExportTemplateApiService extends AutomationApiService<ExportTemplateDTO, ExportTemplate, ExportTemplateDao> {
 
@@ -65,5 +69,10 @@ public class ExportTemplateApiService extends AutomationApiService<ExportTemplat
 
     protected ExportTemplateDTO createDto() {
         return new ExportTemplateDTO();
+    }
+
+    @Override
+    protected BiConsumer<ExportTemplate, Map<String, Object>> getFillPropertiesFunction() {
+        return DataPopulationUtils::fillExportWithCommonFields;
     }
 }

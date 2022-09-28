@@ -47,6 +47,11 @@ class ExportTemplateApiImpl implements ExportTemplateApi {
     }
 
     @Override
+    void updateConfigs(Long id, String scriptConfigs) {
+
+    }
+
+    @Override
     void updateInternal(ExportTemplateDTO exportTemplate) {
         service.updateInternal(exportTemplate)
     }

@@ -17,16 +17,24 @@ import ish.oncourse.server.api.traits.AutomationDTOTrait;
 import ish.oncourse.server.api.v1.model.AutomationStatusDTO;
 import ish.oncourse.server.api.validation.EntityValidator;
 import ish.oncourse.server.cayenne.AutomationTrait;
+import ish.oncourse.server.cayenne.ImportAutomationBinding;
+import ish.oncourse.server.upgrades.BindingUtils;
+import ish.oncourse.server.upgrades.DataPopulationUtils;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.yaml.snakeyaml.Yaml;
 
 
+import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
+import static ish.oncourse.common.ResourceProperty.OPTIONS;
+import static ish.oncourse.common.ResourceProperty.VARIABLES;
 import static ish.oncourse.server.api.servlet.ApiFilter.validateOnly;
 import static ish.oncourse.server.api.v1.function.export.ExportFunctions.DEFAULT_TEMPLATE_PREFIX;
 import static org.apache.commons.lang3.StringUtils.trimToNull;
@@ -36,6 +44,8 @@ abstract class AutomationApiService<T extends AutomationDTOTrait , K extends Aut
 
 
     protected abstract T createDto();
+
+    protected abstract BiConsumer<K, Map<String, Object>> getFillPropertiesFunction();
 
     @Override
     public T toRestModel(K cayenneModel)  {
@@ -137,6 +147,23 @@ abstract class AutomationApiService<T extends AutomationDTOTrait , K extends Aut
         entity.setAutomationStatus(dto.getStatus().getDbType());
         BindingFunctions.updateBuiltInOptions(entity, dto.getOptions());
         return entity;
+    }
+
+    public void updateConfigs(Long id, String configs){
+        ObjectContext context = cayenneService.getNewContext();
+        var entity = getEntityAndValidateExistence(context, id);
+
+        var resourceAsStream = new ByteArrayInputStream(configs.getBytes());
+        Yaml yaml = new Yaml();
+        var loaded = yaml.load(resourceAsStream);
+        var props = (Map<String, Object>) loaded;
+
+        var propertiesFilling = getFillPropertiesFunction();
+        propertiesFilling.accept(entity, props);
+        context.commitChanges();
+
+        BindingUtils.updateOptions(context, DataPopulationUtils.get(props, OPTIONS, List.class), entity, ImportAutomationBinding.class);
+        BindingUtils.updateVariables(context, DataPopulationUtils.get(props, VARIABLES, List.class), entity, ImportAutomationBinding.class);
     }
 
     public List<T> getAutomationFor(String entityName) {

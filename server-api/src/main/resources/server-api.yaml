@@ -153,6 +153,8 @@ paths:
     $ref: './path/list/entity/priorLearning/api.yaml'
   /list/entity/exportTemplate:
     $ref: './path/list/entity/exportTemplate/api.yaml'
+  /list/entity/exportTemplate/config:
+    $ref: './path/list/entity/exportTemplate/config/api.yaml'
   /list/entity/exportTemplate/export:
     $ref: './path/list/entity/exportTemplate/export/api.yaml'
   /list/entity/import:

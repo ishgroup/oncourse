@@ -27,6 +27,8 @@ import org.apache.cayenne.query.ObjectSelect;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 public class ReportApiService extends AutomationApiService<ReportDTO, Report, ReportDao> {
@@ -127,5 +129,11 @@ public class ReportApiService extends AutomationApiService<ReportDTO, Report, Re
 
     protected ReportDTO createDto() {
         return new ReportDTO();
+    }
+
+    @Override
+    protected BiConsumer<Report, Map<String, Object>> getFillPropertiesFunction() {
+        //TODO: firstly we need to add all reports to catalog.yaml file and change their loading
+        return null;
     }
 }

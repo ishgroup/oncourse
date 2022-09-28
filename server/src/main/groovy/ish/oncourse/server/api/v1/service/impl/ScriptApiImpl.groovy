@@ -102,12 +102,6 @@ class ScriptApiImpl implements ScriptApi {
 
     @Override
     void updateConfigs(Long id, String configs) {
-        def resourceAsStream = new ByteArrayInputStream(configs.getBytes())
-        Yaml yaml = new Yaml()
-        def loaded = yaml.load(resourceAsStream)
-        def props = (Map<String, Object>) loaded
-
-        def script = SelectById.query(Script,id).selectOne(cayenneService.newContext)
-        DataPopulationUtils.updateExistedScript(props, script)
+        service.updateConfigs(id, configs)
     }
 }

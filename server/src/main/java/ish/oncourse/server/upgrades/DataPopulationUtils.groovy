@@ -14,6 +14,7 @@ package ish.oncourse.server.upgrades
 import ish.common.types.AutomationStatus
 import ish.common.types.EntityEvent
 import ish.common.types.MessageType
+import ish.oncourse.server.cayenne.MessageTemplate
 import ish.oncourse.server.cayenne.Report
 import static ish.oncourse.common.ResourceType.EXPORT
 import static ish.oncourse.common.ResourceType.IMPORT
@@ -80,7 +81,7 @@ class DataPopulationUtils {
         automationTrait.automationTags = getString(props, TAG) ?: automationTrait.automationTags
     }
 
-    private static fillScriptWithCommonFields(Script script, Map<String, Object> props){
+    static fillScriptWithCommonFields(Script script, Map<String, Object> props){
         script.name = getString(props, NAME) ?: script.name
         script.entity = getString(props, ENTITY_CLASS) ?: script.entity
         script.entityAttribute = getString(props, ENTITY_ATTRIBUTE) ?: script.entityAttribute
@@ -92,10 +93,28 @@ class DataPopulationUtils {
         configureAutomationWithCommonFields(script, props)
     }
 
-    static void updateExistedScript(Map<String, Object> props, Script script){
-        fillScriptWithCommonFields(script, props)
-        script.getContext().commitChanges()
+    static fillExportWithCommonFields(ExportTemplate dbExport, Map<String, Object> props){
+        dbExport.name = getString(props, NAME)
+        dbExport.entity = getString(props, ENTITY_CLASS)
+        dbExport.outputType = get(props, OUTPUT_TYPE, OutputType)
+
+        configureAutomationWithCommonFields(dbExport, props)
     }
+
+    static fillMessageTemplateWithCommonFields(EmailTemplate dbMessage, Map<String, Object> props){
+        dbMessage.name = getString(props, NAME)
+        dbMessage.entity = getString(props, ENTITY_CLASS)
+        dbMessage.type = get(props, MESSAGE_TYPE, MessageType)
+        dbMessage.subject = getString(props, SUBJECT)
+
+        configureAutomationWithCommonFields(dbMessage, props)
+    }
+
+    static fillImportWithCommonFields(Import dbImport, Map<String, Object> props){
+        dbImport.name = getString(props, NAME)
+        configureAutomationWithCommonFields(dbImport, props)
+    }
+
 
     static void updateScript(ObjectContext context, Map<String, Object> props) {
         boolean keepOldScript = false
@@ -144,10 +163,12 @@ class DataPopulationUtils {
         dbImport.name = getString(props, NAME)
         dbImport.body = getBody(props, BODY, IMPORT)
         configureAutomationWithCommonFields(dbImport, props)
+
+        fillImportWithCommonFields(dbImport, props)
         context.commitChanges()
 
         BindingUtils.updateOptions(context, get(props, OPTIONS, List), dbImport, ImportAutomationBinding)
-        BindingUtils.updateVariables(context, get(props, VARIABLES, List),dbImport, ImportAutomationBinding)
+        BindingUtils.updateVariables(context, get(props, VARIABLES, List), dbImport, ImportAutomationBinding)
     }
 
 
@@ -161,11 +182,8 @@ class DataPopulationUtils {
             dbExport.automationStatus = AutomationStatus.ENABLED
         }
 
-        dbExport.name = getString(props, NAME)
-        dbExport.entity = getString(props, ENTITY_CLASS)
-        dbExport.outputType = get(props, OUTPUT_TYPE, OutputType)
+        fillExportWithCommonFields(dbExport, props)
         dbExport.body = getBody(props, BODY, EXPORT)
-        configureAutomationWithCommonFields(dbExport, props)
 
         context.commitChanges()
 
@@ -184,15 +202,12 @@ class DataPopulationUtils {
             dbMessage.automationStatus = AutomationStatus.ENABLED
         }
 
-        dbMessage.name = getString(props, NAME)
-        dbMessage.entity = getString(props, ENTITY_CLASS)
-        dbMessage.type = get(props, MESSAGE_TYPE, MessageType)
-        dbMessage.subject = getString(props, SUBJECT)
+        fillMessageTemplateWithCommonFields(dbMessage, props)
+
         dbMessage.bodyPlain = getBody(props, TXT_TEMPLATE, MESSAGING)
         if (getString(props, HTML_TEMPLATE)) {
             dbMessage.bodyHtml = getBody(props, HTML_TEMPLATE, MESSAGING)
         }
-        configureAutomationWithCommonFields(dbMessage, props)
 
         context.commitChanges()
 
