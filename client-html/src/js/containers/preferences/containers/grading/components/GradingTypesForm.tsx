@@ -9,7 +9,7 @@ import Grid from "@mui/material/Grid";
 import { showConfirm } from "../../../../../common/actions";
 import { deleteGradingType, updateGradingTypes } from "../../../actions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../reducers/state";
 import GradingsRenderer from "./GradingsRenderer";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";

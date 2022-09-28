@@ -11,7 +11,7 @@ import {
   GET_EMAIL_TEMPLATES_WITH_KEYCODE_FULFILLED,
   GET_SCRIPTS_FULFILLED
 } from "../../../actions";
-import { LIST_PAGE_SIZE } from "../../../../constants/Config";
+import { LIST_PAGE_SIZE, LIST_SIDE_BAR_DEFAULT_WIDTH } from "../../../../constants/Config";
 import {
   CLEAR_LIST_STATE,
   GET_FILTERS_FULFILLED,
@@ -63,7 +63,7 @@ class State implements ListState {
     pageSize: LIST_PAGE_SIZE,
     search: null,
     layout: null,
-    filterColumnWidth: 200,
+    filterColumnWidth: LIST_SIDE_BAR_DEFAULT_WIDTH,
     tagsOrder: [],
     recordsLeft: LIST_PAGE_SIZE
   };
@@ -124,7 +124,11 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
           ...newRecords,
           sort: newRecords.sort.map(s => ({ ...s })),
           columns: newRecords.columns.map(c => ({ ...c })),
-          rows: newRecords.rows.map(r => ({ ...r }))
+          rows: newRecords.rows.map(r => ({ ...r })),
+          tagsOrder: [...newRecords.tagsOrder],
+          filterColumnWidth: newRecords.filterColumnWidth < LIST_SIDE_BAR_DEFAULT_WIDTH
+            ? LIST_SIDE_BAR_DEFAULT_WIDTH
+            : newRecords.filterColumnWidth
         },
         searchQuery,
         fetching: false,
