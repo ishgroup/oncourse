@@ -74,12 +74,28 @@ class DataPopulationUtils {
 
 
     private static configureAutomationWithCommonFields(AutomationTrait automationTrait, Map<String, Object> props){
-        automationTrait.description = getString(props, DESCRIPTION)
-        automationTrait.shortDescription = getString(props, SHORT_DESCRIPTION)
-        automationTrait.category = getString(props, CATEGORY)
-        automationTrait.automationTags = getString(props, TAG)
+        automationTrait.description = getString(props, DESCRIPTION) ?: automationTrait.description
+        automationTrait.shortDescription = getString(props, SHORT_DESCRIPTION) ?: automationTrait.shortDescription
+        automationTrait.category = getString(props, CATEGORY) ?: automationTrait.category
+        automationTrait.automationTags = getString(props, TAG) ?: automationTrait.automationTags
     }
 
+    private static fillScriptWithCommonFields(Script script, Map<String, Object> props){
+        script.name = getString(props, NAME) ?: script.name
+        script.entity = getString(props, ENTITY_CLASS) ?: script.entity
+        script.entityAttribute = getString(props, ENTITY_ATTRIBUTE) ?: script.entityAttribute
+        script.triggerType = updateTriggerType(script.triggerType, get(props, TRIGGER_TYPE, TriggerType)) ?: script.triggerType
+        script.outputType = get(props, OUTPUT_TYPE, OutputType) ?: script.outputType
+        script.entityEventType = get(props, ENTITY_EVENT_TYPE, EntityEvent) ?: script.entityEventType
+        script.systemEventType = get(props, ON_COURSE_EVENT_TYPE, SystemEventType) ?: script.systemEventType
+
+        configureAutomationWithCommonFields(script, props)
+    }
+
+    static void updateExistedScript(Map<String, Object> props, Script script){
+        fillScriptWithCommonFields(script, props)
+        script.getContext().commitChanges()
+    }
 
     static void updateScript(ObjectContext context, Map<String, Object> props) {
         boolean keepOldScript = false
@@ -105,19 +121,8 @@ class DataPopulationUtils {
             newScript.cronSchedule = getString(props, CRON_SCHEDULE)
         }
 
-        newScript.name = name
-        newScript.entity = getString(props, ENTITY_CLASS)
-        newScript.entityAttribute = getString(props, ENTITY_ATTRIBUTE)
-
-        newScript.triggerType = updateTriggerType(newScript.triggerType, get(props, TRIGGER_TYPE, TriggerType))
-        newScript.outputType = get(props, OUTPUT_TYPE, OutputType)
-        newScript.entityEventType = get(props, ENTITY_EVENT_TYPE, EntityEvent)
-        newScript.systemEventType = get(props, ON_COURSE_EVENT_TYPE, SystemEventType)
-
+        fillScriptWithCommonFields(newScript, props)
         newScript.body = getBody(props, BODY, SCRIPT)
-
-        configureAutomationWithCommonFields(newScript, props)
-
         context.commitChanges()
 
         BindingUtils.updateOptions(context, get(props, OPTIONS, List), newScript, ScriptAutomationBinding)

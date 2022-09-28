@@ -13,7 +13,7 @@ package ish.oncourse.server.api.v1.service.impl
 
 
 import com.google.inject.Inject
-import ish.oncourse.server.report.IReportService
+import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.upgrades.DataPopulationUtils
 import ish.oncourse.types.OutputType
 import ish.oncourse.aql.AqlService
@@ -24,6 +24,7 @@ import ish.oncourse.server.api.v1.model.ScriptDTO
 import ish.oncourse.server.api.v1.service.ScriptApi
 import ish.oncourse.server.api.validation.EntityValidator
 import ish.scripting.ScriptResult
+import org.apache.cayenne.query.SelectById
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.yaml.snakeyaml.Yaml
@@ -100,11 +101,13 @@ class ScriptApiImpl implements ScriptApi {
     }
 
     @Override
-    void updateConfigs(Long id, String script) {
-        def resourceAsStream = new ByteArrayInputStream(script.getBytes())
+    void updateConfigs(Long id, String configs) {
+        def resourceAsStream = new ByteArrayInputStream(configs.getBytes())
         Yaml yaml = new Yaml()
         def loaded = yaml.load(resourceAsStream)
         def props = (Map<String, Object>) loaded
-        DataPopulationUtils.updateScript(cayenneService.newContext, props)
+
+        def script = SelectById.query(Script,id).selectOne(cayenneService.newContext)
+        DataPopulationUtils.updateExistedScript(props, script)
     }
 }
