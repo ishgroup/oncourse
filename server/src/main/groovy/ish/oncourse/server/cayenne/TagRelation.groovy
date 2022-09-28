@@ -11,13 +11,17 @@
 
 package ish.oncourse.server.cayenne
 
+import com.google.inject.Inject
 import ish.common.types.NodeType
+import ish.common.types.SystemEventType
 import ish.common.types.TypesUtil
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.cayenne.Taggable
 import ish.oncourse.cayenne.TaggableClasses
+import ish.oncourse.common.SystemEvent
 import ish.oncourse.server.cayenne.glue._TagRelation
+import ish.oncourse.server.integration.EventService
 import ish.validation.ValidationFailure
 import org.apache.cayenne.validation.ValidationResult
 
@@ -31,13 +35,27 @@ import java.util.Date
 @API
 @QueueableEntity
 class TagRelation extends _TagRelation implements Queueable {
+	@Inject
+	private EventService eventService;
+
+
 	@Override
 	boolean isAsyncReplicationAllowed() {
 		return tag?.nodeType != NodeType.CHECKLIST
 	}
 
-
-	/**
+	@Override
+	protected void postPersist() {
+		if(tag.nodeType.equals(NodeType.CHECKLIST)){
+			def allTagChilds = tag.parentTag.allChildren.values().collect {it.id}
+			def recordTagIds = taggedRelation.tagIds
+			eventService.postEvent(SystemEvent.valueOf(SystemEventType.CHECKLIST_TASK_CHECKED, this))
+			if(!recordTagIds.containsAll(allTagChilds))
+				return
+			eventService .postEvent(SystemEvent.valueOf(SystemEventType.CHECKLIST_COMPLETED, this))
+		}
+	}
+/**
 	 * To be overridden returning a constant from the TaggableClasses enum.
 	 * @return
 	 */

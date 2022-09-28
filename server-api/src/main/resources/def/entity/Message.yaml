@@ -4,6 +4,10 @@ properties:
     type: integer
     format: int64
     required: true
+  contactId:
+    type: integer
+    format: int64
+    required: true
   subject:
     type: string
   message:

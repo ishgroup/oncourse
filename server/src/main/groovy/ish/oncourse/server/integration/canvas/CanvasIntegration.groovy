@@ -135,7 +135,7 @@ class CanvasIntegration implements PluginTrait {
      * @return users
      */
     protected getUsersWithPagination(nextPageUrl) {
-        def url = nextPageUrl != null ? nextPageUrl : "https://nida-au.test.instructure.com/api/v1/accounts/${accountId}/users?page=1&per_page=100"
+        def url = nextPageUrl != null ? nextPageUrl : (baseUrl + "/api/v1/accounts/${accountId}/users?page=1&per_page=100")
         def client = new RESTClient(url)
 
         client.headers["Authorization"] = "Bearer ${authHeader}"
@@ -227,7 +227,7 @@ class CanvasIntegration implements PluginTrait {
      * @return enrolments
      */
     protected getEnrolmentsWithPagination(nextPageUrl, userId) {
-        def url = nextPageUrl != null ? nextPageUrl : "https://nida-au.test.instructure.com/api/v1/users/${userId}/enrollments?page=1&per_page=100"
+        def url = nextPageUrl != null ? nextPageUrl : (baseUrl + "/api/v1/users/${userId}/enrollments?page=1&per_page=100")
         def client = new RESTClient(url)
         client.headers["Authorization"] = "Bearer ${authHeader}"
         client.request(Method.GET, ContentType.URLENC) {
@@ -268,7 +268,7 @@ class CanvasIntegration implements PluginTrait {
      * @param user id from Canvas
      */
     protected getUserLoginsWithPagination(nextPageUrl, userId) {
-        def url = nextPageUrl != null ? nextPageUrl : "https://nida-au.test.instructure.com/api/v1/users/${userId}/logins?page=1&per_page=100"
+        def url = nextPageUrl != null ? nextPageUrl : (baseUrl + "/api/v1/users/${userId}/logins?page=1&per_page=100")
         def client = new RESTClient(url)
         client.headers["Authorization"] = "Bearer ${authHeader}"
         client.request(Method.GET, ContentType.URLENC) {
@@ -517,7 +517,7 @@ class CanvasIntegration implements PluginTrait {
      * @return collection of sections
      */
     def getSectionsByCourseWithPagination(nextPageUrl, courseId) {
-        def url = nextPageUrl != null ? nextPageUrl : "https://nida-au.test.instructure.com/api/v1/courses/${courseId}/sections?page=1&per_page=100"
+        def url = nextPageUrl != null ? nextPageUrl : (baseUrl + "/api/v1/courses/${courseId}/sections?page=1&per_page=100")
         def client = new RESTClient(url)
 
         client.headers["Authorization"] = "Bearer ${authHeader}"

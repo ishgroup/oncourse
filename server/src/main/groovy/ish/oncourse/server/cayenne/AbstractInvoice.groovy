@@ -428,7 +428,7 @@ abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterf
 
 	@Override
 	String getInteractionName() {
-		return total.toPlainString()
+		return totalIncTax.toPlainString()
 	}
 }
 

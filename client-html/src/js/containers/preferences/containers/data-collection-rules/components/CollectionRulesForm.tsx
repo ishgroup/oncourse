@@ -7,14 +7,8 @@ import * as React from "react";
 import Grid from "@mui/material/Grid";
 import { withStyles } from "@mui/styles";
 import { withRouter } from "react-router-dom";
-import {
-  reduxForm, initialize, getFormSyncErrors
-} from "redux-form";
-import {
-  DataCollectionForm,
-  DataCollectionRule,
-  DataCollectionType
-} from "@api/model";
+import { getFormSyncErrors, initialize, reduxForm } from "redux-form";
+import { DataCollectionForm, DataCollectionRule, DataCollectionType } from "@api/model";
 import createStyles from "@mui/styles/createStyles";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import { connect } from "react-redux";
@@ -23,7 +17,7 @@ import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { sortDefaultSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { State } from "../../../../../reducers/state";
 
@@ -204,7 +198,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
           invalid={invalid}
           title={(isNew && (!value || !value.name || value.name.trim().length === 0))
             ? "New"
-            : value && value.name.trim()}
+            : value?.name?.trim()}
           hideHelpMenu={isNew}
           opened={isNew || Object.keys(syncErrors).includes("name")}
           createdOn={v => new Date(v.created)}

@@ -1,0 +1,7 @@
+Hi ${checkout?.payer?.firstName},
+
+You recently visited the ${Preferences.get("college.name")} website and added at least one item to the cart.
+
+Click here to return to your cart and complete the checkout process.
+
+${checkout?.data?.get("checkoutURL") + "?cartId=" + checkout.UUID}

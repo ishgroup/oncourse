@@ -8,7 +8,7 @@ import { FormControlLabel } from "@mui/material";
 import { initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 
 class SurveyMonkeyBaseForm extends React.Component<any, any> {
   constructor(props) {

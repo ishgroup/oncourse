@@ -13,14 +13,17 @@ package ish.oncourse.server.cayenne.glue;
 
 import com.google.inject.Inject;
 import ish.common.types.NodeType;
+import ish.common.types.SystemEventType;
 import ish.oncourse.API;
 import ish.oncourse.aql.AqlService;
 import ish.oncourse.cayenne.Taggable;
 import ish.oncourse.cayenne.TaggableClasses;
+import ish.oncourse.common.SystemEvent;
 import ish.oncourse.entity.services.TagService;
 import ish.oncourse.server.api.v1.function.TagFunctions;
 import ish.oncourse.server.cayenne.Tag;
 import ish.oncourse.server.cayenne.TagRelation;
+import ish.oncourse.server.integration.EventService;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectQuery;
@@ -42,9 +45,6 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 
 	@Inject
 	private AqlService aqlService;
-	/**
-	 *
-	 */
 
 
 	/**

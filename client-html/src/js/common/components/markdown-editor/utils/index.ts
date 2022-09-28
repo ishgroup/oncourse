@@ -28,7 +28,7 @@ export const getContentMarker = text => {
 
 export const removeContentMarker = text => {
   if (!text) return text;
-  return text.replace(/\s*{render:.*/, "");
+  return text.replace(/\s*{render:.*/g, "");
 };
 
 export const addContentMarker = (text, contentMode) => (

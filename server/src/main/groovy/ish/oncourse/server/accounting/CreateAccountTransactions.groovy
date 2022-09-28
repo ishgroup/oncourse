@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.accounting
 
+import ish.common.types.AccountTransactionType
 import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.AccountTransaction
 import org.apache.cayenne.ObjectContext
@@ -54,7 +55,11 @@ class CreateAccountTransactions {
             at1.transactionDate = details.transactionDate
             at1.tableName = details.tableName
             at1.foreignRecordId = details.foreignRecordId
-            at1.amount = details.amount
+            if (details.tableName == AccountTransactionType.INVOICE_LINE && primaryAccount.expense) {
+                at1.amount = details.amount.negate()
+            } else {
+                at1.amount = details.amount
+            }
             at1.account = primaryAccount
             at1.description = details.description
 
@@ -65,7 +70,11 @@ class CreateAccountTransactions {
             at2.transactionDate = details.transactionDate
             at2.tableName = details.tableName
             at2.foreignRecordId = details.foreignRecordId
-            at2.amount = (isLeftSideGlAccount(primaryAccount) == isLeftSideGlAccount(secondaryAccount)) ? details.amount.negate() : details.amount
+            if (details.tableName == AccountTransactionType.INVOICE_LINE && primaryAccount.expense && secondaryAccount.asset) {
+                at2.amount = details.amount
+            } else {
+                at2.amount = (isLeftSideGlAccount(primaryAccount) == isLeftSideGlAccount(secondaryAccount)) ? details.amount.negate() : details.amount
+            }
             at2.account = secondaryAccount
             at2.description = details.description
 

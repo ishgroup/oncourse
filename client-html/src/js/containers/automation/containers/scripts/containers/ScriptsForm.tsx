@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import FileCopy from "@mui/icons-material/FileCopy";
@@ -161,7 +164,15 @@ const styles = (theme: AppTheme) =>
     },
   });
 
-const entityNameTypes = Object.keys(TriggerType).slice(0, 6).filter(t => t !== "Schedule");
+const entityNameTypes: TriggerType[] = [
+  'On demand',
+  'On create',
+  'On edit',
+  'On create and edit',
+  'On delete',
+  'Checklist task checked',
+  'Checklist completed'
+];
 
 const TriggerTypeItems = Object.keys(TriggerType).map(mapSelectItems);
 
@@ -201,6 +212,7 @@ interface Props {
   emailTemplates?: CatalogItemType[];
   timeZone?: string;
   syncErrors?: any;
+  checklists?: CatalogItemType[];
 }
 
 const getInitComponentBody = (componentName: ScriptComponentType): ScriptComponent | Promise<ScriptComponent> => {
@@ -246,7 +258,8 @@ const ScriptsForm = React.memo<Props>(props => {
     history,
     nextLocation,
     timeZone,
-    syncErrors
+    syncErrors,
+    checklists
   } = props;
 
   const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
@@ -394,7 +407,7 @@ const ScriptsForm = React.memo<Props>(props => {
     [values, values && values.trigger, values && values.trigger && values.trigger.type, isSystemTrigger, isScheduleTrigger],
   );
 
-  const enableEntityNameField = entityNameTypes.indexOf(values && values.trigger && values.trigger.type) > -1;
+  const enableEntityNameField = entityNameTypes.indexOf(values?.trigger?.type) > -1;
 
   const isTriggerExpanded = useMemo(() => triggerExpand
       || !values?.trigger?.type
@@ -452,7 +465,13 @@ const ScriptsForm = React.memo<Props>(props => {
     values && values.trigger && values.trigger.entityName,
     values && values.trigger && values.trigger.entityAttribute,
   ]);
-
+  
+  useEffect(() => {
+    if (!expandInfo && syncErrors && syncErrors["keyCode"] ) {
+      setExpandInfo(true);
+    }
+  }, [syncErrors]);
+  
   return (
     <>
       <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialogClose} onSave={onDialogSave} hasNameField />
@@ -581,16 +600,20 @@ const ScriptsForm = React.memo<Props>(props => {
                         expanded={isTriggerExpanded}
                         customHeading
                       >
-                        <TriggerCardContent
-                          classes={classes}
-                          dispatch={dispatch}
-                          TriggerTypeItems={TriggerTypeItems}
-                          ScheduleTypeItems={ScheduleTypeItems}
-                          enableEntityNameField={enableEntityNameField}
-                          values={values}
-                          isInternal={isInternal}
-                          timeZone={timeZone}
-                        />
+                        {Boolean(values?.trigger) && (
+                          <TriggerCardContent
+                            classes={classes}
+                            dispatch={dispatch}
+                            TriggerTypeItems={TriggerTypeItems}
+                            ScheduleTypeItems={ScheduleTypeItems}
+                            enableEntityNameField={enableEntityNameField}
+                            values={values}
+                            isInternal={isInternal}
+                            timeZone={timeZone}
+                            checklists={checklists}
+                            form={form}
+                          />
+                        )}
                       </ScriptCard>
                     </div>
 
@@ -698,8 +721,8 @@ const ScriptsForm = React.memo<Props>(props => {
                     </Grid>
                   </Grid>
                   <Accordion
-                    defaultExpanded={expandInfo}
-                    onChange={() => setExpandInfo(!expandInfo)}
+                    expanded={expandInfo}
+                    onChange={syncErrors && syncErrors["keyCode"] ? null : () => setExpandInfo(!expandInfo)}
                     classes={{ root: classes.technicalInfoRoot, expanded: classes.technicalInfoExpanded }}
                   >
                     <AccordionSummary classes={{ root: "p-0" }} expandIcon={<ExpandMoreIcon />}>

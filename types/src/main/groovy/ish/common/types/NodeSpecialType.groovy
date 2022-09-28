@@ -26,6 +26,7 @@ public enum NodeSpecialType implements DisplayableExtendedEnumeration<Integer> {
 	 *
 	 * There can only be one tag group called "subjects" and there must always be one.
 	 * It has special meaning in an onCourse website.
+	 * Tag is used to filter cources on the college website
 	 */
 	@API
 	SUBJECTS(1, "Subjects"),
@@ -57,7 +58,17 @@ public enum NodeSpecialType implements DisplayableExtendedEnumeration<Integer> {
 	 * Assessment methods are a tag group used to mark assessments.
 	 */
 	@API
-	ASSESSMENT_METHOD(5, "Assessment methods");
+	ASSESSMENT_METHOD(5, "Assessment methods"),
+
+	/**
+	 * Database value: 6
+	 *
+	 * There can only be one tag group called "terms" and there must always be one.
+	 * It has special meaning in an onCourse website.
+	 * Tag is used to filter classes on the college website
+	 */
+	@API
+	TERMS(6, "Terms")
 
 	private String displayName;
 	private int value;

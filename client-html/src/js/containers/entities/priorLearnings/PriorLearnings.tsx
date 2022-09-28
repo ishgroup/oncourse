@@ -18,23 +18,17 @@ import {
   setListEditRecord,
  } from "../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import {
-  createPriorLearning, deletePriorLearning, getPriorLearning, updatePriorLearning
-} from "./actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 
 const nameCondition = (val: PriorLearning) => val.title;
 
 interface PriorLearningsProps {
-  getPriorLearningRecord?: () => void;
   onInit?: () => void;
-  onSave?: (id: string, priorLearning: PriorLearning) => void;
   onCreate?: (priorLearning: PriorLearning) => void;
   getFilters?: () => void;
   clearListState?: () => void;
   checkPermissions?: () => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
-  onDelete?: (id: string) => void;
 }
 
 const Initial: PriorLearning = {};
@@ -66,13 +60,9 @@ const manualLink = getManualLink("delivery_rpl");
 
 const PriorLearnings: React.FC<PriorLearningsProps> = props => {
   const {
-    getPriorLearningRecord,
     onInit,
-    onSave,
-    onCreate,
     getFilters,
     clearListState,
-    onDelete,
     checkPermissions
   } = props;
 
@@ -96,12 +86,8 @@ const PriorLearnings: React.FC<PriorLearningsProps> = props => {
         hideTitle: true
       }}
       EditViewContent={PriorLearningEditView}
-      getEditRecord={getPriorLearningRecord}
       rootEntity="PriorLearning"
       onInit={onInit}
-      onSave={onSave}
-      onCreate={onCreate}
-      onDelete={onDelete}
       filterGroupsInitial={filterGroups}
       findRelated={findRelatedGroup}
       alwaysFullScreenCreateView
@@ -117,10 +103,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getFilters: () => dispatch(getFilters("PriorLearning")),
   clearListState: () => dispatch(clearListState()),
-  getPriorLearningRecord: (id: string) => dispatch(getPriorLearning(id)),
-  onSave: (id: string, priorLearning: PriorLearning) => dispatch(updatePriorLearning(id, priorLearning)),
-  onDelete: (id: string) => dispatch(deletePriorLearning(id)),
-  onCreate: (priorLearning: PriorLearning) => dispatch(createPriorLearning(priorLearning)),
   checkPermissions: () => dispatch(checkPermissions({ path: fundingUploadsPath, method: "GET" }))
 });
 

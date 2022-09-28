@@ -158,8 +158,6 @@ public final class KeystoreGenerator {
 			// save on disk on .PEM format
 			try (JcaPEMWriter pemWriter = new JcaPEMWriter(new OutputStreamWriter(new FileOutputStream(path)))) {
 				pemWriter.writeObject(ks.getKey(CertificateType.Issue + "-" + alias, keystorePassword.toCharArray()));
-				pemWriter.writeObject(ks.getKey(CertificateType.Intermidiate + "-" + alias, keystorePassword.toCharArray()));
-				pemWriter.writeObject(ks.getKey(CertificateType.ROOT + "-" + alias, keystorePassword.toCharArray()));
 
 				Arrays.stream(ks.getCertificateChain(CertificateType.Issue + "-" + alias)).forEach(certificate ->
 				{
@@ -190,28 +188,26 @@ public final class KeystoreGenerator {
 			PEMParser pemParser = new PEMParser(keyReader);
 			JcaPEMKeyConverter converter = new JcaPEMKeyConverter();
 
-			var issuePrivateKey = converter.getPrivateKey(((PEMKeyPair) pemParser.readObject()).getPrivateKeyInfo());
-			var intermidiatePrivateKey = converter.getPrivateKey(((PEMKeyPair) pemParser.readObject()).getPrivateKeyInfo());
-			var rootPrivateKey = converter.getPrivateKey(((PEMKeyPair) pemParser.readObject()).getPrivateKeyInfo());
+			var privateKey = converter.getPrivateKey(((PEMKeyPair) pemParser.readObject()).getPrivateKeyInfo());
 
 			try (FileInputStream fis = new FileInputStream(location)) {
 
 				final Collection collection = new CertificateFactory().engineGenerateCertificates(fis);
 				Certificate[] serverChain = (X509Certificate[]) collection.toArray(new X509Certificate[collection.size()]);
-				ks.setEntry(alias, new KeyStore.PrivateKeyEntry(issuePrivateKey, serverChain),
+				ks.setEntry(alias, new KeyStore.PrivateKeyEntry(privateKey, serverChain),
 						new KeyStore.PasswordProtection(password.toCharArray())
 				);
 				// store chain in KeyStore
 				ks.setEntry(CertificateType.ROOT + "-" + alias,
-						new KeyStore.PrivateKeyEntry(rootPrivateKey, new Certificate[]{serverChain[2]}),
+						new KeyStore.PrivateKeyEntry(privateKey, new Certificate[]{serverChain[2]}),
 						new KeyStore.PasswordProtection(password.toCharArray())
 				);
 				ks.setEntry(CertificateType.Intermidiate + "-" + alias,
-						new KeyStore.PrivateKeyEntry(intermidiatePrivateKey, new Certificate[]{serverChain[1]}),
+						new KeyStore.PrivateKeyEntry(privateKey, new Certificate[]{serverChain[1]}),
 						new KeyStore.PasswordProtection(password.toCharArray())
 				);
 				ks.setEntry(CertificateType.Issue + "-" + alias,
-						new KeyStore.PrivateKeyEntry(issuePrivateKey, new Certificate[]{serverChain[0]}),
+						new KeyStore.PrivateKeyEntry(privateKey, new Certificate[]{serverChain[0]}),
 						new KeyStore.PasswordProtection(password.toCharArray())
 				);
 			}
@@ -265,11 +261,11 @@ public final class KeystoreGenerator {
 
 		// store chain in KeyStore
 		ks.setEntry(CertificateType.ROOT + "-" + alias,
-				new KeyStore.PrivateKeyEntry(rootKeyPair.getPrivate(), new Certificate[]{serverChain[0]}),
+				new KeyStore.PrivateKeyEntry(issueKeyPair.getPrivate(), new Certificate[]{serverChain[0]}),
 				new KeyStore.PasswordProtection(password.toCharArray())
 		);
 		ks.setEntry(CertificateType.Intermidiate + "-" + alias,
-				new KeyStore.PrivateKeyEntry(intermidiateKeyPair.getPrivate(), new Certificate[]{serverChain[1]}),
+				new KeyStore.PrivateKeyEntry(issueKeyPair.getPrivate(), new Certificate[]{serverChain[1]}),
 				new KeyStore.PasswordProtection(password.toCharArray())
 		);
 		ks.setEntry(CertificateType.Issue + "-" + alias,

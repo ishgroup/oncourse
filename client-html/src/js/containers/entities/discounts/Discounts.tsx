@@ -20,10 +20,6 @@ import {
   setFilterGroups
 } from "../../../common/components/list-view/actions";
 import {
-  getDiscount,
-  updateDiscount,
-  createDiscount,
-  removeDiscount,
   getDiscountContactRelationTypes,
   getDiscountCosAccounts
 } from "./actions";
@@ -125,11 +121,7 @@ class Discounts extends React.PureComponent<any, any> {
 
   render() {
     const {
-      getDiscountRecord,
-      onDelete,
-      onInit,
-      onCreate,
-      onSave
+      onInit
     } = this.props;
 
     return (
@@ -146,12 +138,8 @@ class Discounts extends React.PureComponent<any, any> {
             hideTitle: true
           }}
           EditViewContent={DiscountEditView}
-          getEditRecord={getDiscountRecord}
           rootEntity="Discount"
           onInit={onInit}
-          onCreate={onCreate}
-          onDelete={onDelete}
-          onSave={onSave}
           findRelated={findRelatedGroup}
           filterGroupsInitial={filterGroups}
           noListTags
@@ -178,10 +166,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getEntityTags("Course"));
   },
   clearListState: () => dispatch(clearListState()),
-  getDiscountRecord: (id: string) => dispatch(getDiscount(id)),
-  onSave: (id: string, discount: Discount) => dispatch(updateDiscount(id, discount)),
-  onCreate: (discount: Discount) => dispatch(createDiscount(discount)),
-  onDelete: (id: string) => dispatch(removeDiscount(id)),
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
   checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" }))
 });

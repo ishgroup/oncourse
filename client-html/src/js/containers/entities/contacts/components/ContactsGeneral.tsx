@@ -7,7 +7,9 @@
  */
 
 import React, { useCallback, useEffect, useMemo } from "react";
-import { Contact, Student, Tag, Tutor } from "@api/model";
+import {
+  Contact, Student, Tag, Tutor
+} from "@api/model";
 import { change, Field, getFormInitialValues } from "redux-form";
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
@@ -224,22 +226,17 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     setIsTutor(isInitiallyTutor);
   }, [isInitiallyCompany, isInitiallyStudent, isInitiallyTutor]);
 
-  const onCalendarClick = () => {
-    if (isStudent) {
-      openInternalLink(
-        `/timetable?search=attendance.student.contact.id=${values.id}&title=Timetable for ${getContactFullName(
-          values
-        )}`
-      );
-    }
-    if (isTutor) {
-      openInternalLink(
-        `/timetable?search=tutor.contact.id=${values.id}&title=Timetable for ${getContactFullName(
-          values
-        )}`
-      );
-    }
-  };
+  const onStudentCalendarClick = () => openInternalLink(
+    `/timetable?search=attendance.student.contact.id=${values.id}&title=Timetable for ${getContactFullName(
+      values
+    )}`
+  );
+
+  const onTutorCalendarClick = () => openInternalLink(
+    `/timetable?search=tutor.contact.id=${values.id}&title=Timetable for ${getContactFullName(
+      values
+    )}`
+  );
 
   const filteredTags = useMemo(() => {
     if (Array.isArray(tags)) {
@@ -259,16 +256,6 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
 
     return [];
   }, [tags, isStudent, isTutor, isCompany]);
-  
-  const timetableTitle = useMemo(() => {
-    if (isStudent) {
-      return "Student timetable";
-    }
-    if (isTutor) {
-      return "Tutor timetable";
-    }
-    return "Timetable";
-  }, [isStudent, isTutor]);
 
   return (
     <div className="pt-3 pl-3 pr-3">
@@ -332,12 +319,22 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
           />
         </Grid>
       </Grid>
-      {(isStudent || isTutor) && (
+      {isStudent && (
         <>
-          <Divider className="mt-3 mb-2" />
+          <Divider className="mt-3 mb-2"/>
           <Grid container columnSpacing={3} className="pt-0-5 pb-0-5">
             <Grid item xs={12}>
-              <TimetableButton onClick={onCalendarClick} title={timetableTitle} />
+              <TimetableButton onClick={onStudentCalendarClick} title="Student timetable"/>
+            </Grid>
+          </Grid>
+        </>
+      )}
+      {isTutor && (
+        <>
+          <Divider className="mt-3 mb-2"/>
+          <Grid container columnSpacing={3} className="pt-0-5 pb-0-5">
+            <Grid item xs={12}>
+              <TimetableButton onClick={onTutorCalendarClick} title="Tutor timetable"/>
             </Grid>
           </Grid>
         </>
