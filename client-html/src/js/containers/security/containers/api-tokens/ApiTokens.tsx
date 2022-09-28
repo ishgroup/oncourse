@@ -17,7 +17,7 @@ import { AlertTitle } from "@mui/lab";
 import { connect } from "react-redux";
 import { User } from "@api/model";
 import { v4 as uuidv4 } from 'uuid';
-import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import RouteChangeConfirm from "../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import ApiTokensRenderer from "./components/ApiTokensRenderer";
 import { State } from "../../../../reducers/state";

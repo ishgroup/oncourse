@@ -18,6 +18,11 @@ import groovy.transform.TypeCheckingMode
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.HttpResponseException
+import ish.util.DateFormatter
+import org.apache.commons.lang3.time.DateUtils
+
+import java.text.SimpleDateFormat
+
 import static ish.common.types.CreditCardType.*
 import ish.math.Money
 import ish.oncourse.server.PreferenceController
@@ -75,6 +80,8 @@ class PaymentService {
                                         merchantReference  : merchantReference,
                                         language           : "en",
                                         methods            : ["card"],
+                                        "expires": new SimpleDateFormat(DateFormatter.FORMAT_DATE_RFC3339)
+                                                .format(DateUtils.addMinutes(new Date(), 5)),
                                         callbackUrls       : [
                                                 approved :  origin + '/checkout?paymentStatus=success',
                                                 declined :  origin + '/checkout?paymentStatus=fail',

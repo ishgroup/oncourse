@@ -12,7 +12,7 @@ import { Dispatch } from "redux";
 import { withRouter } from "react-router";
 import { getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-form";
 import { EmailTemplate } from "@api/model";
-import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import { usePrevious } from "../../../../common/utils/hooks";
 import { State } from "../../../../reducers/state";
 import {
