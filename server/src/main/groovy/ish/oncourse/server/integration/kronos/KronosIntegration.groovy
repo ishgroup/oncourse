@@ -41,7 +41,8 @@ class KronosIntegration implements PluginTrait {
     String authToken
 
     static Map kronosSkills = new HashMap()
-    static Map kronosCostCenters = new HashMap()
+    static Map kronosCostCentersIndex0 = new HashMap()
+    static Map kronosCostCentersIndex2 = new HashMap()
     static Map kronosEmployees = new HashMap()
     static Map kronosTimeZones = new HashMap()
     static List<KronosSchedule> kronosSchedules = new ArrayList<>()
@@ -102,17 +103,31 @@ class KronosIntegration implements PluginTrait {
     }
 
     /**
-     * Find Cost Center from stored kronosCostCenters, if not find -> reinit Map kronosCostCenters from Kronos and try to find one more time.
+     * Find Cost Center with tree_index:0 from stored kronosCostCenters0Index, if not find -> reinit Map kronosCostCentersIndex0 from Kronos and try to find one more time.
      */
-    protected findCostCenterId(String costCenterName) {
-        def costCenterId = kronosCostCenters.get(costCenterName)
-        if (!costCenterId) {
+    protected findCostCenterIndex0Id(String costCenterExternalIdOrName) {
+        def costCenter0Id = kronosCostCentersIndex0.get(costCenterExternalIdOrName)
+        if (!costCenter0Id) {
 //            Integration store data, but users can update or add data to Kronos -> that is why reinit data to get actual from Kronos and try to find one more time.
-            initCostCenters()
-            costCenterId = kronosCostCenters.get(costCenterName)
-            return costCenterId
+            initCostCenters0Index()
+            costCenter0Id = kronosCostCentersIndex0.get(costCenterExternalIdOrName)
+            return costCenter0Id
         }
-        return costCenterId
+        return costCenter0Id
+    }
+
+    /**
+     * Find Cost Center with tree_index:2 from stored kronosCostCenters0Index, if not find -> reinit Map kronosCostCentersIndex2 from Kronos and try to find one more time.
+     */
+    protected findCostCenterIndex2Id(String costCenterName) {
+        def costCenter2Id = kronosCostCentersIndex2.get(costCenterName)
+        if (!costCenter2Id) {
+//            Integration store data, but users can update or add data to Kronos -> that is why reinit data to get actual from Kronos and try to find one more time.
+            initCostCenters2Index()
+            costCenter2Id = kronosCostCentersIndex2.get(costCenterName)
+            return costCenter2Id
+        }
+        return costCenter2Id
     }
 
     /**
@@ -179,17 +194,36 @@ class KronosIntegration implements PluginTrait {
     }
 
     /**
-     * Get list of Cost Centers from Kronos and store Cost Center names and Cost Center ids in kronosCostCenters Map<name,id>.
+     * Get list of Cost Centers from Kronos with tree_index:0 and store Cost Center external_id or names (if external_id doesn't exist) and Cost Center ids in kronosCostCenters0Index Map<(external_id/name),id>.
      */
-    protected void initCostCenters() {
-        Map costCentersFromKronos = getCompanyCostCenters() as Map
-        List<Map> centers = costCentersFromKronos["cost_centers"] as List<Map>
+    protected void initCostCenters0Index() {
+        Map costCentersIndex0FromKronos = getCompanyCostCenters(0) as Map
+        List<Map> centers = costCentersIndex0FromKronos["cost_centers"] as List<Map>
         if (!centers){
-            throw new IllegalStateException("Kronos Company '${companyShortName}' doesn't have any Cost Centers")
+            throw new IllegalStateException("Kronos Company '${companyShortName}' doesn't have any Cost Centers with tree_index:0")
         }
-        kronosCostCenters = new HashMap()
+        kronosCostCentersIndex0 = new HashMap()
         for (Map center : centers) {
-            kronosCostCenters.put(center["name"], center["id"])
+            if (center["external_id"]) {
+                kronosCostCentersIndex0.put(center["external_id"], center["id"])
+            } else {
+                kronosCostCentersIndex0.put(center["name"], center["id"])
+            }
+        }
+    }
+
+    /**
+     * Get list of Cost Centers from Kronos with tree_index:2 and store Cost Center external_id or names (if external_id doesn't exist) and Cost Center ids in kronosCostCentersIndex2 Map<(external_id/name),id>.
+     */
+    protected void initCostCenters2Index() {
+        Map costCentersIndex2FromKronos = getCompanyCostCenters(2) as Map
+        List<Map> centers = costCentersIndex2FromKronos["cost_centers"] as List<Map>
+        if (!centers){
+            throw new IllegalStateException("Kronos Company '${companyShortName}' doesn't have any Cost Centers with tree_index:2")
+        }
+        kronosCostCentersIndex2 = new HashMap()
+        for (Map center : centers) {
+            kronosCostCentersIndex2.put(center["name"], center["id"])
         }
     }
 
@@ -324,20 +358,20 @@ class KronosIntegration implements PluginTrait {
      *
      * @return cost centers
      */
-    protected getCompanyCostCenters() {
+    protected getCompanyCostCenters(int treeIndex) {
         def client = new RESTClient(KRONOS_REST_URL)
         client.headers["Authentication"] = "Bearer ${authToken}"
         client.request(Method.GET) {
             uri.path = "/ta/rest/v2/companies/${CID}/config/cost-centers"
             uri.query = [
-                    tree_index: 0,
+                    tree_index: treeIndex,
             ]
 
             response.success = { resp, result ->
                 return result
             }
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to get Cost Centers (company cid) - (${CID}): ${resp.getStatusLine()}, ${result}")
+                throw new IllegalStateException("Failed to get Cost Centers (company cid) - (${CID}), (tree_index) - (${treeIndex}) : ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -405,7 +439,7 @@ class KronosIntegration implements PluginTrait {
         }
     }
 
-    protected getKronosShiftIdBySessionFields(scheduleId, accountId, shiftStart, shiftEnd, skillId, costCenter1Id, costCenter3Id, tutorAttendanceId) {
+    protected getKronosShiftIdBySessionFields(scheduleId, accountId, shiftStart, shiftEnd, skillId, costCenter0Id, costCenter2Id, tutorAttendanceId) {
         Map shiftsFromKronos = getShiftsByScheduleId(scheduleId) as Map
         List<Map> shifts = shiftsFromKronos["shifts"] as List<Map>
         if (!shifts){
@@ -415,18 +449,18 @@ class KronosIntegration implements PluginTrait {
         for (Map shift : shifts) {
             if (shift["account"]["account_id"] == accountId && shift["shift_start"] == shiftStart && shift["shift_end"] == shiftEnd && shift["skill"]["id"] == skillId) {
                 List<Map> costCenters = shift["cost_centers"] as List<Map>
-                def costCenter1 = costCenters.findAll { it["index"] == 1 && it["value"]["id"] == costCenter1Id }
-                def costCenter3 = costCenters.findAll { it["index"] == 3 && it["value"]["id"] == costCenter3Id}
-                if (costCenter1.size() == 1 && costCenter3.size() == 1) {
+                def costCenter0 = costCenters.findAll { it["index"] == 0 && it["value"]["id"] == costCenter0Id }
+                def costCenter2 = costCenters.findAll { it["index"] == 2 && it["value"]["id"] == costCenter2Id}
+                if (costCenter0.size() == 1 && costCenter2.size() == 1) {
                     shiftIds.add(shift["id"])
                 }
             }
         }
-        if (shiftIds.size() > 1) {
-            throw new IllegalStateException("Kronos Company '${companyShortName}' Schedule with id '${scheduleId}' have more then 1 shift with given fields. Custom Field won't add to TutorAttendance with id '${tutorAttendanceId}'")
+        if (shiftIds.size() < 1) {
+            throw new IllegalStateException("Kronos Company '${companyShortName}' Schedule with id '${scheduleId}' have no one shift with given fields. Custom Field won't add to TutorAttendance with id '${tutorAttendanceId}'")
         }
         if (shiftIds.size() > 1) {
-            throw new IllegalStateException("Kronos Company '${companyShortName}' Schedule with id '${scheduleId}' have no one shift with given fields. Custom Field won't add to TutorAttendance with id '${tutorAttendanceId}'")
+            throw new IllegalStateException("Kronos Company '${companyShortName}' Schedule with id '${scheduleId}' have more then 1 shift with given fields: (shift ids) - (${shiftIds}). Custom Field won't add to TutorAttendance with id '${tutorAttendanceId}'")
         }
         return shiftIds.get(0)
     }
@@ -457,7 +491,7 @@ class KronosIntegration implements PluginTrait {
      * Create a new shift in Kronos
      *
      */
-    def createNewShift(accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, scheduleId) {
+    def createNewShift(accountId, date, shiftStart, shiftEnd, costCenter0Id, costCenter2Id, skillId, scheduleId) {
         def client = new RESTClient(KRONOS_REST_URL)
         client.headers["Authentication"] = "Bearer ${authToken}"
         client.request(Method.POST, ContentType.JSON) {
@@ -474,15 +508,15 @@ class KronosIntegration implements PluginTrait {
                                     shift_end: shiftEnd,
                                     cost_centers: [
                                             [
-                                                    index: 1,
+                                                    index: 0,
                                                     value: [
-                                                            id: costCenter1Id,
+                                                            id: costCenter0Id,
                                                     ]
                                             ],
                                             [
-                                                    index: 3,
+                                                    index: 2,
                                                     value: [
-                                                            id: costCenter3Id,
+                                                            id: costCenter2Id,
                                                     ]
                                             ]
                                     ],
@@ -498,8 +532,8 @@ class KronosIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to create shift (company cid, scheduleId, accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId) - " +
-                        "(${CID}, ${scheduleId}, ${accountId}, ${date}, ${shiftStart}, ${shiftEnd}, ${costCenter1Id}, ${costCenter3Id}, ${skillId}): ${resp.getStatusLine()}, ${result}")
+                throw new IllegalStateException("Failed to create shift (company cid, scheduleId, accountId, date, shiftStart, shiftEnd, costCenter0Id, costCenter2Id, skillId) - " +
+                        "(${CID}, ${scheduleId}, ${accountId}, ${date}, ${shiftStart}, ${shiftEnd}, ${costCenter0Id}, ${costCenter2Id}, ${skillId}): ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -508,7 +542,7 @@ class KronosIntegration implements PluginTrait {
      * Update shift in Kronos
      *
      */
-    def updateShift(shiftId, accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, scheduleId) {
+    def updateShift(shiftId, accountId, date, shiftStart, shiftEnd, costCenter0Id, costCenter2Id, skillId, scheduleId) {
         def client = new RESTClient(KRONOS_REST_URL)
         client.headers["Authentication"] = "Bearer ${authToken}"
         client.request(Method.PUT, ContentType.JSON) {
@@ -526,15 +560,15 @@ class KronosIntegration implements PluginTrait {
                                     shift_end: shiftEnd,
                                     cost_centers: [
                                             [
-                                                    index: 1,
+                                                    index: 0,
                                                     value: [
-                                                            id: costCenter1Id,
+                                                            id: costCenter0Id,
                                                     ]
                                             ],
                                             [
-                                                    index: 3,
+                                                    index: 2,
                                                     value: [
-                                                            id: costCenter3Id,
+                                                            id: costCenter2Id,
                                                     ]
                                             ]
                                     ],
@@ -550,8 +584,8 @@ class KronosIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to update shift (company cid, scheduleId, shiftId, accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId) - " +
-                        "(${CID}, ${scheduleId}, ${shiftId}, ${accountId}, ${date}, ${shiftStart}, ${shiftEnd}, ${costCenter1Id}, ${costCenter3Id}, ${skillId}): ${resp.getStatusLine()}, ${result}")
+                throw new IllegalStateException("Failed to update shift (company cid, scheduleId, shiftId, accountId, date, shiftStart, shiftEnd, costCenter0Id, costCenter2Id, skillId) - " +
+                        "(${CID}, ${scheduleId}, ${shiftId}, ${accountId}, ${date}, ${shiftStart}, ${shiftEnd}, ${costCenter0Id}, ${costCenter2Id}, ${skillId}): ${resp.getStatusLine()}, ${result}")
             }
         }
     }
