@@ -406,6 +406,9 @@ const globalStyles = (theme: AppTheme) =>
         height: theme.spacing(4),
         padding: theme.spacing(1)
       },
+      ".lightGrayColor": {
+        color: alpha(theme.palette.text.primary, 0.2),
+      },
       ".noRecordsMessage": {
         color: theme.palette.grey[400],
         flex: 1,
