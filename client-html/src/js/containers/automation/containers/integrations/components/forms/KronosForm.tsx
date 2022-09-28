@@ -8,7 +8,7 @@ import { getFormValues, initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../../reducers/state";
 
 class KronosBaseForm extends React.Component<any, any> {
