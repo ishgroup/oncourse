@@ -29,8 +29,8 @@ import java.text.SimpleDateFormat
  * Start Time >> session tutor rostered start time
  * End Time >> session tutor rostered end time
  * Employee ID >> tutor.payrollRef
- * Cost Center 1 >> First 3 digits of courseClass.incomeAccount
- * Cost Center 3 >> courseClassTutor.definedTutorRole.description
+ * Cost Center 0 >> First 3 digits of courseClass.incomeAccount
+ * Cost Center 2 >> courseClassTutor.definedTutorRole.description
  * Skill >> courseClassTutor.definedTutorRole.name
  * Shift Note >> courseClasscode
  *
@@ -93,10 +93,10 @@ class KronosScriptClosure implements ScriptClosureTrait<KronosIntegration> {
 
         String scheduleId = integration.findScheduleId(scheduleName, scheduleSetting["id"], date)
 
-        String costCenter1 = firstThreeDigitsAccountCode(session.courseClass.incomeAccount.accountCode)
-        def costCenter1Id = integration.findCostCenterId(costCenter1)
-        if (!costCenter1Id) {
-            throw new IllegalArgumentException("Session with id '${session.id}': Cost Center with name '${costCenter1}' (onCourse session.courseClass.incomeAccount.accountCode) doesn't exist in Kronos. Session will not be added to Kronos.")
+        String costCenter0 = firstThreeDigitsAccountCode(session.courseClass.incomeAccount.accountCode)
+        def costCenter0Id = integration.findCostCenterIndex0Id(costCenter0)
+        if (!costCenter0Id) {
+            throw new IllegalArgumentException("Session with id '${session.id}': Cost Center with name '${costCenter0}' (onCourse session.courseClass.incomeAccount.accountCode) doesn't exist in Kronos (Cost Centres tree_index:0). Session will not be added to Kronos.")
         }
 
         //TODO how add to create shift Kronos API request
@@ -109,10 +109,10 @@ class KronosScriptClosure implements ScriptClosureTrait<KronosIntegration> {
 
         List resultShiftIds = new ArrayList()
         for (TutorAttendance tutorAttendance : validatedTutors) {
-            String costCenter3 = tutorAttendance.courseClassTutor.definedTutorRole.description
-            def costCenter3Id = integration.findCostCenterId(costCenter3)
-            if (!costCenter3Id) {
-                throw new IllegalArgumentException("Session's with id '${session.id}' TutorAttendance(sessionTutor) with id '${tutorAttendance.id}': Cost Center with name '${costCenter3}' (onCourse courseClassTutor.definedTutorRole.description) doesn't exist in Kronos. Tutor will not be added to Kronos.")
+            String costCenter2 = tutorAttendance.courseClassTutor.definedTutorRole.description
+            def costCenter2Id = integration.findCostCenterIndex2Id(costCenter2)
+            if (!costCenter2Id) {
+                throw new IllegalArgumentException("Session's with id '${session.id}' TutorAttendance(sessionTutor) with id '${tutorAttendance.id}': Cost Center with name '${costCenter2}' (onCourse courseClassTutor.definedTutorRole.description) doesn't exist in Kronos (Cost Centres tree_index:2). Tutor will not be added to Kronos.")
             }
             String skill = tutorAttendance.courseClassTutor.definedTutorRole.name
             def skillId = integration.findSkillId(skill)
@@ -131,14 +131,14 @@ class KronosScriptClosure implements ScriptClosureTrait<KronosIntegration> {
                 if (scheduleIdByCustomField != scheduleId) {
                     throw new IllegalArgumentException("Schedule id '${scheduleId}' different from custom field schedule id '${scheduleIdByCustomField}'. Shift will not be updated in Kronos. Additional information: start date '${shiftStart}' and end date '${shiftEnd}'.")
                 }
-                resultKronosShift = integration.updateShift(shiftIdByCustomField, accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, scheduleId)
+                resultKronosShift = integration.updateShift(shiftIdByCustomField, accountId, date, shiftStart, shiftEnd, costCenter0Id, costCenter2Id, skillId, scheduleId)
             }
             else {
-                resultKronosShift = integration.createNewShift(accountId, date, shiftStart, shiftEnd, costCenter1Id, costCenter3Id, skillId, scheduleId)
+                resultKronosShift = integration.createNewShift(accountId, date, shiftStart, shiftEnd, costCenter0Id, costCenter2Id, skillId, scheduleId)
             }
             if (resultKronosShift["created"]) {
                 logger.info("Kronos Shift was successfully created. Kronos Schedule id '${scheduleId}'")
-                def kronosShiftId = integration.getKronosShiftIdBySessionFields(scheduleId, accountId, shiftStart, shiftEnd, skillId, costCenter1Id, costCenter3Id, tutorAttendance.id)
+                def kronosShiftId = integration.getKronosShiftIdBySessionFields(scheduleId, accountId, shiftStart, shiftEnd, skillId, costCenter0Id, costCenter2Id, tutorAttendance.id)
                 saveCustomFields(tutorAttendance, kronosShiftId.toString(), scheduleId)
                 logger.info("TutorAttendance(sessionTutor) with Kronos Shift id '${kronosShiftId}' was saved custom fields. Kronos Schedule id '${scheduleId}'.")
                 resultShiftIds.add(kronosShiftId)
