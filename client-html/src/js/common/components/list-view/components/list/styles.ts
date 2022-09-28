@@ -54,6 +54,7 @@ export default (theme: AppTheme) => createStyles({
     lineHeight: "1.1rem"
   },
   headerCell: {
+    display: "flex",
     fontSize: '0.75rem',
     position: "relative",
     padding: theme.spacing(2, 1),
