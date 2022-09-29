@@ -50,6 +50,7 @@ const NestedEntity: React.FC<Props> = ({
   const saveAlert = () =>
   showConfirm(
     {
+      title: null,
       confirmMessage: preventAddMessage,
       cancelButtonText: "OK"
     },

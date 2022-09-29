@@ -22,7 +22,7 @@ import { FormModelSchema } from "../../../../model/preferences/FormModelShema";
 import { State } from "../../../../reducers/state";
 import { getManualLink } from "../../../../common/utils/getManualLink";
 import { PREFERENCES_AUDITS_LINK } from "../../../preferences/constants";
-import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("users_Users");

@@ -1,3 +1,11 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 import React, { useCallback } from "react";
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
@@ -19,24 +27,27 @@ import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { createRoot } from 'react-dom/client';
 import CodeIcon from '@mui/icons-material/Code';
-import { removeContentMarker } from "./utils";
 
 const SourceEditingSwitch = () => (
   <div className="ck_source_edit_custom">
     <CodeIcon className="ck_code_icon_custom" />
-    <span className="ck ck-tooltip ck-tooltip_s"><span className="ck ck-tooltip__text">Edit source</span></span>
   </div>
 );
 
 function customizeSourceEditing( editor ) {
+  let ckRoot;
+
   editor.plugins.get("SourceEditing").on('change:isSourceEditingMode', () => {
     const sourceEdit = document.querySelector('.ck-source-editing-button');
 
-    const root = createRoot(sourceEdit);
-
-    root.render(
-      <SourceEditingSwitch />,
-    );
+    if (sourceEdit) {
+      if (!ckRoot) {
+        ckRoot = createRoot(sourceEdit);
+      }
+      ckRoot.render(
+        <SourceEditingSwitch/>,
+      );
+    }
   });
 }
 
@@ -102,8 +113,13 @@ const WysiwygEditor: React.FC<Props> = ({
   value,
   onChange
 }) => {
-  const onReady = () => {
-    const sourceEdit = document.querySelector('.ck-source-editing-button');
+
+  const onReady = (editor) => {
+    console.log(editor);
+
+    const sourceEdit = document.querySelector<any>('.ck-source-editing-button');
+    sourceEdit.dataset.ckeTooltipText = 'Edit source';
+    sourceEdit.dataset.ckeTooltipPosition = 's';
 
     const root = createRoot(sourceEdit);
 
@@ -112,13 +128,14 @@ const WysiwygEditor: React.FC<Props> = ({
     );
   };
 
+
   const onChangeHandler = useCallback((e, editor) => onChange(editor.getData()), []);
 
   return (
     <CKEditor
       editor={ClassicEditor}
       config={config}
-      data={removeContentMarker(value)}
+      data={value}
       onChange={onChangeHandler}
       onReady={onReady}
     />

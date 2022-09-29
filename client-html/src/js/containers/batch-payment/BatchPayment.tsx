@@ -437,7 +437,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
       changed.reduce((p, i) => (i.checked ? decimalPlus(p, i.amountOwing) : p), 0) ));
   }, [values]);
 
-  const checkedContacts = values.contacts.filter(c => c.checked);
+  const checkedContacts = values.contacts.filter(c => c.checked && !c.processed);
 
   const total = checkedContacts.reduce(
     (p, c) => decimalPlus(p, c.items.reduce((p, c) => decimalPlus(p, c.checked ? c.amountOwing : 0), 0) ),
@@ -469,7 +469,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
                 instantFetchErrorHandler(dispatch, res, `Payment for ${c.name} failed`);
                 dispatch(change(FORM, `contacts[${c.index}]`, {
                   ...c, processing: false, processed: true, error: true,
-                } ));
+                }));
                 setTimeout(resolve, 200);
               });
           }, 300);
@@ -477,6 +477,8 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
           await a;
           await b();
         }, Promise.resolve());
+
+        setProcessing(false);
       });
   };
 
@@ -486,7 +488,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
       <AppBarContainer
         disabledScrolling
         disableInteraction
-        disabled={processing || contactsLoading}
+        disabled={processing || contactsLoading || checkedContacts.length === 0}
         title={(
           <div>
             Batch payment in (showing

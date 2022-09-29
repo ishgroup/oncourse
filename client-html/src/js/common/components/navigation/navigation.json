@@ -3,7 +3,7 @@
     {
       "title": "Scheduling",
       "key": "scheduling",
-      "description": "Make scheduling courses and events a breeze with onCourse scheduling. Whether you offer classroom, self-paced or virtual courses, onCourse has the power to manage even the most complex scheduling requirements. Whether you offer classroom, self-paced or virtual courses, onCourse has the power to manage even the most complex scheduling requirements.<ul><li>Collision Detection</li><li>Course Duplication</li><li>Availability Rules</li><li>Capacity Management</li><li>Worldwide Time-zone Support</li><li>Automation</li><li>Timetable Views</li><ul>",
+      "description": "Make scheduling courses and events a breeze with onCourse scheduling. Whether you offer classroom, self-paced or virtual courses, onCourse has the power to manage even the most complex scheduling requirements.<ul><li>Collision Detection</li><li>Course Duplication</li><li>Availability Rules</li><li>Capacity Management</li><li>Worldwide Time-zone Support</li><li>Automation</li><li>Timetable Views</li><ul>",
       "features": [
         "classes",
         "holidays",
@@ -546,7 +546,7 @@
     {
       "title": "Security",
       "key": "security",
-      "link": "/security",
+      "link": "/security/settings",
       "description": "Create and manage your basic security settings, your onCourse users, user roles and create and manage API tokens."
     },
     {
@@ -601,13 +601,13 @@
       "title": "Traineeship Courses",
       "key": "traineeshipCourses",
       "link": "/course?filter=@Traineeships,@Enabled,@Enabled_and_visible_online",
-      "description": "Shows all the courses set as a Traineeship in you system."
+      "description": "Shows all the courses set as a Traineeship in your system."
     },
     {
       "title": "Traineeships",
       "key": "traineeships",
       "link": "/class?filter=@Traineeships,@Current_classes,@Future_classes,@Self_paced_classes",
-      "description": "Shows all the Trainesship classes in your system."
+      "description": "Shows all the Traineeship classes in your system."
     },
     {
       "title": "Transactions",
@@ -649,7 +649,7 @@
       "title": "Waiting lists",
       "key": "waitingLists",
       "link": "/waitingList",
-      "description": "A collection of the waiting list records created by potential students either from your websute, or added manually by a user into onCourse."
+      "description": "A collection of the waiting list records created by potential students either from your website, or added manually by a user into onCourse."
     },
     {
       "title": "Website setup",

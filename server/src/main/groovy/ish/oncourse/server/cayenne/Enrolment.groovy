@@ -224,6 +224,15 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 		return null
 	}
 
+	/**
+	 * This is the percentage of the class time of the corresponding course class that the student attended during the whole sesssions time
+	 * @return attendace per cent as a number from 0 to 100
+	 */
+	@API
+	Integer getClassAttendancePercent(){
+		courseClass.getAttendancePercentForStudent(student)
+	}
+
 	@Override
 	void setPersistenceState(final int persistenceState) {
 		logger.debug("changing persistence state from: {} to: {}",

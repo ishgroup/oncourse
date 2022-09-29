@@ -102,17 +102,16 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
           noPaper
         />
 
-        <div className="mt-1 centeredFlex">
-          <FormField
-            type="tags"
-            name={`${itemPath}.tags`}
-            tags={tags}
-            rerenderOnEveryChange
-            disabled={readOnly}
-          />
-        </div>
-
-        <Grid container columnSpacing={3} className="mt-1 centeredFlex">
+        <Grid container columnSpacing={3} rowSpacing={2} className="mt-1 centeredFlex">
+          <Grid item xs={12}>
+            <FormField
+              type="tags"
+              name={`${itemPath}.tags`}
+              tags={tags}
+              rerenderOnEveryChange
+              disabled={readOnly}
+            />
+          </Grid>
           <Grid item xs={12}>
             <FormField
               type="text"
