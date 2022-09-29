@@ -5,7 +5,7 @@ records = query {
 
 records.each { r ->
     kronos {
-        scheduleName "Example Weekly Test Schedule"
+        scheduleName scheduleNameValue
         session r
     }
 }
