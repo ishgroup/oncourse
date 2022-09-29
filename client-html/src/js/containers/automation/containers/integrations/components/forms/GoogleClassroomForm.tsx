@@ -12,7 +12,7 @@ import {
 import Button from "@mui/material/Button";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../../common/components/form/Uneditable";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
 import { State } from "../../../../../../reducers/state";
 

@@ -146,9 +146,9 @@ const Sales: React.FC<SalesProps> = props => {
       EditViewContent={SalesEditView}
       CogwheelAdornment={SalesCogwheel}
       rootEntity="ProductItem"
-      onInit={onInit}
       findRelated={findRelatedGroup}
       filterGroupsInitial={filterGroups}
+      createButtonDisabled
       defaultDeleteDisabled
       noListTags
     />
@@ -156,7 +156,6 @@ const Sales: React.FC<SalesProps> = props => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  onInit: () => {},
   getAccounts: () => getPlainAccounts(dispatch),
   getTaxes: () => dispatch(getPlainTaxes()),
   getTags: () => {

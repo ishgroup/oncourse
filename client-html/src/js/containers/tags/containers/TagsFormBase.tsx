@@ -8,7 +8,7 @@
 
 import React from "react";
 import {
-  arrayInsert, arrayPush,
+  arrayPush,
   arrayRemove,
   change,
   getFormSyncErrors,
@@ -26,7 +26,7 @@ import { getDeepValue } from "../../../common/utils/common";
 import { createTag, deleteTag, updateTag } from "../actions";
 import { showConfirm } from "../../../common/actions";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
-import { onSubmitFail } from "../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../common/utils/highlightFormErrors";
 import { getPluralSuffix } from "../../../common/utils/strings";
 import { AppTheme } from "../../../model/common/Theme";
 import { FormTag } from "../../../model/tags";
