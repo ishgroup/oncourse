@@ -888,6 +888,10 @@
   short: Requires active Kronos integration. When a Session are created or edited in onCourse, Shifts (as TutorAttendances) will be created or edited in a Kronos Schedule.
   category: Integrations
   tag:
+  options:
+    - name: scheduleNameValue
+      value: "Ish Schedule"
+      dataType: TEXT
 
 - name: Kronos for list of Sessions
   keyCode: ish.script.kronosListOfShifts
@@ -898,3 +902,7 @@
   short: Requires active Kronos integration. Can find specific list of onCourse Sessions and then create or edit Shifts in Kronos corresponding to its.
   category: Integrations
   tag:
+  options:
+    - name: scheduleNameValue
+      value: "Ish Schedule"
+      dataType: TEXT

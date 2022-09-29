@@ -1,4 +1,4 @@
 kronos {
-    scheduleName "Example Weekly Test Schedule"
+    scheduleName scheduleNameValue
     session record
 }
