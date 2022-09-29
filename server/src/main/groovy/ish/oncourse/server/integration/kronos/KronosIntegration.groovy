@@ -14,8 +14,10 @@ import groovyx.net.http.Method
 import groovyx.net.http.RESTClient
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
+import ish.util.LocalDateUtils
 
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 
 @CompileDynamic
 @Plugin(type = 19)
@@ -149,11 +151,11 @@ class KronosIntegration implements PluginTrait {
      */
     protected findScheduleId(String scheduleName, scheduleSettingId, String sessionDate) {
         Date date = dateFormat.parse(sessionDate)
-        def schedules = kronosSchedules.findAll { it -> it.scheduleStart <= date && it.scheduleEnd > date}
+        def schedules = kronosSchedules.findAll { it.name == scheduleName && it.scheduleStart <= date && it.scheduleEnd > date}
         if (schedules.size() < 1) {
 //            Integration store data, but users can update or add data to Kronos -> that is why reinit data to get actual from Kronos and try to find one more time.
-            initKronosSchedules(scheduleName, scheduleSettingId)
-            schedules = kronosSchedules.findAll { it -> it.scheduleStart <= date && it.scheduleEnd > date}
+            initKronosSchedules(scheduleName, scheduleSettingId, date)
+            schedules = kronosSchedules.findAll {it.name == scheduleName && it.scheduleStart <= date && it.scheduleEnd > date}
             if (schedules.size() < 1) {
                 throw new IllegalStateException("Kronos Company '${companyShortName}' have no Schedule with name '${scheduleName}' and settings_id '${scheduleSettingId}', which contains the date '${sessionDate}'.")
             }
@@ -245,15 +247,18 @@ class KronosIntegration implements PluginTrait {
     /**
      * Get list of Schedules by Schedule Name from Kronos and store Shedule name, id, schedule_start and schedule_end in kronosSchedules List<KronosSchedule>.
      */
-    protected void initKronosSchedules(String scheduleName, scheduleSettingId) {
-        Map resultFromKronos = getCompanySchedules() as Map
+    protected void initKronosSchedules(String scheduleName, scheduleSettingId, Date date) {
+//        A Schedule GET request without 'from' and 'to' return Schedules only for current month. If today is 2022-09-29 the request won't return Schedules for with date 2022-10-03 - 2022-10-09. Date range cannot be more than '31' days. That is why I added and substracted 15 days to get Schedules from this date range.
+        String dateFrom = addDaysToDate(date, -15)
+        String dateTo = addDaysToDate(date, 15)
+        Map resultFromKronos = getCompanySchedules(dateFrom, dateTo) as Map
         List<Map> schedulesFromKronos = resultFromKronos["schedules"] as List<Map>
         if (!schedulesFromKronos) {
-            throw new IllegalStateException("Kronos Company '${companyShortName}' doesn't have any Schedules.")
+            throw new IllegalStateException("Kronos Company '${companyShortName}' doesn't have any Schedules between ${dateFrom} and ${dateTo}.")
         }
         List<Map> schedulesByNameAndSettindId = schedulesFromKronos.findAll { it["name"] == scheduleName && it["settings_id"] == scheduleSettingId }
         if (schedulesByNameAndSettindId.size() == 0) {
-            throw new IllegalStateException("Kronos Company '${companyShortName}' doesn't have Schedules with name '${scheduleName}' and settings_id '${scheduleSettingId}'.")
+            throw new IllegalStateException("Kronos Company '${companyShortName}' doesn't have Schedules with name '${scheduleName}' and settings_id '${scheduleSettingId}' between ${dateFrom} and ${dateTo}.")
         }
         kronosSchedules = new ArrayList()
         for (Map schedule : schedulesByNameAndSettindId) {
@@ -382,17 +387,21 @@ class KronosIntegration implements PluginTrait {
      *
      * @return schedules
      */
-    protected getCompanySchedules() {
+    protected getCompanySchedules(String from, String to) {
         def client = new RESTClient(KRONOS_REST_URL)
         client.headers["Authentication"] = "Bearer ${authToken}"
         client.request(Method.GET) {
             uri.path = "/ta/rest/v2/companies/${CID}/schedules"
+            uri.query = [
+                    from: from,
+                    to: to,
+            ]
 
             response.success = { resp, result ->
                 return result
             }
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to get Schedules (company cid) - (${CID}): ${resp.getStatusLine()}, ${result}")
+                throw new IllegalStateException("Failed to get Schedules (company cid, from, to) - (${CID}, ${from}, ${to}): ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -588,6 +597,12 @@ class KronosIntegration implements PluginTrait {
                         "(${CID}, ${scheduleId}, ${shiftId}, ${accountId}, ${date}, ${shiftStart}, ${shiftEnd}, ${costCenter0Id}, ${costCenter2Id}, ${skillId}): ${resp.getStatusLine()}, ${result}")
             }
         }
+    }
+
+    private String addDaysToDate(Date date, long daysToAdd) {
+        LocalDate localDate = LocalDateUtils.dateToValue(date)
+        LocalDate dateWithAddedDays = localDate.plusDays(daysToAdd)
+        return LocalDateUtils.valueToString(dateWithAddedDays)
     }
 
     private static class KronosSchedule {
