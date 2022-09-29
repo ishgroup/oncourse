@@ -142,7 +142,7 @@ export type AttandanceChangeType =
   | "allTrainingPlans"
   | "bySession";
 
-export type AttendanceGridType =  "Student" | "Training plan";
+export type AttendanceGridType = "Student" | "Training plan";
 
 export const tutorStatusRoles: TutorAttendanceType[] = [
   "Confirmed for payroll",

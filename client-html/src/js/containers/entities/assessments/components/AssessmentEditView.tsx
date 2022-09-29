@@ -6,7 +6,7 @@
 import React from "react";
 import { Assessment } from "@api/model";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
+import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
 import AssessmentGeneralTab from "./AssessmentGeneralTab";
 import AssessmentDocuments from "./AssessmentDocuments";
 import { EditViewProps } from "../../../../model/common/ListView";

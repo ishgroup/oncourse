@@ -11,6 +11,9 @@ properties:
   status:
     $ref: '../enum/TagStatus.yaml'
     required: true
+  type:
+    $ref: '../enum/TagType.yaml'
+    required: true
   system:
     type: boolean
     required: true

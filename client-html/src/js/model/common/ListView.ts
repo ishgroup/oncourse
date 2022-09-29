@@ -1,10 +1,13 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { ReactElement } from "react";
-import { InjectedFormProps } from "redux-form";
+import { FormErrors, InjectedFormProps } from "redux-form";
 import { Dispatch } from "redux";
 import {
   DataResponse, EmailTemplate, Filter, Script, SearchQuery
@@ -17,7 +20,7 @@ import { EntityName } from "../entities/common";
 
 export interface CoreFilter extends Filter {
   active?: boolean;
-  customLabel?: React.ReactNode;
+  customLabel?: () => React.ReactNode;
 }
 
 export interface FilterGroup {
@@ -54,6 +57,8 @@ export interface CogwhelAdornmentProps {
 
 export interface ListState {
   menuTags: MenuTag[];
+  checkedChecklists?: MenuTag[];
+  uncheckedChecklists?: MenuTag[];
   menuTagsLoaded?: boolean;
   filterGroups: FilterGroup[];
   filterGroupsLoaded?: boolean;
@@ -69,7 +74,6 @@ export interface ListState {
   searchQuery?: SearchQuery;
   searchError?: boolean;
   userAQLSearch?: string;
-  nestedEditRecords?: any[];
   savingFilter?: SavingFilterState;
   scripts?: Script[];
   emailTemplates?: EmailTemplate[];
@@ -93,7 +97,6 @@ export interface EditViewContainerProps<E = any> extends Partial<InjectedFormPro
   dispatch?: Dispatch<any>;
   rootEntity: EntityName;
   showConfirm: ShowConfirmCaller;
-  openNestedEditView: any;
   manualLink?: any;
   isNested?: boolean;
   match?: any;
@@ -115,12 +118,11 @@ export interface EditViewProps<V = any> extends Partial<InjectedFormProps<V>> {
   dispatch: any;
   updateDeleteCondition: AnyArgFunction;
   showConfirm: ShowConfirmCaller;
-  openNestedEditView: AnyArgFunction;
   twoColumn?: boolean;
   isNested?: boolean;
   nestedIndex?: number;
   onCloseClick?: AnyArgFunction;
-  syncErrors?: any;
+  syncErrors?: FormErrors;
   tabIndex?: number;
   expanded?: number[];
   setExpanded?: (arg: number[] | ((arg: number[]) => void)) => void;

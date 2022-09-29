@@ -34,6 +34,7 @@ import FullScreenStickyHeader
 import { useAppSelector } from "../../../../common/utils/hooks";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 interface VoucherProductGeneralProps extends EditViewProps<VoucherProduct> {
   accounts?: Account[];
@@ -264,11 +265,20 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         />
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid item xs={twoColumn ? 8 : 12}>
         <FormField
           type="tags"
           name="tags"
           tags={tags}
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <EntityChecklists
+          entity="VoucherProduct"
+          form={form}
+          entityId={values.id}
+          checked={values.tags}
         />
       </Grid>
         

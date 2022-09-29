@@ -9,9 +9,6 @@ import { Dispatch } from "redux";
 import { initialize } from "redux-form";
 import { Module } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
-import {
-  createModule, getModule, removeModule, updateModule
-} from "./actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import ModulesEditView from "./components/ModulesEditView";
 import {
@@ -80,58 +77,28 @@ class Modules extends React.Component<any, any> {
     return false;
   }
 
-  onSave = (id: string, item: Module) => {
-    if (item.isOffered === undefined) {
-      item.isOffered = false;
-    }
-
-    if (item.type === undefined) {
-      item.type = "UNIT OF COMPETENCY";
-    }
-
-    this.props.onSave(id, item);
-  };
-
-  onCreate = (item: Module) => {
-    if (item.isOffered === undefined) {
-      item.isOffered = false;
-    }
-
-    if (item.type === undefined) {
-      item.type = "UNIT OF COMPETENCY";
-    }
-
-    this.props.onCreate(item);
-  };
-
   render() {
     const {
-      getModuleRecord, onDelete, onInit
+      onInit
     } = this.props;
 
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "title",
-            secondaryColumn: "nationalCode"
-          }}
-          editViewProps={{
-            nameCondition,
-            manualLink,
-          }}
-          EditViewContent={ModulesEditView}
-          getEditRecord={getModuleRecord}
-          rootEntity="Module"
-          onInit={onInit}
-          onCreate={this.onCreate}
-          onDelete={onDelete}
-          onSave={this.onSave}
-          findRelated={findRelatedGroup}
-          filterGroupsInitial={filterGroups}
-          noListTags
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "title",
+          secondaryColumn: "nationalCode"
+        }}
+        editViewProps={{
+          nameCondition,
+          manualLink,
+        }}
+        EditViewContent={ModulesEditView}
+        rootEntity="Module"
+        onInit={onInit}
+        findRelated={findRelatedGroup}
+        filterGroupsInitial={filterGroups}
+        noListTags
+      />
     );
   }
 }
@@ -144,11 +111,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getFilters: () => {
     dispatch(getFilters("Module"));
   },
-  clearListState: () => dispatch(clearListState()),
-  getModuleRecord: (id: string) => dispatch(getModule(id)),
-  onSave: (id: string, module: Module) => dispatch(updateModule(id, module)),
-  onCreate: (module: Module) => dispatch(createModule(module)),
-  onDelete: (id: string) => dispatch(removeModule(id))
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Modules);

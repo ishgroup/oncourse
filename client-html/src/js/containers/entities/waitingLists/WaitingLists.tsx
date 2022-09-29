@@ -13,15 +13,8 @@ import { Dispatch } from "redux";
 import { WaitingList } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
 import WaitingListEditView from "./components/WaitingListEditView";
-import {
-  clearListState,
-  getFilters,
-  setListEditRecord,
- } from "../../../common/components/list-view/actions";
+import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { getEntityTags, getListTags } from "../../tags/actions";
-import {
-  createWaitingList, getWaitingList, removeWaitingList, updateWaitingList
-} from "./actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { State } from "../../../reducers/state";
 import WaitingListCogWheel from "./components/WaitingListCogWheel";
@@ -61,7 +54,7 @@ class WaitingLists extends React.Component<any, any> {
 
   render() {
     const {
-      getWaitingListRecord, onCreate, onDelete, onSave, updateTableModel, onInit
+      updateTableModel, onInit
     } = this.props;
 
     return (
@@ -78,12 +71,8 @@ class WaitingLists extends React.Component<any, any> {
           }}
           updateTableModel={updateTableModel}
           EditViewContent={WaitingListEditView}
-          getEditRecord={getWaitingListRecord}
           rootEntity="WaitingList"
           onInit={onInit}
-          onCreate={onCreate}
-          onDelete={onDelete}
-          onSave={onSave}
           findRelated={findRelatedGroup}
           CogwheelAdornment={WaitingListCogWheel}
         />
@@ -110,11 +99,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getFilters: () => dispatch(getFilters("WaitingList")),
   getTags: () => dispatch(getListTags("WaitingList")),
-  clearListState: () => dispatch(clearListState()),
-  getWaitingListRecord: (id: string) => dispatch(getWaitingList(id)),
-  onSave: (id: string, waitingList: WaitingList) => dispatch(updateWaitingList(id, waitingList)),
-  onCreate: (waitingList: WaitingList) => dispatch(createWaitingList(waitingList)),
-  onDelete: (id: string) => dispatch(removeWaitingList(id))
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(WaitingLists);

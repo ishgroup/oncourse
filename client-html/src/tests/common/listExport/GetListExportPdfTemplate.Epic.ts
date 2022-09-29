@@ -1,5 +1,5 @@
 
-import { ActionsObservable } from "redux-observable";
+import { from, filter, toArray } from "rxjs";
 import { store, mockedAPI } from "../../TestEntry";
 import { FETCH_FINISH, FETCH_START } from "../../../js/common/actions";
 import {
@@ -8,14 +8,13 @@ import {
   GET_PDF_REPORTS_FULFILLED
 } from "../../../js/common/components/list-view/components/share/actions";
 import { EpicGetShareList } from "../../../js/common/components/list-view/components/share/epics/EpicGetShareList";
-import { filter, toArray } from "rxjs/operators";
 
 export const GetListExportPdfTemplate = (entityName: string) => {
   // Expected response
   const data = mockedAPI.db.getPdfTemplate(entityName);
 
   // Redux action to trigger epic
-  const action$ = ActionsObservable.of({ type: GET_PDF_REPORTS, payload: entityName });
+  const action$ = from([{ type: GET_PDF_REPORTS, payload: entityName }]);
 
   // Initializing epic instance
   const epic$ = EpicGetShareList(action$, store, {});

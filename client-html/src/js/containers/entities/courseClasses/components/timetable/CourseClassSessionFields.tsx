@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, {
@@ -37,7 +40,6 @@ interface Props {
   dispatch: Dispatch;
   tutors: CourseClassTutorExtended[];
   session?: TimetableSession;
-  sites?: Site[];
   triggerDebounseUpdate?: any;
   warnings: SessionWarning[];
   budget: ClassCostExtended[];
@@ -45,9 +47,9 @@ interface Props {
 }
 
 const roomLabel = room => {
-  if (room["site.name"]) return `${room["site.name"]} - ${room.name}`;
+  if (room && room["site.name"]) return `${room["site.name"]} - ${room.name}`;
 
-  return room.name;
+  return room?.name;
 };
 
 const validateDuration = value => (value < 5 || value > 1440
@@ -195,6 +197,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
                 : `Virtual start (${Intl.DateTimeFormat().resolvedOptions().timeZone})`)
               : "Start"}`}
           onChange={onStartDateChange}
+          debounced={false}
           timezone={session.siteTimezone}
           className={warningTypes.Session.length || warningTypes.UnavailableRule.length ? "errorColor" : undefined}
           persistValue
@@ -222,6 +225,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
           name={`sessions[${session.index}].end`}
           timezone={session.siteTimezone}
           onChange={onEndDateChange}
+          debounced={false}
           type="time"
           label="End"
         />
@@ -297,7 +301,6 @@ const CourseClassSessionFields: React.FC<Props> = ({
 };
 
 const mapStateToProps = (state: State, ownProps: Props) => ({
-  sites: state.plainSearchRecords["Site"].items,
   session: formValueSelector(ownProps.form)(state, `sessions[${ownProps.index}]`) || {},
   timezones: state.timezones,
 });

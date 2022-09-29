@@ -79,7 +79,7 @@ class ItemMeasurer extends React.Component<any, any> {
     }
   };
 
-  _onResize = debounce(entries => {
+  _onResize = entries => {
     const _this = this;
     window.requestAnimationFrame(() => {
       if (!Array.isArray(entries) || !entries.length) {
@@ -87,7 +87,7 @@ class ItemMeasurer extends React.Component<any, any> {
       }
       _this._measureItem();
     });
-  }, 500);
+  };
 }
 
 class DynamicSizeList extends React.Component<any> {

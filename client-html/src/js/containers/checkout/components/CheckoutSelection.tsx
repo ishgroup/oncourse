@@ -1,5 +1,5 @@
 /*
- * Copyright ish group pty ltd 2021.
+ * Copyright ish group pty ltd 2022.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
@@ -38,8 +38,8 @@ import {
   getContactsTaxTypes,
   getContactTags
 } from "../../entities/contacts/actions";
-import { getListNestedEditRecord, setListEditRecord } from "../../../common/components/list-view/actions";
-import LoadingIndicator from "../../../common/components/layout/LoadingIndicator";
+import { setListEditRecord } from "../../../common/components/list-view/actions";
+import LoadingIndicator from "../../../common/components/progress/LoadingIndicator";
 import { EditViewProps } from "../../../model/common/ListView";
 import { NoArgFunction } from "../../../model/common/CommonFunctions";
 import { FETCH_FINISH, openDrawer, showConfirm } from "../../../common/actions";
@@ -163,7 +163,6 @@ interface Props extends Partial<EditViewProps> {
   openSidebarDrawer?: () => void;
   updateColumnsWidth?: (columnsWidth: ColumnWidth) => void;
   classes?: any;
-  openNestedEditView?: any;
   value?: any;
   contactEditRecord?: any;
   showConfirm?: ShowConfirmCaller;
@@ -254,7 +253,6 @@ const parseContactSearch = (search: string) => {
 const CheckoutSelectionForm = React.memo<Props>(props => {
   const {
     openSidebarDrawer,
-    openNestedEditView,
     form,
     dispatch,
     reset,
@@ -954,8 +952,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
       class: { ...selectedClass }
     };
 
-    debugger;
-
     if (selectedItems.some(i => i.id === updatedCourse.id)) {
       updateSelectedClass(updatedCourse);
     } else {
@@ -1210,7 +1206,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                 creatingNew={createNewContact}
                 showConfirm={showConfirm}
                 onSave={onContactSave}
-                openNestedEditView={openNestedEditView}
                 onClose={onClose}
               />
             )}
@@ -1310,8 +1305,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getContactsRelationTypes: () => dispatch(getContactsRelationTypes()),
   getContactsConcessionTypes: () => dispatch(getContactsConcessionTypes()),
   getTaxTypes: () => dispatch(getContactsTaxTypes()),
-  openNestedEditView: (entity: string, id: number, threeColumn: boolean) =>
-    dispatch(getListNestedEditRecord(entity, id, null, threeColumn)),
   showConfirm: props =>
     dispatch(showConfirm(props)),
   getCourses: (offset?: number) => dispatch(

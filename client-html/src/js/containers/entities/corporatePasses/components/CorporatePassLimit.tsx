@@ -169,7 +169,7 @@ class CorporatePassLimit extends Component<Props, any> {
 const mapStateToProps = (state: State) => ({
   sales: state.sales.items,
   salesError: state.sales.error,
-  courseClassItems: state.plainSearchRecords["CourseClass"].items.map(mapPlainDiscountClasses),
+  courseClassItems: state.plainSearchRecords["CourseClass"].items,
   pending: state.plainSearchRecords["CourseClass"].loading,
   discountClassesError: state.plainSearchRecords["CourseClass"].error
 });
@@ -181,7 +181,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearSearchResult: (pending: boolean) => dispatch(clearSales(pending)),
   searchCourseClassSales: (search: string) => {
     dispatch(setCommonPlainSearch("CourseClass", `${search ? `(${search}) AND ` : ""}(isDistantLearningCourse is true OR endDateTime > now) AND isCancelled is false`));
-    dispatch(getCommonPlainRecords("CourseClass", 0, "course.name,uniqueCode,isActive", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(getCommonPlainRecords("CourseClass", 0, "course.name,uniqueCode,isActive", null, null, PLAIN_LIST_MAX_PAGE_SIZE, items => items.map(mapPlainDiscountClasses)));
   },
   clearCourseClassSales: (pending: boolean) => dispatch(clearCommonPlainRecords("CourseClass", pending))
 });

@@ -141,7 +141,7 @@ class DiscountClasses extends React.PureComponent<any, any> {
 }
 
 const mapStateToProps = (state: State) => ({
-  foundDiscountClasses: state.plainSearchRecords["CourseClass"].items.map(mapPlainDiscountClasses),
+  foundDiscountClasses: state.plainSearchRecords["CourseClass"].items,
   pending: state.plainSearchRecords["CourseClass"].loading,
   discountClassesError: state.plainSearchRecords["CourseClass"].error
 });
@@ -149,7 +149,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   searchDiscountClasses: (search: string) => {
     dispatch(setCommonPlainSearch("CourseClass", `${search ? `(${search}) AND ` : ""}(isDistantLearningCourse is true OR endDateTime > now) AND isCancelled is false`));
-    dispatch(getCommonPlainRecords("CourseClass", 0, "course.name,uniqueCode,isActive", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(getCommonPlainRecords("CourseClass", 0, "course.name,uniqueCode,isActive", null, null, PLAIN_LIST_MAX_PAGE_SIZE, items => items.map(mapPlainDiscountClasses)));
   },
   clearDiscountClasses: (pending: boolean) => dispatch(clearCommonPlainRecords("CourseClass", pending))
 });

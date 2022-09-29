@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import clsx from "clsx";
@@ -17,7 +20,7 @@ import IconButton from "@mui/material/IconButton";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
 import { Typography } from "@mui/material";
-import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
+import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
 import { decimalMul } from "../../../../common/utils/numbers/decimalCalculation";
 import { StringArgFunction } from "../../../../model/common/CommonFunctions";
 import { getRoundingByType } from "../../discounts/utils";
@@ -330,7 +333,6 @@ const CourseClassEditView: React.FC<Props> = ({
   manualLink,
   showConfirm,
   syncErrors,
-  openNestedEditView,
   onCloseClick,
   rootEntity,
   invalid,
@@ -504,7 +506,6 @@ const CourseClassEditView: React.FC<Props> = ({
         manualLink,
         showConfirm,
         syncErrors,
-        openNestedEditView,
         onCloseClick,
         rootEntity,
         toogleFullScreenEditView,

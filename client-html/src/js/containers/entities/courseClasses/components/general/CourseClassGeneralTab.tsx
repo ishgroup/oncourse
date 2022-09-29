@@ -6,7 +6,9 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+ useCallback, useEffect, useMemo, useState 
+} from "react";
 import clsx from "clsx";
 import { connect } from "react-redux";
 import { change } from "redux-form";
@@ -36,6 +38,7 @@ import { getClassCostTypes } from "../../utils";
 import CustomFields from "../../../customFieldTypes/components/CustomFieldsTypes";
 import FullScreenStickyHeader
   from "../../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { EntityChecklists } from "../../../../tags/components/EntityChecklists";
 
 interface Props extends Partial<EditViewProps<CourseClassExtended>> {
   tags?: Tag[];
@@ -60,7 +63,7 @@ const CourseClassGeneralTab = React.memo<Props>(
     tutorRoles
   }) => {
     const [classCodeError, setClassCodeError] = useState(null);
-    const [showAllWeeks, setShowAllWeeks] = useState(false);
+    const [showAllWeeks, setShowAllWeeks] = useState(true);
 
     useEffect(() => {
       if (isNew && !values.code) {
@@ -216,7 +219,7 @@ const CourseClassGeneralTab = React.memo<Props>(
                   {values.courseCode ? `${values.courseCode}-${values.code || ""}` : null}
                 </Grid>
               </Grid>
-            )}
+              )}
               fields={(
                 <Grid container columnSpacing={3} rowSpacing={2}>
                   <Grid item xs={twoColumn ? 6 : 12}>
@@ -246,26 +249,21 @@ const CourseClassGeneralTab = React.memo<Props>(
                       onFocus: stubFunction,
                       onBlur: stubFunction,
                       value: values.courseCode ? `${values.courseCode}-${values.code || ""}` : null
-                    }}
+                      }}
                       meta={{
                       error: classCodeError,
                       invalid: Boolean(classCodeError)
-                    }}
+                      }}
                       disabled={!values.courseCode}
                     />
                   </Grid>
                 </Grid>
-            )}
+              )}
             />
           </Grid>
           {Boolean(values.isCancelled) && (
             <div className={clsx("backgroundText errorColorFade-0-2", twoColumn ? "fs10" : "fs8")}>Cancelled</div>
           )}
-
-          <Grid item xs={12}>
-            <FormField type="stub" name="code" required />
-            <FormField type="tags" name="tags" tags={tags} />
-          </Grid>
         </Grid>
 
         <Grid
@@ -273,9 +271,11 @@ const CourseClassGeneralTab = React.memo<Props>(
           className="pt-2 pl-3 pr-3"
           columnSpacing={3}
           rowSpacing={2}
-          direction={twoColumn && !showAllWeeks ? undefined : "column-reverse"}
         >
-          <Grid item xs={twoColumn && !showAllWeeks ? 6 : 12}>
+          <Grid item xs={twoColumn ? 8 : 12}>
+            <FormField type="stub" name="code" required />
+            <FormField type="tags" name="tags" tags={tags} />
+            
             <div className="heading pb-2 pt-3">Restrictions</div>
             <Typography variant="body2" color="inherit" component="div" className="pb-1">
               Students must be at least
@@ -333,18 +333,30 @@ const CourseClassGeneralTab = React.memo<Props>(
             />
           </Grid>
 
-          <CourseClassEnrolmentsChart
-            classId={values.id}
-            classStart={values.startDateTime}
-            minEnrolments={values.minimumPlaces}
-            maxEnrolments={values.maximumPlaces}
-            targetEnrolments={enrolmentsToProfitAllCount}
-            openBudget={openBudget}
-            showAllWeeks={showAllWeeks}
-            setShowAllWeeks={setShowAllWeeks}
-            twoColumn={twoColumn}
-            hasBudged={values.budget.some(b => b.invoiceToStudent && b.perUnitAmountIncTax > 0)}
-          />
+          <Grid item xs={twoColumn ? 4 : 12}>
+            <EntityChecklists
+              className={twoColumn ? "mr-4" : null}
+              entity="CourseClass"
+              form={form}
+              entityId={values.id}
+              checked={values.tags}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <CourseClassEnrolmentsChart
+              classId={values.id}
+              classStart={values.startDateTime}
+              minEnrolments={values.minimumPlaces}
+              maxEnrolments={values.maximumPlaces}
+              targetEnrolments={enrolmentsToProfitAllCount}
+              openBudget={openBudget}
+              showAllWeeks={showAllWeeks}
+              setShowAllWeeks={setShowAllWeeks}
+              twoColumn={twoColumn}
+              hasBudged={values.budget?.some(b => b.invoiceToStudent && b.perUnitAmountIncTax > 0)}
+            />
+          </Grid>
 
           <CustomFields
             entityName="CourseClass"

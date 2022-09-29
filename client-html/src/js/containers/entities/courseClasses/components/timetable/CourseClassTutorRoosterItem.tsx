@@ -288,6 +288,7 @@ const CourseClassTutorRoosterItem = (
               label="Roster start"
               onChange={onStartChange}
               timezone={session.siteTimezone}
+              debounced={false}
             />
           </Grid>
           <Grid item xs={2}>
@@ -297,6 +298,7 @@ const CourseClassTutorRoosterItem = (
               label="Roster end"
               onChange={onEndChange}
               timezone={session.siteTimezone}
+              debounced={false}
             />
           </Grid>
           <Grid item xs={2}>

@@ -12,6 +12,7 @@
 package ish.oncourse.server.cayenne
 
 import ish.common.types.NodeSpecialType
+import ish.common.types.NodeType
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.cayenne.Taggable
@@ -89,7 +90,11 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 		return result
 	}
 
-	/**
+	@Override
+	boolean isAsyncReplicationAllowed() {
+		return nodeType != NodeType.CHECKLIST
+	}
+/**
 	 * @param type
 	 */
 	void destroyNodeRequirement(final Class<? extends Taggable> type) {
@@ -257,17 +262,22 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 
 	void validateForDelete(@Nonnull ValidationResult validationResult) {
 		if (getSpecialType() != null) {
-			String message;
+			String message
 			switch (getSpecialType()) {
 				case NodeSpecialType.SUBJECTS:
 					message = "This tag group represents the categories of courses on your web site and cannot be deleted.";
-					break;
+					break
+				case NodeSpecialType.TERMS:
+					message = "This tag group represents the categories of classes on your web site and cannot be deleted."
+					break
 				case NodeSpecialType.PAYROLL_WAGE_INTERVALS:
 					message = "This tag group is required for the onCourse tutor pay feature.";
-					break;
+					break
 				case NodeSpecialType.ASSESSMENT_METHOD:
 					message = "This tag group is required for the assessments.";
-					break;
+					break
+				case NodeSpecialType.HOME_WEBPAGE:
+					return
 				default:
 					throw new IllegalArgumentException("Unknown special type for tag");
 			}

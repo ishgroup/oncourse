@@ -27,6 +27,7 @@ import FullScreenStickyHeader
 import EntityService from "../../../../common/services/EntityService";
 import history from "../../../../constants/History";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 interface ApplicationGeneralProps extends EditViewProps<Application> {
   classes?: any;
@@ -140,6 +141,21 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           )}
         />
       </Grid>
+      <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 8 : 12}>
+        <FormField
+          type="tags"
+          name="tags"
+          tags={tags}
+        />
+      </Grid>
+      <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+        <EntityChecklists
+          entity="Application"
+          form={form}
+          entityId={values.id}
+          checked={values.tags}
+        />
+      </Grid>
       <Grid item {...gridItemProps}>
         <FormField
           type="remoteDataSearchSelect"
@@ -158,18 +174,11 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
               link={values && values.courseId}
               disabled={!values || !values.courseId}
             />
-            )}
+          )}
           disabled={!isNew}
           itemRenderer={CourseItemRenderer}
           rowHeight={55}
           required
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <FormField
-          type="tags"
-          name="tags"
-          tags={tags}
         />
       </Grid>
       <Grid item {...gridItemProps}>

@@ -30,6 +30,7 @@ import { openRoomLink } from "../../rooms/utils";
 import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 const validateRooms = (value: Room[]) => {
   let error;
@@ -146,7 +147,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
     const layoutArray = getLayoutArray(twoColumn);
 
     return (
-      <Grid container className="pt-3 pl-3 pr-3">
+      <Grid container columnSpacing={3} rowSpacing={2} className="pt-3 pl-3 pr-3">
         <CoordinatesValueUpdater
           dispatch={dispatch}
           latPath="latitude"
@@ -155,7 +156,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
           form={form}
         />
 
-        <Grid item xs={layoutArray[2].xs} className="mb-2">
+        <Grid item xs={layoutArray[2].xs}>
           <FullScreenStickyHeader
             opened={!values.id || Object.keys(syncErrors).includes("name")}
             twoColumn={twoColumn}
@@ -173,8 +174,8 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
           />
         </Grid>
 
-        <Grid item container xs={layoutArray[0].xs} columnSpacing={3} className="flex-nowrap align-items-center mb-1">
-          <Grid item xs={12}>
+        <Grid item container xs={layoutArray[0].xs} columnSpacing={3} rowSpacing={2}>
+          <Grid item xs={twoColumn ? 8 : 12}>
             <FormField
               type="tags"
               name="tags"
@@ -182,12 +183,23 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
             />
           </Grid>
 
-          <Grid item className="centeredFlex">
-            <IconButton href={values.kioskUrl} disabled={!values.kioskUrl} target="_blank">
-              <ScreenShare />
-            </IconButton>
+          <Grid item xs={twoColumn ? 4 : 12}>
+            <div className="centeredFlex">
+              <EntityChecklists
+                className="flex-fill"
+                entity="Site"
+                form={form}
+                entityId={values.id}
+                checked={values.tags}
+              />
 
-            <Typography variant="caption">Kiosk</Typography>
+              <div className="centeredFlex ml-2">
+                <IconButton href={values.kioskUrl} disabled={!values.kioskUrl} target="_blank">
+                  <ScreenShare />
+                </IconButton>
+                <Typography variant="caption">Kiosk</Typography>
+              </div>
+            </div>
           </Grid>
         </Grid>
 
@@ -237,7 +249,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
         )}
 
         <Collapse in={!values.isVirtual}>
-          <Grid container columnSpacing={3}>
+          <Grid container columnSpacing={3} className="pr-3 pl-3">
             <Grid container item xs={layoutArray[2].xs} columnSpacing={3} rowSpacing={2}>
               <Grid item xs={12}>
                 <FormField

@@ -92,6 +92,7 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                       name={`${item}.isReverseCreditNotes`}
                       color="secondary"
                       onChange={v => onCreateCreditNoteChange(v, index)}
+                      debounced={false}
                     />
                   )}
                   label={`Create credit note to reverse the enrolment fee of $${field
@@ -109,6 +110,7 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                     name={`${item}.cancellationFeeExTax`}
                     normalize={roundCancellationFeeExTax}
                     onChange={e => onCancelFeeChange(e, index)}
+                    debounced={false}
                     disabled={!field.isReverseCreditNotes}
                     formatting="inline"
                     hideArrowshideArrows
@@ -121,6 +123,7 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                     selectValueMark="id"
                     selectLabelMark="code"
                     onChange={v => onTaxChange(v, index)}
+                    debounced={false}
                     disabled={!field.isReverseCreditNotes}
                     formatting="inline"
                   />

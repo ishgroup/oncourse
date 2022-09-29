@@ -90,7 +90,7 @@ const initialValues: CourseClassDuplicate & { toDate: string } = {
   applyDiscounts: true,
   copyCosts: true,
   copySitesAndRooms: true,
-  copyPayableTimeForSessions: true,
+  tutorRosterOverrides: true,
   copyVetData: true,
   copyNotes: true,
   copyAssessments: true,
@@ -336,6 +336,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                     formatting="inline"
                     step="1"
                     onChange={handleDaysToChange}
+                    debounced={false}
                     disabled={fetching}
                     className={classes.daysInput}
                     required
@@ -349,6 +350,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                     className={classes.dateTime}
                     formatting="inline"
                     onChange={handleDateChange}
+                    debounced={false}
                     disabled={fetching}
                     fullWidth
                     required
@@ -367,6 +369,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                       name="copyTutors"
                       color="secondary"
                       onChange={onTutorsChange}
+                      debounced={false}
                       disabled={fetching}
                     />
                   )}
@@ -382,6 +385,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                       name="copySitesAndRooms"
                       color="secondary"
                       onChange={onSiteAndRoomsChange}
+                      debounced={false}
                       disabled={fetching}
                     />
                   )}
@@ -428,7 +432,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                     root: "checkbox"
                   }}
                   control={(
-                    <FormField type="checkbox" name="copyPayableTimeForSessions" color="secondary" disabled={fetching} />
+                    <FormField type="checkbox" name="tutorRosterOverrides" color="secondary" disabled={fetching} />
                   )}
                   label="Payable time"
                 />
@@ -453,7 +457,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                     root: "checkbox"
                   }}
                   control={(
-                    <FormField type="checkbox" name="copyOnlyMandatoryTags" color="secondary" onChange={onTagsChange} disabled={fetching} />
+                    <FormField type="checkbox" name="copyOnlyMandatoryTags" color="secondary" onChange={onTagsChange} debounced={false} disabled={fetching} />
                   )}
                   label="Tags"
                 />

@@ -5,7 +5,7 @@
 
 import React, { useMemo } from "react";
 import { connect } from "react-redux";
-import LoadingIndicator from "../../../../common/components/layout/LoadingIndicator";
+import LoadingIndicator from "../../../../common/components/progress/LoadingIndicator";
 import {
  CheckoutDiscount, CheckoutItem, CheckoutPayment, CheckoutSummary
 } from "../../../../model/checkout";

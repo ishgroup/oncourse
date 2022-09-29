@@ -1,5 +1,5 @@
 import * as React from "react";
-import TabsList from "../../../../common/components/layout/TabsList";
+import TabsList from "../../../../common/components/navigation/TabsList";
 
 import CorporatePassSettings from "./CorporatePassSettings";
 import CorporatePassDiscounts from "./CorporatePassDiscounts";

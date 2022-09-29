@@ -14,6 +14,7 @@ package ish.oncourse.server.cayenne
 import com.google.inject.Inject
 import ish.common.types.ContactType
 import ish.common.types.Gender
+import ish.common.types.NodeType
 import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.*
@@ -867,7 +868,8 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	List<Tag> getTags() {
 		List<Tag> tagList = new ArrayList<>(getTaggingRelations().size())
 		for (ContactTagRelation relation : getTaggingRelations()) {
-			tagList.add(relation.getTag())
+			if(relation.tag?.nodeType?.equals(NodeType.TAG))
+				tagList.add(relation.getTag())
 		}
 		return tagList
 	}

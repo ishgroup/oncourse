@@ -25,7 +25,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/application'
         "enrolBy":"2031-09-09",
         "reason":"Some reason 300",
         "documents":[{"id":201}],
-        "tags":[{"id":224}],
+        "tags":[224],
         "customFields":{}
         }
         """
@@ -57,7 +57,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/application'
         "enrolBy":"2031-09-10",
         "reason":"Some reason 300 UPD",
         "documents":[],
-        "tags":[{"id":225}],
+        "tags":[225],
         "customFields":{}
         }
         """
@@ -86,7 +86,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/application'
         "createdBy":"onCourse Administrator",
         "reason":"Some reason 300 UPD",
         "documents":[],
-        "tags":[{"id":225,"name":"app1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
+        "tags":[225],
         "customFields":{},
         "createdOn":"#ignore",
         "modifiedOn":"#ignore"
@@ -114,7 +114,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/application'
         "enrolBy":"2031-09-09",
         "reason":"Some reason 3018",
         "documents":[{"id":201}],
-        "tags":[{"id":224}],
+        "tags":[224],
         "customFields":{}
         }
         """
@@ -146,7 +146,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/application'
         "enrolBy":"2031-09-09",
         "reason":"Some reason 3018",
         "documents":[{"id":201}],
-        "tags":[{"id":224}],
+        "tags":[224],
         "customFields":{}
         }
         """
@@ -174,7 +174,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/application'
         "enrolBy":"2031-09-09",
         "reason":"Some reason 3018",
         "documents":[{"id":201}],
-        "tags":[{"id":224}],
+        "tags":[224],
         "customFields":{}
         }
         """
@@ -202,7 +202,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/application'
         "enrolBy":"2031-09-09",
         "reason":"Some reason 3018",
         "documents":[{"id":201}],
-        "tags":[{"id":224}],
+        "tags":[224],
         "customFields":{}
         }
         """
@@ -230,7 +230,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/application'
         "enrolBy":"2031-09-09",
         "reason":"Some reason 3018",
         "documents":[{"id":201}],
-        "tags":[{"id":224}],
+        "tags":[224],
         "customFields":{}
         }
         """
@@ -258,7 +258,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/application'
         "enrolBy":"2031-09-09",
         "reason":"Some reason 3018",
         "documents":[{"id":201}],
-        "tags":[{"id":224}],
+        "tags":[224],
         "customFields":{}
         }
         """
@@ -286,7 +286,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/application'
         "enrolBy":"2031-09-09",
         "reason":"Some reason 3018",
         "documents":[{"id":201}],
-        "tags":[{"id":224}],
+        "tags":[224],
         "customFields":{}
         }
         """
@@ -587,7 +587,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/application'
         "enrolBy":"2031-09-09",
         "reason":"Some reason 301",
         "documents":[{"id":201}],
-        "tags":[{"id":224}],
+        "tags":[224],
         "customFields":{}
         }
         """
@@ -628,7 +628,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/application'
         "enrolBy":"2031-09-10",
         "reason":"Some reason 301 UPD",
         "documents":[],
-        "tags":[{"id":225}],
+        "tags":[225],
         "customFields":{}
         }
         """
@@ -657,7 +657,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/application'
         "createdBy":"onCourse Administrator",
         "reason":"Some reason 301 UPD",
         "documents":[],
-        "tags":[{"id":225,"name":"app1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
+        "tags":[225],
         "customFields":{},
         "createdOn":"#ignore",
         "modifiedOn":"#ignore"

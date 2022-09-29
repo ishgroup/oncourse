@@ -26,9 +26,9 @@ import {
 } from "date-fns";
 import { Typography } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
+import Button from "@mui/material/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
-import Button from "@mui/material/Button";
 import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
 import CourseItemRenderer from "../../../courses/components/CourseItemRenderer";
 import { courseFilterCondition } from "../../../courses/utils";
@@ -77,7 +77,7 @@ const initialValues: CourseClassDuplicate & { toDate: string } = {
   applyDiscounts: true,
   copyCosts: true,
   copySitesAndRooms: true,
-  copyPayableTimeForSessions: true,
+  tutorRosterOverrides: true,
   copyVetData: true,
   copyNotes: true,
   copyAssessments: true,
@@ -92,6 +92,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
     setDialogOpened,
     classes,
     reset,
+    form,
     selection,
     closeMenu,
     getSessions,
@@ -232,7 +233,13 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
     [sessions]
   );
 
-  const onTutorsChange = useCallback<any>(val => onValuesChange("tutors", val, values.toDate, []), [values.toDate]);
+  const onTutorsChange = useCallback<any>(val => {
+    onValuesChange("tutors", val, values.toDate, []);
+    if (!val) {
+      dispatch(change(form, "tutorRosterOverrides", false));
+    }
+  }, [values.toDate]);
+
   const onTagsChange = useCallback<any>(val => onValuesChange("tags", val, values.toDate, {}), [values.toDate]);
   const onSiteAndRoomsChange = useCallback<any>(
     debounce(val => {
@@ -292,32 +299,34 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
               </div>
 
               {Boolean(sessions.length) && (
-              <div className="pb-2 pr-2">
-                Advance all classes by
-                <FormField
-                  type="number"
-                  name="daysTo"
-                  formatting="inline"
-                  step="1"
-                  onChange={handleDaysToChange}
-                  disabled={fetching}
-                  className={classes.daysInput}
-                  required
-                />
-                {" "}
-                days, so that the earliest class starts on
-                {" "}
-                <FormField
-                  type="date"
-                  name="toDate"
-                  className={classes.dateTime}
-                  formatting="inline"
-                  onChange={handleDateChange}
-                  disabled={fetching}
-                  fullWidth
-                  required
-                />
-              </div>
+                <div className="pb-2 pr-2">
+                  Advance all classes by
+                  <FormField
+                    type="number"
+                    name="daysTo"
+                    formatting="inline"
+                    step="1"
+                    onChange={handleDaysToChange}
+                    debounced={false}
+                    disabled={fetching}
+                    className={classes.daysInput}
+                    required
+                  />
+                  {" "}
+                  days, so that the earliest class starts on
+                  {" "}
+                  <FormField
+                    type="date"
+                    name="toDate"
+                    className={classes.dateTime}
+                    formatting="inline"
+                    onChange={handleDateChange}
+                    debounced={false}
+                    disabled={fetching}
+                    fullWidth
+                    required
+                  />
+                </div>
               )}
 
               <div>Copy to each new class:</div>
@@ -332,10 +341,25 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                       name="copyTutors"
                       color="secondary"
                       onChange={onTutorsChange}
+                      debounced={false}
                       disabled={fetching}
                     />
                   )}
-                  label="Tutors for each session"
+                  label="Tutors"
+                />
+                <FormControlLabel
+                  classes={{
+                    root: "checkbox"
+                  }}
+                  control={(
+                    <FormField
+                      type="checkbox"
+                      name="tutorRosterOverrides"
+                      color="secondary"
+                      disabled={fetching || !values.copyTutors}
+                    />
+                  )}
+                  label="Tutor roster overrides"
                 />
                 <FormControlLabel
                   classes={{
@@ -347,6 +371,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                       name="copySitesAndRooms"
                       color="secondary"
                       onChange={onSiteAndRoomsChange}
+                      debounced={false}
                       disabled={fetching}
                     />
                   )}
@@ -366,7 +391,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                       </Tooltip>
                     ) : (
                       "Budget"
-                    )
+                  )
                   }
                 />
                 <FormControlLabel
@@ -391,15 +416,6 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                   classes={{
                     root: "checkbox"
                   }}
-                  control={(
-                    <FormField type="checkbox" name="copyPayableTimeForSessions" color="secondary" disabled={fetching} />
-                  )}
-                  label="Payable time"
-                />
-                <FormControlLabel
-                  classes={{
-                    root: "checkbox"
-                  }}
                   control={<FormField type="checkbox" name="copyVetData" color="secondary" disabled={fetching} />}
                   label="VET fields"
                 />
@@ -415,7 +431,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                     root: "checkbox"
                   }}
                   control={(
-                    <FormField type="checkbox" name="copyOnlyMandatoryTags" color="secondary" onChange={onTagsChange} disabled={fetching} />
+                    <FormField type="checkbox" name="copyOnlyMandatoryTags" color="secondary" onChange={onTagsChange} debounced={false} disabled={fetching} />
                   )}
                   label="Tags"
                 />

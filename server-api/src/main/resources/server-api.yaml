@@ -193,8 +193,12 @@ paths:
     $ref: './path/list/entity/qualification/api.yaml'
   /list/entity/report:
     $ref: './path/list/entity/report/api.yaml'
+  /list/entity/report/preview:
+    $ref: './path/list/entity/report/preview/api.yaml'
   /list/entity/reportOverlay:
     $ref: './path/list/entity/reportOverlay/api.yaml'
+  /list/entity/reportOverlay/original:
+    $ref: './path/list/entity/reportOverlay/original/api.yaml'
   /list/entity/room:
     $ref: './path/list/entity/room/api.yaml'
   /list/entity/room/validation:
@@ -281,6 +285,10 @@ paths:
     $ref: './path/role/api.yaml'
   /tag:
     $ref: './path/tag/api.yaml'
+  /tag/list:
+    $ref: './path/tag/list/api.yaml'
+  /tag/checklist:
+    $ref: './path/tag/checklist/api.yaml'
   /timetable/calendar:
     $ref: './path/timetable/calendar/api.yaml'
   /timetable/session:

@@ -56,7 +56,7 @@ import java.net.URL;
 import java.rmi.server.UID;
 import java.util.*;
 
-import static ish.util.ImageHelper.generatePdfPreview;
+import static ish.util.ImageHelper.generateHighQualityPdfPreview;
 import static net.sf.jasperreports.engine.export.JRPdfExporter.PDF_FIELD_BORDER_STYLE;
 import static net.sf.jasperreports.engine.style.PropertyStyleProvider.STYLE_PROPERTY_PEN_LINE_WIDTH;
 
@@ -259,7 +259,7 @@ public class PrintWorker implements Runnable {
 		if (printRequest.isCreatePreview() && startingReport != null && pdfResult != null && pdfResult.length != 0 ) {
 			ObjectContext cc = cayenneService.getNewContext();
 			var localReport = cc.localObject(startingReport);
-			localReport.setPreview(generatePdfPreview(pdfResult));
+			localReport.setPreview(generateHighQualityPdfPreview(pdfResult));
 			cc.commitChanges();
 		}
 

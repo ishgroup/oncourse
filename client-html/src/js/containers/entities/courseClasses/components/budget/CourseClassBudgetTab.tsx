@@ -295,7 +295,7 @@ const CourseClassBudgetTab = React.memo<Props>(
     const [popoverAnchor, setPopoverAnchor] = React.useState(null);
     const [tutorsMenuOpened, setTutorsMenuOpened] = React.useState(false);
 
-    const classFee = useMemo(() => getClassFeeTotal(values.budget, taxes), [taxes, values.budget]);
+    const classFee = useMemo(() => getClassFeeTotal(values.budget || [], taxes), [taxes, values.budget]);
 
     const classCostTypes = useMemo(
       () =>
@@ -885,7 +885,7 @@ const BudgetNetRow: React.FC<CommonRowProps> = ({
 const mapStateToProps = (state: State) => ({
   tutorRoles: state.preferences.tutorRoles,
   enrolments: state.courseClass.enrolments,
-  discounts: state.plainSearchRecords["Discount"].items.map(mapPlainDiscounts),
+  discounts: state.plainSearchRecords["Discount"].items,
   pending: state.plainSearchRecords["Discount"].loading,
   discountsError: state.plainSearchRecords["Discount"].error,
 });
@@ -894,7 +894,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   setCourseClassBudgetModalOpened: (opened, onCostRate) => dispatch(setCourseClassBudgetModalOpened(opened, onCostRate)),
   getSearchResult: (search: string) => {
     dispatch(setCommonPlainSearch("Discount", search));
-    dispatch(getCommonPlainRecords("Discount", 0, "name,discountType,discountDollar,discountPercent", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(getCommonPlainRecords("Discount", 0, "name,discountType,discountDollar,discountPercent", null, null, PLAIN_LIST_MAX_PAGE_SIZE, items => items.map(mapPlainDiscounts)));
   },
   clearSearchResult: (pending: boolean) => dispatch(clearCommonPlainRecords("Discount", pending)),
 });

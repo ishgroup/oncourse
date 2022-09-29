@@ -24,7 +24,7 @@ properties:
     $ref: './ClassCost.yaml'
   copySitesAndRooms:
     type: boolean
-  copyPayableTimeForSessions:
+  tutorRosterOverrides:
     type: boolean
   copyVetData:
     type: boolean

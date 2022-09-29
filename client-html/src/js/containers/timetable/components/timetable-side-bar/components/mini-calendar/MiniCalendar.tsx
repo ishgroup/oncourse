@@ -14,6 +14,7 @@ import CalendarWeekPanel from "./components/CalendarWeekPanel";
 import CalendarBody from "./components/CalendarBody";
 import { TimetableContext } from "../../../../Timetable";
 import { State } from "../../../../../../reducers/state";
+import { validateDate } from "../../../../../../common/utils/validation";
 
 interface Props {
   classes?: any;
@@ -45,7 +46,7 @@ const MiniCalendar: React.FunctionComponent<Props> = ({ selectedMonthSessionDays
   return (
     <div className="pb-2">
       <CalendarHeader
-        month={format(selectedMonth, "MMM")}
+        month={(selectedMonth && validateDate(selectedMonth)) ? format(selectedMonth, "MMM") : ""}
         year={selectedMonth.getFullYear()}
         previousMonth={previousMonth}
         nextMonth={nextMonth}

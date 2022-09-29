@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { useCallback, useEffect, useMemo } from "react";
@@ -21,7 +24,6 @@ import FormField from "../../../../common/components/form/formFields/FormField";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { State } from "../../../../reducers/state";
-import { getListNestedEditRecord } from "../../../../common/components/list-view/actions";
 import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
 import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
@@ -40,6 +42,7 @@ import { usePrevious } from "../../../../common/utils/hooks";
 import { leadLabelCondition, openLeadLink } from "../../leads/utils";
 import LeadSelectItemRenderer from "../../leads/components/LeadSelectItemRenderer";
 import Uneditable from "../../../../common/components/form/Uneditable";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 interface Props extends EditViewProps {
   currency: Currency;
@@ -116,13 +119,13 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
     [currency]
   );
 
-  const incomeAndCosAccounts = useMemo(() => {
+  const accountTypes = useMemo(() => {
     const income = accounts.filter(a => a.type === "income");
     income.sort(sortAccounts);
     const cos = accounts.filter(a => a.type === "COS");
     cos.sort(sortAccounts);
 
-    return [income, cos];
+    return {income, cos, all: accounts};
   }, [accounts.length]);
 
   const InvoiceLineComponent = useCallback(
@@ -135,7 +138,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         dispatch={dispatch}
         form={form}
         taxes={taxes}
-        incomeAndCosAccounts={incomeAndCosAccounts}
+        accountTypes={accountTypes}
         type={values.type}
       />
       ),
@@ -147,7 +150,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
       ? () => {
           const newLine: InvoiceLineWithTotal = {
             quantity: 1,
-            incomeAccountId: incomeAndCosAccounts[0].length > 0 ? incomeAndCosAccounts[0][0].id : null,
+            incomeAccountId: accountTypes.income.length > 0 ? accountTypes.income[0]?.id : null,
             taxId:
               selectedContact && selectedContact["taxOverride.id"]
                 ? Number(selectedContact["taxOverride.id"])
@@ -161,7 +164,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
           dispatch(arrayInsert(form, "invoiceLines", 0, newLine));
         }
       : undefined,
-    [form, isNew, taxes, incomeAndCosAccounts, selectedContact]
+    [form, isNew, taxes, accountTypes, selectedContact]
   );
 
   const deleteInvoiceLine = useCallback(
@@ -265,11 +268,20 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="p-3 saveButtonTableOffset defaultBackgroundColor">
-      <Grid item xs={12}>
+      <Grid item xs={twoColumn ? 8 : 12}>
         <FormField
           type="tags"
           name="tags"
           tags={tags}
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <EntityChecklists
+          entity="AbstractInvoice"
+          form={form}
+          entityId={values.id}
+          checked={values.tags}
         />
       </Grid>
 
@@ -482,7 +494,6 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  openNestedEditView: (entity: string, id: number) => dispatch(getListNestedEditRecord(entity, id)),
   setSelectedContact: (selectedContact: any) => dispatch(setSelectedContact(selectedContact))
 });
 

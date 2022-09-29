@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.types.NodeType
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Site
@@ -324,7 +325,8 @@ class Site extends _Site implements Queueable, NotableTrait, AttachableTrait, Si
 	List<Tag> getTags() {
 		List<Tag> tagList = new ArrayList<>(getTaggingRelations().size())
 		for (SiteTagRelation relation : getTaggingRelations()) {
-			tagList.add(relation.getTag())
+			if(relation.tag?.nodeType?.equals(NodeType.TAG))
+				tagList.add(relation.getTag())
 		}
 		return tagList
 	}

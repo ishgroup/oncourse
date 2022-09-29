@@ -23,7 +23,7 @@ export interface SurveyMonkeyFields {
   sendOnEnrolmentCompletion: boolean;
 }
 
-export interface SurveyGizmoFields {
+export interface AlchemerFields {
   user: string;
   password: string;
   surveyId: string;

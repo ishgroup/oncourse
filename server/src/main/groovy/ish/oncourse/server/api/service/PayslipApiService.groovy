@@ -51,7 +51,7 @@ class PayslipApiService extends TaggableApiService<PayslipDTO, Payslip, PayslipD
             payslip.payType = PayslipPayTypeDTO.values()[0].fromDbType(dbModel.payType)
             payslip.tutorId = dbModel.contact.id
             payslip.tutorFullName = dbModel.contact.fullName
-            payslip.tags = dbModel.tags.collect { toRestTagMinimized(it) }
+            payslip.tags = dbModel.allTags.collect { it.id }
             payslip.paylines = dbModel.paylines.collect { toRestPayLine(it) }
                     .sort { a, b -> (!a.className ? !b.className ? 0 : 1 : !b.className ? -1 : a.className <=> b.className) ?: a.type <=> b.type ?: a.dateFor <=> b.dateFor }
             payslip.createdOn = dbModel.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
@@ -70,7 +70,7 @@ class PayslipApiService extends TaggableApiService<PayslipDTO, Payslip, PayslipD
         dbModel.payType = dto.payType.getDbType()
         dbModel.notes = trimToNull(dto.publicNotes)
         dbModel.privateNotes = trimToNull(dto.privateNotes)
-        updateTags(dbModel, dbModel.taggingRelations, dto.tags*.id, PayslipTagRelation, context)
+        updateTags(dbModel, dbModel.taggingRelations, dto.tags, PayslipTagRelation, context)
         updatePayLines(dbModel, dto.paylines)
 
         dbModel

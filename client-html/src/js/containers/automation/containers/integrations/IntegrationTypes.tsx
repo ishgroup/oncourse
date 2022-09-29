@@ -50,12 +50,14 @@ const types: IntegrationTypesModel = {
     name: "Moodle",
     image: moodle,
     form: MoodleForm,
+    formName: "MoodleForm",
     description:
       "Moodle is an open source Learning Managment System (LMS) for delivering training to students. onCourse can create enrolments in Moodle whenever a succesful enrolment is created in corresponding class in onCourse."
   },
   2: {
     name: "Mailchimp",
-    form: MailchimpForm, 
+    form: MailchimpForm,
+    formName: "MailchimpForm",
     image: mailchimp,
     description:
       "MailChimp helps you email the right people at the right time. Send automated emails based on customer behavior and preferences."
@@ -63,6 +65,7 @@ const types: IntegrationTypesModel = {
   3: {
     name: "SurveyMonkey",
     form: SurveyMonkeyForm,
+    formName: "SurveyMonkeyForm",
     image: surveymonkey,
     description:
       "Create and publish online surveys in minutes, and view results graphically in real time SurveyMonkey provides free online questionnaire and survey software."
@@ -70,6 +73,7 @@ const types: IntegrationTypesModel = {
   4: {
     name: "Alchemer",
     form: AlchemerForm,
+    formName: "SurveyGizmoForm",
     image: alchemer,
     description:
       "Alchemer is an exeptionally powerful survey tool designed to make even the most advanced survey projects fun, easy & affordable."
@@ -77,6 +81,7 @@ const types: IntegrationTypesModel = {
   5: {
     name: "Xero",
     form: XeroForm,
+    formName: "XeroForm",
     image: xero,
     description:
       "Xero is online accouting software for small business. Use Xero to manage invoicing bank reconciliation, bookkeeping & more."
@@ -84,6 +89,7 @@ const types: IntegrationTypesModel = {
   6: {
     name: "MYOB",
     form: MYOBForm,
+    formName: "MYOBForm",
     image: myob,
     description:
       "MYOB, Mind Your Own Business, is an Australian multinational corporation that provides tax, accounting and other services to small and medium businesses."
@@ -91,6 +97,7 @@ const types: IntegrationTypesModel = {
   7: {
     name: "Cloud Assess",
     form: CloudAssessForm,
+    formName: "CloudAssessForm",
     image: cloudassess,
     description:
       "Cloud Assess is a flexible assessment platform designed specifically for vocational education assessment."
@@ -98,6 +105,7 @@ const types: IntegrationTypesModel = {
   8: {
     name: "Canvas",
     form: CanvasForm,
+    formName: "CanvasForm",
     image: canvas,
     description:
       "Canvas is an open source Learning Management System (LMS) for delivering training to students. This integration allows you to automatically create classes, students and enrolments in Canvas as needed."
@@ -105,18 +113,21 @@ const types: IntegrationTypesModel = {
   9: {
     name: "Micropower",
     form: MicropowerForm,
+    formName: "MicropowerForm",
     image: micropower,
     description: "Micropower is a powerful users and memberships management platform."
   },
   10: {
     name: "USI Agency",
     form: UsiForm,
+    formName: "UsiForm",
     image: usi,
     description:
       "Unique Student Identifier is a reference number for every student of accredited training in Australia. Automatically add and verify USIs for your students."
   },
   11: {
     name: "VET Student Loans",
+    formName: "VetStudentLoansForm",
     form: VetStudentLoansForm,
     image: tsci,
     description:
@@ -125,6 +136,7 @@ const types: IntegrationTypesModel = {
   12: {
     name: "Google Classroom",
     form: GoogleClassroomForm,
+    formName: "GoogleClassroomForm",
     image: googleclassroom,
     description:
       "Google Classroom is mission control for your classes. As a free service for teachers and students, you can create classes, distribute assignments, send feedback, and see everything in one place. Instant. Paperless. Easy."
@@ -132,6 +144,7 @@ const types: IntegrationTypesModel = {
   13: {
     name: "Coassemble",
     form: CoassembleForm,
+    formName: "CoassembleForm",
     image: coassemble,
     description:
       "Coassemble is a powerful and intuitive platform for organizations to create and deliver quality online training. The first of its kind, Coassemble combines a user-friendly Learning Management System with outstanding rapid authoring capabilities. With Coassemble, organizations can create and deliver online training from a single integrated platform."
@@ -139,6 +152,7 @@ const types: IntegrationTypesModel = {
   14: {
     name: "TalentLMS",
     form: TalentLMSForm,
+    formName: "TalentLMSForm",
     image: talentlms,
     description:
       "TalentLMS is a cloud-based learning management system that provides an online tool to deliver your course materials."
@@ -146,6 +160,7 @@ const types: IntegrationTypesModel = {
   15: {
     name: "LearnDash",
     form: LearnDashForm,
+    formName: "LearnDashForm",
     image: learndash,
     description:
       "LearnDash is a learning management system plugin for Wordpress websites only. It can provide an online space for you to deliver your course materials to students."
@@ -153,6 +168,7 @@ const types: IntegrationTypesModel = {
   16: {
     name: "Amazon S3",
     form: AmazonS3Form,
+    formName: "AmazonS3Form",
     image: amazons3,
     description:
       "Experience Reliability & Scalability With AWS Online Storage Solutions. Sign Up For Free"
@@ -160,6 +176,7 @@ const types: IntegrationTypesModel = {
   17: {
     name: "Microsoft Azure",
     form: AzureForm,
+    formName: "AzureForm",
     image: azure,
     description:
       "Massively-Scalable Object Storage for Unstructured Data. Try Blob Storage Free. Learn by Doing. 25+ Free Services. Build Your Idea. Get Free Credit. Try Free Products."
@@ -167,6 +184,7 @@ const types: IntegrationTypesModel = {
   18: {
     name: "Service NSW voucher",
     form: NSWForm,
+    formName: "NSWForm",
     image: servicensw,
     description: (
       <span>

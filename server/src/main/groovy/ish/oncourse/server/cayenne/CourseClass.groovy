@@ -148,6 +148,29 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		return buff.toString()
 	}
 
+	int getAttendancePercentForStudent(Student student){
+		def studentAttendances = student.attendances.findAll { it.session.courseClass.id == id && it.attendanceType != AttendanceType.UNMARKED && it.session.endDatetime.before(new Date()) }
+		if(studentAttendances.isEmpty())
+			return 0
+		def attendancesDuration = ((studentAttendances.collect {getDurationByType(it)}.sum() as Integer) * 100)
+		def sessionsDuration = studentAttendances*.session.durationInMinutes.sum() as Integer
+		return attendancesDuration.div(sessionsDuration) as Integer
+	}
+
+	private Integer getDurationByType(Attendance attendance){
+		switch (attendance.attendanceType){
+			case AttendanceType.ATTENDED:
+			case AttendanceType.DID_NOT_ATTEND_WITH_REASON:
+				return attendance.session.durationInMinutes
+			case AttendanceType.DID_NOT_ATTEND_WITHOUT_REASON:
+				return 0
+			case AttendanceType.PARTIAL:
+				return attendance.durationMinutes
+			default:
+				throw new UnsupportedOperationException("Incorrect attendance type or try to get duration of unmarked")
+		}
+	}
+
     /**
 	 * @return class fee including GST
 	 */
@@ -1103,7 +1126,8 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	List<Tag> getTags() {
 		List<Tag> tagList = new ArrayList<>(getTaggingRelations().size())
 		for (CourseClassTagRelation relation : getTaggingRelations()) {
-			tagList.add(relation.getTag())
+			if(relation.tag?.nodeType?.equals(NodeType.TAG))
+				tagList.add(relation.getTag())
 		}
 		return tagList
 	}

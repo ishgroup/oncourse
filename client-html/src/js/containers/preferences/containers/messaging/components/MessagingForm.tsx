@@ -17,7 +17,7 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { openInternalLink } from "../../../../../common/utils/links";
 import * as Model from "../../../../../model/preferences/Messaging";
 import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";

@@ -15,15 +15,13 @@ import { Dispatch } from "redux";
 import { UserRole } from "@api/model";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import Categories from "../../../../../model/user-roles/index";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import UserRolePreference from "./UserRolePreference";
 import { State } from "../../../../../reducers/state";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { updateUserRole, removeUserRole } from "../../../actions";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { setNextLocation } from "../../../../../common/actions";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("users_roles");
@@ -40,8 +38,6 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
   private rejectPromise;
 
   private isPending;
-
-  private disableConfirm;
 
   constructor(props) {
     super(props);
@@ -76,12 +72,11 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
 
   componentDidUpdate() {
     const {
-      dirty, nextLocation, setNextLocation, history
+      dirty, nextLocation, history
     } = this.props;
 
     if (nextLocation && !dirty) {
       history.push(nextLocation);
-      setNextLocation('');
     }
   }
 
@@ -112,12 +107,10 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
     return new Promise((resolve, reject) => {
       this.resolvePromise = resolve;
       this.rejectPromise = reject;
-      this.disableConfirm = true;
 
       removeUserRole(id);
     }).then(() => {
       redirectOnDelete();
-      this.disableConfirm = false;
       this.forceUpdate();
     });
   };
@@ -134,7 +127,6 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
       dispatch,
       isNew,
       validateUniqueNames,
-      submitSucceeded,
       hasLicense,
       form,
       invalid,
@@ -143,7 +135,7 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
 
     return (
       <Form onSubmit={handleSubmit(this.onSave)} className={className}>
-        {!this.disableConfirm && !submitSucceeded && dirty && <RouteChangeConfirm form={form} when={dirty && hasLicense} />}
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <AppBarContainer
           values={values}
@@ -205,8 +197,7 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   updateUserRole: (userRole: UserRole) => dispatch(updateUserRole(userRole)),
-  removeUserRole: (id: number) => dispatch(removeUserRole(id)),
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+  removeUserRole: (id: number) => dispatch(removeUserRole(id))
 });
 
 const UserRolesForm = reduxForm({

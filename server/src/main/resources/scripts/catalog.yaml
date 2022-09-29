@@ -786,8 +786,8 @@
   status: NOT_INSTALLED
   triggerType: CRON
   schedule: "@daily-morning"
-  description: Send an invite to a SurveyGizmo survey to students who have just enrolled. If a tag is defined in tagName, then will only run for enrolments in courses tagged with defined tag. surveyInvitationTemplate defines the message template the invitation is sent in.
-  short: Requires an active SurveyGizmo integration to use. On enrolment into certain courses, send an invite to a SurveyGizmo survey.
+  description: Send an invite to a Alchemer survey to students who have just enrolled. If a tag is defined in tagName, then will only run for enrolments in courses tagged with defined tag. surveyInvitationTemplate defines the message template the invitation is sent in.
+  short: Requires an active Alchemer integration to use. On enrolment into certain courses, send an invite to a Alchemer survey.
   category: Integrations
   tag:
   options:
@@ -804,8 +804,8 @@
   status: NOT_INSTALLED
   triggerType: ONCOURSE_EVENT
   onCourseEventType: ENROLMENT_SUCCESSFUL
-  description: Send an invite to a SurveyGizmo survey to students who have just enrolled. If a tag is defined in tagName, then will only run for enrolments in courses tagged with defined tag.
-  short: Requires an active SurveyGizmo integration to use. On enrolment into certain courses, send an invite to a SurveyGizmo survey.
+  description: Send an invite to a Alchemer survey to students who have just enrolled. If a tag is defined in tagName, then will only run for enrolments in courses tagged with defined tag.
+  short: Requires an active Alchemer integration to use. On enrolment into certain courses, send an invite to a Alchemer survey.
   category: Integrations
   tag:
   options:
@@ -868,4 +868,19 @@
     - name: toDate
       label: Transactions to
       dataType: DATE
+
+- name: Abandoned cart reminder
+  keyCode: ish.script.abandonedCartReminder
+  body: ish.script.abandonedCartReminder.groovy
+  status: ENABLED
+  triggerType: CRON
+  schedule: "@daily-morning"
+  short: Increase checkout conversion by sending a reminder to customers who abandoned the checkout process
+  description: Once a day, early in the morning, send a reminder to all customers with an abandoned checkout the previous day (midnight to midnight). If a customer created two abandoned checkouts, they will get two emails. The reminder will include a link to allow them to resume their checkout.
+  category: Marketing
+  tags: New
+  options:
+    - name: emailTemplate
+      dataType: MESSAGE_TEMPLATE
+      value: "ish.email.abandonedCartReminder"
 

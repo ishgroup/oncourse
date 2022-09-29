@@ -33,18 +33,18 @@ mailchimp unsubscribe,"def run(args) {
 	}
 }
 ",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,ENTITY_EVENT,,ContactTagRelation,REMOVE,Unsubscribe contact from a mailchimp list,
-SurveyGizmo send invite on enrolment,"import ish.integrations.*
+Alchemer send invite on enrolment,"import ish.integrations.*
 
 def run(args) {
 	def enrolment = args.value
 
-	ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.SURVEYGIZMO))
+	ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.ALCHEMER))
 			.select(args.context).findAll { integration ->
-		integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_SEND_ON_ENROLMENT_SUCCESS)?.value?.toBoolean()
+		integration.getProperty(IntegrationsConfiguration.ALCHEMER_SEND_ON_ENROLMENT_SUCCESS)?.value?.toBoolean()
 	}.each { integration ->
-		def tag = integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_COURSE_TAG)?.value?.trim()
+		def tag = integration.getProperty(IntegrationsConfiguration.ALCHEMER_COURSE_TAG)?.value?.trim()
 		if (tag == null	|| enrolment.courseClass.course.hasTag(tag)) {
-			surveyGizmo {
+			alchemer {
 				name integration.name
 				template ""survey invitation""
 				reply preference.email.from
@@ -53,7 +53,7 @@ def run(args) {
 		}
 	}
 }
-",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,ONCOURSE_EVENT,,,,Send SurveyGizmo invite upon enrolment,ENROLMENT_SUCCESSFUL
+",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,ONCOURSE_EVENT,,,,Send Alchemer invite upon enrolment,ENROLMENT_SUCCESSFUL
 send product purchased email,"def run(args) {
     def article = args.entity
 
@@ -944,7 +944,7 @@ send student class commencement notice,"def run(args) {
         }
     }
 }",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 9 * * ?,,,"Send an email to the student with information about when their class is starting, the day before it starts",
-SurveyGizmo send invite on enrolment completion,"import ish.integrations.*
+Alchemer send invite on enrolment completion,"import ish.integrations.*
 
 def run(args) {
 	def yesterdayStart = new Date() - 1
@@ -956,15 +956,15 @@ def run(args) {
 	def enrolmentsJustEnded = ObjectSelect.query(Enrolment)
 			.where(Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE_TIME).between(yesterdayStart, yesterdayEnd)).select(args.context)
 
-	ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.SURVEYGIZMO))
+	ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.ALCHEMER))
 			.select(args.context).findAll { integration ->
-		integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_SEND_ON_ENROLMENT_COMPLETION)?.value?.toBoolean()
+		integration.getProperty(IntegrationsConfiguration.ALCHEMER_SEND_ON_ENROLMENT_COMPLETION)?.value?.toBoolean()
 	}.each { integration ->
-		def tag = integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_COURSE_TAG)?.value?.trim()
+		def tag = integration.getProperty(IntegrationsConfiguration.ALCHEMER_COURSE_TAG)?.value?.trim()
 
 		enrolmentsJustEnded.each { enrolment ->
 			if (tag == null	|| enrolment.courseClass.course.hasTag(tag)) {
-				surveyGizmo {
+				alchemer {
 					name integration.name
 					template ""survey invitation""
 					reply preference.email.from
@@ -974,7 +974,7 @@ def run(args) {
 		}
 	}
 }
-",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 9 * * ?,,,Send SurveyGizmo invite upon enrolment completion,
+",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 9 * * ?,,,Send Alchemer invite upon enrolment completion,
 cancelled class notice for tutor,"def run(args) {
     def courseClass = args.entity
 

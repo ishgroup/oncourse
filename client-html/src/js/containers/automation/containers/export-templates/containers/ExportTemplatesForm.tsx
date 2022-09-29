@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, {
@@ -48,14 +51,13 @@ interface Props extends InjectedFormProps {
   history: any,
   syncErrors: any,
   nextLocation: string,
-  setNextLocation: (nextLocation: string) => void,
   emailTemplates?: CatalogItemType[]
 }
 
 const ExportTemplatesForm = React.memo<Props>(
   ({
     dirty, form, handleSubmit, isNew, invalid, values, syncErrors, emailTemplates,
-     dispatch, onCreate, onUpdate, onUpdateInternal, onDelete, history, nextLocation, setNextLocation
+     dispatch, onCreate, onUpdate, onUpdateInternal, onDelete, history, nextLocation
   }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
 
@@ -124,7 +126,6 @@ const ExportTemplatesForm = React.memo<Props>(
     useEffect(() => {
       if (!dirty && nextLocation) {
         history.push(nextLocation);
-        setNextLocation('');
       }
     }, [nextLocation, dirty]);
 
@@ -133,7 +134,7 @@ const ExportTemplatesForm = React.memo<Props>(
         <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialogClose} onSave={onDialogSave} />
 
         <Form onSubmit={handleSubmit(handleSave)}>
-          {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
+          {!disableRouteConfirm && <RouteChangeConfirm form={form} when={dirty || isNew} />}
 
           <AppBarContainer
             values={values}
@@ -241,7 +242,7 @@ const ExportTemplatesForm = React.memo<Props>(
 
                 <FormField
                   type="text"
-                  label="Key Code"
+                  label="Key code"
                   name="keyCode"
                   validate={isNew || !isInternal ? validateKeycode : undefined}
                   disabled={!isNew}
