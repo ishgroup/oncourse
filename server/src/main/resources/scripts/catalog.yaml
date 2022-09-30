@@ -885,7 +885,7 @@
   entityClass: Session
   entityEventType: CREATE_OR_UPDATE
   description: On create or edit Session, create or edit shift into a Kronos Schedule.
-  short: Requires active Kronos integration. When a Session are created or edited in onCourse, Shifts (as TutorAttendances) will be created or edited in a Kronos Schedule.
+  short: Requires active Kronos integration. When Session is created or edited in onCourse, TutorAttendances will be created or edited as Shifts in a Kronos Schedule.
   category: Integrations
   tag:
   options:
@@ -899,7 +899,7 @@
   status: NOT_INSTALLED
   triggerType: ON_DEMAND
   description: Create or edit list of Shifts into a Kronos Schedule from specific list of onCourse Sessions.
-  short: Requires active Kronos integration. Can find specific list of onCourse Sessions and then create or edit Shifts in Kronos corresponding to its.
+  short: Requires active Kronos integration. Finds specific list of onCourse Sessions and then creates or edits Shifts in Kronos.
   category: Integrations
   tag:
   options:
