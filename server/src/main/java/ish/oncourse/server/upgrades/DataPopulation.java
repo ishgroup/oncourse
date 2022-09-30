@@ -10,6 +10,9 @@
  */
 package ish.oncourse.server.upgrades;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import ish.oncourse.common.ResourceProperty;
@@ -19,12 +22,14 @@ import ish.oncourse.server.AngelModule;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.integration.PluginService;
 import ish.oncourse.server.report.IReportService;
+import ish.oncourse.server.report.ReportBuilder;
 import ish.report.ImportReportResult;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -86,22 +91,15 @@ public class DataPopulation implements Runnable {
 		var context = cayenneService.getNewContext();
 
 		logger.info("Resource loading: reports");
-		var resourcesList = PluginService.getPluggableResources(ResourceType.REPORT.getResourcePath(), ResourceType.REPORT.getFilePattern());
-		Set<Long> importedReportsIds = new HashSet<>();
-		for (var path : resourcesList) {
-			try (InputStream inputStream = ResourcesUtil.getResourceAsInputStream(path)) {
-				logger.debug("importing report {}", path);
-				if (inputStream != null) {
-					ImportReportResult reportResult = this.reportService.
-							importReport(IOUtils.toString(inputStream, Charset.defaultCharset()));
-					importedReportsIds.add(reportResult.getReportId());
-					logger.debug("...imported");
-				}
-			} catch (Exception e ) {
-				logger.error("Failed to import report: {}", path, e);
+		var reports = getResourcesList(ResourceType.REPORT);
+		reports.forEach( props -> {
+			try {
+				DataPopulationUtils.updateReport(context, props);
+			} catch (Exception e) {
+				logger.error("{} {} was not imported", ResourceType.REPORT.getDisplayName(), props.get(ResourceProperty.NAME.getDisplayName()), e);
 			}
-		}
-        DataPopulationUtils.removeDeletedReports(context, importedReportsIds);
+		});
+		removeFromDbDeletedResources(context, reports, ResourceType.REPORT);
 
 
         logger.info("Resource loading: scripts");

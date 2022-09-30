@@ -29,12 +29,16 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReportBuilder {
 
     private static final Logger logger = LogManager.getLogger();
 
     private String reportXml;
+
+    public static List<ReportModel> models = new ArrayList<>();
 
 
     public static ReportBuilder valueOf(String reportXml) {
@@ -44,7 +48,7 @@ public class ReportBuilder {
         return reportBuilder;
     }
 
-    public Report build() throws ParserConfigurationException, SAXException, IOException {
+    public Report build(String path) throws ParserConfigurationException, SAXException, IOException {
         var doc = parseDocument();
         var inputName = getReportName(doc);
         var inputEntity = getReportEntity(doc);
@@ -52,6 +56,20 @@ public class ReportBuilder {
         var inputKeyCode = getReportKeyCode(doc); // mandatory identifier
         var inputSortOn = getReportSortOn(doc); // non-mandatory
         var inputDescription = getReportDescription(doc); // non-mandatory
+
+        if(path != null){
+            if(path.startsWith("reports/"))
+                path = path.replaceFirst("reports/","");
+            var reportModel = new ReportModel();
+            reportModel.setReport(path);
+            reportModel.setName(inputName);
+            reportModel.setEntityClass(inputEntity);
+            reportModel.setVisible(inputIsVisible);
+            reportModel.setKeyCode(inputKeyCode);
+            reportModel.setSortOn(inputSortOn);
+            reportModel.setDescription(inputDescription);
+            models.add(reportModel);
+        }
 
         var report = new Report();
         report.setReport(reportXml);
@@ -67,6 +85,90 @@ public class ReportBuilder {
         }
 
         return report;
+    }
+
+    class ReportModel{
+        String keyCode;
+        private String name;
+        private String entityClass;
+        private boolean isVisible;
+        private String report;
+        private String shortDesc;
+        private String description;
+        private String category;
+        private String sortOn;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getEntityClass() {
+            return entityClass;
+        }
+
+        public void setEntityClass(String entityClass) {
+            this.entityClass = entityClass;
+        }
+
+        public String getKeyCode() {
+            return keyCode;
+        }
+
+        public void setKeyCode(String keyCode) {
+            this.keyCode = keyCode;
+        }
+
+        public boolean isVisible() {
+            return isVisible;
+        }
+
+        public void setVisible(boolean visible) {
+            isVisible = visible;
+        }
+
+        public String getReport() {
+            return report;
+        }
+
+        public void setReport(String report) {
+            this.report = report;
+        }
+
+        public String getShortDesc() {
+            return shortDesc;
+        }
+
+        public void setShortDesc(String shortDesc) {
+            this.shortDesc = shortDesc;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public String getCategory() {
+            return category;
+        }
+
+        public void setCategory(String category) {
+            this.category = category;
+        }
+
+        public String getSortOn() {
+            return sortOn;
+        }
+
+        public void setSortOn(String sortOn) {
+            this.sortOn = sortOn;
+        }
     }
 
     public String readProperty(Property  property) {

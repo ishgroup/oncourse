@@ -66,7 +66,7 @@ public class ReportValidator {
 
         Report report;
         try {
-            report = ReportBuilder.valueOf(reportXml).build();
+            report = ReportBuilder.valueOf(reportXml).build(null);
         } catch (Exception e) {
             logger.error("Report building error", e);
             return ReportBuildingError;
