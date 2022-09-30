@@ -8,7 +8,7 @@
 
 import React from "react";
 import {
-  arrayInsert,
+  arrayPush,
   arrayRemove,
   change,
   getFormSyncErrors,
@@ -26,7 +26,7 @@ import { getDeepValue } from "../../../common/utils/common";
 import { createTag, deleteTag, updateTag } from "../actions";
 import { showConfirm } from "../../../common/actions";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
-import { onSubmitFail } from "../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../common/utils/highlightFormErrors";
 import { getPluralSuffix } from "../../../common/utils/strings";
 import { AppTheme } from "../../../model/common/Theme";
 import { FormTag } from "../../../model/tags";
@@ -255,7 +255,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
 
       onDelete(tag);
     }).then(() => {
-      redirectOnDelete();
+      if (redirectOnDelete) redirectOnDelete();
     });
   };
 
@@ -267,7 +267,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
       id: ("new" + this.counter) as any,
     };
 
-    dispatch(arrayInsert(TAGS_FORM_NAME, "childTags", 0, newTag));
+    dispatch(arrayPush(TAGS_FORM_NAME, "childTags", newTag));
     this.setEditingId(newTag.id);
 
     this.counter++;
@@ -292,9 +292,14 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
     const onConfirm = () => {
       const clone = JSON.parse(JSON.stringify(values));
 
-      const removePath = getDeepValue(clone, item.parent.replace(/\[[0-9]+]$/, ""));
+      if (item.parent) {
+        const removePath = getDeepValue(clone, item.parent.replace(/\[[0-9]+]$/, ""));
 
-      removePath && removePath.splice(Number(item.parent.match(/\[(\d)]$/)[1]), 1);
+        if (removePath) {
+          const deleteItem = item.parent.match(/\[(\d)]$/);
+          if (deleteItem && deleteItem.length > 0) removePath.splice(Number(deleteItem[1]), 1);
+        }
+      }
 
       dispatch(change(TAGS_FORM_NAME, "childTags", clone.childTags));
       dispatch(change(TAGS_FORM_NAME, "refreshFlag", !values.refreshFlag));

@@ -16,12 +16,7 @@ import Menu from "@mui/material/Menu";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
 import {
-  createInvoice,
-  deleteQuote,
-  getDefaultInvoiceTerms,
-  getInvoice,
-  removeInvoice,
-  updateInvoice
+  getDefaultInvoiceTerms
 } from "./actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import InvoicesEditView from "./components/InvoicesEditView";
@@ -38,7 +33,6 @@ import { getPlainTaxes } from "../taxes/actions";
 import InvoiceCogwheel from "./components/InvoiceCogwheel";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { formatToDateOnly } from "../../../common/utils/dates/datesNormalizing";
-import AddPaymentOutEditView from "../paymentsOut/components/AddPaymentOutEditView";
 import { getAdministrationSites } from "../sites/actions";
 import { checkPermissions } from "../../../common/actions";
 import { getAccountTransactionLockedDate } from "../../preferences/actions";
@@ -128,7 +122,7 @@ const findRelatedGroup: any[] = [
 ];
 
 const nameCondition = (invoice: Invoice) => {
-  let result = "";
+  let result;
   if (invoice.type === "Invoice") {
     result = invoice.invoiceNumber ? "Invoice #" + invoice.invoiceNumber : "New";
   } else {
@@ -136,10 +130,6 @@ const nameCondition = (invoice: Invoice) => {
   }
 
   return result;
-};
-
-const nestedEditFields = {
-  PaymentOut: props => <AddPaymentOutEditView {...props} />
 };
 
 const manualLink = getManualLink("invoice");
@@ -154,11 +144,7 @@ const Invoices = React.memo<any>(({
   getAdministrationSites,
   getQePermissions,
   clearListState,
-  onCreate,
-  onSave,
-  getInvoiceRecord,
   setListCreatingNew,
-  onDeleteQuote,
   selection,
   history,
   updateSelection,
@@ -248,18 +234,13 @@ const Invoices = React.memo<any>(({
           asyncValidate: notesAsyncValidate,
           asyncBlurFields: ["notes[].message"]
         }}
-        getEditRecord={getInvoiceRecord}
         rootEntity="AbstractInvoice"
         filterEntity="Invoice"
-        onCreate={onCreate}
-        onSave={onSave}
         onInit={onInit}
         customOnCreate={customOnCreate}
-        onDelete={onDeleteQuote}
         defaultDeleteDisabled={defaultDeleteDisabled}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
-        nestedEditFields={nestedEditFields}
         EditViewContent={InvoicesEditView}
         CogwheelAdornment={InvoiceCogwheel}
         alwaysFullScreenCreateView
@@ -324,11 +305,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getAccountTransactionLockedDate());
   },
   clearListState: () => dispatch(clearListState()),
-  getInvoiceRecord: (id: string) => dispatch(getInvoice(id)),
-  onSave: (id: string, invoice: Invoice) => dispatch(updateInvoice(id, invoice)),
-  onCreate: (invoice: Invoice) => dispatch(createInvoice(invoice)),
-  onDelete: (id: string) => dispatch(removeInvoice(id)),
-  onDeleteQuote: (id: string) => dispatch(deleteQuote(id)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
   getTags: () => dispatch(getListTags("AbstractInvoice")),

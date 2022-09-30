@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import * as React from "react";
@@ -22,7 +25,7 @@ import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { getDeepValue, mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../reducers/state";
 import { createDataCollectionForm, deleteDataCollectionForm, updateDataCollectionForm } from "../../../actions";
 import renderCollectionFormFields from "./CollectionFormFieldsRenderer";
@@ -374,7 +377,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
 
     const match = collectionForms.filter(item => item.name === value.trim());
 
-    if (this.props.match.params.action === "edit") {
+    if (values.form.id) {
       const filteredMatch = match.filter(item => item.id !== values.form.id);
       return filteredMatch.length > 0 ? "Form name must be unique" : undefined;
     }
@@ -448,7 +451,6 @@ class DataCollectionWrapper extends React.Component<any, any> {
                       this.onDelete(id);
                     },
                     icon: <DeleteForever />,
-
                     confirmText: "Form will be deleted permanently",
                     tooltip: "Delete form",
                     confirmButtonText: "DELETE"

@@ -190,7 +190,8 @@ class ChecklistsFormRenderer extends TagsFormBase {
       values,
       syncErrors,
       form,
-      classes
+      classes,
+      dispatch
     } = this.props;
 
     const { editingIds } = this.state;
@@ -277,6 +278,8 @@ class ChecklistsFormRenderer extends TagsFormBase {
                         index={index}
                         onDelete={this.removeRequirement}
                         disabled={values.system}
+                        dispatch={dispatch}
+                        form={form}
                       />
                   ))}
                 </Grid>

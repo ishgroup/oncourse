@@ -148,7 +148,8 @@ class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
     private static void updateSites(List<SiteDTO> sites, Lead lead) {
         ObjectContext context = lead.context
         List<Long> sitesToSave = sites*.id ?: [] as List<Long>
-        context.deleteObjects(lead.sites.findAll { !sitesToSave.contains(it.id) })
+        def sitesToRemove = lead.sites.findAll { !sitesToSave.contains(it.id) }
+        sitesToRemove.each {lead.removeFromSites(it)}
         sites.findAll { !lead.sites*.id.contains(it.id) }
                 .collect { getRecordById(context, Site, it.id)}
                 .each {site ->

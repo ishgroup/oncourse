@@ -1,7 +1,5 @@
 import React, { useCallback, useRef } from "react";
-import {
-  ButtonBase, Typography
-} from "@mui/material";
+import { ButtonBase, Typography } from "@mui/material";
 import clsx from "clsx";
 import { alpha } from "@mui/material/styles";
 import { WrappedFieldProps } from "redux-form";
@@ -30,6 +28,7 @@ export const ColoredCheckBox = ({
     >
       <input type="checkbox" ref={inputRef} checked={input.value} hidden onChange={input.onChange} />
       <ButtonBase
+        component="div"
         disabled={disabled}
         sx={{
           width: theme => theme.spacing(3),

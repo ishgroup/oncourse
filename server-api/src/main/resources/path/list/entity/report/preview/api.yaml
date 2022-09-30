@@ -1,0 +1,26 @@
+get:
+  operationId: getHighQualityPreview
+  description: retrieves preview of report from database
+  tags:
+    - PdfTemplate
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of pdf background record to fetch
+  produces:
+    - application/pdf
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: string
+        format: byte
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: REPORT
+    errorMessage: Sorry, you have no permissions to get background. Please contact your administrator
