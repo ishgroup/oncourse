@@ -17,7 +17,7 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import { Form, reduxForm, initialize } from "redux-form";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import * as Model from "../../../../../model/preferences/Avetmiss";
 import { validateEmail } from "../../../../../common/utils/validation";
 import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";

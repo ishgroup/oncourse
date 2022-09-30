@@ -17,7 +17,7 @@ import ContactEditView from "../../../entities/contacts/components/ContactEditVi
 import { formatRelationsBeforeSave, getDisabledSubmitCondition } from "../../../entities/contacts/Contacts";
 import { checkoutCreateContact, checkoutUpdateContact } from "../../actions/checkoutContact";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
-import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
 
 export const CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME = "CheckoutContactEditForm";

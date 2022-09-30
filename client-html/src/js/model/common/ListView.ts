@@ -7,7 +7,7 @@
  */
 
 import React, { ReactElement } from "react";
-import { InjectedFormProps } from "redux-form";
+import { FormErrors, InjectedFormProps } from "redux-form";
 import { Dispatch } from "redux";
 import {
   DataResponse, EmailTemplate, Filter, Script, SearchQuery
@@ -122,7 +122,7 @@ export interface EditViewProps<V = any> extends Partial<InjectedFormProps<V>> {
   isNested?: boolean;
   nestedIndex?: number;
   onCloseClick?: AnyArgFunction;
-  syncErrors?: any;
+  syncErrors?: FormErrors;
   tabIndex?: number;
   expanded?: number[];
   setExpanded?: (arg: number[] | ((arg: number[]) => void)) => void;

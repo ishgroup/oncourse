@@ -163,6 +163,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
     tabIndex,
     expanded,
     setExpanded,
+    syncErrors
   } = props;
 
   const hasQePermissions = access["ENROLMENT_CREATE"];
@@ -241,7 +242,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
 
   return (
     <div className="pl-3 pr-3">
-      <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Education">
+      <ExpandableContainer index={tabIndex} expanded={expanded} formErrors={syncErrors} setExpanded={setExpanded} header="Education">
         <Grid container columnSpacing={3}>
           {enrolmentsPermissions && (
           <Grid

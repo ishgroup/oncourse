@@ -43,11 +43,11 @@ const fundingSourceValues = Object.keys(ClassFundingSource).map(mapSelectItems);
 
 const CourseClassVetTab = React.memo<Props>(props => {
   const {
-    contracts, tabIndex, expanded, setExpanded, twoColumn, values
+    contracts, tabIndex, expanded, setExpanded, twoColumn, values, syncErrors
   } = props;
   return (
     <div className="pl-3 pr-3">
-      <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
+      <ExpandableContainer formErrors={syncErrors} index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
         <Grid container columnSpacing={3} rowSpacing={2}>
           <Grid item xs={4}>
             <FormControlLabel

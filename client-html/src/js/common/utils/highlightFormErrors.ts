@@ -5,8 +5,8 @@
 
 import { getFirstErrorNodePath } from "./validation";
 
-const animateFormErrors = () => {
-  const errorNodes = document.querySelectorAll(".shakingError");
+export const animateFormErrors = (target: Element | Document = document) => {
+  const errorNodes = target.querySelectorAll(".shakingError");
 
   errorNodes.forEach(node => {
     node.classList.add("animated", "shake");

@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import FileCopy from "@mui/icons-material/FileCopy";
@@ -462,7 +465,13 @@ const ScriptsForm = React.memo<Props>(props => {
     values && values.trigger && values.trigger.entityName,
     values && values.trigger && values.trigger.entityAttribute,
   ]);
-
+  
+  useEffect(() => {
+    if (!expandInfo && syncErrors && syncErrors["keyCode"] ) {
+      setExpandInfo(true);
+    }
+  }, [syncErrors]);
+  
   return (
     <>
       <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialogClose} onSave={onDialogSave} hasNameField />
@@ -712,8 +721,8 @@ const ScriptsForm = React.memo<Props>(props => {
                     </Grid>
                   </Grid>
                   <Accordion
-                    defaultExpanded={expandInfo}
-                    onChange={() => setExpandInfo(!expandInfo)}
+                    expanded={expandInfo}
+                    onChange={syncErrors && syncErrors["keyCode"] ? null : () => setExpandInfo(!expandInfo)}
                     classes={{ root: classes.technicalInfoRoot, expanded: classes.technicalInfoExpanded }}
                   >
                     <AccordionSummary classes={{ root: "p-0" }} expandIcon={<ExpandMoreIcon />}>
