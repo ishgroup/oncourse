@@ -786,3 +786,17 @@ databaseChangeLog:
       changes:
         - customChange:
             class: ish.oncourse.server.upgrades.liquibase.change.CreateSpecialTags
+
+  - changeSet:
+      id: 118-1
+      author: dmitriy
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: Account
+        - tableExists:
+            tableName: Preference
+      comment: create default invoice account property
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.CreateInvoiceDefaultAccountPreference
