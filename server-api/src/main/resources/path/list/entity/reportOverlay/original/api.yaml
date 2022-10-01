@@ -11,7 +11,7 @@ get:
       required: true
       description: Unique identifier of pdf background record to fetch
   produces:
-    - application/pdf
+    - application/json
   responses:
     '200':
       description: Success response.
