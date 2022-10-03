@@ -15,9 +15,14 @@ import { createAndDownloadFile } from "../../../../../common/utils/common";
 
 const request: EpicUtils.Request<any, { id: number, name: string }> = {
   type: GET_PDF_BACKGROUND_COPY,
+  hideLoadIndicator: true,
   getData: ({ id }) => ReportOverlayService.getReportOverlayCopy(id),
   processData: (r, s, { name }) => {
-    createAndDownloadFile(r, "png", name);
+
+    r.forEach(f => {
+      createAndDownloadFile(f, "png", name);
+    });
+    
     return [
       getPdfBackgroundCopyListFulfilled(true)
     ];
