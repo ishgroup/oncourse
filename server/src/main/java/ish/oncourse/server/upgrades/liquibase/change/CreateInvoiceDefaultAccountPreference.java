@@ -8,6 +8,7 @@
 
 package ish.oncourse.server.upgrades.liquibase.change;
 
+import ish.common.types.AccountType;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.Account;
 import ish.oncourse.server.cayenne.Preference;
@@ -30,6 +31,7 @@ public class CreateInvoiceDefaultAccountPreference extends IshTaskChange {
         logger.warn("Running upgrade...");
 
         var accountId = ObjectSelect.columnQuery(Account.class, Account.ID)
+                .where(Account.TYPE.eq(AccountType.INCOME).andExp(Account.IS_ENABLED.eq(true)))
                 .orderBy(Account.DESCRIPTION.getName())
                 .selectFirst(context);
 
