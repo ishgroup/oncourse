@@ -94,3 +94,11 @@ export interface ServiceNSWFields {
   programme: string;
   apiKey: string;
 }
+
+export interface KronosFields {
+  username: string;
+  password: string;
+  apiKey: string;
+  companyShortName: string;
+  CID: string;
+}
