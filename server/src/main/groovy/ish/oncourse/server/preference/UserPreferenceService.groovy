@@ -169,7 +169,7 @@ class UserPreferenceService {
             case PreferenceEnumDTO.TUTORIAL_SKIP_SYSTEMUSER:
                 return preferenceController.getTutorialSkipSystemUser()
             case PreferenceEnumDTO.BACKGROUND_QUALITY_SCALE:
-                return preferenceController.getImageHighQualityScale()
+                return preferenceController.getBackgroundQualityScale()
             case PreferenceEnumDTO.NEWS_READ:
                 return getReadNews()
             default:

@@ -1194,8 +1194,8 @@ public abstract class CommonPreferenceController {
 			setNumberOfLoginAttempts((Integer) value);
 		} else if (TUTORIAL_SKIP_SYSTEMUSER.equals(key)) {
 			setTutorialSkipSystemUser((String) value);
-		} else if(IMAGE_HIGH_QUALITY_SCALE.equals(key)){
-			setImageHighQualityScale((String) value);
+		} else if(BACKGROUND_QUALITY_SCALE.equals(key)){
+			setBackgroundQualityScale((String) value);
 		}
 	}
 
@@ -1388,15 +1388,15 @@ public abstract class CommonPreferenceController {
 		return getValue(TUTORIAL_SKIP_SYSTEMUSER, false);
 	}
 
-	public String getImageHighQualityScale(){
-		return getValue(IMAGE_HIGH_QUALITY_SCALE, false);
+	public String getBackgroundQualityScale(){
+		return getValue(BACKGROUND_QUALITY_SCALE, false);
 	}
 
 	public void setTutorialSkipSystemUser(String value){
 		setValue(TUTORIAL_SKIP_SYSTEMUSER, false, value);
 	}
 
-	public void setImageHighQualityScale(String value){
-		setValue(IMAGE_HIGH_QUALITY_SCALE, false, value);
+	public void setBackgroundQualityScale(String value){
+		setValue(BACKGROUND_QUALITY_SCALE, false, value);
 	}
 }
