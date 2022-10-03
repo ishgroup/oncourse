@@ -31,7 +31,7 @@ public class CreateHighQualityPreference extends IshTaskChange {
         Preference preference = context.newObject(Preference.class);
         preference.setName(PreferenceEnumDTO.IMAGE_HIGHQUALITY_SCALE.toString());
         preference.setUniqueKey(PreferenceEnumDTO.IMAGE_HIGHQUALITY_SCALE.toString());
-        preference.setValueString(String.valueOf(10));
+        preference.setValueString(String.valueOf(6));
         context.commitChanges();
     }
 }
