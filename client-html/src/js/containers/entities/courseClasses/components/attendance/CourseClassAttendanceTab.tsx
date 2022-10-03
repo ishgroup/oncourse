@@ -300,12 +300,6 @@ const CourseClassAttendanceTab = React.memo<Props>(
       let addAction = setStudentsToAttend;
       let titlePath = null;
 
-      // if (type === "Tutor") {
-      //   valuesPath = "tutorAttendance";
-      //   idPath = "courseClassTutorId";
-      //   addAction = setTutorsToAttend;
-      // }
-
       if (type === "Training plan") {
         valuesPath = "trainingPlan";
         namePath = "moduleName";
@@ -329,7 +323,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
       });
       const resultArray = Object.keys(result).map(k => result[k]);
 
-      resultArray.sort((a, b) => (a.name > b.name ? 1 : -1));
+      resultArray.sort((a, b) => (a.name.split(" ")[1] ? a.name.split(" ")[1] > b.name.split(" ")[1] ? 1 : -1 : 1));
 
       addAction(resultArray);
     }, [setStudentsToAttend, setModulesToAttend, form]);

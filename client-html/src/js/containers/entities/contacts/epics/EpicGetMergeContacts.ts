@@ -23,10 +23,20 @@ const request: EpicUtils.Request<any, { contactA: string; contactB: string }> = 
       mergeRequest: {
         contactA,
         contactB,
-        data: Object.assign({}, ...mergeData.mergeLines.filter(l => l.a === l.b).map(l => ({ [l.key]: "A" })))
+        data: Object.assign(
+          {},
+
+          ...mergeData.mergeLines
+            .filter(l => l.a === l.b)
+            .map(l => ({ [l.key]: "A" })),
+
+          ...mergeData.mergeLines
+            .filter(l => l.a !== l.b && (!l.a || !l.b))
+            .map(l => ({ [l.key]: (l.a && "A") || (l.b && "B") })))
       }
     })
   ],
   processError: response => FetchErrorHandler(response, "Failed to get contacts")
 };
+
 export const EpicGetMergeContacts: Epic<any, any> = EpicUtils.Create(request);

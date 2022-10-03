@@ -25,7 +25,6 @@ import { State } from "../../../../../reducers/state";
 import { getCourseClassEnrolments, setCourseClassEnrolments } from "../../actions";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import { AppTheme } from "../../../../../model/common/Theme";
-import ChartViewSwitcher from "./ChartViewSwitcher";
 
 interface Props {
   classId: number;
@@ -163,9 +162,7 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
     classStart,
     theme,
     openBudget,
-    setShowAllWeeks,
     showAllWeeks,
-    twoColumn,
     hasBudged
   }) => {
     const [data, setData] = useState<ChartWeeks>(initialData);
@@ -376,7 +373,7 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
               stroke={theme.palette.grey["500"]}
             />
             <Tooltip
-              wrapperStyle={{ zIndex: 1 }}
+              wrapperStyle={{ zIndex: 1, outline: "none" }}
               content={props => <CustomizedTooltip {...props} data={data} showAllWeeks={showAllWeeks} />}
             />
             <ReferenceLine

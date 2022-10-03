@@ -113,7 +113,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
       } as StudentForRender];
     }, []);
 
-    result.sort((a, b) => (a.studentName > b.studentName ? 1 : -1));
+    result.sort((a, b) => (a.studentName.split(" ")[1] ? a.studentName.split(" ")[1] > b.studentName.split(" ")[1] ? 1 : -1 : 1));
 
     setStudentsForRender(result);
   }, [courseClassEnrolments, row.submissions]);
