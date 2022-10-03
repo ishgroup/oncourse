@@ -29,13 +29,9 @@ import ish.print.PrintResult.ResultType;
 import ish.print.transformations.PrintTransformation;
 import ish.s3.AmazonS3Service;
 import ish.util.EntityUtil;
-import ish.util.ImageHelper;
 import ish.util.MapsUtil;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
-import net.sf.jasperreports.engine.export.type.PdfFieldBorderStyleEnum;
-import net.sf.jasperreports.export.PdfExporterConfiguration;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
@@ -58,10 +54,7 @@ import java.net.URL;
 import java.rmi.server.UID;
 import java.util.*;
 
-import static ish.util.ImageHelper.generateHighQualityPdfPreview;
-import static ish.util.ImageHelper.getHighQualityScale;
-import static net.sf.jasperreports.engine.export.JRPdfExporter.PDF_FIELD_BORDER_STYLE;
-import static net.sf.jasperreports.engine.style.PropertyStyleProvider.STYLE_PROPERTY_PEN_LINE_WIDTH;
+import static ish.util.ImageHelper.*;
 
 /**
  * Worker which is serving specific {@link PrintRequest} identified by unique id.
@@ -266,7 +259,7 @@ public class PrintWorker implements Runnable {
 			ObjectContext cc = cayenneService.getNewContext();
 			var localReport = cc.localObject(startingReport);
 			localReport.setPreview(
-					generateHighQualityPdfPreview(pdfResult, getHighQualityScale(userPreferenceService))
+					generateBackgroundImage(pdfResult, userPreferenceService)
 			);
 			cc.commitChanges();
 		}

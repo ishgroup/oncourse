@@ -18,7 +18,7 @@ import org.apache.cayenne.access.DataContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class CreateHighQualityPreference extends IshTaskChange {
+public class CreateBackgroundQualityPreference extends IshTaskChange {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
@@ -29,9 +29,9 @@ public class CreateHighQualityPreference extends IshTaskChange {
         logger.warn("Running upgrade...");
 
         Preference preference = context.newObject(Preference.class);
-        preference.setName(PreferenceEnumDTO.IMAGE_HIGHQUALITY_SCALE.toString());
-        preference.setUniqueKey(PreferenceEnumDTO.IMAGE_HIGHQUALITY_SCALE.toString());
-        preference.setValueString(String.valueOf(6));
+        preference.setName(PreferenceEnumDTO.BACKGROUND_QUALITY_SCALE.toString());
+        preference.setUniqueKey(PreferenceEnumDTO.BACKGROUND_QUALITY_SCALE.toString());
+        preference.setValueString(String.valueOf(2));
         context.commitChanges();
     }
 }
