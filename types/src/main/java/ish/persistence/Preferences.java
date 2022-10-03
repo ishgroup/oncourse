@@ -467,5 +467,5 @@ public interface Preferences {
 
 	String TUTORIAL_SKIP_SYSTEMUSER = "tutorial.skip.systemuser";
 
-	String IMAGE_HIGH_QUALITY_SCALE = "image.highquality.scale";
+	String BACKGROUND_QUALITY_SCALE = "background.quality.scale";
 }
