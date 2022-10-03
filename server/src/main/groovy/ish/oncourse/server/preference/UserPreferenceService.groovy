@@ -168,7 +168,7 @@ class UserPreferenceService {
                 return preferenceController.getOncourseServerDefaultTimezone()
             case PreferenceEnumDTO.TUTORIAL_SKIP_SYSTEMUSER:
                 return preferenceController.getTutorialSkipSystemUser()
-            case PreferenceEnumDTO.IMAGE_HIGHQUALITY_SCALE:
+            case PreferenceEnumDTO.BACKGROUND_QUALITY_SCALE:
                 return preferenceController.getImageHighQualityScale()
             case PreferenceEnumDTO.NEWS_READ:
                 return getReadNews()

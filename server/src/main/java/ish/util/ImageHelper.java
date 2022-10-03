@@ -47,7 +47,10 @@ public class ImageHelper {
 	private static final int PDF_PREVIEW_HEIGHT = 240;
 	private static final int A4_PIXELS_WIDTH = 595;
 	private static final int A4_PIZELS_HEIGHT = 845;
+
 	private static final String PDF_PREVIEW_FORMAT = "png";
+
+	public static final int MAX_IMAGE_SCALE = 10;
 
 
 	public static BufferedImage scaleImageToSize(int nMaxWidth, int nMaxHeight, BufferedImage imgSrc) {
@@ -233,28 +236,28 @@ public class ImageHelper {
 
 
 	/**
-	 * Generates 400x564 (A4 format demention) preview from pdf byte array.
+	 * Generates 400x564 (A4 format demention) background from pdf byte array.
 	 *
 	 * @param pdfContent - pdf byte array
 	 * @return - binary content of generated preview, null - if transformation can't be performed
 	 */
-	public static byte[] generateHighQualityPdfPreview(byte[] pdfContent) {
-		return generateHighQualityPdfPreview(pdfContent, 10);
+	public static byte[] generateBackgroundImage(byte[] pdfContent, UserPreferenceService userPreferenceService) {
+		return generateHighQualityPdfPreview(pdfContent, getBackgroundQualityScale(userPreferenceService));
 	}
 
-	public static int getHighQualityScale(UserPreferenceService userPreferenceService){
-		var highQualityScaleStr = userPreferenceService.get(PreferenceEnumDTO.IMAGE_HIGHQUALITY_SCALE);
+	public static int getBackgroundQualityScale(UserPreferenceService userPreferenceService){
+		var highQualityScaleStr = userPreferenceService.get(PreferenceEnumDTO.BACKGROUND_QUALITY_SCALE);
 		if(highQualityScaleStr != null){
 			try {
 				var highQualityScale = Integer.parseInt(highQualityScaleStr);
 				if(highQualityScale <= 0)
 					highQualityScale = 2;
-				if(highQualityScale > 10)
-					highQualityScale = 10;
+				if(highQualityScale > MAX_IMAGE_SCALE)
+					highQualityScale = MAX_IMAGE_SCALE;
 				return highQualityScale;
 			} catch(Exception ignore){}
 		}
-		return 10;
+		return MAX_IMAGE_SCALE;
 	}
 
 	/**
