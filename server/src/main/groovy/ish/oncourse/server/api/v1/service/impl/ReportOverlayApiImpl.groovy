@@ -115,6 +115,6 @@ class  ReportOverlayApiImpl implements ReportOverlayApi {
     List<byte[]> getOriginal(Long id) {
         ReportOverlay report = SelectById.query(ReportOverlay, id)
                 .selectOne(cayenneService.newContext)
-        return ImageHelper.generateOriginalHighQuality(report?.overlay);
+        return ImageHelper.generateOriginalHighQuality(report?.overlay).each {it -> Base64.getEncoder().encode(it)};
     }
 }
