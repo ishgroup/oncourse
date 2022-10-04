@@ -43,7 +43,7 @@ const StyledCheckboxBase = props => {
   return (
     <Checkbox
       classes={{
-        root: clsx(classes.root, uncheckedClass, className)
+        root: clsx(classes.root, uncheckedClass, className),
       }}
       {...rest}
     />

@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { FormControlLabel } from "@mui/material";
+import { FormControlLabel, Tooltip } from "@mui/material";
 import { FormSwitch } from "./formFields/Switch";
 import EditInPlaceField from "./formFields/EditInPlaceField";
 import EditInPlaceDateTimeField from "./formFields/EditInPlaceDateTimeField";
@@ -44,14 +44,15 @@ const DataTypeRenderer = React.memo<Props & any>(props => {
 
     case "Checkbox": {
       return (
-        <FormControlLabel
-          classes={{
-            root: "checkbox",
-            label: props.classes && props.classes.label
-          }}
-          control={<CheckboxField {...rest} />}
-          label={props.label}
-        />
+        <Tooltip title={props.label}>
+          <FormControlLabel
+            classes={{
+              root: "checkbox"
+            }}
+            control={<CheckboxField {...rest} />}
+            label={props.label}
+          />
+        </Tooltip>
       );
     }
 
