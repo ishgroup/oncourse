@@ -13,6 +13,8 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.cayenne.TutorAttendance
+
 import static ish.oncourse.server.api.v1.function.CustomFieldTypeFunctions.updateCustomField
 import static ish.oncourse.server.api.v1.function.CustomFieldTypeFunctions.validateData
 import static ish.oncourse.server.api.v1.function.CustomFieldTypeFunctions.validateForDelete
@@ -46,6 +48,8 @@ class CustomFieldApiImpl implements CustomFieldApi {
     List<CustomFieldTypeDTO> get() {
         ObjectSelect.query(CustomFieldType)
                 .orderBy(CustomFieldType.SORT_ORDER.asc())
+//                TutorAttendanceCustomField is private custom field, which using only for Kronos integration to store shift_id on onCourse side. TutorAttendanceCustomField won't be shown to users
+                .where(CustomFieldType.ENTITY_IDENTIFIER.ne(TutorAttendance.class.simpleName))
                 .select(cayenneService.newContext)
                 .collect { dbType ->
             new CustomFieldTypeDTO().with { type ->

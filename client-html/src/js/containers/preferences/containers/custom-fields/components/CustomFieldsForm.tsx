@@ -1,6 +1,5 @@
 import * as React from "react";
 import { withRouter } from "react-router";
-import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import {
   Form, FieldArray, reduxForm, SubmissionError, arrayRemove, change, initialize
@@ -10,7 +9,7 @@ import isEqual from "lodash.isequal";
 import { withStyles, createStyles } from "@mui/styles";
 import Grid from "@mui/material/Grid";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { formCommonStyles } from "../../../styles/formCommonStyles";
 import CustomFieldsDeleteDialog from "./CustomFieldsDeleteDialog";
 import CustomFieldsRenderer from "./CustomFieldsRenderer";

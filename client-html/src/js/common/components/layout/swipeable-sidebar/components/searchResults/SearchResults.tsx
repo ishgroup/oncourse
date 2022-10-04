@@ -16,6 +16,10 @@ import ListLinkItem from "./ListLinkItem";
 import ListLinksGroup from "./ListLinksGroup";
 import { getResultId } from "../../utils";
 import navigation from "../../../../navigation/navigation.json";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { IconButton } from "@mui/material";
+import { useHoverShowStyles } from "../../../../../styles/hooks";
+import clsx from "clsx";
 
 const styles = theme => createStyles({
   root: {
@@ -37,44 +41,74 @@ const SearchResults = props => {
     checkSelectedResult,
     setExecMenuOpened,
     setScriptIdSelected,
-    setSelected
+    setSelected,
+    favorites,
+    favoriteScripts,
+    updateFavorites
   } = props;
+  
+  const hoverClasses = useHoverShowStyles();
 
   return (
     <List disablePadding className={classes.root}>
       {userSearch
         && navigation.features
           .filter(c => c.title.toLowerCase().includes(userSearch.toLowerCase()))
-          .map((c, i) => (
-            <ListLinkItem
-              key={i}
-              url={c.link}
-              selected={checkSelectedResult("category", "url", c.link)}
-              item={{
-                name: getHighlightedPartLabel(c.title, userSearch)
-              }}
-              id={getResultId(i, c.title)}
-            />
-          ))}
+          .map((c, i) => {
+            
+            const isFavorite = favorites.includes(c.key);
+            
+            return <div key={i} className={clsx(hoverClasses.container, "centeredFlex")}>
+              <ListLinkItem
+                url={c.link}
+                selected={checkSelectedResult("category", "url", c.link)}
+                item={{
+                  name: getHighlightedPartLabel(c.title, userSearch)
+                }}
+                id={getResultId(i, c.title)}
+              />
+              <IconButton
+                onMouseDown={e => e.stopPropagation()}
+                onClick={() => updateFavorites(c.key, "category")}
+                className={clsx("p-0-5 lightGrayColor", !isFavorite && hoverClasses.target )}
+                size="small"
+              >
+                <FavoriteBorderIcon fontSize="inherit" color={isFavorite ? "primary" : "inherit"} />
+              </IconButton>
+            </div>;
+          })}
       {userSearch
         && hasScriptsPermissions
         && scripts
           .filter(s => s.name.toLowerCase().includes(userSearch.toLowerCase()))
-          .map((s, i) => (
-            <ListLinkItem
-              key={i}
-              openLink={id => {
-                setScriptIdSelected(id);
-                setExecMenuOpened(true);
-              }}
-              item={{
-                name: getHighlightedPartLabel(s.name, userSearch),
-                id: s.id,
-                type: "script"
-              }}
-              id={getResultId(i, s.name)}
-            />
-        ))}
+          .map((s, i) => {
+
+            const isFavorite = favoriteScripts.includes(String(s.id));
+            
+            return <div key={i} className={clsx(hoverClasses.container, "centeredFlex")}>
+              <ListLinkItem
+                key={i}
+                openLink={id => {
+                  setScriptIdSelected(id);
+                  setExecMenuOpened(true);
+                }}
+                item={{
+                  name: getHighlightedPartLabel(s.name, userSearch),
+                  id: s.id,
+                  type: "script"
+                }}
+                id={getResultId(i, s.name)}
+              />
+              <IconButton
+                onMouseDown={e => e.stopPropagation()}
+                onClick={() => updateFavorites(String(s.id), "automation")}
+                className={clsx("p-0-5 lightGrayColor", !isFavorite && hoverClasses.target )}
+                size="small"
+              >
+                <FavoriteBorderIcon fontSize="inherit" color={isFavorite ? "primary" : "inherit"} />
+              </IconButton>
+            </div>;
+          })}
       {updating && <CircularProgress size={32} thickness={5} />}
       {!updating
         && searchResults

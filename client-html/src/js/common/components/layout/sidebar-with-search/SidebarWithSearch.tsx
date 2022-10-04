@@ -3,7 +3,6 @@ import React, {
 } from "react";
 import clsx from "clsx";
 import { Route, Switch } from "react-router-dom";
-import { ListSideBarDefaultWidth } from "../../list-view/ListView";
 import ResizableWrapper from "../resizable/ResizableWrapper";
 import Drawer from "../Drawer";
 import LoadingIndicator from "../../progress/LoadingIndicator";
@@ -14,6 +13,7 @@ import SidebarSearch from "./components/SidebarSearch";
 import { CommonListFilter } from "../../../../model/common/sidebar";
 import FiltersList from "./components/FiltersList";
 import { MainRoute } from "../../../../routes";
+import { LIST_SIDE_BAR_DEFAULT_WIDTH } from "../../../../constants/Config";
 
 interface Props {
   leftColumnWidth: number;
@@ -34,7 +34,7 @@ export const SidebarWithSearch = (props: Props) => {
     leftColumnWidth, updateColumnsWidth, onInit, history, match, SideBar, AppFrame, noSearch, routes, filters = [], appFrameClass
   } = props;
 
-  const [sidebarWidth, setSidebarWidth] = useState(leftColumnWidth || ListSideBarDefaultWidth);
+  const [sidebarWidth, setSidebarWidth] = useState(leftColumnWidth || LIST_SIDE_BAR_DEFAULT_WIDTH);
   const [activeFilters, setActveFilters] = useState<boolean[]>(Array(filters.length).fill(false));
   const [search, setSearch] = useState("");
 

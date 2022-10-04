@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import {
   Form, FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
@@ -10,7 +9,7 @@ import { ConcessionType } from "@api/model";
 import Grid from "@mui/material/Grid";
 import withStyles from "@mui/styles/withStyles";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import ConcessionTypesRenderer from "./ConcessionTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";

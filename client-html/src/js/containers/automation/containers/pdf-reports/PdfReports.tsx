@@ -14,7 +14,7 @@ import {
 import { withRouter } from "react-router";
 import { Dispatch } from "redux";
 import { ExportTemplate, Report } from "@api/model";
-import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../reducers/state";
 import { showConfirm } from "../../../../common/actions";
 import PdfReportsForm from "./containers/PdfReportsForm";
