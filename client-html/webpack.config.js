@@ -158,25 +158,26 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
           minRatio: 0.8,
         }),
       );
-      if (BUILD_NUMBER !== "99-SNAPSHOT") {
-        plugins.push(
-          new BugsnagBuildReporterPlugin({
-            apiKey: '8fc0c45fd7cbb17b6e8d6cad20738799',
-            releaseStage: 'production',
-            appVersion: `${BUILD_NUMBER}`,
-          }),
-          new BugsnagSourceMapUploaderPlugin({
-            apiKey: '8fc0c45fd7cbb17b6e8d6cad20738799',
-            releaseStage: 'production',
-            appVersion: `${BUILD_NUMBER}`,
-            uploadSource: true,
-            overwrite: true,
-            publicPath: '*/',
-          }, {
-            logLevel: 'debug',
-          }),
-        );
-      }
+      // TODO: Uncomment on api key issue resolve
+      // if (BUILD_NUMBER !== "99-SNAPSHOT") {
+      //   plugins.push(
+      //     new BugsnagBuildReporterPlugin({
+      //       apiKey: '8fc0c45fd7cbb17b6e8d6cad20738799',
+      //       releaseStage: 'production',
+      //       appVersion: `${BUILD_NUMBER}`,
+      //     }),
+      //     new BugsnagSourceMapUploaderPlugin({
+      //       apiKey: '8fc0c45fd7cbb17b6e8d6cad20738799',
+      //       releaseStage: 'production',
+      //       appVersion: `${BUILD_NUMBER}`,
+      //       uploadSource: true,
+      //       overwrite: true,
+      //       publicPath: '*/',
+      //     }, {
+      //       logLevel: 'debug',
+      //     }),
+      //   );
+      // }
 
       break;
     }
