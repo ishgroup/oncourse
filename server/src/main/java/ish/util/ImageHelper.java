@@ -32,6 +32,8 @@ import java.awt.image.RenderedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -50,6 +52,7 @@ public class ImageHelper {
 
 	private static final String PDF_PREVIEW_FORMAT = "png";
 
+	public static final int DEFAULT_MAX_IMAGE_SCALE = 4;
 	public static final int MAX_IMAGE_SCALE = 10;
 
 
@@ -220,7 +223,13 @@ public class ImageHelper {
 	 * @return - binary content of generated preview, null - if transformation can't be performed
 	 */
 	public static byte[] generatePdfPreview(byte[] pdfContent) {
-		return generateQualityPreview(pdfContent, 2, true, true);
+		ImageRequest imageRequest = new ImageRequest.Builder(pdfContent)
+				.qualityScale(2)
+				.a4FormatRequired(true)
+				.cutRequired(true)
+				.build();
+		var result = generateQualityPreview(imageRequest);
+		return result == null ? null : result.get(0);
 	}
 
 
@@ -231,18 +240,13 @@ public class ImageHelper {
 	 * @return - binary content of generated preview, null - if transformation can't be performed
 	 */
 	public static byte[] generateHighQualityPdfPreview(byte[] pdfContent, int quality) {
-		return generateQualityPreview(pdfContent, quality, true, false);
-	}
+		var request = new ImageRequest.Builder(pdfContent)
+				.qualityScale(quality)
+				.a4FormatRequired(true)
+				.build();
 
-
-	/**
-	 * Generates 400x564 (A4 format demention) background from pdf byte array.
-	 *
-	 * @param pdfContent - pdf byte array
-	 * @return - binary content of generated preview, null - if transformation can't be performed
-	 */
-	public static byte[] generateBackgroundImage(byte[] pdfContent, UserPreferenceService userPreferenceService) {
-		return generateHighQualityPdfPreview(pdfContent, getBackgroundQualityScale(userPreferenceService));
+		var result = generateQualityPreview(request);
+		return result == null ? null : result.get(0);
 	}
 
 	public static int getBackgroundQualityScale(UserPreferenceService userPreferenceService){
@@ -261,36 +265,87 @@ public class ImageHelper {
 	}
 
 	/**
-	 * Generates 400x564 (A4 format demention) preview from pdf or image byte array.
+	 * Generates 400x564 (A4 format demention) background from pdf byte array.
 	 *
-	 * @param pdfContent - pdf or image byte array
+	 * @param pdfContent - pdf byte array
 	 * @return - binary content of generated preview, null - if transformation can't be performed
 	 */
-	public static byte[] generateQualityPreview(byte[] pdfContent, float scale, boolean a4FormatRequired, boolean cutRequired) {
-		BufferedImage image;
-		boolean landscape;
-		try(PDDocument doc = PDDocument.load(pdfContent)){
-			PDFRenderer renderer = new PDFRenderer(doc);
-			image = renderer.renderImage(0, scale);
-			landscape = !isPortrait(doc.getPage(0));
+	public static byte[] generateBackgroundImage(byte[] pdfContent, UserPreferenceService userPreferenceService) {
+		return generateHighQualityPdfPreview(pdfContent, getBackgroundQualityScale(userPreferenceService));
+	}
+
+	public static List<byte[]> generateOriginalHighQuality(byte[] pdfContent) {
+		var request = new ImageRequest.Builder(pdfContent)
+				.qualityScale(ImageHelper.DEFAULT_MAX_IMAGE_SCALE)
+				.fullBackgroundRequired(true)
+				.build();
+		return generateQualityPreview(request);
+	}
+
+	/**
+	 * Generates 400x564 (A4 format demention) preview from pdf or image byte array.
+	 *
+	 * @param imageRequest - request for generating image from pdf background
+	 * @return - binary content of generated preview, null - if transformation can't be performed
+	 */
+	public static List<byte[]> generateQualityPreview(ImageRequest imageRequest) {
+		var parsedBackground = parseBackground(imageRequest);
+		if(parsedBackground == null) {
+			return null;
+		}
+		var result = new ArrayList<byte[]>();
+		for(var backgroundData:parsedBackground){
+			result.add(processImageToPreview(backgroundData, imageRequest));
+		}
+		return result;
+	}
+
+	private static List<BackgroundData> parseBackground(ImageRequest imageRequest){
+		try {
+			return parseBackAsPdf(imageRequest);
 		} catch (Exception e) {
 			try {
-				image = getAsBufferedImage(pdfContent);
+				BufferedImage image = getAsBufferedImage(imageRequest.getPdfContent());
 				if (image == null)
 					throw new Exception();
-				landscape = image.getWidth() > image.getHeight();
+				boolean landscape = image.getWidth() > image.getHeight();
+				return List.of(new BackgroundData(image, landscape));
 			} catch (Exception ex) {
 				logger.error("Unable to load background" );
 				logger.catching(e);
 				return null;
 			}
 		}
+	}
 
-		if(a4FormatRequired) {
+	private static List<BackgroundData> parseBackAsPdf(ImageRequest imageRequest) throws Exception {
+		BufferedImage image;
+		boolean landscape = false;
+		List<BackgroundData> backgrounds = new ArrayList<>();
+		try(PDDocument doc = PDDocument.load(imageRequest.getPdfContent())){
+			PDFRenderer renderer = new PDFRenderer(doc);
+			int pagesNumber = imageRequest.isFullBackgroundRequired() ? doc.getNumberOfPages() : 1;
+			float scale = imageRequest.getQualityScale();
+			for(int pageIndex = 0; pageIndex < pagesNumber; pageIndex++) {
+				image = renderer.renderImage(pageIndex, scale);
+				if(backgrounds.isEmpty()){
+					landscape = !isPortrait(doc.getPage(0));
+				}
+				backgrounds.add(new BackgroundData(image, landscape));
+			}
+			return backgrounds;
+		}
+	}
+
+	private static byte[] processImageToPreview(BackgroundData parsedBackground, ImageRequest imageRequest){
+		var landscape = parsedBackground.isLandscape();
+		var image = parsedBackground.getBufferedImage();
+
+		if(imageRequest.isA4FormatRequired()) {
 			int width = landscape ? PDF_PREVIEW_HEIGHT : PDF_PREVIEW_WIDTH;
 			int height = landscape ? PDF_PREVIEW_WIDTH : PDF_PREVIEW_HEIGHT;
 
-			if(!cutRequired && image.getWidth() > width && image.getHeight() > height){
+			if(!imageRequest.isCutRequired() && image.getWidth() > width && image.getHeight() > height){
 				width*=3.5;
 				height*=3.5;
 			}
