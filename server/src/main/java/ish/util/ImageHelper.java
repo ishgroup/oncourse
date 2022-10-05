@@ -52,6 +52,7 @@ public class ImageHelper {
 
 	private static final String PDF_PREVIEW_FORMAT = "png";
 
+	public static final int DEFAULT_MAX_IMAGE_SCALE = 4;
 	public static final int MAX_IMAGE_SCALE = 10;
 
 
@@ -223,7 +224,7 @@ public class ImageHelper {
 	 */
 	public static byte[] generatePdfPreview(byte[] pdfContent) {
 		ImageRequest imageRequest = new ImageRequest.Builder(pdfContent)
-				.highQuality(false)
+				.qualityScale(2)
 				.a4FormatRequired(true)
 				.cutRequired(true)
 				.build();
@@ -240,7 +241,7 @@ public class ImageHelper {
 	 */
 	public static byte[] generateHighQualityPdfPreview(byte[] pdfContent, int quality) {
 		var request = new ImageRequest.Builder(pdfContent)
-				.highQuality(true)
+				.qualityScale(quality)
 				.a4FormatRequired(true)
 				.build();
 
@@ -275,7 +276,7 @@ public class ImageHelper {
 
 	public static List<byte[]> generateOriginalHighQuality(byte[] pdfContent) {
 		var request = new ImageRequest.Builder(pdfContent)
-				.highQuality(true)
+				.qualityScale(ImageHelper.DEFAULT_MAX_IMAGE_SCALE)
 				.fullBackgroundRequired(true)
 				.build();
 		return generateQualityPreview(request);
@@ -324,7 +325,7 @@ public class ImageHelper {
 		try(PDDocument doc = PDDocument.load(imageRequest.getPdfContent())){
 			PDFRenderer renderer = new PDFRenderer(doc);
 			int pagesNumber = imageRequest.isFullBackgroundRequired() ? doc.getNumberOfPages() : 1;
-			float scale = imageRequest.isHighQuality() ? 10 : 2;
+			float scale = imageRequest.getQualityScale();
 			for(int pageIndex = 0; pageIndex < pagesNumber; pageIndex++) {
 				image = renderer.renderImage(pageIndex, scale);
 				if(backgrounds.isEmpty()){

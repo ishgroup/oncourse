@@ -13,7 +13,7 @@ public class ImageRequest {
     private boolean a4FormatRequired = false;
     private boolean cutRequired = false;
     private boolean fullBackgroundRequired = false;
-    private boolean highQuality = false;
+    private int qualityScale = 2;
 
     private ImageRequest(){ pdfContent = null; }
 
@@ -38,8 +38,12 @@ public class ImageRequest {
         return fullBackgroundRequired;
     }
 
-    public boolean isHighQuality() {
-        return highQuality;
+    public int getQualityScale() {
+        return qualityScale;
+    }
+
+    public void setQualityScale(int qualityScale) {
+        this.qualityScale = qualityScale;
     }
 
     public static class Builder {
@@ -48,7 +52,7 @@ public class ImageRequest {
         private boolean a4FormatRequired = false;
         private boolean cutRequired = false;
         private boolean fullBackgroundRequired = false;
-        private boolean highQuality = false;
+        private int qualityScale = 2;
 
         public Builder(byte[] pdfContent) {
             this.pdfContent = pdfContent;
@@ -69,8 +73,8 @@ public class ImageRequest {
             return this;
         }
 
-        public Builder highQuality(boolean highQuality){
-            this.highQuality = highQuality;
+        public Builder qualityScale(int qualityScale){
+            this.qualityScale = qualityScale;
             return this;
         }
 
@@ -80,7 +84,7 @@ public class ImageRequest {
             imageRequest.a4FormatRequired = a4FormatRequired;
             imageRequest.cutRequired = cutRequired;
             imageRequest.fullBackgroundRequired = fullBackgroundRequired;
-            imageRequest.highQuality = highQuality;
+            imageRequest.qualityScale = qualityScale;
             return imageRequest;
         }
     }
