@@ -10,6 +10,8 @@
  */
 package ish.util;
 
+import ish.oncourse.server.api.v1.model.PreferenceEnumDTO;
+import ish.oncourse.server.preference.UserPreferenceService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,7 +49,10 @@ public class ImageHelper {
 	private static final int PDF_PREVIEW_HEIGHT = 240;
 	private static final int A4_PIXELS_WIDTH = 595;
 	private static final int A4_PIZELS_HEIGHT = 845;
+
 	private static final String PDF_PREVIEW_FORMAT = "png";
+
+	public static final int MAX_IMAGE_SCALE = 10;
 
 
 	public static BufferedImage scaleImageToSize(int nMaxWidth, int nMaxHeight, BufferedImage imgSrc) {
@@ -233,7 +238,7 @@ public class ImageHelper {
 	 * @param pdfContent - pdf byte array
 	 * @return - binary content of generated preview, null - if transformation can't be performed
 	 */
-	public static byte[] generateHighQualityPdfPreview(byte[] pdfContent) {
+	public static byte[] generateHighQualityPdfPreview(byte[] pdfContent, int quality) {
 		var request = new ImageRequest.Builder(pdfContent)
 				.highQuality(true)
 				.a4FormatRequired(true)
@@ -241,6 +246,31 @@ public class ImageHelper {
 
 		var result = generateQualityPreview(request);
 		return result == null ? null : result.get(0);
+	}
+
+	public static int getBackgroundQualityScale(UserPreferenceService userPreferenceService){
+		var highQualityScaleStr = userPreferenceService.get(PreferenceEnumDTO.BACKGROUND_QUALITY_SCALE);
+		if(highQualityScaleStr != null){
+			try {
+				var highQualityScale = Integer.parseInt(highQualityScaleStr);
+				if(highQualityScale <= 0)
+					highQualityScale = 2;
+				if(highQualityScale > MAX_IMAGE_SCALE)
+					highQualityScale = MAX_IMAGE_SCALE;
+				return highQualityScale;
+			} catch(Exception ignore){}
+		}
+		return MAX_IMAGE_SCALE;
+	}
+
+	/**
+	 * Generates 400x564 (A4 format demention) background from pdf byte array.
+	 *
+	 * @param pdfContent - pdf byte array
+	 * @return - binary content of generated preview, null - if transformation can't be performed
+	 */
+	public static byte[] generateBackgroundImage(byte[] pdfContent, UserPreferenceService userPreferenceService) {
+		return generateHighQualityPdfPreview(pdfContent, getBackgroundQualityScale(userPreferenceService));
 	}
 
 	public static List<byte[]> generateOriginalHighQuality(byte[] pdfContent) {

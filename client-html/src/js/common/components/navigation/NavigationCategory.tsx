@@ -14,9 +14,7 @@ import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import { makeAppStyles } from "../../styles/makeStyles";
 import navigation from "./navigation.json";
 import CatalogItem from "../layout/catalog/CatalogItem";
-import { useAppDispatch, useAppSelector } from "../../utils/hooks";
-import { DASHBOARD_FAVORITES_KEY, FAVORITE_SCRIPTS_KEY } from "../../../constants/Config";
-import { setUserPreference } from "../../actions";
+import { useAppSelector } from "../../utils/hooks";
 import { BooleanArgFunction, NumberArgFunction } from "../../../model/common/CommonFunctions";
 import { openInternalLink } from "../../utils/links";
 import { getPrivisioningLink } from "../../../routes/routesMapping";
@@ -38,6 +36,7 @@ interface Props {
   favoriteScripts: string[];
   setExecMenuOpened: BooleanArgFunction,
   setScriptIdSelected: NumberArgFunction,
+  updateFavorites: (key: string, type: "category" | "automation") => void;
 }
 
 const NavigationItem = ({
@@ -74,12 +73,11 @@ const NavigationCategory = (
     favorites,
     favoriteScripts,
     setScriptIdSelected,
-    setExecMenuOpened
+    setExecMenuOpened,
+    updateFavorites
   }:Props
 ) => {
   const classes = useStyles();
-
-  const dispatch = useAppDispatch();
 
   const scripts = useAppSelector(state => state.dashboard.scripts);
   
@@ -88,25 +86,6 @@ const NavigationCategory = (
   const features = useMemo(() => (category 
     ? navigation.features.filter(f => category.features.includes(f.key))
     : []), [category]);
-  
-  const updateFavorites = (key, type: "category" | "automation") => {
-    if (type === "category") {
-      dispatch(setUserPreference({
-        key: DASHBOARD_FAVORITES_KEY,
-        value: favorites.includes(key)
-          ? favorites.filter(v => v !== key).toString()
-          : [...favorites, key].toString()
-      }));
-    }
-    if (type === "automation") {
-      dispatch(setUserPreference({
-        key: FAVORITE_SCRIPTS_KEY,
-        value: favoriteScripts.includes(key)
-          ? favoriteScripts.filter(v => v !== key).toString()
-          : [...favoriteScripts, key].toString()
-      }));
-    }
-  };
 
   const onOpen = (link: string) => openInternalLink(getPrivisioningLink(link));
 
