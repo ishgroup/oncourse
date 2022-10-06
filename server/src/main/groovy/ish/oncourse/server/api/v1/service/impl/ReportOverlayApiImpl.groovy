@@ -17,6 +17,7 @@ import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
 import ish.oncourse.server.preference.UserPreferenceService
 import ish.util.ImageHelper
+import ish.util.ImageRequest
 
 import static ish.oncourse.server.api.v1.function.export.PdfFunctions.toDbOverlay
 import static ish.oncourse.server.api.v1.function.export.PdfFunctions.toRestOverlay
@@ -113,9 +114,9 @@ class  ReportOverlayApiImpl implements ReportOverlayApi {
     }
 
     @Override
-    byte[] getOriginal(Long id) {
+    List<byte[]> getOriginal(Long id) {
         ReportOverlay report = SelectById.query(ReportOverlay, id)
                 .selectOne(cayenneService.newContext)
-        return ImageHelper.generateQualityPreview(report?.overlay, ImageHelper.MAX_IMAGE_SCALE, false, false)
+        return ImageHelper.generateOriginalHighQuality(report?.overlay).each {it -> Base64.getEncoder().encode(it)};
     }
 }
