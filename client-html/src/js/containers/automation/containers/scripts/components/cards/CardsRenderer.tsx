@@ -225,23 +225,22 @@ const ScriptCardItem = React.memo<ScriptItemProps & WrappedFieldArrayProps>(prop
   
   return (
     <Draggable draggableId={draggableId} index={index} isDragDisabled={isInternal}>
-      {provided => (
-        <div ref={provided.innerRef} {...provided.draggableProps}>
-          <ScriptCard
-            customHeading
-            heading={getHeading}
-            onDelete={(!isInternal || (!isInternal && component.type === "Script" && hasUpdateAccess))
-                  ? e => onDelete(e, index) : null}
-            dragHandlerProps={provided.dragHandleProps}
-            noPadding={component.type === "Script"}
-            onDetailsClick={isInternal ? onInternalSaveClick : undefined}
-            onExpand={invalid ? null : onExpand}
-            expanded={invalid || expand}
-          >
-            {getComponent}
-          </ScriptCard>
-        </div>
-          )}
+      {(provided, snapshot) => (<div ref={provided.innerRef} {...provided.draggableProps}>
+        <ScriptCard
+          customHeading
+          heading={getHeading}
+          onDelete={(!isInternal || (!isInternal && component.type === "Script" && hasUpdateAccess))
+            ? e => onDelete(e, index) : null}
+          dragHandlerProps={provided.dragHandleProps}
+          noPadding={component.type === "Script"}
+          onDetailsClick={isInternal ? onInternalSaveClick : undefined}
+          onExpand={invalid ? null : onExpand}
+          expanded={invalid || expand}
+          className={component.type === "Query" && snapshot.combineTargetFor ? "successBackgroundColor" : null}
+        >
+          {getComponent}
+        </ScriptCard>
+      </div>)}
     </Draggable>
   );
 });
@@ -285,7 +284,7 @@ const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
 
   return (
     <DragDropContext onDragEnd={onDragEndHandler} onDragStart={setDragging}>
-      <Droppable droppableId="droppable">
+      <Droppable droppableId="droppable" isCombineEnabled>
         {(provided, { isDraggingOver, draggingOverWith, draggingFromThisWith }) => {
           const draggingItemHeight = provided.placeholder.props.on ? provided.placeholder.props.on.client.contentBox.height : 0;
 
