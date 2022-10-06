@@ -55,6 +55,7 @@ const SitesRoomFields = props => {
           name={`${item}.name`}
           label="Name"
           className="mr-2"
+          debounced={false}
           required
         />
       </Grid>
@@ -64,6 +65,7 @@ const SitesRoomFields = props => {
           name={`${item}.seatedCapacity`}
           label="Seated Capacity"
           normalize={normalizeNumber}
+          debounced={false}
           required
         />
       </Grid>
