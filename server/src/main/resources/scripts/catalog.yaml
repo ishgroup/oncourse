@@ -906,3 +906,16 @@
     - name: scheduleNameValue
       value: "Ish Schedule"
       dataType: TEXT
+
+- name: Send duplicate outcome notification
+  keyCode: ish.script.sendDuplicateOutcomeNotification
+  body: ish.script.sendDuplicateOutcomeNotification.groovy
+  status: NOT_INSTALLED
+  triggerType: ENTITY_EVENT
+  entityClass: Enrolment
+  entityEventType: CREATE
+  description: We should let people enrol but send a warning email to admin letting them know that someone is enrolled in an outcome they’ve already completed
+  short: Send a warning email to admin letting them know that someone is enrolled in an outcome they’ve already completed
+  category: Notifications
+  tag:
+  options:

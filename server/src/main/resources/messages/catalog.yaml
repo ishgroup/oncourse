@@ -659,4 +659,15 @@
       dataType: TEXT
       value: ish.email.footer
 
+- name: Duplicate outcomes notification
+  type: email
+  keyCode: ish.email.duplicateOutcomesNotification
+  txtTemplate: ish.email.duplicateOutcomesNotification.txt
+  htmlTemplate: ish.email.duplicateOutcomesNotification.html
+  subject: Student enrolled in an already completed outcome
+  entityClass: Enrolment
+  description: A warning email to admin letting them know that someone is enrolled in an outcome they’ve already completed
+  tags:
+  options:
+
 
