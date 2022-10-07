@@ -1,0 +1,12 @@
+Hi
+
+${record.student.contact.fullName} has just enrolled for course ${record.courseClass.course.name} ${record.courseClass.uniqueCode}, but they have already been enrolled in and not completed the following modules:
+
+Outcomes - outcome name, outcome national code, courseClass Code:
+
+<% outcomes.each { it -> %>
+${it.module.title}    ${it.module.nationalCode}    ${it.enrolment.courseClass.code}
+<% } %>
+
+
+This is an automated notification from onCourse
