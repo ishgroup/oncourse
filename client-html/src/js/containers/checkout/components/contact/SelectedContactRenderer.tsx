@@ -12,8 +12,8 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
 import { AppTheme } from "../../../../model/common/Theme";
-import { getContactName } from "../../../entities/contacts/utils";
 import CheckoutAlertTextMessage from "../CheckoutAlertTextMessage";
+import { getContactFullName } from "../../../entities/contacts/utils";
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -57,7 +57,7 @@ const Item = ({
           noWrap
           onClick={() => openRow(item)}
         >
-          {getContactName(item)}
+          {getContactFullName(item)}
         </Typography>
         {
           disabledDeleteId !== item.id && (

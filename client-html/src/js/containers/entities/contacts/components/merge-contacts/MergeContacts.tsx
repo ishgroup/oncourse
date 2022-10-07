@@ -23,11 +23,11 @@ import { StyledCheckbox } from "../../../../../common/components/form/formFields
 import { State } from "../../../../../reducers/state";
 import { Switch } from "../../../../../common/components/form/formFields/Switch";
 import { getMergeContacts, postMergeContacts } from "../../actions";
-import { getContactName } from "../../utils";
 import RadioLabelGroup from "./components/RadioLabelGroup";
 import InfoCard from "./components/InfoCard";
 import { AppTheme } from "../../../../../model/common/Theme";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { getContactFullName } from "../../utils";
 
 export interface MergeContactsFormValues {
   mergeData?: MergeData;
@@ -179,11 +179,11 @@ const MergeContacts = React.memo<Props>(
       }
 
       return {
-        a: getContactName({
+        a: getContactFullName({
           firstName: firstNameData.a,
           lastName: lastNameData.a
         }),
-        b: getContactName({
+        b: getContactFullName({
           firstName: firstNameData.b,
           lastName: lastNameData.b
         })

@@ -8,7 +8,7 @@ import Grid from "@mui/material/Grid";
 import { change } from "redux-form";
 import { Contact } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
+import { getContactFullName } from "../../contacts/utils";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import {
   ContactLinkAdornment,
@@ -22,7 +22,7 @@ class CorporatePassSettings extends React.PureComponent<EditViewProps, any> {
   onContactChange = (value: Contact) => {
     const { form, dispatch } = this.props;
     dispatch(change(form, "invoiceEmail", value.email));
-    dispatch(change(form, "contactFullName", contactLabelCondition(value)));
+    dispatch(change(form, "contactFullName", getContactFullName(value)));
   };
 
   render() {
@@ -51,8 +51,8 @@ class CorporatePassSettings extends React.PureComponent<EditViewProps, any> {
                   name="contactId"
                   label="Contact (company or person to invoice)"
                   selectValueMark="id"
-                  selectLabelCondition={contactLabelCondition}
-                  defaultDisplayValue={values && defaultContactName(values.contactFullName)}
+                  selectLabelCondition={getContactFullName}
+                  defaultDisplayValue={values && values.contactFullName}
                   labelAdornment={(
                     <ContactLinkAdornment id={values?.contactId} />
                   )}
