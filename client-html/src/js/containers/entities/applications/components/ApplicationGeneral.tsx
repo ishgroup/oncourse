@@ -13,7 +13,7 @@ import { State } from "../../../../reducers/state";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
+import { getContactFullName } from "../../contacts/utils";
 import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
 import { courseFilterCondition, openCourseLink } from "../../courses/utils";
 import {
@@ -127,9 +127,9 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
                 name="contactId"
                 label="Student"
                 selectValueMark="id"
-                selectLabelCondition={contactLabelCondition}
+                selectLabelCondition={getContactFullName}
                 disabled={!isNew}
-                defaultDisplayValue={values && defaultContactName(values.studentName)}
+                defaultDisplayValue={values?.studentName}
                 labelAdornment={(
                   <ContactLinkAdornment id={values?.contactId} />
                 )}

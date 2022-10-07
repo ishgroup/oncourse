@@ -9,7 +9,6 @@ import Launch from "@mui/icons-material/Launch";
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import { IconButtonTypeMap } from "@mui/material";
-import { defaultContactName } from "../../../containers/entities/contacts/utils";
 import { useAppDispatch } from "../../utils/hooks";
 import { setSwipeableDrawerSelection, toggleSwipeableDrawer } from "../layout/swipeable-sidebar/actions";
 
@@ -42,7 +41,7 @@ export const HeaderContactTitle: React.FC<HeaderContactLinkProps> = (
 
   return (
     <div className="d-inline-flex-center">
-      {name && defaultContactName(name)}
+      {name}
       <IconButton disabled={!id} size="small" color="primary" onClick={setSelectedContact}>
         <EmojiPeopleIcon fontSize="inherit" />
       </IconButton>
