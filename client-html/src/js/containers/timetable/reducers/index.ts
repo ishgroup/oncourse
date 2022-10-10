@@ -1,3 +1,12 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
+import { isSameDay } from "date-fns";
 import { TimetableState } from "../../../model/timetable";
 import { IAction } from "../../../common/actions/IshAction";
 import {
@@ -6,20 +15,21 @@ import {
   FIND_TIMETABLE_SESSIONS_FULFILLED,
   GET_TIMETABLE_SESSIONS_BY_IDS_FULFILLED,
   GET_TIMETABLE_SESSIONS_DAYS_FULFILLED,
-  SET_TIMETABLE_SEARCH,
-  SET_TIMETABLE_USERS_SEARCH,
-  SET_TIMETABLE_SAVING_FILTER,
-  SET_TIMETABLE_FILTERS,
   GET_TIMETABLE_SESSIONS_TAGS_FULFILLED,
+  SET_TIMETABLE_FILTERS,
+  SET_TIMETABLE_MONTHS,
+  SET_TIMETABLE_SAVING_FILTER,
+  SET_TIMETABLE_SEARCH,
   SET_TIMETABLE_SEARCH_ERROR
 } from "../actions";
 
 const TimetableInitialState: TimetableState = {
   months: [],
+  selectedMonthSessionDays: [],
   filters: [],
+  filtersLoading: true,
   sessionsLoading: false,
   search: "",
-  usersSearch: "",
   searchError: false,
   savingFilter: null
 };
@@ -29,21 +39,31 @@ export const timetableReducer = (
   action: IAction<any>
 ): TimetableState => {
   switch (action.type) {
+    case SET_TIMETABLE_MONTHS: {
+      const { months, loadMore } = action.payload;
+      
+      return {
+        ...state,
+        months: loadMore ? state.months.concat(months) : months,
+      };
+    }
+
     case FIND_TIMETABLE_SESSIONS: {
       return {
         ...state,
         sessionsLoading: true
       };
     }
-
+    
     case FIND_TIMETABLE_SESSIONS_FULFILLED: {
-      const months = state.months.concat(action.payload.months);
-
-      months.sort((a, b) => (a.month > b.month ? 1 : -1));
+      const { months } = action.payload;
+      const startIndex = months.length ? state.months.findIndex(m => isSameDay(m.month, months[0].month)) : -1;
+      const updated = [...state.months];
+      updated.splice(startIndex, months.length, ...months);
 
       return {
         ...state,
-        months,
+        months: updated,
         sessionsLoading: false
       };
     }
@@ -105,7 +125,6 @@ export const timetableReducer = (
 
     case SET_TIMETABLE_SEARCH:
     case SET_TIMETABLE_SEARCH_ERROR:
-    case SET_TIMETABLE_USERS_SEARCH:
     case SET_TIMETABLE_SAVING_FILTER:
     case GET_TIMETABLE_SESSIONS_DAYS_FULFILLED: {
       return {
@@ -117,6 +136,7 @@ export const timetableReducer = (
     case SET_TIMETABLE_FILTERS: {
       return {
         ...state,
+        filtersLoading: false,
         filters: action.payload.filters
       };
     }

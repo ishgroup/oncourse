@@ -5,7 +5,7 @@
 
 import React, { useCallback } from "react";
 import { change } from "redux-form";
-import { Account, ExpiryType, MembershipProduct, ProductStatus, Tax } from "@api/model";
+import { Account, ExpiryType, MembershipProduct, ProductStatus, Tag, Tax } from "@api/model";
 import { connect } from "react-redux";
 import { Grid } from "@mui/material";
 import { Decimal } from "decimal.js-light";
@@ -23,10 +23,12 @@ import FullScreenStickyHeader
 import { EditViewProps } from "../../../../model/common/ListView";
 import { useAppSelector } from "../../../../common/utils/hooks";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 interface MembershipProductGeneralProps extends EditViewProps<MembershipProduct>{
   accounts?: Account[];
   taxes?: Tax[];
+  tags?: Tag[];
   dataCollectionRules?: PreferencesState["dataCollectionRules"];
 }
 
@@ -123,11 +125,9 @@ const handleChangeAccount = (values: MembershipProduct, taxes: Tax[], accounts: 
 
 const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props => {
   const {
-    twoColumn, accounts, taxes, values, dispatch, form, dataCollectionRules, isNew, syncErrors
+    twoColumn, accounts, taxes, values, dispatch, form, dataCollectionRules, isNew, syncErrors, tags
   } = props;
   const initialIndexExpiry = getInitialIndexExpiry(values);
-
-  const tags = useAppSelector(state => state.tags.entityTags["MembershipProduct"]);
 
   const validateIncomeAccount = useCallback(value => (accounts.find((item: Account) => item.id === value) ? undefined : `Income account is mandatory`), [accounts])
 
@@ -179,11 +179,20 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         />
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid item xs={twoColumn ? 8 : 12}>
         <FormField
           type="tags"
           name="tags"
           tags={tags}
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <EntityChecklists
+          entity="MembershipProduct"
+          form={form}
+          entityId={values.id}
+          checked={values.tags}
         />
       </Grid>
 
@@ -194,6 +203,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           label="Income account"
           validate={validateIncomeAccount}
           onChange={handleChangeAccount(values, taxes, accounts, dispatch, form)}
+          debounced={false}
           items={accounts}
           selectValueMark="id"
           selectLabelCondition={a => `${a.accountCode}, ${a.description}`}
@@ -220,6 +230,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           name="feeExTax"
           validate={[validateSingleMandatoryField, validateNonNegative]}
           onChange={handleChangeFeeExTax(values, taxes, dispatch, form)}
+          debounced={false}
           props={{
             label: "Fee ex tax"
           }}
@@ -231,6 +242,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           name="totalFee"
           validate={validateNonNegative}
           onChange={handleChangeFeeIncTax(values, taxes, dispatch, form)}
+          debounced={false}
           props={{
             label: "Total fee"
           }}
@@ -241,6 +253,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           type="select"
           name="taxId"
           onChange={handleChangeTax(values, taxes, dispatch, form)}
+          debounced={false}
           required
           props={{
             label: "Tax",
@@ -290,7 +303,8 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
 const mapStateToProps = (state: State) => ({
   dataCollectionRules: state.preferences.dataCollectionRules,
   accounts: state.plainSearchRecords.Account.items,
-  taxes: state.taxes.items
+  taxes: state.taxes.items,
+  tags: state.tags.entityTags["MembershipProduct"]
 });
 
 export default connect<any, any, any>(mapStateToProps)(MembershipProductGeneral);

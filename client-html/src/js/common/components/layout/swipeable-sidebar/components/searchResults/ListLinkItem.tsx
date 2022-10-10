@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
@@ -11,6 +14,7 @@ import withStyles from "@mui/styles/withStyles";
 import ListItem from "@mui/material/ListItem";
 import Typography from "@mui/material/Typography";
 import { openInternalLink } from "../../../../../utils/links";
+import { getPrivisioningLink } from "../../../../../../routes/routesMapping";
 
 const styles = theme => createStyles({
   chips: {
@@ -35,12 +39,12 @@ const styles = theme => createStyles({
 
 const ListLinkItem = props => {
   const {
-    showConfirm, classes, item, url, openLink, selected, id
+    classes, item, url, openLink, selected, id
   } = props;
 
   return (
     <ListItem
-      onClick={openLink ? () => openLink(item.id) : () => showConfirm(() => openInternalLink(url))}
+      onClick={openLink ? () => openLink(item.id) : () => openInternalLink(getPrivisioningLink(url))}
       disableGutters
       className={classes.listItem}
       dense

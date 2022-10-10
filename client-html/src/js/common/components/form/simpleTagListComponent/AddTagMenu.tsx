@@ -29,60 +29,46 @@ interface Props {
   classes?: any;
   tags: MenuTag[];
   handleAdd: (tag: MenuTag) => void;
-}
-
-interface State {
   activeTag: MenuTag;
+  setActiveTag: (arg: (MenuTag | ((prevState: MenuTag) => MenuTag))) => void;
 }
 
-class AddTagMenu extends React.Component<Props, State> {
-  state = {
-    activeTag: null
+const AddTagMenu = (
+  {
+    classes,
+    tags,
+    handleAdd,
+    activeTag,
+    setActiveTag
+  }: Props
+) => {
+  const handleBack = () => {
+    setActiveTag(prev => prev.parent);
   };
 
-  setActiveTag = activeTag => {
-    this.setState({
-      activeTag
-    });
-  };
-
-  handleBack = () => {
-    this.setState(prev => ({
-      activeTag: prev.activeTag.parent
-    }));
-  }
-
-  render() {
-    const {
-     classes, tags, handleAdd
-    } = this.props;
-
-    const { activeTag } = this.state;
-
-    return (
-      <List
-        className={classes.rootMenu}
-      >
-        {activeTag && (
-          <MenuItem onClick={this.handleBack} className={classes.listItem}>
-            <span className={clsx("d-flex textSecondaryColor", classes.backContainer)}>
-              <KeyboardArrowLeft color="inherit" />
-              Back
-            </span>
-          </MenuItem>
-        )}
-        {(activeTag ? activeTag.children : tags).map(t => (
-          <AddTagMenuItem
-            key={t.tagBody.id}
-            tag={t}
-            classes={classes}
-            setActiveTag={this.setActiveTag}
-            handleAdd={handleAdd}
-          />
-        ))}
-      </List>
-    );
-  }
-}
+  return (
+    <List
+      className={classes.rootMenu}
+    >
+      {activeTag && (
+        <MenuItem onClick={handleBack} className={classes.listItem}>
+          <span className={clsx("d-flex textSecondaryColor", classes.backContainer)}>
+            <KeyboardArrowLeft color="inherit" />
+            Back
+          </span>
+        </MenuItem>
+      )}
+      {(activeTag ? activeTag.children : tags).map(t => (
+        <AddTagMenuItem
+          key={t.tagBody.id}
+          tag={t}
+          classes={classes}
+          setActiveTag={setActiveTag}
+          handleAdd={handleAdd}
+        />
+      ))}
+    </List>
+  );
+};
 
 export default withStyles(styles)(AddTagMenu);

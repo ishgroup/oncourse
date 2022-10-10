@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 /**
@@ -13,10 +16,20 @@ import clsx from "clsx";
 import { createStyles, withStyles } from "@mui/styles";
 import { Edit, ExpandMore } from "@mui/icons-material";
 import {
-  ButtonBase, InputAdornment, Typography, Select, InputLabel, Input, FormHelperText, FormControl, MenuItem, ListItem
+  ButtonBase,
+  FormControl,
+  FormHelperText,
+  Input,
+  InputAdornment,
+  InputLabel,
+  ListItem,
+  MenuItem,
+  Select,
+  Typography
 } from "@mui/material";
+import { AppTheme } from "../../../../model/common/Theme";
 
-const styles = theme => createStyles({
+const styles = (theme: AppTheme) => createStyles({
   inputEndAdornment: {
     display: "flex",
     fontSize: "18px",
@@ -77,7 +90,8 @@ const styles = theme => createStyles({
     color: theme.palette.text.primaryEditable,
     fontWeight: 400,
     "&:hover, &:hover $placeholderContent, &:hover $editButton": {
-      opacity: 0.15
+      opacity: 0.35,
+      color: theme.palette.primary.main
     },
     "&$rightAligned": {
       display: "flex",
@@ -85,13 +99,7 @@ const styles = theme => createStyles({
       justifyContent: "flex-end"
     }
   },
-  rightAligned: {
-    "& $label": {
-      left: "unset",
-      right: 0,
-      transformOrigin: '100% 0'
-    }
-  },
+  rightAligned: {},
   readonly: {
     fontWeight: 300,
     pointerEvents: "none"
@@ -110,12 +118,18 @@ const styles = theme => createStyles({
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    paddingBottom: "4px",
-    right: "-46%",
-    maxWidth: "100%"
+    maxWidth: "100%",
+    marginRight: theme.spacing(0.5)
+  },
+  rightLabel: {
+    left: "unset",
+    right: theme.spacing(-2),
+    "& $label": {
+      marginRight: 0
+    }
   },
   placeholderContent: {
-    opacity: 0.15,
+    opacity: 0.25,
     fontWeight: 400,
   },
   chip: {
@@ -173,6 +187,9 @@ const styles = theme => createStyles({
     right: "-14px",
     bottom: "4px"
   },
+  selectMenu: {
+    zIndex: theme.zIndex.snackbar
+  },
   selectIcon: {
     fontSize: "24px",
     color: theme.palette.divider,
@@ -229,10 +246,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
     if (node) {
       this.inputNode = node;
     }
-  };
-
-  setContainerNode = node => {
-    this.containerNode = node;
   };
 
   edit = e => {
@@ -434,6 +447,22 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
     );
   };
 
+  getSelectValue = () => {
+    const {
+      input, multiple, returnType, selectLabelCondition, selectValueMark
+    } = this.props;
+
+    return multiple
+      ? input.value || []
+      : returnType === "object"
+        ? selectLabelCondition
+          ? selectLabelCondition(input.value)
+          : input.value ? input.value[selectValueMark] : ""
+        : [undefined, null].includes(input.value)
+          ? ""
+          : input.value;
+  }
+
   render() {
     const {
       classes,
@@ -501,18 +530,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         })
       : [...items]);
 
-    const labelContent = labelAdornment ? (
-      <span>
-        {label}
-        {' '}
-        <span>
-          {labelAdornment}
-        </span>
-      </span>
-    ) : (
-      label
-    );
-
     let selectItems;
 
     if (categoryKey) {
@@ -553,7 +570,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         : [...selectItems, selectAdornment.content];
     }
 
-    if (((items && !items.some(i => !i[selectValueMark])) || !items) && (allowEmpty || !input.value) && (!multiple || !items.length)) {
+    if (((items && !items.some(i => [undefined, null].includes(i[selectValueMark]))) || !items) && (allowEmpty || !input.value) && (!multiple || !items.length)) {
       selectItems = [
         <MenuItem
           key="empty"
@@ -648,13 +665,22 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
               label && (
                 <InputLabel
                   classes={{
-                    root: clsx(fieldClasses.label, classes.label, !label && classes.labelTopZeroOffset),
+                    root: clsx(
+                      fieldClasses.label,
+                      "d-flex",
+                      "overflow-visible",
+                      !label && classes.labelTopZeroOffset,
+                      rightAligned && classes.rightLabel
+                    ),
                   }}
                   {...InputLabelProps}
                   shrink={Boolean(label || input.value)}
                   htmlFor={`input-${input.name}`}
                 >
-                  {labelContent}
+                  <span className={classes.label}>
+                    {label}
+                  </span>
+                  {labelAdornment}
                 </InputLabel>
               )
             }
@@ -663,24 +689,19 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
               ? (
                 <div className={clsx(isInline && "d-inline", label && 'mt-2', classes.selectMainWrapper)}>
                   <Select
-                    id={`input-${input.name}`}
+                    id={`input-select-${input.name}`}
                     name={input.name}
-                    value={multiple
-                      ? input.value || []
-                      : returnType === "object"
-                        ? selectLabelCondition
-                          ? selectLabelCondition(input.value)
-                          : input.value ? input.value[selectValueMark] : ""
-                        : input.value || ""}
+                    value={this.getSelectValue()}
                     inputRef={this.setInputNode}
                     inputProps={{
                       classes: {
                         root: classes.textFieldBorderModified,
                         underline: fieldClasses.underline
-                      }
+                      },
+                      id: `input-${input.name}`
                     }}
                     classes={{
-                      select: clsx(classes.muiSelect ,fieldClasses.text, isInline && classes.inlineSelect),
+                      select: clsx(classes.muiSelect, fieldClasses.text, isInline && classes.inlineSelect),
                     }}
                     multiple={multiple}
                     autoWidth={autoWidth}
@@ -691,7 +712,10 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                     onChange={this.onSelectChange}
                     IconComponent={() => (!disabled && <ExpandMore className={classes.selectIconInput} onClick={this.onFocus} />)}
                     MenuProps={{
-                      anchorOrigin: { vertical: 'top', horizontal: 'left' }
+                      anchorOrigin: { vertical: 'top', horizontal: 'left' },
+                      classes: {
+                        root: classes.selectMenu
+                      }
                     }}
                     displayEmpty
                     fullWidth
@@ -731,6 +755,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
               )}
             <FormHelperText
               classes={{
+                root: clsx(rightAligned && "text-end"),
                 error: "shakingError"
               }}
             >
@@ -747,7 +772,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
             })}
           >
             <div className={clsx(isInline ? "d-inline" : classes.fitWidth)}>
-              {isInline && !hideLabel && label && labelContent}
+              {isInline && !hideLabel && label}
 
               {isInline && (
                 <ButtonBase

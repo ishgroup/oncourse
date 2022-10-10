@@ -39,11 +39,7 @@ Feature: Main feature for all GET requests with path 'list/entity/waitingList'
             "studentName":"stud3",
             "courseId":2,
             "courseName":"Course2 course2",
-            "tags":
-                [
-                {"id":221,"name":"waitingList 1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]},
-                {"id":222,"name":"waitingList 2","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}
-                ],
+            "tags":[221, 222],
             "sites":
                 [
                 {"id":200,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"kioskUrl":null,"name":"Default site","street":null,"suburb":null,"state":null,"postcode":null,"country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null},

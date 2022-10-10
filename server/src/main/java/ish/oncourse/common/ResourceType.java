@@ -24,15 +24,15 @@ import javax.annotation.Nonnull;
  */
 public enum ResourceType {
 
-	MESSAGING("Message template", "messages/","catalog.yaml", EmailTemplate.class),
+	MESSAGING("Message template", "messages/",".*\\.yaml", EmailTemplate.class),
 
-	EXPORT("Export Template", "exports/", "catalog.yaml", ExportTemplate.class),
+	EXPORT("Export Template", "exports/", ".*\\.yaml", ExportTemplate.class),
 
 	REPORT("Jasper Report", "reports/", ".*\\.jrxml", Report.class),
 
-	SCRIPT("Script", "scripts/", "catalog.yaml", Script.class),
+	SCRIPT("Script", "scripts/", ".*\\.yaml", Script.class),
 
-	IMPORT("Import", "imports/", "catalog.yaml", Import.class);
+	IMPORT("Import", "imports/", ".*\\.yaml", Import.class);
 
 	private String displayName;
 	private String resourcePath;

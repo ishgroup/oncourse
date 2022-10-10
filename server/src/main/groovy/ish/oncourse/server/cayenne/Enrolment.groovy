@@ -47,7 +47,7 @@ import static java.lang.String.format
  */
 @API
 @QueueableEntity
-class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface, Queueable, NotableTrait, ExpandableTrait, AttachableTrait {
+class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface, Queueable, NotableTrait, ExpandableTrait, AttachableTrait, ContactActivityTrait {
 
 	public static final String IS_VET_PROPERTY = 'vet'
 	static final String DISPLAY_STATUS_PROP = 'displayStatus'
@@ -222,6 +222,15 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 		}
 
 		return null
+	}
+
+	/**
+	 * This is the percentage of the class time of the corresponding course class that the student attended during the whole sesssions time
+	 * @return attendace per cent as a number from 0 to 100
+	 */
+	@API
+	Integer getClassAttendancePercent(){
+		courseClass.getAttendancePercentForStudent(student)
 	}
 
 	@Override
@@ -406,7 +415,11 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 		return super.getCreatedOn()
 	}
 
-	/**
+	@Override
+	String getInteractionName() {
+		return courseClass.course.name
+	}
+/**
 	 * @return
 	 */
 	@API

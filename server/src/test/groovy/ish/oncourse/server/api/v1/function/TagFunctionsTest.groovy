@@ -29,7 +29,7 @@ class TagFunctionsTest {
     @Test
     void validateTagNameWhenNameIsValid2() {
         TagDTO tag = new TagDTO()
-        tag.setName("TestName123")
+        tag.setName("TestName123 %@")
         Set<String> notValidNames = new HashSet<>()
         TagFunctions.validateNamesOfNewTag(tag, notValidNames)
         assertEquals(0, notValidNames.size())
@@ -52,44 +52,44 @@ class TagFunctionsTest {
         TagDTO tag = new TagDTO()
         tag.setName("TestName")
         TagDTO tagChild = new TagDTO()
-        tagChild.setName("Days >= 10")
+        tagChild.setName("Days \"more\" 10")
         tag.setChildTags(List.of(tagChild))
         Set<String> notValidNames = new HashSet<>()
         TagFunctions.validateNamesOfNewTag(tag, notValidNames)
         assertEquals(1, notValidNames.size())
-        assertEquals("Days >= 10", notValidNames[0])
+        assertEquals("Days \"more\" 10", notValidNames[0])
     }
 
     @Test
     void validateTagNameWhenNameIsNotValidAndChildNameIsValid() {
         TagDTO tag = new TagDTO()
-        tag.setName("last day + filters")
+        tag.setName("last day #tag")
         TagDTO tagChild = new TagDTO()
         tagChild.setName("Tag Name - 1")
         tag.setChildTags(List.of(tagChild))
         Set<String> notValidNames = new HashSet<>()
         TagFunctions.validateNamesOfNewTag(tag, notValidNames)
         assertEquals(1, notValidNames.size())
-        assertEquals("last day + filters", notValidNames[0])
+        assertEquals("last day #tag", notValidNames[0])
     }
 
     @Test
     void validateTagNameWhenNameIsNotValid1() {
         TagDTO tag = new TagDTO()
-        tag.setName("last day + filters")
+        tag.setName("last day  \\tag")
         Set<String> notValidNames = new HashSet<>()
         TagFunctions.validateNamesOfNewTag(tag, notValidNames)
         assertEquals(1, notValidNames.size())
-        assertEquals("last day + filters", notValidNames[0])
+        assertEquals("last day  \\tag", notValidNames[0])
     }
 
     @Test
     void validateTagNameWhenNameIsNotValid2() {
         TagDTO tag = new TagDTO()
-        tag.setName("Test (days)")
+        tag.setName("Test \"days\" \\course #tag")
         Set<String> notValidNames = new HashSet<>()
         TagFunctions.validateNamesOfNewTag(tag, notValidNames)
         assertEquals(1, notValidNames.size())
-        assertEquals("Test (days)", notValidNames[0])
+        assertEquals("Test \"days\" \\course #tag", notValidNames[0])
     }
 }

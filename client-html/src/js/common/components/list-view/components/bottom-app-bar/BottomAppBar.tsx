@@ -24,12 +24,10 @@ import SearchInput from "./components/SearchInput";
 import ScriptsMenu from "./components/ScriptsMenu";
 import SendMessageMenu from "./components/SendMessageMenu";
 import ViewSwitcher from "./components/ViewSwitcher";
-import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME, EMAIL_FROM_KEY } from "../../../../../constants/Config";
+import { APP_BAR_HEIGHT } from "../../../../../constants/Config";
 import FindRelatedMenu from "./components/FindRelatedMenu";
 import { FindRelatedItem } from "../../../../../model/common/ListView";
-import { State } from "../../../../../reducers/state";
-import { getEmailTemplatesWithKeyCode, getScripts, getUserPreferences } from "../../../../actions";
-import { LSGetItem } from "../../../../utils/storage";
+import { getScripts } from "../../../../actions";
 
 const SendMessageEntities = [
   "AbstractInvoice",
@@ -45,22 +43,6 @@ const SendMessageEntities = [
   "WaitingList",
   "Lead"
 ];
-
-const EntitiesToMessageTemplateEntitiesMap = {
-  Invoice: ["Contact", "Invoice", "AbstractInvoice"],
-  Application: ["Contact", "Application"],
-  Contact: ["Contact"],
-  Enrolment: ["Contact", "Enrolment"],
-  CourseClass: ["Contact", "CourseClass", "Enrolment", "CourseClassTutor"],
-  PaymentIn: ["Contact", "PaymentIn"],
-  PaymentOut: ["Contact", "PaymentOut"],
-  Payslip: ["Contact", "Payslip"],
-  ProductItem: ["Contact", "Voucher", "Membership", "Article", "ProductItem"],
-  WaitingList: ["Contact", "WaitingList"],
-  Lead: ["Contact", "Lead"]
-};
-
-const getMessageTemplateEntities = entity => EntitiesToMessageTemplateEntitiesMap[entity] || [entity];
 
 const styles = theme => createStyles({
     root: {
@@ -139,25 +121,12 @@ class BottomAppBar extends React.PureComponent<any, any> {
     };
   }
 
-  componentDidMount() {
-    const {
-     rootEntity, getMessageTemplates, getEmailFrom
-    } = this.props;
-
-    if (rootEntity) {
-      getMessageTemplates(getMessageTemplateEntities(rootEntity));
-      getEmailFrom();
-    }
-  }
-
   componentDidUpdate(prevProps) {
     const {
-     rootEntity, getMessageTemplates, getEmailFrom, scripts, getScripts
+     rootEntity, scripts, getScripts
     } = this.props;
 
     if (rootEntity && rootEntity !== prevProps.rootEntity) {
-      getMessageTemplates(getMessageTemplateEntities(rootEntity));
-      getEmailFrom();
       if (!scripts) {
         getScripts(rootEntity);
       }
@@ -207,7 +176,6 @@ class BottomAppBar extends React.PureComponent<any, any> {
 
   handleRelatedLinkClick = (item: FindRelatedItem) => {
     const { rootEntity, selection } = this.props;
-    this.handleClose();
 
     if (item.list) {
       let searchParam = "";
@@ -220,12 +188,14 @@ class BottomAppBar extends React.PureComponent<any, any> {
         searchParam = item.customExpression;
       }
 
-      openInternalLink(`/${item.list}?search=${searchParam}`);
+      openInternalLink(searchParam ? `/${item.list}?search=${searchParam}` : `/${item.list}`);
     } else {
       window.location.href = `/find/related?destList=${item.destination}&sourceList=${rootEntity}&ids=${selection.join(
         ","
       )}`;
     }
+
+    this.handleClose();
   };
 
   handleDeleteClick = () => {
@@ -262,7 +232,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
       createButtonDisabled,
       searchQuery,
       filteredCount,
-      messageTemplates,
+      emailTemplatesWithKeyCode,
       scripts
     } = this.props;
 
@@ -275,7 +245,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
 
     const existingRecordSelected = Boolean(selection.length) && selection[0] !== "NEW";
 
-    const isSendMessageAvailable = SendMessageEntities.includes(rootEntity) && Array.isArray(messageTemplates) && messageTemplates.length;
+    const isSendMessageAvailable = SendMessageEntities.includes(rootEntity) && Array.isArray(emailTemplatesWithKeyCode) && emailTemplatesWithKeyCode.length;
 
     const settingsItems = [
       (selection.length === 0 || existingRecordSelected) && scripts?.length && (
@@ -476,15 +446,8 @@ class BottomAppBar extends React.PureComponent<any, any> {
   }
 }
 
-const mapStateToProps = (state: State) => ({
-  messageTemplates: state.list.emailTemplatesWithKeyCode,
-  scripts: state.list.scripts
-});
-
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  getMessageTemplates: (entities: string[]) => dispatch(getEmailTemplatesWithKeyCode(entities)),
-  getEmailFrom: () => dispatch(getUserPreferences([EMAIL_FROM_KEY])),
   getScripts: (entity: string) => dispatch(getScripts(entity))
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles as any)(BottomAppBar));
+export default connect(null, mapDispatchToProps)(withStyles(styles as any)(BottomAppBar));

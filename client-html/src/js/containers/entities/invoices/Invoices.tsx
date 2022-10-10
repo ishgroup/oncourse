@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { useCallback, useEffect, useState } from "react";
@@ -12,14 +15,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
 import {
-  createInvoice,
-  deleteQuote,
-  getDefaultInvoiceTerms,
-  getInvoice,
-  removeInvoice,
-  updateInvoice
+  getDefaultInvoiceTerms
 } from "./actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import InvoicesEditView from "./components/InvoicesEditView";
@@ -36,7 +33,6 @@ import { getPlainTaxes } from "../taxes/actions";
 import InvoiceCogwheel from "./components/InvoiceCogwheel";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { formatToDateOnly } from "../../../common/utils/dates/datesNormalizing";
-import AddPaymentOutEditView from "../paymentsOut/components/AddPaymentOutEditView";
 import { getAdministrationSites } from "../sites/actions";
 import { checkPermissions } from "../../../common/actions";
 import { getAccountTransactionLockedDate } from "../../preferences/actions";
@@ -126,7 +122,7 @@ const findRelatedGroup: any[] = [
 ];
 
 const nameCondition = (invoice: Invoice) => {
-  let result = "";
+  let result;
   if (invoice.type === "Invoice") {
     result = invoice.invoiceNumber ? "Invoice #" + invoice.invoiceNumber : "New";
   } else {
@@ -134,11 +130,6 @@ const nameCondition = (invoice: Invoice) => {
   }
 
   return result;
-};
-
-const nestedEditFields = {
-  PaymentOut: props => <AddPaymentOutEditView {...props} />,
-  SendMessage: props => <SendMessageEditView {...props} />
 };
 
 const manualLink = getManualLink("invoice");
@@ -153,11 +144,7 @@ const Invoices = React.memo<any>(({
   getAdministrationSites,
   getQePermissions,
   clearListState,
-  onCreate,
-  onSave,
-  getInvoiceRecord,
   setListCreatingNew,
-  onDeleteQuote,
   selection,
   history,
   updateSelection,
@@ -247,15 +234,10 @@ const Invoices = React.memo<any>(({
           asyncValidate: notesAsyncValidate,
           asyncBlurFields: ["notes[].message"]
         }}
-        nestedEditFields={nestedEditFields}
-        getEditRecord={getInvoiceRecord}
         rootEntity="AbstractInvoice"
         filterEntity="Invoice"
-        onCreate={onCreate}
-        onSave={onSave}
         onInit={onInit}
         customOnCreate={customOnCreate}
-        onDelete={onDeleteQuote}
         defaultDeleteDisabled={defaultDeleteDisabled}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
@@ -323,11 +305,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getAccountTransactionLockedDate());
   },
   clearListState: () => dispatch(clearListState()),
-  getInvoiceRecord: (id: string) => dispatch(getInvoice(id)),
-  onSave: (id: string, invoice: Invoice) => dispatch(updateInvoice(id, invoice)),
-  onCreate: (invoice: Invoice) => dispatch(createInvoice(invoice)),
-  onDelete: (id: string) => dispatch(removeInvoice(id)),
-  onDeleteQuote: (id: string) => dispatch(deleteQuote(id)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
   getTags: () => dispatch(getListTags("AbstractInvoice")),

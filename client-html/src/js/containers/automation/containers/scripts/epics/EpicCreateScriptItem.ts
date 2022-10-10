@@ -14,9 +14,30 @@ import { appendComponents } from "../utils";
 import { SCRIPT_EDIT_VIEW_FORM_NAME } from "../constants";
 import { ScriptExtended, ScriptViewMode } from "../../../../../model/scripts";
 
-const request: EpicUtils.Request<any, { script: ScriptExtended, viewMode: ScriptViewMode }> = {
+const request: EpicUtils.Request = {
   type: POST_SCRIPT_ENTITY_REQUEST,
-  getData: ({ script, viewMode }) => ScriptsService.createScriptItem(appendComponents(script, viewMode)),
+  getData: ({ script, viewMode }) => {
+    if (viewMode === "Cards" && script.savedQuerypPrefixes?.length && script.components.length) {
+      script.components.forEach(component => {
+        if (component.type === "Query") {
+          const currentPrefix = script.savedQuerypPrefixes.filter(prefix => prefix.id === component.id)[0];
+          if (currentPrefix) {
+            if (currentPrefix.prefixValue.includes("def") && component.queryClosureReturnValue.includes("def")) {
+              currentPrefix.prefixValue.replace("def", "");
+            }
+            if (currentPrefix.prefixValue) {
+              component.queryClosureReturnValue = currentPrefix.prefixValue + " " + component.queryClosureReturnValue;
+            }
+          }
+        }
+      });
+    }
+
+    if (script.queryClosureReturnValue) delete script.queryClosureReturnValue;
+    if (script.savedQuerypPrefixes) delete script.savedQuerypPrefixes;
+    
+    return ScriptsService.createScriptItem(appendComponents(script, viewMode));
+  },
   processData: (r, s, { script }) => [
       {
         type: POST_SCRIPT_ENTITY_FULFILLED

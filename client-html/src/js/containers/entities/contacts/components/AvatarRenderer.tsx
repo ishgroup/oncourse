@@ -13,6 +13,7 @@ import Gravatar from "react-awesome-gravatar";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Grid from "@mui/material/Grid";
+import clsx from "clsx";
 import noAvatarImg from "../../../../../images/no_pic.png";
 import FilePreview from "../../../../common/components/form/FilePreview";
 import DocumentsService from "../../../../common/components/form/documents/services/DocumentsService";
@@ -89,11 +90,11 @@ const AvatarRenderer: React.FC<any> = props => {
   }, []);
 
   const upload = useCallback(() => {
-    fileRef.current.click();
+    fileRef?.current?.click();
   }, []);
 
   const handleFileSelect = () => {
-    const file = fileRef.current.files[0];
+    const file = fileRef?.current?.files[0];
 
     if (file) {
       const error = validateImageFormat(file);
@@ -133,7 +134,7 @@ const AvatarRenderer: React.FC<any> = props => {
             disabled={disabled}
           />
             ) : (
-              <div onClick={upload} className={`relative cursor-pointer ${classes.profileThumbnail}`}>
+              <div onClick={upload} className={clsx(classes.profileThumbnail, "relative", !disabled && "cursor-pointer")}>
                 {!disabled && (
                   <div className={classes.avatarBackdrop}>
                     <div className="centeredFlex">

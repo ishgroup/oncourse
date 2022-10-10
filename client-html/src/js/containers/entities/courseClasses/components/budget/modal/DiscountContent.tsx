@@ -242,6 +242,7 @@ const DiscountContent: React.FC<Props> = ({
               )}
               disabled={valueLocked}
               onChange={onValueChange}
+              debounced={false}
             />
           </Grid>
           <Grid item xs={6}>

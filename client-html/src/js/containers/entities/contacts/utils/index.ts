@@ -8,11 +8,7 @@ import { openInternalLink } from "../../../../common/utils/links";
 import { CourseClassStatus } from "../../../../model/entities/CourseClass";
 import { EntityType } from "../../../../model/common/NestedEntity";
 
-export const THEME_SPACING = 8;
-
-export const contactLabelCondition = (data: Contact) => data && (data.firstName ? `${data.firstName} ${data.lastName}` : data.lastName);
-
-export const getContactName = item => {
+const getContactName = item => {
   const firstName = item.firstName || "";
   const lastName = item.lastName || "";
   return `${firstName.toLowerCase() === lastName.toLowerCase() ? "" : `${firstName} `}${lastName}`;
@@ -29,20 +25,7 @@ export const getContactFullName = (data: Contact) => {
     return `${firstName} ${middleName} ${lastName}`;
   }
 
-  return `${firstName} ${lastName}`;
-};
-
-export const defaultContactName = (contactName: string) => {
-  if (contactName) {
-    const hasFirstName = contactName.split(", ");
-    let name = contactName;
-
-    if (hasFirstName.length > 0) {
-      name = hasFirstName.reverse().join(" ");
-    }
-    return name;
-  }
-  return contactName;
+  return getContactName(data);
 };
 
 export const openContactLink = (contactId: number) => {
@@ -59,14 +42,14 @@ export const getNestedTutorClassItem = (status: CourseClassStatus, count: number
         name: "Current",
         count,
         link: `/class?search=tutorRoles.tutor.id is ${id}&filter=@Current_classes`,
-        timetableLink: `/timetable/search?query=courseClass.tutorRoles.tutor.id=${id} and courseClass.startDateTime < tomorrow and courseClass.endDateTime >= today and courseClass.isCancelled is false`
+        timetableLink: `/timetable?search=courseClass.tutorRoles.tutor.id=${id} and courseClass.startDateTime < tomorrow and courseClass.endDateTime >= today and courseClass.isCancelled is false`
       };
     case "Future":
       return {
         name: "Future",
         count,
         link: `/class?search=tutorRoles.tutor.id is ${id}&filter=@Future_classes`,
-        timetableLink: `/timetable/search?query=courseClass.tutorRoles.tutor.id=${id} and courseClass.startDateTime >= tomorrow and courseClass.endDateTime >= tomorrow and courseClass.isCancelled is false`
+        timetableLink: `/timetable?search=courseClass.tutorRoles.tutor.id=${id} and courseClass.startDateTime >= tomorrow and courseClass.endDateTime >= tomorrow and courseClass.isCancelled is false`
       };
     case "Self Paced":
       return {
@@ -85,7 +68,7 @@ export const getNestedTutorClassItem = (status: CourseClassStatus, count: number
         name: "Finished",
         count,
         link: `/class?search=tutorRoles.tutor.id is ${id}&filter=@Finished_classes`,
-        timetableLink: `/timetable/search?query=courseClass.tutorRoles.tutor.id=${id} and courseClass.isCancelled is false and courseClass.endDateTime before today`
+        timetableLink: `/timetable?search=courseClass.tutorRoles.tutor.id=${id} and courseClass.isCancelled is false and courseClass.endDateTime before today`
       };
     case "Cancelled":
       return {
@@ -99,17 +82,4 @@ export const getNestedTutorClassItem = (status: CourseClassStatus, count: number
       return null;
     }
   }
-};
-
-export const getContactPhoneAqlSearch = (value: string): string => {
-  const getSearchTemplate = val => `(homePhone starts with "${val}" or mobilePhone starts with "${val}" or workPhone starts with "${val}")`;
-  
-  let search = getSearchTemplate(value.replace(/[^\d]/g, ""));
-
-  // search with special symbols
-  if (/^\+/.test(value)) {
-    search += " or " + getSearchTemplate("+" + value.replace(/[^\d]/g, ""));
-  }
-
-  return search;
 };

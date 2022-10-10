@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable } from "react-beautiful-dnd-next";
 import { connect } from "react-redux";
 import { DataResponse, TableModel } from "@api/model";
 import { Dispatch } from "redux";
@@ -8,6 +8,7 @@ import { MenuTag } from "../../../../../../model/tags";
 import ListTagGroup from "./ListTagGroup";
 import { State } from "../../../../../../reducers/state";
 import { updateTableModel } from "../../../actions";
+import { COLUMN_WITH_COLORS } from "../../list/utils";
 
 const styles = theme =>
   createStyles({
@@ -22,14 +23,17 @@ const styles = theme =>
 interface Props {
   tags: MenuTag[];
   classes: any;
-  showColoredDots: boolean;
   records: DataResponse;
   onChangeTagGroups: (tags: MenuTag[], type: string) => void;
   rootEntity: string;
   updateTableModel: (model: TableModel, listUpdate?: boolean) => void;
 }
 
-const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups, updateTableModel, showColoredDots, records }) => {
+const ListTagGroups = ({
+ tags, classes, onChangeTagGroups, updateTableModel, records 
+}: Props) => {
+  const showColoredDots = records.columns.find(c => c.attribute === COLUMN_WITH_COLORS)?.visible;
+  
   const [tagsForRender, setTagsForRender] = useState([]);
 
   useEffect(() => {
@@ -115,7 +119,6 @@ const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups, upda
 
 const mapStateToProps = (state: State) => ({
   tags: state.list.menuTags,
-  showColoredDots: state.list.showColoredDots,
   records: state.list.records,
 });
 
@@ -123,7 +126,7 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   updateTableModel: (model: TableModel, listUpdate?: boolean) => dispatch(updateTableModel(ownProps.rootEntity, model, listUpdate)),
 });
 
-export default connect<any, any, any>(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withStyles(styles)(ListTagGroups));

@@ -72,9 +72,10 @@ const CourseClassAssessmentsTab: React.FC<Partial<EditViewProps<CourseClassExten
   }, [gradingTypes]);
 
   const AssessmentItemsComponent = useCallback(
-    ({ classes, ...rest }) => (
+    ({ classes, item, ...rest }) => (
       <CourseClassAssessmentItems
         {...rest}
+        item={item}
         dispatch={dispatch}
         form={form}
         courseClassEnrolments={courseClassEnrolments}

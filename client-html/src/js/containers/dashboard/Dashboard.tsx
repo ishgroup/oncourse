@@ -23,7 +23,6 @@ import { AppTheme, ThemeValues } from "../../model/common/Theme";
 import { toggleSwipeableDrawer } from "../../common/components/layout/swipeable-sidebar/actions";
 import { VARIANTS } from "../../common/components/layout/swipeable-sidebar/utils";
 import { SWIPEABLE_SIDEBAR_WIDTH } from "../../common/components/layout/swipeable-sidebar/SwipeableSidebar";
-import StructureGraph from "./StructureGraph";
 
 const styles = (theme: AppTheme) =>
   createStyles({

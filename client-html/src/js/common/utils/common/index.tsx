@@ -7,6 +7,7 @@ import React from "react";
 import { format as formatDateTime } from "date-fns";
 import { DataRow } from "@api/model";
 import { SelectItemDefault } from "../../../model/entities/common";
+import { IS_JEST } from "../../../constants/EnvironmentConstants";
 
 export const getDeepValue = (source, path) => {
   if (path.match(/[.,[]/)) {
@@ -55,7 +56,9 @@ export const getCustomColumnsMap = (columns: string): (dataRow: DataRow) => any 
 };
 
 export const createAndDownloadFile = (data: any, type: string, name: string) => {
-  const url = window.URL.createObjectURL(new Blob([data]));
+  const url = window.URL.createObjectURL(type === "json"
+    ? new Blob([JSON.stringify(data, null, 2)])
+    : new Blob([data]));
   const link = document.createElement("a");
   const fileName = name + "-" + formatDateTime(new Date(), "yyyMMddkkmmss");
 
@@ -67,6 +70,17 @@ export const createAndDownloadFile = (data: any, type: string, name: string) => 
   link.click();
   document.body.removeChild(link);
   window.URL.revokeObjectURL(url);
+};
+
+export const createAndDownloadBase64Image = (data: any, name: string, type = "png") => {
+  const link = document.createElement("a");
+  link.href = "data:image/png;base64," + data;
+  link.setAttribute("download", name + `.${type}`);
+  link.setAttribute("type", `application/${type}`);
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 };
 
 export const getArrayFieldMeta = name => {
@@ -82,8 +96,8 @@ export const getWindowWidth = () => window.innerWidth || document.documentElemen
 
 export const getWindowHeight = () => window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight || 1080;
 
-export const isInStandaloneMode = () =>
+export const isInStandaloneMode = () => (IS_JEST ? false : (
   (window.matchMedia('(display-mode: standalone)').matches)
   // @ts-ignore
   || (window.navigator.standalone)
-  || document.referrer.includes('android-app://');
+  || document.referrer.includes('android-app://')));

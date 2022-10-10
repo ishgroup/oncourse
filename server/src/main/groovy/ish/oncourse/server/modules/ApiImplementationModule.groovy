@@ -30,6 +30,7 @@ import ish.oncourse.server.api.v1.service.CheckoutApi
 import ish.oncourse.server.api.v1.service.ClassCostApi
 import ish.oncourse.server.api.v1.service.ConcessionApi
 import ish.oncourse.server.api.v1.service.ContactApi
+import ish.oncourse.server.api.v1.service.ContactInsightApi
 import ish.oncourse.server.api.v1.service.ContactMergeApi
 import ish.oncourse.server.api.v1.service.ControlApi
 import ish.oncourse.server.api.v1.service.CorporatePassApi
@@ -109,6 +110,7 @@ import ish.oncourse.server.api.v1.service.impl.CheckoutApiImpl
 import ish.oncourse.server.api.v1.service.impl.ClassCostApiImpl
 import ish.oncourse.server.api.v1.service.impl.ConcessionApiImpl
 import ish.oncourse.server.api.v1.service.impl.ContactApiImpl
+import ish.oncourse.server.api.v1.service.impl.ContactInsightApiImpl
 import ish.oncourse.server.api.v1.service.impl.ContactMergeApiImpl
 import ish.oncourse.server.api.v1.service.impl.ControlApiImpl
 import ish.oncourse.server.api.v1.service.impl.CorporatePassApiImpl
@@ -190,6 +192,7 @@ class ApiImplementationModule implements Module {
         binder.bind(CertificateApi).to(CertificateApiImpl)
         binder.bind(ConcessionApi).to(ConcessionApiImpl)
         binder.bind(ContactApi).to(ContactApiImpl)
+        binder.bind(ContactInsightApi).to(ContactInsightApiImpl)
         binder.bind(ContactMergeApi).to(ContactMergeApiImpl)
         binder.bind(ControlApi).to(ControlApiImpl)
         binder.bind(CorporatePassApi).to(CorporatePassApiImpl)

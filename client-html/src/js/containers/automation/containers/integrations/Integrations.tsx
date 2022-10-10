@@ -25,7 +25,7 @@ const Integrations = React.memo<any>(({
   }) => {
   const handleClick = useCallback(
     type => {
-      history.push(`/automation/integration/new?type=${type}`);
+      history.push(`/automation/integration/${type}/new`);
     },
     [history]
   );

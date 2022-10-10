@@ -10,6 +10,9 @@ properties:
   modified:
     type: string
     format: date-time
+  interactionDate:
+    type: string
+    format: date-time
   message:
     type: string
     required: true

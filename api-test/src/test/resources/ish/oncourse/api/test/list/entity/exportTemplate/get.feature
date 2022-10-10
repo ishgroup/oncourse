@@ -18,7 +18,7 @@ Feature: Main feature for all GET requests with path 'list/entity/exportTemplate
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["Room CSV export"])].id
+        * def id = get[0] response.rows[?(@.values == ["Room CSV"])].id
         * print "id = " + id
 
         Given path ishPath + '/' + id
@@ -27,7 +27,7 @@ Feature: Main feature for all GET requests with path 'list/entity/exportTemplate
         And match $ contains
         """
         {
-        "name":"Room CSV export",
+        "name":"Room CSV",
         "keyCode":"ish.onCourse.room.csv",
         "entity":"Room",
         "body":"records.each { Room r ->\n\tcsv << [\n\t\t\t'name'                         : r.name,\n\t\t\t'seated capacity'              : r.seatedCapacity,\n\t\t\t'directions'                   : r.directions,\n\t\t\t'facilities'                   : r.facilities,\n\t\t\t'notes'                        : r.notes,\n\t\t\t'created on'                   : r.createdOn?.format(\"yyyy-MM-dd'T'HH:mm:ssXXX\"),\n\t\t\t'modified on'                  : r.modifiedOn?.format(\"yyyy-MM-dd'T'HH:mm:ssXXX\"),\n\t\t\t'siteName'                     : r.site.name,\n\t\t\t'site is administration centre': r.site.isAdministrationCentre,\n\t\t\t'site Latitude'                : r.site.latitude,\n\t\t\t'site Longitude'               : r.site.longitude,\n\t\t\t'site Postcode'                : r.site.postcode,\n\t\t\t'site State'                   : r.site.state,\n\t\t\t'site Street'                  : r.site.street,\n\t\t\t'site Suburb'                  : r.site.suburb,\n\t\t\t'site Created on'              : r.site.createdOn?.format(\"yyyy-MM-dd'T'HH:mm:ssXXX\"),\n\t\t\t'site Modified on'             : r.site.modifiedOn?.format(\"yyyy-MM-dd'T'HH:mm:ssXXX\")\n\t]\n}\n",
@@ -35,10 +35,10 @@ Feature: Main feature for all GET requests with path 'list/entity/exportTemplate
         "variables":[],
         "options":[],
         "outputType":"csv",
-        "description":null,
-        "shortDescription":null,
+        "description":"Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.",
+        "shortDescription":"Open a list of Rooms in a spreadsheet",
         "automationTags":null,
-        "category":null
+        "category":"scheduling"
         }
         """
 
@@ -58,7 +58,7 @@ Feature: Main feature for all GET requests with path 'list/entity/exportTemplate
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["Class outcomes CSV export"])].id
+        * def id = get[0] response.rows[?(@.values == ["Class outcomes CSV"])].id
         * print "id = " + id
 
         Given path ishPath + '/' + id
@@ -67,7 +67,7 @@ Feature: Main feature for all GET requests with path 'list/entity/exportTemplate
         And match $ contains
         """
         {
-        "name":"Class outcomes CSV export",
+        "name":"Class outcomes CSV",
         "keyCode":"ish.onCourse.classOutcomes.csv",
         "entity":"CourseClass",
         "body":"records.collectMany { CourseClass cc -> cc.enrolments }.collectMany { e -> e.outcomes }.each { o ->\n\tcsv << [\n\t\t\t\"studentNumber\": o.enrolment.student.studentNumber,\n\t\t\t\"firstName\"    : o.enrolment.student.contact.firstName,\n\t\t\t\"lastName\"     : o.enrolment.student.contact.lastName,\n\t\t\t\"classCode\"    : \"${o.enrolment.courseClass.course.code}-${o.enrolment.courseClass.code}\",\n\t\t\t\"nationalCode\" : o.module?.nationalCode,\n\t\t\t\"title\"        : o.module?.title,\n\t\t\t\"startDate\"    : o.startDate?.format(\"d/M/Y hh:mm a\"),\n\t\t\t\"endDate\"      : o.endDate?.format(\"d/M/Y hh:mm a\"),\n\t\t\t\"status\"       : o.status?.displayName\n\t]\n}\n",
@@ -75,10 +75,10 @@ Feature: Main feature for all GET requests with path 'list/entity/exportTemplate
         "variables":[],
         "options":[],
         "outputType":"csv",
-        "description":null,
-        "shortDescription":null,
+        "description":"Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.",
+        "shortDescription":"Open a list of Class outcomess in a spreadsheet",
         "automationTags":null,
-        "category":null
+        "category":"education"
         }
         """
 

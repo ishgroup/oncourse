@@ -762,3 +762,39 @@ databaseChangeLog:
         - customChange: {
           "class": "ish.oncourse.server.upgrades.liquibase.change.UpdateFilterColumnWidth"
         }
+
+  - changeSet:
+      id: 115-3
+      author: dmitry
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: Node
+            columnName: nodeType
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.DeleteTagWebpages
+
+  - changeSet:
+      id: 116-1
+      author: kristina
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: Node
+      comment: create missing special tag groups
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.CreateSpecialTags
+
+  - changeSet:
+      id: 117-1
+      author: dmitars
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: Preference
+      comment: create preference for max image quality
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.CreateBackgroundQualityPreference

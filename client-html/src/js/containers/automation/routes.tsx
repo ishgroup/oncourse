@@ -75,7 +75,7 @@ const automationRoutes = [
     main: Integrations
   },
   {
-    path: "/automation/integration/:id",
+    path: "/automation/integration/:type/:id",
     url: "/automation/integration",
     noMenuLink: true,
     customAppBar: true,

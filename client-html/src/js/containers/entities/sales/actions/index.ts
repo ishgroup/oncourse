@@ -1,23 +1,11 @@
-import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
 import {
-  ProductItem,
-  ProductItemCancel,
-  ProductItemStatus,
-  ProductType,
-  SaleType
+ ProductItemCancel, ProductItemStatus, ProductType, SaleType
 } from "@api/model";
+import { _toRequestType, FULFILLED, REJECTED } from "../../../../common/actions/ActionUtils";
 
 export const GET_SALES = _toRequestType("get/sales");
 export const GET_SALES_FULFILLED = FULFILLED(GET_SALES);
-
-export const GET_COURSE_CLASS_SALES = _toRequestType("get/courseClassSales");
-export const GET_COURSE_CLASS_SALES_FULFILLED = FULFILLED(GET_COURSE_CLASS_SALES);
-
-export const GET_SALE = _toRequestType("get/sale");
-export const GET_SALE_FULFILLED = FULFILLED(GET_SALE);
-
-export const UPDATE_SALE = _toRequestType("update/sale");
-export const UPDATE_SALE_FULFILLED = FULFILLED(UPDATE_SALE);
+export const GET_SALES_REJECTED = REJECTED(GET_SALES);
 
 export const SET_SALE_DELIVERED = _toRequestType("set/sale/delivered");
 
@@ -35,11 +23,6 @@ export const GET_SALE_MENU_TAGS = "get/sale/tags";
 
 export const setSaleDelivered = (id: number) => ({
   type: SET_SALE_DELIVERED,
-  payload: { id }
-});
-
-export const getSale = (id: string) => ({
-  type: GET_SALE,
   payload: { id }
 });
 
@@ -62,24 +45,13 @@ export const getSales = (search: string, entities: SaleType[] = ["Product", "Mem
   payload: { search, entities }
 });
 
-export const getCourseClassSales = (search: string) => ({
-  type: GET_COURSE_CLASS_SALES,
-  payload: search
-});
-
 export const clearSales = pending => ({
   type: CLEAR_SALES,
   payload: { pending, items: null }
 });
 
-export const clearCourseClassSales = pending => ({
-  type: CLEAR_COURSE_CLASS_SALES,
-  payload: { pending, courseClassItems: null }
-});
-
-export const updateSale = (id: string, productItem: ProductItem) => ({
-  type: UPDATE_SALE,
-  payload: { id, productItem }
+export const getSalesRejected = () => ({
+  type: GET_SALES_REJECTED,
 });
 
 export const cancelSale = (productItemCancel: ProductItemCancel) => ({

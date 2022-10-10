@@ -1,7 +1,7 @@
 records.each { Message msg ->
     csv << [
             "id"                : msg.id,
-            "contacts"          : msg?.contacts*.fullName?.flatten()?.unique()?.join(", "),
+            "contacts"          : msg?.contact*.fullName?.flatten()?.unique()?.join(", "),
             "createdOn"         : msg?.createdOn?.format("d-M-y HH:mm:ss"),
             "createdBy"         : msg?.createdBy?.email  ?: "",
             "emailFrom"         : msg?.emailFrom ?: "",

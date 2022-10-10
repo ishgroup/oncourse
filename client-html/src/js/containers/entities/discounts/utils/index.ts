@@ -3,9 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
- Discount, DiscountType, MoneyRounding, Tax
-} from "@api/model";
+import { Discount, DiscountType, MoneyRounding, Tax } from "@api/model";
 import Decimal from "decimal.js-light";
 import { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import {
@@ -97,3 +95,20 @@ export const transformDiscountForNestedList = (discount: Discount): NestedListIt
 });
 
 export const discountSort = (a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+
+export const mapPlainDiscounts = d => ({
+  id: Number(d.id),
+  name: d.name,
+  discountType: d.discountType,
+  discountValue: d.discountDollar ? Number(d.discountDollar) : d.discountDollar,
+  discountPercent: d.discountPercent ? Number(d.discountPercent) : d.discountPercent
+});
+
+
+export const mapPlainDiscountClasses = c => ({
+  id: Number(c.id),
+  name: c["course.name"],
+  code: c.uniqueCode,
+  type: "Class",
+  active: c.isActive
+});

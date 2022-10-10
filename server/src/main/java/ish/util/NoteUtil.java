@@ -49,6 +49,7 @@ public class NoteUtil {
             newNote.setNote(oldNote.getNote());
             newNote.setSystemUser(oldNote.getSystemUser());
             newNote.setCreatedOn(oldNote.getCreatedOn());
+            newNote.setInteractionDate(oldNote.getInteractionDate());
             if (oldNote.getChangedBy() != null) {
                 newNote.setChangedBy(oldNote.getChangedBy());
             }

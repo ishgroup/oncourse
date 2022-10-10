@@ -1,23 +1,37 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Session, TutorAttendance } from "@api/model";
-import { AnyArgFunction, DateArgFunction, StringArgFunction } from "../common/CommonFunctions";
+import { Session } from "@api/model";
+import { AnyArgFunction, DateArgFunction } from "../common/CommonFunctions";
 import { CoreFilter, SavingFilterState } from "../common/ListView";
 
 export type CalendarMode = "Compact" | "Gap(Days)" | "Gap(Hours)";
 
+export type CalendarTagsState = "Tag names" | "Tag dots" | "Tag off";
+
+export type CalendarGroupingState = "Group by tutor" | "Group by room" | "No grouping";
+
+export interface CalendarGrouping {
+  tutor?: string;
+  room?: string;
+  site?: string;
+  sessions: Session[];
+}
+
 export interface TimetableState {
-  months?: TimetableMonth[];
-  selectedMonthSessionDays?: string[];
-  sessionsLoading?: boolean;
-  search?: string;
-  usersSearch?: string;
+  months: TimetableMonth[];
+  selectedMonthSessionDays: string[];
+  sessionsLoading: boolean;
+  search: string;
   searchError?: boolean;
   filters: CoreFilter[];
-  savingFilter?: SavingFilterState;
+  filtersLoading: boolean;
+  savingFilter: SavingFilterState;
 }
 
 export interface TimetableMonth {
@@ -41,13 +55,17 @@ export interface TimetableDay {
 
 export interface TimetableContextState {
   calendarMode: CalendarMode;
+  calendarGrouping: CalendarGroupingState;
+  tagsState: CalendarTagsState;
   targetDay: Date;
   selectedMonth: Date;
   selectedWeekDays: boolean[];
   selectedDayPeriods: boolean[];
   setSelectedWeekDays?: (arg: boolean[]) => void;
   setSelectedDayPeriods?: (arg: boolean[]) => void;
-  setCalendarMode?: StringArgFunction;
+  setCalendarMode?: AnyArgFunction<CalendarMode>;
+  setCalendarGrouping?: AnyArgFunction<CalendarMode>;
+  setTagsState?: AnyArgFunction<CalendarGroupingState>;
   setPrevious?: AnyArgFunction;
   setNext?: AnyArgFunction;
   setTargetDay?: DateArgFunction;

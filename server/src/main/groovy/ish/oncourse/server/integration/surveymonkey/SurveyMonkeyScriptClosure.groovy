@@ -32,6 +32,7 @@ import liquibase.pro.packaged.O
  *     name "name of integration"
  *     contact myContact
  * }
+ * ```
  **/
 @CompileDynamic
 @API

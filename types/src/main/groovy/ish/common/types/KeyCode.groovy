@@ -402,7 +402,7 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_EXPORT_XML(72, "Exporting to XML", ALL - VIEW),
+	SPECIAL_EXPORT_XML(72, "Exporting to XML and CSV", ALL - VIEW),
 
 	/**
 	 * Database value: 73
@@ -718,7 +718,16 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
      * Permission to work with any assessment.
      */
 	@API
-    ASSESSMENT(110, "Assessment", VIEW, NONE, ALL)
+    ASSESSMENT(110, "Assessment", VIEW, NONE, ALL),
+
+	/**
+	 * Database value: 111
+	 *
+	 * Permission to work with any checkout.
+	 * Always enabled: view
+	 */
+	@API
+	CHECKOUT(111, "Checkout", VIEW)
 
 
 	private int value

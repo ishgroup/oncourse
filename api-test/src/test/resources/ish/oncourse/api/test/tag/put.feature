@@ -5,11 +5,12 @@ Feature: Main feature for all PUT requests with path 'tag'
         * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'tag'
+        * def ishListPath = 'tag/list'
         * def ishPathLogin = 'login'
         
 
-        * def newTagGroupCreatedForNotadmin = {"name":"tagName500","status":"Show on website","urlPath":"urlPath","content":"Any text","weight":1,"requirements":[{"type":"Payslip","mandatory":true,"limitToOneTag":true,"system":false}],"childTags":[{"name":"childTag1","status":"Show on website","urlPath":"urlPath1","content":"Any text1","weight":1,},{"name":"childTag2","status":"Show on website","urlPath":"urlPath2","content":"Any text2","weight":2,}]}
-        * def newTagGroupUpdatedByNotadmin = {"name":"tagName501","status":"Show on website","urlPath":"urlPath","content":"Any text","weight":1,"requirements":[{"type":"Payslip","mandatory":true,"limitToOneTag":true,"system":false}],"childTags":[{"name":"childTag1","status":"Show on website","urlPath":"urlPath1","content":"Any text1","weight":1,},{"name":"childTag2","status":"Show on website","urlPath":"urlPath2","content":"Any text2","weight":2,}]}
+        * def newTagGroupCreatedForNotadmin = {"name":"tagName500","status":"Show on website","type":"Tag","urlPath":"urlPath","content":"Any text","weight":1,"requirements":[{"type":"Payslip","mandatory":true,"limitToOneTag":true,"system":false}],"childTags":[{"name":"childTag1","status":"Show on website","type":"Tag","urlPath":"urlPath1","content":"Any text1","weight":1,},{"name":"childTag2","status":"Show on website","type":"Tag","urlPath":"urlPath2","content":"Any text2","weight":2,}]}
+        * def newTagGroupUpdatedByNotadmin = {"name":"tagName501","status":"Show on website","type":"Tag","urlPath":"urlPath","content":"Any text","weight":1,"requirements":[{"type":"Payslip","mandatory":true,"limitToOneTag":true,"system":false}],"childTags":[{"name":"childTag1","status":"Show on website","type":"Tag","urlPath":"urlPath1","content":"Any text1","weight":1,},{"name":"childTag2","status":"Show on website","type":"Tag","urlPath":"urlPath2","content":"Any text2","weight":2,}]}
 
 
 
@@ -22,7 +23,8 @@ Feature: Main feature for all PUT requests with path 'tag'
             "name":"tagName100",
             "status":"Show on website",
             "urlPath":"urlPath",
-            "content":"Any text",
+            "content":'Any text {render:"textile"}',
+            "type":'Tag',
             "weight":1,
             "requirements":[{"type":"Payslip","mandatory":true,"limitToOneTag":true,"system":false}],
             "childTags":
@@ -30,14 +32,16 @@ Feature: Main feature for all PUT requests with path 'tag'
                     "name":"childTag1",
                     "status":"Show on website",
                     "urlPath":"urlPath1",
-                    "content":"Any text1",
+                    "type":'Tag',
+                    "content":'Any text1 {render:"textile"}',
                     "weight":1,
                 },
                 {
                     "name":"childTag2",
                     "status":"Show on website",
                     "urlPath":"urlPath2",
-                    "content":"Any text2",
+                    "type":'Tag',
+                    "content":'Any text2 {render:"textile"}',
                     "weight":2,
                 }]
         }
@@ -49,7 +53,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         Then status 204
 
 #       >>> Update entity:
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name contains "tagName100"
@@ -68,6 +72,7 @@ Feature: Main feature for all PUT requests with path 'tag'
             "urlPath":"urlPath_UPD",
             "content":"Any text_UPD",
             "weight":1,
+            "type":'Tag',
             "requirements":[{"type":"Site","mandatory":false,"limitToOneTag":false,"system":false}],
             "childTags":
                 [{  "id":"#(chuldTagId1)",
@@ -77,6 +82,7 @@ Feature: Main feature for all PUT requests with path 'tag'
                     "urlPath":"urlPath1_UPD",
                     "content":"Any text1_UPD",
                     "weight":2,
+                    "type":'Tag',
                     "requirements":[],
                     "childTags":[]
                 },
@@ -87,6 +93,7 @@ Feature: Main feature for all PUT requests with path 'tag'
                     "urlPath":"urlPath2_UPD",
                     "content":"Any text2_UPD",
                     "weight":1,
+                    "type":'Tag',
                     "requirements":[],
                     "childTags":[]
                 },
@@ -97,6 +104,7 @@ Feature: Main feature for all PUT requests with path 'tag'
                     "urlPath":"urlPath3_UPD",
                     "content":"Any text3_UPD",
                     "weight":3,
+                    "type":'Tag',
                     "requirements":[],
                     "childTags":[]
                 }]
@@ -109,7 +117,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         Then status 204
 
 #       >>> Assertion:
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name contains "tagName100_UPD"
@@ -193,6 +201,7 @@ Feature: Main feature for all PUT requests with path 'tag'
             "urlPath":"urlPath",
             "content":"Any text",
             "weight":1,
+            "type":'Tag',
             "requirements":[{"type":"Payslip","mandatory":true,"limitToOneTag":true,"system":false}],
             "childTags":
                 [{
@@ -200,6 +209,7 @@ Feature: Main feature for all PUT requests with path 'tag'
                     "status":"Show on website",
                     "urlPath":"urlPath1",
                     "content":"Any text1",
+                    "type":'Tag',
                     "weight":1
                 }]
         }
@@ -210,7 +220,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         When method POST
         Then status 204
 
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name contains "tagName102"
@@ -228,6 +238,7 @@ Feature: Main feature for all PUT requests with path 'tag'
             "urlPath":"urlPath_UPD",
             "content":"Any text_UPD",
             "weight":1,
+            "type":'Tag',
             "requirements":[{"type":"Site","mandatory":false,"limitToOneTag":false,"system":false}],
             "childTags":
                 [{  "id":"#(chuldTagId1)",
@@ -237,6 +248,7 @@ Feature: Main feature for all PUT requests with path 'tag'
                     "urlPath":"urlPath1_UPD",
                     "content":"Any text1_UPD",
                     "weight":1,
+                    "type":'Tag',
                     "requirements":[],
                     "childTags":[]
                 }]
@@ -249,7 +261,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         Then status 204
 
 #       >>> Assertion:
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
 
@@ -283,6 +295,7 @@ Feature: Main feature for all PUT requests with path 'tag'
             "urlPath":"urlPath",
             "content":"Any text",
             "weight":1,
+            "type":'Tag',
             "requirements":[{"type":"Payslip","mandatory":true,"limitToOneTag":true,"system":false}],
             "childTags":
                 [{
@@ -290,6 +303,7 @@ Feature: Main feature for all PUT requests with path 'tag'
                     "status":"Show on website",
                     "urlPath":"urlPath1",
                     "content":"Any text1",
+                    "type":'Tag',
                     "weight":1
                 }]
         }
@@ -300,7 +314,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         When method POST
         Then status 204
 
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name contains "tagName103"
@@ -318,6 +332,7 @@ Feature: Main feature for all PUT requests with path 'tag'
             "urlPath":"A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A99A103A107A111A115A119A123A127A1",
             "content":"Any text",
             "weight":1,
+            "type":'Tag',
             "requirements":[{"type":"Site","mandatory":false,"limitToOneTag":false,"system":false}],
             "childTags":
                 [{  "id":"#(chuldTagId1)",
@@ -327,6 +342,7 @@ Feature: Main feature for all PUT requests with path 'tag'
                     "urlPath":"urlPath1",
                     "content":"Any text1",
                     "weight":1,
+                    "type":'Tag',
                     "requirements":[],
                     "childTags":[]
                 }]
@@ -339,7 +355,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         Then status 204
 
 #       >>> Assertion:
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
 
@@ -375,7 +391,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         When method POST
         Then status 204
 
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name contains "tagName500"
@@ -389,7 +405,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         Then status 204
 
 #       >>> Assertion:
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name !contains "tagName500"
@@ -415,7 +431,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         When method POST
         Then status 204
 
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name contains "tagName500"
@@ -434,7 +450,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         Then status 204
 
 #       >>> Assertion:
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name !contains "tagName500"
@@ -460,7 +476,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         When method POST
         Then status 204
 
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name contains "tagName500"
@@ -479,7 +495,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         Then status 204
 
 #       >>> Assertion:
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name !contains "tagName500"
@@ -505,7 +521,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         When method POST
         Then status 204
 
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name contains "tagName500"
@@ -543,7 +559,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         When method POST
         Then status 204
 
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name contains "tagName500"
@@ -581,7 +597,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         When method POST
         Then status 204
 
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name contains "tagName500"
@@ -621,6 +637,7 @@ Feature: Main feature for all PUT requests with path 'tag'
             "status":"Show on website",
             "urlPath":"urlPath",
             "content":"Any text",
+            "type":'Tag',
             "weight":1,
             "requirements":[{"type":"Payslip","mandatory":true,"limitToOneTag":true,"system":false}],
             "childTags":
@@ -629,6 +646,7 @@ Feature: Main feature for all PUT requests with path 'tag'
                 "status":"Show on website",
                 "urlPath":"urlPath1",
                 "content":"Any text1",
+                "type":'Tag',
                 "weight":1
             }]
         }
@@ -639,7 +657,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         When method POST
         Then status 204
 
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name contains "tagName104"
@@ -673,6 +691,7 @@ Feature: Main feature for all PUT requests with path 'tag'
             "status":"Show on website",
             "urlPath":"urlPath",
             "content":"Any text",
+            "type":'Tag',
             "weight":1,
             "requirements":[{"type":"Payslip","mandatory":true,"limitToOneTag":true,"system":false}],
             "childTags":
@@ -681,6 +700,7 @@ Feature: Main feature for all PUT requests with path 'tag'
                     "status":"Show on website",
                     "urlPath":"urlPath1",
                     "content":"Any text1",
+                    "type":'Tag',
                     "weight":1
                 }]
         }
@@ -691,7 +711,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         When method POST
         Then status 204
 
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name contains "tagName105"
@@ -708,12 +728,14 @@ Feature: Main feature for all PUT requests with path 'tag'
             "system":false,
             "urlPath":"urlPath2",
             "content":"Any text",
+            "type":'Tag',
             "weight":1,
             "requirements":[{"type":"Site","mandatory":false,"limitToOneTag":false,"system":false}],
             "childTags":
                 [{  "id":"#(chuldTagId1)",
                     "name":"childTag1",
                     "status":"Show on website",
+                    "type":'Tag',
                     "system":false,
                     "urlPath":"urlPath1",
                     "content":"Any text1",
@@ -750,12 +772,14 @@ Feature: Main feature for all PUT requests with path 'tag'
             "status":"Show on website",
             "urlPath":"urlPath",
             "content":"Any text",
+            "type":'Tag',
             "weight":1,
             "requirements":[{"type":"Payslip","mandatory":true,"limitToOneTag":true,"system":false}],
             "childTags":
                 [{
                     "name":"childTag1",
                     "status":"Show on website",
+                    "type":'Tag',
                     "urlPath":"urlPath1",
                     "content":"Any text1",
                     "weight":1
@@ -768,7 +792,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         When method POST
         Then status 204
 
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name contains "tagName106"
@@ -785,12 +809,14 @@ Feature: Main feature for all PUT requests with path 'tag'
             "system":false,
             "urlPath":"urlPath2",
             "content":"Any text",
+            "type":'Tag',
             "weight":1,
             "requirements":[{"type":"Site","mandatory":false,"limitToOneTag":false,"system":false}],
             "childTags":
                 [{  "id":"#(chuldTagId1)",
                     "name":"",
                     "status":"Show on website",
+                    "type":'Tag',
                     "system":false,
                     "urlPath":"urlPath1",
                     "content":"Any text1",
@@ -827,12 +853,14 @@ Feature: Main feature for all PUT requests with path 'tag'
             "status":"Show on website",
             "urlPath":"urlPath",
             "content":"Any text",
+            "type":'Tag',
             "weight":1,
             "requirements":[{"type":"Payslip","mandatory":true,"limitToOneTag":true,"system":false}],
             "childTags":
                 [{
                     "name":"childTag1",
                     "status":"Show on website",
+                    "type":'Tag',
                     "urlPath":"urlPath1",
                     "content":"Any text1",
                     "weight":1
@@ -845,7 +873,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         When method POST
         Then status 204
 
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name contains "tagName108"
@@ -863,11 +891,13 @@ Feature: Main feature for all PUT requests with path 'tag'
             "urlPath":"urlPath2",
             "content":"Any text",
             "weight":1,
+            "type":'Tag',
             "requirements":[{"type":"Site","mandatory":false,"limitToOneTag":false,"system":false}],
             "childTags":
                 [{  "id":"#(chuldTagId1)",
                     "name":"childTag1",
                     "status":"Show on website",
+                    "type":'Tag',
                     "system":false,
                     "urlPath":"urlPath1",
                     "content":"Any text1",
@@ -904,6 +934,7 @@ Feature: Main feature for all PUT requests with path 'tag'
             "status":"Show on website",
             "urlPath":"urlPath",
             "content":"Any text",
+            "type":'Tag',
             "weight":1,
             "requirements":[{"type":"Payslip","mandatory":true,"limitToOneTag":true,"system":false}],
             "childTags":
@@ -912,6 +943,7 @@ Feature: Main feature for all PUT requests with path 'tag'
                     "status":"Show on website",
                     "urlPath":"urlPath1",
                     "content":"Any text1",
+                    "type":'Tag',
                     "weight":1
                  },
                  {
@@ -919,6 +951,7 @@ Feature: Main feature for all PUT requests with path 'tag'
                     "status":"Show on website",
                     "urlPath":"urlPath2",
                     "content":"Any text2",
+                    "type":'Tag',
                     "weight":1
                 }]
         }
@@ -929,7 +962,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         When method POST
         Then status 204
 
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name contains "tagName109"
@@ -948,6 +981,7 @@ Feature: Main feature for all PUT requests with path 'tag'
             "urlPath":"urlPath2",
             "content":"Any text",
             "weight":1,
+            "type":'Tag',
             "requirements":[{"type":"Site","mandatory":false,"limitToOneTag":false,"system":false}],
             "childTags":
                 [{  "id":"#(chuldTagId1)",
@@ -957,6 +991,7 @@ Feature: Main feature for all PUT requests with path 'tag'
                     "urlPath":"urlPath1",
                     "content":"Any text1",
                     "weight":1,
+                    "type":'Tag',
                     "requirements":[],
                     "childTags":[]
                 },
@@ -967,6 +1002,7 @@ Feature: Main feature for all PUT requests with path 'tag'
                         "urlPath":"urlPath2",
                         "content":"Any text2",
                         "weight":2,
+                        "type":'Tag',
                         "requirements":[],
                         "childTags":[]
                 }]
@@ -1000,12 +1036,14 @@ Feature: Main feature for all PUT requests with path 'tag'
             "urlPath":"urlPath",
             "content":"Any text",
             "weight":1,
+            "type":'Tag',
             "requirements":[{"type":"Payslip","mandatory":true,"limitToOneTag":true,"system":false}],
             "childTags":
                 [{
                     "name":"childTag1",
                     "status":"Show on website",
                     "urlPath":"urlPath1",
+                    "type":'Tag',
                     "content":"Any text1",
                     "weight":1
                 }]
@@ -1017,7 +1055,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         When method POST
         Then status 204
 
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name contains "tagName110"
@@ -1035,6 +1073,7 @@ Feature: Main feature for all PUT requests with path 'tag'
             "urlPath":"urlPath_UPD",
             "content":"Any text_UPD",
             "weight":1,
+            "type":'Tag',
             "requirements":[{"type":"Site","mandatory":false,"limitToOneTag":false,"system":false}],
             "childTags":
                 [{  "id":"#(chuldTagId1)",
@@ -1044,6 +1083,7 @@ Feature: Main feature for all PUT requests with path 'tag'
                     "urlPath":"urlPath1_UPD",
                     "content":"Any text1_UPD",
                     "weight":1,
+                    "type":'Tag',
                     "requirements":[],
                     "childTags":[]
                 }]
@@ -1077,6 +1117,7 @@ Feature: Main feature for all PUT requests with path 'tag'
             "urlPath":"urlPath",
             "content":"Any text",
             "weight":1,
+            "type":'Tag',
             "requirements":[{"type":"Payslip","mandatory":true,"limitToOneTag":true,"system":false}],
             "childTags":
                 [{
@@ -1084,6 +1125,7 @@ Feature: Main feature for all PUT requests with path 'tag'
                     "status":"Show on website",
                     "urlPath":"urlPath1",
                     "content":"Any text1",
+                    "type":'Tag',
                     "weight":1
                 }]
         }
@@ -1094,7 +1136,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         When method POST
         Then status 204
 
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name contains "tagName111"
@@ -1112,6 +1154,7 @@ Feature: Main feature for all PUT requests with path 'tag'
             "urlPath":"A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A99A103A107A111A115A119A123A127A12",
             "content":"Any text_UPD",
             "weight":1,
+            "type":'Tag',
             "requirements":[{"type":"Site","mandatory":false,"limitToOneTag":false,"system":false}],
             "childTags":
                 [{  "id":"#(chuldTagId1)",
@@ -1121,6 +1164,7 @@ Feature: Main feature for all PUT requests with path 'tag'
                     "urlPath":"urlPath1_UPD",
                     "content":"Any text1_UPD",
                     "weight":1,
+                    "type":'Tag',
                     "requirements":[],
                     "childTags":[]
                 }]
@@ -1154,6 +1198,7 @@ Feature: Main feature for all PUT requests with path 'tag'
             "urlPath":"urlPath",
             "content":"Any text",
             "weight":1,
+            "type":'Tag',
             "requirements":[{"type":"Payslip","mandatory":true,"limitToOneTag":true,"system":false}],
             "childTags":
                 [{
@@ -1161,6 +1206,7 @@ Feature: Main feature for all PUT requests with path 'tag'
                     "status":"Show on website",
                     "urlPath":"urlPath1",
                     "content":"Any text1",
+                    "type":'Tag',
                     "weight":1
                 }]
         }
@@ -1171,7 +1217,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         When method POST
         Then status 204
 
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name contains "tagName106"
@@ -1188,6 +1234,7 @@ Feature: Main feature for all PUT requests with path 'tag'
             "system":false,
             "urlPath":"urlPath2",
             "content":"Any text",
+            "type":'Tag',
             "weight":1,
             "requirements":[],
             "childTags":
@@ -1198,6 +1245,7 @@ Feature: Main feature for all PUT requests with path 'tag'
                     "urlPath":"urlPath1",
                     "content":"Any text1",
                     "weight":1,
+                    "type":'Tag',
                     "requirements":[],
                     "childTags":[]
                 }]
@@ -1231,6 +1279,7 @@ Feature: Main feature for all PUT requests with path 'tag'
             "urlPath":"urlPath",
             "content":"Any text",
             "weight":1,
+            "type":'Tag',
             "requirements":[{"type":"Payslip","mandatory":true,"limitToOneTag":true,"system":false}],
             "childTags":
                 [{
@@ -1238,6 +1287,7 @@ Feature: Main feature for all PUT requests with path 'tag'
                     "status":"Show on website",
                     "urlPath":"urlPath1",
                     "content":"Any text1",
+                    "type":'Tag',
                     "weight":1
                 }]
         }
@@ -1248,7 +1298,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         When method POST
         Then status 204
 
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name contains "tagName107"
@@ -1266,6 +1316,7 @@ Feature: Main feature for all PUT requests with path 'tag'
             "urlPath":"urlPath",
             "content":"Any text",
             "weight":1,
+            "type":'Tag',
             "requirements":[{"type":"notExisting","mandatory":true,"limitToOneTag":true,"system":false}],
             "childTags":
                 [{  "id":"#(chuldTagId1)",
@@ -1275,6 +1326,7 @@ Feature: Main feature for all PUT requests with path 'tag'
                     "urlPath":"urlPath1",
                     "content":"Any text1",
                     "weight":1,
+                    "type":'Tag',
                     "requirements":[],
                     "childTags":[]
                 }]

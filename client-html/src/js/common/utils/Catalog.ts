@@ -15,9 +15,9 @@ export const mapListToCatalogItem = (r: DataRow): CatalogItemType => ({
   id: Number(r.id),
   title: r.values[0],
   category: r.values[1],
-  installed: r.values[2] !== "Not Installed",
+  installed: !r.values[5]?.startsWith("ish.") || r.values[2] !== "Not Installed",
   enabled: r.values[2] === "Enabled",
-  tags: r.values[3],
+  tags: !r.values[5]?.startsWith("ish.") ? (r.values[3] ? r.values[3] += ",custom" : r.values[3] = "custom") : r.values[3],
   shortDescription: r.values[4],
   keyCode: r.values[5]
 });

@@ -1,4 +1,4 @@
-import { CourseClass } from "@api/model";
+import { ClassCost, CourseClass } from "@api/model";
 import { generateArraysOfRecords, getEntityResponse } from "../../mockUtils";
 import { CourseClass as CourseClassQueryModel } from "../../../../../build/generated-sources/aql-model/queryLanguageModel";
 import * as Models from "../../../../../build/generated-sources/aql-model/queryLanguageModel";
@@ -23,7 +23,7 @@ export function mockCourseClasses() {
       createdOn: value[10],
       modifiedOn: value[10],
       deposit: 95.45,
-      detBookingId: null,
+      detBookingId: "",
       expectedHours: 0,
       feeExcludeGST: 95.45,
       finalDetExport: null,
@@ -39,7 +39,6 @@ export function mockCourseClasses() {
       midwayDetExport: null,
       minStudentAge: 10,
       minimumPlaces: 1,
-      sessionsCount: value[4],
       suppressAvetmissExport: false,
       vetCourseSiteID: 10,
       vetFundingSourceStateID: "F3",
@@ -77,6 +76,8 @@ export function mockCourseClasses() {
   };
 
   this.getCourseClasses = () => this.courseClasses;
+
+  this.getCourseClassesTotalRows = (): String => String(this.getCourseClasses().rows.length);
 
   this.getPlainCourseClassList = params => {
     let rows: any[];
@@ -181,10 +182,10 @@ export function mockCourseClasses() {
     });
   };
 
-  this.getCourseClassBudget = () => [
+  this.getCourseClassBudget = (classId: number): ClassCost[] => [
     {
       "id": 6455,
-      "courseClassid": 2104,
+      "courseClassid": classId,
       "taxId": 1,
       "accountId": null,
       "invoiceId": null,
@@ -208,12 +209,12 @@ export function mockCourseClasses() {
       "paymentPlan": [
 
       ],
-      "courseClassTutorId": 1426,
+      "courseClassTutorId": classId,
       "tutorRole": "General Tutor"
     },
     {
       "id": 7017,
-      "courseClassid": 2104,
+      "courseClassid": classId,
       "taxId": 1,
       "accountId": null,
       "invoiceId": null,
@@ -288,9 +289,9 @@ export function mockCourseClasses() {
     },
     {
       "id": 7257,
-      "courseClassid": 2104,
+      "courseClassid": classId,
       "taxId": 1,
-      "accountId": 15,
+      "accountId": 1,
       "invoiceId": null,
       "description": "Student enrolment fee",
       "invoiceToStudent": true,
@@ -340,7 +341,7 @@ export function mockCourseClasses() {
     },
     {
       "id": 7862,
-      "courseClassid": 2104,
+      "courseClassid": classId,
       "taxId": 1,
       "accountId": null,
       "invoiceId": null,
@@ -415,7 +416,7 @@ export function mockCourseClasses() {
     },
     {
       "id": 8209,
-      "courseClassid": 2104,
+      "courseClassid": classId,
       "taxId": 1,
       "accountId": null,
       "invoiceId": null,
@@ -490,7 +491,7 @@ export function mockCourseClasses() {
     },
     {
       "id": 28007,
-      "courseClassid": 2104,
+      "courseClassid": classId,
       "taxId": 1,
       "accountId": null,
       "invoiceId": null,
@@ -565,7 +566,7 @@ export function mockCourseClasses() {
     },
     {
       "id": 28574,
-      "courseClassid": 2104,
+      "courseClassid": classId,
       "taxId": 1,
       "accountId": null,
       "invoiceId": null,
@@ -650,9 +651,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -663,8 +662,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-06-20T23:00:00.000Z",
       "end": "2023-06-21T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -674,9 +673,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -687,8 +684,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-06-20T23:00:00.000Z",
       "end": "2023-06-21T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -698,9 +695,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -711,8 +706,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-06-21T23:00:00.000Z",
       "end": "2023-06-22T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -722,9 +717,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -735,8 +728,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-06-22T23:00:00.000Z",
       "end": "2023-06-23T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -746,9 +739,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -759,8 +750,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-06-23T23:00:00.000Z",
       "end": "2023-06-24T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -770,9 +761,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -783,8 +772,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-06-24T23:00:00.000Z",
       "end": "2023-06-25T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -794,9 +783,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -807,8 +794,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-06-27T23:00:00.000Z",
       "end": "2023-06-28T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -818,9 +805,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -831,8 +816,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-06-28T23:00:00.000Z",
       "end": "2023-06-29T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -842,9 +827,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -855,8 +838,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-06-29T23:00:00.000Z",
       "end": "2023-06-30T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -866,9 +849,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -879,8 +860,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-06-30T23:00:00.000Z",
       "end": "2023-07-01T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -890,9 +871,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -903,8 +882,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-07-01T23:00:00.000Z",
       "end": "2023-07-02T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -914,9 +893,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -927,8 +904,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-07-04T23:00:00.000Z",
       "end": "2023-07-05T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -938,9 +915,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -951,8 +926,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-07-05T23:00:00.000Z",
       "end": "2023-07-06T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -962,9 +937,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -975,8 +948,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-07-06T23:00:00.000Z",
       "end": "2023-07-07T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -986,9 +959,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -999,8 +970,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-07-07T23:00:00.000Z",
       "end": "2023-07-08T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -1010,9 +981,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -1023,8 +992,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-07-08T23:00:00.000Z",
       "end": "2023-07-09T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -1034,9 +1003,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -1047,8 +1014,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-07-11T23:00:00.000Z",
       "end": "2023-07-12T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -1058,9 +1025,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -1071,8 +1036,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-07-12T23:00:00.000Z",
       "end": "2023-07-13T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -1082,9 +1047,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -1095,8 +1058,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-07-13T23:00:00.000Z",
       "end": "2023-07-14T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
     {
@@ -1106,9 +1069,7 @@ export function mockCourseClasses() {
       "code": null,
       "room": "Room 1",
       "site": "Perth office",
-      "tutors": [
-
-      ],
+      "tutors": this.getCourseClassTutors().map(t => t.tutorName),
       "tutorAttendances": [
 
       ],
@@ -1119,8 +1080,8 @@ export function mockCourseClasses() {
       "siteTimezone": "Australia/West",
       "start": "2023-07-14T23:00:00.000Z",
       "end": "2023-07-15T05:00:00.000Z",
-      "publicNotes": null,
-      "privateNotes": null,
+      "publicNotes": "",
+      "privateNotes": "",
       "hasPaylines": false
     },
   ];
@@ -1472,20 +1433,36 @@ export function mockCourseClasses() {
     }
   ];
 
-  this.getCourseClassTutors = () => [
+  this.getCourseClassTutors = classId => [
     {
-      "id": 2315,
-      "classId": 1866,
-      "contactId": 182,
-      "roleId": 0,
+      "id": classId,
+      classId,
+      "contactId": classId,
+      "roleId": 1,
       "tutorName": "Eliatan Hill",
       "roleName": "General Tutor",
-      "confirmedOn": null,
+      "confirmedOn": "",
       "isInPublicity": true
     }
   ];
 
-  this.getCourseClassAssessment = () => [];
+  this.getCourseClassAssessment = classId => [
+    {
+      "id": 1,
+      "assessmentId": classId,
+      "courseClassId": classId,
+      "assessmentCode": `code ${classId}`,
+      "assessmentName": `name ${classId}`,
+      "gradingTypeId": 1,
+      "contactIds": [
+        classId
+      ],
+      "moduleIds": [],
+      "releaseDate": null,
+      "dueDate": "2021-06-10T07:04:19.000Z",
+      "submissions": []
+    }
+  ];
 
   this.getCourseClassAttendanceStudents = () => [
     {
@@ -1494,7 +1471,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1504,7 +1481,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1514,7 +1491,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1524,7 +1501,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1534,7 +1511,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1544,7 +1521,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1554,7 +1531,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1564,7 +1541,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1574,7 +1551,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1584,7 +1561,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1594,7 +1571,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1604,7 +1581,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1614,7 +1591,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1624,7 +1601,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1634,7 +1611,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1644,7 +1621,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1654,7 +1631,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1664,7 +1641,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1674,7 +1651,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1684,7 +1661,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1694,7 +1671,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1704,7 +1681,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1714,7 +1691,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1724,7 +1701,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1734,7 +1711,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1744,7 +1721,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1754,7 +1731,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1764,7 +1741,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1774,7 +1751,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Attended",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1784,7 +1761,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1794,7 +1771,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1804,7 +1781,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1814,7 +1791,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1824,7 +1801,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1834,7 +1811,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1844,7 +1821,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1854,7 +1831,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1864,7 +1841,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1874,7 +1851,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1884,7 +1861,7 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     },
@@ -1894,13 +1871,19 @@ export function mockCourseClasses() {
       "contactId": 2979,
       "contactName": "Artyom Tutor",
       "attendanceType": "Unmarked",
-      "note": null,
+      note: "",
       "attendedFrom": null,
       "attendedUntil": null
     }
   ];
 
   this.getCourseClassTrainingPlan = () => [];
+
+  this.cancelCourseClassPayload = () => ({
+    classIds: ["2"],
+    refundManualInvoices: true,
+    sendEmail: true,
+  });
 
   const rows: CourseClass[] = generateArraysOfRecords(20, [
     { name: "id", type: "number" },

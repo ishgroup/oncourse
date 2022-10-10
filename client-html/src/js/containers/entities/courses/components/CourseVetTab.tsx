@@ -9,7 +9,7 @@ import { Dispatch } from "redux";
 import { change } from "redux-form";
 import { Module, Qualification } from "@api/model";
 import {
- Collapse, Tooltip, FormControlLabel, Grid
+ Collapse, FormControlLabel, Grid, Tooltip 
 } from "@mui/material";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
@@ -37,6 +37,7 @@ interface CourseVetTab extends EditViewProps<CourseExtended> {
   setModuleSearch?: StringArgFunction;
   getModules?: AnyArgFunction;
   modulesPending?: boolean;
+  moduleError?: boolean;
   moduleItems?: Module[];
   clearModuleSearch?: BooleanArgFunction;
 }
@@ -64,6 +65,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
     submitSucceeded,
     moduleItems,
     modulesPending,
+    moduleError,
     clearModuleSearch
   } = props;
 
@@ -245,6 +247,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
           resetSearch={submitSucceeded}
           dataRowClass={classes.moduleRowClass}
           aqlEntities={["Module"]}
+          aqlQueryError={moduleError}
           disabled={values.hasEnrolments}
         />
       </Grid>
@@ -254,7 +257,8 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
 
 const mapStateToProps = (state: State) => ({
   modulesPending: state.plainSearchRecords["Module"].loading,
-  moduleItems: state.plainSearchRecords["Module"].items
+  moduleItems: state.plainSearchRecords["Module"].items,
+  moduleError: state.plainSearchRecords["Module"].error
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

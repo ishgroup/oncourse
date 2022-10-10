@@ -1,6 +1,5 @@
 import { DefaultEpic } from "../../common/Default.Epic";
-import { FETCH_SUCCESS } from "../../../js/common/actions";
-import { closeListNestedEditRecord } from "../../../js/common/components/list-view/actions";
+import { FETCH_SUCCESS, closeSendMessage } from "../../../js/common/actions";
 import { sendMessage } from "../../../js/containers/entities/messages/actions";
 import { EpicSendMessage } from "../../../js/containers/entities/messages/epics/EpicSendMessage";
 
@@ -34,14 +33,15 @@ describe("Send message epic tests", () => {
       messageType: "Sms",
       recipientsCount: 1,
       selectAll: true
-    }),
+    },
+    ["2", "3"]),
     epic: EpicSendMessage,
     processData: () => [
       {
         type: FETCH_SUCCESS,
         payload: { message: "All messages sent" }
       },
-      closeListNestedEditRecord(0)
+      closeSendMessage()
     ]
   }));
 });

@@ -4,7 +4,10 @@
   keyCode: ish.email.VETCourseCompletionSurvey
   txtTemplate: ish.email.VETCourseCompletionSurvey.txt
   htmlTemplate: ish.email.VETCourseCompletionSurvey.html
-  subject: "VET Course completion survey"
+  subject: VET Course completion survey
+  short: A message template for inviting the student to complete a course completion survey.
+  description: A message template for inviting the student of a VET course to complete a course completion survey. Their answers will be available in the 'Student Feedback' section of onCourse. Sent by an automation, or manually form the Class or Enrolments windows.
+  category: accreditation
   options:
     - name: header_keycode
       dataType: TEXT
@@ -12,14 +15,16 @@
     - name: footer_keycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: alert students of assessment release
   type: email
   keyCode: ish.email.alertStudentsOfAssessmentRelease
   txtTemplate: ish.email.alertStudentsOfAssessmentRelease.txt
   htmlTemplate: ish.email.alertStudentsOfAssessmentRelease.html
   subject: Assessments Released
-  description: An email with notification to student to inform them that assessments are now available in the SkillsOnCourse portal
+  short: Inform students that a class assessment is now available in the SkillsOnCourse portal.
+  description: An email with notification to students to inform them that assessments are now available in the SkillsOnCourse portal. Sent by an automation.
+  category: education
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -27,13 +32,16 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: alert students of related class
   type: email
   keyCode: ish.email.alertStudentsOfRelatedClass
   txtTemplate: ish.email.alertStudentsOfRelatedClass.txt
   htmlTemplate: ish.email.alertStudentsOfRelatedClass.html
   subject: Next Steps
+  short: Email a notification to promote the selected class to a short list of students who, in the past, attended a class of the same tutor.
+  description: Inform students taught by the tutor of the selected class over the last 18 months that this tutor has another class they might be interested in starting in the near future. Sent by an automation.
+  category: marketing
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -41,14 +49,16 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: alert tutors of assessment release
   type: email
   keyCode: ish.email.alertTutorsOfAssessmentRelease
   txtTemplate: ish.email.alertTutorsOfAssessmentRelease.txt
   htmlTemplate: ish.email.alertTutorsOfAssessmentRelease.html
   subject: Assessment Released
-  description: An email with notification to tutor to inform them that assessments are now available in the SkillsOnCourse portal
+  short: Notify tutors that one of their class assessments has been made available for students on the SkillsonCourse Portal.
+  description: For classes that contain assessments with release dates, sends an email notification to the class tutors upon release to inform them that assessments are now available for students in the SkillsOnCourse portal. Sent by an automation.
+  category: education
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -56,7 +66,7 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Certificate available
   type: email
   keyCode: ish.email.availableCertificate
@@ -64,7 +74,9 @@
   htmlTemplate: ish.email.availableCertificate.html
   subject: Certificate available
   entityClass: Enrolment
-  description: An email to the student containing the link to the certificate
+  short: An email to the student containing the link to the certificate.
+  description: An email that generates a link to the student's certificate after completing their course. Links to the SkillsonCourse portal. Sent by an automation or manually from Class or Enrolments windows.
+  category: accreditation
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -72,7 +84,7 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Birthday voucher email
   type: email
   keyCode: ish.email.birthdayVoucher
@@ -80,7 +92,9 @@
   htmlTemplate: ish.email.birthdayVoucher.html
   subject: Happy Birthday!
   entityClass: Contact
-  description: An email with a birthday voucher as a gift
+  short: An email with a birthday voucher as a gift.
+  description: An email to be sent on or around the birthday of a student with a birthday voucher as a gift. Sent using an automation or manually via Contacts.
+  category: marketing
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -88,7 +102,7 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Class Cancellation
   type: email
   keyCode: ish.email.classCancellation
@@ -96,7 +110,9 @@
   htmlTemplate: ish.email.classCancellation.html
   subject: Class cancellation
   entityClass: Enrolment
-  description: An email to the student with information about class cancellation
+  short: For notifying students that their class has been cancelled.
+  description: An email to the student with information about their class that has been cancelled. Sent from Enrolments or Classes.
+  category: scheduling
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -104,7 +120,7 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Class Confirmed
   type: email
   keyCode: ish.email.classConfirmed
@@ -112,7 +128,9 @@
   htmlTemplate: ish.email.classConfirmed.html
   subject: Class confirmed. ${courseClass.code} ${courseClass.course.name}.
   entityClass: Enrolment
-  description: An email to students when course class is confirmed
+  short: Informs students that their class is confirmed and will proceed as scheduled.
+  description: Informs students that their class is confirmed and will proceed as scheduled. Sent from Enrolments or Classes.
+  category: scheduling
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -120,7 +138,7 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Course completion survey
   type: email
   keyCode: ish.email.courseCompletionSurvey
@@ -128,7 +146,9 @@
   htmlTemplate: ish.email.courseCompletionSurvey.html
   subject: Course completion survey
   entityClass: Enrolment
-  description: Send email with the completion survey to student who completed a course recently.
+  short: Send a completion survey to student who completed a course recently.
+  description: Sends a message with a link to a survey in the SkillsonCourse portal. The results will be added to the Student Feedback window. Can be sent by an automation, or sent manually from the Enrolments or Classes windows.
+  category: marketing
   options:
     - name: header_keycode
       dataType: TEXT
@@ -136,7 +156,7 @@
     - name: footer_keycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Enrolment application accepted
   type: email
   keyCode: ish.email.enrolmentApplicationAccepted
@@ -144,7 +164,9 @@
   htmlTemplate: ish.email.enrolmentApplicationAccepted.html
   subject: Approval to enrol in ${application.course.name}
   entityClass: Application
-  description: An email about whether their application has been offered
+  short: Let a student know their application is successful.
+  description: Send a message to a prospective student informing them that their application for enrolment has been successful. Can be sent by an automation or manually from the Applications window.
+  category: crm
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -152,7 +174,7 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Enrolment application received
   type: email
   keyCode: ish.email.enrolmentApplicationReceived
@@ -160,7 +182,9 @@
   htmlTemplate: ish.email.enrolmentApplicationReceived.html
   subject: Enrolment application received
   entityClass: Application
-  description: An email to the student when their application has been received
+  short: Let a student know their application has been receieved.
+  description: Send a message to a propspective student telling them you've recieved their application. Can be sent by an automation or manually from the Applications window.
+  category: crm
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -168,7 +192,7 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Enrolment application rejected
   type: email
   keyCode: ish.email.enrolmentApplicationRejected
@@ -176,7 +200,9 @@
   htmlTemplate: ish.email.enrolmentApplicationRejected.html
   subject: Your application for ${application.course.name}
   entityClass: Application
-  description: An email about whether their application has been rejected
+  short: Let a student know their application has been unsuccessful.
+  description: Send a message to the student letting them know their application for enrolment has been unsuccessful. Can be sent by an automation or manually via the Applications window.
+  category: crm
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -184,7 +210,7 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Enrolment Confirmation
   type: email
   keyCode: ish.email.enrolmentConfirmation
@@ -192,7 +218,9 @@
   htmlTemplate: ish.email.enrolmentConfirmation.html
   subject: Enrolment confirmation ${enrolment.invoiceLine.invoice.invoiceNumber}
   entityClass: Enrolment
-  description: Enrolment confirmation email to the student
+  short: Inform a student that their enrolment was successful and is confirmed.
+  description: Sends a message to a student letting them know their enrolment has been successful. Can be sent by an automation or manually via the Enrolments or Class windows.
+  category: sales
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -200,14 +228,16 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Enrolment notification
   type: email
   keyCode: ish.email.enrolmentTutorNotification
   txtTemplate: ish.email.enrolmentTutorNotification.txt
   htmlTemplate: ish.email.enrolmentTutorNotification.html
   subject: Enrolment notification from ${enrolment.courseClass.course.name} ${enrolment.courseClass.course.code}-${enrolment.courseClass.code}
-  description: An enrolment notification email to tutors attached to classes.
+  short: Notify a tutor of a successful enrolment in one of their classes.
+  description: Send an enrolment notification email to tutors attached to classes. Can be sent by automation, or from the Class or Enrolment windows.
+  category: sales
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -215,13 +245,15 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Simple footer
   type: email
   keyCode: ish.email.footer
   txtTemplate: ish.email.footer.txt
   htmlTemplate: ish.email.footer.html
-  description: Simple email template footer
+  short: The default footer that attaches to all emails sent from your system.
+  description: The default footer that attaches to all emails sent from your system.
+  category: configuration
   variables:
     - name: subject
       label: Subject
@@ -230,14 +262,16 @@
     - name: footer_text
       dataType: TEXT
       value: ''
-  
-  
+
+
 - name: Simple header
   type: email
   keyCode: ish.email.header
   txtTemplate: ish.email.header.txt
   htmlTemplate: ish.email.header.html
-  description: Simple email template header
+  short: The default header that attaches to all emails sent from your system.
+  description: SThe default header that attaches to all emails sent from your system.
+  category: configuration
   variables:
     - name: subject
       label: Subject
@@ -246,8 +280,8 @@
     - name: logo_url
       dataType: TEXT
       value: ''
-  
-  
+
+
 - name: Membership Notification Renewal
   type: email
   keyCode: ish.email.membershipNotificationRenewal
@@ -255,7 +289,9 @@
   htmlTemplate: ish.email.membershipNotificationRenewal.html
   subject: Membership Renewal
   entityClass: Membership
-  description: An email with notification that membership will expire in the next 7 days
+  short: Inform a contact with a membership that it will expire in 7 days.
+  description: An email to inform a contact with an active membership that it will expire within 7 days time. Can be sent using automation, or manually from the Sales window for any membership sale record.
+  category: sales
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -263,7 +299,7 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Notification of documents pending for deletion
   type: email
   keyCode: ish.email.notificationWithDocumentsList
@@ -271,7 +307,9 @@
   htmlTemplate: ish.email.notificationWithDocumentsList.html
   subject: A list documents to be deleted next Sunday
   entityClass: DocumentVersion
-  description: An email to the system admin with a list of documents to be deleted in the next weekly purge of deleted documents. Documents which have been in the bin for more than 30 days will be deleted.
+  short: An email to the system admin with a list of documents to be deleted in the next weekly purge of deleted documents.
+  description: An email to the system admin with a list of documents to be deleted in the next weekly purge of deleted documents. Documents which have been in the bin for more than 30 days will be deleted. Sent by automation. Cannot be sent manually.
+  category: documents
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -279,16 +317,18 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
-  
+
+
 - name: Payment Receipt
   type: email
   keyCode: ish.email.paymentReceipt
   txtTemplate: ish.email.paymentReceipt.txt
   htmlTemplate: ish.email.paymentReceipt.html
-  subject: ${Preferences.get("college.name")} payment Receipt
+  subject: ${Preferences.get("college.name")} Payment Receipt
   entityClass: PaymentIn
-  description: Email with a payment receipt to the payer
+  short: Email with a payment receipt to the payer.
+  description: A payment receipt sent to the payer of an invoice. Can be sent by automation, or manually from the Payments In window.
+  category: sales
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -296,7 +336,7 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Payment reminder
   type: email
   keyCode: ish.email.paymentReminder
@@ -304,7 +344,9 @@
   htmlTemplate: ish.email.paymentReminder.html
   subject: Invoice ${invoice.invoiceNumber} Payment Reminder
   entityClass: Invoice
-  description: An email reminder with payment due date to the payer.
+  short: Remind a payer that a payment is due on an outstanding invoice.
+  description: An email reminder with payment due date to the payer. Can be sent by an automation, or manually from the Invoices window.
+  category: sales
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -312,7 +354,7 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Contractor pay processed
   type: email
   keyCode: ish.email.payrollContractorNotification
@@ -320,7 +362,9 @@
   htmlTemplate: ish.email.payrollContractorNotification.html
   subject: Contractor pay processed
   entityClass: Payslip
-  description: Notification of processed contractor pay
+  short: Send a contracter tutor a notification that their payroll has been processed.
+  description: For tutors with type 'Contractor', lets them know the amount they need to invoice the employer for payroll. Can be sent using automation, or manually from the Tutor Pay window.
+  category: payroll
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -328,7 +372,7 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Tutor pay processed
   type: email
   keyCode: ish.email.payrollTutorNotification
@@ -336,7 +380,9 @@
   htmlTemplate: ish.email.payrollTutorNotification.html
   subject: Tutor pay processed
   entityClass: Payslip
-  description: Notification of processed tutor pay
+  short: Send an employee tutor a notification that their payroll has been processed.
+  description: For tutors with type 'Contractor', lets them know the amount their patest payroll has been processed. Can be sent using automation, or manually from the Tutor Pay window.
+  category: payroll
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -347,7 +393,7 @@
     - name: remittanceTerms
       dataType: TEXT
       value: '3'
-  
+
 - name: Quote
   type: email
   keyCode: ish.email.quote
@@ -355,7 +401,9 @@
   htmlTemplate: ish.email.quote.html
   subject: Quote ${quote.quoteNumber}
   entityClass: Quote
-  description: Email to the payer with their quote
+  short: Email the contact their quote.
+  description: Send an email copy of a quote to the contact. Can be sent manually from the Invoices window when a Quote record is selected.
+  category: crm
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -363,7 +411,7 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Refund advice
   type: email
   keyCode: ish.email.refundAdvice
@@ -371,7 +419,9 @@
   htmlTemplate: ish.email.refundAdvice.html
   subject: ${Preferences.get("college.name")} Refund Advice
   entityClass: PaymentOut
-  description: An email to the payer about a refund that has been processed
+  short: Inform a payer that refund has been processed.
+  description: An email to the payer about a refund that has been processed. Can be sent by autoamtion or manually from the Payments Out window.
+  category: accounting
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -379,7 +429,7 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Simple Email
   entityClass: Contact
   type: email
@@ -387,7 +437,9 @@
   subject: ${subjectTxt}
   txtTemplate: ish.email.simple.txt
   htmlTemplate: ish.email.simple.html
-  description: Simple email template with minimal styling
+  short: Simple email template with minimal styling.
+  description: Simple email template with minimal styling. Can be sent manually from any window.
+  category: sales
   variables:
     - name: subjectTxt
       label: Subject
@@ -402,8 +454,8 @@
     - name: footer_keycode
       dataType: TEXT
       value: ish.email.footer
-  
-  
+
+
 - name: Student notice of class commencement
   type: email
   keyCode: ish.email.studentNoticeOfClassCommencement
@@ -411,7 +463,9 @@
   htmlTemplate: ish.email.studentNoticeOfClassCommencement.html
   subject: "Reminder: Class starting soon"
   entityClass: Enrolment
-  description: An email to the student with information about when their class is starting
+  short: An email to the student with information about when their class is starting.
+  description: An email to for students with information about when their class is starting, and where it's taking place. Can be sent using automation, or manually from the Classes or Enrolment windows.
+  category: education
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -419,13 +473,16 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
-- name: survey invitation
+
+- name: Survey invitation
   type: email
   keyCode: ish.email.surveyInvitation
   txtTemplate: ish.email.surveyInvitation.txt
   subject: Survey invitation
-  
+  short: An email to the student inviting the to fill out a SurveyMonkey survey. For use with Integrations, not intended for manual sending.
+  description: An email to the student inviting the to fill out a SurveyMonkey survey. For use with SurveyMonkey or Alchemer integrations, not intended for manual sending.
+  category: marketing
+
 - name: Tax Invoice
   type: email
   keyCode: ish.email.taxInvoice
@@ -433,7 +490,9 @@
   htmlTemplate: ish.email.taxInvoice.html
   subject: Invoice ${invoice.invoiceNumber}
   entityClass: Invoice
-  description: Email to the payer with their invoice
+  short: Email to the payer a copy of their invoice.
+  description: Email to the payer a copy of their invoice. Can be sent manually from the Invoices window.
+  category: sales
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -441,14 +500,16 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Tutor notice of class cancellation
   type: email
   keyCode: ish.email.tutorNoticeOfClassCancellation
   txtTemplate: ish.email.tutorNoticeOfClassCancellation.txt
   htmlTemplate: ish.email.tutorNoticeOfClassCancellation.html
   subject: "${Preferences.get(\"college.name\")} ${courseClass.course.name} class was cancelled"
-  description: An email to the tutor with information about class cancellation
+  short: An email to the tutor with information about the class being cancelled.
+  description: An email to the tutor with information about class cancellation. Can be sent using automation, or manually via the Classes window.
+  category: scheduling
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -456,7 +517,7 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Tutor notice of class commencement
   type: email
   entityClass: CourseClassTutor
@@ -464,6 +525,9 @@
   txtTemplate: ish.email.tutorNoticeOfClassCommencement.txt
   htmlTemplate: ish.email.tutorNoticeOfClassCommencement.html
   subject: "Reminder: ${Preferences.get('college.name')} ${record.courseClass.course.name} class starting soon"
+  short: A reminder for the tutor of their upcoming class showing start times and other details.
+  description: A reminder for the tutor of their upcoming class showing start times and other details. Can be sent using automation, or manually via the Classes window.
+  category: scheduling
   options:
     - name: header_keycode
       dataType: TEXT
@@ -471,7 +535,7 @@
     - name: footer_keycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Tutor notice of session commencement
   type: email
   entityClass: TutorAttendance
@@ -479,6 +543,9 @@
   txtTemplate: ish.email.tutorNoticeOfSessionCommencement.txt
   htmlTemplate: ish.email.tutorNoticeOfSessionCommencement.html
   subject: "Reminder: ${Preferences.get('college.name')} ${record.session.courseClass.course.name} class starting soon"
+  short: A reminder for the tutor of their next upcoming session, showing next session start time and other details.
+  description: A reminder for the tutor of their next upcoming session, showing next session start time and other details. Can be sent using automation, or manually via the Classes window.
+  category: scheduling
   options:
     - name: header_keycode
       dataType: TEXT
@@ -486,14 +553,16 @@
     - name: footer_keycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Tutor notice of unmarked attendance
   type: email
   keyCode: ish.email.tutorNoticeOfUnmarkedAttendance
   txtTemplate: ish.email.tutorNoticeOfUnmarkedAttendance.txt
   htmlTemplate: ish.email.tutorNoticeOfUnmarkedAttendance.html
   subject: Notice of unmarked attendance
-  description: An email for notice tutor of unmarked attendance for last week
+  short: Warn a tutor that they haven't completed taking attendance for a class.
+  description: A warning notice for tutors that they haven't yet completed marking student attendance. Can only be sent via automation.
+  category: education
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -501,7 +570,7 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: USI reminder email
   type: email
   keyCode: ish.email.usiReminder
@@ -509,7 +578,9 @@
   htmlTemplate: ish.email.usiReminder.html
   subject: "Urgent: USI information required"
   entityClass: Enrolment
-  description: An email to the student remindering them to supply their USI number.
+  short: An email to the student reminding them to supply their USI number.
+  description: An email to the student reminding them to supply their USI number. Can be sent usign automation, or from within the Classes or Enrolments windows.
+  category: accreditation
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -517,15 +588,17 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Voucher Email
   type: email
   keyCode: ish.email.voucherEmailTemplate
   txtTemplate: ish.email.voucherEmailTemplate.txt
   htmlTemplate: ish.email.voucherEmailTemplate.html
   subject: Voucher ${voucher.voucherProduct.name}
-  entityCLass: Voucher
-  description: Email to the student with information about a voucher they have purchased
+  entityClass: Voucher
+  short: Email to the student with information about a voucher they have purchased.
+  description: Email to the student with information about a voucher they have purchased, including price and voucher code. Can be sent manually from the Sales window when voucher sale is selected.
+  category: sales
   options:
     - name: headerKeycode
       dataType: TEXT
@@ -533,7 +606,7 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Waiting List reminder
   type: email
   keyCode: ish.email.waitingListReminder
@@ -541,7 +614,9 @@
   htmlTemplate: ish.email.waitingListReminder.html
   subject: Waiting list reminder
   entityClass: WaitingList
-  description: An email to the student if they are on the waiting list with information about upcoming classes scheduled
+  short: Send information about upcoming classes to students who are on a waiting list for a course.
+  description: Send information about upcoming classes to students who are on a waiting list for a course. Can be sent with an automation, or manually from the Waiting Lists window.
+  category: marketing
   variables:
     - name: courseClasses
       label: courseClasses
@@ -553,16 +628,35 @@
     - name: footerKeycode
       dataType: TEXT
       value: ish.email.footer
-  
+
 - name: Simple SMS
   entityClass: Contact
   type: sms
   keyCode: ish.sms.simple
   txtTemplate: ish.sms.simple.txt
-  description: Send unformatted SMS
+  short: A blank, unformatted SMS message.
+  description: A blank, unformatted SMS message. Type your message before sending. Can be sent manually from any window.
+  category: sales
   variables:
     - name: message
       label: Message
       dataType: TEXT
-  
-  
+
+- name: Abandoned cart reminder
+  type: email
+  keyCode: ish.email.abandonedCartReminder
+  txtTemplate: ish.email.abandonedCartReminder.txt
+  htmlTemplate: ish.email.abandonedCartReminder.html
+  subject: ${preference.college.name} shopping basket reminder
+  entityClass: Checkout
+  description: An email with a link to resume an abandoned checkout
+  tags:
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
+
+

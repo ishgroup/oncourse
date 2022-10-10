@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.lifecycle;
 
-import ish.oncourse.common.field.PropertyGetSetFactory;
+import ish.oncourse.common.field.PropertyGetSetFields;
 import ish.oncourse.server.cayenne.Field;
 import ish.oncourse.server.cayenne.Tag;
 import org.apache.cayenne.annotation.PreRemove;
@@ -68,7 +68,7 @@ public class TagLifecycleListener {
 
     private String getTagProperty(String tagName) {
         return String.format(PROPERTY_FORMAT,
-                PropertyGetSetFactory.TAG_PATTERN,
+                PropertyGetSetFields.TAG_PATTERN,
                 tagName);
     }
 }

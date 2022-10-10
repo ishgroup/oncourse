@@ -7,12 +7,16 @@ import { Epic } from "redux-observable";
 import { DataResponse } from "@api/model";
 import EntityService from "../services/EntityService";
 import { getCustomColumnsMap } from "../utils/common";
-import { GET_COMMON_PLAIN_RECORDS, GET_COMMON_PLAIN_RECORDS_FULFILLED } from "../actions/CommonPlainRecordsActions";
+import {
+  GET_COMMON_PLAIN_RECORDS,
+  GET_COMMON_PLAIN_RECORDS_FULFILLED,
+  getCommonPlainRecordsRejected
+} from "../actions/CommonPlainRecordsActions";
 import * as EpicUtils from "./EpicUtils";
 
 const request: EpicUtils.Request<
   DataResponse,
-  { key?: string; offset?: number; columns?: string; ascending?: boolean; sort?: string, pageSize?: number }
+  { key?: string; offset?: number; columns?: string; ascending?: boolean; sort?: string, pageSize?: number, customColumnMap?: any }
 > = {
   type: GET_COMMON_PLAIN_RECORDS,
   hideLoadIndicator: true,
@@ -27,19 +31,24 @@ const request: EpicUtils.Request<
     sort,
     ascending
   ),
-  processData: (records, s, { key, columns }) => {
+  processData: (records, s, { key, columns, customColumnMap }) => {
     const { rows, offset, pageSize } = records;
-    const items = rows.map(getCustomColumnsMap(columns));
+    let items = rows.map(getCustomColumnsMap(columns));
+
+    if (typeof customColumnMap === "function") {
+      items = customColumnMap(items);
+    }
 
     return [
       {
         type: GET_COMMON_PLAIN_RECORDS_FULFILLED,
         payload: {
-         key, items, offset, pageSize
+          key, items, offset, pageSize
         }
       }
     ];
-  }
+  },
+  processError: (e, { key }) => [getCommonPlainRecordsRejected(key)]
 };
 
 export const EpicGetCommonPlainRecords: Epic<any, any> = EpicUtils.Create(request);

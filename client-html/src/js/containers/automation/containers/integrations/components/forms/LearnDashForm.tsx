@@ -5,9 +5,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { initialize, reduxForm } from "redux-form";
-import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 
 class LearnDashFormBase extends React.Component<any, any> {
   constructor(props) {
@@ -26,13 +25,11 @@ class LearnDashFormBase extends React.Component<any, any> {
 
   render() {
     const {
-      handleSubmit, onSubmit, AppBarContent, dirty, form
+      handleSubmit, onSubmit, AppBarContent
     } = this.props;
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-
         <AppBarContent>
           <FormField type="text" name="fields.baseUrl" label="Base url" className="mb-2" />
           <FormField type="text" name="fields.userLogin" label="User login" className="mb-2" />

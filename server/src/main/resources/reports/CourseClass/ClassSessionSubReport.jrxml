@@ -92,7 +92,6 @@
 	<field name="courseClass.enrolmentsCount" class="java.lang.Integer"/>
 	<field name="startDatetime" class="java.util.Date"/>
 	<field name="endDatetime" class="java.util.Date"/>
-	<field name="courseClass.sessionRepeatInterval" class="java.lang.Integer"/>
 	<field name="courseClass.code" class="java.lang.String"/>
 	<field name="image.poweredby" class="java.io.InputStream"/>
 	<sortField name="startDatetime"/>

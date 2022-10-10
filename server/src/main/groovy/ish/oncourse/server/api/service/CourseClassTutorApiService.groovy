@@ -100,7 +100,7 @@ class CourseClassTutorApiService extends EntityApiService<CourseClassTutorDTO, C
             }
 
             courseClass = courseClassDao.getById(context, dto.classId)
-            if (!courseClass || courseClass.isCancelled) {
+            if (!courseClass) {
                 validator.throwClientErrorException('classId', 'Class is wrong')
             }
         }

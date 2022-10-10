@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: 112-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: EntityRelation
+            columnName: toEntityIdentifier
+        - columnExists:
+            tableName: EntityRelation
+            columnName: fromEntityIdentifier
+        - columnExists:
+            tableName: EntityRelation
+            columnName: toRecordId
+        - columnExists:
+            tableName: EntityRelation
+            columnName: fromRecordId
+        - columnExists:
+            tableName: Product
+            columnName: type
+      changes:
+        - sql:
+            - "DELETE er FROM EntityRelation AS er INNER JOIN Product AS pr 
+                                                        ON er.toEntityIdentifier = 'Product' AND er.toRecordId=pr.id
+                                                   WHERE er.fromEntityIdentifier IN ('Module','Qualification') 
+                                                        AND pr.type=3"

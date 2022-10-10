@@ -196,6 +196,7 @@ public class CourseClassService {
 	 * @param courseClass
 	 * @return total fee income ex tax for refunded and cancelled classes
 	 */
+	@Deprecated
 	public Money getClassTotalFeeIncomeExTaxForRefundedAndCancelledEnrolments(CourseClass courseClass) {
 		Money result = Money.ZERO;
 		List<Enrolment> canceledRefundedEnrolmentList = (List<Enrolment>) CourseClassUtil.getRefundedAndCancelledEnrolments(courseClass.getEnrolments());
@@ -238,15 +239,11 @@ public class CourseClassService {
 				summary.append(DurationFormatter.formatDuration(duration, DurationFormatter.FORMAT_DD_HH_MM));
 			}
 			summary.append(RuntimeUtil.HTML_LINE_SEPARATOR);
-		} else if (courseClass.getSessionsCount() != null && courseClass.getSessionsCount() > 0) {
+		} else if (courseClass.getSessions() != null && courseClass.getSessions().size() > 0) {
 			summary.append("No recorded sessions. Proposed:");
 			summary.append(RuntimeUtil.HTML_LINE_SEPARATOR);
-			scount = courseClass.getSessionsCount();
-			summary.append(courseClass.getSessionsCount()).append(" sessions");
-			if (courseClass.getMinutesPerSession() != null && courseClass.getMinutesPerSession() > 0) {
-				summary.append(" of ");
-				summary.append(DurationFormatter.formatDuration(courseClass.getMinutesPerSession().longValue() * 60000, DurationFormatter.FORMAT_HH_MM));
-			}
+			scount = courseClass.getSessions().size();
+			summary.append(courseClass.getSessions().size()).append(" sessions");
 			summary.append(RuntimeUtil.HTML_LINE_SEPARATOR);
 		} else {
 			summary.append("No sessions have been set in the timetable.");

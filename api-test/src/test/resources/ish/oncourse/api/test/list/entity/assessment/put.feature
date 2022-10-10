@@ -19,7 +19,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/assessment'
         {
         "code":"code021",
         "name":"update assessment 21",
-        "tags":[{"id":195}],
+        "tags":[195],
         "active":true,
         "description":"some description 21",
         "documents":[{"id":200}]
@@ -47,7 +47,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/assessment'
         "id":"#(id)",
         "code":"code021UPD",
         "name":"update assessment 21UPD",
-        "tags":[{"id":188}],
+        "tags":[188],
         "active":false,
         "description":"some description 21UPD",
         "documents":[{"id":201}]
@@ -68,7 +68,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/assessment'
         "id":"#number",
         "code":"code021UPD",
         "name":"update assessment 21UPD",
-        "tags":[{"id":188,"name":"Short answer","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
+        "tags":[188],
         "active":false,
         "description":"some description 21UPD",
         "documents":"#ignore"
@@ -398,7 +398,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/assessment'
         "id":"#(id)",
         "code":"code29",
         "name":"update assessment 29",
-        "tags":[{"id":99999}],
+        "tags":[99999],
         "active":true,
         "description":"some description 29",
         "documents":[]
@@ -454,7 +454,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/assessment'
         "id":"#(id)",
         "code":"code030",
         "name":"update assessment 30",
-        "tags":[{"id":227}],
+        "tags":[227],
         "active":true,
         "description":"some description 30",
         "documents":[]
@@ -617,7 +617,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/assessment'
         {
         "code":"code022",
         "name":"update assessment 22",
-        "tags":[{"id":195}],
+        "tags":[195],
         "active":true,
         "description":"some description 22",
         "documents":[{"id":200}]
@@ -650,7 +650,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/assessment'
         "id":"#(id)",
         "code":"code022UPD",
         "name":"update assessment 22UPD",
-        "tags":[{"id":188}],
+        "tags":[188],
         "active":false,
         "description":"some description 22UPD",
         "documents":[{"id":201}]
@@ -671,7 +671,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/assessment'
         "id":"#number",
         "code":"code022UPD",
         "name":"update assessment 22UPD",
-        "tags":[{"id":188,"name":"Short answer","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
+        "tags":[188],
         "active":false,
         "description":"some description 22UPD",
         "documents":"#ignore"

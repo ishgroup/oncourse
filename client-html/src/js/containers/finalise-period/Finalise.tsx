@@ -29,7 +29,7 @@ import Button from "@mui/material/Button";
 import FormField from "../../common/components/form/formFields/FormField";
 import { getFinaliseInfo, updateFinaliseDate } from "./actions";
 import { StringArgFunction } from "../../model/common/CommonFunctions";
-import LoadingIndicator from "../../common/components/layout/LoadingIndicator";
+import LoadingIndicator from "../../common/components/progress/LoadingIndicator";
 import { StyledCheckbox } from "../../common/components/form/formFields/CheckboxField";
 import { EEE_D_MMM_YYYY } from "../../common/utils/dates/format";
 import { validateSingleMandatoryField, validateMinMaxDate } from "../../common/utils/validation";

@@ -539,4 +539,14 @@ class Student extends _Student implements StudentTrait, Queueable, Taggable, Att
 	List<Long> getTagIds() {
 		return contact.tagIds
 	}
+
+	@Override
+	List<String> getTagColors() {
+		return contact.getTagColors()
+	}
+
+	@Override
+	String getChecklistsColor() {
+		return contact.getChecklistsColor()
+	}
 }

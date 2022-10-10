@@ -43,7 +43,6 @@ const SearchInput = React.memo<any>(props => {
     onSearchChange,
     onAqlSearchChange,
     onSearchEscape,
-    onBlur,
     onAddEvent,
     onAqlSearchClear,
     inputRef,
@@ -52,8 +51,7 @@ const SearchInput = React.memo<any>(props => {
     autoFocus,
     aqlEntity,
     aqlEntities,
-    validateAql,
-    isValidAqlQuery,
+    aqlQueryError,
     aqlComponentRef,
     searchTags,
     searchType,
@@ -80,7 +78,7 @@ const SearchInput = React.memo<any>(props => {
             } else {
               toggleSearch(e);
             }
-        }}
+          }}
         >
           <Close className="inputAdornmentIcon" />
         </IconButton>
@@ -94,19 +92,19 @@ const SearchInput = React.memo<any>(props => {
     <div>
       {aqlEntities && aqlEntities.length > 1
         && (
-        <EditInPlaceField
-          className="mt-2 mb-2"
-          label="Entity"
-          meta={{}}
-          input={{
+          <EditInPlaceField
+            className="mt-2 mb-2"
+            label="Entity"
+            meta={{}}
+            input={{
             onChange: value => setSelectedEntity(value),
             onFocus: stubFunction,
             onBlur: stubFunction,
             value: aqlEntity
-          }}
-          items={entityItems}
-          select
-        />
+            }}
+            items={entityItems}
+            select
+          />
       )}
 
       <EditInPlaceQuerySelect
@@ -121,16 +119,14 @@ const SearchInput = React.memo<any>(props => {
         className={className}
         placeholder={searchPlaceholder || (aqlEntity ? `${aqlPlaceholderPrefix} ${getAqlLabel(aqlEntity)}` : null)}
         input={{
-          value: searchExpression,
-          meta: {
-            invalid: !isValidAqlQuery,
-            error: !isValidAqlQuery && "Expression is invalid"
-          }
+          value: searchExpression
+        }}
+        meta={{
+          invalid: aqlQueryError,
+          error: aqlQueryError && "Expression is invalid"
         }}
         performSearch={onAqlSearchChange}
-        onValidateQuery={validateAql}
         onFocus={onFocus}
-        onBlur={onBlur}
         endAdornment={InputAdornment}
         menuHeight={300}
       />
@@ -144,7 +140,6 @@ const SearchInput = React.memo<any>(props => {
       className={className}
       onChange={onSearchChange}
       onKeyDown={onSearchEscape}
-      onBlur={onBlur}
       onFocus={onFocus}
       endAdornment={InputAdornment}
       autoFocus={searchExpression ? false : autoFocus}

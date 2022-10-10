@@ -13,7 +13,7 @@ export type HTMLTagArgFunction = (arg: HTMLElement) => void;
 
 export type DateArgFunction = (arg: Date) => void;
 
-export type AnyArgFunction<R = void> = (...args: any[]) => R;
+export type AnyArgFunction<R = void, A = any> = (...args: A[]) => R;
 
 export type NoArgFunction = () => void;
 

@@ -1,12 +1,15 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, {
   useCallback, useEffect, useMemo, useState
 } from "react";
-import { Form, initialize, InjectedFormProps } from "redux-form";
+import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import FileCopy from "@mui/icons-material/FileCopy";
 import Grid from "@mui/material/Grid";
@@ -19,7 +22,7 @@ import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import ScriptCard from "../../scripts/components/cards/CardBase";
-import Bindings from "../../../components/Bindings";
+import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import AvailableFrom, { mapAvailableFrom } from "../../../components/AvailableFrom";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
@@ -29,6 +32,8 @@ import { validateKeycode } from "../../../utils";
 import { mapSelectItems } from "../../../../../common/utils/common";
 import { EntityItems, EntityName } from "../../../../../model/entities/common";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { CatalogItemType } from "../../../../../model/common/Catalog";
+import InfoPill from "../../../../../common/components/layout/InfoPill";
 
 const manualUrl = getManualLink("advancedSetup_Export");
 const getAuditsUrl = (id: number) => `audit?search=~"ExportTemplate" and entityId == ${id}`;
@@ -46,13 +51,13 @@ interface Props extends InjectedFormProps {
   history: any,
   syncErrors: any,
   nextLocation: string,
-  setNextLocation: (nextLocation: string) => void,
+  emailTemplates?: CatalogItemType[]
 }
 
 const ExportTemplatesForm = React.memo<Props>(
   ({
-    dirty, form, handleSubmit, isNew, invalid, values, syncErrors,
-     dispatch, onCreate, onUpdate, onUpdateInternal, onDelete, history, nextLocation, setNextLocation
+    dirty, form, handleSubmit, isNew, invalid, values, syncErrors, emailTemplates,
+     dispatch, onCreate, onUpdate, onUpdateInternal, onDelete, history, nextLocation
   }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
 
@@ -121,7 +126,6 @@ const ExportTemplatesForm = React.memo<Props>(
     useEffect(() => {
       if (!dirty && nextLocation) {
         history.push(nextLocation);
-        setNextLocation('');
       }
     }, [nextLocation, dirty]);
 
@@ -130,7 +134,7 @@ const ExportTemplatesForm = React.memo<Props>(
         <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialogClose} onSave={onDialogSave} />
 
         <Form onSubmit={handleSubmit(handleSave)}>
-          {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
+          {!disableRouteConfirm && <RouteChangeConfirm form={form} when={dirty || isNew} />}
 
           <AppBarContainer
             values={values}
@@ -138,7 +142,14 @@ const ExportTemplatesForm = React.memo<Props>(
             getAuditsUrl={getAuditsUrl}
             disabled={!dirty}
             invalid={invalid}
-            title={isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
+            title={(
+              <div className="centeredFlex">
+                {isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
+                {[...values.automationTags?.split(",") || [],
+                  ...isInternal ? [] : ["custom"]
+                ].map(t => <InfoPill key={t} label={t} />)}
+              </div>
+            )}
             disableInteraction={isInternal}
             opened={isNew || Object.keys(syncErrors).includes("name")}
             fields={(
@@ -183,7 +194,7 @@ const ExportTemplatesForm = React.memo<Props>(
           >
             <Grid container columnSpacing={3}>
               <Grid item xs={9} className="pr-3">
-                <Grid container columnSpacing={3}>
+                <Grid container columnSpacing={3} rowSpacing={2}>
                   <Grid item xs={6}>
                     <div className="heading">Type</div>
                     <FormField
@@ -204,6 +215,13 @@ const ExportTemplatesForm = React.memo<Props>(
                       required
                     />
                   </Grid>
+                  <FieldArray
+                    name="options"
+                    itemsType="component"
+                    component={BindingsRenderer}
+                    emailTemplates={emailTemplates}
+                    rerenderOnEveryChange
+                  />
                 </Grid>
 
                 <ScriptCard
@@ -224,7 +242,7 @@ const ExportTemplatesForm = React.memo<Props>(
 
                 <FormField
                   type="text"
-                  label="Key Code"
+                  label="Key code"
                   name="keyCode"
                   validate={isNew || !isInternal ? validateKeycode : undefined}
                   disabled={!isNew}

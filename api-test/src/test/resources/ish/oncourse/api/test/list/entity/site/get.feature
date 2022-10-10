@@ -45,7 +45,7 @@ Feature: Main feature for all GET requests with path 'list/entity/site'
         Then status 200
         And match $.rows[*].values[*] contains ["site1"]
 
-        * def id = get[0] response.rows[?(@.values == ["[]","site1","Adelaide","5000","false"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]",null,"site1","Adelaide","5000","false"])].id
 
         Given path ishPath + "/" + id
         When method GET
@@ -97,7 +97,7 @@ Feature: Main feature for all GET requests with path 'list/entity/site'
         Then status 200
         And match $.rows[*].values[*] contains ["site1"]
 
-        * def id = get[0] response.rows[?(@.values == ["[]","site1","Adelaide","5000","false"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]",null,"site1","Adelaide","5000","false"])].id
 
         Given path ishPath + "/" + id
         When method GET

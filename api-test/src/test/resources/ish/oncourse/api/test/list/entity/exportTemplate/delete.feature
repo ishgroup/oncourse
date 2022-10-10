@@ -169,7 +169,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/exportTempl
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["Room CSV export"])].id
+        * def id = get[0] response.rows[?(@.values == ["Room CSV"])].id
         * print "id = " + id
 
         Given path ishPath + '/' + id

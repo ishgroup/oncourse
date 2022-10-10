@@ -37,9 +37,9 @@ Feature: Main feature for all POST requests with path 'list/export'
         * match $ == {"status":"#ignore","message":null}
 
 
-    Scenario: (+) Get CSV processId by notadmin
+    Scenario: (+) Get CSV processId by notadmin with permission 'Exporting XML and CSV'
 
-#       <--->  Login as notadmin
+#       <--->  Login as notadmin with permission 'Exporting XML and CSV'
         * configure headers = { Authorization:  'UserWithRightsHide'}
 
         
@@ -68,6 +68,27 @@ Feature: Main feature for all POST requests with path 'list/export'
         * match $ == {"status":"#ignore","message":null}
 
 
+    Scenario: (-) Get CSV processId by notadmin without permission 'Exporting XML and CSV'
+
+#       <--->  Login as notadmin without permission 'Exporting XML and CSV'
+        * configure headers = { Authorization:  'UserWithRightsView'}
+
+
+#       <--->
+
+        Given path ishPathCsvTemplate
+        And param entityName = 'Qualification'
+        When method GET
+        Then status 200
+        And def qualificationCsvExportId = response[0].id
+
+        Given path ishPath
+        And param entityName = 'Qualification'
+        And request {"entityName":"Qualification","template":"#(qualificationCsvExportId)","search":"id == \"4\"","sorting":[{"attribute":"nationalCode","ascending":true,"complexAttribute":[]}]}
+        When method POST
+        Then status 403
+        And match $.errorMessage == "You have no permission to export XML and CSV."
+
 
     Scenario: (+) Get XML processId by admin
 
@@ -94,9 +115,9 @@ Feature: Main feature for all POST requests with path 'list/export'
         * match $ == {"status":"#ignore","message":null}
 
 
-    Scenario: (+) Get XML processId by notadmin
+    Scenario: (+) Get XML processId by notadmin with permission 'Exporting XML and CSV'
 
-#       <--->  Login as notadmin
+#       <--->  Login as notadmin with permission 'Exporting XML and CSV'
         * configure headers = { Authorization:  'UserWithRightsHide'}
 
         
@@ -123,3 +144,25 @@ Feature: Main feature for all POST requests with path 'list/export'
         Then status 200
 
         * match $ == {"status":"#ignore","message":null}
+
+
+    Scenario: (-) Get XML processId by notadmin without permission 'Exporting XML and CSV'
+
+#       <--->  Login as notadmin without permission 'Exporting XML and CSV'
+        * configure headers = { Authorization:  'UserWithRightsView'}
+
+
+#       <--->
+
+        Given path ishPathXmlTemplate
+        And param entityName = 'Qualification'
+        When method GET
+        Then status 200
+        And def qualificationXmlExportId = response[1].id
+
+        Given path ishPath
+        And param entityName = 'Qualification'
+        And request {"entityName":"Qualification","template":"#(qualificationXmlExportId)","search":"id == \"3\"","sorting":[{"attribute":"nationalCode","ascending":true}]}
+        When method POST
+        Then status 403
+        And match $.errorMessage == "You have no permission to export XML and CSV."

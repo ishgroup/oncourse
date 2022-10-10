@@ -120,6 +120,7 @@ const BulkItemWrapper: React.FC<any> = props => {
                 color="secondary"
                 checked={opened}
                 onChange={onChange}
+                debounced={false}
               />
             )}
             label={noCollapse ? opened ? children : renderedTitle : renderedTitle}
@@ -439,6 +440,7 @@ const CourseClassBulkChangeSessionForm = props => {
                         step="1"
                         className={classes.bulkChangeDaysInput}
                         onChange={onMoveLater}
+                        debounced={false}
                       />
                       {" "}
                       days
@@ -460,6 +462,7 @@ const CourseClassBulkChangeSessionForm = props => {
                         step="1"
                         className={classes.bulkChangeDaysInput}
                         onChange={onMoveEarlier}
+                        debounced={false}
                       />
                       {" "}
                       days

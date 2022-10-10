@@ -28,8 +28,8 @@ import ish.common.types.DeliverySchedule
 import ish.common.types.FieldConfigurationType
 import ish.common.types.NodeType
 import static ish.oncourse.common.field.FieldProperty.*
-import static ish.oncourse.common.field.PropertyGetSetFactory.CUSTOM_FIELD_PROPERTY_PATTERN
-import static ish.oncourse.common.field.PropertyGetSetFactory.TAG_PATTERN
+import static ish.oncourse.common.field.PropertyGetSetFields.CUSTOM_FIELD_PROPERTY_PATTERN
+import static ish.oncourse.common.field.PropertyGetSetFields.TAG_PATTERN
 import ish.oncourse.server.api.v1.model.DataCollectionFormDTO
 import ish.oncourse.server.api.v1.model.DataCollectionRuleDTO
 import ish.oncourse.server.api.v1.model.DataCollectionTypeDTO
@@ -117,14 +117,6 @@ class DataCollectionFunctions {
                     .select(context)
                     .collect { new FieldTypeDTO(uniqueKey: "${CUSTOM_FIELD_PROPERTY_PATTERN}${it.entityIdentifier.toLowerCase()}.${it.key}", label: it.name) }
 
-            List<FieldTypeDTO> tagFieldTypes = ObjectSelect.query(Tag.class)
-                    .where(Tag.NODE_TYPE.eq(NodeType.TAG))
-                    .and(Tag.PARENT_TAG.isNull())
-                    .and(Tag.SPECIAL_TYPE.isNull())
-                    .select(context)
-                    .findAll {t -> t.getTagRequirement(Contact.class)}
-                    .collect{new FieldTypeDTO(uniqueKey: "${TAG_PATTERN}${it.pathName}", label: it.name)}
-
             fieldTypes += VISIBLE_FIELDS
 
             switch (formType) {
@@ -134,7 +126,6 @@ class DataCollectionFunctions {
                 case Enrolment.simpleName:
                     fieldTypes += ENROLMENT_LIST_FIELDS
             }
-            fieldTypes += tagFieldTypes
         }
 
         return fieldTypes

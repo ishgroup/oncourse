@@ -9,10 +9,14 @@
 import { SearchQuery, SendMessageRequest } from "@api/model";
 import { MessageExtended } from "../../../../model/common/Message";
 
-export const getMessageRequestModel = (message: MessageExtended, selection: string[], searchQuery: SearchQuery): SendMessageRequest => {
+export const getMessageRequestModel = (message: MessageExtended, selection: string[], { search, filter, tagGroups }: SearchQuery): SendMessageRequest => {
   const requestModel = {
     ...message,
-    searchQuery: { ...searchQuery },
+    searchQuery: {
+      search,
+      filter,
+      tagGroups
+    },
     variables: message.bindings ? message.bindings.reduce((prev: any, cur) => {
       prev[cur.name] = cur.value ?? (cur.type === "Text" ? "" : null);
       return prev;
@@ -21,6 +25,8 @@ export const getMessageRequestModel = (message: MessageExtended, selection: stri
 
   if (!message.selectAll && Array.isArray(selection) && selection.length) {
     requestModel.searchQuery.search = `id in (${String(selection)})`;
+    requestModel.searchQuery.filter = "";
+    requestModel.searchQuery.tagGroups = [];
   }
 
   delete requestModel.selectAll;

@@ -32,6 +32,7 @@ interface DayBaseProps {
   wrapperClass?: string;
   dayNodeRef?: any;
   id?: string;
+  children?: React.ReactNode;
 }
 
 const CalendarDayBase: React.FC<DayBaseProps> = props => {

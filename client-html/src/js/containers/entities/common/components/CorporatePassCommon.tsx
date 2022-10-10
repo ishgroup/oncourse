@@ -8,6 +8,7 @@ import { DiscountCorporatePass } from "@api/model";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
+import clsx from "clsx";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { AppTheme } from "../../../../model/common/Theme";
 import { State } from "../../../../reducers/state";
@@ -17,7 +18,6 @@ import {
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
-import clsx from "clsx";
 
 const styles = createStyles(({ spacing }: AppTheme) => ({
   marginBottomTriple: {
@@ -73,6 +73,7 @@ class CorporatePassCommon extends React.PureComponent<any, any> {
       searchCorporatePasses,
       clearCorporatePasses,
       pending,
+      passErrors,
       title = "CORPORATE PASS",
       titleCaption,
       path,
@@ -101,6 +102,7 @@ class CorporatePassCommon extends React.PureComponent<any, any> {
               (`${a.contact.lastName},${a.contact.firstName}` > `${b.contact.lastName},${b.contact.firstName}` ? 1 : -1)}
             searchType="withToggle"
             aqlEntities={["CorporatePass"]}
+            aqlQueryError={passErrors}
             usePaper
           />
         </div>
@@ -112,14 +114,18 @@ class CorporatePassCommon extends React.PureComponent<any, any> {
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   searchCorporatePasses: (search: string) => {
     dispatch(setCommonPlainSearch("CorporatePass", `${search ? `${search} and ` : ""}(expiryDate is null or expiryDate >= today)`));
-    dispatch(getCommonPlainRecords("CorporatePass", 0, "contact.fullName", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(getCommonPlainRecords("CorporatePass", 0, "contact.fullName", null, null, PLAIN_LIST_MAX_PAGE_SIZE, items => items.map(i => ({
+      id: i.id,
+      contactFullName: i["contact.fullName"]
+    }))));
   },
   clearCorporatePasses: (pending: boolean) => dispatch(clearCommonPlainRecords("CorporatePass", pending))
 });
 
 const mapStateToProps = (state: State) => ({
-  foundCorporatePassItems: state.plainSearchRecords["CorporatePass"].items.map(i => ({ id: i.id, contactFullName: i["contact.fullName"] })),
-  pending: state.plainSearchRecords["CorporatePass"].loading
+  foundCorporatePassItems: state.plainSearchRecords["CorporatePass"].items,
+  pending: state.plainSearchRecords["CorporatePass"].loading,
+  passErrors: state.plainSearchRecords["CorporatePass"].error,
 });
 
 export default connect<any, any, any>(

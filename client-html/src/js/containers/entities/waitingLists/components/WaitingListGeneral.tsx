@@ -9,18 +9,22 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { change } from "redux-form";
-import { Grid, IconButton } from "@mui/material";
-import Launch from "@mui/icons-material/Launch";
+import { Grid } from "@mui/material";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
 import { courseFilterCondition, openCourseLink } from "../../courses/utils";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
+import {
+  ContactLinkAdornment,
+  HeaderContactTitle,
+  LinkAdornment
+} from "../../../../common/components/form/FieldAdornments";
+import { getContactFullName } from "../../contacts/utils";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 class WaitingListGeneral extends React.PureComponent<any, any> {
   handlerCourseChange = courseId => {
@@ -52,12 +56,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
             disableInteraction={!isNew}
             twoColumn={twoColumn}
             title={(
-              <div className="d-inline-flex-center">
-                {values && defaultContactName(values.studentName)}
-                <IconButton disabled={!values?.contactId} size="small" color="primary" onClick={() => openContactLink(values?.contactId)}>
-                  <Launch fontSize="inherit" />
-                </IconButton>
-              </div>
+              <HeaderContactTitle name={values?.studentName} id={values?.contactId} />
             )}
             fields={(
               <Grid item {...gridItemProps}>
@@ -68,10 +67,10 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
                   name="contactId"
                   label="Student"
                   selectValueMark="id"
-                  selectLabelCondition={contactLabelCondition}
-                  defaultDisplayValue={values && defaultContactName(values.studentName)}
+                  selectLabelCondition={getContactFullName}
+                  defaultDisplayValue={values && values.studentName}
                   labelAdornment={
-                    <LinkAdornment linkHandler={openContactLink} link={values.contactId} disabled={!values.contactId} />
+                    <ContactLinkAdornment id={values?.contactId} />
                   }
                   itemRenderer={ContactSelectItemRenderer}
                   rowHeight={55}
@@ -81,11 +80,19 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
             )}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={twoColumn ? 8 : 12}>
           <FormField
             type="tags"
             name="tags"
             tags={tags}
+          />
+        </Grid>
+        <Grid item xs={twoColumn ? 4 : 12}>
+          <EntityChecklists
+            entity="WaitingList"
+            form={form}
+            entityId={values.id}
+            checked={values.tags}
           />
         </Grid>
         <Grid item xs={12}>
@@ -105,6 +112,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
             labelAdornment={<LinkAdornment link={values.courseId} linkHandler={openCourseLink} />}
             itemRenderer={CourseItemRenderer}
             onChange={this.handlerCourseChange}
+            debounced={false}
             rowHeight={55}
             required
           />

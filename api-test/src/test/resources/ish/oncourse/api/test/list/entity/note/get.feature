@@ -23,6 +23,7 @@ Feature: Main feature for all GET requests with path 'list/entity/note'
             {
             "id":1003,
             "created":"#ignore",
+            "interactionDate":"#ignore",
             "modified":"#ignore",
             "message":"Notes: This Course is for testing contacts merging",
             "createdBy":"onCourse Administrator",
@@ -54,6 +55,7 @@ Feature: Main feature for all GET requests with path 'list/entity/note'
             {
             "id":1003,
             "created":"#ignore",
+            "interactionDate":"#ignore",
             "modified":"#ignore",
             "message":"Notes: This Course is for testing contacts merging",
             "createdBy":"onCourse Administrator",

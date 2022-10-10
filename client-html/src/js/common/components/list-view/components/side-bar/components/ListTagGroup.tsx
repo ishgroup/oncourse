@@ -1,13 +1,16 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { useCallback, useMemo, useState } from "react";
 import clsx from "clsx";
 import TreeView from "@mui/lab/TreeView";
 import makeStyles from "@mui/styles/makeStyles";
-import { Draggable } from "react-beautiful-dnd";
+import { Draggable } from "react-beautiful-dnd-next";
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import ListTagItem from "./ListTagItem";
 import { MenuTag } from "../../../../../../model/tags";
@@ -22,9 +25,19 @@ interface Props {
   showColoredDots: boolean;
   updateActive: (updated: MenuTag) => void;
   dndKey: number;
+  dndEnabled?: boolean;
 }
 
-const ListTagGroup: React.FC<Props> = ({ rootTag, classes, updateActive, dndKey, showColoredDots }) => {
+const ListTagGroup: React.FC<Props> = (
+  { 
+    rootTag, 
+    classes, 
+    updateActive, 
+    dndKey, 
+    showColoredDots,
+    dndEnabled = true
+  }
+) => {
   const [expanded, setExpanded] = useState([]);
 
   const customStyles = useStyles();
@@ -64,8 +77,33 @@ const ListTagGroup: React.FC<Props> = ({ rootTag, classes, updateActive, dndKey,
     userSelect: "none",
     ...draggableStyle,
   });
+  
+  const heading = (
+    <div className={clsx("heading", classes.listHeaderOffset)}>
+      {rootTag.prefix ? `${rootTag.prefix} (${rootTag.tagBody.name})` : rootTag.tagBody.name}
+    </div>
+  );
+  
+  const tree = (
+    <TreeView expanded={expanded}>
+      {rootTag.children.map(c => {
+      const key = c.prefix + c.tagBody.id.toString();
+      return (
+        <ListTagItem
+          hasOffset={hasOffset}
+          handleExpand={handleExpand}
+          nodeId={key}
+          item={c}
+          key={key}
+          toggleActive={toggleActive}
+          showColoredDots={showColoredDots}
+        />
+      );
+    })}
+    </TreeView>
+  );
 
-  return (
+  return dndEnabled ? (
     <>
       <Draggable
         key={rootTag.prefix + rootTag.tagBody.id.toString()}
@@ -84,47 +122,44 @@ const ListTagGroup: React.FC<Props> = ({ rootTag, classes, updateActive, dndKey,
                 snapshot.isDragging,
                 provided.draggableProps.style
               )}
-              className={clsx("pt-2", { [customStyles.dragOver]: isDragging })}
+              className={clsx("pt-2", { [customStyles.isDragging]: isDragging })}
             >
               <div
                 className={clsx(
-                  "centeredFlex text-truncate text-nowrap outline-none",
+                  "p-0",
                   customStyles.draggableCellItem,
                   { "pl-3": isDragging },
                 )}
               >
-                <DragIndicator
-                  className={
-                    clsx("dndActionIcon", customStyles.dragIndicator, { [customStyles.visibleDragIndicator]: isDragging })
-                  }
-                />
-                <div className={clsx("heading", classes.listHeaderOffset)}>
-                  {rootTag.prefix ? `${rootTag.prefix} (${rootTag.tagBody.name})` : rootTag.tagBody.name}
+                <div className="d-flex">
+                  <span className="relative">
+                    <DragIndicator
+                      className={
+                        clsx(
+                          "dndActionIcon",
+                          customStyles.dragIndicator,
+                          {
+                            [customStyles.visibleDragIndicator]: isDragging
+                          },
+                        )
+                      }
+                    />
+                  </span>
+                  {heading}
                 </div>
               </div>
-
-              <TreeView expanded={expanded}>
-                {rootTag.children.map(c => {
-                  const key = c.prefix + c.tagBody.id.toString();
-                  return (
-                    <ListTagItem
-                      hasOffset={hasOffset}
-                      handleExpand={handleExpand}
-                      nodeId={key}
-                      item={c}
-                      key={key}
-                      toggleActive={toggleActive}
-                      showColoredDots={showColoredDots}
-                    />
-                  );
-                })}
-              </TreeView>
+              {tree}
             </div>
           );
         }}
       </Draggable>
     </>
-  );
+  ) : (
+    <div className="mt-2">
+      {heading}
+      {tree}
+    </div>
+);
 };
 
 export default ListTagGroup;

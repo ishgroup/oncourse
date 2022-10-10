@@ -1,11 +1,20 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 import React, { useEffect, useMemo } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-form";
 import { Dispatch } from "redux";
 import { ExportTemplate } from "@api/model";
-import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../reducers/state";
+
 import ImportTemplatesForm from "./containers/ImportTemplatesForm";
 import {
   createImportTemplate,
@@ -57,7 +66,9 @@ const ImportTemplates = React.memo<any>(props => {
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues(IMPORT_TEMPLATES_FORM_NAME)(state),
-  syncErrors: getFormSyncErrors(IMPORT_TEMPLATES_FORM_NAME)(state)
+  syncErrors: getFormSyncErrors(IMPORT_TEMPLATES_FORM_NAME)(state),
+  emailTemplates: state.automation.emailTemplate.emailTemplates,
+  nextLocation: state.nextLocation
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

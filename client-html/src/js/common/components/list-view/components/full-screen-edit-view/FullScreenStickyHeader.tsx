@@ -1,11 +1,7 @@
-import React, {
-  useCallback, useEffect, useState
-} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import clsx from "clsx";
 import makeStyles from "@mui/styles/makeStyles";
-import {
- ClickAwayListener, Collapse, Typography, Grid 
-} from "@mui/material";
+import { ClickAwayListener, Collapse, Grid, Typography } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 import { AppTheme } from "../../../../../model/common/Theme";
 import { APP_BAR_HEIGHT, STICKY_HEADER_EVENT } from "../../../../../constants/Config";
@@ -114,9 +110,15 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
   
   const [isEditing, setIsEditing] = useState<boolean>(opened);
   const [isStuck, setIsStuck] = useState<boolean>(false);
+  
+  useEffect(() => {
+    if (!isEditing && opened) {
+      setIsEditing(opened);
+    }
+  }, [opened]);
 
   const onClickAway = () => {
-    if (isEditing) {
+    if (isEditing && !opened) {
       setIsEditing(false);
     }
   };
@@ -134,19 +136,19 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
       document.removeEventListener(STICKY_HEADER_EVENT, onStickyChange);
     };
   }, [onStickyChange]);
-  
+
   const showTitleOnly = twoColumn && isStuck;
 
   const titleExpanded = opened ? false : !isEditing;
 
   return (
-    <Grid
-      container
-      columnSpacing={3}
-      className={clsx("align-items-center", Avatar && opened && "mb-2")}
-      style={Avatar ? { minHeight: "60px" } : null}
-    >
-      <ClickAwayListener onClickAway={onClickAway}>
+    <ClickAwayListener onClickAway={onClickAway}>
+      <Grid
+        container
+        columnSpacing={3}
+        className={clsx("align-items-center", Avatar && opened && "mb-2")}
+        style={Avatar ? { minHeight: "60px" } : null}
+      >
         <Grid
           item
           xs={12}
@@ -157,7 +159,6 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
           )}
           columnSpacing={3}
         >
-
           {Avatar && (
             <Avatar
               avatarSize={showTitleOnly && !opened ? 40 : 90}
@@ -185,7 +186,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
                     showTitleOnly ? "appHeaderFontSize centeredFlex" : classes.title,
                     disableInteraction && classes.disableInteraction
                   )}
-                  onClick={showTitleOnly || disableInteraction || opened ? null : () => setIsEditing(true)}
+                  onClick={(showTitleOnly || disableInteraction || opened) ? null : () => setIsEditing(true)}
                 >
                   <span className="text-truncate">
                     {title}
@@ -205,8 +206,8 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
             </Grid>
           </Grid>
         </Grid>
-      </ClickAwayListener>
-    </Grid>
+      </Grid>
+    </ClickAwayListener>
   );
 });
 

@@ -4,6 +4,6 @@ As you previously attended a course with ${tutor.getName(true)} we thought you m
 
 For more information or to enrol, please visit ${Preferences.get("web.url")} or click on the link below.
 
-Starting ${courseClass.firstSession.startDatetime?.format("EEE d MMMM - h.mm")} - ${courseClass.firstSession.endDatetime?.format("h.mm a")} ${courseClass.sessionsCount == null ? '' : '(' + courseClass.sessionsCount + ' sessions)'}
+Starting ${courseClass.firstSession.startDatetime?.format("EEE d MMMM - h.mm")} - ${courseClass.firstSession.endDatetime?.format("h.mm a")} ${courseClass.sessions == null ? '' : '(' + courseClass.sessions.size() + ' sessions)'}
 
 ${courseClass.course.name} - ${Preferences.get("web.url")}/course/${courseClass.course.code}

@@ -18,6 +18,7 @@ import ish.oncourse.server.cayenne.Document;
 import ish.oncourse.server.cayenne.Report;
 import ish.oncourse.server.cayenne.ReportOverlay;
 import ish.oncourse.server.document.DocumentService;
+import ish.oncourse.server.preference.UserPreferenceService;
 import ish.oncourse.server.report.PdfUtil;
 import ish.persistence.CommonPreferenceController;
 import ish.persistence.Preferences;
@@ -31,7 +32,9 @@ import ish.util.EntityUtil;
 import ish.util.MapsUtil;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.Ordering;
@@ -51,7 +54,7 @@ import java.net.URL;
 import java.rmi.server.UID;
 import java.util.*;
 
-import static ish.util.ImageHelper.generatePdfPreview;
+import static ish.util.ImageHelper.*;
 
 /**
  * Worker which is serving specific {@link PrintRequest} identified by unique id.
@@ -65,6 +68,7 @@ public class PrintWorker implements Runnable {
 	private ICayenneService cayenneService;
 	private DocumentService documentService;
 	private PrintRequest printRequest;
+	private UserPreferenceService userPreferenceService;
 
 	private Map<String, JasperReport> compiledReports = new LinkedHashMap<>();
 	private Map<String, byte[]> images = new LinkedHashMap<>();
@@ -80,11 +84,13 @@ public class PrintWorker implements Runnable {
 
 	private String reportName;
 
-	public PrintWorker(PrintRequest printRequest, ICayenneService cayenneService, DocumentService documentService) {
+	public PrintWorker(PrintRequest printRequest, ICayenneService cayenneService, DocumentService documentService,
+					   UserPreferenceService userPreferenceService) {
 		this.uid = printRequest.getUID();
 		this.printRequest = printRequest;
 		this.cayenneService = cayenneService;
 		this.documentService = documentService;
+		this.userPreferenceService = userPreferenceService;
 
 		progress = 0d;
 		result = ResultType.IN_PROGRESS;
@@ -183,7 +189,7 @@ public class PrintWorker implements Runnable {
 						for (var sourceId : entry.getValue()) {
 
 							// apply path transform, filter and sort
-							var printables = transformRecords(Collections.singletonList(sourceId), printTransformation, startingReport.getSortOn());
+							var printables = transformRecords(Collections.singletonList(sourceId), entry.getKey(), printTransformation, startingReport.getSortOn());
 
 							// work with once source record at a time
 							var filledReports = fillReports(reports, printables);
@@ -198,7 +204,7 @@ public class PrintWorker implements Runnable {
 					} else {
 
 						// apply path transform, filter and sort
-						var printables = transformRecords(entry.getValue(), printTransformation, startingReport.getSortOn());
+						var printables = transformRecords(entry.getValue(), entry.getKey(), printTransformation, startingReport.getSortOn());
 
 						// work with one transformed record at a time
 						for (var printable : printables) {
@@ -218,7 +224,7 @@ public class PrintWorker implements Runnable {
 				} else {
 					// work with all source record ids at the time
 					// apply path transform, filter and sort
-					var printables = transformRecords(entry.getValue(), printTransformation, startingReport.getSortOn());
+					var printables = transformRecords(entry.getValue(), entry.getKey(), printTransformation, startingReport.getSortOn());
 					progress = 33d;
 					//fill report(s)
 					var filledReports = fillReports(reports, printables);
@@ -252,7 +258,9 @@ public class PrintWorker implements Runnable {
 		if (printRequest.isCreatePreview() && startingReport != null && pdfResult != null && pdfResult.length != 0 ) {
 			ObjectContext cc = cayenneService.getNewContext();
 			var localReport = cc.localObject(startingReport);
-			localReport.setPreview(generatePdfPreview(pdfResult));
+			localReport.setPreview(
+					generateBackgroundImage(pdfResult, userPreferenceService)
+			);
 			cc.commitChanges();
 		}
 
@@ -290,7 +298,8 @@ public class PrintWorker implements Runnable {
 	 * @param recordIds to transform
 	 * @return tansformed, filtered, wrapped, sorted list of PrintableObjetcs, ready to print
 	 */
-	protected List<PersistentObjectI> transformRecords(List<Long> recordIds, PrintTransformation transform, String sortOn) throws Exception {
+	protected List<PersistentObjectI> transformRecords(List<Long> recordIds, String entityName,
+													   PrintTransformation transform, String sortOn) throws Exception {
 		try {
 			logger.info("transforming records, at start: {}, transform: {}", recordIds.size(), transform);
 			List<PersistentObjectI>  printList;
@@ -301,7 +310,7 @@ public class PrintWorker implements Runnable {
 	
 			} else {
 				Map<String, List<Long>> tempMap = new HashMap<>();
-				tempMap.put(printRequest.getEntity(), recordIds);
+				tempMap.put(entityName, recordIds);
 				printList = getRecords(tempMap);
 				logger.info("fetching records : {}", printList.size());
 			}
@@ -383,11 +392,13 @@ public class PrintWorker implements Runnable {
 			var exportOutput = new ByteArrayOutputStream();
 
 			var exporter = new JRPdfExporter();
-			exporter.setParameter(JRExporterParameter.JASPER_PRINT_LIST, printJobs);
-			exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, exportOutput);
-			exporter.setParameter(JRPdfExporterParameter.IS_COMPRESSED, Boolean.TRUE);
+			exporter.setExporterInput(SimpleExporterInput.getInstance(printJobs));
+			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(exportOutput));
 
-
+			SimplePdfExporterConfiguration conf = new SimplePdfExporterConfiguration();
+			conf.setCompressed(true);
+			exporter.setConfiguration(conf);
+		
 			exporter.exportReport();
 			if (overlay != null) {
 				exportOutput = PdfUtil.overlayPDFs(exportOutput, overlay.getOverlay());

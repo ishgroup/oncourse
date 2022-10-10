@@ -47,7 +47,8 @@ public class ScriptExecutingJob implements Job {
 			var script = getScriptByName(
 					executionContext.getJobDetail().getJobDataMap().getString(SCRIPT_NAME_PARAMETER), context);
 
-			scriptService.runScript(script);
+			if(script != null)
+				scriptService.runScript(script);
 		} catch (Exception e) {
 			logger.catching(e);
 		}

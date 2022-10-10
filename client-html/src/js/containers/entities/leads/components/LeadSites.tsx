@@ -62,6 +62,7 @@ class LeadSites extends React.PureComponent<any, any> {
     const {
       foundQuickSearchSites,
       pendingQuickSearchSites,
+      errorQuickSearchSites,
       getQuickSearchSites,
       submitSucceeded,
       twoColumn,
@@ -79,6 +80,7 @@ class LeadSites extends React.PureComponent<any, any> {
             values={values && values.sites ? this.sitesToNestedListItems(values.sites) : []}
             searchValues={foundQuickSearchSites ? this.sitesToNestedListItems(foundQuickSearchSites) : []}
             pending={pendingQuickSearchSites}
+            aqlQueryError={errorQuickSearchSites}
             onAdd={this.onAddSite}
             onDelete={this.onDeleteSite}
             onDeleteAll={this.onDeleteAllSites}
@@ -98,7 +100,8 @@ class LeadSites extends React.PureComponent<any, any> {
 
 const mapStateToProps = (state: State) => ({
   foundQuickSearchSites: state.plainSearchRecords["Site"].items,
-  pendingQuickSearchSites: state.plainSearchRecords["Site"].loading
+  pendingQuickSearchSites: state.plainSearchRecords["Site"].loading,
+  errorQuickSearchSites: state.plainSearchRecords["Site"].error
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

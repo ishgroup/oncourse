@@ -23,7 +23,7 @@ export interface SurveyMonkeyFields {
   sendOnEnrolmentCompletion: boolean;
 }
 
-export interface SurveyGizmoFields {
+export interface AlchemerFields {
   user: string;
   password: string;
   surveyId: string;
@@ -93,4 +93,12 @@ export interface ServiceNSWFields {
   terminalId: string;
   programme: string;
   apiKey: string;
+}
+
+export interface KronosFields {
+  username: string;
+  password: string;
+  apiKey: string;
+  companyShortName: string;
+  CID: string;
 }

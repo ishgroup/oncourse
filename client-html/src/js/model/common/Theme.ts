@@ -31,4 +31,5 @@ export interface AppTheme extends Theme {
   tabList: StringKeyObject<StringKeyObject<ColorGetter>>;
   table: StringKeyObject<SimplePaletteColorOptions>;
   palette: Palette & { text: TextExtended };
+  addButtonColor: StringKeyObject<ColorGetter>;
 }

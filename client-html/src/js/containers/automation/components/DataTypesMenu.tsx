@@ -130,7 +130,6 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
                     label="Name"
                     name="name"
                     validate={validateBindingName}
-                    ref={labelType ? undefined : nameRef}
                     required
                     fullWidth
                   />

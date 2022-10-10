@@ -69,7 +69,7 @@ class EntityApiImpl implements EntityApi {
         Class<? extends CayenneDataObject> clzz = EntityUtil.entityClassForName(entity)
         ObjectSelect objectSelect = ObjectSelect.query(clzz)
 
-        ObjectSelect<CayenneDataObject> query = parseSearchQuery(objectSelect, context, aql, entity, request.search, request.filter, request.tagGroups)
+        ObjectSelect<CayenneDataObject> query = parseSearchQuery(objectSelect, context, aql, entity, request.search, request.filter, request.tagGroups, request.uncheckedChecklists)
         if (request.filter || request.search || (request.tagGroups && !request.tagGroups.empty)) {
             response.filteredCount = query.column(Property.create("id", Long)).select(context).toSet().size()
         }

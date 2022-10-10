@@ -7,11 +7,13 @@ import {
   MicropowerFields,
   MoodleFields,
   MYOBFields,
-  SurveyGizmoFields,
+  AlchemerFields,
   SurveyMonkeyFields,
   XeroFields,
   AmazonS3Fields,
-  AzureFields, ServiceNSWFields
+  AzureFields,
+  ServiceNSWFields,
+  KronosFields
 } from "./IntegrationsFields";
 
 export interface IntegrationSchema {
@@ -26,7 +28,7 @@ export interface IntegrationSchema {
     | MoodleFields
     | MailchimpFields
     | MYOBFields
-    | SurveyGizmoFields
+    | AlchemerFields
     | SurveyMonkeyFields
     | XeroFields
     | CanvasFields
@@ -36,12 +38,14 @@ export interface IntegrationSchema {
     | AmazonS3Fields
     | AzureFields
     | ServiceNSWFields
+    | KronosFields
 }
 
 export interface IntegrationTypeSchema {
   name: string;
   image: string;
   form: React.ComponentType<any>;
+  formName: string;
   description: React.ReactNode;
 }
 

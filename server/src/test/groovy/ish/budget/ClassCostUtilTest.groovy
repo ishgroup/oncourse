@@ -338,7 +338,6 @@ class ClassCostUtilTest extends TestWithDatabase {
         ClassCostUtil.resetUnitCount(cc)
 
         cc.setPerUnitAmountExTax(new Money("20.00"))
-        // cc.setSessionCount(10);
         cc.setFlowType(ClassCostFlowType.EXPENSE)
 
         Money result = ClassCostUtil.getActualCost(cc)
