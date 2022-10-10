@@ -342,11 +342,11 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
             "wwChildrenExpiry":null,
             "wwChildrenRef":null,
             "wwChildrenStatus":"Not checked",
-            "currentClassesCount":1,
+            "currentClassesCount":0,
             "futureClasseCount":1,
             "selfPacedclassesCount":0,
             "unscheduledClasseCount":0,
-            "passedClasseCount":0,
+            "passedClasseCount":1,
             "cancelledClassesCount":0
             },
         "abn":null,
