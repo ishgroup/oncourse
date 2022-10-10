@@ -28,7 +28,7 @@ import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { validateKeycode } from "../../../utils";
+import { validateKeycode, validateNameField } from "../../../utils";
 import { mapSelectItems } from "../../../../../common/utils/common";
 import { EntityItems, EntityName } from "../../../../../model/entities/common";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
@@ -158,6 +158,7 @@ const ExportTemplatesForm = React.memo<Props>(
                   name="name"
                   label="Name"
                   margin="none"
+                  validate={validateNameField}
                   disabled={isInternal}
                   required
                 />
