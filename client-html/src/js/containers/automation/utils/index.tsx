@@ -17,3 +17,13 @@ export const renderAutomationItems = item => (
       <LockOutlined className="selectItmeIcon" />
     </span>
   ) : item.label );
+
+export const validateNameField = name => {
+  if (!name) {
+    return "Field is mandatory";
+  }
+  if (name.includes("\"")) {
+    return "Quotation marks not allowed";
+  }
+  return undefined;
+};

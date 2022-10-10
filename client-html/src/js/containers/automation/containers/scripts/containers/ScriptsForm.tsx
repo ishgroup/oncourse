@@ -36,7 +36,7 @@ import { mapSelectItems } from "../../../../../common/utils/common";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
-import { validateKeycode } from "../../../utils";
+import { validateKeycode, validateNameField } from "../../../utils";
 import ScriptCard from "../components/cards/CardBase";
 import { formatRelativeDate } from "../../../../../common/utils/dates/formatRelative";
 import ImportCardContent from "../components/cards/ImportCardContent";
@@ -501,6 +501,7 @@ const ScriptsForm = React.memo<Props>(props => {
               <FormField
                 name="name"
                 label="Name"
+                validate={validateNameField}
                 disabled={isInternal}
                 required
                 placeholder={` `}
