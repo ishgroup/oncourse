@@ -30,7 +30,7 @@ import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { validateKeycode } from "../../../utils";
+import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import { CommonListItem } from "../../../../../model/common/sidebar";
 import { createAndDownloadFile } from "../../../../../common/utils/common";
 import FilePreview from "../../../../../common/components/form/FilePreview";
@@ -253,6 +253,7 @@ const PdfReportsForm = React.memo<Props>(
                 <FormField
                   name="name"
                   label="Name"
+                  validate={validateNameForQuotes}
                   disabled={isInternal}
                   required
                 />
