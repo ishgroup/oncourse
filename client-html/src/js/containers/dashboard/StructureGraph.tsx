@@ -10,45 +10,7 @@ import React, { useEffect, useRef } from "react";
 import { alpha } from "@mui/material/styles";
 import * as d3 from "d3";
 import { makeAppStyles } from "../../common/styles/makeStyles";
-
-const root = [
-  {
-  "name": "Class",
-  "children": [
-    {
-      "name": "Room",
-      "children": [
-        {
-          "name": "Site",
-          "relation": "Holidays"
-        }
-      ]
-    },
-    {
-      "name": "Waiting list",
-    },
-    {
-      "name": "Timetable",
-    },
-    {
-      "name": "Tutor",
-      "children": [
-        {
-          "name": "Holidays",
-        }
-      ]
-    }
-    ]
-  },
-  {
-    "name": "Tutor pay rates",
-    "children": [
-      {
-        "name": "Tutor pay",
-      }
-    ]
-  }
-];
+import { useWindowSize } from "../../common/styles/hooks";
 
 // Returns a list of all nodes under the root.
 function flatten(nodes) {
@@ -65,7 +27,7 @@ function flatten(nodes) {
   return result;
 }
 
-function update(svg, force) {
+function update(svg, force, root) {
   let node = svg.selectAll(".node");
   const nodes = flatten(root);
 
@@ -116,7 +78,7 @@ function update(svg, force) {
       d.children = d._children;
       d._children = null;
     }
-    update(svg, force);
+    update(svg, force, root);
   }
 
   const nodeEnter = node.enter().append("g")
@@ -144,9 +106,8 @@ function color(d) {
 
 const useStyles = makeAppStyles(theme => ({
   root: {
-    width: 600,
+    width: "100%",
     height: 300,
-    marginTop: theme.spacing(4),
     backgroundImage: `radial-gradient(${alpha(theme.palette.primary.main, 0.5)} 1.5px, transparent 1.5px),radial-gradient(${alpha(theme.palette.primary.main, 0.5)} 1.5px, transparent 1.5px)`,
     backgroundPosition: "5px 4px, 20px 18px",
     backgroundSize: "30px 30px",
@@ -162,7 +123,8 @@ const useStyles = makeAppStyles(theme => ({
         font: "12px sans-serif",
         fontWeight: 600,
         pointerEvents: "none",
-        textAnchor: "middle"
+        textAnchor: "middle",
+        fill: theme.palette.text.primary
       },
       "& line.link": {
         fill: "none",
@@ -172,16 +134,16 @@ const useStyles = makeAppStyles(theme => ({
   }
 }));
 
-const StructureGraph = () => {
-  const ref = useRef();
+const StructureGraph = ({ category }) => {
+  const ref = useRef<any>();
+  const forceRef = useRef<any>();
 
   const classes = useStyles();
 
   useEffect(() => {
-    const width = 600;
-    const height = 300;
+    const { width, height } =  ref.current.getBoundingClientRect();
 
-    const force = d3.layout.force()
+    forceRef.current = d3.layout.force()
       .linkDistance(80)
       .charge(-120)
       .gravity(0.05)
@@ -191,8 +153,22 @@ const StructureGraph = () => {
       .attr("width", width)
       .attr("height", height);
 
-    update(svg, force);
-  }, []);
+    update(svg, forceRef.current, category);
+  }, [category]);
+
+  const { width, height } = useWindowSize();
+
+  useEffect(() => {
+    const { width, height } =  ref.current?.getBoundingClientRect();
+
+    d3.select(ref.current).select("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+    forceRef.current?.size([width, height]);
+    forceRef.current?.start();
+
+  }, [width, height]);
   
   return <div className={classes.root} ref={ref} />;
 };

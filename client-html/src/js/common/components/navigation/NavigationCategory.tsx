@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { IconButton, Typography } from "@mui/material";
+import { Grid, IconButton, Typography } from "@mui/material";
 import Close from "@mui/icons-material/Close";
 import React, { useMemo } from "react";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -22,8 +22,6 @@ import StructureGraph from "../../../containers/dashboard/StructureGraph";
 
 const useStyles = makeAppStyles(theme => ({
   description: {
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
     "& ul": {
       paddingLeft: theme.spacing(2)
     }
@@ -67,6 +65,45 @@ const NavigationItem = ({
   );
 };
 
+const root = [
+  {
+    "name": "Class",
+    "children": [
+      {
+        "name": "Room",
+        "children": [
+          {
+            "name": "Site",
+            "relation": "Holidays"
+          }
+        ]
+      },
+      {
+        "name": "Waiting list",
+      },
+      {
+        "name": "Timetable",
+      },
+      {
+        "name": "Tutor",
+        "children": [
+          {
+            "name": "Holidays",
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Tutor pay rates",
+    "children": [
+      {
+        "name": "Tutor pay",
+      }
+    ]
+  }
+];
+
 const NavigationCategory = (
   {
     selected,
@@ -98,10 +135,14 @@ const NavigationCategory = (
           <Close />
         </IconButton>
       </div>
-      <div className="d-flex">
-        <Typography className={classes.description} variant="body2" dangerouslySetInnerHTML={{ __html: category?.description }} />
-        <StructureGraph />
-      </div>
+      <Grid container className="mt-3 mb-3" columnSpacing={2} rowSpacing={2}>
+        <Grid item xs={12} xl={6}>
+          <Typography className={classes.description} variant="body2" dangerouslySetInnerHTML={{ __html: category?.description }} />
+        </Grid>
+        <Grid item xs={12} xl={6}>
+          <StructureGraph category={root} />
+        </Grid>
+      </Grid>
 
       <div className="heading mb-2">
         Features

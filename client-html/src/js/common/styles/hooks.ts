@@ -4,6 +4,7 @@
  */
 
 import { makeStyles } from '@mui/styles';
+import { useEffect, useState } from "react";
 
 export const useHoverShowStyles = makeStyles({
   container: {
@@ -15,3 +16,24 @@ export const useHoverShowStyles = makeStyles({
     visibility: "hidden"
   }
 });
+
+export const useWindowSize = () => {
+  const [windowSize, setWindowSize] = useState({
+    width: undefined,
+    height: undefined,
+  });
+  
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []); 
+  
+  return windowSize;
+};
