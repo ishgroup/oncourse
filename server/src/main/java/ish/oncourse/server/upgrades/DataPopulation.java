@@ -10,9 +10,6 @@
  */
 package ish.oncourse.server.upgrades;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import ish.oncourse.common.ResourceProperty;
@@ -21,18 +18,12 @@ import ish.oncourse.common.ResourcesUtil;
 import ish.oncourse.server.AngelModule;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.integration.PluginService;
-import ish.oncourse.server.report.IReportService;
-import ish.oncourse.server.report.ReportBuilder;
-import ish.report.ImportReportResult;
-import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.*;
 
 import static ish.oncourse.server.upgrades.DataPopulationUtils.removeFromDbDeletedResources;
@@ -46,13 +37,11 @@ public class DataPopulation implements Runnable {
 
 	private final String angelVersion;
 	private final ICayenneService cayenneService;
-	private final IReportService reportService;
 
 	@Inject
-	public DataPopulation(@Named(AngelModule.ANGEL_VERSION) String angelVersion, ICayenneService cayenneService, IReportService reportService) {
+	public DataPopulation(@Named(AngelModule.ANGEL_VERSION) String angelVersion, ICayenneService cayenneService) {
 		this.angelVersion = angelVersion;
 		this.cayenneService = cayenneService;
-		this.reportService = reportService;
 	}
 
 	public static String getPropertyFromXml(final StringBuffer xmlData, final String property) {

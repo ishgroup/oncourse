@@ -10,11 +10,7 @@
  */
 package ish.oncourse.server.report;
 
-import ish.report.ImportReportResult;
-
 /**
  */
 public interface IReportService {
-	ImportReportResult importReport(String reportXml) throws Exception;
-	ImportReportResult importReport(String reportXml, String path) throws Exception;
 }

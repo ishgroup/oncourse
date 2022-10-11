@@ -19,8 +19,8 @@ import ish.oncourse.server.api.v1.model.DataTypeDTO;
 import ish.oncourse.server.api.v1.model.ReportDTO;
 import ish.oncourse.server.cayenne.Report;
 import ish.oncourse.server.report.ReportBuilder;
+import ish.oncourse.server.upgrades.DataPopulationUtils;
 import ish.print.PrintTransformationsFactory;
-import ish.print.transformations.PrintTransformation;
 import ish.util.LocalDateUtils;
 import org.apache.cayenne.query.ObjectSelect;
 
@@ -133,7 +133,6 @@ public class ReportApiService extends AutomationApiService<ReportDTO, Report, Re
 
     @Override
     protected BiConsumer<Report, Map<String, Object>> getFillPropertiesFunction() {
-        //TODO: firstly we need to add all reports to catalog.yaml file and change their loading
-        return null;
+        return DataPopulationUtils::fillReportWithCommonFields;
     }
 }

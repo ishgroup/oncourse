@@ -45,9 +45,6 @@ class TestModule implements Module {
     @Override
     void configure(Binder binder) {
 
-        binder.bind(IReportService.class).to(ReportService.class).in(Scopes.SINGLETON)
-
-
         binder.bind(AccountTransactionService.class).in(Scopes.SINGLETON)
         binder.bind(AuditService.class).in(Scopes.SINGLETON)
         binder.bind(AuditListener.class).toInstance(Mockito.mock(AuditListener.class))

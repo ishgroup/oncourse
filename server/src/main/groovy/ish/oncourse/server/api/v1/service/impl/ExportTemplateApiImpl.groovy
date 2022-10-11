@@ -48,7 +48,7 @@ class ExportTemplateApiImpl implements ExportTemplateApi {
 
     @Override
     void updateConfigs(Long id, String scriptConfigs) {
-
+        service.updateConfigs(id, scriptConfigs)
     }
 
     @Override

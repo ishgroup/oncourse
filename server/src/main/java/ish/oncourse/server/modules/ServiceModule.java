@@ -49,7 +49,6 @@ public class ServiceModule implements Module {
 	public void configure(Binder binder) {
 		binder.bind(SanityCheckService.class).in(Scopes.SINGLETON);
 		binder.bind(TransactionCheckService.class).in(Scopes.SINGLETON);
-		binder.bind(IReportService.class).to(ReportService.class).in(Scopes.SINGLETON);
 		binder.bind(PrintService.class).in(Scopes.SINGLETON);
 
 
