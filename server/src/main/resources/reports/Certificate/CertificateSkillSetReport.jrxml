@@ -3,15 +3,11 @@
 <!-- 2018-02-23T11:42:51 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificateSkillSetReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="517" leftMargin="39" rightMargin="39" topMargin="28" bottomMargin="50" whenResourceMissingType="Empty" uuid="6fb605b7-2bf2-46d1-8131-f4ad03f6f727">
 	<property name="name" value="Certificate-SkillSet"/>
-	<property name="entity" value="Certificate"/>
 	<property name="isSubreport" value="true"/>
-	<property name="isVisible" value="false"/>
-
-	<property name="keyCode" value="ish.onCourse.certificate.skillset"/>
 	<property name="ish.oncourse.title" value="Certificate"/>
 	<property name="ish.oncourse.filePrefix" value="certificate"/>
-	<property name="ish.oncourse.description" value="onCourse includes AQF recommended templates for full Qualification Certificates, Statements of Attainment and transcripts. Certificates can only be generated from units that are recorded as part of onCourse enrolments."/>
 	<property name="ish.oncourse.pdfFileName" value="Certificate.pdf"/>
+
 	<import value="ish.common.types.QualificationType"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>

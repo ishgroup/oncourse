@@ -7,15 +7,7 @@
   ~  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
   -->
 
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AuditListReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" whenResourceMissingType="Empty" uuid="b653b9be-4702-4dc2-89f2-d7fd1c8ed5cd">
-
-    <property name="ish.oncourse.reports.isObjectOnSeparatePage" value="false"/>
-    <property name="entity" value="Audit"/>
-    <property name="name" value="Audit List"/>
-    <property name="isVisible" value="true"/>
-
-    <property name="keyCode" value="ish.onCourse.auditListReport"/>
-
+<jasperReport xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://jasperreports.sourceforge.net/jasperreports" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AuditListReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" whenResourceMissingType="Empty" uuid="b653b9be-4702-4dc2-89f2-d7fd1c8ed5cd">    <property name="ish.oncourse.reports.isObjectOnSeparatePage" value="false"/
     <import value="net.sf.jasperreports.engine.*"/>
     <import value="java.util.*"/>
     <import value="net.sf.jasperreports.engine.data.*"/>

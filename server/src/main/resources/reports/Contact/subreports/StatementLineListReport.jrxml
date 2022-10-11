@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="StatementLineListReport" language="groovy" pageWidth="539" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="539" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="678e0750-264e-4e5a-8eb6-e249057be260">
-	<property name="name" value="Statement Line Detail"/>
-	<property name="entity" value="StatementLinePrintableObject"/>
 	<property name="isSubreport" value="true"/>
-	<property name="isVisible" value="false"/>
-
-	<property name="keyCode" value="ish.onCourse.statementLineListReport"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="ish.math.Money"/>
