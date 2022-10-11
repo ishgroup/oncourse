@@ -13,7 +13,6 @@ import {
   getFilters,
   setListEditRecord
 } from "../../../common/components/list-view/actions";
-import { defaultContactName } from "../contacts/utils";
 import PayslipsEditView from "./components/PayslipsEditView";
 import ListView from "../../../common/components/list-view/ListView";
 import { getListTags } from "../../tags/actions";
@@ -67,7 +66,7 @@ const findRelatedGroup: any[] = [
   { title: "Contacts", list: "contact", expression: "payslips.id" },
   { title: "Classes", list: "class", expression: "costs.paylines.payslip.id" }
 ];
-const nameCondition = (values: Payslip) => defaultContactName(values.tutorFullName);
+const nameCondition = (values: Payslip) => values.tutorFullName;
 
 const manualLink = getManualLink("payroll");
 
