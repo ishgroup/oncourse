@@ -40,6 +40,10 @@ class IntegrationFunctions {
             return new ValidationErrorDTO(data?.id, 'name', "Integration name should be specified")
         }
 
+        if (data.name.contains("\"")) {
+            return new ValidationErrorDTO(data?.id, 'name', "Integration name cannot contain quotation marks.")
+        }
+
         if (getIntegrationByName(context, data.name)) {
             return new ValidationErrorDTO(data?.id, 'name', "Integration name should be unique")
         }

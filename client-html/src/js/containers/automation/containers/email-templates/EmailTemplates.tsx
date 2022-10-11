@@ -50,12 +50,21 @@ const EmailTemplates = React.memo<any>(props => {
 
   const isNew = useMemo(() => id === "new", [id]);
 
-  const validateTemplateCopyName = useCallback(name => (emailTemplates.some(t => t.name?.trim() === name.trim())
-    ? "Name must be unique"
-    : undefined),
+  const validateTemplateCopyName = useCallback(name => {
+      if (name.includes("\"")) {
+        return "Quotation marks not allowed";
+      }
+      if (emailTemplates.some(t => t.name?.trim() === name.trim())) {
+        return "Name must be unique";
+      }
+      return undefined;
+      },
   [emailTemplates]);
 
   const validateNewTemplateName = useCallback(name => {
+      if (name.includes("\"")) {
+        return "Quotation marks not allowed";
+      }
       if (isNew) {
         const matches = emailTemplates.filter(t => t.title.trim() === name.trim());
         return matches.length ? "Name must be unique" : undefined;

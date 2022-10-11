@@ -30,7 +30,7 @@ import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { validateKeycode } from "../../../utils";
+import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import { formatRelativeDate } from "../../../../../common/utils/dates/formatRelative";
 import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL } from "../../../../../common/utils/dates/format";
 import ExecuteImportModal from "../components/ExecuteImportModal";
@@ -147,6 +147,7 @@ const ImportTemplatesForm = React.memo<Props>(
                 <FormField
                   name="name"
                   label="Name"
+                  validate={validateNameForQuotes}
                   disabled={isInternal}
                   required
                 />

@@ -18,10 +18,7 @@ export const renderAutomationItems = item => (
     </span>
   ) : item.label );
 
-export const validateNameField = name => {
-  if (!name) {
-    return "Field is mandatory";
-  }
+export const validateNameForQuotes = name => {
   if (name.includes("\"")) {
     return "Quotation marks not allowed";
   }

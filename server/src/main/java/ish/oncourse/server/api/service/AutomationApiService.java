@@ -96,6 +96,13 @@ abstract class AutomationApiService<T extends AutomationDTOTrait , K extends Aut
             EntityValidator.throwClientErrorException(id, "name", "Name is required.");
         } else if (trimToNull(dto.getName()).length() > 100) {
             EntityValidator.throwClientErrorException(id, "name", "Name cannot be more than 100 chars.");
+        } else if (dto.getName().contains("\"")) {
+            EntityValidator.throwClientErrorException(id, "name", "Name cannot contain quotation marks.");
+        } else {
+            AutomationTrait duplicate = entityDao.getByName(context, trimToNull(dto.getName()));
+            if (duplicate != null && !duplicate.getId().equals(id)) {
+                EntityValidator.throwClientErrorException(id, "name", "Name must be unique.");
+            }
         }
         if (isBlank(dto.getKeyCode())) {
             EntityValidator.throwClientErrorException(id, "keyCode", "keyCode is required.");
