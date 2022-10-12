@@ -27,34 +27,39 @@ function flatten(nodes) {
   return result;
 }
 
-function update(svg, force, root) {
+function update(svg, force, root, container) {
   let node = svg.selectAll(".node");
   const nodes = flatten(root);
 
   const links = d3.layout.tree().links(nodes);
 
-  // links.push({
-  //   source: nodes.find(n => n.name === "Site"),
-  //   target: nodes.find(n => n.name === "Holidays")
-  // });
+  let link = svg.selectAll(".link");
+  
+  function tick() {
+    // Node radius with text offset
+    const radius = 24;
+
+    const { width, height } = container.getBoundingClientRect();
+
+    // Keep nodes within given area
+    node.attr("transform", d => "translate("
+      + Math.max(radius, Math.min(width - radius, d.x)) + ","
+      + Math.max(radius, Math.min(height - radius, d.y)) + ")");
+
+    link
+      .attr("x1", d => d.source.x)
+      .attr("y1", d => d.source.y)
+      .attr("x2", d => d.target.x)
+      .attr("y2", d => d.target.y);
+  }
 
   // Restart the force layout.
   force
     .nodes(nodes)
-    .links(links)
     .on("tick", tick)
+    .links(links)
     .start();
 
-  let link = svg.selectAll(".link");
-
-  function tick() {
-    link.attr("x1", d => d.source.x)
-      .attr("y1", d => d.source.y)
-      .attr("x2", d => d.target.x)
-      .attr("y2", d => d.target.y);
-
-    node.attr("transform", d => "translate(" + d.x + "," + d.y + ")");
-  }
 
   // Update links.
   link = link.data(links, d => d.target.id);
@@ -70,7 +75,7 @@ function update(svg, force, root) {
   node.exit().remove();
 
   function click(d) {
-    if (d3.event.defaultPrevented) return; // ignore drag
+    if ((d3.event as any).defaultPrevented) return; // ignore drag
     if (d.children) {
       d._children = d.children;
       d.children = null;
@@ -78,7 +83,7 @@ function update(svg, force, root) {
       d.children = d._children;
       d._children = null;
     }
-    update(svg, force, root);
+    update(svg, force, root, container);
   }
 
   const nodeEnter = node.enter().append("g")
@@ -134,7 +139,7 @@ const useStyles = makeAppStyles(theme => ({
   }
 }));
 
-const StructureGraph = ({ category }) => {
+const StructureGraph = ({ root }) => {
   const ref = useRef<any>();
   const forceRef = useRef<any>();
 
@@ -149,12 +154,14 @@ const StructureGraph = ({ category }) => {
       .gravity(0.05)
       .size([width, height]);
 
+    d3.select(ref.current).select("svg").remove();
+
     const svg = d3.select(ref.current).append("svg")
       .attr("width", width)
       .attr("height", height);
 
-    update(svg, forceRef.current, category);
-  }, [category]);
+    update(svg, forceRef.current, root, ref.current);
+  }, [root]);
 
   const { width, height } = useWindowSize();
 
@@ -169,7 +176,7 @@ const StructureGraph = ({ category }) => {
     forceRef.current?.start();
 
   }, [width, height]);
-  
+
   return <div className={classes.root} ref={ref} />;
 };
 

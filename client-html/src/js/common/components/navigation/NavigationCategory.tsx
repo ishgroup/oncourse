@@ -12,7 +12,8 @@ import React, { useMemo } from "react";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import { makeAppStyles } from "../../styles/makeStyles";
-import navigation from "./navigation.json";
+import navigation from "./data/navigation.json";
+import structure from "./data/structure.json";
 import CatalogItem from "../layout/catalog/CatalogItem";
 import { useAppSelector } from "../../utils/hooks";
 import { BooleanArgFunction, NumberArgFunction } from "../../../model/common/CommonFunctions";
@@ -65,45 +66,6 @@ const NavigationItem = ({
   );
 };
 
-const root = [
-  {
-    "name": "Class",
-    "children": [
-      {
-        "name": "Room",
-        "children": [
-          {
-            "name": "Site",
-            "relation": "Holidays"
-          }
-        ]
-      },
-      {
-        "name": "Waiting list",
-      },
-      {
-        "name": "Timetable",
-      },
-      {
-        "name": "Tutor",
-        "children": [
-          {
-            "name": "Holidays",
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "Tutor pay rates",
-    "children": [
-      {
-        "name": "Tutor pay",
-      }
-    ]
-  }
-];
-
 const NavigationCategory = (
   {
     selected,
@@ -123,7 +85,8 @@ const NavigationCategory = (
   
   const features = useMemo(() => (category 
     ? navigation.features.filter(f => category.features.includes(f.key))
-    : []), [category]);
+    : []
+  ), [category]);
 
   const onOpen = (link: string) => openInternalLink(getPrivisioningLink(link));
 
@@ -140,7 +103,7 @@ const NavigationCategory = (
           <Typography className={classes.description} variant="body2" dangerouslySetInnerHTML={{ __html: category?.description }} />
         </Grid>
         <Grid item xs={12} xl={6}>
-          <StructureGraph category={root} />
+          {Boolean(structure[selected]) && <StructureGraph root={structure[selected]} />}
         </Grid>
       </Grid>
 

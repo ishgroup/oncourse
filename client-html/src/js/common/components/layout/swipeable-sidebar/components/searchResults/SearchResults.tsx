@@ -15,7 +15,7 @@ import { State } from "../../../../../../reducers/state";
 import ListLinkItem from "./ListLinkItem";
 import ListLinksGroup from "./ListLinksGroup";
 import { getResultId } from "../../utils";
-import navigation from "../../../../navigation/navigation.json";
+import navigation from "../../../../navigation/data/navigation.json";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { IconButton } from "@mui/material";
 import { useHoverShowStyles } from "../../../../../styles/hooks";
