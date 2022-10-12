@@ -47,9 +47,9 @@ class ImportDao implements AutomationDao<Import> {
     }
 
     @Override
-    Import getByName(ObjectContext context, String name) {
+    List<Import> getByName(ObjectContext context, String name) {
         ObjectSelect.query(Import)
                 .where(Import.NAME.eq(name))
-                .selectOne(context)
+                .select(context)
     }
 }

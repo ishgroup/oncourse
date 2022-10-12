@@ -59,9 +59,9 @@ class ReportDao implements AutomationDao<Report> {
     }
 
     @Override
-    Report getByName(ObjectContext context, String name) {
+    List<Report> getByName(ObjectContext context, String name) {
         ObjectSelect.query(Report)
                 .where(Report.KEY_CODE.eq(name))
-                .selectOne(cayenneService.newContext)
+                .select(cayenneService.newContext)
     }
 }
