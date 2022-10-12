@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { withRouter } from "react-router";
@@ -50,29 +50,6 @@ const EmailTemplates = React.memo<any>(props => {
 
   const isNew = useMemo(() => id === "new", [id]);
 
-  const validateTemplateCopyName = useCallback(name => {
-      if (name.includes("\"")) {
-        return "Quotation marks not allowed";
-      }
-      if (emailTemplates.some(t => t.name?.trim() === name.trim())) {
-        return "Name must be unique";
-      }
-      return undefined;
-      },
-  [emailTemplates]);
-
-  const validateNewTemplateName = useCallback(name => {
-      if (name.includes("\"")) {
-        return "Quotation marks not allowed";
-      }
-      if (isNew) {
-        const matches = emailTemplates.filter(t => t.title.trim() === name.trim());
-        return matches.length ? "Name must be unique" : undefined;
-      }
-      return undefined;
-    },
-    [emailTemplates, isNew]);
-
   useEffect(() => {
     if (id && prevId !== id) {
       if (isNew) {
@@ -87,8 +64,6 @@ const EmailTemplates = React.memo<any>(props => {
     <EmailTemplatesForm
       dispatch={dispatch}
       isNew={isNew}
-      validateTemplateCopyName={validateTemplateCopyName}
-      validateNewTemplateName={validateNewTemplateName}
       emailTemplates={emailTemplates}
       {...rest}
     />

@@ -52,12 +52,13 @@ interface Props extends InjectedFormProps {
   onUpdate: (template: ImportModel) => void;
   onDelete: NumberArgFunction;
   emailTemplates?: CatalogItemType[]
+  importTemplates?: CatalogItemType[]
 }
 
 const ImportTemplatesForm = React.memo<Props>(
   ({
     dirty, form, handleSubmit, isNew, invalid, values, dispatch, syncErrors, emailTemplates,
-     onCreate, onUpdate, onUpdateInternal, onDelete
+     onCreate, onUpdate, onUpdateInternal, onDelete, importTemplates
   }) => {
     const [modalOpened, setModalOpened] = useState<boolean>(false);
     const [execMenuOpened, setExecMenuOpened] = useState(false);
@@ -106,15 +107,33 @@ const ImportTemplatesForm = React.memo<Props>(
       [values]
     );
 
-
     const handleRun = () => {
       setImportIdSelected(values.id);
       setExecMenuOpened(true);
     };
 
+    const validateTemplateCopyName = useCallback(name => {
+      if (importTemplates.find(i => i.title.trim() === name.trim())) {
+        return "Template name should be unique";
+      }
+      return validateNameForQuotes(name);
+    }, [importTemplates, values.id]);
+
+    const validateTemplateName = useCallback(name => {
+      if (importTemplates.find(i => i.id !== values.id && i.title.trim() === name.trim())) {
+        return "Template name should be unique";
+      }
+      return validateNameForQuotes(name);
+    }, [importTemplates, values.id]);
+
     return (
       <>
-        <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialodClose} onSave={onDialogSave} />
+        <SaveAsNewAutomationModal
+          opened={modalOpened}
+          onClose={onDialodClose}
+          onSave={onDialogSave}
+          validateNameField={validateTemplateCopyName}
+        />
         <ExecuteImportModal
           opened={execMenuOpened}
           onClose={() => {
@@ -147,7 +166,7 @@ const ImportTemplatesForm = React.memo<Props>(
                 <FormField
                   name="name"
                   label="Name"
-                  validate={validateNameForQuotes}
+                  validate={validateTemplateName}
                   disabled={isInternal}
                   required
                 />
