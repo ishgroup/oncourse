@@ -43,9 +43,7 @@ export interface MYOBFields {
 }
 
 export interface CloudAssessFields {
-  username: string;
   apiKey: string;
-  orgId: string;
 }
 
 export interface CanvasFields {
