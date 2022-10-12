@@ -99,8 +99,12 @@ abstract class AutomationApiService<T extends AutomationDTOTrait , K extends Aut
         } else if (dto.getName().contains("\"")) {
             EntityValidator.throwClientErrorException(id, "name", "Name cannot contain quotation marks.");
         } else {
-            AutomationTrait duplicate = entityDao.getByName(context, trimToNull(dto.getName()));
-            if (duplicate != null && !duplicate.getId().equals(id)) {
+            // Use ObjectSelect.select() instead of ObjectSelect.selectOne() (as in .getByKeyCode()), because there can currently be 2 or more duplicate names and ObjectSelect.selectOne() throw CayenneRuntimeException "Expected zero or one object, instead query matched: N".
+            List<K> duplicates = entityDao.getByName(context, trimToNull(dto.getName()));
+            if (duplicates.size() > 1) {
+                EntityValidator.throwClientErrorException(id, "name", "Name must be unique.");
+            }
+            if (duplicates.size() == 1 && !duplicates.get(0).getId().equals(id)) {
                 EntityValidator.throwClientErrorException(id, "name", "Name must be unique.");
             }
         }

@@ -49,10 +49,10 @@ class ScriptDao implements AutomationDao<Script> {
     }
 
     @Override
-    Script getByName(ObjectContext context, String name) {
+    List<Script> getByName(ObjectContext context, String name) {
         ObjectSelect.query(Script)
                 .where(Script.NAME.eq(name))
-                .selectOne(context)
+                .select(context)
     }
 
     boolean hasTheSameName(ObjectContext context, String name, Long id) {

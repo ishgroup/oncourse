@@ -49,9 +49,9 @@ class EmailTemplateDao implements AutomationDao<EmailTemplate> {
     }
 
     @Override
-    EmailTemplate getByName(ObjectContext context, String name) {
+    List<EmailTemplate> getByName(ObjectContext context, String name) {
         ObjectSelect.query(EmailTemplate)
                 .where(EmailTemplate.NAME.eq(name))
-                .selectOne(context)
+                .select(context)
     }
 }
