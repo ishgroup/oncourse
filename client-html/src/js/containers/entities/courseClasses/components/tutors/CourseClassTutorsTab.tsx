@@ -14,7 +14,6 @@ import { CourseClassTutor, DefinedTutorRole } from "@api/model";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { ClassCostExtended, CourseClassExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 import { State } from "../../../../../reducers/state";
-import { contactLabelCondition } from "../../../contacts/utils";
 import CourseClassTutorsRenderer from "./CourseClassTutorsRenderer";
 import { addActionToQueue, removeActionsFromQueue } from "../../../../../common/actions";
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
@@ -78,7 +77,7 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
           warningsUpdated[value.id] = null;
           setTutorNamesWarnings(warningsUpdated);
         }
-        dispatch(change(form, `tutors[${index}].tutorName`, contactLabelCondition(value)));
+        dispatch(change(form, `tutors[${index}].tutorName`, value));
       },
       [tutorNamesWarnings]
     );

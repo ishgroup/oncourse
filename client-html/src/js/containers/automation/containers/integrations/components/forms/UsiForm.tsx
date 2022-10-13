@@ -9,7 +9,7 @@ import Link from "@mui/material/Link";
 import { change, initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../../reducers/state";
 import { getUSISoftwareId } from "../../../../../preferences/actions";
 

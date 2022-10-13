@@ -546,7 +546,7 @@
     {
       "title": "Security",
       "key": "security",
-      "link": "/security",
+      "link": "/security/settings",
       "description": "Create and manage your basic security settings, your onCourse users, user roles and create and manage API tokens."
     },
     {
