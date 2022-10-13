@@ -8,7 +8,16 @@ ${render(headerKeycode)}
                     Hi ${checkout?.payer?.firstName},
                     <br>
                     You recently visited the ${Preferences.get("college.name")} website and added at least one item to the cart.
+                    <br><br>
+                    <b><i>Classes:</i></b><br>
+                    <% checkout?.shoppingCartClasses.each { cc -> %>
+                    <b>Class code:</b> ${cc.uniqueCode} <b>Course:</b> ${cc.course.name} <b>Course code:</b> ${cc.course.code}<br>
+                    <% } %>
                     <br>
+                    <b><i>Products:</i></b><br>
+                    <% checkout?.shoppingCartProducts.each { product -> %>
+                    <b>Name:</b> ${product.name} <b>SKU:</b> ${product.sku} <b>quantity:</b> ${checkout.shoppingCartProductQuantity(product.id)}<br>
+                    <% } %><br><br>
                     <a href="${checkout?.data?.get('checkoutURL')}?cartId=${checkout.UUID}" style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" target="_blank">Click here</a> to return to your cart and complete the checkout process.
                     <br>
                 </p>
