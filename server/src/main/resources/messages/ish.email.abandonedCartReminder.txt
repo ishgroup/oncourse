@@ -2,6 +2,16 @@ Hi ${checkout?.payer?.firstName},
 
 You recently visited the ${Preferences.get("college.name")} website and added at least one item to the cart.
 
+Classes:
+<% checkout?.shoppingCartClasses.each { cc -> %>
+Class code: ${cc.uniqueCode} Course: ${cc.course.name} Course code: ${cc.course.code}
+<% } %>
+
+Products:
+<% checkout?.shoppingCartProducts.each { product -> %>
+Name: ${product.name} SKU: ${product.sku} quantity: ${checkout.shoppingCartProductQuantity(product.id)}
+<% } %>
+
 Click here to return to your cart and complete the checkout process.
 
 ${checkout?.data?.get("checkoutURL") + "?cartId=" + checkout.UUID}
