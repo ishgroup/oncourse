@@ -141,7 +141,8 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
     setUsiUpdateLocked,
     tabIndex,
     expanded,
-    setExpanded
+    setExpanded,
+    syncErrors
   } = props;
 
   const prevId = usePrevious(values.id);
@@ -244,7 +245,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
 
   return values ? (
     <div className="pt-1 pl-3 pr-3">
-      <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
+      <ExpandableContainer formErrors={syncErrors} index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
         <Grid container columnSpacing={3} rowSpacing={2}>
           {countries && (
             <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>

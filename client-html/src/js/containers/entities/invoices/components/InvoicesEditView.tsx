@@ -24,7 +24,7 @@ import FormField from "../../../../common/components/form/formFields/FormField";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { State } from "../../../../reducers/state";
-import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
+import { getContactFullName } from "../../contacts/utils";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
 import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
 import { getInvoiceClosestPaymentDueDate } from "../utils";
@@ -210,7 +210,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
     value => {
       setSelectedContact(value);
 
-      dispatch(change(form, "contactName", contactLabelCondition(value)));
+      dispatch(change(form, "contactName", getContactFullName(value)));
       dispatch(
         change(
           form,
@@ -320,8 +320,8 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
           name="contactId"
           label="Invoice to"
           selectValueMark="id"
-          selectLabelCondition={contactLabelCondition}
-          defaultDisplayValue={values && defaultContactName(values.contactName)}
+          selectLabelCondition={getContactFullName}
+          defaultDisplayValue={values?.contactName}
           labelAdornment={
             <ContactLinkAdornment id={values?.contactId} />
           }

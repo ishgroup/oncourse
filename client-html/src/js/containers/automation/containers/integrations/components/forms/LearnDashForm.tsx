@@ -6,7 +6,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { initialize, reduxForm } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 
 class LearnDashFormBase extends React.Component<any, any> {
   constructor(props) {

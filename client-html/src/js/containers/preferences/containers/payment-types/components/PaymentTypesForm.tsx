@@ -2,7 +2,6 @@ import * as React from "react";
 import Grid from "@mui/material/Grid";
 import { withStyles } from "@mui/styles";
 import isEqual from "lodash.isequal";
-import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import {
@@ -10,7 +9,7 @@ import {
 } from "redux-form";
 import { PaymentMethod } from "@api/model";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { formCommonStyles } from "../../../styles/formCommonStyles";
 import PaymentTypesRenderer from "./PaymentTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";

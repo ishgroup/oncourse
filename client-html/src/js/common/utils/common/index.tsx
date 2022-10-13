@@ -72,6 +72,17 @@ export const createAndDownloadFile = (data: any, type: string, name: string) => 
   window.URL.revokeObjectURL(url);
 };
 
+export const createAndDownloadBase64Image = (data: any, name: string, type = "png") => {
+  const link = document.createElement("a");
+  link.href = "data:image/png;base64," + data;
+  link.setAttribute("download", name + `.${type}`);
+  link.setAttribute("type", `application/${type}`);
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
 export const getArrayFieldMeta = name => {
   const match = name.match(/\[(\d)]\.([^.]+)$/);
   return { field: match[2], index: Number(match[1]) };

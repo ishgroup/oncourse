@@ -28,7 +28,7 @@ class ReportOverlayService {
     return this.reportOverlayApi.get(id);
   }
 
-  public getReportOverlayCopy(id: number): Promise<string> {
+  public getReportOverlayCopy(id: number): Promise<string[]> {
     return this.reportOverlayApi.getOriginal(id);
   }
 
