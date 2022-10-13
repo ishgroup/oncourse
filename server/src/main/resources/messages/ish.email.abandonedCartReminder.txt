@@ -9,7 +9,8 @@ Class code: ${cc.uniqueCode} Course: ${cc.course.name} Course code: ${cc.course.
 
 Products:
 <% checkout?.shoppingCartProducts.each { product -> %>
-Name: ${product.name} SKU: ${product.sku} quantity: ${checkout.shoppingCartProductQuantity(product.id)}
+<% def productId = product.willowId %>
+Name: ${product.name} SKU: ${product.sku} Quantity: ${checkout.getShoppingCartProductQuantity(productId)}
 <% } %>
 
 Click here to return to your cart and complete the checkout process.
