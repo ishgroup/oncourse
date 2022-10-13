@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
+import React, { useRef } from "react";
 import Button from "@mui/material/Button";
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import { IS_JEST } from "../../../constants/EnvironmentConstants";
@@ -28,17 +28,36 @@ const FormSubmitButton = React.memo<Props>(({
     text = "Save",
     className,
   }) => {
+    const ref = useRef<HTMLButtonElement>();
+    const defaultPrevented = useRef(false);
+  
     const buttonProps = IS_JEST ? {
       "data-testid": "appbar-submit-button"
     } : {};
+
+    // timeout to process blur events
+    const onClick = e => {
+      if (!defaultPrevented.current) {
+        e.preventDefault();
+        defaultPrevented.current = true;
+        setTimeout(() => {
+          ref.current.click();
+        }, 600);
+        return;
+      }
+      defaultPrevented.current = false;
+    };
+
     return (
       <Button
         type="submit"
+        ref={ref}
         classes={{
           root: fab ? "saveButtonEditView" : "whiteAppBarButton",
           disabled: fab ? "saveButtonEditViewDisabled" : "whiteAppBarButtonDisabled"
         }}
         disabled={disabled}
+        onClick={onClick}
         variant="contained"
         color="primary"
         startIcon={
