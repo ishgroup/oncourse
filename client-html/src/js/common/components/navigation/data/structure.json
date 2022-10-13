@@ -216,5 +216,149 @@
     {
       "name": "Website setup"
     }
+  ],
+  "accreditation": [
+    {
+      "name": "Traineeship courses",
+      "children": [
+        {
+          "name": "Traineeships",
+          "children": [
+            {
+              "name": "Assessment submissions"
+            },
+            {
+              "name": "Assessment tasks"
+            }
+          ]
+        },
+        {
+          "name": "Units of competency"
+        },
+        {
+          "name": "Qualifications"
+        },
+        {
+          "name": "Outcomes",
+          "children": [
+            {
+              "name": "Certificates"
+            },
+            {
+              "name": "Prior Learnings"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Funding contract"
+    },
+    {
+      "name": "Export AVETMISS8"
+    }
+  ],
+  "education": [
+    {
+      "name": "Courses",
+      "children": [
+        {
+          "name": "Classes",
+          "children": [
+            {
+              "name": "Assessment tasks",
+              "children": [
+                {
+                  "name": "Assessment submissions"
+                }
+              ]
+            },
+            {
+              "name": "Enrolments",
+              "children": [
+                {
+                  "name": "Outcomes"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Traineeship courses",
+      "children": [
+        {
+          "name": "Traineeships"
+        }
+      ]
+    },
+    {
+      "name": "Messages"
+    },
+    {
+      "name": "Prior learnings"
+    }
+  ],
+  "payroll": [
+    {
+      "name": "Tutors",
+      "children": [
+        {
+          "name": "Tutor pay rates"
+        },
+        {
+          "name": "Tutor pay"
+        }
+      ]
+    }
+  ],
+  "crm": [
+    {
+      "name": "Contacts",
+      "children": [
+        {
+          "name": "Companies"
+        },
+        {
+          "name": "Students",
+          "children": [
+            {
+              "name": "Enrolments"
+            },
+            {
+              "name": "Leads"
+            },
+            {
+              "name": "Applications"
+            },
+            {
+              "name": "Quotes"
+            },
+            {
+              "name": "Corporate pass"
+            },
+            {
+              "name": "Waiting lists"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Discounts"
+    },
+    {
+      "name": "Messages"
+    },
+    {
+      "name": "Messages"
+    },
+    {
+      "name": "Sales"
+    },
+    {
+      "name": "Waiting lists"
+    }
   ]
 }

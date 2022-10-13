@@ -90,6 +90,8 @@ const NavigationCategory = (
 
   const onOpen = (link: string) => openInternalLink(getPrivisioningLink(link));
 
+  const hasStructure = Boolean(structure[selected]);
+
   return (
     <div className="flex-fill p-3 overflow-y-auto">
       <div className="d-flex">
@@ -99,12 +101,14 @@ const NavigationCategory = (
         </IconButton>
       </div>
       <Grid container className="mt-3 mb-3" columnSpacing={2} rowSpacing={2}>
-        <Grid item xs={12} xl={6}>
+        <Grid item xs={12} xl={hasStructure ? 6 : 12}>
           <Typography className={classes.description} variant="body2" dangerouslySetInnerHTML={{ __html: category?.description }} />
         </Grid>
-        <Grid item xs={12} xl={6}>
-          {Boolean(structure[selected]) && <StructureGraph root={structure[selected]} />}
-        </Grid>
+        {hasStructure &&
+          <Grid item xs={12} xl={6}>
+            <StructureGraph root={structure[selected]} />
+          </Grid>
+        }
       </Grid>
 
       <div className="heading mb-2">
