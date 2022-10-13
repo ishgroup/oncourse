@@ -9,7 +9,7 @@ import { Outcome } from "@api/model";
 import EntityService from "../../../../common/services/EntityService";
 import { EditViewProps } from "../../../../model/common/ListView";
 import OutcomeEditFields from "./OutcomeEditFields";
-import { contactLabelCondition } from "../../contacts/utils";
+import { getContactFullName } from "../../contacts/utils";
 
 const getFieldName = name => name;
 
@@ -45,7 +45,7 @@ const OutcomeEditView = React.memo<EditViewProps<Outcome>>(props => {
                 change(
                   form,
                   "studentName",
-                  contactLabelCondition({ firstName: res.rows[0].values[7], lastName: res.rows[0].values[8] })
+                  getContactFullName({ firstName: res.rows[0].values[7], lastName: res.rows[0].values[8] })
                 )
               );
             }

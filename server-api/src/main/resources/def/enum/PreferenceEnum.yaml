@@ -29,3 +29,4 @@ enum:
 - listview.main.content.width
 - oncourse.server.timezone.default
 - tutorial.skip.systemuser
+- background.quality.scale

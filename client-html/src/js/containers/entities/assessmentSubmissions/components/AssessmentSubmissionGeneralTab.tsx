@@ -12,7 +12,6 @@ import { change } from "redux-form";
 import { AssessmentSubmission } from "@api/model";
 import clsx from "clsx";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { getContactName } from "../../contacts/utils";
 import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import EntityService from "../../../../common/services/EntityService";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
@@ -20,6 +19,7 @@ import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { HeaderContactTitle } from "../../../../common/components/form/FieldAdornments";
+import { getContactFullName } from "../../contacts/utils";
 
 const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmission>> = props => {
   const {
@@ -38,7 +38,7 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
         .then(res => {
           setTutors(res.rows.map(r => ({
             contactId: Number(r.id),
-            tutorName: getContactName({ firstName: r.values[0], lastName: r.values[1] })
+            tutorName: getContactFullName({ firstName: r.values[0], lastName: r.values[1] })
           })));
         })
         .catch(err => instantFetchErrorHandler(dispatch, err));
