@@ -53,8 +53,8 @@ import { mapEntityDisplayName } from "./utils";
 import EnrolmentService from "../enrolments/services/EnrolmentService";
 import { EnrolmentExtended } from "../../../model/entities/Enrolment";
 import EntityService from "../../../common/services/EntityService";
-import { getContactName } from "../contacts/utils";
 import { getPaymentOutFromModel } from "../paymentsOut/utils";
+import { getContactFullName } from "../contacts/utils";
 
 const defaultUnknown = () => {
   console.error("Unknown entity name");
@@ -155,7 +155,7 @@ export const getEntityItemById = (entity: EntityName, id: number): Promise<any> 
             .then(res => {
               a.tutors = res.rows.map(r => ({
                 contactId: Number(r.id),
-                tutorName: getContactName({ firstName: r.values[0], lastName: r.values[1] })
+                tutorName: getContactFullName({ firstName: r.values[0], lastName: r.values[1] })
               }));
             });
         }

@@ -25,7 +25,7 @@ import {
   HeaderContactTitle
 } from "../../../../common/components/form/FieldAdornments";
 import {
- contactLabelCondition, defaultContactName, getContactName
+  getContactFullName
 } from "../../contacts/utils";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
@@ -115,7 +115,7 @@ const LeadGeneral = (props: Props) => {
   const classes = useStyles();
 
   const onContactChange = value => {
-    dispatch(change(form, "contactName", getContactName(value)));
+    dispatch(change(form, "contactName", getContactFullName(value)));
   };
 
   useEffect(() => {
@@ -182,8 +182,8 @@ const LeadGeneral = (props: Props) => {
                 entity="Contact"
                 name="contactId"
                 selectValueMark="id"
-                selectLabelCondition={contactLabelCondition}
-                defaultDisplayValue={defaultContactName(values.contactName)}
+                selectLabelCondition={getContactFullName}
+                defaultDisplayValue={values.contactName}
                 onInnerValueChange={onContactChange}
                 itemRenderer={ContactSelectItemRenderer}
                 disabled={!isNew}
@@ -213,8 +213,8 @@ const LeadGeneral = (props: Props) => {
               name="assignToId"
               label="Assigned to"
               selectValueMark="id"
-              selectLabelCondition={contactLabelCondition}
-              defaultDisplayValue={defaultContactName(values.assignTo)}
+              selectLabelCondition={getContactFullName}
+              defaultDisplayValue={values.assignTo}
               disabled={!users}
               items={users}
               required

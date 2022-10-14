@@ -813,3 +813,25 @@
       label: As at date
       dataType: DATE
 
+- keyCode: ish.oncourse.duplicateContactsExport.csv
+  entityClass: Contact
+  name: Duplicate Contacts CSV
+  body: ish.oncourse.duplicateContactsExport.csv.groovy
+  outputType: csv
+  description: Exports in CSV format duplicate contacts. Duplicate search is performed by first name, last name and email. It is possible to choose which fields will be used to search for contacts - 3 fields (first name, last name and email); 2 fields (last name and email); 2 fields (first name and email); 2 fields (first name and last name). Note that this export runs on all data in the database and ignores the selection of contacts you have made before running the export.
+  short: Exports in CSV format duplicate contacts that were found by first name, last name and email
+  category: crm
+  variables:
+    - name: searchByFirstNameAndLastNameAndEmail
+      label: Find duplicates by first name, last name and email
+      dataType: BOOLEAN
+      value: "true"
+    - name: searchByLastNameAndEmail
+      label: Find duplicates by last name and email
+      dataType: BOOLEAN
+    - name: searchByFirstNameAndEmail
+      label: Find duplicates by first name and email
+      dataType: BOOLEAN
+    - name: searchByFirstNameAndLastName
+      label: Find duplicates by first name and last name
+      dataType: BOOLEAN

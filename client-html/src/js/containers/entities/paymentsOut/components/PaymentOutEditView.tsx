@@ -23,7 +23,6 @@ import { SiteState } from "../../sites/reducers/state";
 import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
 import { ContactLinkAdornment, LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { defaultContactName } from "../../contacts/utils";
 
 const invoiceColumns: NestedTableColumn[] = [
   {
@@ -164,7 +163,7 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
     <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
       <Grid item {...gridItemProps}>
         <Uneditable
-          value={defaultContactName(values.payeeName)}
+          value={values.payeeName}
           label="Payment to"
           labelAdornment={
             <ContactLinkAdornment id={values?.payeeId} />

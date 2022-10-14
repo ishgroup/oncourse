@@ -15,9 +15,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
-import {
-  getDefaultInvoiceTerms
-} from "./actions";
+import { getDefaultInvoiceTerms } from "./actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import InvoicesEditView from "./components/InvoicesEditView";
 import {
@@ -35,12 +33,13 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/c
 import { formatToDateOnly } from "../../../common/utils/dates/datesNormalizing";
 import { getAdministrationSites } from "../sites/actions";
 import { checkPermissions } from "../../../common/actions";
-import { getAccountTransactionLockedDate } from "../../preferences/actions";
+import { getAccountTransactionLockedDate, getPreferencesByKeys } from "../../preferences/actions";
 import { getWindowHeight, getWindowWidth } from "../../../common/utils/common";
 import LeadService from "../leads/services/LeadService";
 import { isInvoiceType } from "./utils";
 import { State } from "../../../reducers/state";
 import { getListTags } from "../../tags/actions";
+import { AccountDefaultInvoiceLine, Categories } from "../../../model/preferences";
 
 const filterGroups: FilterGroup[] = [
   {
@@ -137,12 +136,6 @@ const manualLink = getManualLink("invoice");
 const secondaryColumnCondition = row => (row.invoiceNumber ? "Invoice #" + row.invoiceNumber : "Quote #" + row.quoteNumber);
 
 const Invoices = React.memo<any>(({
-  getFilters,
-  getAccounts,
-  getTaxes,
-  getDefaultTerms,
-  getAdministrationSites,
-  getQePermissions,
   clearListState,
   setListCreatingNew,
   selection,
@@ -152,17 +145,10 @@ const Invoices = React.memo<any>(({
   listRecords,
   match: { params, url },
   onInit,
-  getTags,
+  onMount,
   }) => {
   useEffect(() => {
-    getFilters();
-    getAccounts();
-    getTaxes();
-    getDefaultTerms();
-    getAdministrationSites();
-    getQePermissions();
-    getTags();
-
+    onMount();
     return clearListState;
   }, []);
 
@@ -296,19 +282,20 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(setListEditRecord(Initial));
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
   },
-  getAccounts: () => getPlainAccounts(dispatch),
-  getTaxes: () => dispatch(getPlainTaxes()),
-  getAdministrationSites: () => dispatch(getAdministrationSites()),
-  getFilters: () => dispatch(getFilters("Invoice")),
-  getDefaultTerms: () => {
+  onMount: () => {
+    dispatch(getFilters("Invoice"));
+    getPlainAccounts(dispatch);
+    dispatch(getPlainTaxes());
     dispatch(getDefaultInvoiceTerms());
     dispatch(getAccountTransactionLockedDate());
+    dispatch(getAdministrationSites());
+    dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
+    dispatch(getListTags("AbstractInvoice"));
+    dispatch(getPreferencesByKeys([AccountDefaultInvoiceLine.uniqueKey], Categories.financial));
   },
   clearListState: () => dispatch(clearListState()),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
-  getTags: () => dispatch(getListTags("AbstractInvoice")),
-  getQePermissions: () => dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" })),
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Invoices);
