@@ -120,11 +120,11 @@ public class CustomFontExtensionsRegistry extends AbstractFontExtensionsRegistry
 				fontInitializationStarted = true;
 				normalFace.setTtf(fontFile.getAbsolutePath());
 				family.setNormalFace(normalFace);
+				family.setPdfEmbedded(true);
 
 				fontInitializationStarted = false;
-				var font = Font.createFont(Font.TRUETYPE_FONT, fontFile);
 
-				family.setPdfEmbedded(true);
+				var font = normalFace.getFont();
 				logger.warn("registering font {} as {} and name {}", fontFile, font.getFamily(), font.getName());
 				fontFamilies.add(family);
 
