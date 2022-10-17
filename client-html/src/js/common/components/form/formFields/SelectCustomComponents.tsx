@@ -17,6 +17,7 @@ import { green } from "@mui/material/colors";
 import clsx from "clsx";
 import { ListItem } from "@mui/material";
 import { AppTheme } from "../../../../model/common/Theme";
+import Tooltip from "@mui/material/Tooltip";
 
 export const selectStyles = theme => createStyles({
     root: {},
@@ -189,3 +190,13 @@ export const ListboxComponent = React.memo<any>(props => {
     </OuterElementContext.Provider>
   );
 });
+
+export const NoWrapOption = (content, data, search, parentProps) => (
+  <div {...parentProps || {}}>
+    <Tooltip title={content}>
+      <div className="text-nowrap text-truncate">
+        {content}
+      </div>
+    </Tooltip>
+  </div>
+);
