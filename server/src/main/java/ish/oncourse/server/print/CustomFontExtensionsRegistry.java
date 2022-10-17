@@ -131,7 +131,7 @@ public class CustomFontExtensionsRegistry extends AbstractFontExtensionsRegistry
 			} catch (Exception e) {
 				// ignore the error since we just hit a font we couldn't parse
 				fontInitializationStarted = false;
-				logger.warn("can't register font {}. Reason: {}", fontFile, e.getMessage());
+				logger.warn("can't register font {}. Reason: {}", fontFile, "Cannot parse file");
 			}
 
 		}
