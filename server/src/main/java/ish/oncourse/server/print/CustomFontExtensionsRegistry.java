@@ -68,9 +68,10 @@ public class CustomFontExtensionsRegistry extends AbstractFontExtensionsRegistry
 
 	@Override
 	public void registerFonts() {
-		super.registerFonts();
 		if(fontInitializationStarted)
 			return;
+
+		super.registerFonts();
 
 		List<File> folders = new ArrayList<>(8);
 
@@ -119,18 +120,18 @@ public class CustomFontExtensionsRegistry extends AbstractFontExtensionsRegistry
 				fontInitializationStarted = true;
 				normalFace.setTtf(fontFile.getAbsolutePath());
 				family.setNormalFace(normalFace);
+				family.setPdfEmbedded(true);
 
 				fontInitializationStarted = false;
-				var font = Font.createFont(Font.TRUETYPE_FONT, fontFile);
 
-				family.setPdfEmbedded(true);
+				var font = normalFace.getFont();
 				logger.warn("registering font {} as {} and name {}", fontFile, font.getFamily(), font.getName());
 				fontFamilies.add(family);
 
 			} catch (Exception e) {
 				// ignore the error since we just hit a font we couldn't parse
 				fontInitializationStarted = false;
-				logger.warn("can't register font {}. Reason: {}", fontFile, e.getMessage());
+				logger.warn("can't register font {}. Reason: {}", fontFile, "exception was caused into registerFontsFromFolder method");
 			}
 
 		}
