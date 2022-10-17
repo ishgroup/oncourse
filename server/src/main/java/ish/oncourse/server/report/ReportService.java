@@ -10,16 +10,8 @@
  */
 package ish.oncourse.server.report;
 
-import com.google.inject.Inject;
-import ish.common.types.AutomationStatus;
-import ish.oncourse.server.ICayenneService;
-import ish.oncourse.server.cayenne.Report;
-import ish.report.ImportReportResult;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
-import org.apache.cayenne.query.ObjectSelect;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -29,20 +21,7 @@ import java.nio.charset.StandardCharsets;
 
 /**
  */
-public class ReportService implements IReportService {
-
-	private static final Logger logger =  LogManager.getLogger();
-
-	private final ICayenneService cayenneService;
-
-	/**
-	 * @param cayenneService
-	 */
-	@Inject
-	public ReportService(ICayenneService cayenneService) {
-		super();
-		this.cayenneService = cayenneService;
-	}
+public class ReportService {
 
 	public static byte[] compileReport(String xmlReport) throws UnsupportedEncodingException, JRException {
 		var outputStream = new ByteArrayOutputStream();

@@ -32,6 +32,11 @@ class ExportTemplateApiImpl implements ExportTemplateApi {
     }
 
     @Override
+    String getConfigs(Long id) {
+        return service.getConfigs(id)
+    }
+
+    @Override
     void remove(Long id) {
         service.remove(id)
     }

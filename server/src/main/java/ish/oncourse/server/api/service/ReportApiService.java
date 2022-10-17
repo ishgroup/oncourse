@@ -91,7 +91,7 @@ public class ReportApiService extends AutomationApiService<ReportDTO, Report, Re
     @Override
     public Report toCayenneModel(ReportDTO dto, Report cayenneModel) {
         cayenneModel = super.toCayenneModel(dto, cayenneModel);
-        cayenneModel.setIsVisible(Boolean.valueOf(ReportBuilder.valueOf(dto.getBody()).readProperty(Report.IS_VISIBLE)));
+        cayenneModel.setIsVisible(dto.isVisible());
         cayenneModel.setSortOn(dto.getSortOn());
         if (dto.getBackgroundId() != null) {
             cayenneModel.setBackground(overlayDao.getById(cayenneModel.getContext(), dto.getBackgroundId()));
@@ -134,5 +134,10 @@ public class ReportApiService extends AutomationApiService<ReportDTO, Report, Re
     @Override
     protected BiConsumer<Report, Map<String, Object>> getFillPropertiesFunction() {
         return DataPopulationUtils::fillReportWithCommonFields;
+    }
+
+    @Override
+    protected Object getConfigs() {
+        return null;
     }
 }

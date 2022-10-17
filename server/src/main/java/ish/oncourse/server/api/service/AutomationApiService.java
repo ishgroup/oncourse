@@ -11,6 +11,9 @@
 
 package ish.oncourse.server.api.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import ish.oncourse.server.api.dao.AutomationDao;
 import ish.oncourse.server.api.function.BindingFunctions;
 import ish.oncourse.server.api.traits.AutomationDTOTrait;
@@ -27,6 +30,8 @@ import org.yaml.snakeyaml.Yaml;
 
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +51,8 @@ abstract class AutomationApiService<T extends AutomationDTOTrait , K extends Aut
     protected abstract T createDto();
 
     protected abstract BiConsumer<K, Map<String, Object>> getFillPropertiesFunction();
+
+    protected abstract Object getConfigs();
 
     @Override
     public T toRestModel(K cayenneModel)  {
@@ -164,6 +171,19 @@ abstract class AutomationApiService<T extends AutomationDTOTrait , K extends Aut
 
         BindingUtils.updateOptions(context, DataPopulationUtils.get(props, OPTIONS, List.class), entity, ImportAutomationBinding.class);
         BindingUtils.updateVariables(context, DataPopulationUtils.get(props, VARIABLES, List.class), entity, ImportAutomationBinding.class);
+    }
+
+    public String getConfigs(Long id){
+        ObjectContext context = cayenneService.getNewContext();
+        var entity = getEntityAndValidateExistence(context, id);
+        var mapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER));
+        var outputStream = new ByteArrayOutputStream();
+        try {
+            mapper.writeValue(outputStream, getConfigs());
+        } catch (IOException e) {
+            EntityValidator.throwClientErrorException("configs", "Error with writing configs; contact ish support");
+        }
+        return outputStream.toString();
     }
 
     public List<T> getAutomationFor(String entityName) {

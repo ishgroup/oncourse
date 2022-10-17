@@ -64,6 +64,11 @@ class ScriptApiImpl implements ScriptApi {
     }
 
     @Override
+    String getConfigs(Long id) {
+        return service.getConfigs(id)
+    }
+
+    @Override
     void patch(Long id, ScriptDTO scriptDTO) {
         service.updateInternal(scriptDTO)
     }

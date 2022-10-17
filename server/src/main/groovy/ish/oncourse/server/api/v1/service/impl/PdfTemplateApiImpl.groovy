@@ -38,6 +38,11 @@ class PdfTemplateApiImpl implements PdfTemplateApi {
     }
 
     @Override
+    String getConfigs(Long id) {
+        return apiService.getConfigs(id)
+    }
+
+    @Override
     void remove(Long id) {
         apiService.remove(id)
     }

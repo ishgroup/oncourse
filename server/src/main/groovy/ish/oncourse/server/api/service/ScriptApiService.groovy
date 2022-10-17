@@ -91,6 +91,11 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
     }
 
     @Override
+    protected Object getConfigs() {
+        return null;
+    }
+
+    @Override
     ScriptDTO toRestModel(Script dbScript) {
         ScriptDTO scriptDTO = super.toRestModel(dbScript) as ScriptDTO
         scriptDTO.entity = dbScript.entity

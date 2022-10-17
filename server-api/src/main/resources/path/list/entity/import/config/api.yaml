@@ -1,8 +1,8 @@
 get:
   operationId: getConfigs
-  description: get an existing export configs as String
+  description: get an existing import configs as String
   tags:
-    - ExportTemplate
+    - Import
   parameters:
     - name: id
       in: path
@@ -21,15 +21,15 @@ get:
       description: Unexpected error
   x-permission:
     mask: view
-    keyCode: EXPORT_TEMPLATE
-    errorMessage: Sorry, you have no permissions to view export template. Please contact your administrator
+    keyCode: SPECIAL_IMPORT
+    errorMessage: Sorry, you have no permissions to view special import. Please contact your administrator
 
 
 put:
   operationId: updateConfigs
-  description: Update an existing export configs
+  description: Update an existing import configs
   tags:
-    - ExportTemplate
+    - Import
   parameters:
     - name: id
       in: path
@@ -52,5 +52,5 @@ put:
       description: Unexpected error
   x-permission:
     mask: edit
-    keyCode: EXPORT_TEMPLATE
-    errorMessage: Sorry, you have no permissions to update export template. Please contact your administrator
+    keyCode: SPECIAL_IMPORT
+    errorMessage: Sorry, you have no permissions to update import. Please contact your administrator

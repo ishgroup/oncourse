@@ -75,4 +75,9 @@ public class ExportTemplateApiService extends AutomationApiService<ExportTemplat
     protected BiConsumer<ExportTemplate, Map<String, Object>> getFillPropertiesFunction() {
         return DataPopulationUtils::fillExportWithCommonFields;
     }
+
+    @Override
+    protected Object getConfigs() {
+        return null;
+    }
 }

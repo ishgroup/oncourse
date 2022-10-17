@@ -1,3 +1,30 @@
+get:
+  operationId: getConfigs
+  description: get configs of an existing report as String
+  tags:
+    - PdfTemplate
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of script record to fetch
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: string
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: REPORT
+    errorMessage: Sorry, you have no permissions to view report. Please contact your administrator
+
+
 put:
   operationId: updateConfigs
   description: Update an existing report

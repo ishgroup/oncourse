@@ -57,6 +57,11 @@ class ImportApiService extends AutomationApiService<ImportModelDTO, Import, Impo
     }
 
     @Override
+    protected Object getConfigs() {
+        return null
+    }
+
+    @Override
     ImportModelDTO toRestModel(Import dbImport) {
         return super.toRestModel(dbImport) as ImportModelDTO
     }
