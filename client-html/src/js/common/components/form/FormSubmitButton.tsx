@@ -42,7 +42,7 @@ const FormSubmitButton = React.memo<Props>(({
         defaultPrevented.current = true;
         setTimeout(() => {
           ref.current.click();
-        }, 600);
+        }, 500);
         return;
       }
       defaultPrevented.current = false;
