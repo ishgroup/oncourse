@@ -68,9 +68,10 @@ public class CustomFontExtensionsRegistry extends AbstractFontExtensionsRegistry
 
 	@Override
 	public void registerFonts() {
-		super.registerFonts();
 		if(fontInitializationStarted)
 			return;
+
+		super.registerFonts();
 
 		List<File> folders = new ArrayList<>(8);
 
