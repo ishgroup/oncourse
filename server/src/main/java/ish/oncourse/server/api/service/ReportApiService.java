@@ -18,6 +18,8 @@ import ish.oncourse.server.api.v1.model.BindingDTO;
 import ish.oncourse.server.api.v1.model.DataTypeDTO;
 import ish.oncourse.server.api.v1.model.ReportDTO;
 import ish.oncourse.server.cayenne.Report;
+import ish.oncourse.server.configs.AutomationModel;
+import ish.oncourse.server.configs.ReportModel;
 import ish.oncourse.server.report.ReportBuilder;
 import ish.oncourse.server.upgrades.DataPopulationUtils;
 import ish.print.PrintTransformationsFactory;
@@ -137,7 +139,7 @@ public class ReportApiService extends AutomationApiService<ReportDTO, Report, Re
     }
 
     @Override
-    protected Object getConfigs() {
-        return null;
+    protected AutomationModel getConfigsModelOf(Report entity) {
+        return new ReportModel(entity);
     }
 }

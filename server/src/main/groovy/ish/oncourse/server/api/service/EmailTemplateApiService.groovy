@@ -16,6 +16,8 @@ import ish.oncourse.server.api.v1.model.EmailTemplateDTO
 import ish.oncourse.server.api.v1.model.MessageTypeDTO
 import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.EmailTemplate
+import ish.oncourse.server.configs.AutomationModel
+import ish.oncourse.server.configs.MessageModel
 import org.apache.cayenne.ObjectContext
 
 import java.util.function.BiConsumer
@@ -47,6 +49,11 @@ class EmailTemplateApiService extends AutomationApiService<EmailTemplateDTO, Ema
                 fillMessageTemplateWithCommonFields(emailTemplate, stringObjectMap)
             }
         }
+    }
+
+    @Override
+    protected AutomationModel getConfigsModelOf(EmailTemplate entity) {
+        return new MessageModel(entity)
     }
 
     @Override

@@ -12,6 +12,7 @@
 package ish.oncourse.server.api.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import ish.oncourse.server.api.dao.AutomationDao;
@@ -21,11 +22,11 @@ import ish.oncourse.server.api.v1.model.AutomationStatusDTO;
 import ish.oncourse.server.api.validation.EntityValidator;
 import ish.oncourse.server.cayenne.AutomationTrait;
 import ish.oncourse.server.cayenne.ImportAutomationBinding;
+import ish.oncourse.server.configs.AutomationModel;
 import ish.oncourse.server.upgrades.BindingUtils;
 import ish.oncourse.server.upgrades.DataPopulationUtils;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.yaml.snakeyaml.Yaml;
 
 
@@ -52,7 +53,7 @@ abstract class AutomationApiService<T extends AutomationDTOTrait , K extends Aut
 
     protected abstract BiConsumer<K, Map<String, Object>> getFillPropertiesFunction();
 
-    protected abstract Object getConfigs();
+    protected abstract AutomationModel getConfigsModelOf(K entity);
 
     @Override
     public T toRestModel(K cayenneModel)  {
@@ -176,10 +177,13 @@ abstract class AutomationApiService<T extends AutomationDTOTrait , K extends Aut
     public String getConfigs(Long id){
         ObjectContext context = cayenneService.getNewContext();
         var entity = getEntityAndValidateExistence(context, id);
-        var mapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER));
+        var mapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER)
+                .enable(YAMLGenerator.Feature.MINIMIZE_QUOTES));
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        var mapObject = getConfigsModelOf(entity);
         var outputStream = new ByteArrayOutputStream();
         try {
-            mapper.writeValue(outputStream, getConfigs());
+            mapper.writeValue(outputStream, mapObject);
         } catch (IOException e) {
             EntityValidator.throwClientErrorException("configs", "Error with writing configs; contact ish support");
         }

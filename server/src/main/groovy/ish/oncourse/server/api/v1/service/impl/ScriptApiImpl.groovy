@@ -13,8 +13,6 @@ package ish.oncourse.server.api.v1.service.impl
 
 
 import com.google.inject.Inject
-import ish.oncourse.server.cayenne.Script
-import ish.oncourse.server.upgrades.DataPopulationUtils
 import ish.oncourse.types.OutputType
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
@@ -24,10 +22,8 @@ import ish.oncourse.server.api.v1.model.ScriptDTO
 import ish.oncourse.server.api.v1.service.ScriptApi
 import ish.oncourse.server.api.validation.EntityValidator
 import ish.scripting.ScriptResult
-import org.apache.cayenne.query.SelectById
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import org.yaml.snakeyaml.Yaml
 
 import javax.servlet.http.HttpServletResponse
 import javax.ws.rs.core.Context

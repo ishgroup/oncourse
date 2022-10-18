@@ -20,6 +20,7 @@ import ish.oncourse.server.api.v1.model.ExecuteImportRequestDTO
 import ish.oncourse.server.api.v1.model.ImportModelDTO
 import ish.oncourse.server.cayenne.Import
 import ish.oncourse.server.concurrent.ExecutorManager
+import ish.oncourse.server.configs.AutomationModel
 import ish.oncourse.server.imports.ImportService
 import org.apache.cayenne.ObjectContext
 
@@ -57,8 +58,8 @@ class ImportApiService extends AutomationApiService<ImportModelDTO, Import, Impo
     }
 
     @Override
-    protected Object getConfigs() {
-        return null
+    protected AutomationModel getConfigsModelOf(Import entity) {
+        return new ish.oncourse.server.configs.ImportModel(entity)
     }
 
     @Override

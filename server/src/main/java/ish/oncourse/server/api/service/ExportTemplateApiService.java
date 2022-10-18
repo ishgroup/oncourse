@@ -19,6 +19,8 @@ import ish.oncourse.server.api.v1.model.ExportTemplateDTO;
 import ish.oncourse.server.api.v1.model.OutputTypeDTO;
 import ish.oncourse.server.api.validation.EntityValidator;
 import ish.oncourse.server.cayenne.ExportTemplate;
+import ish.oncourse.server.configs.AutomationModel;
+import ish.oncourse.server.configs.ExportModel;
 import ish.oncourse.server.upgrades.DataPopulationUtils;
 import org.apache.cayenne.ObjectContext;
 
@@ -77,7 +79,7 @@ public class ExportTemplateApiService extends AutomationApiService<ExportTemplat
     }
 
     @Override
-    protected Object getConfigs() {
-        return null;
+    protected AutomationModel getConfigsModelOf(ExportTemplate entity) {
+        return new ExportModel(entity);
     }
 }

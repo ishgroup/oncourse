@@ -23,6 +23,8 @@ import ish.oncourse.server.cayenne.Audit
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.oncourse.server.concurrent.ExecutorManager
+import ish.oncourse.server.configs.AutomationModel
+import ish.oncourse.server.configs.ScriptModel
 import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.scripting.ScriptParameters
 import ish.oncourse.server.scripting.validation.ScriptValidator
@@ -91,8 +93,8 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
     }
 
     @Override
-    protected Object getConfigs() {
-        return null;
+    protected AutomationModel getConfigsModelOf(Script entity) {
+        return new ScriptModel(entity)
     }
 
     @Override
