@@ -17,6 +17,7 @@ const request: EpicUtils.Request = {
   getData: payload => PreferencesService.createDataCollectionRule(payload.rule),
   retrieveData: () => PreferencesService.getDataCollectionRules(),
   processData: (dataCollectionRules: DataCollectionRule[]) => {
+    dataCollectionRules.sort((a, b) => a.name > b.name ? 1 : -1);
     return [
       {
         type: CREATE_DATA_COLLECTION_RULE_FULFILLED,
