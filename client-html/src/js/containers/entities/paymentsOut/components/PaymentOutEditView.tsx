@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { useCallback } from "react";
@@ -20,7 +23,6 @@ import { SiteState } from "../../sites/reducers/state";
 import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
 import { ContactLinkAdornment, LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { defaultContactName } from "../../contacts/utils";
 
 const invoiceColumns: NestedTableColumn[] = [
   {
@@ -161,7 +163,7 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
     <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
       <Grid item {...gridItemProps}>
         <Uneditable
-          value={defaultContactName(values.payeeName)}
+          value={values.payeeName}
           label="Payment to"
           labelAdornment={
             <ContactLinkAdornment id={values?.payeeId} />
@@ -180,8 +182,11 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
           disabled={!!initialValues.dateBanked}
         />
       </Grid>
+      {!twoColumn && <Grid item {...gridItemProps}>
+        <Uneditable value={values.type} label="Payment method type" />
+      </Grid>}
       <Grid item {...gridItemProps}>
-        <Uneditable value={paymentMethods && getPaymentNameById(paymentMethods, values.paymentMethodId)} label="Type" />
+        <Uneditable value={paymentMethods && getPaymentNameById(paymentMethods, values.paymentMethodId)} label="Payment method name" />
       </Grid>
       <Grid item {...gridItemProps}>
         <Uneditable value={values.status} label="Status" />
@@ -268,6 +273,6 @@ const mapStateToProps = (state: State, props) => ({
   adminSites: state.sites.adminSites
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(
+export default connect<any, any, any>(mapStateToProps)(
   (props: any) => (props.values ? <PaymentOutEditView {...props} /> : null)
 );

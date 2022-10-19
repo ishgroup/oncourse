@@ -28,7 +28,7 @@ import java.time.Duration
  */
 @API
 @QueueableEntity
-class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, Queueable {
+class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, Queueable, ExpandableTrait {
 
 
 	@Override
@@ -165,5 +165,10 @@ class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, 
 	 */
 	BigDecimal getBudgetedPayableDurationHours() {
 		return DurationFormatter.durationInHoursBetween(startDatetime, endDatetime)
+	}
+
+	@Override
+	Class<? extends CustomField> getCustomFieldClass() {
+		return TutorAttendanceCustomField
 	}
 }

@@ -14,8 +14,6 @@ import Marker from "./Marker";
 interface Props {
   classes?: any;
   values: MergeContactsFormValues;
-  selected: Selected[];
-  setSelected: any;
   dispatch: any;
   contactNames: any;
   initiallySameIndices?: Set<number>;
@@ -60,7 +58,7 @@ const InfoLine = ({ label, data }: InfoLineProps) => (
   </Typography>
 );
 
-const onGlobalSelectionChange = (mergeLines: MergeLine[], letter: Selected, dispatch, setSelected) => {
+const onGlobalSelectionChange = (mergeLines: MergeLine[], letter: Selected, dispatch) => {
   const newSelected = [];
   const newData = {};
 
@@ -69,33 +67,40 @@ const onGlobalSelectionChange = (mergeLines: MergeLine[], letter: Selected, disp
     newData[l.key] = letter.toUpperCase();
   });
 
-  setSelected(newSelected);
   dispatch(change("MergeContactsForm", "mergeRequest.data", newData));
 };
 
 const InfoCard = React.memo<Props>(
   ({
- classes, selected, contactNames, setSelected, initiallySameIndices, values: { mergeData }, dispatch
+ classes, contactNames, initiallySameIndices, values: { mergeData, mergeRequest }, dispatch
 }) => {
-    const selectedA = useMemo(() => selected.filter((s, i) => !initiallySameIndices.has(i)).every(s => s === "a"), [
-      selected,
+    const selectedA = useMemo(() => mergeData?.mergeLines
+      .filter((l, i) => !initiallySameIndices.has(i))
+      .every(l => mergeRequest.data.hasOwnProperty(l.key) && mergeRequest.data[l.key] === "A"),
+    [
+      mergeData,
+      mergeRequest,
       initiallySameIndices
     ]);
 
-    const selectedB = useMemo(() => selected.filter((s, i) => !initiallySameIndices.has(i)).every(s => s === "b"), [
-      selected,
+    const selectedB = useMemo(() => mergeData?.mergeLines
+      .filter((l, i) => !initiallySameIndices.has(i))
+      .every(l => mergeRequest.data.hasOwnProperty(l.key) && mergeRequest.data[l.key] === "B"),
+    [
+      mergeData,
+      mergeRequest,
       initiallySameIndices
     ]);
 
     const onClickA = useCallback(() => {
       if (!selectedA) {
-        onGlobalSelectionChange(mergeData.mergeLines, "a", dispatch, setSelected);
+        onGlobalSelectionChange(mergeData.mergeLines, "a", dispatch);
       }
     }, [mergeData, selectedA]);
 
     const onClickB = useCallback(() => {
       if (!selectedB) {
-        onGlobalSelectionChange(mergeData.mergeLines, "b", dispatch, setSelected);
+        onGlobalSelectionChange(mergeData.mergeLines, "b", dispatch);
       }
     }, [mergeData, selectedB]);
 

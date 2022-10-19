@@ -114,6 +114,7 @@ class AuditsApp extends React.Component<any, any> {
         findRelated={findRelatedGroup}
         CustomFindRelatedMenu={AuditFindRelatedMenu}
         defaultDeleteDisabled
+        createButtonDisabled
         noListTags
       />
     );

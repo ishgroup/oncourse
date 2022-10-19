@@ -9,10 +9,10 @@ import { change, getFormValues } from "redux-form";
 import { Dispatch } from "redux";
 import { CheckoutFundingInvoice } from "../../../../model/checkout/fundingInvoice";
 import { State } from "../../../../reducers/state";
-import { getContactName } from "../../../entities/contacts/utils";
 import { HeaderFieldTypo } from "../HeaderField";
 import { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from "./CheckoutFundingInvoiceSummaryList";
 import { CheckoutPage } from "../../constants";
+import { getContactFullName } from "../../../entities/contacts/utils";
 
 interface Props {
   currencySymbol?: any;
@@ -41,7 +41,7 @@ const CheckoutFundingThisInvoice: React.FC<Props> = (
       {fundingInvoiceValues.fundingInvoices.map((f, index) => (
         <HeaderFieldTypo
           key={f.fundingProviderId}
-          title={f.company ? getContactName(f.company) : <span className="errorColor">Not set</span>}
+          title={f.company ? getContactFullName(f.company) : <span className="errorColor">Not set</span>}
           activeField={f.active ? CheckoutPage.fundingInvoiceSummary : null}
           field={CheckoutPage.fundingInvoiceSummary}
           onClick={() => setActive(index)}
