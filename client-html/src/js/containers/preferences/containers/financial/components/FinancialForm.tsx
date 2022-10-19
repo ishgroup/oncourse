@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import {
-  Form, getFormInitialValues, getFormValues, initialize, reduxForm
+  Form, getFormInitialValues, initialize, reduxForm
 } from "redux-form";
 import { connect } from "react-redux";
 import isEmpty from "lodash.isempty";
@@ -58,10 +58,9 @@ class FinancialBaseForm extends React.Component<any, any> {
 
   public render() {
     const {
-      handleSubmit, values, onSave, accounts = [], dirty, data, invalid, form, formRoleName
+      handleSubmit, onSave, accounts = [], dirty, data, invalid, form, formRoleName
     } = this.props;
 
-    console.log(values);
 
     return (
       <Form className="container" onSubmit={handleSubmit(onSave)} role={formRoleName}>
@@ -242,7 +241,6 @@ class FinancialBaseForm extends React.Component<any, any> {
 }
 
 const mapStateToProps = (state: State) => ({
-  values: getFormValues("FinancialForm")(state),
   initialValues: getFormInitialValues("FinancialForm")(state),
   defaultInvoiceLineAccount: state.userPreferences[ACCOUNT_DEFAULT_INVOICELINE_ID]
 });
