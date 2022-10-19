@@ -65,9 +65,3 @@ export const PaymentInfo: PreferenceSchema = {
   mandatory: false,
   editable: true
 };
-
-export const AccountDefaultInvoiceLine: PreferenceSchema = {
-  uniqueKey: "account.default.invoiceline.id",
-  mandatory: false,
-  editable: true
-};

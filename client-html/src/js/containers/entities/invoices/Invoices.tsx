@@ -32,14 +32,14 @@ import InvoiceCogwheel from "./components/InvoiceCogwheel";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { formatToDateOnly } from "../../../common/utils/dates/datesNormalizing";
 import { getAdministrationSites } from "../sites/actions";
-import { checkPermissions } from "../../../common/actions";
-import { getAccountTransactionLockedDate, getPreferencesByKeys } from "../../preferences/actions";
+import { checkPermissions, getUserPreferences } from "../../../common/actions";
+import { getAccountTransactionLockedDate } from "../../preferences/actions";
 import { getWindowHeight, getWindowWidth } from "../../../common/utils/common";
 import LeadService from "../leads/services/LeadService";
 import { isInvoiceType } from "./utils";
 import { State } from "../../../reducers/state";
 import { getListTags } from "../../tags/actions";
-import { AccountDefaultInvoiceLine, Categories } from "../../../model/preferences";
+import { ACCOUNT_DEFAULT_INVOICELINE_ID } from "../../../constants/Config";
 
 const filterGroups: FilterGroup[] = [
   {
@@ -291,7 +291,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getAdministrationSites());
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
     dispatch(getListTags("AbstractInvoice"));
-    dispatch(getPreferencesByKeys([AccountDefaultInvoiceLine.uniqueKey], Categories.financial));
+    dispatch(getUserPreferences([ACCOUNT_DEFAULT_INVOICELINE_ID]));
   },
   clearListState: () => dispatch(clearListState()),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
