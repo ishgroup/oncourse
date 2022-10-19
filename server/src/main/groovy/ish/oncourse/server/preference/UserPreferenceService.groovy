@@ -193,6 +193,8 @@ class UserPreferenceService {
                 preference.context.commitChanges()
             }
             preference.uniqueKey = userService.currentUser.id + key.toString() + value
+        } else if (key == PreferenceEnumDTO.ACCOUNT_DEFAULT_INVOICELINE_ID) {
+            preference = preferenceController.getPreference(name, false)
         } else {
             preference = getUserPref(name) ?: createUserPref(name)
         }
