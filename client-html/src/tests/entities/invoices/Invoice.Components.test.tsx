@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import { III_DD_MMM_YYYY } from "../../../js/common/utils/dates/format";
+import { AccountDefaultInvoiceLine } from "../../../js/model/preferences";
 import InvoicesEditView from "../../../js/containers/entities/invoices/components/InvoicesEditView";
 import { mockedEditView } from "../../common/MockedEditView.Components";
 
@@ -29,6 +30,13 @@ describe("Virtual rendered InvoicesEditView", () => {
           sendEmail: initialValues.sendEmail,
         });
       }, 500);
-    }
+    },
+    state: () => ({
+      preferences: {
+        financial: {
+          [AccountDefaultInvoiceLine.uniqueKey]: 0
+        }
+      }
+    })
   });
 });
