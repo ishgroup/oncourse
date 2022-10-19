@@ -489,7 +489,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
 
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["AbstractInvoice"],
-  defaultInvoiceLineAccount: state.preferences.financial[AccountDefaultInvoiceLine.uniqueKey],
+  defaultInvoiceLineAccount: state.preferences.financial && state.preferences.financial[AccountDefaultInvoiceLine.uniqueKey],
   accounts: state.plainSearchRecords.Account.items,
   currency: state.currency,
   taxes: state.taxes.items,
