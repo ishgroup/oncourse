@@ -18,10 +18,9 @@ import {
 import { connect } from "react-redux";
 import { FundingSource } from "@api/model";
 import isEqual from "lodash.isequal";
-import { Dispatch } from "redux";
 import Grid from "@mui/material/Grid";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { Fetch } from "../../../../../model/common/Fetch";
 import FundingContractItem from "./FundingContractItem";
 import { State } from "../../../../../reducers/state";

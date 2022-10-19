@@ -3187,6 +3187,9 @@
 		<obj-attribute name="endDatetime" type="java.util.Date" db-attribute-path="endDatetime"/>
 		<obj-attribute name="startDatetime" type="java.util.Date" db-attribute-path="startDatetime"/>
 	</obj-entity>
+	<obj-entity name="TutorAttendanceCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.TutorAttendanceCustomField" clientClassName="ish.oncourse.cayenne.TutorAttendanceCustomField">
+		<qualifier><![CDATA[entityIdentifier = "TutorAttendance"]]></qualifier>
+	</obj-entity>
 	<obj-entity name="UnavailableRule" abstract="true" className="ish.oncourse.server.cayenne.UnavailableRule" clientClassName="ish.oncourse.cayenne.UnavailableRule" dbEntityName="UnavailableRule" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="allDay" type="java.lang.Boolean" db-attribute-path="allDay"/>
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
@@ -3909,6 +3912,9 @@
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
 	<db-relationship name="relatedCourseClass" source="CustomField" target="CourseClass">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="relatedTutorAttendance" source="CustomField" target="SessionCourseClassTutor">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
 	<db-relationship name="customFields" source="CustomFieldType" target="CustomField" toMany="true">
@@ -4675,6 +4681,9 @@
 	</db-relationship>
 	<db-relationship name="session" source="SessionCourseClassTutor" target="CourseSession">
 		<db-attribute-pair source="sessionId" target="id"/>
+	</db-relationship>
+	<db-relationship name="customFields" source="SessionCourseClassTutor" target="CustomField" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
 	<db-relationship name="module" source="Session_Module" target="Module">
 		<db-attribute-pair source="moduleId" target="id"/>
@@ -5579,6 +5588,8 @@
 	<obj-relationship name="courseClassTutor" source="TutorAttendance" target="CourseClassTutor" db-relationship-path="courseClassTutor"/>
 	<obj-relationship name="markedByUser" source="TutorAttendance" target="SystemUser" db-relationship-path="markedByUser"/>
 	<obj-relationship name="session" source="TutorAttendance" target="Session" db-relationship-path="session"/>
+	<obj-relationship name="customFields" source="TutorAttendance" target="TutorAttendanceCustomField" deleteRule="Cascade" db-relationship-path="customFields"/>
+	<obj-relationship name="relatedObject" source="TutorAttendanceCustomField" target="TutorAttendance" deleteRule="Nullify" db-relationship-path="relatedTutorAttendance"/>
 	<obj-relationship name="createdBy" source="UnavailableRule" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdBy">
 		<info:property xmlns:info="http://cayenne.apache.org/schema/10/info" name="comment" value="createdBy"/>
 	</obj-relationship>

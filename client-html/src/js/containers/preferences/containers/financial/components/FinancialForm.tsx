@@ -24,9 +24,8 @@ import { State } from "../../../../../reducers/state";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
 import { getAccountsList } from "../../../utils";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-
 const manualUrl = getManualLink("generalPrefs_financial");
 
 class FinancialBaseForm extends React.Component<any, any> {
@@ -175,6 +174,20 @@ class FinancialBaseForm extends React.Component<any, any> {
                 name={this.formModel.AccountVoucherUnderpayment.uniqueKey}
                 label="Default voucher underpayment account"
                 items={getAccountsList(accounts, AccountType.expense)}
+                fullWidth
+              />
+            </Grid>
+
+            <Hidden smDown>
+              <Grid item sm={6} md={4} />
+            </Hidden>
+
+            <Grid item xs={12} sm={6} md={4}>
+              <FormField
+                type="select"
+                name={this.formModel.AccountDefaultInvoiceLine.uniqueKey}
+                label="Default invoice line income account"
+                items={getAccountsList(accounts, AccountType.income)}
                 fullWidth
               />
             </Grid>

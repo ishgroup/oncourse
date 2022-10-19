@@ -17,9 +17,9 @@ import FormField from "../../../../../common/components/form/formFields/FormFiel
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
 import { openInternalLink } from "../../../../../common/utils/links";
-import { contactLabelCondition } from "../../../../entities/contacts/utils";
 import UserSelectItemRenderer from "../../users/components/UserSelectItemRenderer";
 import { showMessage } from "../../../../../common/actions";
+import { getContactFullName } from "../../../../entities/contacts/utils";
 
 interface RendererProps {
   users: User[];
@@ -61,13 +61,13 @@ const ApiTokenItem: React.FC<ItemsProps> = (
 
   return (
     <Card className="mb-2 p-3">
-      <Grid container columnSpacing={3}>
+      <Grid container columnSpacing={3} rowSpacing={2}>
         <Grid item xs={6}>
           <FormField
             label="Act as user"
             type="searchSelect"
             selectValueMark="id"
-            selectLabelCondition={contactLabelCondition}
+            selectLabelCondition={getContactFullName}
             name={`${item}.userId`}
             items={users || []}
             itemRenderer={UserSelectItemRenderer}

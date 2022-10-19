@@ -24,8 +24,7 @@ import FormField from "../../../../common/components/form/formFields/FormField";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { State } from "../../../../reducers/state";
-import { getListNestedEditRecord } from "../../../../common/components/list-view/actions";
-import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
+import { getContactFullName } from "../../contacts/utils";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
 import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
 import { getInvoiceClosestPaymentDueDate } from "../utils";
@@ -44,6 +43,7 @@ import { leadLabelCondition, openLeadLink } from "../../leads/utils";
 import LeadSelectItemRenderer from "../../leads/components/LeadSelectItemRenderer";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import { AccountDefaultInvoiceLine } from "../../../../model/preferences";
 
 interface Props extends EditViewProps {
   currency: Currency;
@@ -52,6 +52,7 @@ interface Props extends EditViewProps {
   values: InvoiceWithTotalLine;
   classes: any;
   defaultTerms: number;
+  defaultInvoiceLineAccount: string;
   setSelectedContact: AnyArgFunction;
   selectedContact: any;
   tags?: Tag[];
@@ -73,6 +74,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
     taxes,
     defaultTerms,
     setSelectedContact,
+    defaultInvoiceLineAccount,
     tags,
     selectedContact,
     history,
@@ -151,7 +153,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
       ? () => {
           const newLine: InvoiceLineWithTotal = {
             quantity: 1,
-            incomeAccountId: accountTypes.income.length > 0 ? accountTypes.income[0]?.id : null,
+            incomeAccountId: defaultInvoiceLineAccount ? Number(defaultInvoiceLineAccount) : null,
             taxId:
               selectedContact && selectedContact["taxOverride.id"]
                 ? Number(selectedContact["taxOverride.id"])
@@ -211,7 +213,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
     value => {
       setSelectedContact(value);
 
-      dispatch(change(form, "contactName", contactLabelCondition(value)));
+      dispatch(change(form, "contactName", getContactFullName(value)));
       dispatch(
         change(
           form,
@@ -321,8 +323,8 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
           name="contactId"
           label="Invoice to"
           selectValueMark="id"
-          selectLabelCondition={contactLabelCondition}
-          defaultDisplayValue={values && defaultContactName(values.contactName)}
+          selectLabelCondition={getContactFullName}
+          defaultDisplayValue={values?.contactName}
           labelAdornment={
             <ContactLinkAdornment id={values?.contactId} />
           }
@@ -487,6 +489,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
 
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["AbstractInvoice"],
+  defaultInvoiceLineAccount: state.preferences.financial[AccountDefaultInvoiceLine.uniqueKey],
   accounts: state.plainSearchRecords.Account.items,
   currency: state.currency,
   taxes: state.taxes.items,
@@ -495,7 +498,6 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  openNestedEditView: (entity: string, id: number) => dispatch(getListNestedEditRecord(entity, id)),
   setSelectedContact: (selectedContact: any) => dispatch(setSelectedContact(selectedContact))
 });
 
