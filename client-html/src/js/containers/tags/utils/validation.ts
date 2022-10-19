@@ -65,7 +65,7 @@ const validateChildTags = (tag: Tag, errors: Tag[]) => {
       };
     }
 
-    if (t.childTags.length) {
+    if (t.childTags?.length) {
       const childErrors = [];
       validateChildTags(t, childErrors);
       if (childErrors.length) {
