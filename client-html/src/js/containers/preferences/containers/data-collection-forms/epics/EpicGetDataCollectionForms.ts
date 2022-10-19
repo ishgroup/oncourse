@@ -13,6 +13,7 @@ const request: EpicUtils.Request = {
   type: GET_DATA_COLLECTION_FORMS_REQUEST,
   getData: () => PreferencesService.getDataCollectionForms(),
   processData: dataCollectionForms => {
+    dataCollectionForms.sort((a, b) => a.name > b.name ? 1 : -1);
     return [
       {
         type: GET_DATA_COLLECTION_FORMS_FULFILLED,

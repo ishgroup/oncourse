@@ -223,7 +223,6 @@ const CancelEnrolmentModalForm = React.memo<CancelEnrolmentModalProps & Injected
               {plainEnrolmentRecord.courseClassCode}
             </Typography>
             <FormControlLabel
-              className="checkbox pb-3 pt-3"
               control={<FormField type="checkbox" name="deleteNotSetOutcomes" color="secondary" fullWidth />}
               label={`Delete outcomes linked to this enrolment with status "not set"`}
             />

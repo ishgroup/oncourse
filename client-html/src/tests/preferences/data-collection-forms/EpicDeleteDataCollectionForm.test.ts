@@ -14,7 +14,7 @@ describe("Delete data collection form epic tests", () => {
     epic: EpicDeleteDataCollectionForm,
     processData: mockedApi => {
       const dataCollectionForms = mockedApi.db.dataCollectionForms.filter(form => String(form.id) !== String(id));
-
+      dataCollectionForms.sort((a, b) => a.name > b.name ? 1 : -1);
       return [
         {
           type: DELETE_DATA_COLLECTION_FORM_FULFILLED,
