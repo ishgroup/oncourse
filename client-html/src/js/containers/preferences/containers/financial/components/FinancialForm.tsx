@@ -51,19 +51,21 @@ class FinancialBaseForm extends React.Component<any, any> {
       dispatch(initialize("FinancialForm", formData));
     }
 
-    if (initialValues && !initialValues.defaultInvoiceLineAccount && defaultInvoiceLineAccount) {
+    if (initialValues && (initialValues.defaultInvoiceLineAccount !== defaultInvoiceLineAccount)) {
       dispatch(initialize("FinancialForm", {...formData, defaultInvoiceLineAccount}));
     }
   }
 
   public render() {
     const {
-     handleSubmit, onSave, accounts = [], dirty, data, invalid, form, formRoleName
+      handleSubmit, values, onSave, accounts = [], dirty, data, invalid, form, formRoleName
     } = this.props;
+
+    console.log(values);
 
     return (
       <Form className="container" onSubmit={handleSubmit(onSave)} role={formRoleName}>
-        <RouteChangeConfirm form={form} when={dirty} />
+        <RouteChangeConfirm form={form} when={dirty}/>
 
         <AppBarContainer
           values={data}
@@ -195,6 +197,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 name="defaultInvoiceLineAccount"
                 label="Default invoice line income account"
                 items={getAccountsList(accounts, AccountType.income)}
+                debounced={false}
                 fullWidth
               />
             </Grid>
