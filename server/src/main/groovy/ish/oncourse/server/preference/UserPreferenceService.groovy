@@ -170,6 +170,8 @@ class UserPreferenceService {
                 return preferenceController.getTutorialSkipSystemUser()
             case PreferenceEnumDTO.BACKGROUND_QUALITY_SCALE:
                 return preferenceController.getBackgroundQualityScale()
+            case PreferenceEnumDTO.ACCOUNT_DEFAULT_INVOICELINE_ID:
+                return preferenceController.getDefaultInvoiceLineAccount()
             case PreferenceEnumDTO.NEWS_READ:
                 return getReadNews()
             default:
