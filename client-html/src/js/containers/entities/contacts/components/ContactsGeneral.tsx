@@ -1,11 +1,14 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import {
- ConcessionType, Contact, ContactRelationType, Student, Tag, Tutor 
+  Contact, Student, Tag, Tutor
 } from "@api/model";
 import { change, Field, getFormInitialValues } from "redux-form";
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
@@ -16,6 +19,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Divider from '@mui/material/Divider';
+import { Dispatch } from "redux";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import AvatarRenderer from "./AvatarRenderer";
@@ -25,13 +29,14 @@ import TimetableButton from "../../../../common/components/buttons/TimetableButt
 import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 const TutorInitial: Tutor = {
   wwChildrenStatus: "Not checked"
 };
 
 interface ContactsGeneralProps extends EditViewProps<Contact> {
-  classes?: any;
   initialValues?: Contact;
   isStudent?: boolean;
   isTutor?: boolean;
@@ -40,11 +45,7 @@ interface ContactsGeneralProps extends EditViewProps<Contact> {
   setIsTutor?: any;
   setIsCompany?: any;
   tags?: any;
-  countries?: any;
-  relationTypes?: ContactRelationType[];
-  concessionTypes?: ConcessionType[];
   usiLocked?: boolean;
-  fullScreenEditView?: boolean;
 }
 
 export const studentInitial: Student = {
@@ -89,7 +90,19 @@ const filterCompanyTags = (tag: Tag) => {
   return true;
 };
 
-export const ProfileHeading: React.FC<any> = props => {
+interface Props {
+  form: string;
+  dispatch: Dispatch;
+  showConfirm: ShowConfirmCaller;
+  values: Contact;
+  twoColumn: boolean;
+  isCompany: boolean;
+  usiLocked: boolean;
+  syncErrors: any;
+  isNew: boolean;
+}
+
+export const ProfileHeading = (props: Props) => {
   const {
     form,
     dispatch,
@@ -101,26 +114,28 @@ export const ProfileHeading: React.FC<any> = props => {
     syncErrors,
     isNew
   } = props;
+  
+  const Avatar = useCallback(aProps => (
+    <Field
+      name="profilePicture"
+      label="Profile picture"
+      component={AvatarRenderer}
+      showConfirm={showConfirm}
+      email={values.email}
+      twoColumn={twoColumn}
+      props={{
+        dispatch,
+        form
+      }}
+      {...aProps}
+    />
+  ), [values.email]);
 
   return (
     <FullScreenStickyHeader
       opened={isNew || Object.keys(syncErrors).some(k => ['title', 'firstName', 'middleName', 'lastName'].includes(k))}
       twoColumn={twoColumn}
-      Avatar={aProps => (
-        <Field
-          name="profilePicture"
-          label="Profile picture"
-          component={AvatarRenderer}
-          props={{
-            form,
-            dispatch,
-            showConfirm,
-            email: values.email,
-            twoColumn,
-            ...aProps
-          }}
-        />
-      )}
+      Avatar={Avatar}
       title={(
         <>
           {values && !isCompany && values.title && values.title.trim().length > 0 ? `${values.title} ` : ""}
@@ -166,6 +181,9 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     setIsCompany,
     tags,
     isNew,
+    syncErrors,
+    showConfirm,
+    usiLocked,
   } = props;
 
   const isInitiallyStudent = initialValues && !!initialValues.student;
@@ -208,15 +226,19 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     setIsTutor(isInitiallyTutor);
   }, [isInitiallyCompany, isInitiallyStudent, isInitiallyTutor]);
 
-  const onCalendarClick = () => {
-    openInternalLink(
-      `/timetable/search?query=attendance.student.contact.id=${values.id}&title=Timetable for ${getContactFullName(
-        values
-      )}`
-    );
-  };
+  const onStudentCalendarClick = () => openInternalLink(
+    `/timetable?search=attendance.student.contact.id=${values.id}&title=Timetable for ${getContactFullName(
+      values
+    )}`
+  );
 
-  const getFilteredTags = useCallback(() => {
+  const onTutorCalendarClick = () => openInternalLink(
+    `/timetable?search=tutor.contact.id=${values.id}&title=Timetable for ${getContactFullName(
+      values
+    )}`
+  );
+
+  const filteredTags = useMemo(() => {
     if (Array.isArray(tags)) {
       if (isStudent && isTutor) {
         return Array.from(new Set([...tags.filter(filterStudentTags), ...tags.filter(filterTutorTags)]));
@@ -235,11 +257,19 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     return [];
   }, [tags, isStudent, isTutor, isCompany]);
 
-  const filteredTags = getFilteredTags();
-
   return (
     <div className="pt-3 pl-3 pr-3">
-      <ProfileHeading {...props} isNew={isNew} />
+      <ProfileHeading
+        isNew={isNew}
+        form={form}
+        dispatch={dispatch}
+        showConfirm={showConfirm}
+        values={values}
+        twoColumn={twoColumn}
+        isCompany={isCompany}
+        usiLocked={usiLocked}
+        syncErrors={syncErrors}
+      />
       <Grid container columnSpacing={3}>
         <Grid item xs={12} md={twoColumn ? 7 : 12}>
           <Typography variant="caption" display="block" gutterBottom>
@@ -272,21 +302,39 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
           </ButtonGroup>
         </Grid>
       </Grid>
-      <Grid container columnSpacing={3} className="flex-nowrap align-items-center mb-1">
-        <Grid item xs={12}>
+      <Grid container columnSpacing={3} rowSpacing={2}>
+        <Grid item xs={twoColumn ? 8 : 12}>
           <FormField
             type="tags"
             name="tags"
             tags={filteredTags}
           />
         </Grid>
+        <Grid item xs={twoColumn ? 4 : 12}>
+          <EntityChecklists
+            entity="Contact"
+            form={form}
+            entityId={values.id}
+            checked={values.tags}
+          />
+        </Grid>
       </Grid>
       {isStudent && (
         <>
-          <Divider className="mt-3 mb-2" />
+          <Divider className="mt-3 mb-2"/>
           <Grid container columnSpacing={3} className="pt-0-5 pb-0-5">
             <Grid item xs={12}>
-              <TimetableButton onClick={onCalendarClick} />
+              <TimetableButton onClick={onStudentCalendarClick} title="Student timetable"/>
+            </Grid>
+          </Grid>
+        </>
+      )}
+      {isTutor && (
+        <>
+          <Divider className="mt-3 mb-2"/>
+          <Grid container columnSpacing={3} className="pt-0-5 pb-0-5">
+            <Grid item xs={12}>
+              <TimetableButton onClick={onTutorCalendarClick} title="Tutor timetable"/>
             </Grid>
           </Grid>
         </>

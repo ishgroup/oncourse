@@ -104,7 +104,8 @@ Feature: Main feature for all GET requests with path 'list/entity/assessment'
             "removed": false,
             "attachmentRelations": "#ignore",
             "createdOn":"#ignore",
-            "modifiedOn":"#ignore"
+            "modifiedOn":"#ignore",
+            "urlWithoutVersionId":null
             }]
         }
         """

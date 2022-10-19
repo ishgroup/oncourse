@@ -157,7 +157,7 @@ class CourseClassMixin {
 	/**
 	* @return all enrolments with a CANCELLED or REFUNDED status
 	*/
-	@API
+	@Deprecated
 	static getClassTotalFeeIncomeExTaxForRefundedAndCancelledEnrolments(CourseClass self) {
 		return getService(CourseClassService).getClassTotalFeeIncomeExTaxForRefundedAndCancelledEnrolments(self)
 	}
@@ -224,6 +224,20 @@ class CourseClassMixin {
 		return getManuallyDiscountedEnrolments(self)*.invoiceLines.flatten().inject(Money.ZERO) {
 			Money sum, InvoiceLine il -> sum.add(il.discountTotalExTax)
 		}
+	}
+
+	static Money getTotalInvoiced(CourseClass courseClass){
+		Money total = courseClass.enrolmentsInvoiceLines
+				.findAll { it -> !it.discountedPriceTotalIncTax.isNegative() }
+				.sum { it -> it.discountedPriceTotalIncTax } as Money
+		return total != null ? total : Money.ZERO
+	}
+
+	static Money getTotalCredits(CourseClass courseClass){
+		Money total = courseClass.enrolmentsInvoiceLines
+				.findAll { it -> it.discountedPriceTotalIncTax.isNegative() }
+				.sum { it -> it.discountedPriceTotalIncTax } as Money
+		return total != null ? total : Money.ZERO
 	}
 
 	/**

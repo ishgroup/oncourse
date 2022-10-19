@@ -34,6 +34,7 @@ import FullScreenStickyHeader
 import { useAppSelector } from "../../../../common/utils/hooks";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 interface VoucherProductGeneralProps extends EditViewProps<VoucherProduct> {
   accounts?: Account[];
@@ -46,6 +47,7 @@ interface VoucherProductGeneralProps extends EditViewProps<VoucherProduct> {
   foundCourses?: Course[];
   submitSucceeded?: any;
   getMinMaxFee?: (ids: string) => void;
+  coursesError?: boolean;
   dataCollectionRules?: PreferencesState["dataCollectionRules"];
 }
 
@@ -170,6 +172,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
     pendingCourses,
     submitSucceeded,
     getMinMaxFee,
+    coursesError,
     dispatch,
     form,
     rootEntity,
@@ -243,7 +246,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
             <Grid container columnSpacing={3} rowSpacing={2}>
               <Grid item xs={twoColumn ? 2 : 12}>
                 <FormField
-                  label="Code"
+                  label="SKU"
                   name="code"
                   required
                   fullWidth
@@ -251,7 +254,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
               </Grid>
               <Grid item xs={twoColumn ? 4 : 12}>
                 <FormField
-                  label="SKU"
+                  label="Name"
                   name="name"
                   required
                   fullWidth
@@ -262,11 +265,20 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         />
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid item xs={twoColumn ? 8 : 12}>
         <FormField
           type="tags"
           name="tags"
           tags={tags}
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <EntityChecklists
+          entity="VoucherProduct"
+          form={form}
+          entityId={values.id}
+          checked={values.tags}
         />
       </Grid>
         
@@ -342,6 +354,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
             searchType="withToggle"
             disabled={values && values.soldVouchersCount > 0}
             aqlEntities={["Course"]}
+            aqlQueryError={coursesError}
           />
         </div>
         <Typography color="inherit" component="div">
@@ -415,6 +428,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
           form={form}
           submitSucceeded={submitSucceeded}
           rootEntity={rootEntity}
+          customAqlEntities={["Course", "Product"]}
         />
       </Grid>
 
@@ -452,6 +466,7 @@ const mapStateToProps = (state: State) => ({
   minFee: state.voucherProducts.minFee,
   maxFee: state.voucherProducts.maxFee,
   foundCourses: state.plainSearchRecords["Course"].items,
+  coursesError: state.plainSearchRecords["Course"].error,
   pendingCourses: state.plainSearchRecords["Course"].loading,
   dataCollectionRules: state.preferences.dataCollectionRules
 });

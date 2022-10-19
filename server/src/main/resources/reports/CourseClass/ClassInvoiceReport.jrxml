@@ -76,7 +76,6 @@
 	<field name="subreport.ish.onCourse.enrolmentInvoiceSubReport" class="net.sf.jasperreports.engine.JasperReport"/>
 	<field name="image.poweredby" class="java.io.InputStream"/>
 	<field name="tutorNames" class="java.lang.String"/>
-	<field name="sessionsCount" class="java.lang.Integer"/>
 	<group name="details">
 		<groupExpression><![CDATA[null]]></groupExpression>
 		<groupHeader>

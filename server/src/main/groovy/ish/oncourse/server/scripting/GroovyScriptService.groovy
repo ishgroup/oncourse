@@ -14,19 +14,27 @@ import com.google.inject.Inject
 import com.google.inject.Injector
 import groovy.transform.CompileStatic
 import io.bootique.BQRuntime
+import ish.common.types.AutomationStatus
 import ish.common.types.EntityEvent
 import ish.common.types.SystemEventType
 import ish.common.types.TriggerType
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.ISHDataContext
+import ish.oncourse.server.accounting.AccountTransactionService
+import ish.oncourse.server.cayenne.Article
+import ish.oncourse.server.cayenne.Membership
+import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
 import ish.oncourse.server.cayenne.Preference
+import ish.oncourse.server.cayenne.ProductItem
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.cayenne.SystemUser
+import ish.oncourse.server.cayenne.Voucher
 import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.export.ExportService
 import ish.oncourse.server.imports.ImportService
 import ish.oncourse.server.integration.EventService
 import ish.oncourse.server.integration.GroovyScriptEventListener
+import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.messaging.MessageService
 import ish.oncourse.server.print.PrintService
 import ish.oncourse.server.querying.QueryService
@@ -40,6 +48,7 @@ import ish.oncourse.server.users.SystemUserService
 import ish.oncourse.types.AuditAction
 import ish.persistence.Preferences
 import ish.scripting.ScriptResult
+import ish.util.AbstractEntitiesUtil
 import ish.util.TimeZoneUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.Persistent
@@ -53,6 +62,7 @@ import org.reflections.Reflections
 
 import javax.script.*
 import java.util.concurrent.*
+import java.util.regex.Pattern
 
 import static ish.common.types.TriggerType.*
 import static ish.oncourse.server.integration.PluginService.PLUGIN_PACKAGE
@@ -79,6 +89,7 @@ class GroovyScriptService {
     private static final String EMAIL_SERVICE = "Email"
     private static final String QUERY_SERVICE = "Query"
     private static final String EVENT_SERVICE = "eventService"
+    private static final String ACCOUNT_TRANSACTION_SERVICE = "accountTransactionService"
 
     private static final String RUN_QUERY = "query"
     private static final String SEND_EMAIL = "email"
@@ -139,6 +150,9 @@ class GroovyScriptService {
     private EventService eventService
 
     @Inject
+    private LicenseService licenseService
+
+    @Inject
     GroovyScriptService(ICayenneService cayenneService, ISchedulerService schedulerService,
                         Injector injector, SystemUserService systemUserService) {
         GroovySystem.getMetaClassRegistry().getMetaClassCreationHandler().setDisableCustomMetaClassLookup(true)
@@ -186,6 +200,7 @@ class GroovyScriptService {
         PrintService printService = injector.getInstance(PrintService.class)
         MessageService messageService = injector.getInstance(MessageService.class)
         DocumentService documentService = injector.getInstance(DocumentService.class)
+        AccountTransactionService accountTransactionService = injector.getInstance(AccountTransactionService.class)
 
         Bindings bindings = new SimpleBindings()
 
@@ -194,6 +209,7 @@ class GroovyScriptService {
         bindings.put(EMAIL_SERVICE, emailService)
         bindings.put(QUERY_SERVICE, queryService)
         bindings.put(EVENT_SERVICE, eventService)
+        bindings.put(ACCOUNT_TRANSACTION_SERVICE, accountTransactionService)
         bindings.put(RECORDS_PARAM_NAME, [])
         bindings.put(FILE_PARAM_NAME, null)
 
@@ -228,6 +244,12 @@ class GroovyScriptService {
 
     Set<Script> getScriptsForEntity(Class<?> entityClass, LifecycleEvent event) {
         def scripts = scriptTriggerMap?.get(event)?.get(entityClass)
+        if (entityClass in List.of(Article.class as Class<?>, Voucher.class, Membership.class)) {
+            def salesScripts = scriptTriggerMap?.get(event)?.get(ProductItem.class)
+            if (salesScripts)
+                scripts?.addAll(salesScripts)
+        }
+
         if (scripts) {
             return Collections.unmodifiableSet(scripts)
         }
@@ -240,7 +262,7 @@ class GroovyScriptService {
 
         def enabledScripts = ObjectSelect.query(Script)
                 .where(Script.TRIGGER_TYPE.eq(ENTITY_EVENT))
-                .and(Script.ENABLED.isTrue())
+                .and(Script.AUTOMATION_STATUS.eq(AutomationStatus.ENABLED))
                 .and(Script.ENTITY_CLASS.isNotNull())
                 .select(context)
 
@@ -449,6 +471,12 @@ class GroovyScriptService {
             throw new IllegalArgumentException("Script cannot be null.")
         }
 
+        def isLicenseCustomScripting = licenseService.getLisense(PreferenceEnumDTO.LICENSE_SCRIPTING.toString())
+        if (script.keyCode != null && !script.keyCode.contains("ish.") && !isLicenseCustomScripting) {
+            logger.warn("Script {} can not be run, have no license to run custom scripts.", script.getName())
+            return ScriptResult.failure("Have no license to run custom scripts.")
+        }
+
         def engine = engineManager.getEngineByName(GROOVY_SCRIPT_ENGINE)
 
         def bindings = getServiceBindings()
@@ -472,10 +500,53 @@ class GroovyScriptService {
             return ScriptResult.success(result)
         } catch (ScriptException e) {
             logger.error("Execution failed for '{}'.", script.getName(), e)
-            return ScriptResult.failure(e.getMessage())
+            return ScriptResult.failure(e.getMessage() + addErrorLineIfExist(e))
         }
     }
 
+    private static String addErrorLineIfExist(Exception e) {
+        def defaultLinesCount = DEFAULT_IMPORTS.lines().count() + PREPARE_API.lines().count() + PREPARE_LOGGER.lines().count()
+        def errorLine = parseErrorLineFromStackTrace(e)
+        if (errorLine != null) {
+            def lineInScript = errorLine - defaultLinesCount
+            return "\nError in line: " + lineInScript
+        } else {
+            def errorLineExceptionMessage = parseErrorLineFromExceptionMesssage(e)
+            if (errorLineExceptionMessage != null) {
+                def lineInScript = errorLineExceptionMessage - defaultLinesCount
+                return "\nError in line: " + lineInScript
+            } else {
+                return ""
+            }
+        }
+    }
+
+    private static Throwable rootCause(Exception e) {
+        Throwable throwable = e
+        while (throwable.cause != null) throwable = throwable.cause
+        return throwable
+    }
+
+    private static Integer parseErrorLineFromStackTrace(Exception e) {
+        def cause = rootCause(e)
+        def groovyStackTrace = cause.stackTrace.find {
+            it.fileName ==~ /^Script\d+\.groovy$/
+        }
+        return groovyStackTrace != null ? groovyStackTrace.lineNumber : null
+    }
+
+    private static Integer parseErrorLineFromExceptionMesssage(Exception e){
+        def pattern = Pattern.compile("Script\\d+\\.groovy: (\\d+?):")
+        def matcher = pattern.matcher(e.getMessage())
+        if (matcher.find())
+        {
+            def group = matcher.group(1)
+            def line = Integer.valueOf(group)
+            return line
+        } else {
+            return null
+        }
+    }
 
     void runScript(Script script) throws ExecutionException {
         runScript(script, ScriptParameters.empty())

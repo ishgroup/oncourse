@@ -5,7 +5,7 @@ import { openInternalLink } from "../../../common/utils/links";
 
 const AuditFindRelatedMenu = props => {
   const {
- findRelated, selection, rootEntity, records
+ findRelated = [], selection, rootEntity, records
 } = props;
 
   const ENTITY_IDENTIFIER_INDEX = 2;
@@ -31,6 +31,8 @@ const AuditFindRelatedMenu = props => {
       }&sourceList=${rootEntity}&ids=${concreteFindRelatedItems.join(",")}`;
     }
   };
+
+  findRelated.sort((a, b) => (a.title > b.title ? 1 : -1));
 
   return (
     findRelated

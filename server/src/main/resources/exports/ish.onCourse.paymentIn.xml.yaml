@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.paymentIn.xml
-entityClass: PaymentIn
-body: ish.onCourse.paymentIn.xml.groovy
-name: PaymentIn XML export
-outputType: xml

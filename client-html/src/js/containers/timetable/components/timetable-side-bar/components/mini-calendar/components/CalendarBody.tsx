@@ -1,33 +1,48 @@
-import React from "react";
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
+import React, { useContext } from "react";
 import { createStyles, withStyles } from "@mui/styles";
-import CalendarDay from "./CalendarDay";
 import { getDay } from "date-fns";
+import CalendarDay from "./CalendarDay";
 import { getCalendarDays } from "../utils";
+import { TimetableContext } from "../../../../../Timetable";
 
 const styles = theme =>
   createStyles({
     calendar: {
       display: "grid",
-      gridTemplateColumns: `repeat(7, ${theme.spacing(4)})`,
-      gridGap: 1,
-      gridAutoRows: theme.spacing(4),
+      gridTemplateColumns: `repeat(7, ${theme.spacing(3.75)})`,
+      gridGap: 4,
+      gridAutoRows: theme.spacing(3.75),
       padding: theme.spacing(0, 1),
       justifyContent: "center"
     }
   });
 
 const isDisabled = (el, selectedWeekDays): boolean =>
-  selectedWeekDays.every(el => el === false) ? el.status !== "current" : !selectedWeekDays[getDay(el.date)];
+  (selectedWeekDays.every(el => el === false) ? el.status !== "current" : !selectedWeekDays[getDay(el.date)]);
 
-const CalendarBody = ({ classes, month, selectedWeekDays, selectedMonthSessionDays }: any) => {
+const CalendarBody = ({
+ classes, month, selectedWeekDays, selectedMonthSessionDays 
+}) => {
+  const { setTargetDay, targetDay } = useContext(TimetableContext);
+
   return (
     <div className={classes.calendar}>
       {getCalendarDays(month).map((el, id) => (
         <CalendarDay
           key={id}
           {...el}
-          hasSession={el.status === "current" && selectedMonthSessionDays.includes(el.day)}
           disabled={isDisabled(el, selectedWeekDays)}
+          selectedMonthSessionDays={selectedMonthSessionDays}
+          setTargetDay={setTargetDay}
+          targetDay={targetDay}
         />
       ))}
     </div>

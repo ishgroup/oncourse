@@ -12,6 +12,7 @@
 package ish.oncourse.server.api.dao
 
 import com.google.inject.Inject
+import ish.common.types.AutomationStatus
 import ish.oncourse.server.CayenneService
 import ish.oncourse.server.api.v1.function.export.ExportFunctions
 import ish.oncourse.server.cayenne.Report
@@ -33,7 +34,7 @@ class ReportDao implements AutomationDao<Report> {
     @Override
     List<Report> getForEntity(String entityName, ObjectContext context) {
         (ObjectSelect.query(Report)
-                .where(withExp(entityName)) & Report.IS_VISIBLE.isTrue() & Report.ENABLED.isTrue())
+                .where(withExp(entityName)) & Report.IS_VISIBLE.isTrue() & Report.AUTOMATION_STATUS.eq(AutomationStatus.ENABLED))
                 .orderBy(Report.NAME.asc())
                 .select(cayenneService.newContext)
     }

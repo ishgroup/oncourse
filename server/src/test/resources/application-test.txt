@@ -6,36 +6,22 @@ jetty:
 
 jdbc:
   angel-test:
-    url: ${dbUrl}
+    jdbcUrl: ${dbUrl}
     username: root
     driverClassName: org.mariadb.jdbc.Driver
-    testWhileIdle: true
-    validationQuery: SELECT 1
-    validationInterval: 30000
-    timeBetweenEvictionRunsMillis: 3000
-    maxActive: 200
-    maxIdle: 5
-    minIdle: 2
-    removeAbandonedTimeout: 300
-    removeAbandoned: true
-    logAbandoned: true
-    jmxEnabled: true
+    connectionTestQuery: SELECT 1
+    maximumPoolSize: 100
+    minimumIdle: 1
+    idleTimeout: 300000
 
   angel-test-creation:
-    url: ${dbUrl}
+    jdbcUrl: ${dbUrl}
     username: root
     driverClassName: org.mariadb.jdbc.Driver
-    testWhileIdle: true
-    validationQuery: SELECT 1
-    validationInterval: 30000
-    timeBetweenEvictionRunsMillis: 3000
-    maxActive: 200
-    maxIdle: 5
-    minIdle: 2
-    removeAbandonedTimeout: 300
-    removeAbandoned: true
-    logAbandoned: true
-    jmxEnabled: true
+    connectionTestQuery: SELECT 1
+    maximumPoolSize: 100
+    minimumIdle: 1
+    idleTimeout: 300000
 
 cayenne:
   datasource: angel-test

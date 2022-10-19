@@ -1,7 +1,7 @@
-import { Category, ProductItem, ProductType } from "@api/model";
+import { ProductItem, ProductType } from "@api/model";
 import { getMainRouteUrl } from "../../../../routes/routesMapping";
 
-export const buildUrl = (id: number | string, category: Category) => getMainRouteUrl(category) + `/${id}`;
+export const buildUrl = (id: number | string, category: string) => getMainRouteUrl(category) + `/${id}`;
 
 export const productUrl = (productItem: ProductItem) => {
   switch (productItem.productType) {

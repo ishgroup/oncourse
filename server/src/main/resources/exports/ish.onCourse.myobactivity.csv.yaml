@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.myobactivity.csv
-entityClass: Payslip
-body: ish.onCourse.myobactivity.csv.groovy
-name: MYOB Activity Payslip CSV export
-outputType: csv

@@ -368,6 +368,10 @@ const CheckoutSummaryExpandableItemRenderer = React.memo<CheckoutSummaryExpandab
                   const itemOriginalPrice = originalItems.find(i => i.id === item.id).price;
 
                   if (item.type === "course") {
+                    if (!item.class) {
+                      return null;
+                    }
+
                     return (
                       <SummaryExpandableClassRow
                         key={index}

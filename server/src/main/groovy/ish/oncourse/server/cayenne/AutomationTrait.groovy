@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.types.AutomationStatus
 import org.apache.cayenne.Persistent
 
 trait AutomationTrait implements Persistent {
@@ -25,13 +26,19 @@ trait AutomationTrait implements Persistent {
 
     abstract String getBody()
 
-    abstract Boolean getEnabled()
+    abstract AutomationStatus getAutomationStatus()
 
     abstract Date getCreatedOn()
 
     abstract Date getModifiedOn()
 
     abstract String getDescription()
+
+    abstract String getShortDescription()
+
+    abstract String getAutomationTags()
+
+    abstract String getCategory()
 
     abstract List<? extends AutomationBinding> getAutomationBindings()
 
@@ -45,7 +52,7 @@ trait AutomationTrait implements Persistent {
         automationBindings.findAll {it.value == null}
     }
 
-    abstract void setEnabled(Boolean enabled)
+    abstract void setAutomationStatus(AutomationStatus status)
 
     abstract void setName(String name)
 
@@ -56,6 +63,12 @@ trait AutomationTrait implements Persistent {
     abstract void setBody(String body)
 
     abstract void setDescription(String description)
+
+    abstract void setShortDescription(String shortDescription)
+
+    abstract void setCategory(String category)
+
+    abstract void setAutomationTags(String automationTags)
 
 
 }

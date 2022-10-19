@@ -101,7 +101,7 @@ export const Switch = withStyles(styles)(SwitchBase);
 
 export const FormSwitch = props => {
   const {
-    input, color, disabled, stringValue, label, className, inline, onChangeHandler
+    input, color, disabled, stringValue, label, className, inline, onChangeHandler, onClick
   } = props;
 
   const onChange = useCallback(
@@ -132,6 +132,7 @@ export const FormSwitch = props => {
       )}
       <Switch
         checked={getValue(input.value)}
+        onClick={onClick}
         onChange={onChange}
         color={color}
         disabled={disabled}

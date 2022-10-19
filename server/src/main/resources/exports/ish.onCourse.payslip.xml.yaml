@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.payslip.xml
-entityClass: Payslip
-body: ish.onCourse.payslip.xml.groovy
-name: Payslip XML export
-outputType: xml

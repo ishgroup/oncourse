@@ -4,21 +4,27 @@ export function mockArticleProducts() {
   this.getArticleProducts = () => this.articleProducts;
 
   this.getArticleProduct = id => {
-    const row = this.articleProducts.rows.find(row => row.id == id);
+    const row = this.articleProducts.rows.find(articleProduct => Number(articleProduct.id) === Number(id));
     return {
       id: row.id,
       name: row.values[0],
       code: row.values[1],
+      corporatePasses: [],
+      createdOn: "2014-02-28T19:49:13.000Z",
+      customFields: {},
+      dataCollectionRuleId: 55667,
       description: "This is a no refundable fee for students process",
-      incomeAccountId: 1,
-      feeExTax: 15,
-      totalFee: row.values[2],
-      taxId: 1,
-      status: "Can be purchased in office & online",
-      active: true,
       documents: [],
-      notes: [],
-      tags: [this.getTag(1)]
+      feeExTax: 15,
+      incomeAccountId: 1,
+      modifiedOn: "2021-05-25T18:44:42.000Z",
+      relatedSellables: [],
+      status: "Can be purchased in office & online",
+      tags: [this.getTag(1)],
+      taxId: 1,
+      totalFee: row.values[2],
+      active: true,
+      notes: []
     };
   };
 

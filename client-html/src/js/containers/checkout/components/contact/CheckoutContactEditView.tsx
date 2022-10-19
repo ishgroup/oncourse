@@ -1,15 +1,15 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { useCallback } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import {
-  reduxForm, getFormSyncErrors, getFormValues, InjectedFormProps
-} from "redux-form";
-import Button from "@mui/material/Button";
+import { getFormSyncErrors, getFormValues, InjectedFormProps, reduxForm } from "redux-form";
 import { Contact } from "@api/model";
 import { notesAsyncValidate } from "../../../../common/components/form/notes/utils";
 import { State } from "../../../../reducers/state";
@@ -17,7 +17,7 @@ import ContactEditView from "../../../entities/contacts/components/ContactEditVi
 import { formatRelationsBeforeSave, getDisabledSubmitCondition } from "../../../entities/contacts/Contacts";
 import { checkoutCreateContact, checkoutUpdateContact } from "../../actions/checkoutContact";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
-import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
 
 export const CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME = "CheckoutContactEditForm";
@@ -28,7 +28,6 @@ interface Props extends Partial<InjectedFormProps> {
   syncErrors?: any;
   dispatch?: Dispatch<any>;
   showConfirm: ShowConfirmCaller;
-  openNestedEditView: any;
   onSave: (record, dispatch, formProps) => void;
   onContactSave?: (id: string, contact: Contact) => void;
   onContactCreate?: (contact: Contact) => void;
@@ -50,7 +49,6 @@ const QuickEnrolContactEditViewForm: React.FC<Props> = props => {
     onClose,
     creatingNew,
     showConfirm,
-    openNestedEditView,
     onSave,
     onContactSave,
     onContactCreate,
@@ -113,7 +111,6 @@ const QuickEnrolContactEditViewForm: React.FC<Props> = props => {
             dirty={dirty}
             dispatch={dispatch}
             showConfirm={showConfirm}
-            openNestedEditView={openNestedEditView}
             toogleFullScreenEditView={() => {}}
           />
         </AppBarContainer>
@@ -138,7 +135,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 const CheckoutContactEditView = reduxForm({
   form: CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME,
   asyncValidate: notesAsyncValidate,
-  asyncBlurFields: ["notes[].message"],
+  asyncChangeFields: ["notes[].message"],
   onSubmitFail
 })(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(QuickEnrolContactEditViewForm));
 

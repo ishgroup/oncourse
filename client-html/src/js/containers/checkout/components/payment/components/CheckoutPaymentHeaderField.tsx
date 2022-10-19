@@ -308,7 +308,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
         return undefined;
       }
 
-      const date = new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth);
+      const date = new Date(lockedDate);
 
       return compareAsc(addDays(date, 1), new Date(dateChanged)) > 0
         ? `Date must be after ${format(date, D_MMM_YYYY)}`

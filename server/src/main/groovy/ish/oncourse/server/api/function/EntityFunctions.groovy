@@ -74,7 +74,7 @@ class EntityFunctions {
         return query
     }
 
-    static Expression createTagGroupExpression(String alias, List<String> realPaths, List<Long> tagIds, String entity) {
+    static Expression createTagGroupExpression(String alias, List<String> realPaths, List<Long> tagIds, String entity, boolean forbidden) {
 
         SimpleNode taggedNode = new ASTAnd()
         Map aliases = Collections.singletonMap(alias, realPaths.first())
@@ -98,50 +98,62 @@ class EntityFunctions {
             ExpressionUtil.addChild(taggableNode, entityIdentifier, taggableNode.jjtGetNumChildren())
         }
 
-        ASTIn tagId = new ASTIn(idPath, new ASTList(tagIds))
-
         ExpressionUtil.addChild(taggedNode, taggableNode, 0)
-        ExpressionUtil.addChild(taggedNode, tagId, 1)
+
+        Expression inExp = forbidden ? new ASTNotIn(idPath, new ASTList(tagIds)) : new ASTIn(idPath, new ASTList(tagIds))
+        ExpressionUtil.addChild(taggedNode, inExp, 1)
+
+        if(forbidden){
+            //we require it to show entities without tags for checklists request, because of aql specific
+            taggedNode = taggedNode.orExp(new ASTEqual(new ASTObjPath(alias+ "+"), null)) as SimpleNode
+        }
 
         return taggedNode
     }
 
-    static ObjectSelect addTagsExpression(List<TagGroupDTO> tagGroups, ObjectSelect query, String entity) {
+    static ObjectSelect addTagsExpression(List<TagGroupDTO> tagGroups, ObjectSelect query, String entity, List<TagGroupDTO> forbiddenChecklists) {
 
         int aliasCounter = 0
 
         Expression result = null
 
         tagGroups.each { tagGroup ->
+            result = processGroup(result, tagGroup, entity, false, aliasCounter++)
+        }
 
-            String alias = "${Tag.ALIAS}${aliasCounter++}"
-
-            List<String> paths = tagGroup.path != null
-                    ? tagGroup.path.split("\\|").collect {it+"+.${Tag.TAG_PATH}"}
-                    : List.of(Tag.TAG_PATH)
-
-            Expression expr = createTagGroupExpression(alias, paths, tagGroup.tagIds, tagGroup.entity?:entity)
-
-            if (result == null) {
-                result = expr
-            } else {
-                result = result.andExp(expr)
-            }
-
+        forbiddenChecklists.each { tagGroup ->
+            result = processGroup(result, tagGroup, entity, true, aliasCounter++)
         }
 
         query = query & result
         return query
     }
 
-    static ObjectSelect<CayenneDataObject> parseSearchQuery(ObjectSelect<CayenneDataObject> query, ObjectContext context, AqlService aql, String entity, String search, String filter, List<TagGroupDTO> tagGroups) {
+    private static Expression processGroup(Expression result, TagGroupDTO tagGroup, String entity, boolean forbidden, int aliasCounter){
+        String alias = "${Tag.ALIAS}${aliasCounter}"
+
+        List<String> paths = tagGroup.path != null
+                ? tagGroup.path.split("\\|").collect { it + "+.${Tag.TAG_PATH}" }
+                : List.of(Tag.TAG_PATH)
+
+        Expression expr = createTagGroupExpression(alias, paths, tagGroup.tagIds, tagGroup.entity ?: entity, forbidden)
+
+        if (result == null) {
+            result = expr
+        } else {
+            result = result.andExp(expr)
+        }
+        return result
+    }
+
+    static ObjectSelect<CayenneDataObject> parseSearchQuery(ObjectSelect<CayenneDataObject> query, ObjectContext context, AqlService aql, String entity, String search, String filter, List<TagGroupDTO> tagGroups, List<TagGroupDTO> checklists = new ArrayList<>()) {
 
         if (filter) {
             query = addAqlExp(filter, query.getEntityType(), context, query, aql)
         }
 
-        if (tagGroups && !tagGroups.empty) {
-            query = addTagsExpression(tagGroups,  query, entity)
+        if (tagGroups && !tagGroups.empty || checklists && ! checklists.empty) {
+            query = addTagsExpression(tagGroups,  query, entity, checklists)
         }
 
         if (search) {

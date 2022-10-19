@@ -1,5 +1,5 @@
 /*
- * Copyright ish group pty ltd 2021.
+ * Copyright ish group pty ltd 2022.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
@@ -7,9 +7,7 @@
  */
 
 import { isBefore } from "date-fns";
-import React, {
-  Dispatch, useCallback, useEffect, useState
-} from "react";
+import React, { Dispatch, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
 import Typography from "@mui/material/Typography";
@@ -20,19 +18,16 @@ import ListView from "../../../common/components/list-view/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import {
-  createContact,
-  deleteContact,
   getContact,
   getContactsConcessionTypes,
   getContactsRelationTypes,
   getContactsTaxTypes,
-  getContactTags,
-  updateContact
+  getContactTags
 } from "./actions";
 import ContactEditView from "./components/ContactEditView";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import {
-  getContactRelationTypes, getCountries, getLanguages, getPaymentTypes
+ getContactRelationTypes, getCountries, getLanguages, getPaymentTypes 
 } from "../../preferences/actions";
 import { getDefaultInvoiceTerms } from "../invoices/actions";
 import ContactCogWheel from "./components/ContactCogWheel";
@@ -44,22 +39,16 @@ import tutor from "../../../../images/tutor.png";
 import company from "../../../../images/company.png";
 import tutorStudent from "../../../../images/student-tutor.png";
 import person from "../../../../images/person.png";
-import { Classes } from "../../../model/entities/CourseClass";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
 import { getContactFullName } from "./utils";
 
 export type ContactType = "STUDENT" | "TUTOR" | "COMPANY" | "TUTOR_STUDENT";
 
 interface ContactsProps {
   onInit?: () => void;
-  onCreate?: (contact: Contact) => void;
-  onSave?: (id: string, contact: Contact) => void;
   getRecords?: () => void;
   getFilters?: () => void;
-  onDelete?: (id: number) => void;
   clearListState?: () => void;
   getTags?: () => void;
-  getContactRecord?: (id: string) => void;
   getCountries?: () => void;
   getLanguages?: () => void;
   getContactsRelationTypes?: () => void;
@@ -114,6 +103,7 @@ export const ContactInitial: Contact = {
   deliveryStatusSms: 0,
   deliveryStatusEmail: 0,
   customFields: {},
+  abandonedCarts: [],
   tags: []
 };
 
@@ -157,8 +147,8 @@ const findRelatedGroup: any[] = [
   { title: "Applications", list: "application", expression: "student.contact.id" },
   { title: "Audits", list: "audit", expression: "entityIdentifier == Contact and entityId" },
   { title: "Certificates", list: "certificate", expression: "student.contact.id" },
-  { title: "Classes enrolled", list: Classes.path, expression: "enrolments.student.contact.id" },
-  { title: "Classes taught", list: Classes.path, expression: "tutorRoles.tutor.contact.id" },
+  { title: "Classes enrolled", list: "class", expression: "enrolments.student.contact.id" },
+  { title: "Classes taught", list: "class", expression: "tutorRoles.tutor.contact.id" },
   {
     title: "Documents",
     list: "document",
@@ -173,6 +163,9 @@ const findRelatedGroup: any[] = [
   { title: "Payments in", list: "paymentIn", expression: "payer.id" },
   { title: "Payments out", list: "paymentOut", expression: "payee.id" },
   { title: "Payslips", list: "payslip", expression: "contact.id" },
+  { title: "Sales", list: "sale", expression: "purchasedBy.id" },
+  { title: "Student timetable", list: "timetable", expression: "courseClass.enrolments.student.id" },
+  { title: "Tutor timetable", list: "timetable", expression: "tutor.contact.id" },
   { title: "Transactions", list: "transaction", expression: "contact.id" },
   { title: "Waiting lists", list: "waitingList", expression: "student.contact.id" }
 ];
@@ -203,10 +196,6 @@ const getContactTypeImage = (type: ContactType) => {
 
 const customColumnFormats = {
   contactType: v => (v ? <img src={getContactTypeImage(v)} alt={v} /> : null)
-};
-
-const nestedEditFields = {
-  SendMessage: props => <SendMessageEditView {...props} />
 };
 
 export const getDisabledSubmitCondition = (isVerifyingUSI, usiVerificationResult): boolean => (
@@ -243,13 +232,10 @@ const setRowClasses = row => {
 
 const Contacts: React.FC<ContactsProps> = props => {
   const {
-    onDelete,
     getFilters,
     clearListState,
     onInit,
-    onSave,
     getTags,
-    getContactRecord,
     getCountries,
     getLanguages,
     getContactsRelationTypes,
@@ -262,7 +248,6 @@ const Contacts: React.FC<ContactsProps> = props => {
     selection,
     isVerifyingUSI,
     usiVerificationResult,
-    onCreate,
     getPaymentTypes,
   } = props;
 
@@ -328,32 +313,6 @@ const Contacts: React.FC<ContactsProps> = props => {
     };
   }, []);
 
-  const onContactSave = useCallback((id: string, contact) => {
-    const contactModel = { ...contact };
-    const { student, relations } = contactModel;
-
-    if (student) delete contactModel.student.education;
-
-    contactModel.relations = formatRelationsBeforeSave(relations);
-
-    if (contactModel.isCompany) delete contactModel.firstName;
-
-    onSave(id, contactModel);
-  }, []);
-
-  const onContactCreate = useCallback(contact => {
-    const contactModel = { ...contact };
-    const { student, relations } = contactModel;
-
-    if (student) delete contactModel.student.education;
-
-    contactModel.relations = formatRelationsBeforeSave(relations);
-
-    if (contactModel.isCompany) delete contactModel.firstName;
-
-    onCreate(contactModel);
-  }, []);
-
   const getContactFullNameWithTitle = (values: Contact) =>
     `${!values.isCompany && values.title && values.title.trim().length > 0 ? `${values.title} ` : ""}${!values.isCompany ? getContactFullName(values) : values.lastName}`;
 
@@ -372,17 +331,13 @@ const Contacts: React.FC<ContactsProps> = props => {
         nameCondition: getContactFullNameWithTitle,
         disabledSubmitCondition: getDisabledSubmitCondition(isVerifyingUSI, usiVerificationResult),
         asyncValidate: notesAsyncValidate,
-        asyncBlurFields: ["notes[].message"],
+        asyncChangeFields: ["notes[].message"],
         hideTitle: true
       }}
       EditViewContent={ContactEditView}
-      nestedEditFields={nestedEditFields}
-      getEditRecord={getContactRecord}
+      customGetAction={getContact}
       rootEntity="Contact"
-      onCreate={onContactCreate}
       onInit={onInit}
-      onSave={onContactSave}
-      onDelete={onDelete}
       findRelated={findRelatedItems}
       filterGroupsInitial={filterGroups}
       CogwheelAdornment={ContactCogWheel}
@@ -409,10 +364,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getContactsConcessionTypes: () => dispatch(getContactsConcessionTypes()),
   getDefaultTerms: () => dispatch(getDefaultInvoiceTerms()),
   getTaxTypes: () => dispatch(getContactsTaxTypes()),
-  getContactRecord: (id: number) => dispatch(getContact(id)),
-  onDelete: (id: number) => dispatch(deleteContact(id)),
-  onSave: (id: string, contact: Contact) => dispatch(updateContact(id, contact)),
-  onCreate: (contact: Contact) => dispatch(createContact(contact)),
   clearListState: () => dispatch(clearListState()),
   getPermissions: () => {
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));

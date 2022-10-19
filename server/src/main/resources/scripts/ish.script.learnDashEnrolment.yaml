@@ -1,7 +1,0 @@
-name: LearnDash course enrolment
-body: ish.script.learnDashEnrolment.groovy
-keyCode: ish.script.learnDashEnrolment
-enabled: false
-triggerType: ONCOURSE_EVENT
-onCourseEventType: ENROLMENT_SUCCESSFUL
-description: This script will create enrolments in LearnDash. Students will be matched by email address and if none exists in LearnDash, a student will be created. That student will be enrolled in the Learndash course with slug matching the course code in onCourse.

@@ -7,13 +7,12 @@ import React, { useMemo } from "react";
 import Grid from "@mui/material/Grid";
 import { change } from "redux-form";
 import { Dispatch } from "redux";
-import { useSelector } from "react-redux";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import PdfService from "../../../pdf-reports/services/PdfService";
 import { ScriptComponent } from "../../../../../../model/scripts";
-import { State } from "../../../../../../reducers/state";
 import instantFetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { renderAutomationItems } from "../../../../utils";
+import { useAppSelector } from "../../../../../../common/utils/hooks";
 
 interface Props {
   name: string;
@@ -29,20 +28,20 @@ const ReportCardContent: React.FC<Props> = props => {
     dispatch, field, name, renderVariables, form, disabled
   } = props;
 
-  const pdfReports = useSelector<State, any>(state => state.automation.pdfReport.pdfReports);
-  const pdfBackgrounds = useSelector<State, any>(state => state.automation.pdfBackground.pdfBackgrounds);
+  const pdfReports = useAppSelector(state => state.automation.pdfReport.pdfReports);
+  const pdfBackgrounds = useAppSelector(state => state.automation.pdfBackground.pdfBackgrounds);
 
   const pdfReportsItems = useMemo(
     () => (pdfReports
       ? pdfReports.filter(t => t.keyCode).map(t => ({
-         value: t.keyCode, hasIcon: t.hasIcon, label: t.name, id: t.id
+         value: t.keyCode, hasIcon: t.keyCode.startsWith("ish."), label: t.title, id: t.id
         }))
       : []), [pdfReports]
   );
 
   const pdfBackgroundsItems = useMemo(
     () => (pdfBackgrounds
-      ? pdfBackgrounds.filter(t => t.name).map(t => ({ value: t.name, label: t.name }))
+      ? pdfBackgrounds.filter(t => t.title).map(t => ({ value: t.title, label: t.title }))
       : []), [pdfBackgrounds]
   );
 
@@ -64,7 +63,7 @@ const ReportCardContent: React.FC<Props> = props => {
   };
 
   return (
-    <Grid container columnSpacing={3} rowSpacing={2} className="mt-2">
+    <Grid container columnSpacing={3} rowSpacing={1} className="pt-3 pb-3">
       <Grid item xs={12}>
         <FormField
           type="text"
@@ -73,7 +72,8 @@ const ReportCardContent: React.FC<Props> = props => {
           disabled={disabled}
           required
         />
-
+      </Grid>
+      <Grid item xs={12}>
         <FormField
           type="select"
           name={`${name}.keycode`}
@@ -85,9 +85,9 @@ const ReportCardContent: React.FC<Props> = props => {
           disabled={disabled}
           required
         />
-
-        {field.reportEntity && renderVariables(field.reportEntity.variables, name)}
-
+      </Grid>
+      {field.reportEntity && renderVariables(field.reportEntity.variables, name)}
+      <Grid item xs={12}>
         <FormField
           type="select"
           name={`${name}.background`}
@@ -97,7 +97,6 @@ const ReportCardContent: React.FC<Props> = props => {
           disabled={disabled}
           allowEmpty
         />
-
       </Grid>
     </Grid>
   );

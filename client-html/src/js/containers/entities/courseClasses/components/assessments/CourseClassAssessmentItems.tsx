@@ -24,7 +24,6 @@ import FormField from "../../../../../common/components/form/formFields/FormFiel
 import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { stubComponent } from "../../../../../common/utils/common";
-import { defaultContactName } from "../../../contacts/utils";
 import { AssessmentsSubmissionType } from "./AssessmentSubmissionIconButton";
 import SubmissionModal from "./SubmissionModal";
 import styles from "./styles";
@@ -113,7 +112,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
       } as StudentForRender];
     }, []);
 
-    result.sort((a, b) => (a.studentName > b.studentName ? 1 : -1));
+    result.sort((a, b) => (a.studentName.split(" ")[1] ? a.studentName.split(" ")[1] > b.studentName.split(" ")[1] ? 1 : -1 : 1));
 
     setStudentsForRender(result);
   }, [courseClassEnrolments, row.submissions]);
@@ -368,7 +367,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
                 color="secondary"
               />
             )}
-            label={defaultContactName(t.tutorName)}
+            label={t.tutorName}
           />
         </div>
       );
@@ -554,7 +553,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
         <div>
           <div className="heading">Assessment Submission</div>
           <Typography component="div" className="mt-2 mb-3" variant="caption" color="textSecondary">
-            Please save new assessment before editinig submissions
+            Please save new assessment before editing submissions
           </Typography>
         </div>
       )}

@@ -11,7 +11,9 @@ import { formatCurrency, formatPercent } from "../../../../utils/numbers/numbers
 import { CustomColumnFormats } from "../../../../../model/common/ListView";
 import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
 
-export const COLUMN_WITH_COLORS = "tagIds";
+export const COLUMN_WITH_COLORS = "tagColors";
+
+export const CHECKLISTS_COLUMN = "checklistsColor";
 
 const formatBoolean = val => {
   switch (val) {

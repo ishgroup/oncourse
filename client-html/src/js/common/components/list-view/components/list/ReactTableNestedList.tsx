@@ -198,6 +198,7 @@ export interface NestedListProps {
   meta?: any;
   total?: any;
   goToLink?: string;
+  primaryHeader?: boolean;
 }
 
 const ListRoot = React.memo<NestedListProps>(({
@@ -215,7 +216,8 @@ const ListRoot = React.memo<NestedListProps>(({
     meta: { invalid, error },
     total,
     goToLink,
-    calculateHeight
+    calculateHeight,
+    primaryHeader
   }) => {
   const [selection, setSelection] = useState([]);
 
@@ -266,7 +268,7 @@ const ListRoot = React.memo<NestedListProps>(({
         {!hideHeader && (
           <div>
             <div className="centeredFlex">
-              <Typography className="heading pt-1 pb-1">
+              <Typography className={`${primaryHeader ? "heading" : "secondaryHeading"} pt-1 pb-1`}>
                 {rows.length}
                 {" "}
                 {title}

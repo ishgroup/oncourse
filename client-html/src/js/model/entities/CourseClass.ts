@@ -24,10 +24,6 @@ import {
 import { AccountExtended } from "./Account";
 import { TimetableSession } from "../timetable";
 
-export enum Classes {
-  path = "class"
-}
-
 export interface CourseClassRoom {
   id: number;
   name: string;
@@ -146,7 +142,7 @@ export type AttandanceChangeType =
   | "allTrainingPlans"
   | "bySession";
 
-export type AttendanceGridType =  "Student" | "Training plan";
+export type AttendanceGridType = "Student" | "Training plan";
 
 export const tutorStatusRoles: TutorAttendanceType[] = [
   "Confirmed for payroll",

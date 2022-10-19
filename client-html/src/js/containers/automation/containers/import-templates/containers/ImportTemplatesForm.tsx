@@ -1,13 +1,19 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import PlayArrow from "@mui/icons-material/PlayArrow";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { connect } from "react-redux";
+import React, {
+ useCallback, useMemo, useState
+} from "react";
 import { Dispatch } from "redux";
-import { Form, initialize, InjectedFormProps } from "redux-form";
+import {
+ FieldArray, Form, initialize, InjectedFormProps 
+} from "redux-form";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import FileCopy from "@mui/icons-material/FileCopy";
 import Grid from "@mui/material/Grid";
@@ -20,18 +26,17 @@ import FormField from "../../../../../common/components/form/formFields/FormFiel
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import ScriptCard from "../../scripts/components/cards/CardBase";
-import Bindings from "../../../components/Bindings";
+import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
-import { usePrevious } from "../../../../../common/utils/hooks";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { validateKeycode } from "../../../utils";
 import { formatRelativeDate } from "../../../../../common/utils/dates/formatRelative";
 import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL } from "../../../../../common/utils/dates/format";
 import ExecuteImportModal from "../components/ExecuteImportModal";
-import { State } from "../../../../../reducers/state";
-import { setNextLocation } from "../../../../../common/actions";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { CatalogItemType } from "../../../../../model/common/Catalog";
+import InfoPill from "../../../../../common/components/layout/InfoPill";
 
 const manualUrl = getManualLink("advancedSetup_Import");
 const getAuditsUrl = (id: number) => `audit?search=~"ImportTemplate" and entityId == ${id}`;
@@ -46,16 +51,14 @@ interface Props extends InjectedFormProps {
   onUpdateInternal: (template: ImportModel) => void;
   onUpdate: (template: ImportModel) => void;
   onDelete: NumberArgFunction;
-  nextLocation?: string,
-  setNextLocation?: (nextLocation: string) => void,
+  emailTemplates?: CatalogItemType[]
 }
 
 const ImportTemplatesForm = React.memo<Props>(
   ({
-    dirty, form, handleSubmit, isNew, invalid, values, dispatch, syncErrors,
-     onCreate, onUpdate, onUpdateInternal, onDelete, nextLocation, history, setNextLocation
+    dirty, form, handleSubmit, isNew, invalid, values, dispatch, syncErrors, emailTemplates,
+     onCreate, onUpdate, onUpdateInternal, onDelete
   }) => {
-    const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
     const [modalOpened, setModalOpened] = useState<boolean>(false);
     const [execMenuOpened, setExecMenuOpened] = useState(false);
     const [importIdSelected, setImportIdSelected] = useState(null);
@@ -69,7 +72,6 @@ const ImportTemplatesForm = React.memo<Props>(
 
     const onDialogSave = useCallback(
       ({ keyCode }) => {
-        setDisableRouteConfirm(true);
         onCreate({ ...values, id: null, keyCode });
         onDialodClose();
       },
@@ -78,16 +80,12 @@ const ImportTemplatesForm = React.memo<Props>(
 
     const isInternal = useMemo(() => values.keyCode && values.keyCode.startsWith("ish."), [values.keyCode]);
 
-    const prevId = usePrevious(values.id);
-
     const handleDelete = useCallback(() => {
-      setDisableRouteConfirm(true);
       onDelete(values.id);
     }, [values.id]);
 
     const handleSave = useCallback(
       val => {
-        setDisableRouteConfirm(true);
         if (isNew) {
           onCreate(val);
           return;
@@ -108,18 +106,6 @@ const ImportTemplatesForm = React.memo<Props>(
       [values]
     );
 
-    useEffect(() => {
-      if (disableRouteConfirm && values.id !== prevId) {
-        setDisableRouteConfirm(false);
-      }
-    }, [values.id, prevId, disableRouteConfirm]);
-
-    useEffect(() => {
-      if (!dirty && nextLocation) {
-        history.push(nextLocation);
-        setNextLocation('');
-      }
-    }, [nextLocation, dirty]);
 
     const handleRun = () => {
       setImportIdSelected(values.id);
@@ -139,15 +125,21 @@ const ImportTemplatesForm = React.memo<Props>(
         />
 
         <Form onSubmit={handleSubmit(handleSave)}>
-          {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
-
+          <RouteChangeConfirm form={form} when={dirty || isNew} />
           <AppBarContainer
             values={values}
             manualUrl={manualUrl}
             getAuditsUrl={getAuditsUrl}
             disabled={!dirty}
             invalid={invalid}
-            title={isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
+            title={(
+              <div className="centeredFlex">
+                {isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
+                {[...values.automationTags?.split(",") || [],
+                  ...isInternal ? [] : ["custom"]
+                ].map(t => <InfoPill key={t} label={t} />)}
+              </div>
+            )}
             disableInteraction={isInternal}
             opened={isNew || Object.keys(syncErrors).includes("name")}
             fields={(
@@ -209,7 +201,14 @@ const ImportTemplatesForm = React.memo<Props>(
               </>
             )}
           >
-            <Grid container columnSpacing={3}>
+            <Grid container columnSpacing={3} rowSpacing={2}>
+              <FieldArray
+                name="options"
+                itemsType="component"
+                component={BindingsRenderer}
+                emailTemplates={emailTemplates}
+                rerenderOnEveryChange
+              />
               <Grid item xs={9} className="pr-3">
                 <ScriptCard
                   heading="Script"
@@ -229,7 +228,7 @@ const ImportTemplatesForm = React.memo<Props>(
 
                 <FormField
                   type="text"
-                  label="Key Code"
+                  label="Key code"
                   name="keyCode"
                   validate={isNew || !isInternal ? validateKeycode : undefined}
                   disabled={!isNew}
@@ -249,11 +248,12 @@ const ImportTemplatesForm = React.memo<Props>(
               <Grid item xs={3}>
                 <div>
                   <FormField
-                    type="switch"
-                    name="enabled"
                     label="Enabled"
+                    type="switch"
+                    name="status"
                     color="primary"
-                    fullWidth
+                    format={v => v === "Enabled"}
+                    parse={v => (v ? "Enabled" : "Installed but Disabled")}
                   />
                 </div>
                 <div className="mt-3 pt-1">
@@ -319,13 +319,4 @@ const ImportTemplatesForm = React.memo<Props>(
   }
 );
 
-const mapStateToProps = (state: State) => ({
-  nextLocation: state.nextLocation
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-});
-
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)((props:Props) => (props.values
-  ? <ImportTemplatesForm {...props} /> : null));
+export default (props:Props) => (props.values ? <ImportTemplatesForm {...props} /> : null);

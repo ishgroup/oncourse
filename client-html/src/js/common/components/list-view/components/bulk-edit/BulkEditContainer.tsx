@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import {
@@ -139,12 +142,8 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
     const ids = selectAll ? null : selection.map(s => Number(s));
     const searchObj = selectAll ? searchQuery : {};
     const diff = {
-      [selectedKeyCode]: values[selectedKeyCode]
+      [selectedKeyCode]: values[selectedKeyCode]?.toString()
     };
-
-    if (selectedKeyCode === "bulkTag" || selectedKeyCode === "bulkUntag") {
-      diff[selectedKeyCode] = diff[selectedKeyCode].map(tag => tag.id).join(",");
-    }
 
     doBulkEdit(rootEntity, {
       ids,
@@ -333,7 +332,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           <Grid item xs className={classes.menuColumn}>
             <form autoComplete="off" onSubmit={handleSubmit(onSave)} className={classes.form}>
               <Grid container className={classes.formContent}>
-                <Grid item xs={12}>
+                <Grid item xs={12} md={6}>
                   {BulkEditFieldRendered}
                 </Grid>
               </Grid>

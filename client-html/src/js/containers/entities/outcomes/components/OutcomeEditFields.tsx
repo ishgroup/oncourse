@@ -21,7 +21,6 @@ import { makeStyles } from "@mui/styles";
 import {
  ClassFundingSource, DeliveryMode, FundingUpload, Module, Outcome, OutcomeStatus
 } from "@api/model";
-import Launch from "@mui/icons-material/Launch";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import FundingUploadComponent from "../../../../common/components/form/FundingUploadComponent";
@@ -36,10 +35,9 @@ import {
   validateVetPurchasingContractIdentifier
 } from "../../../../common/utils/validation";
 import Uneditable from "../../../../common/components/form/Uneditable";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { HeaderContactTitle, LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { fundingUploadsPath } from "../../../../constants/Api";
 import FundingUploadService from "../../../avetmiss-export/services/FundingUploadService";
-import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
 import { openModuleLink } from "../../modules/utils";
 import { State } from "../../../../reducers/state";
 import { EditViewProps } from "../../../../model/common/ListView";
@@ -48,7 +46,6 @@ import { AppTheme } from "../../../../model/common/Theme";
 import { AssessmentChart, AttendanceChart } from "./OutcomeProgressionChart";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 
 interface OutcomeEditFieldsProps extends EditViewProps<Outcome> {
   modules?: any[];
@@ -226,12 +223,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           disableInteraction
           twoColumn={twoColumn}
           title={(
-            <div className="d-inline-flex-center">
-              {values && defaultContactName(values.studentName)}
-              <IconButton disabled={!values?.contactId} size="small" color="primary" onClick={() => openContactLink(values?.contactId)}>
-                <Launch fontSize="inherit" />
-              </IconButton>
-            </div>
+            <HeaderContactTitle name={values?.studentName} id={values?.contactId} />
           )}
         />
       </Grid>
@@ -329,14 +321,14 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
         <Grid item xs={12}>
           <Grid container columnSpacing={3} rowSpacing={2} item xs={12}>
             <Grid item xs={twoColumn ? 4 : 12}>
-                <FormField
-                  type="date"
-                  name={getFieldName("startDate")}
-                  label="Start date"
-                  validate={validateStartDate}
-                  listSpacing={false}
-                  placeHolder="Leave empty to calculate date from class"
-                />
+              <FormField
+                type="date"
+                name={getFieldName("startDate")}
+                label="Start date"
+                validate={validateStartDate}
+                listSpacing={false}
+                placeHolder="Leave empty to calculate date from class"
+              />
             </Grid>
             <Grid item xs={twoColumn ? 4 : 12}>
               <FormField
@@ -354,7 +346,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
         <Grid item xs={12}>
           <Card className={classes.card}>
             <Grid container columnSpacing={3} rowSpacing={2} className="p-3 pb-0">
-              <Grid xs={twoColumn ? 3 : 12}>
+              <Grid item xs={twoColumn ? 3 : 12}>
                 <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Training Plan</div>
                 <Tooltip
                   placement="top-start"
@@ -380,7 +372,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                   </div>
                 </Tooltip>
               </Grid>
-              <Grid xs={twoColumn ? 3 : 12}>
+              <Grid item xs={twoColumn ? 3 : 12}>
                 <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Actual</div>
                 <Tooltip placement="top-start" title="First session related to this outcome where student was not marked as absent">
                   <div className="pb-2">
@@ -411,7 +403,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                   </div>
                 </Tooltip>
               </Grid>
-              <Grid xs={twoColumn ? 3 : 12}>
+              <Grid item xs={twoColumn ? 3 : 12}>
                 <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Override</div>
                 <Grid item className={clsx(classes.width240, classes.dateWrapper)}>
                   <div className="pb-2">

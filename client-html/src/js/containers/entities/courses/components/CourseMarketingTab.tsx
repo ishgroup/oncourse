@@ -12,6 +12,7 @@ import { FormEditorField } from "../../../../common/components/markdown-editor/F
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
 import { EditViewProps } from "../../../../model/common/ListView";
+import FormField from "../../../../common/components/form/formFields/FormField";
 
 const relationTypesFilter = {
   entities: ["Module" as const],
@@ -20,10 +21,9 @@ const relationTypesFilter = {
     && rel.shoppingCart === "Add but do not allow removal"
 };
 
-const CourseMarketingTab: React.FC<EditViewProps<Course> & { classes: any }> = props => {
+const CourseMarketingTab: React.FC<EditViewProps<Course>> = props => {
   const {
     twoColumn,
-    classes,
     dispatch,
     form,
     showConfirm,
@@ -43,11 +43,18 @@ const CourseMarketingTab: React.FC<EditViewProps<Course> & { classes: any }> = p
       </Grid>
 
       <Grid item xs={12}>
+        <FormField
+          type="multilineText"
+          name="brochureDescription"
+          label="Print brochure description"
+        />
+      </Grid>
+
+      <Grid item xs={12}>
         <FieldArray
           name="documents"
           label="Documents"
           entity="Course"
-          classes={classes}
           component={DocumentsRenderer}
           xsGrid={12}
           mdGrid={twoColumn ? 4 : 12}

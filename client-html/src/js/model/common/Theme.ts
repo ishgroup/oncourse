@@ -19,7 +19,7 @@ export const HighcontrastThemeKey: ThemeValues = "highcontrast";
 
 type ColorGetter = string | ((props: {}) => string);
 
-type TextExtended = TypeText & { primaryEditable: string; hint: string; };
+type TextExtended = TypeText & { primaryEditable: string; hint: string; grey: string };
 
 export interface AppTheme extends Theme {
   heading: StringKeyObject<ColorGetter>;
@@ -31,4 +31,5 @@ export interface AppTheme extends Theme {
   tabList: StringKeyObject<StringKeyObject<ColorGetter>>;
   table: StringKeyObject<SimplePaletteColorOptions>;
   palette: Palette & { text: TextExtended };
+  addButtonColor: StringKeyObject<ColorGetter>;
 }

@@ -13,7 +13,7 @@ describe("Update script epic tests", () => {
     action: saveScriptItem(1, {
       id: 1,
       name: "script 1",
-      enabled: false,
+      status: "Installed but Disabled",
       keyCode: null,
       entity: null,
       description: "test script",
@@ -42,13 +42,13 @@ describe("Update script epic tests", () => {
         + "    \n"
         + "    args.context.commitChanges()",
       lastRun: [
-        "2018-06-04T05:20:48.000Z",
-        "2018-06-04T05:14:40.000Z",
-        "2018-04-17T07:06:01.000Z",
-        "2018-04-17T07:03:48.000Z",
-        "2018-04-17T07:00:19.000Z",
-        "2018-04-17T06:57:43.000Z",
-        "2018-03-16T10:31:37.000Z"
+        { date: "2018-06-04T05:20:48.000Z", status: "SCRIPT_EXECUTED" },
+        { date: "2018-06-04T05:14:40.000Z", status: "SCRIPT_EXECUTED" },
+        { date: "2018-04-17T07:06:01.000Z", status: "SCRIPT_EXECUTED" },
+        { date: "2018-04-17T07:03:48.000Z", status: "SCRIPT_EXECUTED" },
+        { date: "2018-04-17T07:00:19.000Z", status: "SCRIPT_EXECUTED" },
+        { date: "2018-04-17T06:57:43.000Z", status: "SCRIPT_EXECUTED" },
+        { date: "2018-03-16T10:31:37.000Z", status: "SCRIPT_EXECUTED" },
       ],
       createdOn: "2018-01-16T08:51:46.000Z",
       modifiedOn: "2019-10-10T10:00:15.000Z",

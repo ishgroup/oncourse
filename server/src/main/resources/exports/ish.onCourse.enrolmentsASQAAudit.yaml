@@ -1,7 +1,0 @@
-keyCode: ish.onCourse.enrolmentsASQAAudit.csv
-entityClass: Enrolment
-name: ASQA Enrolments Audit
-versionNumber: 1
-minVersion: 9.13
-body: ish.onCourse.enrolmentsASQAAudit.groovy
-outputType: csv

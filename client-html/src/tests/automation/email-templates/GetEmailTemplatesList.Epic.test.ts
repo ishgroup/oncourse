@@ -1,11 +1,12 @@
 import { mockedAPI } from "../../TestEntry";
-import { CommonListItem } from "../../../js/model/common/sidebar";
 import { DefaultEpic } from "../../common/Default.Epic";
 import {
   GET_EMAIL_TEMPLATES_LIST,
   GET_EMAIL_TEMPLATES_LIST_FULFILLED
 } from "../../../js/containers/automation/containers/email-templates/actions";
 import { EpicGetEmailTemplatesList } from "../../../js/containers/automation/containers/email-templates/epics/EpicGetEmailTemplatesList";
+import { CatalogItemType } from "../../../js/model/common/Catalog";
+import { mapListToCatalogItem } from "../../../js/common/utils/Catalog";
 
 describe("Get email templates list epic tests", () => {
   it("EpicGetEmailTemplatesList should returns correct values", () =>
@@ -17,15 +18,9 @@ describe("Get email templates list epic tests", () => {
       processData: () => {
         const emailTemplatesResponse = mockedAPI.db.getEmailTemplates();
 
-        const emailTemplates: CommonListItem[] = emailTemplatesResponse.rows.map(r => ({
-          id: Number(r.id),
-          name: r.values[0],
-          keyCode: r.values[1],
-          hasIcon: r.values[1].startsWith("ish."),
-          grayOut: r.values[2] === "false"
-        }));
+        const emailTemplates: CatalogItemType[] = emailTemplatesResponse.rows.map(mapListToCatalogItem);
 
-        emailTemplates.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
+        emailTemplates.sort((a, b) => (a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1));
 
         return [
           {

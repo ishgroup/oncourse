@@ -15,7 +15,9 @@ import {
   TaxApi,
   Tax,
   UsiVerificationResult,
-  Diff
+  Diff,
+  ContactInsightApi,
+  ContactInsight
 } from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
 
@@ -24,12 +26,18 @@ class ContactsService {
 
   readonly contactApi = new ContactApi(new DefaultHttpService());
 
+  readonly contactInsightApi = new ContactInsightApi(new DefaultHttpService());
+
   readonly concessionApi = new ConcessionApi(new DefaultHttpService());
 
   readonly taxApi = new TaxApi(new DefaultHttpService());
 
   public getContact(id: number): Promise<Contact> {
     return this.contactApi.getContact(id);
+  }
+
+  public getInsight(id: number): Promise<ContactInsight> {
+    return this.contactInsightApi.getInsight(id);
   }
 
   public createContact(contact: Contact): Promise<any> {

@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
@@ -16,26 +16,32 @@ import {
 } from "@api/model";
 import Chip from "@mui/material/Chip";
 import clsx from "clsx";
-import { IconButton } from "@mui/material";
-import Launch from "@mui/icons-material/Launch";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import {
- contactLabelCondition, defaultContactName, getContactName, openContactLink 
+  ContactLinkAdornment,
+  HeaderContactTitle
+} from "../../../../common/components/form/FieldAdornments";
+import {
+  getContactFullName
 } from "../../contacts/utils";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
-import { mapSelectItems } from "../../../../common/utils/common";
+import { getCustomColumnsMap, mapSelectItems } from "../../../../common/utils/common";
 import EntityService from "../../../../common/services/EntityService";
 import { decimalMul, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { getProductAqlType } from "../../sales/utils";
 import { makeAppStyles } from "../../../../common/styles/makeStyles";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import history from "../../../../constants/History";
+import { RELATION_COURSE_COLUMNS } from "../../common/entityConstants";
+import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import { formatRelatedSalables, mapRelatedSalables } from "../../common/utils";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 const statusItems = Object.keys(LeadStatus).map(mapSelectItems);
 
@@ -49,7 +55,6 @@ const useStyles = makeAppStyles(() => ({
 interface Props extends EditViewProps<Lead> {
   tags?: Tag[];
   users?: User[];
-  isScrolling?: boolean;
 }
 
 const asyncUpdateEstimatedValue = async (dispatch: Dispatch, form: string, relatedSellables: Sale[], places: number) => {
@@ -110,8 +115,54 @@ const LeadGeneral = (props: Props) => {
   const classes = useStyles();
 
   const onContactChange = value => {
-    dispatch(change(form, "contactName", getContactName(value)));
+    dispatch(change(form, "contactName", getContactFullName(value)));
   };
+
+  useEffect(() => {
+    if (history.location.search) {
+      const params = new URLSearchParams(history.location.search);
+
+      const courseIds = params.get('courseIds');
+      const contactId = params.get('contactId');
+      const contactName = params.get('contactName');
+      
+      const clearParams = () => {
+        history.replace({
+          pathname: history.location.pathname,
+          search: decodeURIComponent(params.toString())
+        });
+      };
+      
+      if (contactId) {
+        dispatch(change(form, "contactId", Number(contactId)));
+        params.delete('contactId');
+      }
+
+      if (contactName) {
+        dispatch(change(form, "contactName", contactName));
+        params.delete('contactName');
+      }
+
+      if (courseIds) {
+        EntityService.getPlainRecords(
+          'Course',
+          RELATION_COURSE_COLUMNS,
+          `id in (${courseIds})`,
+        ).then(({ rows }) => {
+          const items = rows.map(getCustomColumnsMap(RELATION_COURSE_COLUMNS));
+          const relatedSellables = formatRelatedSalables(items, 'Course').map(mapRelatedSalables);
+          dispatch(change(form, "relatedSellables", relatedSellables));
+        })
+        .catch(res => instantFetchErrorHandler(dispatch, res))
+        .finally(() => {
+          params.delete('courseIds');
+          clearParams();
+        });
+      } else {
+        clearParams();
+      }
+    }
+  }, []);
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pt-3 pr-3">
@@ -121,12 +172,7 @@ const LeadGeneral = (props: Props) => {
           disableInteraction={!isNew}
           twoColumn={twoColumn}
           title={(
-            <div className="d-inline-flex-center">
-              {values && defaultContactName(values.contactName)}
-              <IconButton disabled={!values?.contactId} size="small" color="primary" onClick={() => openContactLink(values?.contactId)}>
-                <Launch fontSize="inherit" />
-              </IconButton>
-            </div>
+            <HeaderContactTitle name={values?.contactName} id={values?.contactId} />
           )}
           fields={(
             <Grid item xs={twoColumn ? 6 : 12}>
@@ -136,12 +182,14 @@ const LeadGeneral = (props: Props) => {
                 entity="Contact"
                 name="contactId"
                 selectValueMark="id"
-                selectLabelCondition={contactLabelCondition}
-                defaultDisplayValue={defaultContactName(values.contactName)}
+                selectLabelCondition={getContactFullName}
+                defaultDisplayValue={values.contactName}
                 onInnerValueChange={onContactChange}
                 itemRenderer={ContactSelectItemRenderer}
                 disabled={!isNew}
-                labelAdornment={<LinkAdornment link={values.contactId} linkHandler={openContactLink} />}
+                labelAdornment={
+                  <ContactLinkAdornment id={values?.contactId} />
+                }
                 rowHeight={55}
                 required
               />
@@ -149,34 +197,44 @@ const LeadGeneral = (props: Props) => {
           )}
         />
       </Grid>
-      <Grid item xs={twoColumn ? 6 : 12}>
-        {!isNew
-          && (
+      <Grid item container rowSpacing={2} xs={twoColumn ? 6 : 12}>
+        <Grid item xs={12}>
           <FormField
-            type="searchSelect"
-            name="assignToId"
-            label="Assigned to"
-            selectValueMark="id"
-            selectLabelCondition={contactLabelCondition}
-            defaultDisplayValue={defaultContactName(values.assignTo)}
-            disabled={!users}
-            items={users}
-            required
+            type="tags"
+            name="tags"
+            tags={tags}
           />
+        </Grid>
+        {!isNew
+        && (
+          <Grid item xs={12}>
+            <FormField
+              type="searchSelect"
+              name="assignToId"
+              label="Assigned to"
+              selectValueMark="id"
+              selectLabelCondition={getContactFullName}
+              defaultDisplayValue={values.assignTo}
+              disabled={!users}
+              items={users}
+              required
+            />
+          </Grid>
         )}
+        <Grid item xs={12}>
+          <FormField type="number" name="studentCount" label="Number of students" />
+        </Grid>
+        <Grid item xs={12}>
+          <FormField type="dateTime" name="nextActionOn" label="Next action on" />
+        </Grid>
       </Grid>
       <Grid item xs={twoColumn ? 6 : 12}>
-        <FormField
-          type="tags"
-          name="tags"
-          tags={tags}
+        <EntityChecklists
+          entity="Lead"
+          form={form}
+          entityId={values.id}
+          checked={values.tags}
         />
-      </Grid>
-      <Grid item xs={twoColumn ? 6 : 12}>
-        <FormField type="number" name="studentCount" label="Number of students" />
-      </Grid>
-      <Grid item xs={twoColumn ? 6 : 12}>
-        <FormField type="dateTime" name="nextActionOn" label="Next action on" />
       </Grid>
       <Grid item xs={twoColumn ? 6 : 12}>
         <div className="centeredFlex">

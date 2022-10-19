@@ -7,6 +7,7 @@ records.each { CourseClass cc ->
 			"Enrol maximum"   : cc.maximumPlaces,
 			"Enrol budget"    : cc.budgetedPlaces,
 			"Enrol actual"    : cc.validEnrolmentCount,
+			"Enrol cancelled" : cc.cancelledEnrolmentCount,
 			"Class fee"       : cc.feeIncGst?.toPlainString(),
 			"Income maximum"  : cc.maximumTotalIncome?.toPlainString(),
 			"Income budget"   : cc.budgetedTotalIncome?.toPlainString(),
@@ -16,6 +17,8 @@ records.each { CourseClass cc ->
 			"Expenses actual" : cc.actualTotalCost?.toPlainString(),
 			"Profit maximum"  : cc.maximumTotalProfit?.toPlainString(),
 			"Profit budget"   : cc.budgetedTotalProfit?.toPlainString(),
-			"Profit actual"   : cc.actualTotalProfit?.toPlainString()
+			"Profit actual"   : cc.actualTotalProfit?.toPlainString(),
+			"Invoiced total"  : cc.totalInvoiced?.toPlainString(),
+			"Credits total"   : cc.totalCredits?.toPlainString()
 	]
 }

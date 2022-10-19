@@ -15,7 +15,7 @@ const NestedTableLinkCell = props => {
   return (
     <div className="centeredFlex linkDecoration" onClick={() => openInternalLink(link)}>
       <span className="text-truncate">{value}</span>
-      <OpenInNew className={classes.linkIcon} color="secondary" />
+      <OpenInNew className={classes.linkIcon} color="primary" />
     </div>
   );
 };

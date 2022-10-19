@@ -12,6 +12,7 @@
 package ish.oncourse.server.cayenne
 
 import ish.common.types.CourseEnrolmentType
+import ish.common.types.NodeType
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.function.CalculateCourseClassNominalHours
@@ -534,7 +535,8 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	List<Tag> getTags() {
 		List<Tag> tagList = new ArrayList<>(getTaggingRelations().size())
 		for (CourseTagRelation relation : getTaggingRelations()) {
-			tagList.add(relation.getTag())
+			if(relation.tag?.nodeType?.equals(NodeType.TAG))
+				tagList.add(relation.getTag())
 		}
 		return tagList
 	}

@@ -104,9 +104,7 @@ class QualificationFunctions {
                 return new ValidationErrorDTO(qualification?.id?.toString(), 'title', "Title can't be more than 255 chars.")
             }
 
-            if (!trimToNull(qualification.qualLevel)) {
-                return new ValidationErrorDTO(qualification?.id?.toString(), 'qualLevel', 'Level is required.')
-            } else if (qualification.qualLevel .length() > 255) {
+            if (trimToNull(qualification.qualLevel) != null && qualification.qualLevel .length() > 255) {
                 return new ValidationErrorDTO(qualification?.id?.toString(), 'qualLevel', "Level can't be more than 255 chars.")
             }
 

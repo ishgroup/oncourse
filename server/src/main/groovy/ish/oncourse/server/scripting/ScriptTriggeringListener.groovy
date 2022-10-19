@@ -15,6 +15,7 @@ import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.ISHDataContext
 import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.cayenne.Script
+import ish.oncourse.server.cayenne.TagRelation
 import ish.persistence.Preferences
 import ish.scripting.ScriptResult
 import org.apache.cayenne.DataChannelSyncFilter

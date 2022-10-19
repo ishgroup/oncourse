@@ -17,7 +17,6 @@ import com.google.inject.Singleton
 import groovy.transform.CompileStatic
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.api.v1.model.CategoryDTO
 import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
 import ish.oncourse.server.api.v1.model.TableModelDTO
 import ish.oncourse.server.cayenne.Account
@@ -56,7 +55,6 @@ class UserPreferenceService {
     private LicenseService licenseService
 
     private static final String USER_PREF_PREFIX = "html.table"
-    private static final String DASHBOARD_FAVORITE_CATEGORY = "html.dashboard.favorite"
     private static final String NEWS = "news.read"
     public static final String JOIN_DELIMETER = ','
 
@@ -90,30 +88,6 @@ class UserPreferenceService {
 
         return defaultModel
     }
-
-    void setFavoriteCategories(List<CategoryDTO> categories) {
-
-        Preference preference = getUserPref(DASHBOARD_FAVORITE_CATEGORY)?:createUserPref(DASHBOARD_FAVORITE_CATEGORY)
-        preference.valueString = categories.empty ? null : categories*.name().join(JOIN_DELIMETER)
-        preference.context.commitChanges()
-    }
-
-    List<CategoryDTO> getFavoriteCategories() {
-        try {
-            Preference preference = getUserPref(DASHBOARD_FAVORITE_CATEGORY)
-
-            if (preference && preference.valueString) {
-                return preference.valueString.split(JOIN_DELIMETER)
-                        .findAll {str -> str in CategoryDTO.values()*.name()}
-                        .collect { str ->  CategoryDTO.values().find {it.name() == str } }
-            }
-        } catch (IOException|CayenneRuntimeException e) {
-            logger.catching(e)
-        }
-
-        return Collections.EMPTY_LIST
-    }
-
 
     private Preference getUserPref(String name) {
         return userService.currentUser.preferences.find {it.name == name}
@@ -177,7 +151,7 @@ class UserPreferenceService {
             case PreferenceEnumDTO.ACCOUNT_DEFAULT_VOUCHERLIABILITY_ID:
                 return preferenceController.getPreference(ACCOUNT_DEFAULT_VOUCHERLIABILITY_ID.toString(), false).getValueString()
             case PreferenceEnumDTO.REPLICATION_ENABLED:
-                return !licenseService.replicationDisabled
+                return !licenseService.isReplicationDisabled()
             case PreferenceEnumDTO.AVETMISS_IDENTIFIER:
                 return preferenceController.avetmissID
             case PreferenceEnumDTO.COURSECLASS_DEFAULT_DELIVERYMODE:
@@ -192,6 +166,10 @@ class UserPreferenceService {
                 return AccountUtil.getDefaultVoucherExpenseAccount(preferenceController.objectContext, Account.class)?.id?.toString()
             case PreferenceEnumDTO.ONCOURSE_SERVER_TIMEZONE_DEFAULT:
                 return preferenceController.getOncourseServerDefaultTimezone()
+            case PreferenceEnumDTO.TUTORIAL_SKIP_SYSTEMUSER:
+                return preferenceController.getTutorialSkipSystemUser()
+            case PreferenceEnumDTO.BACKGROUND_QUALITY_SCALE:
+                return preferenceController.getBackgroundQualityScale()
             case PreferenceEnumDTO.NEWS_READ:
                 return getReadNews()
             default:

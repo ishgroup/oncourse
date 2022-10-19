@@ -1,0 +1,837 @@
+- keyCode: ish.onCourse.account.csv
+  entityClass: Account
+  body: ish.onCourse.account.csv.groovy
+  name: Account CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of accounts in a spreadsheet
+  category: accounting
+
+- keyCode: ish.onCourse.account.xml
+  entityClass: Account
+  body: ish.onCourse.account.xml.groovy
+  name: Account XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of accounts to an XML file
+  category: accounting
+
+- keyCode: ish.onCourse.accountTransaction.csv
+  entityClass: AccountTransaction
+  body: ish.onCourse.accountTransaction.csv.groovy
+  name: Account Transaction CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Account Transactions in a spreadsheet
+  category: accounting
+
+- keyCode: ish.onCourse.accountTransaction.xml
+  entityClass: AccountTransaction
+  body: ish.onCourse.accountTransaction.xml.groovy
+  name: Account Transaction XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Account Transactions to an XML file
+  category: accounting
+
+- keyCode: ish.onCourse.accountTransactionMYOB.csv
+  entityClass: AccountTransaction
+  body: ish.onCourse.accountTransactionMYOB.csv.groovy
+  name: Account Transaction MYOB
+  outputType: csv
+  description: Export account transaction records to CSV format for import into MYOB. This is for manually importing data into MYOB.
+  short: Export account transaction records to CSV format for import into MYOB
+  category: accounting
+
+- keyCode: ish.onCourse.accountTransactionSegmentation.csv
+  entityClass: AccountTransaction
+  body: ish.onCourse.accountTransactionSegmentation.csv.groovy
+  name: Account Transaction Segmentation CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Account Transaction Segmentations in a spreadsheet
+  category: accounting
+
+- keyCode: ish.onCourse.application.xml
+  entityClass: Application
+  body: ish.onCourse.application.xml.groovy
+  name: Application XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Applications to an XML file
+  category: crm
+
+- keyCode: ish.onCourse.assessment.csv
+  entityClass: Assessment
+  body: ish.onCourse.assessment.csv.groovy
+  name: Assessment CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Assessments in a spreadsheet
+  category: education
+
+- keyCode: ish.onCourse.assessment.xml
+  entityClass: Assessment
+  body: ish.onCourse.assessment.xml.groovy
+  name: Assessment XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Assessments to an XML file
+  category: education
+
+- keyCode: ish.onCourse.assessmentSubmission.csv
+  entityClass: AssessmentSubmission
+  body: ish.onCourse.assessmentSubmission.csv.groovy
+  name: Assessment Submission CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Assessment Submissions in a spreadsheet
+  category: education
+
+- keyCode: ish.onCourse.assessmentSubmission.xml
+  entityClass: AssessmentSubmission
+  body: ish.onCourse.assessmentSubmission.xml.groovy
+  name: Assessment Submission XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Assessment Submissions to an XML file
+  category: education
+
+- keyCode: ish.onCourse.attendance.csv
+  entityClass: CourseClass
+  body: ish.onCourse.attendance.csv.groovy
+  name: Attendance CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Attendances in a spreadsheet
+  category: education
+
+- keyCode: ish.onCourse.audit.xml
+  entityClass: Audit
+  body: ish.onCourse.audit.xml.groovy
+  name: Audit Logs XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Audit Log records to an XML file
+  category: configuration
+
+- keyCode: ish.onCourse.auditLogging.csv
+  entityClass: Audit
+  body: ish.onCourse.auditLogging.csv.groovy
+  name: Audit Logs CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Audit Logs in a spreadsheet
+  category: configuration
+
+- keyCode: ish.onCourse.banking.csv
+  entityClass: Banking
+  body: ish.onCourse.banking.csv.groovy
+  name: Banking CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Bankings in a spreadsheet
+  category: accounting
+
+- keyCode: ish.onCourse.banking.xml
+  entityClass: Banking
+  body: ish.onCourse.banking.xml.groovy
+  name: Banking XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Bankings to an XML file
+  category: accounting
+
+- keyCode: ish.onCourse.certificate.csv
+  entityClass: Certificate
+  body: ish.onCourse.certificate.csv.groovy
+  name: Certificate CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Certificates in a spreadsheet
+  category: accreditation
+
+- keyCode: ish.onCourse.certificate.xml
+  entityClass: Certificate
+  body: ish.onCourse.certificate.xml.groovy
+  name: Certificate XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Certificates to an XML file
+  category: accreditation
+
+- keyCode: ish.onCourse.certificateCQR.csv
+  entityClass: Certificate
+  body: ish.onCourse.certificateCQR.csv.groovy
+  name: Certificate CQR CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Certificate CQRs in a spreadsheet
+  category: accreditation
+
+- keyCode: ish.onCourse.classBudget.csv
+  entityClass: CourseClass
+  body: ish.onCourse.classBudget.csv.groovy
+  name: Class Budget Summary CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Class Budget Summarys in a spreadsheet
+  category: education
+
+- keyCode: ish.onCourse.classOutcomes.csv
+  entityClass: CourseClass
+  body: ish.onCourse.classOutcomes.csv.groovy
+  name: Class outcomes CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Class outcomess in a spreadsheet
+  category: education
+
+- keyCode: ish.onCourse.contact.csv
+  entityClass: Contact
+  body: ish.onCourse.contact.csv.groovy
+  name: Contact CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Contacts in a spreadsheet
+  category: crm
+
+- keyCode: ish.onCourse.contact.xml
+  entityClass: Contact
+  body: ish.onCourse.contact.xml.groovy
+  name: Contact XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Contacts to an XML file
+  category: crm
+
+- keyCode: ish.onCourse.contact.json
+  entityClass: Contact
+  body: ish.onCourse.contact.json.groovy
+  name: Contact JSON
+  outputType: json
+  description: Export records to json format. This structured file format is good for sending data to other systems while also being easily readable by humans.
+  short: Export a list of contacts to a json file
+  category: crm
+
+- keyCode: ish.onCourse.corporatePass.csv
+  entityClass: CorporatePass
+  body: ish.onCourse.corporatePass.csv.groovy
+  name: CorporatePass CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of corporatePasses in a spreadsheet
+  category: crm
+
+- keyCode: ish.onCourse.corporatePass.xml
+  entityClass: CorporatePass
+  body: ish.onCourse.corporatePass.xml.groovy
+  name: CorporatePass XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of CorporatePasss to an XML file
+  category: crm
+
+- keyCode: ish.onCourse.course.csv
+  entityClass: Course
+  body: ish.onCourse.course.csv.groovy
+  name: Course CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Courses in a spreadsheet
+  category: education
+
+- keyCode: ish.onCourse.course.xml
+  entityClass: Course
+  body: ish.onCourse.course.xml.groovy
+  name: Course XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Courses to an XML file
+  category: education
+
+- keyCode: ish.onCourse.courseClass.csv
+  entityClass: CourseClass
+  body: ish.onCourse.courseClass.csv.groovy
+  name: CourseClass CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of CourseClasss in a spreadsheet
+  category: scheduling
+
+- keyCode: ish.onCourse.courseClass.xml
+  entityClass: CourseClass
+  body: ish.onCourse.courseClass.xml.groovy
+  name: CourseClass XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of CourseClasss to an XML file
+  category: scheduling
+
+- keyCode: ish.onCourse.courseClassSessions.csv
+  entityClass: CourseClass
+  body: ish.onCourse.courseClassSessions.csv.groovy
+  name: CourseClass Sessions CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of CourseClass Sessionss in a spreadsheet
+  category: scheduling
+
+- keyCode: ish.onCourse.debtorPaymentSummary.csv
+  entityClass: Invoice
+  body: ish.onCourse.debtorPaymentSummary.csv.groovy
+  name: Debtor Payment Summary
+  outputType: csv
+  description: Run on overdue invoices. Exports to csv format data detailing a payment summary for the selected invoices. Useful for seeing a summary of all debtor payments.
+  short: See payment summary data of the selected invoices in a spreadsheet
+  category: accounting
+
+- keyCode: ish.onCourse.discount.csv
+  entityClass: Discount
+  body: ish.onCourse.discount.csv.groovy
+  name: Discount CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Discounts in a spreadsheet
+  category: accounting
+
+- keyCode: ish.onCourse.discount.xml
+  entityClass: Discount
+  body: ish.onCourse.discount.xml.groovy
+  name: Discount XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Discounts to an XML file
+  category: accounting
+
+- keyCode: ish.onCourse.document.csv
+  entityClass: Document
+  body: ish.onCourse.document.csv.groovy
+  name: Document CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Documents in a spreadsheet
+  category: documents
+
+- keyCode: ish.onCourse.document.xml
+  entityClass: Document
+  body: ish.onCourse.documents.xml.groovy
+  name: Document XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Documents to an XML file
+  category: documents
+
+- keyCode: ish.onCourse.enrolment.csv
+  entityClass: Enrolment
+  body: ish.onCourse.enrolment.csv.groovy
+  name: Enrolment CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Enrolments in a spreadsheet
+  category: sales
+
+- keyCode: ish.onCourse.enrolment.xml
+  entityClass: Enrolment
+  body: ish.onCourse.enrolment.xml.groovy
+  name: Enrolment XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Enrolments to an XML file
+  category: sales
+
+- keyCode: ish.onCourse.enrolmentExtendedOutcomes.csv
+  entityClass: Enrolment
+  body: ish.onCourse.enrolmentExtendedOutcomes.csv.groovy
+  name: Extended outcomes CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Extended outcomess in a spreadsheet
+  category: education
+
+- keyCode: ish.onCourse.enrolmentsASQAAudit.csv
+  entityClass: Enrolment
+  name: ASQA Enrolments Audit
+  versionNumber: 1
+  minVersion: 9.13
+  body: ish.onCourse.enrolmentsASQAAudit.groovy
+  outputType: csv
+  description: An export in CSV format that can be supplied to ASQA for purposes of satisfying their audit process. This export looks specifically at student enrolments, detailing the course enrolled in, when they enrolled and some contact details.
+  short: Export enrolment details in CSV format for ASQA auditing
+  category: accreditation
+
+- keyCode: ish.onCourse.extendedOutcomes.csv
+  entityClass: CourseClass
+  body: ish.onCourse.extendedOutcomes.csv.groovy
+  name: Extended outcomes CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Extended outcomess in a spreadsheet
+  category: education
+
+- keyCode: ish.onCourse.groupedMYOB.csv
+  entityClass: AccountTransaction
+  body: ish.onCourse.groupedMYOB.csv.groovy
+  name: grouped MYOB
+  outputType: csv
+  description: An export in CSV format that group your account transactions by account code and date, for manual import into MYOB.
+  short: Exports account transactions grouped by date and account code to a spreadsheet for MYOB import
+  category: accounting
+
+- keyCode: ish.onCourse.indesignBrochureClass.xml
+  entityClass: CourseClass
+  body: ish.onCourse.indesignBrochureClass.xml.groovy
+  name: Indesign Brochure XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Indesign Brochures to an XML file
+  category: marketing
+
+- keyCode: ish.onCourse.invoice.csv
+  entityClass: Invoice
+  body: ish.onCourse.invoice.csv.groovy
+  name: Invoice CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Invoices in a spreadsheet
+  category: accounting
+
+- keyCode: ish.onCourse.invoice.xml
+  entityClass: Invoice
+  body: ish.onCourse.invoice.xml.groovy
+  name: Invoice XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Invoices to an XML file
+  category: accounting
+
+- keyCode: ish.onCourse.invoiceLine.csv
+  entityClass: Invoice
+  body: ish.onCourse.invoiceLine.csv.groovy
+  name: InvoiceLine CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of InvoiceLines in a spreadsheet
+  category: accounting
+
+- keyCode: ish.onCourse.lead.csv
+  entityClass: Lead
+  body: ish.onCourse.lead.csv.groovy
+  name: Lead CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Leads in a spreadsheet
+  category: crm
+
+- keyCode: ish.onCourse.lead.xml
+  entityClass: Lead
+  body: ish.onCourse.lead.xml.groovy
+  name: Lead XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Leads to an XML file
+  category: crm
+
+- keyCode: ish.onCourse.message.csv
+  entityClass: Message
+  body: ish.onCourse.message.csv.groovy
+  name: Message CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Messages in a spreadsheet
+  category: crm
+
+- keyCode: ish.onCourse.message.xml
+  entityClass: Message
+  body: ish.onCourse.message.xml.groovy
+  name: Message XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Messages to an XML file
+  category: crm
+
+- keyCode: ish.onCourse.module.csv
+  entityClass: Module
+  body: ish.onCourse.module.csv.groovy
+  name: Module CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Modules in a spreadsheet
+  category: education
+
+- keyCode: ish.onCourse.module.xml
+  entityClass: Module
+  body: ish.onCourse.module.xml.groovy
+  name: Module XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Modules to an XML file
+  category: education
+
+- keyCode: ish.onCourse.myobactivity.csv
+  entityClass: Payslip
+  body: ish.onCourse.myobactivity.csv.groovy
+  name: MYOB Activity Payslip CSV
+  outputType: csv
+  description: Export tutor pay records to CSV format, for manual upload into MYOB.
+  short: Export a list of tutor payslips in a spreadsheet for upload to MYOB
+  category: payroll
+
+- keyCode: ish.onCourse.nswOlgr.csv
+  entityClass: Contact
+  body: ish.onCourse.nswOlgr.csv.groovy
+  name: NSW OLGR CSV
+  outputType: csv
+  description: Export contacts in CSV format, focusing on data to be provided for Liquor & Gaming NSW.
+  short: Open a list of contacts in a spreadsheet for Liquor & Gaming NSW
+  category: accreditation
+
+- keyCode: ish.onCourse.outcome.csv
+  entityClass: Outcome
+  body: ish.onCourse.outcome.csv.groovy
+  name: Outcome CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Outcomes in a spreadsheet
+  category: education
+
+- keyCode: ish.onCourse.outcome.xml
+  entityClass: Outcome
+  body: ish.onCourse.outcome.xml.groovy
+  name: Outcome XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Outcomes to an XML file
+  category: education
+
+- keyCode: ish.onCourse.paymentIn.csv
+  entityClass: PaymentIn
+  body: ish.onCourse.paymentIn.csv.groovy
+  name: PaymentIn CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of PaymentIns in a spreadsheet
+  category: accounting
+
+- keyCode: ish.onCourse.paymentIn.xml
+  entityClass: PaymentIn
+  body: ish.onCourse.paymentIn.xml.groovy
+  name: PaymentIn XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of PaymentIns to an XML file
+  category: accounting
+
+- keyCode: ish.onCourse.paymentOut.csv
+  entityClass: PaymentOut
+  body: ish.onCourse.paymentOut.csv.groovy
+  name: PaymentOut CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of PaymentOuts in a spreadsheet
+  category: accounting
+
+- keyCode: ish.onCourse.paymentOut.xml
+  entityClass: PaymentOut
+  body: ish.onCourse.paymentOut.xml.groovy
+  name: PaymentOut XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of PaymentOuts to an XML file
+  category: accounting
+
+- keyCode: ish.onCourse.payslip.csv
+  entityClass: Payslip
+  body: ish.onCourse.payslip.csv.groovy
+  name: Payslip CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Payslips in a spreadsheet
+  category: payroll
+
+- keyCode: ish.onCourse.payslip.xml
+  entityClass: Payslip
+  body: ish.onCourse.payslip.xml.groovy
+  name: Payslip XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Payslips to an XML file
+  category: payroll
+
+- keyCode: ish.onCourse.payslipMicropay.csv
+  entityClass: Payslip
+  body: ish.onCourse.payslipMicropay.csv.groovy
+  name: Payslip MicroPay
+  outputType: csv
+  description: Export tutor payslip records to CSV format for the purpose of manual upload to MicroPay
+  short: Export a list of payslips to CSV for MicroPay
+  category: payroll
+
+- keyCode: ish.onCourse.priorLearning.csv
+  entityClass: PriorLearning
+  body: ish.onCourse.priorLearning.csv.groovy
+  name: Prior Learning CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Prior Learnings in a spreadsheet
+  category: education
+
+- keyCode: ish.onCourse.priorLearning.xml
+  entityClass: PriorLearning
+  body: ish.onCourse.priorLearning.xml.groovy
+  name: Prior Learning XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Prior Learnings to an XML file
+  category: education
+
+- keyCode: ish.onCourse.qualification.csv
+  entityClass: Qualification
+  body: ish.onCourse.qualification.csv.groovy
+  name: Qualification CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Qualifications in a spreadsheet
+  category: education
+
+- keyCode: ish.onCourse.qualification.xml
+  entityClass: Qualification
+  body: ish.onCourse.qualification.xml.groovy
+  name: Qualification XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Qualifications to an XML file
+  category: education
+
+- keyCode: ish.onCourse.qualificationsASQAExport.csv
+  name: ASQA Qualifications
+  entityClass: Qualification
+  body: ish.onCourse.qualificationsASQAExport.groovy
+  outputType: csv
+  description: This export produces results in accordance with ASQA's Delivery Data Summary - Table A spreadsheet. The last three columns are expected to be empty as these must be filled out manually.
+  short: Export qualification records to CSV for ASQA audit
+  category: accreditation
+
+
+- keyCode: ish.onCourse.quote.csv
+  entityClass: Quote
+  body: ish.onCourse.quote.csv.groovy
+  name: Quote CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Quotes in a spreadsheet
+  category: crm
+
+- keyCode: ish.onCourse.quote.xml
+  entityClass: Quote
+  body: ish.onCourse.quote.xml.groovy
+  name: Quote XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Quotes to an XML file
+  category: crm
+
+- keyCode: ish.onCourse.quoteLine.csv
+  entityClass: Quote
+  body: ish.onCourse.quoteLine.csv.groovy
+  name: QuoteLine CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of QuoteLines in a spreadsheet
+  category: crm
+
+- keyCode: ish.onCourse.room.csv
+  entityClass: Room
+  body: ish.onCourse.room.csv.groovy
+  name: Room CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Rooms in a spreadsheet
+  category: scheduling
+
+- keyCode: ish.onCourse.room.xml
+  entityClass: Room
+  body: ish.onCourse.room.xml.groovy
+  name: Room XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Rooms to an XML file
+  category: scheduling
+
+- keyCode: ish.onCourse.script.csv
+  entityClass: Script
+  body: ish.onCourse.script.csv.groovy
+  name: Script CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Scripts in a spreadsheet
+  category: automation
+
+- keyCode: ish.onCourse.script.xml
+  entityClass: Script
+  body: ish.onCourse.script.xml.groovy
+  name: Script XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Scripts to an XML file
+  category: automation
+
+- keyCode: ish.onCourse.site.csv
+  entityClass: Site
+  body: ish.onCourse.site.csv.groovy
+  name: Site CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Sites in a spreadsheet
+  category: scheduling
+
+- keyCode: ish.onCourse.site.xml
+  entityClass: Site
+  body: ish.onCourse.site.xml.groovy
+  name: Site XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Sites to an XML file
+  category: scheduling
+
+- keyCode: ish.onCourse.ssBulkUpload.csv
+  entityClass: Application
+  body: ish.onCourse.ssBulkUpload.csv.groovy
+  name: Smart & Skilled Bulk Upload
+  outputType: csv
+  description: Exports in CSV format Application data for the purpose of bulk upload to NSW Smart & Skilled
+  short: An export of Applications to CSV for uploading to S&S
+  category: accreditation
+
+- keyCode: ish.onCourse.survey.csv
+  entityClass: Survey
+  body: ish.onCourse.survey.csv.groovy
+  name: StudentFeedback CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of StudentFeedbacks in a spreadsheet
+  category: marketing
+
+- keyCode: ish.onCourse.survey.xml
+  entityClass: Survey
+  body: ish.onCourse.survey.xml.groovy
+  name: StudentFeedback XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of StudentFeedbacks to an XML file
+  category: marketing
+
+- keyCode: ish.onCourse.trainingPackage.csv
+  entityClass: TrainingPackage
+  body: ish.onCourse.trainingPackage.csv.groovy
+  name: Training Package CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Training Packages in a spreadsheet
+  category: accreditation
+
+- keyCode: ish.onCourse.unitsOfCompetencyASQAExport.csv
+  entityClass: Module
+  body: ish.onCourse.unitsOfCompetencyASQAExport.groovy
+  name: ASQA Units of Competency
+  outputType: csv
+  description: This export produces results in accordance with ASQA's Delivery Data Summary - Table B spreadsheet. The last three columns are expected to be empty as these must be filled out manually.
+  short: Export Modules in CSV format for use in ASQA's auditing process
+  category: accreditation
+  minVersion: 9.13
+
+- keyCode: ish.onCourse.voucher.csv
+  entityClass: Voucher
+  body: ish.onCourse.voucher.csv.groovy
+  name: Voucher CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Vouchers in a spreadsheet
+  category: marketing
+
+- keyCode: ish.onCourse.voucher.xml
+  entityClass: Voucher
+  body: ish.onCourse.voucher.xml.groovy
+  name: Voucher XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of Vouchers to an XML file
+  category: marketing
+
+- keyCode: ish.onCourse.voucherProduct.csv
+  entityClass: VoucherProduct
+  body: ish.onCourse.voucherProduct.csv.groovy
+  name: Voucher Product CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of Voucher Products in a spreadsheet
+  category: marketing
+
+- keyCode: ish.onCourse.voucherProduct.xml
+  entityClass: VoucherProduct
+  body: ish.onCourse.voucherProduct.xml.groovy
+  name: VoucherProduct XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of VoucherProducts to an XML file
+  category: marketing
+
+- keyCode: ish.onCourse.waitingList.csv
+  entityClass: WaitingList
+  body: ish.onCourse.waitingList.csv.groovy
+  name: WaitingList CSV
+  outputType: csv
+  description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
+  short: Open a list of WaitingLists in a spreadsheet
+  category: crm
+
+- keyCode: ish.onCourse.waitingList.xml
+  entityClass: WaitingList
+  body: ish.onCourse.waitingList.xml.groovy
+  name: WaitingList XML
+  outputType: xml
+  description: Export records to XML format. This structured file format can represent typed data from multiple tables and is often the most robust way to send data to other systems.
+  short: Export a list of WaitingLists to an XML file
+  category: crm
+
+- keyCode: ish.oncourse.agedDebtorCsvExport.csv
+  entityClass: Contact
+  name: Historic Aged Debtor CSV
+  versionNumber: 1
+  minVersion: 9.13
+  body: ish.oncourse.agedDebtorCsvExport.groovy
+  outputType: csv
+  description: Export in CSV format the aged historic debtors as of midnight at the end of the 'As At Date'. Optionally export detail lines of all owing invoices individually. Note that this export runs on all data in the database and ignores the selection of contacts you have made before running the export.
+  short: Exports in CSV a list of aged historic debtors.
+  category: accounting
+  variables:
+    - name: detail
+      label: Export detail lines
+      dataType: BOOLEAN
+      value: "false"
+    - name: atDate
+      label: As at date
+      dataType: DATE
+
+- keyCode: ish.oncourse.duplicateContactsExport.csv
+  entityClass: Contact
+  name: Duplicate Contacts CSV
+  body: ish.oncourse.duplicateContactsExport.csv.groovy
+  outputType: csv
+  description: Exports in CSV format duplicate contacts. Duplicate search is performed by first name, last name and email. It is possible to choose which fields will be used to search for contacts - 3 fields (first name, last name and email); 2 fields (last name and email); 2 fields (first name and email); 2 fields (first name and last name). Note that this export runs on all data in the database and ignores the selection of contacts you have made before running the export.
+  short: Exports in CSV format duplicate contacts that were found by first name, last name and email
+  category: crm
+  variables:
+    - name: searchByFirstNameAndLastNameAndEmail
+      label: Find duplicates by first name, last name and email
+      dataType: BOOLEAN
+      value: "true"
+    - name: searchByLastNameAndEmail
+      label: Find duplicates by last name and email
+      dataType: BOOLEAN
+    - name: searchByFirstNameAndEmail
+      label: Find duplicates by first name and email
+      dataType: BOOLEAN
+    - name: searchByFirstNameAndLastName
+      label: Find duplicates by first name and last name
+      dataType: BOOLEAN

@@ -14,6 +14,7 @@ package ish.oncourse.server.api.service;
 import ish.oncourse.server.api.dao.AutomationDao;
 import ish.oncourse.server.api.function.BindingFunctions;
 import ish.oncourse.server.api.traits.AutomationDTOTrait;
+import ish.oncourse.server.api.v1.model.AutomationStatusDTO;
 import ish.oncourse.server.api.validation.EntityValidator;
 import ish.oncourse.server.cayenne.AutomationTrait;
 import org.apache.cayenne.ObjectContext;
@@ -45,10 +46,13 @@ abstract class AutomationApiService<T extends AutomationDTOTrait , K extends Aut
         automationDto.setKeyCode(cayenneModel.getKeyCode());
         automationDto.setEntity(cayenneModel.getEntity());
         automationDto.setBody(cayenneModel.getBody());
-        automationDto.setEnabled(cayenneModel.getEnabled());
+        automationDto.setStatus(AutomationStatusDTO.values()[0].fromDbType(cayenneModel.getAutomationStatus()));
         automationDto.setCreatedOnDate(cayenneModel.getCreatedOn());
         automationDto.setModifiedOnDate(cayenneModel.getModifiedOn());
         automationDto.setDescription(cayenneModel.getDescription());
+        automationDto.setShortDescription(cayenneModel.getShortDescription());
+        automationDto.setCategory(cayenneModel.getCategory());
+        automationDto.setAutomationTags(cayenneModel.getAutomationTags());
         BindingFunctions.populateAutomationBindings(automationDto, cayenneModel);
 
         return automationDto;
@@ -59,8 +63,11 @@ abstract class AutomationApiService<T extends AutomationDTOTrait , K extends Aut
         cayenneModel.setKeyCode(trimToNull(dto.getKeyCode()));
         cayenneModel.setEntity(trimToNull(dto.getEntity()));
         cayenneModel.setBody(trimToNull(dto.getBody()));
-        cayenneModel.setEnabled(dto.isEnabled() == null ? false : dto.isEnabled());
+        cayenneModel.setAutomationStatus(dto.getStatus().getDbType());
         cayenneModel.setDescription(dto.getDescription());
+        cayenneModel.setShortDescription(dto.getShortDescription());
+        cayenneModel.setCategory(dto.getCategory());
+        cayenneModel.setAutomationTags(dto.getAutomationTags());
         BindingFunctions.updateAutomationBindings(cayenneModel, dto);
         return cayenneModel;
     }
@@ -127,7 +134,7 @@ abstract class AutomationApiService<T extends AutomationDTOTrait , K extends Aut
     public K updateInternal(T dto) {
         ObjectContext context = cayenneService.getNewContext();
         var entity = getEntityAndValidateExistence(context, dto.getId());
-        entity.setEnabled(dto.isEnabled() == null ? false : dto.isEnabled());
+        entity.setAutomationStatus(dto.getStatus().getDbType());
         BindingFunctions.updateBuiltInOptions(entity, dto.getOptions());
         return entity;
     }

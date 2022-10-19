@@ -1,10 +1,11 @@
-import { CommonListItem } from "../../../js/model/common/sidebar";
 import { DefaultEpic } from "../../common/Default.Epic";
 import {
   GET_EXPORT_TEMPLATES_LIST_FULFILLED,
   getExportTemplatesList
 } from "../../../js/containers/automation/containers/export-templates/actions";
 import { EpicGetExportTemplatesList } from "../../../js/containers/automation/containers/export-templates/epics/EpicGetExportTemplatesList";
+import { CatalogItemType } from "../../../js/model/common/Catalog";
+import { mapListToCatalogItem } from "../../../js/common/utils/Catalog";
 
 describe("Get export templates list epic tests", () => {
   it("EpicGetExportTemplatesList should returns correct values", () => DefaultEpic({
@@ -13,15 +14,9 @@ describe("Get export templates list epic tests", () => {
     processData: mockedAPI => {
       const exportTemplatesResponse = mockedAPI.db.getExportTemplates();
 
-      const exportTemplates: CommonListItem[] = exportTemplatesResponse.rows.map(r => ({
-        id: Number(r.id),
-        name: r.values[0],
-        keyCode: r.values[1],
-        hasIcon: r.values[1].startsWith("ish."),
-        grayOut: r.values[2] === "false"
-      }));
+      const exportTemplates: CatalogItemType[] = exportTemplatesResponse.rows.map(mapListToCatalogItem);
 
-      exportTemplates.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
+      exportTemplates.sort((a, b) => (a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1));
 
       return [
         {

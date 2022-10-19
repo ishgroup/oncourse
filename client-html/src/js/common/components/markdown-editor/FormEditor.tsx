@@ -10,7 +10,7 @@
  */
 
 import {
-  FormControl, FormHelperText, InputLabel, Input
+ FormControl, FormHelperText, Input, InputLabel 
 } from "@mui/material";
 import ButtonBase from "@mui/material/ButtonBase";
 import ClickAwayListener from '@mui/material/ClickAwayListener';
@@ -20,23 +20,24 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Edit from "@mui/icons-material/Edit";
 import clsx from "clsx";
-import React, { useState } from "react";
-import ReactMarkdown from "react-markdown";
+import React, { useRef, useState } from "react";
+import markdown2html from '@ckeditor/ckeditor5-markdown-gfm/src/markdown2html/markdown2html.js';
 import { Field, WrappedFieldProps } from "redux-form";
 import HtmlEditor from "./HtmlEditor";
-import MarkdownEditor from "./MarkdownEditor";
 import { useStyles } from "./style";
 import {
-  addContentMarker, CONTENT_MODES, getContentMarker, getEditorModeLabel, removeContentMarker
+ addContentMarker, CONTENT_MODES, getContentMarker, getEditorModeLabel, removeContentMarker 
 } from "./utils";
+import WysiwygEditor from "./WysiwygEditor";
 
-const EditorResolver = ({ contentMode, draftContent, onChange }) => {
+const EditorResolver = ({ contentMode, draftContent, onChange, wysiwygRef }) => {
   switch (contentMode) {
     case "md": {
       return (
-        <MarkdownEditor
+        <WysiwygEditor
           value={draftContent}
           onChange={onChange}
+          wysiwygRef={wysiwygRef}
         />
       );
     }
@@ -56,9 +57,9 @@ const EditorResolver = ({ contentMode, draftContent, onChange }) => {
 
 interface Props {
   disabled?: boolean;
-  hideLabel?: boolean;
   fieldClasses?: any;
   label?: string;
+  placeholder?: string;
 }
 
 const FormEditor: React.FC<Props & WrappedFieldProps> = (
@@ -67,9 +68,12 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
     meta,
     disabled,
     label,
+    placeholder,
     fieldClasses = {}
   }
 ) => {
+  const wysiwygRef = useRef<any>();
+
   const [contentMode, setContentMode] = useState(getContentMarker(value));
   const [isEditing, setIsEditing] = useState(false);
   const [modeMenu, setModeMenu] = useState(null);
@@ -84,17 +88,22 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
   };
 
   const onEditButtonFocus = () => {
-    onChange(removeContentMarker(value));
     setIsEditing(true);
   };
 
   const onClickAway = e => {
     const isBalloon = e.target.closest(".ck-balloon-panel");
     if (isEditing && !isBalloon) {
-      if (value.trim()) {
-        onChange(addContentMarker(value, contentMode));
+
+      const sourceEdit = document.querySelector<HTMLButtonElement>('.ck-source-editing-button');
+
+      if (wysiwygRef.current.plugins.get("SourceEditing").isSourceEditingMode && sourceEdit) {
+        sourceEdit.click();
       }
-      setIsEditing(false);
+
+      setTimeout(() => {
+        setIsEditing(false);
+      }, 200);
     }
   };
 
@@ -121,7 +130,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
                 classes.editorArea,
                 { "ace-wrapper": contentMode === "html" || contentMode === "textile" },
                 label && "mt-2"
-              )
+            )
             }
           >
             <div className="content-mode-wrapper">
@@ -145,45 +154,47 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
                     id={mode.id}
                     key={mode.id}
                     onClick={() => {
-                        setContentMode(mode.id);
-                        modeMenuClose();
-                      }}
+                      setContentMode(mode.id);
+                      onChange(addContentMarker(removeContentMarker(value), mode.id));
+                      modeMenuClose();
+                    }}
                     selected={contentMode === mode.id}
                   >
                     {mode.title}
                   </MenuItem>
-                  ))}
+                ))}
               </Menu>
             </div>
             <EditorResolver
               contentMode={contentMode}
-              draftContent={value}
-              onChange={onChange}
+              draftContent={removeContentMarker(value)}
+              onChange={v => onChange(addContentMarker(removeContentMarker(v), contentMode))}
+              wysiwygRef={wysiwygRef}
             />
           </div>
-        ) : (
-          <Typography
-            variant="body1"
-            component="div"
-            onClick={onEditButtonFocus}
-            className={clsx( classes.editable, {
-              [fieldClasses.placeholder ? fieldClasses.placeholder : "placeholderContent"]: !value,
-              [fieldClasses.text]: value,
-            })}
-          >
-            <span className={clsx(contentMode === "md" ? classes.previewFrame : "centeredFlex overflow-hidden")}>
-              {
-                value
-                  ? contentMode === "md"
-                    ? <ReactMarkdown source={removeContentMarker(value)} />
-                    : removeContentMarker(value)
-                  : "No value"
-              }
-            </span>
-            {!disabled
-            && <Edit color="primary" className={classes.hoverIcon} />}
-          </Typography>
-        )}
+          ) : (
+            <Typography
+              variant="body1"
+              component="div"
+              onClick={onEditButtonFocus}
+              className={clsx( classes.editable, {
+                [fieldClasses.placeholder ? fieldClasses.placeholder : "placeholderContent"]: !value,
+                [fieldClasses.text]: value,
+              })}
+            >
+              <span className={clsx(contentMode === "md" ? classes.previewFrame : "centeredFlex overflow-hidden")}>
+                {
+                  value
+                    ? contentMode === "md"
+                      ? <div dangerouslySetInnerHTML={{ __html: markdown2html(removeContentMarker(value)) }} />
+                      : removeContentMarker(value)
+                    : placeholder || "No value"
+                }
+              </span>
+              {!disabled
+              && <Edit color="primary" className={classes.hoverIcon} />}
+            </Typography>
+          )}
         <FormHelperText>
           <span className="shakingError">
             {meta.error}
@@ -197,7 +208,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
             root: "d-none"
           }}
           inputProps={{
-            value
+            value: removeContentMarker(value)
           }}
         />
       </FormControl>
@@ -205,10 +216,11 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
   );
 };
 
-export const FormEditorField = ({ name, label }) => (
+export const FormEditorField = ({ name, label, placeholder }: { name: string, label?: string, placeholder?: string }) => (
   <Field
     name={name}
     label={label}
+    placeholder={placeholder}
     component={FormEditor}
   />
 );

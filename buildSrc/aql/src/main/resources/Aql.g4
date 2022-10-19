@@ -111,7 +111,7 @@ set
 
 idsSet : '[' value (',' value)* ']';
 
-amount : IntegerLiteral unit;
+amount : (IntegerLiteral unit)+;
 
 tag : '#' (Identifier | SingleQuotedStringLiteral | DoubleQuotedStringLiteral);
 

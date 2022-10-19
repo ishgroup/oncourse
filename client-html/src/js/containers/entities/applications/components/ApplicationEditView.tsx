@@ -7,7 +7,7 @@ import React from "react";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import { Application } from "@api/model";
-import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
+import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import ApplicationGeneral from "./ApplicationGeneral";
 import ApplicationDocuments from "./ApplicationDocuments";

@@ -22,6 +22,7 @@ class ConvertCoreMarkdown extends CoreConverter {
 
     @Override
     String convert() {
+        content = MarkdownTableAnalyzer.valueOf(content).getContentWithFixedSeparators()
         List<Extension> extensions = Arrays.asList(HeadingAnchorExtension.builder().idPrefix(HEADER_PREFIX).build(),
                 TablesExtension.create())
         Parser parser = Parser.builder().extensions(extensions).build()

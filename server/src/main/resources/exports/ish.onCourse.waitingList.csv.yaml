@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.waitingList.csv
-entityClass: WaitingList
-body: ish.onCourse.waitingList.csv.groovy
-name: WaitingList CSV export
-outputType: csv

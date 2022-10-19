@@ -12,6 +12,7 @@
 package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
+import ish.oncourse.server.api.v1.model.LastRunDTO
 import ish.oncourse.types.AuditAction
 import ish.common.types.EntityEvent
 import ish.common.types.SystemEventType
@@ -157,6 +158,18 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
                         case SystemEventType.PAYSLIP_PAID:
                             st.type = PAYSLIP_PAID
                             break
+                        case SystemEventType.CHECKLIST_TASK_CHECKED:
+                            st.type = CHECKLIST_TASK_CHECKED
+                            st.entityName = dbScript.entityClass
+                            if(dbScript.entityAttribute)
+                                st.parameterId = Long.parseLong(dbScript.entityAttribute)
+                            break
+                        case SystemEventType.CHECKLIST_COMPLETED:
+                            st.type = CHECKLIST_COMPLETED
+                            st.entityName = dbScript.entityClass
+                            if(dbScript.entityAttribute)
+                                st.parameterId = Long.parseLong(dbScript.entityAttribute)
+                            break
                         default:
                             throw new ServerErrorException("Unexpected error: unknown system event trigger type '$dbScript.systemEventType' in script '$dbScript.name'", Response.Status.INTERNAL_SERVER_ERROR)
                     }
@@ -167,17 +180,25 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
             st
         }
 
-        List<String> lastRunList = ObjectSelect.columnQuery(Audit, Audit.CREATED)
+        List<LastRunDTO> lastRunList = ObjectSelect.columnQuery(Audit, Audit.CREATED, Audit.ACTION)
                 .where(Audit.ENTITY_IDENTIFIER.eq(dbScript.class.simpleName))
                 .and(Audit.ENTITY_ID.eq(dbScript.id))
                 .and(Audit.ACTION.in(AuditAction.SCRIPT_EXECUTED, AuditAction.SCRIPT_FAILED))
                 .orderBy(Audit.CREATED.desc())
                 .limit(LAST_RUN_FETCH_LIMIT)
                 .select(cayenneService.newContext)
-                .collect { DateFormatter.formatDateISO8601(it) }
-
+                .collect { convertArray(it) }
+        
         scriptDTO.lastRun = lastRunList
         scriptDTO
+    }
+
+    private static LastRunDTO convertArray(Object[]arr){
+        new LastRunDTO().with{ it ->
+            it.date = DateFormatter.formatDateISO8601(arr[0] as Date)
+            it.status = (arr[1] as AuditAction).displayName
+            it
+        }
     }
 
     @Override
@@ -264,6 +285,24 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
                 break
             case ON_DEMAND:
                 dbScript.triggerType = TriggerType.ON_DEMAND
+                break
+            case CHECKLIST_TASK_CHECKED:
+                dbScript.triggerType = TriggerType.ONCOURSE_EVENT
+                dbScript.systemEventType = SystemEventType.CHECKLIST_TASK_CHECKED
+                dbScript.entityClass = scriptDTO.trigger.entityName
+                if(scriptDTO.trigger.parameterId)
+                    dbScript.entityAttribute = String.valueOf(scriptDTO.trigger.parameterId)
+                else
+                    dbScript.entityAttribute = null
+                break
+            case CHECKLIST_COMPLETED:
+                dbScript.triggerType = TriggerType.ONCOURSE_EVENT
+                dbScript.systemEventType = SystemEventType.CHECKLIST_COMPLETED
+                dbScript.entityClass = scriptDTO.trigger.entityName
+                if(scriptDTO.trigger.parameterId)
+                    dbScript.entityAttribute = String.valueOf(scriptDTO.trigger.parameterId)
+                else
+                    dbScript.entityAttribute = null
                 break
         }
 

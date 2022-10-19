@@ -28,7 +28,6 @@ describe("Virtual rendered SiteEditView", () => {
         suburb: initialValues.suburb,
         state: initialValues.state,
         postcode: initialValues.postcode,
-        country: initialValues.country.name,
         drivingDirections: initialValues.drivingDirections,
         publicTransportDirections: initialValues.publicTransportDirections,
         specialInstructions: initialValues.specialInstructions,

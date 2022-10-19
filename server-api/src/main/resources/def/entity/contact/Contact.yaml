@@ -173,7 +173,8 @@ properties:
   tags:
     type: array
     items:
-      $ref: '../Tag.yaml'
+      type: integer
+      format: int64
   memberships:
     type: array
     items:
@@ -202,6 +203,10 @@ properties:
     type: array
     items:
       $ref: '../Holiday.yaml'
+  abandonedCarts:
+    type: array
+    items:
+      $ref: '../Cart.yaml'
   removeCChistory:
     type: boolean
 

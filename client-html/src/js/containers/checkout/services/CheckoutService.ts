@@ -3,6 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 import {
+  CartIds,
   CheckoutApi,
   CheckoutModel,
   CheckoutResponse,
@@ -29,6 +30,10 @@ class CheckoutService {
 
   public getSaleRelations(courseIds: string, productIds: string, contactId: number): Promise<CheckoutSaleRelation[]> {
     return this.checkoutApi.getSaleRelations(courseIds, productIds, contactId);
+  }
+
+  getCartDataIds(checkoutId: number): Promise<CartIds> {
+    return this.checkoutApi.getCartDataIds(checkoutId);
   }
 }
 

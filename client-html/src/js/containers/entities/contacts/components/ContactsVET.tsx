@@ -141,7 +141,8 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
     setUsiUpdateLocked,
     tabIndex,
     expanded,
-    setExpanded
+    setExpanded,
+    syncErrors
   } = props;
 
   const prevId = usePrevious(values.id);
@@ -244,7 +245,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
 
   return values ? (
     <div className="pt-1 pl-3 pr-3">
-      <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
+      <ExpandableContainer formErrors={syncErrors} index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
         <Grid container columnSpacing={3} rowSpacing={2}>
           {countries && (
             <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
@@ -384,36 +385,35 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               label="Commonwealth higher education support number (CHESSN)"
             />
           </Grid>
-          <Grid item xs={12}>
-            <Grid container columnSpacing={3}>
-              <Grid item xs={twoColumn ? 6 : 12} md={twoColumn ? 4 : 12} xl={twoColumn ? 2 : 12}>
-                <FormField
-                  type="text"
-                  name="student.usi"
-                  label="Unique student identifier (USI)"
-                  validate={validateUSI}
-                  labelAdornment={<SettingsAdornment clickHandler={e => setMenuUSI(e.currentTarget)} />}
-                  disabled={isSpecialUSI(values) || usiLocked}
-                  onChange={handleUSIChange}
-                />
-                <Menu
-                  id="menuUSI"
-                  anchorEl={showMenuUSI}
-                  open={Boolean(showMenuUSI)}
-                  onClose={closeUSIMenu}
-                  disableAutoFocusItem
-                >
-                  <div>
-                    {isSpecialUSI(values) ? (
-                      <MenuItem
-                        onClick={() => {
+          <Grid item container xs={12}>
+            <Grid item xs={twoColumn ? 6 : 12} md={twoColumn ? 4 : 12}>
+              <FormField
+                type="text"
+                name="student.usi"
+                label="Unique student identifier (USI)"
+                validate={validateUSI}
+                labelAdornment={<SettingsAdornment clickHandler={e => setMenuUSI(e.currentTarget)} />}
+                disabled={isSpecialUSI(values) || usiLocked}
+                onChange={handleUSIChange}
+              />
+              <Menu
+                id="menuUSI"
+                anchorEl={showMenuUSI}
+                open={Boolean(showMenuUSI)}
+                onClose={closeUSIMenu}
+                disableAutoFocusItem
+              >
+                <div>
+                  {isSpecialUSI(values) ? (
+                    <MenuItem
+                      onClick={() => {
                           setUSIStatus("Not supplied");
                           dispatch(change(form, "student.usi", null));
                           closeUSIMenu();
                         }}
-                      >
-                        Remove special USI status
-                      </MenuItem>
+                    >
+                      Remove special USI status
+                    </MenuItem>
                     ) : (
                       <>
                         <MenuItem>
@@ -463,18 +463,17 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
                         </MenuItem>
                       </>
                     )}
-                  </div>
-                </Menu>
-              </Grid>
-              <Grid item xs={twoColumn ? 6 : 12} md={twoColumn ? 8 : 12} xl={twoColumn ? 10 : 12}>
-                <div className="mt-1">{getUSIStatusMsg()}</div>
-              </Grid>
-              {usiVerificationResult && usiVerificationResult.errorMessage && (
-                <Grid item xs={12}>
-                  <div className={`errorColor ${classes.verificationError}`}>{usiVerificationResult.errorMessage}</div>
-                </Grid>
-              )}
+                </div>
+              </Menu>
             </Grid>
+            <Grid item xs={twoColumn ? 6 : 12} md={twoColumn ? 8 : 12}>
+              <div className="mt-1">{getUSIStatusMsg()}</div>
+            </Grid>
+            {usiVerificationResult && usiVerificationResult.errorMessage && (
+            <Grid item xs={12}>
+              <div className={`errorColor ${classes.verificationError}`}>{usiVerificationResult.errorMessage}</div>
+            </Grid>
+              )}
           </Grid>
           <Grid item xs={12}>
             <div className="mt-1 centeredFlex">

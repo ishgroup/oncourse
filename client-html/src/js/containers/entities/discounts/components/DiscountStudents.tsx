@@ -20,7 +20,6 @@ import NestedList, {
   NestedListPanelItem
 } from "../../../../common/components/form/nestedList/NestedList";
 import { State } from "../../../../reducers/state";
-import { clearMembershipSearch, searchMemberships } from "../actions";
 import { PanelItemChangedMessage } from "../../../../common/components/form/nestedList/components/PaperListRenderer";
 import { greaterThanZeroIncludeValidation, validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
@@ -42,6 +41,8 @@ interface DiscountStudentsProps {
   searchConcessionTypes: (search: string) => void;
   foundConcessionTypes: ConcessionType[];
   concessionTypePending: boolean;
+  concessionTypeError?: boolean;
+  membershipError?: boolean;
   // memberships
   clearMembershipSearch: (pending: boolean) => void;
   searchMemberships: (search: string) => void;
@@ -53,24 +54,36 @@ interface DiscountStudentsProps {
 
 interface DiscountStudentsState {
   limited?: boolean;
-  studentAgeOn?: boolean;
 }
 
-interface DiscountContactRelationType extends NestedListPanelItem {}
+interface DiscountContactRelationType extends NestedListPanelItem {
+}
 
 const concessionTypesField = "discountConcessionTypes";
 
+const plainMembershipToNestedListItem = (items: any[]): NestedListItem[] => (items && items.length > 0
+  ? items.map(membership => ({
+    id: membership.id.toString(),
+    entityId: Number(membership.id),
+    primaryText: membership.name,
+    secondaryText: `(${membership.sku})`,
+    link: `/membership/${membership.id}`,
+    panelItemIds: JSON.parse(membership["discountMemberships.discountMembershipRelationTypes.contactRelationType.id"])?.flatMap(m => m),
+    active: true
+  }))
+  : []);
+
 const membershipToNestedListItem = (items: DiscountMembership[]): NestedListItem[] => (items && items.length > 0
-    ? items.map(membership => ({
-        id: membership.productId.toString(),
-        entityId: Number(membership.productId),
-        primaryText: membership.productName,
-        secondaryText: `(${membership.productSku})`,
-        link: `/membership/${membership.productId}`,
-        panelItemIds: membership.contactRelations,
-        active: true
-      }))
-    : []);
+  ? items.map(membership => ({
+    id: membership.productId.toString(),
+    entityId: Number(membership.productId),
+    primaryText: membership.productName,
+    secondaryText: `(${membership.productSku})`,
+    link: `/membership/${membership.productId}`,
+    panelItemIds: membership.contactRelations,
+    active: true
+  }))
+  : []);
 
 const concessionsToNestedListItems = (items: ConcessionType[]): NestedListItem[] => (items && items.length > 0
     ? items.map(concessionType => ({
@@ -89,14 +102,13 @@ const styles = createStyles(({ spacing }: Theme) => ({
   }
 }));
 
-const validatePostcode = value => (value && value.length > 500 ? "Up to 500 chars" : undefined)
+const validatePostcode = value => (value && value.length > 500 ? "Up to 500 chars" : undefined);
 
 class DiscountStudents extends React.PureComponent<DiscountStudentsProps, DiscountStudentsState> {
   constructor(props) {
     super(props);
     const limited = this.isLimitedForCertainStudents(this.props.values);
-    const studentAgeOn = this.isStudentAgeOn(this.props.values);
-    this.state = { limited, studentAgeOn };
+    this.state = { limited };
   }
 
   componentDidUpdate(prevProps): void {
@@ -104,18 +116,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
     if (limited !== this.isLimitedForCertainStudents(prevProps.values)) {
       this.setState({ ...this.state, limited });
     }
-    const studentAgeOn = this.isStudentAgeOn(this.props.values);
-    if (this.state.studentAgeOn !== studentAgeOn) {
-      this.setState({ studentAgeOn });
-    }
   }
-
-  isStudentAgeOn = (values: Discount): boolean => {
-    if (!values) {
-      return false;
-    }
-    return values.studentAgeUnder !== null;
-  };
 
   isLimitedForCertainStudents = (values: Discount): boolean => !!(
       values
@@ -131,10 +132,21 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
     const {
       values, dispatch, form, foundMemberships
     } = this.props;
-    const memberships = values.discountMemberships.concat(
-      items.map(item => foundMemberships.find(m => item.entityId === m.productId))
-    );
-    dispatch(change(form, "discountMemberships", memberships));
+
+    const toAdd = items.map(item => {
+      const membership = foundMemberships.find(m => m.id === item.entityId);
+
+      return {
+        productId: item.entityId,
+        productName: membership.name,
+        productSku: membership.sku,
+        contactRelations: item.panelItemIds
+      };
+    });
+
+    if (toAdd) {
+      dispatch(change(form, "discountMemberships", values.discountMemberships.concat(toAdd)));
+    }
   };
 
   onDeleteAllMemberships = () => {
@@ -180,7 +192,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
       dispatch(change(form, "studentPostcode", null));
       dispatch(change(form, "limitPreviousEnrolment", false));
 
-      this.setState({ ...this.state, limited: e, studentAgeOn: e });
+      this.setState({ ...this.state, limited: e });
     } else {
       this.setState({ ...this.state, limited: e });
     }
@@ -190,9 +202,9 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
     const { dispatch, form } = this.props;
     if (e === null) {
       dispatch(change(form, "studentAge", null));
-      this.setState({ ...this.state, studentAgeOn: false });
+      this.setState({ ...this.state });
     } else {
-      this.setState({ ...this.state, studentAgeOn: true });
+      this.setState({ ...this.state });
     }
   };
 
@@ -225,7 +237,9 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
       clearMembershipSearch,
       searchMemberships,
       concessionTypePending,
+      concessionTypeError,
       foundMemberships,
+      membershipError,
       membershipPending,
       submitSucceeded,
       twoColumn,
@@ -233,8 +247,6 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
     } = this.props;
 
     const concessionTypes = values && values.discountConcessionTypes ? concessionsToNestedListItems(values.discountConcessionTypes) : [];
-
-    const memberships = values && values.discountMemberships ? membershipToNestedListItem(values.discountMemberships) : [];
 
     return (
       <div className="pt-3 pl-3 pr-3">
@@ -264,6 +276,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
             label="Enrolled within (days)"
             parse={normalizeNumber}
             validate={greaterThanZeroIncludeValidation}
+            className="mb-2"
           />
           <div className={clsx("d-grid justify-content-start gridAutoFlow-column", classes.studentsAttributes)}>
             <FormField
@@ -281,15 +294,17 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
                   label: "Over"
                 }
               ]}
+              className="mb-2"
               allowEmpty
             />
-            {this.state.studentAgeOn && (
+            {typeof values.studentAgeUnder === "boolean" && (
               <FormField
                 type="number"
                 name="studentAge"
                 label="(years)"
                 parse={normalizeNumber}
                 validate={[validateSingleMandatoryField, greaterThanZeroIncludeValidation]}
+                className="mb-2"
               />
             )}
           </div>
@@ -317,6 +332,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
               searchValues={concessionsToNestedListItems(foundConcessionTypes)}
               onSearch={searchConcessionTypes}
               clearSearchResult={clearConcessionTypeSearch}
+              aqlQueryError={concessionTypeError}
               pending={concessionTypePending}
               onAdd={this.onAddConcessionTypes}
               onDelete={this.onDeleteConcessionType}
@@ -334,8 +350,9 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
               title="LIMIT TO STUDENTS WITH MEMBERSHIP"
               titleCaption="This discount will only apply to classes commencing while one of these memberships is valid"
               searchPlaceholder="Add memberships"
-              values={memberships}
-              searchValues={membershipToNestedListItem(foundMemberships)}
+              values={membershipToNestedListItem(values.discountMemberships)}
+              searchValues={plainMembershipToNestedListItem(foundMemberships)}
+              aqlQueryError={membershipError}
               onSearch={searchMemberships}
               clearSearchResult={clearMembershipSearch}
               pending={membershipPending}
@@ -360,21 +377,30 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
 }
 
 const mapStateToProps = (state: State) => ({
-  foundConcessionTypes: state.plainSearchRecords["ConcessionType"].items.map(i => ({ id: i.id, name: i.name, allowOnWeb: i.isEnabled })),
+  foundConcessionTypes: state.plainSearchRecords["ConcessionType"].items,
   concessionTypePending: state.plainSearchRecords["ConcessionType"].loading,
-  foundMemberships: state.discounts.membershipItems,
-  membershipPending: state.discounts.pending,
+  concessionTypeError: state.plainSearchRecords["ConcessionType"].error,
+  foundMemberships: state.plainSearchRecords["MembershipProduct"].items,
+  membershipPending: state.plainSearchRecords["MembershipProduct"].loading,
+  membershipError: state.plainSearchRecords["MembershipProduct"].error,
   contactRelationTypes: state.discounts.contactRelationTypes
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   searchConcessionTypes: (search: string) => {
     dispatch(setCommonPlainSearch("ConcessionType", search));
-    dispatch(getCommonPlainRecords("ConcessionType", 0, "name,isEnabled", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(getCommonPlainRecords("ConcessionType", 0, "name,isEnabled", null, null, PLAIN_LIST_MAX_PAGE_SIZE, item => item.map(i => ({
+      id: i.id,
+      name: i.name,
+      allowOnWeb: i.isEnabled
+    }))));
   },
   clearConcessionTypeSearch: (pending: boolean) => dispatch(clearCommonPlainRecords("ConcessionType", pending)),
-  searchMemberships: (search: string) => dispatch(searchMemberships(search)),
-  clearMembershipSearch: (pending: boolean) => dispatch(clearMembershipSearch(pending))
+  searchMemberships: (search: string) => {
+    dispatch(setCommonPlainSearch("MembershipProduct", search));
+    dispatch(getCommonPlainRecords("MembershipProduct", 0, "name,sku,discountMemberships.discountMembershipRelationTypes.contactRelationType.id", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+  },
+  clearMembershipSearch: (pending: boolean) => dispatch(clearCommonPlainRecords("MembershipProduct", pending))
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DiscountStudents));

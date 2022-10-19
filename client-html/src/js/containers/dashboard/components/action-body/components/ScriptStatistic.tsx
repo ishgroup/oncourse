@@ -59,7 +59,7 @@ const ScriptStatistic = ({ dispatch, classes }) => {
     EntityService.getPlainRecords(
       "Script",
       "name",
-      'enabled is true',
+      'automationStatus == ENABLED',
       null,
       null,
       "name",

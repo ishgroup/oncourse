@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.trainingPackage.csv
-entityClass: TrainingPackage
-body: ish.onCourse.trainingPackage.csv.groovy
-name: Training Package CSV export
-outputType: csv

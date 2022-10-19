@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.types.AutomationStatus
 import ish.common.types.EntityEvent
 import ish.common.types.TriggerType
 import ish.oncourse.API
@@ -30,6 +31,7 @@ import java.util.Date
 @API
 @QueueableEntity
 class Script extends _Script implements Queueable, AutomationTrait {
+	public static final String ENABLED_KEY = "enabled"
 
 	/**
 	 * @return the date and time this record was created
@@ -54,10 +56,18 @@ class Script extends _Script implements Queueable, AutomationTrait {
 	 */
 	@Nonnull
 	@API
-	@Override
     Boolean getEnabled() {
-		return super.getEnabled()
+		return super.getAutomationStatus().equals(AutomationStatus.ENABLED)
     }
+
+	/**
+	 * @return status of automation: not installed, installed but disabled, enabled
+	 */
+	@Nonnull
+	@Override
+	AutomationStatus getAutomationStatus() {
+		return super.getAutomationStatus()
+	}
 
 	/**
 	 * @return name of entity whose change triggers this script

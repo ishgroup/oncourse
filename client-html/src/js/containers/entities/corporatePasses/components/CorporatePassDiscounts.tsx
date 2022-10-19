@@ -5,8 +5,13 @@ import { CorporatePass, Discount } from "@api/model";
 import { change } from "redux-form";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { State } from "../../../../reducers/state";
-import { clearDiscounts, getDiscounts } from "../../discounts/actions";
-import { discountSort, transformDiscountForNestedList } from "../../discounts/utils";
+import { discountSort, mapPlainDiscounts, transformDiscountForNestedList } from "../../discounts/utils";
+import {
+  clearCommonPlainRecords,
+  getCommonPlainRecords,
+  setCommonPlainSearch
+} from "../../../../common/actions/CommonPlainRecordsActions";
+import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 
 interface Props {
   values?: CorporatePass;
@@ -17,6 +22,7 @@ interface Props {
   clearSearchResult: (pending: boolean) => void;
   submitSucceeded?: boolean;
   pending: boolean;
+  discountsError: boolean;
 }
 
 class CorporatePassDiscounts extends Component<Props, any> {
@@ -45,7 +51,7 @@ class CorporatePassDiscounts extends Component<Props, any> {
 
   render() {
     const {
-      discounts, getSearchResult, clearSearchResult, submitSucceeded, pending, values
+      discounts, getSearchResult, clearSearchResult, submitSucceeded, pending, values, discountsError
     } = this.props;
 
     const listValues = values && values.linkedDiscounts ? values.linkedDiscounts.map(transformDiscountForNestedList) : [];
@@ -68,6 +74,7 @@ class CorporatePassDiscounts extends Component<Props, any> {
             sort={discountSort}
             resetSearch={submitSucceeded}
             aqlEntities={["Discount"]}
+            aqlQueryError={discountsError}
             usePaper
           />
         </div>
@@ -77,13 +84,17 @@ class CorporatePassDiscounts extends Component<Props, any> {
 }
 
 const mapStateToProps = (state: State) => ({
-  discounts: state.discounts.items,
-  pending: state.discounts.pending
+  discounts: state.plainSearchRecords["Discount"].items,
+  pending: state.plainSearchRecords["Discount"].loading,
+  discountsError: state.plainSearchRecords["Discount"].error,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  getSearchResult: (search: string) => dispatch(getDiscounts(search)),
-  clearSearchResult: (pending: boolean) => dispatch(clearDiscounts(pending))
+  getSearchResult: (search: string) => {
+    dispatch(setCommonPlainSearch("Discount", search));
+    dispatch(getCommonPlainRecords("Discount", 0, "name,discountType,discountDollar,discountPercent", null, null, PLAIN_LIST_MAX_PAGE_SIZE, items => items.map(mapPlainDiscounts)));
+  },
+  clearSearchResult: (pending: boolean) => dispatch(clearCommonPlainRecords("Discount", pending)),
 });
 
 export default connect<any, any, any>(

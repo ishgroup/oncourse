@@ -1,7 +1,0 @@
-name: ASQA Units of Competency Export
-description: This export produces results in accordance with ASQA's Delivery Data Summary - Table B spreadsheet. The last three columns are expected to be empty as these must be filled out manually.
-keyCode: ish.onCourse.unitsOfCompetencyASQAExport.csv
-entityClass: Module
-body: ish.onCourse.unitsOfCompetencyASQAExport.groovy
-outputType: csv
-minVersion: 9.13

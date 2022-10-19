@@ -22,12 +22,13 @@ const ContactsMessages: React.FC<ContactsMessagesProps> = props => {
     tabIndex,
     expanded,
     setExpanded,
+    syncErrors
   } = props;
 
   const messagesColumns: NestedTableColumn[] = [
     {
       name: "createdOn",
-      title: "Created",
+      title: "Created on",
       type: "date",
       width: 160
     },
@@ -65,7 +66,7 @@ const ContactsMessages: React.FC<ContactsMessagesProps> = props => {
 
   return values ? (
     <div className="pl-3 pr-3">
-      <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header={getMessagesTableTitle()}>
+      <ExpandableContainer formErrors={syncErrors} index={tabIndex} expanded={expanded} setExpanded={setExpanded} header={getMessagesTableTitle()}>
         <div
           className="flex-column pb-3"
         >

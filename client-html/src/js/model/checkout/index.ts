@@ -95,6 +95,7 @@ export type CheckoutItem = CheckoutCourse & VoucherProduct & MembershipProduct &
   cartAction?: EntityRelationCartAction;
   relationDiscount?: Discount;
   fromItemRelation?: Sale;
+  quantity?: number;
 };
 
 export type CheckoutProductPurchase = {
@@ -213,4 +214,10 @@ export interface CheckoutSaleExtended extends Sale {
 export interface CheckoutSaleRelationExtended extends CheckoutSaleRelation {
   contactId?: number;
   toItem?: CheckoutSaleExtended;
+}
+
+export type CheckoutAddItemsRequiest = {
+  enrolments?: CheckoutEnrolmentCustom[],
+  purchases?: CheckoutProductPurchase[],
+  keepChecked?: boolean
 }

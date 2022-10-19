@@ -5,7 +5,9 @@
 
 import React, { useCallback } from "react";
 import { change, FieldArray } from "redux-form";
-import { Account, ArticleProduct, ProductStatus, Tag, Tax } from "@api/model";
+import {
+ Account, ArticleProduct, ProductStatus, Tag, Tax 
+} from "@api/model";
 import { connect } from "react-redux";
 import { Grid } from "@mui/material";
 import { Decimal } from "decimal.js-light";
@@ -20,6 +22,7 @@ import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 interface ArticleProductGeneralProps extends EditViewProps<ArticleProduct> {
   accounts?: Account[];
@@ -35,7 +38,7 @@ const productStatusItems = Object.keys(ProductStatus).map(value => ({ value }));
 const handleChangeFeeExTax = (values: ArticleProduct, taxes: Tax[], dispatch, form) => value => {
   const tax = taxes.find(item => item.id === values.taxId);
   const taxRate = tax ? tax.rate : 0;
-  dispatch(change(form, "totalFee", new Decimal(value * (1 + taxRate)).toDecimalPlaces(2).toNumber()));
+  dispatch(change(form, "totalFee", new Decimal((value || 0) * (1 + taxRate)).toDecimalPlaces(2).toNumber()));
 };
 
 const handleChangeFeeIncTax = (values: ArticleProduct, taxes: Tax[], dispatch, form) => value => {
@@ -60,7 +63,6 @@ const handleChangeAccount = (values: ArticleProduct, taxes: Tax[], accounts: Acc
   }
 };
 
-
 const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
   const {
     twoColumn, accounts, isNew, taxes, showConfirm, tags, values, dispatch, form, syncErrors, submitSucceeded, rootEntity, dataCollectionRules
@@ -71,7 +73,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
     lg: twoColumn ? 4 : 12
   } as any;
 
-  const validateIncomeAccount = useCallback(value => (accounts.find((item: Account) => item.id === value) ? undefined : `Income account is mandatory`), [accounts])
+  const validateIncomeAccount = useCallback(value => (accounts.find((item: Account) => item.id === value) ? undefined : `Income account is mandatory`), [accounts]);
 
   return (
 
@@ -80,32 +82,62 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
         <FullScreenStickyHeader
           opened={isNew || Object.keys(syncErrors).includes("name")}
           twoColumn={twoColumn}
-          title={<span>{values && values.name}</span>}
+          title={twoColumn ? (
+            <div className="d-inline-flex-center">
+              <span>
+                {values && values.code}
+              </span>
+              <span className="ml-2">
+                {values && values.name}
+              </span>
+            </div>
+          ) : (
+            <div>
+              <div>
+                {values && values.code}
+              </div>
+              <div className="mt-2">
+                {values && values.name}
+              </div>
+            </div>
+          )}
           fields={(
-            <Grid item {...gridItemProps}>
-              <FormField
-                name="name"
-                label="Name"
-                required
-                fullWidth
-              />
+            <Grid container columnSpacing={3} rowSpacing={2}>
+              <Grid item xs={twoColumn ? 2 : 12}>
+                <FormField
+                  label="SKU"
+                  name="code"
+                  required
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={twoColumn ? 4 : 12}>
+                <FormField
+                  label="Name"
+                  name="name"
+                  required
+                  fullWidth
+                />
+              </Grid>
             </Grid>
           )}
         />
       </Grid>
-      <Grid item xs={12}>
+
+      <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 8 : 12}>
         <FormField
           type="tags"
           name="tags"
           tags={tags}
         />
       </Grid>
+
       <Grid item {...gridItemProps}>
-        <FormField
-          type="text"
-          name="code"
-          label="SKU"
-          required
+        <EntityChecklists
+          entity="ArticleProduct"
+          form={form}
+          entityId={values.id}
+          checked={values.tags}
         />
       </Grid>
 
@@ -116,6 +148,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           label="Income account"
           validate={validateIncomeAccount}
           onChange={handleChangeAccount(values, taxes, accounts, dispatch, form)}
+          debounced={false}
           items={accounts}
           selectValueMark="id"
           selectLabelCondition={a => `${a.accountCode}, ${a.description}`}
@@ -129,6 +162,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           label="Fee ex tax"
           validate={validateNonNegative}
           onChange={handleChangeFeeExTax(values, taxes, dispatch, form)}
+          debounced={false}
           required
         />
       </Grid>
@@ -139,6 +173,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           label="Total fee"
           validate={validateNonNegative}
           onChange={handleChangeFeeIncTax(values, taxes, dispatch, form)}
+          debounced={false}
         />
       </Grid>
       <Grid item {...gridItemProps}>
@@ -147,6 +182,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           label="Tax"
           name="taxId"
           onChange={handleChangeTax(values, taxes, dispatch, form)}
+          debounced={false}
           items={taxes}
           selectValueMark="id"
           selectLabelCondition={tax => tax.code}

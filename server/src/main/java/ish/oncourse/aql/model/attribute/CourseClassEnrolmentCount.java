@@ -39,7 +39,7 @@ public class CourseClassEnrolmentCount implements SyntheticAttributeDescriptor {
 
     @Override
     public SimpleNode spawnNode() {
-        return new SyntheticCourseClassNode();
+        return new SyntheticCourseClassEnrolmentNode();
     }
 
     @Override

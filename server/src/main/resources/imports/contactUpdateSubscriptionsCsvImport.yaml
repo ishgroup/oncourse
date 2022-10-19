@@ -1,9 +1,0 @@
-name: onCourse contact update subscriptions csv import
-keyCode: ish.onCourse.import.contactUpdateSubscriptions.csv
-body: contactUpdateSubscriptionsCsvImport.groovy
-enabled: true
-description: Import contacts to update subscriptions from csv file
-variables:
-  - name: contactFile
-    label: File with contacts
-    dataType: FILE

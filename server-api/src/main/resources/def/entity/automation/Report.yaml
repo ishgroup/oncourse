@@ -14,11 +14,11 @@ properties:
     required: true
     descriptio: report entity
     example: Enrolment
-  enabled:
-    type: boolean
-    description: Report status
+  status:
+    $ref: './AutomationStatus.yaml'
+    description: Automation status
     required: true
-    example: true
+    example: Enabled
   keyCode:
     type: string
     required: true
@@ -67,3 +67,18 @@ properties:
   modifiedOn:
     type: string
     format: date-time
+  shortDescription:
+    type: string
+    require: false
+    description: Message template short description
+    example: descr
+  automationTags:
+    type: string
+    require: false
+    description: automation tags separated by commas
+    example: new,income
+  category:
+    type: string
+    require: false
+    description: automation category
+    example: imports

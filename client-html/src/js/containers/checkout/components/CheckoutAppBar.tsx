@@ -7,12 +7,9 @@
  */
 
 import React from "react";
-import Typography from "@mui/material/Typography";
 import { IconButton } from "@mui/material";
 import Launch from "@mui/icons-material/Launch";
-import { LinkAdornment } from "../../../common/components/form/FieldAdornments";
 import { openInternalLink } from "../../../common/utils/links";
-import { defaultContactName, openContactLink } from "../../entities/contacts/utils";
 
 interface Props {
   title: string;

@@ -8,6 +8,7 @@ import {
   CLEAR_COMMON_PLAIN_RECORDS,
   GET_COMMON_PLAIN_RECORDS,
   GET_COMMON_PLAIN_RECORDS_FULFILLED,
+  GET_COMMON_PLAIN_RECORDS_REJECTED,
   SET_COMMON_PLAIN_RECORD_SEARCH
 } from "../actions/CommonPlainRecordsActions";
 import { availableEntities, CommonPlainRecordSearchState } from "../../model/common/Plain";
@@ -17,6 +18,7 @@ const initial = availableEntities.reduce((p, c) => {
     items: [],
     search: "",
     loading: false,
+    error: false,
     rowsCount: 5000,
   };
   return p;
@@ -45,7 +47,25 @@ export const commonPlainRecordSearchReducer = (
         ...{
           [action.payload.key]: {
             ...state[action.payload.key],
+            error: false,
             loading: true
+          }
+        }
+      };
+    }
+
+    case GET_COMMON_PLAIN_RECORDS_REJECTED: {
+      const {
+        key
+      } = action.payload;
+
+      return {
+        ...state,
+        ...{
+          [key]: {
+            ...state[key],
+            loading: false,
+            error: true,
           }
         }
       };
@@ -78,6 +98,7 @@ export const commonPlainRecordSearchReducer = (
             ...state[action.payload.key],
             items: [],
             search: "",
+            error: false,
             loading: action.payload.loading || false,
             rowsCount: 5000
           }

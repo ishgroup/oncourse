@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.classOutcomes.csv
-entityClass: CourseClass
-body: ish.onCourse.classOutcomes.csv.groovy
-name: Class outcomes CSV export
-outputType: csv

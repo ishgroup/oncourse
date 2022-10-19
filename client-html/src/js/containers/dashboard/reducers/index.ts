@@ -7,11 +7,10 @@ import { GET_ON_DEMAND_SCRIPTS_FULFILLED } from "../../../common/actions";
 import { IAction } from "../../../common/actions/IshAction";
 import {
   GET_BLOG_POSTS_FULFILLED,
-  GET_DASHBOARD_CATEGORIES_FULFILLED,
   GET_DASHBOARD_SEARCH,
   GET_DASHBOARD_SEARCH_FULFILLED,
   GET_DASHBOARD_STATISTIC,
-  GET_DASHBOARD_STATISTIC_FULFILLED, GET_FAVORITE_SCRIPTS_FULFILLED
+  GET_DASHBOARD_STATISTIC_FULFILLED
 } from "../actions";
 import { DashboardState } from "./state";
 
@@ -30,8 +29,6 @@ class DashboardStateClass implements DashboardState {
 
   scripts = [];
 
-  favoriteScripts = [];
-
   blogPosts = [];
 }
 
@@ -39,9 +36,7 @@ export const dashboardReducer = (state: DashboardState = new DashboardStateClass
   switch (action.type) {
     case GET_DASHBOARD_SEARCH_FULFILLED:
     case GET_DASHBOARD_STATISTIC_FULFILLED:
-    case GET_ON_DEMAND_SCRIPTS_FULFILLED:
-    case GET_FAVORITE_SCRIPTS_FULFILLED:
-    case GET_DASHBOARD_CATEGORIES_FULFILLED: {
+    case GET_ON_DEMAND_SCRIPTS_FULFILLED: {
       return {
         ...state,
         ...action.payload

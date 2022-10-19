@@ -2,6 +2,7 @@ package ish.oncourse.server.scripting
 
 import ish.DatabaseSetup
 import ish.TestWithDatabase
+import ish.common.types.AutomationStatus
 import ish.common.types.EntityEvent
 import ish.common.types.SystemEventType
 import ish.common.types.TriggerType
@@ -44,7 +45,7 @@ class ScriptTriggeringListenerTest extends TestWithDatabase {
     private Script createScript(TriggerType triggerType) {
         Script script = cayenneContext.newObject(Script.class)
         script.setName("Script")
-        script.setEnabled(true)
+        script.setAutomationStatus(AutomationStatus.ENABLED)
         script.setScript("def run(args) { logger.error 'Hello World' }")
         script.setTriggerType(triggerType)
         script.setCronSchedule("0 0 4 * * ?")
@@ -98,7 +99,7 @@ class ScriptTriggeringListenerTest extends TestWithDatabase {
         Assertions.assertEquals(JobKey.jobKey(script.getName(), ISchedulerService.CUSTOM_SCRIPT_JOBS_GROUP_ID), schedulerService.getJobs().get(0).getKey())
 
         script.setName("Script1")
-        script.setEnabled(false)
+        script.setAutomationStatus(AutomationStatus.INSTALLED_DISABLED)
         script.getContext().commitChanges()
 
         Assertions.assertEquals(0, schedulerService.getJobs().size())

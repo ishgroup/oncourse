@@ -37,6 +37,8 @@ import { State } from "../../../../../reducers/state";
 import RecipientsSelectionSwitcher from "../../../../entities/messages/components/RecipientsSelectionSwitcher";
 import { runScript } from "../actions";
 import ScriptsService from "../services/ScriptsService";
+import { LICENSE_SCRIPTING_KEY } from "../../../../../constants/Config";
+import { getCookie } from "../../../../../common/utils/Cookie";
 
 const FORM = "ExecuteScriptForm";
 
@@ -51,7 +53,7 @@ interface Props {
   resetForm?: () => void;
   initializeForm?: any;
   dispatch?: Dispatch;
-  values?: any;
+  values?: Script;
   classes?: any;
   filteredCount?: number;
   submitting?: boolean;
@@ -59,6 +61,7 @@ interface Props {
   interruptProcess?: (processId: string) => void;
   process?: ProcessState;
   updateAudits?: any;
+  hasScriptingLicense?: boolean;
 }
 
 const templatesRenderer: React.FC<any> = React.memo<any>(({ fields }) => fields.map((f, index) => {
@@ -109,6 +112,7 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
     filteredCount,
     submitting,
     interruptProcess,
+    hasScriptingLicense,
     listSearchQuery,
     process
   } = props;
@@ -216,6 +220,28 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
   const lastRun = selectedScriptAudits.length
     ? format(new Date(selectedScriptAudits[0].runDate), III_DD_MMM_YYYY_HH_MM)
     : "never";
+  
+  if (opened && !hasScriptingLicense && !values?.keyCode?.startsWith("ish.")) {
+    return (
+      <Dialog open onClose={onDialogClose}>
+        <DialogTitle>
+          Script execution disabled
+        </DialogTitle>
+
+        <DialogContent>
+          Custom scripts execution disabled due to
+          {' '}
+          <a href={`https://provisioning.ish.com.au?token=${getCookie("JSESSIONID")}`}>required license</a>
+        </DialogContent>
+
+        <DialogActions>
+          <Button color="primary" onClick={onDialogClose}>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
 
   return values ? (
     <Dialog open={opened} onClose={onClose} maxWidth="md" fullWidth scroll="body">
@@ -271,6 +297,7 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues(FORM)(state),
+  hasScriptingLicense: state.userPreferences[LICENSE_SCRIPTING_KEY] && state.userPreferences[LICENSE_SCRIPTING_KEY] === "true",
   submitting: state.fetch.pending,
   listSearchQuery: state.list.searchQuery,
   process: state.process

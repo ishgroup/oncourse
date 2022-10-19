@@ -6,7 +6,7 @@
   <EmailTemplate id="2" keyCode="legacy.2" name="Tax Invoice" subject="Tax Invoice" bodyPlain="test" bodyHtml="test"
                  createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <Script id="1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0" name="send_invoice" enabled="1"
+  <Script id="1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0" name="send_invoice" enabled="2"
           triggerType="2" entityClass="Invoice" entityEventType="1" script="
   def invoice = args.entity&#xA;
 
@@ -20,7 +20,7 @@
     invoice.setConfirmationStatus(ConfirmationStatus.SENT)&#xA;
     args.context.commitChanges()&#xA;
   }"/>
-  <Script id="2" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0" name="send_enrolment" enabled="1"
+  <Script id="2" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0" name="send_enrolment" enabled="2"
           triggerType="2" entityClass="Enrolment" entityEventType="4" script="
   def enrolment = args.entity&#xA;
 
@@ -80,12 +80,12 @@
            studentNumber="1" usiStatus="0" citizenship="9" feeHelpEligible="0" createdOn="2021-12-21 12:00:10.0"
            modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <CourseClass id="1" code="123" taxAdjustment="0.1" taxId="3" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
+  <CourseClass id="1" code="123" taxAdjustment="0.1" taxId="3" minimumPlaces="1" maximumPlaces="100"
                isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountId="50" deliveryMode="1" courseId="1" feeExGst="200.00"
                suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0"
                createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <CourseClass id="2" code="124" taxAdjustment="0.1" taxId="3" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
+  <CourseClass id="2" code="124" taxAdjustment="0.1" taxId="3" minimumPlaces="1" maximumPlaces="100"
                isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountId="50" deliveryMode="1" courseId="2" feeExGst="400.00"
                suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0"

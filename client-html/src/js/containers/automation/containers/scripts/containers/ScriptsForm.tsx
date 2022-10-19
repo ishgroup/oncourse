@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import FileCopy from "@mui/icons-material/FileCopy";
@@ -12,26 +15,36 @@ import { withStyles } from "@mui/styles";
 import {
   arrayInsert, change, FieldArray, Form, initialize
 } from "redux-form";
-import Typography from "@mui/material/Typography";
+import clsx from "clsx";
 import { OutputType, Script, TriggerType } from "@api/model";
+import Typography from "@mui/material/Typography";
 import createStyles from "@mui/styles/createStyles";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import CodeIcon from '@mui/icons-material/Code';
+import Divider from "@mui/material/Divider";
+import Accordion from "@mui/material/Accordion";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import CheckIcon from "@mui/icons-material/Check";
+import ClearIcon from "@mui/icons-material/Clear";
+import UploadIcon from "@mui/icons-material/Upload";
+import IconButton from "@mui/material/IconButton";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { mapSelectItems } from "../../../../../common/utils/common";
 import { usePrevious } from "../../../../../common/utils/hooks";
-import { CommonListItem } from "../../../../../model/common/sidebar";
-import Bindings from "../../../components/Bindings";
+import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import { validateKeycode } from "../../../utils";
 import ScriptCard from "../components/cards/CardBase";
 import { formatRelativeDate } from "../../../../../common/utils/dates/formatRelative";
 import ImportCardContent from "../components/cards/ImportCardContent";
 import TriggerCardContent from "../components/cards/TriggerCardContent";
-import ScriptAddMenu from "../components/ScriptAddMenu";
 import { setScriptComponents } from "../actions";
-import { ScriptComponentType, ScriptViewMode } from "../../../../../model/scripts";
+import {
+ ScriptComponent, ScriptComponentType, ScriptExtended, ScriptViewMode 
+} from "../../../../../model/scripts";
 import CardsRenderer from "../components/cards/CardsRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import {
@@ -43,11 +56,17 @@ import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/
 import { ApiMethods } from "../../../../../model/common/apiHandlers";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import AddScriptAction from "../components/AddScriptAction";
+import BoltIcon from "../../../../../../images/icon-bolt.svg";
+import ScriptIcon from "../../../../../../images/icon-script.svg";
+import InfoPill from "../../../../../common/components/layout/InfoPill";
+import { AppTheme } from "../../../../../model/common/Theme";
+import { CatalogItemType } from "../../../../../model/common/Catalog";
 
 const manualUrl = getManualLink("scripts");
 const getAuditsUrl = (id: number) => `audit?search=~"Script" and entityId == ${id}`;
 
-const styles = theme =>
+const styles = (theme: AppTheme) =>
   createStyles({
     root: {
       padding: theme.spacing(0, 9),
@@ -61,6 +80,22 @@ const styles = theme =>
     },
     cardsBox: {
       padding: theme.spacing(0, 3, 3, 0),
+    },
+    cardsItem: {
+      position: "relative",
+      "&::before": {
+        content: `" "`,
+        position: "absolute",
+        height: `calc(100% - ${theme.spacing(3)})`,
+        left: -50,
+        width: 2,
+        backgroundColor: theme.palette.divider
+      }
+    },
+    cardCodeView: {
+      "&::after": {
+        bottom: 0,
+      }
     },
     deleteButtonContainer: {
       display: "flex",
@@ -94,9 +129,50 @@ const styles = theme =>
       margin: theme.spacing(1, 0, 3, 0),
     },
     queryField: {},
+    queryIcon: {
+      backgroundColor: "#fef4e8",
+      color: "#f7941d"
+    },
+    technicalInfoRoot: {
+      boxShadow: "none",
+      background: "none",
+      "&::before": {
+        content: "none",
+      },
+    },
+    technicalInfoExpanded: {
+      margin: "0px",
+    },
+    cardReaderCustomHeading: {
+      maxWidth: "calc(100% - 8px)",
+    },
+    descriptionText: {
+      fontSize: theme.spacing(1.625),
+    },
+    cardLeftIcon: {
+      position: "absolute",
+      left: -75,
+      width: 50,
+      height: 50,
+      backgroundColor: theme.palette.mode === "light" ? "#fef4e8" : theme.palette.background.paper,
+      color: theme.palette.primary.main,
+      zIndex: 1,
+      top: 0,
+      "&:hover": {
+        cursor: "inherit"
+      }
+    },
   });
 
-const entityNameTypes = Object.keys(TriggerType).slice(0, 6).filter(t => t !== "Schedule");
+const entityNameTypes: TriggerType[] = [
+  'On demand',
+  'On create',
+  'On edit',
+  'On create and edit',
+  'On delete',
+  'Checklist task checked',
+  'Checklist completed'
+];
 
 const TriggerTypeItems = Object.keys(TriggerType).map(mapSelectItems);
 
@@ -113,14 +189,13 @@ const TriggerToRecordTypeMap: TriggerToRecordObjType = {
 
 interface Props {
   isNew: boolean;
-  values: any;
+  values: ScriptExtended;
   initialValues;
   dispatch: any;
   ScheduleTypeItems: any;
   hasUpdateAccess: boolean;
   history: any;
   nextLocation: string;
-  setNextLocation: (nextLocation: string) => void;
   classes?: any;
   dirty?: boolean;
   created?: Date;
@@ -134,12 +209,13 @@ interface Props {
   onCreate?: (script: Script, viewMode: ScriptViewMode) => void;
   onDelete?: any;
   formsState?: any;
-  emailTemplates?: CommonListItem[];
+  emailTemplates?: CatalogItemType[];
   timeZone?: string;
   syncErrors?: any;
+  checklists?: CatalogItemType[];
 }
 
-const getInitComponentBody = (componentName: ScriptComponentType) => {
+const getInitComponentBody = (componentName: ScriptComponentType): ScriptComponent | Promise<ScriptComponent> => {
   switch (componentName) {
     case "Query": {
       return getQueryComponent("");
@@ -181,13 +257,24 @@ const ScriptsForm = React.memo<Props>(props => {
     emailTemplates,
     history,
     nextLocation,
-    setNextLocation,
     timeZone,
-    syncErrors
+    syncErrors,
+    checklists
   } = props;
 
   const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
   const [viewMode, setViewMode] = useState<ScriptViewMode>("Cards");
+  const [expandInfo, setExpandInfo] = useState<boolean>(isNew);
+  const [triggerExpand, setTriggerExpand] = useState<boolean>(false);
+  const [isCardDragging, setCardDragging] = useState<boolean>(false);
+  const [expanded, setExpand] = useState([]);
+  
+  const onExpand = id => setExpand(prev => {
+    const index = prev.indexOf(id);
+    const updated = [...prev];
+    index === -1 ? updated.push(id) : updated.splice(index, 1);
+    return updated;
+  });
 
   const isInternal = useMemo(() => values && values.keyCode && values.keyCode.startsWith("ish."), [values && values.keyCode]);
   const isOriginallyInternal = useMemo(
@@ -198,15 +285,14 @@ const ScriptsForm = React.memo<Props>(props => {
 
   const [modalOpened, setModalOpened] = useState<boolean>(false);
 
-  const onDialogClose = useCallback(() => setModalOpened(false), []);
+  const onDialogClose = () => setModalOpened(false);
 
-  const onInternalSaveClick = useCallback(() => {
+  const onInternalSaveClick = () => {
     dispatch(initialize("SaveAsNewAutomationForm", {}));
     setModalOpened(true);
-  }, []);
+  };
 
-  const onDialogSave = useCallback(
-    ({ keyCode, name }) => {
+  const onDialogSave = ({ keyCode, name }) => {
       setDisableRouteConfirm(true);
       onCreate({
         ...values,
@@ -215,12 +301,12 @@ const ScriptsForm = React.memo<Props>(props => {
         name,
       }, viewMode);
       onDialogClose();
-    },
-    [values, viewMode],
-  );
+    };
 
-  const addComponent = async (componentName: ScriptComponentType) => {
-    dispatch(arrayInsert(form, "components", 0, await getInitComponentBody(componentName)));
+  const addComponent = async (componentName: ScriptComponentType, index) => {
+    const component = await getInitComponentBody(componentName);
+    dispatch(arrayInsert(form, "components", index, component));
+    onExpand(component.id);
   };
 
   const addImport = e => {
@@ -254,7 +340,6 @@ const ScriptsForm = React.memo<Props>(props => {
   useEffect(() => {
     if (!dirty && nextLocation) {
       history.push(nextLocation);
-      setNextLocation('');
     }
   }, [nextLocation, dirty]);
 
@@ -322,8 +407,71 @@ const ScriptsForm = React.memo<Props>(props => {
     [values, values && values.trigger, values && values.trigger && values.trigger.type, isSystemTrigger, isScheduleTrigger],
   );
 
-  const enableEntityNameField = entityNameTypes.indexOf(values && values.trigger && values.trigger.type) > -1;
+  const enableEntityNameField = entityNameTypes.indexOf(values?.trigger?.type) > -1;
 
+  const isTriggerExpanded = useMemo(() => triggerExpand
+      || !values?.trigger?.type
+      || (enableEntityNameField && values?.trigger?.type !== "On demand" && !values?.trigger?.entityName)
+      || (values?.trigger?.type === "Schedule" && !values?.trigger?.cron?.scheduleType)
+      || (values?.trigger?.cron?.scheduleType === "Custom" && !values?.trigger?.cron?.custom), [
+    triggerExpand,
+    values,
+    values && values.trigger,
+    values && values.trigger && values.trigger.type,
+    values && values.trigger && values.trigger.entityName,
+    values?.trigger?.cron?.scheduleType,
+    values?.trigger?.cron?.custom
+  ]);
+
+  const customTriggerHeading = useMemo(() => {
+    let detail;
+
+    if (values?.trigger?.type === "On demand") {
+      detail = values?.trigger?.entityName;
+    } else if (values?.trigger?.type === "Schedule") {
+      detail = values?.trigger?.cron?.scheduleType;
+      if (values?.trigger?.cron?.scheduleType === "Custom" && values?.trigger?.cron?.custom) {
+        detail += ` (${values?.trigger?.cron?.custom})`;
+      }
+    } else if (enableEntityNameField && values?.trigger?.entityName) {
+      detail = values?.trigger?.entityName;
+      if (values?.trigger?.type === "On edit" && values?.trigger?.entityAttribute) {
+        detail += ` (${values?.trigger?.entityAttribute})`;
+      }
+    } else {
+      detail = values?.trigger?.type;
+    }
+
+    return (
+      <div className="w-100 centeredFlex text-nowrap text-truncate">
+        <Typography className="heading mr-5" component="div">
+          Trigger
+        </Typography>
+        {detail && !triggerExpand && !isTriggerExpanded && (
+          <div className="text-nowrap text-truncate pr-1">
+            <Typography variant="caption" color="textSecondary">
+              {detail}
+            </Typography>
+          </div>
+        )}
+      </div>
+    );
+  }, [
+    triggerExpand,
+    isTriggerExpanded,
+    values,
+    values && values.trigger,
+    values && values.trigger && values.trigger.type,
+    values && values.trigger && values.trigger.entityName,
+    values && values.trigger && values.trigger.entityAttribute,
+  ]);
+  
+  useEffect(() => {
+    if (!expandInfo && syncErrors && syncErrors["keyCode"] ) {
+      setExpandInfo(true);
+    }
+  }, [syncErrors]);
+  
   return (
     <>
       <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialogClose} onSave={onDialogSave} hasNameField />
@@ -337,9 +485,16 @@ const ScriptsForm = React.memo<Props>(props => {
           getAuditsUrl={getAuditsUrl}
           disabled={!dirty}
           invalid={invalid}
-          title={isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
+          title={(
+            <div className="centeredFlex">
+              {values.name}
+              {[...values.automationTags?.split(",") || [],
+                ...isInternal ? [] : ["custom"]
+              ].map(t => <InfoPill key={t} label={t} />)}
+            </div>
+          )}
           disableInteraction={isInternal}
-          opened={isNew || Object.keys(syncErrors).includes("name")}
+          opened={!values.name || Object.keys(syncErrors).includes("name")}
           noDrawer
           fields={(
             <Grid item xs={12}>
@@ -348,6 +503,7 @@ const ScriptsForm = React.memo<Props>(props => {
                 label="Name"
                 disabled={isInternal}
                 required
+                placeholder={` `}
               />
             </Grid>
           )}
@@ -381,164 +537,245 @@ const ScriptsForm = React.memo<Props>(props => {
               ]}
             />
           )}
-          customAddMenu={!isInternal && viewMode !== "Code" && (
-            <ScriptAddMenu
-              addComponent={addComponent}
-              form={form}
-              dispatch={dispatch}
-              values={values}
-              hasUpdateAccess={hasUpdateAccess}
-            />
-          )}
         >
           {values && (
-            <Grid container className={classes.root}>
-              <Grid item xs={9} className={classes.cardsBox}>
-                <div>
-                  <ScriptCard heading="Trigger" disableExpandedBottomMargin expanded>
-                    <TriggerCardContent
-                      classes={classes}
-                      dispatch={dispatch}
-                      TriggerTypeItems={TriggerTypeItems}
-                      ScheduleTypeItems={ScheduleTypeItems}
-                      enableEntityNameField={enableEntityNameField}
-                      values={values}
-                      isInternal={isInternal}
-                      timeZone={timeZone}
-                    />
-                  </ScriptCard>
-                </div>
-
-                {viewMode === "Code" ? (
-                  <ScriptCard
-                    heading="Script"
-                    className="mb-3 mt-3"
-                    onDetailsClick={isInternal ? onInternalSaveClick : undefined}
-                    expanded
-                    noPadding
-                  >
+            <>
+              <Grid container className="mb-4" rowSpacing={2} columnSpacing={3}>
+                <Grid item xs={12} sm={9}>
+                  <FormField
+                    type="multilineText"
+                    name="shortDescription"
+                    disabled={isInternal}
+                    className="overflow-hidden mb-1"
+                    hideLabel
+                    placeholder="Short description"
+                  />
+                  <Typography variant="caption">
                     <FormField
-                      type="code"
-                      name="content"
+                      type="multilineText"
+                      name="description"
                       disabled={isInternal}
-                      required
+                      className="overflow-hidden mb-1"
+                      hideLabel
+                      placeholder="Description"
+                      fieldClasses={{
+                        text: clsx("fw300", classes.descriptionText)
+                      }}
                     />
-                  </ScriptCard>
-                ) : (
-                  <>
-                    {values.imports && (
-                      <div>
+                  </Typography>
+                </Grid>
+                <FieldArray
+                  name="options"
+                  itemsType="component"
+                  component={BindingsRenderer}
+                  emailTemplates={emailTemplates}
+                  rerenderOnEveryChange
+                />
+              </Grid>
+              <Divider className="mb-5" />
+              <Grid container className={classes.root}>
+                <Grid item xs={9} className={classes.cardsBox}>
+                  <div
+                    className={clsx(classes.cardsItem,
+                      { [classes.cardCodeView]: (viewMode === "Code" || isInternal) })}
+                  >
+                    <div className={clsx("relative", (viewMode === "Code" || isInternal) ? "mb-5" : "")}>
+                      <IconButton size="large" className={classes.cardLeftIcon} disableRipple>
+                        <img src={BoltIcon} alt="icon-bolt" />
+                      </IconButton>
+                      <ScriptCard
+                        heading={customTriggerHeading}
+                        disableExpandedBottomMargin
+                        customButtons={(
+                          <FormField
+                            type="switch"
+                            name="status"
+                            color="primary"
+                            format={v => v === "Enabled"}
+                            parse={v => (v ? "Enabled" : "Installed but Disabled")}
+                            onClick={e => e.stopPropagation()}
+                          />
+                        )}
+                        onExpand={() => setTriggerExpand(!triggerExpand)}
+                        expanded={isTriggerExpanded}
+                        customHeading
+                      >
+                        {Boolean(values?.trigger) && (
+                          <TriggerCardContent
+                            classes={classes}
+                            dispatch={dispatch}
+                            TriggerTypeItems={TriggerTypeItems}
+                            ScheduleTypeItems={ScheduleTypeItems}
+                            enableEntityNameField={enableEntityNameField}
+                            values={values}
+                            isInternal={isInternal}
+                            timeZone={timeZone}
+                            checklists={checklists}
+                            form={form}
+                          />
+                        )}
+                      </ScriptCard>
+                    </div>
+
+                    {viewMode === "Code" ? (
+                      <div className={clsx("mb-5 relative")}>
+                        <IconButton size="large" className={classes.cardLeftIcon} disableRipple>
+                          <img src={ScriptIcon} alt="icon-script" />
+                        </IconButton>
                         <ScriptCard
-                          heading="Import"
-                          className="mt-3"
-                          onDelete={hasUpdateAccess && !isInternal ? removeImports : null}
-                          onAddItem={hasUpdateAccess && !isInternal ? addImport : null}
-                          disableExpandedBottomMargin
-                          expanded
+                          heading="Script"
                           onDetailsClick={isInternal ? onInternalSaveClick : undefined}
+                          noPadding
                         >
-                          <ImportCardContent classes={classes} hasUpdateAccess={hasUpdateAccess} isInternal={isInternal} />
+                          <FormField
+                            type="code"
+                            name="content"
+                            disabled={isInternal}
+                            required
+                          />
                         </ScriptCard>
                       </div>
+                    ) : (
+                      <>
+                        {values.imports && (
+                          <div className={clsx("mt-5 relative", { "mb-5": isInternal })}>
+                            <IconButton size="large" className={classes.cardLeftIcon} disableRipple>
+                              <UploadIcon />
+                            </IconButton>
+                            <ScriptCard
+                              heading="Import"
+                              onDelete={hasUpdateAccess && !isInternal ? removeImports : null}
+                              onAddItem={hasUpdateAccess && !isInternal ? addImport : null}
+                              expanded={expanded.includes("Import")}
+                              onExpand={() => onExpand("Import")}
+                              onDetailsClick={isInternal ? onInternalSaveClick : undefined}
+                              disableExpandedBottomMargin
+                            >
+                              <ImportCardContent classes={classes} hasUpdateAccess={hasUpdateAccess} isInternal={isInternal} />
+                            </ScriptCard>
+                          </div>
+                        )}
+
+                        {!isInternal && (
+                          <AddScriptAction
+                            index={0}
+                            addComponent={addComponent}
+                            form={form}
+                            dispatch={dispatch}
+                            values={values}
+                            hasUpdateAccess={hasUpdateAccess}
+                            active={!values.components}
+                            disabled={isCardDragging}
+                          />
+                        )}
+
+                        <FieldArray
+                          name="components"
+                          component={CardsRenderer}
+                          hasUpdateAccess={hasUpdateAccess}
+                          dispatch={dispatch}
+                          showConfirm={openConfirm}
+                          classes={classes}
+                          rerenderOnEveryChange
+                          isInternal={isInternal}
+                          onInternalSaveClick={onInternalSaveClick}
+                          emailTemplates={emailTemplates}
+                          addComponent={addComponent}
+                          values={values}
+                          setDragging={setCardDragging}
+                          isDragging={isCardDragging}
+                          syncErrors={syncErrors}
+                          onExpand={onExpand}
+                          expanded={expanded}
+                        />
+                      </>
                     )}
+                  </div>
+                </Grid>
 
-                    <FieldArray
-                      name="components"
-                      component={CardsRenderer}
-                      hasUpdateAccess={hasUpdateAccess}
-                      dispatch={dispatch}
-                      showConfirm={openConfirm}
-                      classes={classes}
-                      rerenderOnEveryChange
-                      isInternal={isInternal}
-                      onInternalSaveClick={onInternalSaveClick}
-                      emailTemplates={emailTemplates}
-                    />
-                  </>
-                )}
-
-                <FormField
-                  type="text"
-                  label="Key Code"
-                  name="keyCode"
-                  validate={isNew || !isInternal ? validateKeycode : undefined}
-                  disabled={isOriginallyInternal}
-                  required
-                />
-              </Grid>
-
-              <Grid item xs={3}>
-                <div>
-                  <FormField
-                    type="switch"
-                    name="enabled"
-                    label="Enabled"
-                    color="primary"
-                  />
-                </div>
-                <FormField
-                  label="Output"
-                  name="outputType"
-                  type="select"
-                  items={outputTypes}
-                  disabled={isInternal}
-                  placeholder="no output"
-                  className="mt-2"
-                />
-                <div className="mt-2 pt-1">
-                  <Bindings
-                    defaultVariables={defaultVariables}
-                    dispatch={dispatch}
-                    form={form}
-                    name="variables"
-                    label="Variables"
-                    itemsType="label"
-                    disabled={isInternal}
-                  />
-                </div>
-                <div className="mt-3">
-                  <Bindings
-                    dispatch={dispatch}
-                    form={form}
-                    itemsType="component"
-                    name="options"
-                    label="Options"
-                    disabled={isInternal}
-                    emailTemplates={emailTemplates}
-                  />
-                </div>
-
-                <FormField
-                  type="multilineText"
-                  name="description"
-                  label="Description"
-                  disabled={isInternal}
-                  className="overflow-hidden mt-3"
-                />
-
-                <Grid container columnSpacing={3}>
-                  <Grid item xs className="d-flex">
-                    <div className="flex-fill">
-                      <Typography variant="caption" color="textSecondary">
-                        Last run
-                      </Typography>
-
-                      {values.lastRun && values.lastRun.length ? (
-                        values.lastRun.map((runDate, index) => (
-                          <Typography variant="body1" key={runDate + index}>
-                            {formatRelativeDate(new Date(runDate), new Date(), DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL)}
-                          </Typography>
-                        ))
-                      ) : (
-                        <Typography variant="subtitle1" color="textSecondary">
-                          Never
+                <Grid item xs={3}>
+                  <Grid container columnSpacing={3} className="mb-5">
+                    <Grid item xs className="d-flex">
+                      <div className="flex-fill">
+                        <Typography variant="caption" color="textSecondary">
+                          Last run
                         </Typography>
-                      )}
-                    </div>
+
+                        {values.lastRun && values.lastRun.length ? (
+                          values.lastRun.map((lastRun, index) => (
+                            <div key={index} className="centeredFlex mb-0-5">
+                              {lastRun.status === "Script executed"
+                                ? <CheckIcon className="mr-0-5" color="success" />
+                                : <ClearIcon className="mr-0-5" color="error" />}
+                              <Typography variant="body2">
+                                {formatRelativeDate(new Date(lastRun.date), new Date(), DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL)}
+                              </Typography>
+                            </div>
+                          ))
+                        ) : (
+                          <Typography variant="subtitle1" color="textSecondary">
+                            Never
+                          </Typography>
+                        )}
+                      </div>
+                    </Grid>
                   </Grid>
+                  <Accordion
+                    expanded={expandInfo}
+                    onChange={syncErrors && syncErrors["keyCode"] ? null : () => setExpandInfo(!expandInfo)}
+                    classes={{ root: classes.technicalInfoRoot, expanded: classes.technicalInfoExpanded }}
+                  >
+                    <AccordionSummary classes={{ root: "p-0" }} expandIcon={<ExpandMoreIcon />}>
+                      <Typography className="heading" component="div">
+                        Technical info
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails classes={{ root: "p-0" }}>
+                      <div className="mb-2">
+                        <Bindings
+                          defaultVariables={defaultVariables}
+                          dispatch={dispatch}
+                          form={form}
+                          itemsType="component"
+                          name="options"
+                          label="Configuration variables"
+                          disabled={isInternal}
+                        />
+                      </div>
+                      {values?.trigger?.type === "On demand" && (
+                        <div className="mt-3 mb-4">
+                          <Bindings
+                            dispatch={dispatch}
+                            form={form}
+                            name="variables"
+                            label="Runtime variables"
+                            itemsType="label"
+                            disabled={isInternal}
+                          />
+                        </div>
+                      )}
+                      <FormField
+                        label="Output"
+                        name="outputType"
+                        type="select"
+                        items={outputTypes}
+                        disabled={isInternal}
+                        placeholder="no output"
+                        className="mb-2"
+                      />
+                      <FormField
+                        type="text"
+                        label="Code"
+                        name="keyCode"
+                        validate={isNew || !isInternal ? validateKeycode : undefined}
+                        disabled={isOriginallyInternal}
+                        required
+                      />
+                    </AccordionDetails>
+                  </Accordion>
                 </Grid>
               </Grid>
-            </Grid>
+            </>
           )}
         </AppBarContainer>
       </Form>

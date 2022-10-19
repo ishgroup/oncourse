@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.api.dao
 
+import ish.common.types.AutomationStatus
 import ish.oncourse.server.api.v1.function.export.ExportFunctions
 import ish.oncourse.server.cayenne.ExportTemplate
 import org.apache.cayenne.ObjectContext
@@ -42,7 +43,7 @@ class ExportTemplateDao implements AutomationDao<ExportTemplate> {
         List<String> avalibleTEntities = ExportFunctions.TRANSFORMATIONS_MAP[entityName.toLowerCase()]
         ObjectSelect.query(ExportTemplate)
                 .where(ExportTemplate.ENTITY.in(avalibleTEntities))
-                .and(ExportTemplate.ENABLED.isTrue())
+                .and(ExportTemplate.AUTOMATION_STATUS.eq(AutomationStatus.ENABLED))
                 .orderBy(ExportTemplate.NAME.asc())
                 .select(context)
     }

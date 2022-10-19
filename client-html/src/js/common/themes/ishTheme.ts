@@ -1,3 +1,11 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 import { createTheme } from '@mui/material/styles';
 import { Components } from "@mui/material/styles/components";
 import { PaletteMode } from "@mui/material";
@@ -223,7 +231,8 @@ const defaultThemePalette = {
     primary: "rgba(0, 0, 0, 0.87)",
     primaryEditable: "rgba(0, 0, 0, 0.95)",
     disabled: "rgba(34, 34, 34, 0.38)",
-    hint: "rgba(34, 34, 34, 0.38)"
+    hint: "rgba(34, 34, 34, 0.38)",
+    grey: "#434343",
   }
 };
 
@@ -254,14 +263,15 @@ const darkThemePalette = {
     contrastText: "#fff"
   },
   error: {
- light: "#e57373", main: "#f44336", dark: "#d32f2f", contrastText: "#fff"
-},
+    light: "#e57373", main: "#f44336", dark: "#d32f2f", contrastText: "#fff"
+  },
   text: {
     primary: "rgba(255, 255, 255, 0.87)",
     primaryEditable: "rgba(255, 255, 255, 0.95)",
     secondary: "rgba(255, 255, 255, 0.65)",
     disabled: "rgba(255, 255, 255, 0.38)",
-    hint: "rgba(255, 255, 255, 0.38)"
+    hint: "rgba(255, 255, 255, 0.38)",
+    grey: "rgba(255, 255, 255, 0.65)",
   }
 };
 
@@ -278,14 +288,14 @@ const monochromeThemePalette = {
   mode: "light" as PaletteMode,
   common: { black: "#000", white: "#fff" },
   primary: {
-    main: "#eaeaea",
+    main: "#111111",
     dark: "#76838f",
-    contrastText: "#222222"
+    contrastText: "#fff"
   },
   secondary: {
     light: "#9bbeff",
-    main: "#3e8ef7",
-    dark: "#255ea9",
+    main: "#111111",
+    dark: "#111111",
     contrastText: "#fff"
   },
   error: {
@@ -296,7 +306,8 @@ const monochromeThemePalette = {
     primaryEditable: "#181818",
     secondary: "rgba(34, 34, 34, 0.54)",
     disabled: "rgba(34, 34, 34, 0.38)",
-    hint: "rgba(34, 34, 34, 0.38)"
+    hint: "rgba(34, 34, 34, 0.38)",
+    grey: "#434343",
   }
 };
 
@@ -333,7 +344,8 @@ const highcontrastThemePalette = {
     primaryEditable: "#070707",
     secondary: "#111111",
     disabled: "rgba(34, 34, 34, 0.38)",
-    hint: "rgba(34, 34, 34, 0.38)"
+    hint: "rgba(34, 34, 34, 0.38)",
+    grey: "#434343",
   },
   action: {
     selected: "rgba(0, 0, 0, 0.3)"
@@ -384,6 +396,6 @@ export const getTheme = (): AppTheme => {
   return actualTheme;
 };
 
-export const useTheme = () => ({
+export const useAppTheme = (): AppTheme => ({
   ...getTheme()
 });

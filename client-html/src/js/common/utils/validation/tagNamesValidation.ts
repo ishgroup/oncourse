@@ -1,1 +1,1 @@
-export const validateTagName = value => (value.match(/[@#_,"]/g) ? "Forbidden symbol" : undefined);
+export const validateAqlFilterOrTagName = value => (value.match(/[\\"#]/g) ? "Forbidden symbol" : undefined);

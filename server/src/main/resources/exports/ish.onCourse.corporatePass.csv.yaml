@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.corporatePass.csv
-entityClass: CorporatePass
-body: ish.onCourse.corporatePass.csv.groovy
-name: CorporatePass CSV export
-outputType: csv

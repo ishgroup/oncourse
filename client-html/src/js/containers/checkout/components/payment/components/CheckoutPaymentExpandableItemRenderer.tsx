@@ -22,6 +22,10 @@ const ItemRow = React.memo<any>(props => {
     classes, item, invoiceLine
   } = props;
 
+  if (item.type === "course" && !item.class) {
+    return null;
+  }
+
   const getItemLink = (item, line) => {
     switch (item.type) {
       case "course":

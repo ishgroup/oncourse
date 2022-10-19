@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import * as React from "react";
@@ -13,15 +16,22 @@ import zIndex from "@mui/material/styles/zIndex";
 import { ExitToApp } from "@mui/icons-material";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
-import { getActivePaymentOutMethods, getPaymentOut, updatePaymentOut } from "./actions";
+import { getActivePaymentOutMethods, getAddPaymentOutContact } from "./actions";
 import { getPlainAccounts } from "../accounts/actions";
-import { clearListState, getFilters, } from "../../../common/components/list-view/actions";
+import {
+  clearListState,
+  getFilters,
+  setListCreatingNew,
+  setListSelection,
+} from "../../../common/components/list-view/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getAccountTransactionLockedDate } from "../../preferences/actions";
 import PaymentsOutEditView from "./components/PaymentOutEditView";
 import { PaymentOutModel } from "./reducers/state";
 import { getAdministrationSites } from "../sites/actions";
+import { PaymentOut } from "@api/model";
+import { getAmountOwing, setContraInvoices } from "../invoices/actions";
+import AddPaymentOutEditView from "./components/AddPaymentOutEditView";
 
 const manualLink = getManualLink("processingEnrolments_PaymentOut");
 
@@ -45,10 +55,6 @@ const styles = theme => createStyles({
     fontSize: "1.2rem"
   }
 });
-
-const nestedEditFields = {
-  SendMessage: props => <SendMessageEditView {...props} />
-};
 
 const filterGroups: FilterGroup[] = [
   {
@@ -84,12 +90,35 @@ class PaymentsOut extends React.Component<any, any> {
 
   componentWillUnmount() {
     this.props.clearListState();
+    this.props.clearContraInvoices();
+  }
+
+  onCreateNew() {
+    const {
+      location, onInit, setListCreatingNew, updateSelection
+    } = this.props;
+
+    this.closeCreateNewDialog();
+
+    const urlParams = new URLSearchParams(location.search);
+
+    setListCreatingNew(true);
+    updateSelection(["new"]);
+    onInit(urlParams.get("invoiceId"));
   }
 
   openCreateNewDialog() {
-    this.setState({
-      createNewDialogOpen: true
-    });
+    const {
+      match: { params }
+    } = this.props;
+
+    if (params.id === "new" && window.location.search?.includes("invoiceId")) {
+      this.onCreateNew();
+    } else {
+      this.setState({
+        createNewDialogOpen: true
+      });
+    }
   }
 
   closeCreateNewDialog() {
@@ -100,7 +129,7 @@ class PaymentsOut extends React.Component<any, any> {
 
   render() {
     const {
-      getPaymentOutRecord, onSave, classes
+      classes
     } = this.props;
 
     return (
@@ -114,13 +143,8 @@ class PaymentsOut extends React.Component<any, any> {
             manualLink,
             nameCondition
           }}
-          nestedEditFields={nestedEditFields}
-          EditViewContent={PaymentsOutEditView}
-          getEditRecord={getPaymentOutRecord}
+          EditViewContent={props => props.isNew ?  <AddPaymentOutEditView {...props}/> : <PaymentsOutEditView {...props}/>}
           rootEntity="PaymentOut"
-          onInit={() => this.openCreateNewDialog()}
-          onSave={onSave}
-          onCreate={() => undefined}
           filterGroupsInitial={filterGroups}
           findRelated={[
             { title: "Contacts", list: "contact", expression: "paymentsOut.id" },
@@ -129,7 +153,7 @@ class PaymentsOut extends React.Component<any, any> {
             { title: "Audits", list: "audit", expression: "entityIdentifier == PaymentOut and entityId" }
           ]}
           defaultDeleteDisabled
-          customOnCreate
+          customOnCreate={() => this.openCreateNewDialog()}
           noListTags
         />
         <Popover
@@ -148,7 +172,7 @@ class PaymentsOut extends React.Component<any, any> {
         >
           <div className={classes.dialog}>
             <Link
-              href={`${window.location.origin}/invoice?search=amountOwing < 0`}
+              href={`${window.location.origin}/invoice?filter=@Credit_notes`}
               target="_blank"
               color="textSecondary"
               underline="none"
@@ -166,6 +190,10 @@ class PaymentsOut extends React.Component<any, any> {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  onInit: id => {
+    dispatch(getAddPaymentOutContact(id));
+    dispatch(getAmountOwing(id));
+  },
   getLockedDate: () => {
     dispatch(getAccountTransactionLockedDate());
   },
@@ -175,9 +203,10 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getAdministrationSites: () => dispatch(getAdministrationSites()),
   getAccounts: () => getPlainAccounts(dispatch),
   clearListState: () => dispatch(clearListState()),
-  getPaymentOutRecord: (id: string) => dispatch(getPaymentOut(id)),
   getActivePaymentOutMethods: () => dispatch(getActivePaymentOutMethods()),
-  onSave: (id: string, paymentOut: PaymentOutModel) => dispatch(updatePaymentOut(id, paymentOut))
+  setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
+  updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
+  clearContraInvoices: () => dispatch(setContraInvoices(null)),
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(withStyles(styles, { withTheme: true })(PaymentsOut));

@@ -1,0 +1,25 @@
+- name: Application List
+  entityClass: Application
+  keyCode: ish.onCourse.applicationListReport
+  report: ApplicationListReport.jrxml
+  isSubreport: false
+  isVisible: true
+  title: Application List
+  filePrefix: ApplicationList
+  pdfFileName: ApplicationList.pdf
+  short: A list of applications
+  description: A list of applications
+  category:
+
+- name: Audit List
+  entityClass: Audit
+  keyCode: ish.onCourse.auditListReport
+  report: AuditListReport.jrxml
+  isSubreport: false
+  isVisible: true
+  title: Audit List
+  filePrefix: AuditList
+  pdfFileName: AuditList.pdf
+  short: A list of audit entries
+  description: A list of audit entries
+  category:

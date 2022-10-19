@@ -17,7 +17,7 @@ import Lock from "@mui/icons-material/Lock";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../../common/components/form/Uneditable";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
-import { PayRateTypes } from "./BudgetCostModal";
+import { PayRateTypes, validatePayRateTypes } from "./BudgetCostModal";
 import { greaterThanNullValidation, validateSingleMandatoryField } from "../../../../../../common/utils/validation";
 import {
   formatCurrency,
@@ -31,6 +31,7 @@ import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
 import { DefinedTutorRoleExtended } from "../../../../../../model/preferences/TutorRole";
 import WarningMessage from "../../../../../../common/components/form/fieldMessage/WarningMessage";
 import { getClassCostFee } from "../utils";
+import { ContactLinkAdornment } from "../../../../../../common/components/form/FieldAdornments";
 
 const styles = theme => createStyles({
   divider: {
@@ -137,7 +138,13 @@ const TutorPayContent: React.FC<Props> = ({
   return (
     <Grid container columnSpacing={3}>
       <Grid item xs={6}>
-        <Uneditable label="Contact" value={values.contactName} url={`/contact/${values.contactId}`} />
+        <Uneditable
+          label="Contact"
+          value={values.contactName}
+          labelAdornment={
+            <ContactLinkAdornment id={values.contactId} />
+          }
+        />
       </Grid>
       <Grid item xs={6} className="pb-2">
         <FormControlLabel
@@ -167,6 +174,8 @@ const TutorPayContent: React.FC<Props> = ({
                 label="Type"
                 items={PayRateTypes}
                 onChange={onRepetitionChange}
+                debounced={false}
+                validate={validatePayRateTypes}
               />
 
               {typeof repetitionType === "string" && repetitionType !== values.repetitionType && (

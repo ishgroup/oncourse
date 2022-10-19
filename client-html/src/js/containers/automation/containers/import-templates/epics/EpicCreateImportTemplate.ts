@@ -4,21 +4,20 @@
  */
 
 import { Epic } from "redux-observable";
-
 import { ImportModel } from "@api/model";
+import { initialize } from "redux-form";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import { CREATE_IMPORT_TEMPLATE, CREATE_IMPORT_TEMPLATE_FULFILLED, GET_IMPORT_TEMPLATES_LIST } from "../actions";
+import { CREATE_IMPORT_TEMPLATE, GET_IMPORT_TEMPLATES_LIST } from "../actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import ImportTemplatesService from "../services/ImportTemplatesService";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
+import { IMPORT_TEMPLATES_FORM_NAME } from "../ImportTemplates";
 
 const request: EpicUtils.Request<{ importTemplate: ImportModel }, { importTemplate: ImportModel }> = {
   type: CREATE_IMPORT_TEMPLATE,
   getData: ({ importTemplate }) => ImportTemplatesService.create(importTemplate),
   processData: (v, s, { importTemplate }) => [
-      {
-        type: CREATE_IMPORT_TEMPLATE_FULFILLED
-      },
+    initialize(IMPORT_TEMPLATES_FORM_NAME, importTemplate),
       {
         type: GET_IMPORT_TEMPLATES_LIST,
         payload: { keyCodeToSelect: importTemplate.keyCode }

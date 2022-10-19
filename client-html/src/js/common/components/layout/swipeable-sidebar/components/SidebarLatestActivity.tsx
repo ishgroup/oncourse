@@ -12,17 +12,19 @@ import { DASHBOARD_ACTIVITY_STORAGE_NAME } from "../../../../../constants/Config
 import { getEntityDisplayName } from "../../../../utils/getEntityDisplayName";
 import ListLinksGroup from "./searchResults/ListLinksGroup";
 import { LSGetItem } from "../../../../utils/storage";
+import { AppTheme } from "../../../../../model/common/Theme";
 
-const styles = () => createStyles({
+const styles = (theme: AppTheme) => createStyles({
   activityStatistic: {
-    display: "grid",
-    gridTemplateColumns: "min-content 1fr",
-    marginTop: "4px"
+    marginTop: 4
+  },
+  divider: {
+    margin: theme.spacing(2, 0, 1.25),
   }
 });
 
 const SidebarLatestActivity: React.FC<any> = props => {
-  const { showConfirm, classes, checkSelectedResult } = props;
+  const { classes, checkSelectedResult } = props;
   const [activities, setActivities] = React.useState(JSON.parse(LSGetItem(DASHBOARD_ACTIVITY_STORAGE_NAME) || "null"));
 
   const updateActivity = React.useCallback(() => {
@@ -48,14 +50,14 @@ const SidebarLatestActivity: React.FC<any> = props => {
       <Grid item xs={12} className={classes.activityStatistic}>
         {activities
           && activities.data.map((v, i) => (
-            <ListLinksGroup
-              key={i}
-              entityDisplayName={getEntityDisplayName(v.entity)}
-              entity={v.entity}
-              items={v.items}
-              showConfirm={showConfirm}
-              checkSelectedResult={checkSelectedResult}
-            />
+            <div key={i}>
+              <ListLinksGroup
+                entityDisplayName={getEntityDisplayName(v.entity)}
+                entity={v.entity}
+                items={v.items}
+                checkSelectedResult={checkSelectedResult}
+              />
+            </div>
           ))}
       </Grid>
     </Grid>

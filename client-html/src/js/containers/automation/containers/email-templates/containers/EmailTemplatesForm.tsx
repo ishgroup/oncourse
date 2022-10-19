@@ -1,11 +1,12 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
-  useCallback, useEffect, useMemo, useState
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { EmailTemplate, MessageType } from "@api/model";
 import { Grow } from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -14,7 +15,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { FileCopy } from "@mui/icons-material";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import { Dispatch } from "redux";
-import { Form, initialize, InjectedFormProps } from "redux-form";
+import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import FormField from "../../../../../common/components/form/formFields/FormField";
@@ -24,12 +25,14 @@ import { usePrevious } from "../../../../../common/utils/hooks";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { NumberArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
 import AvailableFrom, { mapMessageAvailableFrom } from "../../../components/AvailableFrom";
-import Bindings from "../../../components/Bindings";
+import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import { MessageTemplateEntityItems, MessageTemplateEntityName } from "../../../constants";
 import { validateKeycode } from "../../../utils";
 import ScriptCard from "../../scripts/components/cards/CardBase";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { CatalogItemType } from "../../../../../model/common/Catalog";
+import InfoPill from "../../../../../common/components/layout/InfoPill";
 
 const manualUrl = getManualLink("emailTemplates");
 const getAuditsUrl = (id: number) => `audit?search=~"EmailTemplate" and entityId == ${id}`;
@@ -50,6 +53,7 @@ interface Props extends InjectedFormProps {
   syncErrors: any;
   nextLocation: string;
   setNextLocation: (nextLocation: string) => void;
+  emailTemplates?: CatalogItemType[];
 }
 
 const validatePlainBody = (v, allValues) => ((allValues.type !== 'Email' || !allValues.body) ? validateSingleMandatoryField(v) : undefined);
@@ -75,8 +79,8 @@ const EmailTemplatesForm: React.FC<Props> = props => {
     validateNewTemplateName,
     history,
     nextLocation,
-    setNextLocation,
     syncErrors,
+    emailTemplates
   } = props;
 
   const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
@@ -146,7 +150,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
   useEffect(() => {
     if (!dirty && nextLocation) {
       history.push(nextLocation);
-      setNextLocation('');
     }
   }, [nextLocation, dirty]);
 
@@ -161,7 +164,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
       />
 
       <Form onSubmit={handleSubmit(handleSave)}>
-        {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
+        {!disableRouteConfirm && <RouteChangeConfirm form={form} when={dirty || isNew} />}
 
         <AppBarContainer
           values={values}
@@ -169,7 +172,14 @@ const EmailTemplatesForm: React.FC<Props> = props => {
           getAuditsUrl={getAuditsUrl}
           disabled={!dirty}
           invalid={invalid}
-          title={isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
+          title={(
+            <div className="centeredFlex">
+              {isNew && (!values.name || values.name?.trim().length === 0) ? "New" : values.name?.trim()}
+              {[...values.automationTags?.split(",") || [],
+                ...isInternal ? [] : ["custom"]
+              ].map(t => <InfoPill key={t} label={t} />)}
+            </div>
+          )}
           disableInteraction={isInternal}
           opened={isNew || Object.keys(syncErrors).includes("name")}
           fields={(
@@ -214,7 +224,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
         >
           <Grid container>
             <Grid item xs={9} className="pr-3">
-              <Grid container columnSpacing={3} className="mb-3">
+              <Grid container columnSpacing={3} rowSpacing={2} className="mb-3">
                 <Grid item xs={6}>
                   <div className="heading">Type</div>
                   <FormField
@@ -235,10 +245,17 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                     select
                   />
                 </Grid>
+                <FieldArray
+                  name="options"
+                  itemsType="component"
+                  component={BindingsRenderer}
+                  emailTemplates={emailTemplates}
+                  rerenderOnEveryChange
+                />
               </Grid>
 
               {values.type === 'Email' && (
-                <Grid container >
+                <Grid container>
                   <Grid item xs={6}>
                     <div className="heading">Subject</div>
                     <FormField
@@ -307,11 +324,12 @@ const EmailTemplatesForm: React.FC<Props> = props => {
             <Grid item xs={3}>
               <div>
                 <FormField
-                  type="switch"
-                  name="enabled"
                   label="Enabled"
+                  type="switch"
+                  name="status"
                   color="primary"
-                  fullWidth
+                  format={v => v === "Enabled"}
+                  parse={v => (v ? "Enabled" : "Installed but Disabled")}
                 />
               </div>
               <div className="mt-3 pt-1">

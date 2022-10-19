@@ -1,15 +1,17 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Category } from "@api/model";
 import { IAction } from "../../../actions/IshAction";
 import {
   GET_EMAIL_TEMPLATES_WITH_KEYCODE_FULFILLED,
   GET_SCRIPTS_FULFILLED
 } from "../../../actions";
-import { LIST_PAGE_SIZE } from "../../../../constants/Config";
+import { LIST_PAGE_SIZE, LIST_SIDE_BAR_DEFAULT_WIDTH } from "../../../../constants/Config";
 import {
   CLEAR_LIST_STATE,
   GET_FILTERS_FULFILLED,
@@ -23,19 +25,14 @@ import {
   SET_LIST_ENTITY,
   SET_LIST_SELECTION,
   SET_LIST_USER_AQL_SEARCH,
-  SET_LIST_NESTED_EDIT_RECORD,
-  CLEAR_LIST_NESTED_EDIT_RECORD,
-  CLOSE_LIST_NESTED_EDIT_RECORD,
   GET_PLAIN_RECORDS_REQUEST_FULFILLED,
   SET_LIST_MENU_TAGS,
   SET_LIST_SEARCH_ERROR,
   SET_LIST_CREATING_NEW,
   SET_LIST_FULL_SCREEN_EDIT_VIEW,
-  SET_LIST_COLUMNS,
   SET_RECIPIENTS_MESSAGE_DATA,
   CLEAR_RECIPIENTS_MESSAGE_DATA,
   SET_LIST_EDIT_RECORD_FETCHING,
-  SET_SHOW_COLORED_DOTS,
   UPDATE_TAGS_ORDER,
 } from "../actions";
 import { latestActivityStorageHandler } from "../../../utils/storage";
@@ -44,6 +41,10 @@ import { getUpdated } from "../utils/listFiltersUtils";
 
 class State implements ListState {
   menuTags = [];
+
+  checkedChecklists = [];
+
+  uncheckedChecklists = [];
 
   menuTagsLoaded = false;
 
@@ -62,7 +63,7 @@ class State implements ListState {
     pageSize: LIST_PAGE_SIZE,
     search: null,
     layout: null,
-    filterColumnWidth: 200,
+    filterColumnWidth: LIST_SIDE_BAR_DEFAULT_WIDTH,
     tagsOrder: [],
     recordsLeft: LIST_PAGE_SIZE
   };
@@ -82,8 +83,6 @@ class State implements ListState {
   editRecord = null;
 
   recepients = null;
-
-  nestedEditRecords = [];
 
   selection = [];
 
@@ -125,7 +124,11 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
           ...newRecords,
           sort: newRecords.sort.map(s => ({ ...s })),
           columns: newRecords.columns.map(c => ({ ...c })),
-          rows: newRecords.rows.map(r => ({ ...r }))
+          rows: newRecords.rows.map(r => ({ ...r })),
+          tagsOrder: [...newRecords.tagsOrder],
+          filterColumnWidth: newRecords.filterColumnWidth < LIST_SIDE_BAR_DEFAULT_WIDTH
+            ? LIST_SIDE_BAR_DEFAULT_WIDTH
+            : newRecords.filterColumnWidth
         },
         searchQuery,
         fetching: false,
@@ -149,7 +152,7 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
       if (editRecord && editRecord.id) {
         latestActivityStorageHandler(
           { name, date: new Date().toISOString(), id: editRecord.id },
-          state.records.entity as Category
+          state.records.entity
         );
       }
 
@@ -164,20 +167,6 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
       return {
         ...state,
         editRecordFetching: true
-      };
-    }
-
-    case SET_LIST_NESTED_EDIT_RECORD: {
-      return {
-        ...state,
-        nestedEditRecords: [...state.nestedEditRecords, action.payload]
-      };
-    }
-
-    case SET_SHOW_COLORED_DOTS: {
-      return {
-        ...state,
-        showColoredDots: action.payload,
       };
     }
 
@@ -283,18 +272,6 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
       };
     }
 
-    case SET_LIST_COLUMNS: {
-      const { columns } = action.payload;
-
-      return {
-        ...state,
-        records: {
-          ...state.records,
-          columns
-        }
-      };
-    }
-
     case SET_LIST_USER_AQL_SEARCH: {
       const { userAQLSearch } = action.payload;
       return {
@@ -329,36 +306,16 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
     }
 
     case SET_LIST_MENU_TAGS: {
-      const { menuTags } = action.payload;
+      const { menuTags, checkedChecklists, uncheckedChecklists } = action.payload;
 
       state.records.offset = 0;
 
       return {
         ...state,
         menuTagsLoaded: true,
-        menuTags: getUpdated(menuTags, null, null, null)
-      };
-    }
-
-    case CLOSE_LIST_NESTED_EDIT_RECORD: {
-      const { index } = action.payload;
-
-      if (state.nestedEditRecords[index]) state.nestedEditRecords[index].opened = false;
-
-      return {
-        ...state,
-        nestedEditRecords: [...state.nestedEditRecords]
-      };
-    }
-
-    case CLEAR_LIST_NESTED_EDIT_RECORD: {
-      const { index } = action.payload;
-
-      state.nestedEditRecords.splice(index, 1);
-
-      return {
-        ...state,
-        nestedEditRecords: [...state.nestedEditRecords]
+        menuTags: getUpdated(menuTags, null, null, null),
+        checkedChecklists: getUpdated(checkedChecklists, null, null, null),
+        uncheckedChecklists: getUpdated(uncheckedChecklists, null, null, null),
       };
     }
 

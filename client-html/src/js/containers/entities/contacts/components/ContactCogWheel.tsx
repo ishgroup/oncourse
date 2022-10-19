@@ -13,6 +13,7 @@ import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOpti
 import MergeContactsModal from "./MergeContactsModal";
 import { closeMergeContactsSuccess, getMergeContacts } from "../actions";
 import PayslipGenerateCogwheelAction from "../../payslips/components/PayslipGenerateCogwheelAction";
+import { getPluralSuffix } from "../../../../common/utils/strings";
 
 const ContactCogWheel = props => {
   const {
@@ -41,7 +42,7 @@ const ContactCogWheel = props => {
     closeMergeContactsSuccess();
   }, []);
 
-  const contactsCountLabel = useMemo(() => `${selection.length} selected contact${selection.length <= 1 ? "" : "s"}`, [
+  const contactsCountLabel = useMemo(() => `${selection.length} selected contact${getPluralSuffix(selection.length)}`, [
     selection.length
   ]);
 

@@ -1,14 +1,16 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { ProductItem, TableModel } from "@api/model";
+import { ProductItem, ProductItemStatus, TableModel } from "@api/model";
 import { clearListState, getFilters } from "../../../common/components/list-view/actions";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
-import { getSale, getSalesManuTags, updateSale } from "./actions";
+import { getSalesManuTags } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
 import SalesEditView from "./components/SalesEditView";
@@ -17,9 +19,8 @@ import SalesCogwheel from "./components/cogwheel/SalesCogwheel";
 import { getPlainAccounts } from "../accounts/actions";
 import { getPlainTaxes } from "../taxes/actions";
 import { Dispatch } from "redux";
-import { getEntityTags, getListTags } from "../../tags/actions";
+import { getEntityTags } from "../../tags/actions";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
-import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 
 interface SalesProps {
   getSaleRecord?: () => void;
@@ -30,7 +31,6 @@ interface SalesProps {
   getAccounts?: () => void;
   clearListState?: () => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
-  onSave?: (id: string, productItem: ProductItem) => void;
 }
 
 const filterGroups: FilterGroup[] = [
@@ -103,19 +103,19 @@ const findRelatedGroup: any[] = [
 
 const manualLink = getManualLink("sales");
 
-const nestedEditFields = {
-  SendMessage: props => <SendMessageEditView {...props} />
+const setRowClasses = ({ displayStatus }: { displayStatus: ProductItemStatus }) => {
+  if (['Credited', 'Redeemed', 'Delivered'].includes(displayStatus)) return "text-op065";
+  if (['Cancelled', 'Expired'].includes(displayStatus)) return "text-op05";
+  return undefined;
 };
 
 const Sales: React.FC<SalesProps> = props => {
   const {
     updateTableModel,
-    getSaleRecord,
     onInit,
     getFilters,
     getAccounts,
     getTaxes,
-    onSave,
     getTags
   } = props;
 
@@ -130,37 +130,32 @@ const Sales: React.FC<SalesProps> = props => {
   }, []);
 
   return (
-    <div>
-      <ListView
-        listProps={{
-          primaryColumn: "product.name",
-          secondaryColumn: "invoiceLine.invoice.contact.fullName"
-        }}
-        editViewProps={{
-          manualLink,
-          asyncValidate: notesAsyncValidate,
-          asyncBlurFields: ["notes[].message"],
-          nameCondition: values => (values ? values.productName : "")
-        }}
-        nestedEditFields={nestedEditFields}
-        updateTableModel={updateTableModel}
-        EditViewContent={SalesEditView}
-        CogwheelAdornment={SalesCogwheel}
-        getEditRecord={getSaleRecord}
-        rootEntity="ProductItem"
-        onInit={onInit}
-        onSave={onSave}
-        findRelated={findRelatedGroup}
-        filterGroupsInitial={filterGroups}
-        defaultDeleteDisabled
-        noListTags
-      />
-    </div>
+    <ListView
+      listProps={{
+        setRowClasses,
+        primaryColumn: "product.name",
+        secondaryColumn: "invoiceLine.invoice.contact.fullName"
+      }}
+      editViewProps={{
+        manualLink,
+        asyncValidate: notesAsyncValidate,
+        asyncChangeFields: ["notes[].message"],
+        nameCondition: values => (values ? values.productName : "")
+      }}
+      updateTableModel={updateTableModel}
+      EditViewContent={SalesEditView}
+      CogwheelAdornment={SalesCogwheel}
+      rootEntity="ProductItem"
+      findRelated={findRelatedGroup}
+      filterGroupsInitial={filterGroups}
+      createButtonDisabled
+      defaultDeleteDisabled
+      noListTags
+    />
   );
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  onInit: () => {},
   getAccounts: () => getPlainAccounts(dispatch),
   getTaxes: () => dispatch(getPlainTaxes()),
   getTags: () => {
@@ -170,9 +165,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getEntityTags("Membership"));
   },
   getFilters: () => dispatch(getFilters("ProductItem")),
-  onSave: (id: string, productItem: ProductItem) => dispatch(updateSale(id, productItem)),
-  clearListState: () => dispatch(clearListState()),
-  getSaleRecord: (id: string) => dispatch(getSale(id))
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Sales);

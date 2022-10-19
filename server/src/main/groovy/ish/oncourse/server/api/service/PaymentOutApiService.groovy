@@ -253,6 +253,10 @@ class PaymentOutApiService extends EntityApiService<PaymentOutDTO, PaymentOut, P
             }
         }
 
+        if (dto.dateBanked && dto.datePayed && dto.dateBanked.isBefore(dto.datePayed)) {
+            validator.throwClientErrorException("dateBanked", "Date banked must be after or equal to date paid")
+        }
+
 
     }
 
@@ -278,8 +282,8 @@ class PaymentOutApiService extends EntityApiService<PaymentOutDTO, PaymentOut, P
             }
         }
 
-        if (dto.dateBanked && dto.dateBanked.isBefore(dto.datePayed)) {
-            validator.throwClientErrorException("dateBanked", "Date banked must be after Date paid")
+        if (dto.dateBanked && dto.datePayed && dto.dateBanked.isBefore(dto.datePayed)) {
+            validator.throwClientErrorException("dateBanked", "Date banked must be after or equal to date paid")
         }
 
         if (paymentOut.dateBanked == null && dto.dateBanked && dto.dateBanked.isBefore(locked)) {

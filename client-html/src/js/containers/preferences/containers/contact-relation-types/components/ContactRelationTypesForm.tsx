@@ -1,6 +1,5 @@
 import * as React from "react";
 import { withRouter } from "react-router";
-import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import Grid from "@mui/material/Grid";
 import withStyles from "@mui/styles/withStyles";
@@ -10,12 +9,11 @@ import {
 import { ContactRelationType } from "@api/model";
 import isEqual from "lodash.isequal";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import ContactRelationTypesRenderer from "./ContactRelationTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { State } from "../../../../../reducers/state";
-import { setNextLocation } from "../../../../../common/actions";
 import { cardsFormStyles } from "../../../styles/formCommonStyles";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
@@ -39,8 +37,7 @@ interface Props {
   onUpdate: (contactRelationTypes: ContactRelationType[]) => void;
   openConfirm?: ShowConfirmCaller;
   history?: any,
-  nextLocation?: string,
-  setNextLocation?: (nextLocation: string) => void,
+  nextLocation?: string
 }
 
 class ContactRelationTypesBaseForm extends React.Component<Props, any> {
@@ -93,12 +90,11 @@ class ContactRelationTypesBaseForm extends React.Component<Props, any> {
       this.props.onUpdate(this.getTouchedAndNew(value.types));
     })
       .then(() => {
-        const { nextLocation, history, setNextLocation } = this.props;
+        const { nextLocation, history } = this.props;
 
         this.props.dispatch(initialize(CONTACT_RELATION_TYPES_FORM, { types: this.props.contactRelationTypes }));
 
         nextLocation && history.push(nextLocation);
-        setNextLocation('');
       })
       .catch(error => {
         this.isPending = false;
@@ -203,14 +199,11 @@ const mapStateToProps = (state: State) => ({
   nextLocation: state.nextLocation
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-});
 
 const ContactRelationTypesForm = reduxForm({
   onSubmitFail,
   form: CONTACT_RELATION_TYPES_FORM
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(
+})(connect<any, any, any>(mapStateToProps, null)(
   withStyles(cardsFormStyles)(withRouter(ContactRelationTypesBaseForm)) as any
 ));
 

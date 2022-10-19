@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Typography } from "@mui/material";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
@@ -48,6 +48,7 @@ type SearchTypes = "withToggle" | "immediate";
 
 interface Props {
   formId: number;
+  aqlQueryError: boolean;
   aqlEntities?: string[];
   values: NestedListItem[];
   searchValues: NestedListItem[];
@@ -79,7 +80,7 @@ interface Props {
   disableAddAll?: boolean;
   validate?: Validator | Validator[];
   entityTags?: any;
-  CustomCell?: React.ReactNode;
+  CustomCell?: any;
 }
 
 interface NestedListState {
@@ -87,10 +88,23 @@ interface NestedListState {
   searchExpression?: string;
   toggleEnabled?: boolean;
   formError?: string;
-  isValidAqlQuery?: boolean;
   searchTags?: Suggestion[];
   selectedAqlEntity?: string;
 }
+
+const InnerFormField = React.memo((props: any) => {
+  const {
+    input: { name },
+    meta: { error },
+    setFormError
+  } = props;
+
+  useEffect(() => {
+    if (setFormError) setFormError(error);
+  }, [error]);
+
+  return <div className="invisible" id={name} />;
+});
 
 class NestedList extends React.Component<Props, NestedListState> {
   private readonly inputRef: any;
@@ -104,7 +118,6 @@ class NestedList extends React.Component<Props, NestedListState> {
 
     this.state = {
       searchEnabled: false,
-      isValidAqlQuery: false,
       toggleEnabled: Boolean(props.values && props.values.length),
       searchExpression: "",
       selectedAqlEntity: props.aqlEntities ? props.aqlEntities[0] : null,
@@ -190,12 +203,6 @@ class NestedList extends React.Component<Props, NestedListState> {
     },
     () => setTimeout(() => this.inputRef.current && this.inputRef.current.focus(), 300));
     this.aqlComponentRef.current.reset();
-  }
-
-  validateAql = isValidAqlQuery => {
-    this.setState({
-      isValidAqlQuery
-    });
   };
 
   triggerSearch = () => {
@@ -208,12 +215,8 @@ class NestedList extends React.Component<Props, NestedListState> {
   };
 
   triggerAqlSearch = () => {
-    const { isValidAqlQuery, selectedAqlEntity } = this.state;
+    const { selectedAqlEntity } = this.state;
     const { searchType } = this.props;
-
-    if (!isValidAqlQuery) {
-      return;
-    }
 
     let { value } = this.inputRef.current;
 
@@ -255,12 +258,6 @@ class NestedList extends React.Component<Props, NestedListState> {
       if (typeof onToggleSearch === "function") {
         onToggleSearch();
       }
-
-      if (!aqlEntities) {
-        setTimeout(() => {
-          this.inputRef.current.focus();
-        }, 300);
-      }
     }
 
     if (searchEnabled) {
@@ -270,8 +267,6 @@ class NestedList extends React.Component<Props, NestedListState> {
     if (aqlEntities) {
       if (searchEnabled) {
         this.aqlComponentRef.current.reset();
-      } else {
-        setTimeout(() => this.inputRef.current && this.inputRef.current.focus(), 300);
       }
     }
 
@@ -299,7 +294,7 @@ class NestedList extends React.Component<Props, NestedListState> {
       },
       () => this.aqlComponentRef.current && this.aqlComponentRef.current.reset()
     );
-  }
+  };
 
   onSearchChange = event => {
     const { clearSearchResult } = this.props;
@@ -342,20 +337,9 @@ class NestedList extends React.Component<Props, NestedListState> {
         if (!checked) {
           this.props.onDeleteAll();
           this.toggleSearch();
-        } else {
-          setTimeout(() => this.inputRef.current && this.inputRef.current.focus(), 300);
         }
       }
     );
-  };
-
-  onBlur = () => {
-    const { searchType, aqlEntities } = this.props;
-    const { searchExpression } = this.state;
-
-    if (!searchExpression && searchType !== "immediate" && (aqlEntities ? aqlEntities.length === 1 : true)) {
-      this.toggleSearch();
-    }
   };
 
   onFocus = () => {
@@ -366,7 +350,7 @@ class NestedList extends React.Component<Props, NestedListState> {
     }
   };
 
-  renderSearchType = React.memo<any>(props => {
+  renderSearchType = React.memo<Props & NestedListState & { searchValuesToShow: any }>(props => {
     const {
       title,
       classes,
@@ -382,7 +366,7 @@ class NestedList extends React.Component<Props, NestedListState> {
       formError,
       searchValuesToShow,
       selectedAqlEntity,
-      isValidAqlQuery,
+      aqlQueryError,
       searchTags,
       secondaryHeading,
       disableAddAll,
@@ -405,11 +389,9 @@ class NestedList extends React.Component<Props, NestedListState> {
             onAqlSearchChange={this.onAqlSearchChange}
             onSearchEscape={this.onSearchEscape}
             onFocus={this.onFocus}
-            onBlur={this.onBlur}
             onAddEvent={this.onAddEvent}
             toggleSearch={this.toggleSearch}
             onSwitchToggle={this.onSwitchToggle}
-            validateAql={this.validateAql}
             inputRef={this.inputRef}
             aqlComponentRef={this.aqlComponentRef}
             titleCaption={titleCaption}
@@ -419,7 +401,7 @@ class NestedList extends React.Component<Props, NestedListState> {
             disabled={disabled}
             setSelectedEntity={this.setSelectedEntity}
             aqlEntity={selectedAqlEntity}
-            isValidAqlQuery={isValidAqlQuery}
+            aqlQueryError={aqlQueryError}
             searchTags={searchTags}
             secondaryHeading={secondaryHeading}
             disableAddAll={disableAddAll}
@@ -444,10 +426,8 @@ class NestedList extends React.Component<Props, NestedListState> {
             onAqlSearchChange={this.onAqlSearchChange}
             onSearchEscape={this.onSearchEscape}
             onFocus={this.onFocus}
-            onBlur={this.onBlur}
             onAddEvent={this.onAddEvent}
             toggleSearch={this.toggleSearch}
-            validateAql={this.validateAql}
             inputRef={this.inputRef}
             aqlComponentRef={this.aqlComponentRef}
             titleCaption={titleCaption}
@@ -456,7 +436,7 @@ class NestedList extends React.Component<Props, NestedListState> {
             disabled={disabled}
             aqlEntity={selectedAqlEntity}
             setSelectedEntity={this.setSelectedEntity}
-            isValidAqlQuery={isValidAqlQuery}
+            aqlQueryError={aqlQueryError}
             searchTags={searchTags}
             secondaryHeading={secondaryHeading}
             disableAddAll={disableAddAll}
@@ -465,18 +445,6 @@ class NestedList extends React.Component<Props, NestedListState> {
         );
       }
     }
-  });
-
-  renderInnerFormField = React.memo((props: any) => {
-    const {
-      meta: { error }
-    } = props;
-
-    this.setState({
-      formError: error
-    });
-
-    return <div className="invisible" id={this.props.name} />;
   });
 
   render() {
@@ -505,7 +473,14 @@ class NestedList extends React.Component<Props, NestedListState> {
 
     return (
       <>
-        {name && <Field name={name} validate={validate} component={this.renderInnerFormField} />}
+        {name && (
+          <Field
+            name={name}
+            validate={validate}
+            component={InnerFormField}
+            setFormError={formError => this.setState({ formError })}
+          />
+        )}
 
         <this.renderSearchType {...{ ...this.props, ...this.state, searchValuesToShow }} />
 
@@ -575,4 +550,4 @@ const mapStateToProps = (state: State) => ({
   entityTags: state.tags.entityTags
 });
 
-export default connect<any, any, Props>(mapStateToProps, null)(withStyles(styles)(NestedList));
+export default connect<any, any, Props>(mapStateToProps)(withStyles(styles)(NestedList));

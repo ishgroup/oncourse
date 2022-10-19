@@ -22,7 +22,7 @@ import javax.annotation.Nonnull
  * a comprehensive audit trail.
  */
 @API
-class Note extends _Note {
+class Note extends _Note implements ContactActivityTrait{
 
 
 
@@ -31,7 +31,13 @@ class Note extends _Note {
 		super.postAdd()
 	}
 
-	/**
+	@Override
+	protected void prePersist() {
+		super.prePersist()
+		if(interactionDate == null)
+			interactionDate = createdOn
+	}
+/**
 	 * @return the date and time this record was created
 	 */
 	@Nonnull
@@ -41,7 +47,16 @@ class Note extends _Note {
 		return super.getCreatedOn()
 	}
 
-	/**
+	@Override
+	String getInteractionDescription() {
+		return note
+	}
+
+	@Override
+	String getInteractionName() {
+		return systemUser?.fullName
+	}
+/**
 	 * @return the date and time this record was modified
 	 */
 	@API
@@ -90,6 +105,11 @@ class Note extends _Note {
 	@Override
 	SystemUser getSystemUser() {
 		return super.getSystemUser()
+	}
+
+	@Override
+	Date getInteractionDate() {
+		return super.getInteractionDate()
 	}
 }
 

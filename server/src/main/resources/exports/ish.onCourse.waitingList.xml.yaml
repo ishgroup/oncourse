@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.waitingList.xml
-entityClass: WaitingList
-body: ish.onCourse.waitingList.xml.groovy
-name: WaitingList XML export
-outputType: xml

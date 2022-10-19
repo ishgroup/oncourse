@@ -174,7 +174,7 @@ class UserFunctions {
                 .where(Site.ID.eq(dtoModel.administrationCentre))
                 .selectOne(context)
         if (!site) {
-            return new ValidationErrorDTO(dtoModel.id?.toString(), 'administrationCentre', "Administration centre doesn't exist.")
+            return new ValidationErrorDTO(dtoModel.id?.toString(), 'administrationCentre', "Select an option for the 'Bank cash/cheques to site' field.")
         }
 
         if (!dtoModel.admin && !dtoModel.role) {
@@ -225,7 +225,7 @@ ${messageStart} to the ish onCourse application for ${serverAddress} . Please cl
 
 ${serverAddress}/invite/${invitationToken}
 
-This invitation will expire in 24 hours.
+This invitation will expire in 7 days.
                 """
 
         SmtpParameters parameters = new SmtpParameters(preferenceController.emailFromAddress, preferenceController.emailFromName, newUser.email, subject, messageText)

@@ -20,7 +20,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/emailTemplate'
         "name":"put 1",
         "type":"Post",
         "entity":"Application",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"put1email",
         "subject":"some subject",
         "plainBody":"somePlainBody",
@@ -54,14 +54,17 @@ Feature: Main feature for all PUT requests with path 'list/entity/emailTemplate'
         "type":"Email",
         "name":"put 1 upd",
         "entity":"Site",
-        "enabled":false,
+        "status":"Not Installed",
         "keyCode":"put1email",
         "subject":"some subject upd",
         "plainBody":"somePlainBodyUPD",
         "description":"some description upd",
         "body":"someBody upd",
         "variables":[{"name":"varName1", "label":"varLabel1", "type":"Text"}],
-        "options":[{"name":"optName1","type":"Date","value":"2019-01-01"}]
+        "options":[{"name":"optName1","type":"Date","value":"2019-01-01"}],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -84,12 +87,15 @@ Feature: Main feature for all PUT requests with path 'list/entity/emailTemplate'
         "subject":"some subject upd",
         "plainBody":"somePlainBodyUPD",
         "body":"someBody upd",
-        "enabled":false,
+        "status":"Not Installed",
         "variables":[{"name":"varName1","label":"varLabel1","type":"Text","value":null,"system":null,"valueDefault":null}],
         "options":[{"name":"optName1","label":null,"type":"Date","value":"2019-01-01","system":null,"valueDefault":null}],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "description":"some description upd"
+        "description":"some description upd",
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -109,14 +115,17 @@ Feature: Main feature for all PUT requests with path 'list/entity/emailTemplate'
         "name":"put 2",
         "type":"Sms",
         "entity":"Application",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"put2email",
         "subject":"some subject",
         "plainBody":"somePlainBody",
         "description":"some description",
         "body":"someBody",
         "variables":[{"name":"varName1","label":"varLabel1","type":"Text","value":null,"system":null,"valueDefault":null}],
-        "options":[{"name":"optName1","label":null,"type":"Date","value":"2019-01-01","system":null,"valueDefault":null}]
+        "options":[{"name":"optName1","label":null,"type":"Date","value":"2019-01-01","system":null,"valueDefault":null}],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -148,14 +157,17 @@ Feature: Main feature for all PUT requests with path 'list/entity/emailTemplate'
         "type":"Post",
         "name":"put 2 upd",
         "entity":"Site",
-        "enabled":false,
+        "status":"Not Installed",
         "keyCode":"put2email",
         "subject":"some subject upd",
         "plainBody":"somePlainBodyUPD",
         "description":"some description upd",
         "body":"someBody upd",
         "variables":[],
-        "options":[]
+        "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -177,12 +189,15 @@ Feature: Main feature for all PUT requests with path 'list/entity/emailTemplate'
         "subject":"some subject upd",
         "plainBody":"somePlainBodyUPD",
         "body":"someBody upd",
-        "enabled":false,
+        "status":"Not Installed",
         "variables":[],
         "options":[],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "description":"some description upd"
+        "description":"some description upd",
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -206,14 +221,17 @@ Feature: Main feature for all PUT requests with path 'list/entity/emailTemplate'
         "name":"put 3",
         "type":"Email",
         "entity":"Application",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"put3email",
         "subject":"some subject",
         "plainBody":"somePlainBody",
         "description":"some description",
         "body":"someBody",
         "variables":[{"name":"varName1","label":"varLabel1","type":"Text","value":null,"system":null,"valueDefault":null}],
-        "options":[{"name":"optName1","label":null,"type":"Date","value":"2019-01-01","system":null,"valueDefault":null}]
+        "options":[{"name":"optName1","label":null,"type":"Date","value":"2019-01-01","system":null,"valueDefault":null}],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -264,14 +282,17 @@ Feature: Main feature for all PUT requests with path 'list/entity/emailTemplate'
         "name":"put 4",
         "type":"Email",
         "entity":"Application",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"put4email",
         "subject":"some subject",
         "plainBody":"somePlainBody",
         "description":"some description",
         "body":"someBody",
         "variables":[{"name":"varName1","label":"varLabel1","type":"Text","value":null,"system":null,"valueDefault":null}],
-        "options":[{"name":"optName1","label":null,"type":"Date","value":"2019-01-01","system":null,"valueDefault":null}]
+        "options":[{"name":"optName1","label":null,"type":"Date","value":"2019-01-01","system":null,"valueDefault":null}],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -298,14 +319,17 @@ Feature: Main feature for all PUT requests with path 'list/entity/emailTemplate'
         "type":"Email",
         "name":"",
         "entity":"Application",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"put4email",
         "subject":"some subject",
         "plainBody":"somePlainBody",
         "description":"some description",
         "body":"someBody",
         "variables":[{"name":"varName1","label":"varLabel1","type":"Text","value":null,"system":null,"valueDefault":null}],
-        "options":[{"name":"optName1","label":null,"type":"Date","value":"2019-01-01","system":null,"valueDefault":null}]
+        "options":[{"name":"optName1","label":null,"type":"Date","value":"2019-01-01","system":null,"valueDefault":null}],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -331,14 +355,17 @@ Feature: Main feature for all PUT requests with path 'list/entity/emailTemplate'
         "name":"put 5",
         "type":"Email",
         "entity":"Application",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"put5email",
         "subject":"some subject",
         "plainBody":"somePlainBody",
         "description":"some description",
         "body":"someBody",
         "variables":[{"name":"varName1","label":"varLabel1","type":"Text","value":null,"system":null,"valueDefault":null}],
-        "options":[{"name":"optName1","label":null,"type":"Date","value":"2019-01-01","system":null,"valueDefault":null}]
+        "options":[{"name":"optName1","label":null,"type":"Date","value":"2019-01-01","system":null,"valueDefault":null}],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -365,14 +392,17 @@ Feature: Main feature for all PUT requests with path 'list/entity/emailTemplate'
         "type":"Email",
         "name":"put 5",
         "entity":"notExistingEntity",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"put5email",
         "subject":"some subject",
         "plainBody":"somePlainBody",
         "description":"some description",
         "body":"someBody",
         "variables":[{"name":"varName1","label":"varLabel1","type":"Text","value":null,"system":null,"valueDefault":null}],
-        "options":[{"name":"optName1","label":null,"type":"Date","value":"2019-01-01","system":null,"valueDefault":null}]
+        "options":[{"name":"optName1","label":null,"type":"Date","value":"2019-01-01","system":null,"valueDefault":null}],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -399,14 +429,17 @@ Feature: Main feature for all PUT requests with path 'list/entity/emailTemplate'
         "type":"Email",
         "name":"put 6",
         "entity":"notExistingEntity",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"put6email",
         "subject":"some subject",
         "plainBody":"somePlainBody",
         "description":"some description",
         "body":"someBody",
         "variables":[{"name":"varName1","label":"varLabel1","type":"Text","value":null,"system":null,"valueDefault":null}],
-        "options":[{"name":"optName1","label":null,"type":"Date","value":"2019-01-01","system":null,"valueDefault":null}]
+        "options":[{"name":"optName1","label":null,"type":"Date","value":"2019-01-01","system":null,"valueDefault":null}],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 

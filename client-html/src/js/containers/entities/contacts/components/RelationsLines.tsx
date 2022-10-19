@@ -9,8 +9,8 @@ import Grid from "@mui/material/Grid";
 import { change } from "redux-form";
 import { Contact } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { defaultContactName, getContactFullName, openContactLink } from "../utils";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { getContactFullName } from "../utils";
+import { ContactLinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import ContactSelectItemRenderer from "./ContactSelectItemRenderer";
 
 const RelationsHeaderBase: React.FunctionComponent<any> = React.memo((props: any) => {
@@ -24,7 +24,7 @@ const RelationsHeaderBase: React.FunctionComponent<any> = React.memo((props: any
   return (
     <div className="w-100 d-grid gridTemplateColumns-1fr">
       <Typography variant="subtitle2" noWrap>
-        {relationName && relatedContactName ? `${relationName} of ${defaultContactName(relatedContactName)}` : ""}
+        {relationName && relatedContactName ? `${relationName} of ${relatedContactName}` : ""}
       </Typography>
     </div>
   );
@@ -96,10 +96,10 @@ export const RelationsContent: React.FunctionComponent<any> = React.memo((props:
           label="Related contact"
           selectValueMark="id"
           selectLabelCondition={getContactFullName}
-          defaultDisplayValue={defaultContactName(row.relatedContactName)}
+          defaultDisplayValue={row.relatedContactName}
           onInnerValueChange={onRelatedContactChange}
           labelAdornment={
-            <LinkAdornment linkHandler={openContactLink} link={row.relatedContactId} disabled={!row.relatedContactId} />
+            <ContactLinkAdornment id={row?.relatedContactId} />
           }
           itemRenderer={ContactSelectItemRenderer}
           rowHeight={55}

@@ -1,29 +1,14 @@
 /*
- * Copyright ish group pty ltd 2020.
+ * Copyright ish group pty ltd 2022.
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of the
- * GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License for more details.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import CircularProgress from "@mui/material/CircularProgress";
 import React, { useCallback, useRef } from "react";
 import clsx from "clsx";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faCog,
-  faFile,
-  faFileAlt,
-  faFileArchive,
-  faFileExcel,
-  faFileImage,
-  faFilePdf,
-  faFilePowerpoint,
-  faFileWord
-} from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
 import { arrayInsert, change, } from "redux-form";
 import { createStyles, withStyles } from "@mui/styles";
@@ -38,7 +23,10 @@ import { Document, DocumentVersion } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import DocumentsService from "../../../../common/components/form/documents/services/DocumentsService";
 import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../../../common/utils/dates/format";
-import { getLatestDocumentItem, iconSwitcher } from "../../../../common/components/form/documents/components/utils";
+import {
+  FileTypeIcon,
+  getLatestDocumentItem
+} from "../../../../common/components/form/documents/components/utils";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { AppTheme } from "../../../../model/common/Theme";
 import { State } from "../../../../reducers/state";
@@ -46,8 +34,7 @@ import DocumentShare from "../../../../common/components/form/documents/componen
 import { showMessage } from "../../../../common/actions";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-
-library.add(faFileImage, faFilePdf, faFileExcel, faFileWord, faFilePowerpoint, faFileArchive, faFileAlt, faFile, faCog);
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 const styles = (theme: AppTheme) => createStyles({
   previewPaper: {
@@ -75,10 +62,6 @@ const styles = (theme: AppTheme) => createStyles({
     "&:hover": {
       boxShadow: `0 0 1px 1px ${theme.palette.primary.main}`
     }
-  },
-  wh100: {
-    height: "30px !important",
-    width: "auto !important"
   },
   documentTitle: {
     margin: "12px 0 0"
@@ -156,9 +139,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
 
   const documentVersion = getLatestDocumentItem(values.versions);
 
-  const currentIcon = iconSwitcher(documentVersion.mimeType);
-
-  const validUrl = values && Array.isArray(values.versions) && ( values.versions[0].url);
+  const validUrl = values && values.urlWithoutVersionId;
 
   const thumbnail = values && Array.isArray(values.versions) && ( values.versions[0].thumbnail);
 
@@ -226,7 +207,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
                     { "coloredHover": hovered })}
                   >
                     <div className="text-center">
-                      {currentIcon({ classes })}
+                      <FileTypeIcon mimeType={documentVersion.mimeType} />
                       <br />
                       <Typography
                         variant="caption"
@@ -306,6 +287,14 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
             </Grid>
 
             <Grid item xs={twoColumn ? 4 : 12} className="mb-3">
+              <EntityChecklists
+                className="mb-3"
+                entity="Document"
+                form={form}
+                entityId={values.id}
+                checked={values.tags}
+              />
+
               <div className="heading mb-2">
                 History
               </div>

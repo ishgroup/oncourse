@@ -463,4 +463,9 @@ public interface Preferences {
 	 */
 	@API
 	String NUMBER_OF_LOGIN_ATTEMPTS = "security.number.login.attempts";
+
+
+	String TUTORIAL_SKIP_SYSTEMUSER = "tutorial.skip.systemuser";
+
+	String BACKGROUND_QUALITY_SCALE = "background.quality.scale";
 }
