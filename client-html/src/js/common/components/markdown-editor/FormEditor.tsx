@@ -97,7 +97,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
 
       const sourceEdit = document.querySelector<HTMLButtonElement>('.ck-source-editing-button');
 
-      if (wysiwygRef.current.plugins.get("SourceEditing").isSourceEditingMode && sourceEdit) {
+      if (wysiwygRef.current?.plugins.get("SourceEditing").isSourceEditingMode && sourceEdit) {
         sourceEdit.click();
       }
 
