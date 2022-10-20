@@ -1,0 +1,3 @@
+kronosDelete {
+    tutorAttendance record
+}
