@@ -41,6 +41,11 @@ class ImportApiImpl implements ImportApi {
     }
 
     @Override
+    String getConfigs(Long id) {
+        return service.getConfigs(id)
+    }
+
+    @Override
     void remove(Long id) {
         service.remove(id)
     }
@@ -48,6 +53,11 @@ class ImportApiImpl implements ImportApi {
     @Override
     void update(Long id, ImportModelDTO importDTO) {
         service.update(id, importDTO)
+    }
+
+    @Override
+    void updateConfigs(Long id, String importConfigs) {
+        service.updateConfigs(id, importConfigs)
     }
 
     @Override

@@ -1,8 +1,8 @@
 get:
   operationId: getConfigs
-  description: get an existing import configs as String
+  description: get an existing email template configs as String
   tags:
-    - Import
+    - EmailTemplate
   parameters:
     - name: id
       in: path
@@ -27,9 +27,9 @@ get:
 
 put:
   operationId: updateConfigs
-  description: Update an existing import configs
+  description: Update an existing email template configs
   tags:
-    - Import
+    - EmailTemplate
   parameters:
     - name: id
       in: path
@@ -37,7 +37,7 @@ put:
       format: int64
       required: true
       description: Unique identifier of script record to fetch
-    - name: importConfigs
+    - name: emailTemplateConfigs
       in: body
       schema:
         type: string
@@ -52,5 +52,5 @@ put:
       description: Unexpected error
   x-permission:
     mask: edit
-    keyCode: SPECIAL_IMPORT
-    errorMessage: Sorry, you have no permissions to update import. Please contact your administrator
+    keyCode: EMAIL_TEMPLATE
+    errorMessage: Sorry, you have no permissions to update email template. Please contact your administrator

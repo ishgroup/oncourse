@@ -145,6 +145,8 @@ paths:
     $ref: './path/list/entity/emailTemplate/api.yaml'
   /list/entity/emailTemplate/template:
     $ref: './path/list/entity/emailTemplate/template/api.yaml'
+  /list/entity/emailTemplate/config:
+    $ref: './path/list/entity/emailTemplate/config/api.yaml'
   /list/entity/enrolment:
     $ref: './path/list/entity/enrolment/api.yaml'
   /list/entity/enrolment/cancel:
@@ -161,6 +163,8 @@ paths:
     $ref: './path/list/entity/import/api.yaml'
   /list/entity/import/execution:
     $ref: './path/list/entity/import/execution/api.yaml'
+  /list/entity/import/config:
+    $ref: './path/list/entity/import/config/api.yaml'
   /list/entity/invoice:
     $ref: './path/list/entity/invoice/api.yaml'
   /list/entity/invoice/contra:

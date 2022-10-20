@@ -52,6 +52,11 @@ class EmailTemplateApiImpl implements EmailTemplateApi {
     }
 
     @Override
+    String getConfigs(Long id) {
+        return service.getConfigs(id)
+    }
+
+    @Override
     void remove(Long id) {
         service.remove(id)
     }
@@ -59,6 +64,11 @@ class EmailTemplateApiImpl implements EmailTemplateApi {
     @Override
     void update(Long id, EmailTemplateDTO emailTemplate) {
         service.update(id, emailTemplate)
+    }
+
+    @Override
+    void updateConfigs(Long id, String emailTemplateConfigs) {
+        service.updateConfigs(id, emailTemplateConfigs)
     }
 
     @Override
