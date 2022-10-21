@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import {
-  Form, getFormValues, initialize, reduxForm
+  Form, getFormInitialValues, initialize, reduxForm
 } from "redux-form";
 import { connect } from "react-redux";
 import isEmpty from "lodash.isempty";
@@ -26,6 +26,7 @@ import { PREFERENCES_AUDITS_LINK } from "../../../constants";
 import { getAccountsList } from "../../../utils";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { ACCOUNT_DEFAULT_INVOICELINE_ID } from "../../../../../constants/Config";
 const manualUrl = getManualLink("generalPrefs_financial");
 
 class FinancialBaseForm extends React.Component<any, any> {
@@ -42,21 +43,28 @@ class FinancialBaseForm extends React.Component<any, any> {
     this.formModel = props.formatModel(Model);
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    const {formData, dispatch, initialized, initialValues, defaultInvoiceLineAccount} = this.props;
+
     // Initializing form with values
-    if (!isEmpty(this.props.formData) && !this.props.initialized) {
-      this.props.dispatch(initialize("FinancialForm", this.props.formData));
+    if (!isEmpty(formData) && !initialized) {
+      dispatch(initialize("FinancialForm", formData));
+    }
+
+    if (initialValues && (initialValues.defaultInvoiceLineAccount !== defaultInvoiceLineAccount)) {
+      dispatch(initialize("FinancialForm", {...formData, defaultInvoiceLineAccount}));
     }
   }
 
   public render() {
     const {
-     handleSubmit, onSave, accounts = [], dirty, data, invalid, form, formRoleName
+      handleSubmit, onSave, accounts = [], dirty, data, invalid, form, formRoleName
     } = this.props;
+
 
     return (
       <Form className="container" onSubmit={handleSubmit(onSave)} role={formRoleName}>
-        <RouteChangeConfirm form={form} when={dirty} />
+        <RouteChangeConfirm form={form} when={dirty}/>
 
         <AppBarContainer
           values={data}
@@ -185,9 +193,10 @@ class FinancialBaseForm extends React.Component<any, any> {
             <Grid item xs={12} sm={6} md={4}>
               <FormField
                 type="select"
-                name={this.formModel.AccountDefaultInvoiceLine.uniqueKey}
+                name="defaultInvoiceLineAccount"
                 label="Default invoice line income account"
                 items={getAccountsList(accounts, AccountType.income)}
+                debounced={false}
                 fullWidth
               />
             </Grid>
@@ -232,7 +241,8 @@ class FinancialBaseForm extends React.Component<any, any> {
 }
 
 const mapStateToProps = (state: State) => ({
-  values: getFormValues("FinancialForm")(state)
+  initialValues: getFormInitialValues("FinancialForm")(state),
+  defaultInvoiceLineAccount: state.userPreferences[ACCOUNT_DEFAULT_INVOICELINE_ID]
 });
 
 const FinancialForm = reduxForm({

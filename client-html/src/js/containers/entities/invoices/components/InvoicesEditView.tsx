@@ -43,7 +43,7 @@ import { leadLabelCondition, openLeadLink } from "../../leads/utils";
 import LeadSelectItemRenderer from "../../leads/components/LeadSelectItemRenderer";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import { AccountDefaultInvoiceLine } from "../../../../model/preferences";
+import { ACCOUNT_DEFAULT_INVOICELINE_ID } from "../../../../constants/Config";
 
 interface Props extends EditViewProps {
   currency: Currency;
@@ -489,7 +489,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
 
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["AbstractInvoice"],
-  defaultInvoiceLineAccount: state.preferences.financial[AccountDefaultInvoiceLine.uniqueKey],
+  defaultInvoiceLineAccount: state.userPreferences[ACCOUNT_DEFAULT_INVOICELINE_ID],
   accounts: state.plainSearchRecords.Account.items,
   currency: state.currency,
   taxes: state.taxes.items,
