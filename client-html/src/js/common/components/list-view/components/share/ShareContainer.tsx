@@ -534,7 +534,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
         {!preview && (
           <>
-            <Grid item xs={12} container>
+            <Grid item xs={12} container className="mt-2">
               <FormControlLabel
                 control={(
                   <Checkbox
@@ -602,16 +602,14 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
     const { values } = this.props;
 
     return (
-      <Grid item xs={12}>
-        <Grid container>
-          <Grid item xs={12}>
-            <Typography variant="body2" color="inherit">
-              {values && values.description}
-            </Typography>
-          </Grid>
-          <Grid item xs={4}>
-            <FieldArray name="variables" component={this.templatesRenderer as any} />
-          </Grid>
+      <Grid item container xs={12}>
+        <Grid item xs={12}>
+          <Typography variant="body2" color="inherit">
+            {values && values.description}
+          </Typography>
+        </Grid>
+        <Grid item container rowSpacing={2} columnSpacing={3} xs={12}>
+          <FieldArray name="variables" component={this.templatesRenderer as any} />
         </Grid>
       </Grid>
     );

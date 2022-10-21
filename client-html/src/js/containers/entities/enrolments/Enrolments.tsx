@@ -1,5 +1,5 @@
 /*
- * Copyright ish group pty ltd 2021.
+ * Copyright ish group pty ltd 2022.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
@@ -26,14 +26,12 @@ import { notesAsyncValidate } from "../../../common/components/form/notes/utils"
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import EntityService from "../../../common/services/EntityService";
 import { getWindowHeight, getWindowWidth } from "../../../common/utils/common";
-import { defaultContactName } from "../contacts/utils";
 import OutcomeService from "../outcomes/services/OutcomeService";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getListTags } from "../../tags/actions";
-import ContactEditView from "../contacts/components/ContactEditView";
 import EnrolmentCogWheel from "./components/EnrolmentCogWheel";
 import EnrolmentEditView from "./components/EnrolmentEditView";
 import { getActiveFundingContracts } from "../../avetmiss-export/actions";
@@ -43,7 +41,7 @@ import { checkPermissions } from "../../../common/actions";
 import { getGradingTypes } from "../../preferences/actions";
 import { updateEntityRecord } from "../common/actions";
 
-const nameCondition = (val: Enrolment) => defaultContactName(val.studentName);
+const nameCondition = (val: Enrolment) => val.studentName;
 
 const manualLink = getManualLink("processingEnrolments");
 
@@ -150,10 +148,6 @@ const findRelatedGroup: any = [
   { title: "Certificates", list: "certificate", expression: "certificateOutcomes.outcome.enrolment.id" },
 
 ];
-
-const nestedEditFields = {
-  Contact: props => <ContactEditView {...props} />
-};
 
 const defaultFields: Array<keyof Enrolment> = ["fundingSource", "vetFundingSourceStateID", "vetPurchasingContractID"];
 
@@ -310,7 +304,6 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         CogwheelAdornment={EnrolmentCogWheel}
-        nestedEditFields={nestedEditFields}
         defaultDeleteDisabled
         alwaysFullScreenCreateView
       />

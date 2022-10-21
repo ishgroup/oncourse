@@ -25,7 +25,7 @@ import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { getDeepValue, mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../reducers/state";
 import { createDataCollectionForm, deleteDataCollectionForm, updateDataCollectionForm } from "../../../actions";
 import renderCollectionFormFields from "./CollectionFormFieldsRenderer";
@@ -451,7 +451,6 @@ class DataCollectionWrapper extends React.Component<any, any> {
                       this.onDelete(id);
                     },
                     icon: <DeleteForever />,
-
                     confirmText: "Form will be deleted permanently",
                     tooltip: "Delete form",
                     confirmButtonText: "DELETE"

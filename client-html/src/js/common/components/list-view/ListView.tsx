@@ -18,7 +18,7 @@ import { createTheme } from '@mui/material';
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import Button from "@mui/material/Button";
 import { UserPreferencesState } from "../../reducers/userPreferencesReducer";
-import { onSubmitFail } from "../../utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../utils/highlightFormErrors";
 import SideBar from "./components/side-bar/SideBar";
 import BottomAppBar from "./components/bottom-app-bar/BottomAppBar";
 import EditView from "./components/edit-view/EditView";
@@ -31,7 +31,6 @@ import FullScreenEditView from "./components/full-screen-edit-view/FullScreenEdi
 import {
   clearListState,
   deleteCustomFilter,
-  getListNestedEditRecord,
   getRecords,
   setFilterGroups,
   setListCreatingNew,
@@ -46,7 +45,6 @@ import {
   setSearch,
   updateTableModel,
 } from "./actions";
-import NestedEditView from "./components/full-screen-edit-view/NestedEditView";
 import { closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm } from "../../actions";
 import ResizableWrapper from "../layout/resizable/ResizableWrapper";
 import { MenuTag } from "../../../model/tags";
@@ -67,7 +65,11 @@ import {
 } from "../../../model/common/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "./constants";
 import { getEntityDisplayName } from "../../utils/getEntityDisplayName";
-import { ENTITY_AQL_STORAGE_NAME, LISTVIEW_MAIN_CONTENT_WIDTH } from "../../../constants/Config";
+import {
+  ENTITY_AQL_STORAGE_NAME, LIST_MAIN_CONTENT_DEFAULT_WIDTH,
+  LIST_SIDE_BAR_DEFAULT_WIDTH,
+  LISTVIEW_MAIN_CONTENT_WIDTH
+} from "../../../constants/Config";
 import { ConfirmProps, ShowConfirmCaller } from "../../../model/common/Confirm";
 import { EntityName, FindEntityState } from "../../../model/entities/common";
 import { saveCategoryAQLLink } from "../../utils/links";
@@ -87,9 +89,6 @@ import {
   updateEntityRecord
 } from "../../../containers/entities/common/actions";
 import { shouldAsyncValidate } from "./utils/listFormUtils";
-
-export const ListSideBarDefaultWidth = 265;
-export const ListMainContentDefaultWidth = 774;
 
 const styles = () => createStyles({
   root: {
@@ -137,7 +136,6 @@ interface Props extends Partial<ListState> {
   savingFilter?: any;
   defaultDeleteDisabled?: boolean;
   createButtonDisabled?: boolean;
-  nestedEditFields?: { [key: string]: (props: any) => React.ReactNode };
   fetch?: Fetch;
   menuTags?: MenuTag[];
   filterEntity?: EntityName;
@@ -153,7 +151,6 @@ interface Props extends Partial<ListState> {
   updateSelection?: (selection: string[]) => void;
   setListUserAQLSearch?: (userAQLSearch: string) => void;
   getScripts?: NoArgFunction;
-  openNestedEditView?: (entity: string, id: number, threeColumn?: boolean) => void;
   openConfirm?: ShowConfirmCaller;
   resetEditView?: NoArgFunction;
   clearListState?: NoArgFunction;
@@ -240,8 +237,8 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       querySearch: false,
       deleteEnabled: !props.defaultDeleteDisabled,
       threeColumn: false,
-      sidebarWidth: ListSideBarDefaultWidth,
-      mainContentWidth: this.getMainContentWidth(ListMainContentDefaultWidth, ListSideBarDefaultWidth),
+      sidebarWidth: LIST_SIDE_BAR_DEFAULT_WIDTH,
+      mainContentWidth: this.getMainContentWidth(LIST_MAIN_CONTENT_DEFAULT_WIDTH, LIST_SIDE_BAR_DEFAULT_WIDTH),
       newSelection: null,
     };
   }
@@ -389,7 +386,7 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
         if (!threeColumn) {
           this.toggleFullWidthView();
         }
-      } else if (prevProps.records.layout) {
+      } else {
         this.onCreateRecord();
       }
 
@@ -975,8 +972,6 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
   getMainContentWidth = (mainContentWidth, sidebarWidth) =>
     (mainContentWidth ? Number(mainContentWidth) : window.screen.width - sidebarWidth - 368);
 
-  openNestedEditViewWithDirtyCheck = (...args) => this.checkDirty(this.props.openNestedEditView, args);
-
   onCreateRecordWithDirtyCheck = this.props.onCreate
     ? (...args) => this.checkDirty(this.onCreateRecord, args, true)
     : undefined;
@@ -1031,17 +1026,13 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       records,
       fetching,
       selection,
-      nestedEditFields,
-      getEditRecord,
       findRelated,
       editViewProps = {},
       CogwheelAdornment,
       savingFilter,
       CustomFindRelatedMenu,
       alwaysFullScreenCreateView,
-      onBeforeSave,
       ShareContainerAlertComponent,
-      updateSelection,
       pdfReports,
       exportTemplates,
       searchMenuItemsRenderer,
@@ -1066,7 +1057,7 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
     } = this.state;
 
     const hasFilters = Boolean(filterGroups.length || menuTags.length || savingFilter);
-    
+
     const table = <ReactTableList
       {...listProps}
       mainContentWidth={mainContentWidth}
@@ -1080,6 +1071,7 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       onSelectionChange={this.onSelection}
       onChangeModel={this.onChangeModel}
       getContainerNode={this.getContainerNode}
+      sidebarWidth={sidebarWidth}
     />;
 
     return (
@@ -1100,23 +1092,8 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
           creatingNew={creatingNew}
           updateDeleteCondition={this.updateDeleteCondition}
           showConfirm={this.showConfirm}
-          openNestedEditView={this.openNestedEditViewWithDirtyCheck}
           alwaysFullScreenCreateView={alwaysFullScreenCreateView}
           threeColumn={threeColumn}
-        />
-
-        <NestedEditView
-          {...editViewProps}
-          EditViewContent={EditViewContent}
-          rootEntity={rootEntity}
-          nestedEditFields={nestedEditFields}
-          updateRoot={getEditRecord}
-          onBeforeSave={onBeforeSave}
-          creatingNew={creatingNew}
-          showConfirm={this.showConfirm}
-          onSave={this.onSave}
-          updateSelection={updateSelection}
-          openNestedEditView={this.openNestedEditViewWithDirtyCheck}
         />
 
         <ShareContainer
@@ -1191,7 +1168,6 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
                   creatingNew={creatingNew}
                   updateDeleteCondition={this.updateDeleteCondition}
                   showConfirm={this.showConfirm}
-                  openNestedEditView={this.openNestedEditViewWithDirtyCheck}
                   toogleFullScreenEditView={this.toggleFullWidthView}
                 />
               </div>
@@ -1224,7 +1200,6 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
             findRelated={findRelated}
             CogwheelAdornment={CogwheelAdornment}
             showConfirm={this.showConfirm}
-            openNestedEditView={this.openNestedEditViewWithDirtyCheck}
             CustomFindRelatedMenu={CustomFindRelatedMenu}
             records={records}
             searchComponentNode={this.searchComponentNode}
@@ -1262,7 +1237,6 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   setListUserAQLSearch: (userAQLSearch: string) => dispatch(setListUserAQLSearch(userAQLSearch)),
   getScripts: () => dispatch(getScripts(ownProps.rootEntity)),
   getCustomFieldTypes: (entity: EntityName) => dispatch(getCustomFieldTypes(entity)),
-  openNestedEditView: (entity: string, id: number, threeColumn: boolean) => dispatch(getListNestedEditRecord(entity, id, null, threeColumn)),
   openConfirm: props => dispatch(showConfirm(props)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView)),

@@ -1,4 +1,4 @@
-import React, { ComponentClass } from "react";
+import React, { ComponentClass, useEffect, useRef, useState } from "react";
 import { withStyles, createStyles } from "@mui/styles";
 import clsx from "clsx";
 import Slider from "@mui/material/Slider";
@@ -12,7 +12,7 @@ const AccessStatusKeys = Object.keys(AccessStatus);
 const styles = theme =>
   createStyles({
     root: {
-      padding: `${theme.spacing(2) - 1} ${theme.spacing(0)}`
+      padding: "15px 0"
     },
     stepperMarks: {
       position: "absolute",
@@ -56,79 +56,87 @@ const styles = theme =>
     },
     stepperThumbFirst: {
       zIndex: 2,
-      marginLeft: "-1px"
+      marginLeft: "5px"
     }
   });
 
-class SliderStepper extends React.PureComponent<any, any> {
-  private prevValue: number;
+const SliderStepper = React.memo<any>(props => {
+  const prevValue = useRef<number>();
+  
+  const [innerValue, setInnerValue] = useState<string>();
+  
+  const {
+    min = 0,
+    step = 1,
+    className,
+    style,
+    classes,
+    input: { value, onChange },
+    item: { alwaysAllowed, neverAllowed },
+    headers
+  } = props;
+  
+  useEffect(() => {
+    setInnerValue(value);
+  }, [value]);
 
-  render() {
-    const {
-      min = 0,
-      step = 1,
-      className,
-      style,
-      classes,
-      input: { value, onChange },
-      item: { alwaysAllowed, neverAllowed },
-      headers
-    } = this.props;
+  const numValue = AccessStatusKeys.indexOf(innerValue);
 
-    const numValue = AccessStatusKeys.indexOf(value);
+  if (!prevValue.current) prevValue.current = numValue;
 
-    if (!this.prevValue) this.prevValue = numValue;
+  return (
+    <div className={clsx(className, "relative")} style={style}>
+      <div className={classes.stepperMarks}>
+        {headers.map((i, index) => {
+          const isNeverAllowed = neverAllowed && neverAllowed.includes(i);
+          const isAlwaysAllowed = alwaysAllowed && alwaysAllowed.includes(i);
 
-    return (
-      <div className={clsx(className, "relative")} style={style}>
-        <div className={classes.stepperMarks}>
-          {headers.map((i, index) => {
-            const isNeverAllowed = neverAllowed && neverAllowed.includes(i);
-            const isAlwaysAllowed = alwaysAllowed && alwaysAllowed.includes(i);
-
-            return (
-              <div key={index} className={clsx("flex-fill relative", classes.stepperMarkWrapper)}>
-                <div
-                  className={clsx(classes.stepperMark, {
-                    [classes.checkedMark]:
-                      index < numValue
-                      || (this.prevValue > numValue && index === numValue)
-                      || isAlwaysAllowed
-                      || isNeverAllowed,
-                    [classes.overlapped]: isNeverAllowed
-                  })}
-                >
-                  {isNeverAllowed && <Lock className={classes.neverAllowedMark} />}
-                </div>
+          return (
+            <div key={index} className={clsx("flex-fill relative", classes.stepperMarkWrapper)}>
+              <div
+                className={clsx(classes.stepperMark, {
+                  [classes.checkedMark]:
+                  index < numValue
+                  || (prevValue.current > numValue && index === numValue)
+                  || isAlwaysAllowed
+                  || isNeverAllowed,
+                  [classes.overlapped]: isNeverAllowed
+                })}
+              >
+                {isNeverAllowed && <Lock className={classes.neverAllowedMark} />}
               </div>
-            );
-          })}
-        </div>
-        <Slider
-          classes={{
-            thumb: numValue === 0 ? classes.stepperThumbFirst : classes.stepperThumb,
-            root: classes.root
-          }}
-          value={numValue > -1 ? numValue : 0}
-          min={min}
-          max={headers.length - 1}
-          step={step}
-          style={{
-            flex: headers.length - 1
-          }}
-          onChange={(e, val: number) => {
-            if (neverAllowed && neverAllowed.includes(headers[val])) {
-              return;
-            }
-
-            onChange(AccessStatusKeys[val]);
-          }}
-          marks
-        />
-        <div className="flex-fill" />
+            </div>
+          );
+        })}
       </div>
-    );
-  }
-}
+      <Slider
+        classes={{
+          thumb: numValue === 0 ? classes.stepperThumbFirst : classes.stepperThumb,
+          root: classes.root
+        }}
+        value={numValue > -1 ? numValue : 0}
+        min={min}
+        max={headers.length - 1}
+        step={step}
+        style={{
+          flex: headers.length - 1
+        }}
+        onChange={(e, val: number) => {
+          if (neverAllowed && neverAllowed.includes(headers[val])) {
+            return;
+          }
+          setInnerValue(AccessStatusKeys[val]);
+        }}
+        onChangeCommitted={(e, val: number) => {
+          if (neverAllowed && neverAllowed.includes(headers[val])) {
+            return;
+          }
+          onChange(AccessStatusKeys[val]);
+        }}
+        marks
+      />
+      <div className="flex-fill" />
+    </div>);
+});
 
 export default withStyles(styles)(SliderStepper) as ComponentClass<any>;

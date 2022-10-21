@@ -115,7 +115,8 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
     expanded,
     setExpanded,
     storedCard,
-    access
+    access,
+    syncErrors
   } = props;
 
   const [lockedTerms, setLockedTerms] = useState(true);
@@ -147,7 +148,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
 
   return values ? (
     <div className="pl-3 pr-3">
-      <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Financial">
+      <ExpandableContainer formErrors={syncErrors} index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Financial">
         <Grid container columnSpacing={3} rowSpacing={2} className="pb-3">
           <Grid item xs={twoColumn ? 3 : 12}>
             <FormField

@@ -14,7 +14,6 @@ import {
   clearListState
 } from "../../../common/components/list-view/actions";
 import { FilterGroup } from "../../../model/common/ListView";
-import { defaultContactName } from "../contacts/utils";
 import CertificateEditView from "./components/CertificateEditView";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import USIAlert from "./components/USIAlert";
@@ -82,7 +81,7 @@ const findRelatedGroup: any = [
 
 const manualLink = getManualLink("certification");
 
-const nameCondition = (value: Certificate) => defaultContactName(value.studentName);
+const nameCondition = (value: Certificate) => value.studentName;
 
 const secondaryColumnCondition = rows => rows["qualification.title"] || "No Qualification";
 
