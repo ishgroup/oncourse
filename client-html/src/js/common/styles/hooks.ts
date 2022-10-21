@@ -3,8 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from "react";
+import { makeStyles } from '@mui/styles';
+import * as Colors from "@mui/material/colors";
 
 export const useHoverShowStyles = makeStyles({
   container: {
@@ -36,4 +37,60 @@ export const useWindowSize = () => {
   }, []); 
   
   return windowSize;
+};
+
+export const getColor = (i, code) => {
+  let colorName = "";
+  switch (i) {
+    case 1:
+      colorName = "pink";
+      break;
+    case 2:
+      colorName = "purple";
+      break;
+    case 3:
+      colorName = "deepPurple";
+      break;
+    case 4:
+      colorName = "indigo";
+      break;
+    case 5:
+      colorName = "blue";
+      break;
+    case 6:
+      colorName = "lightBlue";
+      break;
+    case 7:
+      colorName = "cyan";
+      break;
+    case 8:
+      colorName = "teal";
+      break;
+    case 9:
+      colorName = "green";
+      break;
+    case 10:
+      colorName = "lightGreen";
+      break;
+    case 11:
+      colorName = "lime";
+      break;
+    case 12:
+      colorName = "amber";
+      break;
+    case 13:
+      colorName = "orange";
+      break;
+    case 14:
+      colorName = "deepOrange";
+      break;
+    case 15:
+      colorName = "brown";
+      break;
+    case 0:
+    default:
+      colorName = "red";
+      break;
+  }
+  return Colors[colorName][code];
 };
