@@ -22,7 +22,7 @@ import org.apache.logging.log4j.Logger
  * Delete TutorAttendances as Shift from Kronos automatically as it is deleted in onCourse.
  *
  * ```
- * kronos {
+ * kronosDelete {
  *     session record
  * }
  * ```

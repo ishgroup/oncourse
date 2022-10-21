@@ -918,3 +918,13 @@
     - name: scheduleNameValue
       value: "Ish Schedule"
       dataType: TEXT
+
+- name: Kronos delete custom fields for deleted Kronos Schedules
+  keyCode: ish.script.kronosDeleteCustomFields
+  body: ish.script.kronosDeleteCustomFields.groovy
+  status: NOT_INSTALLED
+  triggerType: ON_DEMAND
+  description: Delete TutorAttendance custom fields 'shiftIdCustomField' and 'scheduleIdCustomField' if Schedule was deleted from Kronos.
+  short: Requires active Kronos integration. Get all TutorAttendances with custom fields 'shiftIdCustomField' and 'scheduleIdCustomField' then these TutorAttendance custom fields will be deleted if Schedule was deleted from Kronos or one of these custom field is null.
+  category: Integrations
+  tag:
