@@ -37,6 +37,14 @@ class PdfService {
   public getHighQualityPreview(id: number): Promise<any> {
     return this.pdfTemplateApi.getHighQualityPreview(id);
   }
+
+  public getConfigs(id: number): Promise<string> {
+    return this.pdfTemplateApi.getConfigs(id);
+  }
+
+  public updateConfigs(id: number, config: string): Promise<any> {
+    return this.pdfTemplateApi.updateConfigs(id, config);
+  }
 }
 
 export default new PdfService();

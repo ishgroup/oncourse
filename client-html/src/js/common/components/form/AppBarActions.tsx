@@ -12,6 +12,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import { connect } from "react-redux";
 import { showConfirm } from "../../actions";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
+import { AppBarAction } from "../../../model/common/AppBar";
 
 const styles = theme =>
   ({
@@ -31,18 +32,8 @@ const styles = theme =>
     }
   } as any);
 
-interface FormSettingsAction {
-  action: any;
-  icon: React.ReactNode;
-  tooltip: string;
-  confirmText?: string;
-  confirmButtonText?: string;
-  disabled?: boolean;
-  tooltipError?: boolean;
-}
-
 interface Props {
-  actions: FormSettingsAction[];
+  actions: AppBarAction[];
   classes?: any;
   showConfirm?: ShowConfirmCaller;
 }

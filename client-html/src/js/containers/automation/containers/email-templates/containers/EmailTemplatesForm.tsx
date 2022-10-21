@@ -33,6 +33,7 @@ import ScriptCard from "../../scripts/components/cards/CardBase";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
 import InfoPill from "../../../../../common/components/layout/InfoPill";
+import getConfigActions from "../../../components/ImportExportConfig";
 
 const manualUrl = getManualLink("emailTemplates");
 const getAuditsUrl = (id: number) => `audit?search=~"EmailTemplate" and entityId == ${id}`;
@@ -153,6 +154,8 @@ const EmailTemplatesForm: React.FC<Props> = props => {
     }
   }, [nextLocation, dirty]);
 
+  const importExportActions = useMemo(() => getConfigActions("EmailTemplate", values.name, values.id), [values.id]);
+
   return (
     <>
       <SaveAsNewAutomationModal
@@ -198,9 +201,10 @@ const EmailTemplatesForm: React.FC<Props> = props => {
               {!isNew && !isInternal && (
                 <AppBarActions
                   actions={[
+                    ...importExportActions,
                     {
                       action: handleDelete,
-                      icon: <DeleteForever />,
+                      icon: <DeleteForever/>,
                       confirm: true,
                       tooltip: "Delete message template",
                       confirmText: "Message template will be deleted permanently",

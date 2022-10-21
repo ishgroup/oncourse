@@ -32,7 +32,14 @@ class EmailTemplateService {
   public getEmailTemplatesWithKeyCode(entityName: string): Promise<EmailTemplate[]> {
     return this.emailTemplateService.getTemplatesWithKeyCode(entityName);
   }
+
+  public getConfigs(id: number): Promise<string> {
+    return this.emailTemplateService.getConfigs(id);
+  }
+
+  public updateConfigs(id: number, config: string): Promise<any> {
+    return this.emailTemplateService.updateConfigs(id, config);
+  }
 }
 
 export default new EmailTemplateService();
-

@@ -2,7 +2,7 @@ import { Integration } from "@api/model";
 import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
 import { IntegrationSchema } from "../../../model/automation/integrations/IntegrationSchema";
 import { CatalogItemType } from "../../../model/common/Catalog";
-import { AutomationEntity } from "../../../model/automation/integrations";
+import { AutomationEntity } from "../../../model/automation/common";
 
 export const GET_INTEGRATIONS_REQUEST = _toRequestType("get/integrations");
 export const GET_INTEGRATIONS_FULFILLED = FULFILLED(GET_INTEGRATIONS_REQUEST);
@@ -16,15 +16,27 @@ export const DELETE_INTEGRATION_ITEM_REQUEST = _toRequestType("delete/integratio
 export const INSTALL_AUTOMATION = _toRequestType("install/automation");
 export const UNINSTALL_AUTOMATION = _toRequestType("uninstall/automation");
 
+export const IMPORT_AUTOMATION_CONFIG = _toRequestType("import/automation/config");
+export const EXPORT_AUTOMATION_CONFIG = _toRequestType("export/automation/config");
+
+export const importAutomationConfig = (entity: AutomationEntity, id: number, config: string) => ({
+  type: IMPORT_AUTOMATION_CONFIG,
+  payload: {entity, id, config}
+});
+
+export const exportAutomationConfig = (entity: AutomationEntity, name: string, id: number) => ({
+  type: EXPORT_AUTOMATION_CONFIG,
+  payload: {entity, name, id}
+});
 
 export const getIntegrations = (nameToSelect?: string) => ({
   type: GET_INTEGRATIONS_REQUEST,
-  payload: { nameToSelect }
+  payload: {nameToSelect}
 });
 
 export const installAutomation = (automation: CatalogItemType, entity: AutomationEntity) => ({
   type: INSTALL_AUTOMATION,
-  payload: { automation, entity }
+  payload: {automation, entity}
 });
 
 export const uninstallAutomation = (automation: CatalogItemType, entity: AutomationEntity) => ({

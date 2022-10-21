@@ -62,6 +62,7 @@ import ScriptIcon from "../../../../../../images/icon-script.svg";
 import InfoPill from "../../../../../common/components/layout/InfoPill";
 import { AppTheme } from "../../../../../model/common/Theme";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
+import getConfigActions from "../../../components/ImportExportConfig";
 
 const manualUrl = getManualLink("scripts");
 const getAuditsUrl = (id: number) => `audit?search=~"Script" and entityId == ${id}`;
@@ -465,19 +466,21 @@ const ScriptsForm = React.memo<Props>(props => {
     values && values.trigger && values.trigger.entityName,
     values && values.trigger && values.trigger.entityAttribute,
   ]);
-  
+
   useEffect(() => {
-    if (!expandInfo && syncErrors && syncErrors["keyCode"] ) {
+    if (!expandInfo && syncErrors && syncErrors["keyCode"]) {
       setExpandInfo(true);
     }
   }, [syncErrors]);
-  
+
+  const importExportActions = useMemo(() => getConfigActions("Script", values.name, values.id), [values.id]);
+
   return (
     <>
-      <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialogClose} onSave={onDialogSave} hasNameField />
+      <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialogClose} onSave={onDialogSave} hasNameField/>
 
       <Form onSubmit={handleSubmit(handleSave)}>
-        {(dirty || isNew) && <RouteChangeConfirm form={form} when={!disableRouteConfirm && (dirty || isNew)} />}
+        {(dirty || isNew) && <RouteChangeConfirm form={form} when={!disableRouteConfirm && (dirty || isNew)}/>}
 
         <AppBarContainer
           values={values}
@@ -510,28 +513,30 @@ const ScriptsForm = React.memo<Props>(props => {
           actions={!isNew && (
             <AppBarActions
               actions={[
-                isInternal
-                  ? {
+                ...isInternal
+                  ? [{
                     action: onInternalSaveClick,
-                    icon: <FileCopy />,
+                    icon: <FileCopy/>,
                     tooltip: "Save as new script"
-                  }
-                  : {
-                    action: handleDelete,
-                    icon: <DeleteForever />,
-                    tooltip: "Delete script",
-                    confirmText: "Script component will be deleted permanently",
-                    confirmButtonText: "DELETE",
-                  },
+                  }]
+                  : [
+                    ...importExportActions,
+                    {
+                      action: handleDelete,
+                      icon: <DeleteForever/>,
+                      tooltip: "Delete script",
+                      confirmText: "Script component will be deleted permanently",
+                      confirmButtonText: "DELETE",
+                    }],
                 viewMode === "Cards"
                   ? {
                     action: toogleViewMode,
-                    icon: <CodeIcon />,
+                    icon: <CodeIcon/>,
                     tooltip: "Switch to code view"
                   }
                   : {
                     action: toogleViewMode,
-                    icon: <ViewAgendaIcon />,
+                    icon: <ViewAgendaIcon/>,
                     tooltip: "Switch to cards view"
                   }
               ]}

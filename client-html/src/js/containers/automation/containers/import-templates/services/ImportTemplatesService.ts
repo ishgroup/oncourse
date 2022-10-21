@@ -37,7 +37,15 @@ class ImportTemplatesService {
       body.append(filesKey, f, f.name);
     });
 
-    return this.service.POST(`/v1/list/entity/import/execution`, body, { headers });
+    return this.service.POST(`/v1/list/entity/import/execution`, body, {headers});
+  }
+
+  public getConfigs(id: number): Promise<string> {
+    return this.importTemplatesApi.getConfigs(id);
+  }
+
+  public updateConfigs(id: number, config: string): Promise<any> {
+    return this.importTemplatesApi.updateConfigs(id, config);
   }
 }
 

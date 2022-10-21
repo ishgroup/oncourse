@@ -23,6 +23,14 @@ class ExportTemplatesService {
   public remove(id: number): Promise<any> {
     return this.exportTemplatesApi.remove(id);
   }
+
+  public getConfigs(id: number): Promise<string> {
+    return this.exportTemplatesApi.getConfigs(id);
+  }
+
+  public updateConfigs(id: number, config: string): Promise<any> {
+    return this.exportTemplatesApi.updateConfigs(id, config);
+  }
 }
 
 export default new ExportTemplatesService();

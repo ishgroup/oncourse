@@ -56,6 +56,14 @@ class ScriptsService {
 
     return this.service.GET(path);
   }
+
+  public getConfigs(id: number): Promise<string> {
+    return this.scriptApi.getConfigs(id);
+  }
+
+  public updateConfigs(id: number, config: string): Promise<any> {
+    return this.scriptApi.updateConfigs(id, config);
+  }
 }
 
 export default new ScriptsService();
