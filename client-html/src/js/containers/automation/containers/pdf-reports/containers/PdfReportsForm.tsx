@@ -388,6 +388,14 @@ const PdfReportsForm = React.memo<Props>(
                     parse={v => (v ? "Enabled" : "Installed but Disabled")}
                   />
                 </div>
+                <div>
+                  <FormField
+                    label="Visible"
+                    type="switch"
+                    name="visible"
+                    color="primary"
+                  />
+                </div>
                 <div className="mt-3 pt-1 pb-2">
                   <Bindings
                     dispatch={dispatch}
