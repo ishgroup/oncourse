@@ -35,7 +35,7 @@ import java.text.SimpleDateFormat
  *
  *
  * ```
- * kronos {
+ * kronosCreateEdit {
  *     scheduleName "Weekly Test Schedule"
  *     session record
  * }

@@ -39,8 +39,8 @@ class KronosIntegration implements PluginTrait {
      */
     public static final int ACCOUNT_NOT_FOUND_CODE = 10002
 
-    private static final String KRONOS_SHIFT_ID_CUSTOM_FIELD_KEY = "kronosShiftId"
-    private static final String KRONOS_SCHEDULE_ID_CUSTOM_FIELD_KEY = "kronosScheduleId"
+    public static final String KRONOS_SHIFT_ID_CUSTOM_FIELD_KEY = "kronosShiftId"
+    public static final String KRONOS_SCHEDULE_ID_CUSTOM_FIELD_KEY = "kronosScheduleId"
 
     private static Logger logger = LogManager.logger
 
@@ -611,7 +611,7 @@ class KronosIntegration implements PluginTrait {
     /**
      * Delete Shift by shift id and schedule id
      *
-     * @return timezones
+     * @return [response: resp, result: result]
      */
     protected deleteShift(shiftId, scheduleId) {
         def client = new RESTClient(KRONOS_REST_URL)
@@ -624,6 +624,26 @@ class KronosIntegration implements PluginTrait {
             }
             response.failure = { resp, result ->
                 throw new IllegalStateException("Failed to delete Shift from Kronos (company cid, scheduleId, shiftId) - (${CID}, ${scheduleId}, ${shiftId}): ${resp.getStatusLine()}, ${result}")
+            }
+        }
+    }
+
+    /**
+     * Get Shift from Kronos by shift id and schedule id
+     *
+     * @return [response: resp, result: result]
+     */
+    protected getShift(shiftId, scheduleId) {
+        def client = new RESTClient(KRONOS_REST_URL)
+        client.headers["Authentication"] = "Bearer ${authToken}"
+        client.request(Method.GET) {
+            uri.path = "/ta/rest/v2/companies/${CID}/schedules/${scheduleId}/shifts/${shiftId}"
+
+            response.success = { resp, result ->
+                return [response: resp, result: result]
+            }
+            response.failure = { resp, result ->
+                return [response: resp, result: result]
             }
         }
     }
