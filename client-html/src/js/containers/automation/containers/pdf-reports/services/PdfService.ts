@@ -1,5 +1,5 @@
 import { DefaultHttpService } from "../../../../../common/services/HttpService";
-import { PdfApi, PdfTemplateApi, PrintRequest, Report } from "@api/model";
+import { AutomationConfigs, PdfApi, PdfTemplateApi, PrintRequest, Report } from "@api/model";
 
 class PdfService {
   readonly service = new DefaultHttpService();
@@ -42,7 +42,7 @@ class PdfService {
     return this.pdfTemplateApi.getConfigs(id);
   }
 
-  public updateConfigs(id: number, config: string): Promise<any> {
+  public updateConfigs(id: number, config: AutomationConfigs): Promise<any> {
     return this.pdfTemplateApi.updateConfigs(id, config);
   }
 }

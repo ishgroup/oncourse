@@ -1,4 +1,4 @@
-import { Integration } from "@api/model";
+import { AutomationConfigs, Integration } from "@api/model";
 import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
 import { IntegrationSchema } from "../../../model/automation/integrations/IntegrationSchema";
 import { CatalogItemType } from "../../../model/common/Catalog";
@@ -19,7 +19,7 @@ export const UNINSTALL_AUTOMATION = _toRequestType("uninstall/automation");
 export const IMPORT_AUTOMATION_CONFIG = _toRequestType("import/automation/config");
 export const EXPORT_AUTOMATION_CONFIG = _toRequestType("export/automation/config");
 
-export const importAutomationConfig = (entity: AutomationEntity, id: number, config: string) => ({
+export const importAutomationConfig = (entity: AutomationEntity, id: number, config: AutomationConfigs) => ({
   type: IMPORT_AUTOMATION_CONFIG,
   payload: {entity, id, config}
 });

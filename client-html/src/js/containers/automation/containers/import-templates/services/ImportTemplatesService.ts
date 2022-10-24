@@ -1,4 +1,4 @@
-import { ImportApi, ImportModel } from "@api/model";
+import { AutomationConfigs, ImportApi, ImportModel } from "@api/model";
 import { DefaultHttpService } from "../../../../../common/services/HttpService";
 
 class ImportTemplatesService {
@@ -44,7 +44,7 @@ class ImportTemplatesService {
     return this.importTemplatesApi.getConfigs(id);
   }
 
-  public updateConfigs(id: number, config: string): Promise<any> {
+  public updateConfigs(id: number, config: AutomationConfigs): Promise<any> {
     return this.importTemplatesApi.updateConfigs(id, config);
   }
 }

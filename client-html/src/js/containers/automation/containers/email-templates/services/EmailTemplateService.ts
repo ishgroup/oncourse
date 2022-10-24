@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { EmailTemplate, EmailTemplateApi } from "@api/model";
+import { AutomationConfigs, EmailTemplate, EmailTemplateApi } from "@api/model";
 import { DefaultHttpService } from "../../../../../common/services/HttpService";
 
 class EmailTemplateService {
@@ -37,7 +37,7 @@ class EmailTemplateService {
     return this.emailTemplateService.getConfigs(id);
   }
 
-  public updateConfigs(id: number, config: string): Promise<any> {
+  public updateConfigs(id: number, config: AutomationConfigs): Promise<any> {
     return this.emailTemplateService.updateConfigs(id, config);
   }
 }

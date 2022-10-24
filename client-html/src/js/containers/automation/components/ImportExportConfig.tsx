@@ -32,7 +32,7 @@ const getConfigActions = (
       const reader = new FileReader();
       reader.readAsText(f);
       reader.onload = function (evt) {
-        dispatch(importAutomationConfig(automation, id, evt.target.result as string));
+        dispatch(importAutomationConfig(automation, id, {config: evt.target.result as string}));
       };
     });
   };

@@ -78,10 +78,15 @@ export const uploadAndGetFile = (): Promise<Blob> => new Promise((resolve => {
   input.style.height = "0";
   document.body.appendChild(input);
 
-  input.onchange = () => {
-    const file = input.files[0];
+  const prevFocus = document.body.onfocus;
+
+  document.body.onfocus = () => {
     document.body.removeChild(input);
-    resolve(file);
+    document.body.onfocus = prevFocus;
+  };
+
+  input.onchange = () => {
+    resolve(input.files[0]);
   };
 
   input.click();

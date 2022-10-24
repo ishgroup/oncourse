@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ExecuteScriptRequest, Script, ScriptApi } from "@api/model";
+import { AutomationConfigs, ExecuteScriptRequest, Script, ScriptApi } from "@api/model";
 import { AxiosInstance } from "axios";
 import { defaultAxios } from "../../../../../common/services/DefaultHttpClient";
 import { DefaultHttpService } from "../../../../../common/services/HttpService";
@@ -61,8 +61,8 @@ class ScriptsService {
     return this.scriptApi.getConfigs(id);
   }
 
-  public updateConfigs(id: number, config: string): Promise<any> {
-    return this.scriptApi.updateConfigs(id, config);
+  public updateConfigs(id: number, scriptConfigs: AutomationConfigs): Promise<any> {
+    return this.scriptApi.updateConfigs(id, scriptConfigs);
   }
 }
 

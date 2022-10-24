@@ -22,8 +22,9 @@ import { getExportTemplate } from "../containers/export-templates/actions";
 import { getImportTemplate } from "../containers/import-templates/actions";
 import { getAutomationPdfReport } from "../containers/pdf-reports/actions";
 import { getScriptItem } from "../containers/scripts/actions";
+import { AutomationConfigs } from "@api/model";
 
-const request: Request<any, { entity: AutomationEntity, id: number, config: string }> = {
+const request: Request<any, { entity: AutomationEntity, id: number, config: AutomationConfigs }> = {
   type: IMPORT_AUTOMATION_CONFIG,
   getData: async ({entity, id, config}) => {
     switch (entity) {
