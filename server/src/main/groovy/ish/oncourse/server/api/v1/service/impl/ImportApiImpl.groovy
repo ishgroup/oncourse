@@ -14,6 +14,7 @@ package ish.oncourse.server.api.v1.service.impl
 import com.google.inject.Inject
 import groovy.json.JsonSlurper
 import ish.oncourse.server.api.service.ImportApiService
+import ish.oncourse.server.api.v1.model.AutomationConfigsDTO
 import ish.oncourse.server.api.v1.model.ExecuteImportRequestDTO
 import ish.oncourse.server.api.v1.model.ImportModelDTO
 import ish.oncourse.server.api.v1.service.ImportApi
@@ -56,8 +57,8 @@ class ImportApiImpl implements ImportApi {
     }
 
     @Override
-    void updateConfigs(Long id, String importConfigs) {
-        service.updateConfigs(id, importConfigs)
+    void updateConfigs(Long id, AutomationConfigsDTO importConfigs) {
+        service.updateConfigs(id, importConfigs.config)
     }
 
     @Override

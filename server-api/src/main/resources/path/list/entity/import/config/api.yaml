@@ -40,7 +40,7 @@ put:
     - name: importConfigs
       in: body
       schema:
-        type: string
+        $ref: './def/entity/automation/AutomationConfigs.yaml'
       required: true
       description: lines of yaml file to upgrade script configs
   responses:

@@ -13,6 +13,7 @@ package ish.oncourse.server.api.v1.service.impl
 
 
 import com.google.inject.Inject
+import ish.oncourse.server.api.v1.model.AutomationConfigsDTO
 import ish.oncourse.types.OutputType
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
@@ -102,7 +103,7 @@ class ScriptApiImpl implements ScriptApi {
     }
 
     @Override
-    void updateConfigs(Long id, String configs) {
-        service.updateConfigs(id, configs)
+    void updateConfigs(Long id, AutomationConfigsDTO configs) {
+        service.updateConfigs(id, configs.config)
     }
 }

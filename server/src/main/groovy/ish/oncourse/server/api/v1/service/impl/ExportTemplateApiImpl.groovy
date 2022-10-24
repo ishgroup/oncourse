@@ -13,6 +13,7 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.server.api.service.ExportTemplateApiService
+import ish.oncourse.server.api.v1.model.AutomationConfigsDTO
 import ish.oncourse.server.api.v1.model.ExportTemplateDTO
 import ish.oncourse.server.api.v1.service.ExportTemplateApi
 
@@ -52,8 +53,8 @@ class ExportTemplateApiImpl implements ExportTemplateApi {
     }
 
     @Override
-    void updateConfigs(Long id, String scriptConfigs) {
-        service.updateConfigs(id, scriptConfigs)
+    void updateConfigs(Long id, AutomationConfigsDTO exportConfigs) {
+        service.updateConfigs(id, exportConfigs.config)
     }
 
     @Override
