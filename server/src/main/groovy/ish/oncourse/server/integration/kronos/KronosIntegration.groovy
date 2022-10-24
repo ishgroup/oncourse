@@ -224,7 +224,7 @@ class KronosIntegration implements PluginTrait {
     }
 
     /**
-     * Get list of Cost Centers from Kronos with tree_index:2 and store Cost Center external_id or names (if external_id doesn't exist) and Cost Center ids in kronosCostCentersIndex2 Map<(external_id/name),id>.
+     * Get list of Cost Centers from Kronos with tree_index:2 and store Cost Center names  and Cost Center ids in kronosCostCentersIndex2 Map<(name),id>.
      */
     protected void initCostCenters2Index() {
         Map costCentersIndex2FromKronos = getCompanyCostCenters(2) as Map
