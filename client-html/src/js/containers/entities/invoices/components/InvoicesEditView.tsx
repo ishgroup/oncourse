@@ -43,6 +43,7 @@ import { leadLabelCondition, openLeadLink } from "../../leads/utils";
 import LeadSelectItemRenderer from "../../leads/components/LeadSelectItemRenderer";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import { ACCOUNT_DEFAULT_INVOICELINE_ID } from "../../../../constants/Config";
 
 interface Props extends EditViewProps {
   currency: Currency;
@@ -51,6 +52,7 @@ interface Props extends EditViewProps {
   values: InvoiceWithTotalLine;
   classes: any;
   defaultTerms: number;
+  defaultInvoiceLineAccount: string;
   setSelectedContact: AnyArgFunction;
   selectedContact: any;
   tags?: Tag[];
@@ -72,6 +74,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
     taxes,
     defaultTerms,
     setSelectedContact,
+    defaultInvoiceLineAccount,
     tags,
     selectedContact,
     history,
@@ -150,7 +153,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
       ? () => {
           const newLine: InvoiceLineWithTotal = {
             quantity: 1,
-            incomeAccountId: accountTypes.income.length > 0 ? accountTypes.income[0]?.id : null,
+            incomeAccountId: defaultInvoiceLineAccount ? Number(defaultInvoiceLineAccount) : null,
             taxId:
               selectedContact && selectedContact["taxOverride.id"]
                 ? Number(selectedContact["taxOverride.id"])
@@ -486,6 +489,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
 
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["AbstractInvoice"],
+  defaultInvoiceLineAccount: state.userPreferences[ACCOUNT_DEFAULT_INVOICELINE_ID],
   accounts: state.plainSearchRecords.Account.items,
   currency: state.currency,
   taxes: state.taxes.items,

@@ -347,7 +347,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
       return;
     }
 
-    if (creatable && value.createdOption) {
+    if (creatable && value && value.createdOption) {
       onCreateOptionInner(value);
     }
 
