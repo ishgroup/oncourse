@@ -50,9 +50,7 @@ public enum DefaultAccount {
 			DefaultAccount.PREPAID_FEES.getPreferenceName(),
 			DefaultAccount.VOUCHER_LIABILITY.getPreferenceName(),
 			DefaultAccount.VOUCHER_UNDERPAYMENT.getPreferenceName(),
-			DefaultAccount.VOUCHER_UNDERPAYMENT.getPreferenceName(),
-			//this account is not required to be initialized during server start, but is added to preferences
-			"account.default.invoiceline.id"
+			DefaultAccount.VOUCHER_UNDERPAYMENT.getPreferenceName()
 	);
 
 	DefaultAccount(String code, String description, AccountType type, String preferenceName) {

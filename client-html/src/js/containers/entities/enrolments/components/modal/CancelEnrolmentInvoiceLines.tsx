@@ -85,7 +85,6 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                   {field && field.invoiceNumber}
                 </Typography>
                 <FormControlLabel
-                  className="checkbox pb-2 pt-2"
                   control={(
                     <FormField
                       type="checkbox"
@@ -100,7 +99,7 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                 />
                 <Grid className="centeredFlex">
                   <FormControlLabel
-                    className="checkbox pb-2 pt-2 mr-0-5"
+                    className="mr-0-5"
                     control={<FormField type="checkbox" name={`${item}.isChargeFee`} color="secondary" fullWidth />}
                     label={`Charge ${field && field.contactName} an administrative fee of `}
                     disabled={!field.isReverseCreditNotes}
@@ -148,7 +147,6 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                 </Grid>
 
                 <FormControlLabel
-                  className="checkbox pb-3 pt-3"
                   control={(
                     <FormField
                       type="checkbox"
