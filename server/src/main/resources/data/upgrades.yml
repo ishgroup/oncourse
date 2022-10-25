@@ -822,6 +822,12 @@ databaseChangeLog:
             tableName: IntegrationProperty
         - tableExists:
             tableName: IntegrationConfiguration
+        - columnExists:
+            tableName: IntegrationProperty
+            columnName: keyCode
+        - columnExists:
+            tableName: IntegrationConfiguration
+            columnName: type
       comment: delete unnecessary integration properties orgId and username for Cloud Assess integration
       changes:
         - customChange:
