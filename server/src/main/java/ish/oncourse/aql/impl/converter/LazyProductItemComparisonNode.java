@@ -13,12 +13,10 @@ package ish.oncourse.aql.impl.converter;
 
 import ish.oncourse.aql.impl.ExpressionUtil;
 import ish.oncourse.aql.impl.Op;
+import ish.oncourse.server.cayenne.Contact;
 import ish.oncourse.server.cayenne.Product;
 import ish.oncourse.server.cayenne.ProductItem;
-import org.apache.cayenne.exp.parser.ASTObjPath;
-import org.apache.cayenne.exp.parser.ASTOr;
-import org.apache.cayenne.exp.parser.ASTScalar;
-import org.apache.cayenne.exp.parser.SimpleNode;
+import org.apache.cayenne.exp.parser.*;
 
 public class LazyProductItemComparisonNode extends LazyEntityComparisonNode {
 
@@ -28,32 +26,52 @@ public class LazyProductItemComparisonNode extends LazyEntityComparisonNode {
 
     @Override
     protected SimpleNode createNode() {
-        var pathString = ((ASTObjPath)this.jjtGetChild(0)).getPath();
-        if(!pathString.isEmpty()) {
+        var pathString = ((ASTObjPath) this.jjtGetChild(0)).getPath();
+        if (!pathString.isEmpty()) {
             pathString += '.';
         }
-        var value = new NameValue(((ASTScalar)this.jjtGetChild(1)).getValue().toString(), getOp());
+        var value = new NameValue(((ASTScalar) this.jjtGetChild(1)).getValue().toString(), getOp());
+        var contactNameValue = new LazyContactComparisionNode.NameValue(((ASTScalar) this.jjtGetChild(1)).getValue().toString(), getOp());
+
         var productNameNode = createComparisionNode(pathString + ProductItem.PRODUCT.dot(Product.NAME).getName(), value.getProductName());
         var productSkuNode = createComparisionNode(pathString + ProductItem.PRODUCT.dot(Product.SKU).getName(), value.getProductName());
+        var voucherCodeNode = createComparisionNode(pathString + ProductItem.CODE.getName(), value.getCode());
+
+        var contactPath = pathString + ProductItem.CONTACT.getName() + "+.";
+        var firstNameNode = createComparisionNode(contactPath + Contact.FIRST_NAME.getName(), contactNameValue.getFirstName());
+        var lastNameNode = createComparisionNode(contactPath + Contact.LAST_NAME.getName(), contactNameValue.getLastName());
+        var middleNameNode = createComparisionNode(contactPath + Contact.MIDDLE_NAME.getName(), contactNameValue.getMiddleName());
 
         var or = new ASTOr();
 
-        ExpressionUtil.addChild(or, productNameNode, 0);
-        ExpressionUtil.addChild(or, productSkuNode, 1);
+        int idx = 0;
+        ExpressionUtil.addChild(or, productNameNode, idx++);
+        ExpressionUtil.addChild(or, productSkuNode, idx++);
+        ExpressionUtil.addChild(or, voucherCodeNode, idx++);
+
+        if(firstNameNode != null)
+            ExpressionUtil.addChild(or, firstNameNode, idx++);
+        if(lastNameNode != null)
+            ExpressionUtil.addChild(or, lastNameNode, idx++);
+        if(middleNameNode != null)
+            ExpressionUtil.addChild(or, middleNameNode, idx);
 
         return or;
     }
+
 
     private static class NameValue {
 
         private final Op op;
         private String productName;
         private String productSku;
+        private String voucherCode;
 
         private NameValue(String nameString, Op op) {
             this.op = op;
             productName = nameString.replaceAll("%", "");
             productSku = nameString.replaceAll("%", "");
+            voucherCode = nameString.replaceAll("%", "");
         }
 
         private String getProductName() {
@@ -68,6 +86,13 @@ public class LazyProductItemComparisonNode extends LazyEntityComparisonNode {
                 return productSku;
             }
             return productSku == null ? null : productSku + "%";
+        }
+
+        public String getCode() {
+            if (op == Op.EQ || op == Op.NE) {
+                return voucherCode;
+            }
+            return voucherCode == null ? null : voucherCode + "%";
         }
     }
 }
