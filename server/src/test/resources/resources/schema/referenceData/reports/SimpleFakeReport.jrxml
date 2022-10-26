@@ -7,14 +7,7 @@
   <property name="ireport.zoom" value="1.0">tt</property>
   <property name="ireport.x" value="0"/>
   <property name="ireport.y" value="71"/>
-  <property name="name" value="Simple Test Report">test</property>
-  <property name="entity" value="Site"/>
-  <property name="isSubreport" value="false"/>
-  <property name="isVisible" value="true"/>
   <property name="versionNumber" value="3"/>
-  <property name="ish.oncourse.description" value="Test descr."/>
-  <property name="sortOn" value="testProp"/>
-  <property name="keyCode" value="ish.onCourse.test.simple"/>
   <title>
     <band height="802" splitType="Stretch">
       <staticText>

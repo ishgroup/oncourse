@@ -27,8 +27,6 @@ import ish.oncourse.server.lifecycle.InvoiceLineInitHelper
 import ish.oncourse.server.messaging.MessageService
 import ish.oncourse.server.quality.QualityService
 import ish.oncourse.server.querying.QueryService
-import ish.oncourse.server.report.IReportService
-import ish.oncourse.server.report.ReportService
 import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.services.*
 import ish.oncourse.server.upgrades.DataPopulation

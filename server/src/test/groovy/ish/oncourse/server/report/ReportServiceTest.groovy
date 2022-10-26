@@ -17,55 +17,118 @@ import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.integration.PluginService
 import ish.oncourse.server.preference.UserPreferenceService
 import ish.oncourse.server.print.PrintWorker
+import ish.oncourse.server.upgrades.DataPopulationUtils
 import ish.print.PrintRequest
 import ish.print.PrintResult
-import ish.report.ImportReportResult
 import net.sf.jasperreports.engine.DefaultJasperReportsContext
+import net.sf.jasperreports.engine.JRException
 import net.sf.jasperreports.engine.JRPropertiesUtil
+import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.SortOrder
 import org.apache.commons.io.FileUtils
-import org.apache.commons.io.IOUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-
-import java.nio.charset.Charset
-
-import static ish.report.ImportReportResult.ReportValidationError.ReportBuildingError
+import org.yaml.snakeyaml.Yaml
 
 @CompileStatic
 @DatabaseSetup
+/**
+ * Note: all reports from test resources must have keycodes, that start with test.
+ */
 class ReportServiceTest extends TestWithDatabase {
     private static final Logger logger = LogManager.getLogger()
+
+
+    private static Collection<? extends Map<String, Object>> getPropsByPath(String path){
+        InputStream resourceAsStream = null
+        try {
+            resourceAsStream = ResourcesUtil.getResourceAsInputStream(path)
+            Yaml yaml = new Yaml();
+            def loaded = yaml.load(resourceAsStream);
+            if(loaded instanceof LinkedHashMap<?,?>)
+                return List.of((Map<String, Object>) loaded);
+            else
+                return (Collection<? extends Map<String, Object>>) loaded;
+        } catch (IOException ex) {
+            logger.warn("Failed to import file: {}",  path);
+        } finally {
+            if(resourceAsStream != null)
+                resourceAsStream.close()
+        }
+        return null
+    }
+
+
+    private static Report loadRepost(String schemeFile, DataContext context){
+        try {
+            def propsList = getPropsByPath(schemeFile)
+            if(!propsList.isEmpty()){
+                DataPopulationUtils.updateReport(context, propsList.first())
+                return ObjectSelect.query(Report.class)
+                        .orderBy(Report.ID.name, SortOrder.DESCENDING)
+                        .selectFirst(context)
+            }
+        } catch (Exception e) {
+            Assertions.fail("could not import the report " + schemeFile)
+        }
+    }
+
+    private static List<Map<String, Object>> loadReports(){
+        List<Map<String, Object>> resourcesList = new ArrayList<>();
+
+        def type = ResourceType.REPORT
+        String filePattern = type.getFilePattern();
+        String resourcePath = type.getResourcePath();
+        Set<String> filePaths = PluginService.getPluggableResources(resourcePath, filePattern);
+        InputStream resourceAsStream = null
+        for (def path : filePaths) {
+            try {
+                resourceAsStream = ResourcesUtil.getResourceAsInputStream(path)
+                Yaml yaml = new Yaml();
+                def loaded = yaml.load(resourceAsStream);
+                if(loaded instanceof LinkedHashMap<?,?>)
+                    resourcesList.add((Map<String, Object>) loaded);
+                else
+                    resourcesList.addAll((Collection<? extends Map<String, Object>>) loaded);
+            } catch (IOException ex) {
+                logger.warn("Failed to import file {}: {}", type.getDisplayName(), path);
+            } finally {
+                if(resourceAsStream != null)
+                    resourceAsStream.close()
+            }
+        }
+        return resourcesList;
+    }
     
     @Test
     void testImportAndCompileAllReportsBasedOnManifest() throws IOException {
         logger.warn("performing testImportAndCompileAllReportsBasedOnManifest")
-        def reportsList = PluginService.getPluggableResources(ResourceType.REPORT.getResourcePath(), ResourceType.REPORT.getFilePattern())
-        ReportService reportService = injector.getInstance(ReportService.class)
-        injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
-        for (String reportFile : reportsList) {
-            if (reportFile.endsWith(".jrxml")) {
-                Report report = null
+        def context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+
+        def reports = loadReports()
+        long id = 1;
+        for (def reportConfigs : reports) {
+            Report report = null
+            try {
+                DataPopulationUtils.updateReport(context, reportConfigs)
+                report = ObjectSelect.query(Report.class)
+                        .where(Report.ID.eq(id++))
+                        .selectOne(cayenneContext)
+            } catch (Exception e) {
+                logger.catching(e)
+                Assertions.fail("could not import the report " + reportConfigs)
+            }
+
+            if (report != null) {
                 try {
-                    ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(reportFile), Charset.defaultCharset()))
-                    report = ObjectSelect.query(Report.class)
-                            .where(Report.ID.eq(importReportResult.getReportId()))
-                            .selectOne(cayenneContext)
+                    ReportService.compileReport(report.getReport())
                 } catch (Exception e) {
                     logger.catching(e)
-                    Assertions.fail("could not import the report " + reportFile)
-                }
-
-                if (report != null) {
-                    try {
-                        ReportService.compileReport(report.getReport())
-                    } catch (Exception e) {
-                        logger.catching(e)
-                        Assertions.fail(String.format("could not compile the report %s : %s", reportFile, e.getMessage()))
-                    }
+                    Assertions.fail(String.format("could not compile the report %s : %s", reportConfigs, e.getMessage()))
                 }
             }
         }
@@ -84,9 +147,8 @@ class ReportServiceTest extends TestWithDatabase {
                 reports.addAll(getAllReportsFromFolder(templateFolder))
             }
         }
-        ReportService reportService = injector.getInstance(ReportService.class)
 
-        for (File reportFile : reports) {
+        /*for (File reportFile : reports) {
             Report report = null
             try {
                 FileReader is = new FileReader(reportFile)
@@ -105,44 +167,54 @@ class ReportServiceTest extends TestWithDatabase {
                     Assertions.fail("could not compile the report " + report.getName() + " (" + reportFile.getAbsolutePath() + ")")
                 }
             }
-        }
+        }*/
     }
 
     
     @Test
     void testImportUpgradeReport() {
         logger.warn("performing testImportUpgradeReport")
-        ReportService reportService = injector.getInstance(ReportService.class)
 
-        String oldReportFile = "resources/schema/referenceData/reports/testReportV1.jrxml"
-        String newReportFile = "resources/schema/referenceData/reports/testReportV2.jrxml"
+        String oldReportScheme = "resources/schema/referenceData/reports/testReportV1.yaml"
+        String newReportScheme = "resources/schema/referenceData/reports/testReportV2.yaml"
 
+        def context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
         // import report
+        long id = 0
         try {
-            ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(oldReportFile), Charset.defaultCharset()))
-            Report report = ObjectSelect.query(Report.class)
-                    .where(Report.ID.eq(importReportResult.getReportId()))
-                    .selectOne(cayenneContext)
-            Assertions.assertEquals("CourseClass", report.getEntity(), "Report entity should be 'CourseClass'")
+            def propsList = getPropsByPath(oldReportScheme)
+            if(!propsList.isEmpty()){
+                DataPopulationUtils.updateReport(context, propsList.first())
+                Report report = ObjectSelect.query(Report.class)
+                        .orderBy(Report.ID.name, SortOrder.DESCENDING)
+                        .selectFirst(cayenneContext)
+                id = report.id
+                Assertions.assertEquals("CourseClass", report.getEntity(), "Report entity should be 'CourseClass'")
+            }
         } catch (Exception e) {
-            Assertions.fail("could not import the report " + oldReportFile)
+            Assertions.fail("could not import the report " + oldReportScheme)
         }
 
         // import new version of the report
         try {
-            ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(newReportFile), Charset.defaultCharset()))
-            Report report = ObjectSelect.query(Report.class)
-                    .where(Report.ID.eq(importReportResult.getReportId()))
-                    .selectOne(cayenneContext)
-            Assertions.assertEquals("Enrolment", report.getEntity(), "Report entity should be 'Enrolment'")
+            def propsList = getPropsByPath(newReportScheme)
+            if(!propsList.isEmpty()){
+                DataPopulationUtils.updateReport(context, propsList.first())
+                Report report = ObjectSelect.query(Report.class)
+                        .where(Report.ID.eq(id))
+                        .selectFirst(cayenneContext)
+                Assertions.assertEquals("Enrolment", report.getEntity(), "Report entity should be 'Enrolment'")
+            }
         } catch (Exception e) {
-            Assertions.fail("could not import the report " + newReportFile)
+            Assertions.fail("could not import the report " + newReportScheme)
         }
 
         // try to downgrade report by importing the old version
-        ImportReportResult importReportResult = null
         try {
-            importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(oldReportFile), Charset.defaultCharset()))
+            def propsList = getPropsByPath(oldReportScheme)
+            if(!propsList.isEmpty()) {
+                DataPopulationUtils.updateReport(context, propsList.first())
+            }
         } catch (IOException e) {
         }
 
@@ -160,17 +232,16 @@ class ReportServiceTest extends TestWithDatabase {
                 "ish.oncourse.server.print.CustomFontExtensionsRegistryFactory")
         JRPropertiesUtil.getInstance(jasperContext).setProperty("net.sf.jasperreports.extension.registry.factory.fonts", "ish.oncourse.server.print.CustomFontExtensionsRegistryFactory")
 
-        ReportService reportService = injector.getInstance(ReportService.class)
         ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
 
         String reportFile = "resources/schema/referenceData/reports/TestFontsReport.jrxml"
 
         Report report = null
         try {
-            ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(reportFile), Charset.defaultCharset()))
+            /*ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(reportFile), Charset.defaultCharset()))
             report = ObjectSelect.query(Report.class)
                     .where(Report.ID.eq(importReportResult.getReportId()))
-                    .selectOne(cayenneContext)
+                    .selectOne(cayenneContext)*/
 
         } catch (Exception e) {
             Assertions.fail("could not import the report " + reportFile)
@@ -217,21 +288,13 @@ class ReportServiceTest extends TestWithDatabase {
     @Test
     void testNonexisintFontReport() throws InterruptedException, IOException {
         logger.warn("performing testNonexisintFontReport")
-        ReportService reportService = injector.getInstance(ReportService.class)
         ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
 
-        String reportFile = "resources/schema/referenceData/reports/TestNonexistingFontsReport.jrxml"
+        def context = cayenneService.newNonReplicatingContext
 
-        Report report = null
-        try {
-            ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(reportFile), Charset.defaultCharset()))
-            report = ObjectSelect.query(Report.class)
-                    .where(Report.ID.eq(importReportResult.getReportId()))
-                    .selectOne(cayenneContext)
+        String schemeFile = "resources/schema/referenceData/reports/TestNonexistingFontsReport.yaml"
 
-        } catch (Exception e) {
-            Assertions.fail("could not import the report " + reportFile)
-        }
+        Report report = loadRepost(schemeFile, context)
 
         final PrintRequest request = new PrintRequest()
         request.setReportCode(report.getKeyCode())
@@ -269,33 +332,26 @@ class ReportServiceTest extends TestWithDatabase {
     @Test
     void testInvalidReport() throws InterruptedException, IOException {
         logger.warn("performing testInvalidReport")
-        ReportService reportService = injector.getInstance(ReportService.class)
+        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
 
-        String reportFile = "resources/schema/referenceData/reports/NonCompilableReport.jrxml"
+        def context = cayenneService.newNonReplicatingContext
 
-        ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(reportFile), Charset.defaultCharset()))
-        Assertions.assertEquals(ReportBuildingError, importReportResult.getReportValidationError())
+        String schemeFile = "resources/schema/referenceData/reports/NonCompilableReport.yaml"
+
+        def report = loadRepost(schemeFile, context)
+        Assertions.assertThrows(JRException, { it -> ReportService.compileReport(report.body) })
     }
 
     
     @Test
     void testNoDataReport() throws InterruptedException, IOException {
         logger.warn("performing testNoDataReport")
-        ReportService reportService = injector.getInstance(ReportService.class)
         ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
 
-        String reportFile = "resources/schema/referenceData/reports/SimpleFakeReport.jrxml"
+        String schemeFile = "resources/schema/referenceData/reports/SimpleFakeReport.yaml"
 
-        Report report = null
-        try {
-            ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(reportFile), Charset.defaultCharset()))
-            report = ObjectSelect.query(Report.class)
-                    .where(Report.ID.eq(importReportResult.getReportId()))
-                    .selectOne(cayenneContext)
-
-        } catch (Exception e) {
-            Assertions.fail("could not import the report " + reportFile)
-        }
+        def context = cayenneService.newNonReplicatingContext
+        Report report = loadRepost(schemeFile, context)
 
         final PrintRequest request = new PrintRequest()
         request.setReportCode(report.getKeyCode())
@@ -324,28 +380,18 @@ class ReportServiceTest extends TestWithDatabase {
 
         Assertions.assertEquals(PrintResult.ResultType.FAILED, worker.getResult().getResultType(), String.format("Printing failed for %s", report.getName()))
         Assertions.assertNotNull(worker.getResult().getError(), String.format("Empty error for %s", report.getName()))
-        cayenneContext.deleteObject(report)
+        context.deleteObject(report)
     }
 
     
     @Test
     void testInvalidFieldReport() throws InterruptedException, IOException {
         logger.warn("performing testInvalidFieldReport")
-        ReportService reportService = injector.getInstance(ReportService.class)
         ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
 
-        String reportFile = "resources/schema/referenceData/reports/InvalidFieldReport.jrxml"
+        String schemeFile = "resources/schema/referenceData/reports/InvalidFieldReport.yaml"
 
-        Report report = null
-        try {
-            ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(reportFile), Charset.defaultCharset()))
-            report = ObjectSelect.query(Report.class)
-                    .where(Report.ID.eq(importReportResult.getReportId()))
-                    .selectOne(cayenneContext)
-
-        } catch (Exception e) {
-            Assertions.fail("could not import the report " + reportFile)
-        }
+        Report report = loadRepost(schemeFile, cayenneService.newNonReplicatingContext)
 
         final PrintRequest request = new PrintRequest()
         request.setReportCode(report.getKeyCode())

@@ -55,7 +55,9 @@ class DataPopulationUtils {
     }
 
     private static String getBody(Map<String, Object> props, ResourceProperty property, ResourceType type) {
-        String path = type.resourcePath + getString(props, property)
+        String path = getString(props, property)
+        if(!props.get(KEY_CODE.displayName).toString().startsWith("test."))
+            path = type.resourcePath + path
         InputStream iStream = ResourcesUtil.getResourceAsInputStream(path)
         return IOUtils.toString(iStream, Charset.defaultCharset())
     }

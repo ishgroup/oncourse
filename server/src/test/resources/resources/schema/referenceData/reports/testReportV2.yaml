@@ -1,0 +1,7 @@
+- name: "Test Report"
+  entityClass: "Enrolment"
+  keyCode: "test.ish.onCourse"
+  report: "resources/schema/referenceData/reports/testReportV2.jrxml"
+  category:
+  sortOn: ""
+  visible: true
