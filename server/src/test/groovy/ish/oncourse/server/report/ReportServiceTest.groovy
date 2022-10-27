@@ -27,6 +27,7 @@ import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SortOrder
 import org.apache.commons.io.FileUtils
+import org.apache.commons.io.IOUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.junit.jupiter.api.Assertions
@@ -148,26 +149,16 @@ class ReportServiceTest extends TestWithDatabase {
             }
         }
 
-        /*for (File reportFile : reports) {
+        for (File reportFile : reports) {
             Report report = null
             try {
-                FileReader is = new FileReader(reportFile)
-                ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(is))
-                report = ObjectSelect.query(Report.class)
-                        .where(Report.ID.eq(importReportResult.getReportId()))
-                        .selectOne(cayenneContext)
+                report = loadRepost(reportFile.getAbsolutePath(), cayenneContext)
+                ReportService.compileReport(report.body)
             } catch (Exception e) {
                 Assertions.fail("could not import the report " + reportFile.getAbsolutePath())
             }
 
-            if (report != null) {
-                try {
-                    ReportService.compileReport(report.getReport())
-                } catch (Exception e) {
-                    Assertions.fail("could not compile the report " + report.getName() + " (" + reportFile.getAbsolutePath() + ")")
-                }
-            }
-        }*/
+        }
     }
 
     
@@ -234,18 +225,9 @@ class ReportServiceTest extends TestWithDatabase {
 
         ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
 
-        String reportFile = "resources/schema/referenceData/reports/TestFontsReport.jrxml"
+        String reportScheme = "resources/schema/referenceData/reports/TestFontsReport.yaml"
 
-        Report report = null
-        try {
-            /*ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(reportFile), Charset.defaultCharset()))
-            report = ObjectSelect.query(Report.class)
-                    .where(Report.ID.eq(importReportResult.getReportId()))
-                    .selectOne(cayenneContext)*/
-
-        } catch (Exception e) {
-            Assertions.fail("could not import the report " + reportFile)
-        }
+        Report report = loadRepost(reportScheme, cayenneService.newNonReplicatingContext)
 
         final PrintRequest request = new PrintRequest()
         request.setReportCode(report.getKeyCode())
