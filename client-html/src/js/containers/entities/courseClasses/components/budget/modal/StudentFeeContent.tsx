@@ -4,7 +4,7 @@
  */
 
 import React, {
-  useCallback, useEffect, useMemo, useState
+  useCallback, useEffect, useMemo
 } from "react";
 import { arrayInsert, arrayRemove, change } from "redux-form";
 import { CourseClassPaymentPlan, Tax } from "@api/model";
@@ -21,11 +21,9 @@ import {
   decimalPlus
 } from "../../../../../../common/utils/numbers/decimalCalculation";
 import { formatCurrency, normalizeNumber } from "../../../../../../common/utils/numbers/numbersNormalizing";
-import EditInPlaceMoneyField from "../../../../../../common/components/form/formFields/EditInPlaceMoneyField";
 import { accountLabelCondition } from "../../../../accounts/utils";
 import { D_MMM_YYYY } from "../../../../../../common/utils/dates/format";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
-import { stubFunction } from "../../../../../../common/utils/common";
 import { getCurrentTax } from "../../../../taxes/utils";
 import { getPaymentPlansTotal } from "../utils";
 import AddButton from "../../../../../../common/components/icons/AddButton";
@@ -90,10 +88,6 @@ const StudentFeeContent: React.FC<Props> = ({
     form,
     namePrefix = ""
   }) => {
-  const [feeWithTax, setFeeWithTax] = useState(() => decimalMinus(
-      values.perUnitAmountIncTax,
-      getPaymentPlansTotal(values.paymentPlan)
-    ));
   const totalLabel = useMemo(() => `Total class fee (${currentTax.gst ? "inc " : "no "} GST)`, [currentTax]);
 
   const classTotalFeeLabel = useMemo(() => formatCurrency(values.perUnitAmountIncTax, currencySymbol), [
@@ -115,7 +109,7 @@ const StudentFeeContent: React.FC<Props> = ({
   );
 
   useEffect(() => {
-    updateFormFee(feeWithTax, values.taxId);
+    updateFormFee(values.perUnitAmountIncTax, values.taxId);
   }, [values.paymentPlan]);
 
   const addPaymentPlan = useCallback(() => {
@@ -130,11 +124,11 @@ const StudentFeeContent: React.FC<Props> = ({
       dispatch(
         arrayInsert(form, namePrefix + "paymentPlan", 0, {
           dayOffset: null,
-          amount: feeWithTax
+          amount: values.perUnitAmountIncTax
         } as CourseClassPaymentPlan)
       );
     }
-  }, [values.paymentPlan, namePrefix, feeWithTax, form]);
+  }, [values.paymentPlan, values.perUnitAmountIncTax, namePrefix, form]);
 
   const calculatefeeAmountByTax = useCallback(
     val => decimalMinus(
@@ -155,7 +149,6 @@ const StudentFeeContent: React.FC<Props> = ({
         dispatch(change(form, namePrefix + "taxId", selectedAccountTaxId));
         const feeWithTax = calculatefeeAmountByTax(selectedAccountTaxId);
 
-        setFeeWithTax(feeWithTax);
         updateFormFee(feeWithTax, selectedAccountTaxId);
       }
     },
@@ -178,7 +171,6 @@ const StudentFeeContent: React.FC<Props> = ({
 
   const onFeeChange = useCallback(
     val => {
-      setFeeWithTax(val);
       updateFormFee(val, values.taxId);
 
       if (values.paymentPlan.length) {
@@ -194,7 +186,6 @@ const StudentFeeContent: React.FC<Props> = ({
   const onTaxIdChange = useCallback(
     val => {
       const fee = calculatefeeAmountByTax(val);
-      setFeeWithTax(fee);
       updateFormFee(fee, val);
     },
     [values.paymentPlan, values.perUnitAmountExTax, taxes]
@@ -212,15 +203,12 @@ const StudentFeeContent: React.FC<Props> = ({
         <FormField type="text" name="description" label="Invoice line title" fullWidth />
       </Grid>
       <Grid item xs={2}>
-        <EditInPlaceMoneyField
+        <FormField
+          type="money"
+          name="perUnitAmountIncTax"
           label="On enrolment"
-          input={{
-            onChange: onFeeChange,
-            onBlur: stubFunction,
-            onFocus: stubFunction,
-            value: feeWithTax
-          }}
-          meta={{}}
+          onChange={onFeeChange}
+          required
         />
       </Grid>
       <Grid item xs={2}>
