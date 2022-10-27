@@ -230,7 +230,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
     const confirmProps: ConfirmProps = {
       title: "INFORMATION",
       confirmMessage: "Any changes you make to the courses that can be enrolled in with this voucher type will also affect vouchers of this type that have already been sold",
-      confirmButtonText: "Proceed"
+      confirmButtonText: "Edit"
     };
     
     return {
