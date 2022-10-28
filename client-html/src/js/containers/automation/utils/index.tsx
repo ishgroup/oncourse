@@ -17,3 +17,10 @@ export const renderAutomationItems = item => (
       <LockOutlined className="selectItmeIcon" />
     </span>
   ) : item.label );
+
+export const validateNameForQuotes = name => {
+  if (name.includes("\"")) {
+    return "Quotation marks not allowed";
+  }
+  return undefined;
+};
