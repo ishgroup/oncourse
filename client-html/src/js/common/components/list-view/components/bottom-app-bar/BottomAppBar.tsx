@@ -10,7 +10,6 @@ import createStyles from "@mui/styles/createStyles";
 import IconButton from "@mui/material/IconButton";
 import PlusIcon from "@mui/icons-material/Add";
 import Share from "@mui/icons-material/Share";
-import HubIcon from "@mui/icons-material/Hub";
 import Settings from "@mui/icons-material/Settings";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -29,7 +28,6 @@ import { APP_BAR_HEIGHT } from "../../../../../constants/Config";
 import FindRelatedMenu from "./components/FindRelatedMenu";
 import { FindRelatedItem } from "../../../../../model/common/ListView";
 import { getScripts } from "../../../../actions";
-import { ENTITIES, EntityItems, EntityName } from "../../../../../model/entities/common";
 
 const SendMessageEntities = [
   "AbstractInvoice",
@@ -235,8 +233,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
       searchQuery,
       filteredCount,
       emailTemplatesWithKeyCode,
-      scripts,
-      toggleRelationshipView
+      scripts
     } = this.props;
 
     const {
@@ -395,24 +392,6 @@ class BottomAppBar extends React.PureComponent<any, any> {
                 classes={classes}
                 disabled={fetch.pending}
               />
-
-              {rootEntity === "Course" && (
-                <Tooltip title="Course Relationships" disableFocusListener>
-                  <div>
-                    <IconButton
-                      onClick={toggleRelationshipView}
-                      disabled={fetch.pending}
-                      classes={{
-                        root: showExportDrawer ? classes.shareOnBackdrop : classes.actionsBarButton,
-                        disabled: classes.buttonDisabledFade
-                      }}
-                      size="large"
-                    >
-                      <HubIcon />
-                    </IconButton>
-                  </div>
-                </Tooltip>
-              )}
 
               <Tooltip title="Share" disableFocusListener>
                 <div>

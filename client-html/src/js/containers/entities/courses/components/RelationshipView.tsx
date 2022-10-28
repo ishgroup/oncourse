@@ -6,22 +6,21 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
+import {connect} from "react-redux";
 import * as d3 from "d3";
 import clsx from "clsx";
+import {EntityRelationType} from "@api/model";
 import { alpha } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
 import { TransitionProps } from "@mui/material/transitions";
 import Slide from "@mui/material/Slide";
-import Button from "@mui/material/Button";
-import AppBar from "@mui/material/AppBar";
-import { makeAppStyles } from "../../../../styles/makeStyles";
-import {getColor, useWindowSize} from "../../../../styles/hooks";
-import LoadingIndicator from "../../../progress/LoadingIndicator";
-import { NoArgFunction } from "../../../../../model/common/CommonFunctions";
-import {State} from "../../../../../reducers/state";
-import {connect} from "react-redux";
-import {EntityRelationType} from "@api/model";
+import { makeAppStyles } from "../../../../common/styles/makeStyles";
+import {getColor, useWindowSize} from "../../../../common/styles/hooks";
+import LoadingIndicator from "../../../../common/components/progress/LoadingIndicator";
+import {NoArgFunction, StringArgFunction} from "../../../../model/common/CommonFunctions";
+import {State} from "../../../../reducers/state";
+import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
 
 const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
   <Slide direction="up" ref={ref} {...props as any} />
@@ -127,11 +126,6 @@ function color(d) {
 }
 
 const useStyles = makeAppStyles(theme => ({
-  root: {
-    marginTop: theme.spacing(8),
-    height: `calc(100vh - ${theme.spacing(8)})`,
-    overflow: 'hidden'
-  },
   graphRoot: {
     width: "100%",
     height: "100%",
@@ -181,22 +175,27 @@ const useStyles = makeAppStyles(theme => ({
 interface Props {
   open: boolean;
   rows: any[];
-  closeView: NoArgFunction;
+  closeMenu: NoArgFunction;
+  setDialogOpened: StringArgFunction;
   entityRelationTypes?: EntityRelationType[];
 }
 
 const RelationshipView: React.FC<Props> = props => {
   const {
-    open, rows, closeView, entityRelationTypes
+    open, rows, closeMenu, setDialogOpened, entityRelationTypes
   } = props;
 
   const [relationTypes, setRelationTypes] = useState<any[]>([]);
-  // const [relationshipItems, setRelationshipItems] = useState<any[]>([]);
 
   const ref = useRef<any>();
   const forceRef = useRef<any>();
 
   const classes = useStyles();
+
+  const onClose = useCallback(() => {
+    setDialogOpened(null);
+    closeMenu()
+  }, []);
 
   useEffect(() => {
     const types = [];
@@ -275,25 +274,15 @@ const RelationshipView: React.FC<Props> = props => {
       disableEnforceFocus
     >
       <LoadingIndicator position="fixed" />
-      <AppBar
-        elevation={0}
-        className={classes.header}
+      <AppBarContainer
+        title="Relationship: Course"
+        onCloseClick={onClose}
+        disableInteraction
+        hideHelpMenu
+        hideSubmitButton
       >
-        <div className="flex-fill">
-          Course Relationship
-        </div>
-        <div>
-          <Button
-            onClick={closeView}
-            className="closeAppBarButton"
-          >
-            Close
-          </Button>
-        </div>
-      </AppBar>
-      <div className={classes.root}>
         <div className={clsx("dotsBackgroundImage", classes.graphRoot)} ref={ref} />
-      </div>
+      </AppBarContainer>
     </Dialog>
   );
 };

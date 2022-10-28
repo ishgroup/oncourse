@@ -89,8 +89,6 @@ import {
   updateEntityRecord
 } from "../../../containers/entities/common/actions";
 import { shouldAsyncValidate } from "./utils/listFormUtils";
-import RelationshipView from "./components/relationship-view/RelationshipView";
-import courseRows from "./components/relationship-view/data/courseRows";
 
 const styles = () => createStyles({
   root: {
@@ -217,7 +215,6 @@ interface ComponentState {
   sidebarWidth: number;
   mainContentWidth: number;
   newSelection: string[] | null;
-  relationshipView: boolean;
 }
 
 class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
@@ -242,8 +239,7 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       threeColumn: false,
       sidebarWidth: LIST_SIDE_BAR_DEFAULT_WIDTH,
       mainContentWidth: this.getMainContentWidth(LIST_MAIN_CONTENT_DEFAULT_WIDTH, LIST_SIDE_BAR_DEFAULT_WIDTH),
-      newSelection: null,
-      relationshipView: false,
+      newSelection: null
     };
   }
 
@@ -1020,13 +1016,6 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
     return searchParam.getAll("search")[0];
   };
 
-  toggleRelationshipView = () => {
-    this.setState(s => ({
-      ...s,
-      relationshipView: !s.relationshipView
-    }));
-  };
-
   render() {
     const {
       classes,
@@ -1105,12 +1094,6 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
           showConfirm={this.showConfirm}
           alwaysFullScreenCreateView={alwaysFullScreenCreateView}
           threeColumn={threeColumn}
-        />
-
-        <RelationshipView
-          open={this.state.relationshipView}
-          rows={courseRows.rows}
-          closeView={this.toggleRelationshipView}
         />
 
         <ShareContainer
@@ -1221,7 +1204,6 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
             records={records}
             searchComponentNode={this.searchComponentNode}
             searchQuery={searchQuery}
-            toggleRelationshipView={this.toggleRelationshipView}
           />
         </div>
       </div>
