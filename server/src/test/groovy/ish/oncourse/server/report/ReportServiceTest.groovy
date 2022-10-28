@@ -405,7 +405,7 @@ class ReportServiceTest extends TestWithDatabase {
         String[] listing = folder.list()
         for (String filename : listing) {
             File file = new File(folder, filename)
-            if (filename.endsWith(".jrxml")) {
+            if (filename.endsWith(".yaml")) {
                 result.add(file)
             } else if (file.isDirectory()) {
                 result.addAll(getAllReportsFromFolder(file))
