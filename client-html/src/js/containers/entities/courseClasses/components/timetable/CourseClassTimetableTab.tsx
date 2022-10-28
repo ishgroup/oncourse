@@ -238,11 +238,20 @@ const CourseClassTimetableTab = ({
       setExpanded(prev => [...prev, tabIndex]);
     }
     const temporaryId = uniqid();
-    let start: any = new Date();
-    start.setMinutes(0, 0, 0);
-    let end: any = addHours(start, 1);
-    start = start.toISOString();
-    end = end.toISOString();
+    
+    let start: any;
+    let end: any;
+    
+    if (values.sessions.length) {
+      start = values.sessions[0].start;
+      end = values.sessions[0].end;
+    } else {
+      start = new Date();
+      start.setMinutes(0, 0, 0);
+      end = addHours(start, 1);
+      start = start.toISOString();
+      end = end.toISOString();
+    }
 
     const duration = differenceInMinutes(new Date(end), new Date(start));
 
