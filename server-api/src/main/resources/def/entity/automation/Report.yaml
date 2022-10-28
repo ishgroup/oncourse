@@ -82,8 +82,3 @@ properties:
     require: false
     description: automation category
     example: imports
-  visible:
-    type: boolean
-    require: false
-    description: if report must be visible in list
-    example: true
