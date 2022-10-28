@@ -1,4 +1,4 @@
-kronos {
+kronosCreateEdit {
     scheduleName scheduleNameValue
-    session record
+    tutorAttendance record
 }
