@@ -12,9 +12,13 @@ import groovy.transform.CompileDynamic
 import groovyx.net.http.ContentType
 import groovyx.net.http.Method
 import groovyx.net.http.RESTClient
+import ish.oncourse.server.api.v1.function.CustomFieldFunctions
+import ish.oncourse.server.cayenne.TutorAttendance
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
 import ish.util.LocalDateUtils
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -34,6 +38,11 @@ class KronosIntegration implements PluginTrait {
      * Error codes from https://secure.workforceready.com.au/ta/docs/rest/pages/errorCodes.html
      */
     public static final int ACCOUNT_NOT_FOUND_CODE = 10002
+
+    public static final String KRONOS_SHIFT_ID_CUSTOM_FIELD_KEY = "kronosShiftId"
+    public static final String KRONOS_SCHEDULE_ID_CUSTOM_FIELD_KEY = "kronosScheduleId"
+
+    private static Logger logger = LogManager.logger
 
     String username
     String password
@@ -215,7 +224,7 @@ class KronosIntegration implements PluginTrait {
     }
 
     /**
-     * Get list of Cost Centers from Kronos with tree_index:2 and store Cost Center external_id or names (if external_id doesn't exist) and Cost Center ids in kronosCostCentersIndex2 Map<(external_id/name),id>.
+     * Get list of Cost Centers from Kronos with tree_index:2 and store Cost Center names  and Cost Center ids in kronosCostCentersIndex2 Map<(name),id>.
      */
     protected void initCostCenters2Index() {
         Map costCentersIndex2FromKronos = getCompanyCostCenters(2) as Map
@@ -599,10 +608,73 @@ class KronosIntegration implements PluginTrait {
         }
     }
 
+    /**
+     * Delete Shift by shift id and schedule id
+     *
+     * @return [response: resp, result: result]
+     */
+    protected deleteShift(shiftId, scheduleId) {
+        def client = new RESTClient(KRONOS_REST_URL)
+        client.headers["Authentication"] = "Bearer ${authToken}"
+        client.request(Method.DELETE) {
+            uri.path = "/ta/rest/v2/companies/${CID}/schedules/${scheduleId}/shifts/${shiftId}"
+
+            response.success = { resp, result ->
+                return [response: resp, result: result]
+            }
+            response.failure = { resp, result ->
+                throw new IllegalStateException("Failed to delete Shift from Kronos (company cid, scheduleId, shiftId) - (${CID}, ${scheduleId}, ${shiftId}): ${resp.getStatusLine()}, ${result}")
+            }
+        }
+    }
+
+    /**
+     * Get Shift from Kronos by shift id and schedule id
+     *
+     * @return [response: resp, result: result]
+     */
+    protected getShift(shiftId, scheduleId) {
+        def client = new RESTClient(KRONOS_REST_URL)
+        client.headers["Authentication"] = "Bearer ${authToken}"
+        client.request(Method.GET) {
+            uri.path = "/ta/rest/v2/companies/${CID}/schedules/${scheduleId}/shifts/${shiftId}"
+
+            response.success = { resp, result ->
+                return [response: resp, result: result]
+            }
+            response.failure = { resp, result ->
+                return [response: resp, result: result]
+            }
+        }
+    }
+
     private String addDaysToDate(Date date, long daysToAdd) {
         LocalDate localDate = LocalDateUtils.dateToValue(date)
         LocalDate dateWithAddedDays = localDate.plusDays(daysToAdd)
         return LocalDateUtils.valueToString(dateWithAddedDays)
+    }
+
+    protected static getCustomFieldShiftId(TutorAttendance tutorAttendance) {
+        return getCustomFieldValue(tutorAttendance, KRONOS_SHIFT_ID_CUSTOM_FIELD_KEY)
+    }
+
+    protected static getCustomFieldScheduleId(TutorAttendance tutorAttendance) {
+        return getCustomFieldValue(tutorAttendance, KRONOS_SCHEDULE_ID_CUSTOM_FIELD_KEY)
+    }
+
+    private static getCustomFieldValue(TutorAttendance tutorAttendance, String customFieldKey) {
+        try {
+            tutorAttendance.getCustomFieldValue(customFieldKey)
+        } catch (MissingPropertyException ex) {
+            logger.warn("TutorAttendanceCustomField '${customFieldKey}' doesn't exist yet. Will be added the first time when will add a shift to Kronos and save TutorAttendanceCustomField with key '${customFieldKey}'. Exception message: ${ex.getMessage()}")
+            return null
+        }
+    }
+
+    protected static void saveCustomFields(TutorAttendance tutorAttendance, String kronosShiftId, String kronosScheduleId) {
+        CustomFieldFunctions.addCustomFieldWithoutCommit(KRONOS_SHIFT_ID_CUSTOM_FIELD_KEY, kronosShiftId, tutorAttendance, tutorAttendance.context)
+        CustomFieldFunctions.addCustomFieldWithoutCommit(KRONOS_SCHEDULE_ID_CUSTOM_FIELD_KEY, kronosScheduleId, tutorAttendance, tutorAttendance.context)
+        tutorAttendance.context.commitChanges()
     }
 
     private static class KronosSchedule {

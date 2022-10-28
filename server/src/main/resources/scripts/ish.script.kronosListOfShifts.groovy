@@ -1,11 +1,11 @@
 records = query {
-    entity "Session"
+    entity "TutorAttendance"
     query "startDatetime next week"
 }
 
 records.each { r ->
-    kronos {
+    kronosCreateEdit {
         scheduleName scheduleNameValue
-        session r
+        tutorAttendance r
     }
 }
