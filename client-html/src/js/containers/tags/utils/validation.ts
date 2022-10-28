@@ -8,7 +8,7 @@
 
 import { ForbiddenTagNames, Tag } from "@api/model";
 import { DecoratedFormProps } from "redux-form";
-import { validateAqlFilterOrTagName, validateSingleMandatoryField } from "../../../common/utils/validation";
+import { validateForbiddenSymbols, validateSingleMandatoryField } from "../../../common/utils/validation";
 
 const validateUniqueTagName = (tag: Tag, allTags: Tag[], message: string = "The tag name is not unique within its parent tag") => (
   allTags.some(t => t.id !== tag.id && tag.name === t.name)
@@ -86,7 +86,7 @@ export const validate = (values: Tag, props: DecoratedFormProps<Tag, { tags: Tag
   }
 
   const nameError = validateSingleMandatoryField(values.name)
-    || validateAqlFilterOrTagName(values.name)
+    || validateForbiddenSymbols(values.name)
     || validateUniqueTagName(values, tags, "Tag name is not unique");
 
   if (nameError) {
