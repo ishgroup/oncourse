@@ -18,7 +18,7 @@ import Typography from "@mui/material/Typography";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import PayslipPaylineRenderrer from "./PayslipPaylineRenderrer";
-import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
+import { getContactFullName } from "../../contacts/utils";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import {
@@ -103,7 +103,7 @@ class PayslipsEditView extends React.PureComponent<any, any> {
   onTutorIdChange = (value: Contact) => {
     const { dispatch, form } = this.props;
 
-    dispatch(change(form, "tutorFullName", contactLabelCondition(value)));
+    dispatch(change(form, "tutorFullName", getContactFullName(value)));
   };
 
   render() {
@@ -144,8 +144,8 @@ class PayslipsEditView extends React.PureComponent<any, any> {
                   name="tutorId"
                   label="Tutor"
                   selectValueMark="id"
-                  selectLabelCondition={contactLabelCondition}
-                  defaultDisplayValue={values && defaultContactName(values.tutorFullName)}
+                  selectLabelCondition={getContactFullName}
+                  defaultDisplayValue={values?.tutorFullName}
                   labelAdornment={
                     <ContactLinkAdornment id={values?.tutorId} />
                   }

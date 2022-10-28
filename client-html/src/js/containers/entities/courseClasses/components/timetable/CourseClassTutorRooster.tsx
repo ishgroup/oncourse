@@ -15,7 +15,6 @@ import {
 import clsx from "clsx";
 import { WrappedFieldProps } from "redux-form";
 import { ClashType, CourseClassTutor, SessionWarning } from "@api/model";
-import { defaultContactName } from "../../../contacts/utils";
 import { TimetableSession } from "../../../../../model/timetable";
 import { ClassCostExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
@@ -85,7 +84,7 @@ const CourseClassTutorRooster = (
                 setTutorsMenuOpened(false);
               }}
               >
-                {`${defaultContactName(t.tutorName)} (${t.roleName})`}
+                {`${t.tutorName} (${t.roleName})`}
               </MenuItem>
               ))}
           </Menu>

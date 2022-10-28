@@ -229,17 +229,15 @@ const TransferEnrolmentModalForm = React.memo<TransferEnrolmentModalProps & Inje
             </Grid>
           </Grid>
 
-          <div className="pt-2">
-            <FieldArray
-              component={TransferEnrolmentInvoiceLines}
-              name="invoices"
-              dispatch={dispatch}
-              incomeAccounts={incomeAccounts}
-              taxes={taxes}
-              classes={classes}
-              rerenderOnEveryChange
-            />
-          </div>
+          <FieldArray
+            component={TransferEnrolmentInvoiceLines}
+            name="invoices"
+            dispatch={dispatch}
+            incomeAccounts={incomeAccounts}
+            taxes={taxes}
+            classes={classes}
+            rerenderOnEveryChange
+          />
         </DialogContent>
 
         <DialogActions className="p-1">
