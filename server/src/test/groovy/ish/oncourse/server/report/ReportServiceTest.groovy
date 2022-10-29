@@ -74,7 +74,7 @@ class ReportServiceTest extends TestWithDatabase {
                         .selectFirst(context)
             }
         } catch (Exception e) {
-            Assertions.fail("could not import the report " + schemeFile)
+            Assertions.fail("could not import the report " + schemeFile+" "+e.getMessage())
         }
     }
 
