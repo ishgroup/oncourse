@@ -158,9 +158,9 @@ public class EntityFactory {
     Entity createEntity(ObjEntity entity) {
         var entityName = entity.getName();
         var syntheticAttributesForEntity
-                = syntheticAttributes.getOrDefault(entity.getJavaClassName(), Collections.emptyList());
+                = syntheticAttributes.getOrDefault(entity.getJavaClassName(), new ArrayList<>());
         if(entityIsTaggable(entityName)){
-            var taggableAttributes = syntheticAttributes.getOrDefault(TaggableCayenneDataObject.class.getName(), Collections.emptyList());
+            var taggableAttributes = syntheticAttributes.getOrDefault(TaggableCayenneDataObject.class.getName(), new ArrayList<>());
             syntheticAttributesForEntity.addAll(taggableAttributes);
         }
         if(ENTITIES_WITH_CUSTOM_FIELDS.contains(entityName)) {
