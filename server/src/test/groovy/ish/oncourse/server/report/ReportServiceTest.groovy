@@ -55,7 +55,7 @@ class ReportServiceTest extends TestWithDatabase {
             else
                 return (Collection<? extends Map<String, Object>>) loaded;
         } catch (IOException ex) {
-            logger.warn("Failed to import file: {}",  path);
+            Assertions.fail("Failed to import file: "+ path + " due to "+ex.getMessage());
         } finally {
             if(resourceAsStream != null)
                 resourceAsStream.close()
