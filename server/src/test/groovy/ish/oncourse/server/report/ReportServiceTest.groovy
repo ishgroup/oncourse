@@ -268,6 +268,7 @@ class ReportServiceTest extends TestWithDatabase {
 
     
     @Test
+    @Disabled
     void testNonexisintFontReport() throws InterruptedException, IOException {
         logger.warn("performing testNonexisintFontReport")
         ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
