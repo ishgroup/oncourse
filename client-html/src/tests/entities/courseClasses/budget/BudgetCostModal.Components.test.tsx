@@ -6,7 +6,7 @@ import BudgetCostModal from "../../../../js/containers/entities/courseClasses/co
 import { getCustomColumnsMap } from "../../../../js/common/utils/common";
 import { getClassFeeTotal, getPaymentPlansTotal } from "../../../../js/containers/entities/courseClasses/components/budget/utils";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../../js/containers/entities/courseClasses/constants";
-import { decimalMinus } from "../../../../js/common/utils/numbers/decimalCalculation";
+import { decimalPlus } from "../../../../js/common/utils/numbers/decimalCalculation";
 
 describe("Virtual rendered BudgetCostModal of Class edit view", () => {
   defaultComponents({
@@ -47,10 +47,9 @@ describe("Virtual rendered BudgetCostModal of Class edit view", () => {
       expect(screen.getByText("Student fee")).toBeTruthy();
       expect(screen.getByLabelText("Invoice line title").value).toBe(initialValues.description);
 
-      expect(screen.getByLabelText("On enrolment").value).toBe(decimalMinus(
-        initialValues.perUnitAmountIncTax,
-        getPaymentPlansTotal(initialValues.paymentPlan)
-      ).toString());
+      const total = decimalPlus(initialValues.perUnitAmountIncTax, getPaymentPlansTotal(initialValues.paymentPlan));
+
+      expect(screen.getByLabelText("On enrolment").value).toBe(total.toString());
 
       expect(screen.getByLabelText("Tax type").value).toBe(initialValues.taxId.toString());
       expect(screen.getByLabelText("Account").value).toBe(initialValues.accountId.toString());
