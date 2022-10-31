@@ -23,12 +23,12 @@ import { mapSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { NumberArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
+import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import AvailableFrom, { mapMessageAvailableFrom } from "../../../components/AvailableFrom";
 import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import { MessageTemplateEntityItems, MessageTemplateEntityName } from "../../../constants";
-import { validateKeycode } from "../../../utils";
+import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import ScriptCard from "../../scripts/components/cards/CardBase";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
@@ -48,8 +48,6 @@ interface Props extends InjectedFormProps {
   onUpdateInternal: (template: EmailTemplate) => void;
   onUpdate: (template: EmailTemplate) => void;
   onDelete: NumberArgFunction;
-  validateTemplateCopyName: StringArgFunction;
-  validateNewTemplateName: StringArgFunction;
   history: any;
   syncErrors: any;
   nextLocation: string;
@@ -76,8 +74,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
     onUpdate,
     onUpdateInternal,
     onDelete,
-    validateTemplateCopyName,
-    validateNewTemplateName,
     history,
     nextLocation,
     syncErrors,
@@ -156,6 +152,21 @@ const EmailTemplatesForm: React.FC<Props> = props => {
 
   const importExportActions = useMemo(() => getConfigActions("EmailTemplate", values.name, values.id), [values.id]);
 
+  const validateTemplateCopyName = useCallback(name => {
+    if (emailTemplates.find(e => e.title.trim() === name.trim())) {
+      return "Template name should be unique";
+    }
+    return validateNameForQuotes(name);
+  }, [emailTemplates, values.id]);
+
+  const validateNewTemplateName = useCallback(name => {
+    if (emailTemplates.find(e => e.id !== values.id && e.title.trim() === name.trim())) {
+      return "Template name should be unique";
+    }
+    return validateNameForQuotes(name);
+  }, [emailTemplates, values.id]);
+
+
   return (
     <>
       <SaveAsNewAutomationModal
@@ -163,7 +174,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
         onClose={onDialogClose}
         onSave={onDialogSave}
         validateNameField={validateTemplateCopyName}
-        hasNameField
       />
 
       <Form onSubmit={handleSubmit(handleSave)}>

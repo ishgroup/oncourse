@@ -30,7 +30,7 @@ import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { validateKeycode } from "../../../utils";
+import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import { CommonListItem } from "../../../../../model/common/sidebar";
 import { createAndDownloadFile } from "../../../../../common/utils/common";
 import FilePreview from "../../../../../common/components/form/FilePreview";
@@ -62,6 +62,7 @@ interface Props extends InjectedFormProps<Report> {
   syncErrors: any;
   nextLocation: string;
   emailTemplates?: CatalogItemType[];
+  pdfReports?: CatalogItemType[];
 }
 
 const reader = new FileReader();
@@ -102,6 +103,7 @@ const PdfReportsForm = React.memo<Props>(
     history,
     nextLocation,
     emailTemplates,
+     pdfReports,
     syncErrors
   }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
@@ -206,7 +208,7 @@ const PdfReportsForm = React.memo<Props>(
 
     const handleFullScreenPreview = () => {
       dispatch(reportFullScreenPreview(values.id));
-    }
+    };
 
     useEffect(() => {
       if (values.id !== prevId) {
@@ -225,13 +227,32 @@ const PdfReportsForm = React.memo<Props>(
 
     const importExportActions = useMemo(() => getConfigActions("Report", values.name, values.id), [values.id]);
 
+    const validateReportCopyName = useCallback(name => {
+      if (pdfReports.find(r => r.title.trim() === name.trim())) {
+        return "Report name should be unique";
+      }
+      return validateNameForQuotes(name);
+    }, [pdfReports, values.id]);
+
+    const validateReportName = useCallback(name => {
+      if (pdfReports.find(r => r.id !== values.id && r.title.trim() === name.trim())) {
+        return "Report name should be unique";
+      }
+      return validateNameForQuotes(name);
+    }, [pdfReports, values.id]);
+
     return (
       <>
         <Form onSubmit={handleSubmit(handleSave)}>
           <input type="file" ref={fileRef} className="d-none" onChange={handleUpload}/>
           <FormField type="stub" name="body"/>
 
-          <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialodClose} onSave={onDialodSave}/>
+          <SaveAsNewAutomationModal 
+            opened={modalOpened} 
+            onClose={onDialodClose} 
+            onSave={onDialodSave} 
+            validateNameField={validateReportCopyName}
+          />
 
           {!disableRouteConfirm && <RouteChangeConfirm form={form} when={dirty || isNew}/>}
 
@@ -256,6 +277,7 @@ const PdfReportsForm = React.memo<Props>(
                 <FormField
                   name="name"
                   label="Name"
+                  validate={validateReportName}
                   disabled={isInternal}
                   required
                 />

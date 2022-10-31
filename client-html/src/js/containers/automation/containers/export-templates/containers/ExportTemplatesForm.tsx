@@ -28,7 +28,7 @@ import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { validateKeycode } from "../../../utils";
+import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import { mapSelectItems } from "../../../../../common/utils/common";
 import { EntityItems, EntityName } from "../../../../../model/entities/common";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
@@ -52,12 +52,13 @@ interface Props extends InjectedFormProps {
   history: any,
   syncErrors: any,
   nextLocation: string,
-  emailTemplates?: CatalogItemType[]
+  emailTemplates?: CatalogItemType[],
+  exportTemplates?: CatalogItemType[]
 }
 
 const ExportTemplatesForm = React.memo<Props>(
   ({
-    dirty, form, handleSubmit, isNew, invalid, values, syncErrors, emailTemplates,
+    dirty, form, handleSubmit, isNew, invalid, values, syncErrors, emailTemplates, exportTemplates,
      dispatch, onCreate, onUpdate, onUpdateInternal, onDelete, history, nextLocation
   }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
@@ -132,9 +133,29 @@ const ExportTemplatesForm = React.memo<Props>(
 
     const importExportActions = useMemo(() => getConfigActions("ExportTemplate", values.name, values.id), [values.id]);
 
+    const validateTemplateCopyName = useCallback(name => {
+      if (exportTemplates.find(e => e.title.trim() === name.trim())) {
+        return "Template name should be unique";
+      }
+      return validateNameForQuotes(name);
+    }, [exportTemplates, values.id]);
+
+    const validateTemplateName = useCallback(name => {
+      if (exportTemplates.find(e => e.id !== values.id && e.title.trim() === name.trim())) {
+        return "Template name should be unique";
+      }
+      return validateNameForQuotes(name);
+    }, [exportTemplates, values.id]);
+
     return (
       <>
-        <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialogClose} onSave={onDialogSave}/>
+        <SaveAsNewAutomationModal
+          opened={modalOpened}
+          onClose={onDialogClose}
+          onSave={onDialogSave}
+          validateNameField={validateTemplateCopyName}
+        />
+
 
         <Form onSubmit={handleSubmit(handleSave)}>
           {!disableRouteConfirm && <RouteChangeConfirm form={form} when={dirty || isNew}/>}
@@ -161,6 +182,7 @@ const ExportTemplatesForm = React.memo<Props>(
                   name="name"
                   label="Name"
                   margin="none"
+                  validate={validateTemplateName}
                   disabled={isInternal}
                   required
                 />

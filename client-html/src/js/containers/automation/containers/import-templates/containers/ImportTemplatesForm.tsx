@@ -30,7 +30,7 @@ import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { validateKeycode } from "../../../utils";
+import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import { formatRelativeDate } from "../../../../../common/utils/dates/formatRelative";
 import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL } from "../../../../../common/utils/dates/format";
 import ExecuteImportModal from "../components/ExecuteImportModal";
@@ -53,12 +53,13 @@ interface Props extends InjectedFormProps {
   onUpdate: (template: ImportModel) => void;
   onDelete: NumberArgFunction;
   emailTemplates?: CatalogItemType[]
+  importTemplates?: CatalogItemType[]
 }
 
 const ImportTemplatesForm = React.memo<Props>(
   ({
     dirty, form, handleSubmit, isNew, invalid, values, dispatch, syncErrors, emailTemplates,
-     onCreate, onUpdate, onUpdateInternal, onDelete
+     onCreate, onUpdate, onUpdateInternal, onDelete, importTemplates
   }) => {
     const [modalOpened, setModalOpened] = useState<boolean>(false);
     const [execMenuOpened, setExecMenuOpened] = useState(false);
@@ -114,9 +115,29 @@ const ImportTemplatesForm = React.memo<Props>(
 
     const importExportActions = useMemo(() => getConfigActions("Import", values.name, values.id), [values.id]);
 
+    const validateTemplateCopyName = useCallback(name => {
+      if (importTemplates.find(i => i.title.trim() === name.trim())) {
+        return "Template name should be unique";
+      }
+      return validateNameForQuotes(name);
+    }, [importTemplates, values.id]);
+
+    const validateTemplateName = useCallback(name => {
+      if (importTemplates.find(i => i.id !== values.id && i.title.trim() === name.trim())) {
+        return "Template name should be unique";
+      }
+      return validateNameForQuotes(name);
+    }, [importTemplates, values.id]);
+
     return (
       <>
-        <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialodClose} onSave={onDialogSave}/>
+        <SaveAsNewAutomationModal
+          opened={modalOpened}
+          onClose={onDialodClose}
+          onSave={onDialogSave}
+          validateNameField={validateTemplateCopyName}
+        />
+        
         <ExecuteImportModal
           opened={execMenuOpened}
           onClose={() => {
@@ -149,6 +170,7 @@ const ImportTemplatesForm = React.memo<Props>(
                 <FormField
                   name="name"
                   label="Name"
+                  validate={validateTemplateName}
                   disabled={isInternal}
                   required
                 />

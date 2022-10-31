@@ -196,9 +196,6 @@ class VoucherProductApiService extends TaggableApiService<VoucherProductDTO, Vou
                 if (!isRedemptionTypeEqual(voucherProductDTO, voucherProduct)) {
                     validator.throwClientErrorException(id, 'maxCoursesRedemption | feeExTax', 'Wrong value')
                 }
-                if (!isCoursesEqual(voucherProductDTO, voucherProduct)) {
-                    validator.throwClientErrorException(id, 'courses', 'Wrong value')
-                }
             }
         }
 
