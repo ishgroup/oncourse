@@ -274,7 +274,7 @@ class ReportServiceTest extends TestWithDatabase {
 
         def context = cayenneService.newNonReplicatingContext
 
-        String schemeFile = "resources/schema/referenceData/reports/TestNonexistingFontsReport.yaml"
+        String schemeFile = "resources/schema/referenceData/reports/TestNonExistingFontsReport.yaml"
 
         Report report = loadRepost(schemeFile, context)
 
