@@ -78,7 +78,6 @@ const FundingContractItem = props => {
               </Grid>
               <Grid item xs={5}>
                 <FormControlLabel
-                  className="checkbox p-3"
                   control={<FormField type="checkbox" name={`${item}.active`} color="primary" />}
                   label="Active"
                 />

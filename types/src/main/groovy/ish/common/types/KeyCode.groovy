@@ -727,7 +727,16 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	CHECKOUT(111, "Checkout", VIEW)
+	CHECKOUT(111, "Checkout", VIEW),
+
+	/**
+	 * Database value: 112
+	 *
+	 * Permission to work with any TutorAttendance.
+	 * Always enabled: view
+	 */
+	@API
+	TUTOR_ATTENDANCE(112, "TutorAttendance", VIEW)
 
 
 	private int value

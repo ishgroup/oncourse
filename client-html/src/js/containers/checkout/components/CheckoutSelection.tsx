@@ -119,7 +119,7 @@ import uniqid from "../../../common/utils/uniqid";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
 import CheckoutAppBar from "./CheckoutAppBar";
 import AppBarContainer from "../../../common/components/layout/AppBarContainer";
-import { getContactName } from "../../entities/contacts/utils";
+import { getContactFullName } from "../../entities/contacts/utils";
 
 export const FORM: string = "CHECKOUT_SELECTION_FORM";
 const SIDEBAR_DEFAULT_WIDTH: number = 320;
@@ -994,7 +994,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         color="primary"
         size="large"
         href={selectedContacts[0]
-          ? `/lead/new?courseIds=${selectedItems.map(s => s.courseId)}&contactId=${selectedContacts[0]?.id}&contactName=${getContactName(selectedContacts[0])}`
+          ? `/lead/new?courseIds=${selectedItems.map(s => s.courseId)}&contactId=${selectedContacts[0]?.id}&contactName=${getContactFullName(selectedContacts[0] as any)}`
           : ""}
         target="_blank"
       >

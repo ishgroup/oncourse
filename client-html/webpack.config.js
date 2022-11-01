@@ -20,7 +20,7 @@ const __common = require("./webpack/__common");
 
 module.exports = function (options = {}) {
   const NODE_ENV = options.NODE_ENV || "development";
-  const BUILD_NUMBER = options.BUILD_NUMBER || "latest";
+  const BUILD_NUMBER = options.BUILD_NUMBER || "99-SNAPSHOT";
   __common.info(NODE_ENV, BUILD_NUMBER);
 
   const main = _main(NODE_ENV, BUILD_NUMBER);
@@ -95,12 +95,6 @@ const _main = (NODE_ENV, BUILD_NUMBER) => {
     cache: false,
     plugins: plugins(NODE_ENV, BUILD_NUMBER),
     devServer: {
-      writeToDisk: true,
-      port: 1707,
-      stats: {
-        chunkModules: false,
-        colors: true,
-      },
       historyApiFallback: true,
       static: "./build/dist",
     },

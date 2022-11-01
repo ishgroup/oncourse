@@ -69,6 +69,8 @@ export const READ_NEWS: PreferenceEnum = "news.read";
 
 export const ACCOUNT_INVOICE_TERMS: PreferenceEnum = "account.invoice.terms";
 
+export const ACCOUNT_DEFAULT_INVOICELINE_ID: PreferenceEnum = "account.default.invoiceline.id";
+
 export const DASHBOARD_THEME_KEY: PreferenceEnum = "html.global.theme";
 
 export const SYSTEM_USER_ADMINISTRATION_CENTER: PreferenceEnum = "systemUser.defaultAdministrationCentre.name";

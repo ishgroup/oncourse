@@ -17,7 +17,6 @@ import Typography from "@mui/material/Typography";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { CheckoutSummary } from "../../../../model/checkout";
-import { getContactName } from "../../../entities/contacts/utils";
 import { checkoutSetDefaultPayer } from "../../actions/checkoutSummary";
 import { summaryListStyles } from "../../styles/summaryListStyles";
 import { CheckoutSummaryCogwheel } from "./CheckoutSummaryCogwheel";
@@ -26,6 +25,7 @@ import { toggleSendContext, toggleSummaryItem, toggleVoucherItem } from "../../a
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
 import CheckoutAppBar from "../CheckoutAppBar";
 import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+import { getContactFullName } from "../../../entities/contacts/utils";
 
 export const CHECKOUT_SUMMARY_FORM = "CHECKOUT_SUMMARY_FORM";
 
@@ -100,7 +100,7 @@ const CheckoutSummaryListForm: React.FC<Props & InjectedFormProps> = props => {
             {summary.list.map((list, i) => (
               <CheckoutSummaryExpandableItemRenderer
                 key={i}
-                header={getContactName(list.contact)}
+                header={getContactFullName(list.contact as any)}
                 items={list.items}
                 originalItems={selectedItems}
                 listIndex={i}

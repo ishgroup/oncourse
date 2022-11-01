@@ -24,7 +24,6 @@ import FormField from "../../../../../common/components/form/formFields/FormFiel
 import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { stubComponent } from "../../../../../common/utils/common";
-import { defaultContactName } from "../../../contacts/utils";
 import { AssessmentsSubmissionType } from "./AssessmentSubmissionIconButton";
 import SubmissionModal from "./SubmissionModal";
 import styles from "./styles";
@@ -368,7 +367,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
                 color="secondary"
               />
             )}
-            label={defaultContactName(t.tutorName)}
+            label={t.tutorName}
           />
         </div>
       );

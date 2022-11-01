@@ -12,7 +12,7 @@ describe("Create data collection form epic tests", () => {
     epic: EpicCreateDataCollectionForm,
     processData: mockedApi => {
       const dataCollectionForms = mockedApi.db.dataCollectionForms;
-
+      dataCollectionForms.sort((a, b) => a.name > b.name ? 1 : -1);
       return [
         {
           type: CREATE_DATA_COLLECTION_FORM_FULFILLED,
