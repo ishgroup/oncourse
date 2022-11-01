@@ -15,7 +15,6 @@ import {
   getFilters,
  } from "../../../common/components/list-view/actions";
 import ListView from "../../../common/components/list-view/ListView";
-import { defaultContactName } from "../contacts/utils";
 import CorporatePassEditView from "./components/CorporatePassEditView";
 import { FilterGroup } from "../../../model/common/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
@@ -100,7 +99,7 @@ class CorporatePasses extends React.Component<any, any> {
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         editViewProps={{
-          nameCondition: pass => defaultContactName(pass.contactFullName),
+          nameCondition: pass => pass.contactFullName,
           manualLink,
           hideTitle: true
         }}

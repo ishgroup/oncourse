@@ -160,7 +160,10 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".checkbox": {
         height: "35px",
-        overflow: "hidden"
+        display: "block",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis"
       },
       ".checkboxWidth": {
         width: "35px"

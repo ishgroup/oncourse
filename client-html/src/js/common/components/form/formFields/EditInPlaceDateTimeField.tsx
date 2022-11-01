@@ -289,9 +289,11 @@ const EditInPlaceDateTimeField: React.FC<any> = (
       }
       input.onBlur(formatted);
       input.onChange(formatted);
+      setTextValue(formatDateInner(appended));
     } else {
       input.onBlur(null);
       input.onChange(null);
+      setTextValue(null);
     }
   };
 

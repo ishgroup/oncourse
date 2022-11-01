@@ -15,6 +15,8 @@ import FormContainer from "../FormContainer";
 import FinancialForm from "./components/FinancialForm";
 import { Account } from "@api/model";
 import { getPlainAccounts } from "../../../entities/accounts/actions";
+import { getUserPreferences } from "../../../../common/actions";
+import { ACCOUNT_DEFAULT_INVOICELINE_ID } from "../../../../constants/Config";
 
 interface Props {
   financial: any;
@@ -31,15 +33,13 @@ class Financial extends React.Component<Props, any> {
     const { financial, accounts } = this.props;
 
     return (
-      <div>
-        <FormContainer
-          data={financial}
-          accounts={accounts}
-          category={Categories.financial}
-          form={formRoleName => <FinancialForm formRoleName={formRoleName} />}
-          formName="FinancialForm"
-        />
-      </div>
+      <FormContainer
+        data={financial}
+        accounts={accounts}
+        category={Categories.financial}
+        form={formRoleName => <FinancialForm formRoleName={formRoleName}/>}
+        formName="FinancialForm"
+      />
     );
   }
 }
@@ -51,7 +51,10 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
-    onInit: () => getPlainAccounts(dispatch)
+    onInit: () => {
+      getPlainAccounts(dispatch);
+      dispatch(getUserPreferences([ACCOUNT_DEFAULT_INVOICELINE_ID]));
+    }
   };
 };
 

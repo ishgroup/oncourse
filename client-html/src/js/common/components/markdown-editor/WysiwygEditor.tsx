@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback } from "react";
+import React from "react";
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
 import AutoformatPlugin from '@ckeditor/ckeditor5-autoformat/src/autoformat';
@@ -34,23 +34,6 @@ const SourceEditingSwitch = () => (
   </div>
 );
 
-function customizeSourceEditing( editor ) {
-  let ckRoot;
-
-  editor.plugins.get("SourceEditing").on('change:isSourceEditingMode', () => {
-    const sourceEdit = document.querySelector('.ck-source-editing-button');
-
-    if (sourceEdit) {
-      if (!ckRoot) {
-        ckRoot = createRoot(sourceEdit);
-      }
-      ckRoot.render(
-        <SourceEditingSwitch/>,
-      );
-    }
-  });
-}
-
 const config = {
   plugins: [
     Markdown,
@@ -70,7 +53,6 @@ const config = {
     ImageStyle,
     ImageCaption,
   ],
-  extraPlugins: [customizeSourceEditing],
   toolbar: [
     'heading',
     'bold',
@@ -107,15 +89,17 @@ const config = {
 interface Props {
   value?: string;
   onChange?: (val: any) => void;
+  wysiwygRef?: any;
 }
 
 const WysiwygEditor: React.FC<Props> = ({
   value,
-  onChange
+  onChange,
+  wysiwygRef
 }) => {
 
-  const onReady = (editor) => {
-    console.log(editor);
+  const onReady = editor => {
+    wysiwygRef.current = editor;
 
     const sourceEdit = document.querySelector<any>('.ck-source-editing-button');
     sourceEdit.dataset.ckeTooltipText = 'Edit source';
@@ -126,10 +110,18 @@ const WysiwygEditor: React.FC<Props> = ({
     root.render(
       <SourceEditingSwitch />
     );
+
+    editor.plugins.get("SourceEditing").on('change:isSourceEditingMode', () => {
+      const sourceEdit = document.querySelector('.ck-source-editing-button');
+      if (sourceEdit) {
+        root.render(
+          <SourceEditingSwitch/>,
+        );
+      }
+    });
   };
 
-
-  const onChangeHandler = useCallback((e, editor) => onChange(editor.getData()), []);
+  const onChangeHandler = (e, editor) => onChange(editor.getData());
 
   return (
     <CKEditor
