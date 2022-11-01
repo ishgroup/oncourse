@@ -20,14 +20,17 @@ Feature: Main feature for all GET requests with path 'list/entity/emailTemplate/
         "name":"template 1",
         "type":"Email",
         "entity":"Course",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"template1",
         "subject":"some subject",
         "plainBody":"somePlainBody",
         "description":"some description",
         "body":"someBody",
         "variables":[{"name":"varName1", "label":"varLabel1", "type":"Text"}],
-        "options":[{"name":"optName1","type":"Date","value":"2019-01-01"}]
+        "options":[{"name":"optName1","type":"Date","value":"2019-01-01"}],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 

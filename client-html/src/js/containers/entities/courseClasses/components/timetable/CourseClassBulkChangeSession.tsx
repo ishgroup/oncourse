@@ -38,6 +38,7 @@ import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../../comm
 import { DD_MMM_YYYY } from "../../../../../common/utils/dates/format";
 import CourseClassTutorRooster from "./CourseClassTutorRooster";
 import { IS_JEST } from "../../../../../constants/EnvironmentConstants";
+import { NoWrapOption } from "../../../../../common/components/form/formFields/SelectCustomComponents";
 
 export const COURSE_CLASS_BULK_UPDATE_FORM: string = "CourseClassBulkUpdateForm";
 
@@ -120,6 +121,7 @@ const BulkItemWrapper: React.FC<any> = props => {
                 color="secondary"
                 checked={opened}
                 onChange={onChange}
+                debounced={false}
               />
             )}
             label={noCollapse ? opened ? children : renderedTitle : renderedTitle}
@@ -148,7 +150,8 @@ const CourseClassBulkChangeSessionForm = props => {
     getRooms,
     rooms,
     bulkValues,
-    sessions
+    sessions,
+    budget
   } = props;
 
   const [laterDate, setLaterDate] = useState<string>(null);
@@ -321,7 +324,7 @@ const CourseClassBulkChangeSessionForm = props => {
               <Grid item xs={12}>
                 {tutors.length > 0 && (
                   <BulkItemWrapper classes={classes} title="Tutors" name="tutors" noCollapse>
-                    <div className={classes.sessionTutors}>
+                    <div>
                       <Field
                         name="tutorAttendances"
                         component={CourseClassTutorRooster}
@@ -329,6 +332,8 @@ const CourseClassBulkChangeSessionForm = props => {
                         tutors={tutors}
                         onDeleteTutor={onDeleteTutor}
                         onAddTutor={onAddTutor}
+                        sessionDuration={durationValue}
+                        budget={budget}
                       />
                     </div>
                   </BulkItemWrapper>
@@ -336,22 +341,18 @@ const CourseClassBulkChangeSessionForm = props => {
               </Grid>
               <Grid item xs={12}>
                 <BulkItemWrapper classes={classes} title="Location" name="location">
-                  <Grid container columnSpacing={3}>
-                    <Grid item xs={6}>
-                      <FormField
-                        type="remoteDataSearchSelect"
-                        entity="Room"
-                        name="roomId"
-                        label="Site and room"
-                        aqlColumns="name,site.name,site.localTimezone,site.id"
-                        selectValueMark="id"
-                        selectLabelCondition={roomLabel}
-                        onInnerValueChange={onRoomIdChange}
-                        rowHeight={36}
-                        allowEmpty
-                      />
-                    </Grid>
-                  </Grid>
+                  <FormField
+                    type="remoteDataSearchSelect"
+                    entity="Room"
+                    name="roomId"
+                    label="Site and room"
+                    aqlColumns="name,site.name,site.localTimezone,site.id"
+                    selectValueMark="id"
+                    selectLabelCondition={roomLabel}
+                    onInnerValueChange={onRoomIdChange}
+                    itemRenderer={NoWrapOption}
+                    allowEmpty
+                  />
                 </BulkItemWrapper>
               </Grid>
               <Grid item xs={12}>
@@ -436,6 +437,7 @@ const CourseClassBulkChangeSessionForm = props => {
                         step="1"
                         className={classes.bulkChangeDaysInput}
                         onChange={onMoveLater}
+                        debounced={false}
                       />
                       {" "}
                       days
@@ -457,6 +459,7 @@ const CourseClassBulkChangeSessionForm = props => {
                         step="1"
                         className={classes.bulkChangeDaysInput}
                         onChange={onMoveEarlier}
+                        debounced={false}
                       />
                       {" "}
                       days

@@ -7,8 +7,8 @@
  */
 buildscript {
 	ext {
-		log4j2Version = '2.17.0'
-		cayenneVersion = '4.1'
+		log4j2Version = '2.17.2'
+		cayenneVersion = '4.1.1'
 		jettyVersion = '10.0.7'
         mariadbVersion = '2.7.4'
 		googleGuiceVersion = '4.2.2'
@@ -16,7 +16,8 @@ buildscript {
 		bouncycastleVersion = '1.67'
 		bootiqueVersion = '1.2'
 		cfxVersion = '3.3.5'
-		jacksonVersion = '2.9.9'
+		//latest jackson version 2.12.2 (no any conflicts with spring, see AbstractApplicationContext), same version jasper uses also
+		jacksonVersion = '2.12.2'
 		javaxActivationVersion = '1.2.0'
 	}
 

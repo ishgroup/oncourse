@@ -37,6 +37,7 @@ class ServerApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(ConcessionApi)
         CXFModule.contributeResources(binder).addBinding().to(ContactApi)
         CXFModule.contributeResources(binder).addBinding().to(ContactMergeApi)
+        CXFModule.contributeResources(binder).addBinding().to(ContactInsightApi)
         CXFModule.contributeResources(binder).addBinding().to(ControlApi)
         CXFModule.contributeResources(binder).addBinding().to(CorporatePassApi)
         CXFModule.contributeResources(binder).addBinding().to(CourseApi)

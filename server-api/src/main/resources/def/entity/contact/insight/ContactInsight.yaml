@@ -1,0 +1,28 @@
+type: object
+properties:
+  email:
+    type: string
+    required: true
+  fullName:
+    type: string
+    required: true
+  fax:
+    type: string
+    required: false
+  homePhone:
+    type: string
+    required: false
+  mobilePhone:
+    type: string
+    required: false
+  workPhone:
+    type: string
+    required: false
+  profilePicture:
+    $ref: '../../Document.yaml'
+  overview:
+    $ref: './ContactOverview.yaml'
+  interactions:
+    type: array
+    items:
+      $ref: './ContactInteraction.yaml'

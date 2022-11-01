@@ -14,7 +14,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/script' with
     Scenario: (+) Update custom script (with Query panel) by admin using PATCH request
 
 #       <--->  Add entity with Query panel to update and define it's id:
-        * def script = {"keyCode":"test.script_1","enabled":true,"name":"script to testing PATCH method","trigger":{"type":"On demand"},"description":"some description","content":"//test"}
+        * def script = {"keyCode":"test.script_1","status":"Enabled","name":"script to testing PATCH method","trigger":{"type":"On demand"},"description":"some description","content":"//test"}
 
         Given path ishPath
         And request script
@@ -30,7 +30,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/script' with
         * def id = get[0] response.rows[0].id
 #       <--->
 
-        * def scriptToUpdate = {"id":"#(id)","name":"script to testing PATCH method","description":"some description","enabled":false,"trigger":{"type":"Enrolment cancelled","entityName":null,"cron":null},"content":"//test"}
+        * def scriptToUpdate = {"id":"#(id)","name":"script to testing PATCH method","description":"some description","status":"Not Installed","trigger":{"type":"Enrolment cancelled","entityName":null,"cron":null},"content":"//test"}
 
         Given path ishPath + '/' + id
         And request scriptToUpdate
@@ -46,20 +46,23 @@ Feature: Main feature for all PATCH requests with path 'list/entity/script' with
         "id":"#number",
         "name":"script to testing PATCH method",
         "description":"some description",
-        "enabled":false,
-        "trigger":{"type":"Enrolment cancelled","entityName":null,"entityAttribute":null,"cron":null},
+        "status":"Not Installed",
+        "trigger":{"type":"Enrolment cancelled","entityName":null,"entityAttribute":null,"cron":null,"parameterId":null},
         "content":"//test",
         "lastRun":[],
         "keyCode":"test.script_1",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "variables":[],
-        "options":[]
+        "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
 #       <--->  Scenario have been finished. Now change created script to default:
-        * def updateScriptToDefault = {"id":"#(id)","name":"script to testing PATCH method","description":"some description","enabled":true,"trigger":{"type":"On demand"},"content":"//test"}
+        * def updateScriptToDefault = {"id":"#(id)","name":"script to testing PATCH method","description":"some description","status":"Enabled","trigger":{"type":"On demand"},"content":"//test"}
 
         Given path ishPath + '/' + id
         And request updateScriptToDefault
@@ -85,7 +88,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/script' with
         * def id = get[0] response.rows[0].id
 #       <--->
 
-        * def scriptToUpdate = {"id":"#(id)","name":"script to testing PATCH method","description":"updated description","enabled":false,"trigger":{"type":"Enrolment cancelled","entityName":null,"cron":null},"content":"//test"}
+        * def scriptToUpdate = {"id":"#(id)","name":"script to testing PATCH method","description":"updated description","status":"Not Installed","trigger":{"type":"Enrolment cancelled","entityName":null,"cron":null},"content":"//test"}
 
         Given path ishPath + '/' + id
         And request scriptToUpdate
@@ -101,20 +104,23 @@ Feature: Main feature for all PATCH requests with path 'list/entity/script' with
         "id":"#number",
         "name":"script to testing PATCH method",
         "description":"some description",
-        "enabled":false,
-        "trigger":{"type":"Enrolment cancelled","entityName":null,"entityAttribute":null,"cron":null},
+        "status":"Not Installed",
+        "trigger":{"type":"Enrolment cancelled","entityName":null,"entityAttribute":null,"cron":null,"parameterId":null},
         "content":"//test",
         "lastRun":[],
         "keyCode":"test.script_1",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "variables":[],
-        "options":[]
+        "options":[],
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
 #       <--->  Scenario have been finished. Now change script to default:
-        * def updateScriptToDefault = {"id":"#(id)","name":"script to testing PATCH method","description":"some description","enabled":true,"trigger":{"type":"On demand"},"content":"//test"}
+        * def updateScriptToDefault = {"id":"#(id)","name":"script to testing PATCH method","description":"some description","status":"Enabled","trigger":{"type":"On demand"},"content":"//test"}
 
         Given path ishPath + '/' + id
         And request updateScriptToDefault
@@ -139,7 +145,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/script' with
         * def id = get[0] response.rows[0].id
 #       <--->
 
-        * def scriptToUpdate = {"id":"#(id)","name":"script to testing PATCH method UPD","description":"updated description","enabled":false,"trigger":{"type":"Enrolment cancelled","entityName":null,"cron":null},"content":"//test"}
+        * def scriptToUpdate = {"id":"#(id)","name":"script to testing PATCH method UPD","description":"updated description","status":"Not Installed","trigger":{"type":"Enrolment cancelled","entityName":null,"cron":null},"content":"//test"}
 
         Given path ishPath + '/' + id
         And request scriptToUpdate
@@ -166,7 +172,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/script' with
         
 #       <--->
 
-        * def scriptToUpdate = {"name":"ecoach enrol UPD","description":"UPD Enrol user to eCoach course upon onCourse enrolment. eCoach course must have the same title as onCourse course name","enabled":true,"trigger":{"type":"Enrolment cancelled","entityName":null,"cron":null},"content":"import groovyx.net.http.ContentType\nimport groovyx.net.http.Method.UPD\nimport groovyx.net.http.RESTClient\n\nBASE_URL = \"\"\napiKey = \"\"\nuserId = \"\"\n\ndef run (args) {\n\t\n\t\t\t\n\tdef enrolment = args.entity\n\n\t// make or get students UPD\n\tdef member = postMember(enrolment)\n\t\n\t//get course id for group add\n\tdef courses =  getCourses()\n\n\tdef course = courses .find { c -> c.title == enrolment.courseClass.course.name }\n\n\t// get groups (classes) in course\n\tdef courseClasses = getGroups(course[\"id\"])\n\tdef courseClass = courseClasses.find { cc -> cc.name == enrolment.courseClass.uniqueCode }\n\n\tif (!courseClass) {\n\t    //create groupClass if one does not exist\n\t    courseClass = postGroup(enrolment, course[\"id\"])\n\t}\n\n\t////add student to group\n\tenrolMemberToGroup(member[\"id\"], courseClass[\"id\"])\n} \n\ndef getCourses() {\n    def client = new RESTClient(BASE_URL)\n    client.headers[\"Authorization\"] = \"ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}\"\n    client.headers[\"Content-Type\"] = \"application/json\"\n    client.headers[\"Accept\"] = \"application/json\"\n\n    client.request(Method.GET, ContentType.JSON) {\n        uri.path = \"/api/v1/courses\"\n        response.success = { resp, result ->\n            return result\n        }\n    }\n}\n\ndef getGroups(courseId) {\n\n    def client = new RESTClient(BASE_URL)\n    client.headers[\"Authorization\"] = \"ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}\"\n    client.headers[\"Content-Type\"] = \"application/json\"\n    client.headers[\"Accept\"] = \"application/json\"\n\n\n    client.request(Method.GET, ContentType.JSON) {\n        uri.path = \"/api/v1/courses/${courseId}/groups\"\n\n        response.success = { resp, result ->\n            return result\n        }\n    }\n}\n\ndef postMember(enrolment) {\n    def client = new RESTClient(BASE_URL)\n    client.headers[\"Authorization\"] = \"ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}\"\n    client.headers[\"Content-Type\"] = \"application/json\"\n    client.headers[\"Accept\"] = \"application/json\"\n\n    client.request(Method.POST, ContentType.JSON) {\n        uri.path = \"/api/v1/members\"\n        uri.query = [\n                username: enrolment.student.contact.email,\n                firstname: enrolment.student.contact.firstName,\n                lastname: enrolment.student.contact.lastName,\n                email: enrolment.student.contact.email\n        ]\n\n        response.success = { resp, result ->\n            return result\n        }\n    }\n}\n\ndef postGroup(enrolment, courseId) {\n\n    def client = new RESTClient(BASE_URL)\n    client.headers[\"Authorization\"] = \"ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}\"\n    client.headers[\"Content-Type\"] = \"application/json\"\n    client.headers[\"Accept\"] = \"application/json\"\n\n    client.request(Method.POST, ContentType.JSON) {\n        uri.path = \"/api/v1/courses/${courseId}/groups\"\n        body = [\n            name: enrolment.courseClass.uniqueCode\n        ]\n\n        response.success = { resp, result ->\n            return result\n        }\n    }\n}\n\ndef enrolMemberToGroup(memberId, groupId) {\n\n    def client = new RESTClient(BASE_URL)\n    client.headers[\"Authorization\"] = \"ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}\"\n    client.headers[\"Content-Type\"] = \"application/json\"\n    client.headers[\"Accept\"] = \"application/json\"\n\n    def id = [memberId] as int[]\n\n    client.request(Method.POST, ContentType.JSON) {\n        uri.path = \"/api/v1/groups/${groupId}/students\"\n        body = [\n            ids: id\n        ]\n\n        response.success = { resp, result ->\n            return result\n        }\n    }\n}"}
+        * def scriptToUpdate = {"name":"ecoach enrol UPD","description":"UPD Enrol user to eCoach course upon onCourse enrolment. eCoach course must have the same title as onCourse course name","status":"Enabled","trigger":{"type":"Enrolment cancelled","entityName":null,"cron":null},"content":"import groovyx.net.http.ContentType\nimport groovyx.net.http.Method.UPD\nimport groovyx.net.http.RESTClient\n\nBASE_URL = \"\"\napiKey = \"\"\nuserId = \"\"\n\ndef run (args) {\n\t\n\t\t\t\n\tdef enrolment = args.entity\n\n\t// make or get students UPD\n\tdef member = postMember(enrolment)\n\t\n\t//get course id for group add\n\tdef courses =  getCourses()\n\n\tdef course = courses .find { c -> c.title == enrolment.courseClass.course.name }\n\n\t// get groups (classes) in course\n\tdef courseClasses = getGroups(course[\"id\"])\n\tdef courseClass = courseClasses.find { cc -> cc.name == enrolment.courseClass.uniqueCode }\n\n\tif (!courseClass) {\n\t    //create groupClass if one does not exist\n\t    courseClass = postGroup(enrolment, course[\"id\"])\n\t}\n\n\t////add student to group\n\tenrolMemberToGroup(member[\"id\"], courseClass[\"id\"])\n} \n\ndef getCourses() {\n    def client = new RESTClient(BASE_URL)\n    client.headers[\"Authorization\"] = \"ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}\"\n    client.headers[\"Content-Type\"] = \"application/json\"\n    client.headers[\"Accept\"] = \"application/json\"\n\n    client.request(Method.GET, ContentType.JSON) {\n        uri.path = \"/api/v1/courses\"\n        response.success = { resp, result ->\n            return result\n        }\n    }\n}\n\ndef getGroups(courseId) {\n\n    def client = new RESTClient(BASE_URL)\n    client.headers[\"Authorization\"] = \"ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}\"\n    client.headers[\"Content-Type\"] = \"application/json\"\n    client.headers[\"Accept\"] = \"application/json\"\n\n\n    client.request(Method.GET, ContentType.JSON) {\n        uri.path = \"/api/v1/courses/${courseId}/groups\"\n\n        response.success = { resp, result ->\n            return result\n        }\n    }\n}\n\ndef postMember(enrolment) {\n    def client = new RESTClient(BASE_URL)\n    client.headers[\"Authorization\"] = \"ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}\"\n    client.headers[\"Content-Type\"] = \"application/json\"\n    client.headers[\"Accept\"] = \"application/json\"\n\n    client.request(Method.POST, ContentType.JSON) {\n        uri.path = \"/api/v1/members\"\n        uri.query = [\n                username: enrolment.student.contact.email,\n                firstname: enrolment.student.contact.firstName,\n                lastname: enrolment.student.contact.lastName,\n                email: enrolment.student.contact.email\n        ]\n\n        response.success = { resp, result ->\n            return result\n        }\n    }\n}\n\ndef postGroup(enrolment, courseId) {\n\n    def client = new RESTClient(BASE_URL)\n    client.headers[\"Authorization\"] = \"ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}\"\n    client.headers[\"Content-Type\"] = \"application/json\"\n    client.headers[\"Accept\"] = \"application/json\"\n\n    client.request(Method.POST, ContentType.JSON) {\n        uri.path = \"/api/v1/courses/${courseId}/groups\"\n        body = [\n            name: enrolment.courseClass.uniqueCode\n        ]\n\n        response.success = { resp, result ->\n            return result\n        }\n    }\n}\n\ndef enrolMemberToGroup(memberId, groupId) {\n\n    def client = new RESTClient(BASE_URL)\n    client.headers[\"Authorization\"] = \"ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}\"\n    client.headers[\"Content-Type\"] = \"application/json\"\n    client.headers[\"Accept\"] = \"application/json\"\n\n    def id = [memberId] as int[]\n\n    client.request(Method.POST, ContentType.JSON) {\n        uri.path = \"/api/v1/groups/${groupId}/students\"\n        body = [\n            ids: id\n        ]\n\n        response.success = { resp, result ->\n            return result\n        }\n    }\n}"}
 
         Given path ishPath + '/5'
         And request scriptToUpdate

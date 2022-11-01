@@ -9,8 +9,7 @@ import Link from "@mui/material/Link";
 import { change, initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../../reducers/state";
 import { getUSISoftwareId } from "../../../../../preferences/actions";
 
@@ -40,17 +39,13 @@ class XeroBaseForm extends React.Component<any, any> {
   render() {
     const {
       AppBarContent,
-      dirty,
       handleSubmit,
       onSubmit,
       usiSoftwareId,
-      form
     } = this.props;
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-
         <AppBarContent>
           <Typography component="div" variant="body2">
             <div>

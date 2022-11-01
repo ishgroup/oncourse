@@ -1,9 +1,9 @@
 import { Audit } from "@api/model";
-import { generateArraysOfRecords } from "../mockUtils";
+import { generateArraysOfRecords, getEntityResponse } from "../mockUtils";
 
 export function mockAudits() {
   this.getAudit = (id: number): Audit => {
-    const row = this.audit.rows.find(row => row.id == id);
+    const row = this.audit.rows.find(audit => Number(audit.id) === Number(id));
     return {
       id: row.id,
       systemUser: row.values[0],
@@ -17,6 +17,20 @@ export function mockAudits() {
 
   this.getAudits = () => this.audit;
 
+  this.getPlainAudits = params => {
+    const columns = params.columns;
+    let rows: any[] = [];
+    if (columns === "entityId,created,action") {
+      rows = [];
+    }
+
+    return getEntityResponse({
+      entity: "Audit",
+      rows,
+      plain: true
+    });
+  };
+
   const rows: Audit[] = generateArraysOfRecords(20, [
     { name: "id", type: "number" },
     { name: "systemUser", type: "string" },
@@ -29,67 +43,44 @@ export function mockAudits() {
     values: [l.systemUser, l.created, l.entityIdentifier, l.action, l.entityId]
   }));
 
-  const columns = [
-    {
-      title: "User Name",
-      attribute: "systemUser.fullName",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: ["systemUser.lastName", "systemUser.firstName"]
-    },
-    {
-      title: "Datetime",
-      attribute: "created",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: "Datetime",
-      sortFields: []
-    },
-    {
-      title: "Entity identifier",
-      attribute: "entityIdentifier",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Action",
-      attribute: "action",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Entity id",
-      attribute: "entityId",
-      sortable: true,
-      visible: true,
-      width: 100,
-      type: null,
-      sortFields: []
-    },
-  ];
-
-  const response = { rows, columns } as any;
-
-  response.entity = "Audit";
-  response.offset = 0;
-  response.filterColumnWidth = 200;
-  response.layout = "Three column";
-  response.pageSize = 10;
-  response.search = "";
-  response.count = rows.length;
-  response.sort = [{
-    attribute: 'created',
-    ascending: false
-  }];
-
-  return response;
+  return getEntityResponse({
+    entity: "Audit",
+    rows,
+    columns: [
+      {
+        title: "User Name",
+        attribute: "systemUser.fullName",
+        sortable: true,
+        sortFields: ["systemUser.lastName", "systemUser.firstName"]
+      },
+      {
+        title: "Datetime",
+        attribute: "created",
+        sortable: true,
+        type: "Datetime",
+      },
+      {
+        title: "Entity identifier",
+        attribute: "entityIdentifier",
+        sortable: true,
+      },
+      {
+        title: "Action",
+        attribute: "action",
+        sortable: true,
+      },
+      {
+        title: "Entity id",
+        attribute: "entityId",
+        sortable: true,
+        width: 100,
+      },
+    ],
+    res: {
+      sort: [{
+        attribute: 'created',
+        ascending: false
+      }]
+    }
+  });
 }

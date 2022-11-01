@@ -15,9 +15,6 @@ import com.google.inject.Inject
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.SessionDao
-import static ish.oncourse.server.api.function.EntityFunctions.addAqlExp
-import static ish.oncourse.server.api.v1.function.TimetableFunctions.getDateRangeExpression
-import static ish.oncourse.server.api.v1.function.TimetableFunctions.toRestSession
 import ish.oncourse.server.api.v1.model.SearchRequestDTO
 import ish.oncourse.server.api.v1.model.SessionDTO
 import ish.oncourse.server.api.v1.service.TimetableApi
@@ -25,12 +22,22 @@ import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Room
 import ish.oncourse.server.cayenne.Session
 import ish.oncourse.server.cayenne.Tutor
-import static ish.util.LocalDateUtils.dateToTimeValue
+import ish.oncourse.server.cayenne.glue.CayenneDataObject
+import ish.util.DurationFormatter
+import ish.util.EntityUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.FunctionExpressionFactory
 import org.apache.cayenne.exp.Property
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.commons.lang.ArrayUtils
+
+import java.math.RoundingMode
+
+import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
+import static ish.oncourse.server.api.v1.function.TimetableFunctions.getDateRangeExpression
+import static ish.oncourse.server.api.v1.function.TimetableFunctions.toRestSession
+import static ish.util.LocalDateUtils.dateToTimeValue
 
 class TimetableApiImpl implements TimetableApi {
 
@@ -56,56 +63,74 @@ class TimetableApiImpl implements TimetableApi {
     List<SessionDTO> find(SearchRequestDTO request) {
 
         ObjectContext context = cayenneService.newReadonlyContext
-        Expression dateFilter = getDateRangeExpression(request.from,request.to)
+        Expression dateFilter = getDateRangeExpression(request.from, request.to)
 
-        ObjectSelect query = ObjectSelect.query(Session).where(dateFilter) &
+        Class<? extends CayenneDataObject> clzz = EntityUtil.entityClassForName(Session.simpleName)
+        ObjectSelect objectSelect = ObjectSelect.query(clzz)
+        def query = parseSearchQuery(objectSelect, context, aql, null, request.search, request.filter, null)
+
+        query = query.where(dateFilter) &
                 Session.COURSE_CLASS.dot(CourseClass.IS_CANCELLED).isFalse()
 
-        query = addAqlExp(request.search, Session, context, query, aql)
         query = query.orderBy(Session.START_DATETIME.asc(), Session.ID.asc())
         return query.columns(Session.ID, Session.START_DATETIME, Session.END_DATETIME)
                 .select(context)
                 .collect {
-                    new SessionDTO(id: it[0] as Long, start: dateToTimeValue(it[1] as Date), end:  dateToTimeValue(it[2] as Date))
+                    new SessionDTO(id: it[0] as Long, start: dateToTimeValue(it[1] as Date), end: dateToTimeValue(it[2] as Date))
                 }
     }
 
     @Override
     List<SessionDTO> get(String idsParam) {
-        if(idsParam == null || idsParam.isEmpty()) {
+        if (idsParam == null || idsParam.isEmpty()) {
             return Collections.emptyList()
         }
-        List<Long> ids = idsParam.split(',').collect {Long.valueOf(it)}
+        List<Long> ids = idsParam.split(',').collect { Long.valueOf(it) }
         fetchSessions(Session.ID.in(ids))
-                .collect {toRestSession(it)}
+                .collect { toRestSession(it) }
     }
 
     @Override
-    List<Integer> getDates(Integer month, Integer year, String search) {
+    List<Double> getDates(Integer month, Integer year, SearchRequestDTO request) {
         ObjectContext context = cayenneService.newReadonlyContext
 
-        Date startOfMonth = new GregorianCalendar(year, month, 1).time
-        Date endOfMonth = (month == Calendar.DECEMBER ? new GregorianCalendar(++year, 0, 1): new GregorianCalendar(year, ++month, 1)).time
+        def calendar = new GregorianCalendar(year, month, 1)
+        int monthSize = calendar.toYearMonth().lengthOfMonth()
 
-        ObjectSelect query = ObjectSelect.query(Session)
-                .where(Session.START_DATETIME.between(startOfMonth, endOfMonth)) &
+        Date startOfMonth = calendar.time
+        Date endOfMonth = (month == Calendar.DECEMBER ? new GregorianCalendar(++year, 0, 1) : new GregorianCalendar(year, ++month, 1)).time
+
+        Class<? extends CayenneDataObject> clzz = EntityUtil.entityClassForName(Session.simpleName)
+        ObjectSelect objectSelect = ObjectSelect.query(clzz)
+        def query = parseSearchQuery(objectSelect, context, aql, null, request?.search, request?.filter, null)
+
+        query = query.where(Session.START_DATETIME.between(startOfMonth, endOfMonth)) &
                 Session.COURSE_CLASS.dot(CourseClass.IS_CANCELLED).isFalse()
 
-
-        query = addAqlExp(search, Session, context, query, aql)
 
         Property<Integer> dayOfMonth = Property
                 .create(FunctionExpressionFactory.dayOfMonthExp(Session.START_DATETIME.path()), Integer.class)
 
-        query.columns(dayOfMonth, Property.COUNT).select(context).collect{it[0] as Integer}
+        double[] result = new double[monthSize]
+        def queryResult = query.columns(dayOfMonth, Property.COUNT, Session.START_DATETIME, Session.END_DATETIME).select(context)
 
+        queryResult.each { sessionLine ->
+            result[(sessionLine[0] as Integer) - 1] += (sessionLine[1] as Integer) * DurationFormatter.durationInHoursBetween(sessionLine[2] as Date, sessionLine[3] as Date).doubleValue()
+        }
+
+        def resultAsObj = ArrayUtils.toObject(result)
+        def maxHours = resultAsObj.collect { it }.max()
+        resultAsObj.collect {
+            maxHours == 0 ? 0 :
+                    new BigDecimal(it / maxHours.doubleValue()).setScale(2, RoundingMode.HALF_UP).doubleValue()
+        }
     }
 
     @Override
     List<SessionDTO> getForClasses(String classIds) {
-        List<Long> ids = classIds.split(',').collect {Long.valueOf(it)}
+        List<Long> ids = classIds.split(',').collect { Long.valueOf(it) }
         fetchSessions(Session.COURSE_CLASS.dot(CourseClass.ID).in(ids))
-                .collect {toRestSession(it)}
+                .collect { toRestSession(it) }
     }
 
     @Override

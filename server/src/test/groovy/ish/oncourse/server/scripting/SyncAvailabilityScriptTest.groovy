@@ -6,6 +6,7 @@ package ish.oncourse.server.scripting
 import groovy.transform.CompileStatic
 import ish.TestWithDatabase
 import ish.DatabaseSetup
+import ish.common.types.AutomationStatus
 import ish.common.types.TriggerType
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Enrolment
@@ -37,7 +38,7 @@ class SyncAvailabilityScriptTest extends TestWithDatabase {
                 SyncAvailabilityScriptTest.class.getClassLoader().getResourceAsStream(
                         "scripts/ish.script.syncAvailabilityEnrolment.groovy")))
         script.setName("Sync availability enrolment")
-        script.setEnabled(true)
+        script.setAutomationStatus(AutomationStatus.ENABLED)
         script.setTriggerType(TriggerType.ON_DEMAND)
         script.setEntityClass("Enrolment")
 
@@ -76,7 +77,7 @@ class SyncAvailabilityScriptTest extends TestWithDatabase {
                 SyncAvailabilityScriptTest.class.getClassLoader().getResourceAsStream(
                         "scripts/ish.script.syncAvailabilityCancellation.groovy")))
         script.setName("Sync availability cancellation")
-        script.setEnabled(true)
+        script.setAutomationStatus(AutomationStatus.ENABLED)
         script.setTriggerType(TriggerType.ON_DEMAND)
         script.setEntityClass("Enrolment")
 

@@ -46,6 +46,7 @@ import {
   isSingleContactAttachment
 } from "../utils";
 import { makeAppStyles } from "../../../../../styles/makeStyles";
+import { mapEntityDisplayName } from "../../../../../../containers/entities/common/utils";
 
 const typesAllowedForWebsite = ["Course", "Contact"];
 
@@ -140,24 +141,6 @@ const mapEntityName = (entity: string) => {
       return "sale";
     default:
       return entity.toLowerCase();
-  }
-};
-
-const mapEntityDisplayName = (entity: string, count: number) => {
-  switch (entity) {
-    case "VoucherProduct":
-      return "Voucher type";
-    case "MembershipProduct":
-      return "Membership type";
-    case "ArticleProduct":
-      return "Product";
-    case "Voucher":
-    case "Membership":
-      return `Sale${count > 1 ? "s" : ""} (${entity})`;
-    case "Article":
-      return `Sale${count > 1 ? "s" : ""} (Product)`;
-    default:
-      return `${entity}${count > 1 ? entity[entity.length - 1] === "s" ? "es" : "s" : ""}`;
   }
 };
 
@@ -272,7 +255,7 @@ const DocumentShare:React.FC<Props> = ({
             <Typography
               component="div"
             >
-              {`${relationsCount} ${mapEntityDisplayName(entity, relationsCount)}`}
+              {`${relationsCount} ${mapEntityDisplayName(entity)}${relationsCount > 1 ? entity[entity.length - 1] === "s" ? "es" : "s" : ""}`}
               <IconButton
                 size="small"
                 color="secondary"
@@ -377,7 +360,7 @@ const DocumentShare:React.FC<Props> = ({
           )}
           title="Attached to"
         />
-        <CardContent ref={attachmentRef}>
+        <CardContent className={noPaper && "pl-0"} ref={attachmentRef}>
           {AttachmentRelations}
         </CardContent>
       </Card>
@@ -413,7 +396,7 @@ const DocumentShare:React.FC<Props> = ({
           {contactRelated
           ? (
             <Collapse in={tutorsAndStudents}>
-              <CardContent>
+              <CardContent className={noPaper && "pl-0"}>
                 <Typography>
                   Shared with
                   {" "}
@@ -428,7 +411,7 @@ const DocumentShare:React.FC<Props> = ({
               {availableOptions["Tutor&Student"]
               && (
               <Collapse in={tutorsAndStudents}>
-                <CardContent>
+                <CardContent className={noPaper && "pl-0"}>
                   <FormControlLabel
                     classes={{
                     root: "checkbox",
@@ -490,27 +473,25 @@ const DocumentShare:React.FC<Props> = ({
           )}
           title="Shareable link"
         />
-        {validUrl
-          && linkOrPublic && (
-            <CardContent>
-              <div className="centeredFlex">
-                <Typography color="textSecondary" className="flex-fill">
-                  <input ref={linkInput} readOnly className="codeArea" type="text" value={validUrl} />
-                </Typography>
-                <Button color="primary" className="text-nowrap" onClick={onCopyLink}>
-                  Copy Link
-                </Button>
-              </div>
-            </CardContent>
-          )}
-        {!linkOrPublic
-          && (
-            <CardContent>
-              <Alert severity="warning" icon={<LockOutlined />}>
-                Document can not be accessed by direct link
-              </Alert>
-            </CardContent>
-          )}
+        <Collapse in={validUrl && linkOrPublic}>
+          <CardContent className={noPaper && "pl-0"}>
+            <div className="centeredFlex">
+              <Typography color="textSecondary" className="flex-fill">
+                <input ref={linkInput} readOnly className="codeArea" type="text" value={validUrl} />
+              </Typography>
+              <Button color="primary" className="text-nowrap" onClick={onCopyLink}>
+                Copy Link
+              </Button>
+            </div>
+          </CardContent>
+        </Collapse>
+        <Collapse in={!linkOrPublic}>
+          <CardContent className={noPaper && "pl-0"}>
+            <Alert severity="warning" icon={<LockOutlined />}>
+              Document can not be accessed by direct link
+            </Alert>
+          </CardContent>
+        </Collapse>
       </Card>
 
       {websiteAvailable

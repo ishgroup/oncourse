@@ -17,10 +17,9 @@ import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import { State } from "../../../../reducers/state";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { ContactLinkAdornment, LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
 import { SiteState } from "../../sites/reducers/state";
-import { defaultContactName, openContactLink } from "../../contacts/utils";
 
 const invoiceColumns: NestedTableColumn[] = [
   {
@@ -71,7 +70,7 @@ const isDateLocked = (lockedDate: any, settlementDate: any) => {
   }
   return (
     compareAsc(
-      addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1),
+      addDays(new Date(lockedDate), 1),
       new Date(settlementDate)
     ) > 0
   );
@@ -101,7 +100,7 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
       if (!initialValues || initialValues.dateBanked === settlementDate) {
         return undefined;
       }
-      const date = new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth);
+      const date = new Date(lockedDate);
       return compareAsc(addDays(date, 1), new Date(settlementDate)) > 0
         ? `Date must be after ${formatDate(date, D_MMM_YYYY)}`
         : undefined;
@@ -119,9 +118,11 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
     <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
       <Grid item {...gridItemProps}>
         <Uneditable
-          value={defaultContactName(values.payerName)}
+          value={values.payerName}
           label="Payment from"
-          labelAdornment={<LinkAdornment link={values && values.payerId} linkHandler={openContactLink} />}
+          labelAdornment={
+            <ContactLinkAdornment id={values?.payerId} />
+          }
         />
       </Grid>
       <Grid item {...gridItemProps}>
@@ -205,7 +206,7 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
               validate={[validateSettlementDate, validateSettlementDateBanked]}
               minDate={
                 lockedDate
-                  ? addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1)
+                  ? addDays(new Date(lockedDate), 1)
                   : undefined
               }
             />

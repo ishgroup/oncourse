@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.document.csv
-entityClass: Document
-body: ish.onCourse.document.csv.groovy
-name: Document CSV export
-outputType: csv

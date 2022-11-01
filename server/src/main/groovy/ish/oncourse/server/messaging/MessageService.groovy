@@ -219,6 +219,7 @@ class MessageService {
 				bindings.put(record.class.simpleName.uncapitalize(), record)
 				bindings.put(templateService.RECORD, record)
 				bindings.put(templateService.TO, recipient)
+				bindings.put(templateService.AUTHOR, messageSpec.createdBy)
 
 				if (templateEntityName != null && templateEntityName.equalsIgnoreCase("contact")) {
 					bindings.put("contact", recipient)

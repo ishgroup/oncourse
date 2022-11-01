@@ -22,7 +22,7 @@ import { FormModelSchema } from "../../../../model/preferences/FormModelShema";
 import { State } from "../../../../reducers/state";
 import { getManualLink } from "../../../../common/utils/getManualLink";
 import { PREFERENCES_AUDITS_LINK } from "../../../preferences/constants";
-import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("users_Users");
@@ -190,6 +190,7 @@ class SettingsForm extends React.Component<any, any> {
                         onChange={(e, v) => {
                           if (Number(v) === 0) e.preventDefault();
                         }}
+                        debounced={false}
                         onKeyPress={ev => {
                           if (ev.key.match(/[+\-e]/)) {
                             ev.preventDefault();
@@ -228,6 +229,7 @@ class SettingsForm extends React.Component<any, any> {
                             ev.preventDefault();
                           }
                         }}
+                        debounced={false}
                         disabled={!enableTOTPScheduleField}
                         hidePlaceholderInEditMode
                       />
@@ -257,6 +259,7 @@ class SettingsForm extends React.Component<any, any> {
                       ev.preventDefault();
                     }
                   }}
+                  debounced={false}
                   hidePlaceholderInEditMode
                 />
                 incorrect login attempts

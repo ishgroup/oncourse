@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.message.xml
-entityClass: Message
-body: ish.onCourse.message.xml.groovy
-name: Message XML export
-outputType: xml

@@ -30,7 +30,7 @@ import { checkPermissions } from "../../../../../common/actions";
 
 const styles = theme => createStyles({
     root: {
-      padding: "16px",
+      padding: theme.spacing(3),
       alignContent: "flex-start"
     },
     totalText: {
@@ -127,7 +127,7 @@ const TotalStatisticInfo = props => {
         <Person className={classes.enrolmentsColor} />
         {' '}
         <span>{totalStudents}</span>
-        <strong className={classes.revenueColor}>{currency && currency.shortCurrencySymbol}</strong>
+        <strong className={classes.revenueColor}>{(currency && totalEnrolments !== null) && currency.shortCurrencySymbol}</strong>
         {totalEnrolments && (<span className="money">{formatCurrency(totalEnrolments, "")}</span>)}
       </Typography>
     </div>
@@ -137,7 +137,7 @@ const TotalStatisticInfo = props => {
 const ChartTooltip = args => {
   const { payload, active } = args;
 
-  return active ? (
+  return active && payload ? (
     <Paper className="p-1">
       {payload.map((i, n) => (
         <Typography key={n} noWrap>
@@ -165,7 +165,7 @@ const Chart = props => (
       >
         <XAxis hide interval={0} />
         <CartesianGrid strokeDasharray="3 3" />
-        <Tooltip content={ChartTooltip} />
+        <Tooltip content={ChartTooltip} wrapperStyle={{ outline: "none" }} />
         <Area type="monotone" dataKey="Revenue" stackId="1" stroke="#ffd876" fill="#ffd876" />
         <Area type="monotone" dataKey="Enrolments" stackId="1" stroke="#73cba7" fill="#73cba7" />
       </AreaChart>
@@ -192,6 +192,7 @@ interface Props {
   getCurrency?: AnyArgFunction;
   currency?: Currency;
   isUpdating?: boolean;
+  hideChart?: boolean;
   hasAuditPermissions?: boolean;
   dispatch?: Dispatch;
   getAuditPermissions?: () => void;
@@ -252,34 +253,36 @@ class Statistics extends React.Component<Props, any> {
 
   render() {
     const {
-     classes, hasAuditPermissions, statisticData, currency, dispatch
+      classes, hasAuditPermissions, statisticData, currency, hideChart, dispatch
     } = this.props;
 
     const { chartData } = this.state;
 
-    return statisticData ? (
-      <Grid container className={classes.root}>
-        <Grid item className="w-100 d-flex">
-          <Typography className="heading flex-fill">Enrolments & Revenue</Typography>
-          <Typography variant="caption">Past 4 weeks</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Chart data={chartData} />
-        </Grid>
-        <Grid item xs={12}>
-          <TotalStatisticInfo
-            totalStudents={statisticData.studentsCount}
-            totalEnrolments={statisticData.moneyCount}
-            classes={classes}
-            currency={currency}
-          />
-        </Grid>
-        <Grid item xs={12} className="mt-2">
-          <Typography className={clsx(classes.coloredHeaderText, classes.marginBottom, classes.smallText)}>
-            Last enrolments
-          </Typography>
-          <List dense disablePadding>
-            {statisticData.latestEnrolments
+    return (
+      <>
+        {statisticData && !hideChart ? (
+          <Grid container className={classes.root}>
+            <Grid item className="w-100 d-flex">
+              <Typography className="heading flex-fill">{statisticData.moneyCount !== null ? 'Enrolments & Revenue' : 'Enrolments'}</Typography>
+              <Typography variant="caption">Past 4 weeks</Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Chart data={chartData} />
+            </Grid>
+            <Grid item xs={12}>
+              <TotalStatisticInfo
+                totalStudents={statisticData.studentsCount}
+                totalEnrolments={statisticData.moneyCount}
+                classes={classes}
+                currency={currency}
+              />
+            </Grid>
+            <Grid item xs={12} className="mt-2">
+              <Typography className={clsx(classes.coloredHeaderText, classes.marginBottom, classes.smallText)}>
+                Last enrolments
+              </Typography>
+              <List dense disablePadding>
+                {statisticData.latestEnrolments
               && statisticData.latestEnrolments.map((e, index) => (
                 <ListItem key={index} dense disableGutters className={classes.smallTextGroup}>
                   <Typography
@@ -294,14 +297,14 @@ class Statistics extends React.Component<Props, any> {
                   </Typography>
                 </ListItem>
               ))}
-          </List>
-        </Grid>
-        <Grid item xs={12} className="mt-2">
-          <Typography className={clsx(classes.coloredHeaderText, classes.marginBottom, classes.smallText)}>
-            Largest waiting lists
-          </Typography>
-          <List dense disablePadding>
-            {statisticData.latestWaitingLists
+              </List>
+            </Grid>
+            <Grid item xs={12} className="mt-2">
+              <Typography className={clsx(classes.coloredHeaderText, classes.marginBottom, classes.smallText)}>
+                Largest waiting lists
+              </Typography>
+              <List dense disablePadding>
+                {statisticData.latestWaitingLists
               && statisticData.latestWaitingLists.map((e, index) => (
                 <ListItem key={index} dense disableGutters className={classes.smallTextGroup}>
                   <Typography
@@ -315,69 +318,70 @@ class Statistics extends React.Component<Props, any> {
                   </Typography>
                 </ListItem>
               ))}
-          </List>
-        </Grid>
-
-        <Grid item xs={12} className="mt-2">
-          <Typography className={clsx(classes.coloredHeaderText, classes.marginBottom, classes.smallText)}>
-            {statisticData.openedClasses}
-            {' '}
-            classes open for enrolment
-          </Typography>
-          <List dense disablePadding>
-            <Grid container className={classes.containerStatisticGroup}>
-              <Grid item className={classes.statisticGroup} xs={6}>
-                <ListItem dense disableGutters className={classes.smallTextGroup}>
-                  <Typography className={classes.smallText}>
-                    {statisticData.inDevelopmentClasses}
-                    {' '}
-                    preparing
-                  </Typography>
-                </ListItem>
-              </Grid>
-              <Grid item className={classes.statisticGroup} xs={6}>
-                <ListItem dense disableGutters className={classes.smallTextGroup}>
-                  <Typography className={classes.smallText}>
-                    {statisticData.cancelledClasses}
-                    {' '}
-                    cancelled
-                  </Typography>
-                </ListItem>
-              </Grid>
+              </List>
             </Grid>
-            <Grid container className={classes.containerStatisticGroup}>
-              <Grid item className={classes.statisticGroup} xs={6}>
-                <ListItem dense disableGutters className={classes.smallTextGroup}>
-                  <Typography className={classes.smallText}>
-                    {statisticData.completedClasses}
-                    {' '}
-                    completed
-                  </Typography>
-                </ListItem>
-              </Grid>
-              <Grid item className={classes.statisticGroup} xs={6}>
-                <ListItem dense disableGutters className={classes.smallTextGroup}>
-                  <Typography className={classes.smallText}>
-                    {statisticData.commencedClasses}
-                    {' '}
-                    commenced
-                  </Typography>
-                </ListItem>
-              </Grid>
-            </Grid>
-          </List>
-        </Grid>
 
-        {hasAuditPermissions && (
-          <Grid item xs={12} className="mt-2">
-            <Typography className={clsx("heading", classes.headingMargin)}>
-              Automation status
-            </Typography>
-            <ScriptStatistic dispatch={dispatch} />
+            <Grid item xs={12} className="mt-2">
+              <Typography className={clsx(classes.coloredHeaderText, classes.marginBottom, classes.smallText)}>
+                {statisticData.openedClasses}
+                {' '}
+                classes open for enrolment
+              </Typography>
+              <List dense disablePadding>
+                <Grid container className={classes.containerStatisticGroup}>
+                  <Grid item className={classes.statisticGroup} xs={6}>
+                    <ListItem dense disableGutters className={classes.smallTextGroup}>
+                      <Typography className={classes.smallText}>
+                        {statisticData.inDevelopmentClasses}
+                        {' '}
+                        preparing
+                      </Typography>
+                    </ListItem>
+                  </Grid>
+                  <Grid item className={classes.statisticGroup} xs={6}>
+                    <ListItem dense disableGutters className={classes.smallTextGroup}>
+                      <Typography className={classes.smallText}>
+                        {statisticData.cancelledClasses}
+                        {' '}
+                        cancelled
+                      </Typography>
+                    </ListItem>
+                  </Grid>
+                </Grid>
+                <Grid container className={classes.containerStatisticGroup}>
+                  <Grid item className={classes.statisticGroup} xs={6}>
+                    <ListItem dense disableGutters className={classes.smallTextGroup}>
+                      <Typography className={classes.smallText}>
+                        {statisticData.completedClasses}
+                        {' '}
+                        completed
+                      </Typography>
+                    </ListItem>
+                  </Grid>
+                  <Grid item className={classes.statisticGroup} xs={6}>
+                    <ListItem dense disableGutters className={classes.smallTextGroup}>
+                      <Typography className={classes.smallText}>
+                        {statisticData.commencedClasses}
+                        {' '}
+                        commenced
+                      </Typography>
+                    </ListItem>
+                  </Grid>
+                </Grid>
+              </List>
+            </Grid>
           </Grid>
-        )}
-      </Grid>
-    ) : null;
+      ) : null}
+      {hasAuditPermissions && (
+        <Grid item xs={12} className="mt-2 p-3">
+          <Typography className={clsx("heading", classes.headingMargin)}>
+            Automation status
+          </Typography>
+          <ScriptStatistic dispatch={dispatch} />
+        </Grid>
+      )}
+    </>
+);
   }
 }
 

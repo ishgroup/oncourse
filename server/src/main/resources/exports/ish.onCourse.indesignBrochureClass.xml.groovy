@@ -41,7 +41,7 @@ def addChild(parent, xml, courseClasses) {
 									mkp.yield("\n")
 									mkp.yield(cc.startDateTime?.format("EEE d MMMMM hh:mma") + "-" + cc.endDateTime?.format("hh:mma"))
 									mkp.yield("\n")
-									mkp.yield(cc.sessionsCount.toString() + " sessions of")
+									mkp.yield(cc.sessions.size().toString() + " sessions of")
 									AverageHours(cc.getFirstSession().durationInHours.setScale(1, java.math.RoundingMode.HALF_UP).stripTrailingZeros().toPlainString() + (cc.getFirstSession().durationInHours.compareTo(BigDecimal.ONE) > 1 ? " hrs" : " hr"))
 
 								}

@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 const path = require("path");
@@ -17,7 +20,7 @@ const __common = require("./webpack/__common");
 
 module.exports = function (options = {}) {
   const NODE_ENV = options.NODE_ENV || "development";
-  const BUILD_NUMBER = options.BUILD_NUMBER || "latest";
+  const BUILD_NUMBER = options.BUILD_NUMBER || "99-SNAPSHOT";
   __common.info(NODE_ENV, BUILD_NUMBER);
 
   const main = _main(NODE_ENV, BUILD_NUMBER);
@@ -92,15 +95,8 @@ const _main = (NODE_ENV, BUILD_NUMBER) => {
     cache: false,
     plugins: plugins(NODE_ENV, BUILD_NUMBER),
     devServer: {
-      inline: false,
-      writeToDisk: true,
-      port: 1707,
-      stats: {
-        chunkModules: false,
-        colors: true,
-      },
       historyApiFallback: true,
-      contentBase: "./build/dist",
+      static: "./build/dist",
     },
     performance: {
       hints: false, // don't keep telling us to make the js smaller

@@ -24,7 +24,9 @@ describe("Virtual rendered ClassDefaultsForm", () => {
         [PreferencesModel.ClassFundingSourcePreference.uniqueKey]: mockedAPI.db.preference[PreferencesModel.ClassFundingSourcePreference.uniqueKey].toString()
       });
 
-      expect(screen.getByRole(preferencesFormRole)).toHaveFormValues(classFormData);
+      setTimeout(() => {
+        expect(screen.getByRole(preferencesFormRole)).toHaveFormValues(classFormData);
+      }, 500);
     }
   });
 });

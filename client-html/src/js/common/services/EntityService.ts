@@ -50,7 +50,8 @@ class EntityService {
     searchQuery.pageSize = pageSize;
     searchQuery.offset = offset;
     searchQuery.filter = getFiltersString(state.list.filterGroups);
-    searchQuery.tagGroups = getTagGroups(state.list.menuTags);
+    searchQuery.tagGroups = getTagGroups([...state.list.menuTags, ...state.list.checkedChecklists]);
+    searchQuery.uncheckedChecklists = getTagGroups(state.list.uncheckedChecklists);
 
     return this.entityApi.getAll(entity, searchQuery).then(res => [res, searchQuery]);
   }

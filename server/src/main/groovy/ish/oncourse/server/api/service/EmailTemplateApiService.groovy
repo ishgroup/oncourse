@@ -12,16 +12,12 @@
 package ish.oncourse.server.api.service
 
 import ish.oncourse.server.api.dao.EmailTemplateDao
-import ish.oncourse.server.api.v1.model.BindingDTO
-import static ish.oncourse.server.api.v1.model.CategoryDTO.CHECKOUT_QUICK_ENROL_
-import static ish.oncourse.server.api.v1.model.CategoryDTO.CHECKOUT_QUICK_ENROL_
-import ish.oncourse.server.api.v1.model.CategoryItemDTO
 import ish.oncourse.server.api.v1.model.EmailTemplateDTO
 import ish.oncourse.server.api.v1.model.MessageTypeDTO
 import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.EmailTemplate
 import org.apache.cayenne.ObjectContext
-import static org.apache.commons.lang3.StringUtils.isBlank
+
 import static org.apache.commons.lang3.StringUtils.trimToNull
 import static org.apache.http.util.TextUtils.isBlank
 

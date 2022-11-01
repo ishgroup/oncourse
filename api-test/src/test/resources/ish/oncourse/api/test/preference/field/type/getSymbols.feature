@@ -14,4 +14,4 @@ Feature: re-usable feature to get not allowed symbols and check it returns 'stat
         And request someFieldType
         When method POST
         Then status 400
-        And match response.errorMessage == "The custom field key can contains alphanumeric symbols only"
+        And match response.errorMessage == "The custom field key can contains alphanumeric symbols and underscores"

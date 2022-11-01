@@ -1,8 +1,0 @@
-name: TalentLMS course enrolment
-body: ish.script.talentLMSEnrolment.groovy
-keyCode: ish.script.talentLMSEnrolment
-enabled: false
-triggerType: ONCOURSE_EVENT
-onCourseEventType: ENROLMENT_SUCCESSFUL
-description: This script will create enrolments in TalentLMS. Students will be matched by email address and if none exists in TalentLMS, a student will be created. That student will be enrolled in the TalentLMS code matching the course code in onCourse.
- Create course enrolment in Talent LMS. One TalentLMS course per unit within an onCourse class. TalentLMS code would be ABC-123-XYZ (where XYZ is the unit code)

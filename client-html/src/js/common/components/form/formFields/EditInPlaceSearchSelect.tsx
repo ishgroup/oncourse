@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import CircularProgress from "@mui/material/CircularProgress";
@@ -9,11 +12,9 @@ import FormHelperText from "@mui/material/FormHelperText";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import Popper from "@mui/material/Popper";
-import { InputAdornment, Autocomplete, IconButton } from "@mui/material";
-import { withStyles, createStyles } from "@mui/styles";
-import React, {
- useContext, useEffect, useMemo, useRef, useState
-} from "react";
+import { Autocomplete, IconButton, InputAdornment } from "@mui/material";
+import { createStyles, withStyles } from "@mui/styles";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import CloseIcon from '@mui/icons-material//Close';
 import clsx from "clsx";
 import Typography from "@mui/material/Typography";
@@ -107,6 +108,7 @@ interface Props extends WrappedFieldProps {
   sortPropKey?: string;
   inHeader?: boolean;
   hasError?: boolean;
+  inputRef?: any;
 }
 
 const SelectContext = React.createContext<any>({});
@@ -118,6 +120,7 @@ const ListBoxAdapter = React.forwardRef<any, any>(({ children, ...other }, ref) 
     loadMoreRows,
     classes,
     fieldClasses = {},
+    loading
   } = useContext(SelectContext);
 
   return (
@@ -127,6 +130,7 @@ const ListBoxAdapter = React.forwardRef<any, any>(({ children, ...other }, ref) 
       loadMoreRows={loadMoreRows}
       classes={classes}
       fieldClasses={fieldClasses}
+      loading={loading}
       ref={ref}
       {...other}
     >
@@ -192,7 +196,8 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     sort,
     sortPropKey,
     inHeader,
-    hasError
+    hasError,
+                                                                        inputRef
   }) => {
   const sortedItems = useMemo(() => items && (sort
     ? [...items].sort(typeof sort === "function"
@@ -295,7 +300,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
   const edit = () => {
     setIsEditing(true);
     setTimeout(() => {
-      inputNode.current.focus();
+      inputNode?.current?.focus();
     }, 50);
   };
 
@@ -339,11 +344,10 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
 
   const handleChange = (e, value, reason) => {
     if (reason === "clear") {
-      onClear();
       return;
     }
 
-    if (creatable && value.createdOption) {
+    if (creatable && value && value.createdOption) {
       onCreateOptionInner(value);
     }
 
@@ -366,6 +370,8 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
   };
 
   const handleInputChange = e => {
+    setSearchValue(e.target.value);
+
     if (onInputChange) {
       onInputChange(e.target.value);
     }
@@ -373,8 +379,6 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     if (remoteData && !e.target.value) {
       onClearRows();
     }
-
-    setSearchValue(e.target.value);
   };
 
   const getOptionLabel = option => (selectLabelCondition ? selectLabelCondition(option) : option[selectLabelMark]) || "";
@@ -400,7 +404,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     if (selectLabelCondition) {
       response = returnType === "object" ? selectLabelCondition(input.value) : formattedDisplayValue || defaultDisplayValue;
     } else if (returnType === "object") {
-      response = input.value[selectLabelMark];
+      response = input.value && input.value[selectLabelMark];
     } else {
       const selected = sortedItems.find(i => getOptionSelected(i, input.value));
       response = selected ? selected[selectLabelMark] : defaultDisplayValue || input.value;
@@ -446,7 +450,8 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
           fieldClasses,
           inline,
           items,
-          popperAnchor
+          popperAnchor,
+          loading
         }}
         >
           <Autocomplete
@@ -461,7 +466,8 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
               root: clsx("d-inline-flex", classes.root),
               hasPopupIcon: classes.hasPopup,
               hasClearIcon: classes.hasClear,
-              inputRoot: classes.inputWrapper
+              inputRoot: classes.inputWrapper,
+              option: "w-100 text-break-spaces"
             }}
             renderOption={renderOption}
             getOptionLabel={getOptionLabel}
@@ -492,7 +498,12 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                   onFocus={onFocus}
                   onBlur={onBlur}
                   onClick={onEditButtonFocus}
-                  inputRef={inputNode}
+                  inputRef={rf => {
+                    inputNode.current = rf;
+                    if (inputRef) {
+                      inputRef.current = rf;
+                    }
+                  }}
                   disableUnderline={inline}
                   classes={{
                     underline: fieldClasses.underline,
@@ -538,52 +549,52 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
         </SelectContext.Provider>
       </div>
       {formatting === "inline" && (
-      <div
-        className={clsx({
+        <div
+          className={clsx({
           "d-none": !inHeader || (inHeader && (inline || isEditing || (meta && meta.invalid)))
         })}
-      >
-        <div className="mw-100 text-truncate">
-          {!hideLabel && label && (
-          <Typography
-            variant="caption"
-            color="textSecondary"
-            style={colors ? { color: `${colors.subheader}` } : {}}
-            noWrap
-          >
-            {label}
-            {' '}
-            {labelAdornment && <span>{labelAdornment}</span>}
-          </Typography>
+        >
+          <div className="mw-100 text-truncate">
+            {!hideLabel && label && (
+              <Typography
+                variant="caption"
+                color="textSecondary"
+                style={colors ? { color: `${colors.subheader}` } : {}}
+                noWrap
+              >
+                {label}
+                {' '}
+                {labelAdornment && <span>{labelAdornment}</span>}
+              </Typography>
           )}
 
-          <ListItemText
-            classes={{
+            <ListItemText
+              classes={{
               root: "pl-0 mb-0 mt-0",
               primary: clsx("d-flex", formatting === "inline" && classes.inline)
-            }}
-            primary={(
-              <>
-                <ButtonBase
-                  onFocus={onEditButtonFocus}
-                  className={clsx(classes.editable, fieldClasses.text, "overflow-hidden d-flex hoverIconContainer", {
+              }}
+              primary={(
+                <>
+                  <ButtonBase
+                    onFocus={onEditButtonFocus}
+                    className={clsx(classes.editable, fieldClasses.text, "overflow-hidden d-flex hoverIconContainer", {
                     [classes.readonly]: disabled
                   })}
-                  component="div"
-                >
-                  <span className={clsx("text-truncate", fieldClasses.text)}>
-                    {displayedValue}
-                  </span>
-                  {!disabled && (
-                  <ExpandMore className={clsx("hoverIcon", classes.editIcon, fieldClasses.editIcon)} />
+                    component="div"
+                  >
+                    <span className={clsx("text-truncate", fieldClasses.text)}>
+                      {displayedValue}
+                    </span>
+                    {!disabled && (
+                      <ExpandMore className={clsx("hoverIcon", classes.editIcon, fieldClasses.editIcon)} />
                   )}
-                </ButtonBase>
-                {endAdornment}
-              </>
-            )}
-          />
+                  </ButtonBase>
+                  {endAdornment}
+                </>
+              )}
+            />
+          </div>
         </div>
-      </div>
     )}
     </div>
   );

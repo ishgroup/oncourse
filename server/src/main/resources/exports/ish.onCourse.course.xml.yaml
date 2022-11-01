@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.course.xml
-entityClass: Course
-body: ish.onCourse.course.xml.groovy
-name: Course XML export
-outputType: xml

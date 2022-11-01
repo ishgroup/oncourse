@@ -5,7 +5,7 @@
 
 import React from "react";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import TabsList from "../../../../common/components/layout/TabsList";
+import TabsList from "../../../../common/components/navigation/TabsList";
 import SitesGeneral from "./SitesGeneral";
 import Directions from "./SitesDirections";
 import AvailabilityFormComponent from "../../../../common/components/form/availabilityComponent/AvailabilityFormComponent";

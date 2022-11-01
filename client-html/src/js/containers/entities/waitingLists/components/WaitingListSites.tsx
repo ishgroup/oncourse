@@ -63,7 +63,8 @@ class WaitingListSites extends React.PureComponent<any, any> {
       submitSucceeded,
       twoColumn,
       values,
-      clearSites
+      clearSites,
+      errorQuickSearchSites
     } = this.props;
 
     return (
@@ -85,6 +86,7 @@ class WaitingListSites extends React.PureComponent<any, any> {
               (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 0)}
             resetSearch={submitSucceeded}
             aqlEntities={["Site"]}
+            aqlQueryError={errorQuickSearchSites}
             usePaper
           />
         </Grid>
@@ -95,15 +97,16 @@ class WaitingListSites extends React.PureComponent<any, any> {
 
 const mapStateToProps = (state: State) => ({
   foundQuickSearchSites: state.plainSearchRecords["Site"].items,
-  pendingQuickSearchSites: state.plainSearchRecords["Site"].loading
+  pendingQuickSearchSites: state.plainSearchRecords["Site"].loading,
+  errorQuickSearchSites: state.plainSearchRecords["Site"].error
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getQuickSearchSites: (search: string) => {
-      dispatch(setCommonPlainSearch( "Site", search));
-      dispatch(getCommonPlainRecords("Site", 0, "name,suburb,postcode", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
-    },
-    clearSites: () => dispatch(clearCommonPlainRecords("Site"))
-  });
+  getQuickSearchSites: (search: string) => {
+    dispatch(setCommonPlainSearch("Site", search));
+    dispatch(getCommonPlainRecords("Site", 0, "name,suburb,postcode", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+  },
+  clearSites: () => dispatch(clearCommonPlainRecords("Site"))
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(WaitingListSites);

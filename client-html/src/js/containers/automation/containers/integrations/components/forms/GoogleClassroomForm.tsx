@@ -12,8 +12,7 @@ import {
 import Button from "@mui/material/Button";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../../common/components/form/Uneditable";
-import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
 import { State } from "../../../../../../reducers/state";
 
@@ -66,14 +65,13 @@ class GoogleClassroomBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-     handleSubmit, onSubmit, AppBarContent, dirty, values, form
+     handleSubmit, onSubmit, AppBarContent, values,
     } = this.props;
 
     const hasIdAndSecret = values && values.fields.clientId && values.fields.clientSecret;
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
         <AppBarContent>
           <FormField name="fields.clientId" label="Client id" type="text" required className="mb-2" />
           <FormField name="fields.clientSecret" label="Client secret" type="text" required className="mb-2" />

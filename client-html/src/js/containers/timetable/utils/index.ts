@@ -1,22 +1,28 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import { Session } from "@api/model";
 import {
- format, getDaysInMonth, setDate, setHours, startOfMonth
+ format, getDaysInMonth, parse, setDate, setHours, startOfMonth 
 } from "date-fns";
 import {
   AfternoonIcon,
   EveningIcon,
   MorningIcon
 } from "../components/timetable-side-bar/components/day-period-filter/DayPeriodIcons";
-import { HA } from "../../../common/utils/dates/format";
-import { TimetableMonth, TimetableSession } from "../../../model/timetable";
+import { DD_MMM_YYYY_MINUSED, HA } from "../../../common/utils/dates/format";
+import {
+ CalendarGrouping, CalendarGroupingState, TimetableMonth, TimetableSession 
+} from "../../../model/timetable";
 import { appendTimezone } from "../../../common/utils/dates/formatTimezone";
+import { NO_ROOM_LABEL, NO_TUTORS_LABEL } from "../TimetableConstants";
 
-const getFormattedMonthDays = (startDate: Date) => Array.from(Array(getDaysInMonth(startDate)), (v, i) => i + 1).map(d => ({
+export const getFormattedMonthDays = (startDate: Date) => Array.from(Array(getDaysInMonth(startDate)), (v, i) => i + 1).map(d => ({
   day: setDate(startDate, d),
   sessions: [],
   updated: false,
@@ -177,7 +183,7 @@ class DayNodesObserver {
       if (rect.top === rootBoundsInfo.top && this.currentStickyId !== record.target.id) {
         this.currentStickyId = record.target.id;
         if (!this.preventUpdate) {
-          this.setTargetDay(new Date(this.currentStickyId));
+          this.setTargetDay(parse(this.currentStickyId, DD_MMM_YYYY_MINUSED, new Date()));
         }
       }
 
@@ -359,6 +365,65 @@ export const getGapHours = (sessions: Session[]) => {
       }
     })
   }));
+};
+
+export const getGroupings = (sessions: Session[], grouping: CalendarGroupingState): CalendarGrouping[] => {
+  const groupings = [];
+
+  if (grouping === "Group by tutor") {
+    const indexes = {};
+    let baseIndex = 0;
+    sessions.forEach(s => {
+      s.tutors.forEach(t => {
+        if (!indexes[t]) {
+          indexes[t] = baseIndex;
+          baseIndex++;
+          groupings.push({
+            tutor: t,
+            sessions: [s]
+          });
+        } else {
+          groupings[indexes[t]].sessions.push(s);
+        }
+      });
+      if (!s.tutors.length) {
+        if (!indexes[NO_TUTORS_LABEL]) {
+          indexes[NO_TUTORS_LABEL] = baseIndex;
+          baseIndex++;
+          groupings.push({
+            tutor: NO_TUTORS_LABEL,
+            sessions: [s]
+          });
+        } else {
+          groupings[indexes[NO_TUTORS_LABEL]].sessions.push(s);
+        }
+      }
+    });
+  }
+
+  if (grouping === "Group by room") {
+    const indexes = {};
+    let baseIndex = 0;
+    sessions.forEach(s => {
+      const baseRoom = s.room || NO_ROOM_LABEL;
+      const baseSite = s.site;
+      const siteRoomKey = `${s.site}-${s.room}`;
+
+      if (!indexes[siteRoomKey]) {
+        indexes[siteRoomKey] = baseIndex;
+        baseIndex++;
+        groupings.push({
+          room: baseRoom,
+          site: baseSite,
+          sessions: [s]
+        });
+      } else {
+        groupings[indexes[siteRoomKey]].sessions.push(s);
+      }
+    });
+  }
+
+  return groupings;
 };
 
 export const testPeriod = (session: Session, periods: boolean[]): boolean => {

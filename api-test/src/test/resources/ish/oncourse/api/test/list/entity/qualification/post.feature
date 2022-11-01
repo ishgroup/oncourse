@@ -171,28 +171,6 @@ Feature: Main feature for all POST requests with path 'list/entity/qualification
         And match $.errorMessage == "Type is required."
 
 
-
-    Scenario: (-) Create new custom Qualification with empty Level
-
-        * def someQualification =
-        """
-        {
-        "type":"Qualification",
-        "qualLevel":"",
-        "title":"someTitle",
-        "nationalCode":"CODE01q",
-        "isOffered":false
-        }
-        """
-
-        Given path ishPath
-        And request someQualification
-        When method POST
-        Then status 400
-        And match $.errorMessage == "Level is required."
-
-
-
     Scenario: (-) Create new custom Qualification with empty Title
 
         * def someQualification =

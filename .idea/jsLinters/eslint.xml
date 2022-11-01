@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EslintConfiguration">
+    <custom-configuration-file used="true" path="$PROJECT_DIR$/client-html/.eslintrc.js" />
+    <files-pattern value="{**/*,*}.{ts,jsx,tsx,html,vue}" />
+  </component>
+</project>

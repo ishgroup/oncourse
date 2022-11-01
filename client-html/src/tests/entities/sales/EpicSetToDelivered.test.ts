@@ -2,7 +2,8 @@ import { DefaultEpic } from "../../common/Default.Epic";
 import { FETCH_SUCCESS } from "../../../js/common/actions";
 import { GET_RECORDS_REQUEST } from "../../../js/common/components/list-view/actions";
 import { EpicSetToDelivered } from "../../../js/containers/entities/sales/epics/EpicSetToDelivered";
-import { GET_SALE, setSaleDelivered } from "../../../js/containers/entities/sales/actions";
+import { getEntityRecord } from "../../../js/containers/entities/common/actions";
+import { setSaleDelivered } from "../../../js/containers/entities/sales/actions";
 
 describe("Update sale to set delivered epic tests", () => {
   it("EpicSetToDelivered should returns correct values", () => DefaultEpic({
@@ -17,10 +18,7 @@ describe("Update sale to set delivered epic tests", () => {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "ProductItem", listUpdate: true, savedID: 1 }
       },
-      {
-        type: GET_SALE,
-        payload: { id: 1 }
-      }
+      getEntityRecord(1, "ProductItem")
     ]
   }));
 });

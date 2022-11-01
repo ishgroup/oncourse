@@ -59,7 +59,6 @@ class EnrolmentTest extends TestWithDatabase {
         tax.setPayableToAccount(account)
 
         CourseClass cc = newContext.newObject(CourseClass.class)
-        cc.setSessionsCount(0)
         cc.setMinimumPlaces(4)
         cc.setMaximumPlaces(5)
         cc.setCode("testCourse")

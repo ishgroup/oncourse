@@ -205,7 +205,7 @@ Feature: Main feature for all POST requests with path 'user'
         And request someUser
         When method POST
         Then status 400
-        And match response.errorMessage == "Administration centre doesn't exist."
+        And match response.errorMessage == "Select an option for the 'Bank cash/cheques to site' field."
 
 
     Scenario: (-) Create new not admin User without role

@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { connect } from "react-redux";
 import {
-  reduxForm, getFormValues, InjectedFormProps, Form
+  reduxForm, getFormValues, InjectedFormProps
 } from "redux-form";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -17,19 +17,15 @@ import Grid from "@mui/material/Grid";
 import { differenceInMinutes, format } from "date-fns";
 import { Typography } from "@mui/material";
 import SvgIcon from "@mui/material/SvgIcon";
-import IconButton from "@mui/material/IconButton";
-import LockOpen from "@mui/icons-material/LockOpen";
-import Lock from "@mui/icons-material/Lock";
-import { CourseClassTutor } from "@api/model";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Button from "@mui/material/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
 import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
 import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import {
   AttandanceChangeType,
-  StudentAttendanceExtended,
-  tutorStatusRoles
+  StudentAttendanceExtended
 } from "../../../../../model/entities/CourseClass";
 import AttendanceIcon from "./AttendanceIcon";
 import AttendanceActionsMenu from "./AttendanceActionsMenu";
@@ -40,12 +36,9 @@ import { stubFunction } from "../../../../../common/utils/common";
 import { getStudentAttendanceLabel } from "./utils";
 import {
   DD_MMM_YYYY_HH_MM_SS,
-  HH_MM_COLONED,
-  III_DD_MMM_YYYY_HH_MM_SPECIAL,
   III_DD_MMM_YYYY_HH_MM_SS
 } from "../../../../../common/utils/dates/format";
 import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
-import Button from "@mui/material/Button";
 
 const getDifferenceInMinutes = (start: string, end: string): number => {
   const startDate = new Date(start);
@@ -133,183 +126,80 @@ const StudentAttendanceContent: React.FC<StudentAttendanceContentProps> = ({
   );
 
   return (
-    <Grid container columnSpacing={3}>
-      <Grid item xs={12}>
-        <div className="centeredFlex mt-2 mb-2">
-          <SvgIcon fontSize="small">
-            <AttendanceIcon type={values.attendanceType} />
-          </SvgIcon>
-          <AttendanceActionsMenu
-            onChange={onAttendanceTypeChange}
-            type="Student"
-            label="Mark attendance for this student as..."
-          />
-          <Typography variant="body1">{getStudentAttendanceLabel(values.attendanceType)}</Typography>
-        </div>
-        <div className="pb-2">
-          <Grid container columnSpacing={3}>
-            <Grid item xs={6}>
-              {values.attendanceType === "Partial" ? (
-                <FormField
-                  type="dateTime"
-                  name="attendedFrom"
-                  label="Attended from"
-                  validate={validateMaxDate}
-                  timezone={bindedSession.siteTimezone}
-                  formatDateTime={DD_MMM_YYYY_HH_MM_SS}
-                />
-              ) : (
-                <Uneditable label="Attended from" value={attendedFromLabel} />
-              )}
-            </Grid>
-            <Grid item xs={6}>
-              {values.attendanceType === "Partial" ? (
-                <FormField
-                  type="dateTime"
-                  name="attendedUntil"
-                  label="Attended until"
-                  validate={validateMinDate}
-                  timezone={bindedSession.siteTimezone}
-                  formatDateTime={DD_MMM_YYYY_HH_MM_SS}
-                />
-              ) : (
-                <Uneditable label="Attended until" value={attendedUntilLabel} />
-              )}
-            </Grid>
-            <Grid item xs={6}>
-              <EditInPlaceField
-                label="Attendance duration"
-                input={{
-                  onChange: stubFunction,
-                  onFocus: stubFunction,
-                  onBlur: stubFunction,
-                  value: attendanceDurationLabel
-                }}
-                meta={{
-                  error: attendanceDurationError,
-                  invalid: Boolean(attendanceDurationError)
-                }}
-                disabled
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <Uneditable value={sessionDurationLabel} label="Session duration" />
-            </Grid>
-            <Grid item xs={12}>
-              <FormField
-                type="multilineText"
-                name="note"
-                label="Note"
-                validate={values.attendanceType === "Absent with reason" ? validateSingleMandatoryField : undefined}
-                fullWidth
-              />
-            </Grid>
-          </Grid>
-        </div>
-      </Grid>
-    </Grid>
-  );
-};
-
-interface TutorAttendanceContentProps {
-  change: any;
-  sessionDuration: number;
-  setHasError: any;
-  bindedSession: TimetableSession;
-  tutors: CourseClassTutor[];
-  values: any;
-}
-
-const TutorAttendanceContent: React.FC<TutorAttendanceContentProps> = ({
-  change,
-  sessionDuration,
-  bindedSession,
-  values,
-  tutors
-}) => {
-  const [durationLocked, setDurationLocked] = useState(
-    !(typeof values.actualPayableDurationMinutes === "number" && values.attendanceType === "Confirmed for payroll")
-  );
-
-  const onIconClick = useCallback(e => {
-    const roleIndex = tutorStatusRoles.indexOf(e.currentTarget.getAttribute("role"));
-    change("attendanceType", [2, -1].includes(roleIndex) ? tutorStatusRoles[0] : tutorStatusRoles[roleIndex + 1]);
-  }, []);
-
-  const onLockClick = useCallback(() => {
-    setDurationLocked(prev => {
-      change("durationMinutes", prev ? sessionDuration : null);
-      return !prev;
-    });
-  }, [sessionDuration]);
-
-  const sessionDurationLabel = useMemo(() => formatDurationMinutes(sessionDuration), [sessionDuration]);
-
-  const sessionDateTime = useMemo(
-    () => (bindedSession.siteTimezone
-      ? format(
-        appendTimezone(new Date(bindedSession.start), bindedSession.siteTimezone),
-        III_DD_MMM_YYYY_HH_MM_SPECIAL
-      ) + ` to ${format(appendTimezone(new Date(bindedSession.end), bindedSession.siteTimezone), HH_MM_COLONED)}`
-      : format(new Date(bindedSession.start), III_DD_MMM_YYYY_HH_MM_SPECIAL)
-          + ` to ${format(new Date(bindedSession.end), HH_MM_COLONED)}`),
-    [values.sessionId, bindedSession.siteTimezone]
-  );
-
-  const tutorContactLink = useMemo(() => `/contact/${tutors.find(t => t.id === values.courseClassTutorId).contactId}`, [
-    tutors.length,
-    values.courseClassTutorId
-  ]);
-
-  return (
-    <Grid container columnSpacing={3} className="pb-2">
-      <Grid item xs={6}>
-        <Uneditable value={values.contactName} label="Tutor" url={tutorContactLink} />
-      </Grid>
-      <Grid item xs={6}>
-        <div className="centeredFlex mt-2 mb-2">
-          <Typography variant="body1" className="pl-1">
-            {values.attendanceType}
-          </Typography>
-        </div>
-      </Grid>
-      <Grid item xs={6}>
-        <Uneditable value={sessionDateTime} label="Session" />
-      </Grid>
-      <Grid item xs={6}>
-        <Uneditable value={sessionDurationLabel} label="Session duration" />
-      </Grid>
-      <Grid item xs={6}>
-        <Uneditable value={sessionDuration} format={formatDurationMinutes} label="Scheduled payable time" />
-      </Grid>
-      <Grid item xs={6}>
-        <FormField
-          type="duration"
-          name="durationMinutes"
-          label="Actual payable time"
-          defaultValue={values.attendanceType === "Rejected for payroll" ? 0 : sessionDuration}
-          labelAdornment={(
-            <span>
-              <IconButton
-                className="inputAdornmentButton"
-                disabled={values.attendanceType !== "Confirmed for payroll"}
-                onClick={onLockClick}
-              >
-                {!durationLocked && <LockOpen className="inputAdornmentIcon" />}
-                {durationLocked && <Lock className="inputAdornmentIcon" />}
-              </IconButton>
-            </span>
-          )}
-          disabled={durationLocked}
+    <Grid container>
+      <Grid item xs={12} className="centeredFlex mt-2 mb-2">
+        <SvgIcon fontSize="small">
+          <AttendanceIcon type={values.attendanceType} />
+        </SvgIcon>
+        <AttendanceActionsMenu
+          onChange={onAttendanceTypeChange}
+          type="Student"
+          label="Mark attendance for this student as..."
         />
-
+        <Typography variant="body1">{getStudentAttendanceLabel(values.attendanceType)}</Typography>
       </Grid>
-      <Grid item xs={12}>
-        <FormField type="multilineText" name="note" label="Notes" fullWidth />
+      <Grid item container columnSpacing={3} rowSpacing={2} xs={12} className="pb-2">
+        <Grid item xs={6}>
+          {values.attendanceType === "Partial" ? (
+            <FormField
+              type="dateTime"
+              name="attendedFrom"
+              label="Attended from"
+              validate={validateMaxDate}
+              timezone={bindedSession.siteTimezone}
+              formatDateTime={DD_MMM_YYYY_HH_MM_SS}
+            />
+          ) : (
+            <Uneditable label="Attended from" value={attendedFromLabel} />
+          )}
+        </Grid>
+        <Grid item xs={6}>
+          {values.attendanceType === "Partial" ? (
+            <FormField
+              type="dateTime"
+              name="attendedUntil"
+              label="Attended until"
+              validate={validateMinDate}
+              timezone={bindedSession.siteTimezone}
+              formatDateTime={DD_MMM_YYYY_HH_MM_SS}
+            />
+          ) : (
+            <Uneditable label="Attended until" value={attendedUntilLabel} />
+          )}
+        </Grid>
+        <Grid item xs={6}>
+          <EditInPlaceField
+            label="Attendance duration"
+            input={{
+              onChange: stubFunction,
+              onFocus: stubFunction,
+              onBlur: stubFunction,
+              value: attendanceDurationLabel
+            }}
+            meta={{
+              error: attendanceDurationError,
+              invalid: Boolean(attendanceDurationError)
+            }}
+            disabled
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <Uneditable value={sessionDurationLabel} label="Session duration" />
+        </Grid>
+        <Grid item xs={12}>
+          <FormField
+            type="multilineText"
+            name="note"
+            label="Note"
+            validate={values.attendanceType === "Absent with reason" ? validateSingleMandatoryField : undefined}
+            fullWidth
+          />
+        </Grid>
       </Grid>
     </Grid>
   );
 };
+
 
 interface AttendanceActionModalProps {
   changeType: AttandanceChangeType;
@@ -364,7 +254,7 @@ const AttendanceActionModalForm: React.FC<AttendanceActionModalProps & InjectedF
       disableRestoreFocus
     >
       <DialogContent>
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <StudentAttendanceContent
             change={change}
             values={values}
@@ -372,7 +262,7 @@ const AttendanceActionModalForm: React.FC<AttendanceActionModalProps & InjectedF
             bindedSession={bindedSession}
             setHasError={setHasError}
           />
-        </Form>
+        </form>
       </DialogContent>
 
       <DialogActions className="p-3">

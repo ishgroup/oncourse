@@ -143,12 +143,15 @@ class PathConverter implements Converter<AqlParser.PathContext> {
         var entity = resolveResult.getEntity();
         for (var segment : allSegments) {
             var identifier = segment.Identifier().getText();
-            var next = entity.getRelationship(identifier);
-            if (next.isEmpty()) {
+            Optional<Entity> next = Optional.empty();
+            if (entity.getSyntheticAttribute(identifier).isPresent()) {
                 syntheticAttribute = entity.getSyntheticAttribute(identifier);
                 if(syntheticAttribute.isPresent()) {
                     next = syntheticAttribute.get().nextEntity();
                 }
+            }
+            if (next.isEmpty()) {
+                next = entity.getRelationship(identifier);
             }
             if (next.isEmpty()) {
                 return ResolveResult.error("Can't resolve path segment: " + identifier);

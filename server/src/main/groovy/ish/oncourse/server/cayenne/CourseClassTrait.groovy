@@ -29,8 +29,6 @@ trait CourseClassTrait {
 
     abstract Course getCourse()
     abstract List<Session> getSessions()
-    abstract Integer getSessionsCount()
-    abstract Integer getMinutesPerSession()
     abstract List<Enrolment> getSuccessAndQueuedEnrolments()
     abstract TimeZone getTimeZone()
     abstract Date getStartDateTime()

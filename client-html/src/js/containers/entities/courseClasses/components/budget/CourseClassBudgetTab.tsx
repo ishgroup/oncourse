@@ -26,7 +26,6 @@ import { stopEventPropagation } from "../../../../../common/utils/events";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { ClassCostExtended, CourseClassExtended, CourseClassRoom } from "../../../../../model/entities/CourseClass";
 import ExpandableContainer from "../../../../../common/components/layout/expandable/ExpandableContainer";
-import { clearDiscounts, getDiscounts } from "../../../discounts/actions";
 import DiscountService from "../../../discounts/services/DiscountService";
 import BudgetEnrolmentsFields from "./BudgetEnrolmentsFields";
 import BudgetExpandableItemRenderer from "./BudgetExpandableItemRenderer";
@@ -41,6 +40,7 @@ import {
   discountSort,
   getDiscountAmountExTax,
   getRoundingByType,
+  mapPlainDiscounts,
   transformDiscountForNestedList
 } from "../../../discounts/utils";
 import { getCurrentTax } from "../../../taxes/utils";
@@ -61,6 +61,12 @@ import { dateForCompare, getClassFeeTotal } from "./utils";
 import PreferencesService from "../../../../preferences/services/PreferencesService";
 import BudgetItemRow from "./BudgetItemRow";
 import uniqid from "../../../../../common/utils/uniqid";
+import {
+  clearCommonPlainRecords,
+  getCommonPlainRecords,
+  setCommonPlainSearch
+} from "../../../../../common/actions/CommonPlainRecordsActions";
+import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../../constants/Config";
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -252,6 +258,7 @@ interface Props extends Partial<EditViewProps> {
   currentTax?: Tax;
   discounts?: Discount[];
   pending?: boolean;
+  discountsError?: boolean;
   getSearchResult?: StringArgFunction;
   clearSearchResult?: BooleanArgFunction;
 }
@@ -260,34 +267,35 @@ const CourseClassBudgetTab = React.memo<Props>(
   ({
     tabIndex,
     taxes,
-    expanded,
-    setExpanded,
-    toogleFullScreenEditView,
-    twoColumn,
-    classes,
-    enrolments,
-    currencySymbol,
-    values,
-    dispatch,
-    form,
-    showConfirm,
-    tutorRoles,
-    setCourseClassBudgetModalOpened,
-    isNew,
-    classRooms,
-    expandedBudget,
-    expandBudgetItem,
-    currentTax,
-    discounts,
-    pending,
-    getSearchResult,
-    clearSearchResult
-  }) => {
+     expanded,
+     setExpanded,
+     toogleFullScreenEditView,
+     twoColumn,
+     classes,
+     enrolments,
+     currencySymbol,
+     values,
+     dispatch,
+     form,
+     showConfirm,
+     tutorRoles,
+     setCourseClassBudgetModalOpened,
+     isNew,
+     classRooms,
+     expandedBudget,
+     expandBudgetItem,
+     currentTax,
+     discounts,
+     pending,
+     discountsError,
+     getSearchResult,
+     clearSearchResult
+   }) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [popoverAnchor, setPopoverAnchor] = React.useState(null);
     const [tutorsMenuOpened, setTutorsMenuOpened] = React.useState(false);
 
-    const classFee = useMemo(() => getClassFeeTotal(values.budget, taxes), [taxes, values.budget]);
+    const classFee = useMemo(() => getClassFeeTotal(values.budget || [], taxes), [taxes, values.budget]);
 
     const classCostTypes = useMemo(
       () =>
@@ -770,6 +778,7 @@ const CourseClassBudgetTab = React.memo<Props>(
                         clearSearchResult={clearSearchResult}
                         sort={discountSort}
                         aqlEntities={["Discount"]}
+                        aqlQueryError={discountsError}
                         secondaryHeading
                         disableAddAll
                       />
@@ -876,14 +885,18 @@ const BudgetNetRow: React.FC<CommonRowProps> = ({
 const mapStateToProps = (state: State) => ({
   tutorRoles: state.preferences.tutorRoles,
   enrolments: state.courseClass.enrolments,
-  discounts: state.discounts.items,
-  pending: state.discounts.pending
+  discounts: state.plainSearchRecords["Discount"].items,
+  pending: state.plainSearchRecords["Discount"].loading,
+  discountsError: state.plainSearchRecords["Discount"].error,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   setCourseClassBudgetModalOpened: (opened, onCostRate) => dispatch(setCourseClassBudgetModalOpened(opened, onCostRate)),
-  getSearchResult: (search: string) => dispatch(getDiscounts(search)),
-  clearSearchResult: (pending: boolean) => dispatch(clearDiscounts(pending))
+  getSearchResult: (search: string) => {
+    dispatch(setCommonPlainSearch("Discount", search));
+    dispatch(getCommonPlainRecords("Discount", 0, "name,discountType,discountDollar,discountPercent", null, null, PLAIN_LIST_MAX_PAGE_SIZE, items => items.map(mapPlainDiscounts)));
+  },
+  clearSearchResult: (pending: boolean) => dispatch(clearCommonPlainRecords("Discount", pending)),
 });
 
 export default connect<any, any, Props>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CourseClassBudgetTab));

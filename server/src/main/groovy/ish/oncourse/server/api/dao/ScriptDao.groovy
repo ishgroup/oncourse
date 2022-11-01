@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.api.dao
 
+import ish.common.types.AutomationStatus
 import ish.oncourse.server.cayenne.Script
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Property
@@ -42,8 +43,15 @@ class ScriptDao implements AutomationDao<Script> {
     List<Script> getForEntity(String entityName, ObjectContext context) {
         ObjectSelect.query(Script)
                 .where(Script.ENTITY_CLASS.eq(entityName))
-                .and(Script.ENABLED.isTrue())
+                .and(Script.AUTOMATION_STATUS.eq(AutomationStatus.ENABLED))
                 .orderBy(Script.NAME.asc())
+                .select(context)
+    }
+
+    @Override
+    List<Script> getByName(ObjectContext context, String name) {
+        ObjectSelect.query(Script)
+                .where(Script.NAME.eq(name))
                 .select(context)
     }
 

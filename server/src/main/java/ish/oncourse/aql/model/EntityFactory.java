@@ -12,6 +12,7 @@
 package ish.oncourse.aql.model;
 
 import ish.oncourse.aql.model.attribute.*;
+import ish.oncourse.aql.model.attribute.tagging.relations.*;
 import ish.oncourse.server.cayenne.CustomFieldType;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.Persistent;
@@ -32,7 +33,7 @@ public class EntityFactory {
      * List of types that supports custom fields.
      */
     private static final List<String> ENTITIES_WITH_CUSTOM_FIELDS =
-            Arrays.asList("Application", "Contact", "Course","CourseClass", "Enrolment", "WaitingList", "Survey", "Article", "Membership", "Voucher");
+            Arrays.asList("Application", "Contact", "Course","CourseClass", "Enrolment", "WaitingList", "Survey", "Article", "Membership", "Voucher", "ProductItem", "ArticleProduct", "VoucherProduct", "MembershipProduct");
 
     /**
      * List of synthetic attributes.
@@ -49,6 +50,7 @@ public class EntityFactory {
             CourseClassEnrolmentCount.class,
             CourseClassEnrolmentMax.class,
             CourseClassEnrolmentMin.class,
+            CourseClassSessionsCount.class,
             SessionTutor.class,
             PaymentInBanking.class,
             PaymentInReversalOfId.class,
@@ -82,7 +84,25 @@ public class EntityFactory {
             ProductItemProductType.class,
             FundingSourceName.class,
             StudentsTutorsCourses.class,
-            StudentsTutorsAssessments.class
+            StudentsTutorsAssessments.class,
+            TaggingRelationsAbstractInvoice.class,
+            TaggingRelationsApplication.class,
+            TaggingRelationsArticleProduct.class,
+            TaggingRelationsAssessment.class,
+            TaggingRelationsContact.class,
+            TaggingRelationsCourse.class,
+            TaggingRelationsCourseClass.class,
+            TaggingRelationsDocument.class,
+            TaggingRelationsEnrolment.class,
+            TaggingRelationsLead.class,
+            TaggingRelationsMembershipProduct.class,
+            TaggingRelationsPayslip.class,
+            TaggingRelationsProductItem.class,
+            TaggingRelationsReport.class,
+            TaggingRelationsRoom.class,
+            TaggingRelationsSite.class,
+            TaggingRelationsVoucherProduct.class,
+            TaggingRelationsWaitingList.class
     );
 
     private final ObjectContext context;
@@ -129,9 +149,12 @@ public class EntityFactory {
     }
 
     private Map<String, Class<?>> customFieldLookup(String entityName) {
+        List<String> entityNames = entityName.equals("ProductItem")
+                ? List.of("Article","Voucher","Membership")
+                : List.of(entityName);
         var customFieldsNames = ObjectSelect
                 .columnQuery(CustomFieldType.class, CustomFieldType.KEY)
-                .where(CustomFieldType.ENTITY_IDENTIFIER.eq(entityName))
+                .where(CustomFieldType.ENTITY_IDENTIFIER.in(entityNames))
                 .select(context);
 
         Map<String, Class<?>> customFields = new HashMap<>();

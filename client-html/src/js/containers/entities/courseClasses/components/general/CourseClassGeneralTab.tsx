@@ -1,10 +1,13 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, {
- useCallback, useEffect, useMemo, useState 
+ useCallback, useMemo, useState
 } from "react";
 import clsx from "clsx";
 import { connect } from "react-redux";
@@ -19,14 +22,12 @@ import { IconButton } from "@mui/material";
 import Launch from "@mui/icons-material/Launch";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
-import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
 import { courseFilterCondition, openCourseLink } from "../../../courses/utils";
 import CourseItemRenderer from "../../../courses/components/CourseItemRenderer";
 import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { CourseClassExtended } from "../../../../../model/entities/CourseClass";
 import CourseClassEnrolmentsChart from "./CourseClassEnrolmentsChart";
-import { stubFunction } from "../../../../../common/utils/common";
 import { showMessage } from "../../../../../common/actions";
 import { AppMessage } from "../../../../../model/common/Message";
 import history from "../../../../../constants/History";
@@ -35,6 +36,7 @@ import { getClassCostTypes } from "../../utils";
 import CustomFields from "../../../customFieldTypes/components/CustomFieldsTypes";
 import FullScreenStickyHeader
   from "../../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { EntityChecklists } from "../../../../tags/components/EntityChecklists";
 
 interface Props extends Partial<EditViewProps<CourseClassExtended>> {
   tags?: Tag[];
@@ -45,6 +47,8 @@ interface Props extends Partial<EditViewProps<CourseClassExtended>> {
   tutorRoles?: any;
 }
 
+const normalizeClassCode = (value: any, previousValue?: any, allValues?: any) => value.replace(new RegExp(`${allValues.courseCode}-?`), "");
+
 const CourseClassGeneralTab = React.memo<Props>(
   ({
     tags,
@@ -54,18 +58,10 @@ const CourseClassGeneralTab = React.memo<Props>(
     syncErrors,
     dispatch,
     form,
-    showMessage,
     toogleFullScreenEditView,
     tutorRoles
   }) => {
-    const [classCodeError, setClassCodeError] = useState(null);
-    const [showAllWeeks, setShowAllWeeks] = useState(false);
-
-    useEffect(() => {
-      if (isNew && !values.code) {
-        setClassCodeError("Class code is mandatory");
-      }
-    }, [isNew]);
+    const [showAllWeeks, setShowAllWeeks] = useState(true);
 
     const openBudget = useCallback(() => {
       if (!twoColumn) {
@@ -81,26 +77,6 @@ const CourseClassGeneralTab = React.memo<Props>(
       });
     }, [twoColumn]);
 
-    const onClassCodeChange = useCallback(
-      e => {
-        const val = e.target.value;
-        const codePrefix = `${values.courseCode}-`;
-
-        if (val.includes(codePrefix)) {
-          const codeValue = val.replace(codePrefix, "");
-          dispatch(change(form, "code", codeValue));
-          if (!codeValue) {
-            setClassCodeError("Class code is mandatory");
-          } else if (classCodeError) {
-            setClassCodeError(null);
-          }
-        } else {
-          showMessage({ message: "Course code part can not be changed" });
-        }
-      },
-      [values.code, values.courseCode, form, classCodeError]
-    );
-
     const onCourseIdChange = useCallback(
       course => {
         dispatch(change(form, "courseCode", course ? course.code : null));
@@ -114,7 +90,6 @@ const CourseClassGeneralTab = React.memo<Props>(
 
         if (!values.code && course.nextAvailableCode) {
           dispatch(change(form, "code", course.nextAvailableCode));
-          setClassCodeError(null);
         }
       },
       [form, values.code, values.sessions]
@@ -184,6 +159,8 @@ const CourseClassGeneralTab = React.memo<Props>(
       values.feeExcludeGST
     ]);
 
+    const formatClassCode = value => `${values.courseCode ? values.courseCode + "-" : ""}${value || ""}`;
+
     return (
       <>
         <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pt-3 pr-3 relative">
@@ -215,7 +192,7 @@ const CourseClassGeneralTab = React.memo<Props>(
                   {values.courseCode ? `${values.courseCode}-${values.code || ""}` : null}
                 </Grid>
               </Grid>
-            )}
+              )}
               fields={(
                 <Grid container columnSpacing={3} rowSpacing={2}>
                   <Grid item xs={twoColumn ? 6 : 12}>
@@ -238,33 +215,25 @@ const CourseClassGeneralTab = React.memo<Props>(
                     />
                   </Grid>
                   <Grid item xs={twoColumn ? 4 : 12}>
-                    <EditInPlaceField
+                    <FormField
+                      type="text"
                       label="Class code"
-                      input={{
-                      onChange: onClassCodeChange,
-                      onFocus: stubFunction,
-                      onBlur: stubFunction,
-                      value: values.courseCode ? `${values.courseCode}-${values.code || ""}` : null
-                    }}
-                      meta={{
-                      error: classCodeError,
-                      invalid: Boolean(classCodeError)
-                    }}
+                      name="code"
+                      placeholder="Select course first"
+                      normalize={normalizeClassCode}
+                      format={formatClassCode}
                       disabled={!values.courseCode}
+                      debounced={false}
+                      required
                     />
                   </Grid>
                 </Grid>
-            )}
+              )}
             />
           </Grid>
           {Boolean(values.isCancelled) && (
             <div className={clsx("backgroundText errorColorFade-0-2", twoColumn ? "fs10" : "fs8")}>Cancelled</div>
           )}
-
-          <Grid item xs={12}>
-            <FormField type="stub" name="code" required />
-            <FormField type="tags" name="tags" tags={tags} />
-          </Grid>
         </Grid>
 
         <Grid
@@ -272,12 +241,13 @@ const CourseClassGeneralTab = React.memo<Props>(
           className="pt-2 pl-3 pr-3"
           columnSpacing={3}
           rowSpacing={2}
-          direction={twoColumn && !showAllWeeks ? undefined : "column-reverse"}
         >
-          <Grid item xs={twoColumn && !showAllWeeks ? 6 : 12}>
+          <Grid item xs={twoColumn ? 8 : 12}>
+            <FormField type="tags" name="tags" tags={tags} />
+            
             <div className="heading pb-2 pt-3">Restrictions</div>
             <Typography variant="body2" color="inherit" component="div" className="pb-1">
-              Students must be over
+              Students must be at least
               <FormField
                 type="number"
                 name="minStudentAge"
@@ -292,7 +262,7 @@ const CourseClassGeneralTab = React.memo<Props>(
             </Typography>
 
             <Typography variant="body2" color="inherit" component="div" className="pb-2">
-              Students must be under
+              Students must be no older than
               <FormField
                 type="number"
                 name="maxStudentAge"
@@ -331,7 +301,18 @@ const CourseClassGeneralTab = React.memo<Props>(
               className="pt-2"
             />
           </Grid>
-          <Grid item xs={twoColumn && !showAllWeeks ? 6 : 12}>
+
+          <Grid item xs={twoColumn ? 4 : 12}>
+            <EntityChecklists
+              className={twoColumn ? "mr-4" : null}
+              entity="CourseClass"
+              form={form}
+              entityId={values.id}
+              checked={values.tags}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
             <CourseClassEnrolmentsChart
               classId={values.id}
               classStart={values.startDateTime}
@@ -341,9 +322,11 @@ const CourseClassGeneralTab = React.memo<Props>(
               openBudget={openBudget}
               showAllWeeks={showAllWeeks}
               setShowAllWeeks={setShowAllWeeks}
-              hasBudget={values.budget.some(b => b.invoiceToStudent && b.perUnitAmountIncTax > 0)}
+              twoColumn={twoColumn}
+              hasBudged={values.budget?.some(b => b.invoiceToStudent && b.perUnitAmountIncTax > 0)}
             />
           </Grid>
+
           <CustomFields
             entityName="CourseClass"
             fieldName="customFields"

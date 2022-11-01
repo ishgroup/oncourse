@@ -37,6 +37,7 @@ class NoteFunctions {
             note.modified = LocalDateUtils.dateToTimeValue(dbNote.modifiedOn)
             note.entityId = dbNote.noteRelations?.notableEntity?.id
             note.entityName = dbNote.noteRelations?.notableEntity?.class?.simpleName
+            note.interactionDate = LocalDateUtils.dateToTimeValue(dbNote.interactionDate)
             if (dbNote.changedBy) {
                 note.modifiedBy = "$dbNote.changedBy.firstName $dbNote.changedBy.lastName"
             }
@@ -62,6 +63,8 @@ class NoteFunctions {
             cayenneModel.note = message
             cayenneModel.changedBy = context.localObject(currentUser)
         }
+
+        cayenneModel.interactionDate = note.interactionDate?.toDate() ?: note.created?.toDate()  ?: new Date()
 
         if (!cayenneModel.noteRelations) {
             cayenneModel.context.newObject(relationClass).with { relation ->

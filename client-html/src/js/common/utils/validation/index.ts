@@ -11,7 +11,7 @@ export * from "./urlValidation";
 export * from "./phonesValidation";
 export * from "./mandatoryValidation";
 export * from "./uniqueNamesValidation";
-export * from "./tagNamesValidation";
+export * from "./symbols";
 export * from "./datesValidation";
 export * from "./numbersValidation";
 export * from "./fieldArrayAsyncValidation";
@@ -70,5 +70,7 @@ export const validateRegex = pattern => {
 export const validatePattern = (value, pattern) => {
   if (!value || !pattern) return undefined;
 
-  return value.replace(new RegExp(pattern),"").trim() ? "Value has invalid format" : undefined;
+  return value.replace(new RegExp(pattern), "").trim() ? "Value has invalid format" : undefined;
 };
+
+export const valiadateSelectItemAvailable = (value, items, valueKey = "value") => (items.some(i => i[valueKey] === value) ? undefined : "Selected value is not available");

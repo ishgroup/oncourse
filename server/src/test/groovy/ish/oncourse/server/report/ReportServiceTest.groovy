@@ -15,6 +15,7 @@ import ish.oncourse.server.cayenne.Report
 import ish.oncourse.server.cayenne.Site
 import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.integration.PluginService
+import ish.oncourse.server.preference.UserPreferenceService
 import ish.oncourse.server.print.PrintWorker
 import ish.print.PrintRequest
 import ish.print.PrintResult
@@ -177,7 +178,6 @@ class ReportServiceTest extends TestWithDatabase {
 
         final PrintRequest request = new PrintRequest()
         request.setReportCode(report.getKeyCode())
-        request.setEntity(report.getEntity())
 
         final List<PersistentObjectI> recordsToPrint = new ArrayList<>()
         Map<String, List<Long>> mapOfIds = new HashMap<>()
@@ -189,7 +189,7 @@ class ReportServiceTest extends TestWithDatabase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class)) {
+        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class), injector.getInstance(UserPreferenceService.class)) {
 
             @CompileStatic
             @Override
@@ -235,7 +235,6 @@ class ReportServiceTest extends TestWithDatabase {
 
         final PrintRequest request = new PrintRequest()
         request.setReportCode(report.getKeyCode())
-        request.setEntity(report.getEntity())
 
         final List<PersistentObjectI> recordsToPrint = new ArrayList<>()
         Map<String, List<Long>> mapOfIds = new HashMap<>()
@@ -247,7 +246,7 @@ class ReportServiceTest extends TestWithDatabase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class)) {
+        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class), injector.getInstance(UserPreferenceService.class)) {
 
             @Override
             protected List<PersistentObjectI> getRecords(Map<String, List<Long>> ids) {
@@ -300,7 +299,6 @@ class ReportServiceTest extends TestWithDatabase {
 
         final PrintRequest request = new PrintRequest()
         request.setReportCode(report.getKeyCode())
-        request.setEntity(report.getEntity())
 
         final List<PersistentObjectI> recordsToPrint = new ArrayList<>()
         Map<String, List<Long>> mapOfIds = new HashMap<>()
@@ -309,7 +307,7 @@ class ReportServiceTest extends TestWithDatabase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class)) {
+        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class), injector.getInstance(UserPreferenceService.class)) {
 
             @Override
             protected List<PersistentObjectI> getRecords(Map<String, List<Long>> ids) {
@@ -351,7 +349,6 @@ class ReportServiceTest extends TestWithDatabase {
 
         final PrintRequest request = new PrintRequest()
         request.setReportCode(report.getKeyCode())
-        request.setEntity(report.getEntity())
 
         final List<PersistentObjectI> recordsToPrint = new ArrayList<>()
         Map<String, List<Long>> mapOfIds = new HashMap<>()
@@ -363,7 +360,7 @@ class ReportServiceTest extends TestWithDatabase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class))
+        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class), injector.getInstance(UserPreferenceService.class))
 
         worker.run()
 

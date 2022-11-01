@@ -1027,6 +1027,10 @@ public abstract class CommonPreferenceController {
 			return getTwoFactorAuthExpiryPeriod();
 		} else if (NUMBER_OF_LOGIN_ATTEMPTS.equals(key)) {
 			return getNumberOfLoginAttempts();
+		} else if (TUTORIAL_SKIP_SYSTEMUSER.equals(key)) {
+			return getTutorialSkipSystemUser();
+		} else if (DEFAULT_INVOICE_LINE_ACCOUNT.equals(key)) {
+			return getDefaultInvoiceLineAccount();
 		}
 
 		if (DEPRECATED_PREFERENCES.contains(key)) {
@@ -1190,6 +1194,12 @@ public abstract class CommonPreferenceController {
 			setTwoFactorAuthExpiryPeriod((Integer) value);
 		} else if (NUMBER_OF_LOGIN_ATTEMPTS.equals(key)) {
 			setNumberOfLoginAttempts((Integer) value);
+		} else if (TUTORIAL_SKIP_SYSTEMUSER.equals(key)) {
+			setTutorialSkipSystemUser((String) value);
+		} else if(BACKGROUND_QUALITY_SCALE.equals(key)){
+			setBackgroundQualityScale((String) value);
+		} else if(DEFAULT_INVOICE_LINE_ACCOUNT.equals(key)){
+			setDefaultInvoiceLineAccount((Long) value);
 		}
 	}
 
@@ -1376,5 +1386,29 @@ public abstract class CommonPreferenceController {
 
 	public void setTwoFactorAuthExpiryPeriod(Integer value) {
 		setValue(TFA_EXPIRY_PERIOD, false, value == null ? null : Integer.toString(value));
+	}
+
+	public String getTutorialSkipSystemUser(){
+		return getValue(TUTORIAL_SKIP_SYSTEMUSER, false);
+	}
+
+	public String getBackgroundQualityScale(){
+		return getValue(BACKGROUND_QUALITY_SCALE, false);
+	}
+
+	public String getDefaultInvoiceLineAccount(){
+		return getValue(DEFAULT_INVOICE_LINE_ACCOUNT, false);
+	}
+
+	public void setTutorialSkipSystemUser(String value){
+		setValue(TUTORIAL_SKIP_SYSTEMUSER, false, value);
+	}
+
+	public void setBackgroundQualityScale(String value){
+		setValue(BACKGROUND_QUALITY_SCALE, false, value);
+	}
+
+	public void setDefaultInvoiceLineAccount(Long value){
+		setValue(DEFAULT_INVOICE_LINE_ACCOUNT, false, String.valueOf(value));
 	}
 }

@@ -71,7 +71,7 @@
 	<field name="image.poweredby" class="java.io.InputStream"/>
 	<field name="subreport.ish.onCourse.classRollTutors" class="net.sf.jasperreports.engine.JasperReport"/>
 	<field name="datasource.sessions" class="net.sf.jasperreports.engine.JRDataSource"/>
-	<field name="sessionsCount" class="java.lang.Integer"/>
+	<field name="sessions" class="java.util.List"/>
 	<field name="datasource.successAndQueuedEnrolments" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<variable name="subRep" class="java.lang.String"/>
 	<variable name="tutorNumber" class="java.math.BigDecimal"/>
@@ -126,7 +126,7 @@
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField" style="data field" x="108" y="77" width="101" height="16" uuid="64e02cdc-f7ab-407a-86ec-1dde9c4e476f"/>
-				<textFieldExpression><![CDATA[$F{sessionsCount}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{sessions}.size()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-21" style="Label" x="30" y="77" width="59" height="16" uuid="e5ac306c-70f0-477e-b863-8ae1c74c9568"/>

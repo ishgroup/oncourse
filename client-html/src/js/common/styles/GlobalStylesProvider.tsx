@@ -7,7 +7,6 @@ import * as React from "react";
 import { alpha, darken } from '@mui/material/styles';
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
-import { grey } from "@mui/material/colors";
 import getOS from "../utils/getOS";
 import { AppTheme } from "../../model/common/Theme";
 import InterRomanVar from "../../../fonts/inter/Inter-Roman.var.woff2";
@@ -124,6 +123,11 @@ const globalStyles = (theme: AppTheme) =>
       ".editViewHeadingOffset": {
         marginTop: `-${theme.spacing(2)}`
       },
+      ".cardBorders": {
+        borderRadius: theme.spacing(1),
+        border: "2px solid",
+        borderColor: alpha(theme.palette.text.disabled, 0.1),
+      },
       ".heading": {
         textTransform: "uppercase",
         fontFamily: theme.typography.fontFamily,
@@ -147,9 +151,19 @@ const globalStyles = (theme: AppTheme) =>
         color: theme.heading.color,
         lineHeight: 1.45
       },
+      ".headingHover": {
+        cursor: 'pointer',
+        willChange: "color",
+        "&:hover": {
+          color: darken(theme.heading.color as any, 0.4),
+        }
+      },
       ".checkbox": {
         height: "35px",
-        overflow: "hidden"
+        display: "block",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis"
       },
       ".checkboxWidth": {
         width: "35px"
@@ -230,7 +244,8 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".avetmissButton": {
         "&:hover": {
-          backgroundColor: darken(theme.palette.primary.main, 0.1)
+          backgroundColor: darken(theme.palette.primary.main, 0.1),
+          color: theme.palette.primary.contrastText
         }
       },
       ".hoverGrayIcon": {
@@ -244,7 +259,7 @@ const globalStyles = (theme: AppTheme) =>
         }
       },
       ".dndActionIcon": {
-        fill: theme.palette.action.hover,
+        fill: theme.palette.action.focus,
         "&:hover": {
           fill: theme.palette.action.active
         }
@@ -272,7 +287,7 @@ const globalStyles = (theme: AppTheme) =>
         marginRight: "auto",
         paddingRight: theme.spacing(2),
         paddingTop: "1px",
-        fontSize: `${theme.typography.fontSize}px`
+        fontSize: `14px`
       },
       ".switchWrapper": {
         flexDirection: "row-reverse",
@@ -283,7 +298,7 @@ const globalStyles = (theme: AppTheme) =>
         marginRight: "100px"
       },
       ".addButtonColor": {
-        color: theme.palette.mode === "light" ? "#f7941d" : darken(grey[400], 0.1)
+        color: theme.addButtonColor.color
       },
       ".labelOffset": {
         marginLeft: "-14px"
@@ -333,6 +348,9 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".primaryColor": {
         color: theme.palette.primary.main
+      },
+      ".secondaryColor": {
+        color: theme.palette.secondary.main
       },
       ".warningColor": {
         color: theme.palette.warning.light
@@ -391,6 +409,9 @@ const globalStyles = (theme: AppTheme) =>
         height: theme.spacing(4),
         padding: theme.spacing(1)
       },
+      ".lightGrayColor": {
+        color: alpha(theme.palette.text.primary, 0.2),
+      },
       ".noRecordsMessage": {
         color: theme.palette.grey[400],
         flex: 1,
@@ -403,6 +424,9 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".textSecondaryColor": {
         color: theme.palette.text.secondary
+      },
+      ".textGreyColor700": {
+        color: theme.palette.text.grey
       },
       ".iconColor": {
         color: theme.palette.text.secondary,

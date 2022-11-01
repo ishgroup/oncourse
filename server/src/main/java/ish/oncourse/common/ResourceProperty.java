@@ -20,13 +20,16 @@ public enum  ResourceProperty {
 
     //common automation props
     NAME("name"),
-    ENABLED("enabled"),
+    STATUS("status"),
     ENTITY_CLASS("entityClass"),
     ENTITY_ATTRIBUTE("entityAttribute"),
     DESCRIPTION("description"),
     BODY("body"),
     KEY_CODE("keyCode"),
     OUTPUT_TYPE("outputType"),
+    SHORT_DESCRIPTION("short"),
+    CATEGORY("category"),
+    TAG("tag"),
 
     @Deprecated
     MIN_VERSION("minVersion"),

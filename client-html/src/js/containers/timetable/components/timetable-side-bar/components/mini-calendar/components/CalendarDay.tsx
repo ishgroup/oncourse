@@ -1,9 +1,18 @@
-import React, { useContext } from "react";
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
+import React, { useMemo } from "react";
 import { Button } from "@mui/material";
 import { isSameDay } from "date-fns";
-import { TimetableContext } from "../../../../../Timetable";
-import withTheme from "@mui/styles/withTheme";
-import { makeStyles } from "@mui/styles";
+import clsx from "clsx";
+import { alpha } from "@mui/material/styles";
+import { makeAppStyles } from "../../../../../../../common/styles/makeStyles";
+import { useAppTheme } from "../../../../../../../common/themes/ishTheme";
 
 interface Props {
   day: number;
@@ -11,33 +20,22 @@ interface Props {
   today?: any;
   date: Date;
   status: string;
-  hasSession: boolean;
+  selectedMonthSessionDays: number[];
   disabled: boolean;
   theme?: any;
-}
-
-interface Styles extends Props {
   targetDay?: any;
+  setTargetDay?: any;
 }
 
-const textColorChooser = (targetDay, date, status, theme) => {
-  const today = isSameDay(date, new Date());
-  const target = isSameDay(targetDay, date);
-  if (status === "previous" || status === "next") {
-    return theme.palette.action.disabled;
-  } else if (today && target) {
-    return theme.palette.common.white;
-  } else if (today) {
-    return theme.palette.primary.main;
-  } else return;
-};
-
-const useStyles = makeStyles({
-  root: ({ date, targetDay, status, theme, hasSession, disabled }: Styles) => ({
+const useStyles = makeAppStyles(theme => ({
+  root: {
     padding: 0,
-    borderRadius: 100,
+    border: "2px solid transparent",
+    borderRadius: 4,
     minWidth: "initial",
     boxShadow: "none",
+    fontWeight: "normal",
+    color: theme.palette.text.primary,
     "&:active": {
       boxShadow: "none"
     },
@@ -45,10 +43,6 @@ const useStyles = makeStyles({
       boxShadow: "none"
     },
     "&::after": {
-      display: hasSession ? "block" : "none",
-      background: disabled
-        ? theme.palette.action.disabled
-        : isSameDay(targetDay, date) ? theme.palette.common.white : theme.palette.secondary.main,
       content: "''",
       position: "absolute",
       width: 4,
@@ -56,31 +50,59 @@ const useStyles = makeStyles({
       top: 4,
       borderRadius: "100%"
     },
-    fontWeight: isSameDay(date, new Date()) ? "bold" : "normal",
-    color: textColorChooser(targetDay, date, status, theme)
-  })
-});
+    "&$same": {
+      border: `2px solid ${theme.palette.text.primary}`
+    }
+  },
+  same: {}
+}));
 
 const CalendarDay = React.memo((props: Props) => {
-  const { day, date, disabled } = props;
+  const {
+   day, status, date, disabled, targetDay, setTargetDay, selectedMonthSessionDays
+  } = props;
 
-  const { setTargetDay, targetDay } = useContext(TimetableContext);
+  const classes = useStyles();
 
-  const classes = useStyles({ targetDay, ...props });
-
+  const theme = useAppTheme();
   const isSame = isSameDay(targetDay, date);
+  const isToday = isSameDay(new Date(), date);
+  
+  const style = useMemo(() => {
+    let result;
+
+    const dayIndexValue = selectedMonthSessionDays[day - 1];
+    
+    if (selectedMonthSessionDays.length && status === "current" && dayIndexValue !== 0) {
+      const backgroundColor = alpha(theme.palette.primary.main, dayIndexValue);
+
+      result = {
+        ...result || {},
+        backgroundColor,
+        color: theme.palette.getContrastText(backgroundColor)
+      };
+    }
+    
+    if (isToday) {
+      result = {
+        ...result || {},
+        fontWeight: "900"
+      };
+    }
+    
+    return result;
+  }, [isToday, status, selectedMonthSessionDays, day, theme]);
 
   return (
     <Button
-      className={classes.root}
+      className={clsx(classes.root, isSame && classes.same)}
       onClick={() => setTargetDay(date)}
-      variant={isSame ? "contained" : "text"}
-      color={isSame ? "primary" : "inherit"}
       disabled={disabled}
+      style={style}
     >
       {day}
     </Button>
   );
 });
 
-export default withTheme(CalendarDay);
+export default CalendarDay;

@@ -2,6 +2,7 @@ type: string
 description: List of user preferences
 enum:
 - html.dashboard.category.width
+- html.dashboard.favorite
 - dashboard.scripts.favorite.id
 - news.read
 - html.global.theme
@@ -27,3 +28,6 @@ enum:
 - courseclass_default_minimumPlaces
 - listview.main.content.width
 - oncourse.server.timezone.default
+- tutorial.skip.systemuser
+- background.quality.scale
+- account.default.invoiceline.id

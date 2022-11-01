@@ -20,6 +20,7 @@ import {
  change, Field, FieldArray, getFormValues, initialize, reduxForm, 
 } from "redux-form";
 import IconButton from "@mui/material/IconButton";
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import {
   Binding,
   ExportRequest,
@@ -54,6 +55,7 @@ import FilePreview from "../../../form/FilePreview";
 import ConfirmBase from "../../../dialog/confirm/ConfirmBase";
 import { ContactType } from "../../../../../containers/entities/contacts/Contacts";
 import { LSGetItem, LSSetItem } from "../../../../utils/storage";
+import { reportFullScreenPreview } from "../../../../../containers/automation/containers/pdf-reports/actions";
 
 type PdfReportType = ContactType | "GENERAL";
 
@@ -452,6 +454,15 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
     });
   };
 
+  handleFullScreenPreview = () => {
+    const { pdfReports, dispatch } = this.props;
+    const { selectedSecondary } = this.state;
+
+    const pdfActive: Report = pdfReports[selectedSecondary];
+    
+    dispatch(reportFullScreenPreview(pdfActive.id));
+  }
+
   renderPdfFields() {
     const {
      classes, overlays, pdfReports, values,
@@ -475,7 +486,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
               </Grid>
             )}
             <Grid item xs={12}>
-              <Grid container>
+              <Grid container columnSpacing={3} rowSpacing={2}>
                 <Grid item xs={12}>
                   <FormField
                     type="select"
@@ -509,14 +520,21 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
           </Grid>
           {preview && (
             <Grid item xs={4} className={classes.previewWrapper}>
-              <FilePreview data={preview} />
+              <FilePreview
+                data={preview}
+                actions={[{
+                  actionLabel: "Full size preview",
+                  onAction: this.handleFullScreenPreview,
+                  icon: <FullscreenIcon />
+                }]}
+              />
             </Grid>
           )}
         </Grid>
 
         {!preview && (
           <>
-            <Grid item xs={12} container>
+            <Grid item xs={12} container className="mt-2">
               <FormControlLabel
                 control={(
                   <Checkbox
@@ -584,16 +602,14 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
     const { values } = this.props;
 
     return (
-      <Grid item xs={12}>
-        <Grid container>
-          <Grid item xs={12}>
-            <Typography variant="body2" color="inherit">
-              {values && values.description}
-            </Typography>
-          </Grid>
-          <Grid item xs={4}>
-            <FieldArray name="variables" component={this.templatesRenderer as any} />
-          </Grid>
+      <Grid item container xs={12}>
+        <Grid item xs={12}>
+          <Typography variant="body2" color="inherit">
+            {values && values.description}
+          </Typography>
+        </Grid>
+        <Grid item container rowSpacing={2} columnSpacing={3} xs={12}>
+          <FieldArray name="variables" component={this.templatesRenderer as any} />
         </Grid>
       </Grid>
     );

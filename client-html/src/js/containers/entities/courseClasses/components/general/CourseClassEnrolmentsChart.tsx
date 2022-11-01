@@ -25,13 +25,14 @@ import { State } from "../../../../../reducers/state";
 import { getCourseClassEnrolments, setCourseClassEnrolments } from "../../actions";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import { AppTheme } from "../../../../../model/common/Theme";
-import ChartViewSwitcher from "./ChartViewSwitcher";
 
 interface Props {
   classId: number;
   classStart: string;
   minEnrolments: number;
   maxEnrolments: number;
+  twoColumn: boolean;
+  hasBudged: boolean;
   targetEnrolments?: number;
   getEnrolments?: NumberArgFunction;
   enrolmentsFetching?: boolean;
@@ -41,7 +42,6 @@ interface Props {
   openBudget?: any;
   setShowAllWeeks?: any;
   showAllWeeks?: boolean;
-  hasBudget?: boolean;
 }
 
 const CustomizedTooltip = props => {
@@ -146,21 +146,7 @@ const CustomizedAxisTick = ({
 );
 
 const useStyles = makeStyles(() => ({
-  showAllWeeks: show => show ? { maxWidth: "unset" } : { maxWidth: "400px" },
-  hasOverlay: {
-    opacity: 0.2,
-    pointerEvents: "none"
-  },
-  overlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    display: "flex",
-    alignItems: "center",
-    height: "100%",
-    width: "100%",
-    justifyContent: "center"
-  }
+  showAllWeeks: show => (show ? { maxWidth: "unset" } : { maxWidth: "400px" }),
 }));
 
 const CourseClassEnrolmentsChart = React.memo<Props>(
@@ -176,18 +162,15 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
     classStart,
     theme,
     openBudget,
-    setShowAllWeeks,
     showAllWeeks,
-    hasBudget
+    hasBudged
   }) => {
     const [data, setData] = useState<ChartWeeks>(initialData);
     const [allWeeksData, setAllWeeksData] = useState<ChartWeeks>(initialData);
     const [todayWeek, setTodayWeek] = useState(null);
     const [allWeeksTodayWeek, setAllWeeksTodayWeek] = useState(null);
     const [showLabels, setShowLabels] = useState(false);
-
-    const hasEnrolments = Boolean(enrolments.length);
-
+    
     const maxLabelEl = useRef<SVGAElement>();
     const minLabelEl = useRef<SVGAElement>();
 
@@ -254,7 +237,9 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
           return;
         }
 
-        weeks[diff].enrolments++;
+        if (weeks[diff]) {
+          weeks[diff].enrolments++;
+        }
 
         for (let i = diff; i >= 0; i--) {
           weeks[i].value++;
@@ -357,8 +342,10 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
     }, [showLabels]);
 
     const startWeekIndex = useMemo(() => allWeeksData.findIndex(d => d.week === 0), [allWeeksData]);
-
-    const hasOverlay = !hasBudget || !hasEnrolments;
+    
+    if (!hasBudged || !enrolments.length) {
+      return null;
+    }
 
     return (
       <div
@@ -366,24 +353,9 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
         onMouseLeave={onChartLeave}
         className={clsx("mt-2 relative", classes.showAllWeeks)}
       >
-        {hasOverlay &&
-          <div className={classes.overlay}>
-            {!hasBudget && !hasEnrolments  &&
-              <Typography>
-                Add a budget to activate
-              </Typography>
-            }
-            {hasBudget && !hasEnrolments &&
-              <Typography>
-                Waiting for enrolments
-              </Typography>
-            }
-          </div>
-        }
         <ResponsiveContainer
           width="100%"
           height={250}
-          className={clsx(hasOverlay && classes.hasOverlay)}
         >
           <AreaChart data={showAllWeeks ? allWeeksData : data} margin={chartMargin}>
             <XAxis
@@ -401,7 +373,7 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
               stroke={theme.palette.grey["500"]}
             />
             <Tooltip
-              wrapperStyle={{ zIndex: 1 }}
+              wrapperStyle={{ zIndex: 1, outline: "none" }}
               content={props => <CustomizedTooltip {...props} data={data} showAllWeeks={showAllWeeks} />}
             />
             <ReferenceLine
@@ -457,10 +429,6 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
           </AreaChart>
         </ResponsiveContainer>
 
-        {Boolean(enrolments.length) && (
-          <ChartViewSwitcher showAllWeeks={showAllWeeks} setShowAllWeeks={setShowAllWeeks} theme={theme} />
-        )}
-
         {maxLabelButton}
         {minLabelButton}
       </div>
@@ -474,8 +442,8 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getEnrolments: id => dispatch(getCourseClassEnrolments(id)),
-    clearEnrolments: () => dispatch(setCourseClassEnrolments([]))
-  });
+  getEnrolments: id => dispatch(getCourseClassEnrolments(id)),
+  clearEnrolments: () => dispatch(setCourseClassEnrolments([]))
+});
 
 export default connect<any, any, Props>(mapStateToProps, mapDispatchToProps)(withTheme(CourseClassEnrolmentsChart));

@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.api.dao
 
+import ish.common.types.AutomationStatus
 import ish.oncourse.server.api.v1.function.MessageFunctions
 import ish.oncourse.server.cayenne.EmailTemplate
 import org.apache.cayenne.ObjectContext
@@ -42,8 +43,15 @@ class EmailTemplateDao implements AutomationDao<EmailTemplate> {
         List<String> avalibleTEntities = MessageFunctions.EMAIL_ENTITIES[entityName.toLowerCase()]
         ObjectSelect.query(EmailTemplate)
                 .where(EmailTemplate.ENTITY.in(avalibleTEntities))
-                .and(EmailTemplate.ENABLED.isTrue())
+                .and(EmailTemplate.AUTOMATION_STATUS.eq(AutomationStatus.ENABLED))
                 .orderBy(EmailTemplate.NAME.asc())
+                .select(context)
+    }
+
+    @Override
+    List<EmailTemplate> getByName(ObjectContext context, String name) {
+        ObjectSelect.query(EmailTemplate)
+                .where(EmailTemplate.NAME.eq(name))
                 .select(context)
     }
 }

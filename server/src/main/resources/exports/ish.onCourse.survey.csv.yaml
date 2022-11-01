@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.survey.csv
-entityClass: Survey
-body: ish.onCourse.survey.csv.groovy
-name: StudentFeedback CSV export
-outputType: csv

@@ -13,7 +13,9 @@ package ish.oncourse.server.cayenne
 
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
+import ish.oncourse.server.api.v1.model.ContactInteractionDTO
 import ish.oncourse.server.cayenne.glue._AttachmentRelation
+import ish.util.LocalDateUtils
 
 import javax.annotation.Nonnull
 
@@ -21,7 +23,7 @@ import javax.annotation.Nonnull
  * Object representing relation between a record and document version.
  */
 @QueueableEntity
-abstract class AttachmentRelation extends _AttachmentRelation implements Queueable {
+abstract class AttachmentRelation extends _AttachmentRelation implements Queueable, ContactActivityTrait {
 
 
 
@@ -83,5 +85,20 @@ abstract class AttachmentRelation extends _AttachmentRelation implements Queueab
 			default: 
 				return null
 		}
+	}
+
+	@Override
+	String getInteractionName() {
+		return document.name
+	}
+
+	ContactInteractionDTO toInteraction(){
+		ContactInteractionDTO contactInteractionDTO = new ContactInteractionDTO()
+		contactInteractionDTO.setDate(LocalDateUtils.dateToTimeValue(interactionDate))
+		contactInteractionDTO.setEntity(document.entityName)
+		contactInteractionDTO.setId(document.id)
+		contactInteractionDTO.setDescription(interactionDescription)
+		contactInteractionDTO.setName(interactionName)
+		contactInteractionDTO
 	}
 }

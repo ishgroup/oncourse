@@ -20,6 +20,7 @@ import org.apache.cayenne.exp.parser.ASTPath;
 import org.apache.cayenne.exp.parser.SimpleNode;
 
 import java.util.List;
+
 /*
  * Type of lazy expression node to swap path(long path or
  * path with outer joins) to UNIQUE synthetic attribute.
@@ -45,8 +46,8 @@ public class SyntheticNodeTemplate extends LazyExpressionNode {
 
     private SimpleNode processPass(SimpleNode parent, List<SimpleNode> other) {
         var index = 0;
-        for(var simpleNode : other) {
-            if(simpleNode instanceof ASTPath) {
+        for (var simpleNode : other) {
+            if (simpleNode instanceof ASTPath) {
                 ExpressionUtil.addChild(parent, processPass((ASTPath) simpleNode), index++);
             } else {
                 ExpressionUtil.addChild(parent, simpleNode, index++);
@@ -54,7 +55,7 @@ public class SyntheticNodeTemplate extends LazyExpressionNode {
         }
 
         // this was done to save path for doing shallow copy later in expressions with dates.
-        if(parent.getOperandCount() >= 2 &&
+        if (parent.getOperandCount() >= 2 &&
                 parent.getOperand(0) instanceof ASTPath &&
                 !(parent.getOperand(1) instanceof ASTPath)) {
             expressionPath = (Expression) parent.getOperand(0);
@@ -65,8 +66,10 @@ public class SyntheticNodeTemplate extends LazyExpressionNode {
 
     private ASTPath processPass(ASTPath prevPath) {
         var pathString = prevPath.getPath();
-        return (ASTPath) ExpressionFactory
+        var resPath = (ASTPath) ExpressionFactory
                 .pathExp(pathString.replaceAll(pathToReplace, expression.toString()));
+        resPath.setPathAliases(expression.getPathAliases());
+        return resPath;
     }
 
     @Override
@@ -76,7 +79,7 @@ public class SyntheticNodeTemplate extends LazyExpressionNode {
 
     @Override
     public Expression shallowCopy() {
-        if(expressionPath != null) {
+        if (expressionPath != null) {
             return expressionPath.shallowCopy();
         }
         return super.shallowCopy();

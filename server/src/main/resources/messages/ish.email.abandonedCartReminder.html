@@ -1,0 +1,35 @@
+${render(headerKeycode)}
+<table align="left" border="0" cellpadding="0" cellspacing="0" class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%">
+    <tbody>
+    <tr>
+        <td align="left" class="ish_content_container left" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 17px;padding-bottom: 10px;padding-left: 17px; vertical-align: top;" valign="top">
+            <div class="ish_text_container">
+                <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-break: break-word;border: 0;text-align: left;">
+                    Hi ${checkout?.payer?.firstName},
+                    <br>
+                    You recently visited the ${Preferences.get("college.name")} website and added at least one item to the cart.
+                    <br><br>
+                    <% def classes = checkout?.shoppingCartClasses %>
+                    <% if(classes && !classes.empty) { %><b><i>Classes:</i></b><br>
+                        <% classes.each { cc -> %>
+                        <b>Class code:</b> ${cc.uniqueCode} <b>Course:</b> ${cc.course.name} <b>Course code:</b> ${cc.course.code}<br>
+                        <% } %>
+                    <% } %>
+                    <br>
+                    <% def products = checkout?.shoppingCartProducts %>
+                    <% if(products && !products.empty) { %> <b><i>Products:</i></b><br>
+                        <% products.each { product -> %>
+                        <% def productId = product.willowId %>
+                        <b>Name:</b> ${product.name} <b>SKU:</b> ${product.sku} <b>Quantity:</b> ${checkout.getShoppingCartProductQuantity(productId)}<br>
+                        <% } %>
+                    <% } %>
+                    <br><br>
+                    <a href="${checkout?.data?.get('checkoutURL')}?cartId=${checkout.UUID}" style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" target="_blank">Click here</a> to return to your cart and complete the checkout process.
+                    <br>
+                </p>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+${render(footerKeycode)}

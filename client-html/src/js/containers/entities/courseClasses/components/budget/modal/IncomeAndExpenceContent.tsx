@@ -12,13 +12,13 @@ import { ClassCostRepetitionType } from "@api/model";
 import { Divider } from "@mui/material";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
-import { contactLabelCondition, openContactLink } from "../../../../contacts/utils";
-import { LinkAdornment } from "../../../../../../common/components/form/FieldAdornments";
+import { getContactFullName } from "../../../../contacts/utils";
+import { ContactLinkAdornment } from "../../../../../../common/components/form/FieldAdornments";
 import ContactSelectItemRenderer from "../../../../contacts/components/ContactSelectItemRenderer";
 import { decimalDivide, decimalMul, decimalPlus } from "../../../../../../common/utils/numbers/decimalCalculation";
 import { getCurrentTax } from "../../../../taxes/utils";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
-import { PayRateTypes } from "./BudgetCostModal";
+import { PayRateTypes, validatePayRateTypes } from "./BudgetCostModal";
 import { greaterThanNullValidation } from "../../../../../../common/utils/validation";
 import { normalizeNumberToZero } from "../../../../../../common/utils/numbers/numbersNormalizing";
 
@@ -101,10 +101,10 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
           name="contactId"
           label="Contact"
           selectValueMark="id"
-          selectLabelCondition={contactLabelCondition}
+          selectLabelCondition={getContactFullName}
           defaultDisplayValue={values.contactName}
           labelAdornment={
-            <LinkAdornment linkHandler={openContactLink} link={values.contactId} disabled={!values.contactId} />
+            <ContactLinkAdornment id={values?.contactId} />
           }
           itemRenderer={ContactSelectItemRenderer}
           rowHeight={55}
@@ -119,6 +119,8 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
             label="Type"
             items={PayRateTypes}
             onChange={onRepetitionChange}
+            debounced={false}
+            validate={validatePayRateTypes}
           />
         </Grid>
         {hasCountField && (
@@ -137,6 +139,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
             name="perUnitAmountExTax"
             label={isIncome ? "Amount" : costLabel}
             onChange={onFeeExTaxChange}
+            debounced={false}
           />
         </Grid>
         <Grid item xs={3}>
@@ -147,6 +150,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
             selectValueMark="id"
             selectLabelMark="code"
             onChange={onTaxIdChange}
+            debounced={false}
             items={taxes}
           />
         </Grid>
@@ -157,6 +161,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
             label="Amount inc tax"
             normalize={normalizeNumberToZero}
             onChange={onFeeIncTaxChange}
+            debounced={false}
           />
         </Grid>
       </Grid>

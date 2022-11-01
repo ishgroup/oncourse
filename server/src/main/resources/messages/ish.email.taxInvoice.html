@@ -96,7 +96,7 @@ ${render(headerKeycode)}
                                     <td width="70%" class="ish_invoice_row left" style="border-collapse: collapse;" valign="top" align="left">Includes ${invoiceLine.taxEach} tax.</td>
                                     <td width="30%" class="ish_invoice_row right" style="border-collapse: collapse; color: #000000  !important;" valign="top" align="right"></td>
                                 </tr>
-                                <% if (invoiceLine.discountEachExTax) { %>
+                                <% if (invoiceLine.discountEachExTax != null && !invoiceLine.invoiceLineDiscounts.isEmpty()) { %>
                                 <tr>
                                     <td width="70%" class="ish_invoice_row left" style="border-collapse: collapse;" valign="top" align="left">${invoiceLine.discountEachExTax} ${invoiceLine.invoiceLineDiscounts[0].discount.name} applied</td>
                                     <td width="30%" class="ish_invoice_row right" style="border-collapse: collapse; color: #000000  !important;" valign="top" align="right"></td>

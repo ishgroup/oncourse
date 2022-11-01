@@ -4,3 +4,5 @@
  */
 
 export const stopEventPropagation = e => e.stopPropagation();
+
+export const preventEventDefault = e => e.preventDefault();

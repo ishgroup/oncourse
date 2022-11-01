@@ -33,11 +33,11 @@ properties:
   body:
     type: string
     description: htmlBody
-  enabled:
-    type: boolean
-    description: Message template status
-    required: false
-    example: true
+  status:
+    $ref: './AutomationStatus.yaml'
+    description: Automation status
+    required: true
+    example: Enabled
   variables:
     type: array
     items:
@@ -61,3 +61,18 @@ properties:
     require: false
     description: Message template description
     example: description
+  shortDescription:
+    type: string
+    require: false
+    description: Message template short description
+    example: descr
+  automationTags:
+    type: string
+    require: false
+    description: automation tags separated by commas
+    example: new,income
+  category:
+    type: string
+    require: false
+    description: automation category
+    example: imports

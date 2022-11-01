@@ -4,7 +4,7 @@
  */
 
 import { CertificateOutcome, Contact } from "@api/model";
-import { FormControlLabel, IconButton, Theme } from "@mui/material";
+import { FormControlLabel, Theme } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import { createStyles, withStyles } from "@mui/styles";
@@ -12,15 +12,16 @@ import Typography from "@mui/material/Typography";
 import clsx from "clsx";
 import { format } from "date-fns";
 import QRCode from "qrcode.react";
-import React, {
- useCallback, useEffect, useMemo
-} from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { arrayRemove, change } from "redux-form";
-import Launch from "@mui/icons-material/Launch";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import {
+  ContactLinkAdornment,
+  HeaderContactTitle,
+  LinkAdornment
+} from "../../../../common/components/form/FieldAdornments";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import EntityService from "../../../../common/services/EntityService";
 import { III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
@@ -29,12 +30,12 @@ import { AnyArgFunction, NumberArgFunction, StringArgFunction } from "../../../.
 import { EditViewProps } from "../../../../model/common/ListView";
 import { State } from "../../../../reducers/state";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
 import { openQualificationLink } from "../../qualifications/utils";
 import { clearCertificateOutcomes, getCertificateOutcomes, setCertificateOutcomesSearch } from "../actions";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import Uneditable from "../../../../common/components/form/Uneditable";
+import { getContactFullName } from "../../contacts/utils";
 
 interface Props extends EditViewProps {
   status?: string;
@@ -43,6 +44,7 @@ interface Props extends EditViewProps {
   setCertificateOutcomesSearch?: StringArgFunction;
   studentOutcomes?: CertificateOutcome[];
   studentOutcomesLoading?: boolean;
+  studentOutcomesError?: boolean;
   classes?: any;
 }
 
@@ -99,6 +101,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
     clearCertificateOutcomes,
     studentOutcomes,
     studentOutcomesLoading,
+    studentOutcomesError,
     setCertificateOutcomesSearch,
     submitSucceeded,
     syncErrors
@@ -120,7 +123,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
                   change(
                     form,
                     "studentName",
-                    contactLabelCondition({ firstName: res.rows[0].values[0], lastName: res.rows[0].values[1] })
+                    getContactFullName({ firstName: res.rows[0].values[0], lastName: res.rows[0].values[1] })
                   )
                 );
               }
@@ -144,7 +147,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
 
   const onStudentIdChange = useCallback(
     (contact: Contact) => {
-      dispatch(change(form, "studentName", contactLabelCondition(contact)));
+      dispatch(change(form, "studentName", getContactFullName(contact)));
       dispatch(change(form, "outcomes", []));
       clearCertificateOutcomes(false);
     },
@@ -262,12 +265,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
           disableInteraction={!isNew}
           twoColumn={twoColumn}
           title={(
-            <div className="d-inline-flex-center">
-              {values && defaultContactName(values.studentName)}
-              <IconButton disabled={!values?.studentContactId} size="small" color="primary" onClick={() => openContactLink(values?.studentContactId)}>
-                <Launch fontSize="inherit" />
-              </IconButton>
-            </div>
+            <HeaderContactTitle name={values?.studentName} id={values?.studentContactId} />
           )}
           fields={(
             <Grid item xs={twoColumn ? 6 : 12}>
@@ -278,15 +276,11 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
                 name="studentContactId"
                 label="Student name"
                 selectValueMark="id"
-                selectLabelCondition={contactLabelCondition}
-                defaultDisplayValue={values && defaultContactName(values.studentName)}
+                selectLabelCondition={getContactFullName}
+                defaultDisplayValue={values.studentName}
                 onInnerValueChange={onStudentIdChange}
                 labelAdornment={(
-                  <LinkAdornment
-                    linkHandler={openContactLink}
-                    link={values.studentContactId}
-                    disabled={!values.studentContactId}
-                  />
+                  <ContactLinkAdornment id={values?.studentContactId} />
                 )}
                 disabled={!isNew}
                 itemRenderer={ContactSelectItemRenderer}
@@ -331,7 +325,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
         </Grid>
 
         <Grid item xs={twoColumn ? 12 : 6} className={classes.select1}>
-          {values && defaultContactName(values.studentName)}
+          {values.studentName}
         </Grid>
 
         <Grid item xs={12}>
@@ -472,6 +466,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
             onDelete={deleteOutcome}
             onToggleSearch={onToggleOutcomesSearch}
             resetSearch={submitSucceeded}
+            aqlQueryError={studentOutcomesError}
           />
         </Grid>
 
@@ -491,7 +486,8 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
 
 const mapStateToProps = (state: State) => ({
   studentOutcomes: state.certificates.outcomes.items,
-  studentOutcomesLoading: state.certificates.outcomes.loading
+  studentOutcomesLoading: state.certificates.outcomes.loading,
+  studentOutcomesError: state.certificates.outcomes.loading
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

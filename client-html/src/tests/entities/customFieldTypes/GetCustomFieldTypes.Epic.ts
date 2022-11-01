@@ -1,5 +1,4 @@
-import { ActionsObservable } from "redux-observable";
-import { filter, toArray } from "rxjs/operators";
+import { from, filter, toArray } from "rxjs";
 import { transformDataType } from "../../../js/containers/entities/common/utils";
 import { store, mockedAPI } from "../../TestEntry";
 import { FETCH_START, FETCH_FINISH } from "../../../js/common/actions";
@@ -14,7 +13,7 @@ export const GetCustomFieldTypes = (entity: string) => {
   const response = mockedAPI.db.getCustomFields(`entityIdentifier=${entity}`);
 
   // Redux action to trigger epic
-  const action$ = ActionsObservable.of({ type: GET_CUSTOM_FIELD_TYPES, payload: entity });
+  const action$ = from([{ type: GET_CUSTOM_FIELD_TYPES, payload: entity }]);
 
   // Initializing epic instance
   const epic$ = EpicGetCustomFieldTypes(action$, store, {});

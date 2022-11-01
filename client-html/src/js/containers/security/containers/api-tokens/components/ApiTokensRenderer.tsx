@@ -17,9 +17,9 @@ import FormField from "../../../../../common/components/form/formFields/FormFiel
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
 import { openInternalLink } from "../../../../../common/utils/links";
-import { contactLabelCondition } from "../../../../entities/contacts/utils";
 import UserSelectItemRenderer from "../../users/components/UserSelectItemRenderer";
 import { showMessage } from "../../../../../common/actions";
+import { getContactFullName } from "../../../../entities/contacts/utils";
 
 interface RendererProps {
   users: User[];
@@ -60,14 +60,14 @@ const ApiTokenItem: React.FC<ItemsProps> = (
   };
 
   return (
-    <Card className="mb-2">
-      <Grid container columnSpacing={3} className="p-3">
-        <Grid xs={6}>
+    <Card className="mb-2 p-3">
+      <Grid container columnSpacing={3} rowSpacing={2}>
+        <Grid item xs={6}>
           <FormField
             label="Act as user"
             type="searchSelect"
             selectValueMark="id"
-            selectLabelCondition={contactLabelCondition}
+            selectLabelCondition={getContactFullName}
             name={`${item}.userId`}
             items={users || []}
             itemRenderer={UserSelectItemRenderer}
@@ -92,10 +92,8 @@ const ApiTokenItem: React.FC<ItemsProps> = (
             </Typography>
           )}
         </Grid>
-        <Grid xs={5}>
+        <Grid item xs={6} display="flex" justifyContent="space-between" alignItems="flex-start">
           <FormField type="text" name={`${item}.name`} label="Token name" disabled={!isNew} required fullWidth />
-        </Grid>
-        <Grid item xs={1}>
           <Button
             size="small"
             classes={{
@@ -107,7 +105,7 @@ const ApiTokenItem: React.FC<ItemsProps> = (
           </Button>
         </Grid>
         {isNew ? (
-          <Grid xs={12}>
+          <Grid item xs={12}>
             <div className="centeredFlex mt-3">
               <Typography color="textSecondary" className="flex-fill">
                 <input readOnly className="codeArea" type="text" ref={linkInput} value={field.secret} />
@@ -122,7 +120,7 @@ const ApiTokenItem: React.FC<ItemsProps> = (
           </Grid>
       )
       : (
-        <Grid xs={12}>
+        <Grid item xs={12}>
           <FormField type="dateTime" name={`${item}.lastAccess`} label="Last access" disabled />
         </Grid>
       )}

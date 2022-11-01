@@ -7,7 +7,7 @@
  */
 
 import * as React from "react";
-import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
+import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
 import LeadGeneral from "./LeadGeneral";
 import LeadSites from "./LeadSites";
 import LeadAttachmentsTab from "./LeadAttachmentsTab";

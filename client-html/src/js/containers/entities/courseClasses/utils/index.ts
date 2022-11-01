@@ -19,7 +19,6 @@ import {
   ClassCostExtended,
   ClassCostItem,
   ClassCostTypes,
-  Classes,
   CourseClassStatus,
   CourseClassTutorExtended, SessionRepeatTypes
 } from "../../../../model/entities/CourseClass";
@@ -37,7 +36,7 @@ import CourseClassAttendanceService from "../components/attendance/services/Cour
 import { appendTimezone } from "../../../../common/utils/dates/formatTimezone";
 import uniqid from "../../../../common/utils/uniqid";
 
-export const openCourseClassLink = (classId: number) => openInternalLink(`/${Classes.path}/${classId}`);
+export const openCourseClassLink = (classId: number) => openInternalLink(`/class/${classId}`);
 
 export const getNestedCourseClassItem = (status: CourseClassStatus, count: number, id: number): EntityType => {
   switch (status) {
@@ -45,43 +44,43 @@ export const getNestedCourseClassItem = (status: CourseClassStatus, count: numbe
       return {
         name: "Current",
         count,
-        link: `/${Classes.path}?search=course.id is ${id}&filter=@Current_classes`,
+        link: `/class?search=course.id is ${id}&filter=@Current_classes`,
         // eslint-disable-next-line max-len
-        timetableLink: `/timetable/search?query=courseClass.course.id=${id} and courseClass.startDateTime < tomorrow and courseClass.endDateTime >= today and courseClass.isCancelled is false`
+        timetableLink: `/timetable/search?search=courseClass.course.id=${id} and courseClass.startDateTime < tomorrow and courseClass.endDateTime >= today and courseClass.isCancelled is false`
       };
     case "Future":
       return {
         name: "Future",
         count,
-        link: `/${Classes.path}?search=course.id is ${id}&filter=@Future_classes`,
+        link: `/class?search=course.id is ${id}&filter=@Future_classes`,
         // eslint-disable-next-line max-len
-        timetableLink: `/timetable/search?query=courseClass.course.id=${id} and courseClass.startDateTime >= tomorrow and courseClass.endDateTime >= tomorrow and courseClass.isCancelled is false`
+        timetableLink: `/timetable/search?search=courseClass.course.id=${id} and courseClass.startDateTime >= tomorrow and courseClass.endDateTime >= tomorrow and courseClass.isCancelled is false`
       };
     case "Self Paced":
       return {
         name: "Self Paced",
         count,
-        link: `/${Classes.path}?search=course.id is ${id}&filter=@Self_paced_classes`
+        link: `/class?search=course.id is ${id}&filter=@Self_paced_classes`
       };
     case "Unscheduled":
       return {
         name: "Unscheduled",
         count,
-        link: `/${Classes.path}?search=course.id is ${id}&filter=@Unscheduled_classes`
+        link: `/class?search=course.id is ${id}&filter=@Unscheduled_classes`
       };
     case "Finished":
       return {
         name: "Finished",
         count,
-        link: `/${Classes.path}?search=course.id is ${id}&filter=@Finished_classes`,
+        link: `/class?search=course.id is ${id}&filter=@Finished_classes`,
         // eslint-disable-next-line max-len
-        timetableLink: `/timetable/search?query=courseClass.course.id=${id} and courseClass.isCancelled is false and courseClass.endDateTime before today`
+        timetableLink: `/timetable?search=courseClass.course.id=${id} and courseClass.isCancelled is false and courseClass.endDateTime before today`
       };
     case "Cancelled":
       return {
         name: "Cancelled",
         count,
-        link: `/${Classes.path}?search=course.id is ${id}&filter=@Cancelled_classes`,
+        link: `/class?search=course.id is ${id}&filter=@Cancelled_classes`,
         grayOut: true
       };
     default: {
@@ -211,7 +210,7 @@ export const getClassCostTypes = (
 
 export const processCourseClassApiActions = async (s: State, createdClassId?: number) => {
   const unprocessedAsyncActions = s.actionsQueue.queuedActions;
-  const savedTutorsIds = s.form[LIST_EDIT_VIEW_FORM_NAME].values.tutors.map(t => t.id);
+  const savedTutorsIds = s.form[LIST_EDIT_VIEW_FORM_NAME] ? s.form[LIST_EDIT_VIEW_FORM_NAME].values.tutors.map(t => t.id) : [];
   const sessionUpdateAction = unprocessedAsyncActions.find(s => s.entity === "Session");
 
   const tutorCreateActions = unprocessedAsyncActions.filter(

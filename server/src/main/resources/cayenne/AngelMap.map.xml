@@ -413,14 +413,9 @@
 		<db-attribute name="midwayDETexport" type="VARCHAR" length="20"/>
 		<db-attribute name="minStudentAge" type="INTEGER"/>
 		<db-attribute name="minimumPlaces" type="INTEGER" isMandatory="true"/>
-		<db-attribute name="minutesPerSession" type="INTEGER" length="10" scale="2"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 		<db-attribute name="reportableHours" type="REAL"/>
 		<db-attribute name="roomId" type="BIGINT"/>
-		<db-attribute name="sessionCount" type="INTEGER" isMandatory="true"/>
-		<db-attribute name="sessionrepeatInterval" type="INTEGER"/>
-		<db-attribute name="sessionrepeatType" type="INTEGER"/>
-		<db-attribute name="sessionsSkipWeekends" type="SMALLINT"/>
 		<db-attribute name="startDateTime" type="TIMESTAMP"/>
 		<db-attribute name="suppressAvetmissExport" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="taxAdjustment" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
@@ -595,7 +590,8 @@
 	<db-entity name="EmailTemplate">
 		<db-attribute name="bodyHtml" type="CLOB"/>
 		<db-attribute name="bodyPlain" type="CLOB"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="category" type="VARCHAR" length="255"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="enabled" type="SMALLINT"/>
 		<db-attribute name="entity" type="VARCHAR" length="128"/>
@@ -606,6 +602,8 @@
 		<db-attribute name="subject" type="CLOB"/>
 		<db-attribute name="type" type="INTEGER"/>
 		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="shortDescription" type="CLOB" length="32000"/>
+		<db-attribute name="tags" type="VARCHAR" length="255"/>
 	</db-entity>
 	<db-entity name="Enrolment">
 		<db-attribute name="associatedCourseIdentifier" type="VARCHAR" length="12"/>
@@ -675,7 +673,8 @@
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="ExportTemplate">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="category" type="VARCHAR" length="255"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="enabled" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="entity" type="VARCHAR" isMandatory="true" length="40"/>
@@ -685,6 +684,8 @@
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="outputType" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="script" type="CLOB"/>
+		<db-attribute name="shortDescription" type="CLOB" length="32000"/>
+		<db-attribute name="tags" type="VARCHAR" length="255"/>
 	</db-entity>
 	<db-entity name="Field">
 		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
@@ -783,7 +784,8 @@
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Import">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="category" type="VARCHAR" length="255"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="enabled" type="SMALLINT"/>
 		<db-attribute name="entity" type="VARCHAR" length="128"/>
@@ -792,6 +794,8 @@
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="script" type="CLOB" isMandatory="true"/>
+		<db-attribute name="shortDescription" type="CLOB" length="32000"/>
+		<db-attribute name="tags" type="VARCHAR" length="255"/>
 	</db-entity>
 	<db-entity name="IntegrationConfiguration">
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
@@ -976,7 +980,6 @@
 		<db-attribute name="contents" type="CLOB" length="32000"/>
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="isVocabulary" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="isWebVisible" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="512"/>
@@ -1005,12 +1008,14 @@
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 		<db-attribute name="nodeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="displayRule" type="VARCHAR" length="512"/>
 	</db-entity>
 	<db-entity name="Note">
 		<db-attribute name="changedById" type="BIGINT"/>
 		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="interactionDate" type="TIMESTAMP" isMandatory="false"/>
 		<db-attribute name="note" type="CLOB" isMandatory="true" length="32000"/>
 		<db-attribute name="systemUserId" type="BIGINT"/>
 	</db-entity>
@@ -1290,7 +1295,8 @@
 	</db-entity>
 	<db-entity name="Report">
 		<db-attribute name="backgroundId" type="BIGINT"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="category" type="VARCHAR" length="255"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="data" type="BLOB" isMandatory="true"/>
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="enabled" type="SMALLINT" isMandatory="true"/>
@@ -1302,6 +1308,8 @@
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="preview" type="BLOB"/>
 		<db-attribute name="sortOn" type="VARCHAR" length="200"/>
+		<db-attribute name="shortDescription" type="CLOB" length="32000"/>
+		<db-attribute name="tags" type="VARCHAR" length="255"/>
 	</db-entity>
 	<db-entity name="ReportOverlay">
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
@@ -1332,7 +1340,8 @@
 		<db-attribute name="tableName" type="VARCHAR" isMandatory="true" length="100"/>
 	</db-entity>
 	<db-entity name="Script">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="category" type="VARCHAR" length="255"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="enabled" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="entityClass" type="VARCHAR" length="128"/>
@@ -1346,6 +1355,8 @@
 		<db-attribute name="outputType" type="INTEGER"/>
 		<db-attribute name="schedule" type="VARCHAR" length="512"/>
 		<db-attribute name="script" type="CLOB" isMandatory="true"/>
+		<db-attribute name="shortDescription" type="CLOB" length="32000"/>
+		<db-attribute name="tags" type="VARCHAR" length="255"/>
 		<db-attribute name="triggerType" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
@@ -2086,13 +2097,8 @@
 		<obj-attribute name="midwayDETexport" type="java.lang.String" db-attribute-path="midwayDETexport"/>
 		<obj-attribute name="minStudentAge" type="java.lang.Integer" db-attribute-path="minStudentAge"/>
 		<obj-attribute name="minimumPlaces" type="java.lang.Integer" db-attribute-path="minimumPlaces"/>
-		<obj-attribute name="minutesPerSession" type="java.lang.Integer" db-attribute-path="minutesPerSession"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="reportableHours" type="java.math.BigDecimal" db-attribute-path="reportableHours"/>
-		<obj-attribute name="sessionRepeatInterval" type="java.lang.Integer" db-attribute-path="sessionrepeatInterval"/>
-		<obj-attribute name="sessionRepeatType" type="ish.common.types.SessionRepetitionType" db-attribute-path="sessionrepeatType"/>
-		<obj-attribute name="sessionsCount" type="java.lang.Integer" db-attribute-path="sessionCount"/>
-		<obj-attribute name="sessionsSkipWeekends" type="java.lang.Boolean" db-attribute-path="sessionsSkipWeekends"/>
 		<obj-attribute name="startDateTime" type="java.util.Date" db-attribute-path="startDateTime"/>
 		<obj-attribute name="suppressAvetmissExport" type="java.lang.Boolean" db-attribute-path="suppressAvetmissExport"/>
 		<obj-attribute name="taxAdjustment" type="ish.math.Money" db-attribute-path="taxAdjustment"/>
@@ -2271,7 +2277,7 @@
 		<obj-attribute name="bodyPlain" type="java.lang.String" db-attribute-path="bodyPlain"/>
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
-		<obj-attribute name="enabled" type="java.lang.Boolean" db-attribute-path="enabled"/>
+		<obj-attribute name="automationStatus" type="ish.common.types.AutomationStatus" db-attribute-path="enabled"/>
 		<obj-attribute name="entity" type="java.lang.String" db-attribute-path="entity"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="keyCode" type="java.lang.String" db-attribute-path="keyCode"/>
@@ -2280,6 +2286,9 @@
 		<obj-attribute name="subject" type="java.lang.String" db-attribute-path="subject"/>
 		<obj-attribute name="type" type="ish.common.types.MessageType" db-attribute-path="type"/>
 		<obj-attribute name="willowId" type="java.lang.Long" lock="true" db-attribute-path="willowId"/>
+		<obj-attribute name="shortDescription" type="java.lang.String" db-attribute-path="shortDescription"/>
+		<obj-attribute name="automationTags" type="java.lang.String" db-attribute-path="tags"/>
+		<obj-attribute name="category" type="java.lang.String" db-attribute-path="category"/>
 	</obj-entity>
 	<obj-entity name="EmailTemplateAutomationBinding" superEntityName="AutomationBinding" className="ish.oncourse.server.cayenne.EmailTemplateAutomationBinding" clientClassName="ish.oncourse.cayenne.EmailTemplateAutomationBinding">
 		<qualifier><![CDATA[entityIdentifier = "EmailTemplate"]]></qualifier>
@@ -2364,7 +2373,7 @@
 	<obj-entity name="ExportTemplate" className="ish.oncourse.server.cayenne.ExportTemplate" clientClassName="ish.oncourse.cayenne.ExportTemplate" dbEntityName="ExportTemplate" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
-		<obj-attribute name="enabled" type="java.lang.Boolean" db-attribute-path="enabled"/>
+		<obj-attribute name="automationStatus" type="ish.common.types.AutomationStatus" db-attribute-path="enabled"/>
 		<obj-attribute name="entity" type="java.lang.String" db-attribute-path="entity"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="keyCode" type="java.lang.String" db-attribute-path="keyCode"/>
@@ -2372,6 +2381,9 @@
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="outputType" type="ish.oncourse.types.OutputType" db-attribute-path="outputType"/>
 		<obj-attribute name="script" type="java.lang.String" db-attribute-path="script"/>
+		<obj-attribute name="shortDescription" type="java.lang.String" db-attribute-path="shortDescription"/>
+		<obj-attribute name="automationTags" type="java.lang.String" db-attribute-path="tags"/>
+		<obj-attribute name="category" type="java.lang.String" db-attribute-path="category"/>
 	</obj-entity>
 	<obj-entity name="ExportTemplateAutomationBinding" superEntityName="AutomationBinding" className="ish.oncourse.server.cayenne.ExportTemplateAutomationBinding" clientClassName="ish.oncourse.cayenne.ExportTemplateAutomationBinding">
 		<qualifier><![CDATA[entityIdentifier = "ExportTemplate"]]></qualifier>
@@ -2462,13 +2474,16 @@
 	<obj-entity name="Import" className="ish.oncourse.server.cayenne.Import" clientClassName="ish.oncourse.cayenne.Import" dbEntityName="Import" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
-		<obj-attribute name="enabled" type="java.lang.Boolean" db-attribute-path="enabled"/>
+		<obj-attribute name="automationStatus" type="ish.common.types.AutomationStatus" db-attribute-path="enabled"/>
 		<obj-attribute name="entity" type="java.lang.String" db-attribute-path="entity"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="keyCode" type="java.lang.String" db-attribute-path="keyCode"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="script" type="java.lang.String" db-attribute-path="script"/>
+		<obj-attribute name="shortDescription" type="java.lang.String" db-attribute-path="shortDescription"/>
+		<obj-attribute name="automationTags" type="java.lang.String" db-attribute-path="tags"/>
+		<obj-attribute name="category" type="java.lang.String" db-attribute-path="category"/>
 	</obj-entity>
 	<obj-entity name="ImportAutomationBinding" superEntityName="AutomationBinding" className="ish.oncourse.server.cayenne.ImportAutomationBinding" clientClassName="ish.oncourse.cayenne.ImportAutomationBinding">
 		<qualifier><![CDATA[entityIdentifier = "Import"]]></qualifier>
@@ -2619,6 +2634,7 @@
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
+		<obj-attribute name="interactionDate" type="java.util.Date" db-attribute-path="interactionDate"/>
 		<obj-attribute name="note" type="java.lang.String" db-attribute-path="note"/>
 	</obj-entity>
 	<obj-entity name="NoteRelation" abstract="true" className="ish.oncourse.server.cayenne.NoteRelation" clientClassName="ish.oncourse.cayenne.NoteRelation" dbEntityName="NoteRelation" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
@@ -2854,7 +2870,7 @@
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="data" type="byte[]" db-attribute-path="data"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
-		<obj-attribute name="enabled" type="java.lang.Boolean" db-attribute-path="enabled"/>
+		<obj-attribute name="automationStatus" type="ish.common.types.AutomationStatus" db-attribute-path="enabled"/>
 		<obj-attribute name="entity" type="java.lang.String" db-attribute-path="entity"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="isVisible" type="java.lang.Boolean" db-attribute-path="isVisible"/>
@@ -2863,6 +2879,9 @@
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="preview" type="byte[]" db-attribute-path="preview"/>
 		<obj-attribute name="sortOn" type="java.lang.String" db-attribute-path="sortOn"/>
+		<obj-attribute name="shortDescription" type="java.lang.String" db-attribute-path="shortDescription"/>
+		<obj-attribute name="automationTags" type="java.lang.String" db-attribute-path="tags"/>
+		<obj-attribute name="category" type="java.lang.String" db-attribute-path="category"/>
 	</obj-entity>
 	<obj-entity name="ReportAutomationBinding" superEntityName="AutomationBinding" className="ish.oncourse.server.cayenne.ReportAutomationBinding" clientClassName="ish.oncourse.cayenne.ReportAutomationBinding">
 		<qualifier><![CDATA[entityIdentifier = "Report"]]></qualifier>
@@ -2919,7 +2938,7 @@
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="cronSchedule" type="java.lang.String" db-attribute-path="schedule"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
-		<obj-attribute name="enabled" type="java.lang.Boolean" db-attribute-path="enabled"/>
+		<obj-attribute name="automationStatus" type="ish.common.types.AutomationStatus" db-attribute-path="enabled"/>
 		<obj-attribute name="entityClass" type="java.lang.String" db-attribute-path="entityClass"/>
 		<obj-attribute name="entityAttribute" type="java.lang.String" db-attribute-path="triggerOnAttribute"/>
 		<obj-attribute name="entityEventType" type="ish.common.types.EntityEvent" db-attribute-path="entityEventType"/>
@@ -2932,6 +2951,9 @@
 		<obj-attribute name="systemEventType" type="ish.common.types.SystemEventType" db-attribute-path="onCourseEventType"/>
 		<obj-attribute name="triggerType" type="ish.common.types.TriggerType" db-attribute-path="triggerType"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+		<obj-attribute name="shortDescription" type="java.lang.String" db-attribute-path="shortDescription"/>
+		<obj-attribute name="automationTags" type="java.lang.String" db-attribute-path="tags"/>
+		<obj-attribute name="category" type="java.lang.String" db-attribute-path="category"/>
 	</obj-entity>
 	<obj-entity name="ScriptAutomationBinding" superEntityName="AutomationBinding" className="ish.oncourse.server.cayenne.ScriptAutomationBinding" clientClassName="ish.oncourse.cayenne.ScriptAutomationBinding">
 		<qualifier><![CDATA[entityIdentifier = "Script"]]></qualifier>
@@ -3093,7 +3115,6 @@
 		<obj-attribute name="contents" type="java.lang.String" db-attribute-path="contents"/>
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
-		<obj-attribute name="isVocabulary" type="java.lang.Boolean" db-attribute-path="isVocabulary"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
@@ -3128,6 +3149,7 @@
 		<obj-attribute name="manyTermsAllowed" type="java.lang.Boolean" db-attribute-path="manyTermsAllowed"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+		<obj-attribute name="displayRule" type="java.lang.String" db-attribute-path="displayRule"/>
 	</obj-entity>
 	<obj-entity name="Tax" className="ish.oncourse.server.cayenne.Tax" clientClassName="ish.oncourse.cayenne.Tax" dbEntityName="Tax" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
@@ -3184,6 +3206,9 @@
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 		<obj-attribute name="endDatetime" type="java.util.Date" db-attribute-path="endDatetime"/>
 		<obj-attribute name="startDatetime" type="java.util.Date" db-attribute-path="startDatetime"/>
+	</obj-entity>
+	<obj-entity name="TutorAttendanceCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.TutorAttendanceCustomField" clientClassName="ish.oncourse.cayenne.TutorAttendanceCustomField">
+		<qualifier><![CDATA[entityIdentifier = "TutorAttendance"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="UnavailableRule" abstract="true" className="ish.oncourse.server.cayenne.UnavailableRule" clientClassName="ish.oncourse.cayenne.UnavailableRule" dbEntityName="UnavailableRule" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="allDay" type="java.lang.Boolean" db-attribute-path="allDay"/>
@@ -3909,6 +3934,9 @@
 	<db-relationship name="relatedCourseClass" source="CustomField" target="CourseClass">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
+	<db-relationship name="relatedTutorAttendance" source="CustomField" target="SessionCourseClassTutor">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
 	<db-relationship name="customFields" source="CustomFieldType" target="CustomField" toMany="true">
 		<db-attribute-pair source="id" target="customFieldTypeId"/>
 	</db-relationship>
@@ -4542,12 +4570,6 @@
 	<db-relationship name="paylines" source="Payslip" target="PayLine" toMany="true">
 		<db-attribute-pair source="id" target="payslipId"/>
 	</db-relationship>
-	<db-relationship name="paymentInLines" source="Payslip" target="PaymentInLine" toMany="true">
-		<db-attribute-pair source="id" target="payslipId"/>
-	</db-relationship>
-	<db-relationship name="paymentOutLines" source="Payslip" target="PaymentOutLine" toMany="true">
-		<db-attribute-pair source="id" target="payslipId"/>
-	</db-relationship>
 	<db-relationship name="taggingRelations" source="Payslip" target="NodeRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
 	</db-relationship>
@@ -4679,6 +4701,9 @@
 	</db-relationship>
 	<db-relationship name="session" source="SessionCourseClassTutor" target="CourseSession">
 		<db-attribute-pair source="sessionId" target="id"/>
+	</db-relationship>
+	<db-relationship name="customFields" source="SessionCourseClassTutor" target="CustomField" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
 	<db-relationship name="module" source="Session_Module" target="Module">
 		<db-attribute-pair source="moduleId" target="id"/>
@@ -5385,8 +5410,6 @@
 	<obj-relationship name="paymentOut" source="PaymentOutLine" target="PaymentOut" deleteRule="Nullify" db-relationship-path="paymentOut"/>
 	<obj-relationship name="contact" source="Payslip" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="paylines" source="Payslip" target="PayLine" deleteRule="Cascade" db-relationship-path="paylines"/>
-	<obj-relationship name="paymentInLines" source="Payslip" target="PaymentInLine" deleteRule="Deny" db-relationship-path="paymentInLines"/>
-	<obj-relationship name="paymentOutLines" source="Payslip" target="PaymentOutLine" deleteRule="Deny" db-relationship-path="paymentOutLines"/>
 	<obj-relationship name="taggingRelations" source="Payslip" target="PayslipTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
 	<obj-relationship name="taggedPayslip" source="PayslipTagRelation" target="Payslip" deleteRule="Nullify" db-relationship-path="taggedPayslip"/>
 	<obj-relationship name="user" source="Preference" target="SystemUser" deleteRule="Nullify" db-relationship-path="user"/>
@@ -5585,6 +5608,8 @@
 	<obj-relationship name="courseClassTutor" source="TutorAttendance" target="CourseClassTutor" db-relationship-path="courseClassTutor"/>
 	<obj-relationship name="markedByUser" source="TutorAttendance" target="SystemUser" db-relationship-path="markedByUser"/>
 	<obj-relationship name="session" source="TutorAttendance" target="Session" db-relationship-path="session"/>
+	<obj-relationship name="customFields" source="TutorAttendance" target="TutorAttendanceCustomField" deleteRule="Cascade" db-relationship-path="customFields"/>
+	<obj-relationship name="relatedObject" source="TutorAttendanceCustomField" target="TutorAttendance" deleteRule="Nullify" db-relationship-path="relatedTutorAttendance"/>
 	<obj-relationship name="createdBy" source="UnavailableRule" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdBy">
 		<info:property xmlns:info="http://cayenne.apache.org/schema/10/info" name="comment" value="createdBy"/>
 	</obj-relationship>

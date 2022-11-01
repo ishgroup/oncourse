@@ -72,14 +72,14 @@
 
   <CourseClass id="1" code="123" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
-               taxid="1" sessionCount="3" minimumPlaces="1" maximumPlaces="1" isShownOnWeb="1"
+               taxid="1" minimumPlaces="1" maximumPlaces="1" isShownOnWeb="1"
                isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountid="100" deliveryMode="1" courseid="100" feeExGst="100.00"
                suppressAvetmissExport="0" roomid="1" budgetedPlaces="10" fundingSource="3" fundingSourceId="1"
                attendanceType="0"/>
   <CourseClass id="2" code="124" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
-               taxid="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
+               taxid="1" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
                isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountid="100" deliveryMode="1" courseid="200" feeExGst="100.00"
                suppressAvetmissExport="0" roomid="1" budgetedPlaces="10" fundingSource="3"
@@ -87,7 +87,7 @@
 
   <CourseClass id="3" code="1244" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
-               taxid="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
+               taxid="1" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
                isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountid="100" deliveryMode="1" courseid="200" feeExGst="100.00"
                suppressAvetmissExport="0" roomid="1" budgetedPlaces="10" fundingSource="3"
@@ -134,27 +134,27 @@
   <CustomField id="3" entityIdentifier="Contact" foreignId="2" customFieldTypeId="2" value="value3"
                createdOn="2017-04-17 19:22:59" modifiedOn="2017-04-17 19:23:29"/>
 
-  <Node id="1" isVocabulary="1" isWebVisible="1" name="ContactTag" nodeType="1"
+  <Node id="1" isWebVisible="1" name="ContactTag" nodeType="1"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRequirement id="1" entityIdentifier="8" isRequired="0" manyTermsAllowed="1" nodeId="1"
                    createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="1" entityIdentifier="8" entityRecordId="1" nodeId="1"
                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <Node id="2" isVocabulary="1" isWebVisible="1" name="StudentTag" nodeType="1"
+  <Node id="2" isWebVisible="1" name="StudentTag" nodeType="1"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRequirement id="2" entityIdentifier="3" isRequired="0" manyTermsAllowed="1" nodeId="2"
                    createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="3" isVocabulary="0" isWebVisible="1" name="StudentChildTag" nodeType="1" parentId="2"
+  <Node id="3" IsWebVisible="1" name="StudentChildTag" nodeType="1" parentId="2"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="2" entityIdentifier="3" entityRecordId="1" nodeId="3"
                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <Node id="4" isVocabulary="1" isWebVisible="1" name="CourseTag" nodeType="1"
+  <Node id="4" isWebVisible="1" name="CourseTag" nodeType="1"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRequirement id="3" entityIdentifier="1" isRequired="0" manyTermsAllowed="1" nodeId="4"
                    createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="5" isVocabulary="0" isWebVisible="1" name="CourseChildTag" nodeType="1" parentId="4"
+  <Node id="5" IsWebVisible="1" name="CourseChildTag" nodeType="1" parentId="4"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="3" entityIdentifier="1" entityRecordId="100" nodeId="5"
                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>

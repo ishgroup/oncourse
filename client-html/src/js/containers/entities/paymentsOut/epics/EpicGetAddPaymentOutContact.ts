@@ -1,9 +1,16 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { DataResponse } from "@api/model";
 import { Epic } from "redux-observable";
 import {
   GET_ADD_PAYMENT_OUT_CONTACT,
-  GET_ADD_PAYMENT_OUT_CONTACT_FULFILLED,
   GET_ADD_PAYMENT_OUT_VALUES,
   GET_REFUNDABLE_PAYMENTS
 } from "../actions";
@@ -25,7 +32,7 @@ const request: EpicUtils.Request = {
       return null;
     });
   },
-  processData: (response: DataResponse) => {
+  processData: (response: DataResponse, s, invoiceId) => {
     if (!response) {
       return [{ type: FETCH_SUCCESS }];
     }
@@ -34,14 +41,11 @@ const request: EpicUtils.Request = {
     const contactId = Number(values[0]);
     const selectedInvoiceContact = {
       payeeId: contactId,
-      payeeName: values[1] ? values[1] + (values[2] && values[2] !== values[1] ? `, ${values[2]}` : "") : ""
+      payeeName: values[1] ? values[1] + (values[2] && values[2] !== values[1] ? `, ${values[2]}` : "") : "",
+      invoiceId
     };
 
     return [
-      {
-        type: GET_ADD_PAYMENT_OUT_CONTACT_FULFILLED,
-        payload: { ...selectedInvoiceContact }
-      },
       {
         type: GET_ADD_PAYMENT_OUT_VALUES,
         payload: { ...selectedInvoiceContact }

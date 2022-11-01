@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.voucher.xml
-entityClass: Voucher
-body: ish.onCourse.voucher.xml.groovy
-name: Voucher XML export
-outputType: xml

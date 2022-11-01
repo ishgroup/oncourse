@@ -18,6 +18,7 @@ import ish.oncourse.server.cayenne.Report
 import ish.oncourse.server.cayenne.ReportOverlay
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.oncourse.server.document.DocumentService
+import ish.oncourse.server.preference.UserPreferenceService
 import ish.oncourse.server.upgrades.DataPopulation
 import ish.print.AdditionalParameters
 import ish.print.PrintRequest
@@ -136,7 +137,6 @@ class ReportPrintingTest extends TestWithDatabase {
 
         final PrintRequest request = new PrintRequest()
         request.setReportCode(report.getKeyCode())
-        request.setEntity(sourceEntity)
 
         request.setValueForKey(AdditionalParameters.DATERANGE_FROM.toString(), DATE_FORMAT.parse("2012-01-01"))
         request.setValueForKey(AdditionalParameters.DATERANGE_TO.toString(), DATE_FORMAT.parse("2013-01-01"))
@@ -174,7 +174,7 @@ class ReportPrintingTest extends TestWithDatabase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(PreferenceController.class) as DocumentService)
+        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(PreferenceController.class) as DocumentService, injector.getInstance(UserPreferenceService.class))
         worker.run()
 
         while (ResultType.IN_PROGRESS == worker.getResult().getResultType()) {

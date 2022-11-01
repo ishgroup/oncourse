@@ -1,0 +1,8 @@
+type: object
+properties:
+  date:
+    type: string
+    required: true
+  status:
+    type: string
+    required: true

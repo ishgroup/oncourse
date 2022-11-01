@@ -105,6 +105,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
               label="Reporting status"
               items={enrolmentReportingStatusItems}
               onChange={onChangeSelectValue}
+              debounced={false}
             />
           </Grid>
 
