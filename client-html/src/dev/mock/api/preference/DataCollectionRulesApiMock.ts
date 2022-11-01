@@ -19,8 +19,6 @@ export function DataCollectionRulesApiMock() {
    * Create Data Collection Rule
    * */
   this.api.onPost("v1/datacollection/rule").reply(config => {
-    const data = JSON.parse(config.data);
-    this.db.createCollectionRule(data);
     return promiseResolve(config, JSON.parse(JSON.stringify(this.db.dataCollectionRules)));
   });
   /**

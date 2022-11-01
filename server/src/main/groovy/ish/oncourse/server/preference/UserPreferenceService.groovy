@@ -170,6 +170,8 @@ class UserPreferenceService {
                 return preferenceController.getTutorialSkipSystemUser()
             case PreferenceEnumDTO.BACKGROUND_QUALITY_SCALE:
                 return preferenceController.getBackgroundQualityScale()
+            case PreferenceEnumDTO.ACCOUNT_DEFAULT_INVOICELINE_ID:
+                return preferenceController.getDefaultInvoiceLineAccount()
             case PreferenceEnumDTO.NEWS_READ:
                 return getReadNews()
             default:
@@ -191,6 +193,8 @@ class UserPreferenceService {
                 preference.context.commitChanges()
             }
             preference.uniqueKey = userService.currentUser.id + key.toString() + value
+        } else if (key == PreferenceEnumDTO.ACCOUNT_DEFAULT_INVOICELINE_ID) {
+            preference = preferenceController.getPreference(name, false)
         } else {
             preference = getUserPref(name) ?: createUserPref(name)
         }

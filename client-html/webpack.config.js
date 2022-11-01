@@ -20,7 +20,7 @@ const __common = require("./webpack/__common");
 
 module.exports = function (options = {}) {
   const NODE_ENV = options.NODE_ENV || "development";
-  const BUILD_NUMBER = options.BUILD_NUMBER || "latest";
+  const BUILD_NUMBER = options.BUILD_NUMBER || "99-SNAPSHOT";
   __common.info(NODE_ENV, BUILD_NUMBER);
 
   const main = _main(NODE_ENV, BUILD_NUMBER);
@@ -95,12 +95,6 @@ const _main = (NODE_ENV, BUILD_NUMBER) => {
     cache: false,
     plugins: plugins(NODE_ENV, BUILD_NUMBER),
     devServer: {
-      writeToDisk: true,
-      port: 1707,
-      stats: {
-        chunkModules: false,
-        colors: true,
-      },
       historyApiFallback: true,
       static: "./build/dist",
     },
@@ -158,26 +152,25 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
           minRatio: 0.8,
         }),
       );
-      // TODO: Uncomment on api key issue resolve
-      // if (BUILD_NUMBER !== "99-SNAPSHOT") {
-      //   plugins.push(
-      //     new BugsnagBuildReporterPlugin({
-      //       apiKey: '8fc0c45fd7cbb17b6e8d6cad20738799',
-      //       releaseStage: 'production',
-      //       appVersion: `${BUILD_NUMBER}`,
-      //     }),
-      //     new BugsnagSourceMapUploaderPlugin({
-      //       apiKey: '8fc0c45fd7cbb17b6e8d6cad20738799',
-      //       releaseStage: 'production',
-      //       appVersion: `${BUILD_NUMBER}`,
-      //       uploadSource: true,
-      //       overwrite: true,
-      //       publicPath: '*/',
-      //     }, {
-      //       logLevel: 'debug',
-      //     }),
-      //   );
-      // }
+      if (BUILD_NUMBER !== "99-SNAPSHOT") {
+        plugins.push(
+          new BugsnagBuildReporterPlugin({
+            apiKey: '8fc0c45fd7cbb17b6e8d6cad20738799',
+            releaseStage: 'production',
+            appVersion: `${BUILD_NUMBER}`,
+          }),
+          new BugsnagSourceMapUploaderPlugin({
+            apiKey: '8fc0c45fd7cbb17b6e8d6cad20738799',
+            releaseStage: 'production',
+            appVersion: `${BUILD_NUMBER}`,
+            uploadSource: true,
+            overwrite: true,
+            publicPath: '*/',
+          }, {
+            logLevel: 'debug',
+          }),
+        );
+      }
 
       break;
     }

@@ -218,8 +218,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
     isEditing: false
   };
 
-  private containerNode: any;
-
   private inputNode: any;
 
   componentWillUnmount() {
@@ -712,7 +710,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                     onChange={this.onSelectChange}
                     IconComponent={() => (!disabled && <ExpandMore className={classes.selectIconInput} onClick={this.onFocus} />)}
                     MenuProps={{
-                      anchorOrigin: { vertical: 'top', horizontal: 'left' },
+                      anchorOrigin: { vertical: 'top', horizontal: 'center' },
                       classes: {
                         root: classes.selectMenu
                       }
