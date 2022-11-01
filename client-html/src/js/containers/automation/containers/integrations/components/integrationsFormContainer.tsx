@@ -87,7 +87,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
     if (!value) {
       return "Field is mandatory";
     }
-    if (value.includes("%")) {
+    if (value.includes("%") || value.includes("\"")) {
       return "Special symbols not allowed";
     }
     if (!this.props.integrations) {

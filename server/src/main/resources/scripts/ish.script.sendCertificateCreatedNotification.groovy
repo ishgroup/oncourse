@@ -8,11 +8,11 @@ def nonVetClasses = allClasses.findAll { cc -> cc.course.courseModules.isEmpty()
 //change 'notVETClasses' below to 'allClasses' to create attendance certificates for all classes, including those with Units of Competency attached
 nonVetClasses.each { cc ->
 
-    //Uncomment the line below to create attendance certificates for enrolments with attendance over 80%
-    //def enrolmentsOver80 = cc.successAndQueuedEnrolments.findAll { e -> e.attendancePercent >= 80 }
-
-    //change 'cc.successAndQueuedEnrolments' to 'enrolmentsOver80' if you uncommented line before
     records = cc.successAndQueuedEnrolments
+    if(attendanceRequired){
+        records = cc.successAndQueuedEnrolments.findAll { e -> e.attendancePercent >= attendanceThreshold }
+    }
+
     records.each { enrolment ->
         def printData = report {
             keycode certificateReportTemplate
