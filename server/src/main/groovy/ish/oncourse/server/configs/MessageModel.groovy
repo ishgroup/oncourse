@@ -8,8 +8,10 @@
 
 package ish.oncourse.server.configs
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import ish.oncourse.server.cayenne.EmailTemplate
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 class MessageModel extends AutomationModel{
     private String entityClass
     private String type

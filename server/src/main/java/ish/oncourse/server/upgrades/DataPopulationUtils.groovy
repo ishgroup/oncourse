@@ -106,16 +106,16 @@ class DataPopulationUtils {
     }
 
     static fillExportWithCommonFields(ExportTemplate dbExport, Map<String, Object> props){
-        dbExport.entity = getString(props, ENTITY_CLASS)
-        dbExport.outputType = get(props, OUTPUT_TYPE, OutputType)
+        dbExport.entity = getString(props, ENTITY_CLASS) ?: dbExport.entity
+        dbExport.outputType = get(props, OUTPUT_TYPE, OutputType) ?: dbExport.outputType
 
         configureAutomationWithCommonFields(dbExport, props)
     }
 
     static fillMessageTemplateWithCommonFields(EmailTemplate dbMessage, Map<String, Object> props){
-        dbMessage.entity = getString(props, ENTITY_CLASS)
-        dbMessage.type = get(props, MESSAGE_TYPE, MessageType)
-        dbMessage.subject = getString(props, SUBJECT)
+        dbMessage.entity = getString(props, ENTITY_CLASS) ?: dbMessage.entity
+        dbMessage.type = get(props, MESSAGE_TYPE, MessageType) ?: dbMessage.type
+        dbMessage.subject = getString(props, SUBJECT) ?: dbMessage.subject
 
         configureAutomationWithCommonFields(dbMessage, props)
     }
