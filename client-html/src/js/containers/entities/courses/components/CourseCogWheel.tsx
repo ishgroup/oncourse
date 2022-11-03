@@ -4,7 +4,6 @@ import { Dispatch } from "redux";
 import MenuItem from "@mui/material/MenuItem";
 import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
 import { duplicateCourses } from "../actions";
-import courseRows from "../../../../common/components/list-view/components/relationship-view/data/courseRows";
 import RelationshipView from "./RelationshipView";
 
 const CourseCogWheel = React.memo<any>(props => {
@@ -35,7 +34,7 @@ const CourseCogWheel = React.memo<any>(props => {
     <>
       <RelationshipView
         open={dialogOpened === "RelationshipView"}
-        rows={courseRows.rows}
+        selection={selection}
         setDialogOpened={setDialogOpened}
         closeMenu={closeMenu}
       />
@@ -57,7 +56,7 @@ const CourseCogWheel = React.memo<any>(props => {
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-    duplicate: (ids: number[]) => dispatch(duplicateCourses(ids))
-  });
+  duplicate: (ids: number[]) => dispatch(duplicateCourses(ids))
+});
 
 export default connect<any, any, any>(null, mapDispatchToProps)(CourseCogWheel);

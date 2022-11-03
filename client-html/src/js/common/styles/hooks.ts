@@ -40,57 +40,5 @@ export const useWindowSize = () => {
 };
 
 export const getColor = (i, code) => {
-  let colorName = "";
-  switch (i) {
-    case 1:
-      colorName = "pink";
-      break;
-    case 2:
-      colorName = "purple";
-      break;
-    case 3:
-      colorName = "deepPurple";
-      break;
-    case 4:
-      colorName = "indigo";
-      break;
-    case 5:
-      colorName = "blue";
-      break;
-    case 6:
-      colorName = "lightBlue";
-      break;
-    case 7:
-      colorName = "cyan";
-      break;
-    case 8:
-      colorName = "teal";
-      break;
-    case 9:
-      colorName = "green";
-      break;
-    case 10:
-      colorName = "lightGreen";
-      break;
-    case 11:
-      colorName = "lime";
-      break;
-    case 12:
-      colorName = "amber";
-      break;
-    case 13:
-      colorName = "orange";
-      break;
-    case 14:
-      colorName = "deepOrange";
-      break;
-    case 15:
-      colorName = "brown";
-      break;
-    case 0:
-    default:
-      colorName = "red";
-      break;
-  }
-  return Colors[colorName][code];
+  return Colors[Object.keys(Colors)[i]][code];
 };

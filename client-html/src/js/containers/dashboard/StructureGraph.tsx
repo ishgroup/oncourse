@@ -121,8 +121,8 @@ const useStyles = makeAppStyles(theme => ({
     borderColor: alpha(theme.palette.text.disabled, 0.1),
       "& .node circle": {
         cursor: "pointer",
-        stroke: "#3182bd",
-        strokeWidth: "1.5px"
+        strokeWidth: "1.5px",
+        stroke: theme.palette.background.default
       },
       "& .node text": {
         font: "12px sans-serif",
