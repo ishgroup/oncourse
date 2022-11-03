@@ -11,7 +11,7 @@ export * from "./urlValidation";
 export * from "./phonesValidation";
 export * from "./mandatoryValidation";
 export * from "./uniqueNamesValidation";
-export * from "./tagNamesValidation";
+export * from "./symbols";
 export * from "./datesValidation";
 export * from "./numbersValidation";
 export * from "./fieldArrayAsyncValidation";

@@ -9,7 +9,6 @@
 import React, { Dispatch, useEffect } from "react";
 import { connect } from "react-redux";
 import { CustomFieldType, SurveyItem, TableModel } from "@api/model";
-import { defaultContactName } from "../contacts/utils";
 import { clearListState, getFilters } from "../../../common/components/list-view/actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import ListView from "../../../common/components/list-view/ListView";
@@ -81,7 +80,7 @@ const StudentFeedbackComp: React.FC<StudentFeedbackProps> = props => {
         secondaryColumn: "enrolment.courseClass.course.name"
       }}
       editViewProps={{
-        nameCondition: values => values && defaultContactName(values.studentName),
+        nameCondition: values => values?.studentName,
         hideTitle: true
       }}
       EditViewContent={SurveyEditView}

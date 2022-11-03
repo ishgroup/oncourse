@@ -10,7 +10,6 @@ import { format } from "date-fns";
 import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
 import { EntityName } from "../../../../model/entities/common";
 import { EEE_D_MMM_YYYY } from "../../../../common/utils/dates/format";
-import { defaultContactName } from "../../contacts/utils";
 import { State } from "../../../../reducers/state";
 
 export const mapEntityDisplayName = (entity: EntityName) => {
@@ -51,7 +50,7 @@ export const mapEntityListDisplayName = (entity: EntityName, item: any, state: S
     case "Banking":
       return `${format(new Date(item.settlementDate), EEE_D_MMM_YYYY)}${item.adminSite ? " for " + item.adminSite : ""}`;
     case "CorporatePass":
-      return defaultContactName(item.contactFullName);
+      return item.contactFullName;
     case "Certificate":
       return item.studentName;
     case "Course":

@@ -17,8 +17,8 @@ import { notesAsyncValidate } from "../../../common/components/form/notes/utils"
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 import { State } from "../../../reducers/state";
 import EntityService from "../../../common/services/EntityService";
-import { getContactName } from "../contacts/utils";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import { getContactFullName } from "../contacts/utils";
 
 const filterGroups: FilterGroup[] = [
   {
@@ -72,7 +72,7 @@ const AssessmentSubmission = (props: any) => {
     )
       .then(res => {
         const tutors = (res.rows.map(r => ({
-          label: getContactName({ firstName: r.values[0], lastName: r.values[1] }),
+          label: getContactFullName({ firstName: r.values[0], lastName: r.values[1] }),
           value: Number(r.id),
         })));
 
