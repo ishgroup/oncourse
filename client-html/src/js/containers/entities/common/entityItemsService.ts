@@ -255,7 +255,7 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
       return PaymentOutService.updatePaymentOut(id, item);
 
     case "Payslip": {
-      const paylines = JSON.parse(JSON.stringify(item.paylines.filter(p => p.deferred)));
+      const paylines = [...item?.paylines.filter(p => p.deferred) || []];
 
       paylines.forEach(i => {
         delete i.deferred;
