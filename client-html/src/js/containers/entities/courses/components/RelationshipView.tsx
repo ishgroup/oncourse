@@ -45,7 +45,6 @@ const useStyles = makeAppStyles(theme => ({
       textAnchor: "middle",
       fill: theme.palette.text.primary
     },
-
     "& .node text.textClone": {
       stroke: theme.palette.background.default
     },

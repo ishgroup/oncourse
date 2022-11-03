@@ -34,24 +34,9 @@ function update(svg, force, root, container) {
   const links = d3.layout.tree().links(nodes);
 
   let link = svg.selectAll(".link");
-  
-  function tick() {
-    // Node radius with text offset
-    const radius = 24;
 
-    const { width, height } = container.getBoundingClientRect();
-
-    // Keep nodes within given area
-    node.attr("transform", d => "translate("
-      + Math.max(radius, Math.min(width - radius, d.x)) + ","
-      + Math.max(radius, Math.min(height - radius, d.y)) + ")");
-
-    link
-      .attr("x1", d => d.source.x)
-      .attr("y1", d => d.source.y)
-      .attr("x2", d => d.target.x)
-      .attr("y2", d => d.target.y);
-  }
+  // Remove labels
+  svg.selectAll("text").remove();
 
   // Restart the force layout.
   force
@@ -59,7 +44,6 @@ function update(svg, force, root, container) {
     .on("tick", tick)
     .links(links)
     .start();
-
 
   // Update links.
   link = link.data(links, d => d.target.id);
@@ -86,21 +70,59 @@ function update(svg, force, root, container) {
     update(svg, force, root, container);
   }
 
-  const nodeEnter = node.enter().append("g")
+  const nodeEnter = node.enter()
+    .append("circle")
+    .attr("r", 10 )
     .attr("class", "node")
     .on("click", click)
     .call(force.drag);
 
-  nodeEnter.append("circle")
-    .attr("r", 10 );
+  const labelsBackground = svg.selectAll(null)
+    .data(nodes)
+    .enter()
+    .append("text")
+    .attr("dy", ".35em")
+    .attr("y", 16)
+    .text(d => d.name)
+    .attr("fill", "none")
+    .attr("class", "textClone")
+    .attr("stroke-width", 3);
 
-  nodeEnter.append("text")
+  const labels = svg.selectAll(null)
+    .data(nodes)
+    .enter()
+    .append("text")
     .attr("dy", ".35em")
     .attr("y", 16)
     .text(d => d.name);
 
-  node.select("circle")
-    .style("fill", color);
+  nodeEnter.style("fill", color);
+
+  function tick() {
+    // Node radius with text offset
+    const radius = 24;
+
+    const { width, height } = container.getBoundingClientRect();
+
+    // Keep nodes within given area
+    node.attr("cx", d => d.x = Math.max(radius, Math.min(width - radius, d.x)))
+      .attr("cy", d => d.y = Math.max(radius, Math.min(height - radius, d.y)));
+
+    link
+      .attr("x1", d => d.source.x)
+      .attr("y1", d => d.source.y)
+      .attr("x2", d => d.target.x)
+      .attr("y2", d => d.target.y);
+
+    labels
+      .attr("x", d => d.x )
+      .attr("y", d => d.y + 16 );
+
+    labelsBackground
+      .attr("x", d => d.x )
+      .attr("y", d => d.y + 16 );
+  }
+
 }
 
 function color(d) {
@@ -119,17 +141,20 @@ const useStyles = makeAppStyles(theme => ({
     borderRadius: theme.spacing(1),
     border: "2px solid",
     borderColor: alpha(theme.palette.text.disabled, 0.1),
-      "& .node circle": {
+      "& .node": {
         cursor: "pointer",
         strokeWidth: "1.5px",
         stroke: theme.palette.background.default
       },
-      "& .node text": {
+      "& text": {
         font: "12px sans-serif",
         fontWeight: 600,
         pointerEvents: "none",
         textAnchor: "middle",
         fill: theme.palette.text.primary
+      },
+      "& text.textClone": {
+        stroke: theme.palette.background.default
       },
       "& line.link": {
         fill: "none",

@@ -31,29 +31,34 @@
   ],
   "automation": [
     {
-      "name": "Scripts",
+      "name": "Automation",
       "children": [
         {
-          "name": "Export templates"
+          "name": "Scripts",
+          "children": [
+            {
+              "name": "Export templates"
+            },
+            {
+              "name": "Import templates"
+            },
+            {
+              "name": "Message templates"
+            }
+          ]
         },
         {
-          "name": "Import templates"
+          "name": "PDF reports",
+          "children": [
+            {
+              "name": "PDF backgrounds"
+            }
+          ]
         },
         {
-          "name": "Message templates"
+          "name": "Integrations"
         }
       ]
-    },
-    {
-      "name": "PDF reports",
-      "children": [
-        {
-          "name": "PDF backgrounds"
-        }
-      ]
-    },
-    {
-      "name": "Integrations"
     }
   ],
   "accounting": [
@@ -64,10 +69,12 @@
       "name": "Transactions",
       "children": [
         {
-          "name": "Invoices"
-        },
-        {
-          "name": "Quotes"
+          "name": "Quotes",
+          "chidren": [
+            {
+              "name": "Invoices"
+            }
+          ]
         },
         {
           "name": "Payments in",
@@ -83,10 +90,10 @@
       ]
     },
     {
-      "name": "Banking deposits",
+      "name": "Deposit banking",
       "children": [
         {
-          "name": "Deposit banking"
+          "name": "Banking deposits"
         }
       ]
     },
@@ -116,29 +123,31 @@
       "name": "Quick enrol",
       "children": [
         {
-          "name": "Invoices"
+          "name": "Sales",
+          "children": [
+            {
+              "name": "Products"
+            },
+            {
+              "name": "Voucher types"
+            }
+          ]
+        },
+        {
+          "name": "Invoices",
+          "children": [
+            {
+              "name": "Payments out"
+            }
+          ]
         },
         {
           "name": "Payments in",
           "children": [
             {
               "name": "Batch payment in"
-            },
-            {
-              "name": "Sales",
-              "children": [
-                {
-                  "name": "Products"
-                },
-                {
-                  "name": "Voucher types"
-                }
-              ]
             }
           ]
-        },
-        {
-          "name": "Payments out"
         }
       ]
     },
@@ -243,13 +252,13 @@
           "children": [
             {
               "name": "Certificates"
-            },
-            {
-              "name": "Prior Learnings"
             }
           ]
         }
       ]
+    },
+    {
+      "name": "Prior Learnings"
     },
     {
       "name": "Funding contract"
@@ -318,7 +327,16 @@
       "name": "Contacts",
       "children": [
         {
+          "name": "Leads"
+        },
+        {
           "name": "Companies"
+        },
+        {
+          "name": "Quotes"
+        },
+        {
+          "name": "Corporate pass"
         },
         {
           "name": "Students",
@@ -327,16 +345,7 @@
               "name": "Enrolments"
             },
             {
-              "name": "Leads"
-            },
-            {
               "name": "Applications"
-            },
-            {
-              "name": "Quotes"
-            },
-            {
-              "name": "Corporate pass"
             },
             {
               "name": "Waiting lists"
