@@ -136,7 +136,7 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
           confirmMessage: hasWages
             ? `Wages for ${tutor.tutorName} will be removed too, do you really want to continue?`
             : "Tutor will be deleted permanently",
-          cancelButtonText: "Delete"
+          confirmButtonText: "Delete"
         });
       };
 
