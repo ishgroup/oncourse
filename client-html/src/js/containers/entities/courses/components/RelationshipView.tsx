@@ -33,19 +33,19 @@ const useStyles = makeAppStyles(theme => ({
     borderRadius: theme.spacing(1),
     border: "2px solid",
     borderColor: alpha(theme.palette.text.disabled, 0.1),
-    "& .node circle": {
+    "& .node": {
       cursor: "pointer",
       strokeWidth: "1.5px",
       stroke: theme.palette.background.default
     },
-    "& .node text": {
+    "& text": {
       font: "12px sans-serif",
       fontWeight: 600,
       pointerEvents: "none",
       textAnchor: "middle",
       fill: theme.palette.text.primary
     },
-    "& .node text.textClone": {
+    "& text.textClone": {
       stroke: theme.palette.background.default
     },
     "& line.link": {
@@ -97,7 +97,7 @@ function flatten(nodes, relationTypes) {
   return result;
 }
 
-function update(svg, force, rows, container, relationTypes) {
+function update(svg, force, rows, container, relationTypes, coursesData) {
   let node = svg.selectAll(".node");
   const nodes = flatten(rows, relationTypes);
 
@@ -105,22 +105,28 @@ function update(svg, force, rows, container, relationTypes) {
 
   let link = svg.selectAll(".link");
 
-  function tick() {
-    const radius = 24;
+  // Remove labels
+  svg.selectAll("text").remove();
 
-    const { width, height } = container.getBoundingClientRect();
+  // Add legend
+  let baseOffset = 0;
 
-    // Keep nodes within given area
-    node.attr("transform", d => "translate("
-      + Math.max(radius, Math.min(width - radius, d.x)) + ","
-      + Math.max(radius, Math.min(height - radius, d.y)) + ")");
-
-    link
-      .attr("x1", d => d.source.x)
-      .attr("y1", d => d.source.y)
-      .attr("x2", d => d.target.x)
-      .attr("y2", d => d.target.y);
-  }
+  relationTypes.filter(t => coursesData
+    .some(c => c.relatedSellables
+      .some(r => r.relationId === t.id)))
+    .forEach(t => {
+      svg.append("circle")
+        .attr("cx", 24)
+        .attr("cy", 24 + baseOffset)
+        .attr("r", 6)
+        .style("fill", t.color);
+      svg.append("text").attr("x", 44).attr("y", 24 + baseOffset).text(t.name)
+        .style("font-size", "15px")
+        .style("font-weight", "400")
+        .style("text-anchor", "unset")
+        .attr("alignment-baseline", "middle");
+      baseOffset += 30;
+    });
 
   // Restart the force layout.
   force
@@ -143,14 +149,17 @@ function update(svg, force, rows, container, relationTypes) {
 
   node.exit().remove();
 
-  const nodeEnter = node.enter().append("g")
+  const nodeEnter = node.enter().append("circle")
+    .attr("r", 6 )
     .attr("class", "node")
     .call(force.drag);
 
-  nodeEnter.append("circle")
-    .attr("r", 6 );
+  nodeEnter.style("fill", color);
 
-  node.append("text")
+  const labelsBackground = svg.selectAll(null)
+    .data(nodes)
+    .enter()
+    .append("text")
     .attr("dy", ".35em")
     .attr("y", 16)
     .text(d => d.type ? `${d.name} (${d.type.toLowerCase()})` : d.name)
@@ -158,13 +167,38 @@ function update(svg, force, rows, container, relationTypes) {
     .attr("class", "textClone")
     .attr("stroke-width", 3);
 
-  nodeEnter.append("text")
+  const labels = svg.selectAll(null)
+    .data(nodes)
+    .enter()
+    .append("text")
     .attr("dy", ".35em")
     .attr("y", 16)
     .text(d => d.type ? `${d.name} (${d.type.toLowerCase()})` : d.name);
 
-  node.select("circle")
-    .style("fill", color);
+  function tick() {
+    // Node radius with text offset
+    const radius = 16;
+
+    const { width, height } = container.getBoundingClientRect();
+
+    // Keep nodes within given area
+    node.attr("cx", d => d.x = Math.max(radius, Math.min(width - radius, d.x)))
+      .attr("cy", d => d.y = Math.max(radius, Math.min(height - radius, d.y)));
+
+    link
+      .attr("x1", d => d.source.x)
+      .attr("y1", d => d.source.y)
+      .attr("x2", d => d.target.x)
+      .attr("y2", d => d.target.y);
+
+    labels
+      .attr("x", d => d.x )
+      .attr("y", d => d.y + 16 );
+
+    labelsBackground
+      .attr("x", d => d.x )
+      .attr("y", d => d.y + 16 );
+  }
 }
 
 function color(d) {
@@ -272,26 +306,7 @@ const RelationshipView: React.FC<Props> = props => {
           };
         });
 
-        // Add legend
-        let baseOffset = 0;
-
-        relationTypes.filter(t => coursesData
-          .some(c => c.relatedSellables
-            .some(r => r.relationId === t.id)))
-          .forEach(t => {
-          svg.append("circle")
-            .attr("cx", 24)
-            .attr("cy", 24 + baseOffset)
-            .attr("r", 6)
-            .style("fill", t.color);
-          svg.append("text").attr("x", 44).attr("y", 24 + baseOffset).text(t.name)
-            .style("font-size", "15px")
-            .style("font-weight", "400")
-            .attr("alignment-baseline", "middle");
-          baseOffset += 30;
-        });
-
-        update(svg, forceRef.current, courses, ref.current, relationTypes);
+        update(svg, forceRef.current, courses, ref.current, relationTypes, coursesData);
     }
   }, [coursesData, open, ref.current, relationTypes]);
 
