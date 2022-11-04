@@ -13,6 +13,7 @@ import { isInvalid, submit } from "redux-form";
 import { connect } from "react-redux";
 import Button from "@mui/material/Button";
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
+import { useEffect, useRef } from "react";
 import { closeConfirm, showConfirm, setNextLocation } from "../../../actions";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import { State } from "../../../../reducers/state";
@@ -26,98 +27,103 @@ interface Props {
   closeConfirm?: () => void;
   setNextLocation?: (nextLocation: string) => void;
   isInvalid?: boolean;
+  isOpened?: boolean;
   nextLocation?: string;
 }
 
-class RouteChangeConfirm extends React.Component<Props & RouteComponentProps> {
-  private unblock: () => void;
+const RouteChangeConfirm = (
+  {
+    nextLocation,
+    when,
+    isOpened,
+    closeConfirm,
+    location,
+    history,
+    submitForm,
+    form,
+    isInvalid,
+    showConfirm,
+    setNextLocation,
+    message = "You have unsaved changes. Do you want to leave this page and discard them?"
+  }: Props & RouteComponentProps
+) => {
 
-  constructor(props) {
-    super(props);
+  const unblock = useRef<any>();
+
+  function onCancel() {
+    setNextLocation("");
   }
 
-  componentDidMount() {
-    this.setUnblockFunction();
+  const blockCallback = nextLocationCurrent => {
+    const isCurrent = nextLocationCurrent.pathname === location.pathname;
+
+    if (when && !isCurrent) {
+      const confirmButton = (
+        <Button
+          classes={{
+            disabled: "saveButtonEditViewDisabled"
+          }}
+          startIcon={isInvalid && <ErrorOutline color="error" />}
+          variant="contained"
+          color="primary"
+          disabled={isInvalid}
+          onClick={() => {
+            submitForm(form);
+            closeConfirm();
+          }}
+        >
+          SAVE
+        </Button>
+      );
+
+      setNextLocation(nextLocationCurrent.pathname);
+
+      showConfirm(
+        {
+          onCancel,
+          onCancelCustom: () => navigateToNextLocation(nextLocationCurrent.pathname),
+          confirmMessage: message,
+          cancelButtonText: "DISCARD CHANGES",
+          confirmCustomComponent: confirmButton
+        }
+      );
+    }
+    
+    return !when as any;
+  };
+
+  unblock.current = history.block(blockCallback);
+
+  function navigateToNextLocation(navigateTo) {
+    unblock.current();
+    history.push(navigateTo);
+    if (isOpened) {
+      closeConfirm();
+    }
+    onCancel();
   }
 
-  componentDidUpdate() {
-    this.setUnblockFunction();
-  }
+  useEffect(() => {
+    if (nextLocation && !when) {
+      navigateToNextLocation(nextLocation);
+    }
+    return unblock.current;
+  }, [
+    when,
+    isInvalid,
+    submitForm,
+    form,
+    closeConfirm,
+    nextLocation,
+    setNextLocation
+  ]);
 
-  setUnblockFunction() {
-    const {
-      message = "You have unsaved changes. Do you want to leave this page and discard them?",
-      history,
-      location,
-      showConfirm,
-      isInvalid,
-      form,
-      submitForm,
-      closeConfirm,
-      setNextLocation,
-      when
-    } = this.props;
-
-    this.unblock = history.block(nextLocation => {
-      const isCurrent = nextLocation.pathname === location.pathname;
-
-      if (when && !isCurrent) {
-        nextLocation.pathname && setNextLocation(nextLocation.pathname);
-        
-        const confirmButton = (
-          <Button
-            classes={{
-              disabled: "saveButtonEditViewDisabled"
-            }}
-            startIcon={isInvalid && <ErrorOutline color="error" />}
-            variant="contained"
-            color="primary"
-            disabled={isInvalid}
-            onClick={() => {
-              submitForm(form);
-              closeConfirm();
-            }}
-          >
-            SAVE
-          </Button>
-        );
-
-        showConfirm(
-          {
-            onCancelCustom: this.onCancelCustom,
-            confirmMessage: message,
-            cancelButtonText: "DISCARD CHANGES",
-            confirmCustomComponent: confirmButton
-          }
-        );
-
-        setNextLocation(nextLocation.pathname);
-      }
-      return !when as any;
-    });
-  }
-
-  componentWillUnmount() {
-    this.unblock();
-  }
-
-  onCancelCustom = () => {
-    this.navigateToNextLocation();
-  }
-
-  navigateToNextLocation() {
-    const { nextLocation } = this.props;
-    this.unblock();
-    this.props.history.push(nextLocation);
-  }
-
-  render() {
-    return null;
-  }
-}
+  return null;
+};
 
 const mapStateToProps = (state: State, ownProps) => ({
   isInvalid: isInvalid(ownProps.form)(state),
+  isOpened: state.confirm.open,
   nextLocation: state.nextLocation
 });
 

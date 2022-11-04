@@ -52,6 +52,7 @@ public class DateFormatter extends DefaultFormatter {
 	public static SimpleDateFormat FORMAT_DATE_YYYYMMDD = new SimpleDateFormat("YYYYMMdd");
 	public static SimpleDateFormat FORMAT_DATE_YYYYMM = new SimpleDateFormat("YYYYMM");
 	public static SimpleDateFormat FORMAT_DATE_ISO8601;
+	public static final String FORMAT_DATE_RFC3339 = "yyyy-MM-dd'T'HH:mm:ssXXX";
 	static 	{
 		FORMAT_DATE_ISO8601 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 		FORMAT_DATE_ISO8601.setTimeZone(TimeZone.getTimeZone("UTC"));

@@ -12,7 +12,7 @@ import { withRouter } from "react-router";
 import { getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-form";
 import { Dispatch } from "redux";
 import { ExportTemplate } from "@api/model";
-import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../reducers/state";
 
 import ImportTemplatesForm from "./containers/ImportTemplatesForm";
@@ -24,7 +24,6 @@ import {
   removeImportTemplate
 } from "./actions";
 import { usePrevious } from "../../../../common/utils/hooks";
-import { setNextLocation } from "../../../../common/actions";
 
 export const IMPORT_TEMPLATES_FORM_NAME = "ImportTemplatesForm";
 
@@ -69,6 +68,8 @@ const mapStateToProps = (state: State) => ({
   values: getFormValues(IMPORT_TEMPLATES_FORM_NAME)(state),
   syncErrors: getFormSyncErrors(IMPORT_TEMPLATES_FORM_NAME)(state),
   emailTemplates: state.automation.emailTemplate.emailTemplates,
+  importTemplates: state.automation.importTemplate.importTemplates,
+  nextLocation: state.nextLocation
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -76,8 +77,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onUpdate: (template: ExportTemplate) => dispatch(updateImportTemplate(template)),
   onUpdateInternal: (template: ExportTemplate) => dispatch(updateInternalImportTemplate(template)),
   onDelete: (id: number) => dispatch(removeImportTemplate(id)),
-  getImportTemplate: (id: number) => dispatch(getImportTemplate(id)),
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation))
+  getImportTemplate: (id: number) => dispatch(getImportTemplate(id))
 });
 
 export default reduxForm({

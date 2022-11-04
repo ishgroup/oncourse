@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React from "react";
@@ -83,7 +86,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
 
   componentDidUpdate(prevProps) {
     const {
-      pending, dispatch, rootEntity, isNested
+      pending, dispatch, rootEntity
     } = this.props;
 
     if (window.performance.getEntriesByName("EditViewStart").length && prevProps.pending && !pending) {
@@ -95,26 +98,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       window.performance.clearMarks("EditViewStart");
       window.performance.clearMarks("EditViewEnd");
       window.performance.clearMeasures("EditView");
-    }
-
-    if (
-      isNested
-      && window.performance.getEntriesByName("NestedEditViewStart").length
-      && prevProps.pending
-      && !pending
-    ) {
-      window.performance.mark("NestedEditViewEnd");
-      window.performance.measure("NestedEditView", "NestedEditViewStart", "NestedEditViewEnd");
-      dispatch(
-        pushGTMEvent(
-          "timing",
-          `${rootEntity}EditView`,
-          window.performance.getEntriesByName("NestedEditView")[0].duration
-        )
-      );
-      window.performance.clearMarks("NestedEditViewStart");
-      window.performance.clearMarks("NestedEditViewEnd");
-      window.performance.clearMeasures("NestedEditViewView");
     }
   }
 
@@ -175,7 +158,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       nestedIndex,
       nameCondition,
       showConfirm,
-      openNestedEditView,
       manualLink,
       submitSucceeded,
       syncErrors,
@@ -242,7 +224,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
                 Close
               </Button>
               <FormSubmitButton
-                disabled={(!creatingNew && !dirty) || Boolean(asyncValidating) || disabledSubmitCondition}
+                disabled={Boolean(asyncValidating) || (!creatingNew && !dirty) || disabledSubmitCondition}
                 invalid={invalid}
                 fab
                 className={isDarkTheme && classes.submitButtonAlternate}
@@ -271,7 +253,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
               dispatch={dispatch}
               dirty={dirty}
               showConfirm={showConfirm}
-              openNestedEditView={openNestedEditView}
               toogleFullScreenEditView={toogleFullScreenEditView}
             />
           </div>

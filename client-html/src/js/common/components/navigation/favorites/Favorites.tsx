@@ -16,6 +16,10 @@ import { State } from "../../../../reducers/state";
 import { DashboardItem } from "../../../../model/dashboard";
 import FavoriteItem from "./FavoriteItem";
 import FavoriteScriptItem from "./FavoriteScriptItem";
+import { IconButton } from "@mui/material";
+import clsx from "clsx";
+import Close from "@mui/icons-material/Close";
+import { useHoverShowStyles } from "../../../styles/hooks";
 
 const styles = theme => createStyles({
   root: {
@@ -72,16 +76,15 @@ interface Props {
   favoriteScripts: string[];
   groupedSortedItems: DashboardItem[];
   classes?: any;
-  showConfirm?: (onConfirm: any) => void;
   setScriptIdSelected?: any;
   setExecMenuOpened?: any;
+  updateFavorites: (key: string, type: "category" | "automation") => void;
 }
 
 const isCategoryType = item => !!item.category;
 
 const Favorites: React.FC<Props> = props => {
   const {
-    showConfirm,
     classes,
     scripts,
     favorites,
@@ -89,7 +92,10 @@ const Favorites: React.FC<Props> = props => {
     groupedSortedItems,
     setScriptIdSelected,
     setExecMenuOpened,
+    updateFavorites
   } = props;
+
+  const hoverClasses = useHoverShowStyles();
 
   const renderFavorites = useMemo(() => groupedSortedItems
     .filter(c => (favorites.includes(c.category)
@@ -97,19 +103,38 @@ const Favorites: React.FC<Props> = props => {
         || favoriteScripts.includes(String(c.id)))
     .map(v => (
       isCategoryType(v) ? (
-        <FavoriteItem
-          key={v.category}
-          item={v}
-          showConfirm={showConfirm}
-        />
+        <div className={clsx("centeredFlex", hoverClasses.container)} key={v.category}>
+          <FavoriteItem
+            item={v}
+          />
+          {v.category !== "quickEnrol" &&
+            <IconButton
+              onMouseDown={e => e.stopPropagation()}
+              onClick={() => updateFavorites(v.category, "category")}
+              className={clsx("p-0-5", hoverClasses.target)}
+              size="small"
+            >
+              <Close fontSize="inherit" color="primary" />
+            </IconButton>
+          }
+        </div>
       )
       : (
-        <FavoriteScriptItem
-          key={v.id}
-          item={v}
-          setScriptIdSelected={setScriptIdSelected}
-          setExecMenuOpened={setExecMenuOpened}
-        />
+          <div className={clsx("centeredFlex", hoverClasses.container)} key={v.id}>
+            <FavoriteScriptItem
+              item={v}
+              setScriptIdSelected={setScriptIdSelected}
+              setExecMenuOpened={setExecMenuOpened}
+            />
+            <IconButton
+              onMouseDown={e => e.stopPropagation()}
+              onClick={() => updateFavorites(String(v.id), "automation")}
+              className={clsx("p-0-5", hoverClasses.target)}
+              size="small"
+            >
+              <Close fontSize="inherit" color="primary" />
+            </IconButton>
+          </div>
       )
   )), [groupedSortedItems, scripts, favoriteScripts, favorites]);
 

@@ -20,6 +20,7 @@ import ish.oncourse.server.api.v1.model.ContactOverviewDTO
 import ish.oncourse.server.api.v1.service.ContactInsightApi
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.document.DocumentService
+import ish.util.LocalDateUtils
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.Property
 import org.apache.cayenne.exp.parser.ASTFalse
@@ -50,9 +51,9 @@ class ContactInsightApiImpl implements ContactInsightApi {
         def enrolments = student?.enrolments
 
         def contactOverview = new ContactOverviewDTO()
-        contactOverview.firstSeen = contact.createdOn.toLocalDate()
-        contactOverview.owing = (invoices*.amountOwing?.sum() as Money ?: Money.ZERO).toBigDecimal()
-        contactOverview.spent = (invoices*.amountPaid?.sum() as Money ?: Money.ZERO).toBigDecimal()
+        contactOverview.firstSeen = LocalDateUtils.dateToTimeValue(contact.createdOn)
+        contactOverview.owing = contact.totalOwing.toBigDecimal()
+        contactOverview.spent = contact.totalInvoiced.toBigDecimal()
         contactOverview.enrolments(enrolments?.collect { it.id } ?: new ArrayList<Long>())
         contactOverview.openApplications(applications
                 ?.findAll { it.status != ApplicationStatus.REJECTED && it.status != ApplicationStatus.WITHDRAWN }

@@ -44,32 +44,37 @@ const validateRooms = (value: Room[]) => {
 
 const openRoom = (entity, id) => openRoomLink(id);
 
-const SitesRoomFields = props => {
-  const { item } = props;
+export const validateRoomUniqueName = (value, allValues) => {
+  const matches = allValues.rooms.filter(item => item.name && item.name.trim() === value.trim());
 
-  return (
-    <Grid container columnSpacing={3} rowSpacing={2}>
-      <Grid item xs={12}>
-        <FormField
-          type="text"
-          name={`${item}.name`}
-          label="Name"
-          className="mr-2"
-          required
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <FormField
-          type="number"
-          name={`${item}.seatedCapacity`}
-          label="Seated Capacity"
-          normalize={normalizeNumber}
-          required
-        />
-      </Grid>
-    </Grid>
-  );
+  return matches.length > 1 ? "Room name must be unique" : undefined;
 };
+
+const SitesRoomFields = ({ item }) => (
+  <Grid container columnSpacing={3} rowSpacing={2}>
+    <Grid item xs={12}>
+      <FormField
+        type="text"
+        name={`${item}.name`}
+        label="Name"
+        className="mr-2"
+        debounced={false}
+        validate={validateRoomUniqueName}
+        required
+      />
+    </Grid>
+    <Grid item xs={12}>
+      <FormField
+        type="number"
+        name={`${item}.seatedCapacity`}
+        label="Seated Capacity"
+        normalize={normalizeNumber}
+        debounced={false}
+        required
+      />
+    </Grid>
+  </Grid>
+);
 
 const getLayoutArray = (twoColumn: boolean): { [key: string]: GridSize }[] =>
   (twoColumn
@@ -147,7 +152,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
     const layoutArray = getLayoutArray(twoColumn);
 
     return (
-      <Grid container className="pt-3 pl-3 pr-3">
+      <Grid container columnSpacing={3} rowSpacing={2} className="pt-3 pl-3 pr-3">
         <CoordinatesValueUpdater
           dispatch={dispatch}
           latPath="latitude"
@@ -156,7 +161,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
           form={form}
         />
 
-        <Grid item xs={layoutArray[2].xs} className="mb-2">
+        <Grid item xs={layoutArray[2].xs}>
           <FullScreenStickyHeader
             opened={!values.id || Object.keys(syncErrors).includes("name")}
             twoColumn={twoColumn}
@@ -249,7 +254,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
         )}
 
         <Collapse in={!values.isVirtual}>
-          <Grid container columnSpacing={3}>
+          <Grid container columnSpacing={3} className="pr-3 pl-3">
             <Grid container item xs={layoutArray[2].xs} columnSpacing={3} rowSpacing={2}>
               <Grid item xs={12}>
                 <FormField

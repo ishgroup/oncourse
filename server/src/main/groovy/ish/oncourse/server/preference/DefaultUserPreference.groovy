@@ -454,6 +454,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Code', attribute: ArticleProduct.SKU.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Price', attribute: ArticleProduct.PRICE_INC_TAX_PROPERTY, sortable: false, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
                 new ColumnDTO(title: 'Number sold', attribute: ArticleProduct.NUMBER_SOLD_PROPERTY, sortable: false, width: W200, visible: true),
+                new ColumnDTO(title: 'Active', attribute: ArticleProduct.IS_ON_SALE.name, sortable: false, width: W200, system: true, type: ColumnTypeDTO.BOOLEAN, visible: true),
         ]
         it.sortings = [
                 new SortingDTO(attribute: ArticleProduct.NAME.name, ascending: true)
@@ -530,6 +531,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Price', attribute: VoucherProduct.PRICE_EX_TAX.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
                 new ColumnDTO(title: 'Online purchase', attribute: VoucherProduct.IS_WEB_VISIBLE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.BOOLEAN),
                 new ColumnDTO(title: 'Number sold', attribute: VoucherProduct.SOLD_VOUCHERS_COUNT, sortable: false, width: W200, visible: true),
+                new ColumnDTO(title: 'Active', attribute: ArticleProduct.IS_ON_SALE.name, sortable: false, width: W200, system: true, type: ColumnTypeDTO.BOOLEAN, visible: true),
         ]
         it.sortings = [
                 new SortingDTO(attribute: VoucherProduct.SKU.name, ascending: true)
@@ -548,6 +550,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'SKU', attribute: MembershipProduct.SKU.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Active memberships', attribute: MembershipProduct.ACTIVE_MEMBERSHIPS_COUNT_KEY, sortable: false, width: W200, visible: false),
                 new ColumnDTO(title: 'Number sold', attribute: MembershipProduct.SOLD_COUNT_KEY, sortable: false, width: W200, visible: false),
+                new ColumnDTO(title: 'Active', attribute: ArticleProduct.IS_ON_SALE.name, sortable: false, width: W200, system: true, type: ColumnTypeDTO.BOOLEAN, visible: true),
         ]
         it.sortings = [
             new SortingDTO(attribute: MembershipProduct.NAME.name, ascending: true)
@@ -643,7 +646,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Type', attribute: ProductItem.TYPE_STRING_DEFENITION, sortable: false, width: W200, visible: true),
                 new ColumnDTO(title: 'SKU', attribute: ProductItem.PRODUCT.dot(Product.SKU).name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Expires', attribute: ProductItem.EXPIRY_DATE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
-                new ColumnDTO(title: 'Status', attribute: ProductItem.DISPLAYABLE_STATUS, sortFields: [ProductItem.STATUS.name], sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Status', attribute: ProductItem.DISPLAYABLE_STATUS, sortFields: [ProductItem.STATUS.name], sortable: true, width: W200, system: true, visible: true),
                 new ColumnDTO(
                         title: 'Purchased by',
                         attribute: ProductItem.INVOICE_LINE.dot(InvoiceLine.INVOICE)
@@ -704,6 +707,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Start date', attribute: Outcome.START_DATE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'End date', attribute: Outcome.END_DATE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Delivery mode', attribute: Outcome.DELIVERY_MODE.name, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Printed certificate', attribute: Outcome.PRINTED_CERTIFICATE_KEY, sortable: false, width: W200, visible: false),
                 /*new ColumnDTO(title: '% of present attendance', attribute: Outcome.PRESENT_ATTENDENCE_PERCENT_KEY, sortable: false, width: W200, visible: false),
                 new ColumnDTO(title: '% of marked asssessments', attribute: Outcome.MARKED_ASSESSMENT_PERCENT_KEY, sortable: false, width: W200, visible: false),*/
         ]
@@ -828,7 +832,7 @@ class DefaultUserPreference {
 
     private static final MESSAGE_MODEL = new TableModelDTO().with() {
         it.columns = [
-                new ColumnDTO(title: 'Date time', attribute: Message.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
+                new ColumnDTO(title: 'Date time', attribute: Message.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
                 new ColumnDTO(title: 'Sent by', attribute: Message.CREATED_BY.dot(SystemUser.LOGIN).name, sortable: false, width: W200, visible: true),
                 new ColumnDTO(title: 'Recipients', attribute: Message.RECIPIENTS_STRING_PROPERTY, sortable: false, width: W200, visible: true),
                 new ColumnDTO(title: 'SMS', attribute: Message.IS_SMS_PROPERTY, sortable: false, width: W200, visible: true, type: ColumnTypeDTO.BOOLEAN),
@@ -872,7 +876,7 @@ class DefaultUserPreference {
                                      CourseClass.CODE.name]),
                 new ColumnDTO(title: 'Starts', attribute: CourseClass.START_DATE_TIME.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
                 new ColumnDTO(title: 'Ends', attribute: CourseClass.END_DATE_TIME.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
-                new ColumnDTO(title: 'Sessions', attribute: CourseClass.SESSIONS_COUNT, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Sessions', attribute: CourseClass.SESSIONS_COUNT, sortable: false, width: W200, visible: true),
                 new ColumnDTO(title: 'Fee', attribute: CourseClass.FEE_INC_GST, sortable: false, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
                 new ColumnDTO(title: 'Tutor', attribute: CourseClass.TUTORS_ABRIDGED_PROP, sortable: false, width: W200, visible: true),
                 new ColumnDTO(title: 'Site name', attribute: CourseClass.ROOM.dot(Room.SITE).dot(Site.NAME).name, sortable: true, width: W200, visible: true, sortFields: [CourseClass.ROOM.outer().dot(Room.SITE).outer().dot(Site.NAME).name]),

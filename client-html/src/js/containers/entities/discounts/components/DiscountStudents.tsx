@@ -377,11 +377,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
 }
 
 const mapStateToProps = (state: State) => ({
-  foundConcessionTypes: state.plainSearchRecords["ConcessionType"].items.map(i => ({
-    id: i.id,
-    name: i.name,
-    allowOnWeb: i.isEnabled
-  })),
+  foundConcessionTypes: state.plainSearchRecords["ConcessionType"].items,
   concessionTypePending: state.plainSearchRecords["ConcessionType"].loading,
   concessionTypeError: state.plainSearchRecords["ConcessionType"].error,
   foundMemberships: state.plainSearchRecords["MembershipProduct"].items,
@@ -393,7 +389,11 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   searchConcessionTypes: (search: string) => {
     dispatch(setCommonPlainSearch("ConcessionType", search));
-    dispatch(getCommonPlainRecords("ConcessionType", 0, "name,isEnabled", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(getCommonPlainRecords("ConcessionType", 0, "name,isEnabled", null, null, PLAIN_LIST_MAX_PAGE_SIZE, item => item.map(i => ({
+      id: i.id,
+      name: i.name,
+      allowOnWeb: i.isEnabled
+    }))));
   },
   clearConcessionTypeSearch: (pending: boolean) => dispatch(clearCommonPlainRecords("ConcessionType", pending)),
   searchMemberships: (search: string) => {

@@ -22,8 +22,8 @@ Feature: Main feature for all PUT requests with path 'user/disableTFA'
         And request loginBody
         When method PUT
         Then status 401
-        And match response.loginStatus == "Token required"
-        And match response.errorMessage == "Auth Token required"
+        And match response.loginStatus == "Invalid credentials"
+        And match response.errorMessage == "User is disabled. Please contact onCourse Administrator."
 #       <----->
 
         Given path '/logout'
@@ -39,7 +39,7 @@ Feature: Main feature for all PUT requests with path 'user/disableTFA'
         When method GET
         Then status 200
 
-        * def id = get[0] response[?(@.login == '2fa_admin1')].id
+        * def id = get[0] response[?(@.login == 'admin')].id
 
         Given path ishPath + '/' + id
         And request {}
@@ -50,7 +50,7 @@ Feature: Main feature for all PUT requests with path 'user/disableTFA'
         Given path '/logout'
         And request {}
         When method PUT
-        * def loginBody = {login: "2fa_admin1", password: "password", kickOut: 'true', skipTfa: 'true'}
+        * def loginBody = {login: "admin", password: "password", kickOut: 'true', skipTfa: 'true'}
         Given path ishPathLogin
         And request loginBody
         When method PUT

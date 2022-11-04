@@ -56,6 +56,18 @@ const ChecklistsFilters = (
 
   const checkedChecklists = useAppSelector(state => state.list.checkedChecklists);
   const uncheckedChecklists = useAppSelector(state => state.list.uncheckedChecklists);
+  
+  const onUpdateChecked = active => {
+    updateChecked(checkedChecklists.map(cl => ({
+      ...cl.tagBody.id === active.tagBody.id ? active : cl
+    })));
+  };
+
+  const onUpdateUnChecked = active => {
+    updateUnChecked(uncheckedChecklists.map(cl => ({
+      ...cl.tagBody.id === active.tagBody.id ? active : cl
+    })));
+  };
 
   return (
     <div className="pr-2">
@@ -85,7 +97,7 @@ const ChecklistsFilters = (
               dndKey={index}
               rootTag={t}
               classes={{}}
-              updateActive={active => updateChecked([active])}
+              updateActive={onUpdateChecked}
               showColoredDots={false}
               dndEnabled={false}
             />
@@ -115,7 +127,7 @@ const ChecklistsFilters = (
               dndKey={index}
               rootTag={t}
               classes={{}}
-              updateActive={active => updateUnChecked([active])}
+              updateActive={onUpdateUnChecked}
               showColoredDots={false}
               dndEnabled={false}
             />

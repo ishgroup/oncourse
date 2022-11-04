@@ -79,7 +79,7 @@ interface Props {
   ItemIcon?: React.ComponentType<any>;
   classes?: any;
   defaultCollapsed?: boolean;
-  ItemIconRenderer?: React.ReactNode;
+  ItemIconRenderer?: any;
 }
 
 const CollapseMenuListBase = React.memo<Props>(

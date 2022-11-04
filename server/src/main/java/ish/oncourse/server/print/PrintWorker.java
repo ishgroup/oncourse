@@ -18,6 +18,7 @@ import ish.oncourse.server.cayenne.Document;
 import ish.oncourse.server.cayenne.Report;
 import ish.oncourse.server.cayenne.ReportOverlay;
 import ish.oncourse.server.document.DocumentService;
+import ish.oncourse.server.preference.UserPreferenceService;
 import ish.oncourse.server.report.PdfUtil;
 import ish.persistence.CommonPreferenceController;
 import ish.persistence.Preferences;
@@ -31,9 +32,6 @@ import ish.util.EntityUtil;
 import ish.util.MapsUtil;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
-import net.sf.jasperreports.engine.export.type.PdfFieldBorderStyleEnum;
-import net.sf.jasperreports.export.PdfExporterConfiguration;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
@@ -56,9 +54,7 @@ import java.net.URL;
 import java.rmi.server.UID;
 import java.util.*;
 
-import static ish.util.ImageHelper.generatePdfPreview;
-import static net.sf.jasperreports.engine.export.JRPdfExporter.PDF_FIELD_BORDER_STYLE;
-import static net.sf.jasperreports.engine.style.PropertyStyleProvider.STYLE_PROPERTY_PEN_LINE_WIDTH;
+import static ish.util.ImageHelper.*;
 
 /**
  * Worker which is serving specific {@link PrintRequest} identified by unique id.
@@ -72,6 +68,7 @@ public class PrintWorker implements Runnable {
 	private ICayenneService cayenneService;
 	private DocumentService documentService;
 	private PrintRequest printRequest;
+	private UserPreferenceService userPreferenceService;
 
 	private Map<String, JasperReport> compiledReports = new LinkedHashMap<>();
 	private Map<String, byte[]> images = new LinkedHashMap<>();
@@ -87,11 +84,13 @@ public class PrintWorker implements Runnable {
 
 	private String reportName;
 
-	public PrintWorker(PrintRequest printRequest, ICayenneService cayenneService, DocumentService documentService) {
+	public PrintWorker(PrintRequest printRequest, ICayenneService cayenneService, DocumentService documentService,
+					   UserPreferenceService userPreferenceService) {
 		this.uid = printRequest.getUID();
 		this.printRequest = printRequest;
 		this.cayenneService = cayenneService;
 		this.documentService = documentService;
+		this.userPreferenceService = userPreferenceService;
 
 		progress = 0d;
 		result = ResultType.IN_PROGRESS;
@@ -259,7 +258,9 @@ public class PrintWorker implements Runnable {
 		if (printRequest.isCreatePreview() && startingReport != null && pdfResult != null && pdfResult.length != 0 ) {
 			ObjectContext cc = cayenneService.getNewContext();
 			var localReport = cc.localObject(startingReport);
-			localReport.setPreview(generatePdfPreview(pdfResult));
+			localReport.setPreview(
+					generateBackgroundImage(pdfResult, userPreferenceService)
+			);
 			cc.commitChanges();
 		}
 

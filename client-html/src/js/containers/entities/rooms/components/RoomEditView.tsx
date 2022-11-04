@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import * as React from "react";
@@ -35,34 +38,34 @@ const RoomEditView = props => {
     dirty,
     form,
     twoColumn,
-    openNestedEditView,
     showConfirm,
     manualLink,
     rootEntity,
     onEditViewScroll,
+    syncErrors
   } = props;
 
   return (
     <TabsList
       items={values ? items : []}
       itemProps={{
-      isNew,
-      isNested,
-      nestedIndex,
-      values,
-      classes,
-      dispatch,
-      dirty,
-      form,
-      twoColumn,
-      openNestedEditView,
-      showConfirm,
-      manualLink,
-      rootEntity,
-      onEditViewScroll
-    }}
+        isNew,
+        isNested,
+        nestedIndex,
+        values,
+        classes,
+        dispatch,
+        dirty,
+        form,
+        twoColumn,
+        showConfirm,
+        manualLink,
+        rootEntity,
+        onEditViewScroll,
+        syncErrors
+      }}
     />
-);
+ );
 };
 
 export default RoomEditView;

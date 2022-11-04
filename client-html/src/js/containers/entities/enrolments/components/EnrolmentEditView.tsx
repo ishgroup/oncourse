@@ -1,3 +1,11 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 import React from "react";
 import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
 import EnrolmentGeneralTab from "./EnrolmentGeneralTab";
@@ -34,7 +42,6 @@ const EnrolmentEditView = props => {
     manualLink,
     showConfirm,
     syncErrors,
-    openNestedEditView,
     onCloseClick,
     toogleFullScreenEditView,
     rootEntity,
@@ -63,7 +70,6 @@ const EnrolmentEditView = props => {
           manualLink,
           showConfirm,
           syncErrors,
-          openNestedEditView,
           onCloseClick,
           toogleFullScreenEditView,
           onEditViewScroll,

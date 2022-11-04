@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React from "react";
@@ -8,7 +11,6 @@ import { Card, IconButton, Grid } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
 import { ClassCostRepetitionType } from "@api/model";
-import clsx from "clsx";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
 import {
@@ -26,10 +28,10 @@ const validateRepetition = val => valiadateSelectItemAvailable(val, repetitionTy
 const validatePercentage = value => (!value && value !== 0 ? "Field is mandatory" : undefined);
 
 const PayRateItem = props => {
-  const { fields, classes, onDelete } = props;
+  const {fields, onDelete} = props;
 
   return fields.map((item, index) => (
-    <Card key={index} className={clsx("card", classes.payRateItem)}>
+    <Card key={index} className="card flex-fill mb-4">
       <Grid container rowSpacing={2}>
         <Grid item xs={12} container columnSpacing={3} rowSpacing={2}>
           <Grid item xs={4}>

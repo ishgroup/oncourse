@@ -10,14 +10,12 @@
  * preferences app layout
  * */
 
-import React, { useEffect, useMemo } from "react";
-import { isDirty, reset } from "redux-form";
+import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { State } from "../../reducers/state";
 import { Categories } from "../../model/preferences";
 import { SidebarWithSearch } from "../../common/components/layout/sidebar-with-search/SidebarWithSearch";
-import { setSwipeableDrawerDirtyForm } from "../../common/components/layout/swipeable-sidebar/actions";
 import {
   getColumnsWidth,
   getDataCollectionForms,
@@ -35,42 +33,21 @@ const PreferencesApp = ({
    history,
    match,
    updateColumnsWidth,
-   preferenceLeftColumnWidth,
-   location: {
-     pathname
-   },
-  formName,
-  dirty,
-  onSetSwipeableDrawerDirtyForm
-  }) => {
-    const isNew = useMemo(() => {
-      const pathArray = pathname.split("/");
-      return pathArray.length > 3 && pathArray[3] === "new";
-    }, [pathname]);
-
-    useEffect(() => {
-      onSetSwipeableDrawerDirtyForm(dirty || isNew, formName);
-    }, [isNew, dirty, formName]);
-
-    return (
-      <SidebarWithSearch
-        leftColumnWidth={preferenceLeftColumnWidth}
-        updateColumnsWidth={updateColumnsWidth}
-        onInit={onInit}
-        SideBar={SideBar}
-        routes={preferencesRoutes}
-        history={history}
-        match={match}
-      />
+   preferenceLeftColumnWidth
+  }) => (
+    <SidebarWithSearch
+      leftColumnWidth={preferenceLeftColumnWidth}
+      updateColumnsWidth={updateColumnsWidth}
+      onInit={onInit}
+      SideBar={SideBar}
+      routes={preferencesRoutes}
+      history={history}
+      match={match}
+    />
     );
-  };
-
-const getFormName = form => form && Object.keys(form)[0];
 
 const mapStateToProps = (state: State) => ({
-  preferenceLeftColumnWidth: state.preferences.columnWidth && state.preferences.columnWidth.preferenceLeftColumnWidth,
-  formName: getFormName(state.form),
-  dirty: isDirty(getFormName(state.form))(state)
+  preferenceLeftColumnWidth: state.preferences.columnWidth && state.preferences.columnWidth.preferenceLeftColumnWidth
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -81,11 +58,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getTutorRoles());
     dispatch(getGradingTypes());
     dispatch(getPreferences(Categories.licences));
+    dispatch(getPreferences(Categories.plugins));
   },
-  updateColumnsWidth: (preferenceLeftColumnWidth: number) => dispatch(updateColumnsWidth({ preferenceLeftColumnWidth })),
-  onSetSwipeableDrawerDirtyForm: (isDirty: boolean, formName: string) => dispatch(
-    setSwipeableDrawerDirtyForm(isDirty, () => dispatch(reset(formName)))
-  )
+  updateColumnsWidth: (preferenceLeftColumnWidth: number) => dispatch(updateColumnsWidth({ preferenceLeftColumnWidth }))
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(PreferencesApp);

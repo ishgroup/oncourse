@@ -1,11 +1,14 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React from "react";
 import {
-  arrayInsert,
+  arrayPush,
   arrayRemove,
   change,
   getFormSyncErrors,
@@ -21,9 +24,9 @@ import { TreeData } from "@atlaskit/tree";
 import { State } from "../../../reducers/state";
 import { getDeepValue } from "../../../common/utils/common";
 import { createTag, deleteTag, updateTag } from "../actions";
-import { setNextLocation, showConfirm } from "../../../common/actions";
+import { showConfirm } from "../../../common/actions";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
-import { onSubmitFail } from "../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../common/utils/highlightFormErrors";
 import { getPluralSuffix } from "../../../common/utils/strings";
 import { AppTheme } from "../../../model/common/Theme";
 import { FormTag } from "../../../model/tags";
@@ -133,12 +136,10 @@ interface FormProps extends Props {
   asyncErrors: any;
   onUpdate: (id: number, tag: Tag) => void;
   onCreate: (tag: Tag) => void;
-  onDelete: (id: number) => void;
+  onDelete: (tag: Tag) => void;
   openTagEditView: (item: Tag) => void;
   closeTagEditView: () => void;
   history: any;
-  nextLocation: string;
-  setNextLocation: (nextLocation: string) => void;
   syncErrors?: any;
 }
 
@@ -170,7 +171,7 @@ const treeItemDataToTag = (id: number | string, tree: TreeData, allTags: Tag[]):
 const treeDataToTags = (tree: TreeData, allTags: Tag[]): Tag[] => tree.items[tree.rootId].children.map(id => treeItemDataToTag(id, tree, allTags));
 
 interface FormState {
-  editingId: number;
+  editingIds: number[];
 }
 
 export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
@@ -183,7 +184,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
   counter;
 
   state = {
-    editingId: null
+    editingIds: []
   }
 
   constructor(props) {
@@ -210,7 +211,9 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
 
   setEditingId = editingId => {
     this.setState({
-      editingId
+      editingIds: this.state.editingIds.includes(editingId)
+        ? this.state.editingIds.filter(id => id !== editingId)
+        : this.state.editingIds.concat(editingId)
     });
   }
 
@@ -241,7 +244,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
     });
   };
 
-  onDelete = id => {
+  onDelete = (tag: Tag) => {
     const { onDelete, redirectOnDelete } = this.props;
 
     this.isPending = true;
@@ -250,9 +253,9 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
       this.resolvePromise = resolve;
       this.rejectPromise = reject;
 
-      onDelete(id);
+      onDelete(tag);
     }).then(() => {
-      redirectOnDelete();
+      if (redirectOnDelete) redirectOnDelete();
     });
   };
 
@@ -264,7 +267,8 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
       id: ("new" + this.counter) as any,
     };
 
-    dispatch(arrayInsert(TAGS_FORM_NAME, "childTags", 0, newTag));
+    dispatch(arrayPush(TAGS_FORM_NAME, "childTags", newTag));
+    this.setEditingId(newTag.id);
 
     this.counter++;
   };
@@ -288,9 +292,14 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
     const onConfirm = () => {
       const clone = JSON.parse(JSON.stringify(values));
 
-      const removePath = getDeepValue(clone, item.parent.replace(/\[[0-9]+]$/, ""));
+      if (item.parent) {
+        const removePath = getDeepValue(clone, item.parent.replace(/\[[0-9]+]$/, ""));
 
-      removePath && removePath.splice(Number(item.parent.match(/\[(\d)]$/)[1]), 1);
+        if (removePath) {
+          const deleteItem = item.parent.match(/\[(\d)]$/);
+          if (deleteItem && deleteItem.length > 0) removePath.splice(Number(deleteItem[1]), 1);
+        }
+      }
 
       dispatch(change(TAGS_FORM_NAME, "childTags", clone.childTags));
       dispatch(change(TAGS_FORM_NAME, "refreshFlag", !values.refreshFlag));
@@ -316,21 +325,19 @@ const mapStateToProps = (state: State) => ({
   values: getFormValues(TAGS_FORM_NAME)(state),
   syncErrors: getFormSyncErrors(TAGS_FORM_NAME)(state),
   tags: state.tags.allTags,
-  fetch: state.fetch,
-  nextLocation: state.nextLocation
+  fetch: state.fetch
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   onUpdate: (id: number, tag: Tag) => dispatch(updateTag(id, tag)),
   onCreate: (tag: Tag) => dispatch(createTag(tag)),
-  onDelete: (id: number) => dispatch(deleteTag(id)),
+  onDelete: (tag: Tag) => dispatch(deleteTag(tag)),
   openConfirm: props => dispatch(showConfirm(props)),
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
-export const TagsFormWrapper = reduxForm({
+export const TagsFormWrapper = reduxForm<any, any, any>({
   form: TAGS_FORM_NAME,
   onSubmitFail,
   validate,
   shouldError: () => true
-})(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((props: any) => <props.Root {...props} />))) as any;
+})(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((props: any) => <props.Root {...props} />)));

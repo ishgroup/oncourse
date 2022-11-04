@@ -1,3 +1,11 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 import React, { useCallback, useEffect, useState } from "react";
 import {
   moveItemOnTree,
@@ -22,7 +30,7 @@ interface TagsTreeProps extends Partial<FormTagProps> {
   rootTag: FormTag;
   onDrop: AnyArgFunction<void, TreeData>;
   setEditingId: NumberArgFunction;
-  editingId: number;
+  editingIds: number[];
   syncErrors: any;
 }
 
@@ -39,7 +47,7 @@ const shouldNotUpdate = (prevProps: TagsTreeProps, currentProps: TagsTreeProps) 
     return false;
   }
 
-  return prevProps.editingId === currentProps.editingId;
+  return prevProps.editingIds === currentProps.editingIds;
 };
 
 const tagToTreeItem = (tag: FormTag): TreeItem => ({
@@ -86,7 +94,7 @@ const useHasError = (syncErrors, item, editingId, setEditingId) => {
   return hasErrors;
 };
 
-const useTagTreeHandlers = (rootTag, editingId, syncErrors, onDrop) => {
+const useTagTreeHandlers = (rootTag, editingIds, syncErrors, onDrop) => {
   const [treeState, setTreeState] = useState<TreeData>();
 
   useEffect(() => {
@@ -98,7 +106,7 @@ const useTagTreeHandlers = (rootTag, editingId, syncErrors, onDrop) => {
       setParents(newState);
       setTreeState(newState);
     }
-  }, [rootTag.id, rootTag.refreshFlag, editingId, syncErrors]);
+  }, [rootTag.id, rootTag.refreshFlag, editingIds, syncErrors]);
 
   const onDragEnd = (
     source: TreeSourcePosition,
@@ -125,10 +133,10 @@ const RenderedTagItem = ({
   onDelete,
   changeVisibility,
   setEditingId,
-  editingId
+  editingIds
 }) => {
-  const hasErrors = useHasError(syncErrors, item, editingId, setEditingId);
-  
+  const hasErrors = useHasError(syncErrors, item, editingIds, setEditingId);
+
   return (
     <div className={classes.cardRoot} ref={provided.innerRef} {...provided.draggableProps} data-draggable-id={item.data.id}>
       <TagItem
@@ -140,7 +148,7 @@ const RenderedTagItem = ({
         provided={provided}
         snapshot={snapshot}
         setIsEditing={setEditingId}
-        isEditing={hasErrors || item.data.id === editingId}
+        isEditing={hasErrors || editingIds.includes(item.data.id)}
       />
     </div>
 );
@@ -153,12 +161,12 @@ export const TagTree = React.memo<TagsTreeProps>(props => {
     onDelete,
     changeVisibility,
     setEditingId,
-    editingId,
+    editingIds,
     syncErrors,
     onDrop
 } = props;
 
-  const { onDragEnd, treeState } = useTagTreeHandlers(rootTag, editingId, syncErrors, onDrop);
+  const { onDragEnd, treeState } = useTagTreeHandlers(rootTag, editingIds, syncErrors, onDrop);
 
   const renderItem = useCallback(({
     item,
@@ -174,9 +182,9 @@ export const TagTree = React.memo<TagsTreeProps>(props => {
       onDelete={onDelete}
       changeVisibility={changeVisibility}
       setEditingId={setEditingId}
-      editingId={editingId}
+      editingIds={editingIds}
     />
-), [editingId, syncErrors]);
+), [editingIds, syncErrors]);
 
   return treeState ? (
     <div>
@@ -188,7 +196,7 @@ export const TagTree = React.memo<TagsTreeProps>(props => {
         provided={{}}
         snapshot={{}}
         setIsEditing={setEditingId}
-        isEditing={rootTag.id === editingId}
+        isEditing={editingIds.includes(rootTag.id)}
       />
       <div className="ml-2">
         <Tree
@@ -230,12 +238,12 @@ export const ChecklistTree = React.memo<TagsTreeProps>(props => {
     rootTag,
     classes,
     onDelete,
-    editingId,
+    editingIds,
     syncErrors,
     onDrop
   } = props;
 
-  const { onDragEnd, treeState } = useTagTreeHandlers(rootTag, editingId, syncErrors, onDrop);
+  const { onDragEnd, treeState } = useTagTreeHandlers(rootTag, editingIds, syncErrors, onDrop);
 
   const renderItem = useCallback(({
     item,
@@ -249,7 +257,7 @@ export const ChecklistTree = React.memo<TagsTreeProps>(props => {
       classes={classes}
       onDelete={onDelete}
     />
-    ), [editingId, syncErrors]);
+    ), [syncErrors]);
 
   return treeState ? (
     <Tree

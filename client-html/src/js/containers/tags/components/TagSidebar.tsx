@@ -3,11 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
-  useCallback, useState
-} from "react";
+import React from "react";
 import { History } from "history";
-import debounce from "lodash.debounce";
 import SideBarHeader from "../../../common/components/layout/side-bar-list/SideBarHeader";
 import { makeAppStyles } from "../../../common/styles/makeStyles";
 
@@ -37,32 +34,26 @@ const getSelected = (history: History) => {
 const TagSidebar = ({
    history
  }: Props) => {
-  const [selected, setSelected] = useState(() => getSelected(history));
-
   const classes = useStyles();
 
-  // Animation timeout
-  const updateHistory = useCallback(debounce(route => {
+  const selectHandler = route => () => {
     history.push(route);
-  }, 250), []);
-
-  const selectHandler = (route, index) => () => {
-    setSelected(index);
-    updateHistory(route);
   };
+
+  const selected = getSelected(history);
 
   return (
     <div className={classes.root}>
       <SideBarHeader
         selected={selected === 1}
         label="Tag groups"
-        onClick={selectHandler("/tags/tagGroups", 1)}
+        onClick={selectHandler("/tags/tagGroups")}
       />
 
       <SideBarHeader
         selected={selected === 2}
         label="Checklists"
-        onClick={selectHandler("/tags/checklists", 2)}
+        onClick={selectHandler("/tags/checklists")}
       />
     </div>
   );

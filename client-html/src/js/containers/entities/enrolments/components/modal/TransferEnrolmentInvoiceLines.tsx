@@ -80,21 +80,21 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
               {field && field.invoiceNumber}
             </Typography>
             <FormControlLabel
-              className="checkbox pb-2 pt-2"
               control={(
                 <FormField
                   type="checkbox"
                   name={`${item}.isReverseCreditNotes`}
                   color="secondary"
                   onChange={v => onCreateCreditNoteChange(v, index)}
+                  debounced={false}
                 />
               )}
               label={`Create credit note to reverse the enrolment fee of $${field
               && field.finalPriceToPayIncTax} to ${field && field.contactName}`}
             />
-            <Grid className="centeredFlex">
+            <div className="centeredFlex">
               <FormControlLabel
-                className="checkbox pb-2 pt-2 mr-0-5"
+                className="mr-0-5"
                 control={<FormField type="checkbox" name={`${item}.isChargeFee`} color="secondary" fullWidth />}
                 label={`Charge ${field && field.contactName} an administrative fee of`}
                 disabled={!field.isReverseCreditNotes}
@@ -104,6 +104,7 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
                 name={`${item}.cancellationFeeExTax`}
                 normalize={roundCancellationFeeExTax}
                 onChange={e => onCancelFeeChange(e, index)}
+                debounced={false}
                 disabled={!field.isReverseCreditNotes}
                 formatting="inline"
                 hideArrowshideArrows
@@ -116,6 +117,7 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
                 selectValueMark="id"
                 selectLabelMark="code"
                 onChange={v => onTaxChange(v, index)}
+                debounced={false}
                 disabled={!field.isReverseCreditNotes}
                 formatting="inline"
               />
@@ -131,12 +133,12 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
                 selectLabelCondition={accountLabelCondition}
                 disabled={!field.isReverseCreditNotes}
               />
-            </Grid>
-            <Grid className="centeredFlex">
+            </div>
+            <div className="centeredFlex">
               {getCancelFeeAmountWarning(index) && (
                 <WarningMessage warning={getCancelFeeAmountWarning(index)} className="pb-0 pt-1" />
               )}
-            </Grid>
+            </div>
           </div>
         );
       })

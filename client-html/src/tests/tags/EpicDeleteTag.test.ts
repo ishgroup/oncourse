@@ -16,7 +16,7 @@ import { EpicDeleteTag } from "../../js/containers/tags/epics/EpicDeleteTag";
 
 describe("Delete tag epic tests", () => {
   it("EpicDeleteTag should returns correct values", () => DefaultEpic({
-    action: deleteTag(1),
+    action: deleteTag({ id: 1 } as any),
     epic: EpicDeleteTag,
     processData: () => {
       const tag = {} as any;
@@ -24,7 +24,7 @@ describe("Delete tag epic tests", () => {
       return [
         {
           type: FETCH_SUCCESS,
-          payload: { message: `${tag.type} was successfully deleted` }
+          payload: {message: `${tag.type} was successfully deleted`}
         },
         getAllTags()
       ];

@@ -52,8 +52,8 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    onInit: () => dispatch(getTimezones())
-  });
+  onInit: () => dispatch(getTimezones())
+});
 
 export default connect<any, any, any>(
   mapStateToProps,

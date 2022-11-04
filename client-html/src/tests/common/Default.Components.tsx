@@ -36,8 +36,6 @@ export const defaultComponents = (props: Props) => {
     viewProps = { ...viewProps, ...defaultProps({ entity, initialValues, mockedApi: mockedAPI }) };
   }
 
-  const MockedEditView = pr => <View {...{ ...pr, ...viewProps }} />;
-
   if (beforeFn) {
     beforeFn();
   }
@@ -45,7 +43,7 @@ export const defaultComponents = (props: Props) => {
   it(`${entity} components should render with given values`, async () => {
     testRender(
       <TestEntry state={state ? { ...state({ mockedApi: mockedAPI, viewProps }) } : {}}>
-        <MockedEditView />
+        <View {...viewProps} />
       </TestEntry>
     );
 

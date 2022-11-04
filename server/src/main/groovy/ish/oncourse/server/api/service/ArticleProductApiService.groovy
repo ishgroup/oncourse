@@ -108,7 +108,7 @@ class ArticleProductApiService extends TaggableApiService<ArticleProductDTO, Art
             articleProductDTO.modifiedOn = articleProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             articleProductDTO.dataCollectionRuleId = articleProduct.fieldConfigurationScheme?.id
             articleProductDTO.documents = articleProduct.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
-            articleProductDTO.tags = articleProduct.tags.collect{ it.id }
+            articleProductDTO.tags = articleProduct.allTags.collect{ it.id }
             articleProductDTO.customFields = articleProduct.customFields.collectEntries {[(it.customFieldType.key) : it.value] }
             articleProductDTO
         }

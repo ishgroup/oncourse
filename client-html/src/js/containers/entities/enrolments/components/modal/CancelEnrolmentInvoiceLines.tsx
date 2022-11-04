@@ -85,13 +85,13 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                   {field && field.invoiceNumber}
                 </Typography>
                 <FormControlLabel
-                  className="checkbox pb-2 pt-2"
                   control={(
                     <FormField
                       type="checkbox"
                       name={`${item}.isReverseCreditNotes`}
                       color="secondary"
                       onChange={v => onCreateCreditNoteChange(v, index)}
+                      debounced={false}
                     />
                   )}
                   label={`Create credit note to reverse the enrolment fee of $${field
@@ -99,7 +99,7 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                 />
                 <Grid className="centeredFlex">
                   <FormControlLabel
-                    className="checkbox pb-2 pt-2 mr-0-5"
+                    className="mr-0-5"
                     control={<FormField type="checkbox" name={`${item}.isChargeFee`} color="secondary" fullWidth />}
                     label={`Charge ${field && field.contactName} an administrative fee of `}
                     disabled={!field.isReverseCreditNotes}
@@ -109,6 +109,7 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                     name={`${item}.cancellationFeeExTax`}
                     normalize={roundCancellationFeeExTax}
                     onChange={e => onCancelFeeChange(e, index)}
+                    debounced={false}
                     disabled={!field.isReverseCreditNotes}
                     formatting="inline"
                     hideArrowshideArrows
@@ -121,6 +122,7 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                     selectValueMark="id"
                     selectLabelMark="code"
                     onChange={v => onTaxChange(v, index)}
+                    debounced={false}
                     disabled={!field.isReverseCreditNotes}
                     formatting="inline"
                   />
@@ -145,7 +147,6 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                 </Grid>
 
                 <FormControlLabel
-                  className="checkbox pb-3 pt-3"
                   control={(
                     <FormField
                       type="checkbox"

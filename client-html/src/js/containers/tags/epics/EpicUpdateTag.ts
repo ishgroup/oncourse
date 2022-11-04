@@ -11,19 +11,26 @@ import { getAllTags, UPDATE_TAG_REQUEST } from "../actions";
 import { FETCH_SUCCESS } from "../../../common/actions";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { TAGS_FORM_NAME } from "../constants";
+import history from "../../../constants/History";
 
 const request: EpicUtils.Request = {
   type: UPDATE_TAG_REQUEST,
   getData: payload => TagsService.updateTag(payload.id, payload.tag),
   retrieveData: payload => TagsService.getTag(payload.id),
-  processData: r => [
+  processData: (r, s) => {
+    if (s.nextLocation) {
+      history.push(s.nextLocation);
+    }
+    
+    return [
       {
         type: FETCH_SUCCESS,
         payload: { message: `${r.type} was successfully updated` }
       },
       initialize(TAGS_FORM_NAME, r),
       getAllTags()
-    ],
+    ];
+  },
   processError: (r, t) => FetchErrorHandler(r, `Error. ${t.type} was not updated`)
 };
 

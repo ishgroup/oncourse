@@ -31,7 +31,6 @@ import ish.oncourse.server.document.DocumentService
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import ish.oncourse.server.api.v1.function.DocumentFunctions
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import ish.oncourse.server.api.v1.model.CancelCourseClassDTO
 import ish.oncourse.server.api.v1.model.ClassFundingSourceDTO
@@ -396,8 +395,8 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         if (courseClassDuplicate.copySitesAndRooms == null) {
             validator.throwClientErrorException('copySitesAndRooms', 'copySitesAndRooms is required')
         }
-        if (courseClassDuplicate.copyPayableTimeForSessions == null) {
-            validator.throwClientErrorException('copyPayableTimeForSessions', 'copyPayableTimeForSessions is required')
+        if (courseClassDuplicate.tutorRosterOverrides == null) {
+            validator.throwClientErrorException('tutorRosterOverrides', 'tutorRosterOverrides is required')
         }
         if (courseClassDuplicate.copyVetData == null) {
             validator.throwClientErrorException('copyVetData', 'copyVetData is required')
@@ -422,7 +421,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
             req.applyDiscounts = courseClassDuplicate.applyDiscounts
             req.copyCosts = courseClassDuplicate.copyCosts
             req.copySitesAndRooms = courseClassDuplicate.copySitesAndRooms
-            req.copyPayableTimeForSessions = courseClassDuplicate.copyPayableTimeForSessions
+            req.tutorRosterOverrides = courseClassDuplicate.tutorRosterOverrides
             req.copyVetData = courseClassDuplicate.copyVetData
             req.copyNotes = courseClassDuplicate.copyNotes
             req.copyAssessments = courseClassDuplicate.copyAssessments

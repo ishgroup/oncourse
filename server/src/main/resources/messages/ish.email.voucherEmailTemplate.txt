@@ -1,5 +1,18 @@
 Thank you for purchasing ${voucher.voucherProduct.name} from ${Preferences.get("college.name")}.
 
-To redeem this voucher, enter this voucher code ${voucher.code} during enrolment. The voucher is available for immediate redemption at ${Preferences.get("web.url")}
+Value at purchase: ${voucher.valueOnPurchase}
+Expiration date: ${voucher.expiryDate.format("EEEE d MMMM yyyy")}
 
-This voucher will expire on ${voucher.expiryDate}.
+<% if (voucher.voucherProduct.maxCoursesRedemption == voucher.redeemedCourseCount || voucher.redemptionValue == 0) { %>
+This voucher is either expired or has been fully redeemed and can no longer be used.
+<% } %>
+
+<% if (voucher.redemptionValue > 0 || voucher.redeemedCourseCount < voucher.voucherProduct.maxCoursesRedemption) { %>
+<% if (!voucher.voucherProduct.maxCoursesRedemption) { %>
+Current redeemable value: ${voucher.redemptionValue}
+<% } else { %>
+Number of enrolments allowed: ${voucher.voucherProduct.maxCoursesRedemption}
+Number of enrolments used: ${voucher.redeemedCourseCount}
+<% } %>
+To redeem this voucher, enter this voucher code ${voucher.code} during enrolment. The voucher is available for immediate redemption at ${Preferences.get("web.url")}
+<% } %>

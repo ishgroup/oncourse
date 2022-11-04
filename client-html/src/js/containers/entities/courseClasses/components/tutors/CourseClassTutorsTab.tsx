@@ -14,7 +14,6 @@ import { CourseClassTutor, DefinedTutorRole } from "@api/model";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { ClassCostExtended, CourseClassExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 import { State } from "../../../../../reducers/state";
-import { contactLabelCondition } from "../../../contacts/utils";
 import CourseClassTutorsRenderer from "./CourseClassTutorsRenderer";
 import { addActionToQueue, removeActionsFromQueue } from "../../../../../common/actions";
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
@@ -24,6 +23,7 @@ import { StringKeyAndValueObject } from "../../../../../model/common/CommomObjec
 import { getTutorNameWarning, isTutorWageExist } from "./utils";
 import uniqid from "../../../../../common/utils/uniqid";
 import AddButton from "../../../../../common/components/icons/AddButton";
+import { getContactFullName } from "../../../contacts/utils";
 
 export interface CourseClassTutorsTabProps extends Partial<EditViewProps> {
   values?: CourseClassExtended;
@@ -78,7 +78,7 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
           warningsUpdated[value.id] = null;
           setTutorNamesWarnings(warningsUpdated);
         }
-        dispatch(change(form, `tutors[${index}].tutorName`, contactLabelCondition(value)));
+        dispatch(change(form, `tutors[${index}].tutorName`, getContactFullName(value)));
       },
       [tutorNamesWarnings]
     );
@@ -136,7 +136,7 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
           confirmMessage: hasWages
             ? `Wages for ${tutor.tutorName} will be removed too, do you really want to continue?`
             : "Tutor will be deleted permanently",
-          cancelButtonText: "Delete"
+          confirmButtonText: "Delete"
         });
       };
 

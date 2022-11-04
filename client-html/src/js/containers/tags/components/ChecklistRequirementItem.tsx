@@ -23,6 +23,8 @@ import { makeAppStyles } from "../../../common/styles/makeStyles";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { Switch } from "../../../common/components/form/formFields/Switch";
 import EntityService from "../../../common/services/EntityService";
+import { Dispatch } from "redux";
+import { change } from "redux-form";
 
 const useStyles = makeAppStyles(theme => ({
   deleteIcon: {
@@ -44,11 +46,13 @@ interface Props {
   onDelete: any;
   index: number;
   parent: string;
+  form: string;
+  dispatch: Dispatch;
 }
 
 const ChecklistRequirementItem = (props: Props) => {
   const {
-    disabled, item, onDelete, index, parent
+    disabled, item, onDelete, index, parent, form, dispatch
   } = props;
   
   const [showDisplayRule, setShowDisplayRule] = useState(Boolean(item.displayRule));
@@ -82,6 +86,13 @@ const ChecklistRequirementItem = (props: Props) => {
   }, [item.displayRule, item.type]);
 
   const validateExpression = useCallback(() => (isValidQuery ? undefined : "Expression is invalid"), [isValidQuery]);
+  
+  const onSwitchDisplayRule = (e, v) => {
+    setShowDisplayRule(v);
+    if (!v) {
+      dispatch(change(form, `${parent}.displayRule`, null));
+    }
+  };
 
   return (
     <div className={clsx(classes.root, hoverClasses.container)}>
@@ -91,7 +102,7 @@ const ChecklistRequirementItem = (props: Props) => {
 
       <FormControlLabel
         className="justify-content-end"
-        control={<Switch checked={showDisplayRule} onChange={(e, v) => setShowDisplayRule(v)} />}
+        control={<Switch checked={showDisplayRule} onChange={onSwitchDisplayRule} />}
         label="Add display rule"
         labelPlacement="start"
       />

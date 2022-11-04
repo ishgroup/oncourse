@@ -125,7 +125,7 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
             invoiceDTO.createdOn = dateToTimeValue(abstractInvoice.createdOn)
             invoiceDTO.modifiedOn = dateToTimeValue(abstractInvoice.modifiedOn)
             invoiceDTO.paymentPlans.addAll([toRestPaymentPlan(abstractInvoice)])
-            invoiceDTO.tags = abstractInvoice.tags.collect { it.id }
+            invoiceDTO.tags = abstractInvoice.allTags.collect { it.id }
             invoiceDTO
         }
         if (abstractInvoice instanceof Invoice) {

@@ -11,6 +11,8 @@ import { COLORS } from "./utils";
 
 export const TAGS_FORM_NAME = "TagsForm";
 
+export const ENTITY_TAGS_EXPAND_SETTINGS_KEY = "EntityTagExpandSettings";
+
 export const EmptyTag: FormTag = {
   id: null,
   name: "",

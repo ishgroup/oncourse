@@ -158,6 +158,6 @@ const mapStateToProps = (state: State) => ({
   values: getFormValues(PAYSLIP_GENERATE_FORM)(state)
 });
 
-export default reduxForm<any, Props>({
+export default reduxForm<any, any, any>({
   form: PAYSLIP_GENERATE_FORM
 })(connect(mapStateToProps)((props: any) => (props.values ? <PayslipGenerateDialog {...props} /> : null)));

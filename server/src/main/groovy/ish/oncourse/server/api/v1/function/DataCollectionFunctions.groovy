@@ -117,13 +117,6 @@ class DataCollectionFunctions {
                     .select(context)
                     .collect { new FieldTypeDTO(uniqueKey: "${CUSTOM_FIELD_PROPERTY_PATTERN}${it.entityIdentifier.toLowerCase()}.${it.key}", label: it.name) }
 
-            List<FieldTypeDTO> tagFieldTypes = ObjectSelect.query(Tag.class)
-                    .and(Tag.PARENT_TAG.isNull())
-                    .and(Tag.SPECIAL_TYPE.isNull())
-                    .select(context)
-                    .findAll {t -> t.getTagRequirement(Contact.class)}
-                    .collect{new FieldTypeDTO(uniqueKey: "${TAG_PATTERN}${it.pathName}", label: it.name)}
-
             fieldTypes += VISIBLE_FIELDS
 
             switch (formType) {
@@ -133,7 +126,6 @@ class DataCollectionFunctions {
                 case Enrolment.simpleName:
                     fieldTypes += ENROLMENT_LIST_FIELDS
             }
-            fieldTypes += tagFieldTypes
         }
 
         return fieldTypes

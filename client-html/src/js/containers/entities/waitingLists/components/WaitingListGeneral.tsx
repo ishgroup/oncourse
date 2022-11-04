@@ -21,7 +21,7 @@ import {
   HeaderContactTitle,
   LinkAdornment
 } from "../../../../common/components/form/FieldAdornments";
-import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
+import { getContactFullName } from "../../contacts/utils";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
@@ -67,8 +67,8 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
                   name="contactId"
                   label="Student"
                   selectValueMark="id"
-                  selectLabelCondition={contactLabelCondition}
-                  defaultDisplayValue={values && defaultContactName(values.studentName)}
+                  selectLabelCondition={getContactFullName}
+                  defaultDisplayValue={values && values.studentName}
                   labelAdornment={
                     <ContactLinkAdornment id={values?.contactId} />
                   }
@@ -112,6 +112,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
             labelAdornment={<LinkAdornment link={values.courseId} linkHandler={openCourseLink} />}
             itemRenderer={CourseItemRenderer}
             onChange={this.handlerCourseChange}
+            debounced={false}
             rowHeight={55}
             required
           />

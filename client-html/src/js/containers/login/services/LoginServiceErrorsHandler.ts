@@ -12,11 +12,11 @@ interface loginResponse {
 let tokenRequiredFirst = true;
 
 const LoginServiceErrorsHandler = (response: loginResponse, customMessage?: string): IAction<any>[] => {
-  if (!response) {
+  if (!response || !response.data || !response.status) {
     return [
       {
         type: FETCH_FAIL,
-        payload: { message: customMessage || "Server is not available" }
+        payload: {message: customMessage || "Server is not available"}
       }
     ];
   }

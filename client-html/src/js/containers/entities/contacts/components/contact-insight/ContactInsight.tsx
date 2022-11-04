@@ -27,6 +27,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Collapse from "@mui/material/Collapse";
 import { CircularProgress } from "@mui/material";
 import Close from "@mui/icons-material/Close";
+import Mail from "@mui/icons-material/Mail";
 import clsx from "clsx";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { formatDistanceStrict } from "date-fns";
@@ -78,6 +79,20 @@ const PhoneLabel = ({ phone, label }) => (
         type="text"
         format={getPhoneMask(phone)}
       />
+    </Typography>
+    {" "}
+    <Typography component="span" variant="caption" color="textSecondary">
+      {label}
+    </Typography>
+  </div>
+);
+
+const MailLabel = ({ mail, label }) => (
+  <div className="mb-1">
+    <Mail fontSize="inherit" className="vert-align-mid" />
+    {" "}
+    <Typography component="span" variant="body2">
+      {mail}
     </Typography>
     {" "}
     <Typography component="span" variant="caption" color="textSecondary">
@@ -560,6 +575,7 @@ const ContactInsight = (
                   {data.homePhone && <PhoneLabel label="home" phone={data.homePhone} />}
                   {data.mobilePhone && <PhoneLabel label="mobile" phone={data.mobilePhone} />}
                   {data.fax && <PhoneLabel label="fax" phone={data.fax} />}
+                  {data.email && <MailLabel label="email" mail={data.email} />}
                   <Chip label="Send Message" className="fontWeight600 mt-1" onClick={onSendMessage} />
                 </div>
               </Grid>

@@ -6,12 +6,12 @@ import Typography from "@mui/material/Typography";
 import Delete from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import { Dispatch } from "redux";
+import { TagRequirement } from "@api/model";
 import { ToogleCheckbox } from "../../../common/components/form/ToogleCheckbox";
 import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
 import { AppTheme } from "../../../model/common/Theme";
 import { useHoverShowStyles } from "../../../common/styles/hooks";
-import { TagRequirement } from "@api/model";
 
 const styles = (theme: AppTheme) => createStyles({
   deleteIcon: {
@@ -81,6 +81,7 @@ const TagRequirementItem: React.FC<Props> = props => {
         component={ToogleCheckbox}
         disabled={disabled}
         onChange={onChange}
+        debounced={false}
       />
 
       <Field
@@ -92,6 +93,7 @@ const TagRequirementItem: React.FC<Props> = props => {
         component={ToogleCheckbox}
         disabled={disabled}
         onChange={onChange}
+        debounced={false}
       />
 
       <IconButton

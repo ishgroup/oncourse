@@ -24,6 +24,8 @@ import StaticProgress from "../../../common/components/progress/StaticProgress";
 import { ColoredCheckBox } from "../../../common/components/form/ColoredCheckBox";
 import { BooleanArgFunction } from "../../../model/common/CommonFunctions";
 import { openInternalLink } from "../../../common/utils/links";
+import { LSGetItem, LSSetItem } from "../../../common/utils/storage";
+import { ENTITY_TAGS_EXPAND_SETTINGS_KEY } from "../constants";
 
 interface ChecklistItemProps {
   item: Tag;
@@ -33,12 +35,14 @@ interface ChecklistItemProps {
   collapsedIds: Record<number, boolean>;
 }
 
+const expandAllInit = (item: Tag) => JSON.parse(LSGetItem(ENTITY_TAGS_EXPAND_SETTINGS_KEY) || "[]").includes(item.id);
+
 const ChecklistItem = ({
  item, onCheck, onCheckAll, checkedIds, collapsedIds 
 }: ChecklistItemProps) => {
   const [menuAnchor, setMenuAnchor] = useState(null);
   const [expandItems, setExpandItems] = useState(true);
-  const [expandAll, setExpandAll] = useState(false);
+  const [expandAll, setExpandAll] = useState(() => expandAllInit(item));
   
   const checkedFraction = useMemo(() => {
     const checkedCount = item.childTags.reduce((p, c) => (checkedIds[c.id] ? ++p : p), 0);
@@ -49,7 +53,15 @@ const ChecklistItem = ({
 
   const onMenuClose = () => setMenuAnchor(null);
 
-  const onShowCompleted = () => setExpandAll(prev => !prev);
+  const onShowCompleted = () => setExpandAll(prev => {
+    const updated = !prev;
+    
+    const prevSettings = JSON.parse(LSGetItem(ENTITY_TAGS_EXPAND_SETTINGS_KEY) || "[]");
+    
+    LSSetItem(ENTITY_TAGS_EXPAND_SETTINGS_KEY, JSON.stringify(Array.from(new Set([...prevSettings, item.id]))));
+    
+    return updated;
+  });
   
   const onMarkAllComplete = () => onCheckAll(!allChecked);
   

@@ -10,7 +10,6 @@ import ish.common.types.*
 import ish.duplicate.ClassDuplicationRequest
 import ish.math.Money
 import ish.math.MoneyRounding
-import ish.oncourse.entity.services.CertificateService
 import ish.oncourse.entity.services.CourseClassService
 import ish.oncourse.generator.DataGenerator
 import ish.oncourse.server.duplicate.DuplicateClassService
@@ -22,8 +21,6 @@ import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.*
 import org.apache.cxf.common.util.StringUtils
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 @DatabaseSetup
@@ -125,7 +122,7 @@ class CourseClassTest extends TestWithDatabase {
                 request.setApplyDiscounts(true)
                 request.setCopyCosts(true)
                 request.setCopySitesAndRooms(true)
-                request.setCopyPayableTimeForSessions(true)
+                request.setTutorRosterOverrides(true)
                 request.setCopyNotes(false)
                 DuplicateClassService service = injector.getInstance(DuplicateClassService.class)
                 Long id = service.duplicateClasses(request).newIds[0]
@@ -276,7 +273,7 @@ class CourseClassTest extends TestWithDatabase {
         request.setApplyDiscounts(false)
         request.setCopyCosts(false)
         request.setCopySitesAndRooms(false)
-        request.setCopyPayableTimeForSessions(false)
+        request.setTutorRosterOverrides(false)
         request.setCopyNotes(true)
         DuplicateClassService service = injector.getInstance(DuplicateClassService.class)
         service.duplicateClasses(request)
@@ -325,7 +322,7 @@ class CourseClassTest extends TestWithDatabase {
         request.setApplyDiscounts(false)
         request.setCopyCosts(false)
         request.setCopySitesAndRooms(false)
-        request.setCopyPayableTimeForSessions(false)
+        request.setTutorRosterOverrides(false)
         request.setCopyNotes(true)
         service = injector.getInstance(DuplicateClassService.class)
         service.duplicateClasses(request)
@@ -402,7 +399,7 @@ class CourseClassTest extends TestWithDatabase {
         request.setApplyDiscounts(true)
         request.setCopyCosts(true)
         request.setCopySitesAndRooms(true)
-        request.setCopyPayableTimeForSessions(true)
+        request.setTutorRosterOverrides(true)
         request.setCopyNotes(false)
         service = injector.getInstance(DuplicateClassService.class)
         service.duplicateClasses(request)
@@ -441,7 +438,7 @@ class CourseClassTest extends TestWithDatabase {
         request.setApplyDiscounts(true)
         request.setCopyCosts(true)
         request.setCopySitesAndRooms(true)
-        request.setCopyPayableTimeForSessions(false)
+        request.setTutorRosterOverrides(false)
         request.setCopyNotes(false)
         service = injector.getInstance(DuplicateClassService.class)
         service.duplicateClasses(request)

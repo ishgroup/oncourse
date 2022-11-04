@@ -28,18 +28,18 @@ trait DocumentTrait {
     }
 
 
-    String getAttachedStudentInfo() {
-        def studentRelation = attachmentRelations
-                .find {it ->
-                    it instanceof StudentAttachmentRelation || it instanceof ContactAttachmentRelation && (it as ContactAttachmentRelation).contact.student != null
-                }
-        if (studentRelation == null)
+    /**
+     * required into document csv export
+     * @return
+     */
+    String getAttachedForFirstEnrolmentStudentInfo() {
+        def enrolmentRelation = attachmentRelations
+                .find {it -> it instanceof EnrolmentAttachmentRelation}
+        if (enrolmentRelation == null)
             return null
-        Student student
-        if (studentRelation instanceof StudentAttachmentRelation)
-            student = (studentRelation as StudentAttachmentRelation).attachedStudent
-        else
-            student = (studentRelation as ContactAttachmentRelation).attachedContact.student
+        Student student = (enrolmentRelation as EnrolmentAttachmentRelation).attachedEnrolment.student
+        if(student == null)
+            return null
         return "No.: ${student.studentNumber} | Name: ${student.contact.name}"
     }
 

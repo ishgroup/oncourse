@@ -55,7 +55,7 @@ class TagRequirementsMenu extends React.Component<any, any> {
   }
 
   filterItems(items) {
-    return items.filter(i => {
+    const filtered = items.filter(i => {
       const isAdded = Boolean(this.props.items.find(r => i.type === r.type));
 
       let isBinded;
@@ -78,6 +78,10 @@ class TagRequirementsMenu extends React.Component<any, any> {
 
       return isAdded ? false : !isBinded;
     });
+
+    filtered.sort((a, b) => (GetTagRequirementDisplayName(a.type) > GetTagRequirementDisplayName(b.type) ? 1 : -1));
+
+    return filtered;
   }
 
   componentDidUpdate({ rootID, items }) {

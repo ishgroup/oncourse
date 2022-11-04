@@ -660,6 +660,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
         items={flavourModel}
         onChange={this.onFlavourChange}
         className="mb-2"
+        debounced={false}
         reqired
       />
     );
@@ -755,6 +756,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                       : dateRangeModel
                                   }
                                   onChange={this.onDateRangeChange}
+                                  debounced={false}
                                   className="mb-2"
                                   displayEmpty
                                   required

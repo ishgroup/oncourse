@@ -238,11 +238,20 @@ const CourseClassTimetableTab = ({
       setExpanded(prev => [...prev, tabIndex]);
     }
     const temporaryId = uniqid();
-    let start: any = new Date();
-    start.setMinutes(0, 0, 0);
-    let end: any = addHours(start, 1);
-    start = start.toISOString();
-    end = end.toISOString();
+    
+    let start: any;
+    let end: any;
+    
+    if (values.sessions.length) {
+      start = values.sessions[0].start;
+      end = values.sessions[0].end;
+    } else {
+      start = new Date();
+      start.setMinutes(0, 0, 0);
+      end = addHours(start, 1);
+      start = start.toISOString();
+      end = end.toISOString();
+    }
 
     const duration = differenceInMinutes(new Date(end), new Date(start));
 
@@ -455,6 +464,9 @@ const CourseClassTimetableTab = ({
 
     sessionSelection.forEach(sid => {
       const originalSession = updated.find(s => s.id === sid || s.temporaryId === sid);
+
+      if (!originalSession) return;
+
       const session: TimetableSession = JSON.parse(JSON.stringify(originalSession));
       const startDate = new Date(session.start);
       const endDate = new Date(session.end);
@@ -547,6 +559,7 @@ const CourseClassTimetableTab = ({
         setShiftedTutorAttendances(originalSession, session);
       } else if (bulkValue.durationChecked && bulkValue.duration !== 0) {
         session.end = addMinutes(new Date(session.start), bulkValue.duration).toISOString();
+        setShiftedTutorAttendances(originalSession, session);
       } else if (bulkValue.payableDurationChecked && bulkValue.payableDuration !== 0) {
         actualPayableDurationMinutes = bulkValue.payableDuration;
       }

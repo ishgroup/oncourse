@@ -28,6 +28,10 @@ class ReportOverlayService {
     return this.reportOverlayApi.get(id);
   }
 
+  public getReportOverlayCopy(id: number): Promise<string[]> {
+    return this.reportOverlayApi.getOriginal(id);
+  }
+
   public removeReportOverlay(id: number): Promise<any> {
     return this.reportOverlayApi.remove(id);
   }

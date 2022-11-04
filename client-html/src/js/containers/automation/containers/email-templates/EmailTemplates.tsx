@@ -6,14 +6,13 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { withRouter } from "react-router";
 import { getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-form";
 import { EmailTemplate } from "@api/model";
-import { setNextLocation } from "../../../../common/actions";
-import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import { usePrevious } from "../../../../common/utils/hooks";
 import { State } from "../../../../reducers/state";
 import {
@@ -51,20 +50,6 @@ const EmailTemplates = React.memo<any>(props => {
 
   const isNew = useMemo(() => id === "new", [id]);
 
-  const validateTemplateCopyName = useCallback(name => (emailTemplates.some(t => t.name?.trim() === name.trim())
-    ? "Name must be unique"
-    : undefined),
-  [emailTemplates]);
-
-  const validateNewTemplateName = useCallback(name => {
-      if (isNew) {
-        const matches = emailTemplates.filter(t => t.title.trim() === name.trim());
-        return matches.length ? "Name must be unique" : undefined;
-      }
-      return undefined;
-    },
-    [emailTemplates, isNew]);
-
   useEffect(() => {
     if (id && prevId !== id) {
       if (isNew) {
@@ -79,8 +64,6 @@ const EmailTemplates = React.memo<any>(props => {
     <EmailTemplatesForm
       dispatch={dispatch}
       isNew={isNew}
-      validateTemplateCopyName={validateTemplateCopyName}
-      validateNewTemplateName={validateNewTemplateName}
       emailTemplates={emailTemplates}
       {...rest}
     />
@@ -100,7 +83,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onUpdateInternal: (template: EmailTemplate) => dispatch(updateInternalEmailTemplate(template)),
   onDelete: (id: number) => dispatch(removeEmailTemplate(id)),
   getEmailTemplate: (id: number) => dispatch(getEmailTemplate(id)),
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
 export default reduxForm({

@@ -18,12 +18,12 @@ import ExpandableItem from "../../../../../common/components/layout/expandable/E
 import { openInternalLink } from "../../../../../common/utils/links";
 import { AppTheme } from "../../../../../model/common/Theme";
 import { DD_MM_YYYY_SLASHED, EEE_D_MMM_YYYY } from "../../../../../common/utils/dates/format";
-import { contactLabelCondition, defaultContactName } from "../../../contacts/utils";
 import { ContactLinkAdornment, LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
 import ContactSelectItemRenderer from "../../../contacts/components/ContactSelectItemRenderer";
 import { CourseClassTutorsTabProps } from "./CourseClassTutorsTab";
 import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
 import WarningMessage from "../../../../../common/components/form/fieldMessage/WarningMessage";
+import { getContactFullName } from "../../../contacts/utils";
 
 const styles = (theme: AppTheme) => createStyles({
   tutorRoot: {
@@ -101,7 +101,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
           <div className={clsx("d-grid gridAutoFlow-column align-items-baseline", classes.tutorColumn)}>
             {tutor.tutorName ? (
               <Typography noWrap className={clsx(nameWarning && "warningColor")}>
-                {defaultContactName(tutor.tutorName)}
+                {tutor.tutorName}
               </Typography>
             ) : (
               <Typography color="error" noWrap>
@@ -152,8 +152,8 @@ const CourseClassTutorItem: React.FC<Props> = ({
                 entity: "Contact",
                 aqlFilter: `isTutor is true and (tutor.dateFinished > ${today} or tutor.dateFinished is null)`,
                 selectValueMark: "id",
-                selectLabelCondition: contactLabelCondition,
-                defaultDisplayValue: defaultContactName(tutor.tutorName),
+                selectLabelCondition: getContactFullName,
+                defaultDisplayValue: tutor.tutorName,
                 labelAdornment: (
                   <ContactLinkAdornment id={tutor?.contactId} />
                 ),

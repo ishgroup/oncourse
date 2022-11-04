@@ -12,11 +12,9 @@ import FormHelperText from "@mui/material/FormHelperText";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import Popper from "@mui/material/Popper";
-import { InputAdornment, Autocomplete, IconButton } from "@mui/material";
-import { withStyles, createStyles } from "@mui/styles";
-import React, {
- useContext, useEffect, useMemo, useRef, useState
-} from "react";
+import { Autocomplete, IconButton, InputAdornment } from "@mui/material";
+import { createStyles, withStyles } from "@mui/styles";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import CloseIcon from '@mui/icons-material//Close';
 import clsx from "clsx";
 import Typography from "@mui/material/Typography";
@@ -302,7 +300,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
   const edit = () => {
     setIsEditing(true);
     setTimeout(() => {
-      inputNode.current.focus();
+      inputNode?.current?.focus();
     }, 50);
   };
 
@@ -346,11 +344,10 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
 
   const handleChange = (e, value, reason) => {
     if (reason === "clear") {
-      onClear();
       return;
     }
 
-    if (creatable && value.createdOption) {
+    if (creatable && value && value.createdOption) {
       onCreateOptionInner(value);
     }
 
@@ -373,6 +370,8 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
   };
 
   const handleInputChange = e => {
+    setSearchValue(e.target.value);
+
     if (onInputChange) {
       onInputChange(e.target.value);
     }
@@ -380,8 +379,6 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     if (remoteData && !e.target.value) {
       onClearRows();
     }
-
-    setSearchValue(e.target.value);
   };
 
   const getOptionLabel = option => (selectLabelCondition ? selectLabelCondition(option) : option[selectLabelMark]) || "";
@@ -407,7 +404,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     if (selectLabelCondition) {
       response = returnType === "object" ? selectLabelCondition(input.value) : formattedDisplayValue || defaultDisplayValue;
     } else if (returnType === "object") {
-      response = input.value[selectLabelMark];
+      response = input.value && input.value[selectLabelMark];
     } else {
       const selected = sortedItems.find(i => getOptionSelected(i, input.value));
       response = selected ? selected[selectLabelMark] : defaultDisplayValue || input.value;
@@ -469,7 +466,8 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
               root: clsx("d-inline-flex", classes.root),
               hasPopupIcon: classes.hasPopup,
               hasClearIcon: classes.hasClear,
-              inputRoot: classes.inputWrapper
+              inputRoot: classes.inputWrapper,
+              option: "w-100 text-break-spaces"
             }}
             renderOption={renderOption}
             getOptionLabel={getOptionLabel}

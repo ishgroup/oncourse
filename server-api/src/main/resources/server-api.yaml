@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   title: onCourse REST Api
-  description: An API for interacting with the backend of the onCourse server
+  description: An API for interacting with the backend of the onCourse server. It uses the HTTP 2.0 protocol, so only those testing tools that support it can be used for testing
   contact:
     name: ish group pty ltd
     url: https://www.ish.com.au
@@ -193,8 +193,12 @@ paths:
     $ref: './path/list/entity/qualification/api.yaml'
   /list/entity/report:
     $ref: './path/list/entity/report/api.yaml'
+  /list/entity/report/preview:
+    $ref: './path/list/entity/report/preview/api.yaml'
   /list/entity/reportOverlay:
     $ref: './path/list/entity/reportOverlay/api.yaml'
+  /list/entity/reportOverlay/original:
+    $ref: './path/list/entity/reportOverlay/original/api.yaml'
   /list/entity/room:
     $ref: './path/list/entity/room/api.yaml'
   /list/entity/room/validation:

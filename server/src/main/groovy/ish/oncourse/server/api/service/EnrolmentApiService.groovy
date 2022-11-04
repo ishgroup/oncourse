@@ -70,7 +70,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
         new EnrolmentDTO().with { enrolmentDTO ->
             enrolmentDTO.feeHelpClass = enrolment.courseClass.course.feeHelpClass
             enrolmentDTO.id = enrolment.id
-            enrolmentDTO.tags = enrolment.tags.collect { it.id }
+            enrolmentDTO.tags = enrolment.allTags.collect { it.id }
             enrolment.student.contact.with { contact ->
                 enrolmentDTO.studentContactId = contact.id
                 enrolmentDTO.studentName = contact.getFullName()

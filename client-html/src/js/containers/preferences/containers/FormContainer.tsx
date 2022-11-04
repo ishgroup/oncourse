@@ -27,8 +27,9 @@ import * as financial from "../../../model/preferences/Financial";
 import * as security from "../../../model/preferences/security";
 import { State } from "../../../reducers/state";
 import { Fetch } from "../../../model/common/Fetch";
-import { setNextLocation, showConfirm } from "../../../common/actions";
+import { setUserPreference, showConfirm } from "../../../common/actions";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
+import { ACCOUNT_DEFAULT_INVOICELINE_ID } from "../../../constants/Config";
 
 const styles = () =>
   createStyles({
@@ -66,8 +67,7 @@ interface Props {
   skipOnInit?: boolean;
   fetch?: Fetch;
   openConfirm?: ShowConfirmCaller;
-  nextLocation?: string,
-  setNextLocation?: (nextLocation: string) => void,
+  nextLocation?: string
 }
 
 const FieldsModel = {
@@ -163,13 +163,10 @@ class FormContainer extends React.Component<Props & RouteComponentProps, any> {
     })
       .then(() => {
         const {
-          dispatch, data, formName, nextLocation, setNextLocation, history
+          dispatch, data, formName
         } = this.props;
 
         dispatch(initialize(formName, this.formatData(data)));
-
-        nextLocation && history.push(nextLocation);
-        setNextLocation('');
       })
       .catch(error => {
         this.isValidating = false;
@@ -234,9 +231,13 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   dispatch,
   onInit: category => dispatch(getPreferences(category)),
-  onSubmit: (category, fields) => dispatch(savePreferences(category, fields)),
-  openConfirm: props => dispatch(showConfirm(props)),
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+  onSubmit: (category, {defaultInvoiceLineAccount, ...fields}) => {
+    if (defaultInvoiceLineAccount) {
+      dispatch(setUserPreference({key: ACCOUNT_DEFAULT_INVOICELINE_ID, value: defaultInvoiceLineAccount}));
+    }
+    dispatch(savePreferences(category, fields));
+  },
+  openConfirm: props => dispatch(showConfirm(props))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(FormContainer)));

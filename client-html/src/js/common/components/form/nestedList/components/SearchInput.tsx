@@ -43,7 +43,6 @@ const SearchInput = React.memo<any>(props => {
     onSearchChange,
     onAqlSearchChange,
     onSearchEscape,
-    onBlur,
     onAddEvent,
     onAqlSearchClear,
     inputRef,
@@ -79,7 +78,7 @@ const SearchInput = React.memo<any>(props => {
             } else {
               toggleSearch(e);
             }
-        }}
+          }}
         >
           <Close className="inputAdornmentIcon" />
         </IconButton>
@@ -93,19 +92,19 @@ const SearchInput = React.memo<any>(props => {
     <div>
       {aqlEntities && aqlEntities.length > 1
         && (
-        <EditInPlaceField
-          className="mt-2 mb-2"
-          label="Entity"
-          meta={{}}
-          input={{
+          <EditInPlaceField
+            className="mt-2 mb-2"
+            label="Entity"
+            meta={{}}
+            input={{
             onChange: value => setSelectedEntity(value),
             onFocus: stubFunction,
             onBlur: stubFunction,
             value: aqlEntity
-          }}
-          items={entityItems}
-          select
-        />
+            }}
+            items={entityItems}
+            select
+          />
       )}
 
       <EditInPlaceQuerySelect
@@ -128,7 +127,6 @@ const SearchInput = React.memo<any>(props => {
         }}
         performSearch={onAqlSearchChange}
         onFocus={onFocus}
-        onBlur={onBlur}
         endAdornment={InputAdornment}
         menuHeight={300}
       />
@@ -142,7 +140,6 @@ const SearchInput = React.memo<any>(props => {
       className={className}
       onChange={onSearchChange}
       onKeyDown={onSearchEscape}
-      onBlur={onBlur}
       onFocus={onFocus}
       endAdornment={InputAdornment}
       autoFocus={searchExpression ? false : autoFocus}

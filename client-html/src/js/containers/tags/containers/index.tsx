@@ -8,7 +8,7 @@
 
 import React, { useEffect } from "react";
 import {
-  arrayInsert,
+  arrayInsert, arrayPush,
   Field, Form, initialize
 } from "redux-form";
 import { Grid, Typography } from "@mui/material";
@@ -53,11 +53,11 @@ class TagsFormRenderer extends TagsFormBase {
 
     const isNew = !values?.id;
 
-    const { editingId } = this.state;
+    const { editingIds } = this.state;
 
     return values ? (
       <Form onSubmit={handleSubmit(this.onSave)} className={className}>
-        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <AppBarContainer
           values={values}
@@ -86,8 +86,8 @@ class TagsFormRenderer extends TagsFormBase {
             <AppBarActions
               actions={[
                 {
-                  action: () => this.onDelete(values.id),
-                  icon: <DeleteForever />,
+                  action: () => this.onDelete(values),
+                  icon: <DeleteForever/>,
                   confirmText: "Tag will be deleted permanently",
                   tooltip: "Delete Tag",
                   confirmButtonText: "DELETE"
@@ -153,7 +153,7 @@ class TagsFormRenderer extends TagsFormBase {
                   changeVisibility={this.changeVisibility}
                   setEditingId={this.setEditingId}
                   onDrop={this.onDrop}
-                  editingId={editingId}
+                  editingIds={editingIds}
                   syncErrors={syncErrors}
                 />
               )}
@@ -176,7 +176,7 @@ class ChecklistsFormRenderer extends TagsFormBase {
       id: ("new" + this.counter) as any,
     };
 
-    dispatch(arrayInsert(TAGS_FORM_NAME, "childTags", 0, newTag));
+    dispatch(arrayPush(TAGS_FORM_NAME, "childTags", newTag));
 
     this.counter++;
   };
@@ -190,16 +190,17 @@ class ChecklistsFormRenderer extends TagsFormBase {
       values,
       syncErrors,
       form,
-      classes
+      classes,
+      dispatch
     } = this.props;
 
-    const { editingId } = this.state;
+    const { editingIds } = this.state;
 
     const isNew = !values?.id;
 
     return values ? (
       <Form onSubmit={handleSubmit(this.onSave)} className={className}>
-        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <AppBarContainer
           values={values}
@@ -240,8 +241,8 @@ class ChecklistsFormRenderer extends TagsFormBase {
             <AppBarActions
               actions={[
                 {
-                  action: () => this.onDelete(values.id),
-                  icon: <DeleteForever />,
+                  action: () => this.onDelete(values),
+                  icon: <DeleteForever/>,
                   confirmText: "Tag will be deleted permanently",
                   tooltip: "Delete Tag",
                   confirmButtonText: "DELETE"
@@ -277,6 +278,8 @@ class ChecklistsFormRenderer extends TagsFormBase {
                         index={index}
                         onDelete={this.removeRequirement}
                         disabled={values.system}
+                        dispatch={dispatch}
+                        form={form}
                       />
                   ))}
                 </Grid>
@@ -298,7 +301,7 @@ class ChecklistsFormRenderer extends TagsFormBase {
                   onDelete={this.removeChildTag}
                   setEditingId={this.setEditingId}
                   onDrop={this.onDrop}
-                  editingId={editingId}
+                  editingIds={editingIds}
                   syncErrors={syncErrors}
                 />
               )}

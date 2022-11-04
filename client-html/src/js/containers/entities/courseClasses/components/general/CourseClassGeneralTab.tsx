@@ -7,7 +7,7 @@
  */
 
 import React, {
- useCallback, useEffect, useMemo, useState 
+ useCallback, useMemo, useState
 } from "react";
 import clsx from "clsx";
 import { connect } from "react-redux";
@@ -22,14 +22,12 @@ import { IconButton } from "@mui/material";
 import Launch from "@mui/icons-material/Launch";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
-import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
 import { courseFilterCondition, openCourseLink } from "../../../courses/utils";
 import CourseItemRenderer from "../../../courses/components/CourseItemRenderer";
 import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { CourseClassExtended } from "../../../../../model/entities/CourseClass";
 import CourseClassEnrolmentsChart from "./CourseClassEnrolmentsChart";
-import { stubFunction } from "../../../../../common/utils/common";
 import { showMessage } from "../../../../../common/actions";
 import { AppMessage } from "../../../../../model/common/Message";
 import history from "../../../../../constants/History";
@@ -51,6 +49,8 @@ interface Props extends Partial<EditViewProps<CourseClassExtended>> {
   classCostTypes?: any;
 }
 
+const normalizeClassCode = (value: any, previousValue?: any, allValues?: any) => value.replace(new RegExp(`${allValues.courseCode}-?`), "");
+
 const CourseClassGeneralTab = React.memo<Props>(
   ({
     tags,
@@ -60,19 +60,11 @@ const CourseClassGeneralTab = React.memo<Props>(
     syncErrors,
     dispatch,
     form,
-    showMessage,
     toogleFullScreenEditView,
     tutorRoles,
     netValues,
      classCostTypes
   }) => {
-    const [classCodeError, setClassCodeError] = useState(null);
-
-    useEffect(() => {
-      if (isNew && !values.code) {
-        setClassCodeError("Class code is mandatory");
-      }
-    }, [isNew]);
 
     const openBudget = useCallback(() => {
       if (!twoColumn) {
@@ -88,26 +80,6 @@ const CourseClassGeneralTab = React.memo<Props>(
       });
     }, [twoColumn]);
 
-    const onClassCodeChange = useCallback(
-      e => {
-        const val = e.target.value;
-        const codePrefix = `${values.courseCode}-`;
-
-        if (val.includes(codePrefix)) {
-          const codeValue = val.replace(codePrefix, "");
-          dispatch(change(form, "code", codeValue));
-          if (!codeValue) {
-            setClassCodeError("Class code is mandatory");
-          } else if (classCodeError) {
-            setClassCodeError(null);
-          }
-        } else {
-          showMessage({ message: "Course code part can not be changed" });
-        }
-      },
-      [values.code, values.courseCode, form, classCodeError]
-    );
-
     const onCourseIdChange = useCallback(
       course => {
         dispatch(change(form, "courseCode", course ? course.code : null));
@@ -121,7 +93,6 @@ const CourseClassGeneralTab = React.memo<Props>(
 
         if (!values.code && course.nextAvailableCode) {
           dispatch(change(form, "code", course.nextAvailableCode));
-          setClassCodeError(null);
         }
       },
       [form, values.code, values.sessions]
@@ -198,9 +169,9 @@ const CourseClassGeneralTab = React.memo<Props>(
       }
 
       const actualEnrolment = decimalDivide(netValues.income.actual, values.successAndQueuedEnrolmentsCount);
-      
+
       let covered = 0;
-      
+
       while (covered < classCostTypes.cost.actual) {
         covered += actualEnrolment;
       }
@@ -210,6 +181,8 @@ const CourseClassGeneralTab = React.memo<Props>(
       netValues,
       values.successAndQueuedEnrolmentsCount
     ]);
+
+    const formatClassCode = value => `${values.courseCode ? values.courseCode + "-" : ""}${value || ""}`;
 
     return (
       <>
@@ -265,19 +238,16 @@ const CourseClassGeneralTab = React.memo<Props>(
                     />
                   </Grid>
                   <Grid item xs={twoColumn ? 4 : 12}>
-                    <EditInPlaceField
+                    <FormField
+                      type="text"
                       label="Class code"
-                      input={{
-                      onChange: onClassCodeChange,
-                      onFocus: stubFunction,
-                      onBlur: stubFunction,
-                      value: values.courseCode ? `${values.courseCode}-${values.code || ""}` : null
-                      }}
-                      meta={{
-                      error: classCodeError,
-                      invalid: Boolean(classCodeError)
-                      }}
+                      name="code"
+                      placeholder="Select course first"
+                      normalize={normalizeClassCode}
+                      format={formatClassCode}
                       disabled={!values.courseCode}
+                      debounced={false}
+                      required
                     />
                   </Grid>
                 </Grid>
@@ -296,7 +266,6 @@ const CourseClassGeneralTab = React.memo<Props>(
           rowSpacing={2}
         >
           <Grid item xs={twoColumn ? 8 : 12}>
-            <FormField type="stub" name="code" required />
             <FormField type="tags" name="tags" tags={tags} />
             
             <div className="heading pb-2 pt-3">Restrictions</div>

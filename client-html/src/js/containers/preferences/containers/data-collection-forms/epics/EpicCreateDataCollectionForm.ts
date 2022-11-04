@@ -16,6 +16,7 @@ const request: EpicUtils.Request = {
   getData: payload => PreferencesService.createDataCollectionForm(payload.form),
   retrieveData: () => PreferencesService.getDataCollectionForms(),
   processData: (dataCollectionForms: any) => {
+    dataCollectionForms.sort((a, b) => a.name > b.name ? 1 : -1);
     return [
       {
         type: CREATE_DATA_COLLECTION_FORM_FULFILLED,

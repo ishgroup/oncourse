@@ -81,7 +81,7 @@ const styles = (theme: AppTheme) => createStyles({
 
 const NewsItemRender = props => {
   const {
-    classes, post, setReadNews, fullScreenEditView, lastLoginOn, setReadNewsLocal
+    classes, post, setReadNews, twoColumn, lastLoginOn, setReadNewsLocal
   } = props;
 
   const isLatestItem = post.published && (!lastLoginOn || new Date(lastLoginOn).getTime() <= new Date(post.published).getTime());
@@ -97,15 +97,15 @@ const NewsItemRender = props => {
       alignItems="flex-start"
       className={clsx("cardBorders", classes.postWrapper)}
     >
-      <div className={clsx("w-100 d-block", fullScreenEditView && post.video && "d-flex")}>
+      <div className={clsx("w-100 d-block", twoColumn && post.video && "d-flex")}>
         {post.video && (
           <iframe
             allow="fullscreen"
-            width={fullScreenEditView ? "220px" : "100%"}
+            width={twoColumn ? "220px" : "100%"}
             height="150"
             src={`https://www.youtube.com/embed/${post.video}`}
             title="video"
-            className={clsx(classes.videoWrapper, fullScreenEditView && "mr-2")}
+            className={clsx(classes.videoWrapper, twoColumn && "mr-2")}
           />
         )}
         <ListItemText
@@ -164,7 +164,7 @@ const NewsItemRender = props => {
 
 const NewsRender = props => {
   const {
-    blogPosts, classes, page, preferences, setReadNews, fullScreenEditView, setReadNewsLocal, showPlaceholder, newsOffset, className
+    blogPosts, classes, page, preferences, setReadNews, twoColumn, setReadNewsLocal, showPlaceholder, newsOffset, className
   } = props;
 
   const lastLoginOn = localStorage.getItem("lastLoginOn");
@@ -189,7 +189,7 @@ const NewsRender = props => {
           post={post}
           classes={classes}
           setReadNews={setReadNews}
-          fullScreenEditView={fullScreenEditView}
+          twoColumn={twoColumn}
           lastLoginOn={lastLoginOnWithTimeZone}
           setReadNewsLocal={setReadNewsLocal}
         />
@@ -206,7 +206,6 @@ const NewsRender = props => {
 
 const mapStateToProps = (state: State) => ({
   blogPosts: state.dashboard.blogPosts,
-  fullScreenEditView: state.list.fullScreenEditView,
   preferences: state.userPreferences,
 });
 
