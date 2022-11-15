@@ -62,6 +62,7 @@ const mapStateToProps = (state: State) => ({
   initialValues: getFormInitialValues(PDF_REPORT_FORM_NAME)(state),
   syncErrors: getFormSyncErrors(PDF_REPORT_FORM_NAME)(state),
   pdfBackgrounds: state.automation.pdfBackground.pdfBackgrounds,
+  pdfReports: state.automation.pdfReport.pdfReports,
   emailTemplates: state.automation.emailTemplate.emailTemplates,
   nextLocation: state.nextLocation,
 });

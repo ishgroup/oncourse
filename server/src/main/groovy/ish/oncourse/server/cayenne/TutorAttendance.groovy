@@ -167,6 +167,14 @@ class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, 
 		return DurationFormatter.durationInHoursBetween(startDatetime, endDatetime)
 	}
 
+	/**
+	 * @return time zone of session that was got from site of room
+	 */
+	@API
+	TimeZone getTimeZone() {
+		this.session.getTimeZone()
+	}
+
 	@Override
 	Class<? extends CustomField> getCustomFieldClass() {
 		return TutorAttendanceCustomField

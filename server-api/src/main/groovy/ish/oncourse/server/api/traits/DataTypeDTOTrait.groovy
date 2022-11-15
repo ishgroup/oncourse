@@ -86,6 +86,8 @@ trait DataTypeDTOTrait {
                 return DataTypeDTO.MESSAGE_TEMPLATE
             case DataType.OBJECT:
                 return DataTypeDTO.OBJECT
+            case DataType.NUMBER:
+                return DataTypeDTO.NUMBER
             case DataType.PATTERN_TEXT:
                 return DataTypeDTO.PATTERN_TEXT
             default:
