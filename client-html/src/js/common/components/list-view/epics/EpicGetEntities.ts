@@ -6,7 +6,13 @@
 import { Epic } from "redux-observable";
 import { Request, Create } from "../../../epics/EpicUtils";
 import EntityService from "../../../services/EntityService";
-import { GET_RECORDS_FULFILLED, GET_RECORDS_REQUEST, setListSearchError, setListSelection } from "../actions";
+import {
+  GET_RECORDS_FULFILLED,
+  GET_RECORDS_FULFILLED_RESOLVE,
+  GET_RECORDS_REQUEST,
+  setListSearchError,
+  setListSelection
+} from "../actions";
 import { State } from "../../../../reducers/state";
 import { GetRecordsArgs } from "../../../../model/common/ListView";
 import FetchErrorHandler from "../../../api/fetch-errors-handlers/FetchErrorHandler";
@@ -19,10 +25,6 @@ const request: Request<any, GetRecordsArgs> = {
      listUpdate, savedID, ignoreSelection, resolve
     } = payload;
 
-    if (resolve) {
-      resolve();
-    }
-
     return [
       {
         type: GET_RECORDS_FULFILLED,
@@ -32,7 +34,11 @@ const request: Request<any, GetRecordsArgs> = {
         ? savedID && records.rows.find(r => String(r.id) === String(savedID))
           ? [setListSelection([String(savedID)])]
           : []
-        : [])
+        : []),
+      ...resolve ? [{
+        type: GET_RECORDS_FULFILLED_RESOLVE,
+        payload: { resolve }
+      }] : [],
     ];
   },
   processError: response => {
