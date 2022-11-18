@@ -9,8 +9,9 @@
 import React, {
   createContext,
   forwardRef,
-  memo, useCallback,
-  useMemo, useRef
+  memo,
+  useMemo,
+  useState
 } from "react";
 import { FixedSizeList, areEqual } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
@@ -28,6 +29,7 @@ import { CHECKLISTS_COLUMN, COLUMN_WITH_COLORS } from "../utils";
 import TagDotRenderer from "./TagDotRenderer";
 import StaticProgress from "../../../../progress/StaticProgress";
 import debounce from "lodash.debounce";
+import { stubFunction } from "../../../../../utils/common";
 
 const ThreeColumnCell = ({ row }) => (<div>
   <Typography variant="subtitle2" color="textSecondary" component="div" noWrap>
@@ -135,13 +137,20 @@ export default ({
   mainContentWidth,
   header
 }) => {
-  const infiniteLoaderRef = useRef();
-
+  const [isLoading, setIsLoading] = useState(false);
+  
   const isItemLoaded = index => index >= recordsCount ? true : !!rows[index];
 
-  const loadMoreItems = useCallback(debounce((startIndex, stopIndex) => new Promise(resolve => onLoadMore(stopIndex, resolve)), 500), [onLoadMore]);
+  const loadMoreItems = isLoading
+    ? stubFunction
+    : (startIndex, stopIndex) => {
+      setIsLoading(true);
+      return new Promise(resolve => onLoadMore(stopIndex, resolve)).then(() => { setIsLoading(false); });
+    };
 
-  const itemCount = recordsCount + (threeColumn ? 0 : HEADER_ROWS_COUNT);
+  const itemCountBase = (rows.length + LIST_PAGE_SIZE);
+
+  const itemCount = (itemCountBase < recordsCount ? itemCountBase : recordsCount) + (threeColumn ? 0 : HEADER_ROWS_COUNT);
 
   const itemData = useMemo(
     () => ({
@@ -159,7 +168,6 @@ export default ({
     <StickyListContext.Provider value={{ header }}>
       <InfiniteLoader
         threshold={0}
-        ref={infiniteLoaderRef}
         minimumBatchSize={LIST_PAGE_SIZE}
         isItemLoaded={isItemLoaded}
         itemCount={itemCount}
