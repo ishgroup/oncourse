@@ -11,6 +11,7 @@ import {
 import { State } from "../../reducers/state";
 import { getFiltersString, getTagGroups } from "../components/list-view/utils/listFiltersUtils";
 import { GetRecordsArgs } from "../../model/common/ListView";
+import { EntityName } from "../../model/entities/common";
 
 class EntityService {
   readonly entityApi = new EntityApi(new DefaultHttpService());
@@ -63,6 +64,10 @@ class EntityService {
 
   public getRecords(entity: string, search: string): Promise<DataResponse> {
     return this.entityApi.get(entity, search, PLAIN_LIST_MAX_PAGE_SIZE, 0);
+  }
+
+  public getRecordsByListSearch(entity: EntityName, search:  SearchQuery): Promise<DataResponse> {
+    return this.entityApi.getAll(entity, { ...search, pageSize: PLAIN_LIST_MAX_PAGE_SIZE, offset: 0 });
   }
 
   public getPlainRecords(

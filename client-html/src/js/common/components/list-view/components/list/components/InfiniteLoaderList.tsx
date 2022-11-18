@@ -28,7 +28,6 @@ import {
 import { CHECKLISTS_COLUMN, COLUMN_WITH_COLORS } from "../utils";
 import TagDotRenderer from "./TagDotRenderer";
 import StaticProgress from "../../../../progress/StaticProgress";
-import debounce from "lodash.debounce";
 import { stubFunction } from "../../../../../utils/common";
 
 const ThreeColumnCell = ({ row }) => (<div>
