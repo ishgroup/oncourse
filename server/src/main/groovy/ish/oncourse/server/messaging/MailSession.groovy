@@ -54,7 +54,7 @@ class MailSession {
         properties.put(SMTP_IO_TIMEOUT, SMTP_IO_TIMEOUT_VALUE)
         properties.put(SMTP_HOST, smtpService.host)
         properties.put(SMTP_PORT, smtpService.port)
-        
+
         switch (smtpService.mode) {
             case SMTPService.Mode.ssl:
                 properties.put("mail.smtp.ssl.enable", "true")
@@ -63,7 +63,9 @@ class MailSession {
             case SMTPService.Mode.starttls:
                 properties.put("mail.smtp.ssl.enable", "false")
                 properties.put("mail.smtp.starttls.enable", "true")
-                properties.put("mail.smtp.ssl.protocols","TLSv1.3")
+
+                def tlsProtocol = smtpService.supportsTls13() ? "TLSv1.3" : "TLSv1.2"
+                properties.put("mail.smtp.ssl.protocols", tlsProtocol)
                 break
             case SMTPService.Mode.unsafe:
                 properties.put("mail.smtp.ssl.enable", "false")

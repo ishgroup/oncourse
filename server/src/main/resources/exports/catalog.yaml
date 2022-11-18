@@ -835,3 +835,22 @@
     - name: searchByFirstNameAndLastName
       label: Find duplicates by first name and last name
       dataType: BOOLEAN
+
+- keyCode: ish.oncourse.exportStudentsWithMultipleEnrolments.csv
+  entityClass: Contact
+  name: Export Students With Multiple Enrolments CSV
+  body: ish.onCourse.studentsWithMultipleEnrolments.csv.groovy
+  outputType: csv
+  description: Export in CSV students with multiple enrolments in the applied date range. Choose start date and end date of enrolments. Choose number of enrolments a contact should have in the applied date range to be included in search results.
+  short: Export in CSV students with multiple enrolments in the applied date range
+  category: crm
+  variables:
+    - name: fromLocalDate
+      label: Date from
+      dataType: DATE
+    - name: toLocalDate
+      label: Date to
+      dataType: DATE
+    - name: numberOfEnrolmentsText
+      label: Number of enrolments
+      dataType: TEXT

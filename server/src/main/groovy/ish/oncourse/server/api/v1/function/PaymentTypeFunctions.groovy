@@ -63,7 +63,7 @@ class PaymentTypeFunctions {
         if (ccTypes.size() > 1 ||
                 (ccTypes.size() == 1
                         && bdCcType
-                        && bdCcType.id?.toString() != ccTypes[0].id
+                        && bdCcType.id != ccTypes[0].id
                         && paymentTypes.find { bdCcType.id?.toString() == it.id } == null)) {
             return new ValidationErrorDTO(ccTypes[0].id?.toString(), 'type', "You already have a real time credit card method. Only one such payment method allowed in onCourse")
         }
