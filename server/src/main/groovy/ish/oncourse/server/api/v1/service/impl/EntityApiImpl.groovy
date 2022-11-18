@@ -75,7 +75,7 @@ class EntityApiImpl implements EntityApi {
         ObjectSelect<CayenneDataObject> query = parseSearchQuery(objectSelect, context, aql, entity, request.search, request.filter, request.tagGroups, request.uncheckedChecklists)
         //!isAuditEntity - filteredCount is set for all entities without filter, search, tagGroups except Audit. For Audit filteredCount is set only with filter, search, tagGroups. It was made because Audit table has 10-16 million records, and request to get Count lasts about 10-16 sec. That is why filteredCount is calculated for Audit only with filter, search, tagsGroups.
         if (!isAuditEntity || request.filter || request.search || (request.tagGroups && !request.tagGroups.empty)) {
-            response.filteredCount = query.column(Property.create("id", Long)).select(context).toSet().size()
+            response.filteredCount = query.selectCount(context)
         }
 
         SortOrder sortOrder = null
