@@ -91,7 +91,7 @@ class KronosCreateEditScriptClosure implements ScriptClosureTrait<KronosIntegrat
         String shiftStart = dateInTimeZoneAndFormat(tutorAttendance.startDatetime, DATE_TIME_FORMAT, timeZone)
         String shiftEnd = dateInTimeZoneAndFormat(tutorAttendance.endDatetime, DATE_TIME_FORMAT, timeZone)
 
-        String scheduleId = integration.findScheduleId(scheduleName, scheduleSetting["id"], date)
+        String scheduleId = integration.getScheduleId(scheduleName, scheduleSetting["id"], date)
 
         String costCenter0 = firstThreeDigitsAccountCode(session.courseClass.incomeAccount.accountCode)
         def costCenter0Id = integration.findCostCenterIndex0Id(costCenter0)
