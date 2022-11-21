@@ -260,12 +260,12 @@ class KronosIntegration implements PluginTrait {
         if (!schedulesFromKronos) {
             throw new IllegalStateException("Kronos Company '${companyShortName}' doesn't have any Schedules between ${dateFrom} and ${dateTo}.")
         }
-        List<Map> schedulesByNameAndSettindId = schedulesFromKronos.findAll { it["name"] == scheduleName && it["settings_id"] == scheduleSettingId }
-        if (schedulesByNameAndSettindId.size() == 0) {
+        List<Map> schedulesByNameAndSettingId = schedulesFromKronos.findAll { it["name"] == scheduleName && it["settings_id"] == scheduleSettingId }
+        if (schedulesByNameAndSettingId.size() == 0) {
             throw new IllegalStateException("Kronos Company '${companyShortName}' doesn't have Schedules with name '${scheduleName}' and settings_id '${scheduleSettingId}' between ${dateFrom} and ${dateTo}.")
         }
         List<KronosSchedule> kronosSchedules = new ArrayList()
-        for (Map schedule : schedulesByNameAndSettindId) {
+        for (Map schedule : schedulesByNameAndSettingId) {
             kronosSchedules.add(new KronosSchedule(schedule["name"] as String, schedule["id"] as String, schedule["schedule_start"] as String, schedule["schedule_end"] as String))
         }
         return kronosSchedules
