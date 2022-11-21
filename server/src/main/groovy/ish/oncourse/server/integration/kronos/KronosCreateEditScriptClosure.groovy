@@ -130,7 +130,7 @@ class KronosCreateEditScriptClosure implements ScriptClosureTrait<KronosIntegrat
             resultKronosShift = integration.createNewShift(accountId, date, shiftStart, shiftEnd, costCenter0Id, costCenter2Id, skillId, scheduleId)
         }
         if (resultKronosShift["created"]) {
-            logger.warn("Session's with id '${session.id}' TutorAttendance with id '${tutorAttendance.id}' was successfully created in as Kronos Shift. Kronos Schedule id '${scheduleId}'")
+            logger.warn("Session's with id '${session.id}' TutorAttendance with id '${tutorAttendance.id}' was successfully created in Kronos as Kronos Shift. Kronos Schedule id '${scheduleId}'")
             def kronosShiftId = integration.getKronosShiftIdBySessionFields(scheduleId, accountId, shiftStart, shiftEnd, skillId, costCenter0Id, costCenter2Id, tutorAttendance.id)
             integration.saveCustomFields(tutorAttendance, kronosShiftId.toString(), scheduleId)
             logger.warn("Session's with id '${session.id}' TutorAttendance with id '${tutorAttendance.id}' with Kronos Shift id '${kronosShiftId}' was successfully saved custom fields. Kronos Schedule id '${scheduleId}'.")
