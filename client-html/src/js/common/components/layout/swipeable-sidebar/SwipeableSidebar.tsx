@@ -43,7 +43,7 @@ import { DASHBOARD_FAVORITES_KEY, FAVORITE_SCRIPTS_KEY } from "../../../../const
 import { useAppSelector } from "../../../utils/hooks";
 import ExecuteScriptModal from "../../../../containers/automation/containers/scripts/components/ExecuteScriptModal";
 import { DashboardItem } from "../../../../model/dashboard";
-import navigation from "../../navigation/navigation.json";
+import navigation from "../../navigation/data/navigation.json";
 import ContactInsight from "../../../../containers/entities/contacts/components/contact-insight/ContactInsight";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import SendMessageEditView from "../../../../containers/entities/messages/components/SendMessageEditView";

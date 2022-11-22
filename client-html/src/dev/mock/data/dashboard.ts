@@ -1,5 +1,5 @@
 import { StatisticData } from "@api/model";
-import navigation from "../../../js/common/components/navigation/navigation.json";
+import navigation from "../../../js/common/components/navigation/data/navigation.json";
 
 export function mockDashboard() {
   this.getStatistic = (): StatisticData => ({
