@@ -46,6 +46,8 @@ import { AppTheme } from "../../../../model/common/Theme";
 import { AssessmentChart, AttendanceChart } from "./OutcomeProgressionChart";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { StringKeyObject } from "../../../../model/common/CommomObjects";
+import EntityService from "../../../../common/services/EntityService";
 
 interface OutcomeEditFieldsProps extends EditViewProps<Outcome> {
   modules?: any[];
@@ -134,6 +136,8 @@ const useStyles = makeStyles((theme: AppTheme) => ({
   }
 }));
 
+const MODULES_WARNING = "This module doesn’t match any of the modules used in associated class. Default class start/end dates will be used as Training plan dates";
+
 const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
   const {
     twoColumn,
@@ -151,6 +155,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
   const classes = useStyles();
 
   const [fundingUploads, setFundingUploads] = useState<FundingUpload[]>([]);
+  const [warnings, setWarnings] = useState<StringKeyObject>({});
 
   isPriorLearning = isPriorLearningBinded;
 
@@ -168,7 +173,34 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           instantFetchErrorHandler(dispatch, er);
         });
     }
-  }, [values && values.id, access]);
+  }, [values.id, access]);
+
+  const setModuleWarnings = async () => {
+    try {
+      const courseId = await EntityService.getPlainRecords("Enrolment", "courseClass.course.id", `id is ${values.enrolmentId}`, 1)
+        .then(r => r.rows[0]?.values[0]);
+
+      const moduleIdsRes = await EntityService.getPlainRecords("Course", "courseModules.module.id", `id is ${courseId}`, 1);
+
+      const moduleIds = moduleIdsRes.rows.length ? JSON.parse(moduleIdsRes.rows[0].values[0]) : null;
+      
+      const warningsUpdated = {};
+
+      if (moduleIds && !moduleIds.includes(values.moduleId)) {
+        warningsUpdated["moduleName"] = MODULES_WARNING;
+      }
+
+      setWarnings(warningsUpdated);
+    } catch (e) {
+      instantFetchErrorHandler(dispatch, e);
+    }
+  };
+
+  useEffect(() => {
+    if (values.enrolmentId && values.moduleId) {
+      setModuleWarnings();
+    }
+  }, [values.enrolmentId, values.moduleId]);
 
   const onModuleCodeChange = useCallback(
     (m: Module) => {
@@ -268,8 +300,9 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
               />
             )}
             onInnerValueChange={onModuleNameChange}
-            allowEmpty
             disabled={values && values.hasCertificate}
+            warning={warnings["moduleName"]}
+            allowEmpty
             fullWidth
           />
         </Grid>

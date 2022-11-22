@@ -27,6 +27,7 @@ import { getHighlightedPartLabel } from "../../../utils/formatting";
 import { usePrevious } from "../../../utils/hooks";
 import { ListboxComponent, selectStyles } from "./SelectCustomComponents";
 import { SelectItemRendererProps } from "../../../../model/common/Fields";
+import WarningMessage from "../fieldMessage/WarningMessage";
 
 const searchStyles = theme => createStyles({
   inputEndAdornment: {
@@ -109,6 +110,7 @@ interface Props extends WrappedFieldProps {
   inHeader?: boolean;
   hasError?: boolean;
   inputRef?: any;
+  warning?: string;
 }
 
 const SelectContext = React.createContext<any>({});
@@ -197,7 +199,8 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     sortPropKey,
     inHeader,
     hasError,
-                                                                        inputRef
+    inputRef,
+    warning
   }) => {
   const sortedItems = useMemo(() => items && (sort
     ? [...items].sort(typeof sort === "function"
@@ -467,7 +470,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
               hasPopupIcon: classes.hasPopup,
               hasClearIcon: classes.hasClear,
               inputRoot: classes.inputWrapper,
-              option: "w-100 text-break-spaces"
+              option: "w-100 text-pre"
             }}
             renderOption={renderOption}
             getOptionLabel={getOptionLabel}
@@ -538,6 +541,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                   }}
                 >
                   {(meta && meta.error) || helperText}
+                  {warning && <WarningMessage warning={warning} />}
                 </FormHelperText>
               </FormControl>
             )}

@@ -414,6 +414,9 @@ export const bootstrap = (theme: AppTheme) => ({
   ".text-pre-line": {
     whiteSpace: "pre-line"
   },
+  ".text-pre": {
+    whiteSpace: "pre"
+  },
   ".text-break-spaces": {
     whiteSpace: "break-spaces"
   },
