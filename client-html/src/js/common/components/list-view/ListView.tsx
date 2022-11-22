@@ -239,7 +239,7 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       threeColumn: false,
       sidebarWidth: LIST_SIDE_BAR_DEFAULT_WIDTH,
       mainContentWidth: this.getMainContentWidth(LIST_MAIN_CONTENT_DEFAULT_WIDTH, LIST_SIDE_BAR_DEFAULT_WIDTH),
-      newSelection: null,
+      newSelection: null
     };
   }
 
