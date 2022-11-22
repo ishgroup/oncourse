@@ -50,6 +50,7 @@ public class CayenneListenersService {
 //		cayenneService.addListener(new QualityCheckListener(qualityService, cayenneService));
 
         // add filters
+        cayenneService.addSyncFilter(new SingleTransactionContextFilter());
         cayenneService.addSyncFilter(new ChangeFilter());
         cayenneService.addSyncFilter(new ScriptTriggeringListener(scriptService, cayenneService));
         cayenneService.addQueryFilter(new RelationshipQueryInvalidatingFilter());
