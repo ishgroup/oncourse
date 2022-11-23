@@ -499,6 +499,10 @@ class CheckoutController {
                     line.invoice = previousInvoice
                     line.amount = payAmount.subtract(payByVouchers)
                     line.invoice.updateAmountOwing()
+                    Money dueDatesAmountSum = line.invoice.invoiceDueDates.sum { it.amount } as Money
+                    if (!dueDatesAmountSum || dueDatesAmountSum == 0) {
+                        line.invoice.createPaymentDues()
+                    }
                     line.invoice.updateDateDue()
                     line.invoice.updateOverdue()
                 }
