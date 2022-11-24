@@ -265,9 +265,10 @@ class Invoice extends _Invoice implements InvoiceInterface {
     }
 
     void createPaymentDues() {
-        paymentInLines.each{ PaymentInLine paymentInLine ->
-            createDueDate(paymentInLine.amount, paymentInLine.paymentIn.paymentDate)
-        }
+        Money amountPaid = totalIncTax.subtract(amountOwing)
+        PaymentInLine firstPaymentInLine = paymentInLines.min { it.paymentIn.paymentDate }
+        if (firstPaymentInLine && amountPaid > 0)
+        createDueDate(amountPaid, firstPaymentInLine.paymentIn.paymentDate)
         if (amountOwing > 0) {
             createDueDate(amountOwing, dateDue)
         }
