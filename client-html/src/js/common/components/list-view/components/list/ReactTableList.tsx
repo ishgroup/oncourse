@@ -44,6 +44,7 @@ interface ListTableProps extends Partial<TableListProps> {
   columns: any;
   data: any;
   sorting: any;
+  recordsCount: number;
   onChangeColumns: (arg: StringKeyObject<any>, listUpdate?: boolean) => void;
   onChangeColumnsOrder: (arg: string[]) => void;
 }
@@ -69,7 +70,6 @@ const Table: React.FC<ListTableProps> = ({
   onLoadMore,
   onChangeModel,
   onChangeColumns,
-  recordsLeft,
   sorting,
   threeColumn,
   onSelectionChange,
@@ -78,7 +78,8 @@ const Table: React.FC<ListTableProps> = ({
   getContainerNode,
   onChangeColumnsOrder,
   mainContentWidth,
-  sidebarWidth
+  sidebarWidth,
+  recordsCount
 }) => {
   const [isDraggingColumn, setColumnIsDragging] = useState(false);
 
@@ -458,7 +459,7 @@ const Table: React.FC<ListTableProps> = ({
       onRowSelect={onRowSelect}
       totalColumnsWidth={totalColumnsWidth}
       onLoadMore={onLoadMore}
-      recordsLeft={recordsLeft}
+      recordsCount={recordsCount}
       threeColumn={threeColumn}
       onRowDoubleClick={onRowDoubleClick}
       mainContentWidth={mainContentWidth}
@@ -470,7 +471,7 @@ const Table: React.FC<ListTableProps> = ({
         No data
       </Typography>
     </div>
-  )), [Header, rows, totalColumnsWidth, selectedRowIdsObj, mainContentWidth, recordsLeft, threeColumn, onRowDoubleClick, state.columnOrder]);
+  )), [Header, rows, totalColumnsWidth, selectedRowIdsObj, recordsCount, mainContentWidth, threeColumn, onRowDoubleClick, state.columnOrder]);
 
   return (
     <div
@@ -492,7 +493,6 @@ export interface TableListProps {
   onLoadMore?: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => void;
   shortCurrencySymbol?: string;
   records?: DataResponse;
-  recordsLeft?: number;
   sidebarWidth?: number;
   mainContentWidth?: number;
   onChangeModel?: (model: TableModel, listUpdate?: boolean) => void;
@@ -537,7 +537,6 @@ const RenderCell = props => {
 
 const ListRoot = React.memo<TableListProps>(({
   records,
-  recordsLeft,
   shortCurrencySymbol,
   onLoadMore,
   onChangeModel,
@@ -650,7 +649,7 @@ const ListRoot = React.memo<TableListProps>(({
         onChangeColumnsOrder={onChangeColumnsOrder}
         threeColumn={threeColumn}
         onLoadMore={onLoadMore}
-        recordsLeft={recordsLeft}
+        recordsCount={records.filteredCount}
         onChangeModel={onChangeModel}
         onRowDoubleClick={onRowDoubleClick}
         onSelectionChange={onSelectionChange}

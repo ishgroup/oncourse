@@ -13,7 +13,6 @@ const payload = {
   savedID: null,
   ignoreSelection: null,
   viewAll: null,
-  startIndex: null,
   stopIndex: null,
   resolve: null
 };
