@@ -168,10 +168,18 @@ const StructureGraph = ({ root }) => {
   const ref = useRef<any>();
   const forceRef = useRef<any>();
 
+  // Stop on unmount
+  useEffect(() => () => {
+    forceRef.current?.stop();
+  }, []);
+
   const classes = useStyles();
 
   useEffect(() => {
     const { width, height } =  ref.current.getBoundingClientRect();
+
+    // Stop on root change
+    forceRef.current?.stop();
 
     forceRef.current = d3.layout.force()
       .linkDistance(80)
