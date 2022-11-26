@@ -8,24 +8,44 @@
 
 package ish.oncourse.server.lifecycle;
 
-import org.apache.cayenne.DataChannelSyncFilter;
-import org.apache.cayenne.DataChannelSyncFilterChain;
-import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.*;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.di.Injector;
 import org.apache.cayenne.graph.GraphDiff;
 import org.apache.cayenne.tx.TransactionManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.concurrent.locks.ReentrantLock;
 
 public class SingleTransactionContextFilter implements DataChannelSyncFilter {
+
+    private static final Logger logger = LogManager.getLogger();
+    private final ReentrantLock lock = new ReentrantLock();
+
     @Override
     public GraphDiff onSync(ObjectContext originatingContext, GraphDiff changes, int syncType, DataChannelSyncFilterChain filterChain) {
         var handler = new InvoiceLineOrPaymentChangesDetector(originatingContext);
         changes.apply(handler);
 
-        if (handler.isInvoiceLineOrPaymentInterfaceDetected()) {
+        if (syncType != DataChannel.ROLLBACK_CASCADE_SYNC && handler.isInvoiceLineOrPaymentInterfaceDetected()) {
             Injector injector = ServerRuntime.builder().build().getInjector();
             TransactionManager transactionManager = injector.getInstance(TransactionManager.class);
-            return transactionManager.performInTransaction(() -> filterChain.onSync(originatingContext, changes, syncType));
+            lock.lock();
+            try {
+                return transactionManager.performInTransaction(() -> filterChain.onSync(originatingContext, changes, syncType));
+            } catch (CayenneRuntimeException e) {
+                if(e.getCause().getClass().equals(IllegalStateException.class)
+                        && e.getMessage().contains("Current status: STATUS_MARKED_ROLLEDBACK")) {
+                    logger.warn("try to rollback changes into transaction detected!");
+                    originatingContext.rollbackChanges();
+                } else {
+                    throw e;
+                }
+            } finally {
+                lock.unlock();
+            }
+
         }
         return filterChain.onSync(originatingContext, changes, syncType);
     }
