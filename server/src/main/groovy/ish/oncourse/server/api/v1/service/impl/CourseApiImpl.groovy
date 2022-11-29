@@ -57,7 +57,7 @@ class CourseApiImpl implements CourseApi {
         def context = cayenneService.newReadonlyContext
         return courseIds.collect {
             courseId -> relatedSellablesOf(context, courseId)
-                    .collect {it.entityFromId = courseId}
+                    .collect {it.entityFromId = courseId; it}
         }.flatten() as List<SaleDTO>
     }
 
