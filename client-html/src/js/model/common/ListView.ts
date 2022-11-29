@@ -80,7 +80,6 @@ export interface ListState {
   emailTemplatesWithKeyCode?: EmailTemplate[];
   creatingNew?: boolean;
   fullScreenEditView?: boolean;
-  recordsLeft?: number;
   recepients?: MessageData;
 }
 
@@ -137,7 +136,6 @@ export interface GetRecordsArgs {
   listUpdate?: boolean;
   savedID?: any;
   ignoreSelection?: boolean;
-  startIndex?: number;
   stopIndex?: number;
   resolve?: AnyArgFunction;
 }

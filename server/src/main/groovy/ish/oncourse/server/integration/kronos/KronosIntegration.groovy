@@ -12,9 +12,13 @@ import groovy.transform.CompileDynamic
 import groovyx.net.http.ContentType
 import groovyx.net.http.Method
 import groovyx.net.http.RESTClient
+import ish.oncourse.server.api.v1.function.CustomFieldFunctions
+import ish.oncourse.server.cayenne.TutorAttendance
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
 import ish.util.LocalDateUtils
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -35,6 +39,11 @@ class KronosIntegration implements PluginTrait {
      */
     public static final int ACCOUNT_NOT_FOUND_CODE = 10002
 
+    public static final String KRONOS_SHIFT_ID_CUSTOM_FIELD_KEY = "kronosShiftId"
+    public static final String KRONOS_SCHEDULE_ID_CUSTOM_FIELD_KEY = "kronosScheduleId"
+
+    private static Logger logger = LogManager.logger
+
     String username
     String password
     String apiKey
@@ -47,7 +56,6 @@ class KronosIntegration implements PluginTrait {
     static Map kronosCostCentersIndex2 = new HashMap()
     static Map kronosEmployees = new HashMap()
     static Map kronosTimeZones = new HashMap()
-    static List<KronosSchedule> kronosSchedules = new ArrayList<>()
 
     static final SimpleDateFormat dateFormat =  new SimpleDateFormat("yyyy-MM-dd")
 
@@ -147,23 +155,19 @@ class KronosIntegration implements PluginTrait {
     }
 
     /**
-     * Find Schedule Id from stored kronosSchedules, if not find -> reinit List kronosSchedules from Kronos and try to find one more time.
+     * Find Schedule Id from Kronos Schedules
      */
-    protected findScheduleId(String scheduleName, scheduleSettingId, String sessionDate) {
+    protected getScheduleId(String scheduleName, scheduleSettingId, String sessionDate) {
         Date date = dateFormat.parse(sessionDate)
-        def schedules = kronosSchedules.findAll { it.name == scheduleName && it.scheduleStart <= date && it.scheduleEnd > date}
-        if (schedules.size() < 1) {
-//            Integration store data, but users can update or add data to Kronos -> that is why reinit data to get actual from Kronos and try to find one more time.
-            initKronosSchedules(scheduleName, scheduleSettingId, date)
-            schedules = kronosSchedules.findAll {it.name == scheduleName && it.scheduleStart <= date && it.scheduleEnd > date}
-            if (schedules.size() < 1) {
-                throw new IllegalStateException("Kronos Company '${companyShortName}' have no Schedule with name '${scheduleName}' and settings_id '${scheduleSettingId}', which contains the date '${sessionDate}'.")
-            }
+        List<KronosSchedule> kronosSchedules = getKronosSchedules(scheduleName, scheduleSettingId, date)
+        List<KronosSchedule> resultSchedule = kronosSchedules.findAll { it.name == scheduleName && it.scheduleStart <= date && it.scheduleEnd > date}
+        if (resultSchedule.size() < 1) {
+            throw new IllegalStateException("Kronos Company '${companyShortName}' have no Schedule with name '${scheduleName}' and settings_id '${scheduleSettingId}', which contains the date '${sessionDate}'.")
         }
-        if (schedules.size() > 1) {
-            throw new IllegalStateException("Kronos Company '${companyShortName}' have more then one Schedules with name '${scheduleName}' and settings_id '${scheduleSettingId}' and contains the date '${sessionDate}'. Here are the schedules with their ids: '${schedules.id}'.")
+        if (resultSchedule.size() > 1) {
+            throw new IllegalStateException("Kronos Company '${companyShortName}' have more then one Schedules with name '${scheduleName}' and settings_id '${scheduleSettingId}' and contains the date '${sessionDate}'. Here are the schedules with their ids: '${resultSchedule.id}'.")
         }
-        return schedules[0].id
+        return resultSchedule[0].id
     }
 
     /**
@@ -215,7 +219,7 @@ class KronosIntegration implements PluginTrait {
     }
 
     /**
-     * Get list of Cost Centers from Kronos with tree_index:2 and store Cost Center external_id or names (if external_id doesn't exist) and Cost Center ids in kronosCostCentersIndex2 Map<(external_id/name),id>.
+     * Get list of Cost Centers from Kronos with tree_index:2 and store Cost Center names  and Cost Center ids in kronosCostCentersIndex2 Map<(name),id>.
      */
     protected void initCostCenters2Index() {
         Map costCentersIndex2FromKronos = getCompanyCostCenters(2) as Map
@@ -245,9 +249,9 @@ class KronosIntegration implements PluginTrait {
     }
 
     /**
-     * Get list of Schedules by Schedule Name from Kronos and store Shedule name, id, schedule_start and schedule_end in kronosSchedules List<KronosSchedule>.
+     * Get list of Schedules by Schedule Name from Kronos and store Shedule name, id, schedule_start and schedule_end in List<KronosSchedule>.
      */
-    protected void initKronosSchedules(String scheduleName, scheduleSettingId, Date date) {
+    protected List<KronosSchedule> getKronosSchedules(String scheduleName, scheduleSettingId, Date date) {
 //        A Schedule GET request without 'from' and 'to' return Schedules only for current month. If today is 2022-09-29 the request won't return Schedules for with date 2022-10-03 - 2022-10-09. Date range cannot be more than '31' days. That is why I added and substracted 15 days to get Schedules from this date range.
         String dateFrom = addDaysToDate(date, -15)
         String dateTo = addDaysToDate(date, 15)
@@ -256,14 +260,15 @@ class KronosIntegration implements PluginTrait {
         if (!schedulesFromKronos) {
             throw new IllegalStateException("Kronos Company '${companyShortName}' doesn't have any Schedules between ${dateFrom} and ${dateTo}.")
         }
-        List<Map> schedulesByNameAndSettindId = schedulesFromKronos.findAll { it["name"] == scheduleName && it["settings_id"] == scheduleSettingId }
-        if (schedulesByNameAndSettindId.size() == 0) {
+        List<Map> schedulesByNameAndSettingId = schedulesFromKronos.findAll { it["name"] == scheduleName && it["settings_id"] == scheduleSettingId }
+        if (schedulesByNameAndSettingId.size() == 0) {
             throw new IllegalStateException("Kronos Company '${companyShortName}' doesn't have Schedules with name '${scheduleName}' and settings_id '${scheduleSettingId}' between ${dateFrom} and ${dateTo}.")
         }
-        kronosSchedules = new ArrayList()
-        for (Map schedule : schedulesByNameAndSettindId) {
+        List<KronosSchedule> kronosSchedules = new ArrayList()
+        for (Map schedule : schedulesByNameAndSettingId) {
             kronosSchedules.add(new KronosSchedule(schedule["name"] as String, schedule["id"] as String, schedule["schedule_start"] as String, schedule["schedule_end"] as String))
         }
+        return kronosSchedules
     }
 
     /**
@@ -599,10 +604,73 @@ class KronosIntegration implements PluginTrait {
         }
     }
 
+    /**
+     * Delete Shift by shift id and schedule id
+     *
+     * @return [response: resp, result: result]
+     */
+    protected deleteShift(shiftId, scheduleId) {
+        def client = new RESTClient(KRONOS_REST_URL)
+        client.headers["Authentication"] = "Bearer ${authToken}"
+        client.request(Method.DELETE) {
+            uri.path = "/ta/rest/v2/companies/${CID}/schedules/${scheduleId}/shifts/${shiftId}"
+
+            response.success = { resp, result ->
+                return [response: resp, result: result]
+            }
+            response.failure = { resp, result ->
+                throw new IllegalStateException("Failed to delete Shift from Kronos (company cid, scheduleId, shiftId) - (${CID}, ${scheduleId}, ${shiftId}): ${resp.getStatusLine()}, ${result}")
+            }
+        }
+    }
+
+    /**
+     * Get Shift from Kronos by shift id and schedule id
+     *
+     * @return [response: resp, result: result]
+     */
+    protected getShift(shiftId, scheduleId) {
+        def client = new RESTClient(KRONOS_REST_URL)
+        client.headers["Authentication"] = "Bearer ${authToken}"
+        client.request(Method.GET) {
+            uri.path = "/ta/rest/v2/companies/${CID}/schedules/${scheduleId}/shifts/${shiftId}"
+
+            response.success = { resp, result ->
+                return [response: resp, result: result]
+            }
+            response.failure = { resp, result ->
+                return [response: resp, result: result]
+            }
+        }
+    }
+
     private String addDaysToDate(Date date, long daysToAdd) {
         LocalDate localDate = LocalDateUtils.dateToValue(date)
         LocalDate dateWithAddedDays = localDate.plusDays(daysToAdd)
         return LocalDateUtils.valueToString(dateWithAddedDays)
+    }
+
+    protected static getCustomFieldShiftId(TutorAttendance tutorAttendance) {
+        return getCustomFieldValue(tutorAttendance, KRONOS_SHIFT_ID_CUSTOM_FIELD_KEY)
+    }
+
+    protected static getCustomFieldScheduleId(TutorAttendance tutorAttendance) {
+        return getCustomFieldValue(tutorAttendance, KRONOS_SCHEDULE_ID_CUSTOM_FIELD_KEY)
+    }
+
+    private static getCustomFieldValue(TutorAttendance tutorAttendance, String customFieldKey) {
+        try {
+            tutorAttendance.getCustomFieldValue(customFieldKey)
+        } catch (MissingPropertyException ex) {
+            logger.warn("TutorAttendanceCustomField '${customFieldKey}' doesn't exist yet. Will be added the first time when will add a shift to Kronos and save TutorAttendanceCustomField with key '${customFieldKey}'. Exception message: ${ex.getMessage()}")
+            return null
+        }
+    }
+
+    protected static void saveCustomFields(TutorAttendance tutorAttendance, String kronosShiftId, String kronosScheduleId) {
+        CustomFieldFunctions.addCustomFieldWithoutCommit(KRONOS_SHIFT_ID_CUSTOM_FIELD_KEY, kronosShiftId, tutorAttendance, tutorAttendance.context)
+        CustomFieldFunctions.addCustomFieldWithoutCommit(KRONOS_SCHEDULE_ID_CUSTOM_FIELD_KEY, kronosScheduleId, tutorAttendance, tutorAttendance.context)
+        tutorAttendance.context.commitChanges()
     }
 
     private static class KronosSchedule {

@@ -11,6 +11,7 @@ import {
 import { State } from "../../reducers/state";
 import { getFiltersString, getTagGroups } from "../components/list-view/utils/listFiltersUtils";
 import { GetRecordsArgs } from "../../model/common/ListView";
+import { EntityName } from "../../model/entities/common";
 
 class EntityService {
   readonly entityApi = new EntityApi(new DefaultHttpService());
@@ -35,15 +36,16 @@ class EntityService {
       pageSize = PLAIN_LIST_MAX_PAGE_SIZE;
       offset = 0;
     } else if (listUpdate) {
-      const recordsLength = state.list.records.rows.length;
       if (typeof stopIndex === "number" && stopIndex > 0) {
-        pageSize = (stopIndex + 1) - recordsLength;
+        pageSize = (stopIndex - (state.list.records.rows.length - 1));
         if (pageSize < 0) pageSize = LIST_PAGE_SIZE;
-        offset = recordsLength;
+        offset = state.list.records.rows.length;
       } else {
-        pageSize = recordsLength;
+        pageSize = state.list.records.rows.length;
       }
     }
+
+    if (offset < 0) offset = 0;
 
     const searchQuery: SearchQuery = {};
     searchQuery.search = search;
@@ -62,6 +64,10 @@ class EntityService {
 
   public getRecords(entity: string, search: string): Promise<DataResponse> {
     return this.entityApi.get(entity, search, PLAIN_LIST_MAX_PAGE_SIZE, 0);
+  }
+
+  public getRecordsByListSearch(entity: EntityName, search:  SearchQuery): Promise<DataResponse> {
+    return this.entityApi.getAll(entity, { ...search, pageSize: PLAIN_LIST_MAX_PAGE_SIZE, offset: 0 });
   }
 
   public getPlainRecords(
