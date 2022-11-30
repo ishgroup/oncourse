@@ -245,7 +245,6 @@
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Contact">
-		<db-attribute name="abn" type="VARCHAR" length="50"/>
 		<db-attribute name="allowEmail" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="allowPost" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="allowSms" type="SMALLINT" isMandatory="true"/>
@@ -1931,7 +1930,6 @@
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
 	<obj-entity name="Contact" className="ish.oncourse.server.cayenne.Contact" clientClassName="ish.oncourse.cayenne.Contact" dbEntityName="Contact" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
-		<obj-attribute name="abn" type="java.lang.String" db-attribute-path="abn"/>
 		<obj-attribute name="allowEmail" type="java.lang.Boolean" db-attribute-path="allowEmail"/>
 		<obj-attribute name="allowPost" type="java.lang.Boolean" db-attribute-path="allowPost"/>
 		<obj-attribute name="allowSms" type="java.lang.Boolean" db-attribute-path="allowSms"/>
