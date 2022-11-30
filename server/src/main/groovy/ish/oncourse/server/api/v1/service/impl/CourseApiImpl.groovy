@@ -55,7 +55,16 @@ class CourseApiImpl implements CourseApi {
     @Override
     List<SaleDTO> getSellables(List<Long> courseIds) {
         def context = cayenneService.newReadonlyContext
-        return courseIds.collect { courseId -> relatedSellablesOf(context, courseId)}.flatten() as List<SaleDTO>
+        return courseIds.collect {
+            courseId -> relatedSellablesOf(context, courseId)
+                    .collect {
+                        if(it.entityFromId == null)
+                            it.entityFromId = courseId
+                        else
+                            it.entityToId = courseId
+                        it
+                    }
+        }.flatten() as List<SaleDTO>
     }
 
     @Override
