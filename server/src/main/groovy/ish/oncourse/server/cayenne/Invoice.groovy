@@ -264,13 +264,16 @@ class Invoice extends _Invoice implements InvoiceInterface {
         return "#" + getInvoiceNumber() + " " + getDescription()
     }
 
-    void createPaymentDues() {
-        Money amountPaid = totalIncTax.subtract(amountOwing)
-        PaymentInLine firstPaymentInLine = paymentInLines.min { it.paymentIn.paymentDate }
-        if (firstPaymentInLine && amountPaid > 0)
-        createDueDate(amountPaid, firstPaymentInLine.paymentIn.paymentDate)
-        if (amountOwing > 0) {
-            createDueDate(amountOwing, dateDue)
+    void createPaymentDues(Money currentPaymentInWithVoucherAmount, LocalDate currentPaymentInDate) {
+        LocalDate currentDate = LocalDate.now()
+        if (dateDue.isAfter(currentDate)) {
+            createDueDate(currentPaymentInWithVoucherAmount, currentPaymentInDate)
+            Money nextPaymentDueAmount = totalIncTax.subtract(currentPaymentInWithVoucherAmount)
+            if (nextPaymentDueAmount > 0) {
+                createDueDate(nextPaymentDueAmount, dateDue)
+            }
+        } else {
+            createDueDate(totalIncTax, dateDue)
         }
     }
 
