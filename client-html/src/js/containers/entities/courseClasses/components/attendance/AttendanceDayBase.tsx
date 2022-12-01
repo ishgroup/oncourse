@@ -39,6 +39,9 @@ const styles = (theme: AppTheme) =>
     },
     assessmentLink: {
       fontSize: "0.8em"
+    },
+    day: {
+      whiteSpace: "nowrap"
     }
   });
 
@@ -92,10 +95,10 @@ const AttendanceDayBase: React.FC<DayBaseProps> = ({
         <Typography variant="body2" className={classes.day}>
           {format(
             new Date((siteTimezone ? appendTimezone(new Date(start), siteTimezone) : start) || dueDate),
-            "iii d MMM"
+            "iii d MMM yyyy"
           )}
         </Typography>
-        <Typography variant="caption">{sessionStartOrAssessmentCode}</Typography>
+        <Typography variant="caption" noWrap>{sessionStartOrAssessmentCode}</Typography>
         <div className={classes.dayMenu}>
           {type === "Training plan" ? (
             <AttendanceActionsMenu
