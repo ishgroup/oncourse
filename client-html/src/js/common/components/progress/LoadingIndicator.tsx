@@ -104,8 +104,9 @@ class LoadingIndicator extends React.PureComponent<any, any> {
 
   render() {
     const {
- classes, appBarOffset, transparentBackdrop, position = "absolute", allowInteractions, customLoading
-} = this.props;
+     classes, appBarOffset, transparentBackdrop, position = "absolute", allowInteractions, customLoading
+    } = this.props;
+
     const { showLoading } = this.state;
 
     return (

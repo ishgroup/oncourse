@@ -13,8 +13,8 @@ import { Dispatch } from "redux";
 import { Filter } from "@api/model";
 import { createCustomFilter, setListSavingFilter } from "../../../actions";
 import { SavingFilterState } from "../../../../../../model/common/ListView";
-import { validateSingleMandatoryField, validateAqlFilterOrTagName } from "../../../../../utils/validation";
 import { SIMPLE_SEARCH_QUOTES_REGEX, SIMPLE_SEARCH_REGEX } from "../../../../../../constants/Config";
+import { validateForbiddenSymbols, validateSingleMandatoryField } from "../../../../../utils/validation";
 
 const styles = theme =>
   createStyles({
@@ -46,7 +46,7 @@ const styles = theme =>
     }
   });
 
-const validationArr = [validateSingleMandatoryField, validateAqlFilterOrTagName];
+const validationArr = [validateSingleMandatoryField, validateForbiddenSymbols];
 
 export class StubFilterItem extends React.PureComponent<any, any> {
   private inputNode: HTMLInputElement;
@@ -118,7 +118,7 @@ export class StubFilterItem extends React.PureComponent<any, any> {
 
     return (
       <div className={classes.root}>
-        <Checkbox disabled className={classes.checkbox} color={"secondary"} />
+        <Checkbox disabled className={classes.checkbox} color="secondary" />
         <TextField
           onChange={this.onFilterNameChange}
           helperText={errorText}
@@ -149,12 +149,10 @@ export class StubFilterItem extends React.PureComponent<any, any> {
 
 export const StubFilterItemBase = withStyles(styles)(StubFilterItem);
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-  return {
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     saveFilter: (filter: Filter, rootEntity: string) => dispatch(createCustomFilter(filter, rootEntity)),
     setSavingFilter: (savingFilter?: SavingFilterState) => dispatch(setListSavingFilter(savingFilter))
-  };
-};
+  });
 
 export default connect<any, any, any>(
   null,

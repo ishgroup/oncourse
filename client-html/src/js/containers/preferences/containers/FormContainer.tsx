@@ -27,8 +27,9 @@ import * as financial from "../../../model/preferences/Financial";
 import * as security from "../../../model/preferences/security";
 import { State } from "../../../reducers/state";
 import { Fetch } from "../../../model/common/Fetch";
-import { showConfirm } from "../../../common/actions";
+import { setUserPreference, showConfirm } from "../../../common/actions";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
+import { ACCOUNT_DEFAULT_INVOICELINE_ID } from "../../../constants/Config";
 
 const styles = () =>
   createStyles({
@@ -230,7 +231,12 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   dispatch,
   onInit: category => dispatch(getPreferences(category)),
-  onSubmit: (category, fields) => dispatch(savePreferences(category, fields)),
+  onSubmit: (category, {defaultInvoiceLineAccount, ...fields}) => {
+    if (defaultInvoiceLineAccount) {
+      dispatch(setUserPreference({key: ACCOUNT_DEFAULT_INVOICELINE_ID, value: defaultInvoiceLineAccount}));
+    }
+    dispatch(savePreferences(category, fields));
+  },
   openConfirm: props => dispatch(showConfirm(props))
 });
 

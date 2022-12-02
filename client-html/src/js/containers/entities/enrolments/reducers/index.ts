@@ -5,15 +5,23 @@
 
 import { EnrolmentsState } from "./state";
 import { IAction } from "../../../../common/actions/IshAction";
-import { SET_ENROLMENT_INVOICE_LINES, SET_ENROLMENT_TRANSFERED } from "../actions";
+import {
+  CANCEL_ENROLMENT,
+  SET_ENROLMENT_INVOICE_LINES,
+  SET_ENROLMENTS_DIALOG,
+  SET_ENROLMENTS_PROCESSING
+} from "../actions";
 
 const initial: EnrolmentsState = {
   invoiceLines: [],
-  isTransfered: false
+  dialogOpened: null,
+  processing: false
 };
 
 export const enrolmentsReducer = (state: EnrolmentsState = initial, action: IAction<any>): any => {
   switch (action.type) {
+    case SET_ENROLMENTS_PROCESSING:
+    case SET_ENROLMENTS_DIALOG:
     case SET_ENROLMENT_INVOICE_LINES: {
       return {
         ...state,
@@ -21,12 +29,11 @@ export const enrolmentsReducer = (state: EnrolmentsState = initial, action: IAct
       };
     }
 
-    case SET_ENROLMENT_TRANSFERED: {
+    case CANCEL_ENROLMENT:
       return {
         ...state,
-        ...action.payload
+        processing: true
       };
-    }
 
     default:
       return state;

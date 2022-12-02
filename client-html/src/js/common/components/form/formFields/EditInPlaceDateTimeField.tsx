@@ -33,6 +33,8 @@ import {
   HH_MM_COLONED, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM, YYYY_MM_DD_MINUSED
 } from "../../../utils/dates/format";
 import { appendTimezone, appendTimezoneToUTC } from "../../../utils/dates/formatTimezone";
+import { endFieldProcessingAction, startFieldProcessingAction } from "../../../actions/FieldProcessing";
+import uniqid from "../../../utils/uniqid";
 
 const styles = theme => createStyles({
   spanLabel: {
@@ -145,18 +147,6 @@ const styles = theme => createStyles({
   labelAdornment: {}
 });
 
-// @ts-ignore
-Date.prototype.stdTimezoneOffset = function () {
-  const jan = new Date(this.getFullYear(), 0, 1);
-  const jul = new Date(this.getFullYear(), 6, 1);
-  return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
-};
-
-// @ts-ignore
-Date.prototype.dstOffset = function () {
-  return this.getTimezoneOffset() - this.stdTimezoneOffset();
-};
-
 const EditInPlaceDateTimeField: React.FC<any> = (
   {
    type,
@@ -168,7 +158,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
    classes,
    fieldClasses = {},
    formatting = "primary",
-   meta: { error, invalid },
+   meta: { error, invalid, active, dispatch },
    labelAdornment,
    helperText,
    label,
@@ -187,6 +177,8 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   const [pickerOpened, setPickerOpened] = useState(false);
 
   const inputNode = useRef<any>(null);
+  const processActionId = useRef<string>(null);
+  const processedValue = useRef<any>(null);
 
   const isInline = formatting === "inline";
 
@@ -226,6 +218,14 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   useEffect(() => {
     setTextValue(formatDateInner(dateValue));
   }, [dateValue]);
+
+  useEffect(() => {
+    if (!active && processActionId.current && input.value === processedValue.current) {
+      dispatch(endFieldProcessingAction(processActionId.current));
+      processedValue.current = null;
+      processActionId.current = null;
+    }
+  }, [input.value, active]);
 
   const onInputChange = e => {
     if (e) setTextValue(e.target.value);
@@ -272,11 +272,15 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   };
 
   const onBlur = () => {
+    processActionId.current = uniqid();
+    dispatch(startFieldProcessingAction({ id: processActionId.current }));
+
     setIsEditing(false);
 
     if (persistValue && !textValue) {
-      input.onBlur(input.value);
+      processedValue.current = input.value;
       input.onChange(input.value);
+      input.onBlur(input.value);
       setTextValue(formatDateInner(dateValue));
       return;
     }
@@ -299,11 +303,15 @@ const EditInPlaceDateTimeField: React.FC<any> = (
           formatted = null;
         }
       }
-      input.onBlur(formatted);
+      setTextValue(formatDateInner(appended));
+      processedValue.current = formatted;
       input.onChange(formatted);
+      input.onBlur(formatted);
     } else {
-      input.onBlur(null);
+      processedValue.current = null;
+      setTextValue(null);
       input.onChange(null);
+      input.onBlur(null);
     }
   };
 

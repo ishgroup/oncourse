@@ -9,7 +9,6 @@ import { Dispatch } from "redux";
 import { format } from "date-fns";
 import ListView from "../../common/components/list-view/ListView";
 import { FilterGroup } from "../../model/common/ListView";
-import { getAuditItem } from "./actions";
 import {
   getRecords,
   clearListState,
@@ -98,8 +97,6 @@ class AuditsApp extends React.Component<any, any> {
   }
 
   render() {
-    const { getAuditRecord } = this.props;
-
     return (
       <ListView
         listProps={{
@@ -112,12 +109,12 @@ class AuditsApp extends React.Component<any, any> {
           nameCondition
         }}
         EditViewContent={AuditsEditView}
-        getEditRecord={getAuditRecord}
         rootEntity="Audit"
         filterGroupsInitial={filterGroups}
         findRelated={findRelatedGroup}
         CustomFindRelatedMenu={AuditFindRelatedMenu}
         defaultDeleteDisabled
+        createButtonDisabled
         noListTags
       />
     );
@@ -126,13 +123,12 @@ class AuditsApp extends React.Component<any, any> {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getRecords: () => {
-    dispatch(getRecords("Audit"));
+    dispatch(getRecords({ entity: "Audit" }));
   },
   getFilters: () => {
     dispatch(getFilters("Audit"));
   },
-  clearListState: () => dispatch(clearListState()),
-  getAuditRecord: (id: number) => dispatch(getAuditItem(id))
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(

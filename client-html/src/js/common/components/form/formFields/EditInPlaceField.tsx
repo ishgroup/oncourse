@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 /**
@@ -87,7 +90,8 @@ const styles = (theme: AppTheme) => createStyles({
     color: theme.palette.text.primaryEditable,
     fontWeight: 400,
     "&:hover, &:hover $placeholderContent, &:hover $editButton": {
-      opacity: 0.35
+      opacity: 0.35,
+      color: theme.palette.primary.main
     },
     "&$rightAligned": {
       display: "flex",
@@ -213,8 +217,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
   state = {
     isEditing: false
   };
-
-  private containerNode: any;
 
   private inputNode: any;
 
@@ -708,7 +710,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                     onChange={this.onSelectChange}
                     IconComponent={() => (!disabled && <ExpandMore className={classes.selectIconInput} onClick={this.onFocus} />)}
                     MenuProps={{
-                      anchorOrigin: { vertical: 'top', horizontal: 'left' },
+                      anchorOrigin: { vertical: 'top', horizontal: 'center' },
                       classes: {
                         root: classes.selectMenu
                       }

@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, {
@@ -16,7 +19,7 @@ import {
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import {
-  ClashType, CourseClassTutor, SessionWarning, Site, TutorAttendance,
+  ClashType, CourseClassTutor, SessionWarning, TutorAttendance,
 } from "@api/model";
 import ErrorMessage from "../../../../../common/components/form/fieldMessage/ErrorMessage";
 import FormField from "../../../../../common/components/form/formFields/FormField";
@@ -30,6 +33,7 @@ import { TimetableSession } from "../../../../../model/timetable";
 import { ClassCostExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 import CourseClassTutorRooster from "./CourseClassTutorRooster";
 import { setShiftedTutorAttendances } from "../../utils";
+import { NoWrapOption } from "../../../../../common/components/form/formFields/SelectCustomComponents";
 
 interface Props {
   form: string;
@@ -37,7 +41,6 @@ interface Props {
   dispatch: Dispatch;
   tutors: CourseClassTutorExtended[];
   session?: TimetableSession;
-  sites?: Site[];
   triggerDebounseUpdate?: any;
   warnings: SessionWarning[];
   budget: ClassCostExtended[];
@@ -45,9 +48,9 @@ interface Props {
 }
 
 const roomLabel = room => {
-  if (room["site.name"]) return `${room["site.name"]} - ${room.name}`;
+  if (room && room["site.name"]) return `${room["site.name"]} - ${room.name}`;
 
-  return room.name;
+  return room?.name;
 };
 
 const validateDuration = value => (value < 5 || value > 1440
@@ -237,7 +240,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
         </Grid>
       ) }
 
-      <Grid item xs={6}>
+      <Grid item xs={12}>
         <FormField
           type="remoteDataSearchSelect"
           entity="Room"
@@ -249,7 +252,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
           defaultDisplayValue={`${session.site} - ${session.room}`}
           labelAdornment={<LinkAdornment linkHandler={openRoomLink} link={session.roomId} disabled={!session.roomId} />}
           onInnerValueChange={onRoomIdChange}
-          rowHeight={36}
+          itemRenderer={NoWrapOption}
           hasError={Boolean(warningTypes.Room.length)}
           allowEmpty
         />
@@ -299,7 +302,6 @@ const CourseClassSessionFields: React.FC<Props> = ({
 };
 
 const mapStateToProps = (state: State, ownProps: Props) => ({
-  sites: state.plainSearchRecords["Site"].items,
   session: formValueSelector(ownProps.form)(state, `sessions[${ownProps.index}]`) || {},
   timezones: state.timezones,
 });

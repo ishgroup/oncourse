@@ -30,12 +30,12 @@ import { AnyArgFunction, NumberArgFunction, StringArgFunction } from "../../../.
 import { EditViewProps } from "../../../../model/common/ListView";
 import { State } from "../../../../reducers/state";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
 import { openQualificationLink } from "../../qualifications/utils";
 import { clearCertificateOutcomes, getCertificateOutcomes, setCertificateOutcomesSearch } from "../actions";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import Uneditable from "../../../../common/components/form/Uneditable";
+import { getContactFullName } from "../../contacts/utils";
 
 interface Props extends EditViewProps {
   status?: string;
@@ -123,7 +123,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
                   change(
                     form,
                     "studentName",
-                    contactLabelCondition({ firstName: res.rows[0].values[0], lastName: res.rows[0].values[1] })
+                    getContactFullName({ firstName: res.rows[0].values[0], lastName: res.rows[0].values[1] })
                   )
                 );
               }
@@ -147,7 +147,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
 
   const onStudentIdChange = useCallback(
     (contact: Contact) => {
-      dispatch(change(form, "studentName", contactLabelCondition(contact)));
+      dispatch(change(form, "studentName", getContactFullName(contact)));
       dispatch(change(form, "outcomes", []));
       clearCertificateOutcomes(false);
     },
@@ -276,8 +276,8 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
                 name="studentContactId"
                 label="Student name"
                 selectValueMark="id"
-                selectLabelCondition={contactLabelCondition}
-                defaultDisplayValue={values && defaultContactName(values.studentName)}
+                selectLabelCondition={getContactFullName}
+                defaultDisplayValue={values.studentName}
                 onInnerValueChange={onStudentIdChange}
                 labelAdornment={(
                   <ContactLinkAdornment id={values?.studentContactId} />
@@ -325,7 +325,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
         </Grid>
 
         <Grid item xs={twoColumn ? 12 : 6} className={classes.select1}>
-          {values && defaultContactName(values.studentName)}
+          {values.studentName}
         </Grid>
 
         <Grid item xs={12}>

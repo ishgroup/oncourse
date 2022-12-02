@@ -10,9 +10,10 @@ import React, { useCallback, useContext } from "react";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import { TimetableContextState } from "../../../../../../model/timetable";
 
 const CalendarTagsSwitcher = ({ className = null, TimetableContext }) => {
-  const { tagsState, setTagsState } = useContext(TimetableContext);
+  const { tagsState, setTagsState } = useContext<TimetableContextState>(TimetableContext);
 
   const onChange = useCallback(e => setTagsState(e.target.value), [setTagsState]);
 

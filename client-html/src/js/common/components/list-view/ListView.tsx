@@ -8,21 +8,17 @@
 
 import React from "react";
 import { withRouter } from "react-router-dom";
-import {
- getFormSyncErrors, initialize, isDirty, isInvalid, submit 
-} from "redux-form";
+import { getFormSyncErrors, initialize, isDirty, isInvalid, submit } from "redux-form";
 import { ThemeProvider } from "@mui/material/styles";
 import { createStyles, withStyles } from "@mui/styles";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import {
- Column, Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel 
-} from "@api/model";
+import { Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel } from "@api/model";
 import { createTheme } from '@mui/material';
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import Button from "@mui/material/Button";
 import { UserPreferencesState } from "../../reducers/userPreferencesReducer";
-import { onSubmitFail } from "../../utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../utils/highlightFormErrors";
 import SideBar from "./components/side-bar/SideBar";
 import BottomAppBar from "./components/bottom-app-bar/BottomAppBar";
 import EditView from "./components/edit-view/EditView";
@@ -35,25 +31,21 @@ import FullScreenEditView from "./components/full-screen-edit-view/FullScreenEdi
 import {
   clearListState,
   deleteCustomFilter,
-  getListNestedEditRecord,
   getRecords,
   setFilterGroups,
-  setListColumns,
   setListCreatingNew,
   setListEditRecord,
   setListEditRecordFetching,
   setListEntity,
   setListFullScreenEditView,
-  setListLayout, setListMenuTags,
+  setListLayout,
+  setListMenuTags,
   setListSelection,
   setListUserAQLSearch,
   setSearch,
   updateTableModel,
 } from "./actions";
-import NestedEditView from "./components/full-screen-edit-view/NestedEditView";
-import {
- closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm
-} from "../../actions";
+import { closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm } from "../../actions";
 import ResizableWrapper from "../layout/resizable/ResizableWrapper";
 import { MenuTag } from "../../../model/tags";
 import { pushGTMEvent } from "../google-tag-manager/actions";
@@ -73,7 +65,11 @@ import {
 } from "../../../model/common/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "./constants";
 import { getEntityDisplayName } from "../../utils/getEntityDisplayName";
-import { ENTITY_AQL_STORAGE_NAME, LISTVIEW_MAIN_CONTENT_WIDTH } from "../../../constants/Config";
+import {
+  ENTITY_AQL_STORAGE_NAME, LIST_MAIN_CONTENT_DEFAULT_WIDTH,
+  LIST_SIDE_BAR_DEFAULT_WIDTH,
+  LISTVIEW_MAIN_CONTENT_WIDTH
+} from "../../../constants/Config";
 import { ConfirmProps, ShowConfirmCaller } from "../../../model/common/Confirm";
 import { EntityName, FindEntityState } from "../../../model/entities/common";
 import { saveCategoryAQLLink } from "../../utils/links";
@@ -84,12 +80,15 @@ import {
   getTagsUpdatedByIds,
   setActiveFiltersBySearch
 } from "./utils/listFiltersUtils";
-import { setSwipeableDrawerDirtyForm } from "../layout/swipeable-sidebar/actions";
 import { LSGetItem } from "../../utils/storage";
 import { getCustomFieldTypes } from "../../../containers/entities/customFieldTypes/actions";
-
-export const ListSideBarDefaultWidth = 200;
-export const ListMainContentDefaultWidth = 774;
+import {
+  createEntityRecord,
+  deleteEntityRecord,
+  getEntityRecord,
+  updateEntityRecord
+} from "../../../containers/entities/common/actions";
+import { shouldAsyncValidate } from "./utils/listFormUtils";
 
 const styles = () => createStyles({
   root: {
@@ -113,19 +112,22 @@ const sideBarTheme = theme => createTheme({
   }
 });
 
+interface OwnProps {
+  onCreate?: (item: any) => void;
+  onDelete?: (id: number) => void;
+  getEditRecord?: (id: number) => void;
+  onSave?: (item: any) => void;
+}
+
 interface Props extends Partial<ListState> {
   listProps: TableListProps;
-  getEditRecord: (id: string) => void;
   rootEntity: EntityName;
   EditViewContent: any;
   onLoadMore?: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
   selection?: string[];
   editRecord?: any;
-  onSave?: any;
   onBeforeSave?: any;
-  onDelete?: any;
-  onCreate?: (record: any) => void;
   classes?: any;
   isDirty?: boolean;
   isInvalid?: boolean;
@@ -134,7 +136,6 @@ interface Props extends Partial<ListState> {
   savingFilter?: any;
   defaultDeleteDisabled?: boolean;
   createButtonDisabled?: boolean;
-  nestedEditFields?: { [key: string]: (props: any) => React.ReactNode };
   fetch?: Fetch;
   menuTags?: MenuTag[];
   filterEntity?: EntityName;
@@ -147,11 +148,9 @@ interface Props extends Partial<ListState> {
   exportTemplates?: ExportTemplate[];
   pdfReports?: Report[];
   updateLayout?: (layout: LayoutType) => void;
-  updateColumns?: (columns: Column[]) => void;
   updateSelection?: (selection: string[]) => void;
   setListUserAQLSearch?: (userAQLSearch: string) => void;
   getScripts?: NoArgFunction;
-  openNestedEditView?: (entity: string, id: number, threeColumn?: boolean) => void;
   openConfirm?: ShowConfirmCaller;
   resetEditView?: NoArgFunction;
   clearListState?: NoArgFunction;
@@ -164,7 +163,6 @@ interface Props extends Partial<ListState> {
     manualLink?: EditViewContainerProps["manualLink"];
     validate?: any;
     asyncValidate?: any;
-    shouldAsyncValidate?: AnyArgFunction<boolean>;
     asyncBlurFields?: string[];
     asyncChangeFields?: string[];
     disabledSubmitCondition?: boolean;
@@ -183,16 +181,17 @@ interface Props extends Partial<ListState> {
   ShareContainerAlertComponent?: any;
   searchMenuItemsRenderer?: ListAqlMenuItemsRenderer;
   customOnCreate?: any;
+  customOnCreateAction?: any;
+  customGetAction?: any;
+  customUpdateAction?: any;
   preformatBeforeSubmit?: AnyArgFunction;
   userAQLSearch?: string;
   listSearch?: string;
   creatingNew?: boolean;
   editRecordFetching?: boolean;
-  recordsLeft?: number;
   searchQuery?: SearchQuery;
   setListEditRecordFetching?: any;
   search?: string;
-  onSwipeableDrawerDirtyForm?: (isDirty: boolean, resetEditView: any) => void;
   deleteDisabledCondition?: (props) => boolean;
   noListTags?: boolean;
   setEntity?: (entity: EntityName) => void;
@@ -217,7 +216,7 @@ interface ComponentState {
   newSelection: string[] | null;
 }
 
-class ListView extends React.PureComponent<Props, ComponentState> {
+class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
   private containerNode;
 
   private searchComponentNode: React.RefObject<any>;
@@ -237,9 +236,9 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       querySearch: false,
       deleteEnabled: !props.defaultDeleteDisabled,
       threeColumn: false,
-      sidebarWidth: ListSideBarDefaultWidth,
-      mainContentWidth: this.getMainContentWidth(ListMainContentDefaultWidth, ListSideBarDefaultWidth),
-      newSelection: null,
+      sidebarWidth: LIST_SIDE_BAR_DEFAULT_WIDTH,
+      mainContentWidth: this.getMainContentWidth(LIST_MAIN_CONTENT_DEFAULT_WIDTH, LIST_SIDE_BAR_DEFAULT_WIDTH),
+      newSelection: null
     };
   }
 
@@ -386,7 +385,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
         if (!threeColumn) {
           this.toggleFullWidthView();
         }
-      } else if (prevProps.records.layout) {
+      } else {
         this.onCreateRecord();
       }
 
@@ -558,7 +557,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     this.filtersSynchronized = true;
   };
 
-  onGetEditRecord = (id: string) => {
+  onGetEditRecord = id => {
     const { sendGAEvent, getEditRecord, rootEntity } = this.props;
 
     sendGAEvent("screenview", `${rootEntity}EditView`);
@@ -713,7 +712,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       return;
     }
 
-    onSave(selection[0], value);
+    onSave(value);
   };
 
   onDelete = id => {
@@ -972,8 +971,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
   getMainContentWidth = (mainContentWidth, sidebarWidth) =>
     (mainContentWidth ? Number(mainContentWidth) : window.screen.width - sidebarWidth - 368);
 
-  openNestedEditViewWithDirtyCheck = (...args) => this.checkDirty(this.props.openNestedEditView, args);
-
   onCreateRecordWithDirtyCheck = this.props.onCreate
     ? (...args) => this.checkDirty(this.onCreateRecord, args, true)
     : undefined;
@@ -1018,32 +1015,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     return searchParam.getAll("search")[0];
   };
 
-  renderTableList = () => {
-    const {
-      listProps, onLoadMore, selection, records, recordsLeft, currency, updateColumns
-    } = this.props;
-
-    const { threeColumn, mainContentWidth } = this.state;
-
-    return (
-      <ReactTableList
-        {...listProps}
-        mainContentWidth={mainContentWidth}
-        onLoadMore={onLoadMore}
-        selection={selection}
-        records={records}
-        recordsLeft={recordsLeft}
-        threeColumn={threeColumn}
-        updateColumns={updateColumns}
-        shortCurrencySymbol={currency.shortCurrencySymbol}
-        onRowDoubleClick={this.onRowDoubleClick}
-        onSelectionChange={this.onSelection}
-        onChangeModel={this.onChangeModel}
-        getContainerNode={this.getContainerNode}
-      />
-    );
-  }
-
   render() {
     const {
       classes,
@@ -1054,17 +1025,13 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       records,
       fetching,
       selection,
-      nestedEditFields,
-      getEditRecord,
       findRelated,
       editViewProps = {},
       CogwheelAdornment,
       savingFilter,
       CustomFindRelatedMenu,
       alwaysFullScreenCreateView,
-      onBeforeSave,
       ShareContainerAlertComponent,
-      updateSelection,
       pdfReports,
       exportTemplates,
       searchMenuItemsRenderer,
@@ -1077,7 +1044,10 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       filterEntity,
       emailTemplatesWithKeyCode,
       scripts,
-      recepients
+      recepients,
+      listProps,
+      onLoadMore,
+      currency
     } = this.props;
 
     const {
@@ -1086,10 +1056,28 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
     const hasFilters = Boolean(filterGroups.length || menuTags.length || savingFilter);
 
+    const table = <ReactTableList
+      {...listProps}
+      mainContentWidth={mainContentWidth}
+      onLoadMore={onLoadMore}
+      selection={selection}
+      records={records}
+      threeColumn={threeColumn}
+      shortCurrencySymbol={currency.shortCurrencySymbol}
+      onRowDoubleClick={this.onRowDoubleClick}
+      onSelectionChange={this.onSelection}
+      onChangeModel={this.onChangeModel}
+      getContainerNode={this.getContainerNode}
+      sidebarWidth={sidebarWidth}
+    />;
+
     return (
       <div className={classes.root}>
+        <LoadingIndicator transparentBackdrop allowInteractions />
+
         <FullScreenEditView
           {...editViewProps}
+          shouldAsyncValidate={shouldAsyncValidate}
           rootEntity={rootEntity}
           form={LIST_EDIT_VIEW_FORM_NAME}
           fullScreenEditView={fullScreenEditView}
@@ -1101,23 +1089,8 @@ class ListView extends React.PureComponent<Props, ComponentState> {
           creatingNew={creatingNew}
           updateDeleteCondition={this.updateDeleteCondition}
           showConfirm={this.showConfirm}
-          openNestedEditView={this.openNestedEditViewWithDirtyCheck}
           alwaysFullScreenCreateView={alwaysFullScreenCreateView}
           threeColumn={threeColumn}
-        />
-
-        <NestedEditView
-          {...editViewProps}
-          EditViewContent={EditViewContent}
-          rootEntity={rootEntity}
-          nestedEditFields={nestedEditFields}
-          updateRoot={getEditRecord}
-          onBeforeSave={onBeforeSave}
-          creatingNew={creatingNew}
-          showConfirm={this.showConfirm}
-          onSave={this.onSave}
-          updateSelection={updateSelection}
-          openNestedEditView={this.openNestedEditViewWithDirtyCheck}
         />
 
         <ShareContainer
@@ -1165,7 +1138,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
         <div className="flex-fill d-flex flex-column overflow-hidden user-select-none">
           <div className="flex-fill d-flex relative">
-            <LoadingIndicator transparentBackdrop allowInteractions />
             {threeColumn ? (
               <ResizableWrapper
                 onResizeStop={this.handleResizeMainContentCallBack}
@@ -1175,14 +1147,15 @@ class ListView extends React.PureComponent<Props, ComponentState> {
                 maxWidth="65%"
                 classes={{ sideBarWrapper: classes.resizableItemList }}
               >
-                {this.renderTableList()}
+                {table}
               </ResizableWrapper>
-            ) : this.renderTableList() }
+            ) : table }
 
             {threeColumn && !fullScreenEditView && (
               <div className="d-flex flex-fill overflow-hidden">
                 <EditView
                   {...editViewProps}
+                  shouldAsyncValidate={shouldAsyncValidate}
                   form={LIST_EDIT_VIEW_FORM_NAME}
                   rootEntity={rootEntity}
                   EditViewContent={EditViewContent}
@@ -1192,7 +1165,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
                   creatingNew={creatingNew}
                   updateDeleteCondition={this.updateDeleteCondition}
                   showConfirm={this.showConfirm}
-                  openNestedEditView={this.openNestedEditViewWithDirtyCheck}
                   toogleFullScreenEditView={this.toggleFullWidthView}
                 />
               </div>
@@ -1225,7 +1197,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
             findRelated={findRelated}
             CogwheelAdornment={CogwheelAdornment}
             showConfirm={this.showConfirm}
-            openNestedEditView={this.openNestedEditViewWithDirtyCheck}
             CustomFindRelatedMenu={CustomFindRelatedMenu}
             records={records}
             searchComponentNode={this.searchComponentNode}
@@ -1257,26 +1228,35 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   clearListState: () => dispatch(clearListState()),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
   updateLayout: (layout: LayoutType) => dispatch(setListLayout(layout)),
-  updateColumns: (columns: Column[]) => dispatch(setListColumns(columns)),
   deleteFilter: (id: number, entity: string, checked: boolean) => dispatch(deleteCustomFilter(id, entity, checked)),
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
   setListMenuTags: ({ tags, checkedChecklists, uncheckedChecklists }) => dispatch(setListMenuTags(tags, checkedChecklists, uncheckedChecklists)),
   setListUserAQLSearch: (userAQLSearch: string) => dispatch(setListUserAQLSearch(userAQLSearch)),
   getScripts: () => dispatch(getScripts(ownProps.rootEntity)),
   getCustomFieldTypes: (entity: EntityName) => dispatch(getCustomFieldTypes(entity)),
-  openNestedEditView: (entity: string, id: number, threeColumn: boolean) => dispatch(getListNestedEditRecord(entity, id, null, threeColumn)),
   openConfirm: props => dispatch(showConfirm(props)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView)),
   updateTableModel: (model: TableModel, listUpdate?: boolean) => dispatch(updateTableModel(ownProps.rootEntity, model, listUpdate)),
-  onLoadMore: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => dispatch(getRecords(ownProps.rootEntity, true, false, startIndex, stopIndex, resolve)),
+  onLoadMore: (stopIndex: number, resolve: any) => dispatch(getRecords(
+    {
+     entity: ownProps.rootEntity, listUpdate: true, ignoreSelection: false, stopIndex, resolve
+    }
+  )),
   onSearch: search => dispatch(setSearch(search, ownProps.rootEntity)),
   setListEditRecordFetching: () => dispatch(setListEditRecordFetching()),
-  onSwipeableDrawerDirtyForm: (isDirty: boolean, resetEditView: any) => dispatch(setSwipeableDrawerDirtyForm(isDirty, resetEditView)),
   getListViewPreferences: () => dispatch(getUserPreferences([LISTVIEW_MAIN_CONTENT_WIDTH])),
   setListviewMainContentWidth: (value: string) => dispatch(setUserPreference({ key: LISTVIEW_MAIN_CONTENT_WIDTH, value })),
   submitForm: () => dispatch(submit(LIST_EDIT_VIEW_FORM_NAME)),
-  closeConfirm: () => dispatch(closeConfirm())
+  closeConfirm: () => dispatch(closeConfirm()),
+  onCreate: (item: any) => dispatch( ownProps.customOnCreateAction
+    ? ownProps.customOnCreateAction(item)
+    : createEntityRecord(item, ownProps.rootEntity)),
+  onDelete: (id: number) => dispatch(deleteEntityRecord(id, ownProps.rootEntity)),
+  onSave: (item: any) => dispatch(updateEntityRecord(item.id, ownProps.rootEntity, item)),
+  getEditRecord: (id: number) => dispatch(ownProps.customGetAction 
+    ? ownProps.customGetAction(id) 
+    : getEntityRecord(id, ownProps.rootEntity))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(ListView))) as React.FC<Props>;

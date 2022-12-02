@@ -33,13 +33,13 @@ Feature: Main feature for all PUT requests with path 'login'
 
     Scenario: (+) Authorize as 2fa user
 
-        * def loginBody = {login: '2fa', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * def loginBody = {login: '2fa_notadmin1', password: 'password', kickOut: 'true', skipTfa: 'true'}
         Given path ishPath
         And request loginBody
         When method PUT
         Then status 401
-        And match response.loginStatus == 'Token required'
-        And match response.errorMessage == 'Auth Token required'
+        And match response.loginStatus == 'Invalid credentials'
+        And match response.errorMessage == 'User is disabled. Please contact onCourse Administrator.'
 
 
 

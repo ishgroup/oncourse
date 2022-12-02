@@ -12,7 +12,6 @@ import { change } from "redux-form";
 import { AssessmentSubmission } from "@api/model";
 import clsx from "clsx";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { getContactName } from "../../contacts/utils";
 import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import EntityService from "../../../../common/services/EntityService";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
@@ -20,6 +19,7 @@ import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { HeaderContactTitle } from "../../../../common/components/form/FieldAdornments";
+import { getContactFullName } from "../../contacts/utils";
 
 const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmission>> = props => {
   const {
@@ -29,18 +29,20 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
   const [tutors, setTutors] = useState([]);
 
   useEffect(() => {
-    EntityService.getPlainRecords(
-      "Contact",
-      "firstName,lastName",
-      `tutor.assessmentClassTutors.assessmentClass.assessmentSubmissions.id is ${values.id}`
-    )
-      .then(res => {
-        setTutors(res.rows.map(r => ({
-          contactId: Number(r.id),
-          tutorName: getContactName({ firstName: r.values[0], lastName: r.values[1] })
-        })));
-      })
-      .catch(err => instantFetchErrorHandler(dispatch, err));
+    if (values.id) {
+      EntityService.getPlainRecords(
+        "Contact",
+        "firstName,lastName",
+        `tutor.assessmentClassTutors.assessmentClass.assessmentSubmissions.id is ${values.id}`
+      )
+        .then(res => {
+          setTutors(res.rows.map(r => ({
+            contactId: Number(r.id),
+            tutorName: getContactFullName({ firstName: r.values[0], lastName: r.values[1] })
+          })));
+        })
+        .catch(err => instantFetchErrorHandler(dispatch, err));
+    }
   }, [values.id]);
 
   const onChangeMarked = (e: any, value: boolean) => {
@@ -128,12 +130,12 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
       </Grid>
       <Grid item xs={twoColumn ? 4 : 12}>
         {values.markedOn && (
-        <FormField
-          label="Marked on"
-          name="markedOn"
-          type="dateTime"
-          placeholder={twoColumn ? "Marked On" : undefined}
-        />
+          <FormField
+            label="Marked on"
+            name="markedOn"
+            type="dateTime"
+            placeholder={twoColumn ? "Marked On" : undefined}
+          />
           )}
       </Grid>
     </Grid>

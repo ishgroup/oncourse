@@ -1,18 +1,22 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, {
   createContext,
   forwardRef,
-  memo, useCallback, useMemo
+  memo,
+  useMemo,
+  useState
 } from "react";
 import { FixedSizeList, areEqual } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import InfiniteLoader from "react-window-infinite-loader";
 import clsx from "clsx";
-import debounce from "lodash.debounce";
 import Typography from "@mui/material/Typography";
 import {
   HEADER_ROWS_COUNT,
@@ -24,6 +28,39 @@ import {
 import { CHECKLISTS_COLUMN, COLUMN_WITH_COLORS } from "../utils";
 import TagDotRenderer from "./TagDotRenderer";
 import StaticProgress from "../../../../progress/StaticProgress";
+import { stubFunction } from "../../../../../utils/common";
+
+const ThreeColumnCell = ({ row }) => (<div>
+  <Typography variant="subtitle2" color="textSecondary" component="div" noWrap>
+    {row.original.secondary}
+  </Typography>
+  <Typography variant="body1" component="div" className="centeredFlex" noWrap>
+    <span className="flex-fill text-truncate">
+      {row.original.primary}
+    </span>
+    {row.cells[1].column.tagsVisible && (
+      <TagDotRenderer
+        className="ml-1"
+        colors={row.values[COLUMN_WITH_COLORS]?.replace(/[[\]]/g, "").split(", ")}
+      />
+    )}
+    {row.cells[1].column.checklistsVisible && row.values[CHECKLISTS_COLUMN] && (
+      <StaticProgress
+        className="ml-1"
+        color={row.values[CHECKLISTS_COLUMN].split("|")[0]}
+        value={parseFloat(row.values[CHECKLISTS_COLUMN].split("|")[1]) * 100}
+        size={18}
+      />
+    )}
+  </Typography>
+</div>);
+
+const TwoColumnCell = ({ cell, classes, ...rest }) => (<div
+  {...rest}
+  className={clsx(classes.bodyCell, cell.column.cellClass)}
+>
+  {cell.render("Cell")}
+</div>);
 
 const ListRow = memo<any>(({ data, index, style }) => {
   const {
@@ -32,8 +69,7 @@ const ListRow = memo<any>(({ data, index, style }) => {
     classes,
     onRowSelect,
     threeColumn,
-    onRowDoubleClick,
-    onMouseOver
+    onRowDoubleClick
   } = data;
 
   if (!threeColumn && HEADER_ROWS_INDICES.includes(index)) {
@@ -64,37 +100,9 @@ const ListRow = memo<any>(({ data, index, style }) => {
       onDoubleClick={() => onRowDoubleClick(row.id)}
     >
       {threeColumn ? (
-        <div>
-          <Typography variant="subtitle2" color="textSecondary" component="div" noWrap>
-            {row.original.secondary}
-          </Typography>
-          <Typography variant="body1" component="div" className="centeredFlex" noWrap>
-            <span className="flex-fill">
-              {row.original.primary}
-            </span>
-            {row.cells[1].column.tagsVisible && (
-              <TagDotRenderer
-                colors={row.values[COLUMN_WITH_COLORS]?.replace(/[[\]]/g, "").split(", ")}
-              />
-            )}
-            {row.cells[1].column.checklistsVisible && row.values[CHECKLISTS_COLUMN] && (
-              <StaticProgress
-                className="ml-1"
-                color={row.values[CHECKLISTS_COLUMN].split("|")[0]}
-                value={parseFloat(row.values[CHECKLISTS_COLUMN].split("|")[1]) * 100}
-                size={18}
-              />
-            )}
-          </Typography>
-        </div>
+        <ThreeColumnCell row={row} />
       ) : row.cells.filter(cell => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(cell.column.id)).map(cell => (
-        <div
-          {...cell.getCellProps()}
-          className={clsx(classes.bodyCell, cell.column.cellClass)}
-          onMouseOver={!["selection", "chooser"].includes(cell.column.id) && onMouseOver ? () => onMouseOver(cell.column.id) : undefined}
-        >
-          {cell.render("Cell")}
-        </div>
+        <TwoColumnCell {...cell.getCellProps()} cell={cell} classes={classes} />
       ))}
     </div>
   );
@@ -121,23 +129,27 @@ export default ({
   classes,
   onRowSelect,
   onLoadMore,
-  recordsLeft,
+  recordsCount,
   listRef,
   threeColumn,
   onRowDoubleClick,
-  onMouseOver,
   mainContentWidth,
   header
 }) => {
-  const isItemLoaded = index => rows[index];
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const isItemLoaded = index => index >= recordsCount ? true : !!rows[index];
 
-  const loadMoreItems = useCallback<any>(
-    debounce(
-      (startIndex, stopIndex) => new Promise(resolve => onLoadMore(startIndex, stopIndex, resolve)),
-      600
-    ),
-    []
-  );
+  const loadMoreItems = isLoading
+    ? stubFunction
+    : (startIndex, stopIndex) => {
+      setIsLoading(true);
+      return new Promise(resolve => onLoadMore(stopIndex, resolve)).then(() => { setIsLoading(false); });
+    };
+
+  const itemCountBase = (rows.length + LIST_PAGE_SIZE);
+
+  const itemCount = (itemCountBase < recordsCount ? itemCountBase : recordsCount) + (threeColumn ? 0 : HEADER_ROWS_COUNT);
 
   const itemData = useMemo(
     () => ({
@@ -147,14 +159,9 @@ export default ({
       onRowSelect,
       threeColumn,
       onRowDoubleClick,
-      onMouseOver,
     }),
-    [prepareRow, rows, classes, onRowSelect, onRowDoubleClick, totalColumnsWidth, threeColumn, onMouseOver]
+    [prepareRow, rows, classes, onRowSelect, onRowDoubleClick, totalColumnsWidth, threeColumn]
   );
-
-  const itemCount = useMemo(() => (rows.length + (recordsLeft >= LIST_PAGE_SIZE ? LIST_PAGE_SIZE : recordsLeft === 1 ? 0 : recordsLeft))
-    + (threeColumn ? 0 : HEADER_ROWS_COUNT),
-   [threeColumn, recordsLeft, rows.length]);
 
   return (
     <StickyListContext.Provider value={{ header }}>

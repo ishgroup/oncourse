@@ -6,9 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
-  useCallback, useEffect, useMemo, useState
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { EmailTemplate, MessageType } from "@api/model";
 import { Grow } from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -17,9 +15,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { FileCopy } from "@mui/icons-material";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import { Dispatch } from "redux";
-import {
- FieldArray, Form, initialize, InjectedFormProps 
-} from "redux-form";
+import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import FormField from "../../../../../common/components/form/formFields/FormField";
@@ -27,12 +23,12 @@ import { mapSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { NumberArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
+import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import AvailableFrom, { mapMessageAvailableFrom } from "../../../components/AvailableFrom";
 import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import { MessageTemplateEntityItems, MessageTemplateEntityName } from "../../../constants";
-import { validateKeycode } from "../../../utils";
+import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import ScriptCard from "../../scripts/components/cards/CardBase";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
@@ -51,8 +47,6 @@ interface Props extends InjectedFormProps {
   onUpdateInternal: (template: EmailTemplate) => void;
   onUpdate: (template: EmailTemplate) => void;
   onDelete: NumberArgFunction;
-  validateTemplateCopyName: StringArgFunction;
-  validateNewTemplateName: StringArgFunction;
   history: any;
   syncErrors: any;
   nextLocation: string;
@@ -79,8 +73,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
     onUpdate,
     onUpdateInternal,
     onDelete,
-    validateTemplateCopyName,
-    validateNewTemplateName,
     history,
     nextLocation,
     syncErrors,
@@ -157,6 +149,20 @@ const EmailTemplatesForm: React.FC<Props> = props => {
     }
   }, [nextLocation, dirty]);
 
+  const validateTemplateCopyName = useCallback(name => {
+    if (emailTemplates.find(e => e.title.trim() === name.trim())) {
+      return "Template name should be unique";
+    }
+    return validateNameForQuotes(name);
+  }, [emailTemplates, values.id]);
+
+  const validateNewTemplateName = useCallback(name => {
+    if (emailTemplates.find(e => e.id !== values.id && e.title.trim() === name.trim())) {
+      return "Template name should be unique";
+    }
+    return validateNameForQuotes(name);
+  }, [emailTemplates, values.id]);
+
   return (
     <>
       <SaveAsNewAutomationModal
@@ -164,7 +170,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
         onClose={onDialogClose}
         onSave={onDialogSave}
         validateNameField={validateTemplateCopyName}
-        hasNameField
       />
 
       <Form onSubmit={handleSubmit(handleSave)}>
@@ -178,7 +183,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
           invalid={invalid}
           title={(
             <div className="centeredFlex">
-              {isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
+              {isNew && (!values.name || values.name?.trim().length === 0) ? "New" : values.name?.trim()}
               {[...values.automationTags?.split(",") || [],
                 ...isInternal ? [] : ["custom"]
               ].map(t => <InfoPill key={t} label={t} />)}

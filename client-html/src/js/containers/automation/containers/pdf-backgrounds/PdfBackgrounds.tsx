@@ -12,13 +12,13 @@ import { getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-f
 import { Dispatch } from "redux";
 import { withRouter } from "react-router";
 import { ExportTemplate } from "@api/model";
-import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../reducers/state";
 import PdfReportsForm from "./containers/PdfBackgroundsForm";
 import { usePrevious } from "../../../../common/utils/hooks";
 import {
   createAutomationPdfBackground,
-  getAutomationPdfBackground,
+  getAutomationPdfBackground, getPdfBackgroundCopy,
   removeAutomationPdfBackground,
   updateAutomationPdfBackground
 } from "./actions";
@@ -56,6 +56,7 @@ const mapStateToProps = (state: State) => ({
   values: getFormValues(PDF_BACKGROUND_FORM_NAME)(state),
   syncErrors: getFormSyncErrors(PDF_BACKGROUND_FORM_NAME)(state),
   nextLocation: state.nextLocation,
+  loading: state.automation.pdfBackground.loading
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -63,7 +64,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onUpdate: (fileName: string, id: number, overlay: File) =>
     dispatch(updateAutomationPdfBackground(fileName, id, overlay)),
   onDelete: (id: number) => dispatch(removeAutomationPdfBackground(id)),
-  getPdfBackground: (id: number) => dispatch(getAutomationPdfBackground(id))
+  getPdfBackground: (id: number) => dispatch(getAutomationPdfBackground(id)),
+  getPdfBackgroundCopy: (id, name) => dispatch(getPdfBackgroundCopy(id, name)),
 });
 
 export default reduxForm({

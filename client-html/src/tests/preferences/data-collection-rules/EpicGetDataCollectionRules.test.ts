@@ -11,7 +11,7 @@ describe("Get data collection rules epic tests", () => {
     epic: EpicGetDataCollectionRules,
     processData: mockedApi => {
       const dataCollectionRules = mockedApi.db.dataCollectionRules;
-
+      dataCollectionRules.sort((a, b) => a.name > b.name ? 1 : -1);
       return [
         {
           type: GET_DATA_COLLECTION_RULES_FULFILLED,

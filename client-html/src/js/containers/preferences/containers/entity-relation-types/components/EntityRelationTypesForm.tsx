@@ -2,17 +2,14 @@ import * as React from "react";
 import Grid from "@mui/material/Grid";
 import withStyles from "@mui/styles/withStyles";
 import { withRouter } from "react-router";
-import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import AddIcon from "@mui/icons-material/Add";
-import Fab from "@mui/material/Fab";
 import {
   Form, FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
 } from "redux-form";
 import { EntityRelationType } from "@api/model";
 import isEqual from "lodash.isequal";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import EntityRelationTypesRenderer from "./EntityRelationTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";

@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import { IAction } from "../../../actions/IshAction";
@@ -8,7 +11,7 @@ import {
   GET_EMAIL_TEMPLATES_WITH_KEYCODE_FULFILLED,
   GET_SCRIPTS_FULFILLED
 } from "../../../actions";
-import { LIST_PAGE_SIZE } from "../../../../constants/Config";
+import { LIST_PAGE_SIZE, LIST_SIDE_BAR_DEFAULT_WIDTH, PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 import {
   CLEAR_LIST_STATE,
   GET_FILTERS_FULFILLED,
@@ -22,15 +25,11 @@ import {
   SET_LIST_ENTITY,
   SET_LIST_SELECTION,
   SET_LIST_USER_AQL_SEARCH,
-  SET_LIST_NESTED_EDIT_RECORD,
-  CLEAR_LIST_NESTED_EDIT_RECORD,
-  CLOSE_LIST_NESTED_EDIT_RECORD,
   GET_PLAIN_RECORDS_REQUEST_FULFILLED,
   SET_LIST_MENU_TAGS,
   SET_LIST_SEARCH_ERROR,
   SET_LIST_CREATING_NEW,
   SET_LIST_FULL_SCREEN_EDIT_VIEW,
-  SET_LIST_COLUMNS,
   SET_RECIPIENTS_MESSAGE_DATA,
   CLEAR_RECIPIENTS_MESSAGE_DATA,
   SET_LIST_EDIT_RECORD_FETCHING,
@@ -64,9 +63,9 @@ class State implements ListState {
     pageSize: LIST_PAGE_SIZE,
     search: null,
     layout: null,
-    filterColumnWidth: 200,
-    tagsOrder: [],
-    recordsLeft: LIST_PAGE_SIZE
+    filteredCount: 0,
+    filterColumnWidth: LIST_SIDE_BAR_DEFAULT_WIDTH,
+    tagsOrder: []
   };
 
   plainRecords = {};
@@ -84,8 +83,6 @@ class State implements ListState {
   editRecord = null;
 
   recepients = null;
-
-  nestedEditRecords = [];
 
   selection = [];
 
@@ -108,12 +105,12 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
 
     case GET_RECORDS_FULFILLED: {
       const { records, payload, searchQuery } = action.payload;
-      const { startIndex, stopIndex }: GetRecordsArgs = payload;
+      const { stopIndex }: GetRecordsArgs = payload;
 
       let newRecords = state.records;
       newRecords = records;
 
-      newRecords.rows = typeof startIndex === "number" && typeof stopIndex === "number"
+      newRecords.rows = typeof stopIndex === "number"
         ? state.records.rows.concat(records.rows)
         : records.rows;
 
@@ -127,11 +124,15 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
           ...newRecords,
           sort: newRecords.sort.map(s => ({ ...s })),
           columns: newRecords.columns.map(c => ({ ...c })),
-          rows: newRecords.rows.map(r => ({ ...r }))
+          rows: newRecords.rows.map(r => ({ ...r })),
+          tagsOrder: [...newRecords.tagsOrder],
+          filteredCount: newRecords.entity === "Audit" ? PLAIN_LIST_MAX_PAGE_SIZE : newRecords.filteredCount,
+          filterColumnWidth: newRecords.filterColumnWidth < LIST_SIDE_BAR_DEFAULT_WIDTH
+            ? LIST_SIDE_BAR_DEFAULT_WIDTH
+            : newRecords.filterColumnWidth
         },
         searchQuery,
-        fetching: false,
-        recordsLeft: records.pageSize
+        fetching: false
       };
     }
 
@@ -166,13 +167,6 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
       return {
         ...state,
         editRecordFetching: true
-      };
-    }
-
-    case SET_LIST_NESTED_EDIT_RECORD: {
-      return {
-        ...state,
-        nestedEditRecords: [...state.nestedEditRecords, action.payload]
       };
     }
 
@@ -278,18 +272,6 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
       };
     }
 
-    case SET_LIST_COLUMNS: {
-      const { columns } = action.payload;
-
-      return {
-        ...state,
-        records: {
-          ...state.records,
-          columns
-        }
-      };
-    }
-
     case SET_LIST_USER_AQL_SEARCH: {
       const { userAQLSearch } = action.payload;
       return {
@@ -334,28 +316,6 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
         menuTags: getUpdated(menuTags, null, null, null),
         checkedChecklists: getUpdated(checkedChecklists, null, null, null),
         uncheckedChecklists: getUpdated(uncheckedChecklists, null, null, null),
-      };
-    }
-
-    case CLOSE_LIST_NESTED_EDIT_RECORD: {
-      const { index } = action.payload;
-
-      if (state.nestedEditRecords[index]) state.nestedEditRecords[index].opened = false;
-
-      return {
-        ...state,
-        nestedEditRecords: [...state.nestedEditRecords]
-      };
-    }
-
-    case CLEAR_LIST_NESTED_EDIT_RECORD: {
-      const { index } = action.payload;
-
-      state.nestedEditRecords.splice(index, 1);
-
-      return {
-        ...state,
-        nestedEditRecords: [...state.nestedEditRecords]
       };
     }
 

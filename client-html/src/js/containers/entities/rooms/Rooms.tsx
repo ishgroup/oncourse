@@ -14,9 +14,6 @@ import { Room } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
-import {
- createRoom, getRoom, removeRoom, updateRoom 
-} from "./actions";
 import RoomEditView from "./components/RoomEditView";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { getListTags } from "../../tags/actions";
@@ -77,7 +74,7 @@ const findRelatedGroup: any[] = [
 
 class Rooms extends React.Component<any, any> {
   componentDidMount() {
-     this.props.getFilters();
+    this.props.getFilters();
     this.props.getTags();
     this.props.getSites();
   }
@@ -92,35 +89,29 @@ class Rooms extends React.Component<any, any> {
 
   render() {
     const {
-      getRoomRecord, onCreate, onDelete, onSave, updateTableModel, onInit
+      updateTableModel, onInit
     } = this.props;
 
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "name",
-            secondaryColumn: "site.name"
-          }}
-          editViewProps={{
-            manualLink,
-            asyncValidate: notesAsyncValidate,
-            asyncBlurFields: ["notes[].message"],
-            hideTitle: true
-          }}
-          updateTableModel={updateTableModel}
-          CogwheelAdornment={BulkEditCogwheelOption}
-          EditViewContent={RoomEditView}
-          getEditRecord={getRoomRecord}
-          rootEntity="Room"
-          onInit={onInit}
-          onCreate={onCreate}
-          onDelete={onDelete}
-          onSave={onSave}
-          filterGroupsInitial={filterGroups}
-          findRelated={findRelatedGroup}
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "name",
+          secondaryColumn: "site.name"
+        }}
+        editViewProps={{
+          manualLink,
+          asyncValidate: notesAsyncValidate,
+          asyncChangeFields: ["notes[].message"],
+          hideTitle: true
+        }}
+        updateTableModel={updateTableModel}
+        CogwheelAdornment={BulkEditCogwheelOption}
+        EditViewContent={RoomEditView}
+        rootEntity="Room"
+        onInit={onInit}
+        filterGroupsInitial={filterGroups}
+        findRelated={findRelatedGroup}
+      />
     );
   }
 }
@@ -135,11 +126,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getTags: () => {
     dispatch(getListTags("Room"));
   },
-  clearListState: () => dispatch(clearListState()),
-  getRoomRecord: (id: string) => dispatch(getRoom(id)),
-  onSave: (id: string, room: Room) => dispatch(updateRoom(id, room)),
-  onCreate: (room: Room) => dispatch(createRoom(room)),
-  onDelete: (id: string) => dispatch(removeRoom(id))
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Rooms);

@@ -421,6 +421,13 @@
     - name: certificateReportTemplate
       dataType: TEXT
       value: "ish.oncourse.nonVetCertificate"
+    - name: attendanceRequired
+      dataType: BOOLEAN
+      value: "false"
+    - name: attendanceThreshold
+      label: Min allowed value of enrolments attendance
+      dataType: NUMBER
+      value: "80"
     - name: certificateReportBackground
       dataType: TEXT
       value: "certificate_attendance_backgound.pdf"
@@ -862,3 +869,69 @@
       label: Transactions to
       dataType: DATE
 
+- name: Abandoned cart reminder
+  keyCode: ish.script.abandonedCartReminder
+  body: ish.script.abandonedCartReminder.groovy
+  status: ENABLED
+  triggerType: CRON
+  schedule: "@daily-morning"
+  short: Increase checkout conversion by sending a reminder to customers who abandoned the checkout process
+  description: Once a day, early in the morning, send a reminder to all customers with an abandoned checkout the previous day (midnight to midnight). If a customer created two abandoned checkouts, they will get two emails. The reminder will include a link to allow them to resume their checkout.
+  category: Marketing
+  tags: New
+  options:
+    - name: emailTemplate
+      dataType: MESSAGE_TEMPLATE
+      value: "ish.email.abandonedCartReminder"
+
+- name: Kronos create/edit shift
+  keyCode: ish.script.kronosCreateEditShift
+  body: ish.script.kronosCreateEditShift.groovy
+  status: NOT_INSTALLED
+  triggerType: ENTITY_EVENT
+  entityClass: TutorAttendance
+  entityEventType: CREATE_OR_UPDATE
+  description: On create or edit TutorAttendance, create or edit shift into a Kronos Schedule.
+  short: Requires active Kronos integration. When TutorAttendance is created or edited in onCourse, the TutorAttendance will be created or edited as Shifts in a Kronos Schedule.
+  category: Integrations
+  tag:
+  options:
+    - name: scheduleNameValue
+      value: "Ish Schedule"
+      dataType: TEXT
+
+- name: Kronos delete shift
+  keyCode: ish.script.kronosDeleteShift
+  body: ish.script.kronosDeleteShift.groovy
+  status: NOT_INSTALLED
+  triggerType: ENTITY_EVENT
+  entityClass: TutorAttendance
+  entityEventType: REMOVE
+  description: On delete TutorAttendance, delete shift into a Kronos Schedule.
+  short: Requires active Kronos integration. When TutorAttendance is deleteded in onCourse, the TutorAttendance (as Shift in Kronos) will be deleteded from a Kronos Schedule.
+  category: Integrations
+  tag:
+
+- name: Kronos for list of TutorAttendances
+  keyCode: ish.script.kronosListOfShifts
+  body: ish.script.kronosListOfShifts.groovy
+  status: NOT_INSTALLED
+  triggerType: ON_DEMAND
+  description: Create or edit list of Shifts into a Kronos Schedule from specific list of onCourse TutorAttendances.
+  short: Requires active Kronos integration. Finds specific list of onCourse TutorAttendances and then creates or edits Shifts in Kronos.
+  category: Integrations
+  tag:
+  options:
+    - name: scheduleNameValue
+      value: "Ish Schedule"
+      dataType: TEXT
+
+- name: Kronos delete custom fields for deleted Kronos Schedules
+  keyCode: ish.script.kronosDeleteCustomFields
+  body: ish.script.kronosDeleteCustomFields.groovy
+  status: NOT_INSTALLED
+  triggerType: ON_DEMAND
+  description: Delete TutorAttendance custom fields 'shiftIdCustomField' and 'scheduleIdCustomField' if Schedule was deleted from Kronos.
+  short: Requires active Kronos integration. Get all TutorAttendances with custom fields 'shiftIdCustomField' and 'scheduleIdCustomField' then these TutorAttendance custom fields will be deleted if Schedule was deleted from Kronos or one of these custom field is null.
+  category: Integrations
+  tag:

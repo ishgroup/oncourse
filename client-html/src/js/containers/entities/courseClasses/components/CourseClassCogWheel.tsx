@@ -12,15 +12,17 @@ import { Dispatch } from "redux";
 import CreateCertificateMenu from "../../../../common/components/list-view/components/bottom-app-bar/components/CreateCertificateMenu";
 import EntityService from "../../../../common/services/EntityService";
 import { State } from "../../../../reducers/state";
-import AvetmissExportModal, { manualAvetmisConfirm } from "../../../avetmiss-export/components/modal/AvetmissExportModal";
+import AvetmissExportModal from "../../../avetmiss-export/components/modal/AvetmissExportModal";
 import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
 import PayslipGenerateCogwheelAction from "../../payslips/components/PayslipGenerateCogwheelAction";
 import CancelCourseClassModal from "./cancel/CancelCourseClassModal";
 import DuplicateCourseClassModal from "./duplicate-courseClass/DuplicateCourseClassModal";
 import DuplicateTraineeshipModal from "./duplicate-courseClass/DuplicateTraineeshipModal";
 import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../common/actions/CommonPlainRecordsActions";
-import { courseClassCancelPath, courseClassTimetablePath } from "../../../../constants/Api";
+import { courseClassCancelPath } from "../../../../constants/Api";
 import { getPluralSuffix } from "../../../../common/utils/strings";
+import { useAppSelector } from "../../../../common/utils/hooks";
+import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 
 const CourseClassCogWheel = memo<any>(props => {
   const {
@@ -38,6 +40,9 @@ const CourseClassCogWheel = memo<any>(props => {
   const [dialogOpened, setDialogOpened] = useState(null);
   const [isTraneeship, setIsTraneeship] = useState(false);
   const [selectedClassesEnrolmentsCount, setSelectedClassesEnrolmentsCount] = useState(0);
+  const [selectedClassesIds, setSelectedClassesIds] = useState(selection);
+  
+  const searchQuery = useAppSelector(state => state.list.searchQuery);
 
   const selectedAndNotNew = useMemo(() => selection.length >= 1 && selection[0] !== "NEW", [selection]);
 
@@ -84,29 +89,47 @@ const CourseClassCogWheel = memo<any>(props => {
     [selection, editRecord, data]);
 
   const onClick = useCallback(
-    e => {
+    async e => {
       const status = e.target.getAttribute("role");
-
+      setDialogOpened(status);
       if (status === "Avetmiss-Export") {
-        return manualAvetmisConfirm(() => {
-            EntityService.getPlainRecords(
+        try {
+          if (selection.length) {
+            const plainEnrolments = await EntityService.getPlainRecords(
               "Enrolment",
               "outcomes.id",
               `courseClass.id in (${selection.toString()}) and outcomes.id not is null`
-            ).then(res => setSelectedClassesEnrolmentsCount(res.rows.length));
-            setDialogOpened(status);
-          },
-          showConfirm);
-      }
+            );
 
-      setDialogOpened(status);
+            setSelectedClassesEnrolmentsCount(plainEnrolments.rows.length);
+            setSelectedClassesIds(selection);
+          } else {
+            const plainClasses = await EntityService.getRecordsByListSearch("CourseClass", searchQuery);
+            
+            const classesIds = plainClasses.rows.map(r => r.id);
+            
+            const plainEnrolments = await EntityService.getPlainRecords(
+              "Enrolment",
+              "outcomes.id",
+              `courseClass.id in (${classesIds.toString()}) and outcomes.id not is null`
+            );
+            
+            setSelectedClassesEnrolmentsCount(plainEnrolments.rows.length);
+            setSelectedClassesIds(classesIds);
+          }
+        } catch (e) {
+          instantFetchErrorHandler(dispatch, e);
+        }
+      }
     },
-    [selection]
+    [selection, searchQuery]
   );
 
   const classesCountLabel = useMemo(() => `${selection.length} class${selection.length <= 1 ? "" : "es"}`, [
     selection.length
   ]);
+
+  const classesLabel = useMemo(() => `${selection.length} class${getPluralSuffix(selection.length)}`, [selection]);
 
   return (
     <>
@@ -131,7 +154,7 @@ const CourseClassCogWheel = memo<any>(props => {
       />
       <AvetmissExportModal
         entity="CourseClass"
-        selection={selection}
+        ids={selectedClassesIds}
         opened={dialogOpened === "Avetmiss-Export"}
         setDialogOpened={setDialogOpened}
         closeMenu={closeMenu}
@@ -166,15 +189,15 @@ const CourseClassCogWheel = memo<any>(props => {
       <PayslipGenerateCogwheelAction
         entity="CourseClass"
         generateLabel={`Generate tutor pay${
-          selection.length ? ` for ${selection.length} class${getPluralSuffix(selection.length)}` : ""
+          selection.length ? ` for ${classesLabel}` : ""
         }`}
         closeMenu={closeMenu}
         showConfirm={showConfirm}
         menuItemClass={menuItemClass}
         selection={selection}
       />
-      <MenuItem disabled={!selectedAndNotNew} className={menuItemClass} role="Avetmiss-Export" onClick={onClick}>
-        AVETMISS 8 export
+      <MenuItem disabled={selection[0] === "NEW"} className={menuItemClass} role="Avetmiss-Export" onClick={onClick}>
+        AVETMISS 8 export {selection.length ? classesLabel : "all"}
       </MenuItem>
       <BulkEditCogwheelOption {...props} />
     </>

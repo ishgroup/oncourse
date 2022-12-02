@@ -13,13 +13,12 @@ import { clearListState, getFilters } from "../../../common/components/list-view
 import { getListTags } from "../../tags/actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import AssessmentSubmissionEditView from "./components/AssessmentSubmissionsEditView";
-import { getAssessmentSubmissionsItem, removeAssessmentSubmissionsItem, updateAssessmentSubmissionsItem } from "./actions";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 import { State } from "../../../reducers/state";
 import EntityService from "../../../common/services/EntityService";
-import { getContactName } from "../contacts/utils";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import { getContactFullName } from "../contacts/utils";
 
 const filterGroups: FilterGroup[] = [
   {
@@ -50,7 +49,7 @@ const nameCondition = (val: AssessmentSubmissionModel) => val.studentName;
 
 const AssessmentSubmission = (props: any) => {
   const {
-    clearListState, getAssessmentSubmissionsItem, getFilters, getTags, onDelete, onSave, selection, dispatch,
+    clearListState, getFilters, getTags, selection, dispatch,
   } = props;
 
   useEffect(() => {
@@ -73,7 +72,7 @@ const AssessmentSubmission = (props: any) => {
     )
       .then(res => {
         const tutors = (res.rows.map(r => ({
-          label: getContactName({ firstName: r.values[0], lastName: r.values[1] }),
+          label: getContactFullName({ firstName: r.values[0], lastName: r.values[1] }),
           value: Number(r.id),
         })));
 
@@ -113,18 +112,16 @@ const AssessmentSubmission = (props: any) => {
       editViewProps={{
         nameCondition,
         asyncValidate: notesAsyncValidate,
-        asyncBlurFields: ["notes[].message"],
+        asyncChangeFields: ["notes[].message"],
         hideTitle: true
       }}
       EditViewContent={AssessmentSubmissionEditView}
-      getEditRecord={getAssessmentSubmissionsItem}
       rootEntity="AssessmentSubmission"
       filterGroupsInitial={filterGroups}
       findRelated={findRelatedGroup}
-      onSave={onSave}
-      onDelete={onDelete}
       CogwheelAdornment={BulkEditCogwheelOption}
       getCustomBulkEditFields={getCustomBulkEditFields}
+      createButtonDisabled
     />
   );
 };
@@ -135,13 +132,9 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   dispatch,
-  getAssessmentSubmissionsItem: (id: number) => dispatch(getAssessmentSubmissionsItem(id)),
   clearListState: () => dispatch(clearListState()),
   getFilters: () => dispatch(getFilters("AssessmentSubmission")),
-  getTags: () => dispatch(getListTags("AssessmentSubmission")),
-  onSave: (id: number, assessmentSubmission: AssessmentSubmissionModel) => (
-    dispatch(updateAssessmentSubmissionsItem(id, assessmentSubmission))),
-  onDelete: (id: number) => dispatch(removeAssessmentSubmissionsItem(id))
+  getTags: () => dispatch(getListTags("AssessmentSubmission"))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssessmentSubmission);
