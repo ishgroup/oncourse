@@ -47,10 +47,6 @@ describe("Virtual rendered BudgetCostModal of Class edit view", () => {
       expect(screen.getByText("Student fee")).toBeTruthy();
       expect(screen.getByLabelText("Invoice line title").value).toBe(initialValues.description);
 
-      const total = decimalPlus(initialValues.perUnitAmountIncTax, getPaymentPlansTotal(initialValues.paymentPlan));
-
-      expect(screen.getByLabelText("On enrolment").value).toBe(total.toString());
-
       expect(screen.getByLabelText("Tax type").value).toBe(initialValues.taxId.toString());
       expect(screen.getByLabelText("Account").value).toBe(initialValues.accountId.toString());
 
