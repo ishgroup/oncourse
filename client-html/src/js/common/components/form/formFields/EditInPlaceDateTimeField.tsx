@@ -316,7 +316,6 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   };
 
   const onClose = () => {
-    onBlur();
     setIsEditing(false);
     setPickerOpened(false);
   };
