@@ -61,7 +61,7 @@ class CourseClassMixin {
 		return isActual(self.isCancelled, self.isDistantLearningCourse, self.endDateTime)
     }
 
-	//test-java-label
+	//test-java-label-2
 	static isActual(boolean isCancelled, boolean isDistantLearningCourse, Date endDateTime) {
 		return !isCancelled && (isDistantLearningCourse || endDateTime?.after(new Date()))
 	}
