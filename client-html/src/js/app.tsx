@@ -12,6 +12,7 @@ import { DEFAULT_CONFIG } from "./constants/Config";
 import store from "./constants/Store";
 import { EnvironmentConstants } from "./constants/EnvironmentConstants";
 
+// test-javascript-label
 if (process.env.NODE_ENV === EnvironmentConstants.production) {
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
