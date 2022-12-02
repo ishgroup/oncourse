@@ -384,13 +384,13 @@ const CourseClassEditView: React.FC<Props> = ({
 
   const budgetLabelAdornment = useMemo(
     () => {
-      const studentFee = values.budget && values.budget.find(
+      const studentFeeIndex = values.budget && values.budget.findIndex(
         b => b.flowType === "Income" && b.repetitionType === "Per enrolment" && b.invoiceToStudent
       );
 
       return (twoColumn ? (
         <BudgetAdornment
-          studentFee={studentFee}
+          studentFee={{ ...values.budget[studentFeeIndex] || {}, index: studentFeeIndex }}
           currencySymbol={currencySymbol}
           isNew={isNew}
           dispatch={dispatch}
