@@ -494,9 +494,9 @@ const CourseClassBudgetTab = React.memo<Props>(
               const temporaryId = savedId || uniqid();
 
               if (!savedId) {
-                dispatch(arrayInsert(form, "budget", 0, { ...data, temporaryId }));
+                dispatch(arrayInsert(form, "budget", 0, { ...postData, temporaryId }));
               } else {
-                dispatch(change(form, `budget[${data.index}]`, { ...data, temporaryId }));
+                dispatch(change(form, `budget[${data.index}]`, { ...postData, temporaryId }));
               }
               dispatch(
                 addActionToQueue(postCourseClassCost(postData), "POST", "ClassCost", temporaryId, bindedActionId)
@@ -510,12 +510,12 @@ const CourseClassBudgetTab = React.memo<Props>(
 
         ClassCostService.validatePut(postData)
           .then(() => {
-            if (data.flowType === "Income" && data.invoiceToStudent) {
-              dispatch(change(form, "feeExcludeGST", data.perUnitAmountExTax));
-              dispatch(change(form, "taxId", data.taxId));
+            if (postData.flowType === "Income" && postData.invoiceToStudent) {
+              dispatch(change(form, "feeExcludeGST", postData.perUnitAmountExTax));
+              dispatch(change(form, "taxId", postData.taxId));
 
-              const currentTax = getCurrentTax(taxes, data.taxId);
-              const feeWithTax = decimalMul(data.perUnitAmountExTax, decimalPlus(1, currentTax.rate));
+              const currentTax = getCurrentTax(taxes, postData.taxId);
+              const feeWithTax = decimalMul(postData.perUnitAmountExTax, decimalPlus(1, currentTax.rate));
 
               classCostTypes.discount.items.forEach(d => {
                 const isPersent = d.value.courseClassDiscount.discount.discountType === "Percent";
