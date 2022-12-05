@@ -658,7 +658,7 @@ const CourseClassTimetableTab = ({
 
   const renderedMonths = useMemo(
     () => months.map((m, i) => (
-      <CalendarMonthBase key={i} fullWidth {...m}>
+      <CalendarMonthBase key={i} fullWidth showYear {...m}>
         {m.days.map(d => {
             if (!d.sessions.length) {
               return null;
