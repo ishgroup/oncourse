@@ -15,7 +15,7 @@ import Typography from "@mui/material/Typography";
 import { addDays, format } from "date-fns";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import {
-  decimalDivide,
+  decimalDivide, decimalMinus,
   decimalMul,
   decimalPlus
 } from "../../../../../../common/utils/numbers/decimalCalculation";
@@ -95,12 +95,18 @@ const StudentFeeContent: React.FC<Props> = ({
     currencySymbol
   ]);
 
-  const updateFormFee = (feeWithTax, taxId) => {
-    const taxMul = decimalPlus(getCurrentTax(taxes, taxId).rate, 1);
+  const onPerUnitChange = (e, v) => {
+    const taxMul = decimalPlus(getCurrentTax(taxes, values.taxId).rate, 1);
 
-    dispatch(change(form, namePrefix + "perUnitAmountExTax", decimalDivide(feeWithTax, taxMul)));
+    dispatch(change(form, namePrefix + "perUnitAmountExTax", decimalDivide(decimalPlus(v, getPaymentPlansTotal(values.paymentPlan)), taxMul)));
+  };
 
-    dispatch(change(form, namePrefix + "perUnitAmountIncTax", feeWithTax));
+  const updateFormFeeByTax = newTaxId => {
+    const taxMul = decimalPlus(getCurrentTax(taxes, newTaxId).rate, 1);
+
+    const paymentPlansTotal = getPaymentPlansTotal(values.paymentPlan);
+
+    dispatch(change(form, namePrefix + "perUnitAmountIncTax", decimalMinus(decimalMul(decimalPlus(values.perUnitAmountExTax, paymentPlansTotal), taxMul), paymentPlansTotal)));
   };
 
   const addPaymentPlan = () => {
@@ -112,16 +118,12 @@ const StudentFeeContent: React.FC<Props> = ({
     );
   };
 
-  const calculatefeeAmountByTax = val => decimalMul(values.perUnitAmountExTax, decimalPlus(getCurrentTax(taxes, val).rate, 1));
-
   const onAccountIdChange = id => {
     const selectedAccountTaxId = Number(accounts.find(a => a.id === id)["tax.id"]);
 
     if (values.taxId !== selectedAccountTaxId) {
       dispatch(change(form, namePrefix + "taxId", selectedAccountTaxId));
-      const feeWithTax = calculatefeeAmountByTax(selectedAccountTaxId);
-
-      updateFormFee(feeWithTax, selectedAccountTaxId);
+      updateFormFeeByTax(selectedAccountTaxId);
     }
   };
 
@@ -139,11 +141,6 @@ const StudentFeeContent: React.FC<Props> = ({
     }, 1000);
   };
 
-  const onTaxIdChange = val => {
-    const fee = calculatefeeAmountByTax(val);
-    updateFormFee(fee, val);
-  };
-
   return (
     <Grid container columnSpacing={3}>
       <Grid item xs={3}>
@@ -154,6 +151,7 @@ const StudentFeeContent: React.FC<Props> = ({
           type="money"
           name="perUnitAmountIncTax"
           label="On enrolment"
+          onBlur={onPerUnitChange}
           required
         />
       </Grid>
@@ -164,7 +162,7 @@ const StudentFeeContent: React.FC<Props> = ({
           label="Tax type"
           selectValueMark="id"
           selectLabelMark="code"
-          onChange={onTaxIdChange}
+          onChange={updateFormFeeByTax}
           debounced={false}
           items={taxes || []}
           required
