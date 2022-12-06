@@ -135,10 +135,8 @@ export const getClassCostTypes = (
 
   if (budget && budget.length) {
     budget.forEach((value, index) => {
-      value.index = index;
-
       const item = {
-        value,
+        value: { ...value, index },
         max: 0,
         projected: 0,
         actual: 0

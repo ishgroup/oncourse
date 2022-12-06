@@ -57,7 +57,7 @@ import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-han
 import { getTutorPayInitial } from "../tutors/utils";
 import { getClassCostTypes } from "../../utils";
 import { BooleanArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
-import { dateForCompare, getClassFeeTotal } from "./utils";
+import { dateForCompare, excludeOnEnrolPaymentPlan, getClassFeeTotal, includeOnEnrolPaymentPlan } from "./utils";
 import PreferencesService from "../../../../preferences/services/PreferencesService";
 import BudgetItemRow from "./BudgetItemRow";
 import uniqid from "../../../../../common/utils/uniqid";
@@ -456,9 +456,8 @@ const CourseClassBudgetTab = React.memo<Props>(
         const role = tutorRoles.find(r => r.id === tutor.roleId);
         onCostRate = (role && role["currentPayrate.oncostRate"]) ? parseFloat(role["currentPayrate.oncostRate"]) : 0;
       }
-
       setCourseClassBudgetModalOpened(true, isNaN(onCostRate) ? 0 : onCostRate);
-      dispatch(initialize(COURSE_CLASS_COST_DIALOG_FORM, data));
+      dispatch(initialize(COURSE_CLASS_COST_DIALOG_FORM, excludeOnEnrolPaymentPlan(data, currentTax)));
       closeAddBudgetMenu();
     };
 
@@ -482,7 +481,7 @@ const CourseClassBudgetTab = React.memo<Props>(
           bindedActionId = tutor && tutor.temporaryId;
         }
 
-        const postData = { ...data };
+        const postData = includeOnEnrolPaymentPlan(data, taxes);
         delete postData.index;
 
         if (postData.id === null) {
@@ -495,9 +494,9 @@ const CourseClassBudgetTab = React.memo<Props>(
               const temporaryId = savedId || uniqid();
 
               if (!savedId) {
-                dispatch(arrayInsert(form, "budget", 0, { ...data, temporaryId }));
+                dispatch(arrayInsert(form, "budget", 0, { ...postData, temporaryId }));
               } else {
-                dispatch(change(form, `budget[${data.index}]`, { ...data, temporaryId }));
+                dispatch(change(form, `budget[${data.index}]`, { ...postData, temporaryId }));
               }
               dispatch(
                 addActionToQueue(postCourseClassCost(postData), "POST", "ClassCost", temporaryId, bindedActionId)
@@ -511,12 +510,12 @@ const CourseClassBudgetTab = React.memo<Props>(
 
         ClassCostService.validatePut(postData)
           .then(() => {
-            if (data.flowType === "Income" && data.invoiceToStudent) {
-              dispatch(change(form, "feeExcludeGST", data.perUnitAmountExTax));
-              dispatch(change(form, "taxId", data.taxId));
+            if (postData.flowType === "Income" && postData.invoiceToStudent) {
+              dispatch(change(form, "feeExcludeGST", postData.perUnitAmountExTax));
+              dispatch(change(form, "taxId", postData.taxId));
 
-              const currentTax = getCurrentTax(taxes, data.taxId);
-              const feeWithTax = decimalMul(data.perUnitAmountExTax, decimalPlus(1, currentTax.rate));
+              const currentTax = getCurrentTax(taxes, postData.taxId);
+              const feeWithTax = decimalMul(postData.perUnitAmountExTax, decimalPlus(1, currentTax.rate));
 
               classCostTypes.discount.items.forEach(d => {
                 const isPersent = d.value.courseClassDiscount.discount.discountType === "Percent";
@@ -549,7 +548,7 @@ const CourseClassBudgetTab = React.memo<Props>(
             }
 
             dispatch(addActionToQueue(putCourseClassCost(postData), "PUT", "ClassCost", data.id));
-            dispatch(arraySplice(form, "budget", data.index, 1, data));
+            dispatch(arraySplice(form, "budget", data.index, 1, postData));
             closeModal();
           })
           .catch(response => instantFetchErrorHandler(dispatch, response));
