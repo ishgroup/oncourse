@@ -5,9 +5,9 @@ Feature: Main feature for all GET requests with path 'list/entity/application'
         * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/application'
+        * def futureYear = java.lang.String.valueOf(java.util.Calendar.getInstance().get(java.util.Calendar.YEAR) + 2)
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        
 
 
 
@@ -38,7 +38,7 @@ Feature: Main feature for all GET requests with path 'list/entity/application'
         "status":"New",
         "source":"office",
         "feeOverride":33.00,
-        "enrolBy":"2030-05-31",
+        "enrolBy": '#(futureYear+"-05-31")',
         "createdBy":"onCourse Administrator",
         "reason":"Some reason",
         "documents":[],
@@ -105,7 +105,7 @@ Feature: Main feature for all GET requests with path 'list/entity/application'
         "status":"New",
         "source":"office",
         "feeOverride":33.00,
-        "enrolBy":"2030-05-31",
+        "enrolBy":'#(futureYear+"-05-31")',
         "createdBy":"onCourse Administrator",
         "reason":"Some reason",
         "documents":[],
