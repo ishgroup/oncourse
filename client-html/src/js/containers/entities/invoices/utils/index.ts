@@ -62,14 +62,8 @@ export const getInvoiceClosestPaymentDueDate = (invoice: Invoice) => {
 
   for (let i = 0; i < openedDues.length; i++) {
     const dueDate = new Date(openedDues[i].date);
-    openedDues[i].successful = false;
 
-    let isCovered = false;
-
-    if (coveringPayment >= openedDues[i].amount) {
-      isCovered = true;
-      openedDues[i].successful = true;
-    }
+    const isCovered = coveringPayment >= openedDues[i].amount;
 
     coveringPayment = decimalMinus(coveringPayment, openedDues[i].amount);
 
@@ -78,6 +72,29 @@ export const getInvoiceClosestPaymentDueDate = (invoice: Invoice) => {
     }
   }
   return datesArr.length ? min(datesArr) : null;
+};
+
+export const processInvoicePaymentPlans = (paymentPlans: InvoicePaymentPlan[]) => {
+  const updated = [...paymentPlans];
+
+  updated.sort(sortInvoicePaymentPlans);
+
+  console.log('!!!!!!!', updated);
+
+  const successfulPayments = updated
+    .filter(p => p.entityName === "PaymentIn" && p.successful)
+    .map(p => ({ ...p }));
+
+  const openedDues = updated.filter(p => p.entityName === "InvoiceDueDate");
+  
+  let coveringPayment = successfulPayments.reduce((p, c) => decimalPlus(p, c.amount), 0);
+
+  for (let i = 0; i < openedDues.length; i++) {
+    openedDues[i].successful = coveringPayment >= openedDues[i].amount;
+    coveringPayment = decimalMinus(coveringPayment, openedDues[i].amount);
+  }
+
+  return updated;
 };
 
 export const isInvoiceType = (id: string, records: any) => {

@@ -6,11 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import * as d3 from "d3";
 import clsx from "clsx";
-import { Course, EntityRelationType } from "@api/model";
+import { Course, EntityRelationType, Sale } from "@api/model";
 import { alpha } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
 import { TransitionProps } from "@mui/material/transitions";
@@ -25,6 +25,8 @@ import CourseService from "../services/CourseService";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { useAppDispatch } from "../../../../common/utils/hooks";
 import Typography from "@mui/material/Typography";
+import EntityService from "../../../../common/services/EntityService";
+import { getCustomColumnsMap } from "../../../../common/utils/common";
 
 const useStyles = makeAppStyles(theme => ({
   graphRoot: {
@@ -80,40 +82,20 @@ const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
   <Slide direction="up" ref={ref} {...props as any} />
 ));
 
-function flatten(nodes, relationTypes) {
-  const result = [];
-  let i = 0;
-  function recurse(node) {
-    if (node.children) node.children.forEach(recurse);
-    if (!node.id) node.id = ++i;
-    if (node.relationId) {
-      node.linkColor = relationTypes.find(type => type.id === node.relationId)?.color;
-    }
-    result.push(node);
-  }
-  nodes.forEach(n => {
-    recurse(n);
-  });
-  return result;
-}
+const color = d => d.type ? "#3182bd" : "#fd8d3c";
 
-function update(svg, force, rows, container, relationTypes, coursesData) {
+function update(nodes, links, relationTypes, svg, force, container) {
   let node = svg.selectAll(".node");
-  const nodes = flatten(rows, relationTypes);
 
-  const links = d3.layout.tree().links(nodes);
-
-  let link = svg.selectAll(".link");
+  const link = svg.selectAll(".link").data(links);
 
   // Remove labels
   svg.selectAll("text").remove();
 
   // Add legend
   let baseOffset = 0;
-
-  relationTypes.filter(t => coursesData
-    .some(c => c.relatedSellables
-      .some(r => r.relationId === t.id)))
+  
+  relationTypes
     .forEach(t => {
       svg.append("circle")
         .attr("cx", 24)
@@ -128,24 +110,14 @@ function update(svg, force, rows, container, relationTypes, coursesData) {
       baseOffset += 30;
     });
 
-  // Restart the force layout.
-  force
-    .nodes(nodes)
-    .on("tick", tick)
-    .links(links)
-    .start();
-
-  // Update links.
-  link = link.data(links, d => d.target.id);
-
   link.exit().remove();
 
   link.enter().insert("line", ".node")
     .attr("class", "link")
-    .attr("style", d => `stroke: ${d.target?.linkColor}`);
+    .attr("style", d => `stroke: ${d.color}`);
 
   // Update nodes.
-  node = node.data(nodes, d => d.id);
+  node = node.data(nodes);
 
   node.exit().remove();
 
@@ -162,7 +134,7 @@ function update(svg, force, rows, container, relationTypes, coursesData) {
     .append("text")
     .attr("dy", ".35em")
     .attr("y", 16)
-    .text(d => d.type ? `${d.name} (${d.type.toLowerCase()})` : d.name)
+    .text(d => d.type ? `${d.name} (${d.type.toLowerCase()})` : `${d.name} ${d.code}`)
     .attr("fill", "none")
     .attr("class", "textClone")
     .attr("stroke-width", 3);
@@ -173,7 +145,7 @@ function update(svg, force, rows, container, relationTypes, coursesData) {
     .append("text")
     .attr("dy", ".35em")
     .attr("y", 16)
-    .text(d => d.type ? `${d.name} (${d.type.toLowerCase()})` : d.name);
+    .text(d => d.type ? `${d.name} (${d.type.toLowerCase()})` : `${d.name} ${d.code}`);
 
   function tick() {
     // Node radius with text offset
@@ -199,12 +171,13 @@ function update(svg, force, rows, container, relationTypes, coursesData) {
       .attr("x", d => d.x )
       .attr("y", d => d.y + 16 );
   }
-}
 
-function color(d) {
-  return d._children ? "#3182bd" // collapsed package
-    : d.children ? "#c6dbef" // expanded package
-      : "#fd8d3c"; // leaf node
+  // Restart the force layout.
+  force
+    .nodes(nodes)
+    .on("tick", tick)
+    .links(links)
+    .start();
 }
 
 interface Props {
@@ -220,8 +193,9 @@ const RelationshipView: React.FC<Props> = props => {
     open, closeMenu, setDialogOpened, entityRelationTypes, selection
   } = props;
 
-  const [relationTypes, setRelationTypes] = useState<any[]>([]);
-  const [coursesData, setCoursesData] = useState<Course[]>([]);
+  const [relationTypes, setRelationTypes] = useState<(EntityRelationType & { color: string })[]>([]);
+  const [courses, setCourses] = useState<Partial<Course>[]>([]);
+  const [sellables, setSellables] = useState<Sale[]>([]);
   const [coursesLoading, setCoursesLoading] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
@@ -231,29 +205,27 @@ const RelationshipView: React.FC<Props> = props => {
 
   const classes = useStyles();
 
-  const onClose = useCallback(() => {
+  const onClose = () => {
     setDialogOpened(null);
-    setCoursesData([]);
+    setCourses([]);
+    setSellables([]);
     closeMenu();
-  }, []);
+  };
 
   const syncCourses = async () => {
-    
     setCoursesLoading(true);
-    const dataDraft = [];
-    
+
     try {
-      for (const courseId of selection) {
-        const course = await CourseService.getCourse(Number(courseId));
-        if (course.relatedSellables.length) {
-          dataDraft.push(course);
-        }
-      }
+      const dataResponse = await EntityService.getPlainRecords("Course", "name,code", `id in (${selection.toString()})`);
+
+      setCourses(dataResponse.rows.map(getCustomColumnsMap("name,code")));
+
+      setSellables(await CourseService.getSellables(selection as any));
+
     } catch (e) {
       instantFetchErrorHandler(dispatch, e);
     }
 
-    setCoursesData(dataDraft);
     setCoursesLoading(false);
   };
 
@@ -282,33 +254,50 @@ const RelationshipView: React.FC<Props> = props => {
   }, [entityRelationTypes]);
 
   useEffect(() => {
-    if (open && coursesData.length) {
-        const { width, height } =  ref.current.getBoundingClientRect();
+    if (open && courses.length && sellables.length && Object.keys(relationTypes).length) {
+      const { width, height } =  ref.current.getBoundingClientRect();
 
-        forceRef.current = d3.layout.force()
-          .linkDistance(120)
-          .charge(-130)
-          .gravity(0.05)
-          .size([width, height]);
+      forceRef.current = d3.layout.force()
+        .linkDistance(120)
+        .charge(-130)
+        .gravity(0.05)
+        .size([width, height]);
 
-        d3.select(ref.current).select("svg").remove();
+      d3.select(ref.current).select("svg").remove();
 
-        const svg = d3.select(ref.current).append("svg")
-          .attr("width", width)
-          .attr("height", height);
+      const svg = d3.select(ref.current).append("svg")
+        .attr("width", width)
+        .attr("height", height);
+      
+      const uniqueSellables = {};
 
-        const courses = coursesData.map(c => {
-          return {
-            id: c.id,
-            name: c.name,
-            code: c.code,
-            children: c.relatedSellables,
-          };
-        });
+      const uniqueSellableTempl = s => `${s.name}${s.code}${s.type}`;
 
-        update(svg, forceRef.current, courses, ref.current, relationTypes, coursesData);
+      const nodes: (Sale & Course)[] = courses
+        .filter(c => sellables.some(s => s.entityFromId === c.id || s.entityToId === c.id))
+        .concat(sellables.filter(s => uniqueSellables[uniqueSellableTempl(s)]
+          ? false
+          : courses.some(c => `${c.name} ${c.code}` === s.name)
+            ? false
+            : uniqueSellables[uniqueSellableTempl(s)] = true
+        ));
+
+      const links = sellables.map(s => ({
+        source: nodes.findIndex(n => s.entityFromId === n.id || uniqueSellableTempl(s) === uniqueSellableTempl(n)),
+        target: nodes.findIndex(n => s.entityToId === n.id || uniqueSellableTempl(s) === uniqueSellableTempl(n)),
+        color: relationTypes.find(t => t.id === s.relationId).color
+      }));
+      
+      update(
+        nodes, 
+        links, 
+        relationTypes.filter(t => sellables.some(s => s.relationId === t.id)),
+        svg, 
+        forceRef.current, 
+        ref.current
+      );
     }
-  }, [coursesData, open, ref.current, relationTypes]);
+  }, [courses, sellables, open, ref.current, relationTypes]);
 
   const { width, height } = useWindowSize();
 
@@ -344,12 +333,12 @@ const RelationshipView: React.FC<Props> = props => {
         hideSubmitButton
       >
         <div className={clsx(
-          coursesData.length && "dotsBackgroundImage",
-          coursesData.length && classes.graphRoot,
-          !coursesData.length && "d-flex h-100"
+          courses.length && "dotsBackgroundImage",
+          courses.length && classes.graphRoot,
+          !courses.length && "d-flex h-100"
         )} ref={ref} >
           {
-            !coursesData.length &&  !coursesLoading && <div className="noRecordsMessage">
+            (!courses.length || !sellables.length) &&  !coursesLoading && <div className="noRecordsMessage">
               <Typography variant="h6" color="inherit" align="center">
                 No relations were found
               </Typography>

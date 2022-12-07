@@ -111,6 +111,8 @@ paths:
     $ref: './path/list/entity/course/api.yaml'
   /list/entity/course/duplicate:
     $ref: './path/list/entity/course/duplicate/api.yaml'
+  /list/entity/course/sellables:
+    $ref: './path/list/entity/course/sellables/api.yaml'
 #  /list/entity/course/bulk:
 #    $ref: './path/list/entity/course/bulk/api.yaml'
   /list/entity/courseClass:

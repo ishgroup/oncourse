@@ -279,6 +279,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
 
     if (persistValue && !textValue) {
       processedValue.current = input.value;
+      input.onChange(input.value);
       input.onBlur(input.value);
       setTextValue(formatDateInner(dateValue));
       return;
@@ -304,16 +305,17 @@ const EditInPlaceDateTimeField: React.FC<any> = (
       }
       setTextValue(formatDateInner(appended));
       processedValue.current = formatted;
+      input.onChange(formatted);
       input.onBlur(formatted);
     } else {
       processedValue.current = null;
       setTextValue(null);
+      input.onChange(null);
       input.onBlur(null);
     }
   };
 
   const onClose = () => {
-    onBlur();
     setIsEditing(false);
     setPickerOpened(false);
   };
