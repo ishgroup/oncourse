@@ -4,7 +4,7 @@
  */
 
 import React, {
-  useCallback, useEffect, useMemo
+  useCallback, useMemo
 } from "react";
 import { arrayInsert, arrayRemove, change } from "redux-form";
 import { CourseClassPaymentPlan, Tax } from "@api/model";
@@ -15,8 +15,7 @@ import Typography from "@mui/material/Typography";
 import { addDays, format } from "date-fns";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import {
-  decimalDivide,
-  decimalMinus,
+  decimalDivide, decimalMinus,
   decimalMul,
   decimalPlus
 } from "../../../../../../common/utils/numbers/decimalCalculation";
@@ -90,76 +89,49 @@ const StudentFeeContent: React.FC<Props> = ({
   }) => {
   const totalLabel = useMemo(() => `Total class fee (${currentTax.gst ? "inc " : "no "} GST)`, [currentTax]);
 
-  const classTotalFeeLabel = useMemo(() => formatCurrency(values.perUnitAmountIncTax, currencySymbol), [
+  const classTotalFeeLabel = useMemo(() => formatCurrency(decimalPlus(values.perUnitAmountIncTax, getPaymentPlansTotal(values.paymentPlan)), currencySymbol), [
     values.perUnitAmountIncTax,
+    values.paymentPlan,
     currencySymbol
   ]);
 
-  const updateFormFee = useCallback(
-    (feeWithTax, taxId) => {
-      const total = decimalPlus(feeWithTax, getPaymentPlansTotal(values.paymentPlan));
+  const onPerUnitChange = (e, v) => {
+    const taxMul = decimalPlus(getCurrentTax(taxes, values.taxId).rate, 1);
 
-      const taxMul = decimalPlus(getCurrentTax(taxes, taxId).rate, 1);
+    dispatch(change(form, namePrefix + "perUnitAmountExTax", decimalDivide(decimalPlus(v, getPaymentPlansTotal(values.paymentPlan)), taxMul)));
+  };
 
-      dispatch(change(form, namePrefix + "perUnitAmountExTax", decimalDivide(total, taxMul)));
+  const updateFormFeeByTax = newTaxId => {
+    const taxMul = decimalPlus(getCurrentTax(taxes, newTaxId).rate, 1);
 
-      dispatch(change(form, namePrefix + "perUnitAmountIncTax", total));
-    },
-    [values.paymentPlan, taxes, form, namePrefix]
-  );
+    const paymentPlansTotal = getPaymentPlansTotal(values.paymentPlan);
 
-  useEffect(() => {
-    updateFormFee(values.perUnitAmountIncTax, values.taxId);
-  }, [values.paymentPlan]);
+    dispatch(change(form, namePrefix + "perUnitAmountIncTax", decimalMinus(decimalMul(decimalPlus(values.perUnitAmountExTax, paymentPlansTotal), taxMul), paymentPlansTotal)));
+  };
 
-  const addPaymentPlan = useCallback(() => {
+  const addPaymentPlan = () => {
     dispatch(
       arrayInsert(form, namePrefix + "paymentPlan", 0, {
         dayOffset: 0,
         amount: 0
       } as CourseClassPaymentPlan)
     );
+  };
 
-    if (!values.paymentPlan.length) {
-      dispatch(
-        arrayInsert(form, namePrefix + "paymentPlan", 0, {
-          dayOffset: null,
-          amount: values.perUnitAmountIncTax
-        } as CourseClassPaymentPlan)
-      );
+  const onAccountIdChange = id => {
+    const selectedAccountTaxId = Number(accounts.find(a => a.id === id)["tax.id"]);
+
+    if (values.taxId !== selectedAccountTaxId) {
+      dispatch(change(form, namePrefix + "taxId", selectedAccountTaxId));
+      updateFormFeeByTax(selectedAccountTaxId);
     }
-  }, [values.paymentPlan, values.perUnitAmountIncTax, namePrefix, form]);
+  };
 
-  const calculatefeeAmountByTax = useCallback(
-    val => decimalMinus(
-        decimalMul(values.perUnitAmountExTax, decimalPlus(getCurrentTax(taxes, val).rate, 1)),
-        values.paymentPlan.length
-          ? values.paymentPlan.reduce((p: number, c) => (c.dayOffset === null ? p : decimalPlus(p, c.amount)), 0)
-          : 0
-      ),
-
-    [values.perUnitAmountExTax, values.paymentPlan, taxes]
-  );
-
-  const onAccountIdChange = useCallback(
-    id => {
-      const selectedAccountTaxId = Number(accounts.find(a => a.id === id)["tax.id"]);
-
-      if (values.taxId !== selectedAccountTaxId) {
-        dispatch(change(form, namePrefix + "taxId", selectedAccountTaxId));
-        const feeWithTax = calculatefeeAmountByTax(selectedAccountTaxId);
-
-        updateFormFee(feeWithTax, selectedAccountTaxId);
-      }
-    },
-    [accounts, taxes, namePrefix, values.taxId, values.perUnitAmountExTax, values.paymentPlan, form]
-  );
-
-  const removePaymentPlan = useCallback((index: number) => {
+  const removePaymentPlan = (index: number) => {
     dispatch(arrayRemove(form, namePrefix + "paymentPlan", index));
-  }, [form, namePrefix]);
+  };
 
-  const onPaymentPlanBlur = useCallback(() => {
+  const onPaymentPlanBlur = () => {
     setTimeout(() => {
       const updated = [...values.paymentPlan];
 
@@ -167,35 +139,7 @@ const StudentFeeContent: React.FC<Props> = ({
 
       dispatch(change(form, namePrefix + "paymentPlan", updated));
     }, 1000);
-  }, [values.paymentPlan, form, namePrefix]);
-
-  const onFeeChange = useCallback(
-    val => {
-      updateFormFee(val, values.taxId);
-
-      if (values.paymentPlan.length) {
-        dispatch(change(form, namePrefix + "paymentPlan", values.paymentPlan.map(p => ({
-          ...p,
-          amount: p.dayOffset === null ? val : p.amount
-        }))));
-      }
-    },
-    [values.taxId, values.paymentPlan, taxes, form, namePrefix]
-  );
-
-  const onTaxIdChange = useCallback(
-    val => {
-      const fee = calculatefeeAmountByTax(val);
-      updateFormFee(fee, val);
-    },
-    [values.paymentPlan, values.perUnitAmountExTax, taxes]
-  );
-
-  useEffect(() => {
-    if (values.paymentPlan.length === 1) {
-      dispatch(change(form, namePrefix + "paymentPlan", []));
-    }
-  }, [values.paymentPlan, form, namePrefix]);
+  };
 
   return (
     <Grid container columnSpacing={3}>
@@ -207,7 +151,7 @@ const StudentFeeContent: React.FC<Props> = ({
           type="money"
           name="perUnitAmountIncTax"
           label="On enrolment"
-          onChange={onFeeChange}
+          onBlur={onPerUnitChange}
           required
         />
       </Grid>
@@ -218,7 +162,7 @@ const StudentFeeContent: React.FC<Props> = ({
           label="Tax type"
           selectValueMark="id"
           selectLabelMark="code"
-          onChange={onTaxIdChange}
+          onChange={updateFormFeeByTax}
           debounced={false}
           items={taxes || []}
           required
@@ -242,22 +186,14 @@ const StudentFeeContent: React.FC<Props> = ({
         <AddButton onClick={addPaymentPlan} />
       </Grid>
       <Grid container columnSpacing={3} item xs={6}>
-        {values.paymentPlan.map((item, index) => {
-          if (item.dayOffset === null) {
-            return null;
-          }
-
-          return (
-            <StudentFeePaymentPlan
-              key={index}
-              index={index}
-              item={item}
-              onDelete={removePaymentPlan}
-              onBlur={onPaymentPlanBlur}
-              classStart={classValues.startDateTime}
-            />
-          );
-        })}
+        {values.paymentPlan.map((item, index) => <StudentFeePaymentPlan
+          key={index}
+          index={index}
+          item={item}
+          onDelete={removePaymentPlan}
+          onBlur={onPaymentPlanBlur}
+          classStart={classValues.startDateTime}
+        />)}
       </Grid>
 
       <Grid container columnSpacing={3} item xs={12} className="pt-2">
