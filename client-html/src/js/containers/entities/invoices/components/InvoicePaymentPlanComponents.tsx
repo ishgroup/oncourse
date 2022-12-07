@@ -10,7 +10,6 @@ import { InvoicePaymentPlan, Currency } from "@api/model";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import OpenInNew from "@mui/icons-material/OpenInNew";
-import { change } from "redux-form";
 import { format, isPast } from "date-fns";
 import Tooltip from "@mui/material/Tooltip";
 import FormField from "../../../../common/components/form/formFields/FormField";
@@ -19,7 +18,6 @@ import { openInternalLink } from "../../../../common/utils/links";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
 import { III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
 import { decimalMinus, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
-import { formatToDateOnly } from "../../../../common/utils/dates/datesNormalizing";
 import { reducePayments } from "../utils";
 
 const validateAmount = val => (val <= 0 ? "Payment due amount must be greater than zero" : undefined);
@@ -149,9 +147,9 @@ interface PaymentPlanContentProps {
 
 export const InvoicePaymentPlanContent: React.FunctionComponent<PaymentPlanContentProps> = React.memo(props => {
   const {
- field, fields, item, currency, totalAmount, form, dispatch, allowZeroValue, hideOwing
-} = props;
-
+   field, fields, item, currency, totalAmount, allowZeroValue, hideOwing
+  } = props;
+  
   const isPaymentDue = useMemo(() => field.entityName === "InvoiceDueDate", [field.type]);
 
   const isExpired = useMemo(() => checkExpired(field.date), [field.date]);
@@ -218,10 +216,6 @@ export const InvoicePaymentPlanContent: React.FunctionComponent<PaymentPlanConte
     </div>
     ), [isExpired, currency.shortCurrencySymbol, lineOwing]);
 
-  const onDateChange = React.useCallback(date => {
-    dispatch(change(form, "dateDue", formatToDateOnly(date)));
-  }, []);
-
   return (
     <>
       <div>
@@ -229,7 +223,6 @@ export const InvoicePaymentPlanContent: React.FunctionComponent<PaymentPlanConte
           type="date"
           name={`${item}.date`}
           label="Date"
-          onChange={onDateChange}
           disabled={!isPaymentDue}
           className="mb-2 mt-2"
         />
