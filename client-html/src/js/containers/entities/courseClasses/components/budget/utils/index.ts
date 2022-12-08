@@ -44,9 +44,9 @@ export const includeOnEnrolPaymentPlan = (item: ClassCostExtended, taxes: Tax[])
     ];
 
     result.perUnitAmountIncTax = result.paymentPlan.reduce((p: number, c) => decimalPlus(p, c.amount), 0);
-
-    result.perUnitAmountExTax = decimalDivide(result.perUnitAmountIncTax, decimalPlus(currentTax.rate, 1));
   }
+
+  result.perUnitAmountExTax = decimalDivide(result.perUnitAmountIncTax, decimalPlus(currentTax.rate, 1));
 
   return result;
 };
