@@ -17,7 +17,7 @@ import { useGradeErrors } from "../../courseClasses/components/assessments/utils
 import GradeContent from "../../courseClasses/components/assessments/GradeContent";
 import { stubFunction } from "../../../../common/utils/common";
 import EditInPlaceDateTimeField from "../../../../common/components/form/formFields/EditInPlaceDateTimeField";
-import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
+import EditInPlaceSearchSelect from "../../../../common/components/form/formFields/EditInPlaceSearchSelect";
 
 interface Props {
   elem: EnrolmentAssessmentExtended;
@@ -118,7 +118,7 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
       <>
         <Grid item xs={3} className={classes.center}>
           {markedStatus === "Submitted" ? (
-            <div>
+            <div className="pt-0-5">
               <div className="pl-3">
                 <EditInPlaceDateTimeField
                   meta={{}}
@@ -135,7 +135,7 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
                 />
               </div>
               <div>
-                <EditInPlaceField
+                <EditInPlaceSearchSelect
                   meta={{}}
                   selectValueMark="contactId"
                   selectLabelMark="tutorName"
@@ -146,10 +146,9 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
                     value: submission.markedById
                   }}
                   placeholder="No assessor"
-                  formatting="inline"
                   items={elem.tutors || []}
                   allowEmpty
-                  select
+                  inline
                 />
               </div>
             </div>

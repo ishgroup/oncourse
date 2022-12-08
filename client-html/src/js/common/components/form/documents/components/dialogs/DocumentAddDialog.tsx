@@ -226,7 +226,7 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
               <EditInPlaceSearchSelect
                 selectValueMark="id"
                 selectLabelMark="name"
-                input={{ value: searchValue, onChange: this.onSelectChange, onBlur: stubFunction } as any}
+                input={{ value: searchValue, onChange: this.onSelectChange as any, onBlur: stubFunction } as any}
                 meta={{} as any}
                 onInputChange={this.onSelectInputChange}
                 placeholder="Find existing documents"
@@ -234,7 +234,10 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
                 itemRenderer={this.searchItemsRenderer}
                 popperAnchor={this.searchContainerNode.current}
                 disabled={searchExistingDocsDisabled}
-                inline
+                fieldClasses={{
+                  editIcon: "d-none"
+                }}
+                disableUnderline
               />
             </div>
             <IconButton

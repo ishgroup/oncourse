@@ -152,17 +152,6 @@ export class EditInPlaceFileFieldBase extends React.PureComponent<any, any> {
     this.fileInputRef = node;
   };
 
-  componentWillUnmount() {
-    const {
-      clearOnUnmount,
-      input: { name },
-      meta: { dispatch, form }
-    } = this.props;
-
-    if (clearOnUnmount) {
-      dispatch(change(form, name, null));
-    }
-  }
 
   componentDidUpdate() {
     if (this.state.isEditing && this.props.disabled) {
@@ -367,7 +356,6 @@ export class EditInPlaceFileFieldBase extends React.PureComponent<any, any> {
       InputProps: { ...restInputProps } = {},
       labelAdornment,
       preformatDisplayValue,
-      clearOnUnmount,
       truncateLines,
       fieldClasses = {},
       rightAligned,

@@ -15,13 +15,12 @@ import {
  CourseClassTutor, GradingItem, GradingType
 } from "@api/model";
 import AssessmentSubmissionIconButton from "./AssessmentSubmissionIconButton";
-import { D_MMM_YYYY } from "../../../../../common/utils/dates/format";
 import { StudentForRender } from "./CourseClassAssessmentItems";
 import { useGradeErrors } from "./utils/hooks";
 import GradeContent from "./GradeContent";
 import EditInPlaceDateTimeField from "../../../../../common/components/form/formFields/EditInPlaceDateTimeField";
 import { stubFunction } from "../../../../../common/utils/common";
-import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
+import EditInPlaceSearchSelect from "../../../../../common/components/form/formFields/EditInPlaceSearchSelect";
 
 interface Props {
   elem: StudentForRender;
@@ -112,7 +111,7 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
       <>
         <Grid item xs={2} className={classes.center}>
           {elem.markedValue === "Submitted" ? (
-            <div>
+            <div className="pt-0-5">
               <div>
                 <EditInPlaceDateTimeField
                   meta={{}}
@@ -128,7 +127,7 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
                 />
               </div>
               <div>
-                <EditInPlaceField
+                <EditInPlaceSearchSelect
                   meta={{}}
                   selectValueMark="contactId"
                   selectLabelMark="tutorName"
@@ -139,10 +138,9 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
                     value: elem.submission.markedById
                   }}
                   placeholder="No assessor"
-                  formatting="inline"
                   items={tutors}
                   allowEmpty
-                  select
+                  inline
                 />
               </div>
             </div>

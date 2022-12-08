@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import { stubFunction } from "../../../../../common/utils/common";
 import EditInPlaceDateTimeField from "../../../../../common/components/form/formFields/EditInPlaceDateTimeField";
-import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
+import EditInPlaceSearchSelect from "../../../../../common/components/form/formFields/EditInPlaceSearchSelect";
 
 const SubmissionModal = (
   {
@@ -76,12 +76,12 @@ const SubmissionModal = (
           <Grid item xs={6}>
             {type === "Marked" && (
               (
-                <EditInPlaceField
+                <EditInPlaceSearchSelect
                   label="Assessor"
                   selectValueMark="contactId"
                   selectLabelMark="tutorName"
                   input={{
-                    onChange: setSelectVal,
+                    onChange: setSelectVal as any,
                     onFocus: stubFunction,
                     onBlur: stubFunction,
                     value: selectVal
@@ -89,7 +89,6 @@ const SubmissionModal = (
                   meta={{}}
                   items={tutors}
                   allowEmpty
-                  select
                 />
               )
             )}

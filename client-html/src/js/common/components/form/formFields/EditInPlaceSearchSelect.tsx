@@ -14,20 +14,17 @@ import InputLabel from "@mui/material/InputLabel";
 import Popper from "@mui/material/Popper";
 import { Autocomplete, IconButton, InputAdornment } from "@mui/material";
 import { createStyles, withStyles } from "@mui/styles";
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { ReactElement, useContext, useEffect, useMemo, useRef, useState } from "react";
 import CloseIcon from '@mui/icons-material//Close';
 import clsx from "clsx";
-import Typography from "@mui/material/Typography";
-import ListItemText from "@mui/material/ListItemText";
-import ButtonBase from "@mui/material/ButtonBase";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import { WrappedFieldProps } from "redux-form";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
 import { usePrevious } from "../../../utils/hooks";
 import { ListboxComponent, selectStyles } from "./SelectCustomComponents";
-import { SelectItemRendererProps } from "../../../../model/common/Fields";
 import WarningMessage from "../fieldMessage/WarningMessage";
+import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
 
 const searchStyles = theme => createStyles({
   inputEndAdornment: {
@@ -57,7 +54,14 @@ const searchStyles = theme => createStyles({
     maxWidth: "100%"
   },
   inline: {
-    fontSize: "inherit"
+    fontSize: "inherit",
+    marginLeft: "0.3em",
+    "& $inputEndAdornment": {
+      display: "none",
+    },
+    "&:hover $inputEndAdornment": {
+      display: "flex",
+    }
   },
   labelShrink: {},
   editable: {
@@ -66,11 +70,18 @@ const searchStyles = theme => createStyles({
   },
   editableInHeader: {
     color: theme.palette.primary.contrastText,
+  },
+  root: {
+    "& $inline.MuiInput-root .MuiInput-input": {
+      padding: 0
+    }
   }
 });
 
-interface Props extends WrappedFieldProps {
-  items: any[];
+interface Props  {
+  input?: Partial<WrappedFieldInputProps>;
+  meta?: Partial<WrappedFieldMetaProps>;
+  items?: any[];
   classes?: any;
   label?: string;
   disabled?: boolean;
@@ -82,7 +93,6 @@ interface Props extends WrappedFieldProps {
   colors?: any;
   creatable?: boolean;
   endAdornment?: any;
-  formatting?: string;
   allowEmpty?: boolean;
   fieldClasses?: any;
   helperText?: string;
@@ -93,12 +103,13 @@ interface Props extends WrappedFieldProps {
   remoteRowCount?: number;
   loadMoreRows?: AnyArgFunction;
   onCreateOption?: AnyArgFunction;
-  itemRenderer?: AnyArgFunction<React.FC<SelectItemRendererProps>>;
+  itemRenderer?: (content, data, search, parentProps) => ReactElement;
   onInputChange?: AnyArgFunction;
   onClearRows?: AnyArgFunction;
   onInnerValueChange?: AnyArgFunction;
   selectValueMark?: string;
   remoteData?: boolean;
+  disableUnderline?: boolean;
   createLabel?: string;
   selectLabelMark?: string;
   returnType?: "object" | "value";
@@ -165,11 +176,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     labelAdornment,
     inline,
     loading,
-    hideLabel,
-    colors,
     creatable,
-    endAdornment,
-    formatting,
     allowEmpty,
     fieldClasses = {},
     helperText,
@@ -178,6 +185,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     selectLabelCondition,
     selectFilterCondition,
     defaultDisplayValue,
+    disableUnderline,
     items = [],
     rowHeight,
     remoteRowCount,
@@ -236,10 +244,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
 
   const onBlur = () => {
     setIsEditing(false);
-
-    if (!inline) {
-      setSearchValue("");
-    }
+    setSearchValue("");
 
     if (remoteData) {
       onInputChange("");
@@ -324,12 +329,6 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     setSearchValue("");
     setIsEditing(false);
     setFormattedDisplayValue(null);
-  };
-
-  const onFocus = e => {
-    if (!inline) {
-      input.onFocus(e);
-    }
   };
 
   const onEditButtonFocus = () => {
@@ -437,173 +436,117 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
   return (
     <div
       className={clsx(className, "outline-none")}
-      id={inline ? undefined : (input && input.name)}
+      id={input?.name}
     >
-      <div
-        className={clsx({
-          "d-none": (inHeader && !(inline || isEditing || (meta && meta.invalid))),
-          [classes.editingSelect]: !inline && formatting !== "inline"
-        })}
+      <SelectContext.Provider value={{
+        rowHeight,
+        remoteRowCount,
+        loadMoreRows,
+        classes,
+        fieldClasses,
+        inline,
+        items,
+        popperAnchor,
+        loading
+      }}
       >
-        <SelectContext.Provider value={{
-          rowHeight,
-          remoteRowCount,
-          loadMoreRows,
-          classes,
-          fieldClasses,
-          inline,
-          items,
-          popperAnchor,
-          loading
-        }}
-        >
-          <Autocomplete
-            value={input.value || ""}
-            options={sortedItems}
-            loading={loading}
-            freeSolo={creatable}
-            disableClearable={!allowEmpty}
-            isOptionEqualToValue={getOptionSelected}
-            onChange={handleChange}
-            classes={{
-              root: clsx("d-inline-flex", classes.root),
-              hasPopupIcon: classes.hasPopup,
-              hasClearIcon: classes.hasClear,
-              inputRoot: classes.inputWrapper,
-              option: "w-100 text-pre"
-            }}
-            renderOption={renderOption}
-            getOptionLabel={getOptionLabel}
-            filterOptions={filterItems}
-            ListboxComponent={ListBoxAdapter as any}
-            PopperComponent={PopperAdapter as any}
-            renderInput={({
-             InputLabelProps, InputProps, inputProps, ...params
-            }) => (
-              <FormControl
-                {...params}
-                variant="standard"
-                error={meta?.invalid}
-              >
-                {labelContent && (
-                  <InputLabel shrink={true} error={meta?.invalid || hasError} htmlFor={`input-${input.name}`}>
-                    {labelContent}
-                  </InputLabel>
-                )}
-                <Input
-                  {...InputProps}
-                  id={`input-${input.name}`}
-                  name={input.name}
-                  disabled={disabled}
-                  placeholder={placeholder || (!isEditing ? "No value" : "")}
-                  autoFocus={inline}
-                  onChange={handleInputChange}
-                  onFocus={onFocus}
-                  onBlur={onBlur}
-                  onClick={onEditButtonFocus}
-                  inputRef={rf => {
-                    inputNode.current = rf;
-                    if (inputRef) {
-                      inputRef.current = rf;
-                    }
-                  }}
-                  disableUnderline={inline}
-                  classes={{
-                    underline: fieldClasses.underline,
-                    input: clsx(inHeader && classes.editableInHeader, disabled && classes.readonly, fieldClasses.text),
-                  }}
-                  inputProps={{
-                    ...inputProps,
-                    value: (isEditing ? searchValue : (typeof displayedValue === "string" ? displayedValue : "")),
-                  }}
-                  endAdornment={!disabled && (
-                    loading
-                      ? <CircularProgress size={24} thickness={4} className={fieldClasses.loading} />
-                      : (
-                        <InputAdornment position="end" className={classes.inputEndAdornment}>
-                          {allowEmpty && input.value && (
-                            <IconButton
-                              size="small"
-                              onClick={onClear}
-                              color="inherit"
-                            >
-                              <CloseIcon className={clsx(fieldClasses.editIcon, classes.clearIcon)} />
-                            </IconButton>
-                          ) }
-                          {!inline && <ExpandMore className={clsx("hoverIcon", fieldClasses.editIcon)} />}
-                        </InputAdornment>
-                      )
-                  )}
-                />
-                <FormHelperText
-                  classes={{
-                    error: "shakingError"
-                  }}
-                >
-                  {(meta && meta.error) || helperText}
-                  {warning && <WarningMessage warning={warning} />}
-                </FormHelperText>
-              </FormControl>
-            )}
-            fullWidth
-            disableListWrap
-            openOnFocus
-            blurOnSelect
-          />
-        </SelectContext.Provider>
-      </div>
-      {formatting === "inline" && (
-        <div
-          className={clsx({
-          "d-none": !inHeader || (inHeader && (inline || isEditing || (meta && meta.invalid)))
-        })}
-        >
-          <div className="mw-100 text-truncate">
-            {!hideLabel && label && (
-              <Typography
-                variant="caption"
-                color="textSecondary"
-                style={colors ? { color: `${colors.subheader}` } : {}}
-                noWrap
-              >
-                {label}
-                {' '}
-                {labelAdornment && <span>{labelAdornment}</span>}
-              </Typography>
-          )}
-
-            <ListItemText
-              classes={{
-              root: "pl-0 mb-0 mt-0",
-              primary: clsx("d-flex", formatting === "inline" && classes.inline)
-              }}
-              primary={(
-                <>
-                  <ButtonBase
-                    onFocus={onEditButtonFocus}
-                    className={clsx(classes.editable, fieldClasses.text, "overflow-hidden d-flex hoverIconContainer", {
-                    [classes.readonly]: disabled
-                  })}
-                    component="div"
-                  >
-                    <span className={clsx("text-truncate", fieldClasses.text)}>
-                      {displayedValue}
-                    </span>
-                    {!disabled && (
-                      <ExpandMore className={clsx("hoverIcon", classes.editIcon, fieldClasses.editIcon)} />
-                  )}
-                  </ButtonBase>
-                  {endAdornment}
-                </>
+        <Autocomplete
+          value={input.value || ""}
+          options={sortedItems}
+          loading={loading}
+          freeSolo={creatable}
+          disableClearable={!allowEmpty}
+          isOptionEqualToValue={getOptionSelected}
+          onChange={handleChange}
+          classes={{
+            root: clsx("d-inline-flex", classes.root),
+            hasPopupIcon: classes.hasPopup,
+            hasClearIcon: classes.hasClear,
+            inputRoot: clsx(classes.inputWrapper, inline && classes.inline),
+            option: "w-100 text-pre"
+          }}
+          renderOption={renderOption}
+          getOptionLabel={getOptionLabel}
+          filterOptions={filterItems}
+          ListboxComponent={ListBoxAdapter as any}
+          PopperComponent={PopperAdapter as any}
+          renderInput={({
+           InputLabelProps, InputProps, inputProps, ...params
+          }) => (
+            <FormControl
+              {...params}
+              variant="standard"
+              error={meta?.invalid}
+            >
+              {labelContent && (
+                <InputLabel shrink={true} error={meta?.invalid || hasError} htmlFor={`input-${input.name}`}>
+                  {labelContent}
+                </InputLabel>
               )}
-            />
-          </div>
-        </div>
-    )}
+              <Input
+                {...InputProps}
+                disableUnderline={disableUnderline}
+                id={`input-${input.name}`}
+                name={input.name}
+                disabled={disabled}
+                placeholder={placeholder || (!isEditing ? "No value" : "")}
+                onChange={handleInputChange}
+                onFocus={input.onFocus}
+                onBlur={onBlur}
+                onClick={onEditButtonFocus}
+                inputRef={rf => {
+                  inputNode.current = rf;
+                  if (inputRef) {
+                    inputRef.current = rf;
+                  }
+                }}
+                classes={{
+                  underline: fieldClasses.underline,
+                  input: clsx(classes.input, inHeader && classes.editableInHeader, disabled && classes.readonly, fieldClasses.text),
+                }}
+                inputProps={{
+                  ...inputProps,
+                  value: (isEditing ? searchValue : (typeof displayedValue === "string" ? displayedValue : "")),
+                }}
+                endAdornment={!disabled && (
+                  loading
+                    ? <CircularProgress size={24} thickness={4} className={fieldClasses.loading} />
+                    : (
+                      <InputAdornment position="end" className={classes.inputEndAdornment}>
+                        {allowEmpty && input.value && (
+                          <IconButton
+                            size="small"
+                            onClick={onClear}
+                            color="inherit"
+                          >
+                            <CloseIcon className={clsx(fieldClasses.editIcon, classes.clearIcon)} />
+                          </IconButton>
+                        ) }
+                        <ExpandMore className={clsx("hoverIcon", fieldClasses.editIcon)} />
+                      </InputAdornment>
+                    )
+                )}
+              />
+              <FormHelperText
+                classes={{
+                  error: "shakingError"
+                }}
+              >
+                {(meta && meta.error) || helperText}
+                {warning && <WarningMessage warning={warning} />}
+              </FormHelperText>
+            </FormControl>
+          )}
+          fullWidth
+          disableListWrap
+          openOnFocus
+          blurOnSelect
+        />
+      </SelectContext.Provider>
     </div>
   );
 };
 
 export default withStyles(theme => ({ ...selectStyles(theme), ...searchStyles(theme) } as any), { withTheme: true })(
   EditInPlaceSearchSelect
-) as any;
+) as React.FC<Props>;

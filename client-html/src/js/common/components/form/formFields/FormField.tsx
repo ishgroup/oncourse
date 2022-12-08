@@ -109,9 +109,8 @@ const FormFieldBase = React.forwardRef<any, Props>(({
     case "money":
       return <EditInPlaceMoneyField ref={ref} {...sharedProps} />;
     case "select":
-      return <EditInPlaceField select ref={ref} {...sharedProps} />;
     case "searchSelect":
-      return <EditInPlaceSearchSelect ref={ref} {...sharedProps} />;
+      return <EditInPlaceSearchSelect inputRef={ref} {...sharedProps} />;
     case "remoteDataSearchSelect":
       return <EditInPlaceRemoteDataSearchSelect ref={ref} {...sharedProps} />;
     case "number":

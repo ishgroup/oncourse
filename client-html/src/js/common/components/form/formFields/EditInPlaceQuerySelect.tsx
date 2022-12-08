@@ -12,7 +12,7 @@ import QueryBuilder from "@mui/icons-material/QueryBuilder";
 import Autocomplete from "@mui/material/Autocomplete";
 import React from "react";
 import { createStyles, withStyles } from "@mui/styles";
-import { change, WrappedFieldMetaProps } from "redux-form";
+import { WrappedFieldMetaProps } from "redux-form";
 import { format as formatDate } from "date-fns";
 import clsx from "clsx";
 import { DatePicker, TimePicker as Time } from "@mui/x-date-pickers";
@@ -254,7 +254,6 @@ interface Props {
   disabled?: boolean;
   disableUnderline?: boolean;
   disableErrorText?: boolean;
-  clearOnUnmount?: boolean;
   inline?: boolean;
   hideLabel?: boolean;
   meta?: Partial<WrappedFieldMetaProps>;
@@ -303,21 +302,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     this.setState({
       options: this.getAutocomplete(this.props.input && this.props.input.value ? this.props.input.value : "").filter(this.filterOptions)
     });
-  }
-
-  componentWillUnmount() {
-    const { clearOnUnmount } = this.props;
-
-    if (clearOnUnmount) {
-      const {
-        input: { name },
-        meta: { dispatch, form }
-      } = this.props;
-
-      dispatch(change(form, name, null));
-    }
-
-    this.inputNode.removeEventListener("click", this.onInputClick);
   }
 
   componentDidUpdate(prev) {

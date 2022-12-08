@@ -13,7 +13,6 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { addDays, format as formatDate } from "date-fns";
 import { Report } from "@api/model";
-import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
@@ -29,6 +28,7 @@ import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
 import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { stubFunction } from "../../../../common/utils/common";
+import EditInPlaceSearchSelect from "../../../../common/components/form/formFields/EditInPlaceSearchSelect";
 
 const paymentColumns: NestedTableColumn[] = [
   {
@@ -226,14 +226,13 @@ class BankingCreateView extends React.PureComponent<any, any> {
             </Grid>
           </Grid>
           <Grid item xs={4}>
-            <EditInPlaceField
+            <EditInPlaceSearchSelect
               items={accounts || []}
               label="Account"
-              input={{ name: "id", value: selectedAccountId, onChange: this.onChangeAccount, onFocus: stubFunction }}
+              input={{ name: "id", value: selectedAccountId, onChange: this.onChangeAccount as any, onFocus: stubFunction }}
               meta={{ error: null, invalid: false, touched: false }}
               selectValueMark="id"
               selectLabelMark="description"
-              select
               disabled={hasNoAccounts}
             />
           </Grid>

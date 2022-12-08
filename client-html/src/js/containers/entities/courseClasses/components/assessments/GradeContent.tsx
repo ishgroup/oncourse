@@ -47,7 +47,6 @@ const GradeContent = (
               value: typeof gradeVal === "number" ? String(gradeVal) : gradeVal
             }}
             formatting="inline"
-            hideArrows
           />
           {Boolean(currentGrade?.name) && `  ( ${currentGrade.name} )`}
         </span>
