@@ -18,7 +18,6 @@ import React, { ReactElement, useContext, useEffect, useMemo, useRef, useState }
 import CloseIcon from '@mui/icons-material//Close';
 import clsx from "clsx";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import { WrappedFieldProps } from "redux-form";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
 import { usePrevious } from "../../../utils/hooks";
@@ -120,6 +119,7 @@ interface Props  {
   sortPropKey?: string;
   inHeader?: boolean;
   hasError?: boolean;
+  hideMenuOnNoResults?: boolean;
   inputRef?: any;
   warning?: string;
 }
@@ -154,12 +154,12 @@ const ListBoxAdapter = React.forwardRef<any, any>(({ children, ...other }, ref) 
 
 const PopperAdapter = React.memo<any>(params => {
   const {
-    inline,
+    hideMenuOnNoResults,
     items,
     popperAnchor
   } = useContext(SelectContext);
 
-  return (inline && !items.length
+  return (hideMenuOnNoResults && !items.length
     ? null
     : popperAnchor
       // @ts-ignore
@@ -168,7 +168,7 @@ const PopperAdapter = React.memo<any>(params => {
       : <Popper {...params} />);
 });
 
-const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
+const EditInPlaceSearchSelect: React.FC<Props> = ({
     classes,
     label,
     disabled,
@@ -195,6 +195,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     onInputChange,
     onClearRows,
     onInnerValueChange,
+    hideMenuOnNoResults,
     remoteData,
     createLabel,
     returnType = "value",
@@ -244,7 +245,10 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
 
   const onBlur = () => {
     setIsEditing(false);
-    setSearchValue("");
+
+    if (!hideMenuOnNoResults) {
+      setSearchValue("");
+    }
 
     if (remoteData) {
       onInputChange("");
@@ -444,6 +448,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
         loadMoreRows,
         classes,
         fieldClasses,
+        hideMenuOnNoResults,
         inline,
         items,
         popperAnchor,

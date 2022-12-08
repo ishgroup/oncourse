@@ -134,7 +134,7 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
                   inlineMargin
                 />
               </div>
-              <div>
+              <div className="pl-3">
                 <EditInPlaceSearchSelect
                   meta={{}}
                   selectValueMark="contactId"

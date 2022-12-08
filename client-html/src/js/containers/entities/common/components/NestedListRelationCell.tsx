@@ -52,7 +52,7 @@ export default (
   const hasError = !filteredTypes.length;
 
   return (
-    <div className="ml-2">
+    <div className="ml-2 mt-0-5">
       {Boolean(relationTypes.length) && (
         <EditInPlaceSearchSelect
           meta={{

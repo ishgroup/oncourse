@@ -214,7 +214,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : false}>
+      <Grid item xs={twoColumn ? 4 : 12}>
         <FormField
           type="select"
           name="fundingSource"

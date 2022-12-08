@@ -36,7 +36,7 @@ const today = new Date().toISOString();
 
 const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => {
   const {
-    classes, values, dispatch, fields: { name }, meta: { error, form }, gradingTypes = [], twoColumn
+    classes, values, dispatch, fields: { name }, meta: { error, form }, gradingTypes = []
   } = props;
 
   const [modalOpenedBy, setModalOpenedBy] = useState<string>(null);

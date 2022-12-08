@@ -237,6 +237,7 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
                 fieldClasses={{
                   editIcon: "d-none"
                 }}
+                hideMenuOnNoResults
                 disableUnderline
               />
             </div>
