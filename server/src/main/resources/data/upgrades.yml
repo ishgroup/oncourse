@@ -813,3 +813,22 @@ databaseChangeLog:
         - customChange:
             class: ish.oncourse.server.upgrades.liquibase.change.CreateInvoiceDefaultAccountPreference
 
+  - changeSet:
+      id: 119-1
+      author: dmitryl
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: IntegrationProperty
+        - tableExists:
+            tableName: IntegrationConfiguration
+        - columnExists:
+            tableName: IntegrationProperty
+            columnName: keyCode
+        - columnExists:
+            tableName: IntegrationConfiguration
+            columnName: type
+      comment: delete unnecessary integration properties orgId and username for Cloud Assess integration
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.DeleteUnnecessaryCloudAssessProperties
