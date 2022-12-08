@@ -10,7 +10,7 @@ import { InvoicePaymentPlan, Currency } from "@api/model";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import OpenInNew from "@mui/icons-material/OpenInNew";
-import { format, isBefore } from "date-fns";
+import { format, isPast } from "date-fns";
 import Tooltip from "@mui/material/Tooltip";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { useHoverShowStyles } from "../../../../common/styles/hooks";
@@ -40,12 +40,7 @@ const getOverdue = (fieldDate: string, allFields: InvoicePaymentPlan[]) => {
   return decimalMinus(prevDuesAmount || 0, paidAmount || 0);
 };
 
-const checkExpired = (date: string) => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  return isBefore(new Date(date), today);
-};
+const checkExpired = (date: string) => isPast(new Date(date));
 
 interface PaymentPlanHeaderProps {
   field: InvoicePaymentPlan;

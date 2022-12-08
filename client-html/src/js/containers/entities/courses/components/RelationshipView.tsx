@@ -121,10 +121,18 @@ function update(nodes, links, relationTypes, svg, force, container) {
 
   node.exit().remove();
 
-  const nodeEnter = node.enter().append("circle")
+  const nodeEnter = node
+    .enter()
+    .append("circle")
     .attr("r", 6 )
     .attr("class", "node")
     .call(force.drag);
+
+  node.on("mouseup", function (d) {
+    const prev = { ...d };
+    d.fixed = !prev.isFixed;
+    d.isFixed = d.fixed;
+  });
 
   nodeEnter.style("fill", color);
 
