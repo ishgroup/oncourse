@@ -122,6 +122,7 @@ interface Props  {
   hideMenuOnNoResults?: boolean;
   inputRef?: any;
   warning?: string;
+  selectAdornment?: { position: "start" | "end", content: ReactElement }
 }
 
 const SelectContext = React.createContext<any>({});
@@ -133,7 +134,8 @@ const ListBoxAdapter = React.forwardRef<any, any>(({ children, ...other }, ref) 
     loadMoreRows,
     classes,
     fieldClasses = {},
-    loading
+    loading,
+    selectAdornment
   } = useContext(SelectContext);
 
   return (
@@ -144,6 +146,7 @@ const ListBoxAdapter = React.forwardRef<any, any>(({ children, ...other }, ref) 
       classes={classes}
       fieldClasses={fieldClasses}
       loading={loading}
+      selectAdornment={selectAdornment}
       ref={ref}
       {...other}
     >
@@ -180,6 +183,7 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
     allowEmpty,
     fieldClasses = {},
     helperText,
+    selectAdornment,
     selectValueMark = "value",
     selectLabelMark = "label",
     selectLabelCondition,
@@ -452,7 +456,8 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
         inline,
         items,
         popperAnchor,
-        loading
+        loading,
+        selectAdornment
       }}
       >
         <Autocomplete
@@ -484,7 +489,7 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
               error={meta?.invalid}
             >
               {labelContent && (
-                <InputLabel shrink={true} error={meta?.invalid || hasError} htmlFor={`input-${input.name}`}>
+                <InputLabel shrink={true} error={meta?.invalid || hasError} htmlFor={`input-${input.name}`} className={fieldClasses.label}>
                   {labelContent}
                 </InputLabel>
               )}
