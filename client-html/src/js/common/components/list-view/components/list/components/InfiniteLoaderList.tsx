@@ -10,7 +10,8 @@ import React, {
   createContext,
   forwardRef,
   memo,
-  useMemo
+  useMemo,
+  useState
 } from "react";
 import { FixedSizeList, areEqual } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
@@ -27,6 +28,7 @@ import {
 import { CHECKLISTS_COLUMN, COLUMN_WITH_COLORS } from "../utils";
 import TagDotRenderer from "./TagDotRenderer";
 import StaticProgress from "../../../../progress/StaticProgress";
+import { stubFunction } from "../../../../../utils/common";
 
 const ThreeColumnCell = ({ row }) => (<div>
   <Typography variant="subtitle2" color="textSecondary" component="div" noWrap>
@@ -127,22 +129,27 @@ export default ({
   classes,
   onRowSelect,
   onLoadMore,
-  recordsLeft,
+  recordsCount,
   listRef,
   threeColumn,
   onRowDoubleClick,
   mainContentWidth,
   header
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const isItemLoaded = index => index >= recordsCount ? true : !!rows[index];
 
-  const itemCount = useMemo(() => (rows.length + (recordsLeft >= LIST_PAGE_SIZE ? LIST_PAGE_SIZE : recordsLeft === 1 ? 0 : recordsLeft)) + (threeColumn ? 0 : HEADER_ROWS_COUNT),
-    [threeColumn, recordsLeft, rows.length]);
+  const loadMoreItems = isLoading
+    ? stubFunction
+    : (startIndex, stopIndex) => {
+      setIsLoading(true);
+      return new Promise(resolve => onLoadMore(stopIndex, resolve)).then(() => { setIsLoading(false); });
+    };
 
-  const isItemLoaded = index => {
-    return index >= rows.length && recordsLeft === 0 ? true : rows[index];
-  };
+  const itemCountBase = (rows.length + LIST_PAGE_SIZE);
 
-  const loadMoreItems = (startIndex, stopIndex) => new Promise(resolve => onLoadMore(startIndex, stopIndex, resolve));
+  const itemCount = (itemCountBase < recordsCount ? itemCountBase : recordsCount) + (threeColumn ? 0 : HEADER_ROWS_COUNT);
 
   const itemData = useMemo(
     () => ({

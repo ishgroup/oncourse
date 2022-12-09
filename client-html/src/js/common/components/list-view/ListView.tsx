@@ -189,7 +189,6 @@ interface Props extends Partial<ListState> {
   listSearch?: string;
   creatingNew?: boolean;
   editRecordFetching?: boolean;
-  recordsLeft?: number;
   searchQuery?: SearchQuery;
   setListEditRecordFetching?: any;
   search?: string;
@@ -239,7 +238,7 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       threeColumn: false,
       sidebarWidth: LIST_SIDE_BAR_DEFAULT_WIDTH,
       mainContentWidth: this.getMainContentWidth(LIST_MAIN_CONTENT_DEFAULT_WIDTH, LIST_SIDE_BAR_DEFAULT_WIDTH),
-      newSelection: null,
+      newSelection: null
     };
   }
 
@@ -1048,7 +1047,6 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       recepients,
       listProps,
       onLoadMore,
-      recordsLeft,
       currency
     } = this.props;
 
@@ -1064,7 +1062,6 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       onLoadMore={onLoadMore}
       selection={selection}
       records={records}
-      recordsLeft={recordsLeft}
       threeColumn={threeColumn}
       shortCurrencySymbol={currency.shortCurrencySymbol}
       onRowDoubleClick={this.onRowDoubleClick}
@@ -1241,9 +1238,9 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView)),
   updateTableModel: (model: TableModel, listUpdate?: boolean) => dispatch(updateTableModel(ownProps.rootEntity, model, listUpdate)),
-  onLoadMore: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => dispatch(getRecords(
+  onLoadMore: (stopIndex: number, resolve: any) => dispatch(getRecords(
     {
-     entity: ownProps.rootEntity, listUpdate: true, ignoreSelection: false, startIndex, stopIndex, resolve
+     entity: ownProps.rootEntity, listUpdate: true, ignoreSelection: false, stopIndex, resolve
     }
   )),
   onSearch: search => dispatch(setSearch(search, ownProps.rootEntity)),

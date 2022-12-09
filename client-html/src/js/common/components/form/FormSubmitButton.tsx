@@ -6,11 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Button from "@mui/material/Button";
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import { IS_JEST } from "../../../constants/EnvironmentConstants";
 import { Collapse } from "@mui/material";
+import { useAppSelector } from "../../utils/hooks";
 
 interface Props {
   disabled: boolean;
@@ -30,23 +31,28 @@ const FormSubmitButton = React.memo<Props>(({
   }) => {
     const ref = useRef<HTMLButtonElement>();
     const defaultPrevented = useRef(false);
+    
+    const isFieldProcessing = useAppSelector(state => state.fieldProcessing.length);
   
     const buttonProps = IS_JEST ? {
       "data-testid": "appbar-submit-button"
     } : {};
 
-    // timeout to process blur events
+  // process blur events
     const onClick = e => {
-      if (!defaultPrevented.current) {
+      if (isFieldProcessing) {
         e.preventDefault();
         defaultPrevented.current = true;
-        setTimeout(() => {
-          ref.current.click();
-        }, 500);
         return;
       }
-      defaultPrevented.current = false;
     };
+    
+    useEffect(() => {
+      if (defaultPrevented.current && !isFieldProcessing) {
+        ref.current?.click();
+        defaultPrevented.current = false;
+      }
+    }, [defaultPrevented.current, isFieldProcessing]);
 
     return (
       <Button
@@ -79,4 +85,3 @@ const FormSubmitButton = React.memo<Props>(({
   });
 
 export default FormSubmitButton;
-

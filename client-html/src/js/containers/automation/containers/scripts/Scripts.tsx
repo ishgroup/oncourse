@@ -74,6 +74,7 @@ const ScriptsBase = React.memo<any>(props => {
       history={history}
       timeZone={timeZone}
       syncErrors={syncErrors}
+      scripts={scripts}
       {...rest}
     />
   );

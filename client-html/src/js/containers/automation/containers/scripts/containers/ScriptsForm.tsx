@@ -36,7 +36,7 @@ import { mapSelectItems } from "../../../../../common/utils/common";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
-import { validateKeycode } from "../../../utils";
+import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import ScriptCard from "../components/cards/CardBase";
 import { formatRelativeDate } from "../../../../../common/utils/dates/formatRelative";
 import ImportCardContent from "../components/cards/ImportCardContent";
@@ -62,6 +62,7 @@ import ScriptIcon from "../../../../../../images/icon-script.svg";
 import InfoPill from "../../../../../common/components/layout/InfoPill";
 import { AppTheme } from "../../../../../model/common/Theme";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
+import { validateForbiddenSymbols } from "../../../../../common/utils/validation";
 
 const manualUrl = getManualLink("scripts");
 const getAuditsUrl = (id: number) => `audit?search=~"Script" and entityId == ${id}`;
@@ -213,6 +214,7 @@ interface Props {
   timeZone?: string;
   syncErrors?: any;
   checklists?: CatalogItemType[];
+  scripts?: CatalogItemType[];
 }
 
 const getInitComponentBody = (componentName: ScriptComponentType): ScriptComponent | Promise<ScriptComponent> => {
@@ -259,7 +261,8 @@ const ScriptsForm = React.memo<Props>(props => {
     nextLocation,
     timeZone,
     syncErrors,
-    checklists
+    checklists,
+    scripts
   } = props;
 
   const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
@@ -472,9 +475,28 @@ const ScriptsForm = React.memo<Props>(props => {
     }
   }, [syncErrors]);
   
+  const validateScriptCopyName = useCallback(name => {
+    if (scripts.find(s => s.title.trim() === name.trim())) {
+      return "Script name should be unique";
+    }
+    return validateNameForQuotes(name);
+  }, [scripts, values.id]);
+
+  const validateScriptName = useCallback(name => {
+    if (scripts.find(s => s.id !== values.id && s.title.trim() === name.trim())) {
+      return "Script name should be unique";
+    }
+    return validateNameForQuotes(name);
+  }, [scripts, values.id]);
+
   return (
     <>
-      <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialogClose} onSave={onDialogSave} hasNameField />
+      <SaveAsNewAutomationModal
+        opened={modalOpened}
+        onClose={onDialogClose}
+        onSave={onDialogSave}
+        validateNameField={validateScriptCopyName}
+      />
 
       <Form onSubmit={handleSubmit(handleSave)}>
         {(dirty || isNew) && <RouteChangeConfirm form={form} when={!disableRouteConfirm && (dirty || isNew)} />}
@@ -501,6 +523,7 @@ const ScriptsForm = React.memo<Props>(props => {
               <FormField
                 name="name"
                 label="Name"
+                validate={validateScriptName}
                 disabled={isInternal}
                 required
                 placeholder={` `}

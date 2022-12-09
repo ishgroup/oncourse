@@ -34,7 +34,7 @@ import SurveyService from "../survey/services/SurveyService";
 import ArticleProductService from "../articleProducts/service/ArticleProductService";
 import MessageService from "../messages/services/MessageService";
 import { formatToDateOnly } from "../../../common/utils/dates/datesNormalizing";
-import { getInvoiceClosestPaymentDueDate, preformatInvoice, sortInvoicePaymentPlans } from "../invoices/utils";
+import { preformatInvoice, processInvoicePaymentPlans } from "../invoices/utils";
 import ContactsService from "../contacts/services/ContactsService";
 import { PayLineWithDefer } from "../../../model/entities/Payslip";
 import CourseClassService from "../courseClasses/services/CourseClassService";
@@ -137,10 +137,7 @@ export const getEntityItemById = (entity: EntityName, id: number): Promise<any> 
     case "AbstractInvoice":
     case "Invoice": {
       return InvoiceService.getInvoice(id).then(invoice => {
-        invoice.paymentPlans.sort(sortInvoicePaymentPlans);
-        getInvoiceClosestPaymentDueDate(invoice);
-
-        return invoice;
+        return { ...invoice, paymentPlans: processInvoicePaymentPlans(invoice.paymentPlans) };
       });
     }
     
@@ -255,7 +252,7 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
       return PaymentOutService.updatePaymentOut(id, item);
 
     case "Payslip": {
-      const paylines = JSON.parse(JSON.stringify(item.paylines.filter(p => p.deferred)));
+      const paylines = [...item?.paylines.filter(p => p.deferred) || []];
 
       paylines.forEach(i => {
         delete i.deferred;

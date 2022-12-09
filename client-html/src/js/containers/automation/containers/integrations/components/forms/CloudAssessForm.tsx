@@ -32,9 +32,7 @@ class CloudAssessBaseForm extends React.Component<any, any> {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         <AppBarContent>
-          <FormField type="text" name="fields.username" label="Username" className="mb-2" fullWidth />
           <FormField type="text" name="fields.apiKey" label="API key" className="mb-2" fullWidth />
-          <FormField type="text" name="fields.orgId" label="Organisation ID" className="mb-2" fullWidth />
         </AppBarContent>
       </form>
     );

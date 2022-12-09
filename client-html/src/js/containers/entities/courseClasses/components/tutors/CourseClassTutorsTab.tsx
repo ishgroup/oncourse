@@ -23,6 +23,7 @@ import { StringKeyAndValueObject } from "../../../../../model/common/CommomObjec
 import { getTutorNameWarning, isTutorWageExist } from "./utils";
 import uniqid from "../../../../../common/utils/uniqid";
 import AddButton from "../../../../../common/components/icons/AddButton";
+import { getContactFullName } from "../../../contacts/utils";
 
 export interface CourseClassTutorsTabProps extends Partial<EditViewProps> {
   values?: CourseClassExtended;
@@ -77,7 +78,7 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
           warningsUpdated[value.id] = null;
           setTutorNamesWarnings(warningsUpdated);
         }
-        dispatch(change(form, `tutors[${index}].tutorName`, value));
+        dispatch(change(form, `tutors[${index}].tutorName`, getContactFullName(value)));
       },
       [tutorNamesWarnings]
     );
@@ -135,7 +136,7 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
           confirmMessage: hasWages
             ? `Wages for ${tutor.tutorName} will be removed too, do you really want to continue?`
             : "Tutor will be deleted permanently",
-          cancelButtonText: "Delete"
+          confirmButtonText: "Delete"
         });
       };
 
