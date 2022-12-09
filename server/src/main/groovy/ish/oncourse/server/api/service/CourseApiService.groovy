@@ -149,13 +149,13 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         course.name = trimToNull(courseDTO.name)
         course.code = trimToNull(courseDTO.code)
         course.enrolmentType = ENROLMENT_TYPE_MAP.getByValue(courseDTO.enrolmentType)
-        course.allowWaitingLists = courseDTO.allowWaitingLists
+        course.allowWaitingLists = courseDTO.isAllowWaitingLists()
         course.fieldConfigurationSchema = fieldConfigurationSchemeDao.getById(course.context, courseDTO.dataCollectionRuleId)
-        course.isTraineeship = courseDTO.isTraineeship
+        course.isTraineeship = courseDTO.isIsTraineeship()
         course.fullTimeLoad = courseDTO.fullTimeLoad
-        course.feeHelpClass = courseDTO.feeHelpClass
+        course.feeHelpClass = courseDTO.isFeeHelpClass()
         if (course.isTraineeship) {
-            course.currentlyOffered = courseDTO.currentlyOffered
+            course.currentlyOffered = courseDTO.isCurrentlyOffered()
         } else {
            switch (courseDTO.status) {
                case COURSE_DISABLED:
@@ -181,8 +181,8 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             course.qualification = null
             course.fieldOfEducation = trimToNull(courseDTO.fieldOfEducation)
         }
-        course.isSufficientForQualification = courseDTO.isSufficientForQualification
-        course.isVET = courseDTO.isVET
+        course.isSufficientForQualification = courseDTO.isIsSufficientForQualification()
+        course.isVET = courseDTO.isIsVET()
 
         updateTags(course, course.taggingRelations, courseDTO.tags, CourseTagRelation, course.context)
         updateDocuments(course, course.attachmentRelations, courseDTO.documents, CourseAttachmentRelation, course.context)
@@ -199,8 +199,8 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             if (course != null)  {
                 if ( (course.qualification != null && course.qualification.id != dto.qualificationId) ||
                         (course.qualification == null && dto.qualificationId != null) ||
-                        (course.isVET != null &&  course.isVET != dto.isVET) ||
-                        (course.isSufficientForQualification != null && course.isVET != dto.isVET) ||
+                        (course.isVET != null &&  course.isVET != dto.isIsVET()) ||
+                        (course.isSufficientForQualification != null && course.isVET != dto.isIsVET()) ||
                         (course.reportableHours != null  && course.reportableHours != dto.reportableHours)) {
                     validator.throwForbiddenErrorException(course.id, 'vet', "Sorry, you have no permissions to edit VET details. Please contact your administrator.")
                 }
@@ -232,10 +232,10 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         if (courseDTO.reportableHours == null) {
             validator.throwClientErrorException(id, 'reportableHours', 'Reportable hours is required.')
         }
-        if (courseDTO.feeHelpClass == null) {
+        if (courseDTO.isFeeHelpClass() == null) {
             validator.throwClientErrorException(id, 'feeHelpClass', 'Fee help class flag is required')
         }
-        if (courseDTO.allowWaitingLists == null) {
+        if (courseDTO.isAllowWaitingLists() == null) {
             validator.throwClientErrorException(id, 'allowWaitingLists', 'Allow waiting lists flag is required.')
         }
 
@@ -252,20 +252,20 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
                     "Course name cannot be greater than " + Course.COURSE_NAME_MAX_LENGTH + " characters.")
         }
 
-        if (courseDTO.isSufficientForQualification == null) {
+        if (courseDTO.isIsSufficientForQualification() == null) {
             validator.throwClientErrorException(id, 'isSufficientForQualification', 'Sufficient for qualification flag is required.')
         }
 
-        if (courseDTO.isVET == null) {
+        if (courseDTO.isIsVET() == null) {
             validator.throwClientErrorException(id, 'isVET', 'VET flag is required.')
         }
 
         if (courseDTO.qualificationId == null) {
-            if (courseDTO.isSufficientForQualification) {
+            if (courseDTO.isIsSufficientForQualification()) {
                 validator.throwClientErrorException(id, 'isSufficientForQualification', 'Course cannot be sufficient for a qualification if there is no qualification set.')
             }
         } else {
-            if (!courseDTO.isVET) {
+            if (!courseDTO.isIsVET()) {
                 validator.throwClientErrorException(id, 'isVET', 'Course must be VET if there is a qualification set.')
             }
         }
@@ -304,14 +304,14 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             }
         }
 
-        if (courseDTO.isTraineeship == null) {
+        if (courseDTO.isIsTraineeship() == null) {
             validator.throwClientErrorException(id, 'isTraineeship', 'Course/Traineeship flag is required.')
         } else {
-            if (courseDTO.isTraineeship) {
+            if (courseDTO.isIsTraineeship()) {
                 if (courseDTO.qualificationId == null) {
                     validator.throwClientErrorException(id, 'qualificationId', 'Traineeship requires qualification to be set.')
                 }
-                if (courseDTO.currentlyOffered == null) {
+                if (courseDTO.isCurrentlyOffered() == null) {
                     validator.throwClientErrorException(id, 'currentlyOffered', 'Currently offered flag required for traineeship.')
                 }
 
@@ -347,7 +347,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
                 validator.throwClientErrorException(id, 'modules', "There are enrolments in this course. Modifying the modules is not allowed.")
             }
 
-            if (course.isTraineeship != courseDTO.isTraineeship) {
+            if (course.isTraineeship != courseDTO.isIsTraineeship()) {
                 validator.throwClientErrorException(id, 'isTraineeship', 'Existed course type can not be changed')
             }
         } else {

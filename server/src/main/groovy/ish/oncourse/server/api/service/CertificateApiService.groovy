@@ -110,7 +110,7 @@ class CertificateApiService extends EntityApiService<CertificateDTO, Certificate
             if (certificateDTO.qualificationId) {
                 certificate.qualification = qualificationDao.getById(certificate.context, certificateDTO.qualificationId)
             }
-            certificate.isQualification = certificateDTO.isQualification
+            certificate.isQualification = certificateDTO.isIsQualification()
             updateOutcomes(certificate, certificateDTO.outcomes)
         }
 
@@ -135,7 +135,7 @@ class CertificateApiService extends EntityApiService<CertificateDTO, Certificate
             validator.throwClientErrorException(id, 'awardedOn', 'Date of awarding is required.')
         }
 
-        if (certificateDTO.isQualification && !certificateDTO.qualificationId) {
+        if (certificateDTO.isIsQualification() && !certificateDTO.qualificationId) {
             validator.throwClientErrorException(id, 'qualificationId', 'Qualification is required.')
         } else if (certificateDTO.qualificationId && !qualificationDao.getById(context, certificateDTO.qualificationId)) {
             validator.throwClientErrorException(id, 'qualificationId', "Qualification  with id=$certificateDTO.qualificationId doesn't exist.")
@@ -230,7 +230,7 @@ class CertificateApiService extends EntityApiService<CertificateDTO, Certificate
 
         ObjectContext context = cayenneService.newContext
         List<Certificate> processedCertificates = []
-        boolean createStatementOfAtteiment = createRequest.createStatementOfAtteiment
+        boolean createStatementOfAtteiment = createRequest.isCreateStatementOfAtteiment()
 
 
         createRequest.enrolmentIds

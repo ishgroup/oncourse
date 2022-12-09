@@ -87,10 +87,10 @@ class AvetmissExportApiImpl implements AvetmissExportApi {
                         certificateService,
                         preferenceController,
                         exportJurisdiction,
-                        requestParameters.defaultStatus ? OutcomeStatus.STATUS_ASSESSABLE_CONTINUING_ENROLMENT : null,
+                        requestParameters.isDefaultStatus() ? OutcomeStatus.STATUS_ASSESSABLE_CONTINUING_ENROLMENT : null,
                         LocalDate.now().plusDays(7),
                         requestParameters.settings?.outcomesEnd ?: LocalDate.now(),
-                        requestParameters.settings.noAssessment,
+                        requestParameters.settings.isNoAssessment(),
                         requestParameters.ids
                 )
 
@@ -179,7 +179,7 @@ class AvetmissExportApiImpl implements AvetmissExportApi {
                 Set<Outcome> outcomes =  Avetmiss8ExportRunner.getOutcomes(settings.classIds,
                         settings.enrolmentIds,
                         settings.fundingContracts,
-                        settings.includeLinkedOutcomes,
+                        settings.isIncludeLinkedOutcomes(),
                         settings.outcomesEnd,
                         settings.outcomesStart,
                         settings.fee.collect {it.dbType},

@@ -34,17 +34,17 @@ class ConcessionTypeFunctions {
     }
 
     static ValidationErrorDTO validateData(List<ConcessionTypeDTO> concessionTypes) {
-        ConcessionTypeDTO invalidType = concessionTypes.find { ct -> ct.id == null && (ct.allowOnWeb == null || ct.requireExpary == null || ct.requireNumber == null)}
+        ConcessionTypeDTO invalidType = concessionTypes.find { ct -> ct.id == null && (ct.isAllowOnWeb() == null || ct.isRequireExpary() == null || ct.requireNumber == null)}
         if (invalidType) {
-            if (invalidType.requireNumber == null) {
+            if (invalidType.isRequireNumber() == null) {
                 return new ValidationErrorDTO(null, 'requireNumber', "Concession requireNumber should be specified")
             }
 
-            if (invalidType.requireExpary == null) {
+            if (invalidType.isRequireExpary() == null) {
                 return new ValidationErrorDTO(null, 'requireExpary', "Concession requireExpary should be specified")
             }
 
-            if (invalidType.allowOnWeb == null) {
+            if (invalidType.isAllowOnWeb() == null) {
                 return new ValidationErrorDTO(null, 'allowOnWeb', "Concession allowOnWeb should be specified")
             }
         }
@@ -84,9 +84,9 @@ class ConcessionTypeFunctions {
     static ConcessionType updateConcession(ConcessionTypeDTO type, ObjectContext context) {
         ConcessionType dbType = type.id? SelectById.query(ConcessionType, type.id).selectFirst(context): context.newObject(ConcessionType)
         dbType.name = type.name
-        dbType.isEnabled = type.allowOnWeb
-        dbType.hasExpiryDate = type.requireExpary
-        dbType.hasConcessionNumber = type.requireNumber
+        dbType.isEnabled = type.isAllowOnWeb()
+        dbType.hasExpiryDate = type.isRequireExpary()
+        dbType.hasConcessionNumber = type.isRequireNumber()
 
         dbType
     }

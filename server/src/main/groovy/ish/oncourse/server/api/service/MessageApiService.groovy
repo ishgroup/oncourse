@@ -327,11 +327,11 @@ class MessageApiService extends EntityApiService<MessageDTO, Message, MessageDao
         RecipientsModel recipientsModel = getRecipientsModel(entityName, messageTypeDTO, entitiesIds, template)
         List<Long> recipientsToSend = new ArrayList<>()
 
-        addRecipientsToSend(recipientsToSend, recipientsModel.students, request.sendToStudents, request.sendToSuppressStudents)
-        addRecipientsToSend(recipientsToSend, recipientsModel.activeStudents, request.sendToActiveStudents, request.sendToSuppressActiveStudents)
-        addRecipientsToSend(recipientsToSend, recipientsModel.withdrawStudents, request.sendToWithdrawnStudents, request.sendToSuppressWithdrawnStudents)
-        addRecipientsToSend(recipientsToSend, recipientsModel.tutors, request.sendToTutors, request.sendToSuppressTutors)
-        addRecipientsToSend(recipientsToSend, recipientsModel.other, request.sendToOtherContacts, request.sendToSuppressOtherContacts)
+        addRecipientsToSend(recipientsToSend, recipientsModel.students, request.isSendToStudents(), request.isSendToSuppressStudents())
+        addRecipientsToSend(recipientsToSend, recipientsModel.activeStudents, request.isSendToActiveStudents(), request.isSendToSuppressActiveStudents())
+        addRecipientsToSend(recipientsToSend, recipientsModel.withdrawStudents, request.isSendToWithdrawnStudents(), request.isSendToSuppressWithdrawnStudents())
+        addRecipientsToSend(recipientsToSend, recipientsModel.tutors, request.isSendToTutors(), request.isSendToSuppressTutors())
+        addRecipientsToSend(recipientsToSend, recipientsModel.other, request.isSendToOtherContacts(), request.isSendToSuppressOtherContacts())
 
         if (recipientsCount != recipientsToSend.size().toBigDecimal()){
             logger.error("A real recipients number doesn't equal specified. Specified: {}, Real: {}, MessageType: {}",

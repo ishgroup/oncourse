@@ -76,9 +76,9 @@ class SiteFunctions {
     }
 
     static Site toDbSite(SiteDTO site, Site dbSite, ObjectContext context, SystemUser currentUser) {
-        dbSite.isAdministrationCentre = site.isAdministrationCentre
-        dbSite.isVirtual = site.isVirtual
-        dbSite.isShownOnWeb = site.isShownOnWeb
+        dbSite.isAdministrationCentre = site.isIsAdministrationCentre()
+        dbSite.isVirtual = site.isIsVirtual()
+        dbSite.isShownOnWeb = site.isIsShownOnWeb()
         dbSite.name = trimToNull(site.name)
         dbSite.street = trimToNull(site.street)
         dbSite.suburb = trimToNull(site.suburb)
@@ -137,15 +137,15 @@ class SiteFunctions {
             return new ValidationErrorDTO(site?.id?.toString(), 'latitude', 'Invalid latitude value. Latitude must be between 90 and -90')
         }
 
-        if (site.isAdministrationCentre == null) {
+        if (site.isIsAdministrationCentre() == null) {
             return new ValidationErrorDTO(site?.id?.toString(), 'isAdministrationCentre', 'Administration centre is required.')
         }
 
-        if (site.isVirtual == null) {
+        if (site.isIsVirtual() == null) {
             return new ValidationErrorDTO(site?.id?.toString(), 'isVirtual', 'Virtual site is required.')
         }
 
-        if (site.isShownOnWeb == null) {
+        if (site.isIsShownOnWeb() == null) {
             return new ValidationErrorDTO(site?.id?.toString(), 'isShownOnWeb', 'Visibility is required.')
         }
 

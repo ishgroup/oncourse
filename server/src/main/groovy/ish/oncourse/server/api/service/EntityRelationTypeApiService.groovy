@@ -41,8 +41,8 @@ class EntityRelationTypeApiService extends EntityApiService<EntityRelationTypeDT
         dbEntity.toName = dtoModel.toName
         dbEntity.fromName = dtoModel.fromName
         dbEntity.description = dtoModel.description
-        dbEntity.isShownOnWeb = dtoModel.isShownOnWeb
-        dbEntity.considerHistory = dtoModel.considerHistory
+        dbEntity.isShownOnWeb = dtoModel.isIsShownOnWeb()
+        dbEntity.considerHistory = dtoModel.isConsiderHistory()
         if (dtoModel.discountId) {
             dbEntity.entityRelationTypeDiscount = SelectById.query(Discount, dtoModel.discountId).selectOne(dbEntity.context)
         } else {

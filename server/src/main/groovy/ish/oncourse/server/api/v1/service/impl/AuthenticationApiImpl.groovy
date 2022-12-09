@@ -145,7 +145,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
 
                 if (eulaModifiedDate.isAfter(lastAccessDate)) {
 
-                    if (details.eulaAccess) {
+                    if (details.isEulaAccess()) {
                         lastAccessDatePreferense.valueString = LocalDateUtils.timeValueToString(LocalDateTime.now())
                         lastAccessDatePreferense.context.commitChanges()
                     } else {
@@ -157,7 +157,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
 
             } else {
 
-                if (details.eulaAccess) {
+                if (details.isEulaAccess()) {
                     userPreferenseService.createEula(user, LocalDateUtils.timeValueToString(LocalDateTime.now()))
                 } else {
                     LoginResponseDTO content = createAuthenticationContent(EULA_REQUIRED, 'Eula required')
@@ -203,13 +203,13 @@ class AuthenticationApiImpl implements AuthenticationApi {
         }
 
 
-        if (user.sessionId != null && user.lastAccess.after(prefController.timeoutThreshold) && !details.kickOut) {
+        if (user.sessionId != null && user.lastAccess.after(prefController.timeoutThreshold) && !details.isKickOut()) {
             errorMessage = 'You are currently logged in from another session.'
             LoginResponseDTO content = createAuthenticationContent(CONCURRENT_SESSIONS_FOUND, errorMessage)
             throwUnauthorizedException(content)
         }
 
-        if (details.kickOut) {
+        if (details.isKickOut()) {
             sessionManager.doKickOut(user)
         }
 
@@ -219,7 +219,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
 
         switch (prefController.twoFactorAuthStatus) {
             case DISABLED:
-                if (!details.skipTfa && noDataForTFA) {
+                if (!details.isSkipTfa() && noDataForTFA) {
                     LoginResponseDTO content = createAuthenticationContent(TFA_OPTIONAL, '', totpService.generateKey(user.email).url)
                     throwUnauthorizedException(content)
                 }

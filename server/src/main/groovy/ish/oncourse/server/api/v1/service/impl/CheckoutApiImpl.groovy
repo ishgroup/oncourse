@@ -271,7 +271,7 @@ class CheckoutApiImpl implements CheckoutApi {
 
         }
 
-        if (checkoutModel.payWithSavedCard) {
+        if (checkoutModel.isPayWithSavedCard()) {
             cardId =  paymentInDao.getCreditCardId(checkout.paymentIn.payer)
             if (cardId == null) {
                 hanbleError(VALIDATION_ERROR, [new CheckoutValidationErrorDTO(propertyName: 'payWithSavedCard', error: 'Payer has no credit card history')])
@@ -283,12 +283,12 @@ class CheckoutApiImpl implements CheckoutApi {
             if (xValidateOnly) {
                 save(checkout)
 
-                if (checkoutModel.payWithSavedCard) {
+                if (checkoutModel.isPayWithSavedCard()) {
                     return dtoResponse
                 }
 
                 String merchantReference = UUID.randomUUID().toString()
-                SessionAttributes attributes = paymentService.createSession(xOrigin, new Money(checkoutModel.payNow), merchantReference, checkoutModel.allowAutoPay)
+                SessionAttributes attributes = paymentService.createSession(xOrigin, new Money(checkoutModel.payNow), merchantReference, checkoutModel.isAllowAutoPay())
                 if (attributes.sessionId) {
                     dtoResponse.sessionId = attributes.sessionId
                     dtoResponse.ccFormUrl = attributes.ccFormUrl
@@ -304,7 +304,7 @@ class CheckoutApiImpl implements CheckoutApi {
                 SessionAttributes sessionAttributes
                 String merchantReference = null
 
-                if (checkoutModel.payWithSavedCard) {
+                if (checkoutModel.isPayWithSavedCard()) {
                     merchantReference = UUID.randomUUID().toString()
                     sessionAttributes = paymentService.makeTransaction(amount, merchantReference, cardId)
                 } else {
@@ -341,7 +341,7 @@ class CheckoutApiImpl implements CheckoutApi {
                 paymentIn.privateNotes = sessionAttributes.responceJson
 
                 if (preferenceController.isPurchaseWithoutAuth()) {
-                    succeedPayment(dtoResponse, checkout, checkoutModel.sendInvoice)
+                    succeedPayment(dtoResponse, checkout, checkoutModel.isSendInvoice())
                 } else {
                     if (AUTH_TYPE != sessionAttributes.type) {
                         hanbleError(VALIDATION_ERROR, [new CheckoutValidationErrorDTO(error: "Credit card transaction has wrong type")])
@@ -350,7 +350,7 @@ class CheckoutApiImpl implements CheckoutApi {
                     sessionAttributes = paymentService.completeTransaction(sessionAttributes.transactionId, amount, merchantReference)
 
                     if (sessionAttributes.authorised) {
-                        succeedPayment(dtoResponse, checkout, checkoutModel.sendInvoice)
+                        succeedPayment(dtoResponse, checkout, checkoutModel.isSendInvoice())
                     } else {
                         paymentIn.gatewayResponse = sessionAttributes.statusText
                         paymentIn.privateNotes = sessionAttributes.responceJson

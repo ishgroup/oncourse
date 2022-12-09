@@ -99,7 +99,7 @@ class PdfApiImpl implements PdfApi {
                 printRequest.search,
                 printRequest.filter,
                 printRequest.tagGroups,
-                printRequest.createPreview,
+                printRequest.isCreatePreview(),
                 printFilters.get(entityName),
                 preProcessors.get(entityName),
                 permissionService,

@@ -116,7 +116,7 @@ class AccountFunctions {
             return new ValidationErrorDTO(accountDTO?.id?.toString(),  'accountCode', 'Code must be unique.')
         }
 
-        if (accountDTO.isEnabled == null) {
+        if (accountDTO.isIsEnabled() == null) {
             return new ValidationErrorDTO(accountDTO?.id?.toString(),  'isEnabled', 'Enabled value is required.')
         }
         if (isBlank(accountDTO.description)) {
@@ -129,7 +129,7 @@ class AccountFunctions {
         } else if (account && account.type != accountTypeMap.getByValue(accountDTO.type)) {
             return new ValidationErrorDTO(accountDTO?.id?.toString(),  'type', 'Cannot change account type.')
         }
-        if ((account != null) && (isDefaultAccount(account)) && !accountDTO.isEnabled) {
+        if ((account != null) && (isDefaultAccount(account)) && !accountDTO.isIsEnabled()) {
             return new ValidationErrorDTO(accountDTO?.id?.toString(),  'isEnabled', 'Cannot disable default account.')
         }
 
@@ -154,7 +154,7 @@ class AccountFunctions {
 
     static Account toDbAccount(AccountDTO accountDTO, Account account, ObjectContext context) {
         account.accountCode = trimToNull(accountDTO.accountCode)
-        account.isEnabled = accountDTO.isEnabled
+        account.isEnabled = accountDTO.isIsEnabled()
         account.description = trimToNull(accountDTO.description)
         account.type = accountTypeMap.getByValue(accountDTO.type)
         if (accountDTO.tax?.id) {

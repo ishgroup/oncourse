@@ -93,7 +93,7 @@ class OutcomeApiService extends EntityApiService<OutcomeDTO, Outcome, OutcomeDao
             if (outcomeEnrolment.outcomes != null && outcomeEnrolment.outcomes.size() > 0 && ((id == null && outcomeDTO.moduleId != null && !hasEnrolmentVetOutcomes) || (id == null && outcomeDTO.moduleId == null && hasEnrolmentVetOutcomes))) {
                 validator.throwClientErrorException(id, 'moduleId', 'VET and non-VET outcomes cannot be mixed.')
             }
-        } else if (!outcomeDTO.isPriorLearning) {
+        } else if (!outcomeDTO.isIsPriorLearning()) {
             validator.throwClientErrorException(id, 'isPriorLearning', 'Outcome must be related to enrolment or prior learning')
         }
 

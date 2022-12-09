@@ -67,7 +67,7 @@ class FilterApiImpl implements FilterApi {
         find.name = filter.name
         find.aqlExpressionString = filter.expression
         find.tableName = filter.entity
-        if (filter.showForCurrentOnly) {
+        if (filter.isShowForCurrentOnly()) {
             find.systemUser = context.localObject(userService.currentUser)
         }
         context.commitChanges()

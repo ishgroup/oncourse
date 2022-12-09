@@ -82,7 +82,7 @@ class EntityApiImpl implements EntityApi {
         query.offset(response.offset.intValue())
         query.limit(response.pageSize.intValue())
         response.sort.each {
-            sortOrder = it.ascending ? SortOrder.ASCENDING : SortOrder.DESCENDING
+            sortOrder = it.isAscending() ? SortOrder.ASCENDING : SortOrder.DESCENDING
             if ((it.complexAttribute != null) && (it.complexAttribute.size() > 0)) {
                 List<Ordering> orderings = new ArrayList<>()
                 for (String attribute : it.complexAttribute) {
@@ -96,7 +96,7 @@ class EntityApiImpl implements EntityApi {
         query.orderBy(ID_FIELD, sortOrder != null ? sortOrder : SortOrder.ASCENDING)
 
         response.columns
-                .findAll { it -> it.visible }
+                .findAll { it -> it.isVisible() }
                 .collect { it -> it.prefetches }
                 .flatten()
                 .forEach(
@@ -162,7 +162,7 @@ class EntityApiImpl implements EntityApi {
 
     private static void populateResponce(List<PersistentObject> records, DataResponseDTO response, List<ColumnDTO> columns = null, List<String> stringColumns = null) {
 
-        List<String> attributes = stringColumns?:columns.findAll { it.visible || it.system }*.attribute
+        List<String> attributes = stringColumns?:columns.findAll { it.isVisible() || it.isSystem() }*.attribute
         records.subList(0, response.pageSize.intValue()).each { PersistentObject e ->
             response.rows << new DataRowDTO().with { r ->
                 r.id = Cayenne.intPKForObject(e).toString()

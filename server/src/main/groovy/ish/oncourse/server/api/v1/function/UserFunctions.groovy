@@ -81,24 +81,24 @@ class UserFunctions {
                 getRecordById(context, SystemUser, dtoModel.id, SystemUser.DEFAULT_ADMINISTRATION_CENTRE.joint(), SystemUser.ACL_ROLES.joint()) :
                 context.newObject(SystemUser)
 
-        dbModel.isActive = dtoModel.active
-        dbModel.loginAttemptNumber = dtoModel.active ? 0 : dbModel.loginAttemptNumber
+        dbModel.isActive = dtoModel.isActive()
+        dbModel.loginAttemptNumber = dtoModel.isActive() ? 0 : dbModel.loginAttemptNumber
         dbModel.login = dtoModel.login
         dbModel.firstName = dtoModel.firstName
         dbModel.lastName = dtoModel.lastName
         dbModel.email = dtoModel.email
         dbModel.defaultAdministrationCentre = getRecordById(context, Site, dtoModel.administrationCentre)
-        dbModel.canEditCMS = dtoModel.accessEditor
+        dbModel.canEditCMS = dtoModel.isAccessEditor()
         if (dtoModel.password) {
             dbModel.password = AuthenticationUtil.generatePasswordHash(dtoModel.password)
             dbModel.passwordLastChanged = LocalDate.now()
         }
-        dbModel.isAdmin = dtoModel.admin
+        dbModel.isAdmin = dtoModel.isAdmin()
         new ArrayList<ACLRole>(dbModel.getAclRoles()).each { dbModel.removeFromAclRoles(it) }
-        if (!dtoModel.admin) {
+        if (!dtoModel.isAdmin()) {
             dbModel.addToAclRoles(getRecordById(context, ACLRole, dtoModel.role))
         }
-        dbModel.passwordUpdateRequired = dtoModel.passwordUpdateRequired
+        dbModel.passwordUpdateRequired = dtoModel.isPasswordUpdateRequired()
         dbModel
     }
 
@@ -150,7 +150,7 @@ class UserFunctions {
             return new ValidationErrorDTO(dtoModel.id?.toString(), SystemUser.LAST_NAME.name, "The maximum last name length is 100.")
         }
 
-        if (dtoModel.id && !dtoModel.inviteAgain) {
+        if (dtoModel.id && !dtoModel.isInviteAgain()) {
             if (dtoModel.password) {
                 String errorMessage = validateUserPassword(dtoModel.email, dtoModel.login, dtoModel.password, complexity)
                 if (errorMessage) {
@@ -177,7 +177,7 @@ class UserFunctions {
             return new ValidationErrorDTO(dtoModel.id?.toString(), 'administrationCentre', "Select an option for the 'Bank cash/cheques to site' field.")
         }
 
-        if (!dtoModel.admin && !dtoModel.role) {
+        if (!dtoModel.isAdmin() && !dtoModel.role) {
             return new ValidationErrorDTO(dtoModel.id?.toString(), 'role', "Not admin users can not be without role.")
         }
 

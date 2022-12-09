@@ -312,7 +312,7 @@ class DataCollectionFunctions {
             dbField.fieldConfiguration = dbForm
             dbField.name = field.label
             dbField.description = field.helpText
-            dbField.mandatory = field.mandatory
+            dbField.mandatory = field.isMandatory()
             dbField
         }
     }

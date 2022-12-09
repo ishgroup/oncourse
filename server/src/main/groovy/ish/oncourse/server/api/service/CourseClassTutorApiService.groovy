@@ -60,7 +60,7 @@ class CourseClassTutorApiService extends EntityApiService<CourseClassTutorDTO, C
     CourseClassTutor toCayenneModel(CourseClassTutorDTO dto, CourseClassTutor cayenneModel) {
         ObjectContext context = cayenneModel.context
         cayenneModel.definedTutorRole = definedTutorRoleDao.getById(context, dto.roleId)
-        cayenneModel.inPublicity = dto.isInPublicity
+        cayenneModel.inPublicity = dto.isIsInPublicity()
         cayenneModel.confirmedOn = LocalDateUtils.valueToDate(dto.confirmedOn)
         cayenneModel.tutor = contactDao.getById(context, dto.contactId).tutor
         if (dto.classId) {

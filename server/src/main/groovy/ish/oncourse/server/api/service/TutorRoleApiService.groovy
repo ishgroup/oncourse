@@ -67,7 +67,7 @@ class TutorRoleApiService extends EntityApiService<DefinedTutorRoleDTO, DefinedT
     DefinedTutorRole toCayenneModel(DefinedTutorRoleDTO tutorRoleDTO, DefinedTutorRole definedTutorRole) {
         definedTutorRole.name = trimToNull(tutorRoleDTO.name)
         definedTutorRole.description = trimToNull(tutorRoleDTO.description)
-        definedTutorRole.active = tutorRoleDTO.active
+        definedTutorRole.active = tutorRoleDTO.isActive()
         updatePayRates(definedTutorRole, tutorRoleDTO.payRates)
         definedTutorRole
     }
@@ -87,7 +87,7 @@ class TutorRoleApiService extends EntityApiService<DefinedTutorRoleDTO, DefinedT
         if (trimToNull(tutorRoleDTO.description) && trimToNull(tutorRoleDTO.description).length() > 128) {
             validator.throwClientErrorException(id, 'description', 'Description cannot be more than 128 chars.')
         }
-        if (tutorRoleDTO.active == null) {
+        if (tutorRoleDTO.isActive() == null) {
             validator.throwClientErrorException(id, 'active', 'Active flag is required.')
         }
 

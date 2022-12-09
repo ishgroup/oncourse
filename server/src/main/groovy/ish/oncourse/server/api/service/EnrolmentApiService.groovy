@@ -145,20 +145,20 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
         enrolment.vetFeeExemptionType = dto.vetFeeExemptionType?.dbType
         enrolment.fundingSource = dto.fundingSource?.dbType
         enrolment.cricosConfirmation = dto.cricosConfirmation
-        enrolment.vetIsFullTime = dto.vetIsFullTime
-        enrolment.vetInSchools = dto.vetInSchools
-        enrolment.suppressAvetmissExport = dto.suppressAvetmissExport
+        enrolment.vetIsFullTime = dto.isVetIsFullTime()
+        enrolment.vetInSchools = dto.isVetInSchools()
+        enrolment.suppressAvetmissExport = dto.isSuppressAvetmissExport()
         enrolment.associatedCourseIdentifier = dto.associatedCourseIdentifier
         enrolment.vetPurchasingContractID = dto.vetPurchasingContractID
-        enrolment.eligibilityExemptionIndicator = dto.eligibilityExemptionIndicator
+        enrolment.eligibilityExemptionIndicator = dto.isEligibilityExemptionIndicator()
         enrolment.outcomeIdTrainingOrg = dto.outcomeIdTrainingOrg
         enrolment.studentIndustryANZSICCode = dto.studentIndustryANZSICCode
         enrolment.vetClientID = dto.vetClientID
         enrolment.vetTrainingContractID = dto.vetTrainingContractID
         enrolment.vetFundingSourceStateID = dto.vetFundingSourceStateID
         enrolment.outcomeIdTrainingOrg = dto.outcomeIdTrainingOrg
-        enrolment.vetFeeIndicator = dto.vetFeeIndicator
-        enrolment.trainingPlanDeveloped = dto.trainingPlanDeveloped
+        enrolment.vetFeeIndicator = dto.isVetFeeIndicator()
+        enrolment.trainingPlanDeveloped = dto.isTrainingPlanDeveloped()
         enrolment.feeHelpAmount = new Money(dto.feeHelpAmount)
         enrolment.feeStatus = FEE_STATUS_MAP.getByValue(dto.feeStatus)
         enrolment.attendanceType = dto.attendanceType.dbType
@@ -237,14 +237,14 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
 
         EnrolmentCancelationRequest request = new EnrolmentCancelationRequest().with {req ->
             req.enrolmentId = cancelEnrolmentDTO.enrolmentIds
-            req.transfer = cancelEnrolmentDTO.transfer
+            req.transfer = cancelEnrolmentDTO.isTransfer()
             cancelEnrolmentDTO.invoiceLineParam.each { refundInvoice ->
                 req.addLineToRefund(new EnrolmentCancelationRequest.InvoiceLineRequest().with { lineReq ->
                     lineReq.invoiceLineId = refundInvoice.invoiceLineId
                     lineReq.accountId = refundInvoice.accountId
                     lineReq.taxId = refundInvoice.taxId
                     lineReq.cancellationFee = refundInvoice.cancellationFee
-                    lineReq.sendInvoice = refundInvoice.sendInvoice
+                    lineReq.sendInvoice = refundInvoice.isSendInvoice()
                     lineReq
                 })
             }
@@ -252,7 +252,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
         }
 
         CancelationResult cancelationResult = cancelEnrolmentService
-                .cancelEnrolment(request, cancelEnrolmentDTO.deleteNotSetOutcomes, cancelEnrolment)
+                .cancelEnrolment(request, cancelEnrolmentDTO.isDeleteNotSetOutcomes(), cancelEnrolment)
 
         if (cancelationResult.isFailed()) {
             cancelationResult.getFailures().each { fail ->

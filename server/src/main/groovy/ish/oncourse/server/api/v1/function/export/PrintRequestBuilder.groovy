@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.api.v1.function.export
 
+import groovy.transform.CompileDynamic
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.api.service.ReportApiService
 import ish.oncourse.server.api.v1.model.SortingDTO
@@ -32,6 +33,7 @@ import static ish.print.AdditionalParameters.*
 import static ish.print.PrintRequestTransformationsFiller.fillWithTransformations
 import static ish.util.LocalDateUtils.*
 
+@CompileDynamic
 class PrintRequestBuilder {
 
     private ObjectContext context

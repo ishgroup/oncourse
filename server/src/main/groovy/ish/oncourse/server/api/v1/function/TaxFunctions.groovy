@@ -120,7 +120,7 @@ class TaxFunctions {
 
         if (tax.code != NON_SUPPLY_TAX_CODE) {
 
-            dbTax.isGSTTaxType = tax.gst
+            dbTax.isGSTTaxType = tax.isGst()
             dbTax.rate = tax.rate
             dbTax.receivableFromAccount = getLiabilityAccount(context, tax.receivableAccountId)
             dbTax.payableToAccount = getAssetAccount(context, tax.payableAccountId)

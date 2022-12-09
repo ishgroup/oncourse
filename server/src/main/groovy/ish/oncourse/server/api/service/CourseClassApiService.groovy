@@ -217,7 +217,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
 
         courseClass.code = dto.code
 
-        if (dto.isDistantLearningCourse) {
+        if (dto.isIsDistantLearningCourse()) {
             courseClass.isDistantLearningCourse = true
             courseClass.maximumDays = dto.maximumDays
             courseClass.expectedHours = dto.expectedHours
@@ -227,8 +227,8 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         } else {
             courseClass.isDistantLearningCourse = false
         }
-        courseClass.isActive = dto.isActive
-        courseClass.isShownOnWeb = dto.isShownOnWeb
+        courseClass.isActive = dto.isIsActive()
+        courseClass.isShownOnWeb = dto.isIsShownOnWeb()
         courseClass.message = dto.message
         courseClass.minStudentAge = dto.minStudentAge
         courseClass.maxStudentAge = dto.maxStudentAge
@@ -236,7 +236,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         courseClass.maximumPlaces = dto.maximumPlaces
         courseClass.budgetedPlaces = dto.budgetedPlaces
         courseClass.attendanceType = dto.attendanceType?.dbType
-        courseClass.suppressAvetmissExport = dto.suppressAvetmissExport
+        courseClass.suppressAvetmissExport = dto.isSuppressAvetmissExport()
         courseClass.deliveryMode = dto.deliveryMode?.dbType
         if (dto.relatedFundingSourceId != null) {
             courseClass.relatedFundingSource = fundingSourceDao.getById(context, dto.relatedFundingSourceId)
@@ -299,16 +299,16 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         if (dto.maximumPlaces < dto.minimumPlaces ) {
             validator.throwClientErrorException(id, 'maximumPlaces', 'Maximum places cannot be less than minimum places.')
         }
-        if (dto.isDistantLearningCourse == null) {
+        if (dto.isIsDistantLearningCourse() == null) {
             validator.throwClientErrorException(id, 'isDistantLearningCourse', 'Is self paced flag is required')
         }
-        if (dto.isActive == null) {
+        if (dto.isIsActive() == null) {
             validator.throwClientErrorException(id, 'isActive', 'Is active flag required')
         }
-        if (dto.isShownOnWeb == null) {
+        if (dto.isIsShownOnWeb() == null) {
             validator.throwClientErrorException(id, 'isShownOnWeb', 'Is shown on web flag is required')
         }
-        if (dto.suppressAvetmissExport == null) {
+        if (dto.isSuppressAvetmissExport() == null) {
             validator.throwClientErrorException(id, 'suppressAvetmissExport', 'Suppress avetmiss export flag is required')
         }
         if (dto.attendanceType == null) {
@@ -323,7 +323,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         validateLength(id, trimToEmpty(dto.vetPurchasingContractScheduleID), 'vetPurchasingContractScheduleID', 3)
 
         Course dbCourse = courseService.getEntityAndValidateExistence(context, dto.courseId)
-        if (dto.expectedHours == null && dto.isDistantLearningCourse && (dbCourse.modules == null || dbCourse.modules.size() == 0)) {
+        if (dto.expectedHours == null && dto.isIsDistantLearningCourse() && (dbCourse.modules == null || dbCourse.modules.size() == 0)) {
             validator.throwClientErrorException(id, 'expectedHours', 'Expected study hours is required for self-paced non-VET class')
         }
     }
@@ -380,34 +380,34 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         if (courseClassDuplicate.daysTo == null) {
             validator.throwClientErrorException('daysTo', "Invalid days to value.")
         }
-        if (courseClassDuplicate.copyTutors == null) {
+        if (courseClassDuplicate.isCopyTutors() == null) {
             validator.throwClientErrorException('copyTutors', 'copyTutors  is required')
         }
-        if (courseClassDuplicate.copyTrainingPlans == null) {
+        if (courseClassDuplicate.isCopyTrainingPlans() == null) {
             validator.throwClientErrorException('copyTrainingPlans', 'copyTrainingPlans is required')
         }
-        if (courseClassDuplicate.applyDiscounts == null) {
+        if (courseClassDuplicate.isApplyDiscounts() == null) {
             validator.throwClientErrorException('applyDiscounts', 'applyDiscounts is required')
         }
-        if (courseClassDuplicate.copyCosts == null) {
+        if (courseClassDuplicate.isCopyCosts() == null) {
             validator.throwClientErrorException('copyCosts', 'copyCosts is required')
         }
-        if (courseClassDuplicate.copySitesAndRooms == null) {
+        if (courseClassDuplicate.isCopySitesAndRooms() == null) {
             validator.throwClientErrorException('copySitesAndRooms', 'copySitesAndRooms is required')
         }
-        if (courseClassDuplicate.tutorRosterOverrides == null) {
+        if (courseClassDuplicate.isTutorRosterOverrides() == null) {
             validator.throwClientErrorException('tutorRosterOverrides', 'tutorRosterOverrides is required')
         }
-        if (courseClassDuplicate.copyVetData == null) {
+        if (courseClassDuplicate.isCopyVetData() == null) {
             validator.throwClientErrorException('copyVetData', 'copyVetData is required')
         }
-        if (courseClassDuplicate.copyNotes == null) {
+        if (courseClassDuplicate.isCopyNotes() == null) {
             validator.throwClientErrorException('copyNotes', 'copyNotes is required')
         }
-        if (courseClassDuplicate.copyAssessments == null) {
+        if (courseClassDuplicate.isCopyAssessments() == null) {
             validator.throwClientErrorException('copyAssessments', 'copyAssessments is required')
         }
-        if (courseClassDuplicate.copyOnlyMandatoryTags == null) {
+        if (courseClassDuplicate.isCopyOnlyMandatoryTags() == null) {
             validator.throwClientErrorException('copyOnlyMandatoryTags', 'copyOnlyMandatoryTags is required')
         }
 
@@ -416,16 +416,16 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
             req.ids = courseClassDuplicate.classIds
             req.courseId = courseClassDuplicate.courseId
             req.daysTo = courseClassDuplicate.daysTo
-            req.copyTutors = courseClassDuplicate.copyTutors
-            req.copyTrainingPlans = courseClassDuplicate.copyTrainingPlans
-            req.applyDiscounts = courseClassDuplicate.applyDiscounts
-            req.copyCosts = courseClassDuplicate.copyCosts
-            req.copySitesAndRooms = courseClassDuplicate.copySitesAndRooms
-            req.tutorRosterOverrides = courseClassDuplicate.tutorRosterOverrides
-            req.copyVetData = courseClassDuplicate.copyVetData
-            req.copyNotes = courseClassDuplicate.copyNotes
-            req.copyAssessments = courseClassDuplicate.copyAssessments
-            req.copyOnlyMandatoryTags = !courseClassDuplicate.copyOnlyMandatoryTags
+            req.copyTutors = courseClassDuplicate.isCopyTutors()
+            req.copyTrainingPlans = courseClassDuplicate.isCopyTrainingPlans()
+            req.applyDiscounts = courseClassDuplicate.isApplyDiscounts()
+            req.copyCosts = courseClassDuplicate.isCopyCosts()
+            req.copySitesAndRooms = courseClassDuplicate.isCopySitesAndRooms()
+            req.tutorRosterOverrides = courseClassDuplicate.isTutorRosterOverrides()
+            req.copyVetData = courseClassDuplicate.isCopyVetData()
+            req.copyNotes = courseClassDuplicate.isCopyNotes()
+            req.copyAssessments = courseClassDuplicate.isCopyAssessments()
+            req.copyOnlyMandatoryTags = !courseClassDuplicate.isCopyOnlyMandatoryTags()
             req
         }, courseClassDuplicate.classCost)
 
@@ -459,11 +459,11 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
             validator.throwClientErrorException(id, null, error)
         }
 
-        if(cancelCourseClassDTO.refundManualInvoices == null) {
+        if(cancelCourseClassDTO.isRefundManualInvoices() == null) {
             validator.throwClientErrorException('refundManualInvoices', 'RefundManualInvoices is required.')
         }
 
-        if(cancelCourseClassDTO.sendEmail == null) {
+        if(cancelCourseClassDTO.isSendEmail() == null) {
             validator.throwClientErrorException('sendEmail', 'SendEmail  is required.')
         }
 
@@ -472,8 +472,8 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         classHelper.courseCLass = courseClass
         classHelper.cancelEnrolmentService = cancelEnrolmentService
         classHelper.eventService = eventService
-        classHelper.refundManualInvoices = cancelCourseClassDTO.refundManualInvoices
-        classHelper.sendEmail = cancelCourseClassDTO.sendEmail
+        classHelper.refundManualInvoices = cancelCourseClassDTO.isRefundManualInvoices()
+        classHelper.sendEmail = cancelCourseClassDTO.isSendEmail()
         classHelper.systemUser = systemUserService.currentUser
 
         CancelationResult cancelationResult = classHelper.cancel()

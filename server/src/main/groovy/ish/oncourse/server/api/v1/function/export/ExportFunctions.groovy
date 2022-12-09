@@ -165,11 +165,11 @@ class ExportFunctions {
         // if were found sortFields for field - use them for sorting, sort ascending will get from first sortField
         if ((sortFields != null) && (sorting != null) && (sorting.size() > 0)) {
             sortFields.each {
-                objectSelect.orderBy(it, sorting.get(0).ascending ? SortOrder.ASCENDING : SortOrder.DESCENDING)
+                objectSelect.orderBy(it, sorting.get(0).isAscending() ? SortOrder.ASCENDING : SortOrder.DESCENDING)
             }
         } else {
             sorting.each {
-                objectSelect.orderBy(it.attribute, it.ascending ? SortOrder.ASCENDING : SortOrder.DESCENDING)
+                objectSelect.orderBy(it.attribute, it.isAscending() ? SortOrder.ASCENDING : SortOrder.DESCENDING)
             }
         }
 

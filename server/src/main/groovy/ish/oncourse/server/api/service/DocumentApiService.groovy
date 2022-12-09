@@ -39,8 +39,8 @@ class DocumentApiService extends TaggableApiService<DocumentDTO, Document, Docum
     @Override
     Document toCayenneModel(DocumentDTO restModel, Document cayenneModel) {
         cayenneModel.name = trimToNull(restModel.name)
-        cayenneModel.isRemoved = restModel.removed
-        cayenneModel.isShared = restModel.shared
+        cayenneModel.isRemoved = restModel.isRemoved()
+        cayenneModel.isShared = restModel.isShared()
         cayenneModel.description = trimToNull(restModel.description)
         cayenneModel.webVisibility = restModel.access.dbType
 
@@ -65,7 +65,7 @@ class DocumentApiService extends TaggableApiService<DocumentDTO, Document, Docum
             validator.throwClientErrorException(id, 'access', 'Security level is required')
         }
 
-        if (restModel.shared == null) {
+        if (restModel.isShared() == null) {
             validator.throwClientErrorException(id, 'shared', 'Shared flag is required')
         }
 

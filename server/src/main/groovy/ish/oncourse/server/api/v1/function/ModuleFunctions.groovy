@@ -60,7 +60,7 @@ class ModuleFunctions {
             module.title = model.title?.trim()
             module.fieldOfEducation = model.fieldOfEducation?.trim()
         }
-        module.isOffered = model.isOffered
+        module.isOffered = model.isIsOffered()
         module.nominalHours = model.nominalHours
         module.specialization = model.specialization?.trim()
         module.creditPoints = model.creditPoints
@@ -103,7 +103,7 @@ class ModuleFunctions {
             return new ValidationErrorDTO(model.id?.toString(), 'specialization', "Specialization must be less than 128 chars.")
         }
 
-        if (model.isOffered == null) {
+        if (model.isIsOffered() == null) {
             return new ValidationErrorDTO(model.id?.toString(), 'isOffered', "Flag \'Is offered\' is required.")
         }
 

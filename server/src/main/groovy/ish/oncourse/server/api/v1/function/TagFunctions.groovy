@@ -137,7 +137,7 @@ class TagFunctions {
                         tagRequirement.mandatory = req.isRequired
                         tagRequirement.limitToOneTag = !req.manyTermsAllowed
                         tagRequirement.displayRule = req.displayRule
-                        tagRequirement.system = tag.system && (
+                        tagRequirement.system = tag.isSystem() && (
                                 (dbTag.specialType == NodeSpecialType.SUBJECTS && tagRequirement.type == TagRequirementTypeDTO.COURSE) ||
                                         (dbTag.specialType == NodeSpecialType.ASSESSMENT_METHOD && tagRequirement.type == TagRequirementTypeDTO.ASSESSMENT) ||
                                         (dbTag.specialType == NodeSpecialType.PAYROLL_WAGE_INTERVALS && tagRequirement.type == TagRequirementTypeDTO.TUTOR) ||
@@ -306,9 +306,9 @@ class TagFunctions {
         tag.requirements.each { r ->
             TagRequirement tagRequirement = r.id ? requirementMap.remove(r.id) : context.newObject(TagRequirement)
             tagRequirement.entityIdentifier = tagRequirementBidiMap.getByValue(r.type)
-            tagRequirement.isRequired = r.mandatory
+            tagRequirement.isRequired = r.isMandatory()
             tagRequirement.displayRule = r.displayRule?.empty ? null : r.displayRule
-            tagRequirement.manyTermsAllowed = !r.limitToOneTag
+            tagRequirement.manyTermsAllowed = !r.isLimitToOneTag()
             tagRequirement.tag = dbTag
         }
         List<TaggableClasses> deletedEntityList = requirementMap

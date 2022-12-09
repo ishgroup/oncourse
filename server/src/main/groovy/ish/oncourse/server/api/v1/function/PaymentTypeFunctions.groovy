@@ -57,7 +57,7 @@ class PaymentTypeFunctions {
     static ValidationErrorDTO validateData(ObjectContext context, List<PaymentMethodDTO> paymentTypes) {
 
         List<PaymentMethodDTO> ccTypes = paymentTypes.findAll { it.type == PayTypeDTO.CREDIT_CARD &&
-                it.active }
+                it.isActive() }
         PaymentMethod bdCcType = ObjectSelect.query(PaymentMethod).where(PaymentMethod.TYPE.eq(CREDIT_CARD)).and(PaymentMethod.ACTIVE.isTrue()).selectOne(context)
 
         if (ccTypes.size() > 1 ||
@@ -128,9 +128,9 @@ class PaymentTypeFunctions {
         PaymentMethod method = type.id ? SelectById.query(PaymentMethod, type.id).selectOne(context) : context.newObject(PaymentMethod)
         method.name = type.name
         method.type = PaymentType.valueOf(type.type.name())
-        method.active = type.active
-        method.bankedAutomatically = type.bankedAuto
-        method.reconcilable = type.reconcilable
+        method.active = type.isActive()
+        method.bankedAutomatically = type.isBankedAuto()
+        method.reconcilable = type.isReconcilable()
         method.account = getAssetAccount(context, type.accountId)
         method.undepositedFundsAccount = getAssetAccount(context, type.undepositAccountId)
         method

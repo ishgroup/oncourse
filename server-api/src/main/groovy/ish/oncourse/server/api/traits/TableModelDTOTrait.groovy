@@ -30,7 +30,7 @@ trait TableModelDTOTrait {
                     isEqualColumns = false
                     return
                 }
-                if (entry.sortable != otherColumn.sortable) {
+                if (entry.isSortable() != otherColumn.isSortable()) {
                     isEqualColumns = false
                     return
                 }
@@ -38,7 +38,7 @@ trait TableModelDTOTrait {
                     isEqualColumns = false
                     return
                 }
-                if(entry.system != otherColumn.system){
+                if(entry.isSystem() != otherColumn.isSystem()){
                     isEqualColumns = false
                     return
                 }

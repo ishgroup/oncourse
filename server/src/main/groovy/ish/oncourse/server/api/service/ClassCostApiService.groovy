@@ -82,7 +82,7 @@ class ClassCostApiService extends EntityApiService<ClassCostDTO, ClassCost, Clas
         ccDto.flowType = ClassCostFlowTypeDTO.values()[0].fromDbType(cayenneModel.flowType)
         ccDto.repetitionType = ClassCostRepetitionTypeDTO.values()[0].fromDbType(cayenneModel.repetitionType)
         ccDto.isOverriden = cayenneModel.flowType == ClassCostFlowType.WAGES && cayenneModel.perUnitAmountExTax != null
-        if (ccDto.isOverriden) {
+        if (ccDto.isIsOverriden()) {
             ccDto.perUnitAmountExTax  = cayenneModel.perUnitAmountExTax?.toBigDecimal()
         } else {
             ccDto.perUnitAmountExTax = cayenneModel.calcPerUnitAmountExTax?.toBigDecimal()
@@ -170,7 +170,7 @@ class ClassCostApiService extends EntityApiService<ClassCostDTO, ClassCost, Clas
                 break
             case ClassCostFlowType.EXPENSE:
                 cayenneModel.invoiceToStudent = false
-                cayenneModel.isSunk = dto.isSunk
+                cayenneModel.isSunk = dto.isIsSunk()
                 updateTax(cayenneModel, dto)
                 updateContact(cayenneModel, dto)
                 break
@@ -178,12 +178,12 @@ class ClassCostApiService extends EntityApiService<ClassCostDTO, ClassCost, Clas
                 if (dto.courseClassTutorId) {
                     cayenneModel.tutorRole = tutorService.getEntityAndValidateExistence(context, dto.courseClassTutorId)
                 }
-                if (!dto.isOverriden) {
+                if (!dto.isIsOverriden()) {
                     cayenneModel.perUnitAmountExTax = null
                 }
                 updateContact(cayenneModel, dto)
                 cayenneModel.onCostRate = dto.onCostRate
-                cayenneModel.isSunk = dto.isSunk
+                cayenneModel.isSunk = dto.isIsSunk()
                 cayenneModel.invoiceToStudent = false
                 break
             case ClassCostFlowType.DISCOUNT:
@@ -255,7 +255,7 @@ class ClassCostApiService extends EntityApiService<ClassCostDTO, ClassCost, Clas
                 break
             case ClassCostFlowTypeDTO.INCOME:
                 validateIncTax(dto,context,id)
-                if (dto.payableOnEnrolment) {
+                if (dto.isPayableOnEnrolment()) {
                     if (!dto.paymentPlan.empty &&
                             dto.paymentPlan*.amount.inject { a, b -> a.add(b) } != dto.perUnitAmountIncTax ) {
                         validator.throwClientErrorException(id, 'perUnitAmountIncTax', 'Payment plan total doesn\'t match Enrolment fee ')
@@ -293,7 +293,7 @@ class ClassCostApiService extends EntityApiService<ClassCostDTO, ClassCost, Clas
 
                 boolean isUserCanOverrideTutorPayRate = permissionService.currentUserCan(KeyCode.SPECIAL_OVERRIDE_TUTOR_PAYRATE, Mask.ALL)
 
-                if (!isUserCanOverrideTutorPayRate && dto.isOverriden) {
+                if (!isUserCanOverrideTutorPayRate && dto.isIsOverriden()) {
                     validator.throwForbiddenErrorException(id, 'repetitionType', 'You have not permission to override tutor pay rate.')
                 }
                 break
@@ -308,7 +308,7 @@ class ClassCostApiService extends EntityApiService<ClassCostDTO, ClassCost, Clas
 
         if (id != null) {
             ClassCost cost = getEntityAndValidateExistence(context, id)
-            if ((cost.flowType != dto.flowType.dbType) || (cost.payableOnEnrolment != dto.payableOnEnrolment)) {
+            if ((cost.flowType != dto.flowType.dbType) || (cost.payableOnEnrolment != dto.isPayableOnEnrolment())) {
                 validator.throwClientErrorException(id, 'flowType', 'Cost type cannot be modified')
             }
 
@@ -316,7 +316,7 @@ class ClassCostApiService extends EntityApiService<ClassCostDTO, ClassCost, Clas
                 validator.throwClientErrorException(id, 'courseClassid', 'Class cannot be modified')
             }
         } else {
-            if (dto.payableOnEnrolment ) {
+            if (dto.isPayableOnEnrolment()) {
                 validator.throwClientErrorException(id, 'payableOnEnrolment', 'Class has only one enrolment fee')
             }
         }

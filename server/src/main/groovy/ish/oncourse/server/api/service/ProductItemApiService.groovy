@@ -300,11 +300,11 @@ class ProductItemApiService extends TaggableApiService<ProductItemDTO, ProductIt
         ValidationErrorDTO error = validateForCancel(cancelRequest, producItem)
         if (error) {
             validator.throwClientErrorException(error)
-        } else if (cancelRequest.createCrediNote) {
+        } else if (cancelRequest.isCreateCrediNote()) {
             Money fee = Money.ZERO
             Account account = null
             Tax tax = null
-            if (cancelRequest.retainAdministrativeFee) {
+            if (cancelRequest.isRetainAdministrativeFee()) {
                 fee = Money.valueOf(cancelRequest.feeAmount)
                 account = accountDao.getById(context, cancelRequest.retainAccountId)
                 tax = taxDao.getById(context, cancelRequest.feeTaxId)
@@ -339,7 +339,7 @@ class ProductItemApiService extends TaggableApiService<ProductItemDTO, ProductIt
             return new ValidationErrorDTO(id:productItem.id.toString(), propertyName: 'status', errorMessage: 'There is no sale by provided id')
         }
 
-        if (productItem instanceof Voucher && cancelRequest.createCrediNote && isPartiallyRedeemed((Voucher) productItem)) {
+        if (productItem instanceof Voucher && cancelRequest.isCreateCrediNote() && isPartiallyRedeemed((Voucher) productItem)) {
             return new ValidationErrorDTO(id: productItem.id.toString(), errorMessage: 'Voucher partially redeemed. No automatic credit note can be created. You can create a credit note manually')
         }
 

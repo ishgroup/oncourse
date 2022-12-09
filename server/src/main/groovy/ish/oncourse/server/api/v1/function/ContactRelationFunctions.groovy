@@ -78,7 +78,7 @@ class ContactRelationFunctions {
     static ContactRelationType updateContactRelation(ObjectContext context, ContactRelationTypeDTO type) {
         ContactRelationType dbType = type.id ? SelectById.query(ContactRelationType, type.id).selectOne(context) : context.newObject(ContactRelationType)
 
-        dbType.delegatedAccessToContact = type.portalAccess
+        dbType.delegatedAccessToContact = type.isPortalAccess()
         if (type.id == null || Long.valueOf(type.id) > 0) {
             dbType.fromContactName = type.relationName
             dbType.toContactName = type.reverseRelationName

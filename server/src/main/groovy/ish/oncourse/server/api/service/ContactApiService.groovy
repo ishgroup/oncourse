@@ -184,7 +184,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         cayenneModel.birthDate = dto.birthDate
         cayenneModel.country = countryDao.getById(context, dto?.country?.id)
         cayenneModel.fax = dto.fax
-        cayenneModel.isCompany = dto.isCompany
+        cayenneModel.isCompany = dto.isIsCompany()
         cayenneModel.gender = dto.gender?.dbType
         cayenneModel.message = dto.message
         cayenneModel.homePhone = removeUnsupportedSymbolsFromPhone(dto.homePhone)
@@ -198,9 +198,9 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         cayenneModel.deliveryStatusEmail = dto.deliveryStatusEmail
         cayenneModel.deliveryStatusSms = dto.deliveryStatusSms
         cayenneModel.deliveryStatusPost = dto.deliveryStatusPost
-        cayenneModel.allowEmail = dto.allowEmail
-        cayenneModel.allowSms = dto.allowSms
-        cayenneModel.allowPost = dto.allowPost
+        cayenneModel.allowEmail = dto.isAllowEmail()
+        cayenneModel.allowSms = dto.isAllowSms()
+        cayenneModel.allowPost = dto.isAllowPost()
         cayenneModel.honorific = dto.honorific
         cayenneModel.firstName = dto.firstName
         cayenneModel.middleName = dto.middleName
@@ -216,7 +216,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         updateContactRelations(context, cayenneModel, dto.relations)
         updateAvailabilityRules(cayenneModel, cayenneModel.unavailableRuleRelations*.rule, dto.rules, ContactUnavailableRuleRelation)
 
-        if (dto.removeCChistory) {
+        if (dto.isRemoveCChistory()) {
             paymentInDao.removeCChistory(cayenneModel)
         }
         cayenneModel
@@ -254,16 +254,16 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         cayenneModel.clientIndustryEmployment = dto?.clientIndustryEmployment?.getDbType()
         cayenneModel.clientOccupationIdentifier = dto?.clientOccupationIdentifier?.getDbType()
         cayenneModel.englishProficiency = dto?.englishProficiency?.getDbType()
-        cayenneModel.feeHelpEligible = dto.feeHelpEligible
+        cayenneModel.feeHelpEligible = dto.isFeeHelpEligible()
         cayenneModel.highestSchoolLevel = dto?.highestSchoolLevel?.getDbType()
         cayenneModel.indigenousStatus = dto?.indigenousStatus?.getDbType()
-        cayenneModel.isOverseasClient = dto.isOverseasClient
-        cayenneModel.isStillAtSchool = dto.isStillAtSchool
+        cayenneModel.isOverseasClient = dto.isIsOverseasClient()
+        cayenneModel.isStillAtSchool = dto.isIsStillAtSchool()
         cayenneModel.medicalInsurance = dto.medicalInsurance
         cayenneModel.passportNumber = dto.passportNumber
         cayenneModel.priorEducationCode = dto?.priorEducationCode?.getDbType()
         cayenneModel.specialNeeds = dto.specialNeeds
-        cayenneModel.specialNeedsAssistance = dto.specialNeedsAssistance
+        cayenneModel.specialNeedsAssistance = dto.isSpecialNeedsAssistance()
         cayenneModel.townOfBirth = dto.townOfBirth
         cayenneModel.uniqueLearnerIndentifier = dto.uniqueLearnerIdentifier
         if (dto.usiStatus == UsiStatusDTO.EXEMPTION || dto.usiStatus == UsiStatusDTO.INTERNATIONAL) {
@@ -324,7 +324,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
 
     void validateModelBeforeSave(ContactDTO dto, ObjectContext context, Long id) {
 
-        checkContactNames(dto.firstName, dto.lastName, dto.isCompany)
+        checkContactNames(dto.firstName, dto.lastName, dto.isIsCompany())
         checkContactFieldsLength(validator, dto)
         checkEmail(dto.email)
 
@@ -355,7 +355,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
 
         if (dto.student != null) {
 
-            if (dto.isCompany) {
+            if (dto.isIsCompany()) {
                 validator.throwClientErrorException(Contact.IS_COMPANY.name, 'A student cannot be a company.')
             }
 

@@ -70,7 +70,7 @@ class AssessmentApiService extends TaggableApiService<AssessmentDTO, Assessment,
     Assessment toCayenneModel(AssessmentDTO restModel, Assessment cayenneModel) {
         cayenneModel.code = trimToNull(restModel.code)
         cayenneModel.name = trimToNull(restModel.name)
-        cayenneModel.active = restModel.active
+        cayenneModel.active = restModel.isActive()
         cayenneModel.description = trimToNull(restModel.description)
         cayenneModel.gradingType = restModel.gradingTypeId ?
                 gradingApiService.getEntityAndValidateExistence(cayenneModel.context, restModel.gradingTypeId) :
@@ -115,7 +115,7 @@ class AssessmentApiService extends TaggableApiService<AssessmentDTO, Assessment,
         } else if (trimToEmpty(restModel.description).size() > 32000) {
             validator.throwClientErrorException(id, 'description', 'Description cannot be more than 32000 chars.')
         }
-        if (restModel.active == null) {
+        if (restModel.isActive() == null) {
             validator.throwClientErrorException(id, 'active', 'Active flag is required.')
         }
 

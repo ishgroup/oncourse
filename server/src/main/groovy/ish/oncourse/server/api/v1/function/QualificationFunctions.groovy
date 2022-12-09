@@ -71,7 +71,7 @@ class QualificationFunctions {
             qualification.reviewDate = model.reviewDate
         }
 
-        qualification.isOffered = model.isOffered
+        qualification.isOffered = model.isIsOffered()
         qualification.nominalHours = model.nominalHours
         qualification.specialization = trimToNull(model.specialization)
     }
@@ -126,7 +126,7 @@ class QualificationFunctions {
             return new ValidationErrorDTO(qualification?.id?.toString(), 'specialization', "Specialization must be less than 128 chars.")
         }
 
-        if (qualification.isOffered == null) {
+        if (qualification.isIsOffered() == null) {
             return new ValidationErrorDTO(qualification?.id?.toString(), 'isOffered', "Flag \'Is offered\' is required.")
         }
         null

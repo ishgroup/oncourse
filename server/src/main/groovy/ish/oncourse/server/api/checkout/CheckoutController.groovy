@@ -161,7 +161,7 @@ class CheckoutController {
         checkout.contactNodes.each { node ->
 
             Contact contact = contactApiService.getEntityAndValidateExistence(context, node.contactId)
-            Boolean confirmation = node.sendConfirmation
+            Boolean confirmation = node.isSendConfirmation()
 
             node.products.each { dto -> processArticle(dto, contact, confirmation) }
             node.memberships.each { dto -> processMembership(dto, contact, confirmation) }
@@ -334,7 +334,7 @@ class CheckoutController {
         voucher.expiryDate = LocalDateUtils.valueToDate(dto.validTo)
         voucher.confirmationStatus =  sendEmail ? NOT_SENT : DO_NOT_SEND
 
-        if (dto.restrictToPayer) {
+        if (dto.isRestrictToPayer()) {
            voucher.redeemableBy = payer
         }
         //chech is this a product with predefined value on purchase
@@ -364,14 +364,14 @@ class CheckoutController {
             invoice = context.newObject(Invoice)
             invoice.amountOwing = Money.ZERO
             invoice.source  = SOURCE_ONCOURSE
-            invoice.confirmationStatus = checkout.sendInvoice ? NOT_SENT : DO_NOT_SEND
+            invoice.confirmationStatus = checkout.isSendInvoice() ? NOT_SENT : DO_NOT_SEND
             invoice.contact = payer
             if (trimToNull(payer.getAddress()) != null) {
                 invoice.setBillToAddress(payer.getAddress())
             }
             invoice.dateDue = LocalDate.now()
             invoice.invoiceDate = LocalDate.now()
-            invoice.allowAutoPay = checkout.allowAutoPay
+            invoice.allowAutoPay = checkout.isAllowAutoPay()
             invoice.createdByUser = context.localObject(systemUserService.currentUser)
             invoice.customerReference = checkout.invoiceCustomerReference
             invoice.publicNotes = checkout.invoicePublicNotes
@@ -407,7 +407,7 @@ class CheckoutController {
     }
 
     private void initPayment() {
-        if (checkout.paymentMethodId == null && !checkout.payWithSavedCard &&
+        if (checkout.paymentMethodId == null && !checkout.isPayWithSavedCard() &&
                 (checkout.previousInvoices.isEmpty() || !checkout.previousInvoices.any { id, amount -> Money.valueOf(amount) != Money.ZERO })) {
             return
         }
@@ -426,7 +426,7 @@ class CheckoutController {
         if (paymentIn.amount > ZERO) {
             if (checkout.paymentMethodId != null) {
                 method =  SelectById.query(PaymentMethod, checkout.paymentMethodId).selectOne(context)
-            } else if (checkout.payWithSavedCard) {
+            } else if (checkout.isPayWithSavedCard()) {
                 method = PaymentMethodUtil.getRealTimeCreditCardPaymentMethod(context, PaymentMethod)
             } else {
                 logger.error('Payment method must be set: {}', checkout.toString())
@@ -459,7 +459,7 @@ class CheckoutController {
             paymentIn.confirmationStatus = DO_NOT_SEND
         } else {
             paymentIn.status = PaymentStatus.SUCCESS
-            paymentIn.confirmationStatus = checkout.sendInvoice ? NOT_SENT : DO_NOT_SEND
+            paymentIn.confirmationStatus = checkout.isSendInvoice() ? NOT_SENT : DO_NOT_SEND
         }
     }
 
@@ -767,7 +767,7 @@ class CheckoutController {
         vPaymentIn.amount = amount
         vPaymentIn.paymentMethod = PaymentMethodUtil.getVOUCHERPaymentMethods(context, PaymentMethod)
         vPaymentIn.status = PaymentStatus.SUCCESS
-        vPaymentIn.confirmationStatus = checkout.sendInvoice ? NOT_SENT : DO_NOT_SEND
+        vPaymentIn.confirmationStatus = checkout.isSendInvoice() ? NOT_SENT : DO_NOT_SEND
 
         vPaymentIn
     }

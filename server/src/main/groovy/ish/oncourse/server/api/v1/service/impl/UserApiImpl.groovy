@@ -123,7 +123,7 @@ class UserApiImpl implements UserApi {
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
         }
         SystemUser dbUser = toDbSystemUser(context, user)
-        if (!user.id || user.inviteAgain) {
+        if (!user.id || user.isInviteAgain()) {
             sendInvitationToUser(dbUser)
         }
 

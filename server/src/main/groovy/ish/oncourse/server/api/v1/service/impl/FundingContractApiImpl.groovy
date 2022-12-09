@@ -50,7 +50,7 @@ class FundingContractApiImpl implements FundingContractApi {
         fundingContracts.each { it ->
             if (it.id != null) {
                 FundingSource dbObj = fundingSourceDao.getById(context, it.id)
-                dbObj.active = it.active
+                dbObj.active = it.isActive()
                 dbObj
             }
         }

@@ -128,10 +128,10 @@ class OutcomeFunctions {
             outcome.enrolment = enrolment
         }
 
-        outcome.startDateOverridden = outcome.priorLearning != null || outcomeDTO.startDateOverridden
+        outcome.startDateOverridden = outcome.priorLearning != null || outcomeDTO.isStartDateOverridden()
         outcome.startDate = outcome.startDateOverridden ? outcomeDTO.startDate : outcomeDTO.actualStartDate
 
-        outcome.endDateOverridden = outcome.priorLearning != null || outcomeDTO.endDateOverridden
+        outcome.endDateOverridden = outcome.priorLearning != null || outcomeDTO.isEndDateOverridden()
         outcome.endDate = outcome.endDateOverridden ? outcomeDTO.endDate : outcomeDTO.actualEndDate
 
 
@@ -160,7 +160,7 @@ class OutcomeFunctions {
         LocalDate startDate = outcomeDTO.startDate
         LocalDate endDate = outcomeDTO.endDate
 
-        if (startDate != null && endDate != null && (outcomeDTO.endDateOverridden || outcomeDTO.startDateOverridden)) {
+        if (startDate != null && endDate != null && (outcomeDTO.isEndDateOverridden() || outcomeDTO.isStartDateOverridden())) {
             if (endDate.isBefore(startDate)) {
                 validator.throwClientErrorException(id, 'endDate', 'End date can not be before the start date.')
             }

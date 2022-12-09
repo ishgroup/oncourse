@@ -222,7 +222,7 @@ class DiscountFunctions {
         } else if (discount.predictedStudentsPercentage < 0 || discount.predictedStudentsPercentage > 1) {
             return new ValidationErrorDTO(discount?.id?.toString(), 'predictedStudentsPercentage', 'Wrong value')
         }
-        if (discount.availableOnWeb == null) {
+        if (discount.isAvailableOnWeb() == null) {
             return new ValidationErrorDTO(discount?.id?.toString(), 'availableOnWeb', 'Availability via online is required.')
         }
         if (trimToEmpty(discount.code).size() > 20) {
@@ -240,17 +240,17 @@ class DiscountFunctions {
         if (discount.validFromOffset && discount.validToOffset && discount.validFromOffset > discount.validToOffset) {
             return new ValidationErrorDTO(discount?.id?.toString(), 'validTo', 'Valid to offset cannot be before valid from offset.')
         }
-        if (discount.hideOnWeb == null) {
+        if (discount.isHideOnWeb() == null) {
             return new ValidationErrorDTO(discount?.id?.toString(), 'hideOnWeb', 'Hiding price on web is required.')
         }
         if (trimToEmpty(discount.description).size() > 32000) {
             return new ValidationErrorDTO(discount?.id?.toString(), 'description', 'Description cannot be more than 32000 chars.')
         }
 
-        if (discount.studentAgeUnder == null && discount.studentAge != null) {
+        if (discount.isStudentAgeUnder() == null && discount.studentAge != null) {
             return new ValidationErrorDTO(discount?.id?.toString(), 'studentAgeUnder', 'Student Age option (Under or Above) is required when Age is set')
         }
-        if (discount.studentAgeUnder != null && discount.studentAge == null) {
+        if (discount.isStudentAgeUnder() != null && discount.studentAge == null) {
             return new ValidationErrorDTO(discount?.id?.toString(), 'studentAge', 'Student Age is required.')
         }
         if (discount.studentAge != null && discount.studentAge < 0) {
@@ -287,7 +287,7 @@ class DiscountFunctions {
                 return new ValidationErrorDTO(discount?.id?.toString(), "discountCourseClasses[$i].id", "CourseClass with id=$courseClass.id not found.")
             }
         }
-        if (discount.addByDefault == null) {
+        if (discount.isAddByDefault() == null) {
             return new ValidationErrorDTO(discount?.id?.toString(), 'addByDefault', 'Add by default is required.')
         }
         if (discount.minEnrolments == null) {
@@ -332,24 +332,24 @@ class DiscountFunctions {
             dbDiscount.cosAccount = null
         }
         dbDiscount.predictedStudentsPercentage = discount.predictedStudentsPercentage
-        dbDiscount.isAvailableOnWeb = discount.availableOnWeb
+        dbDiscount.isAvailableOnWeb = discount.isAvailableOnWeb()
         dbDiscount.code = discount.code
         dbDiscount.validFrom = LocalDateUtils.valueToDate(discount.validFrom)
         dbDiscount.validFromOffset = discount.validFromOffset
         dbDiscount.validTo = LocalDateUtils.valueToDate(discount.validTo, true)
         dbDiscount.validToOffset = discount.validToOffset
-        dbDiscount.hideOnWeb = discount.hideOnWeb
+        dbDiscount.hideOnWeb = discount.isHideOnWeb()
         dbDiscount.publicDescription = discount.description
         dbDiscount.studentEnrolledWithinDays = discount.studentEnrolledWithinDays
-        dbDiscount.studentAge = discount.studentAgeUnder == null ? null : "${discount.studentAgeUnder ? '<' : '>'} $discount.studentAge"
+        dbDiscount.studentAge = discount.isStudentAgeUnder() == null ? null : "${discount.isStudentAgeUnder() ? '<' : '>'} $discount.studentAge"
         dbDiscount.studentPostcode = discount.studentPostcode
         updateDiscountConcessionTypes(context, dbDiscount, discount.discountConcessionTypes)
         updateDiscountMemberships(context, dbDiscount, discount.discountMemberships)
         updateDiscountCourseClasses(context, dbDiscount, discount.discountCourseClasses)
-        dbDiscount.addByDefault = discount.addByDefault
+        dbDiscount.addByDefault = discount.isAddByDefault()
         dbDiscount.minEnrolments = discount.minEnrolments
         dbDiscount.minValue = toMoneyValue(discount.minValue)
-        dbDiscount.limitPreviousEnrolment = discount.limitPreviousEnrolment != null ? discount.limitPreviousEnrolment : false
+        dbDiscount.limitPreviousEnrolment = discount.isLimitPreviousEnrolment() != null ? discount.isLimitPreviousEnrolment() : false
         updateCorporatePassDiscount(context, dbDiscount, discount.corporatePassDiscounts)
         dbDiscount
     }

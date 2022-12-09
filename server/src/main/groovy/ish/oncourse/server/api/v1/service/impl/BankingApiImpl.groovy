@@ -264,7 +264,7 @@ class BankingApiImpl implements BankingApi {
 	}
 
 	private static ValidationErrorDTO validatePaymentIsNotReconcilable(PaymentDTO payment, PaymentInterface paymentInterface) {
-		if (!paymentInterface.paymentMethod.reconcilable && payment.reconciled != paymentInterface.reconciled) {
+		if (!paymentInterface.paymentMethod.reconcilable && payment.isReconciled() != paymentInterface.reconciled) {
 			return new ValidationErrorDTO("---", "payments", ERROR_PAYMENT_IS_NOT_RECONCILABLE)
 		}
 		return null
@@ -341,7 +341,7 @@ class BankingApiImpl implements BankingApi {
 	private static void updatePaymentInterface(PaymentInterface paymentInterface, PaymentDTO payment) {
 		if (payment != null) {
 			if (paymentInterface.paymentMethod.reconcilable) {
-				paymentInterface.reconciled = payment.reconciled
+				paymentInterface.reconciled = payment.isReconciled()
 			}
 		} else {
 			removePaymentFromBanking(paymentInterface)

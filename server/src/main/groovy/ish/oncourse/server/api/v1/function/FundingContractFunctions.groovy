@@ -40,7 +40,7 @@ class FundingContractFunctions {
     static FundingSource toDbFundingContract(FundingSourceDTO fundingSource, FundingSource dbObj) {
         dbObj.name = trimToNull(fundingSource.name)
         dbObj.flavour = ExportJurisdiction.values().find { it.displayName == fundingSource.flavour.toString() }
-        dbObj.active = fundingSource.active
+        dbObj.active = fundingSource.isActive()
         dbObj
     }
 
@@ -58,7 +58,7 @@ class FundingContractFunctions {
     }
 
     static ValidationErrorDTO validateForPatch(FundingSourceDTO entity) {
-        if (entity.active == null) {
+        if (entity.isActive() == null) {
             return new ValidationErrorDTO(entity.id?.toString(), 'active', 'Active flag cannot be null')
         }
         null
@@ -78,7 +78,7 @@ class FundingContractFunctions {
         if (entity.flavour == null) {
             return new ValidationErrorDTO(entity.id?.toString(), 'flavour', 'Flavour is required')
         }
-        if (entity.active == null) {
+        if (entity.isActive() == null) {
             return new ValidationErrorDTO(entity.id?.toString(), 'active', 'Active flag cannot be null')
         }
         null

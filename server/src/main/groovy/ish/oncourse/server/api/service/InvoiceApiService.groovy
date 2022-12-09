@@ -188,7 +188,7 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
             updateInvoiceLines(abstractInvoice, invoiceDTO.invoiceLines)
         }
 
-        abstractInvoice.confirmationStatus = invoiceDTO.sendEmail ? ConfirmationStatus.NOT_SENT : ConfirmationStatus.DO_NOT_SEND
+        abstractInvoice.confirmationStatus = invoiceDTO.isSendEmail() ? ConfirmationStatus.NOT_SENT : ConfirmationStatus.DO_NOT_SEND
         abstractInvoice.customerReference = trimToNull(invoiceDTO.customerReference)
         abstractInvoice.billToAddress = trimToNull(invoiceDTO.billToAddress)
         abstractInvoice.shippingAddress = trimToNull(invoiceDTO.shippingAddress)

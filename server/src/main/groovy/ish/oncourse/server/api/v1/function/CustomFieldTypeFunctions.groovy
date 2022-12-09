@@ -158,7 +158,7 @@ class CustomFieldTypeFunctions {
         }
         dbType.name = type.name
         dbType.defaultValue = type.defaultValue
-        dbType.isMandatory = type.mandatory
+        dbType.isMandatory = type.isMandatory()
         dbType.sortOrder = type.sortOrder
         dbType.dataType = type.dataType.dbType
         dbType.pattern = type.pattern
