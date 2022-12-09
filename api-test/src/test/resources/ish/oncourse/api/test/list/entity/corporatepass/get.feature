@@ -7,7 +7,7 @@ Feature: Main feature for all GET requests with path 'list/entity/corporatepass'
         * def ishPath = 'list/entity/corporatepass'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        
+        * def futureYear = java.lang.String.valueOf(java.util.Calendar.getInstance().get(java.util.Calendar.YEAR) + 2)
 
 
 
@@ -81,7 +81,7 @@ Feature: Main feature for all GET requests with path 'list/entity/corporatepass'
         "contactId":8,
         "contactFullName":"company #2",
         "password":"password2",
-        "expiryDate":"2030-04-01",
+        "expiryDate":'#(futureYear+"-04-01")',
         "invoiceEmail":"co2@gmail.com",
         "linkedDiscounts":[],
         "linkedSalables":"#ignore",
