@@ -46,6 +46,17 @@ const styles = theme =>
     }
   });
 
+const getLabel = (category: string) => {
+  switch (category) {
+    case "EmailTemplate":
+      return "Message templates";
+    case "ExportTemplate":
+      return "Export templates";
+    default:
+      return category;
+  }
+}
+
 const ContentBase = props => {
   const {
     classes,
@@ -72,7 +83,7 @@ const ContentBase = props => {
           <Grid item key={index} xs={12} container>
             <Grid item xs={3}>
               <Typography variant="body2" className={clsx("centeredFlex", classes.stepperLabel)}>
-                {item.name}
+                {getLabel(item.name)}
               </Typography>
             </Grid>
             <Grid item xs={9}>

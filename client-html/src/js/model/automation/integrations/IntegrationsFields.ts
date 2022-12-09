@@ -43,9 +43,7 @@ export interface MYOBFields {
 }
 
 export interface CloudAssessFields {
-  username: string;
   apiKey: string;
-  orgId: string;
 }
 
 export interface CanvasFields {
@@ -93,4 +91,12 @@ export interface ServiceNSWFields {
   terminalId: string;
   programme: string;
   apiKey: string;
+}
+
+export interface KronosFields {
+  username: string;
+  password: string;
+  apiKey: string;
+  companyShortName: string;
+  CID: string;
 }

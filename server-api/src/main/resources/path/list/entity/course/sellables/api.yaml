@@ -1,0 +1,28 @@
+post:
+  operationId: getSellables
+  tags:
+    - Course
+  parameters:
+    - name: courseIds
+      in: body
+      schema:
+        type: array
+        items:
+          type: integer
+          format: int64
+      required: true
+  responses:
+    '200':
+      description: Success response
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/Sale.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: COURSE
+    errorMessage: Sorry, you have no permissions to view course sellables. Please contact your administrator

@@ -6,25 +6,23 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { IconButton, Typography } from "@mui/material";
+import { Grid, IconButton, Typography } from "@mui/material";
 import Close from "@mui/icons-material/Close";
 import React, { useMemo } from "react";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import { makeAppStyles } from "../../styles/makeStyles";
-import navigation from "./navigation.json";
+import navigation from "./data/navigation.json";
+import structure from "./data/structure.json";
 import CatalogItem from "../layout/catalog/CatalogItem";
-import { useAppDispatch, useAppSelector } from "../../utils/hooks";
-import { DASHBOARD_FAVORITES_KEY, FAVORITE_SCRIPTS_KEY } from "../../../constants/Config";
-import { setUserPreference } from "../../actions";
+import { useAppSelector } from "../../utils/hooks";
 import { BooleanArgFunction, NumberArgFunction } from "../../../model/common/CommonFunctions";
 import { openInternalLink } from "../../utils/links";
 import { getPrivisioningLink } from "../../../routes/routesMapping";
+import StructureGraph from "../../../containers/dashboard/StructureGraph";
 
 const useStyles = makeAppStyles(theme => ({
   description: {
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
     "& ul": {
       paddingLeft: theme.spacing(2)
     }
@@ -38,6 +36,7 @@ interface Props {
   favoriteScripts: string[];
   setExecMenuOpened: BooleanArgFunction,
   setScriptIdSelected: NumberArgFunction,
+  updateFavorites: (key: string, type: "category" | "automation") => void;
 }
 
 const NavigationItem = ({
@@ -74,12 +73,11 @@ const NavigationCategory = (
     favorites,
     favoriteScripts,
     setScriptIdSelected,
-    setExecMenuOpened
+    setExecMenuOpened,
+    updateFavorites
   }:Props
 ) => {
   const classes = useStyles();
-
-  const dispatch = useAppDispatch();
 
   const scripts = useAppSelector(state => state.dashboard.scripts);
   
@@ -87,28 +85,12 @@ const NavigationCategory = (
   
   const features = useMemo(() => (category 
     ? navigation.features.filter(f => category.features.includes(f.key))
-    : []), [category]);
-  
-  const updateFavorites = (key, type: "category" | "automation") => {
-    if (type === "category") {
-      dispatch(setUserPreference({
-        key: DASHBOARD_FAVORITES_KEY,
-        value: favorites.includes(key)
-          ? favorites.filter(v => v !== key).toString()
-          : [...favorites, key].toString()
-      }));
-    }
-    if (type === "automation") {
-      dispatch(setUserPreference({
-        key: FAVORITE_SCRIPTS_KEY,
-        value: favoriteScripts.includes(key)
-          ? favoriteScripts.filter(v => v !== key).toString()
-          : [...favoriteScripts, key].toString()
-      }));
-    }
-  };
+    : []
+  ), [category]);
 
   const onOpen = (link: string) => openInternalLink(getPrivisioningLink(link));
+
+  const hasStructure = Boolean(structure[selected]);
 
   return (
     <div className="flex-fill p-3 overflow-y-auto">
@@ -118,7 +100,17 @@ const NavigationCategory = (
           <Close />
         </IconButton>
       </div>
-      <Typography className={classes.description} variant="body2" dangerouslySetInnerHTML={{ __html: category?.description }} />
+      <Grid container className="mt-3 mb-3" columnSpacing={2} rowSpacing={2}>
+        <Grid item xs={12} xl={hasStructure ? 6 : 12}>
+          <Typography className={classes.description} variant="body2" dangerouslySetInnerHTML={{ __html: category?.description }} />
+        </Grid>
+        {hasStructure &&
+          <Grid item xs={12} xl={6}>
+            <StructureGraph root={structure[selected]} />
+          </Grid>
+        }
+      </Grid>
+
       <div className="heading mb-2">
         Features
       </div>

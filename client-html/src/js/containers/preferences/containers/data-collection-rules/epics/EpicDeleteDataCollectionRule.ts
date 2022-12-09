@@ -17,6 +17,7 @@ const request: EpicUtils.Request = {
   getData: payload => PreferencesService.removeDataCollectionRule(payload.id),
   retrieveData: () => PreferencesService.getDataCollectionRules(),
   processData: (dataCollectionRules: DataCollectionRule[]) => {
+    dataCollectionRules.sort((a, b) => a.name > b.name ? 1 : -1);
     return [
       {
         type: DELETE_DATA_COLLECTION_RULE_FULFILLED,

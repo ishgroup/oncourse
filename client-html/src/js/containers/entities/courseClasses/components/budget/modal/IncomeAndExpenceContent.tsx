@@ -12,7 +12,7 @@ import { ClassCostRepetitionType } from "@api/model";
 import { Divider } from "@mui/material";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
-import { contactLabelCondition } from "../../../../contacts/utils";
+import { getContactFullName } from "../../../../contacts/utils";
 import { ContactLinkAdornment } from "../../../../../../common/components/form/FieldAdornments";
 import ContactSelectItemRenderer from "../../../../contacts/components/ContactSelectItemRenderer";
 import { decimalDivide, decimalMul, decimalPlus } from "../../../../../../common/utils/numbers/decimalCalculation";
@@ -101,7 +101,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
           name="contactId"
           label="Contact"
           selectValueMark="id"
-          selectLabelCondition={contactLabelCondition}
+          selectLabelCondition={getContactFullName}
           defaultDisplayValue={values.contactName}
           labelAdornment={
             <ContactLinkAdornment id={values?.contactId} />

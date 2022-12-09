@@ -30,6 +30,13 @@ public class CustomFontExtensionsRegistry extends AbstractFontExtensionsRegistry
 
 	private List<FontFamily> fontFamilies = new ArrayList<>();
 
+	/**
+	 * To load font into setTtf method library tries to load jasperreports context, that caused
+	 * new preinitialization of extensions and inifinite cycle. We need to avoid preinitialization
+	 * of fonts during any font loading (on lower level of methods stack)
+	 */
+	private static boolean fontInitializationStarted = false;
+
 	private CustomFontExtensionsRegistry() {
 	}
 
@@ -62,6 +69,9 @@ public class CustomFontExtensionsRegistry extends AbstractFontExtensionsRegistry
 
 	@Override
 	public void registerFonts() {
+		if(fontInitializationStarted)
+			return;
+
 		super.registerFonts();
 
 		List<File> folders = new ArrayList<>(8);
@@ -102,10 +112,8 @@ public class CustomFontExtensionsRegistry extends AbstractFontExtensionsRegistry
 
 		// register fonts recursively with itext
 		FontFactory.registerDirectory(folder.getAbsolutePath(), true);
-
 		// register fonts with jasper
 		for (final var fontFile : folder.listFiles()) {
-
 			try {
 				var font = Font.createFont(Font.TRUETYPE_FONT, fontFile);
 				SimpleFontFace fontFace = new SimpleFontFace(DefaultJasperReportsContext.getInstance());
@@ -118,12 +126,17 @@ public class CustomFontExtensionsRegistry extends AbstractFontExtensionsRegistry
 					}
 				};
 				family.setPdfEmbedded(true);
+
+				fontInitializationStarted = false;
+
+				var font = normalFace.getFont();
 				logger.warn("registering font {} as {} and name {}", fontFile, font.getFamily(), font.getName());
 				fontFamilies.add(family);
 
 			} catch (Exception e) {
 				// ignore the error since we just hit a font we couldn't parse
-                logger.warn("can't register font {}. Reason: {}", fontFile, e.getMessage());
+				fontInitializationStarted = false;
+				logger.warn("can't register font {}. Reason: {}", fontFile, "Cannot parse file");
 			}
 
 		}

@@ -1,4 +1,4 @@
-export type StringKeyObject<V> = { [key: string]: V };
+export type StringKeyObject<V = any> = { [key: string]: V };
 
 export type StringKeyAndValueObject = StringKeyObject<string>;
 

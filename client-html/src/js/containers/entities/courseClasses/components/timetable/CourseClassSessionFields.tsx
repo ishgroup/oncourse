@@ -19,7 +19,7 @@ import {
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import {
-  ClashType, CourseClassTutor, SessionWarning, Site, TutorAttendance,
+  ClashType, CourseClassTutor, SessionWarning, TutorAttendance,
 } from "@api/model";
 import ErrorMessage from "../../../../../common/components/form/fieldMessage/ErrorMessage";
 import FormField from "../../../../../common/components/form/formFields/FormField";
@@ -33,6 +33,7 @@ import { TimetableSession } from "../../../../../model/timetable";
 import { ClassCostExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 import CourseClassTutorRooster from "./CourseClassTutorRooster";
 import { setShiftedTutorAttendances } from "../../utils";
+import { NoWrapOption } from "../../../../../common/components/form/formFields/SelectCustomComponents";
 
 interface Props {
   form: string;
@@ -239,7 +240,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
         </Grid>
       ) }
 
-      <Grid item xs={6}>
+      <Grid item xs={12}>
         <FormField
           type="remoteDataSearchSelect"
           entity="Room"
@@ -251,7 +252,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
           defaultDisplayValue={`${session.site} - ${session.room}`}
           labelAdornment={<LinkAdornment linkHandler={openRoomLink} link={session.roomId} disabled={!session.roomId} />}
           onInnerValueChange={onRoomIdChange}
-          rowHeight={36}
+          itemRenderer={NoWrapOption}
           hasError={Boolean(warningTypes.Room.length)}
           allowEmpty
         />

@@ -11,7 +11,7 @@ describe("Get data collection forms epic tests", () => {
     epic: EpicGetDataCollectionForms,
     processData: mockedApi => {
       const dataCollectionForms = mockedApi.db.dataCollectionForms;
-
+      dataCollectionForms.sort((a, b) => a.name > b.name ? 1 : -1);
       return [
         {
           type: GET_DATA_COLLECTION_FORMS_FULFILLED,

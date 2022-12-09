@@ -1,3 +1,11 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 import { initialize } from "redux-form";
 import ImportTemplatesService from "../../automation/containers/import-templates/services/ImportTemplatesService";
 import ModuleService from "../modules/services/ModuleService";
@@ -26,7 +34,7 @@ import SurveyService from "../survey/services/SurveyService";
 import ArticleProductService from "../articleProducts/service/ArticleProductService";
 import MessageService from "../messages/services/MessageService";
 import { formatToDateOnly } from "../../../common/utils/dates/datesNormalizing";
-import { getInvoiceClosestPaymentDueDate, preformatInvoice, sortInvoicePaymentPlans } from "../invoices/utils";
+import { preformatInvoice, processInvoicePaymentPlans } from "../invoices/utils";
 import ContactsService from "../contacts/services/ContactsService";
 import { PayLineWithDefer } from "../../../model/entities/Payslip";
 import CourseClassService from "../courseClasses/services/CourseClassService";
@@ -45,7 +53,8 @@ import { mapEntityDisplayName } from "./utils";
 import EnrolmentService from "../enrolments/services/EnrolmentService";
 import { EnrolmentExtended } from "../../../model/entities/Enrolment";
 import EntityService from "../../../common/services/EntityService";
-import { getContactName } from "../contacts/utils";
+import { getPaymentOutFromModel } from "../paymentsOut/utils";
+import { getContactFullName } from "../contacts/utils";
 
 const defaultUnknown = () => {
   console.error("Unknown entity name");
@@ -128,10 +137,7 @@ export const getEntityItemById = (entity: EntityName, id: number): Promise<any> 
     case "AbstractInvoice":
     case "Invoice": {
       return InvoiceService.getInvoice(id).then(invoice => {
-        invoice.paymentPlans.sort(sortInvoicePaymentPlans);
-        getInvoiceClosestPaymentDueDate(invoice);
-
-        return invoice;
+        return { ...invoice, paymentPlans: processInvoicePaymentPlans(invoice.paymentPlans) };
       });
     }
     
@@ -146,7 +152,7 @@ export const getEntityItemById = (entity: EntityName, id: number): Promise<any> 
             .then(res => {
               a.tutors = res.rows.map(r => ({
                 contactId: Number(r.id),
-                tutorName: getContactName({ firstName: r.values[0], lastName: r.values[1] })
+                tutorName: getContactFullName({ firstName: r.values[0], lastName: r.values[1] })
               }));
             });
         }
@@ -246,7 +252,7 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
       return PaymentOutService.updatePaymentOut(id, item);
 
     case "Payslip": {
-      const paylines = JSON.parse(JSON.stringify(item.paylines.filter(p => p.deferred)));
+      const paylines = [...item?.paylines.filter(p => p.deferred) || []];
 
       paylines.forEach(i => {
         delete i.deferred;
@@ -337,6 +343,8 @@ export const createEntityItem = (entity: EntityName, item: any): Promise<any> =>
       return WaitingListService.createWaitingList(item);
     case "Course":
       return CourseService.create(item);
+    case "PaymentOut":
+      return PaymentOutService.postPaymentOut(getPaymentOutFromModel(item));
 
     case "Document": {
       const {

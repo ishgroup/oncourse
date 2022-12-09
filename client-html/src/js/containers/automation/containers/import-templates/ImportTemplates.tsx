@@ -12,7 +12,7 @@ import { withRouter } from "react-router";
 import { getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-form";
 import { Dispatch } from "redux";
 import { ExportTemplate } from "@api/model";
-import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../reducers/state";
 
 import ImportTemplatesForm from "./containers/ImportTemplatesForm";
@@ -68,6 +68,7 @@ const mapStateToProps = (state: State) => ({
   values: getFormValues(IMPORT_TEMPLATES_FORM_NAME)(state),
   syncErrors: getFormSyncErrors(IMPORT_TEMPLATES_FORM_NAME)(state),
   emailTemplates: state.automation.emailTemplate.emailTemplates,
+  importTemplates: state.automation.importTemplate.importTemplates,
   nextLocation: state.nextLocation
 });
 

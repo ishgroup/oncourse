@@ -454,6 +454,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Code', attribute: ArticleProduct.SKU.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Price', attribute: ArticleProduct.PRICE_INC_TAX_PROPERTY, sortable: false, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
                 new ColumnDTO(title: 'Number sold', attribute: ArticleProduct.NUMBER_SOLD_PROPERTY, sortable: false, width: W200, visible: true),
+                new ColumnDTO(title: 'Active', attribute: ArticleProduct.IS_ON_SALE.name, sortable: false, width: W200, system: true, type: ColumnTypeDTO.BOOLEAN, visible: true),
         ]
         it.sortings = [
                 new SortingDTO(attribute: ArticleProduct.NAME.name, ascending: true)
@@ -530,6 +531,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Price', attribute: VoucherProduct.PRICE_EX_TAX.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
                 new ColumnDTO(title: 'Online purchase', attribute: VoucherProduct.IS_WEB_VISIBLE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.BOOLEAN),
                 new ColumnDTO(title: 'Number sold', attribute: VoucherProduct.SOLD_VOUCHERS_COUNT, sortable: false, width: W200, visible: true),
+                new ColumnDTO(title: 'Active', attribute: ArticleProduct.IS_ON_SALE.name, sortable: false, width: W200, system: true, type: ColumnTypeDTO.BOOLEAN, visible: true),
         ]
         it.sortings = [
                 new SortingDTO(attribute: VoucherProduct.SKU.name, ascending: true)
@@ -548,6 +550,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'SKU', attribute: MembershipProduct.SKU.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Active memberships', attribute: MembershipProduct.ACTIVE_MEMBERSHIPS_COUNT_KEY, sortable: false, width: W200, visible: false),
                 new ColumnDTO(title: 'Number sold', attribute: MembershipProduct.SOLD_COUNT_KEY, sortable: false, width: W200, visible: false),
+                new ColumnDTO(title: 'Active', attribute: ArticleProduct.IS_ON_SALE.name, sortable: false, width: W200, system: true, type: ColumnTypeDTO.BOOLEAN, visible: true),
         ]
         it.sortings = [
             new SortingDTO(attribute: MembershipProduct.NAME.name, ascending: true)
@@ -643,7 +646,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Type', attribute: ProductItem.TYPE_STRING_DEFENITION, sortable: false, width: W200, visible: true),
                 new ColumnDTO(title: 'SKU', attribute: ProductItem.PRODUCT.dot(Product.SKU).name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Expires', attribute: ProductItem.EXPIRY_DATE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
-                new ColumnDTO(title: 'Status', attribute: ProductItem.DISPLAYABLE_STATUS, sortFields: [ProductItem.STATUS.name], sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Status', attribute: ProductItem.DISPLAYABLE_STATUS, sortFields: [ProductItem.STATUS.name], sortable: true, width: W200, system: true, visible: true),
                 new ColumnDTO(
                         title: 'Purchased by',
                         attribute: ProductItem.INVOICE_LINE.dot(InvoiceLine.INVOICE)
