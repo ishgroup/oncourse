@@ -18,7 +18,6 @@ import net.sf.jasperreports.engine.fonts.SimpleFontFace;
 import net.sf.jasperreports.engine.fonts.SimpleFontFamily;
 import net.sf.jasperreports.extensions.ExtensionsRegistry;
 
-import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -115,7 +114,6 @@ public class CustomFontExtensionsRegistry extends AbstractFontExtensionsRegistry
 		// register fonts with jasper
 		for (final var fontFile : folder.listFiles()) {
 			try {
-				var font = Font.createFont(Font.TRUETYPE_FONT, fontFile);
 				SimpleFontFace fontFace = new SimpleFontFace(DefaultJasperReportsContext.getInstance());
 				fontFace.setTtf(fontFile.getAbsolutePath(), false);
 				final FontFace face = fontFace;
@@ -126,10 +124,9 @@ public class CustomFontExtensionsRegistry extends AbstractFontExtensionsRegistry
 					}
 				};
 				family.setPdfEmbedded(true);
-
 				fontInitializationStarted = false;
 
-				var font = normalFace.getFont();
+				var font = family.getNormalFace().getFont();
 				logger.warn("registering font {} as {} and name {}", fontFile, font.getFamily(), font.getName());
 				fontFamilies.add(family);
 
