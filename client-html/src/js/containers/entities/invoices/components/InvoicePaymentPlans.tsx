@@ -47,6 +47,7 @@ const InvoicePaymentPlansBase: React.FC<WrappedFieldArrayProps<any> & PaymentPla
   const {
     classes, syncErrors, fields, currency, id, form, dispatch, total
   } = props;
+
   const [activeStep, setActiveStep] = React.useState(fields.length);
 
   useEffect(() => {

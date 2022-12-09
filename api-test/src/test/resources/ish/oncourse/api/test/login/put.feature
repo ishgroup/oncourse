@@ -38,8 +38,8 @@ Feature: Main feature for all PUT requests with path 'login'
         And request loginBody
         When method PUT
         Then status 401
-        And match response.loginStatus == 'Invalid credentials'
-        And match response.errorMessage == 'User is disabled. Please contact onCourse Administrator.'
+        And match response.loginStatus == 'Token required'
+        And match response.errorMessage == 'Auth Token required'
 
 
 
