@@ -123,6 +123,7 @@ const MessageCardContent = React.memo<Props>(props => {
               label="Template"
               items={messageTemplateItems}
               itemRenderer={renderAutomationItems}
+              valueRenderer={renderAutomationItems}
               onInnerValueChange={changeEmailTemplate}
               disabled={disabled}
               required

@@ -62,6 +62,7 @@ const searchStyles = theme => createStyles({
       display: "flex",
     }
   },
+  multiple: {},
   labelShrink: {},
   editable: {
     color: theme.palette.text.primaryEditable,
@@ -73,6 +74,15 @@ const searchStyles = theme => createStyles({
   root: {
     "& $inline.MuiInput-root .MuiInput-input": {
       padding: 0
+    },
+    "& $multiple": {
+      flexWrap: 'wrap'
+    },
+    "& $multiple $inputEndAdornment": {
+      position: 'absolute',
+      right: 0,
+      bottom: 2,
+      height: "auto"
     }
   }
 });
@@ -112,7 +122,7 @@ interface Props  {
   disableUnderline?: boolean;
   createLabel?: string;
   selectLabelMark?: string;
-  returnType?: "object" | "value";
+  returnType?: "object" | "string";
   alwaysDisplayDefault?: boolean;
   popperAnchor?: any;
   placeholder?: string;
@@ -120,6 +130,7 @@ interface Props  {
   sortPropKey?: string;
   inHeader?: boolean;
   hasError?: boolean;
+  multiple?: boolean;
   hideMenuOnNoResults?: boolean;
   inputRef?: any;
   warning?: string;
@@ -203,7 +214,7 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
     hideMenuOnNoResults,
     remoteData,
     createLabel,
-    returnType = "value",
+    returnType = "string",
     alwaysDisplayDefault,
     valueRenderer,
     popperAnchor,
@@ -215,7 +226,8 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
     inHeader,
     hasError,
     inputRef,
-    warning
+    warning,
+    multiple
   }) => {
   const sortedItems = useMemo(() => items && (sort
     ? [...items].sort(typeof sort === "function"
@@ -317,9 +329,9 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
 
   const edit = () => {
     setIsEditing(true);
-    setTimeout(() => {
-      inputNode?.current?.focus();
-    }, 50);
+    if (valueRenderer) {
+      setTimeout(() => inputNode?.current?.focus(), 50);
+    }
   };
 
   const onClear = () => {
@@ -371,7 +383,18 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
       setFormattedDisplayValue(selectLabelCondition(value));
     }
 
-    const newValue = returnType === "object" ? (Object.keys(value).length ? value : null) : value[selectValueMark];
+    let newValue = value[selectValueMark];
+    
+    if (returnType === "object") {
+      newValue = (Object.keys(value).length ? value : null);
+    }
+    
+    if (multiple) {
+      newValue = value.map(v => v[selectValueMark]);
+      if (!newValue.length) {
+        newValue = null;
+      }
+    }
 
     input.onChange(newValue);
 
@@ -396,6 +419,9 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
   const getOptionLabel = option => (selectLabelCondition ? selectLabelCondition(option) : option && option[selectLabelMark]) || "";
 
   const getOptionSelected = (option: any, value: any) => {
+    if (multiple) {
+      return option[selectValueMark] === value[selectValueMark];
+    }
     if (returnType === "object") {
       return option === value;
     }
@@ -409,9 +435,11 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
 
     return getHighlightedPartLabel(getOptionLabel(data), searchValue, optionProps);
   };
-  
-  const selectedOption = useMemo(() => sortedItems.find(i => getOptionSelected(i, input.value)),
-    [sortedItems, selectLabelMark, defaultDisplayValue, input.value]);
+
+  const selectedOption = useMemo(() => sortedItems.find(i => multiple
+      ? (input.value || []).includes(i[selectValueMark])
+      : getOptionSelected(i, input.value)),
+    [sortedItems, multiple, selectValueMark, input.value]);
 
   const displayedValue = useMemo(() => {
     let response;
@@ -450,7 +478,7 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
     : null,
   [selectedOption, searchValue, displayedValue, selectValueMark, valueRenderer]);
 
-  const icons = !disabled && (
+  const renderIcons = useMemo(() => !disabled && (
     loading
       ? <CircularProgress size={24} thickness={4} className={fieldClasses.loading} />
       : (
@@ -467,7 +495,19 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
           <ExpandMore className={clsx("hoverIcon", fieldClasses.editIcon)} />
         </InputAdornment>
       )
-  )
+  ), [disabled, loading, allowEmpty, input.value]);
+  
+  const inputValue = useMemo(() => {
+    if (multiple) {
+      return (input.value || []).map(v => sortedItems.find(s => s[selectValueMark] === v));
+    }
+    return input.value || "";
+  }, [input.value, multiple, selectValueMark, sortedItems]);
+  
+  const renderedPlaceholder = useMemo(() => {
+    const rendered = placeholder || (!isEditing ? "No value" : "");
+    return multiple && inputValue.length ? null : rendered;
+  }, [multiple, placeholder, isEditing, inputValue]);
 
   return (
     <div
@@ -489,7 +529,10 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
       }}
       >
         <Autocomplete
-          value={input.value || ""}
+          blurOnSelect={!multiple}
+          disableCloseOnSelect={multiple}
+          multiple={multiple}
+          value={inputValue}
           options={sortedItems}
           loading={loading}
           freeSolo={creatable}
@@ -500,7 +543,7 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
             root: clsx("d-inline-flex", classes.root),
             hasPopupIcon: classes.hasPopup,
             hasClearIcon: classes.hasClear,
-            inputRoot: clsx(classes.inputWrapper, inline && classes.inline),
+            inputRoot: clsx(classes.inputWrapper, inline && classes.inline, multiple && classes.multiple),
             option: "w-100 text-pre"
           }}
           renderOption={renderOption}
@@ -521,14 +564,14 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
                   {labelContent}
                 </InputLabel>
               )}
-
+              {/* Not compatible with multiple*/}
               {
                 valueRenderer && !isEditing && input.value
                   ? <Select
                       {...InputProps}
                       onFocus={edit}
                       value={input.value || ""}
-                      endAdornment={icons}
+                      endAdornment={renderIcons}
                       IconComponent={null}
                     >
                     {renderValue}
@@ -539,7 +582,7 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
                     id={`input-${input.name}`}
                     name={input.name}
                     disabled={disabled}
-                    placeholder={placeholder || (!isEditing ? "No value" : "")}
+                    placeholder={renderedPlaceholder}
                     onChange={handleInputChange}
                     onFocus={input.onFocus}
                     onBlur={onBlur}
@@ -556,9 +599,9 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
                     }}
                     inputProps={{
                       ...inputProps,
-                      value: (isEditing ? searchValue : (typeof displayedValue === "string" ? displayedValue : "")),
+                      value: (isEditing ? searchValue : multiple ? "" : (typeof displayedValue === "string" ? displayedValue : "")),
                     }}
-                    endAdornment={icons}
+                    endAdornment={renderIcons}
                   />
               }
 
@@ -575,7 +618,6 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
           fullWidth
           disableListWrap
           openOnFocus
-          blurOnSelect
         />
       </SelectContext.Provider>
     </div>
