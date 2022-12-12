@@ -12,7 +12,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import Popper from "@mui/material/Popper";
-import { Autocomplete, IconButton, InputAdornment } from "@mui/material";
+import { Autocomplete, IconButton, InputAdornment, Select } from "@mui/material";
 import { createStyles, withStyles } from "@mui/styles";
 import React, { ReactElement, useContext, useEffect, useMemo, useRef, useState } from "react";
 import CloseIcon from '@mui/icons-material//Close';
@@ -103,6 +103,7 @@ interface Props  {
   loadMoreRows?: AnyArgFunction;
   onCreateOption?: AnyArgFunction;
   itemRenderer?: (content, data, search, parentProps) => ReactElement;
+  valueRenderer?: (content, data, search, parentProps) => ReactElement;
   onInputChange?: AnyArgFunction;
   onClearRows?: AnyArgFunction;
   onInnerValueChange?: AnyArgFunction;
@@ -204,6 +205,7 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
     createLabel,
     returnType = "value",
     alwaysDisplayDefault,
+    valueRenderer,
     popperAnchor,
     input,
     meta,
@@ -391,7 +393,7 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
     }
   };
 
-  const getOptionLabel = option => (selectLabelCondition ? selectLabelCondition(option) : option[selectLabelMark]) || "";
+  const getOptionLabel = option => (selectLabelCondition ? selectLabelCondition(option) : option && option[selectLabelMark]) || "";
 
   const getOptionSelected = (option: any, value: any) => {
     if (returnType === "object") {
@@ -407,6 +409,9 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
 
     return getHighlightedPartLabel(getOptionLabel(data), searchValue, optionProps);
   };
+  
+  const selectedOption = useMemo(() => sortedItems.find(i => getOptionSelected(i, input.value)),
+    [sortedItems, selectLabelMark, defaultDisplayValue, input.value]);
 
   const displayedValue = useMemo(() => {
     let response;
@@ -416,8 +421,7 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
     } else if (returnType === "object") {
       response = input.value && input.value[selectLabelMark];
     } else {
-      const selected = sortedItems.find(i => getOptionSelected(i, input.value));
-      response = selected ? selected[selectLabelMark] : defaultDisplayValue || input.value;
+      response = getOptionLabel(selectedOption) || defaultDisplayValue || input.value;
     }
 
     if (alwaysDisplayDefault) {
@@ -429,7 +433,7 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
       ? response
       : <span className={clsx("overflow-hidden placeholderContent", classes.editable)}>No value</span>
     );
-  }, [formattedDisplayValue, selectLabelCondition, alwaysDisplayDefault, returnType, defaultDisplayValue, selectLabelMark, input, classes]);
+  }, [formattedDisplayValue, selectedOption, selectLabelCondition, alwaysDisplayDefault, returnType, defaultDisplayValue, selectLabelMark, input, classes]);
 
   const labelContent = useMemo(() => (labelAdornment ? (
     <span>
@@ -440,6 +444,30 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
   ) : (
     label
   )), [classes, label, labelAdornment]);
+
+  const renderValue = useMemo(() => valueRenderer
+    ? valueRenderer(displayedValue, selectedOption, searchValue, { value: selectedOption && selectedOption[selectValueMark] })
+    : null,
+  [selectedOption, searchValue, displayedValue, selectValueMark, valueRenderer]);
+
+  const icons = !disabled && (
+    loading
+      ? <CircularProgress size={24} thickness={4} className={fieldClasses.loading} />
+      : (
+        <InputAdornment position="end" className={classes.inputEndAdornment}>
+          {allowEmpty && input.value && (
+            <IconButton
+              size="small"
+              onClick={onClear}
+              color="inherit"
+            >
+              <CloseIcon className={clsx(fieldClasses.editIcon, classes.clearIcon)} />
+            </IconButton>
+          ) }
+          <ExpandMore className={clsx("hoverIcon", fieldClasses.editIcon)} />
+        </InputAdornment>
+      )
+  )
 
   return (
     <div
@@ -493,50 +521,47 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
                   {labelContent}
                 </InputLabel>
               )}
-              <Input
-                {...InputProps}
-                disableUnderline={disableUnderline}
-                id={`input-${input.name}`}
-                name={input.name}
-                disabled={disabled}
-                placeholder={placeholder || (!isEditing ? "No value" : "")}
-                onChange={handleInputChange}
-                onFocus={input.onFocus}
-                onBlur={onBlur}
-                onClick={onEditButtonFocus}
-                inputRef={rf => {
-                  inputNode.current = rf;
-                  if (inputRef) {
-                    inputRef.current = rf;
-                  }
-                }}
-                classes={{
-                  underline: fieldClasses.underline,
-                  input: clsx(classes.input, inHeader && classes.editableInHeader, disabled && classes.readonly, fieldClasses.text),
-                }}
-                inputProps={{
-                  ...inputProps,
-                  value: (isEditing ? searchValue : (typeof displayedValue === "string" ? displayedValue : "")),
-                }}
-                endAdornment={!disabled && (
-                  loading
-                    ? <CircularProgress size={24} thickness={4} className={fieldClasses.loading} />
-                    : (
-                      <InputAdornment position="end" className={classes.inputEndAdornment}>
-                        {allowEmpty && input.value && (
-                          <IconButton
-                            size="small"
-                            onClick={onClear}
-                            color="inherit"
-                          >
-                            <CloseIcon className={clsx(fieldClasses.editIcon, classes.clearIcon)} />
-                          </IconButton>
-                        ) }
-                        <ExpandMore className={clsx("hoverIcon", fieldClasses.editIcon)} />
-                      </InputAdornment>
-                    )
-                )}
-              />
+
+              {
+                valueRenderer && !isEditing && input.value
+                  ? <Select
+                      {...InputProps}
+                      onFocus={edit}
+                      value={input.value || ""}
+                      endAdornment={icons}
+                      IconComponent={null}
+                    >
+                    {renderValue}
+                  </Select>
+                  : <Input
+                    {...InputProps}
+                    disableUnderline={disableUnderline}
+                    id={`input-${input.name}`}
+                    name={input.name}
+                    disabled={disabled}
+                    placeholder={placeholder || (!isEditing ? "No value" : "")}
+                    onChange={handleInputChange}
+                    onFocus={input.onFocus}
+                    onBlur={onBlur}
+                    onClick={onEditButtonFocus}
+                    inputRef={rf => {
+                      inputNode.current = rf;
+                      if (inputRef) {
+                        inputRef.current = rf;
+                      }
+                    }}
+                    classes={{
+                      underline: fieldClasses.underline,
+                      input: clsx(classes.input, inHeader && classes.editableInHeader, disabled && classes.readonly, fieldClasses.text),
+                    }}
+                    inputProps={{
+                      ...inputProps,
+                      value: (isEditing ? searchValue : (typeof displayedValue === "string" ? displayedValue : "")),
+                    }}
+                    endAdornment={icons}
+                  />
+              }
+
               <FormHelperText
                 classes={{
                   error: "shakingError"
