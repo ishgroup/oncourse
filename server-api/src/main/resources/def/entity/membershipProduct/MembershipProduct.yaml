@@ -52,10 +52,6 @@ properties:
     items:
       type: integer
       format: int64
-  documents:
-    type: array
-    items:
-      $ref: '../Document.yaml'
   customFields:
     type: object
     additionalProperties:

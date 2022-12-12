@@ -93,10 +93,6 @@ properties:
     $ref: './EnrolmentCreditType.yaml'
   creditLevel:
     $ref: './EnrolmentCreditLevel.yaml'
-  documents:
-    type: array
-    items:
-      $ref: '../Document.yaml'
   customFields:
     type: object
     additionalProperties:

@@ -14,29 +14,19 @@ package ish.oncourse.server.api.service
 import com.google.inject.Inject
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.api.dao.AssessmentDao
-import ish.oncourse.server.cayenne.GradingType
-import ish.oncourse.server.document.DocumentService
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
 import ish.oncourse.server.api.v1.function.TagFunctions
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
-import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import ish.oncourse.server.api.v1.model.AssessmentDTO
 import ish.oncourse.server.cayenne.Assessment
-import ish.oncourse.server.cayenne.AssessmentAttachmentRelation
 import ish.oncourse.server.cayenne.AssessmentTagRelation
-import ish.oncourse.server.cayenne.Document
+import ish.oncourse.server.cayenne.GradingType
 import ish.oncourse.server.users.SystemUserService
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
-import static org.apache.commons.lang3.StringUtils.isBlank
-import static org.apache.commons.lang3.StringUtils.trimToEmpty
-import static org.apache.commons.lang3.StringUtils.trimToNull
+
+import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
+import static org.apache.commons.lang3.StringUtils.*
 
 class AssessmentApiService extends TaggableApiService<AssessmentDTO, Assessment, AssessmentDao> {
-
-    @Inject
-    private DocumentService documentService
 
     @Inject
     private GradingApiService gradingApiService
@@ -59,7 +49,6 @@ class AssessmentApiService extends TaggableApiService<AssessmentDTO, Assessment,
             assessment.active = cayenneModel.active
             assessment.description = cayenneModel.description
             assessment.gradingTypeId = cayenneModel.gradingType?.id
-            assessment.documents = cayenneModel.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             assessment.createdOn = LocalDateUtils.dateToTimeValue(cayenneModel.createdOn)
             assessment.modifiedOn = LocalDateUtils.dateToTimeValue(cayenneModel.modifiedOn)
             assessment
@@ -77,8 +66,6 @@ class AssessmentApiService extends TaggableApiService<AssessmentDTO, Assessment,
                 null as GradingType
 
         updateTags(cayenneModel, cayenneModel.taggingRelations, restModel.tags, AssessmentTagRelation, cayenneModel.context)
-        updateDocuments(cayenneModel, cayenneModel.attachmentRelations, restModel.documents, AssessmentAttachmentRelation, cayenneModel.context)
-
         cayenneModel
     }
 
@@ -121,14 +108,6 @@ class AssessmentApiService extends TaggableApiService<AssessmentDTO, Assessment,
 
         TagFunctions.validateTagForSave(Assessment, context, restModel.tags)
                 ?.with { validator.throwClientErrorException(it) }
-
-        for(Long documentId : restModel.documents*.id) {
-            Document document = entityDao.getDocumentById(context, documentId)
-            if(document == null) {
-                validator.throwClientErrorException(id, 'documents',
-                        "Document with id = " + documentId + " doesn\'t exist.")
-            }
-        }
 
         TagFunctions.validateRelationsForSave(Assessment, context, restModel.tags, TaggableClasses.ASSESSMENT)
                 ?.with { validator.throwClientErrorException(it) }

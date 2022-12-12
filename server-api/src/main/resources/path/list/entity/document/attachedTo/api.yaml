@@ -1,0 +1,28 @@
+get:
+  operationId: getDocumentsAttachedTo
+  description: get documents array
+  tags:
+    - Document
+  parameters:
+    - name: entityName
+      in: query
+      type: string
+      required: true
+    - name: entityId
+      in: query
+      type: integer
+      format: int64
+      required: true
+  responses:
+    '200':
+      description: Success response
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/Document.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: LAZY/entityName
+    errorMessage: Sorry, you have no permissions to get documents. Please contact your administrator

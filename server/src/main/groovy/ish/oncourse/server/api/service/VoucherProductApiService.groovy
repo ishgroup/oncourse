@@ -16,50 +16,23 @@ import groovy.transform.CompileStatic
 import ish.common.types.AccountType
 import ish.common.types.ExpiryType
 import ish.math.Money
-import ish.oncourse.server.api.dao.AccountDao
-import ish.oncourse.server.api.dao.CorporatePassDao
-import ish.oncourse.server.api.dao.CorporatePassProductDao
-import ish.oncourse.server.api.dao.CourseDao
-import ish.oncourse.server.api.dao.EntityRelationDao
-import ish.oncourse.server.api.dao.FieldConfigurationSchemeDao
-import ish.oncourse.server.api.dao.ProductDao
-import ish.oncourse.server.api.dao.TaxDao
-import ish.oncourse.server.api.dao.VoucherProductCourseDao
-import ish.oncourse.server.api.dao.VoucherProductDao
-import ish.oncourse.server.api.v1.model.ProductTypeDTO
-import ish.oncourse.server.cayenne.Article
-import ish.oncourse.server.cayenne.ExpandableTrait
-import ish.oncourse.server.cayenne.FieldConfigurationScheme
-import ish.oncourse.server.cayenne.Membership
-import ish.oncourse.server.cayenne.Product
-import ish.oncourse.server.cayenne.Voucher
-import ish.oncourse.server.cayenne.VoucherProductTagRelation
-import ish.oncourse.server.cayenne.VoucherProductAttachmentRelation
-import ish.oncourse.server.document.DocumentService
-
-import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
-import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
-import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
-import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
-import static ish.oncourse.server.api.v1.function.ProductFunctions.updateCorporatePassesByIds
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
-import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
-import static ish.oncourse.server.api.v1.model.ProductStatusDTO.CAN_BE_PURCHASED_IN_OFFICE
-import static ish.oncourse.server.api.v1.model.ProductStatusDTO.CAN_BE_PURCHASED_IN_OFFICE_ONLINE
-import static ish.oncourse.server.api.v1.model.ProductStatusDTO.DISABLED
+import ish.oncourse.server.api.dao.*
 import ish.oncourse.server.api.v1.model.VoucherCorporatePassDTO
 import ish.oncourse.server.api.v1.model.VoucherProductCourseDTO
 import ish.oncourse.server.api.v1.model.VoucherProductDTO
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.VoucherProduct
+import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
-import static org.apache.commons.lang3.StringUtils.isBlank
-import static org.apache.commons.lang3.StringUtils.isNotBlank
-import static org.apache.commons.lang3.StringUtils.trimToNull
 
 import java.time.ZoneId
+
+import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
+import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
+import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
+import static ish.oncourse.server.api.v1.function.ProductFunctions.updateCorporatePassesByIds
+import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
+import static ish.oncourse.server.api.v1.model.ProductStatusDTO.*
+import static org.apache.commons.lang3.StringUtils.*
 
 @CompileStatic
 class VoucherProductApiService extends TaggableApiService<VoucherProductDTO, VoucherProduct, VoucherProductDao> {
@@ -69,9 +42,6 @@ class VoucherProductApiService extends TaggableApiService<VoucherProductDTO, Vou
 
     @Inject
     private CorporatePassDao corporatePassDao
-
-    @Inject
-    private DocumentService documentService
 
     @Inject
     private CorporatePassProductDao corporatePassProductDao
@@ -125,7 +95,6 @@ class VoucherProductApiService extends TaggableApiService<VoucherProductDTO, Vou
                     vcp
                 }
             }
-            voucherProductDTO.documents = voucherProduct.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             voucherProductDTO.tags = voucherProduct.allTags.collect{ it.id }
             voucherProductDTO.soldVouchersCount = voucherProduct.getProductItems().size()
             voucherProductDTO.relatedSellables = (EntityRelationDao.getRelatedFrom(voucherProduct.context, Product.simpleName, voucherProduct.id).collect { toRestFromEntityRelation(it) } +
@@ -157,7 +126,6 @@ class VoucherProductApiService extends TaggableApiService<VoucherProductDTO, Vou
                 fieldConfigurationSchemeDao.getById(voucherProduct.context, voucherProductDTO.dataCollectionRuleId) :
                 null as FieldConfigurationScheme
         updateCorporatePassesByIds(voucherProduct, voucherProductDTO.corporatePasses*.id.findAll(), corporatePassProductDao, corporatePassDao)
-        updateDocuments(voucherProduct, voucherProduct.attachmentRelations, voucherProductDTO.documents, VoucherProductAttachmentRelation, context)
         updateTags(voucherProduct, voucherProduct.taggingRelations, voucherProductDTO.tags, VoucherProductTagRelation, context)
         updateCustomFields(voucherProduct.context, voucherProduct, voucherProductDTO.customFields, voucherProduct.customFieldClass)
         updateCourses(voucherProduct, voucherProductDTO.courses)

@@ -20,15 +20,12 @@ import ish.common.types.ProductType
 import ish.common.types.TypesUtil
 import ish.math.Money
 import ish.oncourse.cayenne.Taggable
-import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.api.dao.AccountDao
 import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.dao.ProductItemDAO
 import ish.oncourse.server.api.dao.TaxDao
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.cayenne.*
-import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
-import ish.oncourse.server.document.DocumentService
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.validation.ValidationResult
@@ -41,9 +38,6 @@ import java.util.stream.Collectors
 
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.util.LocalDateUtils.dateToValue
 import static ish.util.LocalDateUtils.valueToDate
@@ -55,9 +49,6 @@ class ProductItemApiService extends TaggableApiService<ProductItemDTO, ProductIt
 
     @Inject
     private ContactDao contactDao
-
-    @Inject
-    private DocumentService documentService
 
     @Inject
     private AccountDao accountDao
@@ -100,7 +91,6 @@ class ProductItemApiService extends TaggableApiService<ProductItemDTO, ProductIt
             productItemDTO.redeemableByName = (type == ProductTypeDTO.VOUCHER && (productItem as Voucher).redeemableBy != null) ? (productItem as Voucher).redeemableBy.getFullName() : null
             productItemDTO.payments = getPayments(type, productItem)
             productItemDTO.tags = productItem.allTags.collect{ it.id }
-            productItemDTO.documents = ((AttachableTrait)productItem).activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
 
             switch (type) {
                 case ProductTypeDTO.PRODUCT:
@@ -240,7 +230,6 @@ class ProductItemApiService extends TaggableApiService<ProductItemDTO, ProductIt
             case ProductTypeDTO.MEMBERSHIP:
             case ProductTypeDTO.VOUCHER:
                 updateCustomFields(productItem.context, productItem as ExpandableTrait, productItemDTO.customFields, (productItem as ExpandableTrait).customFieldClass)
-                updateDocuments(productItem as AttachableTrait, (productItem as AttachableTrait).attachmentRelations, productItemDTO.documents, (productItem as AttachableTrait).relationClass, productItem.context)
                 updateTags(productItem as Taggable, productItem.taggingRelations, productItemDTO.tags, productItem.tagRelationClass, productItem.context)
                 break
         }

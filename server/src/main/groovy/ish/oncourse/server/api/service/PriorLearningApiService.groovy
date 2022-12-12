@@ -17,24 +17,17 @@ import ish.oncourse.server.api.dao.OutcomeDao
 import ish.oncourse.server.api.dao.PriorLearningDao
 import ish.oncourse.server.api.dao.QualificationDao
 import ish.oncourse.server.api.function.CayenneFunctions
-import ish.oncourse.server.api.v1.function.DocumentFunctions
-import ish.oncourse.server.document.DocumentService
-
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
 import ish.oncourse.server.api.v1.function.OutcomeFunctions
-import static ish.oncourse.server.api.v1.function.PriorLearningFunctions.updateOutcomes
 import ish.oncourse.server.api.v1.model.PriorLearningDTO
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.PriorLearning
-import ish.oncourse.server.cayenne.PriorLearningAttachmentRelation
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.StringUtils
 
-class PriorLearningApiService extends EntityApiService<PriorLearningDTO, PriorLearning, PriorLearningDao> {
+import static ish.oncourse.server.api.v1.function.PriorLearningFunctions.updateOutcomes
 
-    @Inject
-    private DocumentService documentService
+class PriorLearningApiService extends EntityApiService<PriorLearningDTO, PriorLearning, PriorLearningDao> {
 
     @Inject
     private QualificationDao qualificationDao
@@ -66,7 +59,6 @@ class PriorLearningApiService extends EntityApiService<PriorLearningDTO, PriorLe
             dto.qualificationLevel = cayenneModel.qualification?.level
             dto.qualificationName = cayenneModel.qualification?.level ? "${cayenneModel.qualification?.level} ${cayenneModel.qualification?.title}" : cayenneModel.qualification?.title
             dto.outcomes = cayenneModel.outcomes?.collect{o -> OutcomeFunctions.toRestOutcome(o)}
-            dto.documents = cayenneModel.documents?.findAll{ !it.isRemoved }?.collect{ d -> DocumentFunctions.toRestDocumentMinimized(d, d.currentVersion.id, documentService)}
             dto.notes = cayenneModel.notes
             dto.contactId = cayenneModel.student?.contact?.id
             dto.contactName = cayenneModel.student?.contact?.fullName
@@ -85,7 +77,6 @@ class PriorLearningApiService extends EntityApiService<PriorLearningDTO, PriorLe
         }
 
         updateOutcomes(outcomeDao, moduleDao, cayenneModel, dto.outcomes)
-        updateDocuments(cayenneModel, cayenneModel.attachmentRelations, dto.documents, PriorLearningAttachmentRelation, cayenneModel.context)
         cayenneModel.notes = dto.notes
         cayenneModel.student = CayenneFunctions.getRecordById(cayenneModel.context, Contact, dto.contactId)?.student
         cayenneModel

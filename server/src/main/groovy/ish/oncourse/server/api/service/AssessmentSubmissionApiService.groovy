@@ -12,25 +12,18 @@ import com.google.inject.Inject
 import ish.oncourse.server.api.dao.AssessmentSubmissionDao
 import ish.oncourse.server.api.v1.model.AssessmentSubmissionDTO
 import ish.oncourse.server.cayenne.AssessmentSubmission
-import ish.oncourse.server.cayenne.AssessmentSubmissionAttachmentRelation
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Tutor
-import ish.oncourse.server.document.DocumentService
 import ish.util.DateFormatter
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
 import static ish.util.LocalDateUtils.UTC
 
 class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissionDTO, AssessmentSubmission, AssessmentSubmissionDao> {
 
     @Inject
     private ContactApiService contactService
-
-    @Inject
-    private DocumentService documentService
 
     @Override
     Class<AssessmentSubmission> getPersistentClass() {
@@ -45,7 +38,6 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
             dtoModel.classId = cayenneModel.assessmentClass.courseClass.id
             dtoModel.courseClassName = cayenneModel.courseClassName
             dtoModel.assessment = cayenneModel.assessmentName
-            dtoModel.documents = cayenneModel.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             dtoModel
         }
     }
@@ -76,8 +68,6 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
         } else {
             cayenneModel.markedBy = null
         }
-
-        updateDocuments(cayenneModel, cayenneModel.attachmentRelations, dto.documents, AssessmentSubmissionAttachmentRelation, cayenneModel.context)
 
         return cayenneModel
     }

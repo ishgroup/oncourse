@@ -67,7 +67,6 @@ class SiteFunctions {
             site.specialInstructions = dbSite.specialInstructions
             site.tags = dbSite.allTags.collect { it.id }
             site.rooms = dbSite.rooms.collect { RoomFunctions.toRestRoomMinimized(it) }
-            site.documents = dbSite.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             site.rules = dbSite.unavailableRuleRelations*.rule.collect{ toRestHoliday(it as UnavailableRule) }
             site.createdOn = dbSite.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             site.modifiedOn = dbSite.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
@@ -98,7 +97,6 @@ class SiteFunctions {
         updateRooms(dbSite, site.rooms)
         updateTags(dbSite, dbSite.taggingRelations, site.tags, SiteTagRelation, context)
         updateAvailabilityRules(dbSite, dbSite.unavailableRuleRelations*.rule, site.rules, SiteUnavailableRuleRelation)
-        updateDocuments(dbSite, dbSite.attachmentRelations, site.documents, SiteAttachmentRelation, context)
 
         dbSite
     }

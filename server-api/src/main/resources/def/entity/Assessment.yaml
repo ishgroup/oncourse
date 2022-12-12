@@ -22,10 +22,6 @@ properties:
     type: boolean
   description:
     type: string
-  documents:
-    type: array
-    items:
-      $ref: './Document.yaml'
   gradingTypeId:
     type: integer
     format: int64

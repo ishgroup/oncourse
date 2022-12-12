@@ -31,10 +31,6 @@ properties:
     type: string
   reason:
     type: string
-  documents:
-    type: array
-    items:
-      $ref: './Document.yaml'
   tags:
     type: array
     items:

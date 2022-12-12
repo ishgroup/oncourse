@@ -28,10 +28,6 @@ properties:
     type: array
     items:
       $ref: './outcome/Outcome.yaml'
-  documents:
-    type: array
-    items:
-      $ref: './Document.yaml'
   notes:
     type: string
   contactId:

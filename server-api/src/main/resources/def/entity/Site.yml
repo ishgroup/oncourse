@@ -64,10 +64,6 @@ properties:
     type: array
     items:
       $ref: './Room.yml'
-  documents:
-    type: array
-    items:
-      $ref: './Document.yaml'
   rules:
     type: array
     items:

@@ -12,33 +12,16 @@ import com.google.inject.Inject
 import ish.math.Money
 import ish.oncourse.server.api.dao.LeadDao
 import ish.oncourse.server.api.v1.function.SaleFunctions
-import ish.oncourse.server.api.v1.model.LeadDTO
-import ish.oncourse.server.api.v1.model.LeadStatusDTO
-import ish.oncourse.server.api.v1.model.SaleDTO
-import ish.oncourse.server.api.v1.model.SaleTypeDTO
-import ish.oncourse.server.api.v1.model.SiteDTO
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.Lead
-import ish.oncourse.server.cayenne.LeadAttachmentRelation
-import ish.oncourse.server.cayenne.LeadCustomField
-import ish.oncourse.server.cayenne.LeadItem
-import ish.oncourse.server.cayenne.LeadSite
-import ish.oncourse.server.cayenne.LeadTagRelation
-import ish.oncourse.server.cayenne.Product
-import ish.oncourse.server.cayenne.Site
-import ish.oncourse.server.cayenne.SystemUser
-import ish.oncourse.server.document.DocumentService
+import ish.oncourse.server.api.v1.model.*
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.users.SystemUserService
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
 import static ish.oncourse.server.api.v1.function.SaleFunctions.toRestSale
 import static ish.oncourse.server.api.v1.function.SiteFunctions.toRestSiteMinimized
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 
 class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
@@ -48,9 +31,6 @@ class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
 
     @Inject
     private ContactApiService contactApiService
-
-    @Inject
-    private DocumentService documentService
 
     @Inject
     private InvoiceApiService invoiceApiService
@@ -82,7 +62,6 @@ class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
             dtoModel.invoices = cayenneModel.invoices.collect {invoiceApiService.toRestLeadInvoice(it) } +
                     cayenneModel.quotes.collect {invoiceApiService.toRestLeadInvoice(it) }
             dtoModel.customFields = cayenneModel.customFields.collectEntries {[(it.customFieldType.key): it.value] }
-            dtoModel.documents = cayenneModel.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             dtoModel.tags = cayenneModel.allTags.collect { it.id }
             dtoModel.relatedSellables = cayenneModel.items.collect {item -> item.course ? toRestSale(item.course) : toRestSale(item.product) }
             dtoModel.sites =  cayenneModel.sites.collect {toRestSiteMinimized(it) }
@@ -108,7 +87,6 @@ class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
         updateLeadItems(cayenneModel, dtoModel.relatedSellables)
         updateSites(dtoModel.sites, cayenneModel)
         updateTags(cayenneModel, cayenneModel.taggingRelations, dtoModel.tags, LeadTagRelation.class, context)
-        updateDocuments(cayenneModel, cayenneModel.attachmentRelations, dtoModel.documents, LeadAttachmentRelation.class, context)
         updateCustomFields(context, cayenneModel, dtoModel.customFields, LeadCustomField.class)
         return cayenneModel
     }

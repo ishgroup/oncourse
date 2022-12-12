@@ -19,7 +19,10 @@ import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.api.dao.*
 import ish.oncourse.server.api.v1.function.TagFunctions
 import ish.oncourse.server.api.v1.model.*
-import ish.oncourse.server.cayenne.*
+import ish.oncourse.server.cayenne.Course
+import ish.oncourse.server.cayenne.CourseCustomField
+import ish.oncourse.server.cayenne.CourseTagRelation
+import ish.oncourse.server.cayenne.CourseUnavailableRuleRelation
 import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.duplicate.DuplicateCourseService
 import ish.oncourse.server.security.api.IPermissionService
@@ -33,21 +36,15 @@ import javax.ws.rs.core.Response
 import static ish.oncourse.server.api.v1.function.CourseFunctions.ENROLMENT_TYPE_MAP
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
 import static ish.oncourse.server.api.v1.function.HolidayFunctions.*
 import static ish.oncourse.server.api.v1.function.ModuleFunctions.bidiModuleType
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.oncourse.server.api.v1.model.CourseStatusDTO.*
 import static org.apache.commons.lang3.StringUtils.*
 
 class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao>  {
-
-    @Inject
-    private DocumentService documentService
 
     @Inject
     private SystemUserService systemUserService
@@ -109,7 +106,6 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.studentWaitingListCount = course.waitingLists.size()
             courseDTO.hasEnrolments = course.courseClasses.find { c -> !c.enrolments.empty} != null
             courseDTO.webDescription = course.webDescription
-            courseDTO.documents = course.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             courseDTO.relatedSellables = relatedSellablesOf(course.context, course.id)
             courseDTO.qualificationId = course.qualification?.id
             courseDTO.qualNationalCode = course.qualification?.nationalCode
@@ -185,7 +181,6 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         course.isVET = courseDTO.isVET
 
         updateTags(course, course.taggingRelations, courseDTO.tags, CourseTagRelation, course.context)
-        updateDocuments(course, course.attachmentRelations, courseDTO.documents, CourseAttachmentRelation, course.context)
         updateModules(course, courseDTO.modules)
         course.reportableHours = courseDTO.reportableHours
 

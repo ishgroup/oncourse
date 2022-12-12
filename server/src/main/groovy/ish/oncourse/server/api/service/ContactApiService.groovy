@@ -146,14 +146,6 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
             dto.invoiceTerms = cayenneModel.invoiceTerms
             dto.taxId = cayenneModel.taxOverride?.id
             dto.customFields = cayenneModel.customFields.collectEntries { [(it.customFieldType.key) : it.value] }
-            dto.documents = cayenneModel.documents
-                    .findAll{doc ->
-                        doc.attachmentRelations.findAll{ r -> AttachmentSpecialType.PROFILE_PICTURE != r.specialType }
-                    }.findAll{ doc ->
-                        !doc.isRemoved
-                    }.collect{ d ->
-                        toRestDocumentMinimized(d, d.currentVersion.id, documentService)
-                    }
             dto.abandonedCarts = cayenneModel.abandonedCarts.collect{toRestCart(it)}
             dto.tags = cayenneModel.allTags.collect{ it.id }
             dto.memberships = cayenneModel.memberships.collect {  productItemApiService.toRestModel(it) }
@@ -210,7 +202,6 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         cayenneModel.invoiceTerms = dto.invoiceTerms
         cayenneModel.taxOverride = dto.taxId != null ? taxDao.getById(context, dto.taxId) : null as Tax
         updateCustomFields(context, cayenneModel, dto.customFields, ContactCustomField)
-        updateDocuments(cayenneModel, cayenneModel.attachmentRelations, dto.documents, ContactAttachmentRelation, context)
         updateTags(cayenneModel, cayenneModel.taggingRelations, dto.tags, ContactTagRelation, context)
         updateProfilePicture(cayenneModel, dto.profilePicture)
         updateContactRelations(context, cayenneModel, dto.relations)

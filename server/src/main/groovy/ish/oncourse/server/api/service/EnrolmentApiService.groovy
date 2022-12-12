@@ -14,27 +14,24 @@ package ish.oncourse.server.api.service
 import com.google.inject.Inject
 import ish.cancel.CancelationResult
 import ish.cancel.EnrolmentCancelationRequest
-import ish.common.types.EnrolmentReportingStatus
 import ish.common.types.EnrolmentStatus
 import ish.math.Money
 import ish.oncourse.server.api.dao.EnrolmentDao
 import ish.oncourse.server.api.dao.FundingSourceDao
 import ish.oncourse.server.api.v1.function.CustomFieldFunctions
-import ish.oncourse.server.api.v1.function.DocumentFunctions
 import ish.oncourse.server.api.v1.function.TagFunctions
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.cancel.CancelEnrolmentService
-import ish.oncourse.server.cayenne.*
-import ish.oncourse.server.document.DocumentService
-import ish.oncourse.server.users.SystemUserService
+import ish.oncourse.server.cayenne.Enrolment
+import ish.oncourse.server.cayenne.EnrolmentCustomField
+import ish.oncourse.server.cayenne.EnrolmentTagRelation
+import ish.oncourse.server.cayenne.Student
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import static ish.oncourse.server.api.v1.function.AssessmentSubmissionFunctions.updateSubmissions
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.EnrolmentFunctions.*
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.validation.EntityValidator.validateLength
 import static org.apache.commons.lang3.StringUtils.trimToNull
 
@@ -48,12 +45,6 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
 
     @Inject
     private AssessmentSubmissionApiService submissionApiService
-
-    @Inject
-    private SystemUserService systemUserService
-
-    @Inject
-    private DocumentService documentService
 
     @Inject
     private FundingSourceDao fundingSourceDao
@@ -123,7 +114,6 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
             enrolmentDTO.creditType = CREDIT_TYPE_MAP[enrolment.creditType]
             enrolmentDTO.creditLevel = CREDIT_LEVEL_MAP[enrolment.creditLevel]
             enrolmentDTO.customFields = enrolment.customFields.collectEntries { [(it.customFieldType.key) : it.value] }
-            enrolmentDTO.documents = enrolment.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             enrolmentDTO.invoicesCount = enrolment.invoiceLines.invoice.toSet().size()
             enrolmentDTO.outcomesCount = enrolment.outcomes.size()
             enrolmentDTO.createdOn = LocalDateUtils.dateToTimeValue(enrolment.createdOn)
@@ -174,7 +164,6 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
 
         updateSubmissions(submissionApiService, this, dto.submissions, enrolment.assessmentSubmissions, context)
         TagFunctions.updateTags(enrolment, enrolment.taggingRelations, dto.tags, EnrolmentTagRelation, context)
-        DocumentFunctions.updateDocuments(enrolment, enrolment.attachmentRelations, dto.documents, EnrolmentAttachmentRelation, context)
         CustomFieldFunctions.updateCustomFields(context, enrolment, dto.customFields, EnrolmentCustomField)
         return enrolment
     }

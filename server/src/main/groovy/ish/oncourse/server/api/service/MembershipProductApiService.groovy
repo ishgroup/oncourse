@@ -21,20 +21,16 @@ import ish.oncourse.server.api.v1.model.MembershipCorporatePassDTO
 import ish.oncourse.server.api.v1.model.MembershipDiscountDTO
 import ish.oncourse.server.api.v1.model.MembershipProductDTO
 import ish.oncourse.server.cayenne.*
-import ish.oncourse.server.document.DocumentService
 import org.apache.cayenne.ObjectContext
 
 import java.time.ZoneId
 
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
 import static ish.oncourse.server.api.v1.function.ProductFunctions.expiryTypeMap
 import static ish.oncourse.server.api.v1.function.ProductFunctions.updateCorporatePasses
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.oncourse.server.api.v1.model.ProductStatusDTO.*
 import static ish.util.MoneyUtil.calculateTaxAdjustment
@@ -45,9 +41,6 @@ class MembershipProductApiService extends TaggableApiService<MembershipProductDT
 
     @Inject
     private AccountDao accountDao
-
-    @Inject
-    private DocumentService documentService
     
     @Inject
     private ContactRelationTypeDao contactRelationTypeDao
@@ -102,7 +95,6 @@ class MembershipProductApiService extends TaggableApiService<MembershipProductDT
             membershipProductDTO.createdOn = membershipProduct.createdOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             membershipProductDTO.modifiedOn = membershipProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             membershipProductDTO.dataCollectionRuleId = membershipProduct.fieldConfigurationScheme?.id
-            membershipProductDTO.documents = membershipProduct.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             membershipProductDTO.tags = membershipProduct.allTags.collect{ it.id }
             membershipProductDTO.customFields = membershipProduct.customFields.collectEntries {[(it.customFieldType.key) : it.value] }
             membershipProductDTO
@@ -136,7 +128,6 @@ class MembershipProductApiService extends TaggableApiService<MembershipProductDT
                 fieldConfigurationSchemeDao.getById(membershipProduct.context, membershipProductDTO.dataCollectionRuleId) :
                 null as FieldConfigurationScheme
         updateCorporatePasses(membershipProduct, membershipProductDTO.corporatePasses, corporatePassProductDao, corporatePassDao)
-        updateDocuments(membershipProduct, membershipProduct.attachmentRelations, membershipProductDTO.documents, MembershipProductAttachmentRelation, context)
         updateTags(membershipProduct, membershipProduct.taggingRelations, membershipProductDTO.tags, MembershipProductTagRelation, context)
         updateCustomFields(membershipProduct.context, membershipProduct, membershipProductDTO.customFields, membershipProduct.customFieldClass)
         updateDiscountMemberships(membershipProduct, membershipProductDTO.membershipDiscounts)

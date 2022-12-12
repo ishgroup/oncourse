@@ -11,19 +11,29 @@
 
 package ish.oncourse.server.api.service
 
+import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.api.dao.DocumentDao
-import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import ish.oncourse.server.api.v1.model.DocumentDTO
+import ish.oncourse.server.cayenne.AttachableTrait
+import ish.oncourse.server.cayenne.AttachmentRelation
 import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.DocumentTagRelation
+import ish.oncourse.server.document.DocumentService
+import ish.util.EntityUtil
 import org.apache.cayenne.ObjectContext
-import static org.apache.commons.lang3.StringUtils.isBlank
-import static org.apache.commons.lang3.StringUtils.trimToEmpty
-import static org.apache.commons.lang3.StringUtils.trimToNull
+import org.apache.cayenne.query.SelectById
+
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
+import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
+import static org.apache.commons.lang3.StringUtils.*
 
 @CompileStatic
 class DocumentApiService extends TaggableApiService<DocumentDTO, Document, DocumentDao> {
+
+    @Inject
+    private DocumentService documentService
+
 
     @Override
     Class<Document> getPersistentClass() {
@@ -98,5 +108,36 @@ class DocumentApiService extends TaggableApiService<DocumentDTO, Document, Docum
             }
         }
         action
+    }
+
+
+    List<DocumentDTO> getDocumentsBy(String entityName, Long id) {
+        AttachableTrait attachableTrait = validateAttachable(entityName, id, cayenneService.newContext)
+        (attachableTrait.attachmentRelations as List<AttachmentRelation>)
+                .findAll {!it.document.isRemoved}
+                .collect {toRestDocument(it.document, it.documentVersion?.id, documentService) }
+    }
+
+
+    AttachableTrait validateAttachable(String entityName, Long entityId, ObjectContext context) {
+
+        if (entityId == null) {
+            validator.throwClientErrorException('entityId', 'Related object id is required')
+        }
+        if (entityName == null) {
+            validator.throwClientErrorException('entityName', 'Related object name is required')
+        }
+
+        def entityClass = EntityUtil.entityClassForName(entityName)
+        if(!(entityClass instanceof Class<? extends AttachableTrait>)){
+            validator.throwClientErrorException('entityName', 'Related object name is wrong')
+        }
+
+        AttachableTrait attachableTrait = SelectById.query(entityClass as Class<? extends AttachableTrait>, entityId).selectOne(context)
+        if (attachableTrait == null) {
+            validator.throwClientErrorException('entityId', 'Related object doesn\'t exist')
+        }
+        return attachableTrait
+
     }
 }

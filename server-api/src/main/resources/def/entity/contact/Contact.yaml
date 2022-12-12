@@ -166,10 +166,6 @@ properties:
     type: object
     additionalProperties:
       type: string
-  documents:
-    type: array
-    items:
-      $ref: '../Document.yaml'
   tags:
     type: array
     items:

@@ -49,10 +49,6 @@ properties:
     type: boolean
   webDescription:
     type: string
-  documents:
-    type: array
-    items:
-      $ref: '../Document.yaml'
   relatedSellables:
     type: array
     items:

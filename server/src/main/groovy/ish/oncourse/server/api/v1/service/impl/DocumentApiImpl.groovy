@@ -94,6 +94,11 @@ class DocumentApiImpl implements DocumentApi {
     }
 
     @Override
+    List<DocumentDTO> getDocumentsAttachedTo(String entityName, Long entityId) {
+        return service.getDocumentsBy(entityName, entityId)
+    }
+
+    @Override
     DocumentDTO search(byte[] content) {
         ObjectContext context = cayenneService.newContext
         if (content && content.length) {

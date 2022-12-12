@@ -138,10 +138,6 @@ properties:
     items:
       type: integer
       format: int64
-  documents:
-    type: array
-    items:
-      $ref: '../Document.yaml'
   isTraineeship:
     type: boolean
   customFields:
