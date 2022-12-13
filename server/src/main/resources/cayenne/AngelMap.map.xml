@@ -939,16 +939,6 @@
 		<db-attribute name="status" type="INTEGER" isMandatory="false"/>
 		<db-attribute name="type" type="INTEGER" isMandatory="false"/>
 	</db-entity>
-	<db-entity name="MessageTemplate">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
-		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="message" type="CLOB" length="32000"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
-		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="64"/>
-		<db-attribute name="subject" type="VARCHAR" length="512"/>
-		<db-attribute name="type" type="INTEGER" isMandatory="true"/>
-		<db-attribute name="willowId" type="BIGINT"/>
-	</db-entity>
 	<db-entity name="Module">
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
 		<db-attribute name="creditPoints" type="DECIMAL" length="10" scale="2"/>
@@ -2603,16 +2593,6 @@
 		<obj-attribute name="type" type="ish.common.types.MessageType" db-attribute-path="type"/>
 		<obj-attribute name="numberOfAttempts" type="java.lang.Integer" db-attribute-path="numberOfAttempts"/>
 		<obj-attribute name="destinationAddress" type="java.lang.String" db-attribute-path="destinationAddress"/>
-	</obj-entity>
-	<obj-entity name="MessageTemplate" className="ish.oncourse.server.cayenne.MessageTemplate" clientClassName="ish.oncourse.cayenne.MessageTemplate" dbEntityName="MessageTemplate" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
-		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
-		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
-		<obj-attribute name="message" type="java.lang.String" db-attribute-path="message"/>
-		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
-		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
-		<obj-attribute name="subject" type="java.lang.String" db-attribute-path="subject"/>
-		<obj-attribute name="type" type="ish.common.types.MessageTemplateType" db-attribute-path="type"/>
-		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
 	<obj-entity name="Module" className="ish.oncourse.server.cayenne.Module" clientClassName="ish.oncourse.cayenne.Module" dbEntityName="Module" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
