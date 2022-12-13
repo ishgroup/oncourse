@@ -832,3 +832,15 @@ databaseChangeLog:
       changes:
         - customChange:
             class: ish.oncourse.server.upgrades.liquibase.change.DeleteUnnecessaryCloudAssessProperties
+
+  - changeSet:
+      id: 120-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - and:
+            - tableExists:
+                tableName: MessageTemplate
+      changes:
+        - dropTable:
+            tableName: MessageTemplate
