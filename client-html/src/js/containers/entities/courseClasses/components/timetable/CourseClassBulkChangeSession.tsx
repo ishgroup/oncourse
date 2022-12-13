@@ -342,7 +342,7 @@ const CourseClassBulkChangeSessionForm = props => {
               <Grid item xs={12}>
                 <BulkItemWrapper classes={classes} title="Location" name="location">
                   <FormField
-                    type="remoteDataSearchSelect"
+                    type="remoteDataSelect"
                     entity="Room"
                     name="roomId"
                     label="Site and room"

@@ -107,7 +107,6 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
                 type="datetime"
                 formatting="inline"
                 formatDate={D_MMM_YYYY}
-                inlineMargin
               />
             </div>
           )
@@ -131,7 +130,6 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
                   type="datetime"
                   formatting="inline"
                   formatDate={D_MMM_YYYY}
-                  inlineMargin
                 />
               </div>
               <div className="pl-3">

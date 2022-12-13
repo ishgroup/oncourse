@@ -250,7 +250,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
           {countries && (
             <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
               <FormField
-                type="searchSelect"
+                type="select"
                 selectValueMark="id"
                 selectLabelMark="name"
                 name="student.countryOfBirth"
@@ -270,7 +270,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
           {languages && (
             <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
               <FormField
-                type="searchSelect"
+                type="select"
                 selectValueMark="id"
                 selectLabelMark="name"
                 name="student.language"
@@ -491,7 +491,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               {countries && (
                 <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
                   <FormField
-                    type="searchSelect"
+                    type="select"
                     selectValueMark="id"
                     selectLabelMark="name"
                     name="student.countryOfResidency"

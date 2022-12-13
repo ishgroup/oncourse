@@ -203,7 +203,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
           <Grid item xs={12}>
             <Grid item xs={6}>
               <FormField
-                type="searchSelect"
+                type="select"
                 name="administrationCenterId"
                 label="Administration center"
                 selectLabelCondition={getAdminCenterLabel}

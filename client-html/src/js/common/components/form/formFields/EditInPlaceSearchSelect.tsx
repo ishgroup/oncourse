@@ -54,7 +54,6 @@ const searchStyles = theme => createStyles({
   },
   inline: {
     fontSize: "inherit",
-    marginLeft: "0.3em",
     "& $inputEndAdornment": {
       display: "none",
     },

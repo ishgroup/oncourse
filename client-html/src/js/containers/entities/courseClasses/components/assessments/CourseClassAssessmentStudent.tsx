@@ -101,7 +101,6 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
               }}
               type="datetime"
               formatting="inline"
-              inlineMargin
             />
           )
           : submittedContent}
@@ -123,7 +122,6 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
                   }}
                   type="datetime"
                   formatting="inline"
-                  inlineMargin
                 />
               </div>
               <div>

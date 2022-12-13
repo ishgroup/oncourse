@@ -128,9 +128,6 @@ const styles = theme => createStyles({
       maxWidth: "calc(100% * 1.4)"
     }
   },
-  inlineMargin: {
-    marginLeft: "0.3em"
-  },
   inlineContainer: {
     display: "inline-flex",
     "&$hiddenContainer": {
@@ -168,7 +165,6 @@ const EditInPlaceDateTimeField: React.FC<any> = (
    className,
    onKeyPress,
    placeholder,
-   inlineMargin,
     persistValue,
   }
 ) => {
@@ -348,7 +344,6 @@ const EditInPlaceDateTimeField: React.FC<any> = (
     <div
       className={clsx(className, "outline-none", {
         [classes.inlineContainer]: isInline,
-        [classes.inlineMargin]: inlineMargin,
         "pointer-events-none": disabled
       })}
     >

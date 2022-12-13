@@ -458,7 +458,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                     <Typography variant="body2" color="inherit" component="span" onClick={e => e.preventDefault()} noWrap>
                       Change course for all classes to
                       <FormField
-                        type="remoteDataSearchSelect"
+                        type="remoteDataSelect"
                         entity="Course"
                         aqlFilter="currentlyOffered is true"
                         name="courseId"

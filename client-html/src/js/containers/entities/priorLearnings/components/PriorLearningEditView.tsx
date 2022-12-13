@@ -136,7 +136,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
         </Grid>
         <Grid item xs={twoColumn ? 6 : 12}>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             name="contactId"
             label="Student"
             entity="Contact"
@@ -155,7 +155,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
 
         <Grid item xs={twoColumn ? 3 : 12}>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             name="qualificationName"
             label="Qualification"
             entity="Qualification"
@@ -175,7 +175,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
 
         <Grid item xs={twoColumn ? 3 : 12}>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             name="qualificationNationalCode"
             label="National code"
             selectValueMark="nationalCode"

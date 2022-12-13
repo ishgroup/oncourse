@@ -391,7 +391,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
 
       <Grid item xs={twoColumn ? 4 : 12}>
         <FormField
-          type="searchSelect"
+          type="select"
           name={`${item}.incomeAccountId`}
           label="Income account"
           disabled={type !== "Quote" && !isNew}
@@ -423,7 +423,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
 
           <Grid item xs={twoColumn ? 6 : 12}>
             <FormField
-              type="remoteDataSearchSelect"
+              type="remoteDataSelect"
               entity="Course"
               name={`${item}.courseName`}
               label="Course"
@@ -444,7 +444,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
 
           <Grid item xs={twoColumn ? 6 : 12}>
             <FormField
-              type="remoteDataSearchSelect"
+              type="remoteDataSelect"
               entity="Discount"
               aqlColumns="name,discountType,discountDollar,discountPercent,rounding"
               aqlFilter="((validTo >= today) or (validTo == null)) and ((validFrom <= today) or (validFrom == null))"

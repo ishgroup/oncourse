@@ -121,7 +121,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           fields={(
             <Grid item {...gridItemProps}>
               <FormField
-                type="remoteDataSearchSelect"
+                type="remoteDataSelect"
                 entity="Contact"
                 aqlFilter="isStudent is true"
                 name="contactId"
@@ -158,7 +158,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
       </Grid>
       <Grid item {...gridItemProps}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           entity="Course"
           aqlFilter="enrolmentType is ENROLMENT_BY_APPLICATION"
           name="courseId"

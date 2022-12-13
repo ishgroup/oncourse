@@ -418,7 +418,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
             <Field name={`${item}.submissions`} component={submissionFieldStub} />
             <Field name={`${item}.contactIds`} component={tutorsFieldStub} />
             <FormField
-              type="remoteDataSearchSelect"
+              type="remoteDataSelect"
               entity="Assessment"
               aqlFilter={assessmentAql}
               aqlColumns={assessmentAqlCols}
@@ -434,7 +434,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
           </Grid>
           <Grid item xs={twoColumn ? 6 : 12}>
             <FormField
-              type="remoteDataSearchSelect"
+              type="remoteDataSelect"
               entity="Assessment"
               aqlFilter={assessmentAql}
               aqlColumns={assessmentAqlCols}

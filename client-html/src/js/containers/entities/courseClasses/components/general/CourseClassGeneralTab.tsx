@@ -197,7 +197,7 @@ const CourseClassGeneralTab = React.memo<Props>(
                 <Grid container columnSpacing={3} rowSpacing={2}>
                   <Grid item xs={twoColumn ? 6 : 12}>
                     <FormField
-                      type="remoteDataSearchSelect"
+                      type="remoteDataSelect"
                       label="Course"
                       entity="Course"
                       name="courseId"

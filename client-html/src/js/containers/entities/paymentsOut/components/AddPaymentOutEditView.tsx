@@ -316,7 +316,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
 
         <Grid item xs={4}>
           <FormField
-            type="searchSelect"
+            type="select"
             name="administrationCenterId"
             label="Site"
             defaultDisplayValue={values.administrationCenterName}
