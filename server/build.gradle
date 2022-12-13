@@ -140,7 +140,7 @@ dependencies {
 	implementation 'com.bugsnag:bugsnag:3.6.2'
 
 	testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
-	testImplementation 'org.mockito:mockito-core:2.18.3'
+	testImplementation 'org.mockito:mockito-core:3.12.4'
 	testImplementation 'commons-dbcp:commons-dbcp:1.4'
 	testImplementation 'xmlunit:xmlunit:1.6' //used for xml export validation tests
 	testImplementation 'org.kohsuke:wordnet-random-name:1.3'
