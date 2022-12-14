@@ -32,6 +32,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -191,8 +192,9 @@ public class ImageHelper {
 	 * according <a href="https://www.iana.org/assignments/media-types/media-types.xhtml"> IANA </a>}
 	 */
 	public static boolean isDoc(String mimeType) {
-		return mimeType.equals("application/msword") ||
-				mimeType.equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+		List<String> types = Arrays.asList("application/msword",
+				"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+		return types.contains(mimeType);
 	}
 
 	/**
@@ -200,13 +202,9 @@ public class ImageHelper {
 	 * according <a href="https://www.iana.org/assignments/media-types/media-types.xhtml"> IANA </a>}
 	 */
 	public static boolean isExcel(String mimeType) {
-		switch (mimeType) {
-			case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-			case "application/vnd.ms-excel":
-				return true;
-			default:
-				return false;
-		}
+		List<String> types = Arrays.asList("application/vnd.ms-excel",
+				"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+		return types.contains(mimeType);
 	}
 
 	/**
@@ -222,20 +220,9 @@ public class ImageHelper {
 	 * according <a href="https://www.iana.org/assignments/media-types/media-types.xhtml"> IANA </a>}
 	 */
 	public static boolean isText(String mimeType) {
-		switch (mimeType) {
-			case "application/xml":
-			case "text/html":
-			case "text/calendar":
-			case "text/javascript":
-			case "application/vnd.oasis.opendocument.text":
-			case "application/x-httpd-php":
-			case "text/rtf":
-			case "text/plain":
-			case "text/xml":
-				return true;
-			default:
-				return false;
-		}
+		List<String> types = Arrays.asList("application/xml", "text/html", "text/calendar", "text/javascript",
+				"application/vnd.oasis.opendocument.text", "application/x-httpd-php", "text/rtf", "text/plain", "text/xml");
+		return types.contains(mimeType);
 	}
 
 	/**

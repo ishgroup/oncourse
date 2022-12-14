@@ -67,7 +67,7 @@ public class ExportTemplateApiService extends AutomationApiService<ExportTemplat
     }
 
     public byte[] getPreview(Long id){
-        return ObjectSelect.columnQuery(ExportTemplate.class, Report.PREVIEW).where(Report.ID.eq(id)).selectOne(cayenneService.getNewContext());
+        return ObjectSelect.columnQuery(ExportTemplate.class, ExportTemplate.PREVIEW).where(Report.ID.eq(id)).selectOne(cayenneService.getNewContext());
     }
 
     protected ExportTemplateDTO createDto() {
