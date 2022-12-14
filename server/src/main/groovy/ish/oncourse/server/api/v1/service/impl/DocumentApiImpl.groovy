@@ -138,8 +138,8 @@ class DocumentApiImpl implements DocumentApi {
     }
 
     @Override
-    void updateDocumentsAttachedTo(String entityName, Long entityId, List<DocumentDTO> documents) {
-        service.updateDocumentsAttachedTo(entityName, entityId, documents)
+    void updateDocumentsAttachedTo(String entityName, Long entityId, List<Long> documentIds) {
+        service.updateDocumentsAttachedTo(entityName, entityId, documentIds)
     }
 
     @Override

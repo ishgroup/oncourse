@@ -316,24 +316,14 @@ class DocumentFunctions {
      *  - create new relation if user add Document
      **/
     static void updateDocuments(AttachableTrait relatedObject,
-                                List<DocumentDTO> documents,
+                                List<Long> documentsToSave,
                                 ObjectContext context) {
-        if (!documents) {
-            documents = []
-        }
+
         def documentRelations = relatedObject.attachmentRelations
-        List<Long> documentsToSave = documents*.id
         List<Long> currentDocs = documentRelations*.document*.id
 
         documentRelations.findAll { !(it.document.id in documentsToSave) }.each {
             context.deleteObjects(it)
-        }
-
-        documentRelations.findAll { it.document.id in documentsToSave }.each { relation ->
-            DocumentDTO document = documents.find { it.id == relation.document.id }
-            if (document.versionId) {
-                relation.documentVersion = SelectById.query(DocumentVersion, document.versionId).selectOne(context)
-            }
         }
 
         def relationClass = relatedObject.getRelationClass()
@@ -347,10 +337,6 @@ class DocumentFunctions {
                 relation.attachedRelation = relatedObject
                 relation.document = dbDocument
                 relation.entityIdentifier = relatedObject.class.simpleName
-                Long versionId = documents.find { it.id == dbDocument.id }?.versionId
-                if (versionId) {
-                    relation.documentVersion = dbDocument.versions.find { it.id == versionId }
-                }
                 relation
             }
         }

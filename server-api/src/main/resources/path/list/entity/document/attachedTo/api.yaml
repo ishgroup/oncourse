@@ -42,12 +42,13 @@ post:
       type: integer
       format: int64
       required: true
-    - name: documents
+    - name: documentIds
       in: body
       schema:
         type: array
         items:
-          $ref: './def/entity/Document.yaml'
+          type: integer
+          format: int64
   responses:
     '204':
       description: Success response.

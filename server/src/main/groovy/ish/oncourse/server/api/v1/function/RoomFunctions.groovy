@@ -14,30 +14,22 @@ package ish.oncourse.server.api.v1.function
 import groovy.transform.CompileStatic
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.function.CayenneFunctions
-import ish.oncourse.server.document.DocumentService
-
-import static ish.oncourse.server.api.function.GetKioskUrl.getKioskUrl
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
-import static ish.oncourse.server.api.v1.function.HolidayFunctions.toRestHoliday
-import static ish.oncourse.server.api.v1.function.HolidayFunctions.updateAvailabilityRules
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
-import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import ish.oncourse.server.api.v1.model.RoomDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
-import ish.oncourse.server.cayenne.Room
-import ish.oncourse.server.cayenne.RoomAttachmentRelation
-import ish.oncourse.server.cayenne.RoomTagRelation
-import ish.oncourse.server.cayenne.RoomUnavailableRuleRelation
-import ish.oncourse.server.cayenne.Site
-import ish.oncourse.server.cayenne.SystemUser
-import ish.oncourse.server.cayenne.UnavailableRule
+import ish.oncourse.server.cayenne.*
+import ish.oncourse.server.document.DocumentService
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.StringUtils
-import static org.apache.commons.lang3.StringUtils.trimToNull
 
 import java.time.ZoneOffset
+
+import static ish.oncourse.server.api.function.GetKioskUrl.getKioskUrl
+import static ish.oncourse.server.api.v1.function.HolidayFunctions.toRestHoliday
+import static ish.oncourse.server.api.v1.function.HolidayFunctions.updateAvailabilityRules
+import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
+import static org.apache.commons.lang3.StringUtils.trimToNull
+
 @CompileStatic
 class RoomFunctions {
 

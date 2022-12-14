@@ -143,8 +143,8 @@ class DocumentApiService extends TaggableApiService<DocumentDTO, Document, Docum
 
     }
 
-    void updateDocumentsAttachedTo(String entityName, Long entityId, List<DocumentDTO> documents){
+    void updateDocumentsAttachedTo(String entityName, Long entityId, List<Long> documentIds){
         def attachable = validateAttachable(entityName, entityId)
-        DocumentFunctions.updateDocuments(attachable, documents, cayenneService.newContext)
+        DocumentFunctions.updateDocuments(attachable, documentIds, cayenneService.newContext)
     }
 }
