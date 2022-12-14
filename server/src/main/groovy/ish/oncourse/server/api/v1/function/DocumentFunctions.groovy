@@ -309,8 +309,6 @@ class DocumentFunctions {
 
     /**
      * @relatedObject -  entity taht can have attached documents: Contact/Course/Enrolment/...
-     * @documentRelations - list of many-to-many relation object: ContactAttachmentRelation/CourseAttachmentRelation/...
-     * @relationClass - type of many-to-many relation: ContactAttachmentRelation/CourseAttachmentRelation/...
      *
      *
      * Main purpose of this method habdle list of actual attached Documents list:
@@ -318,14 +316,12 @@ class DocumentFunctions {
      *  - create new relation if user add Document
      **/
     static void updateDocuments(AttachableTrait relatedObject,
-                                List<? extends AttachmentRelation> documentRelations,
                                 List<DocumentDTO> documents,
-                                Class<? extends AttachmentRelation> relationClass,
                                 ObjectContext context) {
-
         if (!documents) {
             documents = []
         }
+        def documentRelations = relatedObject.attachmentRelations
         List<Long> documentsToSave = documents*.id
         List<Long> currentDocs = documentRelations*.document*.id
 
@@ -340,6 +336,7 @@ class DocumentFunctions {
             }
         }
 
+        def relationClass = relatedObject.getRelationClass()
 
         ObjectSelect.query(Document)
                 .where(Document.ID.in(documentsToSave.findAll { !(it in currentDocs) }))

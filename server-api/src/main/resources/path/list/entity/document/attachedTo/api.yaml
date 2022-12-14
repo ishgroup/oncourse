@@ -24,5 +24,38 @@ get:
       description: Unexpected error
   x-permission:
     mask: view
-    keyCode: LAZY/entityName
+    keyCode: ATTACHMENT_INFO
+    errorMessage: Sorry, you have no permissions to get documents. Please contact your administrator
+
+post:
+  operationId: updateDocumentsAttachedTo
+  description: update documents array, linked to the entity
+  tags:
+    - Document
+  parameters:
+    - name: entityName
+      in: query
+      type: string
+      required: true
+    - name: entityId
+      in: query
+      type: integer
+      format: int64
+      required: true
+    - name: documents
+      in: body
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/Document.yaml'
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: ATTACHMENT_INFO
     errorMessage: Sorry, you have no permissions to get documents. Please contact your administrator

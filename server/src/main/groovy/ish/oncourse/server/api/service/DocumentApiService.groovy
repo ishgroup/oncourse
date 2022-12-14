@@ -14,6 +14,7 @@ package ish.oncourse.server.api.service
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.api.dao.DocumentDao
+import ish.oncourse.server.api.v1.function.DocumentFunctions
 import ish.oncourse.server.api.v1.model.DocumentDTO
 import ish.oncourse.server.cayenne.AttachableTrait
 import ish.oncourse.server.cayenne.AttachmentRelation
@@ -112,14 +113,14 @@ class DocumentApiService extends TaggableApiService<DocumentDTO, Document, Docum
 
 
     List<DocumentDTO> getDocumentsBy(String entityName, Long id) {
-        AttachableTrait attachableTrait = validateAttachable(entityName, id, cayenneService.newContext)
+        AttachableTrait attachableTrait = validateAttachable(entityName, id)
         (attachableTrait.attachmentRelations as List<AttachmentRelation>)
                 .findAll {!it.document.isRemoved}
                 .collect {toRestDocument(it.document, it.documentVersion?.id, documentService) }
     }
 
 
-    AttachableTrait validateAttachable(String entityName, Long entityId, ObjectContext context) {
+    AttachableTrait validateAttachable(String entityName, Long entityId) {
 
         if (entityId == null) {
             validator.throwClientErrorException('entityId', 'Related object id is required')
@@ -133,11 +134,17 @@ class DocumentApiService extends TaggableApiService<DocumentDTO, Document, Docum
             validator.throwClientErrorException('entityName', 'Related object name is wrong')
         }
 
+        def context = cayenneService.newReadonlyContext
         AttachableTrait attachableTrait = SelectById.query(entityClass as Class<? extends AttachableTrait>, entityId).selectOne(context)
         if (attachableTrait == null) {
             validator.throwClientErrorException('entityId', 'Related object doesn\'t exist')
         }
         return attachableTrait
 
+    }
+
+    void updateDocumentsAttachedTo(String entityName, Long entityId, List<DocumentDTO> documents){
+        def attachable = validateAttachable(entityName, entityId)
+        DocumentFunctions.updateDocuments(attachable, documents, cayenneService.newContext)
     }
 }

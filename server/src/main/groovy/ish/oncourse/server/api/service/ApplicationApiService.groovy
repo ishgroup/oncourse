@@ -36,9 +36,8 @@ import static ish.oncourse.server.api.v1.function.ApplicationFunctions.APPLICATI
 import static ish.oncourse.server.api.v1.function.ApplicationFunctions.APPLICATION_STATUS_MAP
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
-import static ish.oncourse.server.api.v1.function.TagFunctions.*
+import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
+import static ish.oncourse.server.api.v1.function.TagFunctions.validateRelationsForSave
 import static org.apache.commons.lang3.StringUtils.trimToNull
 
 @CompileStatic
