@@ -6,6 +6,8 @@ databaseChangeLog:
         - onFail: HALT
         - tableExists:
             tableName: ExportTemplate
+        - tableExists:
+            tableName: Report
       changes:
         - addColumn:
             tableName: ExportTemplate
@@ -14,3 +16,7 @@ databaseChangeLog:
                   name: preview
                   type: longblob
                   afterColumn: shortDescription
+        - modifyDataType:
+            tableName: Report
+            columnName: preview
+            newDataType: longblob
