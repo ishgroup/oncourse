@@ -7,7 +7,7 @@ databaseChangeLog:
         - tableExists:
             tableName: ExportTemplate
         - tableExists:
-            tableName: Report
+            tableName: DocumentVersion
       changes:
         - addColumn:
             tableName: ExportTemplate
@@ -17,6 +17,6 @@ databaseChangeLog:
                   type: longblob
                   afterColumn: shortDescription
         - modifyDataType:
-            tableName: Report
-            columnName: preview
+            tableName: DocumentVersion
+            columnName: thumbnail
             newDataType: longblob
