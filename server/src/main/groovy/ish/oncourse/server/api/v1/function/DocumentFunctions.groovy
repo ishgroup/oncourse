@@ -330,7 +330,6 @@ class DocumentFunctions {
 
         ObjectSelect.query(Document)
                 .where(Document.ID.in(documentsToSave.findAll { !(it in currentDocs) }))
-                .prefetch(Document.VERSIONS.joint())
                 .select(context)
                 .each { dbDocument ->
             context.newObject(relationClass).with { relation ->
