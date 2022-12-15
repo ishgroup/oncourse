@@ -134,7 +134,7 @@ class DocumentApiService extends TaggableApiService<DocumentDTO, Document, Docum
             validator.throwClientErrorException('entityName', 'Related object name is wrong')
         }
 
-        def context = cayenneService.newReadonlyContext
+        def context = cayenneService.newContext
         AttachableTrait attachableTrait = SelectById.query(entityClass as Class<? extends AttachableTrait>, entityId).selectOne(context)
         if (attachableTrait == null) {
             validator.throwClientErrorException('entityId', 'Related object doesn\'t exist')
@@ -145,6 +145,6 @@ class DocumentApiService extends TaggableApiService<DocumentDTO, Document, Docum
 
     void updateDocumentsAttachedTo(String entityName, Long entityId, List<Long> documentIds){
         def attachable = validateAttachable(entityName, entityId)
-        DocumentFunctions.updateDocuments(attachable, documentIds, cayenneService.newContext)
+        DocumentFunctions.updateDocuments(attachable, documentIds, attachable.context)
     }
 }
