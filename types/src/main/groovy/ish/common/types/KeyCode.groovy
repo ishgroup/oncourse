@@ -736,7 +736,16 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	TUTOR_ATTENDANCE(112, "TutorAttendance", VIEW)
+	TUTOR_ATTENDANCE(112, "TutorAttendance", VIEW),
+
+	/**
+	 * Database value: 113
+	 *
+	 * Permission to run scripts with on_demand trigger.
+	 * Always enabled: none
+	 */
+	@API
+	SCRIPT_EXECUTE(113, "Script execute", NONE)
 
 
 	private int value
