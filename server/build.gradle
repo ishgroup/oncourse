@@ -160,6 +160,12 @@ application {
 
 compileGroovy.groovyOptions.configurationScript = file("${rootDir}/gradle/groovyConfig.groovy")
 
+tasks.withType(GroovyCompile) {
+	configure(groovyOptions.forkOptions) {
+		jvmArgs = ['-Xms1g', '-Xmx4g']
+	}
+}
+
 jar {
 	manifest {
 		from sharedManifest
