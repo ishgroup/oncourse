@@ -27,7 +27,8 @@ const SubmissionModal = (
     onSave,
     title,
     selectDefault,
-    dateDefault
+    dateDefault,
+    dispatch
   }
 ) => {
   const type = modalProps[0];
@@ -70,7 +71,9 @@ const SubmissionModal = (
                 onBlur: stubFunction,
                 value: dateVal
               }}
-              meta={{}}
+              meta={{
+                dispatch
+              }}
             />
           </Grid>
           <Grid item xs={6}>

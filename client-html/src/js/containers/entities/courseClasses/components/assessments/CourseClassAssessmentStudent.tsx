@@ -15,13 +15,13 @@ import {
  CourseClassTutor, GradingItem, GradingType
 } from "@api/model";
 import AssessmentSubmissionIconButton from "./AssessmentSubmissionIconButton";
-import { D_MMM_YYYY } from "../../../../../common/utils/dates/format";
 import { StudentForRender } from "./CourseClassAssessmentItems";
 import { useGradeErrors } from "./utils/hooks";
 import GradeContent from "./GradeContent";
 import EditInPlaceDateTimeField from "../../../../../common/components/form/formFields/EditInPlaceDateTimeField";
 import { stubFunction } from "../../../../../common/utils/common";
 import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
+import { Dispatch } from "redux";
 
 interface Props {
   elem: StudentForRender;
@@ -35,6 +35,7 @@ interface Props {
   index: number;
   tutors: CourseClassTutor[];
   triggerAsyncChange: (newValue: any, field: string, index: number) => void;
+  dispatch: Dispatch;
 }
 
 const CourseClassAssessmentStudent: React.FC<Props> = (
@@ -49,7 +50,8 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
     handleGradeMenuOpen,
     index,
     tutors,
-    triggerAsyncChange
+    triggerAsyncChange,
+    dispatch
   }
 ) => {
   const [gradeVal, setGradeVal] = useState<number>(null);
@@ -93,7 +95,9 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
         {elem.submittedValue === "Submitted"
           ? (
             <EditInPlaceDateTimeField
-              meta={{}}
+              meta={{
+                dispatch
+              }}
               input={{
                 onChange: value => triggerAsyncChange(value, "submittedOn", elem.submissionIndex),
                 onFocus: stubFunction,
@@ -115,7 +119,9 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
             <div>
               <div>
                 <EditInPlaceDateTimeField
-                  meta={{}}
+                  meta={{
+                    dispatch
+                  }}
                   input={{
                     onChange: value => triggerAsyncChange(value, "markedOn", elem.submissionIndex),
                     onFocus: stubFunction,
