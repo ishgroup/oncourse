@@ -172,6 +172,7 @@ public class AmazonS3Service {
                 try {
                     S3Object s3Object = s3Client.getObject(request);
                     url = s3Object.getObjectContent().getHttpRequest().getURI().toString();
+                    // connection is closed without waring onlu if it is aboirted or all content is read
                     s3Object.getObjectContent().abort();
                     s3Object.close();
                 } catch (AmazonS3Exception|IOException ignored) {}
