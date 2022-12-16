@@ -339,6 +339,7 @@ class DocumentFunctions {
                 relation
             }
         }
+        context.commitChanges()
     }
 
     static String getDisplayableSize(Long size) {
