@@ -172,6 +172,7 @@ public class AmazonS3Service {
                 try {
                     S3Object s3Object = s3Client.getObject(request);
                     url = s3Object.getObjectContent().getHttpRequest().getURI().toString();
+                    s3Object.getObjectContent().abort();
                     s3Object.close();
                 } catch (AmazonS3Exception|IOException ignored) {}
             }
