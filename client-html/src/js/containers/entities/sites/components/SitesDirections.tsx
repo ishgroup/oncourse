@@ -18,7 +18,7 @@ const getLayoutArray = (twoColumn: boolean): { [key: string]: GridSize }[] =>
 class Directions extends React.Component<any, any> {
   render() {
     const {
-      twoColumn, form, dispatch, showConfirm
+      twoColumn, form, dispatch, showConfirm, isNew
     } = this.props;
 
     const layoutArray = getLayoutArray(twoColumn);
@@ -51,6 +51,7 @@ class Directions extends React.Component<any, any> {
           label="Documents"
           entity="Site"
           component={DocumentsRenderer}
+          isNew={isNew}
           xsGrid={layoutArray[3].xs}
           mdGrid={layoutArray[4].md}
           lgGrid={layoutArray[5].lg}

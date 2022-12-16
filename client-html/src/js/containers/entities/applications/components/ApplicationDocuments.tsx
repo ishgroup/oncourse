@@ -6,7 +6,7 @@ import { Application } from "@api/model";
 
 const ApplicationDocuments: React.FC<EditViewProps<Application>> = props => {
   const {
-    classes, dispatch, form, showConfirm, twoColumn
+    classes, dispatch, form, showConfirm, twoColumn, isNew
   } = props;
   return (
     <div className={classes.documentsRoot}>
@@ -15,6 +15,7 @@ const ApplicationDocuments: React.FC<EditViewProps<Application>> = props => {
         label="Documents"
         entity="Application"
         component={DocumentsRenderer}
+        isNew={isNew}
         xsGrid={12}
         mdGrid={twoColumn ? 6 : 12}
         lgGrid={twoColumn ? 4 : 12}

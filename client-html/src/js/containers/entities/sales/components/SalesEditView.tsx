@@ -72,7 +72,8 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
     values,
     dispatch,
     form,
-    showConfirm
+    showConfirm,
+    isNew
   } = props;
 
   const type = values ? values.productType : undefined;
@@ -226,6 +227,7 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
           label="Documents"
           entity="ProductItem"
           component={DocumentsRenderer}
+          isNew={isNew}
           xsGrid={12}
           mdGrid={twoColumn ? 6 : 12}
           lgGrid={twoColumn ? 4 : 12}

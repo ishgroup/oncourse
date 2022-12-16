@@ -233,6 +233,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
             entity="PriorLearning"
             classes={classes}
             component={DocumentsRenderer}
+isNew={isNew}
             xsGrid={12}
             mdGrid={twoColumn ? 6 : 12}
             lgGrid={twoColumn ? 4 : 12}

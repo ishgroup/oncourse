@@ -93,7 +93,8 @@ const MembershipProductDiscounts: React.FC<MembershipDiscountsProps> = props => 
     dispatch,
     form,
     rootEntity,
-    showConfirm
+    showConfirm,
+    isNew
   } = props;
 
   const discounts = values ? values.membershipDiscounts : [];
@@ -139,6 +140,7 @@ const MembershipProductDiscounts: React.FC<MembershipDiscountsProps> = props => 
           label="Documents"
           entity="ArticleProduct"
           component={DocumentsRenderer}
+          isNew={isNew}
           xsGrid={12}
           mdGrid={twoColumn ? 6 : 12}
           lgGrid={twoColumn ? 4 : 12}

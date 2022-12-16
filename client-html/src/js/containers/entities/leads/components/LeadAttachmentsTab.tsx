@@ -19,7 +19,8 @@ const LeadAttachmentsTab: React.FC<EditViewProps<Lead>> = (props) => {
     twoColumn,
     dispatch,
     form,
-    showConfirm
+    showConfirm,
+    isNew
   } = props;
 
   return (
@@ -30,6 +31,7 @@ const LeadAttachmentsTab: React.FC<EditViewProps<Lead>> = (props) => {
           label="Documents"
           entity="Lead"
           component={DocumentsRenderer}
+          isNew={isNew}
           xsGrid={12}
           mdGrid={twoColumn ? 6 : 12}
           lgGrid={twoColumn ? 4 : 12}

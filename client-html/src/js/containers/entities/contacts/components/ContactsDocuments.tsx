@@ -4,19 +4,11 @@ import { FieldArray } from "redux-form";
 import { Grid } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
+import { EditViewProps } from "../../../../model/common/ListView";
 
-interface ContactsDocumentsProps {
-  classes?: any;
-  twoColumn?: boolean;
-  values?: Contact;
-  dispatch?: any;
-  showConfirm?: any;
-  form?: string;
-}
-
-const ContactsDocuments: React.FC<ContactsDocumentsProps> = props => {
+const ContactsDocuments: React.FC<EditViewProps<Contact>> = props => {
   const {
-    classes, twoColumn, values, dispatch, form, showConfirm
+    classes, twoColumn, values, dispatch, form, showConfirm, isNew
   } = props;
 
   return values ? (
@@ -31,6 +23,7 @@ const ContactsDocuments: React.FC<ContactsDocumentsProps> = props => {
         entity="Contact"
         classes={classes}
         component={DocumentsRenderer}
+        isNew={isNew}
         xsGrid={12}
         mdGrid={twoColumn ? 6 : 12}
         lgGrid={twoColumn ? 4 : 12}

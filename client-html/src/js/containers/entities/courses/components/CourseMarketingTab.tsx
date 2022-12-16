@@ -29,7 +29,8 @@ const CourseMarketingTab: React.FC<EditViewProps<Course>> = props => {
     showConfirm,
     values,
     rootEntity,
-    submitSucceeded
+    submitSucceeded,
+    isNew
   } = props;
 
   return (
@@ -56,6 +57,7 @@ const CourseMarketingTab: React.FC<EditViewProps<Course>> = props => {
           label="Documents"
           entity="Course"
           component={DocumentsRenderer}
+          isNew={isNew}
           xsGrid={12}
           mdGrid={twoColumn ? 4 : 12}
           lgGrid={twoColumn ? 3 : 12}

@@ -79,6 +79,7 @@ interface DocumentsRendererProps {
   clearSearchDocuments: any;
   createDocument: any;
   tags: any;
+  isNew: boolean;
 }
 
 class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & WrappedFieldArrayProps, DocumentsRendererState> {
@@ -93,6 +94,13 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
   };
 
   toggleAdd = (e, addButtonClicked = false) => {
+    const { isNew, showConfirm } = this.props;
+
+    if (isNew) {
+      showConfirm({ title: null, confirmMessage: `Please save new record before adding documents`, cancelButtonText: "OK" });
+      return;
+    }
+    
     this.setState(prev => ({
       openAddDialog: !prev.openAddDialog
     }));
@@ -164,6 +172,13 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
   };
 
   fileDragEvent = (e, openAddDialog) => {
+    const { isNew, showConfirm } = this.props;
+
+    if (isNew) {
+      showConfirm({ title: null, confirmMessage: `Please save new record before adding documents`, cancelButtonText: "OK" });
+      return;
+    }
+
     e.stopPropagation();
     e.preventDefault();
     if (!e.dataTransfer.types.some(t => t === "Files")) {

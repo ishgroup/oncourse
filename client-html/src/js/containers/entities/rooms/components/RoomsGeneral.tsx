@@ -165,6 +165,7 @@ class RoomsGeneral extends React.PureComponent<any, any> {
             entity="Room"
             classes={classes}
             component={DocumentsRenderer}
+isNew={isNew}
             xsGrid={layoutArray[3].xs}
             mdGrid={layoutArray[4].md}
             lgGrid={layoutArray[5].lg}

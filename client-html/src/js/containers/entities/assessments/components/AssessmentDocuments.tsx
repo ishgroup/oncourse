@@ -13,7 +13,7 @@ import { Assessment } from "@api/model";
 
 const AssessmentDocuments: React.FC<EditViewProps<Assessment>> = props => {
   const {
-    classes, dispatch, form, showConfirm, twoColumn
+    classes, dispatch, form, showConfirm, twoColumn, isNew
   } = props;
 
   return (
@@ -24,6 +24,7 @@ const AssessmentDocuments: React.FC<EditViewProps<Assessment>> = props => {
         entity="Assessment"
         classes={classes}
         component={DocumentsRenderer}
+        isNew={isNew}
         xsGrid={12}
         mdGrid={twoColumn ? 6 : 12}
         lgGrid={twoColumn ? 4 : 12}

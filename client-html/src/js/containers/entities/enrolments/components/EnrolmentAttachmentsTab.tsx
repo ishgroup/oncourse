@@ -11,8 +11,8 @@ import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 
 const EnrolmentAttachmentsTab: React.FC<any> = props => {
   const {
- form, showConfirm, twoColumn, classes, dispatch
-} = props;
+   form, showConfirm, twoColumn, classes, dispatch, isNew
+  } = props;
 
   return (
     <Grid container rowSpacing={2} className="p-3">
@@ -22,6 +22,7 @@ const EnrolmentAttachmentsTab: React.FC<any> = props => {
         entity="Enrolment"
         classes={classes}
         component={DocumentsRenderer}
+        isNew={isNew}
         xsGrid={12}
         mdGrid={twoColumn ? 6 : 12}
         lgGrid={twoColumn ? 4 : 12}

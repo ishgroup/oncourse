@@ -14,7 +14,8 @@ const CourseClassDocumentsTab: React.FC<EditViewProps<CourseClassExtended>> = ({
   twoColumn,
   dispatch,
   form,
-  showConfirm
+  showConfirm,
+  isNew
 }) => (
   <Grid container className="pl-3 pr-3 pb-2">
     <FieldArray
@@ -22,6 +23,7 @@ const CourseClassDocumentsTab: React.FC<EditViewProps<CourseClassExtended>> = ({
       label="Documents"
       entity="CourseClass"
       component={DocumentsRenderer}
+      isNew={isNew}
       xsGrid={12}
       mdGrid={twoColumn ? 6 : 12}
       lgGrid={twoColumn ? 4 : 12}
