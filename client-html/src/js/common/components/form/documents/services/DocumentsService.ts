@@ -43,6 +43,14 @@ class DocumentsService {
   public createDocumentVersion(id, fileName, file: File): Promise<DocumentVersion> {
     return this.documentApi.createVersion(id, fileName, file);
   }
+
+  public getDocumentsAttachedTo(entityName: string, entityId: number): Promise<Document[]> {
+    return this.documentApi.getDocumentsAttachedTo(entityName, entityId);
+  }
+
+  public updateDocumentsAttachedTo(entityName: string, entityId: number, documentIds: number[]): Promise<any> {
+    return this.documentApi.updateDocumentsAttachedTo(entityName, entityId, documentIds);
+  }
 }
 
 export default new DocumentsService();

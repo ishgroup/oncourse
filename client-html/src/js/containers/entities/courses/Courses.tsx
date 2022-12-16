@@ -56,7 +56,6 @@ const Initial: Course = {
   webDescription: null,
   customFields: {},
   tags: [],
-  documents: [],
   relatedSellables: [],
   modules: [],
   currentlyOffered: true

@@ -101,3 +101,5 @@ export const isInStandaloneMode = () => (IS_JEST ? false : (
   // @ts-ignore
   || (window.navigator.standalone)
   || document.referrer.includes('android-app://')));
+
+export const getModifiedData = (initial, toCheck) => !initial || !toCheck || JSON.stringify(initial) === JSON.stringify(toCheck) ? null : toCheck;

@@ -14,7 +14,7 @@ import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchEr
 const request: EpicUtils.Request = {
   type: SAVE_PREFERENCES_REQUEST,
   getData: payload => PreferencesService.savePreferences(payload.fields),
-  retrieveData: payload => PreferencesService.getPreferences(payload.category),
+  retrieveData: (v,s,payload) => PreferencesService.getPreferences(payload.category),
   processData: (preferences: any, state: any, payload) => {
     return [
       {

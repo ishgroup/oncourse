@@ -37,7 +37,6 @@ const Initial: Application = {
   applicationDate: formatDate(new Date(), YYYY_MM_DD_MINUSED),
   createdBy: null,
   customFields: {},
-  documents: null,
   enrolBy: null,
   feeOverride: null,
   id: 0,

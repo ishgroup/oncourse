@@ -68,7 +68,6 @@ export function mockCourseClasses() {
       canceledEnrolmentsCount: 0,
       failedEnrolmentsCount: 0,
       tags: [this.getTag(1)],
-      documents: [],
       isTraineeship: false,
       customFields: {},
       feeHelpClass: false,

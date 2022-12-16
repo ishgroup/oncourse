@@ -9,7 +9,6 @@ export function mockSites() {
     return {
       country: this.countries.find(c => Number(c.id) === Number(`20${row.id}`)),
       createdOn: "2021-02-01T06:09:45.466Z",
-      documents: [],
       drivingDirections: "",
       id: row.id,
       isAdministrationCentre: true,
@@ -26,7 +25,6 @@ export function mockSites() {
         {
           createdOn: "2021-02-01T06:09:45.466Z",
           directions: null,
-          documents: [],
           facilities: null,
           id: row.id,
           kioskUrl: `https://ishoncourse.oncourse.cc/room/kiosk/${row.id}`,

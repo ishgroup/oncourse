@@ -184,6 +184,7 @@ export const getEntityItemById = (entity: EntityName, id: number): Promise<any> 
 
 export const updateEntityItemById = (entity: EntityName, id: number, item: any): Promise<any> => {
   delete item.notes;
+  delete item.documents;
 
   processCustomFields(item);
 

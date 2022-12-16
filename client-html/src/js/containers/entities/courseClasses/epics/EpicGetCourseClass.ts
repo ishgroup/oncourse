@@ -20,6 +20,7 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import { getEntityItemById } from "../../common/entityItemsService";
 import { clearActionsQueue } from "../../../../common/actions";
 import { getNoteItems } from "../../../../common/components/form/notes/actions";
+import { getEntityDocuments } from "../../../../common/components/form/documents/actions";
 
 const request: EpicUtils.Request<any, number> = {
   type: GET_COURSE_CLASS,
@@ -81,6 +82,7 @@ const request: EpicUtils.Request<any, number> = {
       ...relatedActions,
       initialize(LIST_EDIT_VIEW_FORM_NAME, courseClass),
       getNoteItems("CourseClass", id, LIST_EDIT_VIEW_FORM_NAME),
+      getEntityDocuments("CourseClass", id, LIST_EDIT_VIEW_FORM_NAME),
       ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : [])
     ];
   },

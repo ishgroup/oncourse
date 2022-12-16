@@ -7,7 +7,6 @@ import { Epic } from "redux-observable";
 import { initialize } from "redux-form";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { getNoteItems } from "../../../../common/components/form/notes/actions";
-import { State } from "../../../../reducers/state";
 import {
   GET_CONTACT,
   GET_CONTACT_FULFILLED,
@@ -22,6 +21,7 @@ import { getEntityItemById } from "../../common/entityItemsService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { AVETMIS_ID_KEY, REPLICATION_ENABLED_KEY } from "../../../../constants/Config";
 import { clearActionsQueue, getUserPreferences } from "../../../../common/actions";
+import { getEntityDocuments } from "../../../../common/components/form/documents/actions";
 
 export const formatContactRelationIds = relations => relations.map(r => {
     if (r.contactFromId) {
@@ -94,6 +94,7 @@ const request: EpicUtils.Request = {
       },
       getUserPreferences([REPLICATION_ENABLED_KEY, AVETMIS_ID_KEY]),
       getNoteItems("Contact", id, LIST_EDIT_VIEW_FORM_NAME),
+      getEntityDocuments("Contact", id, LIST_EDIT_VIEW_FORM_NAME),
       initialize(LIST_EDIT_VIEW_FORM_NAME, contact),
       ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : []),
       ...paymentInPermissions ? [getContactsStoredCc(id)] : [],

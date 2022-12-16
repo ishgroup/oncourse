@@ -4,11 +4,15 @@ import { EpicSearchExistingDocumentByName } from "./EpicSearchExistingDocumentBy
 import { EpicCreateNewDocument } from "./EpicCreateNewDocument";
 import { EpicGetDocumentByID } from "./EpicGetDocumentByID";
 import { EpicCreateAvatarDocument } from "./EpicCreateAvatarDocument";
+import { EpicGetEntityDocuments } from "./EpicGetEntityDocuments";
+import { EpicUpdateEntityDocuments } from "./EpicUpdateEntityDocuments";
 
 export const EpicDocuments = combineEpics(
   EpicSearchExistingDocumentByHash,
   EpicSearchExistingDocumentByName,
   EpicCreateNewDocument,
   EpicCreateAvatarDocument,
-  EpicGetDocumentByID
+  EpicGetDocumentByID,
+  EpicGetEntityDocuments,
+  EpicUpdateEntityDocuments
 );

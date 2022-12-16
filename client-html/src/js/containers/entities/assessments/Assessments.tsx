@@ -36,7 +36,6 @@ const Initial: Assessment = {
   name: null,
   createdOn: null,
   modifiedOn: null,
-  documents: [],
   tags: []
 };
 

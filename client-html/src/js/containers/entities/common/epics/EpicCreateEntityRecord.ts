@@ -16,7 +16,6 @@ import { createEntityItem, createEntityItemByIdErrorHandler } from "../entityIte
 import { executeActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import { CREATE_ENTITY_RECORD_REQUEST } from "../actions";
 import { mapEntityDisplayName } from "../utils";
-import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
 
 export const getProcessDataActions = (entity: EntityName) => [
   executeActionsQueue(),
@@ -32,7 +31,6 @@ export const getProcessDataActions = (entity: EntityName) => [
 const request: Request<any, { item: any, entity: EntityName }> = {
   type: CREATE_ENTITY_RECORD_REQUEST,
   getData: ({ item, entity }) => createEntityItem(entity, item),
-  retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
   processData: (v, s, { entity }) => getProcessDataActions(entity),
   processError: (response, { item, entity }) => createEntityItemByIdErrorHandler(response, entity, item)
 };

@@ -14,6 +14,7 @@ import { DocumentExtended } from "../../../../../../model/common/Documents";
 import { DocumentShareOption } from "../../../../../../model/entities/Document";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+
 export const formatDocumentSize = (size: number): string => {
   if (size < Math.pow(1024, 2)) {
     return `${Math.round(size / 1024)} kb`;

@@ -16,6 +16,9 @@ import { getEntityRecord, UPDATE_ENTITY_RECORD_REQUEST } from "../actions";
 import { mapEntityDisplayName } from "../utils";
 import { State } from "../../../../reducers/state";
 import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
+import { getModifiedData } from "../../../../common/utils/common";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { updateEntityDocuments } from "../../../../common/components/form/documents/actions";
 
 export const getProcessDataActions = (entity: EntityName, state: State, id: number) => [
   executeActionsQueue(),
@@ -31,9 +34,19 @@ export const getProcessDataActions = (entity: EntityName, state: State, id: numb
 
 const request: Request<any, { item: any, entity: EntityName }> = {
   type: UPDATE_ENTITY_RECORD_REQUEST,
-  getData: ({ item, entity }) => updateEntityItemById(entity, item.id, item),
-  retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
-  processData: (v, s, { item, entity }) => getProcessDataActions(entity, s, item.id),
+  getData: async ({ item, entity }, s) => {
+    const documents = [...item?.documents || [] ];
+    await updateEntityItemById(entity, item.id, item);
+    await processNotesAsyncQueue(s.actionsQueue.queuedActions);
+    return documents;
+  },
+  processData: (documents, s, { item, entity }) => {
+    const actions = getProcessDataActions(entity, s, item.id);
+    
+    const modifiedDocs = getModifiedData(s.form[LIST_EDIT_VIEW_FORM_NAME]?.initial.documents, documents);
+    
+    return modifiedDocs ? [updateEntityDocuments(entity, item.id, modifiedDocs.map(d => d.id)), ...actions] : actions;
+  },
   processError: (response, { item, entity }) => updateEntityItemByIdErrorHandler(response, entity, item)
 };
 

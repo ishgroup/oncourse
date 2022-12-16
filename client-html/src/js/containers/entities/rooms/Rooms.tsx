@@ -52,7 +52,6 @@ const Initial: Room = {
   directions: null,
   facilities: null,
   tags: [],
-  documents: [],
   rules: []
 };
 

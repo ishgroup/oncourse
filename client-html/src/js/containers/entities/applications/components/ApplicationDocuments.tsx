@@ -1,16 +1,10 @@
 import React from "react";
 import { FieldArray } from "redux-form";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { Application } from "@api/model";
 
-interface ApplicationDocumentsProps {
-  classes?: any;
-  dispatch?: any;
-  form?: string;
-  showConfirm?: any;
-  twoColumn?: boolean;
-}
-
-const ApplicationDocuments: React.FC<ApplicationDocumentsProps> = props => {
+const ApplicationDocuments: React.FC<EditViewProps<Application>> = props => {
   const {
     classes, dispatch, form, showConfirm, twoColumn
   } = props;

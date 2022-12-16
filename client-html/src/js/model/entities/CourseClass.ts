@@ -62,6 +62,7 @@ export interface CourseClassExtended extends CourseClass {
   notes?: Note[];
   assessments?: AssessmentClassExtended[];
   openedSession?: TimetableSession;
+  documents?: Document[];
 }
 
 export interface BudgetCostModalContentProps {

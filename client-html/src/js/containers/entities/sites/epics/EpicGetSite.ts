@@ -17,6 +17,7 @@ import { clearActionsQueue, FETCH_FAIL } from "../../../../common/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { compareByName } from "../../../../common/utils/sortArrayOfObjectsByName";
 import { updateEntityRecord } from "../../common/actions";
+import { getEntityDocuments } from "../../../../common/components/form/documents/actions";
 
 const request: EpicUtils.Request = {
   type: GET_SITE_ITEM,
@@ -53,6 +54,7 @@ const request: EpicUtils.Request = {
         },
         initialize(LIST_EDIT_VIEW_FORM_NAME, site),
         getNoteItems("Site", id, LIST_EDIT_VIEW_FORM_NAME),
+        getEntityDocuments("Site", id, LIST_EDIT_VIEW_FORM_NAME),
         ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : []),
         ...(error
           ? [

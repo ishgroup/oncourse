@@ -17,28 +17,37 @@ import {
   CHECKOUT_UPDATE_CONTACT_FULFILLED
 } from "../../actions/checkoutContact";
 import { CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME } from "../../components/contact/CheckoutContactEditView";
+import { getModifiedData } from "../../../../common/utils/common";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { updateEntityDocuments } from "../../../../common/components/form/documents/actions";
 
-const request: EpicUtils.Request<any, { id: number; contact: Contact & { notes: any }; message?: string }> = {
+const request: EpicUtils.Request<any, { id: number; contact: Contact & { notes, documents }; message?: string }> = {
   type: CHECKOUT_UPDATE_CONTACT,
-  getData: ({ id, contact }) => {
-    delete contact.notes;
-    return updateEntityItemById("Contact", id, contact);
+  getData: async ({ id, contact }, s) => {
+    const documents = [...contact.documents];
+    await updateEntityItemById("Contact", id, contact);
+    await processNotesAsyncQueue(s.actionsQueue.queuedActions);
+    return documents;
   },
-  retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
-  processData: (v, s, { id, message }) => [
-    ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : []),
-    {
-      type: CHECKOUT_UPDATE_CONTACT_FULFILLED
-    },
-    {
-      type: FETCH_SUCCESS,
-      payload: { message: message || "Contact was updated" }
-    },
-    {
-      type: CHECKOUT_GET_CONTACT,
-      payload: id
-    }
-  ],
+  processData: (documents, s, { id, message }) => {
+    const modifiedDocs = getModifiedData(s.form[LIST_EDIT_VIEW_FORM_NAME]?.initial.documents, documents);
+    
+    return [
+      ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : []),
+      ...modifiedDocs ? [updateEntityDocuments("Contact", id, modifiedDocs.map(d => d.id))] : [],
+      {
+        type: CHECKOUT_UPDATE_CONTACT_FULFILLED
+      },
+      {
+        type: FETCH_SUCCESS,
+        payload: { message: message || "Contact was updated" }
+      },
+      {
+        type: CHECKOUT_GET_CONTACT,
+        payload: id
+      }
+    ];
+  },
   processError: (response, { contact }) => [
       ...FetchErrorHandler(response, "Contact was not updated"),
       initialize(CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME, contact)

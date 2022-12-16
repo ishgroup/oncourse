@@ -15,7 +15,7 @@ export const EpicExecuteActionsQueue: Epic<any, State> = (
 ): Observable<any> => action$.pipe(
     ofType(EXECUTE_ACTIONS_QUEUE),
     mergeMap(() => {
-      const syncActions = state$.value.actionsQueue.queuedActions.filter(a => a.entity !== "Note");
+      const syncActions = state$.value.actionsQueue.queuedActions.filter(a => !["Note", "Document"].includes(a.entity));
 
       return state$.value.actionsQueue.queuedActions.length
         ? [...syncActions.map(a => a.actionBody), clearActionsQueue()]

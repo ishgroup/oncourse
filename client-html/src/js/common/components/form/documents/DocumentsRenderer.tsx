@@ -189,7 +189,12 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
 
   componentDidUpdate(prevProps) {
     const {
-     editingDocument, editingFormName, form, fields, tags, viewDocument
+      editingDocument,
+      editingFormName,
+      form,
+      fields,
+      tags,
+      viewDocument
     } = this.props;
 
     if (!prevProps.editingDocument && editingDocument && editingFormName === form) {
@@ -293,6 +298,8 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
 
     const editItem = fields.get(editingDocumentIndex);
 
+    const documents = fields.getAll();
+
     return (
       <>
         <DocumentAddDialog
@@ -346,9 +353,7 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
           </div>
         </Grid>
         <Grid item container xs={12} columnSpacing={3} spacing={3} wrap="wrap">
-          {fields.map((f, index) => {
-            const item = fields.get(index);
-
+          {documents?.map((item, index) => {
             return (
               <Grid item xs={xsGrid} md={mdGrid} lg={lgGrid} key={item.id} className={classes.documentGridItem}>
                 <DocumentItem
@@ -376,16 +381,16 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    clearEditingDocument: () => dispatch(clearEditingDocument()),
-    clearSearchDocuments: () => dispatch(setSearchDocuments(null)),
-    setEditingDocument: (document: Document, editingFormName: string, viewDocument: boolean = false) =>
-      dispatch(setEditingDocument(document, editingFormName, viewDocument)),
-    setDocumentFile: (file: File) => dispatch(setDocumentFile(file)),
-    getDocumentTags: () => dispatch(getEntityTags("Document")),
-    searchExistingDocument: (inputDocument: File, editingFormName: string) =>
-      dispatch(searchDocumentByHash(inputDocument, editingFormName)),
-    createDocument: (document: Document, form: string, documentPath: string, index: number) =>
-      dispatch(createDocument(document, form, documentPath, index))
-  });
+  clearEditingDocument: () => dispatch(clearEditingDocument()),
+  clearSearchDocuments: () => dispatch(setSearchDocuments(null)),
+  setEditingDocument: (document: Document, editingFormName: string, viewDocument: boolean = false) =>
+    dispatch(setEditingDocument(document, editingFormName, viewDocument)),
+  setDocumentFile: (file: File) => dispatch(setDocumentFile(file)),
+  getDocumentTags: () => dispatch(getEntityTags("Document")),
+  searchExistingDocument: (inputDocument: File, editingFormName: string) =>
+    dispatch(searchDocumentByHash(inputDocument, editingFormName)),
+  createDocument: (document: Document, form: string, documentPath: string, index: number) =>
+    dispatch(createDocument(document, form, documentPath, index))
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DocumentsRenderer));

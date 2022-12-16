@@ -6,12 +6,17 @@
 import { Document } from "@api/model";
 import { _toRequestType } from "../../../../actions/ActionUtils";
 import { DocumentExtended } from "../../../../../model/common/Documents";
+import { EntityName } from "../../../../../model/entities/common";
 
 export const CREATE_DOCUMENT = _toRequestType("post/list/entity/document");
 
 export const CREATE_AVATAR_DOCUMENT = _toRequestType("post/list/entity/document/avatar");
 
 export const GET_DOCUMENT = _toRequestType("get/list/entity/document");
+
+export const GET_ENTITY_DOCUMENTS = _toRequestType("get/list/entity/documents");
+
+export const PUT_ENTITY_DOCUMENTS = _toRequestType("put/list/entity/documents");
 
 export const SEARCH_DOCUMENT_BY_HASH = _toRequestType("get/list/entity/document/search/hash");
 
@@ -24,6 +29,20 @@ export const SET_EDITING_DOCUMENT = "set/editingDocument";
 export const SET_DOCUMENT_FILE = "set/documentFile";
 
 export const SET_SEARCH_DOCUMENTS = "set/searchDocuments";
+
+export const getEntityDocuments = (entityName: EntityName, entityId: number, form: string) => ({
+  type: GET_ENTITY_DOCUMENTS,
+  payload: {
+    entityName, entityId, form
+  }
+});
+
+export const updateEntityDocuments = (entityName: EntityName, entityId: number, documentIds: number[]) => ({
+  type: PUT_ENTITY_DOCUMENTS,
+  payload: {
+    entityName, entityId, documentIds
+  }
+});
 
 export const createDocument = (document: Document, form: string, documentPath: string, index: number) => ({
   type: CREATE_DOCUMENT,

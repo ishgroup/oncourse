@@ -15,24 +15,28 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-vie
 import { processCustomFields } from "../../customFieldTypes/utils";
 import { GET_COURSE_CLASS, UPDATE_COURSE_CLASS } from "../actions";
 import CourseClassService from "../services/CourseClassService";
-import { QueuedAction } from "../../../../model/common/ActionsQueue";
 import { processCourseClassApiActions } from "../utils";
+import { getModifiedData } from "../../../../common/utils/common";
+import { updateEntityDocuments } from "../../../../common/components/form/documents/actions";
 
-const request: EpicUtils.Request<any, { id: number; courseClass: CourseClass }> = {
+const request: EpicUtils.Request<any, { id: number; courseClass: CourseClass & { documents } }> = {
   type: UPDATE_COURSE_CLASS,
-  getData: ({ id, courseClass }) => {
+  getData: async ({ id, courseClass }, s) => {
     processCustomFields(courseClass);
-    return CourseClassService.updateCourseClass(id, courseClass);
+    const documents = [...courseClass.documents];
+    delete courseClass.documents;
+    await CourseClassService.updateCourseClass(id, courseClass);
+    const syncActions = await processCourseClassApiActions(s);
+    const actions = syncActions.filter(a => ![ "Note", "Document"].includes(a.entity));
+    await processNotesAsyncQueue(actions);
+    return { documents, actions };
   },
-  retrieveData: (p, s) => processCourseClassApiActions(s)
-    .then(async (actions: QueuedAction[]) => {
-      const syncActions = actions.filter(a => a.entity !== "Note");
-      const noteActions = actions.filter(a => a.entity === "Note");
-      await processNotesAsyncQueue(noteActions);
-      return syncActions;
-    }),
-  processData: (actions: QueuedAction[], s, { id }) => [
+  processData: ({ documents, actions }, s, { id }) => {
+    const modifiedDocs = getModifiedData(s.form[LIST_EDIT_VIEW_FORM_NAME]?.initial.documents, documents);
+
+    return [
       ...actions.map(a => a.actionBody),
+      ...modifiedDocs ? [updateEntityDocuments("CourseClass", id, modifiedDocs.map(d => d.id))] : [],
       {
         type: FETCH_SUCCESS,
         payload: { message: "Class updated" }
@@ -46,7 +50,8 @@ const request: EpicUtils.Request<any, { id: number; courseClass: CourseClass }> 
         payload: id
       }] : [],
       clearActionsQueue()
-    ],
+    ];
+  },
   processError: response => [...FetchErrorHandler(response, "Class was not updated"), reset(LIST_EDIT_VIEW_FORM_NAME)]
 };
 

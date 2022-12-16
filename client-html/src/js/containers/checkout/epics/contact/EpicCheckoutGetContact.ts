@@ -26,6 +26,8 @@ import {
   CHECKOUT_UPDATE_CONTACT_RELATIONS
 } from "../../actions/checkoutContact";
 import { CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME } from "../../components/contact/CheckoutContactEditView";
+import { getEntityDocuments } from "../../../../common/components/form/documents/actions";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
 const request: EpicUtils.Request = {
   type: CHECKOUT_GET_CONTACT,
@@ -75,6 +77,7 @@ const request: EpicUtils.Request = {
       ...updateContactRelationsAction,
       getUserPreferences([REPLICATION_ENABLED_KEY, AVETMIS_ID_KEY]),
       getNoteItems("Contact", id, CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME),
+      getEntityDocuments("Contact", id, LIST_EDIT_VIEW_FORM_NAME),
       getContactsStoredCc(id),
         initialize(CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME, contact),
       ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : []),

@@ -14,21 +14,12 @@ import DocumentsRenderer from "../../../../common/components/form/documents/Docu
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import FormField from "../../../../common/components/form/formFields/FormField";
 
-interface LeadDocumentsProps {
-  classes?: any;
-  twoColumn?: boolean;
-  values?: Lead;
-  dispatch?: any;
-  showConfirm?: any;
-  form?: string;
-}
-
-const LeadAttachmentsTab: React.FC<EditViewProps<LeadDocumentsProps>> = (props) => {
+const LeadAttachmentsTab: React.FC<EditViewProps<Lead>> = (props) => {
   const {
     twoColumn,
-      dispatch,
-      form,
-      showConfirm
+    dispatch,
+    form,
+    showConfirm
   } = props;
 
   return (

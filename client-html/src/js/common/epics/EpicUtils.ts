@@ -17,7 +17,7 @@ export interface Request<V = any, P = any> {
   type: string;
   hideLoadIndicator?: boolean;
   getData: (payload: P, state: State) => Promise<V>;
-  retrieveData?: (payload: any, state: State) => Promise<V>;
+  retrieveData?: (value: V, state: State, payload?: P) => Promise<V>;
   processData: (value: V, state: State, payload?: P) => IAction<any>[] | Observable<any>;
   processError?: (data: any, payload?: P) => IAction<any>[] | Observable<any>;
 }
@@ -52,7 +52,7 @@ export const CreateWithTimeout = <V, P>(request: DelayedRequest<V, P>): Epic<any
             }
           ],
           from(request.getData(action.payload, state$.value)).pipe(
-            mergeMap(data => (request.retrieveData ? request.retrieveData(action.payload, state$.value) : [data])),
+            mergeMap(data => (request.retrieveData ? request.retrieveData(data, state$.value, action.payload) : [data])),
             mergeMap(data => request.processData(data, state$.value, action.payload)),
             catchError(data => processError(data, request.type, request.processError, action.payload))
           ),
@@ -77,7 +77,7 @@ export const Create = <V, P>(request: Request<V, P>): Epic<any, any> => (action$
             }
           ],
           from(request.getData(action.payload, state$.value)).pipe(
-            mergeMap(data => (request.retrieveData ? request.retrieveData(action.payload, state$.value) : [data])),
+            mergeMap(data => (request.retrieveData ? request.retrieveData(data, state$.value, action.payload) : [data])),
             mergeMap(data => request.processData(data, state$.value, action.payload)),
             catchError(data => processError(data, request.type, request.processError, action.payload))
           ),

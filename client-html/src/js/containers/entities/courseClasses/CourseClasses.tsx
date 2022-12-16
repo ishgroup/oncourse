@@ -173,7 +173,6 @@ const Initial: CourseClassExtended = {
   enrolmentsToProfitLeftCount: null,
   successAndQueuedEnrolmentsCount: null,
   tags: [],
-  documents: [],
   trainingPlan: [],
   sessions: [],
   tutors: [],

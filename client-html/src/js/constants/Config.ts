@@ -135,3 +135,22 @@ export const NOTE_ENTITIES: EntityName[] = [
   "Room",
   "Site"
 ];
+
+export const DOCUMENT_ENTITIES: EntityName[] = [
+  "Application",
+  "Assessment",
+  "AssessmentSubmission",
+  "ArticleProduct",
+  "Contact",
+  "Course",
+  "CourseClass",
+  "Enrolment",
+  "Lead",
+  "PriorLearning",
+  "ProductItem",
+  "MembershipProduct",
+  "VoucherProduct",
+  "Room",
+  "Site"
+];
+

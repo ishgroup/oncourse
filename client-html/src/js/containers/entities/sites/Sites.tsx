@@ -69,7 +69,6 @@ const Initial: Site = {
   specialInstructions: null,
   tags: [],
   rooms: [],
-  documents: [],
   rules: []
 };
 

@@ -21,15 +21,21 @@ import { mapEntityListDisplayName } from "../utils";
 import { getNoteItems } from "../../../../common/components/form/notes/actions";
 import { clearActionsQueue } from "../../../../common/actions";
 import { State } from "../../../../reducers/state";
-import { NOTE_ENTITIES } from "../../../../constants/Config";
+import { DOCUMENT_ENTITIES, NOTE_ENTITIES } from "../../../../constants/Config";
+import { getEntityDocuments } from "../../../../common/components/form/documents/actions";
 
 export const getProcessDataActions = (item: any, entity: EntityName, state: State) => [
   {
     type: SET_LIST_EDIT_RECORD,
     payload: { editRecord: item, name: mapEntityListDisplayName(entity, item, state) }
   },
-  ...NOTE_ENTITIES.includes(entity) ? [getNoteItems(entity, item.id, LIST_EDIT_VIEW_FORM_NAME)] : [],
   initialize(LIST_EDIT_VIEW_FORM_NAME, item),
+  ...NOTE_ENTITIES.includes(entity)
+    ? [getNoteItems(entity, item.id, LIST_EDIT_VIEW_FORM_NAME)]
+    : [],
+  ...DOCUMENT_ENTITIES.includes(entity)
+    ? [getEntityDocuments(entity, item.id, LIST_EDIT_VIEW_FORM_NAME)]
+    : [],
   ...(state.actionsQueue.queuedActions.length ? [clearActionsQueue()] : [])
 ];
 

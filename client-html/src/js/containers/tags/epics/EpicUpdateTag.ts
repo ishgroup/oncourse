@@ -16,7 +16,7 @@ import history from "../../../constants/History";
 const request: EpicUtils.Request = {
   type: UPDATE_TAG_REQUEST,
   getData: payload => TagsService.updateTag(payload.id, payload.tag),
-  retrieveData: payload => TagsService.getTag(payload.id),
+  retrieveData: (v,s,payload) => TagsService.getTag(payload.id),
   processData: (r, s) => {
     if (s.nextLocation) {
       history.push(s.nextLocation);

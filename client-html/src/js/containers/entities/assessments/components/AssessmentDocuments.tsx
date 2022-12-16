@@ -7,16 +7,11 @@ import React from "react";
 import { FieldArray } from "redux-form";
 import Grid from "@mui/material/Grid";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { Assessment } from "@api/model";
 
-interface AssessmentDocumentsProps {
-  classes?: any;
-  dispatch?: any;
-  form?: string;
-  showConfirm?: any;
-  twoColumn?: boolean;
-}
 
-const AssessmentDocuments: React.FC<AssessmentDocumentsProps> = props => {
+const AssessmentDocuments: React.FC<EditViewProps<Assessment>> = props => {
   const {
     classes, dispatch, form, showConfirm, twoColumn
   } = props;
