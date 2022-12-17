@@ -15,6 +15,7 @@ import com.google.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.document.DocumentService
+import ish.oncourse.server.security.api.IPermissionService
 
 import static ish.oncourse.server.api.function.CayenneFunctions.deleteRecord
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
@@ -48,7 +49,10 @@ class SiteApiImpl implements SiteApi {
     private SystemUserService systemUserService
 
     @Inject
-    private SiteApiService entityApiService
+    private SiteApiService siteApiService
+
+    @Inject
+    private IPermissionService permissionService
 
     @Override
     void remove(Long id) {
@@ -59,6 +63,7 @@ class SiteApiImpl implements SiteApi {
         checkForBadRequest(validateEntityExistence(id, entity))
         checkForBadRequest(validateForDelete(entity))
 
+        siteApiService.remove(id)
         deleteRecord(context, entity)
     }
 
@@ -74,7 +79,7 @@ class SiteApiImpl implements SiteApi {
         checkForBadRequest(validateForSave(site, context, false))
 
         Site newSite = context.newObject(Site)
-        toDbSite(site, newSite, context, context.localObject(systemUserService.currentUser))
+        toDbSite(site, newSite, context, permissionService)
 
         context.commitChanges()
     }
@@ -89,12 +94,12 @@ class SiteApiImpl implements SiteApi {
         checkForBadRequest(validateEntityExistence(id, entity))
         checkForBadRequest(validateForSave(site, context, true, id))
 
-        toDbSite(site, entity, context, context.localObject(systemUserService.currentUser))
+        toDbSite(site, entity, context, permissionService)
         context.commitChanges()
     }
 
     @Override
     void bulkChange(DiffDTO diff) {
-        entityApiService.bulkChange(diff)
+        siteApiService.bulkChange(diff)
     }
 }

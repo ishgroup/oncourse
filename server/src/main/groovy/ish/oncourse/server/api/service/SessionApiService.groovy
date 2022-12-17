@@ -13,24 +13,25 @@ package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
+import ish.common.types.KeyCode
+import ish.common.types.Mask
 import ish.oncourse.server.api.dao.CourseClassDao
-import ish.oncourse.server.api.dao.CourseClassTutorDao
 import ish.oncourse.server.api.dao.RoomDao
 import ish.oncourse.server.api.dao.SessionDao
-import ish.oncourse.server.api.dao.TutorAttendanceDao
-import static ish.oncourse.server.api.servlet.ApiFilter.validateOnly
 import ish.oncourse.server.api.v1.function.SessionValidator
 import ish.oncourse.server.api.v1.model.SessionDTO
 import ish.oncourse.server.api.v1.model.SessionWarningDTO
-import static ish.oncourse.server.api.v1.service.impl.SessionApiImpl.CLASS_TEMP_ID
 import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.CourseClassTutor
 import ish.oncourse.server.cayenne.Room
 import ish.oncourse.server.cayenne.Session
 import ish.oncourse.server.cayenne.TutorAttendance
+import ish.oncourse.server.security.api.IPermissionService
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.validation.ValidationException
+
+import static ish.oncourse.server.api.servlet.ApiFilter.validateOnly
+import static ish.oncourse.server.api.v1.service.impl.SessionApiImpl.CLASS_TEMP_ID
 
 @CompileStatic
 class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao> {
@@ -47,6 +48,9 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
 
     @Inject
     private SessionValidator sessionValidator
+
+    @Inject
+    private IPermissionService permissionService
 
     @Override
     Class<Session> getPersistentClass() {
@@ -114,9 +118,13 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
         if (courseClass) {
             //delete
             List<Session> toDelte = courseClass.sessions.findAll { s -> !(s.id in dtoList*.id) }
-            toDelte.each { s ->
-                validateModelBeforeRemove(s)
-                remove(s, context)
+            if(!toDelte.isEmpty()){
+                if(!permissionService.currentUserCan(KeyCode.SESSION, Mask.DELETE))
+                    validator.throwClientErrorException(toDelte.first().id, null, "You don't have permissions to remove this session.")
+                toDelte.each { s ->
+                    validateModelBeforeRemove(s)
+                    remove(s, context)
+                }
             }
         }
 
@@ -127,10 +135,16 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
         }
 
         //create
-        dtoList.findAll { it.id == null }.each { dto ->
-            Session session = entityDao.newObject(context, courseClass)
-            validateModelBeforeSave(dto, context, null)
-            toCayenneModel(dto, session)
+        def newSessions = dtoList.findAll { it.id == null }
+        if(!newSessions.isEmpty()) {
+            if(!permissionService.currentUserCan(KeyCode.SESSION, Mask.CREATE))
+                validator.throwClientErrorException(newSessions.first().id, null, "You don't have permissions to create this session.")
+
+            newSessions.each { dto ->
+                Session session = entityDao.newObject(context, courseClass)
+                validateModelBeforeSave(dto, context, null)
+                toCayenneModel(dto, session)
+            }
         }
 
         try {

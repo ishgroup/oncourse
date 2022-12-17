@@ -11,6 +11,8 @@
 
 package ish.oncourse.server.api.v1.function
 
+import ish.common.types.KeyCode
+import ish.common.types.Mask
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.function.CayenneFunctions
@@ -26,6 +28,7 @@ import ish.oncourse.server.cayenne.SiteTagRelation
 import ish.oncourse.server.cayenne.SiteUnavailableRuleRelation
 import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.cayenne.UnavailableRule
+import ish.oncourse.server.security.api.IPermissionService
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.StringUtils
@@ -75,7 +78,7 @@ class SiteFunctions {
         }
     }
 
-    static Site toDbSite(SiteDTO site, Site dbSite, ObjectContext context, SystemUser currentUser) {
+    static Site toDbSite(SiteDTO site, Site dbSite, ObjectContext context, IPermissionService permissionService = null) {
         dbSite.isAdministrationCentre = site.isAdministrationCentre
         dbSite.isVirtual = site.isVirtual
         dbSite.isShownOnWeb = site.isShownOnWeb
@@ -95,7 +98,7 @@ class SiteFunctions {
         dbSite.publicTransportDirections = trimToNull(site.publicTransportDirections)
         dbSite.specialInstructions = trimToNull(site.specialInstructions)
 
-        updateRooms(dbSite, site.rooms)
+        updateRooms(dbSite, site.rooms, permissionService)
         updateTags(dbSite, dbSite.taggingRelations, site.tags, SiteTagRelation, context)
         updateAvailabilityRules(dbSite, dbSite.unavailableRuleRelations*.rule, site.rules, SiteUnavailableRuleRelation)
         updateDocuments(dbSite, dbSite.attachmentRelations, site.documents, SiteAttachmentRelation, context)
@@ -126,7 +129,7 @@ class SiteFunctions {
         null
     }
 
-    static ValidationErrorDTO validateForSave(SiteDTO site, ObjectContext context, boolean isSiteExists, Long dbSiteId = null) {
+    static ValidationErrorDTO validateForSave(SiteDTO site, ObjectContext context, boolean isSiteExists, Long dbSiteId = null, IPermissionService permissionService = null) {
         ValidationErrorDTO error = null
 
         if ((site.longitude != null) && ((site.longitude > 180) || (site.longitude < -180))) {
@@ -167,6 +170,11 @@ class SiteFunctions {
             return new ValidationErrorDTO(site?.id?.toString(), 'name', 'The name of the site must be unique.')
         }
 
+        if(!site.rooms.empty){
+            if(permissionService != null && !permissionService.currentUserCan(KeyCode.ROOM, Mask.CREATE))
+                return new ValidationErrorDTO(site?.id?.toString(), "rooms", "You don't have permissions to create rooms")
+        }
+
         List<RoomDTO> duplicates = site.rooms.groupBy {it.name}.values().find { it.size() > 1}
         if (duplicates && !duplicates.empty) {
             int index = site.rooms.indexOf(duplicates[0])
@@ -182,7 +190,7 @@ class SiteFunctions {
         return error ?: TagFunctions.validateRelationsForSave(Site, context, site.tags,  TaggableClasses.SITE)
     }
 
-    private static void updateRooms(Site site, List<RoomDTO> rooms) {
+    private static void updateRooms(Site site, List<RoomDTO> rooms, IPermissionService permissionService) {
         ObjectContext context = site.context
 
         List<Long> savedRoomIds = rooms*.id.findAll()
@@ -190,6 +198,9 @@ class SiteFunctions {
 
         rooms.each { RoomDTO room ->
             if (room.id) {
+                if(permissionService != null && !permissionService.currentUserCan(KeyCode.ROOM, Mask.EDIT))
+                    return new ValidationErrorDTO(room.id.toString(), null, "You don't have permissions to update rooms")
+
                 Room dbRoom = site.rooms.find { it.id == room.id }
                 if (dbRoom.name != trimToNull(room.name)) {
                     dbRoom.name = trimToNull(room.name)
@@ -198,6 +209,9 @@ class SiteFunctions {
                     dbRoom.seatedCapacity = room.seatedCapacity
                 }
             } else {
+                if(permissionService != null && !permissionService.currentUserCan(KeyCode.ROOM, Mask.EDIT))
+                    return new ValidationErrorDTO(site.id?.toString(), null, "You don't have permissions to create rooms")
+
                 context.newObject(Room).with { it ->
                     it.site = site
                     it.name = trimToNull(room.name)
