@@ -21,7 +21,7 @@ get:
   x-permission:
     mask: view
     keyCode: LAZY/entity
-    errorMessage: Sorry, you have no permissions to view custom filters for this entity. Please contact your administrator
+    errorMessage: Sorry, you have no permissions to view custom filters for ${entityName}. Please contact your administrator
 
 post:
   operationId: save
@@ -48,7 +48,7 @@ post:
   x-permission:
     mask: view
     keyCode: LAZY/entity
-    errorMessage: Sorry, you have no permissions to create custom filters for this entity. Please contact your administrator
+    errorMessage: Sorry, you have no permissions to create custom filters for ${entityName}. Please contact your administrator
 
 delete:
   operationId: delete
@@ -75,4 +75,4 @@ delete:
   x-permission:
     mask: view
     keyCode: LAZY/entity
-    errorMessage: Sorry, you have no permissions to delete custom filters for this entity. Please contact your administrator
+    errorMessage: Sorry, you have no permissions to delete custom filters for ${entityName}. Please contact your administrator

@@ -76,7 +76,7 @@ post:
     default:
       description: Unexpected error
   x-permission:
-    mask: edit
+    mask: create
     keyCode: BUDGET
     errorMessage: Sorry, you have no permissions to create class badget item. Please contact your administrator
 

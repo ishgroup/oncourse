@@ -44,6 +44,7 @@ public class LazyApiPermission extends ApiPermission {
 
     private String lazyKeyCodeParam;
     private String reserveQueryString;
+    private String keyCodeValue;
 
     private static final Map<String,KeyCode> KEY_CODE_MAP = new HashMap<>();
     static {
@@ -116,7 +117,6 @@ public class LazyApiPermission extends ApiPermission {
 
     @Override
     public KeyCode getKeyCode(String query) {
-        String keyCodeValue;
         try {
             keyCodeValue = splitQuery(query).get(lazyKeyCodeParam);
         } catch (UnsupportedEncodingException e) {
@@ -146,7 +146,11 @@ public class LazyApiPermission extends ApiPermission {
                 return new PermissionCheckingResult(false, "Can't find lazy keycode for entity.");
             }
         }
-            return new PermissionCheckingResult(permissionService.currentUserCan(keyCode, getMask()), errorMessage);
+
+        var entityNameToReplace = keyCodeValue != null ? keyCodeValue : "this entity";
+        errorMessage = errorMessage.replace("${entityName}", entityNameToReplace);
+
+        return new PermissionCheckingResult(permissionService.currentUserCan(keyCode, getMask()), errorMessage);
     }
 
     private String getLazyEntityPath() throws UnsupportedEncodingException {

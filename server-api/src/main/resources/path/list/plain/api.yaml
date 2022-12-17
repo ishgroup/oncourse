@@ -55,4 +55,4 @@ get:
   x-permission:
     mask: view
     keyCode: LAZY/entity
-    errorMessage: Sorry, you have no permissions to view this entity. Please contact your administrator
+    errorMessage: Sorry, you have no permissions to view ${entityName}. Please contact your administrator

@@ -1,6 +1,6 @@
 get:
   operationId: get
-  description: Returns a waitingList record
+  description: Returns a waiting list record
   tags:
     - WaitingList
   parameters:
@@ -9,7 +9,7 @@ get:
       type: integer
       format: int64
       required: true
-      description: Unique identifier of waitingList record to fetch
+      description: Unique identifier of waiting list record to fetch
   responses:
     '200':
       description: Success response
@@ -22,17 +22,17 @@ get:
   x-permission:
     mask: view
     keyCode: WAITING_LIST
-    errorMessage: Sorry, you have no permissions to get waitingList. Please contact your administrator
+    errorMessage: Sorry, you have no permissions to get waiting list. Please contact your administrator
 
 post:
   operationId: create
-  description: Creates a waitingList record
+  description: Creates a waiting list record
   tags:
     - WaitingList
   parameters:
     - name: waitingList
       in: body
-      description: waitingList to create
+      description: waiting list to create
       required: true
       schema:
         $ref: './def/entity/WaitingList.yaml'
@@ -46,11 +46,11 @@ post:
   x-permission:
     mask: create
     keyCode: WAITING_LIST
-    errorMessage: Sorry, you have no permissions to create waitingList. Please contact your administrator
+    errorMessage: Sorry, you have no permissions to create waiting list. Please contact your administrator
 
 put:
   operationId: update
-  description: Updates an existing waitingList record
+  description: Updates an existing waiting list record
   tags:
     - WaitingList
   parameters:
@@ -59,13 +59,13 @@ put:
       type: integer
       format: int64
       required: true
-      description: Unique identifier of waitingList record to fetch
+      description: Unique identifier of waiting list record to fetch
     - name: waitingList
       in: body
       schema:
         $ref: './def/entity/WaitingList.yaml'
       required: true
-      description: waitingList for update
+      description: waiting list for update
   responses:
     '204':
       description: Success response.
@@ -76,7 +76,7 @@ put:
   x-permission:
     mask: edit
     keyCode: WAITING_LIST
-    errorMessage: Sorry, you have no permissions to edit waitingList. Please contact your administrator
+    errorMessage: Sorry, you have no permissions to edit waiting list. Please contact your administrator
 
 delete:
   operationId: remove
@@ -89,7 +89,7 @@ delete:
       type: integer
       format: int64
       required: true
-      description: Unique identifier of waitingList record to fetch
+      description: Unique identifier of waiting list record to fetch
   responses:
     '204':
       description: Success response.
@@ -100,7 +100,7 @@ delete:
   x-permission:
     mask: delete
     keyCode: WAITING_LIST
-    errorMessage: Sorry, you have no permissions to delete waitingList. Please contact your administrator
+    errorMessage: Sorry, you have no permissions to delete waiting list. Please contact your administrator
 
 patch:
   operationId: bulkChange
@@ -112,7 +112,7 @@ patch:
       schema:
         $ref: './def/entity/Diff.yaml'
       required: true
-      description: waitingLists for update
+      description: waiting lists for update
   responses:
     '200':
       description: Success response
@@ -123,4 +123,4 @@ patch:
   x-permission:
     mask: edit
     keyCode: WAITING_LIST
-    errorMessage: Sorry, you have no permissions to edit waitingList. Please contact your administrator.
+    errorMessage: Sorry, you have no permissions to edit waiting list. Please contact your administrator.
