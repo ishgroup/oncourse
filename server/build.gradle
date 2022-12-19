@@ -162,7 +162,7 @@ compileGroovy.groovyOptions.configurationScript = file("${rootDir}/gradle/groovy
 
 tasks.withType(GroovyCompile) {
 	configure(groovyOptions.forkOptions) {
-		jvmArgs = ['-Xms1g', '-Xmx4g']
+		jvmArgs = ['-Xmx4g']
 	}
 }
 
