@@ -187,22 +187,21 @@ class DocumentFunctions {
             }
         } else {
             try {
-                if (isDoc(version.mimeType)) {
-                    version.thumbnail = ThumbnailGenerator.generateForDoc(content)
-                } else {
-                    if (isExcel(version.mimeType)) {
+                switch (version.mimeType) {
+                    case {it instanceof String && isDoc(it as String)}:
+                        version.thumbnail = ThumbnailGenerator.generateForDoc(content)
+                        break
+                    case {it instanceof String && isExcel(it as String)}:
                         version.thumbnail = ThumbnailGenerator.generateForExcel(content)
-                    } else {
-                        if (isCsv(version.mimeType)) {
-                            version.thumbnail = ThumbnailGenerator.generateForCsv(content)
-                        } else {
-                            if (isText(version.mimeType)) {
-                                version.thumbnail = ThumbnailGenerator.generateForText(content)
-                            } else {
-                                version.thumbnail = generatePdfPreview(content)
-                            }
-                        }
-                    }
+                        break
+                    case {it instanceof String && isCsv(it as String)}:
+                        version.thumbnail = ThumbnailGenerator.generateForCsv(content)
+                        break
+                    case {it instanceof String && isText(it as String)}:
+                        version.thumbnail = ThumbnailGenerator.generateForText(content)
+                        break
+                    default:
+                        version.thumbnail = generatePdfPreview(content)
                 }
             } catch (NotActiveException e) {
                 logger.warn("Attempted to process document with name $document.name failed. Angel can not generate privew")

@@ -471,10 +471,8 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
       const activeExportTemplate = exportTemplateTypes[Object.keys(exportTemplateTypes)[selectedPrimary - 1]][selectedSecondary];
       dispatch(exportTemplateFullScreenPreview(activeExportTemplate.id));
     } else {
-      if (this.isPdfReportSelected(selectedPrimary)) {
         const activeReport = pdfReports[selectedSecondary];
         dispatch(reportFullScreenPreview(activeReport.id));
-      }
     }
   };
 
