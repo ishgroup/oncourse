@@ -62,6 +62,12 @@ class AccessApiImpl implements AccessApi {
                 case KeyCodeDTO.SCRIPT_EXECUTE:
                     response.hasAccess = permissionService.currentUserCan(KeyCode.SCRIPT_EXECUTE, Mask.ALL)
                     return response
+                case KeyCodeDTO.ENROLMENT_DISCOUNT:
+                    response.hasAccess = permissionService.currentUserCan(KeyCode.ENROLMENT_DISCOUNT, Mask.ALL)
+                    return response
+                case KeyCodeDTO.VIEW_PAYMENT_OUT:
+                    response.hasAccess = permissionService.currentUserCan(KeyCode.PAYMENT_OUT, Mask.VIEW)
+                    return response
                 default:
                     throw new IllegalArgumentException("Unsapported permission kode $permissionRequest.keyCode")
             }
