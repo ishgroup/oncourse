@@ -101,7 +101,7 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	VET_COURSE(9, "VET Course details", ALL - EDIT),
+	VET_COURSE(9, "VET Course details", VIEW),
 
 	/**
 	 * Database value: 10
@@ -220,7 +220,7 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	BANKING(26, "Banking", ALL - VIEW),
+	BANKING(26, "Banking", VIEW),
 
 	/**
 	 * Database value: 27
@@ -229,7 +229,7 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	RECONCILIATION(27, "Reconciliation", ALL - VIEW),
+	RECONCILIATION(27, "Reconciliation", NONE),
 
 	/**
 	 * Database value: 28
@@ -384,7 +384,7 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_DUPLICATE(70, "Class duplication/rollover", ALL - VIEW),
+	SPECIAL_DUPLICATE(70, "Class duplication/rollover", NONE),
 
 	/**
 	 * Database value: 71
@@ -411,7 +411,7 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_CERTIFICATE(73, "Creating certificate from class", ALL - VIEW),
+	SPECIAL_CERTIFICATE(73, "Creating certificate from class", NONE),
 
 	/**
 	 * Database value: 74
@@ -465,7 +465,7 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_CANCEL_TRANSFER_ENROLMENTS(79, "Enrolment cancellation and transferring", ALL - VIEW),
+	SPECIAL_CANCEL_TRANSFER_ENROLMENTS(79, "Enrolment cancellation and transferring", NONE),
 
 	/**
 	 * Database value: 80
