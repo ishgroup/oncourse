@@ -92,7 +92,7 @@ export const SummaryItemRow = React.memo<any>(props => {
               type="number"
               min="1"
               name={`${item.id}_${listIndex}_itemQuantity`}
-              formatting="inline"
+              inline
               hidePlaceholderInEditMode
               onChange={handleQuantityChange}
               validate={greaterThanNullValidation}

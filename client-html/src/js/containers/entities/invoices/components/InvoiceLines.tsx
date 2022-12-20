@@ -548,7 +548,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
             <FormField
               type="money"
               name={`${item}.total`}
-              formatting="inline"
+              inline
               disabled={type !== "Quote" && !isNew}
               defaultValue={total}
               onBlur={onTotalBlur}

@@ -111,7 +111,7 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                     onChange={e => onCancelFeeChange(e, index)}
                     debounced={false}
                     disabled={!field.isReverseCreditNotes}
-                    formatting="inline"
+                    inline
                     hideArrowshideArrows
                     step="1"
                   />
@@ -124,7 +124,8 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                     onChange={v => onTaxChange(v, index)}
                     debounced={false}
                     disabled={!field.isReverseCreditNotes}
-                    formatting="inline"
+                    className="ml-0-5 mt-0-5"
+                    inline
                   />
                   <span className="money ml-0-5">
                     {formatCurrency(field.chargedFee, currencySymbol)}
@@ -133,10 +134,11 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                     type="select"
                     name={`${item}.incomeAccountId`}
                     items={incomeAccounts || []}
-                    formatting="inline"
                     selectValueMark="id"
                     selectLabelCondition={accountLabelCondition}
                     disabled={!field.isReverseCreditNotes}
+                    className="ml-0-5 mt-0-5"
+                    inline
                   />
                 </Grid>
 

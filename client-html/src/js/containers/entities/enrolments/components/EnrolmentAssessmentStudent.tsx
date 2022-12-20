@@ -105,7 +105,7 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
                 value: submission.submittedOn
               }}
                 type="datetime"
-                formatting="inline"
+                inline
                 formatDate={D_MMM_YYYY}
               />
             </div>
@@ -128,7 +128,7 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
                     value: submission.markedOn
                   }}
                   type="datetime"
-                  formatting="inline"
+                  inline
                   formatDate={D_MMM_YYYY}
                 />
               </div>

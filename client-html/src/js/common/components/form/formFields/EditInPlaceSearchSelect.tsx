@@ -24,6 +24,7 @@ import { usePrevious } from "../../../utils/hooks";
 import { ListboxComponent, selectStyles } from "./SelectCustomComponents";
 import WarningMessage from "../fieldMessage/WarningMessage";
 import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
+import { countWidth } from "../../../utils/DOM";
 
 const searchStyles = theme => createStyles({
   inputEndAdornment: {
@@ -83,6 +84,9 @@ const searchStyles = theme => createStyles({
       bottom: 2,
       height: "auto"
     }
+  },
+  popper: {
+    zIndex: 1400
   }
 });
 
@@ -170,16 +174,24 @@ const PopperAdapter = React.memo<any>(params => {
   const {
     hideMenuOnNoResults,
     items,
-    popperAnchor
+    popperAnchor,
+    inline
   } = useContext(SelectContext);
 
   return (hideMenuOnNoResults && !items.length
     ? null
     : popperAnchor
       // @ts-ignore
-      ? <Popper {...params} style={{ ...params.style, width: popperAnchor.clientWidth }} anchorEl={popperAnchor} />
+      ? <Popper
+         {...params}
+         style={{ ...params.style, width: popperAnchor.clientWidth }}
+         anchorEl={popperAnchor}
+      />
       // @ts-ignore
-      : <Popper {...params} />);
+      : <Popper
+        {...params}
+        style={inline ? null : params.style}
+      />);
 });
 
 const EditInPlaceSearchSelect: React.FC<Props> = ({
@@ -287,8 +299,7 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
     const searchRegexp = new RegExp(searchValue.replace(",", "")
       // eslint-disable-next-line no-useless-escape
       .replace(/[\[\]\{\}\(\)\*]/g, "\\$&")
-      .trim().toLowerCase()
-      .replace(/\s+/g, "|"));
+      .trim().toLowerCase();
 
     if (typeof selectFilterCondition === "function") {
       filtered = items.filter(item => {
@@ -543,12 +554,13 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
             hasPopupIcon: classes.hasPopup,
             hasClearIcon: classes.hasClear,
             inputRoot: clsx(classes.inputWrapper, inline && classes.inline, multiple && classes.multiple),
-            option: "w-100 text-pre"
+            option: "w-100 text-pre",
+            popper: classes.popper
           }}
           renderOption={renderOption}
           getOptionLabel={getOptionLabel}
           filterOptions={filterItems}
-          ListboxComponent={ListBoxAdapter as any}
+          ListboxComponent={inline ? null : ListBoxAdapter as any}
           PopperComponent={PopperAdapter as any}
           renderInput={({
            InputLabelProps, InputProps, inputProps, ...params
@@ -567,14 +579,14 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
               {
                 valueRenderer && !isEditing && input.value
                   ? <Select
-                      {...InputProps}
-                      onFocus={edit}
-                      value={input.value || ""}
-                      endAdornment={renderIcons}
-                      IconComponent={null}
+                    {...InputProps}
+                    onFocus={edit}
+                    value={input.value || ""}
+                    endAdornment={renderIcons}
+                    IconComponent={null}
                     >
                     {renderValue}
-                  </Select>
+                    </Select>
                   : <Input
                     {...InputProps}
                     disableUnderline={disableUnderline}
@@ -599,11 +611,13 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
                     inputProps={{
                       ...inputProps,
                       value: (isEditing ? searchValue : multiple ? "" : (typeof displayedValue === "string" ? displayedValue : "")),
+                      style: {
+                        width: inline ? countWidth(displayedValue) + 3 : inputProps?.style?.width
+                      }
                     }}
                     endAdornment={renderIcons}
                   />
               }
-
               <FormHelperText
                 classes={{
                   error: "shakingError"

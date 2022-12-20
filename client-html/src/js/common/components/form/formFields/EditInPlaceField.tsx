@@ -212,7 +212,6 @@ interface Props {
   ref?: any;
   input?: Partial<WrappedFieldInputProps>;
   meta?: Partial<WrappedFieldMetaProps>;
-  formatting?: "primary" | "inline",
   type?: "password" | "percentage" | "number",
   returnType?: "object" | "string",
   classes?: any;
@@ -244,6 +243,7 @@ interface Props {
   disabledTab?: any
   autoWidth?: boolean,
   multiline?: boolean,
+  inline?: boolean,
 }
 
 export class EditInPlaceFieldBase extends React.PureComponent<Props, any> {
@@ -386,7 +386,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<Props, any> {
   render() {
     const {
       classes,
-      formatting = "primary",
+      inline,
       input,
       meta: { error, invalid },
       helperText,
@@ -424,8 +424,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<Props, any> {
 
     const { isEditing } = this.state;
 
-    const isInline = formatting === "inline";
-
     const textFieldProps = {
       onKeyPress,
       onBlur: this.onBlur,
@@ -438,7 +436,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<Props, any> {
         onKeyDown,
         type: type !== "password" ? (type === "percentage" ? "number" : type) : undefined,
         className: clsx(fieldClasses.text, {
-          [classes.inlineInput]: isInline,
+          [classes.inlineInput]: inline,
           [classes.readonly]: disabled,
           [classes.smallOffsetInput]: disableInputOffsets,
           [classes.hideArrows]: ["percentage", "number"].includes(type),
@@ -446,7 +444,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<Props, any> {
         }),
         placeholder: placeholder || (!isEditing ? "No value" : ""),
         style: {
-          maxWidth: isInline && !invalid ? this.getInputLength() : undefined
+          maxWidth: inline && !invalid ? this.getInputLength() : undefined
         },
       },
       value: input.value ? input.value : !isEditing && defaultValue ? defaultValue : input.value,
@@ -456,8 +454,8 @@ export class EditInPlaceFieldBase extends React.PureComponent<Props, any> {
 
     const iconProps = {
       className: clsx("hoverIcon editInPlaceIcon", classes.selectIcon, fieldClasses.placeholder, {
-        [classes.hiddenContainer]: (rightAligned || isInline) && disabled,
-        [classes.invisibleContainer]: !(rightAligned || isInline) && disabled
+        [classes.hiddenContainer]: (rightAligned || inline) && disabled,
+        [classes.invisibleContainer]: !(rightAligned || inline) && disabled
       })
     };
 
@@ -469,15 +467,15 @@ export class EditInPlaceFieldBase extends React.PureComponent<Props, any> {
       <div
         id={input.name}
         className={clsx(className, "outline-none", {
-          [classes.inlineContainer]: isInline
+          [classes.inlineContainer]: inline
         })}
       >
         <div
           className={clsx({
-            [classes.inlineMargin]: isInline,
+            [classes.inlineMargin]: inline,
             [classes.rightAligned]: rightAligned,
-            [classes.hiddenContainer]: isInline && !(isEditing || invalid),
-            "d-inline": isInline && (isEditing || invalid)
+            [classes.hiddenContainer]: inline && !(isEditing || invalid),
+            "d-inline": inline && (isEditing || invalid)
           })}
         >
           <FormControl
@@ -487,7 +485,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<Props, any> {
             margin="none"
             className={clsx({
               [classes.topMargin]: !listSpacing && !disableInputOffsets,
-              [classes.inlineTextField]: isInline
+              [classes.inlineTextField]: inline
             })}
             {...custom}
           >
@@ -522,12 +520,12 @@ export class EditInPlaceFieldBase extends React.PureComponent<Props, any> {
               multiline={multiline}
               inputRef={this.setInputNode}
               classes={{
-                root: clsx(isInline && classes.inlineInput, classes.textFieldBorderModified,
+                root: clsx(inline && classes.inlineInput, classes.textFieldBorderModified,
                   fieldClasses.text, classes.inputWrapper, isEditing && classes.isEditing),
                 underline: fieldClasses.underline
               }}
               disabled={disabled}
-              endAdornment={!isInline && !disabled && (
+              endAdornment={!inline && !disabled && (
                 <InputAdornment
                   position="end"
                   className={clsx(classes.inputEndAdornment, {
@@ -553,18 +551,18 @@ export class EditInPlaceFieldBase extends React.PureComponent<Props, any> {
             </FormHelperText>
           </FormControl>
         </div>
-        {isInline && (
+        {inline && (
           <div
             className={clsx({
-              [classes.hiddenContainer]: isEditing || invalid || !isInline,
+              [classes.hiddenContainer]: isEditing || invalid || !inline,
               [classes.rightAligned]: rightAligned,
-              "d-inline": isInline && !(isEditing || invalid)
+              "d-inline": inline && !(isEditing || invalid)
             })}
           >
-            <div className={clsx(isInline ? "d-inline" : classes.fitWidth)}>
-              {isInline && !hideLabel && label}
+            <div className={clsx(inline ? "d-inline" : classes.fitWidth)}>
+              {inline && !hideLabel && label}
 
-              {isInline && (
+              {inline && (
                 <ButtonBase
                   component="span"
                   onFocus={this.edit}

@@ -154,7 +154,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
    input,
    classes,
    fieldClasses = {},
-   formatting = "primary",
+   inline,
    meta: { error, invalid, active, dispatch },
    labelAdornment,
    helperText,
@@ -175,8 +175,6 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   const inputNode = useRef<any>(null);
   const processActionId = useRef<string>(null);
   const processedValue = useRef<any>(null);
-
-  const isInline = formatting === "inline";
 
   const formatDateInner = dateObj => {
     if (!dateObj) {
@@ -343,7 +341,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   return (
     <div
       className={clsx(className, "outline-none", {
-        [classes.inlineContainer]: isInline,
+        [classes.inlineContainer]: inline,
         "pointer-events-none": disabled
       })}
     >
@@ -365,10 +363,10 @@ const EditInPlaceDateTimeField: React.FC<any> = (
               margin="none"
               fullWidth
               className={clsx({
-                "pr-2": formatting !== "inline",
+                "pr-2": inline,
                 [classes.topMargin]: !listSpacing,
-                [classes.bottomMargin]: listSpacing && formatting !== "inline",
-                [classes.inlineTextField]: isInline
+                [classes.bottomMargin]: listSpacing && !inline,
+                [classes.inlineTextField]: inline
               })}
             >
               {Boolean(label) && (
@@ -395,15 +393,15 @@ const EditInPlaceDateTimeField: React.FC<any> = (
                 disabled={disabled}
                 inputRef={inputNode}
                 inputProps={{
-                  size: isInline && renderedValue ? renderedValue.length + 1 : undefined,
+                  size: inline && renderedValue ? renderedValue.length + 1 : undefined,
                   className: clsx({
-                    [classes.inlineInput]: isInline
+                    [classes.inlineInput]: inline
                   }),
                   placeholder: placeholder || (!isEditing ? "No value" : ""),
                 }}
                 value={textValue}
                 classes={{
-                  root: clsx(classes.input, fieldClasses.text, isInline && classes.inlineInput,
+                  root: clsx(classes.input, fieldClasses.text, inline && classes.inlineInput,
                     classes.inputWrapper),
                   underline: fieldClasses.underline,
                   input: clsx(classes.input, fieldClasses.text),
@@ -411,13 +409,13 @@ const EditInPlaceDateTimeField: React.FC<any> = (
                 endAdornment={(
                   <InputAdornment
                     position="end"
-                    className={clsx(classes.inputEndAdornment, formatting === "inline" && classes.hiddenContainer)}
+                    className={clsx(classes.inputEndAdornment, inline && classes.hiddenContainer)}
                   >
                     <IconButton
                       tabIndex={-1}
                       onClick={openPicker}
                       classes={{
-                        root: clsx(fieldClasses.text, isInline ? classes.inlinePickerButton : classes.pickerButton)
+                        root: clsx(fieldClasses.text, inline ? classes.inlinePickerButton : classes.pickerButton)
                       }}
                     >
                       {type === "time"

@@ -433,7 +433,7 @@ const CourseClassBulkChangeSessionForm = props => {
                       <FormField
                         type="number"
                         name="moveForward"
-                        formatting="inline"
+                        inline
                         step="1"
                         className={classes.bulkChangeDaysInput}
                         onChange={onMoveLater}
@@ -455,7 +455,7 @@ const CourseClassBulkChangeSessionForm = props => {
                       <FormField
                         name="moveBackward"
                         type="number"
-                        formatting="inline"
+                        inline
                         step="1"
                         className={classes.bulkChangeDaysInput}
                         onChange={onMoveEarlier}

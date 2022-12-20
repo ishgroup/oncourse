@@ -100,7 +100,7 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
                 value: elem.submission.submittedOn
               }}
               type="datetime"
-              formatting="inline"
+              inline
             />
           )
           : submittedContent}
@@ -121,7 +121,7 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
                     value: elem.submission.markedOn
                   }}
                   type="datetime"
-                  formatting="inline"
+                  inline
                 />
               </div>
               <div>
