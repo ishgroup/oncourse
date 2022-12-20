@@ -13,6 +13,7 @@ import { MenuTag } from "../../../../model/tags";
 import { GetRecordsArgs, SavingFilterState } from "../../../../model/common/ListView";
 import { IAction } from "../../../actions/IshAction";
 import { EntityName } from "../../../../model/entities/common";
+import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 
 // Common list actions
 export const GET_RECORDS_REQUEST = _toRequestType("get/records");
@@ -38,6 +39,8 @@ export const POST_FILTER_REQUEST_FULFILLED = FULFILLED(POST_FILTER_REQUEST);
 export const UPDATE_TABLE_MODEL_REQUEST = _toRequestType("update/table/model");
 
 export const BULK_CHANGE_RECORDS = _toRequestType("post/listView/bulkChange");
+
+export const FIND_RELATED_BY_FILTER = "find/related/byFilter";
 
 export const CLEAR_LIST_STATE = "clear/listView";
 
@@ -69,6 +72,10 @@ export const SET_LIST_FULL_SCREEN_EDIT_VIEW = "set/listView/fullScreenEditView";
 
 export const SET_LIST_EDIT_RECORD_FETCHING = "set/listView/editRecordFetching";
 
+export const findRelatedByFilter = (filter: string | AnyArgFunction<string, string>, list: string ) => ({
+  type: FIND_RELATED_BY_FILTER,
+  payload: { filter, list }
+});
 
 export const deleteCustomFilter = (id: number, entity: string, checked: boolean) => ({
   type: DELETE_FILTER_REQUEST,

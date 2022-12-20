@@ -11,7 +11,7 @@ import { format } from "date-fns";
 import { Discount, DiscountType } from "@api/model";
 import { checkPermissions } from "../../../common/actions";
 import { plainCorporatePassPath } from "../../../constants/Api";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import ListView from "../../../common/components/list-view/ListView";
 import {
   setListEditRecord,
@@ -78,7 +78,7 @@ const Initial: Discount = {
   validToOffset: null
 };
 
-const findRelatedGroup: any = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Discount and entityId" },
   { title: "Classes", list: "class", expression: "discountCourseClasses.discount.id" },
   { title: "Enrolments", list: "enrolment", expression: "invoiceLines.invoiceLineDiscounts.discount.id" },

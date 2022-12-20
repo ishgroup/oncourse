@@ -13,7 +13,7 @@ import {
   DataResponse, EmailTemplate, Filter, Script, SearchQuery
 } from "@api/model";
 import { MenuTag } from "../tags";
-import { AnyArgFunction, NoArgFunction } from "./CommonFunctions";
+import { AnyArgFunction, NoArgFunction, StringArgFunction } from "./CommonFunctions";
 import { ShowConfirmCaller } from "./Confirm";
 import { MessageData } from "./Message";
 import { EntityName } from "../entities/common";
@@ -32,7 +32,7 @@ export interface FindRelatedItem {
   title: string;
   list?: string;
   expression?: string;
-  customExpression?: string;
+  customExpression?: AnyArgFunction<string,string>;
   destination?: string;
   items?: FindRelatedItem[];
 }
