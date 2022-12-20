@@ -14,6 +14,8 @@ package ish.oncourse.server.api.service
 import com.google.inject.Inject
 import ish.common.types.ConfirmationStatus
 import ish.common.types.InvoiceType
+import ish.common.types.KeyCode
+import ish.common.types.Mask
 import ish.common.types.PaymentStatus
 import ish.math.Money
 import ish.oncourse.DefaultAccount
@@ -24,6 +26,7 @@ import ish.oncourse.server.api.dao.*
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.duplicate.DuplicateInvoiceService
+import ish.oncourse.server.security.api.IPermissionService
 import ish.oncourse.server.services.IAutoIncrementService
 import ish.oncourse.server.services.TransactionLockedService
 import ish.oncourse.server.users.SystemUserService
@@ -92,6 +95,9 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
 
     @Inject
     private DuplicateInvoiceService duplicateInvoiceService
+
+    @Inject
+    private IPermissionService permissionService
 
     @Inject
     private AqlService aql
@@ -305,6 +311,13 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
                     if (iil.enrolmentId && !enrolmentDao.getById(context, iil.enrolmentId)) {
                         validator.throwClientErrorException(id, "invoiceLines[$idx].enrolmentId", "Enrolment with id=$iil.enrolmentId not found.")
                     }
+                }
+
+                if(invoiceDTO.total < 0 && !permissionService.currentUserCan(KeyCode.INVOICE_CREDIT, Mask.CREATE)){
+                    validator.throwForbiddenErrorException(id, 'total',
+                            "You cannot create invoice with total  ${toMoneyValue(invoiceDTO.total)}" +
+                                    " because of you have no permissions to create credit notes." +
+                                    " Please contact your administrator")
                 }
             }
         }
