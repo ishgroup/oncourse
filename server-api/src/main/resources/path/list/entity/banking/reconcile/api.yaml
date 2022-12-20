@@ -19,5 +19,5 @@ post:
       description: Unexpected error
   x-permission:
     mask: edit
-    keyCode: BANKING
+    keyCode: RECONCILIATION
     errorMessage: Sorry, you have no permission to reconcile banking deposits. Please contact your administrator

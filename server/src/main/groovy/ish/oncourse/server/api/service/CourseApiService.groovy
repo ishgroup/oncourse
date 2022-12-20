@@ -195,7 +195,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
     }
 
     private void checkPermission(CourseDTO dto, Course course) {
-        if (!permissionService.currentUserCan(KeyCode.VET_COURSE, Mask.VIEW)) {
+        if (!permissionService.currentUserCan(KeyCode.VET_COURSE, Mask.EDIT)) {
             if (course != null)  {
                 if ( (course.qualification != null && course.qualification.id != dto.qualificationId) ||
                         (course.qualification == null && dto.qualificationId != null) ||

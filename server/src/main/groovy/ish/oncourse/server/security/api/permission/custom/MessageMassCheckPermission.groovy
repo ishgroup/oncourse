@@ -61,7 +61,7 @@ class MessageMassCheckPermission extends ResourcePermission {
         }
         if (!permissionService.currentUserCan(KeyCode.SPECIAL_EMAIL_MASS, Mask.VIEW)) {
             if (recipientsCount() > 50) {
-                return new PermissionCheckingResult(false, "Sorry, you have no permissions to send emails more than 50. Please contact your administrator")
+                return new PermissionCheckingResult(false, "Sorry, you have no permissions to send more than 50 emails. Please contact your administrator")
             }
         }
         PermissionCheckingResult.successful()
@@ -73,7 +73,7 @@ class MessageMassCheckPermission extends ResourcePermission {
         }
         if (!permissionService.currentUserCan(KeyCode.SPECIAL_SMS_MASS, Mask.VIEW)) {
             if (recipientsCount() <=> 50 == 1) {
-                return new PermissionCheckingResult(false, "Sorry, you have no permissions to send sms more than 50. Please contact your administrator")
+                return new PermissionCheckingResult(false, "Sorry, you have no permissions to send more than 50 sms. Please contact your administrator")
             }
         }
 

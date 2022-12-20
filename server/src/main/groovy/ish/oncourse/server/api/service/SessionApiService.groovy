@@ -120,7 +120,7 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
             List<Session> toDelte = courseClass.sessions.findAll { s -> !(s.id in dtoList*.id) }
             if(!toDelte.isEmpty()){
                 if(!permissionService.currentUserCan(KeyCode.SESSION, Mask.DELETE))
-                    validator.throwClientErrorException(toDelte.first().id, null, "You don't have permissions to remove this session.")
+                    validator.throwForbiddenErrorException(toDelte.first().id, null, "You don't have permissions to remove this session.")
                 toDelte.each { s ->
                     validateModelBeforeRemove(s)
                     remove(s, context)
@@ -138,7 +138,7 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
         def newSessions = dtoList.findAll { it.id == null }
         if(!newSessions.isEmpty()) {
             if(!permissionService.currentUserCan(KeyCode.SESSION, Mask.CREATE))
-                validator.throwClientErrorException(newSessions.first().id, null, "You don't have permissions to create this session.")
+                validator.throwForbiddenErrorException(newSessions.first().id, null, "You don't have permissions to create this session.")
 
             newSessions.each { dto ->
                 Session session = entityDao.newObject(context, courseClass)
