@@ -9,10 +9,13 @@
 package ish.oncourse.api.test.task;
 
 import static ish.oncourse.api.test.task.CustomDatasetAttributesConstants.FUTURE_YEAR_NUMBER;
+import static ish.oncourse.api.test.task.CustomDatasetAttributesConstants.PREVIOUS_YEAR_NUMBER;
 
 public enum CustomDatasetAttribute {
 
-    FUTURE_YEAR("#future_year", String.valueOf(FUTURE_YEAR_NUMBER));
+    FUTURE_YEAR("#future_year", String.valueOf(FUTURE_YEAR_NUMBER)),
+
+    PREVIOUS_YEAR("#previous_year", String.valueOf(PREVIOUS_YEAR_NUMBER));
 
     private final String attributeMarker;
     private final String attributeValue;
