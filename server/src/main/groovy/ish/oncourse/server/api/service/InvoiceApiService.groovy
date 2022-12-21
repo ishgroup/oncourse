@@ -12,6 +12,7 @@
 package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
+import groovy.transform.CompileDynamic
 import ish.common.types.ConfirmationStatus
 import ish.common.types.InvoiceType
 import ish.common.types.PaymentStatus
@@ -46,6 +47,7 @@ import static ish.util.InvoiceUtil.calculateTaxEachForInvoiceLine
 import static ish.util.LocalDateUtils.dateToTimeValue
 import static org.apache.commons.lang3.StringUtils.*
 
+@CompileDynamic
 class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, InvoiceDao> {
 
     @Inject
