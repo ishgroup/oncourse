@@ -37,16 +37,18 @@ export const includeOnEnrolPaymentPlan = (item: ClassCostExtended, taxes: Tax[])
   const currentTax = getCurrentTax(taxes, item.taxId);
   const result = { ...item };
 
-  if (result.flowType === "Income" && result.invoiceToStudent && result.paymentPlan.length) {
-    result.paymentPlan = [
-      { dayOffset: null, amount: result.perUnitAmountIncTax },
-      ...result.paymentPlan
-    ];
+  if (result.flowType === "Income" && result.invoiceToStudent) {
+    if (result.paymentPlan.length) {
+      result.paymentPlan = [
+        { dayOffset: null, amount: result.perUnitAmountIncTax },
+        ...result.paymentPlan
+      ];
 
-    result.perUnitAmountIncTax = result.paymentPlan.reduce((p: number, c) => decimalPlus(p, c.amount), 0);
+      result.perUnitAmountIncTax = result.paymentPlan.reduce((p: number, c) => decimalPlus(p, c.amount), 0);
+    }
+
+    result.perUnitAmountExTax = decimalDivide(result.perUnitAmountIncTax, decimalPlus(currentTax.rate, 1));
   }
-
-  result.perUnitAmountExTax = decimalDivide(result.perUnitAmountIncTax, decimalPlus(currentTax.rate, 1));
 
   return result;
 };
