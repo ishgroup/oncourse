@@ -12,4 +12,6 @@ import java.util.Calendar;
 
 public class CustomDatasetAttributesConstants {
     public static final int FUTURE_YEAR_NUMBER = Calendar.getInstance().get(Calendar.YEAR) + 2;
+
+    public static final int PREVIOUS_YEAR_NUMBER = Calendar.getInstance().get(Calendar.YEAR) - 1;
 }
