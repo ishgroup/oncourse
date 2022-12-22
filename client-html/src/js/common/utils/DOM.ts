@@ -13,8 +13,12 @@ export const countLines = (el: HTMLElement) => {
   return Math.round(divHeight / lineHeight);
 };
 
-export const countWidth = (el: string) => {
+export const countWidth = (el: string, container: Element) => {
   const testContainer = document.createElement("span");
+  const containerStyles = getComputedStyle(container);
+  testContainer.style["height"] = containerStyles["height"];
+  testContainer.style["fontSize"] = containerStyles["fontSize"];
+  testContainer.style["fontWeight"] = containerStyles["fontWeight"];
   testContainer.style.position = "absolute";
   testContainer.style.zIndex = "-10000";
   testContainer.innerHTML = el;

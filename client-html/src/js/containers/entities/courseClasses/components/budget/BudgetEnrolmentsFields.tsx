@@ -89,6 +89,7 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
         <EditInPlaceField
           type="number"
           label="Minimum"
+          className="flex-fill"
           defaultValue={values.minimumPlaces || "0"}
           meta={{
             error: errors.minimum,
@@ -99,7 +100,6 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
             onFocus: stubFunction,
             onBlur: stubFunction
           }}
-          classes={{ fitWidth: "flex-fill" }}
           onKeyPress={preventDecimalEnter}
           rightAligned
         />
@@ -109,6 +109,7 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
         <EditInPlaceField
           type="number"
           label="Maximum"
+          className="flex-fill"
           defaultValue={values.maximumPlaces || "0"}
           meta={{
             error: errors.maximum,
@@ -119,7 +120,6 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
             onFocus: stubFunction,
             onBlur: stubFunction
           }}
-          classes={{ fitWidth: "flex-fill" }}
           onKeyPress={preventDecimalEnter}
           rightAligned
         />
@@ -129,6 +129,7 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
         <EditInPlaceField
           type="number"
           label="Projected"
+          className="flex-fill"
           defaultValue={values.budgetedPlaces || "0"}
           meta={{
             error: errors.budgeted,
@@ -140,7 +141,6 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
             onFocus: stubFunction,
             onBlur: stubFunction
           }}
-          classes={{ fitWidth: "flex-fill" }}
           onKeyPress={preventDecimalEnter}
           rightAligned
         />

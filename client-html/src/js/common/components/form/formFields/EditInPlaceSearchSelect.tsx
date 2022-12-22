@@ -612,7 +612,7 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
                       ...inputProps,
                       value: (isEditing ? searchValue : multiple ? "" : (typeof displayedValue === "string" ? displayedValue : "")),
                       style: {
-                        width: inline ? countWidth(displayedValue) + 3 : inputProps?.style?.width
+                        width: inline ? countWidth(displayedValue, inputNode?.current) + 3 : inputProps?.style?.width
                       }
                     }}
                     endAdornment={renderIcons}

@@ -134,7 +134,6 @@ const PayslipPaylineItem = (props: Props) => {
                     normalize={normalizeNumber}
                     listSpacing={false}
                     inline
-                    disableInputOffsets
                     rightAligned
                   />
                 </Grid>
@@ -162,7 +161,6 @@ const PayslipPaylineItem = (props: Props) => {
                 name={`${item}.value`}
                 listSpacing={false}
                 inline
-                disableInputOffsets
                 rightAligned
                 required
               />
