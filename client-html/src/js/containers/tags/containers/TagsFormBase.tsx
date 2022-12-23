@@ -185,7 +185,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
 
   state = {
     editingIds: []
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -215,7 +215,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
         ? this.state.editingIds.filter(id => id !== editingId)
         : this.state.editingIds.concat(editingId)
     });
-  }
+  };
 
   onSave = values => {
     const { onUpdate, onCreate } = this.props;
@@ -277,7 +277,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
     const { dispatch, values } = this.props;
     dispatch(change(TAGS_FORM_NAME, item.parent ? item.parent + ".status" : "status", item.status === "Private" ? "Show on website" : "Private"));
     dispatch(change(TAGS_FORM_NAME, "refreshFlag", !values.refreshFlag));
-  }
+  };
 
   removeChildTag = (item: FormTag) => {
     const { dispatch, values, openConfirm } = this.props;
@@ -296,7 +296,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
         const removePath = getDeepValue(clone, item.parent.replace(/\[[0-9]+]$/, ""));
 
         if (removePath) {
-          const deleteItem = item.parent.match(/\[(\d)]$/);
+          const deleteItem = item.parent.match(/\[(\d+)]$/);
           if (deleteItem && deleteItem.length > 0) removePath.splice(Number(deleteItem[1]), 1);
         }
       }

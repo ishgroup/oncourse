@@ -17,6 +17,7 @@ import { EntityName } from "../../../../model/entities/common";
 // Common list actions
 export const GET_RECORDS_REQUEST = _toRequestType("get/records");
 export const GET_RECORDS_FULFILLED = FULFILLED(GET_RECORDS_REQUEST);
+export const GET_RECORDS_FULFILLED_RESOLVE = FULFILLED(GET_RECORDS_REQUEST) + "_resolve";
 
 export const GET_PLAIN_RECORDS_REQUEST = _toRequestType("get/records/plain");
 export const GET_PLAIN_RECORDS_REQUEST_FULFILLED = FULFILLED(GET_PLAIN_RECORDS_REQUEST);
@@ -101,14 +102,13 @@ export const getRecords = (
     listUpdate,
     savedID,
     ignoreSelection,
-    startIndex,
     stopIndex,
-    resolve,
+    resolve
   }: GetRecordsArgs
 ): IAction<GetRecordsArgs> => ({
   type: GET_RECORDS_REQUEST,
   payload: {
-    entity, listUpdate, savedID, ignoreSelection, viewAll, startIndex, stopIndex, resolve
+    entity, listUpdate, savedID, ignoreSelection, viewAll, stopIndex, resolve
   }
 });
 

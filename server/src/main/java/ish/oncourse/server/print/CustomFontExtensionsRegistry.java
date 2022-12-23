@@ -12,12 +12,12 @@ package ish.oncourse.server.print;
 
 import com.lowagie.text.FontFactory;
 import net.sf.jasperreports.engine.DefaultJasperReportsContext;
+import net.sf.jasperreports.engine.fonts.FontFace;
 import net.sf.jasperreports.engine.fonts.FontFamily;
 import net.sf.jasperreports.engine.fonts.SimpleFontFace;
 import net.sf.jasperreports.engine.fonts.SimpleFontFamily;
 import net.sf.jasperreports.extensions.ExtensionsRegistry;
 
-import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -114,17 +114,19 @@ public class CustomFontExtensionsRegistry extends AbstractFontExtensionsRegistry
 		// register fonts with jasper
 		for (final var fontFile : folder.listFiles()) {
 			try {
-				var family = new SimpleFontFamily();
-				var normalFace = new SimpleFontFace(DefaultJasperReportsContext.getInstance());
-
-				fontInitializationStarted = true;
-				normalFace.setTtf(fontFile.getAbsolutePath());
-				family.setNormalFace(normalFace);
+				SimpleFontFace fontFace = new SimpleFontFace(DefaultJasperReportsContext.getInstance());
+				fontFace.setTtf(fontFile.getAbsolutePath(), false);
+				final FontFace face = fontFace;
+				var family = new SimpleFontFamily() {
+					@Override
+					public FontFace getNormalFace() {
+						return face;
+					}
+				};
 				family.setPdfEmbedded(true);
-
 				fontInitializationStarted = false;
 
-				var font = normalFace.getFont();
+				var font = family.getNormalFace().getFont();
 				logger.warn("registering font {} as {} and name {}", fontFile, font.getFamily(), font.getName());
 				fontFamilies.add(family);
 

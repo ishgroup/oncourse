@@ -110,8 +110,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.hasEnrolments = course.courseClasses.find { c -> !c.enrolments.empty} != null
             courseDTO.webDescription = course.webDescription
             courseDTO.documents = course.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
-            courseDTO.relatedSellables = (EntityRelationDao.getRelatedFrom(course.context, Course.simpleName, course.id).collect { it -> toRestFromEntityRelation(it) } +
-                    EntityRelationDao.getRelatedTo(course.context, Course.simpleName, course.id).collect { it -> toRestToEntityRelation(it) })
+            courseDTO.relatedSellables = relatedSellablesOf(course.context, course.id)
             courseDTO.qualificationId = course.qualification?.id
             courseDTO.qualNationalCode = course.qualification?.nationalCode
             courseDTO.qualTitle = course.qualification?.title
@@ -138,6 +137,11 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.fullTimeLoad = course.fullTimeLoad
             courseDTO
         }
+    }
+
+    static List<SaleDTO> relatedSellablesOf(ObjectContext context, Long courseId){
+        return (EntityRelationDao.getRelatedFrom(context, Course.simpleName, courseId).collect { it -> toRestFromEntityRelation(it) } +
+                EntityRelationDao.getRelatedTo(context, Course.simpleName, courseId).collect { it -> toRestToEntityRelation(it) })
     }
 
     @Override

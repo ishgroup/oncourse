@@ -56,6 +56,7 @@ import { enrolmentsReducer } from "../containers/entities/enrolments/reducers";
 import { commonPlainRecordSearchReducer } from "../common/reducers/commonPlainRecordSearchReducer";
 import { State } from "./state";
 import { sendMessageReducer } from "../common/reducers/sendMessageReducer";
+import { fieldProcessingReducer } from "../common/reducers/fieldProcessingReducer";
 
 export const combinedReducers = combineReducers<State>({
   access: accessReducer,
@@ -95,6 +96,7 @@ export const combinedReducers = combineReducers<State>({
   plainSearchRecords: commonPlainRecordSearchReducer,
   preferences: preferencesReducer,
   process: processReducer,
+  fieldProcessing: fieldProcessingReducer,
   sales: saleReducer,
   security: securityReducer,
   share: shareReducer,

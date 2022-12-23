@@ -8,14 +8,14 @@ import { Epic } from "redux-observable";
 import { ExportRequest, OutputType } from "@api/model";
 import * as EpicUtils from "../../../../../epics/EpicUtils";
 import ExportService from "../services/ExportService";
-import { getExportResult, POST_EXPORT_REQUEST } from "../actions";
+import { GET_EXPORT_TEMPLATES, getExportResult, getExportTemplates, POST_EXPORT_REQUEST } from "../actions";
 import { START_PROCESS, UPDATE_PROCESS } from "../../../../../actions";
 
 const request: EpicUtils.Request<any, { exportRequest: ExportRequest; outputType: OutputType, isClipboard: boolean }> = {
   type: POST_EXPORT_REQUEST,
   hideLoadIndicator: true,
   getData: ({ exportRequest }) => ExportService.runExport(exportRequest),
-  processData: (processId: string, state, { exportRequest: { entityName }, outputType, isClipboard }) => [
+  processData: (processId: string, state, { exportRequest: { entityName, createPreview }, outputType, isClipboard }) => [
       {
         type: UPDATE_PROCESS,
         payload: { processId }
@@ -24,7 +24,10 @@ const request: EpicUtils.Request<any, { exportRequest: ExportRequest; outputType
         type: START_PROCESS,
         payload: {
           processId,
-          actions: [getExportResult(entityName, processId, outputType, isClipboard)]
+          actions: [
+            ...(createPreview ? [getExportTemplates(entityName)] : []),
+            getExportResult(entityName, processId, outputType, isClipboard)
+          ]
         }
       }
     ]

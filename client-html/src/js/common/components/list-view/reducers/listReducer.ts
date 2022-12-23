@@ -11,7 +11,7 @@ import {
   GET_EMAIL_TEMPLATES_WITH_KEYCODE_FULFILLED,
   GET_SCRIPTS_FULFILLED
 } from "../../../actions";
-import { LIST_PAGE_SIZE, LIST_SIDE_BAR_DEFAULT_WIDTH } from "../../../../constants/Config";
+import { LIST_PAGE_SIZE, LIST_SIDE_BAR_DEFAULT_WIDTH, PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 import {
   CLEAR_LIST_STATE,
   GET_FILTERS_FULFILLED,
@@ -63,9 +63,9 @@ class State implements ListState {
     pageSize: LIST_PAGE_SIZE,
     search: null,
     layout: null,
+    filteredCount: 0,
     filterColumnWidth: LIST_SIDE_BAR_DEFAULT_WIDTH,
-    tagsOrder: [],
-    recordsLeft: LIST_PAGE_SIZE
+    tagsOrder: []
   };
 
   plainRecords = {};
@@ -105,12 +105,12 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
 
     case GET_RECORDS_FULFILLED: {
       const { records, payload, searchQuery } = action.payload;
-      const { startIndex, stopIndex }: GetRecordsArgs = payload;
+      const { stopIndex }: GetRecordsArgs = payload;
 
       let newRecords = state.records;
       newRecords = records;
 
-      newRecords.rows = typeof startIndex === "number" && typeof stopIndex === "number"
+      newRecords.rows = typeof stopIndex === "number"
         ? state.records.rows.concat(records.rows)
         : records.rows;
 
@@ -126,13 +126,13 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
           columns: newRecords.columns.map(c => ({ ...c })),
           rows: newRecords.rows.map(r => ({ ...r })),
           tagsOrder: [...newRecords.tagsOrder],
+          filteredCount: newRecords.entity === "Audit" ? PLAIN_LIST_MAX_PAGE_SIZE : newRecords.filteredCount,
           filterColumnWidth: newRecords.filterColumnWidth < LIST_SIDE_BAR_DEFAULT_WIDTH
             ? LIST_SIDE_BAR_DEFAULT_WIDTH
             : newRecords.filterColumnWidth
         },
         searchQuery,
-        fetching: false,
-        recordsLeft: records.pageSize
+        fetching: false
       };
     }
 

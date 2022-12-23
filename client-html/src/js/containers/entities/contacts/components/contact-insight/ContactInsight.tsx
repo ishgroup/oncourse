@@ -607,7 +607,9 @@ const ContactInsight = (
                         <Box component="div" sx={{ pt: 4 }}>
                           <Stack spacing={2} direction="row" className="mb-1">
                             <EditInPlaceDateTimeField
-                              meta={{}}
+                              meta={{
+                                dispatch
+                              }}
                               input={{
                                 onChange: v => setDateValue(v),
                                 onFocus: stubFunction,
@@ -619,7 +621,9 @@ const ContactInsight = (
                               formatDateTime={DD_MM_YYYY_SLASHED}
                             />
                             <EditInPlaceDateTimeField
-                              meta={{}}
+                              meta={{
+                                dispatch
+                              }}
                               input={{
                                 onChange: v => setDateValue(v),
                                 onFocus: stubFunction,

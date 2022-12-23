@@ -27,6 +27,14 @@ configurations {
 	all*.exclude module: "hessian"
 }
 
+repositories {
+	maven {
+		url = uri("https://repo.e-iceblue.com/nexus/content/groups/public/")
+		content {
+			includeGroup "e-iceblue"
+		}
+	}
+}
 
 sourceSets {
 	main {
@@ -84,8 +92,15 @@ dependencies {
 
 	implementation 'commons-lang:commons-lang:2.6' // this exists only to support some old reports. To be removed when all reports upgraded.
 	implementation ('net.sf.jasperreports:jasperreports:6.20.0') {
+    exclude group:'org.apache.poi', module: 'poi-ooxml'
+		exclude group:'org.codehaus.castor'
+		exclude group:'com.fasterxml.jackson.core'
+		exclude group:'org.apache.lucene'
+		exclude group:'org.olap4j'
+		exclude group:'bouncycastle'
 		exclude group: 'com.lowagie', module: 'itext'
 	}
+
 	api 'com.lowagie:itext:2.1.7'
 
 	implementation "org.bouncycastle:bcprov-jdk15on:$bouncycastleVersion"
@@ -107,7 +122,6 @@ dependencies {
 	implementation 'org.apache.pdfbox:pdfbox:2.0.17'
 	implementation 'org.scribe:scribe:1.3.7'
 	implementation 'commons-io:commons-io:2.6'
-	implementation 'org.apache.commons:commons-lang3:3.7'
 	implementation 'org.apache.commons:commons-collections4:4.1'
 	implementation 'org.reflections:reflections:0.9.12'
 	api "com.google.inject:guice:$googleGuiceVersion"
@@ -132,6 +146,9 @@ dependencies {
 
 	api 'com.nimbusds:nimbus-jose-jwt:8.9'
 	implementation 'com.bugsnag:bugsnag:3.6.2'
+
+	implementation 'e-iceblue:spire.office.free:5.3.1'
+	implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.18'
 
 	testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
 	testImplementation 'org.mockito:mockito-core:2.18.3'
