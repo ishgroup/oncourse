@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: 116-1
+      author: kristina
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: ExportTemplate
+        - tableExists:
+            tableName: DocumentVersion
+      changes:
+        - addColumn:
+            tableName: ExportTemplate
+            columns:
+              - column:
+                  name: preview
+                  type: longblob
+                  afterColumn: shortDescription
+        - modifyDataType:
+            tableName: DocumentVersion
+            columnName: thumbnail
+            newDataType: longblob

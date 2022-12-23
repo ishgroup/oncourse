@@ -223,8 +223,16 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
       return DiscountService.updateDiscount(id, item);
     case "Document":
       return DocumentsService.updateDocumentItem(id, item);
-    case "Enrolment":
-      return EnrolmentService.updateEnrolment(id, item);
+      
+    case "Enrolment": {
+      const withAssessmenProcessed = {
+        ...item,
+        assessments: item.assessments.map(({ tutors, ...rest }) => rest)
+      };
+      
+      return EnrolmentService.updateEnrolment(id, withAssessmenProcessed);
+    }
+      
     case "AbstractInvoice":
     case "Invoice":
       return InvoiceService.updateInvoice(id, preformatInvoice(item));

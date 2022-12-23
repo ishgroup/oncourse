@@ -23,6 +23,10 @@ class ExportTemplatesService {
   public remove(id: number): Promise<any> {
     return this.exportTemplatesApi.remove(id);
   }
+
+  public getHighQualityPreview(id: number): Promise<any> {
+    return this.exportTemplatesApi.getHighQualityPreview(id);
+  }
 }
 
 export default new ExportTemplatesService();

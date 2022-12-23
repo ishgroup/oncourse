@@ -21,6 +21,7 @@ import GradeContent from "./GradeContent";
 import EditInPlaceDateTimeField from "../../../../../common/components/form/formFields/EditInPlaceDateTimeField";
 import { stubFunction } from "../../../../../common/utils/common";
 import EditInPlaceSearchSelect from "../../../../../common/components/form/formFields/EditInPlaceSearchSelect";
+import { Dispatch } from "redux";
 
 interface Props {
   elem: StudentForRender;
@@ -34,6 +35,7 @@ interface Props {
   index: number;
   tutors: CourseClassTutor[];
   triggerAsyncChange: (newValue: any, field: string, index: number) => void;
+  dispatch: Dispatch;
 }
 
 const CourseClassAssessmentStudent: React.FC<Props> = (
@@ -48,7 +50,8 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
     handleGradeMenuOpen,
     index,
     tutors,
-    triggerAsyncChange
+    triggerAsyncChange,
+    dispatch
   }
 ) => {
   const [gradeVal, setGradeVal] = useState<number>(null);
@@ -92,7 +95,9 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
         {elem.submittedValue === "Submitted"
           ? (
             <EditInPlaceDateTimeField
-              meta={{}}
+              meta={{
+                dispatch
+              }}
               input={{
                 onChange: value => triggerAsyncChange(value, "submittedOn", elem.submissionIndex),
                 onFocus: stubFunction,
@@ -113,7 +118,9 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
             <div className="pt-0-5">
               <div>
                 <EditInPlaceDateTimeField
-                  meta={{}}
+                  meta={{
+                    dispatch
+                  }}
                   input={{
                     onChange: value => triggerAsyncChange(value, "markedOn", elem.submissionIndex),
                     onFocus: stubFunction,

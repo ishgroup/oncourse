@@ -46,11 +46,11 @@ const CourseClassTutorsRenderer = React.memo<Props>(props => {
         const tutor = fields.get(i);
         const onDelete = () => onDeleteTutor(i, tutor, fields);
         const nameWarning = tutorNamesWarnings[tutor.contactId];
-        const wage = budget.find(b => b.flowType === "Wages"
+        const wageIndex = budget.findIndex(b => b.flowType === "Wages"
           && (b.courseClassTutorId === tutor.id
             || (b.temporaryTutorId && b.temporaryTutorId === tutor.temporaryId)));
 
-        const openTutorWage = () => addTutorWage(tutor, wage);
+        const openTutorWage = () => addTutorWage(tutor, wageIndex !== -1 ? { ...budget[wageIndex], index: wageIndex } : null);
 
         return (
           <CourseClassTutorItem
@@ -66,7 +66,7 @@ const CourseClassTutorsRenderer = React.memo<Props>(props => {
             expandedIndex={expanded}
             latestSession={latestSession}
             nameWarning={nameWarning}
-            hasWage={Boolean(wage)}
+            hasWage={Boolean(budget[wageIndex])}
           />
         );
       })}

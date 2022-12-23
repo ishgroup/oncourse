@@ -18,6 +18,8 @@ import GradeContent from "../../courseClasses/components/assessments/GradeConten
 import { stubFunction } from "../../../../common/utils/common";
 import EditInPlaceDateTimeField from "../../../../common/components/form/formFields/EditInPlaceDateTimeField";
 import EditInPlaceSearchSelect from "../../../../common/components/form/formFields/EditInPlaceSearchSelect";
+import { Dispatch } from "redux";
+
 
 interface Props {
   elem: EnrolmentAssessmentExtended;
@@ -26,6 +28,7 @@ interface Props {
   classes: any;
   hasGrades: boolean;
   index: number;
+  dispatch: Dispatch;
   onToggleGrade: (elem: EnrolmentAssessmentExtended, grade: GradingItem) => void;
   onChangeGrade: (value: number, elem: EnrolmentAssessmentExtended) => void;
   handleGradeMenuOpen: any;
@@ -47,7 +50,8 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
     handleGradeMenuOpen,
     gradeType,
     gradeItems,
-    triggerAsyncChange
+    triggerAsyncChange,
+    dispatch
   }
 ) => {
   const [gradeVal, setGradeVal] = useState<number>(null);
@@ -97,7 +101,9 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
           ? (
             <div className="pl-3">
               <EditInPlaceDateTimeField
-                meta={{}}
+                meta={{
+                  dispatch
+                }}
                 input={{
                 onChange: value => triggerAsyncChange(value, "submittedOn", submissionIndex),
                 onFocus: stubFunction,
@@ -120,7 +126,9 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
             <div className="pt-0-5">
               <div className="pl-3">
                 <EditInPlaceDateTimeField
-                  meta={{}}
+                  meta={{
+                    dispatch
+                  }}
                   input={{
                     onChange: value => triggerAsyncChange(value, "markedOn", submissionIndex),
                     onFocus: stubFunction,
