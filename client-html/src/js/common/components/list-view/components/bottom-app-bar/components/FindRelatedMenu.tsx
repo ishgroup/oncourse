@@ -23,10 +23,8 @@ const FindRelatedMenu = React.memo<Props>(({ findRelated, handleRelatedLinkClick
   }, []);
 
   const menuOpened = useMemo(() => Boolean(menuAnchor), [menuAnchor]);
-  
-  useEffect(() => {
-    findRelated.sort((a, b) => (a.title > b.title ? 1 : -1));
-  }, [findRelated]);
+
+  findRelated.sort((a, b) => (a.title > b.title ? 1 : -1));
 
   return (
     <>
