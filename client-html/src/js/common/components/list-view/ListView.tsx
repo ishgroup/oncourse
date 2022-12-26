@@ -31,6 +31,7 @@ import FullScreenEditView from "./components/full-screen-edit-view/FullScreenEdi
 import {
   clearListState,
   deleteCustomFilter,
+  findRelatedByFilter,
   getRecords,
   setFilterGroups,
   setListCreatingNew,
@@ -185,6 +186,7 @@ interface Props extends Partial<ListState> {
   customGetAction?: any;
   customUpdateAction?: any;
   preformatBeforeSubmit?: AnyArgFunction;
+  findRelatedByFilter?: AnyArgFunction;
   userAQLSearch?: string;
   listSearch?: string;
   creatingNew?: boolean;
@@ -1044,10 +1046,11 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       filterEntity,
       emailTemplatesWithKeyCode,
       scripts,
-      recepients,
       listProps,
       onLoadMore,
-      currency
+      currency,
+      getScripts,
+      findRelatedByFilter
     } = this.props;
 
     const {
@@ -1171,7 +1174,8 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
             )}
           </div>
           <BottomAppBar
-            recepients={recepients}
+            findRelatedByFilter={findRelatedByFilter}
+            getScripts={getScripts}
             scripts={scripts}
             emailTemplatesWithKeyCode={emailTemplatesWithKeyCode}
             createButtonDisabled={createButtonDisabled}
@@ -1193,7 +1197,6 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
             changeQueryView={this.changeQueryView}
             switchLayout={this.switchLayoutWithDirtyCheck}
             onCreate={this.onCreateRecordWithDirtyCheck}
-            toggleFullWidthView={this.toggleFullWidthView}
             findRelated={findRelated}
             CogwheelAdornment={CogwheelAdornment}
             showConfirm={this.showConfirm}
@@ -1256,7 +1259,8 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   onSave: (item: any) => dispatch(updateEntityRecord(item.id, ownProps.rootEntity, item)),
   getEditRecord: (id: number) => dispatch(ownProps.customGetAction 
     ? ownProps.customGetAction(id) 
-    : getEntityRecord(id, ownProps.rootEntity))
+    : getEntityRecord(id, ownProps.rootEntity)),
+  findRelatedByFilter: (filter, list) => dispatch(findRelatedByFilter(filter, list))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(ListView))) as React.FC<Props>;

@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { format } from "date-fns";
 import ListView from "../../common/components/list-view/ListView";
-import { FilterGroup } from "../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../model/common/ListView";
 import {
   getRecords,
   clearListState,
@@ -38,44 +38,44 @@ const filterGroups: FilterGroup[] = [
 ];
 
 // 'entityIdentifier' here is a special field for filtering in AuditFindRelatedMenu
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   {
-    title: "Accounts", list: "account", expression: "id", entityIdentifier: "Account"
+    title: "Accounts", list: "account", expression: "id"
   },
   {
-    title: "Units Of Competency", list: "module", expression: "id", entityIdentifier: "Module"
+    title: "Units Of Competency", list: "module", expression: "id"
   },
   {
-    title: "Qualifications", list: "qualification", expression: "id", entityIdentifier: "Qualification"
+    title: "Qualifications", list: "qualification", expression: "id"
   },
   {
-    title: "Rooms", list: "room", expression: "id", entityIdentifier: "Room"
+    title: "Rooms", list: "room", expression: "id"
   },
   {
-    title: "Sites", list: "site", expression: "id", entityIdentifier: "Site"
+    title: "Sites", list: "site", expression: "id"
   },
   {
-    title: "Transactions", list: "transaction", expression: "id", entityIdentifier: "AccountTransaction"
+    title: "Transactions", list: "transaction", expression: "id"
   },
   {
-    title: "Invoices", list: "invoice", expression: "id", entityIdentifier: "Invoice"
+    title: "Invoices", list: "invoice", expression: "id"
   },
   {
-    title: "Banking Deposits", list: "banking", expression: "id", entityIdentifier: "Banking"
+    title: "Banking Deposits", list: "banking", expression: "id"
   },
   {
-    title: "Corporate Pass", list: "corporatePass", expression: "id", entityIdentifier: "CorporatePass"
+    title: "Corporate Pass", list: "corporatePass", expression: "id"
   },
   {
-    title: "Payments In", list: "paymentIn", expression: "id", entityIdentifier: "PaymentIn"
+    title: "Payments In", list: "paymentIn", expression: "id"
   },
   {
-    title: "Tutor Pay", list: "payslip", expression: "id", entityIdentifier: "Payslip"
+    title: "Tutor Pay", list: "payslip", expression: "id"
   },
-  { title: "Classes", destination: "CourseClass", entityIdentifier: "CourseClass" },
-  { title: "Contacts", destination: "Contact", entityIdentifier: "Contact" },
-  { title: "Courses", destination: "Course", entityIdentifier: "Course" },
-  { title: "Enrolments", destination: "Enrolment", entityIdentifier: "Enrolment" }
+  { title: "Classes", destination: "CourseClass" },
+  { title: "Contacts", destination: "Contact" },
+  { title: "Courses", destination: "Course" },
+  { title: "Enrolments", destination: "Enrolment" }
 ];
 
 const customColumnFormats = {

@@ -21,7 +21,7 @@ import { checkPermissions } from "../../../common/actions";
 import { State } from "../../../reducers/state";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 
 const Initial: Payslip = {
   status: "New",
@@ -61,7 +61,7 @@ const filterGroups: FilterGroup[] = [
   },
 ];
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Payslip and entityId" },
   { title: "Contacts", list: "contact", expression: "payslips.id" },
   { title: "Classes", list: "class", expression: "costs.paylines.payslip.id" }

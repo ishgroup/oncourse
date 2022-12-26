@@ -32,6 +32,12 @@ class ExportTemplateApiImpl implements ExportTemplateApi {
     }
 
     @Override
+    byte[] getHighQualityPreview(Long id) {
+        def content = service.getPreview(id)
+        return content
+    }
+
+    @Override
     void remove(Long id) {
         service.remove(id)
     }

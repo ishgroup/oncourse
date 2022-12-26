@@ -299,7 +299,7 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
     const searchRegexp = new RegExp(searchValue.replace(",", "")
       // eslint-disable-next-line no-useless-escape
       .replace(/[\[\]\{\}\(\)\*]/g, "\\$&")
-      .trim().toLowerCase();
+      .trim().toLowerCase());
 
     if (typeof selectFilterCondition === "function") {
       filtered = items.filter(item => {
@@ -339,9 +339,7 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
 
   const edit = () => {
     setIsEditing(true);
-    if (valueRenderer) {
-      setTimeout(() => inputNode?.current?.focus(), 50);
-    }
+    setTimeout(() => inputNode?.current?.focus(), 50);
   };
 
   const onClear = () => {
@@ -595,7 +593,7 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
                     disabled={disabled}
                     placeholder={renderedPlaceholder}
                     onChange={handleInputChange}
-                    onFocus={input.onFocus}
+                    onFocus={edit}
                     onBlur={onBlur}
                     onClick={onEditButtonFocus}
                     inputRef={rf => {

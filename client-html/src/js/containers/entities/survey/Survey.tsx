@@ -10,7 +10,7 @@ import React, { Dispatch, useEffect } from "react";
 import { connect } from "react-redux";
 import { CustomFieldType, SurveyItem, TableModel } from "@api/model";
 import { clearListState, getFilters } from "../../../common/components/list-view/actions";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import ListView from "../../../common/components/list-view/ListView";
 import SurveyEditView from "./components/SurveyEditView";
 
@@ -51,7 +51,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Survey and entityId" },
   { title: "Classes", list: "class", expression: "enrolments.surveys.id" },
   { title: "Courses", list: "course", expression: "courseClasses.enrolments.surveys.id " },
