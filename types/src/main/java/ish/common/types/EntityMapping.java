@@ -11,6 +11,9 @@
 
 package ish.common.types;
 
+import ish.oncourse.common.field.ReplicatedConfigurationFields;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +25,8 @@ public final class EntityMapping {
 	private static final Map<String, String> ANGEL_TO_WILLOW = new HashMap<>();
 
 	private static final Map<String, String> WILLOW_TO_ANGEL = new HashMap<>();
+
+	private static final String ANGEL_CONFIGURATION_TO_WILLOW = "Settings";
 
 	public static final Map<String, String> BINARY_RELATION_MAPPING = new HashMap<>();
 
@@ -129,6 +134,9 @@ public final class EntityMapping {
 	 * @return willow entity name
 	 */
 	public static String getWillowEntityIdentifer(String entityIdentifier) {
+		if (Arrays.asList(ReplicatedConfigurationFields.getValues()).contains(entityIdentifier)) {
+			return ANGEL_CONFIGURATION_TO_WILLOW;
+		}
 		return EntityMapping.ANGEL_TO_WILLOW.getOrDefault(entityIdentifier, entityIdentifier);
 	}
 
@@ -139,6 +147,9 @@ public final class EntityMapping {
 	 * @return angel entity name
 	 */
 	public static String getAngelEntityIdentifer(String entityIdentifier) {
+		if (Arrays.asList(ReplicatedConfigurationFields.getValues()).contains(entityIdentifier)) {
+			return ANGEL_CONFIGURATION_TO_WILLOW;
+		}
 		return EntityMapping.WILLOW_TO_ANGEL.getOrDefault(entityIdentifier, entityIdentifier);
 	}
 
