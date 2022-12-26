@@ -6,30 +6,29 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
-import { FormControl, FormHelperText, Input, InputLabel } from "@mui/material";
+import { FormControl, FormHelperText, Input, InputAdornment, InputLabel } from "@mui/material";
 import { FormControlProps } from "@mui/material/FormControl/FormControl";
 import { InputProps } from "@mui/material/Input/Input";
 import { makeAppStyles } from "../../../styles/makeStyles";
 import { countWidth } from "../../../utils/DOM";
+import { FieldClasses } from "../../../../model/common/Fields";
+import WarningMessage from "../fieldMessage/WarningMessage";
 
 interface Props {
   name: string;
   value: string;
-  ref?: React.Ref<any>;
+  ref?: any;
   className?: string;
   label?: React.ReactNode;
   labelAdornment?: React.ReactNode;
-  endAdornment?: React.ReactNode;
+  editIcon?: React.ReactNode;
   FormControlProps?: Partial<FormControlProps>;
   InputProps?: Partial<InputProps>,
-  fieldClasses?: {
-    label?: string;
-    underline?: string;
-    text?: string;
-  },
+  fieldClasses?: FieldClasses,
   placeholder?: string;
+  warning?: string;
   error?: string;
   rightAligned?: boolean;
   inline?: boolean;
@@ -87,6 +86,15 @@ const useStyles = makeAppStyles(theme => ({
   readonly: {
     fontWeight: 300,
     pointerEvents: "none"
+  },
+  inputEndAdornment: {
+    display: "flex",
+    fontSize: "24px",
+    color: theme.palette.primary.main,
+    opacity: 0.5,
+    alignItems: "flex-end",
+    alignSelf: "flex-end",
+    marginBottom: "5px"
   }
 }));
 
@@ -106,27 +114,32 @@ const EditInPlaceFieldBase = (
     name,
     disabled,
     labelAdornment,
-    endAdornment,
+    editIcon,
     error,
     placeholder,
-    hideArrows
+    hideArrows,
+    warning
   }: Props) => {
   
   const classes = useStyles();
 
-  const inputNode = useRef();
+  const [inputNode, setInputNode] = useState<HTMLInputElement>();
 
   useEffect(() => {
-    if (ref && inputNode.current) {
-      ref = inputNode.current;
+    if (ref && inputNode) {
+      ref = inputNode;
     }
-  }, [ref]);
+  }, [ref, inputNode]);
   
-  const inputWidth = useMemo(() => inline && inputNode.current
-    ? countWidth(value || placeholder, inputNode.current)
-    : null, 
-  [inputNode.current, inline, value, placeholder]);
+  const onAdornmentClick = () => {
+    inputNode.focus();
+  };
   
+  const inputWidth = useMemo(() => inline && inputNode
+    ? countWidth(value || placeholder, inputNode)
+    : null,
+  [inputNode, inline, value, placeholder]);
+
   return (
     <FormControl
       fullWidth
@@ -159,9 +172,9 @@ const EditInPlaceFieldBase = (
     }
     <Input
       {...InputProps || {}}
+      inputRef={setInputNode}
       inputProps={{
         placeholder,
-        ref: inputNode,
         className: clsx(fieldClasses.text, {
           [classes.inlineInput]: inline,
           [classes.readonly]: disabled,
@@ -178,11 +191,22 @@ const EditInPlaceFieldBase = (
         underline: fieldClasses.underline
       }}
       disabled={disabled}
-      endAdornment={endAdornment}
+      endAdornment={!disabled &&
+        <InputAdornment
+          position="end"
+          onClick={onAdornmentClick}
+          className={clsx(classes.inputEndAdornment, {
+            ["fsInherit"]: inline,
+            ["d-none"]: (rightAligned || inline),
+            ["invisible"]: !(rightAligned || inline)
+          })}
+        >
+          {editIcon}
+        </InputAdornment>
+      }
       id={`input-${name}`}
       name={name}
     />
-
     <FormHelperText
       classes={{
         root: clsx(rightAligned && "text-end"),
@@ -190,6 +214,7 @@ const EditInPlaceFieldBase = (
       }}
     >
       {error}
+      {warning && <WarningMessage warning={warning} />}
     </FormHelperText>
   </FormControl>
   );

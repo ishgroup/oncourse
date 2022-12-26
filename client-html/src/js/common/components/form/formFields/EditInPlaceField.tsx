@@ -16,7 +16,7 @@ import { Edit } from "@mui/icons-material";
 import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
 import EditInPlaceFieldBase from "./EditInPlaceFieldBase";
 import { makeAppStyles } from "../../../styles/makeStyles";
-import { InputAdornment } from "@mui/material";
+import { FieldClasses } from "../../../../model/common/Fields";
 
 interface Props {
   ref?: any;
@@ -32,14 +32,14 @@ interface Props {
   className?: string,
   onKeyPress?: any,
   placeholder?: string,
+  warning?: string,
   labelAdornment?: any,
   preformatDisplayValue?: any,
   truncateLines?: number,
-  fieldClasses?: any,
+  fieldClasses?: FieldClasses,
   rightAligned?: boolean,
   disableInputOffsets?: boolean,
   onKeyDown?: any,
-  defaultValue?: any
   multiline?: boolean,
   inline?: boolean,
 }
@@ -61,15 +61,6 @@ const useStyles = makeAppStyles(theme => ({
     fontSize: "24px",
     color: theme.palette.divider,
     verticalAlign: "middle",
-  },
-  inputEndAdornment: {
-    display: "flex",
-    fontSize: "24px",
-    color: theme.palette.primary.main,
-    opacity: 0.5,
-    alignItems: "flex-end",
-    alignSelf: "flex-end",
-    marginBottom: "5px"
   }
 }));
 
@@ -93,9 +84,9 @@ const EditInPlaceField = (
     fieldClasses = {},
     rightAligned,
     onKeyDown,
-    defaultValue,
     multiline,
-    inline
+    inline,
+    warning
   }: Props) => {
 
   const classes = useStyles();
@@ -112,22 +103,11 @@ const EditInPlaceField = (
       max,
       onKeyDown,
       rows: truncateLines,
-      type: type !== "password" ? (type === "percentage" ? "number" : type) : undefined
+      type: type !== "password" ? (type === "percentage" ? "number" : type) : undefined,
     },
-    value: defaultValue || input.value,
+    value: input.value,
     onChange: v => (type === "number" && max && Number(v) > Number(max) ? null : input.onChange(v))
   };
-
-  const editIcon = <InputAdornment
-    position="end"
-    className={clsx(classes.inputEndAdornment, {
-      ["fsInherit"]: inline,
-      ["d-none"]: rightAligned || disabled || inline,
-      ["invisible"]: !rightAligned || !inline || disabled
-    })}
-  >
-    <Edit fontSize="inherit" />
-  </InputAdornment>;
 
   return (
     <div
@@ -149,16 +129,17 @@ const EditInPlaceField = (
           error={error}
           invalid={invalid}
           inline={inline}
-          InputProps={InputProps}
           label={label}
+          warning={warning}
           fieldClasses={fieldClasses}
           rightAligned={rightAligned}
           shrink={Boolean(label || input.value)}
           disabled={disabled}
           labelAdornment={labelAdornment}
-          endAdornment={editIcon}
           placeholder={placeholder}
           hideArrows={["percentage", "number"].includes(type)}
+          editIcon={<Edit fontSize="inherit" />}
+          InputProps={InputProps}
         />
       </div>
     </div>

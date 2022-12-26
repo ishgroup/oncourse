@@ -14,13 +14,12 @@
  * */
 
 import React, {
-  ComponentClass, useEffect, useMemo, useRef, useState
+  useEffect, useMemo, useRef, useState
 } from "react";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
-import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
 import DateRange from "@mui/icons-material/DateRange";
 import QueryBuilder from "@mui/icons-material/QueryBuilder";
@@ -35,8 +34,12 @@ import {
 import { appendTimezone, appendTimezoneToUTC } from "../../../utils/dates/formatTimezone";
 import { endFieldProcessingAction, startFieldProcessingAction } from "../../../actions/FieldProcessing";
 import uniqid from "../../../utils/uniqid";
+import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
+import { FieldClasses } from "../../../../model/common/Fields";
+import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
+import { makeAppStyles } from "../../../styles/makeStyles";
 
-const styles = theme => createStyles({
+const useStyles = makeAppStyles(theme => ({
   spanLabel: {
     paddingLeft: "0.5px",
     marginTop: "-3px",
@@ -142,9 +145,31 @@ const styles = theme => createStyles({
   inline: {},
   labelShrink: {},
   labelAdornment: {}
-});
+}));
 
-const EditInPlaceDateTimeField: React.FC<any> = (
+interface Props {
+  ref?: any;
+  input?: Partial<WrappedFieldInputProps>;
+  meta?: Partial<WrappedFieldMetaProps>;
+  type?: "date" | "time" | "datetime"
+  fieldClasses?: FieldClasses,
+  onKeyPress?: AnyArgFunction;
+  labelAdornment?: React.ReactNode;
+  helperText?: React.ReactNode;
+  formatDate?: string;
+  formatTime?: string;
+  formatDateTime?: string;
+  timezone?: string;
+  label?: string;
+  formatValue?: string;
+  className?: string;
+  placeholder?: string;
+  inline?: boolean;
+  disabled?: boolean;
+  persistValue?: boolean;
+}
+
+const EditInPlaceDateTimeField = (
   {
    type,
    formatDate,
@@ -152,21 +177,19 @@ const EditInPlaceDateTimeField: React.FC<any> = (
    formatDateTime,
    timezone,
    input,
-   classes,
    fieldClasses = {},
    inline,
    meta: { error, invalid, active, dispatch },
    labelAdornment,
    helperText,
    label,
-   listSpacing = true,
    disabled,
    formatValue,
    className,
    onKeyPress,
    placeholder,
-    persistValue,
-  }
+   persistValue
+  }: Props
 ) => {
   const [isEditing, setIsEditing] = useState(false);
   const [textValue, setTextValue] = useState("");
@@ -175,6 +198,8 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   const inputNode = useRef<any>(null);
   const processActionId = useRef<string>(null);
   const processedValue = useRef<any>(null);
+
+  const classes = useStyles();
 
   const formatDateInner = dateObj => {
     if (!dateObj) {
@@ -314,10 +339,6 @@ const EditInPlaceDateTimeField: React.FC<any> = (
     setPickerOpened(false);
   };
 
-  const onFocus = () => {
-    input.onFocus();
-  };
-
   const onEnterPress = e => {
     if (e.keyCode === 13 && inputNode.current) {
       inputNode.current.blur();
@@ -363,10 +384,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
               margin="none"
               fullWidth
               className={clsx({
-                "pr-2": inline,
-                [classes.topMargin]: !listSpacing,
-                [classes.bottomMargin]: listSpacing && !inline,
-                [classes.inlineTextField]: inline
+                "pr-2": inline
               })}
             >
               {Boolean(label) && (
@@ -387,7 +405,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
                 type="text"
                 onKeyPress={onKeyPress}
                 onChange={onInputChange}
-                onFocus={onFocus}
+                onFocus={input.onFocus}
                 onBlur={onBlur}
                 onKeyDown={onEnterPress}
                 disabled={disabled}
@@ -440,4 +458,4 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   );
 };
 
-export default withStyles(styles)(EditInPlaceDateTimeField) as ComponentClass<any>;
+export default EditInPlaceDateTimeField;

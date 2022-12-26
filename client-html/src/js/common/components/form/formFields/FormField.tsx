@@ -27,6 +27,7 @@ import EditInPlaceSearchSelect from "./EditInPlaceSearchSelect";
 import { FormSwitch } from "./Switch";
 import { validateTagsList } from "../simpleTagListComponent/validateTagsList";
 import EditInPlacePhoneField from "./EditInPlacePhoneField";
+import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 
 const EditInPlaceTypes = createStringEnum([
   "text",
@@ -55,6 +56,7 @@ const EditInPlaceTypes = createStringEnum([
 interface Props extends Partial<WrappedFieldProps> {
   type?: keyof typeof EditInPlaceTypes;
   required?: boolean;
+  format?: AnyArgFunction;
 
   // Performance optimization property that handles field value rendering outside of Redux Form life circle.
   // It is true by default
@@ -66,6 +68,7 @@ const FormFieldBase = React.forwardRef<any, Props>(({
  type,
  required,
  debounced = true,
+ format,
  ...rest
 }, ref) => {
   const [value, setValue] = useState(rest.input?.value);
@@ -78,18 +81,20 @@ const FormFieldBase = React.forwardRef<any, Props>(({
     ...rest.input || {},
     value,
     onChange: e => {
-      setValue(e?.target ? e.target.value : e);
+      const val = e?.target ? e.target.value : e;
+      setValue(format ? format(val) : val);
       debounceChange(e); 
     },
     onBlur: e => {
-      setValue(e?.target ? e.target.value : e);
+      const val = e?.target ? e.target.value : e;
+      setValue(format ? format(val) : val);
       debounceBlur(e);
     },
   }), [value, rest.input]);
 
   useEffect(() => {
     if (rest.input?.value !== value) {
-      setValue(rest.input?.value);
+      setValue(format ? format(rest.input?.value) : rest.input?.value);
     }
   }, [rest.input?.value]);
 
@@ -182,7 +187,8 @@ const FormField:React.FC<BaseProps> = React.forwardRef<any, BaseProps>(({
       component={FormFieldBase}
       validate={validateResolver}
       props={{
-        ref
+        ref,
+        format: rest.format
       }}
       tags={tags}
       {...rest}
@@ -191,4 +197,3 @@ const FormField:React.FC<BaseProps> = React.forwardRef<any, BaseProps>(({
 });
 
 export default FormField;
-

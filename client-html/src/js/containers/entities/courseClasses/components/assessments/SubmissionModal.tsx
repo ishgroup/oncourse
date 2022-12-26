@@ -65,7 +65,7 @@ const SubmissionModal = (
               type="datetime"
               label={`${type} date`}
               input={{
-                onChange: setDateVal,
+                onChange: setDateVal as any,
                 onFocus: stubFunction,
                 onBlur: stubFunction,
                 value: dateVal
