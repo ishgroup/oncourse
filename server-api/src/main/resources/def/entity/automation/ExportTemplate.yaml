@@ -32,6 +32,11 @@ properties:
     description: Automation status
     required: true
     example: Enabled
+  preview:
+    type: string
+    format: byte
+    description: image byte array
+    required: false
   variables:
     type: array
     items:

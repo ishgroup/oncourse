@@ -684,6 +684,7 @@
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="outputType" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="script" type="CLOB"/>
+		<db-attribute name="preview" type="BLOB"/>
 		<db-attribute name="shortDescription" type="CLOB" length="32000"/>
 		<db-attribute name="tags" type="VARCHAR" length="255"/>
 	</db-entity>
@@ -2371,6 +2372,7 @@
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="outputType" type="ish.oncourse.types.OutputType" db-attribute-path="outputType"/>
 		<obj-attribute name="script" type="java.lang.String" db-attribute-path="script"/>
+		<obj-attribute name="preview" type="byte[]" db-attribute-path="preview"/>
 		<obj-attribute name="shortDescription" type="java.lang.String" db-attribute-path="shortDescription"/>
 		<obj-attribute name="automationTags" type="java.lang.String" db-attribute-path="tags"/>
 		<obj-attribute name="category" type="java.lang.String" db-attribute-path="category"/>
