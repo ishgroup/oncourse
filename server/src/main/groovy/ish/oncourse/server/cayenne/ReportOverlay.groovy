@@ -69,7 +69,7 @@ class ReportOverlay extends _ReportOverlay {
 	}
 
 	@API
-	Boolean isPortrait() {
+	Boolean getPortrait() {
 		ImageHelper.isPortrait(this.overlay)
 	}
 }
