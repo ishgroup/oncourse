@@ -254,9 +254,7 @@ const CourseClassGeneralTab = React.memo<Props>(
                 min="1"
                 max="99"
                 step="1"
-                props={{
-                  formatting: "inline"
-                }}
+                inline
               />
               years old to enrol
             </Typography>
@@ -269,9 +267,7 @@ const CourseClassGeneralTab = React.memo<Props>(
                 min="1"
                 max="99"
                 step="1"
-                props={{
-                  formatting: "inline"
-                }}
+                inline
               />
               years old to enrol
             </Typography>
