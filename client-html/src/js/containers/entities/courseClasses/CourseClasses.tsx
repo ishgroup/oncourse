@@ -34,7 +34,7 @@ import {
   courseClassTimetablePath,
   plainEnrolmentPath
 } from "../../../constants/Api";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import {
   clearListState,
   getFilters,
@@ -239,7 +239,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "All enrolments", list: "enrolment", expression: "courseClass.id" },
   { title: "Audits", list: "audit", expression: "entityIdentifier == CourseClass and entityId" },
   { title: "Courses", list: "course", expression: "courseClasses.id" },

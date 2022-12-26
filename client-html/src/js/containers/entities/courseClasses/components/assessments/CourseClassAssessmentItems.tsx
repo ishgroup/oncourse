@@ -403,6 +403,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
               gradeType={gradeType}
             />
             <SubmissionModal
+              dispatch={dispatch}
               modalProps={modalProps}
               tutors={submissionTutors}
               title={title}
@@ -534,6 +535,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
           <Grid container xs={12} className={classes.items}>
             {studentsForRender.map((elem, index) => (
               <CourseClassAssessmentStudent
+                dispatch={dispatch}
                 elem={elem}
                 index={index}
                 onChangeStatus={onChangeStatus}

@@ -13,7 +13,7 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/c
 import ListView from "../../../common/components/list-view/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { fundingUploadsPath } from "../../../constants/Api";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 import { getOutcomeTags } from "./actions";
 import OutcomeEditView from "./components/OutcomeEditView";
@@ -90,7 +90,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Outcome and entityId" },
   { title: "Classes", list: "class", expression: "enrolments.outcomes.id" },
   { title: "Enrolments", list: "enrolment", expression: "outcomes.id" },

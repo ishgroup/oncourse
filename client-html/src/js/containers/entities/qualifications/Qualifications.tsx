@@ -9,7 +9,7 @@ import { initialize } from "redux-form";
 import { Dispatch } from "redux";
 import { Qualification } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import QualificationsEditView from "./components/QualificationsEditView";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
@@ -80,7 +80,7 @@ const Initial: Qualification = {
   specialization: null
 };
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Qualification and entityId" },
   { title: "Certificates", list: "certificate", expression: "qualification.id" },
   { title: "Class", list: "class", expression: "course.qualification.id" },

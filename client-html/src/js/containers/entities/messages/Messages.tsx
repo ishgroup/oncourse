@@ -10,7 +10,7 @@ import {
   getFilters,
   clearListState,
 } from "../../../common/components/list-view/actions";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import MessageEditView from "./components/MessageEditView";
 import ListView from "../../../common/components/list-view/ListView";
 
@@ -39,7 +39,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Message and entityId" },
   { title: "Contacts", list: "contact", expression: "messages.id" }
 ];
@@ -48,7 +48,6 @@ const primaryColumnCondition = row => row["recipientsString"] || "No recipients"
 
 const Messages: React.FC<MessagesProps> = props => {
   const {
-    onInit,
     getFilters,
     clearListState
   } = props;

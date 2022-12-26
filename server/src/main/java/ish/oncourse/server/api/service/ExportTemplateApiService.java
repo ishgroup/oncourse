@@ -20,6 +20,8 @@ import ish.oncourse.server.api.v1.model.OutputTypeDTO;
 import ish.oncourse.server.api.validation.EntityValidator;
 import ish.oncourse.server.cayenne.ExportTemplate;
 import org.apache.cayenne.ObjectContext;
+import ish.oncourse.server.cayenne.Report;
+import org.apache.cayenne.query.ObjectSelect;
 
 public class ExportTemplateApiService extends AutomationApiService<ExportTemplateDTO, ExportTemplate, ExportTemplateDao> {
 
@@ -33,6 +35,7 @@ public class ExportTemplateApiService extends AutomationApiService<ExportTemplat
     public ExportTemplateDTO toRestModel(ExportTemplate exportTemplate) {
         var dto = super.toRestModel(exportTemplate);
         dto.setOutputType(OutputTypeDTO.values()[0].fromDbType(exportTemplate.getOutputType()));
+        dto.setPreview(exportTemplate.getPreview());
         return dto;
     }
 
@@ -61,6 +64,10 @@ public class ExportTemplateApiService extends AutomationApiService<ExportTemplat
 
     public byte[] exportOnDisk(Long id) {
         return getEntityAndValidateExistence(cayenneService.getNewContext(), id).getScript().getBytes();
+    }
+
+    public byte[] getPreview(Long id){
+        return ObjectSelect.columnQuery(ExportTemplate.class, ExportTemplate.PREVIEW).where(Report.ID.eq(id)).selectOne(cayenneService.getNewContext());
     }
 
     protected ExportTemplateDTO createDto() {

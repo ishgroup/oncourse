@@ -20,7 +20,7 @@ import LeadCogWheel from "./components/LeadCogWheel";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { checkPermissions } from "../../../common/actions";
 import LeadEditView from "./components/LeadEditView";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { getActiveUsers } from "../../security/actions";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 
@@ -53,7 +53,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Lead and entityId" },
   { title: "Contacts", list: "contact", expression: "student.leads.id" },
   { title: "Courses", list: "course", expression: "leadItems.lead.id" },
