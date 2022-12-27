@@ -83,7 +83,7 @@ const FormFieldBase = React.forwardRef<any, Props>(({
     onChange: e => {
       const val = e?.target ? e.target.value : e;
       setValue(format ? format(val) : val);
-      debounceChange(e); 
+      debounceChange(e);
     },
     onBlur: e => {
       const val = e?.target ? e.target.value : e;

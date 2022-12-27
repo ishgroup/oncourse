@@ -2,13 +2,12 @@ import Decimal from "decimal.js-light";
 
 const currencyFormatter = new Intl.NumberFormat("en-US", { minimumFractionDigits: 2 });
 
-export const normalizeNumber = v => (v ? parseFloat(v) : v);
+export const normalizeNumber = v => (typeof v === "number" ? v : typeof v === "string" && v ? parseFloat(v) : v);
 
-export const normalizeNumberToZero = v => (v ? parseFloat(v) : 0);
+export const normalizeNumberToZero = v => (typeof v === "number" ? v : typeof v === "string" && v ? parseFloat(v) : 0);
 
 export const normalizeNumberToPositive = v => {
-  const parsed = v ? parseFloat(v) : 0;
-
+  const parsed = normalizeNumber(v);
   return parsed < 0 ? Math.abs(parsed) : parsed;
 };
 

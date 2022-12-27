@@ -1,4 +1,5 @@
 export const greaterThanNullValidation = value => {
+  console.log('!!!!!', { value });
   return typeof value === "number" && value <= 0 ? "Value must be greater than 0" : undefined;
 };
 

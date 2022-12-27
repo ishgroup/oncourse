@@ -16,7 +16,7 @@ import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Typography from "@mui/material/Typography";
 import { connect } from "react-redux";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { normalizeNumber, normalizeNumberToZero } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { SessionRepeatTypes } from "../../../../../model/entities/CourseClass";
 import { mapSelectItems } from "../../../../../common/utils/common";
 
@@ -101,7 +101,8 @@ const CopySessionDialogBase = React.memo<any>(props => {
                       min="1"
                       max="99"
                       step="1"
-                      normalize={normalizeNumber}
+                      normalize={normalizeNumberToZero}
+                      debounced={false}
                       inline
                     />
                     times

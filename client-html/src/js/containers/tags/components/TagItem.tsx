@@ -112,6 +112,7 @@ const TagItem = React.memo<FormTagProps>(({
               }}
               className={classes.fieldEditable}
               onClick={stopEventPropagation}
+              debounced={false}
               hidePlaceholderInEditMode
             />
           ) : (

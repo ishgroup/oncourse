@@ -98,39 +98,33 @@ class TagsFormRenderer extends TagsFormBase {
         >
           <Grid container>
             <Grid item sm={12} lg={11} xl={8}>
-              <Grid container columnSpacing={3}>
-                <Grid item xs={12} md={8}>
-                  <div className="centeredFlex">
-                    {values && (
-                      <Field
-                        name="requirements"
-                        label="Available for"
-                        component={TagRequirementsMenu}
-                        items={values.requirements}
-                        rootID={values.id}
-                        validate={this.validateRequirements}
-                        system={values.system}
-                      />
-                    )}
-                  </div>
+              <div className="centeredFlex">
+                {values && (
+                  <Field
+                    name="requirements"
+                    label="Available for"
+                    component={TagRequirementsMenu}
+                    items={values.requirements}
+                    rootID={values.id}
+                    validate={this.validateRequirements}
+                    system={values.system}
+                  />
+                )}
+              </div>
 
-                  {values
-                  && values.requirements?.map((i, index) => (
-                    <TagRequirementItem
-                      parent={`requirements[${index}]`}
-                      key={i.type}
-                      item={i}
-                      index={index}
-                      onDelete={this.removeRequirement}
-                      disabled={values.system}
-                      openConfirm={openConfirm}
-                      dispatch={dispatch}
-                    />
-                  ))}
-                </Grid>
-
-                <Grid item xs={false} md={4} />
-              </Grid>
+              {values
+              && values.requirements?.map((i, index) => (
+                <TagRequirementItem
+                  parent={`requirements[${index}]`}
+                  key={i.type}
+                  item={i}
+                  index={index}
+                  onDelete={this.removeRequirement}
+                  disabled={values.system}
+                  openConfirm={openConfirm}
+                  dispatch={dispatch}
+                />
+              ))}
 
               <Divider className="mt-2 mb-2" />
 

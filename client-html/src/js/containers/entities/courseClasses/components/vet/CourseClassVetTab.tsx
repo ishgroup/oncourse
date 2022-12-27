@@ -116,6 +116,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               name="vetCourseSiteID"
               label="Course site identifier (NSW)"
               validate={validateCourseSiteIdentifier}
+              debounced={false}
               fullWidth
             />
           </Grid>
@@ -152,6 +153,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               normalize={normalizeNumber}
               name="qualificationHours"
               label="Qualification hours"
+              debounced={false}
               disabled
             />
           </Grid>
@@ -163,6 +165,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               disabled
               name="nominalHours"
               label="Nominal hours"
+              debounced={false}
             />
           </Grid>
 
@@ -173,6 +176,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               name="classroomHours"
               disabled
               label="Classroom hours"
+              debounced={false}
             />
           </Grid>
 
@@ -183,6 +187,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               name="studentContactHours"
               disabled
               label="Student contact hours"
+              debounced={false}
             />
           </Grid>
 
@@ -192,6 +197,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               normalize={normalizeNumberToZero}
               name="reportableHours"
               label="Reportable hours"
+              debounced={false}
             />
           </Grid>
 

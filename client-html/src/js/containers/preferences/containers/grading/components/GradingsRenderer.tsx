@@ -98,6 +98,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
                             type="number"
                             name={`${item}.minValue`}
                             normalize={normalizeNumber}
+                            debounced={false}
                             label="Min value"
                             required={field.entryType === "number"}
                             fullWidth
@@ -108,6 +109,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
                             type="number"
                             name={`${item}.maxValue`}
                             normalize={normalizeNumber}
+                            debounced={false}
                             label="Max value"
                             required={field.entryType === "number"}
                             fullWidth

@@ -321,6 +321,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
             name={getFieldName("reportableHours")}
             label="Reportable hours"
             normalize={normalizeNumberToZero}
+            debounced={false}
           />
         </Grid>
         <Grid item xs={12}>

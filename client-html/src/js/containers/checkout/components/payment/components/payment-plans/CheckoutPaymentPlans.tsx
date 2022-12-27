@@ -117,6 +117,7 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
               <FormField
                 type="money"
                 name={`${f}.amount`}
+                format={normalizeNumberToPositive}
                 normalize={normalizeNumberToPositive}
                 listSpacing={false}
                 onBlur={onPayNowBlur}

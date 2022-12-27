@@ -243,6 +243,7 @@ const LeadGeneral = (props: Props) => {
             name="estimatedValue"
             label="Estimated value"
             normalize={normalizeNumberToZero}
+            debounced={false}
           />
           <Chip
             size="small"

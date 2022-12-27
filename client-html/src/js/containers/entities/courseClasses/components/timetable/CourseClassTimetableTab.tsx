@@ -41,7 +41,7 @@ import { setCourseClassSessionsWarnings } from "../../actions";
 import CourseClassBulkChangeSession from "./CourseClassBulkChangeSession";
 import CourseClassExpandableSession from "./CourseClassExpandableSession";
 import CopySessionDialog from "./CopySessionDialog";
-import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { normalizeNumber, normalizeNumberToPositive } from "../../../../../common/utils/numbers/numbersNormalizing";
 import CourseClassTimetableService from "./services/CourseClassTimetableService";
 import { addActionToQueue, removeActionsFromQueue } from "../../../../../common/actions";
 import {
@@ -752,6 +752,7 @@ const CourseClassTimetableTab = ({
               max="99"
               step="1"
               normalize={normalizeNumber}
+              debounced={false}
               fullWidth
             />
           </Grid>
@@ -764,7 +765,8 @@ const CourseClassTimetableTab = ({
               min="1"
               max="99"
               step="1"
-              normalize={normalizeNumber}
+              normalize={normalizeNumberToPositive}
+              debounced={false}
               required
               fullWidth
             />

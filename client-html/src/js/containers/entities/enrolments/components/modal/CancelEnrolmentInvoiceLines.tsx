@@ -112,7 +112,6 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                     debounced={false}
                     disabled={!field.isReverseCreditNotes}
                     inline
-                    hideArrowshideArrows
                     step="1"
                   />
                   <FormField

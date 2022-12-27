@@ -132,6 +132,7 @@ const PayslipPaylineItem = (props: Props) => {
                     disabled={!field.deferred}
                     name={`${item}.quantity`}
                     normalize={normalizeNumber}
+                    debounced={false}
                     listSpacing={false}
                     inline
                     rightAligned

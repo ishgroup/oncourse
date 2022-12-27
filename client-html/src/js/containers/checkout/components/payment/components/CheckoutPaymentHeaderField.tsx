@@ -239,7 +239,9 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     }
   };
 
-  const onPayNowChange = useCallback<any>( debounce(value => {
+  const onPayNowChange = useCallback<any>( debounce(e => {
+    const value = e.target.value;
+
     dispatch(checkoutUpdateSummaryField("payNowTotal", value));
     if (value === 0) {
       if (!isZeroPayment) {

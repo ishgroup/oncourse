@@ -341,6 +341,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
                 parse={this.parseDiscountPercent}
                 normalize={this.normalizeDiscountPercent}
                 preformatDisplayValue={value => value + "%"}
+                debounced={false}
               />
             ) : (
               <FormField
@@ -402,6 +403,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
               parse={this.parsePercent}
               normalize={this.normalizePercent}
               preformatDisplayValue={value => value + "%"}
+              debounced={false}
             />
           </Grid>
 
@@ -419,6 +421,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
                   placeholder="Code"
                   inline
                   normalize={trimValue}
+                  debounced={false}
                   required
                 />
               </Collapse>

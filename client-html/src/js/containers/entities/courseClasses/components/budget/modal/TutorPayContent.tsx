@@ -190,6 +190,7 @@ const TutorPayContent: React.FC<Props> = ({
                   label="Count"
                   validate={[greaterThanNullValidation, validateSingleMandatoryField]}
                   normalize={normalizeNumberToZero}
+                  debounced={false}
                 />
               </Grid>
             )}
@@ -200,6 +201,7 @@ const TutorPayContent: React.FC<Props> = ({
                 label={costLabel}
                 validate={greaterThanNullValidation}
                 normalize={normalizeNumberToZero}
+                debounced={false}
               />
               {!isNaN(rate) && rate !== values.perUnitAmountExTax && (
                 <WarningMessage warning="The rate/amount entered differs from, and will override what is defined for the chosen role" />
@@ -224,6 +226,7 @@ const TutorPayContent: React.FC<Props> = ({
                 label="Count"
                 validate={[greaterThanNullValidation, validateSingleMandatoryField]}
                 normalize={normalizeNumberToZero}
+                debounced={false}
               />
             </Typography>
           )}

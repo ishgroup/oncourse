@@ -208,6 +208,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
               <div>Default reportable hours</div>
             </Tooltip>
           )}
+          debounced={false}
         />
       </Grid>
 

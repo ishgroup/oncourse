@@ -121,6 +121,7 @@ class RoomsGeneral extends React.PureComponent<any, any> {
                 label="Seated Capacity"
                 required
                 normalize={normalizeSeatedCapacity}
+                debounced={false}
               />
             </Grid>
 
