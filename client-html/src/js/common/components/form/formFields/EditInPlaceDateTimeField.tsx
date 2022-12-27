@@ -16,15 +16,10 @@
 import React, {
   useEffect, useMemo, useRef, useState
 } from "react";
-import FormControl from "@mui/material/FormControl";
-import FormHelperText from "@mui/material/FormHelperText";
-import Input from "@mui/material/Input";
-import InputLabel from "@mui/material/InputLabel";
 import clsx from "clsx";
 import DateRange from "@mui/icons-material/DateRange";
 import QueryBuilder from "@mui/icons-material/QueryBuilder";
 import { format, isValid } from "date-fns";
-import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import { DateTimeField } from "./DateTimeField";
 import { formatStringDate } from "../../../utils/dates/formatString";
@@ -38,68 +33,9 @@ import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Fi
 import { FieldClasses } from "../../../../model/common/Fields";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { makeAppStyles } from "../../../styles/makeStyles";
+import EditInPlaceFieldBase from "./EditInPlaceFieldBase";
 
 const useStyles = makeAppStyles(theme => ({
-  spanLabel: {
-    paddingLeft: "0.5px",
-    marginTop: "-3px",
-    display: "inline-block",
-    height: "17px",
-  },
-  inputEndAdornment: {
-    color: theme.palette.primary.main,
-    visibility: "hidden",
-  },
-  inputWrapper: {
-    "&:hover $inputEndAdornment": {
-      visibility: "visible"
-    },
-    "&:hover $hiddenContainer": {
-      display: "inline-flex"
-    },
-  },
-  topMargin: {
-    marginTop: theme.spacing(1),
-    paddingLeft: "0"
-  },
-  hiddenContainer: {
-    display: "none"
-  },
-  editButton: {
-    padding: "4px",
-    "&:hover": {
-      color: theme.palette.primary.main,
-      fill: theme.palette.primary.main
-    }
-  },
-  editIcon: {
-    fontSize: "18px",
-    color: theme.palette.divider,
-    display: "inline-flex"
-  },
-  editable: {
-    color: theme.palette.text.primaryEditable,
-    fontWeight: 400,
-    "&:hover, &:hover $editButton": {
-      color: theme.palette.primary.main,
-      fill: theme.palette.primary.main,
-    }
-  },
-  viewMode: {
-    padding: 0,
-    margin: "-2px 0 0",
-  },
-  label: {
-    whiteSpace: "nowrap"
-  },
-  placeholderContent: {
-    color: theme.palette.text.disabled,
-    opacity: 0.4,
-    fontWeight: 400,
-  },
-  input: {
-    width: "100%"
-  },
   inlinePickerButton: {
     padding: "0.2em",
     marginBottom: "0.2em",
@@ -111,40 +47,12 @@ const useStyles = makeAppStyles(theme => ({
   pickerButton: {
     width: theme.spacing(4),
     height: theme.spacing(4),
-    padding: theme.spacing(0.5),
-    "&:hover": {
-      color: theme.palette.primary.main,
-    }
-  },
-  inputLabel: {
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    paddingBottom: "4px",
-    right: "-46%",
-    maxWidth: "100%",
-    "& $labelAdornment": {
-      position: "absolute",
-      transform: "scale(1.3) translate(5px,0)"
-    },
-    "&$labelShrink": {
-      maxWidth: "calc(100% * 1.4)"
-    }
+    bottom: theme.spacing(-0.5)
   },
   inlineContainer: {
-    display: "inline-flex",
-    "&$hiddenContainer": {
-      display: "none"
-    }
-  },
-  inlineInput: {
-    padding: "0 0 1px 0",
-    minWidth: "2.2em",
-    fontSize: "inherit"
-  },
-  inline: {},
-  labelShrink: {},
-  labelAdornment: {}
+    display: "inline-block",
+    marginLeft: theme.spacing(0.5)
+  }
 }));
 
 interface Props {
@@ -155,7 +63,6 @@ interface Props {
   fieldClasses?: FieldClasses,
   onKeyPress?: AnyArgFunction;
   labelAdornment?: React.ReactNode;
-  helperText?: React.ReactNode;
   formatDate?: string;
   formatTime?: string;
   formatDateTime?: string;
@@ -164,9 +71,11 @@ interface Props {
   formatValue?: string;
   className?: string;
   placeholder?: string;
+  warning?: string;
   inline?: boolean;
   disabled?: boolean;
   persistValue?: boolean;
+  rightAligned?: boolean;
 }
 
 const EditInPlaceDateTimeField = (
@@ -181,17 +90,17 @@ const EditInPlaceDateTimeField = (
    inline,
    meta: { error, invalid, active, dispatch },
    labelAdornment,
-   helperText,
    label,
    disabled,
    formatValue,
    className,
    onKeyPress,
    placeholder,
-   persistValue
+   persistValue,
+   warning,
+   rightAligned
   }: Props
 ) => {
-  const [isEditing, setIsEditing] = useState(false);
   const [textValue, setTextValue] = useState("");
   const [pickerOpened, setPickerOpened] = useState(false);
 
@@ -228,12 +137,6 @@ const EditInPlaceDateTimeField = (
     return dateObj;
   }, [input.value, timezone]);
 
-  const onAdornmentClick = () => {
-    setTimeout(() => {
-      setIsEditing(false);
-    }, 600);
-  };
-
   useEffect(() => {
     setTextValue(formatDateInner(dateValue));
   }, [dateValue]);
@@ -250,19 +153,10 @@ const EditInPlaceDateTimeField = (
     if (e) setTextValue(e.target.value);
   };
 
-  const openPicker = () => {
+  const openPicker = e => {
+    e.stopPropagation();
     setPickerOpened(true);
   };
-
-  const renderedValue = useMemo(() => {
-    if (!input.value) {
-      return (
-        <span className={clsx(classes.placeholderContent, classes.editable, fieldClasses.placeholder)}>{placeholder || "No value"}</span>
-      );
-    }
-
-    return formatDateInner(dateValue);
-  }, [dateValue, input.value, placeholder, classes, fieldClasses]);
 
   const onChange = (v: Date) => {
     if (v) {
@@ -293,8 +187,6 @@ const EditInPlaceDateTimeField = (
   const onBlur = () => {
     processActionId.current = uniqid();
     dispatch(startFieldProcessingAction({ id: processActionId.current }));
-
-    setIsEditing(false);
 
     if (persistValue && !textValue) {
       processedValue.current = input.value;
@@ -335,7 +227,6 @@ const EditInPlaceDateTimeField = (
   };
 
   const onClose = () => {
-    setIsEditing(false);
     setPickerOpened(false);
   };
 
@@ -348,16 +239,6 @@ const EditInPlaceDateTimeField = (
   const onPickerChange = v => {
     onChange(timezone ? appendTimezoneToUTC(v, timezone) : v);
   };
-
-  const labelContent = labelAdornment ? (
-    <span onMouseDown={onAdornmentClick}>
-      {label}
-      {" "}
-      <span className={classes.labelAdornment}>{labelAdornment}</span>
-    </span>
-  ) : (
-    label
-  );
 
   return (
     <div
@@ -378,81 +259,47 @@ const EditInPlaceDateTimeField = (
           onChange={onPickerChange}
           onClose={onClose}
           renderInput={() => (
-            <FormControl
-              error={invalid}
-              variant="standard"
-              margin="none"
-              fullWidth
-              className={clsx({
-                "pr-2": inline
-              })}
-            >
-              {Boolean(label) && (
-              <InputLabel
-                classes={{
-                  root: clsx(classes.inputLabel, fieldClasses.label),
-                  shrink: classes.labelShrink
+            <EditInPlaceFieldBase
+              ref={inputNode}
+              name={input.name}
+              value={input.value}
+              error={error}
+              invalid={invalid}
+              inline={inline}
+              label={label}
+              warning={warning}
+              fieldClasses={fieldClasses}
+              rightAligned={rightAligned}
+              shrink={Boolean(label || input.value)}
+              disabled={disabled}
+              labelAdornment={labelAdornment}
+              placeholder={placeholder}
+              editIcon={
+                <IconButton
+                  tabIndex={-1}
+                  onClick={openPicker}
+                  classes={{
+                    root: clsx(fieldClasses.text, inline ? classes.inlinePickerButton : classes.pickerButton)
+                  }}
+                >
+                {type === "time"
+                  ? <QueryBuilder fontSize="inherit" color="inherit" />
+                  : <DateRange color="inherit" fontSize="inherit" />}
+                  </IconButton>}
+                InputProps={{
+                  type: "text",
+                  onFocus: input.onFocus,
+                  inputRef: inputNode,
+                  value: textValue,
+                  onKeyPress,
+                  disabled,
+                  onBlur,
+                  onKeyDown: onEnterPress,
+                  onChange: onInputChange
                 }}
-                shrink={true}
-                htmlFor={`input-${input.name}`}
-              >
-                {labelContent}
-              </InputLabel>
-            )}
-              <Input
-                id={`input-${input.name}`}
-                name={input.name}
-                type="text"
-                onKeyPress={onKeyPress}
-                onChange={onInputChange}
-                onFocus={input.onFocus}
-                onBlur={onBlur}
-                onKeyDown={onEnterPress}
-                disabled={disabled}
-                inputRef={inputNode}
-                inputProps={{
-                  size: inline && renderedValue ? renderedValue.length + 1 : undefined,
-                  className: clsx({
-                    [classes.inlineInput]: inline
-                  }),
-                  placeholder: placeholder || (!isEditing ? "No value" : ""),
-                }}
-                value={textValue}
-                classes={{
-                  root: clsx(classes.input, fieldClasses.text, inline && classes.inlineInput,
-                    classes.inputWrapper),
-                  underline: fieldClasses.underline,
-                  input: clsx(classes.input, fieldClasses.text),
-                }}
-                endAdornment={(
-                  <InputAdornment
-                    position="end"
-                    className={clsx(classes.inputEndAdornment, inline && classes.hiddenContainer)}
-                  >
-                    <IconButton
-                      tabIndex={-1}
-                      onClick={openPicker}
-                      classes={{
-                        root: clsx(fieldClasses.text, inline ? classes.inlinePickerButton : classes.pickerButton)
-                      }}
-                    >
-                      {type === "time"
-                        ? <QueryBuilder fontSize="inherit" color="inherit" />
-                        : <DateRange color="inherit" fontSize="inherit" />}
-                    </IconButton>
-                  </InputAdornment>
-                )}
               />
-              <FormHelperText
-                classes={{
-                error: "shakingError"
-              }}
-              >
-                {error || helperText}
-              </FormHelperText>
-            </FormControl>
-          )}
-        />
+            )}
+          />
       </div>
     </div>
   );

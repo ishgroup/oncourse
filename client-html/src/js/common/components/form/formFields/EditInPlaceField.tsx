@@ -61,6 +61,9 @@ const useStyles = makeAppStyles(theme => ({
     fontSize: "24px",
     color: theme.palette.divider,
     verticalAlign: "middle",
+  },
+  endAdornment: {
+    opacity: 0.5
   }
 }));
 
@@ -132,6 +135,7 @@ const EditInPlaceField = (
           label={label}
           warning={warning}
           fieldClasses={fieldClasses}
+          endAdornmentClass={classes.endAdornment}
           rightAligned={rightAligned}
           shrink={Boolean(label || input.value)}
           disabled={disabled}

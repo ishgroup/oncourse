@@ -21,6 +21,7 @@ interface Props {
   value: string;
   ref?: any;
   className?: string;
+  endAdornmentClass?: string;
   label?: React.ReactNode;
   labelAdornment?: React.ReactNode;
   editIcon?: React.ReactNode;
@@ -64,7 +65,7 @@ const useStyles = makeAppStyles(theme => ({
     "&:hover .invisible": {
       visibility: "visible",
     },
-    "&.Mui-focused .MuiInputAdornment-positionEnd": {
+    "&.Mui-focused $inputEndAdornment": {
       opacity: 1,
     }
   },
@@ -91,7 +92,6 @@ const useStyles = makeAppStyles(theme => ({
     display: "flex",
     fontSize: "24px",
     color: theme.palette.primary.main,
-    opacity: 0.5,
     alignItems: "flex-end",
     alignSelf: "flex-end",
     marginBottom: "5px"
@@ -118,7 +118,8 @@ const EditInPlaceFieldBase = (
     error,
     placeholder,
     hideArrows,
-    warning
+    warning,
+    endAdornmentClass
   }: Props) => {
   
   const classes = useStyles();
@@ -195,7 +196,7 @@ const EditInPlaceFieldBase = (
         <InputAdornment
           position="end"
           onClick={onAdornmentClick}
-          className={clsx(classes.inputEndAdornment, {
+          className={clsx(classes.inputEndAdornment, endAdornmentClass, {
             ["fsInherit"]: inline,
             ["d-none"]: (rightAligned || inline),
             ["invisible"]: !(rightAligned || inline)
