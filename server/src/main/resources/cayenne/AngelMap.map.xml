@@ -377,6 +377,7 @@
 		<db-attribute name="qualificationId" type="BIGINT"/>
 		<db-attribute name="reportableHours" type="REAL"/>
 		<db-attribute name="webDescription" type="CLOB" length="32000"/>
+		<db-attribute name="shortWebDescription" type="CLOB" length="32000"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 		<db-attribute name="feeHelpClass" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="fullTimeLoad" type="VARCHAR" length="10"/>
@@ -2052,6 +2053,7 @@
 		<obj-attribute name="printedBrochureDescription" type="java.lang.String" db-attribute-path="printedBrochureDescription"/>
 		<obj-attribute name="reportableHours" type="java.math.BigDecimal" db-attribute-path="reportableHours"/>
 		<obj-attribute name="webDescription" type="java.lang.String" db-attribute-path="webDescription"/>
+		<obj-attribute name="shortWebDescription" type="java.lang.String" db-attribute-path="shortWebDescription"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 		<obj-attribute name="feeHelpClass" type="java.lang.Boolean" db-attribute-path="feeHelpClass"/>
 		<obj-attribute name="fullTimeLoad" type="java.lang.String" db-attribute-path="fullTimeLoad"/>
