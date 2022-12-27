@@ -135,9 +135,9 @@ const EditInPlaceFieldBase = (
   const onAdornmentClick = () => {
     inputNode.focus();
   };
-  
+
   const inputWidth = useMemo(() => inline && inputNode
-    ? countWidth(value || placeholder, inputNode)
+    ? countWidth(value.toString() || placeholder, inputNode) + 1
     : null,
   [inputNode, inline, value, placeholder]);
 

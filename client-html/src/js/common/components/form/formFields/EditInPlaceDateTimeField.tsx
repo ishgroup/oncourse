@@ -26,7 +26,6 @@ import { formatStringDate } from "../../../utils/dates/formatString";
 import {
   HH_MM_COLONED, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM, YYYY_MM_DD_MINUSED
 } from "../../../utils/dates/format";
-import { appendTimezone, appendTimezoneToUTC } from "../../../utils/dates/formatTimezone";
 import { endFieldProcessingAction, startFieldProcessingAction } from "../../../actions/FieldProcessing";
 import uniqid from "../../../utils/uniqid";
 import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
@@ -34,6 +33,8 @@ import { FieldClasses } from "../../../../model/common/Fields";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { makeAppStyles } from "../../../styles/makeStyles";
 import EditInPlaceFieldBase from "./EditInPlaceFieldBase";
+import { formatInTimeZone } from "date-fns-tz";
+import { appendTimezoneToUTC } from "../../../utils/dates/formatTimezone";
 
 const useStyles = makeAppStyles(theme => ({
   inlinePickerButton: {
@@ -119,23 +120,17 @@ const EditInPlaceDateTimeField = (
 
     switch (type) {
       case "date":
-        return format(dateObj, formatDate || III_DD_MMM_YYYY);
+        return timezone ? formatInTimeZone(dateObj, timezone, formatDate || III_DD_MMM_YYYY) : format(dateObj, formatDate || III_DD_MMM_YYYY);
       case "time":
-        return format(dateObj, formatTime || HH_MM_COLONED);
+        return timezone ? formatInTimeZone(dateObj, timezone, formatTime || HH_MM_COLONED) : format(dateObj, formatTime || HH_MM_COLONED);
       case "datetime":
-        return format(dateObj, formatDateTime || III_DD_MMM_YYYY_HH_MM);
+        return timezone ? formatInTimeZone(dateObj, timezone, formatDateTime || III_DD_MMM_YYYY_HH_MM) : format(dateObj, formatDateTime || III_DD_MMM_YYYY_HH_MM);
       default:
         return dateObj.toString();
     }
   };
 
-  const dateValue = useMemo(() => {
-    let dateObj = input.value ? new Date(input.value) : null;
-    if (timezone && input.value) {
-      dateObj = appendTimezone(dateObj, timezone);
-    }
-    return dateObj;
-  }, [input.value, timezone]);
+  const dateValue = useMemo(() => input.value ? new Date(input.value) : null, [input.value, timezone]);
 
   useEffect(() => {
     setTextValue(formatDateInner(dateValue));
@@ -236,10 +231,6 @@ const EditInPlaceDateTimeField = (
     }
   };
 
-  const onPickerChange = v => {
-    onChange(timezone ? appendTimezoneToUTC(v, timezone) : v);
-  };
-
   return (
     <div
       className={clsx(className, "outline-none", {
@@ -256,7 +247,7 @@ const EditInPlaceDateTimeField = (
           toolbarTitle={label}
           open={pickerOpened}
           value={dateValue}
-          onChange={onPickerChange}
+          onChange={onChange}
           onClose={onClose}
           renderInput={() => (
             <EditInPlaceFieldBase

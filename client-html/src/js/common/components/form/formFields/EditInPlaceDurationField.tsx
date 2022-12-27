@@ -47,7 +47,8 @@ const EditInPlaceDurationField: React.FunctionComponent<any> = props => {
   );
 
   const onBlur = useCallback(
-    value => {
+    e => {
+      const value = e.target.value;
       const parsed = parseDurationString(value);
       input.onBlur(parsed);
       setTextValue(formatDurationMinutes(parsed || 0));
