@@ -63,7 +63,7 @@ public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}} implements
     {{#vendorExtensions.extraAnnotation}}
     {{{vendorExtensions.extraAnnotation}}}
     {{/vendorExtensions.extraAnnotation}}
-    {{{datatypeWithEnum}}} {{#isBoolean}}is{{/isBoolean}}{{getter}}() {
+    {{{datatypeWithEnum}}} {{#isBoolean}}get{{/isBoolean}}{{getter}}() {
         return {{name}}
     }
 

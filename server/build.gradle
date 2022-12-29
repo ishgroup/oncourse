@@ -171,6 +171,13 @@ application {
 
 compileGroovy.groovyOptions.configurationScript = file("${rootDir}/gradle/groovyConfig.groovy")
 
+// Increased maximum heap size to 4 GB instead of 128 MB by default, this is necessary to build onCourse with Groovy 4.0.2 and to run tests
+tasks.withType(GroovyCompile) {
+	configure(groovyOptions.forkOptions) {
+		jvmArgs = ['-Xmx4g']
+	}
+}
+
 jar {
 	manifest {
 		from sharedManifest
