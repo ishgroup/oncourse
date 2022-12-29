@@ -214,7 +214,7 @@ class HttpTester {
         }
 
         void setHeader(String name, String value) {
-            build().put(name, value)
+            super.build().put(name, value)
         }
 
         @Override
@@ -224,27 +224,27 @@ class HttpTester {
 
         @Override
         Immutable asImmutable() {
-            return build().asImmutable()
+            return super.build().asImmutable()
         }
 
         @Override
         HttpField getField(int index) {
-            return build().getField(index)
+            return super.build().getField(index)
         }
 
         @Override
         int size() {
-            return build().size()
+            return super.build().size()
         }
 
         @Override
         Stream<HttpField> stream() {
-            return build().stream()
+            return super.build().stream()
         }
 
         @Override
         Iterator<HttpField> iterator() {
-            return build().iterator()
+            return super.build().iterator()
         }
     }
 
@@ -302,27 +302,27 @@ class HttpTester {
 
         @Override
         Immutable asImmutable() {
-            return build().asImmutable()
+            return super.build().asImmutable()
         }
 
         @Override
         HttpField getField(int index) {
-            return  build().getField(index)
+            return  super.build().getField(index)
         }
 
         @Override
         int size() {
-            return build().size()
+            return super.build().size()
         }
 
         @Override
         Stream<HttpField> stream() {
-            return build().stream()
+            return super.build().stream()
         }
 
         @Override
         Iterator<HttpField> iterator() {
-            return build().iterator()
+            return super.build().iterator()
         }
     }
 }
