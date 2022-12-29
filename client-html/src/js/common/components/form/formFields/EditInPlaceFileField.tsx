@@ -11,76 +11,18 @@
  * */
 
 import React, { useRef } from "react";
-import clsx from "clsx";
 import AttachmentIcon from '@mui/icons-material/Attachment';
-import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
-import EditInPlaceFieldBase from "./EditInPlaceFieldBase";
-import { makeAppStyles } from "../../../styles/makeStyles";
-import { FieldClasses } from "../../../../model/common/Fields";
+import { EditInPlaceFieldProps } from "../../../../model/common/Fields";
 import InputAdornment from "@mui/material/InputAdornment";
+import EditInPlaceField from "./EditInPlaceField";
+import { stubFunction } from "../../../utils/common";
 
-interface Props {
-  ref?: any;
-  input?: Partial<WrappedFieldInputProps>;
-  meta?: Partial<WrappedFieldMetaProps>;
-  label?: string,
-  disabled?: boolean,
-  className?: string,
-  onKeyPress?: any,
-  placeholder?: string,
-  warning?: string,
-  labelAdornment?: any,
-  preformatDisplayValue?: any,
-  fieldClasses?: FieldClasses,
-  rightAligned?: boolean,
-  disableInputOffsets?: boolean,
-  onKeyDown?: any,
-  inline?: boolean,
-}
-
-const useStyles = makeAppStyles(theme => ({
-  rightAligned: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end"
-  },
-  inlineContainer: {
-    display: "inline-block",
-    marginLeft: theme.spacing(0.5)
-  },
-  inlineMargin: {
-    marginRight: theme.spacing(0.5)
-  },
-  editIcon: {
-    fontSize: "24px",
-    color: theme.palette.divider,
-    verticalAlign: "middle",
-  },
-  endAdornment: {
-    opacity: 0.5
-  }
-}));
-
-const EditInPlaceField = (
+const EditInPlaceFileField = (
   {
-    ref,
     input,
-    meta: { error, invalid },
-    label,
-    disabled,
-    className,
-    onKeyPress,
-    placeholder = "No value",
-    labelAdornment,
-    fieldClasses = {},
-    rightAligned,
-    onKeyDown,
-    inline,
-    warning
-  }: Props) => {
+    ...restProps
+  }: EditInPlaceFieldProps) => {
 
-  const classes = useStyles();
-  
   const inputRef = useRef<HTMLInputElement>();
   const fileRef = useRef<HTMLInputElement>();
 
@@ -99,52 +41,27 @@ const EditInPlaceField = (
     }, 200);
   };
 
-  const InputProps = {
-    onKeyPress,
-    startAdornment: <InputAdornment position="start"><AttachmentIcon /></InputAdornment>,
-    onFocus,
-    inputProps: {
-      onKeyDown,
-      ref: inputRef
-    },
-    value: input.value ? input.value.name : "",
-  };
-
   return (
-    <div
-      id={input.name}
-      className={clsx(className, "outline-none", {
-        [classes.inlineContainer]: inline
-      })}
-    >
+    <>
       <input type="file" ref={fileRef} onChange={handleFileSelect} className="d-none" />
-      <div
-        className={clsx({
-          [classes.inlineMargin]: inline,
-          [classes.rightAligned]: rightAligned
-        })}
-      >
-        <EditInPlaceFieldBase
-          ref={ref}
-          name={input.name}
-          value={input.value ? input.value.name : ""}
-          error={error}
-          invalid={invalid}
-          inline={inline}
-          label={label}
-          warning={warning}
-          fieldClasses={fieldClasses}
-          endAdornmentClass={classes.endAdornment}
-          rightAligned={rightAligned}
-          shrink={Boolean(label || input.value)}
-          labelAdornment={labelAdornment}
-          placeholder={placeholder}
-          InputProps={InputProps}
-          disabled={disabled}
-        />
-      </div>
-    </div>
+      <EditInPlaceField
+        {...restProps}
+        input={{
+          onChange: stubFunction,
+          onFocus: stubFunction,
+          onBlur: stubFunction
+        }}
+        InputProps={{
+          startAdornment: <InputAdornment position="start"><AttachmentIcon /></InputAdornment>,
+          onFocus,
+          inputProps: {
+            ref: inputRef
+          },
+          value: input.value ? input.value.name : "",
+        }}
+      />
+    </>
   );
 };
 
-export default EditInPlaceField;
+export default EditInPlaceFileField;

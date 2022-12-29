@@ -13,36 +13,9 @@
 import React from "react";
 import clsx from "clsx";
 import { Edit } from "@mui/icons-material";
-import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
 import EditInPlaceFieldBase from "./EditInPlaceFieldBase";
 import { makeAppStyles } from "../../../styles/makeStyles";
-import { FieldClasses } from "../../../../model/common/Fields";
-
-interface Props {
-  ref?: any;
-  input?: Partial<WrappedFieldInputProps>;
-  meta?: Partial<WrappedFieldMetaProps>;
-  type?: "password" | "percentage" | "number",
-  label?: string,
-  maxLength?: number,
-  disabled?: boolean,
-  min?: number,
-  max?: number,
-  step?: string,
-  className?: string,
-  onKeyPress?: any,
-  placeholder?: string,
-  warning?: string,
-  labelAdornment?: any,
-  preformatDisplayValue?: any,
-  truncateLines?: number,
-  fieldClasses?: FieldClasses,
-  rightAligned?: boolean,
-  disableInputOffsets?: boolean,
-  onKeyDown?: any,
-  multiline?: boolean,
-  inline?: boolean,
-}
+import { EditInPlaceFieldProps } from "../../../../model/common/Fields";
 
 const useStyles = makeAppStyles(theme => ({
   rightAligned: {
@@ -71,7 +44,6 @@ const EditInPlaceField = (
   {
     ref,
     input,
-    meta: { error, invalid },
     type,
     label,
     maxLength,
@@ -81,35 +53,24 @@ const EditInPlaceField = (
     step,
     className,
     onKeyPress,
-    placeholder = "No value",
     labelAdornment,
     truncateLines,
-    fieldClasses = {},
     rightAligned,
     onKeyDown,
     multiline,
     inline,
-    warning
-  }: Props) => {
+    warning,
+    preformatDisplayValue,
+    meta: { error, invalid },
+    placeholder = "No value",
+    fieldClasses = {},
+    InputProps = {}
+  }: EditInPlaceFieldProps) => {
 
   const classes = useStyles();
-
-  const InputProps = {
-    multiline,
-    onKeyPress,
-    onBlur: input.onBlur,
-    onFocus: input.onFocus,
-    maxRows: truncateLines,
-    inputProps: {
-      maxLength,
-      step,
-      min,
-      max,
-      onKeyDown,
-      type: type !== "password" ? (type === "percentage" ? "number" : type) : undefined,
-    },
-    value: input.value,
-    onChange: v => (type === "number" && max && Number(v) > Number(max) ? null : input.onChange(v))
+  
+  const onBlur = () => {
+    input?.onBlur && input.onBlur(input.value);
   };
 
   return (
@@ -143,7 +104,24 @@ const EditInPlaceField = (
           placeholder={placeholder}
           hideArrows={["percentage", "number"].includes(type)}
           editIcon={<Edit fontSize="inherit" />}
-          InputProps={InputProps}
+          InputProps={{
+            multiline,
+            onKeyPress,
+            onBlur,
+            onFocus: input.onFocus,
+            maxRows: truncateLines,
+            inputProps: {
+              maxLength,
+              step,
+              min,
+              max,
+              onKeyDown,
+              type: type !== "password" ? (type === "percentage" ? "number" : type) : undefined,
+            },
+            value: preformatDisplayValue ? preformatDisplayValue(input.value) : input.value,
+            onChange: v => (type === "number" && max && Number(v) > Number(max) ? null : input.onChange(v)),
+            ...InputProps
+          }}
         />
       </div>
     </div>
