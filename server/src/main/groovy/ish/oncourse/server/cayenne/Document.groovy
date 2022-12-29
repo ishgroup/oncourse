@@ -186,7 +186,7 @@ class Document extends _Document implements DocumentTrait, Queueable {
 	}
 
 	@API
-	Boolean isActive() {
+	Boolean getActive() {
 		return !super.isRemoved
 	}
 

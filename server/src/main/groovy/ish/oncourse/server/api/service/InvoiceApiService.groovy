@@ -181,7 +181,8 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
         if (abstractInvoice.newRecord || abstractInvoice instanceof Quote) {
             abstractInvoice.type = invoiceDTO.type.getDbType()
             abstractInvoice.lead = leadDao.getById(abstractInvoice.context, invoiceDTO.leadId)
-            abstractInvoice.contact = contactDao.getById(abstractInvoice.context, invoiceDTO.contactId)
+            // Groovy 4.0.2 tries to cast AbstractInvoice to Quote, because it see 'abstractInvoice instanceof Quote'. This fix helps.
+            ((AbstractInvoice) abstractInvoice).contact = contactDao.getById(abstractInvoice.context, invoiceDTO.contactId)
             abstractInvoice.invoiceDate = invoiceDTO.invoiceDate
             abstractInvoice.source = SOURCE_ONCOURSE
             abstractInvoice.createdByUser = abstractInvoice.context.localObject(systemUserService.currentUser)
