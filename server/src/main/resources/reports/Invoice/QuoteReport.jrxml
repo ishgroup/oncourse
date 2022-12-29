@@ -73,7 +73,6 @@
 	<field name="pref.avetmiss.address.postcode" class="java.lang.String"/>
 	<field name="pref.avetmiss.address.state" class="java.lang.String"/>
 	<field name="quote.amountOwing" class="ish.math.Money"/>
-	<field name="pref.college.paymentInfo" class="java.lang.String"/>
 	<field name="image.poweredby" class="java.io.InputStream"/>
 	<field name="description" class="java.lang.String"/>
 	<field name="account.type" class="java.lang.Integer"/>
@@ -97,12 +96,6 @@
 	<variable name="invoiceLineTotal" class="java.math.BigDecimal" resetType="Group" resetGroup="details" calculation="Sum">
 		<variableExpression><![CDATA[($F{finalPriceToPayIncTax}).toBigDecimal()]]></variableExpression>
 	</variable>
-	<variable name="totalForAccountType" class="java.math.BigDecimal" resetType="Group" resetGroup="taxablesupply" calculation="Sum">
-		<variableExpression><![CDATA[($F{finalPriceToPayIncTax}).toBigDecimal()]]></variableExpression>
-	</variable>
-	<variable name="totalTaxForAccountType" class="java.math.BigDecimal" resetType="Group" resetGroup="taxablesupply" calculation="Sum">
-		<variableExpression><![CDATA[($F{taxEach}.multiply($F{quantity})).toBigDecimal()]]></variableExpression>
-	</variable>
 	<group name="total">
 		<groupExpression><![CDATA[]]></groupExpression>
 	</group>
@@ -120,7 +113,7 @@
 				<textField evaluationTime="Group" evaluationGroup="details" isBlankWhenNull="false">
 					<reportElement key="textField-3" style="data field" x="403" y="27" width="136" height="38" uuid="d1b72d14-7eeb-4d96-97c3-bd767ebdefd2"/>
 					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[$F{quoteLine}.quote.title + "\n" + "Quote"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{quoteLine}.quote.title ? $F{quoteLine}.quote.title + "\n" + "Quote" : "Quote"]]></textFieldExpression>
 					<anchorNameExpression><![CDATA["Summary"]]></anchorNameExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="details" isBlankWhenNull="false">
@@ -136,7 +129,7 @@
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="details" isBlankWhenNull="false">
 					<reportElement key="textField-5" style="header 1" stretchType="RelativeToTallestObject" x="0" y="80" width="538" height="28" uuid="422fef20-096d-4fb6-a15f-6aeef21f48fb"/>
-					<textFieldExpression><![CDATA["Quote"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Quote " + $F{quoteLine}.quote.quoteNumber]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement key="line-2" x="0" y="125" width="539" height="1" forecolor="#9C9595" uuid="d5943755-704a-4e9c-85fc-9321af8861e7"/>
@@ -209,11 +202,6 @@
 					</textElement>
 					<textFieldExpression><![CDATA["Payment details ---- Tear along the line"]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement key="textField-21" style="data field" positionType="Float" x="0" y="13" width="300" height="67" uuid="39892f8b-dbc2-4906-a848-244d0acbee3d"/>
-					<textElement verticalAlignment="Top"/>
-					<textFieldExpression><![CDATA[$F{pref.college.paymentInfo}]]></textFieldExpression>
-				</textField>
 				<textField isBlankWhenNull="false">
 					<reportElement key="textField-22" x="335" y="13" width="204" height="15" uuid="80cf5f01-d274-430e-bf2d-1eaac5452f6c"/>
 					<textElement textAlignment="Center"/>
@@ -244,124 +232,13 @@
 	</group>
 	<group name="footer">
 		<groupFooter>
-			<band height="82" splitType="Stretch">
-				<printWhenExpression><![CDATA[!$F{taxableAccount} || !($F{quoteLine}.quote.hasTaxableInvoiceLines() && $F{quoteLine}.quote.hasNonTaxableInvoiceLines())]]></printWhenExpression>
+			<band height="1" splitType="Stretch">
 				<line direction="BottomUp">
-					<reportElement key="line-6" x="0" y="21" width="538" height="1" forecolor="#9C9595" uuid="8ab1d74c-dcc4-4240-93e6-03099da662df"/>
+					<reportElement key="lineTableEnd" x="0" y="0" width="538" height="1" forecolor="#9C9595" uuid="8ab1d74c-dcc4-4240-93e6-03099da662df"/>
 					<graphicElement fill="Solid">
 						<pen lineWidth="0.5" lineStyle="Solid" lineColor="#9E9898"/>
 					</graphicElement>
 				</line>
-				<line direction="BottomUp">
-					<reportElement key="line-7" x="0" y="72" width="538" height="1" forecolor="#9C9595" uuid="a64b7621-961f-4e2e-b4e9-05320f07e0f2"/>
-					<graphicElement fill="Solid">
-						<pen lineWidth="0.5" lineStyle="Solid" lineColor="#9E9898"/>
-					</graphicElement>
-				</line>
-				<textField evaluationTime="Group" evaluationGroup="details" isBlankWhenNull="false">
-					<reportElement key="textField-6" style="header 3 (right)" x="473" y="0" width="66" height="15" uuid="f8c8f9c8-3c3a-4771-8f2e-92b428c0314d"/>
-					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[new ish.math.Money($V{invoiceLineTotal})]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement key="staticText-8" style="header 3" x="0" y="0" width="40" height="15" uuid="652c42cb-2f99-44a3-a7ab-19e53b767c73"/>
-					<text><![CDATA[Total]]></text>
-				</staticText>
-				<textField evaluationTime="Group" evaluationGroup="details" isBlankWhenNull="false">
-					<reportElement key="textField-7" style="header 3 (right)" x="398" y="1" width="70" height="15" uuid="582881c5-2e28-40ad-b8f9-958b59a6060d"/>
-					<textFieldExpression><![CDATA[new ish.math.Money($V{invoiceLineTaxTotal})]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement key="staticText-9" style="Label" x="347" y="36" width="104" height="15" uuid="6d4828f1-3e10-458b-a8d9-bc91b586d768"/>
-					<text><![CDATA[Less amount paid]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="details" isBlankWhenNull="true">
-					<reportElement key="textField-9" style="data field (money)" x="474" y="36" width="65" height="14" uuid="993b0a5c-c387-4d2a-9afe-c173b0595d7b"/>
-					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[(new ish.math.Money($V{invoiceLineTotal})).subtract($F{quote.amountOwing})]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement key="staticText-9" style="Label" x="347" y="51" width="104" height="15" uuid="db6fd469-dfad-434f-a89b-0af43fad048d"/>
-					<textElement textAlignment="Left"/>
-					<text><![CDATA[Total owing]]></text>
-				</staticText>
-				<textField evaluationTime="Group" evaluationGroup="details" isBlankWhenNull="false">
-					<reportElement key="textField-6" style="data field (money)" x="474" y="51" width="65" height="15" uuid="5021b469-8c8e-41f5-8a62-8ce7b2adc4f3"/>
-					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[$F{quote.amountOwing}]]></textFieldExpression>
-				</textField>
-				<line>
-					<reportElement key="line-7" stretchType="RelativeToBandHeight" x="471" y="1" width="1" height="71" forecolor="#9C9595" uuid="5dd01bd4-71c3-48aa-855c-6b1b36dc8bdd"/>
-					<graphicElement fill="Solid">
-						<pen lineWidth="0.5" lineStyle="Solid" lineColor="#9E9898"/>
-					</graphicElement>
-				</line>
-			</band>
-			<band height="40" splitType="Stretch">
-				<staticText>
-					<reportElement key="staticText-1" style="header 3 (right)" x="347" y="5" width="104" height="15" uuid="46588bb8-5c03-4950-ac04-a168190fa6d7"/>
-					<textElement textAlignment="Right"/>
-					<text><![CDATA[Payment due date]]></text>
-				</staticText>
-				<staticText>
-					<reportElement key="staticText-1" style="header 3 (right)" x="454" y="5" width="85" height="15" uuid="4b4af405-d810-4110-99e6-531dda19732b"/>
-					<textElement textAlignment="Right"/>
-					<text><![CDATA[Amount Payable]]></text>
-				</staticText>
-			</band>
-		</groupFooter>
-	</group>
-	<group name="taxablesupply">
-		<groupExpression><![CDATA[$F{taxableAccount}]]></groupExpression>
-		<groupHeader>
-			<band height="20" splitType="Stretch">
-				<printWhenExpression><![CDATA[$F{taxableAccount}==false]]></printWhenExpression>
-				<staticText>
-					<reportElement style="data field" x="0" y="0" width="471" height="20" uuid="ad5d7386-725c-4067-96c0-0441e7cb4b14"/>
-					<text><![CDATA[The following items are not a taxable supply:]]></text>
-				</staticText>
-				<line>
-					<reportElement key="line-7" stretchType="RelativeToBandHeight" x="471" y="0" width="1" height="20" forecolor="#9C9595" uuid="51b31ddf-f6a7-4ef5-9c0e-4536ba7c7434"/>
-					<graphicElement fill="Solid">
-						<pen lineWidth="0.5" lineStyle="Solid" lineColor="#9E9898"/>
-					</graphicElement>
-				</line>
-			</band>
-		</groupHeader>
-		<groupFooter>
-			<band height="14" splitType="Stretch">
-				<printWhenExpression><![CDATA[$F{taxableAccount} && ($F{quoteLine}.quote.hasTaxableInvoiceLines() && $F{quoteLine}.quote.hasNonTaxableInvoiceLines())]]></printWhenExpression>
-				<staticText>
-					<reportElement style="data field" x="0" y="0" width="395" height="14" uuid="cb2a93d0-a60b-4815-8f04-6bbd0d8d8021"/>
-					<text><![CDATA[Taxable supply]]></text>
-				</staticText>
-				<line direction="BottomUp">
-					<reportElement key="line-5" x="0" y="0" width="539" height="1" forecolor="#9C9595" uuid="f82f6d18-a279-46b1-ba68-8664900bc7f7"/>
-					<graphicElement fill="Solid">
-						<pen lineWidth="0.5" lineStyle="Solid" lineColor="#9E9898"/>
-					</graphicElement>
-				</line>
-				<line>
-					<reportElement key="line-2" x="0" y="13" width="539" height="1" forecolor="#9C9595" uuid="e27b40c2-54be-45f6-9678-b81a40e2c80b"/>
-					<graphicElement fill="Solid">
-						<pen lineWidth="0.5" lineStyle="Solid" lineColor="#9E9898"/>
-					</graphicElement>
-				</line>
-				<textField>
-					<reportElement style="data field (money)" x="398" y="0" width="70" height="14" uuid="2f4b5e6a-662b-4f77-95f5-a953a06dc5c4"/>
-					<textFieldExpression><![CDATA[new ish.math.Money($V{totalTaxForAccountType})]]></textFieldExpression>
-				</textField>
-				<line>
-					<reportElement key="line-3" stretchType="RelativeToBandHeight" x="471" y="0" width="1" height="14" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" forecolor="#9C9595" uuid="30a1807a-06bf-4d21-b382-e0f232a33af5"/>
-					<graphicElement fill="Solid">
-						<pen lineWidth="0.5" lineStyle="Solid" lineColor="#9E9898"/>
-					</graphicElement>
-				</line>
-				<textField>
-					<reportElement style="data field (money)" x="473" y="0" width="66" height="14" uuid="c11dfb7a-f75d-4dca-bfa7-43699994c4f5"/>
-					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[new ish.math.Money($V{totalForAccountType})]]></textFieldExpression>
-				</textField>
 			</band>
 		</groupFooter>
 	</group>
@@ -395,16 +272,12 @@
 				<textFieldExpression><![CDATA[$F{quantity} > 1 ? $F{quantity}.toInteger() + "x " + $F{title} : $F{title}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-2" style="data field (money)" x="357" y="3" width="58" height="14" uuid="d5634542-c063-4009-b438-7b4aa736acff">
-					<printWhenExpression><![CDATA[$F{taxableAccount}==true]]></printWhenExpression>
-				</reportElement>
+				<reportElement key="textField-2" style="data field (money)" x="357" y="3" width="58" height="14" uuid="d5634542-c063-4009-b438-7b4aa736acff"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{discountEachExTax}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-3" style="data field (money)" x="418" y="3" width="50" height="14" uuid="fe00d6d1-a0ce-455c-a660-5eaf186a8131">
-					<printWhenExpression><![CDATA[$F{taxableAccount}==true]]></printWhenExpression>
-				</reportElement>
+				<reportElement key="textField-3" style="data field (money)" x="418" y="3" width="50" height="14" uuid="fe00d6d1-a0ce-455c-a660-5eaf186a8131"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{taxEach}]]></textFieldExpression>
 			</textField>
@@ -418,9 +291,7 @@
 				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-8" style="data field (money)" x="294" y="3" width="60" height="14" uuid="b4b48016-8fb7-4f9b-bdaa-2b6d6ed122ba">
-					<printWhenExpression><![CDATA[$F{taxableAccount}==true]]></printWhenExpression>
-				</reportElement>
+				<reportElement key="textField-8" style="data field (money)" x="294" y="3" width="60" height="14" uuid="b4b48016-8fb7-4f9b-bdaa-2b6d6ed122ba"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{priceEachExTax}]]></textFieldExpression>
 			</textField>
