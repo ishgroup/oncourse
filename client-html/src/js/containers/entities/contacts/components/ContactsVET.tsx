@@ -40,7 +40,6 @@ import { EditViewProps } from "../../../../model/common/ListView";
 import { usePrevious } from "../../../../common/utils/hooks";
 import { mapSelectItems } from "../../../../common/utils/common";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
-import { convertSelectBooleanToString, convertSelectStringToBoolean } from "../utils";
 import { formatTFN, parseTFN, validateTFN } from "../../../../common/utils/validation/tfnValidation";
 import { TFNInputMask } from "./ContactsTutor";
 
@@ -123,6 +122,12 @@ const validateUSI = (value, allValues) => {
 
   return undefined;
 };
+
+const stillAtSchoolItems = [
+  { value: true, label: "Yes" },
+  { value: false, label: "No" },
+  { value: "", label: "Not stated" }
+];
 
 const ContactsVET: React.FC<ContactsVETProps> = props => {
   const {
@@ -327,13 +332,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               type="select"
               name="student.isStillAtSchool"
               label="Still at school"
-              format={convertSelectBooleanToString}
-              parse={convertSelectStringToBoolean}
-              items={[
-                { value: "true", label: "Yes" },
-                { value: "false", label: "No" },
-                { value: "", label: "Not stated" }
-              ]}
+              items={stillAtSchoolItems}
             />
           </Grid>
           <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
