@@ -383,8 +383,9 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	 * @return ABN (Australian Business Number) mostly for companies, but tutors might also have one for payment
 	 */
 	@API
+	@Override
 	@Nullable String getAbn() {
-		return getCustomFieldValue("ABN") as String
+		return super.getAbn()
 	}
 
 	/**
