@@ -43,7 +43,7 @@ public class SchemaUpdateService {
 
 
 
-	private static final String DATA_UPGRADE = "data/";
+	private static final String DATA_UPGRADE = "data/upgrades.yml";
 	private static final String RESOURCES_PATH = "database";
 
 	private final ICayenneService cayenneService;
@@ -105,17 +105,10 @@ public class SchemaUpdateService {
 	public void upgradeData() throws SQLException, DatabaseException {
 		sharedCayenneService = cayenneService;
 
-		List<String> yamlFiles = PluginService.getPluggableResources(DATA_UPGRADE, ".*\\.yml")
-				.stream()
-				.sorted( new NumberedFilesComparator())
-				.collect(Collectors.toList());
+		final var connection = cayenneService.getDataSource()
+				.getConnection();
 
-		for(var yamlFile:yamlFiles){
-			final var connection = cayenneService.getDataSource()
-					.getConnection();
-			applyChangeLog(connection, yamlFile);
-		}
-
+		applyChangeLog(connection, DATA_UPGRADE);
 
 		sharedCayenneService = null;
 	}
