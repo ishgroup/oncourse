@@ -50,6 +50,8 @@ const studentCitizenships = Object.keys(StudentCitizenship).map(mapSelectItems);
 
 const validateBirthDate = v => (!v || new Date(v).getTime() - Date.now() < 0 ? undefined : "Date of birth cannot be in future.");
 
+const validateABN = v => (!v || (new RegExp(/^\d+$/)).test(v) ? undefined : "Business Number (ABN) should be numeric.");
+
 interface ContactDetailsProps extends EditViewProps<Contact> {
   relationTypes?: ContactRelationType[];
   classes?: any;
@@ -375,6 +377,9 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
             </Grid>
             <Grid item {...gridItemProps}>
               <FormField type="phone" name="fax" label="Fax" />
+            </Grid>
+            <Grid item {...gridItemProps}>
+              <FormField type="text" name="abn" label="Business number (ABN)" validate={validateABN} />
             </Grid>
             {!isCompany ? (
               <>
