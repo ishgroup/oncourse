@@ -465,7 +465,7 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
     }
 
     return (
-      ![null, undefined, ''].includes(input.value)
+      ![null, undefined].includes(input.value)
       ? response
       : <span className={clsx("overflow-hidden placeholderContent", classes.editable)}>No value</span>
     );

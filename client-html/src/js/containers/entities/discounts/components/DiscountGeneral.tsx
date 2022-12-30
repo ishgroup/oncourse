@@ -35,7 +35,7 @@ interface DiscountGeneralState {
   validToIndex?: number;
 }
 
-const discountTypes = [
+export const discountTypes = [
   {
     value: DiscountType.Percent,
     label: "Discount percent"
