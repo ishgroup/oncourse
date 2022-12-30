@@ -12,6 +12,11 @@ properties:
   tutor:
     $ref: './Tutor.yaml'
     description: Tutor who owns contact
+  abn:
+    type: string
+    required: true
+    description: Australian business number, for company only
+    example: 12345678901
   birthDate:
     type: string
     format: date
