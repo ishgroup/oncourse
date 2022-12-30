@@ -63,7 +63,7 @@ const PayRateItem = props => {
           </Grid>
           <Grid item xs={2} className="d-flex">
             <FormField
-              type="persent"
+              type="number"
               name={`${item}.oncostRate`}
               label="Oncosts"
               step="0.01"
@@ -71,6 +71,7 @@ const PayRateItem = props => {
               parse={parseFieldPercent}
               onKeyPress={preventNegativeOrLogEnter}
               validate={validatePercentage}
+              debounced={false}
             />
             <Tooltip title="Remove pay rate">
               <IconButton

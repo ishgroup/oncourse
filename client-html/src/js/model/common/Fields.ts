@@ -24,7 +24,7 @@ export interface EditInPlaceFieldProps {
   input?: Partial<WrappedFieldInputProps>;
   meta?: Partial<WrappedFieldMetaProps>;
   InputProps?: Partial<InputProps>;
-  type?: "password" | "percentage" | "number" | "text",
+  type?: "password" | "number" | "text",
   label?: ReactNode,
   maxLength?: number,
   disabled?: boolean,

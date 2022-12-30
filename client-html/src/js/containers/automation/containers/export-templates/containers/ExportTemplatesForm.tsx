@@ -289,6 +289,7 @@ const ExportTemplatesForm = React.memo<Props>(
                     color="primary"
                     format={v => v === "Enabled"}
                     parse={v => v ? "Enabled" : "Installed but Disabled"}
+                    debounced={false}
                   />
                 </div>
                 <div className="mt-3 pt-1">

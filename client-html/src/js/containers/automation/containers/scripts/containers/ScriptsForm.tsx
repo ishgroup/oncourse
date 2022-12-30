@@ -617,6 +617,7 @@ const ScriptsForm = React.memo<Props>(props => {
                             format={v => v === "Enabled"}
                             parse={v => (v ? "Enabled" : "Installed but Disabled")}
                             onClick={e => e.stopPropagation()}
+                            debounced={false}
                           />
                         )}
                         onExpand={() => setTriggerExpand(!triggerExpand)}

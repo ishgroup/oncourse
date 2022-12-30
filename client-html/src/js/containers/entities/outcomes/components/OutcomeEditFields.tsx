@@ -520,6 +520,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
               name={getFieldName("hoursAttended")}
               parse={parseIntValue}
               label="Hours attended"
+              debounced={false}
               fullWidth
             />
           </Grid>

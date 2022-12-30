@@ -49,7 +49,7 @@ const renderTaxTypes = props => {
 
               <Grid item xs={4}>
                 <FormField
-                  type="persent"
+                  type="number"
                   name={`${item}.rate`}
                   label="Rate"
                   min="0"
@@ -61,6 +61,7 @@ const renderTaxTypes = props => {
                   disabled={!field.editable}
                   className={classes.field}
                   validate={validatePercentage}
+                  debounced={false}
                   fullWidth
                 />
               </Grid>

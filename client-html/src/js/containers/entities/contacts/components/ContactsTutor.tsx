@@ -119,6 +119,7 @@ const ContactsTutor: React.FC<ContactsTutorProps> = props => {
             validate={validateTFN}
             parse={parseTFN}
             format={formatTFN}
+            debounced={false}
           />
         </Grid>
         <Grid item xs={twoColumn ? 6 : 12}>

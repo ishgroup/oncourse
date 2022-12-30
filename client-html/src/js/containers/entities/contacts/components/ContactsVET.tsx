@@ -309,6 +309,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               label="Achieved in year"
               validate={[validateNonNegative, validateYearSchoolCompleted]}
               parse={parseIntValue}
+              debounced={false}
             />
           </Grid>
           <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
@@ -547,6 +548,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
                 validate={validateTFN}
                 parse={parseTFN}
                 format={formatTFN}
+                debounced={false}
               />
             </Grid>
           )}

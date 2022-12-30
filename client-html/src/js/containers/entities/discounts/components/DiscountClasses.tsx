@@ -120,6 +120,7 @@ class DiscountClasses extends React.PureComponent<any, any> {
             hidePlaceholderInEditMode
             validate={[validateSingleMandatoryField, validateNonNegative]}
             parse={normalizeNumber}
+            debounced={false}
           />
           enrolments on one invoice from the classes above
         </Typography>

@@ -239,13 +239,14 @@ const TutorPayContent: React.FC<Props> = ({
         <Grid item xs={6} className="centeredFlex">
           <Typography variant="body1" className={classes.onCostRate}>
             <FormField
-              type="persent"
+              type="number"
               name="onCostRate"
               format={formatFieldPercent}
               parse={parseFieldPercent}
               onKeyPress={preventNegativeOrLogEnter}
               defaultValue={`${defaultOnCostRate * 100}%`}
               disabled={onCostLocked}
+              debounced={false}
               inline
             />
             <span>oncost</span>

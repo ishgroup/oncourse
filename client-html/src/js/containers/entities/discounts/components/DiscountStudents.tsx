@@ -277,6 +277,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
             parse={normalizeNumber}
             validate={greaterThanZeroIncludeValidation}
             className="mb-2"
+            debounced={false}
           />
           <div className={clsx("d-grid justify-content-start gridAutoFlow-column", classes.studentsAttributes)}>
             <FormField
@@ -305,6 +306,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
                 parse={normalizeNumber}
                 validate={[validateSingleMandatoryField, greaterThanZeroIncludeValidation]}
                 className="mb-2"
+                debounced={false}
               />
             )}
           </div>

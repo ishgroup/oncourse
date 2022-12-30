@@ -339,6 +339,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
             hidePlaceholderInEditMode
             validate={[validateSingleMandatoryField, validateNonNegative]}
             parse={parseFloatValue}
+            debounced={false}
             inline
           />
           days after purchase

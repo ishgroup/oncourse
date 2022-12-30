@@ -201,7 +201,7 @@ const DiscountContent: React.FC<Props> = ({
       </Grid>
       <Grid item xs={4}>
         <FormField
-          type="persent"
+          type="number"
           name={
             forecastLocked ? "courseClassDiscount.discount.predictedStudentsPercentage" : "courseClassDiscount.forecast"
           }
@@ -217,6 +217,7 @@ const DiscountContent: React.FC<Props> = ({
             </IconButton>
           }}
           disabled={forecastLocked}
+          debounced={false}
         />
       </Grid>
       <Grid item xs={6}>
