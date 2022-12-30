@@ -15,7 +15,6 @@ import { validateSingleMandatoryField } from "../../../utils/validation";
 import SimpleTagList from "../simpleTagListComponent/SimpleTagList";
 import { CheckboxField } from "./CheckboxField";
 import CodeEditorField from "./CodeEditorField";
-import HeaderTextField from "./HeaderTextField";
 import EditInPlaceDateTimeField from "./EditInPlaceDateTimeField";
 import EditInPlaceDurationField from "./EditInPlaceDurationField";
 import EditInPlaceField from "./EditInPlaceField";
@@ -32,7 +31,6 @@ import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 const EditInPlaceTypes = createStringEnum([
   "text",
   "multilineText",
-  "headerText",
   "date",
   "dateTime",
   "duration",
@@ -125,8 +123,6 @@ const FormFieldBase = React.forwardRef<any, Props>(({
       return <EditInPlaceDateTimeField ref={ref} {...sharedProps} type="datetime" />;
     case "aql":
       return <EditInPlaceQuerySelect ref={ref} {...sharedProps as any} />;
-    case "headerText":
-      return <HeaderTextField ref={ref} {...sharedProps} />;
     case "code":
       return <CodeEditorField ref={ref} {...sharedProps} />;
     case "password":
