@@ -15,7 +15,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
 
         * def mergeRequest =
         """
-        {"contactA":"21","contactB":"22","data":{"customField.ABN":"B","Contact.birthDate":"B","Contact.email":"B","Contact.fax":"B","Contact.firstName":"B","Contact.homePhone":"B","Contact.honorific":"B","Contact.invoiceTerms":"B","Contact.isMale":"B","Contact.lastName":"B","Contact.message":"B","Contact.middleName":"B","Contact.mobilePhone":"B","Contact.postcode":"B","Contact.state":"B","Contact.street":"B","Contact.suburb":"B","Contact.tfn":"B","Contact.title":"B","Contact.workPhone":"B","Contact.taxOverride":"B","Contact.country":"B","Student.studentNumber":"B","Student.chessn":"B","Student.citizenship":"B","Student.clientIndustryEmployment":"B","Student.clientOccupationIdentifier":"B","Student.disabilityType":"B","Student.englishProficiency":"B","Student.feeHelpEligible":"B","Student.highestSchoolLevel":"B","Student.indigenousStatus":"B","Student.isOverseasClient":"B","Student.isStillAtSchool":"B","Student.labourForceStatus":"B","Student.medicalInsurance":"B","Student.passportNumber":"B","Student.priorEducationCode":"B","Student.specialNeeds":"B","Student.specialNeedsAssistance":"B","Student.townOfBirth":"B","Student.uniqueLearnerIndentifier":"B","Student.visaExpiryDate":"B","Student.visaNumber":"B","Student.visaType":"B","Student.yearSchoolCompleted":"B","Student.countryOfBirth":"B","Student.countryOfResidency":"B","tags":"B","customField.cf2":"B","customField.cf1":"B","Tutor.dateFinished":"B","Tutor.dateStarted":"B","Tutor.payrollRef":"B","Tutor.resume":"B","Tutor.wwChildrenCheckedOn":"B","Tutor.wwChildrenExpiry":"B","Tutor.wwChildrenRef":"B","Tutor.wwChildrenStatus":"B"}}
+        {"contactA":"21","contactB":"22","data":{"Contact.abn":"B","Contact.birthDate":"B","Contact.email":"B","Contact.fax":"B","Contact.firstName":"B","Contact.homePhone":"B","Contact.honorific":"B","Contact.invoiceTerms":"B","Contact.isMale":"B","Contact.lastName":"B","Contact.message":"B","Contact.middleName":"B","Contact.mobilePhone":"B","Contact.postcode":"B","Contact.state":"B","Contact.street":"B","Contact.suburb":"B","Contact.tfn":"B","Contact.title":"B","Contact.workPhone":"B","Contact.taxOverride":"B","Contact.country":"B","Student.studentNumber":"B","Student.chessn":"B","Student.citizenship":"B","Student.clientIndustryEmployment":"B","Student.clientOccupationIdentifier":"B","Student.disabilityType":"B","Student.englishProficiency":"B","Student.feeHelpEligible":"B","Student.highestSchoolLevel":"B","Student.indigenousStatus":"B","Student.isOverseasClient":"B","Student.isStillAtSchool":"B","Student.labourForceStatus":"B","Student.medicalInsurance":"B","Student.passportNumber":"B","Student.priorEducationCode":"B","Student.specialNeeds":"B","Student.specialNeedsAssistance":"B","Student.townOfBirth":"B","Student.uniqueLearnerIndentifier":"B","Student.visaExpiryDate":"B","Student.visaNumber":"B","Student.visaType":"B","Student.yearSchoolCompleted":"B","Student.countryOfBirth":"B","Student.countryOfResidency":"B","tags":"B","customField.cf2":"B","customField.cf1":"B","Tutor.dateFinished":"B","Tutor.dateStarted":"B","Tutor.payrollRef":"B","Tutor.resume":"B","Tutor.wwChildrenCheckedOn":"B","Tutor.wwChildrenExpiry":"B","Tutor.wwChildrenRef":"B","Tutor.wwChildrenStatus":"B"}}
         """
 
         Given path ishPath
@@ -55,6 +55,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
             "passedClasseCount":0,
             "cancelledClassesCount":0
             },
+        "abn":"222",
         "birthDate":"1999-05-05",
         "country":{"id":2,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"United States of America","saccCode":null},
         "fax":"b",
@@ -84,7 +85,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "middleName":"B",
         "invoiceTerms":22,
         "taxId":1,
-        "customFields":{"cf1":"bb","cf2":"b","ABN":"222"},
+        "customFields":{"cf1":"bb","cf2":"b"},
         "documents":
         [
             {"shared":true,"thumbnail":null,"access":"Public","added":"#ignore","description":"Public description","createdOn":null,"tags":[],"attachmentRelations":[],"versionId":null,"modifiedOn":null,"removed":false,"attachedRecordsCount":null,"versions":[{"fileName":null,"thumbnail":null,"size":"21 b","added":"#ignore","createdBy":null,"id":201,"mimeType":null,"url":null}],"name":"defaultPublicDocument","id":201,"urlWithoutVersionId":null},
@@ -134,6 +135,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "id":23,
         "student":{"id":17,"countryOfBirth":null,"disabilityType":"Not stated","labourForceStatus":"Not stated","englishProficiency":"Not stated","highestSchoolLevel":"Not stated","indigenousStatus":"Not stated","isOverseasClient":false,"isStillAtSchool":false,"language":null,"priorEducationCode":"Not stated","specialNeeds":null,"yearSchoolCompleted":null,"studentNumber":17,"countryOfResidency":null,"visaNumber":null,"visaType":null,"visaExpiryDate":null,"passportNumber":null,"medicalInsurance":null,"uniqueLearnerIdentifier":null,"usi":"3333333333","usiStatus":"Not supplied","chessn":null,"feeHelpEligible":false,"citizenship":"No information","townOfBirth":null,"specialNeedsAssistance":false,"clientIndustryEmployment":"Not Stated","clientOccupationIdentifier":"Not Stated","waitingLists":[],"concessions":[]},
         "tutor":{"defaultPayType":"Employee","id":6,"dateFinished":null,"dateStarted":null,"familyNameLegal":null,"givenNameLegal":null,"payrollRef":null,"resume":null,"wwChildrenCheckedOn":null,"wwChildrenExpiry":null,"wwChildrenRef":null,"wwChildrenStatus":"Not checked","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":1,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
+        "abn":null,
         "birthDate":"1995-05-06",
         "country":{"id":1,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Australia","saccCode":null},
         "fax":null,
@@ -207,7 +209,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
 
     Scenario: (+) Merge company and company
 
-        * def mergeRequest = {"contactA":"27","contactB":"28","data":{"Contact.fax":"A","Contact.country":"A","customField.ABN":"A","Contact.email":"B","Contact.homePhone":"A","Contact.lastName":"B","Contact.message":"A","Contact.mobilePhone":"B","Contact.postcode":"A","Contact.state":"B","Contact.street":"A","Contact.suburb":"B","Contact.workPhone":"A","Contact.taxOverride":"B","tags":"A","customField.cf2":"B","customField.cf1":"A"}}
+        * def mergeRequest = {"contactA":"27","contactB":"28","data":{"Contact.fax":"A","Contact.country":"A","Contact.abn":"A","Contact.email":"B","Contact.homePhone":"A","Contact.lastName":"B","Contact.message":"A","Contact.mobilePhone":"B","Contact.postcode":"A","Contact.state":"B","Contact.street":"A","Contact.suburb":"B","Contact.workPhone":"A","Contact.taxOverride":"B","tags":"A","customField.cf2":"B","customField.cf1":"A"}}
 
         Given path ishPath
         And request mergeRequest
@@ -225,6 +227,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "id":27,
         "student":null,
         "tutor":null,
+        "abn":"777",
         "birthDate":null,
         "country":{"id":1,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Australia","saccCode":null},
         "fax":"444777124",
@@ -254,7 +257,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "middleName":null,
         "invoiceTerms":null,
         "taxId":2,
-        "customFields":{"ABN":"777","cf1":"Co1","cf2":"Co1"},
+        "customFields":{"cf1":"Co1","cf2":"Co1"},
         "documents":"#ignore",
         "tags":[233],
         "memberships":[],
@@ -308,7 +311,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
 
 #       <--->
 
-        * def mergeRequest = {"contactA":"24","contactB":"25","data":{"customField.ABN":"B","Contact.birthDate":"B","Contact.email":"B","Contact.fax":"B","Contact.firstName":"B","Contact.homePhone":"B","Contact.honorific":"B","Contact.invoiceTerms":"B","Contact.isMale":"B","Contact.lastName":"B","Contact.message":"B","Contact.mobilePhone":"B","Contact.postcode":"B","Contact.state":"B","Contact.street":"B","Contact.suburb":"B","Contact.tfn":"B","Contact.title":"B","Contact.workPhone":"B","Contact.taxOverride":"B","Contact.country":"B","tags":"B","customField.cf2":"B","customField.cf1":"B","Tutor.dateFinished":"B","Tutor.dateStarted":"B","Tutor.payrollRef":"B","Tutor.resume":"B","Tutor.wwChildrenCheckedOn":"B","Tutor.wwChildrenExpiry":"B","Tutor.wwChildrenRef":"B","Tutor.wwChildrenStatus":"B"}}
+        * def mergeRequest = {"contactA":"24","contactB":"25","data":{"Contact.abn":"B","Contact.birthDate":"B","Contact.email":"B","Contact.fax":"B","Contact.firstName":"B","Contact.homePhone":"B","Contact.honorific":"B","Contact.invoiceTerms":"B","Contact.isMale":"B","Contact.lastName":"B","Contact.message":"B","Contact.mobilePhone":"B","Contact.postcode":"B","Contact.state":"B","Contact.street":"B","Contact.suburb":"B","Contact.tfn":"B","Contact.title":"B","Contact.workPhone":"B","Contact.taxOverride":"B","Contact.country":"B","tags":"B","customField.cf2":"B","customField.cf1":"B","Tutor.dateFinished":"B","Tutor.dateStarted":"B","Tutor.payrollRef":"B","Tutor.resume":"B","Tutor.wwChildrenCheckedOn":"B","Tutor.wwChildrenExpiry":"B","Tutor.wwChildrenRef":"B","Tutor.wwChildrenStatus":"B"}}
 
         Given path ishPath
         And request mergeRequest
@@ -346,6 +349,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
             "passedClasseCount":1,
             "cancelledClassesCount":0
             },
+        "abn":null,
         "birthDate":"1972-05-06",
         "country":{"id":1,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Australia","saccCode":null},
         "fax":null,
@@ -375,7 +379,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "middleName":null,
         "invoiceTerms":66,
         "taxId":1,
-        "customFields":{"ABN":"555","cf2":"tB","cf1":"tB"},
+        "customFields":{"cf2":"tB","cf1":"tB"},
         "documents":"#ignore",
         "tags":[234],
         "memberships":[],
