@@ -61,7 +61,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
             fields={(
               <Grid item {...gridItemProps}>
                 <FormField
-                  type="remoteDataSearchSelect"
+                  type="remoteDataSelect"
                   entity="Contact"
                   aqlFilter="isStudent is true"
                   name="contactId"
@@ -100,7 +100,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
         </Grid>
         <Grid item xs={12}>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             entity="Course"
             aqlFilter="allowWaitingLists is true"
             name="courseId"

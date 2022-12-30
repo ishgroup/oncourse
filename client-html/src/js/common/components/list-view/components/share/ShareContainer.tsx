@@ -509,8 +509,8 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     selectAdornment={{
                       position: "end",
                       content: (
-                        <MenuItem className="relative" key="upload">
-                          <div className="heading centeredFlex" onClick={this.handleUploadBackgroundClick}>
+                        <MenuItem className="relative w-100" key="upload" onClick={this.handleUploadBackgroundClick}>
+                          <div className="heading centeredFlex">
                             <Publish />
                             {' '}
                             <span className="ml-1">Upload from disk</span>

@@ -127,7 +127,7 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
       </Grid>
       <Grid item {...gridItemProps}>
         <FormField
-          type="searchSelect"
+          type="select"
           name="administrationCenterId"
           label="Site"
           defaultDisplayValue={values && values.administrationCenterName}

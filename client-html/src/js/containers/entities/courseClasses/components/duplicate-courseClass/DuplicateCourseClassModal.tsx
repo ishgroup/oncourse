@@ -304,7 +304,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                   <FormField
                     type="number"
                     name="daysTo"
-                    formatting="inline"
+                    inline
                     step="1"
                     onChange={handleDaysToChange}
                     debounced={false}
@@ -319,7 +319,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                     type="date"
                     name="toDate"
                     className={classes.dateTime}
-                    formatting="inline"
+                    inline
                     onChange={handleDateChange}
                     debounced={false}
                     disabled={fetching}
@@ -458,13 +458,13 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                     <Typography variant="body2" color="inherit" component="span" onClick={e => e.preventDefault()} noWrap>
                       Change course for all classes to
                       <FormField
-                        type="remoteDataSearchSelect"
+                        type="remoteDataSelect"
                         entity="Course"
                         aqlFilter="currentlyOffered is true"
                         name="courseId"
                         selectValueMark="id"
                         selectLabelMark="name"
-                        formatting="inline"
+                        inline
                         selectLabelCondition={v => v.name}
                         selectFilterCondition={courseFilterCondition}
                         validate={changeCourse ? validateSingleMandatoryField : undefined}

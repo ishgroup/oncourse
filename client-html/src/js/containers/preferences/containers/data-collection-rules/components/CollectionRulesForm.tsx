@@ -250,11 +250,11 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                     type="select"
                     name="surveyForms"
                     label="Student Feedback"
-                    multiple
-                    allowEmpty
                     items={this.getItems("Survey") || []}
                     margin="none"
                     className={classes.selectField}
+                    allowEmpty
+                    multiple
                     fullWidth
                   />
                 </Grid>

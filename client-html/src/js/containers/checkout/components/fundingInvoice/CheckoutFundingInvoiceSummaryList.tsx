@@ -81,7 +81,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
     <Grid container columnSpacing={3} className="align-content-between">
       <Grid item xs={6}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           name={`fundingInvoices[${selectedItemIndex}].fundingProviderId`}
           entity="Contact"
           aqlFilter="isCompany is true"

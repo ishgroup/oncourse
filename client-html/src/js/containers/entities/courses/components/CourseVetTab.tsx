@@ -147,7 +147,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
 
       <Grid item xs={twoColumn ? 6 : 12}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           entity="Qualification"
           name="qualificationId"
           label="Qualification"

@@ -41,8 +41,7 @@ const EditInPlaceTypes = createStringEnum([
   "password",
   "aql",
   "select",
-  "searchSelect",
-  "remoteDataSearchSelect",
+  "remoteDataSelect",
   "number",
   "persent",
   "code",
@@ -109,10 +108,8 @@ const FormFieldBase = React.forwardRef<any, Props>(({
     case "money":
       return <EditInPlaceMoneyField ref={ref} {...sharedProps} />;
     case "select":
-      return <EditInPlaceField select ref={ref} {...sharedProps} />;
-    case "searchSelect":
-      return <EditInPlaceSearchSelect ref={ref} {...sharedProps} />;
-    case "remoteDataSearchSelect":
+      return <EditInPlaceSearchSelect inputRef={ref} {...sharedProps} />;
+    case "remoteDataSelect":
       return <EditInPlaceRemoteDataSearchSelect ref={ref} {...sharedProps} />;
     case "number":
       return <EditInPlaceField ref={ref} {...sharedProps} type="number" />;

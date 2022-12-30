@@ -172,7 +172,7 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
       </Grid>
       <Grid item {...gridItemProps}>
         <FormField
-          type="searchSelect"
+          type="select"
           name="administrationCenterId"
           label="Site"
           defaultDisplayValue={values && values.administrationCenterName}
