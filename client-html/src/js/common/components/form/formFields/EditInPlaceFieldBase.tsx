@@ -9,7 +9,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
 import { FormControl, FormHelperText, Input, InputAdornment, InputLabel } from "@mui/material";
-import { FormControlProps } from "@mui/material/FormControl/FormControl";
 import { InputProps } from "@mui/material/Input/Input";
 import { makeAppStyles } from "../../../styles/makeStyles";
 import { countWidth } from "../../../utils/DOM";
@@ -26,7 +25,6 @@ interface Props {
   labelAdornment?: React.ReactNode;
   editIcon?: React.ReactNode;
   CustomInput?: React.ReactNode;
-  FormControlProps?: Partial<FormControlProps>;
   InputProps?: Partial<InputProps>,
   fieldClasses?: FieldClasses,
   placeholder?: string;
@@ -63,7 +61,7 @@ const useStyles = makeAppStyles(theme => ({
     "&:hover .invisible": {
       visibility: "visible",
     },
-    "&.Mui-focused $inputEndAdornment": {
+    "& .Mui-focused $inputEndAdornment": {
       opacity: 1,
     }
   },
@@ -117,7 +115,6 @@ const EditInPlaceFieldBase = (
     warning,
     endAdornmentClass,
     CustomInput,
-    FormControlProps,
     InputProps,
   }: Props) => {
   
@@ -146,8 +143,7 @@ const EditInPlaceFieldBase = (
       error={invalid}
       variant="standard"
       margin="none"
-      className={className}
-      {...FormControlProps || {}}
+      className={clsx(className, classes.inputWrapper)}
     >
     {
       label && (
@@ -189,7 +185,7 @@ const EditInPlaceFieldBase = (
           ...InputProps?.inputProps || {}
         }}
         classes={{
-          root: clsx(fieldClasses.text, classes.inputWrapper, inline && classes.inlineInput),
+          root: clsx(fieldClasses.text, inline && classes.inlineInput),
           underline: fieldClasses.underline
         }}
         disabled={disabled}

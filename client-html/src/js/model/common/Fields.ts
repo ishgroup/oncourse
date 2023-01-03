@@ -10,6 +10,7 @@ export interface FieldClasses {
   selectMenu?: string;
   placeholder?: string;
   loading?: string;
+  listbox?: string;
 }
 
 export interface SelectItemRendererProps<E = any> {

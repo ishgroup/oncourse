@@ -8,7 +8,7 @@
 
 import CircularProgress from "@mui/material/CircularProgress";
 import Popper from "@mui/material/Popper";
-import { Autocomplete, IconButton, Select } from "@mui/material";
+import { Autocomplete, IconButton, InputAdornment, Select } from "@mui/material";
 import { createStyles, withStyles } from "@mui/styles";
 import React, { ReactElement, useContext, useEffect, useMemo, useRef, useState } from "react";
 import CloseIcon from '@mui/icons-material//Close';
@@ -20,12 +20,20 @@ import { usePrevious } from "../../../utils/hooks";
 import { ListboxComponent, selectStyles } from "./SelectCustomComponents";
 import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
 import EditInPlaceFieldBase from "./EditInPlaceFieldBase";
+import { FieldClasses } from "../../../../model/common/Fields";
 
-const searchStyles = () => createStyles({
+const searchStyles = (theme) => createStyles({
   inputEndAdornment: {
-    marginBottom: "-4px",
+    marginBottom: "-6px",
     alignItems: "center",
     display: "flex",
+  },
+  selectAdornment: {
+    marginBottom: "6px",
+    color: theme.palette.primary.main
+  },
+  endAdornment: {
+    opacity: 0.5
   },
   multiple: {},
   root: {
@@ -38,7 +46,7 @@ const searchStyles = () => createStyles({
     "& $multiple $inputEndAdornment": {
       position: 'absolute',
       right: 0,
-      bottom: 2,
+      bottom: 6,
       height: "auto"
     }
   },
@@ -64,7 +72,7 @@ interface Props  {
   creatable?: boolean;
   endAdornment?: any;
   allowEmpty?: boolean;
-  fieldClasses?: any;
+  fieldClasses?: FieldClasses;
   selectLabelCondition?: any;
   selectFilterCondition?: any;
   defaultDisplayValue?: any;
@@ -91,7 +99,8 @@ interface Props  {
   hasError?: boolean;
   multiple?: boolean;
   hideMenuOnNoResults?: boolean;
-  inputRef?: any;
+  hideEditIcon?: boolean;
+  inputRef?: React.Ref<any>;
   warning?: string;
   selectAdornment?: { position: "start" | "end", content: ReactElement }
 }
@@ -178,6 +187,7 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
     onClearRows,
     onInnerValueChange,
     hideMenuOnNoResults,
+    hideEditIcon,
     remoteData,
     createLabel,
     returnType = "string",
@@ -208,6 +218,12 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
   ), [items, selectLabelCondition, selectLabelMark, sortPropKey]);
 
   const inputNode = useRef<any>(null);
+
+  useEffect(() => {
+    if (inputRef && inputNode.current) {
+      inputRef = inputNode.current;
+    }
+  }, [inputNode.current, inputRef]);
 
   const [searchValue, setSearchValue] = useState<string>("");
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -347,11 +363,11 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
     }
 
     let newValue = value[selectValueMark];
-    
+
     if (returnType === "object") {
       newValue = (Object.keys(value).length ? value : null);
     }
-    
+
     if (multiple) {
       newValue = value.map(v => v[selectValueMark]);
       if (!newValue.length) {
@@ -395,7 +411,6 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
     if (typeof itemRenderer === "function") {
       return itemRenderer(getHighlightedPartLabel(getOptionLabel(data), searchValue), data, searchValue, optionProps) as any;
     }
-
     return getHighlightedPartLabel(getOptionLabel(data), searchValue, optionProps);
   };
 
@@ -442,21 +457,28 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
               onClick={onClear}
               color="inherit"
             >
-              <CloseIcon className={clsx(fieldClasses.editIcon, classes.clearIcon)} />
+              <CloseIcon className={classes.clearIcon} />
             </IconButton>
-          ) }
-          <ExpandMore className={clsx("hoverIcon", fieldClasses.editIcon)} />
+          )}
+          <IconButton
+            size="small"
+            color="inherit"
+            className="pl-0 pr-0"
+            disableRipple
+          >
+            <ExpandMore />
+          </IconButton>
         </div>
       )
   ), [disabled, loading, allowEmpty, input.value]);
-  
+
   const inputValue = useMemo(() => {
     if (multiple) {
       return (input.value || []).map(v => sortedItems.find(s => s[selectValueMark] === v));
     }
     return input.value || "";
   }, [input.value, multiple, selectValueMark, sortedItems]);
-  
+
   const renderedPlaceholder = useMemo(() => {
     const rendered = placeholder || (!isEditing ? "No value" : "");
     return multiple && inputValue.length ? null : rendered;
@@ -511,7 +533,6 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
           }) => (
             <EditInPlaceFieldBase
               {...params}
-              ref={inputRef}
               name={input.name}
               value={input.value}
               error={error}
@@ -525,33 +546,44 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
               shrink={Boolean(label || input.value)}
               labelAdornment={labelAdornment}
               placeholder={renderedPlaceholder}
-              editIcon={renderIcons}
+              editIcon={!hideEditIcon && renderIcons}
               InputProps={{
+                ...InputProps,
                 onChange: handleInputChange,
                 onFocus: edit,
                 onClick: onEditButtonFocus,
                 onBlur,
                 disableUnderline,
-                ref: InputProps?.ref,
                 classes: {
                   underline: fieldClasses.underline,
                   input: clsx(classes.input, disabled && classes.readonly, fieldClasses.text),
                 },
                 inputProps: {
                   ...inputProps,
+                  ref: ref => {
+                    (inputProps as any).ref.current = ref;
+                    inputNode.current = ref;
+                  },
                   value: (isEditing ? searchValue : multiple ? "" : (typeof displayedValue === "string" ? displayedValue : "")),
                 }
               }}
               CustomInput={(valueRenderer && !multiple && !isEditing && input.value)
-                ? <Select
-                    {...InputProps}
-                    onFocus={edit}
-                    value={input.value || ""}
-                    endAdornment={renderIcons}
-                    IconComponent={null}
-                  >
+                ?
+                <Select
+                  {...InputProps}
+                  onFocus={edit}
+                  value={input.value || ""}
+                  endAdornment={
+                    <InputAdornment
+                      position="end"
+                      className={clsx(classes.endAdornment, classes.selectAdornment, "d-none")}>
+                      {renderIcons}
+                    </InputAdornment>
+                  }
+                  IconComponent={null}
+                >
                   {renderValue}
-                  </Select>
+                </Select>
                 : null}
             />)
           }
@@ -564,6 +596,6 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
   );
 };
 
-export default withStyles(theme => ({ ...selectStyles(theme), ...searchStyles() } as any), { withTheme: true })(
+export default withStyles(theme => ({ ...selectStyles(theme), ...searchStyles(theme) } as any), { withTheme: true })(
   EditInPlaceSearchSelect
 ) as React.FC<Props>;
