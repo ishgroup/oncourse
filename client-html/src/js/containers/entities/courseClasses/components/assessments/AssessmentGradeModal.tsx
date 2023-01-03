@@ -90,7 +90,6 @@ const AssessmentGradeModal = (
                 onBlur: stubFunction,
                 value: gradeVal
               }}
-              hideArrows
             />
           </Grid>
         </Grid>

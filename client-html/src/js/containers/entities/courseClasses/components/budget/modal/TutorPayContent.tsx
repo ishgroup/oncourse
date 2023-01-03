@@ -243,7 +243,7 @@ const TutorPayContent: React.FC<Props> = ({
               onKeyPress={preventNegativeOrLogEnter}
               defaultValue={`${defaultOnCostRate * 100}%`}
               disabled={onCostLocked}
-              formatting="inline"
+              inline
             />
             <span>oncost</span>
             <span className="pl-1">

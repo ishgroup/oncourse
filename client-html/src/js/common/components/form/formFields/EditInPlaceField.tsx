@@ -11,10 +11,9 @@
  * */
 
 import React from "react";
-import { change } from "redux-form";
 import clsx from "clsx";
 import { createStyles, withStyles } from "@mui/styles";
-import { Edit, ExpandMore } from "@mui/icons-material";
+import { Edit } from "@mui/icons-material";
 import {
   ButtonBase,
   FormControl,
@@ -22,12 +21,10 @@ import {
   Input,
   InputAdornment,
   InputLabel,
-  ListItem,
-  MenuItem,
-  Select,
   Typography
 } from "@mui/material";
 import { AppTheme } from "../../../../model/common/Theme";
+import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
 
 const styles = (theme: AppTheme) => createStyles({
   inputEndAdornment: {
@@ -211,26 +208,50 @@ const styles = (theme: AppTheme) => createStyles({
   },
 });
 
-export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
-  private preventEditOnFocus: boolean = false;
+interface Props {
+  ref?: any;
+  input?: Partial<WrappedFieldInputProps>;
+  meta?: Partial<WrappedFieldMetaProps>;
+  type?: "password" | "percentage" | "number",
+  returnType?: "object" | "string",
+  classes?: any;
+  helperText?: string,
+  label?: string,
+  listSpacing?: boolean,
+  hideLabel?: boolean,
+  maxLength?: number,
+  disabled?: boolean,
+  min?: number,
+  max?: number,
+  step?: string,
+  className?: string,
+  onKeyPress?: any,
+  allowEmpty?: boolean,
+  placeholder?: string,
+  hidePlaceholderInEditMode?: boolean,
+  InputProps?: any,
+  InputLabelProps?: any,
+  labelAdornment?: any,
+  preformatDisplayValue?: any,
+  truncateLines?: number,
+  fieldClasses?: any,
+  rightAligned?: boolean,
+  disableInputOffsets?: boolean,
+  onKeyDown?: any,
+  onInnerValueChange?: any,
+  defaultValue?: any
+  disabledTab?: any
+  autoWidth?: boolean,
+  multiline?: boolean,
+  inline?: boolean,
+}
 
+export class EditInPlaceFieldBase extends React.PureComponent<Props, any> {
   state = {
     isEditing: false
   };
 
   private inputNode: any;
-
-  componentWillUnmount() {
-    const {
-      clearOnUnmount,
-      input: { name },
-      meta: { dispatch, form }
-    } = this.props;
-
-    if (clearOnUnmount) {
-      dispatch(change(form, name, null));
-    }
-  }
 
   componentDidUpdate() {
     if (this.state.isEditing && this.props.disabled) {
@@ -254,15 +275,10 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
     this.setState({
       isEditing: true
     });
-    if (!this.props.select) {
-      setTimeout(() => {
-        if (this.inputNode) this.inputNode.focus();
-      }, 50);
-    }
   };
 
   onBlur = () => {
-    const { input, invalid } = this.props;
+    const { input, meta: { invalid } } = this.props;
 
     this.setState({
       isEditing: invalid || false
@@ -270,9 +286,9 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
     input.onBlur(input.value);
   };
 
-  onFocus = () => {
+  onFocus = e => {
     const {
-      input, type, select, multiline
+      input, type, multiline
     } = this.props;
 
     if (!this.state.isEditing) {
@@ -280,9 +296,9 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         isEditing: true
       });
     }
-    input.onFocus();
+    input.onFocus(e);
 
-    if (!select && this.inputNode) {
+    if (this.inputNode) {
       if (!multiline) {
         this.inputNode.type = "text";
       }
@@ -293,83 +309,31 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
     }
   };
 
-  onEditButtonFocus = (e, type) => {
-    if (this.props.select && this.props.disabledTab && type === "focus") return;
-    if (this.props.select && type === "focus" && this.preventEditOnFocus && !this.props.disabledTab) {
-      this.preventEditOnFocus = false;
-      return;
-    }
-    this.edit(e);
-  };
-
-  onSelectClose = () => {
-    this.preventEditOnFocus = true;
-    this.setState({
-      isEditing: false
-    });
-  };
-
-  onSelectChange = e => {
-    const {
-      items, input, selectValueMark = "value", onInnerValueChange, returnType
-    } = this.props;
-
-    const selected = items.find(i => i[selectValueMark] === e.target.value);
-
-    if (typeof onInnerValueChange === "function") {
-      onInnerValueChange(selected);
-    }
-
-    if (items.length) {
-      input.onChange(returnType === "object" ? selected || null : e.target.value);
-      return;
-    }
-    this.onSelectClose();
-  };
-
   onFieldChange = v => {
     const {
       input: { onChange },
-      disabled,
-      stringValue
+      disabled
     } = this.props;
 
     if (!disabled) {
-      onChange(stringValue ? String(v) : v);
+      onChange(v);
     }
   };
 
   getInputLength = () => {
-    const { input, type } = this.props;
-    let commas = 0;
+    const { input } = this.props;
     const length = String(input.value).length;
-
-    if (type === "money") {
-      let amountLength = length;
-      for (let i = 0; i < length; i++ ) {
-        if (amountLength - 3 > 0) {
-          commas++;
-          amountLength -= 3;
-        }
-      }
-    }
-    return (length + commas) + "ch";
-  }
+    
+    return length + "ch";
+  };
 
   getValue = () => {
     const {
       type,
-      select,
-      items,
-      multiple,
       multiline,
       input: { value },
       placeholder,
-      selectValueMark = "value",
-      selectLabelMark = "label",
-      selectLabelCondition,
       classes,
-      returnType = "string",
       preformatDisplayValue,
       defaultValue,
       fieldClasses = {}
@@ -390,32 +354,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       if (defaultValue) {
         return defaultValue;
       }
-    }
-
-    if (select) {
-      if (multiple && value.length) {
-        return value.map((item, index) => (
-          <span key={index} className={classes.editable}>
-            {item}
-            {value.length > 1 ? index + 1 !== value.length && ", " : null}
-          </span>
-        ));
-      }
-
-      const match = value !== null && value !== undefined && items.find(
-        item => (returnType === "object" ? item[selectValueMark] === value[selectValueMark] : item[selectValueMark] === value)
-      );
-
-      if (match) return selectLabelCondition ? selectLabelCondition(match) : match[selectLabelMark];
-
-      if (defaultValue) {
-        return defaultValue;
-      }
-      return (
-        <span className={clsx(classes.placeholderContent, classes.editable, fieldClasses.placeholder)}>
-          {placeholder || "No value"}
-        </span>
-      );
     }
 
     const formattedValue = value;
@@ -445,42 +383,20 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
     );
   };
 
-  getSelectValue = () => {
-    const {
-      input, multiple, returnType, selectLabelCondition, selectValueMark
-    } = this.props;
-
-    return multiple
-      ? input.value || []
-      : returnType === "object"
-        ? selectLabelCondition
-          ? selectLabelCondition(input.value)
-          : input.value ? input.value[selectValueMark] : ""
-        : [undefined, null].includes(input.value)
-          ? ""
-          : input.value;
-  }
-
   render() {
     const {
       classes,
-      formatting = "primary",
-      selectValueMark = "value",
-      selectLabelMark = "label",
-      selectLabelCondition,
+      inline,
       input,
       meta: { error, invalid },
       helperText,
-      select,
-      items,
       label,
       listSpacing = true,
       hideLabel,
-      editableComponent,
       maxLength,
       type,
       disabled,
-      multiple,
+      ref,
       min,
       max,
       step,
@@ -489,13 +405,11 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       allowEmpty,
       placeholder,
       hidePlaceholderInEditMode,
-      selectAdornment,
       returnType,
       InputProps: { ...restInputProps } = {},
       InputLabelProps = {},
       labelAdornment,
       preformatDisplayValue,
-      clearOnUnmount,
       truncateLines,
       fieldClasses = {},
       rightAligned,
@@ -504,102 +418,25 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       onInnerValueChange,
       defaultValue,
       disabledTab,
-      sort,
       multiline,
-      categoryKey,
-      autoWidth = true,
-      zeroPadding,
-      allowNegative,
       ...custom
     } = this.props;
 
     const { isEditing } = this.state;
 
-    const isInline = formatting === "inline";
-
-    const sortedItems = items && (sort
-      ? [...items].sort(typeof sort === "function"
-        ? sort
-        : (aOption, bOption) => {
-          const aLabel = selectLabelCondition ? selectLabelCondition(aOption) : aOption[selectLabelMark];
-          const bLabel = selectLabelCondition ? selectLabelCondition(bOption) : bOption[selectLabelMark];
-
-          return (aLabel.toLowerCase()).localeCompare(bLabel.toLowerCase());
-        })
-      : [...items]);
-
-    let selectItems;
-
-    if (categoryKey) {
-      const categoryGroup = sortedItems.reduce((acc, cur) => {
-        if (Array.isArray(acc[cur[categoryKey]])) {
-          acc[cur[categoryKey]].push(cur);
-        } else {
-          acc[cur[categoryKey]] = [cur];
-        }
-        return acc;
-      }, {});
-      selectItems = [];
-      Object.keys(categoryGroup).forEach(k => {
-        selectItems.push(<ListItem key={k} className={clsx("heading", selectItems.length && "mt-2")}>{k}</ListItem>);
-        categoryGroup[k].sort((aOption, bOption) => {
-          const aLabel = selectLabelCondition ? selectLabelCondition(aOption) : aOption[selectLabelMark];
-          const bLabel = selectLabelCondition ? selectLabelCondition(bOption) : bOption[selectLabelMark];
-          return (aLabel.toLowerCase()).localeCompare(bLabel.toLowerCase());
-        });
-        selectItems.push(...categoryGroup[k].map((option, index) => (
-          <MenuItem key={k + index} value={option[selectValueMark]}>
-            {selectLabelCondition ? selectLabelCondition(option) : option[selectLabelMark]}
-          </MenuItem>
-        )));
-      });
-    } else {
-      selectItems = sortedItems
-        && sortedItems.map((option, index) => (
-          <MenuItem key={index} value={option[selectValueMark]}>
-            {selectLabelCondition ? selectLabelCondition(option) : option[selectLabelMark]}
-          </MenuItem>
-        ));
-    }
-
-    if (selectAdornment) {
-      selectItems = selectAdornment.position === "start"
-        ? [selectAdornment.content, ...selectItems]
-        : [...selectItems, selectAdornment.content];
-    }
-
-    if (((items && !items.some(i => [undefined, null].includes(i[selectValueMark]))) || !items) && (allowEmpty || !input.value) && (!multiple || !items.length)) {
-      selectItems = [
-        <MenuItem
-          key="empty"
-          value=""
-          classes={{
-            root: clsx({
-              [classes.selectedItem]: multiple,
-              [classes.emptySelect]: multiple
-            }),
-            selected: classes.emptySelect
-          }}
-        >
-          <span className={clsx(classes.placeholderContent, !isEditing && fieldClasses.placeholder)}>{placeholder || "No value"}</span>
-        </MenuItem>,
-        ...selectItems || []
-      ];
-    }
-
     const textFieldProps = {
       onKeyPress,
       onBlur: this.onBlur,
       inputProps: {
+        ref,
         maxLength,
         step,
         min,
         max,
         onKeyDown,
-        allownegative: allowNegative,
         type: type !== "password" ? (type === "percentage" ? "number" : type) : undefined,
         className: clsx(fieldClasses.text, {
-          [classes.inlineInput]: isInline,
+          [classes.inlineInput]: inline,
           [classes.readonly]: disabled,
           [classes.smallOffsetInput]: disableInputOffsets,
           [classes.hideArrows]: ["percentage", "number"].includes(type),
@@ -607,7 +444,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         }),
         placeholder: placeholder || (!isEditing ? "No value" : ""),
         style: {
-          maxWidth: isInline && !invalid ? this.getInputLength() : undefined
+          maxWidth: inline && !invalid ? this.getInputLength() : undefined
         },
       },
       value: input.value ? input.value : !isEditing && defaultValue ? defaultValue : input.value,
@@ -617,35 +454,28 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
 
     const iconProps = {
       className: clsx("hoverIcon editInPlaceIcon", classes.selectIcon, fieldClasses.placeholder, {
-        [classes.hiddenContainer]: (rightAligned || isInline) && disabled,
-        [classes.invisibleContainer]: !(rightAligned || isInline) && disabled
+        [classes.hiddenContainer]: (rightAligned || inline) && disabled,
+        [classes.invisibleContainer]: !(rightAligned || inline) && disabled
       })
     };
 
-    const editIcon = select ? (
-      <ExpandMore
-        {...iconProps}
-      />
-    ) : (
-      <Edit
-        {...iconProps}
-      />
-    );
+    const editIcon =  <Edit
+      {...iconProps}
+    />;
 
     return (
       <div
         id={input.name}
         className={clsx(className, "outline-none", {
-          [classes.inlineContainer]: isInline
+          [classes.inlineContainer]: inline
         })}
       >
         <div
           className={clsx({
-            [classes.inlineMargin]: isInline,
+            [classes.inlineMargin]: inline,
             [classes.rightAligned]: rightAligned,
-            [classes.hiddenContainer]: isInline && !(isEditing || invalid),
-            [classes.invisibleContainer]: isEditing && select && !invalid,
-            "d-inline": isInline && (isEditing || invalid)
+            [classes.hiddenContainer]: inline && !(isEditing || invalid),
+            "d-inline": inline && (isEditing || invalid)
           })}
         >
           <FormControl
@@ -655,7 +485,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
             margin="none"
             className={clsx({
               [classes.topMargin]: !listSpacing && !disableInputOffsets,
-              [classes.inlineTextField]: isInline
+              [classes.inlineTextField]: inline
             })}
             {...custom}
           >
@@ -683,74 +513,34 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
               )
             }
 
-            {select
-              ? (
-                <div className={clsx(isInline && "d-inline", label && 'mt-2', classes.selectMainWrapper)}>
-                  <Select
-                    id={`input-select-${input.name}`}
-                    name={input.name}
-                    value={this.getSelectValue()}
-                    inputRef={this.setInputNode}
-                    inputProps={{
-                      classes: {
-                        root: classes.textFieldBorderModified,
-                        underline: fieldClasses.underline
-                      },
-                      id: `input-${input.name}`
-                    }}
-                    classes={{
-                      select: clsx(classes.muiSelect, fieldClasses.text, isInline && classes.inlineSelect),
-                    }}
-                    multiple={multiple}
-                    autoWidth={autoWidth}
-                    open={isEditing}
-                    disabled={disabled}
-                    onOpen={this.onFocus}
-                    onClose={this.onSelectClose}
-                    onChange={this.onSelectChange}
-                    IconComponent={() => (!disabled && <ExpandMore className={classes.selectIconInput} onClick={this.onFocus} />)}
-                    MenuProps={{
-                      anchorOrigin: { vertical: 'top', horizontal: 'center' },
-                      classes: {
-                        root: classes.selectMenu
-                      }
-                    }}
-                    displayEmpty
-                    fullWidth
-                  >
-                    {selectItems}
-                  </Select>
-                </div>
-              )
-              : (
-                <Input
-                  {...restInputProps}
-                  {...textFieldProps}
-                  maxRows={truncateLines}
-                  multiline={multiline}
-                  inputRef={this.setInputNode}
-                  classes={{
-                    root: clsx(isInline && classes.inlineInput, classes.textFieldBorderModified,
-                      fieldClasses.text, classes.inputWrapper, isEditing && classes.isEditing),
-                    underline: fieldClasses.underline
-                  }}
-                  disabled={disabled}
-                  endAdornment={!isInline && !disabled && (
-                    <InputAdornment
-                      position="end"
-                      className={clsx(classes.inputEndAdornment, {
-                        [classes.hiddenContainer]: rightAligned,
-                        [classes.invisibleContainer]: !rightAligned
-                      })}
-                      onClick={() => this.inputNode && this.inputNode.focus()}
-                    >
-                      <Edit />
-                    </InputAdornment>
-                  )}
-                  id={`input-${input.name}`}
-                  name={input.name}
-                />
+            <Input
+              {...restInputProps}
+              {...textFieldProps}
+              maxRows={truncateLines}
+              multiline={multiline}
+              inputRef={this.setInputNode}
+              classes={{
+                root: clsx(inline && classes.inlineInput, classes.textFieldBorderModified,
+                  fieldClasses.text, classes.inputWrapper, isEditing && classes.isEditing),
+                underline: fieldClasses.underline
+              }}
+              disabled={disabled}
+              endAdornment={!inline && !disabled && (
+                <InputAdornment
+                  position="end"
+                  className={clsx(classes.inputEndAdornment, {
+                    [classes.hiddenContainer]: rightAligned,
+                    [classes.invisibleContainer]: !rightAligned
+                  })}
+                  onClick={() => this.inputNode && this.inputNode.focus()}
+                >
+                  <Edit />
+                </InputAdornment>
               )}
+              id={`input-${input.name}`}
+              name={input.name}
+            />
+
             <FormHelperText
               classes={{
                 root: clsx(rightAligned && "text-end"),
@@ -761,22 +551,22 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
             </FormHelperText>
           </FormControl>
         </div>
-        {isInline && (
+        {inline && (
           <div
             className={clsx({
-              [classes.hiddenContainer]: isEditing || invalid || !isInline,
+              [classes.hiddenContainer]: isEditing || invalid || !inline,
               [classes.rightAligned]: rightAligned,
-              "d-inline": isInline && !(isEditing || invalid)
+              "d-inline": inline && !(isEditing || invalid)
             })}
           >
-            <div className={clsx(isInline ? "d-inline" : classes.fitWidth)}>
-              {isInline && !hideLabel && label}
+            <div className={clsx(inline ? "d-inline" : classes.fitWidth)}>
+              {inline && !hideLabel && label}
 
-              {isInline && (
+              {inline && (
                 <ButtonBase
                   component="span"
-                  onFocus={e => this.onEditButtonFocus(e, "focus")}
-                  onClick={e => this.onEditButtonFocus(e, "click")}
+                  onFocus={this.edit}
+                  onClick={this.edit}
                   className={clsx(
                     "d-inline vert-align-bl hoverIconContainer",
                     classes.editable,
@@ -787,7 +577,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                     }
                   )}
                 >
-                  {editableComponent || this.getValue()}
+                  {this.getValue()}
                   {editIcon}
                 </ButtonBase>
               )}

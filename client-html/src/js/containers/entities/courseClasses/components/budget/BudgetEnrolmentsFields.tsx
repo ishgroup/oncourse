@@ -127,7 +127,6 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
       </Grid>
       <Grid item xs={2} className="text-end">
         <EditInPlaceField
-          name="budgetedPlaces"
           type="number"
           label="Projected"
           defaultValue={values.budgetedPlaces || "0"}
@@ -136,6 +135,7 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
             invalid: Boolean(errors.budgeted)
           }}
           input={{
+            name: "budgetedPlaces",
             onChange: e => debounceChange("budgetedPlaces", e.target.value),
             onFocus: stubFunction,
             onBlur: stubFunction

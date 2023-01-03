@@ -20,7 +20,7 @@ import { useGradeErrors } from "./utils/hooks";
 import GradeContent from "./GradeContent";
 import EditInPlaceDateTimeField from "../../../../../common/components/form/formFields/EditInPlaceDateTimeField";
 import { stubFunction } from "../../../../../common/utils/common";
-import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
+import EditInPlaceSearchSelect from "../../../../../common/components/form/formFields/EditInPlaceSearchSelect";
 import { Dispatch } from "redux";
 
 interface Props {
@@ -105,8 +105,7 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
                 value: elem.submission.submittedOn
               }}
               type="datetime"
-              formatting="inline"
-              inlineMargin
+              inline
             />
           )
           : submittedContent}
@@ -116,7 +115,7 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
       <>
         <Grid item xs={2} className={classes.center}>
           {elem.markedValue === "Submitted" ? (
-            <div>
+            <div className="pt-0-5">
               <div>
                 <EditInPlaceDateTimeField
                   meta={{
@@ -129,12 +128,11 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
                     value: elem.submission.markedOn
                   }}
                   type="datetime"
-                  formatting="inline"
-                  inlineMargin
+                  inline
                 />
               </div>
               <div>
-                <EditInPlaceField
+                <EditInPlaceSearchSelect
                   meta={{}}
                   selectValueMark="contactId"
                   selectLabelMark="tutorName"
@@ -145,10 +143,9 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
                     value: elem.submission.markedById
                   }}
                   placeholder="No assessor"
-                  formatting="inline"
                   items={tutors}
                   allowEmpty
-                  select
+                  inline
                 />
               </div>
             </div>

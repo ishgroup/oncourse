@@ -133,7 +133,7 @@ const PayslipPaylineItem = (props: Props) => {
                     name={`${item}.quantity`}
                     normalize={normalizeNumber}
                     listSpacing={false}
-                    formatting="inline"
+                    inline
                     disableInputOffsets
                     rightAligned
                   />
@@ -161,7 +161,7 @@ const PayslipPaylineItem = (props: Props) => {
                 disabled={!field.deferred}
                 name={`${item}.value`}
                 listSpacing={false}
-                formatting="inline"
+                inline
                 disableInputOffsets
                 rightAligned
                 required

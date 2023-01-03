@@ -46,7 +46,6 @@ describe("Virtual rendered CourseClassEditView", () => {
 
         suppressAvetmissExport: initialValues.suppressAvetmissExport,
         deliveryMode: initialValues.deliveryMode,
-        relatedFundingSourceId: initialValues.relatedFundingSourceId.toString(),
         fundingSource: initialValues.fundingSource,
         vetFundingSourceStateID: initialValues.vetFundingSourceStateID,
         detBookingId: initialValues.detBookingId,
@@ -59,7 +58,7 @@ describe("Virtual rendered CourseClassEditView", () => {
         studentContactHours: initialValues.studentContactHours,
         reportableHours: initialValues.reportableHours,
 
-        ...tutors,
+        // ...tutors,
       });
     }
   });

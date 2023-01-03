@@ -114,7 +114,7 @@ const MessageCardContent = React.memo<Props>(props => {
 
       {templateMessage ? (
         <>
-          <Grid item xs={6}>
+          <Grid item xs={12}>
             <FormField
               type="select"
               name={typeof templateOptionIndex === "number" && templateOptionIndex !== -1
@@ -122,7 +122,8 @@ const MessageCardContent = React.memo<Props>(props => {
                 : `${name}.template`}
               label="Template"
               items={messageTemplateItems}
-              selectLabelCondition={renderAutomationItems}
+              itemRenderer={renderAutomationItems}
+              valueRenderer={renderAutomationItems}
               onInnerValueChange={changeEmailTemplate}
               disabled={disabled}
               required

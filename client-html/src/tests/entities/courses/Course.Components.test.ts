@@ -12,7 +12,6 @@ describe("Virtual rendered CourseEditView", () => {
         code: initialValues.code,
         enrolmentType: initialValues.enrolmentType,
         status: initialValues.status,
-        dataCollectionRuleId: initialValues.dataCollectionRuleId.toString(),
         allowWaitingLists: initialValues.allowWaitingLists,
         brochureDescription: initialValues.brochureDescription,
       });

@@ -12,22 +12,19 @@ import FormHelperText from "@mui/material/FormHelperText";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import Popper from "@mui/material/Popper";
-import { Autocomplete, IconButton, InputAdornment } from "@mui/material";
+import { Autocomplete, IconButton, InputAdornment, Select } from "@mui/material";
 import { createStyles, withStyles } from "@mui/styles";
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { ReactElement, useContext, useEffect, useMemo, useRef, useState } from "react";
 import CloseIcon from '@mui/icons-material//Close';
 import clsx from "clsx";
-import Typography from "@mui/material/Typography";
-import ListItemText from "@mui/material/ListItemText";
-import ButtonBase from "@mui/material/ButtonBase";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import { WrappedFieldProps } from "redux-form";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
 import { usePrevious } from "../../../utils/hooks";
 import { ListboxComponent, selectStyles } from "./SelectCustomComponents";
-import { SelectItemRendererProps } from "../../../../model/common/Fields";
 import WarningMessage from "../fieldMessage/WarningMessage";
+import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
+import { countWidth } from "../../../utils/DOM";
 
 const searchStyles = theme => createStyles({
   inputEndAdornment: {
@@ -57,8 +54,15 @@ const searchStyles = theme => createStyles({
     maxWidth: "100%"
   },
   inline: {
-    fontSize: "inherit"
+    fontSize: "inherit",
+    "& $inputEndAdornment": {
+      display: "none",
+    },
+    "&:hover $inputEndAdornment": {
+      display: "flex",
+    }
   },
+  multiple: {},
   labelShrink: {},
   editable: {
     color: theme.palette.text.primaryEditable,
@@ -66,11 +70,30 @@ const searchStyles = theme => createStyles({
   },
   editableInHeader: {
     color: theme.palette.primary.contrastText,
+  },
+  root: {
+    "& $inline.MuiInput-root .MuiInput-input": {
+      padding: 0
+    },
+    "& $multiple": {
+      flexWrap: 'wrap'
+    },
+    "& $multiple $inputEndAdornment": {
+      position: 'absolute',
+      right: 0,
+      bottom: 2,
+      height: "auto"
+    }
+  },
+  popper: {
+    zIndex: 1400
   }
 });
 
-interface Props extends WrappedFieldProps {
-  items: any[];
+interface Props  {
+  input?: Partial<WrappedFieldInputProps>;
+  meta?: Partial<WrappedFieldMetaProps>;
+  items?: any[];
   classes?: any;
   label?: string;
   disabled?: boolean;
@@ -82,7 +105,6 @@ interface Props extends WrappedFieldProps {
   colors?: any;
   creatable?: boolean;
   endAdornment?: any;
-  formatting?: string;
   allowEmpty?: boolean;
   fieldClasses?: any;
   helperText?: string;
@@ -93,15 +115,17 @@ interface Props extends WrappedFieldProps {
   remoteRowCount?: number;
   loadMoreRows?: AnyArgFunction;
   onCreateOption?: AnyArgFunction;
-  itemRenderer?: AnyArgFunction<React.FC<SelectItemRendererProps>>;
+  itemRenderer?: (content, data, search, parentProps) => ReactElement;
+  valueRenderer?: (content, data, search, parentProps) => ReactElement;
   onInputChange?: AnyArgFunction;
   onClearRows?: AnyArgFunction;
   onInnerValueChange?: AnyArgFunction;
   selectValueMark?: string;
   remoteData?: boolean;
+  disableUnderline?: boolean;
   createLabel?: string;
   selectLabelMark?: string;
-  returnType?: "object" | "value";
+  returnType?: "object" | "string";
   alwaysDisplayDefault?: boolean;
   popperAnchor?: any;
   placeholder?: string;
@@ -109,8 +133,11 @@ interface Props extends WrappedFieldProps {
   sortPropKey?: string;
   inHeader?: boolean;
   hasError?: boolean;
+  multiple?: boolean;
+  hideMenuOnNoResults?: boolean;
   inputRef?: any;
   warning?: string;
+  selectAdornment?: { position: "start" | "end", content: ReactElement }
 }
 
 const SelectContext = React.createContext<any>({});
@@ -122,7 +149,8 @@ const ListBoxAdapter = React.forwardRef<any, any>(({ children, ...other }, ref) 
     loadMoreRows,
     classes,
     fieldClasses = {},
-    loading
+    loading,
+    selectAdornment
   } = useContext(SelectContext);
 
   return (
@@ -133,6 +161,7 @@ const ListBoxAdapter = React.forwardRef<any, any>(({ children, ...other }, ref) 
       classes={classes}
       fieldClasses={fieldClasses}
       loading={loading}
+      selectAdornment={selectAdornment}
       ref={ref}
       {...other}
     >
@@ -143,21 +172,29 @@ const ListBoxAdapter = React.forwardRef<any, any>(({ children, ...other }, ref) 
 
 const PopperAdapter = React.memo<any>(params => {
   const {
-    inline,
+    hideMenuOnNoResults,
     items,
-    popperAnchor
+    popperAnchor,
+    inline
   } = useContext(SelectContext);
 
-  return (inline && !items.length
+  return (hideMenuOnNoResults && !items.length
     ? null
     : popperAnchor
       // @ts-ignore
-      ? <Popper {...params} style={{ ...params.style, width: popperAnchor.clientWidth }} anchorEl={popperAnchor} />
+      ? <Popper
+         {...params}
+         style={{ ...params.style, width: popperAnchor.clientWidth }}
+         anchorEl={popperAnchor}
+      />
       // @ts-ignore
-      : <Popper {...params} />);
+      : <Popper
+        {...params}
+        style={inline ? null : params.style}
+      />);
 });
 
-const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
+const EditInPlaceSearchSelect: React.FC<Props> = ({
     classes,
     label,
     disabled,
@@ -165,19 +202,17 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     labelAdornment,
     inline,
     loading,
-    hideLabel,
-    colors,
     creatable,
-    endAdornment,
-    formatting,
     allowEmpty,
     fieldClasses = {},
     helperText,
+    selectAdornment,
     selectValueMark = "value",
     selectLabelMark = "label",
     selectLabelCondition,
     selectFilterCondition,
     defaultDisplayValue,
+    disableUnderline,
     items = [],
     rowHeight,
     remoteRowCount,
@@ -187,10 +222,12 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     onInputChange,
     onClearRows,
     onInnerValueChange,
+    hideMenuOnNoResults,
     remoteData,
     createLabel,
-    returnType = "value",
+    returnType = "string",
     alwaysDisplayDefault,
+    valueRenderer,
     popperAnchor,
     input,
     meta,
@@ -200,7 +237,8 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     inHeader,
     hasError,
     inputRef,
-    warning
+    warning,
+    multiple
   }) => {
   const sortedItems = useMemo(() => items && (sort
     ? [...items].sort(typeof sort === "function"
@@ -237,7 +275,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
   const onBlur = () => {
     setIsEditing(false);
 
-    if (!inline) {
+    if (!hideMenuOnNoResults) {
       setSearchValue("");
     }
 
@@ -261,8 +299,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     const searchRegexp = new RegExp(searchValue.replace(",", "")
       // eslint-disable-next-line no-useless-escape
       .replace(/[\[\]\{\}\(\)\*]/g, "\\$&")
-      .trim().toLowerCase()
-      .replace(/\s+/g, "|"));
+      .trim().toLowerCase());
 
     if (typeof selectFilterCondition === "function") {
       filtered = items.filter(item => {
@@ -302,9 +339,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
 
   const edit = () => {
     setIsEditing(true);
-    setTimeout(() => {
-      inputNode?.current?.focus();
-    }, 50);
+    setTimeout(() => inputNode?.current?.focus(), 50);
   };
 
   const onClear = () => {
@@ -324,12 +359,6 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     setSearchValue("");
     setIsEditing(false);
     setFormattedDisplayValue(null);
-  };
-
-  const onFocus = e => {
-    if (!inline) {
-      input.onFocus(e);
-    }
   };
 
   const onEditButtonFocus = () => {
@@ -362,7 +391,18 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
       setFormattedDisplayValue(selectLabelCondition(value));
     }
 
-    const newValue = returnType === "object" ? (Object.keys(value).length ? value : null) : value[selectValueMark];
+    let newValue = value[selectValueMark];
+    
+    if (returnType === "object") {
+      newValue = (Object.keys(value).length ? value : null);
+    }
+    
+    if (multiple) {
+      newValue = value.map(v => v[selectValueMark]);
+      if (!newValue.length) {
+        newValue = null;
+      }
+    }
 
     input.onChange(newValue);
 
@@ -384,9 +424,12 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     }
   };
 
-  const getOptionLabel = option => (selectLabelCondition ? selectLabelCondition(option) : option[selectLabelMark]) || "";
+  const getOptionLabel = option => (selectLabelCondition ? selectLabelCondition(option) : option && option[selectLabelMark]) || "";
 
   const getOptionSelected = (option: any, value: any) => {
+    if (multiple) {
+      return option[selectValueMark] === value[selectValueMark];
+    }
     if (returnType === "object") {
       return option === value;
     }
@@ -401,6 +444,11 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     return getHighlightedPartLabel(getOptionLabel(data), searchValue, optionProps);
   };
 
+  const selectedOption = useMemo(() => sortedItems.find(i => multiple
+      ? (input.value || []).includes(i[selectValueMark])
+      : getOptionSelected(i, input.value)),
+    [sortedItems, multiple, selectValueMark, input.value]);
+
   const displayedValue = useMemo(() => {
     let response;
 
@@ -409,8 +457,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     } else if (returnType === "object") {
       response = input.value && input.value[selectLabelMark];
     } else {
-      const selected = sortedItems.find(i => getOptionSelected(i, input.value));
-      response = selected ? selected[selectLabelMark] : defaultDisplayValue || input.value;
+      response = getOptionLabel(selectedOption) || defaultDisplayValue || input.value;
     }
 
     if (alwaysDisplayDefault) {
@@ -418,11 +465,11 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     }
 
     return (
-      ![null, undefined, ''].includes(input.value)
+      ![null, undefined].includes(input.value)
       ? response
       : <span className={clsx("overflow-hidden placeholderContent", classes.editable)}>No value</span>
     );
-  }, [formattedDisplayValue, selectLabelCondition, alwaysDisplayDefault, returnType, defaultDisplayValue, selectLabelMark, input, classes]);
+  }, [formattedDisplayValue, selectedOption, selectLabelCondition, alwaysDisplayDefault, returnType, defaultDisplayValue, selectLabelMark, input, classes]);
 
   const labelContent = useMemo(() => (labelAdornment ? (
     <span>
@@ -434,176 +481,160 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     label
   )), [classes, label, labelAdornment]);
 
+  const renderValue = useMemo(() => valueRenderer
+    ? valueRenderer(displayedValue, selectedOption, searchValue, { value: selectedOption && selectedOption[selectValueMark] })
+    : null,
+  [selectedOption, searchValue, displayedValue, selectValueMark, valueRenderer]);
+
+  const renderIcons = useMemo(() => !disabled && (
+    loading
+      ? <CircularProgress size={24} thickness={4} className={fieldClasses.loading} />
+      : (
+        <InputAdornment position="end" className={classes.inputEndAdornment}>
+          {allowEmpty && input.value && (
+            <IconButton
+              size="small"
+              onClick={onClear}
+              color="inherit"
+            >
+              <CloseIcon className={clsx(fieldClasses.editIcon, classes.clearIcon)} />
+            </IconButton>
+          ) }
+          <ExpandMore className={clsx("hoverIcon", fieldClasses.editIcon)} />
+        </InputAdornment>
+      )
+  ), [disabled, loading, allowEmpty, input.value]);
+  
+  const inputValue = useMemo(() => {
+    if (multiple) {
+      return (input.value || []).map(v => sortedItems.find(s => s[selectValueMark] === v));
+    }
+    return input.value || "";
+  }, [input.value, multiple, selectValueMark, sortedItems]);
+  
+  const renderedPlaceholder = useMemo(() => {
+    const rendered = placeholder || (!isEditing ? "No value" : "");
+    return multiple && inputValue.length ? null : rendered;
+  }, [multiple, placeholder, isEditing, inputValue]);
+
   return (
     <div
       className={clsx(className, "outline-none")}
-      id={inline ? undefined : (input && input.name)}
+      id={input?.name}
     >
-      <div
-        className={clsx({
-          "d-none": (inHeader && !(inline || isEditing || (meta && meta.invalid))),
-          [classes.editingSelect]: !inline && formatting !== "inline"
-        })}
+      <SelectContext.Provider value={{
+        rowHeight,
+        remoteRowCount,
+        loadMoreRows,
+        classes,
+        fieldClasses,
+        hideMenuOnNoResults,
+        inline,
+        items,
+        popperAnchor,
+        loading,
+        selectAdornment
+      }}
       >
-        <SelectContext.Provider value={{
-          rowHeight,
-          remoteRowCount,
-          loadMoreRows,
-          classes,
-          fieldClasses,
-          inline,
-          items,
-          popperAnchor,
-          loading
-        }}
-        >
-          <Autocomplete
-            value={input.value || ""}
-            options={sortedItems}
-            loading={loading}
-            freeSolo={creatable}
-            disableClearable={!allowEmpty}
-            isOptionEqualToValue={getOptionSelected}
-            onChange={handleChange}
-            classes={{
-              root: clsx("d-inline-flex", classes.root),
-              hasPopupIcon: classes.hasPopup,
-              hasClearIcon: classes.hasClear,
-              inputRoot: classes.inputWrapper,
-              option: "w-100 text-pre"
-            }}
-            renderOption={renderOption}
-            getOptionLabel={getOptionLabel}
-            filterOptions={filterItems}
-            ListboxComponent={ListBoxAdapter as any}
-            PopperComponent={PopperAdapter as any}
-            renderInput={({
-             InputLabelProps, InputProps, inputProps, ...params
-            }) => (
-              <FormControl
-                {...params}
-                variant="standard"
-                error={meta?.invalid}
-              >
-                {labelContent && (
-                  <InputLabel shrink={true} error={meta?.invalid || hasError} htmlFor={`input-${input.name}`}>
-                    {labelContent}
-                  </InputLabel>
-                )}
-                <Input
-                  {...InputProps}
-                  id={`input-${input.name}`}
-                  name={input.name}
-                  disabled={disabled}
-                  placeholder={placeholder || (!isEditing ? "No value" : "")}
-                  autoFocus={inline}
-                  onChange={handleInputChange}
-                  onFocus={onFocus}
-                  onBlur={onBlur}
-                  onClick={onEditButtonFocus}
-                  inputRef={rf => {
-                    inputNode.current = rf;
-                    if (inputRef) {
-                      inputRef.current = rf;
-                    }
-                  }}
-                  disableUnderline={inline}
-                  classes={{
-                    underline: fieldClasses.underline,
-                    input: clsx(inHeader && classes.editableInHeader, disabled && classes.readonly, fieldClasses.text),
-                  }}
-                  inputProps={{
-                    ...inputProps,
-                    value: (isEditing ? searchValue : (typeof displayedValue === "string" ? displayedValue : "")),
-                  }}
-                  endAdornment={!disabled && (
-                    loading
-                      ? <CircularProgress size={24} thickness={4} className={fieldClasses.loading} />
-                      : (
-                        <InputAdornment position="end" className={classes.inputEndAdornment}>
-                          {allowEmpty && input.value && (
-                            <IconButton
-                              size="small"
-                              onClick={onClear}
-                              color="inherit"
-                            >
-                              <CloseIcon className={clsx(fieldClasses.editIcon, classes.clearIcon)} />
-                            </IconButton>
-                          ) }
-                          {!inline && <ExpandMore className={clsx("hoverIcon", fieldClasses.editIcon)} />}
-                        </InputAdornment>
-                      )
-                  )}
-                />
-                <FormHelperText
-                  classes={{
-                    error: "shakingError"
-                  }}
-                >
-                  {(meta && meta.error) || helperText}
-                  {warning && <WarningMessage warning={warning} />}
-                </FormHelperText>
-              </FormControl>
-            )}
-            fullWidth
-            disableListWrap
-            openOnFocus
-            blurOnSelect
-          />
-        </SelectContext.Provider>
-      </div>
-      {formatting === "inline" && (
-        <div
-          className={clsx({
-          "d-none": !inHeader || (inHeader && (inline || isEditing || (meta && meta.invalid)))
-        })}
-        >
-          <div className="mw-100 text-truncate">
-            {!hideLabel && label && (
-              <Typography
-                variant="caption"
-                color="textSecondary"
-                style={colors ? { color: `${colors.subheader}` } : {}}
-                noWrap
-              >
-                {label}
-                {' '}
-                {labelAdornment && <span>{labelAdornment}</span>}
-              </Typography>
-          )}
-
-            <ListItemText
-              classes={{
-              root: "pl-0 mb-0 mt-0",
-              primary: clsx("d-flex", formatting === "inline" && classes.inline)
-              }}
-              primary={(
-                <>
-                  <ButtonBase
-                    onFocus={onEditButtonFocus}
-                    className={clsx(classes.editable, fieldClasses.text, "overflow-hidden d-flex hoverIconContainer", {
-                    [classes.readonly]: disabled
-                  })}
-                    component="div"
-                  >
-                    <span className={clsx("text-truncate", fieldClasses.text)}>
-                      {displayedValue}
-                    </span>
-                    {!disabled && (
-                      <ExpandMore className={clsx("hoverIcon", classes.editIcon, fieldClasses.editIcon)} />
-                  )}
-                  </ButtonBase>
-                  {endAdornment}
-                </>
+        <Autocomplete
+          blurOnSelect={!multiple}
+          disableCloseOnSelect={multiple}
+          multiple={multiple}
+          value={inputValue}
+          options={sortedItems}
+          loading={loading}
+          freeSolo={creatable}
+          disableClearable={!allowEmpty}
+          isOptionEqualToValue={getOptionSelected}
+          onChange={handleChange}
+          classes={{
+            root: clsx("d-inline-flex", classes.root),
+            hasPopupIcon: classes.hasPopup,
+            hasClearIcon: classes.hasClear,
+            inputRoot: clsx(classes.inputWrapper, inline && classes.inline, multiple && classes.multiple),
+            option: "w-100 text-pre",
+            popper: classes.popper
+          }}
+          renderOption={renderOption}
+          getOptionLabel={getOptionLabel}
+          filterOptions={filterItems}
+          ListboxComponent={inline ? null : ListBoxAdapter as any}
+          PopperComponent={PopperAdapter as any}
+          renderInput={({
+           InputLabelProps, InputProps, inputProps, ...params
+          }) => (
+            <FormControl
+              {...params}
+              variant="standard"
+              error={meta?.invalid}
+            >
+              {labelContent && (
+                <InputLabel shrink={true} error={meta?.invalid || hasError} htmlFor={`input-${input.name}`} className={fieldClasses.label}>
+                  {labelContent}
+                </InputLabel>
               )}
-            />
-          </div>
-        </div>
-    )}
+              {/* Not compatible with multiple*/}
+              {
+                valueRenderer && !isEditing && input.value
+                  ? <Select
+                    {...InputProps}
+                    onFocus={edit}
+                    value={input.value || ""}
+                    endAdornment={renderIcons}
+                    IconComponent={null}
+                    >
+                    {renderValue}
+                    </Select>
+                  : <Input
+                    {...InputProps}
+                    disableUnderline={disableUnderline}
+                    id={`input-${input.name}`}
+                    name={input.name}
+                    disabled={disabled}
+                    placeholder={renderedPlaceholder}
+                    onChange={handleInputChange}
+                    onFocus={edit}
+                    onBlur={onBlur}
+                    onClick={onEditButtonFocus}
+                    inputRef={rf => {
+                      inputNode.current = rf;
+                      if (inputRef) {
+                        inputRef.current = rf;
+                      }
+                    }}
+                    classes={{
+                      underline: fieldClasses.underline,
+                      input: clsx(classes.input, inHeader && classes.editableInHeader, disabled && classes.readonly, fieldClasses.text),
+                    }}
+                    inputProps={{
+                      ...inputProps,
+                      value: (isEditing ? searchValue : multiple ? "" : (typeof displayedValue === "string" ? displayedValue : "")),
+                      style: {
+                        width: inline ? countWidth(displayedValue) + 3 : inputProps?.style?.width
+                      }
+                    }}
+                    endAdornment={renderIcons}
+                  />
+              }
+              <FormHelperText
+                classes={{
+                  error: "shakingError"
+                }}
+              >
+                {(meta && meta.error) || helperText}
+                {warning && <WarningMessage warning={warning} />}
+              </FormHelperText>
+            </FormControl>
+          )}
+          fullWidth
+          disableListWrap
+          openOnFocus
+        />
+      </SelectContext.Provider>
     </div>
   );
 };
 
 export default withStyles(theme => ({ ...selectStyles(theme), ...searchStyles(theme) } as any), { withTheme: true })(
   EditInPlaceSearchSelect
-) as any;
+) as React.FC<Props>;
