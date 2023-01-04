@@ -4,14 +4,12 @@
  */
 
 import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { Decimal } from "decimal.js-light";
 import React, { useCallback } from "react";
 import { change } from "redux-form";
 import WarningMessage from "../../../../../common/components/form/fieldMessage/WarningMessage";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../../common/components/form/Uneditable";
 import { accountLabelCondition } from "../../../accounts/utils";
 import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { useAppSelector } from "../../../../../common/utils/hooks";
@@ -28,7 +26,7 @@ const addInvoiceLineTax = (cancellationFeeExTax: number, taxRate: number) => new
   .toNumber();
 
 const TransferEnrolmentInvoiceLines: React.FC<any> = ({
-    fields, classes, dispatch, incomeAccounts, taxes
+    fields, dispatch, incomeAccounts, taxes
   }) => {
   const onCreateCreditNoteChange = useCallback((val, ind) => {
     if (!val) {
@@ -106,7 +104,7 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
                 onChange={e => onCancelFeeChange(e, index)}
                 debounced={false}
                 disabled={!field.isReverseCreditNotes}
-                formatting="inline"
+                inline
                 hideArrowshideArrows
                 step="1"
               />
@@ -119,7 +117,8 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
                 onChange={v => onTaxChange(v, index)}
                 debounced={false}
                 disabled={!field.isReverseCreditNotes}
-                formatting="inline"
+                className="ml-0-5 mt-0-5"
+                inline
               />
               <span className="money ml-0-5">
                 {formatCurrency(field.chargedFee, currencySymbol)}
@@ -128,10 +127,11 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
                 type="select"
                 name={`${item}.incomeAccountId`}
                 items={incomeAccounts || []}
-                formatting="inline"
                 selectValueMark="id"
                 selectLabelCondition={accountLabelCondition}
                 disabled={!field.isReverseCreditNotes}
+                className="ml-0-5 mt-0-5"
+                inline
               />
             </div>
             <div className="centeredFlex">

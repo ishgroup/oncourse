@@ -35,7 +35,7 @@ interface DiscountGeneralState {
   validToIndex?: number;
 }
 
-const discountTypes = [
+export const discountTypes = [
   {
     value: DiscountType.Percent,
     label: "Discount percent"
@@ -417,7 +417,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
                   type="text"
                   name="code"
                   placeholder="Code"
-                  formatting="inline"
+                  inline
                   normalize={trimValue}
                   required
                 />

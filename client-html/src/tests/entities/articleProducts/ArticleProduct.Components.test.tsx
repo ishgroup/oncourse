@@ -10,7 +10,6 @@ describe("Virtual rendered ArticleProductEditView", () => {
       expect(screen.getByRole(formRoleName)).toHaveFormValues({
         name: initialValues.name,
         code: initialValues.code,
-        incomeAccountId: initialValues.incomeAccountId.toString(),
         feeExTax: initialValues.feeExTax.toString(),
         totalFee: initialValues.totalFee.toString(),
         status: initialValues.status,

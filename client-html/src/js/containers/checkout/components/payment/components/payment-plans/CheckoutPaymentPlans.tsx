@@ -131,7 +131,7 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
                     <FormField
                       type="date"
                       name={`${f}.payDate`}
-                      formatting="inline"
+                      inline
                       placeHolder="Pay now"
                       onChange={onPayDateChange}
                       validate={validateLockedDate}
@@ -147,7 +147,7 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
                 <FormField
                   type="date"
                   name={`${f}.date`}
-                  formatting="inline"
+                  inline
                   disabled={!field.dateEditable || disabledStep}
                   validate={(!field.dateEditable || disabledStep) ? undefined : validateDueDate}
                   onChange={(!field.dateEditable || disabledStep) ? undefined : onDueDateChange}

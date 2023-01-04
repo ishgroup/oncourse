@@ -38,7 +38,6 @@ describe("Virtual rendered CollectionRules", () => {
       expect(screen.getByRole(DATA_COLLECTION_RULES_FORM)).toHaveFormValues({
         name: rule.name,
         enrolmentFormName: rule.enrolmentFormName,
-        surveyForms: rule.surveyForms.join(","),
         applicationFormName: rule.applicationFormName,
         payerFormName: rule.payerFormName,
         waitingListFormName: rule.waitingListFormName,

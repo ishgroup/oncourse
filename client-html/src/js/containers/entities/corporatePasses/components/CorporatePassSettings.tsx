@@ -46,7 +46,7 @@ class CorporatePassSettings extends React.PureComponent<EditViewProps, any> {
             fields={(
               <Grid item xs={twoColumn ? 6 : 12}>
                 <FormField
-                  type="remoteDataSearchSelect"
+                  type="remoteDataSelect"
                   entity="Contact"
                   name="contactId"
                   label="Contact (company or person to invoice)"

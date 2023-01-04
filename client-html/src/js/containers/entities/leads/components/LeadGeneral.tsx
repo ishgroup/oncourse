@@ -177,7 +177,7 @@ const LeadGeneral = (props: Props) => {
           fields={(
             <Grid item xs={twoColumn ? 6 : 12}>
               <FormField
-                type="remoteDataSearchSelect"
+                type="remoteDataSelect"
                 label="Contact"
                 entity="Contact"
                 name="contactId"
@@ -209,7 +209,7 @@ const LeadGeneral = (props: Props) => {
         && (
           <Grid item xs={12}>
             <FormField
-              type="searchSelect"
+              type="select"
               name="assignToId"
               label="Assigned to"
               selectValueMark="id"

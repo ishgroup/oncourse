@@ -263,7 +263,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
       <Grid container rowSpacing={2} item xs={twoColumn ? 4 : 12}>
         <Grid item xs={12}>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             name={getFieldName("moduleCode")}
             label="Module code"
             entity="Module"
@@ -285,7 +285,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
         </Grid>
         <Grid item xs={12}>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             entity="Module"
             name={getFieldName("moduleName")}
             label="Module name"

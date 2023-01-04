@@ -48,7 +48,6 @@ describe("Virtual rendered ContactEditView", () => {
         "student.yearSchoolCompleted": initialValues.student.yearSchoolCompleted,
         "student.priorEducationCode": initialValues.student.priorEducationCode,
         "student.labourForceStatus": initialValues.student.labourForceStatus,
-        "student.isStillAtSchool": initialValues.student.isStillAtSchool.toString(),
         "student.disabilityType": initialValues.student.disabilityType,
         "student.specialNeedsAssistance": initialValues.student.specialNeedsAssistance,
         "student.clientIndustryEmployment": initialValues.student.clientIndustryEmployment,

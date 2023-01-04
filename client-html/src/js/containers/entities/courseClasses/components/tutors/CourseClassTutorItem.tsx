@@ -145,7 +145,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
       detailsContent={(
         <div>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             name={`tutors[${index}].contactId`}
             props={{
                 label: "Contact",
@@ -170,7 +170,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
           {nameWarning && <WarningMessage warning={nameWarning} />}
 
           <FormField
-            type="searchSelect"
+            type="select"
             name={`tutors[${index}].roleId`}
             label="Role"
             selectValueMark="id"

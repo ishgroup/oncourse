@@ -116,7 +116,7 @@ class DiscountClasses extends React.PureComponent<any, any> {
             type="number"
             name="minEnrolments"
             color="primary"
-            formatting="inline"
+            inline
             hidePlaceholderInEditMode
             validate={[validateSingleMandatoryField, validateNonNegative]}
             parse={normalizeNumber}
@@ -129,7 +129,7 @@ class DiscountClasses extends React.PureComponent<any, any> {
             type="money"
             name="minValue"
             color="primary"
-            formatting="inline"
+            inline
             hidePlaceholderInEditMode
             validate={[validateSingleMandatoryField, validateNonNegative]}
           />

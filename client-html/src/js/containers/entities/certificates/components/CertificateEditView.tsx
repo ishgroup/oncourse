@@ -270,7 +270,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
           fields={(
             <Grid item xs={twoColumn ? 6 : 12}>
               <FormField
-                type="remoteDataSearchSelect"
+                type="remoteDataSelect"
                 entity="Contact"
                 aqlFilter="isStudent is true"
                 name="studentContactId"
@@ -336,7 +336,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
 
         <Grid item xs={twoColumn ? 3 : 12} className={classes.select2}>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             entity="Qualification"
             name="nationalCode"
             label="National code"
@@ -358,7 +358,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
 
         <Grid item xs={twoColumn ? 3 : 12} className={classes.select3}>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             entity="Qualification"
             name="title"
             label="Qualification"

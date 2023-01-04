@@ -81,7 +81,8 @@ const ReportCardContent: React.FC<Props> = props => {
           items={pdfReportsItems}
           className="d-flex mt-2"
           onInnerValueChange={changePdfReport}
-          selectLabelCondition={renderAutomationItems}
+          itemRenderer={renderAutomationItems}
+          valueRenderer={renderAutomationItems}
           disabled={disabled}
           required
         />

@@ -103,7 +103,7 @@ const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & Props
                     <FormField
                       type="text"
                       name={`${f}.name`}
-                      formatting="inline"
+                      inline
                       className="mr-1"
                       required
                     />
@@ -112,7 +112,7 @@ const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & Props
                     <FormField
                       type="number"
                       name={`${f}.lowerBound`}
-                      formatting="inline"
+                      inline
                       validate={validateMinMax}
                       required
                     />

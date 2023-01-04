@@ -282,7 +282,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
 
       <Grid item xs={twoColumn ? 3 : 12}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           entity="Lead"
           name="leadId"
           label="Lead"
@@ -302,7 +302,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
 
       <Grid item xs={twoColumn ? 3 : 12}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           entity="Contact"
           name="contactId"
           label="Invoice to"

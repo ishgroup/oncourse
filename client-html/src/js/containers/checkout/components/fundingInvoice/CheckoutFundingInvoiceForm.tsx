@@ -22,7 +22,8 @@ import AppBarContainer from "../../../../common/components/layout/AppBarContaine
 
 const styles = createStyles(() => ({
   fundingInvoiceSourceId: {
-    marginTop: -10
+    marginTop: -12,
+    flex: 0.5
   }
 }));
 
@@ -101,6 +102,7 @@ const CheckoutFundingInvoiceFormBase = React.memo<Props>(props => {
                 name={`fundingInvoices[${selectedItemIndex}].relatedFundingSourceId`}
                 items={contracts}
                 format={formatFundingSourceId}
+                inline
               />
             </div>
               )}

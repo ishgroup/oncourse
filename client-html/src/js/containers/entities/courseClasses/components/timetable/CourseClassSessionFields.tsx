@@ -242,7 +242,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
 
       <Grid item xs={12}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           entity="Room"
           name={`sessions[${session.index}].roomId`}
           label="Site and room"

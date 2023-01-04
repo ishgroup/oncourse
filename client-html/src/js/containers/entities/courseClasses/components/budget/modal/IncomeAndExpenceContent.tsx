@@ -96,7 +96,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
       </Grid>
       <Grid item xs={6}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           entity="Contact"
           name="contactId"
           label="Contact"
