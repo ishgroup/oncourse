@@ -96,7 +96,7 @@ const EditInPlaceDateTimeField = (
    formatValue,
    className,
    onKeyPress,
-   placeholder,
+   placeholder = "No value",
    persistValue,
    warning,
    rightAligned
