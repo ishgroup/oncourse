@@ -349,7 +349,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               <FormControlLabel
                 className="checkbox pr-3"
                 control={
-                  <FormField type="checkbox" name="student.specialNeedsAssistance" color="secondary" fullWidth />
+                  <FormField type="checkbox" name="student.specialNeedsAssistance" color="secondary" />
                 }
                 label="Disability support requested"
               />
@@ -541,7 +541,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
                 type="text"
                 name="tfn"
                 label="Tax file number"
-                max={9}
+                max="9"
                 InputProps={{
                   inputComponent: TFNInputMask
                 }}

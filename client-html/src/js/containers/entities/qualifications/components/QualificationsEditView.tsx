@@ -101,7 +101,7 @@ const QualificationsEditView = (props: EditViewProps<Qualification>) => {
             type="text"
             name="specialization"
             label="Specialization"
-            maxLength="128"
+            maxLength={128}
           />
         </Grid>
         <Grid item xs={12}>

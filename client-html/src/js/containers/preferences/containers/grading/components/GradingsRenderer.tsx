@@ -74,8 +74,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
                       name={`${item}.name`}
                       label="Name"
                       validate={validateUniqueNamesInArray}
-                      fullWidth
-                      required
+                                            required
                     />
                   </Grid>
                   <Grid item xs={6}>
@@ -86,8 +85,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
                       items={GradingEntryTypes}
                       onChange={val => onTypeChange(val, item)}
                       debounced={false}
-                      fullWidth
-                    />
+                                          />
                   </Grid>
 
                   <Grid item xs={12}>
@@ -101,8 +99,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
                             debounced={false}
                             label="Min value"
                             required={field.entryType === "number"}
-                            fullWidth
-                          />
+                                                      />
                         </Grid>
                         <Grid item xs={6}>
                           <FormField
@@ -112,8 +109,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
                             debounced={false}
                             label="Max value"
                             required={field.entryType === "number"}
-                            fullWidth
-                          />
+                                                      />
                         </Grid>
                       </Grid>
                     </Collapse>

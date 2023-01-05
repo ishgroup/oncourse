@@ -753,8 +753,7 @@ const CourseClassTimetableTab = ({
               step="1"
               normalize={normalizeNumber}
               debounced={false}
-              fullWidth
-            />
+                          />
           </Grid>
 
           <Grid item xs={twoColumn ? 4 : 12}>
@@ -768,8 +767,7 @@ const CourseClassTimetableTab = ({
               normalize={normalizeNumberToPositive}
               debounced={false}
               required
-              fullWidth
-            />
+                          />
           </Grid>
 
           <Grid item xs={twoColumn ? 4 : 12}>

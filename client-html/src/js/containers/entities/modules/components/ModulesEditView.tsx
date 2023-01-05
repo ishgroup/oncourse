@@ -8,7 +8,6 @@ import { FormControlLabel } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { ModuleType } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { greaterThanNullValidation } from "../../../../common/utils/validation";
 import { sortDefaultSelectItems } from "../../../../common/utils/common";
 import { normalizeNumberToPositive } from "../../../../common/utils/numbers/numbersNormalizing";
 
@@ -67,7 +66,7 @@ const ModulesEditView = (props: any) => {
             type="text"
             name="specialization"
             label="Specialization"
-            maxLength="128"
+            maxLength={128}
           />
         </Grid>
       </Grid>

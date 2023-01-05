@@ -93,7 +93,7 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
             <div className="centeredFlex">
               <FormControlLabel
                 className="mr-0-5"
-                control={<FormField type="checkbox" name={`${item}.isChargeFee`} color="secondary" fullWidth />}
+                control={<FormField type="checkbox" name={`${item}.isChargeFee`} color="secondary"  />}
                 label={`Charge ${field && field.contactName} an administrative fee of`}
                 disabled={!field.isReverseCreditNotes}
               />

@@ -69,20 +69,15 @@ const CollectionFormField = props => {
           type="text"
           name={`${field}.label`}
           label="Label"
-          hideLabel
-          listSpacing={false}
           required
-          fullWidth
-        />
+         />
 
         <FormField
           type="multilineText"
           name={`${field}.helpText`}
           label="Help Text"
-          hideLabel
-          listSpacing={false}
+          className="mt-1"
           truncateLines={4}
-          fullWidth
         />
       </div>
 

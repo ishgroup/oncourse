@@ -146,7 +146,7 @@ const StudentFeeContent: React.FC<Props> = ({
   return (
     <Grid container columnSpacing={3}>
       <Grid item xs={3}>
-        <FormField type="text" name="description" label="Invoice line title" fullWidth />
+        <FormField type="text" name="description" label="Invoice line title"  />
       </Grid>
       <Grid item xs={3}>
         <FormField

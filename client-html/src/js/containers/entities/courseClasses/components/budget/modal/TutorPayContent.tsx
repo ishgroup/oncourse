@@ -149,7 +149,7 @@ const TutorPayContent: React.FC<Props> = ({
       <Grid item xs={6} className="pb-2">
         <FormControlLabel
           className="checkbox"
-          control={<FormField type="checkbox" name="isSunk" color="secondary" fullWidth />}
+          control={<FormField type="checkbox" name="isSunk" color="secondary"  />}
           label="Sunk cost (not recoverable if class cancelled)"
         />
       </Grid>

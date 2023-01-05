@@ -52,8 +52,7 @@ const SubmissionModal = (
       classes={{
       paper: "overflow-visible"
     }}
-      fullWidth
-      disableAutoFocus
+            disableAutoFocus
       disableEnforceFocus
       disableRestoreFocus
     >

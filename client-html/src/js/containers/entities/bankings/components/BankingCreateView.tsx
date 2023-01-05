@@ -11,7 +11,7 @@ import {
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { addDays, format as formatDate } from "date-fns";
+import { format as formatDate } from "date-fns";
 import { Report } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
@@ -188,7 +188,6 @@ class BankingCreateView extends React.PureComponent<any, any> {
   render() {
     const {
       accounts,
-      lockedDate,
       openNestedView,
       selectedAccountId,
       values,
@@ -243,11 +242,6 @@ class BankingCreateView extends React.PureComponent<any, any> {
               type="date"
               normalize={v => (v ? formatDate(new Date(v), YYYY_MM_DD_MINUSED) : v)}
               validate={this.validateSettlementDate}
-              minDate={
-                lockedDate
-                  ? addDays(new Date(lockedDate), 1)
-                  : undefined
-              }
               disabled={hasNoAccounts}
               debounced={false}
             />

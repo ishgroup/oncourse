@@ -142,8 +142,7 @@ const SearchInput = React.memo<any>(props => {
       onFocus={onFocus}
       endAdornment={InputAdornment}
       autoFocus={searchExpression ? false : autoFocus}
-      fullWidth
-    />
+          />
   );
 });
 

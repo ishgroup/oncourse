@@ -20,7 +20,6 @@ import Autocomplete from "@mui/material/Autocomplete";
 import clsx from "clsx";
 import { Edit } from "@mui/icons-material";
 import { getAllMenuTags } from "../../../../containers/tags/utils";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import { MenuTag } from "../../../../model/tags";
 import { stubComponent } from "../../../utils/common";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
@@ -30,7 +29,7 @@ import { selectStyles } from "../formFields/SelectCustomComponents";
 import AddTagMenu from "./AddTagMenu";
 import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 import EditInPlaceFieldBase from "../formFields/EditInPlaceFieldBase";
-import { EditInPlaceFieldProps } from "../../../../model/common/Fields";
+import { TagsFieldProps } from "../../../../model/common/Fields";
 
 const styles = theme =>
   createStyles({
@@ -69,12 +68,6 @@ const styles = theme =>
     },
     invalid: {}
   });
-
-interface Props extends EditInPlaceFieldProps {
-  showConfirm: ShowConfirmCaller;
-  tags: Tag[];
-  classes?: any;
-}
 
 const endTagRegex = /#\s*[^\w\d]*$/;
 
@@ -122,21 +115,19 @@ const getInputString = (tagIds: number[], allTags: Tag[]) => (tagIds?.length && 
   }, "")
   : "");
 
-const SimpleTagList: React.FC<Props> = props => {
-  const {
-    input,
-    tags,
-    classes,
-    placeholder,
-    labelAdornment,
-    meta,
-    label = "Tags",
-    disabled,
-    className,
-    warning,
-    fieldClasses = {}
-  } = props;
-
+const SimpleTagList = ({
+   input,
+   tags,
+   classes,
+   placeholder,
+   labelAdornment,
+   meta,
+   label = "Tags",
+   disabled,
+   className,
+   warning,
+   fieldClasses = {}
+}: TagsFieldProps) => {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [activeTag, setActiveTag] = useState<MenuTag>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -365,8 +356,7 @@ const SimpleTagList: React.FC<Props> = props => {
         })}
       >
         <Autocomplete
-          fullWidth
-          value={null}
+                    value={null}
           open={menuIsOpen}
           options={filteredOptions}
           onChange={handleChange}

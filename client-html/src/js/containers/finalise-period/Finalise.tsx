@@ -44,8 +44,6 @@ interface Props {
   updateFinaliseDate: StringArgFunction;
 }
 
-const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => <Slide direction="up" ref={ref} {...props as any} timeout={300} />);
-
 const LinkItem = React.memo<any>(({ label, error, onClick }) => (label ? (
   <Typography
     variant="body1"
@@ -167,9 +165,7 @@ const Finalise = React.memo<Props>(({
                 type="date"
                 name="targetDate"
                 label={finalaseDateLabel}
-                minDate={values.lastDate}
                 validate={[validateSingleMandatoryField, validateMinDate]}
-                fullWidth
               />
             </Grid>
             <Grid item xs={6}>

@@ -11,7 +11,6 @@ import React, { useCallback } from "react";
 import { change } from "redux-form";
 import WarningMessage from "../../../../../common/components/form/fieldMessage/WarningMessage";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../../common/components/form/Uneditable";
 import { accountLabelCondition } from "../../../accounts/utils";
 import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { useAppSelector } from "../../../../../common/utils/hooks";
@@ -31,7 +30,7 @@ const addInvoiceLineTax = (cancellationFeeExTax: number, taxRate: number) => {
 };
 
 const CancelEnrolmentInvoiceLines: React.FC<any> = ({
-    fields, classes, dispatch, incomeAccounts, taxes
+    fields, dispatch, incomeAccounts, taxes
   }) => {
   const onCreateCreditNoteChange = useCallback((val, ind) => {
     if (!val) {
@@ -100,7 +99,7 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                 <Grid className="centeredFlex">
                   <FormControlLabel
                     className="mr-0-5"
-                    control={<FormField type="checkbox" name={`${item}.isChargeFee`} color="secondary" fullWidth />}
+                    control={<FormField type="checkbox" name={`${item}.isChargeFee`} color="secondary" />}
                     label={`Charge ${field && field.contactName} an administrative fee of `}
                     disabled={!field.isReverseCreditNotes}
                   />
@@ -154,8 +153,7 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                       name={`${item}.sendInvoice`}
                       color="secondary"
                       disabled={!field.isReverseCreditNotes}
-                      fullWidth
-                    />
+                                          />
                   )}
                   label="Send credit note email."
                 />

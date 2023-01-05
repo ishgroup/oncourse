@@ -40,9 +40,13 @@ const useStyles = makeAppStyles(theme => ({
   }
 }));
 
+interface InputTypes {
+  type?: "password" | "number" | "text"
+}
+
 const EditInPlaceField = (
   {
-    ref,
+    inputRef,
     input,
     label,
     maxLength,
@@ -55,6 +59,7 @@ const EditInPlaceField = (
     labelAdornment,
     truncateLines,
     rightAligned,
+    defaultValue,
     onKeyDown,
     multiline,
     inline,
@@ -65,7 +70,7 @@ const EditInPlaceField = (
     placeholder = "No value",
     fieldClasses = {},
     InputProps = {}
-  }: EditInPlaceFieldProps) => {
+  }: EditInPlaceFieldProps & InputTypes) => {
 
   const classes = useStyles();
   
@@ -77,53 +82,48 @@ const EditInPlaceField = (
     <div
       id={input.name}
       className={clsx(className, "outline-none", {
+        [classes.inlineMargin]: inline,
+        [classes.rightAligned]: rightAligned,
         [classes.inlineContainer]: inline
       })}
     >
-      <div
-        className={clsx({
-          [classes.inlineMargin]: inline,
-          [classes.rightAligned]: rightAligned
-        })}
-      >
-        <EditInPlaceFieldBase
-          ref={ref}
-          name={input.name}
-          value={input.value}
-          error={error}
-          invalid={invalid}
-          inline={inline}
-          label={label}
-          warning={warning}
-          fieldClasses={fieldClasses}
-          endAdornmentClass={classes.endAdornment}
-          rightAligned={rightAligned}
-          shrink={Boolean(label || input.value)}
-          disabled={disabled}
-          labelAdornment={labelAdornment}
-          placeholder={placeholder}
-          hideArrows={["percentage", "number"].includes(type)}
-          editIcon={<Edit fontSize="inherit" />}
-          InputProps={{
-            multiline,
-            onKeyPress,
-            onBlur,
-            onFocus: input.onFocus,
-            maxRows: truncateLines,
-            inputProps: {
-              maxLength,
-              step,
-              min,
-              max,
-              onKeyDown,
-              type,
-            },
-            value: preformatDisplayValue ? preformatDisplayValue(input.value) : input.value,
-            onChange: v => (type === "number" && max && Number(v) > Number(max) ? null : input.onChange(v)),
-            ...InputProps
-          }}
-        />
-      </div>
+      <EditInPlaceFieldBase
+        ref={inputRef}
+        name={input.name}
+        value={input.value || defaultValue}
+        error={error}
+        invalid={invalid}
+        inline={inline}
+        label={label}
+        warning={warning}
+        fieldClasses={fieldClasses}
+        endAdornmentClass={classes.endAdornment}
+        rightAligned={rightAligned}
+        shrink={Boolean(label || input.value)}
+        disabled={disabled}
+        labelAdornment={labelAdornment}
+        placeholder={placeholder}
+        hideArrows={["percentage", "number"].includes(type)}
+        editIcon={<Edit fontSize="inherit" />}
+        InputProps={{
+          multiline,
+          onKeyPress,
+          onBlur,
+          onFocus: input.onFocus,
+          maxRows: truncateLines,
+          inputProps: {
+            maxLength,
+            step,
+            min,
+            max,
+            onKeyDown,
+            type,
+          },
+          value: preformatDisplayValue ? preformatDisplayValue(input.value || defaultValue) : input.value || defaultValue,
+          onChange: v => (type === "number" && max && Number(v) > Number(max) ? null : input.onChange(v)),
+          ...InputProps
+        }}
+      />
     </div>
   );
 };

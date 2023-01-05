@@ -101,20 +101,20 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
               <Grid container columnSpacing={3} rowSpacing={2}>
                 <Grid item xs={twoColumn ? 2 : 12}>
                   <FormField
+                    type="text"
                     label="Code"
                     name="code"
                     placeholder={twoColumn ? "Code" : undefined}
                     required
-                    fullWidth
                   />
                 </Grid>
                 <Grid item xs={twoColumn ? 4 : 12}>
                   <FormField
+                    type="text"
                     label="Name"
                     name="name"
                     placeholder={twoColumn ? "Name" : undefined}
                     required
-                    fullWidth
                   />
                 </Grid>
               </Grid>

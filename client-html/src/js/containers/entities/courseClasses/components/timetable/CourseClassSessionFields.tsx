@@ -249,7 +249,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
           aqlColumns="name,site.name,site.localTimezone,site.id"
           selectValueMark="id"
           selectLabelCondition={roomLabel}
-          defaultDisplayValue={`${session.site} - ${session.room}`}
+          defaultValue={`${session.site} - ${session.room}`}
           labelAdornment={<LinkAdornment linkHandler={openRoomLink} link={session.roomId} disabled={!session.roomId} />}
           onInnerValueChange={onRoomIdChange}
           itemRenderer={NoWrapOption}
@@ -286,16 +286,14 @@ const CourseClassSessionFields: React.FC<Props> = ({
           type="multilineText"
           name={`sessions[${session.index}].publicNotes`}
           label="Public notes"
-          fullWidth
-        />
+                  />
       </Grid>
       <Grid item xs={6}>
         <FormField
           type="multilineText"
           name={`sessions[${session.index}].privateNotes`}
           label="Private notes"
-          fullWidth
-        />
+                  />
       </Grid>
     </Grid>
   );

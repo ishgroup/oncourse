@@ -61,20 +61,20 @@ const AssessmentGeneralTab = React.memo<Props>(
           <Grid container columnSpacing={3} rowSpacing={2}>
             <Grid item xs={twoColumn ? 2 : 12}>
               <FormField
+                type="text"
                 label="Code"
                 name="code"
                 placeholder={twoColumn ? "Code" : undefined}
                 required
-                fullWidth
-              />
+             />
             </Grid>
             <Grid item xs={twoColumn ? 4 : 12}>
               <FormField
+                type="text"
                 label="Name"
                 name="name"
                 placeholder={twoColumn ? "Name" : undefined}
                 required
-                fullWidth
               />
             </Grid>
           </Grid>
@@ -113,7 +113,7 @@ const AssessmentGeneralTab = React.memo<Props>(
     <Grid item xs={12}>
       <FormControlLabel
         className="checkbox mb-2"
-        control={<FormField type="checkbox" name="active" color="secondary" fullWidth />}
+        control={<FormField type="checkbox" name="active" color="secondary"  />}
         label="Active"
       />
     </Grid>
@@ -123,8 +123,7 @@ const AssessmentGeneralTab = React.memo<Props>(
         name="description"
         label="Description"
         required
-        fullWidth
-      />
+              />
     </Grid>
   </Grid>
     )

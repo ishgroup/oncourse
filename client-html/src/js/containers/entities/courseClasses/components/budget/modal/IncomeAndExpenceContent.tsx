@@ -102,7 +102,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
           label="Contact"
           selectValueMark="id"
           selectLabelCondition={getContactFullName}
-          defaultDisplayValue={values.contactName}
+          defaultValue={values.contactName}
           labelAdornment={
             <ContactLinkAdornment id={values?.contactId} />
           }

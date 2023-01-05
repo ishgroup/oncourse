@@ -210,12 +210,10 @@ const DiscountContent: React.FC<Props> = ({
           format={formatFieldPercent}
           parse={parseFieldPercent}
           onKeyPress={preventNegativeOrLogEnter}
-          props={{
-            label: "Default forecast take-up",
-            labelAdornment: <IconButton className="inputAdornmentButton" onClick={onForecastLockClick}>
-              {forecastLocked ? <Lock className="inputAdornmentIcon" /> : <LockOpen className="inputAdornmentIcon" />}
-            </IconButton>
-          }}
+          label="Default forecast take-up"
+          labelAdornment={<IconButton className="inputAdornmentButton" onClick={onForecastLockClick}>
+            {forecastLocked ? <Lock className="inputAdornmentIcon" /> : <LockOpen className="inputAdornmentIcon" />}
+          </IconButton>}
           disabled={forecastLocked}
           debounced={false}
         />

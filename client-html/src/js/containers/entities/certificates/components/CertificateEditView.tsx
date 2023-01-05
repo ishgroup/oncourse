@@ -277,7 +277,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
                 label="Student name"
                 selectValueMark="id"
                 selectLabelCondition={getContactFullName}
-                defaultDisplayValue={values.studentName}
+                defaultValue={values.studentName}
                 onInnerValueChange={onStudentIdChange}
                 labelAdornment={(
                   <ContactLinkAdornment id={values?.studentContactId} />
@@ -393,8 +393,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
               type="multilineText"
               name="publicNotes"
               label="Printed public notes / Specialization"
-              fullWidth
-            />
+                          />
           </Grid>
         </Grid>
 
@@ -444,7 +443,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
 
         <Grid item container xs={12} className={twoColumn ? "pt-2 pb-2" : undefined}>
           <Grid item xs={twoColumn ? 6 : 12}>
-            <FormField type="multilineText" name="privateNotes" label="Private notes" fullWidth />
+            <FormField type="multilineText" name="privateNotes" label="Private notes" />
           </Grid>
         </Grid>
 

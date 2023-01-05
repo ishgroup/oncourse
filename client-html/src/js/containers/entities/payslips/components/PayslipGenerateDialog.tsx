@@ -101,8 +101,7 @@ const PayslipGenerateDialog: React.FC<Props> = ({
             } unprocessed wages until and including`}
             onChange={onDateChange}
             required
-            fullWidth
-          />
+                      />
 
           <Collapse in={!values.confirm}>
             <DialogContentText

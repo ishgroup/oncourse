@@ -312,10 +312,10 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
               fields={(
                 <Grid item xs={twoColumn ? 6 : 12}>
                   <FormField
+                    type="text"
                     name="name"
                     label="Name"
                     required
-                    fullWidth
                   />
                 </Grid>
               )}
@@ -455,15 +455,15 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
 
         <FormControlLabel
           className="checkbox pr-3"
-          control={<FormField type="checkbox" name="availableOnWeb" color="secondary" fullWidth />}
+          control={<FormField type="checkbox" name="availableOnWeb" color="secondary"  />}
           label="Available for online enrolment"
         />
         <FormControlLabel
           className="checkbox pr-3 mb-2"
-          control={<FormField type="checkbox" name="hideOnWeb" color="secondary" fullWidth />}
+          control={<FormField type="checkbox" name="hideOnWeb" color="secondary"  />}
           label="Hide discounted price on web"
         />
-        <FormField type="multilineText" name="description" label="Public description" fullWidth />
+        <FormField type="multilineText" name="description" label="Public description"  />
       </div>
     );
   }

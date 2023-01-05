@@ -10,19 +10,17 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Popper from "@mui/material/Popper";
 import { Autocomplete, IconButton, InputAdornment, Select } from "@mui/material";
 import { createStyles, withStyles } from "@mui/styles";
-import React, { ReactElement, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import CloseIcon from '@mui/icons-material//Close';
 import clsx from "clsx";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
 import { usePrevious } from "../../../utils/hooks";
 import { ListboxComponent, selectStyles } from "./SelectCustomComponents";
-import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
 import EditInPlaceFieldBase from "./EditInPlaceFieldBase";
-import { FieldClasses } from "../../../../model/common/Fields";
+import { EditInPlaceSearchSelectFieldProps } from "../../../../model/common/Fields";
 
-const searchStyles = (theme) => createStyles({
+const searchStyles = theme => createStyles({
   inputEndAdornment: {
     marginBottom: "-6px",
     alignItems: "center",
@@ -54,56 +52,6 @@ const searchStyles = (theme) => createStyles({
     zIndex: 1400
   }
 });
-
-interface Props  {
-  input?: Partial<WrappedFieldInputProps>;
-  meta?: Partial<WrappedFieldMetaProps>;
-  items?: any[];
-  classes?: any;
-  label?: string;
-  disabled?: boolean;
-  className?: string;
-  labelAdornment?: any;
-  inline?: boolean;
-  rightAligned?: boolean;
-  loading?: boolean;
-  hideLabel?: boolean;
-  colors?: any;
-  creatable?: boolean;
-  endAdornment?: any;
-  allowEmpty?: boolean;
-  fieldClasses?: FieldClasses;
-  selectLabelCondition?: any;
-  selectFilterCondition?: any;
-  defaultDisplayValue?: any;
-  rowHeight?: number;
-  remoteRowCount?: number;
-  loadMoreRows?: AnyArgFunction;
-  onCreateOption?: AnyArgFunction;
-  itemRenderer?: (content, data, search, parentProps) => ReactElement;
-  valueRenderer?: (content, data, search, parentProps) => ReactElement;
-  onInputChange?: AnyArgFunction;
-  onClearRows?: AnyArgFunction;
-  onInnerValueChange?: AnyArgFunction;
-  selectValueMark?: string;
-  remoteData?: boolean;
-  disableUnderline?: boolean;
-  createLabel?: string;
-  selectLabelMark?: string;
-  returnType?: "object" | "string";
-  alwaysDisplayDefault?: boolean;
-  popperAnchor?: any;
-  placeholder?: string;
-  sort?: (a: any, b: any) => number | boolean;
-  sortPropKey?: string;
-  hasError?: boolean;
-  multiple?: boolean;
-  hideMenuOnNoResults?: boolean;
-  hideEditIcon?: boolean;
-  inputRef?: React.Ref<any>;
-  warning?: string;
-  selectAdornment?: { position: "start" | "end", content: ReactElement }
-}
 
 const SelectContext = React.createContext<any>({});
 
@@ -159,7 +107,7 @@ const PopperAdapter = React.memo<any>(params => {
       />);
 });
 
-const EditInPlaceSearchSelect: React.FC<Props> = ({
+const EditInPlaceSearchSelect = ({
     classes,
     label,
     disabled,
@@ -175,7 +123,7 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
     selectLabelMark = "label",
     selectLabelCondition,
     selectFilterCondition,
-    defaultDisplayValue,
+    defaultValue,
     disableUnderline,
     items = [],
     rowHeight,
@@ -204,7 +152,7 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
     multiple,
     rightAligned,
     hasError
-  }) => {
+  }: EditInPlaceSearchSelectFieldProps) => {
   const sortedItems = useMemo(() => items && (sort
     ? [...items].sort(typeof sort === "function"
       ? sort
@@ -229,19 +177,19 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [formattedDisplayValue, setFormattedDisplayValue] = useState<any>("");
 
-  const prevDefaultDisplayValue = usePrevious(defaultDisplayValue);
+  const prevDefaultDisplayValue = usePrevious(defaultValue);
 
   useEffect(() => {
-    if (selectLabelCondition && formattedDisplayValue && defaultDisplayValue !== prevDefaultDisplayValue) {
+    if (selectLabelCondition && formattedDisplayValue && defaultValue !== prevDefaultDisplayValue) {
       setFormattedDisplayValue(null);
     }
-    if (selectLabelCondition && !defaultDisplayValue) {
+    if (selectLabelCondition && !defaultValue) {
       const selected = sortedItems.find(i => getOptionSelected(i, input.value));
       if (selected) {
         setFormattedDisplayValue(selectLabelCondition(selected));
       }
     }
-  }, [selectLabelCondition, formattedDisplayValue, defaultDisplayValue, sortedItems, input.value]);
+  }, [selectLabelCondition, formattedDisplayValue, defaultValue, sortedItems, input.value]);
 
   const onBlur = () => {
     setIsEditing(false);
@@ -423,23 +371,23 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
     let response;
 
     if (selectLabelCondition) {
-      response = returnType === "object" ? selectLabelCondition(input.value) : formattedDisplayValue || defaultDisplayValue;
+      response = returnType === "object" ? selectLabelCondition(input.value) : formattedDisplayValue || defaultValue;
     } else if (returnType === "object") {
       response = input.value && input.value[selectLabelMark];
     } else {
-      response = getOptionLabel(selectedOption) || defaultDisplayValue || input.value;
+      response = getOptionLabel(selectedOption) || defaultValue || input.value;
     }
 
     if (alwaysDisplayDefault) {
-      response = defaultDisplayValue;
+      response = defaultValue;
     }
 
     return (
       ![null, undefined].includes(input.value)
       ? response
-      : <span className="overflow-hidden placeholderContent">No value</span>
+      : null
     );
-  }, [formattedDisplayValue, selectedOption, selectLabelCondition, alwaysDisplayDefault, returnType, defaultDisplayValue, selectLabelMark, input, classes]);
+  }, [formattedDisplayValue, selectedOption, selectLabelCondition, alwaysDisplayDefault, returnType, defaultValue, selectLabelMark, input, classes]);
 
   const renderValue = useMemo(() => valueRenderer
     ? valueRenderer(displayedValue, selectedOption, searchValue, { value: selectedOption && selectedOption[selectValueMark] })
@@ -587,9 +535,9 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
                 : null}
             />)
           }
-          fullWidth
           disableListWrap
           openOnFocus
+          fullWidth
         />
       </SelectContext.Provider>
     </div>
@@ -598,4 +546,4 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
 
 export default withStyles(theme => ({ ...selectStyles(theme), ...searchStyles(theme) } as any), { withTheme: true })(
   EditInPlaceSearchSelect
-) as React.FC<Props>;
+) as React.FC<EditInPlaceSearchSelectFieldProps>;

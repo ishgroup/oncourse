@@ -164,6 +164,7 @@ const ImportTemplatesForm = React.memo<Props>(
             fields={(
               <Grid item xs={12}>
                 <FormField
+                  type="text"
                   name="name"
                   label="Name"
                   validate={validateTemplateName}
@@ -261,8 +262,7 @@ const ImportTemplatesForm = React.memo<Props>(
                   label="Description"
                   name="description"
                   disabled={isInternal}
-                  fullWidth
-                  multiline
+                                    multiline
                 />
               </Grid>
               <Grid item xs={3}>
@@ -306,8 +306,7 @@ const ImportTemplatesForm = React.memo<Props>(
                     label="Description"
                     className="overflow-hidden"
                     multiline
-                    fullWidth
-                  />
+                                      />
 
                   <Grid container columnSpacing={3}>
                     <Grid item xs className="d-flex">

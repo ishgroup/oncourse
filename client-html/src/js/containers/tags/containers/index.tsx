@@ -75,9 +75,9 @@ class TagsFormRenderer extends TagsFormBase {
           containerClass="p-3"
           fields={(
             <FormField
+              type="text"
               name="name"
               label="Name"
-              margin="none"
               disabled={values.system}
               className="flex-fill"
             />
@@ -223,9 +223,9 @@ class ChecklistsFormRenderer extends TagsFormBase {
                 <Field name="color" component={ColorPicker} placement="bottom" />
               </span>
               <FormField
+                type="text"
                 name="name"
                 label="Name"
-                margin="none"
                 className="flex-fill"
                 disabled={values.system}
               />

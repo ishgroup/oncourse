@@ -40,7 +40,6 @@ const PayRateItem = props => {
               name={`${item}.validFrom`}
               label="Valid from"
               formatValue={YYYY_MM_DD_MINUSED}
-              fullWidth
               required
             />
           </Grid>
@@ -85,7 +84,7 @@ const PayRateItem = props => {
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <FormField type="multilineText" name={`${item}.notes`} label="Description" fullWidth />
+          <FormField type="multilineText" name={`${item}.notes`} label="Description" />
         </Grid>
       </Grid>
     </Card>

@@ -112,7 +112,7 @@ const ContactsTutor: React.FC<ContactsTutorProps> = props => {
             type="text"
             name="tfn"
             label="Tax file number"
-            max={9}
+            max="9"
             InputProps={{
               inputComponent: TFNInputMask
             }}

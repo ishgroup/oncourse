@@ -21,7 +21,6 @@ import { normalizeString } from "../../../../common/utils/strings";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { useAppSelector } from "../../../../common/utils/hooks";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
@@ -160,18 +159,18 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
             <Grid container columnSpacing={3} rowSpacing={2}>
               <Grid item xs={twoColumn ? 2 : 12}>
                 <FormField
+                  type="text"
                   label="SKU"
                   name="code"
                   required
-                  fullWidth
                 />
               </Grid>
               <Grid item xs={twoColumn ? 4 : 12}>
                 <FormField
+                  type="text"
                   label="Name"
                   name="name"
                   required
-                  fullWidth
                 />
               </Grid>
             </Grid>
@@ -231,9 +230,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           validate={[validateSingleMandatoryField, validateNonNegative]}
           onChange={handleChangeFeeExTax(values, taxes, dispatch, form)}
           debounced={false}
-          props={{
-            label: "Fee ex tax"
-          }}
+          label="Fee ex tax"
         />
       </Grid>
       <Grid item xs={twoColumn ? 2 : 4}>
@@ -243,9 +240,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           validate={validateNonNegative}
           onChange={handleChangeFeeIncTax(values, taxes, dispatch, form)}
           debounced={false}
-          props={{
-            label: "Total fee"
-          }}
+          label="Total fee"
         />
       </Grid>
       <Grid item xs={twoColumn ? 2 : 4}>
@@ -254,13 +249,11 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           name="taxId"
           onChange={handleChangeTax(values, taxes, dispatch, form)}
           debounced={false}
+          label="Tax"
+          items={taxes}
+          selectValueMark="id"
+          selectLabelCondition={tax => tax.code}
           required
-          props={{
-            label: "Tax",
-            items: taxes,
-            selectValueMark: "id",
-            selectLabelCondition: tax => tax.code
-          }}
         />
       </Grid>
 

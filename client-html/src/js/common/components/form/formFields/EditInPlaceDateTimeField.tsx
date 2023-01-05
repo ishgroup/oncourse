@@ -28,9 +28,7 @@ import {
 } from "../../../utils/dates/format";
 import { endFieldProcessingAction, startFieldProcessingAction } from "../../../actions/FieldProcessing";
 import uniqid from "../../../utils/uniqid";
-import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
-import { FieldClasses } from "../../../../model/common/Fields";
-import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
+import { EditInPlaceDateTimeFieldProps } from "../../../../model/common/Fields";
 import { makeAppStyles } from "../../../styles/makeStyles";
 import EditInPlaceFieldBase from "./EditInPlaceFieldBase";
 import { formatInTimeZone } from "date-fns-tz";
@@ -56,27 +54,8 @@ const useStyles = makeAppStyles(theme => ({
   }
 }));
 
-interface Props {
-  ref?: any;
-  input?: Partial<WrappedFieldInputProps>;
-  meta?: Partial<WrappedFieldMetaProps>;
+interface InputTypes {
   type?: "date" | "time" | "datetime"
-  fieldClasses?: FieldClasses,
-  onKeyPress?: AnyArgFunction;
-  labelAdornment?: React.ReactNode;
-  formatDate?: string;
-  formatTime?: string;
-  formatDateTime?: string;
-  timezone?: string;
-  label?: string;
-  formatValue?: string;
-  className?: string;
-  placeholder?: string;
-  warning?: string;
-  inline?: boolean;
-  disabled?: boolean;
-  persistValue?: boolean;
-  rightAligned?: boolean;
 }
 
 const EditInPlaceDateTimeField = (
@@ -99,10 +78,11 @@ const EditInPlaceDateTimeField = (
    placeholder = "No value",
    persistValue,
    warning,
+  defaultValue,
    rightAligned
-  }: Props
+  }: EditInPlaceDateTimeFieldProps & InputTypes
 ) => {
-  const [textValue, setTextValue] = useState("");
+  const [textValue, setTextValue] = useState(defaultValue || "");
   const [pickerOpened, setPickerOpened] = useState(false);
 
   const inputNode = useRef<any>(null);

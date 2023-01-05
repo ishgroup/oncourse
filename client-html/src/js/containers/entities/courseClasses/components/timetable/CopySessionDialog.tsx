@@ -116,7 +116,6 @@ const CopySessionDialogBase = React.memo<any>(props => {
                       name="repeatType"
                       items={repeatTypeItems}
                       onInnerValueChange={onRepeatTypeChange}
-                      disabledTab
                       inline
                     />
                   </Typography>

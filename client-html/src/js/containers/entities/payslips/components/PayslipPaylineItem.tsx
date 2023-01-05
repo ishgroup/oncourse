@@ -101,7 +101,6 @@ const PayslipPaylineItem = (props: Props) => {
                 disabled={!field.deferred}
                 name={`${item}.description`}
                 label="Description"
-                listSpacing={threeColumn}
                 required
               />
             </Grid>
@@ -133,7 +132,7 @@ const PayslipPaylineItem = (props: Props) => {
                     name={`${item}.quantity`}
                     normalize={normalizeNumber}
                     debounced={false}
-                    listSpacing={false}
+                    
                     inline
                     rightAligned
                   />
@@ -160,7 +159,6 @@ const PayslipPaylineItem = (props: Props) => {
                 type="money"
                 disabled={!field.deferred}
                 name={`${item}.value`}
-                listSpacing={false}
                 inline
                 rightAligned
                 required

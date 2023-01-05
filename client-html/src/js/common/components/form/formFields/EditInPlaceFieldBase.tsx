@@ -133,7 +133,7 @@ const EditInPlaceFieldBase = (
   };
 
   const inputWidth = useMemo(() => inline && inputNode
-    ? countWidth(value.toString() || placeholder, inputNode) + 1
+    ? countWidth(value?.toString() || placeholder, inputNode) + 1
     : null,
   [inputNode, inline, value, placeholder]);
 
