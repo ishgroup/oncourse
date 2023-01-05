@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import DiscountEditView from "../../../js/containers/entities/discounts/components/DiscountEditView";
+import { discountTypes } from "../../../js/containers/entities/discounts/components/DiscountGeneral";
 import { mockedEditView } from "../../common/MockedEditView.Components";
 import { III_DD_MMM_YYYY } from "../../../js/common/utils/dates/format";
 
@@ -11,12 +12,11 @@ describe("Virtual rendered DiscountEditView", () => {
     render: ({ screen, initialValues, formRoleName }) => {
       expect(screen.getByRole(formRoleName)).toHaveFormValues({
         name: initialValues.name,
-        discountType: initialValues.discountType,
+        discountType: discountTypes.find(dt => dt.value === initialValues.discountType).label,
         discountPercent: initialValues.discountPercent * 100,
         rounding: initialValues.rounding,
         predictedStudentsPercentage: initialValues.predictedStudentsPercentage * 100,
         code: initialValues.code,
-        cosAccount: initialValues.cosAccount.toString(),
         validFrom: format(new Date(initialValues.validFrom), III_DD_MMM_YYYY),
         validTo: format(new Date(initialValues.validTo), III_DD_MMM_YYYY),
         availableOnWeb: initialValues.availableOnWeb,

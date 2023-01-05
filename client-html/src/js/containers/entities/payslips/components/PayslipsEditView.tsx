@@ -138,7 +138,7 @@ class PayslipsEditView extends React.PureComponent<any, any> {
             fields={(
               <Grid item xs={twoColumn ? 6 : 12}>
                 <FormField
-                  type="remoteDataSearchSelect"
+                  type="remoteDataSelect"
                   entity="Contact"
                   aqlFilter="isTutor is true"
                   name="tutorId"

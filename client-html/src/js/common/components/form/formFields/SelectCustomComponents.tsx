@@ -113,7 +113,7 @@ export const selectStyles = theme => createStyles({
     },
   });
 
-export const ListRow = React.memo<any>(({ data, index, style }) => {
+export const ListRow = React.memo<any>(({ data: { children, selectAdornment }, index, style }) => {
   const inlineStyle = {
     ...style,
     top: (style.top as number) + 8,
@@ -124,7 +124,11 @@ export const ListRow = React.memo<any>(({ data, index, style }) => {
 
   return (
     <ListItem button style={inlineStyle}>
-      {data[index]}
+      {((selectAdornment?.position === "start" && index === 0)
+        || (selectAdornment?.position === "end" && index === children.length))
+        ? selectAdornment.content
+        : children[index]
+      }
     </ListItem>
   );
 }, areEqual);
@@ -138,15 +142,15 @@ const OuterElementType = React.forwardRef<any, any>((props, ref) => {
 
 export const ListboxComponent = React.memo<any>(props => {
   const {
-   children, rowHeight, remoteRowCount, loadMoreRows, classes, loading, fieldClasses, ...other
+   children, rowHeight, remoteRowCount, loadMoreRows, classes, loading, selectAdornment, fieldClasses, ...other
   } = props;
 
-  const itemData = React.Children.toArray(children);
+  const itemData = { selectAdornment, children: React.Children.toArray(children) };
   const theme = useTheme() as AppTheme;
   const smUp = useMediaQuery(theme.breakpoints.up('sm'), { noSsr: true });
   const itemSize = rowHeight || (smUp ? 36 : 48);
-  const itemCount = remoteRowCount > children.length ? children.length + 3 : children.length;
-  
+  const itemCount = (remoteRowCount > children.length ? children.length + 3 : children.length) + (selectAdornment ? 1 : 0);
+
   const getChildSize = child => {
     if (React.isValidElement(child) && child.type === ListSubheader) {
       return 48;
@@ -158,12 +162,12 @@ export const ListboxComponent = React.memo<any>(props => {
     if (itemCount > 8) {
       return 8 * itemSize;
     }
-    return itemData.map(getChildSize).reduce((a, b) => a + b, 0);
+    return itemData.children.map(getChildSize).reduce((a, b) => a + b, 0);
   };
 
-  const loadMoreItems = () => (loading ? undefined : loadMoreRows(itemData.length));
+  const loadMoreItems = () => (loading ? undefined : loadMoreRows(itemData.children.length));
 
-  const isItemLoaded = index => index < children.length;
+  const isItemLoaded = index => index < (children.length + (selectAdornment ? 1 : 0));
   
   return (
     <OuterElementContext.Provider value={other}>

@@ -102,9 +102,7 @@ const CopySessionDialogBase = React.memo<any>(props => {
                       max="99"
                       step="1"
                       normalize={normalizeNumber}
-                      props={{
-                        formatting: "inline"
-                      }}
+                      inline
                     />
                     times
                   </Typography>
@@ -112,14 +110,13 @@ const CopySessionDialogBase = React.memo<any>(props => {
                   <Typography variant="body2" color="inherit" component="div" className="pb-2">
                     Repeat every
                     <FormField
+                      className="d-inline-flex ml-0-5"
                       type="select"
                       name="repeatType"
-                      props={{
-                        formatting: "inline",
-                        disabledTab: true,
-                        onInnerValueChange: onRepeatTypeChange
-                      }}
                       items={repeatTypeItems}
+                      onInnerValueChange={onRepeatTypeChange}
+                      disabledTab
+                      inline
                     />
                   </Typography>
                 </DialogContent>
