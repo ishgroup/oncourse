@@ -47,8 +47,7 @@ const EditInPlaceDurationField = (
   );
 
   const onBlur = useCallback(
-    e => {
-      const value = e.target.value;
+    value => {
       const parsed = parseDurationString(value);
       input.onBlur(parsed);
       setTextValue(formatDurationMinutes(parsed || 0));

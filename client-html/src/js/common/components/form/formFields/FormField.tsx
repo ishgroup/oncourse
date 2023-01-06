@@ -26,12 +26,17 @@ import { FormSwitch } from "./Switch";
 import { validateTagsList } from "../simpleTagListComponent/validateTagsList";
 import EditInPlacePhoneField from "./EditInPlacePhoneField";
 import { FormFieldProps } from "../../../../model/common/Fields";
+import { stubFunction } from "../../../utils/common";
+
+const stubFieldMocks = { input: { onChange: stubFunction, onBlur: stubFunction }, format: null, debounced: null };
 
 const FormFieldBase = React.forwardRef<any, FormFieldProps>((props, ref) => {
 
   const { type, ...rest } = props;
 
-  const { input, format, debounced } = type !== "stub" ? props : { input: null, format: null, debounced: null };
+  const { input, format, debounced } = type !== "stub" 
+    ? props 
+    : stubFieldMocks;
 
   const entity = type === "remoteDataSelect" ? props.entity : null;
 
