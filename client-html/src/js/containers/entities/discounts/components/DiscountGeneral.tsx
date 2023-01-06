@@ -269,28 +269,15 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
   };
 
   formatDiscountPercent = value => {
-    if (value && value !== "-") {
+    if (value !== "-") {
       return new Decimal(String(value * 100)).toDecimalPlaces(1).toNumber();
     }
     return value;
   };
 
   parseDiscountPercent = value => {
-    if (value && value !== "-") {
+    if (value !== "-") {
       return new Decimal(value / 100).toDecimalPlaces(3).toNumber();
-    }
-    return value;
-  };
-
-  normalizeDiscountPercent = (value, prevValue) => {
-    if (value === "-") {
-      return value;
-    }
-    if (isNaN(value) && prevValue) {
-      return prevValue;
-    }
-    if (value === "" || isNaN(value)) {
-      return "";
     }
     return value;
   };
@@ -339,8 +326,6 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
                 validate={[validateSingleMandatoryField, validateRangeDiscountPercent]}
                 format={this.formatDiscountPercent}
                 parse={this.parseDiscountPercent}
-                normalize={this.normalizeDiscountPercent}
-                preformatDisplayValue={value => value + "%"}
                 debounced={false}
               />
             ) : (
@@ -401,8 +386,6 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
               validate={[validateSingleMandatoryField, validateRangePredictedStudentsPercentage]}
               format={this.formatPercent}
               parse={this.parsePercent}
-              normalize={this.normalizePercent}
-              preformatDisplayValue={value => value + "%"}
               debounced={false}
             />
           </Grid>

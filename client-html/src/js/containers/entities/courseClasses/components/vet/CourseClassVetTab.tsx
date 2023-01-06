@@ -192,7 +192,6 @@ const CourseClassVetTab = React.memo<Props>(props => {
               normalize={normalizeNumberToZero}
               name="reportableHours"
               label="Reportable hours"
-              debounced={false}
             />
           </Grid>
 

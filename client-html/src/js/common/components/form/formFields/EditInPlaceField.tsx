@@ -119,7 +119,9 @@ const EditInPlaceField = (
             onKeyDown,
             type,
           },
-          value: preformatDisplayValue ? preformatDisplayValue(input.value || defaultValue) : input.value || defaultValue,
+          value: preformatDisplayValue
+            ? preformatDisplayValue(input.value || defaultValue)
+            : (input.value === 0 ? String(input.value) : input.value) || defaultValue,
           onChange: v => (type === "number" && max && Number(v) > Number(max) ? null : input.onChange(v)),
           ...InputProps
         }}
