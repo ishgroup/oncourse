@@ -59,7 +59,7 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
   }, [classRooms, values.maximumPlaces, values.minimumPlaces, values.id]);
 
   return (
-    <Grid container direction="row" className={classes.root}>
+    <Grid container direction="row" columnSpacing={3} className={classes.root}>
       <Grid item xs={3} className="centeredFlex pl-2">
         <Typography variant="body1">Enrolments</Typography>
       </Grid>
