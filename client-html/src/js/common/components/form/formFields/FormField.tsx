@@ -34,7 +34,7 @@ const FormFieldBase = React.forwardRef<any, FormFieldProps>((props, ref) => {
 
   const { type, ...rest } = props;
 
-  const { input, format, debounced } = type !== "stub" 
+  const { input, format, debounced = true } = type !== "stub"
     ? props 
     : stubFieldMocks;
 
