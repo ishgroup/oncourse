@@ -193,6 +193,7 @@ class TestWithDatabaseExtension implements
 
     private void resetAutoIncrement() {
         DataDomain domain = cayenneServiceSupplier.call().getSharedContext().getParentDataDomain()
+        def dataMaps = domain.getDataMaps()
         DataMap dataMap = domain.getDataMap("AngelMap")
 
         Connection connection = getTestDatabaseConnection().getConnection()
@@ -347,17 +348,38 @@ class TestWithDatabaseExtension implements
         DbRelationship circularDependencyRelationship = datamap.getDbEntity("Account").getRelationship("tax")
         datamap.getDbEntity("Account").removeRelationship(circularDependencyRelationship.getName())
 
+
         DbGenerator generator = new DbGenerator(jdbcAdapter, datamap, Collections.emptyList()  as Collection<DbEntity>, domain, jdbcEventLogger)
         generator.setShouldCreateTables(true)
         generator.setShouldCreateFKConstraints(true)
         generator.setShouldCreatePKSupport(false)
         generator.runGenerator(dataSourceSupplier.call())
+
         if (generator.getFailures() != null) {
             Assertions.fail("generation of test database schema out of cayenne model failed:")
             for (ValidationFailure result : generator.getFailures().getFailures()) {
                 Assertions.fail(result.toString())
             }
             throw new RuntimeException("generation of test database schema out of cayenne model failed, test terminated.")
+        }
+
+
+        for(def pluginsMap: domain.getDataMaps()){
+            if(!pluginsMap.getName().equals("AngelMap")) {
+                DbGenerator dbGenerator = new DbGenerator(jdbcAdapter, pluginsMap, Collections.emptyList() as Collection<DbEntity>, domain, jdbcEventLogger)
+                dbGenerator.setShouldCreateTables(true)
+                dbGenerator.setShouldCreateFKConstraints(true)
+                dbGenerator.setShouldCreatePKSupport(false)
+                dbGenerator.runGenerator(dataSourceSupplier.call())
+
+                if (dbGenerator.getFailures() != null) {
+                    Assertions.fail("generation of test database schema out of cayenne model failed:")
+                    for (ValidationFailure result : dbGenerator.getFailures().getFailures()) {
+                        Assertions.fail(result.toString())
+                    }
+                    throw new RuntimeException("generation of test database schema out of cayenne model failed, test terminated.")
+                }
+            }
         }
 
         //return circular dependency to dataMap
