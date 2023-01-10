@@ -283,7 +283,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
               onChange={onDataTypeChange}
               debounced={false}
               className={classes.field}
-                            required
+              required
             />
           </Grid>
 
@@ -297,7 +297,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
               disabled={!!field.id}
               className={classes.field}
               sort
-                            required
+              required
             />
           </Grid>
 

@@ -36,8 +36,8 @@ import { appendTimezoneToUTC } from "../../../utils/dates/formatTimezone";
 
 const useStyles = makeAppStyles(theme => ({
   inlinePickerButton: {
-    padding: "0.2em",
-    marginBottom: "0.2em",
+    padding: "2px",
+    marginBottom: "-4px",
     fontSize: "1.3em",
     "&:hover": {
       color: theme.palette.primary.main,
@@ -49,8 +49,8 @@ const useStyles = makeAppStyles(theme => ({
     bottom: theme.spacing(-0.5)
   },
   inlineContainer: {
-    display: "inline-block",
-    marginLeft: theme.spacing(0.5)
+    display: "inline-flex",
+    margin: theme.spacing(0, 0.5)
   }
 }));
 
@@ -233,7 +233,7 @@ const EditInPlaceDateTimeField = (
             <EditInPlaceFieldBase
               ref={inputNode}
               name={input.name}
-              value={input.value}
+              value={textValue}
               error={error}
               invalid={invalid}
               inline={inline}

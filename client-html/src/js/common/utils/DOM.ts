@@ -19,6 +19,7 @@ export const countWidth = (el: string, container: Element) => {
   testContainer.style["height"] = containerStyles["height"];
   testContainer.style["fontSize"] = containerStyles["fontSize"];
   testContainer.style["fontWeight"] = containerStyles["fontWeight"];
+  testContainer.style["fontFeatureSettings"] = containerStyles["fontFeatureSettings"];
   testContainer.style.position = "absolute";
   testContainer.style.zIndex = "-10000";
   testContainer.innerHTML = el;

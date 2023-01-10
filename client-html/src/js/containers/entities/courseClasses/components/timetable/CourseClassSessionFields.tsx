@@ -53,6 +53,8 @@ const roomLabel = room => {
   return room?.name;
 };
 
+const getSiteAndRoomLabel = session => `${session?.site || ""}${session?.room ? ` - ${session?.room}` : ""}`;
+
 const validateDuration = value => (value < 5 || value > 1440
     ? "Each entry in the timetable cannot be shorter than 5 minutes or longer than 24 hours."
     : undefined);
@@ -249,7 +251,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
           aqlColumns="name,site.name,site.localTimezone,site.id"
           selectValueMark="id"
           selectLabelCondition={roomLabel}
-          defaultValue={`${session.site} - ${session.room}`}
+          defaultValue={getSiteAndRoomLabel(session)}
           labelAdornment={<LinkAdornment linkHandler={openRoomLink} link={session.roomId} disabled={!session.roomId} />}
           onInnerValueChange={onRoomIdChange}
           itemRenderer={NoWrapOption}

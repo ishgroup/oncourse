@@ -44,10 +44,12 @@ interface Props extends EditInPlaceFieldProps {
   dispatch?: Dispatch;
 }
 
+const preformatDisplayValue = value => formatCurrency(value, "");
+
 const EditInPlaceMoneyField = ({ currencySymbol, InputProps, dispatch, className, ...restProps }: Props) => (
   <EditInPlaceField
     {...restProps}
-    preformatDisplayValue={value => formatCurrency(value, "")}
+    preformatDisplayValue={preformatDisplayValue}
     InputProps={{
       ...InputProps,
       startAdornment: <InputAdornment position="start">{currencySymbol}</InputAdornment>,

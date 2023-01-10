@@ -33,18 +33,8 @@ import { LinkAdornment } from "../../../../common/components/form/FieldAdornment
 import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { getDiscountAmountExTax } from "../../discounts/utils";
 import Uneditable from "../../../../common/components/form/Uneditable";
+import { calculateInvoiceLineTotal } from "../utils";
 
-const calculateInvoiceLineTotal = (
-  priceEachExTax: number,
-  discountEachExTax: number,
-  taxEach: number,
-  quantity: number
-) => new Decimal(priceEachExTax || 0)
-    .minus(discountEachExTax || 0)
-    .plus(taxEach || 0)
-    .mul(quantity || 1)
-    .toDecimalPlaces(2)
-    .toNumber();
 
 const calculateInvoiceLineTaxEach = (priceEachExTax: number, discountEachExTax: number, taxRate: number) => new Decimal(priceEachExTax || 0)
     .minus(discountEachExTax || 0)
@@ -198,9 +188,9 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
   }, [taxes, row.taxId]);
 
   const total = useMemo(() => formatCurrency(
-      calculateInvoiceLineTotal(row.priceEachExTax, row.discountEachExTax, row.taxEach, row.quantity),
-      currency.shortCurrencySymbol
-    ), [row.id, row.priceEachExTax, row.discountEachExTax, row.taxEach, row.quantity, currency.shortCurrencySymbol]);
+    calculateInvoiceLineTotal(row.priceEachExTax, row.discountEachExTax, row.taxEach, row.quantity),
+    currency.shortCurrencySymbol
+  ), [row.id, row.priceEachExTax, row.discountEachExTax, row.taxEach, row.quantity, currency.shortCurrencySymbol]);
 
   const taxDisplayedAmount = useMemo(
     () => new Decimal(row.taxEach).mul(row.quantity || 1).toDecimalPlaces(2).toNumber(),
@@ -525,7 +515,6 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
             onChange={onTaxIdChange}
             disabled={type !== "Quote" && !isNew}
             items={taxes || []}
-            
             required
           />
         </Grid>
@@ -548,10 +537,11 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
             <FormField
               type="money"
               name={`${item}.total`}
-              inline
               disabled={type !== "Quote" && !isNew}
               defaultValue={total}
               onBlur={onTotalBlur}
+              debounced={false}
+              inline
             />
           </Typography>
         </div>

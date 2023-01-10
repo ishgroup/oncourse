@@ -10,7 +10,7 @@
  * Wrapper component for Material Select and Text Field with edit in plaxce functional
  * */
 
-import React from "react";
+import React, { useMemo } from "react";
 import clsx from "clsx";
 import { Edit } from "@mui/icons-material";
 import EditInPlaceFieldBase from "./EditInPlaceFieldBase";
@@ -78,6 +78,11 @@ const EditInPlaceField = (
     input?.onBlur && input.onBlur(input.value);
   };
 
+  const inputValue = useMemo(() => preformatDisplayValue
+    ? preformatDisplayValue(input.value || defaultValue)
+    : (input.value === 0 ? String(input.value) : input.value) || defaultValue || "",
+  [preformatDisplayValue, input.value, defaultValue]);
+
   return (
     <div
       id={input.name}
@@ -90,7 +95,7 @@ const EditInPlaceField = (
       <EditInPlaceFieldBase
         ref={inputRef}
         name={input.name}
-        value={input.value || defaultValue}
+        value={inputValue}
         error={error}
         invalid={invalid}
         inline={inline}
@@ -119,9 +124,7 @@ const EditInPlaceField = (
             onKeyDown,
             type,
           },
-          value: preformatDisplayValue
-            ? preformatDisplayValue(input.value || defaultValue)
-            : (input.value === 0 ? String(input.value) : input.value) || defaultValue,
+          value: inputValue,
           onChange: v => (type === "number" && max && Number(v) > Number(max) ? null : input.onChange(v)),
           ...InputProps
         }}

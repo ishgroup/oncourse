@@ -37,7 +37,7 @@ export const formatPercent = val => {
 };
 
 export const formatFieldPercent = val => val && Math.round(+val * 10000) / 100;
-export const parseFieldPercent = val => val && Math.round(+val * 100) / 10000;
+export const parseFieldPercent = val => val ? Math.round(+val * 100) / 10000 : 0;
 
 export const preventNegativeOrLogEnter = ev => {
   if (ev.key === "-" || ev.key === "e") {

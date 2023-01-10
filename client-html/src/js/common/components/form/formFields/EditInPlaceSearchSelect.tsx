@@ -405,7 +405,7 @@ const EditInPlaceSearchSelect = ({
               onClick={onClear}
               color="inherit"
             >
-              <CloseIcon className={classes.clearIcon} />
+              <CloseIcon className={clsx("cursor-pointer", inline && "fsInherit")} />
             </IconButton>
           )}
           <IconButton
@@ -414,11 +414,11 @@ const EditInPlaceSearchSelect = ({
             className="pl-0 pr-0"
             disableRipple
           >
-            <ExpandMore />
+            <ExpandMore className={inline && "fsInherit"} />
           </IconButton>
         </div>
       )
-  ), [disabled, loading, allowEmpty, input.value]);
+  ), [disabled, loading, inline, allowEmpty, input.value]);
 
   const inputValue = useMemo(() => {
     if (multiple) {
@@ -464,7 +464,7 @@ const EditInPlaceSearchSelect = ({
           isOptionEqualToValue={getOptionSelected}
           onChange={handleChange}
           classes={{
-            root: clsx("d-inline-flex", classes.root),
+            root: clsx("d-inline-flex", classes.root, inline && classes.inline),
             hasPopupIcon: classes.hasPopup,
             hasClearIcon: classes.hasClear,
             inputRoot: clsx(classes.inputWrapper, multiple && classes.multiple),

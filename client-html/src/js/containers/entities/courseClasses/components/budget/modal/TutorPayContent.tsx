@@ -73,7 +73,7 @@ const TutorPayContent: React.FC<Props> = ({
   const [onCostLocked, setOnCostLocked] = useState(values.onCostRate === null);
   const onLockClick = () => {
     setOnCostLocked(prev => {
-      dispatch(change(COURSE_CLASS_COST_DIALOG_FORM, "onCostRate", prev ? defaultOnCostRate : null));
+      dispatch(change(COURSE_CLASS_COST_DIALOG_FORM, "onCostRate", prev ? defaultOnCostRate : 0));
       return !prev;
     });
   };
@@ -244,12 +244,12 @@ const TutorPayContent: React.FC<Props> = ({
               format={formatFieldPercent}
               parse={parseFieldPercent}
               onKeyPress={preventNegativeOrLogEnter}
-              defaultValue={`${defaultOnCostRate * 100}%`}
               disabled={onCostLocked}
+              defaultValue={0}
               debounced={false}
               inline
             />
-            <span>oncost</span>
+            <span>% oncost</span>
             <span className="pl-1">
               <IconButton className="inputAdornmentButton" onClick={onLockClick}>
                 {!onCostLocked && <LockOpen className="inputAdornmentIcon" />}
