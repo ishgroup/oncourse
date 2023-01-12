@@ -168,7 +168,7 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
             label="Send invoice on redemption to"
             selectValueMark="id"
             selectLabelCondition={getContactFullName}
-            defaultDisplayValue={values.redeemableByName}
+            defaultValue={values.redeemableByName}
             labelAdornment={(
               <LinkAdornment
                 link={values.redeemableById}

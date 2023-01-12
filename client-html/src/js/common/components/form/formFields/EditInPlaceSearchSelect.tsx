@@ -7,70 +7,33 @@
  */
 
 import CircularProgress from "@mui/material/CircularProgress";
-import FormControl from "@mui/material/FormControl";
-import FormHelperText from "@mui/material/FormHelperText";
-import Input from "@mui/material/Input";
-import InputLabel from "@mui/material/InputLabel";
 import Popper from "@mui/material/Popper";
 import { Autocomplete, IconButton, InputAdornment, Select } from "@mui/material";
 import { createStyles, withStyles } from "@mui/styles";
-import React, { ReactElement, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import CloseIcon from '@mui/icons-material//Close';
 import clsx from "clsx";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
 import { usePrevious } from "../../../utils/hooks";
 import { ListboxComponent, selectStyles } from "./SelectCustomComponents";
-import WarningMessage from "../fieldMessage/WarningMessage";
-import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
-import { countWidth } from "../../../utils/DOM";
+import EditInPlaceFieldBase from "./EditInPlaceFieldBase";
+import { EditInPlaceSearchSelectFieldProps } from "../../../../model/common/Fields";
 
 const searchStyles = theme => createStyles({
   inputEndAdornment: {
-    fontSize: "18px",
-    color: theme.palette.primary.main,
+    marginBottom: "-6px",
+    alignItems: "center",
     display: "flex",
-    visibility: 'hidden'
   },
-  validUnderline: {
-    "&:after": {
-      borderBottomColor: theme.palette.primary.main
-    }
+  selectAdornment: {
+    marginBottom: "6px",
+    color: theme.palette.primary.main
   },
-  editingSelect: {
-    paddingBottom: theme.spacing(1) + 1
-  },
-  selectorMenuBackground: {
-    background: theme.palette.background.paper,
-    borderRadius: "inherit"
-  },
-  label: {
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    paddingBottom: "4px",
-    right: "-46%",
-    maxWidth: "100%"
-  },
-  inline: {
-    fontSize: "inherit",
-    "& $inputEndAdornment": {
-      display: "none",
-    },
-    "&:hover $inputEndAdornment": {
-      display: "flex",
-    }
+  endAdornment: {
+    opacity: 0.5
   },
   multiple: {},
-  labelShrink: {},
-  editable: {
-    color: theme.palette.text.primaryEditable,
-    fontWeight: 400,
-  },
-  editableInHeader: {
-    color: theme.palette.primary.contrastText,
-  },
   root: {
     "& $inline.MuiInput-root .MuiInput-input": {
       padding: 0
@@ -81,7 +44,7 @@ const searchStyles = theme => createStyles({
     "& $multiple $inputEndAdornment": {
       position: 'absolute',
       right: 0,
-      bottom: 2,
+      bottom: 6,
       height: "auto"
     }
   },
@@ -89,56 +52,6 @@ const searchStyles = theme => createStyles({
     zIndex: 1400
   }
 });
-
-interface Props  {
-  input?: Partial<WrappedFieldInputProps>;
-  meta?: Partial<WrappedFieldMetaProps>;
-  items?: any[];
-  classes?: any;
-  label?: string;
-  disabled?: boolean;
-  className?: string;
-  labelAdornment?: any;
-  inline?: boolean;
-  loading?: boolean;
-  hideLabel?: boolean;
-  colors?: any;
-  creatable?: boolean;
-  endAdornment?: any;
-  allowEmpty?: boolean;
-  fieldClasses?: any;
-  helperText?: string;
-  selectLabelCondition?: any;
-  selectFilterCondition?: any;
-  defaultDisplayValue?: any;
-  rowHeight?: number;
-  remoteRowCount?: number;
-  loadMoreRows?: AnyArgFunction;
-  onCreateOption?: AnyArgFunction;
-  itemRenderer?: (content, data, search, parentProps) => ReactElement;
-  valueRenderer?: (content, data, search, parentProps) => ReactElement;
-  onInputChange?: AnyArgFunction;
-  onClearRows?: AnyArgFunction;
-  onInnerValueChange?: AnyArgFunction;
-  selectValueMark?: string;
-  remoteData?: boolean;
-  disableUnderline?: boolean;
-  createLabel?: string;
-  selectLabelMark?: string;
-  returnType?: "object" | "string";
-  alwaysDisplayDefault?: boolean;
-  popperAnchor?: any;
-  placeholder?: string;
-  sort?: (a: any, b: any) => number | boolean;
-  sortPropKey?: string;
-  inHeader?: boolean;
-  hasError?: boolean;
-  multiple?: boolean;
-  hideMenuOnNoResults?: boolean;
-  inputRef?: any;
-  warning?: string;
-  selectAdornment?: { position: "start" | "end", content: ReactElement }
-}
 
 const SelectContext = React.createContext<any>({});
 
@@ -194,7 +107,7 @@ const PopperAdapter = React.memo<any>(params => {
       />);
 });
 
-const EditInPlaceSearchSelect: React.FC<Props> = ({
+const EditInPlaceSearchSelect = ({
     classes,
     label,
     disabled,
@@ -205,13 +118,12 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
     creatable,
     allowEmpty,
     fieldClasses = {},
-    helperText,
     selectAdornment,
     selectValueMark = "value",
     selectLabelMark = "label",
     selectLabelCondition,
     selectFilterCondition,
-    defaultDisplayValue,
+    defaultValue,
     disableUnderline,
     items = [],
     rowHeight,
@@ -223,6 +135,7 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
     onClearRows,
     onInnerValueChange,
     hideMenuOnNoResults,
+    hideEditIcon,
     remoteData,
     createLabel,
     returnType = "string",
@@ -230,16 +143,16 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
     valueRenderer,
     popperAnchor,
     input,
-    meta,
+    meta: { error, invalid },
     placeholder,
     sort,
     sortPropKey,
-    inHeader,
-    hasError,
     inputRef,
     warning,
-    multiple
-  }) => {
+    multiple,
+    rightAligned,
+    hasError
+  }: EditInPlaceSearchSelectFieldProps) => {
   const sortedItems = useMemo(() => items && (sort
     ? [...items].sort(typeof sort === "function"
       ? sort
@@ -254,23 +167,29 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
 
   const inputNode = useRef<any>(null);
 
+  useEffect(() => {
+    if (inputRef && inputNode.current) {
+      inputRef = inputNode.current;
+    }
+  }, [inputNode.current, inputRef]);
+
   const [searchValue, setSearchValue] = useState<string>("");
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [formattedDisplayValue, setFormattedDisplayValue] = useState<any>("");
 
-  const prevDefaultDisplayValue = usePrevious(defaultDisplayValue);
+  const prevDefaultDisplayValue = usePrevious(defaultValue);
 
   useEffect(() => {
-    if (selectLabelCondition && formattedDisplayValue && defaultDisplayValue !== prevDefaultDisplayValue) {
+    if (selectLabelCondition && formattedDisplayValue && defaultValue !== prevDefaultDisplayValue) {
       setFormattedDisplayValue(null);
     }
-    if (selectLabelCondition && !defaultDisplayValue) {
+    if (selectLabelCondition && !defaultValue) {
       const selected = sortedItems.find(i => getOptionSelected(i, input.value));
       if (selected) {
         setFormattedDisplayValue(selectLabelCondition(selected));
       }
     }
-  }, [selectLabelCondition, formattedDisplayValue, defaultDisplayValue, sortedItems, input.value]);
+  }, [selectLabelCondition, formattedDisplayValue, defaultValue, sortedItems, input.value]);
 
   const onBlur = () => {
     setIsEditing(false);
@@ -392,11 +311,11 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
     }
 
     let newValue = value[selectValueMark];
-    
+
     if (returnType === "object") {
       newValue = (Object.keys(value).length ? value : null);
     }
-    
+
     if (multiple) {
       newValue = value.map(v => v[selectValueMark]);
       if (!newValue.length) {
@@ -440,7 +359,6 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
     if (typeof itemRenderer === "function") {
       return itemRenderer(getHighlightedPartLabel(getOptionLabel(data), searchValue), data, searchValue, optionProps) as any;
     }
-
     return getHighlightedPartLabel(getOptionLabel(data), searchValue, optionProps);
   };
 
@@ -453,33 +371,23 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
     let response;
 
     if (selectLabelCondition) {
-      response = returnType === "object" ? selectLabelCondition(input.value) : formattedDisplayValue || defaultDisplayValue;
+      response = returnType === "object" ? selectLabelCondition(input.value) : formattedDisplayValue || defaultValue;
     } else if (returnType === "object") {
       response = input.value && input.value[selectLabelMark];
     } else {
-      response = getOptionLabel(selectedOption) || defaultDisplayValue || input.value;
+      response = getOptionLabel(selectedOption) || defaultValue || input.value;
     }
 
     if (alwaysDisplayDefault) {
-      response = defaultDisplayValue;
+      response = defaultValue;
     }
 
     return (
       ![null, undefined].includes(input.value)
       ? response
-      : <span className={clsx("overflow-hidden placeholderContent", classes.editable)}>No value</span>
+      : null
     );
-  }, [formattedDisplayValue, selectedOption, selectLabelCondition, alwaysDisplayDefault, returnType, defaultDisplayValue, selectLabelMark, input, classes]);
-
-  const labelContent = useMemo(() => (labelAdornment ? (
-    <span>
-      {label}
-      {' '}
-      <span>{labelAdornment}</span>
-    </span>
-  ) : (
-    label
-  )), [classes, label, labelAdornment]);
+  }, [formattedDisplayValue, selectedOption, selectLabelCondition, alwaysDisplayDefault, returnType, defaultValue, selectLabelMark, input, classes]);
 
   const renderValue = useMemo(() => valueRenderer
     ? valueRenderer(displayedValue, selectedOption, searchValue, { value: selectedOption && selectedOption[selectValueMark] })
@@ -490,28 +398,35 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
     loading
       ? <CircularProgress size={24} thickness={4} className={fieldClasses.loading} />
       : (
-        <InputAdornment position="end" className={classes.inputEndAdornment}>
+        <div className={classes.inputEndAdornment}>
           {allowEmpty && input.value && (
             <IconButton
               size="small"
               onClick={onClear}
               color="inherit"
             >
-              <CloseIcon className={clsx(fieldClasses.editIcon, classes.clearIcon)} />
+              <CloseIcon className={clsx("cursor-pointer", inline && "fsInherit")} />
             </IconButton>
-          ) }
-          <ExpandMore className={clsx("hoverIcon", fieldClasses.editIcon)} />
-        </InputAdornment>
+          )}
+          <IconButton
+            size="small"
+            color="inherit"
+            className="pl-0 pr-0"
+            disableRipple
+          >
+            <ExpandMore className={inline && "fsInherit"} />
+          </IconButton>
+        </div>
       )
-  ), [disabled, loading, allowEmpty, input.value]);
-  
+  ), [disabled, loading, inline, allowEmpty, input.value]);
+
   const inputValue = useMemo(() => {
     if (multiple) {
       return (input.value || []).map(v => sortedItems.find(s => s[selectValueMark] === v));
     }
     return input.value || "";
   }, [input.value, multiple, selectValueMark, sortedItems]);
-  
+
   const renderedPlaceholder = useMemo(() => {
     const rendered = placeholder || (!isEditing ? "No value" : "");
     return multiple && inputValue.length ? null : rendered;
@@ -544,14 +459,15 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
           options={sortedItems}
           loading={loading}
           freeSolo={creatable}
+          disabled={disabled}
           disableClearable={!allowEmpty}
           isOptionEqualToValue={getOptionSelected}
           onChange={handleChange}
           classes={{
-            root: clsx("d-inline-flex", classes.root),
+            root: clsx("d-inline-flex", classes.root, inline && classes.inline),
             hasPopupIcon: classes.hasPopup,
             hasClearIcon: classes.hasClear,
-            inputRoot: clsx(classes.inputWrapper, inline && classes.inline, multiple && classes.multiple),
+            inputRoot: clsx(classes.inputWrapper, multiple && classes.multiple),
             option: "w-100 text-pre",
             popper: classes.popper
           }}
@@ -563,72 +479,65 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
           renderInput={({
            InputLabelProps, InputProps, inputProps, ...params
           }) => (
-            <FormControl
+            <EditInPlaceFieldBase
               {...params}
-              variant="standard"
-              error={meta?.invalid}
-            >
-              {labelContent && (
-                <InputLabel shrink={true} error={meta?.invalid || hasError} htmlFor={`input-${input.name}`} className={fieldClasses.label}>
-                  {labelContent}
-                </InputLabel>
-              )}
-              {/* Not compatible with multiple*/}
-              {
-                valueRenderer && !isEditing && input.value
-                  ? <Select
-                    {...InputProps}
-                    onFocus={edit}
-                    value={input.value || ""}
-                    endAdornment={renderIcons}
-                    IconComponent={null}
-                    >
-                    {renderValue}
-                    </Select>
-                  : <Input
-                    {...InputProps}
-                    disableUnderline={disableUnderline}
-                    id={`input-${input.name}`}
-                    name={input.name}
-                    disabled={disabled}
-                    placeholder={renderedPlaceholder}
-                    onChange={handleInputChange}
-                    onFocus={edit}
-                    onBlur={onBlur}
-                    onClick={onEditButtonFocus}
-                    inputRef={rf => {
-                      inputNode.current = rf;
-                      if (inputRef) {
-                        inputRef.current = rf;
-                      }
-                    }}
-                    classes={{
-                      underline: fieldClasses.underline,
-                      input: clsx(classes.input, inHeader && classes.editableInHeader, disabled && classes.readonly, fieldClasses.text),
-                    }}
-                    inputProps={{
-                      ...inputProps,
-                      value: (isEditing ? searchValue : multiple ? "" : (typeof displayedValue === "string" ? displayedValue : "")),
-                      style: {
-                        width: inline ? countWidth(displayedValue) + 3 : inputProps?.style?.width
-                      }
-                    }}
-                    endAdornment={renderIcons}
-                  />
-              }
-              <FormHelperText
-                classes={{
-                  error: "shakingError"
-                }}
-              >
-                {(meta && meta.error) || helperText}
-                {warning && <WarningMessage warning={warning} />}
-              </FormHelperText>
-            </FormControl>
-          )}
-          fullWidth
+              name={input.name}
+              value={input.value}
+              error={error}
+              invalid={hasError || invalid}
+              inline={inline}
+              label={label}
+              warning={warning}
+              fieldClasses={fieldClasses}
+              endAdornmentClass={classes.endAdornment}
+              rightAligned={rightAligned}
+              shrink={Boolean(label || input.value)}
+              labelAdornment={labelAdornment}
+              placeholder={renderedPlaceholder}
+              editIcon={!hideEditIcon && renderIcons}
+              InputProps={{
+                ...InputProps,
+                onChange: handleInputChange,
+                onFocus: edit,
+                onClick: onEditButtonFocus,
+                onBlur,
+                disableUnderline,
+                classes: {
+                  underline: fieldClasses.underline,
+                  input: clsx(classes.input, disabled && classes.readonly, fieldClasses.text),
+                },
+                inputProps: {
+                  ...inputProps,
+                  ref: ref => {
+                    (inputProps as any).ref.current = ref;
+                    inputNode.current = ref;
+                  },
+                  value: (isEditing ? searchValue : multiple ? "" : (typeof displayedValue === "string" ? displayedValue : "")),
+                }
+              }}
+              CustomInput={(valueRenderer && !multiple && !isEditing && input.value)
+                ?
+                <Select
+                  {...InputProps}
+                  onFocus={edit}
+                  value={input.value || ""}
+                  endAdornment={
+                    <InputAdornment
+                      position="end"
+                      className={clsx(classes.endAdornment, classes.selectAdornment, "d-none")}>
+                      {renderIcons}
+                    </InputAdornment>
+                  }
+                  IconComponent={null}
+                >
+                  {renderValue}
+                </Select>
+                : null}
+            />)
+          }
           disableListWrap
           openOnFocus
+          fullWidth
         />
       </SelectContext.Provider>
     </div>
@@ -637,4 +546,4 @@ const EditInPlaceSearchSelect: React.FC<Props> = ({
 
 export default withStyles(theme => ({ ...selectStyles(theme), ...searchStyles(theme) } as any), { withTheme: true })(
   EditInPlaceSearchSelect
-) as React.FC<Props>;
+) as React.FC<EditInPlaceSearchSelectFieldProps>;

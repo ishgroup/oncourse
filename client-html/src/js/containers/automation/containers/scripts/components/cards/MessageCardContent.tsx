@@ -94,8 +94,7 @@ const MessageCardContent = React.memo<Props>(props => {
         placeholder={(customPreferencesFields && customPreferencesFields[ADMIN_EMAIL_KEY]) || 'No value'}
         disabled={disabled}
         validate={validateEmail}
-        fullWidth
-      />
+              />
     </Grid>
   );
 
@@ -140,8 +139,7 @@ const MessageCardContent = React.memo<Props>(props => {
               name={`${name}.to`}
               label="To"
               disabled={disabled}
-              fullWidth
-            />
+                          />
           </Grid>
           <Grid item xs={12}>
             <FormField
@@ -149,8 +147,7 @@ const MessageCardContent = React.memo<Props>(props => {
               name={`${name}.cc`}
               disabled={disabled}
               label="cc"
-              fullWidth
-            />
+                          />
           </Grid>
           <Grid item xs={12}>
             <FormField
@@ -158,8 +155,7 @@ const MessageCardContent = React.memo<Props>(props => {
               name={`${name}.bcc`}
               disabled={disabled}
               label="bcc"
-              fullWidth
-            />
+                          />
           </Grid>
           <Grid item xs={12}>
             <FormField
@@ -167,8 +163,7 @@ const MessageCardContent = React.memo<Props>(props => {
               name={`${name}.subject`}
               label="Subject"
               disabled={disabled}
-              fullWidth
-            />
+                          />
           </Grid>
           <Grid item xs={12}>
             <FormField
@@ -176,8 +171,7 @@ const MessageCardContent = React.memo<Props>(props => {
               name={`${name}.content`}
               label="Content"
               disabled={disabled}
-              fullWidth
-            />
+                          />
           </Grid>
         </>
       )}
@@ -189,8 +183,7 @@ const MessageCardContent = React.memo<Props>(props => {
             name={`${name}.key`}
             disabled={disabled}
             label="Key"
-            fullWidth
-          />
+                      />
         </Grid>
       )}
 
@@ -201,8 +194,7 @@ const MessageCardContent = React.memo<Props>(props => {
             name={`${name}.keyCollision`}
             disabled={disabled}
             label="Key collision"
-            fullWidth
-          />
+                      />
         </Grid>
       )}
 

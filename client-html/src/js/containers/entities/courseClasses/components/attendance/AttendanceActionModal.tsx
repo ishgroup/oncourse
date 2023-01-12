@@ -192,8 +192,7 @@ const StudentAttendanceContent: React.FC<StudentAttendanceContentProps> = ({
             name="note"
             label="Note"
             validate={values.attendanceType === "Absent with reason" ? validateSingleMandatoryField : undefined}
-            fullWidth
-          />
+                      />
         </Grid>
       </Grid>
     </Grid>
@@ -248,8 +247,7 @@ const AttendanceActionModalForm: React.FC<AttendanceActionModalProps & InjectedF
       classes={{
         paper: "overflow-visible"
       }}
-      fullWidth
-      disableAutoFocus
+            disableAutoFocus
       disableEnforceFocus
       disableRestoreFocus
     >

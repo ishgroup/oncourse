@@ -257,8 +257,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
               type="text"
               name={`${item}.name`}
               label="Name"
-              fullWidth
-              className={classes.field}
+                            className={classes.field}
               validate={[validateSingleMandatoryField, validateUniqueNamesInArray]}
             />
           </Grid>
@@ -268,8 +267,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
               type="text"
               name={`${item}.fieldKey`}
               label="Custom field key"
-              fullWidth
-              disabled={!!field.id}
+                            disabled={!!field.id}
               className={classes.field}
               required
             />
@@ -285,7 +283,6 @@ const ExpandableCustomFields = React.memo<any>(props => {
               onChange={onDataTypeChange}
               debounced={false}
               className={classes.field}
-              fullWidth
               required
             />
           </Grid>
@@ -300,7 +297,6 @@ const ExpandableCustomFields = React.memo<any>(props => {
               disabled={!!field.id}
               className={classes.field}
               sort
-              fullWidth
               required
             />
           </Grid>
@@ -313,8 +309,6 @@ const ExpandableCustomFields = React.memo<any>(props => {
                   type="checkbox"
                   name={`${item}.mandatory`}
                   color="primary"
-                  value="true"
-                  fullWidth
                 />
               )}
               label="Mandatory"
@@ -410,10 +404,9 @@ const renderCustomFields = React.memo<any>(props => {
                       key={index}
                       ref={provided.innerRef}
                       {...provided.draggableProps}
-                      {...provided.dragHandleProps}
                     >
                       <Card className="card d-flex">
-                        <div className="centeredFlex mr-2">
+                        <div className="centeredFlex mr-2" {...provided.dragHandleProps}>
                           <DragIndicator className={clsx("dndActionIcon", classes.dragIcon)} />
                         </div>
                         <ExpandableCustomFields

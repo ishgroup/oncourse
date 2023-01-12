@@ -74,6 +74,7 @@ const TutorRolesForm = React.memo<Props>(
           fields={(
             <Grid item xs={12}>
               <FormField
+                type="text"
                 name="name"
                 label="Name"
                 required
@@ -107,7 +108,7 @@ const TutorRolesForm = React.memo<Props>(
                   />
                 </Grid>
                 <Grid item xs={3}>
-                  <FormField type="switch" name="active" label="Enabled" color="primary" fullWidth />
+                  <FormField type="switch" name="active" label="Enabled" color="primary" />
                 </Grid>
               </Grid>
             </Grid>

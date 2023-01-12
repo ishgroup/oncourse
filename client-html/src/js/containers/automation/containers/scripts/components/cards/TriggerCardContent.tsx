@@ -108,7 +108,6 @@ const TriggerCardContent = (props: Props) => {
         onChange={onTriggerChange}
         debounced={false}
         required
-        autoWidth
       />
 
       {
@@ -163,7 +162,6 @@ const TriggerCardContent = (props: Props) => {
             items={ScheduleTypeItems}
             required
             className="pl-2 flex-fill"
-            autoWidth
           />
 
           {values.trigger.cron?.scheduleType === "Custom" && (

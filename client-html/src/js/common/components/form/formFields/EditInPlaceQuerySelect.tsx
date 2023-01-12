@@ -12,11 +12,9 @@ import QueryBuilder from "@mui/icons-material/QueryBuilder";
 import Autocomplete from "@mui/material/Autocomplete";
 import React from "react";
 import { createStyles, withStyles } from "@mui/styles";
-import { WrappedFieldMetaProps } from "redux-form";
 import { format as formatDate } from "date-fns";
 import clsx from "clsx";
 import { DatePicker, TimePicker as Time } from "@mui/x-date-pickers";
-import { InputProps } from "@mui/material/Input";
 import { CodeCompletionCore } from "antlr4-c3";
 import { ANTLRInputStream, CommonTokenStream } from "antlr4ts";
 import { AqlLexer } from "@aql/AqlLexer";
@@ -25,7 +23,6 @@ import * as Entities from "@aql/queryLanguageModel";
 import { stubComponent } from "../../../utils/common";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
 import getCaretCoordinates from "../../../utils/getCaretCoordinates";
-import { HTMLTagArgFunction } from "../../../../model/common/CommonFunctions";
 import { selectStyles } from "./SelectCustomComponents";
 import { DD_MM_YYYY_SLASHED, HH_MM_COLONED } from "../../../utils/dates/format";
 import {
@@ -34,8 +31,7 @@ import {
   SIMPLE_SEARCH_QUOTES_REGEX,
   TAGS_REGEX
 } from "../../../../constants/Config";
-import { FieldClasses } from "../../../../model/common/Fields";
-import { ListAqlMenuItemsRenderer } from "../../../../model/common/ListView";
+import { EditInPlaceQueryFieldProps } from "../../../../model/common/Fields";
 
 const queryStyles = theme => createStyles({
   queryMenuItem: {
@@ -242,38 +238,7 @@ interface State {
   caretCoordinates: any;
 }
 
-interface Props {
-  ref?: any;
-  setInputNode: HTMLTagArgFunction;
-  className: string;
-  rootEntity: string;
-  classes?: any;
-  input?: any;
-  editableComponent?: any;
-  label?: string;
-  disabled?: boolean;
-  disableUnderline?: boolean;
-  disableErrorText?: boolean;
-  inline?: boolean;
-  hideLabel?: boolean;
-  meta?: Partial<WrappedFieldMetaProps>;
-  InputProps?: InputProps;
-  filterTags?: Suggestion[];
-  tags?: Suggestion[];
-  customFields?: string[];
-  performSearch?: () => void;
-  theme?: any;
-  onFocus?: any;
-  onBlur?: any;
-  placeholder?: string;
-  labelAdornment?: any;
-  endAdornment?: any;
-  menuHeight?: number;
-  fieldClasses?: FieldClasses;
-  itemRenderer?: ListAqlMenuItemsRenderer;
-}
-
-class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
+class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldProps, State> {
   private inputNode: any;
 
   private pathFilter: string;
@@ -1167,4 +1132,4 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
 
 export default withStyles(theme => ({ ...selectStyles(theme), ...queryStyles(theme) }))(
   EditInPlaceQuerySelect
-) as React.FC<Props>;
+) as React.FC<EditInPlaceQueryFieldProps>;

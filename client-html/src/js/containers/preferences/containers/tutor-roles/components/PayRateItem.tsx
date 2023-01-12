@@ -40,7 +40,6 @@ const PayRateItem = props => {
               name={`${item}.validFrom`}
               label="Valid from"
               formatValue={YYYY_MM_DD_MINUSED}
-              fullWidth
               required
             />
           </Grid>
@@ -63,7 +62,7 @@ const PayRateItem = props => {
           </Grid>
           <Grid item xs={2} className="d-flex">
             <FormField
-              type="persent"
+              type="number"
               name={`${item}.oncostRate`}
               label="Oncosts"
               step="0.01"
@@ -71,6 +70,7 @@ const PayRateItem = props => {
               parse={parseFieldPercent}
               onKeyPress={preventNegativeOrLogEnter}
               validate={validatePercentage}
+              debounced={false}
             />
             <Tooltip title="Remove pay rate">
               <IconButton
@@ -84,7 +84,7 @@ const PayRateItem = props => {
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <FormField type="multilineText" name={`${item}.notes`} label="Description" fullWidth />
+          <FormField type="multilineText" name={`${item}.notes`} label="Description" />
         </Grid>
       </Grid>
     </Card>

@@ -309,6 +309,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               label="Achieved in year"
               validate={[validateNonNegative, validateYearSchoolCompleted]}
               parse={parseIntValue}
+              debounced={false}
             />
           </Grid>
           <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
@@ -348,7 +349,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               <FormControlLabel
                 className="checkbox pr-3"
                 control={
-                  <FormField type="checkbox" name="student.specialNeedsAssistance" color="secondary" fullWidth />
+                  <FormField type="checkbox" name="student.specialNeedsAssistance" color="secondary" />
                 }
                 label="Disability support requested"
               />
@@ -540,13 +541,14 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
                 type="text"
                 name="tfn"
                 label="Tax file number"
-                max={9}
+                max="9"
                 InputProps={{
                   inputComponent: TFNInputMask
                 }}
                 validate={validateTFN}
                 parse={parseTFN}
                 format={formatTFN}
+                debounced={false}
               />
             </Grid>
           )}

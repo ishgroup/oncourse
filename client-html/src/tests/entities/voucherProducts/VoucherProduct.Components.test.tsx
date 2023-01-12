@@ -1,5 +1,6 @@
 import VoucherProductEditView from "../../../js/containers/entities/voucherProducts/components/VoucherProductEditView";
 import { mockedEditView } from "../../common/MockedEditView.Components";
+import { formatCurrency } from "../../../js/common/utils/numbers/numbersNormalizing";
 
 describe("Virtual rendered VoucherProductEditView", () => {
   mockedEditView({
@@ -12,7 +13,7 @@ describe("Virtual rendered VoucherProductEditView", () => {
         code: initialValues.code,
         expiryDays: initialValues.expiryDays,
         maxCoursesRedemption: initialValues.maxCoursesRedemption,
-        feeExTax: initialValues.feeExTax.toString(),
+        feeExTax: formatCurrency(initialValues.feeExTax, ""),
         status: initialValues.status,
         dataCollectionRuleId: initialValues.dataCollectionRuleId.toString(),
         description: initialValues.description,

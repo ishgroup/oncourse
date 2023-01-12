@@ -6,12 +6,13 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { FunctionComponent } from "react";
+import React from "react";
 import clsx from "clsx";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-groovy";
 import "ace-builds/src-noconflict/theme-textmate";
 import { createStyles, withStyles } from "@mui/styles";
+import { CodeFieldProps } from "../../../../model/common/Fields";
 
 const styles = theme =>
   createStyles({
@@ -54,18 +55,17 @@ const styles = theme =>
     }
   });
 
-const CodeEditorField = props => {
-  const {
-    input,
-    meta: { error },
-    classes,
-    errorMessage,
-    disabled,
-    onFocus
-  } = props;
-
+const CodeEditorField = ({
+   input,
+   meta: { error },
+   classes,
+   errorMessage,
+   disabled,
+   onFocus,
+   className
+ }: CodeFieldProps) => {
   return (
-    <div id={input.name}>
+    <div id={input.name} className={className}>
       {error && <div className={classes.errorMessage}><div className="shakingError">{errorMessage || error}</div></div>}
       <AceEditor
         mode="groovy"
@@ -97,4 +97,4 @@ const CodeEditorField = props => {
   );
 };
 
-export default withStyles(styles)(CodeEditorField) as FunctionComponent<any>;
+export default withStyles(styles)(CodeEditorField);

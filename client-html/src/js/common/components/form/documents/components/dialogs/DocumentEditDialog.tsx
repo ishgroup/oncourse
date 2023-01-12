@@ -92,7 +92,6 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
               type="tags"
               name={`${itemPath}.tags`}
               tags={tags}
-              rerenderOnEveryChange
               disabled={readOnly}
             />
           </Grid>
@@ -113,8 +112,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
           name={`${itemPath}.description`}
           label="Description"
           multiline
-          fullWidth
-          disabled={readOnly}
+                    disabled={readOnly}
         />
 
         <DialogActions classes={{ root: classes.actions }}>

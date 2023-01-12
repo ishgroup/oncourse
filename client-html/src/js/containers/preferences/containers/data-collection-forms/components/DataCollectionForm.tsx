@@ -436,6 +436,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
             fields={(
               <Grid item xs={8}>
                 <FormField
+                  type="text"
                   name="form.name"
                   label="Name"
                   validate={this.validateUniqueNames}
@@ -493,7 +494,6 @@ class DataCollectionWrapper extends React.Component<any, any> {
                         type="select"
                         name="form.deliverySchedule"
                         label="Delivery Schedule"
-                        autoWidth
                         items={deliveryScheduleTypes}
                         className={clsx("pt-2", classes.selectField)}
                         required
