@@ -654,7 +654,7 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	@API
 	@Override
 	List<InvoiceLine> getInvoiceLines() {
-		return super.getAbstractInvoiceLines().findAll {it.abstractInvoice?.type == InvoiceType.INVOICE } as List<InvoiceLine>
+		return super.getAbstractInvoiceLines().findAll {it instanceof InvoiceLine } as List<InvoiceLine>
 	}
 
 	/**
@@ -663,7 +663,7 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	@Nonnull
 	@API
 	List<QuoteLine> getQuoteLines() {
-		return super.getAbstractInvoiceLines().findAll { it.abstractInvoice?.type == InvoiceType.QUOTE } as List<QuoteLine>
+		return super.getAbstractInvoiceLines().findAll { it instanceof QuoteLine } as List<QuoteLine>
 	}
 
 	/**
