@@ -147,11 +147,11 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
         fields={(
           <Grid item xs={12}>
             <FormField
+              type="text"
               name="name"
               label="Name"
               validate={this.validateNameField}
               disabled={disableName}
-              fullWidth
             />
           </Grid>
         )}

@@ -499,8 +499,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                 autoComplete="user-name"
                                 component={FormTextField}
                                 validate={validateSingleMandatoryField}
-                                fullWidth
-                              />
+                                                              />
                             </div>
 
                             <div className={classes.textFieldWrapper}>
@@ -511,8 +510,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                 placeholder="Password"
                                 component={FormTextField}
                                 validate={validateSingleMandatoryField}
-                                fullWidth
-                              />
+                                                              />
                             </div>
 
                             {withNetworkFields && (
@@ -561,8 +559,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                   component={NewPasswordField}
                                   passwordScore={passwordScore}
                                   helperText={passwordFeedback}
-                                  fullWidth
-                                />
+                                                                  />
                               ) : (
                                 <Field
                                   name="newPassword"
@@ -571,8 +568,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                   placeholder="New password"
                                   component={FormTextField}
                                   validate={this.validatePasswordStrengthLight}
-                                  fullWidth
-                                />
+                                                                  />
                               )}
                             </div>
 
@@ -584,8 +580,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                 placeholder="Confirm new password"
                                 component={FormTextField}
                                 validate={validatePasswordConfirm}
-                                fullWidth
-                              />
+                                                              />
                             </div>
                           </>
                         )}
@@ -608,8 +603,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                   component={NewPasswordField}
                                   passwordScore={passwordScore}
                                   helperText={passwordFeedback}
-                                  fullWidth
-                                />
+                                                                  />
                               ) : (
                                 <Field
                                   name="newPassword"
@@ -618,8 +612,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                   placeholder="Password"
                                   component={FormTextField}
                                   validate={this.validatePasswordStrengthLight}
-                                  fullWidth
-                                />
+                                                                  />
                               )}
                             </div>
 
@@ -631,8 +624,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                 placeholder="Confirm password"
                                 component={FormTextField}
                                 validate={validatePasswordConfirm}
-                                fullWidth
-                              />
+                                                              />
                             </div>
                           </>
                         )}

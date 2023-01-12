@@ -89,8 +89,7 @@ const templatesRenderer: React.FC<any> = React.memo<any>(({ fields }) => fields.
         type={item.type}
         component={DataTypeRenderer}
         validate={validateSingleMandatoryField}
-        fullWidth
-        {...fieldProps}
+                {...fieldProps}
       />
     </Grid>
   );

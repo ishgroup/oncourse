@@ -147,22 +147,17 @@ const CourseClassTutorItem: React.FC<Props> = ({
           <FormField
             type="remoteDataSelect"
             name={`tutors[${index}].contactId`}
-            props={{
-                label: "Contact",
-                entity: "Contact",
-                aqlFilter: `isTutor is true and (tutor.dateFinished > ${today} or tutor.dateFinished is null)`,
-                selectValueMark: "id",
-                selectLabelCondition: getContactFullName,
-                defaultDisplayValue: tutor.tutorName,
-                labelAdornment: (
-                  <ContactLinkAdornment id={tutor?.contactId} />
-                ),
-                itemRenderer: ContactSelectItemRenderer,
-                onInnerValueChange: onTutorIdChange,
-                disabled: Boolean(tutor.id),
-                rowHeight: 48
-              }}
+            label="Contact"
+            entity="Contact"
+            aqlFilter={`isTutor is true and (tutor.dateFinished > ${today} or tutor.dateFinished is null)`}
+            selectValueMark="id"
+            selectLabelCondition={getContactFullName}
+            defaultValue={tutor.tutorName}
+            labelAdornment={<ContactLinkAdornment id={tutor?.contactId} />}
+            itemRenderer={ContactSelectItemRenderer}
             onInnerValueChange={onTutorIdChange}
+            disabled={Boolean(tutor.id)}
+            rowHeight={48}
             className="mb-2"
             required
           />
@@ -176,7 +171,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
             selectValueMark="id"
             selectLabelMark="name"
             normalize={normalizeNumber}
-            defaultDisplayValue={tutor.roleName}
+            defaultValue={tutor.roleName}
             items={tutorRoles}
             onInnerValueChange={onRoleIdChange}
             disabled={Boolean(tutor.id || hasWage)}

@@ -269,28 +269,15 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
   };
 
   formatDiscountPercent = value => {
-    if (value && value !== "-") {
+    if (value !== "-") {
       return new Decimal(String(value * 100)).toDecimalPlaces(1).toNumber();
     }
     return value;
   };
 
   parseDiscountPercent = value => {
-    if (value && value !== "-") {
+    if (value !== "-") {
       return new Decimal(value / 100).toDecimalPlaces(3).toNumber();
-    }
-    return value;
-  };
-
-  normalizeDiscountPercent = (value, prevValue) => {
-    if (value === "-") {
-      return value;
-    }
-    if (isNaN(value) && prevValue) {
-      return prevValue;
-    }
-    if (value === "" || isNaN(value)) {
-      return "";
     }
     return value;
   };
@@ -312,10 +299,10 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
               fields={(
                 <Grid item xs={twoColumn ? 6 : 12}>
                   <FormField
+                    type="text"
                     name="name"
                     label="Name"
                     required
-                    fullWidth
                   />
                 </Grid>
               )}
@@ -339,8 +326,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
                 validate={[validateSingleMandatoryField, validateRangeDiscountPercent]}
                 format={this.formatDiscountPercent}
                 parse={this.parseDiscountPercent}
-                normalize={this.normalizeDiscountPercent}
-                preformatDisplayValue={value => value + "%"}
+                debounced={false}
               />
             ) : (
               <FormField
@@ -400,8 +386,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
               validate={[validateSingleMandatoryField, validateRangePredictedStudentsPercentage]}
               format={this.formatPercent}
               parse={this.parsePercent}
-              normalize={this.normalizePercent}
-              preformatDisplayValue={value => value + "%"}
+              debounced={false}
             />
           </Grid>
 
@@ -419,6 +404,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
                   placeholder="Code"
                   inline
                   normalize={trimValue}
+                  debounced={false}
                   required
                 />
               </Collapse>
@@ -452,15 +438,15 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
 
         <FormControlLabel
           className="checkbox pr-3"
-          control={<FormField type="checkbox" name="availableOnWeb" color="secondary" fullWidth />}
+          control={<FormField type="checkbox" name="availableOnWeb" color="secondary"  />}
           label="Available for online enrolment"
         />
         <FormControlLabel
           className="checkbox pr-3 mb-2"
-          control={<FormField type="checkbox" name="hideOnWeb" color="secondary" fullWidth />}
+          control={<FormField type="checkbox" name="hideOnWeb" color="secondary"  />}
           label="Hide discounted price on web"
         />
-        <FormField type="multilineText" name="description" label="Public description" fullWidth />
+        <FormField type="multilineText" name="description" label="Public description"  />
       </div>
     );
   }

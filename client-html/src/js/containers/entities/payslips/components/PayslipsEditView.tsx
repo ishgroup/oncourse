@@ -145,7 +145,7 @@ class PayslipsEditView extends React.PureComponent<any, any> {
                   label="Tutor"
                   selectValueMark="id"
                   selectLabelCondition={getContactFullName}
-                  defaultDisplayValue={values?.tutorFullName}
+                  defaultValue={values?.tutorFullName}
                   labelAdornment={
                     <ContactLinkAdornment id={values?.tutorId} />
                   }
@@ -255,11 +255,11 @@ class PayslipsEditView extends React.PureComponent<any, any> {
         </Grid>
 
         <Grid item xs={paislipsLayout[12].xs}>
-          <FormField type="multilineText" name="publicNotes" label="Public notes" fullWidth />
+          <FormField type="multilineText" name="publicNotes" label="Public notes"  />
         </Grid>
 
         <Grid item xs={paislipsLayout[12].xs}>
-          <FormField type="multilineText" name="privateNotes" label="Private notes" fullWidth />
+          <FormField type="multilineText" name="privateNotes" label="Private notes"  />
         </Grid>
       </Grid>
     ) : null;

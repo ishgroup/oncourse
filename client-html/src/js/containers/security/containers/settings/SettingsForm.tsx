@@ -182,7 +182,6 @@ class SettingsForm extends React.Component<any, any> {
                       <FormField
                         type="number"
                         name={this.formModel.SecurityPasswordExpiryPeriod.uniqueKey}
-                        color="primary"
                         inline
                         min="1"
                         max="999"
@@ -197,7 +196,6 @@ class SettingsForm extends React.Component<any, any> {
                           }
                         }}
                         disabled={!enablePasswordScheduleField}
-                        hidePlaceholderInEditMode
                       />
                       days
                     </Typography>
@@ -231,7 +229,6 @@ class SettingsForm extends React.Component<any, any> {
                         }}
                         debounced={false}
                         disabled={!enableTOTPScheduleField}
-                        hidePlaceholderInEditMode
                       />
                       hours
                     </Typography>
@@ -260,7 +257,6 @@ class SettingsForm extends React.Component<any, any> {
                     }
                   }}
                   debounced={false}
-                  hidePlaceholderInEditMode
                 />
                 incorrect login attempts
               </Typography>

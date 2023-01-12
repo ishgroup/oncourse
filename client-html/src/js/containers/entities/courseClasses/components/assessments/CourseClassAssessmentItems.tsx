@@ -429,8 +429,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
               selectLabelMark="code"
               onInnerValueChange={onCodeChange}
               rowHeight={36}
-              fullWidth
-              required
+                            required
             />
           </Grid>
           <Grid item xs={twoColumn ? 6 : 12}>
@@ -445,8 +444,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
               selectLabelMark="name"
               onInnerValueChange={onNameChange}
               rowHeight={36}
-              fullWidth
-              required
+                            required
             />
           </Grid>
           <Grid item xs={twoColumn ? 6 : 12}>

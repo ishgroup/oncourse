@@ -198,7 +198,6 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
               disabled={!item.discounts.length}
               onChange={onDiscountChange}
               placeholder="No discount"
-              disabledTab
               allowEmpty
               classes={{
                 placeholderContent: classes.discountPlaceholder

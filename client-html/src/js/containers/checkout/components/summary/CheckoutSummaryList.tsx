@@ -142,7 +142,7 @@ const CheckoutSummaryListForm: React.FC<Props & InjectedFormProps> = props => {
           </Grid>
 
           <Grid item xs={6}>
-            <FormField type="multilineText" name="invoicePublicNotes" label="Public notes" multiline fullWidth />
+            <FormField type="multilineText" name="invoicePublicNotes" label="Public notes" multiline  />
           </Grid>
         </Grid>
       </AppBarContainer>

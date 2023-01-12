@@ -143,7 +143,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
             aqlFilter="isStudent is true"
             selectValueMark="id"
             selectLabelCondition={getContactFullName}
-            defaultDisplayValue={values?.contactName}
+            defaultValue={values?.contactName}
             labelAdornment={
               <ContactLinkAdornment id={values?.contactId} />
             }
@@ -208,7 +208,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
           />
         </Grid>
         <Grid item xs={12}>
-          <FormField type="multilineText" name="notes" label="Private notes" fullWidth />
+          <FormField type="multilineText" name="notes" label="Private notes" />
         </Grid>
 
         <Grid item xs={12} className="pb-2 pt-2">

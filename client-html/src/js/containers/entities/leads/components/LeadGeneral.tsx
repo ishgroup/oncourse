@@ -183,7 +183,7 @@ const LeadGeneral = (props: Props) => {
                 name="contactId"
                 selectValueMark="id"
                 selectLabelCondition={getContactFullName}
-                defaultDisplayValue={values.contactName}
+                defaultValue={values.contactName}
                 onInnerValueChange={onContactChange}
                 itemRenderer={ContactSelectItemRenderer}
                 disabled={!isNew}
@@ -214,7 +214,7 @@ const LeadGeneral = (props: Props) => {
               label="Assigned to"
               selectValueMark="id"
               selectLabelCondition={getContactFullName}
-              defaultDisplayValue={values.assignTo}
+              defaultValue={values.assignTo}
               disabled={!users}
               items={users}
               required
@@ -243,6 +243,7 @@ const LeadGeneral = (props: Props) => {
             name="estimatedValue"
             label="Estimated value"
             normalize={normalizeNumberToZero}
+            debounced={false}
           />
           <Chip
             size="small"

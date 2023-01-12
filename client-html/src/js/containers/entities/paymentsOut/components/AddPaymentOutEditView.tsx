@@ -319,7 +319,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
             type="select"
             name="administrationCenterId"
             label="Site"
-            defaultDisplayValue={values.administrationCenterName}
+            defaultValue={values.administrationCenterName}
             selectLabelCondition={getAdminCenterLabel}
             validate={
               typeof values.paymentMethodId === "number" && values.selectedPaymentMethod !== "Credit card"
@@ -350,7 +350,6 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
         <Grid item xs={4}>
           <FormField
             type="money"
-            value={values.amount}
             name="amount"
             label="Amount paid"
             validate={[validateSingleMandatoryField, greaterThanNullValidation, validateAmountField]}
@@ -387,7 +386,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
         <Grid item xs={4} />
 
         <Grid item xs={12}>
-          <FormField type="multilineText" name="privateNotes" label="Private notes" fullWidth />
+          <FormField type="multilineText" name="privateNotes" label="Private notes"  />
         </Grid>
       </Grid>
 

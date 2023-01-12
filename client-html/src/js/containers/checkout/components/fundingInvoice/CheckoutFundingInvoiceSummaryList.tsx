@@ -88,7 +88,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
           label="Funding provider"
           selectValueMark="id"
           selectLabelCondition={getContactFullName}
-          defaultDisplayValue={fundingInvoice.company && getContactFullName(fundingInvoice.company)}
+          defaultValue={fundingInvoice.company && getContactFullName(fundingInvoice.company)}
           itemRenderer={ContactSelectItemRenderer}
           onInnerValueChange={onChangeCompany}
           rowHeight={55}

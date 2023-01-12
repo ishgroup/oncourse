@@ -8,7 +8,7 @@ import clsx from "clsx";
 import {
  change, FieldArray, getFormInitialValues
 } from "redux-form";
-import { addDays, compareAsc, format as formatDate } from "date-fns";
+import { compareAsc, format as formatDate } from "date-fns";
 import { Payment } from "@api/model";
 import { connect } from "react-redux";
 import Typography from "@mui/material/Typography";
@@ -247,11 +247,6 @@ class BankingEditView extends React.PureComponent<any, any> {
               label="Settlement Date"
               onBlur={this.onSettlementDateChanged}
               validate={[validateSingleMandatoryField, this.validateSettlementDate]}
-              minDate={
-                  lockedDate
-                    ? addDays(new Date(lockedDate), 1)
-                    : undefined
-                }
             />
           </Grid>
           <Grid item xs={twoColumn ? 4 : 12}>

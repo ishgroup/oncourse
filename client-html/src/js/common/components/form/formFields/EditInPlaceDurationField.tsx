@@ -6,6 +6,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import EditInPlaceField from "./EditInPlaceField";
 import { formatDurationMinutes } from "../../../utils/dates/formatString";
+import { EditInPlaceFieldProps } from "../../../../model/common/Fields";
 
 const parseDurationString = (duration: string): number => {
   if (duration.indexOf(".") > -1) {
@@ -32,11 +33,10 @@ const parseDurationString = (duration: string): number => {
   return min;
 };
 
-const EditInPlaceDurationField: React.FunctionComponent<any> = props => {
-  const {
-    input, type, defaultValue, ...restProps
-  } = props;
-
+const EditInPlaceDurationField = (
+{
+ input, ...restProps
+}: EditInPlaceFieldProps) => {
   const [textValue, setTextValue] = useState(formatDurationMinutes(input.value || 0));
 
   const onChange = useCallback(
@@ -56,13 +56,12 @@ const EditInPlaceDurationField: React.FunctionComponent<any> = props => {
   );
 
   useEffect(() => {
-    setTextValue(formatDurationMinutes(input.value || defaultValue || 0));
-  }, [input.value, defaultValue]);
+    setTextValue(formatDurationMinutes(input.value || 0));
+  }, [input.value]);
 
   return (
     <EditInPlaceField
       {...restProps}
-      defaultValue={defaultValue}
       input={{
         value: textValue,
         onBlur,

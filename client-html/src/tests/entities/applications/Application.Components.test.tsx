@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import { III_DD_MMM_YYYY } from "../../../js/common/utils/dates/format";
 import ApplicationEditView from "../../../js/containers/entities/applications/components/ApplicationEditView";
 import { mockedEditView } from "../../common/MockedEditView.Components";
+import { formatCurrency } from "../../../js/common/utils/numbers/numbersNormalizing";
 
 describe("Virtual rendered ApplicationEditView", () => {
   mockedEditView({
@@ -14,7 +15,7 @@ describe("Virtual rendered ApplicationEditView", () => {
         courseId: initialValues.courseName,
         applicationDate: format(new Date(initialValues.applicationDate), III_DD_MMM_YYYY).toString(),
         status: initialValues.status,
-        feeOverride: initialValues.feeOverride.toString(),
+        feeOverride: formatCurrency(initialValues.feeOverride, ""),
         enrolBy: format(new Date(initialValues.enrolBy), III_DD_MMM_YYYY).toString(),
         createdBy: initialValues.createdBy,
         reason: initialValues.reason,

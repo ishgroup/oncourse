@@ -117,8 +117,9 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
               <FormField
                 type="money"
                 name={`${f}.amount`}
+                format={normalizeNumberToPositive}
                 normalize={normalizeNumberToPositive}
-                listSpacing={false}
+                
                 onBlur={onPayNowBlur}
                 onChange={onPayNowChange}
                 disabled={!first || disabledStep}
@@ -132,7 +133,7 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
                       type="date"
                       name={`${f}.payDate`}
                       inline
-                      placeHolder="Pay now"
+                      placeholder="Pay now"
                       onChange={onPayDateChange}
                       validate={validateLockedDate}
                       fieldClasses={{
