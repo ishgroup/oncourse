@@ -18,8 +18,7 @@ const ImportsRenderer = props => {
         name={f}
         label="Library"
         disabled={!hasUpdateAccess || isInternal}
-        fullWidth
-      />
+              />
     </Grid>
   ));
 };

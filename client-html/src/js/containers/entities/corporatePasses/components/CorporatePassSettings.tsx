@@ -52,7 +52,7 @@ class CorporatePassSettings extends React.PureComponent<EditViewProps, any> {
                   label="Contact (company or person to invoice)"
                   selectValueMark="id"
                   selectLabelCondition={getContactFullName}
-                  defaultDisplayValue={values && values.contactFullName}
+                  defaultValue={values && values.contactFullName}
                   labelAdornment={(
                     <ContactLinkAdornment id={values?.contactId} />
                   )}

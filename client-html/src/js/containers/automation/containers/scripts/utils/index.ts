@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Binding, Script } from "@api/model";
+import { Binding, DataType, Script } from "@api/model";
 import {
   closureSplitRegexp,
   getMessageComponent,
@@ -183,7 +183,7 @@ export const appendComponents = (value: ScriptExtended, viewMode: ScriptViewMode
   return result;
 };
 
-export const getType = type => {
+export const getType = (type: DataType) => {
   switch (type.toLowerCase()) {
     case "date time":
       return "dateTime";
@@ -191,8 +191,6 @@ export const getType = type => {
       return "searchSelect";
     case "remote data search select":
       return "remoteDataSearchSelect";
-    case "header text":
-      return "headerText";
     case "multiline text":
       return "multilineText";
     default:

@@ -75,7 +75,7 @@ class GoogleClassroomBaseForm extends React.Component<any, any> {
         <AppBarContent>
           <FormField name="fields.clientId" label="Client id" type="text" required className="mb-2" />
           <FormField name="fields.clientSecret" label="Client secret" type="text" required className="mb-2" />
-          <FormField name="fields.activationCode" type="stub" validate={validateSingleMandatoryField} disabled className="mb-2" />
+          <FormField name="fields.activationCode" type="stub" validate={validateSingleMandatoryField} />
           <Uneditable value={values && values.fields.activationCode} label="Activation Code" className="mb-2" />
 
           <div>

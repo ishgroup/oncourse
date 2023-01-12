@@ -1,5 +1,6 @@
 import ArticleProductEditView from "../../../js/containers/entities/articleProducts/components/ArticleProductEditView";
 import { mockedEditView } from "../../common/MockedEditView.Components";
+import { formatCurrency } from "../../../js/common/utils/numbers/numbersNormalizing";
 
 describe("Virtual rendered ArticleProductEditView", () => {
   mockedEditView({
@@ -10,8 +11,8 @@ describe("Virtual rendered ArticleProductEditView", () => {
       expect(screen.getByRole(formRoleName)).toHaveFormValues({
         name: initialValues.name,
         code: initialValues.code,
-        feeExTax: initialValues.feeExTax.toString(),
-        totalFee: initialValues.totalFee.toString(),
+        feeExTax: formatCurrency(initialValues.feeExTax, ""),
+        totalFee: formatCurrency(initialValues.totalFee, ""),
         status: initialValues.status,
         dataCollectionRuleId: initialValues.dataCollectionRuleId.toString(),
         description: initialValues.description,

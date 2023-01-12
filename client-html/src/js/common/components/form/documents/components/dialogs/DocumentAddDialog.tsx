@@ -234,11 +234,9 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
                 itemRenderer={this.searchItemsRenderer}
                 popperAnchor={this.searchContainerNode.current}
                 disabled={searchExistingDocsDisabled}
-                fieldClasses={{
-                  editIcon: "d-none"
-                }}
                 hideMenuOnNoResults
                 disableUnderline
+                hideEditIcon
               />
             </div>
             <IconButton

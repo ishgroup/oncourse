@@ -130,7 +130,7 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
           type="select"
           name="administrationCenterId"
           label="Site"
-          defaultDisplayValue={values && values.administrationCenterName}
+          defaultValue={values && values.administrationCenterName}
           selectLabelCondition={getAdminCenterLabel}
           items={adminSites || []}
           labelAdornment={<LinkAdornment link={values && values.administrationCenterId} linkHandler={openSiteLink} />}
@@ -204,11 +204,6 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
               name="dateBanked"
               label="Date banked"
               validate={[validateSettlementDate, validateSettlementDateBanked]}
-              minDate={
-                lockedDate
-                  ? addDays(new Date(lockedDate), 1)
-                  : undefined
-              }
             />
           )}
       </Grid>

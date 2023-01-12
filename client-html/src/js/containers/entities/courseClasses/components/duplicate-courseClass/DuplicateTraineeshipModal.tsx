@@ -352,8 +352,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                     onChange={handleDateChange}
                     debounced={false}
                     disabled={fetching}
-                    fullWidth
-                    required
+                                        required
                   />
                 </div>
               )}

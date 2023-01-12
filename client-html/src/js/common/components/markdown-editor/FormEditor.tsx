@@ -174,7 +174,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
           </div>
           ) : (
             <Typography
-              variant="body1"
+              variant="body2"
               component="div"
               onClick={onEditButtonFocus}
               className={clsx( classes.editable, {

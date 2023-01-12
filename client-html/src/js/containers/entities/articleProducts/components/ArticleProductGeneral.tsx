@@ -105,18 +105,18 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
             <Grid container columnSpacing={3} rowSpacing={2}>
               <Grid item xs={twoColumn ? 2 : 12}>
                 <FormField
+                  type="text"
                   label="SKU"
                   name="code"
                   required
-                  fullWidth
                 />
               </Grid>
               <Grid item xs={twoColumn ? 4 : 12}>
                 <FormField
+                  type="text"
                   label="Name"
                   name="name"
                   required
-                  fullWidth
                 />
               </Grid>
             </Grid>
@@ -208,8 +208,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           selectLabelMark="name"
           items={dataCollectionRules || []}
           format={normalizeString}
-          fullWidth
-          required
+                    required
           sort
         />
       </Grid>

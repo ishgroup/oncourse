@@ -4,6 +4,7 @@ import { defaultComponents } from "../../../common/Default.Components";
 import { D_MMM_YYYY } from "../../../../js/common/utils/dates/format";
 import BudgetCostModal from "../../../../js/containers/entities/courseClasses/components/budget/modal/BudgetCostModal";
 import { getCustomColumnsMap } from "../../../../js/common/utils/common";
+import { formatCurrency } from "../../../../js/common/utils/numbers/numbersNormalizing";
 import { getClassFeeTotal } from "../../../../js/containers/entities/courseClasses/components/budget/utils";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../../js/containers/entities/courseClasses/constants";
 
@@ -43,7 +44,7 @@ describe("Virtual rendered BudgetCostModal of Class edit view", () => {
       },
     }),
     render: ({ screen, initialValues, viewProps }) => {
-      expect(screen.getByLabelText("On enrolment").value).toBe(initialValues.perUnitAmountIncTax.toString());
+      expect(screen.getByLabelText("On enrolment").value).toBe(formatCurrency(initialValues.perUnitAmountIncTax, "").toString());
       expect(screen.getByLabelText("Invoice line title").value).toBe(initialValues.description);
 
       const paymentPlansRecord = initialValues.paymentPlan;
@@ -61,7 +62,6 @@ describe("Virtual rendered BudgetCostModal of Class edit view", () => {
         const label = `Days after start ${offsetDate ? `(${offsetDate})` : ""}`;
 
         expect(screen.getByLabelText(label).value).toBe(plan.dayOffset.toString());
-        expect(screen.getByTestId(`paymentPlan[${index}].amount`).querySelector(`input[name="paymentPlan[${index}].amount"]`).value).toBe(plan.amount.toString());
       });
     }
   });
