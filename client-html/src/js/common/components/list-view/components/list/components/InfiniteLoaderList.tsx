@@ -13,6 +13,9 @@ import React, {
   useMemo,
   useState
 } from "react";
+import {
+  flexRender
+} from '@tanstack/react-table';
 import { FixedSizeList, areEqual } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import InfiniteLoader from "react-window-infinite-loader";
@@ -38,33 +41,34 @@ const ThreeColumnCell = ({ row }) => (<div>
     <span className="flex-fill text-truncate">
       {row.original.primary}
     </span>
-    {row.cells[1].column.tagsVisible && (
+    {row.getVisibleCells()[1].column.tagsVisible && (
       <TagDotRenderer
         className="ml-1"
-        colors={row.values[COLUMN_WITH_COLORS]?.replace(/[[\]]/g, "").split(", ")}
+        colors={row.original[COLUMN_WITH_COLORS]?.replace(/[[\]]/g, "").split(", ")}
       />
     )}
-    {row.cells[1].column.checklistsVisible && row.values[CHECKLISTS_COLUMN] && (
+    {row.getVisibleCells()[1].column.checklistsVisible && row.original[CHECKLISTS_COLUMN] && (
       <StaticProgress
         className="ml-1"
-        color={row.values[CHECKLISTS_COLUMN].split("|")[0]}
-        value={parseFloat(row.values[CHECKLISTS_COLUMN].split("|")[1]) * 100}
+        color={row.original[CHECKLISTS_COLUMN].split("|")[0]}
+        value={parseFloat(row.original[CHECKLISTS_COLUMN].split("|")[1]) * 100}
         size={18}
       />
     )}
   </Typography>
 </div>);
 
-const TwoColumnCell = ({ cell, classes, ...rest }) => (<div
-  {...rest}
+const TwoColumnCell = ({ cell, classes }) => (<div
+  style={{
+    width: cell.column.getSize()
+  }}
   className={clsx(classes.bodyCell, cell.column.cellClass)}
 >
-  {cell.render("Cell")}
+  {flexRender(cell.column.columnDef.cell, cell.getContext())}
 </div>);
 
 const ListRow = memo<any>(({ data, index, style }) => {
   const {
-    prepareRow,
     rows,
     classes,
     onRowSelect,
@@ -79,9 +83,10 @@ const ListRow = memo<any>(({ data, index, style }) => {
   const currentIndex = threeColumn ? index : index - HEADER_ROWS_COUNT;
 
   const row = rows[currentIndex];
+
   const rowClasses = clsx(
     classes.row,
-    row && row.isSelected && classes.selected,
+    row && row.getIsSelected() && classes.selected,
     row && row.original && row.original.customClasses,
     threeColumn ? classes.threeColumnRow : index % 2 && classes.oddRow
   );
@@ -89,20 +94,18 @@ const ListRow = memo<any>(({ data, index, style }) => {
   if (!row) {
     return <div style={style} className={rowClasses} />;
   }
-  prepareRow(row);
 
   return (
     <div
-      {...row.getRowProps()}
       style={style}
       className={rowClasses}
-      onClick={e => onRowSelect(e, row.id, currentIndex)}
+      onClick={e => onRowSelect(e, row)}
       onDoubleClick={() => onRowDoubleClick(row.id)}
     >
       {threeColumn ? (
         <ThreeColumnCell row={row} />
-      ) : row.cells.filter(cell => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(cell.column.id)).map(cell => (
-        <TwoColumnCell {...cell.getCellProps()} cell={cell} classes={classes} />
+      ) : row.getVisibleCells().filter(cell => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(cell.column.id)).map(cell => (
+        <TwoColumnCell cell={cell} key={cell.id} classes={classes} />
       ))}
     </div>
   );
@@ -123,9 +126,7 @@ const innerElementType = forwardRef<any, { children?: React.ReactNode }>(({ chil
 ));
 
 export default ({
-  totalColumnsWidth,
-  prepareRow,
-  rows,
+  table,
   classes,
   onRowSelect,
   onLoadMore,
@@ -136,6 +137,9 @@ export default ({
   mainContentWidth,
   header
 }) => {
+  const rows = table.getRowModel().rows;
+  const totalColumnsWidth = table.getCenterTotalSize();
+
   const [isLoading, setIsLoading] = useState(false);
   
   const isItemLoaded = index => index >= recordsCount ? true : !!rows[index];
@@ -153,14 +157,13 @@ export default ({
 
   const itemData = useMemo(
     () => ({
-      prepareRow,
       rows,
       classes,
       onRowSelect,
       threeColumn,
       onRowDoubleClick,
     }),
-    [prepareRow, rows, classes, onRowSelect, onRowDoubleClick, totalColumnsWidth, threeColumn]
+    [rows, classes, onRowSelect, onRowDoubleClick, totalColumnsWidth, threeColumn]
   );
 
   return (

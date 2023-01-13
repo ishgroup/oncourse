@@ -1,5 +1,5 @@
 /*
- * Copyright ish group pty ltd 2022.
+ * Copyright ish group pty ltd 2023.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
@@ -10,8 +10,14 @@ import React, {
   useCallback, useEffect, useMemo, useRef, useState
 } from "react";
 import {
-  useBlockLayout, useColumnOrder, useResizeColumns, useRowSelect, useSortBy, useTable
-} from "react-table";
+  ColumnDef,
+  ColumnOrderState,
+  flexRender,
+  CellContext,
+  ColumnDefTemplate,
+  getCoreRowModel,
+  useReactTable, RowSelectionState,
+} from '@tanstack/react-table';
 import makeStyles from "@mui/styles/makeStyles";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import debounce from "lodash.debounce";
@@ -31,7 +37,7 @@ import styles from "./styles";
 import TagDotRenderer from "./components/TagDotRenderer";
 import StaticProgress from "../../../progress/StaticProgress";
 import { usePrevious } from "../../../../utils/hooks";
-import { stubComponent } from "../../../../utils/common";
+import { stubFunction } from "../../../../utils/common";
 
 const COLUMN_MIN_WIDTH = 55;
 
@@ -42,7 +48,7 @@ const listRef = React.createRef<any>();
 const getRowId = row => row.id;
 
 interface ListTableProps extends Partial<TableListProps> {
-  columns: any;
+  columnsBase: any;
   data: any;
   sorting: any;
   recordsCount: number;
@@ -54,45 +60,44 @@ const isNewColumnsEquals = (newCol: string[], prevCol: string[]) => {
   let isEquals = true;
 
   if (newCol?.length !== prevCol?.length) return false;
-  
+
   for (const col of newCol) {
     if (!prevCol?.includes(col)) {
       isEquals = false;
       break;
     }
   }
-  
   return isEquals;
 };
 
 const Table: React.FC<ListTableProps> = ({
-  columns,
-  data,
-  onLoadMore,
-  onChangeModel,
-  onChangeColumns,
-  sorting,
-  threeColumn,
-  onSelectionChange,
-  onRowDoubleClick,
-  selection,
-  getContainerNode,
-  onChangeColumnsOrder,
-  mainContentWidth,
-  sidebarWidth,
-  recordsCount
-}) => {
+   columnsBase,
+   data,
+   onLoadMore,
+   onChangeModel,
+   onChangeColumns,
+   sorting,
+   threeColumn,
+   onSelectionChange,
+   onRowDoubleClick,
+   selection,
+   getContainerNode,
+   onChangeColumnsOrder,
+   mainContentWidth,
+   sidebarWidth,
+   recordsCount
+  }) => {
   const [isDraggingColumn, setColumnIsDragging] = useState(false);
+
+  const [columnVisibility, onColumnVisibilityChange] = React.useState({});
+  const [columnOrder, onColumnOrderChange] = React.useState<ColumnOrderState>([]);
+  const [rowSelection, onRowSelectionChange] = React.useState<RowSelectionState>({});
 
   const isMountedRef = useRef(false);
   const isResizingRef = useRef(false);
   const tableRef = useRef<any>();
 
-  useEffect(() => {
-    if (tableRef.current) {
-      getContainerNode(tableRef.current);
-    }
-  }, [tableRef.current]);
+  const classes = useStyles();
 
   const onSelectionChangeHangler = newSelection => {
     if (newSelection.length === 1 && selection.length === 1 && newSelection[0] === selection[0]) {
@@ -100,6 +105,16 @@ const Table: React.FC<ListTableProps> = ({
     }
     onSelectionChange(newSelection);
   };
+
+  useEffect(() => {
+    if (tableRef.current) {
+      getContainerNode(tableRef.current);
+    }
+  }, [tableRef.current]);
+
+  useEffect(() => {
+    onSelectionChangeHangler(Object.keys(rowSelection).map(k => k));
+  }, [rowSelection]);
 
   const onChangeColumnsWidthDebounced = useCallback<any>(debounce((id, width) => {
     onChangeColumns({
@@ -109,18 +124,79 @@ const Table: React.FC<ListTableProps> = ({
     });
     isResizingRef.current = false;
   }, 500), [onChangeColumns]);
+  
+  const toggleRowSelect = id => {
+    const updated = { ...table.getState().rowSelection };
+    if (updated[id]) {
+      delete updated[id];
+    } else {
+      updated[id] = true;
+    }
+    onRowSelectionChange(updated);
+  };
 
-  const selectedRowIdsObj = useMemo(() => (selection ? selection.reduce((p, c) => ({ ...p, [c]: true }), []) : []), [
-    selection
-  ]);
+  const onRowSelect = (e, row) => {
+    const currentSelection = table.getState().rowSelection;
+    const currentSelectionKeys = Object.keys(currentSelection);
 
-  const classes = useStyles();
+    if (e.shiftKey && currentSelectionKeys.length) {
+      const rowsById = table.getRowModel().rowsById;
+      const selectionIndicies = currentSelectionKeys.map(id => rowsById[id].index);
+      const firstSelectedIndex = Math.min(...selectionIndicies);
+      const lastSelectedIndex = Math.max(...selectionIndicies);
 
-  const defaultColumn = useMemo(
-    () => ({
-      width: 40
-    }),
-    []
+      const selectionData = table.getRowModel().rows
+        .slice(Math.min(firstSelectedIndex, row.index), Math.max(lastSelectedIndex, row.index) + 1)
+        .reduce((p, c) => {
+          p[c.id] = true;
+          return p;
+        }, {});
+
+      onRowSelectionChange(selectionData);
+      return;
+    }
+    if (e.ctrlKey || e.metaKey) {
+      toggleRowSelect(row.id);
+      return;
+    }
+    onRowSelectionChange({ [row.id]: true });
+  };
+
+  const onRowCheckboxSelect = (e, id) => {
+    e.stopPropagation();
+    toggleRowSelect(id);
+  };
+
+  const columns = useMemo(
+    () => ([
+      {
+        id: "select",
+        disableResizing: true,
+        size: 40,
+        cell: ({ row }) => {
+          return  <>
+            <StyledCheckbox
+              checked={row.getIsSelected()}
+              className={classes.selectionCheckbox}
+              onClick={e => onRowCheckboxSelect(e, row.id)}
+            />
+            {row.original[COLUMN_WITH_COLORS] && (
+              <TagDotRenderer
+                colors={row.original[COLUMN_WITH_COLORS]?.replace(/[[\]]/g, "").split(", ")}
+                className={classes.listDots}
+              />
+            )}
+          </>;
+        }
+      },
+      ...columnsBase,
+      {
+        id: "chooser",
+        disableResizing: true,
+        size: 80
+      }
+    ]),
+    [columnsBase]
   );
 
   const initialState = useMemo(() => ({
@@ -129,133 +205,49 @@ const Table: React.FC<ListTableProps> = ({
     columnOrder: columns.map(c => c.id)
   }), [sorting, columns]);
 
-  const onRowSelect = useCallback((e, id, index) => {
-    if (e.shiftKey && selection.length) {
-      const firstItem = data.find(d => d.id === selection[0]);
-      const lastItem = data.find(d => d.id === selection[selection.length - 1]);
-      if (firstItem && lastItem) {
-        const firstSelectedIndex = firstItem.index;
-        const lastSelectedIndex = lastItem.index;
-        const selectionData = data
-          .slice(Math.min(firstSelectedIndex, index), Math.max(lastSelectedIndex, index) + 1)
-          .map(d => d.id);
-
-        onSelectionChangeHangler(selectionData);
-      }
-      return;
-    }
-    if (e.ctrlKey || e.metaKey) {
-      const updated = [...selection];
-      const idIndex = updated.indexOf(id);
-      if (idIndex === -1) {
-        updated.push(id);
-      } else {
-        updated.splice(idIndex, 1);
-      }
-      onSelectionChangeHangler(updated);
-      return;
-    }
-    onSelectionChangeHangler([id]);
-  }, [data, selection]);
-
-  const onRowCheckboxSelect = (e, id, st) => {
-    e.stopPropagation();
-    const updated = Object.keys(st.selectedRowIds).filter(k => st.selectedRowIds[k]);
-    const idIndex = updated.indexOf(id);
-    if (idIndex === -1) {
-      updated.push(id);
-    } else {
-      updated.splice(idIndex, 1);
-    }
-    onSelectionChangeHangler(updated);
-  };
-
   const onScroll = e => {
     if (listRef.current) {
       listRef.current.scrollTo(e.currentTarget.scrollTop as any);
     }
   };
 
-  const {
-    allColumns,
-    rows,
-    state,
-    headerGroups,
-    getTableProps,
-    setColumnOrder,
-    getTableBodyProps,
-    totalColumnsWidth
-  } = useTable(
-    {
-      columns,
-      data,
-      defaultColumn,
-      initialState,
-      getRowId,
-      manualSortBy: true,
-      useControlledState: state => useMemo(
-        () => ({
-          ...state,
-          selectedRowIds: selectedRowIdsObj
-        }),
-        [state, selectedRowIdsObj]
-      )
+  const table = useReactTable({
+    data,
+    columns,
+    onRowSelectionChange,
+    onColumnVisibilityChange,
+    onColumnOrderChange,
+    state: {
+      columnVisibility,
+      columnOrder,
+      rowSelection
     },
-    useSortBy,
-    useRowSelect,
-    useColumnOrder,
-    useBlockLayout,
-    useResizeColumns,
-    hooks => {
-      hooks.visibleColumns.push(columns => [
-        {
-          id: "selection",
-          disableResizing: true,
-          Cell: ({ row, state }) => (
-            <>
-              <StyledCheckbox
-                checked={row.isSelected}
-                className={classes.selectionCheckbox}
-                onClick={e => onRowCheckboxSelect(e, row.id, state)}
-              />
-              {row.values[COLUMN_WITH_COLORS] && (
-                <TagDotRenderer
-                  colors={row.values[COLUMN_WITH_COLORS]?.replace(/[[\]]/g, "").split(", ")}
-                  className={classes.listDots}
-                />
-              )}
-            </>
-          )
-        },
-        ...columns,
-        {
-          id: "chooser",
-          disableResizing: true,
-          width: 80
-        }
-      ]);
-    }
-  );
+    enableRowSelection: true,
+    enableMultiRowSelection: true,
+    columnResizeMode: "onChange",
+    getCoreRowModel: getCoreRowModel(),
+    getRowId
+  });
 
   // Table model change effects
-  useEffect(() => {
-    if (isMountedRef.current && tableRef.current) {
-      if (tableRef.current.scrollTop) {
-        tableRef.current.scrollTop = 0;
-      }
-      setTimeout(() => {
-        onChangeModel({
-          sortings: state.sortBy.map(({ id, desc }) => ({
-            attribute: id,
-            ascending: !desc,
-            complexAttribute: columns.find(c => c.id === id).complexAttribute
-          }))
-        }, true);
-      }, 500);
-    } else {
-      isMountedRef.current = true;
-    }
-  }, [state.sortBy]);
+  // useEffect(() => {
+  //   if (isMountedRef.current && tableRef.current) {
+  //     if (tableRef.current.scrollTop) {
+  //       tableRef.current.scrollTop = 0;
+  //     }
+  //     setTimeout(() => {
+  //       onChangeModel({
+  //         sortings: state.sortBy.map(({ id, desc }) => ({
+  //           attribute: id,
+  //           ascending: !desc,
+  //           complexAttribute: columns.find(c => c.id === id).complexAttribute
+  //         }))
+  //       }, true);
+  //     }, 500);
+  //   } else {
+  //     isMountedRef.current = true;
+  //   }
+  // }, [state.sortBy]);
 
   const onHiddenChange = useCallback<any>(debounce(hiddenColumns => {
     const updated = {};
@@ -272,28 +264,28 @@ const Table: React.FC<ListTableProps> = ({
     onChangeColumnsOrder(columnsOrder);
   }, 500), [columns]);
 
-  useEffect(() => {
-    if (isMountedRef.current && !isDraggingColumn && JSON.stringify(state.columnOrder) !== JSON.stringify(initialState.columnOrder)) {
-      onOrderChange(state.columnOrder);
-    }
-  }, [isDraggingColumn]);
+  // useEffect(() => {
+  //   if (isMountedRef.current && !isDraggingColumn && JSON.stringify(state.columnOrder) !== JSON.stringify(initialState.columnOrder)) {
+  //     onOrderChange(state.columnOrder);
+  //   }
+  // }, [isDraggingColumn]);
 
-  const prevHiddenColumns = usePrevious(state.hiddenColumns);
+  // const prevHiddenColumns = usePrevious(state.hiddenColumns);
+  //
+  // useEffect(() => {
+  //   if (isMountedRef.current && listRef.current && !isNewColumnsEquals(state.hiddenColumns, prevHiddenColumns)) {
+  //     onHiddenChange(state.hiddenColumns);
+  //   }
+  // }, [state.hiddenColumns]);
 
-  useEffect(() => {
-    if (isMountedRef.current && listRef.current && !isNewColumnsEquals(state.hiddenColumns, prevHiddenColumns)) {
-      onHiddenChange(state.hiddenColumns);
-    }
-  }, [state.hiddenColumns]);
-
-  useEffect(() => {
-    if (state.columnResizing.isResizingColumn) {
-      isResizingRef.current = true;
-      const column = state.columnResizing.isResizingColumn;
-      const width = state.columnResizing.columnWidths[state.columnResizing.isResizingColumn];
-      onChangeColumnsWidthDebounced(column, width >= COLUMN_MIN_WIDTH ? width : COLUMN_MIN_WIDTH);
-    }
-  }, [state.columnResizing.columnWidths]);
+  // useEffect(() => {
+  //   if (state.columnResizing.isResizingColumn) {
+  //     isResizingRef.current = true;
+  //     const column = state.columnResizing.isResizingColumn;
+  //     const width = state.columnResizing.columnWidths[state.columnResizing.isResizingColumn];
+  //     onChangeColumnsWidthDebounced(column, width >= COLUMN_MIN_WIDTH ? width : COLUMN_MIN_WIDTH);
+  //   }
+  // }, [state.columnResizing.columnWidths]);
 
   useEffect(() => {
     if (isMountedRef.current && tableRef.current && listRef.current) {
@@ -308,9 +300,9 @@ const Table: React.FC<ListTableProps> = ({
     }
   }, [threeColumn]);
 
-  const onColumnOrderChange = useCallback(({
-   destination, source, fields, headers
-  }) => {
+  const reorderColumns = useCallback(({
+     destination, source, fields, headers
+   }) => {
     if (destination) {
       const findDestinationColumn = headers[destination.index];
       const findSourceColumn = headers[source.index];
@@ -321,7 +313,8 @@ const Table: React.FC<ListTableProps> = ({
           const updated = Array.from(fields);
           const [removed] = updated.splice(sIndex, 1);
           updated.splice(dIndex, 0, removed);
-          setColumnOrder(updated);
+          console.log('!!!!!!', updated);
+          // onColumnOrderChange(updated);
         }
       }
     }
@@ -342,26 +335,30 @@ const Table: React.FC<ListTableProps> = ({
 
   const Header = useMemo(() => (
     <div className={classes.header}>
-      {headerGroups.map((headerGroup, groupIndex) => (
+      {table.getHeaderGroups().map((headerGroup, groupIndex) => (
         <DragDropContext
           key={groupIndex}
-          onDragEnd={args => onColumnOrderChange({
+          onDragEnd={args => reorderColumns({
             ...args,
-            fields: state.columnOrder,
+            fields: table.getState().columnOrder,
             headers: headerGroup.headers.filter(column => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(column.id))
           })}
           onDragStart={() => setColumnIsDragging(true)}
         >
-          <Droppable key={headerGroup.getHeaderGroupProps().key} droppableId="droppable" direction="horizontal">
+          <Droppable key={headerGroup.id} droppableId="droppable" direction="horizontal">
             {(provided, snapshot) => (
               <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
                 className={classes.headerRow}
-                style={{...snapshot.isDraggingOver ? { pointerEvents: "none" } : {}}}
+                style={{ ...snapshot.isDraggingOver ? { pointerEvents: "none" } : {} }}
               >
-                {headerGroup.headers.filter(column => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(column.id)).map((column, columnIndex) => {
+                {headerGroup.headers.filter(({ column }) => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(column.id)).map(({ column, getContext }, columnIndex) => {
                   const disabledCell = ["selection", "chooser"].includes(column.id);
+                  const columnDef = column.columnDef as any;
+                  const canSort = column.getCanSort();
+                  const canResize = column.getCanResize();
+
                   return (
                     <Draggable
                       key={columnIndex}
@@ -372,36 +369,37 @@ const Table: React.FC<ListTableProps> = ({
                       {(provided, snapshot) => {
                         const isDragging = snapshot.isDragging;
                         return (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            style={getItemStyle(
+                              snapshot.isDragging,
+                              provided.draggableProps.style
+                            )}
+                          >
                             <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              style={getItemStyle(
-                                snapshot.isDragging,
-                                provided.draggableProps.style
-                              )}
-                            >
-                              <div {...column.getHeaderProps()}
+                               style={{ width: column.getSize() }}
                                className={clsx(
-                                classes.draggableCellItem,
+                                 classes.draggableCellItem,
                                  "text-truncate text-nowrap",
-                                  {
-                                    [classes.isDragging]: isDragging,
-                                    [classes.rightAlighed]: column.type === "Money",
-                                    [classes.activeRight]: column.type === "Money" && column.isSorted
-                                  })
+                                 {
+                                   [classes.isDragging]: isDragging,
+                                   [classes.rightAlighed]: columnDef.type === "Money",
+                                   [classes.activeRight]: columnDef.type === "Money" && column.getIsSorted()
+                                 })
                                }
+                            >
+                              <Typography
+                                variant="subtitle2"
+                                color="textSecondary"
+                                component="div"
+                                fontSize="inherit"
+                                position="relative"
+                                display="flex"
+                                className={columnDef.cellClass}
                               >
-                                <Typography
-                                  variant="subtitle2"
-                                  color="textSecondary"
-                                  component="div"
-                                  fontSize="inherit"
-                                  position="relative"
-                                  display="flex"
-                                  className={column.cellClass}
-                                >
-                                  {!disabledCell && (
-                                    <span  {...provided.dragHandleProps} className="relative">
+                                {!disabledCell && (
+                                  <span  {...provided.dragHandleProps} className="relative">
                                       <DragIndicator
                                         className={
                                           clsx(
@@ -414,29 +412,28 @@ const Table: React.FC<ListTableProps> = ({
                                         }
                                       />
                                     </span>
-                                  )}
-                                  <TableSortLabel
-                                    {...column.getSortByToggleProps()}
-                                    hideSortIcon={isDragging || !column.canSort}
-                                    active={column.isSorted}
-                                    direction={column.isSortedDesc ? "desc" : "asc"}
-                                    classes={{
-                                      root: clsx(
-                                        column.canSort ? classes.canSort : classes.noSort,
-                                        column.colClass,
-                                        "overflow-hidden"
-                                      ),
-                                      icon: column.type === "Money" && column.canSort && classes.rightSort
-                                    }}
-                                    component="span"
-                                  >
-                                    {column.render("Header")}
-                                    &nbsp;
-                                  </TableSortLabel>
-                                </Typography>
-                                {!isDraggingColumn && column.canResize && <div {...column.getResizerProps()} className={classes.resizer} />}
-                              </div>
+                                )}
+                                <TableSortLabel
+                                  hideSortIcon={isDragging || !canSort}
+                                  active={Boolean(column.getIsSorted())}
+                                  direction={column.getAutoSortDir()}
+                                  classes={{
+                                    root: clsx(
+                                      canSort ? classes.canSort : classes.noSort,
+                                      columnDef.colClass,
+                                      "overflow-hidden"
+                                    ),
+                                    icon: columnDef.type === "Money" && canSort && classes.rightSort
+                                  }}
+                                  component="span"
+                                >
+                                  {flexRender(columnDef.header, getContext())}
+                                  &nbsp;
+                                </TableSortLabel>
+                              </Typography>
+                               {/*{!isDraggingColumn && canResize && <div {...column.getResizerProps()} className={classes.resizer} />}*/}
                             </div>
+                          </div>
                         );
                       }}
                     </Draggable>
@@ -448,13 +445,13 @@ const Table: React.FC<ListTableProps> = ({
         </DragDropContext>
       ))}
     </div>
-  ), [headerGroups, isDraggingColumn, totalColumnsWidth]);
+  ), [isDraggingColumn]);
 
-  const List = useMemo(() => (rows.length ? (
+  const List = useMemo(() => (data.length ? (
     <InfiniteLoaderList
       listRef={listRef}
+      table={table}
       classes={classes}
-      table={stubComponent}
       onRowSelect={onRowSelect}
       onLoadMore={onLoadMore}
       recordsCount={recordsCount}
@@ -469,18 +466,17 @@ const Table: React.FC<ListTableProps> = ({
         No data
       </Typography>
     </div>
-  )), [Header, rows, totalColumnsWidth, selectedRowIdsObj, recordsCount, mainContentWidth, threeColumn, onRowDoubleClick, state.columnOrder]);
+  )), [Header, rowSelection, recordsCount, mainContentWidth, threeColumn, onRowDoubleClick]);
 
   return (
     <div
-      {...getTableProps()}
       ref={tableRef}
       className={classes.table}
       style={threeColumn ? { overflowX: "hidden" } : null}
       onScroll={onScroll}
     >
-      {!threeColumn && <ColumnChooser columns={allColumns} classes={classes} />}
-      <div {...getTableBodyProps()} className="flex-fill">
+      {!threeColumn && <ColumnChooser columns={table.getAllColumns()} classes={classes} />}
+      <div className="flex-fill">
         {List}
       </div>
     </div>
@@ -509,11 +505,11 @@ export interface TableListProps {
 }
 
 const RenderCell = props => {
-  const { cell: { value }, column: { index, firstVisibleIndex, checklistsVisible }, row: { values } } = props;
+  const value = props.getValue();
 
-  if (checklistsVisible && index === firstVisibleIndex && values[CHECKLISTS_COLUMN]) {
-    const [color, progress] = values[CHECKLISTS_COLUMN].split("|");
-    
+  if (props.column && props.row && props.column.columnDef.checklistsVisible && props.column.columnDef.index === props.column.columnDef.firstVisibleIndex && props.row.original[CHECKLISTS_COLUMN]) {
+    const [color, progress] = props.row.original[CHECKLISTS_COLUMN].split("|");
+
     return (
       <div className="centeredFlex overflow-hidden">
         <span className="text-truncate">
@@ -534,25 +530,25 @@ const RenderCell = props => {
 };
 
 const ListRoot = React.memo<TableListProps>(({
-  records,
-  shortCurrencySymbol,
-  onLoadMore,
-  onChangeModel,
-  customColumnFormats,
-  setRowClasses,
-  threeColumn,
-  primaryColumn,
-  secondaryColumn,
-  primaryColumnCondition,
-  secondaryColumnCondition,
-  onRowDoubleClick,
-  onSelectionChange,
-  selection,
-  firstColumnName,
-  getContainerNode,
-  sidebarWidth,
-  mainContentWidth
-}) => {
+   records,
+   shortCurrencySymbol,
+   onLoadMore,
+   onChangeModel,
+   customColumnFormats,
+   setRowClasses,
+   threeColumn,
+   primaryColumn,
+   secondaryColumn,
+   primaryColumnCondition,
+   secondaryColumnCondition,
+   onRowDoubleClick,
+   onSelectionChange,
+   selection,
+   firstColumnName,
+   getContainerNode,
+   sidebarWidth,
+   mainContentWidth
+ }) => {
   const columns = useMemo(
     () => {
       let firstVisibleIndex;
@@ -571,20 +567,20 @@ const ListRoot = React.memo<TableListProps>(({
         }
       });
 
-      const result = records.columns.map((c, i) => ({
+      const result: ColumnDef<Record<any, any>>[] = records.columns.map((c, i) => ({
         index: i,
         id: c.attribute,
-        Header: <span className="text-truncate text-nowrap">{c.title}</span>,
-        accessor: row => row[`${c.attribute}`],
         visible: c.visible,
-        width: c.width,
+        size: c.width,
         type: c.type,
         cellClass: c.type === "Money" ? "money text-end justify-content-end" : null,
-        minWidth: COLUMN_MIN_WIDTH,
-        disableSortBy: !c.sortable,
+        minSize: COLUMN_MIN_WIDTH,
+        enableSorting: c.sortable,
         complexAttribute: c.sortFields,
         disableVisibility: [primaryColumn, secondaryColumn].includes(c.attribute),
-        Cell: RenderCell,
+        accessorFn: row => row[`${c.attribute}`],
+        header: () => <span className="text-truncate text-nowrap">{c.title}</span>,
+        cell: RenderCell,
         firstVisibleIndex,
         checklistsVisible,
         tagsVisible
@@ -640,7 +636,7 @@ const ListRoot = React.memo<TableListProps>(({
   return columns.length
     ? (
       <Table
-        columns={columns}
+        columnsBase={columns}
         data={rows}
         sorting={sorting}
         onChangeColumns={onChangeColumns}
