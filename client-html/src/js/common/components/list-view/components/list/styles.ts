@@ -139,6 +139,7 @@ export default (theme: AppTheme) => createStyles({
     }
   },
   row: {
+    display: "flex",
     "&$selected": {
       backgroundColor: theme.palette.action.selected,
       opacity: 1
