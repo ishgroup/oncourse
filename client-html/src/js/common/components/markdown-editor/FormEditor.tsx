@@ -20,7 +20,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Edit from "@mui/icons-material/Edit";
 import clsx from "clsx";
-import React, { useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
 import markdown2html from '@ckeditor/ckeditor5-markdown-gfm/src/markdown2html/markdown2html.js';
 import { Field, WrappedFieldProps } from "redux-form";
 import HtmlEditor from "./HtmlEditor";
@@ -30,13 +30,14 @@ import {
 } from "./utils";
 import WysiwygEditor from "./WysiwygEditor";
 
-const EditorResolver = ({ contentMode, draftContent, onChange }) => {
+const EditorResolver = ({ contentMode, draftContent, onChange, wysiwygRef }) => {
   switch (contentMode) {
     case "md": {
       return (
         <WysiwygEditor
           value={draftContent}
           onChange={onChange}
+          wysiwygRef={wysiwygRef}
         />
       );
     }
@@ -71,6 +72,8 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
     fieldClasses = {}
   }
 ) => {
+  const wysiwygRef = useRef<any>();
+
   const [contentMode, setContentMode] = useState(getContentMarker(value));
   const [isEditing, setIsEditing] = useState(false);
   const [modeMenu, setModeMenu] = useState(null);
@@ -91,7 +94,16 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
   const onClickAway = e => {
     const isBalloon = e.target.closest(".ck-balloon-panel");
     if (isEditing && !isBalloon) {
-      setIsEditing(false);
+
+      const sourceEdit = document.querySelector<HTMLButtonElement>('.ck-source-editing-button');
+
+      if (wysiwygRef.current?.plugins.get("SourceEditing").isSourceEditingMode && sourceEdit) {
+        sourceEdit.click();
+      }
+
+      setTimeout(() => {
+        setIsEditing(false);
+      }, 200);
     }
   };
 
@@ -157,11 +169,12 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
               contentMode={contentMode}
               draftContent={removeContentMarker(value)}
               onChange={v => onChange(addContentMarker(removeContentMarker(v), contentMode))}
+              wysiwygRef={wysiwygRef}
             />
           </div>
           ) : (
             <Typography
-              variant="body1"
+              variant="body2"
               component="div"
               onClick={onEditButtonFocus}
               className={clsx( classes.editable, {

@@ -26,14 +26,12 @@ import { notesAsyncValidate } from "../../../common/components/form/notes/utils"
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import EntityService from "../../../common/services/EntityService";
 import { getWindowHeight, getWindowWidth } from "../../../common/utils/common";
-import { defaultContactName } from "../contacts/utils";
 import OutcomeService from "../outcomes/services/OutcomeService";
 import ListView from "../../../common/components/list-view/ListView";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getListTags } from "../../tags/actions";
-import ContactEditView from "../contacts/components/ContactEditView";
 import EnrolmentCogWheel from "./components/EnrolmentCogWheel";
 import EnrolmentEditView from "./components/EnrolmentEditView";
 import { getActiveFundingContracts } from "../../avetmiss-export/actions";
@@ -43,7 +41,7 @@ import { checkPermissions } from "../../../common/actions";
 import { getGradingTypes } from "../../preferences/actions";
 import { updateEntityRecord } from "../common/actions";
 
-const nameCondition = (val: Enrolment) => defaultContactName(val.studentName);
+const nameCondition = (val: Enrolment) => val.studentName;
 
 const manualLink = getManualLink("processingEnrolments");
 
@@ -134,7 +132,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Enrolment and entityId" },
   { title: "Classes", list: "class", expression: "enrolments.id" },
   {

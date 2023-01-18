@@ -24,7 +24,16 @@ describe("Get merge contacts epic tests", () => {
           mergeRequest: {
             contactA,
             contactB,
-            data: Object.assign({}, ...mergeData.mergeLines.filter(l => l.a === l.b).map(l => ({ [l.key]: "A" })))
+            data: Object.assign(
+              {},
+
+              ...mergeData.mergeLines
+                .filter(l => l.a === l.b)
+                .map(l => ({ [l.key]: "A" })),
+
+              ...mergeData.mergeLines
+                .filter(l => l.a !== l.b && (!l.a || !l.b))
+                .map(l => ({ [l.key]: (l.a && "A") || (l.b && "B") })))
           }
         })
       ];

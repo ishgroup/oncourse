@@ -40,7 +40,6 @@ const renderTaxTypes = props => {
                   type="text"
                   name={`${item}.code`}
                   label="Tax Code"
-                  fullWidth
                   disabled={field.systemType || !field.editable}
                   className={classes.field}
                   required
@@ -49,7 +48,7 @@ const renderTaxTypes = props => {
 
               <Grid item xs={4}>
                 <FormField
-                  type="persent"
+                  type="number"
                   name={`${item}.rate`}
                   label="Rate"
                   min="0"
@@ -61,7 +60,7 @@ const renderTaxTypes = props => {
                   disabled={!field.editable}
                   className={classes.field}
                   validate={validatePercentage}
-                  fullWidth
+                  debounced={false}
                 />
               </Grid>
 
@@ -74,10 +73,8 @@ const renderTaxTypes = props => {
                         type="checkbox"
                         name={`${item}.gst`}
                         color="primary"
-                        value="true"
                         disabled={!field.editable}
-                        fullWidth
-                      />
+                                              />
                     )}
                     label="GST"
                   />
@@ -106,7 +103,6 @@ const renderTaxTypes = props => {
                   className={classes.field}
                   disabled={!field.editable}
                   required
-                  fullWidth
                 />
               </Grid>
 
@@ -119,7 +115,6 @@ const renderTaxTypes = props => {
                   className={classes.field}
                   disabled={!field.editable}
                   required
-                  fullWidth
                 />
               </Grid>
 
@@ -130,7 +125,6 @@ const renderTaxTypes = props => {
                   label="Description"
                   className={classes.field}
                   disabled={!field.editable}
-                  fullWidth
                 />
               </Grid>
             </Grid>

@@ -18,7 +18,7 @@ import { createTheme } from '@mui/material';
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import Button from "@mui/material/Button";
 import { UserPreferencesState } from "../../reducers/userPreferencesReducer";
-import { onSubmitFail } from "../../utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../utils/highlightFormErrors";
 import SideBar from "./components/side-bar/SideBar";
 import BottomAppBar from "./components/bottom-app-bar/BottomAppBar";
 import EditView from "./components/edit-view/EditView";
@@ -31,6 +31,7 @@ import FullScreenEditView from "./components/full-screen-edit-view/FullScreenEdi
 import {
   clearListState,
   deleteCustomFilter,
+  findRelatedByFilter,
   getRecords,
   setFilterGroups,
   setListCreatingNew,
@@ -65,7 +66,11 @@ import {
 } from "../../../model/common/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "./constants";
 import { getEntityDisplayName } from "../../utils/getEntityDisplayName";
-import { ENTITY_AQL_STORAGE_NAME, LISTVIEW_MAIN_CONTENT_WIDTH } from "../../../constants/Config";
+import {
+  ENTITY_AQL_STORAGE_NAME, LIST_MAIN_CONTENT_DEFAULT_WIDTH,
+  LIST_SIDE_BAR_DEFAULT_WIDTH,
+  LISTVIEW_MAIN_CONTENT_WIDTH
+} from "../../../constants/Config";
 import { ConfirmProps, ShowConfirmCaller } from "../../../model/common/Confirm";
 import { EntityName, FindEntityState } from "../../../model/entities/common";
 import { saveCategoryAQLLink } from "../../utils/links";
@@ -85,9 +90,6 @@ import {
   updateEntityRecord
 } from "../../../containers/entities/common/actions";
 import { shouldAsyncValidate } from "./utils/listFormUtils";
-
-export const ListSideBarDefaultWidth = 265;
-export const ListMainContentDefaultWidth = 774;
 
 const styles = () => createStyles({
   root: {
@@ -184,11 +186,11 @@ interface Props extends Partial<ListState> {
   customGetAction?: any;
   customUpdateAction?: any;
   preformatBeforeSubmit?: AnyArgFunction;
+  findRelatedByFilter?: AnyArgFunction;
   userAQLSearch?: string;
   listSearch?: string;
   creatingNew?: boolean;
   editRecordFetching?: boolean;
-  recordsLeft?: number;
   searchQuery?: SearchQuery;
   setListEditRecordFetching?: any;
   search?: string;
@@ -236,9 +238,9 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       querySearch: false,
       deleteEnabled: !props.defaultDeleteDisabled,
       threeColumn: false,
-      sidebarWidth: ListSideBarDefaultWidth,
-      mainContentWidth: this.getMainContentWidth(ListMainContentDefaultWidth, ListSideBarDefaultWidth),
-      newSelection: null,
+      sidebarWidth: LIST_SIDE_BAR_DEFAULT_WIDTH,
+      mainContentWidth: this.getMainContentWidth(LIST_MAIN_CONTENT_DEFAULT_WIDTH, LIST_SIDE_BAR_DEFAULT_WIDTH),
+      newSelection: null
     };
   }
 
@@ -1044,11 +1046,11 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       filterEntity,
       emailTemplatesWithKeyCode,
       scripts,
-      recepients,
       listProps,
       onLoadMore,
-      recordsLeft,
-      currency
+      currency,
+      getScripts,
+      findRelatedByFilter
     } = this.props;
 
     const {
@@ -1063,7 +1065,6 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       onLoadMore={onLoadMore}
       selection={selection}
       records={records}
-      recordsLeft={recordsLeft}
       threeColumn={threeColumn}
       shortCurrencySymbol={currency.shortCurrencySymbol}
       onRowDoubleClick={this.onRowDoubleClick}
@@ -1173,7 +1174,8 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
             )}
           </div>
           <BottomAppBar
-            recepients={recepients}
+            findRelatedByFilter={findRelatedByFilter}
+            getScripts={getScripts}
             scripts={scripts}
             emailTemplatesWithKeyCode={emailTemplatesWithKeyCode}
             createButtonDisabled={createButtonDisabled}
@@ -1195,7 +1197,6 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
             changeQueryView={this.changeQueryView}
             switchLayout={this.switchLayoutWithDirtyCheck}
             onCreate={this.onCreateRecordWithDirtyCheck}
-            toggleFullWidthView={this.toggleFullWidthView}
             findRelated={findRelated}
             CogwheelAdornment={CogwheelAdornment}
             showConfirm={this.showConfirm}
@@ -1240,9 +1241,9 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView)),
   updateTableModel: (model: TableModel, listUpdate?: boolean) => dispatch(updateTableModel(ownProps.rootEntity, model, listUpdate)),
-  onLoadMore: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => dispatch(getRecords(
+  onLoadMore: (stopIndex: number, resolve: any) => dispatch(getRecords(
     {
-     entity: ownProps.rootEntity, listUpdate: true, ignoreSelection: false, startIndex, stopIndex, resolve
+     entity: ownProps.rootEntity, listUpdate: true, ignoreSelection: false, stopIndex, resolve
     }
   )),
   onSearch: search => dispatch(setSearch(search, ownProps.rootEntity)),
@@ -1258,7 +1259,8 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   onSave: (item: any) => dispatch(updateEntityRecord(item.id, ownProps.rootEntity, item)),
   getEditRecord: (id: number) => dispatch(ownProps.customGetAction 
     ? ownProps.customGetAction(id) 
-    : getEntityRecord(id, ownProps.rootEntity))
+    : getEntityRecord(id, ownProps.rootEntity)),
+  findRelatedByFilter: (filter, list) => dispatch(findRelatedByFilter(filter, list))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(ListView))) as React.FC<Props>;

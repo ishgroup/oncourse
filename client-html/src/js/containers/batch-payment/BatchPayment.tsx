@@ -39,12 +39,12 @@ import { formatCurrency } from "../../common/utils/numbers/numbersNormalizing";
 import { BatchPaymentContact } from "../../model/batch-payment";
 import { State } from "../../reducers/state";
 import CheckoutService from "../checkout/services/CheckoutService";
-import { getContactName } from "../entities/contacts/utils";
 import { getBachCheckoutModel } from "./utils";
 import { makeAppStyles } from "../../common/styles/makeStyles";
 import AppBarContainer from "../../common/components/layout/AppBarContainer";
 import { getManualLink } from "../../common/utils/getManualLink";
 import { getPluralSuffix } from "../../common/utils/strings";
+import { getContactFullName } from "../entities/contacts/utils";
 
 const useStyles = makeAppStyles(theme => ({
   checkbox: {
@@ -335,7 +335,7 @@ const getContacts = (dispatch, setContactsLoading, onComplete?) => {
 
       const contacts:BatchPaymentContact[] = [{
         id: Number(res.rows[0].values[0]),
-        name: getContactName({ firstName: res.rows[0].values[1], lastName: res.rows[0].values[2] }),
+        name: getContactFullName({ firstName: res.rows[0].values[1], lastName: res.rows[0].values[2] }),
         hasStoredCard,
         checked: hasStoredCard,
         total: 0,
@@ -359,7 +359,7 @@ const getContacts = (dispatch, setContactsLoading, onComplete?) => {
             id,
             hasStoredCard,
             index: counter + 1,
-            name: getContactName({ firstName: r.values[1], lastName: r.values[2] }),
+            name: getContactFullName({ firstName: r.values[1], lastName: r.values[2] }),
             checked: hasStoredCard,
             total: amountOwing,
             processed: false,

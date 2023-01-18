@@ -15,7 +15,7 @@ import { clearListState, getFilters, setListEditRecord } from "../../../common/c
 import { plainCorporatePassPath } from "../../../constants/Api";
 import ListView from "../../../common/components/list-view/ListView";
 import VoucherProductEditView from "./components/VoucherProductEditView";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { State } from "../../../reducers/state";
 import { getPlainAccounts } from "../accounts/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
@@ -81,7 +81,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == VoucherProduct and entityId" },
   { title: "Contacts purchased", list: "contact", expression: "invoices.invoiceLines.productItems.product.id" },
   { title: "Courses", list: "course", expression: "voucherProductCourses.voucherProduct.id" },

@@ -7,13 +7,13 @@
  */
 
 import React, { ReactElement } from "react";
-import { InjectedFormProps } from "redux-form";
+import { FormErrors, InjectedFormProps } from "redux-form";
 import { Dispatch } from "redux";
 import {
   DataResponse, EmailTemplate, Filter, Script, SearchQuery
 } from "@api/model";
 import { MenuTag } from "../tags";
-import { AnyArgFunction, NoArgFunction } from "./CommonFunctions";
+import { AnyArgFunction, NoArgFunction, StringArgFunction } from "./CommonFunctions";
 import { ShowConfirmCaller } from "./Confirm";
 import { MessageData } from "./Message";
 import { EntityName } from "../entities/common";
@@ -32,7 +32,7 @@ export interface FindRelatedItem {
   title: string;
   list?: string;
   expression?: string;
-  customExpression?: string;
+  customExpression?: AnyArgFunction<string,string>;
   destination?: string;
   items?: FindRelatedItem[];
 }
@@ -80,7 +80,6 @@ export interface ListState {
   emailTemplatesWithKeyCode?: EmailTemplate[];
   creatingNew?: boolean;
   fullScreenEditView?: boolean;
-  recordsLeft?: number;
   recepients?: MessageData;
 }
 
@@ -122,7 +121,7 @@ export interface EditViewProps<V = any> extends Partial<InjectedFormProps<V>> {
   isNested?: boolean;
   nestedIndex?: number;
   onCloseClick?: AnyArgFunction;
-  syncErrors?: any;
+  syncErrors?: FormErrors;
   tabIndex?: number;
   expanded?: number[];
   setExpanded?: (arg: number[] | ((arg: number[]) => void)) => void;
@@ -137,7 +136,6 @@ export interface GetRecordsArgs {
   listUpdate?: boolean;
   savedID?: any;
   ignoreSelection?: boolean;
-  startIndex?: number;
   stopIndex?: number;
   resolve?: AnyArgFunction;
 }

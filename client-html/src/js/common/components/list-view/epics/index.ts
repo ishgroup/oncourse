@@ -16,8 +16,12 @@ import { EpicGetEntities } from "./EpicGetEntities";
 import { EpicDeleteCustomFilter } from "./EpicDeleteCustomFilter";
 import { EpicGetPlainEntities } from "./EpicGetPlainEntities";
 import { EpicBulkChangeRecords } from "./EpicBulkChangeRecords";
+import { EpicGetEntitiesResolve } from "./EpicGetEntitiesResolve";
+import { EpicFindRelatedByFilter } from "./EpicFindRelatedByFilter";
 
 export const EpicList = combineEpics(
+  EpicFindRelatedByFilter,
+  EpicGetEntitiesResolve,
   EpicDeleteCustomFilter,
   EpicGetEntities,
   EpicGetFilters,

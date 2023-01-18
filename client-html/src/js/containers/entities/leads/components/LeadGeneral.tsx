@@ -25,7 +25,7 @@ import {
   HeaderContactTitle
 } from "../../../../common/components/form/FieldAdornments";
 import {
- contactLabelCondition, defaultContactName, getContactName
+  getContactFullName
 } from "../../contacts/utils";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
@@ -115,7 +115,7 @@ const LeadGeneral = (props: Props) => {
   const classes = useStyles();
 
   const onContactChange = value => {
-    dispatch(change(form, "contactName", getContactName(value)));
+    dispatch(change(form, "contactName", getContactFullName(value)));
   };
 
   useEffect(() => {
@@ -177,13 +177,13 @@ const LeadGeneral = (props: Props) => {
           fields={(
             <Grid item xs={twoColumn ? 6 : 12}>
               <FormField
-                type="remoteDataSearchSelect"
+                type="remoteDataSelect"
                 label="Contact"
                 entity="Contact"
                 name="contactId"
                 selectValueMark="id"
-                selectLabelCondition={contactLabelCondition}
-                defaultDisplayValue={defaultContactName(values.contactName)}
+                selectLabelCondition={getContactFullName}
+                defaultValue={values.contactName}
                 onInnerValueChange={onContactChange}
                 itemRenderer={ContactSelectItemRenderer}
                 disabled={!isNew}
@@ -209,12 +209,12 @@ const LeadGeneral = (props: Props) => {
         && (
           <Grid item xs={12}>
             <FormField
-              type="searchSelect"
+              type="select"
               name="assignToId"
               label="Assigned to"
               selectValueMark="id"
-              selectLabelCondition={contactLabelCondition}
-              defaultDisplayValue={defaultContactName(values.assignTo)}
+              selectLabelCondition={getContactFullName}
+              defaultValue={values.assignTo}
               disabled={!users}
               items={users}
               required
@@ -243,6 +243,7 @@ const LeadGeneral = (props: Props) => {
             name="estimatedValue"
             label="Estimated value"
             normalize={normalizeNumberToZero}
+            debounced={false}
           />
           <Chip
             size="small"

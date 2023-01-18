@@ -11,14 +11,14 @@ import { AssessmentSubmission as AssessmentSubmissionModel } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
 import { clearListState, getFilters } from "../../../common/components/list-view/actions";
 import { getListTags } from "../../tags/actions";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import AssessmentSubmissionEditView from "./components/AssessmentSubmissionsEditView";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 import { State } from "../../../reducers/state";
 import EntityService from "../../../common/services/EntityService";
-import { getContactName } from "../contacts/utils";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import { getContactFullName } from "../contacts/utils";
 
 const filterGroups: FilterGroup[] = [
   {
@@ -33,7 +33,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == AssessmentSubmission and entityId" },
   { title: "Assessments", list: "assessment", expression: "assessmentClasses.assessmentSubmissions.id" },
   { title: "Classes", list: "class", expression: "assessmentClasses.assessmentSubmissions.id" },
@@ -72,7 +72,7 @@ const AssessmentSubmission = (props: any) => {
     )
       .then(res => {
         const tutors = (res.rows.map(r => ({
-          label: getContactName({ firstName: r.values[0], lastName: r.values[1] }),
+          label: getContactFullName({ firstName: r.values[0], lastName: r.values[1] }),
           value: Number(r.id),
         })));
 

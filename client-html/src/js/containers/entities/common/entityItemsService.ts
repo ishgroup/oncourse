@@ -34,7 +34,7 @@ import SurveyService from "../survey/services/SurveyService";
 import ArticleProductService from "../articleProducts/service/ArticleProductService";
 import MessageService from "../messages/services/MessageService";
 import { formatToDateOnly } from "../../../common/utils/dates/datesNormalizing";
-import { getInvoiceClosestPaymentDueDate, preformatInvoice, sortInvoicePaymentPlans } from "../invoices/utils";
+import { preformatInvoice, processInvoicePaymentPlans, setInvoiceLinesTotal } from "../invoices/utils";
 import ContactsService from "../contacts/services/ContactsService";
 import { PayLineWithDefer } from "../../../model/entities/Payslip";
 import CourseClassService from "../courseClasses/services/CourseClassService";
@@ -53,8 +53,8 @@ import { mapEntityDisplayName } from "./utils";
 import EnrolmentService from "../enrolments/services/EnrolmentService";
 import { EnrolmentExtended } from "../../../model/entities/Enrolment";
 import EntityService from "../../../common/services/EntityService";
-import { getContactName } from "../contacts/utils";
 import { getPaymentOutFromModel } from "../paymentsOut/utils";
+import { getContactFullName } from "../contacts/utils";
 
 const defaultUnknown = () => {
   console.error("Unknown entity name");
@@ -137,10 +137,7 @@ export const getEntityItemById = (entity: EntityName, id: number): Promise<any> 
     case "AbstractInvoice":
     case "Invoice": {
       return InvoiceService.getInvoice(id).then(invoice => {
-        invoice.paymentPlans.sort(sortInvoicePaymentPlans);
-        getInvoiceClosestPaymentDueDate(invoice);
-
-        return invoice;
+        return setInvoiceLinesTotal({ ...invoice, paymentPlans: processInvoicePaymentPlans(invoice.paymentPlans) });
       });
     }
     
@@ -155,7 +152,7 @@ export const getEntityItemById = (entity: EntityName, id: number): Promise<any> 
             .then(res => {
               a.tutors = res.rows.map(r => ({
                 contactId: Number(r.id),
-                tutorName: getContactName({ firstName: r.values[0], lastName: r.values[1] })
+                tutorName: getContactFullName({ firstName: r.values[0], lastName: r.values[1] })
               }));
             });
         }
@@ -226,8 +223,16 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
       return DiscountService.updateDiscount(id, item);
     case "Document":
       return DocumentsService.updateDocumentItem(id, item);
-    case "Enrolment":
-      return EnrolmentService.updateEnrolment(id, item);
+      
+    case "Enrolment": {
+      const withAssessmenProcessed = {
+        ...item,
+        assessments: item.assessments.map(({ tutors, ...rest }) => rest)
+      };
+      
+      return EnrolmentService.updateEnrolment(id, withAssessmenProcessed);
+    }
+      
     case "AbstractInvoice":
     case "Invoice":
       return InvoiceService.updateInvoice(id, preformatInvoice(item));
@@ -255,7 +260,7 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
       return PaymentOutService.updatePaymentOut(id, item);
 
     case "Payslip": {
-      const paylines = JSON.parse(JSON.stringify(item.paylines.filter(p => p.deferred)));
+      const paylines = [...item?.paylines.filter(p => p.deferred) || []];
 
       paylines.forEach(i => {
         delete i.deferred;

@@ -11,7 +11,6 @@ import {
   CheckoutItem,
   CheckoutState
 } from "../../../model/checkout";
-import { getContactName } from "../../entities/contacts/utils";
 import {
   CHECKOUT_ADD_CONTACT,
   CHECKOUT_ADD_ITEM,
@@ -89,6 +88,7 @@ import {
   CHECKOUT_UPDATE_SUMMARY_LIST_ITEMS,
   CHECKOUT_UPDATE_SUMMARY_PRICES_FULFILLED
 } from "../actions/checkoutSummary";
+import { getContactFullName } from "../../entities/contacts/utils";
 
 const initial: CheckoutState = {
   step: 0,
@@ -1014,7 +1014,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
               const filteredRelations = relationTypes.filter(r => r.isReverseRelation === !isReverseRelation);
               const relation = filteredRelations.find(r => r.value === String(parseInt(conRel.relationId, 10)));
               const relationName = relation && relation.label;
-              const relatedContactName = getContactName(c);
+              const relatedContactName = getContactFullName(c as any);
               rc.relationString = relationName && relatedContactName ? `${relationName} of ${relatedContactName}` : "";
             }
           });

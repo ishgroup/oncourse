@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { defaultComponents } from "../../common/Default.Components";
 import TutorRolesForm, { TUTOR_ROLES_FORM } from
     "../../../js/containers/preferences/containers/tutor-roles/components/TutorRolesForm";
+import { formatCurrency } from "../../../js/common/utils/numbers/numbersNormalizing";
 import { III_DD_MMM_YYYY } from "../../../js/common/utils/dates/format";
 
 describe("Virtual rendered TutorRolesForm", () => {
@@ -34,7 +35,7 @@ describe("Virtual rendered TutorRolesForm", () => {
 
       initialValues.payRates.forEach((payRate, key) => {
         tutorRoles[`payRates[${key}].validFrom`] = format(new Date(payRate.validFrom), III_DD_MMM_YYYY).toString();
-        tutorRoles[`payRates[${key}].rate`] = payRate.rate.toString();
+        tutorRoles[`payRates[${key}].rate`] = formatCurrency(payRate.rate, "");
         tutorRoles[`payRates[${key}].type`] = payRate.type;
         tutorRoles[`payRates[${key}].oncostRate`] = payRate.oncostRate * 100;
         tutorRoles[`payRates[${key}].notes`] = payRate.notes;

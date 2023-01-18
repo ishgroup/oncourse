@@ -14,8 +14,9 @@ const defaultContactMap = ({ id, values }) => ({
   id: Number(id),
   firstName: values[0],
   lastName: values[1],
-  email: values[2],
-  birthDate: values[3],
+  middleName: values[2],
+  email: values[3],
+  birthDate: values[4],
   relationString: ""
 });
 
@@ -29,7 +30,7 @@ const request: EpicUtils.Request<
  search, columns, ascending, sort
 }) => EntityService.getPlainRecords(
       "Contact",
-      columns || "firstName,lastName,email,birthDate",
+      columns || "firstName,lastName,middleName,email,birthDate",
       search,
       100,
       0,

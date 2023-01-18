@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import FileCopy from "@mui/icons-material/FileCopy";
@@ -33,7 +36,7 @@ import { mapSelectItems } from "../../../../../common/utils/common";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
-import { validateKeycode } from "../../../utils";
+import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import ScriptCard from "../components/cards/CardBase";
 import { formatRelativeDate } from "../../../../../common/utils/dates/formatRelative";
 import ImportCardContent from "../components/cards/ImportCardContent";
@@ -210,6 +213,7 @@ interface Props {
   timeZone?: string;
   syncErrors?: any;
   checklists?: CatalogItemType[];
+  scripts?: CatalogItemType[];
 }
 
 const getInitComponentBody = (componentName: ScriptComponentType): ScriptComponent | Promise<ScriptComponent> => {
@@ -256,7 +260,8 @@ const ScriptsForm = React.memo<Props>(props => {
     nextLocation,
     timeZone,
     syncErrors,
-    checklists
+    checklists,
+    scripts
   } = props;
 
   const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
@@ -462,10 +467,35 @@ const ScriptsForm = React.memo<Props>(props => {
     values && values.trigger && values.trigger.entityName,
     values && values.trigger && values.trigger.entityAttribute,
   ]);
+  
+  useEffect(() => {
+    if (!expandInfo && syncErrors && syncErrors["keyCode"] ) {
+      setExpandInfo(true);
+    }
+  }, [syncErrors]);
+  
+  const validateScriptCopyName = useCallback(name => {
+    if (scripts.find(s => s.title.trim() === name.trim())) {
+      return "Script name should be unique";
+    }
+    return validateNameForQuotes(name);
+  }, [scripts, values.id]);
+
+  const validateScriptName = useCallback(name => {
+    if (scripts.find(s => s.id !== values.id && s.title.trim() === name.trim())) {
+      return "Script name should be unique";
+    }
+    return validateNameForQuotes(name);
+  }, [scripts, values.id]);
 
   return (
     <>
-      <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialogClose} onSave={onDialogSave} hasNameField />
+      <SaveAsNewAutomationModal
+        opened={modalOpened}
+        onClose={onDialogClose}
+        onSave={onDialogSave}
+        validateNameField={validateScriptCopyName}
+      />
 
       <Form onSubmit={handleSubmit(handleSave)}>
         {(dirty || isNew) && <RouteChangeConfirm form={form} when={!disableRouteConfirm && (dirty || isNew)} />}
@@ -490,8 +520,10 @@ const ScriptsForm = React.memo<Props>(props => {
           fields={(
             <Grid item xs={12}>
               <FormField
+                type="text"
                 name="name"
                 label="Name"
+                validate={validateScriptName}
                 disabled={isInternal}
                 required
                 placeholder={` `}
@@ -538,7 +570,6 @@ const ScriptsForm = React.memo<Props>(props => {
                     name="shortDescription"
                     disabled={isInternal}
                     className="overflow-hidden mb-1"
-                    hideLabel
                     placeholder="Short description"
                   />
                   <Typography variant="caption">
@@ -547,7 +578,6 @@ const ScriptsForm = React.memo<Props>(props => {
                       name="description"
                       disabled={isInternal}
                       className="overflow-hidden mb-1"
-                      hideLabel
                       placeholder="Description"
                       fieldClasses={{
                         text: clsx("fw300", classes.descriptionText)
@@ -585,6 +615,7 @@ const ScriptsForm = React.memo<Props>(props => {
                             format={v => v === "Enabled"}
                             parse={v => (v ? "Enabled" : "Installed but Disabled")}
                             onClick={e => e.stopPropagation()}
+                            debounced={false}
                           />
                         )}
                         onExpand={() => setTriggerExpand(!triggerExpand)}
@@ -712,8 +743,8 @@ const ScriptsForm = React.memo<Props>(props => {
                     </Grid>
                   </Grid>
                   <Accordion
-                    defaultExpanded={expandInfo}
-                    onChange={() => setExpandInfo(!expandInfo)}
+                    expanded={expandInfo}
+                    onChange={syncErrors && syncErrors["keyCode"] ? null : () => setExpandInfo(!expandInfo)}
                     classes={{ root: classes.technicalInfoRoot, expanded: classes.technicalInfoExpanded }}
                   >
                     <AccordionSummary classes={{ root: "p-0" }} expandIcon={<ExpandMoreIcon />}>

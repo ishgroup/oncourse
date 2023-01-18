@@ -12,7 +12,7 @@ import {
 import Button from "@mui/material/Button";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../../common/components/form/Uneditable";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
 import { State } from "../../../../../../reducers/state";
 
@@ -75,7 +75,7 @@ class GoogleClassroomBaseForm extends React.Component<any, any> {
         <AppBarContent>
           <FormField name="fields.clientId" label="Client id" type="text" required className="mb-2" />
           <FormField name="fields.clientSecret" label="Client secret" type="text" required className="mb-2" />
-          <FormField name="fields.activationCode" type="stub" validate={validateSingleMandatoryField} disabled className="mb-2" />
+          <FormField name="fields.activationCode" type="stub" validate={validateSingleMandatoryField} />
           <Uneditable value={values && values.fields.activationCode} label="Activation Code" className="mb-2" />
 
           <div>

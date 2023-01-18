@@ -1,5 +1,6 @@
 import PayslipsEditView from "../../../js/containers/entities/payslips/components/PayslipsEditView";
 import { mockedEditView } from "../../common/MockedEditView.Components";
+import { formatCurrency } from "../../../js/common/utils/numbers/numbersNormalizing";
 
 describe("Virtual rendered PayslipsEditView", () => {
   mockedEditView({
@@ -10,7 +11,7 @@ describe("Virtual rendered PayslipsEditView", () => {
       const paylines = {};
 
       initialValues.paylines.forEach((payline, i) => {
-        paylines[`paylines[${i}].value`] = payline.value.toString();
+        paylines[`paylines[${i}].value`] = formatCurrency(payline.value, "");
         paylines[`paylines[${i}].description`] = payline.description;
       });
 

@@ -21,7 +21,7 @@ import { State } from "../../../../../reducers/state";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { updateUserRole, removeUserRole } from "../../../actions";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("users_roles");
@@ -153,6 +153,7 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
           fields={(
             <Grid item xs={12}>
               <FormField
+                type="text"
                 name="name"
                 label="Name"
                 validate={validateUniqueNames}

@@ -20,6 +20,7 @@ class SMTPService {
     private String username
     private String password
     private Mode mode = Mode.ssl
+    private Boolean notSupportsTls13 = false
 
     private static final Logger logger = LogManager.logger
 
@@ -53,7 +54,12 @@ class SMTPService {
     void setMode(String mode) {
         this.mode = Mode.byName(mode)
     }
-    
+
+    @BQConfigProperty
+    void setNotSupportsTls13(Boolean notSupportsTls13) {
+        this.notSupportsTls13 = notSupportsTls13
+    }
+
     Integer getEmail_batch() {
         return email_batch
     }
@@ -77,7 +83,11 @@ class SMTPService {
     Mode getMode() {
         return mode
     }
-    
+
+    Boolean supportsTls13() {
+        return !notSupportsTls13
+    }
+
     static enum Mode {
         ssl,
         starttls,

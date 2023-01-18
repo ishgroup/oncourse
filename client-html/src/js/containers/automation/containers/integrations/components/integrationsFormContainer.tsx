@@ -87,7 +87,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
     if (!value) {
       return "Field is mandatory";
     }
-    if (value.includes("%")) {
+    if (value.includes("%") || value.includes("\"")) {
       return "Special symbols not allowed";
     }
     if (!this.props.integrations) {
@@ -147,11 +147,11 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
         fields={(
           <Grid item xs={12}>
             <FormField
+              type="text"
               name="name"
               label="Name"
               validate={this.validateNameField}
               disabled={disableName}
-              fullWidth
             />
           </Grid>
         )}

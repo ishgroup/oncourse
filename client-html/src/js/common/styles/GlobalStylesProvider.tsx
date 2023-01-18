@@ -160,7 +160,10 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".checkbox": {
         height: "35px",
-        overflow: "hidden"
+        display: "block",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis"
       },
       ".checkboxWidth": {
         width: "35px"
@@ -406,6 +409,9 @@ const globalStyles = (theme: AppTheme) =>
         height: theme.spacing(4),
         padding: theme.spacing(1)
       },
+      ".lightGrayColor": {
+        color: alpha(theme.palette.text.primary, 0.2),
+      },
       ".noRecordsMessage": {
         color: theme.palette.grey[400],
         flex: 1,
@@ -497,6 +503,11 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".gridAutoFlow-column": {
         gridAutoFlow: "column"
+      },
+      ".dotsBackgroundImage": {
+        backgroundImage: `radial-gradient(${alpha(theme.palette.primary.main, 0.5)} 1.5px, transparent 1.5px),radial-gradient(${alpha(theme.palette.primary.main, 0.5)} 1.5px, transparent 1.5px)`,
+        backgroundPosition: "5px 4px, 20px 18px",
+        backgroundSize: "30px 30px",
       },
       ...bootstrap(theme),
       ...customOSScrollbars,

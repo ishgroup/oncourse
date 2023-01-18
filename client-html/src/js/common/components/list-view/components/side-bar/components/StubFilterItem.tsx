@@ -14,7 +14,7 @@ import { Filter } from "@api/model";
 import { createCustomFilter, setListSavingFilter } from "../../../actions";
 import { SavingFilterState } from "../../../../../../model/common/ListView";
 import { SIMPLE_SEARCH_QUOTES_REGEX, SIMPLE_SEARCH_REGEX } from "../../../../../../constants/Config";
-import { validateAqlFilterOrTagName, validateSingleMandatoryField } from "../../../../../utils/validation";
+import { validateForbiddenSymbols, validateSingleMandatoryField } from "../../../../../utils/validation";
 
 const styles = theme =>
   createStyles({
@@ -46,7 +46,7 @@ const styles = theme =>
     }
   });
 
-const validationArr = [validateSingleMandatoryField, validateAqlFilterOrTagName];
+const validationArr = [validateSingleMandatoryField, validateForbiddenSymbols];
 
 export class StubFilterItem extends React.PureComponent<any, any> {
   private inputNode: HTMLInputElement;

@@ -20,8 +20,6 @@ export const DEFAULT_CONFIG = {
   CONTAINER_ID: "client"
 };
 
-export const DRAWER_WIDTH = 240;
-
 export const APP_BAR_HEIGHT = 64;
 
 export const LIST_PAGE_SIZE = 50;
@@ -31,6 +29,10 @@ export const PLAIN_LIST_MAX_PAGE_SIZE = 65000;
 export const LIST_THREE_COLUMN_ROW_HEIGHT = 64;
 
 export const LIST_TWO_COLUMN_ROW_HEIGHT = 27;
+
+export const LIST_SIDE_BAR_DEFAULT_WIDTH = 265;
+
+export const LIST_MAIN_CONTENT_DEFAULT_WIDTH = 774;
 
 export const HEADER_ROWS_COUNT = 2;
 
@@ -66,6 +68,8 @@ export const DASHBOARD_FAVORITES_KEY: PreferenceEnum = "html.dashboard.favorite"
 export const READ_NEWS: PreferenceEnum = "news.read";
 
 export const ACCOUNT_INVOICE_TERMS: PreferenceEnum = "account.invoice.terms";
+
+export const ACCOUNT_DEFAULT_INVOICELINE_ID: PreferenceEnum = "account.default.invoiceline.id";
 
 export const DASHBOARD_THEME_KEY: PreferenceEnum = "html.global.theme";
 

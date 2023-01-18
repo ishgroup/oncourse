@@ -786,3 +786,61 @@ databaseChangeLog:
       changes:
         - customChange:
             class: ish.oncourse.server.upgrades.liquibase.change.CreateSpecialTags
+
+  - changeSet:
+      id: 117-1
+      author: dmitars
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: Preference
+      comment: create preference for max image quality
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.CreateBackgroundQualityPreference
+
+  - changeSet:
+      id: 118-1
+      author: dmitriy
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: Account
+        - tableExists:
+            tableName: Preference
+      comment: create default invoice account property
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.CreateInvoiceDefaultAccountPreference
+
+  - changeSet:
+      id: 119-1
+      author: dmitryl
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: IntegrationProperty
+        - tableExists:
+            tableName: IntegrationConfiguration
+        - columnExists:
+            tableName: IntegrationProperty
+            columnName: keyCode
+        - columnExists:
+            tableName: IntegrationConfiguration
+            columnName: type
+      comment: delete unnecessary integration properties orgId and username for Cloud Assess integration
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.DeleteUnnecessaryCloudAssessProperties
+
+  - changeSet:
+      id: 120-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - and:
+            - tableExists:
+                tableName: MessageTemplate
+      changes:
+        - dropTable:
+            tableName: MessageTemplate

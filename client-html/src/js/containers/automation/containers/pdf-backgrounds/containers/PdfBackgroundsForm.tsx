@@ -9,7 +9,7 @@
 import React, {
   useCallback, useEffect, useRef, useState
 } from "react";
-import { change, Form, InjectedFormProps } from "redux-form";
+import { change, Form, initialize, InjectedFormProps } from "redux-form";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import Grid from "@mui/material/Grid";
 import { ReportOverlay } from "@api/model";
@@ -25,6 +25,7 @@ import FilePreview from "../../../../../common/components/form/FilePreview";
 import Uneditable from "../../../../../common/components/form/Uneditable";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { showMessage } from "../../../../../common/actions";
+import { PDF_BACKGROUND_FORM_NAME } from "../PdfBackgrounds";
 
 const manualUrl = getManualLink("reports_background");
 
@@ -60,7 +61,6 @@ const PdfBackgroundsForm = React.memo<Props>(
      loading,
      dispatch
     }) => {
-    const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
     const [fileIsChosen, setFileIsChosen] = useState(false);
     const [chosenFileName, setChosenFileName] = useState(null);
 
@@ -75,21 +75,18 @@ const PdfBackgroundsForm = React.memo<Props>(
     };
 
     const handleDelete = useCallback(() => {
-      setDisableRouteConfirm(true);
+      dispatch(initialize(PDF_BACKGROUND_FORM_NAME, values));
       onDelete(values.id);
       discardFileInput();
     }, [values.id]);
 
     const handleSave = useCallback(
       (val: ReportOverlay) => {
-        setDisableRouteConfirm(true);
         if (isNew) {
           onCreate(val.name, fileRef.current.files[0]);
-          discardFileInput();
           return;
         }
         onUpdate(val.name, val.id, fileIsChosen ? fileRef.current.files[0] : null);
-        discardFileInput();
       },
       [isNew, fileIsChosen]
     );
@@ -97,12 +94,6 @@ const PdfBackgroundsForm = React.memo<Props>(
     const handleUploadClick = useCallback(() => fileRef.current.click(), []);
 
     const handleDownloadClick = () => getPdfBackgroundCopy(values.id, values.name);
-
-    useEffect(() => {
-      if (disableRouteConfirm && values.id !== prevId) {
-        setDisableRouteConfirm(false);
-      }
-    }, [values.id, prevId, disableRouteConfirm]);
 
     useEffect(() => {
       if (values.id !== prevId) {
@@ -161,9 +152,7 @@ const PdfBackgroundsForm = React.memo<Props>(
       <>
         <Form onSubmit={handleSubmit(handleSave)}>
           <input type="file" ref={fileRef} onChange={handleFileSelect} className="d-none" />
-          {(!disableRouteConfirm || fileIsChosen) && (
-            <RouteChangeConfirm form={form} when={dirty || isNew} />
-          )}
+          <RouteChangeConfirm form={form} when={dirty} />
 
           <AppBarContainer
             values={values}
@@ -178,6 +167,7 @@ const PdfBackgroundsForm = React.memo<Props>(
             fields={(
               <Grid item xs={12}>
                 <FormField
+                  type="text"
                   name="name"
                   label="Name"
                   required

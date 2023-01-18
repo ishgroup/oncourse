@@ -15,7 +15,7 @@ import * as Model from "../../../../../model/preferences/ClassDefaults";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("generalPrefs_classdefaults");
@@ -70,6 +70,7 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
                   name={this.formModel.ClassMinPlaces.uniqueKey}
                   label="Minimum places"
                   parse={val => val || "0"}
+                  debounced={false}
                 />
               </Grid>
 
@@ -90,6 +91,7 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
                   name={this.formModel.ClassMaxPlaces.uniqueKey}
                   label="Maximum places"
                   parse={val => val || "0"}
+                  debounced={false}
                 />
               </Grid>
 

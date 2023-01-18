@@ -1,5 +1,5 @@
 import { change, untouch } from "redux-form";
-import { FETCH_FAIL, SET_LOGIN_STATE } from "../../../common/actions/index";
+import { FETCH_FAIL, SET_LOGIN_STATE } from "../../../common/actions";
 import { IAction } from "../../../common/actions/IshAction";
 import { LoginResponse, ValidationError } from "@api/model";
 import { LoginState } from "../reducers/state";
@@ -12,7 +12,7 @@ interface loginResponse {
 let tokenRequiredFirst = true;
 
 const LoginServiceErrorsHandler = (response: loginResponse, customMessage?: string): IAction<any>[] => {
-  if (!response) {
+  if (!response || !response.data || !response.status) {
     return [
       {
         type: FETCH_FAIL,

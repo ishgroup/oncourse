@@ -13,7 +13,7 @@ import { State } from "../../../../reducers/state";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
+import { getContactFullName } from "../../contacts/utils";
 import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
 import { courseFilterCondition, openCourseLink } from "../../courses/utils";
 import {
@@ -121,15 +121,15 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           fields={(
             <Grid item {...gridItemProps}>
               <FormField
-                type="remoteDataSearchSelect"
+                type="remoteDataSelect"
                 entity="Contact"
                 aqlFilter="isStudent is true"
                 name="contactId"
                 label="Student"
                 selectValueMark="id"
-                selectLabelCondition={contactLabelCondition}
+                selectLabelCondition={getContactFullName}
                 disabled={!isNew}
-                defaultDisplayValue={values && defaultContactName(values.studentName)}
+                defaultValue={values?.studentName}
                 labelAdornment={(
                   <ContactLinkAdornment id={values?.contactId} />
                 )}
@@ -158,7 +158,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
       </Grid>
       <Grid item {...gridItemProps}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           entity="Course"
           aqlFilter="enrolmentType is ENROLMENT_BY_APPLICATION"
           name="courseId"
@@ -167,7 +167,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           selectLabelMark="name"
           selectFilterCondition={courseFilterCondition}
           selectLabelCondition={courseFilterCondition}
-          defaultDisplayValue={values && values.courseName}
+          defaultValue={values && values.courseName}
           labelAdornment={(
             <LinkAdornment
               linkHandler={openCourseLink}

@@ -8,25 +8,12 @@ import { FormControlLabel } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { ModuleType } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { greaterThanNullValidation } from "../../../../common/utils/validation";
 import { sortDefaultSelectItems } from "../../../../common/utils/common";
+import { normalizeNumberToPositive } from "../../../../common/utils/numbers/numbersNormalizing";
 
 const moduleTypes = Object.keys(ModuleType).map(key => ({ value: ModuleType[key], label: key }));
 
 moduleTypes.sort(sortDefaultSelectItems);
-
-const checkNumber = val => {
-  const num = String(val);
-
-  return num.match(/\./) ? num.replace(/[0-9]+\./, "").length > 2 : false;
-};
-
-const normalizeCreditPoints = (value, prev) =>
-  ((value && value >= 0) || value === 0 ? (checkNumber(value) ? Number(prev) : Number(value)) : null);
-
-const normalizeExpiryDays = value => ((value && value >= 0) || value === 0 ? Number(value) : null);
-
-const normalizeNominalHours = value => (value || value === 0 ? Number(value) : null);
 
 const ModulesEditView = (props: any) => {
   const {
@@ -79,7 +66,7 @@ const ModulesEditView = (props: any) => {
             type="text"
             name="specialization"
             label="Specialization"
-            maxLength="128"
+            maxLength={128}
           />
         </Grid>
       </Grid>
@@ -88,17 +75,17 @@ const ModulesEditView = (props: any) => {
         <Grid item xs={12}>
           <FormField
             type="number"
-            normalize={normalizeCreditPoints}
+            normalize={normalizeNumberToPositive}
             max="99999999.99"
             name="creditPoints"
             label="Credit points"
-            validate={greaterThanNullValidation}
+            debounced={false}
           />
         </Grid>
         <Grid item xs={12}>
           <FormField
             type="number"
-            normalize={normalizeExpiryDays}
+            normalize={normalizeNumberToPositive}
             onKeyPress={ev => {
               if (ev.key.match(/\./)) {
                 ev.preventDefault();
@@ -106,15 +93,16 @@ const ModulesEditView = (props: any) => {
             }}
             name="expiryDays"
             label="Expiry days"
-            validate={greaterThanNullValidation}
+            debounced={false}
           />
         </Grid>
         <Grid item xs={12}>
           <FormField
             type="number"
-            normalize={normalizeNominalHours}
+            normalize={normalizeNumberToPositive}
             name="nominalHours"
             label="Nominal hours"
+            debounced={false}
           />
         </Grid>
         <Grid item xs={12}>

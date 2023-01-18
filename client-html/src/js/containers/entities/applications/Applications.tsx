@@ -15,9 +15,8 @@ import { notesAsyncValidate } from "../../../common/components/form/notes/utils"
 import ListView from "../../../common/components/list-view/ListView";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
 import { getListTags } from "../../tags/actions";
-import { defaultContactName } from "../contacts/utils";
 import ApplicationEditView from "./components/ApplicationEditView";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { State } from "../../../reducers/state";
 import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
@@ -93,9 +92,9 @@ const filterGroups: FilterGroup[] = [
 
 const manualLink = getManualLink("applications");
 
-const nameCondition = values => (values ? defaultContactName(values.studentName) : "");
+const nameCondition = values => (values ? values.studentName : "");
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   {
     title: "Audits",
     list: "audit",

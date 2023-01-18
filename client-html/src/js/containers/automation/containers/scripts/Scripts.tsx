@@ -11,7 +11,7 @@ import {
 import { withRouter } from "react-router";
 import { ScheduleType, Script } from "@api/model";
 import { Dispatch } from "redux";
-import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../reducers/state";
 import ScriptsForm from "./containers/ScriptsForm";
 import {
@@ -74,6 +74,7 @@ const ScriptsBase = React.memo<any>(props => {
       history={history}
       timeZone={timeZone}
       syncErrors={syncErrors}
+      scripts={scripts}
       {...rest}
     />
   );

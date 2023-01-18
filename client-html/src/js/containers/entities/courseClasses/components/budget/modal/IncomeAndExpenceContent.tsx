@@ -12,7 +12,7 @@ import { ClassCostRepetitionType } from "@api/model";
 import { Divider } from "@mui/material";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
-import { contactLabelCondition } from "../../../../contacts/utils";
+import { getContactFullName } from "../../../../contacts/utils";
 import { ContactLinkAdornment } from "../../../../../../common/components/form/FieldAdornments";
 import ContactSelectItemRenderer from "../../../../contacts/components/ContactSelectItemRenderer";
 import { decimalDivide, decimalMul, decimalPlus } from "../../../../../../common/utils/numbers/decimalCalculation";
@@ -96,13 +96,13 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
       </Grid>
       <Grid item xs={6}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           entity="Contact"
           name="contactId"
           label="Contact"
           selectValueMark="id"
-          selectLabelCondition={contactLabelCondition}
-          defaultDisplayValue={values.contactName}
+          selectLabelCondition={getContactFullName}
+          defaultValue={values.contactName}
           labelAdornment={
             <ContactLinkAdornment id={values?.contactId} />
           }

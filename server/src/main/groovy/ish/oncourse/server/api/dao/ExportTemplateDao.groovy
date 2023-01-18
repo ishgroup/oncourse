@@ -38,6 +38,13 @@ class ExportTemplateDao implements AutomationDao<ExportTemplate> {
                 .selectOne(context)
     }
 
+    @Override
+    List<ExportTemplate> getByName(ObjectContext context, String name) {
+        ObjectSelect.query(ExportTemplate)
+                .where(ExportTemplate.NAME.eq(name))
+                .select(context)
+    }
+
     List<ExportTemplate> getForEntity(String entityName, ObjectContext context) {
 
         List<String> avalibleTEntities = ExportFunctions.TRANSFORMATIONS_MAP[entityName.toLowerCase()]

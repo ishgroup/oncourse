@@ -10,7 +10,8 @@
  */
 package ish.util;
 
-import org.apache.commons.lang3.StringUtils;
+import ish.oncourse.server.api.v1.model.PreferenceEnumDTO;
+import ish.oncourse.server.preference.UserPreferenceService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.pdfbox.io.IOUtils;
@@ -30,6 +31,9 @@ import java.awt.image.RenderedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -38,14 +42,18 @@ public class ImageHelper {
 
 	private static final Logger logger = LogManager.getLogger();
 
-	private static final String MIME_TYPE_IMAGE_PREFIX = "image/";
-	private static final int IMAGE_THUMBNAIL_SIZE = 140;
+	protected static final String MIME_TYPE_IMAGE_PREFIX = "image/";
 
-	private static final int PDF_PREVIEW_WIDTH = 165;
-	private static final int PDF_PREVIEW_HEIGHT = 240;
-	private static final int A4_PIXELS_WIDTH = 595;
-	private static final int A4_PIZELS_HEIGHT = 845;
-	private static final String PDF_PREVIEW_FORMAT = "png";
+
+	protected static final int PDF_PREVIEW_WIDTH = 165;
+	protected static final int PDF_PREVIEW_HEIGHT = 240;
+	protected static final int A4_PIXELS_WIDTH = 595;
+	protected static final int A4_PIXELS_HEIGHT = 845;
+
+	protected static final String PDF_PREVIEW_FORMAT = "png";
+
+	public static final int DEFAULT_MAX_IMAGE_SCALE = 4;
+	public static final int MAX_IMAGE_SCALE = 10;
 
 
 	public static BufferedImage scaleImageToSize(int nMaxWidth, int nMaxHeight, BufferedImage imgSrc) {
@@ -62,8 +70,8 @@ public class ImageHelper {
 		int width = image.getWidth();
 		int height = image.getHeight();
 
-		width = width < height ? A4_PIXELS_WIDTH : A4_PIZELS_HEIGHT;
-		height = image.getWidth() < height ? A4_PIZELS_HEIGHT : A4_PIXELS_WIDTH;
+		width = width < height ? A4_PIXELS_WIDTH : A4_PIXELS_HEIGHT;
+		height = image.getWidth() < height ? A4_PIXELS_HEIGHT : A4_PIXELS_WIDTH;
 
 		var scaledImage = smoothScaleImageTo(width, height, image);
 		imageSrc = getAsByteArray(scaledImage, PDF_PREVIEW_FORMAT);
@@ -163,7 +171,7 @@ public class ImageHelper {
 	}
 
 	/**
-	 * Determines if document version is an image by its MIME type.
+	 * Determines if document version is an image by its MIME type
 	 */
 	public static boolean isImage(byte[] content, String mimeType) {
 		BufferedImage image = null;
@@ -180,33 +188,42 @@ public class ImageHelper {
 	}
 
 	/**
-	 * Generates 140x140 thumbnail from image.
-	 *
-	 * @param content - image binary content
-	 * @param type - image type
-	 * @return - binary content of generated thumbnail, null - if transformation can't be performed
+	 * Determines if document version is a Microsoft Office document by its MIME type
+	 * according <a href="https://www.iana.org/assignments/media-types/media-types.xhtml"> IANA </a>}
 	 */
-	public static byte[] generateThumbnail(byte[] content, String type) throws IOException {
-		String format = type;
-
-		// if type string is in MIME type format (e.g. image/png), remove "image/" prefix
-		if (StringUtils.startsWithIgnoreCase(format, MIME_TYPE_IMAGE_PREFIX)) {
-			format = StringUtils.removeStart(format, MIME_TYPE_IMAGE_PREFIX);
-		}
-
-		BufferedImage bufferedImage = getAsBufferedImage(content);
-
-		if (bufferedImage == null) {
-			logger.warn("Provided byte array can't be converted to any supported image type.");
-
-			return null;
-		}
-
-		return getAsByteArray(ImageHelper.scaleImageToSize(
-				IMAGE_THUMBNAIL_SIZE, IMAGE_THUMBNAIL_SIZE, bufferedImage),
-				format);
+	public static boolean isDoc(String mimeType) {
+		List<String> types = Arrays.asList("application/msword",
+				"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+		return types.contains(mimeType);
 	}
 
+	/**
+	 * Determines if document version is a Microsoft Excel document by its MIME type
+	 * according <a href="https://www.iana.org/assignments/media-types/media-types.xhtml"> IANA </a>}
+	 */
+	public static boolean isExcel(String mimeType) {
+		List<String> types = Arrays.asList("application/vnd.ms-excel",
+				"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+		return types.contains(mimeType);
+	}
+
+	/**
+	 * Determines if document version is a .CSV document by its MIME type
+	 * according <a href="https://www.iana.org/assignments/media-types/media-types.xhtml"> IANA </a>}
+	 */
+	public static boolean isCsv(String mimeType) {
+		return mimeType.equals("text/csv");
+	}
+
+	/**
+	 * Determines if document version is a text document by its MIME type
+	 * according <a href="https://www.iana.org/assignments/media-types/media-types.xhtml"> IANA </a>}
+	 */
+	public static boolean isText(String mimeType) {
+		List<String> types = Arrays.asList("application/xml", "text/html", "text/calendar", "text/javascript",
+				"application/vnd.oasis.opendocument.text", "application/x-httpd-php", "text/rtf", "text/plain", "text/xml");
+		return types.contains(mimeType);
+	}
 
 	/**
 	 * Generates 400x564 (A4 format demention) preview from pdf byte array.
@@ -215,7 +232,13 @@ public class ImageHelper {
 	 * @return - binary content of generated preview, null - if transformation can't be performed
 	 */
 	public static byte[] generatePdfPreview(byte[] pdfContent) {
-		return generateQualityPreview(pdfContent, 2, true, true);
+		ImageRequest imageRequest = new ImageRequest.Builder(pdfContent)
+				.qualityScale(2)
+				.a4FormatRequired(true)
+				.cutRequired(true)
+				.build();
+		var result = generateQualityPreview(imageRequest);
+		return result == null ? null : result.get(0);
 	}
 
 
@@ -225,41 +248,113 @@ public class ImageHelper {
 	 * @param pdfContent - pdf byte array
 	 * @return - binary content of generated preview, null - if transformation can't be performed
 	 */
-	public static byte[] generateHighQualityPdfPreview(byte[] pdfContent) {
-		return generateQualityPreview(pdfContent, 10, true, false);
+	public static byte[] generateHighQualityPdfPreview(byte[] pdfContent, int quality) {
+		var request = new ImageRequest.Builder(pdfContent)
+				.qualityScale(quality)
+				.a4FormatRequired(true)
+				.build();
+
+		var result = generateQualityPreview(request);
+		return result == null ? null : result.get(0);
+	}
+
+	public static int getBackgroundQualityScale(UserPreferenceService userPreferenceService){
+		var highQualityScaleStr = userPreferenceService.get(PreferenceEnumDTO.BACKGROUND_QUALITY_SCALE);
+		if(highQualityScaleStr != null){
+			try {
+				var highQualityScale = Integer.parseInt(highQualityScaleStr);
+				if(highQualityScale <= 0)
+					highQualityScale = 2;
+				if(highQualityScale > MAX_IMAGE_SCALE)
+					highQualityScale = MAX_IMAGE_SCALE;
+				return highQualityScale;
+			} catch(Exception ignore){}
+		}
+		return MAX_IMAGE_SCALE;
+	}
+
+	/**
+	 * Generates 400x564 (A4 format demention) background from pdf byte array.
+	 *
+	 * @param pdfContent - pdf byte array
+	 * @return - binary content of generated preview, null - if transformation can't be performed
+	 */
+	public static byte[] generateBackgroundImage(byte[] pdfContent, UserPreferenceService userPreferenceService) {
+		return generateHighQualityPdfPreview(pdfContent, getBackgroundQualityScale(userPreferenceService));
+	}
+
+	public static List<byte[]> generateOriginalHighQuality(byte[] pdfContent) {
+		var request = new ImageRequest.Builder(pdfContent)
+				.qualityScale(ImageHelper.DEFAULT_MAX_IMAGE_SCALE)
+				.fullBackgroundRequired(true)
+				.build();
+		return generateQualityPreview(request);
 	}
 
 	/**
 	 * Generates 400x564 (A4 format demention) preview from pdf or image byte array.
 	 *
-	 * @param pdfContent - pdf or image byte array
+	 * @param imageRequest - request for generating image from pdf background
 	 * @return - binary content of generated preview, null - if transformation can't be performed
 	 */
-	public static byte[] generateQualityPreview(byte[] pdfContent, float scale, boolean a4FormatRequired, boolean cutRequired) {
-		BufferedImage image;
-		boolean landscape;
-		try(PDDocument doc = PDDocument.load(pdfContent)){
-			PDFRenderer renderer = new PDFRenderer(doc);
-			image = renderer.renderImage(0, scale);
-			landscape = !isPortrait(doc.getPage(0));
+	public static List<byte[]> generateQualityPreview(ImageRequest imageRequest) {
+		var parsedBackground = parseBackground(imageRequest);
+		if(parsedBackground == null) {
+			return null;
+		}
+		var result = new ArrayList<byte[]>();
+		for(var backgroundData:parsedBackground){
+			result.add(processImageToPreview(backgroundData, imageRequest));
+		}
+		return result;
+	}
+
+	private static List<BackgroundData> parseBackground(ImageRequest imageRequest){
+		try {
+			return parseBackAsPdf(imageRequest);
 		} catch (Exception e) {
 			try {
-				image = getAsBufferedImage(pdfContent);
+				BufferedImage image = getAsBufferedImage(imageRequest.getPdfContent());
 				if (image == null)
 					throw new Exception();
-				landscape = image.getWidth() > image.getHeight();
+				boolean landscape = image.getWidth() > image.getHeight();
+				return List.of(new BackgroundData(image, landscape));
 			} catch (Exception ex) {
 				logger.error("Unable to load background" );
 				logger.catching(e);
 				return null;
 			}
 		}
+	}
 
-		if(a4FormatRequired) {
+	private static List<BackgroundData> parseBackAsPdf(ImageRequest imageRequest) throws Exception {
+		BufferedImage image;
+		boolean landscape = false;
+		List<BackgroundData> backgrounds = new ArrayList<>();
+		try(PDDocument doc = PDDocument.load(imageRequest.getPdfContent())){
+			PDFRenderer renderer = new PDFRenderer(doc);
+			int pagesNumber = imageRequest.isFullBackgroundRequired() ? doc.getNumberOfPages() : 1;
+			float scale = imageRequest.getQualityScale();
+			for(int pageIndex = 0; pageIndex < pagesNumber; pageIndex++) {
+				image = renderer.renderImage(pageIndex, scale);
+				if(backgrounds.isEmpty()){
+					landscape = !isPortrait(doc.getPage(0));
+				}
+				backgrounds.add(new BackgroundData(image, landscape));
+			}
+			return backgrounds;
+		}
+	}
+
+	private static byte[] processImageToPreview(BackgroundData parsedBackground, ImageRequest imageRequest){
+		var landscape = parsedBackground.isLandscape();
+		var image = parsedBackground.getBufferedImage();
+
+		if(imageRequest.isA4FormatRequired()) {
 			int width = landscape ? PDF_PREVIEW_HEIGHT : PDF_PREVIEW_WIDTH;
 			int height = landscape ? PDF_PREVIEW_WIDTH : PDF_PREVIEW_HEIGHT;
 
-			if(!cutRequired && image.getWidth() > width && image.getHeight() > height){
+			if(!imageRequest.isCutRequired() && image.getWidth() > width && image.getHeight() > height){
 				width*=3.5;
 				height*=3.5;
 			}

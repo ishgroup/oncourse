@@ -4,4 +4,3 @@
  */
 
 export const COURSE_CLASS_COST_DIALOG_FORM = "CourseClassCostDialogForm";
-export const COURSE_CLASS_SESSION_FORM = "CourseClassSessionForm";

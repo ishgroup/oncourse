@@ -11,17 +11,15 @@ import React, {
 } from "react";
 import { Tag } from "@api/model";
 import {
- FormControl, FormHelperText, Input, InputAdornment, InputLabel, Typography 
+  InputAdornment, MenuItem, Select
 } from "@mui/material";
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import Autocomplete from "@mui/material/Autocomplete";
 import clsx from "clsx";
-import { WrappedFieldProps } from "redux-form";
 import { Edit } from "@mui/icons-material";
 import { getAllMenuTags } from "../../../../containers/tags/utils";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import { MenuTag } from "../../../../model/tags";
 import { stubComponent } from "../../../utils/common";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
@@ -30,12 +28,11 @@ import { getMenuTags } from "../../list-view/utils/listFiltersUtils";
 import { selectStyles } from "../formFields/SelectCustomComponents";
 import AddTagMenu from "./AddTagMenu";
 import { IS_JEST } from "../../../../constants/EnvironmentConstants";
+import EditInPlaceFieldBase from "../formFields/EditInPlaceFieldBase";
+import { TagsFieldProps } from "../../../../model/common/Fields";
 
 const styles = theme =>
   createStyles({
-    listContainer: {
-      marginLeft: "-2px"
-    },
     inputWrapper: {
       "&:hover $inputEndAdornment": {
         visibility: "visible",
@@ -44,73 +41,11 @@ const styles = theme =>
     inputEndAdornment: {
       visibility: 'hidden',
       display: "flex",
-      fontSize: "18px",
       color: theme.palette.primary.main,
       alignItems: "flex-end",
       alignSelf: "flex-end",
-      marginBottom: "4px"
-    },
-    tagBody: {
-      color: theme.palette.text.primary,
-      cursor: "pointer",
-      borderRadius: `${theme.shape.borderRadius}px`,
-      "&:hover": {
-        color: theme.palette.error.main
-      },
-      "&:hover $tagDeleteButton": {
-        visibility: "visible"
-      }
-    },
-    tagBodyTypography: {
-      color: "inherit"
-    },
-    tagDeleteButton: {
-      margin: "4px 0 0 2px",
-      visibility: "hidden"
-    },
-    tagDeleteIcon: {
-      fontSize: "16px",
-      color: "inherit",
-      marginRight: theme.spacing(1)
-    },
-    hoverIcon: {
-      opacity: 0.5,
-      visibility: "hidden",
-      marginLeft: theme.spacing(1)
-    },
-    editable: {
-      cursor: "text",
-      position: "relative",
-      display: "inline-flex",
-      color: theme.palette.text.primaryEditable,
-      minHeight: "32px",
-      padding: "4px 0 4px",
-      marginTop: theme.spacing(2),
-      fontWeight: 400,
-      justifyContent: "space-between",
-      alignItems: "flex-end",
-      "&:hover $hoverIcon": {
-        visibility: "visible"
-      },
-      "&:before": {
-        borderBottom: '1px solid transparent',
-        left: 0,
-        bottom: 0,
-        content: "' '",
-        position: "absolute",
-        right: 0,
-        transition: theme.transitions.create("border-bottom-color", {
-          duration: theme.transitions.duration.standard,
-          easing: theme.transitions.easing.easeInOut
-        }),
-        pointerEvents: "none"
-      },
-      "&:hover:before": {
-        borderBottom: `1px solid ${theme.palette.primary.main}`
-      },
-      "&$invalid:hover:before, &$invalid:before": {
-        borderBottom: `2px solid ${theme.palette.error.main}`
-      },
+      marginBottom: "4px",
+      opacity: 0.5
     },
     tagColorDotSmall: {
       width: theme.spacing(2),
@@ -131,22 +66,8 @@ const styles = theme =>
         padding: 0
       }
     },
-    placeholder: {
-      opacity: 0.15
-    },
     invalid: {}
   });
-
-interface Props extends WrappedFieldProps {
-  showConfirm: ShowConfirmCaller;
-  tags: Tag[];
-  classes?: any;
-  fieldClasses?: any;
-  disabled?: boolean;
-  className?: string;
-  label?: string;
-  placeholder?: string;
-}
 
 const endTagRegex = /#\s*[^\w\d]*$/;
 
@@ -194,19 +115,19 @@ const getInputString = (tagIds: number[], allTags: Tag[]) => (tagIds?.length && 
   }, "")
   : "");
 
-const SimpleTagList: React.FC<Props> = props => {
-  const {
-    input,
-    tags,
-    classes,
-    placeholder,
-    meta,
-    label = "Tags",
-    disabled,
-    className,
-    fieldClasses = {}
-  } = props;
-
+const SimpleTagList = ({
+   input,
+   tags,
+   classes,
+   placeholder,
+   labelAdornment,
+   meta,
+   label = "Tags",
+   disabled,
+   className,
+   warning,
+   fieldClasses = {}
+}: TagsFieldProps) => {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [activeTag, setActiveTag] = useState<MenuTag>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -397,7 +318,7 @@ const SimpleTagList: React.FC<Props> = props => {
   }, [allMenuTags]);
 
   const popperAdapter = useCallback(params => {
-    if (currentInputString) {
+    if (currentInputString || !inputNode.current) {
       return <div {...params} />;
     }
 
@@ -431,13 +352,11 @@ const SimpleTagList: React.FC<Props> = props => {
     <div className={className} id={input.name}>
       <div
         className={clsx("relative", {
-          "d-none": !isEditing,
           "pointer-events-none": disabled
         })}
       >
         <Autocomplete
-          fullWidth
-          value={null}
+                    value={null}
           open={menuIsOpen}
           options={filteredOptions}
           onChange={handleChange}
@@ -456,102 +375,61 @@ const SimpleTagList: React.FC<Props> = props => {
           renderInput={({
             InputLabelProps, InputProps, inputProps, ...params
           }) => (
-            <FormControl
+            <EditInPlaceFieldBase
               {...params}
-              variant="standard"
-              error={meta?.invalid}
-              focused={menuIsOpen}
-            >
-              {label
-              && (
-                <InputLabel
-                  shrink
-                  error={meta?.invalid}
-                  classes={{
-                    root: fieldClasses.label
-                  }}
-                >
-                  {label}
-                </InputLabel>
-              )}
-              <Input
-                {...InputProps}
-                disabled={disabled}
-                placeholder={placeholder}
-                onChange={handleInputChange}
-                onFocus={onFocus}
-                onBlur={onBlur}
-                inputRef={inputNode}
-                classes={{
-                  underline: fieldClasses.underline,
-                  input: clsx(disabled && classes.readonly, fieldClasses.text),
-                }}
-                inputProps={{
+              name={input.name}
+              value={input.value}
+              error={meta.error}
+              invalid={meta?.invalid}
+              label={label}
+              warning={warning}
+              disabled={disabled}
+              fieldClasses={fieldClasses}
+              shrink={Boolean(label || input.value)}
+              labelAdornment={labelAdornment}
+              placeholder={placeholder}
+              editIcon={<Edit fontSize="inherit" />}
+              InputProps={{
+                ...InputProps,
+                onChange: handleInputChange,
+                onFocus,
+                onBlur,
+                inputProps: {
                   ...inputProps,
+                  ref: ref => {
+                    (inputProps as any).ref.current = ref;
+                    inputNode.current = ref;
+                  },
                   value: inputValue
-                }}
-                endAdornment={!disabled && (
-                  <InputAdornment className={classes.inputEndAdornment} position="end">
-                    <Edit color="primary" />
-                  </InputAdornment>
-                )}
-                multiline={!IS_JEST}
-              />
-              <FormHelperText
-                classes={{
-                  error: "shakingError"
-                }}
-              >
-                {meta?.error}
-              </FormHelperText>
-            </FormControl>
-          )}
+                },
+                multiline: !IS_JEST
+              }}
+              CustomInput={!isEditing
+                ? <Select
+                  onFocus={edit}
+                  value="stub"
+                  className={classes.inputWrapper}
+                  classes={{ select: "d-flex flex-wrap cursor-text" }}
+                  endAdornment={
+                    <InputAdornment
+                      position="end"
+                      className={classes.inputEndAdornment}>
+                        <Edit />
+                      </InputAdornment>
+                  }
+                  IconComponent={null}
+                >
+                  <MenuItem value="stub">
+                    {InputValueForRender || <span className="placeholderContent">No value</span>}
+                  </MenuItem>
+                </Select>
+                : null}
+            />)
+          }
           popupIcon={stubComponent()}
           disableListWrap
           openOnFocus
         />
-      </div>
-      <div
-        className={clsx(classes.inputWrapper, {
-          "d-none": isEditing,
-          "pointer-events-none": disabled || !tags || !tags.length
-        })}
-      >
-        <FormControl error={meta && meta.invalid} variant="standard" fullWidth>
-          <InputLabel
-            shrink
-            classes={{
-              root: fieldClasses.label
-            }}
-          >
-            {label}
-          </InputLabel>
-          <Typography
-            variant="body1"
-            component="div"
-            onClick={edit}
-            className={clsx( classes.editable, {
-              [fieldClasses.text]: inputValue,
-              [classes.invalid]: meta && meta.invalid
-            })}
-          >
-            <span className={clsx("centeredFlex flex-wrap", {
-              [fieldClasses.placeholder]: !inputValue,
-              [classes.placeholder]: !inputValue,
-            })}
-            >
-              {InputValueForRender || "No value"}
-            </span>
-            {!disabled
-            && Boolean(!tags || tags.length)
-            && <Edit color="primary" className={classes.hoverIcon} />}
-          </Typography>
-          <FormHelperText>
-            <span className="shakingError">
-              {meta.error}
-            </span>
-          </FormHelperText>
-        </FormControl>
       </div>
     </div>
   );

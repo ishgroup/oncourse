@@ -684,6 +684,7 @@
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="outputType" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="script" type="CLOB"/>
+		<db-attribute name="preview" type="BLOB"/>
 		<db-attribute name="shortDescription" type="CLOB" length="32000"/>
 		<db-attribute name="tags" type="VARCHAR" length="255"/>
 	</db-entity>
@@ -938,16 +939,6 @@
 		<db-attribute name="timeOfDelivery" type="TIMESTAMP"/>
 		<db-attribute name="status" type="INTEGER" isMandatory="false"/>
 		<db-attribute name="type" type="INTEGER" isMandatory="false"/>
-	</db-entity>
-	<db-entity name="MessageTemplate">
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
-		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="message" type="CLOB" length="32000"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
-		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="64"/>
-		<db-attribute name="subject" type="VARCHAR" length="512"/>
-		<db-attribute name="type" type="INTEGER" isMandatory="true"/>
-		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Module">
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
@@ -2381,6 +2372,7 @@
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="outputType" type="ish.oncourse.types.OutputType" db-attribute-path="outputType"/>
 		<obj-attribute name="script" type="java.lang.String" db-attribute-path="script"/>
+		<obj-attribute name="preview" type="byte[]" db-attribute-path="preview"/>
 		<obj-attribute name="shortDescription" type="java.lang.String" db-attribute-path="shortDescription"/>
 		<obj-attribute name="automationTags" type="java.lang.String" db-attribute-path="tags"/>
 		<obj-attribute name="category" type="java.lang.String" db-attribute-path="category"/>
@@ -2603,16 +2595,6 @@
 		<obj-attribute name="type" type="ish.common.types.MessageType" db-attribute-path="type"/>
 		<obj-attribute name="numberOfAttempts" type="java.lang.Integer" db-attribute-path="numberOfAttempts"/>
 		<obj-attribute name="destinationAddress" type="java.lang.String" db-attribute-path="destinationAddress"/>
-	</obj-entity>
-	<obj-entity name="MessageTemplate" className="ish.oncourse.server.cayenne.MessageTemplate" clientClassName="ish.oncourse.cayenne.MessageTemplate" dbEntityName="MessageTemplate" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
-		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
-		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
-		<obj-attribute name="message" type="java.lang.String" db-attribute-path="message"/>
-		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
-		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
-		<obj-attribute name="subject" type="java.lang.String" db-attribute-path="subject"/>
-		<obj-attribute name="type" type="ish.common.types.MessageTemplateType" db-attribute-path="type"/>
-		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
 	<obj-entity name="Module" className="ish.oncourse.server.cayenne.Module" clientClassName="ish.oncourse.cayenne.Module" dbEntityName="Module" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
@@ -3206,6 +3188,9 @@
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 		<obj-attribute name="endDatetime" type="java.util.Date" db-attribute-path="endDatetime"/>
 		<obj-attribute name="startDatetime" type="java.util.Date" db-attribute-path="startDatetime"/>
+	</obj-entity>
+	<obj-entity name="TutorAttendanceCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.TutorAttendanceCustomField" clientClassName="ish.oncourse.cayenne.TutorAttendanceCustomField">
+		<qualifier><![CDATA[entityIdentifier = "TutorAttendance"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="UnavailableRule" abstract="true" className="ish.oncourse.server.cayenne.UnavailableRule" clientClassName="ish.oncourse.cayenne.UnavailableRule" dbEntityName="UnavailableRule" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="allDay" type="java.lang.Boolean" db-attribute-path="allDay"/>
@@ -3929,6 +3914,9 @@
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
 	<db-relationship name="relatedCourseClass" source="CustomField" target="CourseClass">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="relatedTutorAttendance" source="CustomField" target="SessionCourseClassTutor">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
 	<db-relationship name="customFields" source="CustomFieldType" target="CustomField" toMany="true">
@@ -4695,6 +4683,9 @@
 	</db-relationship>
 	<db-relationship name="session" source="SessionCourseClassTutor" target="CourseSession">
 		<db-attribute-pair source="sessionId" target="id"/>
+	</db-relationship>
+	<db-relationship name="customFields" source="SessionCourseClassTutor" target="CustomField" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
 	<db-relationship name="module" source="Session_Module" target="Module">
 		<db-attribute-pair source="moduleId" target="id"/>
@@ -5599,6 +5590,8 @@
 	<obj-relationship name="courseClassTutor" source="TutorAttendance" target="CourseClassTutor" db-relationship-path="courseClassTutor"/>
 	<obj-relationship name="markedByUser" source="TutorAttendance" target="SystemUser" db-relationship-path="markedByUser"/>
 	<obj-relationship name="session" source="TutorAttendance" target="Session" db-relationship-path="session"/>
+	<obj-relationship name="customFields" source="TutorAttendance" target="TutorAttendanceCustomField" deleteRule="Cascade" db-relationship-path="customFields"/>
+	<obj-relationship name="relatedObject" source="TutorAttendanceCustomField" target="TutorAttendance" deleteRule="Nullify" db-relationship-path="relatedTutorAttendance"/>
 	<obj-relationship name="createdBy" source="UnavailableRule" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdBy">
 		<info:property xmlns:info="http://cayenne.apache.org/schema/10/info" name="comment" value="createdBy"/>
 	</obj-relationship>

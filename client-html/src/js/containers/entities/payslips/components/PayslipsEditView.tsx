@@ -18,7 +18,7 @@ import Typography from "@mui/material/Typography";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import PayslipPaylineRenderrer from "./PayslipPaylineRenderrer";
-import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
+import { getContactFullName } from "../../contacts/utils";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import {
@@ -103,7 +103,7 @@ class PayslipsEditView extends React.PureComponent<any, any> {
   onTutorIdChange = (value: Contact) => {
     const { dispatch, form } = this.props;
 
-    dispatch(change(form, "tutorFullName", contactLabelCondition(value)));
+    dispatch(change(form, "tutorFullName", getContactFullName(value)));
   };
 
   render() {
@@ -138,14 +138,14 @@ class PayslipsEditView extends React.PureComponent<any, any> {
             fields={(
               <Grid item xs={twoColumn ? 6 : 12}>
                 <FormField
-                  type="remoteDataSearchSelect"
+                  type="remoteDataSelect"
                   entity="Contact"
                   aqlFilter="isTutor is true"
                   name="tutorId"
                   label="Tutor"
                   selectValueMark="id"
-                  selectLabelCondition={contactLabelCondition}
-                  defaultDisplayValue={values && defaultContactName(values.tutorFullName)}
+                  selectLabelCondition={getContactFullName}
+                  defaultValue={values?.tutorFullName}
                   labelAdornment={
                     <ContactLinkAdornment id={values?.tutorId} />
                   }
@@ -255,11 +255,11 @@ class PayslipsEditView extends React.PureComponent<any, any> {
         </Grid>
 
         <Grid item xs={paislipsLayout[12].xs}>
-          <FormField type="multilineText" name="publicNotes" label="Public notes" fullWidth />
+          <FormField type="multilineText" name="publicNotes" label="Public notes"  />
         </Grid>
 
         <Grid item xs={paislipsLayout[12].xs}>
-          <FormField type="multilineText" name="privateNotes" label="Private notes" fullWidth />
+          <FormField type="multilineText" name="privateNotes" label="Private notes"  />
         </Grid>
       </Grid>
     ) : null;
