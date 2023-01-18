@@ -16,7 +16,7 @@ import * as EpicUtils from "./EpicUtils";
 
 const request: EpicUtils.Request<
   DataResponse,
-  { key?: string; offset?: number; columns?: string; ascending?: boolean; sort?: string, pageSize?: number }
+  { key?: string; offset?: number; columns?: string; ascending?: boolean; sort?: string, pageSize?: number, customColumnMap?: any }
 > = {
   type: GET_COMMON_PLAIN_RECORDS,
   hideLoadIndicator: true,
@@ -31,9 +31,13 @@ const request: EpicUtils.Request<
     sort,
     ascending
   ),
-  processData: (records, s, { key, columns }) => {
+  processData: (records, s, { key, columns, customColumnMap }) => {
     const { rows, offset, pageSize } = records;
-    const items = rows.map(getCustomColumnsMap(columns));
+    let items = rows.map(getCustomColumnsMap(columns));
+
+    if (typeof customColumnMap === "function") {
+      items = customColumnMap(items);
+    }
 
     return [
       {

@@ -21,7 +21,7 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip'
         "tutorFullName":"tutor2, tutor2",
         "publicNotes":"some public notes",
         "privateNotes":"some private notes",
-        "tags":[{"id":218}],
+        "tags":[218],
         "paylines":[{"description":"someDescription","value":33,"quantity":1}]
         }
         """
@@ -51,7 +51,7 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip'
         "status":"New",
         "tutorId":5,
         "tutorFullName":"tutor2",
-        "tags":[{"id":218,"name":"ps1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
+        "tags":[218],
         "paylines":[{"id":"#number","dateFor":"#ignore","description":"someDescription","className":null,"type":null,"budgetedQuantity":null,"budgetedValue":null,"quantity":1.0000,"value":33.00}],
         }
         """
@@ -79,7 +79,7 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip'
         "tutorFullName":"tutor2, tutor2",
         "publicNotes":"some public notes2",
         "privateNotes":"some private notes2",
-        "tags":[{"id":218}],
+        "tags":[218],
         "paylines":[{"description":"someDescription2","value":66,"quantity":1}]
         }
         """
@@ -109,7 +109,7 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip'
         "status":"New",
         "tutorId":5,
         "tutorFullName":"tutor2",
-        "tags":[{"id":218,"name":"ps1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
+        "tags":[218],
         "paylines":[{"id":"#number","dateFor":"#ignore","description":"someDescription2","className":null,"type":null,"budgetedQuantity":null,"budgetedValue":null,"quantity":1.0000,"value":66.00}],
         }
         """

@@ -1,14 +1,18 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { FunctionComponent } from "react";
+import React from "react";
 import clsx from "clsx";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-groovy";
 import "ace-builds/src-noconflict/theme-textmate";
 import { createStyles, withStyles } from "@mui/styles";
+import { CodeFieldProps } from "../../../../model/common/Fields";
 
 const styles = theme =>
   createStyles({
@@ -51,19 +55,18 @@ const styles = theme =>
     }
   });
 
-const CodeEditorField = props => {
-  const {
-    input,
-    meta: { error },
-    classes,
-    errorMessage,
-    disabled,
-    onFocus
-  } = props;
-
+const CodeEditorField = ({
+   input,
+   meta: { error },
+   classes,
+   errorMessage,
+   disabled,
+   onFocus,
+   className
+ }: CodeFieldProps) => {
   return (
-    <>
-      {error && <div className={classes.errorMessage}>{errorMessage || error}</div>}
+    <div id={input.name} className={className}>
+      {error && <div className={classes.errorMessage}><div className="shakingError">{errorMessage || error}</div></div>}
       <AceEditor
         mode="groovy"
         theme="textmate"
@@ -90,8 +93,8 @@ const CodeEditorField = props => {
         }}
         editorProps={{ $blockScrolling: Infinity }}
       />
-    </>
+    </div>
   );
 };
 
-export default withStyles(styles)(CodeEditorField) as FunctionComponent<any>;
+export default withStyles(styles)(CodeEditorField);

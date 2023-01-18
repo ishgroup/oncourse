@@ -13,8 +13,7 @@ import { initialize } from "redux-form";
 import { Room } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
-import { FilterGroup } from "../../../model/common/ListView";
-import { createRoom, getRoom, removeRoom, updateRoom } from "./actions";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import RoomEditView from "./components/RoomEditView";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { getListTags } from "../../tags/actions";
@@ -22,6 +21,7 @@ import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getCommonPlainRecords } from "../../../common/actions/CommonPlainRecordsActions";
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
+import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../constants/Config";
 
 const manualLink = getManualLink("sitesRooms_rooms");
 
@@ -56,7 +56,7 @@ const Initial: Room = {
   rules: []
 };
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Room and entityId" },
   {
     title: "Current classes",
@@ -74,7 +74,7 @@ const findRelatedGroup: any[] = [
 
 class Rooms extends React.Component<any, any> {
   componentDidMount() {
-     this.props.getFilters();
+    this.props.getFilters();
     this.props.getTags();
     this.props.getSites();
   }
@@ -89,35 +89,29 @@ class Rooms extends React.Component<any, any> {
 
   render() {
     const {
-      getRoomRecord, onCreate, onDelete, onSave, updateTableModel, onInit
+      updateTableModel, onInit
     } = this.props;
 
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "name",
-            secondaryColumn: "site.name"
-          }}
-          editViewProps={{
-            manualLink,
-            asyncValidate: notesAsyncValidate,
-            asyncBlurFields: ["notes[].message"],
-            hideTitle: true
-          }}
-          updateTableModel={updateTableModel}
-          CogwheelAdornment={BulkEditCogwheelOption}
-          EditViewContent={RoomEditView}
-          getEditRecord={getRoomRecord}
-          rootEntity="Room"
-          onInit={onInit}
-          onCreate={onCreate}
-          onDelete={onDelete}
-          onSave={onSave}
-          filterGroupsInitial={filterGroups}
-          findRelated={findRelatedGroup}
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "name",
+          secondaryColumn: "site.name"
+        }}
+        editViewProps={{
+          manualLink,
+          asyncValidate: notesAsyncValidate,
+          asyncChangeFields: ["notes[].message"],
+          hideTitle: true
+        }}
+        updateTableModel={updateTableModel}
+        CogwheelAdornment={BulkEditCogwheelOption}
+        EditViewContent={RoomEditView}
+        rootEntity="Room"
+        onInit={onInit}
+        filterGroupsInitial={filterGroups}
+        findRelated={findRelatedGroup}
+      />
     );
   }
 }
@@ -127,16 +121,12 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(setListEditRecord(Initial));
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
   },
-  getSites: () => dispatch(getCommonPlainRecords("Site", 0, "name,localTimezone")),
+  getSites: () => dispatch(getCommonPlainRecords("Site", 0, "name,localTimezone", true, "name", PLAIN_LIST_MAX_PAGE_SIZE)),
   getFilters: () => dispatch(getFilters("Room")),
   getTags: () => {
     dispatch(getListTags("Room"));
   },
-  clearListState: () => dispatch(clearListState()),
-  getRoomRecord: (id: string) => dispatch(getRoom(id)),
-  onSave: (id: string, room: Room) => dispatch(updateRoom(id, room)),
-  onCreate: (room: Room) => dispatch(createRoom(room)),
-  onDelete: (id: string) => dispatch(removeRoom(id))
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Rooms);

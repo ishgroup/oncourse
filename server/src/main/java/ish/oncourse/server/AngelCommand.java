@@ -23,18 +23,13 @@ import ish.oncourse.server.db.SchemaUpdateService;
 import ish.oncourse.server.http.HttpFactory;
 import ish.oncourse.server.integration.EventService;
 import ish.oncourse.server.integration.PluginService;
-import ish.oncourse.server.jmx.RegisterMBean;
 import ish.oncourse.server.license.LicenseService;
 import ish.oncourse.server.messaging.MailDeliveryService;
 import ish.oncourse.server.services.ISchedulerService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.eclipse.jetty.jmx.MBeanContainer;
 import org.eclipse.jetty.server.Server;
 import org.quartz.Scheduler;
-
-import java.lang.management.ManagementFactory;
-
 
 public class AngelCommand extends CommandWithMetadata {
 
@@ -43,7 +38,6 @@ public class AngelCommand extends CommandWithMetadata {
     final private Provider<SchemaUpdateService>  schemaUpdateServiceProvider;
     final private Provider<ISchedulerService> schedulerServiceProvider;
     final private Provider<Scheduler> schedulerProvider;
-    final private Provider<RegisterMBean> registerMBeanProvider;
     final private Provider<Server> serverProvider;
     final private Provider<CayenneService> cayenneServiceProvider;
     final private Provider<BugsnagFactory> bugsnagFactoryProvider;
@@ -62,7 +56,6 @@ public class AngelCommand extends CommandWithMetadata {
                         Provider<SchemaUpdateService> schemaUpdateServiceProvider,
                         Provider<ISchedulerService> schedulerServiceProvider,
                         Provider<Scheduler> schedulerProvider,
-                        Provider<RegisterMBean> registerMBeanProvider,
                         Provider<CayenneService> cayenneServiceProvider,
                         Provider<BugsnagFactory> bugsnagFactoryProvider,
                         Provider<HttpFactory> httpFactoryProvider,
@@ -78,7 +71,6 @@ public class AngelCommand extends CommandWithMetadata {
         this.schemaUpdateServiceProvider = schemaUpdateServiceProvider;
         this.schedulerServiceProvider = schedulerServiceProvider;
         this.schedulerProvider = schedulerProvider;
-        this.registerMBeanProvider = registerMBeanProvider;
         this.bugsnagFactoryProvider = bugsnagFactoryProvider;
         this.httpFactoryProvider = httpFactoryProvider;
         this.licenseServiceProvider = licenseServiceProvider;
@@ -99,7 +91,6 @@ public class AngelCommand extends CommandWithMetadata {
                     schemaUpdateServiceProvider.get(),
                     schedulerServiceProvider.get(),
                     schedulerProvider.get(),
-                    registerMBeanProvider.get(),
                     licenseServiceProvider.get(),
                     cayenneService,
                     pluginServiceProvider.get(),
@@ -107,7 +98,6 @@ public class AngelCommand extends CommandWithMetadata {
                     httpFactory);
 
             server.addBean(new AngelSessionDataStoreFactory(cayenneService, prefControllerProvider.get(), eventServiceProvider.get()));
-            server.addBean(new MBeanContainer(ManagementFactory.getPlatformMBeanServer()));
             bugsnagFactoryProvider.get().init();
             httpFactory.init();
         } catch (Exception e) {

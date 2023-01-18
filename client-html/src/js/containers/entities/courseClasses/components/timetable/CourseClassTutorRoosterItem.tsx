@@ -27,7 +27,6 @@ import { TimetableSession } from "../../../../../model/timetable";
 import ErrorMessage from "../../../../../common/components/form/fieldMessage/ErrorMessage";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { openInternalLink } from "../../../../../common/utils/links";
-import { defaultContactName } from "../../../contacts/utils";
 import { formatDurationMinutes } from "../../../../../common/utils/dates/formatString";
 import { H_MMAAA } from "../../../../../common/utils/dates/format";
 import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
@@ -197,20 +196,20 @@ const CourseClassTutorRoosterItem = (
 
   const isExpanded = expanded === index;
 
-  const wage = budget.find(b => b.flowType === "Wages"
+  const wageIndex = budget.findIndex(b => b.flowType === "Wages"
     && (b.courseClassTutorId === tutor?.id
       || (b.temporaryTutorId && b.temporaryTutorId === tutor?.temporaryId)));
 
-  const openTutorWage = () => addTutorWage ? addTutorWage(tutor, wage) : null;
+  const openTutorWage = () => addTutorWage ? addTutorWage(tutor, wageIndex !== -1 ? { ...budget[wageIndex], index: wageIndex } : null) : null;
 
-  const hasWage = Boolean(wage);
+  const hasWage = Boolean(budget[wageIndex]);
 
   return (
     <Card elevation={isExpanded ? 3 : 0} className={classes.tutorItem}>
       <Grid container columnSpacing={3}>
         <Grid item xs={6} className="centeredFlex">
           <Typography variant="body1" className={classes.tutorItemLabel} noWrap>
-            {`${defaultContactName(tutorAttendance.contactName)}${tutor ? ` (${tutor.roleName})` : ""}`}
+            {`${tutorAttendance.contactName}${tutor ? ` (${tutor.roleName})` : ""}`}
           </Typography>
         </Grid>
 
@@ -288,6 +287,7 @@ const CourseClassTutorRoosterItem = (
               label="Roster start"
               onChange={onStartChange}
               timezone={session.siteTimezone}
+              debounced={false}
             />
           </Grid>
           <Grid item xs={2}>
@@ -297,6 +297,7 @@ const CourseClassTutorRoosterItem = (
               label="Roster end"
               onChange={onEndChange}
               timezone={session.siteTimezone}
+              debounced={false}
             />
           </Grid>
           <Grid item xs={2}>

@@ -10,17 +10,16 @@ import { Course } from "@api/model";
 import React, { Dispatch, useEffect } from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
-import { checkPermissions, executeActionsQueue } from "../../../common/actions";
+import { checkPermissions } from "../../../common/actions";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import ListView from "../../../common/components/list-view/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { CourseExtended } from "../../../model/entities/Course";
 import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
 import { getListTags } from "../../tags/actions";
-import { createCourse, deleteCourse, getCourse, updateCourse } from "./actions";
 import CourseCogWheel from "./components/CourseCogWheel";
 import CourseEditView from "./components/CourseEditView";
 
@@ -34,10 +33,6 @@ interface CoursesProps {
   onInit?: () => void;
   getFilters?: () => void;
   getPermissions?: () => void;
-  onGet?: (id: string) => void;
-  onDelete?: (id: string) => void;
-  onCreate: (course: Course) => void;
-  onUpdate: (id: string, course: Course) => void;
   clearListState?: () => void;
   getTags?: () => void;
   values?: CourseExtended;
@@ -105,7 +100,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Course and entityId" },
   { title: "Applications", list: "application", expression: "course.id" },
   { title: "Classes", list: "class", expression: "course.id" },
@@ -188,10 +183,6 @@ const setRowClasses = ({ currentlyOffered, isShownOnWeb }) => {
 const Courses: React.FC<CoursesProps> = props => {
   const {
     getDataCollectionRules,
-    onCreate,
-    onGet,
-    onUpdate,
-    onDelete,
     getFilters,
     clearListState,
     onInit,
@@ -221,16 +212,12 @@ const Courses: React.FC<CoursesProps> = props => {
       editViewProps={{
         manualLink,
         asyncValidate: notesAsyncValidate,
-        asyncBlurFields: ["notes[].message"],
+        asyncChangeFields: ["notes[].message"],
         hideTitle: true
       }}
       EditViewContent={CourseEditView}
       rootEntity={ENTITY_NAME}
       onInit={onInit}
-      onCreate={onCreate}
-      getEditRecord={onGet}
-      onSave={onUpdate}
-      onDelete={onDelete}
       findRelated={findRelatedGroup}
       filterGroupsInitial={filterGroups}
       preformatBeforeSubmit={preformatBeforeSubmit}
@@ -253,13 +240,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getDataCollectionRules: () => dispatch(getDataCollectionRules()),
   getFilters: () => dispatch(getFilters(ENTITY_NAME)),
-  onCreate: (course: CourseExtended) => {
-    dispatch(executeActionsQueue());
-    dispatch(createCourse(course));
-  },
-  onGet: (id: string) => dispatch(getCourse(id)),
-  onDelete: (id: string) => dispatch(deleteCourse(id)),
-  onUpdate: (id: string, course: CourseExtended) => dispatch(updateCourse(id, course)),
   clearListState: () => dispatch(clearListState()),
   getRelationTypes: () => dispatch(getEntityRelationTypes())
 });

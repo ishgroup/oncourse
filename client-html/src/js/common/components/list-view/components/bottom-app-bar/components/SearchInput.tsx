@@ -25,7 +25,7 @@ import { State } from "../../../../../../reducers/state";
 import { StringArgFunction } from "../../../../../../model/common/CommonFunctions";
 import { setIndeterminate } from "../../../utils/listFiltersUtils";
 import {
- setFilterGroups, setListMenuTags, setListSavingFilter, setListUserAQLSearch 
+ setFilterGroups, setListSavingFilter, setListUserAQLSearch
 } from "../../../actions";
 import { MenuTag } from "../../../../../../model/tags";
 import { FilterGroup, ListAqlMenuItemsRenderer, SavingFilterState } from "../../../../../../model/common/ListView";
@@ -96,7 +96,6 @@ interface Props {
   filterGroups: FilterGroup[];
   setListUserAQLSearch: StringArgFunction;
   onQuerySearch: StringArgFunction;
-  setListMenuTags: (tags: MenuTag[]) => void;
   setFilterGroups: (groups: FilterGroup[]) => void;
   setListSavingFilter: (saving: SavingFilterState) => void;
   classes?: any;
@@ -581,7 +580,6 @@ const mapStateToProps = (state: State, ownProps: Props) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setListSavingFilter: (savingFilter?: SavingFilterState) => dispatch(setListSavingFilter(savingFilter)),
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
-  setListMenuTags: (tags: MenuTag[]) => dispatch(setListMenuTags(tags)),
   setListUserAQLSearch: (userAQLSearch: string) => dispatch(setListUserAQLSearch(userAQLSearch))
 });
 

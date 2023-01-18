@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, {
@@ -25,7 +28,7 @@ import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { validateKeycode } from "../../../utils";
+import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import { mapSelectItems } from "../../../../../common/utils/common";
 import { EntityItems, EntityName } from "../../../../../model/entities/common";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
@@ -48,14 +51,14 @@ interface Props extends InjectedFormProps {
   history: any,
   syncErrors: any,
   nextLocation: string,
-  setNextLocation: (nextLocation: string) => void,
-  emailTemplates?: CatalogItemType[]
+  emailTemplates?: CatalogItemType[],
+  exportTemplates?: CatalogItemType[]
 }
 
 const ExportTemplatesForm = React.memo<Props>(
   ({
-    dirty, form, handleSubmit, isNew, invalid, values, syncErrors, emailTemplates,
-     dispatch, onCreate, onUpdate, onUpdateInternal, onDelete, history, nextLocation, setNextLocation
+    dirty, form, handleSubmit, isNew, invalid, values, syncErrors, emailTemplates, exportTemplates,
+     dispatch, onCreate, onUpdate, onUpdateInternal, onDelete, history, nextLocation
   }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
 
@@ -124,16 +127,34 @@ const ExportTemplatesForm = React.memo<Props>(
     useEffect(() => {
       if (!dirty && nextLocation) {
         history.push(nextLocation);
-        setNextLocation('');
       }
     }, [nextLocation, dirty]);
 
+    const validateTemplateCopyName = useCallback(name => {
+      if (exportTemplates.find(e => e.title.trim() === name.trim())) {
+        return "Template name should be unique";
+      }
+      return validateNameForQuotes(name);
+    }, [exportTemplates, values.id]);
+
+    const validateTemplateName = useCallback(name => {
+      if (exportTemplates.find(e => e.id !== values.id && e.title.trim() === name.trim())) {
+        return "Template name should be unique";
+      }
+      return validateNameForQuotes(name);
+    }, [exportTemplates, values.id]);
+
     return (
       <>
-        <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialogClose} onSave={onDialogSave} />
+        <SaveAsNewAutomationModal
+          opened={modalOpened}
+          onClose={onDialogClose}
+          onSave={onDialogSave}
+          validateNameField={validateTemplateCopyName}
+        />
 
         <Form onSubmit={handleSubmit(handleSave)}>
-          {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
+          {!disableRouteConfirm && <RouteChangeConfirm form={form} when={dirty || isNew} />}
 
           <AppBarContainer
             values={values}
@@ -154,9 +175,10 @@ const ExportTemplatesForm = React.memo<Props>(
             fields={(
               <Grid item xs={12}>
                 <FormField
+                  type="text"
                   name="name"
                   label="Name"
-                  margin="none"
+                  validate={validateTemplateName}
                   disabled={isInternal}
                   required
                 />
@@ -241,7 +263,7 @@ const ExportTemplatesForm = React.memo<Props>(
 
                 <FormField
                   type="text"
-                  label="Key Code"
+                  label="Key code"
                   name="keyCode"
                   validate={isNew || !isInternal ? validateKeycode : undefined}
                   disabled={!isNew}
@@ -254,8 +276,7 @@ const ExportTemplatesForm = React.memo<Props>(
                   label="Description"
                   name="description"
                   disabled={isInternal}
-                  fullWidth
-                  multiline
+                                    multiline
                 />
               </Grid>
               <Grid item xs={3}>
@@ -267,6 +288,7 @@ const ExportTemplatesForm = React.memo<Props>(
                     color="primary"
                     format={v => v === "Enabled"}
                     parse={v => v ? "Enabled" : "Installed but Disabled"}
+                    debounced={false}
                   />
                 </div>
                 <div className="mt-3 pt-1">

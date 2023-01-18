@@ -92,7 +92,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.modifiedOn = LocalDateUtils.dateToTimeValue(course.modifiedOn)
             courseDTO.name = course.name
             courseDTO.code = course.code
-            courseDTO.tags = course.tags.collect { toRestTagMinimized(it) }
+            courseDTO.tags = course.allTags.collect { it.id }
             courseDTO.enrolmentType = ENROLMENT_TYPE_MAP[course.enrolmentType]
             courseDTO.allowWaitingLists = course.allowWaitingLists
             courseDTO.dataCollectionRuleId = course.fieldConfigurationSchema.id
@@ -110,8 +110,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.hasEnrolments = course.courseClasses.find { c -> !c.enrolments.empty} != null
             courseDTO.webDescription = course.webDescription
             courseDTO.documents = course.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
-            courseDTO.relatedSellables = (EntityRelationDao.getRelatedFrom(course.context, Course.simpleName, course.id).collect { it -> toRestFromEntityRelation(it) } +
-                    EntityRelationDao.getRelatedTo(course.context, Course.simpleName, course.id).collect { it -> toRestToEntityRelation(it) })
+            courseDTO.relatedSellables = relatedSellablesOf(course.context, course.id)
             courseDTO.qualificationId = course.qualification?.id
             courseDTO.qualNationalCode = course.qualification?.nationalCode
             courseDTO.qualTitle = course.qualification?.title
@@ -138,6 +137,11 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.fullTimeLoad = course.fullTimeLoad
             courseDTO
         }
+    }
+
+    static List<SaleDTO> relatedSellablesOf(ObjectContext context, Long courseId){
+        return (EntityRelationDao.getRelatedFrom(context, Course.simpleName, courseId).collect { it -> toRestFromEntityRelation(it) } +
+                EntityRelationDao.getRelatedTo(context, Course.simpleName, courseId).collect { it -> toRestToEntityRelation(it) })
     }
 
     @Override
@@ -180,7 +184,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         course.isSufficientForQualification = courseDTO.isSufficientForQualification
         course.isVET = courseDTO.isVET
 
-        updateTags(course, course.taggingRelations, courseDTO.tags*.id, CourseTagRelation, course.context)
+        updateTags(course, course.taggingRelations, courseDTO.tags, CourseTagRelation, course.context)
         updateDocuments(course, course.attachmentRelations, courseDTO.documents, CourseAttachmentRelation, course.context)
         updateModules(course, courseDTO.modules)
         course.reportableHours = courseDTO.reportableHours
@@ -324,10 +328,10 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             }
         }
 
-        TagFunctions.validateTagForSave(Course, context, courseDTO.tags*.id)
+        TagFunctions.validateTagForSave(Course, context, courseDTO.tags)
                 ?.with { validator.throwClientErrorException(it) }
 
-        TagFunctions.validateRelationsForSave(Course, context, courseDTO.tags*.id, TaggableClasses.COURSE)
+        TagFunctions.validateRelationsForSave(Course, context, courseDTO.tags, TaggableClasses.COURSE)
                 ?.with { validator.throwClientErrorException(it) }
 
         validateCustomFields(context, Course.class.simpleName, courseDTO.customFields, id as String, validator)

@@ -7,14 +7,18 @@
  */
 
 import { Session } from "@api/model";
-import { format, getDaysInMonth, setDate, setHours, startOfMonth } from "date-fns";
+import {
+ format, getDaysInMonth, parse, setDate, setHours, startOfMonth 
+} from "date-fns";
 import {
   AfternoonIcon,
   EveningIcon,
   MorningIcon
 } from "../components/timetable-side-bar/components/day-period-filter/DayPeriodIcons";
-import { HA } from "../../../common/utils/dates/format";
-import { CalendarGrouping, CalendarGroupingState, TimetableMonth, TimetableSession } from "../../../model/timetable";
+import { DD_MMM_YYYY_MINUSED, HA } from "../../../common/utils/dates/format";
+import {
+ CalendarGrouping, CalendarGroupingState, TimetableMonth, TimetableSession 
+} from "../../../model/timetable";
 import { appendTimezone } from "../../../common/utils/dates/formatTimezone";
 import { NO_ROOM_LABEL, NO_TUTORS_LABEL } from "../TimetableConstants";
 
@@ -179,7 +183,7 @@ class DayNodesObserver {
       if (rect.top === rootBoundsInfo.top && this.currentStickyId !== record.target.id) {
         this.currentStickyId = record.target.id;
         if (!this.preventUpdate) {
-          this.setTargetDay(new Date(this.currentStickyId));
+          this.setTargetDay(parse(this.currentStickyId, DD_MMM_YYYY_MINUSED, new Date()));
         }
       }
 

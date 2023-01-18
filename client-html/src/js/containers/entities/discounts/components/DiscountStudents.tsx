@@ -262,9 +262,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
                 value: this.state.limited ? this.state.limited : undefined,
                 onChange: this.onChangeCertainStudents
               }}
-              meta={{ error: null, invalid: false, touched: false }}
               color="secondary"
-              fullWidth
             />
           )}
           label="Restrict this discount to certain students"
@@ -277,6 +275,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
             parse={normalizeNumber}
             validate={greaterThanZeroIncludeValidation}
             className="mb-2"
+            debounced={false}
           />
           <div className={clsx("d-grid justify-content-start gridAutoFlow-column", classes.studentsAttributes)}>
             <FormField
@@ -305,6 +304,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
                 parse={normalizeNumber}
                 validate={[validateSingleMandatoryField, greaterThanZeroIncludeValidation]}
                 className="mb-2"
+                debounced={false}
               />
             )}
           </div>
@@ -318,7 +318,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
 
           <FormControlLabel
             className="checkbox pr-3 mb-2"
-            control={<FormField type="checkbox" name="limitPreviousEnrolment" color="secondary" fullWidth />}
+            control={<FormField type="checkbox" name="limitPreviousEnrolment" color="secondary" />}
             label="Limit to students previously enrolled in same course"
           />
 
@@ -377,11 +377,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
 }
 
 const mapStateToProps = (state: State) => ({
-  foundConcessionTypes: state.plainSearchRecords["ConcessionType"].items.map(i => ({
-    id: i.id,
-    name: i.name,
-    allowOnWeb: i.isEnabled
-  })),
+  foundConcessionTypes: state.plainSearchRecords["ConcessionType"].items,
   concessionTypePending: state.plainSearchRecords["ConcessionType"].loading,
   concessionTypeError: state.plainSearchRecords["ConcessionType"].error,
   foundMemberships: state.plainSearchRecords["MembershipProduct"].items,
@@ -393,7 +389,11 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   searchConcessionTypes: (search: string) => {
     dispatch(setCommonPlainSearch("ConcessionType", search));
-    dispatch(getCommonPlainRecords("ConcessionType", 0, "name,isEnabled", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(getCommonPlainRecords("ConcessionType", 0, "name,isEnabled", null, null, PLAIN_LIST_MAX_PAGE_SIZE, item => item.map(i => ({
+      id: i.id,
+      name: i.name,
+      allowOnWeb: i.isEnabled
+    }))));
   },
   clearConcessionTypeSearch: (pending: boolean) => dispatch(clearCommonPlainRecords("ConcessionType", pending)),
   searchMemberships: (search: string) => {

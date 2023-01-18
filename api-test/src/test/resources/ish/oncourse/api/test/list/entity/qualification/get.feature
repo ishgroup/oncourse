@@ -40,7 +40,7 @@ Feature: Main feature for all GET requests with path 'list/entity/qualification'
                         {"id":"4","values":["90946NSW","Building Studies, Technology","Advanced Diploma of","0","true"]},
                         {"id":"1","values":["UEE30807","Electrotechnology Electrician","Certificate III in",null,"false"]}
                     ],
-                "filteredCount":null,
+                "filteredCount":4,
                 "layout":"Three column",
                 "filterColumnWidth":200,
                 "tagsOrder": [],
@@ -84,7 +84,7 @@ Feature: Main feature for all GET requests with path 'list/entity/qualification'
                         {"id":"4","values":["90946NSW","Building Studies, Technology","Advanced Diploma of","0","true"]},
                         {"id":"1","values":["UEE30807","Electrotechnology Electrician","Certificate III in",null,"false"]}
                     ],
-                "filteredCount":null,
+                "filteredCount":4,
                 "layout":"Three column",
                 "filterColumnWidth":200,
                 "tagsOrder": [],

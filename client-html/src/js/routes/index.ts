@@ -14,9 +14,7 @@ import PreferencesApp from "../containers/preferences/index";
 import AuditsApp from "../containers/audits/index";
 import LoginApp from "../containers/login/index";
 import Common from "../containers/Common";
-import preferencesRoutes from "../containers/preferences/routes";
 import SecurityApp from "../containers/security/index";
-import securityRoutes from "../containers/security/routes";
 import TagsApp from "../containers/tags/index";
 import AvetmissExportApp from "../containers/avetmiss-export/index";
 import QualificationsApp from "../containers/entities/qualifications/index";
@@ -83,7 +81,6 @@ export interface Route<T> {
   noMenuLink?: boolean; // prevent links menu item rendering
   icon?: string; // icon class for menu item in slim mode
   main: any; // main component for route
-  routes?: Route<string>[]; // sub routes
   group?: RouteGroupTypes;
 }
 
@@ -179,99 +176,11 @@ export const routes: MainRoute[] = [
   {
     title: "Preferences",
     path: "/preferences",
-    url: "/preferences/college",
+    url: "/preferences",
     main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
+    group: "Preferences",
   },
-  {
-    title: "Data collection forms",
-    path: "/preferences/collectionForms",
-    url: "/preferences/collectionForms",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Data collection rules",
-    path: "/preferences/collectionRules",
-    url: "/preferences/collectionRules",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Tutor pay rates",
-    path: "/preferences/tutorRoles",
-    url: "/preferences/tutorRoles",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Holidays",
-    path: "/preferences/holidays",
-    url: "/preferences/holidays",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Payment types",
-    path: "/preferences/paymentTypes",
-    url: "/preferences/paymentTypes",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Tax types",
-    path: "/preferences/taxTypes",
-    url: "/preferences/taxTypes",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Concession types",
-    path: "/preferences/concessionTypes",
-    url: "/preferences/concessionTypes",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Contact relation types",
-    path: "/preferences/contactRelationTypes",
-    url: "/preferences/contactRelationTypes",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Sellable items relation types",
-    path: "/preferences/sellableItemsRelationTypes",
-    url: "/preferences/sellableItemsRelationTypes",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Custom fields",
-    path: "/preferences/customFields",
-    url: "/preferences/customFields",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Funding Contract",
-    path: "/preferences/fundingContracts",
-    url: "/preferences/fundingContracts",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
+  // Audits
   {
     title: "Audit Logging",
     path: "/audit/:id?",
@@ -284,7 +193,6 @@ export const routes: MainRoute[] = [
     path: "/security",
     url: "/security/settings",
     main: SecurityApp,
-    routes: securityRoutes,
     group: "Preferences"
   },
   {

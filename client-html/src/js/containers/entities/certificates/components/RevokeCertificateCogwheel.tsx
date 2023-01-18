@@ -21,8 +21,6 @@ import FormField from "../../../../common/components/form/formFields/FormField";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { State } from "../../../../reducers/state";
 import { getCertificatesRevokeStatus, revokeCertificate, setCertificatesRevokeStatus } from "../actions";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
-import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
 
 interface RevokeConfirmProps extends InjectedFormProps {
   open: boolean;
@@ -54,8 +52,7 @@ const RevokeConfirmBase: React.FunctionComponent<RevokeConfirmProps> = props => 
           name="reason"
           label="Reason for revoking certificate"
           onKeyDown={stopPropagation}
-          fullWidth
-          required
+                    required
         />
       </DialogContent>
 

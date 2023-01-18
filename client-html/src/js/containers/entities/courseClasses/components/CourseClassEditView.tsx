@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import clsx from "clsx";
@@ -17,7 +20,7 @@ import IconButton from "@mui/material/IconButton";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
 import { Typography } from "@mui/material";
-import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
+import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
 import { decimalMul } from "../../../../common/utils/numbers/decimalCalculation";
 import { StringArgFunction } from "../../../../model/common/CommonFunctions";
 import { getRoundingByType } from "../../discounts/utils";
@@ -47,7 +50,7 @@ import CourseClassDocumentsTab from "./documents/CourseClassDocumentsTab";
 import history from "../../../../constants/History";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../constants";
 import { appendTimezone } from "../../../../common/utils/dates/formatTimezone";
-import { discountsSort } from "./budget/utils";
+import { discountsSort, excludeOnEnrolPaymentPlan } from "./budget/utils";
 import { makeAppStyles } from "../../../../common/styles/makeStyles";
 import { getTutorPayInitial } from "./tutors/utils";
 
@@ -289,10 +292,11 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
                 e.stopPropagation();
 
                 dispatch(setCourseClassBudgetModalOpened(true));
+                
                 dispatch(
                   initialize(
                     COURSE_CLASS_COST_DIALOG_FORM,
-                    studentFee
+                    excludeOnEnrolPaymentPlan(studentFee, currentTax)
                   )
                 );
 
@@ -330,7 +334,6 @@ const CourseClassEditView: React.FC<Props> = ({
   manualLink,
   showConfirm,
   syncErrors,
-  openNestedEditView,
   onCloseClick,
   rootEntity,
   invalid,
@@ -381,13 +384,13 @@ const CourseClassEditView: React.FC<Props> = ({
 
   const budgetLabelAdornment = useMemo(
     () => {
-      const studentFee = values.budget && values.budget.find(
+      const studentFeeIndex = values.budget && values.budget.findIndex(
         b => b.flowType === "Income" && b.repetitionType === "Per enrolment" && b.invoiceToStudent
       );
 
       return (twoColumn ? (
         <BudgetAdornment
-          studentFee={studentFee}
+          studentFee={{ ...values.budget[studentFeeIndex] || {}, index: studentFeeIndex }}
           currencySymbol={currencySymbol}
           isNew={isNew}
           dispatch={dispatch}
@@ -504,7 +507,6 @@ const CourseClassEditView: React.FC<Props> = ({
         manualLink,
         showConfirm,
         syncErrors,
-        openNestedEditView,
         onCloseClick,
         rootEntity,
         toogleFullScreenEditView,

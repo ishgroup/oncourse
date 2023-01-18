@@ -8,11 +8,7 @@ import { openInternalLink } from "../../../../common/utils/links";
 import { CourseClassStatus } from "../../../../model/entities/CourseClass";
 import { EntityType } from "../../../../model/common/NestedEntity";
 
-export const THEME_SPACING = 8;
-
-export const contactLabelCondition = (data: Contact) => data && (data.firstName ? `${data.firstName} ${data.lastName}` : data.lastName);
-
-export const getContactName = item => {
+const getContactName = item => {
   const firstName = item.firstName || "";
   const lastName = item.lastName || "";
   return `${firstName.toLowerCase() === lastName.toLowerCase() ? "" : `${firstName} `}${lastName}`;
@@ -29,20 +25,7 @@ export const getContactFullName = (data: Contact) => {
     return `${firstName} ${middleName} ${lastName}`;
   }
 
-  return `${firstName} ${lastName}`;
-};
-
-export const defaultContactName = (contactName: string) => {
-  if (contactName) {
-    const hasFirstName = contactName.split(", ");
-    let name = contactName;
-
-    if (hasFirstName.length > 0) {
-      name = hasFirstName.reverse().join(" ");
-    }
-    return name;
-  }
-  return contactName;
+  return getContactName(data);
 };
 
 export const openContactLink = (contactId: number) => {

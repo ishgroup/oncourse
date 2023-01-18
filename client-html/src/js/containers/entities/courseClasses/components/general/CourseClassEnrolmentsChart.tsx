@@ -20,13 +20,11 @@ import withTheme from "@mui/styles/withTheme";
 import { green } from "@mui/material/colors";
 import Paper from "@mui/material/Paper";
 import Edit from "@mui/icons-material/Edit";
-import { Grid } from "@mui/material";
 import { CourseClassState } from "../../reducers";
 import { State } from "../../../../../reducers/state";
 import { getCourseClassEnrolments, setCourseClassEnrolments } from "../../actions";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import { AppTheme } from "../../../../../model/common/Theme";
-import ChartViewSwitcher from "./ChartViewSwitcher";
 
 interface Props {
   classId: number;
@@ -164,9 +162,7 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
     classStart,
     theme,
     openBudget,
-    setShowAllWeeks,
     showAllWeeks,
-    twoColumn,
     hasBudged
   }) => {
     const [data, setData] = useState<ChartWeeks>(initialData);
@@ -241,7 +237,9 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
           return;
         }
 
-        weeks[diff].enrolments++;
+        if (weeks[diff]) {
+          weeks[diff].enrolments++;
+        }
 
         for (let i = diff; i >= 0; i--) {
           weeks[i].value++;
@@ -350,96 +348,90 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
     }
 
     return (
-      <Grid item xs={twoColumn && !showAllWeeks ? 6 : 12}>
-        <div
-          onMouseEnter={onChartHover}
-          onMouseLeave={onChartLeave}
-          className={clsx("mt-2 relative", classes.showAllWeeks)}
+      <div
+        onMouseEnter={onChartHover}
+        onMouseLeave={onChartLeave}
+        className={clsx("mt-2 relative", classes.showAllWeeks)}
+      >
+        <ResponsiveContainer
+          width="100%"
+          height={250}
         >
-          <ResponsiveContainer
-            width="100%"
-            height={250}
-          >
-            <AreaChart data={showAllWeeks ? allWeeksData : data} margin={chartMargin}>
-              <XAxis
-                dataKey="week"
-                tickLine={false}
-                tick={props => (
-                  <CustomizedAxisTick {...props} formatter={showAllWeeks ? tickFormatterAll : tickFormatterFirstSix} />
-                )}
-                minTickGap={12}
-              />
-              <Area
-                dataKey="value"
-                type="stepAfter"
-                fill={theme.palette.grey["200"]}
-                stroke={theme.palette.grey["500"]}
-              />
-              <Tooltip
-                wrapperStyle={{ zIndex: 1 }}
-                content={props => <CustomizedTooltip {...props} data={data} showAllWeeks={showAllWeeks} />}
-              />
-              <ReferenceLine
-                y={minEnrolments}
-                ifOverflow="extendDomain"
-                strokeDasharray="3 3"
-                label={(
-                  <CustomizedLabel
-                    label={`Min enrolments (${minEnrolments})`}
-                    fill={theme.palette.text.primary}
-                    visible={showLabels}
-                    coorginatesRef={minLabelEl}
-                  />
-                )}
-              />
-              <ReferenceLine
-                y={maxEnrolments}
-                ifOverflow="extendDomain"
-                strokeDasharray="3 3"
-                label={(
-                  <CustomizedLabel
-                    label={`Max enrolments (${maxEnrolments})`}
-                    fill={theme.palette.text.primary}
-                    visible={showLabels}
-                    coorginatesRef={maxLabelEl}
-                  />
-                )}
-              />
-              <ReferenceLine
-                y={targetEnrolments}
-                ifOverflow="extendDomain"
-                label={(
-                  <CustomizedLabel
-                    label={`Enrolments to profit (${targetEnrolments})`}
-                    fill={theme.palette.text.primary}
-                    visible={showLabels}
-                  />
-                )}
-              />
-              <ReferenceLine
-                x={showAllWeeks ? (startWeekIndex !== allWeeksData.length - 1 ? startWeekIndex : 0) : "start"}
-                isFront
-                stroke={green[600]}
-                strokeWidth={2}
-              />
-              <ReferenceLine
-                x={showAllWeeks ? allWeeksTodayWeek : todayWeek}
-                isFront
-                stroke={theme.palette.secondary.main}
-                strokeWidth={2}
-                label={<CustomizedLabel label="Today" fill={theme.palette.text.primary} visible={showLabels} />}
-              />
-            </AreaChart>
-          </ResponsiveContainer>
-  
-          {Boolean(enrolments.length) && (
-            <ChartViewSwitcher showAllWeeks={showAllWeeks} setShowAllWeeks={setShowAllWeeks} theme={theme} />
-          )}
-  
-          {maxLabelButton}
-          {minLabelButton}
-        </div>
-      </Grid>
+          <AreaChart data={showAllWeeks ? allWeeksData : data} margin={chartMargin}>
+            <XAxis
+              dataKey="week"
+              tickLine={false}
+              tick={props => (
+                <CustomizedAxisTick {...props} formatter={showAllWeeks ? tickFormatterAll : tickFormatterFirstSix} />
+              )}
+              minTickGap={12}
+            />
+            <Area
+              dataKey="value"
+              type="stepAfter"
+              fill={theme.palette.grey["200"]}
+              stroke={theme.palette.grey["500"]}
+            />
+            <Tooltip
+              wrapperStyle={{ zIndex: 1, outline: "none" }}
+              content={props => <CustomizedTooltip {...props} data={data} showAllWeeks={showAllWeeks} />}
+            />
+            <ReferenceLine
+              y={minEnrolments}
+              ifOverflow="extendDomain"
+              strokeDasharray="3 3"
+              label={(
+                <CustomizedLabel
+                  label={`Min enrolments (${minEnrolments})`}
+                  fill={theme.palette.text.primary}
+                  visible={showLabels}
+                  coorginatesRef={minLabelEl}
+                />
+              )}
+            />
+            <ReferenceLine
+              y={maxEnrolments}
+              ifOverflow="extendDomain"
+              strokeDasharray="3 3"
+              label={(
+                <CustomizedLabel
+                  label={`Max enrolments (${maxEnrolments})`}
+                  fill={theme.palette.text.primary}
+                  visible={showLabels}
+                  coorginatesRef={maxLabelEl}
+                />
+              )}
+            />
+            <ReferenceLine
+              y={targetEnrolments}
+              ifOverflow="extendDomain"
+              label={(
+                <CustomizedLabel
+                  label={`Enrolments to profit (${targetEnrolments})`}
+                  fill={theme.palette.text.primary}
+                  visible={showLabels}
+                />
+              )}
+            />
+            <ReferenceLine
+              x={showAllWeeks ? (startWeekIndex !== allWeeksData.length - 1 ? startWeekIndex : 0) : "start"}
+              isFront
+              stroke={green[600]}
+              strokeWidth={2}
+            />
+            <ReferenceLine
+              x={showAllWeeks ? allWeeksTodayWeek : todayWeek}
+              isFront
+              stroke={theme.palette.secondary.main}
+              strokeWidth={2}
+              label={<CustomizedLabel label="Today" fill={theme.palette.text.primary} visible={showLabels} />}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+
+        {maxLabelButton}
+        {minLabelButton}
+      </div>
     );
   }
 );

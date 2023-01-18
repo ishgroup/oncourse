@@ -29,7 +29,7 @@ import FormField from "../../common/components/form/formFields/FormField";
 import { Switch } from "../../common/components/form/formFields/Switch";
 import DynamicSizeList from "../../common/components/form/DynamicSizeList";
 import { LinkAdornment } from "../../common/components/form/FieldAdornments";
-import LoadingIndicator from "../../common/components/layout/LoadingIndicator";
+import LoadingIndicator from "../../common/components/progress/LoadingIndicator";
 import EntityService from "../../common/services/EntityService";
 import { D_MMM_YYYY } from "../../common/utils/dates/format";
 import { formatRelativeDate } from "../../common/utils/dates/formatRelative";
@@ -39,12 +39,12 @@ import { formatCurrency } from "../../common/utils/numbers/numbersNormalizing";
 import { BatchPaymentContact } from "../../model/batch-payment";
 import { State } from "../../reducers/state";
 import CheckoutService from "../checkout/services/CheckoutService";
-import { getContactName } from "../entities/contacts/utils";
 import { getBachCheckoutModel } from "./utils";
 import { makeAppStyles } from "../../common/styles/makeStyles";
 import AppBarContainer from "../../common/components/layout/AppBarContainer";
 import { getManualLink } from "../../common/utils/getManualLink";
 import { getPluralSuffix } from "../../common/utils/strings";
+import { getContactFullName } from "../entities/contacts/utils";
 
 const useStyles = makeAppStyles(theme => ({
   checkbox: {
@@ -292,8 +292,8 @@ const ContactRenderer = ({
           estimatedItemSize={56}
           itemData={{
           items,
-          ...rest,
-        }}
+            ...rest,
+          }}
         >
           {RowRenderer}
         </DynamicSizeList>
@@ -335,7 +335,7 @@ const getContacts = (dispatch, setContactsLoading, onComplete?) => {
 
       const contacts:BatchPaymentContact[] = [{
         id: Number(res.rows[0].values[0]),
-        name: getContactName({ firstName: res.rows[0].values[1], lastName: res.rows[0].values[2] }),
+        name: getContactFullName({ firstName: res.rows[0].values[1], lastName: res.rows[0].values[2] }),
         hasStoredCard,
         checked: hasStoredCard,
         total: 0,
@@ -359,7 +359,7 @@ const getContacts = (dispatch, setContactsLoading, onComplete?) => {
             id,
             hasStoredCard,
             index: counter + 1,
-            name: getContactName({ firstName: r.values[1], lastName: r.values[2] }),
+            name: getContactFullName({ firstName: r.values[1], lastName: r.values[2] }),
             checked: hasStoredCard,
             total: amountOwing,
             processed: false,
@@ -437,7 +437,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
       changed.reduce((p, i) => (i.checked ? decimalPlus(p, i.amountOwing) : p), 0) ));
   }, [values]);
 
-  const checkedContacts = values.contacts.filter(c => c.checked);
+  const checkedContacts = values.contacts.filter(c => c.checked && !c.processed);
 
   const total = checkedContacts.reduce(
     (p, c) => decimalPlus(p, c.items.reduce((p, c) => decimalPlus(p, c.checked ? c.amountOwing : 0), 0) ),
@@ -469,7 +469,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
                 instantFetchErrorHandler(dispatch, res, `Payment for ${c.name} failed`);
                 dispatch(change(FORM, `contacts[${c.index}]`, {
                   ...c, processing: false, processed: true, error: true,
-                } ));
+                }));
                 setTimeout(resolve, 200);
               });
           }, 300);
@@ -477,6 +477,8 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
           await a;
           await b();
         }, Promise.resolve());
+
+        setProcessing(false);
       });
   };
 
@@ -486,7 +488,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
       <AppBarContainer
         disabledScrolling
         disableInteraction
-        disabled={processing || contactsLoading}
+        disabled={processing || contactsLoading || checkedContacts.length === 0}
         title={(
           <div>
             Batch payment in (showing

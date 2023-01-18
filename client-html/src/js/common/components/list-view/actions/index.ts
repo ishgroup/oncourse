@@ -1,24 +1,24 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import { Diff, Filter, LayoutType, MessageType, SearchQuery, TableModel } from "@api/model";
 import { MessageData } from "../../../../model/common/Message";
 import { _toRequestType, FULFILLED } from "../../../actions/ActionUtils";
 import { MenuTag } from "../../../../model/tags";
-import { ApiMethods } from "../../../../model/common/apiHandlers";
 import { GetRecordsArgs, SavingFilterState } from "../../../../model/common/ListView";
-import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { IAction } from "../../../actions/IshAction";
 import { EntityName } from "../../../../model/entities/common";
+import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 
-export const GET_LIST_NESTED_EDIT_RECORD = _toRequestType("get/listView/nestedEditRecord");
-
-export const UPDATE_LIST_NESTED_EDIT_RECORD = _toRequestType("post/listView/nestedEditRecord");
-
+// Common list actions
 export const GET_RECORDS_REQUEST = _toRequestType("get/records");
 export const GET_RECORDS_FULFILLED = FULFILLED(GET_RECORDS_REQUEST);
+export const GET_RECORDS_FULFILLED_RESOLVE = FULFILLED(GET_RECORDS_REQUEST) + "_resolve";
 
 export const GET_PLAIN_RECORDS_REQUEST = _toRequestType("get/records/plain");
 export const GET_PLAIN_RECORDS_REQUEST_FULFILLED = FULFILLED(GET_PLAIN_RECORDS_REQUEST);
@@ -40,17 +40,15 @@ export const UPDATE_TABLE_MODEL_REQUEST = _toRequestType("update/table/model");
 
 export const BULK_CHANGE_RECORDS = _toRequestType("post/listView/bulkChange");
 
+export const FIND_RELATED_BY_FILTER = "find/related/byFilter";
+
 export const CLEAR_LIST_STATE = "clear/listView";
 
 export const SET_LIST_CORE_FILTERS = "set/listView/coreFilters";
 
-export const SET_SHOW_COLORED_DOTS = "set/listView/coloredDots";
-
 export const SET_LIST_SEARCH = "set/listView/search";
 
 export const SET_LIST_ENTITY = "set/listView/entity";
-
-export const SET_LIST_COLUMNS = "set/listView/columns";
 
 export const SET_LIST_SEARCH_ERROR = "set/listView/search/error";
 
@@ -72,13 +70,12 @@ export const SET_LIST_CREATING_NEW = "set/listView/creatingNew";
 
 export const SET_LIST_FULL_SCREEN_EDIT_VIEW = "set/listView/fullScreenEditView";
 
-export const SET_LIST_NESTED_EDIT_RECORD = "set/listView/nestedEditRecord";
-
 export const SET_LIST_EDIT_RECORD_FETCHING = "set/listView/editRecordFetching";
 
-export const CLOSE_LIST_NESTED_EDIT_RECORD = "close/listView/nestedEditRecord";
-
-export const CLEAR_LIST_NESTED_EDIT_RECORD = "clear/listView/nestedEditRecord";
+export const findRelatedByFilter = (filter: string | AnyArgFunction<string, string>, list: string ) => ({
+  type: FIND_RELATED_BY_FILTER,
+  payload: { filter, list }
+});
 
 export const deleteCustomFilter = (id: number, entity: string, checked: boolean) => ({
   type: DELETE_FILTER_REQUEST,
@@ -100,27 +97,25 @@ export const setListLayout = (layout: LayoutType) => ({
   payload: layout
 });
 
-export const setShowColoredDots = (show: boolean) => ({
-  type: SET_SHOW_COLORED_DOTS,
-  payload: show,
-});
-
-export const setListMenuTags = (menuTags: MenuTag[]) => ({
+export const setListMenuTags = (menuTags: MenuTag[], checkedChecklists: MenuTag[], uncheckedChecklists: MenuTag[]) => ({
   type: SET_LIST_MENU_TAGS,
-  payload: { menuTags }
+  payload: { menuTags, checkedChecklists, uncheckedChecklists }
 });
 
 export const getRecords = (
-  entity: string,
-  listUpdate?: boolean,
-  viewAll?: boolean,
-  startIndex?: number,
-  stopIndex?: number,
-  resolve?: AnyArgFunction
+  {
+    entity,
+    viewAll,
+    listUpdate,
+    savedID,
+    ignoreSelection,
+    stopIndex,
+    resolve
+  }: GetRecordsArgs
 ): IAction<GetRecordsArgs> => ({
   type: GET_RECORDS_REQUEST,
   payload: {
-    entity, listUpdate, viewAll, startIndex, stopIndex, resolve
+    entity, listUpdate, savedID, ignoreSelection, viewAll, stopIndex, resolve
   }
 });
 
@@ -158,11 +153,6 @@ export const setListEditRecordFetching = () => ({
   type: SET_LIST_EDIT_RECORD_FETCHING
 });
 
-export const updateTagsOrder = (tagsOrder: number[]) => ({
-  type: UPDATE_TAGS_ORDER,
-  payload: tagsOrder,
-});
-
 export const updateTableModel = (entity: string, model: TableModel, listUpdate?: boolean) => ({
   type: UPDATE_TABLE_MODEL_REQUEST,
   payload: { entity, model, listUpdate }
@@ -188,11 +178,6 @@ export const setSearch = (search: string, entity: string) => ({
   payload: { search, entity }
 });
 
-export const setListColumns = columns => ({
-  type: SET_LIST_COLUMNS,
-  payload: { columns }
-});
-
 export const setListSearchError = (searchError: boolean) => ({
   type: SET_LIST_SEARCH_ERROR,
   payload: { searchError }
@@ -208,49 +193,6 @@ export const setListCreatingNew = (creatingNew: boolean) => ({
   payload: creatingNew
 });
 
-export const setListFullScreenEditView = (fullScreenEditView: boolean) => ({
-  type: SET_LIST_FULL_SCREEN_EDIT_VIEW,
-  payload: fullScreenEditView
-});
-
-export const getListNestedEditRecord = (entity: string, id: number, index?: number, threeColumn?: boolean) => ({
-  type: GET_LIST_NESTED_EDIT_RECORD,
-  payload: {
-    entity, id, index, threeColumn
-  }
-});
-
-export const setListNestedEditRecord = (entity: string, record: any, customOnSave: any, hideFullScreenAppBar?: boolean) => ({
-  type: SET_LIST_NESTED_EDIT_RECORD,
-  payload: {
-    entity, record, opened: true, customOnSave, hideFullScreenAppBar
-  }
-});
-
-export const clearListNestedEditRecord = (index: number) => ({
-  type: CLEAR_LIST_NESTED_EDIT_RECORD,
-  payload: { index }
-});
-
-export const closeListNestedEditRecord = (index: number) => ({
-  type: CLOSE_LIST_NESTED_EDIT_RECORD,
-  payload: { index }
-});
-
-export const updateListNestedEditRecord = (
-  id: number,
-  record: any,
-  entity: string,
-  index: number,
-  listRootEntity: string,
-  method?: ApiMethods
-) => ({
-  type: UPDATE_LIST_NESTED_EDIT_RECORD,
-  payload: {
-    entity, id, record, index, listRootEntity, method
-  }
-});
-
 export const bulkChangeRecords = (entity: EntityName, diff: Diff) => ({
   type: BULK_CHANGE_RECORDS,
   payload: { entity, diff }
@@ -259,6 +201,11 @@ export const bulkChangeRecords = (entity: EntityName, diff: Diff) => ({
 export const setListEntity = (entity: EntityName) => ({
   type: SET_LIST_ENTITY,
   payload: entity
+});
+
+export const setListFullScreenEditView = (fullScreenEditView: boolean) => ({
+  type: SET_LIST_FULL_SCREEN_EDIT_VIEW,
+  payload: fullScreenEditView
 });
 
 export const setReadNewsLocal = (id: string) => ({

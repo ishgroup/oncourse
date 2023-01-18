@@ -4,10 +4,12 @@ import { isInStandaloneMode } from "../common";
 import { LSGetItem, LSSetItem } from "../storage";
 
 export const openInternalLink = link => {
-  window.open(
-    (link.includes("http") ? "" : window.location.origin) + link,
-    isInStandaloneMode() ? "_self" : "_blank"
-  );
+  if (link) {
+    window.open(
+      (link.includes("http") ? "" : window.location.origin) + link,
+      isInStandaloneMode() ? "_self" : "_blank"
+    );
+  }
 };
 
 export const saveCategoryAQLLink = (aql: FindEntityAql) => {

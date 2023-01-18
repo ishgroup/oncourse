@@ -182,7 +182,7 @@ const DiscountContent: React.FC<Props> = ({
   }, [classFee, taxOnDiscount, values.courseClassDiscount.discount.rounding]);
 
   return (
-    <Grid container columnSpacing={3}>
+    <Grid container columnSpacing={3} rowSpacing={2}>
       <Grid item xs={4} className="pr-1">
         <Uneditable
           value={
@@ -201,7 +201,7 @@ const DiscountContent: React.FC<Props> = ({
       </Grid>
       <Grid item xs={4}>
         <FormField
-          type="persent"
+          type="number"
           name={
             forecastLocked ? "courseClassDiscount.discount.predictedStudentsPercentage" : "courseClassDiscount.forecast"
           }
@@ -210,13 +210,12 @@ const DiscountContent: React.FC<Props> = ({
           format={formatFieldPercent}
           parse={parseFieldPercent}
           onKeyPress={preventNegativeOrLogEnter}
-          props={{
-            label: "Default forecast take-up",
-            labelAdornment: <IconButton className="inputAdornmentButton" onClick={onForecastLockClick}>
-              {forecastLocked ? <Lock className="inputAdornmentIcon" /> : <LockOpen className="inputAdornmentIcon" />}
-            </IconButton>
-          }}
+          label="Default forecast take-up"
+          labelAdornment={<IconButton className="inputAdornmentButton" onClick={onForecastLockClick}>
+            {forecastLocked ? <Lock className="inputAdornmentIcon" /> : <LockOpen className="inputAdornmentIcon" />}
+          </IconButton>}
           disabled={forecastLocked}
+          debounced={false}
         />
       </Grid>
       <Grid item xs={6}>
@@ -224,11 +223,11 @@ const DiscountContent: React.FC<Props> = ({
       </Grid>
 
       <Grid item xs={12}>
-        <div className="heading pb-3 pt-2">Value</div>
+        <div className="heading pb-1 pt-2">Value</div>
       </Grid>
 
       <Grid item xs={12} container>
-        <Grid item container xs={8}>
+        <Grid item container xs={8} columnSpacing={3} rowSpacing={2}>
           <Grid item xs={6}>
             <FormField
               type="money"
@@ -242,6 +241,7 @@ const DiscountContent: React.FC<Props> = ({
               )}
               disabled={valueLocked}
               onChange={onValueChange}
+              debounced={false}
             />
           </Grid>
           <Grid item xs={6}>

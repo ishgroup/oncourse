@@ -114,16 +114,16 @@ class CorporatePassCommon extends React.PureComponent<any, any> {
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   searchCorporatePasses: (search: string) => {
     dispatch(setCommonPlainSearch("CorporatePass", `${search ? `${search} and ` : ""}(expiryDate is null or expiryDate >= today)`));
-    dispatch(getCommonPlainRecords("CorporatePass", 0, "contact.fullName", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(getCommonPlainRecords("CorporatePass", 0, "contact.fullName", null, null, PLAIN_LIST_MAX_PAGE_SIZE, items => items.map(i => ({
+      id: i.id,
+      contactFullName: i["contact.fullName"]
+    }))));
   },
   clearCorporatePasses: (pending: boolean) => dispatch(clearCommonPlainRecords("CorporatePass", pending))
 });
 
 const mapStateToProps = (state: State) => ({
-  foundCorporatePassItems: state.plainSearchRecords["CorporatePass"].items.map(i => ({
-    id: i.id,
-    contactFullName: i["contact.fullName"]
-  })),
+  foundCorporatePassItems: state.plainSearchRecords["CorporatePass"].items,
   pending: state.plainSearchRecords["CorporatePass"].loading,
   passErrors: state.plainSearchRecords["CorporatePass"].error,
 });

@@ -14,7 +14,7 @@ import AutoSizer from "react-virtualized-auto-sizer";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import {
- addMonths, endOfMonth, format, isSameMonth, startOfMonth 
+  addMonths, endOfMonth, format, isAfter, isSameMonth, startOfMonth
 } from "date-fns";
 import clsx from "clsx";
 import Typography from "@mui/material/Typography";
@@ -126,12 +126,8 @@ const onRendered = ({
   }
 };
 
-const scrollToCalendarDay = debounce((day: Date, list, index, dayNodesObserver) => {
-  const dayId = format(day, DD_MMM_YYYY_MINUSED);
-
-  const dayNode = document.getElementById(dayId);
-
-  if (dayNode && dayNodesObserver) {
+const scrollToCalendarDay = debounce((dayNode, list, index, dayNodesObserver) => {
+  if (dayNode && dayNodesObserver && list._instanceProps.itemMetadataMap[index]) {
     animateListScroll(
       list,
       dayNode.parentElement.offsetTop + list._instanceProps.itemMetadataMap[index].offset - 32,
@@ -141,6 +137,39 @@ const scrollToCalendarDay = debounce((day: Date, list, index, dayNodesObserver) 
     );
   }
 }, 100);
+
+const initDateAsync = async (searchString, setTargetDay) => {
+  const firstSession = await EntityService.getPlainRecords(
+    "Session",
+    "startDatetime",
+    `${searchString}`,
+    1,
+    0,
+    "startDatetime",
+    true
+  );
+
+  const lastSession = await EntityService.getPlainRecords(
+    "Session",
+    "startDatetime",
+    `${searchString}`,
+    1,
+    0,
+    "startDatetime",
+    false
+  );
+  
+  if (firstSession.rows.length && lastSession.rows.length) {
+    const endDate = new Date(lastSession.rows[0].values[0]);
+    const firstDate = new Date(firstSession.rows[0].values[0]);
+
+    if (isAfter(new Date(), endDate) || isAfter(firstDate, new Date())) {
+      setTargetDay(firstDate);
+    } else {
+      setTargetDay(new Date());
+    }
+  }
+};
 
 const Calendar = React.memo<Props>(props => {
   const {
@@ -168,7 +197,7 @@ const Calendar = React.memo<Props>(props => {
   } = props;
 
   const [dayNodesObserver, setDayNodesObserver] = useState<any>();
-  const [scrollToTargetDayOnRender, setScrollToTargetDayOnRender] = useState(null);
+  const [scrollToTargetDayOnRender, setScrollToTargetDayOnRender] = useState(targetDay);
 
   const listEl = useRef(null);
 
@@ -198,8 +227,9 @@ const Calendar = React.memo<Props>(props => {
     }
   };
 
-  const scrollToDayHandler = targetDayMonthIndex => {
-    scrollToCalendarDay(targetDay, listEl.current, targetDayMonthIndex, dayNodesObserver);
+  const scrollToDayHandler = (targetDayMonthIndex, node?) => {
+    const dayNode = node || document.getElementById(format(targetDay, DD_MMM_YYYY_MINUSED));
+    scrollToCalendarDay(dayNode, listEl.current, targetDayMonthIndex, dayNodesObserver);
   };
 
   // fetch next two months
@@ -240,21 +270,11 @@ const Calendar = React.memo<Props>(props => {
     dispatch(setTimetableSearch(searchString ? decodeURIComponent(searchString) : ""));
 
     if (searchString && !params.get("selectedDate")) {
-      EntityService.getPlainRecords(
-        "Session",
-        "startDatetime",
-        `${searchString}`,
-        1,
-        0,
-        "startDatetime",
-        true
-      )
-        .then(res => {
-          if (res.rows.length) {
-            setTargetDay(new Date(res.rows[0].values[0]));
-          }
-        })
-        .catch(e => instantFetchErrorHandler(dispatch, e));
+      try {
+        initDateAsync(searchString, setTargetDay);
+      } catch (e) {
+        instantFetchErrorHandler(dispatch, e);
+      }
     }
 
     loadNextMonths(targetDay);
@@ -355,7 +375,7 @@ const Calendar = React.memo<Props>(props => {
 
     const targetDayMonthIndex = months.findIndex(m => isSameMonth(m.month, targetDay));
 
-    if (targetDayMonthIndex !== -1) {
+    if (targetDayMonthIndex > -1 && targetDayMonthIndex < 2) {
       if (calendarMode === "Compact" && !(selectedMonthSessionDays[targetDay.getDate() - 1] !== 0)) {
         return;
       }
@@ -372,12 +392,13 @@ const Calendar = React.memo<Props>(props => {
   }, [selectedWeekDays, selectedDayPeriods, calendarMode]);
 
   useEffect(() => {
-    if (dayNodesObserver && scrollToTargetDayOnRender && months.length) {
+    const dayNode = document.getElementById(format(targetDay, DD_MMM_YYYY_MINUSED));
+    if (dayNode && dayNodesObserver && scrollToTargetDayOnRender && months.length) {
       const targetDayMonthIndex = months.findIndex(m => isSameMonth(m.month, scrollToTargetDayOnRender));
-      scrollToDayHandler(targetDayMonthIndex);
+      scrollToDayHandler(targetDayMonthIndex, dayNode);
       setScrollToTargetDayOnRender(null);
     }
-  }, [months, scrollToTargetDayOnRender, dayNodesObserver]);
+  }, [months, targetDay, scrollToTargetDayOnRender, dayNodesObserver]);
 
   const hasSessions = useMemo(() => (calendarMode === "Compact" ? months.some(m => m.hasSessions) : true), [months, calendarMode]);
 

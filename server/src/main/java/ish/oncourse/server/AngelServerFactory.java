@@ -21,7 +21,6 @@ import ish.oncourse.server.cayenne.SystemUser;
 import ish.oncourse.server.db.SchemaUpdateService;
 import ish.oncourse.server.http.HttpFactory;
 import ish.oncourse.server.integration.PluginService;
-import ish.oncourse.server.jmx.RegisterMBean;
 import ish.oncourse.server.license.LicenseService;
 import ish.oncourse.server.messaging.EmailDequeueJob;
 import ish.oncourse.server.messaging.MailDeliveryService;
@@ -95,7 +94,7 @@ public class AngelServerFactory {
     public void start(PreferenceController prefController,
                       SchemaUpdateService schemaUpdateService,
                       ISchedulerService schedulerService,
-                      Scheduler scheduler, RegisterMBean registerMBean,
+                      Scheduler scheduler,
                       LicenseService licenseService,
                       CayenneService cayenneService,
                       PluginService pluginService,
@@ -207,14 +206,6 @@ public class AngelServerFactory {
             throw new RuntimeException("Server scheduler failed to initialise, aborting startup", e1);
         } catch (ParseException e2) {
             throw new RuntimeException("Scheduled service failed to initialise, aborting startup", e2);
-        }
-
-        try {
-            LOGGER.warn("Initializing monitoring services");
-
-            registerMBean.register();
-        } catch (Exception e) {
-            LOGGER.error("Failed to initialize monitoring MBean.", e);
         }
 
         pluginService.onStart();

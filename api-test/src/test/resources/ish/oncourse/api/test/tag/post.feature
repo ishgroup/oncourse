@@ -5,6 +5,7 @@ Feature: Main feature for all POST requests with path 'tag'
         * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'tag'
+        * def ishListPath = 'tag/list'
         * def ishPathLogin = 'login'
         
 
@@ -22,6 +23,7 @@ Feature: Main feature for all POST requests with path 'tag'
             "urlPath":"urlPath",
             "content":"Content text",
             "weight":1,
+            "type":"Tag",
             "requirements":
                 [{
                     "type":"Course",
@@ -37,6 +39,7 @@ Feature: Main feature for all POST requests with path 'tag'
                     "urlPath":"urlPath",
                     "content":"Content text",
                     "weight":1,
+                    "type":"Tag",
                     "requirements":[],
                     "childTags":[]
                 }]
@@ -49,7 +52,7 @@ Feature: Main feature for all POST requests with path 'tag'
         Then status 204
 
 #       >>> Assertion:
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
 
@@ -100,6 +103,7 @@ Feature: Main feature for all POST requests with path 'tag'
             "system":false,
             "urlPath":"urlPath1",
             "content":"Content text",
+            "type":"Tag",
             "weight":1,
             "requirements":
                 [
@@ -121,6 +125,7 @@ Feature: Main feature for all POST requests with path 'tag'
                     "urlPath":"urlPath2",
                     "content":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis accumsan cursus ligula, vitae efficitur ante vulputate sit amet. Pellentesque pharetra orci magna, nec sodales metus ornare at. Mauris sed laoreet ex. Cras commodo condimentum purus, ut venenatis orci accumsan sit amet. Pellentesque posuere velit odio, ut fringilla quam rhoncus sed. Fusce facilisis vel elit a vestibulum. Proin consectetur at nisi sed aliquet. Mauris vulputate blandit nunc. Duis nulla dolor, tincidunt nec facilisis id, gravida eu nisl. Proin congue sem ac ultrices faucibus. Mauris mi nulla, ullamcorper quis ante sit amet, vehicula porttitor lorem.",
                     "weight":1,
+                    "type":"Tag",
                     "requirements":[],
                     "childTags":[]
                 },
@@ -131,6 +136,7 @@ Feature: Main feature for all POST requests with path 'tag'
                     "urlPath":"urlPath3",
                     "content":"Maecenas lacinia auctor mauris eget sodales. Ut in eros mollis, viverra urna id, elementum eros. Etiam consectetur molestie arcu, sed ornare mauris hendrerit sit amet. Aenean sollicitudin ut urna in interdum. Donec quam enim, sodales sit amet viverra at, dapibus vitae nunc. Suspendisse potenti. Morbi iaculis tempor nunc.",
                     "weight":2,
+                    "type":"Tag",
                     "requirements":[],
                     "childTags":[]
                 }]
@@ -143,7 +149,7 @@ Feature: Main feature for all POST requests with path 'tag'
         Then status 204
 
 #       >>> Assertion:
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name contains "tagName2"
@@ -204,6 +210,7 @@ Feature: Main feature for all POST requests with path 'tag'
             "urlPath":"urlPath",
             "content":"Content text",
             "weight":1,
+            "type":"Tag",
             "requirements":
                 [{
                     "type":"Course",
@@ -219,6 +226,7 @@ Feature: Main feature for all POST requests with path 'tag'
                     "urlPath":"urlPath",
                     "content":"Content text",
                     "weight":1,
+                    "type":"Tag",
                     "requirements":[],
                     "childTags":[]
                 }]
@@ -231,7 +239,7 @@ Feature: Main feature for all POST requests with path 'tag'
         Then status 204
 
 #       >>> Assertion:
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
 
@@ -269,6 +277,7 @@ Feature: Main feature for all POST requests with path 'tag'
             "urlPath":"A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A99A103A107A111A115A119A123A127A1",
             "content":"Content text",
             "weight":1,
+            "type":"Tag",
             "requirements":
                 [{
                     "type":"Course",
@@ -284,6 +293,7 @@ Feature: Main feature for all POST requests with path 'tag'
                     "urlPath":"urlPath",
                     "content":"Content text",
                     "weight":1,
+                    "type":"Tag",
                     "requirements":[],
                     "childTags":[]
                 }]
@@ -296,7 +306,7 @@ Feature: Main feature for all POST requests with path 'tag'
         Then status 204
 
 #       >>> Assertion:
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
 
@@ -334,6 +344,7 @@ Feature: Main feature for all POST requests with path 'tag'
             "urlPath":"urlPath1",
             "content":"Content text",
             "weight":1,
+            "type":"Tag",
             "requirements":
                 [
                 {"type":"Payslip","mandatory":true,"limitToOneTag":true,"system":false}
@@ -346,6 +357,7 @@ Feature: Main feature for all POST requests with path 'tag'
                     "urlPath":"urlPath4",
                     "content":"text",
                     "weight":4,
+                    "type":"Tag",
                     "requirements":[],
                     "childTags":[]
                 },
@@ -356,6 +368,7 @@ Feature: Main feature for all POST requests with path 'tag'
                     "urlPath":"urlPath2",
                     "content":"text",
                     "weight":1,
+                    "type":"Tag",
                     "requirements":[],
                     "childTags":[]
                 },
@@ -366,6 +379,7 @@ Feature: Main feature for all POST requests with path 'tag'
                     "urlPath":"urlPath5",
                     "content":"text",
                     "weight":3,
+                    "type":"Tag",
                     "requirements":[],
                     "childTags":[]
                 },
@@ -376,6 +390,7 @@ Feature: Main feature for all POST requests with path 'tag'
                     "urlPath":"urlPath1",
                     "content":"text",
                     "weight":2,
+                    "type":"Tag",
                     "requirements":[],
                     "childTags":[]
                 },
@@ -386,6 +401,7 @@ Feature: Main feature for all POST requests with path 'tag'
                     "urlPath":"urlPath3",
                     "content":"text",
                     "weight":5,
+                    "type":"Tag",
                     "requirements":[],
                     "childTags":[]
                 }]
@@ -398,7 +414,7 @@ Feature: Main feature for all POST requests with path 'tag'
         Then status 204
 
 #       >>> Order assertion:
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
         And match response[*].name contains "tagName50"
@@ -433,6 +449,7 @@ Feature: Main feature for all POST requests with path 'tag'
             "urlPath":"urlPath",
             "content":"Content text",
             "weight":1,
+            "type":"Tag",
             "requirements":
                 [{
                     "type":"Course",
@@ -448,6 +465,7 @@ Feature: Main feature for all POST requests with path 'tag'
                     "urlPath":"urlPath",
                     "content":"Content text",
                     "weight":1,
+                    "type":"Tag",
                     "requirements":[],
                     "childTags":[]
                 }]
@@ -460,7 +478,7 @@ Feature: Main feature for all POST requests with path 'tag'
         Then status 204
 
 #       >>> Assertion:
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
 
@@ -522,6 +540,7 @@ Feature: Main feature for all POST requests with path 'tag'
             "urlPath":"urlPath",
             "content":"Content text",
             "weight":1,
+            "type":"Tag",
             "requirements":
                 [{
                     "type":"Course",
@@ -537,6 +556,7 @@ Feature: Main feature for all POST requests with path 'tag'
                     "urlPath":"urlPath",
                     "content":"Content text",
                     "weight":1,
+                    "type":"Tag",
                     "requirements":[],
                     "childTags":[]
                 }]
@@ -549,7 +569,7 @@ Feature: Main feature for all POST requests with path 'tag'
         Then status 204
 
 #       >>> Assertion:
-        Given path ishPath
+        Given path ishListPath
         When method GET
         Then status 200
 
@@ -611,6 +631,7 @@ Feature: Main feature for all POST requests with path 'tag'
             "urlPath":"urlPath",
             "content":"Content text",
             "weight":1,
+            "type":"Tag",
             "requirements":
                 [{
                     "type":"Course",
@@ -626,6 +647,7 @@ Feature: Main feature for all POST requests with path 'tag'
                     "urlPath":"urlPath",
                     "content":"Content text",
                     "weight":1,
+                    "type":"Tag",
                     "requirements":[],
                     "childTags":[]
                 }]
@@ -656,6 +678,7 @@ Feature: Main feature for all POST requests with path 'tag'
             "urlPath":"urlPath",
             "content":"Content text",
             "weight":1,
+            "type":"Tag",
             "requirements":
                 [{
                     "type":"Course",
@@ -671,6 +694,7 @@ Feature: Main feature for all POST requests with path 'tag'
                     "urlPath":"urlPath",
                     "content":"Content text",
                     "weight":1,
+                    "type":"Tag",
                     "requirements":[],
                     "childTags":[]
                 }]
@@ -701,6 +725,7 @@ Feature: Main feature for all POST requests with path 'tag'
             "urlPath":"urlPath",
             "content":"Content text",
             "weight":1,
+            "type":"Tag",
             "requirements":
                 [{
                     "type":"Course",
@@ -716,6 +741,7 @@ Feature: Main feature for all POST requests with path 'tag'
                     "urlPath":"urlPath",
                     "content":"Content text",
                     "weight":1,
+                    "type":"Tag",
                     "requirements":[],
                     "childTags":[]
                 }]
@@ -761,6 +787,7 @@ Feature: Main feature for all POST requests with path 'tag'
                     "urlPath":"urlPath",
                     "content":"Content text",
                     "weight":1,
+                    "type":"Tag",
                     "requirements":[],
                     "childTags":[]
                 }]
@@ -797,6 +824,7 @@ Feature: Main feature for all POST requests with path 'tag'
             "urlPath":"someUrlPath",
             "content":"someContent",
             "weight":1,
+            "type":"Tag",
             "requirements":
             [{
                 "type":"Course",
@@ -812,6 +840,7 @@ Feature: Main feature for all POST requests with path 'tag'
                 "urlPath":"someUrlPath",
                 "content":"someContent",
                 "weight":1,
+                "type":"Tag",
                 "requirements":[],
                 "childTags":[]
             }]
@@ -837,6 +866,7 @@ Feature: Main feature for all POST requests with path 'tag'
             "urlPath":"someUrlPath",
             "content":"someContent",
             "weight":1,
+            "type":"Tag",
             "requirements":
             [{
                 "type":"Course",
@@ -852,6 +882,7 @@ Feature: Main feature for all POST requests with path 'tag'
                 "urlPath":"someUrlPath",
                 "content":"someContent",
                 "weight":1,
+                "type":"Tag",
                 "requirements":[],
                 "childTags":[]
             }]
@@ -877,6 +908,7 @@ Feature: Main feature for all POST requests with path 'tag'
             "urlPath":"someUrlPath",
             "content":"someContent",
             "weight":1,
+            "type":"Tag",
             "requirements":[],
             "childTags":
             [{
@@ -886,6 +918,7 @@ Feature: Main feature for all POST requests with path 'tag'
                 "urlPath":"someUrlPath",
                 "content":"someContent",
                 "weight":1,
+                "type":"Tag",
                 "requirements":[],
                 "childTags":[]
             }]
@@ -911,6 +944,7 @@ Feature: Main feature for all POST requests with path 'tag'
             "urlPath":"someUrlPath",
             "content":"someContent",
             "weight":1,
+            "type":"Tag",
             "requirements":
             [{
                 "type":"notExisting",
@@ -926,6 +960,7 @@ Feature: Main feature for all POST requests with path 'tag'
                 "urlPath":"someUrlPath",
                 "content":"someContent",
                 "weight":1,
+                "type":"Tag",
                 "requirements":[],
                 "childTags":[]
             }]
@@ -951,6 +986,7 @@ Feature: Main feature for all POST requests with path 'tag'
             "urlPath":"someUrlPath",
             "content":"someContent",
             "weight":1,
+            "type":"Tag",
             "requirements":
                 [{
                     "type":"Course",
@@ -966,6 +1002,7 @@ Feature: Main feature for all POST requests with path 'tag'
                     "urlPath":"someUrlPath",
                     "content":"someContent",
                     "weight":1,
+                    "type":"Tag",
                     "requirements":[],"childTags":[]
                 }]
         }
@@ -989,6 +1026,7 @@ Feature: Main feature for all POST requests with path 'tag'
             "urlPath":"urlPath1",
             "content":"someContent",
             "weight":1,
+            "type":"Tag",
             "requirements":
                 [
                 {"type":"Site","mandatory":false,"limitToOneTag":false,"system":false},
@@ -1002,6 +1040,7 @@ Feature: Main feature for all POST requests with path 'tag'
                     "urlPath":"someUrlPath",
                     "content":"text1",
                     "weight":1,
+                    "type":"Tag",
                     "requirements":[],
                     "childTags":[]
                 },
@@ -1011,6 +1050,7 @@ Feature: Main feature for all POST requests with path 'tag'
                     "system":false,"urlPath":"urlPath3",
                     "content":"text2",
                     "weight":2,
+                    "type":"Tag",
                     "requirements":[],
                     "childTags":[]
                 }]
@@ -1035,6 +1075,7 @@ Feature: Main feature for all POST requests with path 'tag'
             "urlPath":"urlPath1",
             "content":"someContent",
             "weight":1,
+            "type":"Tag",
             "requirements":
                 [
                 {"type":"Payslips","mandatory":true,"limitToOneTag":true,"system":false}
@@ -1047,6 +1088,7 @@ Feature: Main feature for all POST requests with path 'tag'
                     "urlPath":"urlPath2",
                     "content":"text",
                     "weight":1,
+                    "type":"Tag",
                     "requirements":[],
                     "childTags":[]
                 }]
@@ -1071,6 +1113,7 @@ Feature: Main feature for all POST requests with path 'tag'
             "urlPath":"A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A99A103A107A111A115A119A123A127A12",
             "content":"someContent",
             "weight":1,
+            "type":"Tag",
             "requirements":
                 [
                 {"type":"Payslips","mandatory":true,"limitToOneTag":true,"system":false}
@@ -1083,6 +1126,7 @@ Feature: Main feature for all POST requests with path 'tag'
                     "urlPath":"urlPath2",
                     "content":"someContent",
                     "weight":1,
+                    "type":"Tag",
                     "requirements":[],
                     "childTags":[]
                 }]

@@ -595,7 +595,7 @@
   txtTemplate: ish.email.voucherEmailTemplate.txt
   htmlTemplate: ish.email.voucherEmailTemplate.html
   subject: Voucher ${voucher.voucherProduct.name}
-  entityCLass: Voucher
+  entityClass: Voucher
   short: Email to the student with information about a voucher they have purchased.
   description: Email to the student with information about a voucher they have purchased, including price and voucher code. Can be sent manually from the Sales window when voucher sale is selected.
   category: sales
@@ -641,5 +641,22 @@
     - name: message
       label: Message
       dataType: TEXT
+
+- name: Abandoned cart reminder
+  type: email
+  keyCode: ish.email.abandonedCartReminder
+  txtTemplate: ish.email.abandonedCartReminder.txt
+  htmlTemplate: ish.email.abandonedCartReminder.html
+  subject: ${preference.college.name} shopping basket reminder
+  entityClass: Checkout
+  description: An email with a link to resume an abandoned checkout
+  tags:
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer
 
 

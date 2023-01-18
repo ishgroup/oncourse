@@ -25,3 +25,5 @@ export const validateMinMaxDate = (
 
   return result;
 };
+
+export const validateDate = value => !Number.isNaN(new Date(value).getTime());

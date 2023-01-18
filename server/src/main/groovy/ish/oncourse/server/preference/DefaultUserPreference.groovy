@@ -142,7 +142,8 @@ class DefaultUserPreference {
 
     private static final TableModelDTO SITE_MODEL = new TableModelDTO().with {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Checklists', attribute: Taggable.CHECKLIST_COLORS, sortable: false, width: W100, visible: true),
                 new ColumnDTO(title: 'Name', attribute: Site.NAME.name, sortable: true, width: W100, visible: true),
                 new ColumnDTO(title: 'Country', attribute: Site.COUNTRY.dot("name").name, sortable: true, width: W100, visible: false),
                 new ColumnDTO(title: 'State', attribute: Site.STATE.name, sortable: true, width: W100, visible: false),
@@ -166,7 +167,8 @@ class DefaultUserPreference {
 
     private static final TableModelDTO ROOM_MODEL = new TableModelDTO().with {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Checklists', attribute: Taggable.CHECKLIST_COLORS, sortable: false, width: W100, visible: true),
                 new ColumnDTO(title: 'Name', attribute: Room.NAME.name, sortable: true, width: W100, visible: true),
                 new ColumnDTO(title: 'Site', attribute: Room.SITE.dot("name").name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Seated capacity', attribute: Room.SEATED_CAPACITY.name, sortable: true, width: W200, visible: true)
@@ -181,7 +183,8 @@ class DefaultUserPreference {
 
     private static final TableModelDTO INVOICE_MODEL = new TableModelDTO().with {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Checklists', attribute: Taggable.CHECKLIST_COLORS, sortable: false, width: W100, visible: true),
                 new ColumnDTO(title: 'Type', attribute: AbstractInvoice.TYPE.name, sortable: true, width: W100, visible: true, system: true),
                 new ColumnDTO(title: 'Invoice number', attribute: AbstractInvoice.INVOICE_NUMBER.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Quote number', attribute: AbstractInvoice.QUOTE_NUMBER.name, sortable: true, width: W200, visible: true),
@@ -270,7 +273,8 @@ class DefaultUserPreference {
 
     private static final TableModelDTO PAYSLIP_MODEL = new TableModelDTO().with {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Checklists', attribute: Taggable.CHECKLIST_COLORS, sortable: false, width: W100, visible: true),
                 new ColumnDTO(title: 'Name', attribute: Payslip.CONTACT.dot(Contact.FULL_NAME_KEY).name, sortable: true,
                     width: W200, visible: true, sortFields: [CorporatePass.CONTACT.dot(Contact.LAST_NAME).name,
                                                              CorporatePass.CONTACT.dot(Contact.FIRST_NAME).name,
@@ -292,7 +296,8 @@ class DefaultUserPreference {
 
     private static final TableModelDTO DOCUMENT_MODEL = new TableModelDTO().with() {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Checklists', attribute: Taggable.CHECKLIST_COLORS, sortable: false, width: W100, visible: true),
                 new ColumnDTO(title: 'Link', attribute: Document.LINK_PROPERTY, sortable: false, width: W200, visible: true),
                 new ColumnDTO(title: 'Document name', attribute: Document.NAME.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Date added', attribute: Document.ADDED.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
@@ -380,7 +385,8 @@ class DefaultUserPreference {
 
     private static final TableModelDTO WAIT_LIST_MODEL = new TableModelDTO().with {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Checklists', attribute: Taggable.CHECKLIST_COLORS, sortable: false, width: W100, visible: true),
                 new ColumnDTO(title: 'Created', attribute: WaitingList.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Student', attribute: WaitingList.STUDENT.dot(Student.CONTACT).dot(Contact.FULL_NAME_KEY).name, sortable: true,
                         width: W300, visible: true, sortFields: [WaitingList.STUDENT.dot(Student.CONTACT).dot(Contact.LAST_NAME).name,
@@ -398,7 +404,8 @@ class DefaultUserPreference {
 
     private static final TableModelDTO LEAD_MODEL = new TableModelDTO().with {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Checklists', attribute: Taggable.CHECKLIST_COLORS, sortable: false, width: W100, visible: true),
                 new ColumnDTO(title: 'Created', attribute: Lead.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
                 new ColumnDTO(title: 'Customer', attribute: Lead.CUSTOMER.dot(Contact.FULL_NAME_KEY).name, sortable: true,
                         width: W300, visible: true, sortFields: [Lead.CUSTOMER.dot(Contact.LAST_NAME).name,
@@ -418,7 +425,8 @@ class DefaultUserPreference {
 
     private static final TableModelDTO APPLICATION_MODEL = new TableModelDTO().with {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Checklists', attribute: Taggable.CHECKLIST_COLORS, sortable: false, width: W100, visible: true),
                 new ColumnDTO(title: 'Source', attribute: Application.SOURCE.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Student', attribute: Application.STUDENT.dot(Student.CONTACT).dot(Contact.FULL_NAME_KEY).name, sortable: true,
                         width: W300, visible: true, sortFields: [Application.STUDENT.dot(Student.CONTACT).dot(Contact.LAST_NAME).name,
@@ -440,11 +448,13 @@ class DefaultUserPreference {
 
     private static final TableModelDTO ARTICLE_PRODUCT_MODEL = new TableModelDTO().with {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Checklists', attribute: Taggable.CHECKLIST_COLORS, sortable: false, width: W100, visible: true),
                 new ColumnDTO(title: 'Name', attribute: ArticleProduct.NAME.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Code', attribute: ArticleProduct.SKU.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Price', attribute: ArticleProduct.PRICE_INC_TAX_PROPERTY, sortable: false, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
                 new ColumnDTO(title: 'Number sold', attribute: ArticleProduct.NUMBER_SOLD_PROPERTY, sortable: false, width: W200, visible: true),
+                new ColumnDTO(title: 'Active', attribute: ArticleProduct.IS_ON_SALE.name, sortable: false, width: W200, system: true, type: ColumnTypeDTO.BOOLEAN, visible: true),
         ]
         it.sortings = [
                 new SortingDTO(attribute: ArticleProduct.NAME.name, ascending: true)
@@ -456,7 +466,8 @@ class DefaultUserPreference {
 
     private static final TableModelDTO COURSE_MODEL = new TableModelDTO().with() {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Checklists', attribute: Taggable.CHECKLIST_COLORS, sortable: false, width: W100, visible: true),
                 new ColumnDTO(title: 'Name', attribute: Course.NAME.name, sortable: true, width: W400, visible: true),
                 new ColumnDTO(title: 'Code', attribute: Course.CODE.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Field', attribute: Course.FIELD_OF_EDUCATION.name, sortable: true, width: W200, visible: true),
@@ -513,12 +524,14 @@ class DefaultUserPreference {
 
     private static final TableModelDTO VOUCHER_PRODUCT_MODEL = new TableModelDTO().with() {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Checklists', attribute: Taggable.CHECKLIST_COLORS, sortable: false, width: W100, visible: true),
                 new ColumnDTO(title: 'SKU', attribute: VoucherProduct.SKU.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Name', attribute: VoucherProduct.NAME.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Price', attribute: VoucherProduct.PRICE_EX_TAX.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
                 new ColumnDTO(title: 'Online purchase', attribute: VoucherProduct.IS_WEB_VISIBLE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.BOOLEAN),
                 new ColumnDTO(title: 'Number sold', attribute: VoucherProduct.SOLD_VOUCHERS_COUNT, sortable: false, width: W200, visible: true),
+                new ColumnDTO(title: 'Active', attribute: ArticleProduct.IS_ON_SALE.name, sortable: false, width: W200, system: true, type: ColumnTypeDTO.BOOLEAN, visible: true),
         ]
         it.sortings = [
                 new SortingDTO(attribute: VoucherProduct.SKU.name, ascending: true)
@@ -530,12 +543,14 @@ class DefaultUserPreference {
 
     private static final TableModelDTO MEMBERSHIP_PRODUCT_MODEL = new TableModelDTO().with() {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Checklists', attribute: Taggable.CHECKLIST_COLORS, sortable: false, width: W100, visible: true),
                 new ColumnDTO(title: 'Name', attribute: MembershipProduct.NAME.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Price', attribute: MembershipProduct.PRICE_INC_TAX_PROPERTY, sortFields: [MembershipProduct.PRICE_EX_TAX.name], sortable: true, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
                 new ColumnDTO(title: 'SKU', attribute: MembershipProduct.SKU.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Active memberships', attribute: MembershipProduct.ACTIVE_MEMBERSHIPS_COUNT_KEY, sortable: false, width: W200, visible: false),
                 new ColumnDTO(title: 'Number sold', attribute: MembershipProduct.SOLD_COUNT_KEY, sortable: false, width: W200, visible: false),
+                new ColumnDTO(title: 'Active', attribute: ArticleProduct.IS_ON_SALE.name, sortable: false, width: W200, system: true, type: ColumnTypeDTO.BOOLEAN, visible: true),
         ]
         it.sortings = [
             new SortingDTO(attribute: MembershipProduct.NAME.name, ascending: true)
@@ -625,12 +640,13 @@ class DefaultUserPreference {
 
     private static final TableModelDTO SALE_MODEL = new TableModelDTO().with() {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Checklists', attribute: Taggable.CHECKLIST_COLORS, sortable: false, width: W100, visible: true),
                 new ColumnDTO(title: 'Name', attribute: ProductItem.PRODUCT.dot(Product.NAME).name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Type', attribute: ProductItem.TYPE_STRING_DEFENITION, sortable: false, width: W200, visible: true),
                 new ColumnDTO(title: 'SKU', attribute: ProductItem.PRODUCT.dot(Product.SKU).name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Expires', attribute: ProductItem.EXPIRY_DATE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
-                new ColumnDTO(title: 'Status', attribute: ProductItem.DISPLAYABLE_STATUS, sortFields: [ProductItem.STATUS.name], sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Status', attribute: ProductItem.DISPLAYABLE_STATUS, sortFields: [ProductItem.STATUS.name], sortable: true, width: W200, system: true, visible: true),
                 new ColumnDTO(
                         title: 'Purchased by',
                         attribute: ProductItem.INVOICE_LINE.dot(InvoiceLine.INVOICE)
@@ -691,6 +707,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Start date', attribute: Outcome.START_DATE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'End date', attribute: Outcome.END_DATE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Delivery mode', attribute: Outcome.DELIVERY_MODE.name, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Printed certificate', attribute: Outcome.PRINTED_CERTIFICATE_KEY, sortable: false, width: W200, visible: false),
                 /*new ColumnDTO(title: '% of present attendance', attribute: Outcome.PRESENT_ATTENDENCE_PERCENT_KEY, sortable: false, width: W200, visible: false),
                 new ColumnDTO(title: '% of marked asssessments', attribute: Outcome.MARKED_ASSESSMENT_PERCENT_KEY, sortable: false, width: W200, visible: false),*/
         ]
@@ -704,7 +721,8 @@ class DefaultUserPreference {
 
     private static final ASSESSMENT_MODEL = new TableModelDTO().with() {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Checklists', attribute: Taggable.CHECKLIST_COLORS, sortable: false, width: W100, visible: true),
                 new ColumnDTO(title: 'Code', attribute: Assessment.CODE.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Name', attribute: Assessment.NAME.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Active', attribute: Assessment.ACTIVE.name, sortable: true, width: W200, visible: false, system: true, type: ColumnTypeDTO.BOOLEAN),
@@ -759,7 +777,8 @@ class DefaultUserPreference {
 
     private static final ENROLMENT_MODEL = new TableModelDTO().with() {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Checklists', attribute: Taggable.CHECKLIST_COLORS, sortable: false, width: W100, visible: true),
                 new ColumnDTO(title: 'Source', attribute: Enrolment.SOURCE.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Name',
                         attribute: Enrolment.STUDENT.dot(Student.CONTACT).dot(Contact.FULL_NAME_KEY).name,
@@ -813,7 +832,7 @@ class DefaultUserPreference {
 
     private static final MESSAGE_MODEL = new TableModelDTO().with() {
         it.columns = [
-                new ColumnDTO(title: 'Date time', attribute: Message.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
+                new ColumnDTO(title: 'Date time', attribute: Message.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
                 new ColumnDTO(title: 'Sent by', attribute: Message.CREATED_BY.dot(SystemUser.LOGIN).name, sortable: false, width: W200, visible: true),
                 new ColumnDTO(title: 'Recipients', attribute: Message.RECIPIENTS_STRING_PROPERTY, sortable: false, width: W200, visible: true),
                 new ColumnDTO(title: 'SMS', attribute: Message.IS_SMS_PROPERTY, sortable: false, width: W200, visible: true, type: ColumnTypeDTO.BOOLEAN),
@@ -849,14 +868,15 @@ class DefaultUserPreference {
 
     private static final COURSECLASS_MODEL = new TableModelDTO().with {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Checklists', attribute: Taggable.CHECKLIST_COLORS, sortable: false, width: W100, visible: true),
                 new ColumnDTO(title: 'Course', attribute: CourseClass.COURSE.dot(Course.NAME).name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Code', attribute: CourseClass.UNIQUE_CODE_PROPERTY, sortable: true, width: W200, visible: true,
                         sortFields: [CourseClass.COURSE.dot(Course.CODE).name,
                                      CourseClass.CODE.name]),
                 new ColumnDTO(title: 'Starts', attribute: CourseClass.START_DATE_TIME.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
                 new ColumnDTO(title: 'Ends', attribute: CourseClass.END_DATE_TIME.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
-                new ColumnDTO(title: 'Sessions', attribute: CourseClass.SESSIONS_COUNT, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Sessions', attribute: CourseClass.SESSIONS_COUNT, sortable: false, width: W200, visible: true),
                 new ColumnDTO(title: 'Fee', attribute: CourseClass.FEE_INC_GST, sortable: false, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
                 new ColumnDTO(title: 'Tutor', attribute: CourseClass.TUTORS_ABRIDGED_PROP, sortable: false, width: W200, visible: true),
                 new ColumnDTO(title: 'Site name', attribute: CourseClass.ROOM.dot(Room.SITE).dot(Site.NAME).name, sortable: true, width: W200, visible: true, sortFields: [CourseClass.ROOM.outer().dot(Room.SITE).outer().dot(Site.NAME).name]),
@@ -878,7 +898,8 @@ class DefaultUserPreference {
 
     private static final CONTACT_MODEL = new TableModelDTO().with {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Checklists', attribute: Taggable.CHECKLIST_COLORS, sortable: false, width: W100, visible: true),
                 new ColumnDTO(title: 'Name', attribute: Contact.FULL_NAME_KEY, sortable: true,
                         width: W300, visible: true, sortFields: [Contact.LAST_NAME.name,
                                                                  Contact.FIRST_NAME.name,

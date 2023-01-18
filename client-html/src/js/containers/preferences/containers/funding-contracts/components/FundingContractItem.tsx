@@ -52,8 +52,7 @@ const FundingContractItem = props => {
                     name={`${item}.name`}
                     label="Name"
                     className={classes.inputWidth}
-                    fullWidth
-                    required
+                                        required
                   />
                 </Grid>
                 <Grid item xs={7} className="d-flex-start justify-content-end">
@@ -72,13 +71,11 @@ const FundingContractItem = props => {
                   label="Flavour"
                   items={Flavours}
                   className="pr-3"
-                  fullWidth
-                  required
+                                    required
                 />
               </Grid>
               <Grid item xs={5}>
                 <FormControlLabel
-                  className="checkbox p-3"
                   control={<FormField type="checkbox" name={`${item}.active`} color="primary" />}
                   label="Active"
                 />

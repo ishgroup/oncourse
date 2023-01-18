@@ -37,7 +37,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/room'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["[]","testRoom10","site1","100"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]",null,"testRoom10","site1","100"])].id
 #       <----->
 
         Given path ishPath + '/' + id
@@ -79,7 +79,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/room'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["[]","testRoom11","site1","100"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]",null,"testRoom11","site1","100"])].id
 
 #       <--->  Login as notadmin:
         * configure headers = { Authorization:  'UserWithRightsDelete'}
@@ -126,7 +126,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/room'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["[]","testRoom12","site1","100"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]",null,"testRoom12","site1","100"])].id
 
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsCreate'}

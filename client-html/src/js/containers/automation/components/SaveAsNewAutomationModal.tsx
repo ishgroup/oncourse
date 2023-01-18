@@ -18,13 +18,12 @@ interface Props {
   opened: any;
   onClose: any;
   onSave: any;
-  hasNameField?: boolean;
-  validateNameField?: any;
+  validateNameField: any;
 }
 
 const SaveAsNewAutomationModal = React.memo<Props & InjectedFormProps>(
   ({
-     opened, handleSubmit, invalid, onClose, onSave, hasNameField, validateNameField
+     opened, handleSubmit, invalid, onClose, onSave, validateNameField
     }) => (
       <Dialog open={opened} onClose={onClose} maxWidth="md" scroll="body">
         <form autoComplete="off" onSubmit={handleSubmit(onSave)}>
@@ -44,20 +43,16 @@ const SaveAsNewAutomationModal = React.memo<Props & InjectedFormProps>(
               name="keyCode"
               validate={validateKeycode}
               required
-              fullWidth
-            />
+                          />
 
-            {hasNameField
-              && (
-              <FormField
-                type="text"
-                label="Name"
-                name="name"
-                validate={validateNameField || undefined}
-                required
-                fullWidth
-              />
-          )}
+            <FormField
+              type="text"
+              label="Name"
+              name="name"
+              validate={validateNameField || undefined}
+              className="mt-2"
+              required
+                          />
 
           </DialogContent>
 

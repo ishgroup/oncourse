@@ -7,7 +7,7 @@
  */
 
 import { isBefore } from "date-fns";
-import React, { Dispatch, useCallback, useEffect, useState } from "react";
+import React, { Dispatch, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
 import Typography from "@mui/material/Typography";
@@ -18,18 +18,17 @@ import ListView from "../../../common/components/list-view/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import {
-  createContact,
-  deleteContact,
   getContact,
   getContactsConcessionTypes,
   getContactsRelationTypes,
   getContactsTaxTypes,
-  getContactTags,
-  updateContact
+  getContactTags
 } from "./actions";
 import ContactEditView from "./components/ContactEditView";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import { getContactRelationTypes, getCountries, getLanguages, getPaymentTypes } from "../../preferences/actions";
+import {
+ getContactRelationTypes, getCountries, getLanguages, getPaymentTypes 
+} from "../../preferences/actions";
 import { getDefaultInvoiceTerms } from "../invoices/actions";
 import ContactCogWheel from "./components/ContactCogWheel";
 import { checkPermissions } from "../../../common/actions";
@@ -46,14 +45,10 @@ export type ContactType = "STUDENT" | "TUTOR" | "COMPANY" | "TUTOR_STUDENT";
 
 interface ContactsProps {
   onInit?: () => void;
-  onCreate?: (contact: Contact) => void;
-  onSave?: (id: string, contact: Contact) => void;
   getRecords?: () => void;
   getFilters?: () => void;
-  onDelete?: (id: number) => void;
   clearListState?: () => void;
   getTags?: () => void;
-  getContactRecord?: (id: string) => void;
   getCountries?: () => void;
   getLanguages?: () => void;
   getContactsRelationTypes?: () => void;
@@ -148,7 +143,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Applications", list: "application", expression: "student.contact.id" },
   { title: "Audits", list: "audit", expression: "entityIdentifier == Contact and entityId" },
   { title: "Certificates", list: "certificate", expression: "student.contact.id" },
@@ -237,13 +232,10 @@ const setRowClasses = row => {
 
 const Contacts: React.FC<ContactsProps> = props => {
   const {
-    onDelete,
     getFilters,
     clearListState,
     onInit,
-    onSave,
     getTags,
-    getContactRecord,
     getCountries,
     getLanguages,
     getContactsRelationTypes,
@@ -256,14 +248,13 @@ const Contacts: React.FC<ContactsProps> = props => {
     selection,
     isVerifyingUSI,
     usiVerificationResult,
-    onCreate,
     getPaymentTypes,
   } = props;
 
   const [findRelatedItems, setFindRelatedItems] = useState([]);
 
   useEffect(() => {
-    if (relationTypes && selection.length) {
+    if (relationTypes) {
       const relationTypesItem: FindRelatedItem = {
         title: "Contacts related as...",
         items: [{ title: "All related contacts", list: "contact", expression: "allRelatedContacts.id" }]
@@ -271,13 +262,11 @@ const Contacts: React.FC<ContactsProps> = props => {
 
       relationTypes.forEach(t => {
         if (t.relationName === t.reverseRelationName) {
-          const allSelected = selection.join(", ");
-
           relationTypesItem.items.push({
             title: t.relationName,
             list: "contact",
             // eslint-disable-next-line max-len
-            customExpression: `(fromRelationType.id = "${t.id}" and fromRelatedContacts.id in (${allSelected})) or (toRelationType.id = "${t.id}" and toRelatedContacts.id in (${allSelected}))`
+            customExpression: ids => `(fromRelationType.id = "${t.id}" and fromRelatedContacts.id in (${ids})) or (toRelationType.id = "${t.id}" and toRelatedContacts.id in (${ids}))`
           });
 
           return;
@@ -322,32 +311,6 @@ const Contacts: React.FC<ContactsProps> = props => {
     };
   }, []);
 
-  const onContactSave = useCallback((id: string, contact) => {
-    const contactModel = { ...contact };
-    const { student, relations } = contactModel;
-
-    if (student) delete contactModel.student.education;
-
-    contactModel.relations = formatRelationsBeforeSave(relations);
-
-    if (contactModel.isCompany) delete contactModel.firstName;
-
-    onSave(id, contactModel);
-  }, []);
-
-  const onContactCreate = useCallback(contact => {
-    const contactModel = { ...contact };
-    const { student, relations } = contactModel;
-
-    if (student) delete contactModel.student.education;
-
-    contactModel.relations = formatRelationsBeforeSave(relations);
-
-    if (contactModel.isCompany) delete contactModel.firstName;
-
-    onCreate(contactModel);
-  }, []);
-
   const getContactFullNameWithTitle = (values: Contact) =>
     `${!values.isCompany && values.title && values.title.trim().length > 0 ? `${values.title} ` : ""}${!values.isCompany ? getContactFullName(values) : values.lastName}`;
 
@@ -366,16 +329,13 @@ const Contacts: React.FC<ContactsProps> = props => {
         nameCondition: getContactFullNameWithTitle,
         disabledSubmitCondition: getDisabledSubmitCondition(isVerifyingUSI, usiVerificationResult),
         asyncValidate: notesAsyncValidate,
-        asyncBlurFields: ["notes[].message"],
+        asyncChangeFields: ["notes[].message"],
         hideTitle: true
       }}
       EditViewContent={ContactEditView}
-      getEditRecord={getContactRecord}
+      customGetAction={getContact}
       rootEntity="Contact"
-      onCreate={onContactCreate}
       onInit={onInit}
-      onSave={onContactSave}
-      onDelete={onDelete}
       findRelated={findRelatedItems}
       filterGroupsInitial={filterGroups}
       CogwheelAdornment={ContactCogWheel}
@@ -402,10 +362,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getContactsConcessionTypes: () => dispatch(getContactsConcessionTypes()),
   getDefaultTerms: () => dispatch(getDefaultInvoiceTerms()),
   getTaxTypes: () => dispatch(getContactsTaxTypes()),
-  getContactRecord: (id: number) => dispatch(getContact(id)),
-  onDelete: (id: number) => dispatch(deleteContact(id)),
-  onSave: (id: string, contact: Contact) => dispatch(updateContact(id, contact)),
-  onCreate: (contact: Contact) => dispatch(createContact(contact)),
   clearListState: () => dispatch(clearListState()),
   getPermissions: () => {
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));

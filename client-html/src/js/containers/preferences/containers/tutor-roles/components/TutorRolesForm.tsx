@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React from "react";
@@ -13,7 +16,7 @@ import FormField from "../../../../../common/components/form/formFields/FormFiel
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import PayRates from "./PayRates";
@@ -71,26 +74,27 @@ const TutorRolesForm = React.memo<Props>(
           fields={(
             <Grid item xs={12}>
               <FormField
+                type="text"
                 name="name"
                 label="Name"
                 required
               />
             </Grid>
-        )}
+          )}
           actions={!isNew && (
-          <AppBarActions
-            actions={[
-              {
-                action: handleDelete,
-                icon: <DeleteForever />,
-                confirm: true,
-                tooltip: "Delete tutor role",
-                confirmText: "Role will be deleted permanently",
-                confirmButtonText: "DELETE"
-              }
-            ]}
-          />
-        )}
+            <AppBarActions
+              actions={[
+                {
+                  action: handleDelete,
+                  icon: <DeleteForever/>,
+                  confirm: true,
+                  tooltip: "Delete tutor role",
+                  confirmText: "Role will be deleted permanently",
+                  confirmButtonText: "DELETE"
+                }
+              ]}
+            />
+          )}
         >
           <Grid container>
             <Grid item xs={9}>
@@ -104,7 +108,7 @@ const TutorRolesForm = React.memo<Props>(
                   />
                 </Grid>
                 <Grid item xs={3}>
-                  <FormField type="switch" name="active" label="Enabled" color="primary" fullWidth />
+                  <FormField type="switch" name="active" label="Enabled" color="primary" />
                 </Grid>
               </Grid>
             </Grid>

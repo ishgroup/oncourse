@@ -70,7 +70,11 @@ public class DataPopulation implements Runnable {
 		for (var path : filePaths) {
 			try (InputStream resourceAsStream = ResourcesUtil.getResourceAsInputStream(path)) {
 					Yaml yaml = new Yaml();
-					resourcesList.addAll(yaml.load(resourceAsStream));
+					var loaded = yaml.load(resourceAsStream);
+					if(loaded instanceof LinkedHashMap<?,?>)
+						resourcesList.add((Map<String, Object>) loaded);
+					else
+						resourcesList.addAll((Collection<? extends Map<String, Object>>) loaded);
 			} catch (IOException ex) {
 				logger.warn("Failed to import file {}: {}", type.getDisplayName(), path);
 			}
@@ -128,7 +132,7 @@ public class DataPopulation implements Runnable {
 			try {
 				DataPopulationUtils.updateMessage(context, props);
 			} catch (Exception e) {
-				logger.error("{} {} was not importes", ResourceType.MESSAGING.getDisplayName(), props.get(ResourceProperty.NAME.getDisplayName()), e);
+				logger.error("{} {} was not imported", ResourceType.MESSAGING.getDisplayName(), props.get(ResourceProperty.NAME.getDisplayName()), e);
 			}
 		});
 		removeFromDbDeletedResources(context, emailYamls, ResourceType.MESSAGING);
@@ -139,7 +143,7 @@ public class DataPopulation implements Runnable {
 			try {
 				DataPopulationUtils.updateExport(context, props);
 			} catch (Exception e) {
-				logger.error("{} {} was not importes", ResourceType.EXPORT.getDisplayName(), props.get(ResourceProperty.NAME.getDisplayName()), e);
+				logger.error("{} {} was not imported", ResourceType.EXPORT.getDisplayName(), props.get(ResourceProperty.NAME.getDisplayName()), e);
 			}
 		});
 		removeFromDbDeletedResources(context, exports, ResourceType.EXPORT);

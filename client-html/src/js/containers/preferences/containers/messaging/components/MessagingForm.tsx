@@ -17,7 +17,7 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { openInternalLink } from "../../../../../common/utils/links";
 import * as Model from "../../../../../model/preferences/Messaging";
 import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
@@ -101,7 +101,6 @@ class MessagingBaseForm extends React.Component<any, any> {
                 name={this.formModel.EmailFromAddress.uniqueKey}
                 label="Email"
                 validate={[this.validateEmailFromAddress, validateEmail]}
-                fullWidth
               />
             </Grid>
 
@@ -114,7 +113,6 @@ class MessagingBaseForm extends React.Component<any, any> {
                 type="text"
                 name={this.formModel.EmailFromName.uniqueKey}
                 label="Email from name (e.g. College ABC)"
-                fullWidth
               />
             </Grid>
 
@@ -128,7 +126,6 @@ class MessagingBaseForm extends React.Component<any, any> {
                 name={this.formModel.EmailAdminAddress.uniqueKey}
                 label="System administrator email address"
                 validate={validateEmail}
-                fullWidth
               />
             </Grid>
 
@@ -161,7 +158,6 @@ class MessagingBaseForm extends React.Component<any, any> {
                     type="checkbox"
                     name={this.formModel.EmailBounceEnabled.uniqueKey}
                     color="primary"
-                    value="true"
                     stringValue
                   />
                 )}
@@ -175,7 +171,6 @@ class MessagingBaseForm extends React.Component<any, any> {
                 name={this.formModel.EmailPop3Host.uniqueKey}
                 label="Incoming mail server address (POP3)"
                 validate={emailBounceEnabled ? validateSingleMandatoryField : null}
-                fullWidth
               />
             </Grid>
 
@@ -189,7 +184,6 @@ class MessagingBaseForm extends React.Component<any, any> {
                 name={this.formModel.EmailBounceAddress.uniqueKey}
                 label="Email address to which bounces are sent"
                 validate={emailBounceEnabled ? [validateSingleMandatoryField, validateEmail] : validateEmail}
-                fullWidth
               />
             </Grid>
           </Grid>
@@ -201,7 +195,6 @@ class MessagingBaseForm extends React.Component<any, any> {
                 name={this.formModel.EmailPop3Account.uniqueKey}
                 label="Account"
                 validate={emailBounceEnabled ? validateSingleMandatoryField : null}
-                fullWidth
               />
             </Grid>
 
@@ -214,7 +207,6 @@ class MessagingBaseForm extends React.Component<any, any> {
                 type="password"
                 name={this.formModel.EmailPop3Password.uniqueKey}
                 label="Password"
-                fullWidth
               />
             </Grid>
           </Grid>
@@ -252,7 +244,6 @@ class MessagingBaseForm extends React.Component<any, any> {
                 type="text"
                 name={this.formModel.SMSFromAddress.uniqueKey}
                 label="SMS from"
-                fullWidth
               />
             </Grid>
           </Grid>

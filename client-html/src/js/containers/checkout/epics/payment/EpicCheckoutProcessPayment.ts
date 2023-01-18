@@ -65,7 +65,7 @@ const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionI
         persist: true
       }
     }] : FetchErrorHandler(response,
-      response.data.responseText
+      response.data?.responseText
         ? response.data.responseText
         : /(4|5)+/.test(response.status)
         ? response.error

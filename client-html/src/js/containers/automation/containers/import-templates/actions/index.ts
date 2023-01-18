@@ -6,7 +6,6 @@ export const GET_IMPORT_TEMPLATES_LIST = _toRequestType("get/import-templates/li
 export const GET_IMPORT_TEMPLATES_LIST_FULFILLED = FULFILLED(GET_IMPORT_TEMPLATES_LIST);
 
 export const CREATE_IMPORT_TEMPLATE = _toRequestType("post/import-templates/list");
-export const CREATE_IMPORT_TEMPLATE_FULFILLED = FULFILLED(CREATE_IMPORT_TEMPLATE);
 
 export const UPDATE_IMPORT_TEMPLATE = _toRequestType("put/import-templates/list");
 export const UPDATE_IMPORT_TEMPLATE_FULFILLED = FULFILLED(UPDATE_IMPORT_TEMPLATE);

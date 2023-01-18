@@ -9,7 +9,7 @@
 import React, { useCallback } from "react";
 import ExecuteScriptModal from "../../../containers/automation/containers/scripts/components/ExecuteScriptModal";
 import { BooleanArgFunction, StringArgFunction } from "../../../model/common/CommonFunctions";
-import navigation from "./navigation.json";
+import navigation from "./data/navigation.json";
 import SideBarHeader from "../layout/side-bar-list/SideBarHeader";
 
 interface Props {

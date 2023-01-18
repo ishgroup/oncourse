@@ -1,6 +1,6 @@
 import * as React from "react";
 import {
-  render as testRender, screen as testScreen, waitFor, cleanup, fireEvent as testFireEvent
+  render as testRender, screen as testScreen, fireEvent as testFireEvent
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { mockedAPI, TestEntry } from "../TestEntry";
@@ -14,7 +14,7 @@ interface Props {
   }) => any;
   defaultProps?: ({ entity, initialValues, mockedApi }) => object;
   beforeFn?: () => void;
-  state?: (mockedApi: any) => object;
+  state?: ({ mockedApi, viewProps }) => object;
 }
 
 export const defaultComponents = (props: Props) => {
@@ -36,24 +36,18 @@ export const defaultComponents = (props: Props) => {
     viewProps = { ...viewProps, ...defaultProps({ entity, initialValues, mockedApi: mockedAPI }) };
   }
 
-  const MockedEditView = pr => <View {...{ ...pr, ...viewProps }} />;
-
   if (beforeFn) {
     beforeFn();
   }
 
-  afterEach(cleanup);
+  testRender(
+    <TestEntry state={state ? { ...state({ mockedApi: mockedAPI, viewProps }) } : {}}>
+      <View {...viewProps} />
+    </TestEntry>
+  );
 
-  it(`${entity} components should render with given values`, async () => {
-    await waitFor(() => testRender(
-      <TestEntry state={state ? { ...state(mockedAPI) } : {}}>
-        <MockedEditView />
-      </TestEntry>,
-    ), {
-      timeout: 2000
-    });
-
-    return render({
+  it(`${entity} components should render with given values`, () => {
+    render({
       screen: testScreen,
       initialValues,
       mockedApi: mockedAPI,

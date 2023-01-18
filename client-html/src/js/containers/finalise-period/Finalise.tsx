@@ -29,7 +29,7 @@ import Button from "@mui/material/Button";
 import FormField from "../../common/components/form/formFields/FormField";
 import { getFinaliseInfo, updateFinaliseDate } from "./actions";
 import { StringArgFunction } from "../../model/common/CommonFunctions";
-import LoadingIndicator from "../../common/components/layout/LoadingIndicator";
+import LoadingIndicator from "../../common/components/progress/LoadingIndicator";
 import { StyledCheckbox } from "../../common/components/form/formFields/CheckboxField";
 import { EEE_D_MMM_YYYY } from "../../common/utils/dates/format";
 import { validateSingleMandatoryField, validateMinMaxDate } from "../../common/utils/validation";
@@ -43,8 +43,6 @@ interface Props {
   getFinaliseInfo: StringArgFunction;
   updateFinaliseDate: StringArgFunction;
 }
-
-const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => <Slide direction="up" ref={ref} {...props as any} timeout={300} />);
 
 const LinkItem = React.memo<any>(({ label, error, onClick }) => (label ? (
   <Typography
@@ -167,9 +165,7 @@ const Finalise = React.memo<Props>(({
                 type="date"
                 name="targetDate"
                 label={finalaseDateLabel}
-                minDate={values.lastDate}
                 validate={[validateSingleMandatoryField, validateMinDate]}
-                fullWidth
               />
             </Grid>
             <Grid item xs={6}>

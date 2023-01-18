@@ -2,15 +2,13 @@ import * as React from "react";
 import Grid from "@mui/material/Grid";
 import { withRouter } from "react-router";
 import { withStyles } from "@mui/styles";
-import AddIcon from "@mui/icons-material/Add";
 import {
   Form, FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
 } from "redux-form";
 import { Tax } from "@api/model";
 import isEqual from "lodash.isequal";
-import Fab from "@mui/material/Fab";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { formCommonStyles } from "../../../styles/formCommonStyles";
 import TaxTypesRenderer from "./TaxTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
@@ -38,7 +36,6 @@ interface Props {
   openConfirm: ShowConfirmCaller;
   history: any;
   nextLocation: string;
-  setNextLocation: (nextLocation: string) => void;
 }
 
 class TaxTypesBaseForm extends React.Component<Props, any> {
@@ -70,12 +67,11 @@ class TaxTypesBaseForm extends React.Component<Props, any> {
 
   componentDidUpdate() {
     const {
-      dirty, nextLocation, setNextLocation, history
+      dirty, nextLocation, history
     } = this.props;
 
     if (nextLocation && !dirty) {
       history.push(nextLocation);
-      setNextLocation('');
     }
   }
 

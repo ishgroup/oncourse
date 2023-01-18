@@ -30,12 +30,12 @@ import { AnyArgFunction, NumberArgFunction, StringArgFunction } from "../../../.
 import { EditViewProps } from "../../../../model/common/ListView";
 import { State } from "../../../../reducers/state";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
 import { openQualificationLink } from "../../qualifications/utils";
 import { clearCertificateOutcomes, getCertificateOutcomes, setCertificateOutcomesSearch } from "../actions";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import Uneditable from "../../../../common/components/form/Uneditable";
+import { getContactFullName } from "../../contacts/utils";
 
 interface Props extends EditViewProps {
   status?: string;
@@ -123,7 +123,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
                   change(
                     form,
                     "studentName",
-                    contactLabelCondition({ firstName: res.rows[0].values[0], lastName: res.rows[0].values[1] })
+                    getContactFullName({ firstName: res.rows[0].values[0], lastName: res.rows[0].values[1] })
                   )
                 );
               }
@@ -147,7 +147,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
 
   const onStudentIdChange = useCallback(
     (contact: Contact) => {
-      dispatch(change(form, "studentName", contactLabelCondition(contact)));
+      dispatch(change(form, "studentName", getContactFullName(contact)));
       dispatch(change(form, "outcomes", []));
       clearCertificateOutcomes(false);
     },
@@ -270,14 +270,14 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
           fields={(
             <Grid item xs={twoColumn ? 6 : 12}>
               <FormField
-                type="remoteDataSearchSelect"
+                type="remoteDataSelect"
                 entity="Contact"
                 aqlFilter="isStudent is true"
                 name="studentContactId"
                 label="Student name"
                 selectValueMark="id"
-                selectLabelCondition={contactLabelCondition}
-                defaultDisplayValue={values && defaultContactName(values.studentName)}
+                selectLabelCondition={getContactFullName}
+                defaultValue={values.studentName}
                 onInnerValueChange={onStudentIdChange}
                 labelAdornment={(
                   <ContactLinkAdornment id={values?.studentContactId} />
@@ -325,7 +325,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
         </Grid>
 
         <Grid item xs={twoColumn ? 12 : 6} className={classes.select1}>
-          {values && defaultContactName(values.studentName)}
+          {values.studentName}
         </Grid>
 
         <Grid item xs={12}>
@@ -336,7 +336,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
 
         <Grid item xs={twoColumn ? 3 : 12} className={classes.select2}>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             entity="Qualification"
             name="nationalCode"
             label="National code"
@@ -358,7 +358,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
 
         <Grid item xs={twoColumn ? 3 : 12} className={classes.select3}>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             entity="Qualification"
             name="title"
             label="Qualification"
@@ -393,8 +393,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
               type="multilineText"
               name="publicNotes"
               label="Printed public notes / Specialization"
-              fullWidth
-            />
+                          />
           </Grid>
         </Grid>
 
@@ -444,7 +443,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
 
         <Grid item container xs={12} className={twoColumn ? "pt-2 pb-2" : undefined}>
           <Grid item xs={twoColumn ? 6 : 12}>
-            <FormField type="multilineText" name="privateNotes" label="Private notes" fullWidth />
+            <FormField type="multilineText" name="privateNotes" label="Private notes" />
           </Grid>
         </Grid>
 

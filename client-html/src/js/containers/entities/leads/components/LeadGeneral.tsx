@@ -25,7 +25,7 @@ import {
   HeaderContactTitle
 } from "../../../../common/components/form/FieldAdornments";
 import {
- contactLabelCondition, defaultContactName, getContactName
+  getContactFullName
 } from "../../contacts/utils";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
@@ -41,6 +41,7 @@ import history from "../../../../constants/History";
 import { RELATION_COURSE_COLUMNS } from "../../common/entityConstants";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { formatRelatedSalables, mapRelatedSalables } from "../../common/utils";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 const statusItems = Object.keys(LeadStatus).map(mapSelectItems);
 
@@ -114,7 +115,7 @@ const LeadGeneral = (props: Props) => {
   const classes = useStyles();
 
   const onContactChange = value => {
-    dispatch(change(form, "contactName", getContactName(value)));
+    dispatch(change(form, "contactName", getContactFullName(value)));
   };
 
   useEffect(() => {
@@ -176,13 +177,13 @@ const LeadGeneral = (props: Props) => {
           fields={(
             <Grid item xs={twoColumn ? 6 : 12}>
               <FormField
-                type="remoteDataSearchSelect"
+                type="remoteDataSelect"
                 label="Contact"
                 entity="Contact"
                 name="contactId"
                 selectValueMark="id"
-                selectLabelCondition={contactLabelCondition}
-                defaultDisplayValue={defaultContactName(values.contactName)}
+                selectLabelCondition={getContactFullName}
+                defaultValue={values.contactName}
                 onInnerValueChange={onContactChange}
                 itemRenderer={ContactSelectItemRenderer}
                 disabled={!isNew}
@@ -196,34 +197,44 @@ const LeadGeneral = (props: Props) => {
           )}
         />
       </Grid>
-      <Grid item xs={twoColumn ? 6 : 12}>
-        {!isNew
-          && (
+      <Grid item container rowSpacing={2} xs={twoColumn ? 6 : 12}>
+        <Grid item xs={12}>
           <FormField
-            type="searchSelect"
-            name="assignToId"
-            label="Assigned to"
-            selectValueMark="id"
-            selectLabelCondition={contactLabelCondition}
-            defaultDisplayValue={defaultContactName(values.assignTo)}
-            disabled={!users}
-            items={users}
-            required
+            type="tags"
+            name="tags"
+            tags={tags}
           />
+        </Grid>
+        {!isNew
+        && (
+          <Grid item xs={12}>
+            <FormField
+              type="select"
+              name="assignToId"
+              label="Assigned to"
+              selectValueMark="id"
+              selectLabelCondition={getContactFullName}
+              defaultValue={values.assignTo}
+              disabled={!users}
+              items={users}
+              required
+            />
+          </Grid>
         )}
+        <Grid item xs={12}>
+          <FormField type="number" name="studentCount" label="Number of students" />
+        </Grid>
+        <Grid item xs={12}>
+          <FormField type="dateTime" name="nextActionOn" label="Next action on" />
+        </Grid>
       </Grid>
       <Grid item xs={twoColumn ? 6 : 12}>
-        <FormField
-          type="tags"
-          name="tags"
-          tags={tags}
+        <EntityChecklists
+          entity="Lead"
+          form={form}
+          entityId={values.id}
+          checked={values.tags}
         />
-      </Grid>
-      <Grid item xs={twoColumn ? 6 : 12}>
-        <FormField type="number" name="studentCount" label="Number of students" />
-      </Grid>
-      <Grid item xs={twoColumn ? 6 : 12}>
-        <FormField type="dateTime" name="nextActionOn" label="Next action on" />
       </Grid>
       <Grid item xs={twoColumn ? 6 : 12}>
         <div className="centeredFlex">
@@ -232,6 +243,7 @@ const LeadGeneral = (props: Props) => {
             name="estimatedValue"
             label="Estimated value"
             normalize={normalizeNumberToZero}
+            debounced={false}
           />
           <Chip
             size="small"

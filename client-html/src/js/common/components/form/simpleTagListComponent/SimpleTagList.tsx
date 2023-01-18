@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, {
@@ -8,17 +11,15 @@ import React, {
 } from "react";
 import { Tag } from "@api/model";
 import {
- FormControl, FormHelperText, Input, InputAdornment, InputLabel, Typography 
+  InputAdornment, MenuItem, Select
 } from "@mui/material";
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import Autocomplete from "@mui/material/Autocomplete";
 import clsx from "clsx";
-import { WrappedFieldProps } from "redux-form";
 import { Edit } from "@mui/icons-material";
 import { getAllMenuTags } from "../../../../containers/tags/utils";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import { MenuTag } from "../../../../model/tags";
 import { stubComponent } from "../../../utils/common";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
@@ -26,12 +27,12 @@ import getCaretCoordinates from "../../../utils/getCaretCoordinates";
 import { getMenuTags } from "../../list-view/utils/listFiltersUtils";
 import { selectStyles } from "../formFields/SelectCustomComponents";
 import AddTagMenu from "./AddTagMenu";
+import { IS_JEST } from "../../../../constants/EnvironmentConstants";
+import EditInPlaceFieldBase from "../formFields/EditInPlaceFieldBase";
+import { TagsFieldProps } from "../../../../model/common/Fields";
 
 const styles = theme =>
   createStyles({
-    listContainer: {
-      marginLeft: "-2px"
-    },
     inputWrapper: {
       "&:hover $inputEndAdornment": {
         visibility: "visible",
@@ -40,69 +41,11 @@ const styles = theme =>
     inputEndAdornment: {
       visibility: 'hidden',
       display: "flex",
-      fontSize: "18px",
       color: theme.palette.primary.main,
       alignItems: "flex-end",
       alignSelf: "flex-end",
-      marginBottom: "4px"
-    },
-    tagBody: {
-      color: theme.palette.text.primary,
-      cursor: "pointer",
-      borderRadius: `${theme.shape.borderRadius}px`,
-      "&:hover": {
-        color: theme.palette.error.main
-      },
-      "&:hover $tagDeleteButton": {
-        visibility: "visible"
-      }
-    },
-    tagBodyTypography: {
-      color: "inherit"
-    },
-    tagDeleteButton: {
-      margin: "4px 0 0 2px",
-      visibility: "hidden"
-    },
-    tagDeleteIcon: {
-      fontSize: "16px",
-      color: "inherit",
-      marginRight: theme.spacing(1)
-    },
-    hoverIcon: {
-      opacity: 0.5,
-      visibility: "hidden",
-      marginLeft: theme.spacing(1)
-    },
-    editable: {
-      position: "relative",
-      display: "inline-flex",
-      color: theme.palette.text.primaryEditable,
-      minHeight: "32px",
-      padding: "4px 0 4px",
-      marginTop: theme.spacing(2),
-      fontWeight: 400,
-      justifyContent: "space-between",
-      alignItems: "flex-end",
-      "&:hover $hoverIcon": {
-        visibility: "visible"
-      },
-      "&:before": {
-        borderBottom: '1px solid transparent',
-        left: 0,
-        bottom: 0,
-        content: "' '",
-        position: "absolute",
-        right: 0,
-        transition: theme.transitions.create("border-bottom-color", {
-          duration: theme.transitions.duration.standard,
-          easing: theme.transitions.easing.easeInOut
-        }),
-        pointerEvents: "none"
-      },
-      "&:hover:before": {
-        borderBottom: `1px solid ${theme.palette.primary.main}`
-      },
+      marginBottom: "4px",
+      opacity: 0.5
     },
     tagColorDotSmall: {
       width: theme.spacing(2),
@@ -123,29 +66,19 @@ const styles = theme =>
         padding: 0
       }
     },
-    placeholder: {
-      opacity: 0.15
-    }
+    invalid: {}
   });
-
-interface Props extends WrappedFieldProps {
-  showConfirm: ShowConfirmCaller;
-  tags: Tag[];
-  classes?: any;
-  fieldClasses?: any;
-  disabled?: boolean;
-  className?: string;
-  label?: string;
-  placeholder?: string;
-}
 
 const endTagRegex = /#\s*[^\w\d]*$/;
 
-const getCurrentInputString = (input, formTags: Tag[]) => {
+const getCurrentInputString = (input, formTagIds: number[] = [], allMenuTags: MenuTag[] = []) => {
   let substr = input;
 
-  formTags && formTags.forEach(t => {
-    substr = substr.replace("#" + t.name, "").trim();
+  formTagIds?.forEach(id => {
+    const tag = allMenuTags.find(t => t.tagBody.id === id);
+    if (tag) {
+      substr = substr.replace("#" + tag.tagBody.name, "").trim();
+    }
   });
 
   if (substr) {
@@ -175,24 +108,28 @@ const getFullTag = (tagId: number, tags: Tag[]) => {
   }
 };
 
-const getInputString = (tags: Tag[], allTags: Tag[]) => (tags?.length && allTags?.length
-  ? tags.reduce((acc, tag) => (getFullTag(tag.id, allTags) ? `${acc}#${tag.name} ` : acc), "")
+const getInputString = (tagIds: number[], allTags: Tag[]) => (tagIds?.length && allTags?.length
+  ? tagIds.reduce((acc, id) => {
+    const tag = getFullTag(id, allTags);
+    return (tag ? `${acc}#${tag.name} ` : acc);
+  }, "")
   : "");
 
-const SimpleTagList: React.FC<Props> = props => {
-  const {
-    input,
-    tags,
-    classes,
-    placeholder,
-    meta,
-    label = "Tags",
-    disabled,
-    className,
-    fieldClasses = {}
-  } = props;
-
+const SimpleTagList = ({
+   input,
+   tags,
+   classes,
+   placeholder,
+   labelAdornment,
+   meta,
+   label = "Tags",
+   disabled,
+   className,
+   warning,
+   fieldClasses = {}
+}: TagsFieldProps) => {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const [activeTag, setActiveTag] = useState<MenuTag>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [currentInputString, setCurrentInputString] = useState("");
@@ -201,7 +138,7 @@ const SimpleTagList: React.FC<Props> = props => {
     if (!inputValue || !tags || !tags.length) return "";
 
     const arrayOfTags = input?.value?.length
-      && input.value.map((tag: Tag) => getFullTag(tag.id, tags)).filter(t => t);
+      && input.value.map(id => getFullTag(id, tags)).filter(t => t);
 
     if (!arrayOfTags?.length) return "";
 
@@ -215,17 +152,11 @@ const SimpleTagList: React.FC<Props> = props => {
     ));
   }, [tags, input.value, inputValue]);
 
-  useEffect(() => {
-    if (meta.invalid && !isEditing) {
-      setIsEditing(true);
-    }
-  }, [meta.invalid]);
-
   const inputNode = useRef<any>();
   const tagMenuNode = useRef<any>();
 
   const menuTags = useMemo(
-    () => (tags && input.value ? getMenuTags(tags.filter(t => t.childrenCount > 0), input.value) : []),
+    () => (tags && input.value ? getMenuTags(tags.filter(t => t.childrenCount > 0), input.value.map(id => getFullTag(id, tags)).filter(t => t)) : []),
     [tags, input.value]
   );
 
@@ -248,17 +179,16 @@ const SimpleTagList: React.FC<Props> = props => {
       if (!t.children.length) {
         const index = current.findIndex(c => c === t.tagBody.name);
         if (index !== -1) {
-          const addedTagsMatch = input.value.find(v => v.name === t.tagBody.name);
+          const addedTagsMatch = input.value.find(id => getFullTag(id, tags)?.name === t.tagBody.name);
           if (addedTagsMatch && addedTagsMatch.id !== t.tagBody.id) {
             return;
           }
-          updated.push(t.tagBody);
+          updated.push(t.tagBody.id);
           current.splice(index, 1);
         }
       }
     });
 
-    updated.sort((a, b) => current.indexOf(a.name) - current.indexOf(b.name));
     input.onChange(updated);
     setInputValue(getInputString(updated, tags));
   };
@@ -266,12 +196,12 @@ const SimpleTagList: React.FC<Props> = props => {
   const onTagAdd = (tag: MenuTag) => {
     const updated = [...input.value];
 
-    const index = updated.findIndex(t => t.id === tag.tagBody.id);
+    const index = updated.findIndex(id => id === tag.tagBody.id);
 
     if (index !== -1) {
       updated.splice(index, 1);
     } else {
-      updated.push(tag.tagBody);
+      updated.push(tag.tagBody.id);
     }
 
     input.onChange(updated);
@@ -281,7 +211,7 @@ const SimpleTagList: React.FC<Props> = props => {
     }, 100);
   };
 
-  const filterOptions = item => !item.children.length && !input.value.some(v => v.id === item.tagBody.id) && item.tagBody.name
+  const filterOptions = item => !item.children.length && !input.value.some(id => id === item.tagBody.id) && item.tagBody.name
     .toLowerCase()
     .trim()
     .startsWith(currentInputString.toLowerCase().trim());
@@ -320,6 +250,7 @@ const SimpleTagList: React.FC<Props> = props => {
   const exit = () => {
     setMenuIsOpen(false);
     setIsEditing(false);
+    setActiveTag(null);
 
     if (endTagRegex.test(inputValue)) {
       setTimeout(() => {
@@ -343,10 +274,12 @@ const SimpleTagList: React.FC<Props> = props => {
   };
 
   const onTagListBlur = () => {
-    if (document.activeElement !== inputNode.current) {
-      exit();
-      synchronizeTags();
-    }
+    setTimeout(() => {
+      if (document.activeElement !== inputNode.current) {
+        exit();
+        synchronizeTags();
+      }
+    }, 60);
   };
 
   const handleChange = (e, value, action) => {
@@ -366,11 +299,26 @@ const SimpleTagList: React.FC<Props> = props => {
   }, [input.value, tags]);
 
   useEffect(() => {
-    setCurrentInputString(getCurrentInputString(inputValue, input.value));
-  }, [inputValue, input.value]);
+    setCurrentInputString(getCurrentInputString(inputValue, input.value || [], allMenuTags));
+  }, [inputValue, input.value, allMenuTags]);
+
+  useEffect(() => {
+    if (meta.invalid && !isEditing) {
+      setIsEditing(true);
+    }
+  }, [meta.invalid]);
+
+  useEffect(() => {
+    if (activeTag) {
+      const activeUpdated = allMenuTags.find(t => t.tagBody.id === activeTag.tagBody.id);
+      if (activeUpdated) {
+        setActiveTag(activeUpdated);
+      }
+    }
+  }, [allMenuTags]);
 
   const popperAdapter = useCallback(params => {
-    if (currentInputString) {
+    if (currentInputString || !inputNode.current) {
       return <div {...params} />;
     }
 
@@ -394,21 +342,21 @@ const SimpleTagList: React.FC<Props> = props => {
       <AddTagMenu
         tags={menuTags}
         handleAdd={onTagAdd}
+        activeTag={activeTag}
+        setActiveTag={setActiveTag}
       />
     </div>
-  ), [menuTags, onTagAdd]);
+  ), [menuTags, activeTag, setActiveTag, onTagAdd]);
 
   return (
     <div className={className} id={input.name}>
       <div
         className={clsx("relative", {
-          "d-none": !isEditing,
           "pointer-events-none": disabled
         })}
       >
         <Autocomplete
-          fullWidth
-          value={null}
+                    value={null}
           open={menuIsOpen}
           options={filteredOptions}
           onChange={handleChange}
@@ -427,101 +375,61 @@ const SimpleTagList: React.FC<Props> = props => {
           renderInput={({
             InputLabelProps, InputProps, inputProps, ...params
           }) => (
-            <FormControl
+            <EditInPlaceFieldBase
               {...params}
-              variant="standard"
-              error={meta?.invalid}
-              focused={menuIsOpen}
-            >
-              {label
-              && (
-                <InputLabel
-                  shrink
-                  error={meta?.invalid}
-                  classes={{
-                    root: fieldClasses.label
-                  }}
-                >
-                  {label}
-                </InputLabel>
-              )}
-              <Input
-                {...InputProps}
-                disabled={disabled}
-                placeholder={placeholder}
-                onChange={handleInputChange}
-                onFocus={onFocus}
-                onBlur={onBlur}
-                inputRef={inputNode}
-                classes={{
-                  underline: fieldClasses.underline,
-                  input: clsx(disabled && classes.readonly, fieldClasses.text),
-                }}
-                inputProps={{
+              name={input.name}
+              value={input.value}
+              error={meta.error}
+              invalid={meta?.invalid}
+              label={label}
+              warning={warning}
+              disabled={disabled}
+              fieldClasses={fieldClasses}
+              shrink={Boolean(label || input.value)}
+              labelAdornment={labelAdornment}
+              placeholder={placeholder}
+              editIcon={<Edit fontSize="inherit" />}
+              InputProps={{
+                ...InputProps,
+                onChange: handleInputChange,
+                onFocus,
+                onBlur,
+                inputProps: {
                   ...inputProps,
+                  ref: ref => {
+                    (inputProps as any).ref.current = ref;
+                    inputNode.current = ref;
+                  },
                   value: inputValue
-                }}
-                endAdornment={!disabled && (
-                  <InputAdornment className={classes.inputEndAdornment} position="end">
-                    <Edit color="primary" />
-                  </InputAdornment>
-                )}
-                multiline
-              />
-              <FormHelperText
-                classes={{
-                  error: "shakingError"
-                }}
-              >
-                {meta?.error}
-              </FormHelperText>
-            </FormControl>
-          )}
+                },
+                multiline: !IS_JEST
+              }}
+              CustomInput={!isEditing
+                ? <Select
+                  onFocus={edit}
+                  value="stub"
+                  className={classes.inputWrapper}
+                  classes={{ select: "d-flex flex-wrap cursor-text" }}
+                  endAdornment={
+                    <InputAdornment
+                      position="end"
+                      className={classes.inputEndAdornment}>
+                        <Edit />
+                      </InputAdornment>
+                  }
+                  IconComponent={null}
+                >
+                  <MenuItem value="stub">
+                    {InputValueForRender || <span className="placeholderContent">No value</span>}
+                  </MenuItem>
+                </Select>
+                : null}
+            />)
+          }
           popupIcon={stubComponent()}
           disableListWrap
           openOnFocus
         />
-      </div>
-      <div
-        className={clsx(classes.inputWrapper, {
-          "d-none": isEditing,
-          "pointer-events-none": disabled || !tags || !tags.length
-        })}
-      >
-        <FormControl error={meta && meta.invalid} variant="standard" fullWidth>
-          <InputLabel
-            shrink
-            classes={{
-              root: fieldClasses.label
-            }}
-          >
-            {label}
-          </InputLabel>
-          <Typography
-            variant="body1"
-            component="div"
-            onClick={edit}
-            className={clsx( classes.editable, {
-              [fieldClasses.text]: inputValue,
-            })}
-          >
-            <span className={clsx("centeredFlex flex-wrap", {
-              [fieldClasses.placeholder]: !inputValue,
-              [classes.placeholder]: !inputValue,
-            })}
-            >
-              {InputValueForRender || "No value"}
-            </span>
-            {!disabled
-            && Boolean(!tags || tags.length)
-            && <Edit color="primary" className={classes.hoverIcon} />}
-          </Typography>
-          <FormHelperText>
-            <span className="shakingError">
-              {meta.error}
-            </span>
-          </FormHelperText>
-        </FormControl>
       </div>
     </div>
   );

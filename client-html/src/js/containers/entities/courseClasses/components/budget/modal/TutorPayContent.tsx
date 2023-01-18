@@ -73,7 +73,7 @@ const TutorPayContent: React.FC<Props> = ({
   const [onCostLocked, setOnCostLocked] = useState(values.onCostRate === null);
   const onLockClick = () => {
     setOnCostLocked(prev => {
-      dispatch(change(COURSE_CLASS_COST_DIALOG_FORM, "onCostRate", prev ? defaultOnCostRate : null));
+      dispatch(change(COURSE_CLASS_COST_DIALOG_FORM, "onCostRate", prev ? defaultOnCostRate : 0));
       return !prev;
     });
   };
@@ -149,7 +149,7 @@ const TutorPayContent: React.FC<Props> = ({
       <Grid item xs={6} className="pb-2">
         <FormControlLabel
           className="checkbox"
-          control={<FormField type="checkbox" name="isSunk" color="secondary" fullWidth />}
+          control={<FormField type="checkbox" name="isSunk" color="secondary"  />}
           label="Sunk cost (not recoverable if class cancelled)"
         />
       </Grid>
@@ -174,6 +174,7 @@ const TutorPayContent: React.FC<Props> = ({
                 label="Type"
                 items={PayRateTypes}
                 onChange={onRepetitionChange}
+                debounced={false}
                 validate={validatePayRateTypes}
               />
 
@@ -189,6 +190,7 @@ const TutorPayContent: React.FC<Props> = ({
                   label="Count"
                   validate={[greaterThanNullValidation, validateSingleMandatoryField]}
                   normalize={normalizeNumberToZero}
+                  debounced={false}
                 />
               </Grid>
             )}
@@ -199,6 +201,7 @@ const TutorPayContent: React.FC<Props> = ({
                 label={costLabel}
                 validate={greaterThanNullValidation}
                 normalize={normalizeNumberToZero}
+                debounced={false}
               />
               {!isNaN(rate) && rate !== values.perUnitAmountExTax && (
                 <WarningMessage warning="The rate/amount entered differs from, and will override what is defined for the chosen role" />
@@ -223,6 +226,7 @@ const TutorPayContent: React.FC<Props> = ({
                 label="Count"
                 validate={[greaterThanNullValidation, validateSingleMandatoryField]}
                 normalize={normalizeNumberToZero}
+                debounced={false}
               />
             </Typography>
           )}
@@ -235,16 +239,17 @@ const TutorPayContent: React.FC<Props> = ({
         <Grid item xs={6} className="centeredFlex">
           <Typography variant="body1" className={classes.onCostRate}>
             <FormField
-              type="persent"
+              type="number"
               name="onCostRate"
               format={formatFieldPercent}
               parse={parseFieldPercent}
               onKeyPress={preventNegativeOrLogEnter}
-              defaultValue={`${defaultOnCostRate * 100}%`}
               disabled={onCostLocked}
-              formatting="inline"
+              defaultValue={0}
+              debounced={false}
+              inline
             />
-            <span>oncost</span>
+            <span>% oncost</span>
             <span className="pl-1">
               <IconButton className="inputAdornmentButton" onClick={onLockClick}>
                 {!onCostLocked && <LockOpen className="inputAdornmentIcon" />}

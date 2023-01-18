@@ -120,9 +120,7 @@
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-11" style="data field" stretchType="RelativeToBandHeight" x="340" y="2" width="440" height="14" isPrintWhenDetailOverflows="true" uuid="868ecfe7-073e-4810-ad3d-17bfabb3cc70"/>
 				<textElement verticalAlignment="Top"/>
-				<textFieldExpression><![CDATA[$F{message}?.emailBody ?:
-$F{message}?.smsText ?:
-$F{message}?.postDescription ?: ""]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{message}?.emailBody ?: $F{message}?.smsText ?: $F{message}?.postDescription ?: ""]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-11" style="data field" x="11" y="2" width="100" height="13" uuid="d749ff9c-c50b-4d2c-9bc5-94c8db4e0fa0"/>

@@ -95,7 +95,7 @@ class ExportApiImpl implements ExportApi {
                 }
 
 
-                return [(template.outputType): exportService.performExport(template, records, variables, request.exportToClipboard).toString()]
+                return [(template.outputType): exportService.performExport(template, records, variables, request.exportToClipboard, request.createPreview).toString()]
             }
         })
     }

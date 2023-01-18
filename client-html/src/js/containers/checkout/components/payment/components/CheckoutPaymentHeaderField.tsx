@@ -239,7 +239,9 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     }
   };
 
-  const onPayNowChange = useCallback<any>( debounce(value => {
+  const onPayNowChange = useCallback<any>( debounce(e => {
+    const value = e.target.value;
+
     dispatch(checkoutUpdateSummaryField("payNowTotal", value));
     if (value === 0) {
       if (!isZeroPayment) {
@@ -596,7 +598,6 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
           placeholder="Payment method"
           items={isZeroPayment ? noPaymentItems : paymentTypes}
           onChange={hendelMethodChange}
-          disabledTab
           disabled={paymentProcessStatus === "success" || isZeroPayment || formInvalid}
         />
         {selectedPaymentMethod && selectedPaymentMethod.type === "Credit card" && (

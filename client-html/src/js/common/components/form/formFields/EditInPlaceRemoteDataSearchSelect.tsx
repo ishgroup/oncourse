@@ -8,28 +8,18 @@ import debounce from "lodash.debounce";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import EditInPlaceSearchSelect from "./EditInPlaceSearchSelect";
-import { AnyArgFunction, NumberArgFunction, StringArgFunction } from "../../../../model/common/CommonFunctions";
 import { State } from "../../../../reducers/state";
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../actions/CommonPlainRecordsActions";
-import { EntityName } from "../../../../model/entities/common";
+import {
+  EditInPlaceRemoteDataSelectFieldProps,
+} from "../../../../model/common/Fields";
 
-interface Props {
-  onSearchChange: StringArgFunction;
-  onLoadMoreRows: NumberArgFunction;
-  onClearRows: AnyArgFunction;
-  rowHeight?: number;
-  items: any[];
-  loading?: boolean;
-  entity: EntityName;
-  aqlFilter?: string;
-  aqlColumns?: string;
-}
 
-const EditInPlaceRemoteDataSearchSelect: React.FC<Props> = (
+const EditInPlaceRemoteDataSearchSelect: React.FC<EditInPlaceRemoteDataSelectFieldProps> = (
   {
     onLoadMoreRows,
     onSearchChange,
@@ -73,7 +63,7 @@ const getDefaultColumns = entity => {
     case "CourseClass":
       return "course.name,course.code,code,feeIncGst";
     case "Contact":
-      return "firstName,lastName,email,birthDate,street,suburb,state,postcode,invoiceTerms,taxOverride.id";
+      return "firstName,lastName,middleName,email,birthDate,street,suburb,state,postcode,invoiceTerms,taxOverride.id";
     case "Site":
       return "name,localTimezone";
     case "Room":
@@ -108,4 +98,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => {
   };
 };
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(EditInPlaceRemoteDataSearchSelect);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(EditInPlaceRemoteDataSearchSelect) as React.FC<EditInPlaceRemoteDataSelectFieldProps>;

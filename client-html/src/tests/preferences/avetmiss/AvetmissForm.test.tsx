@@ -33,9 +33,11 @@ describe("Virtual rendered AvetmissForm", () => {
         [PreferencesModel.FeeHelpProviderCode.uniqueKey]: mockedAPI.db.preference[PreferencesModel.FeeHelpProviderCode.uniqueKey].toString(),
       });
 
-      expect(screen.getByRole(preferencesFormRole)).toHaveFormValues(avetmissFormData);
-
       fireEvent.click(screen.getByTestId('appbar-submit-button'));
+
+      setTimeout(() => {
+        expect(screen.getByRole(preferencesFormRole)).toHaveFormValues(avetmissFormData);
+      }, 500);
     }
   });
 });

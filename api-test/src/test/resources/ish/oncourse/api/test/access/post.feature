@@ -26,7 +26,9 @@ Feature: Main feature for all POST requests with path 'access'
 
             | entity                | path                                       | method   | result             |
             | 'Audit'               | '/a/v1/list/entity/audit/1'                | 'GET'    | {"hasAccess":true} |
-            | 'Tag'                 | '/a/v1/tag'                                | 'GET'    | {"hasAccess":true} |
+            | 'Tag'                 | '/a/v1/tag/list'                           | 'GET'    | {"hasAccess":true} |
+            | 'Tag'                 | '/a/v1/tag/checklist'                      | 'GET'    | {"hasAccess":true} |
+            | 'Tag'                 | '/a/v1/tag/1'                              | 'GET'    | {"hasAccess":true} |
             | 'Tag'                 | '/a/v1/tag'                                | 'POST'   | {"hasAccess":true} |
             | 'Tag'                 | '/a/v1/tag/1'                              | 'PUT'    | {"hasAccess":true} |
             | 'Tag'                 | '/a/v1/tag/1'                              | 'DELETE' | {"hasAccess":true} |
@@ -191,7 +193,9 @@ Feature: Main feature for all POST requests with path 'access'
 
             | entity                | path                                       | method   | result              |
             | 'Audit'               | '/a/v1/list/entity/audit/'                 | 'GET'    | {"hasAccess":true}  |
-            | 'Tag'                 | '/a/v1/tag'                                | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/list'                           | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/checklist'                      | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/1'                              | 'GET'    | {"hasAccess":true}  |
             | 'Tag'                 | '/a/v1/tag'                                | 'POST'   | {"hasAccess":true}  |
             | 'Tag'                 | '/a/v1/tag/1'                              | 'PUT'    | {"hasAccess":true}  |
             | 'Tag'                 | '/a/v1/tag/1'                              | 'DELETE' | {"hasAccess":false} |
@@ -340,7 +344,9 @@ Feature: Main feature for all POST requests with path 'access'
 
             | entity                | path                                      | method   | result              |
             | 'Audit'               | '/a/v1/list/entity/audit/'                | 'GET'    | {"hasAccess":true}  |
-            | 'Tag'                 | '/a/v1/tag'                               | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/list'                          | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/checklist'                     | 'GET'    | {"hasAccess":true} |
+            | 'Tag'                 | '/a/v1/tag/1'                             | 'GET'    | {"hasAccess":true}  |
             | 'Tag'                 | '/a/v1/tag'                               | 'POST'   | {"hasAccess":false} |
             | 'Tag'                 | '/a/v1/tag/1'                             | 'PUT'    | {"hasAccess":true}  |
             | 'Tag'                 | '/a/v1/tag/1'                             | 'DELETE' | {"hasAccess":false} |
@@ -489,7 +495,9 @@ Feature: Main feature for all POST requests with path 'access'
 
             | entity                | path                                      | method   | result              |
             | 'Audit'               | '/a/v1/list/entity/audit/'                | 'GET'    | {"hasAccess":true}  |
-            | 'Tag'                 | '/a/v1/tag'                               | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/list'                          | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/checklist'                     | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/1'                             | 'GET'    | {"hasAccess":true}  |
             | 'Tag'                 | '/a/v1/tag'                               | 'POST'   | {"hasAccess":false} |
             | 'Tag'                 | '/a/v1/tag/1'                             | 'PUT'    | {"hasAccess":false} |
             | 'Tag'                 | '/a/v1/tag/1'                             | 'DELETE' | {"hasAccess":false} |
@@ -638,7 +646,9 @@ Feature: Main feature for all POST requests with path 'access'
 
             | entity                | path                                      | method   | result              |
             | 'Audit'               | '/a/v1/list/entity/audit/'                | 'GET'    | {"hasAccess":true}  |
-            | 'Tag'                 | '/a/v1/tag'                               | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/list'                          | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/checklist'                     | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/1'                             | 'GET'    | {"hasAccess":true}  |
             | 'Tag'                 | '/a/v1/tag'                               | 'POST'   | {"hasAccess":false} |
             | 'Tag'                 | '/a/v1/tag/1'                             | 'PUT'    | {"hasAccess":false} |
             | 'Tag'                 | '/a/v1/tag/1'                             | 'DELETE' | {"hasAccess":false} |
@@ -787,7 +797,9 @@ Feature: Main feature for all POST requests with path 'access'
 
             | entity                | path                                      | method   | result              |
             | 'Audit'               | '/a/v1/list/entity/audit/'                | 'GET'    | {"hasAccess":false} |
-            | 'Tag'                 | '/a/v1/tag'                               | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/list'                          | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/checklist'                     | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/1'                             | 'GET'    | {"hasAccess":true}  |
             | 'Tag'                 | '/a/v1/tag'                               | 'POST'   | {"hasAccess":false} |
             | 'Tag'                 | '/a/v1/tag/1'                             | 'PUT'    | {"hasAccess":false} |
             | 'Tag'                 | '/a/v1/tag/1'                             | 'DELETE' | {"hasAccess":false} |

@@ -5,14 +5,15 @@
 
 import { Epic } from "redux-observable";
 
+import { ProductItem } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_SALE, SET_SALE_DELIVERED } from "../actions";
+import { SET_SALE_DELIVERED } from "../actions";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { ProductItem } from "@api/model";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { updateEntityItemById } from "../../common/entityItemsService";
 import SaleService from "../services/SaleService";
+import { getEntityRecord } from "../../common/actions";
 
 const request: EpicUtils.Request<any, { id: number }> = {
   type: SET_SALE_DELIVERED,
@@ -22,8 +23,7 @@ const request: EpicUtils.Request<any, { id: number }> = {
 
       return updateEntityItemById("Sale", productItem.id, productItem);
     }),
-  processData: (v, s, { id }) => {
-    return [
+  processData: (v, s, { id }) => [
       {
         type: FETCH_SUCCESS,
         payload: { message: "Sale Record updated" }
@@ -32,12 +32,8 @@ const request: EpicUtils.Request<any, { id: number }> = {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "ProductItem", listUpdate: true, savedID: id }
       },
-      {
-        type: GET_SALE,
-        payload: { id }
-      }
-    ];
-  },
+      getEntityRecord(id, "ProductItem")
+    ],
   processError: response => FetchErrorHandler(response, "Sale Record was not updated")
 };
 

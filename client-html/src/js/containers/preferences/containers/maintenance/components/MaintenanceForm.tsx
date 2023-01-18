@@ -12,7 +12,7 @@ import {
 import isEmpty from "lodash.isempty";
 import { connect } from "react-redux";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import * as Model from "../../../../../model/preferences/Maintenance";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
@@ -78,6 +78,7 @@ class MaintenanceBaseForm extends React.Component<any, any> {
                 label="Minutes of inactivity until automatic logout"
                 parse={val => val || "0"}
                 validate={[validateSingleMandatoryField, this.validateTimeoutRange]}
+                debounced={false}
               />
             </Grid>
           </Grid>

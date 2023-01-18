@@ -1,8 +1,7 @@
-import { ActionsObservable, Epic, ofType } from "redux-observable";
+import { Epic, ofType } from "redux-observable";
 import { debounce, mergeMap } from "rxjs/operators";
-import { interval } from "rxjs";
+import { interval, Observable } from "rxjs";
 import { format, isSameDay } from "date-fns";
-
 import { change, getFormValues } from "redux-form";
 import { Session, TrainingPlan } from "@api/model";
 import { State } from "../../../../reducers/state";
@@ -149,7 +148,7 @@ const getAndMergePlans = async (fundingInvoice: CheckoutFundingInvoice) => {
   fundingInvoice.trainingPlans = trainingPlans;
 };
 
-export const EpicTriggerFundingInvoiceCalculate: Epic<any, any, State> = (action$: ActionsObservable<any>, state$): any =>
+export const EpicTriggerFundingInvoiceCalculate: Epic<any, any, State> = (action$: Observable<any>, state$): any =>
   action$.pipe(
     ofType(
       CHECKOUT_ADD_ITEM,
@@ -177,7 +176,7 @@ export const EpicTriggerFundingInvoiceCalculate: Epic<any, any, State> = (action
           const updated = JSON.parse(JSON.stringify(fi));
 
           updated.item.enrolment.items = fi.item.enrolment.items.filter(i =>
-            summaryList.some(li => li.items.some(l => l.checked && l.type === "course" && l.class.id === i.class.id)));
+            summaryList.some(li => li.items.some(l => l.checked && l.type === "course" && l.class?.id === i.class?.id)));
 
           if (updated.item.enrolment.items.length) {
             fundingInvoicesUpdated.push(updated);

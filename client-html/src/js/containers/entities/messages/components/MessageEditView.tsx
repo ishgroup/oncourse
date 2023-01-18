@@ -16,7 +16,7 @@ import CardContent from "@mui/material/CardContent";
 import { format } from "date-fns";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import { III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
-import { defaultContactName } from "../../contacts/utils";
+import { ContactLinkAdornment } from "../../../../common/components/form/FieldAdornments";
 
 interface MessageEditViewProps {
   values?: Message;
@@ -30,7 +30,6 @@ interface MessageEditViewProps {
   rootEntity?: string;
   twoColumn?: boolean;
   showConfirm?: any;
-  openNestedEditView?: any;
   manualLink?: string;
 }
 
@@ -59,9 +58,11 @@ const MessageEditView = React.memo<MessageEditViewProps>(props => {
         {!twoColumn && (<Grid item xs={12}><Uneditable value={values.subject} label="Subject" /></Grid>)}
         <Grid item xs={twoColumn ? 2 : 6}>
           <Uneditable
-            value={defaultContactName(values.sentToContactFullname)}
+            value={values.sentToContactFullname}
             label="Sent to"
-            url={`/contact?search=messages.message.id=${values.id}`}
+            labelAdornment={(
+              <ContactLinkAdornment id={values?.contactId} />
+            )}
           />
         </Grid>
         <Grid item xs={twoColumn ? 2 : 6}>

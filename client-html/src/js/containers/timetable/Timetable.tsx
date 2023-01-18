@@ -9,7 +9,7 @@
 import React, { createContext, useEffect, useReducer } from "react";
 import { withStyles } from "@mui/styles";
 import createStyles from "@mui/styles/createStyles";
-import { isSameMonth, setDate, startOfMonth } from "date-fns";
+import { isSameMonth, parse, setDate, startOfMonth } from "date-fns";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
 import TimetableSideBar from "./components/timetable-side-bar/TimetableSideBar";
 import Calendar from "./components/calendar/Calendar";
@@ -19,6 +19,7 @@ import { useAppDispatch, useAppSelector } from "../../common/utils/hooks";
 import { LSGetItem, LSSetItem } from "../../common/utils/storage";
 import { LS_TIMETABLE_CALENDAR_MODE, LS_TIMETABLE_GROUPING_MODE, LS_TIMETABLE_TAGS_MODE } from "./TimetableConstants";
 import { getTimetableFilters } from "./actions";
+import { DD_MMM_YYYY_MINUSED } from "../../common/utils/dates/format";
 
 const styles = () =>
   createStyles({
@@ -54,7 +55,7 @@ const initContext = (initial: TimetableContextState) => {
   const paramsDate = params.get("selectedDate");
   
   if (paramsDate) {
-    targetDay = new Date(paramsDate);
+    targetDay = parse(paramsDate, DD_MMM_YYYY_MINUSED, new Date());
   }
   
   return {

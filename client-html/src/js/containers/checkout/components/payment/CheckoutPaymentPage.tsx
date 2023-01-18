@@ -5,12 +5,11 @@
 
 import React, { useMemo } from "react";
 import { connect } from "react-redux";
-import LoadingIndicator from "../../../../common/components/layout/LoadingIndicator";
+import LoadingIndicator from "../../../../common/components/progress/LoadingIndicator";
 import {
  CheckoutDiscount, CheckoutItem, CheckoutPayment, CheckoutSummary
 } from "../../../../model/checkout";
 import { State } from "../../../../reducers/state";
-import { getContactName } from "../../../entities/contacts/utils";
 import CheckoutPreviousInvoiceList from "../summary/CheckoutPreviousInvoiceList";
 import CheckoutDiscountEditView from "../summary/promocode/CheckoutDiscountEditView";
 import CreditCardPaymentPage from "./components/payment-methods/CreditCardPaymentPage";
@@ -19,6 +18,7 @@ import CheckoutAppBar from "../CheckoutAppBar";
 import RestartButton from "../RestartButton";
 import { CheckoutPage } from "../../constants";
 import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+import { getContactFullName } from "../../../entities/contacts/utils";
 
 interface PaymentPageProps {
   payment?: CheckoutPayment;
@@ -42,7 +42,7 @@ const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
 
   const payerName = useMemo(() => {
     const payer = summary.list.find(l => l.payer);
-    return payer ? getContactName(payer.contact) : "";
+    return payer ? getContactFullName(payer.contact as any) : "";
   }, [summary.list]);
 
   const title = payment.process.status === "success" ? "Transaction successful"

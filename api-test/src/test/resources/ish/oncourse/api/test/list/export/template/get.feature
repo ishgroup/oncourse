@@ -63,7 +63,7 @@ Feature: Main feature for all GET requests with path 'list/export/template'
             | 'PaymentIn'           | "PaymentIn XML"            |
             | 'Banking'             | "Banking XML"              |
             | 'WaitingList'         | "WaitingList XML"          |
-            | 'Application'         | "Application XML"          |
+            | 'Application'         | "Smart & Skilled Bulk Upload"          |
             | 'Certificate'         | "Certificate XML"          |
             | 'Survey'              | "StudentFeedback XML"      |
             | 'Audit'               | "Audit Logs XML"                |
@@ -149,7 +149,7 @@ Feature: Main feature for all GET requests with path 'list/export/template'
             | 'PaymentIn'           | "PaymentIn XML"            |
             | 'Banking'             | "Banking XML"              |
             | 'WaitingList'         | "WaitingList XML"          |
-            | 'Application'         | "Application XML"          |
+            | 'Application'         | "Smart & Skilled Bulk Upload"          |
             | 'Certificate'         | "Certificate XML"          |
             | 'Survey'              | "StudentFeedback XML"      |
             | 'Audit'               | "Audit Logs XML"                |
@@ -267,7 +267,7 @@ Feature: Main feature for all GET requests with path 'list/export/template'
             | 'PaymentIn'           | "PaymentIn XML"            |
             | 'Banking'             | "Banking XML"              |
             | 'WaitingList'         | "WaitingList XML"          |
-            | 'Application'         | "Application XML"          |
+            | 'Application'         | "Smart & Skilled Bulk Upload"          |
             | 'Certificate'         | "Certificate XML"          |
             | 'Survey'              | "StudentFeedback XML"      |
             | 'Audit'               | "Audit Logs XML"                |

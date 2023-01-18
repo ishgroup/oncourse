@@ -16,7 +16,6 @@ import clsx from "clsx";
 import { areEqual } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { Delete } from "@mui/icons-material";
-import SidebarSearch from "../sidebar-with-search/components/SidebarSearch";
 import { makeAppStyles } from "../../../styles/makeStyles";
 import AddButton from "../../icons/AddButton";
 import CatalogItem from "./CatalogItem";
@@ -25,6 +24,7 @@ import NewsRender from "../../news/NewsRender";
 import DynamicSizeList from "../../form/DynamicSizeList";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import ExpandableContainer from "../expandable/ExpandableContainer";
+import UserSearch from "../swipeable-sidebar/components/UserSearch";
 
 const Row = memo<any>(
   ({
@@ -48,7 +48,7 @@ const Row = memo<any>(
           </IconButton>
         ) : null}
         grayOut={!item.enabled}
-        showDot
+        showDot={!item.hideDot}
         hoverSecondary
       />
     </div>
@@ -186,7 +186,7 @@ const CatalogWithSearch = React.memo<Props>((
           <Typography className={classes.fabTip} variant="overline" color="primary" fontWeight="bold">Close</Typography>
         </div>
         <div className="flex-fill" />
-        <SidebarSearch setParentSearch={setSearch} />
+        <UserSearch getSearchResults={setSearch} placeholder="Filter items" />
       </div>
       <Typography variant="h4" className="mt-5 mb-3">{title}</Typography>
       <NewsRender page className="mb-3" />

@@ -16,7 +16,7 @@ import Uneditable from "../../../../common/components/form/Uneditable";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { ContactLinkAdornment, LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import {
-  contactLabelCondition, defaultContactName, getContactFullName
+  getContactFullName
 } from "../../contacts/utils";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
@@ -67,7 +67,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
                 change(
                   form,
                   "contactName",
-                  contactLabelCondition({ firstName: res.rows[0].values[0], lastName: res.rows[0].values[1] })
+                  getContactFullName({ firstName: res.rows[0].values[0], lastName: res.rows[0].values[1] })
                 )
               );
             }
@@ -136,14 +136,14 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
         </Grid>
         <Grid item xs={twoColumn ? 6 : 12}>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             name="contactId"
             label="Student"
             entity="Contact"
             aqlFilter="isStudent is true"
             selectValueMark="id"
             selectLabelCondition={getContactFullName}
-            defaultDisplayValue={values && defaultContactName(values.contactName)}
+            defaultValue={values?.contactName}
             labelAdornment={
               <ContactLinkAdornment id={values?.contactId} />
             }
@@ -155,7 +155,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
 
         <Grid item xs={twoColumn ? 3 : 12}>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             name="qualificationName"
             label="Qualification"
             entity="Qualification"
@@ -175,7 +175,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
 
         <Grid item xs={twoColumn ? 3 : 12}>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             name="qualificationNationalCode"
             label="National code"
             selectValueMark="nationalCode"
@@ -208,7 +208,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
           />
         </Grid>
         <Grid item xs={12}>
-          <FormField type="multilineText" name="notes" label="Private notes" fullWidth />
+          <FormField type="multilineText" name="notes" label="Private notes" />
         </Grid>
 
         <Grid item xs={12} className="pb-2 pt-2">

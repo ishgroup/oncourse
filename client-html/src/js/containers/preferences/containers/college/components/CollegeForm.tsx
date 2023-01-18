@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import { reduxForm, initialize, Form } from "redux-form";
 import isEmpty from "lodash.isempty";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
 import * as Model from "../../../../../model/preferences/College";
 import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
@@ -80,7 +80,7 @@ class CollegeBaseForm extends React.Component<any, any> {
               {timezones && (
                 <>
                   <FormField
-                    type="searchSelect"
+                    type="select"
                     name={this.formModel.CollegeTimezone.uniqueKey}
                     label="Default server time zone"
                     items={timezones}

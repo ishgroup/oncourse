@@ -9,7 +9,7 @@
 import React, { useMemo } from "react";
 import { User } from "@api/model";
 import { Tooltip, Typography } from "@mui/material";
-import { contactLabelCondition } from "../../../../entities/contacts/utils";
+import { getContactFullName } from "../../../../entities/contacts/utils";
 
 const UserSelectItemRenderer = React.memo<{ content: string; data: User, parentProps: any }>(props => {
   const { data, parentProps } = props;
@@ -27,7 +27,7 @@ const UserSelectItemRenderer = React.memo<{ content: string; data: User, parentP
     <div {...parentProps}>
       <div className="overflow-hidden">
         <div className="text-nowrap text-truncate">
-          {contactLabelCondition(data)}
+          {getContactFullName(data)}
         </div>
         <Tooltip title={caption}>
           <Typography variant="caption" component="div" color="textSecondary" className="text-truncate">

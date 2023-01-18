@@ -18,3 +18,5 @@ export interface EnrolmentAssessmentExtended extends Assessment{
 export interface EnrolmentExtended extends Enrolment {
   assessments?: EnrolmentAssessmentExtended[];
 }
+
+export type EnrolmentDialogs = "Cancel" | "Transfer" | "Avetmiss-Export";

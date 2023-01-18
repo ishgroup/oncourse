@@ -6,7 +6,7 @@
 import React, {
   useCallback, useMemo
 } from "react";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd-next";
 import Grid from "@mui/material/Grid";
 import { FormControlLabel } from "@mui/material";
 import { WrappedFieldArrayProps } from "redux-form";
@@ -27,6 +27,7 @@ import { getType } from "../../utils";
 import { ShowConfirmCaller } from "../../../../../../model/common/Confirm";
 import AddScriptAction from "../AddScriptAction";
 import ScriptIcon from "../../../../../../../images/icon-script.svg";
+import { Binding } from "@api/model";
 
 const onDragEnd = ({ destination, source, fields }) => {
   if (destination && destination.index !== source.index) {
@@ -93,7 +94,7 @@ const ScriptCardItem = React.memo<ScriptItemProps & WrappedFieldArrayProps>(prop
     });
   }, [fields]);
 
-  const renderVariables = useCallback((variables, name, disabled) => (
+  const renderVariables = useCallback((variables: Binding[], name, disabled) => (
     <>
       {variables.map(elem => (
         elem.type === "Checkbox" ? (
@@ -101,7 +102,7 @@ const ScriptCardItem = React.memo<ScriptItemProps & WrappedFieldArrayProps>(prop
             <FormControlLabel
               control={(
                 <FormField
-                  type={elem.type.toLowerCase()}
+                  type={elem.type.toLowerCase() as any}
                   name={`${name}.${elem.name}`}
                   label={elem.label}
                 />
@@ -113,7 +114,7 @@ const ScriptCardItem = React.memo<ScriptItemProps & WrappedFieldArrayProps>(prop
         ) : (
           <Grid key={getType(elem.type) + elem.label} item xs={12}>
             <FormField
-              type={getType(elem.type)}
+              type={getType(elem.type) as any}
               name={`${name}.${elem.name}`}
               label={elem.label}
               disabled={disabled}

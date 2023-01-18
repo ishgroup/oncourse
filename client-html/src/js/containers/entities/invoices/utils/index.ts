@@ -7,11 +7,33 @@ import { min } from "date-fns";
 import { Invoice, InvoicePaymentPlan } from "@api/model";
 import { InvoiceWithTotalLine } from "../../../../model/entities/Invoice";
 import { decimalMinus, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
+import { Decimal } from "decimal.js-light";
+
+export const calculateInvoiceLineTotal = (
+  priceEachExTax: number,
+  discountEachExTax: number,
+  taxEach: number,
+  quantity: number
+) => new Decimal(priceEachExTax || 0)
+  .minus(discountEachExTax || 0)
+  .plus(taxEach || 0)
+  .mul(quantity || 1)
+  .toDecimalPlaces(2)
+  .toNumber();
 
 export const preformatInvoice = (value: InvoiceWithTotalLine): Invoice => {
   if (value && value.invoiceLines) {
     value.invoiceLines.forEach(l => {
       delete l.total;
+    });
+  }
+  return value;
+};
+
+export const setInvoiceLinesTotal = (value: InvoiceWithTotalLine): Invoice => {
+  if (value && value.invoiceLines) {
+    value.invoiceLines.forEach(l => {
+      l.total = calculateInvoiceLineTotal(l.priceEachExTax, l.discountEachExTax, l.taxEach, l.quantity);
     });
   }
   return value;
@@ -62,14 +84,8 @@ export const getInvoiceClosestPaymentDueDate = (invoice: Invoice) => {
 
   for (let i = 0; i < openedDues.length; i++) {
     const dueDate = new Date(openedDues[i].date);
-    openedDues[i].successful = false;
 
-    let isCovered = false;
-
-    if (coveringPayment >= openedDues[i].amount) {
-      isCovered = true;
-      openedDues[i].successful = true;
-    }
+    const isCovered = coveringPayment >= openedDues[i].amount;
 
     coveringPayment = decimalMinus(coveringPayment, openedDues[i].amount);
 
@@ -78,6 +94,29 @@ export const getInvoiceClosestPaymentDueDate = (invoice: Invoice) => {
     }
   }
   return datesArr.length ? min(datesArr) : null;
+};
+
+export const processInvoicePaymentPlans = (paymentPlans: InvoicePaymentPlan[]) => {
+  const updated = [...paymentPlans];
+
+  updated.sort(sortInvoicePaymentPlans);
+
+  console.log('!!!!!!!', updated);
+
+  const successfulPayments = updated
+    .filter(p => p.entityName === "PaymentIn" && p.successful)
+    .map(p => ({ ...p }));
+
+  const openedDues = updated.filter(p => p.entityName === "InvoiceDueDate");
+  
+  let coveringPayment = successfulPayments.reduce((p, c) => decimalPlus(p, c.amount), 0);
+
+  for (let i = 0; i < openedDues.length; i++) {
+    openedDues[i].successful = coveringPayment >= openedDues[i].amount;
+    coveringPayment = decimalMinus(coveringPayment, openedDues[i].amount);
+  }
+
+  return updated;
 };
 
 export const isInvoiceType = (id: string, records: any) => {

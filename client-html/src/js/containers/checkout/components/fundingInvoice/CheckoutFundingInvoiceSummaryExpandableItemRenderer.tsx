@@ -109,6 +109,7 @@ const CheckoutFundingInvoiceSummaryRow = React.memo<any>(props => {
           label="Price"
           onChange={handlePriceChange}
           normalize={normalizeNumberToZero}
+          debounced={false}
           rightAligned
         />
       </Grid>

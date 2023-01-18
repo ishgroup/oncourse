@@ -20,6 +20,7 @@ import {
  change, Field, FieldArray, getFormValues, initialize, reduxForm, 
 } from "redux-form";
 import IconButton from "@mui/material/IconButton";
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import {
   Binding,
   ExportRequest,
@@ -54,6 +55,8 @@ import FilePreview from "../../../form/FilePreview";
 import ConfirmBase from "../../../dialog/confirm/ConfirmBase";
 import { ContactType } from "../../../../../containers/entities/contacts/Contacts";
 import { LSGetItem, LSSetItem } from "../../../../utils/storage";
+import { reportFullScreenPreview } from "../../../../../containers/automation/containers/pdf-reports/actions";
+import { exportTemplateFullScreenPreview } from "../../../../../containers/automation/containers/export-templates/actions";
 
 type PdfReportType = ContactType | "GENERAL";
 
@@ -300,6 +303,14 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
     return Array.from(new Set(selectionTypes));
   };
 
+  isExportTemplateSelected(selectedPrimary: number) {
+    return selectedPrimary > 0;
+  }
+
+  isPdfReportSelected(selectedPrimary: number) {
+    return selectedPrimary === 0;
+  }
+
   getSelectedPdfReportName = () => {
     const { pdfReports } = this.props;
     const selectedReportIndex = this.state.selectedSecondary;
@@ -423,6 +434,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
         }, {}) : {},
         sorting: sort,
         exportToClipboard: this.isClipboardExport,
+        createPreview,
       };
 
       return doExport(exportRequest, outputType, this.isClipboardExport);
@@ -433,7 +445,6 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
     const {
       toggleExportDrawer, process, interruptProcess, submitting,
     } = this.props;
-
     if (submitting) {
       interruptProcess(process.processId);
       this.resolvePromise();
@@ -450,6 +461,19 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
     this.setState({
       selectAll,
     });
+  };
+
+  handleFullScreenPreview = () => {
+    const { pdfReports, dispatch } = this.props;
+    const { selectedSecondary, selectedPrimary, exportTemplateTypes } = this.state;
+
+    if (this.isExportTemplateSelected(selectedPrimary)) {
+      const activeExportTemplate = exportTemplateTypes[Object.keys(exportTemplateTypes)[selectedPrimary - 1]][selectedSecondary];
+      dispatch(exportTemplateFullScreenPreview(activeExportTemplate.id));
+    } else {
+        const activeReport = pdfReports[selectedSecondary];
+        dispatch(reportFullScreenPreview(activeReport.id));
+    }
   };
 
   renderPdfFields() {
@@ -475,7 +499,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
               </Grid>
             )}
             <Grid item xs={12}>
-              <Grid container>
+              <Grid container columnSpacing={3} rowSpacing={2}>
                 <Grid item xs={12}>
                   <FormField
                     type="select"
@@ -485,8 +509,8 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     selectAdornment={{
                       position: "end",
                       content: (
-                        <MenuItem className="relative" key="upload">
-                          <div className="heading centeredFlex" onClick={this.handleUploadBackgroundClick}>
+                        <MenuItem className="relative w-100" key="upload" onClick={this.handleUploadBackgroundClick}>
+                          <div className="heading centeredFlex">
                             <Publish />
                             {' '}
                             <span className="ml-1">Upload from disk</span>
@@ -509,14 +533,21 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
           </Grid>
           {preview && (
             <Grid item xs={4} className={classes.previewWrapper}>
-              <FilePreview data={preview} />
+              <FilePreview
+                data={preview}
+                actions={[{
+                  actionLabel: "Full size preview",
+                  onAction: this.handleFullScreenPreview,
+                  icon: <FullscreenIcon />
+                }]}
+              />
             </Grid>
           )}
         </Grid>
 
         {!preview && (
           <>
-            <Grid item xs={12} container>
+            <Grid item xs={12} container className="mt-2">
               <FormControlLabel
                 control={(
                   <Checkbox
@@ -581,21 +612,59 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
   };
 
   renderTemplateFields() {
-    const { values } = this.props;
+    const { classes, values } = this.props;
+
+    const { createPreview } = this.state;
+
+    const preview = values && values.preview;
 
     return (
-      <Grid item xs={12}>
-        <Grid container>
-          <Grid item xs={12}>
+      <>
+        <Grid item container xs={12}>
+          <Grid xs={preview ? 8 : 12}>
             <Typography variant="body2" color="inherit">
               {values && values.description}
             </Typography>
+            <Grid item container rowSpacing={2} columnSpacing={3} xs={12}>
+              <FieldArray name="variables" component={this.templatesRenderer as any} />
+            </Grid>
           </Grid>
-          <Grid item xs={4}>
-            <FieldArray name="variables" component={this.templatesRenderer as any} />
-          </Grid>
+          {preview && (
+            <Grid item xs={4} className={classes.previewWrapper}>
+              <FilePreview
+                data={preview}
+                actions={[{
+                  actionLabel: "Full size preview",
+                  onAction: () => this.handleFullScreenPreview(),
+                  icon: <FullscreenIcon />
+                }]}
+              />
+            </Grid>
+          )}
         </Grid>
-      </Grid>
+        {!preview && (
+          <>
+            <Grid item xs={12} container className="mt-2">
+              <FormControlLabel
+                control={(
+                  <Checkbox
+                    color="primary"
+                    checked={createPreview}
+                    className={clsx(classes.createPreviewCheckbox, classes.label)}
+                    onClick={() => this.setState({ createPreview: !createPreview })}
+                  />
+                )}
+                label="Create preview"
+              />
+            </Grid>
+            <Grid item xs={12} container className={classes.label}>
+              <Typography variant="caption" color="inherit">
+                There is no preview for this report yet. Choose this option to create preview.
+              </Typography>
+            </Grid>
+          </>
+        )}
+      </>
     );
   }
 
@@ -623,11 +692,11 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
      selectedPrimary, selectedSecondary, selectAll, exportTemplateTypes,
     } = this.state;
 
-    const pdfSelected = selectedPrimary === 0;
+    const pdfSelected = this.isPdfReportSelected(selectedPrimary);
 
     const exportTemplateTypesArr = exportTemplateTypes ? Object.keys(exportTemplateTypes) : [];
 
-    const templateSelected = selectedPrimary > 0;
+    const templateSelected = this.isExportTemplateSelected(selectedPrimary);
 
     return (
       <Drawer
