@@ -28,10 +28,10 @@ import {
   LIST_THREE_COLUMN_ROW_HEIGHT,
   LIST_TWO_COLUMN_ROW_HEIGHT
 } from "../../../../../../constants/Config";
-import { CHECKLISTS_COLUMN, COLUMN_WITH_COLORS } from "../utils";
 import TagDotRenderer from "./TagDotRenderer";
 import StaticProgress from "../../../../progress/StaticProgress";
 import { stubFunction } from "../../../../../utils/common";
+import { CHECKLISTS_COLUMN, COLUMN_WITH_COLORS } from "../constants";
 
 const ThreeColumnCell = ({ row }) => (<div>
   <Typography variant="subtitle2" color="textSecondary" component="div" noWrap>

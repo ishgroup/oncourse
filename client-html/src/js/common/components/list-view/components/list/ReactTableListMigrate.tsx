@@ -28,7 +28,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd-next"
 import { DataResponse, TableModel } from "@api/model";
 import InfiniteLoaderList from "./components/InfiniteLoaderList";
 import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
-import { CHECKLISTS_COLUMN, COLUMN_WITH_COLORS, getTableRows } from "./utils";
+import { getTableRows } from "./utils";
 import { StyledCheckbox } from "../../../form/formFields/CheckboxField";
 import { CustomColumnFormats } from "../../../../../model/common/ListView";
 import ColumnChooser from "./components/ColumnChooser";
@@ -36,8 +36,7 @@ import { StringKeyObject } from "../../../../../model/common/CommomObjects";
 import styles from "./styles";
 import TagDotRenderer from "./components/TagDotRenderer";
 import StaticProgress from "../../../progress/StaticProgress";
-import { usePrevious } from "../../../../utils/hooks";
-import { stubFunction } from "../../../../utils/common";
+import { CHECKLISTS_COLUMN, CHOOSER_COLUMN, COLUMN_WITH_COLORS, SELECTION_COLUMN } from "./constants";
 
 const COLUMN_MIN_WIDTH = 55;
 
@@ -124,7 +123,7 @@ const Table: React.FC<ListTableProps> = ({
     });
     isResizingRef.current = false;
   }, 500), [onChangeColumns]);
-  
+
   const toggleRowSelect = id => {
     const updated = { ...table.getState().rowSelection };
     if (updated[id]) {
@@ -170,7 +169,7 @@ const Table: React.FC<ListTableProps> = ({
   const columns = useMemo(
     () => ([
       {
-        id: "select",
+        id: SELECTION_COLUMN,
         disableResizing: true,
         size: 40,
         cell: ({ row }) => {
@@ -191,7 +190,7 @@ const Table: React.FC<ListTableProps> = ({
       },
       ...columnsBase,
       {
-        id: "chooser",
+        id: CHOOSER_COLUMN,
         disableResizing: true,
         size: 80
       }
@@ -202,8 +201,11 @@ const Table: React.FC<ListTableProps> = ({
   const initialState = useMemo(() => ({
     sortBy: sorting,
     hiddenColumns: columns.filter(c => !c.visible).map(c => c.id),
-    columnOrder: columns.map(c => c.id)
   }), [sorting, columns]);
+  
+  useEffect(() => {
+    onColumnOrderChange(columns.map(c => c.id));
+  }, [columns]);
 
   const onScroll = e => {
     if (listRef.current) {
@@ -249,6 +251,10 @@ const Table: React.FC<ListTableProps> = ({
   //   }
   // }, [state.sortBy]);
 
+  useEffect(() => {
+    isMountedRef.current = true;
+  }, []);
+
   const onHiddenChange = useCallback<any>(debounce(hiddenColumns => {
     const updated = {};
     columns.forEach(c => {
@@ -263,12 +269,6 @@ const Table: React.FC<ListTableProps> = ({
     if (tableRef.current && tableRef.current.scrollTop) tableRef.current.scrollTop = 0;
     onChangeColumnsOrder(columnsOrder);
   }, 500), [columns]);
-
-  // useEffect(() => {
-  //   if (isMountedRef.current && !isDraggingColumn && JSON.stringify(state.columnOrder) !== JSON.stringify(initialState.columnOrder)) {
-  //     onOrderChange(state.columnOrder);
-  //   }
-  // }, [isDraggingColumn]);
 
   // const prevHiddenColumns = usePrevious(state.hiddenColumns);
   //
@@ -300,26 +300,27 @@ const Table: React.FC<ListTableProps> = ({
     }
   }, [threeColumn]);
 
-  const reorderColumns = useCallback(({
-     destination, source, fields, headers
+  const reorderColumns = ({
+     destination, source, headers
    }) => {
     if (destination) {
       const findDestinationColumn = headers[destination.index];
       const findSourceColumn = headers[source.index];
       if (findDestinationColumn && findSourceColumn) {
+        const fields = table.getState().columnOrder;
         const dIndex = fields.indexOf(findDestinationColumn.id);
         const sIndex = fields.indexOf(findSourceColumn.id);
         if (dIndex !== -1 && sIndex !== -1 && dIndex !== sIndex) {
           const updated = Array.from(fields);
           const [removed] = updated.splice(sIndex, 1);
           updated.splice(dIndex, 0, removed);
-          console.log('!!!!!!', updated);
-          // onColumnOrderChange(updated);
+          onColumnOrderChange(updated as any);
+          onOrderChange(updated.filter(id => ![SELECTION_COLUMN, CHOOSER_COLUMN].includes(id)));
         }
       }
     }
     setColumnIsDragging(false);
-  }, []);
+  };
 
   const getItemStyle = (isDragging, draggableStyle) => {
     if (isDragging) {
@@ -340,7 +341,6 @@ const Table: React.FC<ListTableProps> = ({
           key={groupIndex}
           onDragEnd={args => reorderColumns({
             ...args,
-            fields: table.getState().columnOrder,
             headers: headerGroup.headers.filter(column => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(column.id))
           })}
           onDragStart={() => setColumnIsDragging(true)}
@@ -354,7 +354,7 @@ const Table: React.FC<ListTableProps> = ({
                 style={{ ...snapshot.isDraggingOver ? { pointerEvents: "none" } : {} }}
               >
                 {headerGroup.headers.filter(({ column }) => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(column.id)).map(({ column, getContext }, columnIndex) => {
-                  const disabledCell = ["selection", "chooser"].includes(column.id);
+                  const disabledCell = [SELECTION_COLUMN, CHOOSER_COLUMN].includes(column.id);
                   const columnDef = column.columnDef as any;
                   const canSort = column.getCanSort();
                   const canResize = column.getCanResize();
@@ -398,40 +398,41 @@ const Table: React.FC<ListTableProps> = ({
                                 display="flex"
                                 className={columnDef.cellClass}
                               >
-                                {!disabledCell && (
+                                {!disabledCell && (<>
                                   <span  {...provided.dragHandleProps} className="relative">
-                                      <DragIndicator
-                                        className={
-                                          clsx(
-                                            "dndActionIcon",
-                                            classes.dragIndicator,
-                                            {
-                                              [classes.visibleDragIndicator]: isDragging
-                                            },
-                                          )
-                                        }
-                                      />
-                                    </span>
+                                    <DragIndicator
+                                      className={
+                                        clsx(
+                                          "dndActionIcon",
+                                          classes.dragIndicator,
+                                          {
+                                            [classes.visibleDragIndicator]: isDragging
+                                          },
+                                        )
+                                      }
+                                    />
+                                  </span>
+                                  <TableSortLabel
+                                    hideSortIcon={isDragging || !canSort}
+                                    active={Boolean(column.getIsSorted())}
+                                    direction={column.getAutoSortDir()}
+                                    classes={{
+                                      root: clsx(
+                                        canSort ? classes.canSort : classes.noSort,
+                                        columnDef.colClass,
+                                        "overflow-hidden"
+                                      ),
+                                      icon: columnDef.type === "Money" && canSort && classes.rightSort
+                                    }}
+                                    component="span"
+                                  >
+                                    {flexRender(columnDef.header, getContext())}
+                                    &nbsp;
+                                  </TableSortLabel>
+                                </>
                                 )}
-                                <TableSortLabel
-                                  hideSortIcon={isDragging || !canSort}
-                                  active={Boolean(column.getIsSorted())}
-                                  direction={column.getAutoSortDir()}
-                                  classes={{
-                                    root: clsx(
-                                      canSort ? classes.canSort : classes.noSort,
-                                      columnDef.colClass,
-                                      "overflow-hidden"
-                                    ),
-                                    icon: columnDef.type === "Money" && canSort && classes.rightSort
-                                  }}
-                                  component="span"
-                                >
-                                  {flexRender(columnDef.header, getContext())}
-                                  &nbsp;
-                                </TableSortLabel>
                               </Typography>
-                               {/*{!isDraggingColumn && canResize && <div {...column.getResizerProps()} className={classes.resizer} />}*/}
+                               {/* {!isDraggingColumn && canResize && <div {...column.getResizerProps()} className={classes.resizer} />}*/}
                             </div>
                           </div>
                         );
