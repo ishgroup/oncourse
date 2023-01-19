@@ -13,7 +13,8 @@ import List from "@mui/material/List";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Popover from "@mui/material/Popover";
-import { COLUMN_WITH_COLORS } from "../utils";
+import { COLUMN_WITH_COLORS } from "../constants";
+
 
 const ColumnChooserItem = ({
  classes, column

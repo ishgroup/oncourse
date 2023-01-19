@@ -22,7 +22,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd-next"
 import { DataResponse, TableModel } from "@api/model";
 import InfiniteLoaderList from "./components/InfiniteLoaderList";
 import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
-import { CHECKLISTS_COLUMN, COLUMN_WITH_COLORS, getTableRows } from "./utils";
+import { getTableRows } from "./utils";
 import { StyledCheckbox } from "../../../form/formFields/CheckboxField";
 import { CustomColumnFormats } from "../../../../../model/common/ListView";
 import ColumnChooser from "./components/ColumnChooser";
@@ -32,6 +32,7 @@ import TagDotRenderer from "./components/TagDotRenderer";
 import StaticProgress from "../../../progress/StaticProgress";
 import { usePrevious } from "../../../../utils/hooks";
 import { stubComponent } from "../../../../utils/common";
+import { CHECKLISTS_COLUMN, CHOOSER_COLUMN, COLUMN_WITH_COLORS, SELECTION_COLUMN } from "./constants";
 
 const COLUMN_MIN_WIDTH = 55;
 
@@ -361,7 +362,7 @@ const Table: React.FC<ListTableProps> = ({
                 style={{...snapshot.isDraggingOver ? { pointerEvents: "none" } : {}}}
               >
                 {headerGroup.headers.filter(column => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(column.id)).map((column, columnIndex) => {
-                  const disabledCell = ["selection", "chooser"].includes(column.id);
+                  const disabledCell = [SELECTION_COLUMN, CHOOSER_COLUMN].includes(column.id);
                   return (
                     <Draggable
                       key={columnIndex}
@@ -380,7 +381,7 @@ const Table: React.FC<ListTableProps> = ({
                                 provided.draggableProps.style
                               )}
                             >
-                              <div {...column.getHeaderProps()}
+                              <div
                                className={clsx(
                                 classes.draggableCellItem,
                                  "text-truncate text-nowrap",
