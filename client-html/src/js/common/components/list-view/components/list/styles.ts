@@ -67,6 +67,7 @@ export default (theme: AppTheme) => createStyles({
     }
   },
   draggableCellItem: {
+    position: "relative",
     fontSize: '0.75rem',
     padding: theme.spacing(2, 1),
     transition: theme.transitions.create("padding", {
@@ -175,6 +176,7 @@ export default (theme: AppTheme) => createStyles({
   },
   selected: {},
   resizer: {
+    cursor: "col-resize",
     top: "50%",
     right: "3px",
     width: "3px",
