@@ -13,3 +13,5 @@ export const CHECKLISTS_COLUMN = "checklistsColor";
 export const SELECTION_COLUMN = "select";
 
 export const CHOOSER_COLUMN = "chooser";
+
+export const COLUMN_MIN_WIDTH = 60;
