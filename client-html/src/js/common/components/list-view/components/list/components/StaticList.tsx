@@ -13,6 +13,7 @@ import TableCell from "@mui/material/TableCell";
 import { NestedTableColumnsTypes } from "../../../../../../model/common/NestedTable";
 import NestedTableCheckboxCell from "./NestedTableCheckboxCell";
 import NestedTableLinkCell from "./NestedTableLinkCell";
+import { flexRender } from "@tanstack/react-table";
 
 const ListCell = React.memo<any>(({
  value, fieldName, column, row, onCheckboxChange, classes
@@ -52,7 +53,6 @@ const ListCell = React.memo<any>(({
 
 const ListRow = memo<any>(({ data, index, style }) => {
   const {
-    prepareRow,
     rows,
     classes,
     onRowSelect,
@@ -64,29 +64,32 @@ const ListRow = memo<any>(({ data, index, style }) => {
   const rowClasses = clsx(
     "d-flex",
     classes.row,
-    row.isSelected && classes.selected,
+    row.getIsSelected() && classes.selected,
     row.original && row.original.customClasses,
     index % 2 && classes.oddRow
   );
-  prepareRow(row);
 
   return (
     <div
-      {...row.getRowProps()}
       style={style}
       className={rowClasses}
       onClick={() => onRowSelect(row.id)}
       onDoubleClick={() => (onRowDoubleClick ? onRowDoubleClick(row.original.initial) : null)}
     >
-      {row.cells.map(cell => (
+      {row.getVisibleCells().map(cell => (
         <TableCell
+          style={{
+            minWidth: '0px',
+            boxSizing: "border-box",
+            flex: `${cell.column.getSize()} 0 auto`,
+            width: `${cell.column.getSize()}px`
+          }}
           component="div"
-          {...cell.getCellProps()}
-          className={clsx(classes.bodyCell, cell.column.cellClass)}
+          className={clsx(classes.bodyCell, cell.column.columnDef.cellClass)}
         >
           <ListCell
-            value={cell.render("Cell")}
-            column={cell.column}
+            value={flexRender(cell.column.columnDef.cell, cell.getContext())}
+            column={cell.column.columnDef}
             row={row.original.initial}
             fieldName={row.original.fieldName}
             onCheckboxChange={onCheckboxChange}
@@ -99,24 +102,22 @@ const ListRow = memo<any>(({ data, index, style }) => {
 }, areEqual);
 
 export default ({
-    totalColumnsWidth,
-    prepareRow,
-    rows,
-    classes,
-    onRowDoubleClick,
-    onCheckboxChange,
-    onRowSelect
-  }) => {
+  totalColumnsWidth,
+  rows,
+  classes,
+  onRowDoubleClick,
+  onCheckboxChange,
+  onRowSelect
+}) => {
   const itemData = useMemo(
     () => ({
-      prepareRow,
       rows,
       classes,
       onRowDoubleClick,
       onCheckboxChange,
       onRowSelect
     }),
-    [prepareRow, rows, classes, onRowDoubleClick, onCheckboxChange, onRowSelect, totalColumnsWidth]
+    [rows, classes, onRowDoubleClick, onCheckboxChange, onRowSelect, totalColumnsWidth]
   );
 
   return (

@@ -74,7 +74,7 @@ import {
 import { ConfirmProps, ShowConfirmCaller } from "../../../model/common/Confirm";
 import { EntityName, FindEntityState } from "../../../model/entities/common";
 import { saveCategoryAQLLink } from "../../utils/links";
-import ReactTableList, { TableListProps } from "./components/list/ReactTableListMigrate";
+import ReactTableList, { TableListProps } from "./components/list/ReactTableList";
 import {
   getActiveTags,
   getFiltersNameString,
