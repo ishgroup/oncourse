@@ -62,7 +62,7 @@ const TwoColumnCell = ({ cell, classes }) => (<div
   style={{
     width: cell.column.getSize()
   }}
-  className={clsx(classes.bodyCell, cell.column.cellClass)}
+  className={clsx(classes.bodyCell, cell.column.columnDef.cellClass)}
 >
   {flexRender(cell.column.columnDef.cell, cell.getContext())}
 </div>);

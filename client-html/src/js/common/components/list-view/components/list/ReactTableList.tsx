@@ -31,7 +31,7 @@ import styles from "./styles";
 import TagDotRenderer from "./components/TagDotRenderer";
 import StaticProgress from "../../../progress/StaticProgress";
 import { usePrevious } from "../../../../utils/hooks";
-import { stubComponent } from "../../../../utils/common";
+import { stubComponent, stubFunction } from "../../../../utils/common";
 import { CHECKLISTS_COLUMN, CHOOSER_COLUMN, COLUMN_WITH_COLORS, SELECTION_COLUMN } from "./constants";
 
 const COLUMN_MIN_WIDTH = 55;
@@ -480,7 +480,7 @@ const Table: React.FC<ListTableProps> = ({
       style={threeColumn ? { overflowX: "hidden" } : null}
       onScroll={onScroll}
     >
-      {!threeColumn && <ColumnChooser columns={allColumns} classes={classes} />}
+      {!threeColumn && <ColumnChooser columns={allColumns} classes={classes} onHiddenChange={stubFunction} />}
       <div {...getTableBodyProps()} className="flex-fill">
         {List}
       </div>
