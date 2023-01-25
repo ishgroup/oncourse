@@ -356,7 +356,7 @@ const SimpleTagList = ({
         })}
       >
         <Autocomplete
-                    value={null}
+          value={null}
           open={menuIsOpen}
           options={filteredOptions}
           onChange={handleChange}
@@ -366,7 +366,7 @@ const SimpleTagList = ({
           PopperComponent={currentInputString ? undefined : popperAdapter}
           ListboxComponent={currentInputString ? undefined : listboxAdapter}
           classes={{
-            root: clsx("d-inline-flex", classes.root),
+            root: classes.root,
             hasPopupIcon: classes.hasPopup,
             hasClearIcon: classes.hasClear,
             listbox: clsx(classes.listbox, fieldClasses.listbox),
