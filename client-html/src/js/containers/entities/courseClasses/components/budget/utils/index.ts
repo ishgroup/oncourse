@@ -37,7 +37,7 @@ export const includeOnEnrolPaymentPlan = (item: ClassCostExtended, taxes: Tax[])
   const currentTax = getCurrentTax(taxes, item.taxId);
   const result = { ...item };
 
-  if (result.flowType === "Income" && result.invoiceToStudent) {
+  if (result.flowType === "Income" && result.invoiceToStudent && currentTax) {
     if (result.paymentPlan.length) {
       result.paymentPlan = [
         { dayOffset: null, amount: result.perUnitAmountIncTax },
