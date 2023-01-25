@@ -24,7 +24,7 @@ export const getPaymentPlansTotal = (paymentPlans: CourseClassPaymentPlan[]) =>
 export const excludeOnEnrolPaymentPlan = (item: ClassCostExtended, currentTax: Tax) => {
   const result = { ...item };
 
-  if (result.flowType === "Income" && result.invoiceToStudent && result.paymentPlan.length) {
+  if (result.flowType === "Income" && result.invoiceToStudent && result.paymentPlan?.length) {
     result.perUnitAmountIncTax = result.paymentPlan.find(p => p.dayOffset === null).amount;
     result.perUnitAmountExTax = decimalDivide(result.perUnitAmountIncTax, decimalPlus(currentTax.rate, 1));
     result.paymentPlan = result.paymentPlan.filter(p => p.dayOffset !== null);
