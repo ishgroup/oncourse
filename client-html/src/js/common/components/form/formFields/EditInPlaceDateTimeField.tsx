@@ -27,12 +27,12 @@ import {
   HH_MM_COLONED, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM, YYYY_MM_DD_MINUSED
 } from "../../../utils/dates/format";
 import { endFieldProcessingAction, startFieldProcessingAction } from "../../../actions/FieldProcessing";
-import uniqid from "../../../utils/uniqid";
 import { EditInPlaceDateTimeFieldProps } from "../../../../model/common/Fields";
 import { makeAppStyles } from "../../../styles/makeStyles";
 import EditInPlaceFieldBase from "./EditInPlaceFieldBase";
 import { formatInTimeZone } from "date-fns-tz";
 import { appendTimezoneToUTC } from "../../../utils/dates/formatTimezone";
+import { useAppSelector } from "../../../utils/hooks";
 
 const useStyles = makeAppStyles(theme => ({
   inlinePickerButton: {
@@ -85,9 +85,9 @@ const EditInPlaceDateTimeField = (
   const [textValue, setTextValue] = useState(defaultValue || "");
   const [pickerOpened, setPickerOpened] = useState(false);
 
+  const processActionId = useAppSelector(state => state.fieldProcessing[input.name]);
+
   const inputNode = useRef<any>(null);
-  const processActionId = useRef<string>(null);
-  const processedValue = useRef<any>(null);
 
   const classes = useStyles();
 
@@ -117,12 +117,10 @@ const EditInPlaceDateTimeField = (
   }, [dateValue]);
 
   useEffect(() => {
-    if (!active && processActionId.current && input.value === processedValue.current) {
-      dispatch(endFieldProcessingAction(processActionId.current));
-      processedValue.current = null;
-      processActionId.current = null;
+    if (!active && processActionId) {
+      dispatch(endFieldProcessingAction(input.name));
     }
-  }, [input.value, active]);
+  }, [input.value, input.name, active, processActionId]);
 
   const onInputChange = e => {
     if (e) setTextValue(e.target.value);
@@ -160,11 +158,9 @@ const EditInPlaceDateTimeField = (
   };
 
   const onBlur = () => {
-    processActionId.current = uniqid();
-    dispatch(startFieldProcessingAction({ id: processActionId.current }));
+    dispatch(startFieldProcessingAction(input.name));
 
     if (persistValue && !textValue) {
-      processedValue.current = input.value;
       input.onChange(input.value);
       input.onBlur(input.value);
       setTextValue(formatDateInner(dateValue));
@@ -190,11 +186,9 @@ const EditInPlaceDateTimeField = (
         }
       }
       setTextValue(formatDateInner(appended));
-      processedValue.current = formatted;
       input.onChange(formatted);
       input.onBlur(formatted);
     } else {
-      processedValue.current = null;
       setTextValue(null);
       input.onChange(null);
       input.onBlur(null);
