@@ -151,10 +151,12 @@ const EditInPlaceDateTimeField = (
       }
       setTextValue(formatDateInner(v));
       input.onChange(formatted);
+      input.onBlur(formatted);
       return;
     }
     setTextValue("");
     input.onChange(null);
+    input.onBlur(null);
   };
 
   const onBlur = () => {
