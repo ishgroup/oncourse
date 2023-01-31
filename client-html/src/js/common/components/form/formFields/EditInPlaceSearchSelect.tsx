@@ -151,19 +151,30 @@ const EditInPlaceSearchSelect = ({
     warning,
     multiple,
     rightAligned,
-    hasError
+    hasError,
+    categoryKey
   }: EditInPlaceSearchSelectFieldProps) => {
-  const sortedItems = useMemo(() => items && (sort
-    ? [...items].sort(typeof sort === "function"
-      ? sort
-      : (aOption, bOption) => {
-        const aLabel = selectLabelCondition ? selectLabelCondition(aOption) : aOption[sortPropKey || selectLabelMark];
-        const bLabel = selectLabelCondition ? selectLabelCondition(bOption) : bOption[sortPropKey || selectLabelMark];
+  
+  const sortedItems = useMemo(() => {
+    const sorted = items && (sort
+        ? [...items].sort(typeof sort === "function"
+          ? sort
+          : (aOption, bOption) => {
+            const aLabel = selectLabelCondition ? selectLabelCondition(aOption) : aOption[sortPropKey || selectLabelMark];
+            const bLabel = selectLabelCondition ? selectLabelCondition(bOption) : bOption[sortPropKey || selectLabelMark];
 
-        return (aLabel.toLowerCase()).localeCompare(bLabel.toLowerCase());
-      })
-      : [...items]
-  ), [items, selectLabelCondition, selectLabelMark, sortPropKey]);
+            return (aLabel.toLowerCase()).localeCompare(bLabel.toLowerCase());
+          })
+        : [...items]
+    );
+    
+    if (categoryKey) {
+      sorted.sort((aOption, bOption) => (aOption[categoryKey].toLowerCase()).localeCompare(bOption[categoryKey].toLowerCase()));
+    }
+    
+    return sorted;
+    
+  }, [items, selectLabelCondition, selectLabelMark, sortPropKey, categoryKey]);
 
   const inputNode = useRef<any>(null);
 
@@ -469,13 +480,15 @@ const EditInPlaceSearchSelect = ({
             hasClearIcon: classes.hasClear,
             inputRoot: clsx(classes.inputWrapper, multiple && classes.multiple),
             option: "w-100 text-pre",
-            popper: classes.popper
+            popper: classes.popper,
+            groupUl: "m-0"
           }}
+          groupBy={categoryKey && (option => option[categoryKey])}
           renderOption={renderOption}
           getOptionLabel={getOptionLabel}
           filterOptions={filterItems}
-          ListboxComponent={inline ? null : ListBoxAdapter as any}
-          PopperComponent={PopperAdapter as any}
+          ListboxComponent={inline || categoryKey ? null : ListBoxAdapter as any}
+          PopperComponent={categoryKey ? null : PopperAdapter as any}
           renderInput={({
            InputLabelProps, InputProps, inputProps, ...params
           }) => (
