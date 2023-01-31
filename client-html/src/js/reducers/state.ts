@@ -44,7 +44,6 @@ import { SwipeableDrawer } from "../model/common/drawer/SwipeableDrawerModel";
 import { EnrolmentsState } from "../containers/entities/enrolments/reducers/state";
 import { CommonPlainRecordSearchState } from "../model/common/Plain";
 import { SendMessageState } from "../model/common/SendMessage";
-import { FieldProcessingAction } from "../model/common/FieldProcessing";
 
 // global app state
 export interface State {
@@ -68,7 +67,7 @@ export interface State {
   tags: TagsState;
   export: AvetmissExportState;
   process: ProcessState;
-  fieldProcessing: FieldProcessingAction[];
+  fieldProcessing: Record<string, boolean>;
   list: ListState;
   taxes: TaxesState;
   share: ShareState;
