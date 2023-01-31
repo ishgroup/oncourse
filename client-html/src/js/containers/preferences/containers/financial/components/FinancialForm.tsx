@@ -83,8 +83,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 type="multilineText"
                 name={this.formModel.PaymentInfo.uniqueKey}
                 label="Invoice remittance instructions"
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Grid item xs={12}>
@@ -99,8 +98,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 name={this.formModel.AccountDebtors.uniqueKey}
                 label="Debtors (Asset)"
                 items={getAccountsList(accounts, AccountType.asset)}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Grid item xs={12} sm={6} md={4}>
@@ -109,8 +107,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 name={this.formModel.AccountBank.uniqueKey}
                 label="Bank (Asset)"
                 items={getAccountsList(accounts, AccountType.asset)}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden smDown>
@@ -123,8 +120,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 name={this.formModel.AccountTax.uniqueKey}
                 label="Tax (Liability)"
                 items={getAccountsList(accounts, AccountType.liability)}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Grid item xs={12} sm={6} md={4}>
@@ -133,8 +129,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 name={this.formModel.AccountStudentEnrolments.uniqueKey}
                 label="Student enrolments (Income)"
                 items={getAccountsList(accounts, AccountType.income)}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden smDown>
@@ -147,8 +142,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 name={this.formModel.AccountPrepaidFees.uniqueKey}
                 label="Prepaid fees account (Liability)"
                 items={getAccountsList(accounts, AccountType.liability)}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Grid item xs={12} sm={6} md={4}>
@@ -157,8 +151,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 name={this.formModel.AccountPrepaidFeesPostAt.uniqueKey}
                 label="Post prepaid fees (When)"
                 items={postPrepaidFees}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden smDown>
@@ -171,9 +164,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 name={this.formModel.AccountVoucherLiability.uniqueKey}
                 label="Voucher liability account (Liability)"
                 items={getAccountsList(accounts, AccountType.liability)}
-                helperText=""
-                fullWidth
-              />
+                />
             </Grid>
 
             <Grid item xs={12} sm={6} md={4}>
@@ -182,8 +173,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 name={this.formModel.AccountVoucherUnderpayment.uniqueKey}
                 label="Default voucher underpayment account"
                 items={getAccountsList(accounts, AccountType.expense)}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden smDown>
@@ -197,8 +187,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 label="Default invoice line income account"
                 items={getAccountsList(accounts, AccountType.income)}
                 debounced={false}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden smDown>
@@ -221,8 +210,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 name={this.formModel.AccountDefaultCurrency.uniqueKey}
                 label="Default currency"
                 items={currency}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Grid item xs={12} sm={6} md={4}>
@@ -230,8 +218,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 type="number"
                 name={this.formModel.AccountInvoiceTerms.uniqueKey}
                 label="Default invoice terms (days)"
-                fullWidth
-              />
+                              />
             </Grid>
           </Grid>
         </AppBarContainer>

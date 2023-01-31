@@ -72,8 +72,7 @@ const AssessmentGradeModal = (
       classes={{
         paper: "overflow-visible"
       }}
-      fullWidth
-      disableAutoFocus
+            disableAutoFocus
       disableEnforceFocus
       disableRestoreFocus
     >

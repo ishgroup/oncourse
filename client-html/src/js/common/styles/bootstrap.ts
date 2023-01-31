@@ -398,6 +398,9 @@ export const bootstrap = (theme: AppTheme) => ({
   ".cursor-pointer": {
     cursor: "pointer"
   },
+  ".cursor-text": {
+    cursor: "text"
+  },
   ".pointer-events-none": {
     pointerEvents: "none"
   },

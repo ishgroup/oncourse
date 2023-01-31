@@ -114,10 +114,8 @@ const SurveyEditView = (props: Props) => {
               dispatch(change(form, "testimonial", values.comment));
             }
           }}
-          props={{
-            label: "Visibility",
-            items: visibilityItems
-          }}
+          label="Visibility"
+          items={visibilityItems}
         />
       </Grid>
       <Grid item xs={twoColumn ? 6 : 12}>

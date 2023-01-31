@@ -269,7 +269,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
             entity="Module"
             selectValueMark="nationalCode"
             selectLabelMark="nationalCode"
-            defaultDisplayValue={values && values.moduleCode}
+            defaultValue={values && values.moduleCode}
             labelAdornment={(
               <LinkAdornment
                 linkHandler={openModuleLink}
@@ -280,8 +280,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
             onInnerValueChange={onModuleCodeChange}
             disabled={values && values.hasCertificate}
             allowEmpty
-            fullWidth
-          />
+                      />
         </Grid>
         <Grid item xs={12}>
           <FormField
@@ -291,7 +290,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
             label="Module name"
             selectValueMark="title"
             selectLabelMark="title"
-            defaultDisplayValue={values && values.moduleName}
+            defaultValue={values && values.moduleName}
             labelAdornment={(
               <LinkAdornment
                 linkHandler={openModuleLink}
@@ -303,8 +302,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
             disabled={values && values.hasCertificate}
             warning={warnings["moduleName"]}
             allowEmpty
-            fullWidth
-          />
+                      />
         </Grid>
         <Grid item xs={12}>
           <FormField
@@ -312,8 +310,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
             name={getFieldName("deliveryMode")}
             label="Delivery mode"
             items={deliveryModeValues}
-            fullWidth
-          />
+                      />
         </Grid>
         <Grid item xs={12}>
           <FormField
@@ -321,6 +318,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
             name={getFieldName("reportableHours")}
             label="Reportable hours"
             normalize={normalizeNumberToZero}
+            debounced={false}
           />
         </Grid>
         <Grid item xs={12}>
@@ -329,8 +327,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
             name={getFieldName("fundingSource")}
             label="Funding source"
             items={fundingSourceValues}
-            fullWidth
-          />
+                      />
         </Grid>
       </Grid>
 
@@ -359,8 +356,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                 name={getFieldName("startDate")}
                 label="Start date"
                 validate={validateStartDate}
-                listSpacing={false}
-                placeHolder="Leave empty to calculate date from class"
+                placeholder="Leave empty to calculate date from class"
               />
             </Grid>
             <Grid item xs={twoColumn ? 4 : 12}>
@@ -369,7 +365,6 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                 name={getFieldName("endDate")}
                 label="End date"
                 validate={validateEndtDate}
-                listSpacing={false}
                 placeholder="Leave empty to calculate date from class"
               />
             </Grid>
@@ -510,8 +505,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
               label="Status"
               items={outcomeStatusValues}
               disabled={values && values.printed}
-              fullWidth
-            />
+                          />
           </Grid>
           <Grid item xs={twoColumn ? 4 : 12}>
             <FormField
@@ -519,8 +513,8 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
               name={getFieldName("hoursAttended")}
               parse={parseIntValue}
               label="Hours attended"
-              fullWidth
-            />
+              debounced={false}
+                          />
           </Grid>
           <Grid item xs={twoColumn ? 4 : 12}>
             <FormField
@@ -528,8 +522,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
               name={getFieldName("vetFundingSourceStateID")}
               label="Funding source state"
               validate={validateFundingSourse}
-              fullWidth
-            />
+                          />
           </Grid>
         </Grid>
       </Grid>
@@ -541,8 +534,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
               name={getFieldName("vetPurchasingContractID")}
               label="Purchasing contract identifier"
               validate={validateVetPurchasingContractIdentifier}
-              fullWidth
-            />
+                          />
           </Grid>
           <Grid item xs={twoColumn ? 4 : 12}>
             <FormField
@@ -550,8 +542,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
               name={getFieldName("vetPurchasingContractScheduleID")}
               label="Purchasing contract schedule identifier"
               validate={validatePurchasingContractScheduleIdentifier}
-              fullWidth
-            />
+                          />
           </Grid>
 
           <Grid item xs={twoColumn ? 4 : 12}>
@@ -559,8 +550,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
               type="text"
               name={getFieldName("specificProgramIdentifier")}
               label="Specific program identifier"
-              fullWidth
-              validate={validateSpecificProgramIdentifier}
+                            validate={validateSpecificProgramIdentifier}
             />
           </Grid>
 

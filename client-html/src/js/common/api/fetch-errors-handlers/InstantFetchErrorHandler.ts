@@ -9,7 +9,7 @@ import { ServerResponse } from "../../../model/common/apiHandlers";
 
 const instantFetchErrorHandler = (
   dispatch: Dispatch,
-  response: ServerResponse,
+  response: ServerResponse | Error,
   customMessage: string = "Something went wrong"
 ) => {
   if (!response) {
@@ -18,6 +18,10 @@ const instantFetchErrorHandler = (
       payload: { message: customMessage }
     });
     return;
+  }
+
+  if (response instanceof Error) {
+    throw response;
   }
 
   const { data, status } = response;

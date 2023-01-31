@@ -136,7 +136,7 @@ class AuthenticationFunctions {
 
         // if all else fails, let's check the scratch codes
         String[] scratchCodes = StringUtils.split(user.tokenScratchCodes, SEPARATOR_CHAR)
-        String scratchCode = scratchCodes.find { it == token }
+        String scratchCode = scratchCodes ? scratchCodes.find { it == token } : scratchCodes
         if (scratchCode) {
             // success, this one matched so we'll throw it away now
             ArrayUtils.removeElement(scratchCodes, scratchCode)

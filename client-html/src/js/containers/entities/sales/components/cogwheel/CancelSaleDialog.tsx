@@ -153,7 +153,6 @@ const CancelSaleDialog = React.memo<Props>(props => {
                     items={taxes || []}
                     validate={!feeValuesDisabled ? validateSingleMandatoryField : undefined}
                     disabled={feeValuesDisabled}
-                    autoWidth={false}
                   />
                 </Grid>
                 <Grid item xs={4}>
@@ -166,7 +165,6 @@ const CancelSaleDialog = React.memo<Props>(props => {
                     selectLabelCondition={accountLabelCondition}
                     validate={!feeValuesDisabled ? validateSingleMandatoryField : undefined}
                     disabled={feeValuesDisabled}
-                    autoWidth={false}
                   />
                 </Grid>
               </Grid>

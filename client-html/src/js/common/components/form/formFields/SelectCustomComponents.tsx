@@ -21,6 +21,9 @@ import Tooltip from "@mui/material/Tooltip";
 
 export const selectStyles = theme => createStyles({
     root: {},
+    inline: {
+      margin: theme.spacing(0, 0.5)
+    },
     bottomMargin: {
       marginBottom: `${theme.spacing(1) + 1}`
     },
@@ -83,12 +86,6 @@ export const selectStyles = theme => createStyles({
     readonly: {
       fontWeight: 300,
       pointerEvents: "none"
-    },
-    clearIcon: {
-      fontSize: "1.2rem",
-      "&:hover": {
-        cursor: "pointer",
-      }
     },
     inputWrapper: {
       "&:hover $inputEndAdornment": {

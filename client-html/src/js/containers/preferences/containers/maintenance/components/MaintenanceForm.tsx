@@ -78,6 +78,7 @@ class MaintenanceBaseForm extends React.Component<any, any> {
                 label="Minutes of inactivity until automatic logout"
                 parse={val => val || "0"}
                 validate={[validateSingleMandatoryField, this.validateTimeoutRange]}
+                debounced={false}
               />
             </Grid>
           </Grid>

@@ -68,7 +68,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
                   label="Student"
                   selectValueMark="id"
                   selectLabelCondition={getContactFullName}
-                  defaultDisplayValue={values && values.studentName}
+                  defaultValue={values && values.studentName}
                   labelAdornment={
                     <ContactLinkAdornment id={values?.contactId} />
                   }
@@ -108,7 +108,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
             selectValueMark="id"
             selectLabelCondition={v => v.name}
             selectFilterCondition={courseFilterCondition}
-            defaultDisplayValue={values && values.courseName}
+            defaultValue={values && values.courseName}
             labelAdornment={<LinkAdornment link={values.courseId} linkHandler={openCourseLink} />}
             itemRenderer={CourseItemRenderer}
             onChange={this.handlerCourseChange}

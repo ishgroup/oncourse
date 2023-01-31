@@ -269,18 +269,18 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
             <Grid container columnSpacing={3} rowSpacing={2}>
               <Grid item xs={twoColumn ? 2 : 12}>
                 <FormField
+                  type="text"
                   label="SKU"
                   name="code"
                   required
-                  fullWidth
-                />
+                 />
               </Grid>
               <Grid item xs={twoColumn ? 4 : 12}>
                 <FormField
+                  type="text"
                   label="Name"
                   name="name"
                   required
-                  fullWidth
                 />
               </Grid>
             </Grid>
@@ -335,10 +335,9 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
           <FormField
             type="number"
             name="expiryDays"
-            color="primary"
-            hidePlaceholderInEditMode
             validate={[validateSingleMandatoryField, validateNonNegative]}
             parse={parseFloatValue}
+            debounced={false}
             inline
           />
           days after purchase

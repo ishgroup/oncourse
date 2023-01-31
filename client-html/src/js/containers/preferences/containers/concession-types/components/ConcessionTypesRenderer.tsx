@@ -30,8 +30,7 @@ const renderConcessionTypes = props => {
                       type="text"
                       name={`${item}.name`}
                       label="Concession Type Name"
-                      fullWidth
-                      className={classes.field}
+                                            className={classes.field}
                       validate={[validateSingleMandatoryField, validateUniqueNamesInArray]}
                     />
                   </Grid>
@@ -45,8 +44,6 @@ const renderConcessionTypes = props => {
                             type="checkbox"
                             name={`${item}.allowOnWeb`}
                             color="primary"
-                            value="true"
-                            fullWidth
                           />
                         )}
                         label="Allow students to self-select on website"
@@ -73,8 +70,6 @@ const renderConcessionTypes = props => {
                           type="checkbox"
                           name={`${item}.requireExpary`}
                           color="primary"
-                          value="true"
-                          fullWidth
                         />
                       )}
                       label="Require expiry date"
@@ -89,8 +84,6 @@ const renderConcessionTypes = props => {
                           type="checkbox"
                           name={`${item}.requireNumber`}
                           color="primary"
-                          value="true"
-                          fullWidth
                         />
                       )}
                       label="Require concession type number"

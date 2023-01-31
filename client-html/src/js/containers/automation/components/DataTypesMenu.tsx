@@ -99,8 +99,6 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
       onCancel();
     }, [values]);
 
-    const labelType = itemsType === "label";
-
     return (
       <Popper
         open={Boolean(popupAnchorEl)}
@@ -119,10 +117,9 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
                     type="text"
                     label="Label"
                     name="label"
-                    ref={nameRef}
+                    inputRef={nameRef}
                     className="mb-2"
                     required
-                    fullWidth
                   />
 
                   <FormField
@@ -131,7 +128,6 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
                     name="name"
                     validate={validateBindingName}
                     required
-                    fullWidth
                   />
                 </DialogContent>
 

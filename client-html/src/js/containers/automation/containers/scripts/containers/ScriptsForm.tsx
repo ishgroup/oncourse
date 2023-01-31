@@ -62,7 +62,6 @@ import ScriptIcon from "../../../../../../images/icon-script.svg";
 import InfoPill from "../../../../../common/components/layout/InfoPill";
 import { AppTheme } from "../../../../../model/common/Theme";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
-import { validateForbiddenSymbols } from "../../../../../common/utils/validation";
 
 const manualUrl = getManualLink("scripts");
 const getAuditsUrl = (id: number) => `audit?search=~"Script" and entityId == ${id}`;
@@ -521,6 +520,7 @@ const ScriptsForm = React.memo<Props>(props => {
           fields={(
             <Grid item xs={12}>
               <FormField
+                type="text"
                 name="name"
                 label="Name"
                 validate={validateScriptName}
@@ -570,7 +570,6 @@ const ScriptsForm = React.memo<Props>(props => {
                     name="shortDescription"
                     disabled={isInternal}
                     className="overflow-hidden mb-1"
-                    hideLabel
                     placeholder="Short description"
                   />
                   <Typography variant="caption">
@@ -579,7 +578,6 @@ const ScriptsForm = React.memo<Props>(props => {
                       name="description"
                       disabled={isInternal}
                       className="overflow-hidden mb-1"
-                      hideLabel
                       placeholder="Description"
                       fieldClasses={{
                         text: clsx("fw300", classes.descriptionText)
@@ -617,6 +615,7 @@ const ScriptsForm = React.memo<Props>(props => {
                             format={v => v === "Enabled"}
                             parse={v => (v ? "Enabled" : "Installed but Disabled")}
                             onClick={e => e.stopPropagation()}
+                            debounced={false}
                           />
                         )}
                         onExpand={() => setTriggerExpand(!triggerExpand)}

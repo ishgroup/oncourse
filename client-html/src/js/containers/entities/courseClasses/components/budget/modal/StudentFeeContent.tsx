@@ -15,11 +15,12 @@ import Typography from "@mui/material/Typography";
 import { addDays, format } from "date-fns";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import {
-  decimalDivide, decimalMinus,
+  decimalDivide,
+  decimalMinus,
   decimalMul,
   decimalPlus
 } from "../../../../../../common/utils/numbers/decimalCalculation";
-import { formatCurrency, normalizeNumber } from "../../../../../../common/utils/numbers/numbersNormalizing";
+import { formatCurrency, normalizeNumberToZero } from "../../../../../../common/utils/numbers/numbersNormalizing";
 import { accountLabelCondition } from "../../../../accounts/utils";
 import { D_MMM_YYYY } from "../../../../../../common/utils/dates/format";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
@@ -53,8 +54,9 @@ const StudentFeePaymentPlan: React.FC<any> = ({
           type="number"
           name={`${name}.dayOffset`}
           label={`Days after start ${offsetDate ? `(${offsetDate})` : ""}`}
-          normalize={normalizeNumber}
+          normalize={normalizeNumberToZero}
           onBlur={onBlur}
+          debounced={false}
         />
       </Grid>
       <Grid item xs={4}>
@@ -144,9 +146,9 @@ const StudentFeeContent: React.FC<Props> = ({
   return (
     <Grid container columnSpacing={3}>
       <Grid item xs={3}>
-        <FormField type="text" name="description" label="Invoice line title" fullWidth />
+        <FormField type="text" name="description" label="Invoice line title"  />
       </Grid>
-      <Grid item xs={2}>
+      <Grid item xs={3}>
         <FormField
           type="money"
           name="perUnitAmountIncTax"
@@ -168,7 +170,7 @@ const StudentFeeContent: React.FC<Props> = ({
           required
         />
       </Grid>
-      <Grid item xs={5}>
+      <Grid item xs={4}>
         <FormField
           type="select"
           name="accountId"

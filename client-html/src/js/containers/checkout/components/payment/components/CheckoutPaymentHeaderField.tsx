@@ -596,7 +596,6 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
           placeholder="Payment method"
           items={isZeroPayment ? noPaymentItems : paymentTypes}
           onChange={hendelMethodChange}
-          disabledTab
           disabled={paymentProcessStatus === "success" || isZeroPayment || formInvalid}
         />
         {selectedPaymentMethod && selectedPaymentMethod.type === "Credit card" && (

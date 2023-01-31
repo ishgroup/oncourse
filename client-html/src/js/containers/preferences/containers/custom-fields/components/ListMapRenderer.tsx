@@ -116,7 +116,6 @@ const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
                         }}
                           inline
                           onKeyPress={onKeyPress}
-                          hidePlaceholderInEditMode
                           multiline
                         />
 
@@ -137,7 +136,6 @@ const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
                               }}
                               onKeyPress={onKeyPress}
                               inline
-                              hidePlaceholderInEditMode
                               multiline
                             />
                             )

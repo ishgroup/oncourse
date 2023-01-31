@@ -288,7 +288,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
           label="Lead"
           selectValueMark="id"
           selectLabelCondition={leadLabelCondition}
-          defaultDisplayValue={values && values.leadCustomerName}
+          defaultValue={values && values.leadCustomerName}
           labelAdornment={
             <LinkAdornment linkHandler={openLeadLink} link={values.leadId} disabled={!values.leadId} />
           }
@@ -308,7 +308,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
           label="Invoice to"
           selectValueMark="id"
           selectLabelCondition={getContactFullName}
-          defaultDisplayValue={values?.contactName}
+          defaultValue={values?.contactName}
           labelAdornment={
             <ContactLinkAdornment id={values?.contactId} />
           }
@@ -345,7 +345,6 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
           type="date"
           name="invoiceDate"
           label="Invoice date"
-          maxDate={values.dateDue}
           onChange={onInvoiceDateChange}
           validate={[validateSingleMandatoryField, validateMaxDate]}
           disabled={values.type !== "Quote" && !isNew}
@@ -357,7 +356,6 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
           type="date"
           name="dateDue"
           label="Due date"
-          minDate={values.invoiceDate}
           validate={[validateSingleMandatoryField, validateMinDate]}
           disabled={values.type !== "Quote" && hasPaymentDues}
         />
@@ -431,7 +429,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
       )}
 
       <Grid item xs={12}>
-        <FormField type="multilineText" name="publicNotes" label="Public notes" fullWidth />
+        <FormField type="multilineText" name="publicNotes" label="Public notes" />
       </Grid>
 
       <Grid item xs={12}>

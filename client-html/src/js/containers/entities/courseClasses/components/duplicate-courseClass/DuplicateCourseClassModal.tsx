@@ -323,8 +323,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                     onChange={handleDateChange}
                     debounced={false}
                     disabled={fetching}
-                    fullWidth
-                    required
+                                        required
                   />
                 </div>
               )}
@@ -469,8 +468,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                         selectFilterCondition={courseFilterCondition}
                         validate={changeCourse ? validateSingleMandatoryField : undefined}
                         itemRenderer={CourseItemRenderer}
-                        fullWidth
-                        rowHeight={55}
+                                                rowHeight={55}
                       />
                     </Typography>
                   )}
