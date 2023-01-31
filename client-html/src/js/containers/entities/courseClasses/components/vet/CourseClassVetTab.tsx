@@ -95,7 +95,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               name="vetFundingSourceStateID"
               label="Default funding source state"
               validate={validateVetFundingSourceState}
-                          />
+            />
           </Grid>
 
           <Grid item xs={twoColumn ? 5 : 12}>
@@ -104,7 +104,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               name="detBookingId"
               label="DET Booking Identifier (NSW)/Contracted Program of Study (WA)"
               validate={validateDETBookingIdentifier}
-                          />
+            />
           </Grid>
 
           <Grid item xs={twoColumn ? 4 : 12}>
@@ -115,7 +115,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               label="Course site identifier (NSW)"
               validate={validateCourseSiteIdentifier}
               debounced={false}
-                          />
+            />
           </Grid>
 
           <Grid item xs={twoColumn ? 3 : false} />
@@ -126,7 +126,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               name="vetPurchasingContractID"
               label="Default purchasing contract identifier"
               validate={validateDefaultPurchasingContractIdentifier}
-                          />
+            />
           </Grid>
 
           <Grid item xs={twoColumn ? 4 : 12}>
@@ -135,7 +135,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               name="vetPurchasingContractScheduleID"
               label="Default purchasing contract schedule identifier"
               validate={validatePurchasingContractScheduleIdentifier}
-                          />
+            />
           </Grid>
 
           <Grid item xs={twoColumn ? 3 : false} />
