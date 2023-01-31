@@ -117,6 +117,10 @@ public class DuplicateCourseClass {
             newClass.setRoom(oldClass.getRoom());
         }
 
+        if(request.isCopyCosts()) {
+            newClass.setBudgetedPlaces(oldClass.getBudgetedPlaces());
+        }
+
         if (oldClass.getTax() != null) {
             newClass.setTax(oldClass.getTax());
         }
