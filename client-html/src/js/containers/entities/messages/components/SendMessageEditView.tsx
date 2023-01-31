@@ -555,10 +555,12 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
                   label="Template"
                   selectValueMark="id"
                   selectLabelMark="name"
+                  categoryKey="entity"
                   items={filteredTemplatesByVaribleCount}
                   onChange={onTemplateChange}
                   className="mb-2"
                   required
+                  sort
                 />
 
                 <FieldArray name="bindings" component={bindingsRenderer} rerenderOnEveryChange />
