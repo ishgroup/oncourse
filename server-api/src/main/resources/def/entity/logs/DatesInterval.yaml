@@ -1,0 +1,10 @@
+type: object
+properties:
+  startDate:
+    type: string
+    format: date
+    required: true
+  endDate:
+    type: string
+    format: date
+    required: false
