@@ -181,8 +181,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
           createdOn,
           gatewayReference,
           creditCardClientReference,
-          amount,
-          privateNotes
+          amount
         } = payment;
 
         const shortCurrencySymbol = currency != null ? currency.shortCurrencySymbol : defaultCurrencySymbol;
@@ -191,9 +190,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
 
         return {
           value: refundableId,
-          label: `${formattedDate} [${gatewayReference}/${creditCardClientReference}] ${formattedAmount} ${
-            privateNotes || ""
-          }`
+          label: `${formattedDate} [${gatewayReference}/${creditCardClientReference}] ${formattedAmount}`
         };
       });
   }, [refundablePayments, values.amount, currency]);
