@@ -532,6 +532,7 @@ const EditInPlaceSearchSelect = ({
                 ?
                 <Select
                   {...InputProps}
+                  classes={{ select: "cursor-text" }}
                   onFocus={edit}
                   value={input.value || ""}
                   endAdornment={
