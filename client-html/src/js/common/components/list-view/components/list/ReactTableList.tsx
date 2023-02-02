@@ -85,7 +85,8 @@ const Table = ({
 
   const classes = useStyles();
 
-  const onSelectionChangeHangler = newSelection => {
+  const onSelectionChangeHangler = () => {
+    const newSelection = Object.keys(rowSelection).map(k => k);
     if (newSelection.length === 1 && selection.length === 1 && newSelection[0] === selection[0]) {
       return;
     }
@@ -102,9 +103,6 @@ const Table = ({
     }
   }, [tableRef.current]);
 
-  useEffect(() => {
-    onSelectionChangeHangler(Object.keys(rowSelection).map(k => k));
-  }, [rowSelection]);
 
   const toggleRowSelect = id => {
     const updated = { ...table.getState().rowSelection };
@@ -114,6 +112,7 @@ const Table = ({
       updated[id] = true;
     }
     onRowSelectionChange(updated);
+    onSelectionChangeHangler();
   };
 
   const onRowSelect = (e, row) => {
@@ -134,6 +133,7 @@ const Table = ({
         }, {});
 
       onRowSelectionChange(selectionData);
+      onSelectionChangeHangler();
       return;
     }
     if (e.ctrlKey || e.metaKey) {
@@ -141,6 +141,7 @@ const Table = ({
       return;
     }
     onRowSelectionChange({ [row.id]: true });
+    onSelectionChangeHangler();
   };
 
   const onRowCheckboxSelect = (e, id) => {
