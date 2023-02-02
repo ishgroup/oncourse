@@ -20,7 +20,7 @@ const request: EpicUtils.Request = {
     if (contactId) {
       return EntityService.getPlainRecords(
         "PaymentIn",
-        "createdOn,gatewayReference,creditCardClientReference,amount,privateNotes",
+        "createdOn,gatewayReference,creditCardClientReference,amount",
         `payer.id == ${contactId} and paymentMethod.type == CREDIT_CARD and status == SUCCESS and banking.id != null and gatewayReference !== null`,
         PLAIN_LIST_MAX_PAGE_SIZE,
         0,

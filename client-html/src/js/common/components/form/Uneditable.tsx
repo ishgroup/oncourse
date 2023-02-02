@@ -56,7 +56,8 @@ const Uneditable = React.memo<UneditableProps>(props => {
       className={clsx(className, money && "money")}
       error={Boolean(error)}
       variant="standard"
-          >
+      fullWidth
+    >
       <InputLabel
         shrink
         classes={{

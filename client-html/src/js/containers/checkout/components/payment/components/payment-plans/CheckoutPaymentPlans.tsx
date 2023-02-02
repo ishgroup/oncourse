@@ -119,11 +119,11 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
                 name={`${f}.amount`}
                 format={normalizeNumberToPositive}
                 normalize={normalizeNumberToPositive}
-                
                 onBlur={onPayNowBlur}
                 onChange={onPayNowChange}
                 disabled={!first || disabledStep}
                 validate={first ? validatePayNow : undefined}
+                debounced={false}
               />
 
               {first && (
