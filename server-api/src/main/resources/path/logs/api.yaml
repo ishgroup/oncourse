@@ -1,4 +1,4 @@
-get:
+post:
   operationId: getLogs
   description: get logs files for dates interval
   tags:
