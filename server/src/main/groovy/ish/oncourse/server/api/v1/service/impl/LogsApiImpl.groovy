@@ -10,6 +10,7 @@ package ish.oncourse.server.api.v1.service.impl
 
 import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.server.api.v1.model.DatesIntervalDTO
+import ish.oncourse.server.api.v1.model.LogFileDTO
 import ish.oncourse.server.api.v1.service.LogsApi
 import ish.util.LocalDateUtils
 import org.apache.logging.log4j.LogManager
@@ -24,7 +25,9 @@ import java.nio.file.attribute.BasicFileAttributes
 import java.time.Instant
 
 class LogsApiImpl implements LogsApi {
-    List<byte[]> getLogs(DatesIntervalDTO intervalDTO) {
+
+    @Override
+    List<LogFileDTO> getLogs(DatesIntervalDTO intervalDTO) {
         LoggerContext logContext = (LoggerContext) LogManager.getContext(true);
         def configuration = logContext.getConfiguration()
         def appenders = configuration.getAppenders().values()
@@ -65,7 +68,14 @@ class LogsApiImpl implements LogsApi {
             }
 
         }
-        return logFiles.collect {ResourcesUtil.fileToByteArray(it)}
+
+        return logFiles.collect { file ->
+            new LogFileDTO().with { it ->
+                it.content = ResourcesUtil.fileToByteArray(file)
+                it.fileName = file.name
+                it
+            }
+        }
     }
 
     private static boolean fileWasModifiedInInterval(Instant start, Instant end, String pathToFile){
