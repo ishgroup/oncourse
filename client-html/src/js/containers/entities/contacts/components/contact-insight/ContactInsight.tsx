@@ -257,6 +257,19 @@ const getEntityLabel = (entity: string, name: string, currencySymbol?: string) =
   }
 };
 
+const getInteractionLink = (interaction: ContactInteraction) => {
+  switch (interaction.entity) {
+    case "Voucher":
+    case "Membership":
+    case "Article":
+      return `/sale/${interaction.id}`;
+    case "Note":
+      return null;
+    default: 
+      return `/${interaction.entity[0].toLowerCase()}${interaction.entity.slice(1)}/${interaction.id}`;
+  }
+};
+
 const Interaction = (interaction: ContactInteraction & { currencySymbol?: string }) => {
   const [clamped, setClamped] = useState(true);
   const [descriptionLines, setSescriptionLines] = useState(null);
@@ -272,7 +285,7 @@ const Interaction = (interaction: ContactInteraction & { currencySymbol?: string
       <ListItemText
         primary={(
           <Stack spacing={2} direction="row" className="mb-2">
-            <HoverLink link={interaction.entity !== "Note" && `/${interaction.entity[0].toLowerCase()}${interaction.entity.slice(1)}/${interaction.id}`}>
+            <HoverLink link={getInteractionLink(interaction)}>
               <div className="text-truncate text-nowrap">
                 {getEntityLabel(interaction.entity, interaction.name, interaction.currencySymbol)}
               </div>

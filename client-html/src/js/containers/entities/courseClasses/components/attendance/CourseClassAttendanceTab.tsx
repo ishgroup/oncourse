@@ -299,6 +299,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
       let namePath = "contactName";
       let addAction = setStudentsToAttend;
       let titlePath = null;
+      let sortFunc = (a, b) => (a.name.split(" ")[1] ? a.name.split(" ")[1] > b.name.split(" ")[1] ? 1 : -1 : 1);
 
       if (type === "Training plan") {
         valuesPath = "trainingPlan";
@@ -306,6 +307,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
         idPath = "moduleId";
         titlePath = "moduleTitle";
         addAction = setModulesToAttend;
+        sortFunc = (a, b) => (a.title.localeCompare(b.title));
       }
 
       const result: { [key: string]: ContactAttendanceItem } = {};
@@ -323,8 +325,8 @@ const CourseClassAttendanceTab = React.memo<Props>(
       });
       const resultArray = Object.keys(result).map(k => result[k]);
 
-      resultArray.sort((a, b) => (a.name.split(" ")[1] ? a.name.split(" ")[1] > b.name.split(" ")[1] ? 1 : -1 : 1));
-
+      resultArray.sort(sortFunc);
+      
       addAction(resultArray);
     }, [setStudentsToAttend, setModulesToAttend, form]);
 
@@ -633,18 +635,6 @@ const CourseClassAttendanceTab = React.memo<Props>(
       },
       [form, values.studentAttendance, studentStatusRoles, validateAttendanceUpdate]
     );
-
-    // const onTutorIconClick = (e, attendance) => {
-    //   const roleIndex = tutorStatusRoles.indexOf(e.currentTarget.getAttribute("role"));
-    //
-    //   const attendanceType = [2, -1].includes(roleIndex) ? tutorStatusRoles[0] : tutorStatusRoles[roleIndex + 1];
-    //
-    //   dispatch(change(form, `tutorAttendance[${attendance.index}].attendanceType`, attendanceType));
-    //
-    //   const updated = { ...attendance, attendanceType };
-    //
-    //   validateAttendanceUpdate([updated], "Tutor");
-    // };
 
     const sessionsLeftScroller = useMemo(
       () => selectedItems.length
