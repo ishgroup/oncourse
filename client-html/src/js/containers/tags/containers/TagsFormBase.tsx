@@ -33,7 +33,7 @@ import { FormTag } from "../../../model/tags";
 import { validate } from "../utils/validation";
 import { CatalogItemType } from "../../../model/common/Catalog";
 import { EmptyTag, TAGS_FORM_NAME } from "../constants";
-import { getAllTags } from "../utils";
+import { COLORS, getAllTags } from "../utils";
 
 const styles = (theme: AppTheme) => createStyles({
   dragIcon: {
@@ -264,6 +264,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
 
     const newTag: FormTag = {
       ...EmptyTag,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
       id: ("new" + this.counter) as any,
     };
 
