@@ -12,7 +12,6 @@ import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.server.api.v1.model.DatesIntervalDTO
 import ish.oncourse.server.api.v1.model.LogFileDTO
 import ish.oncourse.server.api.v1.service.LogsApi
-import ish.util.LocalDateUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.core.LoggerContext
 import org.apache.logging.log4j.core.appender.AbstractOutputStreamAppender
@@ -23,6 +22,8 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.attribute.BasicFileAttributes
 import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 
 class LogsApiImpl implements LogsApi {
 
@@ -37,8 +38,8 @@ class LogsApiImpl implements LogsApi {
                 .findAll { it.manager instanceof FileManager }
                 .collect { it.manager as FileManager }
 
-        def startInstant = LocalDateUtils.valueToDate(intervalDTO.startDate).toInstant()
-        def endInstant = intervalDTO.endDate ? LocalDateUtils.valueToDate(intervalDTO.endDate).toInstant() : Instant.now()
+        def startInstant = toInstant(intervalDTO.from)
+        def endInstant = intervalDTO.to ? toInstant(intervalDTO.to) : Instant.now()
 
         def logFiles = new ArrayList<File>()
 
@@ -47,13 +48,13 @@ class LogsApiImpl implements LogsApi {
             if (fileManager instanceof RollingFileManager) {
                 def pattern = (fileManager as RollingFileManager).getPatternProcessor().getPattern()
                 def directory = pattern.substring(0, pattern.lastIndexOf('/'))
-                def patternExtension = pattern.substring(pattern.lastIndexOf('.') + 1)
+                def patternExtension = extensionOf(pattern)
 
                 logFiles.addAll(new File(directory).listFiles(new FilenameFilter() {
                     @Override
                     public boolean accept(File dir, String name) {
                         if (patternExtension != null) {
-                            def fileExtension = name.substring(name.lastIndexOf('.') + 1)
+                            def fileExtension = extensionOf(name)
                             if (!patternExtension.equals(fileExtension))
                                 return false
                         }
@@ -76,6 +77,14 @@ class LogsApiImpl implements LogsApi {
                 it
             }
         }
+    }
+
+    private static Instant toInstant(LocalDateTime dateTime){
+        return dateTime.toInstant(ZoneId.systemDefault().offset)
+    }
+
+    private static String extensionOf(String fileName){
+        return fileName.substring(fileName.lastIndexOf('.') + 1)
     }
 
     private static boolean fileWasModifiedInInterval(Instant start, Instant end, String pathToFile){

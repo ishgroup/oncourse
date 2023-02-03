@@ -4,7 +4,7 @@ post:
   tags:
     - Logs
   parameters:
-    - name: startDate
+    - name: datesInterval
       in: body
       schema:
         $ref: './def/entity/logs/DatesInterval.yaml'
@@ -19,4 +19,6 @@ post:
       default:
         description: Unexpected error
   x-permission:
+    mask: view
     keyCode: ADMIN
+    errorMessage: Sorry, you do not have permissions to download server logs
