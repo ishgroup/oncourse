@@ -20,7 +20,10 @@ import {
   decimalMul,
   decimalPlus
 } from "../../../../../../common/utils/numbers/decimalCalculation";
-import { formatCurrency, normalizeNumberToZero } from "../../../../../../common/utils/numbers/numbersNormalizing";
+import {
+  formatCurrency,
+  normalizeNumber
+} from "../../../../../../common/utils/numbers/numbersNormalizing";
 import { accountLabelCondition } from "../../../../accounts/utils";
 import { D_MMM_YYYY } from "../../../../../../common/utils/dates/format";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
@@ -54,13 +57,13 @@ const StudentFeePaymentPlan: React.FC<any> = ({
           type="number"
           name={`${name}.dayOffset`}
           label={`Days after start ${offsetDate ? `(${offsetDate})` : ""}`}
-          normalize={normalizeNumberToZero}
+          normalize={normalizeNumber}
           onBlur={onBlur}
           debounced={false}
         />
       </Grid>
       <Grid item xs={3}>
-        <FormField type="money" name={`${name}.amount`} label="Amount" {...fieldAmountProps} />
+        <FormField type="money" name={`${name}.amount`} label="Amount" required {...fieldAmountProps}  />
       </Grid>
 
       <Grid item xs={1}>
