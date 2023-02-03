@@ -1,10 +1,10 @@
 type: object
 properties:
-  startDate:
+  from:
     type: string
-    format: date
+    format: date-time
     required: true
-  endDate:
+  to:
     type: string
-    format: date
+    format: date-time
     required: false
