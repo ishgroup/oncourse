@@ -95,7 +95,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
         initialize(form, {
           ...values,
           adminSite: adminCenterName,
-          administrationCenterId: adminSites.find(s => s.label === adminCenterName).value
+          administrationCenterId: adminSites.find(s => s.label === adminCenterName)?.value
         })
       );
     }
