@@ -1,0 +1,22 @@
+delete:
+  operationId: deleteVersionPreview
+  description: Delete thumbnail of document version
+  tags:
+    - Document
+  parameters:
+    - name: id
+      in: query
+      type: integer
+      format: int64
+      required: true
+  responses:
+    '200':
+      description: Success response
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: update
+    keyCode: ATTACHMENT_INFO
+    errorMessage: Sorry, you have no permissions to update Document version. Please contact your administrator
