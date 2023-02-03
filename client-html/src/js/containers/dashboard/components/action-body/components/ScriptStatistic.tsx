@@ -98,7 +98,7 @@ const ScriptStatistic = ({ dispatch, classes }) => {
       resultForRender.sort((a, b) => (new Date(a.result[0].date) < new Date(b.result[0].date) ? 1 : -1));
       setScripts(resultForRender);
     } catch (e) {
-      instantFetchErrorHandler(dispatch, e);
+      instantFetchErrorHandler(dispatch, e, "Failed to get automation status");
     }
   };
 
