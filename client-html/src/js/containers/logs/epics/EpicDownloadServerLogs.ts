@@ -20,9 +20,9 @@ const request: EpicUtils.Request<LogFile, DatesInterval> = {
   type: DOWNLOAD_LOGS,
   getData: startDate => LogsService.getLogs(startDate),
   processData: log => {
-
-    createAndDownloadFile(log.content, "gz", log.fileName, true);
-    
+    if (log) {
+      createAndDownloadFile(log.content, "gz", log.fileName, true);
+    }
     return [
       initialize(LOGS_FORM_NAME, null),
       ...log ? [] : [showMessage({ message: "No logs was found" })]
