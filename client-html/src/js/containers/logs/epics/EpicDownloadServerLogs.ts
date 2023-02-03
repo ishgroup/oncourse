@@ -21,7 +21,7 @@ const request: EpicUtils.Request<LogFile, DatesInterval> = {
   getData: startDate => LogsService.getLogs(startDate),
   processData: log => {
 
-    createAndDownloadFile(log.content, "log", log.fileName);
+    createAndDownloadFile(log.content, "log", log.fileName, true);
     
     return [
       initialize(LOGS_FORM_NAME, null),
