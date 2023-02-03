@@ -9,18 +9,17 @@
 import * as React from "react";
 import Grid from "@mui/material/Grid";
 import AppBarContainer from "../../common/components/layout/AppBarContainer";
-import { Form, getFormValues, reduxForm } from "redux-form";
+import { Form, reduxForm } from "redux-form";
 import { onSubmitFail } from "../../common/utils/highlightFormErrors";
-import { connect } from "react-redux";
-import { State } from "../../reducers/state";
 import FormField from "../../common/components/form/formFields/FormField";
 import { useAppDispatch } from "../../common/utils/hooks";
 import { downloadLogs } from "./actions";
+import LoadingIndicator from "../../common/components/progress/LoadingIndicator";
 
 export const LOGS_FORM_NAME = "DownloadLogsForm";
 
 const Logs = ({
-  values,
+  invalid,
   handleSubmit
 }) => {
   
@@ -32,10 +31,11 @@ const Logs = ({
   
   return (
     <Form className="container" onSubmit={handleSubmit(onSave)} role={LOGS_FORM_NAME} >
+      <LoadingIndicator />
       <AppBarContainer
         hideHelpMenu
         disableInteraction
-        disabled={!values || !values.from || !values.to}
+        disabled={invalid}
         submitButtonText="Download"
         title="Download logs"
       >
@@ -45,6 +45,7 @@ const Logs = ({
               type="dateTime"
               label="From"
               name="from"
+              required
             />
           </Grid>
           <Grid item xs={4}>
@@ -60,14 +61,10 @@ const Logs = ({
   );
 };
 
-const mapStateToProps = (state: State) => ({
-  holidays: state.preferences.holidays,
-  values: getFormValues(LOGS_FORM_NAME)(state),
-});
 
 const LogsForm = reduxForm({
   onSubmitFail,
   form: LOGS_FORM_NAME
-})(connect(mapStateToProps)(Logs));
+})(Logs);
 
 export default LogsForm;

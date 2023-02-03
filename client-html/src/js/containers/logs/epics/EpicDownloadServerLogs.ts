@@ -14,18 +14,18 @@ import LogsService from "../services/LogsService";
 import { createAndDownloadFile } from "../../../common/utils/common";
 import { initialize } from "redux-form";
 import { LOGS_FORM_NAME } from "../Logs";
+import { showMessage } from "../../../common/actions";
 
-const request: EpicUtils.Request<LogFile[], DatesInterval> = {
+const request: EpicUtils.Request<LogFile, DatesInterval> = {
   type: DOWNLOAD_LOGS,
   getData: startDate => LogsService.getLogs(startDate),
-  processData: logs => {
-    
-    for (const log of logs) {
-      createAndDownloadFile(log.content, "log", log.fileName);
-    }
+  processData: log => {
+
+    createAndDownloadFile(log.content, "log", log.fileName);
     
     return [
-      initialize(LOGS_FORM_NAME, null)
+      initialize(LOGS_FORM_NAME, null),
+      ...log ? [] : [showMessage({ message: "No logs was found" })]
     ];
   },
 };
