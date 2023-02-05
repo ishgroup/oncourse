@@ -32,7 +32,7 @@ const FormSubmitButton = React.memo<Props>(({
     const ref = useRef<HTMLButtonElement>();
     const defaultPrevented = useRef(false);
     
-    const isFieldProcessing = useAppSelector(state => state.fieldProcessing.length);
+    const isFieldProcessing = useAppSelector(state => Boolean(Object.keys(state.fieldProcessing).length));
   
     const buttonProps = IS_JEST ? {
       "data-testid": "appbar-submit-button"

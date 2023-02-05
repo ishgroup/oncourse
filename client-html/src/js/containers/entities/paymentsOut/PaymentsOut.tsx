@@ -114,7 +114,7 @@ class PaymentsOut extends React.Component<any, any> {
 
     if (params.id === "new" && window.location.search?.includes("invoiceId")) {
       this.onCreateNew();
-    } else {
+    } else if (!this.state.createNewDialogOpen) {
       this.setState({
         createNewDialogOpen: true
       });
