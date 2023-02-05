@@ -406,6 +406,7 @@ const SimpleTagList = ({
               }}
               CustomInput={!isEditing
                 ? <Select
+                  inputRef={(inputProps as any).ref}
                   onFocus={edit}
                   value="stub"
                   className={classes.inputWrapper}
