@@ -110,7 +110,7 @@ export class MainBase extends React.PureComponent<Props, any> {
   onWindowClose = e => {
     const { isAnyFormDirty } = this.props;
 
-    if (process.env.NODE_ENV !== EnvironmentConstants.production) {
+    if (process.env.NODE_ENV !== EnvironmentConstants.production || navigator.webdriver == true) {
       return;
     }
 
