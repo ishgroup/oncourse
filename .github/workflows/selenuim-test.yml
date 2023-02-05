@@ -55,7 +55,7 @@ jobs:
 
       - name: Run tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
-        run: ./gradlew selenium-test:test
+        run: ./gradlew selenium-test:test -x client-html:test -PdbUrl=jdbc:mariadb://localhost:3306/selenium_api_test?user=root
 
       - name: Publish test results
         uses: EnricoMi/publish-unit-test-result-action@v1
