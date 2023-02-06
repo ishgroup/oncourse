@@ -14,7 +14,7 @@ class LogsService {
 
   readonly logsApi = new LogsApi(this.service);
   
-  public getLogs(startDate: DatesInterval): Promise<LogFile[]> {
+  public getLogs(startDate: DatesInterval): Promise<LogFile> {
     return this.logsApi.getLogs(startDate);
   }
 }
