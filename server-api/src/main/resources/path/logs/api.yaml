@@ -13,9 +13,7 @@ post:
   responses:
     '200':
       schema:
-        type: array
-        items:
-          $ref: './def/entity/logs/LogFile.yaml'
+        $ref: './def/entity/logs/LogFile.yaml'
       default:
         description: Unexpected error
   x-permission:
