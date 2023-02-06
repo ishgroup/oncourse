@@ -9,10 +9,14 @@
 package ish.oncourse.service;
 
 import ish.oncourse.server.api.v1.model.LoginRequestDTO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 
 public class EmailAuthenticationService implements AuthenticationService {
+
+    private static final Logger logger = LogManager.getLogger(EmailAuthenticationService.class);
 
     private final WebDriver driver;
 
@@ -25,44 +29,47 @@ public class EmailAuthenticationService implements AuthenticationService {
 
     @Override
     public void login(LoginRequestDTO requestDTO) {
-        // Test name: Login
-        // Step # | name | target | value
-        // 1 | open | /login |
+
+        logger.error("Test name: Login");
+        logger.error("1 | open | /login |");
         driver.get("https://127.0.0.1:8182/login");
-        // 2 | click | name=user |
+        logger.error(" 2 | click | name=user |");
         driver.findElement(By.name("user")).click();
-        // 3 | type | name=user | admin@example.edu
+
+        logger.error("3 | type | name=user | admin@example.edu");
         driver.findElement(By.name("user")).sendKeys("admin@example.edu");
-        // 4 | click | name=password |
+        logger.error("4 | click | name=password |");
         driver.findElement(By.name("password")).click();
-        // 5 | type | name=password | 11111
+        logger.error("5 | type | name=password | 11111");
         driver.findElement(By.name("password")).sendKeys("11111");
-        // 6 | click | css=.flex-fill:nth-child(3) |
+        logger.error("6 | click | css=.flex-fill:nth-child(3) |");
         driver.findElement(By.cssSelector(".flex-fill:nth-child(3)")).click();
-        // 7 | mouseOver | css=.jss18 |
+        logger.error("7 | mouseOver | css=.jss18 |");
         {
             WebElement element = driver.findElement(By.cssSelector(".jss18"));
             Actions builder = new Actions(driver);
             builder.moveToElement(element).perform();
         }
-        // 8 | click | css=.jss18 |
+        logger.error("8 | click | css=.jss18 |");
         driver.findElement(By.cssSelector(".jss18")).click();
-        // 9 | mouseOut | css=.jss18 |
+        logger.error("9 | mouseOut | css=.jss18 |");
         {
             WebElement element = driver.findElement(By.tagName("body"));
             Actions builder = new Actions(driver);
             builder.moveToElement(element, 0, 0).perform();
         }
-        // 10 | click | css=.MuiGrid-spacing-xs-3 |
+        logger.error("10 | click | css=.MuiGrid-spacing-xs-3 |");
         driver.findElement(By.cssSelector(".MuiGrid-spacing-xs-3")).click();
-        // 11 | mouseOver | css=.jss13 |
+        logger.error("11 | mouseOver | css=.jss13 |");
         {
             WebElement element = driver.findElement(By.cssSelector(".jss13"));
             Actions builder = new Actions(driver);
             builder.moveToElement(element).perform();
         }
+        logger.error("12 | click | css=.jss13 |");
         // 12 | click | css=.jss13 |
         driver.findElement(By.cssSelector(".jss13")).click();
+        logger.error("13 | runScript | window.scrollTo(0,0) |");
         // 13 | runScript | window.scrollTo(0,0) |
         js.executeScript("window.scrollTo(0,0)");
     }
