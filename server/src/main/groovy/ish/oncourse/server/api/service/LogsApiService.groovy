@@ -30,6 +30,9 @@ import static org.apache.commons.codec.binary.Base64.*
 
 class LogsApiService {
     LogFileDTO getCompressedLogsForPeriod(DatesIntervalDTO intervalDTO){
+        if(!intervalDTO.to)
+            intervalDTO.to = LocalDateTime.now()
+
         LoggerContext logContext = (LoggerContext) LogManager.getContext(true);
         def configuration = logContext.getConfiguration()
         def appenders = configuration.getAppenders().values()
@@ -40,7 +43,7 @@ class LogsApiService {
                 .collect { it.manager as FileManager }
 
         def startInstant = toInstant(intervalDTO.from)
-        def endInstant = intervalDTO.to ? toInstant(intervalDTO.to) : Instant.now()
+        def endInstant = toInstant(intervalDTO.to)
 
         def logFiles = new ArrayList<File>()
 
