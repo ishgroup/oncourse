@@ -20,6 +20,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 
 @TestInstance(TestInstance. Lifecycle.PER_CLASS)
@@ -34,6 +35,7 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
         var dto = new LoginRequestDTO();
         dto.setLogin("admin@example.edu");
         dto.setPassword("abcd1723");
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         emailAuthenticationService.login(dto);
     }
 
