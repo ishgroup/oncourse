@@ -13,6 +13,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class EmailAuthenticationService implements AuthenticationService {
 
@@ -34,6 +38,10 @@ public class EmailAuthenticationService implements AuthenticationService {
         logger.error("1 | open | /login |");
         driver.get("https://127.0.0.1:8182/login");
         logger.error(" 2 | click | name=user |");
+        {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("user")));
+        }
         driver.findElement(By.name("user")).click();
 
         logger.error("3 | type | name=user | admin@example.edu");
