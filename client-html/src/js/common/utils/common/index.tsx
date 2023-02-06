@@ -55,12 +55,12 @@ export const getCustomColumnsMap = (columns: string): (dataRow: DataRow) => any 
   });
 };
 
-export const createAndDownloadFile = (data: any, type: string, name: string, noTimeStamp?: boolean) => {
+export const createAndDownloadFile = (data: any, type: string, name: string) => {
   const url = window.URL.createObjectURL(type === "json"
     ? new Blob([JSON.stringify(data, null, 2)])
     : new Blob([data]));
   const link = document.createElement("a");
-  const fileName = name + (noTimeStamp ? "" : ("-" + formatDateTime(new Date(), "yyyMMddkkmmss")));
+  const fileName = name + "-" + formatDateTime(new Date(), "yyyMMddkkmmss");
 
   link.href = url;
   link.setAttribute("download", fileName + `.${type}`);
@@ -75,6 +75,17 @@ export const createAndDownloadFile = (data: any, type: string, name: string, noT
 export const createAndDownloadBase64Image = (data: any, name: string, type = "png") => {
   const link = document.createElement("a");
   link.href = "data:image/png;base64," + data;
+  link.setAttribute("download", name + `.${type}`);
+  link.setAttribute("type", `application/${type}`);
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+export const createAndDownloadBase64File = (data: any, name: string, type: string) => {
+  const link = document.createElement("a");
+  link.href = "data:;base64," + atob(data);
   link.setAttribute("download", name + `.${type}`);
   link.setAttribute("type", `application/${type}`);
 
