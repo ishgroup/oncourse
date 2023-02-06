@@ -43,8 +43,8 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Install Google Chrome
-        run: chmod +x ./scripts/InstallChrome.sh
+      - uses: browser-actions/setup-chrome@v1
+      - run: chrome --version
 
       - name: Cache
         uses: actions/cache@v2
