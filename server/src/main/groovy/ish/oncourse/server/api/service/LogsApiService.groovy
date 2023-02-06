@@ -26,6 +26,8 @@ import java.util.zip.GZIPOutputStream
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
+import static org.apache.commons.codec.binary.Base64.*
+
 class LogsApiService {
     LogFileDTO getCompressedLogsForPeriod(DatesIntervalDTO intervalDTO){
         LoggerContext logContext = (LoggerContext) LogManager.getContext(true);
@@ -72,7 +74,7 @@ class LogsApiService {
         byte[] archivedFiles = archiveFiles(logFiles)
 
         return new LogFileDTO().with { it ->
-            it.content = compressGzipFile(archivedFiles)
+            it.content = encodeBase64(compressGzipFile(archivedFiles))
             it.fileName = "logs_$intervalDTO.from-$intervalDTO.to"
             it
         }
