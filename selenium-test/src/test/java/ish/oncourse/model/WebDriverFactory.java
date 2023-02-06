@@ -24,7 +24,7 @@ public class WebDriverFactory {
         switch (browser) {
             case CHROME:
                 WebDriverManager.chromedriver().setup();
-                return new ChromeDriver(new ChromeOptions().addArguments(IGNORE_CERTIFICATE));
+                return new ChromeDriver(new ChromeOptions().addArguments(IGNORE_CERTIFICATE,"--no-sandbox","--disable-dev-shm-usage","--headless"));
             case FIREFOX:
                 WebDriverManager.firefoxdriver().setup();
                 return new FirefoxDriver(new FirefoxOptions().addArguments(IGNORE_CERTIFICATE));
