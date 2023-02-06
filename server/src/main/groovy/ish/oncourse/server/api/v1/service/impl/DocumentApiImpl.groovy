@@ -89,14 +89,6 @@ class DocumentApiImpl implements DocumentApi {
     }
 
     @Override
-    void deleteVersionPreview(Long id) {
-        ObjectContext context = cayenneService.newContext
-        Document document = service.getEntityAndValidateExistence(context, id)
-        document.currentVersion.thumbnail = null
-        context.commitChanges()
-    }
-
-    @Override
     DocumentDTO get(Long id) {
         return toRestDocument(service.getEntityAndValidateExistence(cayenneService.newContext, id), null, documentService)
     }
