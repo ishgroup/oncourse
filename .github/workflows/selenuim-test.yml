@@ -19,7 +19,6 @@ jobs:
         with:
           mariadb-version: 10.6
           database: angel_selenuim_test
-          run: mysql -D testdb -e 'SELECT VERSION()'
 
       - uses: actions/checkout@v2
 

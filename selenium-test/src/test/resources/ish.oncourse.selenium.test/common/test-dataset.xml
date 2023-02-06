@@ -14,7 +14,7 @@
   <!-- password = `11111` -->
   <SystemUser createdOn="2012-06-20 10:22:44.0" firstName="onCourse" id="1" login="admin"
               modifiedOn="2020-12-15 02:01:57.0" password="d033e22ae348aeb566fc214aec3585c4da997"
-              surName="Administrator" isActive="1" isAdmin="1" email="admin@example.edu"
+              surName="Administrator" isActive="1" isAdmin="1" email="admin@example.edu" loginAttemptNumber="0"
               defaultAdministrationCentreId="1" canEdiTtara="0" canEditCMS="0" willowId="84"
               lastLoginOn="#previous_year-12-05 04:56:53.851000000" passwordUpdateRequired="0"/>
 </dataset>
