@@ -34,8 +34,8 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
         emailAuthenticationService = new EmailAuthenticationService(driver, js);
         var dto = new LoginRequestDTO();
         dto.setLogin("admin@example.edu");
-        dto.setPassword("abcd1723");
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        dto.setPassword("abcd1723");
         emailAuthenticationService.login(dto);
     }
 
