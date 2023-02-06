@@ -13,14 +13,12 @@ jobs:
     strategy:
       matrix:
         java: [11]
-        mariadb-version: [ "10.10", "10.9", "10.8" ]
 
     steps:
 
       - uses: ankane/setup-mariadb@v1
         with:
-          mariadb-version: ${{ matrix.mariadb-version }}
-          database: angel_selenuim_test
+          mariadb-version: "10.10"
 
       - uses: actions/checkout@v2
 
