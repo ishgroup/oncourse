@@ -34,51 +34,62 @@ public class EmailAuthenticationService implements AuthenticationService {
     @Override
     public void login(LoginRequestDTO requestDTO) {
 
-        logger.error("Test name: Login");
-        logger.error("1 | open | /login |");
+        // 1 | open | https://127.0.0.1:8182/login |
+        logger.error("1 | open | https://127.0.0.1:8182/login");
         driver.get("https://127.0.0.1:8182/login");
-        logger.error(" 2 | click | name=user |");
-        {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("user")));
-        }
-        driver.findElement(By.name("user")).click();
 
-        logger.error("3 | type | name=user | admin@example.edu");
-        driver.findElement(By.name("user")).sendKeys("admin@example.edu");
-        logger.error("4 | click | name=password |");
-        driver.findElement(By.name("password")).click();
-        logger.error("5 | type | name=password | 11111");
-        driver.findElement(By.name("password")).sendKeys("11111");
-        logger.error("6 | click | css=.flex-fill:nth-child(3) |");
-        driver.findElement(By.cssSelector(".flex-fill:nth-child(3)")).click();
-        logger.error("7 | mouseOver | css=.jss18 |");
+        // 2 | setWindowSize | 1335x806 |
+        logger.error("2 | setWindowSize | 1335x806");
+        driver.manage().window().setSize(new Dimension(1335, 806));
+
+        // 3 | click | id=:r1: |
+        logger.error("3 | click | id=:r1:");
+        driver.findElement(By.id(":r1:")).click();
+
+        // 4 | type | id=:r1: | admin@example.edu
+        logger.error("4 | type | id=:r1: | " + requestDTO.getLogin());
+        driver.findElement(By.id(":r1:")).sendKeys(requestDTO.getLogin());
+
+        // 5 | click | id=:r2: |
+        logger.error("5 | click | id=:r2:");
+        driver.findElement(By.id(":r2:")).click();
+
+        // 6 | mouseOver | css=.jss18 |
+        logger.error("6 | mouseOver | css=.jss18");
         {
             WebElement element = driver.findElement(By.cssSelector(".jss18"));
             Actions builder = new Actions(driver);
             builder.moveToElement(element).perform();
         }
-        logger.error("8 | click | css=.jss18 |");
+        // 7 | type | id=:r2: | abcd1723
+        logger.error(" 7 | type | id=:r2: | " +requestDTO.getPassword());
+        driver.findElement(By.id(":r2:")).sendKeys(requestDTO.getPassword());
+
+        // 8 | click | css=.jss18 |
+        logger.error("8 | click | css=.jss18");
         driver.findElement(By.cssSelector(".jss18")).click();
-        logger.error("9 | mouseOut | css=.jss18 |");
+
+        // 9 | mouseOut | css=.jss18 |
+        logger.error("9 | mouseOut | css=.jss18");
         {
             WebElement element = driver.findElement(By.tagName("body"));
             Actions builder = new Actions(driver);
             builder.moveToElement(element, 0, 0).perform();
         }
-        logger.error("10 | click | css=.MuiGrid-spacing-xs-3 |");
-        driver.findElement(By.cssSelector(".MuiGrid-spacing-xs-3")).click();
-        logger.error("11 | mouseOver | css=.jss13 |");
+
+        // 10 | mouseOver | css=.jss13 |
+        logger.error("10 | mouseOver | css=.jss13");
         {
             WebElement element = driver.findElement(By.cssSelector(".jss13"));
             Actions builder = new Actions(driver);
             builder.moveToElement(element).perform();
         }
-        logger.error("12 | click | css=.jss13 |");
-        // 12 | click | css=.jss13 |
+        // 11 | click | css=.jss13 |
+        logger.error("11 | click | css=.jss13");
         driver.findElement(By.cssSelector(".jss13")).click();
-        logger.error("13 | runScript | window.scrollTo(0,0) |");
-        // 13 | runScript | window.scrollTo(0,0) |
+
+        // 12 | runScript | window.scrollTo(0,0) |
+        logger.error("12 | runScript | window.scrollTo(0,0)");
         js.executeScript("window.scrollTo(0,0)");
     }
 
