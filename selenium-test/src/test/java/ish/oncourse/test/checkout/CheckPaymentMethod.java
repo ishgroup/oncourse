@@ -33,7 +33,7 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
         emailAuthenticationService = new EmailAuthenticationService(driver, js);
         var dto = new LoginRequestDTO();
         dto.setLogin("admin@example.edu");
-        dto.setPassword("11111");
+        dto.setPassword("abcd1723");
         emailAuthenticationService.login(dto);
     }
 
@@ -65,6 +65,11 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
         driver.findElement(By.cssSelector(".MuiListItemText-root")).click();
         // 9 | mouseOver | css=.mui-1d3bbye > .MuiGrid-grid-xs-1 |
         {
+
+            {
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".mui-1d3bbye > .MuiGrid-grid-xs-1")));
+            }
             WebElement element = driver.findElement(By.cssSelector(".mui-1d3bbye > .MuiGrid-grid-xs-1"));
             Actions builder = new Actions(driver);
             builder.moveToElement(element).perform();
@@ -87,6 +92,10 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
         // 14 | click | name=payment_method |
         driver.findElement(By.name("payment_method")).click();
         // 15 | click | id=:rq:-option-0 |
+        {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(":rq:-option-0")));
+        }
         driver.findElement(By.id(":rq:-option-0")).click();
         // 16 | click | css=.centeredFlex:nth-child(2) .jss311 |
         driver.findElement(By.cssSelector(".centeredFlex:nth-child(2) .jss311")).click();
