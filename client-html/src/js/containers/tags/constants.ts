@@ -25,7 +25,7 @@ export const EmptyTag: FormTag = {
   taggedRecordsCount: 0,
   created: null,
   modified: null,
+  color: COLORS[Math.floor(Math.random() * COLORS.length)],
   requirements: [],
   childTags: [],
-  color: COLORS[Math.floor(Math.random() * COLORS.length)],
 };

@@ -79,7 +79,7 @@ const EditInPlaceField = (
   };
 
   const inputValue = useMemo(() => preformatDisplayValue
-    ? preformatDisplayValue(input.value || defaultValue)
+    ? preformatDisplayValue(input.value === 0 ? input.value : input.value || defaultValue)
     : (input.value === 0 ? String(input.value) : input.value) || defaultValue || "",
   [preformatDisplayValue, input.value, defaultValue]);
 

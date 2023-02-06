@@ -153,6 +153,7 @@ export interface EditInPlaceSearchSelectFieldProps {
   hideMenuOnNoResults?: boolean;
   hideEditIcon?: boolean;
   warning?: string;
+  categoryKey?: string;
   selectAdornment?: { position: "start" | "end", content: ReactElement }
 }
 
