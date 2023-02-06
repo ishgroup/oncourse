@@ -17,6 +17,6 @@ delete:
     default:
       description: Unexpected error
   x-permission:
-    mask: update
+    mask: edit
     keyCode: ATTACHMENT_INFO
     errorMessage: Sorry, you have no permissions to update Document version. Please contact your administrator
