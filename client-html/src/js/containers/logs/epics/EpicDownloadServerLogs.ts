@@ -11,7 +11,7 @@ import * as EpicUtils from "../../../common/epics/EpicUtils";
 import { DOWNLOAD_LOGS } from "../actions";
 import { DatesInterval, LogFile } from "@api/model";
 import LogsService from "../services/LogsService";
-import { createAndDownloadFile } from "../../../common/utils/common";
+import { createAndDownloadBase64File } from "../../../common/utils/common";
 import { initialize } from "redux-form";
 import { LOGS_FORM_NAME } from "../Logs";
 import { showMessage } from "../../../common/actions";
@@ -21,7 +21,7 @@ const request: EpicUtils.Request<LogFile, DatesInterval> = {
   getData: startDate => LogsService.getLogs(startDate),
   processData: log => {
     if (log) {
-      createAndDownloadFile(log.content, "gz", log.fileName, true);
+      createAndDownloadBase64File(log.content, log.fileName, "gzip");
     }
     return [
       initialize(LOGS_FORM_NAME, null),
