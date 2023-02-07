@@ -31,10 +31,11 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
     @BeforeAll
     public void setUp() {
         super.setUp();
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        driver.manage().window().maximize();
         emailAuthenticationService = new EmailAuthenticationService(driver, js);
         var dto = new LoginRequestDTO();
         dto.setLogin("admin@example.edu");
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         dto.setPassword("abcd1723");
         emailAuthenticationService.login(dto);
     }

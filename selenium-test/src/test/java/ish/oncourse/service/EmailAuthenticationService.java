@@ -38,9 +38,9 @@ public class EmailAuthenticationService implements AuthenticationService {
         logger.error("1 | open | https://127.0.0.1:8182/login");
         driver.get("https://127.0.0.1:8182/login");
 
-        // 2 | setWindowSize | 1335x806 |
-        logger.error("2 | setWindowSize | 1335x806");
-        driver.manage().window().setSize(new Dimension(1335, 806));
+//        // 2 | setWindowSize | 1335x806 |
+//        logger.error("2 | setWindowSize | 1335x806");
+//        driver.manage().window().setSize(new Dimension(1335, 806));
 
         // 3 | click | id=:r1: |
         logger.error("3 | click | id=:r1:");
