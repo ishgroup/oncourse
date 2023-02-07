@@ -521,6 +521,7 @@ const EditInPlaceSearchSelect = ({
                 },
                 inputProps: {
                   ...inputProps,
+                  className: fieldClasses.text,
                   ref: ref => {
                     (inputProps as any).ref.current = ref;
                     inputNode.current = ref;

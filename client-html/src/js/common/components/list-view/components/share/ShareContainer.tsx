@@ -21,6 +21,7 @@ import {
 } from "redux-form";
 import IconButton from "@mui/material/IconButton";
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import Delete from '@mui/icons-material/Delete';
 import {
   Binding,
   ExportRequest,
@@ -38,7 +39,13 @@ import FormField from "../../../form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
 import bottomDrawerStyles from "../bottomDrawerStyles";
 import {
- addPrintOverlay, doPrintRequest, getExportTemplates, getShareList, runExport, 
+  addPrintOverlay,
+  deleteExportTemplatePreview,
+  deletePdfReportPreview,
+  doPrintRequest,
+  getExportTemplates,
+  getShareList,
+  runExport,
 } from "./actions";
 import SelectionSwitcher from "./SelectionSwitcher";
 import { ProcessState } from "../../../../reducers/processReducer";
@@ -55,8 +62,12 @@ import FilePreview from "../../../form/FilePreview";
 import ConfirmBase from "../../../dialog/confirm/ConfirmBase";
 import { ContactType } from "../../../../../containers/entities/contacts/Contacts";
 import { LSGetItem, LSSetItem } from "../../../../utils/storage";
-import { reportFullScreenPreview } from "../../../../../containers/automation/containers/pdf-reports/actions";
-import { exportTemplateFullScreenPreview } from "../../../../../containers/automation/containers/export-templates/actions";
+import {
+  reportFullScreenPreview
+} from "../../../../../containers/automation/containers/pdf-reports/actions";
+import {
+  exportTemplateFullScreenPreview,
+} from "../../../../../containers/automation/containers/export-templates/actions";
 
 type PdfReportType = ContactType | "GENERAL";
 
@@ -128,7 +139,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
       selectedSecondary: null,
       selectAll: false,
       exportTemplateTypes: null,
-      createPreview: true,
+      createPreview: false,
       wrongPdfReportMsg: null,
     };
 
@@ -143,8 +154,12 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
   componentDidUpdate(prevProps, prevState) {
     const {
-     pdfReports, exportTemplates, pdfReportsFetching, exportTemplatesFetching, rootEntity,
+     pdfReports, submitting, process, exportTemplates, pdfReportsFetching, exportTemplatesFetching, rootEntity,
     } = this.props;
+
+    if (submitting && prevProps.process.processId && !process.processId) {
+      this.resolvePromise();
+    }
 
     if (prevProps.pdfReportsFetching && !pdfReportsFetching && pdfReports.length) {
       if (typeof prevState.selectedPrimary !== "number") {
@@ -463,17 +478,25 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
     });
   };
 
-  handleFullScreenPreview = () => {
+  handlePreviewAction = (exportAction, reportAction) => {
     const { pdfReports, dispatch } = this.props;
     const { selectedSecondary, selectedPrimary, exportTemplateTypes } = this.state;
 
     if (this.isExportTemplateSelected(selectedPrimary)) {
       const activeExportTemplate = exportTemplateTypes[Object.keys(exportTemplateTypes)[selectedPrimary - 1]][selectedSecondary];
-      dispatch(exportTemplateFullScreenPreview(activeExportTemplate.id));
+      dispatch(exportAction(activeExportTemplate.id));
     } else {
-        const activeReport = pdfReports[selectedSecondary];
-        dispatch(reportFullScreenPreview(activeReport.id));
+      const activeReport = pdfReports[selectedSecondary];
+      dispatch(reportAction(activeReport.id));
     }
+  };
+
+  handleFullScreenPreview = () => {
+    this.handlePreviewAction(exportTemplateFullScreenPreview, reportFullScreenPreview);
+  };
+
+  deletePreview = () => {
+    this.handlePreviewAction(deleteExportTemplatePreview, deletePdfReportPreview);
   };
 
   renderPdfFields() {
@@ -521,7 +544,6 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     fieldClasses={{
                       text: classes.text,
                       label: classes.customLabel,
-                      placeholder: classes.placeholder,
                     }}
                     items={overlays || []}
                     allowEmpty
@@ -535,11 +557,18 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
             <Grid item xs={4} className={classes.previewWrapper}>
               <FilePreview
                 data={preview}
-                actions={[{
-                  actionLabel: "Full size preview",
-                  onAction: this.handleFullScreenPreview,
-                  icon: <FullscreenIcon />
-                }]}
+                actions={[
+                  {
+                    actionLabel: "Full size preview",
+                    onAction: this.handleFullScreenPreview,
+                    icon: <FullscreenIcon />
+                  },
+                  {
+                    actionLabel: "Delete preview",
+                    onAction: this.deletePreview,
+                    icon: <Delete />
+                  }
+                ]}
               />
             </Grid>
           )}
@@ -589,8 +618,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
         : {
             fieldClasses: {
               text: classes.text,
-              label: classes.customLabel,
-              placeholder: classes.placeholder,
+              label: classes.customLabel
             },
             ...(item.type === "Date" ? { formatValue: YYYY_MM_DD_MINUSED } : {}),
             ...(item.type === "Money" ? { stringValue: true } : {}),
@@ -633,11 +661,18 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
             <Grid item xs={4} className={classes.previewWrapper}>
               <FilePreview
                 data={preview}
-                actions={[{
-                  actionLabel: "Full size preview",
-                  onAction: () => this.handleFullScreenPreview(),
-                  icon: <FullscreenIcon />
-                }]}
+                actions={[
+                  {
+                    actionLabel: "Full size preview",
+                    onAction: this.handleFullScreenPreview,
+                    icon: <FullscreenIcon />
+                  },
+                  {
+                    actionLabel: "Delete preview",
+                    onAction: this.deletePreview,
+                    icon: <Delete />
+                  }
+                ]}
               />
             </Grid>
           )}
@@ -753,7 +788,6 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     key={0}
                     selected={selectedPrimary === 0}
                     onClick={() => this.selectPrimary(0)}
-                    // disableRipple
                   >
                     <Typography variant="body2" color="inherit" classes={{ root: classes.listItemsText }}>
                       PDF
@@ -764,7 +798,6 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                 )}
                 {exportTemplateTypesArr.map((t, i) => (
                   <ListItem
-                    // button
                     classes={{
                       root: classes.listItems,
                       selected: classes.listItemsSelected,
@@ -772,7 +805,6 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     key={i + 1}
                     selected={selectedPrimary === i + 1}
                     onClick={() => this.selectPrimary(i + 1)}
-                    // disableRipple
                   >
                     <Typography variant="body2" color="inherit" classes={{ root: classes.listItemsText }}>
                       {t}
@@ -788,7 +820,6 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                 {pdfSelected
                   && pdfReports.map((i, index) => (
                     <ListItem
-                      // button
                       classes={{
                         root: classes.listItems,
                         selected: classes.listItemsSelected,
@@ -797,7 +828,6 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                       selected={selectedSecondary === index}
                       onClick={() => this.selectSecondary(index)}
                       disableGutters
-                      // disableRipple
                       style={{ position: "relative" }}
                     >
                       <Typography variant="body2" color="inherit" classes={{ root: classes.listItemsText }}>
@@ -812,7 +842,6 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                   && Boolean(exportTemplateTypesArr.length)
                   && exportTemplateTypes[exportTemplateTypesArr[selectedPrimary - 1]].map((t, index) => (
                     <ListItem
-                      // button
                       classes={{
                         root: classes.listItems,
                         selected: classes.listItemsSelected,
@@ -821,7 +850,6 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                       selected={selectedSecondary === index}
                       onClick={() => this.selectSecondary(index)}
                       disableGutters
-                      // disableRipple
                       style={{ position: "relative" }}
                     >
                       <Typography variant="body2" color="inherit" classes={{ root: classes.listItemsText }}>

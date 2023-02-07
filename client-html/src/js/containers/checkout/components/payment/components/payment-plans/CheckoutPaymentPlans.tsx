@@ -136,9 +136,6 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
                       placeholder="Pay now"
                       onChange={onPayDateChange}
                       validate={validateLockedDate}
-                      fieldClasses={{
-                        placeholder: "textSecondaryColor"
-                      }}
                     />
                   ) : "Pay now"}
                 </Typography>
