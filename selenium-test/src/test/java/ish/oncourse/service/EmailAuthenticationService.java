@@ -35,9 +35,9 @@ public class EmailAuthenticationService implements AuthenticationService {
     public void login(LoginRequestDTO requestDTO) {
 
         // 1 | open | https://127.0.0.1:8182/login |
-        logger.error(driver.getPageSource());
         logger.error("1 | open | https://127.0.0.1:8182/login");
         driver.get("https://127.0.0.1:8182/login");
+        logger.error(driver.getPageSource());
 
 //        // 2 | setWindowSize | 1335x806 |
 //        logger.error("2 | setWindowSize | 1335x806");
