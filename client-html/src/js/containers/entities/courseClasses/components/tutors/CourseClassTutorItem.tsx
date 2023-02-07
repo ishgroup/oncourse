@@ -162,8 +162,6 @@ const CourseClassTutorItem: React.FC<Props> = ({
             required
           />
 
-          {nameWarning && <WarningMessage warning={nameWarning} />}
-
           <FormField
             type="select"
             name={`tutors[${index}].roleId`}
@@ -184,6 +182,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
               )}
             alwaysDisplayDefault
             className="mb-2"
+            warning={nameWarning}
             required
           />
           {!tutor.id && hasWage

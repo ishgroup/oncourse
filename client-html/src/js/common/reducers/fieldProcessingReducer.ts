@@ -8,16 +8,22 @@
 
 import { IAction } from "../actions/IshAction";
 import { END_FIELD_PROCESSING_ACTION, START_FIELD_PROCESSING_ACTION } from "../actions/FieldProcessing";
-import { FieldProcessingAction } from "../../model/common/FieldProcessing";
 
-export const fieldProcessingReducer = (state: FieldProcessingAction[] = [], action: IAction<any>): any => {
+export const fieldProcessingReducer = (state: Record<string, boolean> = {}, action: IAction<any>): any => {
   switch (action.type) {
     case START_FIELD_PROCESSING_ACTION: {
-      return state.concat(action.payload);
+      return {
+        ...state,
+        [action.payload]: true
+      };
     }
 
     case END_FIELD_PROCESSING_ACTION: {
-      return state.filter(a => a.id !== action.payload);
+      const updated = { ...state };
+      if (updated[action.payload]) {
+        delete updated[action.payload];
+      }
+      return updated;
     }
 
     default:
