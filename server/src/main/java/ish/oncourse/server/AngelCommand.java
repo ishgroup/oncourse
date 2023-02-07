@@ -87,6 +87,9 @@ public class AngelCommand extends CommandWithMetadata {
             CayenneService cayenneService = cayenneServiceProvider.get();
             Server server = serverProvider.get();
             HttpFactory httpFactory = httpFactoryProvider.get();
+
+            logger.error("ANGEL URL: " + httpFactory.getIp() + ":" + httpFactory.getPort() + httpFactory.getPath());
+
             serverFactory.start(prefControllerProvider.get(),
                     schemaUpdateServiceProvider.get(),
                     schedulerServiceProvider.get(),
