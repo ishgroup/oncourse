@@ -57,6 +57,10 @@ jobs:
           key: ${{ matrix.java }}-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: ${{ matrix.java }}-
 
+      - name: Build server
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        run: ./gradlew -x test clean server:build
+
       - name: Run tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         run: ./gradlew selenium-test:test -x client-html:test -PdbUrl=jdbc:mariadb://localhost:3306/angel_selenuim_test?user=root --stacktrace
