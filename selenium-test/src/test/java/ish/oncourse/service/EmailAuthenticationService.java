@@ -35,6 +35,7 @@ public class EmailAuthenticationService implements AuthenticationService {
     public void login(LoginRequestDTO requestDTO) {
 
         // 1 | open | https://127.0.0.1:8182/login |
+        logger.error(driver.getPageSource());
         logger.error("1 | open | https://127.0.0.1:8182/login");
         driver.get("https://127.0.0.1:8182/login");
 
@@ -44,7 +45,13 @@ public class EmailAuthenticationService implements AuthenticationService {
 
         // 3 | click | id=:r1: |
         logger.error("3 | click | id=:r1:");
-        driver.findElement(By.id(":r1:")).click();
+        WebElement webElement = driver.findElement(By.id(":r1:"));
+        if (webElement == null) {
+            logger.error("3 | click | id=:r1: | selenium not see input");
+            logger.error(driver.getPageSource());
+        } else {
+            webElement.click();
+        }
 
         // 4 | type | id=:r1: | admin@example.edu
         logger.error("4 | type | id=:r1: | " + requestDTO.getLogin());

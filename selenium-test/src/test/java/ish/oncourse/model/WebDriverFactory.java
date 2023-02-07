@@ -9,6 +9,7 @@
 package ish.oncourse.model;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.github.bonigarcia.wdm.managers.ChromeDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -24,8 +25,14 @@ public class WebDriverFactory {
         switch (browser) {
             case CHROME:
                 WebDriverManager.chromedriver().setup();
-                return new ChromeDriver(new ChromeOptions().addArguments(IGNORE_CERTIFICATE,
-                        "--no-sandbox","--disable-dev-shm-usage","--headless"));
+                return new ChromeDriver(new ChromeOptions().addArguments(
+                        "--headless",
+                        "--disable-gpu",
+                        "--window-size=1920,1200",
+                        "--ignore-certificate-errors",
+                        "--disable-extensions",
+                        "--no-sandbox",
+                        "--disable-dev-shm-usage"));
             case FIREFOX:
                 WebDriverManager.firefoxdriver().setup();
                 return new FirefoxDriver(new FirefoxOptions().addArguments(IGNORE_CERTIFICATE));
