@@ -191,6 +191,12 @@ const EditInPlaceSearchSelect = ({
   const prevDefaultDisplayValue = usePrevious(defaultValue);
 
   useEffect(() => {
+    if (formattedDisplayValue && !input.value) {
+      setFormattedDisplayValue(null);
+    }
+  }, [formattedDisplayValue, input.value, input.name]);
+
+  useEffect(() => {
     if (selectLabelCondition && formattedDisplayValue && defaultValue !== prevDefaultDisplayValue) {
       setFormattedDisplayValue(null);
     }
@@ -396,7 +402,17 @@ const EditInPlaceSearchSelect = ({
       ? response
       : null
     );
-  }, [formattedDisplayValue, selectedOption, selectLabelCondition, alwaysDisplayDefault, returnType, defaultValue, selectLabelMark, input, classes]);
+  }, [
+    formattedDisplayValue,
+    selectedOption,
+    selectLabelCondition,
+    alwaysDisplayDefault,
+    returnType,
+    defaultValue,
+    selectLabelMark,
+    input.value,
+    classes
+  ]);
 
   const renderValue = useMemo(() => valueRenderer
     ? valueRenderer(displayedValue, selectedOption, searchValue, { value: selectedOption && selectedOption[selectValueMark] })
