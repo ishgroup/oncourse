@@ -9,7 +9,6 @@
 package ish.oncourse.service;
 
 import ish.oncourse.server.api.v1.model.LoginRequestDTO;
-import ish.oncourse.util.SeleniumExecutor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
@@ -35,6 +34,8 @@ public class EmailAuthenticationService implements AuthenticationService {
     @Override
     public void login(LoginRequestDTO requestDTO) {
 
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
         logger.error("1. Open https://127.0.0.1:8182/");
         driver.get("https://127.0.0.1:8182/");
 
@@ -53,22 +54,31 @@ public class EmailAuthenticationService implements AuthenticationService {
         logger.error("6. Click on the `Login` button");
         driver.findElement(By.cssSelector(".jss18")).click();
 
+        try {
+            Boolean anotherSessionExist = wait.until(ExpectedConditions.textToBe(By.cssSelector(".jss18"), "KICK OUT"));
+            if (anotherSessionExist) {
+                logger.error("6.5. Click on the `Kick out` button");
+                driver.findElement(By.cssSelector(".jss18")).click();
+            }
+        } catch (TimeoutException e) {
+            //ignored
+        }
+
         logger.error("7. Move out `Login` button");
         {
-            WebElement element = driver.findElement(By.tagName("body"));
             Actions builder = new Actions(driver);
-            builder.moveToElement(element, 0, 0).perform();
+            builder.moveToElement(driver.findElement(By.tagName("body")), 0, 0).perform();
         }
 
         logger.error("8. Mouse over `Maybe later` button");
         {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
             WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jss13")));
             Actions builder = new Actions(driver);
             builder.moveToElement(element).perform();
         }
 
         logger.error("9. Click on the `Maybe latter` button");
+        wait.until(ExpectedConditions.textToBe(By.cssSelector(".jss13"), "MAYBE LATER"));
         driver.findElement(By.cssSelector(".jss13")).click();
 
         logger.error("10. Run script `window.scrollTo(0,0)`");
@@ -77,6 +87,9 @@ public class EmailAuthenticationService implements AuthenticationService {
 
     @Override
     public void logout() {
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
         logger.error("1. Open https://127.0.0.1:8182/");
         driver.get("https://127.0.0.1:8182/");
 
@@ -84,7 +97,7 @@ public class EmailAuthenticationService implements AuthenticationService {
         js.executeScript("window.scrollTo(0,0)");
 
         logger.error("3. Move to `Logout` button");
-        driver.findElement(By.cssSelector(".jss37")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jss37"))).click();
         {
             WebElement element = driver.findElement(By.cssSelector(".MuiIconButton-sizeMedium:nth-child(2)"));
             Actions builder = new Actions(driver);

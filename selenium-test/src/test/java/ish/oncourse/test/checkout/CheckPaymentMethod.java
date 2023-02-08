@@ -62,6 +62,10 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
         driver.findElement(By.id(":r2:")).sendKeys("Kristina Ish");
 
         logger.error("4. Choose contact");
+        {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("span:nth-child(3) > strong")));
+        }
         driver.findElement(By.cssSelector("span:nth-child(3) > strong")).click();
 
         logger.error("5. Click on the `items` text field");
