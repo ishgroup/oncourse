@@ -35,32 +35,32 @@ public class EmailAuthenticationService implements AuthenticationService {
     @Override
     public void login(LoginRequestDTO requestDTO) {
 
-        logger.info("1. Open https://127.0.0.1:8182/");
+        logger.error("1. Open https://127.0.0.1:8182/");
         driver.get("https://127.0.0.1:8182/");
 
-        logger.info("2. Click on the `user` text field");
+        logger.error("2. Click on the `user` text field");
         driver.findElement(By.id(":r1:")).click();
 
-        logger.info("3. Set email in the `user` text field");
+        logger.error("3. Set email in the `user` text field");
         driver.findElement(By.id(":r1:")).sendKeys(requestDTO.getLogin());
 
-        logger.info("4. Click on the `password` text field");
+        logger.error("4. Click on the `password` text field");
         driver.findElement(By.id(":r2:")).click();
 
-        logger.info("5. Set password in the `password` text field");
+        logger.error("5. Set password in the `password` text field");
         driver.findElement(By.id(":r2:")).sendKeys(requestDTO.getPassword());
 
-        logger.info("6. Click on the `Login` button");
+        logger.error("6. Click on the `Login` button");
         driver.findElement(By.cssSelector(".jss18")).click();
 
-        logger.info("7. Move out `Login` button");
+        logger.error("7. Move out `Login` button");
         {
             WebElement element = driver.findElement(By.tagName("body"));
             Actions builder = new Actions(driver);
             builder.moveToElement(element, 0, 0).perform();
         }
 
-        logger.info("8. Mouse over `Maybe later` button");
+        logger.error("8. Mouse over `Maybe later` button");
         {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
             WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jss13")));
@@ -68,22 +68,22 @@ public class EmailAuthenticationService implements AuthenticationService {
             builder.moveToElement(element).perform();
         }
 
-        logger.info("9. Click on the `Maybe latter` button");
+        logger.error("9. Click on the `Maybe latter` button");
         driver.findElement(By.cssSelector(".jss13")).click();
 
-        logger.info("10. Run script `window.scrollTo(0,0)`");
+        logger.error("10. Run script `window.scrollTo(0,0)`");
         js.executeScript("window.scrollTo(0,0)");
     }
 
     @Override
     public void logout() {
-        logger.info("1. Open https://127.0.0.1:8182/");
+        logger.error("1. Open https://127.0.0.1:8182/");
         driver.get("https://127.0.0.1:8182/");
 
-        logger.info("2. Run script `window.scrollTo(0,0)`");
+        logger.error("2. Run script `window.scrollTo(0,0)`");
         js.executeScript("window.scrollTo(0,0)");
 
-        logger.info("3. Move to `Logout` button");
+        logger.error("3. Move to `Logout` button");
         driver.findElement(By.cssSelector(".jss37")).click();
         {
             WebElement element = driver.findElement(By.cssSelector(".MuiIconButton-sizeMedium:nth-child(2)"));
@@ -96,10 +96,10 @@ public class EmailAuthenticationService implements AuthenticationService {
             builder.moveToElement(element, 0, 0).perform();
         }
 
-        logger.info("4. Click on `Logout` button");
+        logger.error("4. Click on `Logout` button");
         driver.findElement(By.cssSelector(".MuiIconButton-sizeMedium:nth-child(2) > .MuiSvgIcon-root")).click();
 
-        logger.info("5. Confirm logout at dialog. Click on `Yes` button");
+        logger.error("5. Confirm logout at dialog. Click on `Yes` button");
         driver.findElement(By.cssSelector(".MuiButton-contained")).click();
     }
 }
