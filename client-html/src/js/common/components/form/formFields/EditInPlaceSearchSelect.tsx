@@ -344,7 +344,7 @@ const EditInPlaceSearchSelect = ({
 
     setTimeout(() => {
       onBlur();
-      input.onBlur(newValue);
+      input?.onBlur(newValue);
     }, 100);
   };
 

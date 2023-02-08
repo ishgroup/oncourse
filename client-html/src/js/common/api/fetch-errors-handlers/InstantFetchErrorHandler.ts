@@ -37,7 +37,7 @@ const instantFetchErrorHandler = (
     dispatch({
       type: SHOW_MESSAGE,
       payload: {
-        message: response
+        message: typeof response === "string" ? response : customMessage
       }
     });
   }
