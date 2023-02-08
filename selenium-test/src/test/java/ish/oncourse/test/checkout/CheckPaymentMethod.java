@@ -99,17 +99,19 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
 
         logger.info("12. Choose payment method");
         {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("payment_method")));
         }
         driver.findElement(By.name("payment_method")).click();
 
         logger.info("13. Select payment method");
+        {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(":rq:-option-0")));
+        }
         driver.findElement(By.id(":rq:-option-0")).click();
 
-        logger.info("finish test!");
-//        // 15 | click | css=.centeredFlex:nth-child(2) .jss311 |
-//        driver.findElement(By.cssSelector(".centeredFlex:nth-child(2) .jss311")).click();
+        logger.info("Test completed successfully");
     }
 
 }

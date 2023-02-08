@@ -9,6 +9,7 @@
 package ish.oncourse.service;
 
 import ish.oncourse.server.api.v1.model.LoginRequestDTO;
+import ish.oncourse.util.SeleniumExecutor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
@@ -61,7 +62,7 @@ public class EmailAuthenticationService implements AuthenticationService {
 
         logger.info("8. Mouse over `Maybe later` button");
         {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
             WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jss13")));
             Actions builder = new Actions(driver);
             builder.moveToElement(element).perform();
