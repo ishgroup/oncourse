@@ -15,6 +15,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.openqa.selenium.*;
 
+import java.util.concurrent.TimeUnit;
+
 
 @TestInstance(TestInstance. Lifecycle.PER_CLASS)
 public abstract class AbstractSeleniumTest {
@@ -24,6 +26,8 @@ public abstract class AbstractSeleniumTest {
     @BeforeAll
     public void setUp() {
         driver = WebDriverFactory.get(Browser.CHROME);
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         js = (JavascriptExecutor) driver;
     }
 

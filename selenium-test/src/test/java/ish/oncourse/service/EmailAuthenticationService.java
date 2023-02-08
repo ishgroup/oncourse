@@ -34,79 +34,55 @@ public class EmailAuthenticationService implements AuthenticationService {
     @Override
     public void login(LoginRequestDTO requestDTO) {
 
-        // 1 | open | https://127.0.0.1:8182/login |
-        logger.error("1 | open | https://127.0.0.1:8182/");
+        logger.info("1. Open https://127.0.0.1:8182/");
         driver.get("https://127.0.0.1:8182/");
-        logger.error(driver.getPageSource());
-        logger.error(driver.getTitle());
-        logger.error(driver.getCurrentUrl());
-        logger.error(driver.getWindowHandle());
 
-//        // 2 | setWindowSize | 1335x806 |
-//        logger.error("2 | setWindowSize | 1335x806");
-//        driver.manage().window().setSize(new Dimension(1335, 806));
+        logger.info("2. Click on the `user` text field");
+        driver.findElement(By.id(":r1:")).click();
 
-        // 3 | click | id=:r1: |
-        logger.error("3 | click | id=:r1:");
-        WebElement webElement = driver.findElement(By.id(":r1:"));
-        if (webElement == null) {
-            logger.error("3 | click | id=:r1: | selenium not see input");
-            logger.error(driver.getPageSource());
-        } else {
-            webElement.click();
-        }
-
-        // 4 | type | id=:r1: | admin@example.edu
-        logger.error("4 | type | id=:r1: | " + requestDTO.getLogin());
+        logger.info("3. Set email in the `user` text field");
         driver.findElement(By.id(":r1:")).sendKeys(requestDTO.getLogin());
 
-        // 5 | click | id=:r2: |
-        logger.error("5 | click | id=:r2:");
+        logger.info("4. Click on the `password` text field");
         driver.findElement(By.id(":r2:")).click();
 
-        // 6 | mouseOver | css=.jss18 |
-        logger.error("6 | mouseOver | css=.jss18");
-        {
-            WebElement element = driver.findElement(By.cssSelector(".jss18"));
-            Actions builder = new Actions(driver);
-            builder.moveToElement(element).perform();
-        }
-        // 7 | type | id=:r2: | abcd1723
-        logger.error(" 7 | type | id=:r2: | " +requestDTO.getPassword());
+        logger.info("5. Set password in the `password` text field");
         driver.findElement(By.id(":r2:")).sendKeys(requestDTO.getPassword());
 
-        // 8 | click | css=.jss18 |
-        logger.error("8 | click | css=.jss18");
+        logger.info("6. Click on the `Login` button");
         driver.findElement(By.cssSelector(".jss18")).click();
 
-        // 9 | mouseOut | css=.jss18 |
-        logger.error("9 | mouseOut | css=.jss18");
+        logger.info("7. Move out `Login` button");
         {
             WebElement element = driver.findElement(By.tagName("body"));
             Actions builder = new Actions(driver);
             builder.moveToElement(element, 0, 0).perform();
         }
 
-        // 10 | mouseOver | css=.jss13 |
-        logger.error("10 | mouseOver | css=.jss13");
+        logger.info("8. Mouse over `Maybe later` button");
         {
-            WebElement element = driver.findElement(By.cssSelector(".jss13"));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+            WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jss13")));
             Actions builder = new Actions(driver);
             builder.moveToElement(element).perform();
         }
-        // 11 | click | css=.jss13 |
-        logger.error("11 | click | css=.jss13");
+
+        logger.info("9. Click on the `Maybe latter` button");
         driver.findElement(By.cssSelector(".jss13")).click();
 
-        // 12 | runScript | window.scrollTo(0,0) |
-        logger.error("12 | runScript | window.scrollTo(0,0)");
+        logger.info("10. Run script `window.scrollTo(0,0)`");
         js.executeScript("window.scrollTo(0,0)");
     }
 
     @Override
     public void logout() {
+        logger.info("1. Open https://127.0.0.1:8182/");
         driver.get("https://127.0.0.1:8182/");
+
+        logger.info("2. Run script `window.scrollTo(0,0)`");
         js.executeScript("window.scrollTo(0,0)");
+
+        logger.info("3. Move to `Logout` button");
         driver.findElement(By.cssSelector(".jss37")).click();
         {
             WebElement element = driver.findElement(By.cssSelector(".MuiIconButton-sizeMedium:nth-child(2)"));
@@ -118,7 +94,11 @@ public class EmailAuthenticationService implements AuthenticationService {
             Actions builder = new Actions(driver);
             builder.moveToElement(element, 0, 0).perform();
         }
+
+        logger.info("4. Click on `Logout` button");
         driver.findElement(By.cssSelector(".MuiIconButton-sizeMedium:nth-child(2) > .MuiSvgIcon-root")).click();
+
+        logger.info("5. Confirm logout at dialog. Click on `Yes` button");
         driver.findElement(By.cssSelector(".MuiButton-contained")).click();
     }
 }

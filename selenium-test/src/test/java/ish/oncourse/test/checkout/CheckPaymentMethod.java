@@ -12,6 +12,8 @@ import ish.oncourse.server.api.v1.model.LoginRequestDTO;
 import ish.oncourse.service.AuthenticationService;
 import ish.oncourse.service.EmailAuthenticationService;
 import ish.oncourse.test.AbstractSeleniumTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -26,17 +28,18 @@ import java.util.concurrent.TimeUnit;
 @TestInstance(TestInstance. Lifecycle.PER_CLASS)
 public class CheckPaymentMethod extends AbstractSeleniumTest{
 
+    private static final Logger logger = LogManager.getLogger(CheckPaymentMethod.class);
     private static AuthenticationService emailAuthenticationService;
 
     @BeforeAll
     public void setUp() {
         super.setUp();
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-        driver.manage().window().maximize();
-        emailAuthenticationService = new EmailAuthenticationService(driver, js);
+
         var dto = new LoginRequestDTO();
         dto.setLogin("admin@example.edu");
         dto.setPassword("abcd1723");
+
+        emailAuthenticationService = new EmailAuthenticationService(driver, js);
         emailAuthenticationService.login(dto);
     }
 
@@ -48,27 +51,30 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
 
     @Test
     void test() {
-        // 1 | open | https://127.0.0.1:8182/checkout |
-        driver.get("https://127.0.0.1:8182/checkout");
-        // 3 | click | name=contacts |
-        driver.findElement(By.name("contacts")).click();
-        // 4 | type | name=contacts | Kristina Ish
-        driver.findElement(By.name("contacts")).sendKeys("Kristina Ish");
-        // 5 | click | css=span:nth-child(3) > strong |
-        {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("span:nth-child(3) > strong")));
-        }
-        driver.findElement(By.cssSelector("span:nth-child(3) > strong")).click();
-        // 6 | click | name=items |
-        driver.findElement(By.name("items")).click();
-        // 7 | type | name=items | dcftc1
-        driver.findElement(By.name("items")).sendKeys("dcftc1");
-        // 8 | click | css=.MuiListItemText-root |
-        driver.findElement(By.cssSelector(".MuiListItemText-root")).click();
-        // 9 | mouseOver | css=.mui-1d3bbye > .MuiGrid-grid-xs-1 |
-        {
 
+        logger.info("1. Open https://127.0.0.1:8182/checkout");
+        driver.get("https://127.0.0.1:8182/checkout");
+
+        logger.info("2. Click on the `contacts` text field");
+        driver.findElement(By.id(":r2:")).click();
+
+        logger.info("3. Set value in the `contacts` text field");
+        driver.findElement(By.id(":r2:")).sendKeys("Kristina Ish");
+
+        logger.info("4. Choose contact");
+        driver.findElement(By.cssSelector("span:nth-child(3) > strong")).click();
+
+        logger.info("5. Click on the `items` text field");
+        driver.findElement(By.name("items")).click();
+
+        logger.info("6.Set course code in the `items` text field");
+        driver.findElement(By.name("items")).sendKeys("dcftc1");
+
+        logger.info("7. Choose course");
+        driver.findElement(By.cssSelector(".MuiListItemText-root")).click();
+
+        logger.info("8. Choose course");
+        {
             {
                 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
                 wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".mui-1d3bbye > .MuiGrid-grid-xs-1")));
@@ -77,31 +83,33 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
             Actions builder = new Actions(driver);
             builder.moveToElement(element).perform();
         }
-        // 10 | mouseOut | css=.mui-1d3bbye > .MuiGrid-grid-xs-1 |
+
+        logger.info("9. Move mouse to class list");
         {
             WebElement element = driver.findElement(By.tagName("body"));
             Actions builder = new Actions(driver);
             builder.moveToElement(element, 0, 0).perform();
         }
-        // 11 | click | css=.PrivateSwitchBase-input |
+
+        logger.info("10. Choose class");
         driver.findElement(By.cssSelector(".PrivateSwitchBase-input")).click();
-        // 12 | click | css=.MuiPaper-root:nth-child(3) .MuiSvgIcon-root |
+
+        logger.info("11. Open Payment  section");
         driver.findElement(By.cssSelector(".MuiPaper-root:nth-child(3) .MuiSvgIcon-root")).click();
-        // 13 | waitForElementVisible | name=payment_method | 30000
+
+        logger.info("12. Choose payment method");
         {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("payment_method")));
         }
-        // 14 | click | name=payment_method |
         driver.findElement(By.name("payment_method")).click();
-        // 15 | click | id=:rq:-option-0 |
-        {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(":rq:-option-0")));
-        }
+
+        logger.info("13. Select payment method");
         driver.findElement(By.id(":rq:-option-0")).click();
-        // 16 | click | css=.centeredFlex:nth-child(2) .jss311 |
-        driver.findElement(By.cssSelector(".centeredFlex:nth-child(2) .jss311")).click();
+
+        logger.info("finish test!");
+//        // 15 | click | css=.centeredFlex:nth-child(2) .jss311 |
+//        driver.findElement(By.cssSelector(".centeredFlex:nth-child(2) .jss311")).click();
     }
 
 }

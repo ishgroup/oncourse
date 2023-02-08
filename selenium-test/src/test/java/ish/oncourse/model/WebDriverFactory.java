@@ -26,13 +26,14 @@ public class WebDriverFactory {
             case CHROME:
                 WebDriverManager.chromedriver().setup();
                 return new ChromeDriver(new ChromeOptions().addArguments(
-                        "--headless",
-                        "--disable-gpu",
+//                        "--headless",
+//                        "--disable-gpu",
                         "--window-size=1920,1200",
-                        "--ignore-certificate-errors",
-                        "--disable-extensions",
-                        "--no-sandbox",
-                        "--disable-dev-shm-usage"));
+                        "--ignore-certificate-errors"
+//                        "--disable-extensions"
+//                        "--no-sandbox",
+//                        "--disable-dev-shm-usage"));
+                ));
             case FIREFOX:
                 WebDriverManager.firefoxdriver().setup();
                 return new FirefoxDriver(new FirefoxOptions().addArguments(IGNORE_CERTIFICATE));
