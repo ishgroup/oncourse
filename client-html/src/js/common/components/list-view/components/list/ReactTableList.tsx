@@ -80,7 +80,6 @@ const Table = ({
   const [columnOrder, onColumnOrderChange] = useState<ColumnOrderState>([]);
   const [rowSelection, onRowSelectionChange] = useState<RowSelectionState>({});
 
-  const isMountedRef = useRef(false);
   const tableRef = useRef<any>();
 
   const classes = useStyles();
@@ -94,15 +93,10 @@ const Table = ({
   };
 
   useEffect(() => {
-    isMountedRef.current = true;
-  }, []);
-
-  useEffect(() => {
     if (tableRef.current) {
       getContainerNode(tableRef.current);
     }
   }, [tableRef.current]);
-
 
   const toggleRowSelect = id => {
     const updated = { ...table.getState().rowSelection };
@@ -240,17 +234,17 @@ const Table = ({
   const onOrderChange = useCallback<any>(debounce(columnsOrder => {
     if (tableRef.current && tableRef.current.scrollTop) tableRef.current.scrollTop = 0;
     onChangeColumnsOrder(columnsOrder);
-  }, 500), [columns, tableRef.current]);  
-  
+  }, 500), []);
+
   const onSortChange = useCallback<any>(debounce(() => {
     if (tableRef.current.scrollTop) {
       tableRef.current.scrollTop = 0;
     }
     onChangeColumnsSort(table.getState().sorting);
-  }, 500), [columns]);
+  }, 500), []);
 
   useEffect(() => {
-    if (isMountedRef.current && tableRef.current && listRef.current) {
+    if (tableRef.current && listRef.current) {
       listRef.current.scrollTo(0);
       setTimeout(() => {
         if (tableRef.current) {
@@ -324,6 +318,7 @@ const Table = ({
                   const disabledCell = [SELECTION_COLUMN, CHOOSER_COLUMN].includes(column.id);
                   const columnDef = column.columnDef as any;
                   const canSort = column.getCanSort();
+                  const isSorted = column.getIsSorted();
                   const canResize = !columnDef.disableResizing;
 
                   return (
@@ -381,12 +376,16 @@ const Table = ({
                                   </span>
                                   <TableSortLabel
                                     hideSortIcon={isDragging || !canSort}
-                                    active={Boolean(column.getIsSorted())}
-                                    direction={column.getIsSorted() as any || ""}
+                                    active={Boolean(isSorted)}
+                                    direction={isSorted || "asc"}
                                     onClick={canSort
-                                      ? e => {
-                                        column.getToggleSortingHandler()(e);
-                                        onSortChange();
+                                      ? () => {
+                                        if (isSorted === "desc") {
+                                          column.clearSorting();
+                                        } else {
+                                          column.toggleSorting(isSorted !== false);
+                                        }
+                                        onSortChange()
                                       }
                                       : null
                                     }
@@ -429,7 +428,7 @@ const Table = ({
         </DragDropContext>
       ))}
     </div>
-  ), [isDraggingColumn, sorting, columnSizing, columnVisibility]);
+  ), [sorting, isDraggingColumn, columnSizing, columnVisibility]);
 
   const List = useMemo(() => (data.length ? (
     <InfiniteLoaderList
@@ -450,7 +449,7 @@ const Table = ({
         No data
       </Typography>
     </div>
-  )), [columnSizing, sorting, columnVisibility, columnOrder, rowSelection, recordsCount, mainContentWidth, threeColumn, onRowDoubleClick]);
+  )), [sorting, columnSizing, columnVisibility, columnOrder, rowSelection, recordsCount, mainContentWidth, threeColumn, onRowDoubleClick]);
 
   return (
     <div
