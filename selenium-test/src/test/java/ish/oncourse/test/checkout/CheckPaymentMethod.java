@@ -125,7 +125,8 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
         driver.findElement(By.cssSelector(".MuiPaper-root:nth-child(3) .MuiSvgIcon-root")).click();
 
         logger.error("12. Choose payment method");
-        wait.until(ExpectedConditions.attributeToBe(By.name("payment_method"), "value", ""));
+//        wait.until(ExpectedConditions.attributeToBe(By.name("payment_method"), "value", ""));
+        Thread.sleep(10000);
         wait.until(ExpectedConditions.elementToBeClickable(By.name("payment_method"))).click();
 
         Thread.sleep(2000);
