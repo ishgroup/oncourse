@@ -31,7 +31,7 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
     private static AuthenticationService emailAuthenticationService;
 
     @BeforeAll
-    public void setUp() {
+    public void setUp() throws InterruptedException {
         super.setUp();
 
         var dto = new LoginRequestDTO();
@@ -58,20 +58,24 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
 
         logger.error("4. Create new contact");
         {
+
             Thread.sleep(1000);
             driver.findElement(By.name("contacts")).click();
+
             Thread.sleep(1000);
             driver.findElement(By.name("contacts")).sendKeys("Test");
+
             Thread.sleep(1000);
             driver.findElement(By.cssSelector(".MuiListItemText-root")).click();
+
             Thread.sleep(1000);
             driver.findElement(By.name("firstName")).click();
-            Thread.sleep(1000);
             driver.findElement(By.name("firstName")).sendKeys("CheckPaymentMethod");
-            Thread.sleep(1000);
             driver.findElement(By.cssSelector(".saveButtonEditView")).click();
+
             Thread.sleep(1000);
             js.executeScript("window.scrollTo(0,0)");
+
             Thread.sleep(1000);
             {
                 WebElement element = driver.findElement(By.name("items"));

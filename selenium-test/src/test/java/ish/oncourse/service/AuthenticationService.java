@@ -12,7 +12,7 @@ import ish.oncourse.server.api.v1.model.LoginRequestDTO;
 
 public interface AuthenticationService {
 
-    void login (LoginRequestDTO requestDTO);
+    void login (LoginRequestDTO requestDTO) throws InterruptedException;
 
     void logout() throws NoSuchFieldException;
 }
