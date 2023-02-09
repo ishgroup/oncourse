@@ -97,37 +97,37 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
         }
         logger.error("5. Click on the `items` text field");
         driver.findElement(By.name("items")).click();
-
+        Thread.sleep(30000);
         logger.error("6.Set course code in the `items` text field");
         driver.findElement(By.name("items")).sendKeys("dcftc1");
-
+        Thread.sleep(30000);
         logger.error("7. Choose course");
         driver.findElement(By.cssSelector(".MuiListItemText-root")).click();
-
+        Thread.sleep(30000);
         logger.error("8. Choose course");
         {
             WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".mui-1d3bbye > .MuiGrid-grid-xs-1")));
             Actions builder = new Actions(driver);
             builder.moveToElement(element).perform();
         }
-
+        Thread.sleep(30000);
         logger.error("9. Move mouse to class list");
         {
             WebElement element = driver.findElement(By.tagName("body"));
             Actions builder = new Actions(driver);
             builder.moveToElement(element, 0, 0).perform();
         }
-
+        Thread.sleep(30000);
         logger.error("10. Choose class");
         driver.findElement(By.cssSelector(".PrivateSwitchBase-input")).click();
-
+        Thread.sleep(30000);
         logger.error("11. Open Payment  section");
         driver.findElement(By.cssSelector(".MuiPaper-root:nth-child(3) .MuiSvgIcon-root")).click();
-
+        Thread.sleep(30000);
         logger.error("12. Choose payment method");
 //        wait.until(ExpectedConditions.attributeToBe(By.name("payment_method"), "value", ""));
-        Thread.sleep(30000);
         logger.error(driver.getPageSource());
+        Thread.sleep(30000);
         wait.until(ExpectedConditions.elementToBeClickable(By.name("payment_method"))).click();
 
         Thread.sleep(2000);
