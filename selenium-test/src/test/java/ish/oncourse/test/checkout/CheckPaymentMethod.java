@@ -22,9 +22,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
-
-import static org.dbunit.Assertion.assertEquals;
 
 
 @TestInstance(TestInstance. Lifecycle.PER_CLASS)
@@ -54,23 +51,46 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
     @Test
     void test() throws InterruptedException {
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 
         logger.error("1. Open https://127.0.0.1:8182/checkout");
         driver.get("https://127.0.0.1:8182/checkout");
 
-        logger.error("2. Click on the `contacts` text field");
-        driver.findElement(By.id(":r2:")).click();
-
-        logger.error("3. Set value in the `contacts` text field");
-        driver.findElement(By.id(":r2:")).sendKeys("Kristina Ish");
-
-        logger.error("4. Choose contact");
+        logger.error("4. Create new contact");
         {
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("span:nth-child(1) > strong")));
+            Thread.sleep(1000);
+            driver.findElement(By.name("contacts")).click();
+            Thread.sleep(1000);
+            driver.findElement(By.name("contacts")).sendKeys("Test");
+            Thread.sleep(1000);
+            driver.findElement(By.cssSelector(".MuiListItemText-root")).click();
+            Thread.sleep(1000);
+            driver.findElement(By.name("firstName")).click();
+            Thread.sleep(1000);
+            driver.findElement(By.name("firstName")).sendKeys("CheckPaymentMethod");
+            Thread.sleep(1000);
+            driver.findElement(By.cssSelector(".saveButtonEditView")).click();
+            Thread.sleep(1000);
+            js.executeScript("window.scrollTo(0,0)");
+            Thread.sleep(1000);
+            {
+                WebElement element = driver.findElement(By.name("items"));
+                Actions builder = new Actions(driver);
+                builder.moveToElement(element).clickAndHold().perform();
+            }
+            {
+                WebElement element = driver.findElement(By.cssSelector(".MuiDialog-container"));
+                Actions builder = new Actions(driver);
+                builder.moveToElement(element).release().perform();
+            }
+            driver.findElement(By.cssSelector("body")).click();
+            {
+                WebElement element = driver.findElement(By.cssSelector(".MuiButton-contained"));
+                Actions builder = new Actions(driver);
+                builder.moveToElement(element).perform();
+            }
+            driver.findElement(By.cssSelector(".MuiButton-contained")).click();
         }
-        driver.findElement(By.cssSelector("span:nth-child(1) > strong")).click();
-
         logger.error("5. Click on the `items` text field");
         driver.findElement(By.name("items")).click();
 
