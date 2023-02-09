@@ -16,6 +16,7 @@ import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.PaymentMethod
 import ish.oncourse.server.db.SanityCheckService
 import ish.oncourse.server.integration.PluginService
+import ish.oncourse.server.license.LicenseModule
 import ish.oncourse.server.modules.ApiCayenneLayerModule
 import ish.util.AccountUtil
 import org.apache.cayenne.Persistent
@@ -85,6 +86,7 @@ abstract class TestWithDatabase extends TestWithBootique {
                 .app("--config=classpath:application-test.yml")
                 .module(AngelModule.class)
                 .module(JdbcModule.class)
+                .module(LicenseModule.class)
                 .module(new Module() {
                     @Override
                     void configure(Binder binder) {

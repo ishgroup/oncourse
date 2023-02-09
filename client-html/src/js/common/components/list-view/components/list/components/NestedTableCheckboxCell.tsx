@@ -19,7 +19,7 @@ const NestedTableCheckboxCell = props => {
         className={classes.checkbox}
         onChangeHandler={onChangeHandler ? (e, checked) => onChangeHandler(row, checked) : undefined}
         disabled={
-          typeof disabledHandler === "function" ? () => disabledHandler(row) : disabledHandler || false
+          typeof disabledHandler === "function" ? disabledHandler(row) : disabledHandler || false
         }
       />
     </div>

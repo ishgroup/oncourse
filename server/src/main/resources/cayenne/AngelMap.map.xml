@@ -186,9 +186,7 @@
 		<db-attribute name="publicNotes" type="VARCHAR" length="1000"/>
 		<db-attribute name="qualificationId" type="BIGINT"/>
 		<db-attribute name="revokedOn" type="DATE"/>
-		<db-attribute name="studentFirstName" type="VARCHAR" length="100"/>
 		<db-attribute name="studentId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="studentLastName" type="VARCHAR" length="100"/>
 		<db-attribute name="uniqueCode" type="VARCHAR" length="12"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
@@ -377,6 +375,7 @@
 		<db-attribute name="qualificationId" type="BIGINT"/>
 		<db-attribute name="reportableHours" type="REAL"/>
 		<db-attribute name="webDescription" type="CLOB" length="32000"/>
+		<db-attribute name="shortWebDescription" type="CLOB" length="32000"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 		<db-attribute name="feeHelpClass" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="fullTimeLoad" type="VARCHAR" length="10"/>
@@ -1871,8 +1870,6 @@
 		<obj-attribute name="privateNotes" type="java.lang.String" db-attribute-path="privateNotes"/>
 		<obj-attribute name="publicNotes" type="java.lang.String" db-attribute-path="publicNotes"/>
 		<obj-attribute name="revokedOn" type="java.time.LocalDate" db-attribute-path="revokedOn"/>
-		<obj-attribute name="studentFirstName" type="java.lang.String" db-attribute-path="studentFirstName"/>
-		<obj-attribute name="studentLastName" type="java.lang.String" db-attribute-path="studentLastName"/>
 		<obj-attribute name="uniqueCode" type="java.lang.String" db-attribute-path="uniqueCode"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
@@ -2052,6 +2049,7 @@
 		<obj-attribute name="printedBrochureDescription" type="java.lang.String" db-attribute-path="printedBrochureDescription"/>
 		<obj-attribute name="reportableHours" type="java.math.BigDecimal" db-attribute-path="reportableHours"/>
 		<obj-attribute name="webDescription" type="java.lang.String" db-attribute-path="webDescription"/>
+		<obj-attribute name="shortWebDescription" type="java.lang.String" db-attribute-path="shortWebDescription"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 		<obj-attribute name="feeHelpClass" type="java.lang.Boolean" db-attribute-path="feeHelpClass"/>
 		<obj-attribute name="fullTimeLoad" type="java.lang.String" db-attribute-path="fullTimeLoad"/>
