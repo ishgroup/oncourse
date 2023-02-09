@@ -416,9 +416,19 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
       tagGroups: [],
     };
 
-    return new Promise((resolve, reject) => {
-      this.rejectPromise = reject;
-      this.resolvePromise = resolve;
+    return new Promise<void>((resolve, reject) => {
+      this.rejectPromise = () => {
+        this.setState({
+          createPreview: false
+        });
+        reject();
+      };
+      this.resolvePromise = () => {
+        this.setState({
+          createPreview: false
+        });
+        resolve();
+      };
 
       if (selectedPrimary === 0) {
         const { id, backgroundId, variables } = values as Report;
@@ -890,6 +900,9 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     <LoadingButton
                       disabled={invalid || validating}
                       className={classes.closeButton}
+                      classes={{
+                        loadingIndicator: "primaryColor"
+                      }}
                       type="submit"
                       datatype="clipboard"
                       variant="text"
@@ -902,6 +915,9 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                   <LoadingButton
                     disabled={invalid || validating}
                     className={classes.shareButton}
+                    classes={{
+                      loadingIndicator: "primaryColor"
+                    }}
                     type="submit"
                     datatype="share"
                     variant="contained"
