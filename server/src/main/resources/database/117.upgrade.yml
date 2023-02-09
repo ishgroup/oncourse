@@ -1,0 +1,24 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 117-1
+      author: dmitryl
+      preConditions:
+        - onFail: HALT
+        - and:
+            - tableExists:
+                tableName: Certificate
+            - columnExists:
+                tableName: Certificate
+                columnName: studentLastName
+            - columnExists:
+                tableName: Certificate
+                columnName: studentFirstName
+      changes:
+        - dropColumn:
+            columns:
+              - column:
+                  name: studentLastName
+              - column:
+                  name: studentFirstName
+            tableName: Certificate
