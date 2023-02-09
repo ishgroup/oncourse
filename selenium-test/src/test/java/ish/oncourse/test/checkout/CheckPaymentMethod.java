@@ -100,6 +100,14 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
             }
             driver.findElement(By.cssSelector(".MuiButton-contained")).click();
         }
+
+        TakesScreenshot scrShot =((TakesScreenshot)driver);
+        String data = scrShot.getScreenshotAs(OutputType.BASE64);
+        logger.error("------------ 1 BASE 64 SCREENSHOT DATA------------");
+        logger.error(data);
+        logger.error("------------");
+
+
         logger.error("5. Click on the `items` text field");
         driver.findElement(By.name("items")).click();
         logger.error("6.Set course code in the `items` text field");
