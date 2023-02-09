@@ -106,6 +106,7 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
         logger.error("------------ 1 BASE 64 SCREENSHOT DATA------------");
         logger.error(data);
         logger.error("------------");
+        Assertions.assertEquals("Cash",data);
 
 
         logger.error("5. Click on the `items` text field");
@@ -153,7 +154,7 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
             logger.error("------------BASE 64 SCREENSHOT DATA------------");
             logger.error(data);
             logger.error("------------");
-
+            Assertions.assertEquals("Cash",data);
         }
     }
 
