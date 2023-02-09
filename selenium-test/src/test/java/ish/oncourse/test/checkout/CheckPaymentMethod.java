@@ -126,7 +126,8 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
 
         logger.error("12. Choose payment method");
 //        wait.until(ExpectedConditions.attributeToBe(By.name("payment_method"), "value", ""));
-        Thread.sleep(10000);
+        Thread.sleep(30000);
+        logger.error(driver.getPageSource());
         wait.until(ExpectedConditions.elementToBeClickable(By.name("payment_method"))).click();
 
         Thread.sleep(2000);
