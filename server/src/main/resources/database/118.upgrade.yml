@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: 118-1
+      author: kristina
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: Course
+      changes:
+        - addColumn:
+            tableName: Course
+            columns:
+              - column:
+                  name: shortWebDescription
+                  type: longtext
+                  afterColumn: webDescription

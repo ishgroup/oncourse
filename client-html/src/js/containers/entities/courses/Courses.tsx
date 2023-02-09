@@ -54,6 +54,7 @@ const Initial: Course = {
   status: "Enabled",
   reportableHours: 0,
   webDescription: null,
+  shortWebDescription: null,
   customFields: {},
   tags: [],
   documents: [],
