@@ -120,15 +120,15 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
             builder.moveToElement(element, 0, 0).perform();
         }
 
+        logger.error("10. Choose class");
+        driver.findElement(By.cssSelector(".PrivateSwitchBase-input")).click();
+
             TakesScreenshot scrShot =((TakesScreenshot)driver);
             String data = scrShot.getScreenshotAs(OutputType.BASE64);
             logger.error("------------ 1 BASE 64 SCREENSHOT DATA------------");
             logger.error(data);
             logger.error("------------");
             Assertions.assertEquals("Cash",data);
-
-        logger.error("10. Choose class");
-        driver.findElement(By.cssSelector(".PrivateSwitchBase-input")).click();
         logger.error("11. Open Payment  section");
         driver.findElement(By.cssSelector(".MuiPaper-root:nth-child(3) .MuiSvgIcon-root")).click();
         logger.error("12. Choose payment method");
