@@ -14,5 +14,5 @@ public interface AuthenticationService {
 
     void login (LoginRequestDTO requestDTO);
 
-    void logout();
+    void logout() throws NoSuchFieldException;
 }

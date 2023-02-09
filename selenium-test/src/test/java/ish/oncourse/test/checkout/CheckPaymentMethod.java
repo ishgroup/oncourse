@@ -24,6 +24,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
+import static org.dbunit.Assertion.assertEquals;
+
 
 @TestInstance(TestInstance. Lifecycle.PER_CLASS)
 public class CheckPaymentMethod extends AbstractSeleniumTest{
@@ -44,13 +46,15 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
     }
 
     @AfterAll
-    public void tearDown() {
+    public void tearDown() throws NoSuchFieldException {
         emailAuthenticationService.logout();
         super.tearDown();
     }
 
     @Test
-    void test() {
+    void test() throws InterruptedException {
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         logger.error("1. Open https://127.0.0.1:8182/checkout");
         driver.get("https://127.0.0.1:8182/checkout");
@@ -63,10 +67,9 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
 
         logger.error("4. Choose contact");
         {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("span:nth-child(3) > strong")));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("span:nth-child(1) > strong")));
         }
-        driver.findElement(By.cssSelector("span:nth-child(3) > strong")).click();
+        driver.findElement(By.cssSelector("span:nth-child(1) > strong")).click();
 
         logger.error("5. Click on the `items` text field");
         driver.findElement(By.name("items")).click();
@@ -79,11 +82,7 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
 
         logger.error("8. Choose course");
         {
-            {
-                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".mui-1d3bbye > .MuiGrid-grid-xs-1")));
-            }
-            WebElement element = driver.findElement(By.cssSelector(".mui-1d3bbye > .MuiGrid-grid-xs-1"));
+            WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".mui-1d3bbye > .MuiGrid-grid-xs-1")));
             Actions builder = new Actions(driver);
             builder.moveToElement(element).perform();
         }
@@ -102,20 +101,18 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
         driver.findElement(By.cssSelector(".MuiPaper-root:nth-child(3) .MuiSvgIcon-root")).click();
 
         logger.error("12. Choose payment method");
-        {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("payment_method")));
-        }
-        driver.findElement(By.name("payment_method")).click();
+        wait.until(ExpectedConditions.attributeToBe(By.name("payment_method"), "value", ""));
+        wait.until(ExpectedConditions.elementToBeClickable(By.name("payment_method"))).click();
+
+        Thread.sleep(2000);
 
         logger.error("13. Select payment method");
-        {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(":rq:-option-0")));
-        }
-        driver.findElement(By.id(":rq:-option-0")).click();
+        WebElement spanTag = driver.findElement(By.xpath("//span[text()='Cash']"));
+        WebElement clickableTag = spanTag.findElement(By.xpath("./.."));
+        clickableTag.click();
 
-        logger.error("Test completed successfully");
+        String result = driver.findElement(By.name("payment_method")).getAttribute("value");
+        Assertions.assertEquals("Cash",result);
     }
 
 }

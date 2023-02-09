@@ -32,7 +32,7 @@ public abstract class AbstractSeleniumTest {
     }
 
     @AfterAll
-    public void tearDown() {
+    public void tearDown() throws NoSuchFieldException {
         driver.quit();
     }
 
