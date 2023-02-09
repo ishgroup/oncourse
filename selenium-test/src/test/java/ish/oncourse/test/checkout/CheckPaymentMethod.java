@@ -101,14 +101,6 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
             driver.findElement(By.cssSelector(".MuiButton-contained")).click();
         }
 
-        TakesScreenshot scrShot =((TakesScreenshot)driver);
-        String data = scrShot.getScreenshotAs(OutputType.BASE64);
-        logger.error("------------ 1 BASE 64 SCREENSHOT DATA------------");
-        logger.error(data);
-        logger.error("------------");
-        Assertions.assertEquals("Cash",data);
-
-
         logger.error("5. Click on the `items` text field");
         driver.findElement(By.name("items")).click();
         logger.error("6.Set course code in the `items` text field");
@@ -127,6 +119,14 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
             Actions builder = new Actions(driver);
             builder.moveToElement(element, 0, 0).perform();
         }
+
+            TakesScreenshot scrShot =((TakesScreenshot)driver);
+            String data = scrShot.getScreenshotAs(OutputType.BASE64);
+            logger.error("------------ 1 BASE 64 SCREENSHOT DATA------------");
+            logger.error(data);
+            logger.error("------------");
+            Assertions.assertEquals("Cash",data);
+
         logger.error("10. Choose class");
         driver.findElement(By.cssSelector(".PrivateSwitchBase-input")).click();
         logger.error("11. Open Payment  section");
