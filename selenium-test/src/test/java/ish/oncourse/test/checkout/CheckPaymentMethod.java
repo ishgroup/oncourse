@@ -59,13 +59,13 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
         logger.error("4. Create new contact");
         {
 
-            Thread.sleep(1000);
+            Thread.sleep(5000);
             driver.findElement(By.name("contacts")).click();
 
-            Thread.sleep(1000);
+            Thread.sleep(5000);
             driver.findElement(By.name("contacts")).sendKeys("Test");
 
-            Thread.sleep(1000);
+            Thread.sleep(5000);
             driver.findElement(By.cssSelector(".MuiListItemText-root")).click();
 
             Thread.sleep(1000);

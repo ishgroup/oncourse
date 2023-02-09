@@ -72,7 +72,7 @@ public class EmailAuthenticationService implements AuthenticationService {
 
         logger.error("10. Run script `window.scrollTo(0,0)`.");
         js.executeScript("window.scrollTo(0,0)");
-        Thread.sleep(  1000);
+        Thread.sleep(  5000);
     }
 
     @Override
