@@ -222,9 +222,7 @@ const EditInPlaceSearchSelect = ({
 
     if (!Array.isArray(items)) return filtered;
 
-    if (!searchValue) {
-      return items;
-    }
+    if (!searchValue || remoteData)  return items;
 
     const searchRegexp = new RegExp(searchValue.replace(",", "")
       // eslint-disable-next-line no-useless-escape
