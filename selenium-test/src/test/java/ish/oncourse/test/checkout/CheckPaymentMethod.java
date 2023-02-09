@@ -16,11 +16,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.IOException;
 import java.time.Duration;
 
 
@@ -49,7 +52,9 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
     }
 
     @Test
-    void test() throws InterruptedException {
+    void test() throws InterruptedException, IOException {
+
+        try {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 
@@ -97,40 +102,32 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
         }
         logger.error("5. Click on the `items` text field");
         driver.findElement(By.name("items")).click();
-        Thread.sleep(30000);
         logger.error("6.Set course code in the `items` text field");
         driver.findElement(By.name("items")).sendKeys("dcftc1");
-        Thread.sleep(30000);
         logger.error("7. Choose course");
         driver.findElement(By.cssSelector(".MuiListItemText-root")).click();
-        Thread.sleep(30000);
         logger.error("8. Choose course");
         {
             WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".mui-1d3bbye > .MuiGrid-grid-xs-1")));
             Actions builder = new Actions(driver);
             builder.moveToElement(element).perform();
         }
-        Thread.sleep(30000);
         logger.error("9. Move mouse to class list");
         {
             WebElement element = driver.findElement(By.tagName("body"));
             Actions builder = new Actions(driver);
             builder.moveToElement(element, 0, 0).perform();
         }
-        Thread.sleep(30000);
         logger.error("10. Choose class");
         driver.findElement(By.cssSelector(".PrivateSwitchBase-input")).click();
-        Thread.sleep(30000);
         logger.error("11. Open Payment  section");
         driver.findElement(By.cssSelector(".MuiPaper-root:nth-child(3) .MuiSvgIcon-root")).click();
-        Thread.sleep(30000);
         logger.error("12. Choose payment method");
-//        wait.until(ExpectedConditions.attributeToBe(By.name("payment_method"), "value", ""));
-        logger.error(driver.getPageSource());
-        Thread.sleep(50000);
-        driver.findElement(By.name("payment_method")).click();
-//        wait.until(ExpectedConditions.elementToBeClickable(By.name("payment_method"))).click();
 
+        Thread.sleep(10000);
+        wait.until(ExpectedConditions.attributeToBe(By.name("payment_method"), "value", ""));
+        driver.findElement(By.name("payment_method")).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.name("payment_method"))).click();
         Thread.sleep(2000);
 
         logger.error("13. Select payment method");
@@ -140,6 +137,16 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
 
         String result = driver.findElement(By.name("payment_method")).getAttribute("value");
         Assertions.assertEquals("Cash",result);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            TakesScreenshot scrShot =((TakesScreenshot)driver);
+            String data = scrShot.getScreenshotAs(OutputType.BASE64);
+            logger.error("------------BASE 64 SCREENSHOT DATA------------");
+            logger.error(data);
+            logger.error("------------");
+
+        }
     }
 
 }
