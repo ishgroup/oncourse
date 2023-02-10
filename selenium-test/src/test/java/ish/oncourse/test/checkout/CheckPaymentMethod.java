@@ -107,6 +107,7 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
         driver.findElement(By.name("items")).sendKeys("dcftc1");
         logger.error("7. Choose course");
         driver.findElement(By.cssSelector(".MuiListItemText-root")).click();
+        Thread.sleep(5000);
         logger.error("8. Choose course");
         {
             WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".mui-1d3bbye > .MuiGrid-grid-xs-1")));
@@ -114,6 +115,7 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
             builder.moveToElement(element).perform();
         }
         logger.error("9. Move mouse to class list");
+        Thread.sleep(5000);
         {
             WebElement element = driver.findElement(By.tagName("body"));
             Actions builder = new Actions(driver);
@@ -121,21 +123,23 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
         }
 
         logger.error("10. Choose class");
+        Thread.sleep(5000);
         driver.findElement(By.cssSelector(".PrivateSwitchBase-input")).click();
 
         logger.error("11. Open Payment  section");
+        Thread.sleep(5000);
         {
             WebElement spanTag = driver.findElement(By.xpath("//div[text()='Payment']"));
             WebElement clickableTag = spanTag.findElement(By.xpath("./.."));
             clickableTag.click();
         }
-            {
-                TakesScreenshot scrShot = ((TakesScreenshot) driver);
-                String data = scrShot.getScreenshotAs(OutputType.BASE64);
-                logger.error("------------1 BASE 64 SCREENSHOT DATA------------");
-                logger.error(data);
-                logger.error("------------");
-            }
+        {
+            TakesScreenshot scrShot = ((TakesScreenshot) driver);
+            String data = scrShot.getScreenshotAs(OutputType.BASE64);
+            logger.error("------------1 BASE 64 SCREENSHOT DATA------------");
+            logger.error(data);
+            logger.error("------------");
+        }
 
         logger.error("12. Choose payment method");
 
