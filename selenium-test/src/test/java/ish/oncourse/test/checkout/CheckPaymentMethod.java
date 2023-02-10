@@ -131,8 +131,13 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
             WebElement spanTag = driver.findElement(By.xpath("//div[text()='Payment']"));
             WebElement clickableTag = spanTag.findElement(By.xpath("./..")).findElement(By.xpath("./..")).findElement(By.xpath("./.."));
             clickableTag.click();
+            driver.get("https://127.0.0.1:8182/a/v1/preference/payment/type");
             logger.error("CHROME CONSOLE");
             driver.manage().logs().get(LogType.BROWSER).getAll().forEach( it -> {
+                logger.error(it.getMessage());
+            });
+            logger.error("NETWORK");
+            driver.manage().logs().get(LogType.PERFORMANCE).getAll().forEach( it -> {
                 logger.error(it.getMessage());
             });
 
