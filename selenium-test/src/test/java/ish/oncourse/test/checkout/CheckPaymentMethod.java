@@ -132,7 +132,10 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
             WebElement clickableTag = spanTag.findElement(By.xpath("./..")).findElement(By.xpath("./..")).findElement(By.xpath("./.."));
             clickableTag.click();
             logger.error("CHROME CONSOLE");
-            logger.error(driver.manage().logs().get(LogType.BROWSER));
+            driver.manage().logs().get(LogType.BROWSER).getAll().forEach( it -> {
+                logger.error(it.getMessage());
+            });
+
         }
         {
             TakesScreenshot scrShot = ((TakesScreenshot) driver);
