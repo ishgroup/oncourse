@@ -20,6 +20,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -126,20 +127,12 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
         Thread.sleep(5000);
         driver.findElement(By.cssSelector(".PrivateSwitchBase-input")).click();
 
-        logger.error("11. Open Payment  section");
-        {
-            Thread.sleep(10000);
-            TakesScreenshot scrShot = ((TakesScreenshot) driver);
-            String data = scrShot.getScreenshotAs(OutputType.BASE64);
-            logger.error("------------0 BASE 64 SCREENSHOT DATA------------");
-            logger.error(data);
-            logger.error("------------");
-        }
-
         {
             WebElement spanTag = driver.findElement(By.xpath("//div[text()='Payment']"));
-            WebElement clickableTag = spanTag.findElement(By.xpath("./..")).findElement(By.xpath("./.."));
+            WebElement clickableTag = spanTag.findElement(By.xpath("./..")).findElement(By.xpath("./..")).findElement(By.xpath("./.."));
             clickableTag.click();
+            logger.error("CHROME CONSOLE");
+            logger.error(driver.manage().logs().get(LogType.BROWSER));
         }
         {
             TakesScreenshot scrShot = ((TakesScreenshot) driver);
@@ -151,25 +144,24 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
 
         logger.error("12. Choose payment method");
 
-        Thread.sleep(10000);
+        Thread.sleep(3000);
         wait.until(ExpectedConditions.attributeToBe(By.name("payment_method"), "value", ""));
-            {
-                TakesScreenshot scrShot = ((TakesScreenshot) driver);
-                String data = scrShot.getScreenshotAs(OutputType.BASE64);
-                logger.error("------------2 BASE 64 SCREENSHOT DATA------------");
-                logger.error(data);
-                logger.error("------------");
-            }
+        {
+            TakesScreenshot scrShot = ((TakesScreenshot) driver);
+            String data = scrShot.getScreenshotAs(OutputType.BASE64);
+            logger.error("------------2 BASE 64 SCREENSHOT DATA------------");
+            logger.error(data);
+            logger.error("------------");
+        }
         wait.until(ExpectedConditions.elementToBeClickable(By.name("payment_method"))).click();
-            {
-                TakesScreenshot scrShot = ((TakesScreenshot) driver);
-                String data = scrShot.getScreenshotAs(OutputType.BASE64);
-                logger.error("------------3 BASE 64 SCREENSHOT DATA------------");
-                logger.error(data);
-                logger.error("------------");
-                Assertions.assertEquals("Cash",data);
-            }
-
+        {
+            TakesScreenshot scrShot = ((TakesScreenshot) driver);
+            String data = scrShot.getScreenshotAs(OutputType.BASE64);
+            logger.error("------------3 BASE 64 SCREENSHOT DATA------------");
+            logger.error(data);
+            logger.error("------------");
+            Assertions.assertEquals("Cash",data);
+        }
         Thread.sleep(2000);
 
         logger.error("13. Select payment method");
