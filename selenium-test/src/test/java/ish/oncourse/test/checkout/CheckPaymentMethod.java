@@ -129,12 +129,35 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
             WebElement clickableTag = spanTag.findElement(By.xpath("./.."));
             clickableTag.click();
         }
+            {
+                TakesScreenshot scrShot = ((TakesScreenshot) driver);
+                String data = scrShot.getScreenshotAs(OutputType.BASE64);
+                logger.error("------------1 BASE 64 SCREENSHOT DATA------------");
+                logger.error(data);
+                logger.error("------------");
+            }
 
         logger.error("12. Choose payment method");
 
         Thread.sleep(10000);
         wait.until(ExpectedConditions.attributeToBe(By.name("payment_method"), "value", ""));
+            {
+                TakesScreenshot scrShot = ((TakesScreenshot) driver);
+                String data = scrShot.getScreenshotAs(OutputType.BASE64);
+                logger.error("------------2 BASE 64 SCREENSHOT DATA------------");
+                logger.error(data);
+                logger.error("------------");
+            }
         wait.until(ExpectedConditions.elementToBeClickable(By.name("payment_method"))).click();
+            {
+                TakesScreenshot scrShot = ((TakesScreenshot) driver);
+                String data = scrShot.getScreenshotAs(OutputType.BASE64);
+                logger.error("------------3 BASE 64 SCREENSHOT DATA------------");
+                logger.error(data);
+                logger.error("------------");
+                Assertions.assertEquals("Cash",data);
+            }
+
         Thread.sleep(2000);
 
         logger.error("13. Select payment method");
