@@ -66,8 +66,15 @@ public class ExportTemplateApiService extends AutomationApiService<ExportTemplat
         return getEntityAndValidateExistence(cayenneService.getNewContext(), id).getScript().getBytes();
     }
 
-    public byte[] getPreview(Long id){
+    public byte[] getPreview(Long id) {
         return ObjectSelect.columnQuery(ExportTemplate.class, ExportTemplate.PREVIEW).where(Report.ID.eq(id)).selectOne(cayenneService.getNewContext());
+    }
+
+    public void deletePreview(Long id) {
+        var context = cayenneService.getNewContext();
+        var exportTemplate = getEntityAndValidateExistence(context, id);
+        exportTemplate.setPreview(null);
+        context.commitChanges();
     }
 
     protected ExportTemplateDTO createDto() {

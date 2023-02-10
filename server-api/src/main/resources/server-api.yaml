@@ -321,6 +321,8 @@ paths:
     $ref: './path/user/updatePassword/api.yaml'
   /summaryextracts/finaliseperiod:
     $ref: './path/summaryextracts/finaliseperiod/api.yaml'
+  /logs:
+    $ref: './path/logs/api.yaml'
 
 definitions:
 

@@ -168,42 +168,42 @@ const EditInPlaceFieldBase = (
     }
       {CustomInput ||
         <Input
-        {...InputProps || {}}
-        inputRef={setInputNode}
-        inputProps={{
-          placeholder,
-          disabled,
-          className: clsx(fieldClasses.text, {
-            [classes.inlineInput]: inline,
-            [classes.readonly]: disabled,
-            [classes.hideArrows]: hideArrows,
-            "text-end": rightAligned
-          }),
-          style: {
-            width: inline && !invalid ? inputWidth : undefined
-          },
-          ...InputProps?.inputProps || {}
-        }}
-        classes={{
-          root: clsx(fieldClasses.text, inline && classes.inlineInput),
-          underline: fieldClasses.underline
-        }}
-        disabled={disabled}
-        endAdornment={!disabled &&
-          <InputAdornment
-            position="end"
-            onClick={onAdornmentClick}
-            className={clsx(classes.inputEndAdornment, endAdornmentClass, {
-              ["fsInherit"]: inline,
-              ["d-none"]: (rightAligned || inline),
-              ["invisible"]: !(rightAligned || inline)
-            })}
-          >
-            {editIcon}
-          </InputAdornment>
-        }
-        id={`input-${name}`}
-        name={name}
+          {...InputProps || {}}
+          inputRef={setInputNode}
+          inputProps={{
+            placeholder,
+            disabled,
+            className: clsx(fieldClasses.text, {
+              [classes.inlineInput]: inline,
+              [classes.readonly]: disabled,
+              [classes.hideArrows]: hideArrows,
+              "text-end": rightAligned
+            }),
+            style: {
+              width: inline && !invalid ? inputWidth : undefined
+            },
+            ...InputProps?.inputProps || {}
+          }}
+          classes={{
+            root: clsx(fieldClasses.text, inline && classes.inlineInput),
+            underline: fieldClasses.underline
+          }}
+          disabled={disabled}
+          endAdornment={!disabled &&
+            <InputAdornment
+              position="end"
+              onClick={onAdornmentClick}
+              className={clsx(classes.inputEndAdornment, endAdornmentClass, {
+                ["fsInherit"]: inline,
+                ["d-none"]: (rightAligned || inline),
+                ["invisible"]: !(rightAligned || inline)
+              })}
+            >
+              {editIcon}
+            </InputAdornment>
+          }
+          id={`input-${name}`}
+          name={name}
         />
       }
     <FormHelperText

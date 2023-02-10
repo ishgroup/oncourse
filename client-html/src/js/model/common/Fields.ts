@@ -13,7 +13,6 @@ export interface FieldClasses {
   underline?: string;
   label?: string;
   selectMenu?: string;
-  placeholder?: string;
   loading?: string;
   listbox?: string;
 }
