@@ -35,7 +35,7 @@ public class EmailAuthenticationService implements AuthenticationService {
     @Override
     public void login(LoginRequestDTO requestDTO) throws InterruptedException {
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
 
         logger.error("1. Open https://127.0.0.1:8182/");
         driver.get("https://127.0.0.1:8182/");
@@ -72,7 +72,7 @@ public class EmailAuthenticationService implements AuthenticationService {
 
         logger.error("10. Run script `window.scrollTo(0,0)`.");
         js.executeScript("window.scrollTo(0,0)");
-        Thread.sleep(  5000);
+        Thread.sleep(  1000);
     }
 
     @Override

@@ -88,13 +88,11 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
             logger.error("4. Create new contact");
             {
 
-                Thread.sleep(5000);
+                Thread.sleep(2000);
                 driver.findElement(By.name("contacts")).click();
-
-                Thread.sleep(5000);
                 driver.findElement(By.name("contacts")).sendKeys("Test");
 
-                Thread.sleep(5000);
+                Thread.sleep(2000);
                 driver.findElement(By.cssSelector(".MuiListItemText-root")).click();
 
                 Thread.sleep(1000);
@@ -131,7 +129,7 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
             driver.findElement(By.name("items")).sendKeys("dcftc1");
             logger.error("7. Choose course");
             driver.findElement(By.cssSelector(".MuiListItemText-root")).click();
-            Thread.sleep(5000);
+            Thread.sleep(1000);
             logger.error("8. Choose course");
             {
                 WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".mui-1d3bbye > .MuiGrid-grid-xs-1")));
@@ -139,7 +137,7 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
                 builder.moveToElement(element).perform();
             }
             logger.error("9. Move mouse to class list");
-            Thread.sleep(5000);
+            Thread.sleep(1000);
             {
                 WebElement element = driver.findElement(By.tagName("body"));
                 Actions builder = new Actions(driver);
@@ -147,7 +145,7 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
             }
 
             logger.error("10. Choose class");
-            Thread.sleep(5000);
+            Thread.sleep(1000);
             driver.findElement(By.cssSelector(".PrivateSwitchBase-input")).click();
 
             {
@@ -171,36 +169,19 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
 
             logger.error("12. Choose payment method");
 
-            Thread.sleep(3000);
+            Thread.sleep(1000);
             wait.until(ExpectedConditions.attributeToBe(By.name("payment_method"), "value", ""));
-            {
-                TakesScreenshot scrShot = ((TakesScreenshot) driver);
-                String data = scrShot.getScreenshotAs(OutputType.BASE64);
-                logger.error("------------2 BASE 64 SCREENSHOT DATA------------");
-                logger.error(data);
-                logger.error("------------");
-            }
             wait.until(ExpectedConditions.elementToBeClickable(By.name("payment_method"))).click();
-            {
-                TakesScreenshot scrShot = ((TakesScreenshot) driver);
-                String data = scrShot.getScreenshotAs(OutputType.BASE64);
-                logger.error("------------3 BASE 64 SCREENSHOT DATA------------");
-                logger.error(data);
-                logger.error("------------");
-                Assertions.assertEquals("Cash", data);
-            }
             Thread.sleep(2000);
 
             logger.error("13. Select payment method");
             WebElement spanTag = driver.findElement(By.xpath("//span[text()='Cash']"));
             WebElement clickableTag = spanTag.findElement(By.xpath("./.."));
             clickableTag.click();
-
             String result = driver.findElement(By.name("payment_method")).getAttribute("value");
             Assertions.assertEquals("Cash", result);
         } catch (Exception e) {
             e.printStackTrace();
-
             TakesScreenshot scrShot = ((TakesScreenshot) driver);
             String data = scrShot.getScreenshotAs(OutputType.BASE64);
             logger.error("------------BASE 64 SCREENSHOT DATA------------");
