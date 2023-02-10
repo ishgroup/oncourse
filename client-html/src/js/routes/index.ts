@@ -58,6 +58,7 @@ import Automation from "../containers/automation/Automation";
 import { DuplicateCourseClassSwingWrapper } from "../containers/entities/courseClasses/components/duplicate-courseClass/DuplicateCourseClassSwingWrapper";
 import QuickEnrol from "../containers/checkout/Checkout";
 import NotFound from "../containers/notFound/NotFound";
+import LoadableLogs from "../containers/logs";
 
 type RouteGroupTypes = "Preferences" | "Training" | "Finance" | "Common" | "Activity" | "Products";
 
@@ -359,6 +360,13 @@ export const routes: MainRoute[] = [
     path: "/timetable",
     url: "/timetable",
     main: Timetable,
+    group: "Common"
+  },
+  {
+    title: "Server logs",
+    path: "/downloadLogs",
+    url: "/downloadLogs",
+    main: LoadableLogs,
     group: "Common"
   },
   // Products

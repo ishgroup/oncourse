@@ -119,6 +119,7 @@ class ServerApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(CheckoutApi)
         CXFModule.contributeResources(binder).addBinding().to(EntityRelationTypeApi)
         CXFModule.contributeResources(binder).addBinding().to(TokenApi)
+        CXFModule.contributeResources(binder).addBinding().to(LogsApi)
 
         //------
         CXFModule.contributeFeatures(binder).addBinding().to(JAXRSBeanValidationFeature)

@@ -1,0 +1,22 @@
+post:
+  operationId: getLogs
+  description: get logs files for dates interval
+  tags:
+    - Logs
+  parameters:
+    - name: datesInterval
+      in: body
+      schema:
+        $ref: './def/entity/logs/DatesInterval.yaml'
+      required: true
+      description: Start and end dates of required logs period
+  responses:
+    '200':
+      schema:
+        $ref: './def/entity/logs/LogFile.yaml'
+      default:
+        description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: ADMIN
+    errorMessage: Sorry, you do not have permissions to download server logs
