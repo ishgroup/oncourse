@@ -130,18 +130,10 @@ public class CheckPaymentMethod extends AbstractSeleniumTest{
             clickableTag.click();
         }
 
-        TakesScreenshot scrShot =((TakesScreenshot)driver);
-        String data = scrShot.getScreenshotAs(OutputType.BASE64);
-        logger.error("------------ 1 BASE 64 SCREENSHOT DATA------------");
-        logger.error(data);
-        logger.error("------------");
-        Assertions.assertEquals("Cash",data);
-
         logger.error("12. Choose payment method");
 
         Thread.sleep(10000);
         wait.until(ExpectedConditions.attributeToBe(By.name("payment_method"), "value", ""));
-        driver.findElement(By.name("payment_method")).click();
         wait.until(ExpectedConditions.elementToBeClickable(By.name("payment_method"))).click();
         Thread.sleep(2000);
 
