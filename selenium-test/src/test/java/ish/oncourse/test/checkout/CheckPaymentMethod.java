@@ -48,20 +48,20 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
         dto.setLogin("admin@example.edu");
         dto.setPassword("abcd1723");
 
-        DevTools devTools = ((ChromeDriver) driver).getDevTools();
-        devTools.createSession();
-        devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
-
-        devTools.addListener(Network.responseReceived(), l -> {
-            logger.error("Response URL: ");
-            logger.error(l.getResponse().getUrl());
-            logger.error(l.getResponse().getStatus());
-        });
-        devTools.addListener(Network.requestWillBeSent(), l -> {
-            logger.error("Request URL: ");
-            logger.error(l.getRequest().getUrl());
-            logger.error(l.getRequest().getMethod());
-        });
+//        DevTools devTools = ((ChromeDriver) driver).getDevTools();
+//        devTools.createSession();
+//        devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
+//
+//        devTools.addListener(Network.responseReceived(), l -> {
+//            logger.error("Response URL: ");
+//            logger.error(l.getResponse().getUrl());
+//            logger.error(l.getResponse().getStatus());
+//        });
+//        devTools.addListener(Network.requestWillBeSent(), l -> {
+//            logger.error("Request URL: ");
+//            logger.error(l.getRequest().getUrl());
+//            logger.error(l.getRequest().getMethod());
+//        });
 
         emailAuthenticationService = new EmailAuthenticationService(driver, js);
         emailAuthenticationService.login(dto);
@@ -148,19 +148,22 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
             Thread.sleep(1000);
             driver.findElement(By.cssSelector(".PrivateSwitchBase-input")).click();
 
-            logger.error("11. Choose SUMMAEY");
+            logger.error("11. Choose Summary");
+            Thread.sleep(1000);
             js.executeScript("document.evaluate(\"//div[text()='Summary']\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click()");
-            {
-                logger.error("CHROME CONSOLE");
-                driver.manage().logs().get(LogType.BROWSER).getAll().forEach(it -> {
-                    logger.error(it.getMessage());
-                });
-
-            }
+            Thread.sleep(1000);
+            js.executeScript("document.evaluate(\"//div[text()='Payment']\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click()");
+//            {
+//                logger.error("CHROME CONSOLE");
+//                driver.manage().logs().get(LogType.BROWSER).getAll().forEach(it -> {
+//                    logger.error(it.getMessage());
+//                });
+//
+//            }
             {
                 TakesScreenshot scrShot = ((TakesScreenshot) driver);
                 String data = scrShot.getScreenshotAs(OutputType.BASE64);
-                logger.error("------------1 BASE 64 SCREENSHOT DATA------------");
+                logger.error("------------SCREEN BASE 64 SCREENSHOT DATA------------");
                 logger.error(data);
                 logger.error("------------");
             }
