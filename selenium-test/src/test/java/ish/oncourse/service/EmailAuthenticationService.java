@@ -65,14 +65,14 @@ public class EmailAuthenticationService implements AuthenticationService {
             //ignored
         }
 
-        Thread.sleep(  1000);
+        Thread.sleep(  5000);
         boolean result = wait.until(ExpectedConditions.textToBe(By.cssSelector(".jss13"), "MAYBE LATER")).booleanValue();
         logger.error("9. Click on the `Maybe later` button. Result = " + result);
         driver.findElement(By.xpath("//button[normalize-space()='Maybe Later']")).click();
 
         logger.error("10. Run script `window.scrollTo(0,0)`.");
         js.executeScript("window.scrollTo(0,0)");
-        Thread.sleep(  1000);
+        Thread.sleep(  5000);
     }
 
     @Override
