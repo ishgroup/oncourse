@@ -149,7 +149,7 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
             driver.findElement(By.cssSelector(".PrivateSwitchBase-input")).click();
 
 
-            js.executeScript("document.evaluate(\"//div[text()='Payment']\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click()");
+            js.executeScript("document.evaluate(\"//div[text()='SUMMARY']\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click()");
             {
                 logger.error("CHROME CONSOLE");
                 driver.manage().logs().get(LogType.BROWSER).getAll().forEach(it -> {
