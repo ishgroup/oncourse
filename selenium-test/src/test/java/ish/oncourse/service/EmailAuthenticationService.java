@@ -36,24 +36,33 @@ public class EmailAuthenticationService implements AuthenticationService {
     public void login(LoginRequestDTO requestDTO) throws InterruptedException {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
+        Thread.sleep(5000);
 
         logger.error("1. Open https://127.0.0.1:8182/");
         driver.get("https://127.0.0.1:8182/");
+        Thread.sleep(5000);
 
         logger.error("2. Click on the `user` text field.");
         driver.findElement(By.id(":r1:")).click();
+        Thread.sleep(5000);
 
         logger.error("3. Set email in the `user` text field.");
         driver.findElement(By.id(":r1:")).sendKeys(requestDTO.getLogin());
+        Thread.sleep(5000);
 
         logger.error("4. Click on the `password` text field.");
         driver.findElement(By.id(":r2:")).click();
+        Thread.sleep(5000);
 
         logger.error("5. Set password in the `password` text field.");
         driver.findElement(By.id(":r2:")).sendKeys(requestDTO.getPassword());
+        Thread.sleep(5000);
+
 
         logger.error("6. Click on the `Login` button.");
         driver.findElement(By.cssSelector(".jss18")).click();
+        Thread.sleep(5000);
+
 
         try {
             Boolean anotherSessionExist = wait.until(ExpectedConditions.textToBe(By.cssSelector(".jss18"), "KICK OUT"));
@@ -65,14 +74,14 @@ public class EmailAuthenticationService implements AuthenticationService {
             //ignored
         }
 
-        Thread.sleep(  5000);
+        Thread.sleep(5000);
         boolean result = wait.until(ExpectedConditions.textToBe(By.cssSelector(".jss13"), "MAYBE LATER")).booleanValue();
         logger.error("9. Click on the `Maybe later` button. Result = " + result);
         driver.findElement(By.xpath("//button[normalize-space()='Maybe Later']")).click();
 
         logger.error("10. Run script `window.scrollTo(0,0)`.");
         js.executeScript("window.scrollTo(0,0)");
-        Thread.sleep(  5000);
+        Thread.sleep(5000);
     }
 
     @Override
