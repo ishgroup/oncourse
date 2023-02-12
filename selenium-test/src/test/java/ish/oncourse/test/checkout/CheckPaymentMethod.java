@@ -151,15 +151,16 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
             logger.error("11. Choose Summary");
             Thread.sleep(1000);
             js.executeScript("document.evaluate(\"//div[text()='Summary']\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click()");
+            logger.error("11. Choose Payment");
             Thread.sleep(1000);
             js.executeScript("document.evaluate(\"//div[text()='Payment']\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click()");
-//            {
-//                logger.error("CHROME CONSOLE");
-//                driver.manage().logs().get(LogType.BROWSER).getAll().forEach(it -> {
-//                    logger.error(it.getMessage());
-//                });
-//
-//            }
+            {
+                logger.error("CHROME CONSOLE");
+                driver.manage().logs().get(LogType.BROWSER).getAll().forEach(it -> {
+                    logger.error(it.getMessage());
+                });
+
+            }
             {
                 TakesScreenshot scrShot = ((TakesScreenshot) driver);
                 String data = scrShot.getScreenshotAs(OutputType.BASE64);
