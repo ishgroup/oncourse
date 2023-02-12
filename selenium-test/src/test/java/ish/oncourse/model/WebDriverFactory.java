@@ -30,7 +30,7 @@ public class WebDriverFactory {
                         "--disable-gpu",
                         "--window-size=1920,1200",
                         "--ignore-certificate-errors",
-                        "--disable-extensions",
+//                        "--disable-extensions",
                         "--no-sandbox",
                         "--disable-dev-shm-usage"));
             case FIREFOX:
