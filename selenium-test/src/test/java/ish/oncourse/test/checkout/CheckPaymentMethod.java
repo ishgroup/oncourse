@@ -8,7 +8,6 @@
 
 package ish.oncourse.test.checkout;
 
-import com.google.common.collect.ImmutableMap;
 import ish.oncourse.server.api.v1.model.LoginRequestDTO;
 import ish.oncourse.service.AuthenticationService;
 import ish.oncourse.service.EmailAuthenticationService;
@@ -20,20 +19,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.devtools.Command;
-import org.openqa.selenium.devtools.DevTools;
-import org.openqa.selenium.devtools.v109.network.Network;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.io.IOException;
 import java.time.Duration;
-import java.util.Optional;
 
-
+import static ish.oncourse.util.SeleniumUtil.threadWait;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CheckPaymentMethod extends AbstractSeleniumTest {
 
@@ -41,32 +34,15 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
     private static AuthenticationService emailAuthenticationService;
 
     @BeforeAll
-    public void setUp() throws InterruptedException {
+    public void setUp() {
         super.setUp();
 
         var dto = new LoginRequestDTO();
         dto.setLogin("admin@example.edu");
         dto.setPassword("abcd1723");
 
-//        DevTools devTools = ((ChromeDriver) driver).getDevTools();
-//        devTools.createSession();
-//        devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
-//
-//        devTools.addListener(Network.responseReceived(), l -> {
-//            logger.error("Response URL: ");
-//            logger.error(l.getResponse().getUrl());
-//            logger.error(l.getResponse().getStatus());
-//        });
-//        devTools.addListener(Network.requestWillBeSent(), l -> {
-//            logger.error("Request URL: ");
-//            logger.error(l.getRequest().getUrl());
-//            logger.error(l.getRequest().getMethod());
-//        });
-
         emailAuthenticationService = new EmailAuthenticationService(driver, js);
         emailAuthenticationService.login(dto);
-
-
     }
 
     @AfterAll
@@ -76,7 +52,7 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
     }
 
     @Test
-    void test() throws InterruptedException, IOException {
+    void test() {
 
         try {
 
@@ -88,22 +64,22 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
             logger.error("4. Create new contact");
             {
 
-                Thread.sleep(2000);
+                threadWait(Duration.ofSeconds(2));
                 driver.findElement(By.name("contacts")).click();
                 driver.findElement(By.name("contacts")).sendKeys("Test");
 
-                Thread.sleep(2000);
+                threadWait(Duration.ofSeconds(2));
                 driver.findElement(By.cssSelector(".MuiListItemText-root")).click();
 
-                Thread.sleep(1000);
+                threadWait(Duration.ofSeconds(1));
                 driver.findElement(By.name("firstName")).click();
                 driver.findElement(By.name("firstName")).sendKeys("CheckPaymentMethod");
                 driver.findElement(By.cssSelector(".saveButtonEditView")).click();
 
-                Thread.sleep(1000);
+                threadWait(Duration.ofSeconds(1));
                 js.executeScript("window.scrollTo(0,0)");
 
-                Thread.sleep(1000);
+                threadWait(Duration.ofSeconds(1));
                 {
                     WebElement element = driver.findElement(By.name("items"));
                     Actions builder = new Actions(driver);
@@ -129,7 +105,7 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
             driver.findElement(By.name("items")).sendKeys("dcftc1");
             logger.error("7. Choose course");
             driver.findElement(By.cssSelector(".MuiListItemText-root")).click();
-            Thread.sleep(1000);
+            threadWait(Duration.ofSeconds(1));
             logger.error("8. Choose course");
             {
                 WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".mui-1d3bbye > .MuiGrid-grid-xs-1")));
@@ -137,7 +113,7 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
                 builder.moveToElement(element).perform();
             }
             logger.error("9. Move mouse to class list");
-            Thread.sleep(1000);
+            threadWait(Duration.ofSeconds(1));
             {
                 WebElement element = driver.findElement(By.tagName("body"));
                 Actions builder = new Actions(driver);
@@ -145,14 +121,14 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
             }
 
             logger.error("10. Choose class");
-            Thread.sleep(1000);
+            threadWait(Duration.ofSeconds(1));
             driver.findElement(By.cssSelector(".PrivateSwitchBase-input")).click();
 
             logger.error("11. Choose Summary");
-            Thread.sleep(1000);
+            threadWait(Duration.ofSeconds(1));
             js.executeScript("document.evaluate(\"//div[text()='Summary']\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click()");
             logger.error("11. Choose Payment");
-            Thread.sleep(1000);
+            threadWait(Duration.ofSeconds(1));
             js.executeScript("document.evaluate(\"//div[text()='Payment']\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click()");
             {
                 logger.error("CHROME CONSOLE");
@@ -161,20 +137,13 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
                 });
 
             }
-            {
-                TakesScreenshot scrShot = ((TakesScreenshot) driver);
-                String data = scrShot.getScreenshotAs(OutputType.BASE64);
-                logger.error("------------SCREEN BASE 64 SCREENSHOT DATA------------");
-                logger.error(data);
-                logger.error("------------");
-            }
 
             logger.error("12. Choose payment method");
 
-            Thread.sleep(1000);
+            threadWait(Duration.ofSeconds(1));
             wait.until(ExpectedConditions.attributeToBe(By.name("payment_method"), "value", ""));
             wait.until(ExpectedConditions.elementToBeClickable(By.name("payment_method"))).click();
-            Thread.sleep(2000);
+            threadWait(Duration.ofSeconds(2));
 
             logger.error("13. Select payment method");
             WebElement spanTag = driver.findElement(By.xpath("//span[text()='Cash']"));
@@ -189,7 +158,7 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
             logger.error("------------BASE 64 SCREENSHOT DATA------------");
             logger.error(data);
             logger.error("------------");
-            Assertions.assertEquals("Cash", data);
+            Assertions.fail();
         }
     }
 

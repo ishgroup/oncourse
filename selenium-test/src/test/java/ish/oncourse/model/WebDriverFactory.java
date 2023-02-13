@@ -26,7 +26,7 @@ public class WebDriverFactory {
             case CHROME:
                 WebDriverManager.chromedriver().setup();
                 return new ChromeDriver(new ChromeOptions().addArguments(
-                       "--headless",
+//                       "--headless",
 //                        "--headed",
                         "--disable-gpu",
                         "--window-size=1920,1200",

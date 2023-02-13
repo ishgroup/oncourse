@@ -11,6 +11,7 @@ package ish.oncourse.service;
 import ish.oncourse.server.api.v1.model.LoginRequestDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -18,6 +19,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
+
+import static ish.oncourse.util.SeleniumUtil.threadWait;
 
 public class EmailAuthenticationService implements AuthenticationService {
 
@@ -33,7 +36,7 @@ public class EmailAuthenticationService implements AuthenticationService {
     }
 
     @Override
-    public void login(LoginRequestDTO requestDTO) throws InterruptedException {
+    public void login(LoginRequestDTO requestDTO) {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
 
@@ -55,7 +58,7 @@ public class EmailAuthenticationService implements AuthenticationService {
         logger.error("6. Click on the `Login` button.");
         driver.findElement(By.cssSelector(".jss18")).click();
 
-        Thread.sleep(1000);
+        threadWait(Duration.ofSeconds(3));
         try {
             Boolean anotherSessionExist = wait.until(ExpectedConditions.textToBe(By.cssSelector(".jss18"), "KICK OUT"));
             if (anotherSessionExist) {
@@ -66,20 +69,19 @@ public class EmailAuthenticationService implements AuthenticationService {
             //ignored
         }
 
-        Thread.sleep(1000);
+        threadWait(Duration.ofSeconds(3));
         logger.error("7. Click on the `Maybe later` button.");
         wait.until(ExpectedConditions.textToBe(By.cssSelector(".jss13"), "MAYBE LATER"));
         driver.findElement(By.cssSelector(".jss13")).click();
 
-        logger.error("8. Home page is loading.");
-        Thread.sleep(1000);
-        // check page is loaded by scrolling
-        js.executeScript("window.scrollTo(0,0)");
-        logger.error("9. Home page is loaded.");
+        threadWait(Duration.ofSeconds(1));
+        logger.error("8. Сheck if authorization was successful.");
+        Assertions.assertEquals("Dashboard", driver.getTitle());
+        logger.error("8. You log in.");
     }
 
     @Override
-    public void logout() throws NoSuchFieldException {
+    public void logout() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
         logger.error("1. Open https://127.0.0.1:8182/");
@@ -88,7 +90,7 @@ public class EmailAuthenticationService implements AuthenticationService {
         logger.error("2. Click on the `Logout` button.");
         List<WebElement> buttons = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".jss34")));
         if (buttons.size() < 2) {
-            throw new NoSuchFieldException("Button `Logout` doesn't exist");
+            Assertions.fail("Button `Logout` doesn't exist");
         } else {
             buttons.get(1).click();
         }
@@ -102,5 +104,7 @@ public class EmailAuthenticationService implements AuthenticationService {
 
         logger.error("4. Click on `Yes` in the confirm dialog.");
         driver.findElement(By.cssSelector(".MuiButton-contained")).click();
+
+        logger.error("4.You log out.");
     }
 }

@@ -24,7 +24,7 @@ public abstract class AbstractSeleniumTest {
     protected JavascriptExecutor js;
 
     @BeforeAll
-    public void setUp() throws InterruptedException {
+    public void setUp() {
         driver = WebDriverFactory.get(Browser.CHROME);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
