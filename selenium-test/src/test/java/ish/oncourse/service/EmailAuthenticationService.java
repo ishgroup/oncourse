@@ -65,7 +65,7 @@ public class EmailAuthenticationService implements AuthenticationService {
             //ignored
         }
 
-        Thread.sleep(1000);
+        Thread.sleep(3000);
         logger.error("7. Click on the `Maybe later` button.");
         wait.until(ExpectedConditions.textToBe(By.cssSelector(".jss13"), "MAYBE LATER"));
         driver.findElement(By.cssSelector(".jss13")).click();
