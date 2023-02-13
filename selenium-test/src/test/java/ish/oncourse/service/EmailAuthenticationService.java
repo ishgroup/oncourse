@@ -55,6 +55,7 @@ public class EmailAuthenticationService implements AuthenticationService {
         logger.error("6. Click on the `Login` button.");
         driver.findElement(By.cssSelector(".jss18")).click();
 
+        Thread.sleep(3000);
         try {
             Boolean anotherSessionExist = wait.until(ExpectedConditions.textToBe(By.cssSelector(".jss18"), "KICK OUT"));
             if (anotherSessionExist) {
