@@ -55,7 +55,7 @@ public class EmailAuthenticationService implements AuthenticationService {
         logger.error("6. Click on the `Login` button.");
         driver.findElement(By.cssSelector(".jss18")).click();
 
-        Thread.sleep(3000);
+        Thread.sleep(1000);
         try {
             Boolean anotherSessionExist = wait.until(ExpectedConditions.textToBe(By.cssSelector(".jss18"), "KICK OUT"));
             if (anotherSessionExist) {
@@ -66,7 +66,7 @@ public class EmailAuthenticationService implements AuthenticationService {
             //ignored
         }
 
-        Thread.sleep(3000);
+        Thread.sleep(1000);
         logger.error("7. Click on the `Maybe later` button.");
         wait.until(ExpectedConditions.textToBe(By.cssSelector(".jss13"), "MAYBE LATER"));
         driver.findElement(By.cssSelector(".jss13")).click();
