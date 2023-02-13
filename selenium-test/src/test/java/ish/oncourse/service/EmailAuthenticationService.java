@@ -36,33 +36,24 @@ public class EmailAuthenticationService implements AuthenticationService {
     public void login(LoginRequestDTO requestDTO) throws InterruptedException {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
-        Thread.sleep(5000);
 
         logger.error("1. Open https://127.0.0.1:8182/");
         driver.get("https://127.0.0.1:8182/");
-        Thread.sleep(5000);
 
         logger.error("2. Click on the `user` text field.");
         driver.findElement(By.id(":r1:")).click();
-        Thread.sleep(5000);
 
         logger.error("3. Set email in the `user` text field.");
         driver.findElement(By.id(":r1:")).sendKeys(requestDTO.getLogin());
-        Thread.sleep(5000);
 
         logger.error("4. Click on the `password` text field.");
         driver.findElement(By.id(":r2:")).click();
-        Thread.sleep(5000);
 
         logger.error("5. Set password in the `password` text field.");
         driver.findElement(By.id(":r2:")).sendKeys(requestDTO.getPassword());
-        Thread.sleep(5000);
-
 
         logger.error("6. Click on the `Login` button.");
         driver.findElement(By.cssSelector(".jss18")).click();
-        Thread.sleep(5000);
-
 
         try {
             Boolean anotherSessionExist = wait.until(ExpectedConditions.textToBe(By.cssSelector(".jss18"), "KICK OUT"));
@@ -74,14 +65,16 @@ public class EmailAuthenticationService implements AuthenticationService {
             //ignored
         }
 
-        Thread.sleep(5000);
-        boolean result = wait.until(ExpectedConditions.textToBe(By.cssSelector(".jss13"), "MAYBE LATER")).booleanValue();
-        logger.error("9. Click on the `Maybe later` button. Result = " + result);
-        driver.findElement(By.xpath("//button[normalize-space()='Maybe Later']")).click();
+        Thread.sleep(1000);
+        logger.error("7. Click on the `Maybe later` button.");
+        wait.until(ExpectedConditions.textToBe(By.cssSelector(".jss13"), "MAYBE LATER"));
+        driver.findElement(By.cssSelector(".jss13")).click();
 
-        logger.error("10. Run script `window.scrollTo(0,0)`.");
+        logger.error("8. Home page is loading.");
+        Thread.sleep(1000);
+        // check page is loaded by scrolling
         js.executeScript("window.scrollTo(0,0)");
-        Thread.sleep(5000);
+        logger.error("9. Home page is loaded.");
     }
 
     @Override
@@ -91,10 +84,7 @@ public class EmailAuthenticationService implements AuthenticationService {
         logger.error("1. Open https://127.0.0.1:8182/");
         driver.get("https://127.0.0.1:8182/");
 
-        logger.error("2. Run script `window.scrollTo(0,0)`.");
-        js.executeScript("window.scrollTo(0,0)");
-
-        logger.error("4. Click on the `Logout` button.");
+        logger.error("2. Click on the `Logout` button.");
         List<WebElement> buttons = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".jss34")));
         if (buttons.size() < 2) {
             throw new NoSuchFieldException("Button `Logout` doesn't exist");
@@ -102,14 +92,14 @@ public class EmailAuthenticationService implements AuthenticationService {
             buttons.get(1).click();
         }
 
-        logger.error("5. Move to the confirm dialog.");
+        logger.error("3. Move to the confirm dialog.");
         {
             WebElement element = driver.findElement(By.tagName("body"));
             Actions builder = new Actions(driver);
             builder.moveToElement(element, 0, 0).perform();
         }
 
-        logger.error("6. Click on `Yes` in the confirm dialog.");
+        logger.error("4. Click on `Yes` in the confirm dialog.");
         driver.findElement(By.cssSelector(".MuiButton-contained")).click();
     }
 }
