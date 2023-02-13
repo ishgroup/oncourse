@@ -6,9 +6,8 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.util;
+package ish.oncourse.service;
 
-import com.beust.jcommander.Strings;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DevToolsUtil {
+public class GoogleDevTools {
 
     private static DevTools devTools;
 
@@ -27,20 +26,20 @@ public class DevToolsUtil {
     private static final List<String> responseList = new ArrayList<>();
 
 
-    private DevToolsUtil() {}
+    private GoogleDevTools() {}
 
-    public static DevToolsUtil valueOf(WebDriver driver) {
-        DevToolsUtil devToolsUtil = new DevToolsUtil();
+    public static GoogleDevTools valueOf(WebDriver driver) {
+        GoogleDevTools googleDevTools = new GoogleDevTools();
 
         DevTools devTools = ((ChromeDriver) driver).getDevTools();
         devTools.createSession();
         devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
 
-        DevToolsUtil.devTools = devTools;
-        return devToolsUtil;
+        GoogleDevTools.devTools = devTools;
+        return googleDevTools;
     }
 
-    public DevToolsUtil createResponseListener() {
+    public GoogleDevTools createResponseListener() {
         devTools.addListener(Network.responseReceived(), l ->
             requestList.add(String.join(", ",
                     "Url: " + l.getResponse().getUrl(),
@@ -50,7 +49,7 @@ public class DevToolsUtil {
         );
         return this;
     }
-    public DevToolsUtil createRequestListener() {
+    public GoogleDevTools createRequestListener() {
         devTools.addListener(Network.requestWillBeSent(), l ->
                 responseList.add(l.getRequest().getMethod() + ": " + l.getRequest().getUrl())
         );

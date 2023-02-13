@@ -9,18 +9,14 @@
 package ish.oncourse.test.checkout;
 
 import ish.oncourse.server.api.v1.model.LoginRequestDTO;
-import ish.oncourse.service.AuthenticationService;
-import ish.oncourse.service.EmailAuthenticationService;
+import ish.oncourse.service.authentication.AuthenticationService;
+import ish.oncourse.service.authentication.EmailAuthenticationService;
 import ish.oncourse.test.AbstractSeleniumTest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -46,7 +42,7 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
     }
 
     @AfterAll
-    public void tearDown() throws NoSuchFieldException {
+    public void tearDown() {
         emailAuthenticationService.logout();
         super.tearDown();
     }
@@ -130,13 +126,6 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
             logger.error("11. Choose Payment");
             threadWait(Duration.ofSeconds(1));
             js.executeScript("document.evaluate(\"//div[text()='Payment']\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click()");
-            {
-                logger.error("CHROME CONSOLE");
-                driver.manage().logs().get(LogType.BROWSER).getAll().forEach(it -> {
-                    logger.error(it.getMessage());
-                });
-
-            }
 
             logger.error("12. Choose payment method");
 

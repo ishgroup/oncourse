@@ -10,6 +10,7 @@ package ish.oncourse.test;
 
 import ish.oncourse.model.Browser;
 import ish.oncourse.model.WebDriverFactory;
+import ish.oncourse.service.listener.NoSuchElementExceptionHandler;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
@@ -29,10 +30,13 @@ public abstract class AbstractSeleniumTest {
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         js = (JavascriptExecutor) driver;
+
+        Thread.UncaughtExceptionHandler handler = new NoSuchElementExceptionHandler(driver);
+        Thread.setDefaultUncaughtExceptionHandler(handler);
     }
 
     @AfterAll
-    public void tearDown() throws NoSuchFieldException {
+    public void tearDown() {
         driver.quit();
     }
 
