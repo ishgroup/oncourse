@@ -84,64 +84,11 @@ const Table = ({
 
   const classes = useStyles();
 
-  const onSelectionChangeHangler = () => {
-    const newSelection = Object.keys(rowSelection).map(k => k);
-    if (newSelection.length === 1 && selection.length === 1 && newSelection[0] === selection[0]) {
-      return;
-    }
-    onSelectionChange(newSelection);
-  };
-
   useEffect(() => {
     if (tableRef.current) {
       getContainerNode(tableRef.current);
     }
   }, [tableRef.current]);
-
-  const toggleRowSelect = id => {
-    const updated = { ...table.getState().rowSelection };
-    if (updated[id]) {
-      delete updated[id];
-    } else {
-      updated[id] = true;
-    }
-    onRowSelectionChange(updated);
-    onSelectionChangeHangler();
-  };
-
-  const onRowSelect = (e, row) => {
-    const currentSelection = table.getState().rowSelection;
-    const currentSelectionKeys = Object.keys(currentSelection);
-
-    if (e.shiftKey && currentSelectionKeys.length) {
-      const rowsById = table.getRowModel().rowsById;
-      const selectionIndicies = currentSelectionKeys.map(id => rowsById[id].index);
-      const firstSelectedIndex = Math.min(...selectionIndicies);
-      const lastSelectedIndex = Math.max(...selectionIndicies);
-
-      const selectionData = table.getRowModel().rows
-        .slice(Math.min(firstSelectedIndex, row.index), Math.max(lastSelectedIndex, row.index) + 1)
-        .reduce((p, c) => {
-          p[c.id] = true;
-          return p;
-        }, {});
-
-      onRowSelectionChange(selectionData);
-      onSelectionChangeHangler();
-      return;
-    }
-    if (e.ctrlKey || e.metaKey) {
-      toggleRowSelect(row.id);
-      return;
-    }
-    onRowSelectionChange({ [row.id]: true });
-    onSelectionChangeHangler();
-  };
-
-  const onRowCheckboxSelect = (e, id) => {
-    e.stopPropagation();
-    toggleRowSelect(id);
-  };
 
   const columns = useMemo<ColumnDef<Column>[]>(
     () => ([
@@ -223,6 +170,15 @@ const Table = ({
     getRowId
   });
 
+  const onSelectionChangeHangler = useCallback<any>(debounce(() => {
+    console.log(table.getState().rowSelection);
+    const newSelection = Object.keys(table.getState().rowSelection).map(k => k);
+    if (newSelection.length === 1 && selection.length === 1 && newSelection[0] === selection[0]) {
+      return;
+    }
+    onSelectionChange(newSelection);
+  }, 500), [selection]);
+
   const onHiddenChange = useCallback<any>(debounce(() => {
     const updated = {};
     columns.forEach(c => {
@@ -242,6 +198,51 @@ const Table = ({
     }
     onChangeColumnsSort(table.getState().sorting);
   }, 500), []);
+
+  const toggleRowSelect = id => {
+    const updated = { ...table.getState().rowSelection };
+    if (updated[id]) {
+      delete updated[id];
+    } else {
+      updated[id] = true;
+    }
+    onRowSelectionChange(updated);
+    onSelectionChangeHangler();
+  };
+
+  const onRowSelect = (e, row) => {
+    const currentSelection = table.getState().rowSelection;
+    const currentSelectionKeys = Object.keys(currentSelection);
+
+    if (e.shiftKey && currentSelectionKeys.length) {
+      const rowsById = table.getRowModel().rowsById;
+      const selectionIndicies = currentSelectionKeys.map(id => rowsById[id].index);
+      const firstSelectedIndex = Math.min(...selectionIndicies);
+      const lastSelectedIndex = Math.max(...selectionIndicies);
+
+      const selectionData = table.getRowModel().rows
+        .slice(Math.min(firstSelectedIndex, row.index), Math.max(lastSelectedIndex, row.index) + 1)
+        .reduce((p, c) => {
+          p[c.id] = true;
+          return p;
+        }, {});
+
+      onRowSelectionChange(selectionData);
+      onSelectionChangeHangler();
+      return;
+    }
+    if (e.ctrlKey || e.metaKey) {
+      toggleRowSelect(row.id);
+      return;
+    }
+    onRowSelectionChange({ [row.id]: true });
+    onSelectionChangeHangler();
+  };
+
+  const onRowCheckboxSelect = (e, id) => {
+    e.stopPropagation();
+    toggleRowSelect(id);
+  };
 
   useEffect(() => {
     if (tableRef.current && listRef.current) {
