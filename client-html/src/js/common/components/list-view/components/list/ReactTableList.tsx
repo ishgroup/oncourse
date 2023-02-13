@@ -171,7 +171,6 @@ const Table = ({
   });
 
   const onSelectionChangeHangler = useCallback<any>(debounce(() => {
-    console.log(table.getState().rowSelection);
     const newSelection = Object.keys(table.getState().rowSelection).map(k => k);
     if (newSelection.length === 1 && selection.length === 1 && newSelection[0] === selection[0]) {
       return;
