@@ -24,3 +24,26 @@ get:
     mask: view
     keyCode: REPORT
     errorMessage: Sorry, you have no permissions to get background. Please contact your administrator
+
+delete:
+  operationId: deletePreview
+  description: Set preview of report to null
+  tags:
+    - PdfTemplate
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+  responses:
+    '200':
+      description: Success response
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: REPORT
+    errorMessage: Sorry, you have no permissions to update Report preview. Please contact your administrator
