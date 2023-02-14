@@ -78,7 +78,7 @@ class ApiFilter implements Filter {
         } else if (unautorized(request, response) || !permissionService.authorize(request, response)) {
             return
         }
-        enableCSP(response)
+
         chain.doFilter(request, response)
     }
 
@@ -91,10 +91,6 @@ class ApiFilter implements Filter {
         response.addHeader('Access-Control-Allow-Origin', '*')
         response.addHeader('Access-Control-Allow-Methods', 'PUT, GET, OPTIONS, PATCH')
         response.addHeader('Access-Control-Allow-Headers', 'Content-Type, Ish-JXBrowser-Header')
-    }
-
-    private static void enableCSP(Response response) {
-        response.addHeader('Content-Security-Policy', 'default-src \'self\' https://*.hotjar.com https://*.hotjar.io wss://*.hotjar.com \'unsafe-inline\'')
     }
 
     private boolean unautorized(HttpServletRequest request, HttpServletResponse response) {
