@@ -61,4 +61,9 @@ class ExportTemplateApiImpl implements ExportTemplateApi {
     byte[] exportOnDisk(Long id) {
         service.exportOnDisk(id)
     }
+
+    @Override
+    void deletePreview(Long id) {
+        service.deletePreview(id)
+    }
 }

@@ -151,19 +151,30 @@ const EditInPlaceSearchSelect = ({
     warning,
     multiple,
     rightAligned,
-    hasError
+    hasError,
+    categoryKey
   }: EditInPlaceSearchSelectFieldProps) => {
-  const sortedItems = useMemo(() => items && (sort
-    ? [...items].sort(typeof sort === "function"
-      ? sort
-      : (aOption, bOption) => {
-        const aLabel = selectLabelCondition ? selectLabelCondition(aOption) : aOption[sortPropKey || selectLabelMark];
-        const bLabel = selectLabelCondition ? selectLabelCondition(bOption) : bOption[sortPropKey || selectLabelMark];
+  
+  const sortedItems = useMemo(() => {
+    const sorted = items && (sort
+        ? [...items].sort(typeof sort === "function"
+          ? sort
+          : (aOption, bOption) => {
+            const aLabel = selectLabelCondition ? selectLabelCondition(aOption) : aOption[sortPropKey || selectLabelMark];
+            const bLabel = selectLabelCondition ? selectLabelCondition(bOption) : bOption[sortPropKey || selectLabelMark];
 
-        return (aLabel.toLowerCase()).localeCompare(bLabel.toLowerCase());
-      })
-      : [...items]
-  ), [items, selectLabelCondition, selectLabelMark, sortPropKey]);
+            return (aLabel.toLowerCase()).localeCompare(bLabel.toLowerCase());
+          })
+        : [...items]
+    );
+    
+    if (categoryKey) {
+      sorted.sort((aOption, bOption) => (aOption[categoryKey].toLowerCase()).localeCompare(bOption[categoryKey].toLowerCase()));
+    }
+    
+    return sorted;
+    
+  }, [items, selectLabelCondition, selectLabelMark, sortPropKey, categoryKey]);
 
   const inputNode = useRef<any>(null);
 
@@ -178,6 +189,12 @@ const EditInPlaceSearchSelect = ({
   const [formattedDisplayValue, setFormattedDisplayValue] = useState<any>("");
 
   const prevDefaultDisplayValue = usePrevious(defaultValue);
+
+  useEffect(() => {
+    if (formattedDisplayValue && !input.value) {
+      setFormattedDisplayValue(null);
+    }
+  }, [formattedDisplayValue, input.value, input.name]);
 
   useEffect(() => {
     if (selectLabelCondition && formattedDisplayValue && defaultValue !== prevDefaultDisplayValue) {
@@ -211,9 +228,7 @@ const EditInPlaceSearchSelect = ({
 
     if (!Array.isArray(items)) return filtered;
 
-    if (!searchValue) {
-      return items;
-    }
+    if (!searchValue || remoteData)  return items;
 
     const searchRegexp = new RegExp(searchValue.replace(",", "")
       // eslint-disable-next-line no-useless-escape
@@ -327,7 +342,7 @@ const EditInPlaceSearchSelect = ({
 
     setTimeout(() => {
       onBlur();
-      input.onBlur(newValue);
+      input?.onBlur(newValue);
     }, 100);
   };
 
@@ -387,7 +402,17 @@ const EditInPlaceSearchSelect = ({
       ? response
       : null
     );
-  }, [formattedDisplayValue, selectedOption, selectLabelCondition, alwaysDisplayDefault, returnType, defaultValue, selectLabelMark, input, classes]);
+  }, [
+    formattedDisplayValue,
+    selectedOption,
+    selectLabelCondition,
+    alwaysDisplayDefault,
+    returnType,
+    defaultValue,
+    selectLabelMark,
+    input.value,
+    classes
+  ]);
 
   const renderValue = useMemo(() => valueRenderer
     ? valueRenderer(displayedValue, selectedOption, searchValue, { value: selectedOption && selectedOption[selectValueMark] })
@@ -469,13 +494,15 @@ const EditInPlaceSearchSelect = ({
             hasClearIcon: classes.hasClear,
             inputRoot: clsx(classes.inputWrapper, multiple && classes.multiple),
             option: "w-100 text-pre",
-            popper: classes.popper
+            popper: classes.popper,
+            groupUl: "m-0"
           }}
+          groupBy={categoryKey && (option => option[categoryKey])}
           renderOption={renderOption}
           getOptionLabel={getOptionLabel}
           filterOptions={filterItems}
-          ListboxComponent={inline ? null : ListBoxAdapter as any}
-          PopperComponent={PopperAdapter as any}
+          ListboxComponent={inline || categoryKey ? null : ListBoxAdapter as any}
+          PopperComponent={categoryKey ? null : PopperAdapter as any}
           renderInput={({
            InputLabelProps, InputProps, inputProps, ...params
           }) => (
@@ -508,6 +535,7 @@ const EditInPlaceSearchSelect = ({
                 },
                 inputProps: {
                   ...inputProps,
+                  className: fieldClasses.text,
                   ref: ref => {
                     (inputProps as any).ref.current = ref;
                     inputNode.current = ref;
@@ -519,6 +547,7 @@ const EditInPlaceSearchSelect = ({
                 ?
                 <Select
                   {...InputProps}
+                  classes={{ select: "cursor-text" }}
                   onFocus={edit}
                   value={input.value || ""}
                   endAdornment={

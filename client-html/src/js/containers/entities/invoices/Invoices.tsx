@@ -218,7 +218,7 @@ const Invoices = React.memo<any>(({
           manualLink,
           nameCondition,
           asyncValidate: notesAsyncValidate,
-          asyncBlurFields: ["notes[].message"]
+          asyncChangeFields: ["notes[].message"]
         }}
         rootEntity="AbstractInvoice"
         filterEntity="Invoice"

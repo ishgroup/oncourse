@@ -44,7 +44,6 @@ interface Props {
   dispatch?: any;
   selected?: boolean;
   validatePayNow?: any;
-  onPayNowChange?: any;
   onPayDateChange?: any;
   onPayNowFocus?: any;
   onPayNowBlur?: any;
@@ -72,7 +71,6 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
     fields,
     selected,
     validatePayNow,
-    onPayNowChange,
     onPayDateChange,
     onPayNowFocus,
     disabledStep,
@@ -119,11 +117,10 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
                 name={`${f}.amount`}
                 format={normalizeNumberToPositive}
                 normalize={normalizeNumberToPositive}
-                
                 onBlur={onPayNowBlur}
-                onChange={onPayNowChange}
                 disabled={!first || disabledStep}
                 validate={first ? validatePayNow : undefined}
+                debounced={false}
               />
 
               {first && (
@@ -136,9 +133,6 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
                       placeholder="Pay now"
                       onChange={onPayDateChange}
                       validate={validateLockedDate}
-                      fieldClasses={{
-                        placeholder: "textSecondaryColor"
-                      }}
                     />
                   ) : "Pay now"}
                 </Typography>

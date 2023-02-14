@@ -114,22 +114,19 @@ public class CustomFontExtensionsRegistry extends AbstractFontExtensionsRegistry
 		// register fonts with jasper
 		for (final var fontFile : folder.listFiles()) {
 			try {
-				SimpleFontFace fontFace = new SimpleFontFace(DefaultJasperReportsContext.getInstance());
-				fontFace.setTtf(fontFile.getAbsolutePath(), false);
-				final FontFace face = fontFace;
-				var family = new SimpleFontFamily() {
-					@Override
-					public FontFace getNormalFace() {
-						return face;
-					}
-				};
+				var family = new SimpleFontFamily();
+				var normalFace = new SimpleFontFace(DefaultJasperReportsContext.getInstance());
+
+				fontInitializationStarted = true;
+				normalFace.setTtf(fontFile.getAbsolutePath());
+				family.setNormalFace(normalFace);
 				family.setPdfEmbedded(true);
+
 				fontInitializationStarted = false;
 
-				var font = family.getNormalFace().getFont();
+				var font = normalFace.getFont();
 				logger.warn("registering font {} as {} and name {}", fontFile, font.getFamily(), font.getName());
 				fontFamilies.add(family);
-
 			} catch (Exception e) {
 				// ignore the error since we just hit a font we couldn't parse
 				fontInitializationStarted = false;

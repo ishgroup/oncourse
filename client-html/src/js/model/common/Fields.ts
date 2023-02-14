@@ -13,7 +13,6 @@ export interface FieldClasses {
   underline?: string;
   label?: string;
   selectMenu?: string;
-  placeholder?: string;
   loading?: string;
   listbox?: string;
 }
@@ -153,6 +152,7 @@ export interface EditInPlaceSearchSelectFieldProps {
   hideMenuOnNoResults?: boolean;
   hideEditIcon?: boolean;
   warning?: string;
+  categoryKey?: string;
   selectAdornment?: { position: "start" | "end", content: ReactElement }
 }
 

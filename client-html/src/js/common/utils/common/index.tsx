@@ -83,6 +83,17 @@ export const createAndDownloadBase64Image = (data: any, name: string, type = "pn
   document.body.removeChild(link);
 };
 
+export const createAndDownloadBase64File = (data: any, name: string, type: string) => {
+  const link = document.createElement("a");
+  link.href = "data:;base64," + atob(data);
+  link.setAttribute("download", name + `.${type}`);
+  link.setAttribute("type", `application/${type}`);
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
 export const getArrayFieldMeta = name => {
   const match = name.match(/\[(\d)]\.([^.]+)$/);
   return { field: match[2], index: Number(match[1]) };

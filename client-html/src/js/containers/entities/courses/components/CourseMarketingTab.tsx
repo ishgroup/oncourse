@@ -41,6 +41,9 @@ const CourseMarketingTab: React.FC<EditViewProps<Course>> = props => {
       <Grid item xs={12}>
         <FormEditorField name="webDescription" label="Web description" />
       </Grid>
+      <Grid item xs={12}>
+        <FormEditorField name="shortWebDescription" label="Short web description" />
+      </Grid>
 
       <Grid item xs={12}>
         <FormField

@@ -103,7 +103,7 @@ class OutcomeFunctions {
             outcomeDTO.vetFundingSourceStateID = outcome.outcomeVetFundingSourceStateID
             outcomeDTO.specificProgramIdentifier = outcome.specificProgramIdentifier
             outcomeDTO.isPriorLearning = outcome.priorLearning != null
-            outcomeDTO.hasCertificate = !outcome.certificateOutcomes?.empty
+            outcomeDTO.hasCertificate = !outcome.certificateOutcomes?.findAll {!it.certificate.revokedOn}?.empty
             outcomeDTO.printed = outcome.certificateOutcomes?.certificate?.find { it.printedOn && it.revokedOn == null } != null
             outcomeDTO.createdOn = LocalDateUtils.dateToTimeValue(outcome.createdOn)
             outcomeDTO.modifiedOn = LocalDateUtils.dateToTimeValue(outcome.modifiedOn)
