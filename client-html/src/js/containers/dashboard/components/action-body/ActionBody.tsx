@@ -17,6 +17,8 @@ import NewsRender from "../../../../common/components/news/NewsRender";
 import TutorialPanel from "./components/TutorialPanel";
 import tutorials from "./tutorials.json";
 import EntityService from "../../../../common/services/EntityService";
+import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import { Dispatch } from "redux";
 
 const styles = (theme: AppTheme) => createStyles({
   root: {
@@ -39,6 +41,7 @@ interface Props {
   preferencesNewsLatestReadDate?: string;
   drawerOpened?: boolean;
   skipSystemUser?: boolean;
+  dispatch?: Dispatch;
 }
 
 const dashboardFeedWidth = 370;
@@ -127,17 +130,17 @@ class ActionBody extends React.PureComponent<Props, any> {
       switch (tutorialKey) {
         case "course": {
           const courseResponse = await EntityService.getPlainRecords("Course", "id", "id not is null", 1);
-          if (!courseResponse.rows.length) {
+          if (!courseResponse?.rows?.length) {
             return tutorialKey;
           }
           break;
         }
         case "site": {
           const siteResponse = await EntityService.getPlainRecords("Site", "id,name", "id not is null", 2);
-          if (!siteResponse.rows.length) {
+          if (!siteResponse?.rows?.length) {
             return tutorialKey;
           }
-          if (siteResponse.rows.length === 1 && siteResponse.rows[0].values[1] === "Default site") {
+          if (siteResponse?.rows?.length === 1 && siteResponse.rows[0].values[1] === "Default site") {
             this.setState({
               customLink: `/site/${siteResponse.rows[0].values[0]}`
             });
@@ -147,21 +150,21 @@ class ActionBody extends React.PureComponent<Props, any> {
         }
         case "tutor": {
           const tutorResponse = await EntityService.getPlainRecords("Contact", "id", "id not is null and isTutor is true", 1);
-          if (!tutorResponse.rows.length) {
+          if (!tutorResponse?.rows?.length) {
             return tutorialKey;
           }
           break;
         }
         case "courseclass": {
           const courseClassResponse = await EntityService.getPlainRecords("CourseClass", "id", "id not is null", 1);
-          if (!courseClassResponse.rows.length) {
+          if (!courseClassResponse?.rows?.length) {
             return tutorialKey;
           }
           break;
         }
         case "systemuser": {
           const systemUserResponse = await EntityService.getPlainRecords("SystemUser", "id", "id not is null", 2);
-          if (systemUserResponse.rows.length === 1) {
+          if (systemUserResponse?.rows?.length === 1) {
             return tutorialKey;
           }
           break;
@@ -169,20 +172,26 @@ class ActionBody extends React.PureComponent<Props, any> {
       }
     }
     return null;
-  }
+  };
 
   checkTutorials = async () => {
-    const tutorialKey = await this.getTutorial();
+    const { dispatch } = this.props;
 
-    if (!tutorialKey) {
-      clearInterval(this.interval);
+    try {
+      const tutorialKey = await this.getTutorial();
+
+      if (!tutorialKey) {
+        clearInterval(this.interval);
+      }
+
+      this.setState(prev => ({
+        tutorialKey,
+        customLink: tutorialKey === "site" ? prev.customLink : null
+      }));
+    } catch (e) {
+      instantFetchErrorHandler(dispatch, e);
     }
-
-    this.setState(prev => ({
-      tutorialKey,
-      customLink: tutorialKey === "site" ? prev.customLink : null
-    }));
-  }
+  };
 
   render() {
     const { classes, skipSystemUser } = this.props;
