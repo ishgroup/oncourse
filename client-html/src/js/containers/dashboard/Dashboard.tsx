@@ -89,6 +89,7 @@ class Dashboard extends React.PureComponent<any, any> {
 
         <Grid item xs={12} className={classes.containerHeight}>
           <ActionBody
+            dispatch={dispatch}
             preferencesCategoryWidth={preferences[DASHBOARD_CATEGORY_WIDTH_KEY]}
             setDashboardColumnWidth={setDashboardColumnWidth}
             drawerOpened={drawerOpened}
