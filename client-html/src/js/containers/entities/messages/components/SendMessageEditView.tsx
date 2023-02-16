@@ -560,6 +560,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
                   onChange={onTemplateChange}
                   className="mb-2"
                   required
+                  sort
                 />
 
                 <FieldArray name="bindings" component={bindingsRenderer} rerenderOnEveryChange />

@@ -80,7 +80,7 @@ class CollegeBaseForm extends React.Component<any, any> {
               {timezones && (
                 <>
                   <FormField
-                    type="searchSelect"
+                    type="select"
                     name={this.formModel.CollegeTimezone.uniqueKey}
                     label="Default server time zone"
                     items={timezones}

@@ -49,6 +49,8 @@ properties:
     type: boolean
   webDescription:
     type: string
+  shortWebDescription:
+    type: string
   documents:
     type: array
     items:

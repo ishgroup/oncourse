@@ -214,7 +214,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : false}>
+      <Grid item xs={twoColumn ? 4 : 12}>
         <FormField
           type="select"
           name="fundingSource"
@@ -229,8 +229,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
           name="vetFundingSourceStateID"
           label="Default funding source - State"
           validate={validateVetFundingSourceState}
-          fullWidth
-        />
+                  />
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 12}>
@@ -266,8 +265,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
           name="associatedCourseIdentifier"
           label="Associated Course Identifier - (SA - SACE Student ID)"
           validate={validateAssociatedCourseIdentifier}
-          fullWidth
-        />
+                  />
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 12}>
@@ -276,8 +274,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
           name="vetPurchasingContractID"
           label="Default purchasing contract identifier (NSW Commitment ID)"
           validate={validateVetPurchasingContractIdentifier}
-          fullWidth
-        />
+                  />
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 12}>
@@ -286,8 +283,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
           name="outcomeIdTrainingOrg"
           label="Outcome identifier Training Organisation"
           validate={validateOutcomeIdTrainingOrg}
-          fullWidth
-        />
+                  />
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 12}>
@@ -296,8 +292,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
           name="vetClientID"
           label="Client identifier: apprenticeships"
           validate={validateVetClientID}
-          fullWidth
-        />
+                  />
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 12}>
@@ -306,8 +301,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
           name="vetTrainingContractID"
           label="Training contract: apprenticeships"
           validate={validateVetTrainingContractID}
-          fullWidth
-        />
+                  />
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 12} className="mb-2">
@@ -316,8 +310,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
           name="cricosConfirmation"
           label="CRICOS: Confirmation of Enrolment (CoE)"
           validate={validateCricosConfirmation}
-          fullWidth
-        />
+                  />
       </Grid>
 
       <Grid item xs={12} className="mb-2">

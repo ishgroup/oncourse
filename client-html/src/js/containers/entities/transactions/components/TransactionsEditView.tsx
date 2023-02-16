@@ -63,8 +63,7 @@ const TransactionsEditView = props => {
           label={isNew ? "From account" : "Account"}
           items={formattedAccounts || []}
           required={isNew}
-          fullWidth
-        />
+                  />
       </Grid>
       {isNew ? (
         <Grid item xs={twoColumn ? 6 : 12}>
@@ -75,8 +74,7 @@ const TransactionsEditView = props => {
             label="To account"
             required={isNew}
             items={formattedAccounts || []}
-            fullWidth
-          />
+                      />
         </Grid>
       ) : null}
       <Grid item xs={twoColumn ? 6 : 12}>
@@ -86,8 +84,7 @@ const TransactionsEditView = props => {
           name="amount"
           label="Amount"
           validate={isNew ? validateAmountField : undefined}
-          fullWidth
-        />
+                  />
       </Grid>
       <Grid item xs={twoColumn ? 6 : 12}>
         <FormField
@@ -96,8 +93,7 @@ const TransactionsEditView = props => {
           name="transactionDate"
           label="Transaction date"
           required={isNew}
-          fullWidth
-        />
+                  />
       </Grid>
     </Grid>
   );

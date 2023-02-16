@@ -74,8 +74,7 @@ const templatesRenderer: React.FC<any> = React.memo<any>(({ fields }) => fields.
         type={item.type}
         component={DataTypeRenderer}
         validate={validateSingleMandatoryField}
-        fullWidth
-        {...fieldProps}
+                {...fieldProps}
       />
     </Grid>
   );
@@ -165,7 +164,7 @@ const ExecuteImportModal = React.memo<Props & InjectedFormProps>(props => {
         </DialogTitle>
 
         <DialogContent>
-          <Grid container columnSpacing={3}>
+          <Grid container columnSpacing={3} rowSpacing={2}>
             {values.description && (
               <Grid item xs={12} className="mb-2">
                 <Typography variant="body2" color="textSecondary" className="pb-2">

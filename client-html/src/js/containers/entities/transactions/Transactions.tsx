@@ -9,7 +9,7 @@ import { Dispatch } from "redux";
 import { initialize } from "redux-form";
 import ListView from "../../../common/components/list-view/ListView";
 import { Account, Transaction } from "@api/model";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import TransactionsEditView from "./components/TransactionsEditView";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { State } from "../../../reducers/state";
@@ -50,7 +50,7 @@ const Initial: Transaction = {
   transactionDate: null
 };
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == AccountTransaction and entityId" },
   { title: "Contacts", list: "contact", expression: "accountTransactions.id" },
   { title: "Invoices", list: "invoice", expression: "accountTransactions.id" },

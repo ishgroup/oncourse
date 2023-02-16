@@ -15,7 +15,7 @@ import { clearListState, getFilters, setListEditRecord, } from "../../../common/
 import { plainContactRelationTypePath, plainCorporatePassPath } from "../../../constants/Api";
 import ListView from "../../../common/components/list-view/ListView";
 import MembershipProductEditView from "./components/MembershipProductEditView";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getPlainTaxes } from "../taxes/actions";
 import { State } from "../../../reducers/state";
@@ -86,7 +86,7 @@ const filterGroups: FilterGroup[] = [
 
 const expressionFindMembers = " and productItems.status not ( CANCELLED , CREDITED ) and productItems.product.id";
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   {
     title: "Audits",
     list: "audit",

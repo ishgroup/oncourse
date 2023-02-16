@@ -54,7 +54,7 @@ const MessageEditView = React.memo<MessageEditViewProps>(props => {
 
   return (
     <div className="p-3 saveButtonTableOffset">
-      <Grid container columnSpacing={3} rowSpacing={2}>
+      <Grid container columnSpacing={3} rowSpacing={2} className="mb-2">
         {!twoColumn && (<Grid item xs={12}><Uneditable value={values.subject} label="Subject" /></Grid>)}
         <Grid item xs={twoColumn ? 2 : 6}>
           <Uneditable
@@ -69,7 +69,7 @@ const MessageEditView = React.memo<MessageEditViewProps>(props => {
           <Uneditable value={createdOn} label="Created on" />
         </Grid>
       </Grid>
-      <Grid container columnSpacing={3} spacing={2}>
+      <Grid container columnSpacing={3} rowSpacing={2}>
         {values.message && (
           <Grid item xs={twoColumn ? 6 : 12}>
             <Typography variant="caption" color="textSecondary">

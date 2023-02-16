@@ -16,7 +16,7 @@ import Menu from "@mui/material/Menu";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
 import { getDefaultInvoiceTerms } from "./actions";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import InvoicesEditView from "./components/InvoicesEditView";
 import {
   clearListState,
@@ -108,7 +108,7 @@ const Initial: Invoice = {
   overdue: 0
 };
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Invoice and entityId" },
   { title: "Contacts", list: "contact", expression: "invoices.id" },
   { title: "Enrolments", list: "enrolment", expression: "abstractInvoiceLines.abstractInvoice.id " },
@@ -218,7 +218,7 @@ const Invoices = React.memo<any>(({
           manualLink,
           nameCondition,
           asyncValidate: notesAsyncValidate,
-          asyncBlurFields: ["notes[].message"]
+          asyncChangeFields: ["notes[].message"]
         }}
         rootEntity="AbstractInvoice"
         filterEntity="Invoice"

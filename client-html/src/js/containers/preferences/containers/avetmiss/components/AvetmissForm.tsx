@@ -86,8 +86,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
                     name={this.formModel.ShowGUI.uniqueKey}
                     color="primary"
                     stringValue
-                    fullWidth
-                  />
+                                      />
                 )}
                 label="Show RTO related screens and menus"
               />
@@ -104,8 +103,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
                 type="text"
                 name={this.formModel.AvetmissCollegeName.uniqueKey}
                 label="Training organisation name"
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Grid item xs={12} sm={6} md={4}>
@@ -114,8 +112,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
                 name={this.formModel.Jurisdiction.uniqueKey}
                 label="AVETMISS jurisdiction"
                 items={enums.ExportJurisdiction}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden smDown>
@@ -140,8 +137,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
                     </a>
                   </span>
                 )}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Grid item xs={12} sm={6} md={4}>
@@ -150,8 +146,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
                 name={this.formModel.Type.uniqueKey}
                 label="Type"
                 items={enums.TrainingOrg_Types}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden smDown>
@@ -159,11 +154,11 @@ class AvetmissBaseForm extends React.Component<any, any> {
             </Hidden>
 
             <Grid item xs={12} sm={6} md={4}>
-              <FormField type="text" name={this.formModel.Address1.uniqueKey} label="Address 1" fullWidth />
+              <FormField type="text" name={this.formModel.Address1.uniqueKey} label="Address 1"  />
             </Grid>
 
             <Grid item xs={12} sm={6} md={4}>
-              <FormField type="text" name={this.formModel.Suburb.uniqueKey} label="Suburb" fullWidth />
+              <FormField type="text" name={this.formModel.Suburb.uniqueKey} label="Suburb"  />
             </Grid>
 
             <Hidden smDown>
@@ -171,11 +166,11 @@ class AvetmissBaseForm extends React.Component<any, any> {
             </Hidden>
 
             <Grid item xs={12} sm={6} md={4}>
-              <FormField type="text" name={this.formModel.Address2.uniqueKey} label="Address 2" fullWidth />
+              <FormField type="text" name={this.formModel.Address2.uniqueKey} label="Address 2" />
             </Grid>
 
             <Grid item xs={12} sm={6} md={4}>
-              <FormField type="text" name={this.formModel.Postcode.uniqueKey} label="Postcode" fullWidth />
+              <FormField type="text" name={this.formModel.Postcode.uniqueKey} label="Postcode" />
             </Grid>
 
             <Hidden smDown>
@@ -188,8 +183,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
                 name={this.formModel.State.uniqueKey}
                 label="State"
                 items={enums.AddressStates}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden smDown>
@@ -211,8 +205,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
                 type="text"
                 name={this.formModel.ContactName.uniqueKey}
                 label="Contact name"
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Grid item xs={12} sm={6} md={4}>
@@ -221,8 +214,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
                 name={this.formModel.Email.uniqueKey}
                 label="Email"
                 validate={validateEmail}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden smDown>
@@ -230,11 +222,11 @@ class AvetmissBaseForm extends React.Component<any, any> {
             </Hidden>
 
             <Grid item xs={12} sm={6} md={4}>
-              <FormField type="text" name={this.formModel.Phone.uniqueKey} label="Telephone" fullWidth />
+              <FormField type="text" name={this.formModel.Phone.uniqueKey} label="Telephone" />
             </Grid>
 
             <Grid item xs={12} sm={6} md={4}>
-              <FormField type="text" name={this.formModel.Fax.uniqueKey} label="Fax" fullWidth />
+              <FormField type="text" name={this.formModel.Fax.uniqueKey} label="Fax" />
             </Grid>
 
             <Hidden smDown>
@@ -246,8 +238,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
                 type="text"
                 name={this.formModel.CertSignatoryName.uniqueKey}
                 label="Full certificates signatory name (i.e. Dr Joe Bloggs MD)"
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Grid item xs={12} sm={6} md={4}>
@@ -260,7 +251,6 @@ class AvetmissBaseForm extends React.Component<any, any> {
                     type="checkbox"
                     name={this.formModel.showOfferedQM.uniqueKey}
                     color="primary"
-                    value="true"
                     stringValue
                   />
                 )}
@@ -277,8 +267,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
                 type="text"
                 name={this.formModel.QldIdentifier.uniqueKey}
                 label="Queensland RTO id"
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Grid item xs={12} sm={6} md={4}>
@@ -287,8 +276,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
                 name={this.formModel.FeeHelpProviderCode.uniqueKey}
                 label="Fee Help Provider Code"
                 validate={this.providerCodeLengthValidation}
-                fullWidth
-              />
+                              />
             </Grid>
           </Grid>
         </AppBarContainer>

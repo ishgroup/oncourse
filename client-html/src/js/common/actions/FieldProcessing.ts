@@ -6,14 +6,13 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { FieldProcessingAction } from "../../model/common/FieldProcessing";
 
 export const START_FIELD_PROCESSING_ACTION = "add/field/processing/action";
 export const END_FIELD_PROCESSING_ACTION = "remove/field/processing/action";
 
-export const startFieldProcessingAction = (payload: FieldProcessingAction) => ({
+export const startFieldProcessingAction = (id: string) => ({
   type: START_FIELD_PROCESSING_ACTION,
-  payload
+  payload: id
 });
 
 export const endFieldProcessingAction = (id: string) => ({

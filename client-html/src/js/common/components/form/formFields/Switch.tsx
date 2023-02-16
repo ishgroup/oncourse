@@ -12,6 +12,7 @@ import MuiSwitch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
 import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
+import { FormSwitchProps } from "../../../../model/common/Fields";
 
 const getValue = value => {
   switch (value) {
@@ -99,11 +100,7 @@ const SwitchBase = props => {
 
 export const Switch = withStyles(styles)(SwitchBase);
 
-export const FormSwitch = props => {
-  const {
-    input, color, disabled, stringValue, label, className, inline, onChangeHandler, onClick
-  } = props;
-
+export const FormSwitch = ({ input, color, disabled, stringValue, label, className, inline, onChangeHandler, onClick }:FormSwitchProps) => {
   const onChange = useCallback(
     (e, value) => {
       let checked = value;

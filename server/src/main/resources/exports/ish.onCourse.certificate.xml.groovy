@@ -49,8 +49,8 @@ xml.data() {
 					createdOn(cert.createdOn?.format("yyyy-MM-dd'T'HH:mm:ssXXX"))
 					fullQualification(cert.isQualification)
 					printed(cert.printedOn?.format("yyyy-MM-dd"))
-					firstName(cert.studentFirstName)
-					lastName(cert.studentLastName)
+					firstName(cert.student?.contact?.firstName)
+					lastName(cert.student?.contact?.lastName)
 					nationalCode(cert.qualification?.nationalCode)
 					cert.certificateOutcomes.each { CertificateOutcome co ->
 						if (co.outcome.module) {

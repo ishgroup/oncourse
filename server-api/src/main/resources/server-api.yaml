@@ -157,6 +157,8 @@ paths:
     $ref: './path/list/entity/exportTemplate/api.yaml'
   /list/entity/exportTemplate/export:
     $ref: './path/list/entity/exportTemplate/export/api.yaml'
+  /list/entity/exportTemplate/preview:
+    $ref: './path/list/entity/exportTemplate/preview/api.yaml'
   /list/entity/import:
     $ref: './path/list/entity/import/api.yaml'
   /list/entity/import/execution:
@@ -319,6 +321,8 @@ paths:
     $ref: './path/user/updatePassword/api.yaml'
   /summaryextracts/finaliseperiod:
     $ref: './path/summaryextracts/finaliseperiod/api.yaml'
+  /logs:
+    $ref: './path/logs/api.yaml'
 
 definitions:
 

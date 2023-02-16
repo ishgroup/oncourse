@@ -147,12 +147,12 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
 
       <Grid item xs={twoColumn ? 6 : 12}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           entity="Qualification"
           name="qualificationId"
           label="Qualification"
           selectValueMark="id"
-          defaultDisplayValue={values.qualTitle}
+          defaultValue={values.qualTitle}
           labelAdornment={<LinkAdornment link={values.qualificationId} linkHandler={openQualificationLink} />}
           onInnerValueChange={onQualificationCodeChange}
           itemRenderer={QualificationListItemRenderer}
@@ -194,7 +194,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
           type="text"
           name="fieldOfEducation"
           label="Field of education"
-          disabled={values.qualificationId || values.isTraineeship}
+          disabled={Boolean(values.qualificationId || values.isTraineeship)}
         />
       </Grid>
 
@@ -208,6 +208,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
               <div>Default reportable hours</div>
             </Tooltip>
           )}
+          debounced={false}
         />
       </Grid>
 

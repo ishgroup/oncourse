@@ -206,6 +206,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
           fields={(
             <Grid item xs={12}>
               <FormField
+                type="text"
                 name="name"
                 label="Name"
                 validate={this.validateUniqueNames}
@@ -238,9 +239,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                     name="enrolmentFormName"
                     label="Enrolment"
                     items={this.getItems("Enrolment") || []}
-                    margin="none"
                     className={classes.selectField}
-                    fullWidth
                     required
                   />
                 </Grid>
@@ -250,13 +249,11 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                     type="select"
                     name="surveyForms"
                     label="Student Feedback"
-                    multiple
-                    allowEmpty
                     items={this.getItems("Survey") || []}
-                    margin="none"
                     className={classes.selectField}
-                    fullWidth
-                  />
+                    allowEmpty
+                    multiple
+                    />
                 </Grid>
 
                 <Grid item xs={6}>
@@ -265,9 +262,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                     name="applicationFormName"
                     label="Application"
                     items={this.getItems("Application") || []}
-                    margin="none"
                     className={classes.selectField}
-                    fullWidth
                     required
                   />
                 </Grid>
@@ -279,10 +274,8 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                     label="Payer"
                     allowEmpty
                     items={this.getItems("Payer") || []}
-                    margin="none"
                     className={classes.selectField}
-                    fullWidth
-                  />
+                    />
                 </Grid>
 
                 <Grid item xs={6}>
@@ -291,9 +284,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                     name="waitingListFormName"
                     label="Waiting List"
                     items={this.getItems("WaitingList") || []}
-                    margin="none"
                     className={classes.selectField}
-                    fullWidth
                     required
                   />
                 </Grid>
@@ -305,9 +296,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                     label="Parent"
                     allowEmpty
                     items={this.getItems("Parent") || []}
-                    margin="none"
                     className={classes.selectField}
-                    fullWidth
                   />
                 </Grid>
 
@@ -318,9 +307,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                     label="Product"
                     allowEmpty
                     items={this.getItems("Product") || []}
-                    margin="none"
                     className={classes.selectField}
-                    fullWidth
                     required
                   />
                 </Grid>
@@ -332,9 +319,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                     label="Voucher"
                     allowEmpty
                     items={this.getItems("Voucher") || []}
-                    margin="none"
                     className={classes.selectField}
-                    fullWidth
                     required
                   />
                 </Grid>
@@ -346,9 +331,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                     label="Membership"
                     allowEmpty
                     items={this.getItems("Membership") || []}
-                    margin="none"
                     className={classes.selectField}
-                    fullWidth
                     required
                   />
                 </Grid>

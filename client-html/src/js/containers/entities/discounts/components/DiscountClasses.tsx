@@ -107,7 +107,7 @@ class DiscountClasses extends React.PureComponent<any, any> {
         </div>
         <FormControlLabel
           className="pr-3 mb-2"
-          control={<FormField type="checkbox" name="addByDefault" color="secondary" fullWidth />}
+          control={<FormField type="checkbox" name="addByDefault" color="secondary"  />}
           label="Add this discount when creating or duplicating all classes"
         />
         <Typography color="inherit" component="div" noWrap>
@@ -115,11 +115,10 @@ class DiscountClasses extends React.PureComponent<any, any> {
           <FormField
             type="number"
             name="minEnrolments"
-            color="primary"
-            formatting="inline"
-            hidePlaceholderInEditMode
+            inline
             validate={[validateSingleMandatoryField, validateNonNegative]}
             parse={normalizeNumber}
+            debounced={false}
           />
           enrolments on one invoice from the classes above
         </Typography>
@@ -128,9 +127,7 @@ class DiscountClasses extends React.PureComponent<any, any> {
           <FormField
             type="money"
             name="minValue"
-            color="primary"
-            formatting="inline"
-            hidePlaceholderInEditMode
+            inline
             validate={[validateSingleMandatoryField, validateNonNegative]}
           />
           on one invoice

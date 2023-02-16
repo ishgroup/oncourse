@@ -182,8 +182,7 @@ class SettingsForm extends React.Component<any, any> {
                       <FormField
                         type="number"
                         name={this.formModel.SecurityPasswordExpiryPeriod.uniqueKey}
-                        color="primary"
-                        formatting="inline"
+                        inline
                         min="1"
                         max="999"
                         placeholder="30"
@@ -197,7 +196,6 @@ class SettingsForm extends React.Component<any, any> {
                           }
                         }}
                         disabled={!enablePasswordScheduleField}
-                        hidePlaceholderInEditMode
                       />
                       days
                     </Typography>
@@ -216,7 +214,7 @@ class SettingsForm extends React.Component<any, any> {
                       <FormField
                         type="number"
                         name={this.formModel.SecurityTFAExpiryPeriod.uniqueKey}
-                        formatting="inline"
+                        inline
                         min="1"
                         max="999"
                         placeholder="16"
@@ -231,7 +229,6 @@ class SettingsForm extends React.Component<any, any> {
                         }}
                         debounced={false}
                         disabled={!enableTOTPScheduleField}
-                        hidePlaceholderInEditMode
                       />
                       hours
                     </Typography>
@@ -246,7 +243,7 @@ class SettingsForm extends React.Component<any, any> {
                 <FormField
                   type="number"
                   name={this.formModel.SecurityNumberIncorrectLoginAttempts.uniqueKey}
-                  formatting="inline"
+                  inline
                   min="1"
                   max="999"
                   placeholder="5"
@@ -260,7 +257,6 @@ class SettingsForm extends React.Component<any, any> {
                     }
                   }}
                   debounced={false}
-                  hidePlaceholderInEditMode
                 />
                 incorrect login attempts
               </Typography>

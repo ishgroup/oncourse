@@ -297,7 +297,6 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                 name="administrationCentre"
                 label="Bank cash/cheques to site"
                 className="mb-2"
-                autoWidth={false}
                 items={sites || []}
                 required
               />

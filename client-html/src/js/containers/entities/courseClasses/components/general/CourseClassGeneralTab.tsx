@@ -220,7 +220,7 @@ const CourseClassGeneralTab = React.memo<Props>(
                 <Grid container columnSpacing={3} rowSpacing={2}>
                   <Grid item xs={twoColumn ? 6 : 12}>
                     <FormField
-                      type="remoteDataSearchSelect"
+                      type="remoteDataSelect"
                       label="Course"
                       entity="Course"
                       name="courseId"
@@ -228,7 +228,7 @@ const CourseClassGeneralTab = React.memo<Props>(
                       selectLabelMark="name"
                       aqlColumns="code,name,currentlyOffered,isShownOnWeb,reportableHours,nextAvailableCode"
                       selectFilterCondition={courseFilterCondition}
-                      defaultDisplayValue={values && values.courseName}
+                      defaultValue={values && values.courseName}
                       itemRenderer={CourseItemRenderer}
                       disabled={!isNew}
                       onInnerValueChange={onCourseIdChange}
@@ -277,9 +277,7 @@ const CourseClassGeneralTab = React.memo<Props>(
                 min="1"
                 max="99"
                 step="1"
-                props={{
-                  formatting: "inline"
-                }}
+                inline
               />
               years old to enrol
             </Typography>
@@ -292,9 +290,7 @@ const CourseClassGeneralTab = React.memo<Props>(
                 min="1"
                 max="99"
                 step="1"
-                props={{
-                  formatting: "inline"
-                }}
+                inline
               />
               years old to enrol
             </Typography>
