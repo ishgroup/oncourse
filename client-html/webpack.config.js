@@ -132,6 +132,16 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
           template: "src/index-template.html",
           favicon: "src/images/favicon.ico",
           chunksSortMode: 'none',
+          meta: {
+            ["Content-Security-Policy"]: "\n" +
+            "     default-src 'self'\n" +
+            "     https://*.google-analytics.com\n" +
+            "     https://*.google.com\n" +
+            "     https://*.hotjar.com\n" +
+            "     https://*.hotjar.io\n" +
+            "     wss://*.hotjar.com\n" +
+            "     'unsafe-inline'"
+          }
         }),
         new ForkTsCheckerWebpackPlugin({
           async: false,
