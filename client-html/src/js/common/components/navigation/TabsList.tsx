@@ -120,18 +120,21 @@ const TabsList = React.memo<Props & RouteComponentProps>((
       const search = new URLSearchParams(location.search);
       const expandTab = Number(search.get("expandTab"));
 
-      if (search.has("expandTab") && !isNaN(expandTab)) {
-        setTimeout(() => {
-          scrollToSelected(items[expandTab], expandTab);
-          search.delete("expandTab");
+      if (search.has("expandTab")) {
+        if (items[expandTab]) {
+          setTimeout(() => {
+            scrollToSelected(items[expandTab], expandTab);
+          }, 300);
+        }
 
-          const updatedSearch = decodeURIComponent(search.toString());
+        search.delete("expandTab");
 
-          history.replace({
-            pathname: location.pathname,
-            search: updatedSearch ? `?${updatedSearch}` : ""
-          });
-        }, 300);
+        const updatedSearch = decodeURIComponent(search.toString());
+
+        history.replace({
+          pathname: location.pathname,
+          search: updatedSearch ? `?${updatedSearch}` : ""
+        });
       }
     }
   }, [location.search]);
