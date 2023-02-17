@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.service;
+package ish.oncourse.selenium.service.extension.function;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -25,7 +25,6 @@ public class GoogleDevTools {
 
     private static final List<String> responseList = new ArrayList<>();
 
-
     private GoogleDevTools() {}
 
     public static GoogleDevTools valueOf(WebDriver driver) {
@@ -41,7 +40,7 @@ public class GoogleDevTools {
 
     public GoogleDevTools createResponseListener() {
         devTools.addListener(Network.responseReceived(), l ->
-            requestList.add(String.join(", ",
+            responseList.add(String.join(", ",
                     "Url: " + l.getResponse().getUrl(),
                     "Status: " + l.getResponse().getStatus(),
                     "Type: " + l.getResponse().getMimeType()
@@ -51,7 +50,7 @@ public class GoogleDevTools {
     }
     public GoogleDevTools createRequestListener() {
         devTools.addListener(Network.requestWillBeSent(), l ->
-                responseList.add(l.getRequest().getMethod() + ": " + l.getRequest().getUrl())
+                requestList.add(l.getRequest().getMethod() + ": " + l.getRequest().getUrl())
         );
         return this;
     }

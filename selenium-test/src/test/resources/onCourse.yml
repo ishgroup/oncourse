@@ -5,13 +5,3 @@ http:
 
 db:
   uri: '${dbUrl}'
-
-license:
-  college_key: mamoth
-  access_control: true
-  custom_scripts: true
-
-smtp:
-  host: 127.0.0.1
-  port: 11111
-  mode: mock

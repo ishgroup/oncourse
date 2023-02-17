@@ -8,31 +8,23 @@
 
 package ish.oncourse.test;
 
-import ish.oncourse.model.Browser;
-import ish.oncourse.model.WebDriverFactory;
-import ish.oncourse.service.listener.NoSuchElementExceptionHandler;
+import ish.oncourse.selenium.model.Browser;
+import ish.oncourse.selenium.model.WebDriverFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.openqa.selenium.*;
 
-import java.util.concurrent.TimeUnit;
-
-
 @TestInstance(TestInstance. Lifecycle.PER_CLASS)
 public abstract class AbstractSeleniumTest {
     protected WebDriver driver;
+
     protected JavascriptExecutor js;
 
     @BeforeAll
     public void setUp() {
         driver = WebDriverFactory.get(Browser.CHROME);
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         js = (JavascriptExecutor) driver;
-
-        Thread.UncaughtExceptionHandler handler = new NoSuchElementExceptionHandler(driver);
-        Thread.setDefaultUncaughtExceptionHandler(handler);
     }
 
     @AfterAll
@@ -40,4 +32,11 @@ public abstract class AbstractSeleniumTest {
         driver.quit();
     }
 
+    public WebDriver getDriver() {
+        return driver;
+    }
+
+    public JavascriptExecutor getJs() {
+        return js;
+    }
 }

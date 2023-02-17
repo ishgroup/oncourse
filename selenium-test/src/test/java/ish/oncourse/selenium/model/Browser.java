@@ -6,13 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.service.authentication;
+package ish.oncourse.selenium.model;
 
-import ish.oncourse.server.api.v1.model.LoginRequestDTO;
-
-public interface AuthenticationService {
-
-    void login (LoginRequestDTO requestDTO);
-
-    void logout();
+public enum Browser {
+    CHROME,
+    FIREFOX,
+    SAFARI,
 }

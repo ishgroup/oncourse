@@ -6,21 +6,22 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.service.authentication;
+package ish.oncourse.selenium.service.authentication;
 
-import ish.oncourse.server.api.v1.model.LoginRequestDTO;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.Assertions;
+import ish.oncourse.server.api.v1.model.LoginRequestDTO;
+
 
 import java.time.Duration;
 import java.util.List;
 
-import static ish.oncourse.util.SeleniumUtil.threadWait;
+import static ish.oncourse.selenium.util.SeleniumUtil.threadWait;
 
 public class EmailAuthenticationService implements AuthenticationService {
 
@@ -76,8 +77,9 @@ public class EmailAuthenticationService implements AuthenticationService {
 
         threadWait(Duration.ofSeconds(1));
         logger.error("8. Сheck if authorization was successful.");
+
         Assertions.assertEquals("Dashboard", driver.getTitle());
-        logger.error("8. You log in.");
+        logger.error("9. You log in.");
     }
 
     @Override
@@ -105,6 +107,6 @@ public class EmailAuthenticationService implements AuthenticationService {
         logger.error("4. Click on `Yes` in the confirm dialog.");
         driver.findElement(By.cssSelector(".MuiButton-contained")).click();
 
-        logger.error("4.You log out.");
+        logger.error("5.You log out.");
     }
 }

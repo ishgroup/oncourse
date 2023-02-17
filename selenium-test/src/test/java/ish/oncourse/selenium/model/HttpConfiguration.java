@@ -6,17 +6,20 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.util;
+package ish.oncourse.selenium.model;
 
-import java.time.Duration;
+public enum HttpConfiguration {
+    PORT ("onCoursePort"),
+    IP ("onCourseIP"),
+    PATH("onCoursePath");
 
-public class SeleniumUtil {
+    private final String key;
 
-    public static void threadWait(Duration duration) {
-        try {
-            Thread.sleep(duration.toMillis());
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+    HttpConfiguration(String key) {
+        this.key = key;
+    }
+
+    public String getKey() {
+        return key;
     }
 }

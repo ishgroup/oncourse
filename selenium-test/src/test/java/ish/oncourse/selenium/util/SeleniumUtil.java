@@ -6,10 +6,17 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.model;
+package ish.oncourse.selenium.util;
 
-public enum Browser {
-    CHROME,
-    FIREFOX,
-    SAFARI,
+import java.time.Duration;
+
+public class SeleniumUtil {
+
+    public static void threadWait(Duration duration) {
+        try {
+            Thread.sleep(duration.toMillis());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
