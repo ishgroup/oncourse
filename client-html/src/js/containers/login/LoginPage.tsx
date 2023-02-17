@@ -15,7 +15,7 @@ import { connect } from "react-redux";
 import { Dispatch, Action } from "redux";
 import QRCode from "qrcode.react";
 import {
- Field, FieldArray, reduxForm, initialize, change, touch
+  Field, FieldArray, Form, reduxForm, initialize, change, touch
 } from "redux-form";
 import Slide from "@mui/material/Slide";
 import Button from "@mui/material/Button";
@@ -41,6 +41,10 @@ import { LoginState } from "./reducers/state";
 import onCourseLogoDark from "../../../images/onCourseLogoDark.png";
 import ishLogoSmall from "../../../images/logo_small.png";
 import EulaDialog from "./components/EulaDialog";
+import Credits from "./components/Credits";
+import { DecoratedFormProps } from "redux-form/lib/reduxForm";
+
+const FORM_NAME = "LoginForm";
 
 const styles: any = theme => ({
   loginFormWrapper: {
@@ -161,16 +165,13 @@ const styles: any = theme => ({
     }
   },
   authCodefield: {
-    "& > div": {
-      textAlign: "center",
-      "& > div > div > input": {
-        padding: "9px 13px",
-        [theme.breakpoints.up("sm")]: {
-          padding: "18px 22px"
-        },
-        [theme.breakpoints.up("md")]: {
-          padding: "15px 19px"
-        }
+    "& input": {
+      padding: "9px 13px",
+      [theme.breakpoints.up("sm")]: {
+        padding: "18px 22px"
+      },
+      [theme.breakpoints.up("md")]: {
+        padding: "15px 19px"
       }
     }
   }
@@ -221,12 +222,14 @@ interface Props extends LoginState {
   eulaUrl?: string;
 }
 
-export class LoginPageBase extends React.PureComponent<Props, any> {
+export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProps, any> {
   private savedTFAState;
 
   private isInviteForm: boolean = false;
 
   private token: string = '';
+
+  private submitRef = React.createRef<any>();
 
   state = {
     passwordScore: 0,
@@ -258,14 +261,14 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
     }
 
     props.dispatch(
-      initialize("LoginForm", {
+      initialize(FORM_NAME, {
         authCodeDigits: Array.of("", "", "", "", "", ""),
         ...prefilled
       })
     );
 
     if (prefilled.user != null && prefilled.password != null) {
-      props.dispatch(touch("LoginForm", "user"));
+      props.dispatch(touch(FORM_NAME, "user"));
     }
 
     this.isInviteForm = window.location.pathname.includes('invite');
@@ -374,8 +377,8 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
   autocompleteHost = (value, prev) => {
     if (value.match(/^(?!cloud\b)\b\D\w+\.$/) && (!prev || prev.length < value.length)) {
       setTimeout(() => {
-        this.props.dispatch(change("LoginForm", "host", value + "cloud.oncourse.cc"));
-        this.props.dispatch(change("LoginForm", "port", 443));
+        this.props.dispatch(change(FORM_NAME, "host", value + "cloud.oncourse.cc"));
+        this.props.dispatch(change(FORM_NAME, "port", 443));
       });
     }
   };
@@ -383,22 +386,6 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
   toggleCredits = () => {
     const { openCredits } = this.state;
     this.setState({ openCredits: !openCredits });
-  };
-
-  getCreditsItem = (heading, creditPersons) => {
-    const { classes } = this.props;
-    return (
-      <div className="mb-3">
-        <Typography variant="body1" className={classes.creditHeader}>
-          {heading}
-        </Typography>
-        {creditPersons.map((person, i) => (
-          <Typography key={i} variant="body2">
-            {person}
-          </Typography>
-        ))}
-      </div>
-    );
   };
 
   render() {
@@ -430,7 +417,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
     const { passwordScore, passwordFeedback, openCredits } = this.state;
 
     return (
-      <form onSubmit={handleSubmit(this.onSubmit)}>
+      <Form onSubmit={handleSubmit(this.onSubmit)}>
         <Grid container columnSpacing={3} alignItems="center">
           <Grid item xs={1} md={6} />
           <Grid item xs={12} md={6} className={classes.loginFormRight}>
@@ -447,11 +434,10 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
               <div className={classes.loginFormWrapper}>
                 <Grid
                   container
-                  className="mb-2"
                   alignItems="center"
                   alignContent="space-between"
                 >
-                  <Grid item xs={12} className="mb-2">
+                  <Grid item xs={12}>
                     <Grid container columnSpacing={3} alignItems="center">
                       <Grid item xs={12} sm={9}>
                         <div className={classes.logoWrapper}>
@@ -485,7 +471,12 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                             </div>
 
                             <div className={classes.authCodefield}>
-                              <FieldArray name="authCodeDigits" component={AuthCodeFieldRenderer as any} dispatch={dispatch} />
+                              <FieldArray
+                                name="authCodeDigits"
+                                component={AuthCodeFieldRenderer}
+                                dispatch={dispatch}
+                                submitRef={this.submitRef.current}
+                              />
                             </div>
                           </>
                         )}
@@ -683,7 +674,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                         <div className={classes.buttonsContainer}>
                           {!this.isInviteForm && (
                             <>
-                              <a href="Quit" className={classes.link} draggable={false} tabIndex={-1}>
+                              <a href="login" className={classes.link} draggable={false} tabIndex={-1}>
                                 <Button
                                   type={isOptionalTOTP ? "submit" : "button"}
                                   classes={{
@@ -693,7 +684,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                     isTOTP && isNewTOTP
                                       ? e => {
                                         e.preventDefault();
-                                        dispatch(change("LoginForm", "authCodeDigits", Array.of("", "", "", "", "", "")));
+                                        dispatch(change(FORM_NAME, "authCodeDigits", Array.of("", "", "", "", "", "")));
                                         setLoginState(this.savedTFAState);
                                       }
                                       : undefined
@@ -713,6 +704,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                           )}
 
                           <Button
+                            ref={this.submitRef}
                             type="submit"
                             disabled={!anyTouched || invalid || asyncValidating || (this.isInviteForm && !email)}
                             classes={{
@@ -724,7 +716,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                   e.preventDefault();
                                   this.savedTFAState = { isEnableTOTP, isOptionalTOTP };
                                   setLoginState({ isTOTP: true, isNewTOTP: true });
-                                  dispatch(change("LoginForm", "authCodeDigits", Array.of("", "", "", "", "", "")));
+                                  dispatch(change(FORM_NAME, "authCodeDigits", Array.of("", "", "", "", "", "")));
                                 }
                                 : undefined
                             }
@@ -755,71 +747,11 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                       </div>
                     </Collapse>
                     <Collapse in={openCredits} timeout="auto" unmountOnExit>
-                      <Grid container columnSpacing={3} className={classes.creditsWrapper}>
-                        <Grid item xs={12} sm={6}>
-                          <div className="">
-                            {this.getCreditsItem("Product design", ["Aristedes Maniatis", "Natalie Morton"])}
-                            {this.getCreditsItem("System architecture", ["Aristedes Maniatis"])}
-                            {this.getCreditsItem("Engineering leads", [
-                              "Yury Yasuchenya",
-                              "Artyom Kravchenko",
-                              "Andrey Koyro",
-                              "Anton Sakalouski",
-                              "Lachlan Deck",
-                              "Marek Wawrzyczny"
-                            ])}
-                            {this.getCreditsItem("Software engineering", [
-                              "Dmitry Tarasenko",
-                              "Kristina Trukhan",
-                              "Chintan Kotadia",
-                              "Victor Yarmolovich",
-                              "Vadim Haponov",
-                              "Rostislav Zenov",
-                              "Andrey Davidovich",
-                              "Pavel Nikanovich",
-                              "Artyom Kochetkov",
-                              "Alexandr Petkov",
-                              "Maxim Petrusevich",
-                              "Rostislav Zenov",
-                              "Arseni Bulatski",
-                              "Nikita Timofeev",
-                              "Marcin Skladaniec",
-                              "Olga Tkachova",
-                              "Xenia Khailenka",
-                              "Viacheslav Davidovich",
-                              "Andrey Narut",
-                              "Dzmitry Kazimirchyk",
-                            ])}
-                          </div>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          {this.getCreditsItem("Quality assurance", [
-                            "George Filipovich",
-                            "Yury Harachka",
-                            "Aliaksei Haiduchonak",
-                            "Rex Chan"
-                          ])}
-                          {this.getCreditsItem("Icon design", ["Bruce Martin"])}
-                          {this.getCreditsItem("Additional programming", [
-                            "Matthias Moeser",
-                            "Abdul Abdul-Latif",
-                            "Mosleh Uddin",
-                            "Savva Kolbachev",
-                            "Jackson Mills",
-                            "Ruslan Ibragimov",
-                            "Sasha Shestak"
-                          ])}
-                          {this.getCreditsItem("Documentation", [
-                            "James Swinbanks",
-                            "Charlotte Tanner",
-                            "Stephen McIlwaine",
-                          ])}
-                        </Grid>
-                      </Grid>
+                      <Credits wrapperClass={classes.creditsWrapper} itemClass={classes.creditHeader} />
                     </Collapse>
                   </Grid>
                   <div className="flex-fill" />
-                  <Grid container columnSpacing={3} alignItems="center" className="mt-3">
+                  <Grid container columnSpacing={3} alignItems="center">
                     <div className="flex-fill">
                       <div>
                         <IconButton
@@ -848,7 +780,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
             </Slide>
           </Grid>
         </Grid>
-      </form>
+      </Form>
     );
   }
 }
@@ -877,7 +809,7 @@ const shouldAsyncValidate = params => {
 const LoginPage = reduxForm({
   asyncValidate,
   shouldAsyncValidate,
-  form: "LoginForm",
+  form: FORM_NAME,
   touchOnChange: true,
   asyncChangeFields: ["newPasswordAsync"]
 })(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(LoginPageBase)));
