@@ -24,10 +24,7 @@ module.exports = (options = {}) => {
       title: "Angel client",
       template: "src/index-template.html",
       favicon: "src/images/favicon.ico",
-      chunksSortMode: 'none',
-      meta: {
-        ["Content-Security-Policy"]: "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:"
-      }
+      chunksSortMode: 'none'
     }),
   );
 
