@@ -13,6 +13,8 @@ jobs:
     strategy:
       matrix:
         java: [11]
+    env:
+      SHELL: bash
 
     steps:
 
