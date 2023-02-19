@@ -27,11 +27,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 import static ish.oncourse.selenium.util.SeleniumUtil.threadWait;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@ExtendWith({WebDriverResolver.class, PrintBrowserConsole.class})
+//@ExtendWith({WebDriverResolver.class, PrintBrowserConsole.class})
 public class CheckPaymentMethod extends AbstractSeleniumTest {
 
     private static final Logger logger = LogManager.getLogger(CheckPaymentMethod.class);
@@ -40,6 +41,8 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
     public CheckPaymentMethod(WebDriver driver) {
         this.driver = driver;
         js = (JavascriptExecutor) driver;
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @BeforeAll
