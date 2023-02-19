@@ -45,6 +45,7 @@ public class PrintBrowserConsole implements TestWatcher, BeforeAllCallback {
         System.setProperty(HttpConfiguration.PORT.getKey(), String.valueOf(httpConfiguration.get("port")));
         System.setProperty(HttpConfiguration.IP.getKey(), (String) httpConfiguration.get("ip"));
         System.setProperty(HttpConfiguration.PATH.getKey(), (String) httpConfiguration.get("path"));
+        logger.error("SET UP PROPERTY");
     }
 
     @Override
@@ -57,6 +58,7 @@ public class PrintBrowserConsole implements TestWatcher, BeforeAllCallback {
             driver.manage().logs().get(LogType.BROWSER).getAll().forEach(logEntry -> {
                 LogMessageDecoder decoder = LogMessageDecoder.valueOf(logEntry.getMessage());
                 logger.error(logEntry.getMessage());
+                logger.error("IS REACT LOG = " + decoder.isReactLog());
                 if (decoder.isReactLog()) {
                     decoder.decode();
                     logger.error("---Decoding---" +
