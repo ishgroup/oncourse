@@ -265,8 +265,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
   }, 500), [isZeroPayment, paymentMethod]);
   
   useEffect(() => {
-    if (values.paymentPlans && values.paymentPlans[0]) {
-    // if (values?.paymentPlans && values?.paymentPlans[0]) {
+    if (values?.paymentPlans && values?.paymentPlans[0]) {
       onPayNowChange(values.paymentPlans[0].amount);
     }
   }, [values?.paymentPlans && values?.paymentPlans[0]?.amount]);
