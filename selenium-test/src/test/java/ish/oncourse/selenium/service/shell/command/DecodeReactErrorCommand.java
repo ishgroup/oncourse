@@ -8,21 +8,15 @@
 
 package ish.oncourse.selenium.service.shell.command;
 
-import ish.oncourse.selenium.service.shell.function.ShellExecutor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.File;
 
 public class DecodeReactErrorCommand {
 
-    private static final Logger logger = LogManager.getLogger(ShellExecutor.class);
+    private final String bundleName;
 
-    private String bundleName;
+    private final String sourceMapName;
 
-    private String sourceMapName;
-
-    private String errorLocation;
+    private final String errorLocation;
 
     public DecodeReactErrorCommand(String bundleName, String sourceMapName, String errorLocation) {
         this.bundleName = bundleName;
@@ -31,12 +25,8 @@ public class DecodeReactErrorCommand {
     }
 
     public String getCommand() {
-
-        logger.error("USER.DIR = " + System.getProperty("user.dir"));
         String resourceFolder = new File(System.getProperty("user.dir")).getParentFile().getAbsolutePath() +
                 "/server/build/resources/main/static/";
-
-        logger.error("RESOURCE FOLDER " + resourceFolder);
 
         return String.join(" ",
                 "npx",

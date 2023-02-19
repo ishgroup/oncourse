@@ -22,9 +22,10 @@ import java.util.Optional;
 import java.util.logging.Level;
 
 public class PrintPageNetwork implements BeforeEachCallback, TestWatcher {
+
     private static final Logger logger = LogManager.getLogger(PrintPageScreenshot.class);
 
-    private Optional<GoogleDevTools> devTools;
+    private final ThreadLocal<Optional<GoogleDevTools>> devTools = new ThreadLocal<>();
 
     @Override
     public void beforeEach(ExtensionContext context) {
@@ -35,21 +36,22 @@ public class PrintPageNetwork implements BeforeEachCallback, TestWatcher {
             var logger = java.util.logging.Logger.getLogger(org.openqa.selenium.devtools.Connection.class.getName());
             logger.setLevel(Level.OFF);
 
-            devTools = Optional.ofNullable(GoogleDevTools.valueOf(driver)
+            devTools.set(Optional.ofNullable(GoogleDevTools.valueOf(driver)
                     .createRequestListener()
-                    .createResponseListener());
+                    .createResponseListener()));
         }
     }
 
     @Override
     public void testFailed(ExtensionContext context, Throwable cause) {
-        if (devTools.isPresent()) {
+        if (devTools.get().isPresent()) {
+
             logger.error("-----Requests-----");
-            devTools.get().getRequestList().forEach(logger::error);
+            devTools.get().get().getRequestList().forEach(logger::error);
             logger.error("---Requests end---");
 
             logger.error("-----Response-----");
-            devTools.get().getResponseList().forEach(logger::error);
+            devTools.get().get().getResponseList().forEach(logger::error);
             logger.error("---Response end---");
 
             TestWatcher.super.testFailed(context, cause);

@@ -45,7 +45,6 @@ public class PrintBrowserConsole implements TestWatcher, BeforeAllCallback {
         System.setProperty(HttpConfiguration.PORT.getKey(), String.valueOf(httpConfiguration.get("port")));
         System.setProperty(HttpConfiguration.IP.getKey(), (String) httpConfiguration.get("ip"));
         System.setProperty(HttpConfiguration.PATH.getKey(), (String) httpConfiguration.get("path"));
-        logger.error("SET UP PROPERTY");
     }
 
     @Override
