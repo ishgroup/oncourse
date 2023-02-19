@@ -22,8 +22,8 @@ public abstract class AbstractSeleniumTest {
     protected JavascriptExecutor js;
 
     @BeforeAll
-    public void setUp() {
-        driver = WebDriverFactory.get(Browser.CHROME);
+    public void setUp(WebDriver webDriver) {
+        driver = webDriver;
         js = (JavascriptExecutor) driver;
     }
 

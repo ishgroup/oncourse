@@ -32,27 +32,20 @@ import java.util.concurrent.TimeUnit;
 import static ish.oncourse.selenium.util.SeleniumUtil.threadWait;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-//@ExtendWith({WebDriverResolver.class, PrintBrowserConsole.class})
+@ExtendWith({WebDriverResolver.class, PrintBrowserConsole.class})
 public class CheckPaymentMethod extends AbstractSeleniumTest {
 
     private static final Logger logger = LogManager.getLogger(CheckPaymentMethod.class);
     private static AuthenticationService emailAuthenticationService;
 
-//    public CheckPaymentMethod(WebDriver driver) {
-//        this.driver = driver;
-//        js = (JavascriptExecutor) driver;
-//        driver.manage().window().maximize();
-//        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-//    }
-
     @BeforeAll
-    public void setUp() {
-        super.setUp();
+    public void setUp(WebDriver webDriver) {
+        super.setUp(webDriver);
         var dto = new LoginRequestDTO();
         dto.setLogin("admin@example.edu");
         dto.setPassword("abcd1723");
 
-        emailAuthenticationService = new EmailAuthenticationService(driver, js);
+        emailAuthenticationService = new EmailAuthenticationService(this.driver, js);
         emailAuthenticationService.login(dto);
     }
 
