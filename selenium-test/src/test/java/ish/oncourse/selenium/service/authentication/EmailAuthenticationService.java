@@ -8,6 +8,7 @@
 
 package ish.oncourse.selenium.service.authentication;
 
+import ish.oncourse.test.AbstractSeleniumTest;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -43,19 +44,27 @@ public class EmailAuthenticationService implements AuthenticationService {
 
         logger.error("1. Open https://127.0.0.1:8182/");
         driver.get("https://127.0.0.1:8182/");
-
+        threadWait(Duration.ofSeconds(3));
         logger.error("2. Click on the `user` text field.");
-        driver.findElement(By.id(":r1:")).click();
 
+        TakesScreenshot scrShot = ((TakesScreenshot) driver);
+        String data = scrShot.getScreenshotAs(OutputType.BASE64);
+
+        logger.error("---" + driver.getTitle() + " Page " + "---");
+        logger.error(data);
+        logger.error("-----end-----");
+
+        driver.findElement(By.id(":r1:")).click();
+        threadWait(Duration.ofSeconds(3));
         logger.error("3. Set email in the `user` text field.");
         driver.findElement(By.id(":r1:")).sendKeys(requestDTO.getLogin());
-
+        threadWait(Duration.ofSeconds(3));
         logger.error("4. Click on the `password` text field.");
         driver.findElement(By.id(":r2:")).click();
-
+        threadWait(Duration.ofSeconds(3));
         logger.error("5. Set password in the `password` text field.");
         driver.findElement(By.id(":r2:")).sendKeys(requestDTO.getPassword());
-
+        threadWait(Duration.ofSeconds(3));
         logger.error("6. Click on the `Login` button.");
         driver.findElement(By.cssSelector(".jss18")).click();
 

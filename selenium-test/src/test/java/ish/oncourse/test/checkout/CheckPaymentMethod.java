@@ -8,6 +8,7 @@
 
 package ish.oncourse.test.checkout;
 
+import ish.oncourse.selenium.service.extension.PrintPageScreenshot;
 import ish.oncourse.server.api.v1.model.LoginRequestDTO;
 import ish.oncourse.selenium.service.authentication.AuthenticationService;
 import ish.oncourse.selenium.service.authentication.EmailAuthenticationService;
@@ -32,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 import static ish.oncourse.selenium.util.SeleniumUtil.threadWait;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@ExtendWith({WebDriverResolver.class, PrintBrowserConsole.class})
+@ExtendWith({WebDriverResolver.class, PrintBrowserConsole.class, PrintPageScreenshot.class})
 public class CheckPaymentMethod extends AbstractSeleniumTest {
 
     private static final Logger logger = LogManager.getLogger(CheckPaymentMethod.class);
