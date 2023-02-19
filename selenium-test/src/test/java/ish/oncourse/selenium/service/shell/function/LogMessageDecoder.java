@@ -9,12 +9,17 @@
 package ish.oncourse.selenium.service.shell.function;
 
 import ish.oncourse.selenium.model.HttpConfiguration;
+import ish.oncourse.selenium.service.extension.PrintPageScreenshot;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LogMessageDecoder {
+
+    private static final Logger logger = LogManager.getLogger(LogMessageDecoder.class);
 
     private static final String URL_REGEX = "https?://" + System.getProperty(HttpConfiguration.IP.getKey()) + ":" +
             System.getProperty(HttpConfiguration.PORT.getKey()) + System.getProperty(HttpConfiguration.PATH.getKey());
@@ -39,12 +44,17 @@ public class LogMessageDecoder {
 
     public LogMessageDecoder decode() {
         Matcher matcher = Pattern.compile(URL_REGEX + JS_FILE_REGEX).matcher(logMessage);
-        if (matcher.find()) {
+        boolean result = matcher.find();
+        logger.error("MATHCER FIND ? = " + result);
+        if (result) {
             String[] tokens = matcher.group().trim().replaceFirst(URL_REGEX,StringUtils.SPACE).trim().split(":");
 
             this.bundleName = tokens[0].replaceFirst(URL_REGEX, StringUtils.EMPTY);
+            logger.error("bunderName = " + this.bundleName);
             this.sourceMapName = this.bundleName + ".map";
+            logger.error("SourceMap = " + this.sourceMapName);
             this.errorLocation = tokens[1] + ":" + tokens[2];
+            logger.error("ErrorLocation = " + this.errorLocation);
         }
         return this;
     }

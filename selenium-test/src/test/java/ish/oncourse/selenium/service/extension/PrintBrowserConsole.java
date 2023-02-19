@@ -58,7 +58,6 @@ public class PrintBrowserConsole implements TestWatcher, BeforeAllCallback {
             driver.manage().logs().get(LogType.BROWSER).getAll().forEach(logEntry -> {
                 LogMessageDecoder decoder = LogMessageDecoder.valueOf(logEntry.getMessage());
                 logger.error(logEntry.getMessage());
-                logger.error("IS REACT LOG = " + decoder.isReactLog());
                 if (decoder.isReactLog()) {
                     decoder.decode();
                     logger.error("---Decoding---" +
