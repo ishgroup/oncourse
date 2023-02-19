@@ -38,15 +38,16 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
     private static final Logger logger = LogManager.getLogger(CheckPaymentMethod.class);
     private static AuthenticationService emailAuthenticationService;
 
-    public CheckPaymentMethod(WebDriver driver) {
-        this.driver = driver;
-        js = (JavascriptExecutor) driver;
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-    }
+//    public CheckPaymentMethod(WebDriver driver) {
+//        this.driver = driver;
+//        js = (JavascriptExecutor) driver;
+//        driver.manage().window().maximize();
+//        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+//    }
 
     @BeforeAll
     public void setUp() {
+        super.setUp();
         var dto = new LoginRequestDTO();
         dto.setLogin("admin@example.edu");
         dto.setPassword("abcd1723");
