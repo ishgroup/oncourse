@@ -123,6 +123,7 @@ class NewPasswordFieldBase extends React.Component<any, any> {
 
     return (
       <TextField
+        fullWidth
         value={this.state.value}
         error={(touched && invalid) || Boolean(helperText)}
         InputProps={{
