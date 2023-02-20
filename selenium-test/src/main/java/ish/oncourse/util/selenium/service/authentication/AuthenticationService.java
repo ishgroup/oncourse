@@ -6,20 +6,13 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.selenium.model;
+package ish.oncourse.util.selenium.service.authentication;
 
-public enum HttpConfiguration {
-    PORT ("onCoursePort"),
-    IP ("onCourseIP"),
-    PATH("onCoursePath");
+import ish.oncourse.server.api.v1.model.LoginRequestDTO;
 
-    private final String key;
+public interface AuthenticationService {
 
-    HttpConfiguration(String key) {
-        this.key = key;
-    }
+    void login (LoginRequestDTO requestDTO);
 
-    public String getKey() {
-        return key;
-    }
+    void logout();
 }

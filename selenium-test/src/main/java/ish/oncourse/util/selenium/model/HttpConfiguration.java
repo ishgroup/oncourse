@@ -6,10 +6,20 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.selenium.model;
+package ish.oncourse.util.selenium.model;
 
-public enum Browser {
-    CHROME,
-    FIREFOX,
-    SAFARI,
+public enum HttpConfiguration {
+    PORT ("onCoursePort"),
+    IP ("onCourseIP"),
+    PATH("onCoursePath");
+
+    private final String key;
+
+    HttpConfiguration(String key) {
+        this.key = key;
+    }
+
+    public String getKey() {
+        return key;
+    }
 }

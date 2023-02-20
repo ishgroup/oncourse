@@ -6,21 +6,21 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.test.checkout;
+package ish.oncourse.selenium.test.checkout;
 
-import ish.oncourse.selenium.service.extension.PrintPageScreenshot;
+import ish.oncourse.selenium.test.AbstractSeleniumTest;
+import ish.oncourse.selenium.extension.PrintPageScreenshot;
 import ish.oncourse.server.api.v1.model.LoginRequestDTO;
-import ish.oncourse.selenium.service.authentication.AuthenticationService;
-import ish.oncourse.selenium.service.authentication.EmailAuthenticationService;
-import ish.oncourse.selenium.service.extension.service.WebDriverResolver;
-import ish.oncourse.selenium.service.extension.PrintBrowserConsole;
-import ish.oncourse.test.AbstractSeleniumTest;
+import ish.oncourse.util.selenium.model.HttpConfiguration;
+import ish.oncourse.util.selenium.service.authentication.AuthenticationService;
+import ish.oncourse.util.selenium.service.authentication.EmailAuthenticationService;
+import ish.oncourse.util.selenium.service.extension.ConfigurationResolver;
+import ish.oncourse.selenium.extension.PrintBrowserConsole;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -28,12 +28,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
-import static ish.oncourse.selenium.util.SeleniumUtil.threadWait;
+import static ish.oncourse.util.selenium.util.SeleniumUtil.threadWait;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@ExtendWith({WebDriverResolver.class, PrintBrowserConsole.class, PrintPageScreenshot.class})
+@ExtendWith({ConfigurationResolver.class, PrintBrowserConsole.class, PrintPageScreenshot.class})
 public class CheckPaymentMethod extends AbstractSeleniumTest {
 
     private static final Logger logger = LogManager.getLogger(CheckPaymentMethod.class);
@@ -58,12 +57,16 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
 
     @Test
     void test() {
+
+        String port = System.getProperty(HttpConfiguration.PORT.getKey());
+        String ip = System.getProperty(HttpConfiguration.IP.getKey());
+
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 
-        logger.error("1. Open https://127.0.0.1:8182/checkout");
-        driver.get("https://127.0.0.1:8182/checkout");
+        logger.error("1. Open " + "https://" + ip + ":" + port + "/checkout");
+        driver.get("https://" + ip + ":" + port + "/checkout");
 
-        logger.error("4. Create new contact");
+        logger.error("4. Create new contact.");
         {
 
             threadWait(Duration.ofSeconds(2));
@@ -101,20 +104,24 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
             driver.findElement(By.cssSelector(".MuiButton-contained")).click();
         }
 
-        logger.error("5. Click on the `items` text field");
+        logger.error("5. Click on the `items` text field.");
         driver.findElement(By.name("items")).click();
-        logger.error("6.Set course code in the `items` text field");
+
+        logger.error("6.Set course code in the `items` text field.");
         driver.findElement(By.name("items")).sendKeys("dcftc1");
-        logger.error("7. Choose course");
+
+        logger.error("7. Choose course.");
         driver.findElement(By.cssSelector(".MuiListItemText-root")).click();
+
         threadWait(Duration.ofSeconds(1));
-        logger.error("8. Choose course");
+        logger.error("8. Choose course.");
         {
             WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".mui-1d3bbye > .MuiGrid-grid-xs-1")));
             Actions builder = new Actions(driver);
             builder.moveToElement(element).perform();
         }
-        logger.error("9. Move mouse to class list");
+
+        logger.error("9. Move mouse to class list.");
         threadWait(Duration.ofSeconds(1));
         {
             WebElement element = driver.findElement(By.tagName("body"));
@@ -122,31 +129,33 @@ public class CheckPaymentMethod extends AbstractSeleniumTest {
             builder.moveToElement(element, 0, 0).perform();
         }
 
-        logger.error("10. Choose class");
+        logger.error("10. Choose class.");
         threadWait(Duration.ofSeconds(1));
         driver.findElement(By.cssSelector(".PrivateSwitchBase-input")).click();
 
-        logger.error("11. Choose Summary");
+        logger.error("11. Choose Summary.");
         threadWait(Duration.ofSeconds(1));
         js.executeScript("document.evaluate(\"//div[text()='Summary']\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click()");
-        logger.error("11. Choose Payment");
+        logger.error("12. Choose Payment.");
         threadWait(Duration.ofSeconds(1));
         js.executeScript("document.evaluate(\"//div[text()='Payment']\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click()");
 
-        logger.error("12. Choose payment method");
+        logger.error("13. Choose payment method.");
 
         threadWait(Duration.ofSeconds(1));
         wait.until(ExpectedConditions.attributeToBe(By.name("payment_method"), "value", ""));
         wait.until(ExpectedConditions.elementToBeClickable(By.name("payment_method"))).click();
         threadWait(Duration.ofSeconds(2));
 
-        logger.error("13. Select payment method");
+        logger.error("14. Select payment method.");
         WebElement spanTag = driver.findElement(By.xpath("//span[text()='Cash']"));
         WebElement clickableTag = spanTag.findElement(By.xpath("./.."));
         clickableTag.click();
         String result = driver.findElement(By.name("payment_method")).getAttribute("value");
 
         Assertions.assertEquals("Cash", result);
+
+        logger.error("15. Test completed successfully.");
     }
 
 }

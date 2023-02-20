@@ -6,10 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.selenium.service.extension;
+package ish.oncourse.selenium.extension;
 
-import ish.oncourse.selenium.service.extension.service.WebDriverResolver;
-import ish.oncourse.test.AbstractSeleniumTest;
+
+import ish.oncourse.selenium.test.AbstractSeleniumTest;
+import ish.oncourse.util.selenium.service.extension.ConfigurationResolver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.extension.*;
@@ -17,7 +18,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
-@ExtendWith(WebDriverResolver.class)
+@ExtendWith(ConfigurationResolver.class)
 public class PrintPageScreenshot implements TestWatcher {
 
     private static final Logger logger = LogManager.getLogger(PrintPageScreenshot.class);

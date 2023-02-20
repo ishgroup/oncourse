@@ -6,9 +6,9 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.selenium.service.authentication;
+package ish.oncourse.util.selenium.service.authentication;
 
-import ish.oncourse.test.AbstractSeleniumTest;
+import ish.oncourse.util.selenium.model.HttpConfiguration;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -18,11 +18,10 @@ import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
 import ish.oncourse.server.api.v1.model.LoginRequestDTO;
 
-
 import java.time.Duration;
 import java.util.List;
 
-import static ish.oncourse.selenium.util.SeleniumUtil.threadWait;
+import static ish.oncourse.util.selenium.util.SeleniumUtil.threadWait;
 
 public class EmailAuthenticationService implements AuthenticationService {
 
@@ -40,10 +39,14 @@ public class EmailAuthenticationService implements AuthenticationService {
     @Override
     public void login(LoginRequestDTO requestDTO) {
 
+        String port = System.getProperty(HttpConfiguration.PORT.getKey());
+        String ip = System.getProperty(HttpConfiguration.IP.getKey());
+        String basePath = System.getProperty(HttpConfiguration.PATH.getKey());
+
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
 
-        logger.error("1. Open https://127.0.0.1:8182/");
-        driver.get("https://127.0.0.1:8182/");
+        logger.error("1. Open " + "https://" + ip + ":" + port + basePath);
+        driver.get("https://" + ip + ":" + port + basePath);
         threadWait(Duration.ofSeconds(3));
 
         logger.error("2. Click on the `user` text field.");
@@ -85,10 +88,15 @@ public class EmailAuthenticationService implements AuthenticationService {
 
     @Override
     public void logout() {
+
+        String port = System.getProperty(HttpConfiguration.PORT.getKey());
+        String ip = System.getProperty(HttpConfiguration.IP.getKey());
+        String basePath = System.getProperty(HttpConfiguration.PATH.getKey());
+
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-        logger.error("1. Open https://127.0.0.1:8182/");
-        driver.get("https://127.0.0.1:8182/");
+        logger.error("1. Open " + "https://" + ip + ":" + port + basePath);
+        driver.get("https://" + ip + ":" + port + basePath);
 
         logger.error("2. Click on the `Logout` button.");
         List<WebElement> buttons = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".jss34")));

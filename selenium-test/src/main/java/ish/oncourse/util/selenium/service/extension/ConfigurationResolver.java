@@ -6,17 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.selenium.service.extension.service;
+package ish.oncourse.util.selenium.service.extension;
 
-import ish.oncourse.selenium.model.Browser;
-import ish.oncourse.selenium.model.WebDriverFactory;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.ParameterContext;
-import org.junit.jupiter.api.extension.ParameterResolutionException;
-import org.junit.jupiter.api.extension.ParameterResolver;
+import ish.oncourse.util.selenium.model.Browser;
+import ish.oncourse.util.selenium.model.WebDriverFactory;
+import ish.oncourse.util.selenium.service.extension.function.LoadHttpConfiguration;
+import org.junit.jupiter.api.extension.*;
 import org.openqa.selenium.WebDriver;
 
-public class WebDriverResolver implements ParameterResolver {
+public class ConfigurationResolver implements ParameterResolver, BeforeAllCallback {
+
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
         return parameterContext.getParameter().getType().equals(WebDriver.class);
@@ -25,5 +24,10 @@ public class WebDriverResolver implements ParameterResolver {
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
         return WebDriverFactory.get(Browser.CHROME);
+    }
+
+    @Override
+    public void beforeAll(ExtensionContext context) {
+        LoadHttpConfiguration.valueOf("onCourse.yml").load();
     }
 }

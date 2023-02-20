@@ -6,10 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.selenium.service.extension;
+package ish.oncourse.selenium.extension;
 
-import ish.oncourse.selenium.service.extension.function.GoogleDevTools;
-import ish.oncourse.test.AbstractSeleniumTest;
+
+import ish.oncourse.selenium.test.AbstractSeleniumTest;
+import ish.oncourse.util.selenium.service.extension.function.GoogleDevTools;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.extension.BeforeEachCallback;

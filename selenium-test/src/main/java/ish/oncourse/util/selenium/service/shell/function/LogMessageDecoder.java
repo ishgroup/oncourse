@@ -6,13 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.selenium.service.shell.function;
+package ish.oncourse.util.selenium.service.shell.function;
 
-import ish.oncourse.selenium.model.HttpConfiguration;
-import ish.oncourse.selenium.service.extension.PrintPageScreenshot;
+import ish.oncourse.util.selenium.model.HttpConfiguration;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
