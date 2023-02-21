@@ -9,4 +9,4 @@
  * See the GNU Affero General Public License for more details.
  */
 
-include "apidoc", "swagger", 'aql'
+include "apidoc", "swagger", 'aql', 'testDataset'
