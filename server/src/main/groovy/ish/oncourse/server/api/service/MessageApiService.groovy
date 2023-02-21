@@ -340,14 +340,20 @@ class MessageApiService extends EntityApiService<MessageDTO, Message, MessageDao
 
             def recipientsWithoutDestination = withoutDestinationOf(recipientsModel)
             if(!recipientsWithoutDestination.empty) {
-                String notSetField = messageTypeDTO == MessageTypeDTO.EMAIL ? "email/s" : "phone/s"
-                logger.error("Cannot send message as [ {} ] contact ${notSetField} is not set or undeliverable.",
+                String notSetField = messageTypeDTO == MessageTypeDTO.EMAIL ? "email" : "phone"
+                if(recipientsWithoutDestination.size() > 1)
+                    notSetField += "s are"
+                else
+                    notSetField += " is"
+
+                logger.error("Cannot send message as [ {} ] contact ${notSetField} not set or undeliverable.",
                         recipientsWithoutDestination.join(","))
-                validator.throwClientErrorException("recipientsCount", "Cannot send message as [ ${recipientsWithoutDestination.join(",")} ] contact ${notSetField} is not set or undeliverable.")
+                validator.throwClientErrorException("recipientsCount", "Cannot send message as [ ${recipientsWithoutDestination.join(",")} ] contact ${notSetField} not set or undeliverable.")
             } else {
                 validator.throwClientErrorException("recipientsCount", "A real recipients number doesn't equal specified. Specified: ${recipientsCount}, Real: ${recipientsToSend.size()}")
             }
         }
+
         if (smtpService.email_batch != null && recipientsToSend.size() > smtpService.email_batch && MessageTypeDTO.EMAIL == messageTypeDTO) {
             logger.error("A recipients number higher than allowed by license. License: {}, Real: {}",
                     smtpService.email_batch, recipientsToSend.size().toString())
@@ -358,6 +364,7 @@ class MessageApiService extends EntityApiService<MessageDTO, Message, MessageDao
             validator.throwClientErrorException("recipientsCount", "Your license does not allow sending more than ${smtpService.email_batch} emails in one batch. " +
                     "Please send in smaller batches or upgrade to a plan with a higher limit.")
         }
+
         if (licenseService.getLisense("license.sms") != null && recipientsToSend.size() > (Integer)licenseService.getLisense("license.sms") && MessageTypeDTO.SMS == messageTypeDTO) {
             logger.error("A recipients number higher than allowed by license. License: {}, Real: {}",
                     licenseService.getLisense("license.sms"), recipientsToSend.size().toString())
