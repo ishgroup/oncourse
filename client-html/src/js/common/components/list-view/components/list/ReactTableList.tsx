@@ -78,7 +78,10 @@ const Table = ({
   const [columnVisibility, onColumnVisibilityChange] = useState<VisibilityState>({});
   const [columnSizing, onColumnSizingChange] = useState<ColumnSizingState>({});
   const [columnOrder, onColumnOrderChange] = useState<ColumnOrderState>([]);
-  const [rowSelection, onRowSelectionChange] = useState<RowSelectionState>({});
+  const [rowSelection, onRowSelectionChange] = useState<RowSelectionState>(selection.reduce((p, c) => {
+    p[c] = true;
+    return p;
+  }, {}));
 
   const tableRef = useRef<any>();
 
@@ -385,7 +388,7 @@ const Table = ({
                                         } else {
                                           column.toggleSorting(isSorted !== false);
                                         }
-                                        onSortChange()
+                                        onSortChange();
                                       }
                                       : null
                                     }

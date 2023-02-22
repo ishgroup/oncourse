@@ -252,8 +252,9 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       sendGAEvent,
       rootEntity,
       setEntity,
-      match: { url },
+      match: { url, params },
       filterGroupsInitial = [],
+      selection,
       getListViewPreferences
     } = this.props;
 
@@ -289,6 +290,11 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
         search: searchParams.toString(),
         pathname: url
       });
+    }
+
+    if (params.id && !selection.includes(params.id)) {
+      this.ignoreCheckDirtyOnSelection = true;
+      this.onSelection([params.id]);
     }
   }
 
@@ -389,11 +395,6 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
         }
       } else {
         this.onCreateRecord();
-      }
-
-      if (!selection.includes(params.id)) {
-        this.ignoreCheckDirtyOnSelection = true;
-        this.onSelection([params.id]);
       }
     }
 
