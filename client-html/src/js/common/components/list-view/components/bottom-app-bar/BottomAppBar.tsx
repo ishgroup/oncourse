@@ -24,7 +24,8 @@ import { APP_BAR_HEIGHT, PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../../constan
 import FindRelatedMenu from "./components/FindRelatedMenu";
 import { FindRelatedItem } from "../../../../../model/common/ListView";
 import { makeAppStyles } from "../../../../styles/makeStyles";
-
+import EntityService from "../../../../services/EntityService";
+import instantFetchErrorHandler from "../../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
 
 const SendMessageEntities = [
   "AbstractInvoice",
@@ -137,13 +138,17 @@ const BottomAppBar = (
     searchQuery,
     filteredCount,
     emailTemplatesWithKeyCode,
-    findRelatedByFilter
+    findRelatedByFilter,
+    scriptsFilterColumn,
+    dispatch
   }) => {
+  const [filterScriptsBy, setFilterScriptsBy] = useState(null);
+  const [scriptsMenuOpen, setScriptsMenuOpen] = useState(null);
   const [showSettingsMenu, setShowSettingsMenu] = useState(null);
+  const [scriptIdSelected, setScriptIdSelected] = useState(null);
   const [showFindRelatedMenu, setShowFindRelatedMenu] = useState(null);
   const [execScriptsMenuOpen, setExecScriptsMenuOpen] = useState(null);
-  const [scriptIdSelected, setScriptIdSelected] = useState(null);
-
+  
   const classes = useStyles();
   
   useEffect(() => {
@@ -152,6 +157,52 @@ const BottomAppBar = (
     }
   }, [rootEntity, scripts]);
 
+  useEffect(() => {
+    setFilterScriptsBy(null);
+  }, [rootEntity]);
+
+  // Workaround to trigger menu resize
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('resize'));
+  }, [filterScriptsBy]);
+
+  const getFilteredBy = async () => {
+    try {
+      let filterGroups = null;
+      
+      if (selection.length) {
+        filterGroups = {};
+        
+        const records = await EntityService.getPlainRecords(rootEntity, scriptsFilterColumn, `id in (${selection})`);
+
+        records.rows.forEach(r => {
+          if (filterGroups[r.values[0]]) {
+            filterGroups[r.values[0]].ids.push(r.id);
+          } else {
+            filterGroups[r.values[0]] = {
+              ids: [r.id],
+              scripts: []
+            };
+          }
+        });
+        
+        scripts.forEach(s => {
+          filterGroups[s.entity]?.scripts.push(s);
+        });
+      }
+
+      setFilterScriptsBy(filterGroups);
+    } catch (e) {
+      instantFetchErrorHandler(dispatch, e);
+    }
+  };
+
+  useEffect(() => {
+    if (scriptsFilterColumn) {
+      getFilteredBy();
+    }
+  }, [scriptsFilterColumn, selection]);
+  
   const openScriptModal = scriptId => {
     setScriptIdSelected(scriptId);
     setExecScriptsMenuOpen(true);
@@ -213,11 +264,14 @@ const BottomAppBar = (
     (selection.length === 0 || existingRecordSelected) && scripts?.length && (
       <ScriptsMenu
         key="ScriptsMenu"
-        scripts={scripts}
         classes={classes}
+        scripts={scriptsMenuOpen?.entity ? filterScriptsBy[scriptsMenuOpen?.entity]?.scripts : scripts}
         entity={rootEntity}
+        filterScriptsBy={filterScriptsBy}
         closeAll={handleClose}
         openScriptModal={openScriptModal}
+        scriptsMenuOpen={scriptsMenuOpen?.anchor}
+        setScriptsMenuOpen={setScriptsMenuOpen}
       />
     ),
     isSendMessageAvailable
@@ -259,6 +313,7 @@ const BottomAppBar = (
           scriptId={scriptIdSelected}
           selection={selection}
           filteredCount={filteredCount}
+          filteredSelection={filterScriptsBy && filterScriptsBy[scriptsMenuOpen?.entity]?.ids}
         />
 
         <div className={classes.root}>
@@ -397,6 +452,7 @@ const BottomAppBar = (
                   paper: classes.cogWheelMenuOffset
                 }}
                 disableAutoFocusItem
+
               >
                 {settingsItems}
               </Menu>
