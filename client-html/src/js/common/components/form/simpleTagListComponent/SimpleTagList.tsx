@@ -418,7 +418,7 @@ const SimpleTagList = ({
                         <Edit />
                       </InputAdornment>
                   }
-                  IconComponent={null}
+                  IconComponent={stubComponent}
                 >
                   <MenuItem value="stub">
                     {InputValueForRender || <span className="placeholderContent">No value</span>}

@@ -503,22 +503,25 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
     const { classes } = this.props;
 
     const rightAligned = caretCoordinates && caretCoordinates.left >= this.inputNode.clientWidth;
-
-    return [clsx(classes.menuCorner, rightAligned ? classes.cornerRight : classes.cornerLeft), {
-      display: menuIsOpen && Boolean(options.length) ? "block" : "none",
-      position: "absolute",
-      marginBottom: "12px",
-      width: "auto",
-      transform: "translateY(calc(-100% - 8px))",
-      top: 0,
-      ...rightAligned
-        ? {
-          left: this.inputNode.clientWidth,
-        }
-        : {
-          left: caretCoordinates ? caretCoordinates.left : 0,
-        }
-    }];
+    
+    return {
+      className: clsx(classes.menuCorner, rightAligned ? classes.cornerRight : classes.cornerLeft),
+      style: {
+        display: menuIsOpen && Boolean(options.length) ? "block" : "none",
+        position: "absolute" as any,
+        marginBottom: "12px",
+        width: "auto",
+        transform: "translateY(calc(-100% - 8px))",
+        top: 0,
+        ...rightAligned
+          ? {
+            left: this.inputNode.clientWidth,
+          }
+          : {
+            left: caretCoordinates ? caretCoordinates.left : 0,
+          }
+      }
+    };
   };
 
   filterOptions = item => item.label
@@ -1014,11 +1017,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
     return option as any;
   };
 
-  popperAdapter = params => {
-    const [className, style] = this.getInlineMenuStyles();
-
-    return <div {...params} className={className} style={style} />;
-  };
+  popperAdapter = ({ anchorEl, disablePortal, className, style,  ...params }) => (<div {...params} {...this.getInlineMenuStyles()} />);
 
   render() {
     const {
@@ -1103,7 +1102,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
                 // eslint-disable-next-line react/jsx-no-duplicate-props
                 inputProps={{
                   ...params.inputProps,
-                  value: inputValue
+                  value: inputValue || ""
                 }}
                 error={meta?.invalid}
                 helperText={(

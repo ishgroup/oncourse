@@ -389,7 +389,6 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
           defaultValue={row.incomeAccountName}
           selectValueMark="id"
           selectLabelCondition={accountLabelCondition}
-          
           onChange={onIncomeAccountChange}
           inputRef={accountRef}
           required
