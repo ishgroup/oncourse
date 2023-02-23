@@ -174,11 +174,7 @@ const Table = ({
   });
 
   const onSelectionChangeHangler = useCallback<any>(debounce(() => {
-    const newSelection = Object.keys(table.getState().rowSelection).map(k => k);
-    if (newSelection.length === 1 && selection.length === 1 && newSelection[0] === selection[0]) {
-      return;
-    }
-    onSelectionChange(newSelection);
+    onSelectionChange(Object.keys(table.getState().rowSelection).map(k => k));
   }, 500), [selection]);
 
   const onHiddenChange = useCallback<any>(debounce(() => {
