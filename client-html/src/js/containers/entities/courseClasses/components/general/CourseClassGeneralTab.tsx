@@ -31,7 +31,7 @@ import CourseClassEnrolmentsChart from "./CourseClassEnrolmentsChart";
 import { showMessage } from "../../../../../common/actions";
 import { AppMessage } from "../../../../../model/common/Message";
 import history from "../../../../../constants/History";
-import { decimalMinus, decimalPlus } from "../../../../../common/utils/numbers/decimalCalculation";
+import { decimalDivide, decimalMinus, decimalPlus } from "../../../../../common/utils/numbers/decimalCalculation";
 import { getClassCostTypes } from "../../utils";
 import CustomFields from "../../../customFieldTypes/components/CustomFieldsTypes";
 import FullScreenStickyHeader
@@ -45,6 +45,8 @@ interface Props extends Partial<EditViewProps<CourseClassExtended>> {
   clearActionsQueue?: any;
   enrolments?: any;
   tutorRoles?: any;
+  netValues?: any;
+  classCostTypes?: any;
 }
 
 const normalizeClassCode = (value: any, previousValue?: any, allValues?: any) => value.replace(new RegExp(`${allValues.courseCode}-?`), "");
@@ -59,9 +61,10 @@ const CourseClassGeneralTab = React.memo<Props>(
     dispatch,
     form,
     toogleFullScreenEditView,
-    tutorRoles
+    tutorRoles,
+    netValues,
+     classCostTypes
   }) => {
-    const [showAllWeeks, setShowAllWeeks] = useState(true);
 
     const openBudget = useCallback(() => {
       if (!twoColumn) {
@@ -95,6 +98,7 @@ const CourseClassGeneralTab = React.memo<Props>(
       [form, values.code, values.sessions]
     );
 
+    // Enrolments to profit projected
     const enrolmentsToProfitAllCount = useMemo(() => {
       if (values.feeExcludeGST <= 0) {
         return 0;
@@ -157,6 +161,25 @@ const CourseClassGeneralTab = React.memo<Props>(
       values.tutors,
       tutorRoles,
       values.feeExcludeGST
+    ]);
+
+    const actualEnrolmentsToProfit = useMemo(() => {
+      if (values.successAndQueuedEnrolmentsCount < 1) {
+        return 0;
+      }
+
+      const actualEnrolment = decimalDivide(netValues.income.actual, values.successAndQueuedEnrolmentsCount);
+
+      let covered = 0;
+
+      while (covered < classCostTypes.cost.actual) {
+        covered += actualEnrolment;
+      }
+
+      return decimalDivide(covered, actualEnrolment);
+    }, [
+      netValues,
+      values.successAndQueuedEnrolmentsCount
     ]);
 
     const formatClassCode = value => `${values.courseCode ? values.courseCode + "-" : ""}${value || ""}`;
@@ -315,10 +338,8 @@ const CourseClassGeneralTab = React.memo<Props>(
               minEnrolments={values.minimumPlaces}
               maxEnrolments={values.maximumPlaces}
               targetEnrolments={enrolmentsToProfitAllCount}
+              actualEnrolmentsToProfit={actualEnrolmentsToProfit}
               openBudget={openBudget}
-              showAllWeeks={showAllWeeks}
-              setShowAllWeeks={setShowAllWeeks}
-              twoColumn={twoColumn}
               hasBudged={values.budget?.some(b => b.invoiceToStudent && b.perUnitAmountIncTax > 0)}
             />
           </Grid>

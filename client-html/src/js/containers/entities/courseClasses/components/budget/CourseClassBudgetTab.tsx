@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import { Popover } from "@mui/material";
@@ -55,7 +58,6 @@ import { deleteCourseClassCost, postCourseClassCost, putCourseClassCost } from "
 import ClassCostService from "./services/ClassCostService";
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { getTutorPayInitial } from "../tutors/utils";
-import { getClassCostTypes } from "../../utils";
 import { BooleanArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
 import { dateForCompare, excludeOnEnrolPaymentPlan, getClassFeeTotal, includeOnEnrolPaymentPlan } from "./utils";
 import PreferencesService from "../../../../preferences/services/PreferencesService";
@@ -261,6 +263,8 @@ interface Props extends Partial<EditViewProps> {
   discountsError?: boolean;
   getSearchResult?: StringArgFunction;
   clearSearchResult?: BooleanArgFunction;
+  classCostTypes?: any;
+  netValues?: any;
 }
 
 const CourseClassBudgetTab = React.memo<Props>(
@@ -289,65 +293,15 @@ const CourseClassBudgetTab = React.memo<Props>(
      pending,
      discountsError,
      getSearchResult,
-     clearSearchResult
+     clearSearchResult,
+     classCostTypes,
+     netValues
    }) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [popoverAnchor, setPopoverAnchor] = React.useState(null);
     const [tutorsMenuOpened, setTutorsMenuOpened] = React.useState(false);
 
     const classFee = useMemo(() => getClassFeeTotal(values.budget || [], taxes), [taxes, values.budget]);
-
-    const classCostTypes = useMemo(
-      () =>
-        getClassCostTypes(
-          values.budget,
-          values.maximumPlaces,
-          values.budgetedPlaces,
-          values.successAndQueuedEnrolmentsCount,
-          values.sessions,
-          values.tutors,
-          tutorRoles,
-        ),
-      [
-        values.budget,
-        values.maximumPlaces,
-        values.budgetedPlaces,
-        values.successAndQueuedEnrolmentsCount,
-        values.sessions,
-        values.tutors,
-        tutorRoles
-      ]
-    );
-
-    const netValues = useMemo(() => {
-      const max = decimalMinus(
-        decimalPlus(classCostTypes.customInvoices.max, classCostTypes.income.max),
-        classCostTypes.discount.max
-      );
-
-      const projected = decimalMinus(
-        decimalPlus(classCostTypes.customInvoices.projected, classCostTypes.income.projected),
-        classCostTypes.discount.projected
-      );
-
-      const actual = decimalMinus(
-        decimalPlus(classCostTypes.customInvoices.actual, classCostTypes.income.actual),
-        classCostTypes.discount.actual
-      );
-
-      return {
-        income: {
-          max,
-          projected,
-          actual
-        },
-        profit: {
-          max: decimalMinus(max, classCostTypes.cost.max),
-          projected: decimalMinus(projected, classCostTypes.cost.projected),
-          actual: decimalMinus(actual, classCostTypes.cost.actual)
-        }
-      };
-    }, [classCostTypes]);
 
     const openAddBudgetMenu = useCallback(e => {
       setAnchorEl(e.currentTarget);
