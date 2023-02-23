@@ -30,7 +30,7 @@ import { stubFunction } from "../../../utils/common";
 
 const stubFieldMocks = { input: { onChange: stubFunction, onBlur: stubFunction }, format: null, debounced: null };
 
-const FormFieldBase = React.forwardRef<any, FormFieldProps>((props, ref) => {
+const FormFieldBase = (props: FormFieldProps) => {
 
   const { type, ...rest } = props;
 
@@ -74,46 +74,46 @@ const FormFieldBase = React.forwardRef<any, FormFieldProps>((props, ref) => {
 
   switch (type) {
     case "phone":
-      return <EditInPlacePhoneField inputRef={ref} {...sharedProps} />;
+      return <EditInPlacePhoneField  {...sharedProps} />;
     case "duration":
-      return <EditInPlaceDurationField inputRef={ref} {...sharedProps} />;
+      return <EditInPlaceDurationField  {...sharedProps} />;
     case "file":
-      return <EditInPlaceFileField inputRef={ref} {...sharedProps} />;
+      return <EditInPlaceFileField  {...sharedProps} />;
     case "money":
-      return <EditInPlaceMoneyField inputRef={ref} {...sharedProps} />;
+      return <EditInPlaceMoneyField  {...sharedProps} />;
     case "select":
-      return <EditInPlaceSearchSelect inputRef={ref} {...sharedProps} />;
+      return <EditInPlaceSearchSelect  {...sharedProps} />;
     case "remoteDataSelect":
-      return <EditInPlaceRemoteDataSearchSelect inputRef={ref} entity={entity} {...sharedProps} />;
+      return <EditInPlaceRemoteDataSearchSelect  entity={entity} {...sharedProps} />;
     case "number":
-      return <EditInPlaceField inputRef={ref} {...sharedProps} type="number" />;
+      return <EditInPlaceField  {...sharedProps} type="number" />;
     case "date":
-      return <EditInPlaceDateTimeField inputRef={ref} {...sharedProps} type="date" />;
+      return <EditInPlaceDateTimeField  {...sharedProps} type="date" />;
     case "time":
-      return <EditInPlaceDateTimeField inputRef={ref} {...sharedProps} type="time" />;
+      return <EditInPlaceDateTimeField  {...sharedProps} type="time" />;
     case "dateTime":
-      return <EditInPlaceDateTimeField inputRef={ref} {...sharedProps} type="datetime" />;
+      return <EditInPlaceDateTimeField  {...sharedProps} type="datetime" />;
     case "aql":
-      return <EditInPlaceQuerySelect inputRef={ref} {...sharedProps as any} />;
+      return <EditInPlaceQuerySelect  {...sharedProps as any} />;
     case "code":
       return <CodeEditorField {...sharedProps} />;
     case "password":
-      return <EditInPlaceField inputRef={ref} {...sharedProps} type="password" />;
+      return <EditInPlaceField  {...sharedProps} type="password" />;
     case "switch":
       return <FormSwitch {...sharedProps} />;
     case "checkbox":
       return <CheckboxField {...sharedProps} />;
     case "multilineText":
-      return <EditInPlaceField inputRef={ref} {...sharedProps} multiline />;
+      return <EditInPlaceField  {...sharedProps} multiline />;
     case "stub":
-      return <div className="invisible" ref={ref} />;
+      return <div className="invisible" />;
     case "tags":
-      return <SimpleTagList inputRef={ref} {...sharedProps} />;
+      return <SimpleTagList  {...sharedProps} />;
     case "text":
     default:
-      return <EditInPlaceField inputRef={ref} {...sharedProps} />;
+      return <EditInPlaceField  {...sharedProps} />;
   }
-});
+};
 
 type BaseProps = FormFieldProps & BaseFieldProps<FormFieldProps>;
 

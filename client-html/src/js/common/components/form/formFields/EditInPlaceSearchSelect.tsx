@@ -154,7 +154,7 @@ const EditInPlaceSearchSelect = ({
     hasError,
     categoryKey
   }: EditInPlaceSearchSelectFieldProps) => {
-  
+
   const sortedItems = useMemo(() => {
     const sorted = items && (sort
         ? [...items].sort(typeof sort === "function"
@@ -177,12 +177,6 @@ const EditInPlaceSearchSelect = ({
   }, [items, selectLabelCondition, selectLabelMark, sortPropKey, categoryKey]);
 
   const inputNode = useRef<any>(null);
-
-  useEffect(() => {
-    if (inputRef && inputNode.current) {
-      inputRef = inputNode.current;
-    }
-  }, [inputNode.current, inputRef]);
 
   const [searchValue, setSearchValue] = useState<string>("");
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -539,6 +533,7 @@ const EditInPlaceSearchSelect = ({
                   ref: ref => {
                     (inputProps as any).ref.current = ref;
                     inputNode.current = ref;
+                    if (inputRef) inputRef.current = ref;
                   },
                   value: (isEditing ? searchValue : multiple ? "" : (typeof displayedValue === "string" ? displayedValue : "")),
                 }

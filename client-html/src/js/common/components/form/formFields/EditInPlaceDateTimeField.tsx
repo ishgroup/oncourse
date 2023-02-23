@@ -227,7 +227,6 @@ const EditInPlaceDateTimeField = (
           onClose={onClose}
           renderInput={() => (
             <EditInPlaceFieldBase
-              ref={inputNode}
               name={input.name}
               value={textValue}
               error={error}
