@@ -11,7 +11,6 @@ import React, { useCallback } from "react";
 import { change } from "redux-form";
 import WarningMessage from "../../../../../common/components/form/fieldMessage/WarningMessage";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../../common/components/form/Uneditable";
 import { accountLabelCondition } from "../../../accounts/utils";
 import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { useAppSelector } from "../../../../../common/utils/hooks";
@@ -31,7 +30,7 @@ const addInvoiceLineTax = (cancellationFeeExTax: number, taxRate: number) => {
 };
 
 const CancelEnrolmentInvoiceLines: React.FC<any> = ({
-    fields, classes, dispatch, incomeAccounts, taxes
+    fields, dispatch, incomeAccounts, taxes
   }) => {
   const onCreateCreditNoteChange = useCallback((val, ind) => {
     if (!val) {
@@ -85,7 +84,6 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                   {field && field.invoiceNumber}
                 </Typography>
                 <FormControlLabel
-                  className="checkbox pb-2 pt-2"
                   control={(
                     <FormField
                       type="checkbox"
@@ -100,8 +98,8 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                 />
                 <Grid className="centeredFlex">
                   <FormControlLabel
-                    className="checkbox pb-2 pt-2 mr-0-5"
-                    control={<FormField type="checkbox" name={`${item}.isChargeFee`} color="secondary" fullWidth />}
+                    className="mr-0-5"
+                    control={<FormField type="checkbox" name={`${item}.isChargeFee`} color="secondary" />}
                     label={`Charge ${field && field.contactName} an administrative fee of `}
                     disabled={!field.isReverseCreditNotes}
                   />
@@ -112,8 +110,7 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                     onChange={e => onCancelFeeChange(e, index)}
                     debounced={false}
                     disabled={!field.isReverseCreditNotes}
-                    formatting="inline"
-                    hideArrowshideArrows
+                    inline
                     step="1"
                   />
                   <FormField
@@ -125,7 +122,8 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                     onChange={v => onTaxChange(v, index)}
                     debounced={false}
                     disabled={!field.isReverseCreditNotes}
-                    formatting="inline"
+                    className="ml-0-5 mt-0-5"
+                    inline
                   />
                   <span className="money ml-0-5">
                     {formatCurrency(field.chargedFee, currencySymbol)}
@@ -134,10 +132,11 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                     type="select"
                     name={`${item}.incomeAccountId`}
                     items={incomeAccounts || []}
-                    formatting="inline"
                     selectValueMark="id"
                     selectLabelCondition={accountLabelCondition}
                     disabled={!field.isReverseCreditNotes}
+                    className="ml-0-5 mt-0-5"
+                    inline
                   />
                 </Grid>
 
@@ -148,15 +147,13 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                 </Grid>
 
                 <FormControlLabel
-                  className="checkbox pb-3 pt-3"
                   control={(
                     <FormField
                       type="checkbox"
                       name={`${item}.sendInvoice`}
                       color="secondary"
                       disabled={!field.isReverseCreditNotes}
-                      fullWidth
-                    />
+                                          />
                   )}
                   label="Send credit note email."
                 />

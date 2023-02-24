@@ -8,7 +8,7 @@
 
 import React from "react";
 import {
-  arrayInsert, arrayPush,
+  arrayPush,
   arrayRemove,
   change,
   getFormSyncErrors,
@@ -26,14 +26,14 @@ import { getDeepValue } from "../../../common/utils/common";
 import { createTag, deleteTag, updateTag } from "../actions";
 import { showConfirm } from "../../../common/actions";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
-import { onSubmitFail } from "../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../common/utils/highlightFormErrors";
 import { getPluralSuffix } from "../../../common/utils/strings";
 import { AppTheme } from "../../../model/common/Theme";
 import { FormTag } from "../../../model/tags";
 import { validate } from "../utils/validation";
 import { CatalogItemType } from "../../../model/common/Catalog";
 import { EmptyTag, TAGS_FORM_NAME } from "../constants";
-import { getAllTags } from "../utils";
+import { COLORS, getAllTags } from "../utils";
 
 const styles = (theme: AppTheme) => createStyles({
   dragIcon: {
@@ -185,7 +185,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
 
   state = {
     editingIds: []
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -215,7 +215,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
         ? this.state.editingIds.filter(id => id !== editingId)
         : this.state.editingIds.concat(editingId)
     });
-  }
+  };
 
   onSave = values => {
     const { onUpdate, onCreate } = this.props;
@@ -264,6 +264,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
 
     const newTag: FormTag = {
       ...EmptyTag,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
       id: ("new" + this.counter) as any,
     };
 
@@ -277,7 +278,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
     const { dispatch, values } = this.props;
     dispatch(change(TAGS_FORM_NAME, item.parent ? item.parent + ".status" : "status", item.status === "Private" ? "Show on website" : "Private"));
     dispatch(change(TAGS_FORM_NAME, "refreshFlag", !values.refreshFlag));
-  }
+  };
 
   removeChildTag = (item: FormTag) => {
     const { dispatch, values, openConfirm } = this.props;
@@ -296,7 +297,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
         const removePath = getDeepValue(clone, item.parent.replace(/\[[0-9]+]$/, ""));
 
         if (removePath) {
-          const deleteItem = item.parent.match(/\[(\d)]$/);
+          const deleteItem = item.parent.match(/\[(\d+)]$/);
           if (deleteItem && deleteItem.length > 0) removePath.splice(Number(deleteItem[1]), 1);
         }
       }

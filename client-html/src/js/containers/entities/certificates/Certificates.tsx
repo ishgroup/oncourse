@@ -13,8 +13,7 @@ import {
   getFilters,
   clearListState
 } from "../../../common/components/list-view/actions";
-import { FilterGroup } from "../../../model/common/ListView";
-import { defaultContactName } from "../contacts/utils";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import CertificateEditView from "./components/CertificateEditView";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import USIAlert from "./components/USIAlert";
@@ -72,7 +71,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Certificate and entityId" },
   { title: "Enrolments", list: "enrolment", expression: "outcomes.certificateOutcomes.certificate.id" },
   { title: "Students", list: "contact", expression: "student.certificates.id" },
@@ -82,7 +81,7 @@ const findRelatedGroup: any = [
 
 const manualLink = getManualLink("certification");
 
-const nameCondition = (value: Certificate) => defaultContactName(value.studentName);
+const nameCondition = (value: Certificate) => value.studentName;
 
 const secondaryColumnCondition = rows => rows["qualification.title"] || "No Qualification";
 

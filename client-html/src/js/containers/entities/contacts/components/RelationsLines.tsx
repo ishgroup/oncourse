@@ -9,7 +9,7 @@ import Grid from "@mui/material/Grid";
 import { change } from "redux-form";
 import { Contact } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { defaultContactName, getContactFullName } from "../utils";
+import { getContactFullName } from "../utils";
 import { ContactLinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import ContactSelectItemRenderer from "./ContactSelectItemRenderer";
 
@@ -24,7 +24,7 @@ const RelationsHeaderBase: React.FunctionComponent<any> = React.memo((props: any
   return (
     <div className="w-100 d-grid gridTemplateColumns-1fr">
       <Typography variant="subtitle2" noWrap>
-        {relationName && relatedContactName ? `${relationName} of ${defaultContactName(relatedContactName)}` : ""}
+        {relationName && relatedContactName ? `${relationName} of ${relatedContactName}` : ""}
       </Typography>
     </div>
   );
@@ -90,13 +90,13 @@ export const RelationsContent: React.FunctionComponent<any> = React.memo((props:
     <Grid container columnSpacing={3} rowSpacing={2}>
       <Grid item xs={12} className={classes.select1}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           entity="Contact"
           name={`${item}.relatedContactId`}
           label="Related contact"
           selectValueMark="id"
           selectLabelCondition={getContactFullName}
-          defaultDisplayValue={defaultContactName(row.relatedContactName)}
+          defaultValue={row.relatedContactName}
           onInnerValueChange={onRelatedContactChange}
           labelAdornment={
             <ContactLinkAdornment id={row?.relatedContactId} />

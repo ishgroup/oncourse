@@ -47,6 +47,7 @@ import { EpicPdfReports } from "./containers/automation/containers/pdf-reports/e
 import { EpicPdfBackgrounds } from "./containers/automation/containers/pdf-backgrounds/epics";
 import { EpicNotes } from "./common/components/form/notes/epics";
 import { EpicCheckout } from "./containers/checkout/epics";
+import { EpicServerLogs } from "./containers/logs/epics";
 
 // Creating ES6 Set Object to guarantee unique value of each import
 const importSet = new Set([
@@ -92,7 +93,8 @@ const importSet = new Set([
   EpicOutcome,
   EpicEnrolment,
   EpicMessage,
-  EpicCheckout
+  EpicCheckout,
+  EpicServerLogs
 ]);
 
 const importArray = [];

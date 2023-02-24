@@ -20,7 +20,6 @@ import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { EEE_D_MMM_YYYY } from "../../../../common/utils/dates/format";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { contactLabelCondition } from "../../contacts/utils";
 import { ContactLinkAdornment, LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { buildUrl, getSaleEntityName, productUrl } from "../utils";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
@@ -31,6 +30,7 @@ import DocumentsRenderer from "../../../../common/components/form/documents/Docu
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import { getContactFullName } from "../../contacts/utils";
 
 interface SalesGeneralViewProps extends EditViewProps<ProductItem> {
 }
@@ -91,7 +91,7 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
 
   const onRedeemableByIdChange = useCallback(
     (val: Contact) => {
-      dispatch(change(form, "redeemableByName", contactLabelCondition(val)));
+      dispatch(change(form, "redeemableByName", getContactFullName(val)));
     },
     [form]
   );
@@ -162,13 +162,13 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
       {type === ProductType.Voucher && (
         <Grid item {...gridItemProps}>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             entity="Contact"
             name="redeemableById"
             label="Send invoice on redemption to"
             selectValueMark="id"
-            selectLabelCondition={contactLabelCondition}
-            defaultDisplayValue={values.redeemableByName}
+            selectLabelCondition={getContactFullName}
+            defaultValue={values.redeemableByName}
             labelAdornment={(
               <LinkAdornment
                 link={values.redeemableById}

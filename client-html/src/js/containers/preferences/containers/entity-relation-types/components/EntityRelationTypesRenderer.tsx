@@ -111,7 +111,6 @@ const renderEntityRelationTypes = props => {
                           type="checkbox"
                           name={`${item}.considerHistory`}
                           color="primary"
-                          value="true"
                         />
                       )}
                       label="Consider history"
@@ -139,7 +138,6 @@ const renderEntityRelationTypes = props => {
                       type="checkbox"
                       name={`${item}.isShownOnWeb`}
                       color="primary"
-                      value="true"
                     />
                       )}
                   label="Show on web"

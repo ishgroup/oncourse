@@ -38,6 +38,7 @@ import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../../comm
 import { DD_MMM_YYYY } from "../../../../../common/utils/dates/format";
 import CourseClassTutorRooster from "./CourseClassTutorRooster";
 import { IS_JEST } from "../../../../../constants/EnvironmentConstants";
+import { NoWrapOption } from "../../../../../common/components/form/formFields/SelectCustomComponents";
 
 export const COURSE_CLASS_BULK_UPDATE_FORM: string = "CourseClassBulkUpdateForm";
 
@@ -118,7 +119,6 @@ const BulkItemWrapper: React.FC<any> = props => {
                 type="checkbox"
                 name={`${name}Checked`}
                 color="secondary"
-                checked={opened}
                 onChange={onChange}
                 debounced={false}
               />
@@ -297,8 +297,7 @@ const CourseClassBulkChangeSessionForm = props => {
       disableEnforceFocus
       disableRestoreFocus
       maxWidth="md"
-      fullWidth
-      classes={{
+            classes={{
         paper: classes.paperDialog
       }}
     >
@@ -340,22 +339,18 @@ const CourseClassBulkChangeSessionForm = props => {
               </Grid>
               <Grid item xs={12}>
                 <BulkItemWrapper classes={classes} title="Location" name="location">
-                  <Grid container columnSpacing={3}>
-                    <Grid item xs={6}>
-                      <FormField
-                        type="remoteDataSearchSelect"
-                        entity="Room"
-                        name="roomId"
-                        label="Site and room"
-                        aqlColumns="name,site.name,site.localTimezone,site.id"
-                        selectValueMark="id"
-                        selectLabelCondition={roomLabel}
-                        onInnerValueChange={onRoomIdChange}
-                        rowHeight={36}
-                        allowEmpty
-                      />
-                    </Grid>
-                  </Grid>
+                  <FormField
+                    type="remoteDataSelect"
+                    entity="Room"
+                    name="roomId"
+                    label="Site and room"
+                    aqlColumns="name,site.name,site.localTimezone,site.id"
+                    selectValueMark="id"
+                    selectLabelCondition={roomLabel}
+                    onInnerValueChange={onRoomIdChange}
+                    itemRenderer={NoWrapOption}
+                    allowEmpty
+                  />
                 </BulkItemWrapper>
               </Grid>
               <Grid item xs={12}>
@@ -363,8 +358,6 @@ const CourseClassBulkChangeSessionForm = props => {
                   <Grid container>
                     <Grid item xs={6}>
                       <EditInPlaceDurationField
-                        label="Actual payable duration"
-                        id="actualPayableDuration"
                         meta={{}}
                         input={{
                           value: payableDurationValue,
@@ -373,7 +366,6 @@ const CourseClassBulkChangeSessionForm = props => {
                           onFocus: stubFunction,
                           name: "actualPayableDuration"
                         }}
-                        hideLabel
                       />
                     </Grid>
                   </Grid>
@@ -399,7 +391,6 @@ const CourseClassBulkChangeSessionForm = props => {
                         }
                         timezone={initial.siteTimezone || classTimezone}
                         persistValue
-                        hideLabel
                       />
                     </Grid>
                   </Grid>
@@ -410,8 +401,6 @@ const CourseClassBulkChangeSessionForm = props => {
                   <Grid container>
                     <Grid item xs={6}>
                       <EditInPlaceDurationField
-                        label="Duration"
-                        id="duration"
                         meta={{
                           error: durationError,
                           invalid: Boolean(durationError)
@@ -423,7 +412,6 @@ const CourseClassBulkChangeSessionForm = props => {
                           onFocus: stubFunction,
                           name: "duration"
                         }}
-                        hideLabel
                       />
                     </Grid>
                   </Grid>
@@ -436,7 +424,7 @@ const CourseClassBulkChangeSessionForm = props => {
                       <FormField
                         type="number"
                         name="moveForward"
-                        formatting="inline"
+                        inline
                         step="1"
                         className={classes.bulkChangeDaysInput}
                         onChange={onMoveLater}
@@ -458,7 +446,7 @@ const CourseClassBulkChangeSessionForm = props => {
                       <FormField
                         name="moveBackward"
                         type="number"
-                        formatting="inline"
+                        inline
                         step="1"
                         className={classes.bulkChangeDaysInput}
                         onChange={onMoveEarlier}

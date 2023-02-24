@@ -39,7 +39,6 @@ import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRest
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
 import static ish.oncourse.server.api.v1.function.HolidayFunctions.*
 import static ish.oncourse.server.api.v1.function.ModuleFunctions.bidiModuleType
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.oncourse.server.api.v1.model.CourseStatusDTO.*
 import static org.apache.commons.lang3.StringUtils.*
@@ -109,9 +108,9 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.studentWaitingListCount = course.waitingLists.size()
             courseDTO.hasEnrolments = course.courseClasses.find { c -> !c.enrolments.empty} != null
             courseDTO.webDescription = course.webDescription
+            courseDTO.shortWebDescription = course.shortWebDescription
             courseDTO.documents = course.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
-            courseDTO.relatedSellables = (EntityRelationDao.getRelatedFrom(course.context, Course.simpleName, course.id).collect { it -> toRestFromEntityRelation(it) } +
-                    EntityRelationDao.getRelatedTo(course.context, Course.simpleName, course.id).collect { it -> toRestToEntityRelation(it) })
+            courseDTO.relatedSellables = relatedSellablesOf(course.context, course.id)
             courseDTO.qualificationId = course.qualification?.id
             courseDTO.qualNationalCode = course.qualification?.nationalCode
             courseDTO.qualTitle = course.qualification?.title
@@ -138,6 +137,11 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.fullTimeLoad = course.fullTimeLoad
             courseDTO
         }
+    }
+
+    static List<SaleDTO> relatedSellablesOf(ObjectContext context, Long courseId){
+        return (EntityRelationDao.getRelatedFrom(context, Course.simpleName, courseId).collect { it -> toRestFromEntityRelation(it) } +
+                EntityRelationDao.getRelatedTo(context, Course.simpleName, courseId).collect { it -> toRestToEntityRelation(it) })
     }
 
     @Override
@@ -170,6 +174,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         }
         course.printedBrochureDescription = trimToNull(courseDTO.brochureDescription)
         course.webDescription = trimToNull(courseDTO.webDescription)
+        course.shortWebDescription = trimToNull(courseDTO.shortWebDescription)
         if (courseDTO.qualificationId != null) {
             course.qualification =  qualificationDao.getById(course.context, courseDTO.qualificationId)
             course.fieldOfEducation = trimToNull(course.qualification.fieldOfEducation)
@@ -272,6 +277,10 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
 
         if (trimToEmpty(courseDTO.webDescription).length() > 32000) {
             validator.throwClientErrorException(id, 'webDescription', 'Web description must be shorter then 32000 characters.')
+        }
+
+        if (trimToEmpty(courseDTO.shortWebDescription).length() > 32000) {
+            validator.throwClientErrorException(id, 'shortWebDescription', 'Short web description must be shorter then 32000 characters.')
         }
 
         if (trimToEmpty(courseDTO.brochureDescription).length() > 32000) {

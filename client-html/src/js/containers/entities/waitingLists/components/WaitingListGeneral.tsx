@@ -21,7 +21,7 @@ import {
   HeaderContactTitle,
   LinkAdornment
 } from "../../../../common/components/form/FieldAdornments";
-import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
+import { getContactFullName } from "../../contacts/utils";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
@@ -61,14 +61,14 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
             fields={(
               <Grid item {...gridItemProps}>
                 <FormField
-                  type="remoteDataSearchSelect"
+                  type="remoteDataSelect"
                   entity="Contact"
                   aqlFilter="isStudent is true"
                   name="contactId"
                   label="Student"
                   selectValueMark="id"
-                  selectLabelCondition={contactLabelCondition}
-                  defaultDisplayValue={values && defaultContactName(values.studentName)}
+                  selectLabelCondition={getContactFullName}
+                  defaultValue={values && values.studentName}
                   labelAdornment={
                     <ContactLinkAdornment id={values?.contactId} />
                   }
@@ -100,7 +100,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
         </Grid>
         <Grid item xs={12}>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             entity="Course"
             aqlFilter="allowWaitingLists is true"
             name="courseId"
@@ -108,7 +108,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
             selectValueMark="id"
             selectLabelCondition={v => v.name}
             selectFilterCondition={courseFilterCondition}
-            defaultDisplayValue={values && values.courseName}
+            defaultValue={values && values.courseName}
             labelAdornment={<LinkAdornment link={values.courseId} linkHandler={openCourseLink} />}
             itemRenderer={CourseItemRenderer}
             onChange={this.handlerCourseChange}

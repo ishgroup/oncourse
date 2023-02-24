@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Button from "@mui/material/Button";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
 import { State } from "../../../../../../reducers/state";
 
@@ -141,7 +141,6 @@ class XeroBaseForm extends React.Component<any, any> {
                     type="stub"
                     name="verificationCode"
                     validate={validateSingleMandatoryField}
-                    className="mb-2"
                   />
                 )
               }

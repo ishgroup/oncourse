@@ -33,18 +33,8 @@ import { LinkAdornment } from "../../../../common/components/form/FieldAdornment
 import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { getDiscountAmountExTax } from "../../discounts/utils";
 import Uneditable from "../../../../common/components/form/Uneditable";
+import { calculateInvoiceLineTotal } from "../utils";
 
-const calculateInvoiceLineTotal = (
-  priceEachExTax: number,
-  discountEachExTax: number,
-  taxEach: number,
-  quantity: number
-) => new Decimal(priceEachExTax || 0)
-    .minus(discountEachExTax || 0)
-    .plus(taxEach || 0)
-    .mul(quantity || 1)
-    .toDecimalPlaces(2)
-    .toNumber();
 
 const calculateInvoiceLineTaxEach = (priceEachExTax: number, discountEachExTax: number, taxRate: number) => new Decimal(priceEachExTax || 0)
     .minus(discountEachExTax || 0)
@@ -198,9 +188,9 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
   }, [taxes, row.taxId]);
 
   const total = useMemo(() => formatCurrency(
-      calculateInvoiceLineTotal(row.priceEachExTax, row.discountEachExTax, row.taxEach, row.quantity),
-      currency.shortCurrencySymbol
-    ), [row.id, row.priceEachExTax, row.discountEachExTax, row.taxEach, row.quantity, currency.shortCurrencySymbol]);
+    calculateInvoiceLineTotal(row.priceEachExTax, row.discountEachExTax, row.taxEach, row.quantity),
+    currency.shortCurrencySymbol
+  ), [row.id, row.priceEachExTax, row.discountEachExTax, row.taxEach, row.quantity, currency.shortCurrencySymbol]);
 
   const taxDisplayedAmount = useMemo(
     () => new Decimal(row.taxEach).mul(row.quantity || 1).toDecimalPlaces(2).toNumber(),
@@ -391,15 +381,14 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
 
       <Grid item xs={twoColumn ? 4 : 12}>
         <FormField
-          type="searchSelect"
+          type="select"
           name={`${item}.incomeAccountId`}
           label="Income account"
           disabled={type !== "Quote" && !isNew}
           items={useAllAccounts ? accountTypes.all : incomeAccountOptions}
-          defaultDisplayValue={row.incomeAccountName}
+          defaultValue={row.incomeAccountName}
           selectValueMark="id"
           selectLabelCondition={accountLabelCondition}
-          autoWidth={false}
           onChange={onIncomeAccountChange}
           inputRef={accountRef}
           required
@@ -423,14 +412,14 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
 
           <Grid item xs={twoColumn ? 6 : 12}>
             <FormField
-              type="remoteDataSearchSelect"
+              type="remoteDataSelect"
               entity="Course"
               name={`${item}.courseName`}
               label="Course"
               selectValueMark="name"
               selectLabelMark="name"
               selectFilterCondition={courseFilterCondition}
-              defaultDisplayValue={row.courseName}
+              defaultValue={row.courseName}
               labelAdornment={
                 <LinkAdornment link={row.courseId} linkHandler={courseLinkHandler} disabled={!row.courseId} />
               }
@@ -444,7 +433,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
 
           <Grid item xs={twoColumn ? 6 : 12}>
             <FormField
-              type="remoteDataSearchSelect"
+              type="remoteDataSelect"
               entity="Discount"
               aqlColumns="name,discountType,discountDollar,discountPercent,rounding"
               aqlFilter="((validTo >= today) or (validTo == null)) and ((validFrom <= today) or (validFrom == null))"
@@ -452,7 +441,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
               selectValueMark="id"
               selectLabelMark="name"
               name={`${item}.discountId`}
-              defaultDisplayValue={row.discountName}
+              defaultValue={row.discountName}
               onInnerValueChange={onDiscountIdChange}
               disabled={type !== "Quote" && !isNew}
               allowEmpty
@@ -525,7 +514,6 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
             onChange={onTaxIdChange}
             disabled={type !== "Quote" && !isNew}
             items={taxes || []}
-            autoWidth={false}
             required
           />
         </Grid>
@@ -548,11 +536,11 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
             <FormField
               type="money"
               name={`${item}.total`}
-              formatting="inline"
               disabled={type !== "Quote" && !isNew}
               defaultValue={total}
               onBlur={onTotalBlur}
-              hidePlaceholderInEditMode
+              debounced={false}
+              inline
             />
           </Typography>
         </div>

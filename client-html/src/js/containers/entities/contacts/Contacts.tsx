@@ -88,8 +88,8 @@ export const ContactInitial: Contact = {
   id: 0,
   student: null,
   tutor: null,
-  firstName: "",
-  lastName: "",
+  firstName: null,
+  lastName: null,
   middleName: null,
   birthDate: null,
   gender: null,
@@ -143,7 +143,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Applications", list: "application", expression: "student.contact.id" },
   { title: "Audits", list: "audit", expression: "entityIdentifier == Contact and entityId" },
   { title: "Certificates", list: "certificate", expression: "student.contact.id" },
@@ -254,7 +254,7 @@ const Contacts: React.FC<ContactsProps> = props => {
   const [findRelatedItems, setFindRelatedItems] = useState([]);
 
   useEffect(() => {
-    if (relationTypes && selection.length) {
+    if (relationTypes) {
       const relationTypesItem: FindRelatedItem = {
         title: "Contacts related as...",
         items: [{ title: "All related contacts", list: "contact", expression: "allRelatedContacts.id" }]
@@ -262,13 +262,11 @@ const Contacts: React.FC<ContactsProps> = props => {
 
       relationTypes.forEach(t => {
         if (t.relationName === t.reverseRelationName) {
-          const allSelected = selection.join(", ");
-
           relationTypesItem.items.push({
             title: t.relationName,
             list: "contact",
             // eslint-disable-next-line max-len
-            customExpression: `(fromRelationType.id = "${t.id}" and fromRelatedContacts.id in (${allSelected})) or (toRelationType.id = "${t.id}" and toRelatedContacts.id in (${allSelected}))`
+            customExpression: ids => `(fromRelationType.id = "${t.id}" and fromRelatedContacts.id in (${ids})) or (toRelationType.id = "${t.id}" and toRelatedContacts.id in (${ids}))`
           });
 
           return;

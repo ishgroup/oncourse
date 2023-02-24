@@ -67,6 +67,7 @@ export interface State {
   tags: TagsState;
   export: AvetmissExportState;
   process: ProcessState;
+  fieldProcessing: Record<string, boolean>;
   list: ListState;
   taxes: TaxesState;
   share: ShareState;

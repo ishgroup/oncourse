@@ -55,11 +55,6 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
     }
   }
 
-  unlink = () => {
-    const { index, onUnlink } = this.props;
-    onUnlink(index);
-  };
-
   renderType(lastVersion, validUrl, type) {
     const {
       classes, item, itemPath, tags, onClose, dispatch, form, onSave
@@ -69,28 +64,38 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
 
     return (
       <div>
-        <div className="mt-1 mb-2 centeredFlex">
-          <Tooltip title="Open Document URL" disableHoverListener={!validUrl}>
-            <div>
-              <ButtonBase disabled={!validUrl} onClick={(e: any) => this.openDocumentURL(e, validUrl)}>
-                <DocumentIconsChooser
-                  hovered={Boolean(validUrl)}
-                  type={lastVersion.mimeType}
-                  thumbnail={item.thumbnail}
-                />
-              </ButtonBase>
+        <Grid container rowSpacing={2} className="mt-0 mb-2 centeredFlex">
+          <Grid item xs={12} className="d-flex">
+            <Tooltip title="Open Document URL" disableHoverListener={!validUrl}>
+              <div>
+                <ButtonBase disabled={!validUrl} onClick={(e: any) => this.openDocumentURL(e, validUrl)}>
+                  <DocumentIconsChooser
+                    hovered={Boolean(validUrl)}
+                    type={lastVersion.mimeType}
+                    thumbnail={item.thumbnail}
+                  />
+                </ButtonBase>
+              </div>
+            </Tooltip>
+            <div className="flex-fill">
+              <FormField
+                type="text"
+                name={`${itemPath}.name`}
+                label="Name"
+                required
+                disabled={readOnly}
+              />
             </div>
-          </Tooltip>
-          <div className="flex-fill ml-3">
+          </Grid>
+          <Grid item xs={12}>
             <FormField
-              type="text"
-              name={`${itemPath}.name`}
-              label="Name"
-              required
+              type="tags"
+              name={`${itemPath}.tags`}
+              tags={tags}
               disabled={readOnly}
             />
-          </div>
-        </div>
+          </Grid>
+        </Grid>
 
         <DocumentShare
           validUrl={validUrl}
@@ -102,27 +107,13 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
           noPaper
         />
 
-        <Grid container columnSpacing={3} rowSpacing={2} className="mt-1 centeredFlex">
-          <Grid item xs={12}>
-            <FormField
-              type="tags"
-              name={`${itemPath}.tags`}
-              tags={tags}
-              rerenderOnEveryChange
-              disabled={readOnly}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <FormField
-              type="text"
-              name={`${itemPath}.description`}
-              label="Description"
-              multiline
-              fullWidth
-              disabled={readOnly}
-            />
-          </Grid>
-        </Grid>
+        <FormField
+          type="text"
+          name={`${itemPath}.description`}
+          label="Description"
+          multiline
+                    disabled={readOnly}
+        />
 
         <DialogActions classes={{ root: classes.actions }}>
           <Button color="primary" onClick={onClose}>

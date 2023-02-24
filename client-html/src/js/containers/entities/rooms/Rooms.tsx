@@ -13,7 +13,7 @@ import { initialize } from "redux-form";
 import { Room } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import RoomEditView from "./components/RoomEditView";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { getListTags } from "../../tags/actions";
@@ -56,7 +56,7 @@ const Initial: Room = {
   rules: []
 };
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Room and entityId" },
   {
     title: "Current classes",

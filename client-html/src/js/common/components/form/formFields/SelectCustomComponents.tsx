@@ -17,9 +17,13 @@ import { green } from "@mui/material/colors";
 import clsx from "clsx";
 import { ListItem } from "@mui/material";
 import { AppTheme } from "../../../../model/common/Theme";
+import Tooltip from "@mui/material/Tooltip";
 
 export const selectStyles = theme => createStyles({
     root: {},
+    inline: {
+      margin: theme.spacing(0, 0.5)
+    },
     bottomMargin: {
       marginBottom: `${theme.spacing(1) + 1}`
     },
@@ -83,12 +87,6 @@ export const selectStyles = theme => createStyles({
       fontWeight: 300,
       pointerEvents: "none"
     },
-    clearIcon: {
-      fontSize: "1.2rem",
-      "&:hover": {
-        cursor: "pointer",
-      }
-    },
     inputWrapper: {
       "&:hover $inputEndAdornment": {
         visibility: 'visible'
@@ -112,7 +110,7 @@ export const selectStyles = theme => createStyles({
     },
   });
 
-export const ListRow = React.memo<any>(({ data, index, style }) => {
+export const ListRow = React.memo<any>(({ data: { children, selectAdornment }, index, style }) => {
   const inlineStyle = {
     ...style,
     top: (style.top as number) + 8,
@@ -123,7 +121,11 @@ export const ListRow = React.memo<any>(({ data, index, style }) => {
 
   return (
     <ListItem button style={inlineStyle}>
-      {data[index]}
+      {((selectAdornment?.position === "start" && index === 0)
+        || (selectAdornment?.position === "end" && index === children.length))
+        ? selectAdornment.content
+        : children[index]
+      }
     </ListItem>
   );
 }, areEqual);
@@ -135,17 +137,17 @@ const OuterElementType = React.forwardRef<any, any>((props, ref) => {
   return <div ref={ref} {...props} {...outerProps} />;
 });
 
-export const ListboxComponent = React.memo<any>(props => {
+export const ListboxComponent = React.forwardRef<any, any>((props, ref) => {
   const {
-   children, rowHeight, remoteRowCount, loadMoreRows, classes, loading, fieldClasses, ...other
+   children, rowHeight, remoteRowCount, loadMoreRows, classes, loading, selectAdornment, fieldClasses, ...other
   } = props;
 
-  const itemData = React.Children.toArray(children);
+  const itemData = { selectAdornment, children: React.Children.toArray(children) };
   const theme = useTheme() as AppTheme;
   const smUp = useMediaQuery(theme.breakpoints.up('sm'), { noSsr: true });
   const itemSize = rowHeight || (smUp ? 36 : 48);
-  const itemCount = remoteRowCount > children.length ? children.length + 3 : children.length;
-  
+  const itemCount = (remoteRowCount > children.length ? children.length + 3 : children.length) + (selectAdornment ? 1 : 0);
+
   const getChildSize = child => {
     if (React.isValidElement(child) && child.type === ListSubheader) {
       return 48;
@@ -157,35 +159,47 @@ export const ListboxComponent = React.memo<any>(props => {
     if (itemCount > 8) {
       return 8 * itemSize;
     }
-    return itemData.map(getChildSize).reduce((a, b) => a + b, 0);
+    return itemData.children.map(getChildSize).reduce((a, b) => a + b, 0);
   };
 
-  const loadMoreItems = () => (loading ? undefined : loadMoreRows(itemData.length));
+  const loadMoreItems = () => (loading ? undefined : loadMoreRows(itemData.children.length));
 
-  const isItemLoaded = index => index < children.length;
+  const isItemLoaded = index => index < (children.length + (selectAdornment ? 1 : 0));
   
   return (
-    <OuterElementContext.Provider value={other}>
-      <InfiniteLoader
-        isItemLoaded={isItemLoaded}
-        itemCount={itemCount}
-        loadMoreItems={loadMoreItems}
-      >
-        {({ onItemsRendered }) => (
-          <List
-            height={getHeight() + 2 * 8}
-            width="100%"
-            className={clsx(classes.menuList, fieldClasses.selectMenu)}
-            itemData={itemData}
-            outerElementType={OuterElementType}
-            onItemsRendered={onItemsRendered}
-            itemSize={itemSize}
-            itemCount={itemCount}
-          >
-            {ListRow}
-          </List>
-        )}
-      </InfiniteLoader>
-    </OuterElementContext.Provider>
+    <div ref={ref}>
+      <OuterElementContext.Provider value={other}>
+        <InfiniteLoader
+          isItemLoaded={isItemLoaded}
+          itemCount={itemCount}
+          loadMoreItems={loadMoreItems}
+        >
+          {({ onItemsRendered }) => (
+            <List
+              height={getHeight() + 2 * 8}
+              width="100%"
+              className={clsx(classes.menuList, fieldClasses.selectMenu)}
+              itemData={itemData}
+              outerElementType={OuterElementType}
+              onItemsRendered={onItemsRendered}
+              itemSize={itemSize}
+              itemCount={itemCount}
+            >
+              {ListRow}
+            </List>
+          )}
+        </InfiniteLoader>
+      </OuterElementContext.Provider>
+    </div>
   );
 });
+
+export const NoWrapOption = (content, data, search, parentProps) => (
+  <div {...parentProps || {}}>
+    <Tooltip title={content}>
+      <div className="text-nowrap text-truncate">
+        {content}
+      </div>
+    </Tooltip>
+  </div>
+);

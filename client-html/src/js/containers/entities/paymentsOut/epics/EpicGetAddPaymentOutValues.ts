@@ -1,31 +1,46 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_ADD_PAYMENT_OUT_VALUES, GET_ADD_PAYMENT_OUT_VALUES_FULFILLED } from "../actions";
-import { DataResponse, PaymentOut } from "@api/model";
+import { GET_ADD_PAYMENT_OUT_VALUES, getActivePaymentOutMethods } from "../actions";
+import { DataResponse } from "@api/model";
 import EntityService from "../../../../common/services/EntityService";
+import { PaymentOutModel } from "../reducers/state";
+import { getAmountToAllocate } from "../utils";
+import { setListEditRecord } from "../../../../common/components/list-view/actions";
+import { initialize } from "redux-form";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
+import { format } from "date-fns";
+import history from "../../../../constants/History";
 
-let formData: PaymentOut;
-
-const request: EpicUtils.Request = {
+const request: EpicUtils.Request<{ dataResponse: DataResponse, formData: PaymentOutModel  }> = {
   type: GET_ADD_PAYMENT_OUT_VALUES,
   hideLoadIndicator: true,
-  getData: contact => {
-    const { payeeId } = contact;
-    formData = contact;
+  getData: async formData => {
+    const { payeeId } = formData;
+
+    let dataResponse = null;
 
     if (payeeId) {
-      return EntityService.getPlainRecords(
+      dataResponse = await EntityService.getPlainRecords(
         "Invoice",
         "dateDue,invoiceNumber,amountOwing",
         `contact.id == ${payeeId} and amountOwing < 0`
       );
     }
 
-    return Promise.resolve(null);
+    return Promise.resolve({ formData, dataResponse });
   },
-  processData: (response: DataResponse) => {
-    if (response && response.rows.length) {
-      formData.invoices = response.rows.map(({ id, values }) => ({
+  processData: ({ dataResponse, formData }, s, { invoiceId }) => {
+    if (dataResponse && dataResponse.rows.length) {
+      formData.invoices = dataResponse.rows.map(({ id, values }) => ({
         id: Number(id),
         payable: false,
         dateDue: values[0],
@@ -35,11 +50,30 @@ const request: EpicUtils.Request = {
       }));
     }
 
+    const invoiceIndex = formData.invoices?.findIndex(i => i.id === Number(invoiceId));
+    if (invoiceIndex !== -1 && formData.invoices[invoiceIndex]) {
+      const amount = Math.abs(formData.invoices[invoiceIndex].amountOwing);
+      const amountToAllocate = getAmountToAllocate(formData.invoices, amount);
+      formData.amount = amount;
+      formData.invoices[invoiceIndex].payable = true;
+      formData.invoices[invoiceIndex].outstanding = formData.invoices[invoiceIndex].outstanding + amountToAllocate;
+    }
+
+    formData.datePayed = format(Date.now(), III_DD_MMM_YYYY);
+    formData.dateBanked = "";
+
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.delete("invoiceId");
+
+    history.replace({
+      pathname: history.location.pathname,
+      search: decodeURIComponent(urlParams.toString())
+    });
+
     return [
-      {
-        type: GET_ADD_PAYMENT_OUT_VALUES_FULFILLED,
-        payload: { ...formData }
-      }
+      getActivePaymentOutMethods(),
+      initialize(LIST_EDIT_VIEW_FORM_NAME, formData),
+      setListEditRecord(formData)
     ];
   }
 };

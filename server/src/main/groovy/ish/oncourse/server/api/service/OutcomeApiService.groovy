@@ -97,7 +97,7 @@ class OutcomeApiService extends EntityApiService<OutcomeDTO, Outcome, OutcomeDao
             validator.throwClientErrorException(id, 'isPriorLearning', 'Outcome must be related to enrolment or prior learning')
         }
 
-        if (outcome != null && !outcome.certificateOutcomes.empty) {
+        if (outcome != null && !outcome.certificateOutcomes.findAll {!it.certificate.revokedOn}.empty) {
             if ((outcome.module == null && outcomeDTO.moduleId != null) || outcome.module.id != outcomeDTO.moduleId) {
                 validator.throwClientErrorException(id, 'moduleId', 'Module cannot be changed for outcome used in certificate')
             }

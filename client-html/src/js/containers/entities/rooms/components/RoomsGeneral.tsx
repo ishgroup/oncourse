@@ -121,13 +121,14 @@ class RoomsGeneral extends React.PureComponent<any, any> {
                 label="Seated Capacity"
                 required
                 normalize={normalizeSeatedCapacity}
+                debounced={false}
               />
             </Grid>
 
             <Grid item xs={layoutArray[4].xs}>
               {sites && (
                 <FormField
-                  type="searchSelect"
+                  type="select"
                   name="siteId"
                   label="Site"
                   selectLabelMark="name"

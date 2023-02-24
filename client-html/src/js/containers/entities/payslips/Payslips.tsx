@@ -13,7 +13,6 @@ import {
   getFilters,
   setListEditRecord
 } from "../../../common/components/list-view/actions";
-import { defaultContactName } from "../contacts/utils";
 import PayslipsEditView from "./components/PayslipsEditView";
 import ListView from "../../../common/components/list-view/ListView";
 import { getListTags } from "../../tags/actions";
@@ -22,7 +21,7 @@ import { checkPermissions } from "../../../common/actions";
 import { State } from "../../../reducers/state";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 
 const Initial: Payslip = {
   status: "New",
@@ -62,12 +61,12 @@ const filterGroups: FilterGroup[] = [
   },
 ];
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Payslip and entityId" },
   { title: "Contacts", list: "contact", expression: "payslips.id" },
   { title: "Classes", list: "class", expression: "costs.paylines.payslip.id" }
 ];
-const nameCondition = (values: Payslip) => defaultContactName(values.tutorFullName);
+const nameCondition = (values: Payslip) => values.tutorFullName;
 
 const manualLink = getManualLink("payroll");
 

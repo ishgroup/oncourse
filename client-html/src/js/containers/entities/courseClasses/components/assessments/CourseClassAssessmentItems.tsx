@@ -24,7 +24,6 @@ import FormField from "../../../../../common/components/form/formFields/FormFiel
 import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { stubComponent } from "../../../../../common/utils/common";
-import { defaultContactName } from "../../../contacts/utils";
 import { AssessmentsSubmissionType } from "./AssessmentSubmissionIconButton";
 import SubmissionModal from "./SubmissionModal";
 import styles from "./styles";
@@ -113,7 +112,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
       } as StudentForRender];
     }, []);
 
-    result.sort((a, b) => (a.studentName > b.studentName ? 1 : -1));
+    result.sort((a, b) => (a.studentName.split(" ")[1] ? a.studentName.split(" ")[1] > b.studentName.split(" ")[1] ? 1 : -1 : 1));
 
     setStudentsForRender(result);
   }, [courseClassEnrolments, row.submissions]);
@@ -368,7 +367,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
                 color="secondary"
               />
             )}
-            label={defaultContactName(t.tutorName)}
+            label={t.tutorName}
           />
         </div>
       );
@@ -404,6 +403,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
               gradeType={gradeType}
             />
             <SubmissionModal
+              dispatch={dispatch}
               modalProps={modalProps}
               tutors={submissionTutors}
               title={title}
@@ -419,7 +419,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
             <Field name={`${item}.submissions`} component={submissionFieldStub} />
             <Field name={`${item}.contactIds`} component={tutorsFieldStub} />
             <FormField
-              type="remoteDataSearchSelect"
+              type="remoteDataSelect"
               entity="Assessment"
               aqlFilter={assessmentAql}
               aqlColumns={assessmentAqlCols}
@@ -429,13 +429,12 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
               selectLabelMark="code"
               onInnerValueChange={onCodeChange}
               rowHeight={36}
-              fullWidth
-              required
+                            required
             />
           </Grid>
           <Grid item xs={twoColumn ? 6 : 12}>
             <FormField
-              type="remoteDataSearchSelect"
+              type="remoteDataSelect"
               entity="Assessment"
               aqlFilter={assessmentAql}
               aqlColumns={assessmentAqlCols}
@@ -445,8 +444,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
               selectLabelMark="name"
               onInnerValueChange={onNameChange}
               rowHeight={36}
-              fullWidth
-              required
+                            required
             />
           </Grid>
           <Grid item xs={twoColumn ? 6 : 12}>
@@ -535,6 +533,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
           <Grid container xs={12} className={classes.items}>
             {studentsForRender.map((elem, index) => (
               <CourseClassAssessmentStudent
+                dispatch={dispatch}
                 elem={elem}
                 index={index}
                 onChangeStatus={onChangeStatus}

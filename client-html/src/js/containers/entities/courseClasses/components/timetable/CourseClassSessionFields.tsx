@@ -19,7 +19,7 @@ import {
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import {
-  ClashType, CourseClassTutor, SessionWarning, Site, TutorAttendance,
+  ClashType, CourseClassTutor, SessionWarning, TutorAttendance,
 } from "@api/model";
 import ErrorMessage from "../../../../../common/components/form/fieldMessage/ErrorMessage";
 import FormField from "../../../../../common/components/form/formFields/FormField";
@@ -33,6 +33,7 @@ import { TimetableSession } from "../../../../../model/timetable";
 import { ClassCostExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 import CourseClassTutorRooster from "./CourseClassTutorRooster";
 import { setShiftedTutorAttendances } from "../../utils";
+import { NoWrapOption } from "../../../../../common/components/form/formFields/SelectCustomComponents";
 
 interface Props {
   form: string;
@@ -51,6 +52,8 @@ const roomLabel = room => {
 
   return room?.name;
 };
+
+const getSiteAndRoomLabel = session => `${session?.site || ""}${session?.room ? ` - ${session?.room}` : ""}`;
 
 const validateDuration = value => (value < 5 || value > 1440
     ? "Each entry in the timetable cannot be shorter than 5 minutes or longer than 24 hours."
@@ -239,19 +242,19 @@ const CourseClassSessionFields: React.FC<Props> = ({
         </Grid>
       ) }
 
-      <Grid item xs={6}>
+      <Grid item xs={12}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           entity="Room"
           name={`sessions[${session.index}].roomId`}
           label="Site and room"
           aqlColumns="name,site.name,site.localTimezone,site.id"
           selectValueMark="id"
           selectLabelCondition={roomLabel}
-          defaultDisplayValue={`${session.site} - ${session.room}`}
+          defaultValue={getSiteAndRoomLabel(session)}
           labelAdornment={<LinkAdornment linkHandler={openRoomLink} link={session.roomId} disabled={!session.roomId} />}
           onInnerValueChange={onRoomIdChange}
-          rowHeight={36}
+          itemRenderer={NoWrapOption}
           hasError={Boolean(warningTypes.Room.length)}
           allowEmpty
         />
@@ -285,16 +288,14 @@ const CourseClassSessionFields: React.FC<Props> = ({
           type="multilineText"
           name={`sessions[${session.index}].publicNotes`}
           label="Public notes"
-          fullWidth
-        />
+                  />
       </Grid>
       <Grid item xs={6}>
         <FormField
           type="multilineText"
           name={`sessions[${session.index}].privateNotes`}
           label="Private notes"
-          fullWidth
-        />
+                  />
       </Grid>
     </Grid>
   );

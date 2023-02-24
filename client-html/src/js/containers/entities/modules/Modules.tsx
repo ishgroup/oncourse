@@ -9,7 +9,7 @@ import { Dispatch } from "redux";
 import { initialize } from "redux-form";
 import { Module } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import ModulesEditView from "./components/ModulesEditView";
 import {
   clearListState,
@@ -53,7 +53,7 @@ const Initial: Module = {
   title: null
 };
 
-const findRelatedGroup: any = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Module and entityId" },
   { title: "Certificates", list: "certificate", expression: "certificateOutcomes.outcome.module.id" },
   { title: "Classes", list: "class", expression: "course.modules.id" },

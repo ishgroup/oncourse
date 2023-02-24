@@ -8,7 +8,7 @@ import { MenuTag } from "../../../../../../model/tags";
 import ListTagGroup from "./ListTagGroup";
 import { State } from "../../../../../../reducers/state";
 import { updateTableModel } from "../../../actions";
-import { COLUMN_WITH_COLORS } from "../../list/utils";
+import { COLUMN_WITH_COLORS } from "../../list/constants";
 
 const styles = theme =>
   createStyles({

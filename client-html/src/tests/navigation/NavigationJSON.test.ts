@@ -1,4 +1,4 @@
-import navigation from "../../js/common/components/navigation/navigation.json";
+import navigation from "../../js/common/components/navigation/data/navigation.json";
 
 describe("test navigation JSON validity", () => {
   it("all categories should have features", () => expect(navigation.categories).not.toEqual(

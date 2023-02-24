@@ -15,9 +15,8 @@ import {
   getFilters,
  } from "../../../common/components/list-view/actions";
 import ListView from "../../../common/components/list-view/ListView";
-import { defaultContactName } from "../contacts/utils";
 import CorporatePassEditView from "./components/CorporatePassEditView";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getEntityTags } from "../../tags/actions";
@@ -51,7 +50,7 @@ const Initial: CorporatePass = {
   linkedSalables: []
 };
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == CorporatePass and entityId" },
   { title: "Classes", list: "class", expression: "corporatePassCourseClass.corporatePass.id" },
   { title: "Contacts", list: "contact", expression: "corporatePasses.id" },
@@ -100,7 +99,7 @@ class CorporatePasses extends React.Component<any, any> {
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         editViewProps={{
-          nameCondition: pass => defaultContactName(pass.contactFullName),
+          nameCondition: pass => pass.contactFullName,
           manualLink,
           hideTitle: true
         }}

@@ -47,4 +47,11 @@ class EmailTemplateDao implements AutomationDao<EmailTemplate> {
                 .orderBy(EmailTemplate.NAME.asc())
                 .select(context)
     }
+
+    @Override
+    List<EmailTemplate> getByName(ObjectContext context, String name) {
+        ObjectSelect.query(EmailTemplate)
+                .where(EmailTemplate.NAME.eq(name))
+                .select(context)
+    }
 }

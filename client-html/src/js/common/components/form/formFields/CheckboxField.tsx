@@ -11,6 +11,7 @@ import React, { useCallback } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import withStyles from "@mui/styles/withStyles";
 import clsx from "clsx";
+import { CheckboxFieldProps } from "../../../../model/common/Fields";
 
 const getValue = (value, stringValue) => {
   if (!stringValue) {
@@ -43,7 +44,7 @@ const StyledCheckboxBase = props => {
   return (
     <Checkbox
       classes={{
-        root: clsx(classes.root, uncheckedClass, className)
+        root: clsx(classes.root, uncheckedClass, className),
       }}
       {...rest}
     />
@@ -52,11 +53,7 @@ const StyledCheckboxBase = props => {
 
 export const StyledCheckbox = withStyles(styles)(StyledCheckboxBase);
 
-export const CheckboxField = props => {
-  const {
-    input, color, disabled, stringValue, className, uncheckedClass, onChangeHandler, stopPropagation
-  } = props;
-
+export const CheckboxField = ({ input, color, disabled, stringValue, className, uncheckedClass, onChangeHandler, stopPropagation }: CheckboxFieldProps) => {
   const onChange = useCallback(
     (e, value) => {
       let checked = value;
@@ -79,7 +76,7 @@ export const CheckboxField = props => {
       checked={getValue(input.value, stringValue)}
       onChange={onChange}
       color={color}
-      disabled={typeof disabled === "function" ? disabled() : disabled}
+      disabled={disabled}
       className={className}
       uncheckedClass={uncheckedClass}
       onClick={stopPropagation ? e => e.stopPropagation() : undefined}

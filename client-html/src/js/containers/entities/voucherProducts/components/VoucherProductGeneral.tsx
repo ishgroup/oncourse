@@ -35,6 +35,7 @@ import { useAppSelector } from "../../../../common/utils/hooks";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import { ConfirmProps } from "../../../../model/common/Confirm";
 
 interface VoucherProductGeneralProps extends EditViewProps<VoucherProduct> {
   accounts?: Account[];
@@ -216,6 +217,28 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
   const expenseAccounts = useMemo(() => accounts.filter(a => a.type === "expense"), [accounts]);
 
   const tags = useAppSelector(state => state.tags.entityTags["VoucherProduct"]);
+  
+  const courseHandlers = useMemo(() => {
+    if (values.soldVouchersCount === 0) {
+      return {
+        onAdd: onAddCourses(props),
+        onDelete: onDeleteCourse(props),
+        onDeleteAll: onDeleteAllCourses(props)
+      };
+    }
+    
+    const confirmProps: ConfirmProps = {
+      title: "INFORMATION",
+      confirmMessage: "Any changes you make to the courses that can be enrolled in with this voucher type will also affect vouchers of this type that have already been sold",
+      confirmButtonText: "Edit"
+    };
+    
+    return {
+      onAdd: arg => showConfirm({ ...confirmProps, onConfirm: () => onAddCourses(props).call(null, arg) }),
+      onDelete: arg => showConfirm({ ...confirmProps, onConfirm: () => onDeleteCourse(props).call(null, arg) }),
+      onDeleteAll: () => showConfirm({ ...confirmProps, onConfirm: onDeleteAllCourses(props) })
+    };
+  }, [ values, dispatch, form, foundCourses]);
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pt-3 pr-3">
@@ -246,18 +269,18 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
             <Grid container columnSpacing={3} rowSpacing={2}>
               <Grid item xs={twoColumn ? 2 : 12}>
                 <FormField
+                  type="text"
                   label="SKU"
                   name="code"
                   required
-                  fullWidth
-                />
+                 />
               </Grid>
               <Grid item xs={twoColumn ? 4 : 12}>
                 <FormField
+                  type="text"
                   label="Name"
                   name="name"
                   required
-                  fullWidth
                 />
               </Grid>
             </Grid>
@@ -312,11 +335,10 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
           <FormField
             type="number"
             name="expiryDays"
-            color="primary"
-            hidePlaceholderInEditMode
             validate={[validateSingleMandatoryField, validateNonNegative]}
             parse={parseFloatValue}
-            formatting="inline"
+            debounced={false}
+            inline
           />
           days after purchase
         </Typography>
@@ -346,15 +368,12 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
             onSearch={searchCourses}
             clearSearchResult={clearCourses}
             pending={pendingCourses}
-            onAdd={onAddCourses(props)}
-            onDelete={onDeleteCourse(props)}
-            onDeleteAll={onDeleteAllCourses(props)}
             sort={sortCourses}
             resetSearch={submitSucceeded}
             searchType="withToggle"
-            disabled={values && values.soldVouchersCount > 0}
             aqlEntities={["Course"]}
             aqlQueryError={coursesError}
+            {...courseHandlers}
           />
         </div>
         <Typography color="inherit" component="div">

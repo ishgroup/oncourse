@@ -16,7 +16,7 @@ import FormField from "../../../../../common/components/form/formFields/FormFiel
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import PayRates from "./PayRates";
@@ -74,6 +74,7 @@ const TutorRolesForm = React.memo<Props>(
           fields={(
             <Grid item xs={12}>
               <FormField
+                type="text"
                 name="name"
                 label="Name"
                 required
@@ -107,7 +108,7 @@ const TutorRolesForm = React.memo<Props>(
                   />
                 </Grid>
                 <Grid item xs={3}>
-                  <FormField type="switch" name="active" label="Enabled" color="primary" fullWidth />
+                  <FormField type="switch" name="active" label="Enabled" color="primary" />
                 </Grid>
               </Grid>
             </Grid>

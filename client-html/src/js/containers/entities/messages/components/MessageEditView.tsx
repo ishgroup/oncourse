@@ -16,7 +16,6 @@ import CardContent from "@mui/material/CardContent";
 import { format } from "date-fns";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import { III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
-import { defaultContactName } from "../../contacts/utils";
 import { ContactLinkAdornment } from "../../../../common/components/form/FieldAdornments";
 
 interface MessageEditViewProps {
@@ -31,7 +30,6 @@ interface MessageEditViewProps {
   rootEntity?: string;
   twoColumn?: boolean;
   showConfirm?: any;
-  openNestedEditView?: any;
   manualLink?: string;
 }
 
@@ -56,11 +54,11 @@ const MessageEditView = React.memo<MessageEditViewProps>(props => {
 
   return (
     <div className="p-3 saveButtonTableOffset">
-      <Grid container columnSpacing={3} rowSpacing={2}>
+      <Grid container columnSpacing={3} rowSpacing={2} className="mb-2">
         {!twoColumn && (<Grid item xs={12}><Uneditable value={values.subject} label="Subject" /></Grid>)}
         <Grid item xs={twoColumn ? 2 : 6}>
           <Uneditable
-            value={defaultContactName(values.sentToContactFullname)}
+            value={values.sentToContactFullname}
             label="Sent to"
             labelAdornment={(
               <ContactLinkAdornment id={values?.contactId} />
@@ -71,7 +69,7 @@ const MessageEditView = React.memo<MessageEditViewProps>(props => {
           <Uneditable value={createdOn} label="Created on" />
         </Grid>
       </Grid>
-      <Grid container columnSpacing={3} spacing={2}>
+      <Grid container columnSpacing={3} rowSpacing={2}>
         {values.message && (
           <Grid item xs={twoColumn ? 6 : 12}>
             <Typography variant="caption" color="textSecondary">

@@ -43,11 +43,11 @@ const fundingSourceValues = Object.keys(ClassFundingSource).map(mapSelectItems);
 
 const CourseClassVetTab = React.memo<Props>(props => {
   const {
-    contracts, tabIndex, expanded, setExpanded, twoColumn, values
+    contracts, tabIndex, expanded, setExpanded, twoColumn, values, syncErrors
   } = props;
   return (
     <div className="pl-3 pr-3">
-      <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
+      <ExpandableContainer formErrors={syncErrors} index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
         <Grid container columnSpacing={3} rowSpacing={2}>
           <Grid item xs={4}>
             <FormControlLabel
@@ -95,7 +95,6 @@ const CourseClassVetTab = React.memo<Props>(props => {
               name="vetFundingSourceStateID"
               label="Default funding source state"
               validate={validateVetFundingSourceState}
-              fullWidth
             />
           </Grid>
 
@@ -105,7 +104,6 @@ const CourseClassVetTab = React.memo<Props>(props => {
               name="detBookingId"
               label="DET Booking Identifier (NSW)/Contracted Program of Study (WA)"
               validate={validateDETBookingIdentifier}
-              fullWidth
             />
           </Grid>
 
@@ -116,7 +114,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               name="vetCourseSiteID"
               label="Course site identifier (NSW)"
               validate={validateCourseSiteIdentifier}
-              fullWidth
+              debounced={false}
             />
           </Grid>
 
@@ -128,7 +126,6 @@ const CourseClassVetTab = React.memo<Props>(props => {
               name="vetPurchasingContractID"
               label="Default purchasing contract identifier"
               validate={validateDefaultPurchasingContractIdentifier}
-              fullWidth
             />
           </Grid>
 
@@ -138,7 +135,6 @@ const CourseClassVetTab = React.memo<Props>(props => {
               name="vetPurchasingContractScheduleID"
               label="Default purchasing contract schedule identifier"
               validate={validatePurchasingContractScheduleIdentifier}
-              fullWidth
             />
           </Grid>
 
@@ -152,6 +148,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               normalize={normalizeNumber}
               name="qualificationHours"
               label="Qualification hours"
+              debounced={false}
               disabled
             />
           </Grid>
@@ -163,6 +160,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               disabled
               name="nominalHours"
               label="Nominal hours"
+              debounced={false}
             />
           </Grid>
 
@@ -173,6 +171,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               name="classroomHours"
               disabled
               label="Classroom hours"
+              debounced={false}
             />
           </Grid>
 
@@ -183,6 +182,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               name="studentContactHours"
               disabled
               label="Student contact hours"
+              debounced={false}
             />
           </Grid>
 

@@ -121,7 +121,6 @@ const QueryCardContent = props => {
           <FormField
             name={`${name}.queryClosureReturnValue`}
             type="text"
-            value={field.queryClosureReturnValue}
             label="Returned results name"
             validate={validateQueryClosureReturnValue}
           />
