@@ -43,8 +43,7 @@ const SaveAsNewAutomationModal = React.memo<Props & InjectedFormProps>(
               name="keyCode"
               validate={validateKeycode}
               required
-              fullWidth
-            />
+                          />
 
             <FormField
               type="text"
@@ -53,8 +52,7 @@ const SaveAsNewAutomationModal = React.memo<Props & InjectedFormProps>(
               validate={validateNameField || undefined}
               className="mt-2"
               required
-              fullWidth
-            />
+                          />
 
           </DialogContent>
 

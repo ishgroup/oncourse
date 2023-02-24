@@ -70,6 +70,7 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
                   name={this.formModel.ClassMinPlaces.uniqueKey}
                   label="Minimum places"
                   parse={val => val || "0"}
+                  debounced={false}
                 />
               </Grid>
 
@@ -90,6 +91,7 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
                   name={this.formModel.ClassMaxPlaces.uniqueKey}
                   label="Maximum places"
                   parse={val => val || "0"}
+                  debounced={false}
                 />
               </Grid>
 

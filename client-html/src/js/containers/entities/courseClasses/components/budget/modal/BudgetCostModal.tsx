@@ -162,8 +162,7 @@ const BudgetCostModal = React.memo<CourseClassCostModalProps & InjectedFormProps
       <Dialog
         open={opened}
         onClose={onClose}
-        fullWidth
-        maxWidth="md"
+                maxWidth="md"
         classes={{
           paper: "overflow-auto"
         }}

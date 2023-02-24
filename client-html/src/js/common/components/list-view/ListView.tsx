@@ -31,6 +31,7 @@ import FullScreenEditView from "./components/full-screen-edit-view/FullScreenEdi
 import {
   clearListState,
   deleteCustomFilter,
+  findRelatedByFilter,
   getRecords,
   setFilterGroups,
   setListCreatingNew,
@@ -123,6 +124,7 @@ interface Props extends Partial<ListState> {
   listProps: TableListProps;
   rootEntity: EntityName;
   EditViewContent: any;
+  dispatch?: Dispatch;
   onLoadMore?: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
   selection?: string[];
@@ -138,6 +140,7 @@ interface Props extends Partial<ListState> {
   createButtonDisabled?: boolean;
   fetch?: Fetch;
   menuTags?: MenuTag[];
+  scriptsFilterColumn?: string;
   filterEntity?: EntityName;
   filterGroups?: FilterGroup[];
   filterGroupsInitial?: FilterGroup[];
@@ -185,6 +188,7 @@ interface Props extends Partial<ListState> {
   customGetAction?: any;
   customUpdateAction?: any;
   preformatBeforeSubmit?: AnyArgFunction;
+  findRelatedByFilter?: AnyArgFunction;
   userAQLSearch?: string;
   listSearch?: string;
   creatingNew?: boolean;
@@ -250,8 +254,9 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       sendGAEvent,
       rootEntity,
       setEntity,
-      match: { url },
+      match: { url, params },
       filterGroupsInitial = [],
+      selection,
       getListViewPreferences
     } = this.props;
 
@@ -287,6 +292,11 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
         search: searchParams.toString(),
         pathname: url
       });
+    }
+
+    if (params.id && !selection.includes(params.id)) {
+      this.ignoreCheckDirtyOnSelection = true;
+      this.onSelection([params.id]);
     }
   }
 
@@ -387,11 +397,6 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
         }
       } else {
         this.onCreateRecord();
-      }
-
-      if (!selection.includes(params.id)) {
-        this.ignoreCheckDirtyOnSelection = true;
-        this.onSelection([params.id]);
       }
     }
 
@@ -603,6 +608,10 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       match: { url, params },
       location: { search }
     } = this.props;
+
+    if (newSelection.length === 1 && selection.length === 1 && newSelection[0] === selection[0]) {
+      return;
+    }
 
     const { threeColumn } = this.state;
 
@@ -1044,10 +1053,13 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       filterEntity,
       emailTemplatesWithKeyCode,
       scripts,
-      recepients,
       listProps,
       onLoadMore,
-      currency
+      currency,
+      dispatch,
+      getScripts,
+      findRelatedByFilter,
+      scriptsFilterColumn
     } = this.props;
 
     const {
@@ -1171,7 +1183,9 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
             )}
           </div>
           <BottomAppBar
-            recepients={recepients}
+            dispatch={dispatch}
+            findRelatedByFilter={findRelatedByFilter}
+            getScripts={getScripts}
             scripts={scripts}
             emailTemplatesWithKeyCode={emailTemplatesWithKeyCode}
             createButtonDisabled={createButtonDisabled}
@@ -1193,7 +1207,6 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
             changeQueryView={this.changeQueryView}
             switchLayout={this.switchLayoutWithDirtyCheck}
             onCreate={this.onCreateRecordWithDirtyCheck}
-            toggleFullWidthView={this.toggleFullWidthView}
             findRelated={findRelated}
             CogwheelAdornment={CogwheelAdornment}
             showConfirm={this.showConfirm}
@@ -1201,6 +1214,7 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
             records={records}
             searchComponentNode={this.searchComponentNode}
             searchQuery={searchQuery}
+            scriptsFilterColumn={scriptsFilterColumn}
           />
         </div>
       </div>
@@ -1219,6 +1233,7 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
+  dispatch,
   sendGAEvent: (event: GAEventTypes, screen: string, time?: number) => dispatch(pushGTMEvent(event, screen, time)),
   setEntity: entity => dispatch(setListEntity(entity)),
   resetEditView: () => {
@@ -1256,7 +1271,8 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   onSave: (item: any) => dispatch(updateEntityRecord(item.id, ownProps.rootEntity, item)),
   getEditRecord: (id: number) => dispatch(ownProps.customGetAction 
     ? ownProps.customGetAction(id) 
-    : getEntityRecord(id, ownProps.rootEntity))
+    : getEntityRecord(id, ownProps.rootEntity)),
+  findRelatedByFilter: (filter, list) => dispatch(findRelatedByFilter(filter, list))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(ListView))) as React.FC<Props>;

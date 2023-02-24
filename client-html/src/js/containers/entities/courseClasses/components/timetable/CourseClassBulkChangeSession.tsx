@@ -119,7 +119,6 @@ const BulkItemWrapper: React.FC<any> = props => {
                 type="checkbox"
                 name={`${name}Checked`}
                 color="secondary"
-                checked={opened}
                 onChange={onChange}
                 debounced={false}
               />
@@ -298,8 +297,7 @@ const CourseClassBulkChangeSessionForm = props => {
       disableEnforceFocus
       disableRestoreFocus
       maxWidth="md"
-      fullWidth
-      classes={{
+            classes={{
         paper: classes.paperDialog
       }}
     >
@@ -342,7 +340,7 @@ const CourseClassBulkChangeSessionForm = props => {
               <Grid item xs={12}>
                 <BulkItemWrapper classes={classes} title="Location" name="location">
                   <FormField
-                    type="remoteDataSearchSelect"
+                    type="remoteDataSelect"
                     entity="Room"
                     name="roomId"
                     label="Site and room"
@@ -360,8 +358,6 @@ const CourseClassBulkChangeSessionForm = props => {
                   <Grid container>
                     <Grid item xs={6}>
                       <EditInPlaceDurationField
-                        label="Actual payable duration"
-                        id="actualPayableDuration"
                         meta={{}}
                         input={{
                           value: payableDurationValue,
@@ -370,7 +366,6 @@ const CourseClassBulkChangeSessionForm = props => {
                           onFocus: stubFunction,
                           name: "actualPayableDuration"
                         }}
-                        hideLabel
                       />
                     </Grid>
                   </Grid>
@@ -396,7 +391,6 @@ const CourseClassBulkChangeSessionForm = props => {
                         }
                         timezone={initial.siteTimezone || classTimezone}
                         persistValue
-                        hideLabel
                       />
                     </Grid>
                   </Grid>
@@ -407,8 +401,6 @@ const CourseClassBulkChangeSessionForm = props => {
                   <Grid container>
                     <Grid item xs={6}>
                       <EditInPlaceDurationField
-                        label="Duration"
-                        id="duration"
                         meta={{
                           error: durationError,
                           invalid: Boolean(durationError)
@@ -420,7 +412,6 @@ const CourseClassBulkChangeSessionForm = props => {
                           onFocus: stubFunction,
                           name: "duration"
                         }}
-                        hideLabel
                       />
                     </Grid>
                   </Grid>
@@ -433,7 +424,7 @@ const CourseClassBulkChangeSessionForm = props => {
                       <FormField
                         type="number"
                         name="moveForward"
-                        formatting="inline"
+                        inline
                         step="1"
                         className={classes.bulkChangeDaysInput}
                         onChange={onMoveLater}
@@ -455,7 +446,7 @@ const CourseClassBulkChangeSessionForm = props => {
                       <FormField
                         name="moveBackward"
                         type="number"
-                        formatting="inline"
+                        inline
                         step="1"
                         className={classes.bulkChangeDaysInput}
                         onChange={onMoveEarlier}

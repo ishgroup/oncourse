@@ -125,6 +125,13 @@ public class ReportApiService extends AutomationApiService<ReportDTO, Report, Re
         return ObjectSelect.columnQuery(Report.class, Report.PREVIEW).where(Report.ID.eq(id)).selectOne(cayenneService.getNewContext());
     }
 
+    public void deletePreview(Long id) {
+        var context = cayenneService.getNewContext();
+        var report = getEntityAndValidateExistence(context, id);
+        report.setPreview(null);
+        context.commitChanges();
+    }
+
     protected ReportDTO createDto() {
         return new ReportDTO();
     }

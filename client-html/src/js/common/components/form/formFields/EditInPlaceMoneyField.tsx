@@ -11,6 +11,8 @@ import clsx from "clsx";
 import EditInPlaceField from "./EditInPlaceField";
 import { State } from "../../../../reducers/state";
 import { formatCurrency, normalizeNumber } from "../../../utils/numbers/numbersNormalizing";
+import { EditInPlaceFieldProps } from "../../../../model/common/Fields";
+import { Dispatch } from "redux";
 
 interface NumberFormatCustomProps {
   onChange?: (event: { target: { value: string } }) => void;
@@ -37,32 +39,28 @@ const NumberFormatCustom = React.forwardRef<any, NumberFormatCustomProps>((props
 );
 });
 
-const EditInPlaceMoneyField: React.FunctionComponent<any> = props => {
-  // prevent dispatch and type from spreading
-  const {
-    currencySymbol, InputProps, dispatch, type, className, ...restProps
-} = props;
+interface Props extends EditInPlaceFieldProps {
+  currencySymbol?: string;
+  dispatch?: Dispatch;
+}
 
-  return (
-    <EditInPlaceField
-      {...restProps}
-      preformatDisplayValue={value => formatCurrency(value, currencySymbol)}
-      InputProps={{
-        ...InputProps,
-        startAdornment: <InputAdornment position="start">{currencySymbol}</InputAdornment>,
-        inputComponent: NumberFormatCustom
-      }}
-      className={clsx("money", className)}
-      type="money"
-    />
-  );
-};
+const preformatDisplayValue = value => value || value === 0 ? formatCurrency(value, "") : value;
+
+const EditInPlaceMoneyField = ({ currencySymbol, InputProps, dispatch, className, ...restProps }: Props) => (
+  <EditInPlaceField
+    {...restProps}
+    preformatDisplayValue={preformatDisplayValue}
+    InputProps={{
+      ...InputProps,
+      startAdornment: <InputAdornment position="start">{currencySymbol}</InputAdornment>,
+      inputComponent: NumberFormatCustom as any,
+    }}
+    className={clsx("money", className)}
+  />
+);
 
 const mapStateToProps = (state: State) => ({
   currencySymbol: state.currency && state.currency.shortCurrencySymbol
 });
 
-export default connect<any, any, any>(
-  mapStateToProps,
-  null
-)(EditInPlaceMoneyField);
+export default connect(mapStateToProps)(EditInPlaceMoneyField);

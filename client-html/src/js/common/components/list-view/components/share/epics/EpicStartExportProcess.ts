@@ -8,8 +8,9 @@ import { Epic } from "redux-observable";
 import { ExportRequest, OutputType } from "@api/model";
 import * as EpicUtils from "../../../../../epics/EpicUtils";
 import ExportService from "../services/ExportService";
-import { GET_EXPORT_TEMPLATES, getExportResult, getExportTemplates, POST_EXPORT_REQUEST } from "../actions";
-import { START_PROCESS, UPDATE_PROCESS } from "../../../../../actions";
+import { getExportResult, getExportTemplates, POST_EXPORT_REQUEST } from "../actions";
+import { clearProcess, START_PROCESS, UPDATE_PROCESS } from "../../../../../actions";
+import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErrorHandler";
 
 const request: EpicUtils.Request<any, { exportRequest: ExportRequest; outputType: OutputType, isClipboard: boolean }> = {
   type: POST_EXPORT_REQUEST,
@@ -30,7 +31,11 @@ const request: EpicUtils.Request<any, { exportRequest: ExportRequest; outputType
           ]
         }
       }
-    ]
+    ],
+  processError: response => [
+    clearProcess(),
+    ...FetchErrorHandler(response)
+  ]
 };
 
 export const EpicStartExportProcess: Epic<any, any> = EpicUtils.Create(request);

@@ -30,6 +30,8 @@ import ish.oncourse.server.security.api.PermissionModule;
 public class AngelServer {
     public static final String UTF_8 = "UTF-8";
 
+    public static final String ONCOURSE_CONFIG_PATH = "onCourse.yml";
+
     public static void main(String[] args) {
 
         System.getProperty("file.encodin", UTF_8);
@@ -37,7 +39,7 @@ public class AngelServer {
 
         Bootique.app()
                 //--server command to run jetty server
-                .args("--server", "--config=classpath:application.yml", "--config=onCourse.yml")
+                .args("--server", "--config=classpath:application.yml", "--config=" + ONCOURSE_CONFIG_PATH)
                 .module(AngelModule.class)
                 .module(PermissionModule.class)
                 .module(CayenneModule.class)

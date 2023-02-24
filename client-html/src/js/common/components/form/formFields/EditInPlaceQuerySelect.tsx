@@ -12,11 +12,9 @@ import QueryBuilder from "@mui/icons-material/QueryBuilder";
 import Autocomplete from "@mui/material/Autocomplete";
 import React from "react";
 import { createStyles, withStyles } from "@mui/styles";
-import { change, WrappedFieldMetaProps } from "redux-form";
 import { format as formatDate } from "date-fns";
 import clsx from "clsx";
 import { DatePicker, TimePicker as Time } from "@mui/x-date-pickers";
-import { InputProps } from "@mui/material/Input";
 import { CodeCompletionCore } from "antlr4-c3";
 import { ANTLRInputStream, CommonTokenStream } from "antlr4ts";
 import { AqlLexer } from "@aql/AqlLexer";
@@ -25,7 +23,6 @@ import * as Entities from "@aql/queryLanguageModel";
 import { stubComponent } from "../../../utils/common";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
 import getCaretCoordinates from "../../../utils/getCaretCoordinates";
-import { HTMLTagArgFunction } from "../../../../model/common/CommonFunctions";
 import { selectStyles } from "./SelectCustomComponents";
 import { DD_MM_YYYY_SLASHED, HH_MM_COLONED } from "../../../utils/dates/format";
 import {
@@ -34,8 +31,7 @@ import {
   SIMPLE_SEARCH_QUOTES_REGEX,
   TAGS_REGEX
 } from "../../../../constants/Config";
-import { FieldClasses } from "../../../../model/common/Fields";
-import { ListAqlMenuItemsRenderer } from "../../../../model/common/ListView";
+import { EditInPlaceQueryFieldProps } from "../../../../model/common/Fields";
 
 const queryStyles = theme => createStyles({
   queryMenuItem: {
@@ -242,39 +238,7 @@ interface State {
   caretCoordinates: any;
 }
 
-interface Props {
-  ref?: any;
-  setInputNode: HTMLTagArgFunction;
-  className: string;
-  rootEntity: string;
-  classes?: any;
-  input?: any;
-  editableComponent?: any;
-  label?: string;
-  disabled?: boolean;
-  disableUnderline?: boolean;
-  disableErrorText?: boolean;
-  clearOnUnmount?: boolean;
-  inline?: boolean;
-  hideLabel?: boolean;
-  meta?: Partial<WrappedFieldMetaProps>;
-  InputProps?: InputProps;
-  filterTags?: Suggestion[];
-  tags?: Suggestion[];
-  customFields?: string[];
-  performSearch?: () => void;
-  theme?: any;
-  onFocus?: any;
-  onBlur?: any;
-  placeholder?: string;
-  labelAdornment?: any;
-  endAdornment?: any;
-  menuHeight?: number;
-  fieldClasses?: FieldClasses;
-  itemRenderer?: ListAqlMenuItemsRenderer;
-}
-
-class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
+class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldProps, State> {
   private inputNode: any;
 
   private pathFilter: string;
@@ -303,21 +267,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     this.setState({
       options: this.getAutocomplete(this.props.input && this.props.input.value ? this.props.input.value : "").filter(this.filterOptions)
     });
-  }
-
-  componentWillUnmount() {
-    const { clearOnUnmount } = this.props;
-
-    if (clearOnUnmount) {
-      const {
-        input: { name },
-        meta: { dispatch, form }
-      } = this.props;
-
-      dispatch(change(form, name, null));
-    }
-
-    this.inputNode.removeEventListener("click", this.onInputClick);
   }
 
   componentDidUpdate(prev) {
@@ -554,22 +503,25 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     const { classes } = this.props;
 
     const rightAligned = caretCoordinates && caretCoordinates.left >= this.inputNode.clientWidth;
-
-    return [clsx(classes.menuCorner, rightAligned ? classes.cornerRight : classes.cornerLeft), {
-      display: menuIsOpen && Boolean(options.length) ? "block" : "none",
-      position: "absolute",
-      marginBottom: "12px",
-      width: "auto",
-      transform: "translateY(calc(-100% - 8px))",
-      top: 0,
-      ...rightAligned
-        ? {
-          left: this.inputNode.clientWidth,
-        }
-        : {
-          left: caretCoordinates ? caretCoordinates.left : 0,
-        }
-    }];
+    
+    return {
+      className: clsx(classes.menuCorner, rightAligned ? classes.cornerRight : classes.cornerLeft),
+      style: {
+        display: menuIsOpen && Boolean(options.length) ? "block" : "none",
+        position: "absolute" as any,
+        marginBottom: "12px",
+        width: "auto",
+        transform: "translateY(calc(-100% - 8px))",
+        top: 0,
+        ...rightAligned
+          ? {
+            left: this.inputNode.clientWidth,
+          }
+          : {
+            left: caretCoordinates ? caretCoordinates.left : 0,
+          }
+      }
+    };
   };
 
   filterOptions = item => item.label
@@ -1065,11 +1017,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     return option as any;
   };
 
-  popperAdapter = params => {
-    const [className, style] = this.getInlineMenuStyles();
-
-    return <div {...params} className={className} style={style} />;
-  };
+  popperAdapter = ({ anchorEl, disablePortal, className, style,  ...params }) => (<div {...params} {...this.getInlineMenuStyles()} />);
 
   render() {
     const {
@@ -1154,7 +1102,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
                 // eslint-disable-next-line react/jsx-no-duplicate-props
                 inputProps={{
                   ...params.inputProps,
-                  value: inputValue
+                  value: inputValue || ""
                 }}
                 error={meta?.invalid}
                 helperText={(
@@ -1183,4 +1131,4 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
 
 export default withStyles(theme => ({ ...selectStyles(theme), ...queryStyles(theme) }))(
   EditInPlaceQuerySelect
-) as React.FC<Props>;
+) as React.FC<EditInPlaceQueryFieldProps>;

@@ -116,7 +116,7 @@ const TransferEnrolmentModalForm = React.memo<TransferEnrolmentModalProps & Inje
 
   React.useEffect(() => {
     getDefaultIncomeAccount();
-  });
+  }, []);
 
   React.useEffect(() => {
     if (!invoiceLines) return;

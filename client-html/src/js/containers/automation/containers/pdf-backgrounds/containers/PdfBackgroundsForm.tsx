@@ -167,6 +167,7 @@ const PdfBackgroundsForm = React.memo<Props>(
             fields={(
               <Grid item xs={12}>
                 <FormField
+                  type="text"
                   name="name"
                   label="Name"
                   required

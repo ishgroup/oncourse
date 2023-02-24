@@ -10,7 +10,7 @@ import { PriorLearning, TableModel } from "@api/model";
 import { checkPermissions } from "../../../common/actions";
 import ListView from "../../../common/components/list-view/ListView";
 import { fundingUploadsPath } from "../../../constants/Api";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import PriorLearningEditView from "./components/PriorLearningEditView";
 import {
   clearListState,
@@ -51,7 +51,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Students", list: "contact", expression: "student.priorLearnings.id" },
   { title: "Outcomes", list: "outcome", expression: "priorLearning.id" }
 ];

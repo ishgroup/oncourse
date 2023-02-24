@@ -114,9 +114,8 @@ const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
                           onBlur: stubFunction,
                           value: (isMap ? f.label : f.value) || ""
                         }}
-                          formatting="inline"
+                          inline
                           onKeyPress={onKeyPress}
-                          hidePlaceholderInEditMode
                           multiline
                         />
 
@@ -136,8 +135,7 @@ const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
                                 value: f.value || ""
                               }}
                               onKeyPress={onKeyPress}
-                              formatting="inline"
-                              hidePlaceholderInEditMode
+                              inline
                               multiline
                             />
                             )

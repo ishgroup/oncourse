@@ -12,7 +12,7 @@ import { ProductItem, ProductItemStatus, TableModel } from "@api/model";
 import { clearListState, getFilters } from "../../../common/components/list-view/actions";
 import { getSalesManuTags } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import SalesEditView from "./components/SalesEditView";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import SalesCogwheel from "./components/cogwheel/SalesCogwheel";
@@ -87,7 +87,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   {
     title: "Audits",
     list: "audit",

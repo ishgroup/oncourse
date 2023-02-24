@@ -39,8 +39,7 @@ const NoteItem = (props: Props) => {
               type="text"
               name={messageName}
               required
-              fullWidth
-              multiline
+                            multiline
             />
           </Grid>
           <Grid container justifyContent="space-between">

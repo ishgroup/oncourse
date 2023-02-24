@@ -13,13 +13,13 @@ import FormField from "../../../../common/components/form/formFields/FormField";
 const ChequeSummaryRenderer = () => (
   <Grid item xs={12} container columnSpacing={3} rowSpacing={2}>
     <Grid item xs={4}>
-      <FormField type="text" name="chequeSummary.chequeBank" label="Cheque bank" fullWidth />
+      <FormField type="text" name="chequeSummary.chequeBank" label="Cheque bank"  />
     </Grid>
     <Grid item xs={4}>
-      <FormField type="text" name="chequeSummary.chequeBranch" label="Cheque branch" fullWidth />
+      <FormField type="text" name="chequeSummary.chequeBranch" label="Cheque branch"  />
     </Grid>
     <Grid item xs={4}>
-      <FormField type="text" name="chequeSummary.chequeDrawer" label="Cheque drawer" fullWidth />
+      <FormField type="text" name="chequeSummary.chequeDrawer" label="Cheque drawer"  />
     </Grid>
   </Grid>
 );

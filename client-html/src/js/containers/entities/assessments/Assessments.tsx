@@ -11,7 +11,7 @@ import { notesAsyncValidate } from "../../../common/components/form/notes/utils"
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
 import AssessmentEditView from "./components/AssessmentEditView";
 import ListView from "../../../common/components/list-view/ListView";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getListTags } from "../../tags/actions";
@@ -58,7 +58,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Assessment and entityId" },
   { title: "Classes", list: "class", expression: "assessmentClasses.assessment.id" },
   {

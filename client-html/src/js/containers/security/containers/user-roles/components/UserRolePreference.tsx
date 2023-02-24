@@ -92,8 +92,7 @@ const ContentBase = props => {
                   type="checkbox"
                   name={item.name}
                   key={index}
-                  classes={{ root: classes.checkboxColor }}
-                  className={classes.checkbox}
+                  className={clsx(classes.checkbox, classes.checkboxColor)}
                   color="primary"
                   stringValue
                 />

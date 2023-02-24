@@ -141,7 +141,6 @@ class XeroBaseForm extends React.Component<any, any> {
                     type="stub"
                     name="verificationCode"
                     validate={validateSingleMandatoryField}
-                    className="mb-2"
                   />
                 )
               }

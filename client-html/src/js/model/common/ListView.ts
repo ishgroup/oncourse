@@ -32,7 +32,7 @@ export interface FindRelatedItem {
   title: string;
   list?: string;
   expression?: string;
-  customExpression?: string;
+  customExpression?: AnyArgFunction<string, string>;
   destination?: string;
   items?: FindRelatedItem[];
 }
@@ -143,3 +143,8 @@ export interface GetRecordsArgs {
 export interface CustomColumnFormats {
   [column: string]: (value: any, row?: any, columns?: any) => string | ReactElement;
 }
+
+export type FilterScriptsBy = Record<string, {
+  ids: string[];
+  scripts: Script[];
+}>

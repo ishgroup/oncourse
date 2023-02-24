@@ -153,6 +153,7 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
           fields={(
             <Grid item xs={12}>
               <FormField
+                type="text"
                 name="name"
                 label="Name"
                 validate={validateUniqueNames}

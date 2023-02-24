@@ -46,8 +46,7 @@ const GradeContent = (
               onBlur: () => onChangeGrade(gradeVal, elem),
               value: typeof gradeVal === "number" ? String(gradeVal) : gradeVal
             }}
-            formatting="inline"
-            hideArrows
+            inline
           />
           {Boolean(currentGrade?.name) && `  ( ${currentGrade.name} )`}
         </span>

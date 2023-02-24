@@ -48,6 +48,7 @@ public class DuplicateCourseService {
             var newCourse = context.newObject(Course.class);
 
             newCourse.setWebDescription(oldCourse.getWebDescription());
+            newCourse.setShortWebDescription(oldCourse.getShortWebDescription());
             newCourse.setName(oldCourse.getName());
             newCourse.setIsShownOnWeb(false);
             newCourse.setIsTraineeship(oldCourse.getIsTraineeship());

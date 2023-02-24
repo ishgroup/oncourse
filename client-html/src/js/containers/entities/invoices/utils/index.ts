@@ -7,11 +7,33 @@ import { min } from "date-fns";
 import { Invoice, InvoicePaymentPlan } from "@api/model";
 import { InvoiceWithTotalLine } from "../../../../model/entities/Invoice";
 import { decimalMinus, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
+import { Decimal } from "decimal.js-light";
+
+export const calculateInvoiceLineTotal = (
+  priceEachExTax: number,
+  discountEachExTax: number,
+  taxEach: number,
+  quantity: number
+) => new Decimal(priceEachExTax || 0)
+  .minus(discountEachExTax || 0)
+  .plus(taxEach || 0)
+  .mul(quantity || 1)
+  .toDecimalPlaces(2)
+  .toNumber();
 
 export const preformatInvoice = (value: InvoiceWithTotalLine): Invoice => {
   if (value && value.invoiceLines) {
     value.invoiceLines.forEach(l => {
       delete l.total;
+    });
+  }
+  return value;
+};
+
+export const setInvoiceLinesTotal = (value: InvoiceWithTotalLine): Invoice => {
+  if (value && value.invoiceLines) {
+    value.invoiceLines.forEach(l => {
+      l.total = calculateInvoiceLineTotal(l.priceEachExTax, l.discountEachExTax, l.taxEach, l.quantity);
     });
   }
   return value;
@@ -78,8 +100,6 @@ export const processInvoicePaymentPlans = (paymentPlans: InvoicePaymentPlan[]) =
   const updated = [...paymentPlans];
 
   updated.sort(sortInvoicePaymentPlans);
-
-  console.log('!!!!!!!', updated);
 
   const successfulPayments = updated
     .filter(p => p.entityName === "PaymentIn" && p.successful)

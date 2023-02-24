@@ -145,38 +145,31 @@ const CourseClassTutorItem: React.FC<Props> = ({
       detailsContent={(
         <div>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             name={`tutors[${index}].contactId`}
-            props={{
-                label: "Contact",
-                entity: "Contact",
-                aqlFilter: `isTutor is true and (tutor.dateFinished > ${today} or tutor.dateFinished is null)`,
-                selectValueMark: "id",
-                selectLabelCondition: getContactFullName,
-                defaultDisplayValue: tutor.tutorName,
-                labelAdornment: (
-                  <ContactLinkAdornment id={tutor?.contactId} />
-                ),
-                itemRenderer: ContactSelectItemRenderer,
-                onInnerValueChange: onTutorIdChange,
-                disabled: Boolean(tutor.id),
-                rowHeight: 48
-              }}
+            label="Contact"
+            entity="Contact"
+            aqlFilter={`isTutor is true and (tutor.dateFinished > ${today} or tutor.dateFinished is null)`}
+            selectValueMark="id"
+            selectLabelCondition={getContactFullName}
+            defaultValue={tutor.tutorName}
+            labelAdornment={<ContactLinkAdornment id={tutor?.contactId} />}
+            itemRenderer={ContactSelectItemRenderer}
             onInnerValueChange={onTutorIdChange}
+            disabled={Boolean(tutor.id)}
+            rowHeight={48}
             className="mb-2"
             required
           />
 
-          {nameWarning && <WarningMessage warning={nameWarning} />}
-
           <FormField
-            type="searchSelect"
+            type="select"
             name={`tutors[${index}].roleId`}
             label="Role"
             selectValueMark="id"
             selectLabelMark="name"
             normalize={normalizeNumber}
-            defaultDisplayValue={tutor.roleName}
+            defaultValue={tutor.roleName}
             items={tutorRoles}
             onInnerValueChange={onRoleIdChange}
             disabled={Boolean(tutor.id || hasWage)}
@@ -189,6 +182,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
               )}
             alwaysDisplayDefault
             className="mb-2"
+            warning={nameWarning}
             required
           />
           {!tutor.id && hasWage
