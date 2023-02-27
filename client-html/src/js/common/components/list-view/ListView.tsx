@@ -124,6 +124,7 @@ interface Props extends Partial<ListState> {
   listProps: TableListProps;
   rootEntity: EntityName;
   EditViewContent: any;
+  dispatch?: Dispatch;
   onLoadMore?: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
   selection?: string[];
@@ -139,6 +140,7 @@ interface Props extends Partial<ListState> {
   createButtonDisabled?: boolean;
   fetch?: Fetch;
   menuTags?: MenuTag[];
+  scriptsFilterColumn?: string;
   filterEntity?: EntityName;
   filterGroups?: FilterGroup[];
   filterGroupsInitial?: FilterGroup[];
@@ -607,6 +609,10 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       location: { search }
     } = this.props;
 
+    if (newSelection.length === 1 && selection.length === 1 && newSelection[0] === selection[0]) {
+      return;
+    }
+
     const { threeColumn } = this.state;
 
     if ((isDirty || (creatingNew && selection[0] === "new")) && !this.ignoreCheckDirtyOnSelection) {
@@ -1050,8 +1056,10 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       listProps,
       onLoadMore,
       currency,
+      dispatch,
       getScripts,
-      findRelatedByFilter
+      findRelatedByFilter,
+      scriptsFilterColumn
     } = this.props;
 
     const {
@@ -1175,6 +1183,7 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
             )}
           </div>
           <BottomAppBar
+            dispatch={dispatch}
             findRelatedByFilter={findRelatedByFilter}
             getScripts={getScripts}
             scripts={scripts}
@@ -1205,6 +1214,7 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
             records={records}
             searchComponentNode={this.searchComponentNode}
             searchQuery={searchQuery}
+            scriptsFilterColumn={scriptsFilterColumn}
           />
         </div>
       </div>
@@ -1223,6 +1233,7 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
+  dispatch,
   sendGAEvent: (event: GAEventTypes, screen: string, time?: number) => dispatch(pushGTMEvent(event, screen, time)),
   setEntity: entity => dispatch(setListEntity(entity)),
   resetEditView: () => {

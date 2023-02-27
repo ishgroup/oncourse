@@ -146,7 +146,8 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
               " https://*.hotjar.io" +
               " wss://*.hotjar.com" +
               " 'unsafe-inline';" +
-              " img-src * 'self' data: https:;"
+              " img-src * 'self' data: https:;" +
+              " frame-src 'self' data: https:;"
             }
           }
         }),
