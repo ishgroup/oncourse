@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Loadable from "@react-loadable/revised";
 import Loading from "../../common/components/progress/Loading";
 
@@ -7,8 +7,6 @@ const LoadableComponent = Loadable({
   loading: Loading
 });
 
-export default class LoadableScripts extends React.Component {
-  render() {
-    return <LoadableComponent {...this.props} />;
-  }
+export default function LoadableAutomation(props) {
+  return <LoadableComponent {...props} />;
 }

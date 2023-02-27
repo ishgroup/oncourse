@@ -54,11 +54,12 @@ import FinaliseApp from "../containers/finalise-period/index";
 import ContactsApp from "../containers/entities/contacts";
 import { EnvironmentConstants } from "../constants/EnvironmentConstants";
 import MergeContacts from "../containers/entities/contacts/components/merge-contacts/MergeContacts";
-import Automation from "../containers/automation/Automation";
+import Automation from "../containers/automation/index";
 import { DuplicateCourseClassSwingWrapper } from "../containers/entities/courseClasses/components/duplicate-courseClass/DuplicateCourseClassSwingWrapper";
-import QuickEnrol from "../containers/checkout/Checkout";
+import QuickEnrol from "../containers/checkout/index";
 import NotFound from "../containers/notFound/NotFound";
 import LoadableLogs from "../containers/logs";
+import { LoadableIntegrations } from "../containers/automation/containers/LoadableCatalogs";
 
 type RouteGroupTypes = "Preferences" | "Training" | "Finance" | "Common" | "Activity" | "Products";
 
@@ -347,6 +348,12 @@ export const routes: MainRoute[] = [
     group: "Finance"
   },
   // Common
+  ... process.env.NODE_ENV === EnvironmentConstants.development ? [{
+    title: "Menu",
+    path: "/menu",
+    url: "/menu",
+    main: Common,
+  }] : [],
   {
     title: "Dashboard",
     path: "/",
@@ -451,7 +458,7 @@ export const routes: MainRoute[] = [
     title: "Integrations",
     path: "/automation/integrations",
     url: "/automation/integrations",
-    main: Automation,
+    main: LoadableIntegrations,
     group: "Preferences"
   },
   {
@@ -508,16 +515,6 @@ export const routes: MainRoute[] = [
     group: "Common"
   },
 ];
-
-if (process.env.NODE_ENV === EnvironmentConstants.development) {
-  routes.push({
-    title: "Menu",
-    exact: true,
-    path: "/menu",
-    url: "/menu",
-    main: Common
-  });
-}
 
 export const routeGroups: RouteGroup[] = [
   {
