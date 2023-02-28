@@ -101,8 +101,6 @@ export const processInvoicePaymentPlans = (paymentPlans: InvoicePaymentPlan[]) =
 
   updated.sort(sortInvoicePaymentPlans);
 
-  console.log('!!!!!!!', updated);
-
   const successfulPayments = updated
     .filter(p => p.entityName === "PaymentIn" && p.successful)
     .map(p => ({ ...p }));

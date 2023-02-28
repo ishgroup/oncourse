@@ -1,17 +1,17 @@
 /*
- * Copyright ish group pty ltd 2022.
+ * Copyright ish group pty ltd 2023.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.api.test.task;
+export const COLUMN_WITH_COLORS = "tagColors";
 
-import java.util.Calendar;
+export const CHECKLISTS_COLUMN = "checklistsColor";
 
-public class CustomDatasetAttributesConstants {
-    public static final int FUTURE_YEAR_NUMBER = Calendar.getInstance().get(Calendar.YEAR) + 2;
+export const SELECTION_COLUMN = "select";
 
-    public static final int PREVIOUS_YEAR_NUMBER = Calendar.getInstance().get(Calendar.YEAR) - 1;
-}
+export const CHOOSER_COLUMN = "chooser";
+
+export const COLUMN_MIN_WIDTH = 60;

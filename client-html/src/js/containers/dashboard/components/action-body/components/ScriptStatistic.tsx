@@ -66,6 +66,8 @@ const ScriptStatistic = ({ dispatch, classes }) => {
         true
       );
 
+      if (!Array.isArray(scriptRes?.rows)) return;
+
       const resultForRender = [];
 
       for (const scriptRow of scriptRes.rows) {
