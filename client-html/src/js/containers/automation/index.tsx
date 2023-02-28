@@ -7,6 +7,6 @@ const LoadableComponent = Loadable({
   loading: Loading
 });
 
-export default function LoadableAutomation(props) {
-  return <LoadableComponent {...props} />;
-}
+export default props => (
+  <LoadableComponent {...props} />
+);
