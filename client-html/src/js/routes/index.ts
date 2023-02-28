@@ -54,7 +54,7 @@ import FinaliseApp from "../containers/finalise-period/index";
 import ContactsApp from "../containers/entities/contacts";
 import { EnvironmentConstants } from "../constants/EnvironmentConstants";
 import MergeContacts from "../containers/entities/contacts/components/merge-contacts/MergeContacts";
-import Automation from "../containers/automation/Automation";
+import Automation from "../containers/automation/index";
 import { DuplicateCourseClassSwingWrapper } from "../containers/entities/courseClasses/components/duplicate-courseClass/DuplicateCourseClassSwingWrapper";
 import QuickEnrol from "../containers/checkout/index";
 import NotFound from "../containers/notFound/NotFound";
