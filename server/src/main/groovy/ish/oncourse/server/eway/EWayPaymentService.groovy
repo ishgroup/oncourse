@@ -62,7 +62,7 @@ class EWayPaymentService {
 
             builder.handler['success'] = { response, body ->
                 attributes.sessionId = body["AccessCode"]
-                attributes.ccFormUrl = body["SharedPaymentUrl"]
+                attributes.ccFormUrl = body["SharedPaymentUrl"] + "&View=Modal"
             }
 
             Map<String, Object> body = [transactionType    : "Purchase",
