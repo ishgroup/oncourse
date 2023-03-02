@@ -57,6 +57,7 @@ import ish.oncourse.server.dashboard.CourseSearchService
 import ish.oncourse.server.dashboard.DashboardSearchManager
 import ish.oncourse.server.dashboard.EnrolmentSearchService
 import ish.oncourse.server.dashboard.InvoiceSearchService
+import ish.oncourse.server.eway.EWayPaymentService
 import ish.oncourse.server.windcave.PaymentService
 
 class ApiServiceModule implements Module {
@@ -101,6 +102,7 @@ class ApiServiceModule implements Module {
         binder.bind(OutcomeApiService).in(Scopes.SINGLETON)
         binder.bind(PayslipApiService).in(Scopes.NO_SCOPE)
         binder.bind(PaymentService).in(Scopes.NO_SCOPE)
+        binder.bind(EWayPaymentService).in(Scopes.NO_SCOPE)
         binder.bind(PriorLearningApiService).in(Scopes.SINGLETON)
         binder.bind(ReportApiService).in(Scopes.SINGLETON)
         binder.bind(RoomApiService).in(Scopes.NO_SCOPE)

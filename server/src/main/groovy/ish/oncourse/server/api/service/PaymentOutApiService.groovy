@@ -16,6 +16,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import ish.common.types.ConfirmationStatus
 import ish.common.types.PaymentStatus
+import ish.oncourse.server.eway.EWayPaymentService
 import static ish.common.types.PaymentStatus.*
 import ish.common.types.PaymentType
 import ish.math.Money
@@ -73,6 +74,9 @@ class PaymentOutApiService extends EntityApiService<PaymentOutDTO, PaymentOut, P
 
     @Inject
     private PaymentService paymentService
+
+    @Inject
+    private EWayPaymentService eWayPaymentService
 
     @Override
     Class<PaymentOut> getPersistentClass() {
@@ -307,7 +311,8 @@ class PaymentOutApiService extends EntityApiService<PaymentOutDTO, PaymentOut, P
         ObjectContext context = paymentIn.context
         String merchantReference = UUID.randomUUID().toString()
 
-        SessionAttributes sessionAttributes = paymentService.makeRefund(amount, merchantReference, paymentIn.gatewayReference)
+//        SessionAttributes sessionAttributes = paymentService.makeRefund(amount, merchantReference, paymentIn.gatewayReference)
+        SessionAttributes sessionAttributes = eWayPaymentService.makeRefund(amount, merchantReference, paymentIn.gatewayReference)
 
         PaymentOut paymentOut = context.newObject(PaymentOut)
         paymentOut.creditCardExpiry = paymentIn.creditCardExpiry
@@ -360,7 +365,9 @@ class PaymentOutApiService extends EntityApiService<PaymentOutDTO, PaymentOut, P
         } else {
             paymentOut.status = SUCCESS
             paymentOut.gatewayReference = sessionAttributes.transactionId
-            paymentOut.paymentDate = sessionAttributes.paymentDate
+            //Rewrite
+            paymentOut.paymentDate = LocalDate.now()
+//            paymentOut.paymentDate = sessionAttributes.paymentDate
         }
         return paymentOut
     }

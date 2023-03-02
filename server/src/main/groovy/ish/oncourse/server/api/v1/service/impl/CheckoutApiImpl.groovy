@@ -28,6 +28,7 @@ import ish.oncourse.server.api.v1.function.DiscountFunctions
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.CheckoutApi
 import ish.oncourse.server.cayenne.*
+import ish.oncourse.server.eway.EWayPaymentService
 import ish.oncourse.server.integration.EventService
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.users.SystemUserService
@@ -45,6 +46,7 @@ import org.apache.logging.log4j.Logger
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
+import java.time.LocalDate
 
 import static ish.common.types.ConfirmationStatus.DO_NOT_SEND
 import static ish.common.types.ConfirmationStatus.NOT_SENT
@@ -83,6 +85,9 @@ class CheckoutApiImpl implements CheckoutApi {
 
     @Inject
     PaymentService paymentService
+
+    @Inject
+    EWayPaymentService eWayPaymentService
 
     @Inject
     LicenseService licenseService
@@ -251,7 +256,8 @@ class CheckoutApiImpl implements CheckoutApi {
     @Override
     SessionStatusDTO status(String sessionId) {
         SessionStatusDTO dto = new SessionStatusDTO()
-        SessionAttributes attributes =  paymentService.checkStatus(sessionId)
+//        SessionAttributes attributes =  paymentService.checkStatus(sessionId)
+        SessionAttributes attributes = eWayPaymentService.checkStatus(sessionId)
         dto.authorised = attributes.authorised
         dto.complete = attributes.complete
         dto.responseText = attributes.statusText
@@ -288,7 +294,8 @@ class CheckoutApiImpl implements CheckoutApi {
                 }
 
                 String merchantReference = UUID.randomUUID().toString()
-                SessionAttributes attributes = paymentService.createSession(xOrigin, new Money(checkoutModel.payNow), merchantReference, checkoutModel.allowAutoPay)
+//                SessionAttributes attributes = paymentService.createSession(xOrigin, new Money(checkoutModel.payNow), merchantReference, checkoutModel.allowAutoPay)
+                SessionAttributes attributes = eWayPaymentService.createAccessCodeShared(xOrigin, new Money(checkoutModel.payNow), merchantReference, checkoutModel.allowAutoPay)
                 if (attributes.sessionId) {
                     dtoResponse.sessionId = attributes.sessionId
                     dtoResponse.ccFormUrl = attributes.ccFormUrl
@@ -306,14 +313,16 @@ class CheckoutApiImpl implements CheckoutApi {
 
                 if (checkoutModel.payWithSavedCard) {
                     merchantReference = UUID.randomUUID().toString()
-                    sessionAttributes = paymentService.makeTransaction(amount, merchantReference, cardId)
+//
+//                    sessionAttributes = paymentService.makeTransaction(amount, merchantReference, cardId)
                 } else {
                     if (!checkoutModel.merchantReference) {
                         hanbleError(VALIDATION_ERROR, [new CheckoutValidationErrorDTO(propertyName: 'merchantReference', error: "Merchant reference is required")])
                     } else {
                         merchantReference = checkoutModel.merchantReference
                     }
-                    sessionAttributes = paymentService.checkStatus(xPaymentSessionId)
+//                    sessionAttributes = paymentService.checkStatus(xPaymentSessionId)
+                    sessionAttributes = eWayPaymentService.checkStatus(xPaymentSessionId)
 
                     if (!sessionAttributes.complete) {
                         hanbleError(VALIDATION_ERROR, [new CheckoutValidationErrorDTO(error: "Credit card authorisation is not complite")])
@@ -336,6 +345,8 @@ class CheckoutApiImpl implements CheckoutApi {
                 paymentIn.gatewayResponse = sessionAttributes.statusText
                 paymentIn.gatewayReference = sessionAttributes.transactionId
                 paymentIn.paymentDate = sessionAttributes.paymentDate
+                // Rewrite
+                paymentIn.paymentDate = LocalDate.now()
                 paymentIn.billingId = sessionAttributes.billingId
                 paymentIn.sessionId = merchantReference
                 paymentIn.privateNotes = sessionAttributes.responceJson
@@ -347,7 +358,8 @@ class CheckoutApiImpl implements CheckoutApi {
                         hanbleError(VALIDATION_ERROR, [new CheckoutValidationErrorDTO(error: "Credit card transaction has wrong type")])
                     }
 
-                    sessionAttributes = paymentService.completeTransaction(sessionAttributes.transactionId, amount, merchantReference)
+                    //Rewrite
+//                    sessionAttributes = paymentService.completeTransaction(sessionAttributes.transactionId, amount, merchantReference)
 
                     if (sessionAttributes.authorised) {
                         succeedPayment(dtoResponse, checkout, checkoutModel.sendInvoice)
