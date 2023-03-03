@@ -64,7 +64,15 @@ public interface Preferences {
 	@API
 	String COLLEGE_PAYMENT_INFO = "college.paymentInfo";
 
+	/**
+	 * Unique API key issued by the payment system for a particular college
+	 */
 	String PAYMENT_GATEWAY_PASS = "payment.gateway.api.key";
+
+	/**
+	 * Type of payment system used in the checkout
+	 */
+	String PAYMENT_GATAWAY_TYPE = "payment.gateway.type";
 
 
 	// **************************************

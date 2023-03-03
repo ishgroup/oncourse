@@ -18,7 +18,9 @@
             <option value="$PROJECT_DIR$/buildSrc/apidoc" />
             <option value="$PROJECT_DIR$/buildSrc/aql" />
             <option value="$PROJECT_DIR$/buildSrc/swagger" />
+            <option value="$PROJECT_DIR$/buildSrc/testDataset" />
             <option value="$PROJECT_DIR$/client-html" />
+            <option value="$PROJECT_DIR$/selenium-test" />
             <option value="$PROJECT_DIR$/server" />
             <option value="$PROJECT_DIR$/server-api" />
             <option value="$PROJECT_DIR$/types" />
