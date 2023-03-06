@@ -19,7 +19,7 @@ import {
   getContactsTaxTypes,
   getContactTags
 } from "../entities/contacts/actions";
-import { checkPermissions } from "../../common/actions";
+import { checkPermissions, getUserPreferences } from "../../common/actions";
 import { getDefaultInvoiceTerms } from "../entities/invoices/actions";
 import { changeStep, checkoutClearState } from "./actions";
 import CheckoutSelection from "./components/CheckoutSelection";
@@ -29,16 +29,7 @@ import { getCustomFieldTypes } from "../entities/customFieldTypes/actions";
 export const FORM: string = "QUICK_ENROL_FORM";
 
 interface Props {
-  getContactTags?: NoArgFunction;
-  getContactCustomFieldTypes?: NoArgFunction;
-  getCountries?: NoArgFunction;
-  getLanguages?: NoArgFunction;
-  getContactsRelationTypes?: NoArgFunction;
-  getContactsConcessionTypes?: NoArgFunction;
-  getActiveFundingContracts?: NoArgFunction;
-  getQePermissions?: () => void;
-  getTaxTypes?: NoArgFunction;
-  getDefaultTerms?: NoArgFunction;
+  onInit?: NoArgFunction;
   clearState?: NoArgFunction;
   changeStep?: (step: number) => void;
   checkoutStep?: number;
@@ -47,34 +38,17 @@ interface Props {
 
 const Checkout = React.memo<Props>(props => {
   const {
-    getContactTags,
-    getCountries,
-    getLanguages,
-    getContactsRelationTypes,
-    getContactsConcessionTypes,
-    getTaxTypes,
+    onInit,
     changeStep,
     checkoutStep,
-    getDefaultTerms,
     clearState,
-    getActiveFundingContracts,
-    getContactCustomFieldTypes,
-    getQePermissions
   } = props;
 
   const [paymentStatus, setPaymentStatus] = React.useState("");
 
   React.useEffect(() => {
-    getContactCustomFieldTypes();
-    getContactTags();
-    getCountries();
-    getLanguages();
-    getContactsRelationTypes();
-    getContactsConcessionTypes();
-    getTaxTypes();
-    getDefaultTerms();
-    getActiveFundingContracts();
-    getQePermissions();
+
+    onInit();
 
     const query = new URLSearchParams(window.location.search);
     const paymentStatus = query.get("paymentStatus");
@@ -102,25 +76,27 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  getContactCustomFieldTypes: () => dispatch(getCustomFieldTypes("Contact")),
-  getContactTags: () => dispatch(getContactTags()),
-  getCountries: () => dispatch(getCountries()),
-  getLanguages: () => dispatch(getLanguages()),
-  getContactsRelationTypes: () => dispatch(getContactsRelationTypes()),
-  getContactsConcessionTypes: () => dispatch(getContactsConcessionTypes()),
-  getDefaultTerms: () => dispatch(getDefaultInvoiceTerms()),
-  getTaxTypes: () => dispatch(getContactsTaxTypes()),
-  changeStep: (step: number) => dispatch(changeStep(step)),
-  clearState: () => {
-    dispatch(checkoutClearState());
-  },
-  getActiveFundingContracts: () => dispatch(getActiveFundingContracts(true)),
-  getQePermissions: () => {
+  onInit: () => {
+    dispatch(getCustomFieldTypes("Contact"));
+    dispatch(getContactTags());
+    dispatch(getCountries());
+    dispatch(getLanguages());
+    dispatch(getContactsRelationTypes());
+    dispatch(getContactsConcessionTypes());
+    dispatch(getDefaultInvoiceTerms());
+    dispatch(getContactsTaxTypes());
+    dispatch(getActiveFundingContracts(true));
+    dispatch(getUserPreferences(["payment.gateway.type"]));
+
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Enrolment", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=PriorLearning", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Outcome", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Certificate", method: "GET" }));
+  },
+  changeStep: (step: number) => dispatch(changeStep(step)),
+  clearState: () => {
+    dispatch(checkoutClearState());
   },
 });
 
