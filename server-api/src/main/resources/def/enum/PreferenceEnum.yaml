@@ -31,3 +31,4 @@ enum:
 - tutorial.skip.systemuser
 - background.quality.scale
 - account.default.invoiceline.id
+- payment.gateway.type

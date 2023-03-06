@@ -51,6 +51,7 @@ interface CreditCardPaymentPageProps {
   paymentInvoice?: any;
   paymentId?: number;
   payerName: string;
+  isEway?: boolean;
 }
 
 const CreditCardPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
@@ -72,7 +73,8 @@ const CreditCardPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     checkoutPaymentSetCustomStatus,
     process,
     payerName,
-    hasSummarryErrors
+    hasSummarryErrors,
+    isEway
   } = props;
 
   const [validatePayment, setValidatePayment] = React.useState(true);
@@ -115,40 +117,43 @@ const CreditCardPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   return (
     <div
       style={disablePayment ? { pointerEvents: "none" } : null}
-      className={clsx("d-flex flex-fill justify-content-center", classes.content)}
+      className="d-flex h-100 justify-content-center"
     >
-      {iframeUrl && !process.status && (
-      <div className="flex-column justify-content-center w-100">
-        <div className={clsx("centeredFlex justify-content-center", classes.payerLastCardMargin)}>
-          <div className={clsx("w-100", classes.paymentDetails)}>
-            <div className={classes.fieldCardRoot}>
-              <div className={classes.contentRoot}>
-                <h1>
-                  Details
-                </h1>
-                <div className={clsx("centeredFlex", classes.cardLabelPadding)}>
+      {iframeUrl && !process.status && (isEway
+        ? (<iframe src={iframeUrl} className={clsx("w-100 h-100", classes.iframe)} title="eway-frame" />)
+        : ((
+            <div className="flex-column justify-content-center w-100">
+              <div className={clsx("centeredFlex justify-content-center", classes.payerLastCardMargin)}>
+                <div className={clsx("w-100", classes.paymentDetails)}>
+                  <div className={classes.fieldCardRoot}>
+                    <div className={classes.contentRoot}>
+                      <h1>
+                        Details
+                      </h1>
+                      <div className={clsx("centeredFlex", classes.cardLabelPadding)}>
                   <span className={classes.legend}>
                     Amount:
                   </span>
-                  <Typography variant="body2" component="span" className="money fontWeight600">
-                    {formatCurrency(summary.payNowTotal, currencySymbol)}
-                  </Typography>
-                </div>
-                <div className={clsx("centeredFlex", classes.cardLabelPadding)}>
+                        <Typography variant="body2" component="span" className="money fontWeight600">
+                          {formatCurrency(summary.payNowTotal, currencySymbol)}
+                        </Typography>
+                      </div>
+                      <div className={clsx("centeredFlex", classes.cardLabelPadding)}>
                   <span className={classes.legend}>
                     Payer:
                   </span>
-                  <b>{payerName}</b>
+                        <b>{payerName}</b>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
+              <div className={clsx("w-100", classes.iframeWrapper, hasSummarryErrors && "disabled")}>
+                <iframe src={iframeUrl} className={clsx("w-100 h-100", classes.iframe)} title="windcave-frame" />
+              </div>
             </div>
-          </div>
-        </div>
-        <div className={clsx("w-100", classes.iframeWrapper, hasSummarryErrors && "disabled")}>
-          <iframe src={iframeUrl} className={clsx("w-100 h-100", classes.iframe)} title="windcave-frame" />
-        </div>
-      </div>
-        )}
+          ))
+      )}
       {!iframeUrl && process.status !== "" && !isPaymentProcessing && (
       <PaymentMessageRenderer
         tryAgain={proceedPayment}
@@ -170,7 +175,8 @@ const mapStateToProps = (state: State) => ({
   xPaymentSessionId: state.checkout.payment.xPaymentSessionId,
   merchantReference: state.checkout.payment.merchantReference,
   process: state.checkout.payment.process,
-  hasSummarryErrors: isInvalid(CheckoutSelectionForm)(state)
+  hasSummarryErrors: isInvalid(CheckoutSelectionForm)(state),
+  isEway: state.userPreferences['payment.gateway.type'] === "EWAY"
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

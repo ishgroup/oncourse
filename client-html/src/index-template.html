@@ -22,7 +22,7 @@
     <script>
       // Checkout payment processing
       const query = window.location.href;
-      const sessionIdMatch = query.match(/sessionId=([^&#?]+)/);
+      const sessionIdMatch = query.match(/sessionId=([^&#?]+)/) || query.match(/AccessCode=([^&#?]+)/);
       const statusMatch = query.match(/paymentStatus=([^&#?]+)/);
 
       if (sessionIdMatch && sessionIdMatch[1] && statusMatch && statusMatch[1]) {
