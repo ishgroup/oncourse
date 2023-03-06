@@ -14,7 +14,7 @@ const request: EpicUtils.Request<any,  number> = {
   getData: id =>
     EntityService.getPlainRecords(
       "PaymentIn",
-      "status,paymentMethod.type,gatewayReference,payer.totalOwing,reconciled,reversalOf,reversedBy,banking.id,amount,payer.fullName",
+      "status,gatewayReference,payer.totalOwing,reconciled,reversalOf,reversedBy,banking.id,amount,payer.fullName",
       `id == ${id}`,
       1,
       0
@@ -27,15 +27,14 @@ const request: EpicUtils.Request<any,  number> = {
         payload: {
           id: row.id,
           status: row.values[0],
-          paymentMethodType: row.values[1],
-          gatewayReference: row.values[2],
-          payerTotalOwing: Number(row.values[3]),
-          reconciled: row.values[4] === "true",
-          reversalOf: row.values[5],
-          reversedBy: row.values[6],
-          bankingId: row.values[7],
-          amount: parseFloat(row.values[8]),
-          name: row.values[9],
+          gatewayReference: row.values[1],
+          payerTotalOwing: Number(row.values[2]),
+          reconciled: row.values[3] === "true",
+          reversalOf: row.values[4],
+          reversedBy: row.values[5],
+          bankingId: row.values[6],
+          amount: parseFloat(row.values[7]),
+          name: row.values[8],
         }
       }
     ];
