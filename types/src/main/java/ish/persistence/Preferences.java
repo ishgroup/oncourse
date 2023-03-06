@@ -72,7 +72,7 @@ public interface Preferences {
 	/**
 	 * Type of payment system used in the checkout
 	 */
-	String PAYMENT_GATAWAY_TYPE = "payment.gateway.type";
+	String PAYMENT_GATEWAY_TYPE = "payment.gateway.type";
 
 
 	// **************************************
