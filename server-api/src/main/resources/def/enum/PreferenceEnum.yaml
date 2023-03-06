@@ -32,4 +32,3 @@ enum:
 - background.quality.scale
 - account.default.invoiceline.id
 - payment.gateway.type
-- payment.gateway.type
