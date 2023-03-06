@@ -172,6 +172,8 @@ class UserPreferenceService {
                 return preferenceController.getBackgroundQualityScale()
             case PreferenceEnumDTO.ACCOUNT_DEFAULT_INVOICELINE_ID:
                 return preferenceController.getDefaultInvoiceLineAccount()
+            case PreferenceEnumDTO.PAYMENT_GATEWAY_TYPE:
+                return preferenceController.getPaymentGatewayType()
             case PreferenceEnumDTO.NEWS_READ:
                 return getReadNews()
             default:
