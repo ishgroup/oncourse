@@ -12,13 +12,14 @@ import {
 import { State } from "../../../../reducers/state";
 import CheckoutPreviousInvoiceList from "../summary/CheckoutPreviousInvoiceList";
 import CheckoutDiscountEditView from "../summary/promocode/CheckoutDiscountEditView";
-import CreditCardPaymentPage from "./components/payment-methods/CreditCardPaymentPage";
+import WindcavePaymentPage from "./components/payment-methods/WindcavePaymentPage";
 import PaymentPage from "./components/payment-methods/PaymentPage";
 import CheckoutAppBar from "../CheckoutAppBar";
 import RestartButton from "../RestartButton";
 import { CheckoutPage } from "../../constants";
 import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
 import { getContactFullName } from "../../../entities/contacts/utils";
+import EwayPaymentPage from "./components/payment-methods/EwayPaymentPage";
 
 interface PaymentPageProps {
   payment?: CheckoutPayment;
@@ -29,11 +30,12 @@ interface PaymentPageProps {
   disablePayment?: boolean;
   activeField: any;
   titles: any;
+  isEway?: boolean;
 }
 
 const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
   const {
- payment, activeField, titles, summary, selectedDiscount, summaryVouchers, isPaymentProcessing, disablePayment
+ payment, activeField, titles, summary, selectedDiscount, summaryVouchers, isPaymentProcessing, disablePayment, isEway
 } = props;
 
   const selectedPaymentType = payment.availablePaymentTypes.find(t => t.name === payment.selectedPaymentType);
@@ -62,8 +64,6 @@ const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
         : (
           <div className="root">
             <LoadingIndicator customLoading={isPaymentProcessing} />
-
-
             <AppBarContainer
               hideHelpMenu
               hideSubmitButton
@@ -76,15 +76,21 @@ const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
               }
             >
               {selectedPaymentType && selectedPaymentType.type === "Credit card"
-              && (
-                <CreditCardPaymentPage
-                  isPaymentProcessing={isPaymentProcessing}
-                  payerName={payerName}
-                  summary={summary}
-                  disablePayment={disablePayment}
-                />
-              )}
-
+                && (isEway
+                ? (<EwayPaymentPage
+                    isPaymentProcessing={isPaymentProcessing}
+                    payerName={payerName}
+                    summary={summary}
+                    disablePayment={disablePayment}
+                  />)
+                : (
+                  <WindcavePaymentPage
+                    isPaymentProcessing={isPaymentProcessing}
+                    payerName={payerName}
+                    summary={summary}
+                    disablePayment={disablePayment}
+                  />
+                )}
               {((selectedPaymentType && selectedPaymentType.type !== "Credit card")
                 || (!selectedPaymentType && ["No payment", "Saved credit card"].includes(payment.selectedPaymentType)))
               && <PaymentPage paymentType={payment.selectedPaymentType} payerName={payerName} summary={summary} />}
@@ -99,7 +105,8 @@ const mapStateToProps = (state: State) => ({
   payment: state.checkout.payment,
   summary: state.checkout.summary,
   summaryVouchers: state.checkout.summary.vouchers,
-  isPaymentProcessing: state.checkout.payment.isProcessing
+  isPaymentProcessing: state.checkout.payment.isProcessing,
+  isEway: state.userPreferences['payment.gateway.type'] === "EWAY"
 });
 
 export default connect<any, any, any>(mapStateToProps, null)(CheckoutPaymentPage);
