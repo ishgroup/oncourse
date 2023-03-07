@@ -19,10 +19,11 @@
     <link rel="manifest" href="/manifest.json">
     <script async src='https://www.google-analytics.com/analytics.js'></script>
     <script async defer src="https://apis.google.com/js/api.js"></script>
+    <script src="https://secure.ewaypayments.com/scripts/eCrypt.min.js" ></script>
     <script>
       // Checkout payment processing
       const query = window.location.href;
-      const sessionIdMatch = query.match(/sessionId=([^&#?]+)/) || query.match(/AccessCode=([^&#?]+)/);
+      const sessionIdMatch = query.match(/sessionId=([^&#?]+)/);
       const statusMatch = query.match(/paymentStatus=([^&#?]+)/);
 
       if (sessionIdMatch && sessionIdMatch[1] && statusMatch && statusMatch[1]) {

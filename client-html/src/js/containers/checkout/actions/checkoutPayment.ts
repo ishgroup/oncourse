@@ -46,6 +46,11 @@ export const checkoutSetPaymentMethod = (selectedType: string) => ({
   payload: { selectedType }
 });
 
+export const checkoutSetPaymentStatusDetails = (data: any) => ({
+  type: CHECKOUT_SET_PAYMENT_STATUS_DETAILS,
+  payload: { data }
+});
+
 export const checkoutSetPaymentPlans = (paymentPlans: CheckoutPaymentPlan[]) => ({
   type: CHECKOUT_SET_PAYMENT_PLANS,
   payload: paymentPlans
