@@ -2330,10 +2330,10 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.6.tgz#cee20bd55e68a1720bdab363ecf0c821ded4cd45"
   integrity sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==
 
-"@react-loadable/revised@1.*":
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/@react-loadable/revised/-/revised-1.3.1.tgz#c713414ee44f4dcc9c910e118930dd400ee827a9"
-  integrity sha512-9FSvZyYBcE2KbuW9uioWzmSkGUZR7l9fhzbM8ArO10MkkLuXwfdFtbMoAtEfR5O0bPm85HSeJDOz67UuW0AqVA==
+"@react-loadable/revised@^1.3.2":
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/@react-loadable/revised/-/revised-1.3.2.tgz#bcb06c66263a3b34fb8e088a0509810df769cdc0"
+  integrity sha512-xflJNKWCd1vpI5f9exd0B/a0dfbgh0XeuMGtZZSwwN8YzOQSIFhGR4phzbg2VzZE6NidbjnxUjytuMJO6HnhQQ==
 
 "@rollup/plugin-babel@^5.2.0":
   version "5.3.1"

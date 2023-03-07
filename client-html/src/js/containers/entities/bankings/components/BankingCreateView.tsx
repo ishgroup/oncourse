@@ -78,8 +78,8 @@ class BankingCreateView extends React.PureComponent<any, any> {
 
   componentDidUpdate() {
     const {
- accounts, adminSites, dispatch, adminCenterName, form, values
-} = this.props;
+     accounts, adminSites, dispatch, adminCenterName, form, values
+    } = this.props;
 
     if (!values) {
       return;
@@ -228,7 +228,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
             <EditInPlaceSearchSelect
               items={accounts || []}
               label="Account"
-              input={{ name: "id", value: selectedAccountId, onChange: this.onChangeAccount as any, onFocus: stubFunction }}
+              input={{ name: "id", value: selectedAccountId, onChange: this.onChangeAccount as any, onFocus: stubFunction, onBlur: stubFunction }}
               meta={{ error: null, invalid: false, touched: false }}
               selectValueMark="id"
               selectLabelMark="description"
