@@ -44,12 +44,7 @@ trait TaggableTrait implements Taggable{
     /**
      * @see ish.oncourse.cayenne.Taggable#getId()
      */
-    Long getId() {
-        if (isNewRecord()) {
-            return null
-        }
-        return Cayenne.longPKForObject(this as Persistent);
-    }
+    abstract Long getId()
 
     /**
      * Get firts 3   related tags colors.
@@ -202,7 +197,7 @@ trait TaggableTrait implements Taggable{
     boolean removeTag(Tag tag) {
         if (tag != null) {
             List<TagRelation> tagRelations = new ArrayList<>(tag.getTagRelations());
-            tagRelations.each { relation ->
+            for (relation in tagRelations) {
                 if (relation.getTaggedRelation() == this) {
                     getObjectContext().deleteObjects(relation)
                     return true
