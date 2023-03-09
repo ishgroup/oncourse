@@ -6,11 +6,9 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 import React, { useEffect } from "react";
-import clsx from "clsx";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import withStyles from "@mui/styles/withStyles";
-import { change, isInvalid } from "redux-form";
+import { change } from "redux-form";
 import {
   CheckoutPayment,
   CheckoutPaymentProcess,
@@ -25,8 +23,8 @@ import {
 } from "../../../../actions/checkoutPayment";
 import PaymentMessageRenderer from "../PaymentMessageRenderer";
 import { BooleanArgFunction, StringArgFunction } from "../../../../../../model/common/CommonFunctions";
-import styles from "./styles";
 import { FORM } from "../../../CheckoutSelection";
+import { Button } from "@mui/material";
 
 interface CreditCardPaymentPageProps {
   classes?: any;
@@ -51,7 +49,6 @@ interface CreditCardPaymentPageProps {
 
 const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   const {
-    classes,
     summary,
     isPaymentProcessing,
     disablePayment,
@@ -77,9 +74,11 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     checkoutProcessCcPayment(true, xPaymentSessionId, window.location.origin);
   }, [summary.payNowTotal, merchantReference]);
 
-  const pymentCallback = (result) => {
+  const pymentCallback = result => {
     const urlParams = new URL(iframeUrl).searchParams;
     const sessionId = urlParams.get("AccessCode");
+
+    if (result === "Cancel") return;
 
     if (result === "Complete") {
       setPaymentSuccess(true);
@@ -90,10 +89,10 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
       checkoutPaymentSetCustomStatus("success");
     }
 
-    if (["Cancel", "Error"].includes(result)) {
+    if (result === "Error") {
       dispatch(change(FORM, "payment_method", null));
       dispatch(checkoutSetPaymentMethod(null));
-      checkoutPaymentSetCustomStatus(result === "Cancel" ? "cancel" : "fail");
+      checkoutPaymentSetCustomStatus("fail");
     }
 
     checkoutGetPaymentStatusDetails(sessionId);
@@ -106,19 +105,28 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     }
   }, [summary.payNowTotal, summary.allowAutoPay, summary.paymentDate, summary.invoiceDueDate]);
   
-  useEffect(() => {
-    if (iframeUrl) {
-      (window as any).eCrypt.showModalPayment({
-        sharedPaymentUrl: iframeUrl,
-      }, pymentCallback);
-    }
-  }, [iframeUrl]);
+  const openCardFrame = () => {
+    (window as any).eCrypt.showModalPayment({
+      sharedPaymentUrl: iframeUrl,
+    }, pymentCallback);
+  };
 
   return (
     <div
       style={disablePayment ? { pointerEvents: "none" } : null}
-      className={clsx("d-flex flex-fill justify-content-center", classes.content)}
+      className="d-flex flex-fill h-100 justify-content-center"
     >
+      {iframeUrl && !process.status &&
+        <Button
+          size="large"
+          variant="contained"
+          color="primary"
+          className="mt-auto mb-auto"
+          onClick={openCardFrame}
+        >
+          Enter card details
+        </Button>
+      }
       {process.status !== "" && !isPaymentProcessing && (
         <PaymentMessageRenderer
           tryAgain={proceedPayment}
@@ -153,4 +161,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   checkoutPaymentSetCustomStatus: (status: string) => dispatch(checkoutPaymentSetCustomStatus(status))
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EwayPaymentPage));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(EwayPaymentPage);
