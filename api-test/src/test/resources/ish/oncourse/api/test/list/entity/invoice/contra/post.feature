@@ -11,7 +11,7 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice/contr
 
 
     # During test execution, additional rows are created in the 'PaymentInLine' table, witch also
-    # not delete after completed "prepareTestDb" task
+    # not delete after completed "prepareTestDatabase" task
     # You need to delete them yourself
 
 

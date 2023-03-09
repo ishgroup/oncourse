@@ -1,3 +1,4 @@
+import test.PrepareTestDatabase
 
 /*
  * Copyright ish group pty ltd 2020.
@@ -41,11 +42,9 @@ task copyConfig(type: Copy) {
     expand(dbUrl: dbUrl)
 }
 
-task prepareTestDb(type: JavaExec) {
-    main = 'ish.oncourse.api.test.task.PrepareTestDb'
-    classpath = sourceSets.test.runtimeClasspath
-    def dbUrl = project.hasProperty('dbUrl')?project.getProperty('dbUrl'):'jdbc:mariadb://localhost/angel_api_test'
-    args = [dbUrl, "$rootDir/api-test/src/test/resources/test-dataset.xml"]
+task prepareTestDatabase (type: PrepareTestDatabase) {
+    databaseUrl = project.hasProperty('dbUrl')?project.getProperty('dbUrl'):'jdbc:mariadb://localhost/angel_api_test'
+    dataSetPath = "$rootDir/api-test/src/test/resources/test-dataset.xml"
 }
 
 test {
@@ -53,11 +52,11 @@ test {
         events "failed", "standardOut"
     }
 
-    tasks.getByName('prepareTestDb').mustRunAfter(':server:startDaemon').mustRunAfter('copyConfig')
+    tasks.getByName('prepareTestDatabase').mustRunAfter(':server:startDaemon').mustRunAfter('copyConfig')
 
     dependsOn "copyConfig"
     dependsOn ":server:startDaemon"
-    dependsOn "prepareTestDb"
+    dependsOn "prepareTestDatabase"
     // pull cucumber options into the cucumber jvm
     systemProperty "cucumber.options", System.properties.getProperty("cucumber.options")
     // pull karate options into the jvm
