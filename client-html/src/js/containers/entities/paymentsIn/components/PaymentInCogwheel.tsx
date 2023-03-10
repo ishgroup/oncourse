@@ -20,13 +20,13 @@ interface PaymentInCustomValues {
 }
 
 const isDisabledForReverse = (customValues: PaymentInCustomValues) => (
-    !customValues
-    || customValues.status !== "Success"
-    || ["Zero", "Reverse", "Voucher"].includes(customValues.paymentMethodType)
-    || customValues.reversalOf !== null
-    || customValues.reversedBy !== null
-    || (customValues.paymentMethodType.toLowerCase() !== "credit card" && customValues.bankingId !== null)
-  );
+  !customValues
+  || customValues.status !== "Success"
+  || ["Zero", "Reverse", "Voucher"].includes(customValues.paymentMethodType)
+  || customValues.reversalOf !== null
+  || customValues.reversedBy !== null
+  || customValues.bankingId !== null
+);
 
 interface Props extends CogwhelAdornmentProps {
   reverse: any;
