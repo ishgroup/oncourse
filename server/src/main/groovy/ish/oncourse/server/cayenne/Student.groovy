@@ -13,6 +13,7 @@ package ish.oncourse.server.cayenne
 
 import com.google.inject.Inject
 import com.sun.istack.NotNull
+import ish.common.types.AttendanceType
 import ish.common.types.AvetmissStudentDisabilityType
 import ish.common.types.AvetmissStudentEnglishProficiency
 import ish.common.types.AvetmissStudentIndigenousStatus
@@ -21,6 +22,7 @@ import ish.common.types.AvetmissStudentPriorEducation
 import ish.common.types.AvetmissStudentSchoolLevel
 import ish.common.types.ClientIndustryEmploymentType
 import ish.common.types.ClientOccupationIdentifierType
+import ish.common.types.EnrolmentStatus
 import ish.common.types.StudentCitizenship
 import ish.common.types.UsiStatus
 import ish.oncourse.API
@@ -533,6 +535,16 @@ class Student extends _Student implements StudentTrait, Queueable, Taggable, Att
 			}
 		}
 		return tagList
+	}
+
+	/**
+	 * @return attendance records for all SUCCESS enrolments
+	 */
+	@Nonnull
+	@API
+	List<Attendance> getActiveAttendances() {
+		def courseClasses = enrolments.findAll { it.status == EnrolmentStatus.SUCCESS }.courseClass
+		return attendances.findAll { it.session.courseClass in courseClasses && it.attendanceType == AttendanceType.UNMARKED}
 	}
 
 	@Override
