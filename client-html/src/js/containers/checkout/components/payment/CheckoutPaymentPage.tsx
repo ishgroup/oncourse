@@ -63,7 +63,7 @@ const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
         ? <CheckoutDiscountEditView type="voucher" selectedDiscount={voucherItem} />
         : (
           <div className="root">
-            <LoadingIndicator customLoading={isPaymentProcessing} />
+            <LoadingIndicator />
             <AppBarContainer
               hideHelpMenu
               hideSubmitButton

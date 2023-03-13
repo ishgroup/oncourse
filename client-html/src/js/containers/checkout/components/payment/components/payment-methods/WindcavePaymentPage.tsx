@@ -19,13 +19,10 @@ import {
 } from "../../../../../../model/checkout";
 import { State } from "../../../../../../reducers/state";
 import {
-  checkoutClearPaymentStatus, checkoutGetPaymentStatusDetails,
-  checkoutPaymentSetCustomStatus, checkoutProcessPayment,
-  checkoutSetPaymentSuccess,
-  clearCcIframeUrl
+  checkoutClearPaymentStatus, checkoutGetPaymentStatusDetails, checkoutProcessPayment, clearCcIframeUrl
 } from "../../../../actions/checkoutPayment";
 import PaymentMessageRenderer from "../PaymentMessageRenderer";
-import { BooleanArgFunction, StringArgFunction } from "../../../../../../model/common/CommonFunctions";
+import { StringArgFunction } from "../../../../../../model/common/CommonFunctions";
 import { formatCurrency } from "../../../../../../common/utils/numbers/numbersNormalizing";
 import styles from "./styles";
 import { FORM as CheckoutSelectionForm } from "../../../CheckoutSelection";
@@ -37,7 +34,6 @@ interface CreditCardPaymentPageProps {
   isPaymentProcessing?: boolean;
   disablePayment?: boolean;
   hasSummarryErrors?: boolean;
-  setPaymentSuccess?: BooleanArgFunction;
   currencySymbol?: any;
   iframeUrl?: string;
   xPaymentSessionId?: string;
@@ -45,7 +41,6 @@ interface CreditCardPaymentPageProps {
   checkoutProcessCcPayment?: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => void;
   clearCcIframeUrl: () => void;
   checkoutGetPaymentStatusDetails: StringArgFunction;
-  checkoutPaymentSetCustomStatus: StringArgFunction;
   onCheckoutClearPaymentStatus: () => void;
   process?: CheckoutPaymentProcess;
   paymentInvoice?: any;
@@ -59,7 +54,6 @@ const WindcavePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     summary,
     isPaymentProcessing,
     disablePayment,
-    setPaymentSuccess,
     currencySymbol,
     iframeUrl,
     xPaymentSessionId,
@@ -69,7 +63,6 @@ const WindcavePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     payment,
     onCheckoutClearPaymentStatus,
     checkoutGetPaymentStatusDetails,
-    checkoutPaymentSetCustomStatus,
     process,
     payerName,
     hasSummarryErrors
@@ -86,15 +79,8 @@ const WindcavePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   const onMessage = e => {
     const paymentDetails = e.data.payment;
     if (paymentDetails && paymentDetails.status) {
-      if (paymentDetails.status === "success") {
-        setPaymentSuccess(true);
-        setValidatePayment(false);
-        if (merchantReference !== "") {
-          checkoutProcessCcPayment(false, paymentDetails.sessionId, window.location.origin);
-        }
-      }
       checkoutGetPaymentStatusDetails(paymentDetails.sessionId);
-      checkoutPaymentSetCustomStatus(paymentDetails.status);
+      setValidatePayment(false);
       clearCcIframeUrl();
     }
   };
@@ -174,14 +160,12 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setPaymentSuccess: (isSuccess: boolean) => dispatch(checkoutSetPaymentSuccess(isSuccess)),
   checkoutProcessCcPayment: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => {
     dispatch(checkoutProcessPayment(xValidateOnly, xPaymentSessionId, xOrigin));
   },
   clearCcIframeUrl: () => dispatch(clearCcIframeUrl()),
   onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus()),
-  checkoutGetPaymentStatusDetails: (sessionId: string) => dispatch(checkoutGetPaymentStatusDetails(sessionId)),
-  checkoutPaymentSetCustomStatus: (status: string) => dispatch(checkoutPaymentSetCustomStatus(status))
+  checkoutGetPaymentStatusDetails: (sessionId: string) => dispatch(checkoutGetPaymentStatusDetails(sessionId))
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(WindcavePaymentPage));
