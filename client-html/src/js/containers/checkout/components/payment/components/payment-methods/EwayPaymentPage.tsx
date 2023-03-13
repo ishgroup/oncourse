@@ -18,13 +18,12 @@ import { State } from "../../../../../../reducers/state";
 import {
   checkoutClearPaymentStatus, checkoutGetPaymentStatusDetails,
   checkoutPaymentSetCustomStatus, checkoutProcessPayment, checkoutSetPaymentMethod,
-  checkoutSetPaymentSuccess,
   clearCcIframeUrl
 } from "../../../../actions/checkoutPayment";
 import PaymentMessageRenderer from "../PaymentMessageRenderer";
-import { BooleanArgFunction, StringArgFunction } from "../../../../../../model/common/CommonFunctions";
+import { StringArgFunction } from "../../../../../../model/common/CommonFunctions";
 import { FORM } from "../../../CheckoutSelection";
-import { Button } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 
 interface CreditCardPaymentPageProps {
   classes?: any;
@@ -32,10 +31,8 @@ interface CreditCardPaymentPageProps {
   payment?: CheckoutPayment;
   isPaymentProcessing?: boolean;
   disablePayment?: boolean;
-  setPaymentSuccess?: BooleanArgFunction;
   iframeUrl?: string;
   xPaymentSessionId?: string;
-  merchantReference?: string;
   checkoutProcessCcPayment?: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => void;
   clearCcIframeUrl: () => void;
   checkoutGetPaymentStatusDetails: StringArgFunction;
@@ -52,10 +49,8 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     summary,
     isPaymentProcessing,
     disablePayment,
-    setPaymentSuccess,
     iframeUrl,
     xPaymentSessionId,
-    merchantReference,
     checkoutProcessCcPayment,
     clearCcIframeUrl,
     payment,
@@ -66,28 +61,20 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     dispatch
   } = props;
 
-  const [validatePayment, setValidatePayment] = React.useState(true);
+  const [frameOpening, setFrameOpening] = React.useState(false);
 
-  const proceedPayment = React.useCallback(() => {
+  const proceedPayment = () => {
     onCheckoutClearPaymentStatus();
-    setValidatePayment(true);
     checkoutProcessCcPayment(true, xPaymentSessionId, window.location.origin);
-  }, [summary.payNowTotal, merchantReference]);
+  };
 
   const pymentCallback = result => {
+    setFrameOpening(false);
+
     const urlParams = new URL(iframeUrl).searchParams;
     const sessionId = urlParams.get("AccessCode");
 
     if (result === "Cancel") return;
-
-    if (result === "Complete") {
-      setPaymentSuccess(true);
-      setValidatePayment(false);
-      if (merchantReference !== "") {
-        checkoutProcessCcPayment(false, sessionId, window.location.origin);
-      }
-      checkoutPaymentSetCustomStatus("success");
-    }
 
     if (result === "Error") {
       dispatch(change(FORM, "payment_method", null));
@@ -106,6 +93,7 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   }, [summary.payNowTotal, summary.allowAutoPay, summary.paymentDate, summary.invoiceDueDate]);
   
   const openCardFrame = () => {
+    setFrameOpening(true);
     (window as any).eCrypt.showModalPayment({
       sharedPaymentUrl: iframeUrl,
     }, pymentCallback);
@@ -117,7 +105,8 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
       className="d-flex flex-fill h-100 justify-content-center"
     >
       {iframeUrl && !process.status &&
-        <Button
+        <LoadingButton
+          loading={frameOpening}
           size="large"
           variant="contained"
           color="primary"
@@ -125,13 +114,12 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
           onClick={openCardFrame}
         >
           Enter card details
-        </Button>
+        </LoadingButton>
       }
       {process.status !== "" && !isPaymentProcessing && (
         <PaymentMessageRenderer
           tryAgain={proceedPayment}
           payment={payment}
-          validatePayment={validatePayment}
           summary={summary}
         />
       )}
@@ -145,13 +133,11 @@ const mapStateToProps = (state: State) => ({
   paymentId: state.checkout.payment.paymentId,
   iframeUrl: state.checkout.payment.wcIframeUrl,
   xPaymentSessionId: state.checkout.payment.xPaymentSessionId,
-  merchantReference: state.checkout.payment.merchantReference,
   process: state.checkout.payment.process
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   dispatch,
-  setPaymentSuccess: (isSuccess: boolean) => dispatch(checkoutSetPaymentSuccess(isSuccess)),
   checkoutProcessCcPayment: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => {
     dispatch(checkoutProcessPayment(xValidateOnly, xPaymentSessionId, xOrigin));
   },
