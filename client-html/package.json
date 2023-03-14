@@ -43,7 +43,6 @@
     "eslint-plugin-jsx-a11y": "6.6.1",
     "eslint-plugin-react": "7.31.1",
     "eslint-plugin-react-hooks": "4.6.0",
-    "@fatso83/stacktrace-cli": "1.0.7",
     "file-loader": "6.*",
     "fork-ts-checker-webpack-plugin": "7.2.13",
     "html-webpack-plugin": "5.*",
@@ -177,8 +176,5 @@
       "^d3-(.*)$": "<rootDir>/node_modules/d3-$1/dist/d3-$1",
       "\\.css$|@ckeditor": "<rootDir>/src/dev/mock/importMock.ts"
     }
-  },
-  "resolutions": {
-    "puppeteer": "^19.7.4"
   }
 }
