@@ -177,5 +177,8 @@
       "^d3-(.*)$": "<rootDir>/node_modules/d3-$1/dist/d3-$1",
       "\\.css$|@ckeditor": "<rootDir>/src/dev/mock/importMock.ts"
     }
+  },
+  "resolutions": {
+    "puppeteer": "^19.7.4"
   }
 }
