@@ -542,6 +542,9 @@ const EditInPlaceSearchSelect = ({
                 ?
                 <Select
                   {...InputProps}
+                  inputRef={ref => {
+                    (inputProps as any).ref.current = ref?.node;
+                  }}
                   classes={{ select: "cursor-text" }}
                   onFocus={edit}
                   value={input.value || ""}
