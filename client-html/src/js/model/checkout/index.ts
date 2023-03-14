@@ -180,7 +180,7 @@ export interface CheckoutPayment {
   xPaymentSessionId?: string;
   merchantReference?: string;
   process?: CheckoutPaymentProcess;
-  invoice?: any;
+  invoice?: Invoice;
   paymentId?: number;
   savedCreditCard?: {
     creditCardName: string;

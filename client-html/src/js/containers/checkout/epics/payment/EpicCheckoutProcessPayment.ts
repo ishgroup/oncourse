@@ -12,9 +12,8 @@ import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import {
   CHECKOUT_EMPTY_PAYMENT_ACTION,
   CHECKOUT_PROCESS_PAYMENT,
-  CHECKOUT_PROCESS_PAYMENT_FULFILLED,
   checkoutPaymentSetCustomStatus,
-  checkoutPaymentSetStatus,
+  checkoutPaymentSetStatus, checkoutProcessPaymentFulfilled,
   checkoutSetPaymentProcessing
 } from "../../actions/checkoutPayment";
 import { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from "../../components/fundingInvoice/CheckoutFundingInvoiceSummaryList";
@@ -48,33 +47,54 @@ const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionI
       paymentType !== "Credit card" && !xValidateOnly
         ? checkoutPaymentSetCustomStatus("success")
         : { type: CHECKOUT_EMPTY_PAYMENT_ACTION },
-      {
-        type: CHECKOUT_PROCESS_PAYMENT_FULFILLED,
-        payload: { ...checkoutResponse }
-      },
+      checkoutProcessPaymentFulfilled(checkoutResponse),
       checkoutSetPaymentProcessing(false),
     ];
   },
-  processError: (response, { xValidateOnly }) => (response ? [
-    checkoutSetPaymentProcessing(false),
-    ...xValidateOnly ? [] : [checkoutPaymentSetStatus("fail", response.status, response.statusText, response.data)],
-    ...Array.isArray(response.data) ? [{
-      type: SHOW_MESSAGE,
-      payload: {
-        message: response.data.reduce((p, c, i) => p + c.error + (i === response.data.length - 1 ? "" : "\n\n"), ""),
-        persist: true
+  processError: (response, { xValidateOnly }) => {
+    const actions: any = [
+      checkoutSetPaymentProcessing(false),
+      checkoutProcessPaymentFulfilled({
+        sessionId: null,
+        ccFormUrl: null,
+        merchantReference: null,
+        paymentId: null,
+        invoice: null,
+      })
+    ];
+    
+    if (response) {
+      if (!xValidateOnly) {
+        actions.push(
+          checkoutPaymentSetStatus("fail", response.status, response.statusText, response.data)
+        );
       }
-    }] : FetchErrorHandler(response,
-      response.data?.responseText
-        ? response.data.responseText
-        : /(4|5)+/.test(response.status)
-        ? response.error
-          ? response.error
-          : "Payment gateway cannot be contacted. Please try again later or contact ish support."
-        : null)
-  ] : [
-    checkoutSetPaymentProcessing(false),
-    ...FetchErrorHandler(response, "Payment gateway cannot be contacted. Please try again later or contact ish support.")])
+      if (Array.isArray(response.data)) {
+        actions.push({
+          type: SHOW_MESSAGE,
+          payload: {
+            message: response.data.reduce((p, c, i) => p + c.error + (i === response.data.length - 1 ? "" : "\n\n"), ""),
+            persist: true
+          }
+        });
+      } else {
+        actions.push(
+          ...FetchErrorHandler(response,
+            response.data?.responseText
+              ? response.data.responseText
+              : /(4|5)+/.test(response.status)
+                ? response.error
+                  ? response.error
+                  : "Payment gateway cannot be contacted. Please try again later or contact ish support."
+                : null)
+        );
+      }
+    } else {
+      actions.push(...FetchErrorHandler(response, "Payment gateway cannot be contacted. Please try again later or contact ish support."));
+    }
+
+    return actions;
+  }
 };
 
 export const EpicCheckoutProcessPayment: Epic<any, any> = EpicUtils.Create(request);
