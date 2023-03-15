@@ -90,7 +90,7 @@ const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
                     summary={summary}
                     disablePayment={disablePayment}
                   />
-                )}
+                ))}
               {((selectedPaymentType && selectedPaymentType.type !== "Credit card")
                 || (!selectedPaymentType && ["No payment", "Saved credit card"].includes(payment.selectedPaymentType)))
               && <PaymentPage paymentType={payment.selectedPaymentType} payerName={payerName} summary={summary} />}
@@ -106,7 +106,7 @@ const mapStateToProps = (state: State) => ({
   summary: state.checkout.summary,
   summaryVouchers: state.checkout.summary.vouchers,
   isPaymentProcessing: state.checkout.payment.isProcessing,
-  isEway: state.userPreferences['payment.gateway.type'] === "EWAY"
+  isEway: ["EWAY", "EWAY_TEST"].includes(state.userPreferences['payment.gateway.type'])
 });
 
 export default connect<any, any, any>(mapStateToProps, null)(CheckoutPaymentPage);
