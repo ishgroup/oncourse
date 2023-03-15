@@ -180,7 +180,7 @@ const SimpleTagList = ({
         const index = current.findIndex(c => c === t.tagBody.name);
         if (index !== -1) {
           const addedTagsMatch = input.value.find(id => getFullTag(id, tags)?.name === t.tagBody.name);
-          if (addedTagsMatch && addedTagsMatch.id !== t.tagBody.id) {
+          if (addedTagsMatch && addedTagsMatch !== t.tagBody.id) {
             return;
           }
           updated.push(t.tagBody.id);
@@ -370,7 +370,8 @@ const SimpleTagList = ({
             hasPopupIcon: classes.hasPopup,
             hasClearIcon: classes.hasClear,
             listbox: clsx(classes.listbox, fieldClasses.listbox),
-            inputRoot: classes.inputWrapper
+            inputRoot: classes.inputWrapper,
+            noOptions: "d-none"
           }}
           renderInput={({
             InputLabelProps, InputProps, inputProps, ...params

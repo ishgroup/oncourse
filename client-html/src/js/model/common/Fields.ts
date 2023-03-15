@@ -202,6 +202,7 @@ export interface TagsFieldProps extends EditInPlaceFieldProps {
   tags: Tag[];
   showConfirm?: ShowConfirmCaller;
   classes?: any;
+  validateEntity?: EntityName;
 }
 
 interface FormFieldBaseProps {
