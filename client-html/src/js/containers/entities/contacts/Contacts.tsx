@@ -18,7 +18,6 @@ import ListView from "../../../common/components/list-view/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import {
-  getContact,
   getContactsConcessionTypes,
   getContactsRelationTypes,
   getContactsTaxTypes,
@@ -333,7 +332,6 @@ const Contacts: React.FC<ContactsProps> = props => {
         hideTitle: true
       }}
       EditViewContent={ContactEditView}
-      customGetAction={getContact}
       rootEntity="Contact"
       onInit={onInit}
       findRelated={findRelatedItems}

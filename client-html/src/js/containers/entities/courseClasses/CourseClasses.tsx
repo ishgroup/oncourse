@@ -46,7 +46,7 @@ import EnrolmentService from "../enrolments/services/EnrolmentService";
 import OutcomeService from "../outcomes/services/OutcomeService";
 import CourseClassCogWheel from "./components/CourseClassCogWheel";
 import CourseClassEditView from "./components/CourseClassEditView";
-import { createCourseClass, getCourseClass, getCourseClassTags, updateCourseClass } from "./actions";
+import { createCourseClass, getCourseClassTags, updateCourseClass } from "./actions";
 import { BooleanArgFunction, NoArgFunction } from "../../../model/common/CommonFunctions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getGradingTypes, getTutorRoles } from "../../preferences/actions";
@@ -638,7 +638,6 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
         rootEntity="CourseClass"
         onInit={onInit}
         customOnCreateAction={createCourseClass}
-        customGetAction={getCourseClass}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         CogwheelAdornment={CourseClassCogWheel}
