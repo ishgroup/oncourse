@@ -12,6 +12,8 @@ enum PaymentGatewayType {
 
     EWAY("EWAY"),
 
+    EWAY_TEST("EWAY_TEST"),
+
     WINDCAVE("WINDCAVE"),
 
     TEST_PAYMENT_SYSTEM("TEST"),
@@ -31,6 +33,9 @@ enum PaymentGatewayType {
     static PaymentGatewayType getByValue(String value) {
         if (EWAY.value.equalsIgnoreCase(value)) {
             return EWAY
+        }
+        if (EWAY_TEST.value.equalsIgnoreCase(value)) {
+            return EWAY_TEST
         }
         if (WINDCAVE.value.equalsIgnoreCase(value)) {
             return WINDCAVE
