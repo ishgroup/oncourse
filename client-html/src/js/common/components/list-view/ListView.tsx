@@ -185,7 +185,6 @@ interface Props extends Partial<ListState> {
   searchMenuItemsRenderer?: ListAqlMenuItemsRenderer;
   customOnCreate?: any;
   customOnCreateAction?: any;
-  customGetAction?: any;
   customUpdateAction?: any;
   preformatBeforeSubmit?: AnyArgFunction;
   findRelatedByFilter?: AnyArgFunction;
@@ -1269,9 +1268,7 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
     : createEntityRecord(item, ownProps.rootEntity)),
   onDelete: (id: number) => dispatch(deleteEntityRecord(id, ownProps.rootEntity)),
   onSave: (item: any) => dispatch(updateEntityRecord(item.id, ownProps.rootEntity, item)),
-  getEditRecord: (id: number) => dispatch(ownProps.customGetAction 
-    ? ownProps.customGetAction(id) 
-    : getEntityRecord(id, ownProps.rootEntity)),
+  getEditRecord: (id: number) => dispatch(getEntityRecord(id, ownProps.rootEntity)),
   findRelatedByFilter: (filter, list) => dispatch(findRelatedByFilter(filter, list))
 });
 

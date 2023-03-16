@@ -127,8 +127,6 @@ const FormField = React.forwardRef<any, BaseProps>((props, ref) => {
   const tags = type === "tags" ? props.tags : [];
   const required = type !== "stub" ? props.required : false;
 
-  const validateTags = useCallback((...args: [any, any, any]) => validateTagsList(tags || [], ...args), [tags]);
-  
   const validateResolver = useMemo(() => {
     const result = [];
     if (required) {
@@ -138,11 +136,15 @@ const FormField = React.forwardRef<any, BaseProps>((props, ref) => {
       result.push(validate);
     }
     if (type === "tags") {
-      result.push(validateTags);
+      result.push(
+        (value, allValues, formProps) => validateTagsList(tags || [], value, formProps, props, (type === "tags"
+            ? props.validateEntity
+            : null
+        ))
+      );
     }
-
     return result.length > 1 ? result : result.length ? result[0] : undefined;
-  }, [validate, required, type, validateTags]);
+  }, [validate, required, type, type === "tags" && props.validateEntity]);
 
   return (
     <Field
