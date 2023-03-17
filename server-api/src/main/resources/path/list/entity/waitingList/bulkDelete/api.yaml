@@ -18,5 +18,5 @@ post:
       description: Unexpected error
   x-permission:
     mask: edit
-    keyCode: WAITING LIST
+    keyCode: WAITING_LIST
     errorMessage: Sorry, you have no permissions to edit waiting lists. Please contact your administrator.
