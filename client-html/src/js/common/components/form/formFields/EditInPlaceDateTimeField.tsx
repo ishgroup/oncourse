@@ -121,7 +121,7 @@ const EditInPlaceDateTimeField = (
 
   useEffect(() => {
     setTextValue(formatDateInner(dateValue, timezone));
-  }, [dateValue]);
+  }, [dateValue, timezone]);
 
   useEffect(() => {
     if (!active && processActionId) {
