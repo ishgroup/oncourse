@@ -516,7 +516,9 @@ export const deleteEntityItemById = (entity: EntityName, id: number): Promise<an
     case "Site":
       return SiteService.removeSite(id);
     case "WaitingList":
-      return WaitingListService.removeWaitingList(id);
+      return WaitingListService.bulkDelete({
+        ids: [id]
+      });
     default:
       return defaultUnknown();
   }
