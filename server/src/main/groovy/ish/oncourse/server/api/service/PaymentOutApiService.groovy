@@ -15,8 +15,7 @@ import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import ish.common.types.ConfirmationStatus
-import ish.common.types.PaymentStatus
-import ish.oncourse.server.eway.EWayPaymentService
+import ish.oncourse.server.checkout.CheckoutApiService
 import static ish.common.types.PaymentStatus.*
 import ish.common.types.PaymentType
 import ish.math.Money
@@ -39,8 +38,7 @@ import ish.oncourse.server.cayenne.PaymentOutLine
 import ish.oncourse.server.cayenne.Site
 import ish.oncourse.server.services.TransactionLockedService
 import ish.oncourse.server.users.SystemUserService
-import ish.oncourse.server.windcave.PaymentService
-import ish.oncourse.server.windcave.SessionAttributes
+import ish.oncourse.server.checkout.gateway.windcave.SessionAttributes
 import static ish.util.LocalDateUtils.dateToTimeValue
 import ish.util.PaymentMethodUtil
 import org.apache.cayenne.ObjectContext
@@ -73,10 +71,7 @@ class PaymentOutApiService extends EntityApiService<PaymentOutDTO, PaymentOut, P
     private SystemUserService systemUserService
 
     @Inject
-    private PaymentService paymentService
-
-    @Inject
-    private EWayPaymentService eWayPaymentService
+    CheckoutApiService checkoutApiService
 
     @Override
     Class<PaymentOut> getPersistentClass() {
@@ -311,8 +306,7 @@ class PaymentOutApiService extends EntityApiService<PaymentOutDTO, PaymentOut, P
         ObjectContext context = paymentIn.context
         String merchantReference = UUID.randomUUID().toString()
 
-//        SessionAttributes sessionAttributes = paymentService.makeRefund(amount, merchantReference, paymentIn.gatewayReference)
-        SessionAttributes sessionAttributes = eWayPaymentService.makeRefund(amount, merchantReference, paymentIn.gatewayReference)
+        SessionAttributes sessionAttributes = checkoutApiService.makeRefund(amount, merchantReference, paymentIn.gatewayReference)
 
         PaymentOut paymentOut = context.newObject(PaymentOut)
         paymentOut.creditCardExpiry = paymentIn.creditCardExpiry
@@ -354,7 +348,7 @@ class PaymentOutApiService extends EntityApiService<PaymentOutDTO, PaymentOut, P
         }
 
         if (!sessionAttributes.authorised) {
-            String errorMessage = "Refund transaction is failed: ${sessionAttributes.statusText?:sessionAttributes.errorMessage}, error code: $sessionAttributes.reCo"
+            String errorMessage = "Refund transaction is failed: $sessionAttributes.statusText, $sessionAttributes.errorMessage, error code: $sessionAttributes.reCo"
 
             paymentOut.status = FAILED
             paymentOut.paymentDate = LocalDate.now()
@@ -365,9 +359,7 @@ class PaymentOutApiService extends EntityApiService<PaymentOutDTO, PaymentOut, P
         } else {
             paymentOut.status = SUCCESS
             paymentOut.gatewayReference = sessionAttributes.transactionId
-            //Rewrite
-            paymentOut.paymentDate = LocalDate.now()
-//            paymentOut.paymentDate = sessionAttributes.paymentDate
+            paymentOut.paymentDate = sessionAttributes.paymentDate
         }
         return paymentOut
     }
