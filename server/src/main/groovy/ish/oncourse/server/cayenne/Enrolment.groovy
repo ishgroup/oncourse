@@ -17,6 +17,9 @@ import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.function.CalculateOutcomeReportableHours
+import ish.oncourse.server.api.v1.function.CartFunctions
+import ish.oncourse.server.api.v1.model.CartContactIdsDTO
+import ish.oncourse.server.api.v1.model.CartObjectDataDTO
 import ish.oncourse.server.cayenne.glue._Enrolment
 import ish.validation.EnrolmentStatusValidator
 import org.apache.cayenne.PersistenceState
@@ -114,6 +117,31 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	@Override
 	void prePersist() {
 		updateOverriddenFields()
+	}
+
+	@Override
+	protected void postPersist() {
+		removeAbandonedCartsWithThisClass()
+	}
+
+	private void removeAbandonedCartsWithThisClass(){
+		Contact contact = student.getContact()
+		if(contact == null)
+			return
+
+		String formattedCartContact = format("\"contactId\":\"%d\"", contact.getWillowId())
+		List<Checkout> checkouts = ObjectSelect.query(Checkout.class)
+				.where(Checkout.SHOPPING_CART.contains(formattedCartContact))
+				.select(context)
+
+		checkouts.each {checkout ->
+			List<CartContactIdsDTO> cartContacts = CartFunctions.contactCartsOf(checkout, contact.getWillowId(), CartFunctions.CLASSES_KEY)
+			if ((cartContacts.collect { it.classIds }.flatten() as List<CartObjectDataDTO>)
+					.any { it -> it.getId().equals(courseClass.getId()) }) {
+				context.deleteObject(checkout)
+				context.commitChanges()
+			}
+		}
 	}
 
 	/**
