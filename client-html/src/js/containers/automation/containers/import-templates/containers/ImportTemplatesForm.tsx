@@ -72,8 +72,8 @@ const ImportTemplatesForm = React.memo<Props>(
     }, []);
 
     const onDialogSave = useCallback(
-      ({ keyCode }) => {
-        onCreate({ ...values, id: null, keyCode });
+      ({ keyCode, name }) => {
+        onCreate({ ...values, id: null, keyCode, name });
         onDialodClose();
       },
       [values]
