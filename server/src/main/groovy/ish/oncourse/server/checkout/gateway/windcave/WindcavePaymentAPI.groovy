@@ -1,15 +1,12 @@
 /*
- * Copyright ish group pty ltd 2020.
+ * Copyright ish group pty ltd 2023.
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of the
- * GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License for more details.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.server.windcave
+package ish.oncourse.server.checkout.gateway.windcave
 
 import com.google.inject.Inject
 import groovy.json.JsonOutput
@@ -32,7 +29,7 @@ import org.apache.logging.log4j.Logger
 import java.time.LocalDate
 
 @CompileStatic
-class PaymentService {
+class WindcavePaymentAPI {
 
 //    SXNoR3JvdXBSRVNUX0RldjphOTljYWUxYmRlZGJjNGU5ODQ3OTNmZjNhNjkwMDM5ZTdlZWUyOTgyMmQ0ZDQzZDg2M2JkZDE4NGNlOTk4NmRj
 
@@ -41,7 +38,7 @@ class PaymentService {
     public static final String  PURCHASE_TYPE = "purchase"
 
 
-    private static final Logger logger = LogManager.getLogger(PaymentService)
+    private static final Logger logger = LogManager.getLogger(WindcavePaymentAPI)
 
     @Inject
     PreferenceController preferenceController
