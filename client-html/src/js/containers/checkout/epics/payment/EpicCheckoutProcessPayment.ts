@@ -24,6 +24,16 @@ import { getCheckoutModel } from "../../utils";
 import { FORM } from "../../components/CheckoutSelection";
 import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
 
+const errorMessageDefault = "Payment gateway cannot be contacted. Please try again later or contact ish support.";
+
+const getErrorMessage = response => response.data?.responseText
+  ? response.data.responseText
+  : /(4|5)+/.test(response.status)
+    ? response.error
+      ? response.error
+      : errorMessageDefault
+    : null;
+
 const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string }> = {
   type: CHECKOUT_PROCESS_PAYMENT,
   getData: ({
@@ -66,7 +76,12 @@ const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionI
     if (response) {
       if (!xValidateOnly) {
         actions.push(
-          checkoutPaymentSetStatus("fail", response.status, response.statusText, response.data)
+          checkoutPaymentSetStatus(
+            "fail",
+            response.status,
+            response.statusText,
+            { ...response.data, responseText: getErrorMessage(response) }
+          )
         );
       }
       if (Array.isArray(response.data)) {
@@ -79,18 +94,11 @@ const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionI
         });
       } else {
         actions.push(
-          ...FetchErrorHandler(response,
-            response.data?.responseText
-              ? response.data.responseText
-              : /(4|5)+/.test(response.status)
-                ? response.error
-                  ? response.error
-                  : "Payment gateway cannot be contacted. Please try again later or contact ish support."
-                : null)
+          ...FetchErrorHandler(response, getErrorMessage(response))
         );
       }
     } else {
-      actions.push(...FetchErrorHandler(response, "Payment gateway cannot be contacted. Please try again later or contact ish support."));
+      actions.push(...FetchErrorHandler(response, errorMessageDefault));
     }
 
     return actions;
