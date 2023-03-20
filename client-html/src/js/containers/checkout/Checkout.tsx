@@ -87,10 +87,10 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getContactsTaxTypes());
     dispatch(getActiveFundingContracts(true));
     dispatch(getUserPreferences(["payment.gateway.type"]));
-
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Enrolment", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=PriorLearning", method: "GET" }));
+    dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=PaymentIn", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Outcome", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Certificate", method: "GET" }));
   },
