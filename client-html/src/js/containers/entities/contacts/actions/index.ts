@@ -42,12 +42,19 @@ export const GET_CONTACT_CERTIFICATES_FULFILLED = FULFILLED(GET_CONTACT_CERTIFIC
 
 export const CLOSE_MERGE_CONTACTS_SUCCESS = "close/contacts/mergeContactsSuccess";
 
+export const DELETE_CONTACT_SHOPPING_CART = _toRequestType("delete/contact/shoppingCart");
+
 export const VERIFY_USI = _toRequestType("verify/contacts/usi");
 export const VERIFY_USI_FULFILLED = FULFILLED(VERIFY_USI);
 export const VERIFY_USI_REJECTED = REJECTED(VERIFY_USI);
 
 export const CLEAR_USI_VERIFICATION_RESULT = "clear/contacts/usiVerificationResult";
 export const CLEAR_CONTACT_EDUCATION = "clear/contact/education";
+
+export const deleteContactShoppingCart = (id: number) => ({
+  type: DELETE_CONTACT_SHOPPING_CART,
+  payload: id
+});
 
 export const postMergeContacts = (request: MergeRequest) => ({
   type: POST_MERGE_CONTACTS,
