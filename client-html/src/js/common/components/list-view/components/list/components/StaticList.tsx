@@ -3,9 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
-  memo, useMemo
-} from "react";
+import React, { memo } from "react";
 import { FixedSizeList, areEqual } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import clsx from "clsx";
@@ -14,11 +12,20 @@ import { NestedTableColumnsTypes } from "../../../../../../model/common/NestedTa
 import NestedTableCheckboxCell from "./NestedTableCheckboxCell";
 import NestedTableLinkCell from "./NestedTableLinkCell";
 import { flexRender } from "@tanstack/react-table";
+import NestedTableDeleteCell from "./NestedTableDeleteCell";
 
 const ListCell = React.memo<any>(({
- value, fieldName, column, row, onCheckboxChange, classes
+ value, fieldName, column, row, onCheckboxChange, onRowDelete, classes
 } ) => {
   switch (column.type as NestedTableColumnsTypes) {
+    case "delete":
+      return (
+        <NestedTableDeleteCell
+          classes={classes}
+          onRowDelete={onRowDelete}
+        />
+      );
+      
     case "checkbox": {
       return (
         <NestedTableCheckboxCell
@@ -56,6 +63,7 @@ const ListRow = memo<any>(({ data, index, style }) => {
     rows,
     classes,
     onRowSelect,
+    onRowDelete,
     onRowDoubleClick,
     onCheckboxChange
   } = data;
@@ -93,6 +101,7 @@ const ListRow = memo<any>(({ data, index, style }) => {
             row={row.original.initial}
             fieldName={row.original.fieldName}
             onCheckboxChange={onCheckboxChange}
+            onRowDelete={() => onRowDelete(row.original.initial.id)}
             classes={classes}
           />
         </TableCell>
@@ -101,24 +110,11 @@ const ListRow = memo<any>(({ data, index, style }) => {
   );
 }, areEqual);
 
-export default ({
-  totalColumnsWidth,
-  rows,
-  classes,
-  onRowDoubleClick,
-  onCheckboxChange,
-  onRowSelect
-}) => {
-  const itemData = useMemo(
-    () => ({
-      rows,
-      classes,
-      onRowDoubleClick,
-      onCheckboxChange,
-      onRowSelect
-    }),
-    [rows, classes, onRowDoubleClick, onCheckboxChange, onRowSelect, totalColumnsWidth]
-  );
+export default itemData => {
+  const {
+    totalColumnsWidth,
+    rows
+  } = itemData;
 
   return (
     <AutoSizer>
