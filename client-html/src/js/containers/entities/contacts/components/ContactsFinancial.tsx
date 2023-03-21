@@ -122,7 +122,6 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
   const [lockedTerms, setLockedTerms] = useState(true);
   
   const removeShopingCartRow = id => {
-    console.log(id);
     dispatch(change(form, "abandonedCarts", values.abandonedCarts.filter(c => c.id !== id)));
   };
 
