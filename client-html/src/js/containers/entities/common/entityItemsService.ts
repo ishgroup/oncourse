@@ -204,15 +204,21 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
       return CertificateService.updateCertificate(id, item);
 
     case "Contact": {
-      const { student, relations } = item;
+      const itemToSave = { ...item };
 
-      if (student) delete item.student.education;
+      if (itemToSave.student) {
+        itemToSave.student = {
+          ...item.student,
+          education: null
+        };
+        delete itemToSave.student.education;
+      }
 
-      item.relations = formatRelationsBeforeSave(relations);
+      itemToSave.relations = [...formatRelationsBeforeSave(itemToSave.relations)];
 
-      if (item.isCompany) delete item.firstName;
+      if (itemToSave.isCompany) delete item.firstName;
 
-      return ContactsService.updateContact(id, item);
+      return ContactsService.updateContact(id, itemToSave);
     }
 
     case "CorporatePass":
