@@ -91,7 +91,7 @@ abstract class EntityApiService<T extends _DTOTrait, K extends Persistent, M ext
         }
         ObjectContext context = cayenneService.newContext
 
-        if (dto.search ||  dto.filter || !dto.tagGroups.empty) {
+        if (dto.search || dto.filter || !dto.tagGroups.empty) {
             List<K> entities = getBulkEntities(dto, context)
 
             entities.each { entity ->
@@ -119,10 +119,18 @@ abstract class EntityApiService<T extends _DTOTrait, K extends Persistent, M ext
         ObjectContext context = cayenneService.newContext
         List<K> entities = null
 
-        if(dto.filter || dto.search)
+        if (dto.filter || dto.search)
             entities = getBulkEntities(dto, context)
         else
-            entities = EntityUtil.getObjectsByIds(context, getPersistentClass() as Class<? extends PersistentObjectI>, dto.ids).collect {it as K}
+            entities = EntityUtil.getObjectsByIds(context, getPersistentClass() as Class<? extends PersistentObjectI>, dto.ids).collect { it as K }
+
+        if (entities == null || entities.empty) {
+            validator.throwClientErrorException("diff", "Records for bulk remove are not found")
+        }
+
+        if(entities.contains(null)){
+            validator.throwClientErrorException("diff", "Record with id ${dto.ids.get(entities.indexOf(null))} not found")
+        }
 
         try {
             context.deleteObjects(entities)
@@ -132,14 +140,14 @@ abstract class EntityApiService<T extends _DTOTrait, K extends Persistent, M ext
         }
     }
 
-    final List<K> getBulkEntities(DiffDTO dto, ObjectContext context){
+    final List<K> getBulkEntities(DiffDTO dto, ObjectContext context) {
         Class<K> clzz = getPersistentClass()
         ObjectSelect query = ObjectSelect.query(clzz)
         query = parseSearchQuery(query as ObjectSelect, context, aqlService, clzz.simpleName, dto.search, dto.filter, dto.tagGroups)
         query.select(context) as List<K>
     }
 
-    void remove (K persistent, ObjectContext context) {
+    void remove(K persistent, ObjectContext context) {
         context.deleteObject(persistent)
     }
 
