@@ -383,7 +383,7 @@ export const createEntityItem = (entity: EntityName, item: any): Promise<any> =>
         access,
         content,
         tags,
-        (Array.isArray(versions) && versions[0].fileName) || content.name
+        (versions && versions[0] && versions[0].fileName) || content.name
       );
     }
 
