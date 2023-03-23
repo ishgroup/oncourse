@@ -15,7 +15,13 @@ const AuthCodeFieldRenderer = ({ fields, dispatch, submitRef }) => {
   const focusNextNode = value => {
     if (value || value === 0) {
       const firstEmpty = inputNodes.find(node => !node.value);
-      if (firstEmpty) {firstEmpty.focus();} else { submitRef.click(); }
+      if (firstEmpty) {
+        firstEmpty.focus();
+      } else {
+        setTimeout(() => {
+          submitRef.click();
+        }, 200);
+      }
     }
   };
 
