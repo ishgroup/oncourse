@@ -36,7 +36,11 @@ const styles = theme =>
     inputWrapper: {
       "&:hover $inputEndAdornment": {
         visibility: "visible",
-      }
+      },
+      "&:hover .placeholderContent": {
+        color: theme.palette.primary.main,
+        opacity: 0.5
+      },
     },
     inputEndAdornment: {
       visibility: 'hidden',
@@ -388,7 +392,7 @@ const SimpleTagList = ({
               fieldClasses={fieldClasses}
               shrink={Boolean(label || input.value)}
               labelAdornment={labelAdornment}
-              placeholder={placeholder}
+              placeholder={placeholder || "No value"}
               editIcon={<Edit fontSize="inherit" />}
               InputProps={{
                 ...InputProps,
@@ -407,7 +411,9 @@ const SimpleTagList = ({
               }}
               CustomInput={!isEditing
                 ? <Select
-                  inputRef={(inputProps as any).ref}
+                  inputRef={ref => {
+                    (inputProps as any).ref.current = ref?.node;
+                  }}
                   onFocus={edit}
                   value="stub"
                   className={classes.inputWrapper}
