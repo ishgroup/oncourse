@@ -19,6 +19,7 @@ import tutorials from "./tutorials.json";
 import EntityService from "../../../../common/services/EntityService";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { Dispatch } from "redux";
+import { AccessState } from "../../../../common/reducers/accessReducer";
 
 const styles = (theme: AppTheme) => createStyles({
   root: {
@@ -42,6 +43,7 @@ interface Props {
   drawerOpened?: boolean;
   skipSystemUser?: boolean;
   dispatch?: Dispatch;
+  access?: AccessState;
 }
 
 const dashboardFeedWidth = 370;
