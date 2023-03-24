@@ -83,9 +83,6 @@ const useStyles = makeAppStyles(theme => ({
   cogWheelMenuOffset: {
     marginLeft: "-45px"
   },
-  cogWheelMenuDelete: {
-    color: theme.palette.error.main
-  },
   customIconButton: {
     padding: `${theme.spacing(1)} 2.5px`,
     height: theme.spacing(6),
@@ -298,7 +295,7 @@ const BottomAppBar = (
         disabled={selection.length !== 1 || !existingRecordSelected}
         onClick={handleDeleteClick}
         classes={{
-          root: clsx("listItemPadding", classes.cogWheelMenuDelete)
+          root: "listItemPadding errorColor"
         }}
       >
         Delete record

@@ -60,7 +60,8 @@ const FormSubmitButton = React.memo<Props>(({
         ref={ref}
         classes={{
           root: fab ? "saveButtonEditView" : "whiteAppBarButton",
-          disabled: fab ? "saveButtonEditViewDisabled" : "whiteAppBarButtonDisabled"
+          disabled: fab ? "saveButtonEditViewDisabled" : "whiteAppBarButtonDisabled",
+          startIcon: !invalid && "m-0"
         }}
         disabled={disabled}
         onClick={onClick}
