@@ -94,7 +94,7 @@ Feature: Main feature for all POST requests with path 'access'
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'          | 'GET'    | {"hasAccess":true} |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList'            | 'POST'   | {"hasAccess":true} |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'          | 'PUT'    | {"hasAccess":true} |
-            | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'          | 'DELETE' | {"hasAccess":true} |
+            | 'WaitingList'         | '/a/v1/list/entity/waitingList/bulkDelete' | 'POST'   | {"hasAccess":true} |
             | 'Application'         | '/a/v1/list/entity/application/1'          | 'GET'    | {"hasAccess":true} |
             | 'Application'         | '/a/v1/list/entity/application'            | 'POST'   | {"hasAccess":true} |
             | 'Application'         | '/a/v1/list/entity/application/1'          | 'PUT'    | {"hasAccess":true} |
@@ -253,7 +253,7 @@ Feature: Main feature for all POST requests with path 'access'
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'          | 'GET'    | {"hasAccess":true}  |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList'            | 'POST'   | {"hasAccess":true}  |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'          | 'PUT'    | {"hasAccess":true}  |
-            | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'          | 'DELETE' | {"hasAccess":false} |
+            | 'WaitingList'         | '/a/v1/list/entity/waitingList/bulkDelete' | 'POST'   | {"hasAccess":true} |
             | 'Application'         | '/a/v1/list/entity/application/1'          | 'GET'    | {"hasAccess":true}  |
             | 'Application'         | '/a/v1/list/entity/application'            | 'POST'   | {"hasAccess":true}  |
             | 'Application'         | '/a/v1/list/entity/application/1'          | 'PUT'    | {"hasAccess":true}  |
@@ -404,7 +404,7 @@ Feature: Main feature for all POST requests with path 'access'
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'GET'    | {"hasAccess":true}  |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList'           | 'POST'   | {"hasAccess":false} |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'PUT'    | {"hasAccess":true}  |
-            | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'DELETE' | {"hasAccess":false} |
+            | 'WaitingList'         | '/a/v1/list/entity/waitingList/bulkDelete'| 'POST'   | {"hasAccess":true} |
             | 'Application'         | '/a/v1/list/entity/application/1'         | 'GET'    | {"hasAccess":true}  |
             | 'Application'         | '/a/v1/list/entity/application'           | 'POST'   | {"hasAccess":false} |
             | 'Application'         | '/a/v1/list/entity/application/1'         | 'PUT'    | {"hasAccess":true}  |
@@ -555,7 +555,7 @@ Feature: Main feature for all POST requests with path 'access'
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'GET'    | {"hasAccess":true}  |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList'           | 'POST'   | {"hasAccess":false} |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'PUT'    | {"hasAccess":false} |
-            | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'DELETE' | {"hasAccess":false} |
+            | 'WaitingList'         | '/a/v1/list/entity/waitingList/bulkDelete'| 'POST'   | {"hasAccess":false} |
             | 'Application'         | '/a/v1/list/entity/application/1'         | 'GET'    | {"hasAccess":true}  |
             | 'Application'         | '/a/v1/list/entity/application'           | 'POST'   | {"hasAccess":false} |
             | 'Application'         | '/a/v1/list/entity/application/1'         | 'PUT'    | {"hasAccess":false} |
@@ -706,7 +706,7 @@ Feature: Main feature for all POST requests with path 'access'
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'GET'    | {"hasAccess":true}  |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList'           | 'POST'   | {"hasAccess":false} |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'PUT'    | {"hasAccess":false} |
-            | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'DELETE' | {"hasAccess":false} |
+            | 'WaitingList'         | '/a/v1/list/entity/waitingList/bulkDelete'| 'POST'   | {"hasAccess":false} |
             | 'Application'         | '/a/v1/list/entity/application/1'         | 'GET'    | {"hasAccess":true}  |
             | 'Application'         | '/a/v1/list/entity/application'           | 'POST'   | {"hasAccess":false} |
             | 'Application'         | '/a/v1/list/entity/application/1'         | 'PUT'    | {"hasAccess":false} |
@@ -869,7 +869,7 @@ Feature: Main feature for all POST requests with path 'access'
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'GET'    | {"hasAccess":false} |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList'           | 'POST'   | {"hasAccess":false} |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'PUT'    | {"hasAccess":false} |
-            | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'DELETE' | {"hasAccess":false} |
+            | 'WaitingList'         | '/a/v1/list/entity/waitingList/bulkDelete'| 'POST'   | {"hasAccess":false} |
             | 'Application'         | '/a/v1/list/entity/application/1'         | 'GET'    | {"hasAccess":false} |
             | 'Application'         | '/a/v1/list/entity/application'           | 'POST'   | {"hasAccess":false} |
             | 'Application'         | '/a/v1/list/entity/application/1'         | 'PUT'    | {"hasAccess":false} |
