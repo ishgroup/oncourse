@@ -14,7 +14,7 @@ import { PreferenceEnum } from "@api/model";
 import { State } from "../../reducers/state";
 import DashboardHeader from "./components/DashboardHeader";
 import ActionBody from "./components/action-body/ActionBody";
-import { getUserPreferences, showConfirm, setUserPreference } from "../../common/actions";
+import { getUserPreferences, showConfirm, setUserPreference, checkPermissions } from "../../common/actions";
 import {
   DASHBOARD_CATEGORY_WIDTH_KEY,
   DASHBOARD_THEME_KEY, SYSTEM_USER_TUTORIAL_SKIP,
@@ -65,6 +65,7 @@ class Dashboard extends React.PureComponent<any, any> {
       openConfirm,
       drawerOpened,
       dispatch,
+      access
     } = this.props;
 
     return (
@@ -89,6 +90,7 @@ class Dashboard extends React.PureComponent<any, any> {
 
         <Grid item xs={12} className={classes.containerHeight}>
           <ActionBody
+            access={access}
             dispatch={dispatch}
             preferencesCategoryWidth={preferences[DASHBOARD_CATEGORY_WIDTH_KEY]}
             setDashboardColumnWidth={setDashboardColumnWidth}
@@ -104,7 +106,8 @@ class Dashboard extends React.PureComponent<any, any> {
 const mapStateToProps = (state: State) => ({
   drawerOpened: state.swipeableDrawer.opened,
   preferences: state.userPreferences,
-  upgradePlanLink: state.dashboard.upgradePlanLink
+  upgradePlanLink: state.dashboard.upgradePlanLink,
+  access: state.access
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -114,6 +117,13 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setPreferencesTheme: (value: ThemeValues) => dispatch(setUserPreference({ key: DASHBOARD_THEME_KEY, value })),
   openConfirm: props => dispatch(showConfirm(props)),
   toggleSwipeableDrawer: () => dispatch(toggleSwipeableDrawer(VARIANTS.persistent)),
+  checkPermissions: () => {
+    dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Course", method: "GET" }));
+    dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Site", method: "GET" }));
+    dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Contact", method: "GET" }));
+    dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=CourseClass", method: "GET" }));
+    dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=SystemUser", method: "GET" }));
+  }
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Dashboard));

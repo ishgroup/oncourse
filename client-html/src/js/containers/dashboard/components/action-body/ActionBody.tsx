@@ -126,9 +126,13 @@ class ActionBody extends React.PureComponent<Props, any> {
   };
 
   getTutorial = async () => {
+    const { access } = this.props;
+
     for (const tutorialKey in tutorials) {
       switch (tutorialKey) {
         case "course": {
+          const courseAccess = access["/a/v1/list/plain?entity=Course"] && access["/a/v1/list/plain?entity=Course"]["GET"];
+          if (!courseAccess) break;
           const courseResponse = await EntityService.getPlainRecords("Course", "id", "id not is null", 1);
           if (!courseResponse?.rows?.length) {
             return tutorialKey;
@@ -136,6 +140,8 @@ class ActionBody extends React.PureComponent<Props, any> {
           break;
         }
         case "site": {
+          const siteAccess = access["/a/v1/list/plain?entity=Site"] && access["/a/v1/list/plain?entity=Site"]["GET"];
+          if (!siteAccess) break;
           const siteResponse = await EntityService.getPlainRecords("Site", "id,name", "id not is null", 2);
           if (!siteResponse?.rows?.length) {
             return tutorialKey;
@@ -149,6 +155,8 @@ class ActionBody extends React.PureComponent<Props, any> {
           break;
         }
         case "tutor": {
+          const tutorAccess = access["/a/v1/list/plain?entity=Contact"] && access["/a/v1/list/plain?entity=Contact"]["GET"];
+          if (!tutorAccess) break;
           const tutorResponse = await EntityService.getPlainRecords("Contact", "id", "id not is null and isTutor is true", 1);
           if (!tutorResponse?.rows?.length) {
             return tutorialKey;
@@ -156,6 +164,8 @@ class ActionBody extends React.PureComponent<Props, any> {
           break;
         }
         case "courseclass": {
+          const courseClassAccess = access["/a/v1/list/plain?entity=CourseClass"] && access["/a/v1/list/plain?entity=CourseClass"]["GET"];
+          if (!courseClassAccess) break;
           const courseClassResponse = await EntityService.getPlainRecords("CourseClass", "id", "id not is null", 1);
           if (!courseClassResponse?.rows?.length) {
             return tutorialKey;
@@ -163,6 +173,8 @@ class ActionBody extends React.PureComponent<Props, any> {
           break;
         }
         case "systemuser": {
+          const systemUserAccess = access["/a/v1/list/plain?entity=SystemUser"] && access["/a/v1/list/plain?entity=SystemUser"]["GET"];
+          if (!systemUserAccess) break;
           const systemUserResponse = await EntityService.getPlainRecords("SystemUser", "id", "id not is null", 2);
           if (systemUserResponse?.rows?.length === 1) {
             return tutorialKey;
