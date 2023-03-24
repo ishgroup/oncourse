@@ -9,11 +9,16 @@ def dataContext = product.context
 def counter = 0
 def previousContactId = 0L
 def requestStr = "SELECT * FROM Contact WHERE DAYOFYEAR(BIRTHDATE) BETWEEN DAYOFYEAR(NOW())+1 AND DAYOFYEAR(NOW())+7 AND ID > %d LIMIT 100"
-def request = new SQLTemplate(Contact.class, String.format(requestStr, previousContactId))
-def contacts = dataContext.performQuery(request)
-previousContactId = contacts.empty ? previousContactId : contacts.last().id
 
-while(!contacts.empty) {
+
+while(true) {
+    def request = new SQLTemplate(Contact.class, String.format(requestStr, previousContactId))
+    def contacts = dataContext.performQuery(request)
+    if(contacts.empty)
+        break
+
+    previousContactId = contacts.last().id
+
     contacts.each { contact ->
 
         //must create an invoice/invoiceline for voucher validation
@@ -59,10 +64,6 @@ while(!contacts.empty) {
             counter = 0
         }
     }
-
-    request = new SQLTemplate(Contact.class, String.format(requestStr, previousContactId))
-    contacts = dataContext.performQuery(request)
-    previousContactId = contacts.empty ? previousContactId : contacts.last().id
 }
 if (counter > 0) {
     dataContext.commitChanges()
