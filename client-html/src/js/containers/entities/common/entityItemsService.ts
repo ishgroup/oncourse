@@ -382,7 +382,7 @@ export const createEntityItem = (entity: EntityName, item: any): Promise<any> =>
         shared,
         access,
         content,
-        tags,
+        tags?.toString(),
         (versions && versions[0] && versions[0].fileName) || content.name
       );
     }
