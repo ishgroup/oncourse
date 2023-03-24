@@ -1,0 +1,23 @@
+post:
+  operationId: removeContactShoppingCart
+  description: remove shopping carts where this contact is a payer
+  tags:
+    - Contact
+  parameters:
+    - name: id
+      in: query
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of contact
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: CONTACT
+    errorMessage: Sorry, you have no permissions to edit contact info. Please contact your administrator
