@@ -266,7 +266,7 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
       return PaymentOutService.updatePaymentOut(id, item);
 
     case "Payslip": {
-      const paylines = [...item?.paylines.filter(p => p.deferred) || []];
+      const paylines = [...item?.paylines?.filter(p => p.deferred) || []];
 
       paylines.forEach(i => {
         delete i.deferred;
@@ -383,7 +383,7 @@ export const createEntityItem = (entity: EntityName, item: any): Promise<any> =>
         access,
         content,
         tags,
-        (Array.isArray(versions) && versions[0].fileName) || content.name
+        (versions && versions[0] && versions[0].fileName) || content.name
       );
     }
 
