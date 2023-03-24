@@ -53,6 +53,7 @@ class Dashboard extends React.PureComponent<any, any> {
   componentDidMount() {
     this.props.getDashboardPreferences();
     this.props.toggleSwipeableDrawer();
+    this.props.checkPermissions();
   }
 
   render() {
