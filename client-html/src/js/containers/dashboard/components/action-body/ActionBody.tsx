@@ -52,7 +52,9 @@ class ActionBody extends React.PureComponent<Props, any> {
   private updateChart;
 
   private drawerUpdated = true;
-  
+
+  private intervalIsSet = false;
+
   private interval = null;
 
   constructor(props) {
@@ -65,11 +67,6 @@ class ActionBody extends React.PureComponent<Props, any> {
       tutorialKey: null,
       customLink: null
     };
-  }
-  
-  componentDidMount() {
-    this.interval = setInterval(this.checkTutorials, 10000);
-    this.checkTutorials();
   }
   
   componentWillUnmount() {
@@ -96,7 +93,7 @@ class ActionBody extends React.PureComponent<Props, any> {
   }
 
   componentDidUpdate(prevProps: Readonly<Props>) {
-    const { preferencesCategoryWidth } = this.props;
+    const { preferencesCategoryWidth, access } = this.props;
 
     if (!prevProps.preferencesCategoryWidth && preferencesCategoryWidth) {
       const windowSize = window.screen.width;
@@ -107,6 +104,18 @@ class ActionBody extends React.PureComponent<Props, any> {
       this.setState({
         statisticsColumnWidth: Number(newPreferencesCategoryWidth)
       });
+    }
+
+    if (!this.intervalIsSet
+      && access["/a/v1/list/plain?entity=Course"]
+      && access["/a/v1/list/plain?entity=Site"]
+      && access["/a/v1/list/plain?entity=Contact"]
+      && access["/a/v1/list/plain?entity=CourseClass"]
+      && access["/a/v1/list/plain?entity=SystemUser"]
+    ) {
+      this.intervalIsSet = true;
+      this.interval = setInterval(this.checkTutorials, 10000);
+      this.checkTutorials();
     }
   }
 
