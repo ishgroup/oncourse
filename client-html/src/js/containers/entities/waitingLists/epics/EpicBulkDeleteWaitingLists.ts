@@ -12,6 +12,9 @@ import { BULK_DELETE_WAITING_LISTS } from "../actions";
 import { Diff } from "@api/model";
 import WaitingListService from "../services/WaitingListService";
 import { showMessage } from "../../../../common/actions";
+import { getRecords, setListSelection } from "../../../../common/components/list-view/actions";
+import { initialize } from "redux-form";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
 const request: Request<any, Diff> = {
   type: BULK_DELETE_WAITING_LISTS,
@@ -20,7 +23,10 @@ const request: Request<any, Diff> = {
     showMessage({
       success: true,
       message: "Waiting lists deleted"
-    })
+    }),
+    getRecords({ entity: "WaitingList", listUpdate: true }),
+    setListSelection([]),
+    initialize(LIST_EDIT_VIEW_FORM_NAME, null)
   ],
 };
 
