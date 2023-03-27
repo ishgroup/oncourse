@@ -137,6 +137,7 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
               ["http-equiv"]: "Content-Security-Policy",
               ["content"]: "" +
               " default-src 'self'" +
+              " http://localhost:8100" +
               " https://*.google-analytics.com" +
               " https://*.googletagmanager.com" +
               " https://*.googleapis.com" +
