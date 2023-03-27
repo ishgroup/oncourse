@@ -64,11 +64,6 @@ class ContactApiImpl implements ContactApi {
     }
 
     @Override
-    void removeContactShoppingCart(Long id) {
-        contactApiService.removeCartsFor(id)
-    }
-
-    @Override
     void updateContact(Long id, ContactDTO contact) {
         contactApiService.update(id, contact)
     }
