@@ -48,10 +48,6 @@ class ContactsService {
     return this.contactApi.removeContact(id);
   }
 
-  public deleteContactShoppingCart(id: number): Promise<any> {
-    return this.contactApi.removeContactShoppingCart(id);
-  }
-
   public updateContact(id: number, contact: Contact): Promise<Contact> {
     return this.contactApi.updateContact(id, contact);
   }

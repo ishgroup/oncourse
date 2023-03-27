@@ -18,6 +18,7 @@ import ish.oncourse.cayenne.FinancialItem
 import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.dao.ContactRelationDao
 import ish.oncourse.server.api.dao.ContactRelationTypeDao
+import ish.oncourse.server.api.v1.model.CartDTO
 import ish.oncourse.server.api.v1.model.ContactDTO
 import ish.oncourse.server.api.v1.model.MessagePersonDTO
 import ish.oncourse.server.api.v1.model.MessageStatusDTO
@@ -275,6 +276,12 @@ class ContactFunctions {
             m.type = MessageTypeDTO.values()[0].fromDbType(message.type)
             m
         }
+    }
+
+    static void updateAbandonedCarts(ObjectContext context, Contact contact, List<CartDTO> carts){
+        def removedCarts = contact.abandonedCarts.findAll { !(it.id in carts*.id) }
+        context.deleteObjects(removedCarts)
+        context.commitChanges()
     }
 
     static void validateContactRelations(ObjectContext context, ContactDao contactDao, ContactRelationTypeDao contactRelationTypeDao, ContactRelationDao contactRelationDao, EntityValidator validator, ContactDTO contact) {

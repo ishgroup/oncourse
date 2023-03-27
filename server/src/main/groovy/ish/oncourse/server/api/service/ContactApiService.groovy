@@ -214,6 +214,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         updateTags(cayenneModel, cayenneModel.taggingRelations, dto.tags, ContactTagRelation, context)
         updateProfilePicture(cayenneModel, dto.profilePicture)
         updateContactRelations(context, cayenneModel, dto.relations)
+        updateAbandonedCarts(context, cayenneModel, dto.abandonedCarts)
         updateAvailabilityRules(cayenneModel, cayenneModel.unavailableRuleRelations*.rule, dto.rules, ContactUnavailableRuleRelation)
 
         if (dto.removeCChistory) {
