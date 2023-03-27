@@ -225,8 +225,6 @@ paths:
     $ref: './path/list/entity/contact/api.yaml'
   /list/entity/contact/insight:
     $ref: './path/list/entity/contact/insight/api.yaml'
-  /list/entity/contact/cart:
-    $ref: './path/list/entity/contact/cart/api.yaml'
   /list/entity/contact/merge:
     $ref: './path/list/entity/contact/merge/api.yaml'
   /list/entity/contact/usi:

@@ -699,13 +699,4 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         }
         action
     }
-
-    void removeCartsFor(long contactId) {
-        def context = cayenneService.newContext
-        def checkouts = ObjectSelect.query(Checkout)
-                .where(Checkout.PAYER.dot(Contact.ID).eq(contactId))
-                .select(context)
-        context.deleteObject(checkouts)
-        context.commitChanges()
-    }
 }
