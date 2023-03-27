@@ -122,6 +122,7 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	@Override
 	protected void postPersist() {
 		removeAbandonedCartsWithThisClass()
+		removeAbandonedCartsWithThisWaitingCourse()
 	}
 
 	private void removeAbandonedCartsWithThisClass(){
@@ -138,6 +139,27 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 			List<CartContactIdsDTO> cartContacts = CartFunctions.contactCartsOf(checkout, contact.getWillowId(), CartFunctions.CLASSES_KEY)
 			if ((cartContacts.collect { it.classIds }.flatten() as List<CartObjectDataDTO>)
 					.any { it -> it.getId().equals(courseClass.getId()) }) {
+				context.deleteObject(checkout)
+				context.commitChanges()
+			}
+		}
+	}
+
+
+	private void removeAbandonedCartsWithThisWaitingCourse(){
+		Contact contact = student.getContact()
+		if(contact == null)
+			return
+
+		String formattedCartContact = format("\"contactId\":\"%d\"", contact.getWillowId())
+		List<Checkout> checkouts = ObjectSelect.query(Checkout.class)
+				.where(Checkout.SHOPPING_CART.contains(formattedCartContact))
+				.select(context)
+
+		checkouts.each {checkout ->
+			List<CartContactIdsDTO> cartContacts = CartFunctions.contactCartsOf(checkout, contact.getWillowId(), CartFunctions.WAITING_KEY)
+			if ((cartContacts.collect { it.waitingCoursesIds }.flatten() as List<CartObjectDataDTO>)
+					.any { it -> it.getId().equals(courseClass.course.getId()) }) {
 				context.deleteObject(checkout)
 				context.commitChanges()
 			}
