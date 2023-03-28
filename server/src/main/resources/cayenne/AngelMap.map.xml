@@ -596,9 +596,9 @@
 		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="enabled" type="SMALLINT"/>
-		<db-attribute name="isSubtemplate" type="TINYINT"/>
 		<db-attribute name="entity" type="VARCHAR" length="128"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="isSubtemplate" type="TINYINT"/>
 		<db-attribute name="keyCode" type="VARCHAR" length="80"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
