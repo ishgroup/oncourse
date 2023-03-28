@@ -382,7 +382,7 @@ export const createEntityItem = (entity: EntityName, item: any): Promise<any> =>
         shared,
         access,
         content,
-        tags,
+        tags?.toString(),
         (versions && versions[0] && versions[0].fileName) || content.name
       );
     }
@@ -516,7 +516,9 @@ export const deleteEntityItemById = (entity: EntityName, id: number): Promise<an
     case "Site":
       return SiteService.removeSite(id);
     case "WaitingList":
-      return WaitingListService.removeWaitingList(id);
+      return WaitingListService.bulkDelete({
+        ids: [id]
+      });
     default:
       return defaultUnknown();
   }
