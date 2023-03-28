@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 108-1
+      id: 121-1
       author: dmitriy
       preConditions:
         - onFail: HALT
@@ -21,14 +21,14 @@ databaseChangeLog:
                     defaultValueNumeric: 0
 
   - changeSet:
-      id: 108-2
+      id: 121-2
       author: dmitriy
       preConditions:
         - onFail: HALT
         - and:
-          - columnExists:
-              tableName: EmailTemplate
-              columnName: isSubtemplate
+            - columnExists:
+                tableName: EmailTemplate
+                columnName: isSubtemplate
       changes:
         changes:
           - sql: 'UPDATE EmailTemplate e
