@@ -1,6 +1,7 @@
 package ish.oncourse.server.upgrades.liquibase.change;
 
 import ish.common.types.ProductStatus;
+import ish.liquibase.IshTaskChange;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.Voucher;
 import ish.oncourse.server.db.SchemaUpdateService;
