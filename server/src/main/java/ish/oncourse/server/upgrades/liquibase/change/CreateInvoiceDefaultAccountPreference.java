@@ -9,6 +9,7 @@
 package ish.oncourse.server.upgrades.liquibase.change;
 
 import ish.common.types.AccountType;
+import ish.liquibase.IshTaskChange;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.Account;
 import ish.oncourse.server.cayenne.Preference;
