@@ -22,7 +22,7 @@ import org.apache.cayenne.ObjectContext
 
 import java.util.function.BiConsumer
 
-import static ish.oncourse.server.upgrades.DataPopulationUtils.fillMessageTemplateWithCommonFields
+import static ish.oncourse.server.upgrades.DataPopulationUtils.fillEmailTemplateWithCommonFields
 import static org.apache.commons.lang3.StringUtils.trimToNull
 import static org.apache.http.util.TextUtils.isBlank
 
@@ -46,7 +46,7 @@ class EmailTemplateApiService extends AutomationApiService<EmailTemplateDTO, Ema
         return new BiConsumer<EmailTemplate, Map<String, Object>>() {
             @Override
             void accept(EmailTemplate emailTemplate, Map<String, Object> stringObjectMap) {
-                fillMessageTemplateWithCommonFields(emailTemplate, stringObjectMap)
+                fillEmailTemplateWithCommonFields(emailTemplate, stringObjectMap)
             }
         }
     }

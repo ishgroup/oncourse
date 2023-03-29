@@ -14,7 +14,6 @@ package ish.oncourse.server.upgrades
 import ish.common.types.AutomationStatus
 import ish.common.types.EntityEvent
 import ish.common.types.MessageType
-import ish.oncourse.server.cayenne.MessageTemplate
 import ish.oncourse.server.cayenne.Report
 import static ish.oncourse.common.ResourceType.EXPORT
 import static ish.oncourse.common.ResourceType.IMPORT
@@ -112,7 +111,7 @@ class DataPopulationUtils {
         configureAutomationWithCommonFields(dbExport, props)
     }
 
-    static fillMessageTemplateWithCommonFields(EmailTemplate dbMessage, Map<String, Object> props){
+    static fillEmailTemplateWithCommonFields(EmailTemplate dbMessage, Map<String, Object> props){
         dbMessage.entity = getString(props, ENTITY_CLASS) ?: dbMessage.entity
         dbMessage.type = get(props, MESSAGE_TYPE, MessageType) ?: dbMessage.type
         dbMessage.subject = getString(props, SUBJECT) ?: dbMessage.subject
@@ -234,7 +233,7 @@ class DataPopulationUtils {
             dbMessage.automationStatus = AutomationStatus.ENABLED
         }
 
-        fillMessageTemplateWithCommonFields(dbMessage, props)
+        fillEmailTemplateWithCommonFields(dbMessage, props)
 
         dbMessage.bodyPlain = getBody(props, TXT_TEMPLATE, MESSAGING)
         if (getString(props, HTML_TEMPLATE)) {
