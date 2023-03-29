@@ -53,6 +53,8 @@ const roomLabel = room => {
   return room?.name;
 };
 
+const getSiteAndRoomLabel = session => `${session?.site || ""}${session?.room ? ` - ${session?.room}` : ""}`;
+
 const validateDuration = value => (value < 5 || value > 1440
     ? "Each entry in the timetable cannot be shorter than 5 minutes or longer than 24 hours."
     : undefined);
@@ -242,14 +244,14 @@ const CourseClassSessionFields: React.FC<Props> = ({
 
       <Grid item xs={12}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           entity="Room"
           name={`sessions[${session.index}].roomId`}
           label="Site and room"
           aqlColumns="name,site.name,site.localTimezone,site.id"
           selectValueMark="id"
           selectLabelCondition={roomLabel}
-          defaultDisplayValue={`${session.site} - ${session.room}`}
+          defaultValue={getSiteAndRoomLabel(session)}
           labelAdornment={<LinkAdornment linkHandler={openRoomLink} link={session.roomId} disabled={!session.roomId} />}
           onInnerValueChange={onRoomIdChange}
           itemRenderer={NoWrapOption}
@@ -286,16 +288,14 @@ const CourseClassSessionFields: React.FC<Props> = ({
           type="multilineText"
           name={`sessions[${session.index}].publicNotes`}
           label="Public notes"
-          fullWidth
-        />
+                  />
       </Grid>
       <Grid item xs={6}>
         <FormField
           type="multilineText"
           name={`sessions[${session.index}].privateNotes`}
           label="Private notes"
-          fullWidth
-        />
+                  />
       </Grid>
     </Grid>
   );

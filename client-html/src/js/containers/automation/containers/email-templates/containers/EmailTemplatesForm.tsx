@@ -198,6 +198,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
           fields={(
             <Grid item xs={12}>
               <FormField
+                type="text"
                 name="name"
                 label="Name"
                 validate={validateNewTemplateName}
@@ -256,7 +257,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                     items={messageTypes}
                     disabled={isInternal}
                     required
-                    select
                   />
                 </Grid>
                 <FieldArray
@@ -331,8 +331,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                 label="Description"
                 name="description"
                 disabled={isInternal}
-                fullWidth
-                multiline
+                                multiline
               />
             </Grid>
             <Grid item xs={3}>
@@ -344,6 +343,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                   color="primary"
                   format={v => v === "Enabled"}
                   parse={v => (v ? "Enabled" : "Installed but Disabled")}
+                  debounced={false}
                 />
               </div>
               <div className="mt-3 pt-1">

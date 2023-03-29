@@ -8,7 +8,8 @@ import { stopSubmit } from "redux-form";
 import * as EpicUtils from "../../../../../epics/EpicUtils";
 import PdfService from "../../../../../../containers/automation/containers/pdf-reports/services/PdfService";
 import { DO_PRINT_REQUEST, DO_PRINT_REQUEST_FULFILLED, GET_PDF_REPORTS, GET_PRINT_RESULT } from "../actions";
-import { START_PROCESS, UPDATE_PROCESS } from "../../../../../actions";
+import { clearProcess, START_PROCESS, UPDATE_PROCESS } from "../../../../../actions";
+import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErrorHandler";
 
 const request: EpicUtils.Request = {
   type: DO_PRINT_REQUEST,
@@ -43,7 +44,11 @@ const request: EpicUtils.Request = {
           ]
         }
       }
-    ]
+    ],
+  processError: response => [
+    clearProcess(),
+    ...FetchErrorHandler(response)
+  ]
 };
 
 export const EpicStartPrintProcess: Epic<any, any> = EpicUtils.Create(request);

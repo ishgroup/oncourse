@@ -17,7 +17,7 @@ import FileUploaderDialog from "../../../common/components/file-uploader/FileUpl
 import { getInitialDocument } from "../../../common/components/form/documents/components/utils";
 import DocumentsService from "../../../common/components/form/documents/services/DocumentsService";
 import { BooleanArgFunction } from "../../../model/common/CommonFunctions";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import ListView from "../../../common/components/list-view/ListView";
 import {
   clearListState,
@@ -132,7 +132,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Document and entityId" },
   { title: "Courses", list: "course", expression: "attachmentRelations.entityIdentifier == 'Course' and attachmentRelations.document.id" },
   {

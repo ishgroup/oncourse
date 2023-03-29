@@ -74,23 +74,18 @@ const CollectionFormHeading = props => {
           type="text"
           name={`${field}.name`}
           label="Heading"
-          hideLabel
-          listSpacing={false}
           validate={[validateSingleMandatoryField, validateUniqueNames]}
           fieldClasses={{
             label: "heading"
           }}
-          fullWidth
         />
 
         <FormField
           type="multilineText"
           name={`${field}.description`}
           label="Description"
-          hideLabel
-          listSpacing={false}
+          className="mt-1"
           truncateLines={4}
-          fullWidth
         />
       </div>
 

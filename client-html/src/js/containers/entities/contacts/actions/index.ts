@@ -13,7 +13,6 @@ export const POST_MERGE_CONTACTS = _toRequestType("post/mergeContacts");
 export const POST_MERGE_CONTACTS_FULFILLED = FULFILLED(POST_MERGE_CONTACTS);
 
 export const GET_CONTACT = _toRequestType("get/contact");
-export const GET_CONTACT_FULFILLED = FULFILLED(GET_CONTACT);
 
 export const GET_CONTACT_TAGS = _toRequestType("get/contact/tags");
 

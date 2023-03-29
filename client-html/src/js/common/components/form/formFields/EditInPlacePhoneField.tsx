@@ -12,19 +12,23 @@ import React, {
 import NumberFormat from "react-number-format";
 import InputAdornment from "@mui/material/InputAdornment";
 import PhoneIcon from '@mui/icons-material/Phone';
-import { WrappedFieldProps } from "redux-form";
 import debounce from "lodash.debounce";
 import EditInPlaceField from "./EditInPlaceField";
 import { getPhoneMask } from "../../../../constants/PhoneMasks";
+import { EditInPlaceFieldProps } from "../../../../model/common/Fields";
+import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
+import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 
-interface NumberFormatCustomProps extends WrappedFieldProps {
-  onChange?: (event: { target: { value: string } }) => void;
+interface NumberFormatCustomProps {
+  onChange?: (event: any) => void;
   value?: string;
+  input?: Partial<Omit<WrappedFieldInputProps, "onBlur">> & { onBlur?: AnyArgFunction };
+  meta?: Partial<WrappedFieldMetaProps>;
 }
 
 const NumberFormatCustom = React.forwardRef<any, NumberFormatCustomProps>((props, ref) => {
   const { onChange, ...other } = props;
-  
+
   const inputRef = useRef<any>();
 
   const [format, setFormat] = useState(null);
@@ -78,12 +82,7 @@ const NumberFormatCustom = React.forwardRef<any, NumberFormatCustomProps>((props
   );
 });
 
-const EditInPlacePhoneField: React.FunctionComponent<any> = props => {
-  // prevent dispatch and type from spreading
-  const {
-    InputProps, dispatch, type, className, ...restProps
-  } = props;
-
+const EditInPlacePhoneField = ({ InputProps, className, ...restProps }: EditInPlaceFieldProps) => {
   return (
     <EditInPlaceField
       {...restProps}

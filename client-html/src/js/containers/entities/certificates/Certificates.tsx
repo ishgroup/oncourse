@@ -13,7 +13,7 @@ import {
   getFilters,
   clearListState
 } from "../../../common/components/list-view/actions";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import CertificateEditView from "./components/CertificateEditView";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import USIAlert from "./components/USIAlert";
@@ -71,7 +71,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Certificate and entityId" },
   { title: "Enrolments", list: "enrolment", expression: "outcomes.certificateOutcomes.certificate.id" },
   { title: "Students", list: "contact", expression: "student.certificates.id" },

@@ -177,8 +177,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
           name="creditTotal"
           label="RPL indicator"
           items={enrolmentCreditTotalItems}
-          fullWidth
-        />
+                  />
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 12}>
@@ -203,8 +202,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
           name="creditProviderType"
           label="Credit provider type"
           items={enrolmentCreditProviderTypeItems}
-          fullWidth
-        />
+                  />
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 12}>
@@ -213,8 +211,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
           name="creditType"
           label="Credit type"
           items={enrolmentCreditTypeItems}
-          fullWidth
-        />
+                  />
       </Grid>
       <Grid item xs={twoColumn ? 4 : 12}>
         <FormField
@@ -222,8 +219,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
           name="creditLevel"
           label="Credit level"
           items={enrolmentCreditLevelItems}
-          fullWidth
-        />
+                  />
       </Grid>
     </Grid>
   );

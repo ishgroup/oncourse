@@ -34,7 +34,7 @@ import SurveyService from "../survey/services/SurveyService";
 import ArticleProductService from "../articleProducts/service/ArticleProductService";
 import MessageService from "../messages/services/MessageService";
 import { formatToDateOnly } from "../../../common/utils/dates/datesNormalizing";
-import { getInvoiceClosestPaymentDueDate, preformatInvoice, sortInvoicePaymentPlans } from "../invoices/utils";
+import { preformatInvoice, processInvoicePaymentPlans, setInvoiceLinesTotal } from "../invoices/utils";
 import ContactsService from "../contacts/services/ContactsService";
 import { PayLineWithDefer } from "../../../model/entities/Payslip";
 import CourseClassService from "../courseClasses/services/CourseClassService";
@@ -137,10 +137,7 @@ export const getEntityItemById = (entity: EntityName, id: number): Promise<any> 
     case "AbstractInvoice":
     case "Invoice": {
       return InvoiceService.getInvoice(id).then(invoice => {
-        invoice.paymentPlans.sort(sortInvoicePaymentPlans);
-        getInvoiceClosestPaymentDueDate(invoice);
-
-        return invoice;
+        return setInvoiceLinesTotal({ ...invoice, paymentPlans: processInvoicePaymentPlans(invoice.paymentPlans) });
       });
     }
     
@@ -207,15 +204,21 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
       return CertificateService.updateCertificate(id, item);
 
     case "Contact": {
-      const { student, relations } = item;
+      const itemToSave = { ...item };
 
-      if (student) delete item.student.education;
+      if (itemToSave.student) {
+        itemToSave.student = {
+          ...item.student,
+          education: null
+        };
+        delete itemToSave.student.education;
+      }
 
-      item.relations = formatRelationsBeforeSave(relations);
+      itemToSave.relations = [...formatRelationsBeforeSave(itemToSave.relations)];
 
-      if (item.isCompany) delete item.firstName;
+      if (itemToSave.isCompany) delete item.firstName;
 
-      return ContactsService.updateContact(id, item);
+      return ContactsService.updateContact(id, itemToSave);
     }
 
     case "CorporatePass":
@@ -226,8 +229,16 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
       return DiscountService.updateDiscount(id, item);
     case "Document":
       return DocumentsService.updateDocumentItem(id, item);
-    case "Enrolment":
-      return EnrolmentService.updateEnrolment(id, item);
+      
+    case "Enrolment": {
+      const withAssessmenProcessed = {
+        ...item,
+        assessments: item.assessments.map(({ tutors, ...rest }) => rest)
+      };
+      
+      return EnrolmentService.updateEnrolment(id, withAssessmenProcessed);
+    }
+      
     case "AbstractInvoice":
     case "Invoice":
       return InvoiceService.updateInvoice(id, preformatInvoice(item));
@@ -255,7 +266,7 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
       return PaymentOutService.updatePaymentOut(id, item);
 
     case "Payslip": {
-      const paylines = [...item?.paylines.filter(p => p.deferred) || []];
+      const paylines = [...item?.paylines?.filter(p => p.deferred) || []];
 
       paylines.forEach(i => {
         delete i.deferred;
@@ -371,8 +382,8 @@ export const createEntityItem = (entity: EntityName, item: any): Promise<any> =>
         shared,
         access,
         content,
-        tags,
-        (Array.isArray(versions) && versions[0].fileName) || content.name
+        tags?.toString(),
+        (versions && versions[0] && versions[0].fileName) || content.name
       );
     }
 
@@ -505,7 +516,9 @@ export const deleteEntityItemById = (entity: EntityName, id: number): Promise<an
     case "Site":
       return SiteService.removeSite(id);
     case "WaitingList":
-      return WaitingListService.removeWaitingList(id);
+      return WaitingListService.bulkDelete({
+        ids: [id]
+      });
     default:
       return defaultUnknown();
   }

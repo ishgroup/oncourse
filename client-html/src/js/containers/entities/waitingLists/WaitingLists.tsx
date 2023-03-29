@@ -20,6 +20,7 @@ import { State } from "../../../reducers/state";
 import WaitingListCogWheel from "./components/WaitingListCogWheel";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { checkPermissions } from "../../../common/actions";
+import { FindRelatedItem } from "../../../model/common/ListView";
 
 const Initial: WaitingList = {
   id: null,
@@ -31,7 +32,7 @@ const Initial: WaitingList = {
   customFields: {}
 };
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == WaitingList and entityId" },
   { title: "Contacts", list: "contact", expression: "student.waitingLists.id" }
 ];
@@ -58,25 +59,23 @@ class WaitingLists extends React.Component<any, any> {
     } = this.props;
 
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "student.contact.fullName",
-            secondaryColumn: "course.name"
-          }}
-          editViewProps={{
-            manualLink,
-            nameCondition,
-            hideTitle: true
-          }}
-          updateTableModel={updateTableModel}
-          EditViewContent={WaitingListEditView}
-          rootEntity="WaitingList"
-          onInit={onInit}
-          findRelated={findRelatedGroup}
-          CogwheelAdornment={WaitingListCogWheel}
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "student.contact.fullName",
+          secondaryColumn: "course.name"
+        }}
+        editViewProps={{
+          manualLink,
+          nameCondition,
+          hideTitle: true
+        }}
+        updateTableModel={updateTableModel}
+        EditViewContent={WaitingListEditView}
+        rootEntity="WaitingList"
+        onInit={onInit}
+        findRelated={findRelatedGroup}
+        CogwheelAdornment={WaitingListCogWheel}
+      />
     );
   }
 }

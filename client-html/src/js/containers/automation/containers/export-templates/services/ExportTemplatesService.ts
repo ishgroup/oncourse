@@ -31,6 +31,10 @@ class ExportTemplatesService {
   public updateConfigs(id: number, config: AutomationConfigs): Promise<any> {
     return this.exportTemplatesApi.updateConfigs(id, config);
   }
+  
+  public getHighQualityPreview(id: number): Promise<any> {
+    return this.exportTemplatesApi.getHighQualityPreview(id);
+  }
 }
 
 export default new ExportTemplatesService();

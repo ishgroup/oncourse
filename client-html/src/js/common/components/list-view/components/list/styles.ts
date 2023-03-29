@@ -51,6 +51,7 @@ export default (theme: AppTheme) => createStyles({
     background: theme.palette.background.paper,
   },
   noSort: {
+    cursor: "unset",
     lineHeight: "1.1rem"
   },
   headerCell: {
@@ -67,6 +68,7 @@ export default (theme: AppTheme) => createStyles({
     }
   },
   draggableCellItem: {
+    position: "relative",
     fontSize: '0.75rem',
     padding: theme.spacing(2, 1),
     transition: theme.transitions.create("padding", {
@@ -100,7 +102,9 @@ export default (theme: AppTheme) => createStyles({
   },
   activeRight: {},
   rightAlighed: {},
-  canSort: {},
+  canSort: {
+    cursor: "pointer"
+  },
   isDragging: {
     boxShadow: theme.shadows[2],
     background: theme.palette.background.paper,
@@ -114,6 +118,7 @@ export default (theme: AppTheme) => createStyles({
     }
   },
   dragIndicator: {
+    cursor: "grab",
     position: "absolute",
     top: "50%",
     left: theme.spacing(-3),
@@ -139,6 +144,8 @@ export default (theme: AppTheme) => createStyles({
     }
   },
   row: {
+    cursor: "pointer",
+    display: "flex",
     "&$selected": {
       backgroundColor: theme.palette.action.selected,
       opacity: 1
@@ -149,7 +156,6 @@ export default (theme: AppTheme) => createStyles({
     "&$selected $listDots": {
       display: "none",
     },
-    cursor: "pointer"
   },
   oddRow: {
     backgroundColor: alpha(theme.palette.action.hover, 0.03)
@@ -174,6 +180,7 @@ export default (theme: AppTheme) => createStyles({
   },
   selected: {},
   resizer: {
+    cursor: "col-resize",
     top: "50%",
     right: "3px",
     width: "3px",

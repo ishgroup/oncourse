@@ -132,6 +132,25 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
           template: "src/index-template.html",
           favicon: "src/images/favicon.ico",
           chunksSortMode: 'none',
+          meta: {
+            [""]: {
+              ["http-equiv"]: "Content-Security-Policy",
+              ["content"]: "" +
+              " default-src 'self'" +
+              " http://localhost:8100" +
+              " https://*.google-analytics.com" +
+              " https://*.googletagmanager.com" +
+              " https://*.googleapis.com" +
+              " https://*.google.com" +
+              " https://*.ish.com.au" +
+              " https://*.hotjar.com" +
+              " https://*.hotjar.io" +
+              " wss://*.hotjar.com" +
+              " 'unsafe-inline';" +
+              " img-src * 'self' data: https:;" +
+              " frame-src 'self' data: https:;"
+            }
+          }
         }),
         new ForkTsCheckerWebpackPlugin({
           async: false,

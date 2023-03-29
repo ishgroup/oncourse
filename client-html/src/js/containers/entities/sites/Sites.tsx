@@ -13,8 +13,7 @@ import { initialize } from "redux-form";
 import { Site } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
-import { getSite } from "./actions";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { getListTags } from "../../tags/actions";
 import SiteEditView from "./components/SiteEditView";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
@@ -73,7 +72,7 @@ const Initial: Site = {
   rules: []
 };
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Site and entityId" },
   {
     title: "Current classes",
@@ -144,7 +143,6 @@ class Sites extends React.Component<any, any> {
         }}
         CogwheelAdornment={BulkEditCogwheelOption}
         EditViewContent={SiteEditView}
-        customGetAction={getSite}
         rootEntity="Site"
         onInit={this.onInit}
         findRelated={findRelatedGroup}

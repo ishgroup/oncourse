@@ -74,4 +74,9 @@ class PdfTemplateApiImpl implements PdfTemplateApi {
                 ImageHelper.getBackgroundQualityScale(userPreferenceService)
         )
     }
+
+    @Override
+    void deletePreview(Long id){
+        apiService.deletePreview(id)
+    }
 }

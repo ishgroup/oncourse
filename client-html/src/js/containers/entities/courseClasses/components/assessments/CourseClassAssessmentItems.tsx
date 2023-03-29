@@ -403,6 +403,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
               gradeType={gradeType}
             />
             <SubmissionModal
+              dispatch={dispatch}
               modalProps={modalProps}
               tutors={submissionTutors}
               title={title}
@@ -418,7 +419,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
             <Field name={`${item}.submissions`} component={submissionFieldStub} />
             <Field name={`${item}.contactIds`} component={tutorsFieldStub} />
             <FormField
-              type="remoteDataSearchSelect"
+              type="remoteDataSelect"
               entity="Assessment"
               aqlFilter={assessmentAql}
               aqlColumns={assessmentAqlCols}
@@ -428,13 +429,12 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
               selectLabelMark="code"
               onInnerValueChange={onCodeChange}
               rowHeight={36}
-              fullWidth
-              required
+                            required
             />
           </Grid>
           <Grid item xs={twoColumn ? 6 : 12}>
             <FormField
-              type="remoteDataSearchSelect"
+              type="remoteDataSelect"
               entity="Assessment"
               aqlFilter={assessmentAql}
               aqlColumns={assessmentAqlCols}
@@ -444,8 +444,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
               selectLabelMark="name"
               onInnerValueChange={onNameChange}
               rowHeight={36}
-              fullWidth
-              required
+                            required
             />
           </Grid>
           <Grid item xs={twoColumn ? 6 : 12}>
@@ -534,6 +533,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
           <Grid container xs={12} className={classes.items}>
             {studentsForRender.map((elem, index) => (
               <CourseClassAssessmentStudent
+                dispatch={dispatch}
                 elem={elem}
                 index={index}
                 onChangeStatus={onChangeStatus}

@@ -45,6 +45,10 @@ class PdfService {
   public updateConfigs(id: number, config: AutomationConfigs): Promise<any> {
     return this.pdfTemplateApi.updateConfigs(id, config);
   }
+  
+  public deletePreview(id: number): Promise<any>  {
+    return this.pdfTemplateApi.deletePreview(id);
+  }
 }
 
 export default new PdfService();

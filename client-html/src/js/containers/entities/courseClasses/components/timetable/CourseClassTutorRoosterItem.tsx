@@ -196,13 +196,13 @@ const CourseClassTutorRoosterItem = (
 
   const isExpanded = expanded === index;
 
-  const wage = budget.find(b => b.flowType === "Wages"
+  const wageIndex = budget.findIndex(b => b.flowType === "Wages"
     && (b.courseClassTutorId === tutor?.id
       || (b.temporaryTutorId && b.temporaryTutorId === tutor?.temporaryId)));
 
-  const openTutorWage = () => addTutorWage ? addTutorWage(tutor, wage) : null;
+  const openTutorWage = () => addTutorWage ? addTutorWage(tutor, wageIndex !== -1 ? { ...budget[wageIndex], index: wageIndex } : null) : null;
 
-  const hasWage = Boolean(wage);
+  const hasWage = Boolean(budget[wageIndex]);
 
   return (
     <Card elevation={isExpanded ? 3 : 0} className={classes.tutorItem}>

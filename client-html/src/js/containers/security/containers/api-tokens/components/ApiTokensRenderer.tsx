@@ -65,7 +65,7 @@ const ApiTokenItem: React.FC<ItemsProps> = (
         <Grid item xs={6}>
           <FormField
             label="Act as user"
-            type="searchSelect"
+            type="select"
             selectValueMark="id"
             selectLabelCondition={getContactFullName}
             name={`${item}.userId`}
@@ -81,7 +81,6 @@ const ApiTokenItem: React.FC<ItemsProps> = (
             rowHeight={55}
             disabled={!isNew}
             className="pr-1"
-            fullWidth
             required
           />
 
@@ -93,7 +92,7 @@ const ApiTokenItem: React.FC<ItemsProps> = (
           )}
         </Grid>
         <Grid item xs={6} display="flex" justifyContent="space-between" alignItems="flex-start">
-          <FormField type="text" name={`${item}.name`} label="Token name" disabled={!isNew} required fullWidth />
+          <FormField type="text" name={`${item}.name`} label="Token name" disabled={!isNew} required />
           <Button
             size="small"
             classes={{

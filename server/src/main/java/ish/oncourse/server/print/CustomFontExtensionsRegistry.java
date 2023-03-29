@@ -12,12 +12,12 @@ package ish.oncourse.server.print;
 
 import com.lowagie.text.FontFactory;
 import net.sf.jasperreports.engine.DefaultJasperReportsContext;
+import net.sf.jasperreports.engine.fonts.FontFace;
 import net.sf.jasperreports.engine.fonts.FontFamily;
 import net.sf.jasperreports.engine.fonts.SimpleFontFace;
 import net.sf.jasperreports.engine.fonts.SimpleFontFamily;
 import net.sf.jasperreports.extensions.ExtensionsRegistry;
 
-import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -127,7 +127,6 @@ public class CustomFontExtensionsRegistry extends AbstractFontExtensionsRegistry
 				var font = normalFace.getFont();
 				logger.warn("registering font {} as {} and name {}", fontFile, font.getFamily(), font.getName());
 				fontFamilies.add(family);
-
 			} catch (Exception e) {
 				// ignore the error since we just hit a font we couldn't parse
 				fontInitializationStarted = false;

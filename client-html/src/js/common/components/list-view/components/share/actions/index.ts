@@ -29,6 +29,20 @@ export const POST_EXPORT_REQUEST = _toRequestType("post/list/export");
 
 export const SET_PRINT_VALIDATING_STATUS = "set/print/validation";
 
+export const DELETE_PDF_REPORT_PREVIEW = _toRequestType("delete/list/share/report/preview");
+
+export const DELETE_EXPORT_TEMPLATE_PREVIEW = _toRequestType("delete/list/share/csv/template/preview");
+
+export const deletePdfReportPreview = (id: number) => ({
+  type: DELETE_PDF_REPORT_PREVIEW,
+  payload: id
+});
+
+export const deleteExportTemplatePreview = (id: number) => ({
+  type: DELETE_EXPORT_TEMPLATE_PREVIEW,
+  payload: id
+});
+
 export const setPrintValidatingStatus = (validating: boolean) => ({
   type: SET_PRINT_VALIDATING_STATUS,
   payload: { validating }

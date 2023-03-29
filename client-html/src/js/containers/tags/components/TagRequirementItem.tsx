@@ -12,6 +12,7 @@ import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName"
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
 import { AppTheme } from "../../../model/common/Theme";
 import { useHoverShowStyles } from "../../../common/styles/hooks";
+import { Grid } from "@mui/material";
 
 const styles = (theme: AppTheme) => createStyles({
   deleteIcon: {
@@ -19,7 +20,7 @@ const styles = (theme: AppTheme) => createStyles({
   },
   root: {
     display: "grid",
-    gridTemplateColumns: `0.5fr 1fr 1fr ${theme.spacing(4.5)}`,
+    gridTemplateColumns: "minmax(100px, 300px) 210px 230px 46px",
     alignItems: "center",
     marginBottom: theme.spacing(2)
   }
@@ -68,12 +69,13 @@ const TagRequirementItem: React.FC<Props> = props => {
 
   return (
     <div className={clsx(classes.root, hoverClasses.container)}>
-      <Typography variant="h5" className="flex-fill" fontSize="1.3rem">
+      <Typography variant="h5"  fontSize="1.3rem">
         {header}
       </Typography>
 
       <Field
         name={`${parent}.mandatory`}
+        className="ml-1"
         margin="none"
         type="checkbox"
         chackedLabel="Mandatory"
@@ -86,6 +88,7 @@ const TagRequirementItem: React.FC<Props> = props => {
 
       <Field
         name={`${parent}.limitToOneTag`}
+        className="ml-1"
         margin="none"
         type="checkbox"
         chackedLabel="One tag only"
@@ -97,7 +100,7 @@ const TagRequirementItem: React.FC<Props> = props => {
       />
 
       <IconButton
-        className={clsx("dndActionIconButton", hoverClasses.target, {
+        className={clsx("dndActionIconButton ml-1", hoverClasses.target,  {
           "invisible": disabled
         })}
         onClick={() => onDelete(index)}

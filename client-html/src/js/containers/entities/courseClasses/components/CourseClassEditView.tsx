@@ -21,7 +21,7 @@ import { Dispatch } from "redux";
 import { initialize } from "redux-form";
 import { Typography } from "@mui/material";
 import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
-import { decimalMul } from "../../../../common/utils/numbers/decimalCalculation";
+import { decimalMinus, decimalMul, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { StringArgFunction } from "../../../../model/common/CommonFunctions";
 import { getRoundingByType } from "../../discounts/utils";
 import { getCurrentTax } from "../../taxes/utils";
@@ -50,9 +50,10 @@ import CourseClassDocumentsTab from "./documents/CourseClassDocumentsTab";
 import history from "../../../../constants/History";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../constants";
 import { appendTimezone } from "../../../../common/utils/dates/formatTimezone";
-import { discountsSort } from "./budget/utils";
+import { discountsSort, excludeOnEnrolPaymentPlan } from "./budget/utils";
 import { makeAppStyles } from "../../../../common/styles/makeStyles";
 import { getTutorPayInitial } from "./tutors/utils";
+import { getClassCostTypes } from "../utils";
 
 const itemsBase: TabsListItem[] = [
   {
@@ -292,10 +293,11 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
                 e.stopPropagation();
 
                 dispatch(setCourseClassBudgetModalOpened(true));
+                
                 dispatch(
                   initialize(
                     COURSE_CLASS_COST_DIALOG_FORM,
-                    studentFee
+                    excludeOnEnrolPaymentPlan(studentFee, currentTax)
                   )
                 );
 
@@ -383,13 +385,13 @@ const CourseClassEditView: React.FC<Props> = ({
 
   const budgetLabelAdornment = useMemo(
     () => {
-      const studentFee = values.budget && values.budget.find(
+      const studentFeeIndex = values.budget && values.budget.findIndex(
         b => b.flowType === "Income" && b.repetitionType === "Per enrolment" && b.invoiceToStudent
       );
 
       return (twoColumn ? (
         <BudgetAdornment
-          studentFee={studentFee}
+          studentFee={{ ...values.budget[studentFeeIndex] || {}, index: studentFeeIndex }}
           currencySymbol={currencySymbol}
           isNew={isNew}
           dispatch={dispatch}
@@ -489,6 +491,59 @@ const CourseClassEditView: React.FC<Props> = ({
     [tutorRoles, twoColumn, values.taxId, values.id, expandedBudget]
   );
 
+
+  const classCostTypes = useMemo(
+    () =>
+      getClassCostTypes(
+        values.budget,
+        values.maximumPlaces,
+        values.budgetedPlaces,
+        values.successAndQueuedEnrolmentsCount,
+        values.sessions,
+        values.tutors,
+        tutorRoles,
+      ),
+    [
+      values.budget,
+      values.maximumPlaces,
+      values.budgetedPlaces,
+      values.successAndQueuedEnrolmentsCount,
+      values.sessions,
+      values.tutors,
+      tutorRoles
+    ]
+  );
+
+  const netValues = useMemo(() => {
+    const max = decimalMinus(
+      decimalPlus(classCostTypes.customInvoices.max, classCostTypes.income.max),
+      classCostTypes.discount.max
+    );
+
+    const projected = decimalMinus(
+      decimalPlus(classCostTypes.customInvoices.projected, classCostTypes.income.projected),
+      classCostTypes.discount.projected
+    );
+
+    const actual = decimalMinus(
+      decimalPlus(classCostTypes.customInvoices.actual, classCostTypes.income.actual),
+      classCostTypes.discount.actual
+    );
+
+    return {
+      income: {
+        max,
+        projected,
+        actual
+      },
+      profit: {
+        max: decimalMinus(max, classCostTypes.cost.max),
+        projected: decimalMinus(projected, classCostTypes.cost.projected),
+        actual: decimalMinus(actual, classCostTypes.cost.actual)
+      }
+    };
+  }, [classCostTypes]);
+
   return (
     <TabsList
       items={items}
@@ -516,7 +571,9 @@ const CourseClassEditView: React.FC<Props> = ({
         expandedBudget,
         expandBudgetItem,
         addTutorWage,
-        currentTax
+        currentTax,
+        classCostTypes,
+        netValues
       }}
     />
   );

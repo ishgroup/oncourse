@@ -90,13 +90,13 @@ export const RelationsContent: React.FunctionComponent<any> = React.memo((props:
     <Grid container columnSpacing={3} rowSpacing={2}>
       <Grid item xs={12} className={classes.select1}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           entity="Contact"
           name={`${item}.relatedContactId`}
           label="Related contact"
           selectValueMark="id"
           selectLabelCondition={getContactFullName}
-          defaultDisplayValue={row.relatedContactName}
+          defaultValue={row.relatedContactName}
           onInnerValueChange={onRelatedContactChange}
           labelAdornment={
             <ContactLinkAdornment id={row?.relatedContactId} />

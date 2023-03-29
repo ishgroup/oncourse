@@ -503,7 +503,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
   const textSmsCreditsCount = !isEmailView && preview && Math.ceil(preview.length / 160);
 
   const filteredTemplatesByVaribleCount = useMemo<EmailTemplate[]>(() =>
-    templates?.filter(template => template.variables.filter(variable => variable.type === DataType.Object).length === 0) || [], [templates]);
+    templates?.filter(template => template?.variables.filter(variable => variable.type === DataType.Object).length === 0) || [], [templates]);
 
   const onSubmit = model => dispatch(sendMessage(model, selection));
 
@@ -560,6 +560,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
                   onChange={onTemplateChange}
                   className="mb-2"
                   required
+                  sort
                 />
 
                 <FieldArray name="bindings" component={bindingsRenderer} rerenderOnEveryChange />

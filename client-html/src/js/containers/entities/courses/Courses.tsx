@@ -16,7 +16,7 @@ import { clearListState, getFilters, setListEditRecord } from "../../../common/c
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import ListView from "../../../common/components/list-view/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { CourseExtended } from "../../../model/entities/Course";
 import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
 import { getListTags } from "../../tags/actions";
@@ -54,6 +54,7 @@ const Initial: Course = {
   status: "Enabled",
   reportableHours: 0,
   webDescription: null,
+  shortWebDescription: null,
   customFields: {},
   tags: [],
   documents: [],
@@ -100,7 +101,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Course and entityId" },
   { title: "Applications", list: "application", expression: "course.id" },
   { title: "Classes", list: "class", expression: "course.id" },

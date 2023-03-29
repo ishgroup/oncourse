@@ -73,9 +73,9 @@ const ExportTemplatesForm = React.memo<Props>(
     }, []);
 
     const onDialogSave = useCallback(
-      ({ keyCode }) => {
+      ({ keyCode, name }) => {
         setDisableRouteConfirm(true);
-        onCreate({ ...values, id: null, keyCode });
+        onCreate({ ...values, id: null, keyCode, name });
         onDialogClose();
       },
       [values]
@@ -179,9 +179,9 @@ const ExportTemplatesForm = React.memo<Props>(
             fields={(
               <Grid item xs={12}>
                 <FormField
+                  type="text"
                   name="name"
                   label="Name"
-                  margin="none"
                   validate={validateTemplateName}
                   disabled={isInternal}
                   required
@@ -281,8 +281,7 @@ const ExportTemplatesForm = React.memo<Props>(
                   label="Description"
                   name="description"
                   disabled={isInternal}
-                  fullWidth
-                  multiline
+                                    multiline
                 />
               </Grid>
               <Grid item xs={3}>
@@ -294,6 +293,7 @@ const ExportTemplatesForm = React.memo<Props>(
                     color="primary"
                     format={v => v === "Enabled"}
                     parse={v => v ? "Enabled" : "Installed but Disabled"}
+                    debounced={false}
                   />
                 </div>
                 <div className="mt-3 pt-1">

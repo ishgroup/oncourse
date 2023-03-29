@@ -111,7 +111,7 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
 
   addDraggingEvent = draggingEventAdded => {
     this.setState({ draggingEventAdded });
-  }
+  };
 
   addDialogRefEvents = () => {
     const { draggingEventAdded } = this.state;
@@ -121,11 +121,11 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
       this.dialogRef.current.addEventListener("dragenter", () => this.draggingEvent(true));
       this.dialogRef.current.addEventListener("dragleave", () => this.draggingEvent(false));
     }
-  }
+  };
 
   setParentDraggingState = isDragging => {
     this.setState({ isDragging });
-  }
+  };
 
   UNSAFE_componentWillUpdate(nextProps) {
     this.setParentDraggingState(nextProps.isParentDragging);
@@ -226,7 +226,7 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
               <EditInPlaceSearchSelect
                 selectValueMark="id"
                 selectLabelMark="name"
-                input={{ value: searchValue, onChange: this.onSelectChange, onBlur: stubFunction } as any}
+                input={{ value: searchValue, onChange: this.onSelectChange as any, onBlur: stubFunction } as any}
                 meta={{} as any}
                 onInputChange={this.onSelectInputChange}
                 placeholder="Find existing documents"
@@ -234,7 +234,9 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
                 itemRenderer={this.searchItemsRenderer}
                 popperAnchor={this.searchContainerNode.current}
                 disabled={searchExistingDocsDisabled}
-                inline
+                hideMenuOnNoResults
+                disableUnderline
+                hideEditIcon
               />
             </div>
             <IconButton

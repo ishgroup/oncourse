@@ -57,8 +57,7 @@ const LeadAttachmentsTab: React.FC<EditViewProps<LeadDocumentsProps>> = (props) 
           name="studentNotes"
           disabled
           label="Student notes"
-          fullWidth
-        />
+                  />
       </div>
     </div>
   );

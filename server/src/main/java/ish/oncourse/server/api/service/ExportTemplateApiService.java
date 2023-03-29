@@ -23,6 +23,8 @@ import ish.oncourse.server.configs.AutomationModel;
 import ish.oncourse.server.configs.ExportModel;
 import ish.oncourse.server.upgrades.DataPopulationUtils;
 import org.apache.cayenne.ObjectContext;
+import ish.oncourse.server.cayenne.Report;
+import org.apache.cayenne.query.ObjectSelect;
 
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -39,6 +41,7 @@ public class ExportTemplateApiService extends AutomationApiService<ExportTemplat
     public ExportTemplateDTO toRestModel(ExportTemplate exportTemplate) {
         var dto = super.toRestModel(exportTemplate);
         dto.setOutputType(OutputTypeDTO.values()[0].fromDbType(exportTemplate.getOutputType()));
+        dto.setPreview(exportTemplate.getPreview());
         return dto;
     }
 
@@ -67,6 +70,17 @@ public class ExportTemplateApiService extends AutomationApiService<ExportTemplat
 
     public byte[] exportOnDisk(Long id) {
         return getEntityAndValidateExistence(cayenneService.getNewContext(), id).getScript().getBytes();
+    }
+
+    public byte[] getPreview(Long id) {
+        return ObjectSelect.columnQuery(ExportTemplate.class, ExportTemplate.PREVIEW).where(Report.ID.eq(id)).selectOne(cayenneService.getNewContext());
+    }
+
+    public void deletePreview(Long id) {
+        var context = cayenneService.getNewContext();
+        var exportTemplate = getEntityAndValidateExistence(context, id);
+        exportTemplate.setPreview(null);
+        context.commitChanges();
     }
 
     protected ExportTemplateDTO createDto() {

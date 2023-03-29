@@ -177,13 +177,13 @@ const LeadGeneral = (props: Props) => {
           fields={(
             <Grid item xs={twoColumn ? 6 : 12}>
               <FormField
-                type="remoteDataSearchSelect"
+                type="remoteDataSelect"
                 label="Contact"
                 entity="Contact"
                 name="contactId"
                 selectValueMark="id"
                 selectLabelCondition={getContactFullName}
-                defaultDisplayValue={values.contactName}
+                defaultValue={values.contactName}
                 onInnerValueChange={onContactChange}
                 itemRenderer={ContactSelectItemRenderer}
                 disabled={!isNew}
@@ -209,12 +209,12 @@ const LeadGeneral = (props: Props) => {
         && (
           <Grid item xs={12}>
             <FormField
-              type="searchSelect"
+              type="select"
               name="assignToId"
               label="Assigned to"
               selectValueMark="id"
               selectLabelCondition={getContactFullName}
-              defaultDisplayValue={values.assignTo}
+              defaultValue={values.assignTo}
               disabled={!users}
               items={users}
               required
@@ -243,6 +243,7 @@ const LeadGeneral = (props: Props) => {
             name="estimatedValue"
             label="Estimated value"
             normalize={normalizeNumberToZero}
+            debounced={false}
           />
           <Chip
             size="small"

@@ -73,8 +73,8 @@ const ImportTemplatesForm = React.memo<Props>(
     }, []);
 
     const onDialogSave = useCallback(
-      ({ keyCode }) => {
-        onCreate({ ...values, id: null, keyCode });
+      ({ keyCode, name }) => {
+        onCreate({ ...values, id: null, keyCode, name });
         onDialodClose();
       },
       [values]
@@ -168,6 +168,7 @@ const ImportTemplatesForm = React.memo<Props>(
             fields={(
               <Grid item xs={12}>
                 <FormField
+                  type="text"
                   name="name"
                   label="Name"
                   validate={validateTemplateName}
@@ -266,8 +267,7 @@ const ImportTemplatesForm = React.memo<Props>(
                   label="Description"
                   name="description"
                   disabled={isInternal}
-                  fullWidth
-                  multiline
+                                    multiline
                 />
               </Grid>
               <Grid item xs={3}>
@@ -279,6 +279,7 @@ const ImportTemplatesForm = React.memo<Props>(
                     color="primary"
                     format={v => v === "Enabled"}
                     parse={v => (v ? "Enabled" : "Installed but Disabled")}
+                    debounced={false}
                   />
                 </div>
                 <div className="mt-3 pt-1">
@@ -310,8 +311,7 @@ const ImportTemplatesForm = React.memo<Props>(
                     label="Description"
                     className="overflow-hidden"
                     multiline
-                    fullWidth
-                  />
+                                      />
 
                   <Grid container columnSpacing={3}>
                     <Grid item xs className="d-flex">

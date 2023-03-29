@@ -17,6 +17,7 @@ export const useStyles = makeStyles((theme: AppTheme) => ({
   },
   editable: {
     display: "inline-flex",
+    cursor: "text",
     color: theme.palette.text.primaryEditable,
     minHeight: "32px",
     padding: "4px 0 4px",
@@ -49,7 +50,7 @@ export const useStyles = makeStyles((theme: AppTheme) => ({
       "& .ck-dropdown__button .ck-button__label": {
         fontSize: "14px"
       },
-      cursor: "pointer",
+      cursor: "text",
       overflowY: "auto",
       position: "relative",
       "& .ck-list__item .ck-button": {
@@ -141,7 +142,7 @@ export const useStyles = makeStyles((theme: AppTheme) => ({
     width: "100%",
     maxHeight: "300px",
     overflow: "auto",
-    fontSize: "14px",
+    fontSize: "16px",
     "& > div": {
       width: "100%"
     },

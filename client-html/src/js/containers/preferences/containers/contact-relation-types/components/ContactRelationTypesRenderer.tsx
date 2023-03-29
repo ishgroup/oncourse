@@ -30,8 +30,7 @@ const renderContactRelationTypes = props => {
                       type="text"
                       name={`${item}.relationName`}
                       label="Relationship Name"
-                      fullWidth
-                      className={classes.field}
+                                            className={classes.field}
                       disabled={field.systemType}
                       required
                     />
@@ -43,8 +42,7 @@ const renderContactRelationTypes = props => {
                         type="text"
                         name={`${item}.reverseRelationName`}
                         label="Reverse relationship Name"
-                        fullWidth
-                        className={clsx(classes.field, "flex-fill")}
+                                                className={clsx(classes.field, "flex-fill")}
                         disabled={field.systemType}
                         required
                       />
@@ -71,8 +69,6 @@ const renderContactRelationTypes = props => {
                           type="checkbox"
                           name={`${item}.portalAccess`}
                           color="primary"
-                          value="true"
-                          fullWidth
                         />
                       )}
                       label={`Allow ${field.relationName} to access all information in ${field.reverseRelationName} skillsOnCourse portal`}
