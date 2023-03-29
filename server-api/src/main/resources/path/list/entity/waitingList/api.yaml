@@ -78,30 +78,6 @@ put:
     keyCode: WAITING_LIST
     errorMessage: Sorry, you have no permissions to edit waitingList. Please contact your administrator
 
-delete:
-  operationId: remove
-  description: deletes a existing waitingList record
-  tags:
-    - WaitingList
-  parameters:
-    - name: id
-      in: path
-      type: integer
-      format: int64
-      required: true
-      description: Unique identifier of waitingList record to fetch
-  responses:
-    '204':
-      description: Success response.
-    '400':
-      description: Bad request error.
-    default:
-      description: Unexpected error
-  x-permission:
-    mask: delete
-    keyCode: WAITING_LIST
-    errorMessage: Sorry, you have no permissions to delete waitingList. Please contact your administrator
-
 patch:
   operationId: bulkChange
   tags:

@@ -154,7 +154,7 @@ const EditInPlaceSearchSelect = ({
     hasError,
     categoryKey
   }: EditInPlaceSearchSelectFieldProps) => {
-  
+
   const sortedItems = useMemo(() => {
     const sorted = items && (sort
         ? [...items].sort(typeof sort === "function"
@@ -178,17 +178,17 @@ const EditInPlaceSearchSelect = ({
 
   const inputNode = useRef<any>(null);
 
-  useEffect(() => {
-    if (inputRef && inputNode.current) {
-      inputRef = inputNode.current;
-    }
-  }, [inputNode.current, inputRef]);
-
   const [searchValue, setSearchValue] = useState<string>("");
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [formattedDisplayValue, setFormattedDisplayValue] = useState<any>("");
 
   const prevDefaultDisplayValue = usePrevious(defaultValue);
+
+  useEffect(() => {
+    if (formattedDisplayValue && !input.value) {
+      setFormattedDisplayValue(null);
+    }
+  }, [formattedDisplayValue, input.value, input.name]);
 
   useEffect(() => {
     if (selectLabelCondition && formattedDisplayValue && defaultValue !== prevDefaultDisplayValue) {
@@ -222,9 +222,7 @@ const EditInPlaceSearchSelect = ({
 
     if (!Array.isArray(items)) return filtered;
 
-    if (!searchValue) {
-      return items;
-    }
+    if (!searchValue || remoteData)  return items;
 
     const searchRegexp = new RegExp(searchValue.replace(",", "")
       // eslint-disable-next-line no-useless-escape
@@ -398,7 +396,17 @@ const EditInPlaceSearchSelect = ({
       ? response
       : null
     );
-  }, [formattedDisplayValue, selectedOption, selectLabelCondition, alwaysDisplayDefault, returnType, defaultValue, selectLabelMark, input, classes]);
+  }, [
+    formattedDisplayValue,
+    selectedOption,
+    selectLabelCondition,
+    alwaysDisplayDefault,
+    returnType,
+    defaultValue,
+    selectLabelMark,
+    input.value,
+    classes
+  ]);
 
   const renderValue = useMemo(() => valueRenderer
     ? valueRenderer(displayedValue, selectedOption, searchValue, { value: selectedOption && selectedOption[selectValueMark] })
@@ -521,9 +529,11 @@ const EditInPlaceSearchSelect = ({
                 },
                 inputProps: {
                   ...inputProps,
+                  className: fieldClasses.text,
                   ref: ref => {
                     (inputProps as any).ref.current = ref;
                     inputNode.current = ref;
+                    if (inputRef) inputRef.current = ref;
                   },
                   value: (isEditing ? searchValue : multiple ? "" : (typeof displayedValue === "string" ? displayedValue : "")),
                 }
@@ -532,6 +542,9 @@ const EditInPlaceSearchSelect = ({
                 ?
                 <Select
                   {...InputProps}
+                  inputRef={ref => {
+                    (inputProps as any).ref.current = ref?.node;
+                  }}
                   classes={{ select: "cursor-text" }}
                   onFocus={edit}
                   value={input.value || ""}

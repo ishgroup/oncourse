@@ -1,7 +1,7 @@
 records.each { Certificate c ->
 	csv << [
-			"studentFirstName"               : c.studentFirstName,
-			"studentLastName"                : c.studentLastName,
+			"studentFirstName"               : c.student?.contact?.firstName,
+			"studentLastName"                : c.student?.contact?.lastName,
 			"studentBirthDate"               : c.student.contact.birthDate?.format("dd/MM/yyyy"),
 			"studentEmail"                   : c.student.contact.email,
 			"studentStreet"                  : c.student.contact.street,

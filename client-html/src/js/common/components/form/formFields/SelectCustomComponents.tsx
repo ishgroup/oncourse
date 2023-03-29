@@ -137,7 +137,7 @@ const OuterElementType = React.forwardRef<any, any>((props, ref) => {
   return <div ref={ref} {...props} {...outerProps} />;
 });
 
-export const ListboxComponent = React.memo<any>(props => {
+export const ListboxComponent = React.forwardRef<any, any>((props, ref) => {
   const {
    children, rowHeight, remoteRowCount, loadMoreRows, classes, loading, selectAdornment, fieldClasses, ...other
   } = props;
@@ -167,28 +167,30 @@ export const ListboxComponent = React.memo<any>(props => {
   const isItemLoaded = index => index < (children.length + (selectAdornment ? 1 : 0));
   
   return (
-    <OuterElementContext.Provider value={other}>
-      <InfiniteLoader
-        isItemLoaded={isItemLoaded}
-        itemCount={itemCount}
-        loadMoreItems={loadMoreItems}
-      >
-        {({ onItemsRendered }) => (
-          <List
-            height={getHeight() + 2 * 8}
-            width="100%"
-            className={clsx(classes.menuList, fieldClasses.selectMenu)}
-            itemData={itemData}
-            outerElementType={OuterElementType}
-            onItemsRendered={onItemsRendered}
-            itemSize={itemSize}
-            itemCount={itemCount}
-          >
-            {ListRow}
-          </List>
-        )}
-      </InfiniteLoader>
-    </OuterElementContext.Provider>
+    <div ref={ref}>
+      <OuterElementContext.Provider value={other}>
+        <InfiniteLoader
+          isItemLoaded={isItemLoaded}
+          itemCount={itemCount}
+          loadMoreItems={loadMoreItems}
+        >
+          {({ onItemsRendered }) => (
+            <List
+              height={getHeight() + 2 * 8}
+              width="100%"
+              className={clsx(classes.menuList, fieldClasses.selectMenu)}
+              itemData={itemData}
+              outerElementType={OuterElementType}
+              onItemsRendered={onItemsRendered}
+              itemSize={itemSize}
+              itemCount={itemCount}
+            >
+              {ListRow}
+            </List>
+          )}
+        </InfiniteLoader>
+      </OuterElementContext.Provider>
+    </div>
   );
 });
 

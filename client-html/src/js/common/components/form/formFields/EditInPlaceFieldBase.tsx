@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import clsx from "clsx";
 import { FormControl, FormHelperText, Input, InputAdornment, InputLabel } from "@mui/material";
 import { InputProps } from "@mui/material/Input/Input";
@@ -18,7 +18,6 @@ import WarningMessage from "../fieldMessage/WarningMessage";
 interface Props {
   name: string;
   value: string;
-  ref?: any;
   className?: string;
   endAdornmentClass?: string;
   label?: React.ReactNode;
@@ -96,7 +95,6 @@ const useStyles = makeAppStyles(theme => ({
 
 const EditInPlaceFieldBase = (
   {
-    ref,
     value,
     invalid,
     className,
@@ -121,12 +119,6 @@ const EditInPlaceFieldBase = (
   const classes = useStyles();
 
   const [inputNode, setInputNode] = useState<HTMLInputElement>();
-
-  useEffect(() => {
-    if (ref && inputNode) {
-      ref = inputNode;
-    }
-  }, [ref, inputNode]);
   
   const onAdornmentClick = () => {
     inputNode.focus();
@@ -168,42 +160,42 @@ const EditInPlaceFieldBase = (
     }
       {CustomInput ||
         <Input
-        {...InputProps || {}}
-        inputRef={setInputNode}
-        inputProps={{
-          placeholder,
-          disabled,
-          className: clsx(fieldClasses.text, {
-            [classes.inlineInput]: inline,
-            [classes.readonly]: disabled,
-            [classes.hideArrows]: hideArrows,
-            "text-end": rightAligned
-          }),
-          style: {
-            width: inline && !invalid ? inputWidth : undefined
-          },
-          ...InputProps?.inputProps || {}
-        }}
-        classes={{
-          root: clsx(fieldClasses.text, inline && classes.inlineInput),
-          underline: fieldClasses.underline
-        }}
-        disabled={disabled}
-        endAdornment={!disabled &&
-          <InputAdornment
-            position="end"
-            onClick={onAdornmentClick}
-            className={clsx(classes.inputEndAdornment, endAdornmentClass, {
-              ["fsInherit"]: inline,
-              ["d-none"]: (rightAligned || inline),
-              ["invisible"]: !(rightAligned || inline)
-            })}
-          >
-            {editIcon}
-          </InputAdornment>
-        }
-        id={`input-${name}`}
-        name={name}
+          {...InputProps || {}}
+          inputRef={setInputNode}
+          inputProps={{
+            placeholder,
+            disabled,
+            className: clsx(fieldClasses.text, {
+              [classes.inlineInput]: inline,
+              [classes.readonly]: disabled,
+              [classes.hideArrows]: hideArrows,
+              "text-end": rightAligned
+            }),
+            style: {
+              width: inline && !invalid ? inputWidth : undefined
+            },
+            ...InputProps?.inputProps || {}
+          }}
+          classes={{
+            root: clsx(fieldClasses.text, inline && classes.inlineInput),
+            underline: fieldClasses.underline
+          }}
+          disabled={disabled}
+          endAdornment={!disabled &&
+            <InputAdornment
+              position="end"
+              onClick={onAdornmentClick}
+              className={clsx(classes.inputEndAdornment, endAdornmentClass, {
+                ["fsInherit"]: inline,
+                ["d-none"]: (rightAligned || inline),
+                ["invisible"]: !(rightAligned || inline)
+              })}
+            >
+              {editIcon}
+            </InputAdornment>
+          }
+          id={`input-${name}`}
+          name={name}
         />
       }
     <FormHelperText

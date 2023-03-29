@@ -36,7 +36,11 @@ const styles = theme =>
     inputWrapper: {
       "&:hover $inputEndAdornment": {
         visibility: "visible",
-      }
+      },
+      "&:hover .placeholderContent": {
+        color: theme.palette.primary.main,
+        opacity: 0.5
+      },
     },
     inputEndAdornment: {
       visibility: 'hidden',
@@ -180,7 +184,7 @@ const SimpleTagList = ({
         const index = current.findIndex(c => c === t.tagBody.name);
         if (index !== -1) {
           const addedTagsMatch = input.value.find(id => getFullTag(id, tags)?.name === t.tagBody.name);
-          if (addedTagsMatch && addedTagsMatch.id !== t.tagBody.id) {
+          if (addedTagsMatch && addedTagsMatch !== t.tagBody.id) {
             return;
           }
           updated.push(t.tagBody.id);
@@ -370,7 +374,8 @@ const SimpleTagList = ({
             hasPopupIcon: classes.hasPopup,
             hasClearIcon: classes.hasClear,
             listbox: clsx(classes.listbox, fieldClasses.listbox),
-            inputRoot: classes.inputWrapper
+            inputRoot: classes.inputWrapper,
+            noOptions: "d-none"
           }}
           renderInput={({
             InputLabelProps, InputProps, inputProps, ...params
@@ -387,7 +392,7 @@ const SimpleTagList = ({
               fieldClasses={fieldClasses}
               shrink={Boolean(label || input.value)}
               labelAdornment={labelAdornment}
-              placeholder={placeholder}
+              placeholder={placeholder || "No value"}
               editIcon={<Edit fontSize="inherit" />}
               InputProps={{
                 ...InputProps,
@@ -406,7 +411,9 @@ const SimpleTagList = ({
               }}
               CustomInput={!isEditing
                 ? <Select
-                  inputRef={(inputProps as any).ref}
+                  inputRef={ref => {
+                    (inputProps as any).ref.current = ref?.node;
+                  }}
                   onFocus={edit}
                   value="stub"
                   className={classes.inputWrapper}
@@ -418,7 +425,7 @@ const SimpleTagList = ({
                         <Edit />
                       </InputAdornment>
                   }
-                  IconComponent={null}
+                  IconComponent={stubComponent}
                 >
                   <MenuItem value="stub">
                     {InputValueForRender || <span className="placeholderContent">No value</span>}

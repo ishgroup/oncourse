@@ -93,7 +93,6 @@ const EditInPlaceField = (
       })}
     >
       <EditInPlaceFieldBase
-        ref={inputRef}
         name={input.name}
         value={inputValue}
         error={error}
@@ -117,6 +116,7 @@ const EditInPlaceField = (
           onFocus: input.onFocus,
           maxRows: truncateLines,
           inputProps: {
+            ref: inputRef,
             maxLength,
             step,
             min,

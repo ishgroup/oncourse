@@ -30,7 +30,6 @@ const StaticProgress = ({ className, color, value, size = 24, thickness = 8 }: S
     />
     <CircularProgress
       variant="determinate"
-      disableShrink
       sx={{
         color: `#${color}`,
         position: 'absolute',

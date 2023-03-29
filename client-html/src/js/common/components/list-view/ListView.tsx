@@ -124,6 +124,7 @@ interface Props extends Partial<ListState> {
   listProps: TableListProps;
   rootEntity: EntityName;
   EditViewContent: any;
+  dispatch?: Dispatch;
   onLoadMore?: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
   selection?: string[];
@@ -139,6 +140,7 @@ interface Props extends Partial<ListState> {
   createButtonDisabled?: boolean;
   fetch?: Fetch;
   menuTags?: MenuTag[];
+  scriptsFilterColumn?: string;
   filterEntity?: EntityName;
   filterGroups?: FilterGroup[];
   filterGroupsInitial?: FilterGroup[];
@@ -183,7 +185,6 @@ interface Props extends Partial<ListState> {
   searchMenuItemsRenderer?: ListAqlMenuItemsRenderer;
   customOnCreate?: any;
   customOnCreateAction?: any;
-  customGetAction?: any;
   customUpdateAction?: any;
   preformatBeforeSubmit?: AnyArgFunction;
   findRelatedByFilter?: AnyArgFunction;
@@ -252,8 +253,9 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       sendGAEvent,
       rootEntity,
       setEntity,
-      match: { url },
+      match: { url, params },
       filterGroupsInitial = [],
+      selection,
       getListViewPreferences
     } = this.props;
 
@@ -289,6 +291,11 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
         search: searchParams.toString(),
         pathname: url
       });
+    }
+
+    if (params.id && !selection.includes(params.id)) {
+      this.ignoreCheckDirtyOnSelection = true;
+      this.onSelection([params.id]);
     }
   }
 
@@ -389,11 +396,6 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
         }
       } else {
         this.onCreateRecord();
-      }
-
-      if (!selection.includes(params.id)) {
-        this.ignoreCheckDirtyOnSelection = true;
-        this.onSelection([params.id]);
       }
     }
 
@@ -605,6 +607,10 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       match: { url, params },
       location: { search }
     } = this.props;
+
+    if (newSelection.length === 1 && selection.length === 1 && newSelection[0] === selection[0]) {
+      return;
+    }
 
     const { threeColumn } = this.state;
 
@@ -1049,8 +1055,10 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       listProps,
       onLoadMore,
       currency,
+      dispatch,
       getScripts,
-      findRelatedByFilter
+      findRelatedByFilter,
+      scriptsFilterColumn
     } = this.props;
 
     const {
@@ -1174,6 +1182,7 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
             )}
           </div>
           <BottomAppBar
+            dispatch={dispatch}
             findRelatedByFilter={findRelatedByFilter}
             getScripts={getScripts}
             scripts={scripts}
@@ -1204,6 +1213,7 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
             records={records}
             searchComponentNode={this.searchComponentNode}
             searchQuery={searchQuery}
+            scriptsFilterColumn={scriptsFilterColumn}
           />
         </div>
       </div>
@@ -1222,6 +1232,7 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
+  dispatch,
   sendGAEvent: (event: GAEventTypes, screen: string, time?: number) => dispatch(pushGTMEvent(event, screen, time)),
   setEntity: entity => dispatch(setListEntity(entity)),
   resetEditView: () => {
@@ -1257,9 +1268,7 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
     : createEntityRecord(item, ownProps.rootEntity)),
   onDelete: (id: number) => dispatch(deleteEntityRecord(id, ownProps.rootEntity)),
   onSave: (item: any) => dispatch(updateEntityRecord(item.id, ownProps.rootEntity, item)),
-  getEditRecord: (id: number) => dispatch(ownProps.customGetAction 
-    ? ownProps.customGetAction(id) 
-    : getEntityRecord(id, ownProps.rootEntity)),
+  getEditRecord: (id: number) => dispatch(getEntityRecord(id, ownProps.rootEntity)),
   findRelatedByFilter: (filter, list) => dispatch(findRelatedByFilter(filter, list))
 });
 

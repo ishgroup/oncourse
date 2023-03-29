@@ -1,7 +1,7 @@
 import { Tag } from "@api/model";
 import { InputProps } from "@mui/material/Input";
 import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
-import React, { ReactElement, ReactNode } from "react";
+import React, { MutableRefObject, ReactElement, ReactNode } from "react";
 import { AnyArgFunction, HTMLTagArgFunction, NumberArgFunction, StringArgFunction } from "./CommonFunctions";
 import { Suggestion } from "../../common/components/form/formFields/EditInPlaceQuerySelect";
 import { ShowConfirmCaller } from "./Confirm";
@@ -13,7 +13,6 @@ export interface FieldClasses {
   underline?: string;
   label?: string;
   selectMenu?: string;
-  placeholder?: string;
   loading?: string;
   listbox?: string;
 }
@@ -26,7 +25,7 @@ export interface SelectItemRendererProps<E = any> {
 }
 
 export interface EditInPlaceFieldProps {
-  inputRef?: React.Ref<any>;
+  inputRef?: MutableRefObject<any>;
   input?: Partial<Omit<WrappedFieldInputProps, "onBlur">> & { onBlur?: AnyArgFunction };
   meta?: Partial<WrappedFieldMetaProps>;
   InputProps?: Partial<InputProps>;
@@ -53,7 +52,7 @@ export interface EditInPlaceFieldProps {
 }
 
 export interface EditInPlaceDateTimeFieldProps {
-  inputRef?: React.Ref<any>;
+  inputRef?: MutableRefObject<any>;
   input?: Partial<Omit<WrappedFieldInputProps, "onBlur">> & { onBlur?: AnyArgFunction };
   meta?: Partial<WrappedFieldMetaProps>;
   fieldClasses?: FieldClasses,
@@ -107,7 +106,7 @@ export interface EditInPlaceQueryFieldProps {
 }
 
 export interface EditInPlaceSearchSelectFieldProps {
-  inputRef?: React.Ref<any>;
+  inputRef?: MutableRefObject<any>;
   input?: Partial<Omit<WrappedFieldInputProps, "onBlur">> & { onBlur?: AnyArgFunction };
   meta?: Partial<WrappedFieldMetaProps>;
   items?: any[];
@@ -203,6 +202,7 @@ export interface TagsFieldProps extends EditInPlaceFieldProps {
   tags: Tag[];
   showConfirm?: ShowConfirmCaller;
   classes?: any;
+  validateEntity?: EntityName;
 }
 
 interface FormFieldBaseProps {

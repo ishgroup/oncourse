@@ -111,7 +111,7 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
 
   addDraggingEvent = draggingEventAdded => {
     this.setState({ draggingEventAdded });
-  }
+  };
 
   addDialogRefEvents = () => {
     const { draggingEventAdded } = this.state;
@@ -121,11 +121,11 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
       this.dialogRef.current.addEventListener("dragenter", () => this.draggingEvent(true));
       this.dialogRef.current.addEventListener("dragleave", () => this.draggingEvent(false));
     }
-  }
+  };
 
   setParentDraggingState = isDragging => {
     this.setState({ isDragging });
-  }
+  };
 
   UNSAFE_componentWillUpdate(nextProps) {
     this.setParentDraggingState(nextProps.isParentDragging);

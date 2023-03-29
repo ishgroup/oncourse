@@ -72,9 +72,9 @@ const ExportTemplatesForm = React.memo<Props>(
     }, []);
 
     const onDialogSave = useCallback(
-      ({ keyCode }) => {
+      ({ keyCode, name }) => {
         setDisableRouteConfirm(true);
-        onCreate({ ...values, id: null, keyCode });
+        onCreate({ ...values, id: null, keyCode, name });
         onDialogClose();
       },
       [values]

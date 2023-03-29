@@ -54,10 +54,11 @@ import FinaliseApp from "../containers/finalise-period/index";
 import ContactsApp from "../containers/entities/contacts";
 import { EnvironmentConstants } from "../constants/EnvironmentConstants";
 import MergeContacts from "../containers/entities/contacts/components/merge-contacts/MergeContacts";
-import Automation from "../containers/automation/Automation";
+import Automation from "../containers/automation/index";
 import { DuplicateCourseClassSwingWrapper } from "../containers/entities/courseClasses/components/duplicate-courseClass/DuplicateCourseClassSwingWrapper";
-import QuickEnrol from "../containers/checkout/Checkout";
+import QuickEnrol from "../containers/checkout/index";
 import NotFound from "../containers/notFound/NotFound";
+import LoadableLogs from "../containers/logs";
 
 type RouteGroupTypes = "Preferences" | "Training" | "Finance" | "Common" | "Activity" | "Products";
 
@@ -346,6 +347,12 @@ export const routes: MainRoute[] = [
     group: "Finance"
   },
   // Common
+  ... process.env.NODE_ENV === EnvironmentConstants.development ? [{
+    title: "Menu",
+    path: "/menu",
+    url: "/menu",
+    main: Common,
+  }] : [],
   {
     title: "Dashboard",
     path: "/",
@@ -359,6 +366,13 @@ export const routes: MainRoute[] = [
     path: "/timetable",
     url: "/timetable",
     main: Timetable,
+    group: "Common"
+  },
+  {
+    title: "Server logs",
+    path: "/downloadLogs",
+    url: "/downloadLogs",
+    main: LoadableLogs,
     group: "Common"
   },
   // Products
@@ -401,55 +415,6 @@ export const routes: MainRoute[] = [
     title: "Automation",
     path: "/automation",
     url: "/automation",
-    main: Automation,
-    group: "Preferences"
-  },
-  {
-    title: "Import templates",
-    path: "/automation/import-templates",
-    url: "/automation/import-templates",
-    main: Automation,
-    group: "Preferences"
-  },
-  {
-    title: "Export templates",
-    path: "/automation/export-templates",
-    url: "/automation/export-templates",
-    main: Automation,
-    group: "Preferences"
-  },
-  {
-    title: "Message templates",
-    path: "/automation/email-templates",
-    url: "/automation/email-templates",
-    main: Automation,
-    group: "Preferences"
-  },
-  {
-    title: "PDF backgrounds",
-    path: "/automation/pdf-backgrounds",
-    url: "/automation/pdf-backgrounds",
-    main: Automation,
-    group: "Preferences"
-  },
-  {
-    title: "PDF reports",
-    path: "/automation/pdf-reports",
-    url: "/automation/pdf-reports",
-    main: Automation,
-    group: "Preferences"
-  },
-  {
-    title: "Integrations",
-    path: "/automation/integrations",
-    url: "/automation/integrations",
-    main: Automation,
-    group: "Preferences"
-  },
-  {
-    title: "Scripts",
-    path: "/automation/script",
-    url: "/automation/script",
     main: Automation,
     group: "Preferences"
   },
@@ -500,16 +465,6 @@ export const routes: MainRoute[] = [
     group: "Common"
   },
 ];
-
-if (process.env.NODE_ENV === EnvironmentConstants.development) {
-  routes.push({
-    title: "Menu",
-    exact: true,
-    path: "/menu",
-    url: "/menu",
-    main: Common
-  });
-}
 
 export const routeGroups: RouteGroup[] = [
   {

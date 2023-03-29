@@ -9,6 +9,9 @@
 // CRUD actions
 import { _toRequestType } from "../../../../common/actions/ActionUtils";
 import { EntityName } from "../../../../model/entities/common";
+import { getContact } from "../../contacts/actions";
+import { getCourseClass } from "../../courseClasses/actions";
+import { getSite } from "../../sites/actions";
 
 export const GET_ENTITY_RECORD_REQUEST = _toRequestType("get/entity/record");
 
@@ -18,10 +21,21 @@ export const UPDATE_ENTITY_RECORD_REQUEST = _toRequestType("update/entity/record
 
 export const DELETE_ENTITY_RECORD_REQUEST = _toRequestType("delete/entity/record");
 
-export const getEntityRecord = (id: number, entity: EntityName) => ({
-  type: GET_ENTITY_RECORD_REQUEST,
-  payload: { id, entity }
-});
+export const getEntityRecord = (id, entity: EntityName) => {
+  switch (entity) {
+    case "Contact":
+      return getContact(id);
+    case "CourseClass":
+      return getCourseClass(id);
+    case "Site":
+      return getSite(id);
+    default: 
+      return {
+        type: GET_ENTITY_RECORD_REQUEST,
+        payload: { id, entity }
+      };
+  }
+};
 
 export const createEntityRecord = (item: any, entity: EntityName) => ({
   type: CREATE_ENTITY_RECORD_REQUEST,

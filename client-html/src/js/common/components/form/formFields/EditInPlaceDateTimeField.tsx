@@ -31,7 +31,7 @@ import { EditInPlaceDateTimeFieldProps } from "../../../../model/common/Fields";
 import { makeAppStyles } from "../../../styles/makeStyles";
 import EditInPlaceFieldBase from "./EditInPlaceFieldBase";
 import { formatInTimeZone } from "date-fns-tz";
-import { appendTimezoneToUTC } from "../../../utils/dates/formatTimezone";
+import { appendTimezoneToUTC, appendTimezone } from "../../../utils/dates/formatTimezone";
 import { useAppSelector } from "../../../utils/hooks";
 
 const useStyles = makeAppStyles(theme => ({
@@ -91,7 +91,7 @@ const EditInPlaceDateTimeField = (
 
   const classes = useStyles();
 
-  const formatDateInner = dateObj => {
+  const formatDateInner = (dateObj, timezoneFormat?) => {
     if (!dateObj) {
       return "";
     }
@@ -100,21 +100,28 @@ const EditInPlaceDateTimeField = (
 
     switch (type) {
       case "date":
-        return timezone ? formatInTimeZone(dateObj, timezone, formatDate || III_DD_MMM_YYYY) : format(dateObj, formatDate || III_DD_MMM_YYYY);
+        return timezoneFormat ? formatInTimeZone(dateObj, timezoneFormat, formatDate || III_DD_MMM_YYYY) : format(dateObj, formatDate || III_DD_MMM_YYYY);
       case "time":
-        return timezone ? formatInTimeZone(dateObj, timezone, formatTime || HH_MM_COLONED) : format(dateObj, formatTime || HH_MM_COLONED);
+        return timezoneFormat ? formatInTimeZone(dateObj, timezoneFormat, formatTime || HH_MM_COLONED) : format(dateObj, formatTime || HH_MM_COLONED);
       case "datetime":
-        return timezone ? formatInTimeZone(dateObj, timezone, formatDateTime || III_DD_MMM_YYYY_HH_MM) : format(dateObj, formatDateTime || III_DD_MMM_YYYY_HH_MM);
+        return timezoneFormat ? formatInTimeZone(dateObj, timezoneFormat, formatDateTime || III_DD_MMM_YYYY_HH_MM) : format(dateObj, formatDateTime || III_DD_MMM_YYYY_HH_MM);
       default:
         return dateObj.toString();
     }
   };
 
-  const dateValue = useMemo(() => input.value ? new Date(input.value) : null, [input.value, timezone]);
+  const dateValue = useMemo(() => input.value ? new Date(input.value) : null, [input.value]);
+
+  const pickerValue = useMemo(() => input.value
+    ? timezone
+      ? appendTimezone(new Date(input.value), timezone)
+      : new Date(input.value)
+    : null,
+  [input.value, timezone]);
 
   useEffect(() => {
-    setTextValue(formatDateInner(dateValue));
-  }, [dateValue]);
+    setTextValue(formatDateInner(dateValue, timezone));
+  }, [dateValue, timezone]);
 
   useEffect(() => {
     if (!active && processActionId) {
@@ -133,23 +140,23 @@ const EditInPlaceDateTimeField = (
 
   const onChange = (v: Date) => {
     if (v) {
+      const appended = timezone ? appendTimezoneToUTC(v, timezone) : v;
       let formatted;
       if (formatValue) {
-        formatted = format(v, formatValue);
+        formatted = format(appended, formatValue);
       } else if (type === "date") {
-        if (isValid(v)) {
-          formatted = format(v, YYYY_MM_DD_MINUSED);
+        if (isValid(appended)) {
+          formatted = format(appended, YYYY_MM_DD_MINUSED);
         } else {
           formatted = null;
         }
       } else {
         try {
-          formatted = v.toISOString();
+          formatted = appended.toISOString();
         } catch {
           formatted = null;
         }
       }
-      setTextValue(formatDateInner(v));
       input.onChange(formatted);
       input.onBlur(formatted);
       return;
@@ -165,7 +172,7 @@ const EditInPlaceDateTimeField = (
     if (persistValue && !textValue) {
       input.onChange(input.value);
       input.onBlur(input.value);
-      setTextValue(formatDateInner(dateValue));
+      setTextValue(formatDateInner(dateValue, timezone));
       return;
     }
 
@@ -187,7 +194,7 @@ const EditInPlaceDateTimeField = (
           formatted = null;
         }
       }
-      setTextValue(formatDateInner(appended));
+      setTextValue(formatDateInner(appended, timezone));
       input.onChange(formatted);
       input.onBlur(formatted);
     } else {
@@ -222,12 +229,11 @@ const EditInPlaceDateTimeField = (
           type={type}
           toolbarTitle={label}
           open={pickerOpened}
-          value={dateValue}
+          value={pickerValue}
           onChange={onChange}
           onClose={onClose}
           renderInput={() => (
             <EditInPlaceFieldBase
-              ref={inputNode}
               name={input.name}
               value={textValue}
               error={error}

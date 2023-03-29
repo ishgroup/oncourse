@@ -82,7 +82,7 @@ describe("Virtual rendered DuplicateTraineeshipModal of Class list view", () => 
           copyOnlyMandatoryTags: initialValues.copyOnlyMandatoryTags,
           copyNotes: initialValues.copyNotes,
         });
-      }, 1000);
+      }, 500);
     }
   });
 });
