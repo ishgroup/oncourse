@@ -7,7 +7,7 @@
  */
 
 import React, {
- useCallback, useMemo, useState
+ useCallback, useMemo
 } from "react";
 import clsx from "clsx";
 import { connect } from "react-redux";
@@ -169,6 +169,10 @@ const CourseClassGeneralTab = React.memo<Props>(
       }
 
       const actualEnrolment = decimalDivide(netValues.income.actual, values.successAndQueuedEnrolmentsCount);
+
+      if (actualEnrolment <= 0) {
+        return 0;
+      }
 
       let covered = 0;
 

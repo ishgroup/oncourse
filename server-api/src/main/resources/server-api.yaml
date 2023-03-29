@@ -221,6 +221,8 @@ paths:
     $ref: './path/list/entity/voucherProduct/api.yaml'
   /list/entity/waitingList:
     $ref: './path/list/entity/waitingList/api.yaml'
+  /list/entity/waitingList/bulkDelete:
+    $ref: './path/list/entity/waitingList/bulkDelete/api.yaml'
   /list/entity/contact:
     $ref: './path/list/entity/contact/api.yaml'
   /list/entity/contact/insight:

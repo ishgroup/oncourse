@@ -63,7 +63,7 @@ describe("Virtual rendered DuplicateCourseClassModal of Class list view", () => 
           copyAssessments: initialValues.copyAssessments,
           copyOnlyMandatoryTags: initialValues.copyOnlyMandatoryTags
         });
-      }, 1000);
+      }, 500);
     }
   });
 });
