@@ -182,10 +182,10 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
                 fields={(
                   <Grid item xs={twoColumn ? 6 : 12}>
                     <FormField
+                      type="text"
                       name="name"
                       label="Name"
                       required
-                      fullWidth
                     />
                   </Grid>
                 )}

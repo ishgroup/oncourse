@@ -9,7 +9,7 @@ import * as React from "react";
 import { initialize } from "redux-form";
 import { Account } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import AccountsEditView from "./components/AccountsEditView";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
 import { getTaxTypes } from "../../preferences/actions";
@@ -42,7 +42,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Account and entityId" },
   { title: "Invoices", list: "invoice", expression: "invoiceLines.account.id" },
   { title: "Transactions", list: "transaction", expression: "account.id" }

@@ -398,6 +398,9 @@ export const bootstrap = (theme: AppTheme) => ({
   ".cursor-pointer": {
     cursor: "pointer"
   },
+  ".cursor-text": {
+    cursor: "text"
+  },
   ".pointer-events-none": {
     pointerEvents: "none"
   },
@@ -413,6 +416,9 @@ export const bootstrap = (theme: AppTheme) => ({
   },
   ".text-pre-line": {
     whiteSpace: "pre-line"
+  },
+  ".text-pre": {
+    whiteSpace: "pre"
   },
   ".text-break-spaces": {
     whiteSpace: "break-spaces"

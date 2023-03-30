@@ -294,7 +294,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
             <Grid item {...gridItemProps}>
               {countries && (
                 <FormField
-                  type="searchSelect"
+                  type="select"
                   selectValueMark="id"
                   selectLabelMark="name"
                   name="country"

@@ -15,6 +15,7 @@ import com.google.inject.Inject;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.integration.PluginService;
 import ish.oncourse.server.license.LicenseService;
+import ish.liquibase.NumberedFilesComparator;
 import liquibase.Liquibase;
 import liquibase.Scope;
 import liquibase.database.DatabaseFactory;
@@ -33,8 +34,6 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class SchemaUpdateService {

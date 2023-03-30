@@ -162,13 +162,13 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
       {type === ProductType.Voucher && (
         <Grid item {...gridItemProps}>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             entity="Contact"
             name="redeemableById"
             label="Send invoice on redemption to"
             selectValueMark="id"
             selectLabelCondition={getContactFullName}
-            defaultDisplayValue={values.redeemableByName}
+            defaultValue={values.redeemableByName}
             labelAdornment={(
               <LinkAdornment
                 link={values.redeemableById}

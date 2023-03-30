@@ -10,6 +10,7 @@ import Grid from "@mui/material/Grid";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { sortDefaultSelectItems } from "../../../../common/utils/common";
 import { EditViewProps } from "../../../../model/common/ListView";
+import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 
 const qualificationTypes = Object.keys(QualificationType)
   .filter(i => Number.isNaN(Number(i)))
@@ -100,13 +101,14 @@ const QualificationsEditView = (props: EditViewProps<Qualification>) => {
             type="text"
             name="specialization"
             label="Specialization"
-            maxLength="128"
+            maxLength={128}
           />
         </Grid>
         <Grid item xs={12}>
           <FormField
             type="number"
-            normalize={value => (value || value === 0 ? Number(value) : null)}
+            normalize={normalizeNumber}
+            debounced={false}
             name="nominalHours"
             label="Nominal hours"
           />

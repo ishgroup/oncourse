@@ -11,9 +11,8 @@ import {
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { addDays, format as formatDate } from "date-fns";
+import { format as formatDate } from "date-fns";
 import { Report } from "@api/model";
-import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
@@ -29,6 +28,7 @@ import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
 import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { stubFunction } from "../../../../common/utils/common";
+import EditInPlaceSearchSelect from "../../../../common/components/form/formFields/EditInPlaceSearchSelect";
 
 const paymentColumns: NestedTableColumn[] = [
   {
@@ -78,8 +78,8 @@ class BankingCreateView extends React.PureComponent<any, any> {
 
   componentDidUpdate() {
     const {
- accounts, adminSites, dispatch, adminCenterName, form, values
-} = this.props;
+     accounts, adminSites, dispatch, adminCenterName, form, values
+    } = this.props;
 
     if (!values) {
       return;
@@ -95,7 +95,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
         initialize(form, {
           ...values,
           adminSite: adminCenterName,
-          administrationCenterId: adminSites.find(s => s.label === adminCenterName).value
+          administrationCenterId: adminSites.find(s => s.label === adminCenterName)?.value
         })
       );
     }
@@ -188,7 +188,6 @@ class BankingCreateView extends React.PureComponent<any, any> {
   render() {
     const {
       accounts,
-      lockedDate,
       openNestedView,
       selectedAccountId,
       values,
@@ -203,7 +202,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
           <Grid item xs={12}>
             <Grid item xs={6}>
               <FormField
-                type="searchSelect"
+                type="select"
                 name="administrationCenterId"
                 label="Administration center"
                 selectLabelCondition={getAdminCenterLabel}
@@ -226,14 +225,13 @@ class BankingCreateView extends React.PureComponent<any, any> {
             </Grid>
           </Grid>
           <Grid item xs={4}>
-            <EditInPlaceField
+            <EditInPlaceSearchSelect
               items={accounts || []}
               label="Account"
-              input={{ name: "id", value: selectedAccountId, onChange: this.onChangeAccount, onFocus: stubFunction }}
+              input={{ name: "id", value: selectedAccountId, onChange: this.onChangeAccount as any, onFocus: stubFunction, onBlur: stubFunction }}
               meta={{ error: null, invalid: false, touched: false }}
               selectValueMark="id"
               selectLabelMark="description"
-              select
               disabled={hasNoAccounts}
             />
           </Grid>
@@ -244,12 +242,8 @@ class BankingCreateView extends React.PureComponent<any, any> {
               type="date"
               normalize={v => (v ? formatDate(new Date(v), YYYY_MM_DD_MINUSED) : v)}
               validate={this.validateSettlementDate}
-              minDate={
-                lockedDate
-                  ? addDays(new Date(lockedDate), 1)
-                  : undefined
-              }
               disabled={hasNoAccounts}
+              debounced={false}
             />
           </Grid>
           <Grid item xs={4} />

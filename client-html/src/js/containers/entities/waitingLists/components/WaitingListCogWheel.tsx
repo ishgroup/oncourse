@@ -8,6 +8,38 @@ import { connect } from "react-redux";
 import MenuItem from "@mui/material/MenuItem";
 import { State } from "../../../../reducers/state";
 import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
+import clsx from "clsx";
+import { useAppDispatch, useAppSelector } from "../../../../common/utils/hooks";
+import { bulkDeleteWaitingLists } from "../actions";
+
+const WaitingListBulkDelete = memo<any>(({
+  menuItemClass, closeMenu, selection
+}) => {
+  const hasAql = useAppSelector(state => state.list.searchQuery
+    && (state.list.searchQuery.search || state.list.searchQuery.filter || state.list.searchQuery.tagGroups.length));
+
+  const { search, filter, tagGroups } = useAppSelector(state => state.list.searchQuery);
+
+  const dispatch = useAppDispatch();
+
+  const onBulkEditClick = () => {
+    dispatch(bulkDeleteWaitingLists({
+      ids: selection,
+      search,
+      filter,
+      tagGroups
+    }));
+    closeMenu();
+  };
+
+  return (
+    <>
+      <MenuItem className={clsx(menuItemClass, "errorColor")} onClick={onBulkEditClick} disabled={!selection.length && !hasAql}>
+        Bulk delete...
+      </MenuItem>
+    </>
+  );
+});
 
 const WaitingListCogWheel = memo<any>(props => {
   const {
@@ -24,7 +56,6 @@ const WaitingListCogWheel = memo<any>(props => {
 
   return (
     <>
-      <BulkEditCogwheelOption {...props} />
       {hoSelectedOrNew ? null : (
         <MenuItem className={menuItemClass} onClick={onQuickEnrolment} disabled={!hasQePermissions}>
           Enrol
@@ -35,6 +66,8 @@ const WaitingListCogWheel = memo<any>(props => {
           {selection.length > 1 && "s"}
         </MenuItem>
       )}
+      <BulkEditCogwheelOption {...props} />
+      <WaitingListBulkDelete {...props} />
     </>
   );
 });

@@ -10,6 +10,7 @@ package ish.oncourse.server.upgrades.liquibase.change;
 
 import ish.common.types.NodeSpecialType;
 import ish.common.types.NodeType;
+import ish.liquibase.IshTaskChange;
 import ish.oncourse.cayenne.TaggableClasses;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.Tag;

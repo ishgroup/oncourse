@@ -34,7 +34,7 @@ import {
   courseClassTimetablePath,
   plainEnrolmentPath
 } from "../../../constants/Api";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import {
   clearListState,
   getFilters,
@@ -46,7 +46,7 @@ import EnrolmentService from "../enrolments/services/EnrolmentService";
 import OutcomeService from "../outcomes/services/OutcomeService";
 import CourseClassCogWheel from "./components/CourseClassCogWheel";
 import CourseClassEditView from "./components/CourseClassEditView";
-import { createCourseClass, getCourseClass, getCourseClassTags, updateCourseClass } from "./actions";
+import { createCourseClass, getCourseClassTags, updateCourseClass } from "./actions";
 import { BooleanArgFunction, NoArgFunction } from "../../../model/common/CommonFunctions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getGradingTypes, getTutorRoles } from "../../preferences/actions";
@@ -239,7 +239,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "All enrolments", list: "enrolment", expression: "courseClass.id" },
   { title: "Audits", list: "audit", expression: "entityIdentifier == CourseClass and entityId" },
   { title: "Courses", list: "course", expression: "courseClasses.id" },
@@ -638,7 +638,6 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
         rootEntity="CourseClass"
         onInit={onInit}
         customOnCreateAction={createCourseClass}
-        customGetAction={getCourseClass}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         CogwheelAdornment={CourseClassCogWheel}

@@ -36,6 +36,7 @@ records.each { CourseClass cc ->
 			"courseIsVET"                       : cc.course.isVET,
 			"courseReportableHours"             : cc.course.reportableHours?.format("0.00"),
 			"courseWebDescription"              : cc.course.webDescription,
+			"courseShortWebDescription"         : cc.course.shortWebDescription,
 			"courseAllowWaitingLists"           : cc.course.allowWaitingLists,
 			"courseIsShownOnWeb"                : cc.course.isShownOnWeb,
 			"courseIsSufficientForQualification": cc.course.isSufficientForQualification,

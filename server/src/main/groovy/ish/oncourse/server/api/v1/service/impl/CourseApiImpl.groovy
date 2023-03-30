@@ -13,13 +13,15 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.server.CayenneService
-import ish.oncourse.server.api.dao.CourseDao
 import ish.oncourse.server.api.service.CourseApiService
 import ish.oncourse.server.api.v1.function.EntityRelationFunctions
 import ish.oncourse.server.api.v1.model.CourseDTO
 import ish.oncourse.server.api.v1.model.DiffDTO
+import ish.oncourse.server.api.v1.model.SaleDTO
 import ish.oncourse.server.api.v1.service.CourseApi
 import ish.oncourse.server.cayenne.Course
+
+import static ish.oncourse.server.api.service.CourseApiService.relatedSellablesOf
 
 class CourseApiImpl implements CourseApi {
 
@@ -48,6 +50,21 @@ class CourseApiImpl implements CourseApi {
     @Override
     CourseDTO get(Long id) {
         courseApiService.get(id)
+    }
+
+    @Override
+    List<SaleDTO> getSellables(List<Long> courseIds) {
+        def context = cayenneService.newReadonlyContext
+        return courseIds.collect {
+            courseId -> relatedSellablesOf(context, courseId)
+                    .collect {
+                        if(it.entityFromId == null)
+                            it.entityFromId = courseId
+                        else
+                            it.entityToId = courseId
+                        it
+                    }
+        }.flatten() as List<SaleDTO>
     }
 
     @Override

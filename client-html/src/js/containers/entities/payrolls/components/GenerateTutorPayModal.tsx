@@ -115,8 +115,7 @@ const GenerateTutorPayModalForm: React.FC<Props> = props => {
             } unprocessed wages until and including`}
             onChange={onDateChange}
             required
-            fullWidth
-          />
+                      />
 
           <Collapse in={!value.confirm}>
             <DialogContentText

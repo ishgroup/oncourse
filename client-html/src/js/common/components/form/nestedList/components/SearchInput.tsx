@@ -10,7 +10,7 @@ import Close from "@mui/icons-material/Close";
 import Input from "@mui/material/Input";
 import EditInPlaceQuerySelect from "../../formFields/EditInPlaceQuerySelect";
 import { mapSelectItems, stubFunction } from "../../../../utils/common";
-import EditInPlaceField from "../../formFields/EditInPlaceField";
+import EditInPlaceSearchSelect from "../../formFields/EditInPlaceSearchSelect";
 
 const getAqlLabel = entity => {
   switch (entity) {
@@ -92,7 +92,7 @@ const SearchInput = React.memo<any>(props => {
     <div>
       {aqlEntities && aqlEntities.length > 1
         && (
-          <EditInPlaceField
+          <EditInPlaceSearchSelect
             className="mt-2 mb-2"
             label="Entity"
             meta={{}}
@@ -103,7 +103,6 @@ const SearchInput = React.memo<any>(props => {
             value: aqlEntity
             }}
             items={entityItems}
-            select
           />
       )}
 
@@ -143,8 +142,7 @@ const SearchInput = React.memo<any>(props => {
       onFocus={onFocus}
       endAdornment={InputAdornment}
       autoFocus={searchExpression ? false : autoFocus}
-      fullWidth
-    />
+          />
   );
 });
 

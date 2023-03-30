@@ -39,7 +39,6 @@ class MoodleBaseForm extends React.Component<any, any> {
           <FormField
             name="fields.courseTag"
             label="Only activate for enrolments in courses tagged with"
-            listSpacing
             type="text"
             className="mb-2"
           />

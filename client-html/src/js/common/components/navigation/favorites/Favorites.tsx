@@ -136,7 +136,7 @@ const Favorites: React.FC<Props> = props => {
             </IconButton>
           </div>
       )
-  )), [groupedSortedItems, scripts, favoriteScripts, favorites]);
+  )), [groupedSortedItems, scripts, favoriteScripts, favorites, hoverClasses]);
 
   return (
     <Grid container alignItems="center">

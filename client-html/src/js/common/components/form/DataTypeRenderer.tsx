@@ -11,6 +11,7 @@ import EditInPlaceDateTimeField from "./formFields/EditInPlaceDateTimeField";
 import { CheckboxField } from "./formFields/CheckboxField";
 import EditInPlaceFileField from "./formFields/EditInPlaceFileField";
 import EditInPlaceMoneyField from "./formFields/EditInPlaceMoneyField";
+import EditInPlaceSearchSelect from "./formFields/EditInPlaceSearchSelect";
 
 interface Props {
   type: string;
@@ -35,7 +36,7 @@ const DataTypeRenderer = React.memo<Props & any>(props => {
 
     case "Message template":
     case "Select": {
-      return <EditInPlaceField {...rest} select />;
+      return <EditInPlaceSearchSelect {...rest} />;
     }
 
     case "Number": {

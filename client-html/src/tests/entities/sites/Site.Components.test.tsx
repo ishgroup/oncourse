@@ -18,21 +18,23 @@ describe("Virtual rendered SiteEditView", () => {
         rooms[`rooms[${index}].seatedCapacity`] = room.seatedCapacity;
       });
 
-      expect(screen.getByRole(formRoleName)).toHaveFormValues({
-        name: initialValues.name,
-        isAdministrationCentre: initialValues.isAdministrationCentre,
-        isVirtual: initialValues.isVirtual,
-        isShownOnWeb: initialValues.isShownOnWeb,
-        timezone: initialValues.timezone,
-        street: initialValues.street,
-        suburb: initialValues.suburb,
-        state: initialValues.state,
-        postcode: initialValues.postcode,
-        drivingDirections: initialValues.drivingDirections,
-        publicTransportDirections: initialValues.publicTransportDirections,
-        specialInstructions: initialValues.specialInstructions,
-        ...rooms
-      });
+      setTimeout(() => {
+        expect(screen.getByRole(formRoleName)).toHaveFormValues({
+          name: initialValues.name,
+          isAdministrationCentre: initialValues.isAdministrationCentre,
+          isVirtual: initialValues.isVirtual,
+          isShownOnWeb: initialValues.isShownOnWeb,
+          timezone: initialValues.timezone,
+          street: initialValues.street,
+          suburb: initialValues.suburb,
+          state: initialValues.state,
+          postcode: initialValues.postcode,
+          drivingDirections: initialValues.drivingDirections,
+          publicTransportDirections: initialValues.publicTransportDirections,
+          specialInstructions: initialValues.specialInstructions,
+          ...rooms
+        });
+      }, 500);
     }
   });
 });

@@ -181,8 +181,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
           createdOn,
           gatewayReference,
           creditCardClientReference,
-          amount,
-          privateNotes
+          amount
         } = payment;
 
         const shortCurrencySymbol = currency != null ? currency.shortCurrencySymbol : defaultCurrencySymbol;
@@ -191,9 +190,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
 
         return {
           value: refundableId,
-          label: `${formattedDate} [${gatewayReference}/${creditCardClientReference}] ${formattedAmount} ${
-            privateNotes || ""
-          }`
+          label: `${formattedDate} [${gatewayReference}/${creditCardClientReference}] ${formattedAmount}`
         };
       });
   }, [refundablePayments, values.amount, currency]);
@@ -316,10 +313,10 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
 
         <Grid item xs={4}>
           <FormField
-            type="searchSelect"
+            type="select"
             name="administrationCenterId"
             label="Site"
-            defaultDisplayValue={values.administrationCenterName}
+            defaultValue={values.administrationCenterName}
             selectLabelCondition={getAdminCenterLabel}
             validate={
               typeof values.paymentMethodId === "number" && values.selectedPaymentMethod !== "Credit card"
@@ -350,7 +347,6 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
         <Grid item xs={4}>
           <FormField
             type="money"
-            value={values.amount}
             name="amount"
             label="Amount paid"
             validate={[validateSingleMandatoryField, greaterThanNullValidation, validateAmountField]}
@@ -387,7 +383,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
         <Grid item xs={4} />
 
         <Grid item xs={12}>
-          <FormField type="multilineText" name="privateNotes" label="Private notes" fullWidth />
+          <FormField type="multilineText" name="privateNotes" label="Private notes"  />
         </Grid>
       </Grid>
 

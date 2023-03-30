@@ -8,6 +8,7 @@
 
 package ish.oncourse.server.upgrades.liquibase.change;
 
+import ish.liquibase.IshTaskChange;
 import ish.oncourse.server.cayenne.Checkout;
 import ish.oncourse.server.db.SchemaUpdateService;
 import liquibase.database.Database;

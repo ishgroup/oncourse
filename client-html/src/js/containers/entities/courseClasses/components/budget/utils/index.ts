@@ -5,7 +5,11 @@
 
 import { ClassCost, CourseClassPaymentPlan, Tax } from "@api/model";
 import { differenceInMinutes, format, subMinutes } from "date-fns";
-import { decimalDivide, decimalMul, decimalPlus } from "../../../../../../common/utils/numbers/decimalCalculation";
+import {
+  decimalDivide,
+  decimalMul,
+  decimalPlus
+} from "../../../../../../common/utils/numbers/decimalCalculation";
 import { TimetableSession } from "../../../../../../model/timetable";
 import { ClassCostExtended } from "../../../../../../model/entities/CourseClass";
 import { getCurrentTax } from "../../../../taxes/utils";
@@ -16,6 +20,38 @@ export const getFeeWithTaxAmount = (exTaxFee: number, currentTax: Tax) => decima
 
 export const getPaymentPlansTotal = (paymentPlans: CourseClassPaymentPlan[]) =>
   paymentPlans.reduce((p: number, c) => (c.dayOffset === null ? p : decimalPlus(p, c.amount)), 0);
+
+export const excludeOnEnrolPaymentPlan = (item: ClassCostExtended, currentTax: Tax) => {
+  const result = { ...item };
+
+  if (result.flowType === "Income" && result.invoiceToStudent && result.paymentPlan?.length) {
+    result.perUnitAmountIncTax = result.paymentPlan.find(p => p.dayOffset === null).amount;
+    result.perUnitAmountExTax = decimalDivide(result.perUnitAmountIncTax, decimalPlus(currentTax.rate, 1));
+    result.paymentPlan = result.paymentPlan.filter(p => p.dayOffset !== null);
+  }
+  
+  return result;
+};
+
+export const includeOnEnrolPaymentPlan = (item: ClassCostExtended, taxes: Tax[]) => {
+  const currentTax = getCurrentTax(taxes, item.taxId);
+  const result = { ...item };
+
+  if (result.flowType === "Income" && result.invoiceToStudent && currentTax) {
+    if (result.paymentPlan.length) {
+      result.paymentPlan = [
+        { dayOffset: null, amount: result.perUnitAmountIncTax },
+        ...result.paymentPlan
+      ];
+
+      result.perUnitAmountIncTax = result.paymentPlan.reduce((p: number, c) => decimalPlus(p, c.amount), 0);
+    }
+
+    result.perUnitAmountExTax = decimalDivide(result.perUnitAmountIncTax, decimalPlus(currentTax.rate, 1));
+  }
+
+  return result;
+};
 
 const getSessionPayable = (
   item: ClassCostExtended,

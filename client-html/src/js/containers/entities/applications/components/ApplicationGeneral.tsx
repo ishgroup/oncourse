@@ -121,7 +121,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           fields={(
             <Grid item {...gridItemProps}>
               <FormField
-                type="remoteDataSearchSelect"
+                type="remoteDataSelect"
                 entity="Contact"
                 aqlFilter="isStudent is true"
                 name="contactId"
@@ -129,7 +129,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
                 selectValueMark="id"
                 selectLabelCondition={getContactFullName}
                 disabled={!isNew}
-                defaultDisplayValue={values?.studentName}
+                defaultValue={values?.studentName}
                 labelAdornment={(
                   <ContactLinkAdornment id={values?.contactId} />
                 )}
@@ -158,7 +158,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
       </Grid>
       <Grid item {...gridItemProps}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           entity="Course"
           aqlFilter="enrolmentType is ENROLMENT_BY_APPLICATION"
           name="courseId"
@@ -167,7 +167,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           selectLabelMark="name"
           selectFilterCondition={courseFilterCondition}
           selectLabelCondition={courseFilterCondition}
-          defaultDisplayValue={values && values.courseName}
+          defaultValue={values && values.courseName}
           labelAdornment={(
             <LinkAdornment
               linkHandler={openCourseLink}

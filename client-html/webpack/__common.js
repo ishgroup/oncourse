@@ -14,15 +14,17 @@ const WorkboxPlugin = require('workbox-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const path = require("path");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { ReactLoadablePlugin }  = require('@react-loadable/revised/webpack');
 const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
+const { writeFile } = require('fs/promises')
 
 const _info = (NODE_ENV, BUILD_NUMBER) => {
   console.log(`
-Build started with following configuration:
-===========================================
-→ NODE_ENV: ${NODE_ENV}
-→ BUILD_NUMBER: ${BUILD_NUMBER}
-`);
+    Build started with following configuration:
+    ===========================================
+    → NODE_ENV: ${NODE_ENV}
+    → BUILD_NUMBER: ${BUILD_NUMBER}
+  `);
 };
 
 const KEYS = {
@@ -90,6 +92,12 @@ const _common = (dirname, options) => {
       ],
     },
     plugins: [
+      new ReactLoadablePlugin({
+        async callback(manifest) {
+          await writeFile(path.resolve(dirname, 'build/manifest.json'), JSON.stringify(manifest, null, 2))
+        },
+        absPath: true,
+      }),
       _DefinePlugin("development", options.BUILD_NUMBER),
       new webpack.ProvidePlugin({
         process: 'process/browser',
@@ -114,7 +122,10 @@ const _common = (dirname, options) => {
       }),
     ],
     devServer: {
-      port: 8100
+      port: 8100,
+      devMiddleware: {
+        writeToDisk: true,
+      }
     },
     devtool: false,
   };

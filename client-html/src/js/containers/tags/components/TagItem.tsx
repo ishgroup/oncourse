@@ -112,7 +112,7 @@ const TagItem = React.memo<FormTagProps>(({
               }}
               className={classes.fieldEditable}
               onClick={stopEventPropagation}
-              hidePlaceholderInEditMode
+              debounced={false}
             />
           ) : (
             <Typography variant="body2" className={item.urlPath ? undefined : "placeholderContent"} noWrap>

@@ -172,7 +172,7 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
         </Grid>
       </AccordionSummary>
       <AccordionDetails>
-        <Grid container>
+        <Grid container columnSpacing={3} rowSpacing={2}>
           {item.class.isVet && (
             <Grid item xs={12}>
               <FormField
@@ -198,7 +198,6 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
               disabled={!item.discounts.length}
               onChange={onDiscountChange}
               placeholder="No discount"
-              disabledTab
               allowEmpty
               classes={{
                 placeholderContent: classes.discountPlaceholder

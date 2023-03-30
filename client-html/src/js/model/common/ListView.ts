@@ -32,7 +32,7 @@ export interface FindRelatedItem {
   title: string;
   list?: string;
   expression?: string;
-  customExpression?: string;
+  customExpression?: AnyArgFunction<string, string>;
   destination?: string;
   items?: FindRelatedItem[];
 }
@@ -80,7 +80,6 @@ export interface ListState {
   emailTemplatesWithKeyCode?: EmailTemplate[];
   creatingNew?: boolean;
   fullScreenEditView?: boolean;
-  recordsLeft?: number;
   recepients?: MessageData;
 }
 
@@ -137,7 +136,6 @@ export interface GetRecordsArgs {
   listUpdate?: boolean;
   savedID?: any;
   ignoreSelection?: boolean;
-  startIndex?: number;
   stopIndex?: number;
   resolve?: AnyArgFunction;
 }
@@ -145,3 +143,8 @@ export interface GetRecordsArgs {
 export interface CustomColumnFormats {
   [column: string]: (value: any, row?: any, columns?: any) => string | ReactElement;
 }
+
+export type FilterScriptsBy = Record<string, {
+  ids: string[];
+  scripts: Script[];
+}>

@@ -30,3 +30,7 @@ properties:
   exportToClipboard:
     type: boolean
     description: affect on CSV only, use tab separators instead of comma character
+  createPreview:
+    description: generate and save preview for report
+    required: false
+    type: boolean

@@ -16,7 +16,7 @@ import Typography from "@mui/material/Typography";
 import { openInternalLink } from "../../../../../utils/links";
 import ListLinkItem from "./ListLinkItem";
 import { getResultId } from "../../utils";
-import navigation from "../../../../navigation/navigation.json";
+import navigation from "../../../../navigation/data/navigation.json";
 
 const styles = theme =>
   createStyles({

@@ -96,13 +96,13 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
       </Grid>
       <Grid item xs={6}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           entity="Contact"
           name="contactId"
           label="Contact"
           selectValueMark="id"
           selectLabelCondition={getContactFullName}
-          defaultDisplayValue={values.contactName}
+          defaultValue={values.contactName}
           labelAdornment={
             <ContactLinkAdornment id={values?.contactId} />
           }

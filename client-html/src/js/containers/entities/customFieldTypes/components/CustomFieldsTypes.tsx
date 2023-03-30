@@ -67,7 +67,7 @@ const customFieldComponentResolver = (type: CustomFieldType, onCreateOption) => 
     }
     case "List": {
       const isCreatable = type.defaultValue && type.defaultValue.includes("*");
-      fieldType = isCreatable ? "searchSelect" : "select";
+      fieldType = "select";
       componentProps = {
         allowEmpty: !type.mandatory,
         validate,

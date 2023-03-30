@@ -504,6 +504,11 @@ const globalStyles = (theme: AppTheme) =>
       ".gridAutoFlow-column": {
         gridAutoFlow: "column"
       },
+      ".dotsBackgroundImage": {
+        backgroundImage: `radial-gradient(${alpha(theme.palette.primary.main, 0.5)} 1.5px, transparent 1.5px),radial-gradient(${alpha(theme.palette.primary.main, 0.5)} 1.5px, transparent 1.5px)`,
+        backgroundPosition: "5px 4px, 20px 18px",
+        backgroundSize: "30px 30px",
+      },
       ...bootstrap(theme),
       ...customOSScrollbars,
       ...animateStyles

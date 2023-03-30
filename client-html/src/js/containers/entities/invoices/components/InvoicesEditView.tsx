@@ -61,6 +61,21 @@ interface Props extends EditViewProps {
 
 const sortAccounts = (a: Account, b: Account) => (a.description[0].toLowerCase() > b.description[0].toLowerCase() ? 1 : -1);
 
+const validateMaxDate = (value, allValues) => validateMinMaxDate(
+  value,
+  "",
+  allValues.dateDue,
+  "",
+  "Invoice date should be before invoice due date or have the same date"
+);
+
+const validateMinDate = (value, allValues) => validateMinMaxDate(
+  value,
+  allValues.invoiceDate,
+  "",
+  "Invoice due date should be after invoice date or have the same date"
+);
+
 const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = props => {
   const {
     isNew,
@@ -80,42 +95,13 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
     history,
   } = props;
 
-  useEffect(() => {
-    if (values.type === "Quote" && isNew) dispatch(change(form, "sendEmail", false));
-  }, []);
-
-  useEffect(() => {
-    if (values.type === "Quote" && history.location.state?.type === "Invoice") dispatch(change(form, "type", "Invoice"));
-  }, [values.type]);
-
   const prevId = usePrevious(values.id);
 
-  const onInvoiceDateChange = useCallback(
-    value => {
+  const onInvoiceDateChange = value => {
       dispatch(change(form, "paymentPlans[0].date", formatToDateOnly(value)));
-    },
-    [form]
-  );
+  };
 
-  const validateMaxDate = useCallback((value, allValues) => validateMinMaxDate(
-      value,
-      "",
-      allValues.dateDue,
-      "",
-      "Invoice date should be before invoice due date or have the same date"
-    ), []);
-
-  const validateMinDate = useCallback((value, allValues) => validateMinMaxDate(
-      value,
-      allValues.invoiceDate,
-      "",
-      "Invoice due date should be after invoice date or have the same date"
-    ), []);
-
-  const validateInvoiceLines = useCallback(
-    (value, allValues) => (allValues.invoiceLines && allValues.invoiceLines.length ? undefined : "Please enter some invoice lines"),
-    []
-  );
+  const validateInvoiceLines = (value, allValues) => (allValues.invoiceLines && allValues.invoiceLines.length ? undefined : "Please enter some invoice lines");
 
   const LineHeader = useCallback(
     props => <HeaderContent currency={currency} {...props} />,
@@ -128,7 +114,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
     const cos = accounts.filter(a => a.type === "COS");
     cos.sort(sortAccounts);
 
-    return {income, cos, all: accounts};
+    return { income, cos, all: accounts };
   }, [accounts.length]);
 
   const InvoiceLineComponent = useCallback(
@@ -148,41 +134,34 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
     [currency, isNew, twoColumn, form]
   );
 
-  const addInvoiceLine = useCallback(
-    isNew || values.type === "Quote"
-      ? () => {
-          const newLine: InvoiceLineWithTotal = {
-            quantity: 1,
-            incomeAccountId: defaultInvoiceLineAccount ? Number(defaultInvoiceLineAccount) : null,
-            taxId:
-              selectedContact && selectedContact["taxOverride.id"]
-                ? Number(selectedContact["taxOverride.id"])
-                : taxes.length ? taxes[0].id : null,
-            taxEach: 0,
-            discountEachExTax: 0,
-            priceEachExTax: 0,
-            total: 0
-          };
+  const addInvoiceLine = isNew || values.type === "Quote"
+    ? () => {
+      const newLine: InvoiceLineWithTotal = {
+        quantity: 1,
+        incomeAccountId: defaultInvoiceLineAccount ? Number(defaultInvoiceLineAccount) : null,
+        taxId:
+          selectedContact && selectedContact["taxOverride.id"]
+            ? Number(selectedContact["taxOverride.id"])
+            : taxes.length ? taxes[0].id : null,
+        taxEach: 0,
+        discountEachExTax: 0,
+        priceEachExTax: 0,
+        total: 0
+      };
+        dispatch(arrayInsert(form, "invoiceLines", 0, newLine));
+      }
+    : undefined;
 
-          dispatch(arrayInsert(form, "invoiceLines", 0, newLine));
-        }
-      : undefined,
-    [form, isNew, taxes, accountTypes, selectedContact]
-  );
+  const deleteInvoiceLine = (isNew || values.type === "Quote")
+    ? index => {
+      dispatch(arrayRemove(form, "invoiceLines", index));
 
-  const deleteInvoiceLine = useCallback(
-    (isNew || values.type === "Quote")
-      ? index => {
-          dispatch(arrayRemove(form, "invoiceLines", index));
+      const total = values.invoiceLines.reduce((pr, cur, ind) => decimalPlus(pr, ind === index ? 0 : cur.total), 0);
 
-          const total = values.invoiceLines.reduce((pr, cur, ind) => decimalPlus(pr, ind === index ? 0 : cur.total), 0);
-
-          dispatch(change(form, "total", total));
-          dispatch(change(form, "paymentPlans[0].amount", total));
-        }
-      : undefined,
-    [values.invoiceLines, form, isNew]
-  );
+      dispatch(change(form, "total", total));
+      dispatch(change(form, "paymentPlans[0].amount", total));
+      }
+    : undefined;
 
   const total = useMemo(() => formatCurrency(values.total, currency.shortCurrencySymbol), [
     values.total,
@@ -209,49 +188,46 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
     dispatch(change(form, "contactName", value["customer.fullName"]));
   };
 
-  const onContactChange = useCallback(
-    value => {
-      setSelectedContact(value);
+  const onContactChange = value => {
+    setSelectedContact(value);
 
-      dispatch(change(form, "contactName", getContactFullName(value)));
+    dispatch(change(form, "contactName", getContactFullName(value)));
+    dispatch(
+      change(
+        form,
+        "billToAddress",
+        `${value["street"] ? value["street"] + "\n" : ""}${value["suburb"] ? value["suburb"] + " " : ""}${
+          value["state"] ? value["state"] + " " : ""
+        }${value["postcode"] ? value["postcode"] + " " : ""}`
+      )
+    );
+
+    if (!hasPaymentDues) {
       dispatch(
         change(
           form,
-          "billToAddress",
-          `${value["street"] ? value["street"] + "\n" : ""}${value["suburb"] ? value["suburb"] + " " : ""}${
-            value["state"] ? value["state"] + " " : ""
-          }${value["postcode"] ? value["postcode"] + " " : ""}`
+          "dateDue",
+          formatToDateOnly(addDays(new Date(), value["invoiceTerms"] ? Number(value["invoiceTerms"]) : defaultTerms))
         )
       );
+    }
 
-      if (!hasPaymentDues) {
-        dispatch(
-          change(
-            form,
-            "dateDue",
-            formatToDateOnly(addDays(new Date(), value["invoiceTerms"] ? Number(value["invoiceTerms"]) : defaultTerms))
-          )
-        );
+    if (value["taxOverride.id"] && invoiceLinesCount) {
+      let count = invoiceLinesCount;
+      while (count--) {
+        dispatch(change(form, `invoiceLines[${count}].taxId`, Number(value["taxOverride.id"])));
       }
+    }
+  };
 
-      if (value["taxOverride.id"] && invoiceLinesCount) {
-        let count = invoiceLinesCount;
-        while (count--) {
-          dispatch(change(form, `invoiceLines[${count}].taxId`, Number(value["taxOverride.id"])));
-        }
-      }
-    },
-    [form, defaultTerms, hasPaymentDues, invoiceLinesCount]
-  );
-
-  const updateDateDue = useCallback(() => {
+  const updateDateDue = () => {
     if (hasPaymentDues) {
       const closest = getInvoiceClosestPaymentDueDate(values);
       if (closest) {
         dispatch(change(form, "dateDue", formatToDateOnly(closest)));
       }
     }
-  }, [form, values.paymentPlans, hasPaymentDues]);
+  };
 
   useEffect(() => {
     if (!isNew) {
@@ -268,6 +244,14 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
       }
     }
   }, [values.id]);
+
+  useEffect(() => {
+    if (values.type === "Quote" && isNew) dispatch(change(form, "sendEmail", false));
+  }, []);
+
+  useEffect(() => {
+    if (values.type === "Quote" && history.location.state?.type === "Invoice") dispatch(change(form, "type", "Invoice"));
+  }, [values.type]);
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="p-3 saveButtonTableOffset defaultBackgroundColor">
@@ -298,13 +282,13 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
 
       <Grid item xs={twoColumn ? 3 : 12}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           entity="Lead"
           name="leadId"
           label="Lead"
           selectValueMark="id"
           selectLabelCondition={leadLabelCondition}
-          defaultDisplayValue={values && values.leadCustomerName}
+          defaultValue={values && values.leadCustomerName}
           labelAdornment={
             <LinkAdornment linkHandler={openLeadLink} link={values.leadId} disabled={!values.leadId} />
           }
@@ -318,13 +302,13 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
 
       <Grid item xs={twoColumn ? 3 : 12}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           entity="Contact"
           name="contactId"
           label="Invoice to"
           selectValueMark="id"
           selectLabelCondition={getContactFullName}
-          defaultDisplayValue={values?.contactName}
+          defaultValue={values?.contactName}
           labelAdornment={
             <ContactLinkAdornment id={values?.contactId} />
           }
@@ -361,7 +345,6 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
           type="date"
           name="invoiceDate"
           label="Invoice date"
-          maxDate={values.dateDue}
           onChange={onInvoiceDateChange}
           validate={[validateSingleMandatoryField, validateMaxDate]}
           disabled={values.type !== "Quote" && !isNew}
@@ -373,7 +356,6 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
           type="date"
           name="dateDue"
           label="Due date"
-          minDate={values.invoiceDate}
           validate={[validateSingleMandatoryField, validateMinDate]}
           disabled={values.type !== "Quote" && hasPaymentDues}
         />
@@ -438,16 +420,16 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
             name="paymentPlans"
             currency={currency}
             syncErrors={syncErrors}
-            id={values.id}
             form={form}
             dispatch={dispatch}
             total={values.total}
+            id={values.id}
           />
         </Grid>
       )}
 
       <Grid item xs={12}>
-        <FormField type="multilineText" name="publicNotes" label="Public notes" fullWidth />
+        <FormField type="multilineText" name="publicNotes" label="Public notes" />
       </Grid>
 
       <Grid item xs={12}>

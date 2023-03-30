@@ -58,6 +58,7 @@ import ish.oncourse.server.api.v1.service.ImportApi
 import ish.oncourse.server.api.v1.service.IntegrationApi
 import ish.oncourse.server.api.v1.service.InvoiceApi
 import ish.oncourse.server.api.v1.service.LeadApi
+import ish.oncourse.server.api.v1.service.LogsApi
 import ish.oncourse.server.api.v1.service.MembershipProductApi
 import ish.oncourse.server.api.v1.service.MessageApi
 import ish.oncourse.server.api.v1.service.ModuleApi
@@ -138,6 +139,7 @@ import ish.oncourse.server.api.v1.service.impl.ImportApiImpl
 import ish.oncourse.server.api.v1.service.impl.IntegrationApiImpl
 import ish.oncourse.server.api.v1.service.impl.InvoiceApiImpl
 import ish.oncourse.server.api.v1.service.impl.LeadApiImpl
+import ish.oncourse.server.api.v1.service.impl.LogsApiImpl
 import ish.oncourse.server.api.v1.service.impl.MembershipProductApiImpl
 import ish.oncourse.server.api.v1.service.impl.MessageApiImpl
 import ish.oncourse.server.api.v1.service.impl.ModuleApiImpl
@@ -275,5 +277,7 @@ class ApiImplementationModule implements Module {
         binder.bind(EntityRelationTypeApi).to(EntityRelationTypeApiImpl)
         binder.bind(TokenApi).to(ApiTokenApiImpl)
         binder.bind(GradingApi).to(GradingApiImpl)
+
+        binder.bind(LogsApi).to(LogsApiImpl)
     }
 }

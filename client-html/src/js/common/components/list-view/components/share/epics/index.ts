@@ -7,6 +7,8 @@ import { EpicStartPrintProcess } from "./EpicStartPrintProcess";
 import { EpicGetExportTemplates } from "./EpicGetExportTemplates";
 import { EpicStartExportProcess } from "./EpicStartExportProcess";
 import { EpicGetExportResult } from "./EpicGetExportResult";
+import { EpicDeleteExportTemplatePreview } from "./EpicDeleteExportTemplatePreview";
+import { EpicDeletePDFReportPreview } from "./EpicDeletePDFReportPreview";
 
 export const EpicShare = combineEpics(
   EpicGetOverlays,
@@ -16,5 +18,7 @@ export const EpicShare = combineEpics(
   EpicStartPrintProcess,
   EpicGetExportTemplates,
   EpicStartExportProcess,
-  EpicGetExportResult
+  EpicGetExportResult,
+  EpicDeletePDFReportPreview,
+  EpicDeleteExportTemplatePreview
 );

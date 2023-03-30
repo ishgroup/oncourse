@@ -237,7 +237,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
         {timezones && (
           <Grid item xs={layoutArray[2].xs} className="mb-2">
             <FormField
-              type="searchSelect"
+              type="select"
               name="timezone"
               label="Default timezone"
               items={timezones}
@@ -277,7 +277,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
               <Grid item xs={12}>
                 {Boolean(countries?.length) && (
                   <FormField
-                    type="searchSelect"
+                    type="select"
                     selectValueMark="id"
                     selectLabelMark="name"
                     name="country"
