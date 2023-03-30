@@ -18,8 +18,6 @@ import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.function.CalculateOutcomeReportableHours
 import ish.oncourse.server.api.v1.function.CartFunctions
-import ish.oncourse.server.api.v1.model.CartContactIdsDTO
-import ish.oncourse.server.api.v1.model.CartObjectDataDTO
 import ish.oncourse.server.cayenne.glue._Enrolment
 import ish.validation.EnrolmentStatusValidator
 import org.apache.cayenne.PersistenceState
@@ -32,7 +30,6 @@ import javax.annotation.Nullable
 
 import static ish.common.types.EnrolmentStatus.NEW
 import static java.lang.String.format
-
 /**
  * An enrolment joins a student to a class. There can be only one enrolment per student per class.
  *
@@ -122,7 +119,6 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	@Override
 	protected void postPersist() {
 		removeAbandonedCartsWithThisClass()
-		removeAbandonedCartsWithThisWaitingCourse()
 	}
 
 	private void removeAbandonedCartsWithThisClass(){
@@ -133,27 +129,10 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 		List<Checkout> checkouts = CartFunctions.checkoutsByContactId(context, contact.willowId)
 
 		checkouts.each {checkout ->
-			List<CartContactIdsDTO> cartContacts = CartFunctions.contactCartsOf(checkout, contact.getWillowId(), CartFunctions.CLASSES_KEY)
-			if ((cartContacts.collect { it.classIds }.flatten() as List<CartObjectDataDTO>)
-					.any { it -> it.getId().equals(courseClass.getId()) }) {
-				context.deleteObject(checkout)
-				context.commitChanges()
-			}
-		}
-	}
+			def classesIds = CartFunctions.idsOfCurrentItems(checkout, contact.getWillowId(), CartFunctions.CLASSES_KEY)
+			def waitingCoursesIds = CartFunctions.idsOfCurrentItems(checkout, contact.getWillowId(), CartFunctions.WAITING_KEY)
 
-
-	private void removeAbandonedCartsWithThisWaitingCourse(){
-		Contact contact = student.getContact()
-		if(contact == null)
-			return
-
-		List<Checkout> checkouts = CartFunctions.checkoutsByContactId(context, contact.willowId)
-
-		checkouts.each {checkout ->
-			List<CartContactIdsDTO> cartContacts = CartFunctions.contactCartsOf(checkout, contact.getWillowId(), CartFunctions.WAITING_KEY)
-			if ((cartContacts.collect { it.waitingCoursesIds }.flatten() as List<CartObjectDataDTO>)
-					.any { it -> it.getId().equals(courseClass.course.getId()) }) {
+			if (classesIds.contains(courseClass.willowId) || waitingCoursesIds.contains(courseClass.course.willowId)) {
 				context.deleteObject(checkout)
 				context.commitChanges()
 			}
