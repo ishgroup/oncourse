@@ -28,6 +28,8 @@ import org.apache.cayenne.query.ObjectSelect
 
 import java.time.ZoneOffset
 
+import static java.lang.String.format
+
 class CartFunctions {
     public static final String CLASSES_KEY = "classes"
     public static final String WAITING_KEY = "waitingCourses"
@@ -136,5 +138,12 @@ class CartFunctions {
         return ObjectSelect.query(angelClass)
                 .where(willowIdProperty.eq(willowId))
                 .selectOne(context)
+    }
+
+    static checkoutsByContactId(ObjectContext context, Long contactWillowId){
+        String formattedCartContact = format("\"contactId\":\"%d\"", contactWillowId)
+        return ObjectSelect.query(Checkout.class)
+                .where(Checkout.SHOPPING_CART.contains(formattedCartContact))
+                .select(context)
     }
 }

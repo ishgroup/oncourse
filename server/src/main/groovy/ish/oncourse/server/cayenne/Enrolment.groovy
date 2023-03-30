@@ -130,10 +130,7 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 		if(contact == null)
 			return
 
-		String formattedCartContact = format("\"contactId\":\"%d\"", contact.getWillowId())
-		List<Checkout> checkouts = ObjectSelect.query(Checkout.class)
-				.where(Checkout.SHOPPING_CART.contains(formattedCartContact))
-				.select(context)
+		List<Checkout> checkouts = CartFunctions.checkoutsByContactId(context, contact.willowId)
 
 		checkouts.each {checkout ->
 			List<CartContactIdsDTO> cartContacts = CartFunctions.contactCartsOf(checkout, contact.getWillowId(), CartFunctions.CLASSES_KEY)
@@ -151,10 +148,7 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 		if(contact == null)
 			return
 
-		String formattedCartContact = format("\"contactId\":\"%d\"", contact.getWillowId())
-		List<Checkout> checkouts = ObjectSelect.query(Checkout.class)
-				.where(Checkout.SHOPPING_CART.contains(formattedCartContact))
-				.select(context)
+		List<Checkout> checkouts = CartFunctions.checkoutsByContactId(context, contact.willowId)
 
 		checkouts.each {checkout ->
 			List<CartContactIdsDTO> cartContacts = CartFunctions.contactCartsOf(checkout, contact.getWillowId(), CartFunctions.WAITING_KEY)
