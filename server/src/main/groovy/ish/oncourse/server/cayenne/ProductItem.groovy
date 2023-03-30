@@ -21,7 +21,6 @@ import ish.oncourse.server.api.v1.function.CartFunctions
 import ish.oncourse.server.api.v1.model.CartContactIdsDTO
 import ish.oncourse.server.api.v1.model.CartObjectDataDTO
 import ish.oncourse.server.cayenne.glue._ProductItem
-import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -29,8 +28,6 @@ import javax.annotation.Nonnull
 
 import static ish.common.types.ProductStatus.*
 import static ish.persistence.CommonExpressionFactory.previousMidnight
-import static java.lang.String.format
-
 /**
  * ProductItem is an abstract entity describing product item which has been sold through onCourse.
  * Currently this includes articles, memberships and vouchers.
@@ -61,10 +58,7 @@ class ProductItem extends _ProductItem implements Queueable, NotableTrait, Conta
 	}
 
 	private void removeAbandonedCartsWithThisProduct(){
-		String formattedCartContact = format("\"contactId\":\"%d\"", contact.getWillowId())
-		List<Checkout> checkouts = ObjectSelect.query(Checkout.class)
-				.where(Checkout.SHOPPING_CART.contains(formattedCartContact))
-				.select(context)
+		List<Checkout> checkouts = CartFunctions.checkoutsByContactId(context, contact.willowId)
 
 		checkouts.each {checkout ->
 			List<CartContactIdsDTO> cartContacts = CartFunctions.contactCartsOf(checkout, contact.getWillowId(), CartFunctions.PRODUCTS_KEY)
