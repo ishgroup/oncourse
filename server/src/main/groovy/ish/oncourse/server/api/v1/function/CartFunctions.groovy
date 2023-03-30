@@ -68,6 +68,12 @@ class CartFunctions {
         contactCartsOf(checkout, contactWillowId, Set.of(column))
     }
 
+    static List<Long> idsOfCurrentItems(Checkout checkout, Long contactId, String column){
+        def checkoutCart = cartAsMapOf(checkout)
+        def suitableContacts = (checkoutCart.contacts as List<Map>).findAll { parseAsLong(it.contactId) == contactId }
+        return (suitableContacts.collect{(it.get(column) as List<Map>)}.flatten() as List<Map>).collect {parseAsLong(it.id) }
+    }
+
     static List<CartContactIdsDTO> contactCartsOf(Checkout checkout, Long contactId, Set<String> columns = classes.keySet()){
         def checkoutCart = cartAsMapOf(checkout)
 

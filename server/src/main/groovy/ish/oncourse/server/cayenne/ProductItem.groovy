@@ -18,8 +18,6 @@ import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.api.v1.function.CartFunctions
-import ish.oncourse.server.api.v1.model.CartContactIdsDTO
-import ish.oncourse.server.api.v1.model.CartObjectDataDTO
 import ish.oncourse.server.cayenne.glue._ProductItem
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -61,9 +59,8 @@ class ProductItem extends _ProductItem implements Queueable, NotableTrait, Conta
 		List<Checkout> checkouts = CartFunctions.checkoutsByContactId(context, contact.willowId)
 
 		checkouts.each {checkout ->
-			List<CartContactIdsDTO> cartContacts = CartFunctions.contactCartsOf(checkout, contact.getWillowId(), CartFunctions.PRODUCTS_KEY)
-			if ((cartContacts.collect { it.productIds }.flatten() as List<CartObjectDataDTO>)
-					.any { it -> it.getId().equals(product.getId()) }) {
+			def productIds = CartFunctions.idsOfCurrentItems(checkout, contact.willowId, CartFunctions.PRODUCTS_KEY)
+			if (productIds.contains(product.willowId)) {
 				context.deleteObject(checkout)
 				context.commitChanges()
 			}
