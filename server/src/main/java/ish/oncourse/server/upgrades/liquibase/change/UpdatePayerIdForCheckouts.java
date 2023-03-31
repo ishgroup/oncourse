@@ -27,7 +27,7 @@ public class UpdatePayerIdForCheckouts extends IshTaskChange {
     @Override
     public void execute(Database database) throws CustomChangeException {
         ICayenneService cayenneService = SchemaUpdateService.sharedCayenneService;
-        DataContext context = cayenneService.getNewContext();
+        DataContext context = cayenneService.getNewNonReplicatingContext();
 
         long lastCheckoutId = 0;
 
