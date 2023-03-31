@@ -146,7 +146,7 @@ class CartFunctions {
                 .selectOne(context)
     }
 
-    static checkoutsByContactId(ObjectContext context, Long contactWillowId){
+    static List<Checkout> checkoutsByContactId(ObjectContext context, Long contactWillowId){
         String formattedCartContact = format("\"contactId\":\"%d\"", contactWillowId)
         return ObjectSelect.query(Checkout.class)
                 .where(Checkout.SHOPPING_CART.contains(formattedCartContact))
