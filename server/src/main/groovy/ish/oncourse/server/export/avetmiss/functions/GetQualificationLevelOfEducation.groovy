@@ -51,6 +51,9 @@ class GetQualificationLevelOfEducation {
     int get() {
         def level = 999
 
+        if(qualificationLevel == null)
+            return level
+
         if (qualificationLevel.contains("graduate diploma")) {
             level = 211
         } else if (qualificationLevel.contains("professional specialist qualification at graduate diploma level")) {
