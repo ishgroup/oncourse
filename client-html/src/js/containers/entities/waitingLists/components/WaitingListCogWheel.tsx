@@ -11,9 +11,18 @@ import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOpti
 import clsx from "clsx";
 import { useAppDispatch, useAppSelector } from "../../../../common/utils/hooks";
 import { bulkDeleteWaitingLists } from "../actions";
+import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
+import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 
-const WaitingListBulkDelete = memo<any>(({
-  menuItemClass, closeMenu, selection
+interface WaitingListBulkDeleteProps {
+  menuItemClass: string;
+  closeMenu: AnyArgFunction;
+  selection: number[];
+  showConfirm: ShowConfirmCaller;
+}
+
+const WaitingListBulkDelete = memo<WaitingListBulkDeleteProps>(({
+  menuItemClass, closeMenu, selection, showConfirm
 }) => {
   const hasAql = useAppSelector(state => state.list.searchQuery
     && (state.list.searchQuery.search || state.list.searchQuery.filter || state.list.searchQuery.tagGroups.length));
@@ -23,21 +32,26 @@ const WaitingListBulkDelete = memo<any>(({
   const dispatch = useAppDispatch();
 
   const onBulkEditClick = () => {
-    dispatch(bulkDeleteWaitingLists({
-      ids: selection,
-      search,
-      filter,
-      tagGroups
-    }));
-    closeMenu();
+    showConfirm({
+      onConfirm: () => {
+        dispatch(bulkDeleteWaitingLists({
+          ids: selection,
+          search,
+          filter,
+          tagGroups
+        }));
+        closeMenu();
+      },
+      confirmMessage: "Records will be permanently deleted. This action can not be undone",
+      confirmButtonText: "Delete"
+    })
+
   };
 
   return (
-    <>
-      <MenuItem className={clsx(menuItemClass, "errorColor")} onClick={onBulkEditClick} disabled={!selection.length && !hasAql}>
-        Bulk delete...
-      </MenuItem>
-    </>
+    <MenuItem className={clsx(menuItemClass, "errorColor")} onClick={onBulkEditClick} disabled={!selection.length && !hasAql}>
+      Bulk delete...
+    </MenuItem>
   );
 });
 
@@ -77,5 +91,4 @@ const mapStateToProps = (state: State) => ({
   hasQePermissions: state.access["ENROLMENT_CREATE"]
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(WaitingListCogWheel);
-
+export default connect<any, any, any>(mapStateToProps)(WaitingListCogWheel);
