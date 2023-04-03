@@ -21,14 +21,12 @@ import ish.oncourse.server.api.traits.AutomationDTOTrait;
 import ish.oncourse.server.api.v1.model.AutomationStatusDTO;
 import ish.oncourse.server.api.validation.EntityValidator;
 import ish.oncourse.server.cayenne.AutomationTrait;
-import ish.oncourse.server.cayenne.ImportAutomationBinding;
 import ish.oncourse.server.configs.AutomationModel;
 import ish.oncourse.server.upgrades.BindingUtils;
 import ish.oncourse.server.upgrades.DataPopulationUtils;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.yaml.snakeyaml.Yaml;
-
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -181,8 +179,8 @@ abstract class AutomationApiService<T extends AutomationDTOTrait , K extends Aut
         propertiesFilling.accept(entity, props);
         context.commitChanges();
 
-        BindingUtils.updateOptions(context, DataPopulationUtils.get(props, OPTIONS, List.class), entity, ImportAutomationBinding.class);
-        BindingUtils.updateVariables(context, DataPopulationUtils.get(props, VARIABLES, List.class), entity, ImportAutomationBinding.class);
+        BindingUtils.updateOptions(context, DataPopulationUtils.get(props, OPTIONS, List.class), entity, entity.getAutomationBindingClass());
+        BindingUtils.updateVariables(context, DataPopulationUtils.get(props, VARIABLES, List.class), entity, entity.getAutomationBindingClass());
     }
 
     public String getConfigs(Long id){

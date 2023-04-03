@@ -19,7 +19,7 @@ class ScriptModel extends AutomationModel{
     private String entityEventType
     private String triggerType
     private String outputType
-    private String systemEventType
+    private String onCourseEventType
 
     ScriptModel(Script script) {
         super(script)
@@ -29,7 +29,7 @@ class ScriptModel extends AutomationModel{
         this.entityEventType = script.entityEventType?.name()
         this.triggerType = script.triggerType?.name()
         this.outputType = script.outputType?.name()
-        this.systemEventType = script.systemEventType?.name()
+        this.onCourseEventType = script.systemEventType?.name()
     }
 
     String getEntityClass() {
@@ -52,7 +52,7 @@ class ScriptModel extends AutomationModel{
         return outputType
     }
 
-    String getSystemEventType() {
-        return systemEventType
+    String getOnCourseEventType() {
+        return onCourseEventType
     }
 }
