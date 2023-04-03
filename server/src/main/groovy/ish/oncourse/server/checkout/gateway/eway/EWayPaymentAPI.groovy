@@ -15,11 +15,13 @@ import groovy.transform.TypeCheckingMode
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.HttpResponseException
+import ish.common.checkout.gateway.eway.EWayErrorCode
+import ish.common.checkout.gateway.eway.EWayResponseMessage
 import ish.common.types.CreditCardType
 import ish.math.Money
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.checkout.gateway.windcave.SessionAttributes
+import ish.common.checkout.gateway.SessionAttributes
 import org.apache.commons.lang.StringUtils
 import org.apache.http.HttpResponse
 import org.apache.logging.log4j.LogManager
@@ -415,7 +417,7 @@ class EWayPaymentAPI {
 
     static String buildErrorMessages(String errorCodes) {
         List<String> list = Arrays.asList(errorCodes.split("\\s*,\\s*"))
-        return list.collect {EWayErrorCode.getErrorMessageByCode(it.trim()) ?: it}?.toString()
+        return list.collect { EWayErrorCode.getErrorMessageByCode(it.trim()) ?: it}?.toString()
     }
 
     static void logStatusOrError(SessionAttributes attributes) {

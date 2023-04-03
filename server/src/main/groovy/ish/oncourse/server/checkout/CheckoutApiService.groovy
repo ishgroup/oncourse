@@ -10,6 +10,7 @@ package ish.oncourse.server.checkout
 
 import com.google.inject.Inject
 import com.google.inject.Injector
+import ish.common.checkout.gateway.PaymentGatewayError
 import ish.common.types.PaymentGatewayType
 import ish.common.types.SystemEventType
 import ish.math.Money
@@ -37,7 +38,7 @@ import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
 import ish.oncourse.server.checkout.gateway.eway.test.EWayTestPaymentService
 import ish.oncourse.server.integration.EventService
 import ish.oncourse.server.users.SystemUserService
-import ish.oncourse.server.checkout.gateway.windcave.SessionAttributes
+import ish.common.checkout.gateway.SessionAttributes
 import ish.oncourse.server.checkout.gateway.windcave.WindcavePaymentService
 import org.apache.cayenne.query.ObjectSelect
 

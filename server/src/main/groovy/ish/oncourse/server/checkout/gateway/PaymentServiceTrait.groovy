@@ -22,7 +22,7 @@ import ish.oncourse.server.cayenne.Article
 import ish.oncourse.server.cayenne.Membership
 import ish.oncourse.server.cayenne.ProductItem
 import ish.oncourse.server.cayenne.Voucher
-import ish.oncourse.server.checkout.PaymentGatewayError
+import ish.common.checkout.gateway.PaymentGatewayError
 import ish.util.LocalDateUtils
 import org.apache.cayenne.validation.ValidationException
 import org.apache.logging.log4j.LogManager

@@ -12,7 +12,7 @@ import ish.math.Money
 import ish.oncourse.server.api.checkout.Checkout
 import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
 import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.checkout.gateway.windcave.SessionAttributes
+import ish.common.checkout.gateway.SessionAttributes
 
 interface PaymentServiceInterface extends PaymentServiceTrait {
 

@@ -15,6 +15,8 @@ import groovy.transform.TypeCheckingMode
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.HttpResponseException
+import ish.common.checkout.gateway.SessionAttributes
+import ish.common.checkout.gateway.windcave.WindcaveResponseCode
 import ish.util.DateFormatter
 import org.apache.commons.lang3.time.DateUtils
 
