@@ -9,6 +9,7 @@
 package ish.oncourse.server.checkout.gateway.windcave
 
 import com.google.inject.Inject
+import ish.common.checkout.gateway.SessionAttributes
 import ish.math.Money
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.checkout.Checkout
@@ -16,7 +17,7 @@ import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
 import ish.oncourse.server.api.v1.model.SessionStatusDTO
 import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.checkout.PaymentGatewayError
+import ish.common.checkout.gateway.PaymentGatewayError
 import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
 
 import static WindcavePaymentAPI.AUTH_TYPE

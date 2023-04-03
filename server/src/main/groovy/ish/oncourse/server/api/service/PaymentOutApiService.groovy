@@ -38,7 +38,7 @@ import ish.oncourse.server.cayenne.PaymentOutLine
 import ish.oncourse.server.cayenne.Site
 import ish.oncourse.server.services.TransactionLockedService
 import ish.oncourse.server.users.SystemUserService
-import ish.oncourse.server.checkout.gateway.windcave.SessionAttributes
+import ish.common.checkout.gateway.SessionAttributes
 import static ish.util.LocalDateUtils.dateToTimeValue
 import ish.util.PaymentMethodUtil
 import org.apache.cayenne.ObjectContext
