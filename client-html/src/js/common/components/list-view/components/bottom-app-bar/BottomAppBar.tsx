@@ -167,7 +167,7 @@ const BottomAppBar = (
     try {
       let filterGroups = null;
       
-      if (selection.length) {
+      if (selection.length && selection[0] !== "new") {
         filterGroups = {};
         
         const records = await EntityService.getPlainRecords(rootEntity, scriptsFilterColumn, `id in (${selection})`);
