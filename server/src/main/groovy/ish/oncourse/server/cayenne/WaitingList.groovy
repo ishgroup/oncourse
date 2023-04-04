@@ -14,7 +14,9 @@ package ish.oncourse.server.cayenne
 
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
+import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.glue._WaitingList
+import org.apache.cayenne.query.ObjectSelect
 
 import javax.annotation.Nonnull
 /**
@@ -27,8 +29,26 @@ import javax.annotation.Nonnull
 @API
 @QueueableEntity
 class WaitingList extends _WaitingList implements Queueable, ExpandableTrait, ContactActivityTrait {
+	@Override
+	protected void prePersist() {
+		super.prePersist()
+		validateDuplicate()
+	}
 
+	@Override
+	protected void preUpdate() {
+		super.preUpdate()
+		validateDuplicate()
+	}
 
+	private void validateDuplicate(){
+		def sameWaitingList = ObjectSelect.query(WaitingList)
+				.where(WaitingList.ID.ne(id).andExp(WaitingList.STUDENT.eq(student)).andExp(WaitingList.COURSE.eq(course)))
+				.selectFirst(context)
+		if(sameWaitingList != null){
+			EntityValidator.throwClientErrorException("student","Waiting list for this student and course already exists!")
+		}
+	}
 
 	/**
 	 * @return the date and time this record was created
@@ -118,7 +138,7 @@ class WaitingList extends _WaitingList implements Queueable, ExpandableTrait, Co
 	List<WaitingListSite> getWaitingListSites() {
 		return super.getWaitingListSites()
 	}
-	
+
 	@Override
 	Class<? extends CustomField> getCustomFieldClass() {
 		return WaitingListCustomField
