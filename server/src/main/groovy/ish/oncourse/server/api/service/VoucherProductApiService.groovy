@@ -26,13 +26,26 @@ import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.TaxDao
 import ish.oncourse.server.api.dao.VoucherProductCourseDao
 import ish.oncourse.server.api.dao.VoucherProductDao
+import ish.oncourse.server.api.v1.model.ProductTypeDTO
+import ish.oncourse.server.cayenne.Article
+import ish.oncourse.server.cayenne.ExpandableTrait
 import ish.oncourse.server.cayenne.FieldConfigurationScheme
+import ish.oncourse.server.cayenne.Membership
 import ish.oncourse.server.cayenne.Product
+import ish.oncourse.server.cayenne.Voucher
+import ish.oncourse.server.cayenne.VoucherProductTagRelation
+import ish.oncourse.server.cayenne.VoucherProductAttachmentRelation
+import ish.oncourse.server.document.DocumentService
 
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
 import static ish.oncourse.server.api.v1.function.ProductFunctions.updateCorporatePassesByIds
+import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
+import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.oncourse.server.api.v1.model.ProductStatusDTO.CAN_BE_PURCHASED_IN_OFFICE
 import static ish.oncourse.server.api.v1.model.ProductStatusDTO.CAN_BE_PURCHASED_IN_OFFICE_ONLINE
 import static ish.oncourse.server.api.v1.model.ProductStatusDTO.DISABLED
@@ -49,13 +62,16 @@ import static org.apache.commons.lang3.StringUtils.trimToNull
 import java.time.ZoneId
 
 @CompileStatic
-class VoucherProductApiService extends EntityApiService<VoucherProductDTO, VoucherProduct, VoucherProductDao> {
+class VoucherProductApiService extends TaggableApiService<VoucherProductDTO, VoucherProduct, VoucherProductDao> {
 
     @Inject
     private AccountDao accountDao
 
     @Inject
     private CorporatePassDao corporatePassDao
+
+    @Inject
+    private DocumentService documentService
 
     @Inject
     private CorporatePassProductDao corporatePassProductDao
@@ -109,18 +125,23 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
                     vcp
                 }
             }
+            voucherProductDTO.documents = voucherProduct.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
+            voucherProductDTO.tags = voucherProduct.allTags.collect{ it.id }
             voucherProductDTO.soldVouchersCount = voucherProduct.getProductItems().size()
             voucherProductDTO.relatedSellables = (EntityRelationDao.getRelatedFrom(voucherProduct.context, Product.simpleName, voucherProduct.id).collect { toRestFromEntityRelation(it) } +
                     EntityRelationDao.getRelatedTo(voucherProduct.context, Product.simpleName, voucherProduct.id).collect { toRestToEntityRelation(it) })
             voucherProductDTO.createdOn = voucherProduct.createdOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             voucherProductDTO.modifiedOn = voucherProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             voucherProductDTO.dataCollectionRuleId = voucherProduct.fieldConfigurationScheme?.id
+            voucherProductDTO.customFields = voucherProduct.customFields.collectEntries {[(it.customFieldType.key) : it.value] }
             voucherProductDTO
         }
     }
 
     @Override
     VoucherProduct toCayenneModel(VoucherProductDTO voucherProductDTO, VoucherProduct voucherProduct) {
+        ObjectContext context = voucherProduct.context
+
         voucherProduct.name = trimToNull(voucherProductDTO.name)
         voucherProduct.sku = trimToNull(voucherProductDTO.code)
         voucherProduct.priceExTax = toMoneyValue(voucherProductDTO.feeExTax)
@@ -136,6 +157,9 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
                 fieldConfigurationSchemeDao.getById(voucherProduct.context, voucherProductDTO.dataCollectionRuleId) :
                 null as FieldConfigurationScheme
         updateCorporatePassesByIds(voucherProduct, voucherProductDTO.corporatePasses*.id.findAll(), corporatePassProductDao, corporatePassDao)
+        updateDocuments(voucherProduct, voucherProduct.attachmentRelations, voucherProductDTO.documents, VoucherProductAttachmentRelation, context)
+        updateTags(voucherProduct, voucherProduct.taggingRelations, voucherProductDTO.tags, VoucherProductTagRelation, context)
+        updateCustomFields(voucherProduct.context, voucherProduct, voucherProductDTO.customFields, voucherProduct.customFieldClass)
         updateCourses(voucherProduct, voucherProductDTO.courses)
         if (voucherProduct.newRecord) {
             voucherProduct.tax = taxDao.getNonSupplyTax(voucherProduct.context)
@@ -171,9 +195,6 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
             if (voucherProduct.getProductItems().size() > 0) {
                 if (!isRedemptionTypeEqual(voucherProductDTO, voucherProduct)) {
                     validator.throwClientErrorException(id, 'maxCoursesRedemption | feeExTax', 'Wrong value')
-                }
-                if (!isCoursesEqual(voucherProductDTO, voucherProduct)) {
-                    validator.throwClientErrorException(id, 'courses', 'Wrong value')
                 }
             }
         }
@@ -296,5 +317,14 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
         return voucherProduct.voucherProductCourses.collect { it.course.id }.sort() == voucherProductDTO.courses.collect {
             it.id
         }.sort()
+    }
+
+    @Override
+    Closure getAction (String key, String value) {
+        Closure action = super.getAction(key, value)
+        if (!action) {
+            validator.throwClientErrorException(key, "Unsupported attribute")
+        }
+        action
     }
 }

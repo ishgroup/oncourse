@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import { alpha } from '@mui/material/styles';
@@ -26,6 +29,9 @@ export const bootstrap = (theme: AppTheme) => ({
   ".fs2": {
     fontSize: theme.spacing(2)
   },
+  ".fs3": {
+    fontSize: theme.spacing(3)
+  },
   ".fs4": {
     fontSize: theme.spacing(4)
   },
@@ -37,6 +43,9 @@ export const bootstrap = (theme: AppTheme) => ({
   },
   ".fs19": {
     fontSize: theme.spacing(19)
+  },
+  ".fw300": {
+    fontWeight: 300
   },
   ".fsInherit": {
     fontSize: "inherit"
@@ -155,14 +164,32 @@ export const bootstrap = (theme: AppTheme) => ({
   ".m-3": {
     margin: theme.spacing(3)
   },
+  ".mt-5": {
+    marginTop: theme.spacing(5)
+  },
+  ".mt-4": {
+    marginTop: theme.spacing(4)
+  },
   ".mt-3": {
     marginTop: theme.spacing(3)
   },
   ".ml-3": {
     marginLeft: theme.spacing(3)
   },
+  ".mr-5": {
+    marginRight: theme.spacing(5)
+  },
+  ".mr-4": {
+    marginRight: theme.spacing(4)
+  },
   ".mr-3": {
     marginRight: theme.spacing(3)
+  },
+  ".mb-5": {
+    marginBottom: theme.spacing(5)
+  },
+  ".mb-4": {
+    marginBottom: theme.spacing(4)
   },
   ".mb-3": {
     marginBottom: theme.spacing(3)
@@ -242,6 +269,9 @@ export const bootstrap = (theme: AppTheme) => ({
   ".overflow-hidden": {
     overflow: "hidden"
   },
+  ".overflow-x-hidden": {
+    overflowX: "hidden"
+  },
   ".overflow-y-auto": {
     overflowY: "auto"
   },
@@ -298,6 +328,9 @@ export const bootstrap = (theme: AppTheme) => ({
   ".flex-nowrap": {
     flexWrap: "nowrap"
   },
+  ".flex-wrap": {
+    flexWrap: "wrap"
+  },
   ".align-items-baseline": {
     alignItems: "baseline"
   },
@@ -332,7 +365,7 @@ export const bootstrap = (theme: AppTheme) => ({
     outline: "none"
   },
   ".disabled": {
-    opacity: 0.6,
+    opacity: theme.palette.action.disabledOpacity,
     pointerEvents: "none"
   },
   ".text-op065": {
@@ -365,6 +398,9 @@ export const bootstrap = (theme: AppTheme) => ({
   ".cursor-pointer": {
     cursor: "pointer"
   },
+  ".cursor-text": {
+    cursor: "text"
+  },
   ".pointer-events-none": {
     pointerEvents: "none"
   },
@@ -381,6 +417,12 @@ export const bootstrap = (theme: AppTheme) => ({
   ".text-pre-line": {
     whiteSpace: "pre-line"
   },
+  ".text-pre": {
+    whiteSpace: "pre"
+  },
+  ".text-break-spaces": {
+    whiteSpace: "break-spaces"
+  },
   ".word-break-all": {
     wordBreak: "break-all"
   },
@@ -392,6 +434,9 @@ export const bootstrap = (theme: AppTheme) => ({
   },
   ".mw-100": {
     maxWidth: "100%"
+  },
+  ".w-50": {
+    width: "50%"
   },
   ".mw-800": {
     maxWidth: theme.spacing(100)
@@ -448,5 +493,8 @@ export const bootstrap = (theme: AppTheme) => ({
   },
   ".lh-1": {
     lineHeight: 1,
+  },
+  ".text-decoration-underline": {
+    textDecoration: "underline",
   },
 });

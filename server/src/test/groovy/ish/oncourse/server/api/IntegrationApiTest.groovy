@@ -6,13 +6,15 @@ import ish.oncourse.server.api.v1.model.IntegrationDTO
 import ish.oncourse.server.api.v1.model.IntegrationPropDTO
 import ish.oncourse.server.api.v1.service.impl.IntegrationApiImpl
 import ish.oncourse.server.cayenne.IntegrationConfiguration
-import ish.oncourse.server.integration.myob.MyobIntegration
 import org.apache.cayenne.query.ObjectSelect
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 @CompileStatic
 class IntegrationApiTest extends TestWithDatabase {
+    public static final String ALCHEMER_API_TOKEN = "apiToken"
+    public static final String ALCHEMER_API_TOKEN_SECRET = "apiTokenSecret"
+    public static final String ALCHEMER_SURVEY_ID = "surveyId"
 
     @Test
     void test() {
@@ -20,13 +22,11 @@ class IntegrationApiTest extends TestWithDatabase {
         integrationApi.cayenneService = cayenneService
 
         Assertions.assertEquals(0, integrationApi.get().size())
-        List<IntegrationPropDTO> fields = [new IntegrationPropDTO(key: MyobIntegration.MYOB_BASE_URL, value: 'http://myob.com'),
-                                           new IntegrationPropDTO(key: MyobIntegration.MYOB_USER, value: 'user'),
-                                           new IntegrationPropDTO(key: MyobIntegration.MYOB_PASSWORD, value: 'pass'),
-                                           new IntegrationPropDTO(key: MyobIntegration.MYOB_REFRESH_TOKEN, value: 'token'),
-
+        List<IntegrationPropDTO> fields = [new IntegrationPropDTO(key: ALCHEMER_API_TOKEN, value: 'user'),
+                                           new IntegrationPropDTO(key: ALCHEMER_API_TOKEN_SECRET, value: 'pass'),
+                                           new IntegrationPropDTO(key: ALCHEMER_SURVEY_ID, value: 'surveyId'),
         ]
-        IntegrationDTO data = new IntegrationDTO(name: 'integration', type: new BigDecimal(6), props: fields)
+        IntegrationDTO data = new IntegrationDTO(name: 'integration', type: new BigDecimal(4), props: fields)
 
         integrationApi.create(data)
 

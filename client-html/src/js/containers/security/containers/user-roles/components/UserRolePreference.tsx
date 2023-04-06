@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import { Collapse, Typography } from "@mui/material";
+import { Collapse, Grid, Typography } from "@mui/material";
 import { withStyles } from "@mui/styles";
 import { Field, change } from "redux-form";
 import createStyles from "@mui/styles/createStyles";
@@ -46,6 +46,17 @@ const styles = theme =>
     }
   });
 
+const getLabel = (category: string) => {
+  switch (category) {
+    case "EmailTemplate":
+      return "Message templates";
+    case "ExportTemplate":
+      return "Export templates";
+    default:
+      return category;
+  }
+}
+
 const ContentBase = props => {
   const {
     classes,
@@ -53,48 +64,53 @@ const ContentBase = props => {
   } = props;
 
   return (
-    <div className="d-flex">
-      <div className="mt-auto">
-        {permissions.map((item, index) => (
-          <Typography variant="body2" key={index} className={clsx("centeredFlex", classes.stepperLabel)}>
-            {item.name}
-          </Typography>
-        ))}
-      </div>
-
-      <div className="flex-fill">
+    <Grid container>
+      <Grid item xs={3}/>
+      <Grid item xs={9}>
         <div className={clsx("d-flex", classes.stepperHeadersWrapper)}>
           {headers
-            && headers.map((i, index) => (
-              <Typography variant="body2" key={index} component="div" className="flex-fill">
-                <div className="relative">
-                  <div className={classes.stepperHeader}>{i}</div>
-                </div>
-              </Typography>
-            ))}
+          && headers.map((i, index) => (
+            <Typography variant="body2" key={index} component="div" className="flex-fill">
+              <div className="relative">
+                <div className={classes.stepperHeader}>{i}</div>
+              </div>
+            </Typography>
+          ))}
         </div>
-        {permissions.map((i, index) => (i.checkbox ? (
-          <FormField
-            type="checkbox"
-            name={i.name}
-            key={index}
-            classes={{ root: classes.checkboxColor }}
-            className={classes.checkbox}
-            color="primary"
-            stringValue
-          />
-          ) : (
-            <Field
-              name={i.name}
-              component={SliderStepperField}
-              key={index}
-              item={i}
-              headers={headers}
-              className="relative d-flex"
-            />
-          )))}
-      </div>
-    </div>
+      </Grid>
+      <Grid item container xs={12}>
+        {permissions.map((item, index) => (
+          <Grid item key={index} xs={12} container>
+            <Grid item xs={3}>
+              <Typography variant="body2" className={clsx("centeredFlex", classes.stepperLabel)}>
+                {getLabel(item.name)}
+              </Typography>
+            </Grid>
+            <Grid item xs={9}>
+              {item.checkbox ? (
+                <FormField
+                  type="checkbox"
+                  name={item.name}
+                  key={index}
+                  className={clsx(classes.checkbox, classes.checkboxColor)}
+                  color="primary"
+                  stringValue
+                />
+                ) : (
+                  <Field
+                    name={item.name}
+                    component={SliderStepperField}
+                    key={index}
+                    item={item}
+                    headers={headers}
+                    className="relative d-flex"
+                  />
+                )}
+            </Grid>
+          </Grid>
+          ))}
+      </Grid>
+    </Grid>
   );
 };
 

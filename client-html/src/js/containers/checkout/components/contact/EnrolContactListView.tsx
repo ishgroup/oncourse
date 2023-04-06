@@ -8,8 +8,8 @@ import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
 import { D_MMM_YYYY } from "../../../../common/utils/dates/format";
 import { getHighlightedPartLabel } from "../../../../common/utils/formatting";
-import { getContactName } from "../../../entities/contacts/utils";
 import EnrolItemListRenderer from "../items/components/EnrolItemListRenderer";
+import { getContactFullName } from "../../../entities/contacts/utils";
 
 const EnrolContactListView = React.memo<any>(props => {
   const {
@@ -28,9 +28,9 @@ const EnrolContactListView = React.memo<any>(props => {
           disabledHandler={disabledHandler}
           primaryText={item => (item.type && item.type === "create"
               ? item.name
-              : searchString && getHighlightedPartLabel(getContactName(item), searchString))}
+              : searchString && getHighlightedPartLabel(getContactFullName(item), searchString))}
           secondaryText={item => (
-            <Typography component="span" variant="caption" color="textSecondary" className="text-truncate">
+            <Typography component="div" variant="caption" color="textSecondary" noWrap>
               {` ${item.birthDate ? format(new Date(item.birthDate), D_MMM_YYYY) : ""}  ${item.email || ""}`}
             </Typography>
           )}
@@ -46,13 +46,13 @@ const EnrolContactListView = React.memo<any>(props => {
           items={relatedContacts}
           onChangeHandler={onChangeHandler}
           disabledHandler={disabledHandler}
-          primaryText={item => (searchString ? getHighlightedPartLabel(getContactName(item), searchString) : getContactName(item))}
+          primaryText={item => (searchString ? getHighlightedPartLabel(getContactFullName(item), searchString) : getContactFullName(item))}
           secondaryText={item => (
-            <Typography component="span">
-              <Typography component="span" variant="caption" color="textSecondary" className="text-truncate">
+            <Typography component="div">
+              <Typography component="span" variant="caption" color="textSecondary" noWrap>
                 {` ${item.birthDate ? format(new Date(item.birthDate), D_MMM_YYYY) : ""}  ${item.email || ""}`}
               </Typography>
-              <Typography component="p" variant="caption" color="textSecondary" className="text-truncate">
+              <Typography component="p" variant="caption" color="textSecondary" noWrap>
                 {` ${item.relationString}`}
               </Typography>
             </Typography>

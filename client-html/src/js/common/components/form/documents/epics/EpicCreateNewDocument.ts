@@ -26,7 +26,7 @@ const request: EpicUtils.Request<
       document.shared,
       document.access,
       state.documents.documentFile,
-      document.tags.map(t => t.id).toString(),
+      document.tags.toString(),
       state.documents.documentFile ? state.documents.documentFile.name : ""
     ),
   processData: (newDocument: Document, state: any, { form, documentPath, index }) => [

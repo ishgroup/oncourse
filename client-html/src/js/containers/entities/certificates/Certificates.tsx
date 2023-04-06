@@ -13,11 +13,7 @@ import {
   getFilters,
   clearListState
 } from "../../../common/components/list-view/actions";
-import { FilterGroup } from "../../../model/common/ListView";
-import { defaultContactName } from "../contacts/utils";
-import {
-  getCertificate, updateCertificate, createCertificate, removeCertificate
-} from "./actions";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import CertificateEditView from "./components/CertificateEditView";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import USIAlert from "./components/USIAlert";
@@ -25,11 +21,7 @@ import RevokeCertificateCogwheel from "./components/RevokeCertificateCogwheel";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 
 interface CertificatesProps {
-  getCertificateRecord?: () => void;
   onInit?: () => void;
-  onCreate?: (certificate: Certificate) => void;
-  onDelete?: (id: string) => void;
-  onSave?: (id: string, certificate: Certificate) => void;
   getFilters?: () => void;
   clearListState?: () => void;
 }
@@ -79,7 +71,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Certificate and entityId" },
   { title: "Enrolments", list: "enrolment", expression: "outcomes.certificateOutcomes.certificate.id" },
   { title: "Students", list: "contact", expression: "student.certificates.id" },
@@ -89,18 +81,14 @@ const findRelatedGroup: any = [
 
 const manualLink = getManualLink("certification");
 
-const nameCondition = (value: Certificate) => defaultContactName(value.studentName);
+const nameCondition = (value: Certificate) => value.studentName;
 
 const secondaryColumnCondition = rows => rows["qualification.title"] || "No Qualification";
 
 const Certificates: React.FC<CertificatesProps> = props => {
   const {
-    getCertificateRecord,
     onInit,
-    onCreate,
-    onSave,
-    getFilters,
-    onDelete
+    getFilters
   } = props;
 
   useEffect(() => {
@@ -111,32 +99,26 @@ const Certificates: React.FC<CertificatesProps> = props => {
   }, []);
 
   return (
-    <div>
-      <ListView
-        listProps={{
-          primaryColumn: "student.contact.fullName",
-          secondaryColumn: "qualification.title",
-          secondaryColumnCondition
-        }}
-        editViewProps={{
-          manualLink,
-          nameCondition,
-          hideTitle: true
-        }}
-        EditViewContent={CertificateEditView}
-        CogwheelAdornment={RevokeCertificateCogwheel}
-        getEditRecord={getCertificateRecord}
-        rootEntity="Certificate"
-        onInit={onInit}
-        onCreate={onCreate}
-        onSave={onSave}
-        onDelete={onDelete}
-        findRelated={findRelatedGroup}
-        ShareContainerAlertComponent={USIAlert}
-        filterGroupsInitial={filterGroups}
-        noListTags
-      />
-    </div>
+    <ListView
+      listProps={{
+        primaryColumn: "student.contact.fullName",
+        secondaryColumn: "qualification.title",
+        secondaryColumnCondition
+      }}
+      editViewProps={{
+        manualLink,
+        nameCondition,
+        hideTitle: true
+      }}
+      EditViewContent={CertificateEditView}
+      CogwheelAdornment={RevokeCertificateCogwheel}
+      rootEntity="Certificate"
+      onInit={onInit}
+      findRelated={findRelatedGroup}
+      ShareContainerAlertComponent={USIAlert}
+      filterGroupsInitial={filterGroups}
+      noListTags
+    />
   );
 };
 
@@ -148,11 +130,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getFilters: () => {
     dispatch(getFilters("Certificate"));
   },
-  clearListState: () => dispatch(clearListState()),
-  getCertificateRecord: (id: string) => dispatch(getCertificate(id)),
-  onSave: (id: string, certificate: Certificate) => dispatch(updateCertificate(id, certificate)),
-  onCreate: (certificate: Certificate) => dispatch(createCertificate(certificate)),
-  onDelete: (id: string) => dispatch(removeCertificate(id))
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Certificates);

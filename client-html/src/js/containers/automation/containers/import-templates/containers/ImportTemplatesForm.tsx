@@ -1,13 +1,19 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import PlayArrow from "@mui/icons-material/PlayArrow";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { connect } from "react-redux";
+import React, {
+ useCallback, useMemo, useState
+} from "react";
 import { Dispatch } from "redux";
-import { Form, initialize, InjectedFormProps } from "redux-form";
+import {
+ FieldArray, Form, initialize, InjectedFormProps 
+} from "redux-form";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import FileCopy from "@mui/icons-material/FileCopy";
 import Grid from "@mui/material/Grid";
@@ -17,23 +23,20 @@ import IconButton from "@mui/material/IconButton";
 import { ImportModel } from "@api/model";
 import Typography from "@mui/material/Typography";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import ScriptCard from "../../scripts/components/cards/CardBase";
-import Bindings from "../../../components/Bindings";
+import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
-import { usePrevious } from "../../../../../common/utils/hooks";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { validateKeycode } from "../../../utils";
+import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import { formatRelativeDate } from "../../../../../common/utils/dates/formatRelative";
 import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL } from "../../../../../common/utils/dates/format";
 import ExecuteImportModal from "../components/ExecuteImportModal";
-import { State } from "../../../../../reducers/state";
-import { setNextLocation } from "../../../../../common/actions";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { CatalogItemType } from "../../../../../model/common/Catalog";
+import InfoPill from "../../../../../common/components/layout/InfoPill";
 
 const manualUrl = getManualLink("advancedSetup_Import");
 const getAuditsUrl = (id: number) => `audit?search=~"ImportTemplate" and entityId == ${id}`;
@@ -42,21 +45,21 @@ interface Props extends InjectedFormProps {
   isNew: boolean;
   values: any;
   history: any;
+  syncErrors: any;
   dispatch: Dispatch;
   onCreate: (template: ImportModel) => void;
   onUpdateInternal: (template: ImportModel) => void;
   onUpdate: (template: ImportModel) => void;
   onDelete: NumberArgFunction;
-  nextLocation?: string,
-  setNextLocation?: (nextLocation: string) => void,
+  emailTemplates?: CatalogItemType[]
+  importTemplates?: CatalogItemType[]
 }
 
 const ImportTemplatesForm = React.memo<Props>(
   ({
-    dirty, form, handleSubmit, isNew, invalid, values, dispatch,
-     onCreate, onUpdate, onUpdateInternal, onDelete, nextLocation, history, setNextLocation
+    dirty, form, handleSubmit, isNew, invalid, values, dispatch, syncErrors, emailTemplates,
+     onCreate, onUpdate, onUpdateInternal, onDelete, importTemplates
   }) => {
-    const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
     const [modalOpened, setModalOpened] = useState<boolean>(false);
     const [execMenuOpened, setExecMenuOpened] = useState(false);
     const [importIdSelected, setImportIdSelected] = useState(null);
@@ -69,9 +72,8 @@ const ImportTemplatesForm = React.memo<Props>(
     }, []);
 
     const onDialogSave = useCallback(
-      ({ keyCode }) => {
-        setDisableRouteConfirm(true);
-        onCreate({ ...values, id: null, keyCode });
+      ({ keyCode, name }) => {
+        onCreate({ ...values, id: null, keyCode, name });
         onDialodClose();
       },
       [values]
@@ -79,16 +81,12 @@ const ImportTemplatesForm = React.memo<Props>(
 
     const isInternal = useMemo(() => values.keyCode && values.keyCode.startsWith("ish."), [values.keyCode]);
 
-    const prevId = usePrevious(values.id);
-
     const handleDelete = useCallback(() => {
-      setDisableRouteConfirm(true);
       onDelete(values.id);
     }, [values.id]);
 
     const handleSave = useCallback(
       val => {
-        setDisableRouteConfirm(true);
         if (isNew) {
           onCreate(val);
           return;
@@ -109,27 +107,33 @@ const ImportTemplatesForm = React.memo<Props>(
       [values]
     );
 
-    useEffect(() => {
-      if (disableRouteConfirm && values.id !== prevId) {
-        setDisableRouteConfirm(false);
-      }
-    }, [values.id, prevId, disableRouteConfirm]);
-
-    useEffect(() => {
-      if (!dirty && nextLocation) {
-        history.push(nextLocation);
-        setNextLocation('');
-      }
-    }, [nextLocation, dirty]);
-
     const handleRun = () => {
       setImportIdSelected(values.id);
       setExecMenuOpened(true);
     };
 
+    const validateTemplateCopyName = useCallback(name => {
+      if (importTemplates.find(i => i.title.trim() === name.trim())) {
+        return "Template name should be unique";
+      }
+      return validateNameForQuotes(name);
+    }, [importTemplates, values.id]);
+
+    const validateTemplateName = useCallback(name => {
+      if (importTemplates.find(i => i.id !== values.id && i.title.trim() === name.trim())) {
+        return "Template name should be unique";
+      }
+      return validateNameForQuotes(name);
+    }, [importTemplates, values.id]);
+
     return (
       <>
-        <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialodClose} onSave={onDialogSave} />
+        <SaveAsNewAutomationModal
+          opened={modalOpened}
+          onClose={onDialodClose}
+          onSave={onDialogSave}
+          validateNameField={validateTemplateCopyName}
+        />
         <ExecuteImportModal
           opened={execMenuOpened}
           onClose={() => {
@@ -140,195 +144,199 @@ const ImportTemplatesForm = React.memo<Props>(
         />
 
         <Form onSubmit={handleSubmit(handleSave)}>
-          {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
-
-          <CustomAppBar>
-            <FormField
-              type="headerText"
-              name="name"
-              placeholder="Name"
-              margin="none"
-              className="pl-1"
-              listSpacing={false}
-              disabled={isInternal}
-              required
-            />
-
-            <div className="flex-fill" />
-
-            {!isNew && !isInternal && (
-              <AppBarActions
-                actions={[
-                  {
-                    action: handleDelete,
-                    icon: <DeleteForever />,
-                    confirm: true,
-                    tooltip: "Delete import template",
-                    confirmText: "Import template will be deleted permanently",
-                    confirmButtonText: "DELETE"
-                  },
-                  {
-                    action: handleRun,
-                    icon: <PlayArrow />,
-                    tooltip: dirty ? "Save changes before run" : "Run import",
-                    tooltipError: dirty,
-                    disabled: dirty
-                  }
-                ]}
-              />
+          <RouteChangeConfirm form={form} when={dirty || isNew} />
+          <AppBarContainer
+            values={values}
+            manualUrl={manualUrl}
+            getAuditsUrl={getAuditsUrl}
+            disabled={!dirty}
+            invalid={invalid}
+            title={(
+              <div className="centeredFlex">
+                {isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
+                {[...values.automationTags?.split(",") || [],
+                  ...isInternal ? [] : ["custom"]
+                ].map(t => <InfoPill key={t} label={t} />)}
+              </div>
             )}
-
-            {isInternal && (
-              <>
-                <AppBarActions
-                  actions={[
-                    {
-                      action: handleRun,
-                      icon: <PlayArrow />,
-                      tooltip: dirty ? "Save changes before run" : "Run import",
-                      tooltipError: dirty,
-                      disabled: dirty
-                    }
-                  ]}
-                />
-                <Grow in={isInternal}>
-                  <Tooltip title="Save as new import template">
-                    <IconButton onClick={onInternalSaveClick} color="inherit">
-                      <FileCopy color="inherit" />
-                    </IconButton>
-                  </Tooltip>
-                </Grow>
-              </>
-            )}
-
-            <AppBarHelpMenu
-              created={values.createdOn ? new Date(values.createdOn) : null}
-              modified={values.modifiedOn ? new Date(values.modifiedOn) : null}
-              manualUrl={manualUrl}
-              auditsUrl={getAuditsUrl(values.id)}
-            />
-
-            <FormSubmitButton
-              disabled={!dirty}
-              invalid={invalid}
-            />
-          </CustomAppBar>
-
-          <Grid container columnSpacing={3} className="p-3 appBarContainer">
-            <Grid item xs={9} className="pr-3">
-              <ScriptCard
-                heading="Script"
-                className="mb-3"
-                onDetailsClick={isInternal ? onInternalSaveClick : undefined}
-                expanded
-                noPadding
-              >
+            disableInteraction={isInternal}
+            opened={isNew || Object.keys(syncErrors).includes("name")}
+            fields={(
+              <Grid item xs={12}>
                 <FormField
-                  type="code"
-                  name="body"
-                  className="mt-3"
+                  type="text"
+                  name="name"
+                  label="Name"
+                  validate={validateTemplateName}
                   disabled={isInternal}
                   required
                 />
-              </ScriptCard>
+              </Grid>
+            )}
+            actions={(
+              <>
+                {!isNew && !isInternal && (
+                  <AppBarActions
+                    actions={[
+                      {
+                        action: handleDelete,
+                        icon: <DeleteForever />,
+                        confirm: true,
+                        tooltip: "Delete import template",
+                        confirmText: "Import template will be deleted permanently",
+                        confirmButtonText: "DELETE"
+                      },
+                      {
+                        action: handleRun,
+                        icon: <PlayArrow />,
+                        tooltip: dirty ? "Save changes before run" : "Run import",
+                        tooltipError: dirty,
+                        disabled: dirty
+                      }
+                    ]}
+                  />
+                )}
 
-              <FormField
-                type="text"
-                label="Key Code"
-                name="keyCode"
-                validate={isNew || !isInternal ? validateKeycode : undefined}
-                disabled={!isNew}
-                required
+                {isInternal && (
+                  <>
+                    <AppBarActions
+                      actions={[
+                        {
+                          action: handleRun,
+                          icon: <PlayArrow />,
+                          tooltip: dirty ? "Save changes before run" : "Run import",
+                          tooltipError: dirty,
+                          disabled: dirty
+                        }
+                      ]}
+                    />
+                    <Grow in={isInternal}>
+                      <Tooltip title="Save as new import template">
+                        <IconButton onClick={onInternalSaveClick} color="inherit">
+                          <FileCopy color="primary" />
+                        </IconButton>
+                      </Tooltip>
+                    </Grow>
+                  </>
+                )}
+              </>
+            )}
+          >
+            <Grid container columnSpacing={3} rowSpacing={2}>
+              <FieldArray
+                name="options"
+                itemsType="component"
+                component={BindingsRenderer}
+                emailTemplates={emailTemplates}
+                rerenderOnEveryChange
               />
+              <Grid item xs={9} className="pr-3">
+                <ScriptCard
+                  heading="Script"
+                  className="mb-3"
+                  onDetailsClick={isInternal ? onInternalSaveClick : undefined}
+                  expanded
+                  noPadding
+                >
+                  <FormField
+                    type="code"
+                    name="body"
+                    className="mt-3"
+                    disabled={isInternal}
+                    required
+                  />
+                </ScriptCard>
 
-              <FormField
-                type="text"
-                label="Description"
-                name="description"
-                disabled={isInternal}
-                fullWidth
-                multiline
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <div>
-                <FormField
-                  type="switch"
-                  name="enabled"
-                  label="Enabled"
-                  color="primary"
-                  fullWidth
-                />
-              </div>
-              <div className="mt-3 pt-1">
-                <Bindings
-                  defaultVariables={defaultVariables}
-                  dispatch={dispatch}
-                  form={form}
-                  name="variables"
-                  label="Variables"
-                  itemsType="label"
-                  disabled={isInternal}
-                />
-              </div>
-              <div className="mt-3">
-                <Bindings
-                  dispatch={dispatch}
-                  form={form}
-                  itemsType="component"
-                  name="options"
-                  label="Options"
-                  disabled={isInternal}
-                />
-              </div>
-
-              <div className="mt-3">
                 <FormField
                   type="text"
-                  name="description"
-                  label="Description"
-                  className="overflow-hidden"
-                  multiline
-                  fullWidth
+                  label="Key code"
+                  name="keyCode"
+                  validate={isNew || !isInternal ? validateKeycode : undefined}
+                  disabled={!isNew}
+                  className="mb-2"
+                  required
                 />
 
-                <Grid container columnSpacing={3}>
-                  <Grid item xs className="d-flex">
-                    <div className="flex-fill">
-                      <Typography variant="caption" color="textSecondary">
-                        Last run
-                      </Typography>
+                <FormField
+                  type="text"
+                  label="Description"
+                  name="description"
+                  disabled={isInternal}
+                                    multiline
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <div>
+                  <FormField
+                    label="Enabled"
+                    type="switch"
+                    name="status"
+                    color="primary"
+                    format={v => v === "Enabled"}
+                    parse={v => (v ? "Enabled" : "Installed but Disabled")}
+                    debounced={false}
+                  />
+                </div>
+                <div className="mt-3 pt-1">
+                  <Bindings
+                    defaultVariables={defaultVariables}
+                    dispatch={dispatch}
+                    form={form}
+                    name="variables"
+                    label="Variables"
+                    itemsType="label"
+                    disabled={isInternal}
+                  />
+                </div>
+                <div className="mt-3">
+                  <Bindings
+                    dispatch={dispatch}
+                    form={form}
+                    itemsType="component"
+                    name="options"
+                    label="Options"
+                    disabled={isInternal}
+                  />
+                </div>
 
-                      {values.lastRun && values.lastRun.length ? (
-                        values.lastRun.map((runDate, index) => (
-                          <Typography variant="body1" key={index}>
-                            {formatRelativeDate(new Date(runDate), new Date(), DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL)}
-                          </Typography>
-                        ))
-                      ) : (
-                        <Typography variant="subtitle1" color="textSecondary">
-                          Never
+                <div className="mt-3">
+                  <FormField
+                    type="text"
+                    name="description"
+                    label="Description"
+                    className="overflow-hidden"
+                    multiline
+                                      />
+
+                  <Grid container columnSpacing={3}>
+                    <Grid item xs className="d-flex">
+                      <div className="flex-fill">
+                        <Typography variant="caption" color="textSecondary">
+                          Last run
                         </Typography>
-                      )}
-                    </div>
+
+                        {values.lastRun && values.lastRun.length ? (
+                          values.lastRun.map((runDate, index) => (
+                            <Typography variant="body1" key={index}>
+                              {formatRelativeDate(new Date(runDate), new Date(), DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL)}
+                            </Typography>
+                          ))
+                        ) : (
+                          <Typography variant="subtitle1" color="textSecondary">
+                            Never
+                          </Typography>
+                        )}
+                      </div>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </div>
+                </div>
+              </Grid>
             </Grid>
-          </Grid>
+          </AppBarContainer>
         </Form>
       </>
     );
   }
 );
 
-const mapStateToProps = (state: State) => ({
-  nextLocation: state.nextLocation
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-});
-
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)((props:Props) => (props.values
-  ? <ImportTemplatesForm {...props} /> : null));
+export default (props:Props) => (props.values ? <ImportTemplatesForm {...props} /> : null);

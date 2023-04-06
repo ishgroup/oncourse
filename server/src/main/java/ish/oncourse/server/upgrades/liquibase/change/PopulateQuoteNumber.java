@@ -8,40 +8,42 @@
 
 package ish.oncourse.server.upgrades.liquibase.change;
 
+import ish.liquibase.IshTaskChange;
 import ish.oncourse.server.ICayenneService;
-import ish.oncourse.server.cayenne.*;
+import ish.oncourse.server.cayenne.Quote;
 import ish.oncourse.server.db.SchemaUpdateService;
 import liquibase.database.Database;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.CustomChangeException;
-import liquibase.exception.DatabaseException;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.ObjectSelect;
-import org.apache.cayenne.query.SQLTemplate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class PopulateQuoteNumber extends IshTaskChange {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public void execute(Database database) throws CustomChangeException {
         ICayenneService cayenneService = SchemaUpdateService.sharedCayenneService;
         DataContext context = cayenneService.getNewContext();
+        logger.warn("Running upgrade...");
+
         AtomicReference<Long> nextNumber = new AtomicReference<>(1L);
         List<Quote> quotes = ObjectSelect.query(Quote.class).where(Quote.QUOTE_NUMBER.isNull()).select(context);
         if (!quotes.isEmpty()) {
+            logger.warn("Upgrade quotes");
             quotes.forEach( q -> q.setQuoteNumber(nextNumber.getAndSet(nextNumber.get() + 1)));
         }
         context.commitChanges();
 
         JdbcConnection connection = (JdbcConnection) database.getConnection();
         try (var statement = connection.createStatement()) {
+            logger.warn("Upgrade SequenceSupport");
             statement.execute(String.format("INSERT INTO SequenceSupport (tableName, nextId) VALUES('quote', %d)", nextNumber.get()));
             connection.commit();
 

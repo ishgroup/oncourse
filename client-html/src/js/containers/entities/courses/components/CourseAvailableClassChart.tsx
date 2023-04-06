@@ -10,15 +10,20 @@ import React, { useEffect, useState } from "react";
 import withTheme from "@mui/styles/withTheme";
 import { green } from "@mui/material/colors";
 import { differenceInDays, format, parseISO } from "date-fns";
-import { Paper, Typography } from "@mui/material";
-import clsx from "clsx";
-import { makeStyles } from '@mui/styles';
+import { Grid, Paper, Typography } from "@mui/material";
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine
 } from 'recharts';
 import { END_DAY_VALUE, initDataForGraph, START_DAY_VALUE } from "../utils";
 import EntityService from "../../../../common/services/EntityService";
 import { III_DD_MMM_YYYY_HH_MM } from "../../../../common/utils/dates/format";
+import { makeAppStyles } from "../../../../common/styles/makeStyles";
+
+const useStyles = makeAppStyles(() => ({
+  chartWrapper: {
+    height: "250px",
+  },
+}));
 
 const CustomizedTooltip = (props: any) => {
   const { active, payload } = props;
@@ -95,33 +100,16 @@ const CustomizedAxisTick: React.FC<any> = (props: any) => {
   );
 };
 
-const useStyles = makeStyles(() => ({
-  hasOverlay: {
-    opacity: 0.2,
-    pointerEvents: "none"
-  },
-  overlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    display: "flex",
-    alignItems: "center",
-    height: "100%",
-    width: "100%",
-    justifyContent: "center"
-  }
-}));
 
 const CourseAvailableClassChart = (props: any) => {
   const { courseId, isNew, theme } = props;
 
-  const [graphData, setGraphData] = useState(initDataForGraph());
-  const [hasOverlay, setHasOverlay] = useState(false);
+  const [graphData, setGraphData] = useState(null);
 
   const classes = useStyles();
 
   useEffect(() => {
-    if (isNew) return null;
+    if (isNew) return;
 
     EntityService.getPlainRecords(
       "CourseClass",
@@ -135,12 +123,8 @@ const CourseAvailableClassChart = (props: any) => {
       const classIds = courseClasses.rows.map(e => e.id);
 
       if (!classIds.length) {
-        setGraphData(initDataForGraph());
-        setHasOverlay(true);
         return null;
       }
-
-      setHasOverlay(false);
 
       EntityService.getPlainRecords(
         "Enrolment",
@@ -179,7 +163,7 @@ const CourseAvailableClassChart = (props: any) => {
         if (oldEnrolments.length) availablePlacesOnStartDate -= oldEnrolments.length;
 
         let newAvailablePlaces = 0;
-        const newGraphData = graphData.map(elem => {
+        const newGraphData = initDataForGraph().map(elem => {
           const newClasses = courseClassesWithFormatedDate.filter(courseClass => courseClass.createdOnFormated === elem.dayDate);
           const newStartedClasses = courseClassesWithFormatedDate.filter(courseClass => courseClass.startDateTimeFormated === elem.dayDate);
 
@@ -271,17 +255,13 @@ const CourseAvailableClassChart = (props: any) => {
     return null;
   };
 
-  return (
-    <div className="relative h-100">
-      {hasOverlay && (
-        <div className={classes.overlay}>
-          <Typography>
-            Create a class to see projection
-          </Typography>
-        </div>
-      )}
+  if (!graphData) {
+    return null;
+  }
 
-      <ResponsiveContainer width="100%" height="100%" className={clsx(hasOverlay && classes.hasOverlay)}>
+  return (
+    <Grid item xs={12} className={classes.chartWrapper}>
+      <ResponsiveContainer width="100%" height="100%">
         <LineChart
           width={500}
           height={400}
@@ -325,7 +305,7 @@ const CourseAvailableClassChart = (props: any) => {
           />
         </LineChart>
       </ResponsiveContainer>
-    </div>
+    </Grid>
   );
 };
 

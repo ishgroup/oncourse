@@ -1,11 +1,9 @@
 import * as React from "react";
 import { defaultComponents } from "../../common/Default.Components";
-import CheckoutPreviousInvoiceList
+import CheckoutPreviousInvoiceList, { CheckoutPreviousInvoiceListFormRole }
   from "../../../js/containers/checkout/components/summary/CheckoutPreviousInvoiceList";
 import { CheckoutPage, titles } from "../../../js/containers/checkout/constants";
 import { decimalPlus } from "../../../js/common/utils/numbers/decimalCalculation";
-
-// TODO Enable test when find solution to test @mui checkboxes
 
 describe("Virtual rendered CheckoutPreviousInvoiceList", () => {
   defaultComponents({
@@ -37,15 +35,17 @@ describe("Virtual rendered CheckoutPreviousInvoiceList", () => {
         uncheckAllPreviousInvoice: jest.fn()
       };
     },
-    render: (wrapper, initialValues, shallow) => {
-      const count = initialValues.length;
-      let i;
+    render: ({ screen, initialValues }) => {
+      const previousInvoices = {};
 
-      // expect(shallow.find("input[type='checkbox']").at(0).props().checked).toEqual(true);
-      //
-      // for (i = 1; i <= count; i++) {
-      //   expect(shallow.find("input[type='checkbox']").at(i).props().checked).toEqual(true);
-      // }
+      initialValues.forEach(invoice => {
+        previousInvoices[`previousInvoiceCheckbox[${invoice.id}]`] = true;
+      });
+
+      expect(screen.getByRole(CheckoutPreviousInvoiceListFormRole)).toHaveFormValues({
+        isPayDueAmounts: true,
+        ...previousInvoices,
+      });
     }
   });
 });

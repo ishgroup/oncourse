@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
   <Site id="100" name="Default site" isAdministrationCentre="1" isShownOnWeb="0" isVirtual="0"
-        localTimezone="Australia/Sydney"/>
+        localTimezone="Australia/Sydney" />
 
   <SystemUser email="admin@mail.com" id="100" login="admin" firstName="admin" surname="admin" isActive="1" isAdmin="1"
               password="test" canEditCMS="1" canEditTara="1" createdOn="2012-05-10 00:00:00"

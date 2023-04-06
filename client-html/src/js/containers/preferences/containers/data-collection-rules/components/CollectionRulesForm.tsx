@@ -7,29 +7,23 @@ import * as React from "react";
 import Grid from "@mui/material/Grid";
 import { withStyles } from "@mui/styles";
 import { withRouter } from "react-router-dom";
-import {
-  reduxForm, initialize
-} from "redux-form";
-import {
-  DataCollectionForm,
-  DataCollectionRule,
-  DataCollectionType
-} from "@api/model";
+import { getFormSyncErrors, initialize, reduxForm } from "redux-form";
+import { DataCollectionForm, DataCollectionRule, DataCollectionType } from "@api/model";
 import createStyles from "@mui/styles/createStyles";
 import DeleteForever from "@mui/icons-material/DeleteForever";
-import Button from "@mui/material/Button";
+import { connect } from "react-redux";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { sortDefaultSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { State } from "../../../../../reducers/state";
 
-const manualLink = getManualLink("dataCollection");
+const manualUrl = getManualLink("dataCollection");
+
+export const DATA_COLLECTION_RULES_FORM: string = "CollectionRulesForm";
 
 const styles = () =>
   createStyles({
@@ -49,6 +43,7 @@ interface Props {
   handleSubmit: any;
   match: any;
   history: any;
+  syncErrors: any;
   dirty: boolean;
   invalid: boolean;
   form: string;
@@ -59,28 +54,29 @@ interface Props {
 
 class CollectionRulesBaseForm extends React.Component<Props, any> {
   private resolvePromise;
+
   private rejectPromise;
+
   private unlisten;
+
   private promisePending: boolean = false;
+
   private skipValidation: boolean;
 
   constructor(props) {
     super(props);
 
-    this.state = {
-      disableConfirm: false
-    };
-
     if (props.item) {
-      props.dispatch(initialize("CollectionRulesForm", props.item));
+      props.dispatch(initialize(DATA_COLLECTION_RULES_FORM, props.item));
     } else {
-      props.dispatch(initialize("CollectionRulesForm", { id: null }));
+      props.dispatch(initialize(DATA_COLLECTION_RULES_FORM, { id: null }));
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.promisePending && nextProps.item && (!this.props.item || this.props.item.id !== nextProps.item.id)) {
-      this.props.dispatch(initialize("CollectionRulesForm", nextProps.item));
+      this.props.dispatch(initialize(DATA_COLLECTION_RULES_FORM, nextProps.item));
       return;
     }
     if (this.rejectPromise && nextProps.fetch && nextProps.fetch.success === false) {
@@ -105,7 +101,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
   onHistoryChange = location => {
     const locationParts = location.pathname.split("/");
     if (locationParts[2] === "collectionRules" && locationParts[3] === "new") {
-      this.props.dispatch(initialize("CollectionRulesForm", { id: null }));
+      this.props.dispatch(initialize(DATA_COLLECTION_RULES_FORM, { id: null }));
     }
   };
 
@@ -154,7 +150,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
     if (collectionRules[0].id === id) {
       if (collectionRules.length > 1) {
         history.push(`/preferences/collectionRules/edit/${collectionRules[1].id}`);
-        setTimeout(() => dispatch(initialize("CollectionRulesForm", collectionRules[1])), 100);
+        setTimeout(() => dispatch(initialize(DATA_COLLECTION_RULES_FORM, collectionRules[1])), 100);
 
         return;
       }
@@ -162,17 +158,13 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
       return;
     }
     history.push(`/preferences/collectionRules/edit/${collectionRules[0].id}`);
-    setTimeout(() => dispatch(initialize("CollectionRulesForm", collectionRules[0])), 100);
+    setTimeout(() => dispatch(initialize(DATA_COLLECTION_RULES_FORM, collectionRules[0])), 100);
   };
 
   onRuleDelete = id => {
     const { onDelete } = this.props;
 
     this.promisePending = true;
-
-    this.setState({
-      disableConfirm: true
-    });
 
     return new Promise((resolve, reject) => {
       this.resolvePromise = resolve;
@@ -182,218 +174,183 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
     })
       .then(() => {
         this.redirectOnDelete(id);
-        this.setState({
-          disableConfirm: false
-        });
       })
       .catch(() => {
         this.promisePending = false;
-        this.setState({
-          disableConfirm: false
-        });
       });
   };
 
   render() {
     const {
-     classes, handleSubmit, match, value, dirty, form, onSubmit, invalid
+      classes, handleSubmit, match, value, dirty, form, onSubmit, invalid, syncErrors
     } = this.props;
-    const { disableConfirm } = this.state;
     const isNew = match.params.action === "new";
 
-    const created = value && value.created;
-    const modified = value && value.modified;
-
     return (
-      <form className="container" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-        {!disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
-        <CustomAppBar>
-          <Grid
-            container
-            classes={{
-              container: classes.fitSmallWidth
-            }}
-          >
-            <Grid item xs={12} className="centeredFlex relative">
+      <form className="container" autoComplete="off" onSubmit={handleSubmit(onSubmit)} role={DATA_COLLECTION_RULES_FORM}>
+        <RouteChangeConfirm form={form} when={dirty} />
+
+        <AppBarContainer
+          values={value}
+          manualUrl={manualUrl}
+          getAuditsUrl={id => `audit?search=~"FieldConfigurationScheme" and entityId == ${id}`}
+          disabled={!dirty}
+          invalid={invalid}
+          title={(isNew && (!value || !value.name || value.name.trim().length === 0))
+            ? "New"
+            : value?.name?.trim()}
+          hideHelpMenu={isNew}
+          opened={isNew || Object.keys(syncErrors).includes("name")}
+          createdOn={v => new Date(v.created)}
+          modifiedOn={v => new Date(v.modified)}
+          fields={(
+            <Grid item xs={12}>
               <FormField
-                type="headerText"
+                type="text"
                 name="name"
-                placeholder="Name"
-                margin="none"
-                className={classes.HeaderTextField}
-                listSpacing={false}
-                validate={[validateSingleMandatoryField, this.validateUniqueNames]}
-              />
-
-              <div className="flex-fill" />
-              {!isNew && (
-                <AppBarActions
-                  actions={[
-                    {
-                      action: () => {
-                        this.onRuleDelete(value.id);
-                      },
-                      icon: <DeleteForever />,
-
-                      tooltip: "Delete form",
-                      confirmText: "Rule will be deleted permanently",
-                      confirmButtonText: "DELETE"
-                    }
-                  ]}
-                />
-              )}
-
-              {!isNew && value && (
-                <AppBarHelpMenu
-                  created={created ? new Date(created) : null}
-                  modified={modified ? new Date(modified) : null}
-                  auditsUrl={`audit?search=~"FieldConfigurationScheme" and entityId == ${value.id}`}
-                  manualUrl={manualLink}
-                />
-              )}
-
-              <FormSubmitButton
-                disabled={!dirty}
-                invalid={invalid}
+                label="Name"
+                validate={this.validateUniqueNames}
+                required
               />
             </Grid>
-          </Grid>
-        </CustomAppBar>
+          )}
+          actions={!isNew && (
+            <AppBarActions
+              actions={[
+                {
+                  action: () => {
+                    this.onRuleDelete(value.id);
+                  },
+                  icon: <DeleteForever />,
+                  tooltip: "Delete form",
+                  confirmText: "Rule will be deleted permanently",
+                  confirmButtonText: "DELETE"
+                }
+              ]}
+            />
+          )}
+        >
+          <Grid container>
+            <Grid item xs={12} md={10}>
+              <Grid container columnSpacing={3} rowSpacing={2}>
+                <Grid item xs={6}>
+                  <FormField
+                    type="select"
+                    name="enrolmentFormName"
+                    label="Enrolment"
+                    items={this.getItems("Enrolment") || []}
+                    className={classes.selectField}
+                    required
+                  />
+                </Grid>
 
-        <Grid container columnSpacing={3}>
-          <Grid item xs={12} md={10}>
-            <Grid container columnSpacing={3}>
-              <Grid item xs={6}>
-                <FormField
-                  type="select"
-                  name="enrolmentFormName"
-                  label="Enrolment"
-                  items={this.getItems("Enrolment") || []}
-                  margin="none"
-                  className={classes.selectField}
-                  fullWidth
-                  required
-                />
-              </Grid>
+                <Grid item xs={6}>
+                  <FormField
+                    type="select"
+                    name="surveyForms"
+                    label="Student Feedback"
+                    items={this.getItems("Survey") || []}
+                    className={classes.selectField}
+                    allowEmpty
+                    multiple
+                    />
+                </Grid>
 
-              <Grid item xs={6}>
-                <FormField
-                  type="select"
-                  name="surveyForms"
-                  label="Student Feedback"
-                  multiple
-                  allowEmpty
-                  items={this.getItems("Survey") || []}
-                  margin="none"
-                  className={classes.selectField}
-                  fullWidth
-                />
-              </Grid>
+                <Grid item xs={6}>
+                  <FormField
+                    type="select"
+                    name="applicationFormName"
+                    label="Application"
+                    items={this.getItems("Application") || []}
+                    className={classes.selectField}
+                    required
+                  />
+                </Grid>
 
-              <Grid item xs={6}>
-                <FormField
-                  type="select"
-                  name="applicationFormName"
-                  label="Application"
-                  items={this.getItems("Application") || []}
-                  margin="none"
-                  className={classes.selectField}
-                  fullWidth
-                  required
-                />
-              </Grid>
+                <Grid item xs={6}>
+                  <FormField
+                    type="select"
+                    name="payerFormName"
+                    label="Payer"
+                    allowEmpty
+                    items={this.getItems("Payer") || []}
+                    className={classes.selectField}
+                    />
+                </Grid>
 
-              <Grid item xs={6}>
-                <FormField
-                  type="select"
-                  name="payerFormName"
-                  label="Payer"
-                  allowEmpty
-                  items={this.getItems("Payer") || []}
-                  margin="none"
-                  className={classes.selectField}
-                  fullWidth
-                />
-              </Grid>
+                <Grid item xs={6}>
+                  <FormField
+                    type="select"
+                    name="waitingListFormName"
+                    label="Waiting List"
+                    items={this.getItems("WaitingList") || []}
+                    className={classes.selectField}
+                    required
+                  />
+                </Grid>
 
-              <Grid item xs={6}>
-                <FormField
-                  type="select"
-                  name="waitingListFormName"
-                  label="Waiting List"
-                  items={this.getItems("WaitingList") || []}
-                  margin="none"
-                  className={classes.selectField}
-                  fullWidth
-                  required
-                />
-              </Grid>
+                <Grid item xs={6}>
+                  <FormField
+                    type="select"
+                    name="parentFormName"
+                    label="Parent"
+                    allowEmpty
+                    items={this.getItems("Parent") || []}
+                    className={classes.selectField}
+                  />
+                </Grid>
 
-              <Grid item xs={6}>
-                <FormField
-                  type="select"
-                  name="parentFormName"
-                  label="Parent"
-                  allowEmpty
-                  items={this.getItems("Parent") || []}
-                  margin="none"
-                  className={classes.selectField}
-                  fullWidth
-                />
-              </Grid>
+                <Grid item xs={6}>
+                  <FormField
+                    type="select"
+                    name="productFormName"
+                    label="Product"
+                    allowEmpty
+                    items={this.getItems("Product") || []}
+                    className={classes.selectField}
+                    required
+                  />
+                </Grid>
 
-              <Grid item xs={6}>
-                <FormField
-                  type="select"
-                  name="productFormName"
-                  label="Product"
-                  allowEmpty
-                  items={this.getItems("Product") || []}
-                  margin="none"
-                  className={classes.selectField}
-                  fullWidth
-                  required
-                />
-              </Grid>
+                <Grid item xs={6}>
+                  <FormField
+                    type="select"
+                    name="voucherFormName"
+                    label="Voucher"
+                    allowEmpty
+                    items={this.getItems("Voucher") || []}
+                    className={classes.selectField}
+                    required
+                  />
+                </Grid>
 
-              <Grid item xs={6}>
-                <FormField
-                  type="select"
-                  name="voucherFormName"
-                  label="Voucher"
-                  allowEmpty
-                  items={this.getItems("Voucher") || []}
-                  margin="none"
-                  className={classes.selectField}
-                  fullWidth
-                  required
-                />
-              </Grid>
-
-              <Grid item xs={6}>
-                <FormField
-                  type="select"
-                  name="membershipFormName"
-                  label="Membership"
-                  allowEmpty
-                  items={this.getItems("Membership") || []}
-                  margin="none"
-                  className={classes.selectField}
-                  fullWidth
-                  required
-                />
+                <Grid item xs={6}>
+                  <FormField
+                    type="select"
+                    name="membershipFormName"
+                    label="Membership"
+                    allowEmpty
+                    items={this.getItems("Membership") || []}
+                    className={classes.selectField}
+                    required
+                  />
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
+        </AppBarContainer>
       </form>
     );
   }
 }
 
+const mapStateToProps = (state: State) => ({
+  syncErrors: getFormSyncErrors(DATA_COLLECTION_RULES_FORM)(state)
+});
+
 const CollectionRulesForm = reduxForm({
-  form: "CollectionRulesForm",
+  form: DATA_COLLECTION_RULES_FORM,
   onSubmitFail
-})(withStyles(styles)(withRouter(CollectionRulesBaseForm)) as any);
+})(withStyles(styles)(withRouter(connect<any, any, any>(mapStateToProps)(CollectionRulesBaseForm))) as any);
 
 export default CollectionRulesForm;

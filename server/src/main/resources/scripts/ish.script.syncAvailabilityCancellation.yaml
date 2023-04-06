@@ -1,7 +1,0 @@
-name: Synchronise availability (cancellation)
-keyCode: ish.script.syncAvailabilityCancellation
-body: ish.script.syncAvailabilityCancellation.groovy
-enabled: false
-triggerType: ONCOURSE_EVENT
-onCourseEventType: ENROLMENT_CANCELLED
-description: This script finds all single session classes taught by the same tutor in the same room with overlapping times and keeps the places available in sync. For each enrolment in Class A, the maximum available places in Class B is reduced by one. This is useful if one class is a subset of another (eg. a refresher First Aid class where students need only come to the second half of the regular First Aid class). If you enable this script, you'll also want to enable 'Synchronise availability (enrolment)'

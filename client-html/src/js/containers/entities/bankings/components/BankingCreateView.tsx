@@ -11,9 +11,8 @@ import {
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { addDays, format as formatDate } from "date-fns";
+import { format as formatDate } from "date-fns";
 import { Report } from "@api/model";
-import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
@@ -28,8 +27,8 @@ import { LinkAdornment } from "../../../../common/components/form/FieldAdornment
 import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
 import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { stubFunction } from "../../../../common/utils/common";
+import EditInPlaceSearchSelect from "../../../../common/components/form/formFields/EditInPlaceSearchSelect";
 
 const paymentColumns: NestedTableColumn[] = [
   {
@@ -79,8 +78,8 @@ class BankingCreateView extends React.PureComponent<any, any> {
 
   componentDidUpdate() {
     const {
- accounts, adminSites, dispatch, adminCenterName, form, values
-} = this.props;
+     accounts, adminSites, dispatch, adminCenterName, form, values
+    } = this.props;
 
     if (!values) {
       return;
@@ -96,7 +95,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
         initialize(form, {
           ...values,
           adminSite: adminCenterName,
-          administrationCenterId: adminSites.find(s => s.label === adminCenterName).value
+          administrationCenterId: adminSites.find(s => s.label === adminCenterName)?.value
         })
       );
     }
@@ -148,10 +147,11 @@ class BankingCreateView extends React.PureComponent<any, any> {
 
   validateSettlementDate = (value: any) => {
     const { lockedDate, editRecord } = this.props;
+
     if (!lockedDate || !editRecord || editRecord.settlementDate === value) {
       return undefined;
     }
-    const date = new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth);
+    const date = new Date(lockedDate);
     const dateString = date.toISOString();
     return validateMinMaxDate(
       value,
@@ -188,7 +188,6 @@ class BankingCreateView extends React.PureComponent<any, any> {
   render() {
     const {
       accounts,
-      lockedDate,
       openNestedView,
       selectedAccountId,
       values,
@@ -198,99 +197,87 @@ class BankingCreateView extends React.PureComponent<any, any> {
     const hasNoAccounts = this.hasNoAccounts();
 
     return (
-      <div className="">
-        <FullScreenStickyHeader
-          title={values && adminSites && adminSites.filter(s => s.value === values.administrationCenterId).map(s => s.label)}
-          fields={(
-            <Grid container columnSpacing={0} className="flex-fill">
-              <Grid item xs={6}>
-                <FormField
-                  type="searchSelect"
-                  name="administrationCenterId"
-                  placeholder="Administration center"
-                  selectLabelCondition={getAdminCenterLabel}
-                  onChange={this.onSiteIdChange as any}
-                  items={adminSites || []}
-                  endAdornment={(
-                    <LinkAdornment
-                      link={values && values.administrationCenterId}
-                      linkHandler={openSiteLink}
-                      linkColor="inherit"
-                      className="appHeaderFontSize"
-                    />
-                  )}
-                  fieldClasses={{
-                    text: "appHeaderFontSize",
-                    selectMenu: "textPrimaryColor",
-                  }}
-                  required
-                />
-              </Grid>
-            </Grid>
-          )}
-          twoColumn
-        />
-        <div className="flex-column p-3 h-100">
-          <Grid container columnSpacing={3}>
-            <Grid item xs={4}>
-              <EditInPlaceField
-                items={accounts || []}
-                label="Account"
-                input={{ name: "id", value: selectedAccountId, onChange: this.onChangeAccount }}
-                meta={{ error: null, invalid: false, touched: false }}
-                selectValueMark="id"
-                selectLabelMark="description"
-                select
-                disabled={hasNoAccounts}
-              />
-            </Grid>
-            <Grid item xs={4}>
+      <div className="flex-column p-3 h-100">
+        <Grid container columnSpacing={3} rowSpacing={2}>
+          <Grid item xs={12}>
+            <Grid item xs={6}>
               <FormField
-                name="settlementDate"
-                label="Date banked"
-                type="date"
-                normalize={v => (v ? formatDate(new Date(v), YYYY_MM_DD_MINUSED) : v)}
-                validate={this.validateSettlementDate}
-                minDate={
-                  lockedDate
-                    ? addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1)
-                    : undefined
-                }
-                disabled={hasNoAccounts}
-              />
-            </Grid>
-            <Grid item xs={4} />
-            <Grid item xs={4}>
-              <FormControlLabel
-                classes={{
-                  root: "pr-3 checkbox"
+                type="select"
+                name="administrationCenterId"
+                label="Administration center"
+                selectLabelCondition={getAdminCenterLabel}
+                onChange={this.onSiteIdChange as any}
+                items={adminSites || []}
+                endAdornment={(
+                  <LinkAdornment
+                    link={values && values.administrationCenterId}
+                    linkHandler={openSiteLink}
+                    linkColor="inherit"
+                    className="appHeaderFontSize"
+                  />
+                )}
+                fieldClasses={{
+                  text: "appHeaderFontSize",
+                  selectMenu: "textPrimaryColor",
                 }}
-                control={<StyledCheckbox onChange={this.selectAll} checked={this.isAllSelected()} />}
-                label={
-                  "Select all ("
-                  + this.getSelectedCount()
-                  + " payment"
-                  + (this.getSelectedCount() > 1 ? "s" : "")
-                  + " selected)"
-                }
-                disabled={hasNoAccounts}
+                required
               />
             </Grid>
           </Grid>
+          <Grid item xs={4}>
+            <EditInPlaceSearchSelect
+              items={accounts || []}
+              label="Account"
+              input={{ name: "id", value: selectedAccountId, onChange: this.onChangeAccount as any, onFocus: stubFunction, onBlur: stubFunction }}
+              meta={{ error: null, invalid: false, touched: false }}
+              selectValueMark="id"
+              selectLabelMark="description"
+              disabled={hasNoAccounts}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <FormField
+              name="settlementDate"
+              label="Date banked"
+              type="date"
+              normalize={v => (v ? formatDate(new Date(v), YYYY_MM_DD_MINUSED) : v)}
+              validate={this.validateSettlementDate}
+              disabled={hasNoAccounts}
+              debounced={false}
+            />
+          </Grid>
+          <Grid item xs={4} />
+          <Grid item xs={4}>
+            <FormControlLabel
+              classes={{
+                root: "pr-3 checkbox"
+              }}
+              control={<StyledCheckbox onChange={this.selectAll} checked={this.isAllSelected()} />}
+              label={
+                "Select all ("
+                + this.getSelectedCount()
+                + " payment"
+                + (this.getSelectedCount() > 1 ? "s" : "")
+                + " selected)"
+              }
+              disabled={hasNoAccounts}
+            />
+          </Grid>
+        </Grid>
 
-          <FieldArray
-            name="payments"
-            className="saveButtonTableOffset"
-            goToLink="/paymentIn"
-            title={this.paymentsTitle()}
-            total={this.totalAmount()}
-            component={NestedTable}
-            columns={paymentColumns}
-            onRowDoubleClick={openNestedView}
-            rerenderOnEveryChange
-          />
-        </div>
+        <FieldArray
+          name="payments"
+          className="saveButtonTableOffset"
+          goToLink="/paymentIn"
+          title={this.paymentsTitle()}
+          total={this.totalAmount()}
+          component={NestedTable}
+          columns={paymentColumns}
+          onRowDoubleClick={openNestedView}
+          rerenderOnEveryChange
+        />
       </div>
+
     );
   }
 }

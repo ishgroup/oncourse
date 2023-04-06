@@ -41,7 +41,7 @@ import static ish.oncourse.cayenne.MappedSelectParams.*
  */
 @API
 @QueueableEntity
-class Certificate extends _Certificate implements Queueable, AttachableTrait {
+class Certificate extends _Certificate implements Queueable, AttachableTrait, ContactActivityTrait {
 	private static final Logger logger = LogManager.getLogger()
 
 	public static final SUCCESSFUL_OUTCOMES_PROPERTY = "successful_outcomes";
@@ -85,22 +85,6 @@ class Certificate extends _Certificate implements Queueable, AttachableTrait {
 
 	}
 
-	/**
-	 * @return
-	 */
-	@Nullable
-	@Override
-	Object getValueForKey(String key) {
-
-		if (STUDENT_FIRST_NAME.getName() == key) {
-			return getStudentFirstName()
-		} else if (STUDENT_LAST_NAME.getName() == key) {
-			return getStudentLastName()
-		}
-
-		return super.getValueForKey(key)
-	}
-
 	@Override
 	void addToAttachmentRelations(AttachmentRelation relation) {
 		if (relation instanceof CertificateAttachmentRelation) {
@@ -136,18 +120,12 @@ class Certificate extends _Certificate implements Queueable, AttachableTrait {
 	}
 
 	/**
-	 * A certificate stores the student name as at the time the certificate is created.
-	 *
 	 * @return student first name
+	 * @Deprecated Use certificate.student.contact.firstName instead
 	 */
 	@API
-	@Override
+	@Deprecated
 	String getStudentFirstName() {
-
-		String result = super.getStudentFirstName()
-		if (!StringUtils.isEmpty(result)) {
-			return result
-		}
 		if (getStudent() != null && getStudent().getContact() != null) {
 			return getStudent().getContact().getFirstName()
 		}
@@ -155,17 +133,12 @@ class Certificate extends _Certificate implements Queueable, AttachableTrait {
 	}
 
 	/**
-	 * A certificate stores the student name as at the time the certificate is created.
-	 *
 	 * @return student last name
+	 * @Deprecated Use certificate.student.contact.lastName instead
 	 */
 	@API
-	@Override
+	@Deprecated
 	String getStudentLastName() {
-		String result = super.getStudentLastName()
-		if (!StringUtils.isEmpty(result)) {
-			return result
-		}
 		if (getStudent() != null && getStudent().getContact() != null) {
 			return getStudent().getContact().getLastName()
 		}
@@ -191,8 +164,11 @@ class Certificate extends _Certificate implements Queueable, AttachableTrait {
 		return super.getCreatedOn()
 	}
 
-
-	/**
+	@Override
+	String getInteractionName() {
+		return qualification?.title
+	}
+/**
 	 * @return true if this certificate is for a full qualification (or accredited course)
 	 *
 	 */
@@ -278,7 +254,6 @@ class Certificate extends _Certificate implements Queueable, AttachableTrait {
 	 *
 	 * @return the qualification
 	 */
-	@Nonnull
 	@API
 	@Override
 	Qualification getQualification() {

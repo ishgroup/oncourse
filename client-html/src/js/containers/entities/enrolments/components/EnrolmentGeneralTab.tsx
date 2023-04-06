@@ -1,12 +1,15 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { useCallback, useMemo } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { change, FieldArray } from "redux-form";
+import { FieldArray } from "redux-form";
 import Grid from "@mui/material/Grid";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
@@ -17,15 +20,15 @@ import {
   Enrolment,
   EnrolmentExemptionType,
   EnrolmentStudyReason,
-  FundingSource, GradingType,
+  FundingSource,
+  GradingType,
   PaymentSource,
   Tag
 } from "@api/model";
+import clsx from "clsx";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
-import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import { formatFundingSourceId } from "../../common/utils";
-import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
 import {
   validateAssociatedCourseIdentifier,
   validateCharacter,
@@ -35,18 +38,17 @@ import {
   validateVetPurchasingContractIdentifier,
   validateVetTrainingContractID
 } from "../../../../common/utils/validation";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import { setSelectedContact } from "../../invoices/actions";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import EnrolmentSubmissions from "./EnrolmentSubmissions";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { HeaderContactTitle } from "../../../../common/components/form/FieldAdornments";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 const validateCricosConfirmation = value => validateCharacter(value, 32, "Confirmation of Enrolment");
 
@@ -62,9 +64,7 @@ interface Props extends Partial<EditViewProps> {
   values?: Enrolment;
   contracts?: FundingSource[];
   tags?: Tag[];
-  setSelectedContact?: AnyArgFunction;
   gradingTypes?: GradingType[];
-  isScrolling?: boolean;
 }
 
 const EnrolmentGeneralTab: React.FC<Props> = props => {
@@ -76,20 +76,10 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
     twoColumn,
     values,
     dispatch,
-    setSelectedContact,
     contracts,
     dirty,
-    gradingTypes
+    gradingTypes,
   } = props;
-
-  const onContactChange = useCallback(
-    value => {
-      setSelectedContact(value);
-
-      dispatch(change(form, "studentName", contactLabelCondition(value)));
-    },
-    [form]
-  );
 
   const validateAssesments = useCallback((value: AssessmentClass[], allValues: Enrolment) => {
     let error;
@@ -109,8 +99,6 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
     }
     return error;
   }, [gradingTypes]);
-
-  const validateTagList = useCallback((value, allValues, props) => validateTagsList(tags, value, allValues, props), []);
 
   const invoiceTypes = useMemo(
     () => (values.id
@@ -141,222 +129,201 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
   const outcomesAddLink = useMemo(() => `/outcome/new?search=enrolment.id=${values.id}`, [values.id]);
 
   return (
-    <>
-      {twoColumn && (
+    <Grid container columnSpacing={3} rowSpacing={2} className={clsx("pl-3 pr-3", twoColumn ? "pt-2" : "pt-3")}>
+      <Grid item xs={12}>
         <FullScreenStickyHeader
+          disableInteraction
           twoColumn={twoColumn}
-          title={defaultContactName(values.studentName)}
-        />
-      )}
-      <Grid container columnSpacing={3} className="pt-3 pl-3 pr-3">
-        <Grid item xs={12}>
-          <FormField
-            type="tags"
-            name="tags"
-            tags={tags}
-            validate={tags && tags.length ? validateTagList : undefined}
-          />
-        </Grid>
-
-        <Grid item xs={twoColumn ? 4 : 12}>
-          <FormField
-            type="remoteDataSearchSelect"
-            entity="Contact"
-            aqlFilter="isStudent is true"
-            name="studentContactId"
-            label="Student"
-            selectValueMark="id"
-            selectLabelCondition={contactLabelCondition}
-            defaultDisplayValue={values && defaultContactName(values.studentName)}
-            labelAdornment={(
-              <LinkAdornment
-                linkHandler={openContactLink}
-                link={values.studentContactId}
-                disabled={!values.studentContactId}
-              />
-            )}
-            onInnerValueChange={onContactChange}
-            itemRenderer={ContactSelectItemRenderer}
-            disabled={!isNew}
-            rowHeight={55}
-            required
-          />
-        </Grid>
-
-        <Grid item xs={twoColumn ? 8 : 12}>
-          <Uneditable
-            value={values && values.courseClassName}
-            label="Class"
-            url={`/class/${values.courseClassId}`}
-          />
-        </Grid>
-
-        <Grid item xs={twoColumn ? 4 : 12}>
-          <FormField type="text" name="displayStatus" label="Status" disabled />
-        </Grid>
-
-        <Grid item xs={twoColumn ? 8 : 12}>
-          <FormField
-            type="select"
-            name="source"
-            label="Source"
-            items={paymentSourceItems}
-            disabled={!isNew}
-          />
-        </Grid>
-
-        <Grid item xs={12} className="pt-2 pb-3">
-          <Divider />
-        </Grid>
-
-        <Grid item xs={twoColumn ? 4 : 12}>
-          {contracts && (
-            <FormField
-              type="select"
-              selectValueMark="id"
-              selectLabelMark="name"
-              name="relatedFundingSourceId"
-              label="Funding contract"
-              items={contracts}
-              format={formatFundingSourceId}
-            />
+          title={(
+            <HeaderContactTitle name={values?.studentName} id={values?.studentContactId} />
           )}
-        </Grid>
+        />
+      </Grid>
+      <Grid item xs={twoColumn ? 8 : 12}>
+        <FormField
+          type="tags"
+          name="tags"
+          tags={tags}
+        />
+      </Grid>
 
-        <Grid item xs={twoColumn ? 4 : 12}>
-          <FormField
-            type="select"
-            name="studyReason"
-            label="Study reason"
-            items={enrolmentStudyReasonItems}
-          />
-        </Grid>
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <EntityChecklists
+          entity="Enrolment"
+          form={form}
+          entityId={values.id}
+          checked={values.tags}
+        />
+      </Grid>
 
-        <Grid item xs={twoColumn ? 4 : 12}>
-          <FormField
-            type="select"
-            name="vetFeeExemptionType"
-            label="Fee exemption/concession type"
-            items={enrolmentExemptionTypeItems}
-          />
-        </Grid>
+      <Grid item xs={twoColumn ? 8 : 12}>
+        <Uneditable
+          value={values && values.courseClassName}
+          label="Class"
+          url={`/class/${values.courseClassId}`}
+        />
+      </Grid>
 
-        <Grid item xs={twoColumn ? 4 : false}>
-          <FormField
-            type="select"
-            name="fundingSource"
-            label="Default funding source national"
-            items={fundingSourceValues}
-          />
-        </Grid>
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <FormField type="text" name="displayStatus" label="Status" disabled />
+      </Grid>
 
-        <Grid item xs={twoColumn ? 4 : 12}>
-          <FormField
-            type="text"
-            name="vetFundingSourceStateID"
-            label="Default funding source - State"
-            validate={validateVetFundingSourceState}
-            fullWidth
-          />
-        </Grid>
+      <Grid item xs={twoColumn ? 8 : 12}>
+        <FormField
+          type="select"
+          name="source"
+          label="Source"
+          items={paymentSourceItems}
+          disabled={!isNew}
+        />
+      </Grid>
 
-        <Grid item xs={twoColumn ? 4 : 12}>
-          <FormControlLabel
-            className="checkbox"
-            control={<FormField type="checkbox" name="vetIsFullTime" />}
-            label="Full time flag (QLD)"
-          />
-        </Grid>
+      <Grid item xs={12} className="pt-2 pb-3">
+        <Divider />
+      </Grid>
 
-        <Grid item xs={12} className="pt-2 pb-3">
-          <Divider />
-        </Grid>
+      <Grid item xs={twoColumn ? 4 : 12}>
+        {contracts && (
+        <FormField
+          type="select"
+          selectValueMark="id"
+          selectLabelMark="name"
+          name="relatedFundingSourceId"
+          label="Funding contract"
+          items={contracts}
+          format={formatFundingSourceId}
+        />
+          )}
+      </Grid>
 
-        <Grid item xs={twoColumn ? 4 : 12}>
-          <FormControlLabel
-            className="checkbox"
-            control={<FormField type="checkbox" name="vetInSchools" />}
-            label="VET in schools enrolment"
-          />
-        </Grid>
-        <Grid item xs={twoColumn ? 8 : 12} className="mb-2">
-          <FormControlLabel
-            className="checkbox"
-            control={<FormField type="checkbox" name="suppressAvetmissExport" />}
-            label="Do not report for AVETMISS"
-          />
-        </Grid>
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <FormField
+          type="select"
+          name="studyReason"
+          label="Study reason"
+          items={enrolmentStudyReasonItems}
+        />
+      </Grid>
 
-        <Grid item xs={twoColumn ? 4 : 12}>
-          <FormField
-            type="text"
-            name="associatedCourseIdentifier"
-            label="Associated Course Identifier - (SA - SACE Student ID)"
-            validate={validateAssociatedCourseIdentifier}
-            fullWidth
-          />
-        </Grid>
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <FormField
+          type="select"
+          name="vetFeeExemptionType"
+          label="Fee exemption/concession type"
+          items={enrolmentExemptionTypeItems}
+        />
+      </Grid>
 
-        <Grid item xs={twoColumn ? 4 : 12}>
-          <FormField
-            type="text"
-            name="vetPurchasingContractID"
-            label="Default purchasing contract identifier (NSW Commitment ID)"
-            validate={validateVetPurchasingContractIdentifier}
-            fullWidth
-          />
-        </Grid>
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <FormField
+          type="select"
+          name="fundingSource"
+          label="Default funding source national"
+          items={fundingSourceValues}
+        />
+      </Grid>
 
-        <Grid item xs={twoColumn ? 4 : 12}>
-          <FormField
-            type="text"
-            name="outcomeIdTrainingOrg"
-            label="Outcome identifier Training Organisation"
-            validate={validateOutcomeIdTrainingOrg}
-            fullWidth
-          />
-        </Grid>
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <FormField
+          type="text"
+          name="vetFundingSourceStateID"
+          label="Default funding source - State"
+          validate={validateVetFundingSourceState}
+                  />
+      </Grid>
 
-        <Grid item xs={twoColumn ? 4 : 12}>
-          <FormField
-            type="text"
-            name="vetClientID"
-            label="Client identifier: apprenticeships"
-            validate={validateVetClientID}
-            fullWidth
-          />
-        </Grid>
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <FormControlLabel
+          className="checkbox"
+          control={<FormField type="checkbox" name="vetIsFullTime" />}
+          label="Full time flag (QLD)"
+        />
+      </Grid>
 
-        <Grid item xs={twoColumn ? 4 : 12}>
-          <FormField
-            type="text"
-            name="vetTrainingContractID"
-            label="Training contract: apprenticeships"
-            validate={validateVetTrainingContractID}
-            fullWidth
-          />
-        </Grid>
+      <Grid item xs={12} className="pt-2 pb-3">
+        <Divider />
+      </Grid>
 
-        <Grid item xs={twoColumn ? 4 : 12} className="mb-2">
-          <FormField
-            type="text"
-            name="cricosConfirmation"
-            label="CRICOS: Confirmation of Enrolment (CoE)"
-            validate={validateCricosConfirmation}
-            fullWidth
-          />
-        </Grid>
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <FormControlLabel
+          className="checkbox"
+          control={<FormField type="checkbox" name="vetInSchools" />}
+          label="VET in schools enrolment"
+        />
+      </Grid>
+      <Grid item xs={twoColumn ? 8 : 12} className="mb-2">
+        <FormControlLabel
+          className="checkbox"
+          control={<FormField type="checkbox" name="suppressAvetmissExport" />}
+          label="Do not report for AVETMISS"
+        />
+      </Grid>
 
-        <FormGroup className="mb-2">
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <FormField
+          type="text"
+          name="associatedCourseIdentifier"
+          label="Associated Course Identifier - (SA - SACE Student ID)"
+          validate={validateAssociatedCourseIdentifier}
+                  />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <FormField
+          type="text"
+          name="vetPurchasingContractID"
+          label="Default purchasing contract identifier (NSW Commitment ID)"
+          validate={validateVetPurchasingContractIdentifier}
+                  />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <FormField
+          type="text"
+          name="outcomeIdTrainingOrg"
+          label="Outcome identifier Training Organisation"
+          validate={validateOutcomeIdTrainingOrg}
+                  />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <FormField
+          type="text"
+          name="vetClientID"
+          label="Client identifier: apprenticeships"
+          validate={validateVetClientID}
+                  />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <FormField
+          type="text"
+          name="vetTrainingContractID"
+          label="Training contract: apprenticeships"
+          validate={validateVetTrainingContractID}
+                  />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 4 : 12} className="mb-2">
+        <FormField
+          type="text"
+          name="cricosConfirmation"
+          label="CRICOS: Confirmation of Enrolment (CoE)"
+          validate={validateCricosConfirmation}
+                  />
+      </Grid>
+
+      <Grid item xs={12} className="mb-2">
+        <FormGroup>
           <FormControlLabel
             className="checkbox"
             control={<FormField type="checkbox" name="eligibilityExemptionIndicator" />}
-            label="Eligibility exemption  inidicator (Vic)"
+            label="Eligibility exemption  indicator (Vic)"
           />
           <FormControlLabel
             className="checkbox"
             control={<FormField type="checkbox" name="vetFeeIndicator" />}
-            label="VET FEE HELP Indicator (Vic)"
+            label="VET FEE HELP indicator (Vic)"
           />
           <FormControlLabel
             className="checkbox"
@@ -364,59 +331,53 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
             label="Training plan developed (NSW)"
           />
         </FormGroup>
-
-        {!isNew && (
-          <>
-            <Grid item xs={12} className="pt-2 pb-3">
-              <Divider />
-            </Grid>
-            <Grid item xs={12}>
-              <NestedEntity
-                entityTypes={invoiceTypes}
-                dirty={dirty}
-                showConfirm={showConfirm}
-                twoColumn={twoColumn}
-                isNew={isNew}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <NestedEntity
-                entityTypes={outcomeTypes}
-                dirty={dirty}
-                showConfirm={showConfirm}
-                twoColumn={twoColumn}
-                isNew={isNew}
-                addLink={outcomesAddLink}
-              />
-            </Grid>
-            <Grid item xs={12} className="pb-3">
-              <Divider />
-            </Grid>
-            <CustomFields
-              entityName="Enrolment"
-              fieldName="customFields"
-              entityValues={values}
-              dispatch={dispatch}
-              form={form}
-              gridItemProps={{
-                xs: twoColumn ? 6 : 12,
-                lg: twoColumn ? 4 : 12
-              }}
-            />
-          </>
-        )}
-
-        <FieldArray
-          name="assessments"
-          component={EnrolmentSubmissions}
-          values={values as any}
-          gradingTypes={gradingTypes}
-          dispatch={dispatch}
-          validate={validateAssesments}
+      </Grid>
+      <Grid item xs={12} className="pt-2 pb-3">
+        <Divider />
+      </Grid>
+      <Grid item xs={12}>
+        <NestedEntity
+          entityTypes={invoiceTypes}
+          dirty={dirty}
+          showConfirm={showConfirm}
           twoColumn={twoColumn}
+          isNew={isNew}
         />
       </Grid>
-    </>
+      <Grid item xs={12}>
+        <NestedEntity
+          entityTypes={outcomeTypes}
+          dirty={dirty}
+          showConfirm={showConfirm}
+          twoColumn={twoColumn}
+          isNew={isNew}
+          addLink={outcomesAddLink}
+        />
+      </Grid>
+      <Grid item xs={12} className="pb-3">
+        <Divider />
+      </Grid>
+      <CustomFields
+        entityName="Enrolment"
+        fieldName="customFields"
+        entityValues={values}
+        form={form}
+        gridItemProps={{
+          xs: twoColumn ? 6 : 12,
+          lg: twoColumn ? 4 : 12
+        }}
+      />
+      <FieldArray
+        name="assessments"
+        component={EnrolmentSubmissions}
+        values={values as any}
+        gradingTypes={gradingTypes}
+        dispatch={dispatch}
+        validate={validateAssesments}
+        twoColumn={twoColumn}
+      />
+    </Grid>
+  
   );
 };
 

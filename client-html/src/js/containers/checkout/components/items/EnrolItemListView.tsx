@@ -36,7 +36,7 @@ const EnrolItemListView = React.memo<any>(props => {
           disabledHandler={disabledHandler}
           primaryText={item => (searchString ? getHighlightedPartLabel(item.code, searchString) : item.code)}
           secondaryText={item => (
-            <Typography component="span" variant="caption" color="textSecondary" className="ml-0-5 text-truncate">
+            <Typography component="div" variant="caption" color="textSecondary" noWrap>
               {searchString ? getHighlightedPartLabel(item.name, searchString) : item.name}
             </Typography>
           )}
@@ -52,7 +52,7 @@ const EnrolItemListView = React.memo<any>(props => {
           disabledHandler={disabledHandler}
           primaryText={item => (searchString ? getHighlightedPartLabel(item.code, searchString) : item.code)}
           secondaryText={item => (
-            <Typography component="span" variant="caption" color="textSecondary" className="ml-0-5 text-truncate">
+            <Typography component="div" variant="caption" color="textSecondary" noWrap>
               {searchString ? getHighlightedPartLabel(item.name, searchString) : item.name}
             </Typography>
           )}
@@ -68,7 +68,7 @@ const EnrolItemListView = React.memo<any>(props => {
           disabledHandler={disabledHandler}
           primaryText={item => (searchString ? getHighlightedPartLabel(item.code, searchString) : item.code)}
           secondaryText={item => (
-            <Typography component="span" variant="caption" color="textSecondary" className="ml-0-5 text-truncate">
+            <Typography component="div" variant="caption" color="textSecondary" noWrap>
               {searchString ? getHighlightedPartLabel(item.name, searchString) : item.name}
             </Typography>
           )}
@@ -84,7 +84,7 @@ const EnrolItemListView = React.memo<any>(props => {
           disabledHandler={disabledHandler}
           primaryText={item => (searchString ? getHighlightedPartLabel(item.code, searchString) : item.code)}
           secondaryText={item => (
-            <Typography component="span" variant="caption" color="textSecondary" className="ml-0-5 text-truncate">
+            <Typography component="div" variant="caption" color="textSecondary" noWrap>
               {searchString ? getHighlightedPartLabel(item.name, searchString) : item.name}
             </Typography>
           )}

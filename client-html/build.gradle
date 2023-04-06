@@ -1,11 +1,19 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 plugins {
     id 'com.github.node-gradle.node'
     id 'queryLanguageModel'
 }
 
 node {
-    version = '12.19.0'
-    yarnVersion = '1.22.10'
+    version = '16.10.0'
+    yarnVersion = '1.22.19'
     download = System.properties['os.name'] != "FreeBSD" // FreeBSD has no binaries this plugin can install
     workDir = file("${project.buildDir}/nodejs")
 }
@@ -40,7 +48,7 @@ task queryGrammar(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn', 'ge
 }
 
 task jest(type: YarnTask, dependsOn: 'queryGrammar') {
-    args = ['test', '--runInBand']
+    args = ['test']
 }
 test.dependsOn(jest)
 

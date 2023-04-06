@@ -8,7 +8,6 @@ Feature: Main feature for all POST requests with path 'list/entity/document'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
         * def ishPathPlain = 'list/plain'
-        
 
 
 
@@ -36,7 +35,7 @@ Feature: Main feature for all POST requests with path 'list/entity/document'
         When method GET
         Then status 200
         And match $.name == "testDoc2"
-        And match $.tags[*].id == [216]
+        And match $.tags[*] == [216]
         And match $.description == "some description"
         And match $.access == "Private"
         And match $.shared == true
@@ -67,7 +66,6 @@ Feature: Main feature for all POST requests with path 'list/entity/document'
         And match $.description == "some description"
         And match $.access == "Public"
         And match $.shared == true
-
 
 
     Scenario: (+) Upload private document by notadmin with rights
@@ -104,7 +102,6 @@ Feature: Main feature for all POST requests with path 'list/entity/document'
         And match $.shared == true
 
 
-
     Scenario: (+) Upload public document by notadmin with rights
 
 #       <--->  Login as notadmin
@@ -137,7 +134,6 @@ Feature: Main feature for all POST requests with path 'list/entity/document'
         And match $.description == "some description"
         And match $.access == "Public"
         And match $.shared == true
-
 
 
     Scenario: (-) Upload public document by notadmin without rights

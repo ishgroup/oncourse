@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { useEffect } from "react";
@@ -10,10 +13,9 @@ import { Account, TableModel, VoucherProduct } from "@api/model";
 import { Dispatch } from "redux";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
 import { plainCorporatePassPath } from "../../../constants/Api";
-import { createVoucherProduct, getVoucherProduct, updateVoucherProduct } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
 import VoucherProductEditView from "./components/VoucherProductEditView";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { State } from "../../../reducers/state";
 import { getPlainAccounts } from "../accounts/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
@@ -23,17 +25,17 @@ import {
   ACCOUNT_DEFAULT_VOUCHER_UNDERPAYMENT_ID
 } from "../../../constants/Config";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import { getEntityTags } from "../../tags/actions";
+import { getEntityTags, getListTags } from "../../tags/actions";
 import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
+import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
+import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 
 interface VoucherProductsProps {
-  getVoucherProductRecord?: () => void;
   getTagsForClassesSearch?: () => void;
   onInit?: (initial: VoucherProduct) => void;
-  onCreate?: (voucherProduct: VoucherProduct) => void;
-  onSave?: (id: string, voucherProduct: VoucherProduct) => void;
   getFilters?: () => void;
   getRelationTypes?: () => void;
+  getTags?: () => void;
   clearListState?: () => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
   getDefaultAccounts?: () => void;
@@ -74,16 +76,17 @@ const filterGroups: FilterGroup[] = [
         name: "Inactive",
         expression: "isOnSale == false",
         active: false
-      }
+      },
     ]
   }
 ];
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == VoucherProduct and entityId" },
   { title: "Contacts purchased", list: "contact", expression: "invoices.invoiceLines.productItems.product.id" },
   { title: "Courses", list: "course", expression: "voucherProductCourses.voucherProduct.id" },
-  { title: "Vouchers", list: "sale", expression: "product.id" }
+  { title: "Sales", list: "sale", expression: "type is VOUCHER AND product.id" },
+  { title: "Vouchers", list: "sale", expression: "product.id" },
 ];
 
 const preformatBeforeSubmit = (value: VoucherProduct): VoucherProduct => {
@@ -98,12 +101,14 @@ const preformatBeforeSubmit = (value: VoucherProduct): VoucherProduct => {
   return value;
 };
 
+const setRowClasses = ({ isOnSale }) => {
+  if (isOnSale === "No") return "text-op05";
+  return undefined;
+};
+
 const VoucherProducts: React.FC<VoucherProductsProps> = props => {
   const {
-    getVoucherProductRecord,
     onInit,
-    onCreate,
-    onSave,
     getFilters,
     clearListState,
     getDefaultAccounts,
@@ -113,7 +118,8 @@ const VoucherProducts: React.FC<VoucherProductsProps> = props => {
     accounts,
     checkPermissions,
     getRelationTypes,
-    getDataCollectionRules
+    getDataCollectionRules,
+    getTags
   } = props;
 
   const onInitCustom = () => {
@@ -130,6 +136,7 @@ const VoucherProducts: React.FC<VoucherProductsProps> = props => {
     getDefaultAccounts();
     getAccounts();
     getFilters();
+    getTags();
     getTagsForClassesSearch();
     checkPermissions();
     getRelationTypes();
@@ -140,29 +147,28 @@ const VoucherProducts: React.FC<VoucherProductsProps> = props => {
   }, []);
 
   return (
-    <div>
-      <ListView
-        listProps={{
-          primaryColumn: "name",
-          secondaryColumn: "sku"
+    <ListView
+      listProps={{
+        setRowClasses,
+        primaryColumn: "name",
+        secondaryColumn: "sku"
+      }}
+      editViewProps={{
+          manualLink,
+          asyncValidate: notesAsyncValidate,
+          asyncChangeFields: ["notes[].message"],
+          hideTitle: true
         }}
-        editViewProps={{
-          manualLink
-        }}
-        EditViewContent={VoucherProductEditView}
-        getEditRecord={getVoucherProductRecord}
-        rootEntity="VoucherProduct"
-        aqlEntity="Product"
-        onInit={onInitCustom}
-        onCreate={onCreate}
-        onSave={onSave}
-        findRelated={findRelatedGroup}
-        filterGroupsInitial={filterGroups}
-        preformatBeforeSubmit={preformatBeforeSubmit}
-        defaultDeleteDisabled
-        noListTags
-      />
-    </div>
+      EditViewContent={VoucherProductEditView}
+      CogwheelAdornment={BulkEditCogwheelOption}
+      rootEntity="VoucherProduct"
+      onInit={onInitCustom}
+      findRelated={findRelatedGroup}
+      filterGroupsInitial={filterGroups}
+      preformatBeforeSubmit={preformatBeforeSubmit}
+      defaultDeleteDisabled
+      noListTags
+    />
   );
 };
 
@@ -174,6 +180,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getTagsForClassesSearch: () => {
     dispatch(getEntityTags("Course"));
   },
+  getTags: () => dispatch(getListTags("VoucherProduct")),
   getFilters: () => dispatch(getFilters("VoucherProduct")),
   getAccounts: () => getPlainAccounts(dispatch),
   getDefaultAccounts: () => {
@@ -181,9 +188,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getUserPreferences([ACCOUNT_DEFAULT_VOUCHER_UNDERPAYMENT_ID]));
   },
   clearListState: () => dispatch(clearListState()),
-  getVoucherProductRecord: (id: string) => dispatch(getVoucherProduct(id)),
-  onSave: (id: string, voucherProduct: VoucherProduct) => dispatch(updateVoucherProduct(id, voucherProduct)),
-  onCreate: (voucherProduct: VoucherProduct) => dispatch(createVoucherProduct(voucherProduct)),
   checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" })),
   getRelationTypes: () => dispatch(getEntityRelationTypes()),
   getDataCollectionRules: () => dispatch(getDataCollectionRules()),

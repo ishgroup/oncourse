@@ -48,9 +48,9 @@ const PayslipPaylineItem = (props: Props) => {
 
   return (
     <Card className={clsx(threeColumn ? classes.threeColumnCard : "card", "relative")}>
-      <Grid container columnSpacing={3}>
+      <Grid container>
         <Grid item xs={paylineLayout[1].xs} className="d-flex">
-          <Grid container columnSpacing={3}>
+          <Grid container>
             {field.type && (
               <Typography variant="body1" color="textSecondary" className={threeColumn ? "flex-fill" : undefined}>
                 {field.type}
@@ -84,7 +84,7 @@ const PayslipPaylineItem = (props: Props) => {
         </Grid>
 
         <Grid item xs={paylineLayout[4].xs}>
-          <Grid container columnSpacing={3} className="h-100">
+          <Grid container columnSpacing={3} rowSpacing={2} className="h-100">
             <Grid item xs={12}>
               {field.className && (
                 <Grid item xs={paylineLayout[2].xs}>
@@ -95,22 +95,20 @@ const PayslipPaylineItem = (props: Props) => {
                 </Grid>
               )}
             </Grid>
-            <Grid item xs={12} className={threeColumn ? "pt-2" : undefined}>
+            <Grid item xs={12} className={clsx("pr-2", threeColumn ? "pt-2" : undefined)}>
               <FormField
                 type="multilineText"
                 disabled={!field.deferred}
                 name={`${item}.description`}
                 label="Description"
-                listSpacing={threeColumn}
                 required
-                fullWidth
               />
             </Grid>
           </Grid>
         </Grid>
 
         <Grid item xs={paylineLayout[5].xs}>
-          <Grid container columnSpacing={3} className={classes.infoContainer}>
+          <Grid container className={classes.infoContainer}>
             {hasQuantityAndTotal && (
               <>
                 <Grid item xs={2} />
@@ -127,16 +125,15 @@ const PayslipPaylineItem = (props: Props) => {
                   <Typography variant="caption">{field.type === "Per enrolment" ? "Enrolments" : "Hours"}</Typography>
                 </Grid>
 
-                <Grid item xs={4} className="text-nowrap">
+                <Grid item xs={4} className="text-nowrap d-flex justify-content-end">
                   <FormField
                     type="number"
                     disabled={!field.deferred}
                     name={`${item}.quantity`}
                     normalize={normalizeNumber}
-                    className={classes.fieldMargin}
-                    listSpacing={false}
-                    disableInputOffsets
-                    fullWidth
+                    debounced={false}
+                    
+                    inline
                     rightAligned
                   />
                 </Grid>
@@ -144,6 +141,7 @@ const PayslipPaylineItem = (props: Props) => {
                 <Grid item xs={5} className={classes.infoItem}>
                   <Typography
                     variant="subtitle1"
+                    className="fw300"
                     color={field.quantity === field.budgetedQuantity ? "textSecondary" : "error"}
                   >
                     {field.budgetedQuantity}
@@ -156,15 +154,12 @@ const PayslipPaylineItem = (props: Props) => {
               <Typography variant="caption">{field.className ? "Rate" : "Total"}</Typography>
             </Grid>
 
-            <Grid item xs={hasQuantityAndTotal ? 5 : 10} className="text-nowrap">
+            <Grid item xs={hasQuantityAndTotal ? 5 : 10} className="text-nowrap d-flex justify-content-end">
               <FormField
                 type="money"
                 disabled={!field.deferred}
                 name={`${item}.value`}
-                className={hasQuantityAndTotal ? classes.fieldMargin : undefined}
-                listSpacing={false}
-                disableInputOffsets
-                fullWidth
+                inline
                 rightAligned
                 required
               />
@@ -175,7 +170,7 @@ const PayslipPaylineItem = (props: Props) => {
                 <Typography
                   variant="subtitle1"
                   color={field.value === field.budgetedValue ? "textSecondary" : "error"}
-                  className="money"
+                  className="money fw300"
                 >
                   {shortCurrencySymbol}
                   {field.budgetedValue.toFixed(2) || 0}
@@ -191,7 +186,7 @@ const PayslipPaylineItem = (props: Props) => {
 
                 <Grid item xs={5} className={classes.infoItem}>
                   <div className="w-100 text-end">
-                    <Typography variant="subtitle1" className="money" noWrap>
+                    <Typography variant="subtitle1" className="money fw300" noWrap>
                       {shortCurrencySymbol}
                       {valueTotal.toFixed(2)}
                     </Typography>
@@ -202,7 +197,7 @@ const PayslipPaylineItem = (props: Props) => {
                   <Typography
                     variant="subtitle1"
                     color={valueTotal === budgetTotal ? "textSecondary" : "error"}
-                    className="money"
+                    className="money fw300"
                     noWrap
                   >
                     {shortCurrencySymbol}

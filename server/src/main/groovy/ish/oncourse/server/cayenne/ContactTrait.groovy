@@ -11,16 +11,23 @@
 
 package ish.oncourse.server.cayenne
 
+import com.google.inject.Inject
 import ish.common.types.ProductStatus
 import ish.oncourse.API
 import ish.oncourse.server.api.dao.PaymentInDao
+import ish.oncourse.server.license.LicenseService
 import ish.util.RuntimeUtil
+import ish.util.UrlUtil
 import org.apache.commons.lang3.StringUtils
 
+import java.text.ParseException
 import java.time.LocalDate
 import java.time.Period
 
 trait ContactTrait {
+
+    private static final int DEFAULT_PORTAL_URL_SIGNATURE_TIMEOUT = 7
+    private static final String PORTAL_USI_TARGET = "USI"
 
     abstract List<Membership> getMemberships()
     abstract LocalDate getBirthDate()
@@ -31,6 +38,10 @@ trait ContactTrait {
     abstract String getPostcode()
     abstract String getState()
     abstract String getSuburb()
+    abstract String getUniqueCode()
+
+    @Inject
+    private LicenseService licenseService
     
     boolean hasMembership(MembershipProduct membership) {
         memberships.any { it.status == ProductStatus.ACTIVE && it.expiryDate > new Date() && it.product.id == membership.id  }
@@ -125,4 +136,103 @@ trait ContactTrait {
             contact.getAddress()
         }
     }
+
+
+    /**
+     *
+     * Generates signed URL granting access to specific page in portal.
+     * For example following statement
+     * restrictedPortalURL(courseClass, '2016-01-11')
+     * if executed on 1 Jan 2016 will yield the following URL:
+     * https://www.skillsoncourse.com.au/portal/class/1531?valid=20160111&key=k9_S8uk68W5PoCvq5lSUp70sqQY
+     *
+     *
+     * Target - the specific object on the basis of which url to certain portal page will be assembled.
+     *
+     * Available objects are:
+     * ```
+     * courseClass - link to class page
+     * enrolment - link to class page
+     * invoice - link to one invoice details
+     * document - link to download file directly
+     * "USI" string - link to USI details entering page in portal
+     * "someOtherPagePath" string - link to page defined by customer (for example: 'timetable', 'results', 'resources', 'subscriptions' and other
+     * ```
+     * Timeout - acceptable for different parameter types:
+     * ```
+     *  java.util.Date - date after which URL will expire and no longer be valid,<
+     *  java.lang.String - string representation of date (format is 'yyyy-MM-dd') after which URL will expire and no longer be valid,
+     *  java.lang.Integer - number of days after which URL will expire and no longer be valid.
+     * ```
+     * If timeout == null or not defined then url link will be valid for 7 days.
+     *
+     * @param target object on the basis of which url to certain portal page will be assembled
+     * @param date or time after which the generated URL will expire
+     *
+     * @return signed portal url to certain page (target)
+     */
+    @API
+    String getPortalLink(def target, def timeout = null) {
+
+        Date expiryDate = parseExpiryDate(timeout)
+        String hashSalt = licenseService.getSecurity_key()
+        if (PORTAL_USI_TARGET.equals(target)) {
+            return UrlUtil.createPortalUsiLink(this.uniqueCode, expiryDate, hashSalt)
+        } else {
+            String path = parsePortalTarget(target)
+            return UrlUtil.createSignedPortalUrl(path, expiryDate, hashSalt)
+        }
+    }
+
+    private Date parseExpiryDate(Object timeout) {
+
+        if (timeout) {
+            switch (timeout.class) {
+                case String:
+                    try {
+                        return Date.parse('yyyy-MM-dd', (String)timeout)
+                    } catch (ParseException e) {
+                        return new Date().plus(DEFAULT_PORTAL_URL_SIGNATURE_TIMEOUT)
+                    }
+                case Date:
+                    return (Date) timeout
+                case Integer:
+                    return new Date().plus((Integer)timeout)
+                default:
+                    throw new IllegalArgumentException("Can not interpret 'validUntil' parameter to Date value")
+            }
+
+        } else {
+            return new Date().plus(DEFAULT_PORTAL_URL_SIGNATURE_TIMEOUT)
+        }
+    }
+
+    private String parsePortalTarget(Object target) {
+        StringBuilder path = new StringBuilder()
+        if (target) {
+            switch (target.class) {
+                case String:
+                    path.append(target)
+                    break
+                case CourseClass:
+                    path.append("class/" + ((CourseClass)target).willowId)
+                    break
+                case Enrolment:
+                    path.append("class/" + ((Enrolment)target).courseClass.willowId)
+                    break
+                case Invoice:
+                    path.append("invoicedetails/" + ((Invoice)target).willowId)
+                    break
+                case Document:
+                    path.append("resource/" + ((Document)target).fileUUID)
+                    break
+                default:
+                    throw new IllegalArgumentException("Can not interpret 'target' parameter to url path")
+            }
+        } else {
+            throw new IllegalArgumentException("Path cannot be null.")
+        }
+        return path.append("?contactId=" + this.uniqueCode).toString()
+    }
+
 }

@@ -61,7 +61,10 @@ Feature: Main feature for all POST requests with path 'list/entity/articleProduc
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "relatedSellables":[],
-        "dataCollectionRuleId":null
+        "dataCollectionRuleId":null,
+        "documents":[],
+        "customFields":{},
+        "tags":[]
         }
         """
 
@@ -118,6 +121,9 @@ Feature: Main feature for all POST requests with path 'list/entity/articleProduc
         "totalFee":110.00,
         "taxId":1,
         "incomeAccountId":7,
+        "documents":[],
+        "customFields":{},
+        "tags":[],
         "status":"Can be purchased in office & online",
         "corporatePasses":[{"id":1002,"contactFullName":"company #2"}],
         "createdOn":"#ignore",

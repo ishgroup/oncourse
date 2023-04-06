@@ -18,8 +18,7 @@ const ImportsRenderer = props => {
         name={f}
         label="Library"
         disabled={!hasUpdateAccess || isInternal}
-        fullWidth
-      />
+              />
     </Grid>
   ));
 };
@@ -28,7 +27,7 @@ const ImportCardContent = props => {
   const { classes, hasUpdateAccess, isInternal } = props;
 
   return (
-    <Grid container columnSpacing={3} className="pt-3">
+    <Grid container columnSpacing={3} rowSpacing={2} className="pt-3">
       <FieldArray name="imports" component={ImportsRenderer} hasUpdateAccess={hasUpdateAccess} classes={classes} isInternal={isInternal} />
     </Grid>
   );

@@ -12,7 +12,7 @@ export const dialogStyles = theme =>
       padding: theme.spacing(1, 2),
       background: theme.palette.background.paper,
       boxShadow: `${theme.shadows[20]}`,
-      borderRadius: `${theme.shape.borderRadius}px`
+      borderRadius: `${theme.shape.borderRadius}`
     },
     container: {
       width: "500px"
@@ -26,13 +26,14 @@ export const dialogStyles = theme =>
       bottom: 0,
       width: "100%",
       position: "absolute",
-      borderBottomRightRadius: `${theme.shape.borderRadius}px`,
-      borderBottomLeftRadius: `${theme.shape.borderRadius}px`
+      borderBottomRightRadius: `${theme.shape.borderRadius}`,
+      borderBottomLeftRadius: `${theme.shape.borderRadius}`
     },
     selectContainer: {
       minWidth: "500px",
       position: "relative",
-      zIndex: 1400
+      zIndex: 1400,
+      paddingLeft: theme.spacing(1)
     },
     closeAndClearButton: {
       position: "relative",

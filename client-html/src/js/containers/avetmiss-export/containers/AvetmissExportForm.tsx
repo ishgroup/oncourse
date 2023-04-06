@@ -6,7 +6,7 @@
 import React from "react";
 import posed from "react-pose";
 import {
- format as formatDate, getDaysInMonth, setDate, setMonth, setYear 
+  format as formatDate, getDaysInMonth, setDate, setMonth, setYear
 } from "date-fns";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -20,14 +20,12 @@ import {
   FormGroup,
   Grid,
   Hidden,
-  IconButton,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { withStyles, createStyles } from "@mui/styles";
-import { ExpandMore, HelpOutline } from "@mui/icons-material";
+import { ExpandMore } from "@mui/icons-material";
 import {
- arrayPush, arrayRemove, change, getFormValues, initialize, InjectedFormProps, reduxForm 
+  arrayPush, arrayRemove, change, getFormValues, initialize, InjectedFormProps, reduxForm
 } from "redux-form";
 import clsx from "clsx";
 import {
@@ -39,13 +37,9 @@ import {
   FundingStatus,
   FundingUpload
 } from "@api/model";
-import Button from "@mui/material/Button";
 import LoadingButton from "@mui/lab/LoadingButton";
 import ErrorMessage from "../../../common/components/form/fieldMessage/ErrorMessage";
 import FormField from "../../../common/components/form/formFields/FormField";
-import CustomAppBar from "../../../common/components/layout/CustomAppBar";
-import HamburgerMenu from "../../../common/components/layout/swipeable-sidebar/components/HamburgerMenu";
-import { VARIANTS } from "../../../common/components/layout/swipeable-sidebar/utils";
 import { State } from "../../../reducers/state";
 import { StyledCheckbox } from "../../../common/components/form/formFields/CheckboxField";
 import AvetmissExportResults from "../components/AvetmissExportResults";
@@ -67,8 +61,8 @@ import { getManualLink } from "../../../common/utils/getManualLink";
 import AvetmissHistory from "../components/AvetmissHistory/AvetmissHistory";
 import PreviousExportPanel from "../components/PreviousExportPanel/PreviousExportPanel";
 import getAvetmissExportFormValues from "../utils/getAvetmissExportFormValues";
-import { AppTheme } from "../../../model/common/Theme";
 import { AvetmissExportSettingsReqired } from "../../../model/preferences";
+import AppBarContainer from "../../../common/components/layout/AppBarContainer";
 
 export const FORM: string = "AvetmissExportForm";
 
@@ -186,7 +180,7 @@ const Box = posed.div({
 
 const getModel = val =>
   Object.keys(val)
-    .filter(i => isNaN(Number(i)))
+    .filter(i => Number.isNaN(Number(i)))
     .map(i => ({
       label: i,
       value: i
@@ -201,10 +195,6 @@ const todayMonth = today.getMonth();
 const formated = setMonth(new Date(), todayMonth);
 
 const manualUrl = getManualLink("AVETMISS");
-
-const openManual = () => {
-  window.open(manualUrl);
-};
 
 // Australian quarters
 const getCurrentQuarter = () => {
@@ -267,7 +257,7 @@ const dateRangeModel = datesValues.map(i => ({
 const feeModel = Object.keys(AvetmissExportFee);
 
 const feeModelCollapsed = feeModel.filter(
-  i => isNaN(Number(i)) && i !== "Fee for service VET (non-funded)" && i !== "Non VET"
+  i => Number.isNaN(Number(i)) && i !== "Fee for service VET (non-funded)" && i !== "Non VET"
 );
 
 const setDates = (v, dispatch) => {
@@ -362,9 +352,9 @@ const avetmissStateInitial = {
 
 const getEndDateWarningMsg = (date: string) => {
   if (!date) return "";
-  const today = new Date();
+  const todayDate = new Date();
   const endDate = new Date(date);
-  return (endDate > today) ? "Setting the end date in the future will usually result in bad data." : "";
+  return (endDate > todayDate) ? "Setting the end date in the future will usually result in bad data." : "";
 };
 
 class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, any> {
@@ -665,10 +655,11 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
         type="select"
         name="flavour"
         label="Flavour"
-        formatting="primary"
         items={flavourModel}
         onChange={this.onFlavourChange}
-        reqired
+        className="mb-2"
+        debounced={false}
+        required
       />
     );
 
@@ -676,276 +667,263 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
 
     return (
       <form className="container" onSubmit={handleSubmit(this.onFind)}>
-        <CustomAppBar fullWidth>
-          <HamburgerMenu variant={VARIANTS.temporary} />
-          <Grid container columnSpacing={3}>
-            <Grid item xs={12} className="centeredFlex">
-              <Typography variant="h6" color="inherit" noWrap>
-                AVETMISS 8
-              </Typography>
-
-              <div className="flex-fill" />
-
-              <Tooltip title="Additional information">
-                <IconButton onClick={openManual}>
-                  <HelpOutline className="text-white" />
-                </IconButton>
-              </Tooltip>
-              {onClose && (
-                <Button onClick={onClose} className="whiteAppBarButton">
-                  Close
-                </Button>
-              )}
-            </Grid>
-          </Grid>
-        </CustomAppBar>
-
-        {values && (
-          <Grid container columnSpacing={3} spacing={2}>
-            {uploads && uploads.length > 0 && !skipAnimation && (
-              <Grid item xs={12} lg={8}>
-                <Box
-                  pose={previousExportStatusSetted ? "moved" : "static"}
-                  target={this.firstUploadNode}
-                  onPoseComplete={this.showUploads}
-                >
-                  <PreviousExportPanel
-                    hideHeader={previousExportStatusSetted}
-                    classes={classes}
-                    onSubmit={this.uploadStatusUpdated}
-                    item={uploads ? uploads[0] : {}}
-                  />
-                </Box>
-              </Grid>
-            )}
-
-            <Hidden xsUp={showUploads}>
-              <Grid item xs={12} lg={8}>
-                <Card onClick={hasOutcomesOrExport ? this.reset : undefined}>
-                  <CardContent
-                    className={clsx("mb-0 pl-2", classes.settingsWrapper, {
-                      "cursor-pointer": hasOutcomesOrExport
-                    })}
+        <AppBarContainer
+          title="AVETMISS 8"
+          disableInteraction
+          manualUrl={manualUrl}
+          onCloseClick={onClose}
+          hideSubmitButton
+        >
+          {values && (
+            <Grid container columnSpacing={3} spacing={2}>
+              {uploads && uploads.length > 0 && !skipAnimation && (
+                <Grid item xs={12} lg={8}>
+                  <Box
+                    pose={previousExportStatusSetted ? "moved" : "static"}
+                    target={this.firstUploadNode}
+                    onPoseComplete={this.showUploads}
                   >
-                    <Typography
-                      color="inherit"
-                      component="div"
-                      className={clsx("heading mt-1 centeredFlex pl-2", {
-                        "mb-2": hasOutcomesOrExport
+                    <PreviousExportPanel
+                      hideHeader={previousExportStatusSetted}
+                      classes={classes}
+                      onSubmit={this.uploadStatusUpdated}
+                      item={uploads ? uploads[0] : {}}
+                    />
+                  </Box>
+                </Grid>
+              )}
+
+              <Hidden xsUp={showUploads}>
+                <Grid item xs={12} lg={8}>
+                  <Card onClick={hasOutcomesOrExport ? this.reset : undefined}>
+
+                    <CardContent
+                      className={clsx("mb-0", classes.settingsWrapper, {
+                        "cursor-pointer": hasOutcomesOrExport
                       })}
                     >
-                      Select
-                      {hasOutcomesOrExport && (
-                        <>
-                          <div className="flex-fill" />
-                          {' '}
-                          <ExpandMore />
-                        </>
-                      )}
-                    </Typography>
-                    {!hasOutcomesOrExport && <Divider className={classes.divider} />}
-
-                    <Collapse in={!hasOutcomesOrExport}>
-                      <div
-                        className={clsx("d-flex pl-2 pb-2", {
-                          "invisible": hasOutcomesOrExport
+                      <Typography
+                        color="inherit"
+                        component="div"
+                        className={clsx("heading mt-1 centeredFlex", {
+                          "mb-2": hasOutcomesOrExport
                         })}
                       >
-                        {showEnrolmentsCount ? (
-                          <div>
-                            {flavourField}
-                            <Typography gutterBottom variant="caption">
-                              Exporting
-                              {' '}
-                              {enrolmentsCount}
-                              {' '}
-                              enrolment
-                              {enrolmentsCount !== 1 ? "s" : ""}
-                              ...
-                              {" "}
-                            </Typography>
-                          </div>
-                        ) : (
+                        Select
+                        {hasOutcomesOrExport && (
                           <>
-                            <div className="flex-fill">
-                              {flavourField}
-                              <FormField
-                                type="select"
-                                name="dateRange"
-                                label="Outcomes in progress during"
-                                formatting="primary"
-                                items={
-                                  values.flavour === "NCVER (Standard AVETMISS)"
-                                    ? dateRangeModel.slice(1)
-                                    : dateRangeModel
-                                }
-                                onChange={this.onDateRangeChange}
-                                required
-                              />
+                            <div className="flex-fill" />
+                            {' '}
+                            <ExpandMore />
+                          </>
+                        )}
+                      </Typography>
+                      {!hasOutcomesOrExport && <Divider className={classes.divider} />}
 
-                              <Collapse in={values.dateRange === "Custom date range"}>
-                                <div>
-                                  <FormField
-                                    type="date"
-                                    name="outcomesStart"
-                                    label="Start"
-                                    maxDate={values.outcomesEnd}
-                                    validate={this.validateMaxDate}
-                                    className="pr-2"
-                                  />
+                      <Collapse in={!hasOutcomesOrExport}>
+                        <div
+                          className={clsx("d-flex", {
+                            "invisible": hasOutcomesOrExport
+                          })}
+                        >
+                          {showEnrolmentsCount ? (
+                            <div>
+                              {flavourField}
+                              <Typography gutterBottom variant="caption">
+                                Exporting
+                                {' '}
+                                {enrolmentsCount}
+                                {' '}
+                                enrolment
+                                {enrolmentsCount !== 1 ? "s" : ""}
+                                ...
+                                {" "}
+                              </Typography>
+                            </div>
+                          ) : (
+                            <>
+                              <div className="flex-fill">
+                                {flavourField}
+                                <FormField
+                                  type="select"
+                                  name="dateRange"
+                                  label="Outcomes in progress during"
+                                  items={
+                                    values.flavour === "NCVER (Standard AVETMISS)"
+                                      ? dateRangeModel.slice(1)
+                                      : dateRangeModel
+                                  }
+                                  onChange={this.onDateRangeChange}
+                                  debounced={false}
+                                  className="mb-2"
+                                  allowEmpty
+                                  required
+                                />
+
+                                <Collapse in={values.dateRange === "Custom date range"}>
                                   <div>
                                     <FormField
                                       type="date"
-                                      name="outcomesEnd"
-                                      label="End"
-                                      minDate={values.outcomesStart}
-                                      validate={this.validateMinDate}
+                                      name="outcomesStart"
+                                      label="Start"
+                                      validate={this.validateMaxDate}
+                                      className="mb-2"
                                     />
-                                    {endDateWarning && <ErrorMessage message={endDateWarning} />}
+                                    <div>
+                                      <FormField
+                                        type="date"
+                                        name="outcomesEnd"
+                                        label="End"
+                                        validate={this.validateMinDate}
+                                        className="mb-2"
+                                      />
+                                      {endDateWarning && <ErrorMessage message={endDateWarning} />}
+                                    </div>
                                   </div>
-                                </div>
-                              </Collapse>
+                                </Collapse>
 
-                              <FormControlLabel
-                                classes={{
-                                  root: "checkbox"
-                                }}
-                                control={
-                                  <FormField type="checkbox" name="includeLinkedOutcomes" color="primary" />
-                                }
-                                label="Include linked outcomes"
-                              />
+                                <FormControlLabel
+                                  classes={{
+                                    root: "checkbox"
+                                  }}
+                                  control={
+                                    <FormField type="checkbox" name="includeLinkedOutcomes" color="primary" />
+                                  }
+                                  label="Include linked outcomes"
+                                />
 
-                              <Typography variant="caption" component="div" className="pr-2">
-                                Outcomes outside the date range will be included if linked to the same enrolment or if they have the same Purchasing contract identifier.
-                              </Typography>
-                            </div>
-                            <div className="flex-fill ml-2">
-                              <FormGroup>
-                                {contracts
-                                  && contracts.map(con => (
-                                    <FormControlLabel
-                                      classes={{
-                                        root: "checkbox"
-                                      }}
-                                      key={con.id}
-                                      control={(
-                                        <StyledCheckbox
-                                          color="primary"
-                                          checked={values.fundingContracts.some(v => v === con.id)}
-                                          onChange={(e, v) => this.onContractChange(e, v, con)}
-                                        />
-                                      )}
-                                      label={con.name}
-                                    />
-                                  ))}
-                              </FormGroup>
-
-                              <FormControlLabel
-                                classes={{
-                                  root: "checkbox"
-                                }}
-                                control={(
-                                  <StyledCheckbox
-                                    color="primary"
-                                    checked={feeForServiceChecked}
-                                    onChange={this.onFeeChange}
-                                  />
-                                )}
-                                label="No funding contract (Fee for service VET)"
-                              />
-
-                              <Collapse in={feeForServiceChecked}>
-                                <FormGroup className="ml-2">
-                                  {feeModelCollapsed.map(i => (
-                                    <FormControlLabel
-                                      key={i}
-                                      classes={{
-                                        root: "checkbox"
-                                      }}
-                                      control={(
-                                        <StyledCheckbox
-                                          color="primary"
-                                          checked={Boolean(values.fee.find(f => f === i))}
-                                          onChange={(e, v) => this.onFeeItemChange(e, v, i)}
-                                        />
-                                      )}
-                                      label={i}
-                                    />
-                                  ))}
-                                </FormGroup>
-                              </Collapse>
-                              {!checkboxesValid && (
-                                <Typography variant="body1" color="error">
-                                  Please select one or more options.
+                                <Typography variant="caption" component="div" className="pr-2">
+                                  Outcomes outside the date range will be included if linked to the same enrolment or
+                                  if they have the same Purchasing contract identifier.
                                 </Typography>
-                              )}
-                            </div>
-                          </>
+                              </div>
+                              <div className="flex-fill ml-2 pb-1">
+                                <FormGroup>
+                                  {contracts
+                                    && contracts.map(con => (
+                                      <FormControlLabel
+                                        classes={{
+                                          root: "checkbox"
+                                        }}
+                                        key={con.id}
+                                        control={(
+                                          <StyledCheckbox
+                                            color="primary"
+                                            checked={values.fundingContracts.some(v => v === con.id)}
+                                            onChange={(e, v) => this.onContractChange(e, v, con)}
+                                          />
+                                        )}
+                                        label={con.name}
+                                      />
+                                    ))}
+                                </FormGroup>
+
+                                <FormControlLabel
+                                  classes={{
+                                    root: "checkbox"
+                                  }}
+                                  control={(
+                                    <StyledCheckbox
+                                      color="primary"
+                                      checked={feeForServiceChecked}
+                                      onChange={this.onFeeChange}
+                                    />
+                                  )}
+                                  label="No funding contract (Fee for service VET)"
+                                />
+
+                                <Collapse in={feeForServiceChecked}>
+                                  <FormGroup className="ml-2">
+                                    {feeModelCollapsed.map(i => (
+                                      <FormControlLabel
+                                        key={i}
+                                        classes={{
+                                          root: "checkbox"
+                                        }}
+                                        control={(
+                                          <StyledCheckbox
+                                            color="primary"
+                                            checked={Boolean(values.fee.find(f => f === i))}
+                                            onChange={(e, v) => this.onFeeItemChange(e, v, i)}
+                                          />
+                                        )}
+                                        label={i}
+                                      />
+                                    ))}
+                                  </FormGroup>
+                                </Collapse>
+                                {!checkboxesValid && (
+                                  <Typography variant="body1" color="error">
+                                    Please select one or more options.
+                                  </Typography>
+                                )}
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      </Collapse>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="flex-column justify-content-center mt-3">
+                    {!hasOutcomesOrExport && (
+                      <div className="centeredFlex justify-content-center pt-1 pb-1">
+                        {!hasNoResults && (
+                          <LoadingButton
+                            color="primary"
+                            type="submit"
+                            disabled={invalid || !checkboxesValid}
+                            loading={pending}
+                            className="avetmissButton"
+                          >
+                            Find
+                          </LoadingButton>
+                        )}
+
+                        {hasNoResults && (
+                          <Typography variant="body1" color="error">
+                            No outcomes match your criteria above
+                          </Typography>
                         )}
                       </div>
+                    )}
+
+                    <Collapse in={hasOutcomesOrExport}>
+                      <CardContent className="pt-3">
+                        {hasOutcomesOrExport && (
+                          <AvetmissExportResults
+                            classes={classes}
+                            outcomes={outcomes}
+                            values={values}
+                            dispatch={dispatch}
+                            onExport={this.onExport}
+                            pending={pending}
+                          />
+                        )}
+                      </CardContent>
                     </Collapse>
-                  </CardContent>
-                </Card>
-
-                <Card className="flex-column justify-content-center mt-3">
-                  {!hasOutcomesOrExport && (
-                    <div className="centeredFlex justify-content-center pt-3 pb-3">
-                      {!hasNoResults && (
-                        <LoadingButton
-                          color="primary"
-                          type="submit"
-                          disabled={invalid || !checkboxesValid}
-                          loading={pending}
-                          className="avetmissButton"
-                        >
-                          Find
-                        </LoadingButton>
-                      )}
-
-                      {hasNoResults && (
-                        <Typography variant="body1" color="error">
-                          No outcomes match your criteria above
-                        </Typography>
-                      )}
-                    </div>
-                  )}
-
-                  <Collapse in={hasOutcomesOrExport}>
-                    <CardContent className="pt-3">
-                      {hasOutcomesOrExport && (
-                        <AvetmissExportResults
-                          classes={classes}
-                          outcomes={outcomes}
-                          values={values}
-                          dispatch={dispatch}
-                          onExport={this.onExport}
-                          pending={pending}
-                        />
-                      )}
-                    </CardContent>
-                  </Collapse>
-                </Card>
+                  </Card>
+                </Grid>
+              </Hidden>
+              <Grid item lg={4} xs={12}>
+                {uploads && uploads.length > 0 && (
+                  <AvetmissHistory
+                    classes={classes}
+                    items={uploads}
+                    setFirstUploadNode={this.setFirstUploadNode}
+                    skipAnimation={skipAnimation}
+                    previousExportStatusSetted={previousExportStatusSetted}
+                    onStatusChange={updateFundingUpload}
+                    onRunAgainClicked={this.onRunAgainClicked}
+                  />
+                )}
               </Grid>
-            </Hidden>
-            <Grid item lg={4} xs={12}>
-              {uploads && uploads.length > 0 && (
-                <AvetmissHistory
-                  classes={classes}
-                  items={uploads}
-                  setFirstUploadNode={this.setFirstUploadNode}
-                  skipAnimation={skipAnimation}
-                  previousExportStatusSetted={previousExportStatusSetted}
-                  onStatusChange={updateFundingUpload}
-                  onRunAgainClicked={this.onRunAgainClicked}
-                />
-              )}
             </Grid>
-          </Grid>
-        )}
-        <div className={clsx(classes.indicator, values && "d-none")}>
-          <CircularProgress size={40} thickness={5} />
-        </div>
+          )}
+          <div className={clsx(classes.indicator, values && "d-none")}>
+            <CircularProgress size={40} thickness={5} />
+          </div>
+        </AppBarContainer>
       </form>
     );
   }

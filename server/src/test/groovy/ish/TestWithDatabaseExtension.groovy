@@ -48,13 +48,13 @@ class TestWithDatabaseExtension implements
         BeforeAllCallback, AfterAllCallback, BeforeEachCallback, AfterEachCallback {
 
 
-    
+
     private static final Logger logger = LogManager.getLogger()
 
     private static final String RESET_AUTO_INCREMENT_TEMPLATE_MYSQL = "ALTER TABLE %s AUTO_INCREMENT = %d"
     private static final int NEXT_ID = 10000
     private static final String CUSTOM_FIELD = "CustomField"
-    
+
     private Closure<ICayenneService> cayenneServiceSupplier
     private Closure<DataContext> dataContextSupplier
     private Closure<DataSource> dataSourceSupplier
@@ -87,7 +87,7 @@ class TestWithDatabaseExtension implements
     void beforeEach(ExtensionContext context) throws Exception {
         def store = context.root.getStore(GLOBAL)
         def previousDataSource = store.get("dataSource")
-        
+
 
         // do this once for the whole dbunit run
         if (!store.get("db_setup")) {
@@ -104,7 +104,7 @@ class TestWithDatabaseExtension implements
             if (a.readOnly() && store.get("db_data_loaded")) {
                 //do nothing, data not changed from tests to test 
             } else if (a.type() == DatabaseOperation.DELETE_ALL) {
-                wipeTablesMariadb()             
+                wipeTablesMariadb()
                 for (dataSource in a?.value()) {
                     store.put("dataSource", dataSource)
                     InputStream st = SessionTest.class.getClassLoader().getResourceAsStream(dataSource)
@@ -122,7 +122,7 @@ class TestWithDatabaseExtension implements
                 //All tests has DELETE_ALL strategy. Need to implement alghorithm for other strategies. Not sure how it hould be right now
                 throw new UnsupportedOperationException(" ${a.type()}  Not implemented")
             }
-         
+
         }
         if (a && a.readOnly()) {
             databaseTest.cayenneContext = cayenneServiceSupplier.call().getNewReadonlyContext()
@@ -193,6 +193,7 @@ class TestWithDatabaseExtension implements
 
     private void resetAutoIncrement() {
         DataDomain domain = cayenneServiceSupplier.call().getSharedContext().getParentDataDomain()
+        def dataMaps = domain.getDataMaps()
         DataMap dataMap = domain.getDataMap("AngelMap")
 
         Connection connection = getTestDatabaseConnection().getConnection()
@@ -248,6 +249,8 @@ class TestWithDatabaseExtension implements
         nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedAssessment"))
         nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedLead"))
         nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedInvoice"))
+        nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedProductItem"))
+        nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedProduct"))
         for (Relationship rel : nodeRelationshipsToRemove) {
             datamap.getDbEntity("NodeRelation").removeRelationship(rel.getName())
         }
@@ -271,6 +274,8 @@ class TestWithDatabaseExtension implements
         binaryRelationshipsToRemove.add(datamap.getDbEntity("BinaryRelation").getRelationship("attachedAssessment"))
         binaryRelationshipsToRemove.add(datamap.getDbEntity("BinaryRelation").getRelationship("attachedAssessmentSubmission"))
         binaryRelationshipsToRemove.add(datamap.getDbEntity("BinaryRelation").getRelationship("attachedLead"))
+        binaryRelationshipsToRemove.add(datamap.getDbEntity("BinaryRelation").getRelationship("attachedProduct"))
+        binaryRelationshipsToRemove.add(datamap.getDbEntity("BinaryRelation").getRelationship("attachedProductItem"))
         for (Relationship rel : binaryRelationshipsToRemove) {
             datamap.getDbEntity("BinaryRelation").removeRelationship(rel.getName())
         }
@@ -298,6 +303,8 @@ class TestWithDatabaseExtension implements
         noteRelationshipsToRemove.add(datamap.getDbEntity("NoteRelation").getRelationship("notedAssessment"))
         noteRelationshipsToRemove.add(datamap.getDbEntity("NoteRelation").getRelationship("notedAssessmentSubmission"))
         noteRelationshipsToRemove.add(datamap.getDbEntity("NoteRelation").getRelationship("notedLead"))
+        noteRelationshipsToRemove.add(datamap.getDbEntity("NoteRelation").getRelationship("notedProduct"))
+        noteRelationshipsToRemove.add(datamap.getDbEntity("NoteRelation").getRelationship("notedProductItem"))
         for (Relationship rel : noteRelationshipsToRemove) {
             datamap.getDbEntity("NoteRelation").removeRelationship(rel.getName())
         }
@@ -314,6 +321,10 @@ class TestWithDatabaseExtension implements
         customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedMembership"))
         customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedVoucher"))
         customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedLead"))
+        customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedArticleProduct"))
+        customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedVoucherProduct"))
+        customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedMembershipProduct"))
+        customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedTutorAttendance"))
         for (Relationship rel : customFieldRelationships) {
             datamap.getDbEntity("CustomField").removeRelationship(rel.getName())
         }
@@ -337,17 +348,8 @@ class TestWithDatabaseExtension implements
         DbRelationship circularDependencyRelationship = datamap.getDbEntity("Account").getRelationship("tax")
         datamap.getDbEntity("Account").removeRelationship(circularDependencyRelationship.getName())
 
-        DbGenerator generator = new DbGenerator(jdbcAdapter, datamap, Collections.emptyList()  as Collection<DbEntity>, domain, jdbcEventLogger)
-        generator.setShouldCreateTables(true)
-        generator.setShouldCreateFKConstraints(true)
-        generator.setShouldCreatePKSupport(false)
-        generator.runGenerator(dataSourceSupplier.call())
-        if (generator.getFailures() != null) {
-            Assertions.fail("generation of test database schema out of cayenne model failed:")
-            for (ValidationFailure result : generator.getFailures().getFailures()) {
-                Assertions.fail(result.toString())
-            }
-            throw new RuntimeException("generation of test database schema out of cayenne model failed, test terminated.")
+        for(def pluginsMap: domain.getDataMaps()){
+            generateDatabase(jdbcAdapter, pluginsMap, domain, jdbcEventLogger)
         }
 
         //return circular dependency to dataMap
@@ -380,4 +382,21 @@ class TestWithDatabaseExtension implements
         datamap.getDbEntity("BinaryRelation").getAttribute("documentId").setMandatory(true)
     }
 
+
+    private void generateDatabase(DbAdapter dbAdapter, DataMap dataMap,
+                                         DataDomain domain, JdbcEventLogger eventLogger){
+        DbGenerator dbGenerator = new DbGenerator(dbAdapter, dataMap, Collections.emptyList() as Collection<DbEntity>, domain, eventLogger)
+        dbGenerator.setShouldCreateTables(true)
+        dbGenerator.setShouldCreateFKConstraints(true)
+        dbGenerator.setShouldCreatePKSupport(false)
+        dbGenerator.runGenerator(dataSourceSupplier.call())
+
+        if (dbGenerator.getFailures() != null) {
+            Assertions.fail("generation of test database schema out of cayenne model failed:")
+            for (ValidationFailure result : dbGenerator.getFailures().getFailures()) {
+                Assertions.fail(result.toString())
+            }
+            throw new RuntimeException("generation of test database schema out of cayenne model failed, test terminated.")
+        }
+    }
 }

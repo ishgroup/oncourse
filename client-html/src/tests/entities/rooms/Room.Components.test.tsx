@@ -6,9 +6,13 @@ describe("Virtual rendered RoomEditView", () => {
     entity: "Room",
     EditView: RoomEditView,
     record: mockecApi => mockecApi.db.getRoom(1),
-    render: (wrapper, initialValues) => {
-      expect(wrapper.find("#name input").val()).toContain(initialValues.name);
-      expect(wrapper.find("#seatedCapacity input").val()).toContain(initialValues.seatedCapacity);
+    render: ({ screen, initialValues, formRoleName }) => {
+      expect(screen.getByRole(formRoleName)).toHaveFormValues({
+        name: initialValues.name,
+        seatedCapacity: initialValues.seatedCapacity.toString(),
+        facilities: initialValues.facilities,
+        directions: initialValues.directions,
+      });
     }
   });
 });

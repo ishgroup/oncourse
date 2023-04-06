@@ -49,8 +49,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/courseClass
         "midwayDetExport":null,
         "minStudentAge":"10",
         "minimumPlaces":10,
-        "reportableHours":12,  
-        "sessionsCount":null,
+        "reportableHours":12,
         "suppressAvetmissExport":true,
         "vetCourseSiteID":123,
         "vetFundingSourceStateID":"123",
@@ -64,7 +63,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/courseClass
         "summaryDiscounts":null,
         "enrolmentsToProfitLeftCount":null,
         "successAndQueuedEnrolmentsCount":null,
-        "tags":[{"id":231}],
+        "tags":[231],
         "documents":[{"id":200}],
         "isTraineeship":false
         }
@@ -135,8 +134,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/courseClass
         "midwayDetExport":null,
         "minStudentAge":"10",
         "minimumPlaces":10,
-        "reportableHours":12,        
-        "sessionsCount":null,
+        "reportableHours":12,
         "suppressAvetmissExport":true,
         "vetCourseSiteID":123,
         "vetFundingSourceStateID":"123",
@@ -150,7 +148,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/courseClass
         "summaryDiscounts":null,
         "enrolmentsToProfitLeftCount":null,
         "successAndQueuedEnrolmentsCount":null,
-        "tags":[{"id":231}],
+        "tags":[231],
         "documents":[{"id":200}],
         "isTraineeship":false
         }
@@ -226,8 +224,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/courseClass
         "midwayDetExport":null,
         "minStudentAge":"10",
         "minimumPlaces":10,
-        "reportableHours":12,        
-        "sessionsCount":null,
+        "reportableHours":12,
         "suppressAvetmissExport":true,
         "vetCourseSiteID":123,
         "vetFundingSourceStateID":"123",
@@ -241,7 +238,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/courseClass
         "summaryDiscounts":null,
         "enrolmentsToProfitLeftCount":null,
         "successAndQueuedEnrolmentsCount":null,
-        "tags":[{"id":231}],
+        "tags":[231],
         "documents":[{"id":200}],
         "isTraineeship":false
         }

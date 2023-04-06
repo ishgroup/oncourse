@@ -3,8 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React from "react";
 import clsx from "clsx";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -31,9 +30,6 @@ const NoteItem = (props: Props) => {
     item, classes, messageName, onDelete, index, twoColumn
   } = props;
 
-  const [checked, setChecked] = useState(false);
-  const [iconHovered, setIconHovered] = useState(false);
-
   return (
     <Grid item xs={twoColumn ? 1 : 12} md={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
       <Paper className="p-1 h-100">
@@ -42,13 +38,11 @@ const NoteItem = (props: Props) => {
             <FormField
               type="text"
               name={messageName}
-              onBlur={() => setChecked(!!item.message)}
               required
-              fullWidth
-              multiline
+                            multiline
             />
           </Grid>
-          <Grid container alignItems="flex-end">
+          <Grid container justifyContent="space-between">
             <Grid item>
               {item.created && (
                 <Typography className={classes.dateInfo}>
@@ -58,11 +52,11 @@ const NoteItem = (props: Props) => {
                 </Typography>
               )}
               {item.createdBy && (
-              <Typography className={classes.dateInfo}>
-                by
-                {" "}
-                {item.createdBy}
-              </Typography>
+                <Typography className={classes.dateInfo}>
+                  by
+                  {" "}
+                  {item.createdBy}
+                </Typography>
               )}
               {item.modified && (
                 <Typography className={clsx(classes.dateInfo, "mt-1")}>
@@ -72,28 +66,14 @@ const NoteItem = (props: Props) => {
                 </Typography>
               )}
               {item.modifiedBy && (
-              <Typography className={classes.dateInfo}>
-                by
-                {" "}
-                {item.modifiedBy}
-              </Typography>
+                <Typography className={classes.dateInfo}>
+                  by
+                  {" "}
+                  {item.modifiedBy}
+                </Typography>
               )}
             </Grid>
-            <Grid item>
-              {item.message && !item.id && (
-                <Tooltip title={checked ? "Note added" : "Add note"}>
-                  <span>
-                    <IconButton
-                      className="lightGrayIconButton"
-                      color="secondary"
-                      onMouseEnter={() => setIconHovered(true)}
-                      onMouseLeave={() => setIconHovered(false)}
-                    >
-                      <FontAwesomeIcon fixedWidth icon="check" className={clsx("inherit", { "successColor": checked || iconHovered })} />
-                    </IconButton>
-                  </span>
-                </Tooltip>
-              )}
+            <Grid item className="d-flex" alignItems="flex-end">
               <Tooltip title="Remove Note">
                 <IconButton
                   className="lightGrayIconButton"

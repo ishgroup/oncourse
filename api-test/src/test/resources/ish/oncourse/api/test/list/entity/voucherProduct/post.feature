@@ -70,7 +70,10 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "relatedSellables":[],
         "dataCollectionRuleId":null,
         "underpaymentAccountId":11,
-        "dataCollectionRuleId":103
+        "dataCollectionRuleId":103,
+        "documents":[],
+        "customFields":{},
+        "tags":[]
         }
         """
 
@@ -135,7 +138,10 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "relatedSellables":[],
         "dataCollectionRuleId":null,
         "underpaymentAccountId":11,
-        "dataCollectionRuleId":103
+        "dataCollectionRuleId":103,
+        "documents":[],
+        "customFields":{},
+        "tags":[]
         }
         """
 
@@ -200,7 +206,10 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "relatedSellables":[],
         "dataCollectionRuleId":null,
         "underpaymentAccountId":11,
-        "dataCollectionRuleId":103
+        "dataCollectionRuleId":103,
+        "documents":[],
+        "customFields":{},
+        "tags":[]
         }
         """
 
@@ -271,7 +280,10 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "relatedSellables":[],
         "dataCollectionRuleId":null,
         "underpaymentAccountId":11,
-        "dataCollectionRuleId":103
+        "dataCollectionRuleId":103,
+        "documents":[],
+        "customFields":{},
+        "tags":[]
         }
         """
 

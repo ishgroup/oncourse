@@ -55,6 +55,7 @@ interface Props {
   showArrowButton?: boolean;
   disabled?: boolean;
   validate?: Validator;
+  children?: React.ReactNode;
 }
 
 const HeaderField: React.FC<Props> = props => {
@@ -133,7 +134,7 @@ const HeaderField: React.FC<Props> = props => {
               )
             }}
             validate={validate}
-          />
+                      />
         )}
         <div className="mt-2">
           {SelectedItemView}
@@ -143,7 +144,7 @@ const HeaderField: React.FC<Props> = props => {
   );
 };
 
-const useHeaderTypoStyles = makeAppStyles()(() => ({
+const useHeaderTypoStyles = makeAppStyles(() => ({
   checkboxRoot: {
     width: 19,
     height: 19,
@@ -189,7 +190,7 @@ export const HeaderFieldTypo = React.memo<HeaderFieldTypoProps>(props => {
     onCheckboxClick
   } = props;
 
-  const { classes } = useHeaderTypoStyles();
+  const classes = useHeaderTypoStyles();
 
   return (
     <div

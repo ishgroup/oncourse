@@ -1,8 +1,9 @@
-import React, { Dispatch, useEffect } from "react";
+import React, { Dispatch, useCallback, useEffect } from "react";
 import { connect } from "react-redux";
 import Typography from "@mui/material/Typography";
 import { CertificateValidationRequest, SearchQuery, Sorting } from "@api/model";
-import { setCertificatesValidationStatus, validateCertificates } from "../actions/index";
+import debounce from "lodash.debounce";
+import { setCertificatesValidationStatus, validateCertificates } from "../actions";
 import { State } from "../../../../reducers/state";
 import { setPrintValidatingStatus } from "../../../../common/components/list-view/components/share/actions";
 import { BooleanArgFunction } from "../../../../model/common/CommonFunctions";
@@ -54,15 +55,18 @@ const USIAlert: React.FunctionComponent<USIAlertProps> = props => {
     searchQuery,
     selectAll
   } = props;
+  
+  const debounceValidate = useCallback(debounce((...args: [any, any, any, any]) => {
+    setPrintValidatingStatus(true);
+    validate(getCertificateValidationRequest(...args));
+  }, 300), []);
 
   useEffect(
     () => {
-      setPrintValidatingStatus(true);
-      validate(getCertificateValidationRequest(selectAll, searchQuery, selection, sort));
-
+      debounceValidate(selectAll, searchQuery, selection, sort);
       return () => setCertificatesValidationStatus(null);
     },
-    [selectAll]
+    [selectAll, searchQuery, selection, sort]
   );
 
   return (
@@ -86,9 +90,9 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    validate: (validationRequest: CertificateValidationRequest) => dispatch(validateCertificates(validationRequest)),
-    setPrintValidatingStatus: (status: boolean) => dispatch(setPrintValidatingStatus(status)),
-    setCertificatesValidationStatus: (status: string) => dispatch(setCertificatesValidationStatus(status))
-  });
+  validate: (validationRequest: CertificateValidationRequest) => dispatch(validateCertificates(validationRequest)),
+  setPrintValidatingStatus: (status: boolean) => dispatch(setPrintValidatingStatus(status)),
+  setCertificatesValidationStatus: (status: string) => dispatch(setCertificatesValidationStatus(status))
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(USIAlert);

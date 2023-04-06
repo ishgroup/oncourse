@@ -1,23 +1,20 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import TextField from "@mui/material/TextField";
 import DateRange from "@mui/icons-material/DateRange";
 import QueryBuilder from "@mui/icons-material/QueryBuilder";
-import Autocomplete from "@mui/lab/Autocomplete";
+import Autocomplete from "@mui/material/Autocomplete";
 import React from "react";
 import { createStyles, withStyles } from "@mui/styles";
-import { change, WrappedFieldMetaProps } from "redux-form";
 import { format as formatDate } from "date-fns";
 import clsx from "clsx";
-import { DatePicker, TimePicker as Time } from "@mui/lab";
-import CreateIcon from '@mui/icons-material/Create';
-import ButtonBase from "@mui/material/ButtonBase";
-import ListItemText from "@mui/material/ListItemText";
-import Typography from "@mui/material/Typography";
-import { InputProps } from "@mui/material/Input";
+import { DatePicker, TimePicker as Time } from "@mui/x-date-pickers";
 import { CodeCompletionCore } from "antlr4-c3";
 import { ANTLRInputStream, CommonTokenStream } from "antlr4ts";
 import { AqlLexer } from "@aql/AqlLexer";
@@ -26,18 +23,15 @@ import * as Entities from "@aql/queryLanguageModel";
 import { stubComponent } from "../../../utils/common";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
 import getCaretCoordinates from "../../../utils/getCaretCoordinates";
-import { HTMLTagArgFunction } from "../../../../model/common/CommonFunctions";
 import { selectStyles } from "./SelectCustomComponents";
 import { DD_MM_YYYY_SLASHED, HH_MM_COLONED } from "../../../utils/dates/format";
 import {
   FILTER_TAGS_REGEX,
   SIMPLE_SEARCH_QUOTES_AND_NO_WHITESPACE_REGEX,
   SIMPLE_SEARCH_QUOTES_REGEX,
-  SIMPLE_SEARCH_REGEX,
   TAGS_REGEX
 } from "../../../../constants/Config";
-import { FieldClasses } from "../../../../model/common/Fields";
-import { ListAqlMenuItemsRenderer } from "../../../../model/common/ListView";
+import { EditInPlaceQueryFieldProps } from "../../../../model/common/Fields";
 
 const queryStyles = theme => createStyles({
   queryMenuItem: {
@@ -69,13 +63,6 @@ const queryStyles = theme => createStyles({
   menuShadow: {
     boxShadow: "0 0 0 1px hsla(0,0%,0%,0.1), 0 4px 11px hsla(0,0%,0%,0.1)"
   },
-  hasPopupIcon: {
-    "&$hasClearIcon $inputRoot": {
-      paddingRight: 0
-    }
-  },
-  hasClearIcon: {},
-  inputRoot: {},
   editable: {
     color: theme.palette.text.primaryEditable,
     fontWeight: 400,
@@ -225,6 +212,7 @@ const completeSuggestions = (
       break;
     }
   }
+
   return variants.map(i => ({
     token,
     value: i,
@@ -243,58 +231,19 @@ export interface Suggestion {
 interface State {
   value: object[];
   options: Suggestion[];
-  isEditing: boolean;
   menuIsOpen: boolean;
-  error: boolean;
   pickerOpened: "DATE" | "TIME";
   inputValue: string;
   searchValue: string;
   caretCoordinates: any;
 }
 
-interface Props {
-  onValidateQuery?: (valid: boolean, input?: string) => void;
-  setInputNode: HTMLTagArgFunction;
-  className: string;
-  rootEntity: string;
-  classes?: any;
-  input?: any;
-  editableComponent?: any;
-  label?: string;
-  disabled?: boolean;
-  disableUnderline?: boolean;
-  disableErrorText?: boolean;
-  isValidQuery?: boolean;
-  clearOnUnmount?: boolean;
-  inline?: boolean;
-  hideLabel?: boolean;
-  meta?: WrappedFieldMetaProps;
-  InputProps?: InputProps;
-  filterTags?: Suggestion[];
-  tags?: Suggestion[];
-  customFields?: string[];
-  performSearch?: () => void;
-  theme?: any;
-  onFocus?: any;
-  onBlur?: any;
-  placeholder?: string;
-  labelAdornment?: any;
-  endAdornment?: any;
-  menuHeight?: number;
-  fieldClasses?: FieldClasses;
-  itemRenderer?: ListAqlMenuItemsRenderer;
-}
-
-class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
+class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldProps, State> {
   private inputNode: any;
 
   private pathFilter: string;
 
   private operatorsFilter: string;
-
-  private hasQueryError: boolean;
-
-  private hasFilterTagsError: boolean;
 
   private simpleSearchChecked: boolean;
 
@@ -306,9 +255,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     this.state = {
       value: [],
       options: [],
-      isEditing: false,
       menuIsOpen: false,
-      error: false,
       pickerOpened: null,
       inputValue: (props.input && props.input.value) || "",
       searchValue: "",
@@ -318,28 +265,13 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
 
   componentDidMount(): void {
     this.setState({
-      options: this.getAutocomplete(this.props.input && this.props.input.value ? this.props.input.value : "")
+      options: this.getAutocomplete(this.props.input && this.props.input.value ? this.props.input.value : "").filter(this.filterOptions)
     });
-  }
-
-  componentWillUnmount() {
-    const { clearOnUnmount } = this.props;
-
-    if (clearOnUnmount) {
-      const {
-        input: { name },
-        meta: { dispatch, form }
-      } = this.props;
-
-      dispatch(change(form, name, null));
-    }
-
-    this.inputNode.removeEventListener("click", this.onInputClick);
   }
 
   componentDidUpdate(prev) {
     const {
-     input, rootEntity, inline, meta
+     input, rootEntity
     } = this.props;
 
     if (prev.rootEntity !== rootEntity) {
@@ -351,7 +283,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
         },
         () => {
           this.setState({
-            options: this.getAutocomplete(input.value || "")
+            options: this.getAutocomplete(input.value || "").filter(this.filterOptions)
           });
         }
       );
@@ -365,27 +297,19 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
         inputValue: input.value
       });
     }
-
-    if (!inline && !this.state.isEditing && meta.invalid) {
-      this.setState({
-        isEditing: true
-      });
-    }
   }
 
   getAutocomplete = (input, position?) => {
     const { parser } = this.parseInputString(input);
     const {
-     rootEntity, filterTags, tags, customFields, onValidateQuery
+      rootEntity, filterTags, tags, customFields
     } = this.props;
-
-    const { error, inputValue } = this.state;
 
     const core = new CodeCompletionCore(parser);
     core.showRuleStack = true;
     core.ignoredTokens = new Set([AqlLexer.EOF, AqlLexer.SEPARATOR, AqlLexer.T__17]);
     const candidates = core.collectCandidates(
-      typeof position === "number" ? position : this.inputNode ? this.inputNode.selectionStart : 0
+      typeof position === "number" ? position : 0
     );
     const keywords: any = [];
 
@@ -401,6 +325,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
 
       return this.getAutocomplete(input + ".", position);
     }
+
     for (const candidate of candidates.tokens) {
       const suggestions = completeSuggestions(
         parser.vocabulary.getDisplayName(candidate[0]),
@@ -431,16 +356,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
       v => !["AND", "OR", "'+'", "'-'", "'%'", "'*'", "'/'", "','", "Time12", "Time24"].includes(v.token)
     );
 
-    // make all incomplete queries invalid
-    if (inputValue && inputValue.match(/\s/) && !error && hasSuggestionsForIncomplete) {
-      this.setState({
-        error: true
-      });
-      if (onValidateQuery) {
-        onValidateQuery(false, inputValue);
-      }
-    }
-
     if (hasSuggestionsForIncomplete) {
       variants = variants.filter(v => !["AND", "OR"].includes(v.token));
     }
@@ -448,40 +363,11 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     return variants;
   };
 
-  validateFilterTagsNames = input => {
-    const { filterTags, tags } = this.props;
-
-    let error = false;
-
-    const filterTagsMatch = input.match(FILTER_TAGS_REGEX);
-
-    const tagsMatch = input.match(TAGS_REGEX);
-
-    if (filterTagsMatch) {
-      filterTagsMatch.forEach(i => {
-        const parsed = i.replace(/[@,"]/g, "");
-
-        error = !filterTags.find(f => f.value === parsed);
-      });
-    }
-
-    if (tagsMatch) {
-      tagsMatch.forEach(i => {
-        const parsed = i.replace(/[#,"]/g, "");
-
-        error = !tags.find(f => f.value === parsed);
-      });
-    }
-
-    return error;
-  };
-
   parseInputString = val => {
     if (!val) {
       val = "";
     }
     const simpleSearchQuotesMatch = val.match(SIMPLE_SEARCH_QUOTES_REGEX);
-    const simpleSearchMatch = val.match(SIMPLE_SEARCH_REGEX);
     const tagMatch = val.match(TAGS_REGEX);
     const filterMatch = val.match(FILTER_TAGS_REGEX);
 
@@ -495,44 +381,13 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
       input = input.replace(FILTER_TAGS_REGEX, v => `@"${v.replace("@", "")}"`);
     }
 
-    const { error } = this.state;
-    const { onValidateQuery, filterTags, tags } = this.props;
+    input = input.length ? input : `#""`;
 
     const chars = new ANTLRInputStream(input);
     const lexer = new AqlLexer(chars);
     const tokens = new CommonTokenStream(lexer);
     const parser = new AqlParser(tokens);
     parser.query();
-
-    let parserErrors = simpleSearchMatch || !val ? 0 : parser.numberOfSyntaxErrors;
-
-    if ((filterTags || tags) && (!error || this.hasFilterTagsError) && !parserErrors) {
-      if (this.validateFilterTagsNames(input)) {
-        this.hasFilterTagsError = true;
-
-        parserErrors = 1;
-      } else {
-        this.hasFilterTagsError = false;
-      }
-    }
-
-    if (!error && parserErrors) {
-      this.hasQueryError = true;
-      this.setState({
-        error: true
-      });
-    }
-
-    if (error && !parserErrors) {
-      this.hasQueryError = false;
-      this.setState({
-        error: false
-      });
-    }
-
-    if (onValidateQuery) {
-      onValidateQuery(!parserErrors, input);
-    }
 
     return { tokens, parser } as any;
   };
@@ -584,21 +439,10 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     });
   };
 
-  edit = () => {
-    this.setState(
-      {
-        isEditing: true
-      },
-      () => {
-        this.inputNode.focus();
-      }
-    );
-  };
-
   onBlur = () => {
     if (this.state.pickerOpened) return;
 
-    const { inline, input, onBlur } = this.props;
+    const { onBlur } = this.props;
 
     if (onBlur) {
       onBlur();
@@ -606,12 +450,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
 
     this.setState({
       menuIsOpen: false,
-      isEditing: false
     });
-
-    if (!inline) {
-      input.onBlur(this.state.inputValue);
-    }
   };
 
   onFocus = e => {
@@ -659,38 +498,38 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     }
   };
 
-  getValue = classes => (
-    this.state.inputValue || <span className={clsx(classes.editable, "overflow-hidden")}>{this.props.placeholder || (!this.state.isEditing && "No value")}</span>
-  );
-
   getInlineMenuStyles = () => {
-    const { caretCoordinates } = this.state;
+    const { caretCoordinates, menuIsOpen, options } = this.state;
     const { classes } = this.props;
 
     const rightAligned = caretCoordinates && caretCoordinates.left >= this.inputNode.clientWidth;
-
-    return [clsx(classes.menuCorner, rightAligned ? classes.cornerRight : classes.cornerLeft), {
-      position: "absolute",
-      marginBottom: "12px",
-      width: "auto",
-      transform: "translateY(calc(-100% - 8px))",
-      top: 0,
-      ...rightAligned
-        ? {
-          left: this.inputNode.clientWidth,
-        }
-        : {
-          left: caretCoordinates ? caretCoordinates.left : 0,
-        }
-    }];
-  }
+    
+    return {
+      className: clsx(classes.menuCorner, rightAligned ? classes.cornerRight : classes.cornerLeft),
+      style: {
+        display: menuIsOpen && Boolean(options.length) ? "block" : "none",
+        position: "absolute" as any,
+        marginBottom: "12px",
+        width: "auto",
+        transform: "translateY(calc(-100% - 8px))",
+        top: 0,
+        ...rightAligned
+          ? {
+            left: this.inputNode.clientWidth,
+          }
+          : {
+            left: caretCoordinates ? caretCoordinates.left : 0,
+          }
+      }
+    };
+  };
 
   filterOptions = item => item.label
       .toLowerCase()
       .trim()
       .startsWith(this.state.searchValue.trim().toLowerCase());
 
-  filterOptionsInner = options => options.filter(this.filterOptions)
+  filterOptionsInner = options => options.filter(this.filterOptions);
 
   openPicker = pickerOpened => {
     this.setState({
@@ -705,6 +544,8 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
   };
 
   handlePickerChange = (type, date) => {
+    if (!date) return;
+
     const dateTime = type === "DATE" ? formatDate(date, DD_MM_YYYY_SLASHED) + " " : formatDate(date, HH_MM_COLONED) + " ";
 
     const inputValue = this.state.inputValue + dateTime;
@@ -722,7 +563,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
   };
 
   handleChange = (e, value, action) => {
-    const { inline, input, onValidateQuery } = this.props;
+    const { inline, input } = this.props;
 
     if (action === "clear" || action === "remove-option") {
       this.operatorsFilter = "";
@@ -737,10 +578,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
 
       if (!inline) {
         input.onChange("");
-      }
-
-      if (onValidateQuery) {
-        onValidateQuery(true);
       }
 
       return;
@@ -793,28 +630,23 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
         this.setCaret();
         this.updateAutocomplete(inputValue);
         this.performSearch();
+        if (!inline) input.onChange(inputValue);
       }
     );
   };
 
   handleInputChange = e => {
+    const { input, inline } = this.props;
+
     const value = e.target.value;
 
     if (!value && !value.match(/\s/)) {
       this.simpleSearchChecked = false;
     }
 
-    const { onValidateQuery } = this.props;
-
-    const {
-      tokens: { tokens }
-    } = this.parseInputString(value);
+    const { tokens: { tokens } } = this.parseInputString(value);
 
     if (!value) {
-      if (onValidateQuery) {
-        onValidateQuery(true);
-      }
-
       this.setState(
         {
           inputValue: "",
@@ -826,13 +658,13 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
           this.pathFilter = "";
           this.setState(
             {
-              options: this.getAutocomplete("")
+              options: this.getAutocomplete("").filter(this.filterOptions)
             },
             this.performSearch
           );
+          if (!inline) input.onChange("");
         }
       );
-
       return;
     }
 
@@ -847,6 +679,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
         this.setMenuPosition(this.inputNode.selectionStart);
         this.updateAutocomplete(value);
         this.performSearch();
+        if (!inline) input.onChange(value);
       }
     );
   };
@@ -888,25 +721,22 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
       this.setState({
         searchValue: this.state.searchValue.replace(/"/g, "")
       });
-
       return;
     }
 
     if (lastTokenType === "'@'") {
       this.setState({
         searchValue: "",
-        options: filterTags || []
+        options: (filterTags || []).filter(this.filterOptions)
       });
-
       return;
     }
 
     if (lastTokenType === "'#'") {
       this.setState({
         searchValue: "",
-        options: tags || []
+        options: (tags || []).filter(this.filterOptions)
       });
-
       return;
     }
 
@@ -921,7 +751,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
       this.setState({
         inputValue,
         searchValue: inputValue,
-        options: this.getAutocomplete("", 0)
+        options: this.getAutocomplete("", 0).filter(this.filterOptions)
       });
 
       return;
@@ -968,7 +798,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
         },
         () => {
           this.setState({
-            options: this.getAutocomplete(value)
+            options: this.getAutocomplete(value, this.inputNode?.selectionStart).filter(this.filterOptions)
           });
         }
       );
@@ -984,7 +814,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
         },
         () => {
           this.setState({
-            options: this.getAutocomplete(value)
+            options: this.getAutocomplete(value).filter(this.filterOptions)
           });
         }
       );
@@ -995,24 +825,21 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     if (lastTokenType === "Identifier") {
       if (this.state.searchValue !== lastToken.text) {
         this.setState({
-          options: this.getAutocomplete(value)
+          options: this.getAutocomplete(value).filter(this.filterOptions)
         });
       } else {
         if (!lastIdentifier) {
           this.operatorsFilter = "";
         }
 
-        const filteredOptions = options.filter(this.filterOptions);
-
-        if (filteredOptions.length === 1 && filteredOptions[0].value === lastToken.text) {
+        if (options.length === 1 && options[0].value === lastToken.text) {
           this.setIdentifierFilters(lastToken.text);
           if (this.operatorsFilter === "SEPARATOR") {
             this.setState({
               searchValue: "",
-              options: this.getAutocomplete(lastToken.text)
+              options: this.getAutocomplete(lastToken.text).filter(this.filterOptions)
             });
           }
-
           return;
         }
 
@@ -1026,7 +853,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
         }
 
         this.setState({
-          options: this.getAutocomplete(value.replace(new RegExp(lastToken.text + "$"), ""))
+          options: this.getAutocomplete(value.replace(new RegExp(lastToken.text + "$"), "")).filter(this.filterOptions)
         });
       }
     }
@@ -1109,7 +936,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
       }
 
       case 27: {
-        this.inputNode.blur();
+        this.inputNode?.blur();
       }
     }
   };
@@ -1144,10 +971,8 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
 
     this.setState({
       value: [],
-      options: this.getAutocomplete("", 0),
-      isEditing: false,
+      options: this.getAutocomplete("", 0).filter(this.filterOptions),
       menuIsOpen: false,
-      error: false,
       pickerOpened: null,
       inputValue: "",
       searchValue: "",
@@ -1158,7 +983,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
   performSearch = () => {
     const { performSearch } = this.props;
 
-    if (performSearch && !this.hasQueryError) {
+    if (performSearch) {
       performSearch();
     }
   };
@@ -1171,7 +996,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
 
     const label = this.getOptionLabel(data);
 
-    const content = getHighlightedPartLabel(label, searchValue);
+    const content = getHighlightedPartLabel(label, searchValue, optionProps);
 
     let option = content;
 
@@ -1192,11 +1017,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     return option as any;
   };
 
-  popperAdapter = params => {
-    const [className, style] = this.getInlineMenuStyles();
-
-    return <div {...params} className={className} style={style} />;
-  };
+  popperAdapter = ({ anchorEl, disablePortal, className, style,  ...params }) => (<div {...params} {...this.getInlineMenuStyles()} />);
 
   render() {
     const {
@@ -1204,25 +1025,19 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
       input,
       meta,
       label,
-      hideLabel,
-      editableComponent,
       disabled,
       className,
       inline,
       placeholder,
-      labelAdornment,
       endAdornment,
       disableUnderline,
       disableErrorText,
       fieldClasses = {},
-      isValidQuery
     } = this.props;
 
     const {
-     error, isEditing, menuIsOpen, options, value, inputValue, pickerOpened
+      menuIsOpen, options, value, inputValue, pickerOpened
     } = this.state;
-
-    const filteredOptions = options.filter(this.filterOptions);
 
     return (
       <div className={className} id={input.name}>
@@ -1246,34 +1061,35 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
 
         <div
           className={clsx("relative", {
-            "d-none": !(inline || isEditing || (!isValidQuery && (meta.invalid || error))),
             "pointer-events-none": disabled,
             [classes.bottomPadding]: !inline
           })}
         >
           <Autocomplete
-            // debug
             value={value}
-            open={menuIsOpen && Boolean(filteredOptions.length)}
-            options={filteredOptions}
+            open={menuIsOpen && Boolean(options.length)}
+            options={options}
             onChange={this.handleChange}
             renderOption={this.renderOption}
             filterOptions={this.filterOptionsInner}
             getOptionLabel={this.getOptionLabel}
             PopperComponent={inline ? this.popperAdapter as any : undefined}
             classes={inline ? {
+              root: classes.root,
               paper: classes.menuShadow,
               listbox: "p-0 relative zIndex1 paperBackgroundColor",
-              // @ts-ignore
-              hasPopupIcon: classes.hasPopupIcon,
-              hasClearIcon: classes.hasClearIcon,
-              inputRoot: classes.inputRoot
+              hasPopupIcon: classes.hasPopup,
+              hasClearIcon: classes.hasClear,
+              inputRoot: classes.inputWrapper
             } : undefined}
             renderInput={params => (
               <TextField
                 {...params}
                 variant="standard"
                 onKeyDown={this.onKeyDown}
+                InputLabelProps={{
+                  shrink: true
+                }}
                 InputProps={{
                   ...params.InputProps,
                   disableUnderline,
@@ -1286,12 +1102,12 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
                 // eslint-disable-next-line react/jsx-no-duplicate-props
                 inputProps={{
                   ...params.inputProps,
-                  value: inputValue
+                  value: inputValue || ""
                 }}
-                error={!isValidQuery && ((meta && meta.invalid) || error)}
+                error={meta?.invalid}
                 helperText={(
-                  <span className="shakingError">
-                    {!disableErrorText && !isValidQuery && (meta && meta.invalid ? meta.error : error ? "Expression is invalid" : "")}
+                  <span className="d-block shakingError">
+                    {!disableErrorText && (meta?.invalid ? meta.error || "Expression is invalid" : "")}
                   </span>
                 )}
                 onChange={this.handleInputChange}
@@ -1299,7 +1115,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
                 onFocus={this.onFocus}
                 onBlur={this.onBlur}
                 label={label}
-                placeholder={placeholder}
+                placeholder={placeholder || "No value"}
               />
             )}
             popupIcon={stubComponent()}
@@ -1308,45 +1124,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
             multiple
           />
         </div>
-        <div
-          className={clsx(classes.textField, {
-            "d-none": inline || isEditing || (!isValidQuery && (meta.invalid || error)),
-            "pointer-events-none": disabled
-          })}
-        >
-          <div className="mw-100 text-truncate">
-            {!hideLabel && label && (
-              <Typography variant="caption" className="centeredFlex" color="textSecondary">
-                {label}
-                {' '}
-                {labelAdornment}
-              </Typography>
-            )}
-
-            <ListItemText
-              classes={{
-                root: "pl-0 mb-0 mt-0",
-                primary: "d-flex"
-              }}
-              primary={(
-                <ButtonBase
-                  onClick={this.edit}
-                  className={clsx(classes.editable, "overflow-hidden hoverIconContainer")}
-                  component="div"
-                >
-                  <span
-                    className={clsx(classes.editable, "overflow-hidden", {
-                      "placeholderContent": !inline && !input.value.length
-                    })}
-                  >
-                    {editableComponent || this.getValue(classes)}
-                    {!disabled && <CreateIcon className="editInPlaceIcon hoverIcon" />}
-                  </span>
-                </ButtonBase>
-              )}
-            />
-          </div>
-        </div>
       </div>
     );
   }
@@ -1354,4 +1131,4 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
 
 export default withStyles(theme => ({ ...selectStyles(theme), ...queryStyles(theme) }))(
   EditInPlaceQuerySelect
-) as any;
+) as React.FC<EditInPlaceQueryFieldProps>;

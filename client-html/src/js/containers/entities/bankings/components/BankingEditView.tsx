@@ -8,7 +8,7 @@ import clsx from "clsx";
 import {
  change, FieldArray, getFormInitialValues
 } from "redux-form";
-import { addDays, compareAsc, format as formatDate } from "date-fns";
+import { compareAsc, format as formatDate } from "date-fns";
 import { Payment } from "@api/model";
 import { connect } from "react-redux";
 import Typography from "@mui/material/Typography";
@@ -27,12 +27,10 @@ import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../co
 import { DD_MMM_YYYY_MINUSED, III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
 import { PaymentInType } from "../consts";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { openSiteLink } from "../../sites/utils";
-import Uneditable from "../../../../common/components/form/Uneditable";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { defaultContactName, openContactLink } from "../../contacts/utils";
+import Uneditable from "../../../../common/components/form/Uneditable";
 
 const disabledHandler = (p: Payment) => {
   if (!p) {
@@ -140,7 +138,7 @@ class BankingEditView extends React.PureComponent<any, any> {
     }
     return (
       compareAsc(
-        new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth),
+        new Date(lockedDate),
         new Date(editRecord.settlementDate)
       ) > 0
     );
@@ -151,7 +149,7 @@ class BankingEditView extends React.PureComponent<any, any> {
     if (!lockedDate || !editRecord || editRecord.settlementDate === value) {
       return undefined;
     }
-    const date = new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth);
+    const date = new Date(lockedDate);
     const dateString = date.toISOString();
     return validateMinMaxDate(
       value,
@@ -166,7 +164,7 @@ class BankingEditView extends React.PureComponent<any, any> {
     const shortCurrencySymbol = currency != null ? currency.shortCurrencySymbol : "$";
     if (!values || !values.payments) {
       return (
-        <Typography variant="body1" className="placeholderContent">
+        <Typography component="span" variant="body1" className="placeholderContent">
           No value
         </Typography>
       );
@@ -176,22 +174,10 @@ class BankingEditView extends React.PureComponent<any, any> {
       new Decimal(0)
     );
     return (
-      <Typography variant="body1" className="money">
+      <Typography component="span" variant="body1" className="money">
         {formatCurrency(total, shortCurrencySymbol)}
       </Typography>
     );
-  };
-
-  getEditRecordProp = (name: string) => {
-    const { editRecord } = this.props;
-    if (!editRecord || editRecord[name] === null) {
-      return (
-        <Typography variant="body1" className="placeholderContent">
-          No value
-        </Typography>
-      );
-    }
-    return <Typography variant="body1">{editRecord[name]}</Typography>;
   };
 
   onSettlementDateChanged = (v: any, newValue: string, prevValue: string) => {
@@ -228,32 +214,32 @@ class BankingEditView extends React.PureComponent<any, any> {
       openNestedView,
       values,
       isNew,
-      invalid
     } = this.props;
 
     return (
-      <div className="h-100 flex-column p-3">
-        <FullScreenStickyHeader
-          opened={isNew || invalid}
-          disableInteraction={!isNew}
-          twoColumn={twoColumn}
-          title={(
-            <div className="centeredFlex">
-              {values?.administrationCenterId
-                ? (
-                <>
-                  {values?.adminSite}
-                  <IconButton size="small" color="primary" onClick={() => openSiteLink(values?.administrationCenterId)}>
-                    <Launch fontSize="inherit" />
-                  </IconButton>
-                </>
-                )
-                : this.getHeader()}
-            </div>
-            )}
-        />
-        <Grid container columnSpacing={3}>
-          <Grid item xs={twoColumn ? 3 : 6}>
+      <div className={clsx("pl-3 pr-3 h-100 d-flex flex-column", twoColumn ? "pt-2" : "pt-3")}>
+        <Grid container columnSpacing={3} rowSpacing={2}>
+          <Grid item xs={12}>
+            <FullScreenStickyHeader
+              disableInteraction={!isNew}
+              twoColumn={twoColumn}
+              title={(
+                <div className="d-inline-flex-center">
+                  {values?.administrationCenterId
+                    ? (
+                      <>
+                        {values?.adminSite}
+                        <IconButton size="small" color="primary" onClick={() => openSiteLink(values?.administrationCenterId)}>
+                          <Launch fontSize="inherit" />
+                        </IconButton>
+                      </>
+                    )
+                    : this.getHeader()}
+                </div>
+              )}
+            />
+          </Grid>
+          <Grid item xs={twoColumn ? 4 : 12}>
             <FormField
               type="date"
               disabled={this.isDateLocked(lockedDate, editRecord)}
@@ -261,24 +247,16 @@ class BankingEditView extends React.PureComponent<any, any> {
               label="Settlement Date"
               onBlur={this.onSettlementDateChanged}
               validate={[validateSingleMandatoryField, this.validateSettlementDate]}
-              minDate={
-                  lockedDate
-                    ? addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1)
-                    : undefined
-                }
             />
           </Grid>
-          <Grid item xs={twoColumn ? 3 : 6}>
-            <Typography variant="caption" color="textSecondary">
-              Created by
-            </Typography>
-            {this.getEditRecordProp("createdBy")}
+          <Grid item xs={twoColumn ? 4 : 12}>
+            <Uneditable
+              label="Created by"
+              value={values?.createdBy}
+            />
           </Grid>
           <Grid item xs={12}>
             <FormControlLabel
-              className={clsx("pr-3", {
-                  "mt-2": !twoColumn
-                })}
               control={<Checkbox onChange={this.reconcileAllPayments} checked={this.isAllPaymentsReconciled()} />}
               label="Reconcile this banking deposit"
               disabled={this.isReconcileAllDisabled()}

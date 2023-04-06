@@ -12,24 +12,30 @@
 package ish.oncourse.server.export
 
 import com.google.inject.Inject
-import groovy.json.JsonBuilder
+import groovy.json.JsonGenerator
+import groovy.json.StreamingJsonBuilder
 import groovy.transform.CompileDynamic
 import groovy.xml.MarkupBuilder
 import ish.export.ExportParameter
 import ish.export.ExportResult
+import ish.math.Money
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.ExportTemplate
-import ish.oncourse.server.messaging.DocumentParam
 import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.scripting.api.CollegePreferenceService
 import ish.oncourse.server.scripting.api.ExportSpec
 import ish.util.EntityUtil
+import ish.util.ThumbnailGenerator
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.commons.io.FilenameUtils
 
 import javax.script.ScriptEngineManager
 import javax.script.SimpleBindings
+import java.nio.charset.StandardCharsets
+
+import static ish.oncourse.server.export.Formatter.formatOutput
 
 @CompileDynamic
 class ExportService {
@@ -71,7 +77,8 @@ class ExportService {
 
 		ExportResult result = new ExportResult()
 
-		result.setResult(performExport(template, exportables).toString().bytes)
+		String out = performExport(template, exportables)
+		result.setResult().(out.bytes)
 
 		return result
 	}
@@ -83,7 +90,7 @@ class ExportService {
 	 * @param records list of records to be exported
 	 * @return {@link Writer} object containing export output
 	 */
-	def performExport(ExportTemplate template, Iterable<? extends PersistentObjectI> records, Map<String, Object> variables = [:], Boolean clipboardExport = false) {
+	def performExport(ExportTemplate template, Iterable<? extends PersistentObjectI> records, Map<String, Object> variables = [:], Boolean clipboardExport = false, boolean createPreview = false) {
 		def groovyScriptEngine = scriptEngineManager.getEngineByName("groovy")
 
 		def bindings = new SimpleBindings()
@@ -94,7 +101,11 @@ class ExportService {
 		if (clipboardExport) {
 			csv.delimiter = '\t' as char
 		}
-		def json = new JsonBuilder(writer)
+		def generator = new JsonGenerator.Options()
+				.addConverter(Money){value -> value.toPlainString()}
+				.build()
+		def json = new StreamingJsonBuilder(writer,generator)
+
 
 		template.options.each { opt ->
 			bindings.put(opt.name, opt.objectValue)
@@ -118,7 +129,12 @@ class ExportService {
 				String.format(GroovyScriptService.PREPARE_LOGGER, template.name) +
 				template.script, bindings)
 
-		return writer
+
+		if (createPreview && !writer.toString().isEmpty()) {
+			createExportPreview(template, StandardCharsets.UTF_8.encode(writer.toString()).array())
+		}
+
+		return formatOutput(writer.toString(), template.outputType)
 	}
 
 	/**
@@ -148,5 +164,17 @@ class ExportService {
 		build.call()
 
 		return performExport(exportSpec.templateKeyCode, exportSpec.entityRecords).toString()
+	}
+
+	static void createExportPreview(ExportTemplate template, byte[] content) {
+		if (FilenameUtils.getExtension(template.keyCode).equalsIgnoreCase("csv")) {
+			template.preview = ThumbnailGenerator.generateForCsv(content)
+			template.objectContext.commitChanges()
+		} else {
+			if (FilenameUtils.getExtension(template.keyCode).equalsIgnoreCase("xml")) {
+				template.preview = ThumbnailGenerator.generateForText(content)
+				template.objectContext.commitChanges()
+			}
+		}
 	}
 }

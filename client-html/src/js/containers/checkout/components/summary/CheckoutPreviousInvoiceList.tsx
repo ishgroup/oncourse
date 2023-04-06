@@ -13,7 +13,6 @@ import {
 import { withStyles } from "@mui/styles";
 import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import { openInternalLink } from "../../../../common/utils/links";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
 import { D_MMM_YYYY } from "../../../../common/utils/dates/format";
@@ -27,6 +26,9 @@ import { summaryListStyles } from "../../styles/summaryListStyles";
 import CheckoutAppBar from "../CheckoutAppBar";
 import { CheckoutPreviousInvoice, PreviousInvoiceState } from "../../../../model/checkout";
 import { BooleanArgFunction } from "../../../../model/common/CommonFunctions";
+import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+
+export const CheckoutPreviousInvoiceListFormRole: string = "CheckoutPreviousInvoiceListform";
 
 interface InvoiceItemRowProps {
   classes: any;
@@ -47,7 +49,7 @@ const InvoiceItemRow: React.FC<InvoiceItemRowProps> = (
 ) => (
   <Grid item xs={12} container alignItems="center" direction="row" className={classes.tableTab}>
     <div className={clsx("centeredFlex flex-fill", classes.itemTitle)}>
-      <StyledCheckbox checked={item.checked} onChange={toggleInvoiceItem} />
+      <StyledCheckbox name={`previousInvoiceCheckbox[${item.id}]`} checked={item.checked} onChange={toggleInvoiceItem} />
       <Typography variant="body1" className={clsx("mr-1", !item.checked && "disabled")}>
         {`${item.invoiceDate && format(new Date(item.invoiceDate), D_MMM_YYYY)} invoice ${item.invoiceNumber}`}
       </Typography>
@@ -61,8 +63,7 @@ const InvoiceItemRow: React.FC<InvoiceItemRowProps> = (
           ? item.overdue
             ? <span className="errorColor">overdue</span>
             : (item.dateDue && `due ${format(new Date(item.dateDue), D_MMM_YYYY)}`)
-          : ""
-        }
+          : ""}
       </Typography>
       <div className={clsx("money text-end ml-3", classes.summaryItemPrice, !item.checked && "disabled")}>
         {formatCurrency(
@@ -74,7 +75,7 @@ const InvoiceItemRow: React.FC<InvoiceItemRowProps> = (
       </div>
     </div>
   </Grid>
-  );
+);
 
 interface Props {
   classes?: any;
@@ -100,69 +101,78 @@ const CheckoutPreviousInvoiceList: React.FC<Props> = props => {
   } = props;
 
   return (
-    <div className="appFrame flex-fill root">
-      <CustomAppBar>
-        <CheckoutAppBar title={activeField && titles[activeField]} />
-      </CustomAppBar>
-      <div className="appBarContainer w-100 p-3">
-        <FormControlLabel
-          classes={{
-            root: "checkbox"
-          }}
-          control={(
-            <StyledCheckbox
-              checked={previousInvoices.payDueAmounts}
-              onChange={e => setPayDue(e.target.checked)}
-            />
-          )}
-          label="Pay due amounts"
-          className="mb-1 pl-1"
-        />
-        <Paper elevation={0} className="p-3">
-          <div className="d-flex">
-            <Chip
-              size="small"
-              className="mb-1"
-              onClick={() => uncheckAllPreviousInvoice(activeField, !previousInvoices.unCheckAll)}
-              label={previousInvoices.unCheckAll ? "Check All" : "Uncheck All"}
-            />
-            <div className="flex-fill" />
-            <Typography variant="body2" className={classes.topRightlabel}>
-              {previousInvoices.payDueAmounts ? "Next due" : "Total owing"}
-            </Typography>
-          </div>
-
-          <Grid container columnSpacing={3}>
-            {previousInvoices.invoices.map((item, index) => (
-              <InvoiceItemRow
-                key={index}
-                classes={classes}
-                item={item}
-                toggleInvoiceItem={() => toggleInvoiceItem(index, activeField)}
-                currencySymbol={currencySymbol}
-                payDueAmounts={previousInvoices.payDueAmounts}
+    <form autoComplete="off" className="appFrame flex-fill root" role={CheckoutPreviousInvoiceListFormRole}>
+      <AppBarContainer
+        hideHelpMenu
+        hideSubmitButton
+        disableInteraction
+        title={(
+          <CheckoutAppBar title={activeField && titles[activeField]} />
+        )}
+        containerClass="p-3"
+      >
+        <div className="w-100">
+          <FormControlLabel
+            classes={{
+              root: "checkbox"
+            }}
+            control={(
+              <StyledCheckbox
+                name="isPayDueAmounts"
+                checked={previousInvoices.payDueAmounts}
+                onChange={e => setPayDue(e.target.checked)}
               />
-            ))}
-            <Grid item xs={12} container direction="row" className={classes.tableTab}>
-              <Grid item xs={8} />
-              <Grid
-                item
-                xs={4}
-                container
-                className={clsx("pt-1", "summaryTopBorder", classes.summaryItemPrice)}
-              >
-                <Typography variant="body2" className="money">
-                  {formatCurrency(
-                    previousInvoices.invoiceTotal < 0 ? -previousInvoices.invoiceTotal : previousInvoices.invoiceTotal,
-                    currencySymbol
-                  )}
-                </Typography>
+            )}
+            label="Pay due amounts"
+            className="mb-1 pl-1"
+          />
+          <Paper elevation={0} className="p-3">
+            <div className="d-flex">
+              <Chip
+                size="small"
+                className="mb-1"
+                onClick={() => uncheckAllPreviousInvoice(activeField, !previousInvoices.unCheckAll)}
+                label={previousInvoices.unCheckAll ? "Check All" : "Uncheck All"}
+              />
+              <div className="flex-fill" />
+              <Typography variant="body2" className={classes.topRightlabel}>
+                {previousInvoices.payDueAmounts ? "Next due" : "Total owing"}
+              </Typography>
+            </div>
+
+            <Grid container>
+              {previousInvoices.invoices.map((item, index) => (
+                <InvoiceItemRow
+                  key={index}
+                  classes={classes}
+                  item={item}
+                  toggleInvoiceItem={() => toggleInvoiceItem(index, activeField)}
+                  currencySymbol={currencySymbol}
+                  payDueAmounts={previousInvoices.payDueAmounts}
+                />
+              ))}
+              <Grid item xs={12} container direction="row" className={classes.tableTab}>
+                <Grid item xs={8} />
+                <Grid
+                  item
+                  xs={4}
+                  container
+                  direction="row-reverse"
+                  className={clsx("pt-1", "summaryTopBorder", classes.summaryItemPrice)}
+                >
+                  <Typography variant="body2" className="money">
+                    {formatCurrency(
+                      previousInvoices.invoiceTotal < 0 ? -previousInvoices.invoiceTotal : previousInvoices.invoiceTotal,
+                      currencySymbol
+                    )}
+                  </Typography>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </Paper>
-      </div>
-    </div>
+          </Paper>
+        </div>
+      </AppBarContainer>
+    </form>
   );
 };
 

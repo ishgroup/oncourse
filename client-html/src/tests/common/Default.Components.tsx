@@ -1,32 +1,34 @@
 import * as React from "react";
-// import { createMount } from "@mui/material/test-utils";
-import { shallow } from 'enzyme';
+import {
+  render as testRender, screen as testScreen, fireEvent as testFireEvent, act
+} from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 import { mockedAPI, TestEntry } from "../TestEntry";
 
 interface Props {
   entity: string;
   View: (props: any) => any;
   record: (mockedApi: any) => object;
-  render: (wrapper: any, initialValues: any, shallow?: any) => any;
+  render: ({
+    screen, initialValues, mockedApi, fireEvent, viewProps
+  }) => any;
   defaultProps?: ({ entity, initialValues, mockedApi }) => object;
   beforeFn?: () => void;
+  state?: ({ mockedApi, viewProps }) => object;
 }
 
-export const defaultComponents: ({
-  entity, View, record, render, defaultProps, beforeFn,
-}: Props) => void = ({
-  entity, View, record, render, defaultProps, beforeFn,
-}) => {
-  const initialValues = record(mockedAPI);
-  // let mount;
+export const defaultComponents = (props: Props) => {
+  const {
+    entity,
+    View,
+    record,
+    render,
+    defaultProps,
+    beforeFn,
+    state
+  } = props;
 
-  // beforeAll(() => {
-  //   mount = createMount();
-  // });
-  //
-  // afterAll(() => {
-  //   mount.cleanUp();
-  // });
+  const initialValues = record(mockedAPI);
 
   let viewProps = { initialValues, values: initialValues };
 
@@ -34,24 +36,25 @@ export const defaultComponents: ({
     viewProps = { ...viewProps, ...defaultProps({ entity, initialValues, mockedApi: mockedAPI }) };
   }
 
-  const MockedEditView = pr => <View {...{ ...pr, ...viewProps }} />;
-
   if (beforeFn) {
     beforeFn();
   }
 
-  it(`${entity} components should render with given values`, async () => {
-    const wrapper = await shallow(
-      <TestEntry>
-        <MockedEditView />
-      </TestEntry>,
-    );
 
-    return new Promise<void>(resolve => {
-      setTimeout(() => {
-        render(wrapper.render(), initialValues, wrapper);
-        resolve();
-      }, 2000);
-    });
+
+  testRender(
+    <TestEntry state={state ? { ...state({ mockedApi: mockedAPI, viewProps }) } : {}}>
+      <View {...viewProps} />
+    </TestEntry>
+  );
+
+  it(`${entity} components should render with given values`, async () => {
+    await act( async () => render({
+      screen: testScreen,
+      initialValues,
+      mockedApi: mockedAPI,
+      fireEvent: testFireEvent,
+      viewProps,
+    }));
   });
 };

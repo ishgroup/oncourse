@@ -17,8 +17,7 @@ import { Dispatch } from "redux";
 import {
   change, DecoratedComponentClass, FieldArray, getFormValues, reduxForm
 } from "redux-form";
-
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { ContactLinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
@@ -26,7 +25,6 @@ import { formatCurrency } from "../../../../common/utils/numbers/numbersNormaliz
 import { BooleanArgFunction } from "../../../../model/common/CommonFunctions";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
-import { openContactLink } from "../../contacts/utils";
 import { postContraInvoices } from "../actions";
 import { ContraInvoiceFormData } from "../reducers/state";
 
@@ -169,13 +167,13 @@ const ContraInvoiceModal: React.FunctionComponent<Props> = props => {
                 name="contactName"
                 label="Payment from"
                 labelAdornment={
-                  <LinkAdornment linkHandler={openContactLink} link={values.contactId} disabled={!values.contactId} />
+                  <ContactLinkAdornment id={values?.contactId} />
                 }
                 disabled
               />
             </Grid>
 
-            <Grid item xs={6} className="textField">
+            <Grid item xs={6}>
               <div>
                 <Typography variant="caption" color="textSecondary">
                   Amount left to allocate

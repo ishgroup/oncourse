@@ -37,6 +37,7 @@ class ServerApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(ConcessionApi)
         CXFModule.contributeResources(binder).addBinding().to(ContactApi)
         CXFModule.contributeResources(binder).addBinding().to(ContactMergeApi)
+        CXFModule.contributeResources(binder).addBinding().to(ContactInsightApi)
         CXFModule.contributeResources(binder).addBinding().to(ControlApi)
         CXFModule.contributeResources(binder).addBinding().to(CorporatePassApi)
         CXFModule.contributeResources(binder).addBinding().to(CourseApi)
@@ -48,7 +49,6 @@ class ServerApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(DataCollectionApi)
         CXFModule.contributeResources(binder).addBinding().to(DiscountApi)
         CXFModule.contributeResources(binder).addBinding().to(DocumentApi)
-        CXFModule.contributeResources(binder).addBinding().to(DocumentExportApi)
 
         CXFModule.contributeResources(binder).addBinding().to(EmailTemplateApi)
         CXFModule.contributeResources(binder).addBinding().to(EnrolmentApi)
@@ -119,6 +119,7 @@ class ServerApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(CheckoutApi)
         CXFModule.contributeResources(binder).addBinding().to(EntityRelationTypeApi)
         CXFModule.contributeResources(binder).addBinding().to(TokenApi)
+        CXFModule.contributeResources(binder).addBinding().to(LogsApi)
 
         //------
         CXFModule.contributeFeatures(binder).addBinding().to(JAXRSBeanValidationFeature)

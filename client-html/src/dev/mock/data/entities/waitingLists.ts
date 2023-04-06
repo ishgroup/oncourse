@@ -1,10 +1,11 @@
+import { WaitingList } from "@api/model";
 import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockWaitingLists() {
   this.getWaitingLists = () => this.waitingLists;
 
-  this.getWaitingList = id => {
-    const row = this.waitingLists.rows.find(row => row.id == id);
+  this.getWaitingList = (id: any): WaitingList => {
+    const row = this.waitingLists.rows.find(waitingList => Number(waitingList.id) === Number(id));
     return {
       tags: this.getTags(),
       studentCount: 10,

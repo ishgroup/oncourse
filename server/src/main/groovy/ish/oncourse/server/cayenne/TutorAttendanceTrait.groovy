@@ -22,8 +22,8 @@ trait TutorAttendanceTrait {
     }
     
     List<Payslip> getPayslips() {
-        List<PayLine> payLines = getCourseClassTutor().classCosts*.paylines.flatten() as List<PayLine>
-        return payLines.findAll {it.session.equalsIgnoreContext(session)}*.payslip.unique() 
+        List<PayLine> payLines = getCourseClassTutor().classCosts*.paylines.flatten().grep() as List<PayLine>
+        return payLines.findAll {it.session && it.session.equalsIgnoreContext(session)}*.payslip.unique() 
     }
     
 }

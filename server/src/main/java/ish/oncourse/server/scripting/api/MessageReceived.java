@@ -13,12 +13,10 @@ package ish.oncourse.server.scripting.api;
 
 import ish.oncourse.server.cayenne.Contact;
 import ish.oncourse.server.cayenne.Message;
-import ish.oncourse.server.cayenne.MessagePerson;
 import ish.oncourse.server.cayenne.glue.CayenneDataObject;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 public class MessageReceived {
@@ -52,15 +50,13 @@ public class MessageReceived {
         if (message == null) {
             return true;
         } else {
-            CayenneDataObject collisionObject = message;
             if (contact != null) {
-                collisionObject = message.getMessagePersons().stream()
-                        .filter(messagePerson -> messagePerson.getContact().getId().equals(contact.getId()))
-                        .findFirst()
-                        .get();
+                if(!message.getContact().getId().equals(contact.getId())){
+                    return true;
+                }
             }
 
-            auditCollision.accept(collisionObject);
+            auditCollision.accept(message);
             return false;
         }
     }
@@ -71,8 +67,8 @@ public class MessageReceived {
                 .orderBy(Message.ID.desc());
 
         if (contact != null) {
-            select.and(Message.MESSAGE_PERSONS.dot(MessagePerson.CONTACT).dot(Contact.ID).eq(contact.getId()))
-                    .prefetch(Message.MESSAGE_PERSONS.joint());
+            select.and(Message.CONTACT.dot(Contact.ID).eq(contact.getId()))
+                    .prefetch(Message.CONTACT.joint());
         }
 
         var messages = select.select(context);

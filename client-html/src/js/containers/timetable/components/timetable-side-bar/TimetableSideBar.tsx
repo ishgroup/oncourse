@@ -16,11 +16,11 @@ const styles = theme =>
     }
   });
 
-const TimetableSideBar = ({ classes, hasSearch }) => (
+const TimetableSideBar = ({ classes }) => (
   <div className={classes.sideBar}>
     <MiniCalendar />
     <DayPeriodFilter />
-    {!hasSearch && <CustomFilters />}
+    <CustomFilters />
   </div>
 );
 

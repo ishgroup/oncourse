@@ -1,23 +1,25 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+ useCallback, useEffect, useMemo, useRef, useState 
+} from "react";
 import { Tag } from "@api/model";
-import { Typography } from "@mui/material";
-import ButtonBase from "@mui/material/ButtonBase";
+import {
+  InputAdornment, MenuItem, Select
+} from "@mui/material";
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import ListItemText from "@mui/material/ListItemText";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
-import TextField from "@mui/material/TextField";
-import Edit from "@mui/icons-material/Edit";
-import Autocomplete from "@mui/lab/Autocomplete";
+import Autocomplete from "@mui/material/Autocomplete";
 import clsx from "clsx";
-import { WrappedFieldProps } from "redux-form";
+import { Edit } from "@mui/icons-material";
 import { getAllMenuTags } from "../../../../containers/tags/utils";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import { MenuTag } from "../../../../model/tags";
 import { stubComponent } from "../../../utils/common";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
@@ -25,55 +27,29 @@ import getCaretCoordinates from "../../../utils/getCaretCoordinates";
 import { getMenuTags } from "../../list-view/utils/listFiltersUtils";
 import { selectStyles } from "../formFields/SelectCustomComponents";
 import AddTagMenu from "./AddTagMenu";
+import { IS_JEST } from "../../../../constants/EnvironmentConstants";
+import EditInPlaceFieldBase from "../formFields/EditInPlaceFieldBase";
+import { TagsFieldProps } from "../../../../model/common/Fields";
 
 const styles = theme =>
   createStyles({
-    listContainer: {
-      marginLeft: "-2px"
-    },
-    tagBody: {
-      color: theme.palette.text.primary,
-      cursor: "pointer",
-      borderRadius: `${theme.shape.borderRadius}px`,
-      "&:hover": {
-        color: theme.palette.error.main
-      },
-      "&:hover $tagDeleteButton": {
-        visibility: "visible"
-      }
-    },
-    tagBodyTypography: {
-      color: "inherit"
-    },
-    tagDeleteButton: {
-      margin: "4px 0 0 2px",
-      visibility: "hidden"
-    },
-    tagDeleteIcon: {
-      fontSize: "16px",
-      color: "inherit",
-      marginRight: theme.spacing(1)
-    },
-    noTagsLabel: {},
-    inputRoot: {
-      "& $tagInput": {
-        width: "auto",
-        color: "inherit",
-        maxWidth: theme.spacing(30)
-      }
-    },
-    tagInput: {},
-    hoverIcon: {
-      visibility: "hidden",
-    },
-    editable: {
-      color: theme.palette.text.primaryEditable,
-      fontWeight: 400,
-      "&$editable &:hover $hoverIcon": {
+    inputWrapper: {
+      "&:hover $inputEndAdornment": {
         visibility: "visible",
-        color: theme.palette.primary.main,
-        fontSize: "1.2rem",
       },
+      "&:hover .placeholderContent": {
+        color: theme.palette.primary.main,
+        opacity: 0.5
+      },
+    },
+    inputEndAdornment: {
+      visibility: 'hidden',
+      display: "flex",
+      color: theme.palette.primary.main,
+      alignItems: "flex-end",
+      alignSelf: "flex-end",
+      marginBottom: "4px",
+      opacity: 0.5
     },
     tagColorDotSmall: {
       width: theme.spacing(2),
@@ -82,26 +58,31 @@ const styles = theme =>
       minHeight: theme.spacing(2),
       background: "red",
       borderRadius: "100%"
-    }
+    },
+    listbox: {
+      whiteSpace: 'break-spaces'
+    },
+    hasPopup: {
+      "&$root $inputWrapper": {
+        padding: 0
+      },
+      "&$root$hasClear $inputWrapper": {
+        padding: 0
+      }
+    },
+    invalid: {}
   });
-
-interface Props extends WrappedFieldProps {
-  showConfirm: ShowConfirmCaller;
-  tags: Tag[];
-  classes?: any;
-  fieldClasses?: any;
-  disabled?: boolean;
-  className?: string;
-  label?: string;
-}
 
 const endTagRegex = /#\s*[^\w\d]*$/;
 
-const getCurrentInputString = (input, formTags: Tag[]) => {
+const getCurrentInputString = (input, formTagIds: number[] = [], allMenuTags: MenuTag[] = []) => {
   let substr = input;
 
-  formTags && formTags.forEach(t => {
-    substr = substr.replace("#" + t.name, "").trim();
+  formTagIds?.forEach(id => {
+    const tag = allMenuTags.find(t => t.tagBody.id === id);
+    if (tag) {
+      substr = substr.replace("#" + tag.tagBody.name, "").trim();
+    }
   });
 
   if (substr) {
@@ -131,16 +112,28 @@ const getFullTag = (tagId: number, tags: Tag[]) => {
   }
 };
 
-const getInputString = (tags: Tag[], allTags: Tag[]) => (tags?.length && allTags?.length
-  ? tags.reduce((acc, tag) => (getFullTag(tag.id, allTags) ? `${acc}#${tag.name} ` : acc), "")
+const getInputString = (tagIds: number[], allTags: Tag[]) => (tagIds?.length && allTags?.length
+  ? tagIds.reduce((acc, id) => {
+    const tag = getFullTag(id, allTags);
+    return (tag ? `${acc}#${tag.name} ` : acc);
+  }, "")
   : "");
 
-const SimpleTagList: React.FC<Props> = props => {
-  const {
-    input, tags, classes, meta, label = "Tags", disabled, className, fieldClasses = {}
-  } = props;
-
+const SimpleTagList = ({
+   input,
+   tags,
+   classes,
+   placeholder,
+   labelAdornment,
+   meta,
+   label = "Tags",
+   disabled,
+   className,
+   warning,
+   fieldClasses = {}
+}: TagsFieldProps) => {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const [activeTag, setActiveTag] = useState<MenuTag>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [currentInputString, setCurrentInputString] = useState("");
@@ -149,29 +142,25 @@ const SimpleTagList: React.FC<Props> = props => {
     if (!inputValue || !tags || !tags.length) return "";
 
     const arrayOfTags = input?.value?.length
-      && input.value.map((tag: Tag) => getFullTag(tag.id, tags)).filter(t => t);
+      && input.value.map(id => getFullTag(id, tags)).filter(t => t);
 
     if (!arrayOfTags?.length) return "";
 
     return arrayOfTags.map((tag: Tag, index) => (
-      <span key={tag.id} className={clsx("d-flex align-items-center", index !== arrayOfTags.length - 1 ? "pr-1" : "")}>
+      <span key={tag.id} className={clsx("centeredFlex", index !== arrayOfTags.length - 1 ? "pr-1" : "")}>
         <div key={tag.id} className={clsx(classes.tagColorDotSmall, "mr-0-5")} style={{ background: "#" + tag.color }} />
-        {`#${tag.name} `}
+        <span className="text-nowrap">
+          {`#${tag.name} `}
+        </span>
       </span>
     ));
   }, [tags, input.value, inputValue]);
-
-  useEffect(() => {
-    if (meta.invalid && !isEditing) {
-      setIsEditing(true);
-    }
-  }, [meta.invalid]);
 
   const inputNode = useRef<any>();
   const tagMenuNode = useRef<any>();
 
   const menuTags = useMemo(
-    () => (tags && input.value ? getMenuTags(tags.filter(t => t.childrenCount > 0), input.value) : []),
+    () => (tags && input.value ? getMenuTags(tags.filter(t => t.childrenCount > 0), input.value.map(id => getFullTag(id, tags)).filter(t => t)) : []),
     [tags, input.value]
   );
 
@@ -194,17 +183,16 @@ const SimpleTagList: React.FC<Props> = props => {
       if (!t.children.length) {
         const index = current.findIndex(c => c === t.tagBody.name);
         if (index !== -1) {
-          const addedTagsMatch = input.value.find(v => v.name === t.tagBody.name);
-          if (addedTagsMatch && addedTagsMatch.id !== t.tagBody.id) {
+          const addedTagsMatch = input.value.find(id => getFullTag(id, tags)?.name === t.tagBody.name);
+          if (addedTagsMatch && addedTagsMatch !== t.tagBody.id) {
             return;
           }
-          updated.push(t.tagBody);
+          updated.push(t.tagBody.id);
           current.splice(index, 1);
         }
       }
     });
 
-    updated.sort((a, b) => current.indexOf(a.name) - current.indexOf(b.name));
     input.onChange(updated);
     setInputValue(getInputString(updated, tags));
   };
@@ -212,12 +200,12 @@ const SimpleTagList: React.FC<Props> = props => {
   const onTagAdd = (tag: MenuTag) => {
     const updated = [...input.value];
 
-    const index = updated.findIndex(t => t.id === tag.tagBody.id);
+    const index = updated.findIndex(id => id === tag.tagBody.id);
 
     if (index !== -1) {
       updated.splice(index, 1);
     } else {
-      updated.push(tag.tagBody);
+      updated.push(tag.tagBody.id);
     }
 
     input.onChange(updated);
@@ -227,7 +215,7 @@ const SimpleTagList: React.FC<Props> = props => {
     }, 100);
   };
 
-  const filterOptions = item => !item.children.length && !input.value.some(v => v.id === item.tagBody.id) && item.tagBody.name
+  const filterOptions = item => !item.children.length && !input.value.some(id => id === item.tagBody.id) && item.tagBody.name
     .toLowerCase()
     .trim()
     .startsWith(currentInputString.toLowerCase().trim());
@@ -236,12 +224,12 @@ const SimpleTagList: React.FC<Props> = props => {
 
   const filteredOptions = allMenuTags.filter(filterOptions);
 
-  const getOptionText = (option, label) => (
-    <span>
-      {`${option.path ? option.path + " / " : ""}`}
+  const getOptionText = (option, optionProps, label) => (
+    <div {...optionProps}>
+      {`${option.path ? option.path + " /" : ""}`}
       {' '}
       {label}
-    </span>
+    </div>
   );
 
   const getOptionLabel = op => op.path;
@@ -249,7 +237,7 @@ const SimpleTagList: React.FC<Props> = props => {
   const renderOption = (optionProps, option) => {
     const label = option?.tagBody?.name;
     const highlightedLabel = getHighlightedPartLabel(label, currentInputString);
-    return getOptionText(option, highlightedLabel);
+    return getOptionText(option, optionProps, highlightedLabel);
   };
 
   const handleInputChange = e => {
@@ -266,6 +254,7 @@ const SimpleTagList: React.FC<Props> = props => {
   const exit = () => {
     setMenuIsOpen(false);
     setIsEditing(false);
+    setActiveTag(null);
 
     if (endTagRegex.test(inputValue)) {
       setTimeout(() => {
@@ -289,14 +278,16 @@ const SimpleTagList: React.FC<Props> = props => {
   };
 
   const onTagListBlur = () => {
-    if (document.activeElement !== inputNode.current) {
-      exit();
-      synchronizeTags();
-    }
+    setTimeout(() => {
+      if (document.activeElement !== inputNode.current) {
+        exit();
+        synchronizeTags();
+      }
+    }, 60);
   };
 
   const handleChange = (e, value, action) => {
-    if (action === "select-option") {
+    if (action === "selectOption") {
       onTagAdd(value);
     }
   };
@@ -312,11 +303,26 @@ const SimpleTagList: React.FC<Props> = props => {
   }, [input.value, tags]);
 
   useEffect(() => {
-    setCurrentInputString(getCurrentInputString(inputValue, input.value));
-  }, [inputValue, input.value]);
+    setCurrentInputString(getCurrentInputString(inputValue, input.value || [], allMenuTags));
+  }, [inputValue, input.value, allMenuTags]);
+
+  useEffect(() => {
+    if (meta.invalid && !isEditing) {
+      setIsEditing(true);
+    }
+  }, [meta.invalid]);
+
+  useEffect(() => {
+    if (activeTag) {
+      const activeUpdated = allMenuTags.find(t => t.tagBody.id === activeTag.tagBody.id);
+      if (activeUpdated) {
+        setActiveTag(activeUpdated);
+      }
+    }
+  }, [allMenuTags]);
 
   const popperAdapter = useCallback(params => {
-    if (currentInputString) {
+    if (currentInputString || !inputNode.current) {
       return <div {...params} />;
     }
 
@@ -340,15 +346,16 @@ const SimpleTagList: React.FC<Props> = props => {
       <AddTagMenu
         tags={menuTags}
         handleAdd={onTagAdd}
+        activeTag={activeTag}
+        setActiveTag={setActiveTag}
       />
     </div>
-  ), [menuTags, onTagAdd]);
+  ), [menuTags, activeTag, setActiveTag, onTagAdd]);
 
   return (
     <div className={className} id={input.name}>
       <div
         className={clsx("relative", {
-          "d-none": !isEditing,
           "pointer-events-none": disabled
         })}
       >
@@ -360,94 +367,85 @@ const SimpleTagList: React.FC<Props> = props => {
           renderOption={renderOption}
           filterOptions={filterOptionsInner}
           getOptionLabel={getOptionLabel}
-          PopperComponent={popperAdapter}
+          PopperComponent={currentInputString ? undefined : popperAdapter}
           ListboxComponent={currentInputString ? undefined : listboxAdapter}
           classes={{
-            listbox: fieldClasses.listbox
+            root: classes.root,
+            hasPopupIcon: classes.hasPopup,
+            hasClearIcon: classes.hasClear,
+            listbox: clsx(classes.listbox, fieldClasses.listbox),
+            inputRoot: classes.inputWrapper,
+            noOptions: "d-none"
           }}
-          renderInput={params => (
-            <TextField
+          renderInput={({
+            InputLabelProps, InputProps, inputProps, ...params
+          }) => (
+            <EditInPlaceFieldBase
               {...params}
-              margin="none"
-              InputLabelProps={{
-                classes: {
-                  root: fieldClasses.label
-                }
-              }}
-              InputProps={{
-                ...params.InputProps,
-                classes: {
-                  underline: fieldClasses.underline
-                },
-              }}
-              // eslint-disable-next-line react/jsx-no-duplicate-props
-              inputProps={{
-                ...params.inputProps,
-                value: inputValue,
-                className: fieldClasses.text
-              }}
-              error={meta && meta.invalid}
-              helperText={(
-                <span className="shakingError">
-                  {meta.error}
-                </span>
-              )}
-              onChange={handleInputChange}
-              onFocus={onFocus}
-              onBlur={onBlur}
-              inputRef={inputNode}
+              name={input.name}
+              value={input.value}
+              error={meta.error}
+              invalid={meta?.invalid}
               label={label}
-              variant="standard"
-              multiline
-            />
-          )}
+              warning={warning}
+              disabled={disabled}
+              fieldClasses={fieldClasses}
+              shrink={Boolean(label || input.value)}
+              labelAdornment={labelAdornment}
+              placeholder={placeholder || "No value"}
+              editIcon={<Edit fontSize="inherit" />}
+              InputProps={{
+                ...InputProps,
+                onChange: handleInputChange,
+                onFocus,
+                onBlur,
+                inputProps: {
+                  ...inputProps,
+                  ref: ref => {
+                    (inputProps as any).ref.current = ref;
+                    inputNode.current = ref;
+                  },
+                  value: inputValue
+                },
+                multiline: !IS_JEST
+              }}
+              CustomInput={!isEditing
+                ? <Select
+                  inputRef={ref => {
+                    (inputProps as any).ref.current = ref?.node;
+                  }}
+                  onFocus={edit}
+                  value="stub"
+                  className={classes.inputWrapper}
+                  classes={{ select: "d-flex flex-wrap cursor-text" }}
+                  endAdornment={
+                    <InputAdornment
+                      position="end"
+                      className={classes.inputEndAdornment}>
+                        <Edit />
+                      </InputAdornment>
+                  }
+                  IconComponent={stubComponent}
+                >
+                  <MenuItem value="stub">
+                    {InputValueForRender || <span className="placeholderContent">No value</span>}
+                  </MenuItem>
+                </Select>
+                : null}
+            />)
+          }
           popupIcon={stubComponent()}
           disableListWrap
           openOnFocus
         />
       </div>
-      <div
-        className={clsx({
-          "d-none": isEditing,
-          "pointer-events-none": disabled || !tags || !tags.length
-        })}
-      >
-        <div className="mw-100 text-truncate">
-          <Typography variant="caption" className={fieldClasses.label} color="textSecondary">
-            {label}
-          </Typography>
-
-          <ListItemText
-            classes={{
-              root: "pl-0 mb-0",
-              primary: "d-flex"
-            }}
-            primary={(
-              <ButtonBase
-                onClick={edit}
-                className={clsx("overflow-hidden hoverIconContainer", classes.editable)}
-                component="div"
-              >
-                <span
-                  className={clsx("overflow-hidden d-flex align-items-center", classes.editable, {
-                    [fieldClasses.placeholder ? fieldClasses.placeholder : "placeholderContent"]: !inputValue,
-                    [fieldClasses.text]: inputValue,
-                  })}
-                >
-                  {InputValueForRender || "No value"}
-                  {!disabled
-                  && Boolean(!tags || tags.length)
-                  && <Edit className={clsx("editInPlaceIcon hoverIcon", classes.hoverIcon, fieldClasses.placeholder, "mt-0-5")} />}
-                </span>
-              </ButtonBase>
-            )}
-          />
-        </div>
-      </div>
     </div>
   );
 };
 
-export default withStyles(theme => ({ ...selectStyles(theme), ...styles(theme) }))(
+export default withStyles(theme => ({
+  ...selectStyles(theme),
+  ...styles(theme)
+}))(
   SimpleTagList
 ) as any;

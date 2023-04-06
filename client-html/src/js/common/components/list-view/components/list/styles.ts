@@ -1,11 +1,15 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import { createStyles } from "@mui/styles";
 import { alpha } from '@mui/material/styles';
 import { AppTheme } from "../../../../../model/common/Theme";
+import { HEADER_ROWS_COUNT, LIST_TWO_COLUMN_ROW_HEIGHT } from "../../../../../constants/Config";
 
 export default (theme: AppTheme) => createStyles({
   infiniteLoaderListRoot: {
@@ -17,9 +21,9 @@ export default (theme: AppTheme) => createStyles({
     background: theme.palette.background.paper,
     display: "flex",
     flexDirection: "column",
-    overflow: "auto",
-    position: "relative",
-    height: "100%"
+    width: "100%",
+    height: "100%",
+    overflow: "auto"
   },
   nestedTable: {
     background: theme.palette.background.paper,
@@ -38,10 +42,20 @@ export default (theme: AppTheme) => createStyles({
     position: "sticky",
     zIndex: 1,
     top: 0,
+    height: `${LIST_TWO_COLUMN_ROW_HEIGHT * HEADER_ROWS_COUNT}px`,
     background: theme.palette.background.paper,
     borderBottom: `1px solid ${theme.palette.divider}`,
   },
+  headerRow: {
+    display: "flex",
+    background: theme.palette.background.paper,
+  },
+  noSort: {
+    cursor: "unset",
+    lineHeight: "1.1rem"
+  },
   headerCell: {
+    display: "flex",
     fontSize: '0.75rem',
     position: "relative",
     padding: theme.spacing(2, 1),
@@ -51,62 +65,69 @@ export default (theme: AppTheme) => createStyles({
     },
     "& $draggingCell,&:focus $draggingCell": {
       color: theme.palette.divider
-    },
-  },
-  draggingCell: {},
-  listHeaderCell: {
-    "&:hover": {
-      "& $tableSortLabel": {
-        opacity: 0.5
-      }
     }
-  },
-  headerCellItem: {
-    padding: theme.spacing(2, 1),
-    zIndex: 1
-  },
-  headerRow: {
-    display: "flex",
-    background: theme.palette.background.paper
-  },
-  noSort: {
-    lineHeight: "1.1rem"
   },
   draggableCellItem: {
     position: "relative",
+    fontSize: '0.75rem',
+    padding: theme.spacing(2, 1),
     transition: theme.transitions.create("padding", {
       duration: theme.transitions.duration.standard,
       easing: theme.transitions.easing.easeInOut
     }),
     "&:hover": {
-      paddingLeft: 24,
+      paddingLeft: theme.spacing(3),
       "& $dragIndicator": {
         visibility: "visible",
         fill: theme.palette.action.active
       }
+    },
+    "&:hover $resizer": {
+      opacity: 1
+    },
+    "&:hover:not($activeRight) $canSort": {
+      transition: theme.transitions.create("padding", {
+        duration: theme.transitions.duration.standard,
+        easing: theme.transitions.easing.easeInOut
+      }),
+      paddingRight: theme.spacing(3)
+    },
+    "&$activeRight $rightSort": {
+      position: "static"
     },
     "& $visibleDragIndicator": {
       visibility: "visible",
       fill: theme.palette.action.active
     }
   },
-  dragOver: {
-    padding: theme.spacing(2, 0),
-    paddingLeft: 24,
+  activeRight: {},
+  rightAlighed: {},
+  canSort: {
+    cursor: "pointer"
+  },
+  isDragging: {
     boxShadow: theme.shadows[2],
-    background: theme.palette.background.paper
+    background: theme.palette.background.paper,
+    transition: "none",
+    paddingLeft: theme.spacing(3),
+    "&$rightAlighed:not($activeRight)": {
+      paddingRight: theme.spacing(4)
+    },
+    "&$rightAlighed:has( $noSort)": {
+      paddingRight: theme.spacing(1)
+    }
   },
   dragIndicator: {
+    cursor: "grab",
     position: "absolute",
     top: "50%",
-    left: 0,
-    width: 24,
-    height: 24,
+    left: theme.spacing(-3),
+    width: theme.spacing(3),
+    height: theme.spacing(3),
     transform: "translateY(-50%)",
     visibility: "hidden"
   },
   visibleDragIndicator: {},
-  tableSortLabel: {},
   bodyCell: {
     padding: theme.spacing(0.5, 1),
     whiteSpace: "nowrap",
@@ -123,6 +144,8 @@ export default (theme: AppTheme) => createStyles({
     }
   },
   row: {
+    cursor: "pointer",
+    display: "flex",
     "&$selected": {
       backgroundColor: theme.palette.action.selected,
       opacity: 1
@@ -133,7 +156,6 @@ export default (theme: AppTheme) => createStyles({
     "&$selected $listDots": {
       display: "none",
     },
-    cursor: "pointer"
   },
   oddRow: {
     backgroundColor: alpha(theme.palette.action.hover, 0.03)
@@ -147,16 +169,20 @@ export default (theme: AppTheme) => createStyles({
     width: theme.spacing(2.5),
     margin: 0,
     display: "none",
+    position: "absolute",
+    top: "50%",
+    transform: "translateY(-50%)",
+    left: "14px"
   },
   listDots: {
     height: "19px",
     margin: 0,
-    display: "flex",
   },
   selected: {},
   resizer: {
+    cursor: "col-resize",
     top: "50%",
-    right: "-3px",
+    right: "3px",
     width: "3px",
     height: "50%",
     transform: "translateY(-50%)",
@@ -176,6 +202,7 @@ export default (theme: AppTheme) => createStyles({
     right: theme.spacing(2),
     top: "1px",
     zIndex: theme.zIndex.appBar,
+    color: theme.palette.text.secondary,
     backgroundColor: theme.palette.background.paper,
     borderRadius: "100%"
   },
@@ -203,5 +230,9 @@ export default (theme: AppTheme) => createStyles({
   },
   hideOverflowY: {
     overflowY: "hidden"
+  },
+  rightSort: {
+    position: "absolute",
+    right: 0
   }
 });

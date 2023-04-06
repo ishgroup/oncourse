@@ -1,24 +1,32 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
- useEffect, useMemo, useRef, Fragment, useState
-} from "react";
+import React, { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import withStyles from "@mui/styles/withStyles";
-import { getTimetableSessionsByIds, getTimetableSessionsTags } from "../../../../actions/index";
+import { getTimetableSessionsByIds, getTimetableSessionsTags } from "../../../../actions";
 import styles from "../styles";
-import { gapHoursDayPeriodsBase, getGapHours } from "../../../../utils/index";
-import { CalendarMode, TimetableDay } from "../../../../../../model/timetable/index";
+import { gapHoursDayPeriodsBase, getGapHours, getGroupings } from "../../../../utils";
+import {
+  CalendarGrouping,
+  CalendarGroupingState,
+  CalendarMode,
+  CalendarTagsState,
+  TimetableDay
+} from "../../../../../../model/timetable";
 import CalendarSessionHour from "../session/CalendarSessionHour";
 import CalendarSession from "../session/CalendarSession";
 import CalendarDayBase from "./CalendarDayBase";
+import { NO_ROOM_LABEL, NO_TUTORS_LABEL } from "../../../../TimetableConstants";
 
 interface CompactModeDayProps extends TimetableDay {
   monthIndex: number;
@@ -31,16 +39,16 @@ interface CompactModeDayProps extends TimetableDay {
   classes: any;
   calendarMode: CalendarMode;
   selectedDayPeriods: boolean[];
-  tagsExpanded: any;
-  setTagsExpanded: any;
+  tagsState: CalendarTagsState;
+  calendarGrouping: CalendarGroupingState;
 }
 
 const EmptyGapDay: React.FunctionComponent<any> = React.memo(
   ({
- classes, selectedDayPeriods, hasSelectedDayPeriods, updated, hasSessions
-}) => (
-  <>
-    {gapHoursDayPeriodsBase.map((p, i) => {
+     classes, selectedDayPeriods, hasSelectedDayPeriods, updated, hasSessions
+  }) => (
+    <>
+      {gapHoursDayPeriodsBase.map((p, i) => {
         if (hasSelectedDayPeriods && !selectedDayPeriods[i]) {
           return null;
         }
@@ -72,7 +80,7 @@ const EmptyGapDay: React.FunctionComponent<any> = React.memo(
           </Grid>
         );
       })}
-  </>
+    </>
   )
 );
 
@@ -84,8 +92,7 @@ const GapDay: React.FunctionComponent<any> = React.memo(
     updated,
     hasSessions,
     tagsUpdated,
-    tagsExpanded,
-    setTagsExpanded
+    tagsState,
   }) => {
     const hasSelectedDayPeriods = selectedDayPeriods.includes(true);
 
@@ -122,8 +129,7 @@ const GapDay: React.FunctionComponent<any> = React.memo(
                             key={h.title + h.sessions.length}
                             classes={classes}
                             sessions={h.sessions}
-                            tagsExpanded={tagsExpanded}
-                            setTagsExpanded={setTagsExpanded}
+                            tagsState={tagsState}
                           />
                         ) : (
                           <Typography className="text-disabled">available</Typography>
@@ -149,6 +155,80 @@ const GapDay: React.FunctionComponent<any> = React.memo(
   }
 );
 
+interface GroupingDayProps {
+  classes: any;
+  groupings: CalendarGrouping[];
+  hasSessions: boolean;
+  tagsState: CalendarTagsState;
+  groupingState: CalendarGroupingState;
+}
+
+const GroupingDay = React.memo<GroupingDayProps>(
+  ({
+     classes,
+     groupings,
+     hasSessions,
+     tagsState,
+     groupingState
+   }) => (hasSessions && groupings.length ? (
+     <>
+       {groupings.map((g, i) => (
+         <Grid container columnSpacing={3} key={i}>
+           <Grid item xs={2} className={classes.gapDayOffsetTop}>
+             {g.sessions.some(s => s.name) ? (
+               <>
+                 <Typography
+                   component="div"
+                   variant="body2"
+                   className={clsx({
+                 "text-disabled": g.tutor === NO_TUTORS_LABEL || g.room === NO_ROOM_LABEL
+               })}
+                 >
+                   {g.tutor || g.room}
+                 </Typography>
+                 {g.site && (
+                 <Typography
+                   component="div"
+                   variant="body2"
+                 >
+                   {g.site}
+                 </Typography>
+               )}
+               </>
+              ) : (
+                <Typography
+                  component="div"
+                  variant="body2"
+                  className="text-disabled"
+                >
+                  Loading...
+                </Typography>
+              )}
+           </Grid>
+
+           <Grid item xs={10} className={classes.groupedDayWrapper}>
+             {g.sessions.length ? (
+                g.sessions.map(s => (
+                  <CalendarSession
+                    key={s.id}
+                    tagsState={tagsState}
+                    hideTutors={groupingState === "Group by tutor"}
+                    hideRooms={groupingState === "Group by room"}
+                    {...s}
+                  />
+                ))
+              ) : (
+                <Typography className="text-disabled dayOffset">available</Typography>
+              )}
+           </Grid>
+         </Grid>
+          ))}
+     </>
+    ) : (
+      <Typography className="text-disabled dayOffset">available</Typography>
+    ))
+);
+
 const CalendarDayWrapper: React.FunctionComponent<CompactModeDayProps> = React.memo(props => {
   const {
     day,
@@ -163,13 +243,14 @@ const CalendarDayWrapper: React.FunctionComponent<CompactModeDayProps> = React.m
     classes,
     calendarMode,
     selectedDayPeriods,
-    tagsExpanded,
+    tagsState,
     tagsUpdated,
-    setTagsExpanded,
-    getSessionsTags
+    getSessionsTags,
+    calendarGrouping
   } = props;
 
   const [gapHours, setGapHours] = useState([]);
+  const [groupings, setGroupings] = useState<CalendarGrouping[]>([]);
   const [inView, setInView] = useState<boolean>(false);
 
   const sessionsIds = useMemo(() => sessions.map(s => s.id), [sessions]);
@@ -178,27 +259,35 @@ const CalendarDayWrapper: React.FunctionComponent<CompactModeDayProps> = React.m
     if (!updated && !isScrolling && inView && sessions.length) {
       updateSessionsDetails(sessionsIds, monthIndex, dayIndex);
     }
-    if (updated && !tagsUpdated && !isScrolling && inView && sessionsIds.length) {
+    if (tagsState !== "Tag off" && updated && !tagsUpdated && !isScrolling && inView && sessionsIds.length) {
       getSessionsTags(sessionsIds, monthIndex, dayIndex);
     }
-  }, [updated, tagsUpdated, isScrolling, inView]);
+  }, [updated, tagsUpdated, isScrolling, inView, tagsState]);
 
   useEffect(() => {
-    if (!gapHours.length && calendarMode === "Gap(Hours)" && sessions.length && updated && tagsUpdated) {
+    if (!gapHours.length && calendarMode === "Gap(Hours)" && sessions.length && updated) {
       setGapHours(getGapHours(sessions));
     }
   }, [calendarMode, sessions, updated, tagsUpdated]);
 
+  useEffect(() => {
+    if (calendarGrouping !== "No grouping" && sessions.length) {
+      setGroupings(getGroupings(sessions, calendarGrouping));
+    }
+  }, [calendarGrouping, sessions, updated, tagsUpdated]);
+
   const dayNodeRef = useRef(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (dayNodesObserver && dayNodeRef.current) {
       dayNodeRef.current.setInView = setInView;
       dayNodeRef.current.isInView = inView;
       dayNodesObserver.observer.observe(dayNodeRef.current);
     }
 
-    return () => dayNodesObserver.observer.unobserve(dayNodeRef.current);
+    return () => {
+      if (dayNodeRef.current && dayNodesObserver) dayNodesObserver.observer.unobserve(dayNodeRef.current);
+    };
   }, [dayNodesObserver, dayNodeRef.current]);
 
   const renderedDays = useMemo(
@@ -206,16 +295,14 @@ const CalendarDayWrapper: React.FunctionComponent<CompactModeDayProps> = React.m
         sessions.map(s => (
           <CalendarSession
             key={s.id}
-            inView={inView}
-            tagsExpanded={tagsExpanded}
-            setTagsExpanded={setTagsExpanded}
+            tagsState={tagsState}
             {...s}
           />
         ))
       ) : (
         <Typography className="text-disabled dayOffset">available</Typography>
       )),
-    [sessions, updated, selectedDayPeriods, tagsExpanded, inView]
+    [sessions, updated, selectedDayPeriods, tagsState, calendarGrouping]
   );
 
   return (
@@ -231,22 +318,31 @@ const CalendarDayWrapper: React.FunctionComponent<CompactModeDayProps> = React.m
           selectedDayPeriods={selectedDayPeriods}
           gapHours={gapHours}
           updated={updated}
-          hasSessions={sessions.length}
+          hasSessions={Boolean(sessions.length)}
           tagsUpdated={tagsUpdated}
-          tagsExpanded={tagsExpanded}
-          setTagsExpanded={setTagsExpanded}
+          tagsState={tagsState}
         />
-      ) : (
-        renderedDays
-      )}
+      ) : calendarGrouping === "No grouping" 
+        ? renderedDays 
+        : (
+          <GroupingDay
+            groupingState={calendarGrouping}
+            hasSessions={Boolean(sessions.length)}
+            classes={classes}
+            groupings={groupings}
+            tagsState={tagsState}
+          />
+        )}
     </CalendarDayBase>
   );
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    updateSessionsDetails: (ids: number[], monthIndex?: number, dayIndex?: number) => dispatch(getTimetableSessionsByIds(ids, monthIndex, dayIndex)),
-    getSessionsTags: (ids: number[], monthIndex?: number, dayIndex?: number) => dispatch(getTimetableSessionsTags(ids, monthIndex, dayIndex))
-  });
+  updateSessionsDetails: (ids: number[], monthIndex?: number, dayIndex?: number) =>
+    dispatch(getTimetableSessionsByIds(ids, monthIndex, dayIndex)),
+  getSessionsTags: (ids: number[], monthIndex?: number, dayIndex?: number) =>
+    dispatch(getTimetableSessionsTags(ids, monthIndex, dayIndex))
+});
 
 export const CalendarDay = connect<any, any, any>(
   null,

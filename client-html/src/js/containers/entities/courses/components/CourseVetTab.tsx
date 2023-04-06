@@ -7,11 +7,10 @@ import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
-import Grid from "@mui/material/Grid";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Tooltip from "@mui/material/Tooltip";
 import { Module, Qualification } from "@api/model";
-import { Collapse } from "@mui/material";
+import {
+ Collapse, FormControlLabel, Grid, Tooltip 
+} from "@mui/material";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
@@ -38,6 +37,7 @@ interface CourseVetTab extends EditViewProps<CourseExtended> {
   setModuleSearch?: StringArgFunction;
   getModules?: AnyArgFunction;
   modulesPending?: boolean;
+  moduleError?: boolean;
   moduleItems?: Module[];
   clearModuleSearch?: BooleanArgFunction;
 }
@@ -65,6 +65,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
     submitSucceeded,
     moduleItems,
     modulesPending,
+    moduleError,
     clearModuleSearch
   } = props;
 
@@ -139,19 +140,19 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
   }, [moduleItems]);
 
   return (
-    <Grid container columnSpacing={3} className="pl-3 pr-3">
+    <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pr-3 mt-1">
       <Grid item xs={12}>
-        <div className="heading mt-2 mb-2">Vet</div>
+        <div className="heading">Vet</div>
       </Grid>
 
       <Grid item xs={twoColumn ? 6 : 12}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           entity="Qualification"
           name="qualificationId"
           label="Qualification"
           selectValueMark="id"
-          defaultDisplayValue={values.qualTitle}
+          defaultValue={values.qualTitle}
           labelAdornment={<LinkAdornment link={values.qualificationId} linkHandler={openQualificationLink} />}
           onInnerValueChange={onQualificationCodeChange}
           itemRenderer={QualificationListItemRenderer}
@@ -170,7 +171,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
         <Uneditable value={values.qualLevel} label="Level" />
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12} className="mb-2">
+      <Grid item xs={twoColumn ? 6 : 12}>
         <FormControlLabel
           className="checkbox"
           control={<FormField type="checkbox" name="isSufficientForQualification" />}
@@ -179,7 +180,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12} className="mb-2">
+      <Grid item xs={twoColumn ? 6 : 12}>
         <FormControlLabel
           className="checkbox"
           control={<FormField type="checkbox" name="isVET" />}
@@ -193,7 +194,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
           type="text"
           name="fieldOfEducation"
           label="Field of education"
-          disabled={values.qualificationId || values.isTraineeship}
+          disabled={Boolean(values.qualificationId || values.isTraineeship)}
         />
       </Grid>
 
@@ -207,11 +208,12 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
               <div>Default reportable hours</div>
             </Tooltip>
           )}
+          debounced={false}
         />
       </Grid>
 
       <Grid item xs={12}>
-        <div className="heading mb-2 mt-2">Vet student loans</div>
+        <div className="heading">Vet student loans</div>
       </Grid>
 
       <Grid item xs={twoColumn ? 6 : 12}>
@@ -246,6 +248,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
           resetSearch={submitSucceeded}
           dataRowClass={classes.moduleRowClass}
           aqlEntities={["Module"]}
+          aqlQueryError={moduleError}
           disabled={values.hasEnrolments}
         />
       </Grid>
@@ -255,7 +258,8 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
 
 const mapStateToProps = (state: State) => ({
   modulesPending: state.plainSearchRecords["Module"].loading,
-  moduleItems: state.plainSearchRecords["Module"].items
+  moduleItems: state.plainSearchRecords["Module"].items,
+  moduleError: state.plainSearchRecords["Module"].error
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

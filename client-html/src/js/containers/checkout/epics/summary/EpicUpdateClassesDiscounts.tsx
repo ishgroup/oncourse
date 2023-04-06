@@ -23,6 +23,7 @@ const request: EpicUtils.Request<any, boolean> = {
 
     let totalEnrolmentsCount = 0;
     let totalAmountExDiscount = 0;
+    const payerId = state.checkout.summary.list.find(l => l.payer)?.contact.id;
     const enrolments = [];
 
     state.checkout.summary.list.forEach((l, listIndex) => {
@@ -34,7 +35,7 @@ const request: EpicUtils.Request<any, boolean> = {
           }
           totalAmountExDiscount = decimalPlus(totalAmountExDiscount, parseFloat(originalItem.price));
 
-          if (i.type === "course") {
+          if (i.type === "course" && i.class) {
             totalEnrolmentsCount++;
 
             const courseItems = l.items.filter(item => item.checked && item.type === "course");
@@ -42,6 +43,7 @@ const request: EpicUtils.Request<any, boolean> = {
             enrolments.push({
               contactId: l.contact.id,
               classItem: i,
+              payerId,
               courseIds: courseItems.map(item => item.courseId).toString(),
               productIds: l.items.filter(item => item.checked && item.type !== "course").map(item => item.id).toString(),
               listIndex,
@@ -66,7 +68,8 @@ const request: EpicUtils.Request<any, boolean> = {
           enrolments.map(enrolment => enrolment.classItem.class.id).toString(),
           codes,
           e.membershipIds,
-          totalAmountExDiscount
+          totalAmountExDiscount,
+          e.payerId
         )
         .then(res => {
           const discounts = res.map(i => i.discount);

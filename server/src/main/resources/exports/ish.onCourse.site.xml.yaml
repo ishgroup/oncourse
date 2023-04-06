@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.site.xml
-entityClass: Site
-body: ish.onCourse.site.xml.groovy
-name: Site XML export
-outputType: xml

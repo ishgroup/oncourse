@@ -1,28 +1,26 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, {
   useCallback, useEffect, useMemo, useRef
 } from "react";
 import Grid from "@mui/material/Grid";
-import FormGroup from "@mui/material/FormGroup";
-import Typography from "@mui/material/Typography";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import {
   arrayPush, arrayRemove, change, Field, formValueSelector
 } from "redux-form";
 import {
-  addMinutes, differenceInMinutes, set, setDate
+  addMinutes, differenceInMinutes
 } from "date-fns";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import {
-  ClashType, SessionWarning, Site, TutorAttendance,
+  ClashType, CourseClassTutor, SessionWarning, TutorAttendance,
 } from "@api/model";
-import { FormControl, FormHelperText } from "@mui/material";
-import clsx from "clsx";
 import ErrorMessage from "../../../../../common/components/form/fieldMessage/ErrorMessage";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { greaterThanNullValidation } from "../../../../../common/utils/validation";
@@ -32,9 +30,10 @@ import { State } from "../../../../../reducers/state";
 import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
 import { openRoomLink } from "../../../rooms/utils";
 import { TimetableSession } from "../../../../../model/timetable";
-import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
+import { ClassCostExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 import CourseClassTutorRooster from "./CourseClassTutorRooster";
 import { setShiftedTutorAttendances } from "../../utils";
+import { NoWrapOption } from "../../../../../common/components/form/formFields/SelectCustomComponents";
 
 interface Props {
   form: string;
@@ -42,16 +41,19 @@ interface Props {
   dispatch: Dispatch;
   tutors: CourseClassTutorExtended[];
   session?: TimetableSession;
-  sites?: Site[];
   triggerDebounseUpdate?: any;
   warnings: SessionWarning[];
+  budget: ClassCostExtended[];
+  addTutorWage: (tutor: CourseClassTutor, wage?: ClassCostExtended) => void;
 }
 
 const roomLabel = room => {
-  if (room["site.name"]) return `${room["site.name"]} - ${room.name}`;
+  if (room && room["site.name"]) return `${room["site.name"]} - ${room.name}`;
 
-  return room.name;
+  return room?.name;
 };
+
+const getSiteAndRoomLabel = session => `${session?.site || ""}${session?.room ? ` - ${session?.room}` : ""}`;
 
 const validateDuration = value => (value < 5 || value > 1440
     ? "Each entry in the timetable cannot be shorter than 5 minutes or longer than 24 hours."
@@ -63,7 +65,9 @@ const CourseClassSessionFields: React.FC<Props> = ({
   session,
   tutors,
   triggerDebounseUpdate,
-  warnings
+  warnings,
+  budget,
+  addTutorWage
 }) => {
   const isMounted = useRef(false);
 
@@ -184,7 +188,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
   };
 
   return (
-    <Grid container columnSpacing={3}>
+    <Grid container columnSpacing={3} rowSpacing={2}>
       <Grid item xs={4}>
         <FormField type="stub" name={`sessions[${session.index}].end`} validate={validateSessionEnd} />
         <FormField
@@ -196,6 +200,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
                 : `Virtual start (${Intl.DateTimeFormat().resolvedOptions().timeZone})`)
               : "Start"}`}
           onChange={onStartDateChange}
+          debounced={false}
           timezone={session.siteTimezone}
           className={warningTypes.Session.length || warningTypes.UnavailableRule.length ? "errorColor" : undefined}
           persistValue
@@ -223,36 +228,45 @@ const CourseClassSessionFields: React.FC<Props> = ({
           name={`sessions[${session.index}].end`}
           timezone={session.siteTimezone}
           onChange={onEndDateChange}
+          debounced={false}
           type="time"
           label="End"
         />
       </Grid>
+      {Boolean(warningTypes.Session.length || warningTypes.UnavailableRule.length) && (
+        <Grid item xs={12}>
+          {warningTypes.Session
+            .map(w => <ErrorMessage message={w.message} /> )}
+          {warningTypes.UnavailableRule
+            .map(w => <ErrorMessage message={w.message} /> )}
+        </Grid>
+      ) }
+
       <Grid item xs={12}>
-        {warningTypes.Session
-          .map(w => <ErrorMessage message={w.message} /> )}
-        {warningTypes.UnavailableRule
-          .map(w => <ErrorMessage message={w.message} /> )}
-      </Grid>
-      <Grid item xs={6}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           entity="Room"
           name={`sessions[${session.index}].roomId`}
           label="Site and room"
           aqlColumns="name,site.name,site.localTimezone,site.id"
           selectValueMark="id"
           selectLabelCondition={roomLabel}
-          defaultDisplayValue={`${session.site} - ${session.room}`}
+          defaultValue={getSiteAndRoomLabel(session)}
           labelAdornment={<LinkAdornment linkHandler={openRoomLink} link={session.roomId} disabled={!session.roomId} />}
           onInnerValueChange={onRoomIdChange}
-          rowHeight={36}
+          itemRenderer={NoWrapOption}
           hasError={Boolean(warningTypes.Room.length)}
           allowEmpty
         />
       </Grid>
-      {warningTypes.Room
-        .map(w => <ErrorMessage message={w.message} /> )}
-      <Grid item xs={12} className="mb-2">
+      {Boolean(warningTypes.Room.length)
+        && (
+          <Grid item xs={12}>
+            {warningTypes.Room
+              .map(w => <ErrorMessage message={w.message} /> )}
+          </Grid>
+      )}
+      <Grid item xs={12}>
         <Field
           name={`sessions[${session.index}].tutorAttendances`}
           component={CourseClassTutorRooster}
@@ -262,9 +276,11 @@ const CourseClassSessionFields: React.FC<Props> = ({
           tutors={tutors}
           onDeleteTutor={onDeleteTutor}
           onAddTutor={onAddTutor}
+          budget={budget}
+          addTutorWage={addTutorWage}
         />
       </Grid>
-      <Grid xs={12} className="secondaryHeading mb-1">
+      <Grid item xs={12} className="secondaryHeading">
         Notes
       </Grid>
       <Grid item xs={6}>
@@ -272,23 +288,20 @@ const CourseClassSessionFields: React.FC<Props> = ({
           type="multilineText"
           name={`sessions[${session.index}].publicNotes`}
           label="Public notes"
-          fullWidth
-        />
+                  />
       </Grid>
       <Grid item xs={6}>
         <FormField
           type="multilineText"
           name={`sessions[${session.index}].privateNotes`}
           label="Private notes"
-          fullWidth
-        />
+                  />
       </Grid>
     </Grid>
   );
 };
 
 const mapStateToProps = (state: State, ownProps: Props) => ({
-  sites: state.plainSearchRecords["Site"].items,
   session: formValueSelector(ownProps.form)(state, `sessions[${ownProps.index}]`) || {},
   timezones: state.timezones,
 });

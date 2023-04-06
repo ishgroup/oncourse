@@ -3,11 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback } from "react";
+import React from "react";
 import IconButton from "@mui/material/IconButton";
 import Launch from "@mui/icons-material/Launch";
+import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import { IconButtonTypeMap } from "@mui/material";
+import { useAppDispatch } from "../../utils/hooks";
+import { setSwipeableDrawerSelection, toggleSwipeableDrawer } from "../layout/swipeable-sidebar/actions";
 
 interface Props {
   link?: string | number;
@@ -18,9 +21,66 @@ interface Props {
   disabled?: boolean;
 }
 
+interface HeaderContactLinkProps {
+  id: number;
+  name?: string;
+}
+
+export const HeaderContactTitle: React.FC<HeaderContactLinkProps> = (
+  {
+   id,
+   name
+ }
+) => {
+  const dispatch = useAppDispatch();
+  
+  const setSelectedContact = () => {
+    dispatch(toggleSwipeableDrawer());
+    dispatch(setSwipeableDrawerSelection(id));
+  };
+
+  return (
+    <div className="d-inline-flex-center">
+      {name}
+      <IconButton disabled={!id} size="small" color="primary" onClick={setSelectedContact}>
+        <EmojiPeopleIcon fontSize="inherit" />
+      </IconButton>
+    </div>
+  );
+};
+
+interface ContactLinkAdornmentProps {
+  id: number;
+}
+
+export const ContactLinkAdornment: React.FC<ContactLinkAdornmentProps> = ({
+  id
+}) => {
+  const dispatch = useAppDispatch();
+  const setSelectedContact = () => {
+    dispatch(toggleSwipeableDrawer());
+    dispatch(setSwipeableDrawerSelection(id));
+  };
+
+  return (
+    <span>
+      <IconButton
+        disabled={!id}
+        onClick={setSelectedContact}
+        color="primary"
+        classes={{
+          root: "inputAdornmentButton"
+        }}
+      >
+        <EmojiPeopleIcon className="inputAdornmentIcon" color="inherit" />
+      </IconButton>
+    </span>
+  );
+};
+
 export const LinkAdornment: React.FC<Props> = ({
   link,
-  linkColor = "secondary",
+  linkColor = "primary",
   linkHandler,
   clickHandler,
   className,
@@ -55,12 +115,12 @@ export const SettingsAdornment: React.FC<Props> = ({
         disabled={disabled}
         onClick={onClick}
         classes={{
-          root: "inputAdornmentButton"
+          root: "inputAdornmentButton ml-0-5"
         }}
         color="inherit"
         size="small"
       >
-        <SettingsOutlinedIcon fontSize="inherit" color="inherit" />
+        <SettingsOutlinedIcon color="inherit" />
       </IconButton>
     </span>
   );

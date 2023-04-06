@@ -15,13 +15,13 @@ import {
  CourseClassTutor, GradingItem, GradingType
 } from "@api/model";
 import AssessmentSubmissionIconButton from "./AssessmentSubmissionIconButton";
-import { D_MMM_YYYY } from "../../../../../common/utils/dates/format";
 import { StudentForRender } from "./CourseClassAssessmentItems";
 import { useGradeErrors } from "./utils/hooks";
 import GradeContent from "./GradeContent";
 import EditInPlaceDateTimeField from "../../../../../common/components/form/formFields/EditInPlaceDateTimeField";
 import { stubFunction } from "../../../../../common/utils/common";
-import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
+import EditInPlaceSearchSelect from "../../../../../common/components/form/formFields/EditInPlaceSearchSelect";
+import { Dispatch } from "redux";
 
 interface Props {
   elem: StudentForRender;
@@ -35,6 +35,7 @@ interface Props {
   index: number;
   tutors: CourseClassTutor[];
   triggerAsyncChange: (newValue: any, field: string, index: number) => void;
+  dispatch: Dispatch;
 }
 
 const CourseClassAssessmentStudent: React.FC<Props> = (
@@ -49,7 +50,8 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
     handleGradeMenuOpen,
     index,
     tutors,
-    triggerAsyncChange
+    triggerAsyncChange,
+    dispatch
   }
 ) => {
   const [gradeVal, setGradeVal] = useState<number>(null);
@@ -85,7 +87,7 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
   const gradeErrors = useGradeErrors(elem?.submission?.grade, gradeType);
 
   return (
-    <Grid container columnSpacing={3} key={index} className={clsx(classes.rowWrapper, "align-items-center d-inline-flex-center")}>
+    <Grid container key={index} className={clsx(classes.rowWrapper, "align-items-center d-inline-flex-center")}>
       <Grid item xs={4} className="d-inline-flex-center pl-1">
         {elem.studentName}
       </Grid>
@@ -93,7 +95,9 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
         {elem.submittedValue === "Submitted"
           ? (
             <EditInPlaceDateTimeField
-              meta={{}}
+              meta={{
+                dispatch
+              }}
               input={{
                 onChange: value => triggerAsyncChange(value, "submittedOn", elem.submissionIndex),
                 onFocus: stubFunction,
@@ -101,8 +105,7 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
                 value: elem.submission.submittedOn
               }}
               type="datetime"
-              formatting="inline"
-              inlineMargin
+              inline
             />
           )
           : submittedContent}
@@ -112,10 +115,12 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
       <>
         <Grid item xs={2} className={classes.center}>
           {elem.markedValue === "Submitted" ? (
-            <div>
+            <div className="pt-0-5">
               <div>
                 <EditInPlaceDateTimeField
-                  meta={{}}
+                  meta={{
+                    dispatch
+                  }}
                   input={{
                     onChange: value => triggerAsyncChange(value, "markedOn", elem.submissionIndex),
                     onFocus: stubFunction,
@@ -123,12 +128,11 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
                     value: elem.submission.markedOn
                   }}
                   type="datetime"
-                  formatting="inline"
-                  inlineMargin
+                  inline
                 />
               </div>
               <div>
-                <EditInPlaceField
+                <EditInPlaceSearchSelect
                   meta={{}}
                   selectValueMark="contactId"
                   selectLabelMark="tutorName"
@@ -139,10 +143,9 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
                     value: elem.submission.markedById
                   }}
                   placeholder="No assessor"
-                  formatting="inline"
                   items={tutors}
                   allowEmpty
-                  select
+                  inline
                 />
               </div>
             </div>

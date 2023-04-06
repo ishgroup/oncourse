@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import { ClassFundingSource, CourseEnrolmentType, CourseStatus, DeliveryMode, OutcomeStatus } from "@api/model";
@@ -16,7 +19,7 @@ export interface BulkEditField {
   keyCode: string;
   label: string;
   name: string;
-  type: string;
+  type: "Select" | "Text" | "Date" | "Number" | "Switch" | "Checkbox" | "Tag" | "Money";
   items?: SelectItemDefault[];
   propsItemKey?: string;
   selectValueMark?: string;
@@ -44,7 +47,6 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
           name: "Funding source",
           type: "Select",
           items: Object.keys(ClassFundingSource).map(mapSelectItems),
-          defaultValue: "Not set"
         },
         {
           keyCode: "vetPurchasingContractID",
@@ -73,13 +75,25 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
           name: "Delivery mode",
           type: "Select",
           items: Object.keys(DeliveryMode).map(mapSelectItems),
-          defaultValue: "Not set"
+          defaultValue: "Not Set"
         },
         {
           keyCode: "reportableHours",
           label: "Reportable hours",
           name: "Reportable hours",
           type: "Number"
+        },
+        {
+          keyCode: "startDate",
+          label: "Start date override",
+          name: "Start date override",
+          type: "Date"
+        },
+        {
+          keyCode: "endDate",
+          label: "End date override",
+          name: "End date override",
+          type: "Date"
         }
       ];
     }
@@ -136,6 +150,13 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
     case "Course": {
       return [
         {
+          keyCode: "allowWaitingLists",
+          label: "Allow waiting lists",
+          name: "Allow waiting lists",
+          type: "Checkbox",
+          defaultValue: true
+        },
+        {
           keyCode: "enrolmentType",
           label: "Enrolment type",
           name: "Enrolment type",
@@ -182,7 +203,6 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
           name: "Default funding source national",
           type: "Select",
           items: Object.keys(ClassFundingSource).map(mapSelectItems),
-          defaultValue: "Not set"
         },
         {
           keyCode: "relatedFundingSourceId",
@@ -241,11 +261,13 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
           label: "Assessor",
           name: "Assessor",
           type: "Select",
-          items: [],
-          defaultValue: "Not set",
         }
       ];
     }
+    case "ArticleProduct":
+    case "MembershipProduct":
+    case "ProductItem":
+    case "VoucherProduct":
     case "WaitingList":
     case "AbstractInvoice":
     case "Room":

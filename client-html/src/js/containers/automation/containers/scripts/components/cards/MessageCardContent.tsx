@@ -22,10 +22,11 @@ import EmailTemplateService from "../../../email-templates/services/EmailTemplat
 import { ScriptComponent, ScriptExtended } from "../../../../../../model/scripts";
 import { renderAutomationItems } from "../../../../utils";
 import { validateEmail } from "../../../../../../common/utils/validation";
+import { CatalogItemType } from "../../../../../../model/common/Catalog";
 
 interface Props {
   name: string;
-  emailTemplates: any;
+  emailTemplates: CatalogItemType[];
   field: ScriptComponent;
   dispatch: Dispatch;
   form: string;
@@ -43,7 +44,7 @@ const MessageCardContent = React.memo<Props>(props => {
   const messageTemplateItems = useMemo(
     () => (emailTemplates
       ? emailTemplates.filter(t => t.keyCode).map(t => ({
-         value: t.keyCode, label: t.name, hasIcon: t.hasIcon, id: t.id,
+         value: t.keyCode, label: t.title, hasIcon: t.keyCode.startsWith("ish."), id: t.id,
         }))
       : []), [emailTemplates],
   );
@@ -93,13 +94,12 @@ const MessageCardContent = React.memo<Props>(props => {
         placeholder={(customPreferencesFields && customPreferencesFields[ADMIN_EMAIL_KEY]) || 'No value'}
         disabled={disabled}
         validate={validateEmail}
-        fullWidth
-      />
+              />
     </Grid>
   );
 
   return (
-    <Grid container columnSpacing={3} className="mt-2">
+    <Grid container columnSpacing={3} rowSpacing={2} className="mt-2 pb-2">
       <Grid item xs={12} className="centeredFlex">
         <Typography variant="caption" color="textSecondary">
           Use template
@@ -113,7 +113,7 @@ const MessageCardContent = React.memo<Props>(props => {
 
       {templateMessage ? (
         <>
-          <Grid item xs={6}>
+          <Grid item xs={12}>
             <FormField
               type="select"
               name={typeof templateOptionIndex === "number" && templateOptionIndex !== -1
@@ -121,7 +121,8 @@ const MessageCardContent = React.memo<Props>(props => {
                 : `${name}.template`}
               label="Template"
               items={messageTemplateItems}
-              selectLabelCondition={renderAutomationItems}
+              itemRenderer={renderAutomationItems}
+              valueRenderer={renderAutomationItems}
               onInnerValueChange={changeEmailTemplate}
               disabled={disabled}
               required
@@ -138,8 +139,7 @@ const MessageCardContent = React.memo<Props>(props => {
               name={`${name}.to`}
               label="To"
               disabled={disabled}
-              fullWidth
-            />
+                          />
           </Grid>
           <Grid item xs={12}>
             <FormField
@@ -147,8 +147,7 @@ const MessageCardContent = React.memo<Props>(props => {
               name={`${name}.cc`}
               disabled={disabled}
               label="cc"
-              fullWidth
-            />
+                          />
           </Grid>
           <Grid item xs={12}>
             <FormField
@@ -156,8 +155,7 @@ const MessageCardContent = React.memo<Props>(props => {
               name={`${name}.bcc`}
               disabled={disabled}
               label="bcc"
-              fullWidth
-            />
+                          />
           </Grid>
           <Grid item xs={12}>
             <FormField
@@ -165,8 +163,7 @@ const MessageCardContent = React.memo<Props>(props => {
               name={`${name}.subject`}
               label="Subject"
               disabled={disabled}
-              fullWidth
-            />
+                          />
           </Grid>
           <Grid item xs={12}>
             <FormField
@@ -174,8 +171,7 @@ const MessageCardContent = React.memo<Props>(props => {
               name={`${name}.content`}
               label="Content"
               disabled={disabled}
-              fullWidth
-            />
+                          />
           </Grid>
         </>
       )}
@@ -187,8 +183,7 @@ const MessageCardContent = React.memo<Props>(props => {
             name={`${name}.key`}
             disabled={disabled}
             label="Key"
-            fullWidth
-          />
+                      />
         </Grid>
       )}
 
@@ -199,8 +194,7 @@ const MessageCardContent = React.memo<Props>(props => {
             name={`${name}.keyCollision`}
             disabled={disabled}
             label="Key collision"
-            fullWidth
-          />
+                      />
         </Grid>
       )}
 

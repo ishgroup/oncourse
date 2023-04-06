@@ -1,15 +1,16 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import * as React from "react";
 import { connect } from "react-redux";
 import { initialize, reduxForm } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
-import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 
 class MicropowerBaseForm extends React.Component<any, any> {
   constructor(props) {
@@ -28,21 +29,17 @@ class MicropowerBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-     handleSubmit, onSubmit, AppBarContent, dirty, form
+     handleSubmit, onSubmit, AppBarContent
     } = this.props;
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-
-        <CustomAppBar>
-          <AppBarContent />
-        </CustomAppBar>
-
-        <FormField name="fields.identity" label="Identity" type="text" fullWidth />
-        <FormField name="fields.signature" label="Signature" type="text" fullWidth />
-        <FormField name="fields.clientId" label="Client Id" type="text" fullWidth />
-        <FormField name="fields.productSku" label="Product Sku" type="text" fullWidth />
+        <AppBarContent>
+          <FormField name="fields.identity" label="Identity" type="text" className="mb-2" />
+          <FormField name="fields.signature" label="Signature" type="text" className="mb-2" />
+          <FormField name="fields.clientId" label="Client Id" type="text" className="mb-2" />
+          <FormField name="fields.productSku" label="Product SKU" type="text" className="mb-2" />
+        </AppBarContent>
       </form>
     );
   }

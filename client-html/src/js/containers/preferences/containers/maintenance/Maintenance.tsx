@@ -1,3 +1,11 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -6,7 +14,7 @@ import { Categories } from "../../../../model/preferences";
 import FormContainer from "../FormContainer";
 import MaintenanceForm from "./components/MaintenanceForm";
 import { EnumItem, EnumName } from "@api/model";
-import { getEnum } from "../../actions/index";
+import { getEnum } from "../../actions";
 
 interface Props {
   MaintenanceTimes: EnumItem[];
@@ -28,7 +36,8 @@ class Maintenance extends React.Component<Props, any> {
           enums={{ MaintenanceTimes }}
           data={maintenance}
           category={Categories.maintenance}
-          form={<MaintenanceForm />}
+          form={formRoleName => <MaintenanceForm formRoleName={formRoleName} />}
+          formName="MaintenanceForm"
         />
       </div>
     );

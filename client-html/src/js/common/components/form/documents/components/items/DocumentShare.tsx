@@ -21,7 +21,15 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Typography from "@mui/material/Typography";
-import { Attachment, Directions, Language, Link, LockOutlined, OpenInNew, SupervisorAccount } from "@mui/icons-material";
+import {
+  Attachment,
+  Directions,
+  Language,
+  Link,
+  LockOutlined,
+  OpenInNew,
+  SupervisorAccount
+} from "@mui/icons-material";
 import { AlertTitle } from "@mui/lab";
 import Alert from "@mui/lab/Alert";
 import { Dispatch } from "redux";
@@ -30,7 +38,6 @@ import { showMessage } from "../../../../../actions";
 import { StyledCheckbox } from "../../../formFields/CheckboxField";
 import { Switch } from "../../../formFields/Switch";
 import { openInternalLink } from "../../../../../utils/links";
-import { AppTheme } from "../../../../../../model/common/Theme";
 import { DocumentShareOption } from "../../../../../../model/entities/Document";
 import {
   getAvailableOptions,
@@ -39,10 +46,11 @@ import {
   isSingleContactAttachment
 } from "../utils";
 import { makeAppStyles } from "../../../../../styles/makeStyles";
+import { mapEntityDisplayName } from "../../../../../../containers/entities/common/utils";
 
 const typesAllowedForWebsite = ["Course", "Contact"];
 
-const useStyles = makeAppStyles()((theme: AppTheme) => ({
+const useStyles = makeAppStyles(theme => ({
   linkButton: {
     fontSize: "1.2em",
     padding: theme.spacing(0.5)
@@ -119,6 +127,23 @@ const onAttachmentPeopleClick = (entity: string, access: DocumentVisibility, rel
   }
 };
 
+const mapEntityName = (entity: string) => {
+  switch (entity) {
+    case "VoucherProduct":
+      return "voucher";
+    case "MembershipProduct":
+      return "membership";
+    case "ArticleProduct":
+      return "product";
+    case "Voucher":
+    case "Membership":
+    case "Article":
+      return "sale";
+    default:
+      return entity.toLowerCase();
+  }
+};
+
 const DocumentShare:React.FC<Props> = ({
    validUrl,
    dispatch,
@@ -133,7 +158,7 @@ const DocumentShare:React.FC<Props> = ({
 
   const groupedAttachmentRelations = groupAttachmentsByEntity(documentSource.attachmentRelations);
 
-  const [availableOptions, setAvailableOptions] = useState<{[O in DocumentShareOption]?: boolean}>(getAvailableOptions(groupedAttachmentRelations));
+  const [availableOptions, setAvailableOptions] = useState<{ [O in DocumentShareOption]?: boolean }>(getAvailableOptions(groupedAttachmentRelations));
 
   const onAttachmentsOver = () => {
     const nodes = attachmentRef.current.querySelectorAll(".highlight");
@@ -164,7 +189,7 @@ const DocumentShare:React.FC<Props> = ({
 
   const linkInput = useRef<any>();
 
-  const { classes } = useStyles();
+  const classes = useStyles();
 
   const onCopyLink = () => {
     linkInput.current.select();
@@ -223,28 +248,31 @@ const DocumentShare:React.FC<Props> = ({
         const displayedRelationsCount = displayedRelations.length;
         const relationsCount = relations.length;
         const moreCount = relationsCount - displayedRelationsCount;
+        const entityName = mapEntityName(entity);
 
         return (
           <div key={entity}>
             <Typography
               component="div"
             >
-              {`${relationsCount} ${entity.capitalize()}${relationsCount > 1 ? entity[entity.length - 1] === "s" ? "es" : "s" : ""} `}
+              {`${relationsCount} ${mapEntityDisplayName(entity)}${relationsCount > 1 ? entity[entity.length - 1] === "s" ? "es" : "s" : ""}`}
               <IconButton
+                size="small"
                 color="secondary"
                 className={classes.linkButton}
-                onClick={() => onAttachmentCategoryClick(entity, relationsMap)}
+                onClick={() => onAttachmentCategoryClick(entityName, relationsMap)}
               >
-                <OpenInNew fontSize="inherit" />
+                <OpenInNew fontSize="inherit" color="primary" />
               </IconButton>
               {portalEnabled
                 && !["Site", "Room"].includes(entity) && (
                 <IconButton
+                  size="small"
                   color="secondary"
                   className={classes.linkButton}
                   onClick={() => onAttachmentPeopleClick(entity, documentSource.access, relations)}
                 >
-                  <SupervisorAccount fontSize="inherit" className="highlight" />
+                  <SupervisorAccount fontSize="inherit" className="highlight" color="primary" />
                 </IconButton>
               )}
             </Typography>
@@ -332,7 +360,7 @@ const DocumentShare:React.FC<Props> = ({
           )}
           title="Attached to"
         />
-        <CardContent ref={attachmentRef}>
+        <CardContent className={noPaper && "pl-0"} ref={attachmentRef}>
           {AttachmentRelations}
         </CardContent>
       </Card>
@@ -368,7 +396,7 @@ const DocumentShare:React.FC<Props> = ({
           {contactRelated
           ? (
             <Collapse in={tutorsAndStudents}>
-              <CardContent>
+              <CardContent className={noPaper && "pl-0"}>
                 <Typography>
                   Shared with
                   {" "}
@@ -383,7 +411,7 @@ const DocumentShare:React.FC<Props> = ({
               {availableOptions["Tutor&Student"]
               && (
               <Collapse in={tutorsAndStudents}>
-                <CardContent>
+                <CardContent className={noPaper && "pl-0"}>
                   <FormControlLabel
                     classes={{
                     root: "checkbox",
@@ -445,27 +473,25 @@ const DocumentShare:React.FC<Props> = ({
           )}
           title="Shareable link"
         />
-        {validUrl
-          && linkOrPublic && (
-            <CardContent>
-              <div className="centeredFlex">
-                <Typography color="textSecondary" className="flex-fill">
-                  <input ref={linkInput} readOnly className="codeArea" type="text" value={validUrl} />
-                </Typography>
-                <Button color="primary" className="text-nowrap" onClick={onCopyLink}>
-                  Copy Link
-                </Button>
-              </div>
-            </CardContent>
-          )}
-        {!linkOrPublic
-          && (
-            <CardContent>
-              <Alert severity="warning" icon={<LockOutlined />}>
-                Document can not be accessed by direct link
-              </Alert>
-            </CardContent>
-          )}
+        <Collapse in={validUrl && linkOrPublic}>
+          <CardContent className={noPaper && "pl-0"}>
+            <div className="centeredFlex">
+              <Typography color="textSecondary" className="flex-fill">
+                <input ref={linkInput} readOnly className="codeArea" type="text" value={validUrl} />
+              </Typography>
+              <Button color="primary" className="text-nowrap" onClick={onCopyLink}>
+                Copy Link
+              </Button>
+            </div>
+          </CardContent>
+        </Collapse>
+        <Collapse in={!linkOrPublic}>
+          <CardContent className={noPaper && "pl-0"}>
+            <Alert severity="warning" icon={<LockOutlined />}>
+              Document can not be accessed by direct link
+            </Alert>
+          </CardContent>
+        </Collapse>
       </Card>
 
       {websiteAvailable

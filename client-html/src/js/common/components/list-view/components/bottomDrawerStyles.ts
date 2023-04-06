@@ -13,6 +13,7 @@ export default (theme: AppTheme) => createStyles({
   exportContainer: {
     height: "50vh",
     backgroundColor: theme.share.exportContainer.backgroundColor,
+    backgroundImage: 'unset',
     padding: theme.spacing(2, 3, 3, 3),
     bottom: "64px",
     color: theme.share.color.selectedItemText,
@@ -140,9 +141,6 @@ export default (theme: AppTheme) => createStyles({
   },
   customLabel: {
     color: theme.share.color.customLabel
-  },
-  placeholder: {
-    color: theme.share.color.itemText
   },
   previewWrapper: {
     paddingLeft: theme.spacing(2)

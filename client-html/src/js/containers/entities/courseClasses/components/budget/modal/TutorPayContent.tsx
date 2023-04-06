@@ -17,7 +17,7 @@ import Lock from "@mui/icons-material/Lock";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../../common/components/form/Uneditable";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
-import { PayRateTypes } from "./BudgetCostModal";
+import { PayRateTypes, validatePayRateTypes } from "./BudgetCostModal";
 import { greaterThanNullValidation, validateSingleMandatoryField } from "../../../../../../common/utils/validation";
 import {
   formatCurrency,
@@ -31,6 +31,7 @@ import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
 import { DefinedTutorRoleExtended } from "../../../../../../model/preferences/TutorRole";
 import WarningMessage from "../../../../../../common/components/form/fieldMessage/WarningMessage";
 import { getClassCostFee } from "../utils";
+import { ContactLinkAdornment } from "../../../../../../common/components/form/FieldAdornments";
 
 const styles = theme => createStyles({
   divider: {
@@ -72,7 +73,7 @@ const TutorPayContent: React.FC<Props> = ({
   const [onCostLocked, setOnCostLocked] = useState(values.onCostRate === null);
   const onLockClick = () => {
     setOnCostLocked(prev => {
-      dispatch(change(COURSE_CLASS_COST_DIALOG_FORM, "onCostRate", prev ? defaultOnCostRate : null));
+      dispatch(change(COURSE_CLASS_COST_DIALOG_FORM, "onCostRate", prev ? defaultOnCostRate : 0));
       return !prev;
     });
   };
@@ -84,7 +85,7 @@ const TutorPayContent: React.FC<Props> = ({
     [values.courseClassTutorId, values.temporaryTutorId, classValues.tutors]
   );
 
-  const role = useMemo(() => tutorRoles.find(r => r.id === tutor.roleId), [tutor, tutorRoles]);
+  const role = useMemo(() => tutor && tutorRoles.find(r => r.id === tutor.roleId), [tutor, tutorRoles]);
 
   const rate = useMemo(() => ((role && role["currentPayrate.rate"]) ? parseFloat(role["currentPayrate.rate"]) : 0), [role]);
   const repetitionType = useMemo(() => ((role && role["currentPayrate.type"]) ? role["currentPayrate.type"] : ""), [role]);
@@ -137,12 +138,18 @@ const TutorPayContent: React.FC<Props> = ({
   return (
     <Grid container columnSpacing={3}>
       <Grid item xs={6}>
-        <Uneditable label="Contact" value={values.contactName} url={`/contact/${values.contactId}`} />
+        <Uneditable
+          label="Contact"
+          value={values.contactName}
+          labelAdornment={
+            <ContactLinkAdornment id={values.contactId} />
+          }
+        />
       </Grid>
       <Grid item xs={6} className="pb-2">
         <FormControlLabel
           className="checkbox"
-          control={<FormField type="checkbox" name="isSunk" color="secondary" fullWidth />}
+          control={<FormField type="checkbox" name="isSunk" color="secondary"  />}
           label="Sunk cost (not recoverable if class cancelled)"
         />
       </Grid>
@@ -167,6 +174,8 @@ const TutorPayContent: React.FC<Props> = ({
                 label="Type"
                 items={PayRateTypes}
                 onChange={onRepetitionChange}
+                debounced={false}
+                validate={validatePayRateTypes}
               />
 
               {typeof repetitionType === "string" && repetitionType !== values.repetitionType && (
@@ -181,6 +190,7 @@ const TutorPayContent: React.FC<Props> = ({
                   label="Count"
                   validate={[greaterThanNullValidation, validateSingleMandatoryField]}
                   normalize={normalizeNumberToZero}
+                  debounced={false}
                 />
               </Grid>
             )}
@@ -191,6 +201,7 @@ const TutorPayContent: React.FC<Props> = ({
                 label={costLabel}
                 validate={greaterThanNullValidation}
                 normalize={normalizeNumberToZero}
+                debounced={false}
               />
               {!isNaN(rate) && rate !== values.perUnitAmountExTax && (
                 <WarningMessage warning="The rate/amount entered differs from, and will override what is defined for the chosen role" />
@@ -202,8 +213,8 @@ const TutorPayContent: React.FC<Props> = ({
       <Grid item xs={12}>
         <Divider />
       </Grid>
-      <Grid item container xs={12} className="pt-2">
-        <Grid item xs={6} container alignItems="center">
+      <Grid item container columnSpacing={3} xs={12} className="pt-2">
+        <Grid item xs={6} className="centeredFlex">
           <Typography variant="body1" className="text-nowrap money pt-1">
             {typeAndCostLabel}
           </Typography>
@@ -215,28 +226,30 @@ const TutorPayContent: React.FC<Props> = ({
                 label="Count"
                 validate={[greaterThanNullValidation, validateSingleMandatoryField]}
                 normalize={normalizeNumberToZero}
+                debounced={false}
               />
             </Typography>
           )}
         </Grid>
-        <Grid item xs={6} container alignItems="center">
+        <Grid item xs={6} className="centeredFlex">
           <Typography variant="body1" className="money pt-1">
             {budgetedCostLabel}
           </Typography>
         </Grid>
-        <Grid item xs={6} container alignItems="center">
+        <Grid item xs={6} className="centeredFlex">
           <Typography variant="body1" className={classes.onCostRate}>
             <FormField
-              type="persent"
+              type="number"
               name="onCostRate"
               format={formatFieldPercent}
               parse={parseFieldPercent}
               onKeyPress={preventNegativeOrLogEnter}
-              defaultValue={`${defaultOnCostRate * 100}%`}
               disabled={onCostLocked}
-              formatting="inline"
+              defaultValue={0}
+              debounced={false}
+              inline
             />
-            <span>oncost</span>
+            <span>% oncost</span>
             <span className="pl-1">
               <IconButton className="inputAdornmentButton" onClick={onLockClick}>
                 {!onCostLocked && <LockOpen className="inputAdornmentIcon" />}
@@ -245,19 +258,19 @@ const TutorPayContent: React.FC<Props> = ({
             </span>
           </Typography>
         </Grid>
-        <Grid item xs={6} className="textField" alignItems="center" container>
-          <Typography variant="body1" className="money pt-2">
+        <Grid item xs={6} className="centeredFlex">
+          <Typography variant="body1" className="money pt-1">
             {onCostTotalLabel}
           </Typography>
         </Grid>
-      </Grid>
-      <Grid item xs={6} container>
-        <Typography variant="body1">Total</Typography>
-      </Grid>
-      <Grid item xs={6} container>
-        <Typography variant="body1" className="money">
-          {budgetedIncOnCostLabel}
-        </Typography>
+        <Grid item xs={6} className="centeredFlex">
+          <Typography variant="body1">Total</Typography>
+        </Grid>
+        <Grid item xs={6} className="centeredFlex">
+          <Typography variant="body1" className="money pt-1">
+            {budgetedIncOnCostLabel}
+          </Typography>
+        </Grid>
       </Grid>
       <Grid item xs={12} className="pt-2 pb-2">
         <Divider />

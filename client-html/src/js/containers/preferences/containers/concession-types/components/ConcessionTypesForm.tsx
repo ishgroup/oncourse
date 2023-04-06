@@ -1,32 +1,26 @@
 import * as React from "react";
-import ClassNames from "clsx";
-import Grid from "@mui/material/Grid";
-import withStyles from "@mui/styles/withStyles";
-import AddIcon from "@mui/icons-material/Add";
-import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import Typography from "@mui/material/Typography";
-import Fab from "@mui/material/Fab";
-import { withRouter } from "react-router";
 import {
   Form, FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
 } from "redux-form";
-import { ConcessionType } from "@api/model";
+import { withRouter } from "react-router";
 import isEqual from "lodash.isequal";
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
+import { ConcessionType } from "@api/model";
+import Grid from "@mui/material/Grid";
+import withStyles from "@mui/styles/withStyles";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import ConcessionTypesRenderer from "./ConcessionTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { State } from "../../../../../reducers/state";
-import { setNextLocation } from "../../../../../common/actions";
 import { cardsFormStyles } from "../../../styles/formCommonStyles";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
-const manualLink = getManualLink("generalPrefs_concessionTypes");
+const manualUrl = getManualLink("generalPrefs_concessionTypes");
+
+export const CONCESSION_TYPES_FORM: string = "ConcessionTypesForm";
 
 interface Props {
   data: any;
@@ -43,8 +37,7 @@ interface Props {
   onUpdate: (concessionTypes: ConcessionType[]) => void;
   openConfirm?: ShowConfirmCaller;
   history?: any,
-  nextLocation?: string,
-  setNextLocation?: (nextLocation: string) => void,
+  nextLocation?: string
 }
 
 class ConcessionTypesBaseForm extends React.Component<Props, any> {
@@ -57,10 +50,11 @@ class ConcessionTypesBaseForm extends React.Component<Props, any> {
   constructor(props) {
     super(props);
 
-    props.dispatch(initialize("ConcessionTypesForm", { types: props.concessionTypes }));
+    props.dispatch(initialize(CONCESSION_TYPES_FORM, { types: props.concessionTypes }));
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.isPending) {
       return;
     }
@@ -96,12 +90,11 @@ class ConcessionTypesBaseForm extends React.Component<Props, any> {
       this.props.onUpdate(this.getTouchedAndNew(value.types));
     })
       .then(() => {
-        const { nextLocation, history, setNextLocation } = this.props;
+        const { nextLocation, history } = this.props;
 
-        this.props.dispatch(initialize("ConcessionTypesForm", { types: this.props.concessionTypes }));
+        this.props.dispatch(initialize(CONCESSION_TYPES_FORM, { types: this.props.concessionTypes }));
 
         nextLocation && history.push(nextLocation);
-        setNextLocation('');
       })
       .catch(error => {
         this.isPending = false;
@@ -126,7 +119,7 @@ class ConcessionTypesBaseForm extends React.Component<Props, any> {
     item.requireNumber = false;
     item.allowOnWeb = false;
 
-    this.props.dispatch(arrayInsert("ConcessionTypesForm", "types", 0, item));
+    this.props.dispatch(arrayInsert(CONCESSION_TYPES_FORM, "types", 0, item));
     const domNode = document.getElementById("types[0].name");
     if (domNode) domNode.scrollIntoView({ behavior: "smooth" });
   };
@@ -144,13 +137,13 @@ class ConcessionTypesBaseForm extends React.Component<Props, any> {
         if (item.id) {
           onDelete(item.id);
         } else {
-          this.props.dispatch(arrayRemove("ConcessionTypesForm", "types", index));
+          this.props.dispatch(arrayRemove(CONCESSION_TYPES_FORM, "types", index));
           this.resolvePromise(true);
         }
       })
         .then(clientSideDelete => {
           if (!clientSideDelete) {
-            this.props.dispatch(initialize("ConcessionTypesForm", { types: this.props.concessionTypes }));
+            this.props.dispatch(initialize(CONCESSION_TYPES_FORM, { types: this.props.concessionTypes }));
           }
         })
         .catch(() => {
@@ -167,60 +160,36 @@ class ConcessionTypesBaseForm extends React.Component<Props, any> {
     } = this.props;
 
     return (
-      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
+      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)} role={CONCESSION_TYPES_FORM}>
         <RouteChangeConfirm form={form} when={dirty} />
 
-        <CustomAppBar>
-          <Grid container columnSpacing={3}>
-            <Grid item xs={12} className={ClassNames("centeredFlex", "relative")}>
-              <Fab
-                type="button"
-                size="small"
-                color="primary"
-                classes={{
-                  sizeSmall: "appBarFab"
-                }}
-                onClick={() => this.onAddNew()}
-              >
-                <AddIcon />
-              </Fab>
-              <Typography className="appHeaderFontSize pl-2" color="inherit" noWrap>
-                Concession Types
-              </Typography>
-
-              <div className="flex-fill" />
-
-              {data && (
-                <AppBarHelpMenu
-                  created={created}
-                  modified={modified}
-                  auditsUrl={`audit?search=~"ConcessionType" and entityId in (${idsToString(data.types)}})`}
-                  manualUrl={manualLink}
-                />
-              )}
-
-              <FormSubmitButton
-                disabled={!dirty}
-                invalid={invalid}
-              />
+        <AppBarContainer
+          values={data}
+          manualUrl={manualUrl}
+          getAuditsUrl={() => `audit?search=~"ConcessionType" and entityId in (${idsToString(data.types)}})`}
+          disabled={!dirty}
+          invalid={invalid}
+          title="Concession Types"
+          disableInteraction
+          createdOn={() => created}
+          modifiedOn={() => modified}
+          onAddMenu={() => this.onAddNew()}
+        >
+          <Grid container className={classes.marginTop}>
+            <Grid item sm={12} lg={10}>
+              <Grid container columnSpacing={3}>
+                {data && (
+                  <FieldArray
+                    name="types"
+                    component={ConcessionTypesRenderer}
+                    onDelete={this.onClickDelete}
+                    classes={classes}
+                  />
+                )}
+              </Grid>
             </Grid>
           </Grid>
-        </CustomAppBar>
-
-        <Grid container columnSpacing={3} className={classes.marginTop}>
-          <Grid item sm={12} lg={10}>
-            <Grid container columnSpacing={3}>
-              {data && (
-                <FieldArray
-                  name="types"
-                  component={ConcessionTypesRenderer}
-                  onDelete={this.onClickDelete}
-                  classes={classes}
-                />
-              )}
-            </Grid>
-          </Grid>
-        </Grid>
+        </AppBarContainer>
       </Form>
     );
   }
@@ -230,13 +199,9 @@ const mapStateToProps = (state: State) => ({
   nextLocation: state.nextLocation,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-});
-
 const ConcessionTypesForm = reduxForm({
   onSubmitFail,
-  form: "ConcessionTypesForm"
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(cardsFormStyles)(withRouter(ConcessionTypesBaseForm)) as any));
+  form: CONCESSION_TYPES_FORM
+})(connect<any, any, any>(mapStateToProps, null)(withStyles(cardsFormStyles)(withRouter(ConcessionTypesBaseForm)) as any));
 
 export default ConcessionTypesForm;

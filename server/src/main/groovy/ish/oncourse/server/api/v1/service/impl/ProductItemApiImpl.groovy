@@ -13,6 +13,7 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.server.api.service.ProductItemApiService
+import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.model.ProductItemCancelDTO
 import ish.oncourse.server.api.v1.model.ProductItemDTO
 import ish.oncourse.server.api.v1.service.ProductItemApi
@@ -21,6 +22,11 @@ class ProductItemApiImpl implements ProductItemApi {
 
     @Inject
     ProductItemApiService entityService
+
+    @Override
+    void bulkChange(DiffDTO diff) {
+        entityService.bulkChange(diff)
+    }
 
     @Override
     void cancel(ProductItemCancelDTO productItemCancel) {

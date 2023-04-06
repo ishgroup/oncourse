@@ -13,19 +13,10 @@ import { format as formatDate } from "date-fns";
 import { Application } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
-import {
-  setListEditRecord,
-  getFilters,
- clearListState
-} from "../../../common/components/list-view/actions";
+import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
 import { getListTags } from "../../tags/actions";
-import { defaultContactName } from "../contacts/utils";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
-import {
-  getApplication, updateApplication, createApplication, removeApplication
-} from "./actions";
 import ApplicationEditView from "./components/ApplicationEditView";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { State } from "../../../reducers/state";
 import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
@@ -35,9 +26,6 @@ import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption"
 interface ApplicationsProps {
   getApplicationRecord?: () => void;
   onInit?: () => void;
-  onCreate?: (application: Application) => void;
-  onDelete?: (id: string) => void;
-  onSave?: (id: string, application: Application) => void;
   getFilters?: () => void;
   getTags?: () => void;
   clearListState?: () => void;
@@ -104,9 +92,9 @@ const filterGroups: FilterGroup[] = [
 
 const manualLink = getManualLink("applications");
 
-const nameCondition = values => (values ? defaultContactName(values.studentName) : "");
+const nameCondition = values => (values ? values.studentName : "");
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   {
     title: "Audits",
     list: "audit",
@@ -116,10 +104,6 @@ const findRelatedGroup: any[] = [
   { title: "Courses", list: "course", expression: "applications.id" },
   { title: "Enrolments", list: "enrolment", expression: "student.applications.id" }
 ];
-
-const nestedEditFields = {
-  SendMessage: props => <SendMessageEditView {...props} />
-};
 
 class Applications extends React.Component<ApplicationsProps, any> {
   componentDidMount() {
@@ -133,37 +117,29 @@ class Applications extends React.Component<ApplicationsProps, any> {
 
   render() {
     const {
-      getApplicationRecord, onCreate, onDelete, onSave, onInit
+      onInit
     } = this.props;
 
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "course.name",
-            secondaryColumn: "student.contact.fullName"
-          }}
-          editViewProps={{
-            manualLink,
-            asyncValidate: notesAsyncValidate,
-            asyncBlurFields: ["notes[].message"],
-            nameCondition,
-            hideTitle: true
-          }}
-          nestedEditFields={nestedEditFields}
-          EditViewContent={ApplicationEditView}
-          CogwheelAdornment={BulkEditCogwheelOption}
-          getEditRecord={getApplicationRecord}
-          rootEntity="Application"
-          onInit={onInit}
-          onCreate={onCreate}
-          onDelete={onDelete}
-          onSave={onSave}
-          findRelated={findRelatedGroup}
-          filterGroupsInitial={filterGroups}
-
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "course.name",
+          secondaryColumn: "student.contact.fullName"
+        }}
+        editViewProps={{
+          manualLink,
+          asyncValidate: notesAsyncValidate,
+          asyncChangeFields: ["notes[].message"],
+          nameCondition,
+          hideTitle: true
+        }}
+        EditViewContent={ApplicationEditView}
+        CogwheelAdornment={BulkEditCogwheelOption}
+        rootEntity="Application"
+        onInit={onInit}
+        findRelated={findRelatedGroup}
+        filterGroupsInitial={filterGroups}
+      />
     );
   }
 }
@@ -179,14 +155,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
   },
   getFilters: () => dispatch(getFilters("Application")),
-  getTags: () => {
-    dispatch(getListTags("Application"));
-  },
+  getTags: () => dispatch(getListTags("Application")),
   clearListState: () => dispatch(clearListState()),
-  getApplicationRecord: (id: string) => dispatch(getApplication(id)),
-  onSave: (id: string, application: Application) => dispatch(updateApplication(id, application)),
-  onCreate: (application: Application) => dispatch(createApplication(application)),
-  onDelete: (id: string) => dispatch(removeApplication(id)),
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Applications);

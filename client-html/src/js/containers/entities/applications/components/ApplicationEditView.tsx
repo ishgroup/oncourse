@@ -7,8 +7,7 @@ import React from "react";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import { Application } from "@api/model";
-import { Dispatch } from "redux";
-import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
+import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import ApplicationGeneral from "./ApplicationGeneral";
 import ApplicationDocuments from "./ApplicationDocuments";
@@ -35,45 +34,11 @@ const items: TabsListItem[] = [
   }
 ];
 
-const ApplicationEditView: React.FC<EditViewProps<Application> & { classes: any }> = props => {
-  const {
-    values,
-    isNew,
-    isNested,
-    classes,
-    dispatch,
-    dirty,
-    form,
-    nestedIndex,
-    rootEntity,
-    twoColumn,
-    showConfirm,
-    openNestedEditView,
-    manualLink,
-    invalid
-  } = props;
-
-  return (
-    <TabsList
-      items={values ? items : []}
-      itemProps={{
-        isNew,
-        isNested,
-        values,
-        classes,
-        dispatch,
-        dirty,
-        form,
-        nestedIndex,
-        rootEntity,
-        twoColumn,
-        showConfirm,
-        openNestedEditView,
-        manualLink,
-        invalid
-      }}
-    />
+const ApplicationEditView: React.FC<EditViewProps<Application> & { classes: any }> = props => (
+  <TabsList
+    items={props.values ? items : []}
+    itemProps={props}
+  />
   );
-};
 
 export default withStyles(styles)(ApplicationEditView);

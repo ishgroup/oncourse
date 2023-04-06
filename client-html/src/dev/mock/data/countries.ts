@@ -1,5 +1,7 @@
 import { Country } from "@api/model";
 export function mockCountries(): Country[] {
+  this.getCountry = id => this.countries.find(c => c.id === id);
+
   return [
     {
       "id": 200,

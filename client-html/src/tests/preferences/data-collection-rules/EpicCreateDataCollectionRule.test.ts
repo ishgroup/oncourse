@@ -12,7 +12,7 @@ describe("Create data collection rule epic tests", () => {
     epic: EpicCreateDataCollectionRule,
     processData: mockedApi => {
       const dataCollectionRules = mockedApi.db.dataCollectionRules;
-
+      dataCollectionRules.sort((a, b) => a.name > b.name ? 1 : -1);
       return [
         {
           type: CREATE_DATA_COLLECTION_RULE_FULFILLED,

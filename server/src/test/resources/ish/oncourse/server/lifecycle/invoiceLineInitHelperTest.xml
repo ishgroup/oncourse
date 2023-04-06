@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-  <Preference ID="40" VALUESTRING="40 " NAME="account.prepaidFees" UNIQUEKEY="account.prepaidFees"/>
+  <Preference ID="40" VALUESTRING="40 " NAME="account.prepaidFees" UNIQUEKEY="account.prepaidFees"
+              CREATEDON="2012-05-08 15:58:09.202" MODIFIEDON="2012-05-08 15:58:09.202"/>
   <Preference ID="41" VALUESTRING="everySession" NAME="account.prepaidFeesPostAt"
-              UNIQUEKEY="account.prepaidFeesPostAt"/>
+              UNIQUEKEY="account.prepaidFeesPostAt" CREATEDON="2012-05-08 15:58:09.202"
+              MODIFIEDON="2012-05-08 15:58:09.202"/>
   <Preference CREATEDON="2012-05-08 15:58:09.202" ID="1542" MODIFIEDON="2012-05-08 15:58:09.202" VALUESTRING="21010"
               NAME="account.prepaidFees.code" UNIQUEKEY="account.prepaidFees.code"/>
-  <Preference ID="44" VALUESTRING="41 " NAME="account.discount" UNIQUEKEY="account.discount"/>
+  <Preference ID="44" VALUESTRING="41 " NAME="account.discount" UNIQUEKEY="account.discount"
+              CREATEDON="2012-05-08 15:58:09.202" MODIFIEDON="2012-05-08 15:58:09.202"/>
   <Preference CREATEDON="2013-05-06 00:33:41.841" ID="1622" MODIFIEDON="2013-05-06 00:33:41.841" VALUESTRING="6"
               NAME="account.default.gst.id" UNIQUEKEY="account.default.gst.id"/>
   <Preference CREATEDON="2013-05-06 00:33:41.897" ID="1623" MODIFIEDON="2013-05-06 00:33:41.897" VALUESTRING="40"
@@ -34,18 +37,20 @@
               VALUESTRING="31-Dec-2015" NAME="finance.transaction_locked" UNIQUEKEY="finance.transaction_locked"/>
 
   <Site id="1" name="Default site" isAdministrationCentre="1" isShownOnWeb="0" isVirtual="0"
-        localTimezone="Australia/Sydney"/>
+        localTimezone="Australia/Sydney" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"/>
 
   <SystemUser email="admin@mail.com" id="1" login="admin" firstName="admin" surname="admin" isActive="1" isAdmin="1"
               password="test" canEditCMS="1" canEditTara="1" createdOn="2012-05-10 00:00:00"
               modifiedOn="2012-05-10 00:00:00" defaultAdministrationCentreId="1" PASSWORDUPDATEREQUIRED="0"/>
 
   <Account ACCOUNTCODE="21010" DESCRIPTION="Prepaid fees liability account" ID="40" ISENABLED="1"
-           MODIFIEDON="2012-05-08 16:02:04.209" TYPE="2"/>
-  <Account ACCOUNTCODE="54020" DESCRIPTION="Discounts given" ID="41" ISENABLED="1" MODIFIEDON="2013-01-08 15:22:10.196"
-           TYPE="5"/>
-  <Account ACCOUNTCODE="21400" DESCRIPTION="Voucher liability" ID="200" ISENABLED="1" TYPE="2"/>
-  <Account ACCOUNTCODE="65387" DESCRIPTION="Voucher underpayment" ID="201" ISENABLED="1" TYPE="6"/>
+           CREATEDON="2007-03-01 14:35:11.047" MODIFIEDON="2012-05-08 16:02:04.209" TYPE="2"/>
+  <Account ACCOUNTCODE="54020" DESCRIPTION="Discounts given" ID="41" ISENABLED="1"
+           CREATEDON="2007-03-01 14:35:11.047" MODIFIEDON="2013-01-08 15:22:10.196" TYPE="5"/>
+  <Account ACCOUNTCODE="21400" DESCRIPTION="Voucher liability" ID="200" ISENABLED="1" TYPE="2"
+           CREATEDON="2007-03-01 14:35:11.047" MODIFIEDON="2013-01-08 15:22:10.196"/>
+  <Account ACCOUNTCODE="65387" DESCRIPTION="Voucher underpayment" ID="201" ISENABLED="1" TYPE="6"
+           CREATEDON="2007-03-01 14:35:11.047" MODIFIEDON="2013-01-08 15:22:10.196"/>
   <Account ACCOUNTCODE="10000" CREATEDON="2007-03-01 14:35:11.047" DESCRIPTION="Assets" ID="1" ISENABLED="0"
            MODIFIEDON="2007-11-16 18:24:33.217" TYPE="1"/>
   <Account ACCOUNTCODE="11000" CREATEDON="2007-03-01 14:35:11.071" DESCRIPTION="Current assets" ID="2" ISENABLED="0"
@@ -111,8 +116,10 @@
   <Account ACCOUNTCODE="66000" CREATEDON="2007-03-01 14:35:11.45" DESCRIPTION="Motor vehicle" ID="32" ISENABLED="0"
            MODIFIEDON="2007-11-16 18:24:33.29" TYPE="6"/>
 
-  <PaymentMethod id="2" name="Credit card" accountId="1" active="1" bankedAutomatically="1" reconcilable="1" type="2"/>
-  <PaymentMethod id="10" name="Reverse" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="10"/>
+  <PaymentMethod id="2" name="Credit card" accountId="1" active="1" bankedAutomatically="1" reconcilable="1" type="2"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="10" name="Reverse" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="10"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Tax id="1" isGSTTaxType="1" payableToSupplierAccountId="3" receivableFromStudentAccountId="4" taxCode="GST"
        taxrate="0.1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
@@ -146,10 +153,10 @@
 
   <Course id="1" code="ATT1" willowId="1" name="Basic computer skills" allowWaitingLists="1" currentlyOffered="1"
           isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1"
-          feeHelpClass="0"/>
+          feeHelpClass="0" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Course id="2" code="ATT2" willowId="1" name="Basic computer skills2" allowWaitingLists="1" currentlyOffered="1"
           isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1"
-          feeHelpClass="0"/>
+          feeHelpClass="0" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Contact id="1" firstName="Test" lastName="Student" isMale="1" isCompany="0" createdOn="2012-05-10 00:00:00"
            modifiedOn="2012-05-10 00:00:00" allowEmail="1" allowPost="0" allowSms="1" birthDate="1991-01-01 00:00:00"
@@ -159,16 +166,19 @@
 
   <Student id="1" contactId="1" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
            highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-           studentNumber="1" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+           studentNumber="1" usiStatus="0" citizenship="9" feeHelpEligible="0" createdOn="2021-12-21 12:00:10.0"
+           modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <CourseClass id="1" code="123" taxAdjustment="0.1" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
+  <CourseClass id="1" code="123" taxAdjustment="0.1" taxId="1" minimumPlaces="1" maximumPlaces="100"
                isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountId="5" deliveryMode="1" courseId="1" feeExGst="200.00"
-               suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
-  <CourseClass id="2" code="124" taxAdjustment="0.1" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
+               suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0"
+               createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <CourseClass id="2" code="124" taxAdjustment="0.1" taxId="1" minimumPlaces="1" maximumPlaces="100"
                isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountId="5" deliveryMode="1" courseId="2" feeExGst="400.00"
-               suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
+               suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0"
+               createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Invoice allowAutoPay="1" type="1" overdue="0.00" id="100" invoiceNumber="1" debtorsAccountId="1" contactId="1"
            amoutOwing="0.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00"

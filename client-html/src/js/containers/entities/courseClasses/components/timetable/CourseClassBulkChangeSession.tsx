@@ -3,7 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, {
+  useCallback, useEffect, useMemo, useState
+} from "react";
 import clsx from "clsx";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
@@ -13,15 +15,18 @@ import {
 import Dialog from "@mui/material/Dialog";
 import Grid from "@mui/material/Grid";
 import DialogContent from "@mui/material/DialogContent";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import Collapse from "@mui/material/Collapse";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
 import { TutorAttendance } from "@api/model";
-import { differenceInMinutes } from "date-fns";
+import {
+  addDays, differenceInMinutes, format as formatDate, subDays
+} from "date-fns";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
 import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
@@ -30,9 +35,12 @@ import { greaterThanNullValidation } from "../../../../../common/utils/validatio
 import EditInPlaceDurationField from "../../../../../common/components/form/formFields/EditInPlaceDurationField";
 import { courseClassCloseBulkUpdateModal } from "./actions";
 import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../../common/actions/CommonPlainRecordsActions";
+import { DD_MMM_YYYY } from "../../../../../common/utils/dates/format";
 import CourseClassTutorRooster from "./CourseClassTutorRooster";
+import { IS_JEST } from "../../../../../constants/EnvironmentConstants";
+import { NoWrapOption } from "../../../../../common/components/form/formFields/SelectCustomComponents";
 
-const COURSE_CLASS_BULK_UPDATE_FORM: string = "CourseClassBulkUpdateForm";
+export const COURSE_CLASS_BULK_UPDATE_FORM: string = "CourseClassBulkUpdateForm";
 
 const styles = theme => createStyles({
   paperDialog: {
@@ -41,13 +49,13 @@ const styles = theme => createStyles({
   bulkChangeDialogContent: {
     "&:first-child": {
       paddingTop: theme.spacing(1)
-    }
+    },
   },
   bulkChangeDaysInput: {
     maxWidth: theme.spacing(10)
   },
   bullkWrapperItem: {
-    paddingLeft: theme.spacing(4)
+    paddingLeft: theme.spacing(3.625)
   },
   disabledHeading: {
     color: `${theme.palette.text.secondary} !important`
@@ -58,7 +66,7 @@ const validateDuration = value => (value !== "" && (value < 5 || value > 1440)
   ? "Each entry in the timetable cannot be shorter than 5 minutes or longer than 24 hours."
   : undefined);
 
-const initialValues = {
+export const initialValues = {
   tutorAttendances: [],
   tutorsChecked: false,
   locationChecked: false,
@@ -79,6 +87,51 @@ const initialValues = {
   moveBackward: ""
 };
 
+const BulkItemWrapper: React.FC<any> = props => {
+  const {
+    classes, title, name, children, noCollapse
+  } = props;
+  const [opened, setOpened] = React.useState(false);
+
+  const onChange = React.useCallback(checked => {
+    setOpened(checked);
+  }, [name]);
+
+  const renderedTitle = (
+    <Typography variant="body2" className={clsx("secondaryHeading", { [classes.disabledHeading]: !opened })}>
+      {title}
+    </Typography>
+  );
+
+  const labelProps = IS_JEST ? {
+    "data-testid": `input-${name}Checked`
+  } : {};
+
+  return (
+    <div className="mb-2 w-100">
+      <div className="centeredFlex">
+        <FormGroup>
+          <FormControlLabel
+            {...labelProps}
+            htmlFor={`input-${name}Checked`}
+            control={(
+              <FormField
+                type="checkbox"
+                name={`${name}Checked`}
+                color="secondary"
+                onChange={onChange}
+                debounced={false}
+              />
+            )}
+            label={noCollapse ? opened ? children : renderedTitle : renderedTitle}
+          />
+        </FormGroup>
+      </div>
+      {!noCollapse && <Collapse in={opened} className={classes.bullkWrapperItem}>{children}</Collapse>}
+    </div>
+  );
+};
+
 const CourseClassBulkChangeSessionForm = props => {
   const {
     handleSubmit,
@@ -96,8 +149,12 @@ const CourseClassBulkChangeSessionForm = props => {
     getRooms,
     rooms,
     bulkValues,
-    sessions
+    sessions,
+    budget
   } = props;
+
+  const [laterDate, setLaterDate] = useState<string>(null);
+  const [earlierDate, setEarlierDate] = useState<string>(null);
 
   const classTimezone = useMemo(() => {
     if (!sessions) {
@@ -173,7 +230,7 @@ const CourseClassBulkChangeSessionForm = props => {
     []
   );
 
-  const onClose = React.useCallback(() => {
+  const onClose = useCallback(() => {
     dispatch(courseClassCloseBulkUpdateModal());
     reset();
   }, []);
@@ -185,6 +242,8 @@ const CourseClassBulkChangeSessionForm = props => {
   const onDeleteTutor = (index: number) => {
     dispatch(arrayRemove(form, `tutorAttendances`, index));
   };
+  
+  const firstSelectedSession = useMemo(() => sessions?.find(s => s.id === selection[0]) || sessions[0], [sessions, selection]);
 
   const onAddTutor = (tutor: CourseClassTutorExtended) => {
     dispatch(arrayPush(form, `tutorAttendances`, {
@@ -194,14 +253,41 @@ const CourseClassBulkChangeSessionForm = props => {
       contactName: tutor.tutorName,
       attendanceType: 'Not confirmed for payroll',
       note: null,
-      actualPayableDurationMinutes: durationValue || differenceInMinutes(new Date(sessions[0]?.end), new Date(sessions[0]?.start)),
+      actualPayableDurationMinutes:
+        durationValue || differenceInMinutes(new Date(firstSelectedSession?.end), new Date(firstSelectedSession?.start)),
       hasPayslip: false,
-      start: bulkValues.start || sessions[0]?.start,
-      end: bulkValues.end || sessions[0]?.end,
+      start: bulkValues.start || firstSelectedSession?.start,
+      end: bulkValues.end || firstSelectedSession?.end,
       contactId: tutor.contactId,
       payslipIds: []
     } as TutorAttendance));
   };
+
+  const onMoveLater = e => {
+    const days = e.target.value !== "" ? Number(e.target.value) : 0;
+
+    if (days > 0) {
+      setLaterDate(formatDate(addDays(new Date(firstSelectedSession?.start), days), DD_MMM_YYYY).toString());
+    } else {
+      setLaterDate(null);
+    }
+  };
+
+  const onMoveEarlier = e => {
+    const days = e.target.value !== "" ? Number(e.target.value) : 0;
+
+    if (days > 0) {
+      const firstSessionDate = new Date(firstSelectedSession?.start);
+      const toDate = formatDate(subDays(firstSessionDate, days), DD_MMM_YYYY).toString();
+      setEarlierDate(`${formatDate(firstSessionDate, DD_MMM_YYYY).toString()} to ${toDate}`);
+    } else {
+      setEarlierDate(null);
+    }
+  };
+
+  const updateButtonProps = IS_JEST ? {
+    "data-testid": "update"
+  } : {};
 
   return (
     <Dialog
@@ -211,18 +297,17 @@ const CourseClassBulkChangeSessionForm = props => {
       disableEnforceFocus
       disableRestoreFocus
       maxWidth="md"
-      fullWidth
-      classes={{
+            classes={{
         paper: classes.paperDialog
       }}
     >
-      <form autoComplete="off" noValidate onSubmit={handleSubmit}>
+      <form autoComplete="off" noValidate onSubmit={handleSubmit} role={COURSE_CLASS_BULK_UPDATE_FORM}>
         <DialogContent
           classes={{
             root: classes.bulkChangeDialogContent
           }}
         >
-          <Grid container columnSpacing={3}>
+          <Grid container>
             <Grid item xs={12}>
               <div className={clsx("centeredFlex")}>
                 <div className="heading mt-2 mb-2">
@@ -232,137 +317,150 @@ const CourseClassBulkChangeSessionForm = props => {
               <div className="pb-2">
                 {`Update ${selection.length} timetable event${selection.length > 1 ? "s" : ""}`}
               </div>
-              {tutors.length > 0 && (
-                <BulkItemWrapper classes={classes} title="Tutors" name="tutors" noCollapse>
-                  <div className={classes.sessionTutors} onClick={e => e.preventDefault()}>
-                    <Field
-                      name="tutorAttendances"
-                      component={CourseClassTutorRooster}
-                      session={bulkValues}
-                      tutors={tutors}
-                      onDeleteTutor={onDeleteTutor}
-                      onAddTutor={onAddTutor}
-                    />
-                  </div>
+            </Grid>
+            <Grid item xs={12} container>
+              <Grid item xs={12}>
+                {tutors.length > 0 && (
+                  <BulkItemWrapper classes={classes} title="Tutors" name="tutors" noCollapse>
+                    <div>
+                      <Field
+                        name="tutorAttendances"
+                        component={CourseClassTutorRooster}
+                        session={{ ...bulkValues, siteTimezone: classTimezone }}
+                        tutors={tutors}
+                        onDeleteTutor={onDeleteTutor}
+                        onAddTutor={onAddTutor}
+                        sessionDuration={durationValue}
+                        budget={budget}
+                      />
+                    </div>
+                  </BulkItemWrapper>
+                )}
+              </Grid>
+              <Grid item xs={12}>
+                <BulkItemWrapper classes={classes} title="Location" name="location">
+                  <FormField
+                    type="remoteDataSelect"
+                    entity="Room"
+                    name="roomId"
+                    label="Site and room"
+                    aqlColumns="name,site.name,site.localTimezone,site.id"
+                    selectValueMark="id"
+                    selectLabelCondition={roomLabel}
+                    onInnerValueChange={onRoomIdChange}
+                    itemRenderer={NoWrapOption}
+                    allowEmpty
+                  />
                 </BulkItemWrapper>
-              )}
-            </Grid>
-            <Grid item xs={12}>
-              <BulkItemWrapper classes={classes} title="Location" name="location">
-                <Grid container columnSpacing={3}>
-                  <Grid item xs={6}>
-                    <FormField
-                      type="remoteDataSearchSelect"
-                      entity="Room"
-                      name="roomId"
-                      label="Site and room"
-                      aqlColumns="name,site.name,site.localTimezone,site.id"
-                      selectValueMark="id"
-                      selectLabelCondition={roomLabel}
-                      onInnerValueChange={onRoomIdChange}
-                      rowHeight={36}
-                      allowEmpty
-                    />
+              </Grid>
+              <Grid item xs={12}>
+                <BulkItemWrapper classes={classes} title="Actual payable duration" name="payableDuration">
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <EditInPlaceDurationField
+                        meta={{}}
+                        input={{
+                          value: payableDurationValue,
+                          onChange: stubFunction,
+                          onBlur: onPayableDurationChange,
+                          onFocus: stubFunction,
+                          name: "actualPayableDuration"
+                        }}
+                      />
+                    </Grid>
                   </Grid>
-                </Grid>
-              </BulkItemWrapper>
-            </Grid>
-            <Grid item xs={12}>
-              <BulkItemWrapper classes={classes} title="Actual payable duration" name="payableDuration">
-                <Grid container>
-                  <Grid item xs={6}>
-                    <EditInPlaceDurationField
-                      label="Actual payable duration"
-                      meta={{}}
-                      input={{
-                        value: payableDurationValue,
-                        onChange: stubFunction,
-                        onBlur: onPayableDurationChange,
-                        onFocus: stubFunction
-                      }}
-                      hideLabel
-                    />
+                </BulkItemWrapper>
+              </Grid>
+              <Grid item xs={12}>
+                <BulkItemWrapper
+                  classes={classes}
+                  title={`Start time ${initial.siteTimezone ? `(${initial.siteTimezone})` : classTimezone ? `(${classTimezone})` : ""}`}
+                  name="start"
+                >
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <FormField
+                        type="time"
+                        name="start"
+                        label={
+                          `Start time ${initial.siteTimezone
+                            ? `(${initial.siteTimezone})`
+                            : classTimezone
+                              ? `(${classTimezone})`
+                              : ""}`
+                        }
+                        timezone={initial.siteTimezone || classTimezone}
+                        persistValue
+                      />
+                    </Grid>
                   </Grid>
-                </Grid>
-              </BulkItemWrapper>
-            </Grid>
-            <Grid item xs={12}>
-              <BulkItemWrapper
-                classes={classes}
-                title={`Start time ${initial.siteTimezone ? `(${initial.siteTimezone})` : classTimezone ? `(${classTimezone})` : ""}`}
-                name="start"
-              >
-                <Grid container>
-                  <Grid item xs={6}>
-                    <FormField
-                      type="time"
-                      name="start"
-                      label={`Start time ${initial.siteTimezone ? `(${initial.siteTimezone})` : classTimezone ? `(${classTimezone})` : ""}`}
-                      timezone={initial.siteTimezone || classTimezone}
-                      persistValue
-                      hideLabel
-                    />
+                </BulkItemWrapper>
+              </Grid>
+              <Grid item xs={12}>
+                <BulkItemWrapper classes={classes} title="Duration" name="duration">
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <EditInPlaceDurationField
+                        meta={{
+                          error: durationError,
+                          invalid: Boolean(durationError)
+                        }}
+                        input={{
+                          value: durationValue,
+                          onChange: stubFunction,
+                          onBlur: onDurationChange,
+                          onFocus: stubFunction,
+                          name: "duration"
+                        }}
+                      />
+                    </Grid>
                   </Grid>
-                </Grid>
-              </BulkItemWrapper>
-            </Grid>
-            <Grid item xs={12}>
-              <BulkItemWrapper classes={classes} title="Duration" name="duration">
-                <Grid container>
-                  <Grid item xs={6}>
-                    <EditInPlaceDurationField
-                      label="Duration"
-                      meta={{
-                        error: durationError,
-                        invalid: Boolean(durationError)
-                      }}
-                      input={{
-                        value: durationValue,
-                        onChange: stubFunction,
-                        onBlur: onDurationChange,
-                        onFocus: stubFunction
-                      }}
-                      hideLabel
-                    />
+                </BulkItemWrapper>
+              </Grid>
+              <Grid item xs={12}>
+                <BulkItemWrapper classes={classes} title="Move later" name="moveForward">
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <FormField
+                        type="number"
+                        name="moveForward"
+                        inline
+                        step="1"
+                        className={classes.bulkChangeDaysInput}
+                        onChange={onMoveLater}
+                        debounced={false}
+                      />
+                      {" "}
+                      days
+                    </Grid>
+                    <Grid item xs={6} id="moveForwardInfo">
+                      {laterDate && `Earliest selected session will starts ${laterDate}`}
+                    </Grid>
                   </Grid>
-                </Grid>
-              </BulkItemWrapper>
-            </Grid>
-            <Grid item xs={12}>
-              <BulkItemWrapper classes={classes} title="Move forward" name="moveForward">
-                <Grid container>
-                  <Grid item xs={6}>
-                    <FormField
-                      type="number"
-                      name="moveForward"
-                      formatting="inline"
-                      step="1"
-                      className={classes.bulkChangeDaysInput}
-                      hideArrows
-                    />
-                    {" "}
-                    days
+                </BulkItemWrapper>
+              </Grid>
+              <Grid item xs={12}>
+                <BulkItemWrapper classes={classes} title="Move earlier" name="moveBackward">
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <FormField
+                        name="moveBackward"
+                        type="number"
+                        inline
+                        step="1"
+                        className={classes.bulkChangeDaysInput}
+                        onChange={onMoveEarlier}
+                        debounced={false}
+                      />
+                      {" "}
+                      days
+                    </Grid>
+                    <Grid item xs={6} id="moveBackwardInfo">
+                      {earlierDate && `Earliest selected session will be moved from ${earlierDate}`}
+                    </Grid>
                   </Grid>
-                </Grid>
-              </BulkItemWrapper>
-            </Grid>
-            <Grid item xs={12}>
-              <BulkItemWrapper classes={classes} title="Move backward" name="moveBackward">
-                <Grid container>
-                  <Grid item xs={6}>
-                    <FormField
-                      name="moveBackward"
-                      type="number"
-                      formatting="inline"
-                      step="1"
-                      className={classes.bulkChangeDaysInput}
-                      hideArrows
-                    />
-                    {" "}
-                    days
-                  </Grid>
-                </Grid>
-              </BulkItemWrapper>
+                </BulkItemWrapper>
+              </Grid>
             </Grid>
           </Grid>
         </DialogContent>
@@ -371,6 +469,7 @@ const CourseClassBulkChangeSessionForm = props => {
             Cancel
           </Button>
           <Button
+            {...updateButtonProps}
             variant="contained"
             color="primary"
             onClick={submitChanges}
@@ -384,48 +483,9 @@ const CourseClassBulkChangeSessionForm = props => {
   );
 };
 
-const BulkItemWrapper: React.FC<any> = props => {
-  const {
- classes, title, name, children, noCollapse
-} = props;
-  const [opened, setOpened] = React.useState(false);
-
-  const onChange = React.useCallback(checked => {
-    setOpened(checked);
-  }, [name]);
-
-  const renderedTitle = (
-    <Typography variant="body2" className={clsx("secondaryHeading", { [classes.disabledHeading]: !opened })}>
-      {title}
-    </Typography>
-);
-
-  return (
-    <div className="mb-2 w-100">
-      <FormControlLabel
-        control={(
-          <FormField
-            type="checkbox"
-            name={`${name}Checked`}
-            color="secondary"
-            checked={opened}
-            onChange={onChange}
-          />
-        )}
-        label={noCollapse ? opened ? children : renderedTitle : renderedTitle}
-        classes={{
-          root: 'd-flex',
-          label: 'w-100'
-        }}
-      />
-      {!noCollapse && <Collapse in={opened} className={classes.bullkWrapperItem}>{children}</Collapse>}
-    </div>
-  );
-};
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<any>, props) => ({
   init: () => {
-    dispatch(initialize(COURSE_CLASS_BULK_UPDATE_FORM, initialValues));
+    dispatch(initialize(COURSE_CLASS_BULK_UPDATE_FORM, props.initialValues || initialValues));
   },
   getRooms: (search: string) => {
     dispatch(setCommonPlainSearch("Room", search));

@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.module.csv
-entityClass: Module
-body: ish.onCourse.module.csv.groovy
-name: Module CSV export
-outputType: csv

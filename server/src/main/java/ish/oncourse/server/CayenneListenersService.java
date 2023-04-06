@@ -13,6 +13,7 @@ package ish.oncourse.server;
 import com.google.inject.Inject;
 import ish.oncourse.server.accounting.AccountTransactionService;
 import ish.oncourse.server.integration.EventService;
+import ish.oncourse.server.license.LicenseService;
 import ish.oncourse.server.lifecycle.*;
 import ish.oncourse.server.scripting.GroovyScriptService;
 import ish.oncourse.server.scripting.ScriptTriggeringListener;
@@ -24,12 +25,12 @@ import org.apache.cayenne.access.ValidationFilter;
 public class CayenneListenersService {
 
     @Inject
-    public CayenneListenersService(ICayenneService cayenneService, PreferenceController pref,
+    public CayenneListenersService(ICayenneService cayenneService, PreferenceController pref, LicenseService licenseService,
                                    InvoiceLineInitHelper invoiceLineInitHelper,
                                    GroovyScriptService scriptService, EventService eventService,
                                    TransactionLockedService transactionLockedService, AuditListener auditListener, AccountTransactionService accountTransactionService) {
         // add listeners
-        cayenneService.addListener(new PaymentInLifecycleListener(pref));
+        cayenneService.addListener(new PaymentInLifecycleListener(pref, licenseService));
         cayenneService.addListener(new PaymentInLineLifecycleListener());
         cayenneService.addListener(new AbstractInvoiceLifecycleListener());
         cayenneService.addListener(new InvoiceLifecycleListener());

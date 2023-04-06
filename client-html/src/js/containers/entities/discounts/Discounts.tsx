@@ -11,7 +11,7 @@ import { format } from "date-fns";
 import { Discount, DiscountType } from "@api/model";
 import { checkPermissions } from "../../../common/actions";
 import { plainCorporatePassPath } from "../../../constants/Api";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import ListView from "../../../common/components/list-view/ListView";
 import {
   setListEditRecord,
@@ -20,10 +20,6 @@ import {
   setFilterGroups
 } from "../../../common/components/list-view/actions";
 import {
-  getDiscount,
-  updateDiscount,
-  createDiscount,
-  removeDiscount,
   getDiscountContactRelationTypes,
   getDiscountCosAccounts
 } from "./actions";
@@ -82,7 +78,7 @@ const Initial: Discount = {
   validToOffset: null
 };
 
-const findRelatedGroup: any = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Discount and entityId" },
   { title: "Classes", list: "class", expression: "discountCourseClasses.discount.id" },
   { title: "Enrolments", list: "enrolment", expression: "invoiceLines.invoiceLineDiscounts.discount.id" },
@@ -125,11 +121,7 @@ class Discounts extends React.PureComponent<any, any> {
 
   render() {
     const {
-      getDiscountRecord,
-      onDelete,
-      onInit,
-      onCreate,
-      onSave
+      onInit
     } = this.props;
 
     return (
@@ -142,15 +134,12 @@ class Discounts extends React.PureComponent<any, any> {
             secondaryColumnCondition: this.secondaryColumnCondition
           }}
           editViewProps={{
-            manualLink
+            manualLink,
+            hideTitle: true
           }}
           EditViewContent={DiscountEditView}
-          getEditRecord={getDiscountRecord}
           rootEntity="Discount"
           onInit={onInit}
-          onCreate={onCreate}
-          onDelete={onDelete}
-          onSave={onSave}
           findRelated={findRelatedGroup}
           filterGroupsInitial={filterGroups}
           noListTags
@@ -177,10 +166,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getEntityTags("Course"));
   },
   clearListState: () => dispatch(clearListState()),
-  getDiscountRecord: (id: string) => dispatch(getDiscount(id)),
-  onSave: (id: string, discount: Discount) => dispatch(updateDiscount(id, discount)),
-  onCreate: (discount: Discount) => dispatch(createDiscount(discount)),
-  onDelete: (id: string) => dispatch(removeDiscount(id)),
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
   checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" }))
 });

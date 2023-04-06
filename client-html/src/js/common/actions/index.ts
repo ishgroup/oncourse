@@ -10,7 +10,7 @@
 import {
   LoginRequest,
   PermissionRequest,
-  PreferenceEnum,
+  PreferenceEnum, User,
   UserPreference
 } from "@api/model";
 import { _toRequestType, FULFILLED, REJECTED } from "./ActionUtils";
@@ -74,6 +74,9 @@ export const CLOSE_DRAWER = "common/drawer/close";
 export const OPEN_CONFIRM = "common/confirm/open";
 export const CLOSE_CONFIRM = "common/confirm/close";
 
+export const OPEN_SEND_MESSAGE = "common/sendMessage/open";
+export const CLOSE_SEND_MESSAGE = "common/sendMessage/close";
+
 export const SHOW_MESSAGE = "common/message/show";
 export const CLEAR_MESSAGE = "common/message/clear";
 
@@ -97,6 +100,10 @@ export const EXECUTE_ACTIONS_QUEUE = "execute/actionsQueue";
 export const CLEAR_ACTIONS_QUEUE = "clear/actionsQueue";
 
 export const NEXT_LOCATION = 'nextLocation';
+
+export const GET_SYSTEM_USER_DATA = "get/systemUser/data";
+
+export const SET_SYSTEM_USER_DATA = "set/systemUser/data";
 
 export const addActionToQueue = (
   actionBody: IAction,
@@ -129,23 +136,21 @@ export const clearActionsQueue = () => ({
   type: CLEAR_ACTIONS_QUEUE
 });
 
-export const showConfirm: ShowConfirmCaller = (payload) => {
-  return {
+export const showConfirm: ShowConfirmCaller = payload => ({
     type: OPEN_CONFIRM,
     payload
-  };
-};
+  });
 
 export const closeConfirm = () => ({
   type: CLOSE_CONFIRM
 });
 
-export const setLastLocation = () => ({
-  type: SET_LAST_LOCATION
+export const openSendMessage = () => ({
+  type: OPEN_SEND_MESSAGE
 });
 
-export const clearLastLocation = () => ({
-  type: CLEAR_LAST_LOCATION
+export const closeSendMessage = () => ({
+  type: CLOSE_SEND_MESSAGE
 });
 
 export const checkPassword = (value: string, host?: string, port?: number) => ({
@@ -261,4 +266,13 @@ export const clearMessage = () => ({
 export const setNextLocation = (nextLocation: string) => ({
   type: NEXT_LOCATION,
   payload: nextLocation
+});
+
+export const getSystemUserData = () => ({
+  type: GET_SYSTEM_USER_DATA,
+});
+
+export const setSystemUserData = (systemUserData: User) => ({
+  type: SET_SYSTEM_USER_DATA,
+  payload: systemUserData
 });

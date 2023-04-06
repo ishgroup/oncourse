@@ -17,6 +17,7 @@ import ish.common.types.ProductStatus
 import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
+import ish.oncourse.cayenne.Taggable
 import ish.oncourse.server.cayenne.glue._Voucher
 import ish.validation.ValidationFailure
 import org.apache.cayenne.validation.ValidationResult
@@ -31,7 +32,7 @@ import java.util.List
  */
 @API
 @QueueableEntity
-class Voucher extends _Voucher implements ExpandableTrait {
+class Voucher extends _Voucher implements ExpandableTrait, AttachableTrait {
 
 
 
@@ -233,5 +234,20 @@ class Voucher extends _Voucher implements ExpandableTrait {
 	@Override
 	Class<? extends CustomField> getCustomFieldClass() {
 		return VoucherCustomField
+	}
+
+	@Override
+	void addToAttachmentRelations(AttachmentRelation relation) {
+		super.addToAttachmentRelations(relation as VoucherAttachmentRelation)
+	}
+
+	@Override
+	void removeFromAttachmentRelations(AttachmentRelation relation) {
+		super.removeFromAttachmentRelations(relation as VoucherAttachmentRelation)
+	}
+
+	@Override
+	Class<? extends AttachmentRelation> getRelationClass() {
+		return VoucherAttachmentRelation
 	}
 }

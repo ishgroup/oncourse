@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { LoginRequest } from "@api/model";
+import { LoginRequest, LoginResponse } from "@api/model";
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import { bugsnagClient } from "../../../constants/Bugsnag";
@@ -17,7 +17,7 @@ import {
 import LoginServiceErrorsHandler from "../services/LoginServiceErrorsHandler";
 import history from "../../../constants/History";
 
-const request: EpicUtils.Request<any, {body: LoginRequest, host, port}> = {
+const request: EpicUtils.Request<LoginResponse, { body: LoginRequest, host, port }> = {
   type: POST_AUTHENTICATION_REQUEST,
   getData: payload => LoginService.postLoginRequest(payload.body, payload.host, payload.port),
   processData: (data, state, { body }) => {

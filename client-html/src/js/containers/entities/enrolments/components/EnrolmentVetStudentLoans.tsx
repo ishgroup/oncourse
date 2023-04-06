@@ -92,26 +92,26 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
   };
 
   return (
-    <Grid container columnSpacing={3} className="pl-3 pr-3">
+    <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pr-3">
       {values.feeHelpClass && (
         <>
-          <Grid item xs={12} className="mt-2 mb-2">
+          <Grid item xs={12} className="mt-2">
             <div className="heading mt-2 mb-2">
               VET Student Loans
             </div>
-
             <FormField
               type="select"
               name="studentLoanStatus"
               label="Reporting status"
               items={enrolmentReportingStatusItems}
               onChange={onChangeSelectValue}
+              debounced={false}
             />
           </Grid>
 
           <Grid item xs={12}>
             <Collapse in={showVSL}>
-              <Grid container columnSpacing={3} item={true} xs={12}>
+              <Grid container columnSpacing={3} rowSpacing={2} item={true} xs={12}>
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField
                     type="money"
@@ -152,7 +152,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
       )}
 
       <Grid item xs={12} className="centeredFlex">
-        <div className="heading mt-2 mb-2">Credit and rpl</div>
+        <div className="heading">Credit and rpl</div>
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 12}>
@@ -177,8 +177,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
           name="creditTotal"
           label="RPL indicator"
           items={enrolmentCreditTotalItems}
-          fullWidth
-        />
+                  />
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 12}>
@@ -203,8 +202,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
           name="creditProviderType"
           label="Credit provider type"
           items={enrolmentCreditProviderTypeItems}
-          fullWidth
-        />
+                  />
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 12}>
@@ -213,8 +211,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
           name="creditType"
           label="Credit type"
           items={enrolmentCreditTypeItems}
-          fullWidth
-        />
+                  />
       </Grid>
       <Grid item xs={twoColumn ? 4 : 12}>
         <FormField
@@ -222,8 +219,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
           name="creditLevel"
           label="Credit level"
           items={enrolmentCreditLevelItems}
-          fullWidth
-        />
+                  />
       </Grid>
     </Grid>
   );

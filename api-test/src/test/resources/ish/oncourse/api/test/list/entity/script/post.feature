@@ -13,7 +13,7 @@ Feature: Main feature for all POST requests with path 'list/entity/script' witho
         
     Scenario: (+) Add script without panels by admin
 
-        * def script = {"keyCode":"test.script_1","enabled":true,"name":"script_1","trigger":{"type":"On demand"},"description":"some description","content":"def run(args) {}"}
+        * def script = {"keyCode":"test.script_1","status":"Enabled","name":"script_1","trigger":{"type":"On demand"},"description":"some description","content":"def run(args) {}"}
 
         Given path ishPath
         And request script
@@ -36,8 +36,8 @@ Feature: Main feature for all POST requests with path 'list/entity/script' witho
         {"id":"#number",
         "name":"script_1",
         "description":"some description",
-        "enabled":true,
-        "trigger":{"type":"On demand","entityName":null,"entityAttribute":null,"cron":null},"content":"def run(args) {}",
+        "status":"Enabled",
+        "trigger":{"type":"On demand","entityName":null,"entityAttribute":null,"cron":null,"parameterId":null},"content":"def run(args) {}",
         "lastRun":[],
         "keyCode":test.script_1,
         "content":"def run(args) {}",
@@ -56,7 +56,7 @@ Feature: Main feature for all POST requests with path 'list/entity/script' witho
 
     Scenario: (+) Add script with Query panel by admin
 
-        * def script = {"keyCode":"test.script_2","name":"script_2","enabled":true,"content":"\n// Query closure start \n  def result = query {\n    entity \"Room\"\n    query \"createdOn is last month \"\n    context args.context\n  }      \n  // Query closure end\n","trigger":{"type":"On create","entityName":"Site","cron":null}, "entity":"Site"}
+        * def script = {"keyCode":"test.script_2","name":"script_2","status":"Enabled","content":"\n// Query closure start \n  def result = query {\n    entity \"Room\"\n    query \"createdOn is last month \"\n    context args.context\n  }      \n  // Query closure end\n","trigger":{"type":"On create","entityName":"Site","cron":null}, "entity":"Site"}
 
         Given path ishPath
         And request script
@@ -79,8 +79,8 @@ Feature: Main feature for all POST requests with path 'list/entity/script' witho
         {"id":"#number",
         "name":"script_2",
         "description":null,
-        "enabled":true,
-        "trigger":{"type":"On create","entityName":"Site","entityAttribute":null,"cron":null},
+        "status":"Enabled",
+        "trigger":{"type":"On create","entityName":"Site","entityAttribute":null,"cron":null,"parameterId":null},
         "lastRun":[],
         "keyCode":"test.script_2",
         "entity":"Site",
@@ -105,7 +105,7 @@ Feature: Main feature for all POST requests with path 'list/entity/script' witho
 
     Scenario: (-) Add script with Import panel by admin
 
-        * def script = {"keyCode":"test.script_3","enabled":true,"name":"script_3","trigger":{"type":"On demand"},"description":"some description","content":"import ish.integrations.*\ndef run(args) {\n}"}
+        * def script = {"keyCode":"test.script_3","status":"Enabled","name":"script_3","trigger":{"type":"On demand"},"description":"some description","content":"import ish.integrations.*\ndef run(args) {\n}"}
 
         Given path ishPath
         And request script
@@ -128,7 +128,7 @@ Feature: Main feature for all POST requests with path 'list/entity/script' witho
 
     Scenario: (-) Add script with Script panel by admin
 
-        * def script = {"keyCode":"test.script_4", "enabled":true,"name":"script_4","trigger":{"type":"On demand"},"description":"some description","content":"def run(args) {\n new Date() \n}"}
+        * def script = {"keyCode":"test.script_4", "status":"Enabled","name":"script_4","trigger":{"type":"On demand"},"description":"some description","content":"def run(args) {\n new Date() \n}"}
 
         Given path ishPath
         And request script
@@ -157,7 +157,7 @@ Feature: Main feature for all POST requests with path 'list/entity/script' witho
         
 #       <--->
 
-        * def script = {"keyCode":"test.script_5","enabled":true,"name":"script_5","trigger":{"type":"On demand"},"description":"some description","content":"def run(args) {}"}
+        * def script = {"keyCode":"test.script_5","status":"Enabled","name":"script_5","trigger":{"type":"On demand"},"description":"some description","content":"def run(args) {}"}
 
         Given path ishPath
         And request script
@@ -180,8 +180,8 @@ Feature: Main feature for all POST requests with path 'list/entity/script' witho
         {"id":"#number",
         "name":"script_5",
         "description":"some description",
-        "enabled":true,
-        "trigger":{"type":"On demand","entityName":null,"entityAttribute":null,"cron":null},
+        "status":"Enabled",
+        "trigger":{"type":"On demand","entityName":null,"entityAttribute":null,"cron":null,"parameterId":null},
         "content":"def run(args) {}",
         "lastRun":[],
         "keyCode":"test.script_5",
@@ -212,7 +212,7 @@ Feature: Main feature for all POST requests with path 'list/entity/script' witho
         
 #       <--->
 
-        * def script = {"keyCode":"test.script_6","name":"script_6","enabled":true,"content":"\n// Query closure start \n  def result = query {\n    entity \"Room\"\n    query \"createdOn is last month \"\n    context args.context\n  }      \n  // Query closure end\n","trigger":{"type":"On create","entityName":"Site"}, "entity":"Site"}
+        * def script = {"keyCode":"test.script_6","name":"script_6","status":"Enabled","content":"\n// Query closure start \n  def result = query {\n    entity \"Room\"\n    query \"createdOn is last month \"\n    context args.context\n  }      \n  // Query closure end\n","trigger":{"type":"On create","entityName":"Site"}, "entity":"Site"}
 
         Given path ishPath
         And request script
@@ -235,8 +235,8 @@ Feature: Main feature for all POST requests with path 'list/entity/script' witho
         {"id":"#number",
         "name":"script_6",
         "description":null,
-        "enabled":true,
-        "trigger":{"type":"On create","entityName":"Site","entityAttribute":null,"cron":null},
+        "status":"Enabled",
+        "trigger":{"type":"On create","entityName":"Site","entityAttribute":null,"cron":null,"parameterId":null},
         "lastRun":[],
         "keyCode":"test.script_6",
         "entity":"Site",
@@ -267,7 +267,7 @@ Feature: Main feature for all POST requests with path 'list/entity/script' witho
         
 #       <--->
 
-        * def script = {"keyCode":"test.script_7","enabled":true,"name":"script_5","trigger":{"type":"On create","entityName":"Site"},"description":"some description","content":"\ndef run(args) {\n\n// Query closure start \n  def result = query {\n    entity Site\n    query \"createdOn last month \"\n    context args.context\n  }      \n  // Query closure end\n}"}
+        * def script = {"keyCode":"test.script_7","status":"Enabled","name":"script_5","trigger":{"type":"On create","entityName":"Site"},"description":"some description","content":"\ndef run(args) {\n\n// Query closure start \n  def result = query {\n    entity Site\n    query \"createdOn last month \"\n    context args.context\n  }      \n  // Query closure end\n}"}
 
         Given path ishPath
         And request script
@@ -285,7 +285,7 @@ Feature: Main feature for all POST requests with path 'list/entity/script' witho
         
 #       <--->
 
-        * def script = {"keyCode":"test.script_8","enabled":true,"name":"script_8","trigger":{"type":"On demand"},"description":"some description","content":"import ish.integrations.*\ndef run(args) {\n}"}
+        * def script = {"keyCode":"test.script_8","status":"Enabled","name":"script_8","trigger":{"type":"On demand"},"description":"some description","content":"import ish.integrations.*\ndef run(args) {\n}"}
 
         Given path ishPath
         And request script
@@ -319,7 +319,7 @@ Feature: Main feature for all POST requests with path 'list/entity/script' witho
         
 #       <--->
 
-        * def script = {"keyCode":"test.script_9","enabled":true,"name":"script_9","trigger":{"type":"On demand"},"description":"some description","content":"def run(args) {\n new Date() \n}"}
+        * def script = {"keyCode":"test.script_9","status":"Enabled","name":"script_9","trigger":{"type":"On demand"},"description":"some description","content":"def run(args) {\n new Date() \n}"}
 
         Given path ishPath
         And request script

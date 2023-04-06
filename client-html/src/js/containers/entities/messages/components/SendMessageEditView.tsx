@@ -1,21 +1,19 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 // eslint-disable-next-line import/no-extraneous-dependencies
-import React, {
-  useCallback, useEffect, useMemo, useState, Fragment, useRef
-} from "react";
+import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Dispatch } from "redux";
-import {
- change, Field, FieldArray, initialize
-} from "redux-form";
+import { change, DecoratedFormProps, Field, FieldArray, getFormValues, initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import debounce from "lodash.debounce";
 import clsx from "clsx";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
-import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
@@ -23,25 +21,16 @@ import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
 import OpenInNew from "@mui/icons-material/OpenInNew";
-import {
-  Binding,
-  EmailTemplate, MessageType, Recipients, SearchQuery
-} from "@api/model";
+import { Binding, DataType, EmailTemplate, MessageType, Recipients, SearchQuery } from "@api/model";
+import { Dialog } from "@mui/material";
+import { TransitionProps } from "@mui/material/transitions";
+import Slide from "@mui/material/Slide";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
 import DataTypeRenderer from "../../../../common/components/form/DataTypeRenderer";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
-import {
-  clearListNestedEditRecord,
-  clearRecipientsMessageData,
-  closeListNestedEditRecord,
-  getRecipientsMessageData
-} from "../../../../common/components/list-view/actions";
+import { clearRecipientsMessageData, getRecipientsMessageData } from "../../../../common/components/list-view/actions";
 import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
-import { EMAIL_FROM_KEY } from "../../../../constants/Config";
-import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
-import { EditViewProps } from "../../../../model/common/ListView";
+import { AnyArgFunction, NoArgFunction, StringArgFunction } from "../../../../model/common/CommonFunctions";
 import { MessageData, MessageExtended } from "../../../../model/common/Message";
 import { State } from "../../../../reducers/state";
 import MessageService from "../services/MessageService";
@@ -52,6 +41,13 @@ import previewSmsImage from "../../../../../images/preview-sms.png";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { getMessageRequestModel } from "../utils";
 import { openInternalLink, saveCategoryAQLLink } from "../../../../common/utils/links";
+import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+import LoadingIndicator from "../../../../common/components/progress/LoadingIndicator";
+import { closeSendMessage, getEmailTemplatesWithKeyCode, getUserPreferences } from "../../../../common/actions";
+import { sendMessage } from "../actions";
+import { getManualLink } from "../../../../common/utils/getManualLink";
+import { EMAIL_FROM_KEY } from "../../../../constants/Config";
+import { SEND_MESSAGE_FORM_NAME } from "../../../../constants/Forms";
 
 const styles = theme => createStyles({
   previewContent: {
@@ -110,23 +106,31 @@ const styles = theme => createStyles({
     top: "50%",
     left: "50%",
     transform: "translateX(-50%) translateY(-50%)"
+  },
+  zIndexModal: {
+    zIndex: theme.zIndex.modal + 5
   }
 });
 
-interface MessageEditViewProps extends EditViewProps {
-  values: MessageExtended;
-  selection?: string[];
-  classes?: any;
-  templates: EmailTemplate[];
+interface MessageEditViewProps {
+  selection: string[];
+  filteredCount: number;
+  listEntity: string;
+  templates?: EmailTemplate[];
   recipientsMessageData?: MessageData;
   emailFrom?: string;
-  filteredCount?: number;
   submitting?: boolean;
+  opened?: boolean;
   listSearchQuery?: SearchQuery;
-  listEntity?: string;
+  values?: MessageExtended;
+  classes?: any;
+  selectionOnly?: boolean;
   getRecipientsMessageData?: (entityName: string, messageType: MessageType, listSearchQuery: SearchQuery, selection: string[], templateId: number) => void;
   clearOnClose?: AnyArgFunction;
   close?: AnyArgFunction;
+  handleSubmit?: any;
+  getMessageTemplates?: StringArgFunction;
+  getEmailFrom?: NoArgFunction;
 }
 
 const initialValues: MessageExtended = {
@@ -134,9 +138,14 @@ const initialValues: MessageExtended = {
   selectAll: false,
   recipientsCount: 0,
   bindings: [],
+  fromAddress: null,
   sendToStudents: true,
+  sendToWithdrawnStudents: false,
+  sendToActiveStudents: true,
   sendToTutors: true,
   sendToOtherContacts: true,
+  sendToSuppressActiveStudents: false,
+  sendToSuppressWithdrawnStudents: false,
   sendToSuppressStudents: false,
   sendToSuppressTutors: false,
   sendToSuppressOtherContacts: false
@@ -200,14 +209,37 @@ const labelsMap = label => {
   return label;
 };
 
-const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
+const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
+  <Slide direction="up" ref={ref} {...props as any} mountOnEnter unmountOnExit />
+));
+
+const manualUrl = getManualLink("messages");
+
+const EntitiesToMessageTemplateEntitiesMap = {
+  Invoice: ["Contact", "Invoice", "AbstractInvoice"],
+  Application: ["Contact", "Application"],
+  Contact: ["Contact"],
+  Enrolment: ["Contact", "Enrolment"],
+  CourseClass: ["Contact", "CourseClass", "Enrolment", "CourseClassTutor"],
+  PaymentIn: ["Contact", "PaymentIn"],
+  PaymentOut: ["Contact", "PaymentOut"],
+  Payslip: ["Contact", "Payslip"],
+  ProductItem: ["Contact", "Voucher", "Membership", "Article", "ProductItem"],
+  WaitingList: ["Contact", "WaitingList"],
+  Lead: ["Contact", "Lead"]
+};
+
+const getMessageTemplateEntities = entity => EntitiesToMessageTemplateEntitiesMap[entity] || [entity];
+
+const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps>(props => {
   const {
     classes,
+    opened,
     getRecipientsMessageData,
     listSearchQuery,
     listEntity,
-    manualLink,
-    values,
+    values = {},
+    selectionOnly,
     dispatch,
     form,
     templates,
@@ -217,18 +249,14 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
     filteredCount,
     submitting,
     invalid,
-    isNew,
-    dirty,
-    close
+    close,
+    handleSubmit,
+    getMessageTemplates,
+    getEmailFrom,
+    clearOnClose
   } = props;
 
   const htmlRef = useRef<HTMLDivElement>();
-
-  useEffect(() => {
-    if (htmlRef.current && !htmlRef.current.shadowRoot) {
-      htmlRef.current.attachShadow({ mode: 'open' });
-    }
-  }, [htmlRef.current]);
 
   const [preview, setPreview] = useState(null);
   const [isMarketing, setIsMarketing] = useState(true);
@@ -242,6 +270,23 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
     tutors: true,
     other: true
   });
+  
+  const checkAttachedShadow = () => {
+    if (htmlRef.current && !htmlRef.current.shadowRoot) {
+      htmlRef.current.attachShadow({ mode: 'open' });
+    }
+  };
+
+  useEffect(() => {
+    if (listEntity) {
+      getMessageTemplates(listEntity);
+      getEmailFrom();
+      dispatch(initialize(form, { ...initialValues, entity: listEntity }));
+    }
+    return () => {
+      clearOnClose();
+    };
+  }, [listEntity]);
 
   useEffect(() => {
     dispatch(change(form, "sendToWithdrawnStudents", selected.withdrawnStudents));
@@ -271,38 +316,40 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
     dispatch(change(form, "sendToOtherContacts", selected.other));
   }, [selected && selected.other]);
 
+  useEffect(() => {
+    if ( htmlRef.current) {
+      checkAttachedShadow();
+      if (values.messageType === "Email") {
+        htmlRef.current.shadowRoot.innerHTML = preview;
+      } else {
+        htmlRef.current.shadowRoot.innerHTML = "";
+      }
+    }
+  }, [values, preview, htmlRef.current?.shadowRoot]);
+  
   const isEmailView = useMemo(() => values.messageType === "Email", [values.messageType]);
 
   const getTemplateById = useCallback(id => templates.find(t => t.id === id), [templates]);
 
-  const getPreview = val => {
+  const getPreview = (val, selection, listSearchQuery) => {
     MessageService.getMessagePreview(
       val.recipientsCount,
-      getMessageRequestModel(val, selection, listSearchQuery),
+      getMessageRequestModel(val, selection, listSearchQuery || {}),
       val.messageType
       )
-      .then(r => {
-        setPreview(r);
-          if (htmlRef.current) {
-            if (val.messageType === "Email") {
-              htmlRef.current.shadowRoot.innerHTML = r;
-            } else {
-              htmlRef.current.shadowRoot.innerHTML = "";
-            }
-          }
-      })
+      .then(setPreview)
       .catch(e => instantFetchErrorHandler(dispatch, e));
   };
 
-  const getPreviewDebounced = useCallback<any>(debounce(val => {
-    getPreview(val);
+  const getPreviewDebounced = useCallback<any>(debounce((val, selection, listSearchQuery) => {
+    getPreview(val, selection, listSearchQuery);
   }, 600), []);
 
   useEffect(() => {
-    if (!invalid && values.bindings && values.recipientsCount && values.messageType) {
-      getPreviewDebounced(values);
+    if (opened && !invalid && values.bindings && values.recipientsCount && values.messageType) {
+      getPreviewDebounced(values, selection, listSearchQuery);
     }
-  }, [values]);
+  }, [values, selection, listSearchQuery, invalid, opened]);
 
   const onTemplateChange = (e, value, previousValue) => {
     if (value && value !== previousValue) {
@@ -314,7 +361,8 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
         dispatch(change(form, "bindings", selectedTemplate.variables.map(v =>
           ({ ...v, value: v.type === "Checkbox" ? false : v.type === "Text" ? "" : v.value }))));
 
-        if (htmlRef.current && htmlRef.current.shadowRoot) {
+        if (htmlRef.current) {
+          checkAttachedShadow();
           htmlRef.current.shadowRoot.innerHTML = "";
         }
 
@@ -329,16 +377,17 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
       if (selectedTemplate.type === "Sms") {
         dispatch(change(form, "messageType", "Sms"));
       }
+
       getRecipientsMessageData(listEntity, selectedTemplate.type, listSearchQuery, values.selectAll ? null : selection, selectedTemplate.id);
     }
   };
 
   useEffect(() => {
-    if (templates && templates.length) {
+    if (opened && templates && templates.length) {
       dispatch(change(form, "templateId", templates[0].id));
       onTemplateChange(null, templates[0].id, null);
     }
-  }, [templates]);
+  }, [templates, opened]);
 
   const setSelectAll = useCallback((v: boolean) => {
     dispatch(change(form, "selectAll", v));
@@ -405,7 +454,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
           <Typography variant="body2" className="heading">
             {`${totalHeaderCount} ${labelsMap(recipientsName)}`}
           </Typography>
-          <IconButton size="small" color="secondary" onClick={() => openLink(headerIds)}>
+          <IconButton size="small" color="primary" onClick={() => openLink(headerIds)}>
             <OpenInNew fontSize="inherit" />
           </IconButton>
           <Switch onChange={(e, v) => setSelected(prev => ({ ...prev, [recipientsName]: v }))} checked={selected[recipientsName]} />
@@ -416,7 +465,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
               <Typography variant="body2">
                 {`Skipping ${totalCounter[recipientsName].withoutDestinationIds?.length || 0} without ${
                   isEmailView ? "email or with undeliverable email" : "mobile phone or with undeliverable mobile phone"}`}
-                <IconButton size="small" color="secondary" onClick={() => openLink(totalCounter[recipientsName].withoutDestinationIds)}>
+                <IconButton size="small" color="primary" onClick={() => openLink(totalCounter[recipientsName].withoutDestinationIds)}>
                   <OpenInNew fontSize="inherit" />
                 </IconButton>
               </Typography>
@@ -424,7 +473,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
             {isMarketing && totalCounter[recipientsName].suppressToSendIds?.length !== 0 && (
               <Typography variant="body2">
                 {`Skipping ${totalCounter[recipientsName].suppressToSendIds?.length || 0} not accepting marketing material`}
-                <IconButton size="small" color="secondary" onClick={() => openLink(totalCounter[recipientsName].suppressToSendIds)}>
+                <IconButton size="small" color="primary" onClick={() => openLink(totalCounter[recipientsName].suppressToSendIds)}>
                   <OpenInNew fontSize="inherit" />
                 </IconButton>
               </Typography>
@@ -453,146 +502,145 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
 
   const textSmsCreditsCount = !isEmailView && preview && Math.ceil(preview.length / 160);
 
+  const filteredTemplatesByVaribleCount = useMemo<EmailTemplate[]>(() =>
+    templates?.filter(template => template?.variables.filter(variable => variable.type === DataType.Object).length === 0) || [], [templates]);
+
+  const onSubmit = model => dispatch(sendMessage(model, selection));
+
   return (
-    <div className="appBarContainer">
-      <CustomAppBar>
-        <div className="centeredFlex w-100">
-          <div className="flex-fill">
-            <Typography className="appHeaderFontSize" color="inherit">
+    <Dialog
+      fullScreen
+      open={opened}
+      TransitionComponent={Transition}
+      disableEnforceFocus
+      classes={{
+        root: classes.zIndexModal,
+        paper: "overflow-hidden"
+      }}
+    >
+      <LoadingIndicator position="fixed" />
+      <form onSubmit={handleSubmit(onSubmit)} autoComplete="off" noValidate>
+        <AppBarContainer
+          disabledScrolling
+          disableInteraction
+          noDrawer
+          manualUrl={manualUrl}
+          onCloseClick={close}
+          submitButtonText="Send"
+          title={(
+            <div>
               Send
               {' '}
               { isEmailView ? "email" : "SMS" }
-            </Typography>
-          </div>
-          <div>
-            {manualLink && (
-              <AppBarHelpMenu
-                manualUrl={manualLink}
-              />
-            )}
-
-            <Button onClick={close} className="closeAppBarButton">
-              Close
-            </Button>
-            <Button
-              type="submit"
-              classes={{
-                root: "whiteAppBarButton",
-                disabled: "whiteAppBarButtonDisabled"
-              }}
-              disabled={invalid || (!isNew && !dirty) || !values.recipientsCount}
-            >
-              Send
-            </Button>
-          </div>
-        </div>
-      </CustomAppBar>
-
-      <div className="p-3">
-        <Grid container columnSpacing={3} spacing={3}>
-          <Grid item xs={12} md={6}>
-            <Grid item xs className="centeredFlex mb-2">
-              <RecipientsSelectionSwitcher
-                selectedRecords={selection.length}
-                allRecords={filteredCount}
-                selectAll={values.selectAll}
-                setSelectAll={setSelectAll}
-                disabled={submitting /* count === null */}
-              />
-            </Grid>
-
-            <FormField
-              type="select"
-              name="templateId"
-              label="Template"
-              selectValueMark="id"
-              selectLabelMark="name"
-              categoryKey="entity"
-              items={templates || []}
-              onChange={onTemplateChange}
-              required
-            />
-
-            <FieldArray name="bindings" component={bindingsRenderer} rerenderOnEveryChange />
-
-            {isEmailView && (
-              <FormField type="text" name="fromAddress" label="From address" />
-            )}
-
-            <FormControlLabel
-              className="mb-2"
-              control={(
-                <StyledCheckbox
-                  checked={isMarketing}
-                  onChange={() => {
-                    setIsMarketing(!isMarketing);
-                    setSuppressed(!suppressed);
-                  }}
-                  color="secondary"
-                />
-              )}
-              label="This is a marketing message"
-            />
-
-            <br />
-
-            {counterItems}
-          </Grid>
-
-          <Grid item xs={12} md={6} className="relative">
-            <Typography variant="body1" className={clsx(classes.noRecipients, { "d-none": values.recipientsCount })}>
-              No recipients
-            </Typography>
-            <div className={clsx({ "d-none": !values.recipientsCount })}>
-              <div className={isEmailView ? undefined : "d-none"}>
-                <Typography variant="caption" color="textSecondary">
-                  Preview
-                </Typography>
-                <Card>
-                  <CardContent>
-                    <div className={clsx("overflow-auto", classes.previewContent)} ref={htmlRef} />
-                  </CardContent>
-                </Card>
-              </div>
-              <div className={clsx("relative w-100", isEmailView && "d-none", classes.previewSmsWrapper)}>
-                <div className={classes.previewSmsImage}>
-                  <img src={previewSmsImage} alt="preview-sms" />
-                </div>
-                {preview && String(preview).length > 0 && (
-                  <>
-                    <div className={clsx("text-pre-wrap", classes.previewSmsTextWrapper)}>
-                      <div className={classes.previewSmsText}>
-                        {preview}
-                      </div>
-                    </div>
-                    {textSmsCreditsCount > 1 && (
-                      <Typography variant="caption" color="textSecondary" className={classes.previewSmsCredits}>
-                        {`This message requires ${textSmsCreditsCount} credits to send.`}
-                      </Typography>
-                    )}
-                  </>
-                )}
-              </div>
             </div>
-          </Grid>
-        </Grid>
-      </div>
-    </div>
+          )}
+        >
+          <div className="appBarContainer">
+            <Grid container columnSpacing={3} spacing={3}>
+              <Grid item xs={12} md={6}>
+                <Grid item xs className="centeredFlex mb-2">
+                  <RecipientsSelectionSwitcher
+                    selectedRecords={selection.length}
+                    allRecords={filteredCount}
+                    selectAll={values.selectAll}
+                    setSelectAll={setSelectAll}
+                    disabled={submitting /* count === null */}
+                    selectionOnly={selectionOnly}
+                  />
+                </Grid>
+
+                <FormField
+                  type="select"
+                  name="templateId"
+                  label="Template"
+                  selectValueMark="id"
+                  selectLabelMark="name"
+                  categoryKey="entity"
+                  items={filteredTemplatesByVaribleCount}
+                  onChange={onTemplateChange}
+                  className="mb-2"
+                  required
+                  sort
+                />
+
+                <FieldArray name="bindings" component={bindingsRenderer} rerenderOnEveryChange />
+
+                {isEmailView && (
+                  <FormField type="text" name="fromAddress" label="From address" className="mb-2" />
+                )}
+
+                <FormControlLabel
+                  className="mb-2"
+                  control={(
+                    <StyledCheckbox
+                      checked={isMarketing}
+                      onChange={() => {
+                        setIsMarketing(!isMarketing);
+                        setSuppressed(!suppressed);
+                      }}
+                      color="primary"
+                    />
+                  )}
+                  label="This is a marketing message"
+                />
+                <br />
+                {counterItems}
+              </Grid>
+
+              <Grid item xs={12} md={6} className="relative">
+                <Typography variant="body1" className={clsx(classes.noRecipients, { "d-none": values.recipientsCount })}>
+                  No recipients
+                </Typography>
+                <div className={clsx({ "d-none": !values.recipientsCount })}>
+                  <div className={isEmailView ? undefined : "d-none"}>
+                    <Typography variant="caption" color="textSecondary">
+                      Preview
+                    </Typography>
+                    <Card>
+                      <CardContent>
+                        <div className={clsx("overflow-auto", classes.previewContent)} ref={htmlRef} />
+                      </CardContent>
+                    </Card>
+                  </div>
+                  <div className={clsx("relative w-100", isEmailView && "d-none", classes.previewSmsWrapper)}>
+                    <div className={classes.previewSmsImage}>
+                      <img src={previewSmsImage} alt="preview-sms" />
+                    </div>
+                    {preview && String(preview).length > 0 && (
+                      <>
+                        <div className={clsx("text-pre-wrap", classes.previewSmsTextWrapper)}>
+                          <div className={classes.previewSmsText}>
+                            {preview}
+                          </div>
+                        </div>
+                        {textSmsCreditsCount > 1 && (
+                          <Typography variant="caption" color="textSecondary" className={classes.previewSmsCredits}>
+                            {`This message requires ${textSmsCreditsCount} credits to send.`}
+                          </Typography>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </div>
+              </Grid>
+            </Grid>
+          </div>
+        </AppBarContainer>
+      </form>
+    </Dialog>
   );
 });
 
 const mapStateToProps = (state: State) => ({
-  templates: state.list.emailTemplatesWithKeyCode,
-  recipientsMessageData: state.list.recepients,
+  values: getFormValues(SEND_MESSAGE_FORM_NAME)(state),
   emailFrom: state.userPreferences[EMAIL_FROM_KEY],
-  selection: state.list.selection,
-  listSearchQuery: state.list.searchQuery,
-  filteredCount: state.list.records.filteredCount,
   submitting: state.fetch.pending,
-  listEntity: state.list.records.entity
+  opened: state.sendMessage.open,
+  templates: state.list.emailTemplatesWithKeyCode,
+  recipientsMessageData: state.list.recepients
 });
 
-const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   getRecipientsMessageData: (entityName: string, messageType: MessageType, listSearchQuery: SearchQuery, selection: string[], templateId: number) => dispatch(
     getRecipientsMessageData(
       entityName,
@@ -604,26 +652,15 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   ),
   clearOnClose: () => {
     dispatch(clearRecipientsMessageData());
-    dispatch(clearListNestedEditRecord(ownProps.nestedIndex));
   },
   close: () => {
-    dispatch(closeListNestedEditRecord(ownProps.nestedIndex));
-  }
+    dispatch(closeSendMessage());
+    dispatch(clearRecipientsMessageData());
+  },
+  getMessageTemplates: (entitity: string) => dispatch(getEmailTemplatesWithKeyCode(getMessageTemplateEntities(entitity))),
+  getEmailFrom: () => dispatch(getUserPreferences([EMAIL_FROM_KEY])),
 });
 
-const SendMessageEditViewResolver: React.FC<MessageEditViewProps> = props => {
-  const {
-    dispatch, form, clearOnClose, values, listEntity
-  } = props;
-
-  useEffect(() => {
-    dispatch(initialize(form, { ...initialValues, entity: listEntity }));
-    return () => {
-      clearOnClose();
-    };
-  }, []);
-
-  return values ? <SendMessageEditView {...props} /> : null;
-};
-
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SendMessageEditViewResolver));
+export default reduxForm<any, any, any>({
+  form: SEND_MESSAGE_FORM_NAME,
+})(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SendMessageEditView)));

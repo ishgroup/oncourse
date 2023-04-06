@@ -13,7 +13,7 @@ import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { ContactLinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { validateVetPurchasingContractIdentifier } from "../../../../common/utils/validation";
@@ -22,7 +22,7 @@ import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { AppTheme } from "../../../../model/common/Theme";
 import { State } from "../../../../reducers/state";
 import ContactSelectItemRenderer from "../../../entities/contacts/components/ContactSelectItemRenderer";
-import { contactLabelCondition, getContactName, openContactLink } from "../../../entities/contacts/utils";
+import { getContactFullName } from "../../../entities/contacts/utils";
 import { summaryListStyles } from "../../styles/summaryListStyles";
 import CheckoutFundingInvoicePaymentPlans from "./CheckoutFundingInvoicePaymentPlans";
 import CheckoutFundingInvoiceSummaryExpandableItemRenderer from "./CheckoutFundingInvoiceSummaryExpandableItemRenderer";
@@ -81,23 +81,19 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
     <Grid container columnSpacing={3} className="align-content-between">
       <Grid item xs={6}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           name={`fundingInvoices[${selectedItemIndex}].fundingProviderId`}
           entity="Contact"
           aqlFilter="isCompany is true"
           label="Funding provider"
           selectValueMark="id"
-          selectLabelCondition={contactLabelCondition}
-          defaultDisplayValue={fundingInvoice.company && getContactName(fundingInvoice.company)}
+          selectLabelCondition={getContactFullName}
+          defaultValue={fundingInvoice.company && getContactFullName(fundingInvoice.company)}
           itemRenderer={ContactSelectItemRenderer}
           onInnerValueChange={onChangeCompany}
           rowHeight={55}
           labelAdornment={(
-            <LinkAdornment
-              linkHandler={openContactLink}
-              link={fundingInvoice && fundingInvoice.fundingProviderId}
-              disabled={!fundingInvoice || !fundingInvoice.fundingProviderId}
-            />
+            <ContactLinkAdornment id={fundingInvoice?.fundingProviderId} />
           )}
         />
       </Grid>
@@ -112,7 +108,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
       <Grid item xs={12} className="pb-3">
         <CheckoutFundingInvoiceSummaryExpandableItemRenderer
           classes={classes}
-          header={getContactName(fundingInvoice.item.enrolment.contact)}
+          header={getContactFullName(fundingInvoice.item.enrolment.contact as any)}
           items={fundingInvoice.item.enrolment.items}
           itemTotal={fundingInvoice ? fundingInvoice.total : 0}
           currencySymbol={currency && currency.shortCurrencySymbol}
@@ -122,7 +118,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
           form={form}
         />
       </Grid>
-      <Grid container columnSpacing={3}>
+      <Grid item xs={12} container>
         {fundingInvoice && fundingInvoice.paymentPlans && (
           <Grid item sm={6} className="pr-2">
             <CheckoutFundingInvoicePaymentPlans
@@ -143,10 +139,11 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
               </Typography>
             </div>
             <FieldArray
-              name={`fundingInvoices[${selectedItemIndex}].trainingPlans`}
+              name={`fundingInvoices[${selectedItemIndex}].trainingPlans` as string}
               className="saveButtonTableOffset"
               component={NestedTable}
               columns={trainingPlansColumns}
+              calculateHeight
               hideHeader
             />
           </Grid>

@@ -26,7 +26,7 @@ import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { openInternalLink } from "../../../../common/utils/links";
 import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
-import LoadingIndicator from "../../../../common/components/layout/LoadingIndicator";
+import LoadingIndicator from "../../../../common/components/progress/LoadingIndicator";
 
 export const PAYSLIP_GENERATE_FORM = "PayslipGenerateForm";
 
@@ -101,8 +101,7 @@ const PayslipGenerateDialog: React.FC<Props> = ({
             } unprocessed wages until and including`}
             onChange={onDateChange}
             required
-            fullWidth
-          />
+                      />
 
           <Collapse in={!values.confirm}>
             <DialogContentText
@@ -158,6 +157,6 @@ const mapStateToProps = (state: State) => ({
   values: getFormValues(PAYSLIP_GENERATE_FORM)(state)
 });
 
-export default reduxForm<any, Props>({
+export default reduxForm<any, any, any>({
   form: PAYSLIP_GENERATE_FORM
 })(connect(mapStateToProps)((props: any) => (props.values ? <PayslipGenerateDialog {...props} /> : null)));

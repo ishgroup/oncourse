@@ -33,6 +33,14 @@ class PdfService {
   public removeReport(id: number): Promise<any> {
     return this.pdfTemplateApi.remove(id);
   }
+
+  public getHighQualityPreview(id: number): Promise<any> {
+    return this.pdfTemplateApi.getHighQualityPreview(id);
+  }
+
+  public deletePreview(id: number): Promise<any>  {
+    return this.pdfTemplateApi.deletePreview(id);
+  }
 }
 
 export default new PdfService();

@@ -16,7 +16,7 @@ interface AssessmentSubmissionIconButtonProps {
   grade?: string;
 }
 
-const useStyles = makeAppStyles()(() => ({
+const useStyles = makeAppStyles(() => ({
   iconGrey: {
     color: "#d4d4d4"
   },
@@ -33,7 +33,7 @@ const GradeButton: React.FC<AssessmentSubmissionIconButtonProps> = (
    grade
  }
 ) => {
-  const { classes } = useStyles();
+  const classes  = useStyles();
 
   return grade ? (
     <ButtonBase className="p-0" onClick={onClick}>

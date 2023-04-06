@@ -42,7 +42,7 @@ Feature: Main feature for all GET requests with path 'list/entity/module'
                         {"id":"6","values":["VU21318","Identify community options","false"]},
                         {"id":"5","values":["VU21349","Identify the Australian electoral system","false"]}
                     ],
-                "filteredCount":null,
+                "filteredCount":6,
                 "layout":"Three column",
                 "filterColumnWidth":200,
                 "tagsOrder":[]
@@ -89,7 +89,7 @@ Feature: Main feature for all GET requests with path 'list/entity/module'
                         {"id":"6","values":["VU21318","Identify community options","false"]},
                         {"id":"5","values":["VU21349","Identify the Australian electoral system","false"]}
                     ],
-                "filteredCount":null,
+                "filteredCount":6,
                 "layout":"Three column",
                 "filterColumnWidth":200,
                 "tagsOrder":[]

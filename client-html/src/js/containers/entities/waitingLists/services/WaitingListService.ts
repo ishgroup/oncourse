@@ -8,6 +8,10 @@ class WaitingListService {
     return this.waitingListApi.bulkChange(diff);
   }
 
+  public bulkDelete(diff: Diff): Promise<any> {
+    return this.waitingListApi.bulkDelete(diff);
+  }
+
   public createWaitingList(waitingList: WaitingList): Promise<any> {
     return this.waitingListApi.create(waitingList);
   }
@@ -18,10 +22,6 @@ class WaitingListService {
 
   public updateWaitingList(id: number, waitingList: WaitingList): Promise<any> {
     return this.waitingListApi.update(id, waitingList);
-  }
-
-  public removeWaitingList(id: number): Promise<any> {
-    return this.waitingListApi.remove(id);
   }
 }
 

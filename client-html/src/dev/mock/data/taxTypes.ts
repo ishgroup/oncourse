@@ -11,6 +11,10 @@ export function mockTaxTypes(): Tax[] {
       {
         id: "2",
         values: ["2", "N", "0.0000", "false"]
+      },
+      {
+        id: "204",
+        values: ["204", "VAT", "0.1500", "false"]
       }
     ];
 
@@ -19,6 +23,22 @@ export function mockTaxTypes(): Tax[] {
       rows,
       plain: true
     });
+  };
+
+  this.getPlainTaxesFormatted = () => {
+    const items: Tax[] = [];
+    for (const row of this.getPlainTaxes().rows) {
+      items.push({
+        id: Number(row.values[0]),
+        code: row.values[1],
+        rate: parseFloat(row.values[2]),
+        gst: row.values[3] === "true"
+      });
+    }
+
+    items.sort((a, b) => (a.code[0] > b.code[0] ? 1 : -1));
+
+    return items;
   };
 
   this.saveTaxType = items => {

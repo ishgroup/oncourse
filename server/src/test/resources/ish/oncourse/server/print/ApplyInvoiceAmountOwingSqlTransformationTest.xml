@@ -1,20 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-  <Account id="1" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"/>
-  <Account id="2" accountCode="INC6" description="Test income account" isEnabled="1" type="4" taxId="1"/>
-  <Account id="3" accountCode="accEnrl" description="Test asset account" isEnabled="1" type="1"/>
-  <Account id="4" accountCode="accDebt" description="Test income account" isEnabled="1" type="4" taxId="1"/>
-  <Account id="5" accountCode="accFees" description="Test fees account" isEnabled="1" type="2"/>
-  <Account id="6" accountCode="accLiab" description="Test liability account" isEnabled="1" type="2"/>
+  <Account id="1" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"
+           createdOn="2021-12-21 12:00:10.0"
+           modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account id="2" accountCode="INC6" description="Test income account" isEnabled="1" type="4" taxId="1"
+           createdOn="2021-12-21 12:00:10.0"
+           modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account id="3" accountCode="accEnrl" description="Test asset account" isEnabled="1" type="1"
+           createdOn="2021-12-21 12:00:10.0"
+           modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account id="4" accountCode="accDebt" description="Test income account" isEnabled="1" type="4" taxId="1"
+           createdOn="2021-12-21 12:00:10.0"
+           modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account id="5" accountCode="accFees" description="Test fees account" isEnabled="1" type="2"
+           createdOn="2021-12-21 12:00:10.0"
+           modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account id="6" accountCode="accLiab" description="Test liability account" isEnabled="1" type="2"
+           createdOn="2021-12-21 12:00:10.0"
+           modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <PaymentMethod id="2" name="Credit Card" accountId="3" active="1" bankedAutomatically="1" reconcilable="1" type="2"/>
-  <PaymentMethod id="5" name="Zero" accountId="3" active="1" bankedAutomatically="1" reconcilable="1" type="5"/>
+  <PaymentMethod id="2" name="Credit Card" accountId="3" active="1" bankedAutomatically="1" reconcilable="1" type="2"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="5" name="Zero" accountId="3" active="1" bankedAutomatically="1" reconcilable="1" type="5"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Tax id="1" isGSTTaxType="1" payableToSupplierAccountId="2" receivableFromStudentAccountId="3" taxCode="GST"
-       taxrate="0.1"/>
+       taxrate="0.1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Site id="1" name="Default site" isAdministrationCentre="1" isShownOnWeb="0" isVirtual="0"
-        localTimezone="Australia/Sydney"/>
+        localTimezone="Australia/Sydney" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <SystemUser email="admin@mail.com" id="1" login="admin" firstName="admin" surname="admin" isActive="1" isAdmin="1"
               password="test" canEditCMS="1" canEditTara="1" createdOn="2012-05-10 00:00:00"
@@ -31,14 +45,17 @@
            confirmationStatus="2"/>
   <InvoiceLine id="1" invoiceId="1" accountId="5" prepaidFeesAccountId="5" prepaidFeesRemaining="0.00"
                discountEachExTax="5.00" priceEachExTax="24.00" quantity="1" taxEach="1.00" taxId="1"
-               title="test invoiceline" description="simple invoice"/>
+               title="test invoiceline" description="simple invoice"
+               createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <PaymentIn id="1" accountInId="2" amount="20.00" payerId="1" paymentMethodId="2" status="3" reconciled="0"
              createdOn="[fiveDaysAgo]" source="O" confirmationStatus="3" paymentDate="[fiveDaysAgo]"/>
-  <PaymentInLine id="1" accountOutId="6" amount="20.00" invoiceId="1" paymentInId="1"/>
+  <PaymentInLine id="1" accountOutId="6" amount="20.00" invoiceId="1" paymentInId="1"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <PaymentOut id="1" accountOutId="6" amount="20.00" payeeId="1" paymentMethodId="2" status="3" reconciled="0"
               createdOn="[yesterday]" confirmationStatus="3" paymentDate="[yesterday]"/>
-  <PaymentOutLine id="1" accountInId="6" amount="20.00" invoiceId="1" paymentOutId="1"/>
+  <PaymentOutLine id="1" accountInId="6" amount="20.00" invoiceId="1" paymentOutId="1"
+                  createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
 </dataset>

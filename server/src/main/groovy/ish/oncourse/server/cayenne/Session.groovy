@@ -60,13 +60,11 @@ class Session extends _Session implements SessionTrait, SessionInterface, Queuea
 	}
 
 	/**
-	 * @return duration in hours
-	 * @deprecated always the samme to {@link #getDurationInHours}
+	 * @return duration in hours depending on TutorAttendances
 	 */
 	@API
-	@Deprecated 
 	BigDecimal getPayableDurationInHours() {
-		return getDurationInHours()
+		return sessionTutors.sum {it.actualPayableDurationHours} as BigDecimal
 	}
 
 	/**
@@ -292,8 +290,9 @@ class Session extends _Session implements SessionTrait, SessionInterface, Queuea
 	}
 
 	/**
-	 * @return
+	 * @return list of tutors attendances, related to this session
 	 */
+	@API
 	@Nonnull
 	@Override
 	List<TutorAttendance> getSessionTutors() {

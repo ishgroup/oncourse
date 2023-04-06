@@ -14,25 +14,6 @@ package ish.oncourse.server.api.v1.service.impl
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.common.types.EntityRelationCartAction
-import ish.oncourse.server.api.dao.ContactDao
-import ish.oncourse.server.api.dao.CourseDao
-import ish.oncourse.server.api.dao.EntityRelationDao
-import ish.oncourse.server.api.dao.ModuleDao
-import ish.oncourse.server.api.dao.ProductDao
-import ish.oncourse.server.api.v1.model.CheckoutSaleRelationDTO
-import ish.oncourse.server.api.v1.model.EntityRelationCartActionDTO
-import ish.oncourse.server.api.v1.model.SaleDTO
-import ish.oncourse.server.api.v1.model.SaleTypeDTO
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.Module
-import ish.oncourse.server.cayenne.EntityRelation
-import ish.oncourse.server.cayenne.EntityRelationType
-import ish.oncourse.server.cayenne.Outcome
-import ish.oncourse.server.cayenne.Product
-import org.apache.commons.lang3.StringUtils
-
-import static ish.common.types.ConfirmationStatus.DO_NOT_SEND
-import static ish.common.types.ConfirmationStatus.NOT_SENT
 import ish.common.types.PaymentStatus
 import ish.common.types.SystemEventType
 import ish.math.Money
@@ -41,52 +22,34 @@ import ish.oncourse.server.CayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.checkout.Checkout
 import ish.oncourse.server.api.checkout.CheckoutController
-import ish.oncourse.server.api.dao.FundingSourceDao
-import ish.oncourse.server.api.dao.PaymentInDao
-import ish.oncourse.server.api.service.ArticleProductApiService
-import ish.oncourse.server.api.service.ContactApiService
-import ish.oncourse.server.api.service.CourseClassApiService
-import ish.oncourse.server.api.service.InvoiceApiService
-import ish.oncourse.server.api.service.MembershipProductApiService
-import ish.oncourse.server.api.service.VoucherProductApiService
+import ish.oncourse.server.api.dao.*
+import ish.oncourse.server.api.service.*
 import ish.oncourse.server.api.v1.function.DiscountFunctions
-import ish.oncourse.server.api.v1.model.CheckoutArticleDTO
-import ish.oncourse.server.api.v1.model.CheckoutEnrolmentDTO
-import ish.oncourse.server.api.v1.model.CheckoutMembershipDTO
-import ish.oncourse.server.api.v1.model.CheckoutModelDTO
-import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
-import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
-import ish.oncourse.server.api.v1.model.CheckoutVoucherDTO
-import ish.oncourse.server.api.v1.model.CourseClassDiscountDTO
-import ish.oncourse.server.api.v1.model.InvoiceDTO
-import ish.oncourse.server.api.v1.model.InvoiceInvoiceLineDTO
-import ish.oncourse.server.api.v1.model.SessionStatusDTO
+import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.CheckoutApi
-import ish.oncourse.server.cayenne.Article
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.DiscountCourseClass
-import ish.oncourse.server.cayenne.Membership
-import ish.oncourse.server.cayenne.MembershipProduct
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.ProductItem
-import ish.oncourse.server.cayenne.Voucher
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.integration.EventService
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.users.SystemUserService
 import ish.oncourse.server.windcave.PaymentService
-import static ish.oncourse.server.windcave.PaymentService.AUTH_TYPE
 import ish.oncourse.server.windcave.SessionAttributes
 import ish.util.DiscountUtils
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.validation.ValidationException
+import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
+
+import static ish.common.types.ConfirmationStatus.DO_NOT_SEND
+import static ish.common.types.ConfirmationStatus.NOT_SENT
+import static ish.oncourse.server.api.v1.function.CartFunctions.cartDataIdsOf
+import static ish.oncourse.server.windcave.PaymentService.AUTH_TYPE
 
 @CompileStatic
 class CheckoutApiImpl implements CheckoutApi {
@@ -102,16 +65,16 @@ class CheckoutApiImpl implements CheckoutApi {
 
     @Inject
     ContactDao contactDao
-    
+
     @Inject
     CourseDao courseDao
-    
+
     @Inject
     ProductDao productDao
 
     @Inject
     ModuleDao moduleDao
-    
+
     @Inject
     PreferenceController preferenceController
 
@@ -120,7 +83,7 @@ class CheckoutApiImpl implements CheckoutApi {
 
     @Inject
     PaymentService paymentService
-    
+
     @Inject
     LicenseService licenseService
 
@@ -158,12 +121,19 @@ class CheckoutApiImpl implements CheckoutApi {
     PaymentInDao paymentInDao
 
     @Override
+    CartIdsDTO getCartDataIds(Long checkoutId) {
+        def checkout = SelectById.query(ish.oncourse.server.cayenne.Checkout,checkoutId).selectOne(cayenneService.newReadonlyContext)
+        return cartDataIdsOf(checkout)
+    }
+
+    @Override
     List<CourseClassDiscountDTO> getContactDiscounts(Long contactId, Long classId,
                                                      String courseIds, String productIds, String classIds,
-                                                     String promoIds, String membershipIds, BigDecimal purchaseTotal) {
+                                                     String promoIds, String membershipIds, BigDecimal purchaseTotal, Long payerId) {
         ObjectContext context = cayenneService.newContext
         CourseClass courseClass = courseClassService.getEntityAndValidateExistence(context, classId)
         Contact contact = contactApiService.getEntityAndValidateExistence(context, contactId)
+        Contact payerContact = payerId == null ? null : contactApiService.getEntityAndValidateExistence(context, payerId) as Contact
         if (contact.isCompany) {
             return []
         }
@@ -176,7 +146,7 @@ class CheckoutApiImpl implements CheckoutApi {
                 membershipIds.split(',').collect { membershipApiService.getEntityAndValidateExistence(context,Long.valueOf(it)) }
         Money total = new Money(purchaseTotal)
 
-        List<DiscountCourseClass> discountCourseClasses = courseClass.getAvalibleDiscounts(contact, courses, products, promos, enrolledClasses, memberships, total)
+        List<DiscountCourseClass> discountCourseClasses = courseClass.getAvalibleDiscounts(contact, payerContact, courses, products, promos, enrolledClasses, memberships, total)
 
         if (discountCourseClasses.empty) {
             return []
@@ -200,13 +170,13 @@ class CheckoutApiImpl implements CheckoutApi {
         List<EntityRelation> relations = EntityRelationDao.getRelatedToOrEqual(context, entityName, id)
                 .findAll { EntityRelationCartAction.NO_ACTION != it.relationType.shoppingCart }
         List<CheckoutSaleRelationDTO> result = []
-        
+
         relations.findAll { Course.simpleName == it.toEntityIdentifier && id != it.toEntityAngelId }.each { relation ->
             EntityRelationType relationType = relation.relationType
             Course course = courseDao.getById(context, relation.toEntityAngelId)
 
             if (contact && relationType.considerHistory  && contact.student.isEnrolled(course)) {
-                //ignore that course since student already enrolled in 
+                //ignore that course since student already enrolled in
             } else {
                 result << createCourseCheckoutSaleRelation(id, entityName, course, relationType)
             }
@@ -222,7 +192,7 @@ class CheckoutApiImpl implements CheckoutApi {
                 result << createCourseCheckoutSaleRelation(id, entityName, course, relationType)
             }
         }
-        
+
         relations.findAll { Product.simpleName == it.toEntityIdentifier && id != it.toEntityAngelId }.each { relation ->
             EntityRelationType relationType = relation.relationType
             Product product = productDao.getById(context, relation.toEntityAngelId)
@@ -265,7 +235,7 @@ class CheckoutApiImpl implements CheckoutApi {
         ObjectContext context = cayenneService.newContext
         List<CheckoutSaleRelationDTO> result = []
         Contact contact = contactId ? contactDao.getById(context, contactId) : null
-        
+
         if (StringUtils.trimToNull(courseIds)) {
             (courseIds.split(',').collect {Long.valueOf(it)} as List<Long>).each { courseId ->
                 result.addAll(getSaleRelations(courseId, Course.simpleName, contact))
@@ -298,7 +268,7 @@ class CheckoutApiImpl implements CheckoutApi {
             hanbleError(VALIDATION_ERROR, checkout.errors)
         }  else if (xValidateOnly) {
             eventService.postEvent(SystemEvent.valueOf(SystemEventType.VALIDATE_CHECKOUT, checkoutModel))
-          
+
         }
 
         if (checkoutModel.payWithSavedCard) {
@@ -308,7 +278,7 @@ class CheckoutApiImpl implements CheckoutApi {
             }
         }
 
-        if (checkout.creditCard) {
+        if (checkout.isCreditCard()) {
 
             if (xValidateOnly) {
                 save(checkout)
@@ -370,14 +340,13 @@ class CheckoutApiImpl implements CheckoutApi {
                 paymentIn.sessionId = merchantReference
                 paymentIn.privateNotes = sessionAttributes.responceJson
 
-                if (preferenceController.purchaseWithoutAuth) {
+                if (preferenceController.isPurchaseWithoutAuth()) {
                     succeedPayment(dtoResponse, checkout, checkoutModel.sendInvoice)
                 } else {
                     if (AUTH_TYPE != sessionAttributes.type) {
                         hanbleError(VALIDATION_ERROR, [new CheckoutValidationErrorDTO(error: "Credit card transaction has wrong type")])
                     }
 
-                    save(checkout)
                     sessionAttributes = paymentService.completeTransaction(sessionAttributes.transactionId, amount, merchantReference)
 
                     if (sessionAttributes.authorised) {
@@ -408,7 +377,7 @@ class CheckoutApiImpl implements CheckoutApi {
             line.invoice.updateDateDue()
             line.invoice.updateOverdue()
         }
-        checkout.context.commitChanges()
+        save(checkout)
         fillResponce(dtoResponse, checkout)
     }
 

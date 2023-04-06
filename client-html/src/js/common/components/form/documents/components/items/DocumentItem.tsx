@@ -39,7 +39,7 @@ class DocumentItem extends React.PureComponent<any, any> {
     } = this.props;
     return (
       <Paper onClick={this.openDocumentView} classes={{ root: clsx("cursor-pointer h-100", classes.documentPaper) }}>
-        <Grid container columnSpacing={3} className={clsx("p-1 relative h-100 align-content-between", classes.container)}>
+        <Grid container className={clsx("p-1 relative h-100 align-content-between", classes.container)}>
           <DocumentHeader
             item={item}
             unlink={unlink}

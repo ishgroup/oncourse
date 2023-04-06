@@ -1,9 +1,7 @@
 name: "CodeQL"
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  schedule:
+    - cron: '47 3 * * SUN'
 
 jobs:
   analyze:
@@ -39,10 +37,7 @@ jobs:
         uses: github/codeql-action/init@v1
         with:
           languages: ${{ matrix.language }}
-          queries: security-and-quality
-          paths-ignore:
-            - **/build/generated-resources/**
-            - **/build/generated-sources/**
+          config-file: ./.github/codeql-config.yml
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@v1

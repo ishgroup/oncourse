@@ -1,19 +1,20 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 import * as React from "react";
 import { arrayInsert, arrayRemove, FieldArray } from "redux-form";
 import { Grid } from "@mui/material";
-import { createStyles, withStyles } from "@mui/styles";
 import { TutorRolePayRate } from "@api/model";
 import { format, subYears } from "date-fns";
 import PayRateItem from "./PayRateItem";
 import { YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
-import AddIcon from "../../../../../common/components/icons/AddIcon";
-
-const styles = () => createStyles({
-  payRateItem: {
-    marginBottom: 30
-  }
-});
+import AddButton from "../../../../../common/components/icons/AddButton";
 
 const FIELD_NAME: string = "payRates";
 
@@ -58,11 +59,11 @@ class PayRates extends React.Component<Props, any> {
     const { classes } = this.props;
 
     return (
-      <Grid container columnSpacing={3} className="h-100 overflow-hidden justify-content-center" alignContent="flex-start">
+      <Grid container className="h-100 overflow-hidden justify-content-center" alignContent="flex-start">
         <Grid item xs={12}>
           <div className="centeredFlex">
             <div className="heading">Pay Rate</div>
-            <AddIcon onClick={this.addPayRate} />
+            <AddButton onClick={this.addPayRate} />
           </div>
         </Grid>
 
@@ -72,4 +73,4 @@ class PayRates extends React.Component<Props, any> {
   }
 }
 
-export default withStyles(styles)(PayRates);
+export default PayRates;

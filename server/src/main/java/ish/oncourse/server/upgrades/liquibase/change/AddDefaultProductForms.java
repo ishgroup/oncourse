@@ -8,6 +8,7 @@
 
 package ish.oncourse.server.upgrades.liquibase.change;
 
+import ish.liquibase.IshTaskChange;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.*;
 import ish.oncourse.server.db.SchemaUpdateService;
@@ -16,6 +17,8 @@ import liquibase.exception.CustomChangeException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,11 +26,14 @@ import java.util.Map;
 
 public class AddDefaultProductForms extends IshTaskChange {
 
+    private static final Logger logger = LogManager.getLogger(AddDefaultProductForms.class);
+
     @Override
     public void execute(Database database) throws CustomChangeException {
         ICayenneService cayenneService = SchemaUpdateService.sharedCayenneService;
         DataContext context = cayenneService.getNewContext();
 
+        logger.warn("Running upgrade AddDefaultProductForms...");
         FieldConfiguration enrolmentForm = ObjectSelect.query(FieldConfiguration.class)
                 .where(FieldConfiguration.ID.eq(-1L))
                 .prefetch(FieldConfiguration.FIELDS.joint())
@@ -41,7 +47,9 @@ public class AddDefaultProductForms extends IshTaskChange {
             put(9, VoucherFieldConfiguration.class);
         }};
 
+
         formConfigurations.forEach((type, formConfiguration) -> {
+            logger.warn("Add forms for " + formConfiguration.getName());
 
             List<FieldConfiguration> currentForms = ObjectSelect.query(FieldConfiguration.class)
                     .where(FieldConfiguration.INT_TYPE.eq(type)).select(context);

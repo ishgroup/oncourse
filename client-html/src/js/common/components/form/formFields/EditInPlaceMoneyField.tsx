@@ -11,53 +11,56 @@ import clsx from "clsx";
 import EditInPlaceField from "./EditInPlaceField";
 import { State } from "../../../../reducers/state";
 import { formatCurrency, normalizeNumber } from "../../../utils/numbers/numbersNormalizing";
+import { EditInPlaceFieldProps } from "../../../../model/common/Fields";
+import { Dispatch } from "redux";
 
 interface NumberFormatCustomProps {
-  inputRef: (instance: NumberFormat | null) => void;
-  onChange: (event: { target: { value: string } }) => void;
+  onChange?: (event: { target: { value: string } }) => void;
+  decimalScale: number;
+  allowNegative: boolean;
 }
 
-const NumberFormatCustom: React.FunctionComponent<NumberFormatCustomProps> = props => {
-  const { inputRef, onChange, ...other } = props;
+const NumberFormatCustom = React.forwardRef<any, NumberFormatCustomProps>((props, ref) => {
+  const { onChange, allowNegative = true, ...other } = props;
 
   const onValueChange = useCallback(values => {
     onChange(normalizeNumber(values.value));
   }, []);
 
-  return <NumberFormat {...other} getInputRef={inputRef} onValueChange={onValueChange} thousandSeparator />;
-};
-
-const EditInPlaceMoneyField: React.FunctionComponent<any> = props => {
-  // prevent dispatch and type from spreading
-  const {
-    currencySymbol, allowNegative = true, InputProps, dispatch, type, className, ...restProps
-} = props;
-
-  const inputComponent = useCallback(
-    inputProps => <NumberFormatCustom {...inputProps} decimalScale={2} allowNegative={allowNegative} />,
-    [allowNegative]
-  );
-
   return (
-    <EditInPlaceField
-      {...restProps}
-      preformatDisplayValue={value => formatCurrency(value, currencySymbol)}
-      InputProps={{
-        ...InputProps,
-        startAdornment: <InputAdornment position="start">{currencySymbol}</InputAdornment>,
-        inputComponent
-      }}
-      className={clsx("money", className)}
-      type="money"
+    <NumberFormat
+      {...other}
+      getInputRef={ref}
+      onValueChange={onValueChange}
+      allowNegative={allowNegative}
+      decimalScale={2}
+      thousandSeparator
     />
-  );
-};
+);
+});
+
+interface Props extends EditInPlaceFieldProps {
+  currencySymbol?: string;
+  dispatch?: Dispatch;
+}
+
+const preformatDisplayValue = value => value || value === 0 ? formatCurrency(value, "") : value;
+
+const EditInPlaceMoneyField = ({ currencySymbol, InputProps, dispatch, className, ...restProps }: Props) => (
+  <EditInPlaceField
+    {...restProps}
+    preformatDisplayValue={preformatDisplayValue}
+    InputProps={{
+      ...InputProps,
+      startAdornment: <InputAdornment position="start">{currencySymbol}</InputAdornment>,
+      inputComponent: NumberFormatCustom as any,
+    }}
+    className={clsx("money", className)}
+  />
+);
 
 const mapStateToProps = (state: State) => ({
   currencySymbol: state.currency && state.currency.shortCurrencySymbol
 });
 
-export default connect<any, any, any>(
-  mapStateToProps,
-  null
-)(EditInPlaceMoneyField);
+export default connect(mapStateToProps)(EditInPlaceMoneyField);

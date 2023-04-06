@@ -13,15 +13,15 @@ import { Dispatch } from "redux";
 import { Filter } from "@api/model";
 import { createCustomFilter, setListSavingFilter } from "../../../actions";
 import { SavingFilterState } from "../../../../../../model/common/ListView";
-import { validateSingleMandatoryField, validateTagName } from "../../../../../utils/validation";
 import { SIMPLE_SEARCH_QUOTES_REGEX, SIMPLE_SEARCH_REGEX } from "../../../../../../constants/Config";
+import { validateForbiddenSymbols, validateSingleMandatoryField } from "../../../../../utils/validation";
 
 const styles = theme =>
   createStyles({
     checkbox: {
       height: "1.3em",
       width: "1.3em",
-      marginLeft: "-7px"
+      marginTop: "6px"
     },
     root: {
       display: "flex",
@@ -46,7 +46,7 @@ const styles = theme =>
     }
   });
 
-const validationArr = [validateSingleMandatoryField, validateTagName];
+const validationArr = [validateSingleMandatoryField, validateForbiddenSymbols];
 
 export class StubFilterItem extends React.PureComponent<any, any> {
   private inputNode: HTMLInputElement;
@@ -118,16 +118,18 @@ export class StubFilterItem extends React.PureComponent<any, any> {
 
     return (
       <div className={classes.root}>
-        <Checkbox disabled className={classes.checkbox} color={"secondary"} />
+        <Checkbox disabled className={classes.checkbox} color="secondary" />
         <TextField
           onChange={this.onFilterNameChange}
           helperText={errorText}
           error={error}
           inputRef={this.setInputNode}
           value={filterName}
+          variant="standard"
+          className="ml-1"
         />
 
-        <Tooltip title="Save Filter">
+        <Tooltip title="Save Filter" placement="right">
           <div>
             <IconButton onClick={this.onSaveFilter} className={classes.iconButton} disabled={error}>
               <BookmarkBorder fontSize="inherit" color={error ? "disabled" : "secondary"} />
@@ -135,7 +137,7 @@ export class StubFilterItem extends React.PureComponent<any, any> {
           </div>
         </Tooltip>
 
-        <Tooltip title="Delete Filter">
+        <Tooltip title="Delete Filter" placement="right">
           <IconButton onClick={this.clearFilter} className={clsx(classes.deleteButton, classes.iconButton)}>
             <Delete fontSize="inherit" color="secondary" />
           </IconButton>
@@ -147,12 +149,10 @@ export class StubFilterItem extends React.PureComponent<any, any> {
 
 export const StubFilterItemBase = withStyles(styles)(StubFilterItem);
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-  return {
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     saveFilter: (filter: Filter, rootEntity: string) => dispatch(createCustomFilter(filter, rootEntity)),
     setSavingFilter: (savingFilter?: SavingFilterState) => dispatch(setListSavingFilter(savingFilter))
-  };
-};
+  });
 
 export default connect<any, any, any>(
   null,

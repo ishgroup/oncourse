@@ -46,7 +46,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/note'
         And param entityId = 2
         When method GET
         Then status 200
-        And match $ contains [{"id":"#(~~noteId)","created":"#ignore","modified":"#ignore","message":"update note1UPD","createdBy":"onCourse Administrator","modifiedBy":"onCourse Administrator","entityName":"Course","entityId":2}]
+        And match $ contains [{"id":"#(~~noteId)","created":"#ignore","modified":"#ignore","message":"update note1UPD","createdBy":"onCourse Administrator","modifiedBy":"onCourse Administrator","entityName":"Course","entityId":2,"interactionDate":"#ignore"}]
 
 #       <--->  Scenario have been finished. Now find and remove created object from DB:
         Given path ishPath + '/' + noteId
@@ -95,7 +95,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/note'
         And param entityId = 2
         When method GET
         Then status 200
-        And match $ contains [{"id":"#(~~noteId)","created":"#ignore","modified":"#ignore","message":"update note2UPD","createdBy":"onCourse Administrator","modifiedBy":"UserWithRightsDelete UserWithRightsDelete","entityName":"Course","entityId":2}]
+        And match $ contains [{"id":"#(~~noteId)","created":"#ignore","interactionDate":"#ignore","modified":"#ignore","message":"update note2UPD","createdBy":"onCourse Administrator","modifiedBy":"UserWithRightsDelete UserWithRightsDelete","entityName":"Course","entityId":2}]
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
         Given path ishPath + '/' + noteId

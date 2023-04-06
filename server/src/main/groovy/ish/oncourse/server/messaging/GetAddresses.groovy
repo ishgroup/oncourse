@@ -12,7 +12,7 @@
 package ish.oncourse.server.messaging
 
 import groovy.transform.CompileDynamic
-import ish.oncourse.server.cayenne.MessagePerson
+import ish.oncourse.server.cayenne.Message
 
 import javax.mail.Address
 import javax.mail.internet.InternetAddress
@@ -21,7 +21,7 @@ import javax.mail.internet.InternetAddress
 class GetAddresses {
 
     private Set<String> recipients
-    private MessagePerson messagePerson
+    private Message message
 
     private GetAddresses() {
 
@@ -37,9 +37,9 @@ class GetAddresses {
         getAddresses
     }
 
-    static GetAddresses valueOf(MessagePerson messagePerson) {
+    static GetAddresses valueOf(Message message) {
         GetAddresses getAddresses = new GetAddresses()
-        getAddresses.messagePerson = messagePerson
+        getAddresses.message = message
         getAddresses
     }
 
@@ -50,9 +50,9 @@ class GetAddresses {
     }
 
     Address[] get() {
-        if (messagePerson) {
-            String personal = messagePerson.contact.isCompany ? messagePerson.contact.lastName : "${messagePerson.contact.firstName} ${messagePerson.contact.lastName}".toString()
-            [new InternetAddress(messagePerson.destinationAddress, personal)]
+        if (message) {
+            String personal = message.contact.isCompany ? message.contact.lastName : "${message.contact.firstName} ${message.contact.lastName}".toString()
+            [new InternetAddress(message.destinationAddress, personal)]
         } else if (recipients && !recipients.empty) {
             recipients.collect { new InternetAddress(it) }
         } else {

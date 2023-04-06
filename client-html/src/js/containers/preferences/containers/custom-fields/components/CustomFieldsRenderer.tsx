@@ -3,13 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
+import React, { useMemo, useState } from "react";
 import clsx from "clsx";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd-next";
 import { change, Field } from "redux-form";
-import {
- FormControlLabel, Grid, Button, Collapse, Card
-} from "@mui/material";
+import Card from "@mui/material/Card";
+import Collapse from "@mui/material/Collapse";
+import Grid from "@mui/material/Grid";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import { CustomFieldType, DataType, EntityType } from "@api/model";
 import { CheckboxField, StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
@@ -18,13 +21,41 @@ import EditInPlaceField from "../../../../../common/components/form/formFields/E
 import EditInPlaceMoneyField from "../../../../../common/components/form/formFields/EditInPlaceMoneyField";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import {
-  validateEmail, validateSingleMandatoryField, validateURL, validateUniqueNamesInArray, validateRegex
+  validateEmail,
+  validateRegex,
+  validateSingleMandatoryField,
+  validateUniqueNamesInArray,
+  validateURL
 } from "../../../../../common/utils/validation";
 import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
 import ListMapRenderer from "./ListMapRenderer";
+import ExpandableItem from "../../../../../common/components/layout/expandable/ExpandableItem";
+import Uneditable from "../../../../../common/components/form/Uneditable";
+import { SelectItemDefault } from "../../../../../model/entities/common";
+
+const mapEntityType = (entityType: EntityType) => {
+  switch (entityType) {
+    case "Article":
+      return "Sale (Product)";
+    case "Voucher":
+      return "Sale (Voucher)";
+    case "Membership":
+      return "Sale (Membership)";
+    case "ArticleProduct":
+      return "Product";
+    case "VoucherProduct":
+      return "Voucher type";
+    case "MembershipProduct":
+      return "Membership type";
+    default:
+      return entityType;
+  }
+};
+
+const entityTypeCondition = (item: SelectItemDefault) => mapEntityType(item.label as any);
 
 const EntityTypes = Object.keys(EntityType)
-  .filter(val => isNaN(Number(val)))
+  .filter(val => Number.isNaN(Number(val)))
   .map(mapSelectItems);
 
 EntityTypes.sort(sortDefaultSelectItems);
@@ -160,10 +191,180 @@ const validateResolver = (value, allValues, props, name) => {
   return undefined;
 };
 
-const renderCustomFields = props => {
+const ExpandableCustomFields = React.memo<any>(props => {
+  const {
+    item,
+    classes,
+    field,
+    onDataTypeChange,
+    onDelete,
+    index,
+    onAddOther,
+    isListOrMap,
+    expanded,
+    onChange,
+  } = props;
+
+  const isExpanded = useMemo(() => ((expanded !== null && [index].includes(expanded)) || !field.id || !field.name), [expanded, field]);
+
+  return (
+    <ExpandableItem
+      expanded={isExpanded}
+      onChange={onChange}
+      classes={{
+        expandIcon: clsx("zIndex2", classes.expandIcon),
+        expansionPanelRoot: classes.expansionPanelRoot,
+        expansionPanelDetails: classes.expansionPanelDetails,
+        collapseRoot: "w-100",
+      }}
+      elevation={0}
+      expandButtonId={`custom-field-${index}`}
+      collapsedContent={(
+        <Grid container columnSpacing={3} className="relative align-items-center">
+          <Grid item xs={4}>
+            <Uneditable
+              value={field.name}
+              label="Name"
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <Uneditable
+              value={mapEntityType(field.entityType)}
+              label="Record Type"
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <Uneditable
+              value={field.dataType}
+              label="Data Type"
+            />
+          </Grid>
+        </Grid>
+      )}
+      buttonsContent={(
+        <div className="d-flex align-items-baseline zIndex2 relative">
+          <div className="centeredFlex">
+            <IconButton onClick={() => onDelete(field, index)} size="small" className={classes.deleteButtonCustom}>
+              <DeleteIcon fontSize="inherit" />
+            </IconButton>
+          </div>
+        </div>
+      )}
+      detailsContent={(
+        <Grid container columnSpacing={3} rowSpacing={3} className="relative">
+          <Grid item xs={4}>
+            <FormField
+              type="text"
+              name={`${item}.name`}
+              label="Name"
+                            className={classes.field}
+              validate={[validateSingleMandatoryField, validateUniqueNamesInArray]}
+            />
+          </Grid>
+
+          <Grid item xs={4}>
+            <FormField
+              type="text"
+              name={`${item}.fieldKey`}
+              label="Custom field key"
+                            disabled={!!field.id}
+              className={classes.field}
+              required
+            />
+          </Grid>
+
+          <Grid item xs={4}>
+            <FormField
+              type="select"
+              name={`${item}.dataType`}
+              label="Data Type"
+              items={DataTypes}
+              disabled={!!field.id}
+              onChange={onDataTypeChange}
+              debounced={false}
+              className={classes.field}
+              required
+            />
+          </Grid>
+
+          <Grid item xs={4}>
+            <FormField
+              type="select"
+              name={`${item}.entityType`}
+              selectLabelCondition={entityTypeCondition}
+              label="Record Type"
+              items={EntityTypes}
+              disabled={!!field.id}
+              className={classes.field}
+              sort
+              required
+            />
+          </Grid>
+
+          <Grid item xs={4}>
+            <FormControlLabel
+              className={classes.checkbox}
+              control={(
+                <FormField
+                  type="checkbox"
+                  name={`${item}.mandatory`}
+                  color="primary"
+                />
+              )}
+              label="Mandatory"
+            />
+
+            {field.dataType === "List" && (
+              <FormControlLabel
+                className={classes.checkbox}
+                control={(
+                  <StyledCheckbox
+                    checked={field.defaultValue && field.defaultValue.includes("*")}
+                    onChange={(e, checked) => onAddOther(index, checked)}
+                    color="primary"
+                  />
+                )}
+                label="Add 'other' option"
+              />
+            )}
+          </Grid>
+
+          <Grid item xs={4}>
+            <Collapse in={isListOrMap} mountOnEnter unmountOnExit>
+              <Field
+                name={`${item}.defaultValue`}
+                label="Default value"
+                field={field}
+                component={CustomFieldsResolver}
+                className={classes.field}
+                classes={classes}
+                validate={validateResolver}
+              />
+            </Collapse>
+            <Collapse in={field.dataType === "Pattern text"} mountOnEnter unmountOnExit>
+              <FormField
+                type="text"
+                name={`${item}.pattern`}
+                label="Pattern"
+                disabled={!!field.id}
+                className={classes.field}
+                validate={validateRegex}
+                required
+              />
+            </Collapse>
+          </Grid>
+        </Grid>
+      )}
+    />
+  );
+});
+
+const renderCustomFields = React.memo<any>(props => {
   const {
     fields, classes, onDelete, dispatch, meta: { form }
   } = props;
+
+  const [expanded, setExpanded] = useState<number>(null);
 
   const onAddOther = (index, checked) => {
     const field = fields.get(index);
@@ -198,134 +399,28 @@ const renderCustomFields = props => {
               return (
                 <Draggable key={index} draggableId={String(index + 1)} index={index}>
                   {provided => (
-                    <div id={`custom-field-${index}`} key={index} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                    <div
+                      id={`custom-field-${index}`}
+                      key={index}
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                    >
                       <Card className="card d-flex">
-                        <div className="centeredFlex mr-2">
+                        <div className="centeredFlex mr-2" {...provided.dragHandleProps}>
                           <DragIndicator className={clsx("dndActionIcon", classes.dragIcon)} />
                         </div>
-
-                        <Grid container columnSpacing={3} spacing={2} className="relative">
-                          <Grid item xs={12}>
-                            <Grid container columnSpacing={3}>
-                              <Grid item xs={3}>
-                                <FormField
-                                  type="text"
-                                  name={`${item}.name`}
-                                  label="Name"
-                                  fullWidth
-                                  className={classes.field}
-                                  validate={[validateSingleMandatoryField, validateUniqueNamesInArray]}
-                                />
-                              </Grid>
-
-                              <Grid item xs={4}>
-                                <FormField
-                                  type="text"
-                                  name={`${item}.fieldKey`}
-                                  label="Custom field key"
-                                  fullWidth
-                                  disabled={field.id}
-                                  className={classes.field}
-                                  required
-                                />
-                              </Grid>
-
-                              <Grid item xs={4}>
-                                <FormField
-                                  type="select"
-                                  name={`${item}.dataType`}
-                                  label="Data Type"
-                                  items={DataTypes}
-                                  disabled={field.id}
-                                  onChange={onDataTypeChange}
-                                  className={classes.field}
-                                  fullWidth
-                                  required
-                                />
-                              </Grid>
-
-                              <Grid item xs={1}>
-                                <Button
-                                  size="small"
-                                  classes={{
-                                    root: classes.deleteButton
-                                  }}
-                                  onClick={() => onDelete(field, index)}
-                                >
-                                  Delete
-                                </Button>
-                              </Grid>
-
-                              <Grid item xs={3}>
-                                <FormField
-                                  type="select"
-                                  name={`${item}.entityType`}
-                                  label="Record Type"
-                                  items={EntityTypes}
-                                  disabled={field.id}
-                                  className={classes.field}
-                                  fullWidth
-                                  required
-                                />
-                              </Grid>
-
-                              <Grid item xs={4}>
-                                <FormControlLabel
-                                  className={classes.checkbox}
-                                  control={(
-                                    <FormField
-                                      type="checkbox"
-                                      name={`${item}.mandatory`}
-                                      color="primary"
-                                      value="true"
-                                      fullWidth
-                                    />
-                                  )}
-                                  label="Mandatory"
-                                />
-
-                                {field.dataType === "List" && (
-                                  <FormControlLabel
-                                    className={classes.checkbox}
-                                    control={(
-                                      <StyledCheckbox
-                                        checked={field.defaultValue && field.defaultValue.includes("*")}
-                                        onChange={(e, checked) => onAddOther(index, checked)}
-                                        color="primary"
-                                      />
-                                    )}
-                                    label="Add 'other' option"
-                                  />
-                                )}
-                              </Grid>
-
-                              <Grid item xs={5}>
-                                <Collapse in={isListOrMap} mountOnEnter unmountOnExit>
-                                  <Field
-                                    name={`${item}.defaultValue`}
-                                    label="Default value"
-                                    field={field}
-                                    component={CustomFieldsResolver}
-                                    className={classes.field}
-                                    classes={classes}
-                                    validate={validateResolver}
-                                  />
-                                </Collapse>
-                                <Collapse in={field.dataType === "Pattern text"} mountOnEnter unmountOnExit>
-                                  <FormField
-                                    type="text"
-                                    name={`${item}.pattern`}
-                                    label="Pattern"
-                                    disabled={field.id}
-                                    className={classes.field}
-                                    validate={validateRegex}
-                                    required
-                                  />
-                                </Collapse>
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                        </Grid>
+                        <ExpandableCustomFields
+                          item={item}
+                          classes={classes}
+                          field={field}
+                          onDataTypeChange={onDataTypeChange}
+                          onDelete={onDelete}
+                          index={index}
+                          onAddOther={onAddOther}
+                          isListOrMap={isListOrMap}
+                          expanded={expanded}
+                          onChange={() => setExpanded(expanded === index ? null : index)}
+                        />
                       </Card>
                     </div>
                   )}
@@ -338,6 +433,6 @@ const renderCustomFields = props => {
       </Droppable>
     </DragDropContext>
   );
-};
+});
 
 export default renderCustomFields;

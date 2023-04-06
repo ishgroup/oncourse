@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import { connect } from "react-redux";
@@ -11,9 +14,8 @@ import { Dispatch } from "redux";
 import ListView from "../../../common/components/list-view/ListView";
 import { plainCorporatePassPath } from "../../../constants/Api";
 import ArticleProductEditView from "./components/ArticleProductEditView";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import { createArticleProduct, getArticleProduct, updateArticleProduct } from "./actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { State } from "../../../reducers/state";
 import { getPlainTaxes } from "../taxes/actions";
@@ -22,14 +24,15 @@ import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID } from "../../../constants/Config
 import { checkPermissions, getUserPreferences } from "../../../common/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
+import { getListTags } from "../../tags/actions";
+import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
+import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 
 interface ArticleProductsProps {
-  getArticleProductRecord?: () => void;
   onInit?: (initial: ArticleProduct) => void;
-  onCreate?: (articleProduct: ArticleProduct) => void;
   onDelete?: (id: string) => void;
-  onSave?: (id: string, articleProduct: ArticleProduct) => void;
   getFilters?: () => void;
+  getTags?: () => void;
   clearListState?: () => void;
   getAccounts?: () => void;
   getRelationTypes?: () => void;
@@ -48,7 +51,7 @@ const Initial: ArticleProduct = {
   code: null,
   corporatePasses: [],
   description: null,
-  feeExTax: null,
+  feeExTax: 0,
   id: 0,
   incomeAccountId: null,
   relatedSellables: [],
@@ -76,7 +79,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   {
     title: "Audits",
     list: "audit",
@@ -92,7 +95,8 @@ const findRelatedGroup: any[] = [
     title: "Invoices",
     list: "invoice",
     expression: "(invoiceLines.productItems.status  ==  ACTIVE) and invoiceLines.productItems.product.id"
-  }
+  },
+  { title: "Sales", list: "sale", expression: "type is ARTICLE AND product.id" },
 ];
 
 const manualLink = getManualLink("product");
@@ -110,14 +114,16 @@ const preformatBeforeSubmit = (value: ArticleProduct): ArticleProduct => {
   return value;
 };
 
+const setRowClasses = ({ isOnSale }) => {
+  if (isOnSale === "No") return "text-op05";
+  return undefined;
+};
+
 const ArticleProducts: React.FC<ArticleProductsProps> = props => {
   const [initNew, setInitNew] = useState(false);
 
   const {
-    getArticleProductRecord,
     onInit,
-    onCreate,
-    onSave,
     getFilters,
     getDefaultIncomeAccount,
     getTaxes,
@@ -129,7 +135,8 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
     updatingTaxes,
     checkPermissions,
     getRelationTypes,
-    getDataCollectionRules
+    getDataCollectionRules,
+    getTags
   } = props;
 
   useEffect(() => {
@@ -150,6 +157,7 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
     getAccounts();
     getTaxes();
     getFilters();
+    getTags();
     checkPermissions();
     getRelationTypes();
     getDataCollectionRules();
@@ -159,29 +167,28 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
   }, []);
 
   return (
-    <div>
-      <ListView
-        listProps={{
-          primaryColumn: "name",
-          secondaryColumn: "sku"
-        }}
-        editViewProps={{
-          manualLink
-        }}
-        EditViewContent={ArticleProductEditView}
-        getEditRecord={getArticleProductRecord}
-        rootEntity="ArticleProduct"
-        aqlEntity="Product"
-        onInit={() => setInitNew(true)}
-        onCreate={onCreate}
-        onSave={onSave}
-        findRelated={findRelatedGroup}
-        filterGroupsInitial={filterGroups}
-        preformatBeforeSubmit={preformatBeforeSubmit}
-        defaultDeleteDisabled
-        noListTags
-      />
-    </div>
+    <ListView
+      listProps={{
+        setRowClasses,
+        primaryColumn: "name",
+        secondaryColumn: "sku"
+      }}
+      editViewProps={{
+        manualLink,
+        asyncValidate: notesAsyncValidate,
+        asyncChangeFields: ["notes[].message"],
+        hideTitle: true
+      }}
+      EditViewContent={ArticleProductEditView}
+      CogwheelAdornment={BulkEditCogwheelOption}
+      rootEntity="ArticleProduct"
+      onInit={() => setInitNew(true)}
+      findRelated={findRelatedGroup}
+      filterGroupsInitial={filterGroups}
+      preformatBeforeSubmit={preformatBeforeSubmit}
+      defaultDeleteDisabled
+      noListTags
+    />
   );
 };
 
@@ -193,11 +200,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getDefaultIncomeAccount: () => dispatch(getUserPreferences([ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID])),
   getTaxes: () => dispatch(getPlainTaxes()),
   getAccounts: () => getPlainAccounts(dispatch, "income"),
+  getTags: () => dispatch(getListTags("ArticleProduct")),
   getFilters: () => dispatch(getFilters("ArticleProduct")),
   clearListState: () => dispatch(clearListState()),
-  getArticleProductRecord: (id: string) => dispatch(getArticleProduct(id)),
-  onSave: (id: string, articleProduct: ArticleProduct) => dispatch(updateArticleProduct(id, articleProduct)),
-  onCreate: (articleProduct: ArticleProduct) => dispatch(createArticleProduct(articleProduct)),
   checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" })),
   getRelationTypes: () => dispatch(getEntityRelationTypes()),
   getDataCollectionRules: () => dispatch(getDataCollectionRules()),

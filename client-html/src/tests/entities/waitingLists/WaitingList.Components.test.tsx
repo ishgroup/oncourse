@@ -6,12 +6,14 @@ describe("Virtual rendered WaitingListEditView", () => {
     entity: "WaitingList",
     EditView: WaitingListEditView,
     record: mockecApi => mockecApi.db.getWaitingList(1),
-    render: (wrapper, initialValues) => {
-      expect(wrapper.find("#contactId input").val()).toContain(initialValues.studentName);
-      expect(wrapper.find("#studentCount input").val()).toContain(initialValues.studentCount);
-      expect(wrapper.find("#courseId input").val()).toContain(initialValues.courseName);
-      expect(wrapper.find("#studentNotes textarea").val()).toContain(initialValues.studentNotes);
-      expect(wrapper.find("#privateNotes textarea").val()).toContain(initialValues.privateNotes);
+    render: ({ screen, initialValues, formRoleName }) => {
+      expect(screen.getByRole(formRoleName)).toHaveFormValues({
+        contactId: initialValues.studentName,
+        studentCount: initialValues.studentCount,
+        courseId: initialValues.courseName,
+        studentNotes: initialValues.studentNotes,
+        privateNotes: initialValues.privateNotes,
+      });
     }
   });
 });

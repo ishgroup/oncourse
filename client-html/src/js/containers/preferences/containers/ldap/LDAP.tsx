@@ -1,3 +1,11 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -18,7 +26,6 @@ class LDAP extends React.Component<any, any> {
     const isSsl = this.props.ldap[ldapModel.LdapSSL.uniqueKey];
     const baseDn = this.props.ldap[ldapModel.LdapBaseDN.uniqueKey];
     const user = this.props.ldap[ldapModel.LdapUsernameAttribute.uniqueKey];
-    console.log(host, port, isSsl, baseDn, user);
     this.props.handleTestConnection(host, port, isSsl, baseDn, user);
   }
 
@@ -30,7 +37,8 @@ class LDAP extends React.Component<any, any> {
         testLdapConnection={this.handleTestLdapConnection.bind(this)}
         licence={licences}
         category={Categories.ldap}
-        form={<LDAPForm />}
+        form={formRoleName => <LDAPForm formRoleName={formRoleName} />}
+        formName="LDAPForm"
       />
     );
   }

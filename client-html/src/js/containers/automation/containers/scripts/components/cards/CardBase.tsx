@@ -9,7 +9,7 @@ import { withStyles, createStyles } from "@mui/styles";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
 import clsx from "clsx";
-import AddIcon from "../../../../../../common/components/icons/AddIcon";
+import AddButton from "../../../../../../common/components/icons/AddButton";
 
 const styles = theme =>
   createStyles({
@@ -19,13 +19,12 @@ const styles = theme =>
       },
       "&$panelExpandedWithoutMargin": {
         "&:last-child": {
-          marginTop: theme.spacing(3),
           marginBottom: 0
         }
       },
       "&$panelExpanded": {
         "&:last-child": {
-          marginBottom: theme.spacing(3)
+          marginBottom: theme.spacing(0)
         }
       }
     },
@@ -40,20 +39,31 @@ const styles = theme =>
       }
     },
     panelDetailsPadding: {},
+    noHoverEffect: {},
     collapse: {
       overflow: "visible"
     },
     summaryRoot: {
       borderBottom: "1px solid transparent",
-      padding: theme.spacing(0, 0, 0, 2)
+      padding: theme.spacing(0, 0, 0, 2),
+      "&$noHoverEffect:hover": {
+        cursor: "inherit"
+      }
     },
     summaryExpanded: {
       borderBottomColor: `${theme.palette.divider}`
     },
     summaryExpandIcon: {
+      borderRadius: "50%",
       "&:hover": {
         backgroundColor: theme.palette.action.hover
       }
+    },
+    summaryContent: {
+      maxWidth: "calc(100% - 48px)"
+    },
+    summaryContentInner: {
+      maxWidth: "calc(100% - 32px)"
     }
   });
 
@@ -70,7 +80,10 @@ const CardBase = props => {
     dragHandlerProps,
     disableExpandedBottomMargin,
     onAddItem,
-    onDetailsClick
+    onDetailsClick,
+    customHeading,
+    customButtons,
+    onExpand
   } = props;
 
   return (
@@ -80,43 +93,48 @@ const CardBase = props => {
         expanded: disableExpandedBottomMargin ? classes.panelExpandedWithoutMargin : classes.panelExpanded
       }}
       className={className}
-      defaultExpanded={expanded}
+      expanded={onExpand ? expanded : true}
     >
       <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
+        expandIcon={onExpand ? <ExpandMoreIcon /> : null}
         classes={{
-          root: classes.summaryRoot,
+          root: clsx(classes.summaryRoot, !onExpand && clsx("p-0", classes.noHoverEffect)),
           expanded: classes.summaryExpanded,
-          expandIconWrapper: clsx("p-0-5 mr-2", classes.summaryExpandIcon)
+          expandIconWrapper: clsx("p-0-5 mr-2", classes.summaryExpandIcon),
+          content: classes.summaryContent
         }}
+        onClick={onExpand}
       >
-        <div className="flex-fill centeredFlex" {...dragHandlerProps}>
-          <div>
-            <Typography className="heading" component="div">
-              {heading}
-            </Typography>
-            <Typography variant="subtitle1" color="textSecondary">
-              {details}
-            </Typography>
-          </div>
+        <div className={clsx("flex-fill centeredFlex w-100", classes.summaryContentInner)} {...dragHandlerProps}>
           {Boolean(dragHandlerProps) && <DragIndicator color="disabled" />}
+          {customHeading ? heading : (
+            <div>
+              <Typography className="heading" component="div">
+                {heading}
+              </Typography>
+              <Typography variant="subtitle1" color="textSecondary">
+                {details}
+              </Typography>
+            </div>
+            )}
           {Boolean(onAddItem) && (
-            <AddIcon className="addButtonColor fs2 p-1" onClick={onAddItem} iconFontSize="inherit" />
-          )}
+            <AddButton className="addButtonColor fs2 p-1" onClick={onAddItem} iconFontSize="inherit" />
+            )}
         </div>
         <div>
+          {customButtons}
           {Boolean(onDelete) && (
-            <IconButton className="fs2 p-1" onClick={onDelete} data-component={heading}>
-              <Delete fontSize="inherit" />
-            </IconButton>
-          )}
+          <IconButton className="fs2 p-1" onClick={onDelete} data-component={heading}>
+            <Delete fontSize="inherit" />
+          </IconButton>
+            )}
         </div>
       </AccordionSummary>
       <AccordionDetails
         onClick={onDetailsClick}
         classes={{
-          root: clsx("relative", classes.panelDetailsRoot)
-        }}
+            root: clsx("relative", classes.panelDetailsRoot)
+          }}
         className={noPadding ? "p-0" : classes.panelDetailsPadding}
       >
         {children}

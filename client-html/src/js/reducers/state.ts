@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Country, Currency, Language } from "@api/model";
+import { Country, Currency, Language, User } from "@api/model";
 import { PreferencesState } from "../containers/preferences/reducers/state";
 import { Fetch } from "../model/common/Fetch";
 import { Drawer } from "../model/common/drawer/DrawerModel";
@@ -43,6 +43,7 @@ import { CheckoutState } from "../model/checkout";
 import { SwipeableDrawer } from "../model/common/drawer/SwipeableDrawerModel";
 import { EnrolmentsState } from "../containers/entities/enrolments/reducers/state";
 import { CommonPlainRecordSearchState } from "../model/common/Plain";
+import { SendMessageState } from "../model/common/SendMessage";
 
 // global app state
 export interface State {
@@ -66,6 +67,7 @@ export interface State {
   tags: TagsState;
   export: AvetmissExportState;
   process: ProcessState;
+  fieldProcessing: Record<string, boolean>;
   list: ListState;
   taxes: TaxesState;
   share: ShareState;
@@ -80,7 +82,7 @@ export interface State {
   currency: Currency;
   usiSoftwareId: string;
   banking: BankingState;
-  lockedDate: Date;
+  lockedDate: string;
   discounts: DiscountsState;
   sales: SaleState;
   timetable: TimetableState;
@@ -95,4 +97,6 @@ export interface State {
   enrolments: EnrolmentsState;
   plainSearchRecords: CommonPlainRecordSearchState;
   nextLocation: string;
+  systemUser: User;
+  sendMessage: SendMessageState;
 }

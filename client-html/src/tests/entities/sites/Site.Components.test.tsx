@@ -6,13 +6,35 @@ describe("Virtual rendered SiteEditView", () => {
     entity: "Site",
     EditView: SiteEditView,
     record: mockecApi => mockecApi.db.getSite(1),
-    render: (wrapper, initialValues) => {
-      expect(wrapper.find("#name input").val()).toContain(initialValues.name);
-      expect(wrapper.find("#street input").val()).toContain(initialValues.street);
-      expect(wrapper.find("#suburb input").val()).toContain(initialValues.suburb);
-      expect(wrapper.find("#postcode input").val()).toContain(initialValues.postcode);
-      expect(wrapper.find("#country input").val()).toContain(initialValues.country.name);
-      expect(wrapper.find("#timezone input").val()).toContain(initialValues.timezone);
+    render: ({
+      screen, initialValues, formRoleName, fireEvent
+    }) => {
+      const rooms = {};
+
+      initialValues.rooms.forEach((room, index) => {
+        fireEvent.click(screen.getByTestId(`minified-rooms[${index}]`));
+
+        rooms[`rooms[${index}].name`] = room.name;
+        rooms[`rooms[${index}].seatedCapacity`] = room.seatedCapacity;
+      });
+
+      setTimeout(() => {
+        expect(screen.getByRole(formRoleName)).toHaveFormValues({
+          name: initialValues.name,
+          isAdministrationCentre: initialValues.isAdministrationCentre,
+          isVirtual: initialValues.isVirtual,
+          isShownOnWeb: initialValues.isShownOnWeb,
+          timezone: initialValues.timezone,
+          street: initialValues.street,
+          suburb: initialValues.suburb,
+          state: initialValues.state,
+          postcode: initialValues.postcode,
+          drivingDirections: initialValues.drivingDirections,
+          publicTransportDirections: initialValues.publicTransportDirections,
+          specialInstructions: initialValues.specialInstructions,
+          ...rooms
+        });
+      }, 500);
     }
   });
 });

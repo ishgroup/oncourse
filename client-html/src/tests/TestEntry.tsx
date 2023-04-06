@@ -1,7 +1,13 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 import * as React from "react";
 import { Provider } from "react-redux";
-import { configure } from "enzyme";
-import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import { StateObservable } from "redux-observable";
 import { Subject } from "rxjs";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -18,10 +24,8 @@ export const mockedAPI: any = initMockDB();
 
 export const store = new StateObservable(new Subject(), TestStore.getState());
 
-configure({ adapter: new Adapter() });
-
-export const TestEntry = ({ children }) => (
-  <Provider store={TestStore as any}>
+export const TestEntry = ({ children, state = {} }) => (
+  <Provider store={{ ...TestStore, getState: () => ({ ...TestStore.getState(), ...state }) } as any}>
     <RootComponent>
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />

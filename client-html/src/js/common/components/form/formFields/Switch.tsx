@@ -12,6 +12,7 @@ import MuiSwitch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
 import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
+import { FormSwitchProps } from "../../../../model/common/Fields";
 
 const getValue = value => {
   switch (value) {
@@ -59,7 +60,7 @@ const styles = theme => createStyles({
         color: theme.palette.common.white
       },
       "&$checked": {
-        transform: `translateX(${theme.spacing(2)}px)`
+        transform: `translateX(${theme.spacing(2)})`
       },
       "&$checked + $bar": {
         opacity: 1
@@ -99,11 +100,7 @@ const SwitchBase = props => {
 
 export const Switch = withStyles(styles)(SwitchBase);
 
-export const FormSwitch = props => {
-  const {
- input, color, disabled, stringValue, label, className, inline, onChangeHandler
-} = props;
-
+export const FormSwitch = ({ input, color, disabled, stringValue, label, className, inline, onChangeHandler, onClick }:FormSwitchProps) => {
   const onChange = useCallback(
     (e, value) => {
       let checked = value;
@@ -125,16 +122,21 @@ export const FormSwitch = props => {
     <>
       {label && (
         <Typography variant="caption" color="textSecondary">
-          {label}
+          <label htmlFor={`input-${input.name}`}>
+            {label}
+          </label>
         </Typography>
       )}
       <Switch
         checked={getValue(input.value)}
+        onClick={onClick}
         onChange={onChange}
         color={color}
         disabled={disabled}
         className={className}
         inline={inline}
+        id={`input-${input.name}`}
+        name={input.name}
       />
     </>
   );

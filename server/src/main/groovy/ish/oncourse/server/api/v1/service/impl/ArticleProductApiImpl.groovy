@@ -16,6 +16,7 @@ import ish.oncourse.server.CayenneService
 import ish.oncourse.server.api.service.ArticleProductApiService
 import ish.oncourse.server.api.v1.function.EntityRelationFunctions
 import ish.oncourse.server.api.v1.model.ArticleProductDTO
+import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.service.ArticleProductApi
 import ish.oncourse.server.cayenne.ArticleProduct
 import ish.oncourse.server.cayenne.Product
@@ -27,6 +28,11 @@ class ArticleProductApiImpl implements ArticleProductApi {
 
     @Inject
     private ArticleProductApiService service
+
+    @Override
+    void bulkChange(DiffDTO diff) {
+        service.bulkChange(diff)
+    }
 
     @Override
     void create(ArticleProductDTO articleDTO) {

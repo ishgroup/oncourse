@@ -20,7 +20,4 @@ public interface OutcomeInterface {
 
 	EnrolmentInterface getEnrolment();
 
-	Date getStartDate();
-	Date getEndDate();
-
 }

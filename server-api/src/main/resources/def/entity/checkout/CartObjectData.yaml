@@ -1,0 +1,19 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+    example: 200
+    description: Id of record
+  selected:
+    type: boolean
+    required: true
+  productType:
+    $ref: '../../enum/ProductType.yaml'
+    required: false
+  quantity:
+    type: integer
+    format: int64
+    required: false
+

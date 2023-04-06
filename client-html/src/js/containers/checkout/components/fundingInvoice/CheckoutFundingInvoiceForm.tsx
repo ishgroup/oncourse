@@ -13,16 +13,17 @@ import clsx from "clsx";
 import { createStyles, withStyles } from "@mui/styles";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import { CheckoutFundingInvoice } from "../../../../model/checkout/fundingInvoice";
 import { State } from "../../../../reducers/state";
 import { formatFundingSourceId } from "../../../entities/common/utils";
 import CheckoutFundingInvoiceSummaryList, { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from "./CheckoutFundingInvoiceSummaryList";
 import CheckoutAppBar from "../CheckoutAppBar";
+import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
 
 const styles = createStyles(() => ({
   fundingInvoiceSourceId: {
-    marginTop: -1
+    marginTop: -12,
+    flex: 0.5
   }
 }));
 
@@ -61,63 +62,64 @@ const CheckoutFundingInvoiceFormBase = React.memo<Props>(props => {
   } = props;
 
   const selectedItemIndex = fundingInvoices.findIndex(i => i.active);
-
+  
   return (
-    <div className="appFrame flex-fill root">
-      <CustomAppBar>
+    <AppBarContainer
+      hideHelpMenu
+      hideSubmitButton
+      disableInteraction
+      title={(
         <CheckoutAppBar title={titles[activeField]} />
-      </CustomAppBar>
-      <div className="appBarContainer w-100">
-        <form autoComplete="off">
-          <FormField type="stub" name="fundingInvoices" validate={validateFundingInvoices} />
-          {selectedItemIndex !== -1 && (
-            <div className="p-3">
-              <div className="centeredFlex">
-                <FormControlLabel
-                  classes={{
-                    root: "pb-2 mr-0"
-                  }}
-                  control={(
-                    <FormField
-                      type="switch"
-                      name={`fundingInvoices[${selectedItemIndex}].trackAmountOwing`}
-                    />
-                  )}
-                  label={
-                    `Track the amount owing against funding contract ${
-                      !contracts ? "provider" : ""
-                    }`
-                  }
+      )}
+    >
+      <form autoComplete="off">
+        <FormField type="stub" name="fundingInvoices" validate={validateFundingInvoices} />
+        {selectedItemIndex !== -1 && (
+        <div>
+          <div className="centeredFlex">
+            <FormControlLabel
+              classes={{
+                  root: "pb-2 mr-0"
+                }}
+              control={(
+                <FormField
+                  type="switch"
+                  name={`fundingInvoices[${selectedItemIndex}].trackAmountOwing`}
                 />
-                {contracts && (
-                  <div className={clsx("ml-0-5", classes.fundingInvoiceSourceId)}>
-                    <FormField
-                      type="select"
-                      selectValueMark="id"
-                      selectLabelMark="name"
-                      name={`fundingInvoices[${selectedItemIndex}].relatedFundingSourceId`}
-                      label="Default funding contract"
-                      items={contracts}
-                      format={formatFundingSourceId}
-                      hideLabel
-                    />
-                  </div>
-              )}
-              </div>
-              <Collapse in={fundingInvoices[selectedItemIndex].trackAmountOwing} mountOnEnter unmountOnExit>
-                <CheckoutFundingInvoiceSummaryList
-                  dispatch={dispatch}
-                  syncErrors={syncErrors}
-                  fundingInvoice={fundingInvoices[selectedItemIndex]}
-                  selectedItemIndex={selectedItemIndex}
-                  form={form}
-                />
-              </Collapse>
+                )}
+              label={
+                  `Track the amount owing against funding contract ${
+                    !contracts ? "provider" : ""
+                  }`
+                }
+            />
+            {contracts && (
+            <div className={clsx("ml-0-5", classes.fundingInvoiceSourceId)}>
+              <FormField
+                type="select"
+                selectValueMark="id"
+                selectLabelMark="name"
+                name={`fundingInvoices[${selectedItemIndex}].relatedFundingSourceId`}
+                items={contracts}
+                format={formatFundingSourceId}
+                inline
+              />
             </div>
-          )}
-        </form>
-      </div>
-    </div>
+              )}
+          </div>
+          <Collapse in={fundingInvoices[selectedItemIndex].trackAmountOwing} mountOnEnter unmountOnExit>
+            <CheckoutFundingInvoiceSummaryList
+              dispatch={dispatch}
+              syncErrors={syncErrors}
+              fundingInvoice={fundingInvoices[selectedItemIndex]}
+              selectedItemIndex={selectedItemIndex}
+              form={form}
+            />
+          </Collapse>
+        </div>
+        )}
+      </form>
+    </AppBarContainer>
   );
 });
 

@@ -3,11 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import clsx from "clsx";
 import * as React from "react";
-import Grid from "@mui/material/Grid";
-import AddIcon from "@mui/icons-material/Add";
-import Typography from "@mui/material/Typography";
 import { withRouter } from "react-router";
 import {
   Form,
@@ -22,22 +18,22 @@ import {
 import { connect } from "react-redux";
 import { FundingSource } from "@api/model";
 import isEqual from "lodash.isequal";
-import Fab from "@mui/material/Fab";
-import { Dispatch } from "redux";
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
+import Grid from "@mui/material/Grid";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { Fetch } from "../../../../../model/common/Fetch";
 import FundingContractItem from "./FundingContractItem";
 import { State } from "../../../../../reducers/state";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
-import * as Model from "../../../../../model/preferences/Licences";
 import getTimestamps from "../../../../../common/utils/timestamps/getTimestamps";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { ApiMethods } from "../../../../../model/common/apiHandlers";
-import { setNextLocation } from "../../../../../common/actions";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { getManualLink } from "../../../../../common/utils/getManualLink";
+
+const manualUrl = getManualLink("generalPrefs-fundingContractsPrefs");
+
+export const FUNDING_CONTRACTS_FORM: string = "FundingContractsForm";
 
 interface Props {
   values: any;
@@ -55,7 +51,6 @@ interface Props {
   fetch?: Fetch;
   history?: any;
   nextLocation?: string;
-  setNextLocation?: (nextLocation: string) => void;
 }
 
 const Initial: FundingSource = {
@@ -75,14 +70,15 @@ class FundingContractsForm extends React.Component<Props, any> {
   constructor(props) {
     super(props);
     if (props.fundingContracts) {
-      props.dispatch(initialize("FundingContractsForm", { fundingContracts: props.fundingContracts }));
+      props.dispatch(initialize(FUNDING_CONTRACTS_FORM, { fundingContracts: props.fundingContracts }));
     }
   }
 
+  // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps(nextProps: Props) {
     // Initializing form with values
     if (nextProps.fundingContracts && !this.props.initialized) {
-      this.props.dispatch(initialize("FundingContractsForm", { fundingContracts: nextProps.fundingContracts }));
+      this.props.dispatch(initialize(FUNDING_CONTRACTS_FORM, { fundingContracts: nextProps.fundingContracts }));
     }
     if (!this.isPending) {
       return;
@@ -101,7 +97,7 @@ class FundingContractsForm extends React.Component<Props, any> {
   }
 
   onAddNew = () => {
-    this.props.dispatch(arrayInsert("FundingContractsForm", "fundingContracts", 0, Initial));
+    this.props.dispatch(arrayInsert(FUNDING_CONTRACTS_FORM, "fundingContracts", 0, Initial));
     const domNode = document.getElementById("fundingContracts[0].name");
     if (domNode) domNode.scrollIntoView({ behavior: "smooth" });
   };
@@ -128,16 +124,16 @@ class FundingContractsForm extends React.Component<Props, any> {
       this.resolvePromise = resolve;
       this.rejectPromise = reject;
 
-      this.props.onSave(this.getTouchedAndNew(value.fundingContracts),   "POST");
+      this.props.onSave(this.getTouchedAndNew(value.fundingContracts), "POST");
     })
       .then(() => {
         const {
- nextLocation, history, setNextLocation, dispatch
-} = this.props;
-        dispatch(initialize("FundingContractsForm", { fundingContracts: this.props.fundingContracts }));
+          nextLocation, history, dispatch
+        } = this.props;
+        dispatch(initialize(FUNDING_CONTRACTS_FORM, { fundingContracts: this.props.fundingContracts }));
 
         nextLocation && history.push(nextLocation);
-        setNextLocation('');
+
       })
       .catch(error => {
         this.isPending = false;
@@ -168,13 +164,13 @@ class FundingContractsForm extends React.Component<Props, any> {
         if (item.id) {
           onDelete(item.id);
         } else {
-          dispatch(arrayRemove("FundingContractsForm", "fundingContracts", index));
+          dispatch(arrayRemove(FUNDING_CONTRACTS_FORM, "fundingContracts", index));
           this.resolvePromise(true);
         }
       })
         .then(clientSideDelete => {
           if (!clientSideDelete) {
-            dispatch(initialize("FundingContractsForm", { fundingContracts: this.props.fundingContracts }));
+            dispatch(initialize(FUNDING_CONTRACTS_FORM, { fundingContracts: this.props.fundingContracts }));
           }
         })
         .catch(() => {
@@ -187,84 +183,50 @@ class FundingContractsForm extends React.Component<Props, any> {
 
   render() {
     const {
-     values, dirty, invalid, handleSubmit, timestamps, form
+      values, dirty, invalid, handleSubmit, timestamps, form
     } = this.props;
 
     return (
-      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
+      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)} role={FUNDING_CONTRACTS_FORM}>
         <RouteChangeConfirm form={form} when={dirty} />
-
-        <CustomAppBar>
-          <Grid container columnSpacing={3}>
-            <Grid item xs={12} className="centeredFlex relative">
-              {(
-                <Fab
-                  type="button"
-                  size="small"
-                  color="primary"
-                  classes={{
-                    sizeSmall: "appBarFab"
-                  }}
-                  onClick={this.onAddNew}
-                >
-                  <AddIcon />
-                </Fab>
-              )}
-
-              <Typography
-                color="inherit"
-                noWrap
-                className={clsx("appHeaderFontSize", "pl-2" )}
-              >
-                Funding Contracts
-              </Typography>
-
-              <div className="flex-fill" />
-
+        <AppBarContainer
+          values={values}
+          manualUrl={manualUrl}
+          getAuditsUrl={() => `audit?search=~"FundingSource" and entityId in (${idsToString(values.fundingContracts)})`}
+          disabled={!dirty}
+          invalid={invalid}
+          title="Funding Contracts"
+          disableInteraction
+          createdOn={() => timestamps && timestamps[0]}
+          modifiedOn={() => timestamps && timestamps[1]}
+          onAddMenu={() => this.onAddNew()}
+        >
+          <Grid container className="mt-2">
+            <Grid item sm={12} lg={10}>
               {values && (
-                <AppBarHelpMenu
-                  created={timestamps && timestamps[0]}
-                  modified={timestamps && timestamps[1]}
-                  auditsUrl={`audit?search=~"FundingSource" and entityId in (${idsToString(values.fundingContracts)})`}
-                  manualUrl={`https://www.ish.com.au/s/onCourse/doc/${process.env.RELEASE_VERSION}/manual/generalPrefs.html#generalPrefs-fundingContracts`}
+                <FieldArray
+                  name="fundingContracts"
+                  component={FundingContractItem}
+                  onDelete={this.onClickDelete}
                 />
               )}
-
-              <FormSubmitButton
-                disabled={!dirty}
-                invalid={invalid}
-              />
             </Grid>
           </Grid>
-        </CustomAppBar>
-
-        <Grid container columnSpacing={3}>
-          <Grid item sm={12} lg={10} className="mt-1">
-            {values && (
-              <FieldArray
-                name="fundingContracts"
-                component={FundingContractItem}
-                onDelete={this.onClickDelete}
-              />
-            )}
-          </Grid>
-        </Grid>
+        </AppBarContainer>
       </Form>
     );
   }
 }
 
 const mapStateToProps = (state: State) => ({
-  values: getFormValues("FundingContractsForm")(state),
+  values: getFormValues(FUNDING_CONTRACTS_FORM)(state),
   fundingContracts: state.preferences.fundingContracts,
   timestamps: state.preferences.fundingContracts && getTimestamps(state.preferences.fundingContracts),
   fetch: state.fetch,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-});
 
-export default reduxForm({ onSubmitFail, form: "FundingContractsForm" })(
-  connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withRouter(FundingContractsForm))
-) as React.ComponentClass<any>;
+export default reduxForm({
+  onSubmitFail,
+  form: FUNDING_CONTRACTS_FORM
+})(connect<any, any, any>(mapStateToProps, null)(withRouter(FundingContractsForm))) as React.ComponentClass<any>;

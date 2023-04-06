@@ -20,8 +20,8 @@ import { LinkAdornment } from "../../../../../common/components/form/FieldAdornm
 import { openInternalLink } from "../../../../../common/utils/links";
 import { CheckoutPayment, CheckoutSummary } from "../../../../../model/checkout";
 import { AppTheme } from "../../../../../model/common/Theme";
-import { getContactName } from "../../../../entities/contacts/utils";
 import CheckoutPaymentExpandableItemRenderer from "./CheckoutPaymentExpandableItemRenderer";
+import { getContactFullName } from "../../../../entities/contacts/utils";
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -168,7 +168,7 @@ const SuccessPaymentMessage: React.FC<any> = props => {
         <Typography variant="h5">Transaction successful</Typography>
       </div>
       <div>
-        <Grid container columnSpacing={3} className="p-3 align-content-between">
+        <Grid container className="p-3 align-content-between">
           {payment.invoice && (
           <Grid item xs={12}>
             {summary.list.map((list, i) => (
@@ -177,7 +177,7 @@ const SuccessPaymentMessage: React.FC<any> = props => {
                 classes={classes}
                 header={list.payer ? (
                   <>
-                    {`Invoice ${invoiceNumber} to ${getContactName(list.contact)}`}
+                    {`Invoice ${invoiceNumber} to ${getContactFullName(list.contact)}`}
                     <span className="appHeaderFontSize ml-1">
                       <IconButton
                         disabled={payment.invoice && !payment.invoice.id}
@@ -205,7 +205,7 @@ const SuccessPaymentMessage: React.FC<any> = props => {
                       </IconButton>
                     </span>
                   </>
-                      ) : getContactName(list.contact)}
+                      ) : getContactFullName(list.contact)}
                 items={list.items}
                 isPayer={list.payer}
                 voucherItems={summary.voucherItems}

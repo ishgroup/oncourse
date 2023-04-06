@@ -10,18 +10,15 @@
  */
 package ish.oncourse.server.cayenne
 
-
 import ish.oncourse.API
 import ish.oncourse.cayenne.AttendanceInterface
 import ish.oncourse.cayenne.OutcomeInterface
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.cayenne.SessionModuleInterface
-import ish.oncourse.entity.delegator.OutcomeDelegator
 import ish.oncourse.server.cayenne.Module
 import ish.oncourse.server.cayenne.glue._SessionModule
 
 import javax.annotation.Nonnull
-
 /**
  * Object representing relation between session and module.
  */
@@ -75,7 +72,7 @@ class SessionModule extends _SessionModule implements SessionModuleInterface, Qu
 
 	@Override
 	AttendanceInterface getAttendanceForOutcome(OutcomeInterface outcomeInterface) {
-		Outcome outcome = ((OutcomeDelegator) outcomeInterface).getOutcome()
+		Outcome outcome = (Outcome) outcomeInterface
 		Student student = (Student) outcome.getEnrolment().getStudent()
 		this.session.attendance.find{it.student.id == student.id}
 	}

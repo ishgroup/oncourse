@@ -65,11 +65,15 @@
   <Account accountCode="66000" createdOn="2012-06-20 10:22:44.0" description="Motor vehicle" id="32" isEnabled="0"
            modifiedOn="2012-06-20 10:22:44.0" type="6"/>
   <Account accountCode="21010" description="Prepaid fees liability account" id="40" isEnabled="1"
-           modifiedOn="2014-10-17 22:47:58.0" type="2"/>
-  <Account accountCode="54020" description="Discounts given" id="41" isEnabled="1" type="5"/>
-  <Account accountCode="21400" description="Voucher liability" id="200" isEnabled="1" type="2"/>
-  <Account accountCode="65387" description="Voucher underpayment" id="201" isEnabled="1" type="6"/>
-  <Account accountCode="45387" description="Vouchers expired" id="202" isEnabled="1" type="4" taxId="1"/>
+           createdOn="2014-10-17 22:47:58.0" modifiedOn="2014-10-17 22:47:58.0" type="2"/>
+  <Account accountCode="54020" description="Discounts given" id="41" isEnabled="1" type="5"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account accountCode="21400" description="Voucher liability" id="200" isEnabled="1" type="2"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account accountCode="65387" description="Voucher underpayment" id="201" isEnabled="1" type="6"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account accountCode="45387" description="Vouchers expired" id="202" isEnabled="1" type="4" taxId="1"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Tax createdOn="2012-06-20 10:22:44.0" description="Australian GST" id="1" isGSTTaxType="1"
        modifiedOn="2014-10-17 22:47:53.0" payableToSupplierAccountId="6" receivableFromStudentAccountId="11"
@@ -160,8 +164,8 @@
           isSufficientForQualification="1" currentlyOffered="1" reportableHours="40.0" isTraineeship="0"
           name="Payroll Course" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 
-  <Country id="268" isoCodeAlpha3="AUS" isoCodeNumeric="36" modifiedOn="2014-10-17 22:39:31.0" name="Australia"
-           saccCode="1101"/>
+  <Country id="268" isoCodeAlpha3="AUS" isoCodeNumeric="36" createdOn="2014-10-17 22:39:31.0"
+           modifiedOn="2014-10-17 22:39:31.0" name="Australia" saccCode="1101"/>
 
   <Site createdOn="2012-06-20 10:27:51.0" id="200" modifiedOn="2014-10-17 23:09:56.0" name="Default site"
         isAdministrationCentre="1" isShownOnWeb="0" localTimezone="Australia/Brisbane" isVirtual="0"/>
@@ -189,68 +193,68 @@
 
   <CourseClass code="1" courseId="200" createdOn="2014-10-17 22:46:29.0" endDateTime="2015-01-10 23:44:54.0"
                feeExGst="600.00" id="206" incomeAccountId="15" isCancelled="0" isDistantLearningCourse="0"
-               isShownOnWeb="0" maximumPlaces="10" minimumPlaces="1" minutesPerSession="60"
-               modifiedOn="2014-10-17 23:09:58.0" roomId="204" sessionCount="1" startDateTime="2015-01-01 22:44:54.0"
-               taxId="1" deliveryMode="1" fundingSource="3" budgetedPlaces="0" sessionsSkipWeekends="0"
-               sessionrepeatType="6" sessionrepeatInterval="1" isClassFeeApplicationOnly="0" taxAdjustment="0.00"
+               isShownOnWeb="0" maximumPlaces="10" minimumPlaces="1"
+               modifiedOn="2014-10-17 23:09:58.0" roomId="204" startDateTime="2015-01-01 22:44:54.0"
+               taxId="1" deliveryMode="1" fundingSource="3" budgetedPlaces="0"
+               isClassFeeApplicationOnly="0" taxAdjustment="0.00"
                deposit="600.00" isActive="1" suppressAvetmissExport="0" attendanceType="9"/>
   <CourseClass code="2" courseId="200" createdOn="2014-11-11 22:46:29.0" endDateTime="2015-02-10 23:44:54.0"
                feeExGst="600.00" id="207" incomeAccountId="15" isCancelled="0" isDistantLearningCourse="0"
-               isShownOnWeb="0" maximumPlaces="10" minimumPlaces="1" minutesPerSession="60"
-               modifiedOn="2014-10-17 23:09:58.0" roomId="204" sessionCount="1" startDateTime="2015-01-01 22:44:54.0"
-               taxId="1" deliveryMode="1" fundingSource="3" budgetedPlaces="0" sessionsSkipWeekends="0"
-               sessionrepeatType="6" sessionrepeatInterval="1" isClassFeeApplicationOnly="0" taxAdjustment="0.00"
+               isShownOnWeb="0" maximumPlaces="10" minimumPlaces="1"
+               modifiedOn="2014-10-17 23:09:58.0" roomId="204" startDateTime="2015-01-01 22:44:54.0"
+               taxId="1" deliveryMode="1" fundingSource="3" budgetedPlaces="0"
+               isClassFeeApplicationOnly="0" taxAdjustment="0.00"
                deposit="600.00" isActive="1" suppressAvetmissExport="0" attendanceType="9"/>
   <CourseClass code="3" courseId="200" createdOn="2014-11-01 22:46:29.0" endDateTime="2015-01-01 23:44:54.0"
                feeExGst="600.00" id="208" incomeAccountId="15" isCancelled="0" isDistantLearningCourse="0"
-               isShownOnWeb="0" maximumPlaces="10" minimumPlaces="1" minutesPerSession="60"
-               modifiedOn="2014-10-17 23:09:58.0" roomId="204" sessionCount="1" startDateTime="2015-01-01 22:44:54.0"
-               taxId="1" deliveryMode="1" fundingSource="3" budgetedPlaces="0" sessionsSkipWeekends="0"
-               sessionrepeatType="6" sessionrepeatInterval="1" isClassFeeApplicationOnly="0" taxAdjustment="0.00"
+               isShownOnWeb="0" maximumPlaces="10" minimumPlaces="1"
+               modifiedOn="2014-10-17 23:09:58.0" roomId="204" startDateTime="2015-01-01 22:44:54.0"
+               taxId="1" deliveryMode="1" fundingSource="3" budgetedPlaces="0"
+               isClassFeeApplicationOnly="0" taxAdjustment="0.00"
                deposit="600.00" isActive="1" suppressAvetmissExport="0" attendanceType="9"/>
   <CourseClass code="4" courseId="200" createdOn="2014-01-01 22:46:29.0" endDateTime="2014-10-01 23:44:54.0"
                feeExGst="600.00" id="209" incomeAccountId="15" isCancelled="0" isDistantLearningCourse="0"
-               isShownOnWeb="0" maximumPlaces="10" minimumPlaces="1" minutesPerSession="60"
-               modifiedOn="2014-10-17 23:09:58.0" roomId="204" sessionCount="1" startDateTime="2015-01-01 22:44:54.0"
-               taxId="1" deliveryMode="1" fundingSource="3" budgetedPlaces="0" sessionsSkipWeekends="0"
-               sessionrepeatType="6" sessionrepeatInterval="1" isClassFeeApplicationOnly="0" taxAdjustment="0.00"
+               isShownOnWeb="0" maximumPlaces="10" minimumPlaces="1"
+               modifiedOn="2014-10-17 23:09:58.0" roomId="204" startDateTime="2015-01-01 22:44:54.0"
+               taxId="1" deliveryMode="1" fundingSource="3" budgetedPlaces="0"
+               isClassFeeApplicationOnly="0" taxAdjustment="0.00"
                deposit="600.00" isActive="1" suppressAvetmissExport="0" attendanceType="9"/>
   <CourseClass code="5" courseId="200" createdOn="2014-10-18 22:46:29.0" endDateTime="2015-01-08 23:44:54.0"
                feeExGst="600.00" id="210" incomeAccountId="15" isCancelled="0" isDistantLearningCourse="0"
-               isShownOnWeb="0" maximumPlaces="10" minimumPlaces="1" minutesPerSession="60"
-               modifiedOn="2014-10-17 23:09:58.0" roomId="204" sessionCount="3" startDateTime="2015-01-01 22:44:54.0"
-               taxId="1" deliveryMode="1" fundingSource="3" budgetedPlaces="0" sessionsSkipWeekends="0"
-               sessionrepeatType="6" sessionrepeatInterval="1" isClassFeeApplicationOnly="0" taxAdjustment="0.00"
+               isShownOnWeb="0" maximumPlaces="10" minimumPlaces="1"
+               modifiedOn="2014-10-17 23:09:58.0" roomId="204" startDateTime="2015-01-01 22:44:54.0"
+               taxId="1" deliveryMode="1" fundingSource="3" budgetedPlaces="0"
+               isClassFeeApplicationOnly="0" taxAdjustment="0.00"
                deposit="600.00" isActive="1" suppressAvetmissExport="0" attendanceType="9"/>
 
   <CourseSession courseClass_Id="206" createdOn="2014-10-17 22:46:29.0" endDatetime="2015-01-10 23:44:54.0" id="260"
                  modifiedOn="2014-10-17 23:10:01.0" roomId="204" startDatetime="2015-01-10 22:44:54.0"
                  />
-  <CourseSession courseClass_Id="206" createdOn="2014-10-17 22:46:29.0" endDatetime="2015-01-03 23:44:54.0" id="261"
+  <CourseSession courseClass_Id="207" createdOn="2014-10-17 22:46:29.0" endDatetime="2015-01-03 23:44:54.0" id="261"
                  modifiedOn="2014-10-17 23:10:07.0" roomId="204" startDatetime="2015-01-03 22:44:54.0"
                  />
-  <CourseSession courseClass_Id="206" createdOn="2014-10-17 22:46:29.0" endDatetime="2015-01-07 23:44:54.0" id="262"
+  <CourseSession courseClass_Id="208" createdOn="2014-10-17 22:46:29.0" endDatetime="2015-01-07 23:44:54.0" id="262"
                  modifiedOn="2014-10-17 23:10:02.0" roomId="204" startDatetime="2015-01-07 22:44:54.0"
                  />
-  <CourseSession courseClass_Id="206" createdOn="2014-10-17 22:46:29.0" endDatetime="2015-01-09 23:44:54.0" id="263"
+  <CourseSession courseClass_Id="209" createdOn="2014-10-17 22:46:29.0" endDatetime="2015-01-09 23:44:54.0" id="263"
                  modifiedOn="2014-10-17 23:10:07.0" roomId="204" startDatetime="2015-01-09 22:44:54.0"
                  />
-  <CourseSession courseClass_Id="206" createdOn="2014-10-17 22:46:29.0" endDatetime="2015-01-02 23:44:54.0" id="264"
+  <CourseSession courseClass_Id="210" createdOn="2014-10-17 22:46:29.0" endDatetime="2015-01-02 23:44:54.0" id="264"
                  modifiedOn="2014-10-17 22:47:55.0" roomId="204" startDatetime="2015-01-02 22:44:54.0"
                  />
-  <CourseSession courseClass_Id="206" createdOn="2014-10-17 22:46:29.0" endDatetime="2015-01-08 23:44:54.0" id="265"
+  <CourseSession courseClass_Id="210" createdOn="2014-10-17 22:46:29.0" endDatetime="2015-01-08 23:44:54.0" id="265"
                  modifiedOn="2014-10-17 23:10:07.0" roomId="204" startDatetime="2015-01-08 22:44:54.0"
                  />
-  <CourseSession courseClass_Id="206" createdOn="2014-10-17 22:46:29.0" endDatetime="2015-01-05 23:44:54.0" id="266"
+  <CourseSession courseClass_Id="210" createdOn="2014-10-17 22:46:29.0" endDatetime="2015-01-05 23:44:54.0" id="266"
                  modifiedOn="2014-10-17 23:11:48.0" roomId="204" startDatetime="2015-01-05 22:44:54.0"
                  />
-  <CourseSession courseClass_Id="206" createdOn="2014-10-17 22:46:29.0" endDatetime="2015-01-01 23:44:54.0" id="267"
+  <CourseSession courseClass_Id="210" createdOn="2014-10-17 22:46:29.0" endDatetime="2015-01-01 23:44:54.0" id="267"
                  modifiedOn="2014-10-17 23:11:02.0" roomId="204" startDatetime="2015-01-01 22:44:54.0"
                  />
-  <CourseSession courseClass_Id="206" createdOn="2014-10-17 22:46:29.0" endDatetime="2015-01-04 23:44:54.0" id="268"
+  <CourseSession courseClass_Id="210" createdOn="2014-10-17 22:46:29.0" endDatetime="2015-01-04 23:44:54.0" id="268"
                  modifiedOn="2014-10-17 23:11:48.0" roomId="204" startDatetime="2015-01-04 22:44:54.0"
                  />
-  <CourseSession courseClass_Id="206" createdOn="2014-10-17 22:46:29.0" endDatetime="2015-01-06 23:44:54.0" id="269"
+  <CourseSession courseClass_Id="210" createdOn="2014-10-17 22:46:29.0" endDatetime="2015-01-06 23:44:54.0" id="269"
                  modifiedOn="2014-10-17 23:11:01.0" roomId="204" startDatetime="2015-01-06 22:44:54.0"
                  />
 
@@ -399,18 +403,30 @@
                priceEachexTax="600.00" quantity="1.00" sortOrder="17" taxEach="60.00" taxId="1"
                title="Student Three enrolled in pc1-6" prepaidFeesRemaining="600.00" prepaidFeesAccountId="40"/>
 
-  <PaymentMethod id="1" name="Cash" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
-  <PaymentMethod id="2" name="Cheque" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="1"/>
-  <PaymentMethod id="3" name="Credit card" accountId="3" active="1" bankedAutomatically="1" reconcilable="1" type="2"/>
-  <PaymentMethod id="4" name="EFT" accountId="3" active="1" bankedAutomatically="1" reconcilable="1" type="6"/>
-  <PaymentMethod id="5" name="B-Pay" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
-  <PaymentMethod id="6" name="Zero" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="5"/>
-  <PaymentMethod id="7" name="Other" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
-  <PaymentMethod id="8" name="Contra" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="7"/>
-  <PaymentMethod id="9" name="Voucher" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="8"/>
-  <PaymentMethod id="10" name="PayPal" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
-  <PaymentMethod id="11" name="Reverse" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="10"/>
-  <PaymentMethod id="12" name="EFTPOS" accountId="3" active="1" bankedAutomatically="1" reconcilable="1" type="6"/>
+  <PaymentMethod id="1" name="Cash" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="2" name="Cheque" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="1"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="3" name="Credit card" accountId="3" active="1" bankedAutomatically="1" reconcilable="1" type="2"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="4" name="EFT" accountId="3" active="1" bankedAutomatically="1" reconcilable="1" type="6"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="5" name="B-Pay" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="6" name="Zero" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="5"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="7" name="Other" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="8" name="Contra" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="7"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="9" name="Voucher" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="8"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="10" name="PayPal" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="11" name="Reverse" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="10"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="12" name="EFTPOS" accountId="3" active="1" bankedAutomatically="1" reconcilable="1" type="6"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <PaymentIn paymentDate="2010-10-14 22:04:34.551" accountInId="3" amount="6330.00" createdOn="2014-10-17 22:47:52.0"
              id="200" modifiedOn="2014-10-17 22:47:53.0" privateNotes="" reconciled="0" status="3" paymentMethodId="1"

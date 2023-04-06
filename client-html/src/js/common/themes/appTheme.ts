@@ -1,5 +1,5 @@
-import { yellow } from "@mui/material/colors";
-import { alpha } from "@mui/material/styles";
+import { grey, yellow } from "@mui/material/colors";
+import { alpha, darken } from "@mui/material/styles";
 import { ThemeValues, AppTheme } from "../../model/common/Theme";
 
 export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
@@ -70,8 +70,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
         backgroundColor: '#4b6390'
       },
       listItemRoot: {
-        color: "#c9d0de",
-        selectedColor: "#fff",
+        color: "#fff"
       },
     },
     table: {
@@ -79,6 +78,9 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
         main: '#f8f8f8',
         light: '#f4f3ec'
       }
+    },
+    addButtonColor: {
+      color: "#f7941d"
     }
   },
   dark: {
@@ -148,8 +150,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
         backgroundColor: '#302A22'
       },
       listItemRoot: {
-        color: "#fff",
-        selectedColor: "#fff",
+        color: "#fff"
       },
     },
     table: {
@@ -157,11 +158,14 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
         main: '#696969',
         light: '#696969bf'
       }
+    },
+    addButtonColor: {
+      color: darken(grey[400], 0.1)
     }
   },
   monochrome: {
     heading: {
-      color: '#222222'
+      color: '#000'
     },
     blog: {
       root: {
@@ -206,11 +210,11 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
     appBar: {
       header: {
         background: "#fff",
-        color: "#222",
+        color: "#000",
       },
       headerAlternate: {
-        background: "#eaeaea",
-        color: "#222",
+        background: "#f4f4f4",
+        color: "#000",
       },
     },
     appBarButton: {
@@ -223,11 +227,10 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
     },
     tabList: {
       listContainer: {
-        backgroundColor: '#302A22'
+        backgroundColor: '#e3e3e3'
       },
       listItemRoot: {
-        color: "#fff",
-        selectedColor: "#fff",
+        color: "#000",
       },
     },
     table: {
@@ -235,6 +238,9 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
         main: '#f8f8f8',
         light: '#f4f3ec'
       }
+    },
+    addButtonColor: {
+      color: "#000"
     }
   },
   highcontrast: {
@@ -281,7 +287,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
     },
     appBar: {
       header: {
-        background: "#fff",
+        background: "#f2f2f2",
         color: "#222",
       },
       headerAlternate: {
@@ -302,8 +308,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
         backgroundColor: '#292929'
       },
       listItemRoot: {
-        color: "#fff",
-        selectedColor: "#fff",
+        color: "#fff"
       },
     },
     table: {
@@ -311,84 +316,9 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
         main: '#f8f8f8',
         light: '#f4f3ec'
       }
-    }
-  },
-  christmas: {
-    heading: {
-      color: '#165B33'
     },
-    blog: {
-      root: {
-        backgroundColor: 'transparent'
-      }
-    },
-    share: {
-      exportContainer: {
-        backgroundColor: '#eee'
-      },
-      closeButton: {
-        color: '#B3000C'
-      },
-      shareButton: {
-        color: '#fff',
-        backgroundColor: '#B3000C',
-        backgroundColorHover: alpha('#fff', 0.9)
-      },
-      color: {
-        headerText: '#000',
-        itemText: 'rgba(0,0,0,0.6)',
-        selectedItemText: 'rgba(0,0,0,1)',
-        customLabel: 'rgba(0,0,0,.5)'
-      }
-    },
-    statistics: {
-      coloredHeaderText: {
-        color: '#00B32C'
-      },
-      enrolmentText: {
-        color: '#73cba7',
-        strokeColor: '#73cba7'
-      },
-      revenueText: {
-        color: '#ffd876',
-        strokeColor: '#ffd876'
-      },
-      rightColumn: {
-        color: alpha('rgba(0, 0, 0, 0.87)', 0.4)
-      }
-    },
-    appBar: {
-      header: {
-        background: "#fff",
-        color: "#222",
-      },
-      headerAlternate: {
-        background: "#B3000C",
-        color: "#fff",
-      },
-    },
-    appBarButton: {
-      close: {
-        color: '#fff'
-      },
-      helpMenu: {
-        color: '#fff'
-      }
-    },
-    tabList: {
-      listContainer: {
-        backgroundColor: '#146B3A'
-      },
-      listItemRoot: {
-        color: "#fff",
-        selectedColor: "#fff",
-      },
-    },
-    table: {
-      contrastRow: {
-        main: '#f8f8f8',
-        light: '#f4f3ec'
-      }
+    addButtonColor: {
+      color: "#111111"
     }
   }
 };

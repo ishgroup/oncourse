@@ -28,7 +28,7 @@ import javax.annotation.Nonnull
 import javax.annotation.Nullable
 import java.time.LocalDate
 
-abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterface, Queueable, NotableTrait, AttachableTrait {
+abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterface, Queueable, NotableTrait, AttachableTrait, ContactActivityTrait {
 
 	private static final Logger logger = LogManager.getLogger()
 
@@ -145,7 +145,7 @@ abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterf
 			Money overdue = Money.ZERO
 
 			for (InvoiceDueDate dueDate : dueDates) {
-				if (currentDate.isAfter(dueDate.getDueDate())) {
+				if (currentDate.isAfter(dueDate.getDueDate()) || currentDate.equals(dueDate.getDueDate())) {
 					overdue = overdue.add(dueDate.getAmount())
 				}
 			}
@@ -424,6 +424,11 @@ abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterf
 	@Override
 	Class<? extends TagRelation> getTagRelationClass() {
 		return AbstractInvoiceTagRelation.class
+	}
+
+	@Override
+	String getInteractionName() {
+		return totalIncTax.toPlainString()
 	}
 }
 

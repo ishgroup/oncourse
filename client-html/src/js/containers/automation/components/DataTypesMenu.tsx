@@ -20,9 +20,8 @@ import FormField from "../../../common/components/form/formFields/FormField";
 import { BindingsItemType } from "./Bindings";
 import { NoArgFunction } from "../../../model/common/CommonFunctions";
 import { makeAppStyles } from "../../../common/styles/makeStyles";
-import { AppTheme } from "../../../model/common/Theme";
 
-const useStyles = makeAppStyles()((theme: AppTheme) => ({
+const useStyles = makeAppStyles(theme => ({
   popper: {
     zIndex: theme.zIndex.modal + 1
   },
@@ -64,12 +63,12 @@ interface BindingEditPopupProps extends InjectedFormProps {
 
 const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
   ({
-     popupAnchorEl, onCancel, onSave, handleSubmit, invalid, itemsType, values, reset
+     popupAnchorEl, onCancel, onSave, handleSubmit, invalid, values, reset
   }) => {
     const nameRef = useRef<any>();
     const popperRef = useRef<any>();
 
-    const { classes } = useStyles();
+    const classes  = useStyles();
 
     const setPopperRef = useCallback(node => {
       if (node) {
@@ -84,7 +83,7 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
 
     useEffect(() => {
       if (popupAnchorEl && nameRef.current) {
-        nameRef.current.edit();
+        nameRef.current.focus();
       }
     }, [popupAnchorEl, nameRef.current]);
 
@@ -100,8 +99,6 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
       onCancel();
     }, [values]);
 
-    const labelType = itemsType === "label";
-
     return (
       <Popper
         open={Boolean(popupAnchorEl)}
@@ -116,25 +113,21 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
             <Paper className={classes.paper} elevation={8}>
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <DialogContent className="overflow-hidden">
-                  {labelType && (
-                    <FormField
-                      type="text"
-                      label="Label"
-                      name="label"
-                      ref={nameRef}
-                      required
-                      fullWidth
-                    />
-                  )}
+                  <FormField
+                    type="text"
+                    label="Label"
+                    name="label"
+                    inputRef={nameRef}
+                    className="mb-2"
+                    required
+                  />
 
                   <FormField
                     type="text"
                     label="Name"
                     name="name"
                     validate={validateBindingName}
-                    ref={labelType ? undefined : nameRef}
                     required
-                    fullWidth
                   />
                 </DialogContent>
 

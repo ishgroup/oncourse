@@ -9,12 +9,14 @@ export function mockQualifications() {
     return {
       id: row.id,
       type: "Skill set",
-      name: null,
+      name: "",
       nationalCode: row.values[0],
       title: row.values[1],
       qualLevel: row.values[2],
       nominalHours: row.values[3],
-      isOffered: row.values[4]
+      isOffered: row.values[4],
+      fieldOfEducation: "",
+      specialization: "",
     };
   };
 

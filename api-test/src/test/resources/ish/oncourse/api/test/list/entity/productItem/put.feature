@@ -65,7 +65,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         "voucherCode":null,
         "redeemableById":null,
         "redeemableByName":null,
-        "customFields":{}
+        "customFields":{},
+        "documents":[],
+        "tags":[]
         }
         """
 
@@ -92,7 +94,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         "voucherCode":null,
         "redeemableById":null,
         "redeemableByName":null,
-        "customFields":{"mcf1":"updatedValue"}
+        "customFields":{"mcf1":"updatedValue"},
+        "documents":[],
+        "tags":[]
         }
         """
 
@@ -124,7 +128,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         "voucherCode":null,
         "redeemableById":null,
         "redeemableByName":null,
-        "customFields":{"mcf1":"updatedValue"}
+        "customFields":{"mcf1":"updatedValue"},
+        "documents":[],
+        "tags":[]
         }
         """
 
@@ -186,7 +192,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         "voucherCode":null,
         "redeemableById":null,
         "redeemableByName":null,
-        "customFields":{}
+        "customFields":{},
+        "documents":[],
+        "tags":[]
         }
         """
 
@@ -218,7 +226,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         "voucherCode":null,
         "redeemableById":null,
         "redeemableByName":null,
-        "customFields":{}
+        "customFields":{},
+        "documents":[],
+        "tags":[]
         }
         """
 
@@ -307,7 +317,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         "voucherCode":"2zMEaTEz",
         "redeemableById":15,
         "redeemableByName":"stud9",
-        "customFields":{}
+        "customFields":{},
+        "documents":[],
+        "tags":[]
         }
         """
 
@@ -366,7 +378,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         Then status 200
         And match $ ==
         """
-        {"id":1001,"productId":1002,"productType":"Voucher","productName":"voucherType1","purchasedById":14,"purchasedByName":"stud8","purchasedOn":"2019-07-22","expiresOn":"2030-07-22","purchasePrice":50.00,"status":"Active","payments":[],"validFrom":null,"valueRemaining":"1 classes","voucherCode":"2zMEaTEz","redeemableById":15,"redeemableByName":"stud9","customFields":{}}
+        {"id":1001,"productId":1002,"productType":"Voucher","productName":"voucherType1","purchasedById":14,"purchasedByName":"stud8","purchasedOn":"2019-07-22","expiresOn":"2030-07-22","purchasePrice":50.00,"status":"Active","payments":[],"validFrom":null,"valueRemaining":"1 classes","voucherCode":"2zMEaTEz","redeemableById":15,"redeemableByName":"stud9","customFields":{},"tags":[],"documents":[]}
         """
 
 #       <--->  Scenario have been finished. Now change back entity:
@@ -496,7 +508,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         "voucherCode":null,
         "redeemableById":null,
         "redeemableByName":null,
-        "customFields":{}
+        "customFields":{},
+        "documents":[],
+        "tags":[]
         }
         """
 
@@ -556,7 +570,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         "voucherCode":"2zMEaTEz",
         "redeemableById":14,
         "redeemableByName":"stud8",
-        "customFields":{}
+        "customFields":{},
+        "documents":[],
+        "tags":[]
         }
         """
 

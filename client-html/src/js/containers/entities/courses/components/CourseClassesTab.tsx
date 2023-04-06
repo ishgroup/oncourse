@@ -3,11 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Grid from "@mui/material/Grid";
 import React, { useEffect, useState } from "react";
+import { Grid } from "@mui/material";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
 import { EntityType } from "../../../../model/common/NestedEntity";
-import { Classes } from "../../../../model/entities/CourseClass";
 import { getNestedCourseClassItem } from "../../courseClasses/utils";
 
 const CourseClassesTab: React.FC<any> = ({
@@ -58,18 +57,20 @@ const CourseClassesTab: React.FC<any> = ({
   ]);
 
   return (
-    <Grid container item xs={12} className="pl-3 pr-3">
-      <NestedEntity
-        entityName="Classes"
-        goToLink="/class"
-        entityTypes={classesTypes}
-        addLink={`/${Classes.path}/new?courseId=${values.id}`}
-        dirty={dirty}
-        showConfirm={showConfirm}
-        twoColumn={twoColumn}
-        isNew={isNew}
-        preventAddMessage="Save course before adding classes"
-      />
+    <Grid container className="pl-3 pr-3">
+      <Grid item xs={12}>
+        <NestedEntity
+          entityName="Classes"
+          goToLink="/class"
+          entityTypes={classesTypes}
+          addLink={`/class/new?courseId=${values.id}`}
+          dirty={dirty}
+          showConfirm={showConfirm}
+          twoColumn={twoColumn}
+          isNew={isNew}
+          preventAddMessage="Save course before adding classes"
+        />
+      </Grid>
     </Grid>
 );
 };

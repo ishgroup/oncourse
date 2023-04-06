@@ -35,7 +35,7 @@ export const closureBodyRegexp = /{((?:[^{}]|{[^}]*})*)}/;
 
 const getBodyEntries = body => {
   const bodyMatch = body.match(closureBodyRegexp);
-  const entries = Array.isArray(bodyMatch) ? bodyMatch[0].match(/(\w+\s?["']?[^'"]*["']?\n)+/g) : [];
+  const entries = Array.isArray(bodyMatch) ? bodyMatch[0].match(/(\w+\s?(["'][^'"]*["']|\w+)?\n)+/g) : [];
   return Array.isArray(entries) ? entries : [];
 };
 
@@ -61,12 +61,13 @@ export const getQueryComponent = (body: string): ScriptComponent => {
   };
 };
 
-export const getMessageTemplate = component => {
-  const variables: Binding[] = component?.templateEntity?.variables || [];
+export const getMessageTemplate = (component: ScriptComponent, options: Binding[]) => {
+  const variables: Binding[] = component?.templateEntity?.variables || options || [];
   const entries = Object.entries(component);
+
   const parsedString = entries.reduce((result, e, index) => (["id", "record", "attachment", "type", "templateEntity"].includes(e[0])
     ? result
-    : `${result}${e[0]} ${variables.some(v => v.name === e[0] && v.type === "Object") 
+    : `${result}${e[0]} ${variables.some(v => v.name === e[1] && ["Object", "Message template"].includes(v.type)) 
       ? e[1] 
       : ( e[0] === 'content' ? `"""${e[1]}"""` : `"${e[1]}"`)}${index === (entries.length - 1) 
         ? "" 

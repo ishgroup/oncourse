@@ -7,39 +7,32 @@ import React, { useCallback, useMemo, useState } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import {
- arrayInsert, change, FieldArray, initialize, WrappedFieldArrayProps
+ arrayInsert, change, FieldArray, WrappedFieldArrayProps
 } from "redux-form";
 import Grid from "@mui/material/Grid";
-import { ClassCost, CourseClassTutor, DefinedTutorRole } from "@api/model";
-
+import { CourseClassTutor, DefinedTutorRole } from "@api/model";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { ClassCostExtended, CourseClassExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 import { State } from "../../../../../reducers/state";
-import { StringArgFunction } from "../../../../../model/common/CommonFunctions";
-import { contactLabelCondition } from "../../../contacts/utils";
 import CourseClassTutorsRenderer from "./CourseClassTutorsRenderer";
 import { addActionToQueue, removeActionsFromQueue } from "../../../../../common/actions";
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import CourseClassTutorService from "./services/CourseClassTutorService";
 import { deleteCourseClassTutor, postCourseClassTutor, setCourseClassTutorNamesWarnings } from "./actions";
 import { StringKeyAndValueObject } from "../../../../../model/common/CommomObjects";
-import { getTutorNameWarning, getTutorPayInitial, isTutorWageExist } from "./utils";
-import { COURSE_CLASS_COST_DIALOG_FORM } from "../../constants";
-import { setCourseClassBudgetModalOpened } from "../../actions";
-import history from "../../../../../constants/History";
+import { getTutorNameWarning, isTutorWageExist } from "./utils";
 import uniqid from "../../../../../common/utils/uniqid";
-import AddIcon from "../../../../../common/components/icons/AddIcon";
+import AddButton from "../../../../../common/components/icons/AddButton";
+import { getContactFullName } from "../../../contacts/utils";
 
 export interface CourseClassTutorsTabProps extends Partial<EditViewProps> {
   values?: CourseClassExtended;
   setTutorNamesWarnings?: (warnings: StringKeyAndValueObject) => void;
-  tutorRoles?: any;
+  tutorRoles?: DefinedTutorRole[];
+  addTutorWage?: (tutor: CourseClassTutor, wage?: ClassCostExtended) => void;
   tutorNamesWarnings?: StringKeyAndValueObject;
   currencySymbol?: string;
   latestSession?: Date;
-  setCourseClassBudgetModalOpened?: (opened: boolean, onCostRate?: number) => void;
-  expandedBudget?: string[];
-  expandBudgetItem?: StringArgFunction;
 }
 
 const TutorInitial: CourseClassTutor = {
@@ -65,9 +58,7 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
     latestSession,
     setTutorNamesWarnings,
     tutorNamesWarnings,
-    setCourseClassBudgetModalOpened,
-    expandedBudget,
-    expandBudgetItem
+    addTutorWage
   }) => {
     const [expanded, setExpanded] = useState(null);
 
@@ -87,7 +78,7 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
           warningsUpdated[value.id] = null;
           setTutorNamesWarnings(warningsUpdated);
         }
-        dispatch(change(form, `tutors[${index}].tutorName`, contactLabelCondition(value)));
+        dispatch(change(form, `tutors[${index}].tutorName`, getContactFullName(value)));
       },
       [tutorNamesWarnings]
     );
@@ -145,7 +136,7 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
           confirmMessage: hasWages
             ? `Wages for ${tutor.tutorName} will be removed too, do you really want to continue?`
             : "Tutor will be deleted permanently",
-          cancelButtonText: "Delete"
+          confirmButtonText: "Delete"
         });
       };
 
@@ -175,36 +166,11 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
       dispatch(change(form, `tutors[${index}].roleName`, value.name));
     }, []);
 
-    const addTutorWage = useCallback(
-      (tutor: CourseClassTutor, wage?: ClassCostExtended) => {
-        const role = tutorRoles.find(r => r.id === tutor.roleId);
-        const onCostRate = (role && role["currentPayrate.oncostRate"]) ? parseFloat(role["currentPayrate.oncostRate"]) : 0;
-        const perUnitAmountExTax = (role && role["currentPayrate.rate"]) ? parseFloat(role["currentPayrate.rate"]) : 0;
-        const initWage: ClassCost = wage || getTutorPayInitial(tutor, values.id, values.taxId, role, perUnitAmountExTax);
-
-        setCourseClassBudgetModalOpened(true, isNaN(onCostRate) ? 0 : onCostRate);
-        dispatch(initialize(COURSE_CLASS_COST_DIALOG_FORM, initWage));
-        if (twoColumn) {
-          const search = new URLSearchParams(window.location.search);
-          search.append("expandTab", "4");
-          history.replace({
-            pathname: history.location.pathname,
-            search: decodeURIComponent(search.toString())
-          });
-
-          if (!expandedBudget.includes("Total Cost")) {
-            expandBudgetItem("Total Cost");
-          }
-        }
-      },
-      [tutorRoles, twoColumn, values.taxId, values.id, expandedBudget]
-    );
-
     return (
-      <Grid container columnSpacing={3} className="pl-3 pr-3 pb-3">
+      <Grid container columnSpacing={3} className="pl-3 pr-3 pb-2">
         <Grid item xs={12} className="centeredFlex">
           <div className="heading">Tutors</div>
-          <AddIcon onClick={onAddTutor} />
+          <AddButton onClick={onAddTutor} />
         </Grid>
 
         <Grid item xs={twoColumn ? 6 : 12}>
@@ -231,7 +197,6 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setTutorNamesWarnings: warnings => dispatch(setCourseClassTutorNamesWarnings(warnings)),
-  setCourseClassBudgetModalOpened: (opened, onCostRate) => dispatch(setCourseClassBudgetModalOpened(opened, onCostRate))
 });
 
 const mapStateToProps = (state: State) => ({

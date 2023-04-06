@@ -5,6 +5,7 @@ const mockByKeys = (index, keys) => {
 
     if (item.type === "Datetime" || item.type === "Date") value = new Date().toISOString();
     else if (item.type === "number" || item.type === "Number") value = parseInt(`${index + 1}`, 10);
+    else if (item.type === "boolean" || item.type === "Boolean") value = "true";
 
     obj[item.name] = value;
   });
@@ -30,7 +31,8 @@ export const getEntityResponse = ({
     visible: true,
     system: null,
     width: 200,
-    sortFields: []
+    sortFields: [],
+    prefetches: [],
   };
 
   const columnsList = [];

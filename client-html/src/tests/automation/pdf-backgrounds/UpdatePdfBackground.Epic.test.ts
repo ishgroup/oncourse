@@ -1,4 +1,5 @@
 import { DefaultEpic } from "../../common/Default.Epic";
+import { showMessage } from "../../../js/common/actions";
 import {
   getAutomationPdfBackground,
   getAutomationPdfBackgroundsList,
@@ -16,6 +17,7 @@ describe("Update pdf background epic tests", () => {
     } as File),
     epic: EpicUpdatePdfBackground,
     processData: () => [
+      showMessage({ success: true, message: "PDF background updated" }),
       getAutomationPdfBackgroundsList(),
       getAutomationPdfBackground(1)
     ]

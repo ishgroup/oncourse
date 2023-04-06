@@ -4,20 +4,24 @@
  */
 
 import { Dispatch } from "redux";
-import { SHOW_MESSAGE } from "../../actions/index";
+import { SHOW_MESSAGE } from "../../actions";
 import { ServerResponse } from "../../../model/common/apiHandlers";
 
 const instantFetchErrorHandler = (
   dispatch: Dispatch,
-  response: ServerResponse,
-  customMessage: string = "Something went wrong. Changes won't be saved"
+  response: ServerResponse | Error,
+  customMessage: string = "Something went wrong"
 ) => {
   if (!response) {
     dispatch({
       type: SHOW_MESSAGE,
-      payload: { message: customMessage || "Something went wrong" }
+      payload: { message: customMessage }
     });
     return;
+  }
+
+  if (response instanceof Error) {
+    throw response;
   }
 
   const { data, status } = response;
@@ -33,7 +37,7 @@ const instantFetchErrorHandler = (
     dispatch({
       type: SHOW_MESSAGE,
       payload: {
-        message: response
+        message: typeof response === "string" ? response : customMessage
       }
     });
   }

@@ -5,7 +5,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { Grid, Typography } from "@mui/material";
-import { change } from "redux-form";
+import { change, FieldArray } from "redux-form";
 import { Account, Course, Currency, ProductStatus, VoucherProduct, VoucherProductCourse } from "@api/model";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -29,6 +29,13 @@ import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
 import { PreferencesState } from "../../../preferences/reducers/state";
 import { normalizeString } from "../../../../common/utils/strings";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { useAppSelector } from "../../../../common/utils/hooks";
+import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import { ConfirmProps } from "../../../../model/common/Confirm";
 
 interface VoucherProductGeneralProps extends EditViewProps<VoucherProduct> {
   accounts?: Account[];
@@ -41,6 +48,7 @@ interface VoucherProductGeneralProps extends EditViewProps<VoucherProduct> {
   foundCourses?: Course[];
   submitSucceeded?: any;
   getMinMaxFee?: (ids: string) => void;
+  coursesError?: boolean;
   dataCollectionRules?: PreferencesState["dataCollectionRules"];
 }
 
@@ -165,10 +173,13 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
     pendingCourses,
     submitSucceeded,
     getMinMaxFee,
+    coursesError,
     dispatch,
     form,
     rootEntity,
-    dataCollectionRules
+    dataCollectionRules,
+    syncErrors,
+    showConfirm
   } = props;
   const [redemptionIndex, setRedemptionIndex] = useState(null);
   const initialRedemptionIndex = getInitialRedemptionIndex(isNew, values);
@@ -205,29 +216,96 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
 
   const expenseAccounts = useMemo(() => accounts.filter(a => a.type === "expense"), [accounts]);
 
+  const tags = useAppSelector(state => state.tags.entityTags["VoucherProduct"]);
+  
+  const courseHandlers = useMemo(() => {
+    if (values.soldVouchersCount === 0) {
+      return {
+        onAdd: onAddCourses(props),
+        onDelete: onDeleteCourse(props),
+        onDeleteAll: onDeleteAllCourses(props)
+      };
+    }
+    
+    const confirmProps: ConfirmProps = {
+      title: "INFORMATION",
+      confirmMessage: "Any changes you make to the courses that can be enrolled in with this voucher type will also affect vouchers of this type that have already been sold",
+      confirmButtonText: "Edit"
+    };
+    
+    return {
+      onAdd: arg => showConfirm({ ...confirmProps, onConfirm: () => onAddCourses(props).call(null, arg) }),
+      onDelete: arg => showConfirm({ ...confirmProps, onConfirm: () => onDeleteCourse(props).call(null, arg) }),
+      onDeleteAll: () => showConfirm({ ...confirmProps, onConfirm: onDeleteAllCourses(props) })
+    };
+  }, [ values, dispatch, form, foundCourses]);
+
   return (
-    <div className="generalRoot">
-      <div className="pt-1">
-        <Grid container columnSpacing={3}>
-          <Grid item xs={twoColumn ? 4 : 6}>
-            <FormField
-              type="text"
-              name="name"
-              label="Name"
-              required
-            />
-          </Grid>
-          <Grid item xs={twoColumn ? 4 : 6}>
-            <FormField
-              type="text"
-              name="code"
-              label="SKU"
-              required
-            />
-          </Grid>
-        </Grid>
-      </div>
-      <div className="mr-2">
+    <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pt-3 pr-3">
+      <Grid item container xs={12}>
+        <FullScreenStickyHeader
+          opened={isNew || Object.keys(syncErrors).some(k => ['code', 'name'].includes(k))}
+          twoColumn={twoColumn}
+          title={twoColumn ? (
+            <div className="d-inline-flex-center">
+              <span>
+                {values && values.code}
+              </span>
+              <span className="ml-2">
+                {values && values.name}
+              </span>
+            </div>
+            ) : (
+              <div>
+                <div>
+                  {values && values.code}
+                </div>
+                <div className="mt-2">
+                  {values && values.name}
+                </div>
+              </div>
+            )}
+          fields={(
+            <Grid container columnSpacing={3} rowSpacing={2}>
+              <Grid item xs={twoColumn ? 2 : 12}>
+                <FormField
+                  type="text"
+                  label="SKU"
+                  name="code"
+                  required
+                 />
+              </Grid>
+              <Grid item xs={twoColumn ? 4 : 12}>
+                <FormField
+                  type="text"
+                  label="Name"
+                  name="name"
+                  required
+                />
+              </Grid>
+            </Grid>
+            )}
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 8 : 12}>
+        <FormField
+          type="tags"
+          name="tags"
+          tags={tags}
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <EntityChecklists
+          entity="VoucherProduct"
+          form={form}
+          entityId={values.id}
+          checked={values.tags}
+        />
+      </Grid>
+        
+      <Grid item xs={twoColumn ? 6 : 12}>
         <FormField
           type="select"
           name="liabilityAccountId"
@@ -237,117 +315,158 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
           selectLabelCondition={accountLabelCondition}
           required
         />
-      </div>
-      <FormField
-        type="select"
-        name="underpaymentAccountId"
-        label="Default voucher underpayment account"
-        items={expenseAccounts}
-        selectValueMark="id"
-        selectLabelCondition={accountLabelCondition}
-        required
-      />
-      <Typography color="inherit" component="div" noWrap>
-        Expires
+      </Grid>
+
+      <Grid item xs={twoColumn ? 6 : 12}>
         <FormField
-          type="number"
-          name="expiryDays"
-          color="primary"
-          formatting="inline"
-          hidePlaceholderInEditMode
-          validate={[validateSingleMandatoryField, validateNonNegative]}
-          parse={parseFloatValue}
+          type="select"
+          name="underpaymentAccountId"
+          label="Default voucher underpayment account"
+          items={expenseAccounts}
+          selectValueMark="id"
+          selectLabelCondition={accountLabelCondition}
+          required
         />
-        days after purchase
-      </Typography>
-      <div className="pt-2">
-        <div className="mb-2">
-          <CustomSelector
-            caption="Can be redeemed for"
-            options={getRedemptionOptions()}
-            onSelect={onSelectRedemption(props, setRedemptionIndex)}
-            initialIndex={redemptionIndex === null ? initialRedemptionIndex : redemptionIndex}
-            disabled={values && values.soldVouchersCount > 0}
+      </Grid>
+
+      <Grid item xs={12}>
+        <Typography color="inherit" component="div" noWrap>
+          Expires
+          <FormField
+            type="number"
+            name="expiryDays"
+            validate={[validateSingleMandatoryField, validateNonNegative]}
+            parse={parseFloatValue}
+            debounced={false}
+            inline
+          />
+          days after purchase
+        </Typography>
+      </Grid>
+
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <CustomSelector
+          caption="Can be redeemed for"
+          options={getRedemptionOptions()}
+          onSelect={onSelectRedemption(props, setRedemptionIndex)}
+          initialIndex={redemptionIndex === null ? initialRedemptionIndex : redemptionIndex}
+          disabled={values && values.soldVouchersCount > 0}
+        />
+      </Grid>
+
+      {redemptionIndex === RedemptionType.Enrollment && (
+      <Grid item xs={12}>
+        <div className={twoColumn ? "mb-2 mw-800" : "mb-2"}>
+          <NestedList
+            formId={values.id}
+            title="Courses"
+            name="courses"
+            searchPlaceholder="Find course"
+            validate={validateCourses}
+            values={coursesToNestedListItems(values.courses)}
+            searchValues={coursesToNestedListItems(foundCourses)}
+            onSearch={searchCourses}
+            clearSearchResult={clearCourses}
+            pending={pendingCourses}
+            sort={sortCourses}
+            resetSearch={submitSucceeded}
+            searchType="withToggle"
+            aqlEntities={["Course"]}
+            aqlQueryError={coursesError}
+            {...courseHandlers}
           />
         </div>
-      </div>
-      {redemptionIndex === RedemptionType.Enrollment && (
-        <div className="pb-2">
-          <div className={twoColumn ? "mb-2 mw-800" : "mb-2"}>
-            <NestedList
-              formId={values.id}
-              title="Courses"
-              name="courses"
-              searchPlaceholder="Find course"
-              validate={validateCourses}
-              values={coursesToNestedListItems(values.courses)}
-              searchValues={coursesToNestedListItems(foundCourses)}
-              onSearch={searchCourses}
-              clearSearchResult={clearCourses}
-              pending={pendingCourses}
-              onAdd={onAddCourses(props)}
-              onDelete={onDeleteCourse(props)}
-              onDeleteAll={onDeleteAllCourses(props)}
-              sort={sortCourses}
-              resetSearch={submitSucceeded}
-              searchType="withToggle"
-              disabled={values && values.soldVouchersCount > 0}
-              aqlEntities={["Course"]}
-            />
-          </div>
-          <Typography color="inherit" component="div">
-            Current class fee price range:
-            {' '}
-            <span className="money">{formatCurrency(minFee)}</span>
-            {' '}
-            to
-            {" "}
-            <span className="money">{formatCurrency(maxFee)}</span>
-          </Typography>
-        </div>
-      )}
+        <Typography color="inherit" component="div">
+          Current class fee price range:
+          {' '}
+          <span className="money">{formatCurrency(minFee)}</span>
+          {' '}
+          to
+          {" "}
+          <span className="money">{formatCurrency(maxFee)}</span>
+        </Typography>
+      </Grid>
+        )}
+
       {redemptionIndex !== RedemptionType.Purchase && (
-        <FormField
-          type="money"
-          name="feeExTax"
-          validate={[validateSingleMandatoryField, validateNonNegative]}
-          label="Voucher price"
-        />
-      )}
-      <FormField
-        type="select"
-        name="status"
-        label="Status"
-        items={productStatusItems}
-        selectLabelMark="value"
-      />
-      <Grid container columnSpacing={3}>
-        <Grid item xs={twoColumn ? 4 : 12}>
+        <Grid item xs={twoColumn ? 6 : 12} style={redemptionIndex === RedemptionType.Value ? { marginTop: "10px" } : null}>
           <FormField
-            type="select"
-            name="dataCollectionRuleId"
-            label="Data collection rule"
-            selectValueMark="id"
-            selectLabelMark="name"
-            items={dataCollectionRules || []}
-            format={normalizeString}
-            required
-            sort
+            type="money"
+            name="feeExTax"
+            validate={[validateSingleMandatoryField, validateNonNegative]}
+            label="Voucher price"
           />
         </Grid>
+      )}
+
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <FormField
+          type="select"
+          name="status"
+          label="Status"
+          items={productStatusItems}
+          selectLabelMark="value"
+        />
       </Grid>
-      <FormEditorField
-        name="description"
-        label="Web description"
-      />
-      <RelationsCommon
-        values={values}
-        dispatch={dispatch}
+
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <FormField
+          type="select"
+          name="dataCollectionRuleId"
+          label="Data collection rule"
+          selectValueMark="id"
+          selectLabelMark="name"
+          items={dataCollectionRules || []}
+          format={normalizeString}
+          required
+          sort
+        />
+      </Grid>
+
+      <CustomFields
+        entityName="VoucherProduct"
+        fieldName="customFields"
+        entityValues={values}
         form={form}
-        submitSucceeded={submitSucceeded}
-        rootEntity={rootEntity}
+        gridItemProps={{
+          xs: twoColumn ? 6 : 12
+        }}
       />
-    </div>
+
+      <Grid item xs={12}>
+        <FormEditorField
+          name="description"
+          label="Web description"
+        />
+      </Grid>
+
+      <Grid item xs={12}>
+        <RelationsCommon
+          values={values}
+          dispatch={dispatch}
+          form={form}
+          submitSucceeded={submitSucceeded}
+          rootEntity={rootEntity}
+          customAqlEntities={["Course", "Product"]}
+        />
+      </Grid>
+
+      <Grid item xs={12} className="pb-3 mb-3">
+        <FieldArray
+          name="documents"
+          label="Documents"
+          entity="ArticleProduct"
+          component={DocumentsRenderer}
+          xsGrid={12}
+          mdGrid={twoColumn ? 6 : 12}
+          lgGrid={twoColumn ? 4 : 12}
+          dispatch={dispatch}
+          form={form}
+          showConfirm={showConfirm}
+          rerenderOnEveryChange
+        />
+      </Grid>
+    </Grid>
   );
 };
 
@@ -366,6 +485,7 @@ const mapStateToProps = (state: State) => ({
   minFee: state.voucherProducts.minFee,
   maxFee: state.voucherProducts.maxFee,
   foundCourses: state.plainSearchRecords["Course"].items,
+  coursesError: state.plainSearchRecords["Course"].error,
   pendingCourses: state.plainSearchRecords["Course"].loading,
   dataCollectionRules: state.preferences.dataCollectionRules
 });

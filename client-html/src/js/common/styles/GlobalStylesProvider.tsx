@@ -7,12 +7,8 @@ import * as React from "react";
 import { alpha, darken } from '@mui/material/styles';
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
-import { grey } from "@mui/material/colors";
 import getOS from "../utils/getOS";
 import { AppTheme } from "../../model/common/Theme";
-import christmasHeaderBackground from "../../../images/beach-header.jpg";
-import christmasBodyBackground from "../../../images/sparkel.png";
-import christmasBodyBackgroundStars from "../../../images/christmas_header_background.gif";
 import InterRomanVar from "../../../fonts/inter/Inter-Roman.var.woff2";
 import InterItalicVar from "../../../fonts/inter/Inter-Italic.var.woff2";
 import { animateStyles } from "./animateStyles";
@@ -127,6 +123,11 @@ const globalStyles = (theme: AppTheme) =>
       ".editViewHeadingOffset": {
         marginTop: `-${theme.spacing(2)}`
       },
+      ".cardBorders": {
+        borderRadius: theme.spacing(1),
+        border: "2px solid",
+        borderColor: alpha(theme.palette.text.disabled, 0.1),
+      },
       ".heading": {
         textTransform: "uppercase",
         fontFamily: theme.typography.fontFamily,
@@ -150,9 +151,19 @@ const globalStyles = (theme: AppTheme) =>
         color: theme.heading.color,
         lineHeight: 1.45
       },
+      ".headingHover": {
+        cursor: 'pointer',
+        willChange: "color",
+        "&:hover": {
+          color: darken(theme.heading.color as any, 0.4),
+        }
+      },
       ".checkbox": {
         height: "35px",
-        overflow: "hidden"
+        display: "block",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis"
       },
       ".checkboxWidth": {
         width: "35px"
@@ -194,6 +205,7 @@ const globalStyles = (theme: AppTheme) =>
         backgroundColor: `${theme.palette.grey[300]} !important`
       },
       ".saveButtonEditView": {
+        whiteSpace: "nowrap",
         boxShadow: theme.shadows[2],
         "&:hover": {
           backgroundColor: darken(theme.palette.primary.main, 0.1)
@@ -232,7 +244,8 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".avetmissButton": {
         "&:hover": {
-          backgroundColor: darken(theme.palette.primary.main, 0.1)
+          backgroundColor: darken(theme.palette.primary.main, 0.1),
+          color: theme.palette.primary.contrastText
         }
       },
       ".hoverGrayIcon": {
@@ -246,7 +259,7 @@ const globalStyles = (theme: AppTheme) =>
         }
       },
       ".dndActionIcon": {
-        fill: theme.palette.action.hover,
+        fill: theme.palette.action.focus,
         "&:hover": {
           fill: theme.palette.action.active
         }
@@ -274,17 +287,18 @@ const globalStyles = (theme: AppTheme) =>
         marginRight: "auto",
         paddingRight: theme.spacing(2),
         paddingTop: "1px",
-        fontSize: `${theme.typography.fontSize}px`
+        fontSize: `14px`
       },
       ".switchWrapper": {
         flexDirection: "row-reverse",
+        justifyContent: "space-between",
         marginLeft: 0
       },
       ".switchLabelMargin": {
         marginRight: "100px"
       },
       ".addButtonColor": {
-        color: theme.palette.mode === "light" ? "#f7941d" : darken(grey[400], 0.1)
+        color: theme.addButtonColor.color
       },
       ".labelOffset": {
         marginLeft: "-14px"
@@ -320,30 +334,14 @@ const globalStyles = (theme: AppTheme) =>
           color: theme.palette.primary.contrastText
         }
       },
-      ".textField": {
-        // @ts-ignore
-        paddingBottom: `${theme.spacing(2) - 3}px`,
-        paddingLeft: "0",
-        overflow: "hidden",
-        display: "flex",
-        "&.d-none": {
-          display: "none"
-        }
-      },
       ".errorColor": {
-        color: theme.palette.error.main
+        color: theme.palette.error.light
       },
       ".errorBackgroundColor": {
-        backgroundColor: theme.palette.error.main
+        backgroundColor: theme.palette.error.light
       },
       ".errorColorFade-0-2": {
-        color: alpha(theme.palette.error.main, 0.2)
-      },
-      ".errorDarkColor": {
-        color: theme.palette.error.dark
-      },
-      ".errorDarkBackgroundColor": {
-        backgroundColor: theme.palette.error.dark
+        color: alpha(theme.palette.error.light, 0.2)
       },
       ".errorContrastColor": {
         color: theme.palette.error.contrastText
@@ -351,14 +349,17 @@ const globalStyles = (theme: AppTheme) =>
       ".primaryColor": {
         color: theme.palette.primary.main
       },
+      ".secondaryColor": {
+        color: theme.palette.secondary.main
+      },
       ".warningColor": {
-        color: theme.palette.warning.main
+        color: theme.palette.warning.light
       },
       ".successColor": {
-        color: theme.palette.success.main
+        color: theme.palette.success.light
       },
       ".successBackgroundColor": {
-        backgroundColor: theme.palette.success.main
+        backgroundColor: theme.palette.success.light
       },
       ".primaryContarstText": {
         color: theme.palette.primary.contrastText
@@ -374,7 +375,7 @@ const globalStyles = (theme: AppTheme) =>
         }
       },
       ".defaultBackgroundColor": {
-        backgroundColor: theme.palette.background.default
+        backgroundColor: theme.appBar.header.background
       },
       ".paperBackgroundColor": {
         background: theme.palette.background.paper
@@ -408,6 +409,9 @@ const globalStyles = (theme: AppTheme) =>
         height: theme.spacing(4),
         padding: theme.spacing(1)
       },
+      ".lightGrayColor": {
+        color: alpha(theme.palette.text.primary, 0.2),
+      },
       ".noRecordsMessage": {
         color: theme.palette.grey[400],
         flex: 1,
@@ -421,6 +425,9 @@ const globalStyles = (theme: AppTheme) =>
       ".textSecondaryColor": {
         color: theme.palette.text.secondary
       },
+      ".textGreyColor700": {
+        color: theme.palette.text.grey
+      },
       ".iconColor": {
         color: theme.palette.text.secondary,
         marginLeft: theme.spacing(1)
@@ -430,12 +437,6 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".closeAndClearButton": {
         padding: theme.spacing(1)
-      },
-      ".listHeadingPadding": {
-        padding: `${theme.spacing(1) + 4}px ${theme.spacing(3)}px`,
-        display: "flex",
-        justifyContent: "space-between",
-        height: "auto"
       },
       ".appHeaderFontSize": {
         fontSize: "1.125rem"
@@ -459,31 +460,6 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".summaryTopBorder": {
         borderTop: `1px solid ${theme.palette.text.primary}`
-      },
-      ".christmasBody": {
-        backgroundImage: `url(${christmasBodyBackground})`,
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "bottom left",
-        backgroundSize: "60%"
-      },
-      ".christmasBackground": {
-        background: "transparent"
-      },
-      ".christmasHeader": {
-        "&:before": {
-          content: "''",
-          backgroundImage: `url(${christmasBodyBackgroundStars})`,
-          position: "absolute",
-          top: 0,
-          left: 0,
-          height: "100%",
-          width: "100%"
-        }
-      },
-      ".christmasHeaderDashboard": {
-        backgroundImage: `url(${christmasHeaderBackground})`,
-        backgroundSize: "cover",
-        backgroundPosition: "top"
       },
       ".selectedItemArrow": {
         [theme.breakpoints.up("md")]: {
@@ -522,14 +498,16 @@ const globalStyles = (theme: AppTheme) =>
           visibility: "visible",
         }
       },
-      ".generalRoot": {
-        padding: theme.spacing(1, 3, 0)
-      },
       ".gridTemplateColumns-1fr": {
         gridTemplateColumns: "minmax(0, 1fr) auto"
       },
       ".gridAutoFlow-column": {
         gridAutoFlow: "column"
+      },
+      ".dotsBackgroundImage": {
+        backgroundImage: `radial-gradient(${alpha(theme.palette.primary.main, 0.5)} 1.5px, transparent 1.5px),radial-gradient(${alpha(theme.palette.primary.main, 0.5)} 1.5px, transparent 1.5px)`,
+        backgroundPosition: "5px 4px, 20px 18px",
+        backgroundSize: "30px 30px",
       },
       ...bootstrap(theme),
       ...customOSScrollbars,

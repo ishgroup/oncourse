@@ -22,7 +22,14 @@ export function mockDataCollectionRules(): DataCollectionRule[] {
       enrolmentFormName: "Enrolment Form",
       applicationFormName: "Fee for service",
       waitingListFormName: "Waiting list Form",
-      surveyForms: ["Survey Form 1", "Survey Form 2"]
+      payerFormName: "Payer Details",
+      parentFormName: "Parent Details",
+      productFormName: "Default Field form (Product)",
+      voucherFormName: "Default Voucher Form",
+      membershipFormName: "Default Field form (Membership)",
+      surveyForms: ["Survey Form 1", "Survey Form 2"],
+      created: "2017-04-09T02:00:00.000Z",
+      modified: "2021-11-02T00:52:12.000Z",
     },
     {
       id: "55667",
@@ -30,7 +37,14 @@ export function mockDataCollectionRules(): DataCollectionRule[] {
       enrolmentFormName: "Enrolment Form",
       applicationFormName: "Fee for service",
       waitingListFormName: "Waiting list Form",
-      surveyForms: ["Survey Form 2"]
+      payerFormName: "Payer Details",
+      parentFormName: "Parent Details",
+      productFormName: "Default Field form (Product)",
+      voucherFormName: "Creative Kids Voucher Form",
+      membershipFormName: "Default Field form (Membership)",
+      surveyForms: ["Survey Form 2"],
+      created: "2017-04-09T02:00:00.000Z",
+      modified: "2021-07-05T11:52:07.000Z"
     }
   ];
 }

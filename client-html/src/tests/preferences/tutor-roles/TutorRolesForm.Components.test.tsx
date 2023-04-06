@@ -1,28 +1,28 @@
 import * as React from "react";
-import * as _ from "lodash";
+// import * as _ from "lodash";
 import { format } from "date-fns";
 import { defaultComponents } from "../../common/Default.Components";
-import TutorRolesForm from "../../../js/containers/preferences/containers/tutor-roles/components/TutorRolesForm";
+import TutorRolesForm, { TUTOR_ROLES_FORM } from
+    "../../../js/containers/preferences/containers/tutor-roles/components/TutorRolesForm";
+import { formatCurrency } from "../../../js/common/utils/numbers/numbersNormalizing";
 import { III_DD_MMM_YYYY } from "../../../js/common/utils/dates/format";
-
-// TODO Enable test on fix
 
 describe("Virtual rendered TutorRolesForm", () => {
   defaultComponents({
-    entity: "TutorRolesForm",
+    entity: TUTOR_ROLES_FORM,
     View: props => <TutorRolesForm {...props} />,
     record: mockedApi => mockedApi.db.getTutorRole(1),
     defaultProps: ({ initialValues }) => {
       const payRates = (
         initialValues.payRates
         && initialValues.payRates.length > 0
-        && _.orderBy(initialValues.payRates, ["validFrom"], ["desc"])
+        && initialValues.payRates.sort((a, b) => (b.validFrom > a.validFrom ? 1 : -1))
       ) || [];
 
       const values = { ...initialValues, payRates };
 
       return {
-        form: "TutorRolesForm",
+        form: TUTOR_ROLES_FORM,
         initialValues: values,
         values,
         value: values,
@@ -30,18 +30,24 @@ describe("Virtual rendered TutorRolesForm", () => {
         showConfirm: jest.fn()
       };
     },
-    render: (wrapper, initialValues, shallow) => {
-      // expect(wrapper.find("#description input").val()).toContain(initialValues.description);
-      // expect(shallow.find("input[type='checkbox']").props().checked).toEqual(initialValues.active);
-      //
-      // initialValues.payRates.forEach((payRate, index) => {
-      //   expect(wrapper.find(`div[id='payRates[${index}].validFrom'] input`).val()).toContain(
-      //     format(new Date(payRate.validFrom), III_DD_MMM_YYYY).toString()
-      //   );
-      //   expect(wrapper.find(`div[id='payRates[${index}].rate'] input`).val()).toContain(payRate.rate);
-      //   expect(wrapper.find(`div[id='payRates[${index}].type'] input`).val()).toContain(payRate.type);
-      //   expect(wrapper.find(`div[id='payRates[${index}].oncostRate'] input`).val()).toContain("10");
-      // });
+    render: ({ screen, initialValues, fireEvent }) => {
+      const tutorRoles = {};
+
+      initialValues.payRates.forEach((payRate, key) => {
+        tutorRoles[`payRates[${key}].validFrom`] = format(new Date(payRate.validFrom), III_DD_MMM_YYYY).toString();
+        tutorRoles[`payRates[${key}].rate`] = formatCurrency(payRate.rate, "");
+        tutorRoles[`payRates[${key}].type`] = payRate.type;
+        tutorRoles[`payRates[${key}].oncostRate`] = payRate.oncostRate * 100;
+        tutorRoles[`payRates[${key}].notes`] = payRate.notes;
+      });
+
+      expect(screen.getByRole(TUTOR_ROLES_FORM)).toHaveFormValues({
+        description: initialValues.description,
+        active: initialValues.active,
+        ...tutorRoles
+      });
+
+      fireEvent.click(screen.getByTestId('appbar-submit-button'));
     }
   });
 });

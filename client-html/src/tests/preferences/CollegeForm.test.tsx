@@ -1,42 +1,29 @@
 import * as React from "react";
-import { mount } from "enzyme";
-import { mockedAPI, TestEntry } from "../TestEntry";
+import { defaultComponents } from "../common/Default.Components";
+import { dashedCase } from "../common/utils";
 import College from "../../js/containers/preferences/containers/college/College";
 import * as PreferencesModel from "../../js/model/preferences";
+import { preferencesFormRole } from "../../js/containers/preferences/containers/FormContainer";
 
-describe("College Form component", () => {
-  test("it should render correct input values", () => {
-    // Rendering complete Virtual DOM tree with testing component as a child
-    const wrapper = mount(
-      <TestEntry>
-        <College />
-      </TestEntry>,
-    );
+describe("Virtual rendered College Form component", () => {
+  defaultComponents({
+    entity: "CollegeForm",
+    View: props => <College {...props} />,
+    record: () => ({}),
+    defaultProps: () => ({}),
+    render: ({ screen, fireEvent, mockedApi }) => {
+      const collegeFormData = dashedCase({
+        [PreferencesModel.CollegeWebsite.uniqueKey]: mockedApi.db.preference[PreferencesModel.CollegeWebsite.uniqueKey],
+        [PreferencesModel.CollegeName.uniqueKey]: mockedApi.db.preference[PreferencesModel.CollegeName.uniqueKey],
+        [PreferencesModel.CollegeTimezone.uniqueKey]: mockedApi.db.preference[PreferencesModel.CollegeTimezone.uniqueKey],
+        [PreferencesModel.CollegeABN.uniqueKey]: mockedApi.db.preference[PreferencesModel.CollegeABN.uniqueKey],
+      });
 
-    // Returning Promise with timeout to wait for API calls to end and rendered component ti update
-    // @ts-ignore
-    return new Promise<void>(resolve => {
+      fireEvent.click(screen.getByTestId('appbar-submit-button'));
+
       setTimeout(() => {
-        // Testing rendered HTML inputs value to match one stored in mock DB
-        // Using real HTML selectors to find rendered elements
-        expect(wrapper.find("#web-url input").getDOMNode().value).toEqual(
-          mockedAPI.db.preference[PreferencesModel.CollegeWebsite.uniqueKey],
-        );
-
-        expect(wrapper.find("#college-name input").getDOMNode().value).toEqual(
-          mockedAPI.db.preference[PreferencesModel.CollegeName.uniqueKey],
-        );
-
-        expect(wrapper.find("#oncourse-server-timezone-default input").getDOMNode().value).toEqual(
-          mockedAPI.db.preference[PreferencesModel.CollegeTimezone.uniqueKey],
-        );
-
-        expect(wrapper.find("#college-abn input").getDOMNode().value).toEqual(
-          mockedAPI.db.preference[PreferencesModel.CollegeABN.uniqueKey],
-        );
-
-        resolve();
-      }, 2000);
-    });
+        expect(screen.getByRole(preferencesFormRole)).toHaveFormValues(collegeFormData);
+      }, 500);
+    }
   });
 });

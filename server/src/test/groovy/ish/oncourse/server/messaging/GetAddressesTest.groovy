@@ -3,7 +3,7 @@ package ish.oncourse.server.messaging
 
 import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.MessagePerson
+import ish.oncourse.server.cayenne.Message
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
@@ -56,30 +56,30 @@ class GetAddressesTest {
         Assertions.assertTrue(expectedResults3.contains(getAddresses3.get().toString()))
 
 
-        MessagePerson messagePerson1 = getMessagePerson(true)
+        Message message1 = getMessage(true)
         String expectedResult4 = 'testLastName <destinationAddress@ish.com.au>'
-        GetAddresses getAddresses4 = GetAddresses.valueOf(messagePerson1)
+        GetAddresses getAddresses4 = GetAddresses.valueOf(message1)
         Assertions.assertEquals(1, getAddresses4.get().size())
         Assertions.assertEquals(expectedResult4, getAddresses4.get()[0].toString())
 
 
-        MessagePerson messagePerson2 = getMessagePerson(false)
+        Message message2 = getMessage(false)
         String expectedResult5 = 'testFirstName testLastName <destinationAddress@ish.com.au>'
-        GetAddresses getAddresses5 = GetAddresses.valueOf(messagePerson2)
+        GetAddresses getAddresses5 = GetAddresses.valueOf(message2)
         Assertions.assertEquals(expectedResult5, getAddresses5.get()[0].toString())
     }
 
 
-    private MessagePerson getMessagePerson(boolean isCompany) {
+    private Message getMessage(boolean isCompany) {
         Contact contact = Mockito.mock(Contact)
         Mockito.when(contact.firstName).thenReturn('testFirstName')
         Mockito.when(contact.lastName).thenReturn('testLastName')
         Mockito.when(contact.isCompany).thenReturn(isCompany)
 
-        MessagePerson messagePerson = Mockito.mock(MessagePerson)
-        Mockito.when(messagePerson.destinationAddress).thenReturn('destinationAddress@ish.com.au')
-        Mockito.when(messagePerson.contact).thenReturn(contact)
+        Message message = Mockito.mock(Message)
+        Mockito.when(message.destinationAddress).thenReturn('destinationAddress@ish.com.au')
+        Mockito.when(message.contact).thenReturn(contact)
 
-        messagePerson
+        message
     }
 }

@@ -7,7 +7,6 @@
  */
 
 import React, { createRef, useEffect, useState } from "react";
-import { DataResponse } from "@api/model";
 import {
  Grid, Link, List, ListItem, Typography, Tooltip
 } from "@mui/material";
@@ -53,51 +52,56 @@ const styles = theme => createStyles({
 const ScriptStatistic = ({ dispatch, classes }) => {
   const [scripts, setScripts] = useState([]);
 
-  const getScriptsData = () => {
+  const getScriptsData = async () => {
     const today = new Date();
+    
+    try {
+      const scriptRes = await EntityService.getPlainRecords(
+        "Script",
+        "name",
+        'automationStatus == ENABLED',
+        null,
+        null,
+        "name",
+        true
+      );
 
-    EntityService.getPlainRecords(
-      "Script",
-      "name",
-      'enabled is true',
-      null,
-      null,
-      "name",
-      true
-    )
-      .then(async (scriptRes: DataResponse) => {
-        const resultForRender = [];
+      if (!Array.isArray(scriptRes?.rows)) return;
 
-        await scriptRes.rows.map(scriptRow => () =>
-          EntityService.getPlainRecords(
-            "Audit",
-            "entityId,created,action",
-            `entityIdentifier is "Script" and entityId is ${scriptRow.id}
+      const resultForRender = [];
+
+      for (const scriptRow of scriptRes.rows) {
+        const auditRes = await EntityService.getPlainRecords(
+          "Audit",
+          "entityId,created,action",
+          `entityIdentifier is "Script" and entityId is ${scriptRow.id}
             and ( action is SCRIPT_FAILED or action is SCRIPT_EXECUTED) `,
-            7,
-            0,
-            'created',
-            false
-          ).then(auditRes => {
-            if (!auditRes.rows.length || !auditRes.rows.some(r => differenceInHours(today, new Date(r.values[1])) <= 24)) {
-              return;
-            }
-            const result = auditRes.rows.map(row => ({
-              id: row.values[0],
-              date: row.values[1],
-              status: row.values[2],
-            }));
-            resultForRender.push({ name: scriptRow.values[0], result });
-          })
-          .catch(err => instantFetchErrorHandler(dispatch, err))).reduce(async (a, b) => {
-          await a;
-          await b();
-        }, Promise.resolve());
+          7,
+          0,
+          'created',
+          false
+        );
 
-        resultForRender.sort((a, b) => (new Date(a.result[0].date) < new Date(b.result[0].date) ? 1 : -1));
-        setScripts(resultForRender);
-      })
-      .catch(err => instantFetchErrorHandler(dispatch, err));
+        if (auditRes.rows.length && auditRes.rows.some(r => differenceInHours(today, new Date(r.values[1])) <= 24)) {
+          const result = []; 
+          auditRes.rows.forEach(row => {
+            if (row.values[1]) {
+              result.push({
+                id: row.values[0],
+                date: row.values[1],
+                status: row.values[2],
+              });
+            }
+          });
+          resultForRender.push({ name: scriptRow.values[0], result });
+        }
+      }
+
+      resultForRender.sort((a, b) => (new Date(a.result[0].date) < new Date(b.result[0].date) ? 1 : -1));
+      setScripts(resultForRender);
+    } catch (e) {
+      instantFetchErrorHandler(dispatch, e, "Failed to get automation status");
+    }
   };
 
   useEffect(() => {

@@ -3,8 +3,8 @@ import { defaultComponents } from "../../common/Default.Components";
 import Messaging from "../../../js/containers/preferences/containers/messaging/Messaging";
 import { mockedAPI } from "../../TestEntry";
 import * as PreferencesModel from "../../../js/model/preferences";
-
-// TODO Enable test on fix
+import { preferencesFormRole } from "../../../js/containers/preferences/containers/FormContainer";
+import { dashedCase } from "../../common/utils";
 
 describe("Virtual rendered MessagingForm", () => {
   defaultComponents({
@@ -15,34 +15,22 @@ describe("Virtual rendered MessagingForm", () => {
       form: "MessagingForm",
       history: jest.fn()
     }),
-    render: wrapper => {
-      // expect(wrapper.find("#email-from input").val()).toContain(
-      //   mockedAPI.db.preference[PreferencesModel.EmailFromAddress.uniqueKey]
-      // );
-      //
-      // expect(wrapper.find("#email-from-name input").val()).toContain(
-      //   mockedAPI.db.preference[PreferencesModel.EmailFromName.uniqueKey]
-      // );
-      //
-      // expect(wrapper.find("#email-admin input").val()).toContain(
-      //   mockedAPI.db.preference[PreferencesModel.EmailAdminAddress.uniqueKey]
-      // );
-      //
-      // expect(wrapper.find("#email-pop3host input").val()).toContain(
-      //   mockedAPI.db.preference[PreferencesModel.EmailPop3Host.uniqueKey]
-      // );
-      //
-      // expect(wrapper.find("#email-bounce-address input").val()).toContain(
-      //   mockedAPI.db.preference[PreferencesModel.EmailBounceAddress.uniqueKey]
-      // );
-      //
-      // expect(wrapper.find("#email-pop3-account input").val()).toContain(
-      //   mockedAPI.db.preference[PreferencesModel.EmailPop3Account.uniqueKey]
-      // );
-      //
-      // expect(wrapper.find("#email-pop3-password input").val()).toEqual(
-      //   mockedAPI.db.preference[PreferencesModel.EmailPop3Password.uniqueKey]
-      // );
+    render: ({ screen, fireEvent }) => {
+      const messagingFormData = dashedCase({
+        [PreferencesModel.EmailFromAddress.uniqueKey]: mockedAPI.db.preference[PreferencesModel.EmailFromAddress.uniqueKey],
+        [PreferencesModel.EmailFromName.uniqueKey]: mockedAPI.db.preference[PreferencesModel.EmailFromName.uniqueKey],
+        [PreferencesModel.EmailAdminAddress.uniqueKey]: mockedAPI.db.preference[PreferencesModel.EmailAdminAddress.uniqueKey],
+        [PreferencesModel.EmailPop3Host.uniqueKey]: mockedAPI.db.preference[PreferencesModel.EmailPop3Host.uniqueKey],
+        [PreferencesModel.EmailBounceAddress.uniqueKey]: mockedAPI.db.preference[PreferencesModel.EmailBounceAddress.uniqueKey],
+        [PreferencesModel.EmailPop3Account.uniqueKey]: mockedAPI.db.preference[PreferencesModel.EmailPop3Account.uniqueKey],
+        [PreferencesModel.EmailPop3Password.uniqueKey]: mockedAPI.db.preference[PreferencesModel.EmailPop3Password.uniqueKey],
+      });
+
+      fireEvent.click(screen.getByTestId('appbar-submit-button'));
+
+      setTimeout(() => {
+        expect(screen.getByRole(preferencesFormRole)).toHaveFormValues(messagingFormData);
+      }, 500);
     }
   });
 });

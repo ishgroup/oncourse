@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { useCallback } from "react";
@@ -18,9 +21,8 @@ import Uneditable from "../../../../common/components/form/Uneditable";
 import { State } from "../../../../reducers/state";
 import { SiteState } from "../../sites/reducers/state";
 import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { ContactLinkAdornment, LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { defaultContactName, openContactLink } from "../../contacts/utils";
 
 const invoiceColumns: NestedTableColumn[] = [
   {
@@ -69,7 +71,7 @@ const isDateLocked = (lockedDate: any, settlementDate: any) => {
   }
   return (
     compareAsc(
-      addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1),
+      addDays(new Date(lockedDate), 1),
       new Date(settlementDate)
     ) > 0
   );
@@ -87,7 +89,7 @@ const isDatePayedLocked = (lockedDate: any, datePayed: any, settlementDate: any)
   }
   return (
     compareAsc(
-      addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1),
+      addDays(new Date(lockedDate), 1),
       new Date(datePayed)
     ) > 0
   );
@@ -125,7 +127,7 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
   const validateLockedDate = useCallback(
     settlementDate => {
       if (!lockedDate || !settlementDate ) return undefined;
-      const lockedDateValue = new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth);
+      const lockedDateValue = new Date(lockedDate);
       return compareAsc(lockedDateValue, new Date(settlementDate)) === 1
         ? `You must choose date after "Transaction locked" date (${format(lockedDateValue, D_MMM_YYYY)})`
         : undefined;
@@ -155,55 +157,58 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
     || ["Contra", "Internal", "Reverse", "Voucher"].includes(values.type)
     || !["Success", "Reversed"].includes(values.status);
 
+  const gridItemProps = { xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 };
+
   return (
-    <div className="flex-column p-3 h-100">
-      <Grid container columnSpacing={3}>
-        <Grid item xs={twoColumn ? 6 : 12}>
-          <Uneditable
-            value={defaultContactName(values.payeeName)}
-            label="Payment to"
-            labelAdornment={<LinkAdornment link={values && values.payeeId} linkHandler={openContactLink} />}
-          />
-        </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
-          <FormField
-            type="searchSelect"
-            name="administrationCenterId"
-            label="Site"
-            defaultDisplayValue={values && values.administrationCenterName}
-            selectLabelCondition={getAdminCenterLabel}
-            items={adminSites || []}
-            labelAdornment={<LinkAdornment link={values && values.administrationCenterId} linkHandler={openSiteLink} />}
-            disabled={initialValues.dateBanked}
-          />
-        </Grid>
-        <Grid item xs={twoColumn ? 2 : 6}>
-          <Uneditable value={paymentMethods && getPaymentNameById(paymentMethods, values.paymentMethodId)} label="Type" />
-        </Grid>
-        <Grid item xs={twoColumn ? 2 : 6}>
-          <Uneditable value={values.status} label="Status" />
-        </Grid>
+    <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
+      <Grid item {...gridItemProps}>
+        <Uneditable
+          value={values.payeeName}
+          label="Payment to"
+          labelAdornment={
+            <ContactLinkAdornment id={values?.payeeId} />
+          }
+        />
       </Grid>
-      <Grid container columnSpacing={3}>
-        <Grid item xs={6}>
-          <Uneditable value={getAccountById(accountItems, values.accountOut)} label="Account" />
-        </Grid>
+      <Grid item {...gridItemProps}>
+        <FormField
+          type="select"
+          name="administrationCenterId"
+          label="Site"
+          defaultValue={values && values.administrationCenterName}
+          selectLabelCondition={getAdminCenterLabel}
+          items={adminSites || []}
+          labelAdornment={<LinkAdornment link={values && values.administrationCenterId} linkHandler={openSiteLink} />}
+          disabled={!!initialValues.dateBanked}
+        />
       </Grid>
-      <Grid container columnSpacing={3}>
-        {values.chequeSummary && Object.keys(values.chequeSummary).length > 0 && (
-        <Grid item xs={twoColumn ? 2 : 6}>
+      {!twoColumn && <Grid item {...gridItemProps}>
+        <Uneditable value={values.type} label="Payment method type" />
+      </Grid>}
+      <Grid item {...gridItemProps}>
+        <Uneditable value={paymentMethods && getPaymentNameById(paymentMethods, values.paymentMethodId)} label="Payment method name" />
+      </Grid>
+      <Grid item {...gridItemProps}>
+        <Uneditable value={values.status} label="Status" />
+      </Grid>
+
+      <Grid item {...gridItemProps}>
+        <Uneditable value={getAccountById(accountItems, values.accountOut)} label="Account" />
+      </Grid>
+   
+      {values.chequeSummary && Object.keys(values.chequeSummary).length > 0 && (
+        <Grid item {...gridItemProps}>
           {Object.keys(values.chequeSummary).map(item => (
             <Uneditable value={values.chequeSummary[item]} label={item} />
           ))}
         </Grid>
         )}
-        <Grid item xs={twoColumn ? 2 : 6}>
-          <Uneditable value={values.amount} money label="Amount" />
-        </Grid>
+      <Grid item {...gridItemProps}>
+        <Uneditable value={values.amount} money label="Amount" />
       </Grid>
-      <Grid container columnSpacing={3}>
-        <Grid item xs={twoColumn ? 2 : 6}>
-          {datePayedDisabled
+  
+      <Grid item {...gridItemProps}>
+        {datePayedDisabled
             ? <Uneditable value={values.datePayed} format={v => v && format(new Date(v), III_DD_MMM_YYYY)} label="Date paid" />
           : (
             <FormField
@@ -211,49 +216,42 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
               name="datePayed"
               label="Date paid"
               validate={[validateSettlementDatePayed, validateLockedDate]}
-              minDate={
-                lockedDate
-                  ? addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1)
-                  : undefined
-              }
             />
           )}
-        </Grid>
-        <Grid item xs={twoColumn ? 2 : 6}>
-          {dateBankedDisabled
-            ? <Uneditable value={values.dateBanked} format={v => v && format(new Date(v), III_DD_MMM_YYYY)} label="Date banked" />
-            : (
-              <FormField
-                type="date"
-                name="dateBanked"
-                label="Date banked"
-                validate={[validateSettlementDateBanked, validateLockedDate]}
-                minDate={
-                lockedDate
-                  ? addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1)
-                  : undefined
-              }
-              />
-)}
-        </Grid>
-        <Grid item xs={twoColumn ? 9 : 12}>
-          <FormField type="multilineText" name="privateNotes" label="Private notes" fullWidth />
-        </Grid>
-        <Grid item xs={12}>
-          <Uneditable value={values.createdBy} label="Created by" />
-        </Grid>
       </Grid>
-      <FieldArray
-        name="invoices"
-        goToLink="/invoice"
-        title={(values && values.invoices && values.invoices.length) === 1 ? "Invoice" : "Invoices"}
-        component={NestedTable}
-        columns={invoiceColumns}
-        onRowDoubleClick={openRow}
-        rerenderOnEveryChange
-        sortBy={(a, b) => b.invoiceNumber - a.invoiceNumber}
-      />
-    </div>
+      <Grid item {...gridItemProps}>
+        {dateBankedDisabled
+          ? <Uneditable value={values.dateBanked} format={v => v && format(new Date(v), III_DD_MMM_YYYY)} label="Date banked" />
+          : (
+            <FormField
+              type="date"
+              name="dateBanked"
+              label="Date banked"
+              validate={[validateSettlementDateBanked, validateLockedDate]}
+            />
+        )}
+      </Grid>
+      <Grid item {...gridItemProps}>
+        <FormField type="multilineText" name="privateNotes" label="Private notes"  />
+      </Grid>
+      <Grid item {...gridItemProps}>
+        <Uneditable value={values.createdBy} label="Created by" />
+      </Grid>
+      <Grid item xs={12} className="saveButtonTableOffset">
+        <FieldArray
+          name="invoices"
+          goToLink="/invoice"
+          title={(values && values.invoices && values.invoices.length) === 1 ? "Invoice" : "Invoices"}
+          component={NestedTable}
+          columns={invoiceColumns}
+          onRowDoubleClick={openRow}
+          rerenderOnEveryChange
+          sortBy={(a, b) => b.invoiceNumber - a.invoiceNumber}
+          calculateHeight
+        />
+      </Grid>
+    </Grid>
+ 
 );
 };
 
@@ -265,6 +263,6 @@ const mapStateToProps = (state: State, props) => ({
   adminSites: state.sites.adminSites
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(
+export default connect<any, any, any>(mapStateToProps)(
   (props: any) => (props.values ? <PaymentOutEditView {...props} /> : null)
 );

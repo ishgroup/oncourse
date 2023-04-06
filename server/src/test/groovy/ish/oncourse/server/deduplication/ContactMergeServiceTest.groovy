@@ -232,7 +232,7 @@ class ContactMergeServiceTest extends TestWithDatabase {
         Assertions.assertEquals(2, ObjectSelect.query(ClassCost).where(ClassCost.CONTACT.eq(a)).selectCount(cayenneContext))
         Assertions.assertEquals(2, ObjectSelect.query(CorporatePass).where(CorporatePass.CONTACT.eq(a)).selectCount(cayenneContext))
         Assertions.assertEquals(2, ObjectSelect.query(Invoice).where(Invoice.CONTACT.eq(a)).selectCount(cayenneContext))
-        Assertions.assertEquals(2, ObjectSelect.query(Message).where(Message.MESSAGE_PERSONS.dot(MessagePerson.CONTACT).eq(a)).selectCount(cayenneContext))
+        Assertions.assertEquals(2, ObjectSelect.query(Message).where(Message.CONTACT.eq(a)).selectCount(cayenneContext))
         Assertions.assertEquals(3, ObjectSelect.query(ContactNoteRelation).where(ContactNoteRelation.NOTED_CONTACT.eq(a)).selectCount(cayenneContext))
         Assertions.assertEquals(2, ObjectSelect.query(PaymentIn).where(PaymentIn.PAYER.eq(a)).selectCount(cayenneContext))
         Assertions.assertEquals(2, ObjectSelect.query(PaymentOut).where(PaymentOut.PAYEE.eq(a)).selectCount(cayenneContext))

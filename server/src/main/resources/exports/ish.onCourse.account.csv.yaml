@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.account.csv
-entityClass: Account
-body: ish.onCourse.account.csv.groovy
-name: Account CSV export
-outputType: csv

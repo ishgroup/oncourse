@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.qualification.xml
-entityClass: Qualification
-body: ish.onCourse.qualification.xml.groovy
-name: Qualification XML export
-outputType: xml

@@ -86,7 +86,7 @@ const BudgetInvoiceItemRenderer = React.memo<Partial<BudgetExpandableProps>>(
           }}
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Grid container columnSpacing={3} direction="row">
+            <Grid container direction="row">
               <Grid item xs={5}>
                 <div className="secondaryHeading">{header}</div>
               </Grid>
@@ -106,7 +106,7 @@ const BudgetInvoiceItemRenderer = React.memo<Partial<BudgetExpandableProps>>(
             </Grid>
           </AccordionSummary>
           <AccordionDetails>
-            <Grid container columnSpacing={3}>
+            <Grid container >
               {rowsValues.items.map((item, i) => (
                 <BudgetInvoiceItemRow key={i} value={item.value} currencySymbol={currencySymbol} classes={classes} />
               ))}

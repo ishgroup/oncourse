@@ -4,9 +4,8 @@
  */
 
 import { Epic } from "redux-observable";
-
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import { GET_EXPORT_TEMPLATES_LIST, REMOVE_EXPORT_TEMPLATE, REMOVE_EXPORT_TEMPLATE_FULFILLED } from "../actions/index";
+import { GET_EXPORT_TEMPLATES_LIST, REMOVE_EXPORT_TEMPLATE } from "../actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import ExportTemplatesService from "../services/ExportTemplatesService";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
@@ -19,9 +18,6 @@ const request: EpicUtils.Request<any, number> = {
     history.push("/automation/export-templates");
 
     return [
-      {
-        type: REMOVE_EXPORT_TEMPLATE_FULFILLED
-      },
       {
         type: GET_EXPORT_TEMPLATES_LIST
       },

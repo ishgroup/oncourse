@@ -88,28 +88,28 @@
 
   <CourseClass id="1" code="1234" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
-               taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
+               taxId="1" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
                isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountId="1" deliveryMode="1" courseId="1" feeExGst="100.00"
                suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
                attendanceType="0"/>
   <CourseClass id="2" code="124" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
-               taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
+               taxId="1" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
                isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountId="1" deliveryMode="1" courseId="2" feeExGst="100.00"
                suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
                attendanceType="0"/>
   <CourseClass id="3" code="125" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
-               taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
+               taxId="1" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
                isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountId="1" deliveryMode="1" courseId="2" feeExGst="100.00"
                suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
                attendanceType="0"/>
   <CourseClass id="4" code="126" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
-               taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
+               taxId="1" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
                isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountId="1" deliveryMode="1" courseId="2" feeExGst="100.00"
                suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
@@ -142,28 +142,34 @@
   <CourseSession id="4" courseClass_Id="2" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
                   createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
   <CourseSession id="5" courseClass_Id="2" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                  createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+                 createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
   <CourseSession id="6" courseClass_Id="2" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                  createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+                 createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
 
   <CourseSession id="7" courseClass_Id="3" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                  createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+                 createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
   <CourseSession id="8" courseClass_Id="3" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                  createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+                 createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
 
   <CourseSession id="9" courseClass_Id="4" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                  createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+                 createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
   <CourseSession id="10" courseClass_Id="4" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                  createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+                 createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
 
 
-  <SessionCourseClassTutor ACTUALPAYABLEDURATIONMINUTES="180" STARTDATETIME="2030-04-30 09:00:00.0" ENDDATETIME="2030-05-07 05:00:00.0" id="42" approvedByUserId="1" attendanceType="1" courseClassTutorId="1"
+  <SessionCourseClassTutor ACTUALPAYABLEDURATIONMINUTES="180" STARTDATETIME="2030-04-30 09:00:00.0"
+                           ENDDATETIME="2030-05-07 05:00:00.0" id="42" approvedByUserId="1" attendanceType="1"
+                           courseClassTutorId="1"
                            createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
                            sessionId="1"/>
-  <SessionCourseClassTutor ACTUALPAYABLEDURATIONMINUTES="180" STARTDATETIME="2030-04-30 09:00:00.0" ENDDATETIME="2030-05-07 05:00:00.0" id="43" approvedByUserId="1" attendanceType="1" courseClassTutorId="1"
+  <SessionCourseClassTutor ACTUALPAYABLEDURATIONMINUTES="180" STARTDATETIME="2030-04-30 09:00:00.0"
+                           ENDDATETIME="2030-05-07 05:00:00.0" id="43" approvedByUserId="1" attendanceType="1"
+                           courseClassTutorId="1"
                            createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
                            sessionId="2"/>
-  <SessionCourseClassTutor ACTUALPAYABLEDURATIONMINUTES="180" STARTDATETIME="2030-04-30 09:00:00.0" ENDDATETIME="2030-05-07 05:00:00.0" id="44" approvedByUserId="1" attendanceType="1" courseClassTutorId="1"
+  <SessionCourseClassTutor ACTUALPAYABLEDURATIONMINUTES="180" STARTDATETIME="2030-04-30 09:00:00.0"
+                           ENDDATETIME="2030-05-07 05:00:00.0" id="44" approvedByUserId="1" attendanceType="1"
+                           courseClassTutorId="1"
                            createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
                            sessionId="3"/>
 
@@ -177,24 +183,28 @@
              contactId="11" perUnitAmountExTax="100.00" taxAdjustment="0.00" invoiceToStudent="0"
              payableOnEnrolment="1" isSunk="0" tutorRoleId="2"/>
 
-  <Session_Module id="1" sessionId="1" moduleId="1"/>
-  <Session_Module id="2" sessionId="2" moduleId="2"/>
-  <Session_Module id="3" sessionId="3" moduleId="2"/>
-  <Session_Module id="4" sessionId="3" moduleId="1"/>
+  <Session_Module id="1" sessionId="1" moduleId="1" createdOn="2021-12-21 12:00:10.0"
+                  modifiedOn="2021-12-21 12:00:10.0"/>
+  <Session_Module id="2" sessionId="2" moduleId="2" createdOn="2021-12-21 12:00:10.0"
+                  modifiedOn="2021-12-21 12:00:10.0"/>
+  <Session_Module id="3" sessionId="3" moduleId="2" createdOn="2021-12-21 12:00:10.0"
+                  modifiedOn="2021-12-21 12:00:10.0"/>
+  <Session_Module id="4" sessionId="3" moduleId="1" createdOn="2021-12-21 12:00:10.0"
+                  modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Discount id="1" code="ABC50" discountType="1" discountDollar="50" name="discountPercent1" rounding="0"
             validFrom="2004-10-17 22:44:15" validTo="2100-01-01 00:00:00" predictedStudentsPercentage="0.15"
             HIDEONWEB="0" ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1" minValue="0"
-            limitPreviousEnrolment="0"/>
+            limitPreviousEnrolment="0" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Discount id="2" code="ABC20" discountType="1" discountDollar="20" name="discountPercent2" rounding="0"
             validFrom="2004-10-17 22:44:15" validTo="2100-01-01 00:00:00" predictedStudentsPercentage="0.15"
             HIDEONWEB="0" ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1" minValue="0"
-            limitPreviousEnrolment="0"/>
+            limitPreviousEnrolment="0" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Discount_CourseClass id="1" courseClassId="1" discountId="1" predictedStudentsPercentage="0.1"
-                        discountDollar="55"/>
+                        discountDollar="55" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Discount_CourseClass id="2" courseClassId="1" discountId="2" predictedStudentsPercentage="0.1"
-                        discountDollar="25"/>
+                        discountDollar="25" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <GradingType id="1" createdOn="2021-04-13 10:22:44.0" modifiedOn="2021-04-21 21:30:45.0" name="Pass/Fail"
                min_value="0.00" max_value="100.00" entryType="2"/>

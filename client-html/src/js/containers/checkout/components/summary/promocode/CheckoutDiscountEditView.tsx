@@ -15,7 +15,6 @@ import { DiscountType } from "@api/model";
 import { Dispatch } from "redux";
 import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
 import Uneditable from "../../../../../common/components/form/Uneditable";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import { III_DD_MMM_YYYY } from "../../../../../common/utils/dates/format";
 import { decimalMinus, decimalPlus } from "../../../../../common/utils/numbers/decimalCalculation";
 import { CheckoutDiscount, CheckoutSummary } from "../../../../../model/checkout";
@@ -24,6 +23,8 @@ import { formatCurrency } from "../../../../../common/utils/numbers/numbersNorma
 import { checkoutChangeSummaryItemField, checkoutUpdatePromo } from "../../../actions/checkoutSummary";
 import { StyledCourseItemRenderer } from "../../items/components/SelectedItemRenderer";
 import CheckoutAppBar from "../../CheckoutAppBar";
+import { CheckoutSummaryCogwheel } from "../CheckoutSummaryCogwheel";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const styles = () => createStyles({
     history: {
@@ -112,7 +113,7 @@ const VoucherView: React.FC<Props> = props => {
     <>
       {isClassVoucher
         ? (
-          <Grid container columnSpacing={3}>
+          <Grid container>
             <Grid item sm={12} className="mb-2">
               <div className="heading">Apply to</div>
               <Typography variant="caption">
@@ -167,9 +168,9 @@ const VoucherView: React.FC<Props> = props => {
         </Grid>
       </Grid>
 
-      <Grid container columnSpacing={3} className="pt-2">
+      <Grid container className="pt-2">
         <div className="heading">History</div>
-        <Grid container columnSpacing={3} className="pt-2">
+        <Grid item xs={12} container columnSpacing={3} className="pt-2">
           <Grid item sm={12} className={classes.history}>
             <div className={clsx("centeredFlex", classes.historyItem)}>
               <Grid item xs={4}>
@@ -268,14 +269,20 @@ const CheckoutDiscountEditView = React.memo<any>(props => {
   const { selectedDiscount, type } = props;
 
   return (
-    <div className="appFrame flex-fill root">
-      <CustomAppBar>
-        <CheckoutAppBar title={`${selectedDiscount.name} (${selectedDiscount.code})`} />
-      </CustomAppBar>
-      <div className="appBarContainer w-100 p-3">
-        {type === "discount" && <DiscountPromoView {...props} />}
-        {type === "voucher" && <VoucherView {...props} />}
-      </div>
+    <div className="root">
+      <AppBarContainer
+        hideHelpMenu
+        hideSubmitButton
+        disableInteraction
+        title={(
+          <CheckoutAppBar title={`${selectedDiscount.name} (${selectedDiscount.code})`} />
+        )}
+      >
+        <div className="w-100">
+          {type === "discount" && <DiscountPromoView {...props} />}
+          {type === "voucher" && <VoucherView {...props} />}
+        </div>
+      </AppBarContainer>
     </div>
   );
 });

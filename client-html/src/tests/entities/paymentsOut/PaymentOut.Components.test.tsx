@@ -8,20 +8,19 @@ describe("Virtual rendered PaymentsOutEditView", () => {
     entity: "PaymentOut",
     EditView: PaymentsOutEditView,
     record: mockecApi => mockecApi.db.getPaymentOut(1),
-    render: (wrapper, initialValues) => {
-      expect(wrapper.find(".textField").text()).toContain(initialValues.payeeName);
-      expect(wrapper.find("#administrationCenterId input").val()).toContain(initialValues.administrationCenterName);
-      expect(wrapper.find(".textField").text()).toContain("No Value");
-      expect(wrapper.find(".textField").text()).toContain(initialValues.status);
-      expect(wrapper.find(".textField").text()).toContain("Account is disabled");
-      expect(wrapper.find(".textField").text()).toContain(initialValues.amount);
-      expect(wrapper.find(".textField").text()).toContain(
-        format(new Date(initialValues.datePayed), III_DD_MMM_YYYY).toString()
-      );
-      expect(wrapper.find(".textField").text()).toContain(
-        format(new Date(initialValues.dateBanked), III_DD_MMM_YYYY).toString()
-      );
-      expect(wrapper.find(".textField").text()).toContain(initialValues.createdBy);
+    render: ({ screen, initialValues, formRoleName }) => {
+      expect(screen.getByRole(formRoleName)).toHaveFormValues({
+        administrationCenterId: initialValues.administrationCenterName,
+        privateNotes: initialValues.privateNotes,
+      });
+
+      expect(screen.getByLabelText('Payment to', { selector: 'input' }).value).toBe(initialValues.payeeName);
+      expect(screen.getByLabelText('Status').value).toBe(initialValues.status);
+      expect(screen.getByLabelText('Account').value).toBe("Account is disabled");
+      expect(screen.getByLabelText('Amount').value).toBe(initialValues.amount.toFixed(2));
+      expect(screen.getByLabelText('Date paid').value).toBe(format(new Date(initialValues.datePayed), III_DD_MMM_YYYY).toString());
+      expect(screen.getByLabelText('Date banked').value).toBe(format(new Date(initialValues.dateBanked), III_DD_MMM_YYYY).toString());
+      expect(screen.getByLabelText('Created by').value).toBe(initialValues.createdBy);
     }
   });
 });

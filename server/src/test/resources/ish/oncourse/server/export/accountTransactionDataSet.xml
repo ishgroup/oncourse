@@ -19,7 +19,8 @@
   <Account id="9" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" accountCode="vUnderpay"
            description="Test voucher underpay acc" isEnabled="1" type="6"/>
 
-  <PaymentMethod id="2" name="Credit card" accountId="1" active="1" bankedAutomatically="1" reconcilable="1" type="2"/>
+  <PaymentMethod id="2" name="Credit card" accountId="1" active="1" bankedAutomatically="1" reconcilable="1" type="2"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0"
                       modifiedOn="2017-06-20 12:00:00.0"/>
@@ -50,11 +51,11 @@
         facilities="Some facilities..." createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01"/>
 
   <Tax id="1" isGSTTaxType="1" payableToSupplierAccountId="3" receivableFromStudentAccountId="4" taxCode="GST"
-       taxrate="0.1"/>
+       taxrate="0.1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <CourseClass id="1" code="123" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
-               taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
+               taxId="1" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
                isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountId="1" deliveryMode="1" courseId="1" feeExGst="100.00"
                suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"

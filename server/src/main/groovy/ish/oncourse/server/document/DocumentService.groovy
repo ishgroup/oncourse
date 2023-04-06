@@ -18,15 +18,18 @@ import ish.common.types.AttachmentInfoVisibility
 import ish.oncourse.API
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.AttachableTrait
-import ish.oncourse.server.cayenne.AttachmentData
 import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.DocumentVersion
 import ish.oncourse.server.scripting.api.DocumentSpec
 import ish.s3.AmazonS3Service
 import ish.s3.AmazonS3Service.UploadResult
+import ish.util.ThumbnailGenerator
 import org.apache.cayenne.ObjectContext
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+
+import javax.ws.rs.ClientErrorException
+import javax.ws.rs.core.Response
 
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateStoragePlace
 import static ish.oncourse.server.scripting.api.DocumentSpec.ATTACH_ACTION
@@ -177,7 +180,7 @@ class DocumentService {
 		if (ImageHelper.isImage(content, mimeType)) {
 			version.setPixelWidth(ImageHelper.imageWidth(content))
 			version.setPixelHeight(ImageHelper.imageHeight(content))
-			version.setThumbnail(ImageHelper.generateThumbnail(content, mimeType))
+			version.setThumbnail(ThumbnailGenerator.generateForImg(content, mimeType))
         }
 		version.setFileName(name)
 		version.setHash(SecurityUtil.hashByteArray(content))
@@ -191,9 +194,7 @@ class DocumentService {
             version.setVersionId(result.getVersionId())
 
         } else {
-			AttachmentData attachmentData = context.newObject(AttachmentData)
-            attachmentData.setContent(content)
-            version.setAttachmentData(attachmentData)
+			throw new ClientErrorException("Attempted to create document with name $name as data, stored in db, but this ability was removed in new versions. Add s3 accessKey.", Response.Status.BAD_REQUEST)
         }
 
 		attachDocument(doc, attach)

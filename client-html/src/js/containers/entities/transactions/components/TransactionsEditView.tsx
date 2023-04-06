@@ -8,7 +8,6 @@ import Grid from "@mui/material/Grid";
 import { connect } from "react-redux";
 import { Account } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { State } from "../../../../reducers/state";
 
 const getFormattedAccounts = (accounts: Account[]) => {
@@ -55,48 +54,46 @@ const TransactionsEditView = props => {
   const formattedAccounts = accounts ? getFormattedAccounts(accounts) : [];
 
   return (
-    <Grid container columnSpacing={3} className="p-3">
-      <Grid item lg={twoColumn ? 6 : 12} md={twoColumn ? 8 : 12} xs={12}>
-        <Grid container columnSpacing={3}>
-          <Grid item xs={twoColumn ? 6 : 12}>
-            <FormField
-              type="select"
-              disabled={!isNew || !hasAccounts}
-              name="fromAccount"
-              label={isNew ? "From account" : "Account"}
-              validate={isNew ? validateSingleMandatoryField : undefined}
-              items={formattedAccounts || []}
-              fullWidth
-            />
-            {isNew ? (
-              <FormField
-                type="select"
-                disabled={!hasAccounts}
-                name="toAccount"
-                label="To account"
-                validate={isNew ? validateSingleMandatoryField : undefined}
-                items={formattedAccounts || []}
-                fullWidth
-              />
-            ) : null}
-            <FormField
-              type="money"
-              disabled={!isNew}
-              name="amount"
-              label="Amount"
-              validate={isNew ? validateAmountField : undefined}
-              fullWidth
-            />
-            <FormField
-              type="date"
-              disabled={!isNew}
-              name="transactionDate"
-              label="Transaction date"
-              validate={isNew ? validateSingleMandatoryField : undefined}
-              fullWidth
-            />
-          </Grid>
+    <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <FormField
+          type="select"
+          disabled={!isNew || !hasAccounts}
+          name="fromAccount"
+          label={isNew ? "From account" : "Account"}
+          items={formattedAccounts || []}
+          required={isNew}
+                  />
+      </Grid>
+      {isNew ? (
+        <Grid item xs={twoColumn ? 6 : 12}>
+          <FormField
+            type="select"
+            disabled={!hasAccounts}
+            name="toAccount"
+            label="To account"
+            required={isNew}
+            items={formattedAccounts || []}
+                      />
         </Grid>
+      ) : null}
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <FormField
+          type="money"
+          disabled={!isNew}
+          name="amount"
+          label="Amount"
+          validate={isNew ? validateAmountField : undefined}
+                  />
+      </Grid>
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <FormField
+          type="date"
+          disabled={!isNew}
+          name="transactionDate"
+          label="Transaction date"
+          required={isNew}
+                  />
       </Grid>
     </Grid>
   );

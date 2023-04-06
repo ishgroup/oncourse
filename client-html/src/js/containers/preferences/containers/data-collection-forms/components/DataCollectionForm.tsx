@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import * as React from "react";
@@ -8,7 +11,7 @@ import clsx from "clsx";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import {
-  Form, change, FieldArray, getFormValues, initialize, reduxForm, SubmissionError
+  Form, change, FieldArray, getFormValues, initialize, reduxForm, SubmissionError, getFormSyncErrors
 } from "redux-form";
 import { DeliveryScheduleType } from "@api/model";
 import Divider from "@mui/material/Divider";
@@ -19,21 +22,19 @@ import DeleteForever from "@mui/icons-material/DeleteForever";
 import FileCopy from "@mui/icons-material/FileCopy";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
-import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
+import { getDeepValue, mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../reducers/state";
 import { createDataCollectionForm, deleteDataCollectionForm, updateDataCollectionForm } from "../../../actions";
 import renderCollectionFormFields from "./CollectionFormFieldsRenderer";
 import CollectionFormFieldTypesMenu from "./CollectionFormFieldTypesMenu";
-import { setNextLocation } from "../../../../../common/actions";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
-const manualLink = getManualLink("dataCollection");
+const manualUrl = getManualLink("dataCollection");
+
+export const DATA_COLLECTION_FORM: string = "DataCollectionForm";
 
 const deliveryScheduleTypes = Object.keys(DeliveryScheduleType).map(mapSelectItems);
 
@@ -42,10 +43,10 @@ deliveryScheduleTypes.sort(sortDefaultSelectItems);
 const styles = theme => createStyles({
   mainContainer: {
     margin: theme.spacing(-3),
-    height: `calc(100% + ${theme.spacing(6)}px)`
+    height: `calc(100% + ${theme.spacing(6)})`
   },
   headerControlsContainer: {
-    margin: `-12px 0 0 ${theme.spacing(1)}px`
+    margin: `-12px 0 0 ${theme.spacing(1)}`
   },
   heading: {
     marginTop: "50px",
@@ -65,9 +66,6 @@ const styles = theme => createStyles({
     boxShadow: theme.shadows[2],
     background: theme.palette.background.default
   },
-  HeaderTextField: {
-    marginLeft: "20px"
-  }
 });
 
 const setParents = targets => {
@@ -125,9 +123,6 @@ class DataCollectionWrapper extends React.Component<any, any> {
 
   constructor(props) {
     super(props);
-    this.state = {
-      disableConfirm: false
-    };
 
     if (props.match.params.action === "edit" && props.collectionForms) {
       const currentForm = this.getCollectionForm(props);
@@ -136,7 +131,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
         items,
         form: currentForm
       };
-      this.props.dispatch(initialize("DataCollectionForm", state));
+      this.props.dispatch(initialize(DATA_COLLECTION_FORM, state));
     }
 
     if (props.match.params.action === "new") {
@@ -147,7 +142,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
           type: this.props.match.params.type
         }
       };
-      this.props.dispatch(initialize("DataCollectionForm", state));
+      this.props.dispatch(initialize(DATA_COLLECTION_FORM, state));
     }
   }
 
@@ -176,7 +171,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
           items,
           form: currentForm
         };
-        this.props.dispatch(initialize("DataCollectionForm", state));
+        this.props.dispatch(initialize(DATA_COLLECTION_FORM, state));
       }
     }
 
@@ -232,7 +227,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
         },
         items: []
       };
-      this.props.dispatch(initialize("DataCollectionForm", state));
+      this.props.dispatch(initialize(DATA_COLLECTION_FORM, state));
     }
   };
 
@@ -249,7 +244,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
 
     delete type.formattedLabel;
 
-    this.props.dispatch(change("DataCollectionForm", "items", [field, ...items]));
+    this.props.dispatch(change(DATA_COLLECTION_FORM, "items", [field, ...items]));
 
     this.formRef.scrollTo({
       top: 0,
@@ -266,7 +261,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
       description: ""
     };
 
-    this.props.dispatch(change("DataCollectionForm", "items", [heading, ...items]));
+    this.props.dispatch(change(DATA_COLLECTION_FORM, "items", [heading, ...items]));
 
     this.formRef.scrollTo({
       top: 0,
@@ -280,7 +275,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
     const updated = [...items];
     updated.splice(index, 1);
 
-    this.props.dispatch(change("DataCollectionForm", "items", updated));
+    this.props.dispatch(change(DATA_COLLECTION_FORM, "items", updated));
   };
 
   onSave = value => {
@@ -304,7 +299,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
       }
     })
       .then(() => {
-        const { nextLocation, history, setNextLocation } = this.props;
+        const { nextLocation, history } = this.props;
         const updated = this.props.collectionForms.find(item => item.name === value.form.name);
         const items = parseDataCollectionFormData(updated);
         const updatedData = {
@@ -312,11 +307,10 @@ class DataCollectionWrapper extends React.Component<any, any> {
           form: updated
         };
         this.skipValidation = true;
-        this.props.dispatch(initialize("DataCollectionForm", updatedData));
+        this.props.dispatch(initialize(DATA_COLLECTION_FORM, updatedData));
 
         if (nextLocation) {
           history.push(nextLocation);
-          setNextLocation('');
         } else {
           history.push(`/preferences/collectionForms/edit/${formatted.type}/${encodeURIComponent(updated.id)}`);
         }
@@ -339,10 +333,6 @@ class DataCollectionWrapper extends React.Component<any, any> {
   onDelete = id => {
     this.isPending = true;
 
-    this.setState({
-      disableConfirm: true
-    });
-
     return new Promise((resolve, reject) => {
       this.resolvePromise = resolve;
       this.rejectPromise = reject;
@@ -351,15 +341,9 @@ class DataCollectionWrapper extends React.Component<any, any> {
     })
       .then(() => {
         this.redirectOnDelete(id);
-        this.setState({
-          disableConfirm: false
-        });
       })
       .catch(() => {
         this.isPending = false;
-        this.setState({
-          disableConfirm: false
-        });
       });
   };
 
@@ -393,7 +377,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
 
     const match = collectionForms.filter(item => item.name === value.trim());
 
-    if (this.props.match.params.action === "edit") {
+    if (values.form.id) {
       const filteredMatch = match.filter(item => item.id !== values.form.id);
       return filteredMatch.length > 0 ? "Form name must be unique" : undefined;
     }
@@ -407,7 +391,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
     clone.id = "";
 
     this.props.dispatch(
-      initialize("DataCollectionForm", {
+      initialize(DATA_COLLECTION_FORM, {
         items,
         form: clone
       })
@@ -424,96 +408,76 @@ class DataCollectionWrapper extends React.Component<any, any> {
 
   render() {
     const {
-      classes, dispatch, values, handleSubmit, match, dirty, history, valid, form
+      classes, dispatch, values, handleSubmit, match, dirty, history, valid, form, syncErrors
     } = this.props;
 
-    const { disableConfirm } = this.state;
     const isNew = match.params.action === "new";
 
     const type = this.props.match.params.type;
     const id = !isNew && values && values.form.id;
-    const created = values && values.form.created;
-    const modified = values && values.form.modified;
 
     return (
-      <div className={clsx(classes.mainContainer, "overflow-hidden")}>
-        <div className="h-100 overflow-y-auto" ref={this.getFormRef}>
-          <Form className="container p-3" onSubmit={handleSubmit(this.onSave)}>
-            {!disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
-            <CustomAppBar>
-              <Grid
-                container
-                className="ml-1"
-                classes={{
-                  container: classes.fitSmallWidth
-                }}
-              >
-                <Grid item xs={12} className="centeredFlex">
-                  {values && (
-                    <CollectionFormFieldTypesMenu
-                      items={values.items}
-                      formType={type}
-                      addField={this.addField}
-                      addHeading={this.addHeading}
-                      className="ml-0"
-                    />
-                  )}
-
-                  <FormField
-                    type="headerText"
-                    name="form.name"
-                    placeholder="Name"
-                    margin="none"
-                    className={classes.HeaderTextField}
-                    listSpacing={false}
-                    validate={[validateSingleMandatoryField, this.validateUniqueNames]}
-                  />
-
-                  <div className="flex-fill" />
-
-                  {values && !isNew && (
-                    <AppBarActions
-                      actions={[
-                        {
-                          action: () => {
-                            this.onDelete(id);
-                          },
-                          icon: <DeleteForever />,
-
-                          confirmText: "Form will be deleted permanently",
-                          tooltip: "Delete form",
-                          confirmButtonText: "DELETE"
-                        },
-                        {
-                          action: () => {
-                            this.duplicateForm(history, values.form, values.items);
-                          },
-                          icon: <FileCopy />,
-                          confirm: false,
-                          tooltip: "Copy form"
-                        }
-                      ]}
-                    />
-                  )}
-
-                  {!isNew && values && (
-                    <AppBarHelpMenu
-                      created={created ? new Date(created) : null}
-                      modified={modified ? new Date(modified) : null}
-                      auditsUrl={`audit?search=~"${type}FieldConfiguration" and entityId == ${values.form.id}`}
-                      manualUrl={manualLink}
-                    />
-                  )}
-
-                  <FormSubmitButton
-                    disabled={!dirty}
-                    invalid={!valid}
-                  />
-                </Grid>
+      <div ref={this.getFormRef}>
+        <Form className="container" onSubmit={handleSubmit(this.onSave)} role={DATA_COLLECTION_FORM}>
+          <RouteChangeConfirm form={form} when={dirty} />
+          <AppBarContainer
+            values={values}
+            manualUrl={manualUrl}
+            getAuditsUrl={() => `audit?search=~"${type}FieldConfiguration" and entityId == ${values.form.id}`}
+            disabled={!dirty}
+            invalid={!valid}
+            title={(isNew && (!values || !values.form.name || values.form.name.trim().length === 0))
+              ? "New"
+              : values?.form?.name?.trim()}
+            hideHelpMenu={isNew}
+            createdOn={v => new Date(v.form.created)}
+            modifiedOn={v => new Date(v.form.modified)}
+            opened={getDeepValue(syncErrors, "form.name")}
+            fields={(
+              <Grid item xs={8}>
+                <FormField
+                  type="text"
+                  name="form.name"
+                  label="Name"
+                  validate={this.validateUniqueNames}
+                  required
+                />
               </Grid>
-            </CustomAppBar>
-
-            <Grid container columnSpacing={3}>
+            )}
+            actions={values && !isNew && (
+              <AppBarActions
+                actions={[
+                  {
+                    action: () => {
+                      this.onDelete(id);
+                    },
+                    icon: <DeleteForever />,
+                    confirmText: "Form will be deleted permanently",
+                    tooltip: "Delete form",
+                    confirmButtonText: "DELETE"
+                  },
+                  {
+                    action: () => {
+                      this.duplicateForm(history, values.form, values.items);
+                    },
+                    icon: <FileCopy />,
+                    confirm: false,
+                    tooltip: "Copy form"
+                  }
+                ]}
+              />
+            )}
+            customAddMenu={values && (
+              <CollectionFormFieldTypesMenu
+                items={values.items}
+                formType={type}
+                addField={this.addField}
+                addHeading={this.addHeading}
+                className="ml-0"
+              />
+            )}
+          >
+            <Grid container>
               <Grid item sm={12} lg={10} xl={6}>
                 <Grid container columnSpacing={3}>
                   <Grid item xs={12} className={clsx("centeredFlex", classes.headerControlsContainer)}>
@@ -530,7 +494,6 @@ class DataCollectionWrapper extends React.Component<any, any> {
                         type="select"
                         name="form.deliverySchedule"
                         label="Delivery Schedule"
-                        autoWidth
                         items={deliveryScheduleTypes}
                         className={clsx("pt-2", classes.selectField)}
                         required
@@ -557,15 +520,16 @@ class DataCollectionWrapper extends React.Component<any, any> {
                 </Grid>
               </Grid>
             </Grid>
-          </Form>
-        </div>
+          </AppBarContainer>
+        </Form>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state: State) => ({
-  values: getFormValues("DataCollectionForm")(state),
+  values: getFormValues(DATA_COLLECTION_FORM)(state),
+  syncErrors: getFormSyncErrors(DATA_COLLECTION_FORM)(state),
   fetch: state.fetch,
   nextLocation: state.nextLocation,
 });
@@ -573,14 +537,13 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onUpdate: (id, form) => dispatch(updateDataCollectionForm(id, form)),
   onCreate: form => dispatch(createDataCollectionForm(form)),
-  onDelete: id => dispatch(deleteDataCollectionForm(id)),
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+  onDelete: id => dispatch(deleteDataCollectionForm(id))
 });
 
 const DataCollectionForm = reduxForm({
   onSubmitFail: (errors, dispatch, submitError, props) =>
     onSubmitFail(errors, dispatch, submitError, props, { behavior: "smooth", block: "end" }),
-  form: "DataCollectionForm"
+  form: DATA_COLLECTION_FORM
 })(
   connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DataCollectionWrapper))
 );

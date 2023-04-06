@@ -13,6 +13,7 @@ import FormField from "../../../../../../common/components/form/formFields/FormF
 import { mapSelectItems } from "../../../../../../common/utils/common";
 import EntityService from "../../../../../../common/services/EntityService";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../../../constants/Config";
+import { getPluralSuffix } from "../../../../../../common/utils/strings";
 
 const records = Object.keys(Entities)
   .filter(i => Entities[i].constructor.name !== "Enum")
@@ -38,7 +39,7 @@ const QueryCardContent = props => {
 
   const debounseSearch = useCallback<any>(
     debounce((isValid, entity, query, queryResultsPending) => {
-      if (isValid && !queryResultsPending) {
+      if (entity && isValid && !queryResultsPending) {
         setQueryResultsPending(true);
         EntityService.getPlainRecords(
           entity,
@@ -49,10 +50,12 @@ const QueryCardContent = props => {
           setQueryResults(res.rows.length);
           setQueryResultsPending(false);
           setQueryHideResults(false);
+          onValidateQuery(true, query);
         })
         .catch(() => {
           setQueryHideResults(true);
           setQueryResultsPending(false);
+          onValidateQuery(false, query);
         });
       }
     }, 600),
@@ -60,8 +63,9 @@ const QueryCardContent = props => {
   );
 
   useEffect(() => {
+    onValidateQuery(true);
     debounseSearch(isValidQuery, field.entity, field.query, queryResultsPending);
-  }, [field.query]);
+  }, [field.query, field.entity]);
 
   const validateQueryClosureReturnValue = useCallback(value => {
     if (!value) return "";
@@ -78,7 +82,7 @@ const QueryCardContent = props => {
   const validateExpression = useCallback(() => (isValidQuery ? undefined : "Expression is invalid"), [isValidQuery]);
 
   return (
-    <Grid container columnSpacing={3}>
+    <Grid container columnSpacing={3} rowSpacing={2}>
       <Grid item xs={12}>
         <FormField
           type="select"
@@ -89,54 +93,51 @@ const QueryCardContent = props => {
           disabled={disabled}
           required
         />
+      </Grid>  
 
-        <Grid item xs={12}>
-          <Collapse
-            in={queryAvailable}
-            classes={{
-              wrapper: field.entity ? "overflow-visible" : undefined
-            }}
-          >
-            <div className={classes.queryField}>
-              <FormField
-                type="aql"
-                name={`${name}.query`}
-                label="Query"
-                placeholder="All records"
-                rootEntity={field.entity}
-                disabled={!field.entity || disabled}
-                onValidateQuery={onValidateQuery}
-                validate={validateExpression}
-                isValidQuery={isValidQuery}
-              />
-            </div>
-          </Collapse>
+      <Grid item xs={12}>
+        <Collapse
+          in={queryAvailable}
+          classes={{
+            wrapper: field.entity ? "overflow-visible" : undefined
+          }}
+        >
+          <div className={classes.queryField}>
+            <FormField
+              type="aql"
+              name={`${name}.query`}
+              label="Query"
+              placeholder="All records"
+              rootEntity={field.entity}
+              disabled={!field.entity || disabled}
+              validate={validateExpression}
+            />
+          </div>
+        </Collapse>
+      </Grid>
+
+      <Grid item container xs={12} className="mb-2">
+        <Grid item xs={6}>
+          <FormField
+            name={`${name}.queryClosureReturnValue`}
+            type="text"
+            label="Returned results name"
+            validate={validateQueryClosureReturnValue}
+          />
         </Grid>
 
-        <Grid item={true} container xs={12}>
-          <Grid xs={6}>
-            <FormField
-              name={`${name}.queryClosureReturnValue`}
-              type="text"
-              value={field.queryClosureReturnValue}
-              label="Returned results name"
-              validate={validateQueryClosureReturnValue}
-            />
-          </Grid>
-
-          <Grid xs={6} className="d-flex p-2" alignItems="flex-end">
-            {queryResultsPending && !hideQueryResults && <CircularProgress size={24} thickness={4} />}
-            {!queryResultsPending && !hideQueryResults && (
-              <Typography variant="caption" color="textSecondary">
-                {queryResults === PLAIN_LIST_MAX_PAGE_SIZE ? `more than ${queryResults}` : queryResults}
-                {' '}
-                record
-                {queryResults === 1 ? "" : "s"}
-                {' '}
-                found
-              </Typography>
+        <Grid item xs={6} className="d-flex p-2" alignItems="flex-end">
+          {queryResultsPending && !hideQueryResults && <CircularProgress size={24} thickness={4} />}
+          {!queryResultsPending && !hideQueryResults && (
+          <Typography variant="caption" color="textSecondary">
+            {queryResults === PLAIN_LIST_MAX_PAGE_SIZE ? `more than ${queryResults}` : queryResults}
+            {' '}
+            record
+            {getPluralSuffix(queryResults)}
+            {' '}
+            found
+          </Typography>
             )}
-          </Grid>
         </Grid>
       </Grid>
     </Grid>

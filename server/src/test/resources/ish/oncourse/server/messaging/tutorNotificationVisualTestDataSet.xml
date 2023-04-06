@@ -54,7 +54,7 @@
 
   <CourseClass id="1" code="123" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
-               taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
+               taxId="1" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
                isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountId="1" deliveryMode="1" courseId="1" feeExGst="100.00"
                suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
@@ -105,9 +105,12 @@
            budgetedQuantity="2" budgetedValue="71.25" dateFor="2013-01-01 10:00:00" description="Description..."
            createdOn="2012-05-20 00:00:00" modifiedOn="2012-05-20 00:00:00"/>
 
-  <EmailTemplate id="1" name="Tutor Payrun Notification" subject="CCE Pay Run Advice" bodyPlain="" bodyHtml=""/>
-  <EmailTemplate id="2" name="CCE-Header" bodyPlain="" bodyHtml=""/>
-  <EmailTemplate id="3" name="CCE-Footer" bodyPlain="" bodyHtml=""/>
+  <EmailTemplate id="1" name="Tutor Payrun Notification" subject="CCE Pay Run Advice" bodyPlain="" bodyHtml=""
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <EmailTemplate id="2" name="CCE-Header" bodyPlain="" bodyHtml="" createdOn="2021-12-21 12:00:10.0"
+                 modifiedOn="2021-12-21 12:00:10.0"/>
+  <EmailTemplate id="3" name="CCE-Footer" bodyPlain="" bodyHtml="" createdOn="2021-12-21 12:00:10.0"
+                 modifiedOn="2021-12-21 12:00:10.0"/>
 
   <PREFERENCE CREATEDON="2012-06-20 00:00:00.0" ID="1" MODIFIEDON="2012-06-20 00:00:00.0" NAME="email.smtphost"
               VALUESTRING="localhost" UNIQUEKEY="email.smtphost"/>

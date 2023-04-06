@@ -49,6 +49,7 @@ export const FormTextField = props => {
       error={touched && invalid}
       inputRef={inputRef}
       helperText={(touched && error) || helperText}
+      fullWidth
       {...input}
       {...custom}
     />

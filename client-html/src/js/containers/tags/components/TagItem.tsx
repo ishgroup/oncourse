@@ -1,157 +1,154 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { useCallback } from "react";
 import clsx from "clsx";
-import { FieldArray } from "redux-form";
-import { Draggable } from "react-beautiful-dnd";
-import { withStyles, createStyles } from "@mui/styles";
+import { Field } from "redux-form";
 import Delete from "@mui/icons-material/Delete";
 import Edit from "@mui/icons-material/Edit";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import TagItemsRenderer from "./TagItemsRenderer";
+import { Collapse } from "@mui/material";
+import { useHoverShowStyles } from "../../../common/styles/hooks";
+import { FormEditorField } from "../../../common/components/markdown-editor/FormEditor";
+import { stopEventPropagation } from "../../../common/utils/events";
+import FormField from "../../../common/components/form/formFields/FormField";
+import { FormTagProps } from "../../../model/tags";
+import ColorPicker from "../../../common/components/form/color-picker/ColorPicker";
 
-const styles = theme => createStyles({
-  dragIcon: {
-    margin: theme.spacing(0, 2)
-  },
-  actionButton: {
-    marginRight: "10px"
-  },
-  actionIcon: {
-    fontSize: "20px"
-  },
-  card: {
-    borderRadius: `${theme.shape.borderRadius}px`,
-    padding: "2px 0",
-    margin: "2px 0",
-    "&:hover": {
-      boxShadow: theme.shadows[2]
-    },
-    gridTemplateColumns: "auto auto 1fr 40% auto auto"
-  },
-  dragOver: {
-    boxShadow: theme.shadows[2]
-  },
-  tagColorDot: {
-    width: theme.spacing(3),
-    height: theme.spacing(3),
-    borderRadius: "100%"
-  }
-});
+const getFieldName = (parent, name) => (parent ? parent + `.${name}` : name);
 
-const TagItem = React.memo<any>(props => {
-  const {
-    classes, parent, onDelete, index, item, noTransformClass, openTagEditView, validatTagsNames, key
-  } = props;
+const TagItem = React.memo<FormTagProps>(({
+  classes,
+  onDelete,
+  changeVisibility,
+  item,
+  snapshot,
+  provided,
+  isEditing,
+  setIsEditing
+}) => {
+  const onEditClick = () => setIsEditing(item.id);
 
-  if (!item.parent) {
-    item.parent = parent;
-  }
+  const onDeleteClick = useCallback(e => {
+    stopEventPropagation(e);
+    onDelete(item);
+  }, [item]);
 
-  const onEditClick = useCallback(() => openTagEditView(item, parent), [item, parent]);
+  const onVisibilityClick = useCallback(e => {
+    stopEventPropagation(e);
+    changeVisibility(item);
+  }, [item]);
 
-  const onDeleteClick = useCallback(() => onDelete(parent, index, item), [item, parent, index]);
+  const hoverClasses = useHoverShowStyles();
+
+  const urlPlaceholder = item.urlPath
+    ? "/" + item.urlPath.trim().toLowerCase().replaceAll(" ", "+")
+    : item.name
+      ? "/" + item.name.trim().toLowerCase().replaceAll(" ", "+")
+      : "No value";
 
   return (
-    <>
-      <Draggable key={key} draggableId={parent || "ROOT"} index={item.dragIndex} isDragDisabled={!parent}>
-        {(provided, snapshot) => {
-          const isDragging = snapshot.isDragging;
+    <div
+      className={clsx(classes.card, hoverClasses.container, {
+        [clsx("paperBackgroundColor", classes.dragOver)]: snapshot.isDragging || Boolean(snapshot.combineTargetFor)
+      })}
+      onClick={isEditing ? null : onEditClick}
+    >
+      <div className={classes.cardGrid}>
+        <div {...provided.dragHandleProps}>
+          <DragIndicator
+            className={clsx("d-flex", classes.dragIcon, !item.parent && "pointer-events-none")}
+          />
+        </div>
 
-          return (
-            <div
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-              className={noTransformClass}
-            >
-              <div
-                className={clsx("cursor-pointer d-grid align-items-center", classes.card, {
-                  [clsx("paperBackgroundColor", classes.dragOver)]: isDragging || Boolean(snapshot.combineTargetFor)
-                })}
-              >
-                <div>
-                  <DragIndicator
-                    className={clsx({
-                      "dndActionIcon": true,
-                      [clsx("d-flex", classes.dragIcon)]: true
-                    })}
-                  />
-                </div>
+        <div className="pr-3">
+          {isEditing
+            ? (<Field name={getFieldName(item.parent, "color")} component={ColorPicker} />)
+            : (<div className={classes.tagColorDot} style={{ background: "#" + item.color }} />)}
+        </div>
 
-                <div className="pr-2">
-                  <div className={classes.tagColorDot} style={{ background: "#" + item.color }} />
-                </div>
+        <div>
+          {isEditing
+            ? (
+              <FormField
+                type="text"
+                name={getFieldName(item.parent, "name")}
+                fieldClasses={{
+                  text: classes.nameEditable
+                }}
+                disabled={item.system}
+                className={classes.fieldEditable}
+                onClick={stopEventPropagation}
+              />
+            )
+            : (
+              <Typography variant="body2" fontWeight="500" noWrap>
+                {item.name}
+              </Typography>
+            )}
+        </div>
 
-                <div>
-                  <div>
-                    <Typography variant="caption" color="textSecondary">
-                      Name
-                    </Typography>
+        <div>
+          {isEditing ? (
+            <FormField
+              type="text"
+              name={getFieldName(item.parent, "urlPath")}
+              placeholder={urlPlaceholder}
+              normalize={val => {
+                if (!val) return null;
+                return val;
+              }}
+              fieldClasses={{
+                text: classes.urlEditable
+              }}
+              className={classes.fieldEditable}
+              onClick={stopEventPropagation}
+              debounced={false}
+            />
+          ) : (
+            <Typography variant="body2" className={item.urlPath ? undefined : "placeholderContent"} noWrap>
+              {urlPlaceholder}
+            </Typography>
+          )}
+        </div>
 
-                    <Typography variant="body2" color={item.name ? undefined : "error"} noWrap>
-                      {item.name || "Name is mandatory"}
-                    </Typography>
-                  </div>
-                </div>
+        <IconButton className={clsx("dndActionIconButton", hoverClasses.target)} onClick={onEditClick}>
+          <Edit className={classes.actionIcon} />
+        </IconButton>
 
-                <div className="centeredFlex">
-                  <div className="pr-1 flex-fill overflow-hidden">
-                    <Typography variant="caption" color="textSecondary">
-                      URL path
-                    </Typography>
+        <IconButton className="dndActionIconButton" onClick={onVisibilityClick}>
+          {item.status === "Private"
+            ? <VisibilityOffIcon className={classes.actionIconInactive} />
+            : <VisibilityIcon className={classes.actionIcon} />}
+        </IconButton>
 
-                    <Typography variant="body2" className={item.urlPath ? undefined : "placeholderContent"} noWrap>
-                      {item.urlPath || "No Value"}
-                    </Typography>
-                  </div>
-
-                  <div className="flex-fill">
-                    <Typography variant="caption" color="textSecondary">
-                      Visibility
-                    </Typography>
-
-                    <Typography variant="body2">{item.status}</Typography>
-                  </div>
-                </div>
-
-                <IconButton className={clsx(classes.actionButton, "dndActionIconButton")} onClick={onEditClick}>
-                  <Edit className={clsx(classes.actionIcon, "dndActionIcon")} />
-                </IconButton>
-
-                <IconButton
-                  className={clsx(classes.actionButton, {
-                    "invisible": !parent,
-                    "dndActionIconButton": true
-                  })}
-                  onClick={onDeleteClick}
-                >
-                  <Delete className={clsx(classes.actionIcon, "dndActionIcon")} />
-                </IconButton>
-              </div>
-            </div>
-          );
-        }}
-      </Draggable>
-
-      <div className="ml-2">
-        <FieldArray
-          noTransformClass={noTransformClass}
-          name={parent ? `${parent}.childTags` : "childTags"}
-          component={TagItemsRenderer}
-          onDelete={onDelete}
-          openTagEditView={openTagEditView}
-          validate={validatTagsNames}
-          rerenderOnEveryChange
-        />
+        <IconButton
+          className={clsx("dndActionIconButton", {
+            "invisible": !item.parent,
+            [hoverClasses.target]: item.parent
+          })}
+          onClick={onDeleteClick}
+        >
+          <Delete className={classes.actionIcon}/>
+        </IconButton>
       </div>
-    </>
+
+      <Collapse in={isEditing} mountOnEnter unmountOnExit>
+        <div className="pl-3 pr-3" onClick={stopEventPropagation}>
+          <FormEditorField name={getFieldName(item.parent, "content")} placeholder="Enter description" />
+        </div>
+      </Collapse>
+    </div>
   );
 });
 
-export default withStyles(styles)(TagItem);
+export default TagItem;

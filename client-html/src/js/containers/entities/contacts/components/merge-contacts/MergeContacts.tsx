@@ -5,7 +5,7 @@
 
 import { FormControlLabel } from "@mui/material";
 import React, {
- Dispatch, useCallback, useEffect, useMemo, useState
+ Dispatch, useEffect, useMemo, useState
 } from "react";
 import clsx from "clsx";
 import { connect } from "react-redux";
@@ -13,26 +13,21 @@ import {
  Field, getFormValues, initialize, reduxForm
 } from "redux-form";
 import { createStyles, withStyles } from "@mui/styles";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
-import Button from "@mui/material/Button";
 import { MergeData, MergeLine, MergeRequest } from "@api/model";
 import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
 import { State } from "../../../../../reducers/state";
-import LoadingIndicator from "../../../../../common/components/layout/LoadingIndicator";
 import { Switch } from "../../../../../common/components/form/formFields/Switch";
 import { getMergeContacts, postMergeContacts } from "../../actions";
-import { getContactName } from "../../utils";
-import RadioLabelGroup, { Selected } from "./components/RadioLabelGroup";
+import RadioLabelGroup from "./components/RadioLabelGroup";
 import InfoCard from "./components/InfoCard";
 import { AppTheme } from "../../../../../model/common/Theme";
-import { LSGetItem } from "../../../../../common/utils/storage";
-import { APPLICATION_THEME_STORAGE_NAME } from "../../../../../constants/Config";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { getContactFullName } from "../../utils";
 
 export interface MergeContactsFormValues {
   mergeData?: MergeData;
@@ -100,10 +95,8 @@ const MergeContacts = React.memo<Props>(
     mergeCloseOnSuccess,
     closeWithoutMerge
   }) => {
-    const [showDifference, setShowDifference] = useState(false);
+    const [showDifference, setShowDifference] = useState(true);
     const [agreeWithLowScore, setAgreeWithLowScore] = useState(false);
-
-    const [selected, setSelected] = useState<Selected[]>([]);
 
     useEffect(() => {
       if (window.location.search) {
@@ -118,28 +111,21 @@ const MergeContacts = React.memo<Props>(
     }, [window.location.search]);
 
     useEffect(() => {
-      if (!selected.length && values.mergeData.mergeLines.length) {
-        setSelected(
-          values.mergeData.mergeLines.map((l, i) => {
-            if (l.a === l.b) {
-              initiallySameIndices.add(i);
-              return "a" as Selected;
-            }
-            return null;
-          })
-        );
+      if (values.mergeData.mergeLines.length) {
+        values.mergeData.mergeLines.forEach((l, i) => {
+          if (l.a === l.b) {
+            initiallySameIndices.add(i);
+          }
+        });
       }
-    }, [selected, values.mergeData.mergeLines]);
+    }, [values.mergeData.mergeLines]);
 
-    const onSubmit = useCallback(
-      values => {
-        postMergeContacts(values.mergeRequest);
-        if (isModal) {
-          mergeCloseOnSuccess();
-        }
-      },
-      [selected]
-    );
+    const onSubmit = values => {
+      postMergeContacts(values.mergeRequest);
+      if (isModal) {
+        mergeCloseOnSuccess();
+      }
+    };
 
     const score = useMemo(() =>
       (values.mergeData.mergeLines.length ? calculateMergeScore(values.mergeData.mergeLines) : 0),
@@ -178,8 +164,8 @@ const MergeContacts = React.memo<Props>(
       [score]
     );
 
-    const isMergeDisabled = useMemo(() => selected.some(s => s === null) || (score <= 70 && !agreeWithLowScore),
-      [selected, score, agreeWithLowScore]);
+    const isMergeDisabled = values.mergeData.mergeLines.some(l => values.mergeRequest.data[l.key] === undefined)
+        || (score <= 70 && !agreeWithLowScore);
 
     const contactNames = useMemo(() => {
       const firstNameData = values.mergeData.mergeLines.find(m => m.key === "Contact.firstName");
@@ -193,18 +179,16 @@ const MergeContacts = React.memo<Props>(
       }
 
       return {
-        a: getContactName({
+        a: getContactFullName({
           firstName: firstNameData.a,
           lastName: lastNameData.a
         }),
-        b: getContactName({
+        b: getContactFullName({
           firstName: firstNameData.b,
           lastName: lastNameData.b
         })
       };
     }, [values.mergeData]);
-
-    console.log(score);
 
     return (
       <>
@@ -213,106 +197,72 @@ const MergeContacts = React.memo<Props>(
             <DialogTitle>Merge successful</DialogTitle>
             <DialogContent className="overflow-hidden">Contacts were merged successfully! Close the window.</DialogContent>
           </div>
-          {/* <DialogActions className="p-3"> */}
-          {/*  <Button color="primary" onClick={() => closeMergeContactsPage()}> */}
-          {/*    Close Window */}
-          {/*  </Button> */}
-          {/* </DialogActions> */}
         </Dialog>
+
         <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-          <AppBar className={clsx(LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader")}>
-            <Toolbar>
-              <Typography className="appHeaderFontSize">
-                Merge
-                {' '}
-                {contactNames.a}
-                {' '}
-                with
-                {' '}
-                {contactNames.b}
-              </Typography>
+          <AppBarContainer
+            hideHelpMenu
+            closeButtonText="Close"
+            submitButtonText="Merge"
+            onCloseClick={isModal ? closeWithoutMerge : null}
+            disabled={isMergeDisabled}
+            title={`Merge ${contactNames.a} with ${contactNames.b}`}
+          >
 
-              <div className="flex-fill" />
-
-              {isModal ? (
-                <Button onClick={closeWithoutMerge} className="whiteAppBarButton">
-                  Close
-                </Button>
-              ) : null}
-
-              <Button
-                type="submit"
-                classes={{
-                  root: "whiteAppBarButton",
-                  disabled: "whiteAppBarButtonDisabled"
-                }}
-                disabled={isMergeDisabled}
-              >
-                Merge
-              </Button>
-            </Toolbar>
-          </AppBar>
-
-          <LoadingIndicator appBarOffset />
-
-          <Grid container columnSpacing={3} className="p-3 h-100 appBarContainer defaultBackgroundColor" wrap="nowrap">
-            <Grid item xs={12} md={6} className={clsx("d-grid align-content-start", classes.contactsFields)}>
-              <Typography variant="body2" className={clsx("d-grid align-items-center justify-content-start", classes.switcherGroup)}>
-                Only show differences
-                <Switch checked={showDifference} onChange={() => setShowDifference(prevValue => !prevValue)} />
-              </Typography>
-
-              {values.mergeData.mergeLines.map((l, i) => (
-                <Field
-                  key={i}
-                  line={l}
-                  index={i}
-                  name={`mergeRequest.data["${l.key}"]`}
-                  component={RadioLabelGroup}
-                  showDifference={showDifference}
-                  selected={selected}
-                  setSelected={setSelected}
-                />
-              ))}
-            </Grid>
-            <Grid item xs={12} md="auto" className={clsx("d-grid align-items-start align-content-start", classes.rightColumn)}>
-              <InfoCard
-                values={values}
-                selected={selected}
-                setSelected={setSelected}
-                initiallySameIndices={initiallySameIndices}
-                dispatch={dispatch}
-                contactNames={contactNames}
-              />
-              <Typography variant="body2">
-                Merging two contacts cannot be undone. Choose which values to retain; the other data will be discarded.
-              </Typography>
-
-              {matchScoreLabel}
-
-              {score <= 70 && (
-              <div className="mt1">
-                <Typography variant="body2">
-                  These records are not a likely match
+            <Grid container wrap="nowrap">
+              <Grid item xs={12} md={6} className={clsx("d-grid align-content-start", classes.contactsFields)}>
+                <Typography variant="body2" className={clsx("d-grid align-items-center justify-content-start", classes.switcherGroup)}>
+                  Only show differences
+                  <Switch checked={showDifference} onChange={() => setShowDifference(prevValue => !prevValue)} />
                 </Typography>
-                <FormControlLabel
-                  classes={{
-                    root: "checkbox mt1"
-                  }}
-                  control={(
-                    <StyledCheckbox
-                      color="primary"
-                      checked={agreeWithLowScore}
-                      onChange={(e, v) => setAgreeWithLowScore(v)}
-                    />
-                  )}
-                  label="I am sure I want to merge these records"
-                />
-              </div>
-)}
 
+                {values.mergeData.mergeLines.map((l, i) => (
+                  <Field
+                    key={i}
+                    line={l}
+                    index={i}
+                    name={`mergeRequest.data["${l.key}"]`}
+                    component={RadioLabelGroup}
+                    showDifference={showDifference}
+                  />
+                ))}
+              </Grid>
+              <Grid item xs={12} md="auto" className={clsx("d-grid align-items-start align-content-start", classes.rightColumn)}>
+                <InfoCard
+                  values={values}
+                  initiallySameIndices={initiallySameIndices}
+                  dispatch={dispatch}
+                  contactNames={contactNames}
+                />
+                <Typography variant="body2">
+                  Merging two contacts cannot be undone. Choose which values to retain; the other data will be discarded.
+                </Typography>
+
+                {matchScoreLabel}
+
+                {score <= 70 && (
+                  <div className="mt1">
+                    <Typography variant="body2">
+                      These records are not a likely match
+                    </Typography>
+                    <FormControlLabel
+                      classes={{
+                        root: "checkbox mt1"
+                      }}
+                      control={(
+                        <StyledCheckbox
+                          color="primary"
+                          checked={agreeWithLowScore}
+                          onChange={(e, v) => setAgreeWithLowScore(v)}
+                        />
+                      )}
+                      label="I am sure I want to merge these records"
+                    />
+                  </div>
+                )}
+              </Grid>
             </Grid>
-          </Grid>
+          </AppBarContainer>
         </form>
       </>
     );

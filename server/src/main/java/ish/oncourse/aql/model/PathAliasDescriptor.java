@@ -80,10 +80,6 @@ public class PathAliasDescriptor implements SyntheticAttributeDescriptor {
             var idx = 1;
 
             String path = pathExp.getPath();
-            if(!path.startsWith(alias)) {
-                ctx.reportError(-1, -1, "Invalid arguments in path alias resolution.");
-                return null;
-            }
             path = path.replaceFirst(alias, this.path);
 
             ExpressionUtil.addChild(parent, new ASTObjPath(path), 0);

@@ -27,6 +27,10 @@ import java.util.Date
 class CustomFieldType extends _CustomFieldType implements Queueable {
 
 
+	@Override
+	boolean isAsyncReplicationAllowed() {
+		return !getEntityIdentifier().equals(TutorAttendance.class.simpleName)
+	}
 
 	/**
 	 * @return the date and time this record was created
@@ -109,24 +113,5 @@ class CustomFieldType extends _CustomFieldType implements Queueable {
 	@Nonnull @API @Override
 	String getEntityIdentifier() {
 		return super.getEntityIdentifier()
-	}
-
-	/**
-	 * The entity (eg. Contact, Enrolment) to which this custom field type is bound.
-	 * However, in case when entity is 'Article' we will change to 'Product' for appropriate value of the enumeration
-	 * @return
-	 */
-	@Nonnull
-	String getEntityIdentifierExtended() {
-		return entityIdentifier == 'Article' ? 'Product' : entityIdentifier
-	}
-
-	/**
-	 * Set value of entity (eg. Contact, Enrolment) to which this custom field type is bound.
-	 * However, in case when entity is 'Product' we will change to 'Article' for correct next working.
-	 */
-	@Nonnull
-	void setEntityIdentifierExtended(String value) {
-		entityIdentifier = value == 'Product' ? 'Article' : value
 	}
 }

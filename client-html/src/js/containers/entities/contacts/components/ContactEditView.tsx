@@ -1,12 +1,16 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { useCallback, useState } from "react";
 import { connect } from "react-redux";
+import { useTheme } from "@mui/styles";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
+import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
 import ContactsGeneral from "./ContactsGeneral";
 import ContactsFinancial from "./ContactsFinancial";
 import ContactsMessages from "./ContactsMessages";
@@ -19,6 +23,7 @@ import ContactsTutor from "./ContactsTutor";
 import AvailabilityFormComponent from "../../../../common/components/form/availabilityComponent/AvailabilityFormComponent";
 import { State } from "../../../../reducers/state";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
+import { AppTheme } from "../../../../model/common/Theme";
 
 const studentItems: TabsListItem[] = [
   {
@@ -92,7 +97,6 @@ const ContactEditView = props => {
     rootEntity,
     twoColumn,
     showConfirm,
-    openNestedEditView,
     manualLink,
     invalid,
     currencySymbol,
@@ -104,6 +108,8 @@ const ContactEditView = props => {
   const [isTutor, setIsTutor] = useState(false);
   const [isCompany, setIsCompany] = useState(false);
   const [usiUpdateLocked, setUsiUpdateLocked] = useState(true);
+
+  const theme = useTheme<AppTheme>();
 
   const getActiveItems = () => {
     let activeItems = [...items];
@@ -144,6 +150,7 @@ const ContactEditView = props => {
   return (
     <TabsList
       items={values ? getActiveItems() : []}
+      newsOffset={twoColumn ? theme.spacing(6) : null}
       itemProps={{
         isNew,
         isNested,
@@ -157,7 +164,6 @@ const ContactEditView = props => {
         rootEntity,
         twoColumn,
         showConfirm,
-        openNestedEditView,
         manualLink,
         isStudent,
         isTutor,

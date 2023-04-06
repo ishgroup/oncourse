@@ -1,16 +1,38 @@
-import { ActionsObservable } from "redux-observable";
+import { Epic, StateObservable } from "redux-observable";
 import { filter, toArray } from "rxjs/operators";
-import { mockedAPI, store } from "../TestEntry";
+import { Subject, from } from "rxjs";
+import { mockedAPI } from "../TestEntry";
 import { FETCH_FINISH, FETCH_START } from "../../js/common/actions";
+import TestStore from "../../js/constants/Store";
+
+interface Props {
+  action: any;
+  epic: Epic<any, any>,
+  processData: (mockedApi: any, state?: any) => any;
+  beforeProcess?: () => void;
+  store?: ({ mockedApi, values }) => Object;
+  initialValues?: ({ mockedApi }) => Object;
+}
 
 export const DefaultEpic = ({
-  action, epic, processData, beforeProcess = () => {}
-}) => {
+  action,
+  epic,
+  processData,
+  beforeProcess,
+  store,
+  initialValues
+}: Props) => {
+  const formValues = typeof initialValues === "function" ? initialValues({ mockedApi: mockedAPI }) : {};
+  const customStore = typeof store === "function" ? store({ mockedApi: mockedAPI, values: formValues }) : {};
+
+  // Initialize / override default state
+  const state = new StateObservable(new Subject(), { ...TestStore.getState(), ...customStore });
+
   // Redux action to trigger epic
-  const action$ = ActionsObservable.of(typeof action === "function" ? action(mockedAPI) : action );
+  const action$ = from([typeof action === "function" ? action(mockedAPI) : action]);
 
   // Initializing epic instance
-  const epic$ = epic(action$, store, {});
+  const epic$ = epic(action$, state, {});
 
   if (beforeProcess) beforeProcess();
 
@@ -23,5 +45,5 @@ export const DefaultEpic = ({
         toArray()
       )
       .toPromise()
-  ).resolves.toEqual(processData(mockedAPI));
+  ).resolves.toEqual(processData(mockedAPI, state?.value));
 };

@@ -6,10 +6,12 @@ describe("Virtual rendered AccountsEditView", () => {
     entity: "Account",
     EditView: AccountsEditView,
     record: mockecApi => mockecApi.db.getAccount(1),
-    render: (wrapper, initialValues) => {
-      expect(wrapper.find("#accountCode input").val()).toContain(initialValues.accountCode);
-      expect(wrapper.find("#type input").val()).toContain(initialValues.type.toString());
-      expect(wrapper.find("#description textarea").val()).toContain(initialValues.description);
+    render: ({ screen, initialValues, formRoleName }) => {
+      expect(screen.getByRole(formRoleName)).toHaveFormValues({
+        accountCode: initialValues.accountCode,
+        type: initialValues.type.toString(),
+        description: initialValues.description
+      });
     }
   });
 });

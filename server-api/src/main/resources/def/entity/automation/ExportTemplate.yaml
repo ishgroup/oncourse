@@ -27,11 +27,16 @@ properties:
     description: export body
     example: |
       records.each { Enrolment e -> csv << ["id" : e.id]}
-  enabled:
-    type: boolean
-    description: Export status
+  status:
+    $ref: './AutomationStatus.yaml'
+    description: Automation status
     required: true
-    example: true
+    example: Enabled
+  preview:
+    type: string
+    format: byte
+    description: image byte array
+    required: false
   variables:
     type: array
     items:
@@ -60,3 +65,18 @@ properties:
     require: true
     description: export description
     example: description
+  shortDescription:
+    type: string
+    require: false
+    description: Message template short description
+    example: descr
+  automationTags:
+    type: string
+    require: false
+    description: automation tags separated by commas
+    example: new,income
+  category:
+    type: string
+    require: false
+    description: automation category
+    example: imports

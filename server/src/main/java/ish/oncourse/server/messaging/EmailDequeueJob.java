@@ -19,8 +19,7 @@ import ish.oncourse.server.AngelServerFactory;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.PreferenceController;
 import ish.oncourse.server.cayenne.Contact;
-import ish.oncourse.server.cayenne.MessagePerson;
-import ish.oncourse.server.cayenne.glue._MessagePerson;
+import ish.oncourse.server.cayenne.Message;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
@@ -67,16 +66,16 @@ public class EmailDequeueJob implements Job {
 		super();
 	}
 
-	public MessageStatus sendMessageToRecipient(final MessagePerson messagePers, final Contact aReceiver, final StringBuffer theResponse) {
+	public MessageStatus sendMessageToRecipient(final Message message, final Contact aReceiver, final StringBuffer theResponse) {
 		MessageStatus returnStatus;
 
 		try {
-			var getFrom = GetFrom.valueOf(messagePers.getMessage().getEmailFrom(), preferenceController.getEmailFromName());
-			var getEnvelopeFrom = GetEnvelopeFrom.valueOf(messagePers.getMessage().getEmailFrom(), preferenceController.getEmailBounceEnabled(), preferenceController.getEmailBounceAddress(), messagePers.getId().toString());
-			var getAddressesTO = GetAddresses.valueOf(messagePers);
-			var getSubject = GetSubject.valueOf(messagePers.getMessage().getEmailSubject());
-			var getEmailPlainBody = GetEmailPlainBody.valueOf(messagePers);
-			var getEmailHtmlBody = GetEmailHtmlBody.valueOf(messagePers);
+			var getFrom = GetFrom.valueOf(message.getEmailFrom(), preferenceController.getEmailFromName());
+			var getEnvelopeFrom = GetEnvelopeFrom.valueOf(message.getEmailFrom(), preferenceController.getEmailBounceEnabled(), preferenceController.getEmailBounceAddress(), message.getId().toString());
+			var getAddressesTO = GetAddresses.valueOf(message);
+			var getSubject = GetSubject.valueOf(message.getEmailSubject());
+			var getEmailPlainBody = GetEmailPlainBody.valueOf(message);
+			var getEmailHtmlBody = GetEmailHtmlBody.valueOf(message);
 			var getContent = GetContent.valueOf(getEmailPlainBody, getEmailHtmlBody);
 
 			var mailDeliveryParam = MailDeliveryParam.valueOf(getFrom, getEnvelopeFrom, getAddressesTO, getSubject, getContent);
@@ -142,7 +141,7 @@ public class EmailDequeueJob implements Job {
 			// primary keys of MessagePerson
 			Collection<Long> ids = bounceInfo.keySet();
 
-			var query = SelectQuery.query(MessagePerson.class, MessagePerson.ID.in(ids));
+			var query = SelectQuery.query(Message.class, Message.ID.in(ids));
 			final ObjectContext context = this.cayenneService.getNewContext();
 
 			for (var messPers : context.select(query)) {
@@ -171,9 +170,9 @@ public class EmailDequeueJob implements Job {
 
 				var getEnvelopeFrom = GetEnvelopeFrom.valueOf(preferenceController.getEmailBounceAddress());
 
-				var getAddressesTO = GetAddresses.valueOf(messPers.getMessage().getEmailFrom());
+				var getAddressesTO = GetAddresses.valueOf(messPers.getEmailFrom());
 
-				var subject = String.format("\"%s\" was bounced", messPers.getMessage().getEmailSubject());
+				var subject = String.format("\"%s\" was bounced", messPers.getEmailSubject());
 				var getSubject = GetSubject.valueOf(subject);
 
 				var body = String.format("This message was unable to be delivered to the recipient. onCourse has already noted it as undeliverable " +
@@ -204,8 +203,8 @@ public class EmailDequeueJob implements Job {
 	/**
 	 * @return the list of currently queued MessagePerson's
 	 */
-	protected List<MessagePerson> currentQueue(Expression dequeueingQualifier, final DataContext context) {
-		var aQuery = SelectQuery.query(MessagePerson.class, dequeueingQualifier);
+	protected List<Message> currentQueue(Expression dequeueingQualifier, final DataContext context) {
+		var aQuery = SelectQuery.query(Message.class, dequeueingQualifier);
 		aQuery.setCacheStrategy(QueryCacheStrategy.NO_CACHE);
 		aQuery.setPageSize(25);
 		aQuery.setFetchLimit(500);
@@ -229,27 +228,27 @@ public class EmailDequeueJob implements Job {
 				return;
 			}
 
-			var dequeueingQualifier = ExpressionFactory.matchExp(MessagePerson.TYPE.getName(), MessageType.EMAIL);
-			dequeueingQualifier = dequeueingQualifier.andExp(ExpressionFactory.matchExp(MessagePerson.STATUS.getName(), MessageStatus.QUEUED));
+			var dequeueingQualifier = ExpressionFactory.matchExp(Message.TYPE.getName(), MessageType.EMAIL);
+			dequeueingQualifier = dequeueingQualifier.andExp(ExpressionFactory.matchExp(Message.STATUS.getName(), MessageStatus.QUEUED));
 
 			final var aContext = this.cayenneService.getNewContext();
-			var messagePersons = currentQueue(dequeueingQualifier, aContext);
+			var messages = currentQueue(dequeueingQualifier, aContext);
 
-			if (messagePersons.size() > 0) {
+			if (messages.size() > 0) {
 
-				var count = messagePersons.size();
+				var count = messages.size();
 
 				for (var i = 0; i < count && !AngelServerFactory.QUIT_SIGNAL_CAUGHT; i++) {
-					var aMessagePerson = messagePersons.get(i);
-					if (MessageStatus.QUEUED.equals(aMessagePerson.getStatus())) {
-						var aReceiver = aMessagePerson.getContact();
+					var message = messages.get(i);
+					if (MessageStatus.QUEUED.equals(message.getStatus())) {
+						var aReceiver = message.getContact();
 
-						if (aMessagePerson.hasMessage() && aReceiver != null) {
+						if (aReceiver != null) {
 							var responseBuffer = new StringBuffer();
 
 							MessageStatus newStatus = null;
 							try {
-								newStatus = sendMessageToRecipient(aMessagePerson, aReceiver, responseBuffer);
+								newStatus = sendMessageToRecipient(message, aReceiver, responseBuffer);
 								logger.debug("setting status:{}", newStatus);
 
 							} catch (IllegalStateException e) {
@@ -258,10 +257,10 @@ public class EmailDequeueJob implements Job {
 
 							if (newStatus != null) {
 								try {
-									aMessagePerson.setStatus(newStatus);
-									aMessagePerson.setResponse(responseBuffer.toString());
+									message.setStatus(newStatus);
+									message.setResponse(responseBuffer.toString());
 									if (MessageStatus.SENT.equals(newStatus)) {
-										aMessagePerson.setSentOn(new Date());
+										message.setTimeOfDelivery(new Date());
 									}
 									aContext.commitChanges();
 								} catch (Exception e) {

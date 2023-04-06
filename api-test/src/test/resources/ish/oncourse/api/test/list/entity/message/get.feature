@@ -47,6 +47,7 @@ Feature: Main feature for all GET requests with path 'list/entity/message'
         {
         "id":1000,
         "subject":"Invoice 8 Payment Reminder",
+        "contactId":11,
         "message":"some body 1",
         "htmlMessage":"test@test1",
         "sms":"sms",
@@ -54,7 +55,7 @@ Feature: Main feature for all GET requests with path 'list/entity/message'
         "creatorKey":null,
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "sentToContactFullname":"stud5 ContraInvoice5 and 2 others"
+        "sentToContactFullname":"stud5 ContraInvoice5"
         }
         """
 
@@ -75,6 +76,7 @@ Feature: Main feature for all GET requests with path 'list/entity/message'
         """
         {
         "id":1001,
+        "contactId":12,
         "subject":"Invoice 10 Payment Reminder",
         "message":"some body 2",
         "htmlMessage":"test@test2",
@@ -83,7 +85,7 @@ Feature: Main feature for all GET requests with path 'list/entity/message'
         "creatorKey":null,
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "sentToContactFullname":"stud6 ContraInvoice6 and 2 others"
+        "sentToContactFullname":"stud6 ContraInvoice6"
         }
         """
 

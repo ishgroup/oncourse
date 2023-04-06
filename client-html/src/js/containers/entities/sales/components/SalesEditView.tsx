@@ -7,15 +7,12 @@
  */
 
 import React, { useCallback } from "react";
-import {
-  Contact,
-  ProductItem, ProductItemPayment,
-  ProductItemStatus,
-  ProductType
-} from "@api/model";
+import { Contact, ProductItem, ProductItemPayment, ProductItemStatus, ProductType } from "@api/model";
 import { change, FieldArray } from "redux-form";
 import { compareAsc, format as formatDate, startOfDay } from "date-fns";
-import { Grid } from "@mui/material";
+import { Grid, IconButton } from "@mui/material";
+import Launch from "@mui/icons-material/Launch";
+import clsx from "clsx";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { openInternalLink } from "../../../../common/utils/links";
@@ -23,30 +20,20 @@ import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { EEE_D_MMM_YYYY } from "../../../../common/utils/dates/format";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { contactLabelCondition } from "../../contacts/utils";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import { buildUrl, productUrl } from "../utils";
+import { ContactLinkAdornment, LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { buildUrl, getSaleEntityName, productUrl } from "../utils";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { useAppSelector } from "../../../../common/utils/hooks";
+import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
+import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import { getContactFullName } from "../../contacts/utils";
 
-interface SalesGeneralViewProps {
-  classes?: any;
-  twoColumn?: boolean;
-  manualLink?: string;
-  values?: ProductItem;
-  dispatch?: any;
-  form?: string;
+interface SalesGeneralViewProps extends EditViewProps<ProductItem> {
 }
-
-const nameLabel = (type: ProductType) => {
-  switch (type) {
-    case ProductType.Membership:
-      return "Membership name";
-    case ProductType.Voucher:
-      return "Voucher name";
-    default:
-      return "Product name";
-  }
-};
 
 const paymentColumns: NestedTableColumn[] = [
   {
@@ -77,12 +64,15 @@ const openRow = (value: ProductItemPayment) => {
   openInternalLink(`/invoice/${value.id}`);
 };
 
+const defaultTags = [];
+
 const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
   const {
     twoColumn,
     values,
     dispatch,
-    form
+    form,
+    showConfirm
   } = props;
 
   const type = values ? values.productType : undefined;
@@ -101,118 +91,171 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
 
   const onRedeemableByIdChange = useCallback(
     (val: Contact) => {
-      dispatch(change(form, "redeemableByName", contactLabelCondition(val)));
+      dispatch(change(form, "redeemableByName", getContactFullName(val)));
     },
     [form]
   );
 
-  return values ? (
-    <div className="pl-3 pr-3 flex-column h-100">
-      <Uneditable
-        className="pt-2"
-        value={values.productName}
-        label={nameLabel(type)}
-        url={productUrl(values)}
-      />
+  const gridItemProps = {
+    xs: twoColumn ? 6 : 12,
+    lg: twoColumn ? 4 : 12
+  } as any;
 
-      <Grid container columnSpacing={3}>
-        <Grid item xs={twoColumn ? 6 : 12}>
-          <Uneditable
-            value={values.purchasedByName}
-            label="Purchased by"
-            url={buildUrl(values.purchasedById, "Contacts")}
-          />
-        </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
-          <Uneditable value={formatSaleDate(values.purchasedOn)} label="Purchased on" />
-        </Grid>
+  const tags = useAppSelector(state => state.tags?.entityTags[getSaleEntityName(values?.productType)] || defaultTags);
+
+  return values ? (
+    <Grid container columnSpacing={3} rowSpacing={2} className={clsx("p-3", twoColumn && "pt-1")}>
+      <Grid item xs={12}>
+        <FullScreenStickyHeader
+          disableInteraction
+          twoColumn={twoColumn}
+          title={(
+            <div className="d-inline-flex-center">
+              {values && values.productName}
+              <IconButton disabled={!values?.productId} size="small" color="primary" onClick={() => openInternalLink(productUrl(values))}>
+                <Launch fontSize="inherit" />
+              </IconButton>
+            </div>
+            )}
+        />
+      </Grid>
+      <Grid item xs={twoColumn ? 8 : 12}>
+        <FormField
+          type="tags"
+          name="tags"
+          tags={tags}
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <EntityChecklists
+          entity={customFieldType}
+          form={form}
+          entityId={values.id}
+          checked={values.tags}
+        />
+      </Grid>
+
+      <Grid item {...gridItemProps}>
+        <Uneditable
+          value={values.purchasedByName}
+          label="Purchased by"
+          labelAdornment={
+            <ContactLinkAdornment id={values.purchasedById} />
+          }
+        />
+      </Grid>
+      <Grid item {...gridItemProps}>
+        <Uneditable value={formatSaleDate(values.purchasedOn)} label="Purchased on"  />
+      </Grid>
+
+      <Grid item container columnSpacing={3} rowSpacing={2} xs={12}>
         <CustomFields
           entityName={customFieldType}
           fieldName="customFields"
           entityValues={values}
-          dispatch={dispatch}
           form={form}
-          gridItemProps={{
-            xs: twoColumn ? 6 : 12
-          }}
+          gridItemProps={gridItemProps}
         />
       </Grid>
 
-      <Grid container columnSpacing={3}>
-        {type === ProductType.Voucher && (
-          <Grid item xs={twoColumn ? 6 : 12}>
-            <FormField
-              type="remoteDataSearchSelect"
-              entity="Contact"
-              name="redeemableById"
-              label="Send invoice on redemption to"
-              selectValueMark="id"
-              selectLabelCondition={contactLabelCondition}
-              defaultDisplayValue={values.redeemableByName}
-              labelAdornment={(
-                <LinkAdornment
-                  link={values.redeemableById}
-                  clickHandler={openLink}
-                />
-              )}
-              disabled={values.status !== ProductItemStatus.Active}
-              itemRenderer={ContactSelectItemRenderer}
-              onInnerValueChange={onRedeemableByIdChange}
-              rowHeight={55}
-              allowEmpty
-            />
-          </Grid>
-        )}
-        {type === ProductType.Membership && (
-          <Grid item xs={twoColumn ? 6 : 12}>
-            <Uneditable value={formatSaleDate(values.validFrom)} label="Valid from" />
-          </Grid>
-        )}
-        {(type === ProductType.Membership || type === ProductType.Voucher) && (
-          <Grid item xs={twoColumn ? 6 : 12}>
-            <FormField
-              type="date"
-              name="expiresOn"
-              label="Expires On"
-              disabled={
-                values.status !== ProductItemStatus.Active
-                || compareAsc(startOfDay(new Date()), new Date(values.expiresOn)) > 0
-              }
-            />
-          </Grid>
-        )}
-      </Grid>
-      <Grid container columnSpacing={3}>
-        <Grid item xs={twoColumn ? 2 : 6}>
-          <Uneditable value={values.purchasePrice} label="Purchase price" money />
-        </Grid>
-        <Grid item xs={twoColumn ? 2 : 6}>
-          <Uneditable value={values.status} label="Status" />
-        </Grid>
-      </Grid>
       {type === ProductType.Voucher && (
-        <Grid container columnSpacing={3}>
-          <Grid item xs={twoColumn ? 2 : 6}>
+        <Grid item {...gridItemProps}>
+          <FormField
+            type="remoteDataSelect"
+            entity="Contact"
+            name="redeemableById"
+            label="Send invoice on redemption to"
+            selectValueMark="id"
+            selectLabelCondition={getContactFullName}
+            defaultValue={values.redeemableByName}
+            labelAdornment={(
+              <LinkAdornment
+                link={values.redeemableById}
+                clickHandler={openLink}
+              />
+                )}
+            disabled={values.status !== ProductItemStatus.Active}
+            itemRenderer={ContactSelectItemRenderer}
+            onInnerValueChange={onRedeemableByIdChange}
+            rowHeight={55}
+            allowEmpty
+          />
+        </Grid>
+        )}
+      {type === ProductType.Membership && (
+        <Grid item {...gridItemProps}>
+          <Uneditable value={formatSaleDate(values.validFrom)} label="Valid from" />
+        </Grid>
+      )}
+      {(type === ProductType.Membership || type === ProductType.Voucher) && (
+        <Grid item {...gridItemProps}>
+          <FormField
+            type="date"
+            name="expiresOn"
+            label="Expires On"
+            disabled={
+              values.status !== ProductItemStatus.Active
+              || compareAsc(startOfDay(new Date()), new Date(values.expiresOn)) > 0
+            }
+          />
+        </Grid>
+      )}
+
+      <Grid item {...gridItemProps}>
+        <Uneditable value={values.purchasePrice} label="Purchase price" money />
+      </Grid>
+      <Grid item {...gridItemProps}>
+        <Uneditable value={values.status} label="Status" />
+      </Grid>
+   
+      {type === ProductType.Voucher && (
+        <Grid item xs={12} container columnSpacing={3} rowSpacing={2}>
+          <Grid item {...gridItemProps} className="money">
             <Uneditable value={values.valueRemaining} label="Value remaining" />
           </Grid>
-          <Grid item xs={twoColumn ? 2 : 6}>
+          <Grid item {...gridItemProps}>
             <Uneditable value={values.voucherCode} label="Voucher code" />
           </Grid>
         </Grid>
       )}
-      {type !== ProductType.Product && (
+
+      <Grid item xs={12} className="mb-3">
         <FieldArray
-          name="payments"
-          className="saveButtonTableOffset"
-          title={(values && values.payments && values.payments.length) === 1 ? "Payment record" : "Payment records"}
-          component={NestedTable}
-          columns={columnsByType(values.productType)}
-          onRowDoubleClick={openRow}
+          name="documents"
+          label="Documents"
+          entity="ProductItem"
+          component={DocumentsRenderer}
+          xsGrid={12}
+          mdGrid={twoColumn ? 6 : 12}
+          lgGrid={twoColumn ? 4 : 12}
+          dispatch={dispatch}
+          form={form}
+          showConfirm={showConfirm}
           rerenderOnEveryChange
-          sortBy={(a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()}
         />
-      )}
-    </div>
+      </Grid>
+
+      <Grid item xs={12}>
+        <OwnApiNotes {...props} leftOffset />
+      </Grid>
+
+      <Grid item xs={12}>
+        {type !== ProductType.Product && (
+          <FieldArray
+            name="payments"
+            className="saveButtonTableOffset"
+            title={(values && values.payments && values.payments.length) === 1 ? "Payment record" : "Payment records"}
+            component={NestedTable}
+            columns={columnsByType(values.productType)}
+            onRowDoubleClick={openRow}
+            rerenderOnEveryChange
+            sortBy={(a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()}
+            calculateHeight
+          />
+          )}
+      </Grid>
+    </Grid>
   ) : null;
 };
 

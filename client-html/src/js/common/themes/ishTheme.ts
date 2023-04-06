@@ -1,15 +1,23 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 import { createTheme } from '@mui/material/styles';
+import { Components } from "@mui/material/styles/components";
+import { PaletteMode } from "@mui/material";
 import { theme } from "./appTheme";
 import {
   AppTheme,
-  ChristmasThemeKey,
   DarkThemeKey,
   DefaultThemeKey,
   HighcontrastThemeKey,
   MonochromeThemeKey,
   ThemeValues
 } from "../../model/common/Theme";
-import { Components } from "@mui/material/styles/components";
 
 const createOverrides = (palette):{ components: Components } => ({
   components: {
@@ -107,9 +115,12 @@ const createOverrides = (palette):{ components: Components } => ({
           },
         },
         input: {
+          '&.Mui-disabled': {
+            fontWeight: 300,
+            WebkitTextFillColor: 'inherit'
+          },
           "&::placeholder": {
-            color: palette.text.disabled,
-            fill: palette.text.disabled,
+            opacity: 0.15
           },
           textOverflow: "ellipsis",
           color: palette.text.primaryEditable,
@@ -125,36 +136,21 @@ const createOverrides = (palette):{ components: Components } => ({
         },
         inputMultiline: {
           lineHeight: "1.5em"
-        },
+        }
       }
     },
     MuiCssBaseline: {
       styleOverrides: {
-        "@global": {
-          body: {
-            fontFeatureSettings:
-              '"dlig" 0, "numr" 0, "dnom" 0, "tnum" 0, "case" 0, "zero" 0, "frac" 0, '
-              + '"sups" 0, "subs" 0, "cpsp" 0, "salt" 0, "ss01" 0, "ss02" 0, "ss03" 0, '
-              + '"cv01", "cv02", "cv03", "cv04", "cv05", "cv06", "cv07", "cv08", "cv09", '
-              + '"cv10", "cv11", "calt", "liga", "kern"'
-          }
+        body: {
+          fontFeatureSettings:
+            '"dlig" 0, "numr" 0, "dnom" 0, "tnum" 0, "case" 0, "zero" 0, "frac" 0, '
+            + '"sups" 0, "subs" 0, "cpsp" 0, "salt" 0, "ss01" 0, "ss02" 0, "ss03" 0, '
+            + '"cv01", "cv02", "cv03", "cv04", "cv05", "cv06", "cv07", "cv08", "cv09", '
+            + '"cv10", "cv11", "calt", "liga", "kern"',
+          fontSize: "0.875rem"
         }
       }
     },
-    // MuiPickerDTTabs: {
-    //   styleOverrides: {
-    //     tabs: {
-    //       color: palette.primary.contrastText
-    //     }
-    //   }
-    // },
-    // PrivateTabIndicator: {
-    //   styleOverrides: {
-    //     colorSecondary: {
-    //       backgroundColor: palette.primary.contrastText
-    //     }
-    //   }
-    // },
     MuiMenuItem: {
       styleOverrides: {
         root: {
@@ -235,7 +231,8 @@ const defaultThemePalette = {
     primary: "rgba(0, 0, 0, 0.87)",
     primaryEditable: "rgba(0, 0, 0, 0.95)",
     disabled: "rgba(34, 34, 34, 0.38)",
-    hint: "rgba(34, 34, 34, 0.38)"
+    hint: "rgba(34, 34, 34, 0.38)",
+    grey: "#434343",
   }
 };
 
@@ -248,7 +245,7 @@ export const defaultTheme = createTheme({
 
 // Dark Theme
 const darkThemePalette = {
-  type: "dark",
+  mode: "dark" as PaletteMode,
   common: { black: "#000", white: "#fff" },
   primary: {
     main: "#f7941d",
@@ -266,14 +263,15 @@ const darkThemePalette = {
     contrastText: "#fff"
   },
   error: {
- light: "#e57373", main: "#f44336", dark: "#d32f2f", contrastText: "#fff"
-},
+    light: "#e57373", main: "#f44336", dark: "#d32f2f", contrastText: "#fff"
+  },
   text: {
     primary: "rgba(255, 255, 255, 0.87)",
     primaryEditable: "rgba(255, 255, 255, 0.95)",
     secondary: "rgba(255, 255, 255, 0.65)",
     disabled: "rgba(255, 255, 255, 0.38)",
-    hint: "rgba(255, 255, 255, 0.38)"
+    hint: "rgba(255, 255, 255, 0.38)",
+    grey: "rgba(255, 255, 255, 0.65)",
   }
 };
 
@@ -287,17 +285,17 @@ export const darkTheme = createTheme({
 // Monochrome Theme
 
 const monochromeThemePalette = {
-  type: "light",
+  mode: "light" as PaletteMode,
   common: { black: "#000", white: "#fff" },
   primary: {
-    main: "#eaeaea",
+    main: "#111111",
     dark: "#76838f",
-    contrastText: "#222222"
+    contrastText: "#fff"
   },
   secondary: {
     light: "#9bbeff",
-    main: "#3e8ef7",
-    dark: "#255ea9",
+    main: "#111111",
+    dark: "#111111",
     contrastText: "#fff"
   },
   error: {
@@ -308,7 +306,8 @@ const monochromeThemePalette = {
     primaryEditable: "#181818",
     secondary: "rgba(34, 34, 34, 0.54)",
     disabled: "rgba(34, 34, 34, 0.38)",
-    hint: "rgba(34, 34, 34, 0.38)"
+    hint: "rgba(34, 34, 34, 0.38)",
+    grey: "#434343",
   }
 };
 
@@ -345,7 +344,8 @@ const highcontrastThemePalette = {
     primaryEditable: "#070707",
     secondary: "#111111",
     disabled: "rgba(34, 34, 34, 0.38)",
-    hint: "rgba(34, 34, 34, 0.38)"
+    hint: "rgba(34, 34, 34, 0.38)",
+    grey: "#434343",
   },
   action: {
     selected: "rgba(0, 0, 0, 0.3)"
@@ -358,47 +358,6 @@ export const highcontrastTheme = createTheme({
   ...commonTypography,
   ...theme.highcontrast,
   ...createOverrides(highcontrastThemePalette)
-}) as AppTheme;
-
-// High Contrast Theme
-
-const christmasThemePalette = {
-  type: "light",
-  common: { black: "#111111", white: "#fff" },
-  primary: {
-    main: "#B3000C",
-    dark: "#76838f",
-    contrastText: "#fff"
-  },
-  secondary: {
-    light: "#9bbeff",
-    main: "#165B33",
-    dark: "#111111",
-    contrastText: "#fff"
-  },
-  background: {
-    default: "#fff"
-  },
-  error: {
-    light: "#e57373", main: "#f44336", dark: "#d32f2f", contrastText: "#fff"
-  },
-  text: {
-    primary: "#111111",
-    primaryEditable: "#070707",
-    secondary: "#111111",
-    disabled: "rgba(34, 34, 34, 0.38)",
-    hint: "rgba(34, 34, 34, 0.38)"
-  },
-  action: {
-    disabled: "rgba(255, 255, 255, 0.26)"
-  }
-};
-
-export const christmasTheme = createTheme({
-  palette: christmasThemePalette,
-  ...commonTypography,
-  ...theme.christmas,
-  ...createOverrides(christmasThemePalette)
 }) as AppTheme;
 
 export const currentTheme = (themeName: ThemeValues): AppTheme => {
@@ -414,9 +373,6 @@ export const currentTheme = (themeName: ThemeValues): AppTheme => {
     }
     case HighcontrastThemeKey: {
       return highcontrastTheme;
-    }
-    case ChristmasThemeKey: {
-      return christmasTheme;
     }
     default: {
       return defaultTheme;
@@ -440,6 +396,6 @@ export const getTheme = (): AppTheme => {
   return actualTheme;
 };
 
-export const useTheme = () => ({
+export const useAppTheme = (): AppTheme => ({
   ...getTheme()
 });

@@ -3,7 +3,7 @@ Dear ${waitingList.student.contact.fullName},
 You are receiving this message because you are on the ${Preferences.get("college.name")} waiting list.
 
 The following information is for upcoming classes:
-<%  courseClasses.each() { courseClass -> %>
+<% courseClasses.each() { courseClass -> %>
 --------------------------------------------------
 
 Class: ${courseClass.course.code}-${courseClass.code} ${courseClass.course.name}<% if (courseClass.startDateTime == null) { %>

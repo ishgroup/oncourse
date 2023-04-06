@@ -16,7 +16,6 @@ import {
   Contact,
   Country,
   Language,
-  StudentCitizenship,
   UsiStatus,
   UsiVerificationResult
 } from "@api/model";
@@ -41,7 +40,6 @@ import { EditViewProps } from "../../../../model/common/ListView";
 import { usePrevious } from "../../../../common/utils/hooks";
 import { mapSelectItems } from "../../../../common/utils/common";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
-import { convertSelectBooleanToString, convertSelectStringToBoolean } from "../utils";
 import { formatTFN, parseTFN, validateTFN } from "../../../../common/utils/validation/tfnValidation";
 import { TFNInputMask } from "./ContactsTutor";
 
@@ -52,7 +50,6 @@ const priorEducations = Object.keys(AvetmissStudentPriorEducation).map(mapSelect
 const disabilityTypes = Object.keys(AvetmissStudentDisabilityType).map(mapSelectItems);
 const industriesOfEmployment = Object.keys(ClientIndustryEmploymentType).map(mapSelectItems);
 const occupationIdentifiers = Object.keys(ClientOccupationIdentifierType).map(mapSelectItems);
-const studentCitizenships = Object.keys(StudentCitizenship).map(mapSelectItems);
 const avetmissStudentLabourStatuses = Object.keys(AvetmissStudentLabourStatus).map(mapSelectItems);
 
 const openUpgradeLink = () => {
@@ -126,6 +123,12 @@ const validateUSI = (value, allValues) => {
   return undefined;
 };
 
+const stillAtSchoolItems = [
+  { value: true, label: "Yes" },
+  { value: false, label: "No" },
+  { value: "", label: "Not stated" }
+];
+
 const ContactsVET: React.FC<ContactsVETProps> = props => {
   const {
     classes,
@@ -143,7 +146,8 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
     setUsiUpdateLocked,
     tabIndex,
     expanded,
-    setExpanded
+    setExpanded,
+    syncErrors
   } = props;
 
   const prevId = usePrevious(values.id);
@@ -245,13 +249,13 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
   }, [prevId, usiVerificationResult]);
 
   return values ? (
-    <div className="pt-2 pl-3 pr-3">
-      <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
+    <div className="pt-1 pl-3 pr-3">
+      <ExpandableContainer formErrors={syncErrors} index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
         <Grid container columnSpacing={3} rowSpacing={2}>
           {countries && (
             <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
               <FormField
-                type="searchSelect"
+                type="select"
                 selectValueMark="id"
                 selectLabelMark="name"
                 name="student.countryOfBirth"
@@ -271,7 +275,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
           {languages && (
             <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
               <FormField
-                type="searchSelect"
+                type="select"
                 selectValueMark="id"
                 selectLabelMark="name"
                 name="student.language"
@@ -305,6 +309,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               label="Achieved in year"
               validate={[validateNonNegative, validateYearSchoolCompleted]}
               parse={parseIntValue}
+              debounced={false}
             />
           </Grid>
           <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
@@ -328,13 +333,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               type="select"
               name="student.isStillAtSchool"
               label="Still at school"
-              format={convertSelectBooleanToString}
-              parse={convertSelectStringToBoolean}
-              items={[
-                { value: "true", label: "Yes" },
-                { value: "false", label: "No" },
-                { value: "", label: "Not stated" }
-              ]}
+              items={stillAtSchoolItems}
             />
           </Grid>
           <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
@@ -350,7 +349,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               <FormControlLabel
                 className="checkbox pr-3"
                 control={
-                  <FormField type="checkbox" name="student.specialNeedsAssistance" color="secondary" fullWidth />
+                  <FormField type="checkbox" name="student.specialNeedsAssistance" color="secondary" />
                 }
                 label="Disability support requested"
               />
@@ -386,36 +385,35 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               label="Commonwealth higher education support number (CHESSN)"
             />
           </Grid>
-          <Grid item xs={12}>
-            <Grid container columnSpacing={3}>
-              <Grid item xs={twoColumn ? 6 : 12} md={twoColumn ? 4 : 12} xl={twoColumn ? 2 : 12}>
-                <FormField
-                  type="text"
-                  name="student.usi"
-                  label="Unique student identifier (USI)"
-                  validate={validateUSI}
-                  labelAdornment={<SettingsAdornment clickHandler={e => setMenuUSI(e.currentTarget)} />}
-                  disabled={isSpecialUSI(values) || usiLocked}
-                  onChange={handleUSIChange}
-                />
-                <Menu
-                  id="menuUSI"
-                  anchorEl={showMenuUSI}
-                  open={Boolean(showMenuUSI)}
-                  onClose={closeUSIMenu}
-                  disableAutoFocusItem
-                >
-                  <div>
-                    {isSpecialUSI(values) ? (
-                      <MenuItem
-                        onClick={() => {
+          <Grid item container xs={12}>
+            <Grid item xs={twoColumn ? 6 : 12} md={twoColumn ? 4 : 12}>
+              <FormField
+                type="text"
+                name="student.usi"
+                label="Unique student identifier (USI)"
+                validate={validateUSI}
+                labelAdornment={<SettingsAdornment clickHandler={e => setMenuUSI(e.currentTarget)} />}
+                disabled={isSpecialUSI(values) || usiLocked}
+                onChange={handleUSIChange}
+              />
+              <Menu
+                id="menuUSI"
+                anchorEl={showMenuUSI}
+                open={Boolean(showMenuUSI)}
+                onClose={closeUSIMenu}
+                disableAutoFocusItem
+              >
+                <div>
+                  {isSpecialUSI(values) ? (
+                    <MenuItem
+                      onClick={() => {
                           setUSIStatus("Not supplied");
                           dispatch(change(form, "student.usi", null));
                           closeUSIMenu();
                         }}
-                      >
-                        Remove special USI status
-                      </MenuItem>
+                    >
+                      Remove special USI status
+                    </MenuItem>
                     ) : (
                       <>
                         <MenuItem>
@@ -465,18 +463,17 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
                         </MenuItem>
                       </>
                     )}
-                  </div>
-                </Menu>
-              </Grid>
-              <Grid item xs={twoColumn ? 6 : 12} md={twoColumn ? 8 : 12} xl={twoColumn ? 10 : 12}>
-                <div className="mt-1">{getUSIStatusMsg()}</div>
-              </Grid>
-              {usiVerificationResult && usiVerificationResult.errorMessage && (
-                <Grid item xs={12}>
-                  <div className={`errorColor ${classes.verificationError}`}>{usiVerificationResult.errorMessage}</div>
-                </Grid>
-              )}
+                </div>
+              </Menu>
             </Grid>
+            <Grid item xs={twoColumn ? 6 : 12} md={twoColumn ? 8 : 12}>
+              <div className="mt-1">{getUSIStatusMsg()}</div>
+            </Grid>
+            {usiVerificationResult && usiVerificationResult.errorMessage && (
+            <Grid item xs={12}>
+              <div className={`errorColor ${classes.verificationError}`}>{usiVerificationResult.errorMessage}</div>
+            </Grid>
+              )}
           </Grid>
           <Grid item xs={12}>
             <div className="mt-1 centeredFlex">
@@ -494,7 +491,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               {countries && (
                 <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
                   <FormField
-                    type="searchSelect"
+                    type="select"
                     selectValueMark="id"
                     selectLabelMark="name"
                     name="student.countryOfResidency"
@@ -530,7 +527,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
             </>
           )}
           <Grid item xs={12}>
-            <div className="mt-1 centeredFlex">
+            <div className="mt-1 mb-2 centeredFlex">
               <FormControlLabel
                 className="checkbox pr-3"
                 control={<FormField type="checkbox" name="student.feeHelpEligible" color="secondary" />}
@@ -539,30 +536,21 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
             </div>
           </Grid>
           {values.student && values.student.feeHelpEligible && (
-            <>
-              <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
-                <FormField
-                  type="select"
-                  name="student.citizenship"
-                  label="Citizenship status"
-                  items={studentCitizenships}
-                />
-              </Grid>
-              <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
-                <FormField
-                  type="text"
-                  name="tfn"
-                  label="Tax file number"
-                  max={9}
-                  InputProps={{
-                    inputComponent: TFNInputMask
-                  }}
-                  validate={validateTFN}
-                  parse={parseTFN}
-                  format={formatTFN}
-                />
-              </Grid>
-            </>
+            <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+              <FormField
+                type="text"
+                name="tfn"
+                label="Tax file number"
+                max="9"
+                InputProps={{
+                  inputComponent: TFNInputMask
+                }}
+                validate={validateTFN}
+                parse={parseTFN}
+                format={formatTFN}
+                debounced={false}
+              />
+            </Grid>
           )}
         </Grid>
       </ExpandableContainer>

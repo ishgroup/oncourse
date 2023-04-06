@@ -4,30 +4,30 @@
  */
 
 import { Epic } from "redux-observable";
-
-import { Column, DataResponse, DataRow, Script } from "@api/model";
-import * as EpicUtils from "./EpicUtils";
+import { DataResponse, Script } from "@api/model";
+import { Request, Create } from "./EpicUtils";
 import { GET_SCRIPTS_FULFILLED, GET_SCRIPTS_REQUEST } from "../actions";
 import EntityService from "../services/EntityService";
+import { getCustomColumnsMap } from "../utils/common";
 
 const scriptsMap = {
   "ProductItem": ["ProductItem", "Voucher", "Article", "Membership"],
   "AbstractInvoice": ["Invoice", "Quote"]
 };
 
-const request: EpicUtils.Request = {
+const request: Request = {
   type: GET_SCRIPTS_REQUEST,
-  getData: payload => EntityService.getRecords(
+  getData: payload => EntityService.getPlainRecords(
     "Script",
+    "name,entity",
     `( ${
       scriptsMap[payload.entity]
         ? scriptsMap[payload.entity].map(e => `entityClass == ${e}`).join(" || ")
         : `entityClass == ${payload.entity}`
-    } ) && ( triggerType == ON_DEMAND )`
+    } ) && ( triggerType == ON_DEMAND ) && (automationStatus = ENABLED)`
   ),
   processData: (records: DataResponse) => {
-    const nameIndex = records.columns.findIndex((col: Column) => col.attribute === "name");
-    const scripts: Script[] = records.rows.map((row: DataRow) => ({ id: Number(row.id), name: row.values[nameIndex] } as Script));
+    const scripts: Script[] = records.rows.map(getCustomColumnsMap("name,entity"));
 
     return [
       {
@@ -38,4 +38,4 @@ const request: EpicUtils.Request = {
   }
 };
 
-export const EpicGetScripts: Epic<any, any> = EpicUtils.Create(request);
+export const EpicGetScripts: Epic<any, any> = Create(request);

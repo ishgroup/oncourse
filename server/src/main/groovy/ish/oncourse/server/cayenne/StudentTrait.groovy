@@ -18,6 +18,8 @@ import org.apache.cayenne.query.ObjectSelect
 
 trait StudentTrait {
 
+    abstract Contact getContact();
+
     @Inject
     private ICayenneService cayenneService
 
@@ -42,5 +44,9 @@ trait StudentTrait {
                                         )
                 )
                 .selectCount(cayenneService.newReadonlyContext)
+    }
+
+    String getPortalLink(def target, def timeout = null) {
+        return getContact().getPortalLink(target, timeout)
     }
 }

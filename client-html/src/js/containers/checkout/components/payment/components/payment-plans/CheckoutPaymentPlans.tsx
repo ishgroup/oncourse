@@ -44,7 +44,6 @@ interface Props {
   dispatch?: any;
   selected?: boolean;
   validatePayNow?: any;
-  onPayNowChange?: any;
   onPayDateChange?: any;
   onPayNowFocus?: any;
   onPayNowBlur?: any;
@@ -72,7 +71,6 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
     fields,
     selected,
     validatePayNow,
-    onPayNowChange,
     onPayDateChange,
     onPayNowFocus,
     disabledStep,
@@ -117,13 +115,12 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
               <FormField
                 type="money"
                 name={`${f}.amount`}
-                formatting="custom"
+                format={normalizeNumberToPositive}
                 normalize={normalizeNumberToPositive}
-                listSpacing={false}
                 onBlur={onPayNowBlur}
-                onChange={onPayNowChange}
                 disabled={!first || disabledStep}
                 validate={first ? validatePayNow : undefined}
+                debounced={false}
               />
 
               {first && (
@@ -132,13 +129,10 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
                     <FormField
                       type="date"
                       name={`${f}.payDate`}
-                      formatting="inline"
-                      placeHolder="Pay now"
+                      inline
+                      placeholder="Pay now"
                       onChange={onPayDateChange}
                       validate={validateLockedDate}
-                      fieldClasses={{
-                        placeholder: "textSecondaryColor"
-                      }}
                     />
                   ) : "Pay now"}
                 </Typography>
@@ -148,7 +142,7 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
                 <FormField
                   type="date"
                   name={`${f}.date`}
-                  formatting="inline"
+                  inline
                   disabled={!field.dateEditable || disabledStep}
                   validate={(!field.dateEditable || disabledStep) ? undefined : validateDueDate}
                   onChange={(!field.dateEditable || disabledStep) ? undefined : onDueDateChange}
@@ -172,7 +166,7 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
               }}
             >
               {first ? (
-                <StepButton onClick={onPayNowFocus} className="text-left">
+                <StepButton disableRipple onClick={onPayNowFocus} className="text-left">
                   {stepContent}
                 </StepButton>
               ) : stepContent}

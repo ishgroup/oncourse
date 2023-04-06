@@ -15,7 +15,7 @@ Feature: Main feature for all GET requests with path 'preference/lockedDate'
         Given path ishPath
         When method GET
         Then status 200
-        And match $ == {"year":2015,"month":"DECEMBER","monthValue":12,"dayOfMonth":31,"chronology":{"id":"ISO","calendarType":"iso8601"},"dayOfWeek":"THURSDAY","era":"CE","dayOfYear":365,"leapYear":false}
+        And match $ == {"lockedDate":"2015-12-31"}
 
 
 
@@ -27,7 +27,7 @@ Feature: Main feature for all GET requests with path 'preference/lockedDate'
         Given path ishPath
         When method GET
         Then status 200
-        And match $ == {"year":2015,"month":"DECEMBER","monthValue":12,"dayOfMonth":31,"chronology":{"id":"ISO","calendarType":"iso8601"},"dayOfWeek":"THURSDAY","era":"CE","dayOfYear":365,"leapYear":false}
+        And match $ == {"lockedDate":"2015-12-31"}
 
 
 

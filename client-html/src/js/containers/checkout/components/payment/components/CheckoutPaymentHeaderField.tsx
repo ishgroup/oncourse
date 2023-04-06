@@ -19,7 +19,7 @@ import debounce from "lodash.debounce";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { change } from "redux-form";
+import { change, getFormValues } from "redux-form";
 import { checkPermissions } from "../../../../../common/actions";
 import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
 import FormField from "../../../../../common/components/form/formFields/FormField";
@@ -75,6 +75,9 @@ interface PaymentHeaderFieldProps {
   currencySymbol?: any;
   clearCcIframeUrl?: () => void;
   form?: string;
+  values?: {
+    paymentPlans?: CheckoutPaymentPlan[]
+  };
   dispatch?: any;
   defaultTerms?: string;
   paymentProcessStatus?: any;
@@ -128,9 +131,10 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     checkoutGetSavedCard,
     savedCreditCard,
     setDisablePayment,
-    setPaymentPlans
+    setPaymentPlans,
+    values
   } = props;
-
+  
   const payerContact = useMemo(() => checkoutSummary.list.find(l => l.payer).contact, [checkoutSummary.list]);
 
   useEffect(() => {
@@ -258,7 +262,13 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
         dispatch(change(form, "payment_method", null));
       }
     }
-  }, 200), [isZeroPayment, paymentMethod]);
+  }, 500), [isZeroPayment, paymentMethod]);
+  
+  useEffect(() => {
+    if (values?.paymentPlans && values?.paymentPlans[0]) {
+      onPayNowChange(values.paymentPlans[0].amount);
+    }
+  }, [values?.paymentPlans && values?.paymentPlans[0]?.amount]);
 
   const onPayNowFocus = () => {
     setDisablePayment(true);
@@ -308,7 +318,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
         return undefined;
       }
 
-      const date = new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth);
+      const date = new Date(lockedDate);
 
       return compareAsc(addDays(date, 1), new Date(dateChanged)) > 0
         ? `Date must be after ${format(date, D_MMM_YYYY)}`
@@ -569,7 +579,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
         showArrowButton
       />
 
-      <div className="pl-2 pr-2">
+      <div className="pl-2 pr-2 pb-2">
         <CheckoutPaymentPlans
           name="paymentPlans"
           form={form}
@@ -596,7 +606,6 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
           placeholder="Payment method"
           items={isZeroPayment ? noPaymentItems : paymentTypes}
           onChange={hendelMethodChange}
-          disabledTab
           disabled={paymentProcessStatus === "success" || isZeroPayment || formInvalid}
         />
         {selectedPaymentMethod && selectedPaymentMethod.type === "Credit card" && (
@@ -634,7 +643,8 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
   );
 };
 
-const mapStateToProps = (state: State) => ({
+const mapStateToProps = (state: State, ownProps) => ({
+  values: getFormValues(ownProps.form)(state),
   availablePaymentTypes: state.checkout.payment.availablePaymentTypes,
   selectedPaymentType: state.checkout.payment.selectedPaymentType,
   checkoutSummary: state.checkout.summary,

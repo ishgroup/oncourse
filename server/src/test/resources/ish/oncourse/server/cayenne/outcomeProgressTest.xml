@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-  <Account id="5" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"/>
-  <Account id="6" accountCode="INC6" description="Test income account" isEnabled="1" type="4" taxId="3"/>
-  <Account id="7" accountCode="ASSET7" description="Test asset account" isEnabled="1" type="1"/>
-  <Account id="8" accountCode="INC8" description="Test income account" isEnabled="1" type="4" taxId="3"/>
+  <Account id="5" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account id="6" accountCode="INC6" description="Test income account" isEnabled="1" type="4" taxId="3"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account id="7" accountCode="ASSET7" description="Test asset account" isEnabled="1" type="1"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account id="8" accountCode="INC8" description="Test income account" isEnabled="1" type="4" taxId="3"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0"
                       modifiedOn="2017-06-20 12:00:00.0"/>
@@ -15,78 +19,91 @@
 
   <Course id="5" feeHelpClass="0" code="ATT3" willowId="5" name="Traineeship, vet with modules" allowWaitingLists="1"
           currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" isTraineeship="1"
-          enrolmentType="1" fieldConfigurationSchemaId="1"/>
+          enrolmentType="1" fieldConfigurationSchemaId="1" createdOn="2021-12-21 12:00:10.0"
+          modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <Module id="1" type="1" isOffered="1" nationalCode="TEST1" title="Test module 1"/>
-  <Module id="2" type="1" isOffered="1" nationalCode="TEST2" title="Test module 2"/>
-  <Module id="3" type="1" isOffered="1" nationalCode="TEST3" title="Test module 3"/>
-  <Module id="4" type="1" isOffered="1" nationalCode="TEST4" title="Test module 4"/>
+  <Module id="1" type="1" isOffered="1" nationalCode="TEST1" title="Test module 1" createdOn="2021-12-21 12:00:10.0"
+          modifiedOn="2021-12-21 12:00:10.0"/>
+  <Module id="2" type="1" isOffered="1" nationalCode="TEST2" title="Test module 2" createdOn="2021-12-21 12:00:10.0"
+          modifiedOn="2021-12-21 12:00:10.0"/>
+  <Module id="3" type="1" isOffered="1" nationalCode="TEST3" title="Test module 3" createdOn="2021-12-21 12:00:10.0"
+          modifiedOn="2021-12-21 12:00:10.0"/>
+  <Module id="4" type="1" isOffered="1" nationalCode="TEST4" title="Test module 4" createdOn="2021-12-21 12:00:10.0"
+          modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <Module_Course id="7" courseId="5" moduleId="1"/>
-  <Module_Course id="8" courseId="5" moduleId="2"/>
-  <Module_Course id="9" courseId="5" moduleId="3"/>
+  <Module_Course id="7" courseId="5" moduleId="1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Module_Course id="8" courseId="5" moduleId="2" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Module_Course id="9" courseId="5" moduleId="3" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Site id="1" isAdministrationCentre="1" isShownOnWeb="1" name="test site" localTimezone="Australia/Sydney"
-        isVirtual="0"/>
+        isVirtual="0" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <Room id="1" name="Test room" seatedCapacity="25" siteId="1"/>
+  <Room id="1" name="Test room" seatedCapacity="25" siteId="1" createdOn="2021-12-21 12:00:10.0"
+        modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Tax id="3" isGSTTaxType="1" payableToSupplierAccountId="7" receivableFromStudentAccountId="8" taxCode="GST"
-       taxrate="0.1"/>
+       taxrate="0.1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <CourseClass id="5" code="124" fundingSource="3" taxAdjustment="0.1" taxId="3" sessionCount="7" minimumPlaces="1"
+  <CourseClass id="5" code="124" fundingSource="3" taxAdjustment="0.1" taxId="3" minimumPlaces="1"
                maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1"
                isCancelled="1" isActive="1" incomeAccountId="5" deliveryMode="1" courseId="5"
                feeExGst="3200.00" suppressAvetmissExport="0" roomId="1"
-               budgetedPlaces="10" attendanceType="0"/>
+               budgetedPlaces="10" attendanceType="0" createdOn="2021-12-21 12:00:10.0"
+               modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Contact id="5" isCompany="0" isStudent="1" isTutor="0" uniqueCode="457AB" deliveryStatusSms="1"
            deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name4"
-           lastName="name" email="test5@test.te"/>
+           lastName="name" email="test5@test.te" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Student id="5" contactId="5" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
            highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-           studentNumber="5" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+           studentNumber="5" usiStatus="0" citizenship="9" feeHelpEligible="0" createdOn="2021-12-21 12:00:10.0"
+           modifiedOn="2021-12-21 12:00:10.0"/>
 
   <CourseSession id="100" courseClass_Id="5" startDatetime="[start_date1]" endDatetime="[end_date1]"
-                 />
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <CourseSession id="200" courseClass_Id="5" startDatetime="[start_date2]" endDatetime="[end_date2]"
-                 />
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
 
   <Enrolment id="1234" courseClass_id="5" studentId="5" eligibilityExemptionIndicator="0" source="O" studyReason="0"
              vetFeeIndicator="0" vetIsFullTime="0"
              status="0" confirmationStatus="2"
-             feeHelpAmount="0" attendanceType="9"/>
+             feeHelpAmount="0" attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <CourseSession id="300" courseClass_Id="5" startDatetime="[tomorrow]" endDatetime="[end_session]" />
-  <Assessment id="100" name="name" active="true" code="code" createdOn="2017-09-20 12:00:00.0" modifiedOn="[yesterday]"/>
+  <CourseSession id="300" courseClass_Id="5" startDatetime="[tomorrow]" endDatetime="[end_session]"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Assessment id="100" name="name" active="true" code="code" createdOn="2017-09-20 12:00:00.0"
+              modifiedOn="[yesterday]"/>
   <AssessmentClass id="100" courseClassId="5" releaseDate="[yesterday]" assessmentId="100" dueDate="[tomorrow]"
                    modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
-  <Assessment id="200" name="name" active="true" code="code2" createdOn="2017-09-20 12:00:00.0" modifiedOn="[yesterday]"/>
+  <Assessment id="200" name="name" active="true" code="code2" createdOn="2017-09-20 12:00:00.0"
+              modifiedOn="[yesterday]"/>
   <AssessmentClass id="200" courseClassId="5" releaseDate="[tomorrow]" assessmentId="200" dueDate="[tomorrow]"
                    modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
 
-  <Assessment id="300" name="name" active="true" code="code2" createdOn="2017-09-20 12:00:00.0" modifiedOn="[yesterday]"/>
+  <Assessment id="300" name="name" active="true" code="code2" createdOn="2017-09-20 12:00:00.0"
+              modifiedOn="[yesterday]"/>
   <AssessmentClass id="300" courseClassId="5" releaseDate="[yesterday]" assessmentId="300" dueDate="[tomorrow]"
                    modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
 
   <CourseSession id="400" courseClass_Id="5" startDatetime="2012-01-03 10:00:00" endDatetime="2012-01-04 12:00:00"
-                 />
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Attendance attendanceType="1" id="100" sessionID="400" studentID="5" createdOn="2014-10-17 22:47:54.0"
               modifiedOn="2014-10-17 22:47:54.0"/>
 
   <CourseSession id="500" courseClass_Id="5" startDatetime="2012-01-03 10:00:00" endDatetime="2012-01-05 02:00:00"
-                 />
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Attendance attendanceType="4" id="200" sessionID="500" studentID="5" createdOn="2014-10-17 22:47:54.0"
-              modifiedOn="2014-10-17 22:47:54.0" attendedFrom="2012-01-03 10:00:00" attendedUntil="2012-01-04 10:00:00"/>
+              modifiedOn="2014-10-17 22:47:54.0" attendedFrom="2012-01-03 10:00:00"
+              attendedUntil="2012-01-04 10:00:00"/>
 
   <CourseSession id="600" courseClass_Id="5" startDatetime="2012-01-03 10:00:00" endDatetime="2012-01-03 14:00:00"
-                 />
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Attendance attendanceType="0" id="300" sessionID="600" studentID="5" createdOn="2014-10-17 22:47:54.0"
               modifiedOn="2014-10-17 22:47:54.0"/>
 
   <CourseSession id="700" courseClass_Id="5" startDatetime="2012-01-03 10:00:00" endDatetime="2012-01-04 20:00:00"
-                 />
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Attendance attendanceType="3" id="400" sessionID="700" studentID="5" createdOn="2014-10-17 22:47:54.0"
               modifiedOn="2014-10-17 22:47:54.0"/>
 </dataset>

@@ -3,6 +3,6 @@
 **/build/
 server/onCourse.yml
 /server/logSetup.xml
-/server/onCourseSSL.keystore
+/server/onCourseSSL.pem
 /server/logs/
 **/out/

@@ -4,7 +4,7 @@
  */
 
 import { parse, addWeeks, addDays, subDays, addMonths, addYears, setHours, setMinutes } from "date-fns";
-import { DD_MMM_YYYY, DD_MMM_YYYY_HH_MM, HH_MM_COLONED } from "../../utils/dates/format";
+import { DD_MMM_YYYY, DD_MMM_YYYY_HH_MM, HH_MM_COLONED } from "./format";
 
 const transitionDate = new Date(2000, 0, 1);
 
@@ -83,6 +83,10 @@ export const formatStringDate = (dateString: string, type: string, baseDate: Dat
 
   if (type === "time") {
     parsed = parse(dateString, HH_MM_COLONED, baseDate);
+    if (checkInvalidDate(parsed)) {
+      return parsed;
+    }
+    parsed = parse(dateString, "HH", baseDate);
     if (checkInvalidDate(parsed)) {
       return parsed;
     }

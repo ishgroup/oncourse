@@ -31,15 +31,14 @@ const renderPaymentTypes = props => {
 
         return (
           <Card id={`payment-type-item-${index}`} className="card" key={index}>
-            <Grid container columnSpacing={3} spacing={2} className="relative">
+            <Grid container spacing={2} className="relative">
               <Grid item xs={12}>
-                <Grid container columnSpacing={3}>
+                <Grid container columnSpacing={3} rowSpacing={2}>
                   <Grid item xs={10} md={11}>
                     <FormField
                       type="text"
                       name={`${item}.name`}
                       label="Name"
-                      fullWidth
                       disabled={field.systemType}
                       validate={[validateSingleMandatoryField, validateUniqueNamesInArray]}
                     />
@@ -68,10 +67,8 @@ const renderPaymentTypes = props => {
                           type="checkbox"
                           name={`${item}.active`}
                           color="primary"
-                          value="true"
                           disabled={field.systemType}
-                          fullWidth
-                        />
+                                                  />
                       )}
                       label="Active"
                     />
@@ -84,10 +81,8 @@ const renderPaymentTypes = props => {
                           type="checkbox"
                           name={`${item}.bankedAuto`}
                           color="primary"
-                          value="true"
                           disabled={field.systemType}
-                          fullWidth
-                        />
+                                                  />
                       )}
                       label="Banked automatically"
                     />
@@ -100,10 +95,8 @@ const renderPaymentTypes = props => {
                           type="checkbox"
                           name={`${item}.reconcilable`}
                           color="primary"
-                          value="true"
                           disabled={field.systemType}
-                          fullWidth
-                        />
+                                                  />
                       )}
                       label="Reconcilable"
                     />
@@ -119,7 +112,6 @@ const renderPaymentTypes = props => {
                           items={PayTypes}
                           className={classes.field}
                           required
-                          fullWidth
                         />
                       </Grid>
 
@@ -131,7 +123,6 @@ const renderPaymentTypes = props => {
                           items={assetAccounts}
                           className={classes.field}
                           required
-                          fullWidth
                         />
                       </Grid>
 
@@ -143,7 +134,6 @@ const renderPaymentTypes = props => {
                           items={assetAccounts}
                           className={classes.field}
                           required
-                          fullWidth
                         />
                       </Grid>
                     </>

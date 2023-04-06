@@ -1,10 +1,11 @@
+import { DefinedTutorRole } from "@api/model";
 import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockTutorRoles() {
   this.getPlainTutorRoles = () => this.tutorRoles;
   
-  this.getTutorRole = id => {
-    const row = this.tutorRoles.rows.find(row => Number(row.id) === Number(id));
+  this.getTutorRole = (id: any): DefinedTutorRole => {
+    const row = this.tutorRoles.rows.find(role => Number(role.id) === Number(id));
     return {
       id: row.id,
       name: row.values[0],
@@ -17,7 +18,15 @@ export function mockTutorRoles() {
           validFrom: "2012-11-07",
           rate: 85.00,
           oncostRate: 0.1000,
-          notes: null
+          notes: ""
+        },
+        {
+          id: 221,
+          type: "Per enrolment",
+          validFrom: "2015-12-09",
+          rate: 85.00,
+          oncostRate: 0.1000,
+          notes: ""
         }
       ]
     };

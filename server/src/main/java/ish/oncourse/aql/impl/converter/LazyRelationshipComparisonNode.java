@@ -69,7 +69,10 @@ public class LazyRelationshipComparisonNode extends LazyExpressionNode {
         outerPath = outerPath.replace(".", "+.");
         outerPath = outerPath.replace("++", "+");
 
-        ExpressionUtil.addChild(node, new ASTObjPath(outerPath), 0);
+        var outerPathNode = new ASTObjPath(outerPath);
+        outerPathNode.setPathAliases(path.getPathAliases());
+
+        ExpressionUtil.addChild(node, outerPathNode, 0);
         ExpressionUtil.addChild(node, new ASTScalar(null), 1);
     }
 }

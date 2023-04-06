@@ -1,32 +1,24 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React from "react";
 import { Account, VoucherProduct } from "@api/model";
 import { connect } from "react-redux";
-import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
+import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
 import { AccessState } from "../../../../common/reducers/accessReducer";
 import { plainCorporatePassPath } from "../../../../constants/Api";
 import { State } from "../../../../reducers/state";
 import CorporatePassCommon from "../../common/components/CorporatePassCommon";
 import VoucherProductGeneral from "./VoucherProductGeneral";
+import { EditViewProps } from "../../../../model/common/ListView";
+import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 
-interface VoucherProductEditViewProps {
-  values?: VoucherProduct;
-  isNew?: boolean;
-  isNested?: boolean;
-  dispatch?: any;
-  dirty?: boolean;
-  form?: string;
-  nestedIndex?: number;
-  rootEntity?: string;
-  twoColumn?: boolean;
-  submitSucceeded?: boolean;
-  showConfirm?: any;
-  openNestedEditView?: any;
-  manualLink?: string;
+interface VoucherProductEditViewProps extends EditViewProps<VoucherProduct>{
   accounts?: Account[];
   access?: AccessState;
 }
@@ -34,6 +26,10 @@ const items: TabsListItem[] = [
   {
     label: "General",
     component: props => <VoucherProductGeneral {...props} />
+  },
+  {
+    label: "Notes",
+    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} className="mb-2" />
   },
   {
     label: "Corporate passes",
@@ -58,11 +54,11 @@ const VoucherProductEditView: React.FC<VoucherProductEditViewProps> = props => {
     rootEntity,
     twoColumn,
     showConfirm,
-    openNestedEditView,
     manualLink,
     accounts,
     access,
-    submitSucceeded
+    submitSucceeded,
+    syncErrors
   } = props;
 
   const corporatePassAccess = access[plainCorporatePassPath] && access[plainCorporatePassPath]["GET"];
@@ -83,10 +79,10 @@ const VoucherProductEditView: React.FC<VoucherProductEditViewProps> = props => {
         rootEntity,
         twoColumn,
         showConfirm,
-        openNestedEditView,
         manualLink,
         accounts,
-        submitSucceeded
+        submitSucceeded,
+        syncErrors
       }}
     />
   );

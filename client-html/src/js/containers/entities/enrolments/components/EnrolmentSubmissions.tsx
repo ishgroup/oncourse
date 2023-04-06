@@ -36,7 +36,7 @@ const today = new Date().toISOString();
 
 const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => {
   const {
-    classes, values, dispatch, fields: { name }, meta: { error, form }, gradingTypes = [], twoColumn
+    classes, values, dispatch, fields: { name }, meta: { error, form }, gradingTypes = []
   } = props;
 
   const [modalOpenedBy, setModalOpenedBy] = useState<string>(null);
@@ -237,11 +237,11 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
     : `${modalProps[2]} ${modalProps[0].toLowerCase()} date${titlePostfix}`);
 
   const modalGradeType = gradingTypes.find(g =>
-    g.id === values.assessments[gradeMenuAnchorEl?.attributes?.id?.value?.replace("grade", "")]?.gradingTypeId);
+    g.id === values?.assessments[gradeMenuAnchorEl?.attributes?.id?.value?.replace("grade", "")]?.gradingTypeId);
 
   const modalGradeItems = modalGradeType?.gradingItems;
 
-  const hasGrades = Boolean(values.assessments.some(a => gradingTypes.some(g => g.id === a.gradingTypeId)));
+  const hasGrades = Boolean(values?.assessments.some(a => gradingTypes.some(g => g.id === a.gradingTypeId)));
 
   return values.assessments && values.assessments.length ? (
     <Grid item={true} xs={12} id={name} container>
@@ -255,6 +255,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
         gradeItems={modalGradeItems}
       />
       <SubmissionModal
+        dispatch={dispatch}
         modalProps={modalProps}
         tutors={values.assessments[modalProps[3]]?.tutors || []}
         title={title}
@@ -275,7 +276,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
         </Typography>
       </Grid>
 
-      <Grid container columnSpacing={3} item={true} xs={twoColumn ? 8 : 12} className={classes.tableHeader}>
+      <Grid container item xs={12} className={classes.tableHeader}>
         <Grid item xs={3} />
         <Grid item xs={hasGrades ? 3 : 6} className={classes.center}>
           <span className="relative">
@@ -316,7 +317,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
       )}
 
       </Grid>
-      <Grid container columnSpacing={3} item={true} xs={twoColumn ? 8 : 12} className={classes.items}>
+      <Grid container item xs={12} className={classes.items}>
         {values.assessments.map((elem, index) => {
           const elemGradeType = gradingTypes?.find(g => g.id === elem.gradingTypeId);
           return (
@@ -332,6 +333,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
               triggerAsyncChange={triggerAsyncChange}
               classes={classes}
               hasGrades={hasGrades}
+              dispatch={dispatch}
               index={index}
             />
           );

@@ -1,26 +1,20 @@
 import * as React from "react";
-import ClassNames from "clsx";
 import Grid from "@mui/material/Grid";
 import { withRouter } from "react-router";
 import { withStyles } from "@mui/styles";
-import AddIcon from "@mui/icons-material/Add";
-import Typography from "@mui/material/Typography";
 import {
   Form, FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
 } from "redux-form";
 import { Tax } from "@api/model";
 import isEqual from "lodash.isequal";
-import Fab from "@mui/material/Fab";
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { formCommonStyles } from "../../../styles/formCommonStyles";
 import TaxTypesRenderer from "./TaxTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("generalPrefs_taxTypes");
 
@@ -42,7 +36,6 @@ interface Props {
   openConfirm: ShowConfirmCaller;
   history: any;
   nextLocation: string;
-  setNextLocation: (nextLocation: string) => void;
 }
 
 class TaxTypesBaseForm extends React.Component<Props, any> {
@@ -58,7 +51,8 @@ class TaxTypesBaseForm extends React.Component<Props, any> {
     props.dispatch(initialize("TaxTypesForm", { types: props.taxTypes }));
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.isPending) {
       return;
     }
@@ -73,12 +67,11 @@ class TaxTypesBaseForm extends React.Component<Props, any> {
 
   componentDidUpdate() {
     const {
- dirty, nextLocation, setNextLocation, history
-} = this.props;
+      dirty, nextLocation, history
+    } = this.props;
 
     if (nextLocation && !dirty) {
       history.push(nextLocation);
-      setNextLocation('');
     }
   }
 
@@ -172,66 +165,42 @@ class TaxTypesBaseForm extends React.Component<Props, any> {
 
   render() {
     const {
-     classes, handleSubmit, data, assetAccounts, liabilityAccounts, dirty, created, modified, invalid, form
+      classes, handleSubmit, data, assetAccounts, liabilityAccounts, dirty, created, modified, invalid, form
     } = this.props;
 
     return (
       <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
         <RouteChangeConfirm form={form} when={dirty} />
 
-        <CustomAppBar>
-          <Grid container columnSpacing={3}>
-            <Grid item xs={12} className={ClassNames("centeredFlex", "relative")}>
-              <Fab
-                type="button"
-                size="small"
-                color="primary"
-                classes={{
-                  sizeSmall: "appBarFab"
-                }}
-                onClick={() => this.onAddNew()}
-              >
-                <AddIcon />
-              </Fab>
-              <Typography color="inherit" className="appHeaderFontSize pl-2" noWrap>
-                Tax Types
-              </Typography>
-
-              <div className="flex-fill" />
-
-              {data && (
-                <AppBarHelpMenu
-                  created={created}
-                  modified={modified}
-                  auditsUrl={`audit?search=~"Tax" and entityId in (${idsToString(data.types)})`}
-                  manualUrl={manualUrl}
-                />
-              )}
-
-              <FormSubmitButton
-                disabled={!dirty}
-                invalid={invalid}
-              />
+        <AppBarContainer
+          values={data}
+          manualUrl={manualUrl}
+          getAuditsUrl={() => `audit?search=~"Tax" and entityId in (${idsToString(data.types)})`}
+          disabled={!dirty}
+          invalid={invalid}
+          title="Tax Types"
+          disableInteraction
+          createdOn={() => created}
+          modifiedOn={() => modified}
+          onAddMenu={() => this.onAddNew()}
+        >
+          <Grid container className="mt-2">
+            <Grid item sm={12} lg={10}>
+              <Grid container columnSpacing={3}>
+                {data && (
+                  <FieldArray
+                    name="types"
+                    assetAccounts={assetAccounts}
+                    liabilityAccounts={liabilityAccounts}
+                    component={TaxTypesRenderer}
+                    onDelete={this.onClickDelete}
+                    classes={classes}
+                  />
+                )}
+              </Grid>
             </Grid>
           </Grid>
-        </CustomAppBar>
-
-        <Grid container columnSpacing={3} className={classes.marginTop}>
-          <Grid item sm={12} lg={10}>
-            <Grid container columnSpacing={3}>
-              {data && (
-                <FieldArray
-                  name="types"
-                  assetAccounts={assetAccounts}
-                  liabilityAccounts={liabilityAccounts}
-                  component={TaxTypesRenderer}
-                  onDelete={this.onClickDelete}
-                  classes={classes}
-                />
-              )}
-            </Grid>
-          </Grid>
-        </Grid>
+        </AppBarContainer>
       </Form>
     );
   }

@@ -20,7 +20,7 @@ export function mockCertificates() {
       modifiedOn: row.values[7],
       revokedOn: row.values[8],
       code: "cNwB7eb4yFsy",
-      expiryDate: null,
+      expiryDate: "2022-01-10T06:22:29.271Z",
       outcomes: [
         {
           code: "TAAENV402B",
@@ -35,8 +35,8 @@ export function mockCertificates() {
           name: "Work effectively in vocational education and training"
         }
       ],
-      privateNotes: null,
-      publicNotes: null,
+      privateNotes: "",
+      publicNotes: "",
       qualificationId: 1,
       studentContactId: 1,
       studentDateOfBirth: null,
@@ -58,10 +58,24 @@ export function mockCertificates() {
     } else {
       rows = generateArraysOfRecords(20, [
         { name: "id", type: "number" },
-        { name: "revokedOn", type: "Datetime" }
+        { name: "isQualification", type: "boolean" },
+        { name: "nationalCode", type: "string" },
+        { name: "title", type: "string" },
+        { name: "certificateNumber", type: "number" },
+        { name: "createdOn", type: "Datetime" },
+        { name: "printedOn", type: "Datetime" },
+        { name: "level", type: "string" }
       ]).map(l => ({
         id: l.id,
-        values: [l.revokedOn]
+        values: [
+          true,
+          l.nationalCode,
+          l.title,
+          l.certificateNumber,
+          "2022-01-08T06:22:29.271Z",
+          "2022-01-08T06:22:29.271Z",
+          l.level
+        ]
       }));
     }
 

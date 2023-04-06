@@ -12,6 +12,7 @@ import { FormEditorField } from "../../../../common/components/markdown-editor/F
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
 import { EditViewProps } from "../../../../model/common/ListView";
+import FormField from "../../../../common/components/form/formFields/FormField";
 
 const relationTypesFilter = {
   entities: ["Module" as const],
@@ -20,10 +21,9 @@ const relationTypesFilter = {
     && rel.shoppingCart === "Add but do not allow removal"
 };
 
-const CourseMarketingTab: React.FC<EditViewProps<Course> & { classes: any }> = props => {
+const CourseMarketingTab: React.FC<EditViewProps<Course>> = props => {
   const {
     twoColumn,
-    classes,
     dispatch,
     form,
     showConfirm,
@@ -33,21 +33,31 @@ const CourseMarketingTab: React.FC<EditViewProps<Course> & { classes: any }> = p
   } = props;
 
   return (
-    <Grid container columnSpacing={3} className="pl-3 pr-3">
+    <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pr-3">
       <Grid item xs={12}>
-        <div className="heading mt-2 mb-2">Marketing</div>
+        <div className="heading mt-3">Marketing</div>
       </Grid>
 
       <Grid item xs={12}>
         <FormEditorField name="webDescription" label="Web description" />
       </Grid>
+      <Grid item xs={12}>
+        <FormEditorField name="shortWebDescription" label="Short web description" />
+      </Grid>
 
-      <Grid item xs={12} className="pb-3">
+      <Grid item xs={12}>
+        <FormField
+          type="multilineText"
+          name="brochureDescription"
+          label="Print brochure description"
+        />
+      </Grid>
+
+      <Grid item xs={12}>
         <FieldArray
           name="documents"
           label="Documents"
           entity="Course"
-          classes={classes}
           component={DocumentsRenderer}
           xsGrid={12}
           mdGrid={twoColumn ? 4 : 12}
@@ -59,7 +69,7 @@ const CourseMarketingTab: React.FC<EditViewProps<Course> & { classes: any }> = p
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 10 : 12}>
+      <Grid item xs={12} className="mt-3">
         <RelationsCommon
           name="relatedSellables"
           values={values}

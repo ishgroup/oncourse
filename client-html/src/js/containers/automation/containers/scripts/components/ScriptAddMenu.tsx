@@ -9,7 +9,7 @@ import { change } from "redux-form";
 const styles = theme =>
   createStyles({
     menuWrapper: {
-      marginTop: theme.spacing(10)
+      marginTop: theme.spacing(2)
     },
     listItemPadding: {
       padding: theme.spacing(0.5, 8, 0.5, 2),

@@ -4,23 +4,19 @@
  */
 
 import * as React from "react";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import { Form, reduxForm, initialize } from "redux-form";
 import isEmpty from "lodash.isempty";
 import { connect } from "react-redux";
+import Grid from "@mui/material/Grid";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
 import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
 import * as Model from "../../../../../model/preferences/ClassDefaults";
-import Button from "@mui/material/Button";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("generalPrefs_classdefaults");
 
@@ -38,7 +34,8 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
     this.formModel = props.formatModel(Model);
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     // Initializing form with values
     if (!isEmpty(nextProps.formData) && !this.props.initialized) {
       this.props.dispatch(initialize("ClassDefaultsForm", nextProps.formData));
@@ -47,83 +44,69 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-     handleSubmit, onSave, dirty, enums, data, form, invalid
+     handleSubmit, onSave, dirty, enums, data, form, invalid, formRoleName
     } = this.props;
 
     return (
-      <Form className="container" onSubmit={handleSubmit(onSave)}>
+      <Form className="container" onSubmit={handleSubmit(onSave)} role={formRoleName}>
         <RouteChangeConfirm form={form} when={dirty} />
 
-        <CustomAppBar>
-          <Grid container columnSpacing={3}>
-            <Grid item xs={12} className="centeredFlex">
-              <Typography className="appHeaderFontSize" color="inherit" noWrap>
-                Class Defaults
-              </Typography>
-
-              <div className="flex-fill" />
-
-              {data && (
-                <AppBarHelpMenu
-                  created={data.created}
-                  modified={data.modified}
-                  auditsUrl={PREFERENCES_AUDITS_LINK}
-                  manualUrl={manualUrl}
+        <AppBarContainer
+          values={data}
+          manualUrl={manualUrl}
+          getAuditsUrl={PREFERENCES_AUDITS_LINK}
+          disabled={!dirty}
+          invalid={invalid}
+          title="Class Defaults"
+          disableInteraction
+          createdOn={values => values.created}
+          modifiedOn={values => values.modified}
+        >
+          <Grid container columnSpacing={3} rowSpacing={2}>
+            <Grid container item columnSpacing={3} rowSpacing={2}>
+              <Grid item xs={12} sm={3}>
+                <FormField
+                  type="number"
+                  name={this.formModel.ClassMinPlaces.uniqueKey}
+                  label="Minimum places"
+                  parse={val => val || "0"}
+                  debounced={false}
                 />
-              )}
+              </Grid>
 
-              <FormSubmitButton
-                disabled={!dirty}
-                invalid={invalid}
-              />
+              <Grid item xs={12} sm={4}>
+                <FormField
+                  type="select"
+                  name={this.formModel.ClassDeliveryMode.uniqueKey}
+                  label="Delivery mode"
+                  items={enums.DeliveryMode}
+                />
+              </Grid>
+            </Grid>
+
+            <Grid container item columnSpacing={3} rowSpacing={2}>
+              <Grid item xs={12} sm={3}>
+                <FormField
+                  type="number"
+                  name={this.formModel.ClassMaxPlaces.uniqueKey}
+                  label="Maximum places"
+                  parse={val => val || "0"}
+                  debounced={false}
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={4}>
+                <FormField
+                  type="select"
+                  name={this.formModel.ClassFundingSourcePreference.uniqueKey}
+                  label="Funding source"
+                  items={enums.ClassFundingSource}
+                />
+              </Grid>
             </Grid>
           </Grid>
-        </CustomAppBar>
 
-        <Grid container columnSpacing={3} spacing={2}>
-          <Grid item xs={12} sm={3}>
-            <FormField
-              type="number"
-              name={this.formModel.ClassMinPlaces.uniqueKey}
-              label="Minimum places"
-              parse={val => val || "0"}
-              fullWidth
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={4}>
-            <FormField
-              type="select"
-              name={this.formModel.ClassDeliveryMode.uniqueKey}
-              label="Delivery mode"
-              items={enums.DeliveryMode}
-              listSpacing
-            />
-          </Grid>
-        </Grid>
-
-        <Grid container columnSpacing={3} spacing={2}>
-          <Grid item xs={12} sm={3}>
-            <FormField
-              type="number"
-              name={this.formModel.ClassMaxPlaces.uniqueKey}
-              label="Maximum places"
-              parse={val => val || "0"}
-              fullWidth
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={4}>
-            <FormField
-              type="select"
-              name={this.formModel.ClassFundingSourcePreference.uniqueKey}
-              label="Funding source"
-              items={enums.ClassFundingSource}
-              fullWidth
-              listSpacing
-            />
-          </Grid>
-        </Grid>
+        </AppBarContainer>
       </Form>
     );
   }

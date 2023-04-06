@@ -14,9 +14,9 @@ import {
 import FormField from "../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { ContactLinkAdornment, LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import {
-  contactLabelCondition, defaultContactName, getContactFullName, openContactLink
+  getContactFullName
 } from "../../contacts/utils";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
@@ -25,6 +25,8 @@ import { OutcomesContentLine, OutcomesHeaderLine } from "./OutcomesLines";
 import EntityService from "../../../../common/services/EntityService";
 import { openQualificationLink } from "../../qualifications/utils";
 import { OutcomeInitial } from "../../outcomes/Outcomes";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 interface PriorLearningEditViewProps extends EditViewProps<PriorLearning> {
   classes?: any;
@@ -65,7 +67,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
                 change(
                   form,
                   "contactName",
-                  contactLabelCondition({ firstName: res.rows[0].values[0], lastName: res.rows[0].values[1] })
+                  getContactFullName({ firstName: res.rows[0].values[0], lastName: res.rows[0].values[1] })
                 )
               );
             }
@@ -115,22 +117,35 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
 
   return values ? (
     <div className="p-3">
-      <Grid container columnSpacing={3}>
+      <Grid container columnSpacing={3} rowSpacing={2}>
         <Grid item xs={12}>
-          <FormField type="text" name="title" label="Title" required />
+          <FullScreenStickyHeader
+            opened={isNew || Object.keys(syncErrors).includes("title")}
+            twoColumn={twoColumn}
+            title={(
+              <div className="d-inline-flex-center">
+                {values.title}
+              </div>
+            )}
+            fields={(
+              <Grid item xs={twoColumn ? 6 : 12}>
+                <FormField type="text" name="title" label="Title" required />
+              </Grid>
+            )}
+          />
         </Grid>
         <Grid item xs={twoColumn ? 6 : 12}>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             name="contactId"
             label="Student"
             entity="Contact"
             aqlFilter="isStudent is true"
             selectValueMark="id"
             selectLabelCondition={getContactFullName}
-            defaultDisplayValue={values && defaultContactName(values.contactName)}
+            defaultValue={values?.contactName}
             labelAdornment={
-              <LinkAdornment linkHandler={openContactLink} link={values.contactId} disabled={!values.contactId} />
+              <ContactLinkAdornment id={values?.contactId} />
             }
             itemRenderer={ContactSelectItemRenderer}
             required
@@ -140,7 +155,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
 
         <Grid item xs={twoColumn ? 3 : 12}>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             name="qualificationName"
             label="Qualification"
             entity="Qualification"
@@ -160,7 +175,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
 
         <Grid item xs={twoColumn ? 3 : 12}>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             name="qualificationNationalCode"
             label="National code"
             selectValueMark="nationalCode"
@@ -193,39 +208,40 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
           />
         </Grid>
         <Grid item xs={12}>
-          <FormField type="multilineText" name="notes" label="Private notes" fullWidth />
+          <FormField type="multilineText" name="notes" label="Private notes" />
         </Grid>
-      </Grid>
-      <Grid item xs={12} className="pb-2 pt-2">
-        <MinifiedEntitiesList
-          name="outcomes"
-          header="Outcomes"
-          oneItemHeader="Outcome"
-          count={outcomesCount}
-          FieldsContent={OutcomesContent}
-          HeaderContent={OutcomesHeaderLine}
-          onAdd={addNewOutcome}
-          onDelete={deleteOutcome}
-          syncErrors={syncErrors}
-          validate={validateOutcomes}
-          accordion
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <FieldArray
-          name="documents"
-          label="Documents"
-          entity="PriorLearning"
-          classes={classes}
-          component={DocumentsRenderer}
-          xsGrid={12}
-          mdGrid={twoColumn ? 6 : 12}
-          lgGrid={twoColumn ? 4 : 12}
-          dispatch={dispatch}
-          form={form}
-          showConfirm={showConfirm}
-          rerenderOnEveryChange
-        />
+
+        <Grid item xs={12} className="pb-2 pt-2">
+          <MinifiedEntitiesList
+            name="outcomes"
+            header="Outcomes"
+            oneItemHeader="Outcome"
+            count={outcomesCount}
+            FieldsContent={OutcomesContent}
+            HeaderContent={OutcomesHeaderLine}
+            onAdd={addNewOutcome}
+            onDelete={deleteOutcome}
+            syncErrors={syncErrors}
+            validate={validateOutcomes}
+            accordion
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <FieldArray
+            name="documents"
+            label="Documents"
+            entity="PriorLearning"
+            classes={classes}
+            component={DocumentsRenderer}
+            xsGrid={12}
+            mdGrid={twoColumn ? 6 : 12}
+            lgGrid={twoColumn ? 4 : 12}
+            dispatch={dispatch}
+            form={form}
+            showConfirm={showConfirm}
+            rerenderOnEveryChange
+          />
+        </Grid>
       </Grid>
     </div>
   ) : null;

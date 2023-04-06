@@ -5,16 +5,13 @@
 
 import * as React from "react";
 import {
- change, getFormValues, initialize, reduxForm 
+  change, getFormValues, initialize, reduxForm
 } from "redux-form";
 import { connect } from "react-redux";
 import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
-import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../../reducers/state";
 import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
 
@@ -70,7 +67,7 @@ class CanvasBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-     handleSubmit, onSubmit, AppBarContent, dirty, item, values, form
+     handleSubmit, onSubmit, AppBarContent, item, values
     } = this.props;
 
     const { loading } = this.state;
@@ -79,62 +76,59 @@ class CanvasBaseForm extends React.Component<any, any> {
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-        <CustomAppBar>
-          <AppBarContent />
-        </CustomAppBar>
-
-        {
-          !values?.id && (
-            <FormField
-              type="stub"
-              name="fields.verificationCode"
-              validate={validateSingleMandatoryField}
-            />
-          )
-        }
-
-        <FormField disabled={configured} type="text" name="fields.baseUrl" label="Base url" fullWidth />
-        <FormField disabled={configured} type="text" name="fields.accountId" label="Account id" fullWidth />
-        <FormField disabled={configured} type="text" name="fields.clientToken" label="Client id" fullWidth />
-        <FormField
-          disabled={configured}
-          type="password"
-          name="fields.clientSecret"
-          label="Client secret"
-          fullWidth
-        />
-        {values && values.fields && values.fields.baseUrl && values.fields.clientToken && values.fields.clientSecret ? (
-          configured
-            ? (
-              <Typography variant="caption">
-                Canvas access has been set up
-                {
-                  item && item.id ? "" : ". Press Save to finish"
-                }
-              </Typography>
-              )
-            : (
-              <>
-                <Typography variant="caption">
-                  Press ‘Configure’ to proceed with authorising onCourse to access your Canvas account.
-                </Typography>
-                <div>
-                  <LoadingButton
-                    loading={loading}
-                    variant="contained"
-                    className="mt-1"
-                    onClick={this.configure}
-                  >
-                    Configure
-                  </LoadingButton>
-                </div>
-              </>
+        <AppBarContent>
+          {
+            !values?.id && (
+              <FormField
+                type="stub"
+                name="fields.verificationCode"
+                validate={validateSingleMandatoryField}
+              />
             )
-      ) : (
-        <Typography variant="caption">Fill all fields to proceed proceed with authorising</Typography>
-      )}
+          }
 
+          <FormField disabled={configured} type="text" name="fields.baseUrl" label="Base url" required className="mb-2" />
+          <FormField disabled={configured} type="text" name="fields.accountId" label="Account id" required className="mb-2" />
+          <FormField disabled={configured} type="text" name="fields.clientToken" label="Client id" required className="mb-2" />
+          <FormField
+            disabled={configured}
+            type="password"
+            name="fields.clientSecret"
+            label="Client secret"
+            required
+            className="mb-2"
+          />
+          {values && values.fields && values.fields.baseUrl && values.fields.clientToken && values.fields.clientSecret ? (
+            configured
+              ? (
+                <Typography variant="caption">
+                  Canvas access has been set up
+                  {
+                    item && item.id ? "" : ". Press Save to finish"
+                  }
+                </Typography>
+                )
+              : (
+                <>
+                  <Typography variant="caption">
+                    Press ‘Configure’ to proceed with authorising onCourse to access your Canvas account.
+                  </Typography>
+                  <div>
+                    <LoadingButton
+                      loading={loading}
+                      variant="contained"
+                      className="mt-1"
+                      onClick={this.configure}
+                    >
+                      Configure
+                    </LoadingButton>
+                  </div>
+                </>
+              )
+          ) : (
+            <Typography variant="caption">Fill all fields to proceed with authorization</Typography>
+          )}
+        </AppBarContent>
       </form>
     );
   }

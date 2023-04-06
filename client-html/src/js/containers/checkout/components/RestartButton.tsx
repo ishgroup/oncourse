@@ -21,9 +21,11 @@ const RestartButton: React.FC<any> = () => {
   return (
     <Button
       classes={{
-      root: "whiteAppBarButton",
-      disabled: "whiteAppBarButtonDisabled"
-    }}
+        root: "text-nowrap",
+      }}
+      color="primary"
+      variant="contained"
+      disableElevation
       onClick={() => {
       dispatch(checkoutClearState());
       dispatch(checkoutGetActivePaymentMethods());

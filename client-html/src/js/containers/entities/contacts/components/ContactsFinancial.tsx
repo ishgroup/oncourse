@@ -6,15 +6,17 @@
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import React, {
- useCallback, useState
+  useCallback, useMemo, useState
 } from "react";
-import { Contact, PaymentMethod, Tax } from "@api/model";
+import {
+  Cart, Contact, PaymentMethod, Tax
+} from "@api/model";
 import { change, FieldArray } from "redux-form";
 import IconButton from "@mui/material/IconButton";
 import LockOpen from "@mui/icons-material/LockOpen";
 import Lock from "@mui/icons-material/Lock";
 import { connect } from "react-redux";
-import { Grid } from "@mui/material";
+import { Alert, Grid } from "@mui/material";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { AccessState } from "../../../../common/reducers/accessReducer";
 import { openInternalLink } from "../../../../common/utils/links";
@@ -22,7 +24,6 @@ import { State } from "../../../../reducers/state";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { ContactsState } from "../reducers";
-import { getTableWrapperHeight } from "../utils";
 import { EditViewProps } from "../../../../model/common/ListView";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
 
@@ -47,7 +48,7 @@ const financialColumns: NestedTableColumn[] = [
   },
   {
     name: "date",
-    title: "Date",
+    title: "Created on",
     type: "date",
     width: 160
   },
@@ -77,11 +78,29 @@ const financialColumns: NestedTableColumn[] = [
   }
 ];
 
+const shopingCartColumns: NestedTableColumn[] = [
+  {
+    name: "createdOn",
+    title: "Created on",
+    type: "date",
+    width: 160
+  },
+  {
+    name: "totalValue",
+    title: "Total",
+    type: "currency"
+  }
+];
+
 const openRow = value => {
   const { type, relatedEntityId } = value;
 
   const route = type[0].toLowerCase() + type.substring(1);
   openInternalLink(`/${route}/${relatedEntityId}`);
+};
+
+const openShopingCartRow = (row: Cart) => {
+  openInternalLink(`/checkout?cartId=${row.id}`);
 };
 
 const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
@@ -96,7 +115,8 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
     expanded,
     setExpanded,
     storedCard,
-    access
+    access,
+    syncErrors
   } = props;
 
   const [lockedTerms, setLockedTerms] = useState(true);
@@ -113,13 +133,12 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
 
     setLockedTerms(prev => !prev);
   }, [defaultTerms, lockedTerms]);
+  
+  const financialTableTitle = useMemo(() => {
+    const financialRecordsCount = (values && Array.isArray(values.financialData) ? values.financialData.length : 0);
 
-  const getFinancialRecordsCount = useCallback(
-    () => (values && Array.isArray(values.financialData) ? values.financialData.length : 0),
-    [values.financialData]
-  );
-
-  const getFinancialTableTitle = () => (getFinancialRecordsCount() === 1 ? "financial record" : "financial records");
+    return financialRecordsCount === 1 ? "financial record" : "financial records";
+  }, [values.financialData]);
 
   const removeStoredCreditCard = () => {
     dispatch(change(form, "removeCChistory", true));
@@ -129,8 +148,8 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
 
   return values ? (
     <div className="pl-3 pr-3">
-      <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Financial">
-        <Grid container columnSpacing={3}>
+      <ExpandableContainer formErrors={syncErrors} index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Financial">
+        <Grid container columnSpacing={3} rowSpacing={2} className="pb-3">
           <Grid item xs={twoColumn ? 3 : 12}>
             <FormField
               type="number"
@@ -155,52 +174,67 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
               label="Tax type"
               items={getFormattedTaxes(taxTypes) || []}
               placeholder="Not set"
-              allwowEmpty
             />
           </Grid>
           {paymentInPermissions && storedCard && !values.removeCChistory
           && (
             <Grid item xs={12} className="centeredFlex mb-3 mt-2">
-              <Typography variant="body2">
-                <div>
-                  A credit card was collected on
-                  {' '}
-                  {storedCard.created}
-                  {' '}
-                  and is securely stored for this user.
-                </div>
-                <div className="centeredFlex">
-                  {storedCard.creditCardType}
-                  {" "}
-                  {storedCard.creditCardNumber}
-                  <Button
-                    onClick={removeStoredCreditCard}
-                    size="small"
-                    variant="text"
-                    className="errorColor ml-2"
-                  >
-                    delete
-                  </Button>
-                </div>
-              </Typography>
+              <Alert severity="info">
+                <Typography variant="body2">
+                  <div>
+                    A credit card was collected on
+                    {' '}
+                    {storedCard.created}
+                    {' '}
+                    and is securely stored for this user.
+                  </div>
+                  <div className="centeredFlex">
+                    {storedCard.creditCardType}
+                    {" "}
+                    {storedCard.creditCardNumber}
+                    <Button
+                      onClick={removeStoredCreditCard}
+                      size="small"
+                      variant="text"
+                      className="errorColor ml-2"
+                    >
+                      delete
+                    </Button>
+                  </div>
+                </Typography>
+              </Alert>
             </Grid>
           )}
           <Grid
             item
             xs={12}
             className="flex-column"
-            style={{
-              height: values.financialData && getTableWrapperHeight(values.financialData.length)
-            }}
           >
             <FieldArray
               name="financialData"
-              title={getFinancialTableTitle()}
+              title={financialTableTitle}
               component={NestedTable}
               columns={financialColumns}
               onRowDoubleClick={openRow}
               rerenderOnEveryChange
-              hideHeader
+              calculateHeight
+            />
+          </Grid>
+
+          <Grid
+            item
+            xs={12}
+            className="flex-column"
+          >
+            <FieldArray
+              name="abandonedCarts"
+              title={`Abandoned shopping cart${values.abandonedCarts?.length !== 1 ? "s" : ""}`}
+              component={NestedTable}
+              columns={shopingCartColumns}
+              onRowDoubleClick={openShopingCartRow}
+              sortBy={(a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()}
+              rerenderOnEveryChange
+              calculateHeight
             />
           </Grid>
         </Grid>

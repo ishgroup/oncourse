@@ -38,16 +38,21 @@ const addDialogStyles = theme => createStyles({
     "&:first-child": {
       marginLeft: 0
     }
+  },
+  paperWithSearch: {
+    height: "46px"
   }
 });
 
-const DocumentSearchItem = React.memo<{ data: DocumentSearchItemType; content: string; classes: any }>(props => {
-  const { classes, data, content } = props;
+const DocumentSearchItem = React.memo<{ data: DocumentSearchItemType; content: string; classes: any, parentProps: any }>(props => {
+  const {
+   classes, data, content, parentProps
+  } = props;
 
   const formattedDate = format(new Date(data.added), KK_MM_AAAA_EEE_DD_MMM_YYYY_SPECIAL).replace(/\./g, "");
 
   return (
-    <>
+    <div {...parentProps}>
       <Grid item xs={4} className={clsx("text-truncate text-nowrap", classes.searchItemPartWrapper)}>
         <Tooltip title={content}>
           <Typography variant="body2" component="span" className="text-truncate">
@@ -72,7 +77,7 @@ const DocumentSearchItem = React.memo<{ data: DocumentSearchItemType; content: s
           </Typography>
         </Tooltip>
       </Grid>
-    </>
+    </div>
   );
 });
 
@@ -106,7 +111,7 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
 
   addDraggingEvent = draggingEventAdded => {
     this.setState({ draggingEventAdded });
-  }
+  };
 
   addDialogRefEvents = () => {
     const { draggingEventAdded } = this.state;
@@ -116,11 +121,11 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
       this.dialogRef.current.addEventListener("dragenter", () => this.draggingEvent(true));
       this.dialogRef.current.addEventListener("dragleave", () => this.draggingEvent(false));
     }
-  }
+  };
 
   setParentDraggingState = isDragging => {
     this.setState({ isDragging });
-  }
+  };
 
   UNSAFE_componentWillUpdate(nextProps) {
     this.setParentDraggingState(nextProps.isParentDragging);
@@ -188,8 +193,8 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
     clearSearchDocuments();
   };
 
-  searchItemsRenderer = (content, data) => (
-    <DocumentSearchItem classes={this.props.classes} data={data} content={content} />
+  searchItemsRenderer = (content, data, search, props) => (
+    <DocumentSearchItem classes={this.props.classes} data={data} content={content} parentProps={props} />
   );
 
   componentWillUnmount() {
@@ -211,7 +216,8 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
           onClose={this.onClose}
           classes={{
             paper: clsx("overflow-visible", {
-              [classes.addDialogMargin]: Boolean(searchItems && searchItems.length)
+              [classes.addDialogMargin]: Boolean(searchItems?.length),
+              [classes.paperWithSearch]: Boolean(searchItems?.length) && !fetch.pending
             })
           }}
         >
@@ -220,7 +226,7 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
               <EditInPlaceSearchSelect
                 selectValueMark="id"
                 selectLabelMark="name"
-                input={{ onChange: this.onSelectChange, onBlur: stubFunction } as any}
+                input={{ value: searchValue, onChange: this.onSelectChange as any, onBlur: stubFunction } as any}
                 meta={{} as any}
                 onInputChange={this.onSelectInputChange}
                 placeholder="Find existing documents"
@@ -228,7 +234,9 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
                 itemRenderer={this.searchItemsRenderer}
                 popperAnchor={this.searchContainerNode.current}
                 disabled={searchExistingDocsDisabled}
-                inline
+                hideMenuOnNoResults
+                disableUnderline
+                hideEditIcon
               />
             </div>
             <IconButton

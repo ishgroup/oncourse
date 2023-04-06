@@ -11,7 +11,6 @@ import { AccessState } from "../../../../common/reducers/accessReducer";
 import { openInternalLink } from "../../../../common/utils/links";
 import { State } from "../../../../reducers/state";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
-import { getTableWrapperHeight } from "../utils";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
 import { EditViewProps } from "../../../../model/common/ListView";
@@ -27,33 +26,32 @@ const certificatesColumns: NestedTableColumn[] = [
     title: "Full qualification or skill set",
     type: "checkbox",
     disabledHandler: true,
-    width: 220
+    width: 170
   },
   {
     name: "nationalCode",
     title: "National code",
-    width: 160
+    width: 120
   },
   {
     name: "qualificationName",
-    title: "Qualification name"
+    title: "Qualification name",
+    width: 300
   },
   {
     name: "certificateNumber",
     title: "Certificate number",
-    width: 160
+    width: 120
   },
   {
     name: "createdOn",
     title: "Created",
     type: "date",
-    width: 160
   },
   {
     name: "lastPrintedOn",
     title: "Last printed",
     type: "date",
-    width: 160
   }
 ];
 
@@ -61,34 +59,34 @@ const enrolmentColumns: NestedTableColumn[] = [
   {
     name: "invoiceNumber",
     title: "Invoice #",
-    width: 160
+    width: 60
   },
   {
     name: "createdOn",
     title: "Created",
     type: "date",
-    width: 160
   },
   {
     name: "uniqueCode",
     title: "Unique code",
-    width: 160
+    width: 100
   },
   {
     name: "courseName",
-    title: "Course name"
+    title: "Course name",
+    width: 300
   },
   {
     name: "status",
-    title: "Status",
-    width: 160
+    title: "Status"
   }
 ];
 
 const priorLearningsColumns: NestedTableColumn[] = [
   {
     name: "title",
-    title: "Title"
+    title: "Title",
+    width: 300
   },
   {
     name: "externalRef",
@@ -104,7 +102,8 @@ const priorLearningsColumns: NestedTableColumn[] = [
   },
   {
     name: "qualName",
-    title: "Qual Name"
+    title: "Qual Name",
+    width: 300
   }
 ];
 
@@ -112,33 +111,26 @@ const outcomesColumns: NestedTableColumn[] = [
   {
     name: "nationalCode",
     title: "National code",
-    width: 160
   },
   {
     name: "course",
-    title: "Module/Course"
+    title: "Module/Course",
+    width: 300
   },
   {
     name: "status",
     title: "Status",
-    width: 160
+    width: 200
   },
   {
     name: "startDate",
     title: "Start date",
     type: "date",
-    width: 160
   },
   {
     name: "endDate",
     title: "End date",
     type: "date",
-    width: 160
-  },
-  {
-    name: "deliveryMode",
-    title: "Delivery mode",
-    width: 160
   }
 ];
 
@@ -171,6 +163,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
     tabIndex,
     expanded,
     setExpanded,
+    syncErrors
   } = props;
 
   const hasQePermissions = access["ENROLMENT_CREATE"];
@@ -249,16 +242,12 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
 
   return (
     <div className="pl-3 pr-3">
-      <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Education">
+      <ExpandableContainer index={tabIndex} expanded={expanded} formErrors={syncErrors} setExpanded={setExpanded} header="Education">
         <Grid container columnSpacing={3}>
           {enrolmentsPermissions && (
           <Grid
             item
             xs={12}
-            className="flex-column"
-            style={{
-              height: getTableWrapperHeight(enrolmentsCount)
-            }}
           >
             <FieldArray
               name="student.education.enrolments"
@@ -270,6 +259,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
               onAdd={hasQePermissions ? onAddEnrolment : undefined}
               rerenderOnEveryChange
               sortBy={(a, b) => b.invoiceNumber - a.invoiceNumber}
+              calculateHeight
             />
           </Grid>
         )}
@@ -280,10 +270,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
             <Grid
               item
               xs={12}
-              className="flex-column"
-              style={{
-                height: getTableWrapperHeight(priorLearningsCount)
-              }}
+              className="mt-2"
             >
               <FieldArray
                 name="student.education.priorLearnings"
@@ -294,6 +281,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
                 onRowDoubleClick={openPriorLearningsRow}
                 onAdd={onAddPriorLearning}
                 rerenderOnEveryChange
+                calculateHeight
               />
             </Grid>
           )}
@@ -304,10 +292,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
             <Grid
               item
               xs={12}
-              className="flex-column"
-              style={{
-                height: getTableWrapperHeight(outcomesCount)
-              }}
+              className="mt-2"
             >
               <FieldArray
                 name="student.education.outcomes"
@@ -318,20 +303,18 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
                 onRowDoubleClick={openOutcomesRow}
                 rerenderOnEveryChange
                 sortBy={(a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime()}
+                calculateHeight
               />
             </Grid>
           )}
         </Grid>
-        <Grid container columnSpacing={3}>
+        <Grid container columnSpacing={3} className="saveButtonTableOffset">
           {certificatesPermissions
             && (
             <Grid
               item
               xs={12}
-              className="flex-column"
-              style={{
-                height: getTableWrapperHeight(certificatesCount)
-              }}
+              className="mt-2"
             >
               <FieldArray
                 name="student.education.certificates"
@@ -343,6 +326,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
                 onAdd={onAddCertificates}
                 rerenderOnEveryChange
                 sortBy={(a, b) => b.certificateNumber - a.certificateNumber}
+                calculateHeight
               />
             </Grid>
           )}
@@ -357,4 +341,4 @@ const mapStateToProps = (state: State) => ({
   access: state.access
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(ContactsEducation);
+export default connect<any, any, any>(mapStateToProps)(ContactsEducation);

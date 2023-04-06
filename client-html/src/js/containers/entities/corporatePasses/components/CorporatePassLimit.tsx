@@ -12,11 +12,15 @@ import { CorporatePass, Sale, SaleType } from "@api/model";
 import { change } from "redux-form";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { State } from "../../../../reducers/state";
-import {
- clearCourseClassSales, clearSales, getCourseClassSales, getSales
-} from "../../sales/actions";
+import { clearSales, getSales } from "../../sales/actions";
 import { entityForLink } from "../../common/utils";
-import { Classes } from "../../../../model/entities/CourseClass";
+import { mapPlainDiscountClasses } from "../../discounts/utils";
+import {
+  clearCommonPlainRecords,
+  getCommonPlainRecords,
+  setCommonPlainSearch
+} from "../../../../common/actions/CommonPlainRecordsActions";
+import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 
 const styles = createStyles({
   dataRowClass: {
@@ -36,7 +40,9 @@ interface Props {
   clearSearchResult: (pending: boolean) => void;
   clearCourseClassSales: (pending: boolean) => void;
   submitSucceeded?: boolean;
-  pending: boolean;
+  pending?: boolean;
+  salesError?: boolean;
+  discountClassesError?: boolean;
 }
 
 const transform = (sale: Sale): NestedListItem => ({
@@ -47,7 +53,7 @@ const transform = (sale: Sale): NestedListItem => ({
     secondaryText: sale.code,
     link:
       sale.type === SaleType.Class
-        ? `/${Classes.path}?search=id is ${sale.id}`
+        ? `/class?search=id is ${sale.id}`
         : `/${entityForLink(sale.type)}/${sale.id}`,
     active: typeof sale.active === "boolean" ? sale.active : true
   });
@@ -97,8 +103,10 @@ class CorporatePassLimit extends Component<Props, any> {
       searchCourseClassSales,
       clearSearchResult,
       clearCourseClassSales,
+      discountClassesError,
       submitSucceeded,
-      pending
+      pending,
+      salesError
     } = this.props;
 
     const listValues = values && values.linkedSalables ? values.linkedSalables.map(transform) : [];
@@ -150,6 +158,7 @@ class CorporatePassLimit extends Component<Props, any> {
             dataRowClass={classes.dataRowClass}
             searchType="withToggle"
             aqlEntities={["Product", "CourseClass"]}
+            aqlQueryError={discountClassesError || salesError}
           />
         </div>
       </div>
@@ -159,8 +168,10 @@ class CorporatePassLimit extends Component<Props, any> {
 
 const mapStateToProps = (state: State) => ({
   sales: state.sales.items,
-  courseClassItems: state.sales.courseClassItems,
-  pending: state.sales.pending
+  salesError: state.sales.error,
+  courseClassItems: state.plainSearchRecords["CourseClass"].items,
+  pending: state.plainSearchRecords["CourseClass"].loading,
+  discountClassesError: state.plainSearchRecords["CourseClass"].error
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -169,9 +180,10 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   clearSearchResult: (pending: boolean) => dispatch(clearSales(pending)),
   searchCourseClassSales: (search: string) => {
-    if (search) dispatch(getCourseClassSales(search));
+    dispatch(setCommonPlainSearch("CourseClass", `${search ? `(${search}) AND ` : ""}(isDistantLearningCourse is true OR endDateTime > now) AND isCancelled is false`));
+    dispatch(getCommonPlainRecords("CourseClass", 0, "course.name,uniqueCode,isActive", null, null, PLAIN_LIST_MAX_PAGE_SIZE, items => items.map(mapPlainDiscountClasses)));
   },
-  clearCourseClassSales: (pending: boolean) => dispatch(clearCourseClassSales(pending))
+  clearCourseClassSales: (pending: boolean) => dispatch(clearCommonPlainRecords("CourseClass", pending))
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CorporatePassLimit));

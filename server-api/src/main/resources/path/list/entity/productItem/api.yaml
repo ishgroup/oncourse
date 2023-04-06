@@ -74,3 +74,26 @@ post:
     mask: edit
     keyCode: SALE
     errorMessage: Sorry, you have no permissions to edit sale. Please contact your administrator
+
+patch:
+  operationId: bulkChange
+  tags:
+    - ProductItem
+  parameters:
+    - name: diff
+      in: body
+      schema:
+        $ref: './def/entity/Diff.yaml'
+      required: true
+      description: product item for update
+  responses:
+    '200':
+      description: Success responce
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: SALE
+    errorMessage: Sorry, you have no permissions to edit product item. Please contact your administrator

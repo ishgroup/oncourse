@@ -105,7 +105,6 @@ class InvoiceLifecycleListenerTest extends TestWithDatabase {
 
         cayenneContext.commitChanges()
 
-        Assertions.assertTrue(cayenneContext.select(SelectQuery.query(MessagePerson.class)).isEmpty())
         Assertions.assertTrue(cayenneContext.select(SelectQuery.query(Message.class)).isEmpty())
 
         invoice.setModifiedOn(new Date())
@@ -115,7 +114,6 @@ class InvoiceLifecycleListenerTest extends TestWithDatabase {
 
         // still should be no messages, need to wait until all enrolments will be successful
 
-        Assertions.assertTrue(cayenneContext.select(SelectQuery.query(MessagePerson.class)).isEmpty())
         Assertions.assertTrue(cayenneContext.select(SelectQuery.query(Message.class)).isEmpty())
 
         invoice.setModifiedOn(new Date())
@@ -127,10 +125,8 @@ class InvoiceLifecycleListenerTest extends TestWithDatabase {
         Thread.sleep(5000)
 
         List<Message> messages = cayenneContext.select(SelectQuery.query(Message.class))
-        List<MessagePerson> messagePersons = cayenneContext.select(SelectQuery.query(MessagePerson.class))
 
         Assertions.assertEquals(3, messages.size())
-        Assertions.assertEquals(3, messagePersons.size())
     }
 
     
@@ -178,10 +174,8 @@ class InvoiceLifecycleListenerTest extends TestWithDatabase {
         Thread.sleep(1000)
 
         List<Message> messages = cayenneContext.select(SelectQuery.query(Message.class))
-        List<MessagePerson> messagePersons = cayenneContext.select(SelectQuery.query(MessagePerson.class))
 
         Assertions.assertEquals(2, messages.size())
-        Assertions.assertEquals(2, messagePersons.size())
     }
 
 

@@ -1,7 +1,7 @@
 import * as React from "react";
 import getTimestamps from "../../../js/common/utils/timestamps/getTimestamps";
 import { defaultComponents } from "../../common/Default.Components";
-import EntityRelationTypesForm
+import EntityRelationTypesForm, { ENTITY_RELATION_TYPES_FORM }
   from "../../../js/containers/preferences/containers/entity-relation-types/components/EntityRelationTypesForm";
 
 describe("Virtual rendered EntityRelationTypes", () => {
@@ -18,7 +18,7 @@ describe("Virtual rendered EntityRelationTypes", () => {
       items.sort((a, b) => (a.label.toLowerCase() > b.label.toLowerCase() ? 1 : -1));
 
       return {
-        form: "EntityRelationTypesForm",
+        form: ENTITY_RELATION_TYPES_FORM,
         data: { types: initialValues },
         entityRelationTypes: initialValues,
         timestamps: getTimestamps(initialValues),
@@ -26,15 +26,20 @@ describe("Virtual rendered EntityRelationTypes", () => {
         discountsMap: items
       };
     },
-    render: (wrapper, initialValues) => {
+    render: ({ screen, initialValues, fireEvent }) => {
+      const relationTypes = {};
+
       initialValues.forEach((type, key) => {
-        const warpperId = `#entity-relation-type-${key}`;
-        expect(wrapper.find(`${warpperId} div[id="types[${key}].name"] input`).val()).toContain(type.name);
-        expect(wrapper.find(`${warpperId} div[id="types[${key}].description"] input`).val()).toContain(type.description);
-        expect(wrapper.find(`${warpperId} div[id="types[${key}].fromName"] input`).val()).toContain(type.fromName);
-        expect(wrapper.find(`${warpperId} div[id="types[${key}].shoppingCart"] input`).val()).toContain(type.shoppingCart);
-        expect(wrapper.find(`${warpperId} div[id="types[${key}].toName"] input`).val()).toContain(type.toName);
+        relationTypes[`types[${key}].name`] = type.name;
+        relationTypes[`types[${key}].description`] = type.description;
+        relationTypes[`types[${key}].fromName`] = type.fromName;
+        relationTypes[`types[${key}].shoppingCart`] = type.shoppingCart;
+        relationTypes[`types[${key}].toName`] = type.toName;
       });
+
+      expect(screen.getByRole(ENTITY_RELATION_TYPES_FORM)).toHaveFormValues(relationTypes);
+
+      fireEvent.click(screen.getByTestId('appbar-submit-button'));
     }
   });
 });

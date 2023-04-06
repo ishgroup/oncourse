@@ -15,7 +15,7 @@ import Grid from "@mui/material/Grid";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import { EntityType } from "../../../../model/common/NestedEntity";
 import { openInternalLink } from "../../../utils/links";
-import AddIcon from "../../icons/AddIcon";
+import AddButton from "../../icons/AddButton";
 
 interface Props {
   entityName?: string;
@@ -50,6 +50,7 @@ const NestedEntity: React.FC<Props> = ({
   const saveAlert = () =>
   showConfirm(
     {
+      title: null,
       confirmMessage: preventAddMessage,
       cancelButtonText: "OK"
     },
@@ -69,7 +70,7 @@ const NestedEntity: React.FC<Props> = ({
   const addAction = useMemo(
     () =>
       (addLink ? (
-        <AddIcon onClick={isNew ? saveAlert : openAddLink} />
+        <AddButton onClick={isNew ? saveAlert : openAddLink} />
       ) : null),
     [isNew, addLink]
   );
@@ -99,7 +100,7 @@ const NestedEntity: React.FC<Props> = ({
               badgeContent={t.count}
               max={999}
             >
-              <ButtonGroup variant="contained" className="mr-2" disabled={t.disabled}>
+              <ButtonGroup variant="contained" color="inherit" className="mr-2" disabled={t.disabled}>
                 {t.timetableLink && (
                   <Button size="small" onClick={() => openTimetableLink(t.timetableLink)}>
                     <DateRange />

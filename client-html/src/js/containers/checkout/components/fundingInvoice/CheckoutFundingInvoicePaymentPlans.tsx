@@ -22,7 +22,7 @@ import { InvoicePaymentPlanContent, InvoicePaymentPlanHeader } from "../../../en
 import { paymentPlanStyles } from "../../../entities/invoices/styles/paymentPlanStyles";
 import { sortInvoicePaymentPlans } from "../../../entities/invoices/utils";
 import { getDeepValue } from "../../../../common/utils/common";
-import AddIcon from "../../../../common/components/icons/AddIcon";
+import AddButton from "../../../../common/components/icons/AddButton";
 
 interface PaymentPlansProps {
   classes?: any;
@@ -109,7 +109,7 @@ const InvoicePaymentPlansBase: React.FC<WrappedFieldArrayProps<any> & PaymentPla
           Payment plan
         </Typography>
 
-        <AddIcon onClick={addPaymentDue} />
+        <AddButton onClick={addPaymentDue} />
       </div>
 
       {error}

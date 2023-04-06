@@ -19,6 +19,7 @@ import CourseClassAssessmentService from "./services/CourseClassAssessmentServic
 import { deleteCourseClassAssessment } from "./actions";
 import uniqid from "../../../../../common/utils/uniqid";
 import { State } from "../../../../../reducers/state";
+import Divider from "@mui/material/Divider";
 
 const assessmentInitial: AssessmentClass = {
   id: null,
@@ -71,9 +72,10 @@ const CourseClassAssessmentsTab: React.FC<Partial<EditViewProps<CourseClassExten
   }, [gradingTypes]);
 
   const AssessmentItemsComponent = useCallback(
-    ({ classes, ...rest }) => (
+    ({ classes, item, ...rest }) => (
       <CourseClassAssessmentItems
         {...rest}
+        item={item}
         dispatch={dispatch}
         form={form}
         courseClassEnrolments={courseClassEnrolments}
@@ -148,7 +150,8 @@ const CourseClassAssessmentsTab: React.FC<Partial<EditViewProps<CourseClassExten
 
   return (
     <Grid container>
-      <Grid item xs={12} className="pl-3 pr-3 pb-2">
+      <Grid item xs={12} className="pl-3 pr-3 pb-1">
+        <Divider className="mb-1" />
         {isNew ? (
           <div>
             <div className="heading pb-1">Assessments</div>

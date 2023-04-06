@@ -7,7 +7,7 @@ import { Tag } from "@api/model";
 
 const isParent = (tag: Tag, ID: number) => (tag.id === ID ? true : tag.childTags.find(c => isParent(c, ID)));
 
-export const validateTagsList = (tags: Tag[], value, allValues, props) => {
+export const validateTagsList = (tags: Tag[], value, allValues, props, rootEntity?) => {
   let error;
 
   if (!tags) {
@@ -17,7 +17,7 @@ export const validateTagsList = (tags: Tag[], value, allValues, props) => {
   const rootTagsWithRequirements = {};
 
   tags.forEach(t => {
-    const match = t.requirements.filter(r => (r.type === props.rootEntity && (r.mandatory || r.limitToOneTag)));
+    const match = t.requirements.filter(r => (r.type === (rootEntity || props.rootEntity) && (r.mandatory || r.limitToOneTag)));
 
     if (match.length) {
       rootTagsWithRequirements[t.id] = { name: t.name, requirements: match[0] };
@@ -28,13 +28,13 @@ export const validateTagsList = (tags: Tag[], value, allValues, props) => {
 
   if (value) {
     value.forEach(i => {
-      const match = tags.find(t => isParent(t, i.id));
+      const match = tags.find(t => isParent(t, i));
 
       if (match) {
         if (usedRootTags[match.id]) {
-          usedRootTags[match.id].push(i);
+          usedRootTags[match.id].push(match);
         } else {
-          usedRootTags[match.id] = [i];
+          usedRootTags[match.id] = [match];
         }
       }
     });

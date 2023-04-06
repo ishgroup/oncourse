@@ -11,10 +11,10 @@
            workPhone="331110001" mobilePhone="331110001" street="1st" postcode="1002" suburb="Sydney" state="NSW"
            uniqueCode="TUT1UNIQUE" isStudent="0" isTutor="1" email="tutor@tutor.tutor"/>
 
-  <Note id="1" note="first note1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="2" note="second note1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="3" note="first note2" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="4" note="second note2" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="1" note="first note1" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="2" note="second note1" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="3" note="first note2" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="4" note="second note2" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
 
   <NoteRelation id="1" noteId="1" entityRecordId="1" entityIdentifier="Contact" createdOn="2015-01-24 18:00:00"
                 modifiedOn="2015-01-24 18:00:00"/>
@@ -28,13 +28,17 @@
   <Student id="1" contactId="1" studentNumber="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"
            indigenousStatus="1" isOverseasClient="0" isStillAtSchool="0" employmentCategoryId="1"
            priorEducationCode="1" concessionNumber="1" concessionType="1" specialNeeds="some"
-           yearSchoolCompleted="2009" usiStatus="1" citizenship="9" feeHelpEligible="0"/>
+           yearSchoolCompleted="2009" usiStatus="1" citizenship="9" feeHelpEligible="0"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Tutor id="1" contactId="2" dateStarted="2012-01-01 00:00:00" dateFinished="2013-01-01 00:00:00" resume="some text"
-         wwChildrenStatus="0"/>
+         wwChildrenStatus="0" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <CorporatePass id="1" contactId="1" password="1234"/>
-  <CorporatePass id="2" contactId="1" password="12345"/>
-  <CorporatePass id="3" contactId="2" password="123456"/>
+  <CorporatePass id="1" contactId="1" password="1234" createdOn="2021-12-21 12:00:10.0"
+                 modifiedOn="2021-12-21 12:00:10.0"/>
+  <CorporatePass id="2" contactId="1" password="12345" createdOn="2021-12-21 12:00:10.0"
+                 modifiedOn="2021-12-21 12:00:10.0"/>
+  <CorporatePass id="3" contactId="2" password="123456" createdOn="2021-12-21 12:00:10.0"
+                 modifiedOn="2021-12-21 12:00:10.0"/>
 
 </dataset>

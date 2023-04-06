@@ -14,12 +14,11 @@ package ish.oncourse.server.entity.mixins
 import groovy.transform.CompileDynamic
 import ish.common.types.AttendanceType
 import ish.oncourse.API
-import ish.oncourse.entity.services.SessionService
 import ish.oncourse.entity.services.StudentConcessionService
 import ish.oncourse.entity.services.StudentService
 import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.StudentConcession
 import static ish.oncourse.server.entity.mixins.MixinHelper.getService
+import ish.oncourse.server.cayenne.StudentConcession
 
 import javax.annotation.Nonnull
 
@@ -54,12 +53,6 @@ class StudentMixin {
 	static @Nonnull getOutcomes(Student self) {
 		return getService(StudentService).getOutcomes(self, false)
 	}
-
-	@Deprecated
-	static getPortalLink(Student self, def target, def timeout = null) {
-		return self.contact.getPortalLink(target, timeout)
-	}
-
 
 	/**
 	 * @return the culmative attendance percentage for all sessions for all classes this student has been enrolled in

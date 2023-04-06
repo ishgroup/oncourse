@@ -5,14 +5,11 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import Tooltip from "@mui/material/Tooltip";
 import clsx from "clsx";
-import React, {
-  memo, useCallback, useEffect, useRef, useState,
-} from "react";
+import React, { memo, useCallback, useEffect, useRef, useState, } from "react";
 import { FormControlLabel } from "@mui/material";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { areEqual } from "react-window";
 import { format } from "date-fns";
-import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -26,17 +23,13 @@ import Close from '@mui/icons-material/Close';
 import Zoom from '@mui/material/Zoom';
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import {
-  change, FieldArray, getFormValues, InjectedFormProps, reduxForm,
-} from "redux-form";
+import { change, FieldArray, getFormValues, InjectedFormProps, reduxForm, } from "redux-form";
 import instantFetchErrorHandler from "../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import AppBarHelpMenu from "../../common/components/form/AppBarHelpMenu";
 import FormField from "../../common/components/form/formFields/FormField";
 import { Switch } from "../../common/components/form/formFields/Switch";
 import DynamicSizeList from "../../common/components/form/DynamicSizeList";
 import { LinkAdornment } from "../../common/components/form/FieldAdornments";
-import CustomAppBar from "../../common/components/layout/CustomAppBar";
-import LoadingIndicator from "../../common/components/layout/LoadingIndicator";
+import LoadingIndicator from "../../common/components/progress/LoadingIndicator";
 import EntityService from "../../common/services/EntityService";
 import { D_MMM_YYYY } from "../../common/utils/dates/format";
 import { formatRelativeDate } from "../../common/utils/dates/formatRelative";
@@ -44,14 +37,16 @@ import { openInternalLink } from "../../common/utils/links";
 import { decimalPlus } from "../../common/utils/numbers/decimalCalculation";
 import { formatCurrency } from "../../common/utils/numbers/numbersNormalizing";
 import { BatchPaymentContact } from "../../model/batch-payment";
-import { AppTheme } from "../../model/common/Theme";
 import { State } from "../../reducers/state";
 import CheckoutService from "../checkout/services/CheckoutService";
-import { getContactName } from "../entities/contacts/utils";
 import { getBachCheckoutModel } from "./utils";
 import { makeAppStyles } from "../../common/styles/makeStyles";
+import AppBarContainer from "../../common/components/layout/AppBarContainer";
+import { getManualLink } from "../../common/utils/getManualLink";
+import { getPluralSuffix } from "../../common/utils/strings";
+import { getContactFullName } from "../entities/contacts/utils";
 
-const useStyles = makeAppStyles()((theme: AppTheme) => ({
+const useStyles = makeAppStyles(theme => ({
   checkbox: {
     width: "auto",
     height: "auto",
@@ -156,8 +151,8 @@ const ContactItem = memo<ContactItemProps>(({
           content: "m-0",
         }}
         >
-          <Grid container columnSpacing={3} className="centeredFlex">
-            <div className="centeredFlex flex-fill pl-1">
+          <Grid container className="centeredFlex">
+            <div className="centeredFlex flex-fill pl-1 pr-2">
               <Tooltip
                 disableHoverListener={!checkDisabled}
                 disableFocusListener={!checkDisabled}
@@ -210,11 +205,10 @@ const ContactItem = memo<ContactItemProps>(({
 
               {!expanded && <span className="money">{total}</span>}
             </div>
-
           </Grid>
         </AccordionSummary>
         <AccordionDetails>
-          <Grid container columnSpacing={3}>
+          <Grid container>
             {item.items.map((i, index) => (
               <Grid key={i.id} item xs={12} className={clsx("d-flex", classes.tableTab)}>
                 <div className="centeredFlex flex-fill">
@@ -255,6 +249,7 @@ const ContactItem = memo<ContactItemProps>(({
                 item
                 xs={4}
                 container
+                justifyContent="flex-end"
                 className="money pt-1 summaryTopBorder"
               >
                 <Typography variant="body2" className={classes.amountMargin}>{total}</Typography>
@@ -297,8 +292,8 @@ const ContactRenderer = ({
           estimatedItemSize={56}
           itemData={{
           items,
-          ...rest,
-        }}
+            ...rest,
+          }}
         >
           {RowRenderer}
         </DynamicSizeList>
@@ -314,6 +309,8 @@ interface Props {
     contacts: BatchPaymentContact[]
   };
 }
+
+const manualUrl = getManualLink("batchpayments_batchpayments");
 
 const getContacts = (dispatch, setContactsLoading, onComplete?) => {
   EntityService.getPlainRecords(
@@ -338,7 +335,7 @@ const getContacts = (dispatch, setContactsLoading, onComplete?) => {
 
       const contacts:BatchPaymentContact[] = [{
         id: Number(res.rows[0].values[0]),
-        name: getContactName({ firstName: res.rows[0].values[1], lastName: res.rows[0].values[2] }),
+        name: getContactFullName({ firstName: res.rows[0].values[1], lastName: res.rows[0].values[2] }),
         hasStoredCard,
         checked: hasStoredCard,
         total: 0,
@@ -362,7 +359,7 @@ const getContacts = (dispatch, setContactsLoading, onComplete?) => {
             id,
             hasStoredCard,
             index: counter + 1,
-            name: getContactName({ firstName: r.values[1], lastName: r.values[2] }),
+            name: getContactFullName({ firstName: r.values[1], lastName: r.values[2] }),
             checked: hasStoredCard,
             total: amountOwing,
             processed: false,
@@ -404,19 +401,16 @@ const getContacts = (dispatch, setContactsLoading, onComplete?) => {
 
 const BatchPayment: React.FC<Props & InjectedFormProps> = ({
   handleSubmit,
-  dirty,
-  invalid,
   dispatch,
   currencySymbol,
   values,
-  form,
 }) => {
   const [contactsLoading, setContactsLoading] = useState(false);
   const [filterByStoreCard, setFilterByStoreCard] = useState(true);
   const [processing, setProcessing] = useState(false);
   const cancel = useRef(false);
 
-  const { classes } = useStyles();
+  const classes = useStyles();
 
   useEffect(() => {
     setContactsLoading(true);
@@ -443,7 +437,8 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
       changed.reduce((p, i) => (i.checked ? decimalPlus(p, i.amountOwing) : p), 0) ));
   }, [values]);
 
-  const checkedContacts = values.contacts.filter(c => c.checked);
+  const checkedContacts = values.contacts.filter(c => c.checked && !c.processed);
+
   const total = checkedContacts.reduce(
     (p, c) => decimalPlus(p, c.items.reduce((p, c) => decimalPlus(p, c.checked ? c.amountOwing : 0), 0) ),
     0,
@@ -474,7 +469,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
                 instantFetchErrorHandler(dispatch, res, `Payment for ${c.name} failed`);
                 dispatch(change(FORM, `contacts[${c.index}]`, {
                   ...c, processing: false, processed: true, error: true,
-                } ));
+                }));
                 setTimeout(resolve, 200);
               });
           }, 300);
@@ -482,108 +477,87 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
           await a;
           await b();
         }, Promise.resolve());
+
+        setProcessing(false);
       });
   };
 
   return (
     <form className="appBarContainer" noValidate autoComplete="off" onSubmit={handleSubmit(onSave)}>
       <LoadingIndicator appBarOffset transparentBackdrop customLoading={contactsLoading} />
-
-      <CustomAppBar>
-        <Grid container columnSpacing={3}>
-          <Grid item xs={12} className="centeredFlex">
-            <Typography color="inherit" noWrap className="appHeaderFontSize">
-              Batch payment in (showing
-              {' '}
-              {values.contacts.length}
-              {' '}
-              contact
-              {values.contacts.length !== 1 ? "s" : ""}
-              {' '}
-              with amounts due or overdue)
-            </Typography>
-
-            <div className="flex-fill" />
-
-            <AppBarHelpMenu
-              manualUrl=""
-            />
-
-            <Button
-              className="closeAppBarButton"
-              onClick={() => {
-              cancel.current = true;
-              setProcessing(false);
-            }}
-            >
-              cancel
-            </Button>
-
-            <Button
-              type="submit"
-              classes={{
-                root: "whiteAppBarButton",
-                disabled: "whiteAppBarButtonDisabled",
-              }}
-              disabled={invalid || processing}
-            >
-              Process
-              {' '}
-              {checkedContacts.length}
-              {' '}
-              payment
-              {checkedContacts.length === 1 ? "" : "s"}
-            </Button>
-          </Grid>
-        </Grid>
-      </CustomAppBar>
-
-      {!contactsLoading && (
-      <div className="flex-column p-3 h-100">
-        <div className="mb-3 d-flex justify-content-end">
-          <FormControlLabel
-            control={(
-              <Switch
-                checked={filterByStoreCard}
-                onChange={() => setFilterByStoreCard(!filterByStoreCard)}
+      <AppBarContainer
+        disabledScrolling
+        disableInteraction
+        disabled={processing || contactsLoading || checkedContacts.length === 0}
+        title={(
+          <div>
+            Batch payment in (showing
+            {' '}
+            {values.contacts.length}
+            {' '}
+            contact
+            {values.contacts.length !== 1 ? "s" : ""}
+            {' '}
+            with amounts due or overdue)
+          </div>
+        )}
+        manualUrl={manualUrl}
+        onCloseClick={processing ? () => {
+          cancel.current = true;
+          setProcessing(false);
+        } : null}
+        closeButtonText="Cancel"
+        submitButtonText={processing ? "Processing..." : `Process ${checkedContacts.length} payment${getPluralSuffix(checkedContacts.length)}`}
+        containerClass="flex-column p-3 h-100"
+      >
+        {!contactsLoading && (
+          <div className="flex-column p-3 h-100">
+            <div className="mb-3 d-flex justify-content-end">
+              <FormControlLabel
+                control={(
+                  <Switch
+                    checked={filterByStoreCard}
+                    onChange={() => setFilterByStoreCard(!filterByStoreCard)}
+                  />
+                )}
+                classes={{
+                  labelPlacementStart: "m-0",
+                }}
+                label="Only show contacts with a stored card"
+                labelPlacement="start"
+                disabled={processing}
               />
-            )}
-            classes={{
-              labelPlacementStart: "m-0",
-            }}
-            label="Only show contacts with a stored card"
-            labelPlacement="start"
-            disabled={processing}
-          />
-        </div>
+            </div>
 
-        <div className={clsx("overflow-auto flex-fill", classes.list)}>
-          <FieldArray
-            name="contacts"
-            component={ContactRenderer}
-            classes={classes}
-            currencySymbol={currencySymbol}
-            filterByStoreCard={filterByStoreCard}
-            onContactItemSelect={onContactItemSelect}
-          />
-        </div>
+            <div className={clsx("flex-fill", classes.list)}>
+              <FieldArray
+                name="contacts"
+                component={ContactRenderer}
+                classes={classes}
+                currencySymbol={currencySymbol}
+                filterByStoreCard={filterByStoreCard}
+                onContactItemSelect={onContactItemSelect}
+              />
+            </div>
 
-        <Grid container columnSpacing={3} className="pt-3 d-flex justify-content-end">
-          <Grid item xs={12} sm={8} />
-          <Grid
-            item
-            xs={12}
-            sm={4}
-            container
-            className="money p-2 summaryTopBorder"
-          >
-            <Typography variant="body2" className={classes.amountMargin}>
-              <strong>{formatCurrency(total, currencySymbol)}</strong>
-            </Typography>
-          </Grid>
-        </Grid>
-      </div>
-      )}
+            <Grid container className="pt-3 d-flex justify-content-end">
+              <Grid item xs={12} sm={8} />
+              <Grid
+                item
+                xs={12}
+                sm={4}
+                container
+                justifyContent="flex-end"
+                className="money p-2 summaryTopBorder"
+              >
+                <Typography variant="body2" className={classes.amountMargin}>
+                  <strong>{formatCurrency(total, currencySymbol)}</strong>
+                </Typography>
+              </Grid>
+            </Grid>
+          </div>
+        )}
+      </AppBarContainer>
     </form>
 );
 };

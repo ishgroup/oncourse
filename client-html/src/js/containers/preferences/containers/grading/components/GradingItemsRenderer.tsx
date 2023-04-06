@@ -17,7 +17,7 @@ import { useHoverShowStyles } from "../../../../../common/styles/hooks";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { getFieldArrayFieldMeta } from "../../../../../common/utils/validation";
 import { GradingFormData } from "./GradingTypesForm";
-import AddIcon from "../../../../../common/components/icons/AddIcon";
+import AddButton from "../../../../../common/components/icons/AddButton";
 
 interface Props {
   classes: any;
@@ -85,7 +85,7 @@ const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & Props
         <Typography component="div" variant="caption" color="textSecondary" noWrap>
           {label}
         </Typography>
-        <AddIcon onClick={onAdd} className="p-0-5" />
+        <AddButton onClick={onAdd} className="p-0-5" />
       </div>
       {error && (
         <Typography className="shakingError" component="div" variant="caption" color="error" noWrap>
@@ -99,11 +99,11 @@ const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & Props
             {
               fields.map((f, index) => (
                 <li key={index} className={hoverClasses.container}>
-                  <Typography variant="body2" color="inherit" noWrap>
+                  <Typography variant="body2" color="inherit" noWrap component="div">
                     <FormField
                       type="text"
                       name={`${f}.name`}
-                      formatting="inline"
+                      inline
                       className="mr-1"
                       required
                     />
@@ -112,9 +112,8 @@ const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & Props
                     <FormField
                       type="number"
                       name={`${f}.lowerBound`}
-                      formatting="inline"
+                      inline
                       validate={validateMinMax}
-                      hideArrows
                       required
                     />
                     {parent.entryType === "choice list" && "%"}

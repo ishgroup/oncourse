@@ -1,18 +1,21 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
 import { Account, MembershipProduct, Tax } from "@api/model";
+import { Dispatch } from "redux";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { plainContactRelationTypePath, plainCorporatePassPath } from "../../../constants/Api";
-import { createMembershipProduct, getMembershipProduct, updateMembershipProduct } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
 import MembershipProductEditView from "./components/MembershipProductEditView";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getPlainTaxes } from "../taxes/actions";
 import { State } from "../../../reducers/state";
@@ -22,15 +25,15 @@ import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID, PLAIN_LIST_MAX_PAGE_SIZE } from 
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
 import { getCommonPlainRecords } from "../../../common/actions/CommonPlainRecordsActions";
-import { Dispatch } from "redux";
+import { getListTags } from "../../tags/actions";
+import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
+import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 
 interface MembershipProductsProps {
-  getMembershipProductRecord?: () => void;
   onInit?: (initial: MembershipProduct) => void;
-  onCreate?: (membershipProduct: MembershipProduct) => void;
-  onSave?: (id: string, membershipProduct: MembershipProduct) => void;
   getRecords?: () => void;
   getFilters?: () => void;
+  getTags?: () => void;
   getRelationTypes?: () => void;
   getAccounts?: () => void;
   getTaxes?: () => void;
@@ -83,7 +86,7 @@ const filterGroups: FilterGroup[] = [
 
 const expressionFindMembers = " and productItems.status not ( CANCELLED , CREDITED ) and productItems.product.id";
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   {
     title: "Audits",
     list: "audit",
@@ -92,7 +95,8 @@ const findRelatedGroup: any[] = [
   { title: "Current members", list: "contact", expression: "productItems.expiryDate > now" + expressionFindMembers },
   { title: "Expired members", list: "contact", expression: "productItems.expiryDate <= now" + expressionFindMembers },
   { title: "Classes", list: "class", expression: "discountCourseClasses.discount.discountMemberships.membershipProduct.id" },
-  { title: "Discounts", list: "discount", expression: "discountMemberships.membershipProduct.id" }
+  { title: "Discounts", list: "discount", expression: "discountMemberships.membershipProduct.id" },
+  { title: "Sales", list: "sale", expression: "type is MEMBERSHIP AND product.id" },
 ];
 
 const manualLink = getManualLink("concessions_creatingMemberships");
@@ -109,14 +113,16 @@ const preformatBeforeSubmit = (value: MembershipProduct): MembershipProduct => {
   return value;
 };
 
+const setRowClasses = ({ isOnSale }) => {
+  if (isOnSale === "No") return "text-op05";
+  return undefined;
+};
+
 const MembershipProducts: React.FC<MembershipProductsProps> = props => {
   const [initNew, setInitNew] = useState(false);
 
   const {
-    getMembershipProductRecord,
     onInit,
-    onCreate,
-    onSave,
     getFilters,
     clearListState,
     getAccounts,
@@ -130,6 +136,7 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
     getMembershipProductContactRelationTypes,
     checkPermissions,
     getRelationTypes,
+    getTags,
     getDataCollectionRules
   } = props;
 
@@ -151,6 +158,7 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
     getMembershipProductContactRelationTypes();
     getAccounts();
     getTaxes();
+    getTags();
     getFilters();
     checkPermissions();
     getRelationTypes();
@@ -161,26 +169,28 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
   }, []);
 
   return (
-    <div>
-      <ListView
-        listProps={{ primaryColumn: "name", secondaryColumn: "sku" }}
-        editViewProps={{
-          manualLink
-        }}
-        EditViewContent={MembershipProductEditView}
-        getEditRecord={getMembershipProductRecord}
-        rootEntity="MembershipProduct"
-        aqlEntity="Product"
-        onInit={() => setInitNew(true)}
-        onCreate={onCreate}
-        onSave={onSave}
-        findRelated={findRelatedGroup}
-        filterGroupsInitial={filterGroups}
-        preformatBeforeSubmit={preformatBeforeSubmit}
-        defaultDeleteDisabled
-        noListTags
-      />
-    </div>
+    <ListView
+      listProps={{
+        setRowClasses,
+        primaryColumn: "name",
+        secondaryColumn: "sku"
+      }}
+      editViewProps={{
+        manualLink,
+        asyncValidate: notesAsyncValidate,
+        asyncChangeFields: ["notes[].message"],
+        hideTitle: true
+      }}
+      EditViewContent={MembershipProductEditView}
+      CogwheelAdornment={BulkEditCogwheelOption}
+      rootEntity="MembershipProduct"
+      onInit={() => setInitNew(true)}
+      findRelated={findRelatedGroup}
+      filterGroupsInitial={filterGroups}
+      preformatBeforeSubmit={preformatBeforeSubmit}
+      defaultDeleteDisabled
+      noListTags
+    />
   );
 };
 
@@ -192,17 +202,18 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getMembershipProductContactRelationTypes: () => {
     dispatch(checkPermissions({ path: plainContactRelationTypePath, method: "GET" },
      [
-       getCommonPlainRecords("ContactRelationType", 0, "toContactName", true, null, PLAIN_LIST_MAX_PAGE_SIZE)
+       getCommonPlainRecords("ContactRelationType", 0, "toContactName", true, null, PLAIN_LIST_MAX_PAGE_SIZE, items => items.map(r => ({
+         id: r.id,
+         description: r.toContactName
+       })))
      ]));
   },
   getDefaultIncomeAccount: () => dispatch(getUserPreferences([ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID])),
   getTaxes: () => dispatch(getPlainTaxes()),
-  getAccounts: () => getPlainAccounts(dispatch,"income"),
+  getAccounts: () => getPlainAccounts(dispatch, "income"),
+  getTags: () => dispatch(getListTags("MembershipProduct")),
   getFilters: () => dispatch(getFilters("MembershipProduct")),
   clearListState: () => dispatch(clearListState()),
-  getMembershipProductRecord: (id: string) => dispatch(getMembershipProduct(id)),
-  onSave: (id: string, membershipProduct: MembershipProduct) => dispatch(updateMembershipProduct(id, membershipProduct)),
-  onCreate: (membershipProduct: MembershipProduct) => dispatch(createMembershipProduct(membershipProduct)),
   checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" })),
   getRelationTypes: () => dispatch(getEntityRelationTypes()),
   getDataCollectionRules: () => dispatch(getDataCollectionRules()),

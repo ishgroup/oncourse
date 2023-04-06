@@ -6,12 +6,18 @@ describe("Virtual rendered ModulesEditView", () => {
     entity: "Module",
     EditView: ModulesEditView,
     record: mockecApi => mockecApi.db.getModule(1),
-    render: (wrapper, initialValues) => {
-      expect(wrapper.find("#title input").val()).toContain(initialValues.title);
-      expect(wrapper.find("#nationalCode input").val()).toContain(initialValues.nationalCode);
-      expect(wrapper.find("#fieldOfEducation input").val()).toContain(initialValues.fieldOfEducation);
-      expect(wrapper.find("#nominalHours input").val()).toContain(initialValues.nominalHours);
-      expect(wrapper.find("#type input").val()).toContain(initialValues.type);
+    render: ({ screen, initialValues, formRoleName }) => {
+      expect(screen.getByRole(formRoleName)).toHaveFormValues({
+        title: initialValues.title,
+        creditPoints: initialValues.creditPoints,
+        nationalCode: initialValues.nationalCode,
+        expiryDays: initialValues.expiryDays,
+        fieldOfEducation: initialValues.fieldOfEducation,
+        nominalHours: initialValues.nominalHours,
+        specialization: initialValues.specialization,
+        type: initialValues.type,
+        isOffered: initialValues.isOffered,
+      });
     }
   });
 });

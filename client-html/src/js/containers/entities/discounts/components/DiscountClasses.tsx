@@ -13,10 +13,15 @@ import { createStyles, withStyles } from "@mui/styles";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { State } from "../../../../reducers/state";
-import { clearCourseClassSales, getCourseClassSales } from "../../sales/actions";
 import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
-import { validateSingleMandatoryField, validateNonNegative } from "../../../../common/utils/validation";
-import { Classes } from "../../../../model/entities/CourseClass";
+import { validateNonNegative, validateSingleMandatoryField } from "../../../../common/utils/validation";
+import {
+  clearCommonPlainRecords,
+  getCommonPlainRecords,
+  setCommonPlainSearch
+} from "../../../../common/actions/CommonPlainRecordsActions";
+import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import { mapPlainDiscountClasses } from "../utils";
 
 /**
  * @param sale
@@ -26,7 +31,7 @@ const courseClassToNestedListItem = (sale: Sale): NestedListItem => ({
   entityId: sale.id,
   primaryText: sale.name,
   secondaryText: sale.code,
-  link: `/${Classes.path}?search=id is ${sale.id}`,
+  link: `/class?search=id is ${sale.id}`,
   active: sale.active
 });
 
@@ -44,7 +49,7 @@ class DiscountClasses extends React.PureComponent<any, any> {
 
   onDeleteDiscountClass = (item: NestedListItem) => {
     const { values, dispatch, form } = this.props;
-    const { classes } = values.discountCourseClasses.filter(c => item.entityId !== c.id);
+    const classes = values.discountCourseClasses.filter(c => item.entityId !== c.id);
     dispatch(change(form, "discountCourseClasses", classes));
   };
 
@@ -52,7 +57,7 @@ class DiscountClasses extends React.PureComponent<any, any> {
     const {
       values, dispatch, form, foundDiscountClasses
     } = this.props;
-    const { classes } = values.discountCourseClasses.concat(
+    const classes = values.discountCourseClasses.concat(
       items.map(item => foundDiscountClasses.find(c => item.entityId === c.id))
     );
     dispatch(change(form, "discountCourseClasses", classes));
@@ -63,6 +68,7 @@ class DiscountClasses extends React.PureComponent<any, any> {
       classes,
       values,
       foundDiscountClasses,
+      discountClassesError,
       pending,
       searchDiscountClasses,
       clearDiscountClasses,
@@ -77,7 +83,7 @@ class DiscountClasses extends React.PureComponent<any, any> {
       : [];
 
     return (
-      <div className="p-3 pb-0">
+      <div className="p-3">
         <div className={twoColumn ? "mb-2 mw-800" : "mb-2"}>
           <NestedList
             formId={values.id}
@@ -96,11 +102,12 @@ class DiscountClasses extends React.PureComponent<any, any> {
             resetSearch={submitSucceeded}
             dataRowClass={classes.dataRowClass}
             aqlEntities={["CourseClass"]}
+            aqlQueryError={discountClassesError}
           />
         </div>
         <FormControlLabel
           className="pr-3 mb-2"
-          control={<FormField type="checkbox" name="addByDefault" color="secondary" fullWidth />}
+          control={<FormField type="checkbox" name="addByDefault" color="secondary"  />}
           label="Add this discount when creating or duplicating all classes"
         />
         <Typography color="inherit" component="div" noWrap>
@@ -108,11 +115,10 @@ class DiscountClasses extends React.PureComponent<any, any> {
           <FormField
             type="number"
             name="minEnrolments"
-            color="primary"
-            formatting="inline"
-            hidePlaceholderInEditMode
+            inline
             validate={[validateSingleMandatoryField, validateNonNegative]}
             parse={normalizeNumber}
+            debounced={false}
           />
           enrolments on one invoice from the classes above
         </Typography>
@@ -121,9 +127,7 @@ class DiscountClasses extends React.PureComponent<any, any> {
           <FormField
             type="money"
             name="minValue"
-            color="primary"
-            formatting="inline"
-            hidePlaceholderInEditMode
+            inline
             validate={[validateSingleMandatoryField, validateNonNegative]}
           />
           on one invoice
@@ -134,15 +138,17 @@ class DiscountClasses extends React.PureComponent<any, any> {
 }
 
 const mapStateToProps = (state: State) => ({
-  foundDiscountClasses: state.sales.courseClassItems,
-  pending: state.sales.pending
+  foundDiscountClasses: state.plainSearchRecords["CourseClass"].items,
+  pending: state.plainSearchRecords["CourseClass"].loading,
+  discountClassesError: state.plainSearchRecords["CourseClass"].error
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   searchDiscountClasses: (search: string) => {
-    if (search) dispatch(getCourseClassSales(search));
+    dispatch(setCommonPlainSearch("CourseClass", `${search ? `(${search}) AND ` : ""}(isDistantLearningCourse is true OR endDateTime > now) AND isCancelled is false`));
+    dispatch(getCommonPlainRecords("CourseClass", 0, "course.name,uniqueCode,isActive", null, null, PLAIN_LIST_MAX_PAGE_SIZE, items => items.map(mapPlainDiscountClasses)));
   },
-  clearDiscountClasses: (pending: boolean) => dispatch(clearCourseClassSales(pending))
+  clearDiscountClasses: (pending: boolean) => dispatch(clearCommonPlainRecords("CourseClass", pending))
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DiscountClasses));

@@ -1,18 +1,18 @@
 import * as React from "react";
 import { defaultComponents } from "../../common/Default.Components";
-import CollectionRulesForm
+import CollectionRulesForm, { DATA_COLLECTION_RULES_FORM }
   from "../../../js/containers/preferences/containers/data-collection-rules/components/CollectionRulesForm";
 
 describe("Virtual rendered CollectionRules", () => {
   defaultComponents({
-    entity: "CollectionRulesForm",
+    entity: DATA_COLLECTION_RULES_FORM,
     View: props => <CollectionRulesForm {...props} />,
     record: mockedApi => mockedApi.db.dataCollectionRules,
     defaultProps: ({ initialValues, mockedApi }) => {
       const value = initialValues[0];
 
       return {
-        form: "CollectionRulesForm",
+        form: DATA_COLLECTION_RULES_FORM,
         initialValues: value,
         values: value,
         value,
@@ -32,13 +32,22 @@ describe("Virtual rendered CollectionRules", () => {
         onSubmit: jest.fn()
       };
     },
-    render: (wrapper, initialValues) => {
+    render: ({ screen, initialValues, fireEvent }) => {
       const rule = initialValues[0];
 
-      expect(wrapper.find("#enrolmentFormName input").val()).toContain(rule.enrolmentFormName);
-      expect(wrapper.find("#surveyForms input").val()).toContain(rule.surveyForms.join(","));
-      expect(wrapper.find("#applicationFormName input").val()).toContain(rule.applicationFormName);
-      expect(wrapper.find("#waitingListFormName input").val()).toContain(rule.waitingListFormName);
+      expect(screen.getByRole(DATA_COLLECTION_RULES_FORM)).toHaveFormValues({
+        name: rule.name,
+        enrolmentFormName: rule.enrolmentFormName,
+        applicationFormName: rule.applicationFormName,
+        payerFormName: rule.payerFormName,
+        waitingListFormName: rule.waitingListFormName,
+        parentFormName: rule.parentFormName,
+        productFormName: rule.productFormName,
+        voucherFormName: rule.voucherFormName,
+        membershipFormName: rule.membershipFormName,
+      });
+
+      fireEvent.click(screen.getByTestId('appbar-submit-button'));
     }
   });
 });

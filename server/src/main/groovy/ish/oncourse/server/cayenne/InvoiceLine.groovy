@@ -85,7 +85,6 @@ class InvoiceLine extends _InvoiceLine {
     /**
      * @return enrolment linked to this invoice line
      */
-    @Nonnull
     @API
     @Override
     Enrolment getEnrolment() {

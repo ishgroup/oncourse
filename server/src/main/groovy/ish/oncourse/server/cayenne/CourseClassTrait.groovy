@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.cayenne
 
-import groovy.time.TimeCategory
 import groovy.transform.CompileDynamic
 import ish.common.types.ClassCostFlowType
 import ish.common.types.ClassCostRepetitionType
@@ -30,8 +29,6 @@ trait CourseClassTrait {
 
     abstract Course getCourse()
     abstract List<Session> getSessions()
-    abstract Integer getSessionsCount()
-    abstract Integer getMinutesPerSession()
     abstract List<Enrolment> getSuccessAndQueuedEnrolments()
     abstract TimeZone getTimeZone()
     abstract Date getStartDateTime()
@@ -51,7 +48,7 @@ trait CourseClassTrait {
            DiscountCourseClass discountCourseClass = objectContext.newObject(DiscountCourseClass)
            discountCourseClass.courseClass = this as CourseClass
            discountCourseClass.discount = objectContext.localObject(discount)
-           
+
            ClassCost classCost = objectContext.newObject(ClassCost)
            classCost.courseClass = this as CourseClass
            classCost.discountCourseClass = discountCourseClass
@@ -77,7 +74,7 @@ trait CourseClassTrait {
             objectContext.deleteObjects(discountCourseClasses)
         }
     }
-    
+
     @API
     BigDecimal getQualificationHours() {
         getCourse().qualification?.nominalHours
@@ -130,7 +127,7 @@ trait CourseClassTrait {
     }
 
 
-    List<DiscountCourseClass> getAvalibleDiscounts(Contact contact, List<Long> courseIds,
+    List<DiscountCourseClass> getAvalibleDiscounts(Contact contact, Contact payerContact, List<Long> courseIds,
                                                    List<Long> productIds, List<Long> promoIds, List<CourseClass> classes,
                                                    List<MembershipProduct> newMemberships, Money purchaseTotal ) {
         List<EntityRelation> relations = EntityRelationDao.getRelatedFrom(objectContext, Course.simpleName, course.id)
@@ -147,6 +144,12 @@ trait CourseClassTrait {
                     dcc.discount.entityRelationTypes.empty || dcc.discount in discountsViaRelations
                 }.
                 findAll { it.discount.code == null || it.discount.id in promoIds }.
-                findAll { it.discount.isStudentEligibile(contact, newMemberships, this, classes, purchaseTotal) }
+                findAll { it.discount.isStudentEligibile(contact, newMemberships, this, classes, purchaseTotal) }.
+                findAll {
+                    it.discount.corporatePassDiscount.isEmpty() ? true :
+                            !it.discount.corporatePassDiscount.findAll {
+                                payerContact != null && it.corporatePass.contact == payerContact
+                            }.isEmpty()
+                }
     }
 }

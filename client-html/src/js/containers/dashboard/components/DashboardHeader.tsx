@@ -1,73 +1,88 @@
-import React from "react";
-import clsx from "clsx";
-import { AppBar } from "@mui/material";
-import Toolbar from "@mui/material/Toolbar";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
-import withStyles from "@mui/styles/withStyles";
 import IconButton from "@mui/material/IconButton";
-import PaletteIcon from "@mui/icons-material/Palette";
-import LogoutIcon from "@mui/icons-material/PowerSettingsNew";
+import PaletteIcon from "@mui/icons-material/PaletteOutlined";
+import LogoutIcon from "@mui/icons-material/PowerSettingsNewOutlined";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
-import { darken } from "@mui/material/styles";
 import { Dispatch } from "redux";
+import { Typography } from "@mui/material";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { ThemeContext } from "../../ThemeContext";
-import { APPLICATION_THEME_STORAGE_NAME, DASHBOARD_ACTIVITY_STORAGE_NAME } from "../../../constants/Config";
-import onCourseLogoDark from "../../../../images/onCourseLogoDark.png";
-import onCourseLogoLight from "../../../../images/onCourseLogoLight.png";
-import onCourseLogoChristmas from "../../../../images/onCourseLogoChristmas.png";
+import {
+  APP_BAR_HEIGHT,
+  APPLICATION_THEME_STORAGE_NAME,
+  DASHBOARD_ACTIVITY_STORAGE_NAME
+} from "../../../constants/Config";
 import HamburgerMenu from "../../../common/components/layout/swipeable-sidebar/components/HamburgerMenu";
 import { VARIANTS } from "../../../common/components/layout/swipeable-sidebar/utils";
 import DashboardService from "../services/DashboardService";
-import { LSGetItem, LSRemoveItem } from "../../../common/utils/storage";
+import {  LSRemoveItem } from "../../../common/utils/storage";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
+import { useAppSelector } from "../../../common/utils/hooks";
+import { makeAppStyles } from "../../../common/styles/makeStyles";
+import { getSystemUserData } from "../../../common/actions";
 
-const styles = theme => ({
+const useStyles = makeAppStyles(theme => ({
   appBar: {
-    backgroundColor:
-      theme.palette.mode === "light" ? theme.palette.primary.main : darken(theme.palette.background.default, 0.4),
-    zIndex: theme.zIndex.drawer + 1
+    backgroundColor: theme.palette.background.default,
+    height: APP_BAR_HEIGHT,
+    padding: theme.spacing(0, 3),
+    position: "absolute",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    left: "auto",
+    right: 0,
   },
-  toolBarGutters: {
-    padding: "0 16px"
+  toolBar: {
+    display: "flex",
+    alignItems: "center",
+    flex: 1,
+    borderBottom: `1px solid ${theme.palette.divider}`
   },
-  whiteTextColor: {
-    color: theme.palette.primary.contrastText
+  toolBarButton: {
+    color: theme.addButtonColor.color
   },
   upgradeButton: {
     color: theme.palette.primary.contrastText,
     borderColor: theme.palette.primary.contrastText,
     margin: theme.spacing(0, 2)
-  },
-  logo: { height: "36px", width: "auto" }
-});
+  }
+}));
 
 interface Props {
-  classes: any;
-  theme: any;
   upgradePlanLink: any;
   setPreferencesTheme: any;
   openConfirm: ShowConfirmCaller;
   dispatch: Dispatch;
+  drawerOpened: boolean;
 }
 
-class DashboardHeader extends React.PureComponent<Props, any> {
-  state = {
-    themeMenu: null
+const DashboardHeader = (
+  {
+    upgradePlanLink,
+    setPreferencesTheme,
+    openConfirm,
+    dispatch,
+    drawerOpened,
+  }: Props
+) => {
+  const classes = useStyles();
+
+  const [themeMenu, setThemeMenu] = useState();
+
+  const themeMenuOpen = e => {
+    setThemeMenu(e.currentTarget);
   };
 
-  themeMenuOpen = e => {
-    this.setState({ themeMenu: e.currentTarget });
+  const themeMenuClose = () => {
+    setThemeMenu(null);
   };
 
-  themeMenuClose = () => {
-    this.setState({ themeMenu: null });
-  };
-
-  logout = () => {
+  const logout = () => {
     LSRemoveItem(APPLICATION_THEME_STORAGE_NAME);
     LSRemoveItem(DASHBOARD_ACTIVITY_STORAGE_NAME);
 
@@ -75,144 +90,125 @@ class DashboardHeader extends React.PureComponent<Props, any> {
       .then(() => {
         window.open("/login", "_self");
       })
-      .catch(err => instantFetchErrorHandler(this.props.dispatch, err));
+      .catch(err => instantFetchErrorHandler(dispatch, err));
   };
 
-  toggleConfirm = () => {
-    this.props.openConfirm({ onConfirm: this.logout, confirmMessage: "Do you want to logout?", confirmButtonText: "Yes" });
+  const toggleConfirm = () => {
+    openConfirm({ onConfirm: logout, confirmMessage: "Do you want to logout?", confirmButtonText: "Yes" });
   };
 
-  render() {
-    const { themeMenu } = this.state;
-    const {
-      classes, theme, upgradePlanLink, setPreferencesTheme
-    } = this.props;
-    const isChristmas = LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas";
-    return (
-      <AppBar className={clsx(classes.appBar, isChristmas && "christmasHeaderDashboard")}>
-        <Toolbar
-          classes={{
-            gutters: classes.toolBarGutters
-          }}
-        >
+  const systemUser = useAppSelector(state => state.systemUser);
+
+  useEffect(() => {
+    dispatch(getSystemUserData());
+  }, []);
+    
+  return (
+    <header className={classes.appBar}>
+      <div className={classes.toolBar}>
+        {!drawerOpened && (
           <HamburgerMenu variant={VARIANTS.persistent} />
-          <Grid container alignItems="center">
-            <Grid item container alignItems="center" xs={6}>
-              {isChristmas ? (
-                <img src={onCourseLogoChristmas} className={classes.logo} alt="Logo" />
-              ) : (
-                <img
-                  src={theme.palette.mode === "dark" ? onCourseLogoDark : onCourseLogoLight}
-                  className={classes.logo}
-                  alt="Logo"
-                />
-              )}
-            </Grid>
-            <Grid item xs={6}>
-              <Grid container className="justify-content-end">
-                <Grid item>
-                  {upgradePlanLink && (
-                    <Button
-                      target="_blank"
-                      variant="outlined"
-                      href={upgradePlanLink}
-                      className={classes.upgradeButton}
-                      classes={{
-                        root: classes.upgradeButton
-                      }}
-                    >
-                      Upgrade to onCourse Pro
-                    </Button>
-                  )}
-
-                  <Tooltip title="Change Theme" disableFocusListener>
-                    <IconButton
-                      className={classes.whiteTextColor}
-                      onClick={this.themeMenuOpen}
-                      aria-owns={themeMenu ? "theme-menu" : null}
-                    >
-                      <PaletteIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <ThemeContext.Consumer>
-                    {({ themeHandler, themeName }) => (
-                      <Menu
-                        id="theme-menu"
-                        anchorEl={themeMenu}
-                        open={Boolean(themeMenu)}
-                        onClose={this.themeMenuClose}
-                      >
-                        <MenuItem
-                          id="default"
-                          onClick={() => {
-                            this.themeMenuClose();
-                            themeHandler("default");
-                            setPreferencesTheme("default");
-                          }}
-                          selected={themeName === "default"}
-                        >
-                          Light Theme
-                        </MenuItem>
-                        <MenuItem
-                          id="dark"
-                          onClick={() => {
-                            this.themeMenuClose();
-                            themeHandler("dark");
-                            setPreferencesTheme("dark");
-                          }}
-                          selected={themeName === "dark"}
-                        >
-                          Dark Theme
-                        </MenuItem>
-                        <MenuItem
-                          id="monochrome"
-                          onClick={() => {
-                            this.themeMenuClose();
-                            themeHandler("monochrome");
-                            setPreferencesTheme("monochrome");
-                          }}
-                          selected={themeName === "monochrome"}
-                        >
-                          Monochrome Theme
-                        </MenuItem>
-                        <MenuItem
-                          id="highcontrast"
-                          onClick={() => {
-                            this.themeMenuClose();
-                            themeHandler("highcontrast");
-                            setPreferencesTheme("highcontrast");
-                          }}
-                          selected={themeName === "highcontrast"}
-                        >
-                          High Contrast Theme
-                        </MenuItem>
-                        {/* <MenuItem */}
-                        {/*  id="christmas" */}
-                        {/*  onClick={() => { */}
-                        {/*    this.themeMenuClose(); */}
-                        {/*    themeHandler("christmas"); */}
-                        {/*    setPreferencesTheme("christmas"); */}
-                        {/*  }} */}
-                        {/*  selected={themeName === "christmas"} */}
-                        {/* > */}
-                        {/*  Christmas Theme */}
-                        {/* </MenuItem> */}
-                      </Menu>
-                    )}
-                  </ThemeContext.Consumer>
-                  <Tooltip title="Logout">
-                    <IconButton onClick={this.toggleConfirm} className={classes.whiteTextColor}>
-                      <LogoutIcon />
-                    </IconButton>
-                  </Tooltip>
-                </Grid>
-              </Grid>
-            </Grid>
+        )}
+        <Grid container className="justify-content-end" alignContent="center">
+          <Grid item xs={6} container justifyContent="start" alignContent="center">
+            <Typography variant="subtitle2" color="textSecondary" noWrap>
+              Welcome back
+              {" "}
+              {systemUser?.firstName}
+            </Typography>
           </Grid>
-        </Toolbar>
-      </AppBar>
-    );
-  }
-}
+          <Grid item xs={6} container justifyContent="end" alignContent="center">
+            {upgradePlanLink && (
+            <Button
+              target="_blank"
+              variant="outlined"
+              href={upgradePlanLink}
+              className={classes.upgradeButton}
+              classes={{
+                      root: classes.upgradeButton
+                    }}
+            >
+              Upgrade to onCourse Pro
+            </Button>
+                )}
 
-export default withStyles(styles, { withTheme: true })(DashboardHeader) as any;
+            <Tooltip title="Change Theme" disableFocusListener>
+              <IconButton
+                onClick={themeMenuOpen}
+                aria-owns={themeMenu ? "theme-menu" : null}
+                className={classes.toolBarButton}
+              >
+                <PaletteIcon />
+              </IconButton>
+            </Tooltip>
+            <ThemeContext.Consumer>
+              {({ themeHandler, themeName }) => (
+                <Menu
+                  id="theme-menu"
+                  anchorEl={themeMenu}
+                  open={Boolean(themeMenu)}
+                  onClose={themeMenuClose}
+                >
+                  <MenuItem
+                    id="default"
+                    onClick={() => {
+                      themeMenuClose();
+                      themeHandler("default");
+                      setPreferencesTheme("default");
+                    }}
+                    selected={themeName === "default"}
+                  >
+                    Light Theme
+                  </MenuItem>
+                  <MenuItem
+                    id="dark"
+                    onClick={() => {
+                          themeMenuClose();
+                          themeHandler("dark");
+                          setPreferencesTheme("dark");
+                        }}
+                    selected={themeName === "dark"}
+                  >
+                    Dark Theme
+                  </MenuItem>
+                  <MenuItem
+                    id="monochrome"
+                    onClick={() => {
+                          themeMenuClose();
+                          themeHandler("monochrome");
+                          setPreferencesTheme("monochrome");
+                        }}
+                    selected={themeName === "monochrome"}
+                  >
+                    Monochrome Theme
+                  </MenuItem>
+                  <MenuItem
+                    id="highcontrast"
+                    onClick={() => {
+                          themeMenuClose();
+                          themeHandler("highcontrast");
+                          setPreferencesTheme("highcontrast");
+                        }}
+                    selected={themeName === "highcontrast"}
+                  >
+                    High Contrast Theme
+                  </MenuItem>
+                </Menu>
+                  )}
+            </ThemeContext.Consumer>
+            <Tooltip title="Logout">
+              <IconButton
+                onClick={toggleConfirm}
+                className={classes.toolBarButton}
+              >
+                <LogoutIcon />
+              </IconButton>
+            </Tooltip>
+          </Grid>
+        </Grid>
+      </div>
+    </header>
+  );
+};
+
+export default DashboardHeader;

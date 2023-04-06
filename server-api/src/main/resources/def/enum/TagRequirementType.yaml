@@ -16,3 +16,9 @@ enum:
   - Tutor
   - WaitingList
   - CourseClass
+  - Article
+  - Voucher
+  - Membership
+  - ArticleProduct
+  - VoucherProduct
+  - MembershipProduct

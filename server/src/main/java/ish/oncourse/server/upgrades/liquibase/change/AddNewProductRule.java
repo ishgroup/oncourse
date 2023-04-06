@@ -8,6 +8,7 @@
 
 package ish.oncourse.server.upgrades.liquibase.change;
 
+import ish.liquibase.IshTaskChange;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.*;
 import ish.oncourse.server.db.SchemaUpdateService;
@@ -16,6 +17,8 @@ import liquibase.exception.CustomChangeException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +27,14 @@ public class AddNewProductRule extends IshTaskChange {
 
     private final static String SCHEMA_NAME = "Product";
 
+    private final static Logger logger = LogManager.getLogger();
+
     @Override
     public void execute(Database database) throws CustomChangeException {
         ICayenneService cayenneService = SchemaUpdateService.sharedCayenneService;
         DataContext context = cayenneService.getNewContext();
+
+        logger.warn("Running upgrade...");
 
         List<FieldConfigurationScheme> productSchemes = ObjectSelect.query(FieldConfigurationScheme.class)
                 .where(FieldConfigurationScheme.NAME.eq(SCHEMA_NAME))

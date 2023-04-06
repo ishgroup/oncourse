@@ -16,7 +16,7 @@ import {
   usiSoftwareIdReducer
 } from "../containers/preferences/reducers";
 import { drawerReducer } from "../common/reducers/drawerReducer";
-import { loginReducer } from "../containers/login/reducers";
+import { loginReducer, systemUserReducer } from "../containers/login/reducers";
 import { securityReducer } from "../containers/security/reducers";
 import { tagsReducer } from "../containers/tags/reducers";
 import { AvetmissExportReducer } from "../containers/avetmiss-export/reducers";
@@ -55,6 +55,8 @@ import { swipeableDrawerReducer } from "../common/components/layout/swipeable-si
 import { enrolmentsReducer } from "../containers/entities/enrolments/reducers";
 import { commonPlainRecordSearchReducer } from "../common/reducers/commonPlainRecordSearchReducer";
 import { State } from "./state";
+import { sendMessageReducer } from "../common/reducers/sendMessageReducer";
+import { fieldProcessingReducer } from "../common/reducers/fieldProcessingReducer";
 
 export const combinedReducers = combineReducers<State>({
   access: accessReducer,
@@ -94,6 +96,7 @@ export const combinedReducers = combineReducers<State>({
   plainSearchRecords: commonPlainRecordSearchReducer,
   preferences: preferencesReducer,
   process: processReducer,
+  fieldProcessing: fieldProcessingReducer,
   sales: saleReducer,
   security: securityReducer,
   share: shareReducer,
@@ -105,5 +108,7 @@ export const combinedReducers = combineReducers<State>({
   timezones: timezonesReducer,
   userPreferences: userPreferencesReducer,
   usiSoftwareId: usiSoftwareIdReducer,
-  voucherProducts: voucherProductReducer
+  voucherProducts: voucherProductReducer,
+  systemUser: systemUserReducer,
+  sendMessage: sendMessageReducer
 });

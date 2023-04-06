@@ -15,6 +15,7 @@ import com.google.inject.Inject
 import groovy.text.Template
 import groovy.transform.CompileStatic
 import ish.common.types.EnrolmentStatus
+import ish.common.types.MessageType
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.MessageDao
@@ -45,7 +46,7 @@ import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.Tutor
 import ish.oncourse.server.cayenne.Voucher
 import ish.oncourse.server.cayenne.WaitingList
-import static ish.oncourse.server.messaging.MessageService.createMessagePerson
+import static ish.oncourse.server.messaging.MessageService.buildMessage
 import org.apache.commons.lang3.StringUtils
 
 
@@ -65,7 +66,6 @@ import ish.oncourse.server.cayenne.EmailTemplate
 import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.ProductItem
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
-import ish.oncourse.server.entity.mixins.MessageMixin
 import ish.oncourse.server.scripting.api.TemplateService
 import ish.oncourse.server.users.SystemUserService
 import ish.util.EntityUtil
@@ -80,7 +80,7 @@ import org.apache.logging.log4j.Logger
 import java.time.ZoneOffset
 
 @CompileStatic
-class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageDao> {
+class MessageApiService extends EntityApiService<MessageDTO, Message, MessageDao> {
     private static final Logger logger = LogManager.logger
     private static final String CREATED_SUCCESS = "Messages created successfully"
     private static final int BATCH_SIZE = 50
@@ -112,9 +112,10 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
             messageDTO.createdOn = message.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             messageDTO.modifiedOn = message.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             messageDTO.creatorKey = message.creatorKey
-            messageDTO.sentToContactFullname = MessageMixin.getRecipientsString(message)
+            messageDTO.sentToContactFullname = message.getContact().getFullName()
             messageDTO.subject = message.emailSubject
             messageDTO.message = message.emailBody
+            messageDTO.contactId = message.contact?.id
             messageDTO.sms = message.smsText
             messageDTO.postDescription = message.postDescription
             messageDTO.htmlMessage = message.emailHtmlBody
@@ -172,7 +173,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
 
         def template = getTemplate(templateId, context)
         List<Long> entitiesIds = getEntityIds(entityName, request, context, template)
-        
+
         MessageTypeDTO messageTypeDTO = MessageTypeDTO.fromValue(messageType)
         RecipientsModel model = getRecipientsModel(entityName, messageTypeDTO, entitiesIds, template)
 
@@ -217,7 +218,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
         if (AbstractEntitiesUtil.isAbstract(entityName)) {
             entityName = template.entity
         }
-            
+
         Expression exp = null
         Property<Long> contactFindProperty = getFindContactProperty(entityName)
         if ( contactFindProperty != null ) {
@@ -280,7 +281,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
         if (MessageTypeDTO.EMAIL == messageType) {
 
             noDestinationIds = query.column(ID)
-                    .where(expression.andExp(Contact.EMAIL.isNull().orExp(Contact.EMAIL.eq(EMPTY).orExp(Contact.DELIVERY_STATUS_EMAIL.eq(6)))))
+                    .where(expression.andExp(Contact.EMAIL.isNull().orExp(Contact.EMAIL.eq(EMPTY).orExp(Contact.DELIVERY_STATUS_EMAIL.gte(6)))))
                     .select(context)
             suppresstoSendIds = query.column(ID)
                     .where(expression.andExp(Contact.ALLOW_EMAIL.isFalse(), Contact.EMAIL.isNotNull(), Contact.EMAIL.ne(EMPTY), Contact.DELIVERY_STATUS_EMAIL.lt(6)))
@@ -292,7 +293,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
         } else if (MessageTypeDTO.SMS == messageType) {
 
             noDestinationIds = query.column(ID)
-                    .where(expression.andExp(Contact.MOBILE_PHONE.isNull().orExp(Contact.MOBILE_PHONE.eq(EMPTY).orExp(Contact.DELIVERY_STATUS_SMS.eq(6)))))
+                    .where(expression.andExp(Contact.MOBILE_PHONE.isNull().orExp(Contact.MOBILE_PHONE.eq(EMPTY).orExp(Contact.DELIVERY_STATUS_SMS.gte(6)))))
                     .select(context)
             suppresstoSendIds = query.column(ID)
                     .where(expression.andExp(Contact.ALLOW_SMS.isFalse(), Contact.MOBILE_PHONE.isNotNull(), Contact.MOBILE_PHONE.ne(EMPTY), Contact.DELIVERY_STATUS_SMS.lt(6)))
@@ -320,7 +321,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
             logger.error("The message template didn't find out. MessageType: {}, Id: {}", messageTypeDTO.toString(), request.templateId)
             validator.throwClientErrorException("templateId", "The message template didn't find out.")
         }
-        
+
         List<Long> entitiesIds = getEntityIds(request.entity, request.searchQuery, context, template)
         String entityName = request.entity
 
@@ -336,8 +337,23 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
         if (recipientsCount != recipientsToSend.size().toBigDecimal()){
             logger.error("A real recipients number doesn't equal specified. Specified: {}, Real: {}, MessageType: {}",
                     recipientsCount.toString(), recipientsToSend.size().toString(), messageType)
-            validator.throwClientErrorException("recipientsCount", "A real recipients number doesn't equal specified. Specified: ${recipientsCount}, Real: ${recipientsToSend.size()}")
+
+            def recipientsWithoutDestination = withoutDestinationOf(recipientsModel)
+            if(!recipientsWithoutDestination.empty) {
+                String notSetField = messageTypeDTO == MessageTypeDTO.EMAIL ? "email" : "phone"
+                if(recipientsWithoutDestination.size() > 1)
+                    notSetField += "s are"
+                else
+                    notSetField += " is"
+
+                logger.error("Cannot send message as [ {} ] contact ${notSetField} not set or undeliverable.",
+                        recipientsWithoutDestination.join(","))
+                validator.throwClientErrorException("recipientsCount", "Cannot send message as [ ${recipientsWithoutDestination.join(",")} ] contact ${notSetField} not set or undeliverable.")
+            } else {
+                validator.throwClientErrorException("recipientsCount", "A real recipients number doesn't equal specified. Specified: ${recipientsCount}, Real: ${recipientsToSend.size()}")
+            }
         }
+
         if (smtpService.email_batch != null && recipientsToSend.size() > smtpService.email_batch && MessageTypeDTO.EMAIL == messageTypeDTO) {
             logger.error("A recipients number higher than allowed by license. License: {}, Real: {}",
                     smtpService.email_batch, recipientsToSend.size().toString())
@@ -348,6 +364,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
             validator.throwClientErrorException("recipientsCount", "Your license does not allow sending more than ${smtpService.email_batch} emails in one batch. " +
                     "Please send in smaller batches or upgrade to a plan with a higher limit.")
         }
+
         if (licenseService.getLisense("license.sms") != null && recipientsToSend.size() > (Integer)licenseService.getLisense("license.sms") && MessageTypeDTO.SMS == messageTypeDTO) {
             logger.error("A recipients number higher than allowed by license. License: {}, Real: {}",
                     licenseService.getLisense("license.sms"), recipientsToSend.size().toString())
@@ -399,14 +416,17 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
                     htmlBindings.put(templateService.RECORD, entity)
                     htmlBindings.put(entityVarName, entity)
                     htmlBindings.put(templateService.TO, recipient)
+                    htmlBindings.put(templateService.AUTHOR, user)
                     plainBindings.put(templateService.RECORD, entity)
                     plainBindings.put(entityVarName, entity)
                     plainBindings.put(templateService.TO, recipient)
+                    plainBindings.put(templateService.AUTHOR, user)
                     templateService.addSubject(template, plainBindings, htmlBindings)
                     return templateService.renderHtml(template, htmlBindings)
                 case MessageTypeDTO.SMS:
                     plainBindings.put(templateService.RECORD, entity)
                     plainBindings.put(templateService.TO, recipient)
+                    plainBindings.put(templateService.AUTHOR, user)
                     return templateService.renderPlain(template, plainBindings)
             }
         }
@@ -464,12 +484,14 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
                         htmlBindings.put(entityVarName, entity)
                         plainBindings.put(templateService.TO, recipient)
                         htmlBindings.put(templateService.TO, recipient)
+                        plainBindings.put(templateService.AUTHOR, user)
+                        htmlBindings.put(templateService.AUTHOR, user)
 
                         Message message = batchContext.newObject(Message.class)
                         message.createdBy = batchContext.localObject(user)
                         fillMessage(message)
 
-                        createMessagePerson(message, batchContext.localObject(recipient), template.type)
+                        buildMessage(message, batchContext.localObject(recipient), template.type)
                     }
                 }
             }
@@ -492,18 +514,18 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
         def columnSelect = parseSearchQuery(objectSelect, context, aql, entityName, request.search, request.filter, request.tagGroups)
                 .column(Property.create("id", Long))
 
-        if (template != null && !template.entity.equals(entityName) && AbstractEntitiesUtil.isAbstract(entityName)) {
+        if (template != null && template.entity != null && !template.entity.equals(entityName) && AbstractEntitiesUtil.isAbstract(entityName)) {
             Expression isCurrentInheritorExp = AbstractEntitiesUtil.getIsCurrentInheritorExp(entityName, template.entity)
             columnSelect = columnSelect.and(isCurrentInheritorExp)
         }
-           
+
         return columnSelect.select(context)
     }
 
     private EmailTemplate getTemplate(Long templateId, ObjectContext context){
         return SelectById.query(EmailTemplate, templateId).selectOne(context)
     }
-    
+
     static List<Long> addRecipientsToSend(List<Long> recipients, RecipientGroupModel group, boolean suitableForSend, boolean suppressToSend) {
         if (suitableForSend) {
             recipients.addAll(group.suitableForSend)
@@ -512,6 +534,16 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
             }
         }
         recipients
+    }
+
+    private static List<Long> withoutDestinationOf(RecipientsModel recipientsModel){
+        List<Long> withoutDestinationIds = new ArrayList<>()
+        withoutDestinationIds.addAll(recipientsModel.activeStudents.withoutDestination)
+        withoutDestinationIds.addAll(recipientsModel.students.withoutDestination)
+        withoutDestinationIds.addAll(recipientsModel.withdrawStudents.withoutDestination)
+        withoutDestinationIds.addAll(recipientsModel.tutors.withoutDestination)
+        withoutDestinationIds.addAll(recipientsModel.other.withoutDestination)
+        withoutDestinationIds
     }
 
 

@@ -40,7 +40,7 @@ const styles = (theme: AppTheme) =>
       fontSize: "20px",
       height: "30px",
       width: "30px",
-      padding: `${theme.spacing(0.5)}px`
+      padding: `${theme.spacing(0.5)}`
     }
   });
 
@@ -71,7 +71,7 @@ const FilterItem = props => {
         )}
         label={
           expression ? (
-            <Tooltip title={expression}>
+            <Tooltip title={expression} placement="right">
               <div className="text-truncate">{renderedLabel}</div>
             </Tooltip>
           ) : (
@@ -81,7 +81,7 @@ const FilterItem = props => {
       />
 
       {deletable && (
-        <Tooltip title="Delete Filter">
+        <Tooltip title="Delete Filter" placement="right">
           <IconButton className={classes.deleteButton} onClick={() => onDelete(id, rootEntity, checked, isPrivate)}>
             <Delete fontSize="inherit" color="secondary" />
           </IconButton>

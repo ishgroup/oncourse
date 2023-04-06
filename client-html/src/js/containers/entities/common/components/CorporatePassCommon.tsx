@@ -8,6 +8,7 @@ import { DiscountCorporatePass } from "@api/model";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
+import clsx from "clsx";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { AppTheme } from "../../../../model/common/Theme";
 import { State } from "../../../../reducers/state";
@@ -19,9 +20,6 @@ import {
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 
 const styles = createStyles(({ spacing }: AppTheme) => ({
-  root: {
-    padding: spacing(3)
-  },
   marginBottomTriple: {
     marginBottom: spacing(3)
   },
@@ -42,7 +40,7 @@ const corporatePassToNestedListItem = (items: DiscountCorporatePass[]): NestedLi
   }))
   : []);
 
-class VoucherProductCorporatePasses extends React.PureComponent<any, any> {
+class CorporatePassCommon extends React.PureComponent<any, any> {
   onAddCorporatePasses = (items: NestedListItem[]) => {
     const {
       values, dispatch, form, foundCorporatePassItems, path
@@ -75,15 +73,17 @@ class VoucherProductCorporatePasses extends React.PureComponent<any, any> {
       searchCorporatePasses,
       clearCorporatePasses,
       pending,
+      passErrors,
       title = "CORPORATE PASS",
       titleCaption,
-      path
+      path,
+      className
     } = this.props;
 
     const corporatePassItems = values && values[path] ? corporatePassToNestedListItem(values[path]) : [];
 
     return (
-      <div className={classes.root}>
+      <div className={clsx("pl-3 pr-3", className)}>
         <div className={twoColumn ? classes.compact : classes.marginBottomTriple}>
           <NestedList
             formId={values.id}
@@ -102,6 +102,7 @@ class VoucherProductCorporatePasses extends React.PureComponent<any, any> {
               (`${a.contact.lastName},${a.contact.firstName}` > `${b.contact.lastName},${b.contact.firstName}` ? 1 : -1)}
             searchType="withToggle"
             aqlEntities={["CorporatePass"]}
+            aqlQueryError={passErrors}
             usePaper
           />
         </div>
@@ -113,17 +114,21 @@ class VoucherProductCorporatePasses extends React.PureComponent<any, any> {
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   searchCorporatePasses: (search: string) => {
     dispatch(setCommonPlainSearch("CorporatePass", `${search ? `${search} and ` : ""}(expiryDate is null or expiryDate >= today)`));
-    dispatch(getCommonPlainRecords("CorporatePass", 0, "contact.fullName", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(getCommonPlainRecords("CorporatePass", 0, "contact.fullName", null, null, PLAIN_LIST_MAX_PAGE_SIZE, items => items.map(i => ({
+      id: i.id,
+      contactFullName: i["contact.fullName"]
+    }))));
   },
   clearCorporatePasses: (pending: boolean) => dispatch(clearCommonPlainRecords("CorporatePass", pending))
 });
 
 const mapStateToProps = (state: State) => ({
-  foundCorporatePassItems: state.plainSearchRecords["CorporatePass"].items.map(i => ({ id: i.id, contactFullName: i["contact.fullName"] })),
-  pending: state.plainSearchRecords["CorporatePass"].loading
+  foundCorporatePassItems: state.plainSearchRecords["CorporatePass"].items,
+  pending: state.plainSearchRecords["CorporatePass"].loading,
+  passErrors: state.plainSearchRecords["CorporatePass"].error,
 });
 
 export default connect<any, any, any>(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(VoucherProductCorporatePasses));
+)(withStyles(styles)(CorporatePassCommon));

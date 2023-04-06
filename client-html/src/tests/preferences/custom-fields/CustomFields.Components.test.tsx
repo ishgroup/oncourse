@@ -1,6 +1,7 @@
 import * as React from "react";
 import getTimestamps from "../../../js/common/utils/timestamps/getTimestamps";
-import CustomFieldsForm from "../../../js/containers/preferences/containers/custom-fields/components/CustomFieldsForm";
+import CustomFieldsForm, { CUSTOM_FIELDS_FORM } from
+    "../../../js/containers/preferences/containers/custom-fields/components/CustomFieldsForm";
 import { defaultComponents } from "../../common/Default.Components";
 
 describe("Virtual rendered CustomFieldTypes", () => {
@@ -9,20 +10,30 @@ describe("Virtual rendered CustomFieldTypes", () => {
     View: props => <CustomFieldsForm {...props} />,
     record: mockedApi => mockedApi.db.customFields,
     defaultProps: ({ initialValues }) => ({
-      form: "CustomFieldsForm",
+      form: CUSTOM_FIELDS_FORM,
       data: { types: initialValues },
       customFields: initialValues,
       timestamps: getTimestamps(initialValues),
       fetch: false
     }),
-    render: (wrapper, initialValues) => {
+    render: ({ screen, initialValues, fireEvent }) => {
+      const customFields = {};
+
       initialValues.forEach((type, key) => {
-        const warpperId = `#custom-field-${key}`;
-        expect(wrapper.find(`${warpperId} div[id="types[${key}].name"] input`).val()).toContain(type.name);
-        expect(wrapper.find(`${warpperId} div[id="types[${key}].fieldKey"] input`).val()).toContain(type.fieldKey);
-        expect(wrapper.find(`${warpperId} div[id="types[${key}].dataType"] input`).val()).toContain(type.dataType);
-        expect(wrapper.find(`${warpperId} div[id="types[${key}].entityType"] input`).val()).toContain(type.entityType);
+        fireEvent.click(screen.getByTestId(`expand-button-custom-field-${key}`));
+
+        customFields[`types[${key}].name`] = type.name;
+        customFields[`types[${key}].fieldKey`] = type.fieldKey;
+        customFields[`types[${key}].dataType`] = type.dataType;
+        customFields[`types[${key}].entityType`] = type.entityType;
+        customFields[`types[${key}].mandatory`] = type.mandatory;
       });
+
+      fireEvent.click(screen.getByTestId('appbar-submit-button'));
+
+      setTimeout(() => {
+        expect(screen.getByRole(CUSTOM_FIELDS_FORM)).toHaveFormValues(customFields);
+      }, 500);
     }
   });
 });

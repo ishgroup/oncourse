@@ -6,15 +6,36 @@ describe("Virtual rendered EnrolmentEditView", () => {
     entity: "Enrolment",
     EditView: EnrolmentEditView,
     record: mockecApi => mockecApi.db.getEnrolment(1),
-    render: (wrapper, initialValues) => {
-      expect(wrapper.find("#studentContactId input").val()).toContain(initialValues.studentName);
-      expect(wrapper.find("#displayStatus input").val()).toContain(initialValues.displayStatus);
-      expect(wrapper.find("#source input").val()).toContain(initialValues.source);
-      expect(wrapper.find("#studyReason input").val()).toContain(initialValues.studyReason);
-      expect(wrapper.find("#vetFeeExemptionType input").val()).toContain(initialValues.vetFeeExemptionType);
-      expect(wrapper.find("#fundingSource input").val()).toContain(initialValues.fundingSource);
-
-      expect(wrapper.find("#creditLevel input").val()).toContain(initialValues.creditLevel);
+    render: ({ screen, initialValues, formRoleName }) => {
+      expect(screen.getByRole(formRoleName)).toHaveFormValues({
+        displayStatus: initialValues.displayStatus,
+        source: initialValues.source,
+        studyReason: initialValues.studyReason,
+        vetFeeExemptionType: initialValues.vetFeeExemptionType,
+        fundingSource: initialValues.fundingSource,
+        vetFundingSourceStateID: initialValues.vetFundingSourceStateID,
+        vetIsFullTime: initialValues.vetIsFullTime,
+        vetInSchools: initialValues.vetInSchools,
+        suppressAvetmissExport: initialValues.suppressAvetmissExport,
+        associatedCourseIdentifier: initialValues.associatedCourseIdentifier,
+        vetPurchasingContractID: initialValues.vetPurchasingContractID,
+        outcomeIdTrainingOrg: initialValues.outcomeIdTrainingOrg,
+        vetClientID: initialValues.vetClientID,
+        vetTrainingContractID: initialValues.vetTrainingContractID,
+        cricosConfirmation: initialValues.cricosConfirmation,
+        eligibilityExemptionIndicator: initialValues.eligibilityExemptionIndicator,
+        vetFeeIndicator: initialValues.vetFeeIndicator,
+        trainingPlanDeveloped: initialValues.trainingPlanDeveloped,
+        studentLoanStatus: initialValues.studentLoanStatus,
+        creditOfferedValue: initialValues.creditOfferedValue,
+        creditUsedValue: initialValues.creditUsedValue,
+        creditTotal: initialValues.creditTotal,
+        creditFOEId: initialValues.creditFOEId,
+        creditProvider: initialValues.creditProvider,
+        creditProviderType: initialValues.creditProviderType,
+        creditType: initialValues.creditType,
+        creditLevel: initialValues.creditLevel,
+      });
     }
   });
 });

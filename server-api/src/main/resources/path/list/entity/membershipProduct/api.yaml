@@ -75,3 +75,26 @@ put:
     mask: edit
     keyCode: MEMBERSHIP
     errorMessage: Sorry, you have no permissions to edit membership product. Please contact your administrator
+
+patch:
+  operationId: bulkChange
+  tags:
+    - MembershipProduct
+  parameters:
+    - name: diff
+      in: body
+      schema:
+        $ref: './def/entity/Diff.yaml'
+      required: true
+      description: membership product for update
+  responses:
+    '200':
+      description: Success responce
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: MEMBERSHIP
+    errorMessage: Sorry, you have no permissions to edit membership product. Please contact your administrator

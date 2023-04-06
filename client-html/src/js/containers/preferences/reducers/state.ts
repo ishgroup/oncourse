@@ -46,4 +46,5 @@ export interface PreferencesState {
   isLogged?: boolean;
   columnWidth?: ColumnWidth;
   product?: any;
+  plugins?: string;
 }

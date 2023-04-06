@@ -83,10 +83,10 @@ const styles = (theme: AppTheme) =>
     },
     documentChooserButton: {
       position: "absolute",
-      left: 8,
+      left: 4,
       top: 0,
       height: "100%",
-      width: 76
+      width: 66
     }
   });
 

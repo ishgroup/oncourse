@@ -9,15 +9,12 @@
  * See the GNU Affero General Public License for more details.
  */
 
-import { Category } from "@api/model";
 import BatchPayment from "../containers/batch-payment/BatchPayment";
 import PreferencesApp from "../containers/preferences/index";
 import AuditsApp from "../containers/audits/index";
 import LoginApp from "../containers/login/index";
 import Common from "../containers/Common";
-import preferencesRoutes from "../containers/preferences/routes";
 import SecurityApp from "../containers/security/index";
-import securityRoutes from "../containers/security/routes";
 import TagsApp from "../containers/tags/index";
 import AvetmissExportApp from "../containers/avetmiss-export/index";
 import QualificationsApp from "../containers/entities/qualifications/index";
@@ -57,11 +54,11 @@ import FinaliseApp from "../containers/finalise-period/index";
 import ContactsApp from "../containers/entities/contacts";
 import { EnvironmentConstants } from "../constants/EnvironmentConstants";
 import MergeContacts from "../containers/entities/contacts/components/merge-contacts/MergeContacts";
-import Automation from "../containers/automation/Automation";
+import Automation from "../containers/automation/index";
 import { DuplicateCourseClassSwingWrapper } from "../containers/entities/courseClasses/components/duplicate-courseClass/DuplicateCourseClassSwingWrapper";
-import BulkTagView from "../containers/tags/containers/BulkTagView";
-import QuickEnrol from "../containers/checkout/Checkout";
+import QuickEnrol from "../containers/checkout/index";
 import NotFound from "../containers/notFound/NotFound";
+import LoadableLogs from "../containers/logs";
 
 type RouteGroupTypes = "Preferences" | "Training" | "Finance" | "Common" | "Activity" | "Products";
 
@@ -85,11 +82,10 @@ export interface Route<T> {
   noMenuLink?: boolean; // prevent links menu item rendering
   icon?: string; // icon class for menu item in slim mode
   main: any; // main component for route
-  routes?: Route<string>[]; // sub routes
   group?: RouteGroupTypes;
 }
 
-export type MainRoute = Route<Category | SystemCategories>;
+export type MainRoute = Route<string | SystemCategories>;
 
 export interface RouteGroup {
   title: RouteGroupTypes;
@@ -181,99 +177,11 @@ export const routes: MainRoute[] = [
   {
     title: "Preferences",
     path: "/preferences",
-    url: "/preferences/college",
+    url: "/preferences",
     main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
+    group: "Preferences",
   },
-  {
-    title: "Data collection forms",
-    path: "/preferences/collectionForms",
-    url: "/preferences/collectionForms",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Data collection rules",
-    path: "/preferences/collectionRules",
-    url: "/preferences/collectionRules",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Tutor pay rates",
-    path: "/preferences/tutorRoles",
-    url: "/preferences/tutorRoles",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Holidays",
-    path: "/preferences/holidays",
-    url: "/preferences/holidays",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Payment types",
-    path: "/preferences/paymentTypes",
-    url: "/preferences/paymentTypes",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Tax types",
-    path: "/preferences/taxTypes",
-    url: "/preferences/taxTypes",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Concession types",
-    path: "/preferences/concessionTypes",
-    url: "/preferences/concessionTypes",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Contact relation types",
-    path: "/preferences/contactRelationTypes",
-    url: "/preferences/contactRelationTypes",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Sellable items relation types",
-    path: "/preferences/sellableItemsRelationTypes",
-    url: "/preferences/sellableItemsRelationTypes",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Custom fields",
-    path: "/preferences/customFields",
-    url: "/preferences/customFields",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Funding Contract",
-    path: "/preferences/fundingContracts",
-    url: "/preferences/fundingContracts",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
+  // Audits
   {
     title: "Audit Logging",
     path: "/audit/:id?",
@@ -286,7 +194,6 @@ export const routes: MainRoute[] = [
     path: "/security",
     url: "/security/settings",
     main: SecurityApp,
-    routes: securityRoutes,
     group: "Preferences"
   },
   {
@@ -440,6 +347,12 @@ export const routes: MainRoute[] = [
     group: "Finance"
   },
   // Common
+  ... process.env.NODE_ENV === EnvironmentConstants.development ? [{
+    title: "Menu",
+    path: "/menu",
+    url: "/menu",
+    main: Common,
+  }] : [],
   {
     title: "Dashboard",
     path: "/",
@@ -453,6 +366,13 @@ export const routes: MainRoute[] = [
     path: "/timetable",
     url: "/timetable",
     main: Timetable,
+    group: "Common"
+  },
+  {
+    title: "Server logs",
+    path: "/downloadLogs",
+    url: "/downloadLogs",
+    main: LoadableLogs,
     group: "Common"
   },
   // Products
@@ -499,55 +419,6 @@ export const routes: MainRoute[] = [
     group: "Preferences"
   },
   {
-    title: "Import templates",
-    path: "/automation/import-templates",
-    url: "/automation/import-templates",
-    main: Automation,
-    group: "Preferences"
-  },
-  {
-    title: "Export templates",
-    path: "/automation/export-templates",
-    url: "/automation/export-templates",
-    main: Automation,
-    group: "Preferences"
-  },
-  {
-    title: "Message templates",
-    path: "/automation/email-templates",
-    url: "/automation/email-templates",
-    main: Automation,
-    group: "Preferences"
-  },
-  {
-    title: "PDF backgrounds",
-    path: "/automation/pdf-backgrounds",
-    url: "/automation/pdf-backgrounds",
-    main: Automation,
-    group: "Preferences"
-  },
-  {
-    title: "PDF reports",
-    path: "/automation/pdf-reports",
-    url: "/automation/pdf-reports",
-    main: Automation,
-    group: "Preferences"
-  },
-  {
-    title: "Integrations",
-    path: "/automation/integrations",
-    url: "/automation/integrations",
-    main: Automation,
-    group: "Preferences"
-  },
-  {
-    title: "Scripts",
-    path: "/automation/script",
-    url: "/automation/script",
-    main: Automation,
-    group: "Preferences"
-  },
-  {
     title: "Classes",
     path: "/class/:id?",
     url: "/class",
@@ -567,14 +438,6 @@ export const routes: MainRoute[] = [
     url: "/contact",
     main: ContactsApp,
     group: "Activity"
-  },
-  {
-    title: "Tags",
-    path: "/tagTreeView",
-    url: "/tagTreeView",
-    noMenuLink: true,
-    main: BulkTagView,
-    group: "Preferences"
   },
   {
     title: "Checkout (Quick Enrol)",
@@ -602,16 +465,6 @@ export const routes: MainRoute[] = [
     group: "Common"
   },
 ];
-
-if (process.env.NODE_ENV === EnvironmentConstants.development) {
-  routes.push({
-    title: "Menu",
-    exact: true,
-    path: "/menu",
-    url: "/menu",
-    main: Common
-  });
-}
 
 export const routeGroups: RouteGroup[] = [
   {

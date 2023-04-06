@@ -1,52 +1,31 @@
 /*
- * Copyright ish group pty ltd 2020.
+ * Copyright ish group pty ltd 2022.
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of the
- * GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License for more details.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import CircularProgress from "@mui/material/CircularProgress";
 import React, { useCallback, useRef } from "react";
 import clsx from "clsx";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faFile,
-  faFileAlt,
-  faFileArchive,
-  faFileExcel,
-  faFileImage,
-  faFilePdf,
-  faFilePowerpoint,
-  faFileWord,
-  faCog
-} from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
-import { arrayInsert, change, Field, } from "redux-form";
+import { arrayInsert, change, } from "redux-form";
 import { createStyles, withStyles } from "@mui/styles";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Collapse from "@mui/material/Collapse";
-import {
-  ExpandMore,
-  OpenWith
-} from "@mui/icons-material";
+import { ExpandMore, OpenWith } from "@mui/icons-material";
 import Button from "@mui/material/Button";
 import { addDays, format } from "date-fns";
 import { Document, DocumentVersion } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import DocumentsService from "../../../../common/components/form/documents/services/DocumentsService";
-import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
-import SimpleTagList from "../../../../common/components/form/simpleTagListComponent/SimpleTagList";
-import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../../../common/utils/dates/format";
 import {
-  getLatestDocumentItem,
-  iconSwitcher
+  FileTypeIcon,
+  getLatestDocumentItem
 } from "../../../../common/components/form/documents/components/utils";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { AppTheme } from "../../../../model/common/Theme";
@@ -55,8 +34,7 @@ import DocumentShare from "../../../../common/components/form/documents/componen
 import { showMessage } from "../../../../common/actions";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-
-library.add(faFileImage, faFilePdf, faFileExcel, faFileWord, faFilePowerpoint, faFileArchive, faFileAlt, faFile, faCog);
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 const styles = (theme: AppTheme) => createStyles({
   previewPaper: {
@@ -84,10 +62,6 @@ const styles = (theme: AppTheme) => createStyles({
     "&:hover": {
       boxShadow: `0 0 1px 1px ${theme.palette.primary.main}`
     }
-  },
-  wh100: {
-    height: "30px !important",
-    width: "auto !important"
   },
   documentTitle: {
     margin: "12px 0 0"
@@ -132,11 +106,6 @@ interface DocumentGeneralProps extends EditViewProps<Document> {
   hovered?: boolean;
 }
 
-const validateTagList = (value, allValues, props) => {
-  const { tags } = props;
-  return validateTagsList(tags && tags.length > 0 ? tags : [], value, allValues, props);
-};
-
 const openDocumentURL = (e: React.MouseEvent<any>, url: string) => {
   e.stopPropagation();
   window.open(url);
@@ -151,6 +120,8 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
     hovered = true,
     form,
     dispatch,
+    isNew,
+    syncErrors
   } = props;
 
   const fileRef = useRef<any>();
@@ -168,9 +139,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
 
   const documentVersion = getLatestDocumentItem(values.versions);
 
-  const currentIcon = iconSwitcher(documentVersion.mimeType);
-
-  const validUrl = values && Array.isArray(values.versions) && ( values.versions[0].url);
+  const validUrl = values && values.urlWithoutVersionId;
 
   const thumbnail = values && Array.isArray(values.versions) && ( values.versions[0].thumbnail);
 
@@ -195,15 +164,6 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
     fileRef.current.click();
   }, []);
 
-  const headerField = (
-    <FormField
-      name="name"
-      label="Name"
-      required
-      fullWidth
-    />
-  );
-
   return (
     loadingDocVersion
       ? (
@@ -213,22 +173,24 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
       )
       : (
         <div className={twoColumn ? "" : "h-100"}>
-          {twoColumn && (
-            <FullScreenStickyHeader
-              twoColumn={twoColumn}
-              title={values && values.name}
-              fields={(
-                <Grid container>
-                  <Grid item xs={8}>
-                    {headerField}
+          <Grid container columnSpacing={3} rowSpacing={2} className="p-3 ">
+            <Grid item container xs={12}>
+              <FullScreenStickyHeader
+                opened={isNew || Object.keys(syncErrors).includes("name")}
+                twoColumn={twoColumn}
+                title={<span>{values && values.name}</span>}
+                fields={(
+                  <Grid item xs={twoColumn ? 6 : 12}>
+                    <FormField
+                      type="text"
+                      name="name"
+                      label="Name"
+                      required
+                    />
                   </Grid>
-                </Grid>
-              )}
-              truncateTitle
-            />
-          )}
-
-          <Grid container columnSpacing={3} className="p-3 relative">
+                )}
+              />
+            </Grid>
             <Grid item xs={twoColumn ? 4 : 12}>
               {Boolean(values.removed) && (
               <div className={clsx("backgroundText errorColorFade-0-2", twoColumn ? "fs10" : "fs8")}>PENDING DELETION</div>
@@ -245,7 +207,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
                     { "coloredHover": hovered })}
                   >
                     <div className="text-center">
-                      {currentIcon({ classes })}
+                      <FileTypeIcon mimeType={documentVersion.mimeType} />
                       <br />
                       <Typography
                         variant="caption"
@@ -297,20 +259,16 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
               </Collapse>
               <br />
             </Grid>
-            <Grid item container xs={twoColumn ? 4 : 12} alignContent="flex-start">
+            <Grid item container columnSpacing={3} rowSpacing={2} xs={twoColumn ? 4 : 12} alignContent="flex-start">
               <Grid item xs={12}>
-                {!twoColumn && headerField}
-              </Grid>
-              <Grid item xs={12}>
-                <Field
+                <FormField
+                  type="tags"
                   name="tags"
                   tags={tags}
-                  component={SimpleTagList}
-                  validate={tags && tags.length ? validateTagList : undefined}
                 />
               </Grid>
               <Grid item xs={12}>
-                <Field name="description" label="Description" component={EditInPlaceField} multiline fullWidth />
+                <FormField type="multilineText" name="description" label="Description" />
               </Grid>
               {Boolean(values.removed) && (
               <Grid item xs={12} className="pb-2">
@@ -329,6 +287,14 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
             </Grid>
 
             <Grid item xs={twoColumn ? 4 : 12} className="mb-3">
+              <EntityChecklists
+                className="mb-3"
+                entity="Document"
+                form={form}
+                entityId={values.id}
+                checked={values.tags}
+              />
+
               <div className="heading mb-2">
                 History
               </div>

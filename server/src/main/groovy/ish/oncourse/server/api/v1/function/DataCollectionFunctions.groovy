@@ -13,6 +13,7 @@ package ish.oncourse.server.api.v1.function
 
 import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.ArticleFieldConfiguration
+import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.MembershipFieldConfiguration
 import ish.oncourse.server.cayenne.VoucherFieldConfiguration
 import ish.oncourse.server.cayenne.WaitingList
@@ -27,8 +28,8 @@ import ish.common.types.DeliverySchedule
 import ish.common.types.FieldConfigurationType
 import ish.common.types.NodeType
 import static ish.oncourse.common.field.FieldProperty.*
-import static ish.oncourse.common.field.PropertyGetSetFactory.CUSTOM_FIELD_PROPERTY_PATTERN
-import static ish.oncourse.common.field.PropertyGetSetFactory.TAG_PATTERN
+import static ish.oncourse.common.field.PropertyGetSetFields.CUSTOM_FIELD_PROPERTY_PATTERN
+import static ish.oncourse.common.field.PropertyGetSetFields.TAG_PATTERN
 import ish.oncourse.server.api.v1.model.DataCollectionFormDTO
 import ish.oncourse.server.api.v1.model.DataCollectionRuleDTO
 import ish.oncourse.server.api.v1.model.DataCollectionTypeDTO
@@ -62,7 +63,7 @@ import java.time.ZoneOffset
 class DataCollectionFunctions {
 
     private static final List<FieldTypeDTO> VISIBLE_FIELDS
-    private static final List<FieldTypeDTO> WAITING_LIST_FIELDS
+    private static final List<FieldTypeDTO> WAITING_LIST_FIELDS, ENROLMENT_LIST_FIELDS;
     private static final Map<DataCollectionTypeDTO, Class<? extends FieldConfiguration>> CONFIGURATION_MAP
 
     static {
@@ -74,6 +75,7 @@ class DataCollectionFunctions {
                                 .collect { new FieldTypeDTO(uniqueKey: it.key, label: it.displayName)}
         
             WAITING_LIST_FIELDS = [DETAIL, STUDENTS_COUNT].collect { new FieldTypeDTO(uniqueKey: it.key, label: it.displayName)}
+            ENROLMENT_LIST_FIELDS = [STUDY_REASON].collect {new FieldTypeDTO(uniqueKey: it.key, label: it.displayName)}
         }
 
     static {
@@ -115,20 +117,15 @@ class DataCollectionFunctions {
                     .select(context)
                     .collect { new FieldTypeDTO(uniqueKey: "${CUSTOM_FIELD_PROPERTY_PATTERN}${it.entityIdentifier.toLowerCase()}.${it.key}", label: it.name) }
 
-            List<FieldTypeDTO> tagFieldTypes = ObjectSelect.query(Tag.class)
-                    .where(Tag.NODE_TYPE.eq(NodeType.TAG))
-                    .and(Tag.PARENT_TAG.isNull())
-                    .and(Tag.SPECIAL_TYPE.isNull())
-                    .select(context)
-                    .findAll {t -> t.getTagRequirement(Contact.class)}
-                    .collect{new FieldTypeDTO(uniqueKey: "${TAG_PATTERN}${it.pathName}", label: it.name)}
-
             fieldTypes += VISIBLE_FIELDS
-            
-            if (WaitingList.simpleName == formType) {
-                fieldTypes += WAITING_LIST_FIELDS
+
+            switch (formType) {
+                case WaitingList.simpleName:
+                    fieldTypes += WAITING_LIST_FIELDS
+                    break
+                case Enrolment.simpleName:
+                    fieldTypes += ENROLMENT_LIST_FIELDS
             }
-            fieldTypes += tagFieldTypes
         }
 
         return fieldTypes

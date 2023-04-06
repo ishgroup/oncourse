@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 const webpack = require("webpack");
@@ -11,15 +14,17 @@ const WorkboxPlugin = require('workbox-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const path = require("path");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { ReactLoadablePlugin }  = require('@react-loadable/revised/webpack');
 const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
+const { writeFile } = require('fs/promises')
 
 const _info = (NODE_ENV, BUILD_NUMBER) => {
   console.log(`
-Build started with following configuration:
-===========================================
-→ NODE_ENV: ${NODE_ENV}
-→ BUILD_NUMBER: ${BUILD_NUMBER}
-`);
+    Build started with following configuration:
+    ===========================================
+    → NODE_ENV: ${NODE_ENV}
+    → BUILD_NUMBER: ${BUILD_NUMBER}
+  `);
 };
 
 const KEYS = {
@@ -87,6 +92,12 @@ const _common = (dirname, options) => {
       ],
     },
     plugins: [
+      new ReactLoadablePlugin({
+        async callback(manifest) {
+          await writeFile(path.resolve(dirname, 'build/manifest.json'), JSON.stringify(manifest, null, 2))
+        },
+        absPath: true,
+      }),
       _DefinePlugin("development", options.BUILD_NUMBER),
       new webpack.ProvidePlugin({
         process: 'process/browser',
@@ -111,9 +122,10 @@ const _common = (dirname, options) => {
       }),
     ],
     devServer: {
-      inline: true,
-      hot: true,
-      port: 8100
+      port: 8100,
+      devMiddleware: {
+        writeToDisk: true,
+      }
     },
     devtool: false,
   };
@@ -135,26 +147,6 @@ const _styleModule = dirname => [
       ],
     },
     {
-      test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
-      use: ['raw-loader'],
-    },
-    {
-      test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
-      use: [
-        MiniCssExtractPlugin.loader,
-        'css-loader',
-        {
-          loader: 'postcss-loader',
-          options: styles.getPostCssConfig( {
-            themeImporter: {
-              themePath: require.resolve( '@ckeditor/ckeditor5-theme-lark' ),
-            },
-            minify: true,
-          } ),
-        },
-      ],
-    },
-    {
       test: /\.s?css$/,
       use: [MiniCssExtractPlugin.loader, 'css-loader'],
       exclude: [
@@ -170,6 +162,36 @@ const _styleModule = dirname => [
         path.resolve(dirname, "node_modules/ace-builds"),
       ],
     },
+  {
+    test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
+    use: [ 'raw-loader' ]
+  },
+  {
+    test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
+    use: [
+      {
+        loader: 'style-loader',
+        options: {
+          injectType: 'singletonStyleTag',
+          attributes: {
+            'data-cke': true
+          }
+        }
+      },
+      'css-loader',
+      {
+        loader: 'postcss-loader',
+        options: {
+          postcssOptions: styles.getPostCssConfig( {
+            themeImporter: {
+              themePath: require.resolve( '@ckeditor/ckeditor5-theme-lark' )
+            },
+            minify: true
+          } )
+        }
+      }
+    ]
+  }
   ];
 
 /**
@@ -215,6 +237,10 @@ const _PwaManifestPlugin = () => new WebpackPwaManifest({
 const _GenerateSW = () => new WorkboxPlugin.GenerateSW({
   clientsClaim: true,
   skipWaiting: true,
+  cleanupOutdatedCaches: true,
+  exclude: [
+    /index\.html$/,
+  ],
 });
 
 module.exports = {

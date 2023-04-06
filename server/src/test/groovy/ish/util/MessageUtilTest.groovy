@@ -8,7 +8,6 @@ import ish.common.types.MessageType
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Country
 import ish.oncourse.server.cayenne.Message
-import ish.oncourse.server.cayenne.MessagePerson
 import ish.oncourse.server.scripting.api.MessageReceived
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -102,24 +101,18 @@ class MessageUtilTest extends TestWithDatabase {
 
         //contact1 has message, but not contact
         //expected: lastMessageByKey for contact will return null, for contact1 - return message
-        MessagePerson mPerson = cayenneContext.newObject(MessagePerson.class)
-        fillMessagePerson(mPerson)
         Message message = cayenneContext.newObject(Message.class)
         message.setCreatorKey("someKey")
         fillMessage(message)
-        message.addToMessagePersons(mPerson)
-        contact1.addToMessages(mPerson)
+        contact1.addToMessages(message)
         cayenneContext.commitChanges()
         Assertions.assertFalse(MessageReceived.valueOf(cayenneContext, "someKey", contact).isPresent())
         Assertions.assertTrue(MessageReceived.valueOf(cayenneContext, "someKey", contact1).isPresent())
 
-        mPerson = cayenneContext.newObject(MessagePerson.class)
-        fillMessagePerson(mPerson)
-        Message lastMessage = cayenneContext.newObject(Message.class)
-        lastMessage.setCreatorKey("someKey")
-        fillMessage(lastMessage)
-        lastMessage.addToMessagePersons(mPerson)
-        contact1.addToMessages(mPerson)
+        message = cayenneContext.newObject(Message.class)
+        message.setCreatorKey("someKey")
+        fillMessage(message)
+        contact1.addToMessages(message)
         cayenneContext.commitChanges()
 
         Assertions.assertTrue(MessageReceived.valueOf(cayenneContext, "someKey", contact1).isPresent())
@@ -132,6 +125,10 @@ class MessageUtilTest extends TestWithDatabase {
             message.setSmsText("someSmsText")
             message.setEmailBody("someBody")
             message.setEmailHtmlBody("someBody")
+            message.setStatus(MessageStatus.SENT)
+            message.setType(MessageType.EMAIL)
+            message.setNumberOfAttempts(1)
+            message.setDestinationAddress("someDestinationAddress")
         }
     }
 
@@ -145,15 +142,6 @@ class MessageUtilTest extends TestWithDatabase {
     private void fillCountry(Country... countries) {
         for (Country country : countries) {
             country.setName("Belarus")
-        }
-    }
-
-    private void fillMessagePerson(MessagePerson... mPersons) {
-        for (MessagePerson mPerson : mPersons) {
-            mPerson.setStatus(MessageStatus.SENT)
-            mPerson.setType(MessageType.EMAIL)
-            mPerson.setAttemptCount(1)
-            mPerson.setDestinationAddress("someDestinationAddress")
         }
     }
 }

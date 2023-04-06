@@ -25,7 +25,7 @@ import ish.oncourse.server.api.v1.model.MessageTypeDTO
 import ish.oncourse.server.api.v1.model.StudentConcessionDTO
 import ish.oncourse.server.api.v1.model.StudentDTO
 import ish.oncourse.server.cayenne.ConcessionType
-import ish.oncourse.server.cayenne.MessagePerson
+import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.api.v1.model.ContactRelationDTO
 import ish.oncourse.server.api.v1.model.DocumentDTO
 import ish.oncourse.server.api.v1.model.PaymentStatusDTO
@@ -50,7 +50,6 @@ import org.apache.cayenne.Persistent
 import org.apache.cayenne.exp.Property
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.Ordering
-import org.apache.cayenne.query.Orderings
 import org.apache.cayenne.query.PrefetchTreeNode
 import org.apache.cayenne.query.SortOrder
 import org.apache.commons.lang3.StringUtils
@@ -265,15 +264,15 @@ class ContactFunctions {
 
     }
 
-    static MessagePersonDTO toRestMessagePerson(MessagePerson messagePerson) {
+    static MessagePersonDTO toRestMessagePerson(Message message) {
         new MessagePersonDTO().with { m ->
-            m.messageId = messagePerson?.message?.id
-            m.createdOn = LocalDateUtils.dateToTimeValue(messagePerson.createdOn)
-            m.sentOn = LocalDateUtils.dateToTimeValue(messagePerson.sentOn)
-            m.creatorKey = messagePerson?.message?.creatorKey
-            m.subject = messagePerson?.message?.emailSubject
-            m.status = MessageStatusDTO.values()[0].fromDbType(messagePerson.status)
-            m.type = MessageTypeDTO.values()[0].fromDbType(messagePerson.type)
+            m.messageId = message.id
+            m.createdOn = LocalDateUtils.dateToTimeValue(message.createdOn)
+            m.sentOn = LocalDateUtils.dateToTimeValue(message.timeOfDelivery)
+            m.creatorKey = message.creatorKey
+            m.subject = message.emailSubject
+            m.status = MessageStatusDTO.values()[0].fromDbType(message.status)
+            m.type = MessageTypeDTO.values()[0].fromDbType(message.type)
             m
         }
     }

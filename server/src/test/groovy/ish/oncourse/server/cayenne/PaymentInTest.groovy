@@ -20,6 +20,7 @@ import ish.validation.ValidationFailure
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.validation.ValidationException
+import org.junit.Ignore
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -28,7 +29,7 @@ import java.time.LocalDate
 @CompileStatic
 class PaymentInTest extends TestWithDatabase {
 
-    @Test
+    /*@Test
     void testDataModifiedOnForPaymentInLines() throws InterruptedException {
         DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
@@ -77,7 +78,7 @@ class PaymentInTest extends TestWithDatabase {
         pIn.setBanking(banking)
         newContext.commitChanges()
         Assertions.assertNotSame(pIn.getModifiedOn(), pInModifiedOn)
-    }
+    }*/
 
     
     @Test

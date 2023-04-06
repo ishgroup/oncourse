@@ -4,39 +4,23 @@
  */
 
 import React, { useMemo } from "react";
-import clsx from "clsx";
-import { change } from "redux-form";
 import { withStyles, createStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import debounce from "lodash.debounce";
 import { Dispatch } from "redux";
-import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../common/components/form/Uneditable";
 import { AppTheme } from "../../../../../model/common/Theme";
 import { normalizeNumberToZero, preventDecimalEnter } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { stubFunction } from "../../../../../common/utils/common";
 import { CourseClassExtended, CourseClassRoom } from "../../../../../model/entities/CourseClass";
 import { validateNonNegative } from "../../../../../common/utils/validation";
-import WarningMessage from "../../../../../common/components/form/fieldMessage/WarningMessage";
 
 const styles = (theme: AppTheme) => createStyles({
   root: {
     background: theme.table.contrastRow.light,
     borderRadius: theme.shape.borderRadius,
     paddingTop: theme.spacing(1.5),
-    paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4)
-  },
-  rowItemCol12: {
-    paddingRight: 20
-  },
-  rowItemCol3: {
-    paddingRight: 21
-  },
-  rowItemCol4: {
-    paddingRight: 26
   }
 });
 
@@ -50,7 +34,7 @@ interface Props {
 }
 
 const BudgetEnrolmentsFields = React.memo<Props>(({
- values, enrolmentsCount, classes, form, dispatch, classRooms
+ values, enrolmentsCount, classes, classRooms
 }) => {
   const seatedCapacityWarnings = useMemo(() => {
     const warnings = {
@@ -74,90 +58,52 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
     return warnings;
   }, [classRooms, values.maximumPlaces, values.minimumPlaces, values.id]);
 
-  const debounceChange = debounce((field, value) => {
-    dispatch(change(form, field, normalizeNumberToZero(value)));
-  }, 500);
-
-  const errors = useMemo(
-    () => ({
-      minimum: validateNonNegative(values.minimumPlaces),
-      maximum: validateNonNegative(values.maximumPlaces),
-      budgeted: validateNonNegative(values.budgetedPlaces)
-    }),
-    [values.minimumPlaces, values.maximumPlaces, values.budgetedPlaces]
-  );
-
   return (
-    <Grid container columnSpacing={3} direction="row" className={classes.root}>
-      <Grid item xs={3} className="centeredFlex">
+    <Grid container direction="row" columnSpacing={3} className={classes.root}>
+      <Grid item xs={3} className="centeredFlex pl-2">
         <Typography variant="body1">Enrolments</Typography>
       </Grid>
-      <Grid item xs={2} className={clsx(classes.rowItemCol12, "text-end")}>
-        <FormField type="stub" name="minimumPlaces" validate={validateNonNegative} />
-        <FormField type="stub" name="maximumPlaces" validate={validateNonNegative} />
-        <FormField type="stub" name="budgetedPlaces" validate={validateNonNegative} />
-
-        <EditInPlaceField
+      <Grid item xs={2} className="text-end">
+        <FormField
           type="number"
+          name="minimumPlaces"
           label="Minimum"
-          defaultValue={values.minimumPlaces || "0"}
-          meta={{
-            error: errors.minimum,
-            invalid: Boolean(errors.minimum)
-          }}
-          input={{
-            onChange: e => debounceChange("minimumPlaces", e.target.value),
-            onFocus: stubFunction,
-            onBlur: stubFunction
-          }}
-          classes={{ textField: "text-end", fitWidth: "flex-fill" }}
+          className="flex-fill"
           onKeyPress={preventDecimalEnter}
+          normalize={normalizeNumberToZero}
+          format={normalizeNumberToZero}
+          validate={validateNonNegative}
+          warning={seatedCapacityWarnings.min}
           rightAligned
         />
-        {seatedCapacityWarnings.min && <WarningMessage warning={seatedCapacityWarnings.min} />}
       </Grid>
-      <Grid item xs={2} className={clsx(classes.rowItemCol12, "text-end")}>
-        <EditInPlaceField
+      <Grid item xs={2} className="text-end">
+        <FormField
+          name="maximumPlaces"
           type="number"
           label="Maximum"
-          defaultValue={values.maximumPlaces || "0"}
-          meta={{
-            error: errors.maximum,
-            invalid: Boolean(errors.maximum)
-          }}
-          input={{
-            onChange: e => debounceChange("maximumPlaces", e.target.value),
-            onFocus: stubFunction,
-            onBlur: stubFunction
-          }}
-          classes={{ textField: "text-end", fitWidth: "flex-fill" }}
+          className="flex-fill"
           onKeyPress={preventDecimalEnter}
+          format={normalizeNumberToZero}
+          warning={seatedCapacityWarnings.max}
+          validate={validateNonNegative}
           rightAligned
         />
-        {seatedCapacityWarnings.max && <WarningMessage warning={seatedCapacityWarnings.max} />}
       </Grid>
-      <Grid item xs={2} className={clsx(classes.rowItemCol3, "text-end")}>
-        <EditInPlaceField
-          name="budgetedPlaces"
+      <Grid item xs={2} className="text-end">
+        <FormField
           type="number"
+          name="budgetedPlaces"
           label="Projected"
-          defaultValue={values.budgetedPlaces || "0"}
-          meta={{
-            error: errors.budgeted,
-            invalid: Boolean(errors.budgeted)
-          }}
-          input={{
-            onChange: e => debounceChange("budgetedPlaces", e.target.value),
-            onFocus: stubFunction,
-            onBlur: stubFunction
-          }}
-          classes={{ textField: "text-end", fitWidth: "flex-fill" }}
+          className="flex-fill"
           onKeyPress={preventDecimalEnter}
+          format={normalizeNumberToZero}
+          validate={validateNonNegative}
           rightAligned
         />
       </Grid>
-      <Grid item xs={2} className={clsx("d-flex justify-content-end", classes.rowItemCol4)}>
-        <Uneditable value={enrolmentsCount || "0"} label="Actual" className="text-end" />
+      <Grid item xs={2} className="d-flex justify-content-end">
+        <Uneditable value={enrolmentsCount || "0"} label="Actual" rightAligned />
       </Grid>
       <Grid item xs={1} />
     </Grid>

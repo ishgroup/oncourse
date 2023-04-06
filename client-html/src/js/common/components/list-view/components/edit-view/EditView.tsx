@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import * as React from "react";
@@ -8,10 +11,14 @@ import { createStyles, withStyles } from "@mui/styles";
 import { getFormSyncErrors, getFormValues, reduxForm } from "redux-form";
 import Typography from "@mui/material/Typography";
 import { connect } from "react-redux";
+import clsx from "clsx";
 import { State } from "../../../../../reducers/state";
 import FormSubmitButton from "../../../form/FormSubmitButton";
 import { pushGTMEvent } from "../../../google-tag-manager/actions";
 import { EditViewContainerProps } from "../../../../../model/common/ListView";
+import { TAB_LIST_SCROLL_TARGET_ID } from "../../../../../constants/Config";
+
+export const editViewFormRole: string = "editView-form";
 
 const styles = theme =>
   createStyles({
@@ -20,6 +27,8 @@ const styles = theme =>
       flexDirection: "column",
       width: "100%",
       userSelect: "text",
+      position: "relative",
+      overflow: "hidden"
     },
     actionButtonsGroup: {
       position: "absolute",
@@ -62,7 +71,6 @@ class EditView extends React.PureComponent<EditViewContainerProps, any> {
       rootEntity,
       form,
       showConfirm,
-      openNestedEditView,
       manualLink,
       submitSucceeded,
       syncErrors,
@@ -71,8 +79,16 @@ class EditView extends React.PureComponent<EditViewContainerProps, any> {
       disabledSubmitCondition
     } = this.props;
 
+    const noTabList = document.getElementById(TAB_LIST_SCROLL_TARGET_ID) === null;
+
     return (
-      <form className={classes.root} onSubmit={handleSubmit} autoComplete="off" noValidate>
+      <form
+        className={clsx(classes.root, noTabList && "fullHeightWithoutAppBar")}
+        onSubmit={handleSubmit}
+        autoComplete="off"
+        noValidate
+        role={editViewFormRole}
+      >
         {!hasSelected && (
           <div className="noRecordsMessage">
             <Typography variant="h6" color="inherit" align="center">
@@ -83,7 +99,7 @@ class EditView extends React.PureComponent<EditViewContainerProps, any> {
 
         {hasSelected && (
           <>
-            <div className="flex-fill">
+            <div className={clsx("flex-fill", noTabList && "overflow-y-auto")}>
               <EditViewContent
                 asyncValidating={asyncValidating}
                 syncErrors={syncErrors}
@@ -98,7 +114,6 @@ class EditView extends React.PureComponent<EditViewContainerProps, any> {
                 dirty={dirty}
                 dispatch={dispatch}
                 showConfirm={showConfirm}
-                openNestedEditView={openNestedEditView}
                 toogleFullScreenEditView={toogleFullScreenEditView}
               />
             </div>

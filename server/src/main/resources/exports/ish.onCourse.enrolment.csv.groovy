@@ -77,6 +77,7 @@ records.each { Enrolment e ->
 			"courseIsVET"                       : e.courseClass.course.isVET,
 			"courseReportableHours"             : e.courseClass.course.reportableHours?.format("0.00"),
 			"courseWebDescription"              : e.courseClass.course.webDescription,
+			"courseShortWebDescription"         : e.courseClass.course.shortWebDescription,
 			"courseAllowWaitingList"            : e.courseClass.course.allowWaitingLists,
 			"courseIsShownOnWeb"                : e.courseClass.course.isShownOnWeb,
 			"courseIsSufficientForQualification": e.courseClass.course.isSufficientForQualification,

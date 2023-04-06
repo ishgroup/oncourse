@@ -1,27 +1,34 @@
 /*
- * Copyright ish group pty ltd 2021.
+ * Copyright ish group pty ltd 2022.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useMemo } from "react";
+import React, {
+ useCallback, useEffect, useMemo, useState 
+} from "react";
 import clsx from "clsx";
 import { Dispatch } from "redux";
-import { change, getFormValues, initialize, isDirty, isInvalid, reduxForm } from "redux-form";
+import {
+ change, getFormValues, initialize, isDirty, isInvalid, reduxForm 
+} from "redux-form";
 import { connect } from "react-redux";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
-import { Category, CheckoutSaleRelation, ColumnWidth } from "@api/model";
+import { CheckoutSaleRelation, ColumnWidth } from "@api/model";
 import debounce from "lodash.debounce";
+import Button from "@mui/material/Button";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../constants/Config";
 import history from "../../../constants/History";
-import { CheckoutCourse, CheckoutCourseClass, CheckoutSummary } from "../../../model/checkout";
+import {
+  CheckoutContact,
+  CheckoutCourse, CheckoutCourseClass, CheckoutItem, CheckoutSummary
+} from "../../../model/checkout";
 import { State } from "../../../reducers/state";
 import ResizableWrapper from "../../../common/components/layout/resizable/ResizableWrapper";
 import Drawer from "../../../common/components/layout/Drawer";
-import CustomAppBar from "../../../common/components/layout/CustomAppBar";
 import { AppTheme } from "../../../model/common/Theme";
 import { studentInitial } from "../../entities/contacts/components/ContactsGeneral";
 import { getCountries, getLanguages, updateColumnsWidth } from "../../preferences/actions";
@@ -31,8 +38,8 @@ import {
   getContactsTaxTypes,
   getContactTags
 } from "../../entities/contacts/actions";
-import { getListNestedEditRecord, setListEditRecord } from "../../../common/components/list-view/actions";
-import LoadingIndicator from "../../../common/components/layout/LoadingIndicator";
+import { setListEditRecord } from "../../../common/components/list-view/actions";
+import LoadingIndicator from "../../../common/components/progress/LoadingIndicator";
 import { EditViewProps } from "../../../model/common/ListView";
 import { NoArgFunction } from "../../../model/common/CommonFunctions";
 import { FETCH_FINISH, openDrawer, showConfirm } from "../../../common/actions";
@@ -52,7 +59,7 @@ import {
   checkoutCourseMap,
   checkoutProductMap,
   checkoutVoucherMap,
-  getCheckoutCurrentStep,
+  getCheckoutCurrentStep, processCeckoutCartIds,
   processCheckoutContactId,
   processCheckoutCourseClassId,
   processCheckoutEnrolmentId,
@@ -111,6 +118,8 @@ import {
 import uniqid from "../../../common/utils/uniqid";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
 import CheckoutAppBar from "./CheckoutAppBar";
+import AppBarContainer from "../../../common/components/layout/AppBarContainer";
+import { getContactFullName } from "../../entities/contacts/utils";
 
 export const FORM: string = "CHECKOUT_SELECTION_FORM";
 const SIDEBAR_DEFAULT_WIDTH: number = 320;
@@ -154,11 +163,10 @@ interface Props extends Partial<EditViewProps> {
   openSidebarDrawer?: () => void;
   updateColumnsWidth?: (columnsWidth: ColumnWidth) => void;
   classes?: any;
-  openNestedEditView?: any;
   value?: any;
   contactEditRecord?: any;
   showConfirm?: ShowConfirmCaller;
-  selectedContacts?: any[];
+  selectedContacts?: CheckoutContact[];
   addSelectedContact?: (contact: any) => void;
   removeContact?: (index: number) => void;
   updateContact?: (contact: any, id: number) => void;
@@ -178,7 +186,7 @@ interface Props extends Partial<EditViewProps> {
   getVouchers?: any;
   membershipProducts?: any[];
   getMembershipProducts?: any;
-  selectedItems?: any[];
+  selectedItems?: CheckoutItem[];
   addSelectedItem?: (item: any) => void;
   removeItem?: (itemId: number, itemType: string) => void;
   onChangeStep?: (step: CheckoutCurrentStepType) => void;
@@ -245,7 +253,6 @@ const parseContactSearch = (search: string) => {
 const CheckoutSelectionForm = React.memo<Props>(props => {
   const {
     openSidebarDrawer,
-    openNestedEditView,
     form,
     dispatch,
     reset,
@@ -305,23 +312,23 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     salesRelations
   } = props;
 
-  const [sidebarWidth, setSidebarWidth] = React.useState(SIDEBAR_DEFAULT_WIDTH);
-  const [activeField, setActiveField] = React.useState<CheckoutPageType>(CheckoutPage.default);
-  const [listContacts, setListContacts] = React.useState(contacts);
-  const [selectedContact, setSelectedContact] = React.useState(undefined);
-  const [openContactEditView, setOpenContactEditView] = React.useState(false);
-  const [createNewContact, setCreateNewContact] = React.useState(false);
-  const [selectedCourse, setSelectedCourse] = React.useState(undefined);
-  const [openClassListView, setOpenClassListView] = React.useState(false);
-  const [checkDirtyContactViewOnFocus, setCheckDirtyContactViewOnFocus] = React.useState(true);
-  const [checkDirtyContactViewOnFocusCancel, setCheckDirtyContactViewOnFocusCancel] = React.useState(false);
-  const [openedItem, setOpenedItem] = React.useState(undefined);
-  const [openItemEditView, setOpenItemEditView] = React.useState(false);
-  const [selectedDiscount, setSelectedDiscount] = React.useState(undefined);
-  const [openDiscountView, setOpenDiscountView] = React.useState(false);
-  const [customLoading, setCustomLoading] = React.useState(false);
-  const [disablePayment, setDisablePayment] = React.useState(false);
-  const [itemsSearch, setItemsSearch] = React.useState<string>(null);
+  const [sidebarWidth, setSidebarWidth] = useState(SIDEBAR_DEFAULT_WIDTH);
+  const [activeField, setActiveField] = useState<CheckoutPageType>(CheckoutPage.default);
+  const [listContacts, setListContacts] = useState(contacts);
+  const [selectedContact, setSelectedContact] = useState(undefined);
+  const [openContactEditView, setOpenContactEditView] = useState(false);
+  const [createNewContact, setCreateNewContact] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState(undefined);
+  const [openClassListView, setOpenClassListView] = useState(false);
+  const [checkDirtyContactViewOnFocus, setCheckDirtyContactViewOnFocus] = useState(true);
+  const [checkDirtyContactViewOnFocusCancel, setCheckDirtyContactViewOnFocusCancel] = useState(false);
+  const [openedItem, setOpenedItem] = useState(undefined);
+  const [openItemEditView, setOpenItemEditView] = useState(false);
+  const [selectedDiscount, setSelectedDiscount] = useState(undefined);
+  const [openDiscountView, setOpenDiscountView] = useState(false);
+  const [customLoading, setCustomLoading] = useState(false);
+  const [disablePayment, setDisablePayment] = useState(false);
+  const [itemsSearch, setItemsSearch] = useState<string>(null);
 
   const mapedProducts = useMemo(() => products.map(checkoutProductMap), [products]);
   const mapedMbershipProducts = useMemo(() => membershipProducts.map(checkoutProductMap), [membershipProducts]);
@@ -342,19 +349,19 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     mapedMbershipProducts
   ]);
 
-  const onCloseItemView = React.useCallback(() => {
+  const onCloseItemView = useCallback(() => {
     setOpenedItem(undefined);
     setOpenItemEditView(false);
     clearItemRecord();
     setActiveField(CheckoutPage.default);
   }, []);
 
-  const clearDiscountView = React.useCallback(() => {
+  const clearDiscountView = useCallback(() => {
     setSelectedDiscount(undefined);
     setOpenDiscountView(false);
   }, []);
 
-  const handleChangeStep = React.useCallback(
+  const handleChangeStep = useCallback(
     (step: CheckoutCurrentStepType) => {
       const currentStep = getCheckoutCurrentStep(step);
       onChangeStep(step);
@@ -373,14 +380,14 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     [checkoutStep]
   );
 
-  const onCloseClassList = React.useCallback(() => {
+  const onCloseClassList = useCallback(() => {
     setSelectedCourse(undefined);
     setOpenClassListView(false);
     checkoutClearCourseClassList();
     setActiveField(CheckoutPage.default);
   }, []);
 
-  const getItemRecord = React.useCallback((item, type) => {
+  const getItemRecord = useCallback((item, type) => {
     switch (type) {
       case "membership":
         getMemberShipRecord(item);
@@ -396,7 +403,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     }
   }, []);
 
-  const openItem = React.useCallback(
+  const openItem = useCallback(
     item => {
       if (checkoutStep > 0) handleChangeStep(CheckoutCurrentStep.shoppingCart);
       switch (item.type) {
@@ -439,7 +446,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     [selectedCourse, openClassListView, selectedItems, checkoutStep, openedItem]
   );
 
-  const openContactRow = React.useCallback(
+  const openContactRow = useCallback(
     (item, checkDirty = true) => {
       if (selectedContact && selectedContact.id === item.id) {
         return;
@@ -467,7 +474,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     [openContactEditView, contactEditRecord, selectedContact, isContactEditViewDirty, checkoutStep, createNewContact]
   );
 
-  const onClearItemsSearch = React.useCallback((clearActive = false) => {
+  const onClearItemsSearch = useCallback((clearActive = false) => {
     if (clearActive) {
       setActiveField(CheckoutPage.default);
     }
@@ -508,6 +515,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
           const course = checkoutCourseMap(row);
           course.id = uniqid();
           openItem(course);
+          addSelectedItem(course);
         }
         dispatch(change(FORM, "items", ""));
         onClearItemsSearch(true);
@@ -530,7 +538,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     }, 500);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(setCommonPlainSearch("Course", "currentlyOffered is true"));
     dispatch(setCommonPlainSearch("ArticleProduct", "isOnSale is true"));
     dispatch(setCommonPlainSearch("VoucherProduct", "isOnSale is true"));
@@ -548,9 +556,19 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     const leadId = query.get("leadId");
     const courseClassId = query.get("courseClassId");
     const waitingListIds = query.get("waitingListIds");
+    const cartId = query.get("cartId");
 
     if (window.location.search) {
       history.replace("/checkout");
+    }
+    if (cartId) {
+      processCeckoutCartIds(
+        cartId,
+        onChangeStep,
+        setActiveField,
+        setCustomLoading,
+        dispatch
+      );
     }
     if (leadId) {
       processCheckoutLeadId(
@@ -559,7 +577,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         setActiveField,
         setCustomLoading,
         dispatch
-      ).catch(e => console.error(e));
+      );
     }
     if (waitingListIds) {
       processCheckoutWaitingListIds(
@@ -568,7 +586,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         setActiveField,
         setCustomLoading,
         dispatch
-      ).catch(e => console.error(e));
+      );
     }
     if (courseClassId) {
       processCheckoutCourseClassId(
@@ -580,7 +598,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         getClassPaymentPlans,
         openItem,
         dispatch
-      ).catch(e => console.error(e));
+      );
     }
     if (contactId) {
       processCheckoutContactId(contactId, onSelectHandler, dispatch);
@@ -602,7 +620,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     }
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.shoppingCart) && contactsSearch && contactsSearch.length > 0) {
       setCheckDirtyContactViewOnFocus(true);
       contacts.splice(0, 0, {
@@ -613,7 +631,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     }
   }, [contacts, contactsSearch]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (contactEditRecord) {
       setListContacts(prev => {
         const updated = [...prev];
@@ -622,7 +640,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         if (findIndex !== -1) {
           latestActivityStorageHandler(
             { name: contactEditRecord.name, date: new Date().toISOString(), id: contactEditRecord.id },
-            "Contacts" as Category
+            "Contacts"
           );
 
           updated[findIndex] = contactEditRecord;
@@ -632,7 +650,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     }
   }, [contactEditRecord]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (selectedContacts.length > 0) {
       const ids = [];
       selectedContacts.forEach(sc => {
@@ -648,26 +666,26 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     }
   }, [selectedContacts]);
 
-  const handleResizeCallback = React.useCallback(
+  const handleResizeCallback = useCallback(
     (...props) => {
       setSidebarWidth(props[2].getClientRects()[0].width);
     },
     [sidebarWidth]
   );
 
-  const handleResizeStopCallback = React.useCallback(
+  const handleResizeStopCallback = useCallback(
     (...props) => {
       updateColumnsWidth(props[2].getClientRects()[0].width);
     },
     [sidebarWidth]
   );
 
-  const onClearContactsSearch = React.useCallback(() => {
+  const onClearContactsSearch = useCallback(() => {
     clearContactsSearch();
     setListContacts([]);
   }, []);
 
-  const handleFocusCallback = React.useCallback(
+  const handleFocusCallback = useCallback(
     (props, name) => {
       if (checkDirtyContactViewOnFocusCancel) {
         setCheckDirtyContactViewOnFocusCancel(false);
@@ -727,7 +745,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     ]
   );
 
-  const onClose = React.useCallback(
+  const onClose = useCallback(
     (props?: any, checkDirty = true) => {
       if ((isContactEditViewDirty || createNewContact) && checkDirty) {
         showConfirm({
@@ -746,7 +764,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     [isContactEditViewDirty, createNewContact]
   );
 
-  const onSelectDisabledHandler = React.useCallback(
+  const onSelectDisabledHandler = useCallback(
     (row, type) => {
       switch (type) {
         case "contact":
@@ -764,7 +782,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     [selectedContacts, selectedItems]
   );
 
-  const onContactDeleteHandler = React.useCallback(
+  const onContactDeleteHandler = useCallback(
     (e, i, row) => {
       removeContact(i);
 
@@ -778,7 +796,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     [contactEditRecord, listContacts, selectedContact]
   );
 
-  const onContactSave = React.useCallback(
+  const onContactSave = useCallback(
     (value, dispatch, formProps) => {
       if (formProps.creatingNew) {
         setActiveField(CheckoutPage.default);
@@ -800,9 +818,9 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     [listContacts, selectedContacts]
   );
 
-  const onSubmit = React.useCallback(() => { }, []);
+  const onSubmit = useCallback(() => { }, []);
 
-  const onItemDeleteHandler = React.useCallback(
+  const onItemDeleteHandler = useCallback(
     (e, i, row) => {
       const onRemove = () => {
         removeItem(row.id, row.type);
@@ -862,13 +880,13 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     [selectedCourse, salesRelations, selectedItems, openedItem]
   );
 
-  const debouncedSearchUpdate = React.useCallback<any>(debounce((name, val) => setItemsSearch(val.trim().toLowerCase()), 800), []);
+  const debouncedSearchUpdate = useCallback<any>(debounce((name, val) => setItemsSearch(val.trim().toLowerCase()), 800), []);
 
   const onClearItemsSearchField = () => {
     setItemsSearch(null);
   };
 
-  const noItemMsg = React.useMemo(() => {
+  const noItemMsg = useMemo(() => {
     if (
       value
       && value.items
@@ -885,7 +903,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     filteredItems
   ]);
 
-  const noContactMsg = React.useMemo(() => {
+  const noContactMsg = useMemo(() => {
     if (value && value.contacts && !contacts.length && !contactsLoading) {
       return `No contacts found for "${value.contacts}"`;
     }
@@ -910,7 +928,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     dispatch({ type: FETCH_FINISH });
   };
 
-  const openDiscount = React.useCallback(
+  const openDiscount = useCallback(
     row => {
       if (selectedDiscount && selectedDiscount.id === row.id && selectedDiscount.type === row.type) {
         return;
@@ -922,34 +940,31 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     [selectedDiscount]
   );
 
-  const onClassSelect = useCallback(
-    (selectedClass: CheckoutCourseClass) => {
-      const updatedCourse: CheckoutCourse = {
-        ...selectedCourse,
-        price: selectedClass.price,
-        animate: true,
-        discount: null,
-        discounts: [],
-        discountExTax: 0,
-        studyReason: "Not stated",
-        class: { ...selectedClass }
-      };
+  const onClassSelect = (selectedClass: CheckoutCourseClass) => {
+    const updatedCourse: CheckoutCourse = {
+      ...selectedCourse,
+      price: selectedClass.price,
+      animate: true,
+      discount: null,
+      discounts: [],
+      discountExTax: 0,
+      studyReason: "Not stated",
+      class: { ...selectedClass }
+    };
 
-      if (selectedItems.some(i => i.id === updatedCourse.id)) {
-        updateSelectedClass(updatedCourse);
-      } else {
-        addSelectedItem(updatedCourse);
-      }
+    if (selectedItems.some(i => i.id === updatedCourse.id)) {
+      updateSelectedClass(updatedCourse);
+    } else {
+      addSelectedItem(updatedCourse);
+    }
 
-      setSelectedCourse(updatedCourse);
-      getClassPaymentPlans(updatedCourse);
-      openSidebarDrawer();
-      setTimeout(() => {
-        checkoutUpdateSummaryClassesDiscounts();
-      }, 500);
-    },
-    [selectedCourse]
-  );
+    setSelectedCourse(updatedCourse);
+    getClassPaymentPlans(updatedCourse);
+    openSidebarDrawer();
+    setTimeout(() => {
+      checkoutUpdateSummaryClassesDiscounts();
+    }, 500);
+  };
 
   const handleFundingInvoiceClick = () => {
     handleChangeStep(CheckoutCurrentStep.fundingInvoice);
@@ -961,6 +976,33 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         active: ind === 0
       }))));
   };
+  
+  const isSummaryAvailable = useMemo(() => selectedContacts.length > 0
+    && ((selectedItems.length > 0 && selectedItems.some(i => i.type !== "course" || i.class))
+      || Boolean(summary.previousOwing.invoices.length)), [selectedContacts, selectedItems, summary.previousOwing.invoices.length]);
+  
+  const isCreateLeadAvailable = useMemo(() => selectedContacts.length === 1
+    && selectedItems.length > 0
+    && !summary.previousOwing.invoices.length
+    && !selectedItems.some(i => i.type !== "course" || i.class),
+    [selectedItems, selectedContacts, summary.previousOwing.invoices.length]);
+  
+  const createLeadButton = useMemo(() => (
+    <div className="centeredFlex justify-content-center mt-3 mb-3">
+      <Button
+        variant="outlined"
+        color="primary"
+        size="large"
+        href={selectedContacts[0]
+          ? `/lead/new?courseIds=${selectedItems.map(s => s.courseId)}&contactId=${selectedContacts[0]?.id}&contactName=${getContactFullName(selectedContacts[0] as any)}`
+          : ""}
+        target="_blank"
+      >
+        Create Lead
+      </Button>
+    </div>
+    ),
+  [selectedItems, selectedContacts]);
 
   return (
     <div className={clsx("root", classes.root)}>
@@ -1020,70 +1062,73 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                 />
               </CheckoutSectionExpandableRenderer>
 
-              {selectedContacts.length > 0 && (selectedItems.length > 0 || Boolean(summary.previousOwing.invoices.length)) && (
-              <>
-                <CheckoutSectionExpandableRenderer
-                  title="Summary"
-                  expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.summary)}
-                  onExpanded={handleSummmayClick}
-                  disabled={paymentProcessStatus === "success"}
-                >
-                  <CheckoutPromoCodesHeaderField
-                    setActiveField={setActiveField}
-                    handleFocusCallback={handleFocusCallback}
-                    openDiscountRow={openDiscount}
-                    selectedDiscount={selectedDiscount}
-                    clearDiscountView={clearDiscountView}
-                    dispatch={dispatch}
-                    disabled={summarryInvalid}
-                  />
+              {isCreateLeadAvailable && createLeadButton}
 
-                  <CheckoutSummaryHeaderField
-                    activeField={activeField}
-                    setActiveField={setActiveField}
-                    selectedContacts={selectedContacts}
-                    clearDiscountView={clearDiscountView}
-                  />
-                </CheckoutSectionExpandableRenderer>
-
-                {Boolean(fundingInvoiceValues.fundingInvoices.length && selectedItems.filter(i => i.checked).length > 0) && (
+              {isSummaryAvailable
+                && (
+                <>
                   <CheckoutSectionExpandableRenderer
-                    title="Funding Invoices"
-                    expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.fundingInvoice)}
-                    onExpanded={handleFundingInvoiceClick}
+                    title="Summary"
+                    expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.summary)}
+                    onExpanded={handleSummmayClick}
                     disabled={paymentProcessStatus === "success"}
                   >
-                    <CheckoutFundingThisInvoice dispatch={dispatch} />
+                    <CheckoutPromoCodesHeaderField
+                      setActiveField={setActiveField}
+                      handleFocusCallback={handleFocusCallback}
+                      openDiscountRow={openDiscount}
+                      selectedDiscount={selectedDiscount}
+                      clearDiscountView={clearDiscountView}
+                      dispatch={dispatch}
+                      disabled={summarryInvalid}
+                    />
+
+                    <CheckoutSummaryHeaderField
+                      activeField={activeField}
+                      setActiveField={setActiveField}
+                      selectedContacts={selectedContacts}
+                      clearDiscountView={clearDiscountView}
+                    />
                   </CheckoutSectionExpandableRenderer>
+
+                  {Boolean(fundingInvoiceValues.fundingInvoices.length && selectedItems.filter(i => i.checked).length > 0) && (
+                    <CheckoutSectionExpandableRenderer
+                      title="Funding Invoices"
+                      expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.fundingInvoice)}
+                      onExpanded={handleFundingInvoiceClick}
+                      disabled={paymentProcessStatus === "success"}
+                    >
+                      <CheckoutFundingThisInvoice dispatch={dispatch} />
+                    </CheckoutSectionExpandableRenderer>
                  )}
 
-                <CheckoutSectionExpandableRenderer
-                  title="Payment"
-                  expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.payment)}
-                  onExpanded={handlePaymentClick}
-                  disabled={
-                        paymentProcessStatus === "success"
-                        || hasErrors
-                        || summarryInvalid
-                        || fundingInvoiceInvalid
-                        || (
-                          !summary.list.some(l => l.items.some(li => li.checked))
-                          && !summary.voucherItems.some(i => i.checked)
-                          && !summary.previousOwing.invoices.length)
-                      }
-                >
-                  <CheckoutPaymentHeaderField
-                    form={form}
-                    dispatch={dispatch}
-                    activeField={activeField}
-                    setActiveField={setActiveField}
-                    selectedDiscount={selectedDiscount}
-                    setSelectedDiscount={setSelectedDiscount}
-                    setDisablePayment={setDisablePayment}
-                    formInvalid={invalid}
-                  />
-                </CheckoutSectionExpandableRenderer>
-              </>
+                  <CheckoutSectionExpandableRenderer
+                    title="Payment"
+                    expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.payment)}
+                    onExpanded={handlePaymentClick}
+                    disabled={
+                    paymentProcessStatus === "success"
+                    || hasErrors
+                    || summarryInvalid
+                    || fundingInvoiceInvalid
+                    || (
+                      !summary.list.some(l => l.items.some(li => li.checked))
+                      && !summary.voucherItems.some(i => i.checked)
+                      && !summary.previousOwing.invoices.length)
+                  }
+                  >
+                    <CheckoutPaymentHeaderField
+                      form={form}
+                      dispatch={dispatch}
+                      activeField={activeField}
+                      setActiveField={setActiveField}
+                      selectedDiscount={selectedDiscount}
+                      setSelectedDiscount={setSelectedDiscount}
+                      setDisablePayment={setDisablePayment}
+                      formInvalid={invalid}
+                    />
+                  </CheckoutSectionExpandableRenderer>
+                </>
                 )}
             </div>
           </form>
@@ -1103,51 +1148,56 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
               && !openContactEditView
               && !selectedContact && (
                 <>
-                  <CustomAppBar>
-                    <CheckoutAppBar
-                      title={
-                        activeField === CheckoutPage.contacts && noContactMsg !== null
-                        ? noContactMsg
-                        : activeField === CheckoutPage.items && noItemMsg !== null
-                          ? noItemMsg
-                          : titles[activeField]
-                      }
-                    />
-                  </CustomAppBar>
-
-                  <div className="appBarContainer w-100">
-                    {!openContactEditView && activeField === CheckoutPage.contacts && (
-                      <div className="p-3">
-                        <EnrolContactListView
-                          title={`${listContacts.length > 1 ? "Contacts" : "Contact"}`}
-                          contacts={listContacts}
-                          relatedContacts={relatedContacts}
-                          onChangeHandler={onSelectHandler}
-                          disabledHandler={onSelectDisabledHandler}
-                          searchString={value && value.contacts}
-                          selectedContacts={selectedContacts}
-                          setCreateNewContact={setCreateNewContact}
-                          contactsLoading={contactsLoading}
-                        />
-                      </div>
+                  <AppBarContainer
+                    hideHelpMenu
+                    hideSubmitButton
+                    disableInteraction
+                    title={(
+                      <CheckoutAppBar
+                        title={
+                          activeField === CheckoutPage.contacts && noContactMsg !== null
+                            ? noContactMsg
+                            : activeField === CheckoutPage.items && noItemMsg !== null
+                              ? noItemMsg
+                              : titles[activeField]
+                        }
+                      />
                     )}
+                  >
+                    <div className="w-100">
+                      {!openContactEditView && activeField === CheckoutPage.contacts && (
+                        <div>
+                          <EnrolContactListView
+                            title={`${listContacts.length > 1 ? "Contacts" : "Contact"}`}
+                            contacts={listContacts}
+                            relatedContacts={relatedContacts}
+                            onChangeHandler={onSelectHandler}
+                            disabledHandler={onSelectDisabledHandler}
+                            searchString={value && value.contacts}
+                            selectedContacts={selectedContacts}
+                            setCreateNewContact={setCreateNewContact}
+                            contactsLoading={contactsLoading}
+                          />
+                        </div>
+                      )}
 
-                    {!openItemEditView && !openClassListView && activeField === CheckoutPage.items && (
-                      <div className="p-3">
-                        <EnrolItemListView
-                          courses={filteredItems.courses}
-                          products={filteredItems.products}
-                          vouchers={filteredItems.vouchers}
-                          membershipProducts={filteredItems.membershipProducts}
-                          onChangeHandler={onSelectHandler}
-                          disabledHandler={onSelectDisabledHandler}
-                          searchString={itemsSearch}
-                          selectedItems={selectedItems}
-                          salesRelations={salesRelations}
-                        />
-                      </div>
-                    )}
-                  </div>
+                      {!openItemEditView && !openClassListView && activeField === CheckoutPage.items && (
+                        <div>
+                          <EnrolItemListView
+                            courses={filteredItems.courses}
+                            products={filteredItems.products}
+                            vouchers={filteredItems.vouchers}
+                            membershipProducts={filteredItems.membershipProducts}
+                            onChangeHandler={onSelectHandler}
+                            disabledHandler={onSelectDisabledHandler}
+                            searchString={itemsSearch}
+                            selectedItems={selectedItems}
+                            salesRelations={salesRelations}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </AppBarContainer>
                 </>
               )}
 
@@ -1156,7 +1206,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                 creatingNew={createNewContact}
                 showConfirm={showConfirm}
                 onSave={onContactSave}
-                openNestedEditView={openNestedEditView}
                 onClose={onClose}
               />
             )}
@@ -1176,7 +1225,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
             )}
           </div>
         </div>
-        <div className={clsx({ "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.summary) })}>
+        <div className={clsx("root", { "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.summary) })}>
           <CheckoutSummaryComp
             checkoutStep={checkoutStep}
             onChangeStep={onChangeStep}
@@ -1187,13 +1236,13 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
             summaryList={summary.list}
           />
         </div>
-        <div className={clsx({ "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.fundingInvoice) })}>
+        <div className={clsx("root", { "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.fundingInvoice) })}>
           <CheckoutFundingInvoiceForm
             activeField={activeField}
             titles={titles}
           />
         </div>
-        <div className={clsx({ "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.payment) })}>
+        <div className={clsx("root", { "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.payment) })}>
           <CheckoutPaymentPage
             activeField={activeField}
             titles={titles}
@@ -1256,8 +1305,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getContactsRelationTypes: () => dispatch(getContactsRelationTypes()),
   getContactsConcessionTypes: () => dispatch(getContactsConcessionTypes()),
   getTaxTypes: () => dispatch(getContactsTaxTypes()),
-  openNestedEditView: (entity: string, id: number, threeColumn: boolean) =>
-    dispatch(getListNestedEditRecord(entity, id, null, threeColumn)),
   showConfirm: props =>
     dispatch(showConfirm(props)),
   getCourses: (offset?: number) => dispatch(

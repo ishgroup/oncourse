@@ -3,6 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 import {
+  CartIds,
   CheckoutApi,
   CheckoutModel,
   CheckoutResponse,
@@ -19,8 +20,8 @@ class CheckoutService {
     return this.checkoutApi.submit(checkoutModel, xValidateOnly, xPaymentSessionId, xOrigin);
   }
 
-  public getContactDiscounts(contactId: number, classId: number, courseIds: string, productIds: string, classIds: string, promoIds: string, membershipIds: string, purchaseTotal: number): Promise<CourseClassDiscount[]> {
-    return this.checkoutApi.getContactDiscounts(contactId, classId, courseIds, productIds, classIds, promoIds, membershipIds, purchaseTotal);
+  public getContactDiscounts(contactId: number, classId: number, courseIds: string, productIds: string, classIds: string, promoIds: string, membershipIds: string, purchaseTotal: number, payerId: number = null): Promise<CourseClassDiscount[]> {
+    return this.checkoutApi.getContactDiscounts(contactId, classId, courseIds, productIds, classIds, promoIds, membershipIds, purchaseTotal, payerId);
   }
 
   public getSessionStatus(sessionId: string): Promise<SessionStatus> {
@@ -29,6 +30,10 @@ class CheckoutService {
 
   public getSaleRelations(courseIds: string, productIds: string, contactId: number): Promise<CheckoutSaleRelation[]> {
     return this.checkoutApi.getSaleRelations(courseIds, productIds, contactId);
+  }
+
+  getCartDataIds(checkoutId: number): Promise<CartIds> {
+    return this.checkoutApi.getCartDataIds(checkoutId);
   }
 }
 

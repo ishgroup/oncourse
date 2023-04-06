@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { useMemo } from "react";
@@ -17,6 +20,7 @@ import { TimetableSession } from "../../../../../model/timetable";
 import CourseClassSessionFields from "./CourseClassSessionFields";
 import CalendarSession from "../../../../timetable/components/calendar/components/session/CalendarSession";
 import ExpandableItem from "../../../../../common/components/layout/expandable/ExpandableItem";
+import { ClassCostExtended } from "../../../../../model/entities/CourseClass";
 
 interface Props {
   expanded: number;
@@ -34,6 +38,8 @@ interface Props {
   warnings: SessionWarning[];
   setOpenCopyDialog?: ({ open, session }) => void;
   openCopyDialog?: { open?: boolean, session: { id: any } };
+  budget: ClassCostExtended[];
+  addTutorWage: (tutor: CourseClassTutor, wage?: ClassCostExtended) => void;
 }
 
 const CourseClassExpandableSession = React.memo<Props>(props => {
@@ -52,7 +58,9 @@ const CourseClassExpandableSession = React.memo<Props>(props => {
     sessionSelection,
     warnings,
     setOpenCopyDialog,
-    openCopyDialog
+    openCopyDialog,
+    budget,
+    addTutorWage
   } = props;
 
   const onCopyClick = React.useCallback(e => {
@@ -75,14 +83,16 @@ const CourseClassExpandableSession = React.memo<Props>(props => {
       expanded={isExpanded}
       onChange={onChange}
       keepPaper={!session.id}
+      expandButtonId={`course-class-session-${session.id || session.temporaryId}`}
       classes={{
+        expansionPanelRoot: "w-100",
         expandIcon: "invisible",
         expansionPanelSummayRoot: clsx(
           classes.sessionExpansionPanelSummayRoot,
           { [classes.visibleActionButtons]: openCopyDialog.session.id === session.id }
         )
       }}
-      collapsedContent={<CalendarSession key={session.id} clashes={clashes} {...session} disableLink disableTags inView />}
+      collapsedContent={<CalendarSession key={session.id} clashes={clashes} {...session} disableLink />}
       buttonsContent={(
         <div className={clsx("d-flex align-items-baseline zIndex2 relative", classes.sessionActionButtonWrapper)}>
           <div className="centeredFlex">
@@ -118,6 +128,8 @@ const CourseClassExpandableSession = React.memo<Props>(props => {
             triggerDebounseUpdate={triggerDebounseUpdate}
             tutors={tutors}
             warnings={warnings}
+            budget={budget}
+            addTutorWage={addTutorWage}
           />
         )
       }

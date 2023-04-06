@@ -3,33 +3,29 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
-import withStyles from "@mui/styles/withStyles";
-import createStyles from "@mui/styles/createStyles";
 import IconButton from "@mui/material/IconButton";
 import PlusIcon from "@mui/icons-material/Add";
 import Share from "@mui/icons-material/Share";
 import Settings from "@mui/icons-material/Settings";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { List, ListItem, Tooltip } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 import { alpha, darken } from '@mui/material/styles';
 import FindInPage from "@mui/icons-material/FindInPage";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import ExecuteScriptModal from "../../../../../containers/automation/containers/scripts/components/ExecuteScriptModal";
 import { openInternalLink } from "../../../../utils/links";
 import SearchInput from "./components/SearchInput";
 import ScriptsMenu from "./components/ScriptsMenu";
 import SendMessageMenu from "./components/SendMessageMenu";
 import ViewSwitcher from "./components/ViewSwitcher";
-import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME, EMAIL_FROM_KEY } from "../../../../../constants/Config";
+import { APP_BAR_HEIGHT, PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../../constants/Config";
 import FindRelatedMenu from "./components/FindRelatedMenu";
 import { FindRelatedItem } from "../../../../../model/common/ListView";
-import { State } from "../../../../../reducers/state";
-import { getEmailTemplatesWithKeyCode, getScripts, getUserPreferences } from "../../../../actions";
-import { LSGetItem } from "../../../../utils/storage";
+import { makeAppStyles } from "../../../../styles/makeStyles";
+import EntityService from "../../../../services/EntityService";
+import instantFetchErrorHandler from "../../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
 
 const SendMessageEntities = [
   "AbstractInvoice",
@@ -46,296 +42,283 @@ const SendMessageEntities = [
   "Lead"
 ];
 
-const EntitiesToMessageTemplateEntitiesMap = {
-  Invoice: ["Contact", "Invoice", "AbstractInvoice"],
-  Application: ["Contact", "Application"],
-  Contact: ["Contact"],
-  Enrolment: ["Contact", "Enrolment"],
-  CourseClass: ["Contact", "CourseClass", "Enrolment", "CourseClassTutor"],
-  PaymentIn: ["Contact", "PaymentIn"],
-  PaymentOut: ["Contact", "PaymentOut"],
-  Payslip: ["Contact", "Payslip"],
-  ProductItem: ["Contact", "Voucher", "Membership", "Article", "ProductItem"],
-  WaitingList: ["Contact", "WaitingList"],
-  Lead: ["Contact", "Lead"]
-};
+const useStyles = makeAppStyles(theme => ({
+  root: {
+    backgroundColor:
+      theme.palette.mode === "light" ? theme.palette.primary.main : darken(theme.palette.background.default, 0.4),
+    height: `${APP_BAR_HEIGHT}px`,
+    bottom: 0,
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: theme.spacing(2),
+    position: "relative"
+  },
+  mainLabel: {
+    color: theme.palette.primary.contrastText
+  },
+  actionArea: {
+    color: theme.palette.primary.contrastText,
+    display: "flex"
+  },
+  actionsBarButton: {
+    color: "inherit",
+    "&$buttonDisabledOpacity": {
+      opacity: 0.5
+    },
+    "&$buttonDisabledFade": {
+      color: alpha(theme.palette.primary.contrastText, 0.5)
+    }
+  },
+  buttonDisabledOpacity: {},
+  buttonDisabledFade: {},
+  shareOnBackdrop: {
+    color: "inherit",
+    zIndex: theme.zIndex.modal + 1
+  },
+  relatedMenuOffset: {
+    marginLeft: "45px"
+  },
+  cogWheelMenuOffset: {
+    marginLeft: "-45px"
+  },
+  customIconButton: {
+    padding: `${theme.spacing(1)} 2.5px`,
+    height: theme.spacing(6),
+    width: theme.spacing(6)
+  },
+  findInPage: {
+    color: theme.palette.primary.contrastText
+  },
+  switcherActive: {
+    color: theme.palette.primary.contrastText
+  },
+  switcherDisabled: {
+    color: alpha(theme.palette.primary.contrastText, 0.3)
+  },
+  findRelated: {
+    display: "flex",
+    flex: 1,
+    justifyContent: "flex-end"
+  }
+}));
 
-const getMessageTemplateEntities = entity => EntitiesToMessageTemplateEntitiesMap[entity] || [entity];
+const BottomAppBar = (
+  {
+    rootEntity,
+    scripts,
+    getScripts,
+    selection,
+    onDelete,
+    fetch,
+    toggleExportDrawer,
+    showExportDrawer,
+    toggleBulkEditDrawer,
+    showBulkEditDrawer,
+    querySearch,
+    changeQueryView,
+    onQuerySearch,
+    switchLayout,
+    threeColumn,
+    deleteEnabled,
+    hasShareTypes,
+    onCreate,
+    findRelated,
+    CogwheelAdornment,
+    showConfirm,
+    CustomFindRelatedMenu,
+    records,
+    searchComponentNode,
+    searchMenuItemsRenderer,
+    createButtonDisabled,
+    searchQuery,
+    filteredCount,
+    emailTemplatesWithKeyCode,
+    findRelatedByFilter,
+    scriptsFilterColumn,
+    dispatch
+  }) => {
+  const [filterScriptsBy, setFilterScriptsBy] = useState(null);
+  const [scriptsMenuOpen, setScriptsMenuOpen] = useState(null);
+  const [showSettingsMenu, setShowSettingsMenu] = useState(null);
+  const [scriptIdSelected, setScriptIdSelected] = useState(null);
+  const [showFindRelatedMenu, setShowFindRelatedMenu] = useState(null);
+  const [execScriptsMenuOpen, setExecScriptsMenuOpen] = useState(null);
+  
+  const classes = useStyles();
+  
+  useEffect(() => {
+    if (rootEntity && !scripts) {
+      getScripts(rootEntity);
+    }
+  }, [rootEntity, scripts]);
 
-const styles = theme => createStyles({
-    root: {
-      backgroundColor:
-        theme.palette.mode === "light" ? theme.palette.primary.main : darken(theme.palette.background.default, 0.4),
-      height: `${APP_BAR_HEIGHT}px`,
-      bottom: 0,
-      width: "100%",
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      padding: theme.spacing(2),
-      position: "relative"
-    },
-    mainLabel: {
-      color: theme.palette.primary.contrastText
-    },
-    actionArea: {
-      color: theme.palette.primary.contrastText,
-      display: "flex"
-    },
-    actionsBarButton: {
-      color: "inherit",
-      "&$buttonDisabledOpacity": {
-        opacity: 0.5
-      },
-      "&$buttonDisabledFade": {
-        color: alpha(theme.palette.primary.contrastText, 0.5)
+  useEffect(() => {
+    setFilterScriptsBy(null);
+  }, [rootEntity]);
+
+  // Workaround to trigger menu resize
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('resize'));
+  }, [filterScriptsBy]);
+
+  const getFilteredBy = async () => {
+    try {
+      let filterGroups = null;
+      
+      if (selection.length && selection[0] !== "new") {
+        filterGroups = {};
+        
+        const records = await EntityService.getPlainRecords(rootEntity, scriptsFilterColumn, `id in (${selection})`);
+
+        records.rows.forEach(r => {
+          if (filterGroups[r.values[0]]) {
+            filterGroups[r.values[0]].ids.push(r.id);
+          } else {
+            filterGroups[r.values[0]] = {
+              ids: [r.id],
+              scripts: []
+            };
+          }
+        });
+        
+        scripts.forEach(s => {
+          filterGroups[s.entity]?.scripts.push(s);
+        });
       }
-    },
-    buttonDisabledOpacity: {},
-    buttonDisabledFade: {},
-    shareOnBackdrop: {
-      color: "inherit",
-      zIndex: theme.zIndex.modal + 1
-    },
-    relatedMenuOffset: {
-      marginLeft: "45px"
-    },
-    cogWheelMenuOffset: {
-      marginLeft: "-45px"
-    },
-    cogWheelMenuDelete: {
-      color: theme.palette.error.main
-    },
-    customIconButton: {
-      padding: `${theme.spacing(1)} 2.5px`,
-      height: theme.spacing(6),
-      width: theme.spacing(6)
-    },
-    findInPage: {
-      color: theme.palette.primary.contrastText
-    },
-    switcherActive: {
-      color: theme.palette.primary.contrastText
-    },
-    switcherDisabled: {
-      color: alpha(theme.palette.primary.contrastText, 0.3)
-    },
-    findRelated: {
-      display: "flex",
-      flex: 1,
-      justifyContent: "flex-end"
+
+      setFilterScriptsBy(filterGroups);
+    } catch (e) {
+      instantFetchErrorHandler(dispatch, e);
     }
-  });
+  };
 
-class BottomAppBar extends React.PureComponent<any, any> {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      showSettingsMenu: null,
-      showFindRelatedMenu: null,
-      execScriptsMenuOpen: null,
-      scriptIdSelected: null
-    };
-  }
-
-  componentDidMount() {
-    const {
-     rootEntity, getMessageTemplates, getEmailFrom
-    } = this.props;
-
-    if (rootEntity) {
-      getMessageTemplates(getMessageTemplateEntities(rootEntity));
-      getEmailFrom();
+  useEffect(() => {
+    if (scriptsFilterColumn) {
+      getFilteredBy();
     }
-  }
-
-  componentDidUpdate(prevProps) {
-    const {
-     rootEntity, getMessageTemplates, getEmailFrom, scripts, getScripts
-    } = this.props;
-
-    if (rootEntity && rootEntity !== prevProps.rootEntity) {
-      getMessageTemplates(getMessageTemplateEntities(rootEntity));
-      getEmailFrom();
-      if (!scripts) {
-        getScripts(rootEntity);
-      }
-    }
-  }
-
-  setExecScriptsMenuOpen = (value: boolean) => {
-    this.setState({
-      execScriptsMenuOpen: value
-    });
+  }, [scriptsFilterColumn, selection]);
+  
+  const openScriptModal = scriptId => {
+    setScriptIdSelected(scriptId);
+    setExecScriptsMenuOpen(true);
   };
 
-  setScriptIdSelected = (id: number) => {
-    this.setState({
-      scriptIdSelected: id
-    });
+  const onExecuteScriptDialogClose = () => {
+    setScriptIdSelected(null);
+    setExecScriptsMenuOpen(false);
   };
 
-  openScriptModal = scriptId => {
-    this.setScriptIdSelected(scriptId);
-    this.setExecScriptsMenuOpen(true);
+  const handleClickSettings = e => setShowSettingsMenu(e.currentTarget);
+
+  const handleClickRelatedMenu = e => setShowFindRelatedMenu(e.currentTarget);
+
+  const handleClose = () => {
+    setShowSettingsMenu(null);
+    setShowFindRelatedMenu(null);
   };
 
-  onExecuteScriptDialogClose = () => {
-    this.setScriptIdSelected(null);
-    this.setExecScriptsMenuOpen(false);
-  };
-
-  handleClickSettings = event => {
-    this.setState({
-      showSettingsMenu: event.currentTarget
-    });
-  };
-
-  handleClickRelatedMenu = event => {
-    this.setState({
-      showFindRelatedMenu: event.currentTarget
-    });
-  };
-
-  handleClose = () => {
-    this.setState({
-      showSettingsMenu: null,
-      showFindRelatedMenu: null
-    });
-  };
-
-  handleRelatedLinkClick = (item: FindRelatedItem) => {
-    const { rootEntity, selection } = this.props;
-    this.handleClose();
-
+  const handleRelatedLinkClick = (item: FindRelatedItem) => {
     if (item.list) {
       let searchParam = "";
 
       if (item.expression) {
-        searchParam = `${item.expression} in (${selection.join(", ")})`;
+        searchParam = item.expression;
       }
 
       if (item.customExpression) {
-        searchParam = item.customExpression;
+        searchParam = item.customExpression(selection.join(", "));
       }
 
-      openInternalLink(`/${item.list}?search=${searchParam}`);
+      if (selection.length) {
+        searchParam += ` in (${selection.join(", ")})`;
+      } else {
+        findRelatedByFilter(item.customExpression || searchParam, item.list);
+        return;
+      }
+
+      openInternalLink(searchParam ? `/${item.list}?search=${searchParam}` : `/${item.list}`);
     } else {
       window.location.href = `/find/related?destList=${item.destination}&sourceList=${rootEntity}&ids=${selection.join(
         ","
       )}`;
     }
+
+    handleClose();
   };
 
-  handleDeleteClick = () => {
-    const { onDelete, selection } = this.props;
+  const handleDeleteClick = () => {
     onDelete(selection[0]);
-    this.handleClose();
+    handleClose();
   };
+  
+  const existingRecordSelected = Boolean(selection.length) && selection[0] !== "NEW";
 
-  render() {
-    const {
-      classes,
-      fetch,
-      toggleExportDrawer,
-      showExportDrawer,
-      toggleBulkEditDrawer,
-      showBulkEditDrawer,
-      selection,
-      rootEntity,
-      aqlEntity,
-      querySearch,
-      changeQueryView,
-      onQuerySearch,
-      switchLayout,
-      threeColumn,
-      deleteEnabled,
-      hasShareTypes,
-      onCreate,
-      findRelated,
-      CogwheelAdornment,
-      showConfirm,
-      CustomFindRelatedMenu,
-      records,
-      searchComponentNode,
-      searchMenuItemsRenderer,
-      createButtonDisabled,
-      searchQuery,
-      filteredCount,
-      messageTemplates,
-      scripts
-    } = this.props;
+  const isSendMessageAvailable = SendMessageEntities.includes(rootEntity) && Array.isArray(emailTemplatesWithKeyCode) && emailTemplatesWithKeyCode.length;
 
-    const {
-      showFindRelatedMenu,
-      showSettingsMenu,
-      execScriptsMenuOpen,
-      scriptIdSelected
-    } = this.state;
-
-    const existingRecordSelected = Boolean(selection.length) && selection[0] !== "NEW";
-
-    const isSendMessageAvailable = SendMessageEntities.includes(rootEntity) && Array.isArray(messageTemplates) && messageTemplates.length;
-
-    const settingsItems = [
-      (selection.length === 0 || existingRecordSelected) && scripts?.length && (
-        <ScriptsMenu
-          key="ScriptsMenu"
-          scripts={scripts}
-          classes={classes}
-          entity={rootEntity}
-          closeAll={this.handleClose}
-          openScriptModal={this.openScriptModal}
-        />
-      ),
-      isSendMessageAvailable
-      && <SendMessageMenu key="SendMessageMenu" selection={selection} entity={rootEntity} closeAll={this.handleClose} />,
-      CogwheelAdornment && (
-        <CogwheelAdornment
-          key="CogwheelAdornment"
-          closeMenu={this.handleClose}
-          menuItemClass="listItemPadding"
-          searchQuery={searchQuery}
-          selection={selection}
-          showConfirm={showConfirm}
-          onCreate={onCreate}
-          entity={rootEntity}
-          showBulkEditDrawer={showBulkEditDrawer}
-          toggleBulkEditDrawer={toggleBulkEditDrawer}
-          records={records}
-        />
-      ),
-      deleteEnabled
-      && (
-        <MenuItem
-          key="DeleteRecord"
-          disabled={selection.length !== 1 || !existingRecordSelected}
-          onClick={this.handleDeleteClick}
-          classes={{
-            root: clsx("listItemPadding", classes.cogWheelMenuDelete)
-          }}
-        >
-          Delete record
-        </MenuItem>
-      )].filter(i => i);
+  const settingsItems = [
+    (selection.length === 0 || existingRecordSelected) && scripts?.length && (
+      <ScriptsMenu
+        key="ScriptsMenu"
+        classes={classes}
+        scripts={scriptsMenuOpen?.entity ? filterScriptsBy[scriptsMenuOpen?.entity]?.scripts : scripts}
+        entity={rootEntity}
+        filterScriptsBy={filterScriptsBy}
+        closeAll={handleClose}
+        openScriptModal={openScriptModal}
+        scriptsMenuOpen={scriptsMenuOpen?.anchor}
+        setScriptsMenuOpen={setScriptsMenuOpen}
+      />
+    ),
+    isSendMessageAvailable
+    && <SendMessageMenu key="SendMessageMenu" selection={selection} entity={rootEntity} closeAll={handleClose} />,
+    CogwheelAdornment && (
+      <CogwheelAdornment
+        key="CogwheelAdornment"
+        closeMenu={handleClose}
+        menuItemClass="listItemPadding"
+        searchQuery={searchQuery}
+        selection={selection}
+        showConfirm={showConfirm}
+        onCreate={onCreate}
+        entity={rootEntity}
+        showBulkEditDrawer={showBulkEditDrawer}
+        toggleBulkEditDrawer={toggleBulkEditDrawer}
+        records={records}
+      />
+    ),
+    deleteEnabled
+    && (
+      <MenuItem
+        key="DeleteRecord"
+        disabled={selection.length !== 1 || !existingRecordSelected}
+        onClick={handleDeleteClick}
+        classes={{
+          root: "listItemPadding errorColor"
+        }}
+      >
+        Delete record
+      </MenuItem>
+    )].filter(i => i);
 
     return (
       <>
         <ExecuteScriptModal
           opened={Boolean(execScriptsMenuOpen)}
-          onClose={this.onExecuteScriptDialogClose}
+          onClose={onExecuteScriptDialogClose}
           scriptId={scriptIdSelected}
           selection={selection}
           filteredCount={filteredCount}
+          filteredSelection={filterScriptsBy && filterScriptsBy[scriptsMenuOpen?.entity]?.ids}
         />
 
-        <div className={clsx(classes.root, LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader")}>
+        <div className={classes.root}>
           <SearchInput
             innerRef={searchComponentNode}
             onQuerySearch={onQuerySearch}
             querySearch={querySearch}
-            rootEntity={aqlEntity || rootEntity}
+            rootEntity={rootEntity}
             changeQueryView={changeQueryView}
             searchMenuItemsRenderer={searchMenuItemsRenderer}
             placeholder="Find..."
@@ -350,11 +333,11 @@ class BottomAppBar extends React.PureComponent<any, any> {
                       root: clsx(classes.actionsBarButton, classes.customIconButton),
                       disabled: classes.buttonDisabledOpacity
                     }}
-                    disabled={!selection.length || !findRelated || fetch.pending}
+                    disabled={!findRelated || fetch.pending || records.filteredCount > PLAIN_LIST_MAX_PAGE_SIZE}
                     className="ml-1"
                     aria-owns={showFindRelatedMenu ? "related" : undefined}
                     aria-haspopup="true"
-                    onClick={this.handleClickRelatedMenu}
+                    onClick={handleClickRelatedMenu}
                   >
                     <FindInPage className={classes.findInPage} />
                   </IconButton>
@@ -366,7 +349,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
               id="related"
               anchorEl={showFindRelatedMenu}
               open={Boolean(showFindRelatedMenu)}
-              onClose={this.handleClose}
+              onClose={handleClose}
               classes={{
                 paper: classes.relatedMenuOffset
               }}
@@ -394,7 +377,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
                   records={records}
                 />
               ) : (
-                <FindRelatedMenu findRelated={findRelated} handleRelatedLinkClick={this.handleRelatedLinkClick} />
+                <FindRelatedMenu findRelated={findRelated} handleRelatedLinkClick={handleRelatedLinkClick} />
               )}
             </Menu>
 
@@ -450,7 +433,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
                     color="inherit"
                     aria-owns={showSettingsMenu ? "settings" : undefined}
                     aria-haspopup="true"
-                    onClick={this.handleClickSettings}
+                    onClick={handleClickSettings}
                     size="large"
                   >
                     <Settings />
@@ -461,11 +444,12 @@ class BottomAppBar extends React.PureComponent<any, any> {
                 id="settings"
                 anchorEl={showSettingsMenu}
                 open={Boolean(showSettingsMenu)}
-                onClose={this.handleClose}
+                onClose={handleClose}
                 classes={{
                   paper: classes.cogWheelMenuOffset
                 }}
                 disableAutoFocusItem
+
               >
                 {settingsItems}
               </Menu>
@@ -473,19 +457,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
           </div>
         </div>
       </>
-    );
-  }
-}
+  );
+};
 
-const mapStateToProps = (state: State) => ({
-  messageTemplates: state.list.emailTemplatesWithKeyCode,
-  scripts: state.list.scripts
-});
-
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  getMessageTemplates: (entities: string[]) => dispatch(getEmailTemplatesWithKeyCode(entities)),
-  getEmailFrom: () => dispatch(getUserPreferences([EMAIL_FROM_KEY])),
-  getScripts: (entity: string) => dispatch(getScripts(entity))
-});
-
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(BottomAppBar));
+export default BottomAppBar;

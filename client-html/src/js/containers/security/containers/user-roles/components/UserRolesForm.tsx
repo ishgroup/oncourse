@@ -8,25 +8,21 @@ import { Grid } from "@mui/material/";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import { withRouter } from "react-router";
 import {
-  Form, getFormValues, initialize, reduxForm
+  Form, getFormSyncErrors, getFormValues, initialize, reduxForm
 } from "redux-form";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { UserRole } from "@api/model";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import Categories from "../../../../../model/user-roles/index";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import UserRolePreference from "./UserRolePreference";
 import { State } from "../../../../../reducers/state";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { updateUserRole, removeUserRole } from "../../../actions";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { setNextLocation } from "../../../../../common/actions";
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("users_roles");
 
@@ -43,8 +39,6 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
 
   private isPending;
 
-  private disableConfirm;
-
   constructor(props) {
     super(props);
 
@@ -55,7 +49,8 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
     }
   }
 
-  componentWillReceiveProps({
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps({
     dataItem, fetch, submitSucceeded, isNew
   }) {
     if (this.isPending && fetch && fetch.success === false) {
@@ -76,11 +71,12 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
   }
 
   componentDidUpdate() {
-    const { dirty, nextLocation, setNextLocation, history } = this.props;
+    const {
+      dirty, nextLocation, history
+    } = this.props;
 
     if (nextLocation && !dirty) {
       history.push(nextLocation);
-      setNextLocation('');
     }
   }
 
@@ -111,12 +107,10 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
     return new Promise((resolve, reject) => {
       this.resolvePromise = resolve;
       this.rejectPromise = reject;
-      this.disableConfirm = true;
 
       removeUserRole(id);
     }).then(() => {
       redirectOnDelete();
-      this.disableConfirm = false;
       this.forceUpdate();
     });
   };
@@ -133,67 +127,63 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
       dispatch,
       isNew,
       validateUniqueNames,
-      submitSucceeded,
       hasLicense,
       form,
-      invalid
+      invalid,
+      syncErrors
     } = this.props;
 
     return (
       <Form onSubmit={handleSubmit(this.onSave)} className={className}>
-        {!this.disableConfirm && !submitSucceeded && dirty && <RouteChangeConfirm form={form} when={dirty && hasLicense} />}
+        <RouteChangeConfirm form={form} when={dirty} />
 
-        <Grid container columnSpacing={3} spacing={2}>
-          <CustomAppBar>
-            <Grid container columnSpacing={3}>
-              <Grid item xs={12} className="centeredFlex">
-                <FormField
-                  type="headerText"
-                  name="name"
-                  placeholder="Name"
-                  margin="none"
-                  listSpacing={false}
-                  validate={[validateSingleMandatoryField, validateUniqueNames]}
-                />
-
-                <div className="flex-fill" />
-
-                {hasLicense && !isNew && (
-                  <AppBarActions
-                    actions={[
-                      {
-                        action: () => this.onDelete(id),
-                        icon: <DeleteForever />,
-                        tooltip: "Delete User Role",
-                        confirmText: "User Role will be deleted permanently",
-                        confirmButtonText: "DELETE"
-                      }
-                    ]}
-                  />
-                )}
-
-                <AppBarHelpMenu
-                  created={created ? new Date(created) : null}
-                  modified={modified ? new Date(modified) : null}
-                  auditsUrl={'audit?search=~"ACLRole"'}
-                  manualUrl={manualUrl}
-                />
-
-                <FormSubmitButton
-                  disabled={!dirty}
-                  invalid={invalid}
-                />
-              </Grid>
+        <AppBarContainer
+          values={values}
+          manualUrl={manualUrl}
+          getAuditsUrl='audit?search=~"ACLRole"'
+          disabled={!dirty}
+          invalid={invalid}
+          title={(isNew && (!values || !values.name || values.name.trim().length === 0))
+            ? "New"
+            : values && values.name.trim()}
+          createdOn={() => (created ? new Date(created) : null)}
+          modifiedOn={() => (modified ? new Date(modified) : null)}
+          opened={isNew || Object.keys(syncErrors).includes("name")}
+          containerClass="p-3"
+          fields={(
+            <Grid item xs={12}>
+              <FormField
+                type="text"
+                name="name"
+                label="Name"
+                validate={validateUniqueNames}
+                required
+              />
             </Grid>
-          </CustomAppBar>
-
-          <Grid item md={12} lg={11} className="ml-2">
-            {values
-              && Categories.map((item, index) => (
-                <UserRolePreference key={index} item={item} values={values} dispatch={dispatch} initial={rights} />
-              ))}
+          )}
+          actions={hasLicense && !isNew && (
+            <AppBarActions
+              actions={[
+                {
+                  action: () => this.onDelete(id),
+                  icon: <DeleteForever />,
+                  tooltip: "Delete User Role",
+                  confirmText: "User Role will be deleted permanently",
+                  confirmButtonText: "DELETE"
+                }
+              ]}
+            />
+          )}
+        >
+          <Grid container>
+            <Grid item md={12} lg={11} className="ml-2">
+              {values
+                && Categories.map((item, index) => (
+                  <UserRolePreference key={index} item={item} values={values} dispatch={dispatch} initial={rights} />
+                ))}
+            </Grid>
           </Grid>
-        </Grid>
+        </AppBarContainer>
       </Form>
     );
   }
@@ -201,14 +191,14 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues("UserRolesForm")(state),
+  syncErrors: getFormSyncErrors("UserRolesForm")(state),
   fetch: state.fetch,
   nextLocation: state.nextLocation,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   updateUserRole: (userRole: UserRole) => dispatch(updateUserRole(userRole)),
-  removeUserRole: (id: number) => dispatch(removeUserRole(id)),
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+  removeUserRole: (id: number) => dispatch(removeUserRole(id))
 });
 
 const UserRolesForm = reduxForm({

@@ -6,7 +6,6 @@ import ish.DatabaseSetup
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.Message
-import ish.oncourse.server.cayenne.MessagePerson
 import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.messaging.MailDeliveryParam
 import ish.oncourse.server.messaging.MailDeliveryService
@@ -45,14 +44,12 @@ class MessageServiceTest extends TestWithDatabase {
 
         messageService.sendMessage(messageSpec)
 
-        List<Message> messages = ObjectSelect.query(Message).prefetch(Message.MESSAGE_PERSONS.joint()).select(cayenneContext)
-        List<MessagePerson> messagePeople = ObjectSelect.query(MessagePerson).select(cayenneContext)
+        List<Message> messages = ObjectSelect.query(Message).select(cayenneContext)
 
 
-        Assertions.assertEquals(3, messages.size())
-        Assertions.assertEquals(2, messagePeople.size())
+        Assertions.assertEquals(2, messages.size())
 
-        Message messageToFirstStudent = messages.find { it.messagePersons.find { it.contact.id == 1l } }
+        Message messageToFirstStudent = messages.find { it.contact?.id == 1l }
         Assertions.assertNotNull(messageToFirstStudent, "The email would be sent to the first student!")
         Assertions.assertEquals("Hello Student First", messageToFirstStudent.emailSubject)
         Assertions.assertEquals("Thank you for you enrolment to our course TestCourse! Common cost is 100", messageToFirstStudent.emailBody)
@@ -79,16 +76,15 @@ class MessageServiceTest extends TestWithDatabase {
 
         messageService.sendMessage(messageSpec)
 
-        List<Message> messages = ObjectSelect.query(Message).prefetch(Message.MESSAGE_PERSONS.joint()).select(cayenneContext)
-        List<MessagePerson> messagePeople = ObjectSelect.query(MessagePerson).select(cayenneContext)
+        List<Message> messages = ObjectSelect.query(Message).select(cayenneContext)
 
 
-        Assertions.assertEquals(3, messages.size())
-        Assertions.assertEquals(1, messagePeople.size())
+        Assertions.assertEquals(1, messages.size())
 
-        Message messageToSecondStudent = messages.find { it.messagePersons.find { it.contact.id == 2l } }
+        Message messageToSecondStudent = messages.find { it.contact?.id == 2l  }
         Assertions.assertNotNull(messageToSecondStudent, "The SMS would be sent to the second student!")
-        Assertions.assertEquals(messageToSecondStudent.smsText, "Hi, Student Second. Thank you!")
+        String expectedMessage = "Hi, Student Second, from ${systemUser.fullName}. Thank you!"
+        Assertions.assertEquals(expectedMessage, messageToSecondStudent.smsText)
         Assertions.assertNull(messageToSecondStudent.emailSubject, "The subject should be null")
         Assertions.assertNull(messageToSecondStudent.emailBody, "The textBody should be null")
         Assertions.assertNull(messageToSecondStudent.emailHtmlBody, "The htmlBody should be null")

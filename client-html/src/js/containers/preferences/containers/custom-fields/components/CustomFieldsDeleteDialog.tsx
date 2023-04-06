@@ -4,7 +4,7 @@
  */
 
 import { CustomFieldType } from "@api/model";
-import MuiButton from "@mui/material/Button";
+import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -13,10 +13,7 @@ import Typography from "@mui/material/Typography";
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import {
-  getFormValues, initialize, InjectedFormProps, reduxForm
-} from "redux-form";
-import Button from "@mui/material/Button";
+import { getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { stubFunction } from "../../../../../common/utils/common";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
@@ -84,7 +81,7 @@ const CustomFieldsDeleteDialog = React.memo<CustomFieldsDeleteDialogProps & Inje
               </Typography>
             )}
           </div>
-          <Grid item xs={12}>
+          <Grid item xs={12} className="mt-2">
             <FormField
               type="text"
               name="customFieldName"

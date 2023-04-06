@@ -3,9 +3,102 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Course, EntityRelationType, Module, Qualification, Sale, SaleType } from "@api/model";
-import { Classes } from "../../../../model/entities/CourseClass";
+import {
+ Account, Course, EntityRelationType, Module, Qualification, Sale, SaleType 
+} from "@api/model";
+import { format } from "date-fns";
 import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
+import { EntityName } from "../../../../model/entities/common";
+import { EEE_D_MMM_YYYY } from "../../../../common/utils/dates/format";
+import { State } from "../../../../reducers/state";
+
+export const mapEntityDisplayName = (entity: EntityName) => {
+  switch (entity) {
+    case "VoucherProduct":
+      return "Voucher";
+    case "MembershipProduct":
+      return "Membership";
+    case "ArticleProduct":
+      return "Product";
+    case "Article":
+    case "ProductItem":
+    case "Voucher":
+    case "Membership":
+      return "Sale";
+    case "AbstractInvoice":
+    case "Invoice":
+      return "Invoice";
+    case "CourseClass":
+      return "Class";
+    case "PaymentIn":
+      return "Payment In";
+    case "PaymentOut":
+      return "Payment Out";
+    default:
+      return entity.split(/(?=[A-Z])/).join(" ").toLowerCase().capitalize();
+  }
+};
+
+export const mapEntityListDisplayName = (entity: EntityName, item: any, state: State) => {
+  switch (entity) {
+    case "Account":
+      return `${item.accountCode} ${item.description}`;
+    case "Application":
+      return item.courseName;
+    case "AssessmentSubmission":
+      return item.id;
+    case "Banking":
+      return `${format(new Date(item.settlementDate), EEE_D_MMM_YYYY)}${item.adminSite ? " for " + item.adminSite : ""}`;
+    case "CorporatePass":
+      return item.contactFullName;
+    case "Certificate":
+      return item.studentName;
+    case "Course":
+      return `${item.name} ${item.code}`;
+    case "Outcome":
+    case "Enrolment":
+      return item.studentName;
+    case "Invoice":
+    case "AbstractInvoice":
+      return item.invoiceNumber;
+    case "Lead":
+      return item.contactName;
+    case "Message":
+      return `${item.sentToContactFullname} (${item.subject})`;
+    case "Qualification":
+    case "PriorLearning":
+    case "Module":
+      return item.title;
+    case "PaymentIn":
+      return item.payerName;
+    case "PaymentOut":
+      return item.payeeName;
+    case "Payslip":
+      return item.tutorFullName;
+    case "ProductItem":
+      return item.productName;
+    case "Survey":
+      return item.studentName + " - " + item.className;
+    case "AccountTransaction": {
+      let name: any = item.fromAccount;
+
+      if (state.plainSearchRecords.Account.items) {
+        const account = state.plainSearchRecords.Account.items.find((acc: Account) => acc.id === item.fromAccount);
+
+        if (account) {
+          name = `${account.description} ${account.accountCode}`;
+        }
+      }
+
+      return name;
+    }
+    case "WaitingList":
+      return item.courseName;
+
+    default:
+      return item.name;
+  }
+};
 
 export const entityForLink = (type: SaleType) => {
   switch (type) {
@@ -58,7 +151,7 @@ export const formatRelatedSalables = (relatedItems, type?: SaleType) => relatedI
     primaryText: item.name,
     secondaryText: item.code,
     link: entityName === SaleType.Class
-      ? `/${Classes.path}?search=id is ${entityId}`
+      ? `/class?search=id is ${entityId}`
       : `/${entityForLink(entityName)}/${entityId}`,
     active: typeof r.active === "boolean"
       ? r.active
@@ -92,3 +185,16 @@ export const formattedEntityRelationTypes = (types: EntityRelationType[]): Entit
 };
 
 export const salesSort = (a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+
+export const mapRelatedSalables = (s): Sale & { tempId: any } => ({
+  id: s.entityId,
+  tempId: s.entityId,
+  name: s.primaryText,
+  code: s.secondaryText,
+  active: s.active,
+  type: s.entityName,
+  expiryDate: null,
+  entityFromId: s.entityId,
+  entityToId: null,
+  relationId: -1
+});

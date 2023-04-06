@@ -12,22 +12,15 @@ import { initialize } from "redux-form";
 import { Dispatch } from "redux";
 import { WaitingList } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
 import WaitingListEditView from "./components/WaitingListEditView";
-import {
-  clearListState,
-  getFilters,
-  setListEditRecord,
- } from "../../../common/components/list-view/actions";
+import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { getEntityTags, getListTags } from "../../tags/actions";
-import {
-  createWaitingList, getWaitingList, removeWaitingList, updateWaitingList
-} from "./actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { State } from "../../../reducers/state";
 import WaitingListCogWheel from "./components/WaitingListCogWheel";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { checkPermissions } from "../../../common/actions";
+import { FindRelatedItem } from "../../../model/common/ListView";
 
 const Initial: WaitingList = {
   id: null,
@@ -39,14 +32,10 @@ const Initial: WaitingList = {
   customFields: {}
 };
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == WaitingList and entityId" },
   { title: "Contacts", list: "contact", expression: "student.waitingLists.id" }
 ];
-
-const nestedEditFields = {
-  SendMessage: props => <SendMessageEditView {...props} />
-};
 
 const manualLink = getManualLink("waitingLists");
 
@@ -66,34 +55,27 @@ class WaitingLists extends React.Component<any, any> {
 
   render() {
     const {
-      getWaitingListRecord, onCreate, onDelete, onSave, updateTableModel, onInit
+      updateTableModel, onInit
     } = this.props;
 
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "student.contact.fullName",
-            secondaryColumn: "course.name"
-          }}
-          editViewProps={{
-            manualLink,
-            nameCondition,
-            hideTitle: true
-          }}
-          updateTableModel={updateTableModel}
-          nestedEditFields={nestedEditFields}
-          EditViewContent={WaitingListEditView}
-          getEditRecord={getWaitingListRecord}
-          rootEntity="WaitingList"
-          onInit={onInit}
-          onCreate={onCreate}
-          onDelete={onDelete}
-          onSave={onSave}
-          findRelated={findRelatedGroup}
-          CogwheelAdornment={WaitingListCogWheel}
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "student.contact.fullName",
+          secondaryColumn: "course.name"
+        }}
+        editViewProps={{
+          manualLink,
+          nameCondition,
+          hideTitle: true
+        }}
+        updateTableModel={updateTableModel}
+        EditViewContent={WaitingListEditView}
+        rootEntity="WaitingList"
+        onInit={onInit}
+        findRelated={findRelatedGroup}
+        CogwheelAdornment={WaitingListCogWheel}
+      />
     );
   }
 }
@@ -116,11 +98,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getFilters: () => dispatch(getFilters("WaitingList")),
   getTags: () => dispatch(getListTags("WaitingList")),
-  clearListState: () => dispatch(clearListState()),
-  getWaitingListRecord: (id: string) => dispatch(getWaitingList(id)),
-  onSave: (id: string, waitingList: WaitingList) => dispatch(updateWaitingList(id, waitingList)),
-  onCreate: (waitingList: WaitingList) => dispatch(createWaitingList(waitingList)),
-  onDelete: (id: string) => dispatch(removeWaitingList(id))
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(WaitingLists);

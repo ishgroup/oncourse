@@ -11,14 +11,17 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.common.CalculateEndDate
-import ish.common.CalculateStartDate
+import ish.oncourse.server.util.AttendanceNotTakenProcessor
+import ish.oncourse.server.util.AttendanceProcessor
+import ish.oncourse.server.util.AttendanceTakenProcessor
+import ish.oncourse.server.util.EndDateCalculator
+import ish.oncourse.server.util.StartDateCalculator
 import ish.common.types.ClassFundingSource
 import ish.common.types.DeliveryMode
 import ish.common.types.OutcomeStatus
 import ish.oncourse.API
+import ish.oncourse.cayenne.OutcomeInterface
 import ish.oncourse.cayenne.QueueableEntity
-import ish.oncourse.entity.delegator.OutcomeDelegator
 import ish.oncourse.function.CalculateOutcomeReportableHours
 import ish.oncourse.server.cayenne.glue._Outcome
 import ish.util.LocalDateUtils
@@ -28,7 +31,6 @@ import org.apache.logging.log4j.Logger
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
 import java.time.LocalDate
-
 /**
  * Outcomes are a relationship between a student and a Module/Unit of Competency and represents
  * a student's progress through training, and the result of their assessment.
@@ -38,7 +40,7 @@ import java.time.LocalDate
  */
 @API
 @QueueableEntity
-class Outcome extends _Outcome implements Queueable, OutcomeTrait {
+class Outcome extends _Outcome implements Queueable, OutcomeTrait, OutcomeInterface {
 
 	private static final Logger logger = LogManager.getLogger()
 	public static final String STUDENT_NAME = "studentName"
@@ -48,6 +50,7 @@ class Outcome extends _Outcome implements Queueable, OutcomeTrait {
 	public static final String TRAINING_PLAN_END_DATE_PROPERTY = "trainingPlanEndDate"
 	public static final String PRESENT_ATTENDENCE_PERCENT_KEY = "presentAttendancePercent"
 	public static final String MARKED_ASSESSMENT_PERCENT_KEY = "markedAssessmentPercent"
+	public static final String PRINTED_CERTIFICATE_KEY = "printedCertificate"
 
 	public static final String CODE = "code";
 	public static final String NAME = "name";
@@ -379,7 +382,7 @@ class Outcome extends _Outcome implements Queueable, OutcomeTrait {
 	 */
 	@API
 	LocalDate getTrainingPlanStartDate() {
-		return LocalDateUtils.dateToValue(calculateStartDate(Boolean.FALSE))
+		return LocalDateUtils.dateToValue(calculateStartDate(new AttendanceNotTakenProcessor()))
 	}
 
 	/**
@@ -387,7 +390,7 @@ class Outcome extends _Outcome implements Queueable, OutcomeTrait {
 	 */
 	@API
 	LocalDate getTrainingPlanEndDate() {
-		return LocalDateUtils.dateToValue(calculateEndDate(Boolean.FALSE))
+		return LocalDateUtils.dateToValue(calculateEndDate(new AttendanceNotTakenProcessor()))
 	}
 
 	/**
@@ -395,7 +398,7 @@ class Outcome extends _Outcome implements Queueable, OutcomeTrait {
 	 */
 	@API
 	LocalDate getActualStartDate() {
-		return LocalDateUtils.dateToValue(calculateStartDate(Boolean.TRUE))
+		return LocalDateUtils.dateToValue(calculateStartDate(new AttendanceTakenProcessor()))
 	}
 
 	/**
@@ -403,14 +406,22 @@ class Outcome extends _Outcome implements Queueable, OutcomeTrait {
 	 */
 	@API
 	LocalDate getActualEndDate() {
-		return LocalDateUtils.dateToValue(calculateEndDate(Boolean.TRUE))
+		return LocalDateUtils.dateToValue(calculateEndDate(new AttendanceTakenProcessor()))
 	}
 
-	Date calculateStartDate(Boolean attendanceTakenIntoAccount) {
-		return new CalculateStartDate(OutcomeDelegator.valueOf(this), attendanceTakenIntoAccount).calculate()
+	/**
+	 * @return 'Yes' if outcome linked to at least 1 printed and non-revoked certificate
+	 */
+	@API
+	String getPrintedCertificate() {
+		return (certificateOutcomes?.certificate?.find { it.printedOn && it.revokedOn == null } != null) ? "Yes" : ""
 	}
 
-	Date calculateEndDate(Boolean attendanceTakenIntoAccount) {
-		return new CalculateEndDate(OutcomeDelegator.valueOf(this), attendanceTakenIntoAccount).calculate()
+	Date calculateStartDate(AttendanceProcessor attendanceProcessor) {
+		return calculateDate(new StartDateCalculator(), attendanceProcessor)
+	}
+
+	Date calculateEndDate(AttendanceProcessor attendanceProcessor) {
+		return calculateDate(new EndDateCalculator(), attendanceProcessor)
 	}
 }

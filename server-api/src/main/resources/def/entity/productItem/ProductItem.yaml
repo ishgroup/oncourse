@@ -53,3 +53,12 @@ properties:
     type: object
     additionalProperties:
       type: string
+  tags:
+    type: array
+    items:
+      type: integer
+      format: int64
+  documents:
+    type: array
+    items:
+      $ref: '../Document.yaml'

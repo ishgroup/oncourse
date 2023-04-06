@@ -4,13 +4,7 @@
  */
 
 import * as React from "react";
-import ClassNames from "clsx";
 import Grid from "@mui/material/Grid";
-import { withStyles, createStyles } from "@mui/styles";
-import AddIcon from "@mui/icons-material/Add";
-import Typography from "@mui/material/Typography";
-import Fab from "@mui/material/Fab";
-import { Dispatch } from "redux";
 import isEqual from "lodash.isequal";
 import { withRouter } from "react-router";
 import {
@@ -26,35 +20,25 @@ import {
 import { connect } from "react-redux";
 import { Holiday, RepeatEndEnum, RepeatEnum } from "@api/model";
 import { addHours } from "date-fns";
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../reducers/state";
 import AvailabilityRenderer from "../../../../../common/components/form/availabilityComponent/AvailabilityRenderer";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import getTimestamps from "../../../../../common/utils/timestamps/getTimestamps";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { setNextLocation } from "../../../../../common/actions";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
-
-const styles = theme =>
-  createStyles({
-    container: {
-      margin: theme.spacing(-3)
-    }
-  });
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("generalPrefs_holidays");
+
+export const HOLIDAYS_FORM: string = "HolidaysForm";
 
 interface Props {
   values: any;
   holidays: Holiday[];
   onSave: (items: Holiday[]) => void;
   onDelete: (id: number) => void;
-  timestamps: Date[];
-  classes: any;
   initialized: boolean;
   invalid: boolean;
   dirty: boolean;
@@ -65,7 +49,6 @@ interface Props {
   history: any;
   openConfirm?: ShowConfirmCaller;
   nextLocation?: string,
-  setNextLocation?: (nextLocation: string) => void,
 }
 
 class HolidaysBaseForm extends React.Component<Props, any> {
@@ -79,14 +62,15 @@ class HolidaysBaseForm extends React.Component<Props, any> {
     super(props);
 
     if (props.holidays) {
-      props.dispatch(initialize("HolidaysForm", { holidays: props.holidays }));
+      props.dispatch(initialize(HOLIDAYS_FORM, { holidays: props.holidays }));
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     // Initializing form with values
     if (nextProps.holidays && !this.props.initialized) {
-      this.props.dispatch(initialize("HolidaysForm", { holidays: nextProps.holidays }));
+      this.props.dispatch(initialize(HOLIDAYS_FORM, { holidays: nextProps.holidays }));
     }
     if (!this.isPending) {
       return;
@@ -115,7 +99,7 @@ class HolidaysBaseForm extends React.Component<Props, any> {
     item.repeatEndAfter = 0;
     item.repeatOn = undefined;
 
-    this.props.dispatch(arrayInsert("HolidaysForm", "holidays", 0, item));
+    this.props.dispatch(arrayInsert(HOLIDAYS_FORM, "holidays", 0, item));
     const domNode = document.getElementById("holidays[0].description");
     if (domNode) domNode.scrollIntoView({ behavior: "smooth" });
   };
@@ -145,11 +129,10 @@ class HolidaysBaseForm extends React.Component<Props, any> {
       this.props.onSave(this.getTouchedAndNew(value.holidays));
     })
       .then(() => {
-        const { history, nextLocation, setNextLocation } = this.props;
-        this.props.dispatch(initialize("HolidaysForm", { holidays: this.props.holidays }));
+        const { history, nextLocation } = this.props;
+        this.props.dispatch(initialize(HOLIDAYS_FORM, { holidays: this.props.holidays }));
 
         nextLocation && history.push(nextLocation);
-        setNextLocation('');
       })
       .catch(error => {
         this.isPending = false;
@@ -180,13 +163,13 @@ class HolidaysBaseForm extends React.Component<Props, any> {
         if (item.id) {
           onDelete(item.id);
         } else {
-          this.props.dispatch(arrayRemove("HolidaysForm", "holidays", index));
+          this.props.dispatch(arrayRemove(HOLIDAYS_FORM, "holidays", index));
           this.resolvePromise(true);
         }
       })
         .then(clientSideDelete => {
           if (!clientSideDelete) {
-            this.props.dispatch(initialize("HolidaysForm", { holidays: this.props.holidays }));
+            this.props.dispatch(initialize(HOLIDAYS_FORM, { holidays: this.props.holidays }));
           }
         })
         .catch(() => {
@@ -199,85 +182,60 @@ class HolidaysBaseForm extends React.Component<Props, any> {
 
   render() {
     const {
-      classes, handleSubmit, values, dirty, invalid, timestamps, dispatch, form
+      handleSubmit, values, dirty, invalid, holidays, dispatch, form
     } = this.props;
+
+    const timestamps = holidays && getTimestamps(holidays);
     const created = timestamps && timestamps[0];
     const modified = timestamps && timestamps[1];
 
     return (
-      <Form className="mt-2" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
+      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)} role={HOLIDAYS_FORM}>
         <RouteChangeConfirm form={form} when={dirty} />
 
-        <CustomAppBar>
-          <Grid container columnSpacing={3}>
-            <Grid item xs={12} className={ClassNames("centeredFlex", "relative")}>
-              <Fab
-                type="button"
-                size="small"
-                color="primary"
-                classes={{
-                  sizeSmall: "appBarFab"
-                }}
-                onClick={this.onAddNew}
-              >
-                <AddIcon />
-              </Fab>
-              <Typography color="inherit" noWrap className="appHeaderFontSize pl-2">
-                Holidays
-              </Typography>
-
-              <div className="flex-fill" />
-
+        <AppBarContainer
+          values={values}
+          manualUrl={manualUrl}
+          getAuditsUrl={() => `audit?search=~"UnavailableRule" and entityId in (${idsToString(values.holidays)})`}
+          disabled={!dirty}
+          invalid={invalid}
+          title="Holidays"
+          disableInteraction
+          createdOn={() => created}
+          modifiedOn={() => modified}
+          onAddMenu={() => this.onAddNew()}
+        >
+          <Grid container className="mt-2">
+            <Grid item sm={12} lg={10}>
               {values && (
-                <AppBarHelpMenu
-                  created={created}
-                  modified={modified}
-                  auditsUrl={`audit?search=~"UnavailableRule" and entityId in (${idsToString(values.holidays)})`}
-                  manualUrl={manualUrl}
+                <FieldArray
+                  name="holidays"
+                  component={AvailabilityRenderer}
+                  onDelete={this.onClickDelete}
+                  dispatch={dispatch}
+                  rerenderOnEveryChange
                 />
               )}
-
-              <FormSubmitButton
-                disabled={!dirty}
-                invalid={invalid}
-              />
             </Grid>
           </Grid>
-        </CustomAppBar>
-
-        <Grid container columnSpacing={3}>
-          <Grid item sm={12} lg={10} className={classes.container}>
-            {values && (
-              <FieldArray
-                name="holidays"
-                component={AvailabilityRenderer}
-                onDelete={this.onClickDelete}
-                dispatch={dispatch}
-                rerenderOnEveryChange
-              />
-            )}
-          </Grid>
-        </Grid>
+        </AppBarContainer>
       </Form>
     );
   }
 }
 
 const mapStateToProps = (state: State) => ({
-  timestamps: state.preferences.holidays && getTimestamps(state.preferences.holidays),
   holidays: state.preferences.holidays,
-  values: getFormValues("HolidaysForm")(state),
+  values: getFormValues(HOLIDAYS_FORM)(state),
   fetch: state.fetch,
   nextLocation: state.nextLocation
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-});
-
 const HolidaysForm = reduxForm({
   onSubmitFail,
-  form: "HolidaysForm"
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(HolidaysBaseForm))));
+  form: HOLIDAYS_FORM
+})(connect<any, any, any>(mapStateToProps, null)(
+  withRouter(HolidaysBaseForm)
+));
 
 export default HolidaysForm;

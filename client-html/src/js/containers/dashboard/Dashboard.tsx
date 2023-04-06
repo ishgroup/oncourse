@@ -14,17 +14,15 @@ import { PreferenceEnum } from "@api/model";
 import { State } from "../../reducers/state";
 import DashboardHeader from "./components/DashboardHeader";
 import ActionBody from "./components/action-body/ActionBody";
-import { getUserPreferences, showConfirm, setUserPreference } from "../../common/actions";
+import { getUserPreferences, showConfirm, setUserPreference, checkPermissions } from "../../common/actions";
 import {
   DASHBOARD_CATEGORY_WIDTH_KEY,
-  DASHBOARD_THEME_KEY,
-  APPLICATION_THEME_STORAGE_NAME
+  DASHBOARD_THEME_KEY, SYSTEM_USER_TUTORIAL_SKIP,
 } from "../../constants/Config";
 import { AppTheme, ThemeValues } from "../../model/common/Theme";
 import { toggleSwipeableDrawer } from "../../common/components/layout/swipeable-sidebar/actions";
 import { VARIANTS } from "../../common/components/layout/swipeable-sidebar/utils";
 import { SWIPEABLE_SIDEBAR_WIDTH } from "../../common/components/layout/swipeable-sidebar/SwipeableSidebar";
-import { LSGetItem } from "../../common/utils/storage";
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -55,6 +53,7 @@ class Dashboard extends React.PureComponent<any, any> {
   componentDidMount() {
     this.props.getDashboardPreferences();
     this.props.toggleSwipeableDrawer();
+    this.props.checkPermissions();
   }
 
   render() {
@@ -67,6 +66,7 @@ class Dashboard extends React.PureComponent<any, any> {
       openConfirm,
       drawerOpened,
       dispatch,
+      access
     } = this.props;
 
     return (
@@ -76,11 +76,10 @@ class Dashboard extends React.PureComponent<any, any> {
           classes.container,
           {
             [classes.drawerOpenedContainer]: drawerOpened
-          },
-          LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasBody"
+          }
         )}
       >
-        <Grid item xs={12}>
+        <Grid item xs={12} className="relative">
           <DashboardHeader
             dispatch={dispatch}
             upgradePlanLink={upgradePlanLink}
@@ -92,9 +91,12 @@ class Dashboard extends React.PureComponent<any, any> {
 
         <Grid item xs={12} className={classes.containerHeight}>
           <ActionBody
+            access={access}
+            dispatch={dispatch}
             preferencesCategoryWidth={preferences[DASHBOARD_CATEGORY_WIDTH_KEY]}
             setDashboardColumnWidth={setDashboardColumnWidth}
             drawerOpened={drawerOpened}
+            skipSystemUser={Boolean(preferences[SYSTEM_USER_TUTORIAL_SKIP])}
           />
         </Grid>
       </Grid>
@@ -105,16 +107,24 @@ class Dashboard extends React.PureComponent<any, any> {
 const mapStateToProps = (state: State) => ({
   drawerOpened: state.swipeableDrawer.opened,
   preferences: state.userPreferences,
-  upgradePlanLink: state.dashboard.upgradePlanLink
+  upgradePlanLink: state.dashboard.upgradePlanLink,
+  access: state.access
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   dispatch,
-  getDashboardPreferences: () => dispatch(getUserPreferences([DASHBOARD_CATEGORY_WIDTH_KEY])),
+  getDashboardPreferences: () => dispatch(getUserPreferences([DASHBOARD_CATEGORY_WIDTH_KEY, SYSTEM_USER_TUTORIAL_SKIP])),
   setDashboardColumnWidth: (key: PreferenceEnum, value: string) => dispatch(setUserPreference({ key, value })),
   setPreferencesTheme: (value: ThemeValues) => dispatch(setUserPreference({ key: DASHBOARD_THEME_KEY, value })),
   openConfirm: props => dispatch(showConfirm(props)),
   toggleSwipeableDrawer: () => dispatch(toggleSwipeableDrawer(VARIANTS.persistent)),
+  checkPermissions: () => {
+    dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Course", method: "GET" }));
+    dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Site", method: "GET" }));
+    dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Contact", method: "GET" }));
+    dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=CourseClass", method: "GET" }));
+    dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=SystemUser", method: "GET" }));
+  }
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Dashboard));

@@ -1,0 +1,189 @@
+databaseChangeLog:
+    - changeSet:
+        id: 106-1
+        author: dmitriy
+        preConditions:
+          - onFail: HALT
+          - and:
+              - not:
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: emailSubject
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: emailBody
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: emailFrom
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: emailHtmlBody
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: creatorKey
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: postDescription
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: smsText
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: createdByUserId
+        changes:
+          - addColumn:
+              tableName: Message_Person
+              columns:
+                - column:
+                    name: emailSubject
+                    type: VARCHAR(500)
+                - column:
+                    name: emailBody
+                    type: TEXT
+                - column:
+                    name: emailFrom
+                    type: VARCHAR(200)
+                - column:
+                    name: emailHtmlBody
+                    type: mediumtext
+                - column:
+                    name: creatorKey
+                    type: VARCHAR(256)
+                - column:
+                    name: postDescription
+                    type: VARCHAR(1000)
+                - column:
+                    name: smsText
+                    type: longtext
+                - column:
+                    name: createdByUserId
+                    type: BIGINT
+          - createIndex:
+                columns:
+                    - column:
+                          name: messageId
+                indexName: fk_Message_Person_Message
+                tableName: Message_Person
+                unique: false
+
+    - changeSet:
+          id: 106-2
+          author: dmitriy
+          preConditions:
+              - onFail: HALT
+              - and:
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: emailSubject
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: emailBody
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: emailFrom
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: emailHtmlBody
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: creatorKey
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: postDescription
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: smsText
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: createdByUserId
+          changes:
+              - sql: 'UPDATE Message m INNER JOIN Message_Person mp ON mp.messageId = m.Id
+                        SET mp.emailSubject = m.emailSubject,
+                            mp.emailBody = m.emailBody,
+                            mp.emailFrom = m.emailFrom,
+                            mp.emailHtmlBody = m.emailHtmlBody,
+                            mp.creatorKey = m.creatorKey,
+                            mp.postDescription = m.postDescription,
+                            mp.smsText = m.smsText,
+                            mp.createdByUserId = m.createdByUserId
+                        WHERE mp.emailSubject IS NULL and mp.smsText IS NULL'
+    - changeSet:
+          id: 106-3
+          author: dmitriy
+          preConditions:
+              - onFail: HALT
+              - and:
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: emailSubject
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: emailBody
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: emailFrom
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: emailHtmlBody
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: creatorKey
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: postDescription
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: smsText
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: createdByUserId
+          changes:
+              - addForeignKeyConstraint:
+                  baseColumnNames: createdByUserId
+                  baseTableName: Message_Person
+                  constraintName: fk_Message_CreatedBy_SystemUser
+                  referencedColumnNames: id
+                  referencedTableName: SystemUser
+              - renameColumn:
+                  columnDataType: int(11)
+                  newColumnName: numberOfAttempts
+                  oldColumnName: attemptCount
+                  tableName: Message_Person
+              - renameColumn:
+                  columnDataType: DATETIME
+                  newColumnName: timeOfDelivery
+                  oldColumnName: sentOn
+                  tableName: Message_Person
+
+    - changeSet:
+        id: 106-4
+        author: dmitriy
+        preConditions:
+          - onFail: HALT
+          - and:
+              - columnExists:
+                  tableName: Message_Person
+                  columnName: messageId
+              - tableExists:
+                  tableName: Message
+              - tableExists:
+                  tableName: Message_Person
+        changes:
+          - dropForeignKeyConstraint:
+              baseTableName: Message_Person
+              constraintName: fk_MessPers_Message
+          - dropIndex:
+              tableName: Message_Person
+              indexName: fk_Message_Person_Message
+          - dropNotNullConstraint:
+              columnName: contactId
+              tableName: Message_Person
+              columnDataType: BIGINT
+          - dropTable:
+              tableName: Message
+          - dropColumn:
+                tableName: Message_Person
+                columnName: messageId
+          - renameTable:
+              newTableName: Message
+              oldTableName: Message_Person

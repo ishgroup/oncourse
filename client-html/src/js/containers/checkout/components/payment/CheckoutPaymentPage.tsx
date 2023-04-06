@@ -5,13 +5,11 @@
 
 import React, { useMemo } from "react";
 import { connect } from "react-redux";
-import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
-import LoadingIndicator from "../../../../common/components/layout/LoadingIndicator";
+import LoadingIndicator from "../../../../common/components/progress/LoadingIndicator";
 import {
  CheckoutDiscount, CheckoutItem, CheckoutPayment, CheckoutSummary
 } from "../../../../model/checkout";
 import { State } from "../../../../reducers/state";
-import { getContactName } from "../../../entities/contacts/utils";
 import CheckoutPreviousInvoiceList from "../summary/CheckoutPreviousInvoiceList";
 import CheckoutDiscountEditView from "../summary/promocode/CheckoutDiscountEditView";
 import CreditCardPaymentPage from "./components/payment-methods/CreditCardPaymentPage";
@@ -19,6 +17,8 @@ import PaymentPage from "./components/payment-methods/PaymentPage";
 import CheckoutAppBar from "../CheckoutAppBar";
 import RestartButton from "../RestartButton";
 import { CheckoutPage } from "../../constants";
+import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+import { getContactFullName } from "../../../entities/contacts/utils";
 
 interface PaymentPageProps {
   payment?: CheckoutPayment;
@@ -42,7 +42,7 @@ const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
 
   const payerName = useMemo(() => {
     const payer = summary.list.find(l => l.payer);
-    return payer ? getContactName(payer.contact) : "";
+    return payer ? getContactFullName(payer.contact as any) : "";
   }, [summary.list]);
 
   const title = payment.process.status === "success" ? "Transaction successful"
@@ -61,26 +61,34 @@ const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
         ? <CheckoutDiscountEditView type="voucher" selectedDiscount={voucherItem} />
         : (
           <div className="root">
-            <CustomAppBar>
-              <CheckoutAppBar title={title} />
-              {payment.process.status === "success" && <RestartButton />}
-            </CustomAppBar>
             <LoadingIndicator customLoading={isPaymentProcessing} />
 
-            {selectedPaymentType && selectedPaymentType.type === "Credit card"
+
+            <AppBarContainer
+              hideHelpMenu
+              hideSubmitButton
+              disableInteraction
+              title={(
+                <CheckoutAppBar title={title} />
+              )}
+              actions={
+                payment.process.status === "success" && <RestartButton />
+              }
+            >
+              {selectedPaymentType && selectedPaymentType.type === "Credit card"
               && (
-              <CreditCardPaymentPage
-                isPaymentProcessing={isPaymentProcessing}
-                payerName={payerName}
-                summary={summary}
-                disablePayment={disablePayment}
-              />
-            )}
+                <CreditCardPaymentPage
+                  isPaymentProcessing={isPaymentProcessing}
+                  payerName={payerName}
+                  summary={summary}
+                  disablePayment={disablePayment}
+                />
+              )}
 
-            {((selectedPaymentType && selectedPaymentType.type !== "Credit card")
-            || (!selectedPaymentType && ["No payment", "Saved credit card"].includes(payment.selectedPaymentType)))
-            && <PaymentPage paymentType={payment.selectedPaymentType} payerName={payerName} summary={summary} />}
-
+              {((selectedPaymentType && selectedPaymentType.type !== "Credit card")
+                || (!selectedPaymentType && ["No payment", "Saved credit card"].includes(payment.selectedPaymentType)))
+              && <PaymentPage paymentType={payment.selectedPaymentType} payerName={payerName} summary={summary} />}
+            </AppBarContainer>
           </div>
       )}
     </>

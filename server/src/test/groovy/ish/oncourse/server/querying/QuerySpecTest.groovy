@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import ish.DatabaseOperation
 import ish.TestWithDatabase
 import ish.DatabaseSetup
+import ish.common.types.AutomationStatus
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.scripting.ScriptParameters
@@ -252,7 +253,7 @@ class QuerySpecTest extends TestWithDatabase {
         GroovyScriptService scriptService = injector.getInstance(GroovyScriptService)
 
         Script script = context.newObject(Script.class)
-        script.setEnabled(true)
+        script.setAutomationStatus(AutomationStatus.ENABLED)
 
         script.setScript("""
                            def result = query {

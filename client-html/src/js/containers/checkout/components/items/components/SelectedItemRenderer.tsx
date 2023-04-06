@@ -52,18 +52,28 @@ const CourseItemRenderer: React.FC<any> = props => {
           </Typography>
           <div className="align-items-center text-truncate">
             <Typography variant="caption">
-              {item.class.courseCode}
-              -
-              {item.class.code}
-              {item.class.startDateTime !== null
-                ? " ( "
-                  + formatDate(item.class.siteTimezone
-                  ? appendTimezone(new Date(item.class.startDateTime), item.class.siteTimezone)
-                  : new Date(item.class.startDateTime), III_DD_MMM_YYYY_HH_MM_AAAA)
-                    .replace("a.m.", "am")
-                    .replace("p.m.", "pm")
-                  + " )"
-                : ""}
+              {item.class 
+                ? (
+                  <>
+                    {item.class.courseCode}
+                    -
+                    {item.class.code}
+                    {item.class.startDateTime !== null
+                    ? " ( "
+                    + formatDate(item.class.siteTimezone
+                      ? appendTimezone(new Date(item.class.startDateTime), item.class.siteTimezone)
+                      : new Date(item.class.startDateTime), III_DD_MMM_YYYY_HH_MM_AAAA)
+                      .replace("a.m.", "am")
+                      .replace("p.m.", "pm")
+                    + " )"
+                    : ""}
+                  </>
+                )
+                : (
+                  <>
+                    No class selected
+                  </>
+                )}
             </Typography>
           </div>
         </div>
@@ -81,8 +91,8 @@ export const StyledCourseItemRenderer = withStyles(styles)(CourseItemRenderer);
 
 const CommonItemRenderer: React.FC<any> = props => {
   const {
- item, index, classes, onDelete, openRow, selected
-} = props;
+   item, index, classes, onDelete, openRow, selected
+  } = props;
 
   return (
     <>
@@ -136,7 +146,7 @@ const Item = props => {
         <CommonItemRenderer item={item} {...props} selected={selected} />
       )}
       </div>
-      {mounted && item.type === "course" && item.class.message && (
+      {mounted && item.type === "course" && item.class?.message && (
         <CheckoutAlertTextMessage message={item.class.message} />
       )}
     </div>
@@ -145,12 +155,10 @@ const Item = props => {
 
 const SelectedItemRenderer = memo<any>(({
  items, ...rest
-}) => {
-  return (
-    <div className="relative">
-      {items && items.map((item, index) => <Item item={item} index={index} {...rest} />)}
-    </div>
-  );
-});
+}) => (
+  <div className="relative">
+    {items && items.map((item, index) => <Item item={item} index={index} {...rest} />)}
+  </div>
+  ));
 
 export default withStyles(styles)(SelectedItemRenderer);

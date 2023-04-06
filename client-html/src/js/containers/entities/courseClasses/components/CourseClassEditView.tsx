@@ -1,26 +1,28 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import clsx from "clsx";
 import Decimal from "decimal.js-light";
 import React, {
- useEffect, useMemo, useState, Fragment
+  useEffect, useMemo, useState, Fragment, useCallback
 } from "react";
 import { format } from "date-fns";
 import { connect, useSelector } from "react-redux";
-import { Tax } from "@api/model";
+import { ClassCost, CourseClassTutor, DefinedTutorRole, Tax } from "@api/model";
 import debounce from "lodash.debounce";
 import Edit from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
 import { Typography } from "@mui/material";
-import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
-import { decimalMul } from "../../../../common/utils/numbers/decimalCalculation";
+import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
+import { decimalMinus, decimalMul, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { StringArgFunction } from "../../../../model/common/CommonFunctions";
-import { AppTheme } from "../../../../model/common/Theme";
 import { getRoundingByType } from "../../discounts/utils";
 import { getCurrentTax } from "../../taxes/utils";
 import CourseClassGeneralTab from "./general/CourseClassGeneralTab";
@@ -48,8 +50,10 @@ import CourseClassDocumentsTab from "./documents/CourseClassDocumentsTab";
 import history from "../../../../constants/History";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../constants";
 import { appendTimezone } from "../../../../common/utils/dates/formatTimezone";
-import { discountsSort } from "./budget/utils";
+import { discountsSort, excludeOnEnrolPaymentPlan } from "./budget/utils";
 import { makeAppStyles } from "../../../../common/styles/makeStyles";
+import { getTutorPayInitial } from "./tutors/utils";
+import { getClassCostTypes } from "../utils";
 
 const itemsBase: TabsListItem[] = [
   {
@@ -124,6 +128,7 @@ const itemsBase: TabsListItem[] = [
 ];
 
 interface Props extends EditViewProps<CourseClassExtended> {
+  tutorRoles?: DefinedTutorRole[];
   currencySymbol?: string;
   taxes?: Tax[];
 }
@@ -177,7 +182,7 @@ const FeeEditButton = ({ onClick, className }) => (
   </IconButton>
 );
 
-const useBudgetAdornmentStyles = makeAppStyles()((theme: AppTheme) => ({
+const useBudgetAdornmentStyles = makeAppStyles(theme => ({
   root: {
     display: "grid",
     gridTemplateColumns: "1fr auto",
@@ -223,7 +228,7 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
  expandBudgetItem,
  currentTax
 }) => {
-  const { classes } = useBudgetAdornmentStyles();
+  const classes = useBudgetAdornmentStyles();
 
   const discounts = useMemo(() => {
     const discountItems = budget.filter(b => b.flowType === "Discount"
@@ -288,10 +293,11 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
                 e.stopPropagation();
 
                 dispatch(setCourseClassBudgetModalOpened(true));
+                
                 dispatch(
                   initialize(
                     COURSE_CLASS_COST_DIALOG_FORM,
-                    studentFee
+                    excludeOnEnrolPaymentPlan(studentFee, currentTax)
                   )
                 );
 
@@ -329,13 +335,13 @@ const CourseClassEditView: React.FC<Props> = ({
   manualLink,
   showConfirm,
   syncErrors,
-  openNestedEditView,
   onCloseClick,
   rootEntity,
   invalid,
   toogleFullScreenEditView,
   currencySymbol,
-  taxes
+  taxes,
+  tutorRoles
 }) => {
   const [classRooms, setClassRooms] = useState<CourseClassRoom[]>([]);
   const [sessionsData, setSessionsData] = useState<any>(null);
@@ -379,13 +385,13 @@ const CourseClassEditView: React.FC<Props> = ({
 
   const budgetLabelAdornment = useMemo(
     () => {
-      const studentFee = values.budget && values.budget.find(
+      const studentFeeIndex = values.budget && values.budget.findIndex(
         b => b.flowType === "Income" && b.repetitionType === "Per enrolment" && b.invoiceToStudent
       );
 
       return (twoColumn ? (
         <BudgetAdornment
-          studentFee={studentFee}
+          studentFee={{ ...values.budget[studentFeeIndex] || {}, index: studentFeeIndex }}
           currencySymbol={currencySymbol}
           isNew={isNew}
           dispatch={dispatch}
@@ -460,6 +466,84 @@ const CourseClassEditView: React.FC<Props> = ({
 
   const savedTutors = useMemo(() => (values.tutors ? values.tutors.filter(t => t.id) : []), [values.tutors]);
 
+  const addTutorWage = useCallback(
+    (tutor: CourseClassTutor, wage?: ClassCostExtended) => {
+      const role = tutorRoles.find(r => r.id === tutor.roleId);
+      const onCostRate = (role && role["currentPayrate.oncostRate"]) ? parseFloat(role["currentPayrate.oncostRate"]) : 0;
+      const perUnitAmountExTax = (role && role["currentPayrate.rate"]) ? parseFloat(role["currentPayrate.rate"]) : 0;
+      const initWage: ClassCost = wage || getTutorPayInitial(tutor, values.id, values.taxId, role, perUnitAmountExTax);
+
+      dispatch(setCourseClassBudgetModalOpened(true, isNaN(onCostRate) ? 0 : onCostRate));
+      dispatch(initialize(COURSE_CLASS_COST_DIALOG_FORM, initWage));
+      if (twoColumn) {
+        const search = new URLSearchParams(window.location.search);
+        search.append("expandTab", "4");
+        history.replace({
+          pathname: history.location.pathname,
+          search: decodeURIComponent(search.toString())
+        });
+
+        if (!expandedBudget.includes("Total Cost")) {
+          expandBudgetItem("Total Cost");
+        }
+      }
+    },
+    [tutorRoles, twoColumn, values.taxId, values.id, expandedBudget]
+  );
+
+
+  const classCostTypes = useMemo(
+    () =>
+      getClassCostTypes(
+        values.budget,
+        values.maximumPlaces,
+        values.budgetedPlaces,
+        values.successAndQueuedEnrolmentsCount,
+        values.sessions,
+        values.tutors,
+        tutorRoles,
+      ),
+    [
+      values.budget,
+      values.maximumPlaces,
+      values.budgetedPlaces,
+      values.successAndQueuedEnrolmentsCount,
+      values.sessions,
+      values.tutors,
+      tutorRoles
+    ]
+  );
+
+  const netValues = useMemo(() => {
+    const max = decimalMinus(
+      decimalPlus(classCostTypes.customInvoices.max, classCostTypes.income.max),
+      classCostTypes.discount.max
+    );
+
+    const projected = decimalMinus(
+      decimalPlus(classCostTypes.customInvoices.projected, classCostTypes.income.projected),
+      classCostTypes.discount.projected
+    );
+
+    const actual = decimalMinus(
+      decimalPlus(classCostTypes.customInvoices.actual, classCostTypes.income.actual),
+      classCostTypes.discount.actual
+    );
+
+    return {
+      income: {
+        max,
+        projected,
+        actual
+      },
+      profit: {
+        max: decimalMinus(max, classCostTypes.cost.max),
+        projected: decimalMinus(projected, classCostTypes.cost.projected),
+        actual: decimalMinus(actual, classCostTypes.cost.actual)
+      }
+    };
+  }, [classCostTypes]);
+
   return (
     <TabsList
       items={items}
@@ -477,7 +561,6 @@ const CourseClassEditView: React.FC<Props> = ({
         manualLink,
         showConfirm,
         syncErrors,
-        openNestedEditView,
         onCloseClick,
         rootEntity,
         toogleFullScreenEditView,
@@ -487,15 +570,18 @@ const CourseClassEditView: React.FC<Props> = ({
         savedTutors,
         expandedBudget,
         expandBudgetItem,
-        currentTax
+        addTutorWage,
+        currentTax,
+        classCostTypes,
+        netValues
       }}
-      customAppBar
     />
   );
 };
 
 const mapStateToProps = (state: State) => ({
   taxes: state.taxes.items,
+  tutorRoles: state.preferences.tutorRoles,
   currencySymbol: state.currency.shortCurrencySymbol
 });
 

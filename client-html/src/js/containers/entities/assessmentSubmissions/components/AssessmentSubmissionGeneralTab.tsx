@@ -12,11 +12,14 @@ import { change } from "redux-form";
 import { AssessmentSubmission } from "@api/model";
 import clsx from "clsx";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { getContactName } from "../../contacts/utils";
 import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import EntityService from "../../../../common/services/EntityService";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { EditViewProps } from "../../../../model/common/ListView";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { HeaderContactTitle } from "../../../../common/components/form/FieldAdornments";
+import { getContactFullName } from "../../contacts/utils";
 
 const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmission>> = props => {
   const {
@@ -26,18 +29,20 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
   const [tutors, setTutors] = useState([]);
 
   useEffect(() => {
-    EntityService.getPlainRecords(
-      "Contact",
-      "firstName,lastName",
-      `tutor.assessmentClassTutors.assessmentClass.assessmentSubmissions.id is ${values.id}`
-    )
-      .then(res => {
-        setTutors(res.rows.map(r => ({
-          contactId: Number(r.id),
-          tutorName: getContactName({ firstName: r.values[0], lastName: r.values[1] })
-        })));
-      })
-      .catch(err => instantFetchErrorHandler(dispatch, err));
+    if (values.id) {
+      EntityService.getPlainRecords(
+        "Contact",
+        "firstName,lastName",
+        `tutor.assessmentClassTutors.assessmentClass.assessmentSubmissions.id is ${values.id}`
+      )
+        .then(res => {
+          setTutors(res.rows.map(r => ({
+            contactId: Number(r.id),
+            tutorName: getContactFullName({ firstName: r.values[0], lastName: r.values[1] })
+          })));
+        })
+        .catch(err => instantFetchErrorHandler(dispatch, err));
+    }
   }, [values.id]);
 
   const onChangeMarked = (e: any, value: boolean) => {
@@ -58,14 +63,14 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
   };
 
   return (
-    <Grid container columnSpacing={3} className="pt-3 pl-3 pr-3">
-      <Grid item xs={twoColumn ? 4 : 12}>
-        <FormField
-          label="Student name"
-          name="studentName"
-          type="text"
-          placeholder={twoColumn ? "Name" : undefined}
-          disabled
+    <Grid container columnSpacing={3} rowSpacing={2} className="pt-3 pl-3 pr-3 mb-2">
+      <Grid item xs={12}>
+        <FullScreenStickyHeader
+          disableInteraction
+          twoColumn={twoColumn}
+          title={(
+            <HeaderContactTitle name={values?.studentName} id={values?.studentId} />
+          )}
         />
       </Grid>
       <Grid item xs={twoColumn ? 4 : 12}>
@@ -77,7 +82,7 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
           disabled
         />
       </Grid>
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid item xs={twoColumn ? 6 : 12}>
         <FormField
           label="Assessmment name"
           name="assessment"
@@ -86,57 +91,52 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
           disabled
         />
       </Grid>
-
-      <Grid container columnSpacing={3} className="pb-2">
-        <Grid item xs={twoColumn ? 4 : 12} className="d-flex align-items-center">
-          <FormControlLabel
-            className="checkbox"
-            control={<StyledCheckbox checked={values.submittedOn} />}
-            label="Submitted"
-            disabled
-          />
-        </Grid>
-        <Grid item xs={twoColumn ? 4 : 12} className={clsx("d-flex align-items-center", !twoColumn && "mb-2")}>
-          <FormControlLabel
-            className="checkbox"
-            label="Marked"
-            control={<StyledCheckbox checked={values.markedOn} onChange={onChangeMarked} />}
-          />
-        </Grid>
-        <Grid item xs={twoColumn ? 4 : 12}>
-          <FormField
-            type="select"
-            selectValueMark="contactId"
-            selectLabelMark="tutorName"
-            name="markedById"
-            label="Assessor"
-            items={tutors}
-            onChange={onAssessorChange}
-            allowEmpty
-          />
-        </Grid>
+      <Grid item xs={twoColumn ? 4 : 12} className="d-flex align-items-center">
+        <FormControlLabel
+          className="checkbox"
+          control={<StyledCheckbox checked={values.submittedOn} />}
+          label="Submitted"
+          disabled
+        />
       </Grid>
-
-      <Grid container columnSpacing={3}>
-        <Grid item xs={twoColumn ? 4 : 12}>
-          <FormField
-            label="Submitted on"
-            name="submittedOn"
-            type="dateTime"
-            placeholder={twoColumn ? "Submitted On" : undefined}
-            required
-          />
-        </Grid>
-        <Grid item xs={twoColumn ? 4 : 12}>
-          {values.markedOn && (
+      <Grid item xs={twoColumn ? 4 : 12} className={clsx("d-flex align-items-center", !twoColumn && "mb-2")}>
+        <FormControlLabel
+          className="checkbox"
+          label="Marked"
+          control={<StyledCheckbox checked={values.markedOn} onChange={onChangeMarked} />}
+        />
+      </Grid>
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <FormField
+          type="select"
+          selectValueMark="contactId"
+          selectLabelMark="tutorName"
+          name="markedById"
+          label="Assessor"
+          items={tutors}
+          onChange={onAssessorChange}
+          debounced={false}
+          allowEmpty
+        />
+      </Grid>
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <FormField
+          label="Submitted on"
+          name="submittedOn"
+          type="dateTime"
+          placeholder={twoColumn ? "Submitted On" : undefined}
+          required
+        />
+      </Grid>
+      <Grid item xs={twoColumn ? 4 : 12}>
+        {values.markedOn && (
           <FormField
             label="Marked on"
             name="markedOn"
             type="dateTime"
             placeholder={twoColumn ? "Marked On" : undefined}
           />
-            )}
-        </Grid>
+          )}
       </Grid>
     </Grid>
   );

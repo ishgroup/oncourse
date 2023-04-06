@@ -34,108 +34,98 @@ const renderTaxTypes = props => {
 
         return (
           <Card className="card" key={index}>
-            <Grid container columnSpacing={3} spacing={2} className="relative">
-              <Grid item xs={12}>
-                <Grid container columnSpacing={3}>
-                  <Grid item xs={4}>
-                    <FormField
-                      type="text"
-                      name={`${item}.code`}
-                      label="Tax Code"
-                      fullWidth
-                      disabled={field.systemType || !field.editable}
-                      className={classes.field}
-                      required
-                    />
-                  </Grid>
+            <Grid container columnSpacing={3} rowSpacing={2}  className="relative">
+              <Grid item xs={4}>
+                <FormField
+                  type="text"
+                  name={`${item}.code`}
+                  label="Tax Code"
+                  disabled={field.systemType || !field.editable}
+                  className={classes.field}
+                  required
+                />
+              </Grid>
 
-                  <Grid item xs={4}>
-                    <FormField
-                      type="persent"
-                      name={`${item}.rate`}
-                      label="Rate"
-                      min="0"
-                      max="100"
-                      step="0.01"
-                      format={formatFieldPercent}
-                      parse={parseFieldPercent}
-                      onKeyPress={preventNegativeOrLogEnter}
-                      disabled={!field.editable}
-                      className={classes.field}
-                      validate={validatePercentage}
-                      fullWidth
-                    />
-                  </Grid>
+              <Grid item xs={4}>
+                <FormField
+                  type="number"
+                  name={`${item}.rate`}
+                  label="Rate"
+                  min="0"
+                  max="100"
+                  step="0.01"
+                  format={formatFieldPercent}
+                  parse={parseFieldPercent}
+                  onKeyPress={preventNegativeOrLogEnter}
+                  disabled={!field.editable}
+                  className={classes.field}
+                  validate={validatePercentage}
+                  debounced={false}
+                />
+              </Grid>
 
-                  <Grid item xs={4}>
-                    <div className="d-flex">
-                      <FormControlLabel
-                        className={classes.checkbox}
-                        control={(
-                          <FormField
-                            type="checkbox"
-                            name={`${item}.gst`}
-                            color="primary"
-                            value="true"
-                            disabled={!field.editable}
-                            fullWidth
-                          />
-                        )}
-                        label="GST"
-                      />
-                      <div className="flex-fill" />
-                      {!field.systemType && (
-                        <div>
-                          <Button
-                            size="small"
-                            color="secondary"
-                            className={classes.deleteButton}
-                            onClick={() => onDelete(field, index)}
-                          >
-                            Delete
-                          </Button>
-                        </div>
-                      )}
+              <Grid item xs={4}>
+                <div className="d-flex">
+                  <FormControlLabel
+                    className={classes.checkbox}
+                    control={(
+                      <FormField
+                        type="checkbox"
+                        name={`${item}.gst`}
+                        color="primary"
+                        disabled={!field.editable}
+                                              />
+                    )}
+                    label="GST"
+                  />
+                  <div className="flex-fill" />
+                  {!field.systemType && (
+                    <div>
+                      <Button
+                        size="small"
+                        color="secondary"
+                        className={classes.deleteButton}
+                        onClick={() => onDelete(field, index)}
+                      >
+                        Delete
+                      </Button>
                     </div>
-                  </Grid>
+                  )}
+                </div>
+              </Grid>
 
-                  <Grid item xs={4}>
-                    <FormField
-                      type="select"
-                      name={`${item}.payableAccountId`}
-                      label="Payable Account"
-                      items={assetAccounts}
-                      className={classes.field}
-                      disabled={!field.editable}
-                      required
-                      fullWidth
-                    />
-                  </Grid>
+              <Grid item xs={4}>
+                <FormField
+                  type="select"
+                  name={`${item}.payableAccountId`}
+                  label="Payable Account"
+                  items={assetAccounts}
+                  className={classes.field}
+                  disabled={!field.editable}
+                  required
+                />
+              </Grid>
 
-                  <Grid item xs={4}>
-                    <FormField
-                      type="select"
-                      name={`${item}.receivableAccountId`}
-                      label="Receivable Account"
-                      items={liabilityAccounts}
-                      className={classes.field}
-                      disabled={!field.editable}
-                      required
-                      fullWidth
-                    />
-                  </Grid>
+              <Grid item xs={4}>
+                <FormField
+                  type="select"
+                  name={`${item}.receivableAccountId`}
+                  label="Receivable Account"
+                  items={liabilityAccounts}
+                  className={classes.field}
+                  disabled={!field.editable}
+                  required
+                />
+              </Grid>
 
-                  <Grid item xs={4}>
-                    <FormField
-                      type="text"
-                      name={`${item}.description`}
-                      label="Description"
-                      className={classes.field}
-                      disabled={!field.editable}
-                      fullWidth
-                    />
-                  </Grid>
-                </Grid>
+              <Grid item xs={4}>
+                <FormField
+                  type="text"
+                  name={`${item}.description`}
+                  label="Description"
+                  className={classes.field}
+                  disabled={!field.editable}
+                />
               </Grid>
             </Grid>
           </Card>

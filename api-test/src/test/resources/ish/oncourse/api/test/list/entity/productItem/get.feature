@@ -61,7 +61,9 @@ Feature: Main feature for all GET requests with path 'list/entity/sales'
         "voucherCode":null,
         "redeemableById":null,
         "redeemableByName":null,
-        "customFields":{}
+        "customFields":{},
+        "documents":[],
+        "tags": []
         }
         """
 
@@ -91,7 +93,9 @@ Feature: Main feature for all GET requests with path 'list/entity/sales'
         "voucherCode":"g3zEmUdf",
         "redeemableById":null,
         "redeemableByName":null,
-        "customFields":{"vcf1":"ABCDEF"}
+        "customFields":{"vcf1":"ABCDEF"},
+        "documents":[],
+        "tags":[]
         }
         """
 
@@ -121,7 +125,9 @@ Feature: Main feature for all GET requests with path 'list/entity/sales'
         "voucherCode":null,
         "redeemableById":null,
         "redeemableByName":null,
-        "customFields":{}
+        "customFields":{},
+        "documents":[],
+        "tags":[]
         }
         """
 
@@ -157,7 +163,9 @@ Feature: Main feature for all GET requests with path 'list/entity/sales'
         "voucherCode":null,
         "redeemableById":null,
         "redeemableByName":null,
-        "customFields":{}
+        "customFields":{},
+        "documents":[],
+        "tags":[]
         }
         """
 

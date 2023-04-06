@@ -31,7 +31,6 @@ import static ish.oncourse.server.api.v1.function.MessageFunctions.getRecipients
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.EmailTemplate
 import ish.oncourse.server.cayenne.Message
-import ish.oncourse.server.cayenne.MessagePerson
 import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.oncourse.server.scripting.api.MessageSpec
@@ -85,13 +84,13 @@ class MessageService {
 			def recipient = SelectById.query(Contact, recipientId).selectOne(context)
 
 			if (sendingPreference.sendEmail) {
-				createMessagePerson(message, recipient, MessageType.EMAIL)
+				buildMessage(message, recipient, MessageType.EMAIL)
 			}
 			if (sendingPreference.sendSms) {
-				createMessagePerson(message, recipient, MessageType.SMS)
+				buildMessage(message, recipient, MessageType.SMS)
 			}
 			if (sendingPreference.sendPost) {
-				createMessagePerson(message, recipient, MessageType.POST)
+				buildMessage(message, recipient, MessageType.POST)
 			}
 
 			if (++counter == 100) {
@@ -105,34 +104,29 @@ class MessageService {
 		}
 	}
 
-	def static createMessagePerson(Message message, Contact contact, MessageType type) {
-		def context = contact.objectContext
+	def static buildMessage(Message message, Contact contact, MessageType type) {
 
-		def messagePerson
 		switch (type) {
 			case MessageType.SMS:
 				if (!contact.mobilePhone) {
 					return
 				}
-				messagePerson = context.newObject(MessagePerson)
-				messagePerson.destinationAddress = contact.mobilePhone
+				message.destinationAddress = contact.mobilePhone
 				break
 			case MessageType.EMAIL:
 				if (!contact.email) {
 					return
 				}
-				messagePerson = context.newObject(MessagePerson)
-				messagePerson.destinationAddress = contact.email
+				message.destinationAddress = contact.email
 				break
 			case MessageType.POST:
 				throw new UnsupportedOperationException()
 		}
-		messagePerson.attemptCount = 0
-		messagePerson.message = message
-		messagePerson.status = MessageStatus.QUEUED
-		messagePerson.type = type
+		message.numberOfAttempts = 0
+		message.status = MessageStatus.QUEUED
+		message.type = type
 
-		messagePerson.contact = contact
+		message.contact = contact
 	}
 
 	/**
@@ -225,6 +219,7 @@ class MessageService {
 				bindings.put(record.class.simpleName.uncapitalize(), record)
 				bindings.put(templateService.RECORD, record)
 				bindings.put(templateService.TO, recipient)
+				bindings.put(templateService.AUTHOR, messageSpec.createdBy)
 
 				if (templateEntityName != null && templateEntityName.equalsIgnoreCase("contact")) {
 					bindings.put("contact", recipient)
@@ -234,7 +229,9 @@ class MessageService {
 				if (messageSpec.attachments.empty && messageSpec.content == null) {
 					if (collision.apply(recipient)) {
 						Message message = MessageBuilder.valueOf(templateService, messageSpec, template, bindings, context).build()
-						createMessagePerson(message, context.localObject(recipient), template.type)
+						buildMessage(message, context.localObject(recipient), template.type)
+						if(message.contact == null)
+							context.deleteObject(message)
 					}
 				} else if (recipient.email) {
 					SmtpParameters parameters = new SmtpParameters(messageSpec)

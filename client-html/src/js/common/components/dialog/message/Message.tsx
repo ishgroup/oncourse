@@ -8,7 +8,7 @@ import clsx from "clsx";
 import { withStyles } from "@mui/styles";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
-import Alert from "@mui/lab/Alert";
+import Alert from "@mui/material/Alert";
 import CloseIcon from "@mui/icons-material/Close";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 
@@ -114,7 +114,9 @@ class Message extends React.Component<Props, any> {
           variant="filled"
           severity={success ? "success" : "error"}
           classes={{
-            message: "text-pre-wrap"
+            message: "text-pre-wrap",
+            standardError: "errorBackgroundColor",
+            standardSuccess: "successBackgroundColor"
           }}
           action={(
             <IconButton

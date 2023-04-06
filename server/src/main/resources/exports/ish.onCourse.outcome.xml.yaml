@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.outcome.xml
-entityClass: Outcome
-body: ish.onCourse.outcome.xml.groovy
-name: Outcome XML export
-outputType: xml

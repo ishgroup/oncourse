@@ -13,6 +13,7 @@ import Gravatar from "react-awesome-gravatar";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Grid from "@mui/material/Grid";
+import clsx from "clsx";
 import noAvatarImg from "../../../../../images/no_pic.png";
 import FilePreview from "../../../../common/components/form/FilePreview";
 import DocumentsService from "../../../../common/components/form/documents/services/DocumentsService";
@@ -24,26 +25,7 @@ import { makeAppStyles } from "../../../../common/styles/makeStyles";
 const validateImageFormat = (imageFile: File) =>
   (["image/jpeg", "image/png"].includes(imageFile.type) ? undefined : "Avatar must be of image type");
 
-const useStyles = makeAppStyles()((theme, _props, createRef) => {
-  const avatarBackdrop = {
-    ref: createRef(),
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    background: theme.palette.action.active,
-    position: "absolute",
-    height: "100%",
-    width: "100%",
-    opacity: 0,
-    transition: theme.transitions.create("opacity", {
-      duration: theme.transitions.duration.standard,
-      easing: theme.transitions.easing.easeInOut
-    }),
-    borderRadius: "100%",
-    color: "#fff",
-  } as const;
-  
-  return {
+const useStyles = makeAppStyles(theme => ({
     avatarWrapper: {
       "&, & img": {
         transition: theme.transitions.create("all", {
@@ -53,19 +35,33 @@ const useStyles = makeAppStyles()((theme, _props, createRef) => {
       },
     },
     profileThumbnail: {
-      [`&:hover ${avatarBackdrop.ref}`]: {
+      "&:hover $avatarBackdrop": {
         opacity: 1,
       },
     },
-    avatarBackdrop,
+    avatarBackdrop: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      background: theme.palette.action.active,
+      position: "absolute",
+      height: "100%",
+      width: "100%",
+      opacity: 0,
+      transition: theme.transitions.create("opacity", {
+        duration: theme.transitions.duration.standard,
+        easing: theme.transitions.easing.easeInOut
+      }),
+      borderRadius: "100%",
+      color: "#fff",
+    },
     avatarRoot: {
       transition: theme.transitions.create("all", {
         duration: theme.transitions.duration.standard,
         easing: theme.transitions.easing.easeInOut
       }),
     },
-  };
-});
+  }));
 
 const AvatarRenderer: React.FC<any> = props => {
   const {
@@ -78,8 +74,8 @@ const AvatarRenderer: React.FC<any> = props => {
     avatarSize,
     twoColumn,
   } = props;
-  
-  const { classes } = useStyles();
+
+  const classes = useStyles();
 
   const fileRef = useRef<any>();
 
@@ -94,11 +90,11 @@ const AvatarRenderer: React.FC<any> = props => {
   }, []);
 
   const upload = useCallback(() => {
-    fileRef.current.click();
+    fileRef?.current?.click();
   }, []);
 
-  const handleFileSelect = useCallback(() => {
-    const file = fileRef.current.files[0];
+  const handleFileSelect = () => {
+    const file = fileRef?.current?.files[0];
 
     if (file) {
       const error = validateImageFormat(file);
@@ -119,7 +115,7 @@ const AvatarRenderer: React.FC<any> = props => {
         }
       });
     }
-  }, [form, input.name]);
+  };
 
   const size = avatarSize || 90;
 
@@ -138,7 +134,7 @@ const AvatarRenderer: React.FC<any> = props => {
             disabled={disabled}
           />
             ) : (
-              <div onClick={upload} className={`relative cursor-pointer ${classes.profileThumbnail}`}>
+              <div onClick={upload} className={clsx(classes.profileThumbnail, "relative", !disabled && "cursor-pointer")}>
                 {!disabled && (
                   <div className={classes.avatarBackdrop}>
                     <div className="centeredFlex">

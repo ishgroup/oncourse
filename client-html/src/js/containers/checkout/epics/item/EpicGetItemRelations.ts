@@ -1,11 +1,10 @@
-import { ActionsObservable, Epic } from "redux-observable";
+import { Epic, ofType } from "redux-observable";
 import {
   flatMap, catchError, mergeMap
 } from "rxjs/operators";
 import { CheckoutSaleRelation } from "@api/model";
-
 import { closestIndexTo } from "date-fns";
-import { concat, from } from "rxjs";
+import { concat, from, Observable } from "rxjs";
 import {
   CHECKOUT_ADD_CONTACT,
   CHECKOUT_ADD_ITEM,
@@ -39,12 +38,13 @@ const assignTypeProps = r => {
   r.toItem.type = r.toItem.cartItem.fromItemRelation.type;
 };
 
-export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObservable<any>, state$): any => action$
-.ofType(
-  CHECKOUT_ADD_ITEM,
-  CHECKOUT_ADD_CONTACT,
-  CHECKOUT_REMOVE_CONTACT
-).pipe(
+export const EpicGetItemRelations: Epic<any, any, State> = (action$: Observable<any>, state$): any => action$
+  .pipe(
+    ofType(
+      CHECKOUT_ADD_ITEM,
+      CHECKOUT_ADD_CONTACT,
+      CHECKOUT_REMOVE_CONTACT
+    ),
     mergeMap(sourceAction =>
       concat(
         [

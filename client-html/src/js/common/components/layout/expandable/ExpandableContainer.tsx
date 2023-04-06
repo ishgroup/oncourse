@@ -4,28 +4,36 @@
  */
 
 import React, {
- useCallback, useRef, useMemo
+  useRef, useMemo, useEffect, useState
 } from "react";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
 import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
-import { AppTheme } from "../../../../model/common/Theme";
-import AddIcon from "../../icons/AddIcon";
 import Divider from "@mui/material/Divider";
+import { AppTheme } from "../../../../model/common/Theme";
+import AddButton from "../../icons/AddButton";
+import { IS_JEST } from "../../../../constants/EnvironmentConstants";
+import { FormErrors } from "redux-form";
+import { findDOMNode } from "react-dom";
+import { animateFormErrors } from "../../../utils/highlightFormErrors";
 
 const styles = (theme: AppTheme) =>
   createStyles({
     expandButton: {
+      position: "absolute",
+      right: 0,
       transition: `transform ${theme.transitions.duration.shortest}ms ${theme.transitions.easing.easeInOut}`
     },
     expandButtonExpanded: {
       transform: "rotate(180deg)"
     },
-    adornmentOffset: {
-      marginLeft: theme.spacing(-1.5)
-    }
+    controls: {
+      position: "relative",
+      paddingRight: theme.spacing(5)
+    },
+    expanded: {}
   });
 
 interface Props {
@@ -33,13 +41,13 @@ interface Props {
   header: React.ReactNode;
   expanded: number[];
   index: number;
+  formErrors?: FormErrors;
   setExpanded: (arg: number[]) => void;
   headerAdornment?: React.ReactNode;
   onChange?: (e: Event, expanded: number[]) => void;
   onAdd?: any;
   classes?: any;
-  mountAll?: boolean;
-  inlineHeading?: boolean;
+  noDivider?: boolean;
 }
 
 const ExpandableContainer: React.FC<Props> = ({
@@ -52,58 +60,91 @@ const ExpandableContainer: React.FC<Props> = ({
   expanded,
   setExpanded,
   index,
-  mountAll,
-  inlineHeading = false,
+  noDivider,
+  formErrors
 }) => {
+  const [hasErrors, setHasErrors] = useState(false);
+
+  const childrenRef = useRef<HTMLDivElement>();
+  
   const headerRef = useRef<any>();
 
   const isExpanded = useMemo(() => expanded.includes(index), [expanded, index]);
 
-  const toggleExpand = useCallback(
-    e => {
-      const updated = [...expanded];
+  const toggleExpand = e => {
+    const updated = [...expanded];
 
-      if (isExpanded) {
-        updated.splice(
-          updated.findIndex(i => i === index),
-          1
-        );
-      } else {
-        updated.push(index);
-      }
+    if (isExpanded) {
+      updated.splice(
+        updated.findIndex(i => i === index),
+        1
+      );
+    } else {
+      updated.push(index);
+    }
 
-      if (onChange) {
-        onChange(e, updated);
+    if (onChange) {
+      onChange(e, updated);
+    }
+    if (!e?.isDefaultPrevented()) {
+      setExpanded(updated);
+    }
+  };
+
+  const buttonId = `expand-button-${index}`;
+  const iconButtonProps = IS_JEST ? {
+    'data-testid': buttonId,
+  } : {};
+
+  useEffect(() => {
+    if (formErrors && childrenRef.current) {
+      const domNode = findDOMNode(childrenRef.current) as HTMLDivElement;
+
+      let childrenError = false;
+
+      for (const field of Object.keys(formErrors)) {
+        if (domNode.querySelector(`[id=${field}]`)) {
+          childrenError = true;
+          break;
+        }
       }
-      if (!e.isDefaultPrevented()) {
-        setExpanded(updated);
-      }
-    },
-    [isExpanded, expanded, index]
-  );
+      setHasErrors(childrenError);
+    }
+  }, [childrenRef.current, formErrors]);
+
+  useEffect(() => {
+    if (hasErrors && !isExpanded) {
+      toggleExpand(null);
+    }
+  }, [hasErrors, isExpanded]);
+
+  const clickHandler = hasErrors ? () => animateFormErrors(childrenRef.current) : toggleExpand;
 
   return (
     <>
-      <Divider className="mb-2"/>
+      <Divider className={clsx(onAdd ? "mb-2" : "mb-3", noDivider && "invisible")} />
       <div ref={headerRef}>
-        <div className="centeredFlex mb-2">
-          <div className={clsx("centeredFlex", { "flex-fill": !inlineHeading })}>
-            <div className="heading">{header}</div>
+        <div className={clsx("centeredFlex", onAdd ? "mb-2" : "mb-3", classes.controls)}>
+          <div className="centeredFlex">
+            <div className={clsx("heading headingHover", isExpanded && classes.expanded)} onClick={clickHandler}>{header}</div>
             {onAdd && (
-              <AddIcon onClick={onAdd} />
+              <AddButton onClick={onAdd} />
             )}
           </div>
-          <IconButton onClick={toggleExpand} className={onAdd && classes.adornmentOffset}>
-            <ExpandMore
-              className={clsx(classes.expandButton, isExpanded && classes.expandButtonExpanded)}
-            />
-          </IconButton>
           {headerAdornment}
+          <IconButton
+            onClick={clickHandler}
+            className={clsx(classes.expandButton, isExpanded && classes.expandButtonExpanded)}
+            id={buttonId}
+            {...iconButtonProps}
+          >
+            <ExpandMore />
+          </IconButton>
         </div>
       </div>
 
-      <div>
-        <Collapse in={isExpanded} unmountOnExit={!mountAll} mountOnEnter={!mountAll}>
+      <div ref={childrenRef}>
+        <Collapse in={isExpanded}>
           {children}
         </Collapse>
       </div>

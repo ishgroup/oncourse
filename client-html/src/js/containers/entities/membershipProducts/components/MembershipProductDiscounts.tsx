@@ -2,7 +2,7 @@ import { MembershipDiscount, MembershipProduct } from "@api/model";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { change } from "redux-form";
+import { change, FieldArray } from "redux-form";
 import { State } from "../../../../reducers/state";
 import { PanelItemChangedMessage } from "../../../../common/components/form/nestedList/components/PaperListRenderer";
 import NestedList, {
@@ -17,12 +17,14 @@ import {
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 
 interface MembershipDiscountsProps extends EditViewProps<MembershipProduct>{
   foundDiscounts?: MembershipDiscount[];
   searchDiscounts?: (search: string) => void;
   clearDiscountsSearch?: (pending: boolean) => void;
   discountsPending?: boolean;
+  discountsError?: boolean;
   contactRelationTypes?: NestedListPanelItem[];
 }
 
@@ -85,11 +87,13 @@ const MembershipProductDiscounts: React.FC<MembershipDiscountsProps> = props => 
     searchDiscounts,
     clearDiscountsSearch,
     discountsPending,
+    discountsError,
     submitSucceeded,
     contactRelationTypes,
     dispatch,
     form,
-    rootEntity
+    rootEntity,
+    showConfirm
   } = props;
 
   const discounts = values ? values.membershipDiscounts : [];
@@ -106,6 +110,7 @@ const MembershipProductDiscounts: React.FC<MembershipDiscountsProps> = props => 
           onSearch={searchDiscounts}
           clearSearchResult={clearDiscountsSearch}
           pending={discountsPending}
+          aqlQueryError={discountsError}
           onAdd={onAddDiscounts(props)}
           onDelete={onDeleteDiscount(props)}
           onDeleteAll={onDeleteAllDiscounts(props)}
@@ -127,30 +132,46 @@ const MembershipProductDiscounts: React.FC<MembershipDiscountsProps> = props => 
         submitSucceeded={submitSucceeded}
         rootEntity={rootEntity}
       />
+
+      <div className="pb-3 mb-3 mt-1">
+        <FieldArray
+          name="documents"
+          label="Documents"
+          entity="ArticleProduct"
+          component={DocumentsRenderer}
+          xsGrid={12}
+          mdGrid={twoColumn ? 6 : 12}
+          lgGrid={twoColumn ? 4 : 12}
+          dispatch={dispatch}
+          form={form}
+          showConfirm={showConfirm}
+          rerenderOnEveryChange
+        />
+      </div>
     </div>
   );
 };
 
 const mapStateToProps = (state: State) => ({
-  foundDiscounts: state.plainSearchRecords["Discount"].items
-    .map(d => ({ discountId: d.id, discountName: d.name }))
-    .sort((a, b) => {
-      if (a.discountId < b.discountId) {
-        return -1;
-      }
-      if (a.discountId > b.discountId) {
-        return 1;
-      }
-      return 0;
-    }),
+  foundDiscounts: state.plainSearchRecords["Discount"].items,
   discountsPending: state.plainSearchRecords["Discount"].loading,
-  contactRelationTypes: state.plainSearchRecords["ContactRelationType"].items.map(r => ({ id: r.id, description: r.toContactName }))
+  discountsError: state.plainSearchRecords["Discount"].error,
+  contactRelationTypes: state.plainSearchRecords["ContactRelationType"].items
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   searchDiscounts: (search: string) => {
     dispatch(setCommonPlainSearch("Discount", `${search} and (validTo == null or validTo >= today)`));
-    dispatch(getCommonPlainRecords("Discount", 0, "name", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(getCommonPlainRecords("Discount", 0, "name", null, null, PLAIN_LIST_MAX_PAGE_SIZE, items => items.map(d => ({ discountId: d.id, discountName: d.name }))
+      .sort((a, b) => {
+        if (a.discountId < b.discountId) {
+          return -1;
+        }
+        if (a.discountId > b.discountId) {
+          return 1;
+        }
+        return 0;
+      })));
   },
   clearDiscountsSearch: (pending: boolean) => dispatch(clearCommonPlainRecords("Discount", pending))
 });

@@ -6,6 +6,7 @@
 import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 import NestedEntity from "../../../../../common/components/form/nestedEntity/NestedEntity";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { CourseClassExtended } from "../../../../../model/entities/CourseClass";
@@ -46,9 +47,10 @@ const CourseClassEnrolmentsTab: React.FC<EditViewProps<CourseClassExtended>> = p
   }, [values.id, values.failedEnrolmentsCount, values.successAndQueuedEnrolmentsCount, values.canceledEnrolmentsCount]);
 
   return (
-    <div className="pl-3 pr-3 pb-2">
+    <div className="pl-3 pr-3">
+      <Divider className="mb-1" />
       {isNew ? (
-        <div className="pb-1 pt-2">
+        <div className="pb-1 pt-1">
           <div className="heading pb-1">Enrolments</div>
           <Typography variant="caption" color="textSecondary">
             Please save your new class before adding enrolments
@@ -66,6 +68,7 @@ const CourseClassEnrolmentsTab: React.FC<EditViewProps<CourseClassExtended>> = p
           isNew={isNew}
         />
       )}
+      <Divider className="mt-1" />
     </div>
   );
 };

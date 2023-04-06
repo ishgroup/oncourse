@@ -1,7 +1,7 @@
-import { Category, ProductItem, ProductType } from "@api/model";
+import { ProductItem, ProductType } from "@api/model";
 import { getMainRouteUrl } from "../../../../routes/routesMapping";
 
-export const buildUrl = (id: number | string, category: Category) => getMainRouteUrl(category) + `/${id}`;
+export const buildUrl = (id: number | string, category: string) => getMainRouteUrl(category) + `/${id}`;
 
 export const productUrl = (productItem: ProductItem) => {
   switch (productItem.productType) {
@@ -24,5 +24,14 @@ export const getProductAqlType = (type: ProductType | string) => {
       return "ArticleProduct";
     default:
       throw Error("Unknown product type");
+  }
+};
+
+export const getSaleEntityName = (type: ProductType) => {
+  switch (type) {
+    case "Product":
+      return "Article";
+    default:
+      return type;
   }
 };

@@ -55,7 +55,7 @@ class DataCollectionApiTest extends TestWithDatabase {
         integrationApi.setCayenneService(cayenneService)
         List<FieldTypeDTO> fieldTypes = integrationApi.getFieldTypes(DataCollectionTypeDTO.ENROLMENT.toString())
 
-        Assertions.assertEquals(32, fieldTypes.size())
+        Assertions.assertEquals(33, fieldTypes.size())
         Assertions.assertNotNull(fieldTypes.find { it.uniqueKey == 'customField.contact.passportNumber' })
         Assertions.assertNotNull(fieldTypes.find { it.uniqueKey == 'customField.enrolment.enrolmentNumber' })
 

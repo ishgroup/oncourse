@@ -11,7 +11,7 @@ import { addHours } from "date-fns";
 import AvailabilityRenderer from "./AvailabilityRenderer";
 import { getLabelWithCount } from "../../../utils/strings";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
-import AddIcon from "../../icons/AddIcon";
+import AddButton from "../../icons/AddButton";
 
 const addRule = (dispatch: any, form: string) => {
   const item = {} as Holiday;
@@ -66,7 +66,7 @@ const AvailabilityFormComponent = React.memo<Props>(
       <div className="heading mt-2 mb-2">
         {getLabelWithCount("Availability Rule", values[name] ? values[name].length : 0)}
       </div>
-      <AddIcon onClick={addRule.bind(null, dispatch, form, name)} />
+      <AddButton onClick={addRule.bind(null, dispatch, form, name)} />
     </div>
 
     <FieldArray

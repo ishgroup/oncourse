@@ -33,7 +33,7 @@ const LeadAttachmentsTab: React.FC<EditViewProps<LeadDocumentsProps>> = (props) 
 
   return (
     <div className="pr-3 saveButtonTableOffset">
-      <div className="pb-3 pl-3">
+      <div className="mb-2 pl-3 pb-3 pr-3 pt-2">
         <FieldArray
           name="documents"
           label="Documents"
@@ -48,15 +48,16 @@ const LeadAttachmentsTab: React.FC<EditViewProps<LeadDocumentsProps>> = (props) 
           rerenderOnEveryChange
         />
       </div>
-      <OwnApiNotes {...props} />
-      <div className="pb-3 pl-3">
+      <div>
+        <OwnApiNotes {...props} />
+      </div>
+      <div className="p-3">
         <FormField
           type="multilineText"
           name="studentNotes"
           disabled
           label="Student notes"
-          fullWidth
-        />
+                  />
       </div>
     </div>
   );

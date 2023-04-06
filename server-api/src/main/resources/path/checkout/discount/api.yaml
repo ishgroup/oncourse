@@ -38,6 +38,10 @@ get:
       in: query
       type: number
       description: Total amount (without discount) of all purchaces in current checkout
+    - name: payerId
+      in: query
+      type: integer
+      format: int64
   responses:
     '200':
       schema:

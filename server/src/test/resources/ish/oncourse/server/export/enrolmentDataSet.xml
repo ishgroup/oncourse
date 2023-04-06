@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-  <Country ID="1" ISOCODEALPHA3="AU" ISOCODENUMERIC="123" NAME="Australia" SACCCODE="1101"/>
+  <Country ID="1" ISOCODEALPHA3="AU" ISOCODENUMERIC="123" NAME="Australia" SACCCODE="1101"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Note id="100" note="firstCourseNote1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
   <Note id="200" note="secondCourseNote1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
@@ -34,15 +35,24 @@
   <NoteRelation id="1000" noteid="1000" entityRecordid="200" entityIdentifier="CourseClass"
                 createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
 
-  <Account id="100" accountCode="11500" description="Test debtors account" isEnabled="1" type="1"/>
-  <Account id="200" accountCode="41000" description="Test income account" isEnabled="1" type="4" taxid="100"/>
-  <Account id="300" accountCode="11600" description="Test tax asset account" isEnabled="1" type="1"/>
-  <Account id="400" accountCode="21600" description="Test tax liability account" isEnabled="1" type="2"/>
-  <Account id="500" accountCode="21010" description="Test prepaid fees account" isEnabled="1" type="2"/>
-  <Account id="600" accountCode="50050" description="Test discount account" isEnabled="1" type="5"/>
-  <Account id="700" accountCode="accBank" description="Test bank account" isEnabled="1" type="1"/>
-  <Account id="800" accountCode="vLability" description="Test voucher liability acc" isEnabled="1" type="2"/>
-  <Account id="900" accountCode="vUnderpay" description="Test voucher underpay acc" isEnabled="1" type="6"/>
+  <Account id="100" accountCode="11500" description="Test debtors account" isEnabled="1" type="1"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account id="200" accountCode="41000" description="Test income account" isEnabled="1" type="4" taxid="100"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account id="300" accountCode="11600" description="Test tax asset account" isEnabled="1" type="1"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account id="400" accountCode="21600" description="Test tax liability account" isEnabled="1" type="2"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account id="500" accountCode="21010" description="Test prepaid fees account" isEnabled="1" type="2"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account id="600" accountCode="50050" description="Test discount account" isEnabled="1" type="5"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account id="700" accountCode="accBank" description="Test bank account" isEnabled="1" type="1"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account id="800" accountCode="vLability" description="Test voucher liability acc" isEnabled="1" type="2"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account id="900" accountCode="vUnderpay" description="Test voucher underpay acc" isEnabled="1" type="6"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <FieldConfiguration id="100" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0"
                       modifiedOn="2017-06-20 12:00:00.0"/>
@@ -83,18 +93,18 @@
         facilities="Some facilities..." createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01"/>
 
   <Tax id="100" isGSTTaxType="1" payableToSupplierAccountid="300" receivableFromStudentAccountid="400" taxCode="GST"
-       taxrate="0.1"/>
+       taxrate="0.1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <CourseClass id="100" code="123" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
-               taxid="100" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
+               taxid="100" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
                isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountid="100" deliveryMode="1" courseid="100" feeExGst="100.00"
                suppressAvetmissExport="0" roomid="100" budgetedPlaces="10" fundingSource="3"
                attendanceType="0"/>
   <CourseClass id="200" code="124" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
-               taxid="100" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
+               taxid="100" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
                isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountid="100" deliveryMode="1" courseid="200" feeExGst="100.00"
                suppressAvetmissExport="0" roomid="100" budgetedPlaces="10" fundingSource="3"
@@ -112,18 +122,18 @@
            citizenship="9" feeHelpEligible="0"/>
 
   <CourseSession id="100" courseClass_id="100" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                 />
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <CourseSession id="200" courseClass_id="100" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                 />
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <CourseSession id="300" courseClass_id="100" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                 />
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <CourseSession id="400" courseClass_id="200" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                 />
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <CourseSession id="500" courseClass_id="200" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                 />
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <CourseSession id="600" courseClass_id="200" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                 />
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Enrolment id="100" courseClass_id="100" studentid="100" eligibilityExemptionIndicator="0" source="O" studyReason="0"
              vetFeeIndicator="0" vetIsFullTime="0" status="3" fundingSource="1" createdOn="2013-01-01 00:00:00"

@@ -14,35 +14,13 @@ package ish.oncourse.server.api.v1.function
 import groovy.transform.CompileStatic
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.api.dao.DocumentDao
-import ish.oncourse.server.api.v1.model.SearchItemDTO
+import ish.oncourse.server.api.v1.model.*
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.document.DocumentService
 import ish.s3.AmazonS3Service
-import java.nio.file.Files
-import java.nio.file.Path
-import ish.oncourse.server.api.v1.model.DocumentAttachmentRelationDTO
-import ish.oncourse.server.api.v1.model.DocumentDTO
-import ish.oncourse.server.api.v1.model.DocumentVersionDTO
-import ish.oncourse.server.api.v1.model.DocumentVisibilityDTO
-import ish.oncourse.server.api.v1.model.ValidationErrorDTO
-import ish.oncourse.server.cayenne.Application
-import ish.oncourse.server.cayenne.Assessment
-import ish.oncourse.server.cayenne.AttachableTrait
-import ish.oncourse.server.cayenne.AttachmentData
-import ish.oncourse.server.cayenne.AttachmentRelation
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Document
-import ish.oncourse.server.cayenne.DocumentTagRelation
-import ish.oncourse.server.cayenne.DocumentVersion
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.PriorLearning
-import ish.oncourse.server.cayenne.Room
-import ish.oncourse.server.cayenne.Site
-import ish.oncourse.server.cayenne.SystemUser
 import ish.util.LocalDateUtils
 import ish.util.SecurityUtil
+import ish.util.ThumbnailGenerator
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
@@ -51,22 +29,28 @@ import org.apache.logging.log4j.Logger
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
+import java.nio.file.Files
+import java.nio.file.Path
 
-import static org.apache.commons.lang3.StringUtils.isBlank
-import static org.apache.commons.lang3.StringUtils.trimToNull
-import static ish.util.ImageHelper.generatePdfPreview
-import static ish.util.ImageHelper.generateThumbnail
-import static ish.util.ImageHelper.imageHeight
-import static ish.util.ImageHelper.imageWidth
-import static ish.util.ImageHelper.isImage
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
+import static ish.oncourse.server.api.v1.function.ContactFunctions.getProfilePictureDocument
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.util.Constants.BILLING_APP_LINK
+import static ish.util.ImageHelper.*
+import static org.apache.commons.lang3.StringUtils.isBlank
+import static org.apache.commons.lang3.StringUtils.trimToNull
 
 @CompileStatic
 class DocumentFunctions {
 
     private static final Logger logger = LogManager.getLogger(DocumentFunctions)
+
+    static DocumentDTO getProfilePicture(Contact contact, DocumentService documentService) {
+        Document profilePictureDocument = getProfilePictureDocument(contact)
+        if (profilePictureDocument) {
+            return toRestDocument(profilePictureDocument, profilePictureDocument.currentVersion.id, documentService)
+        }
+        null
+    }
 
     static DocumentDTO toRestDocument(Document dbDocument, Long versionId, DocumentService documentService) {
         new DocumentDTO().with { document ->
@@ -74,7 +58,7 @@ class DocumentFunctions {
             document.name = dbDocument.name
             document.versionId = versionId
             document.added = LocalDateUtils.dateToTimeValue(dbDocument.added)
-            document.tags = dbDocument.tags.collect { toRestTagMinimized(it) }
+            document.tags = dbDocument.allTags.collect { it.id }
 
             DocumentVersion dbVersion = versionId ? dbDocument.versions.find { it.id == versionId } : dbDocument.versions.max{ v1, v2 -> v1.timestamp.compareTo(v2.timestamp)}
             document.thumbnail = dbVersion.thumbnail
@@ -91,6 +75,9 @@ class DocumentFunctions {
             document.createdOn = LocalDateUtils.dateToTimeValue(dbDocument.createdOn)
             document.modifiedOn = LocalDateUtils.dateToTimeValue(dbDocument.modifiedOn)
             document.attachmentRelations = toRestDocumentAttachmentRelations(dbDocument.attachmentRelations)
+            if (s3Service) {
+                document.urlWithoutVersionId = s3Service.getFileUrl(dbDocument.fileUUID, null, dbDocument.webVisibility)
+            }
             document
         }
     }
@@ -109,6 +96,9 @@ class DocumentFunctions {
                 s3Service = new AmazonS3Service(documentService)
             }
             document.versions = dbDocument.versions.collect { toRestDocumentVersionMinimized(it, s3Service) }.sort {it.added}.reverse()
+            if (s3Service) {
+                document.urlWithoutVersionId = s3Service.getFileUrl(dbDocument.fileUUID, null, dbDocument.webVisibility)
+            }
             document
         }
     }
@@ -190,22 +180,40 @@ class DocumentFunctions {
             version.pixelWidth = imageWidth(content)
             version.pixelHeight = imageHeight(content)
             try {
-                version.thumbnail = generateThumbnail(content, version.mimeType)
+                version.thumbnail = ThumbnailGenerator.generateForImg(content, version.mimeType)
             } catch (IOException e) {
                 logger.warn("Attempted to process document with name $document.name as an image, but it wasn't.")
                 logger.catching(e)
             }
         } else {
-            version.thumbnail = generatePdfPreview(content)
+            try {
+                switch (version.mimeType) {
+                    case {it instanceof String && isDoc(it as String)}:
+                        version.thumbnail = ThumbnailGenerator.generateForDoc(content)
+                        break
+                    case {it instanceof String && isExcel(it as String)}:
+                        version.thumbnail = ThumbnailGenerator.generateForExcel(content)
+                        break
+                    case {it instanceof String && isCsv(it as String)}:
+                        version.thumbnail = ThumbnailGenerator.generateForCsv(content)
+                        break
+                    case {it instanceof String && isText(it as String)}:
+                        version.thumbnail = ThumbnailGenerator.generateForText(content)
+                        break
+                    default:
+                        version.thumbnail = generatePdfPreview(content)
+                }
+            } catch (NotActiveException e) {
+                logger.warn("Attempted to process document with name $document.name failed. Angel can not generate privew")
+                logger.catching(e)
+            }
         }
 
         if (documentService.usingExternalStorage) {
             AmazonS3Service s3Service = new AmazonS3Service(documentService)
             version.versionId  =  s3Service.putFile(document.fileUUID, version.fileName, content, document.webVisibility)
         } else {
-            AttachmentData attachmentData = context.newObject(AttachmentData)
-            attachmentData.content = content
-            attachmentData.documentVersion = version
+           // throw new ClientErrorException("Attempted to process document with name $document.name as data, stored in db, but this ability was removed in new versions. Add s3 accessKey.", Response.Status.BAD_REQUEST)
         }
 
         version
@@ -302,6 +310,16 @@ class DocumentFunctions {
                 break
             case Site:
                 (entity as Site).name
+                break
+            case Article:
+            case Voucher:
+            case Membership:
+                (entity as ProductItem).product.name
+                break
+            case ArticleProduct:
+            case VoucherProduct:
+            case MembershipProduct:
+                (entity as Product).name
                 break
             default:
                 " "

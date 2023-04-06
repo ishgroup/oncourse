@@ -11,7 +11,8 @@
   <Account id="9" accountCode="FEE9" description="Test fees account" isEnabled="1" type="2"
            modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
 
-  <PaymentMethod id="2" name="Credit card" accountId="6" active="1" bankedAutomatically="1" reconcilable="1" type="2"/>
+  <PaymentMethod id="2" name="Credit card" accountId="6" active="1" bankedAutomatically="1" reconcilable="1" type="2"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0"
                       modifiedOn="2017-06-20 12:00:00.0"/>
@@ -50,19 +51,19 @@
   <Tax id="3" isGSTTaxType="1" payableToSupplierAccountId="7" receivableFromStudentAccountId="8" taxCode="GST"
        taxrate="0.1" modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
 
-  <CourseClass id="1" code="123" taxAdjustment="0.1" taxId="3" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
+  <CourseClass id="1" code="123" taxAdjustment="0.1" taxId="3" minimumPlaces="1" maximumPlaces="100"
                isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="0" isActive="1"
                incomeAccountId="5" deliveryMode="1" courseId="1" feeExGst="200.00"
                suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" modifiedOn="2012-01-03 11:00:00"
                createdOn="2012-01-03 10:00:00" startDateTime="2012-01-04 10:00:00" endDateTime="2012-02-04 11:00:00"
                fundingSource="3" attendanceType="0"/>
-  <CourseClass id="2" code="124" taxAdjustment="0.1" taxId="3" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
+  <CourseClass id="2" code="124" taxAdjustment="0.1" taxId="3" minimumPlaces="1" maximumPlaces="100"
                isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="0" isActive="1"
                incomeAccountId="5" deliveryMode="1" courseId="2" feeExGst="400.00"
                suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" modifiedOn="2012-01-03 11:00:00"
                createdOn="2012-01-03 10:00:00" startDateTime="2012-01-04 10:00:00" endDateTime="2012-02-04 11:00:00"
                fundingSource="3" attendanceType="0"/>
-  <CourseClass id="3" code="125" taxAdjustment="0.1" taxId="3" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
+  <CourseClass id="3" code="125" taxAdjustment="0.1" taxId="3" minimumPlaces="1" maximumPlaces="100"
                isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountId="5" deliveryMode="1" courseId="2" feeExGst="400.00"
                suppressAvetmissExport="0" roomId="2" budgetedPlaces="10" modifiedOn="2012-01-03 11:00:00"
@@ -160,10 +161,10 @@
 
   <Tutor id="1" contactId="21"
          resume="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-         wwChildrenStatus="0"/>
+         wwChildrenStatus="0" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Tutor id="2" contactId="22"
          resume="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-         wwChildrenStatus="0"/>
+         wwChildrenStatus="0" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Student id="1" contactId="1" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
            highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"

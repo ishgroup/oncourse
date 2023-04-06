@@ -1,14 +1,21 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 import * as React from "react";
 import { connect } from "react-redux";
 import { withStyles } from "@mui/styles";
 import {
- List, ListItem, ListSubheader, ListItemText
+  List, ListItem, ListSubheader, ListItemText
 } from "@mui/material";
-
 import Button from "@mui/material/Button";
 import { State } from "../../../../reducers/state";
 import * as Model from "../../../../model/preferences/Licences";
-import AppBar from "../../../../common/components/layout/AppBar";
+import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
 
 const styles: any = () => ({
   disabledList: {
@@ -16,6 +23,7 @@ const styles: any = () => ({
   },
   listItem: {
     paddingBottom: 0,
+    paddingLeft: 0,
     "&:nth-child(2)": {
       paddingTop: 0
     }
@@ -44,7 +52,7 @@ class Licences extends React.Component<any, any> {
   }
 
   render() {
-    const { licences } = this.props;
+    const { licences, plugins, classes } = this.props;
 
     const inactive = licences
       && Object.keys(licences)
@@ -54,50 +62,78 @@ class Licences extends React.Component<any, any> {
 
     return (
       <div>
-        <AppBar title="Licences" />
-
-        <List
-          subheader={(
-            <ListSubheader disableSticky className="heading mb-2">
-              Enabled Features
-            </ListSubheader>
-          )}
+        <AppBarContainer
+          title="Licences"
+          hideHelpMenu
+          hideSubmitButton
+          disableInteraction
         >
-          {licences
-          && Object.keys(licences)
-            .filter(item => Object.keys(LicenseNames).includes(item) && licences[item] !== null
-              && (licences[item].toLowerCase() === "true" || Number(licences[item]) > 0))
-            .map(item => this.listItem(item, true))}
-        </List>
-
-        {inactive && Boolean(inactive.length) && (
           <List
-            className="mt-1"
             subheader={(
-              <ListSubheader disableSticky className="heading">
-                Inactive Features
-                <a href="http://www.ish.com.au/oncourse/signup" target="_blank" className="link" rel="noreferrer">
-                  <Button
-                    color="primary"
-                    size="small"
-                    className="m-1 licencesUpgradeButton"
-                  >
-                    Upgrade now
-                  </Button>
-                </a>
+              <ListSubheader disableSticky className="heading mb-2 pl-0">
+                Enabled Features
               </ListSubheader>
             )}
           >
-            {inactive}
+            {licences
+            && Object.keys(licences)
+              .filter(item => Object.keys(LicenseNames).includes(item) && licences[item] !== null
+                && (licences[item].toLowerCase() === "true" || Number(licences[item]) > 0))
+              .map(item => this.listItem(item, true))}
           </List>
-        )}
+
+          {inactive && Boolean(inactive.length) && (
+            <List
+              className="mt-1"
+              subheader={(
+                <ListSubheader disableSticky className="heading mb-2">
+                  Inactive Features
+                  <a href="http://www.ish.com.au/oncourse/signup" target="_blank" className="link" rel="noreferrer">
+                    <Button
+                      color="primary"
+                      size="small"
+                      className="m-1 licencesUpgradeButton"
+                    >
+                      Upgrade now
+                    </Button>
+                  </a>
+                </ListSubheader>
+              )}
+            >
+              {inactive}
+            </List>
+          )}
+
+          {
+            plugins && plugins["plugins.names"] && (
+              <List
+                className="mt-1"
+                subheader={(
+                  <ListSubheader disableSticky className="heading pl-0 mb-2">
+                    Enabled Plugins
+                  </ListSubheader>
+                )}
+              >
+                {plugins["plugins.names"].split(",").map(item => {
+                  const splitted = item.split("|");
+                  return (
+                    <ListItem key={item} className={classes.listItem}>
+                      <ListItemText primary={`${splitted[0]} ${splitted[1]}`} />
+                    </ListItem>
+                  );
+                })}
+              </List>
+            )
+          }
+        </AppBarContainer>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state: State) => ({
-  licences: state.preferences.licences
+  licences: state.preferences.licences,
+  plugins: state.preferences.plugins
 });
 
 const Styled = withStyles(styles)(Licences);

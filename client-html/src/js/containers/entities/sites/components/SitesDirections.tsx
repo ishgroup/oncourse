@@ -22,43 +22,44 @@ class Directions extends React.Component<any, any> {
     } = this.props;
 
     const layoutArray = getLayoutArray(twoColumn);
+
     return (
-      <>
-        <div className="heading p-3 pt-2 pb-0">Directions</div>
-        <Grid container columnSpacing={3} className="h-100 justify-content-center p-3" alignItems="flex-start" alignContent="flex-start">
-          <Grid item xs={layoutArray[0].xs} className="mb-2">
-            <FormEditorField
-              name="drivingDirections"
-              label="Driving directions"
-            />
-          </Grid>
-          <Grid item xs={layoutArray[1].xs} className="mb-2">
-            <FormEditorField
-              name="publicTransportDirections"
-              label="Public transport directions"
-            />
-          </Grid>
-          <Grid item xs={layoutArray[2].xs} className="mb-2">
-            <FormEditorField
-              name="specialInstructions"
-              label="Special instructions"
-            />
-          </Grid>
-          <FieldArray
-            name="documents"
-            label="Documents"
-            entity="Site"
-            component={DocumentsRenderer}
-            xsGrid={layoutArray[3].xs}
-            mdGrid={layoutArray[4].md}
-            lgGrid={layoutArray[5].lg}
-            dispatch={dispatch}
-            form={form}
-            showConfirm={showConfirm}
-            rerenderOnEveryChange
+      <Grid container columnSpacing={3} rowSpacing={2} className="pt-3 pb-1 pl-3 pr-3">
+        <Grid item xs={12}>
+          <div className="heading">Directions</div>
+        </Grid>
+        <Grid item xs={layoutArray[0].xs}>
+          <FormEditorField
+            name="drivingDirections"
+            label="Driving directions"
           />
         </Grid>
-      </>
+        <Grid item xs={layoutArray[1].xs}>
+          <FormEditorField
+            name="publicTransportDirections"
+            label="Public transport directions"
+          />
+        </Grid>
+        <Grid item xs={layoutArray[2].xs} className="mb-3">
+          <FormEditorField
+            name="specialInstructions"
+            label="Special instructions"
+          />
+        </Grid>
+        <FieldArray
+          name="documents"
+          label="Documents"
+          entity="Site"
+          component={DocumentsRenderer}
+          xsGrid={layoutArray[3].xs}
+          mdGrid={layoutArray[4].md}
+          lgGrid={layoutArray[5].lg}
+          dispatch={dispatch}
+          form={form}
+          showConfirm={showConfirm}
+          rerenderOnEveryChange
+        />
+      </Grid>
     );
   }
 }

@@ -91,7 +91,7 @@ public class ClassCostUtil {
 		if (plannedEnrolmentsCount == null) {
 			switch (type) {
 				case ClassBudgetUtil.ACTUAL:
-					plannedEnrolmentsCount = classCost.getCourseClass().getValidEnrolmentCount();
+					plannedEnrolmentsCount = classCost.getCourseClass().getActualEnrolmentCount();
 					break;
 				case ClassBudgetUtil.MAXIMUM:
 					plannedEnrolmentsCount = classCost.getCourseClass().getMaximumPlaces();
@@ -144,10 +144,8 @@ public class ClassCostUtil {
 				case ClassBudgetUtil.ACTUAL:
 					if (ClassCostFlowType.INCOME.equals(classCost.getFlowType()) && classCost.getInvoiceToStudent()) {
 						Money result = Money.ZERO;
-						if (classCost.getCourseClass().getSuccessAndQueuedEnrolments() != null) {
-							for (Enrolment e : classCost.getCourseClass().getSuccessAndQueuedEnrolments()) {
-                                result = result.add(e.getOriginalInvoiceLine().getPriceTotalExTax());
-							}
+						for (Enrolment e : classCost.getCourseClass().getActualEnrolments()) {
+							result = result.add(e.getOriginalInvoiceLine().getPriceTotalExTax());
 						}
 						return result;
 					}
@@ -331,7 +329,7 @@ public class ClassCostUtil {
 		// assume only one discount can be applied to inviceLine. the many-to-many is just legasy stuff.
 		return cost.getCourseClass()
 				// get all class enrolments
-				.getSuccessAndQueuedEnrolments().stream()
+				.getActualEnrolments().stream()
 				// take all invoiceLines from them 
 				.map(Enrolment::getInvoiceLines)
 				// flatten them since previous line returns stream of lists of invoiceLines

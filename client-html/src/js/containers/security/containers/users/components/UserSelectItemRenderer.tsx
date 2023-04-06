@@ -9,10 +9,10 @@
 import React, { useMemo } from "react";
 import { User } from "@api/model";
 import { Tooltip, Typography } from "@mui/material";
-import { contactLabelCondition } from "../../../../entities/contacts/utils";
+import { getContactFullName } from "../../../../entities/contacts/utils";
 
-const UserSelectItemRenderer = React.memo<{ content: string; data: User }>(props => {
-  const { data } = props;
+const UserSelectItemRenderer = React.memo<{ content: string; data: User, parentProps: any }>(props => {
+  const { data, parentProps } = props;
 
   const caption = useMemo(
     () => (
@@ -24,17 +24,19 @@ const UserSelectItemRenderer = React.memo<{ content: string; data: User }>(props
   );
 
   return (
-    <div className="overflow-hidden">
-      <div className="text-nowrap text-truncate">
-        {contactLabelCondition(data)}
+    <div {...parentProps}>
+      <div className="overflow-hidden">
+        <div className="text-nowrap text-truncate">
+          {getContactFullName(data)}
+        </div>
+        <Tooltip title={caption}>
+          <Typography variant="caption" component="div" color="textSecondary" className="text-truncate">
+            {caption}
+          </Typography>
+        </Tooltip>
       </div>
-      <Tooltip title={caption}>
-        <Typography variant="caption" component="div" color="textSecondary" className="text-truncate">
-          {caption}
-        </Typography>
-      </Tooltip>
     </div>
   );
 });
 
-export default (content, data) => <UserSelectItemRenderer data={data} content={content} />;
+export default (content, data, search, parentProps) => <UserSelectItemRenderer data={data} content={content} parentProps={parentProps} />;

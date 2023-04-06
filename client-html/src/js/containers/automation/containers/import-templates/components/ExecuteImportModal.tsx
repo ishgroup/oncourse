@@ -7,7 +7,6 @@ import Grid from "@mui/material/Grid";
 import React, {
   useCallback, useEffect, useMemo
 } from "react";
-import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -18,6 +17,7 @@ import { Dispatch } from "redux";
 import {
   destroy, Field, FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm
 } from "redux-form";
+import Button from "@mui/material/Button";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { interruptProcess } from "../../../../../common/actions";
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
@@ -74,8 +74,7 @@ const templatesRenderer: React.FC<any> = React.memo<any>(({ fields }) => fields.
         type={item.type}
         component={DataTypeRenderer}
         validate={validateSingleMandatoryField}
-        fullWidth
-        {...fieldProps}
+                {...fieldProps}
       />
     </Grid>
   );
@@ -165,7 +164,7 @@ const ExecuteImportModal = React.memo<Props & InjectedFormProps>(props => {
         </DialogTitle>
 
         <DialogContent>
-          <Grid container columnSpacing={3}>
+          <Grid container columnSpacing={3} rowSpacing={2}>
             {values.description && (
               <Grid item xs={12} className="mb-2">
                 <Typography variant="body2" color="textSecondary" className="pb-2">

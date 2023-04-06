@@ -32,13 +32,13 @@ const CheckoutSearchList = React.memo<Props>(props => {
           {items.map((item, i) => (
             <React.Fragment key={i}>
               <ListItem
-                // button
+                button
                 disableGutters
                 dense
                 className="justify-content-space-between p-0-5"
                 alignItems="flex-start"
-                // onClick={onClick && (e => onClick(item, type))}
-                // onDoubleClick={onDoubleClick && (e => onDoubleClick(item, type, false))}
+                onClick={onClick && (e => onClick(item, type)) as any}
+                onDoubleClick={onDoubleClick && (e => onDoubleClick(item, type, false)) as any}
                 selected={selected(item, type)}
               >
                 <ListItemText

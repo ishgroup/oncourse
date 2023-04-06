@@ -7,8 +7,8 @@ import { Epic } from "redux-observable";
 import { CustomFieldType, DataResponse } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
-import { transformDataType } from "../../common/utils";
 import { GET_CUSTOM_FIELD_TYPES, GET_CUSTOM_FIELD_TYPES_FULFILLED } from "../actions";
+import { mapCustomFieldsResponse } from "../utils";
 
 const request: EpicUtils.Request<any, string> = {
   type: GET_CUSTOM_FIELD_TYPES,
@@ -18,19 +18,7 @@ const request: EpicUtils.Request<any, string> = {
       `entityIdentifier=${entity}`
     ),
   processData: (response: DataResponse, state, entity: string) => {
-    const types = response.rows.map(
-      item =>
-        ({
-          id: item.id,
-          fieldKey: item.values[0],
-          name: item.values[1],
-          defaultValue: item.values[2],
-          mandatory: item.values[3] === "true",
-          dataType: item.values[4] === "URL" ? item.values[4] : transformDataType(item.values[4]),
-          sortOrder: Number(item.values[5]),
-          pattern: item.values[6]
-        } as CustomFieldType)
-    );
+    const types = response.rows.map(mapCustomFieldsResponse);
 
     types.sort((a, b) => (a.sortOrder > b.sortOrder ? 1 : -1));
 

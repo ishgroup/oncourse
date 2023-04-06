@@ -19,12 +19,16 @@ import ish.common.types.ProductStatus
 import ish.common.types.ProductType
 import ish.common.types.TypesUtil
 import ish.math.Money
+import ish.oncourse.cayenne.Taggable
+import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.api.dao.AccountDao
 import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.dao.ProductItemDAO
 import ish.oncourse.server.api.dao.TaxDao
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.cayenne.*
+import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
+import ish.oncourse.server.document.DocumentService
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.validation.ValidationResult
@@ -37,16 +41,23 @@ import java.util.stream.Collectors
 
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
+import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
+import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.util.LocalDateUtils.dateToValue
 import static ish.util.LocalDateUtils.valueToDate
 
-class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem, ProductItemDAO> {
+class ProductItemApiService extends TaggableApiService<ProductItemDTO, ProductItem, ProductItemDAO> {
 
     @Inject
     private ProductItemDAO productItemDAO
 
     @Inject
     private ContactDao contactDao
+
+    @Inject
+    private DocumentService documentService
 
     @Inject
     private AccountDao accountDao
@@ -88,6 +99,9 @@ class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem
             productItemDTO.redeemableById = type == ProductTypeDTO.VOUCHER ? (productItem as Voucher).redeemableBy?.id : null
             productItemDTO.redeemableByName = (type == ProductTypeDTO.VOUCHER && (productItem as Voucher).redeemableBy != null) ? (productItem as Voucher).redeemableBy.getFullName() : null
             productItemDTO.payments = getPayments(type, productItem)
+            productItemDTO.tags = productItem.allTags.collect{ it.id }
+            productItemDTO.documents = ((AttachableTrait)productItem).activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
+
             switch (type) {
                 case ProductTypeDTO.PRODUCT:
                     productItemDTO.customFields = (productItem as Article).customFields.collectEntries {[(it.customFieldType.key) : it.value] }
@@ -223,13 +237,11 @@ class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem
     ProductItem toCayenneModel(ProductItemDTO productItemDTO, ProductItem productItem) {
         switch (productItemDTO.productType) {
             case ProductTypeDTO.PRODUCT:
-                updateCustomFields(productItem.context, productItem as Article, productItemDTO.customFields, ArticleCustomField)
-                break
             case ProductTypeDTO.MEMBERSHIP:
-                updateCustomFields(productItem.context, productItem as Membership, productItemDTO.customFields, MembershipCustomField)
-                break
             case ProductTypeDTO.VOUCHER:
-                updateCustomFields(productItem.context, productItem as Voucher, productItemDTO.customFields, VoucherCustomField)
+                updateCustomFields(productItem.context, productItem as ExpandableTrait, productItemDTO.customFields, (productItem as ExpandableTrait).customFieldClass)
+                updateDocuments(productItem as AttachableTrait, (productItem as AttachableTrait).attachmentRelations, productItemDTO.documents, (productItem as AttachableTrait).relationClass, productItem.context)
+                updateTags(productItem as Taggable, productItem.taggingRelations, productItemDTO.tags, productItem.tagRelationClass, productItem.context)
                 break
         }
         if (productItem.status == ProductStatus.ACTIVE) {
@@ -341,5 +353,14 @@ class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem
         } else {
             return v.redeemedCourseCount > 0
         }
+    }
+
+    @Override
+    Closure getAction (String key, String value) {
+        Closure action = super.getAction(key, value)
+        if (!action) {
+            validator.throwClientErrorException(key, "Unsupported attribute")
+        }
+        action
     }
 }

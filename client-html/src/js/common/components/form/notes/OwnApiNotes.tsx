@@ -19,7 +19,8 @@ import { deleteNoteItem, postNoteItem } from "./actions";
 import NotesService from "./services/NotesService";
 import instantFetchErrorHandler from "../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
 import uniqid from "../../../utils/uniqid";
-import AddIcon from "../../icons/AddIcon";
+import AddButton from "../../icons/AddButton";
+import { APP_BAR_HEIGHT } from "../../../../constants/Config";
 
 interface Props {
   classes?: any;
@@ -94,6 +95,13 @@ const OwnApiNotes = React.memo<Props>(
         const newNote: Note = { message: "", entityName: rootEntity, entityId: values.id };
         dispatch(arrayInsert(form, "notes", 0, { ...newNote, temporaryId }));
         dispatch(addActionToQueue(postNoteItem(newNote), "POST", "Note", temporaryId));
+        setTimeout(() => {
+          const domNode = document.getElementById("notes[0].message");
+          if (domNode)  window.scrollTo({
+            top: domNode.offsetTop - APP_BAR_HEIGHT,
+            behavior: 'smooth'
+          });
+        }, 200);
       }
     }, [isNew, form, rootEntity, values.notes, values.id]);
 
@@ -107,7 +115,7 @@ const OwnApiNotes = React.memo<Props>(
               {notesHeader}
               {values.notes && values.notes.length !== 1 ? "s" : ""}
             </div>
-            <AddIcon onClick={addNote} />
+            <AddButton onClick={addNote} />
           </div>
         </Grid>
 

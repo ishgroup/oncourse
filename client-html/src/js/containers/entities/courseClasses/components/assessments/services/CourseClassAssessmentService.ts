@@ -8,6 +8,7 @@ import { DefaultHttpService } from "../../../../../../common/services/HttpServic
 
 class CourseClassAssessmentService {
   readonly service = new DefaultHttpService();
+
   readonly assessmentApi = new AssessmentClassApi(this.service);
 
   public getCourseClassAssessments(id: number): Promise<AssessmentClass[]> {
@@ -28,19 +29,19 @@ class CourseClassAssessmentService {
 
   public validateDelete(id: number): Promise<any> {
     return this.service.DELETE(`/v1/list/entity/courseClass/assessment/${id}`, {
-      headers: { "X-validate-only": true }
+      headers: { "X-validate-only": "true" }
     });
   }
 
   public validatePost(assessment: AssessmentClass): Promise<any> {
     return this.service.POST(`/v1/list/entity/courseClass/assessment`, assessment, {
-      headers: { "X-validate-only": true }
+      headers: { "X-validate-only": "true" }
     });
   }
 
   public validatePut(assessment: AssessmentClass): Promise<any> {
     return this.service.PUT(`/v1/list/entity/courseClass/assessment/${assessment.id}`, assessment, {
-      headers: { "X-validate-only": true }
+      headers: { "X-validate-only": "true" }
     });
   }
 }

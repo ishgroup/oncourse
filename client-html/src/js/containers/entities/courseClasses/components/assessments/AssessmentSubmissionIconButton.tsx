@@ -13,7 +13,7 @@ import withStyles from "@mui/styles/withStyles";
 import { StringValueType } from "../../../../../model/common/CommomObjects";
 import { makeAppStyles } from "../../../../../common/styles/makeStyles";
 
-const useStyles = makeAppStyles()(() => ({
+const useStyles = makeAppStyles(() => ({
   iconRemove: {
     color: "red"
   },
@@ -41,7 +41,7 @@ interface AssessmentSubmissionIconProps {
 }
 
 const AssessmentSubmissionIcon: React.FC<AssessmentSubmissionIconProps> = ({ type }) => {
-  const { classes } = useStyles();
+  const classes  = useStyles();
 
   switch (type) {
     case "Submitted":

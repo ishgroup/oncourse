@@ -11,6 +11,7 @@
 package ish.oncourse.server.report;
 
 import com.google.inject.Inject;
+import ish.common.types.AutomationStatus;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.Report;
 import ish.report.ImportReportResult;
@@ -68,7 +69,7 @@ public class ReportService implements IReportService {
 		if (updatedReport == null) {
 			logger.info("Creating new report {}", newReport.getName());
 			updatedReport = context.newObject(Report.class);
-			updatedReport.setEnabled(true);
+			updatedReport.setAutomationStatus(AutomationStatus.ENABLED);
 		} else {
 			logger.info("Updating {} report", newReport.getName());
 		}

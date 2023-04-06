@@ -7,13 +7,9 @@
  */
 
 import React from "react";
-
 import Grid from "@mui/material/Grid";
-import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
-import Typography from "@mui/material/Typography";
 import {
-  arrayInsert, arrayRemove, FieldArray, getFormValues, InjectedFormProps, reduxForm
+  arrayInsert, arrayRemove, FieldArray, getFormValues, InjectedFormProps, reduxForm, Form
 } from "redux-form";
 import { Dispatch } from "redux";
 import Alert from "@mui/lab/Alert";
@@ -21,14 +17,13 @@ import { AlertTitle } from "@mui/lab";
 import { connect } from "react-redux";
 import { User } from "@api/model";
 import { v4 as uuidv4 } from 'uuid';
-import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
-import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
-import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
+import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import RouteChangeConfirm from "../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import ApiTokensRenderer from "./components/ApiTokensRenderer";
 import { State } from "../../../../reducers/state";
 import { deleteApiToken, updateApiTokens } from "../../actions";
 import { showConfirm } from "../../../../common/actions";
+import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
 
 interface Props extends InjectedFormProps {
   security: any;
@@ -45,8 +40,8 @@ const ApiTokensBase:React.FC<Props> = (
     values,
     dispatch,
     form,
-    users
-}
+    users,
+  }
 ) => {
   const onAdd = () => {
     dispatch(arrayInsert(form, "tokens", 0, {
@@ -79,66 +74,40 @@ const ApiTokensBase:React.FC<Props> = (
   };
 
   return (
-    <form className="mt-2" noValidate autoComplete="off" onSubmit={handleSubmit(onSave)}>
+    <Form className="mt-2" noValidate autoComplete="off" onSubmit={handleSubmit(onSave)}>
       <RouteChangeConfirm form={form} when={dirty} />
-      <CustomAppBar>
-        <Grid container columnSpacing={3}>
-          <Grid item xs={12} className="centeredFlex relative">
-            <Fab
-              type="button"
-              size="small"
-              color="primary"
-              classes={{
-                sizeSmall: "appBarFab"
-              }}
-              onClick={onAdd}
-            >
-              <AddIcon />
-            </Fab>
-            <Typography color="inherit" noWrap className="appHeaderFontSize pl-2">
-              API Tokens
-            </Typography>
 
-            <div className="flex-fill" />
-
-            {/* {values && ( */}
-            {/*  <AppBarHelpMenu */}
-            {/*    created={created} */}
-            {/*    modified={modified} */}
-            {/*    auditsUrl={`audit?search=~"UnavailableRule" and entityId in (${idsToString(values.holidays)})`} */}
-            {/*    manualUrl={manualUrl} */}
-            {/*  /> */}
-            {/* )} */}
-
-            <FormSubmitButton
-              disabled={!dirty}
-              invalid={invalid}
+      <AppBarContainer
+        values={values}
+        disabled={!dirty}
+        invalid={invalid}
+        title="API Tokens"
+        disableInteraction
+        hideHelpMenu
+        onAddMenu={onAdd}
+      >
+        <Grid container className="mt-2">
+          <Grid item xs={12} md={10}>
+            <Alert severity="info" className="mb-2">
+              <AlertTitle>
+                API tokens can be used by third party tools
+              </AlertTitle>
+              Caution: these tokens will allow an attacker to access, change or delete your data, so take care of where you distribute the token secret.
+            </Alert>
+          </Grid>
+          <Grid item xs={12} md={10}>
+            <FieldArray
+              name="tokens"
+              users={users}
+              component={ApiTokensRenderer}
+              onDelete={onDeleteToken}
+              dispatch={dispatch}
+              rerenderOnEveryChange
             />
           </Grid>
         </Grid>
-      </CustomAppBar>
-
-      <Grid container columnSpacing={3}>
-        <Grid item xs={12} md={10}>
-          <Alert severity="info" className="mb-2">
-            <AlertTitle>
-              API tokens can be used by third party tools
-            </AlertTitle>
-            Caution: these tokens will allow an attacker to access, change or delete your data, so take care of where you distribute the token secret.
-          </Alert>
-        </Grid>
-        <Grid item xs={12} md={10}>
-          <FieldArray
-            name="tokens"
-            users={users}
-            component={ApiTokensRenderer}
-            onDelete={onDeleteToken}
-            dispatch={dispatch}
-            rerenderOnEveryChange
-          />
-        </Grid>
-      </Grid>
-    </form>
+      </AppBarContainer>
+    </Form>
   );
 };
 
@@ -153,6 +122,8 @@ const ApiTokens = reduxForm({
   initialValues: {
     tokens: []
   }
-})(connect(mapStateToProps)((props: any) => (props.values ? <ApiTokensBase {...props} /> : null)));
+})(connect(mapStateToProps)(
+  (props: any) => (props.values ? <ApiTokensBase {...props} /> : null)
+));
 
 export default ApiTokens;

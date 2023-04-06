@@ -1,32 +1,26 @@
 import * as React from "react";
-import ClassNames from "clsx";
 import Grid from "@mui/material/Grid";
 import withStyles from "@mui/styles/withStyles";
 import { withRouter } from "react-router";
-import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import AddIcon from "@mui/icons-material/Add";
-import Typography from "@mui/material/Typography";
-import Fab from "@mui/material/Fab";
 import {
   Form, FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
 } from "redux-form";
 import { EntityRelationType } from "@api/model";
 import isEqual from "lodash.isequal";
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import EntityRelationTypesRenderer from "./EntityRelationTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { State } from "../../../../../reducers/state";
-import { setNextLocation } from "../../../../../common/actions";
 import { cardsFormStyles } from "../../../styles/formCommonStyles";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
-const manualLink = getManualLink("generalPrefs_sellableItemsRelationTypes");
+const manualUrl = getManualLink("generalPrefs_sellableItemsRelationTypes");
+
+export const ENTITY_RELATION_TYPES_FORM: string = "EntityRelationTypesForm";
 
 interface Props {
   data: any;
@@ -44,8 +38,7 @@ interface Props {
   onUpdate: (entityRelationTypes: EntityRelationType[]) => void;
   openConfirm?: ShowConfirmCaller;
   history?: any,
-  nextLocation?: string,
-  setNextLocation?: (nextLocation: string) => void,
+  nextLocation?: string
 }
 
 class EntityRelationTypesBaseForm extends React.Component<Props, any> {
@@ -58,10 +51,11 @@ class EntityRelationTypesBaseForm extends React.Component<Props, any> {
   constructor(props) {
     super(props);
 
-    props.dispatch(initialize("EntityRelationTypesForm", { types: props.entityRelationTypes }));
+    props.dispatch(initialize(ENTITY_RELATION_TYPES_FORM, { types: props.entityRelationTypes }));
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.isPending) {
       return;
     }
@@ -97,12 +91,11 @@ class EntityRelationTypesBaseForm extends React.Component<Props, any> {
       this.props.onUpdate(this.getTouchedAndNew(value.types));
     })
       .then(() => {
-        const { nextLocation, history, setNextLocation } = this.props;
+        const { nextLocation, history } = this.props;
 
-        this.props.dispatch(initialize("EntityRelationTypesForm", { types: this.props.entityRelationTypes }));
+        this.props.dispatch(initialize(ENTITY_RELATION_TYPES_FORM, { types: this.props.entityRelationTypes }));
 
         nextLocation && history.push(nextLocation);
-        setNextLocation('');
       })
       .catch(error => {
         this.isPending = false;
@@ -131,7 +124,7 @@ class EntityRelationTypesBaseForm extends React.Component<Props, any> {
     item.isShownOnWeb = true;
     item.considerHistory = false;
 
-    this.props.dispatch(arrayInsert("EntityRelationTypesForm", "types", 0, item));
+    this.props.dispatch(arrayInsert(ENTITY_RELATION_TYPES_FORM, "types", 0, item));
     const domNode = document.getElementById("types[0].toName");
     if (domNode) domNode.scrollIntoView({ behavior: "smooth" });
   };
@@ -149,13 +142,13 @@ class EntityRelationTypesBaseForm extends React.Component<Props, any> {
         if (item.id) {
           onDelete(item.id);
         } else {
-          this.props.dispatch(arrayRemove("EntityRelationTypesForm", "types", index));
+          this.props.dispatch(arrayRemove(ENTITY_RELATION_TYPES_FORM, "types", index));
           this.resolvePromise(true);
         }
       })
         .then(clientSideDelete => {
           if (!clientSideDelete) {
-            this.props.dispatch(initialize("EntityRelationTypesForm", { types: this.props.entityRelationTypes }));
+            this.props.dispatch(initialize(ENTITY_RELATION_TYPES_FORM, { types: this.props.entityRelationTypes }));
           }
         })
         .catch(() => {
@@ -172,61 +165,37 @@ class EntityRelationTypesBaseForm extends React.Component<Props, any> {
     } = this.props;
 
     return (
-      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
+      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)} role={ENTITY_RELATION_TYPES_FORM}>
         <RouteChangeConfirm form={form} when={dirty} />
 
-        <CustomAppBar>
-          <Grid container columnSpacing={3}>
-            <Grid item xs={12} className={ClassNames("centeredFlex", "relative")}>
-              <Fab
-                type="button"
-                size="small"
-                color="primary"
-                classes={{
-                  sizeSmall: "appBarFab"
-                }}
-                onClick={() => this.onAddNew()}
-              >
-                <AddIcon />
-              </Fab>
-              <Typography className="appHeaderFontSize pl-2" variant="body1" color="inherit" noWrap>
-                Sellable items relation types
-              </Typography>
-
-              <div className="flex-fill" />
-
-              {data && (
-                <AppBarHelpMenu
-                  created={created}
-                  modified={modified}
-                  auditsUrl={`audit?search=~"EntityRelationType" and entityId in (${idsToString(data.types)})`}
-                  manualUrl={manualLink}
-                />
-              )}
-
-              <FormSubmitButton
-                disabled={!dirty}
-                invalid={invalid}
-              />
+        <AppBarContainer
+          values={data}
+          manualUrl={manualUrl}
+          getAuditsUrl={() => `audit?search=~"EntityRelationType" and entityId in (${idsToString(data.types)})`}
+          disabled={!dirty}
+          invalid={invalid}
+          title="Sellable items relation types"
+          disableInteraction
+          createdOn={() => created}
+          modifiedOn={() => modified}
+          onAddMenu={() => this.onAddNew()}
+        >
+          <Grid container className="mt-2">
+            <Grid item sm={12} lg={10}>
+              <Grid container columnSpacing={3}>
+                {data && (
+                  <FieldArray
+                    name="types"
+                    component={EntityRelationTypesRenderer}
+                    onDelete={this.onClickDelete}
+                    classes={classes}
+                    discounts={discountsMap}
+                  />
+                )}
+              </Grid>
             </Grid>
           </Grid>
-        </CustomAppBar>
-
-        <Grid container columnSpacing={3} className={classes.marginTop}>
-          <Grid item sm={12} lg={10}>
-            <Grid container columnSpacing={3}>
-              {data && (
-                <FieldArray
-                  name="types"
-                  component={EntityRelationTypesRenderer}
-                  onDelete={this.onClickDelete}
-                  classes={classes}
-                  discounts={discountsMap}
-                />
-              )}
-            </Grid>
-          </Grid>
-        </Grid>
+        </AppBarContainer>
       </Form>
     );
   }
@@ -236,13 +205,11 @@ const mapStateToProps = (state: State) => ({
   nextLocation: state.nextLocation
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-});
-
 const EntityRelationTypesForm = reduxForm({
   onSubmitFail,
-  form: "EntityRelationTypesForm"
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(cardsFormStyles)(withRouter(EntityRelationTypesBaseForm) as any)));
+  form: ENTITY_RELATION_TYPES_FORM
+})(connect<any, any, any>(mapStateToProps, null)(
+  withStyles(cardsFormStyles)(withRouter(EntityRelationTypesBaseForm) as any)
+));
 
 export default EntityRelationTypesForm;

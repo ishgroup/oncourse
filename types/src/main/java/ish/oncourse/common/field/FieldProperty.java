@@ -10,7 +10,7 @@
  */
 package ish.oncourse.common.field;
 
-import static ish.oncourse.common.field.PropertyGetSetFactory.*;
+import static ish.oncourse.common.field.PropertyGetSetFields.*;
 
 public enum FieldProperty {
 
@@ -57,7 +57,8 @@ public enum FieldProperty {
 
 	DETAIL(ContextType.WAITING_LIST, "Student notes","detail"),
 	STUDENTS_COUNT(ContextType.WAITING_LIST,"Number of students", "potentialStudents"),
-	
+
+	STUDY_REASON(ContextType.ENROLMENT, "Study reason","studyReason"),
 
 	CUSTOM_FIELD_CONTACT(ContextType.CONTACT, "Custom Field ", CUSTOM_FIELD_PROPERTY_PATTERN   + ContextType.CONTACT.getIdentifier()),
 	CUSTOM_FIELD_STUDENT(ContextType.STUDENT, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN + ContextType.STUDENT.getIdentifier()),

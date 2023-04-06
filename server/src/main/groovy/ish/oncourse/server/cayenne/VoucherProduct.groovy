@@ -40,7 +40,7 @@ import java.util.List
  */
 @API
 @QueueableEntity
-class VoucherProduct extends _VoucherProduct {
+class VoucherProduct extends _VoucherProduct implements AttachableTrait, NotableTrait, ExpandableTrait{
 
 
 
@@ -62,7 +62,7 @@ class VoucherProduct extends _VoucherProduct {
 		if (!underpaymentAccount) {
 			result.addFailure(ValidationFailure.validationFailure(this, UNDERPAYMENT_ACCOUNT.getName(), "Underpayment account required."))
 		}
-		
+
 		if (StringUtils.trimToNull(getName()) == null) {
 			result.addFailure(ValidationFailure.validationFailure(this, NAME.getName(), "Name cannot be empty."))
 		}
@@ -82,8 +82,7 @@ class VoucherProduct extends _VoucherProduct {
 	 *
 	 * @return the maximum number of enrolments which can be redeemed with this voucher
 	 */
-	@API
-	@Override
+	@API @Override
 	Integer getMaxCoursesRedemption() {
 		return super.getMaxCoursesRedemption()
 	}
@@ -105,7 +104,7 @@ class VoucherProduct extends _VoucherProduct {
 	}
 
 	/**
-	 * VoucherProducts are a liability when created. This method can return the account of the general ledger these liabilities are created in
+	 * Vouchers are a liability when created. This method can return the account of the general ledger these liabilities are created in
 	 * @return the account joined to this voucher product
 	 */
 	@Nonnull
@@ -116,15 +115,48 @@ class VoucherProduct extends _VoucherProduct {
 	}
 
 	/**
+	 * Vouchers which are redeemed for a value different to their sale price need to put the underpayment into an appropriate expense account.
+	 * @return the account joined to this voucher product
+	 */
+	@Override @API
+	Account getUnderpaymentAccount() {
+		return super.getUnderpaymentAccount()
+	}
+
+	/**
 	 * If getMaxCoursesRedemption() is not null, then this function will return a list of courses which can be redeemed
 	 * using this voucher. If getMaxCoursesRedemption() is not null and this list is empty, then the voucher
 	 * can be used against any enrollable class.
 	 *
 	 * @return a list of courses into which the student can enrol
 	 */
-	@Nonnull
+	@Nonnull @API
+	List<Course> getCourses() {
+		return super.voucherProductCourses*.course.flatten() as List<Course>
+	}
+
 	@Override
-	List<VoucherProductCourse> getVoucherProductCourses() {
-		return super.getVoucherProductCourses()
+	Class<? extends TagRelation> getTagRelationClass() {
+		return VoucherProductTagRelation
+	}
+
+	@Override
+	void addToAttachmentRelations(AttachmentRelation relation) {
+		super.addToAttachmentRelations(relation as VoucherProductAttachmentRelation)
+	}
+
+	@Override
+	void removeFromAttachmentRelations(AttachmentRelation relation) {
+		super.removeFromAttachmentRelations(relation as VoucherProductAttachmentRelation)
+	}
+
+	@Override
+	Class<? extends AttachmentRelation> getRelationClass() {
+		return VoucherProductAttachmentRelation
+	}
+
+	@Override
+	Class<? extends CustomField> getCustomFieldClass() {
+		return VoucherProductCustomField
 	}
 }

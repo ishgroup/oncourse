@@ -101,7 +101,7 @@ const AvailabilityItem: React.FC<Props> = ({
     <Card id={`holidays-item-${index}`} className={threeColumn ? classes.threeColumnCard : "card"}>
       <Grid container>
         <Grid item xs={availabilityLayout[1].xs}>
-          <Grid container>
+          <Grid container rowSpacing={2} columnSpacing={3}>
             <Grid
               item
               xs={availabilityLayout[2].xs}
@@ -133,7 +133,6 @@ const AvailabilityItem: React.FC<Props> = ({
                 timezone={timezone}
                 name={allDay ? `${item}.startDate` : `${item}.startDateTime`}
                 label="Start"
-                maxDate={field.endDate}
                 validate={validateMaxDate}
                 required
               />
@@ -145,7 +144,6 @@ const AvailabilityItem: React.FC<Props> = ({
                 timezone={timezone}
                 name={allDay ? `${item}.endDate` : `${item}.endDateTime`}
                 label="End"
-                minDate={field.startDate}
                 validate={validateMinDate}
                 required
               />
@@ -179,7 +177,6 @@ const AvailabilityItem: React.FC<Props> = ({
                   timezone={timezone}
                   name={`${item}.repeatOn`}
                   label="On date"
-                  minDate={field.startDate}
                   validate={validateMinDate}
                   className="pr-2"
                   required

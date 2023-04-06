@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useMemo } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { utcToZonedTime } from "date-fns-tz";
@@ -22,23 +22,15 @@ import ListItem from "@mui/material/ListItem";
 import { State } from "../../../reducers/state";
 import { AppTheme } from "../../../model/common/Theme";
 import { D_MMM_YYYY } from "../../utils/dates/format";
-import {
-  READ_NEWS
-} from "../../../constants/Config";
+import { READ_NEWS } from "../../../constants/Config";
 import { setUserPreference } from "../../actions";
 import { setReadNewsLocal } from "../list-view/actions";
 
 const styles = (theme: AppTheme) => createStyles({
-  postsWrapper: {
-    padding: theme.spacing(3),
-  },
   postWrapper: {
     background: theme.palette.background.paper,
     position: "relative",
     padding: theme.spacing(3),
-    borderRadius: theme.spacing(1),
-    border: "2px solid",
-    borderColor: alpha(theme.palette.text.disabled, 0.1),
     "&:not(:last-child)": {
       marginBottom: theme.spacing(2),
     },
@@ -89,7 +81,7 @@ const styles = (theme: AppTheme) => createStyles({
 
 const NewsItemRender = props => {
   const {
-    classes, post, setReadNews, fullScreenEditView, lastLoginOn, setReadNewsLocal
+    classes, post, setReadNews, twoColumn, lastLoginOn, setReadNewsLocal
   } = props;
 
   const isLatestItem = post.published && (!lastLoginOn || new Date(lastLoginOn).getTime() <= new Date(post.published).getTime());
@@ -103,17 +95,17 @@ const NewsItemRender = props => {
     <ListItem
       id={`post-${post.id}`}
       alignItems="flex-start"
-      className={classes.postWrapper}
+      className={clsx("cardBorders", classes.postWrapper)}
     >
-      <div className={clsx("w-100 d-block", fullScreenEditView && post.video && "d-flex")}>
+      <div className={clsx("w-100 d-block", twoColumn && post.video && "d-flex")}>
         {post.video && (
           <iframe
             allow="fullscreen"
-            width={fullScreenEditView ? "220px" : "100%"}
+            width={twoColumn ? "220px" : "100%"}
             height="150"
             src={`https://www.youtube.com/embed/${post.video}`}
             title="video"
-            className={clsx(classes.videoWrapper, fullScreenEditView && "mr-2")}
+            className={clsx(classes.videoWrapper, twoColumn && "mr-2")}
           />
         )}
         <ListItemText
@@ -172,46 +164,48 @@ const NewsItemRender = props => {
 
 const NewsRender = props => {
   const {
-    blogPosts, classes, page, preferences, setReadNews, fullScreenEditView, setReadNewsLocal
+    blogPosts, classes, page, preferences, setReadNews, twoColumn, setReadNewsLocal, showPlaceholder, newsOffset, className
   } = props;
 
   const lastLoginOn = localStorage.getItem("lastLoginOn");
   const lastLoginOnWithTimeZone = utcToZonedTime(lastLoginOn || new Date(), Intl.DateTimeFormat().resolvedOptions().timeZone);
-
-  const [postsForRender, setPostsForRender] = useState([]);
-
-  useEffect(() => {
+  
+  const postsForRender = useMemo(() => {
     const readNews = preferences[READ_NEWS] && preferences[READ_NEWS].split(",");
 
-    const filteredPosts = blogPosts.filter(post => (page ? post.page && window.location.pathname.includes(post.page) : true)
-      && (!readNews || !readNews.includes(post.id))).reverse();
+    const filteredPosts = blogPosts.filter(post => (page ? post.page && window.location.pathname.includes(post.page) : !post.page)
+    && (!readNews || !readNews.includes(post.id))).reverse();
 
     const newsWithoutDate = filteredPosts.filter(post => !post.published);
     const newsWithDate = filteredPosts.filter(post => post.published);
-    const newsForRender = newsWithoutDate.concat(newsWithDate);
-    setPostsForRender(newsForRender);
+    return newsWithoutDate.concat(newsWithDate);
   }, [blogPosts, page, preferences]);
 
   return postsForRender.length ? (
-    <div className={classes.postsWrapper}>
+    <Box className={className} sx={{ marginTop: newsOffset }}>
       {postsForRender.map(post => (
         <NewsItemRender
           key={post.id}
           post={post}
           classes={classes}
           setReadNews={setReadNews}
-          fullScreenEditView={fullScreenEditView}
+          twoColumn={twoColumn}
           lastLoginOn={lastLoginOnWithTimeZone}
           setReadNewsLocal={setReadNewsLocal}
         />
       ))}
+    </Box>
+  ) : showPlaceholder ? (
+    <div className="noRecordsMessage">
+      <Typography variant="h6" color="inherit" align="center">
+        No unread news
+      </Typography>
     </div>
   ) : null;
 };
 
 const mapStateToProps = (state: State) => ({
   blogPosts: state.dashboard.blogPosts,
-  fullScreenEditView: state.list.fullScreenEditView,
   preferences: state.userPreferences,
 });
 

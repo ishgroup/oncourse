@@ -17,6 +17,7 @@ import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.*;
 import ish.oncourse.server.document.DocumentService;
 import ish.oncourse.server.entity.mixins.ContactMixin;
+import ish.oncourse.server.scripting.converter.RenderType;
 import ish.util.DateFormatter;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
@@ -39,6 +40,7 @@ public class TemplateService {
 	public static final String SUBJECT = "subject";
 	public static final String RECORD = "record";
 	public static final String TO = "to";
+	public static final String AUTHOR = "author";
 	public static final String TEMPLATE_BINDING = "Template";
 	public static final String COLLEGE_PREFERENCE_SERVICE = "Preference";
 	public static final String PREFERENCES_BINDING = "Preferences";
@@ -49,6 +51,10 @@ public class TemplateService {
 	private static final String JAVA_EURO = "\u20AC";
 	private static final String HTML_EURO = "&euro;";
 	public static final String CONTACT_SERVICE_BINDING = "ContactService";
+
+	public static final String RENDER_TYPE_HTML = "HTML";
+	public static final String RENDER_TYPE_PLAIN = "PLAIN";
+	public static final String RENDER_TYPE_RAW = "RAW";
 
 	private ICayenneService cayenneService;
 	private CollegePreferenceService preferenceService;
@@ -82,11 +88,13 @@ public class TemplateService {
 		);
 		Template htmlTemplate = createHtmlTemplate(template);
 		var html = htmlTemplate.make(putBaseBindings(bindings)).toString();
+
 		MetaclassCleaner.clearGroovyCache(htmlTemplate);
-		
-		return html
-				.replaceAll(JAVA_POUND, HTML_POUND)
-				.replaceAll(JAVA_EURO, HTML_EURO);
+		html = html.replaceAll(JAVA_POUND, HTML_POUND).replaceAll(JAVA_EURO, HTML_EURO);
+
+		MessageBodyConverter messageBodyConverter = MessageBodyConverter.valueOf(html,RenderType.HTML);
+
+		return messageBodyConverter.shouldConvert() ? MessageBodyConverter.valueOf(html,RenderType.HTML).convert() : html;
 	}
 
 	public Template createPlainTemplate(EmailTemplate template) {
@@ -104,10 +112,12 @@ public class TemplateService {
 				bindings.put(opt.getName(), opt.getValue())
 		);
 		Template htmlTemplate = createPlainTemplate(template);
+
 		String result =  htmlTemplate.make(putBaseBindings(bindings)).toString();
 		MetaclassCleaner.clearGroovyCache(htmlTemplate);
+		MessageBodyConverter messageBodyConverter = MessageBodyConverter.valueOf(result,RenderType.PLAIN);
 
-		return result;
+		return messageBodyConverter.shouldConvert() ? messageBodyConverter.convert() : result;
 	}
 
 	public Template createSubjectTemplate(EmailTemplate template) {
@@ -161,6 +171,9 @@ public class TemplateService {
 		bindings.put(COLLEGE_PREFERENCE_SERVICE, preferenceService);
 		bindings.put(DATE_FORMATTER, new DateFormatter(TimeZone.getDefault()));
 		bindings.put(CONTACT_SERVICE_BINDING, new ContactTrait.ContactService());
+		bindings.put(RENDER_TYPE_HTML, RenderType.HTML);
+		bindings.put(RENDER_TYPE_RAW, RenderType.RAW);
+		bindings.put(RENDER_TYPE_PLAIN, RenderType.PLAIN);
 
 		bindings.put(BINDINGS, bindings);
 

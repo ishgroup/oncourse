@@ -45,7 +45,7 @@ const CheckoutFundingInvoiceSummaryExpandableItemRenderer = React.memo<any>(prop
         className={classes.panel}
       >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Grid container columnSpacing={3} className="centeredFlex">
+          <Grid container className="centeredFlex">
             <div className="centeredFlex flex-fill">
               <div className="heading mr-2">{header}</div>
             </div>
@@ -57,7 +57,7 @@ const CheckoutFundingInvoiceSummaryExpandableItemRenderer = React.memo<any>(prop
           </Grid>
         </AccordionSummary>
         <AccordionDetails>
-          <Grid container columnSpacing={3}>
+          <Grid container>
             {items && items.map((item, index) => (
               <CheckoutFundingInvoiceSummaryRow
                 key={index}
@@ -102,14 +102,14 @@ const CheckoutFundingInvoiceSummaryRow = React.memo<any>(props => {
           <Typography variant="body1">{item.class.name}</Typography>
         </div>
       </Grid>
-      <Grid item container xs={3}>
+      <Grid item xs={3}>
         <FormField
           type="money"
           name={`fundingInvoices[${selectedItemIndex}].item.enrolment.items[${index}].totalFee`}
           label="Price"
-          className="pl-2 text-end"
           onChange={handlePriceChange}
           normalize={normalizeNumberToZero}
+          debounced={false}
           rightAligned
         />
       </Grid>

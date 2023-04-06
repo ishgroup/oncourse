@@ -6,14 +6,15 @@ describe("Virtual rendered CourseEditView", () => {
     entity: "Course",
     EditView: CourseEditView,
     record: mockecApi => mockecApi.db.getCourse(1),
-    render: (wrapper, initialValues) => {
-      expect(wrapper.find("#name input").val()).toContain(initialValues.name);
-      expect(wrapper.find("#code input").val()).toContain(initialValues.code);
-      expect(wrapper.find("#enrolmentType input").val()).toContain(initialValues.enrolmentType);
-      expect(wrapper.find("#status input").val()).toContain(initialValues.status);
-      expect(wrapper.find("#dataCollectionRuleId input").val()).toContain(initialValues.dataCollectionRuleId);
-      expect(wrapper.find("#brochureDescription textarea").val()).toContain(initialValues.brochureDescription);
-      expect(wrapper.find("#webDescription").text()).toContain(initialValues.webDescription);
+    render: ({ screen, initialValues, formRoleName }) => {
+      expect(screen.getByRole(formRoleName)).toHaveFormValues({
+        name: initialValues.name,
+        code: initialValues.code,
+        enrolmentType: initialValues.enrolmentType,
+        status: initialValues.status,
+        allowWaitingLists: initialValues.allowWaitingLists,
+        brochureDescription: initialValues.brochureDescription,
+      });
     }
   });
 });

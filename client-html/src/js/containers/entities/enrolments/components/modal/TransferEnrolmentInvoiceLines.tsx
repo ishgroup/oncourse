@@ -4,15 +4,15 @@
  */
 
 import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { Decimal } from "decimal.js-light";
 import React, { useCallback } from "react";
 import { change } from "redux-form";
 import WarningMessage from "../../../../../common/components/form/fieldMessage/WarningMessage";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../../common/components/form/Uneditable";
 import { accountLabelCondition } from "../../../accounts/utils";
+import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { useAppSelector } from "../../../../../common/utils/hooks";
 
 const FORM: string = "TRANSFER_ENROLMENT_MODAL_FORM";
 const CANCEL_FEE_AMOUNT_WARNING_MESSAGE = "The cancellation fee is greater than the fee paid";
@@ -26,7 +26,7 @@ const addInvoiceLineTax = (cancellationFeeExTax: number, taxRate: number) => new
   .toNumber();
 
 const TransferEnrolmentInvoiceLines: React.FC<any> = ({
-    fields, classes, dispatch, incomeAccounts, taxes
+    fields, dispatch, incomeAccounts, taxes
   }) => {
   const onCreateCreditNoteChange = useCallback((val, ind) => {
     if (!val) {
@@ -62,6 +62,8 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
     return (field.finalPriceToPayIncTax < field.chargedFee ? CANCEL_FEE_AMOUNT_WARNING_MESSAGE : null);
   };
 
+  const currencySymbol = useAppSelector(state => state.currency.shortCurrencySymbol);
+
   return (
     <div>
       {
@@ -76,23 +78,23 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
               {field && field.invoiceNumber}
             </Typography>
             <FormControlLabel
-              className="checkbox pb-2 pt-2"
               control={(
                 <FormField
                   type="checkbox"
                   name={`${item}.isReverseCreditNotes`}
                   color="secondary"
                   onChange={v => onCreateCreditNoteChange(v, index)}
+                  debounced={false}
                 />
               )}
               label={`Create credit note to reverse the enrolment fee of $${field
               && field.finalPriceToPayIncTax} to ${field && field.contactName}`}
             />
-            <Grid className="centeredFlex">
+            <div className="centeredFlex">
               <FormControlLabel
-                className="checkbox pb-2 pt-2"
-                control={<FormField type="checkbox" name={`${item}.isChargeFee`} color="secondary" fullWidth />}
-                label={`Charge ${field && field.contactName} an administrative fee of `}
+                className="mr-0-5"
+                control={<FormField type="checkbox" name={`${item}.isChargeFee`} color="secondary"  />}
+                label={`Charge ${field && field.contactName} an administrative fee of`}
                 disabled={!field.isReverseCreditNotes}
               />
               <FormField
@@ -100,9 +102,9 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
                 name={`${item}.cancellationFeeExTax`}
                 normalize={roundCancellationFeeExTax}
                 onChange={e => onCancelFeeChange(e, index)}
+                debounced={false}
                 disabled={!field.isReverseCreditNotes}
-                formatting="inline"
-                hideArrowshideArrows
+                inline
                 step="1"
               />
               <FormField
@@ -112,31 +114,30 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
                 selectValueMark="id"
                 selectLabelMark="code"
                 onChange={v => onTaxChange(v, index)}
+                debounced={false}
                 disabled={!field.isReverseCreditNotes}
-                formatting="inline"
+                className="ml-0-5 mt-0-5"
+                inline
               />
-              {"  "}
-              <Uneditable
-                value={field && field.chargedFee}
-                label=""
-                money
-                className={`pb-0 ${classes.uneditableTextField}`}
-              />
+              <span className="money ml-0-5">
+                {formatCurrency(field.chargedFee, currencySymbol)}
+              </span>
               <FormField
                 type="select"
                 name={`${item}.incomeAccountId`}
                 items={incomeAccounts || []}
-                formatting="inline"
                 selectValueMark="id"
                 selectLabelCondition={accountLabelCondition}
                 disabled={!field.isReverseCreditNotes}
+                className="ml-0-5 mt-0-5"
+                inline
               />
-            </Grid>
-            <Grid className="centeredFlex">
+            </div>
+            <div className="centeredFlex">
               {getCancelFeeAmountWarning(index) && (
                 <WarningMessage warning={getCancelFeeAmountWarning(index)} className="pb-0 pt-1" />
               )}
-            </Grid>
+            </div>
           </div>
         );
       })

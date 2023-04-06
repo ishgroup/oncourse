@@ -20,14 +20,12 @@ import { Switch } from "../../../../common/components/form/formFields/Switch";
 import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
 import EditInPlaceDateTimeField from "../../../../common/components/form/formFields/EditInPlaceDateTimeField";
 import { mapSelectItems } from "../../../../common/utils/common";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { EditViewProps } from "../../../../model/common/ListView";
 
-interface DiscountGeneralProps {
-  values?: Discount;
-  twoColumn?: boolean;
-  form: string;
-  dispatch: any;
+interface DiscountGeneralProps extends EditViewProps<Discount> {
   cosAccounts?: { id: number; description: string }[];
-  manualLink?: string;
 }
 
 interface DiscountGeneralState {
@@ -37,7 +35,7 @@ interface DiscountGeneralState {
   validToIndex?: number;
 }
 
-const discountTypes = [
+export const discountTypes = [
   {
     value: DiscountType.Percent,
     label: "Discount percent"
@@ -58,6 +56,8 @@ const validateZero = value => (!value ? "Must be more or less then 0" : undefine
 
 const validateRangeDiscountPercent = value => validateRangeInclusive(value, -1, 1);
 const validateRangePredictedStudentsPercentage = value => validateRangeInclusive(value, 0, 1);
+
+const trimValue = value => value.trim() ? value : null;
 
 class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGeneralState> {
   constructor(props: DiscountGeneralProps) {
@@ -233,8 +233,6 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
 
   currencySymbol = "$";
 
-  parseFloatValue = value => (value ? parseFloat(value) : value);
-
   onCodeSwitchToggle = (e, checked) => {
     const { dispatch, form } = this.props;
     if (checked === false) {
@@ -271,47 +269,43 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
   };
 
   formatDiscountPercent = value => {
-    if (value && value !== "-") {
+    if (value !== "-") {
       return new Decimal(String(value * 100)).toDecimalPlaces(1).toNumber();
     }
     return value;
   };
 
   parseDiscountPercent = value => {
-    if (value && value !== "-") {
+    if (value !== "-") {
       return new Decimal(value / 100).toDecimalPlaces(3).toNumber();
     }
     return value;
   };
 
-  normalizeDiscountPercent = (value, prevValue) => {
-    if (value === "-") {
-      return value;
-    }
-    if (isNaN(value) && prevValue) {
-      return prevValue;
-    }
-    if (value === "" || isNaN(value)) {
-      return "";
-    }
-    return value;
-  };
-
   render() {
-    const { twoColumn, cosAccounts } = this.props;
+    const { twoColumn, cosAccounts, isNew, syncErrors, values } = this.props;
     const { validFromIndex, validToIndex } = this.state;
 
     const gridXS = twoColumn ? 6 : 12;
 
     return (
-      <div className="d-grid pt-2 pl-3 pr-3 pb-0">
-        <Grid container spacing={0}>
-          <Grid item xs={gridXS}>
-            <FormField
-              type="text"
-              name="name"
-              label="Name"
-              required
+      <div className="d-grid p-3">
+        <Grid container columnSpacing={3} rowSpacing={2}>
+          <Grid item container xs={12}>
+            <FullScreenStickyHeader
+              opened={isNew || Object.keys(syncErrors).includes("name")}
+              twoColumn={twoColumn}
+              title={<span>{values && values.name}</span>}
+              fields={(
+                <Grid item xs={twoColumn ? 6 : 12}>
+                  <FormField
+                    type="text"
+                    name="name"
+                    label="Name"
+                    required
+                  />
+                </Grid>
+              )}
             />
           </Grid>
           <Grid item xs={gridXS}>
@@ -332,8 +326,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
                 validate={[validateSingleMandatoryField, validateRangeDiscountPercent]}
                 format={this.formatDiscountPercent}
                 parse={this.parseDiscountPercent}
-                normalize={this.normalizeDiscountPercent}
-                preformatDisplayValue={value => value + "%"}
+                debounced={false}
               />
             ) : (
               <FormField
@@ -350,7 +343,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
 
           <Grid item xs={12}>
             <Collapse in={this.state.discountType === DiscountType.Percent} mountOnEnter unmountOnExit>
-              <Grid container>
+              <Grid container columnSpacing={3} rowSpacing={2}>
                 <Grid item xs={gridXS}>
                   <FormField
                     type="money"
@@ -393,17 +386,28 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
               validate={[validateSingleMandatoryField, validateRangePredictedStudentsPercentage]}
               format={this.formatPercent}
               parse={this.parsePercent}
-              normalize={this.normalizePercent}
-              preformatDisplayValue={value => value + "%"}
+              debounced={false}
             />
           </Grid>
 
           <Grid item xs={12}>
             <Divider className="mt-2 mb-2" />
-            <div className="d-grid justify-content-start align-items-center gridAutoFlow-column mb-2">
-              <Typography className="heading">Require promotional code</Typography>
-              <Switch onChange={this.onCodeSwitchToggle} checked={this.state.codeOn} />
-              {this.state.codeOn && <FormField type="text" name="code" formatting="inline" />}
+            <div className="mb-2">
+              <div className="centeredFlex">
+                <Typography className="heading">Require promotional code</Typography>
+                <Switch onChange={this.onCodeSwitchToggle} checked={this.state.codeOn} />
+              </div>
+              <Collapse in={this.state.codeOn} mountOnEnter unmountOnExit>
+                <FormField
+                  type="text"
+                  name="code"
+                  placeholder="Code"
+                  inline
+                  normalize={trimValue}
+                  debounced={false}
+                  required
+                />
+              </Collapse>
             </div>
           </Grid>
 
@@ -434,15 +438,15 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
 
         <FormControlLabel
           className="checkbox pr-3"
-          control={<FormField type="checkbox" name="availableOnWeb" color="secondary" fullWidth />}
+          control={<FormField type="checkbox" name="availableOnWeb" color="secondary"  />}
           label="Available for online enrolment"
         />
         <FormControlLabel
           className="checkbox pr-3 mb-2"
-          control={<FormField type="checkbox" name="hideOnWeb" color="secondary" fullWidth />}
+          control={<FormField type="checkbox" name="hideOnWeb" color="secondary"  />}
           label="Hide discounted price on web"
         />
-        <FormField type="multilineText" name="description" label="Public description" fullWidth />
+        <FormField type="multilineText" name="description" label="Public description"  />
       </div>
     );
   }

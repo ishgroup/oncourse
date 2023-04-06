@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import { Typography } from "@mui/material";
@@ -9,9 +12,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { getFormValues, initialize, reduxForm } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
-import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../../reducers/state";
 
 class VetStudentLoans extends React.Component<any, any> {
@@ -31,60 +32,59 @@ class VetStudentLoans extends React.Component<any, any> {
   render() {
     const {
       AppBarContent,
-      dirty,
       handleSubmit,
       onSubmit,
       values,
-      form
     } = this.props;
 
     const hasNameAndID = values && values.fields.deviceName && values.fields.organisationId;
 
     return values ? (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-        <CustomAppBar>
-          <AppBarContent />
-        </CustomAppBar>
-        <FormField
-          name="fields.deviceName"
-          label="Device name"
-          type="text"
-          required
-          disabled={values.id}
-          fullWidth
-        />
-        <FormField
-          name="fields.organisationId"
-          label="Organisation ID"
-          type="text"
-          required
-          disabled={values.id}
-          fullWidth
-        />
-        {!values.id && (
-          <>
-            <FormField
-              name="fields.activationCode"
-              label="Activation Code"
-              type="text"
-              required
-              fullWidth
-            />
-            <div className="mt-1">
-              <Button
-                href={`https://proda.humanservices.gov.au/piaweb/app/orgdel/orgs/${values.fields.organisationId}/devices/${values.fields.deviceName}`}
-                target="_blank"
-                variant="contained"
-                disabled={!hasNameAndID}
-              >
-                Get activation code
-              </Button>
-            </div>
-          </>
+        <AppBarContent>
+          <FormField
+            name="fields.deviceName"
+            label="Device name"
+            type="text"
+            required
+            disabled={values.id}
+            className="mb-2"
+          />
+          <FormField
+            name="fields.organisationId"
+            label="Organisation ID"
+            type="text"
+            required
+            disabled={values.id}
+            className="mb-2"
+          />
+          {!values.id && (
+            <>
+              <FormField
+                name="fields.activationCode"
+                label="Activation code"
+                type="text"
+                required
+                className="mb-2"
+              />
+              <div className="mt-1">
+                <Button
+                  href={`https://proda.humanservices.gov.au/piaweb/app/orgdel/orgs/${values.fields.organisationId}/devices/${values.fields.deviceName}`}
+                  target="_blank"
+                  variant="contained"
+                  disabled={!hasNameAndID}
+                >
+                  Get activation code
+                </Button>
+              </div>
+            </>
+            )}
+          {!hasNameAndID && (
+            <Typography variant="caption">
+              Please fill Device name and Organisation ID fields to be able to get activation code
+            </Typography>
           )}
-        {!hasNameAndID
-          && <Typography variant="caption">Please fill Device name and Organisation ID fields to be able to get activation code</Typography>}
+        </AppBarContent>
       </form>
     ) : null;
   }

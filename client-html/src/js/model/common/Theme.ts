@@ -6,8 +6,7 @@ enum ThemeValuesEnum {
   "default",
   "dark",
   "monochrome",
-  "highcontrast",
-  "christmas"
+  "highcontrast"
 }
 
 export type ThemeValues = keyof typeof ThemeValuesEnum;
@@ -17,11 +16,10 @@ export const DefaultThemeKey: ThemeValues = "default";
 export const DarkThemeKey: ThemeValues = "dark";
 export const MonochromeThemeKey: ThemeValues = "monochrome";
 export const HighcontrastThemeKey: ThemeValues = "highcontrast";
-export const ChristmasThemeKey: ThemeValues = "christmas";
 
 type ColorGetter = string | ((props: {}) => string);
 
-type TextExtended = TypeText & { primaryEditable: string; hint: string; };
+type TextExtended = TypeText & { primaryEditable: string; hint: string; grey: string };
 
 export interface AppTheme extends Theme {
   heading: StringKeyObject<ColorGetter>;
@@ -33,4 +31,5 @@ export interface AppTheme extends Theme {
   tabList: StringKeyObject<StringKeyObject<ColorGetter>>;
   table: StringKeyObject<SimplePaletteColorOptions>;
   palette: Palette & { text: TextExtended };
+  addButtonColor: StringKeyObject<ColorGetter>;
 }

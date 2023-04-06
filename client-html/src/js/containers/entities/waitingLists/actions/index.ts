@@ -1,42 +1,17 @@
-import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
-import { WaitingList } from "@api/model";
+/*
+ * Copyright ish group pty ltd 2023.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
 
-export const GET_WAITING_LIST_ITEM = _toRequestType("get/waitingList");
-export const GET_WAITING_LIST_ITEM_FULFILLED = FULFILLED(GET_WAITING_LIST_ITEM);
+import { _toRequestType } from "../../../../common/actions/ActionUtils";
+import { Diff } from "@api/model";
 
-export const DELETE_WAITING_LIST_ITEM = _toRequestType("delete/waitingList");
-export const DELETE_WAITING_LIST_ITEM_FULFILLED = FULFILLED(DELETE_WAITING_LIST_ITEM);
+export const BULK_DELETE_WAITING_LISTS = _toRequestType("delete/bulk/waitingList");
 
-export const UPDATE_WAITING_LIST_ITEM = _toRequestType("put/waitingList");
-export const UPDATE_WAITING_LIST_ITEM_FULFILLED = FULFILLED(UPDATE_WAITING_LIST_ITEM);
-
-export const CREATE_WAITING_LIST_ITEM = _toRequestType("post/waitingList");
-export const CREATE_WAITING_LIST_ITEM_FULFILLED = FULFILLED(CREATE_WAITING_LIST_ITEM);
-
-export const GET_WAITING_LIST_DELETE_VALIDATION = _toRequestType("get/list/entity/waitingList/validation");
-export const GET_WAITING_LIST_DELETE_VALIDATION_FULFILLED = FULFILLED(GET_WAITING_LIST_DELETE_VALIDATION);
-
-export const validateDeleteWaitingList = (id: string, callback: any) => ({
-  type: GET_WAITING_LIST_DELETE_VALIDATION,
-  payload: { id, callback }
-});
-
-export const getWaitingList = (id: string) => ({
-  type: GET_WAITING_LIST_ITEM,
-  payload: id
-});
-
-export const removeWaitingList = (id: string) => ({
-  type: DELETE_WAITING_LIST_ITEM,
-  payload: id
-});
-
-export const updateWaitingList = (id: string, waitingList: WaitingList) => ({
-  type: UPDATE_WAITING_LIST_ITEM,
-  payload: { id, waitingList }
-});
-
-export const createWaitingList = (waitingList: WaitingList) => ({
-  type: CREATE_WAITING_LIST_ITEM,
-  payload: { waitingList }
+export const bulkDeleteWaitingLists = (diff: Diff) => ({
+  type: BULK_DELETE_WAITING_LISTS,
+  payload: diff
 });

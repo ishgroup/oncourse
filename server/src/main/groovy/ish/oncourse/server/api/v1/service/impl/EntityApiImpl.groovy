@@ -14,10 +14,10 @@ package ish.oncourse.server.api.v1.service.impl
 import com.google.inject.Inject
 import groovy.transform.CompileDynamic
 import ish.oncourse.aql.AqlService
-import ish.oncourse.cayenne.Taggable
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.EntityApi
+import ish.oncourse.server.cayenne.Audit
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.oncourse.server.preference.UserPreferenceService
 import ish.util.DateFormatter
@@ -70,10 +70,12 @@ class EntityApiImpl implements EntityApi {
         Class<? extends CayenneDataObject> clzz = EntityUtil.entityClassForName(entity)
         ObjectSelect objectSelect = ObjectSelect.query(clzz)
 
-        ObjectSelect<CayenneDataObject> query = parseSearchQuery(objectSelect, context, aql, entity, request.search, request.filter, request.tagGroups)
+        boolean isAuditEntity = Audit.class.name.equals(clzz.name)
 
-        if ( request.filter || request.search || (request.tagGroups && !request.tagGroups.empty)) {
-            response.filteredCount = query.column(Property.create("id", Long)).select(context).toSet().size()
+        ObjectSelect<CayenneDataObject> query = parseSearchQuery(objectSelect, context, aql, entity, request.search, request.filter, request.tagGroups, request.uncheckedChecklists)
+        //!isAuditEntity - filteredCount is set for all entities without filter, search, tagGroups except Audit. For Audit filteredCount is set only with filter, search, tagGroups. It was made because Audit table has 10-16 million records, and request to get Count lasts about 10-16 sec. That is why filteredCount is calculated for Audit only with filter, search, tagsGroups.
+        if (!isAuditEntity || request.filter || request.search || (request.tagGroups && !request.tagGroups.empty)) {
+            response.filteredCount = query.column(Property.create("id", Long).countDistinct()).suppressDistinct().selectOne(context) // Can't use query.selectCount(context), because selectCount with Joins can't use Distinct correct. If tables with Joins have same column names (id, createdOn, modifiedOn, ...) 'Select *' and 'Select count(*)' using Distinct will have duplicates
         }
 
         SortOrder sortOrder = null
@@ -103,7 +105,7 @@ class EntityApiImpl implements EntityApi {
                         }
                 )
 
-        List<PersistentObject> records = query.select(context)
+        List<? extends CayenneDataObject> records = query.select(context)
         response.pageSize = new BigDecimal(Math.min(response.pageSize.intValue(), records.size()))
         populateResponce(records, response, response.columns, null)
         return response

@@ -1,14 +1,15 @@
 import * as React from "react";
 import { AccountType } from "@api/model";
 import { defaultComponents } from "../../common/Default.Components";
-import PaymentTypesForm from "../../../js/containers/preferences/containers/payment-types/components/PaymentTypesForm";
+import PaymentTypesForm, { PAYMENT_TYPES_FORM } from
+    "../../../js/containers/preferences/containers/payment-types/components/PaymentTypesForm";
 import { sortDefaultSelectItems } from "../../../js/common/utils/common";
 import getTimestamps from "../../../js/common/utils/timestamps/getTimestamps";
 import { AccountExtended } from "../../../js/model/entities/Account";
 
 describe("Virtual rendered PaymentTypesForm", () => {
   defaultComponents({
-    entity: "PaymentTypesForm",
+    entity: PAYMENT_TYPES_FORM,
     View: props => <PaymentTypesForm {...props} />,
     record: mockedApi => mockedApi.db.paymentTypes,
     defaultProps: ({ initialValues, mockedApi }) => {
@@ -43,7 +44,7 @@ describe("Virtual rendered PaymentTypesForm", () => {
       assetAccounts.sort(sortDefaultSelectItems);
 
       return {
-        form: "PaymentTypesForm",
+        form: PAYMENT_TYPES_FORM,
         initialValues: values,
         values,
         data: values,
@@ -56,20 +57,23 @@ describe("Virtual rendered PaymentTypesForm", () => {
         onDelete: jest.fn()
       };
     },
-    render: (wrapper, initialValues) => {
-      initialValues.forEach((value, index) => {
-        expect(wrapper.find(`#payment-type-item-${index} div[id='types[${index}].name'] input`).val())
-          .toEqual(value.name);
-        
+    render: ({ screen, initialValues, fireEvent }) => {
+      const paymentTypes = {};
+
+      initialValues.forEach((value, key) => {
+        paymentTypes[`types[${key}].name`] = value.name;
+        paymentTypes[`types[${key}].active`] = value.active;
+        paymentTypes[`types[${key}].bankedAuto`] = value.bankedAuto;
+        paymentTypes[`types[${key}].reconcilable`] = value.reconcilable;
+
         if (!value.systemType) {
-          expect(wrapper.find(`#payment-type-item-${index} div[id='types[${index}].type'] input`).val())
-            .toEqual(value.type);
-          expect(wrapper.find(`#payment-type-item-${index} div[id='types[${index}].undepositAccountId'] input`).val())
-            .toEqual(value.undepositAccountId.toString());
-          expect(wrapper.find(`#payment-type-item-${index} div[id='types[${index}].accountId'] input`).val())
-            .toEqual(value.accountId.toString());
+          paymentTypes[`types[${key}].type`] = value.type;
         }
       });
+
+      expect(screen.getByRole(PAYMENT_TYPES_FORM)).toHaveFormValues(paymentTypes);
+
+      fireEvent.click(screen.getByTestId('appbar-submit-button'));
     }
   });
 });

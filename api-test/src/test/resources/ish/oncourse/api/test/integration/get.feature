@@ -16,7 +16,7 @@ Feature: Main feature for all GET requests with path 'integration'
         * print "we have no predefined integrations"
         And match karate.sizeOf(response) == 0
         
-        * def integration = {name: 'someName', type: 6}
+        * def integration = {name: 'someName', type: 3}
         Given path ishPath
         And request integration
         When method POST
@@ -26,7 +26,7 @@ Feature: Main feature for all GET requests with path 'integration'
         When method GET
         Then status 200
         And match karate.sizeOf(response) == 1
-        And match response[0].type == 6
+        And match response[0].type == 3
         And match response[0].name == 'someName'
         And match response[0].verificationCode == null
         And match each response[0].props[*].value == null

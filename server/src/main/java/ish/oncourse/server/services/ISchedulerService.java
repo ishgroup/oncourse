@@ -46,8 +46,6 @@ public interface ISchedulerService {
 	String FUNDING_CONTRACT_JOB_ID = "fundingContractJob";
 	String FUNDING_CONTRACT_JOB_INTERVAL = "1 15 0am * * ?";
 	String CERTIFICATE_UPDATE_WATCHER_INTERVAL = "0 0 0/1 ? * * *";
-	String CHRISTMAS_THEME_ENABLE_JOB_INTERVAL = "0 0 0 9 12 ? *";
-	String CHRISTMAS_THEME_DISABLE_JOB_INTERVAL = "0 0 0 12 1 ? *";
 	String PERMANENTLY_DELETE_DOCUMENTS_INTERVAL = "0 0 7 ? * SUN *";
 	/**
 	 * schedules a job with interval in seconds

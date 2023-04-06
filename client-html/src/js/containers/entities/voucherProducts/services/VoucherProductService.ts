@@ -1,5 +1,5 @@
 import { DefaultHttpService } from "../../../../common/services/HttpService";
-import { VoucherProduct, VoucherProductApi } from "@api/model";
+import { Diff, VoucherProduct, VoucherProductApi } from "@api/model";
 
 class VoucherProductService {
   readonly voucherProductApi = new VoucherProductApi(new DefaultHttpService());
@@ -14,6 +14,10 @@ class VoucherProductService {
 
   public createVoucherProduct(voucherProduct: VoucherProduct): Promise<any> {
     return this.voucherProductApi.create(voucherProduct);
+  }
+
+  public bulkChange(diff: Diff): Promise<any> {
+    return this.voucherProductApi.bulkChange(diff);
   }
 }
 

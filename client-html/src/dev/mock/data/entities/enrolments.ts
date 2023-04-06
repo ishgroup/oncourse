@@ -7,20 +7,22 @@ export function mockEnrolments() {
     const row = this.enrolments.rows.find(row => row.id == id);
     return {
       id: row.id,
-      associatedCourseIdentifier: null,
-      attendanceType: "QLD - Non-concessional participant, WA - Health Care Card (N)",
+      associatedCourseIdentifier: "",
+      attendanceType: "OUA and non-higher degree research student use only",
       confirmationStatus: "Sent",
       clientIdentifier: null,
       courseClassId: 1,
       courseClassName: row.values[3],
-      creditOfferedValue: null,
-      creditUsedValue: null,
-      creditFOEId: null,
-      creditProvider: null,
-      creditProviderType: null,
-      creditType: null,
+      creditOfferedValue: "",
+      creditUsedValue: "",
+      creditFOEId: "",
+      creditProvider: "",
+      creditProviderType: "Other Higher Education Provider",
+      creditTotal: "Unit of study is NOT an RPL unit of study",
+      studentLoanStatus: "Not eligible",
+      creditType: "Credit/RPL was offered for prior VET study only",
       creditLevel: "Diploma",
-      cricosConfirmation: null,
+      cricosConfirmation: "",
       customFields: {},
       eligibilityExemptionIndicator: false,
       feeExemption: "Not set",
@@ -40,19 +42,27 @@ export function mockEnrolments() {
       studentContactId: 1,
       studyReason: "Not stated",
       suppressAvetmissExport: false,
-      trainingPlanDeveloped: null,
-      vetClientID: null,
+      trainingPlanDeveloped: false,
+      vetClientID: "",
       vetFeeExemptionType: "Not set",
       vetFeeIndicator: false,
-      vetFundingSourceStateID: null,
-      vetInSchools: null,
+      vetFundingSourceStateID: "",
+      vetInSchools: false,
       vetIsFullTime: false,
+      vetPurchasingContractID: "2",
       vetPurchasingContractIdentifier: "2",
-      vetTrainingContractID: null,
+      vetTrainingContractID: "",
       documents: [],
       notes: [],
       tags: [this.getTag(1)],
-      assessments: []
+      assessments: [],
+      outcomeIdTrainingOrg: "",
+      studentIndustryANZSICCode: null,
+      relatedFundingSourceId: 1,
+      invoicesCount: 1,
+      outcomesCount: 1,
+      feeStatus: null,
+      submissions: [],
     };
   };
 
@@ -82,7 +92,19 @@ export function mockEnrolments() {
     let rows = [];
 
     if (columnList.length) {
-      if (columnList.includes("status")) {
+      if (columnList.includes("student.contact.fullName")) {
+        rows = generateArraysOfRecords(20, [
+          { name: "id", type: "number" },
+          { name: "createdOn", type: "Datetime" },
+          { name: "status", type: "string" },
+          { name: "fullName", type: "string" },
+          { name: "contactId", type: "number" },
+          { name: "courseName", type: "string" }
+        ]).map(l => ({
+          id: l.id,
+          values: ["2022-03-15T06:11:46.050Z", "Active", l.fullName, l.contactId]
+        }));
+      } else if (columnList.includes("status")) {
         ids.forEach(id => {
           rows.push({
             id,

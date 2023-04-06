@@ -66,10 +66,14 @@
            modifiedOn="2012-06-20 10:22:44.0" type="6"/>
   <Account accountCode="21010" description="Prepaid fees liability account" id="40" isEnabled="1"
            modifiedOn="2014-10-17 22:47:58.0" type="2"/>
-  <Account accountCode="54020" description="Discounts given" id="41" isEnabled="1" type="5"/>
-  <Account accountCode="21400" description="Voucher liability" id="200" isEnabled="1" type="2"/>
-  <Account accountCode="65387" description="Voucher underpayment" id="201" isEnabled="1" type="6"/>
-  <Account accountCode="45387" description="Vouchers expired" id="202" isEnabled="1" type="4" taxId="1"/>
+  <Account accountCode="54020" description="Discounts given" id="41" isEnabled="1" type="5"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account accountCode="21400" description="Voucher liability" id="200" isEnabled="1" type="2"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account accountCode="65387" description="Voucher underpayment" id="201" isEnabled="1" type="6"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Account accountCode="45387" description="Vouchers expired" id="202" isEnabled="1" type="4" taxId="1"
+           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Tax createdOn="2012-06-20 10:22:44.0" description="Australian GST" id="1" isGSTTaxType="1"
        modifiedOn="2014-10-17 22:47:53.0" payableToSupplierAccountId="6" receivableFromStudentAccountId="11"
@@ -192,10 +196,10 @@
 
   <CourseClass code="4" courseId="200" createdOn="2014-10-17 22:44:15.0" endDateTime="2015-01-10 23:42:33.0"
                feeExGst="400.00" id="204" incomeAccountId="15" isCancelled="0" isDistantLearningCourse="0"
-               isShownOnWeb="0" maximumPlaces="10" minimumPlaces="1" minutesPerSession="60"
-               modifiedOn="2014-10-17 23:10:57.0" roomId="205" sessionCount="10" startDateTime="2015-01-01 22:42:33.0"
+               isShownOnWeb="0" maximumPlaces="10" minimumPlaces="1"
+               modifiedOn="2014-10-17 23:10:57.0" roomId="205" startDateTime="2015-01-01 22:42:33.0"
                taxId="1" willowId="5034373" deliveryMode="1" fundingSource="3" budgetedPlaces="0"
-               sessionsSkipWeekends="0" sessionrepeatType="6" sessionrepeatInterval="1" isClassFeeApplicationOnly="0"
+               isClassFeeApplicationOnly="0"
                taxAdjustment="0.00" deposit="400.00" isActive="1" suppressAvetmissExport="0" attendanceType="9"/>
 
   <CourseSession courseClass_Id="204" createdOn="2014-10-17 22:44:15.0" endDatetime="2015-01-01 23:42:33.0" id="240"
@@ -386,18 +390,30 @@
                priceEachexTax="400.00" quantity="1.00" sortOrder="10" taxEach="40.00" taxId="1"
                title="Student Two enrolled in pc1-4" prepaidFeesRemaining="400.00" prepaidFeesAccountId="40"/>
 
-  <PaymentMethod id="1" name="Cash" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
-  <PaymentMethod id="2" name="Cheque" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="1"/>
-  <PaymentMethod id="3" name="Credit card" accountId="3" active="1" bankedAutomatically="1" reconcilable="1" type="2"/>
-  <PaymentMethod id="4" name="EFT" accountId="3" active="1" bankedAutomatically="1" reconcilable="1" type="6"/>
-  <PaymentMethod id="5" name="B-Pay" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
-  <PaymentMethod id="6" name="Zero" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="5"/>
-  <PaymentMethod id="7" name="Other" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
-  <PaymentMethod id="8" name="Contra" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="7"/>
-  <PaymentMethod id="9" name="Voucher" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="8"/>
-  <PaymentMethod id="10" name="PayPal" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
-  <PaymentMethod id="11" name="Reverse" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="10"/>
-  <PaymentMethod id="12" name="EFTPOS" accountId="3" active="1" bankedAutomatically="1" reconcilable="1" type="6"/>
+  <PaymentMethod id="1" name="Cash" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="2" name="Cheque" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="1"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="3" name="Credit card" accountId="3" active="1" bankedAutomatically="1" reconcilable="1" type="2"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="4" name="EFT" accountId="3" active="1" bankedAutomatically="1" reconcilable="1" type="6"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="5" name="B-Pay" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="6" name="Zero" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="5"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="7" name="Other" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="8" name="Contra" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="7"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="9" name="Voucher" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="8"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="10" name="PayPal" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="11" name="Reverse" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="10"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <PaymentMethod id="12" name="EFTPOS" accountId="3" active="1" bankedAutomatically="1" reconcilable="1" type="6"
+                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <PaymentIn PAYMENTDATE="2010-10-14 22:04:34.551" accountInId="3" amount="6330.00" createdOn="2014-10-17 22:47:52.0"
              id="200" modifiedOn="2014-10-17 22:47:53.0" privateNotes="" reconciled="0" status="3" paymentMethodId="1"

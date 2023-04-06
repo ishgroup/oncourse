@@ -17,18 +17,21 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { darken } from "@mui/material/styles";
 import debounce from "lodash.debounce";
-import { CustomFieldType } from "@api/model";
+import { CustomFieldType, ProductType } from "@api/model";
 import { getAllMenuTags } from "../../../../../../containers/tags/utils";
 import EditInPlaceQuerySelect, { Suggestion } from "../../../../form/formFields/EditInPlaceQuerySelect";
 import QuerySaveMenu from "./QuerySaveMenu";
 import { State } from "../../../../../../reducers/state";
 import { StringArgFunction } from "../../../../../../model/common/CommonFunctions";
 import { setIndeterminate } from "../../../utils/listFiltersUtils";
-import { setFilterGroups, setListMenuTags, setListSavingFilter, setListUserAQLSearch } from "../../../actions";
+import {
+ setFilterGroups, setListSavingFilter, setListUserAQLSearch
+} from "../../../actions";
 import { MenuTag } from "../../../../../../model/tags";
 import { FilterGroup, ListAqlMenuItemsRenderer, SavingFilterState } from "../../../../../../model/common/ListView";
 import { FILTER_TAGS_REGEX, TAGS_REGEX } from "../../../../../../constants/Config";
 import { AppTheme } from "../../../../../../model/common/Theme";
+import { getSaleEntityName } from "../../../../../../containers/entities/sales/utils";
 
 export const styles = (theme: AppTheme) => createStyles({
     container: {
@@ -93,7 +96,6 @@ interface Props {
   filterGroups: FilterGroup[];
   setListUserAQLSearch: StringArgFunction;
   onQuerySearch: StringArgFunction;
-  setListMenuTags: (tags: MenuTag[]) => void;
   setFilterGroups: (groups: FilterGroup[]) => void;
   setListSavingFilter: (saving: SavingFilterState) => void;
   classes?: any;
@@ -109,8 +111,6 @@ interface Props {
 }
 
 interface SearchInputState {
-  isValidQuery: boolean;
-  hasQueryValue: boolean;
   expanded: boolean;
   querySaveMenuAnchor: HTMLElement;
   tagsSuggestions: Suggestion[];
@@ -177,9 +177,7 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
     super(props);
 
     this.state = {
-      isValidQuery: true,
       querySaveMenuAnchor: null,
-      hasQueryValue: false,
       expanded: props.alwaysExpanded,
       tagsSuggestions: null,
       filtersSuggestions: null,
@@ -225,7 +223,7 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
       });
     }
 
-    if (customFieldTypes && customFieldTypes.length && !this.state.customFieldsSuggestions) {
+    if (prevProps.customFieldTypes !== customFieldTypes && customFieldTypes.length) {
       this.setState({
         customFieldsSuggestions: getCustomFieldsSuggestions(customFieldTypes)
       });
@@ -278,13 +276,6 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
       },
       this.onBlur
     );
-  };
-
-  onValidateQuery = isValidQuery => {
-    this.setState({
-      isValidQuery,
-      hasQueryValue: Boolean(this.inputNode.value)
-    });
   };
 
   getAqlExpression = (value: string, setUsersSearch?: boolean) => {
@@ -388,11 +379,6 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
 
   searchByQuery = () => {
     const { onQuerySearch, savingFilter, setListSavingFilter } = this.props;
-    const { isValidQuery } = this.state;
-
-    if (!isValidQuery) {
-      return;
-    }
 
     if (savingFilter) {
       setListSavingFilter(null);
@@ -464,11 +450,6 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
 
     this.queryComponentNode.reset();
 
-    this.setState({
-      hasQueryValue: false,
-      isValidQuery: true
-    });
-
     if (!alwaysExpanded && expanded) {
       this.setExpanded(false);
     }
@@ -487,8 +468,6 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
     } = this.props;
 
     const {
-      isValidQuery,
-      hasQueryValue,
       querySaveMenuAnchor,
       expanded,
       tagsSuggestions,
@@ -518,7 +497,6 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
                 tags={tagsSuggestions || []}
                 filterTags={filtersSuggestions || []}
                 customFields={customFieldsSuggestions || []}
-                onValidateQuery={this.onValidateQuery}
                 setInputNode={this.setInputNode}
                 rootEntity={rootEntity}
                 className="flex-fill"
@@ -534,7 +512,7 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
                 disableErrorText
               />
 
-              {(hasQueryValue || userAQLSearch) && (
+              {userAQLSearch && (
                 <IconButton
                   className={clsx(classes.inputIcon, expanded && classes.shiftedIcon)}
                   onClick={this.clear}
@@ -558,16 +536,16 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
 
               {expanded && (
                 <IconButton
-                  disabled={!isValidQuery || !hasQueryValue || searchServerError}
+                  disabled={!userAQLSearch || searchServerError}
                   className={classes.inputIcon}
                   onClick={this.openQuerySaveMenu}
                   onMouseEnter={this.onActionIconOver}
                   onMouseLeave={this.onActionIconOut}
                 >
-                  {isValidQuery && !searchServerError ? (
-                    <BookmarkBorder className={hasQueryValue ? classes.bookmarkIconValid : undefined} />
-                  ) : (
+                  {searchServerError ? (
                     <BookmarkTwoTone color="error" />
+                  ) : (
+                    <BookmarkBorder className={userAQLSearch ? classes.bookmarkIconValid : undefined} />
                   )}
                 </IconButton>
               )}
@@ -594,14 +572,15 @@ const mapStateToProps = (state: State, ownProps: Props) => ({
   userAQLSearch: state.list.userAQLSearch,
   searchServerError: state.list.searchError,
   tags: state.list.menuTags,
-  customFieldTypes: state.customFieldTypes.types[ownProps.rootEntity]
+  customFieldTypes: ownProps.rootEntity === "ProductItem"
+    ? Object.keys(ProductType).reduce((p, c) => [...p, ...state.customFieldTypes.types[getSaleEntityName(c as any)] || []], [])
+    : state.customFieldTypes.types[ownProps.rootEntity]
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    setListSavingFilter: (savingFilter?: SavingFilterState) => dispatch(setListSavingFilter(savingFilter)),
-    setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
-    setListMenuTags: (tags: MenuTag[]) => dispatch(setListMenuTags(tags)),
-    setListUserAQLSearch: (userAQLSearch: string) => dispatch(setListUserAQLSearch(userAQLSearch))
-  });
+  setListSavingFilter: (savingFilter?: SavingFilterState) => dispatch(setListSavingFilter(savingFilter)),
+  setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
+  setListUserAQLSearch: (userAQLSearch: string) => dispatch(setListUserAQLSearch(userAQLSearch))
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(SearchInputBase);

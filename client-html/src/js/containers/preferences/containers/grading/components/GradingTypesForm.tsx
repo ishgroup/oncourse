@@ -1,20 +1,18 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import {
- FieldArray, Form, getFormValues, initialize, InjectedFormProps, reduxForm
+  FieldArray, Form, getFormValues, initialize, InjectedFormProps, reduxForm
 } from "redux-form";
 import { Dispatch } from "redux";
 import { GradingType } from "@api/model";
-import AddIcon from "@mui/icons-material/Add";
-import { Fab, Grid, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import { showConfirm } from "../../../../../common/actions";
 import { deleteGradingType, updateGradingTypes } from "../../../actions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../reducers/state";
 import GradingsRenderer from "./GradingsRenderer";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 export interface GradingFormData {
   types: GradingType[];
@@ -26,7 +24,7 @@ export interface GradingProps {
   gradingTypes: GradingType[];
 }
 
-export const FORM = "GradingForm";
+export const GRADING_FORM: string = "GradingForm";
 
 const GradingTypes: React.FC<GradingProps & InjectedFormProps & { dispatch: Dispatch }> = props => {
   const {
@@ -37,12 +35,12 @@ const GradingTypes: React.FC<GradingProps & InjectedFormProps & { dispatch: Disp
     form,
     invalid,
     array,
-    gradingTypes
+    gradingTypes,
   } = props;
 
   useEffect(() => {
     if (Array.isArray(gradingTypes)) {
-      dispatch(initialize(FORM, { types: gradingTypes }));
+      dispatch(initialize(GRADING_FORM, { types: gradingTypes }));
     }
   }, [gradingTypes]);
 
@@ -78,60 +76,33 @@ const GradingTypes: React.FC<GradingProps & InjectedFormProps & { dispatch: Disp
     array.remove("types", index);
   };
 
-  const onSave = values => {
-    dispatch(updateGradingTypes(values.types));
+  const onSave = v => {
+    dispatch(updateGradingTypes(v.types));
   };
 
   return (
-    <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(onSave)}>
+    <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(onSave)} role={GRADING_FORM}>
       <RouteChangeConfirm form={form} when={dirty} />
 
-      <CustomAppBar>
-        <Grid container columnSpacing={3}>
-          <Grid item xs={12} className="centeredFlex relative">
-            <Fab
-              type="button"
-              size="small"
-              color="primary"
-              classes={{
-                sizeSmall: "appBarFab"
-              }}
-              onClick={onAddNew}
-            >
-              <AddIcon />
-            </Fab>
-            <Typography className="appHeaderFontSize pl-2" variant="body1" color="inherit" noWrap>
-              Grading types
-            </Typography>
-
-            <div className="flex-fill" />
-
-            {/* {values && ( */}
-            {/*  <AppBarHelpMenu */}
-            {/*    created={created} */}
-            {/*    modified={modified} */}
-            {/*    auditsUrl={`audit?search=~"EntityRelationType" and entityId in (${idsToString(data.types)})`} */}
-            {/*    manualUrl={manualLink} */}
-            {/*  /> */}
-            {/* )} */}
-
-            <FormSubmitButton
-              disabled={!dirty}
-              invalid={invalid}
-            />
-          </Grid>
+      <AppBarContainer
+        values={values}
+        disabled={!dirty}
+        invalid={invalid}
+        title="Grading types"
+        disableInteraction
+        hideHelpMenu
+        onAddMenu={() => onAddNew()}
+      >
+        <Grid container className="mt-2">
+          <FieldArray
+            name="types"
+            component={GradingsRenderer}
+            onDelete={onClickDelete}
+            dispatch={dispatch}
+            rerenderOnEveryChange
+          />
         </Grid>
-      </CustomAppBar>
-
-      <Grid container columnSpacing={3} className="mt-3">
-        <FieldArray
-          name="types"
-          component={GradingsRenderer}
-          onDelete={onClickDelete}
-          dispatch={dispatch}
-          rerenderOnEveryChange
-        />
-      </Grid>
+      </AppBarContainer>
     </Form>
   );
 };
@@ -173,7 +144,7 @@ const mapStateToProps = (state: State) => ({
 const GradingTypesForm = reduxForm({
   onSubmitFail,
   validate,
-  form: FORM,
+  form: GRADING_FORM,
   initialValues: {
     types: []
   }

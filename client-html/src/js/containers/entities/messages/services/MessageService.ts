@@ -28,7 +28,7 @@ class MessageService {
   public getMessagePreview(recipientsCount: number, model: SendMessageRequest, messageType: string): Promise<string> {
     return this.service.POST(`/v1/list/option/message`, model,
       {
-        headers: { "X-validate-only": true },
+        headers: { "X-validate-only": "true" },
         params: { messageType, recipientsCount }
       });
   }

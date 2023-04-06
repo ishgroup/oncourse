@@ -1,22 +1,12 @@
 import {
   UserPreferenceApi,
-  Category,
   UserPreference,
-  PreferenceEnum,
-  DashboardLinks
+  PreferenceEnum
 } from "@api/model";
 import { DefaultHttpService } from "./HttpService";
 
 class UserPreferenceService {
   readonly userPreferenceApi = new UserPreferenceApi(new DefaultHttpService());
-
-  public getCategories(): Promise<DashboardLinks> {
-    return this.userPreferenceApi.getDashboardLinks();
-  }
-
-  public setFavoriteCategories(categories: Category[]): Promise<any> {
-    return this.userPreferenceApi.setFavorites(categories);
-  }
 
   public getUserPreferencesByKeys(keys: PreferenceEnum[]): Promise<{ [key: string]: string }> {
     return this.userPreferenceApi.get(keys.toString());

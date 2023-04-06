@@ -3,8 +3,8 @@ import { defaultComponents } from "../../common/Default.Components";
 import { mockedAPI } from "../../TestEntry";
 import * as PreferencesModel from "../../../js/model/preferences";
 import Financial from "../../../js/containers/preferences/containers/financial/Financial";
-
-// TODO Enable test on fix
+import { preferencesFormRole } from "../../../js/containers/preferences/containers/FormContainer";
+import { dashedCase } from "../../common/utils";
 
 describe("Virtual rendered FinancialForm", () => {
   defaultComponents({
@@ -12,50 +12,26 @@ describe("Virtual rendered FinancialForm", () => {
     View: props => <Financial {...props} />,
     record: () => ({}),
     defaultProps: () => ({}),
-    render: wrapper => {
-      // expect(wrapper.find("#college-paymentInfo textarea").val()).toEqual(
-      //   mockedAPI.db.preference[PreferencesModel.PaymentInfo.uniqueKey].toString()
-      // );
-      //
-      // expect(wrapper.find("#account-default-debtors-id input").val()).toEqual(
-      //   mockedAPI.db.preference[PreferencesModel.AccountDebtors.uniqueKey].toString()
-      // );
-      //
-      // expect(wrapper.find("#account-default-bank-id input").val()).toEqual(
-      //   mockedAPI.db.preference[PreferencesModel.AccountBank.uniqueKey].toString()
-      // );
-      //
-      // expect(wrapper.find("#account-default-tax-id input").val()).toEqual(
-      //   mockedAPI.db.preference[PreferencesModel.AccountTax.uniqueKey].toString()
-      // );
-      //
-      // expect(wrapper.find("#account-default-studentEnrolments-id input").val()).toEqual(
-      //   mockedAPI.db.preference[PreferencesModel.AccountStudentEnrolments.uniqueKey].toString()
-      // );
-      //
-      // expect(wrapper.find("#account-prepaidFees-id input").val()).toEqual(
-      //   mockedAPI.db.preference[PreferencesModel.AccountPrepaidFees.uniqueKey].toString()
-      // );
-      //
-      // expect(wrapper.find("#account-prepaidFeesPostAt input").val()).toEqual(
-      //   mockedAPI.db.preference[PreferencesModel.AccountPrepaidFeesPostAt.uniqueKey].toString()
-      // );
-      //
-      // expect(wrapper.find("#account-default-voucherLiability-id input").val()).toEqual(
-      //   mockedAPI.db.preference[PreferencesModel.AccountVoucherLiability.uniqueKey].toString()
-      // );
-      //
-      // expect(wrapper.find("#account-default-voucherUnderpayment-id input").val()).toEqual(
-      //   mockedAPI.db.preference[PreferencesModel.AccountVoucherUnderpayment.uniqueKey].toString()
-      // );
-      //
-      // expect(wrapper.find("#default-currency input").val()).toEqual(
-      //   mockedAPI.db.preference[PreferencesModel.AccountDefaultCurrency.uniqueKey].toString()
-      // );
-      //
-      // expect(wrapper.find("#account-invoice-terms input").val()).toEqual(
-      //   mockedAPI.db.preference[PreferencesModel.AccountInvoiceTerms.uniqueKey].toString()
-      // );
+    render: ({ screen, fireEvent }) => {
+      const avetmissFormData = dashedCase({
+        [PreferencesModel.PaymentInfo.uniqueKey]: mockedAPI.db.preference[PreferencesModel.PaymentInfo.uniqueKey].toString(),
+        [PreferencesModel.AccountDebtors.uniqueKey]: mockedAPI.db.preference[PreferencesModel.AccountDebtors.uniqueKey].toString(),
+        [PreferencesModel.AccountBank.uniqueKey]: mockedAPI.db.preference[PreferencesModel.AccountBank.uniqueKey].toString(),
+        [PreferencesModel.AccountTax.uniqueKey]: mockedAPI.db.preference[PreferencesModel.AccountTax.uniqueKey].toString(),
+        [PreferencesModel.AccountStudentEnrolments.uniqueKey]: mockedAPI.db.preference[PreferencesModel.AccountStudentEnrolments.uniqueKey].toString(),
+        [PreferencesModel.AccountPrepaidFees.uniqueKey]: mockedAPI.db.preference[PreferencesModel.AccountPrepaidFees.uniqueKey].toString(),
+        [PreferencesModel.AccountPrepaidFeesPostAt.uniqueKey]: mockedAPI.db.preference[PreferencesModel.AccountPrepaidFeesPostAt.uniqueKey].toString(),
+        [PreferencesModel.AccountVoucherLiability.uniqueKey]: mockedAPI.db.preference[PreferencesModel.AccountVoucherLiability.uniqueKey].toString(),
+        [PreferencesModel.AccountVoucherUnderpayment.uniqueKey]: mockedAPI.db.preference[PreferencesModel.AccountVoucherUnderpayment.uniqueKey].toString(),
+        [PreferencesModel.AccountDefaultCurrency.uniqueKey]: mockedAPI.db.preference[PreferencesModel.AccountDefaultCurrency.uniqueKey].toString(),
+        [PreferencesModel.AccountInvoiceTerms.uniqueKey]: Number(mockedAPI.db.preference[PreferencesModel.AccountInvoiceTerms.uniqueKey]),
+      });
+      
+      fireEvent.click(screen.getByTestId('appbar-submit-button'));
+
+      setTimeout(() => {
+        expect(screen.getByRole(preferencesFormRole)).toHaveFormValues(avetmissFormData);
+      }, 500);
     }
   });
 });
