@@ -13,6 +13,7 @@ Feature: Main feature for all GET requests with path 'export/avetmiss8'
 
     Scenario: (+) Get avetmiss8 export result by admin
 
+        * def proxyId = 1001
         * def avetmissExport = {"ids":[101,1,4],"defaultStatus":false,"settings":{"flavour":"NCVER (Standard AVETMISS)","fee":["Fee for service VET (non-funded)","Queensland","New South Wales","Victoria","Tasmania","Australian Capital Territory","Western Australia","South Australia","Northern Territory","No Australian state defined","Non VET"],"outcomesStart":"2017-01-01","outcomesEnd":"2018-05-21","includeLinkedOutcomes":false,"fundingContracts":[],"classIds":[]}}
 
         Given path ishPath
@@ -21,8 +22,7 @@ Feature: Main feature for all GET requests with path 'export/avetmiss8'
         Then status 200
 
         * def processId = $
-
-        Given path ishPath + '/' + processId
+        Given path ishPath + '/' + proxyId
         When method GET
         Then status 200
         And match $ contains '.txt'

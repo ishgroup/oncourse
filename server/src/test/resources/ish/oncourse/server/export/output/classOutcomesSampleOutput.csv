@@ -1,3 +1,3 @@
 studentNumber,firstName,lastName,classCode,nationalCode,title,startDate,endDate,status
 3,name3,name,ATT1-123,TESTCODE1,Test module 1,,,Competency achieved/pass (20)
-4,name4,name,ATT1-123,TESTCODE2,Test module 2,1/1/2013 12:00 PM,1/2/2013 12:00 PM,Competency not achieved/fail (30)
+4,name4,name,ATT1-123,TESTCODE2,Test module 2,1/1/2013 12:00 pm,1/2/2013 12:00 pm,Competency not achieved/fail (30)

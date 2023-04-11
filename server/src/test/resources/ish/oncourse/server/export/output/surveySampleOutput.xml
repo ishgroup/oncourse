@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
   <survey id='1'>
-    <createdOn>2013-01-01T00:00:00Z</createdOn>
-    <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
+    <createdOn>2013-01-01T00:00:00+10:00</createdOn>
+    <modifiedOn>2013-02-01T00:00:00+10:00</modifiedOn>
     <publicComment>false</publicComment>
     <comment>abc</comment>
     <courseScore>0</courseScore>
@@ -23,8 +23,8 @@
     </tutor>
   </survey>
   <survey id='2'>
-    <createdOn>2013-01-01T00:00:00Z</createdOn>
-    <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
+    <createdOn>2013-01-01T00:00:00+10:00</createdOn>
+    <modifiedOn>2013-02-01T00:00:00+10:00</modifiedOn>
     <publicComment>true</publicComment>
     <comment />
     <courseScore>5</courseScore>

@@ -134,28 +134,20 @@
   <CustomField id="3" entityIdentifier="Contact" foreignId="2" customFieldTypeId="2" value="value3"
                createdOn="2017-04-17 19:22:59" modifiedOn="2017-04-17 19:23:29"/>
 
-  <Node id="1" isWebVisible="1" name="ContactTag" nodeType="1"
-        createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+
   <NodeRequirement id="1" entityIdentifier="8" isRequired="0" manyTermsAllowed="1" nodeId="1"
                    createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="1" entityIdentifier="8" entityRecordId="1" nodeId="1"
                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <Node id="2" isWebVisible="1" name="StudentTag" nodeType="1"
-        createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+
   <NodeRequirement id="2" entityIdentifier="3" isRequired="0" manyTermsAllowed="1" nodeId="2"
                    createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="3" IsWebVisible="1" name="StudentChildTag" nodeType="1" parentId="2"
-        createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="2" entityIdentifier="3" entityRecordId="1" nodeId="3"
                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <Node id="4" isWebVisible="1" name="CourseTag" nodeType="1"
-        createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRequirement id="3" entityIdentifier="1" isRequired="0" manyTermsAllowed="1" nodeId="4"
                    createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="5" IsWebVisible="1" name="CourseChildTag" nodeType="1" parentId="4"
-        createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="3" entityIdentifier="1" entityRecordId="100" nodeId="5"
                 createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
@@ -242,22 +234,22 @@
                createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <!-- messages -->
-  <Message id="1" createdOn="2007-11-20 18:15:37.36" modifiedOn="2007-11-20 19:00:46.826"
-           smsText="message for contact 1"/>
-  <Message_Person id="1" attemptCount="0" destinationAddress="65/34 Iris Ave&#xA;Westfield VIC 3455" messageId="1"
+  <Message id="1" numberOfAttempts="0" createdOn="2007-11-20 18:15:37.36" modifiedOn="2007-11-20 19:00:46.826"
+           smsText="message for contact 1" status="2" type="3" contactId="1" destinationAddress="65/34 Iris Ave&#xA;Westfield VIC 3455"/>
+<!--  <Message_Person id="1" attemptCount="0" destinationAddress="65/34 Iris Ave&#xA;Westfield VIC 3455" messageId="1"
                   status="2" type="3" createdOn="2011-02-08 13:41:47.872" modifiedOn="2011-02-08 13:41:47.872"
-                  contactId="1"/>
-  <Message id="2" createdOn="2007-11-20 18:15:37.36" modifiedOn="2007-11-20 19:00:46.826"
-           smsText="message for contact 2"/>
-  <Message_Person id="2" attemptCount="0" destinationAddress="65/34 Iris Ave&#xA;Westfield VIC 3455" messageId="2"
+                  contactId="1"/>-->
+  <Message id="2" numberOfAttempts="0" createdOn="2007-11-20 18:15:37.36" modifiedOn="2007-11-20 19:00:46.826"
+           smsText="message for contact 2" destinationAddress="65/34 Iris Ave&#xA;Westfield VIC 3455" status="2" type="3" contactId="2"/>
+<!--  <Message_Person id="2" attemptCount="0" destinationAddress="65/34 Iris Ave&#xA;Westfield VIC 3455" messageId="2"
                   status="2" type="3" createdOn="2011-02-08 13:41:47.872" modifiedOn="2011-02-08 13:41:47.872"
-                  contactId="2"/>
+                  contactId="2"/>-->
 
   <!-- notes -->
-  <Note id="1" note="contact 1 note" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <Note id="1" note="contact 1 note" interactionDate="2015-03-09 17:00:51.0" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
   <NoteRelation id="1" noteId="1" entityRecordId="1" entityIdentifier="Contact" createdOn="2015-03-09 17:00:51.0"
                 modifiedOn="2015-03-09 17:20:32.0"/>
-  <Note id="2" note="contact 2 note" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <Note id="2" note="contact 2 note" interactionDate="2015-03-09 17:00:51.0" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
   <NoteRelation id="2" noteId="2" entityRecordId="2" entityIdentifier="Contact" createdOn="2015-03-09 17:00:51.0"
                 modifiedOn="2015-03-09 17:20:32.0"/>
 
@@ -375,10 +367,8 @@
                  createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <!-- course class tutors -->
-  <DefinedTutorRole id="1" description="Tutor 1 role" name="Tutor 1 role" active="1" createdOn="2021-12-21 12:00:10.0"
-                    modifiedOn="2021-12-21 12:00:10.0"/>
-  <DefinedTutorRole id="2" description="Tutor 2 role" name="Tutor 2 role" active="1" createdOn="2021-12-21 12:00:10.0"
-                    modifiedOn="2021-12-21 12:00:10.0"/>
+  <DefinedTutorRole id="1" description="Tutor 1 role" name="Tutor 1 role" active="1"/>
+  <DefinedTutorRole id="2" description="Tutor 2 role" name="Tutor 2 role" active="1"/>
 
   <CourseClassTutor id="1" tutorId="1" courseClassId="1" inPublicity="1" definedTutorRoleId="1"
                     modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>

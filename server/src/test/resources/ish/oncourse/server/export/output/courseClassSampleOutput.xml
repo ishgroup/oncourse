@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
   <course id='1'>
-    <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
-    <createdOn>2013-01-01T00:00:00Z</createdOn>
+    <modifiedOn>2013-02-01T00:00:00+10:00</modifiedOn>
+    <createdOn>2013-01-01T00:00:00+10:00</createdOn>
     <allowWaitingLists>true</allowWaitingLists>
     <code>ATT1</code>
     <currentlyOffered>true</currentlyOffered>
@@ -15,11 +15,11 @@
     <reportableHours>3.00</reportableHours>
     <webDescription />
     <courseClass id='1'>
-      <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
-      <createdOn>2013-01-01T00:00:00Z</createdOn>
+      <modifiedOn>2013-02-01T00:00:00+10:00</modifiedOn>
+      <createdOn>2013-01-01T00:00:00+10:00</createdOn>
       <code>123</code>
       <deliveryMode>Classroom</deliveryMode>
-      <endDateTime>2013-01-02T00:00:00Z</endDateTime>
+      <endDateTime>2013-01-02T00:00:00+10:00</endDateTime>
       <price>
         <amount>110.00</amount>
         <taxAmount>10.00</taxAmount>
@@ -45,21 +45,20 @@
       <minimumPlaces>1</minimumPlaces>
       <budgetedPlaces>10</budgetedPlaces>
       <notes>firstCourseClassNote1
-        secondCourseClassNote1
-      </notes>
-      <startDateTime>2013-01-01T00:00:00Z</startDateTime>
+        secondCourseClassNote1</notes>
+      <startDateTime>2013-01-01T00:00:00+10:00</startDateTime>
       <webDescription />
       <accountCode>11500</accountCode>
       <enrolment id='1'>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
         <source>office</source>
         <status>Active</status>
         <vetClientID />
         <contact id='3' />
         <outcome id='1'>
-          <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
-          <createdOn>2013-01-01T00:00:00Z</createdOn>
+          <modifiedOn>2013-02-01T00:00:00+10:00</modifiedOn>
+          <createdOn>2013-01-01T00:00:00+10:00</createdOn>
           <startDate />
           <endDate />
           <status>Competency achieved/pass (20)</status>
@@ -67,44 +66,44 @@
         </outcome>
       </enrolment>
       <enrolment id='2'>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
         <source>office</source>
         <status>Active</status>
         <vetClientID />
         <contact id='4' />
         <outcome id='2'>
-          <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
-          <createdOn>2013-01-01T00:00:00Z</createdOn>
-          <startDate>2013-01-01T12:00:00Z</startDate>
-          <endDate>2013-02-01T12:00:00Z</endDate>
+          <modifiedOn>2013-02-01T00:00:00+10:00</modifiedOn>
+          <createdOn>2013-01-01T00:00:00+10:00</createdOn>
+          <startDate>2013-01-01T12:00:00+10:00</startDate>
+          <endDate>2013-02-01T12:00:00+10:00</endDate>
           <status>Competency not achieved/fail (30)</status>
           <module nationalCode='TESTCODE2' />
         </outcome>
       </enrolment>
       <session id='1'>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
-        <start>2013-01-01T00:00:00Z</start>
-        <end>2013-01-02T00:00:00Z</end>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
+        <start>2013-01-01T00:00:00+10:00</start>
+        <end>2013-01-02T00:00:00+10:00</end>
       </session>
       <session id='2'>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
-        <start>2013-01-01T00:00:00Z</start>
-        <end>2013-01-02T00:00:00Z</end>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
+        <start>2013-01-01T00:00:00+10:00</start>
+        <end>2013-01-02T00:00:00+10:00</end>
       </session>
       <session id='3'>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
-        <start>2013-01-01T00:00:00Z</start>
-        <end>2013-01-02T00:00:00Z</end>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
+        <start>2013-01-01T00:00:00+10:00</start>
+        <end>2013-01-02T00:00:00+10:00</end>
       </session>
     </courseClass>
   </course>
   <course id='2'>
-    <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
-    <createdOn>2013-01-01T00:00:00Z</createdOn>
+    <modifiedOn>2013-02-01T00:00:00+10:00</modifiedOn>
+    <createdOn>2013-01-01T00:00:00+10:00</createdOn>
     <allowWaitingLists>true</allowWaitingLists>
     <code>ATT2</code>
     <currentlyOffered>true</currentlyOffered>
@@ -117,11 +116,11 @@
     <reportableHours>3.00</reportableHours>
     <webDescription />
     <courseClass id='2'>
-      <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
-      <createdOn>2013-01-01T00:00:00Z</createdOn>
+      <modifiedOn>2013-02-01T00:00:00+10:00</modifiedOn>
+      <createdOn>2013-01-01T00:00:00+10:00</createdOn>
       <code>124</code>
       <deliveryMode>Classroom</deliveryMode>
-      <endDateTime>2013-01-02T00:00:00Z</endDateTime>
+      <endDateTime>2013-01-02T00:00:00+10:00</endDateTime>
       <price>
         <amount>110.00</amount>
         <taxAmount>10.00</taxAmount>
@@ -147,92 +146,91 @@
       <minimumPlaces>1</minimumPlaces>
       <budgetedPlaces>10</budgetedPlaces>
       <notes>firstCourseClassNote2
-        secondCourseClassNote2
-      </notes>
-      <startDateTime>2013-01-01T00:00:00Z</startDateTime>
+secondCourseClassNote2</notes>
+      <startDateTime>2013-01-01T00:00:00+10:00</startDateTime>
       <webDescription />
       <accountCode>11500</accountCode>
       <enrolment id='3'>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
         <source>office</source>
         <status>Active</status>
         <vetClientID />
         <contact id='3' />
       </enrolment>
       <enrolment id='4'>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
         <source>office</source>
         <status>Active</status>
         <vetClientID />
         <contact id='4' />
       </enrolment>
       <enrolment id='7'>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
         <source>office</source>
         <status>Active</status>
         <vetClientID />
         <contact id='7' />
       </enrolment>
       <enrolment id='8'>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
         <source>office</source>
         <status>Active</status>
         <vetClientID />
         <contact id='8' />
       </enrolment>
       <enrolment id='9'>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
         <source>office</source>
         <status>Active</status>
         <vetClientID />
         <contact id='9' />
       </enrolment>
       <enrolment id='10'>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
         <source>office</source>
         <status>Active</status>
         <vetClientID />
         <contact id='10' />
       </enrolment>
       <enrolment id='11'>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
         <source>office</source>
         <status>Cancelled</status>
         <vetClientID />
         <contact id='10' />
       </enrolment>
       <session id='4'>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
-        <start>2013-01-01T00:00:00Z</start>
-        <end>2013-01-02T00:00:00Z</end>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
+        <start>2013-01-01T00:00:00+10:00</start>
+        <end>2013-01-02T00:00:00+10:00</end>
       </session>
       <session id='5'>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
-        <start>2013-01-01T00:00:00Z</start>
-        <end>2013-01-02T00:00:00Z</end>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
+        <start>2013-01-01T00:00:00+10:00</start>
+        <end>2013-01-02T00:00:00+10:00</end>
       </session>
       <session id='6'>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
-        <start>2013-01-01T00:00:00Z</start>
-        <end>2013-01-02T00:00:00Z</end>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
+        <start>2013-01-01T00:00:00+10:00</start>
+        <end>2013-01-02T00:00:00+10:00</end>
       </session>
     </courseClass>
     <courseClass id='3'>
-      <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
-      <createdOn>2013-01-01T00:00:00Z</createdOn>
+      <modifiedOn>2013-02-01T00:00:00+10:00</modifiedOn>
+      <createdOn>2013-01-01T00:00:00+10:00</createdOn>
       <code>125</code>
       <deliveryMode>Classroom</deliveryMode>
-      <endDateTime>2013-01-02T00:00:00Z</endDateTime>
+      <endDateTime>2013-01-02T00:00:00+10:00</endDateTime>
       <price>
         <amount>110.00</amount>
         <taxAmount>10.00</taxAmount>
@@ -258,38 +256,37 @@
       <minimumPlaces>1</minimumPlaces>
       <budgetedPlaces>10</budgetedPlaces>
       <notes>firstCourseClassNote3
-        secondCourseClassNote3
-      </notes>
-      <startDateTime>2013-01-01T00:00:00Z</startDateTime>
+        secondCourseClassNote3</notes>
+      <startDateTime>2013-01-01T00:00:00+10:00</startDateTime>
       <webDescription />
       <accountCode>11500</accountCode>
       <enrolment id='5'>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
         <source>office</source>
         <status>Active</status>
         <vetClientID />
         <contact id='5' />
       </enrolment>
       <session id='7'>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
-        <start>2013-01-01T00:00:00Z</start>
-        <end>2013-01-02T00:00:00Z</end>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
+        <start>2013-01-01T00:00:00+10:00</start>
+        <end>2013-01-02T00:00:00+10:00</end>
       </session>
       <session id='8'>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
-        <start>2013-01-01T00:00:00Z</start>
-        <end>2013-01-02T00:00:00Z</end>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
+        <start>2013-01-01T00:00:00+10:00</start>
+        <end>2013-01-02T00:00:00+10:00</end>
       </session>
     </courseClass>
     <courseClass id='4'>
-      <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
-      <createdOn>2013-01-01T00:00:00Z</createdOn>
+      <modifiedOn>2013-02-01T00:00:00+10:00</modifiedOn>
+      <createdOn>2013-01-01T00:00:00+10:00</createdOn>
       <code>126</code>
       <deliveryMode>Classroom</deliveryMode>
-      <endDateTime>2013-01-02T00:00:00Z</endDateTime>
+      <endDateTime>2013-01-02T00:00:00+10:00</endDateTime>
       <price>
         <amount>110.00</amount>
         <taxAmount>10.00</taxAmount>
@@ -315,38 +312,37 @@
       <minimumPlaces>1</minimumPlaces>
       <budgetedPlaces>10</budgetedPlaces>
       <notes>firstCourseClassNote4
-        secondCourseClassNote4
-      </notes>
-      <startDateTime>2013-01-01T00:00:00Z</startDateTime>
+        secondCourseClassNote4</notes>
+      <startDateTime>2013-01-01T00:00:00+10:00</startDateTime>
       <webDescription />
       <accountCode>11500</accountCode>
       <enrolment id='6'>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
         <source>office</source>
         <status>Active</status>
         <vetClientID />
         <contact id='6' />
       </enrolment>
       <enrolment id='12'>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
         <source>office</source>
         <status>Failed</status>
         <vetClientID />
         <contact id='10' />
       </enrolment>
       <session id='9'>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
-        <start>2013-01-01T00:00:00Z</start>
-        <end>2013-01-02T00:00:00Z</end>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
+        <start>2013-01-01T00:00:00+10:00</start>
+        <end>2013-01-02T00:00:00+10:00</end>
       </session>
       <session id='10'>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
-        <start>2013-01-01T00:00:00Z</start>
-        <end>2013-01-02T00:00:00Z</end>
+        <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+        <createdOn>2013-01-01T00:00:00+10:00</createdOn>
+        <start>2013-01-01T00:00:00+10:00</start>
+        <end>2013-01-02T00:00:00+10:00</end>
       </session>
     </courseClass>
   </course>

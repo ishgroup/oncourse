@@ -4,6 +4,7 @@
 
 package ish.oncourse.server.print
 
+import ish.common.types.TaskResultType
 import groovy.transform.CompileStatic
 import ish.TestWithDatabase
 import ish.DatabaseSetup
@@ -43,7 +44,7 @@ import java.time.LocalDate
 @DatabaseSetup(value = "ish/oncourse/server/sampleData.xml")
 class ConcurrentReportPrintingTest extends TestWithDatabase {
     List<String> keyCodeList = new ArrayList<>()
-    
+
     @BeforeEach
     void dataPopulation() throws Exception {
         DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
@@ -79,7 +80,7 @@ class ConcurrentReportPrintingTest extends TestWithDatabase {
      * this test method can eb simplified (ie. testing PrintService instead), but its requried for now to test the inner doings of the classes.
      * @throws Exception
      */
-    
+
     @Test
     void testReport() throws Exception {
         //semi randomised list of records
@@ -149,19 +150,19 @@ class ConcurrentReportPrintingTest extends TestWithDatabase {
             int workersRunning = 0
             Thread.sleep(200)
             for (PrintWorker w : reportsToRun.values()) {
-                if (PrintResult.ResultType.IN_PROGRESS == w.getResult().getResultType()) {
-                    workersRunning = workersRunning + 1
+				if (TaskResultType.IN_PROGRESS == w.getResult().getType()) {
+					workersRunning = workersRunning + 1
                 }
             }
             workersFinished = workersRunning == 0
         }
 
-        for (Map.Entry<PrintRequest, PrintWorker> e : reportsToRun.entrySet()) {
-            Assertions.assertEquals(PrintResult.ResultType.SUCCESS, e.getValue().getResult().getResultType(), String.format("Printing failed for %s", e.getKey().getReportCode()))
-            Assertions.assertNotNull(e.getValue().getResult().getResult(), String.format("Empty printing result for %s", e.getKey().getReportCode()))
+            for (Map.Entry<PrintRequest, PrintWorker> e : reportsToRun.entrySet()) {
+			Assertions.assertEquals(TaskResultType.SUCCESS, e.getValue().getResult().getType(),String.format("Printing failed for %s", e.getKey().getReportCode()))
+            Assertions.assertNotNull(new String(e.getValue().getResult().getData()), String.format("Empty printing result for %s",  e.getKey().getReportCode()))
 
 
-            FileUtils.writeByteArrayToFile(new File("build/test-data/concurrentReportTestOutput/" + e.getKey().getReportCode() + ".pdf"), e.getValue().getResult().getResult())
+            FileUtils.writeByteArrayToFile(new File("build/test-data/concurrentReportTestOutput/"+e.getKey().getReportCode()+".pdf"), e.getValue().getResult().getData())
         }
     }
 }

@@ -15,12 +15,17 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class ImportResult implements Serializable {
+import ish.common.types.TaskResultType;
+import ish.oncourse.server.cluster.TaskResult;
+
+public class ImportResult extends TaskResult implements Serializable {
 
 	private Map<String, List<Long>> createdRecords;
 	private Map<String, List<Long>> modifiedRecords;
 
-	private String errorMessage;
+	public ImportResult() {
+		super(TaskResultType.SUCCESS);
+	}
 
 	/**
 	 * @return list of created records' ids mapped to their entity names
@@ -58,7 +63,7 @@ public class ImportResult implements Serializable {
 	 * @return error message returned by import
 	 */
 	public String getErrorMessage() {
-		return errorMessage;
+		return getError();
 	}
 
 	/**
@@ -67,6 +72,6 @@ public class ImportResult implements Serializable {
 	 * @param errorMessage error message
 	 */
 	public void setErrorMessage(String errorMessage) {
-		this.errorMessage = errorMessage;
+		setError(errorMessage);
 	}
 }

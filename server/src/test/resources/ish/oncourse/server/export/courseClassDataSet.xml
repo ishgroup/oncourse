@@ -118,14 +118,14 @@
                suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
                attendanceType="0"/>
 
-  <Note id="7" note="firstCourseClassNote1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="8" note="secondCourseClassNote1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="9" note="firstCourseClassNote2" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="10" note="secondCourseClassNote2" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="11" note="firstCourseClassNote3" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="12" note="secondCourseClassNote3" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="13" note="firstCourseClassNote4" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
-  <Note id="14" note="secondCourseClassNote4" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="7" note="firstCourseClassNote1" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="8" note="secondCourseClassNote1" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="9" note="firstCourseClassNote2" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="10" note="secondCourseClassNote2" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="11" note="firstCourseClassNote3" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="12" note="secondCourseClassNote3" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="13" note="firstCourseClassNote4" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00"  modifiedOn="2015-01-24 18:00:00"/>
+  <Note id="14" note="secondCourseClassNote4" createdOn="2015-01-24 18:00:00" interactionDate="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
 
   <NoteRelation id="7" noteId="7" entityRecordId="1" entityIdentifier="CourseClass" createdOn="2015-01-24 18:00:00"
                 modifiedOn="2015-01-24 18:00:00"/>

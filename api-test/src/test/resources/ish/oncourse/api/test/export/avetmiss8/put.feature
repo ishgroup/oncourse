@@ -8,6 +8,7 @@ Feature: Main feature for all PUT requests with path 'export/avetmiss8'
         * def ishPathLogin = 'login'
         * def ishPathControl = 'control'
         * def ishPathOutcomes = 'export/avetmiss8/outcomes'
+        * def proxyId = 1001
         
 
 
@@ -29,7 +30,7 @@ Feature: Main feature for all PUT requests with path 'export/avetmiss8'
 
         * match $ == {"status":"#ignore","message":null}
 
-        Given path ishPath + '/' + processId
+        Given path ishPath + '/' + proxyId
         When method GET
         Then status 200
         And match $ contains '.txt'
@@ -53,7 +54,7 @@ Feature: Main feature for all PUT requests with path 'export/avetmiss8'
 
         * match $ == {"status":"#ignore","message":null}
 
-        Given path ishPath + '/' + processId
+        Given path ishPath + '/' + proxyId
         When method GET
         Then status 200
         And match $ contains '.txt'
@@ -83,7 +84,8 @@ Feature: Main feature for all PUT requests with path 'export/avetmiss8'
 
         * match $ == {"status":"#ignore","message":null}
 
-        Given path ishPath + '/' + processId
+
+        Given path ishPath + '/' + proxyId
         When method GET
         Then status 200
         And match $ contains '.txt'

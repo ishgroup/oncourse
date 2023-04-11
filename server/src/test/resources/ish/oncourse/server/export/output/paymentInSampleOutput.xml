@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
   <contact id='100'>
-    <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
-    <createdOn>2012-05-10T00:00:00Z</createdOn>
+    <modifiedOn>2012-05-10T00:00:00+10:00</modifiedOn>
+    <createdOn>2012-05-10T00:00:00+10:00</createdOn>
     <allowEmail>true</allowEmail>
     <allowPost>false</allowPost>
     <allowSms>true</allowSms>
@@ -28,8 +28,8 @@
     <workPhone>331110000</workPhone>
     <title />
     <paymentIn id='100'>
-      <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
-      <createdOn>2012-05-10T00:00:00Z</createdOn>
+      <modifiedOn>2012-05-10T00:00:00+10:00</modifiedOn>
+      <createdOn>2012-05-10T00:00:00+10:00</createdOn>
       <amount>10.00</amount>
       <creditCardExpiry>01/2013</creditCardExpiry>
       <creditCardType>VISA</creditCardType>
@@ -44,8 +44,8 @@
     </paymentIn>
   </contact>
   <contact id='200'>
-    <modifiedOn>2012-05-20T00:00:00Z</modifiedOn>
-    <createdOn>2012-05-20T00:00:00Z</createdOn>
+    <modifiedOn>2012-05-20T00:00:00+10:00</modifiedOn>
+    <createdOn>2012-05-20T00:00:00+10:00</createdOn>
     <allowEmail>true</allowEmail>
     <allowPost>false</allowPost>
     <allowSms>false</allowSms>
@@ -71,8 +71,8 @@
     <workPhone>331110001</workPhone>
     <title />
     <paymentIn id='200'>
-      <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
-      <createdOn>2012-05-10T00:00:00Z</createdOn>
+      <modifiedOn>2012-05-10T00:00:00+10:00</modifiedOn>
+      <createdOn>2012-05-10T00:00:00+10:00</createdOn>
       <amount>10.00</amount>
       <creditCardExpiry />
       <creditCardType />

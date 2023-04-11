@@ -18,7 +18,7 @@ import ish.oncourse.server.api.model.ImportModel
 import ish.oncourse.server.api.v1.model.ExecuteImportRequestDTO
 import ish.oncourse.server.api.v1.model.ImportModelDTO
 import ish.oncourse.server.cayenne.Import
-import ish.oncourse.server.concurrent.ExecutorManager
+import ish.oncourse.server.cluster.ClusteredExecutorManager
 import ish.oncourse.server.imports.ImportService
 import ish.common.types.DataType
 import org.apache.cayenne.ObjectContext
@@ -28,10 +28,10 @@ import java.util.concurrent.Callable
 class ImportApiService extends AutomationApiService<ImportModelDTO, Import, ImportDao> {
 
     @Inject
-     private ImportService importService
+    private ImportService importService
 
     @Inject
-    private ExecutorManager executorManager
+    private ClusteredExecutorManager executorManager
 
     @Override
     Class<Import> getPersistentClass() {
@@ -83,12 +83,10 @@ class ImportApiService extends AutomationApiService<ImportModelDTO, Import, Impo
             model.importData[var.name] = files[i].bytes
         }
 
-        return executorManager.submit(new Callable() {
-
+        executorManager.submit(new Callable<ImportResult>() {
             @Override
-            Object call() throws Exception {
-                ImportResult importResult = importService.performImport(model, context)
-                return importResult
+            ImportResult call() throws Exception {
+                importService.performImport(model, context)
             }
         })
     }

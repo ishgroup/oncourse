@@ -1,5 +1,7 @@
 package ish.oncourse.server.querying
 
+import ish.common.types.TaskResultType
+import ish.oncourse.server.ICayenneService
 import groovy.transform.CompileStatic
 import ish.DatabaseOperation
 import ish.TestWithDatabase
@@ -21,10 +23,10 @@ class QuerySpecTest extends TestWithDatabase {
 
     static Collection<Arguments> values() {
         def data = [
-                
+
         //Query rules:
         //1) Date:
-        // - range inclusive                
+        // - range inclusive
         ["CourseClass", "Date range inclusive", "[200, 202, 220, 222, 223, 224]", "startDateTime in 2018-03-15 .. 2018-03-20"],
         ["CourseClass", "Date range inclusive", "[200, 202, 220, 222, 223, 224]", "startDateTime in 15/03/2018 .. 20/03/2018"],
 
@@ -97,9 +99,9 @@ class QuerySpecTest extends TestWithDatabase {
         ["Enrolment", "Not Match enum correct syntax", "[200, 201, 202, 203, 204, 237, 238, 240, 241, 242, 243]", "confirmationStatus not is SENT"],
 
         // - not match any of enums
-        ["Enrolment", "Not Match any of enums correct syntax", "[237, 238, 240, 241, 242, 243]", "confirmationStatus not NOT_SENT, SENT"], 
+        ["Enrolment", "Not Match any of enums correct syntax", "[237, 238, 240, 241, 242, 243]", "confirmationStatus not NOT_SENT, SENT"],
         ["Enrolment", "Not Match any of enums correct syntax", "[237, 238, 240, 241, 242, 243]", "confirmationStatus not (NOT_SENT, SENT)"],
-        
+
         // 3) Num,,
         // - definite num
         ["Invoice", "By definite number", "[222]", "amountOwing = 1320"],
@@ -266,8 +268,8 @@ class QuerySpecTest extends TestWithDatabase {
 
         ScriptResult result = scriptService.runScript(script, ScriptParameters.empty(), cayenneService.getNewContext())
 
-        if (result.getType() == ScriptResult.ResultType.SUCCESS)
-            Assertions.assertEquals(expectedResult, result.getResultValue().toString(), description)
+        if (result.getType() == TaskResultType.SUCCESS)
+            Assertions.assertEquals(expectedResult, new String((byte[])result.getData()))
         else
             Assertions.fail("Incorrect syntax: " + result.error)
     }

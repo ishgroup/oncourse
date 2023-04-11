@@ -21,27 +21,13 @@ Feature: Re-usable feature to get CSV with access rights
 
         * match $ == {"status":"#ignore","message":null}
 
-##      <---> Pause:
-#        * def sleep =
-#             """
-#             function(seconds){
-#               for(i = 0; i <= seconds; i++)
-#               {
-#                 java.lang.Thread.sleep(1*200);
-#                 karate.log(i);
-#               }
-#             }
-#             """
-#           * call sleep 1
-
 #        Given path ishPathControl + '/' + processId
 #        When method GET
 #        Then status 200
 #
 #        * match $ == {"status":"#ignore","message":null}
 
-
-        Given path ishPath + '/' + processId
+        Given path ishPath + '/' + proxyId
         And param entityName = entity
         When method GET
         Then status 200

@@ -1,3 +1,3 @@
 name,is administration centre,latitude,longitude,postcode,state,street,suburb,created on,modified on
-Site 1,false,53.90000000,27.62000000,1001,NSW,Main,Sydney,2013-01-01T00:00:00Z,2013-02-01T00:00:00Z
-Site 2,false,-33.90000000,153.17000000,1002,NSW,1st,Sydney,2013-01-01T00:00:00Z,2013-02-01T00:00:00Z
+Site 1,false,53.90000000,27.62000000,1001,NSW,Main,Sydney,2013-01-01T00:00:00+10:00,2013-02-01T00:00:00+10:00
+Site 2,false,-33.90000000,153.17000000,1002,NSW,1st,Sydney,2013-01-01T00:00:00+10:00,2013-02-01T00:00:00+10:00

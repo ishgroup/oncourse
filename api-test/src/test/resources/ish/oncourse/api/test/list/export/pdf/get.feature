@@ -187,30 +187,30 @@ Feature: Main feature for all GET requests with path 'list/export/pdf'
     Scenario: (+) Export PDF by admin
 
         * table getEntityPdf
-        | entity                | dataToExport                                                                                                                                                                                                                      |
-        | 'Qualification'       | {"search":"id == \"3\"","filter":"","tagGroups":[],"sorting":[],"report":"#(qualificationPdfExportId)","overlay":null,"variables":{},"createPreview":false}    |
-        | 'Module'              | {"search":"id == \"3\"","filter":"","tagGroups":[],"sorting":[],"report":"#(modulePdfExportId)","overlay":null,"variables":{},"createPreview":false}           |
-        | 'Site'                | {"search":"id == \"201\"","filter":"","tagGroups":[],"sorting":[],"report":"#(sitePdfExportId)","overlay":null,"variables":{},"createPreview":false}           |
-        | 'Room'                | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(roomPdfExportId)","overlay":null,"variables":{},"createPreview":false}             |
-        | 'AccountTransaction'  | {"search":"id == \"16\"","filter":"","tagGroups":[],"sorting":[],"report":"#(transactionPdfExportId)","overlay":null,"variables":{},"createPreview":false}     |
-        | 'Account'             | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(accountPdfExportId)","overlay":null,"variables":{"localdateRange_from":"2017-12-01","localdateRange_to":"2019-12-31"},"createPreview":false} |
-        | 'Payslip'             | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(payslipPdfExportId)","overlay":null,"variables":{},"createPreview":false}       |
-        | 'CorporatePass'       | {"search":"id == \"1001\"","filter":"","tagGroups":[],"sorting":[],"report":"#(corporatePassPdfExportId)","overlay":null,"variables":{},"createPreview":false} |
-        | 'AbstractInvoice'             | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(invoicePdfExportId)","overlay":null,"variables":{},"createPreview":false}          |
-        | 'PaymentIn'           | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(paymentInPdfExportId)","overlay":null,"variables":{},"createPreview":false}        |
-        | 'Banking'             | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(bankingPdfExportId)","overlay":null,"variables":{},"createPreview":false}       |
-        | 'WaitingList'         | {"search":"id == \"1001\"","filter":"","tagGroups":[],"sorting":[],"report":"#(waitingListPdfExportId)","overlay":null,"variables":{},"createPreview":false}   |
-        | 'Application'         | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(applicationPdfExportId)","overlay":null,"variables":{},"createPreview":false}   |
-        | 'Certificate'         | {"search":"id == \"1003\"","filter":"","tagGroups":[],"sorting":[],"report":"#(certificatePdfExportId)","overlay":null,"variables":{},"createPreview":false}   |
-        | 'Survey'              | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(surveyPdfExportId)","overlay":null,"variables":{},"createPreview":false}        |
-        | 'Outcome'             | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(outcomePdfExportId)","overlay":null,"variables":{},"createPreview":false}          |
-        | 'Audit'               | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(auditPdfExportId)","overlay":null,"variables":{},"createPreview":false}            |
-        | 'Discount'            | {"search":"id == \"1001\"","filter":"","tagGroups":[],"sorting":[],"report":"#(discountPdfExportId)","overlay":null,"variables":{},"createPreview":false}      |
-        | 'Course'              | {"search":"id == \"5\"","filter":"","tagGroups":[],"sorting":[],"report":"#(coursePdfExportId)","overlay":null,"variables":{},"createPreview":false}           |
-        | 'CourseClass'         | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(courseClassPdfExportId)","overlay":null,"variables":{},"createPreview":false}      |
-        | 'Enrolment'           | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(enrolmentPdfExportId)","overlay":null,"variables":{},"createPreview":false}        |
-        | 'VoucherProduct'      | {"search":"id == \"1002\"","filter":"","tagGroups":[],"sorting":[],"report":"#(voucherProductPdfExportId)","overlay":null,"variables":{},"createPreview":false}|
-        | 'Contact'             | {"search":"id == \"2\"","filter":"","tagGroups":[],"sorting":[],"report":"#(contactPdfExportId)","overlay":null,"variables":{},"createPreview":false}          |
+        | entity                | dataToExport                                                                                                                                                   | proxyId |
+        | 'Qualification'       | {"search":"id == \"3\"","filter":"","tagGroups":[],"sorting":[],"report":"#(qualificationPdfExportId)","overlay":null,"variables":{},"createPreview":false}    | 401     |
+        | 'Module'              | {"search":"id == \"3\"","filter":"","tagGroups":[],"sorting":[],"report":"#(modulePdfExportId)","overlay":null,"variables":{},"createPreview":false}           | 402     |
+        | 'Site'                | {"search":"id == \"201\"","filter":"","tagGroups":[],"sorting":[],"report":"#(sitePdfExportId)","overlay":null,"variables":{},"createPreview":false}           | 403     |
+        | 'Room'                | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(roomPdfExportId)","overlay":null,"variables":{},"createPreview":false}             | 404     |
+        | 'AccountTransaction'  | {"search":"id == \"16\"","filter":"","tagGroups":[],"sorting":[],"report":"#(transactionPdfExportId)","overlay":null,"variables":{},"createPreview":false}     | 405     |
+        | 'Account'             | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(accountPdfExportId)","overlay":null,"variables":{"localdateRange_from":"2017-12-01","localdateRange_to":"2019-12-31"},"createPreview":false} | 406 |
+        | 'Payslip'             | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(payslipPdfExportId)","overlay":null,"variables":{},"createPreview":false}       | 407                                                           |
+        | 'CorporatePass'       | {"search":"id == \"1001\"","filter":"","tagGroups":[],"sorting":[],"report":"#(corporatePassPdfExportId)","overlay":null,"variables":{},"createPreview":false} | 408                                                           |
+        | 'AbstractInvoice'             | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(invoicePdfExportId)","overlay":null,"variables":{},"createPreview":false}          | 409                                                   |
+        | 'PaymentIn'           | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(paymentInPdfExportId)","overlay":null,"variables":{},"createPreview":false}        | 410                                                           |
+        | 'Banking'             | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(bankingPdfExportId)","overlay":null,"variables":{},"createPreview":false}       | 411                                                           |
+        | 'WaitingList'         | {"search":"id == \"1001\"","filter":"","tagGroups":[],"sorting":[],"report":"#(waitingListPdfExportId)","overlay":null,"variables":{},"createPreview":false}   | 412                                                           |
+        | 'Application'         | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(applicationPdfExportId)","overlay":null,"variables":{},"createPreview":false}   | 413                                                           |
+        | 'Certificate'         | {"search":"id == \"1003\"","filter":"","tagGroups":[],"sorting":[],"report":"#(certificatePdfExportId)","overlay":null,"variables":{},"createPreview":false}   | 414                                                           |
+        | 'Survey'              | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(surveyPdfExportId)","overlay":null,"variables":{},"createPreview":false}        | 415                                                           |
+        | 'Outcome'             | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(outcomePdfExportId)","overlay":null,"variables":{},"createPreview":false}          | 416                                                           |
+        | 'Audit'               | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(auditPdfExportId)","overlay":null,"variables":{},"createPreview":false}            | 417                                                           |
+        | 'Discount'            | {"search":"id == \"1001\"","filter":"","tagGroups":[],"sorting":[],"report":"#(discountPdfExportId)","overlay":null,"variables":{},"createPreview":false}      | 418                                                           |
+        | 'Course'              | {"search":"id == \"5\"","filter":"","tagGroups":[],"sorting":[],"report":"#(coursePdfExportId)","overlay":null,"variables":{},"createPreview":false}           | 419                                                           |
+        | 'CourseClass'         | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(courseClassPdfExportId)","overlay":null,"variables":{},"createPreview":false}      | 420                                                           |
+        | 'Enrolment'           | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(enrolmentPdfExportId)","overlay":null,"variables":{},"createPreview":false}        | 421                                                           |
+        | 'VoucherProduct'      | {"search":"id == \"1002\"","filter":"","tagGroups":[],"sorting":[],"report":"#(voucherProductPdfExportId)","overlay":null,"variables":{},"createPreview":false}| 422                                                           |
+        | 'Contact'             | {"search":"id == \"2\"","filter":"","tagGroups":[],"sorting":[],"report":"#(contactPdfExportId)","overlay":null,"variables":{},"createPreview":false}          | 423                                                           |
 
         * call read('getPdfWithRights.feature') getEntityPdf
 
@@ -220,11 +220,11 @@ Feature: Main feature for all GET requests with path 'list/export/pdf'
     Scenario: (+) Export PDF without sorting in request by admin
 
         * table getEntityPdf
-        | entity                | dataToExport                                                                                                                                                                                                                    |
-        | 'PaymentIn'           | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(paymentInPdfExportId)","overlay":null,"variables":{},"createPreview":false}      |
-        | 'Banking'             | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(bankingPdfExportId)","overlay":null,"variables":{},"createPreview":false}     |
-        | 'WaitingList'         | {"search":"id == \"1001\"","filter":"","tagGroups":[],"sorting":[],"report":"#(waitingListPdfExportId)","overlay":null,"variables":{},"createPreview":false} |
-        | 'Audit'               | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(auditPdfExportId)","overlay":null,"variables":{},"createPreview":false}          |
+        | entity                | dataToExport                                                                                                                                                 | proxyId |
+        | 'PaymentIn'           | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(paymentInPdfExportId)","overlay":null,"variables":{},"createPreview":false}      | 501     |
+        | 'Banking'             | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(bankingPdfExportId)","overlay":null,"variables":{},"createPreview":false}     | 502     |
+        | 'WaitingList'         | {"search":"id == \"1001\"","filter":"","tagGroups":[],"sorting":[],"report":"#(waitingListPdfExportId)","overlay":null,"variables":{},"createPreview":false} | 503     |
+        | 'Audit'               | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(auditPdfExportId)","overlay":null,"variables":{},"createPreview":false}          | 504     |
 
         * call read('getPdfWithRights.feature') getEntityPdf
 
@@ -240,30 +240,30 @@ Feature: Main feature for all GET requests with path 'list/export/pdf'
 #       <--->
 
         * table getEntityPdf
-        | entity                | dataToExport                                                                                                                                                                                                                      |
-        | 'Qualification'       | {"search":"id == \"3\"","filter":"","tagGroups":[],"sorting":[],"report":"#(qualificationPdfExportId)","overlay":null,"variables":{},"createPreview":false}    |
-        | 'Module'              | {"search":"id == \"3\"","filter":"","tagGroups":[],"sorting":[],"report":"#(modulePdfExportId)","overlay":null,"variables":{},"createPreview":false}           |
-        | 'Site'                | {"search":"id == \"201\"","filter":"","tagGroups":[],"sorting":[],"report":"#(sitePdfExportId)","overlay":null,"variables":{},"createPreview":false}           |
-        | 'Room'                | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(roomPdfExportId)","overlay":null,"variables":{},"createPreview":false}             |
-        | 'AccountTransaction'  | {"search":"id == \"16\"","filter":"","tagGroups":[],"sorting":[],"report":"#(transactionPdfExportId)","overlay":null,"variables":{},"createPreview":false}     |
-        | 'Account'             | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(accountPdfExportId)","overlay":null,"variables":{"localdateRange_from":"2017-12-01","localdateRange_to":"2019-12-31"},"createPreview":false} |
-        | 'Payslip'             | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(payslipPdfExportId)","overlay":null,"variables":{},"createPreview":false}       |
-        | 'CorporatePass'       | {"search":"id == \"1001\"","filter":"","tagGroups":[],"sorting":[],"report":"#(corporatePassPdfExportId)","overlay":null,"variables":{},"createPreview":false} |
-        | 'AbstractInvoice'             | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(invoicePdfExportId)","overlay":null,"variables":{},"createPreview":false}          |
-        | 'PaymentIn'           | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(paymentInPdfExportId)","overlay":null,"variables":{},"createPreview":false}        |
-        | 'Banking'             | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(bankingPdfExportId)","overlay":null,"variables":{},"createPreview":false}       |
-        | 'WaitingList'         | {"search":"id == \"1001\"","filter":"","tagGroups":[],"sorting":[],"report":"#(waitingListPdfExportId)","overlay":null,"variables":{},"createPreview":false}   |
-        | 'Application'         | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(applicationPdfExportId)","overlay":null,"variables":{},"createPreview":false}   |
-        | 'Certificate'         | {"search":"id == \"1003\"","filter":"","tagGroups":[],"sorting":[],"report":"#(certificatePdfExportId)","overlay":null,"variables":{},"createPreview":false}   |
-        | 'Survey'              | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(surveyPdfExportId)","overlay":null,"variables":{},"createPreview":false}        |
-        | 'Outcome'             | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(outcomePdfExportId)","overlay":null,"variables":{},"createPreview":false}          |
-        | 'Audit'               | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(auditPdfExportId)","overlay":null,"variables":{},"createPreview":false}            |
-        | 'Discount'            | {"search":"id == \"1001\"","filter":"","tagGroups":[],"sorting":[],"report":"#(discountPdfExportId)","overlay":null,"variables":{},"createPreview":false}      |
-        | 'Course'              | {"search":"id == \"5\"","filter":"","tagGroups":[],"sorting":[],"report":"#(coursePdfExportId)","overlay":null,"variables":{},"createPreview":false}           |
-        | 'CourseClass'         | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(courseClassPdfExportId)","overlay":null,"variables":{},"createPreview":false}      |
-        | 'Enrolment'           | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(enrolmentPdfExportId)","overlay":null,"variables":{},"createPreview":false}        |
-        | 'VoucherProduct'      | {"search":"id == \"1002\"","filter":"","tagGroups":[],"sorting":[],"report":"#(voucherProductPdfExportId)","overlay":null,"variables":{},"createPreview":false}|
-        | 'Contact'             | {"search":"id == \"2\"","filter":"","tagGroups":[],"sorting":[],"report":"#(contactPdfExportId)","overlay":null,"variables":{},"createPreview":false}          |
+        | entity                | dataToExport                                                                                                                                                   | proxyId |
+        | 'Qualification'       | {"search":"id == \"3\"","filter":"","tagGroups":[],"sorting":[],"report":"#(qualificationPdfExportId)","overlay":null,"variables":{},"createPreview":false}    | 401     |
+        | 'Module'              | {"search":"id == \"3\"","filter":"","tagGroups":[],"sorting":[],"report":"#(modulePdfExportId)","overlay":null,"variables":{},"createPreview":false}           | 402     |
+        | 'Site'                | {"search":"id == \"201\"","filter":"","tagGroups":[],"sorting":[],"report":"#(sitePdfExportId)","overlay":null,"variables":{},"createPreview":false}           | 403     |
+        | 'Room'                | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(roomPdfExportId)","overlay":null,"variables":{},"createPreview":false}             | 404     |
+        | 'AccountTransaction'  | {"search":"id == \"16\"","filter":"","tagGroups":[],"sorting":[],"report":"#(transactionPdfExportId)","overlay":null,"variables":{},"createPreview":false}     | 405     |
+        | 'Account'             | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(accountPdfExportId)","overlay":null,"variables":{"localdateRange_from":"2017-12-01","localdateRange_to":"2019-12-31"},"createPreview":false} | 406 |
+        | 'Payslip'             | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(payslipPdfExportId)","overlay":null,"variables":{},"createPreview":false}       | 407                                                           |
+        | 'CorporatePass'       | {"search":"id == \"1001\"","filter":"","tagGroups":[],"sorting":[],"report":"#(corporatePassPdfExportId)","overlay":null,"variables":{},"createPreview":false} | 408                                                           |
+        | 'AbstractInvoice'             | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(invoicePdfExportId)","overlay":null,"variables":{},"createPreview":false}  | 409                                                           |
+        | 'PaymentIn'           | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(paymentInPdfExportId)","overlay":null,"variables":{},"createPreview":false}        | 410                                                           |
+        | 'Banking'             | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(bankingPdfExportId)","overlay":null,"variables":{},"createPreview":false}       | 411                                                           |
+        | 'WaitingList'         | {"search":"id == \"1001\"","filter":"","tagGroups":[],"sorting":[],"report":"#(waitingListPdfExportId)","overlay":null,"variables":{},"createPreview":false}   | 412                                                           |
+        | 'Application'         | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(applicationPdfExportId)","overlay":null,"variables":{},"createPreview":false}   | 413                                                           |
+        | 'Certificate'         | {"search":"id == \"1003\"","filter":"","tagGroups":[],"sorting":[],"report":"#(certificatePdfExportId)","overlay":null,"variables":{},"createPreview":false}   | 414                                                           |
+        | 'Survey'              | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(surveyPdfExportId)","overlay":null,"variables":{},"createPreview":false}        | 415                                                           |
+        | 'Outcome'             | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(outcomePdfExportId)","overlay":null,"variables":{},"createPreview":false}          | 416                                                           |
+        | 'Audit'               | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(auditPdfExportId)","overlay":null,"variables":{},"createPreview":false}            | 417                                                           |
+        | 'Discount'            | {"search":"id == \"1001\"","filter":"","tagGroups":[],"sorting":[],"report":"#(discountPdfExportId)","overlay":null,"variables":{},"createPreview":false}      | 418                                                           |
+        | 'Course'              | {"search":"id == \"5\"","filter":"","tagGroups":[],"sorting":[],"report":"#(coursePdfExportId)","overlay":null,"variables":{},"createPreview":false}           | 419                                                           |
+        | 'CourseClass'         | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(courseClassPdfExportId)","overlay":null,"variables":{},"createPreview":false}      | 420                                                           |
+        | 'Enrolment'           | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(enrolmentPdfExportId)","overlay":null,"variables":{},"createPreview":false}        | 421                                                           |
+        | 'VoucherProduct'      | {"search":"id == \"1002\"","filter":"","tagGroups":[],"sorting":[],"report":"#(voucherProductPdfExportId)","overlay":null,"variables":{},"createPreview":false}| 422                                                           |
+        | 'Contact'             | {"search":"id == \"2\"","filter":"","tagGroups":[],"sorting":[],"report":"#(contactPdfExportId)","overlay":null,"variables":{},"createPreview":false}          | 423                                                           |
 
         * call read('getPdfWithRights.feature') getEntityPdf
 

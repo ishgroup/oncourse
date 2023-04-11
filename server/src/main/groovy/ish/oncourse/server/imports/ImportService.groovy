@@ -96,10 +96,10 @@ class ImportService {
 			groovyScriptEngine.eval(GroovyScriptService.DEFAULT_IMPORTS + model.dbImport.script, bindings)
 		} catch (ScriptException e) {
 			logger.error("Script execution error.", e)
-			return new ImportResult(errorMessage: "Import script execution finished with exception:\n ${e.message}")
+			return new ImportResult(error: "Import script execution finished with exception:\n ${e.message}")
 		} catch(all) {
 			logger.error("Script execution error.", all)
-			return new ImportResult(errorMessage: "Error encountered while executing import script:\n ${all.message}")
+			return new ImportResult(error: "Error encountered while executing import script:\n ${all.message}")
 		}
 
 		return new ImportResult(

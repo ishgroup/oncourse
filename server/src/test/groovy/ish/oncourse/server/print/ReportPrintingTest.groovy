@@ -8,6 +8,7 @@ import groovy.transform.CompileStatic
 import ish.TestUtil
 import ish.TestWithDatabase
 import ish.DatabaseSetup
+import ish.common.types.TaskResultType
 import ish.oncourse.cayenne.PaymentInterface
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.common.ResourcesUtil
@@ -21,8 +22,8 @@ import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.preference.UserPreferenceService
 import ish.oncourse.server.upgrades.DataPopulation
 import ish.print.AdditionalParameters
+import ish.oncourse.server.cluster.TaskResult
 import ish.print.PrintRequest
-import ish.print.PrintResult.ResultType
 import ish.print.PrintTransformationsFactory
 import ish.util.EntityUtil
 import org.apache.cayenne.query.SelectQuery
@@ -177,13 +178,13 @@ class ReportPrintingTest extends TestWithDatabase {
         PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(PreferenceController.class) as DocumentService, injector.getInstance(UserPreferenceService.class))
         worker.run()
 
-        while (ResultType.IN_PROGRESS == worker.getResult().getResultType()) {
-            Thread.sleep(200)
+        while (TaskResultType.IN_PROGRESS == worker.getResult().getType()) {
+			Thread.sleep(200)
         }
 
-        Assertions.assertEquals(ResultType.SUCCESS, worker.getResult().getResultType(), String.format("Printing failed for %s", report.getName()))
-        Assertions.assertNotNull(worker.getResult().getResult(), String.format("Empty printing result for %s", report.getName()))
+		Assertions.assertEquals( TaskResultType.SUCCESS, worker.getResult().getType(),String.format("Printing failed for %s", report.getName()))
+        Assertions.assertNotNull(worker.getResult().getData(), String.format("Empty printing result for %s", report.getName()))
 
-        FileUtils.writeByteArrayToFile(new File("build/test-data/printing/" + reportFolder + "/" + report.getName() + "-" + sourceEntity + ".pdf"), worker.getResult().getResult())
+        FileUtils.writeByteArrayToFile(new File("build/test-data/printing/"+reportFolder+"/"+report.getName()+"-"+sourceEntity+".pdf"), worker.getResult().getData())
     }
 }

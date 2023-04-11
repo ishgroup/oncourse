@@ -7,6 +7,7 @@ package ish.oncourse.server.report
 import groovy.transform.CompileStatic
 import ish.DatabaseSetup
 import ish.TestWithDatabase
+import ish.common.types.TaskResultType
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.common.ResourceType
 import ish.oncourse.common.ResourcesUtil
@@ -18,7 +19,6 @@ import ish.oncourse.server.integration.PluginService
 import ish.oncourse.server.preference.UserPreferenceService
 import ish.oncourse.server.print.PrintWorker
 import ish.print.PrintRequest
-import ish.print.PrintResult
 import ish.report.ImportReportResult
 import net.sf.jasperreports.engine.DefaultJasperReportsContext
 import net.sf.jasperreports.engine.JRPropertiesUtil
@@ -39,7 +39,7 @@ import static ish.report.ImportReportResult.ReportValidationError.ReportBuilding
 @DatabaseSetup
 class ReportServiceTest extends TestWithDatabase {
     private static final Logger logger = LogManager.getLogger()
-    
+
     @Test
     void testImportAndCompileAllReportsBasedOnManifest() throws IOException {
         logger.warn("performing testImportAndCompileAllReportsBasedOnManifest")
@@ -108,7 +108,7 @@ class ReportServiceTest extends TestWithDatabase {
         }
     }
 
-    
+
     @Test
     void testImportUpgradeReport() {
         logger.warn("performing testImportUpgradeReport")
@@ -150,7 +150,7 @@ class ReportServiceTest extends TestWithDatabase {
 
     // This test was disabled because it cannot easily be made to run on FreeBSD
     // where the closest font is actually called "Adobe Helvetica"
-    
+
     @Disabled
     @Test
     void testCustomFontReport() throws InterruptedException, IOException {
@@ -201,19 +201,19 @@ class ReportServiceTest extends TestWithDatabase {
 
         worker.run()
 
-        while (PrintResult.ResultType.IN_PROGRESS.equals(worker.getResult().getResultType())) {
-            Thread.sleep(200)
+        while (TaskResultType.IN_PROGRESS == worker.getResult().getType()) {
+			Thread.sleep(200)
         }
-        if (worker.getResult().getResultType() != PrintResult.ResultType.SUCCESS) {
-            logger.warn("print has failed : {}", worker.getResult())
+		if (worker.getResult().getType() != TaskResultType.SUCCESS) {
+			logger.warn("print has failed : {}", worker.getResult())
         }
-        Assertions.assertEquals(PrintResult.ResultType.SUCCESS, worker.getResult().getResultType(), String.format("Printing failed for %s", report.getName()))
-        Assertions.assertNotNull(worker.getResult().getResult(), String.format("Empty printing result for %s", report.getName()))
+		Assertions.assertEquals(TaskResultType.SUCCESS, worker.getResult().getType(),String.format("Printing failed for %s", report.getName()))
+        Assertions.assertNotNull(worker.getResult().getData(),String.format("Empty printing result for %s", report.getName()))
 
-        FileUtils.writeByteArrayToFile(new File("build/test-data/ReportPrintServiceTest/testCustomFontReport.pdf"), worker.getResult().getResult())
+        FileUtils.writeByteArrayToFile(new File("build/test-data/ReportPrintServiceTest/testCustomFontReport.pdf"), worker.getResult().getData())
     }
 
-    
+
     @Test
     void testNonexisintFontReport() throws InterruptedException, IOException {
         logger.warn("performing testNonexisintFontReport")
@@ -257,15 +257,15 @@ class ReportServiceTest extends TestWithDatabase {
 
         worker.run()
 
-        while (PrintResult.ResultType.IN_PROGRESS.equals(worker.getResult().getResultType())) {
-            Thread.sleep(200)
+        while (TaskResultType.IN_PROGRESS.equals(worker.getResult().getType())) {
+			Thread.sleep(200)
         }
 
-        Assertions.assertEquals(PrintResult.ResultType.FAILED, worker.getResult().getResultType(), String.format("Printing failed for %s", report.getName()))
+        Assertions.assertEquals(TaskResultType.FAILURE, worker.getResult().getType(), String.format("Printing failed for %s", report.getName()))
         Assertions.assertNotNull(worker.getResult().getError(), String.format("Empty error for %s", report.getName()))
     }
 
-    
+
     @Test
     void testInvalidReport() throws InterruptedException, IOException {
         logger.warn("performing testInvalidReport")
@@ -277,7 +277,7 @@ class ReportServiceTest extends TestWithDatabase {
         Assertions.assertEquals(ReportBuildingError, importReportResult.getReportValidationError())
     }
 
-    
+
     @Test
     void testNoDataReport() throws InterruptedException, IOException {
         logger.warn("performing testNoDataReport")
@@ -318,16 +318,16 @@ class ReportServiceTest extends TestWithDatabase {
 
         worker.run()
 
-        while (PrintResult.ResultType.IN_PROGRESS.equals(worker.getResult().getResultType())) {
-            Thread.sleep(200)
+        while (TaskResultType.IN_PROGRESS.equals(worker.getResult().getType())) {
+			Thread.sleep(200)
         }
 
-        Assertions.assertEquals(PrintResult.ResultType.FAILED, worker.getResult().getResultType(), String.format("Printing failed for %s", report.getName()))
+        Assertions.assertEquals(TaskResultType.FAILURE, worker.getResult().getType(), String.format("Printing failed for %s", report.getName()))
         Assertions.assertNotNull(worker.getResult().getError(), String.format("Empty error for %s", report.getName()))
         cayenneContext.deleteObject(report)
     }
 
-    
+
     @Test
     void testInvalidFieldReport() throws InterruptedException, IOException {
         logger.warn("performing testInvalidFieldReport")
@@ -364,11 +364,11 @@ class ReportServiceTest extends TestWithDatabase {
 
         worker.run()
 
-        while (PrintResult.ResultType.IN_PROGRESS.equals(worker.getResult().getResultType())) {
-            Thread.sleep(200)
+        while (TaskResultType.IN_PROGRESS.equals(worker.getResult().getType())) {
+			Thread.sleep(200)
         }
 
-        Assertions.assertEquals(PrintResult.ResultType.FAILED, worker.getResult().getResultType(), String.format("Printing failed for %s", report.getName()))
+        Assertions.assertEquals(TaskResultType.FAILURE, worker.getResult().getType(), String.format("Printing failed for %s", report.getName()))
         Assertions.assertNotNull(worker.getResult().getError(), String.format("Empty error for %s", report.getName()))
     }
 

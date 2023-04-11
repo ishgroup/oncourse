@@ -12,6 +12,9 @@
 package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
+import ish.common.types.TaskResultType
+import ish.oncourse.server.cluster.ClusteredExecutorManager
+import ish.oncourse.server.cluster.TaskResult
 import ish.oncourse.server.api.v1.model.LastRunDTO
 import ish.oncourse.types.AuditAction
 import ish.common.types.EntityEvent
@@ -31,14 +34,12 @@ import static ish.oncourse.server.api.v1.model.TriggerTypeDTO.*
 import ish.oncourse.server.cayenne.Audit
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
-import ish.oncourse.server.concurrent.ExecutorManager
 import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.scripting.ScriptParameters
 import ish.oncourse.server.scripting.validation.ScriptValidator
 import ish.oncourse.server.users.SystemUserService
 import ish.scripting.CronExpressionType
 import ish.scripting.ScriptResult
-import static ish.scripting.ScriptResult.ResultType.FAILURE
 import ish.util.DateFormatter
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
@@ -64,7 +65,7 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
     private SystemUserService systemUserService
 
     @Inject
-    private ExecutorManager executorManager
+    private ClusteredExecutorManager executorManager
 
     @Context
     private HttpServletResponse response
@@ -188,7 +189,7 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
                 .limit(LAST_RUN_FETCH_LIMIT)
                 .select(cayenneService.newContext)
                 .collect { convertArray(it) }
-        
+
         scriptDTO.lastRun = lastRunList
         scriptDTO
     }
@@ -361,9 +362,9 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
         }
     }
 
-    ScriptResult getResult (String proccessId) {
+    TaskResult getResult(String proccessId) {
         try {
-            return executorManager.getResult(proccessId) as ScriptResult
+            return executorManager.getResult(proccessId) as TaskResult
         } catch (Exception e) {
             logger.catching(e)
             validator.throwClientErrorException("ScriptExecutionResultGetting", e.message)
@@ -379,7 +380,7 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
             scriptParameters.add(name, value)
         }
 
-        return executorManager.submit(new Callable() {
+        return executorManager.submit(new Callable<ScriptResult>() {
             @Override
             ScriptResult call() throws Exception {
                 ScriptResult result = null
@@ -388,7 +389,7 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
                 } else {
                     for (CayenneDataObject record : records) {
                         result = groovyScriptService.runAndWait(script, new ScriptParameters(scriptParameters).fillDefaultParameters(record))
-                        if (result.type == FAILURE) {
+                        if (result.type == TaskResultType.FAILURE) {
                             return result
                         }
                     }
@@ -405,5 +406,6 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
         Script dbScript = super.updateInternal(dto) as Script
         updateTrigger(dto, dbScript)
         dbScript.getContext().commitChanges()
+        dbScript
     }
 }

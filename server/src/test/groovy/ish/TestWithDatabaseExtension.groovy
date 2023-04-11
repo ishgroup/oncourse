@@ -129,7 +129,6 @@ class TestWithDatabaseExtension implements
         } else {
             databaseTest.cayenneContext = cayenneServiceSupplier.call().getNewContext()
         }
-
     }
 
     private void wipeTablesMariadb() {
@@ -208,7 +207,7 @@ class TestWithDatabaseExtension implements
         }
     }
 
-    private IDatabaseConnection getTestDatabaseConnection() throws Exception {
+    IDatabaseConnection getTestDatabaseConnection() throws Exception {
         DatabaseConnection dbConnection = new DatabaseConnection(dataSourceSupplier.call().getConnection(), null)
 
         DatabaseConfig config = dbConnection.getConfig()

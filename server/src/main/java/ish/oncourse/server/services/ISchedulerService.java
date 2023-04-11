@@ -31,6 +31,7 @@ public interface ISchedulerService {
 	String CHRISTMAS_THEME_ENABLE_JOB_ID = "christmasThemeUpdateJob";
 	String CHRISTMAS_THEME_DISABLE_JOB_ID = "christmasThemeDisableJob";
 	String PERMANENTLY_DELETE_DOCUMENTS_ID = "permanentlyDeleteDocumentsJob";
+	String EXPIRED_TASKS_CLEANER_JOB_ID = "expiredTasksCleanerJob";
 	String  USER_DISAIBLE_JOB_ID = "userDisableJob";
 
 	String BACKGROUND_JOBS_GROUP_ID = "backgroundJobs";
@@ -47,6 +48,7 @@ public interface ISchedulerService {
 	String FUNDING_CONTRACT_JOB_INTERVAL = "1 15 0am * * ?";
 	String CERTIFICATE_UPDATE_WATCHER_INTERVAL = "0 0 0/1 ? * * *";
 	String PERMANENTLY_DELETE_DOCUMENTS_INTERVAL = "0 0 7 ? * SUN *";
+	String EXPIRED_TASKS_CLEANER_JOB_INTERVAL = "0 46 * ? * * *";
 	/**
 	 * schedules a job with interval in seconds
 	 *

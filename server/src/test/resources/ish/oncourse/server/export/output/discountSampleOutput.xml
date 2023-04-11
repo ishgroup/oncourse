@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
   <discount id='1'>
-    <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-    <createdOn>2013-01-01T00:00:00Z</createdOn>
+    <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+    <createdOn>2013-01-01T00:00:00+10:00</createdOn>
     <code>tst1</code>
     <discountPercent>0.20</discountPercent>
     <discountMax />
@@ -14,8 +14,8 @@
     <validTo>2013-02-01</validTo>
   </discount>
   <discount id='2'>
-    <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-    <createdOn>2013-01-01T00:00:00Z</createdOn>
+    <modifiedOn>2013-01-01T00:00:00+10:00</modifiedOn>
+    <createdOn>2013-01-01T00:00:00+10:00</createdOn>
     <code>tst2</code>
     <discountDollar>20.00</discountDollar>
     <rounding>No Rounding</rounding>

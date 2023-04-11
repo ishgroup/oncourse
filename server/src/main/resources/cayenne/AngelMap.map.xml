@@ -671,6 +671,18 @@
 		<db-attribute name="toName" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
+	<db-entity name="ExecutorManagerTask">
+		<db-attribute name="createdOn" type="TIMESTAMP" length="6"/>
+		<db-attribute name="errorMessage" type="VARCHAR" length="255"/>
+		<db-attribute name="keyCode" type="CHAR" isMandatory="true" length="36"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" length="6"/>
+		<db-attribute name="outputType" type="INTEGER" length="10"/>
+		<db-attribute name="result" type="BLOB"/>
+		<db-attribute name="status" type="INTEGER" isMandatory="true" length="10"/>
+		<db-attribute name="statusMessage" type="VARCHAR" length="255"/>
+		<db-attribute name="taskId" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="taskName" type="VARCHAR" length="100"/>
+	</db-entity>
 	<db-entity name="ExportTemplate">
 		<db-attribute name="category" type="VARCHAR" length="255"/>
 		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
@@ -2358,6 +2370,17 @@
 		<obj-attribute name="shoppingCart" type="ish.common.types.EntityRelationCartAction" db-attribute-path="shoppingCart"/>
 		<obj-attribute name="toName" type="java.lang.String" db-attribute-path="toName"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+	</obj-entity>
+	<obj-entity name="ExecutorManagerTask" className="ish.oncourse.server.cayenne.ExecutorManagerTask" dbEntityName="ExecutorManagerTask" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
+		<obj-attribute name="createdOn" type="java.time.LocalDateTime" db-attribute-path="createdOn"/>
+		<obj-attribute name="errorMessage" type="java.lang.String" db-attribute-path="errorMessage"/>
+		<obj-attribute name="key" type="java.lang.String" db-attribute-path="keyCode"/>
+		<obj-attribute name="modifiedOn" type="java.time.LocalDateTime" db-attribute-path="modifiedOn"/>
+		<obj-attribute name="outputType" type="ish.oncourse.types.OutputType" db-attribute-path="outputType"/>
+		<obj-attribute name="result" type="byte[]" db-attribute-path="result"/>
+		<obj-attribute name="status" type="ish.common.types.TaskResultType" db-attribute-path="status"/>
+		<obj-attribute name="statusMessage" type="java.lang.String" db-attribute-path="statusMessage"/>
+		<obj-attribute name="taskName" type="java.lang.String" db-attribute-path="taskName"/>
 	</obj-entity>
 	<obj-entity name="ExportTemplate" className="ish.oncourse.server.cayenne.ExportTemplate" clientClassName="ish.oncourse.cayenne.ExportTemplate" dbEntityName="ExportTemplate" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>

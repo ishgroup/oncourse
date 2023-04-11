@@ -1,3 +1,3 @@
 created on,modified on,status,budgeted quantity,budgeted value,date for,description,course-class code,quantity,taxValue,value,payroll ref,tutor first name,tutor last name,tutor email,tutor street,tutor state,tutor postcode,tutor suburb
-2012-05-20T00:00:00Z,2012-05-20T00:00:00Z,Paid/Exported,2.0000,71.00,2013-01-01,Description...,ATT1-123,2.0000,0.00,71.00,1234567890,Test,Student,test@test.test,Main,NSW,1001,Sydney
-2012-05-20T00:00:00Z,2012-05-20T00:00:00Z,Paid/Exported,2.0000,71.00,2013-01-01,Description...,ATT1-123,2.0000,0.00,71.00,1234567890,Test,Student,test@test.test,Main,NSW,1001,Sydney
+2012-05-20T00:00:00+10:00,2012-05-20T00:00:00+10:00,Paid/Exported,2.0000,71.00,2013-01-01,Description...,ATT1-123,2.0000,0.00,71.00,1234567890,Test,Student,test@test.test,Main,NSW,1001,Sydney
+2012-05-20T00:00:00+10:00,2012-05-20T00:00:00+10:00,Paid/Exported,2.0000,71.00,2013-01-01,Description...,ATT1-123,2.0000,0.00,71.00,1234567890,Test,Student,test@test.test,Main,NSW,1001,Sydney

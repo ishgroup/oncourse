@@ -1,0 +1,5 @@
+created,Student count,Notes,Student notes,Estimated value,Next action on,Status,Title,First name,Last name,Email,Street,Suburb,State,Post code,Mobile phone,Home phone,Work phone,Birth date,Courses,Products,Assigned to
+2012-05-10T00:00:00,8,"first note1
+second note1",First student notes,,,Open,,Test,Student,test@test.test,Main,Sydney,NSW,1001,331110000,331110000,331110000,1991-01-01,Test Course,,test@mail.com
+2012-05-10T00:00:00,3,"first note2
+second note2",Second student notes,,,Closed,,Test,Tutor,tutor@tutor.tutor,1st,Sydney,NSW,1002,331110001,331110001,331110001,1990-01-01,Test Course 2,Industry Membership,test@mail.com
