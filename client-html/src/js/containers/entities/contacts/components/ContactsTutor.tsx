@@ -79,7 +79,7 @@ const ContactsTutor: React.FC<ContactsTutorProps> = props => {
       openInternalLink(`/timetable`);
     } else {
       openInternalLink(
-        `/timetable/search?query=tutor.id=${tutorId}&title=Tutor timetable for ${getContactFullName(values)}`
+        `/timetable?search=tutor.id=${tutorId}&title=Tutor timetable for ${getContactFullName(values)}`
       );
     }
   };
@@ -112,13 +112,14 @@ const ContactsTutor: React.FC<ContactsTutorProps> = props => {
             type="text"
             name="tfn"
             label="Tax file number"
-            max={9}
+            max="9"
             InputProps={{
               inputComponent: TFNInputMask
             }}
             validate={validateTFN}
             parse={parseTFN}
             format={formatTFN}
+            debounced={false}
           />
         </Grid>
         <Grid item xs={twoColumn ? 6 : 12}>

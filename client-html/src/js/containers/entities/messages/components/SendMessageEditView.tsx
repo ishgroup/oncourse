@@ -1,15 +1,14 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 // eslint-disable-next-line import/no-extraneous-dependencies
-import React, {
-  useCallback, useEffect, useMemo, useState, Fragment, useRef
-} from "react";
+import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Dispatch } from "redux";
-import {
-  change, DecoratedFormProps, Field, FieldArray, getFormValues, initialize, reduxForm
-} from "redux-form";
+import { change, DecoratedFormProps, Field, FieldArray, getFormValues, initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import debounce from "lodash.debounce";
 import clsx from "clsx";
@@ -22,20 +21,14 @@ import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
 import OpenInNew from "@mui/icons-material/OpenInNew";
-import {
-  Binding, DataType,
-  EmailTemplate, MessageType, Recipients, SearchQuery
-} from "@api/model";
+import { Binding, DataType, EmailTemplate, MessageType, Recipients, SearchQuery } from "@api/model";
 import { Dialog } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
 import Slide from "@mui/material/Slide";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import DataTypeRenderer from "../../../../common/components/form/DataTypeRenderer";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import {
-  clearRecipientsMessageData,
-  getRecipientsMessageData
-} from "../../../../common/components/list-view/actions";
+import { clearRecipientsMessageData, getRecipientsMessageData } from "../../../../common/components/list-view/actions";
 import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
 import { AnyArgFunction, NoArgFunction, StringArgFunction } from "../../../../model/common/CommonFunctions";
 import { MessageData, MessageExtended } from "../../../../model/common/Message";
@@ -49,11 +42,12 @@ import { validateSingleMandatoryField } from "../../../../common/utils/validatio
 import { getMessageRequestModel } from "../utils";
 import { openInternalLink, saveCategoryAQLLink } from "../../../../common/utils/links";
 import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
-import LoadingIndicator from "../../../../common/components/layout/LoadingIndicator";
+import LoadingIndicator from "../../../../common/components/progress/LoadingIndicator";
 import { closeSendMessage, getEmailTemplatesWithKeyCode, getUserPreferences } from "../../../../common/actions";
 import { sendMessage } from "../actions";
 import { getManualLink } from "../../../../common/utils/getManualLink";
 import { EMAIL_FROM_KEY } from "../../../../constants/Config";
+import { SEND_MESSAGE_FORM_NAME } from "../../../../constants/Forms";
 
 const styles = theme => createStyles({
   previewContent: {
@@ -146,7 +140,7 @@ const initialValues: MessageExtended = {
   bindings: [],
   fromAddress: null,
   sendToStudents: true,
-  sendToWithdrawnStudents: true,
+  sendToWithdrawnStudents: false,
   sendToActiveStudents: true,
   sendToTutors: true,
   sendToOtherContacts: true,
@@ -277,11 +271,11 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
     other: true
   });
   
-  useEffect(() => {
+  const checkAttachedShadow = () => {
     if (htmlRef.current && !htmlRef.current.shadowRoot) {
       htmlRef.current.attachShadow({ mode: 'open' });
     }
-  }, [htmlRef.current]);
+  };
 
   useEffect(() => {
     if (listEntity) {
@@ -322,7 +316,17 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
     dispatch(change(form, "sendToOtherContacts", selected.other));
   }, [selected && selected.other]);
 
-
+  useEffect(() => {
+    if ( htmlRef.current) {
+      checkAttachedShadow();
+      if (values.messageType === "Email") {
+        htmlRef.current.shadowRoot.innerHTML = preview;
+      } else {
+        htmlRef.current.shadowRoot.innerHTML = "";
+      }
+    }
+  }, [values, preview, htmlRef.current?.shadowRoot]);
+  
   const isEmailView = useMemo(() => values.messageType === "Email", [values.messageType]);
 
   const getTemplateById = useCallback(id => templates.find(t => t.id === id), [templates]);
@@ -333,16 +337,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
       getMessageRequestModel(val, selection, listSearchQuery || {}),
       val.messageType
       )
-      .then(r => {
-        setPreview(r);
-          if (htmlRef.current) {
-            if (val.messageType === "Email") {
-              htmlRef.current.shadowRoot.innerHTML = r;
-            } else {
-              htmlRef.current.shadowRoot.innerHTML = "";
-            }
-          }
-      })
+      .then(setPreview)
       .catch(e => instantFetchErrorHandler(dispatch, e));
   };
 
@@ -351,10 +346,10 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
   }, 600), []);
 
   useEffect(() => {
-    if (!invalid && values.bindings && values.recipientsCount && values.messageType) {
+    if (opened && !invalid && values.bindings && values.recipientsCount && values.messageType) {
       getPreviewDebounced(values, selection, listSearchQuery);
     }
-  }, [values]);
+  }, [values, selection, listSearchQuery, invalid, opened]);
 
   const onTemplateChange = (e, value, previousValue) => {
     if (value && value !== previousValue) {
@@ -366,7 +361,8 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
         dispatch(change(form, "bindings", selectedTemplate.variables.map(v =>
           ({ ...v, value: v.type === "Checkbox" ? false : v.type === "Text" ? "" : v.value }))));
 
-        if (htmlRef.current && htmlRef.current.shadowRoot) {
+        if (htmlRef.current) {
+          checkAttachedShadow();
           htmlRef.current.shadowRoot.innerHTML = "";
         }
 
@@ -507,7 +503,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
   const textSmsCreditsCount = !isEmailView && preview && Math.ceil(preview.length / 160);
 
   const filteredTemplatesByVaribleCount = useMemo<EmailTemplate[]>(() =>
-    templates?.filter(template => template.variables.filter(variable => variable.type === DataType.Object).length === 0) || [], [templates]);
+    templates?.filter(template => template?.variables.filter(variable => variable.type === DataType.Object).length === 0) || [], [templates]);
 
   const onSubmit = model => dispatch(sendMessage(model, selection));
 
@@ -564,6 +560,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
                   onChange={onTemplateChange}
                   className="mb-2"
                   required
+                  sort
                 />
 
                 <FieldArray name="bindings" component={bindingsRenderer} rerenderOnEveryChange />
@@ -635,7 +632,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
 });
 
 const mapStateToProps = (state: State) => ({
-  values: getFormValues("SendMessageForm")(state),
+  values: getFormValues(SEND_MESSAGE_FORM_NAME)(state),
   emailFrom: state.userPreferences[EMAIL_FROM_KEY],
   submitting: state.fetch.pending,
   opened: state.sendMessage.open,
@@ -664,6 +661,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   getEmailFrom: () => dispatch(getUserPreferences([EMAIL_FROM_KEY])),
 });
 
-export default reduxForm<MessageExtended, MessageEditViewProps>({
-  form: "SendMessageForm",
+export default reduxForm<any, any, any>({
+  form: SEND_MESSAGE_FORM_NAME,
 })(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SendMessageEditView)));

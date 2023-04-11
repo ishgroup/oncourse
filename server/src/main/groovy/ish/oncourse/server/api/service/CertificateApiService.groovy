@@ -79,8 +79,8 @@ class CertificateApiService extends EntityApiService<CertificateDTO, Certificate
                 new CertificateOutcomeDTO().with { co ->
                     co.id = it.outcome.id
                     co.issueDate = it.outcome.endDate
-                    co.code = it.outcome.module.nationalCode
-                    co.name = it.outcome.module.title
+                    co.code = it.outcome.module?.nationalCode
+                    co.name = it.outcome.module?.title
                     co.status = it.outcome.status.displayName
                     co
                 }

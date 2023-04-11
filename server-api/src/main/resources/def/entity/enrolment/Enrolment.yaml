@@ -6,7 +6,8 @@ properties:
   tags:
     type: array
     items:
-      $ref: '../Tag.yaml'
+      type: integer
+      format: int64
   studentContactId:
     type: integer
     format: int64

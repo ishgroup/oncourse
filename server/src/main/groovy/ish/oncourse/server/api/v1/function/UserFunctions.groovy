@@ -194,7 +194,7 @@ class UserFunctions {
     }
 
     static void updateLoginAttemptNumber(SystemUser user, Integer allowedNumberOfAttempts, Integer newAttemptNumber = null) {
-        user.loginAttemptNumber = newAttemptNumber ?: ++(user.loginAttemptNumber)
+        user.loginAttemptNumber = newAttemptNumber == null ? 1 : ++(user.loginAttemptNumber)
 
         if (allowedNumberOfAttempts <= user.loginAttemptNumber) {
             user.isActive = Boolean.FALSE

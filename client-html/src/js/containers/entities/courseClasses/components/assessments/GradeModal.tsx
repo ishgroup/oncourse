@@ -72,8 +72,7 @@ const GradeModal = (
       classes={{
         paper: "overflow-visible"
       }}
-      fullWidth
-      disableAutoFocus
+            disableAutoFocus
       disableEnforceFocus
       disableRestoreFocus
     >
@@ -90,7 +89,6 @@ const GradeModal = (
                 onBlur: stubFunction,
                 value: gradeVal
               }}
-              hideArrows
             />
           </Grid>
         </Grid>

@@ -25,7 +25,6 @@ export const InputSection = React.memo<any>(props => {
     onAqlSearchChange,
     onSearchEscape,
     onFocus,
-    onBlur,
     onAddEvent,
     toggleSearch,
     inputRef,
@@ -100,7 +99,6 @@ export const InputSection = React.memo<any>(props => {
             onAqlSearchChange={onAqlSearchChange}
             onSearchEscape={onSearchEscape}
             onFocus={onFocus}
-            onBlur={onBlur}
             onAddEvent={onAddEvent}
             inputRef={inputRef}
             classes={classes}
@@ -139,7 +137,6 @@ export const InputSectionWithToggle = React.memo<any>(props => {
     onAqlSearchChange,
     onSearchEscape,
     onFocus,
-    onBlur,
     onAddEvent,
     toggleSearch,
     onSwitchToggle,
@@ -200,7 +197,6 @@ export const InputSectionWithToggle = React.memo<any>(props => {
             classes={classes}
             toggleSearch={toggleSearch}
             onFocus={onFocus}
-            onBlur={onBlur}
             className={clsx("w-100", classes.topOffset)}
             aqlEntity={aqlEntity}
             setSelectedEntity={setSelectedEntity}

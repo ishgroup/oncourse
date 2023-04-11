@@ -20,6 +20,7 @@ import ish.oncourse.server.document.DocumentService
 import ish.s3.AmazonS3Service
 import ish.util.LocalDateUtils
 import ish.util.SecurityUtil
+import ish.util.ThumbnailGenerator
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
@@ -32,7 +33,6 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 import static ish.oncourse.server.api.v1.function.ContactFunctions.getProfilePictureDocument
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.util.Constants.BILLING_APP_LINK
 import static ish.util.ImageHelper.*
@@ -58,7 +58,7 @@ class DocumentFunctions {
             document.name = dbDocument.name
             document.versionId = versionId
             document.added = LocalDateUtils.dateToTimeValue(dbDocument.added)
-            document.tags = dbDocument.tags.collect { toRestTagMinimized(it) }
+            document.tags = dbDocument.allTags.collect { it.id }
 
             DocumentVersion dbVersion = versionId ? dbDocument.versions.find { it.id == versionId } : dbDocument.versions.max{ v1, v2 -> v1.timestamp.compareTo(v2.timestamp)}
             document.thumbnail = dbVersion.thumbnail
@@ -180,13 +180,33 @@ class DocumentFunctions {
             version.pixelWidth = imageWidth(content)
             version.pixelHeight = imageHeight(content)
             try {
-                version.thumbnail = generateThumbnail(content, version.mimeType)
+                version.thumbnail = ThumbnailGenerator.generateForImg(content, version.mimeType)
             } catch (IOException e) {
                 logger.warn("Attempted to process document with name $document.name as an image, but it wasn't.")
                 logger.catching(e)
             }
         } else {
-            version.thumbnail = generatePdfPreview(content)
+            try {
+                switch (version.mimeType) {
+                    case {it instanceof String && isDoc(it as String)}:
+                        version.thumbnail = ThumbnailGenerator.generateForDoc(content)
+                        break
+                    case {it instanceof String && isExcel(it as String)}:
+                        version.thumbnail = ThumbnailGenerator.generateForExcel(content)
+                        break
+                    case {it instanceof String && isCsv(it as String)}:
+                        version.thumbnail = ThumbnailGenerator.generateForCsv(content)
+                        break
+                    case {it instanceof String && isText(it as String)}:
+                        version.thumbnail = ThumbnailGenerator.generateForText(content)
+                        break
+                    default:
+                        version.thumbnail = generatePdfPreview(content)
+                }
+            } catch (NotActiveException e) {
+                logger.warn("Attempted to process document with name $document.name failed. Angel can not generate privew")
+                logger.catching(e)
+            }
         }
 
         if (documentService.usingExternalStorage) {

@@ -1,5 +1,5 @@
 /*
- * Copyright ish group pty ltd 2021.
+ * Copyright ish group pty ltd 2022.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
@@ -8,21 +8,17 @@
 
 import React from "react";
 import { withRouter } from "react-router-dom";
-import {
- getFormSyncErrors, initialize, isDirty, isInvalid, submit 
-} from "redux-form";
+import { getFormSyncErrors, initialize, isDirty, isInvalid, submit } from "redux-form";
 import { ThemeProvider } from "@mui/material/styles";
 import { createStyles, withStyles } from "@mui/styles";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import {
- Column, Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel 
-} from "@api/model";
+import { Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel } from "@api/model";
 import { createTheme } from '@mui/material';
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import Button from "@mui/material/Button";
 import { UserPreferencesState } from "../../reducers/userPreferencesReducer";
-import { onSubmitFail } from "../../utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../utils/highlightFormErrors";
 import SideBar from "./components/side-bar/SideBar";
 import BottomAppBar from "./components/bottom-app-bar/BottomAppBar";
 import EditView from "./components/edit-view/EditView";
@@ -30,15 +26,14 @@ import ShareContainer from "./components/share/ShareContainer";
 import BulkEditContainer from "./components/bulk-edit/BulkEditContainer";
 import { State } from "../../../reducers/state";
 import { Fetch } from "../../../model/common/Fetch";
-import LoadingIndicator from "../layout/LoadingIndicator";
+import LoadingIndicator from "../progress/LoadingIndicator";
 import FullScreenEditView from "./components/full-screen-edit-view/FullScreenEditView";
 import {
   clearListState,
   deleteCustomFilter,
-  getListNestedEditRecord,
+  findRelatedByFilter,
   getRecords,
   setFilterGroups,
-  setListColumns,
   setListCreatingNew,
   setListEditRecord,
   setListEditRecordFetching,
@@ -49,13 +44,9 @@ import {
   setListSelection,
   setListUserAQLSearch,
   setSearch,
-  setShowColoredDots,
   updateTableModel,
 } from "./actions";
-import NestedEditView from "./components/full-screen-edit-view/NestedEditView";
-import {
- closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm 
-} from "../../actions";
+import { closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm } from "../../actions";
 import ResizableWrapper from "../layout/resizable/ResizableWrapper";
 import { MenuTag } from "../../../model/tags";
 import { pushGTMEvent } from "../google-tag-manager/actions";
@@ -75,18 +66,30 @@ import {
 } from "../../../model/common/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "./constants";
 import { getEntityDisplayName } from "../../utils/getEntityDisplayName";
-import { ENTITY_AQL_STORAGE_NAME, LISTVIEW_MAIN_CONTENT_WIDTH } from "../../../constants/Config";
+import {
+  ENTITY_AQL_STORAGE_NAME, LIST_MAIN_CONTENT_DEFAULT_WIDTH,
+  LIST_SIDE_BAR_DEFAULT_WIDTH,
+  LISTVIEW_MAIN_CONTENT_WIDTH
+} from "../../../constants/Config";
 import { ConfirmProps, ShowConfirmCaller } from "../../../model/common/Confirm";
 import { EntityName, FindEntityState } from "../../../model/entities/common";
 import { saveCategoryAQLLink } from "../../utils/links";
 import ReactTableList, { TableListProps } from "./components/list/ReactTableList";
-import { getActiveTags, getFiltersNameString, getTagsUpdatedByIds } from "./utils/listFiltersUtils";
-import { setSwipeableDrawerDirtyForm } from "../layout/swipeable-sidebar/actions";
+import {
+  getActiveTags,
+  getFiltersNameString,
+  getTagsUpdatedByIds,
+  setActiveFiltersBySearch
+} from "./utils/listFiltersUtils";
 import { LSGetItem } from "../../utils/storage";
 import { getCustomFieldTypes } from "../../../containers/entities/customFieldTypes/actions";
-
-export const ListSideBarDefaultWidth = 200;
-export const ListMainContentDefaultWidth = 774;
+import {
+  createEntityRecord,
+  deleteEntityRecord,
+  getEntityRecord,
+  updateEntityRecord
+} from "../../../containers/entities/common/actions";
+import { shouldAsyncValidate } from "./utils/listFormUtils";
 
 const styles = () => createStyles({
   root: {
@@ -110,19 +113,23 @@ const sideBarTheme = theme => createTheme({
   }
 });
 
+interface OwnProps {
+  onCreate?: (item: any) => void;
+  onDelete?: (id: number) => void;
+  getEditRecord?: (id: number) => void;
+  onSave?: (item: any) => void;
+}
+
 interface Props extends Partial<ListState> {
   listProps: TableListProps;
-  getEditRecord: (id: string) => void;
   rootEntity: EntityName;
   EditViewContent: any;
+  dispatch?: Dispatch;
   onLoadMore?: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
   selection?: string[];
   editRecord?: any;
-  onSave?: any;
   onBeforeSave?: any;
-  onDelete?: any;
-  onCreate?: any;
   classes?: any;
   isDirty?: boolean;
   isInvalid?: boolean;
@@ -131,24 +138,22 @@ interface Props extends Partial<ListState> {
   savingFilter?: any;
   defaultDeleteDisabled?: boolean;
   createButtonDisabled?: boolean;
-  nestedEditFields?: { [key: string]: (props: any) => React.ReactNode };
   fetch?: Fetch;
   menuTags?: MenuTag[];
+  scriptsFilterColumn?: string;
   filterEntity?: EntityName;
   filterGroups?: FilterGroup[];
   filterGroupsInitial?: FilterGroup[];
   onSearch?: StringArgFunction;
   setFilterGroups?: (filterGroups: FilterGroup[]) => void;
-  setListMenuTags?: (tags: MenuTag[]) => void;
+  setListMenuTags?: ({ tags, checkedChecklists, uncheckedChecklists }: { tags: MenuTag[], checkedChecklists: MenuTag[], uncheckedChecklists: MenuTag[] }) => void;
   deleteFilter?: (id: number, entity: string, checked: boolean) => void;
   exportTemplates?: ExportTemplate[];
   pdfReports?: Report[];
   updateLayout?: (layout: LayoutType) => void;
-  updateColumns?: (columns: Column[]) => void;
   updateSelection?: (selection: string[]) => void;
   setListUserAQLSearch?: (userAQLSearch: string) => void;
   getScripts?: NoArgFunction;
-  openNestedEditView?: (entity: string, id: number, threeColumn?: boolean) => void;
   openConfirm?: ShowConfirmCaller;
   resetEditView?: NoArgFunction;
   clearListState?: NoArgFunction;
@@ -161,7 +166,6 @@ interface Props extends Partial<ListState> {
     manualLink?: EditViewContainerProps["manualLink"];
     validate?: any;
     asyncValidate?: any;
-    shouldAsyncValidate?: AnyArgFunction<boolean>;
     asyncBlurFields?: string[];
     asyncChangeFields?: string[];
     disabledSubmitCondition?: boolean;
@@ -169,28 +173,28 @@ interface Props extends Partial<ListState> {
     keepDirtyOnReinitialize?: boolean;
     hideTitle?: EditViewContainerProps["hideTitle"];
   };
-  CogwheelAdornment?: React.ReactNode;
+  CogwheelAdornment?: any;
   location?: any;
   history?: any;
   match?: any;
   sendGAEvent?: (event: GAEventTypes, screen: string, time?: number) => void;
   alwaysFullScreenCreateView?: any;
   currency?: Currency;
-  CustomFindRelatedMenu?: React.ReactNode;
+  CustomFindRelatedMenu?: any;
   ShareContainerAlertComponent?: any;
   searchMenuItemsRenderer?: ListAqlMenuItemsRenderer;
   customOnCreate?: any;
+  customOnCreateAction?: any;
+  customUpdateAction?: any;
   preformatBeforeSubmit?: AnyArgFunction;
+  findRelatedByFilter?: AnyArgFunction;
   userAQLSearch?: string;
   listSearch?: string;
   creatingNew?: boolean;
-  showColoredDots?: boolean;
   editRecordFetching?: boolean;
-  recordsLeft?: number;
   searchQuery?: SearchQuery;
   setListEditRecordFetching?: any;
   search?: string;
-  onSwipeableDrawerDirtyForm?: (isDirty: boolean, resetEditView: any) => void;
   deleteDisabledCondition?: (props) => boolean;
   noListTags?: boolean;
   setEntity?: (entity: EntityName) => void;
@@ -199,7 +203,6 @@ interface Props extends Partial<ListState> {
   setListviewMainContentWidth?: (value: string) => void;
   submitForm?: any;
   closeConfirm?: () => void;
-  setShowColoredDots?: (value: boolean) => void;
   deleteWithoutConfirmation?: boolean;
   getCustomBulkEditFields?: any;
   getCustomFieldTypes?: (entity: EntityName) => void;
@@ -216,7 +219,7 @@ interface ComponentState {
   newSelection: string[] | null;
 }
 
-class ListView extends React.PureComponent<Props, ComponentState> {
+class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
   private containerNode;
 
   private searchComponentNode: React.RefObject<any>;
@@ -236,9 +239,9 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       querySearch: false,
       deleteEnabled: !props.defaultDeleteDisabled,
       threeColumn: false,
-      sidebarWidth: ListSideBarDefaultWidth,
-      mainContentWidth: this.getMainContentWidth(ListMainContentDefaultWidth, ListSideBarDefaultWidth),
-      newSelection: null,
+      sidebarWidth: LIST_SIDE_BAR_DEFAULT_WIDTH,
+      mainContentWidth: this.getMainContentWidth(LIST_MAIN_CONTENT_DEFAULT_WIDTH, LIST_SIDE_BAR_DEFAULT_WIDTH),
+      newSelection: null
     };
   }
 
@@ -250,8 +253,9 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       sendGAEvent,
       rootEntity,
       setEntity,
-      match: { url },
+      match: { url, params },
       filterGroupsInitial = [],
+      selection,
       getListViewPreferences
     } = this.props;
 
@@ -288,6 +292,11 @@ class ListView extends React.PureComponent<Props, ComponentState> {
         pathname: url
       });
     }
+
+    if (params.id && !selection.includes(params.id)) {
+      this.ignoreCheckDirtyOnSelection = true;
+      this.onSelection([params.id]);
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -316,6 +325,8 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       filterGroupsLoaded,
       noListTags,
       preferences,
+      checkedChecklists,
+      uncheckedChecklists
     } = this.props;
 
     const { threeColumn } = this.state;
@@ -383,13 +394,8 @@ class ListView extends React.PureComponent<Props, ComponentState> {
         if (!threeColumn) {
           this.toggleFullWidthView();
         }
-      } else if (prevProps.records.layout) {
+      } else {
         this.onCreateRecord();
-      }
-
-      if (!selection.includes(params.id)) {
-        this.ignoreCheckDirtyOnSelection = true;
-        this.onSelection([params.id]);
       }
     }
 
@@ -420,22 +426,24 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       const currentUrlSearch = new URLSearchParams(location.search);
 
       const filtersUrlString = currentUrlSearch.get("filter");
-      const tagsUrlString = currentUrlSearch.get("tag");
+      const tagsUrlString = currentUrlSearch.get("tags");
+      const checkedChecklistsUrlString = currentUrlSearch.get("checkedChecklists");
+      const uncheckedChecklistsUrlString = currentUrlSearch.get("uncheckedChecklists");
       const searchString = currentUrlSearch.get("search");
 
       if (prevUrlSearch.get("filter") !== filtersUrlString) {
         const filtersString = getFiltersNameString(filterGroups);
         if (filtersString !== filtersUrlString) {
           const updated = [...filterGroups];
-          this.setActiveFiltersBySearch(filtersUrlString, filterGroups);
+          setActiveFiltersBySearch(filtersUrlString, filterGroups);
           this.onChangeFilters(updated, "filters");
         }
       }
 
-      if (prevUrlSearch.get("tag") !== tagsUrlString) {
-        const tagsString = getActiveTags(menuTags).map(t => t.tagBody.id).toString();
-
-        if (tagsString !== tagsUrlString) {
+      // Update tags by url
+      if (prevUrlSearch.get("tags") !== tagsUrlString) {
+        const activeString = getActiveTags(menuTags).map(t => t.tagBody.id).toString();
+        if (activeString !== tagsUrlString) {
           const tagIds = tagsUrlString ? tagsUrlString
             .split(",")
             .map(f => Number(f)) : [];
@@ -443,8 +451,30 @@ class ListView extends React.PureComponent<Props, ComponentState> {
         }
       }
 
+      // Update checked tags by url
+      if (prevUrlSearch.get("checkedChecklists") !== checkedChecklistsUrlString) {
+        const activeString = getActiveTags(checkedChecklists).map(t => t.tagBody.id).toString();
+        if (activeString !== checkedChecklistsUrlString) {
+          const ids = checkedChecklistsUrlString ? checkedChecklistsUrlString
+            .split(",")
+            .map(f => Number(f)) : [];
+          this.onChangeFilters(getTagsUpdatedByIds(checkedChecklists, ids), "checkedChecklists");
+        }
+      }
+
+      // Update tags by url
+      if (prevUrlSearch.get("uncheckedChecklists") !== uncheckedChecklistsUrlString) {
+        const activeString = getActiveTags(uncheckedChecklists).map(t => t.tagBody.id).toString();
+        if (activeString !== uncheckedChecklistsUrlString) {
+          const ids = uncheckedChecklistsUrlString ? uncheckedChecklistsUrlString
+            .split(",")
+            .map(f => Number(f)) : [];
+          this.onChangeFilters(getTagsUpdatedByIds(uncheckedChecklists, ids), "uncheckedChecklists");
+        }
+      }
+
+      // Update filters by url
       if (prevUrlSearch.get("search") !== searchString) {
-        // this.onQuerySearchChange(searchString);
         setListUserAQLSearch(searchString);
       }
     }
@@ -464,24 +494,14 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     this.props.clearListState();
   }
 
-  setActiveFiltersBySearch = (search: string, filters: FilterGroup[]) => {
-    const filterNames = search ? search.replace(/[@_]/g, " ")
-        .split(",")
-        .map(f => f.trim()) : [];
-    filters.forEach(g => {
-        g.filters.forEach(f => {
-          // eslint-disable-next-line no-param-reassign
-          f.active = filterNames.includes(f.name);
-        });
-      });
-  };
-
   synchronizeAllFilters = () => {
     const {
       setListUserAQLSearch,
       filterGroupsInitial = [],
       filterGroups,
       menuTags,
+      checkedChecklists,
+      uncheckedChecklists,
       onSearch
     } = this.props;
 
@@ -492,18 +512,37 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
       const search = this.getUrlSearch(searchParams);
       const filtersSearch = searchParams.get("filter");
-      const tagsSearch = searchParams.get("tag");
+      const tagsSearch = searchParams.get("tags");
+      const checkedChecklistsUrlString = searchParams.get("checkedChecklists");
+      const uncheckedChecklistsUrlString = searchParams.get("uncheckedChecklists");
 
       if (filtersSearch) {
-        this.setActiveFiltersBySearch(filtersSearch, targetFilters);
+        setActiveFiltersBySearch(filtersSearch, targetFilters);
       }
       this.onChangeFilters(targetFilters, "filters");
 
+      // Sync tags by search
       if (tagsSearch && menuTags) {
         const tagIds = tagsSearch
           .split(",")
           .map(f => Number(f));
         this.onChangeFilters(getTagsUpdatedByIds(menuTags, tagIds), "tags");
+      }
+
+      // Sync checked checklists by search
+      if (checkedChecklistsUrlString && checkedChecklists) {
+        const ids = checkedChecklistsUrlString
+          .split(",")
+          .map(f => Number(f));
+        this.onChangeFilters(getTagsUpdatedByIds(checkedChecklists, ids), "checkedChecklists");
+      }
+
+      // Sync unchecked checklists by search
+      if (uncheckedChecklistsUrlString && uncheckedChecklists) {
+        const ids = uncheckedChecklistsUrlString
+          .split(",")
+          .map(f => Number(f));
+        this.onChangeFilters(getTagsUpdatedByIds(uncheckedChecklists, ids), "uncheckedChecklists");
       }
 
       if (search) {
@@ -522,7 +561,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     this.filtersSynchronized = true;
   };
 
-  onGetEditRecord = (id: string) => {
+  onGetEditRecord = id => {
     const { sendGAEvent, getEditRecord, rootEntity } = this.props;
 
     sendGAEvent("screenview", `${rootEntity}EditView`);
@@ -569,6 +608,10 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       location: { search }
     } = this.props;
 
+    if (newSelection.length === 1 && selection.length === 1 && newSelection[0] === selection[0]) {
+      return;
+    }
+
     const { threeColumn } = this.state;
 
     if ((isDirty || (creatingNew && selection[0] === "new")) && !this.ignoreCheckDirtyOnSelection) {
@@ -613,7 +656,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
   onChangeFilters = (filters: FilterGroup[] | MenuTag[], type: string) => {
     const {
-     setFilterGroups, setListMenuTags, location: { search }, match: { url }
+     setFilterGroups, setListMenuTags, location: { search }, match: { url }, menuTags, checkedChecklists, uncheckedChecklists
     } = this.props;
 
     const searchParams = new URLSearchParams(search);
@@ -628,16 +671,20 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       }
     }
 
-    if (type === "tags") {
-      setListMenuTags(filters as MenuTag[]);
+    if (["tags", "checkedChecklists", "uncheckedChecklists"].includes(type)) {
+      setListMenuTags({
+        tags: menuTags,
+        checkedChecklists, 
+        uncheckedChecklists,
+        ...{ [type]: filters as MenuTag[] }
+      });
       const tagsString = getActiveTags(filters as MenuTag[]).map(t => t.tagBody.id).toString();
       if (tagsString) {
-        searchParams.set("tag", tagsString);
+        searchParams.set(type, tagsString);
       } else {
-        searchParams.delete("tag");
+        searchParams.delete(type);
       }
     }
-
     const resultErlSearchString = decodeURIComponent(searchParams.toString());
     this.updateHistory(url, resultErlSearchString ? "?" + resultErlSearchString : "" );
   };
@@ -673,7 +720,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       return;
     }
 
-    onSave(selection[0], value);
+    onSave(value);
   };
 
   onDelete = id => {
@@ -800,7 +847,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
         {
           cancelButtonText: "DISCARD CHANGES",
           confirmCustomComponent: confirmButton,
-          onCancel: props.onConfirm
+          onCancelCustom: props.onConfirm
         },
       );
     } else {
@@ -932,8 +979,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
   getMainContentWidth = (mainContentWidth, sidebarWidth) =>
     (mainContentWidth ? Number(mainContentWidth) : window.screen.width - sidebarWidth - 368);
 
-  openNestedEditViewWithDirtyCheck = (...args) => this.checkDirty(this.props.openNestedEditView, args);
-
   onCreateRecordWithDirtyCheck = this.props.onCreate
     ? (...args) => this.checkDirty(this.onCreateRecord, args, true)
     : undefined;
@@ -978,34 +1023,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     return searchParam.getAll("search")[0];
   };
 
-  renderTableList = () => {
-    const {
-      listProps, onLoadMore, selection, records, recordsLeft, currency, updateColumns, setShowColoredDots, showColoredDots
-    } = this.props;
-
-    const { threeColumn, mainContentWidth } = this.state;
-
-    return (
-      <ReactTableList
-        {...listProps}
-        mainContentWidth={mainContentWidth}
-        onLoadMore={onLoadMore}
-        selection={selection}
-        records={records}
-        recordsLeft={recordsLeft}
-        threeColumn={threeColumn}
-        updateColumns={updateColumns}
-        setShowColoredDots={setShowColoredDots}
-        showColoredDots={showColoredDots}
-        shortCurrencySymbol={currency.shortCurrencySymbol}
-        onRowDoubleClick={this.onRowDoubleClick}
-        onSelectionChange={this.onSelection}
-        onChangeModel={this.onChangeModel}
-        getContainerNode={this.getContainerNode}
-      />
-    );
-  }
-
   render() {
     const {
       classes,
@@ -1016,17 +1033,13 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       records,
       fetching,
       selection,
-      nestedEditFields,
-      getEditRecord,
       findRelated,
       editViewProps = {},
       CogwheelAdornment,
       savingFilter,
       CustomFindRelatedMenu,
       alwaysFullScreenCreateView,
-      onBeforeSave,
       ShareContainerAlertComponent,
-      updateSelection,
       pdfReports,
       exportTemplates,
       searchMenuItemsRenderer,
@@ -1039,7 +1052,13 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       filterEntity,
       emailTemplatesWithKeyCode,
       scripts,
-      recepients
+      listProps,
+      onLoadMore,
+      currency,
+      dispatch,
+      getScripts,
+      findRelatedByFilter,
+      scriptsFilterColumn
     } = this.props;
 
     const {
@@ -1048,10 +1067,28 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
     const hasFilters = Boolean(filterGroups.length || menuTags.length || savingFilter);
 
+    const table = <ReactTableList
+      {...listProps}
+      mainContentWidth={mainContentWidth}
+      onLoadMore={onLoadMore}
+      selection={selection}
+      records={records}
+      threeColumn={threeColumn}
+      shortCurrencySymbol={currency.shortCurrencySymbol}
+      onRowDoubleClick={this.onRowDoubleClick}
+      onSelectionChange={this.onSelection}
+      onChangeModel={this.onChangeModel}
+      getContainerNode={this.getContainerNode}
+      sidebarWidth={sidebarWidth}
+    />;
+
     return (
       <div className={classes.root}>
+        <LoadingIndicator transparentBackdrop allowInteractions />
+
         <FullScreenEditView
           {...editViewProps}
+          shouldAsyncValidate={shouldAsyncValidate}
           rootEntity={rootEntity}
           form={LIST_EDIT_VIEW_FORM_NAME}
           fullScreenEditView={fullScreenEditView}
@@ -1063,23 +1100,8 @@ class ListView extends React.PureComponent<Props, ComponentState> {
           creatingNew={creatingNew}
           updateDeleteCondition={this.updateDeleteCondition}
           showConfirm={this.showConfirm}
-          openNestedEditView={this.openNestedEditViewWithDirtyCheck}
           alwaysFullScreenCreateView={alwaysFullScreenCreateView}
           threeColumn={threeColumn}
-        />
-
-        <NestedEditView
-          {...editViewProps}
-          EditViewContent={EditViewContent}
-          rootEntity={rootEntity}
-          nestedEditFields={nestedEditFields}
-          updateRoot={getEditRecord}
-          onBeforeSave={onBeforeSave}
-          creatingNew={creatingNew}
-          showConfirm={this.showConfirm}
-          onSave={this.onSave}
-          updateSelection={updateSelection}
-          openNestedEditView={this.openNestedEditViewWithDirtyCheck}
         />
 
         <ShareContainer
@@ -1108,7 +1130,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
             ignoreScreenWidth
             onResizeStop={this.handleResizeCallBack}
             sidebarWidth={sidebarWidth}
-            minWidth="10%"
+            minWidth="265px"
             maxWidth="65%"
           >
             <ThemeProvider theme={sideBarTheme}>
@@ -1127,7 +1149,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
         <div className="flex-fill d-flex flex-column overflow-hidden user-select-none">
           <div className="flex-fill d-flex relative">
-            <LoadingIndicator transparentBackdrop allowInteractions />
             {threeColumn ? (
               <ResizableWrapper
                 onResizeStop={this.handleResizeMainContentCallBack}
@@ -1137,14 +1158,15 @@ class ListView extends React.PureComponent<Props, ComponentState> {
                 maxWidth="65%"
                 classes={{ sideBarWrapper: classes.resizableItemList }}
               >
-                {this.renderTableList()}
+                {table}
               </ResizableWrapper>
-            ) : this.renderTableList() }
+            ) : table }
 
             {threeColumn && !fullScreenEditView && (
               <div className="d-flex flex-fill overflow-hidden">
                 <EditView
                   {...editViewProps}
+                  shouldAsyncValidate={shouldAsyncValidate}
                   form={LIST_EDIT_VIEW_FORM_NAME}
                   rootEntity={rootEntity}
                   EditViewContent={EditViewContent}
@@ -1154,14 +1176,15 @@ class ListView extends React.PureComponent<Props, ComponentState> {
                   creatingNew={creatingNew}
                   updateDeleteCondition={this.updateDeleteCondition}
                   showConfirm={this.showConfirm}
-                  openNestedEditView={this.openNestedEditViewWithDirtyCheck}
                   toogleFullScreenEditView={this.toggleFullWidthView}
                 />
               </div>
             )}
           </div>
           <BottomAppBar
-            recepients={recepients}
+            dispatch={dispatch}
+            findRelatedByFilter={findRelatedByFilter}
+            getScripts={getScripts}
             scripts={scripts}
             emailTemplatesWithKeyCode={emailTemplatesWithKeyCode}
             createButtonDisabled={createButtonDisabled}
@@ -1183,15 +1206,14 @@ class ListView extends React.PureComponent<Props, ComponentState> {
             changeQueryView={this.changeQueryView}
             switchLayout={this.switchLayoutWithDirtyCheck}
             onCreate={this.onCreateRecordWithDirtyCheck}
-            toggleFullWidthView={this.toggleFullWidthView}
             findRelated={findRelated}
             CogwheelAdornment={CogwheelAdornment}
             showConfirm={this.showConfirm}
-            openNestedEditView={this.openNestedEditViewWithDirtyCheck}
             CustomFindRelatedMenu={CustomFindRelatedMenu}
             records={records}
             searchComponentNode={this.searchComponentNode}
             searchQuery={searchQuery}
+            scriptsFilterColumn={scriptsFilterColumn}
           />
         </div>
       </div>
@@ -1207,10 +1229,10 @@ const mapStateToProps = (state: State) => ({
   ...state.list,
   ...state.share,
   preferences: state.userPreferences,
-  showColoredDots: state.list.showColoredDots,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
+  dispatch,
   sendGAEvent: (event: GAEventTypes, screen: string, time?: number) => dispatch(pushGTMEvent(event, screen, time)),
   setEntity: entity => dispatch(setListEntity(entity)),
   resetEditView: () => {
@@ -1220,27 +1242,34 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   clearListState: () => dispatch(clearListState()),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
   updateLayout: (layout: LayoutType) => dispatch(setListLayout(layout)),
-  updateColumns: (columns: Column[]) => dispatch(setListColumns(columns)),
   deleteFilter: (id: number, entity: string, checked: boolean) => dispatch(deleteCustomFilter(id, entity, checked)),
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
-  setListMenuTags: (tags: MenuTag[]) => dispatch(setListMenuTags(tags)),
+  setListMenuTags: ({ tags, checkedChecklists, uncheckedChecklists }) => dispatch(setListMenuTags(tags, checkedChecklists, uncheckedChecklists)),
   setListUserAQLSearch: (userAQLSearch: string) => dispatch(setListUserAQLSearch(userAQLSearch)),
   getScripts: () => dispatch(getScripts(ownProps.rootEntity)),
   getCustomFieldTypes: (entity: EntityName) => dispatch(getCustomFieldTypes(entity)),
-  openNestedEditView: (entity: string, id: number, threeColumn: boolean) => dispatch(getListNestedEditRecord(entity, id, null, threeColumn)),
   openConfirm: props => dispatch(showConfirm(props)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView)),
   updateTableModel: (model: TableModel, listUpdate?: boolean) => dispatch(updateTableModel(ownProps.rootEntity, model, listUpdate)),
-  onLoadMore: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => dispatch(getRecords(ownProps.rootEntity, true, false, startIndex, stopIndex, resolve)),
+  onLoadMore: (stopIndex: number, resolve: any) => dispatch(getRecords(
+    {
+     entity: ownProps.rootEntity, listUpdate: true, ignoreSelection: false, stopIndex, resolve
+    }
+  )),
   onSearch: search => dispatch(setSearch(search, ownProps.rootEntity)),
   setListEditRecordFetching: () => dispatch(setListEditRecordFetching()),
-  onSwipeableDrawerDirtyForm: (isDirty: boolean, resetEditView: any) => dispatch(setSwipeableDrawerDirtyForm(isDirty, resetEditView)),
   getListViewPreferences: () => dispatch(getUserPreferences([LISTVIEW_MAIN_CONTENT_WIDTH])),
   setListviewMainContentWidth: (value: string) => dispatch(setUserPreference({ key: LISTVIEW_MAIN_CONTENT_WIDTH, value })),
   submitForm: () => dispatch(submit(LIST_EDIT_VIEW_FORM_NAME)),
   closeConfirm: () => dispatch(closeConfirm()),
-  setShowColoredDots: (value: boolean) => dispatch(setShowColoredDots(value)),
+  onCreate: (item: any) => dispatch( ownProps.customOnCreateAction
+    ? ownProps.customOnCreateAction(item)
+    : createEntityRecord(item, ownProps.rootEntity)),
+  onDelete: (id: number) => dispatch(deleteEntityRecord(id, ownProps.rootEntity)),
+  onSave: (item: any) => dispatch(updateEntityRecord(item.id, ownProps.rootEntity, item)),
+  getEditRecord: (id: number) => dispatch(getEntityRecord(id, ownProps.rootEntity)),
+  findRelatedByFilter: (filter, list) => dispatch(findRelatedByFilter(filter, list))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(ListView))) as React.FC<Props>;

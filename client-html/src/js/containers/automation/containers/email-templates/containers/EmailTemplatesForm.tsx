@@ -1,11 +1,12 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
-  useCallback, useEffect, useMemo, useState
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { EmailTemplate, MessageType } from "@api/model";
 import { Grow } from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -22,12 +23,12 @@ import { mapSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { NumberArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
+import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import AvailableFrom, { mapMessageAvailableFrom } from "../../../components/AvailableFrom";
 import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import { MessageTemplateEntityItems, MessageTemplateEntityName } from "../../../constants";
-import { validateKeycode } from "../../../utils";
+import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import ScriptCard from "../../scripts/components/cards/CardBase";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
@@ -46,8 +47,6 @@ interface Props extends InjectedFormProps {
   onUpdateInternal: (template: EmailTemplate) => void;
   onUpdate: (template: EmailTemplate) => void;
   onDelete: NumberArgFunction;
-  validateTemplateCopyName: StringArgFunction;
-  validateNewTemplateName: StringArgFunction;
   history: any;
   syncErrors: any;
   nextLocation: string;
@@ -74,11 +73,8 @@ const EmailTemplatesForm: React.FC<Props> = props => {
     onUpdate,
     onUpdateInternal,
     onDelete,
-    validateTemplateCopyName,
-    validateNewTemplateName,
     history,
     nextLocation,
-    setNextLocation,
     syncErrors,
     emailTemplates
   } = props;
@@ -150,9 +146,22 @@ const EmailTemplatesForm: React.FC<Props> = props => {
   useEffect(() => {
     if (!dirty && nextLocation) {
       history.push(nextLocation);
-      setNextLocation('');
     }
   }, [nextLocation, dirty]);
+
+  const validateTemplateCopyName = useCallback(name => {
+    if (emailTemplates.find(e => e.title.trim() === name.trim())) {
+      return "Template name should be unique";
+    }
+    return validateNameForQuotes(name);
+  }, [emailTemplates, values.id]);
+
+  const validateNewTemplateName = useCallback(name => {
+    if (emailTemplates.find(e => e.id !== values.id && e.title.trim() === name.trim())) {
+      return "Template name should be unique";
+    }
+    return validateNameForQuotes(name);
+  }, [emailTemplates, values.id]);
 
   return (
     <>
@@ -161,11 +170,10 @@ const EmailTemplatesForm: React.FC<Props> = props => {
         onClose={onDialogClose}
         onSave={onDialogSave}
         validateNameField={validateTemplateCopyName}
-        hasNameField
       />
 
       <Form onSubmit={handleSubmit(handleSave)}>
-        {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
+        {!disableRouteConfirm && <RouteChangeConfirm form={form} when={dirty || isNew} />}
 
         <AppBarContainer
           values={values}
@@ -175,7 +183,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
           invalid={invalid}
           title={(
             <div className="centeredFlex">
-              {isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
+              {isNew && (!values.name || values.name?.trim().length === 0) ? "New" : values.name?.trim()}
               {[...values.automationTags?.split(",") || [],
                 ...isInternal ? [] : ["custom"]
               ].map(t => <InfoPill key={t} label={t} />)}
@@ -186,6 +194,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
           fields={(
             <Grid item xs={12}>
               <FormField
+                type="text"
                 name="name"
                 label="Name"
                 validate={validateNewTemplateName}
@@ -243,7 +252,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                     items={messageTypes}
                     disabled={isInternal}
                     required
-                    select
                   />
                 </Grid>
                 <FieldArray
@@ -256,7 +264,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
               </Grid>
 
               {values.type === 'Email' && (
-                <Grid container >
+                <Grid container>
                   <Grid item xs={6}>
                     <div className="heading">Subject</div>
                     <FormField
@@ -318,8 +326,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                 label="Description"
                 name="description"
                 disabled={isInternal}
-                fullWidth
-                multiline
+                                multiline
               />
             </Grid>
             <Grid item xs={3}>
@@ -330,7 +337,8 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                   name="status"
                   color="primary"
                   format={v => v === "Enabled"}
-                  parse={v => v ? "Enabled" : "Installed but Disabled"}
+                  parse={v => (v ? "Enabled" : "Installed but Disabled")}
+                  debounced={false}
                 />
               </div>
               <div className="mt-3 pt-1">

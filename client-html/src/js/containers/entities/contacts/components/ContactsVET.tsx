@@ -40,7 +40,6 @@ import { EditViewProps } from "../../../../model/common/ListView";
 import { usePrevious } from "../../../../common/utils/hooks";
 import { mapSelectItems } from "../../../../common/utils/common";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
-import { convertSelectBooleanToString, convertSelectStringToBoolean } from "../utils";
 import { formatTFN, parseTFN, validateTFN } from "../../../../common/utils/validation/tfnValidation";
 import { TFNInputMask } from "./ContactsTutor";
 
@@ -124,6 +123,12 @@ const validateUSI = (value, allValues) => {
   return undefined;
 };
 
+const stillAtSchoolItems = [
+  { value: true, label: "Yes" },
+  { value: false, label: "No" },
+  { value: "", label: "Not stated" }
+];
+
 const ContactsVET: React.FC<ContactsVETProps> = props => {
   const {
     classes,
@@ -141,7 +146,8 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
     setUsiUpdateLocked,
     tabIndex,
     expanded,
-    setExpanded
+    setExpanded,
+    syncErrors
   } = props;
 
   const prevId = usePrevious(values.id);
@@ -244,12 +250,12 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
 
   return values ? (
     <div className="pt-1 pl-3 pr-3">
-      <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
+      <ExpandableContainer formErrors={syncErrors} index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
         <Grid container columnSpacing={3} rowSpacing={2}>
           {countries && (
             <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
               <FormField
-                type="searchSelect"
+                type="select"
                 selectValueMark="id"
                 selectLabelMark="name"
                 name="student.countryOfBirth"
@@ -269,7 +275,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
           {languages && (
             <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
               <FormField
-                type="searchSelect"
+                type="select"
                 selectValueMark="id"
                 selectLabelMark="name"
                 name="student.language"
@@ -303,6 +309,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               label="Achieved in year"
               validate={[validateNonNegative, validateYearSchoolCompleted]}
               parse={parseIntValue}
+              debounced={false}
             />
           </Grid>
           <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
@@ -326,13 +333,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               type="select"
               name="student.isStillAtSchool"
               label="Still at school"
-              format={convertSelectBooleanToString}
-              parse={convertSelectStringToBoolean}
-              items={[
-                { value: "true", label: "Yes" },
-                { value: "false", label: "No" },
-                { value: "", label: "Not stated" }
-              ]}
+              items={stillAtSchoolItems}
             />
           </Grid>
           <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
@@ -348,7 +349,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               <FormControlLabel
                 className="checkbox pr-3"
                 control={
-                  <FormField type="checkbox" name="student.specialNeedsAssistance" color="secondary" fullWidth />
+                  <FormField type="checkbox" name="student.specialNeedsAssistance" color="secondary" />
                 }
                 label="Disability support requested"
               />
@@ -490,7 +491,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               {countries && (
                 <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
                   <FormField
-                    type="searchSelect"
+                    type="select"
                     selectValueMark="id"
                     selectLabelMark="name"
                     name="student.countryOfResidency"
@@ -540,13 +541,14 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
                 type="text"
                 name="tfn"
                 label="Tax file number"
-                max={9}
+                max="9"
                 InputProps={{
                   inputComponent: TFNInputMask
                 }}
                 validate={validateTFN}
                 parse={parseTFN}
                 format={formatTFN}
+                debounced={false}
               />
             </Grid>
           )}

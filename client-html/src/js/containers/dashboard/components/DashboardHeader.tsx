@@ -44,7 +44,7 @@ const useStyles = makeAppStyles(theme => ({
     borderBottom: `1px solid ${theme.palette.divider}`
   },
   toolBarButton: {
-    color: theme.palette.mode === "light" ? theme.palette.primary.main : theme.palette.primary.contrastText
+    color: theme.addButtonColor.color
   },
   upgradeButton: {
     color: theme.palette.primary.contrastText,

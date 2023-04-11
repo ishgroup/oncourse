@@ -1,18 +1,25 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, {
   createContext,
   forwardRef,
-  memo, useCallback, useMemo
+  memo,
+  useMemo,
+  useState
 } from "react";
+import {
+  flexRender
+} from '@tanstack/react-table';
 import { FixedSizeList, areEqual } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import InfiniteLoader from "react-window-infinite-loader";
 import clsx from "clsx";
-import debounce from "lodash.debounce";
 import Typography from "@mui/material/Typography";
 import {
   HEADER_ROWS_COUNT,
@@ -21,17 +28,52 @@ import {
   LIST_THREE_COLUMN_ROW_HEIGHT,
   LIST_TWO_COLUMN_ROW_HEIGHT
 } from "../../../../../../constants/Config";
-import { COLUMN_WITH_COLORS } from "../utils";
+import TagDotRenderer from "./TagDotRenderer";
+import StaticProgress from "../../../../progress/StaticProgress";
+import { stubFunction } from "../../../../../utils/common";
+import { CHECKLISTS_COLUMN, COLUMN_WITH_COLORS } from "../constants";
+
+const ThreeColumnCell = ({ row }) => (<div>
+  <Typography variant="subtitle2" color="textSecondary" component="div" noWrap>
+    {row.original.secondary}
+  </Typography>
+  <Typography variant="body1" component="div" className="centeredFlex" noWrap>
+    <span className="flex-fill text-truncate">
+      {row.original.primary}
+    </span>
+    {row.getVisibleCells()[1].column.tagsVisible && (
+      <TagDotRenderer
+        className="ml-1"
+        colors={row.original[COLUMN_WITH_COLORS]?.replace(/[[\]]/g, "").split(", ")}
+      />
+    )}
+    {row.getVisibleCells()[1].column.checklistsVisible && row.original[CHECKLISTS_COLUMN] && (
+      <StaticProgress
+        className="ml-1"
+        color={row.original[CHECKLISTS_COLUMN].split("|")[0]}
+        value={parseFloat(row.original[CHECKLISTS_COLUMN].split("|")[1]) * 100}
+        size={18}
+      />
+    )}
+  </Typography>
+</div>);
+
+const TwoColumnCell = ({ cell, classes }) => (<div
+  style={{
+    width: cell.column.getSize()
+  }}
+  className={clsx(classes.bodyCell, cell.column.columnDef.cellClass)}
+>
+  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+</div>);
 
 const ListRow = memo<any>(({ data, index, style }) => {
   const {
-    prepareRow,
     rows,
     classes,
     onRowSelect,
     threeColumn,
-    onRowDoubleClick,
-    onMouseOver
+    onRowDoubleClick
   } = data;
 
   if (!threeColumn && HEADER_ROWS_INDICES.includes(index)) {
@@ -41,9 +83,10 @@ const ListRow = memo<any>(({ data, index, style }) => {
   const currentIndex = threeColumn ? index : index - HEADER_ROWS_COUNT;
 
   const row = rows[currentIndex];
+
   const rowClasses = clsx(
     classes.row,
-    row && row.isSelected && classes.selected,
+    row && row.getIsSelected() && classes.selected,
     row && row.original && row.original.customClasses,
     threeColumn ? classes.threeColumnRow : index % 2 && classes.oddRow
   );
@@ -51,33 +94,18 @@ const ListRow = memo<any>(({ data, index, style }) => {
   if (!row) {
     return <div style={style} className={rowClasses} />;
   }
-  prepareRow(row);
 
   return (
     <div
-      {...row.getRowProps()}
       style={style}
       className={rowClasses}
-      onClick={e => onRowSelect(e, row.id, currentIndex)}
+      onClick={e => onRowSelect(e, row)}
       onDoubleClick={() => onRowDoubleClick(row.id)}
     >
       {threeColumn ? (
-        <div>
-          <Typography variant="subtitle2" color="textSecondary" noWrap>
-            {row.original.secondary}
-          </Typography>
-          <Typography variant="body1" noWrap>
-            {row.original.primary}
-          </Typography>
-        </div>
-      ) : row.cells.filter(cell => cell.column.id !== COLUMN_WITH_COLORS).map(cell => (
-        <div
-          {...cell.getCellProps()}
-          className={clsx(classes.bodyCell, cell.column.cellClass)}
-          onMouseOver={!["selection", "chooser"].includes(cell.column.id) && onMouseOver ? () => onMouseOver(cell.column.id) : undefined}
-        >
-          {cell.render("Cell")}
-        </div>
+        <ThreeColumnCell row={row} />
+      ) : row.getVisibleCells().filter(cell => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(cell.column.id)).map(cell => (
+        <TwoColumnCell cell={cell} key={cell.id} classes={classes} />
       ))}
     </div>
   );
@@ -86,7 +114,7 @@ const ListRow = memo<any>(({ data, index, style }) => {
 const StickyListContext = createContext(null);
 StickyListContext.displayName = "StickyListContext";
 
-const innerElementType = forwardRef<any>(({ children, ...rest }, ref) => (
+const innerElementType = forwardRef<any, { children?: React.ReactNode }>(({ children, ...rest }, ref) => (
   <StickyListContext.Consumer>
     {({ header }) => (
       <div ref={ref} {...rest}>
@@ -98,46 +126,45 @@ const innerElementType = forwardRef<any>(({ children, ...rest }, ref) => (
 ));
 
 export default ({
-  totalColumnsWidth,
-  prepareRow,
-  rows,
+  table,
   classes,
   onRowSelect,
   onLoadMore,
-  recordsLeft,
+  recordsCount,
   listRef,
   threeColumn,
   onRowDoubleClick,
-  onMouseOver,
   mainContentWidth,
   header
 }) => {
-  const isItemLoaded = index => rows[index];
+  const rows = table.getRowModel().rows;
+  const totalColumnsWidth = table.getCenterTotalSize();
 
-  const loadMoreItems = useCallback<any>(
-    debounce(
-      (startIndex, stopIndex) => new Promise(resolve => onLoadMore(startIndex, stopIndex, resolve)),
-      600
-    ),
-    []
-  );
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const isItemLoaded = index => index >= recordsCount ? true : !!rows[index];
+
+  const loadMoreItems = isLoading
+    ? stubFunction
+    : (startIndex, stopIndex) => {
+      setIsLoading(true);
+      return new Promise(resolve => onLoadMore(stopIndex, resolve)).then(() => { setIsLoading(false); });
+    };
+
+  const itemCountBase = (rows.length + LIST_PAGE_SIZE);
+
+  const itemCount = (itemCountBase < recordsCount ? itemCountBase : recordsCount) + (threeColumn ? 0 : HEADER_ROWS_COUNT);
 
   const itemData = useMemo(
     () => ({
-      prepareRow,
       rows,
       classes,
       onRowSelect,
       threeColumn,
       onRowDoubleClick,
-      onMouseOver,
     }),
-    [prepareRow, rows, classes, onRowSelect, onRowDoubleClick, totalColumnsWidth, threeColumn, onMouseOver]
+    [rows, classes, onRowSelect, onRowDoubleClick, totalColumnsWidth, threeColumn]
   );
-
-  const itemCount = useMemo(() => (rows.length + (recordsLeft >= LIST_PAGE_SIZE ? LIST_PAGE_SIZE : recordsLeft === 1 ? 0 : recordsLeft))
-    + (threeColumn ? 0 : HEADER_ROWS_COUNT),
-   [threeColumn, recordsLeft, rows.length]);
 
   return (
     <StickyListContext.Provider value={{ header }}>

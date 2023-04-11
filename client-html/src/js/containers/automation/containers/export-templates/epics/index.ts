@@ -5,6 +5,7 @@ import { EpicCreateExportTemplate } from "./EpicCreateExportTemplate";
 import { EpicRemoveExportTemplate } from "./EpicRemoveExportTemplate";
 import { EpicUpdateExportTemplate } from "./EpicUpdateExportTemplate";
 import { EpicUpdateInternalExportTemplate } from "./EpicUpdateInternalExportTemplate";
+import { EpicGetFullScreenPreview } from "./EpicGetFullScreenPreview";
 
 export const EpicExportTemplates = combineEpics(
   EpicGetExportTemplatesList,
@@ -12,5 +13,6 @@ export const EpicExportTemplates = combineEpics(
   EpicCreateExportTemplate,
   EpicRemoveExportTemplate,
   EpicUpdateExportTemplate,
-  EpicUpdateInternalExportTemplate
+  EpicUpdateInternalExportTemplate,
+  EpicGetFullScreenPreview,
 );

@@ -39,7 +39,7 @@ Feature: Main feature for all PUT requests with path 'user/disableTFA'
         When method GET
         Then status 200
 
-        * def id = get[0] response[?(@.login == '2fa_admin1')].id
+        * def id = get[0] response[?(@.login == 'admin')].id
 
         Given path ishPath + '/' + id
         And request {}
@@ -50,7 +50,7 @@ Feature: Main feature for all PUT requests with path 'user/disableTFA'
         Given path '/logout'
         And request {}
         When method PUT
-        * def loginBody = {login: "2fa_admin1", password: "password", kickOut: 'true', skipTfa: 'true'}
+        * def loginBody = {login: "admin", password: "password", kickOut: 'true', skipTfa: 'true'}
         Given path ishPathLogin
         And request loginBody
         When method PUT

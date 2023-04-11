@@ -18,12 +18,12 @@ import ExpandableItem from "../../../../../common/components/layout/expandable/E
 import { openInternalLink } from "../../../../../common/utils/links";
 import { AppTheme } from "../../../../../model/common/Theme";
 import { DD_MM_YYYY_SLASHED, EEE_D_MMM_YYYY } from "../../../../../common/utils/dates/format";
-import { contactLabelCondition, defaultContactName } from "../../../contacts/utils";
 import { ContactLinkAdornment, LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
 import ContactSelectItemRenderer from "../../../contacts/components/ContactSelectItemRenderer";
 import { CourseClassTutorsTabProps } from "./CourseClassTutorsTab";
 import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
 import WarningMessage from "../../../../../common/components/form/fieldMessage/WarningMessage";
+import { getContactFullName } from "../../../contacts/utils";
 
 const styles = (theme: AppTheme) => createStyles({
   tutorRoot: {
@@ -85,6 +85,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
     <ExpandableItem
       expanded={index === expandedIndex}
       onChange={onChange}
+      expandButtonId={`course-class-tutor-${index}`}
       buttonsContent={(
         <div className="centeredFlex zIndex1 text-nowrap">
           <Button color="primary" onClick={onWageClick} disabled={(!tutor.roleId && tutor.roleId !== 0) || !tutor.contactId}>
@@ -100,7 +101,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
           <div className={clsx("d-grid gridAutoFlow-column align-items-baseline", classes.tutorColumn)}>
             {tutor.tutorName ? (
               <Typography noWrap className={clsx(nameWarning && "warningColor")}>
-                {defaultContactName(tutor.tutorName)}
+                {tutor.tutorName}
               </Typography>
             ) : (
               <Typography color="error" noWrap>
@@ -144,41 +145,34 @@ const CourseClassTutorItem: React.FC<Props> = ({
       detailsContent={(
         <div>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             name={`tutors[${index}].contactId`}
-            props={{
-                label: "Contact",
-                entity: "Contact",
-                aqlFilter: `isTutor is true and (tutor.dateFinished > ${today} or tutor.dateFinished is null)`,
-                selectValueMark: "id",
-                selectLabelCondition: contactLabelCondition,
-                defaultDisplayValue: defaultContactName(tutor.tutorName),
-                labelAdornment: (
-                  <ContactLinkAdornment id={tutor?.contactId} />
-                ),
-                itemRenderer: ContactSelectItemRenderer,
-                onInnerValueChange: onTutorIdChange,
-                disabled: tutor.id,
-                rowHeight: 48
-              }}
+            label="Contact"
+            entity="Contact"
+            aqlFilter={`isTutor is true and (tutor.dateFinished > ${today} or tutor.dateFinished is null)`}
+            selectValueMark="id"
+            selectLabelCondition={getContactFullName}
+            defaultValue={tutor.tutorName}
+            labelAdornment={<ContactLinkAdornment id={tutor?.contactId} />}
+            itemRenderer={ContactSelectItemRenderer}
             onInnerValueChange={onTutorIdChange}
+            disabled={Boolean(tutor.id)}
+            rowHeight={48}
             className="mb-2"
             required
           />
 
-          {nameWarning && <WarningMessage warning={nameWarning} />}
-
           <FormField
-            type="searchSelect"
+            type="select"
             name={`tutors[${index}].roleId`}
             label="Role"
             selectValueMark="id"
             selectLabelMark="name"
             normalize={normalizeNumber}
-            defaultDisplayValue={tutor.roleName}
+            defaultValue={tutor.roleName}
             items={tutorRoles}
             onInnerValueChange={onRoleIdChange}
-            disabled={tutor.id || hasWage}
+            disabled={Boolean(tutor.id || hasWage)}
             labelAdornment={(
               <LinkAdornment
                 linkHandler={openTutorRoleLink}
@@ -188,6 +182,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
               )}
             alwaysDisplayDefault
             className="mb-2"
+            warning={nameWarning}
             required
           />
           {!tutor.id && hasWage

@@ -67,6 +67,7 @@ export interface State {
   tags: TagsState;
   export: AvetmissExportState;
   process: ProcessState;
+  fieldProcessing: Record<string, boolean>;
   list: ListState;
   taxes: TaxesState;
   share: ShareState;
@@ -81,7 +82,7 @@ export interface State {
   currency: Currency;
   usiSoftwareId: string;
   banking: BankingState;
-  lockedDate: Date;
+  lockedDate: string;
   discounts: DiscountsState;
   sales: SaleState;
   timetable: TimetableState;

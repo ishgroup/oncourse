@@ -63,7 +63,7 @@ interface BindingEditPopupProps extends InjectedFormProps {
 
 const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
   ({
-     popupAnchorEl, onCancel, onSave, handleSubmit, invalid, itemsType, values, reset
+     popupAnchorEl, onCancel, onSave, handleSubmit, invalid, values, reset
   }) => {
     const nameRef = useRef<any>();
     const popperRef = useRef<any>();
@@ -83,7 +83,7 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
 
     useEffect(() => {
       if (popupAnchorEl && nameRef.current) {
-        nameRef.current.edit();
+        nameRef.current.focus();
       }
     }, [popupAnchorEl, nameRef.current]);
 
@@ -98,8 +98,6 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
       reset();
       onCancel();
     }, [values]);
-
-    const labelType = itemsType === "label";
 
     return (
       <Popper
@@ -119,10 +117,9 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
                     type="text"
                     label="Label"
                     name="label"
-                    ref={nameRef}
+                    inputRef={nameRef}
                     className="mb-2"
                     required
-                    fullWidth
                   />
 
                   <FormField
@@ -131,7 +128,6 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
                     name="name"
                     validate={validateBindingName}
                     required
-                    fullWidth
                   />
                 </DialogContent>
 

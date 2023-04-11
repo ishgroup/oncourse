@@ -1,0 +1,28 @@
+get:
+  operationId: getOriginal
+  description: retrieves directly background overlay from database
+  tags:
+    - ReportOverlay
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of pdf background record to fetch
+  produces:
+    - application/json
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          type: string
+          format: byte
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: REPORT
+    errorMessage: Sorry, you have no permissions to get background. Please contact your administrator

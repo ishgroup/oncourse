@@ -1,13 +1,19 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import PlayArrow from "@mui/icons-material/PlayArrow";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { connect } from "react-redux";
+import React, {
+ useCallback, useMemo, useState
+} from "react";
 import { Dispatch } from "redux";
-import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
+import {
+ FieldArray, Form, initialize, InjectedFormProps 
+} from "redux-form";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import FileCopy from "@mui/icons-material/FileCopy";
 import Grid from "@mui/material/Grid";
@@ -23,14 +29,11 @@ import ScriptCard from "../../scripts/components/cards/CardBase";
 import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
-import { usePrevious } from "../../../../../common/utils/hooks";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { validateKeycode } from "../../../utils";
+import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import { formatRelativeDate } from "../../../../../common/utils/dates/formatRelative";
 import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL } from "../../../../../common/utils/dates/format";
 import ExecuteImportModal from "../components/ExecuteImportModal";
-import { State } from "../../../../../reducers/state";
-import { setNextLocation } from "../../../../../common/actions";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
 import InfoPill from "../../../../../common/components/layout/InfoPill";
@@ -48,17 +51,15 @@ interface Props extends InjectedFormProps {
   onUpdateInternal: (template: ImportModel) => void;
   onUpdate: (template: ImportModel) => void;
   onDelete: NumberArgFunction;
-  nextLocation?: string,
-  setNextLocation?: (nextLocation: string) => void,
   emailTemplates?: CatalogItemType[]
+  importTemplates?: CatalogItemType[]
 }
 
 const ImportTemplatesForm = React.memo<Props>(
   ({
     dirty, form, handleSubmit, isNew, invalid, values, dispatch, syncErrors, emailTemplates,
-     onCreate, onUpdate, onUpdateInternal, onDelete, nextLocation, history, setNextLocation
+     onCreate, onUpdate, onUpdateInternal, onDelete, importTemplates
   }) => {
-    const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
     const [modalOpened, setModalOpened] = useState<boolean>(false);
     const [execMenuOpened, setExecMenuOpened] = useState(false);
     const [importIdSelected, setImportIdSelected] = useState(null);
@@ -71,9 +72,8 @@ const ImportTemplatesForm = React.memo<Props>(
     }, []);
 
     const onDialogSave = useCallback(
-      ({ keyCode }) => {
-        setDisableRouteConfirm(true);
-        onCreate({ ...values, id: null, keyCode });
+      ({ keyCode, name }) => {
+        onCreate({ ...values, id: null, keyCode, name });
         onDialodClose();
       },
       [values]
@@ -81,16 +81,12 @@ const ImportTemplatesForm = React.memo<Props>(
 
     const isInternal = useMemo(() => values.keyCode && values.keyCode.startsWith("ish."), [values.keyCode]);
 
-    const prevId = usePrevious(values.id);
-
     const handleDelete = useCallback(() => {
-      setDisableRouteConfirm(true);
       onDelete(values.id);
     }, [values.id]);
 
     const handleSave = useCallback(
       val => {
-        setDisableRouteConfirm(true);
         if (isNew) {
           onCreate(val);
           return;
@@ -111,27 +107,33 @@ const ImportTemplatesForm = React.memo<Props>(
       [values]
     );
 
-    useEffect(() => {
-      if (disableRouteConfirm && values.id !== prevId) {
-        setDisableRouteConfirm(false);
-      }
-    }, [values.id, prevId, disableRouteConfirm]);
-
-    useEffect(() => {
-      if (!dirty && nextLocation) {
-        history.push(nextLocation);
-        setNextLocation('');
-      }
-    }, [nextLocation, dirty]);
-
     const handleRun = () => {
       setImportIdSelected(values.id);
       setExecMenuOpened(true);
     };
 
+    const validateTemplateCopyName = useCallback(name => {
+      if (importTemplates.find(i => i.title.trim() === name.trim())) {
+        return "Template name should be unique";
+      }
+      return validateNameForQuotes(name);
+    }, [importTemplates, values.id]);
+
+    const validateTemplateName = useCallback(name => {
+      if (importTemplates.find(i => i.id !== values.id && i.title.trim() === name.trim())) {
+        return "Template name should be unique";
+      }
+      return validateNameForQuotes(name);
+    }, [importTemplates, values.id]);
+
     return (
       <>
-        <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialodClose} onSave={onDialogSave} />
+        <SaveAsNewAutomationModal
+          opened={modalOpened}
+          onClose={onDialodClose}
+          onSave={onDialogSave}
+          validateNameField={validateTemplateCopyName}
+        />
         <ExecuteImportModal
           opened={execMenuOpened}
           onClose={() => {
@@ -142,8 +144,7 @@ const ImportTemplatesForm = React.memo<Props>(
         />
 
         <Form onSubmit={handleSubmit(handleSave)}>
-          {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
-
+          <RouteChangeConfirm form={form} when={dirty || isNew} />
           <AppBarContainer
             values={values}
             manualUrl={manualUrl}
@@ -163,8 +164,10 @@ const ImportTemplatesForm = React.memo<Props>(
             fields={(
               <Grid item xs={12}>
                 <FormField
+                  type="text"
                   name="name"
                   label="Name"
+                  validate={validateTemplateName}
                   disabled={isInternal}
                   required
                 />
@@ -246,7 +249,7 @@ const ImportTemplatesForm = React.memo<Props>(
 
                 <FormField
                   type="text"
-                  label="Key Code"
+                  label="Key code"
                   name="keyCode"
                   validate={isNew || !isInternal ? validateKeycode : undefined}
                   disabled={!isNew}
@@ -259,8 +262,7 @@ const ImportTemplatesForm = React.memo<Props>(
                   label="Description"
                   name="description"
                   disabled={isInternal}
-                  fullWidth
-                  multiline
+                                    multiline
                 />
               </Grid>
               <Grid item xs={3}>
@@ -271,7 +273,8 @@ const ImportTemplatesForm = React.memo<Props>(
                     name="status"
                     color="primary"
                     format={v => v === "Enabled"}
-                    parse={v => v ? "Enabled" : "Installed but Disabled"}
+                    parse={v => (v ? "Enabled" : "Installed but Disabled")}
+                    debounced={false}
                   />
                 </div>
                 <div className="mt-3 pt-1">
@@ -303,8 +306,7 @@ const ImportTemplatesForm = React.memo<Props>(
                     label="Description"
                     className="overflow-hidden"
                     multiline
-                    fullWidth
-                  />
+                                      />
 
                   <Grid container columnSpacing={3}>
                     <Grid item xs className="d-flex">
@@ -337,13 +339,4 @@ const ImportTemplatesForm = React.memo<Props>(
   }
 );
 
-const mapStateToProps = (state: State) => ({
-  nextLocation: state.nextLocation
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-});
-
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)((props:Props) => (props.values
-  ? <ImportTemplatesForm {...props} /> : null));
+export default (props:Props) => (props.values ? <ImportTemplatesForm {...props} /> : null);

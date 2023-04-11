@@ -17,9 +17,9 @@ import FormField from "../../../../../common/components/form/formFields/FormFiel
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
 import { openInternalLink } from "../../../../../common/utils/links";
-import { contactLabelCondition } from "../../../../entities/contacts/utils";
 import UserSelectItemRenderer from "../../users/components/UserSelectItemRenderer";
 import { showMessage } from "../../../../../common/actions";
+import { getContactFullName } from "../../../../entities/contacts/utils";
 
 interface RendererProps {
   users: User[];
@@ -61,13 +61,13 @@ const ApiTokenItem: React.FC<ItemsProps> = (
 
   return (
     <Card className="mb-2 p-3">
-      <Grid container columnSpacing={3}>
+      <Grid container columnSpacing={3} rowSpacing={2}>
         <Grid item xs={6}>
           <FormField
             label="Act as user"
-            type="searchSelect"
+            type="select"
             selectValueMark="id"
-            selectLabelCondition={contactLabelCondition}
+            selectLabelCondition={getContactFullName}
             name={`${item}.userId`}
             items={users || []}
             itemRenderer={UserSelectItemRenderer}
@@ -81,7 +81,6 @@ const ApiTokenItem: React.FC<ItemsProps> = (
             rowHeight={55}
             disabled={!isNew}
             className="pr-1"
-            fullWidth
             required
           />
 
@@ -93,7 +92,7 @@ const ApiTokenItem: React.FC<ItemsProps> = (
           )}
         </Grid>
         <Grid item xs={6} display="flex" justifyContent="space-between" alignItems="flex-start">
-          <FormField type="text" name={`${item}.name`} label="Token name" disabled={!isNew} required fullWidth />
+          <FormField type="text" name={`${item}.name`} label="Token name" disabled={!isNew} required />
           <Button
             size="small"
             classes={{

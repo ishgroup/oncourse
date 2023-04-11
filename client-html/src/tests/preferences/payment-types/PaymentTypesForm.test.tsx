@@ -68,8 +68,6 @@ describe("Virtual rendered PaymentTypesForm", () => {
 
         if (!value.systemType) {
           paymentTypes[`types[${key}].type`] = value.type;
-          paymentTypes[`types[${key}].undepositAccountId`] = value.undepositAccountId.toString();
-          paymentTypes[`types[${key}].accountId`] = value.accountId.toString();
         }
       });
 

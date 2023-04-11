@@ -21,6 +21,7 @@ import ish.common.types.TaskResultType
 import ish.common.types.TriggerType
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.ISHDataContext
+import ish.oncourse.server.accounting.AccountTransactionService
 import ish.oncourse.server.cayenne.Article
 import ish.oncourse.server.cayenne.Membership
 import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
@@ -87,6 +88,7 @@ class GroovyScriptService {
     private static final String EMAIL_SERVICE = "Email"
     private static final String QUERY_SERVICE = "Query"
     private static final String EVENT_SERVICE = "eventService"
+    private static final String ACCOUNT_TRANSACTION_SERVICE = "accountTransactionService"
 
     private static final String RUN_QUERY = "query"
     private static final String SEND_EMAIL = "email"
@@ -197,6 +199,7 @@ class GroovyScriptService {
         PrintService printService = injector.getInstance(PrintService.class)
         MessageService messageService = injector.getInstance(MessageService.class)
         DocumentService documentService = injector.getInstance(DocumentService.class)
+        AccountTransactionService accountTransactionService = injector.getInstance(AccountTransactionService.class)
 
         Bindings bindings = new SimpleBindings()
 
@@ -205,6 +208,7 @@ class GroovyScriptService {
         bindings.put(EMAIL_SERVICE, emailService)
         bindings.put(QUERY_SERVICE, queryService)
         bindings.put(EVENT_SERVICE, eventService)
+        bindings.put(ACCOUNT_TRANSACTION_SERVICE, accountTransactionService)
         bindings.put(RECORDS_PARAM_NAME, [])
         bindings.put(FILE_PARAM_NAME, null)
 

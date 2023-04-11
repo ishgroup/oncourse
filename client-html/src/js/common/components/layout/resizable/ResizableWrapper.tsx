@@ -3,7 +3,7 @@ import { Resizable } from "re-resizable";
 import { withStyles, createStyles } from "@mui/styles";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import clsx from "clsx";
-import { ListSideBarDefaultWidth } from "../../list-view/ListView";
+import { LIST_SIDE_BAR_DEFAULT_WIDTH } from "../../../../constants/Config";
 
 const styles = theme =>
   createStyles({
@@ -64,7 +64,7 @@ const ResizableWrapper = (props: Props) => {
     return useMediaQuery('(min-width:992px)') || ignoreScreenWidth ? (
       <Resizable
         size={{ width: sidebarWidth, height: "100%" }}
-        minWidth={minWidth || ListSideBarDefaultWidth}
+        minWidth={minWidth || LIST_SIDE_BAR_DEFAULT_WIDTH}
         maxWidth={maxWidth}
         onResizeStop={onResizeStop}
         onResize={onResize}

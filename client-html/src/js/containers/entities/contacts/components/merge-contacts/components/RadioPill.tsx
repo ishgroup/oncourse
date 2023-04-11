@@ -22,7 +22,6 @@ const styles = createStyles(({ palette, spacing }: Theme) => ({
     color: palette.text.secondary,
     fontSize: "0.7rem",
     padding: spacing(0.25, 0.5),
-    maxWidth: 250
   },
   active: {
     backgroundColor: palette.divider

@@ -10,7 +10,7 @@
  */
 package ish.oncourse.common.field;
 
-import static ish.oncourse.common.field.PropertyGetSetFactory.*;
+import static ish.oncourse.common.field.PropertyGetSetFields.*;
 
 public enum FieldProperty {
 

@@ -25,7 +25,7 @@ import { FormModelSchema } from "../../../../../model/preferences/FormModelShema
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("generalPrefs_ldap");
@@ -137,8 +137,7 @@ class LDAPBaseForm extends React.Component<any, any> {
                 name={this.formModel.LdapHost.uniqueKey}
                 label="Host"
                 disabled={!licence || !simpleAuthEnabled}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden xsDown>
@@ -151,8 +150,7 @@ class LDAPBaseForm extends React.Component<any, any> {
                 name={this.formModel.LdapBindUserDN.uniqueKey}
                 label="Bind user DN"
                 disabled={!licence || !simpleAuthEnabled}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden xsDown>
@@ -165,8 +163,7 @@ class LDAPBaseForm extends React.Component<any, any> {
                 name={this.formModel.LdapServerPort.uniqueKey}
                 label="Port, e.g. 389"
                 disabled={!licence || !simpleAuthEnabled}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden xsDown>
@@ -203,8 +200,7 @@ class LDAPBaseForm extends React.Component<any, any> {
                 name={this.formModel.LdapBindUserPass.uniqueKey}
                 label="Bind user password"
                 disabled={!licence || !simpleAuthEnabled}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden xsDown>
@@ -217,8 +213,7 @@ class LDAPBaseForm extends React.Component<any, any> {
                 name={this.formModel.LdapBaseDN.uniqueKey}
                 label="Base DN"
                 disabled={!licence || !simpleAuthEnabled}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden xsDown>
@@ -253,8 +248,7 @@ class LDAPBaseForm extends React.Component<any, any> {
                 name={this.formModel.LdapUsernameAttribute.uniqueKey}
                 label="Username attribute"
                 disabled={!licence || !simpleAuthEnabled}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden xsDown>
@@ -267,7 +261,6 @@ class LDAPBaseForm extends React.Component<any, any> {
                 name={this.formModel.LdapUserSearchFilter.uniqueKey}
                 label="User search filter"
                 disabled={!licence || !simpleAuthEnabled}
-                fullWidth
               />
             </Grid>
 
@@ -312,7 +305,6 @@ class LDAPBaseForm extends React.Component<any, any> {
                     name={this.formModel.LdapSaslAuthentication.uniqueKey}
                     color="primary"
                     disabled={!licence || !simpleAuthEnabled}
-                    fullWidth
                     stringValue
                   />
                 )}
@@ -332,7 +324,6 @@ class LDAPBaseForm extends React.Component<any, any> {
                 name={this.formModel.LdapGroupMemberAttribute.uniqueKey}
                 label="Group member attribute"
                 disabled={!licence || !saslAuthEnabled || !simpleAuthEnabled}
-                fullWidth
               />
             </Grid>
 
@@ -346,7 +337,6 @@ class LDAPBaseForm extends React.Component<any, any> {
                 name={this.formModel.LdapGroupAttribute.uniqueKey}
                 label="Group name attribute"
                 disabled={!licence || !saslAuthEnabled || !simpleAuthEnabled}
-                fullWidth
               />
             </Grid>
 
@@ -360,7 +350,6 @@ class LDAPBaseForm extends React.Component<any, any> {
                 name={this.formModel.LdapGroupSearchFilter.uniqueKey}
                 label="Group search filter"
                 disabled={!licence || !saslAuthEnabled || !simpleAuthEnabled}
-                fullWidth
               />
             </Grid>
 

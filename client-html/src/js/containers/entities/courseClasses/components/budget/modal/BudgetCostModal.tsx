@@ -62,7 +62,9 @@ const BudgetCostModal = React.memo<CourseClassCostModalProps & InjectedFormProps
     currentTax,
     classFee
   }) => {
+
     const incomeAccounts = useMemo(() => accounts.filter(a => a.type === "income"), [accounts]);
+
     const activeTutorRoles = useMemo(() => (tutorRoles ? tutorRoles.filter(t => t.active) : []), [
       tutorRoles
     ]);
@@ -160,8 +162,7 @@ const BudgetCostModal = React.memo<CourseClassCostModalProps & InjectedFormProps
       <Dialog
         open={opened}
         onClose={onClose}
-        fullWidth
-        maxWidth="md"
+                maxWidth="md"
         classes={{
           paper: "overflow-auto"
         }}
@@ -197,6 +198,6 @@ const mapStateToProps = (state: State) => ({
   defaultOnCostRate: state.courseClass.defaultOnCostRate
 });
 
-export default reduxForm<any, CourseClassCostModalProps>({
+export default reduxForm<any, any, any>({
   form: COURSE_CLASS_COST_DIALOG_FORM
-})(connect(mapStateToProps, null)(BudgetCostModal));
+})(connect(mapStateToProps)(BudgetCostModal));

@@ -49,8 +49,8 @@ public enum DefaultAccount {
 			DefaultAccount.STUDENT_ENROLMENTS.getPreferenceName(),
 			DefaultAccount.PREPAID_FEES.getPreferenceName(),
 			DefaultAccount.VOUCHER_LIABILITY.getPreferenceName(),
+			DefaultAccount.VOUCHER_UNDERPAYMENT.getPreferenceName(),
 			DefaultAccount.VOUCHER_UNDERPAYMENT.getPreferenceName()
-
 	);
 
 	DefaultAccount(String code, String description, AccountType type, String preferenceName) {

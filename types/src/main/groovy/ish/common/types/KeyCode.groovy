@@ -718,7 +718,25 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
      * Permission to work with any assessment.
      */
 	@API
-    ASSESSMENT(110, "Assessment", VIEW, NONE, ALL)
+    ASSESSMENT(110, "Assessment", VIEW, NONE, ALL),
+
+	/**
+	 * Database value: 111
+	 *
+	 * Permission to work with any checkout.
+	 * Always enabled: view
+	 */
+	@API
+	CHECKOUT(111, "Checkout", VIEW),
+
+	/**
+	 * Database value: 112
+	 *
+	 * Permission to work with any TutorAttendance.
+	 * Always enabled: view
+	 */
+	@API
+	TUTOR_ATTENDANCE(112, "TutorAttendance", VIEW)
 
 
 	private int value

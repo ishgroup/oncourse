@@ -145,7 +145,7 @@ abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterf
 			Money overdue = Money.ZERO
 
 			for (InvoiceDueDate dueDate : dueDates) {
-				if (currentDate.isAfter(dueDate.getDueDate())) {
+				if (currentDate.isAfter(dueDate.getDueDate()) || currentDate.equals(dueDate.getDueDate())) {
 					overdue = overdue.add(dueDate.getAmount())
 				}
 			}
@@ -428,7 +428,7 @@ abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterf
 
 	@Override
 	String getInteractionName() {
-		return total.toPlainString()
+		return totalIncTax.toPlainString()
 	}
 }
 

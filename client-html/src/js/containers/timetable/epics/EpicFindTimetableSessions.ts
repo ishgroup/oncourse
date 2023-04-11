@@ -1,3 +1,11 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 import { Epic } from "redux-observable";
 import { SearchRequest, Session } from "@api/model";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
@@ -5,12 +13,17 @@ import { FIND_TIMETABLE_SESSIONS, FIND_TIMETABLE_SESSIONS_FULFILLED, setTimetabl
 import TimetableService from "../services/TimetableService";
 import { getMonthsWithinYear } from "../utils";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { getFiltersString } from "../../../common/components/list-view/utils/listFiltersUtils";
 
 const request: EpicUtils.Request<Session[], { request: SearchRequest }> = {
   type: FIND_TIMETABLE_SESSIONS,
-  getData: ({ request }) => TimetableService.findTimetableSessions(request),
+  getData: ({ request }, { timetable: { search, filters } }) => {
+    request.search = search;
+    request.filter = getFiltersString([{ filters }]);
+    return TimetableService.findTimetableSessions(request);
+  },
   processData: (sessions, s, { request: { from } }) => {
-    const months = getMonthsWithinYear(sessions, new Date(from));
+    const months = sessions.length ? getMonthsWithinYear(sessions, new Date(from)) : [];
 
     return [
       {
@@ -30,7 +43,6 @@ const request: EpicUtils.Request<Session[], { request: SearchRequest }> = {
         }
       ];
     }
-
     return FetchErrorHandler(response);
   }
 };

@@ -27,6 +27,14 @@ configurations {
 	all*.exclude module: "hessian"
 }
 
+repositories {
+	maven {
+		url = uri("https://repo.e-iceblue.com/nexus/content/groups/public/")
+		content {
+			includeGroup "e-iceblue"
+		}
+	}
+}
 
 sourceSets {
 	main {
@@ -52,7 +60,7 @@ dependencies {
 
 	implementation "io.bootique.jetty:bootique-jetty:$bootiqueVersion"
 	implementation "io.bootique.cayenne:bootique-cayenne:$bootiqueVersion"
-	implementation "io.bootique.jdbc:bootique-jdbc-tomcat:$bootiqueVersion"
+	implementation "io.bootique.jdbc:bootique-jdbc-hikaricp:$bootiqueVersion"
 
 	api ("org.apache.cxf:cxf-rt-frontend-jaxws:$cfxVersion") {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
@@ -73,7 +81,6 @@ dependencies {
 	implementation "org.eclipse.jetty:jetty-servlets:$jettyVersion"
 	implementation "org.eclipse.jetty.http2:http2-server:$jettyVersion"
 	implementation "org.eclipse.jetty:jetty-alpn-java-server:$jettyVersion"
-	implementation "org.eclipse.jetty:jetty-jmx:$jettyVersion"
 
 	implementation "com.nulab-inc:zxcvbn:1.4.1"
 
@@ -84,14 +91,17 @@ dependencies {
 	implementation "org.mariadb.jdbc:mariadb-java-client:$mariadbVersion"
 
 	implementation 'commons-lang:commons-lang:2.6' // this exists only to support some old reports. To be removed when all reports upgraded.
-	implementation ('net.sf.jasperreports:jasperreports:6.1.1') {
-		exclude group:'org.apache.poi', module: 'poi-ooxml'
+	implementation ('net.sf.jasperreports:jasperreports:6.20.0') {
+    exclude group:'org.apache.poi', module: 'poi-ooxml'
 		exclude group:'org.codehaus.castor'
 		exclude group:'com.fasterxml.jackson.core'
 		exclude group:'org.apache.lucene'
 		exclude group:'org.olap4j'
 		exclude group:'bouncycastle'
+		exclude group: 'com.lowagie', module: 'itext'
 	}
+
+	api 'com.lowagie:itext:2.1.7'
 
 	implementation "org.bouncycastle:bcprov-jdk15on:$bouncycastleVersion"
 	implementation "org.bouncycastle:bcmail-jdk15on:$bouncycastleVersion"
@@ -105,11 +115,13 @@ dependencies {
 	implementation 'com.amazonaws:aws-java-sdk-s3:1.11.939'
 	implementation 'com.azure:azure-storage-blob:12.9.0'
 
-	api 'org.quartz-scheduler:quartz:2.3.2'
+//	exclude HikariCP-java7 from quartz, because currently bootique-jdbc-hikaricp contains HikariCP and it's help to resolve dependency conflict
+	api ('org.quartz-scheduler:quartz:2.3.2') {
+		exclude group: 'com.zaxxer', module: 'HikariCP-java7'
+	}
 	implementation 'org.apache.pdfbox:pdfbox:2.0.17'
 	implementation 'org.scribe:scribe:1.3.7'
 	implementation 'commons-io:commons-io:2.6'
-	implementation 'org.apache.commons:commons-lang3:3.7'
 	implementation 'org.apache.commons:commons-collections4:4.1'
 	implementation 'org.reflections:reflections:0.9.12'
 	api "com.google.inject:guice:$googleGuiceVersion"
@@ -134,6 +146,9 @@ dependencies {
 
 	api 'com.nimbusds:nimbus-jose-jwt:8.9'
 	implementation 'com.bugsnag:bugsnag:3.6.2'
+
+	implementation 'e-iceblue:spire.office.free:5.3.1'
+	implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.18'
 
 	testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
 	testImplementation 'org.mockito:mockito-core:2.18.3'

@@ -1,0 +1,30 @@
+get:
+  operationId: getChecklists
+  description: list of all root checklists
+  tags:
+    - Tag
+  parameters:
+    - name: entityName
+      in: query
+      required: true
+      type: string
+      description: entity type identifier, null param returns empty list of checklists
+    - name: id
+      in: query
+      type: integer
+      format: int64
+      required: false
+      description: Unique identifier of record to fetch checked checklists, null param will return empty list
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/Tag.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: TAG
+    errorMessage: Sorry, you have no permissions to get tags. Please contact your administrator

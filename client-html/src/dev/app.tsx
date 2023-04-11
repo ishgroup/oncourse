@@ -3,7 +3,7 @@
  * Enable Hot Module Reloading, MOCKs and other dev functionality
  * */
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import { createRoot } from 'react-dom/client';
 import { Provider } from "react-redux";
 import { DEFAULT_CONFIG } from "../js/constants/Config";
 import { initMockDB } from "./mock/MockAdapter";
@@ -12,13 +12,10 @@ import AppEntry from "../js/AppEntry";
 
 initMockDB();
 
-const start = () => {
-  ReactDOM.render(
-    <Provider store={store as any}>
-      <AppEntry />
-    </Provider>,
-    document.getElementById(DEFAULT_CONFIG.CONTAINER_ID)
-  );
-};
+const root = createRoot(document.getElementById(DEFAULT_CONFIG.CONTAINER_ID));
 
-start();
+root.render(
+  <Provider store={store as any}>
+    <AppEntry />
+  </Provider>
+);

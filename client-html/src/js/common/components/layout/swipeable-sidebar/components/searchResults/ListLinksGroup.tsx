@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React from "react";
@@ -13,7 +16,7 @@ import Typography from "@mui/material/Typography";
 import { openInternalLink } from "../../../../../utils/links";
 import ListLinkItem from "./ListLinkItem";
 import { getResultId } from "../../utils";
-import navigation from "../../../../navigation/navigation.json";
+import navigation from "../../../../navigation/data/navigation.json";
 
 const styles = theme =>
   createStyles({
@@ -45,7 +48,7 @@ class ListLinksGroup extends React.PureComponent<any, any> {
 
   openEntity = () => {
     const {
-      showConfirm, entityDisplayName, userSearch
+      entityDisplayName, userSearch
     } = this.props;
 
     const category = navigation.features.find(c => c.title === entityDisplayName);
@@ -53,16 +56,18 @@ class ListLinksGroup extends React.PureComponent<any, any> {
     if (category) {
       const url = category.link.indexOf("?") !== -1 ? category.link.slice(0, category.link.indexOf("?")) : category.link;
 
-      showConfirm(() => openInternalLink(
+      openInternalLink(
         url + (userSearch ? `?search=~"${userSearch}"` : "")
-      ));
+      );
     }
   };
 
   openLink = id => {
-    const { showConfirm, entityDisplayName, entity, setSelected } = this.props;
-
-    if (entity === "Contact") {
+    const {
+     entityDisplayName, entity, setSelected
+    } = this.props;
+    
+    if (entity === "Contact" && typeof setSelected === "function") {
       setSelected(id);
       return;
     }
@@ -72,9 +77,9 @@ class ListLinksGroup extends React.PureComponent<any, any> {
     if (category) {
       const url = category.link.indexOf("?") !== -1 ? category.link.slice(0, category.link.indexOf("?")) : category.link;
 
-      showConfirm(() => openInternalLink(
+      openInternalLink(
         !id || !Number.isNaN(Number(id)) ? url + (id ? `/${id}` : "") : id
-      ));
+      );
     }
   };
 
@@ -127,7 +132,7 @@ class ListLinksGroup extends React.PureComponent<any, any> {
                   id={getResultId(i, `${entity}-${v.id}`)}
                 />
               ))}
-              <Collapse in={collapsed}>
+              <Collapse in={collapsed} mountOnEnter unmountOnExit>
                 {lastItems.map((v, i) => (
                   <ListLinkItem
                     key={i}

@@ -137,7 +137,7 @@ const TotalStatisticInfo = props => {
 const ChartTooltip = args => {
   const { payload, active } = args;
 
-  return active ? (
+  return active && payload ? (
     <Paper className="p-1">
       {payload.map((i, n) => (
         <Typography key={n} noWrap>
@@ -165,7 +165,7 @@ const Chart = props => (
       >
         <XAxis hide interval={0} />
         <CartesianGrid strokeDasharray="3 3" />
-        <Tooltip content={ChartTooltip} />
+        <Tooltip content={ChartTooltip} wrapperStyle={{ outline: "none" }} />
         <Area type="monotone" dataKey="Revenue" stackId="1" stroke="#ffd876" fill="#ffd876" />
         <Area type="monotone" dataKey="Enrolments" stackId="1" stroke="#73cba7" fill="#73cba7" />
       </AreaChart>

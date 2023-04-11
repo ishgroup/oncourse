@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import { Popover } from "@mui/material";
@@ -55,9 +58,8 @@ import { deleteCourseClassCost, postCourseClassCost, putCourseClassCost } from "
 import ClassCostService from "./services/ClassCostService";
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { getTutorPayInitial } from "../tutors/utils";
-import { getClassCostTypes } from "../../utils";
 import { BooleanArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
-import { dateForCompare, getClassFeeTotal } from "./utils";
+import { dateForCompare, excludeOnEnrolPaymentPlan, getClassFeeTotal, includeOnEnrolPaymentPlan } from "./utils";
 import PreferencesService from "../../../../preferences/services/PreferencesService";
 import BudgetItemRow from "./BudgetItemRow";
 import uniqid from "../../../../../common/utils/uniqid";
@@ -261,6 +263,8 @@ interface Props extends Partial<EditViewProps> {
   discountsError?: boolean;
   getSearchResult?: StringArgFunction;
   clearSearchResult?: BooleanArgFunction;
+  classCostTypes?: any;
+  netValues?: any;
 }
 
 const CourseClassBudgetTab = React.memo<Props>(
@@ -289,65 +293,15 @@ const CourseClassBudgetTab = React.memo<Props>(
      pending,
      discountsError,
      getSearchResult,
-     clearSearchResult
+     clearSearchResult,
+     classCostTypes,
+     netValues
    }) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [popoverAnchor, setPopoverAnchor] = React.useState(null);
     const [tutorsMenuOpened, setTutorsMenuOpened] = React.useState(false);
 
-    const classFee = useMemo(() => getClassFeeTotal(values.budget, taxes), [taxes, values.budget]);
-
-    const classCostTypes = useMemo(
-      () =>
-        getClassCostTypes(
-          values.budget,
-          values.maximumPlaces,
-          values.budgetedPlaces,
-          values.successAndQueuedEnrolmentsCount,
-          values.sessions,
-          values.tutors,
-          tutorRoles,
-        ),
-      [
-        values.budget,
-        values.maximumPlaces,
-        values.budgetedPlaces,
-        values.successAndQueuedEnrolmentsCount,
-        values.sessions,
-        values.tutors,
-        tutorRoles
-      ]
-    );
-
-    const netValues = useMemo(() => {
-      const max = decimalMinus(
-        decimalPlus(classCostTypes.customInvoices.max, classCostTypes.income.max),
-        classCostTypes.discount.max
-      );
-
-      const projected = decimalMinus(
-        decimalPlus(classCostTypes.customInvoices.projected, classCostTypes.income.projected),
-        classCostTypes.discount.projected
-      );
-
-      const actual = decimalMinus(
-        decimalPlus(classCostTypes.customInvoices.actual, classCostTypes.income.actual),
-        classCostTypes.discount.actual
-      );
-
-      return {
-        income: {
-          max,
-          projected,
-          actual
-        },
-        profit: {
-          max: decimalMinus(max, classCostTypes.cost.max),
-          projected: decimalMinus(projected, classCostTypes.cost.projected),
-          actual: decimalMinus(actual, classCostTypes.cost.actual)
-        }
-      };
-    }, [classCostTypes]);
+    const classFee = useMemo(() => getClassFeeTotal(values.budget || [], taxes), [taxes, values.budget]);
 
     const openAddBudgetMenu = useCallback(e => {
       setAnchorEl(e.currentTarget);
@@ -453,12 +407,11 @@ const CourseClassBudgetTab = React.memo<Props>(
       if (data.flowType === "Wages") {
         const tutor = values.tutors.find(t =>
           (data.courseClassTutorId ? t.id === data.courseClassTutorId : t.temporaryId === data.temporaryTutorId));
-        const role = tutorRoles.find(r => r.id === tutor.roleId);
+        const role = tutor ? tutorRoles.find(r => r.id === tutor.roleId) : null;
         onCostRate = (role && role["currentPayrate.oncostRate"]) ? parseFloat(role["currentPayrate.oncostRate"]) : 0;
       }
-
       setCourseClassBudgetModalOpened(true, isNaN(onCostRate) ? 0 : onCostRate);
-      dispatch(initialize(COURSE_CLASS_COST_DIALOG_FORM, data));
+      dispatch(initialize(COURSE_CLASS_COST_DIALOG_FORM, excludeOnEnrolPaymentPlan(data, currentTax)));
       closeAddBudgetMenu();
     };
 
@@ -482,7 +435,7 @@ const CourseClassBudgetTab = React.memo<Props>(
           bindedActionId = tutor && tutor.temporaryId;
         }
 
-        const postData = { ...data };
+        const postData = includeOnEnrolPaymentPlan(data, taxes);
         delete postData.index;
 
         if (postData.id === null) {
@@ -495,9 +448,9 @@ const CourseClassBudgetTab = React.memo<Props>(
               const temporaryId = savedId || uniqid();
 
               if (!savedId) {
-                dispatch(arrayInsert(form, "budget", 0, { ...data, temporaryId }));
+                dispatch(arrayInsert(form, "budget", 0, { ...postData, temporaryId }));
               } else {
-                dispatch(change(form, `budget[${data.index}]`, { ...data, temporaryId }));
+                dispatch(change(form, `budget[${data.index}]`, { ...postData, temporaryId }));
               }
               dispatch(
                 addActionToQueue(postCourseClassCost(postData), "POST", "ClassCost", temporaryId, bindedActionId)
@@ -511,12 +464,12 @@ const CourseClassBudgetTab = React.memo<Props>(
 
         ClassCostService.validatePut(postData)
           .then(() => {
-            if (data.flowType === "Income" && data.invoiceToStudent) {
-              dispatch(change(form, "feeExcludeGST", data.perUnitAmountExTax));
-              dispatch(change(form, "taxId", data.taxId));
+            if (postData.flowType === "Income" && postData.invoiceToStudent) {
+              dispatch(change(form, "feeExcludeGST", postData.perUnitAmountExTax));
+              dispatch(change(form, "taxId", postData.taxId));
 
-              const currentTax = getCurrentTax(taxes, data.taxId);
-              const feeWithTax = decimalMul(data.perUnitAmountExTax, decimalPlus(1, currentTax.rate));
+              const currentTax = getCurrentTax(taxes, postData.taxId);
+              const feeWithTax = decimalMul(postData.perUnitAmountExTax, decimalPlus(1, currentTax.rate));
 
               classCostTypes.discount.items.forEach(d => {
                 const isPersent = d.value.courseClassDiscount.discount.discountType === "Percent";
@@ -549,7 +502,7 @@ const CourseClassBudgetTab = React.memo<Props>(
             }
 
             dispatch(addActionToQueue(putCourseClassCost(postData), "PUT", "ClassCost", data.id));
-            dispatch(arraySplice(form, "budget", data.index, 1, data));
+            dispatch(arraySplice(form, "budget", data.index, 1, postData));
             closeModal();
           })
           .catch(response => instantFetchErrorHandler(dispatch, response));
@@ -885,7 +838,7 @@ const BudgetNetRow: React.FC<CommonRowProps> = ({
 const mapStateToProps = (state: State) => ({
   tutorRoles: state.preferences.tutorRoles,
   enrolments: state.courseClass.enrolments,
-  discounts: state.plainSearchRecords["Discount"].items.map(mapPlainDiscounts),
+  discounts: state.plainSearchRecords["Discount"].items,
   pending: state.plainSearchRecords["Discount"].loading,
   discountsError: state.plainSearchRecords["Discount"].error,
 });
@@ -894,7 +847,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   setCourseClassBudgetModalOpened: (opened, onCostRate) => dispatch(setCourseClassBudgetModalOpened(opened, onCostRate)),
   getSearchResult: (search: string) => {
     dispatch(setCommonPlainSearch("Discount", search));
-    dispatch(getCommonPlainRecords("Discount", 0, "name,discountType,discountDollar,discountPercent", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(getCommonPlainRecords("Discount", 0, "name,discountType,discountDollar,discountPercent", null, null, PLAIN_LIST_MAX_PAGE_SIZE, items => items.map(mapPlainDiscounts)));
   },
   clearSearchResult: (pending: boolean) => dispatch(clearCommonPlainRecords("Discount", pending)),
 });

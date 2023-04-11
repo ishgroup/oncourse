@@ -7,6 +7,7 @@ import React from "react";
 import { format as formatDateTime } from "date-fns";
 import { DataRow } from "@api/model";
 import { SelectItemDefault } from "../../../model/entities/common";
+import { IS_JEST } from "../../../constants/EnvironmentConstants";
 
 export const getDeepValue = (source, path) => {
   if (path.match(/[.,[]/)) {
@@ -71,6 +72,28 @@ export const createAndDownloadFile = (data: any, type: string, name: string) => 
   window.URL.revokeObjectURL(url);
 };
 
+export const createAndDownloadBase64Image = (data: any, name: string, type = "png") => {
+  const link = document.createElement("a");
+  link.href = "data:image/png;base64," + data;
+  link.setAttribute("download", name + `.${type}`);
+  link.setAttribute("type", `application/${type}`);
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+export const createAndDownloadBase64File = (data: any, name: string, type: string) => {
+  const link = document.createElement("a");
+  link.href = "data:;base64," + atob(data);
+  link.setAttribute("download", name + `.${type}`);
+  link.setAttribute("type", `application/${type}`);
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
 export const getArrayFieldMeta = name => {
   const match = name.match(/\[(\d)]\.([^.]+)$/);
   return { field: match[2], index: Number(match[1]) };
@@ -84,8 +107,8 @@ export const getWindowWidth = () => window.innerWidth || document.documentElemen
 
 export const getWindowHeight = () => window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight || 1080;
 
-export const isInStandaloneMode = () =>
+export const isInStandaloneMode = () => (IS_JEST ? false : (
   (window.matchMedia('(display-mode: standalone)').matches)
   // @ts-ignore
   || (window.navigator.standalone)
-  || document.referrer.includes('android-app://');
+  || document.referrer.includes('android-app://')));

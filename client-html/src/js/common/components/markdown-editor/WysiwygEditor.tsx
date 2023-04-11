@@ -1,4 +1,12 @@
-import React, { useCallback } from "react";
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
+import React from "react";
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
 import AutoformatPlugin from '@ckeditor/ckeditor5-autoformat/src/autoformat';
@@ -17,26 +25,14 @@ import LinkImage from '@ckeditor/ckeditor5-link/src/linkimage';
 import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption';
 import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ReactDOM from "react-dom";
+import { createRoot } from 'react-dom/client';
 import CodeIcon from '@mui/icons-material/Code';
-import { removeContentMarker } from "./utils";
 
 const SourceEditingSwitch = () => (
   <div className="ck_source_edit_custom">
     <CodeIcon className="ck_code_icon_custom" />
-    <span className="ck ck-tooltip ck-tooltip_s"><span className="ck ck-tooltip__text">Edit source</span></span>
   </div>
 );
-
-function customizeSourceEditing( editor ) {
-  editor.plugins.get("SourceEditing").on('change:isSourceEditingMode', () => {
-    const sourceEdit = document.querySelector('.ck-source-editing-button');
-    ReactDOM.render(
-      <SourceEditingSwitch />,
-      sourceEdit
-    );
-  });
-}
 
 const config = {
   plugins: [
@@ -57,7 +53,6 @@ const config = {
     ImageStyle,
     ImageCaption,
   ],
-  extraPlugins: [customizeSourceEditing],
   toolbar: [
     'heading',
     'bold',
@@ -94,27 +89,45 @@ const config = {
 interface Props {
   value?: string;
   onChange?: (val: any) => void;
+  wysiwygRef?: any;
 }
 
 const WysiwygEditor: React.FC<Props> = ({
   value,
-  onChange
+  onChange,
+  wysiwygRef
 }) => {
-  const onReady = () => {
-    const sourceEdit = document.querySelector('.ck-source-editing-button');
-    ReactDOM.render(
-      <SourceEditingSwitch />,
-      sourceEdit
+
+  const onReady = editor => {
+    wysiwygRef.current = editor;
+
+    const sourceEdit = document.querySelector<any>('.ck-source-editing-button');
+    sourceEdit.dataset.ckeTooltipText = 'Edit source';
+    sourceEdit.dataset.ckeTooltipPosition = 's';
+
+    const root = createRoot(sourceEdit);
+
+    root.render(
+      <SourceEditingSwitch />
     );
+
+    editor.plugins.get("SourceEditing").on('change:isSourceEditingMode', () => {
+      const sourceEdit = document.querySelector('.ck-source-editing-button');
+      if (sourceEdit) {
+        root.render(
+          <SourceEditingSwitch/>,
+        );
+      }
+    });
   };
 
-  const onChangeHandler = useCallback((e, editor) => onChange(editor.getData()), []);
+  const onChangeHandler = (e, editor) => onChange(editor.getData());
 
   return (
     <CKEditor
       editor={ClassicEditor}
       config={config}
-      data={removeContentMarker(value)}
+      data={value}
       onChange={onChangeHandler}
       onReady={onReady}
     />

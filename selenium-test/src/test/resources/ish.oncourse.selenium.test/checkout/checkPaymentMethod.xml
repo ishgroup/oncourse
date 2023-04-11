@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+  <Course code="dcftc1" createdOn="2023-02-01 00:45:52" id="1" isShownOnWeb="1" isVET="0" modifiedOn="2023-02-01 00:46:54"
+          allowWaitingLists="1" isSufficientForQualification="0" currentlyOffered="1" reportableHours="0"
+          isTraineeship="0" name="Default Course for test checkout 1" enrolmentType="1" fieldConfigurationSchemaId="102"
+          feeHelpClass="0"/>
+
+  <CourseClass code="1" courseId="1" createdOn="2023-02-01 00:46:54" endDateTime="2045-01-30 17:00:00" feeExGst="454.55"
+               id="1" incomeAccountId="7" isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999"
+               minimumPlaces="1" modifiedOn="2023-02-01 00:47:12" taxId="1" startDateTime="2045-01-30 16:00:00"
+               deliveryMode="1" fundingSource="3" detBookingId="null" budgetedPlaces="0" reportableHours="0"
+               isClassFeeApplicationOnly="0" taxAdjustment="-0.01" deposit="454.55" isActive="1"
+               suppressAvetmissExport="0" expectedHours="0" attendanceType="9"/>
+
+  <ClassCost createdbyUserID="1" createdOn="2023-02-01 00:46:54" courseClassId="1" description="Student enrolment fee"
+             id="1" isFunding="1" modifiedOn="2023-02-01 00:47:12"
+             perUnitAmountExTax="454.55" taxId="1" type="3" taxAdjustment="-0.01" invoiceToStudent="1" payableOnEnrolment="1" isSunk="0"/>
+
+  <CourseSession courseClass_Id="1" createdOn="2023-02-01 00:46:54" endDatetime="2045-01-30 17:00:00" id="1"
+                 modifiedOn="2023-02-01 00:46:54" startDatetime="2045-01-30 16:00:00"/>
+
+  <Contact createdOn="2023-02-01 00:44:51" id="1" isCompany="0" modifiedOn="2023-02-01 00:44:51" isStudent="1" isTutor="0"
+           deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="0" allowSms="0" allowEmail="1"
+           uniqueCode="5YNHuGq9DEAdMXdj" firstName="Kristina" lastName="Ish"/>
+
+  <Student createdOn="2023-02-01 00:44:51" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" id="1" indigenousStatus="0" isOverseasClient="0" modifiedOn="2023-02-01 00:44:51"
+           priorEducationCode="0" studentNumber="1" contactId="1" usiStatus="0" feeHelpEligible="0" citizenship="9"
+           clientIndustryEmployment="0" clientOccupationIdentifier="0"/>
+</dataset>

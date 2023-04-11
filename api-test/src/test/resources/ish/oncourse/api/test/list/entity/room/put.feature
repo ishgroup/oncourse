@@ -23,7 +23,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
-        "tags":[{"id":212,"name":"1","status":"Private","system":false,"urlPath":null,"content":null,"weight":null,"taggedRecordsCount":0,"childrenCount":0,"requirements":[],"childTags":[]}],
+        "tags":[212],
         "documents":[],
         "rules":[{"id":null,"description":"test","repeatEnd":"never","repeat":"month","repeatEndAfter":0,"startDateTime":"2020-02-01T08:59:00.000Z","endDateTime":"2020-02-15T08:59:00.000Z"}]
         }
@@ -39,7 +39,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["[212]","testRoom100","site1","25"])].id
+        * def id = get[0] response.rows[?(@.values == ["[null]",null,"testRoom100","site1","25"])].id
 #       <--->
 
         * def roomToUpdate =
@@ -52,7 +52,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         "kioskUrl":null,
         "directions":"someDirections_upd",
         "facilities":"someFacilities_upd",
-        "tags":[{"id":213,"name":"2","status":"Private","system":false,"urlPath":null,"content":null,"weight":null,"taggedRecordsCount":0,"childrenCount":0,"requirements":[],"childTags":[]}],
+        "tags":[213],
         "documents":[],
         "rules":[{"id":null,"description":"testUPD","startDate":"2020-02-03","endDate":"2020-02-22","startDateTime":null,"endDateTime":null,"repeat":"week","repeatEnd":"after","repeatEndAfter":"22","repeatOn":null}]
         }
@@ -76,7 +76,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         "kioskUrl":null,
         "directions":"someDirections_upd",
         "facilities":"someFacilities_upd",
-        "tags":[{"id":213,"name":"2","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null, "modified":null,"requirements":[],"childTags":[]}],
+        "tags":[213],
         "documents":[],
         "rules":[{"id":"#ignore","description":"testUPD","startDate":"2020-02-03","endDate":"2020-02-22","startDateTime":null,"endDateTime":null,"repeat":"week","repeatEnd":"after","repeatEndAfter":22,"repeatOn":null,"created":"#ignore","modified":"#ignore"}],
         "createdOn":"#ignore",
@@ -117,7 +117,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["[]","testRoom101","site1","5"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]",null,"testRoom101","site1","5"])].id
 #       <--->
 
         * def roomToUpdate =
@@ -181,7 +181,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["[]","testRoom104","site1","5"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]",null,"testRoom104","site1","5"])].id
 
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsEdit'}
@@ -250,7 +250,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["[]","testRoom105","site1","5"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]",null,"testRoom105","site1","5"])].id
 
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsView'}
@@ -314,7 +314,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["[]","testRoom101","site1","5"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]",null,"testRoom101","site1","5"])].id
 
 #       <--->  Update room to empty Name:
         * def roomToUpdate =
@@ -393,7 +393,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["[]","testRoom101","site1","5"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]",null,"testRoom101","site1","5"])].id
 
 #       <--->  Update room to not existent Name:
         * def roomToUpdate =
@@ -451,7 +451,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["[]","testRoom102","site1","5"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]",null,"testRoom102","site1","5"])].id
 
 #       <--->  Update Name to >150 symbols:
         * def roomToUpdate =
@@ -493,7 +493,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         "kioskUrl":null,
         "directions":"someDirections_upd",
         "facilities":"someFacilities_upd",
-        "tags":[{"id":213,"name":"2","status":"Private","system":false,"urlPath":null,"content":null,"weight":null,"taggedRecordsCount":0,"childrenCount":0,"requirements":[],"childTags":[]}],
+        "tags":[213],
         "documents":[],
         "rules":[]
         }

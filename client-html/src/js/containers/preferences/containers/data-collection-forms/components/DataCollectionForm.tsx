@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import * as React from "react";
@@ -22,12 +25,11 @@ import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { getDeepValue, mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../reducers/state";
 import { createDataCollectionForm, deleteDataCollectionForm, updateDataCollectionForm } from "../../../actions";
 import renderCollectionFormFields from "./CollectionFormFieldsRenderer";
 import CollectionFormFieldTypesMenu from "./CollectionFormFieldTypesMenu";
-import { setNextLocation } from "../../../../../common/actions";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("dataCollection");
@@ -121,9 +123,6 @@ class DataCollectionWrapper extends React.Component<any, any> {
 
   constructor(props) {
     super(props);
-    this.state = {
-      disableConfirm: false
-    };
 
     if (props.match.params.action === "edit" && props.collectionForms) {
       const currentForm = this.getCollectionForm(props);
@@ -300,7 +299,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
       }
     })
       .then(() => {
-        const { nextLocation, history, setNextLocation } = this.props;
+        const { nextLocation, history } = this.props;
         const updated = this.props.collectionForms.find(item => item.name === value.form.name);
         const items = parseDataCollectionFormData(updated);
         const updatedData = {
@@ -312,7 +311,6 @@ class DataCollectionWrapper extends React.Component<any, any> {
 
         if (nextLocation) {
           history.push(nextLocation);
-          setNextLocation('');
         } else {
           history.push(`/preferences/collectionForms/edit/${formatted.type}/${encodeURIComponent(updated.id)}`);
         }
@@ -335,10 +333,6 @@ class DataCollectionWrapper extends React.Component<any, any> {
   onDelete = id => {
     this.isPending = true;
 
-    this.setState({
-      disableConfirm: true
-    });
-
     return new Promise((resolve, reject) => {
       this.resolvePromise = resolve;
       this.rejectPromise = reject;
@@ -347,15 +341,9 @@ class DataCollectionWrapper extends React.Component<any, any> {
     })
       .then(() => {
         this.redirectOnDelete(id);
-        this.setState({
-          disableConfirm: false
-        });
       })
       .catch(() => {
         this.isPending = false;
-        this.setState({
-          disableConfirm: false
-        });
       });
   };
 
@@ -389,7 +377,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
 
     const match = collectionForms.filter(item => item.name === value.trim());
 
-    if (this.props.match.params.action === "edit") {
+    if (values.form.id) {
       const filteredMatch = match.filter(item => item.id !== values.form.id);
       return filteredMatch.length > 0 ? "Form name must be unique" : undefined;
     }
@@ -423,7 +411,6 @@ class DataCollectionWrapper extends React.Component<any, any> {
       classes, dispatch, values, handleSubmit, match, dirty, history, valid, form, syncErrors
     } = this.props;
 
-    const { disableConfirm } = this.state;
     const isNew = match.params.action === "new";
 
     const type = this.props.match.params.type;
@@ -432,7 +419,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
     return (
       <div ref={this.getFormRef}>
         <Form className="container" onSubmit={handleSubmit(this.onSave)} role={DATA_COLLECTION_FORM}>
-          {!disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
+          <RouteChangeConfirm form={form} when={dirty} />
           <AppBarContainer
             values={values}
             manualUrl={manualUrl}
@@ -441,7 +428,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
             invalid={!valid}
             title={(isNew && (!values || !values.form.name || values.form.name.trim().length === 0))
               ? "New"
-              : values && values.form.name.trim()}
+              : values?.form?.name?.trim()}
             hideHelpMenu={isNew}
             createdOn={v => new Date(v.form.created)}
             modifiedOn={v => new Date(v.form.modified)}
@@ -449,6 +436,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
             fields={(
               <Grid item xs={8}>
                 <FormField
+                  type="text"
                   name="form.name"
                   label="Name"
                   validate={this.validateUniqueNames}
@@ -464,7 +452,6 @@ class DataCollectionWrapper extends React.Component<any, any> {
                       this.onDelete(id);
                     },
                     icon: <DeleteForever />,
-
                     confirmText: "Form will be deleted permanently",
                     tooltip: "Delete form",
                     confirmButtonText: "DELETE"
@@ -507,7 +494,6 @@ class DataCollectionWrapper extends React.Component<any, any> {
                         type="select"
                         name="form.deliverySchedule"
                         label="Delivery Schedule"
-                        autoWidth
                         items={deliveryScheduleTypes}
                         className={clsx("pt-2", classes.selectField)}
                         required
@@ -551,8 +537,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onUpdate: (id, form) => dispatch(updateDataCollectionForm(id, form)),
   onCreate: form => dispatch(createDataCollectionForm(form)),
-  onDelete: id => dispatch(deleteDataCollectionForm(id)),
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+  onDelete: id => dispatch(deleteDataCollectionForm(id))
 });
 
 const DataCollectionForm = reduxForm({

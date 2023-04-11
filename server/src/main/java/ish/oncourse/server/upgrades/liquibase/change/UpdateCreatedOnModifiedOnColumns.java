@@ -8,6 +8,7 @@
 
 package ish.oncourse.server.upgrades.liquibase.change;
 
+import ish.liquibase.IshTaskChange;
 import liquibase.database.Database;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.CustomChangeException;
@@ -47,7 +48,6 @@ public class UpdateCreatedOnModifiedOnColumns extends IshTaskChange {
             "Language",
             "Discount_CourseClass",
             "DocumentVersion",
-            "MessageTemplate",
             "Tutor",
             "EmailTemplate",
             "Discount_Membership_RelationType",

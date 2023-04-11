@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { StatelessComponent } from "react";
+import React from "react";
 import InputAdornment from "@mui/material/InputAdornment";
 import CircularProgress from "@mui/material/CircularProgress";
 import { withStyles, createStyles } from "@mui/styles";
@@ -123,6 +123,7 @@ class NewPasswordFieldBase extends React.Component<any, any> {
 
     return (
       <TextField
+        fullWidth
         value={this.state.value}
         error={(touched && invalid) || Boolean(helperText)}
         InputProps={{
@@ -166,4 +167,4 @@ class NewPasswordFieldBase extends React.Component<any, any> {
   }
 }
 
-export default withStyles(styles)(NewPasswordFieldBase) as StatelessComponent<any>;
+export default withStyles(styles)(NewPasswordFieldBase);

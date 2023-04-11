@@ -98,7 +98,7 @@ class ExportApiImpl implements ExportApi {
 
                 TaskResult result = new TaskResult(TaskResultType.SUCCESS)
                 result.setResultOutputType(template.outputType)
-                result.setData(exportService.performExport(template, records, variables, request.exportToClipboard).toString().bytes)
+                result.setData(exportService.performExport(template, records, variables, request.exportToClipboard, request.createPreview).toString().bytes)
                 return result
             }
         })

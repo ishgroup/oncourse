@@ -4,7 +4,7 @@
  */
 
 import * as React from "react";
-import { withStyles, createStyles } from "@mui/styles";
+import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
 import Typography from "@mui/material/Typography";
 import Delete from "@mui/icons-material/Delete";
@@ -12,7 +12,7 @@ import DragIndicator from "@mui/icons-material/DragIndicator";
 import IconButton from "@mui/material/IconButton";
 import { Field } from "redux-form";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { PillCheckboxField } from "../../../../../common/components/form/PillCheckbox";
+import { ToogleCheckbox } from "../../../../../common/components/form/ToogleCheckbox";
 
 const styles = () => createStyles({
   card: {
@@ -69,20 +69,15 @@ const CollectionFormField = props => {
           type="text"
           name={`${field}.label`}
           label="Label"
-          hideLabel
-          listSpacing={false}
           required
-          fullWidth
-        />
+         />
 
         <FormField
           type="multilineText"
           name={`${field}.helpText`}
           label="Help Text"
-          hideLabel
-          listSpacing={false}
+          className="mt-1"
           truncateLines={4}
-          fullWidth
         />
       </div>
 
@@ -97,7 +92,7 @@ const CollectionFormField = props => {
         type="checkbox"
         chackedLabel="Mandatory"
         uncheckedLabel="Optional"
-        component={PillCheckboxField}
+        component={ToogleCheckbox}
         className={classes.chip}
       />
 

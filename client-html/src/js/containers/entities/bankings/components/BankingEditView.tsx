@@ -8,7 +8,7 @@ import clsx from "clsx";
 import {
  change, FieldArray, getFormInitialValues
 } from "redux-form";
-import { addDays, compareAsc, format as formatDate } from "date-fns";
+import { compareAsc, format as formatDate } from "date-fns";
 import { Payment } from "@api/model";
 import { connect } from "react-redux";
 import Typography from "@mui/material/Typography";
@@ -138,7 +138,7 @@ class BankingEditView extends React.PureComponent<any, any> {
     }
     return (
       compareAsc(
-        new Date(lockedDate.lockedDate),
+        new Date(lockedDate),
         new Date(editRecord.settlementDate)
       ) > 0
     );
@@ -149,7 +149,7 @@ class BankingEditView extends React.PureComponent<any, any> {
     if (!lockedDate || !editRecord || editRecord.settlementDate === value) {
       return undefined;
     }
-    const date = new Date(lockedDate.lockedDate);
+    const date = new Date(lockedDate);
     const dateString = date.toISOString();
     return validateMinMaxDate(
       value,
@@ -164,7 +164,7 @@ class BankingEditView extends React.PureComponent<any, any> {
     const shortCurrencySymbol = currency != null ? currency.shortCurrencySymbol : "$";
     if (!values || !values.payments) {
       return (
-        <Typography variant="body1" className="placeholderContent">
+        <Typography component="span" variant="body1" className="placeholderContent">
           No value
         </Typography>
       );
@@ -174,7 +174,7 @@ class BankingEditView extends React.PureComponent<any, any> {
       new Decimal(0)
     );
     return (
-      <Typography variant="body1" className="money">
+      <Typography component="span" variant="body1" className="money">
         {formatCurrency(total, shortCurrencySymbol)}
       </Typography>
     );
@@ -247,11 +247,6 @@ class BankingEditView extends React.PureComponent<any, any> {
               label="Settlement Date"
               onBlur={this.onSettlementDateChanged}
               validate={[validateSingleMandatoryField, this.validateSettlementDate]}
-              minDate={
-                  lockedDate
-                    ? addDays(new Date(lockedDate.lockedDate), 1)
-                    : undefined
-                }
             />
           </Grid>
           <Grid item xs={twoColumn ? 4 : 12}>

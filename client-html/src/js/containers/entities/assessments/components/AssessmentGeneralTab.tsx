@@ -13,6 +13,7 @@ import { State } from "../../../../reducers/state";
 import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 interface Props extends Partial<EditViewProps<Assessment>> {
   tags?: Tag[];
@@ -28,7 +29,8 @@ const AssessmentGeneralTab = React.memo<Props>(
     values,
     gradingTypes = [],
     syncErrors,
-      isNew
+    isNew,
+    form
   }
 ) => (
   <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
@@ -54,39 +56,49 @@ const AssessmentGeneralTab = React.memo<Props>(
                   {values && values.name}
                 </div>
               </div>
-              )}
+        )}
         fields={(
           <Grid container columnSpacing={3} rowSpacing={2}>
             <Grid item xs={twoColumn ? 2 : 12}>
               <FormField
+                type="text"
                 label="Code"
                 name="code"
                 placeholder={twoColumn ? "Code" : undefined}
                 required
-                fullWidth
-              />
+             />
             </Grid>
             <Grid item xs={twoColumn ? 4 : 12}>
               <FormField
+                type="text"
                 label="Name"
                 name="name"
                 placeholder={twoColumn ? "Name" : undefined}
                 required
-                fullWidth
               />
             </Grid>
           </Grid>
-              )}
+        )}
       />
-
     </Grid>
-    <Grid item xs={12}>
+
+    <Grid item xs={twoColumn ? 8 : 12}>
       <FormField
         type="tags"
         name="tags"
         tags={tags}
       />
     </Grid>
+
+    <Grid item xs={twoColumn ? 4 : 12}>
+      <EntityChecklists
+        entity="Assessment"
+        form={form}
+        entityId={values.id}
+        checked={values.tags}
+      />
+    </Grid>
+
     <Grid item xs={12}>
       <FormField
         type="select"
@@ -101,7 +113,7 @@ const AssessmentGeneralTab = React.memo<Props>(
     <Grid item xs={12}>
       <FormControlLabel
         className="checkbox mb-2"
-        control={<FormField type="checkbox" name="active" color="secondary" fullWidth />}
+        control={<FormField type="checkbox" name="active" color="secondary"  />}
         label="Active"
       />
     </Grid>
@@ -111,8 +123,7 @@ const AssessmentGeneralTab = React.memo<Props>(
         name="description"
         label="Description"
         required
-        fullWidth
-      />
+              />
     </Grid>
   </Grid>
     )

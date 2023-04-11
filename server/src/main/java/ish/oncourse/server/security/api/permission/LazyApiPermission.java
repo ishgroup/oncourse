@@ -24,6 +24,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import static ish.oncourse.server.security.api.PermissionServiceFactory.ROOT_API;
@@ -102,6 +103,9 @@ public class LazyApiPermission extends ApiPermission {
         KEY_CODE_MAP.put(AssessmentClass.class.getSimpleName().toLowerCase(), KeyCode.ASSESSMENT);
         KEY_CODE_MAP.put(AssessmentSubmission.class.getSimpleName().toLowerCase(), KeyCode.ASSESSMENT);
         KEY_CODE_MAP.put(SystemUser.class.getSimpleName().toLowerCase(), KeyCode.SYSTEMUSER);
+        KEY_CODE_MAP.put(Tag.class.getSimpleName().toLowerCase(), KeyCode.TAG);
+        KEY_CODE_MAP.put(Checkout.class.getSimpleName().toLowerCase(), KeyCode.CHECKOUT);
+        KEY_CODE_MAP.put(TutorAttendance.class.getSimpleName().toLowerCase(), KeyCode.TUTOR_ATTENDANCE);
     }
 
 

@@ -9,6 +9,7 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         * def ishPathList = 'list'
         * def ishPathPlain = 'list/plain'
         * def ishPathCustomFieldsType = 'preference/field/type'
+        * def ishPathDelete = 'list/entity/waitingList/bulkDelete'
         
 
 
@@ -24,7 +25,7 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         "studentCount":10,
         "contactId":3,
         "courseId":2,
-        "tags":[{"id":221}],
+        "tags":[221],
         "sites":[{"id":200}],
         "customFields":{}
         }
@@ -60,7 +61,7 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         "studentName":"stud2",
         "courseId":2,
         "courseName":"Course2 course2",
-        "tags":[{"id":221,"name":"waitingList 1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
+        "tags":[221],
         "sites":[{"id":200,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"kioskUrl":null,"name":"Default site","street":null,"suburb":null,"state":null,"postcode":null,"country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}],
         "customFields":{},
         "createdOn":"#ignore",
@@ -69,8 +70,13 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         """
 
 #       <--->  Scenario have been finished. Now find and remove created object from DB:
-        Given path ishPath + '/' + id
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 
@@ -110,7 +116,7 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         "studentCount":80,
         "contactId":3,
         "courseId":2,
-        "tags":[{"id":221}],
+        "tags":[221],
         "sites":[{"id":200}],
         "customFields":{"age":"18","passportNumber":"1234567890"}
         }
@@ -146,7 +152,7 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         "studentName":"stud2",
         "courseId":2,
         "courseName":"Course2 course2",
-        "tags":[{"id":221,"name":"waitingList 1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
+        "tags":[221],
         "sites":[{"id":200,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"kioskUrl":null,"name":"Default site","street":null,"suburb":null,"state":null,"postcode":null,"country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}],
         "customFields":{"age":"18","passportNumber":"1234567890"},
         "createdOn":"#ignore",
@@ -155,8 +161,13 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         """
 
 #       <--->  Scenario have been finished. Now find and remove created object from DB:
-        Given path ishPath + '/' + id
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 #       <---> Remove all Custom fields for WaitingList from Preferences:
@@ -205,7 +216,7 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         "studentCount":81,
         "contactId":3,
         "courseId":2,
-        "tags":[{"id":221}],
+        "tags":[221],
         "sites":[{"id":200}],
         "customFields":{"passportNumber":"1234567890"}
         }
@@ -241,7 +252,7 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         "studentName":"stud2",
         "courseId":2,
         "courseName":"Course2 course2",
-        "tags":[{"id":221,"name":"waitingList 1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
+        "tags":[221],
         "sites":[{"id":200,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"kioskUrl":null,"name":"Default site","street":null,"suburb":null,"state":null,"postcode":null,"country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}],
         "customFields":{"passportNumber":"1234567890"},
         "createdOn":"#ignore",
@@ -250,8 +261,13 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         """
 
 #       <--->  Scenario have been finished. Now find and remove created object from DB:
-        Given path ishPath + '/' + id
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 #       <---> Remove all Custom fields for WaitingList from Preferences:
@@ -301,7 +317,7 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         "studentCount":82,
         "contactId":3,
         "courseId":2,
-        "tags":[{"id":221}],
+        "tags":[221],
         "sites":[{"id":200}],
         "customFields":{}
         }
@@ -410,7 +426,7 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         "studentCount":11,
         "contactId":3,
         "courseId":2,
-        "tags":[{"id":221}],
+        "tags":[221],
         "sites":[{"id":200}],
         "customFields":{}
         }
@@ -446,7 +462,7 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         "studentName":"stud2",
         "courseId":2,
         "courseName":"Course2 course2",
-        "tags":[{"id":221,"name":"waitingList 1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
+        "tags":[221],
         "sites":[{"id":200,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"kioskUrl":null,"name":"Default site","street":null,"suburb":null,"state":null,"postcode":null,"country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}],
         "customFields":{},
         "createdOn":"#ignore",
@@ -457,10 +473,15 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
 #       <--->  Scenario have been finished. Now find and remove created object from DB:
         * configure headers = { Authorization: 'admin'}
 
-        
 
-        Given path ishPath + '/' + id
-        When method DELETE
+
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 

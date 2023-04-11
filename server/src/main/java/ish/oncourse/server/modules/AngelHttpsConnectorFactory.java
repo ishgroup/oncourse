@@ -14,16 +14,11 @@ package ish.oncourse.server.modules;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.bootique.annotation.BQConfig;
 import io.bootique.jetty.connector.ConnectorFactory;
-import ish.oncourse.server.security.KeystoreGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.alpn.server.ALPNServerConnectionFactory;
-import org.eclipse.jetty.http2.HTTP2Cipher;
 import org.eclipse.jetty.http2.server.HTTP2ServerConnectionFactory;
 import org.eclipse.jetty.server.*;
-import org.eclipse.jetty.util.ssl.SslContextFactory;
-
-import java.security.KeyStore;
 
 
 @BQConfig
@@ -44,34 +39,8 @@ public class AngelHttpsConnectorFactory extends ConnectorFactory {
     protected ConnectionFactory[] buildHttpConnectionFactories(HttpConfiguration httpConfig) {
         var http2 = new HTTP2ServerConnectionFactory(httpConfig);
         var alpn = new ALPNServerConnectionFactory("h2");
-        SslConnectionFactory ssl = new SslConnectionFactory(createSslContextFactory(), "alpn");
+        SslConnectionFactory ssl = new SslConnectionFactory(SslContextHolder.get(), "alpn");
         return new ConnectionFactory[]{ssl, alpn, http2 };
-    }
-
-
-    SslContextFactory.Server createSslContextFactory()  {
-        KeyStore keyStore;
-        try {
-            //read or create (first run) server key store
-            keyStore = KeystoreGenerator.getClientServerKeystore();
-        } catch (Exception e) {
-            logger.catching(e);
-            throw new RuntimeException("Can not get server key store");
-        }
-
-        // SSL Context Factory for HTTPS and HTTP/2
-        SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
-        sslContextFactory.setKeyStore(keyStore);
-        sslContextFactory.setKeyStorePassword(KeystoreGenerator.KEYSTORE_PASSWORD);
-        sslContextFactory.setSslSessionTimeout(MAX_IDLE_TIME);
-        sslContextFactory.setCipherComparator(HTTP2Cipher.COMPARATOR);
-
-        // SSL has security problems
-        sslContextFactory.setProtocol("TLS");
-        //Enforce higher levels of TLS. Only 1.3
-        sslContextFactory.addExcludeProtocols("SSLv3", "SSLv2", "TLSv1","TLSv1.1","TLSv1.2");
-
-        return sslContextFactory;
     }
 
     @Override

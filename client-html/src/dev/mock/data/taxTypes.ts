@@ -25,6 +25,22 @@ export function mockTaxTypes(): Tax[] {
     });
   };
 
+  this.getPlainTaxesFormatted = () => {
+    const items: Tax[] = [];
+    for (const row of this.getPlainTaxes().rows) {
+      items.push({
+        id: Number(row.values[0]),
+        code: row.values[1],
+        rate: parseFloat(row.values[2]),
+        gst: row.values[3] === "true"
+      });
+    }
+
+    items.sort((a, b) => (a.code[0] > b.code[0] ? 1 : -1));
+
+    return items;
+  };
+
   this.saveTaxType = items => {
     this.taxTypes = items;
   };

@@ -21,6 +21,7 @@ import io.bootique.config.ConfigurationFactory;
 import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedServlet;
 import io.bootique.jetty.command.ServerCommand;
+import ish.oncourse.server.integration.PluginsPrefsService;
 import ish.oncourse.server.jetty.AngelJettyModule;
 import ish.oncourse.common.ResourcesUtil;
 import ish.oncourse.server.api.servlet.ApiFilter;
@@ -31,7 +32,6 @@ import ish.oncourse.server.cluster.ClusteredExecutorManager;
 import ish.oncourse.server.db.AngelCayenneModule;
 import ish.oncourse.server.integration.EventService;
 import ish.oncourse.server.integration.PluginService;
-import ish.oncourse.server.jmx.RegisterMBean;
 import ish.oncourse.server.lifecycle.ClassPublishListener;
 import ish.oncourse.server.lifecycle.PayslipApprovedListener;
 import ish.oncourse.server.lifecycle.PayslipPaidListener;
@@ -58,8 +58,6 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.utils.ConnectionProvider;
 import org.quartz.utils.DBConnectionManager;
 
-import javax.management.MalformedObjectNameException;
-import javax.management.NotCompliantMBeanException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -160,6 +158,7 @@ public class AngelModule extends ConfigModule {
         binder.bind(CertificateUpdateWatcher.class).in(Scopes.SINGLETON);
         binder.bind(ICayenneService.class).to(CayenneService.class).in(Scopes.SINGLETON);
         binder.bind(PreferenceController.class);
+        binder.bind(PluginsPrefsService.class);
         binder.bind(UserPreferenceService.class);
         binder.bind(String.class).annotatedWith(Names.named(ANGEL_VERSION)).toInstance(getVersion());
         binder.bind(EmailService.class).in(Scopes.SINGLETON);
@@ -196,22 +195,6 @@ public class AngelModule extends ConfigModule {
     @Provides
     AngelServerFactory createAngelServerFactory(ConfigurationFactory configFactory) {
         return configFactory.config(AngelServerFactory.class, configPrefix);
-    }
-
-    @Singleton
-    @Provides
-    RegisterMBean createRegisterMBean(Injector injector) {
-        try {
-            return new RegisterMBean(
-                    injector.getInstance(ICayenneService.class),
-                    injector.getInstance(ISessionManager.class),
-                    injector.getInstance(Key.get(String.class, Names.named(ANGEL_VERSION))),
-                    injector.getInstance(PreferenceController.class));
-        } catch (MalformedObjectNameException | NotCompliantMBeanException e) {
-            logger.catching(e);
-        }
-
-        return null;
     }
 
     @Singleton

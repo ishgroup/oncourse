@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, {
@@ -27,7 +30,7 @@ import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { validateKeycode } from "../../../utils";
+import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import { CommonListItem } from "../../../../../model/common/sidebar";
 import { createAndDownloadFile } from "../../../../../common/utils/common";
 import FilePreview from "../../../../../common/components/form/FilePreview";
@@ -38,6 +41,8 @@ import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
 import InfoPill from "../../../../../common/components/layout/InfoPill";
+import FullscreenIcon from "@mui/icons-material/Fullscreen";
+import { reportFullScreenPreview } from "../actions";
 
 const manualUrl = getManualLink("reports");
 const getAuditsUrl = (id: number) => `audit?search=~"Report" and entityId == ${id}`;
@@ -56,7 +61,7 @@ interface Props extends InjectedFormProps<Report> {
   syncErrors: any;
   nextLocation: string;
   emailTemplates?: CatalogItemType[];
-  setNextLocation: (nextLocation: string) => void;
+  pdfReports?: CatalogItemType[];
 }
 
 const reader = new FileReader();
@@ -96,8 +101,8 @@ const PdfReportsForm = React.memo<Props>(
     initialValues,
     history,
     nextLocation,
-    setNextLocation,
     emailTemplates,
+     pdfReports,
     syncErrors
   }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
@@ -200,6 +205,10 @@ const PdfReportsForm = React.memo<Props>(
       [form, initialValues.backgroundId]
     );
 
+    const handleFullScreenPreview = () => {
+      dispatch(reportFullScreenPreview(values.id));
+    };
+
     useEffect(() => {
       if (values.id !== prevId) {
         discardFileInput();
@@ -212,9 +221,22 @@ const PdfReportsForm = React.memo<Props>(
     useEffect(() => {
       if (!dirty && nextLocation) {
         history.push(nextLocation);
-        setNextLocation('');
       }
     }, [nextLocation, dirty]);
+
+    const validateReportCopyName = useCallback(name => {
+      if (pdfReports.find(r => r.title.trim() === name.trim())) {
+        return "Report name should be unique";
+      }
+      return validateNameForQuotes(name);
+    }, [pdfReports, values.id]);
+
+    const validateReportName = useCallback(name => {
+      if (pdfReports.find(r => r.id !== values.id && r.title.trim() === name.trim())) {
+        return "Report name should be unique";
+      }
+      return validateNameForQuotes(name);
+    }, [pdfReports, values.id]);
 
     return (
       <>
@@ -222,9 +244,14 @@ const PdfReportsForm = React.memo<Props>(
           <input type="file" ref={fileRef} className="d-none" onChange={handleUpload} />
           <FormField type="stub" name="body" />
 
-          <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialodClose} onSave={onDialodSave} />
+          <SaveAsNewAutomationModal 
+            opened={modalOpened} 
+            onClose={onDialodClose} 
+            onSave={onDialodSave} 
+            validateNameField={validateReportCopyName}
+          />
 
-          {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
+          {!disableRouteConfirm && <RouteChangeConfirm form={form} when={dirty || isNew} />}
 
           <AppBarContainer
             values={values}
@@ -245,8 +272,10 @@ const PdfReportsForm = React.memo<Props>(
             fields={(
               <Grid item xs={12}>
                 <FormField
+                  type="text"
                   name="name"
                   label="Name"
+                  validate={validateReportName}
                   disabled={isInternal}
                   required
                 />
@@ -325,6 +354,7 @@ const PdfReportsForm = React.memo<Props>(
                     selectLabelMark="title"
                     items={pdfBackgrounds}
                     onChange={onBackgroundIdChange}
+                    debounced={false}
                     allowEmpty
                   />
                 </Grid>
@@ -375,6 +405,7 @@ const PdfReportsForm = React.memo<Props>(
                     color="primary"
                     format={v => v === "Enabled"}
                     parse={v => (v ? "Enabled" : "Installed but Disabled")}
+                    debounced={false}
                   />
                 </div>
                 <div className="mt-3 pt-1 pb-2">
@@ -401,7 +432,18 @@ const PdfReportsForm = React.memo<Props>(
                   {!isNew && (
                     <FilePreview
                       label="Preview"
-                      actions={[{ actionLabel: "Clear preview", onAction: handleClearPreview, icon: <DeleteOutlineRoundedIcon /> }]}
+                      actions={[
+                        {
+                          actionLabel: "Clear preview",
+                          onAction: handleClearPreview,
+                          icon: <DeleteOutlineRoundedIcon />
+                        },
+                        {
+                          actionLabel: "Full size preview",
+                          onAction: handleFullScreenPreview,
+                          icon: <FullscreenIcon />
+                        }
+                      ]}
                       data={values.preview}
                     />
                   )}

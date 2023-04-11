@@ -7,23 +7,51 @@
  */
 
 import * as React from "react";
+import { format } from "date-fns";
 import DuplicateTraineeshipModal, { DUPLICATE_TRAINEESHIP_FORM } from
     "../../../js/containers/entities/courseClasses/components/duplicate-courseClass/DuplicateTraineeshipModal";
 import { stubFunction } from "../../../js/common/utils/common";
 import { defaultComponents } from "../../common/Default.Components";
+import { III_DD_MMM_YYYY } from "../../../js/common/utils/dates/format";
 
 describe("Virtual rendered DuplicateTraineeshipModal of Class list view", () => {
   defaultComponents({
     entity: "DuplicateTraineeshipModal",
     View: props => <div><DuplicateTraineeshipModal {...props} /></div>,
-    record: () => ({}),
+    record: mockedApi => {
+      const sessions = mockedApi.db.getCourseClassTimetable();
+      const earliestDate = new Date(sessions[0].start);
+
+      return {
+        daysTo: 0,
+        toDate: earliestDate,
+        applyDiscounts: true,
+        copyAssessments: true,
+        copyCosts: true,
+        copyNotes: true,
+        copyOnlyMandatoryTags: true,
+        tutorRosterOverrides: true,
+        copySitesAndRooms: true,
+        copyTrainingPlans: true,
+        copyTutors: true,
+        copyVetData: true
+      };
+    },
     defaultProps: ({ mockedApi }) => ({
       opened: true,
       sessions: mockedApi.db.getCourseClassTimetable(),
       selection: mockedApi.db.getCourseClassSelectedSessions(),
-      setDialogOpened: stubFunction
+      setDialogOpened: stubFunction,
+      closeMenu: stubFunction
     }),
-    render: ({ screen, fireEvent }) => {
+    state: ({ viewProps }) => ({
+      form: {
+        [DUPLICATE_TRAINEESHIP_FORM]: {
+          values: viewProps.values
+        }
+      }
+    }),
+    render: ({ screen, fireEvent, initialValues }) => {
       expect(screen.getByText("Duplicate traineeship class")).toBeTruthy();
 
       fireEvent.click(screen.getByLabelText("Tutors for each session"));
@@ -37,20 +65,24 @@ describe("Virtual rendered DuplicateTraineeshipModal of Class list view", () => 
       fireEvent.click(screen.getByLabelText("Tags"));
       fireEvent.click(screen.getByLabelText("Class notes"));
 
-      expect(screen.getByRole(DUPLICATE_TRAINEESHIP_FORM)).toHaveFormValues({
-        copyTutors: true,
-        copySitesAndRooms: true,
-        copyCosts: true,
-        copyTrainingPlans: true,
-        applyDiscounts: true,
-        copyPayableTimeForSessions: true,
-        copyVetData: true,
-        copyAssessments: true,
-        copyOnlyMandatoryTags: true,
-        copyNotes: true,
-      });
-
       fireEvent.click(screen.getByText("Duplicate and enrol"));
+
+      setTimeout(() => {
+        expect(screen.getByRole(DUPLICATE_TRAINEESHIP_FORM)).toHaveFormValues({
+          daysTo: initialValues.daysTo,
+          toDate: format(initialValues.toDate, III_DD_MMM_YYYY),
+          copyTutors: initialValues.copyTutors,
+          copySitesAndRooms: initialValues.copySitesAndRooms,
+          copyCosts: initialValues.copyCosts,
+          copyTrainingPlans: initialValues.copyTrainingPlans,
+          applyDiscounts: initialValues.applyDiscounts,
+          tutorRosterOverrides: initialValues.tutorRosterOverrides,
+          copyVetData: initialValues.copyVetData,
+          copyAssessments: initialValues.copyAssessments,
+          copyOnlyMandatoryTags: initialValues.copyOnlyMandatoryTags,
+          copyNotes: initialValues.copyNotes,
+        });
+      }, 500);
     }
   });
 });

@@ -10,27 +10,26 @@ import {
 import { withStyles } from "@mui/styles";
 import clsx from "clsx";
 import {
-  Form, getFormValues, startAsyncValidation, initialize, reduxForm, change, getFormSyncErrors
+  Form, getFormValues, initialize, reduxForm, change, getFormSyncErrors
 } from "redux-form";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { format as formatDate } from "date-fns";
 import IconPhoneLocked from "@mui/icons-material/ScreenLockPortrait";
-import debounce from "lodash.debounce";
 import { User, UserRole } from "@api/model";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../reducers/state";
 import {
-  updateUser, validateNewUserPassword, resetUserPassword, disableUser2FA
+  updateUser, resetUserPassword, disableUser2FA
 } from "../../../actions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import Message from "../../../../../common/components/dialog/message/Message";
 import { SelectItemDefault } from "../../../../../model/entities/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { III_DD_MMM_YYYY_HH_MM_SPECIAL } from "../../../../../common/utils/dates/format";
-import { setNextLocation, showConfirm } from "../../../../../common/actions";
+import { showConfirm } from "../../../../../common/actions";
 import Uneditable from "../../../../../common/components/form/Uneditable";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
@@ -111,7 +110,6 @@ interface FormProps extends Props {
   history: any;
   nextLocation: string;
   syncErrors: any;
-  setNextLocation: (nextLocation: string) => void;
 }
 
 class UsersFormBase extends React.PureComponent<FormProps, any> {
@@ -157,12 +155,11 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
 
   componentDidUpdate() {
     const {
-     dirty, nextLocation, setNextLocation, history
+     dirty, nextLocation, history
     } = this.props;
 
     if (nextLocation && !dirty) {
       history.push(nextLocation);
-      setNextLocation('');
     }
   }
 
@@ -300,7 +297,6 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                 name="administrationCentre"
                 label="Bank cash/cheques to site"
                 className="mb-2"
-                autoWidth={false}
                 items={sites || []}
                 required
               />
@@ -376,6 +372,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                             dispatch(change("UsersForm", "role", null));
                           }
                         }}
+                        debounced={false}
                       />
                     )}
                     label="Admin"
@@ -428,8 +425,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   updateUser: (user: User) => dispatch(updateUser(user)),
   resetUserPassword: (id: number) => dispatch(resetUserPassword(id)),
   disableUser2FA: (id: number) => dispatch(disableUser2FA(id)),
-  openConfirm: props => dispatch(showConfirm(props)),
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+  openConfirm: props => dispatch(showConfirm(props))
 });
 
 const UsersForm = reduxForm({

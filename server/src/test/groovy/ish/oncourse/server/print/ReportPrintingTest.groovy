@@ -19,6 +19,7 @@ import ish.oncourse.server.cayenne.Report
 import ish.oncourse.server.cayenne.ReportOverlay
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.oncourse.server.document.DocumentService
+import ish.oncourse.server.preference.UserPreferenceService
 import ish.oncourse.server.upgrades.DataPopulation
 import ish.print.AdditionalParameters
 import ish.oncourse.server.cluster.TaskResult
@@ -174,7 +175,7 @@ class ReportPrintingTest extends TestWithDatabase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(PreferenceController.class) as DocumentService)
+        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(PreferenceController.class) as DocumentService, injector.getInstance(UserPreferenceService.class))
         worker.run()
 
         while (TaskResultType.IN_PROGRESS == worker.getResult().getType()) {

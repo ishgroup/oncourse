@@ -3,11 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Dispatch } from "redux";
-import {
- FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm 
-} from "redux-form";
+import { FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import withStyles from "@mui/styles/withStyles";
 import Dialog from "@mui/material/Dialog";
@@ -24,8 +22,7 @@ import FormField from "../../../../../common/components/form/formFields/FormFiel
 import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID } from "../../../../../constants/Config";
 import { BooleanArgFunction } from "../../../../../model/common/CommonFunctions";
 import { State } from "../../../../../reducers/state";
-import { cancelEnrolment, setEnrolmentTransfered } from "../../actions";
-import { openInternalLink } from "../../../../../common/utils/links";
+import { cancelEnrolment } from "../../actions";
 import WarningMessage from "../../../../../common/components/form/fieldMessage/WarningMessage";
 import { useOutcomeWarnings } from "./hooks";
 import { enrolmentModalStyles } from "./styles";
@@ -49,9 +46,8 @@ interface TransferEnrolmentModalProps {
   getPlainEnrolmentRecord?: () => void;
   enrolmentPlainRecord?: any;
   getDefaultIncomeAccount?: () => void;
-  clearEnrolmentTransfered?: () => void;
   defaultIncomeAccountId?: string;
-  isTransfered?: boolean;
+  processing?: boolean;
 }
 
 interface InvoiceLine {
@@ -104,14 +100,12 @@ const TransferEnrolmentModalForm = React.memo<TransferEnrolmentModalProps & Inje
     taxes,
     dispatch,
     transferEnrolment,
-    isTransfered,
-    clearEnrolmentTransfered,
     enrolmentPlainRecord,
     getDefaultIncomeAccount,
-    defaultIncomeAccountId
+    defaultIncomeAccountId,
+    processing
   } = props;
 
-  const [loading, setLoading] = React.useState(false);
   const [plainEnrolmentRecord, setPlainEnrolmentRecord] = React.useState({
     studentName: "",
     courseClassName: "",
@@ -122,7 +116,7 @@ const TransferEnrolmentModalForm = React.memo<TransferEnrolmentModalProps & Inje
 
   React.useEffect(() => {
     getDefaultIncomeAccount();
-  });
+  }, []);
 
   React.useEffect(() => {
     if (!invoiceLines) return;
@@ -153,8 +147,7 @@ const TransferEnrolmentModalForm = React.memo<TransferEnrolmentModalProps & Inje
   }, [enrolmentPlainRecord]);
 
   const onClose = () => {
-    setDialogOpened(null);
-    setLoading(false);
+    setDialogOpened(false);
   };
 
   const incomeAccounts = useMemo(() => {
@@ -193,20 +186,8 @@ const TransferEnrolmentModalForm = React.memo<TransferEnrolmentModalProps & Inje
 
     transferEnrolment(transferParams);
 
-    setDialogOpened(null);
-    setLoading(true);
+    closeMenu();
   };
-
-  useEffect(() => {
-    if (isTransfered) {
-      setTimeout(() => {
-        openInternalLink(`/checkout?enrolmentId=${selection[0]}`);
-      }, 1000);
-      clearEnrolmentTransfered();
-      setDialogOpened(null);
-      closeMenu();
-    }
-  }, [isTransfered, selection]);
 
   return (
     <Dialog fullWidth maxWidth="md" open={opened} onClose={onClose}>
@@ -248,17 +229,15 @@ const TransferEnrolmentModalForm = React.memo<TransferEnrolmentModalProps & Inje
             </Grid>
           </Grid>
 
-          <div className="pt-2">
-            <FieldArray
-              component={TransferEnrolmentInvoiceLines}
-              name="invoices"
-              dispatch={dispatch}
-              incomeAccounts={incomeAccounts}
-              taxes={taxes}
-              classes={classes}
-              rerenderOnEveryChange
-            />
-          </div>
+          <FieldArray
+            component={TransferEnrolmentInvoiceLines}
+            name="invoices"
+            dispatch={dispatch}
+            incomeAccounts={incomeAccounts}
+            taxes={taxes}
+            classes={classes}
+            rerenderOnEveryChange
+          />
         </DialogContent>
 
         <DialogActions className="p-1">
@@ -266,7 +245,7 @@ const TransferEnrolmentModalForm = React.memo<TransferEnrolmentModalProps & Inje
             Cancel
           </Button>
 
-          <LoadingButton variant="contained" color="primary" type="submit" loading={loading}>
+          <LoadingButton variant="contained" color="primary" type="submit" loading={processing}>
             Proceed
           </LoadingButton>
         </DialogActions>
@@ -278,7 +257,7 @@ const TransferEnrolmentModalForm = React.memo<TransferEnrolmentModalProps & Inje
 const mapStateToProps = (state: State) => ({
   value: getFormValues(FORM)(state),
   invoiceLines: state.enrolments.invoiceLines,
-  isTransfered: state.enrolments.isTransfered,
+  processing: state.enrolments.processing,
   accounts: state.plainSearchRecords.Account.items,
   taxes: state.taxes.items,
   enrolmentPlainRecord: state.plainSearchRecords["Enrolment"],
@@ -287,8 +266,7 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   transferEnrolment: (values: CancelEnrolment) => dispatch(cancelEnrolment(values, "transfer")),
-  getDefaultIncomeAccount: () => dispatch(getUserPreferences([ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID])),
-  clearEnrolmentTransfered: () => dispatch(setEnrolmentTransfered(false))
+  getDefaultIncomeAccount: () => dispatch(getUserPreferences([ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID]))
 });
 
 const TransferEnrolmentModal = reduxForm({

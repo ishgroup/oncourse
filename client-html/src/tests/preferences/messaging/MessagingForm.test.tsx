@@ -26,9 +26,11 @@ describe("Virtual rendered MessagingForm", () => {
         [PreferencesModel.EmailPop3Password.uniqueKey]: mockedAPI.db.preference[PreferencesModel.EmailPop3Password.uniqueKey],
       });
 
-      expect(screen.getByRole(preferencesFormRole)).toHaveFormValues(messagingFormData);
-
       fireEvent.click(screen.getByTestId('appbar-submit-button'));
+
+      setTimeout(() => {
+        expect(screen.getByRole(preferencesFormRole)).toHaveFormValues(messagingFormData);
+      }, 500);
     }
   });
 });

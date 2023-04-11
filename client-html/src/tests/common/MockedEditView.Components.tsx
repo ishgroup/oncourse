@@ -10,25 +10,30 @@ interface Props {
   render: ({
     screen, initialValues, formRoleName, mockedApi, fireEvent
   }) => any;
+  state?: (mockedApi: any) => object;
 }
 
-export const mockedEditView: ({
-  entity, EditView, record, render
-}: Props) => void = ({
-  entity, EditView, record, render
-}) => defaultComponents({
-  entity,
-  View: pr => <ListEditView {...pr} />,
-  record,
-  beforeFn: () => {
-    window.performance.getEntriesByName = jest.fn(() => []);
-  },
-  defaultProps: () => ({
-    EditViewContent: props => <EditView {...props} />,
-    rootEntity: entity,
-    form: LIST_EDIT_VIEW_FORM_NAME,
-    hasSelected: true,
-    creatingNew: false
-  }),
-  render: pr => render({ ...pr, formRoleName: editViewFormRole })
-});
+export const mockedEditView = (props: Props) => {
+  const {
+    entity, EditView, record, render, state
+  } = props;
+
+  defaultComponents({
+    entity,
+    View: pr => <ListEditView {...pr} />,
+    record,
+    beforeFn: () => {
+      window.performance.getEntriesByName = jest.fn(() => []);
+    },
+    defaultProps: () => ({
+      EditViewContent: pr => <EditView {...pr} />,
+      rootEntity: entity,
+      form: LIST_EDIT_VIEW_FORM_NAME,
+      hasSelected: true,
+      creatingNew: false,
+      toogleFullScreenEditView: jest.fn(),
+    }),
+    render: pr => render({ ...pr, formRoleName: editViewFormRole }),
+    state,
+  });
+};

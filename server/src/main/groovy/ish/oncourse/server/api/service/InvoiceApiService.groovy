@@ -125,7 +125,7 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
             invoiceDTO.createdOn = dateToTimeValue(abstractInvoice.createdOn)
             invoiceDTO.modifiedOn = dateToTimeValue(abstractInvoice.modifiedOn)
             invoiceDTO.paymentPlans.addAll([toRestPaymentPlan(abstractInvoice)])
-            invoiceDTO.tags = abstractInvoice.tags.collect { toRestTagMinimized(it) }
+            invoiceDTO.tags = abstractInvoice.allTags.collect { it.id }
             invoiceDTO
         }
         if (abstractInvoice instanceof Invoice) {
@@ -200,7 +200,7 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
         if (abstractInvoice instanceof Invoice) {
             updateInvoiceDueDates(abstractInvoice as Invoice, invoiceDTO.paymentPlans)
         }
-        updateTags(abstractInvoice, abstractInvoice.taggingRelations, invoiceDTO.tags*.id, AbstractInvoiceTagRelation.class, abstractInvoice.context)
+        updateTags(abstractInvoice, abstractInvoice.taggingRelations, invoiceDTO.tags, AbstractInvoiceTagRelation.class, abstractInvoice.context)
         abstractInvoice
     }
 

@@ -62,6 +62,7 @@ interface Props {
   process?: ProcessState;
   updateAudits?: any;
   hasScriptingLicense?: boolean;
+  filteredSelection?: string[];
 }
 
 const templatesRenderer: React.FC<any> = React.memo<any>(({ fields }) => fields.map((f, index) => {
@@ -89,8 +90,7 @@ const templatesRenderer: React.FC<any> = React.memo<any>(({ fields }) => fields.
         type={item.type}
         component={DataTypeRenderer}
         validate={validateSingleMandatoryField}
-        fullWidth
-        {...fieldProps}
+                {...fieldProps}
       />
     </Grid>
   );
@@ -114,6 +114,7 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
     interruptProcess,
     hasScriptingLicense,
     listSearchQuery,
+    filteredSelection,
     process
   } = props;
 
@@ -199,7 +200,7 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
       const searchQuery = { ...listSearchQuery };
 
       if (!selectAll) {
-        searchQuery.search = getExpression(selection);
+        searchQuery.search = getExpression(filteredSelection || selection);
       }
 
       executeScriptRequest = {
@@ -262,7 +263,7 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
             {(values.trigger.entityName || values.entity) && (
               <Grid item xs={12} className="centeredFlex mb-2">
                 <RecipientsSelectionSwitcher
-                  selectedRecords={selection.length}
+                  selectedRecords={filteredSelection?.length || selection.length}
                   allRecords={filteredCount}
                   selectAll={selectAll}
                   setSelectAll={setSelectAll}

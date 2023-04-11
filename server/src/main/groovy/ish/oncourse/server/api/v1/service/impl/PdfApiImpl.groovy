@@ -19,6 +19,8 @@ import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.service.ReportApiService
 import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.cluster.ClusteredExecutorManager
+import ish.oncourse.server.preference.UserPreferenceService
+
 import static ish.oncourse.server.api.v1.function.CommonFunctions.badRequest
 import ish.oncourse.server.api.v1.function.export.CertificatePrintFilter
 import ish.oncourse.server.api.v1.function.export.CertificatePrintPreProcessor
@@ -77,6 +79,9 @@ class PdfApiImpl implements PdfApi {
     @Inject
     private SystemUserService systemUserService
 
+    @Inject
+    private UserPreferenceService userPreferenceService
+
     @Context
     private HttpServletResponse response
 
@@ -114,7 +119,7 @@ class PdfApiImpl implements PdfApi {
                     return result
                 }
 
-                PrintWorker worker = new PrintWorker(request, cayenneService, documentService)
+                PrintWorker worker = new PrintWorker(request, cayenneService, documentService, userPreferenceService)
                 worker.run()
                 worker.result
             }

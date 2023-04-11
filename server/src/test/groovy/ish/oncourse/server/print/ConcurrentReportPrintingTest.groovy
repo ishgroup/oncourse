@@ -19,7 +19,8 @@ import ish.oncourse.server.cayenne.Report
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.integration.PluginService
-import ish.oncourse.server.report.JRRuntimeConfig
+import ish.oncourse.server.jasper.JasperReportsConfig
+import ish.oncourse.server.preference.UserPreferenceService
 import ish.oncourse.server.upgrades.DataPopulation
 import ish.print.AdditionalParameters
 import ish.print.PrintRequest
@@ -54,7 +55,7 @@ class ConcurrentReportPrintingTest extends TestWithDatabase {
         } catch (Exception e) {
             Assertions.fail("could not import one of the resources " + e)
         }
-        new JRRuntimeConfig().config()
+        JasperReportsConfig.configureGroovyCompiler()
 
         def reportsList = PluginService.getPluggableResources(ResourceType.REPORT.getResourcePath(), ResourceType.REPORT.getFilePattern())
 
@@ -135,7 +136,7 @@ class ConcurrentReportPrintingTest extends TestWithDatabase {
 
             request.setIds(mapOfIds)
 
-            PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(PreferenceController.class) as DocumentService)
+            PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(PreferenceController.class) as DocumentService, injector.getInstance(UserPreferenceService.class))
 
             reportsToRun.put(request, worker)
         }

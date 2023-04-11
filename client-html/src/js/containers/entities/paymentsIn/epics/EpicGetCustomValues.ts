@@ -14,7 +14,7 @@ const request: EpicUtils.Request<any,  number> = {
   getData: id =>
     EntityService.getPlainRecords(
       "PaymentIn",
-      "status,paymentMethod.name,gatewayReference,payer.totalOwing,reconciled,reversalOf,reversedBy,banking.id,amount,payer.fullName",
+      "status,paymentMethod.type,gatewayReference,payer.totalOwing,reconciled,reversalOf,reversedBy,banking.id,amount,payer.fullName",
       `id == ${id}`,
       1,
       0

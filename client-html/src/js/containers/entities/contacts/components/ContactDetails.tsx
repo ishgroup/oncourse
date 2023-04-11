@@ -82,7 +82,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
     countries,
     concessionTypes,
     usiLocked,
-    isCompany
+    isCompany,
   } = props;
 
   const [showPostalSettingsMenu, setPostalSettingsMenu] = useState(null);
@@ -243,7 +243,13 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
   return values ? (
     <Grid container className="pt-2 pl-3 pr-3">
       <Grid item xs={12}>
-        <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} mountAll header="Contact">
+        <ExpandableContainer
+          index={tabIndex}
+          expanded={expanded}
+          setExpanded={setExpanded}
+          formErrors={syncErrors}
+          header="Contact"
+        >
           <Grid container columnSpacing={3} rowSpacing={2} className="mb-2">
             <Grid item {...gridItemProps}>
               <FormField
@@ -288,7 +294,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
             <Grid item {...gridItemProps}>
               {countries && (
                 <FormField
-                  type="searchSelect"
+                  type="select"
                   selectValueMark="id"
                   selectLabelMark="name"
                   name="country"

@@ -43,7 +43,7 @@ class FixMissingOutcomesDataUpgradeTest extends TestWithDatabase {
             String enrol = ""
             for (Enrolment e : s.getEnrolments()) {
                 if (!(EnrolmentStatus.STATUSES_FAILED.contains(e.getStatus()) || EnrolmentStatus.STATUSES_CANCELLATIONS.contains(e.getStatus()))) {
-                    expectedNumberOfAttendance = expectedNumberOfAttendance + e.getCourseClass().getSessionsCount()
+                    expectedNumberOfAttendance = expectedNumberOfAttendance + e.getCourseClass().getSessions().size()
                     enrol = enrol + " " + e.getId()
                 }
 

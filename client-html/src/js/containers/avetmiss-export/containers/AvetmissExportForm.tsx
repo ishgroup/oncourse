@@ -20,12 +20,10 @@ import {
   FormGroup,
   Grid,
   Hidden,
-  IconButton,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { withStyles, createStyles } from "@mui/styles";
-import { ExpandMore, HelpOutline } from "@mui/icons-material";
+import { ExpandMore } from "@mui/icons-material";
 import {
   arrayPush, arrayRemove, change, getFormValues, initialize, InjectedFormProps, reduxForm
 } from "redux-form";
@@ -660,7 +658,8 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
         items={flavourModel}
         onChange={this.onFlavourChange}
         className="mb-2"
-        reqired
+        debounced={false}
+        required
       />
     );
 
@@ -755,8 +754,9 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                       : dateRangeModel
                                   }
                                   onChange={this.onDateRangeChange}
+                                  debounced={false}
                                   className="mb-2"
-                                  displayEmpty
+                                  allowEmpty
                                   required
                                 />
 
@@ -766,7 +766,6 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                       type="date"
                                       name="outcomesStart"
                                       label="Start"
-                                      maxDate={values.outcomesEnd}
                                       validate={this.validateMaxDate}
                                       className="mb-2"
                                     />
@@ -775,7 +774,6 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                         type="date"
                                         name="outcomesEnd"
                                         label="End"
-                                        minDate={values.outcomesStart}
                                         validate={this.validateMinDate}
                                         className="mb-2"
                                       />

@@ -27,6 +27,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Collapse from "@mui/material/Collapse";
 import { CircularProgress } from "@mui/material";
 import Close from "@mui/icons-material/Close";
+import Mail from "@mui/icons-material/Mail";
 import clsx from "clsx";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { formatDistanceStrict } from "date-fns";
@@ -78,6 +79,20 @@ const PhoneLabel = ({ phone, label }) => (
         type="text"
         format={getPhoneMask(phone)}
       />
+    </Typography>
+    {" "}
+    <Typography component="span" variant="caption" color="textSecondary">
+      {label}
+    </Typography>
+  </div>
+);
+
+const MailLabel = ({ mail, label }) => (
+  <div className="mb-1">
+    <Mail fontSize="inherit" className="vert-align-mid" />
+    {" "}
+    <Typography component="span" variant="body2">
+      {mail}
     </Typography>
     {" "}
     <Typography component="span" variant="caption" color="textSecondary">
@@ -242,6 +257,19 @@ const getEntityLabel = (entity: string, name: string, currencySymbol?: string) =
   }
 };
 
+const getInteractionLink = (interaction: ContactInteraction) => {
+  switch (interaction.entity) {
+    case "Voucher":
+    case "Membership":
+    case "Article":
+      return `/sale/${interaction.id}`;
+    case "Note":
+      return null;
+    default: 
+      return `/${interaction.entity[0].toLowerCase()}${interaction.entity.slice(1)}/${interaction.id}`;
+  }
+};
+
 const Interaction = (interaction: ContactInteraction & { currencySymbol?: string }) => {
   const [clamped, setClamped] = useState(true);
   const [descriptionLines, setSescriptionLines] = useState(null);
@@ -257,7 +285,7 @@ const Interaction = (interaction: ContactInteraction & { currencySymbol?: string
       <ListItemText
         primary={(
           <Stack spacing={2} direction="row" className="mb-2">
-            <HoverLink link={interaction.entity !== "Note" && `/${interaction.entity[0].toLowerCase()}${interaction.entity.slice(1)}/${interaction.id}`}>
+            <HoverLink link={getInteractionLink(interaction)}>
               <div className="text-truncate text-nowrap">
                 {getEntityLabel(interaction.entity, interaction.name, interaction.currencySymbol)}
               </div>
@@ -560,6 +588,7 @@ const ContactInsight = (
                   {data.homePhone && <PhoneLabel label="home" phone={data.homePhone} />}
                   {data.mobilePhone && <PhoneLabel label="mobile" phone={data.mobilePhone} />}
                   {data.fax && <PhoneLabel label="fax" phone={data.fax} />}
+                  {data.email && <MailLabel label="email" mail={data.email} />}
                   <Chip label="Send Message" className="fontWeight600 mt-1" onClick={onSendMessage} />
                 </div>
               </Grid>
@@ -591,7 +620,9 @@ const ContactInsight = (
                         <Box component="div" sx={{ pt: 4 }}>
                           <Stack spacing={2} direction="row" className="mb-1">
                             <EditInPlaceDateTimeField
-                              meta={{}}
+                              meta={{
+                                dispatch
+                              }}
                               input={{
                                 onChange: v => setDateValue(v),
                                 onFocus: stubFunction,
@@ -603,7 +634,9 @@ const ContactInsight = (
                               formatDateTime={DD_MM_YYYY_SLASHED}
                             />
                             <EditInPlaceDateTimeField
-                              meta={{}}
+                              meta={{
+                                dispatch
+                              }}
                               input={{
                                 onChange: v => setDateValue(v),
                                 onFocus: stubFunction,
