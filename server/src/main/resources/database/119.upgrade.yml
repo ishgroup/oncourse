@@ -1,0 +1,52 @@
+databaseChangeLog:
+  - changeSet:
+      id: 119-1
+      author: ntimofeev
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: ExecutorManagerTask
+      changes:
+        - createTable:
+            tableName: ExecutorManagerTask
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: taskId
+                  type: BIGINT
+              - column:
+                  name: keyCode
+                  type: CHAR(36)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: status
+                  type: int(11)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: result
+                  type: longblob
+              - column:
+                  name: createdOn
+                  type: datetime
+              - column:
+                  name: modifiedOn
+                  type: datetime
+              - column:
+                  name: errorMessage
+                  type: varchar(255)
+              - column:
+                  name: statusMessage
+                  type: varchar(255)
+              - column:
+                  name: taskName
+                  type: varchar(100)
+              - column:
+                  name: outputType
+                  type: int(11)
