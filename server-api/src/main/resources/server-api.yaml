@@ -345,3 +345,6 @@ definitions:
 
   ExecuteImportRequest:
     $ref: './def/entity/import/ExecuteImportRequest.yaml'
+
+  ProcessResult:
+    $ref: './def/entity/ProcessResult.yaml'
