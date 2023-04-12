@@ -50,7 +50,6 @@ import ish.oncourse.server.api.service.TutorRoleApiService
 import ish.oncourse.server.api.service.VoucherProductApiService
 import ish.oncourse.server.api.service.WaitingListApiService
 import ish.oncourse.server.api.validation.EntityValidator
-import ish.oncourse.server.concurrent.ExecutorManager
 import ish.oncourse.server.dashboard.ClassSearchService
 import ish.oncourse.server.dashboard.ContactSearchService
 import ish.oncourse.server.dashboard.CourseSearchService
@@ -63,7 +62,6 @@ class ApiServiceModule implements Module {
 
     @Override
     void configure(Binder binder) {
-        binder.bind(ExecutorManager).in(Scopes.SINGLETON)
 
         binder.bind(ClassSearchService).in(Scopes.SINGLETON)
         binder.bind(ContactSearchService).in(Scopes.SINGLETON)
