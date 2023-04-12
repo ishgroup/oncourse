@@ -79,7 +79,6 @@ class ApiServiceModule implements Module {
 
     @Override
     void configure(Binder binder) {
-        binder.bind(ExecutorManager).in(Scopes.SINGLETON)
 
         binder.bind(ClassSearchService).in(Scopes.SINGLETON)
         binder.bind(ContactSearchService).in(Scopes.SINGLETON)

@@ -12,6 +12,11 @@
 package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
+import ish.oncourse.server.cluster.ClusteredExecutorManager
+
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+
 import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
 import static ish.oncourse.server.api.v1.function.PayrollFunctions.toPayrollGenerationRequest
 import static ish.oncourse.server.api.v1.function.PayrollFunctions.toWagesToProcess
@@ -19,7 +24,6 @@ import static ish.oncourse.server.api.v1.function.PayrollFunctions.validate
 import ish.oncourse.server.api.v1.model.PayrollRequestDTO
 import ish.oncourse.server.api.v1.model.WagesToProcessDTO
 import ish.oncourse.server.api.v1.service.PayrollApi
-import ish.oncourse.server.concurrent.ExecutorManager
 import ish.oncourse.server.payroll.PayrollService
 
 import java.util.concurrent.Callable
@@ -31,13 +35,11 @@ class PayrollApiImpl implements PayrollApi {
     @Inject
     private PayrollService payrollService
 
-    @Inject
-    private ExecutorManager executorManager
-
     @Override
     String execute(String entity, Boolean bulkConfirmTutorWages, PayrollRequestDTO payrollRequest) {
         checkForBadRequest(validate(payrollRequest))
-        executorManager.submit(new Callable<Object>() {
+        ExecutorService workerThreadExecutor = Executors.newFixedThreadPool(1)
+        workerThreadExecutor.submit(new Callable<Object>() {
             @Override
             Object call() throws Exception {
                 payrollService.generatePayslips(toPayrollGenerationRequest(payrollRequest, Boolean.TRUE.equals(bulkConfirmTutorWages)))
