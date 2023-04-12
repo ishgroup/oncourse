@@ -28,4 +28,6 @@
            highestSchoolLevel="0" id="1" indigenousStatus="0" isOverseasClient="0" modifiedOn="2023-02-01 00:44:51"
            priorEducationCode="0" studentNumber="1" contactId="1" usiStatus="0" feeHelpEligible="0" citizenship="9"
            clientIndustryEmployment="0" clientOccupationIdentifier="0"/>
+
+  <Preference CREATEDON="2023-04-11 10:00:00.759000000" MODIFIEDON="2023-04-11 10:00:00.759000000" NAME="payment.gateway.type" UNIQUEKEY="payment.gateway.type" VALUESTRING="WINDCAVE" ID="870"/>
 </dataset>

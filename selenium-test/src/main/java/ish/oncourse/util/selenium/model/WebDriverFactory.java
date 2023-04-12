@@ -30,7 +30,8 @@ public class WebDriverFactory {
                         "--ignore-certificate-errors",
                         "--disable-extensions",
                         "--no-sandbox",
-                        "--disable-dev-shm-usage"));
+                        "--disable-dev-shm-usage",
+                        "--remote-allow-origins=*"));
             case FIREFOX:
                 WebDriverManager.firefoxdriver().setup();
                 return new FirefoxDriver(new FirefoxOptions().addArguments("--ignore-certificate-errors"));
