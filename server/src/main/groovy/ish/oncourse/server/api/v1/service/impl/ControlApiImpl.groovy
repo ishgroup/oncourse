@@ -12,8 +12,6 @@
 package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
-import ish.oncourse.server.api.v1.model.ProcessResultDTO
-import ish.oncourse.server.api.v1.model.ProcessStatusDTO
 import ish.oncourse.server.cluster.ClusteredExecutorManager
 
 import ish.oncourse.server.api.v1.service.ControlApi
@@ -21,18 +19,6 @@ import ish.oncourse.server.api.v1.service.ControlApi
 class ControlApiImpl implements ControlApi {
 
     @Inject private ClusteredExecutorManager clusteredExecutorManager
-
-    @Override
-    ProcessResultDTO getStatus(String processId) {
-        ProcessStatusDTO status = clusteredExecutorManager.getStatus(processId)
-        ProcessResultDTO processResult = new ProcessResultDTO()
-
-        processResult.status = status
-        if(status == ProcessStatusDTO.FAILED) {
-            processResult.message = clusteredExecutorManager.getResult(processId).getError()
-        }
-        return processResult
-    }
 
     @Override
     void interrupt(String processId) {

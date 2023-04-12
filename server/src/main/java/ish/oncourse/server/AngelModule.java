@@ -21,6 +21,10 @@ import io.bootique.config.ConfigurationFactory;
 import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedServlet;
 import io.bootique.jetty.command.ServerCommand;
+import io.bootique.jetty.websocket.JettyWebSocketModule;
+import ish.oncourse.server.api.v1.service.impl.JobStatusCallback;
+import ish.oncourse.server.integration.PluginsPrefsService;
+import ish.oncourse.server.jetty.AngelJettyModule;
 import ish.oncourse.common.ResourcesUtil;
 import ish.oncourse.server.api.servlet.*;
 import ish.oncourse.server.db.AngelCayenneModule;
@@ -157,6 +161,12 @@ public class AngelModule extends ConfigModule {
                 .addMappedFilter(API_FILTER)
                 .addMappedServlet(HEALTHCHECK_SERVLET)
                 .addServlet(new ResourceServlet(),"resources", ROOT_URL_PATTERN);
+
+
+
+        binder.bind(JobStatusCallback.class).in(Scopes.SINGLETON);
+        JettyWebSocketModule.extend(binder)
+                .addEndpoint(JobStatusCallback.class);
 
         binder.bind(ISessionManager.class).to(SessionManager.class).in(Scopes.SINGLETON);
         binder.bind(CertificateUpdateWatcher.class).in(Scopes.SINGLETON);

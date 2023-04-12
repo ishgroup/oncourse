@@ -373,3 +373,6 @@ definitions:
 
   FieldValidationType:
     $ref: './def/enum/FieldValidationType.yaml'
+
+  ProcessResult:
+    $ref: './def/entity/ProcessResult.yaml'

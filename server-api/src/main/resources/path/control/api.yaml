@@ -1,25 +1,3 @@
-get:
-  summary: get actual status of the process
-  operationId: getStatus
-  tags:
-    - Control
-  parameters:
-    - name: processId
-      in: path
-      type: string
-      required: true
-      description: Unique identifier of the process
-  responses:
-    '200':
-      description: Success response.
-      schema:
-        $ref: './def/entity/ProcessResult.yaml'
-    default:
-      description: Unexpected error
-  x-permission:
-    mask: view
-    keyCode: UNDEFINED
-
 delete:
   operationId: interrupt
   tags:

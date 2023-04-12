@@ -51,6 +51,7 @@ dependencies {
 	implementation "io.bootique.jetty:bootique-jetty:$bootiqueVersion"
 	implementation "io.bootique.cayenne:bootique-cayenne:$bootiqueVersion"
 	implementation "io.bootique.jdbc:bootique-jdbc-hikaricp:$bootiqueVersion"
+	implementation "io.bootique.jetty:bootique-jetty-websocket:$bootiqueVersion"
 
 	api ("org.apache.cxf:cxf-rt-frontend-jaxws:$cfxVersion") {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
