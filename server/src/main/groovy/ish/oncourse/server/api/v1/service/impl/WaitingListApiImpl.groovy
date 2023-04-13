@@ -54,18 +54,6 @@ class WaitingListApiImpl implements WaitingListApi {
     }
 
     @Override
-    void remove(Long id) {
-        checkForBadRequest(validateIdParam(id))
-
-        ObjectContext context = cayenneService.newContext
-        WaitingList entity = getRecordById(context, WaitingList, id)
-
-        checkForBadRequest(validateEntityExistence(id, entity))
-
-        deleteRecord(context, entity)
-    }
-
-    @Override
     void update(Long id, WaitingListDTO waitingListDTO) {
         checkForBadRequest(validateIdParam(id))
 
@@ -82,5 +70,10 @@ class WaitingListApiImpl implements WaitingListApi {
     @Override
     void bulkChange(DiffDTO diff) {
         entityApiService.bulkChange(diff)
+    }
+
+    @Override
+    void bulkDelete(DiffDTO diff) {
+        entityApiService.bulkRemove(diff)
     }
 }

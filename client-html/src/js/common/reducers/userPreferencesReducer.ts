@@ -2,9 +2,10 @@ import { IAction } from "../actions/IshAction";
 import { GET_USER_PREFERENCES_FULFILLED } from "../actions";
 import { SET_READ_NEWS_LOCAL } from "../components/list-view/actions";
 import { READ_NEWS } from "../../constants/Config";
+import { PreferenceEnum } from "@api/model";
 
-export interface UserPreferencesState {
-  [key: string]: string;
+export type UserPreferencesState = {
+  [K in PreferenceEnum]?: K extends "payment.gateway.type" ? "EWAY" | "EWAY_TEST" | "WINDCAVE" | "TEST" | "DISABLED" : string;
 }
 
 export const userPreferencesReducer = (state: UserPreferencesState = {}, action: IAction<any>): any => {

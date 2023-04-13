@@ -7,10 +7,8 @@ import { Epic } from "redux-observable";
 import { initialize } from "redux-form";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { getNoteItems } from "../../../../common/components/form/notes/actions";
-import { State } from "../../../../reducers/state";
 import {
   GET_CONTACT,
-  GET_CONTACT_FULFILLED,
   getContactCertificates,
   getContactEnrolments,
   getContactOutcomes,
@@ -84,10 +82,6 @@ const request: EpicUtils.Request = {
     }
 
     return [
-      {
-        type: GET_CONTACT_FULFILLED,
-        payload: { contact }
-      },
       {
         type: SET_LIST_EDIT_RECORD,
         payload: { editRecord: contact, name: contact.lastName }
