@@ -44,24 +44,30 @@ class AuditService {
         executorService = Executors.newSingleThreadExecutor()
     }
 
+
     def submit(CayenneDataObject object, AuditAction action) {
         submit(object, action, null)
     }
 
-    def submit(CayenneDataObject object, AuditAction action, String message) {
 
+    def submit(CayenneDataObject object, AuditAction action, String message) {
         if (!object.auditAllowed) {
             return
         }
 
-        def userId = systemUserService.currentUser?.id
-        def created = new Timestamp(new Date().time)
         def entityId = Cayenne.longPKForObject(object)
         def entityName = object.class.simpleName
 
         if (message == null) {
             message = defaultMessage(action, object)
         }
+
+        submit(entityName, entityId, action, message)
+    }
+
+    def submit(String entityName, Long entityId, AuditAction action, String message){
+        def userId = systemUserService.currentUser?.id
+        def created = new Timestamp(new Date().time)
 
         executorService.submit({
             Connection connection
@@ -80,7 +86,7 @@ class AuditService {
                 connection.commit()
                 stmt.close()
             } catch (Exception e) {
-                logger.warn("Fail to submit audit entry for ${object.objectId}, action:${action.name()}", e)
+                logger.warn("Fail to submit audit entry for ${entityId}, action:${action.name()}", e)
             } finally {
                 if (connection != null && !connection.isClosed()) {
                     connection.close()
