@@ -3029,6 +3029,9 @@
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 		<obj-attribute name="yearSchoolCompleted" type="java.lang.Integer" db-attribute-path="yearSchoolCompleted"/>
 	</obj-entity>
+	<obj-entity name="StudentCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.StudentCustomField" clientClassName="ish.oncourse.cayenne.StudentCustomField">
+		<qualifier><![CDATA[entityIdentifier = "Student"]]></qualifier>
+	</obj-entity>
 	<obj-entity name="StudentAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.StudentAttachmentRelation" clientClassName="ish.oncourse.cayenne.StudentAttachmentRelation">
 		<qualifier><![CDATA[entityIdentifier = "Student"]]></qualifier>
 	</obj-entity>
@@ -3195,6 +3198,9 @@
 	</obj-entity>
 	<obj-entity name="TutorAttendanceCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.TutorAttendanceCustomField" clientClassName="ish.oncourse.cayenne.TutorAttendanceCustomField">
 		<qualifier><![CDATA[entityIdentifier = "TutorAttendance"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="TutorCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.TutorCustomField" clientClassName="ish.oncourse.cayenne.TutorCustomField">
+		<qualifier><![CDATA[entityIdentifier = "Tutor"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="UnavailableRule" abstract="true" className="ish.oncourse.server.cayenne.UnavailableRule" clientClassName="ish.oncourse.cayenne.UnavailableRule" dbEntityName="UnavailableRule" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="allDay" type="java.lang.Boolean" db-attribute-path="allDay"/>
@@ -3882,6 +3888,12 @@
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
 	<db-relationship name="relatedContact" source="CustomField" target="Contact">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="relatedStudent" source="CustomField" target="Student">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="relatedTutor" source="CustomField" target="Tutor">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
 	<db-relationship name="relatedCourse" source="CustomField" target="Course">
@@ -4793,6 +4805,9 @@
 	<db-relationship name="customFields" source="Survey" target="CustomField" toMany="true">
 		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
+	<db-relationship name="customFields" source="Student" target="CustomField" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
+	</db-relationship>
 	<db-relationship name="enrolment" source="Survey" target="Enrolment">
 		<db-attribute-pair source="enrolmentId" target="id"/>
 	</db-relationship>
@@ -4927,6 +4942,9 @@
 	</db-relationship>
 	<db-relationship name="contact" source="Tutor" target="Contact">
 		<db-attribute-pair source="contactId" target="id"/>
+	</db-relationship>
+	<db-relationship name="customFields" source="Tutor" target="CustomField" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
 	<db-relationship name="markedAttendances" source="Tutor" target="Attendance" toMany="true">
 		<db-attribute-pair source="id" target="markedByTutorId"/>
@@ -5133,6 +5151,8 @@
 	<obj-relationship name="attachedArticle" source="ArticleAttachmentRelation" target="Article" deleteRule="Nullify" db-relationship-path="attachedProductItem"/>
 	<obj-relationship name="attachedMembership" source="MembershipAttachmentRelation" target="Membership" deleteRule="Nullify" db-relationship-path="attachedProductItem"/>
 	<obj-relationship name="relatedObject" source="ContactCustomField" target="Contact" deleteRule="Nullify" db-relationship-path="relatedContact"/>
+	<obj-relationship name="relatedObject" source="StudentCustomField" target="Contact" deleteRule="Nullify" db-relationship-path="relatedStudent"/>
+	<obj-relationship name="relatedObject" source="TutorCustomField" target="Contact" deleteRule="Nullify" db-relationship-path="relatedTutor"/>
 	<obj-relationship name="contactToUpdate" source="ContactDuplicate" target="Contact" deleteRule="Deny" db-relationship-path="contactToUpdate"/>
 	<obj-relationship name="createdByUser" source="ContactDuplicate" target="SystemUser" deleteRule="Deny" db-relationship-path="createdByUser"/>
 	<obj-relationship name="notedContact" source="ContactNoteRelation" target="Contact" deleteRule="Nullify" db-relationship-path="notedContact"/>
@@ -5433,6 +5453,9 @@
 	<obj-relationship name="relatedObject" source="MembershipCustomField" target="Membership" deleteRule="Nullify" db-relationship-path="relatedMembership"/>
 	<obj-relationship name="customFields" source="Voucher" target="VoucherCustomField" deleteRule="Nullify" db-relationship-path="customFields"/>
 	<obj-relationship name="relatedObject" source="VoucherCustomField" target="Voucher" deleteRule="Nullify" db-relationship-path="relatedVoucher"/>
+	<obj-relationship name="customFields" source="Student" target="StudentCustomField" deleteRule="Cascade" db-relationship-path="customFields"/>
+	<obj-relationship name="customFields" source="Tutor" target="TutorCustomField" deleteRule="Cascade" db-relationship-path="customFields"/>
+
 	<obj-relationship name="certificates" source="Qualification" target="Certificate" deleteRule="Deny" db-relationship-path="certificates"/>
 	<obj-relationship name="courses" source="Qualification" target="Course" deleteRule="Deny" db-relationship-path="courses"/>
 	<obj-relationship name="defaultModules" source="Qualification" target="Module" deleteRule="Deny" db-relationship-path="defaultModules"/>
