@@ -15,6 +15,7 @@ export const GET_CUSTOM_FIELD_TYPES_FULFILLED = FULFILLED(GET_CUSTOM_FIELD_TYPES
 export const GET_SALE_CUSTOM_FIELD_TYPES = _toRequestType("get/sale/customFieldTypes");
 
 export const GET_INVOICE_CUSTOM_FIELD_TYPES = _toRequestType("get/abstractInvoice/customFieldTypes");
+export const GET_CONTACT_CUSTOM_FIELD_TYPES = _toRequestType("get/contact/customFieldTypes");
 
 export const getCustomFieldTypes = (entity: EntityName) => (entity === "ProductItem"
   ? {
@@ -22,7 +23,9 @@ export const getCustomFieldTypes = (entity: EntityName) => (entity === "ProductI
   }
   : (entity === "AbstractInvoice" ? {
     type: GET_INVOICE_CUSTOM_FIELD_TYPES,
+  } : (entity === "Contact" ? {
+    type: GET_CONTACT_CUSTOM_FIELD_TYPES,
   } : {
     type: GET_CUSTOM_FIELD_TYPES,
     payload: entity
-  }));
+  })));
