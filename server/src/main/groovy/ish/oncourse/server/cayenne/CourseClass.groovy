@@ -1177,6 +1177,24 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	}
 
 	/**
+	 * @return attendance records for all SUCCESS enrolments
+	 */
+	@Nonnull
+	@API
+	List<Attendance> getActiveAttendances() {
+		ArrayList<Attendance> result = new ArrayList<>()
+			def students = enrolments.findAll { it.status == EnrolmentStatus.SUCCESS }.student
+		students.attendances.each {
+			it.each {
+				if (it.session.courseClass.id == this.id && it.attendanceType == AttendanceType.UNMARKED) {
+					result.add(it)
+				}
+			}
+		}
+		return result
+	}
+
+	/**
 	 * @return JSR-310 compatible start date of the class
 	 */
 	LocalDate getStart() {
