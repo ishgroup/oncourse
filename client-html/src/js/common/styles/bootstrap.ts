@@ -248,6 +248,9 @@ export const bootstrap = (theme: AppTheme) => ({
   ".mt-auto": {
     marginTop: "auto"
   },
+  ".mb-auto": {
+    marginBottom: "auto"
+  },
   ".ml-0": {
     marginLeft: 0
   },

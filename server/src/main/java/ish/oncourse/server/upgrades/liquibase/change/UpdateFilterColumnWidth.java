@@ -10,6 +10,7 @@ package ish.oncourse.server.upgrades.liquibase.change;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ish.liquibase.IshTaskChange;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.api.v1.model.TableModelDTO;
 import ish.oncourse.server.cayenne.Preference;

@@ -134,15 +134,15 @@ public class CheckPaymentMethodTest extends AbstractSeleniumTest {
         driver.findElement(By.cssSelector(".PrivateSwitchBase-input")).click();
 
         logger.error("11. Choose Summary.");
-        threadWait(Duration.ofSeconds(1));
+        threadWait(Duration.ofSeconds(2));
         js.executeScript("document.evaluate(\"//div[text()='Summary']\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click()");
         logger.error("12. Choose Payment.");
-        threadWait(Duration.ofSeconds(1));
+        threadWait(Duration.ofSeconds(2));
         js.executeScript("document.evaluate(\"//div[text()='Payment']\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click()");
 
         logger.error("13. Choose payment method.");
 
-        threadWait(Duration.ofSeconds(1));
+        threadWait(Duration.ofSeconds(2));
         wait.until(ExpectedConditions.attributeToBe(By.name("payment_method"), "value", ""));
         wait.until(ExpectedConditions.elementToBeClickable(By.name("payment_method"))).click();
         threadWait(Duration.ofSeconds(2));

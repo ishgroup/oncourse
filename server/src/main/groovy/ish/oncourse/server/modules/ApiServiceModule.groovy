@@ -50,6 +50,9 @@ import ish.oncourse.server.api.service.TutorRoleApiService
 import ish.oncourse.server.api.service.VoucherProductApiService
 import ish.oncourse.server.api.service.WaitingListApiService
 import ish.oncourse.server.api.validation.EntityValidator
+import ish.oncourse.server.checkout.CheckoutApiService
+import ish.oncourse.server.checkout.gateway.eway.test.EWayTestPaymentAPI
+import ish.oncourse.server.checkout.gateway.eway.test.EWayTestPaymentService
 import ish.oncourse.server.concurrent.ExecutorManager
 import ish.oncourse.server.dashboard.ClassSearchService
 import ish.oncourse.server.dashboard.ContactSearchService
@@ -57,7 +60,10 @@ import ish.oncourse.server.dashboard.CourseSearchService
 import ish.oncourse.server.dashboard.DashboardSearchManager
 import ish.oncourse.server.dashboard.EnrolmentSearchService
 import ish.oncourse.server.dashboard.InvoiceSearchService
-import ish.oncourse.server.windcave.PaymentService
+import ish.oncourse.server.checkout.gateway.eway.EWayPaymentAPI
+import ish.oncourse.server.checkout.gateway.eway.EWayPaymentService
+import ish.oncourse.server.checkout.gateway.windcave.WindcavePaymentAPI
+import ish.oncourse.server.checkout.gateway.windcave.WindcavePaymentService
 
 class ApiServiceModule implements Module {
 
@@ -100,7 +106,13 @@ class ApiServiceModule implements Module {
         binder.bind(NoteApiService).in(Scopes.SINGLETON)
         binder.bind(OutcomeApiService).in(Scopes.SINGLETON)
         binder.bind(PayslipApiService).in(Scopes.NO_SCOPE)
-        binder.bind(PaymentService).in(Scopes.NO_SCOPE)
+        binder.bind(CheckoutApiService).in(Scopes.SINGLETON)
+        binder.bind(EWayPaymentAPI).in(Scopes.SINGLETON)
+        binder.bind(EWayPaymentService).in(Scopes.SINGLETON)
+        binder.bind(EWayTestPaymentAPI).in(Scopes.SINGLETON)
+        binder.bind(EWayTestPaymentService).in(Scopes.SINGLETON)
+        binder.bind(WindcavePaymentAPI).in(Scopes.SINGLETON)
+        binder.bind(WindcavePaymentService).in(Scopes.SINGLETON)
         binder.bind(PriorLearningApiService).in(Scopes.SINGLETON)
         binder.bind(ReportApiService).in(Scopes.SINGLETON)
         binder.bind(RoomApiService).in(Scopes.NO_SCOPE)
