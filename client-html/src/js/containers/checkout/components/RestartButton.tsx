@@ -14,6 +14,7 @@ import { checkoutClearState } from "../actions";
 import { checkoutGetActivePaymentMethods } from "../actions/checkoutPayment";
 import { CHECKOUT_SUMMARY_FORM as SUMMARRY_FORM } from "./summary/CheckoutSummaryList";
 import { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from "./fundingInvoice/CheckoutFundingInvoiceSummaryList";
+import { FORM as SELECTION_FORM } from "./CheckoutSelection";
 
 const RestartButton: React.FC<any> = () => {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ const RestartButton: React.FC<any> = () => {
       dispatch(checkoutClearState());
       dispatch(checkoutGetActivePaymentMethods());
       dispatch(reset(SUMMARRY_FORM));
+      dispatch(reset(SELECTION_FORM));
       dispatch(reset(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM));
     }}
     >

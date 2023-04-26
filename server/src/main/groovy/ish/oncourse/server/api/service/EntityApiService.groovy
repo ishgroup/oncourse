@@ -33,7 +33,8 @@ abstract class EntityApiService<T extends _DTOTrait, K extends Persistent, M ext
     @Inject
     protected ICayenneService cayenneService
 
-    @Inject AqlService aqlService
+    @Inject
+    AqlService aqlService
 
     @Inject
     protected EntityValidator validator
@@ -119,16 +120,16 @@ abstract class EntityApiService<T extends _DTOTrait, K extends Persistent, M ext
         ObjectContext context = cayenneService.newContext
         List<K> entities = null
 
-        if (dto.filter || dto.search)
-            entities = getBulkEntities(dto, context)
-        else
+        if (dto.ids)
             entities = EntityUtil.getObjectsByIds(context, getPersistentClass() as Class<? extends PersistentObjectI>, dto.ids).collect { it as K }
+        else if (dto.filter || dto.search)
+            entities = getBulkEntities(dto, context)
 
         if (entities == null || entities.empty) {
             validator.throwClientErrorException("diff", "Records for bulk remove are not found")
         }
 
-        if(entities.contains(null)){
+        if (entities.contains(null)) {
             validator.throwClientErrorException("diff", "Record with id ${dto.ids.get(entities.indexOf(null))} not found")
         }
 
