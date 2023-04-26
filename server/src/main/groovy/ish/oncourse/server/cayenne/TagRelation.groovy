@@ -20,7 +20,6 @@ import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.cayenne.Taggable
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.common.SystemEvent
-import ish.oncourse.common.SystemEvent
 import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
 import ish.oncourse.server.cayenne.glue._TagRelation
 import ish.oncourse.server.integration.EventService
@@ -48,9 +47,9 @@ class TagRelation extends _TagRelation implements Queueable {
 
 	@Override
 	protected void postPersist() {
-		if(tag.nodeType.equals(NodeType.CHECKLIST)){
-			if(tag.parentTag != null){
-				if(checklistCompleted() && !taggedRelation.tagIds.contains(tag.parentTag.id)) {
+		if(tag.nodeType.equals(NodeType.CHECKLIST)) {
+			if (tag.parentTag != null) {
+				if (checklistCompleted() && !taggedRelation.tagIds.contains(tag.parentTag.id)) {
 					def relation = context.newObject(TagRelation.class)
 					relation.tag = tag.parentTag
 					relation.taggedRelation = taggedRelation
@@ -59,15 +58,14 @@ class TagRelation extends _TagRelation implements Queueable {
 					context.commitChanges()
 				}
 			}
+		}
 
-			def allTagChilds = tag.parentTag.allChildren.values().collect {it.id}
-			def recordTagIds = taggedRelation.tagIds
-			eventService.postEvent(SystemEvent.valueOf(SystemEventType.CHECKLIST_TASK_CHECKED, this))
-			if(!recordTagIds.containsAll(allTagChilds))
-				return
-			eventService.postEvent(SystemEvent.valueOf(SystemEventType.CHECKLIST_COMPLETED, this))
-		} else
+    	if(tag.nodeType.equals(NodeType.CHECKLIST)){
+			def eventType = tag.parentTag ? SystemEventType.CHECKLIST_TASK_CHECKED : SystemEventType.CHECKLIST_COMPLETED
+			eventService.postEvent(SystemEvent.valueOf(eventType, this))
+		} else {
 			eventService.postEvent(SystemEvent.valueOf(SystemEventType.TAG_ADDED, this))
+		}
 	}
 
 	@Override
