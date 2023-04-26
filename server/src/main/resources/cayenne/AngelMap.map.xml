@@ -5149,8 +5149,8 @@
 	<obj-relationship name="attachedArticle" source="ArticleAttachmentRelation" target="Article" deleteRule="Nullify" db-relationship-path="attachedProductItem"/>
 	<obj-relationship name="attachedMembership" source="MembershipAttachmentRelation" target="Membership" deleteRule="Nullify" db-relationship-path="attachedProductItem"/>
 	<obj-relationship name="relatedObject" source="ContactCustomField" target="Contact" deleteRule="Nullify" db-relationship-path="relatedContact"/>
-	<obj-relationship name="relatedObject" source="StudentCustomField" target="Contact" deleteRule="Nullify" db-relationship-path="relatedStudent"/>
-	<obj-relationship name="relatedObject" source="TutorCustomField" target="Contact" deleteRule="Nullify" db-relationship-path="relatedTutor"/>
+	<obj-relationship name="relatedObject" source="StudentCustomField" target="Student" deleteRule="Nullify" db-relationship-path="relatedStudent"/>
+	<obj-relationship name="relatedObject" source="TutorCustomField" target="Tutor" deleteRule="Nullify" db-relationship-path="relatedTutor"/>
 	<obj-relationship name="contactToUpdate" source="ContactDuplicate" target="Contact" deleteRule="Deny" db-relationship-path="contactToUpdate"/>
 	<obj-relationship name="createdByUser" source="ContactDuplicate" target="SystemUser" deleteRule="Deny" db-relationship-path="createdByUser"/>
 	<obj-relationship name="notedContact" source="ContactNoteRelation" target="Contact" deleteRule="Nullify" db-relationship-path="notedContact"/>
