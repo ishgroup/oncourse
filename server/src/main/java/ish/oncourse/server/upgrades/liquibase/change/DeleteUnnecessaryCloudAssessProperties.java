@@ -10,6 +10,7 @@
  */
 package ish.oncourse.server.upgrades.liquibase.change;
 
+import ish.liquibase.IshTaskChange;
 import ish.oncourse.server.cayenne.IntegrationConfiguration;
 import ish.oncourse.server.cayenne.IntegrationProperty;
 import ish.oncourse.server.db.SchemaUpdateService;

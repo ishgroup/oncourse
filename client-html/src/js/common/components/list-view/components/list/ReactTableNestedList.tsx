@@ -112,6 +112,7 @@ const Table: React.FC<NestedListTableProps> = ({
             const direction: any = column.getIsSorted();
 
             return <TableCell
+              key={columnDef.id}
               style={{
                 minWidth: '0px',
                 boxSizing: "border-box",
@@ -124,7 +125,7 @@ const Table: React.FC<NestedListTableProps> = ({
               <TableSortLabel
                 hideSortIcon={!canSort}
                 active={Boolean(direction)}
-                direction={direction || ""}
+                direction={direction || "asc"}
                 classes={{
                   root: clsx(!canSort && classes.noSort)
                 }}

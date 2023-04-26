@@ -1,0 +1,22 @@
+post:
+  operationId: bulkDelete
+  tags:
+    - WaitingList
+  parameters:
+    - name: diff
+      in: body
+      schema:
+        $ref: './def/entity/Diff.yaml'
+      required: true
+      description: waiting lists for delete
+  responses:
+    '200':
+      description: Success response
+    '400':
+      description: Bad request error
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: WAITING_LIST
+    errorMessage: Sorry, you have no permissions to edit waiting lists. Please contact your administrator.

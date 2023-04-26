@@ -6,7 +6,6 @@ import React from "react";
 import clsx from "clsx";
 import withStyles from "@mui/styles/withStyles";
 import createStyles from "@mui/styles/createStyles";
-import CircularProgress from "@mui/material/CircularProgress";
 import IconButton from "@mui/material/IconButton";
 import Launch from "@mui/icons-material/Launch";
 import Share from "@mui/icons-material/Share";
@@ -236,7 +235,7 @@ const SuccessPaymentMessage: React.FC<any> = props => {
 };
 
 const PaymentMessageRenderer: React.FC<PaymentMessageRendererProps> = props => {
-  const { payment, classes } = props;
+  const { payment } = props;
 
   const render = () => {
     switch (payment.process.status) {
@@ -253,15 +252,6 @@ const PaymentMessageRenderer: React.FC<PaymentMessageRendererProps> = props => {
 
   return (
     <>
-      <div
-        className={clsx(
-          "absolute w-100 centeredFlex justify-content-center zIndex1",
-          classes.loader,
-          { "d-none": !payment.isProcessing && !payment.isFetchingDetails }
-        )}
-      >
-        <CircularProgress size={40} thickness={5} />
-      </div>
       {!payment.isProcessing && !payment.isFetchingDetails && render()}
     </>
   );

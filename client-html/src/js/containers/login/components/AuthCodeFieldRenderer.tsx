@@ -15,7 +15,13 @@ const AuthCodeFieldRenderer = ({ fields, dispatch, submitRef }) => {
   const focusNextNode = value => {
     if (value || value === 0) {
       const firstEmpty = inputNodes.find(node => !node.value);
-      if (firstEmpty) {firstEmpty.focus();} else { submitRef.click(); }
+      if (firstEmpty) {
+        firstEmpty.focus();
+      } else {
+        setTimeout(() => {
+          submitRef.click();
+        }, 200);
+      }
     }
   };
 
@@ -34,7 +40,9 @@ const AuthCodeFieldRenderer = ({ fields, dispatch, submitRef }) => {
         const codeDigits = code.split("");
         if (codeDigits.length === 6 && !Number.isNaN(Number(code))) {
           dispatch(change("LoginForm", "authCodeDigits", codeDigits));
-          submitRef.click();
+          setTimeout(() => {
+            submitRef.click();
+          }, 200);
         }
       }
     }

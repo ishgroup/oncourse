@@ -281,7 +281,7 @@ class MessageApiService extends EntityApiService<MessageDTO, Message, MessageDao
         if (MessageTypeDTO.EMAIL == messageType) {
 
             noDestinationIds = query.column(ID)
-                    .where(expression.andExp(Contact.EMAIL.isNull().orExp(Contact.EMAIL.eq(EMPTY).orExp(Contact.DELIVERY_STATUS_EMAIL.eq(6)))))
+                    .where(expression.andExp(Contact.EMAIL.isNull().orExp(Contact.EMAIL.eq(EMPTY).orExp(Contact.DELIVERY_STATUS_EMAIL.gte(6)))))
                     .select(context)
             suppresstoSendIds = query.column(ID)
                     .where(expression.andExp(Contact.ALLOW_EMAIL.isFalse(), Contact.EMAIL.isNotNull(), Contact.EMAIL.ne(EMPTY), Contact.DELIVERY_STATUS_EMAIL.lt(6)))
@@ -293,7 +293,7 @@ class MessageApiService extends EntityApiService<MessageDTO, Message, MessageDao
         } else if (MessageTypeDTO.SMS == messageType) {
 
             noDestinationIds = query.column(ID)
-                    .where(expression.andExp(Contact.MOBILE_PHONE.isNull().orExp(Contact.MOBILE_PHONE.eq(EMPTY).orExp(Contact.DELIVERY_STATUS_SMS.eq(6)))))
+                    .where(expression.andExp(Contact.MOBILE_PHONE.isNull().orExp(Contact.MOBILE_PHONE.eq(EMPTY).orExp(Contact.DELIVERY_STATUS_SMS.gte(6)))))
                     .select(context)
             suppresstoSendIds = query.column(ID)
                     .where(expression.andExp(Contact.ALLOW_SMS.isFalse(), Contact.MOBILE_PHONE.isNotNull(), Contact.MOBILE_PHONE.ne(EMPTY), Contact.DELIVERY_STATUS_SMS.lt(6)))

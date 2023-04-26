@@ -871,7 +871,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         showConfirm({
           onConfirm: onRemove,
           confirmMessage: "The item you are removing is required by another item in the shopping cart.",
-          cancelButtonText: "Override"
         });
       } else {
         onRemove();
