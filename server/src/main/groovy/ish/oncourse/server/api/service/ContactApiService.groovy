@@ -587,6 +587,9 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
             student.waitingLists = dbStudent.waitingLists.collect{ l -> l.course.name }
             student.concessions = dbStudent?.concessions?.collect{ toRestConcession(it) }
             student.customFields = dbStudent?.customFields?.collectEntries { [(it.customFieldType.key) : it.value] }
+            if(!student.customFields)
+                student.customFields = Collections.emptyMap()
+
             student
         }
     }
@@ -620,6 +623,8 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
             tutor.passedClasseCount = count.passedClassesCount
             tutor.cancelledClassesCount = count.cancelledClassesCount
             tutor.customFields = dbTutor?.customFields?.collectEntries { [(it.customFieldType.key) : it.value] }
+            if(!tutor.customFields)
+                tutor.customFields = Collections.emptyMap()
 
             tutor
         }
