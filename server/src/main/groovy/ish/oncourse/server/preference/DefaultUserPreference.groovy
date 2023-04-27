@@ -77,6 +77,8 @@ class DefaultUserPreference {
     private static final Integer W300 = 300
     private static final Integer W400 = 400
 
+    private static final String VET_MODEL_NAME = "Vet"
+
     private static final TableModelDTO AUDIT_MODEL = new TableModelDTO().with {
         it.columns = [
                 new ColumnDTO(title: 'User Name', attribute: Audit.SYSTEM_USER.dot('fullName').name, sortable: true,
@@ -949,6 +951,24 @@ class DefaultUserPreference {
         it
     }
 
+    private static final VET_MODEL = new TableModelDTO().with {
+        it.columns = [
+                new ColumnDTO(title: 'Name', attribute: Contact.FULL_NAME_KEY, sortable: true,
+                        width: W300, visible: true, sortFields: [Contact.LAST_NAME.name,
+                                                                 Contact.FIRST_NAME.name,
+                                                                 Contact.MIDDLE_NAME.name]),
+                new ColumnDTO(title: 'Birthdate', attribute: Contact.BIRTH_DATE.name, sortable: true, type: ColumnTypeDTO.DATE,
+                        width: W300, visible: true),
+                new ColumnDTO(title: 'Email', attribute: Contact.EMAIL_KEY, sortable: true,
+                        width: W200, visible: false),
+                new ColumnDTO(title: 'Enrolments', attribute: Contact.ENROLMENTS_COUNT_KEY, sortable: false,
+                        width: W200, visible: false),
+        ]
+        it.layout = LayoutTypeDTO.THREE_COLUMN
+        it.filterColumnWidth = W200
+        it
+    }
+
     // must be below model initializations
     public static final Map<String, TableModelDTO> DEFAULT_MODEL_MAP = [
             (Account.ENTITY_NAME)              : ACCOUNT_MODEL,
@@ -976,16 +996,17 @@ class DefaultUserPreference {
             (Certificate.ENTITY_NAME)          : CERTIFICATE_MODEL,
             (Survey.ENTITY_NAME)               : STUDENT_FEEDBACK_MODEL,
             (ProductItem.ENTITY_NAME)          : SALE_MODEL,
-            (Outcome.ENTITY_NAME)              : OUTCOME_MODEL,
-            (Assessment.ENTITY_NAME)           : ASSESSMENT_MODEL,
-            (AssessmentSubmission.ENTITY_NAME) : ASSESSMENT_SUBMISSION_MODEL,
-            (Enrolment.ENTITY_NAME)            : ENROLMENT_MODEL,
-            (Message.ENTITY_NAME)              : MESSAGE_MODEL,
-            (PaymentOut.ENTITY_NAME)           : PAYMENT_OUT_MODEL,
-            (DefinedTutorRole.ENTITY_NAME)     : DEFINED_TUTOR_ROLE_MODEL,
-            (CourseClass.ENTITY_NAME)          : COURSECLASS_MODEL,
-            (Contact.ENTITY_NAME)              : CONTACT_MODEL,
-            (PriorLearning.ENTITY_NAME)        : PRIOR_LEARNING_MODEL
+            (Outcome.ENTITY_NAME)             : OUTCOME_MODEL,
+            (Assessment.ENTITY_NAME)          : ASSESSMENT_MODEL,
+            (AssessmentSubmission.ENTITY_NAME): ASSESSMENT_SUBMISSION_MODEL,
+            (Enrolment.ENTITY_NAME)           : ENROLMENT_MODEL,
+            (Message.ENTITY_NAME)             : MESSAGE_MODEL,
+            (PaymentOut.ENTITY_NAME)          : PAYMENT_OUT_MODEL,
+            (DefinedTutorRole.ENTITY_NAME)    : DEFINED_TUTOR_ROLE_MODEL,
+            (CourseClass.ENTITY_NAME)         : COURSECLASS_MODEL,
+            (Contact.ENTITY_NAME)             : CONTACT_MODEL,
+            (PriorLearning.ENTITY_NAME)       : PRIOR_LEARNING_MODEL,
+            (VET_MODEL_NAME)                  : VET_MODEL,
 
 
     ] as Map<String, TableModelDTO>

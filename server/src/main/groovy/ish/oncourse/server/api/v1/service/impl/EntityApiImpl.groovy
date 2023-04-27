@@ -64,7 +64,7 @@ class EntityApiImpl implements EntityApi {
 
     @Override
     DataResponseDTO getAll(String entity, SearchQueryDTO request) {
-        DataResponseDTO response = createResponse(entity, request.search, request.pageSize, request.offset)
+        DataResponseDTO response = createResponse(entity, request)
         ObjectContext context = cayenneService.newReadonlyContext
 
         Class<? extends CayenneDataObject> clzz = EntityUtil.entityClassForName(entity)
@@ -187,15 +187,14 @@ class EntityApiImpl implements EntityApi {
         }
     }
 
-    private DataResponseDTO createResponse(String entity, String search, BigDecimal pageSize, BigDecimal offset) {
-
+    private DataResponseDTO createResponse(String entity, SearchQueryDTO request) {
         DataResponseDTO dataResponse = new DataResponseDTO()
 
         dataResponse.entity = entity.capitalize()
-        TableModelDTO model = preference.getTableModel(dataResponse.entity)
-        dataResponse.search = search
-        dataResponse.pageSize = pageSize ? pageSize : DEF_PAGE_SIZE
-        dataResponse.offset = offset ? offset : DEF_OFFSET
+        TableModelDTO model = preference.getTableModel(request.tableModel ? request.tableModel : dataResponse.entity)
+        dataResponse.search = request.search
+        dataResponse.pageSize = request.pageSize ? request.pageSize : DEF_PAGE_SIZE
+        dataResponse.offset = request.offset ? request.offset : DEF_OFFSET
         dataResponse.sort = model.sortings
         dataResponse.columns = model.columns
         dataResponse.filterColumnWidth = model.filterColumnWidth
