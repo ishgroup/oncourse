@@ -16,6 +16,7 @@ import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import { EntityType } from "../../../../model/common/NestedEntity";
 import { openInternalLink } from "../../../utils/links";
 import AddButton from "../../icons/AddButton";
+import clsx from "clsx";
 
 interface Props {
   entityName?: string;
@@ -27,6 +28,7 @@ interface Props {
   addLink?: string;
   isNew?: boolean;
   preventAddMessage?: string;
+  secondaryHeading?: boolean;
 }
 
 const NestedEntity: React.FC<Props> = ({
@@ -38,7 +40,8 @@ const NestedEntity: React.FC<Props> = ({
   twoColumn,
   isNew,
   preventAddMessage,
-  goToLink
+  goToLink,
+  secondaryHeading
 }) => {
   const openEntityLink = useCallback(
     link => {
@@ -79,7 +82,7 @@ const NestedEntity: React.FC<Props> = ({
     <div>
       {entityName && (
         <div className="centeredFlex">
-          <Typography className="heading pt-2 pb-2">{entityName}</Typography>
+          <Typography className={clsx("pt-2 pb-2", secondaryHeading ? "secondaryHeading" : "heading")}>{entityName}</Typography>
           {goToLink && (
             <IconButton size="small" color="primary" onClick={() => openInternalLink(goToLink)}>
               <Launch fontSize="inherit" />

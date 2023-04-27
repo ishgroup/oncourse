@@ -10,22 +10,15 @@ import NumberFormat from "react-number-format";
 import { change } from "redux-form";
 import Typography from "@mui/material/Typography";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { openInternalLink } from "../../../../common/utils/links";
-import { getContactFullName } from "../utils";
-import TimetableButton from "../../../../common/components/buttons/TimetableButton";
 import ContactCourseClass from "./ContactCourseClass";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { formatTFN, parseTFN, validateTFN } from "../../../../common/utils/validation/tfnValidation";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { Switch } from "../../../../common/components/form/formFields/Switch";
 import { makeAppStyles } from "../../../../common/styles/makeStyles";
-
-interface ContactsTutorProps {
-  twoColumn?: boolean;
-  isNew?: boolean;
-  values?: Contact;
-  dispatch?: any;
-}
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import { EditViewProps } from "../../../../model/common/ListView";
+import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
 
 const useStyles = makeAppStyles(() => ({
   switchWrapper: {
@@ -47,9 +40,9 @@ export const TFNInputMask = React.forwardRef<any, any>((props, ref) => (
   />
 ));
 
-const ContactsTutor: React.FC<ContactsTutorProps> = props => {
+const ContactsTutor: React.FC<EditViewProps<Contact>> = props => {
   const {
-    dispatch, twoColumn, values, isNew
+    dispatch, twoColumn, values, isNew, form, tabIndex, expanded, setExpanded, syncErrors
   } = props;
 
   const [switchChanged, setSwitchChangedValue] = useState(false);
@@ -73,24 +66,16 @@ const ContactsTutor: React.FC<ContactsTutorProps> = props => {
     setSwitchValue(!switchValue);
   };
 
-  const onCalendarClick = () => {
-    const tutorId = values.tutor && values.tutor.id;
-    if (!tutorId) {
-      openInternalLink(`/timetable`);
-    } else {
-      openInternalLink(
-        `/timetable?search=tutor.id=${tutorId}&title=Tutor timetable for ${getContactFullName(values)}`
-      );
-    }
-  };
-
   return values ? (
-    <>
-      <div className="heading p-3 pt-2 pb-0">TUTOR</div>
-      <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
-        <Grid item xs={12} className="mb-2 pt-2 pb-2">
-          <TimetableButton onClick={onCalendarClick} />
-        </Grid>
+    <ExpandableContainer
+      index={tabIndex}
+      expanded={expanded}
+      setExpanded={setExpanded}
+      formErrors={syncErrors}
+      className="pl-3 pr-3"
+      header="Tutor"
+    >
+      <Grid container columnSpacing={3} rowSpacing={2}>
         <Grid item xs={twoColumn ? 6 : 12}>
           <FormField
             type="text"
@@ -131,6 +116,19 @@ const ContactsTutor: React.FC<ContactsTutorProps> = props => {
         <Grid item xs={twoColumn ? 6 : 12}>
           <FormField type="date" name="tutor.dateFinished" label="Date finished" />
         </Grid>
+        {values.tutor && (
+          <>
+            <CustomFields
+              entityName="Tutor"
+              fieldName="tutor.customFields"
+              entityValues={values}
+              form={form}
+              gridItemProps={{
+                xs: twoColumn ? 6 : 12
+              }}
+            />
+          </>
+        )}
 
         <Grid item xs={twoColumn ? 6 : 12} className={classes.switchWrapper}>
           <Typography variant="caption" color="textSecondary">
@@ -155,7 +153,7 @@ const ContactsTutor: React.FC<ContactsTutorProps> = props => {
         )}
 
         <Grid item xs={12} className="mt-2 pb-2">
-          <div className="heading">WORKING WITH CHILDREN CHECK (WWCC)</div>
+          <div className="secondaryHeading">WORKING WITH CHILDREN CHECK (WWCC)</div>
         </Grid>
         <Grid item xs={twoColumn ? 6 : 12}>
           <FormField type="text" name="tutor.wwChildrenRef" label="WWCC number" />
@@ -172,7 +170,7 @@ const ContactsTutor: React.FC<ContactsTutorProps> = props => {
         {isNew && <div className="p-3" />}
         {!isNew && <ContactCourseClass {...props} />}
       </Grid>
-    </>
+    </ExpandableContainer>
   ) : null;
 };
 

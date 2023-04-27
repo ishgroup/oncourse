@@ -40,15 +40,15 @@ const studentItems: TabsListItem[] = [
 
 const tutorItems: TabsListItem[] = [
   {
+    label: "Tutor",
+    component: props => <ContactsTutor {...props} />,
+    expandable: true
+  },
+  {
     label: "Resume",
     component: props => <ContactsResume {...props} />,
     expandable: true
   },
-  {
-    label: "Tutor",
-    component: props => <ContactsTutor {...props} />,
-    expandable: true
-  }
 ];
 
 const items: TabsListItem[] = [
