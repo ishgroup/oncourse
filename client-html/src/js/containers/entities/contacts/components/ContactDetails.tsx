@@ -416,18 +416,6 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
               gridItemProps={gridItemProps}
             />
 
-            {values.tutor && (
-              <>
-                <CustomFields
-                  entityName="Tutor"
-                  fieldName="tutor.customFields"
-                  entityValues={values}
-                  form={form}
-                  gridItemProps={gridItemProps}
-                />
-              </>
-            )}
-
             {values.student && (
               <CustomFields
                 entityName="Student"

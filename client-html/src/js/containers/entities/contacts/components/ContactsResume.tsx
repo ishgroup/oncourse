@@ -6,23 +6,33 @@
 import React from "react";
 import { Grid } from "@mui/material";
 import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
+import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { Contact } from "@api/model";
 
-interface ContactsResumeProps {
-  twoColumn?: boolean;
-}
-
-const ContactsResume: React.FC<ContactsResumeProps> = props => {
-  const { twoColumn } = props;
+const ContactsResume: React.FC<EditViewProps<Contact>> = ({
+  tabIndex,
+  twoColumn,
+  expanded,
+  setExpanded,
+  syncErrors
+}) => {
 
   return (
-    <div className="p-3">
-      <div className="heading mb-2">RESUME</div>
+    <ExpandableContainer
+      index={tabIndex}
+      expanded={expanded}
+      setExpanded={setExpanded}
+      formErrors={syncErrors}
+      className="pl-3 pr-3 pb-3"
+      header="RESUME"
+    >
       <Grid container columnSpacing={3}>
         <Grid item xs={12} className={twoColumn ? "pt-2 pb-2" : undefined}>
           <FormEditorField name="tutor.resume" label="Resume" />
         </Grid>
       </Grid>
-    </div>
+    </ExpandableContainer>
   );
 };
 
