@@ -13,10 +13,13 @@ package ish.oncourse.server.services
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
-import ish.oncourse.types.AuditAction
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
+import ish.oncourse.types.AuditAction
 import org.apache.cayenne.Cayenne
+import org.apache.cayenne.tx.TransactionDescriptor
+import org.apache.cayenne.tx.TransactionManager
+import org.apache.cayenne.tx.TransactionPropagation
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -70,28 +73,35 @@ class AuditService {
         def created = new Timestamp(new Date().time)
 
         executorService.submit({
-            Connection connection
-            try {
-                connection = cayenneService.dataSource.connection
-                PreparedStatement stmt = connection.prepareStatement(INSERT_AUDIT_PATTERN)
-                stmt.setTimestamp(1, created)
+            TransactionManager manager = cayenneService.serverRuntime.getInjector().getInstance(TransactionManager.class)
+                TransactionDescriptor descriptor = new TransactionDescriptor(
+                    Connection.TRANSACTION_SERIALIZABLE, // set transaction isolation to SERIALIZABLE
+                    TransactionPropagation.REQUIRES_NEW  // require new transaction for every operation
+            )
+            manager.performInTransaction({ ->
+                Connection connection
+                try {
+                    connection = cayenneService.dataSource.connection
+                    PreparedStatement stmt = connection.prepareStatement(INSERT_AUDIT_PATTERN)
+                    stmt.setTimestamp(1, created)
 
-                setLong(stmt, 2, userId)
-                setLong(stmt, 3, entityId)
-                setString(stmt, 4, entityName)
-                setString(stmt, 5, action.databaseValue)
-                setString(stmt, 6, message)
+                    setLong(stmt, 2, userId)
+                    setLong(stmt, 3, entityId)
+                    setString(stmt, 4, entityName)
+                    setString(stmt, 5, action.databaseValue)
+                    setString(stmt, 6, message)
 
-                stmt.executeUpdate()
-                connection.commit()
-                stmt.close()
-            } catch (Exception e) {
-                logger.warn("Fail to submit audit entry for ${entityId}, action:${action.name()}", e)
-            } finally {
-                if (connection != null && !connection.isClosed()) {
-                    connection.close()
+                    stmt.executeUpdate()
+                    connection.commit()
+                    stmt.close()
+                } catch (Exception e) {
+                    logger.warn("Fail to submit audit entry for ${entityId}, action:${action.name()}", e)
+                } finally {
+                    if (connection != null && !connection.isClosed()) {
+                        connection.close()
+                    }
                 }
-            }
+            }, descriptor)
         })
     }
 
