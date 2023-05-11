@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.types.DiscountAvailabilityType
 import ish.common.types.DiscountType
 import ish.math.Money
 import ish.math.MoneyRounding
@@ -287,9 +288,18 @@ class Discount extends _Discount implements DiscountTrait, DiscountInterface, Qu
 	 */
 	@Nonnull
 	@API
-	@Override
 	Boolean getIsAvailableOnWeb() {
-		return super.getIsAvailableOnWeb()
+		return availableFor != DiscountAvailabilityType.OFFICE_ONLY
+	}
+
+	/**
+	 * @return type of discount availability (OFFICE_ONLY / ONLINE_ONLY / ONLINE_AND_OFFICE)
+	 */
+	@Nonnull
+	@API
+	@Override
+	DiscountAvailabilityType getAvailableFor() {
+		return super.getAvailableFor()
 	}
 
 	/**

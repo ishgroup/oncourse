@@ -2183,7 +2183,7 @@
 		<obj-attribute name="discountType" type="ish.common.types.DiscountType" db-attribute-path="discountType"/>
 		<obj-attribute name="hideOnWeb" type="java.lang.Boolean" db-attribute-path="hideOnWeb"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
-		<obj-attribute name="isAvailableOnWeb" type="java.lang.Boolean" db-attribute-path="isAvailableOnWeb"/>
+		<obj-attribute name="availableFor" type="ish.common.types.DiscountAvailabilityType" db-attribute-path="isAvailableOnWeb"/>
 		<obj-attribute name="limitPreviousEnrolment" type="java.lang.Boolean" db-attribute-path="limitPreviousEnrolment"/>
 		<obj-attribute name="minEnrolments" type="java.lang.Integer" db-attribute-path="minEnrolments"/>
 		<obj-attribute name="minValue" type="ish.math.Money" db-attribute-path="minValue"/>
