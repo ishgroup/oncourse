@@ -67,6 +67,12 @@ const queryStyles = theme => createStyles({
     color: theme.palette.text.primaryEditable,
     fontWeight: 400,
   },
+  noOptions: {
+    display: "none",
+    "& $menuCorner": {
+      display: "none"
+    }
+  }
 });
 
 const TimePicker: any = Time;
@@ -727,7 +733,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
     if (lastTokenType === "'@'") {
       this.setState({
         searchValue: "",
-        options: (filterTags || []).filter(this.filterOptions)
+        options: (filterTags || [])
       });
       return;
     }
@@ -735,7 +741,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
     if (lastTokenType === "'#'") {
       this.setState({
         searchValue: "",
-        options: (tags || []).filter(this.filterOptions)
+        options: (tags || [])
       });
       return;
     }
@@ -1080,7 +1086,8 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
               listbox: "p-0 relative zIndex1 paperBackgroundColor",
               hasPopupIcon: classes.hasPopup,
               hasClearIcon: classes.hasClear,
-              inputRoot: classes.inputWrapper
+              inputRoot: classes.inputWrapper,
+              noOptions: classes.noOptions
             } : undefined}
             renderInput={params => (
               <TextField
