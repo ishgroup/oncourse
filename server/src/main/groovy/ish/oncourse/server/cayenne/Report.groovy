@@ -77,7 +77,7 @@ import javax.annotation.Nullable
  * ```
  */
 @API
-class Report extends _Report implements AutomationTrait {
+class Report extends _Report implements AutomationTrait, TaggableTrait {
 
 
     private static final Logger logger = LogManager.getLogger()

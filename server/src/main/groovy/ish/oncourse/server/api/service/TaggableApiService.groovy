@@ -12,32 +12,37 @@
 package ish.oncourse.server.api.service
 
 import ish.oncourse.server.api.dao.CayenneLayer
+import ish.oncourse.server.cayenne.TaggableTrait
+import ish.oncourse.server.cayenne.TaggableTraitConstants
+import org.apache.cayenne.Persistent
+
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import ish.oncourse.server.api.traits._DTOTrait
 import ish.oncourse.server.cayenne.Tag
-import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
 
-abstract class TaggableApiService <T extends _DTOTrait, K extends TaggableCayenneDataObject, M extends CayenneLayer<K>> extends EntityApiService<T, K, M> {
+abstract class TaggableApiService <T extends _DTOTrait, K extends Persistent & TaggableTrait, M extends CayenneLayer<K>> extends EntityApiService<T, K, M> {
 
     Closure getAction(String key, String value) {
         Closure action = null
         switch (key) {
-            case TaggableCayenneDataObject.BULK_TAG_PROPERTY:
+            case TaggableTraitConstants.BULK_TAG_PROPERTY:
                 action = { K entity ->
+                    def taggableEntity = entity as TaggableTrait
                     value.split(",").each { id ->
-                        Tag dbTag = getRecordById(entity.context, Tag, id as Long)
-                        if (!entity.hasTag(dbTag.getName(), true) && !entity.addTag(dbTag)) {
-                            validator.throwClientErrorException(entity.id, key, "Selected record can’t be tagged with ${dbTag.name}")
+                        Tag dbTag = getRecordById(taggableEntity.context, Tag, id as Long)
+                        if (!taggableEntity.hasTag(dbTag.getName(), true) && !taggableEntity.addTag(dbTag)) {
+                            validator.throwClientErrorException(taggableEntity.id, key, "Selected record can’t be tagged with ${dbTag.name}")
                         }
                     }
                 }
                 break
-            case TaggableCayenneDataObject.BULK_UNTAG_PROPERTY:
+            case TaggableTraitConstants.BULK_UNTAG_PROPERTY:
                 action = { K entity ->
+                    def taggableEntity = entity as TaggableTrait
                     value.split(",").each { id ->
-                        Tag dbTag = getRecordById(entity.context, Tag, id as Long)
-                        if (entity.hasTag(dbTag.getName(), true) && !entity.removeTag(dbTag)) {
-                            validator.throwClientErrorException(entity.id, key, "Selected record can’t be tagged with ${dbTag.name}")
+                        Tag dbTag = getRecordById(taggableEntity.context, Tag, id as Long)
+                        if (taggableEntity.hasTag(dbTag.getName(), true) && !taggableEntity.removeTag(dbTag)) {
+                            validator.throwClientErrorException(taggableEntity.id, key, "Selected record can’t be tagged with ${dbTag.name}")
                         }
                     }
                 }

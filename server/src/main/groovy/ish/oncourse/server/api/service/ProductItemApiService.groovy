@@ -27,7 +27,6 @@ import ish.oncourse.server.api.dao.ProductItemDAO
 import ish.oncourse.server.api.dao.TaxDao
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.cayenne.*
-import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
 import ish.oncourse.server.document.DocumentService
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect

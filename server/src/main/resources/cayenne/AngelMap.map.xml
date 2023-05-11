@@ -1613,7 +1613,7 @@
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 	</obj-entity>
-	<obj-entity name="AbstractInvoice" abstract="true" className="ish.oncourse.server.cayenne.AbstractInvoice" dbEntityName="Invoice" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
+	<obj-entity name="AbstractInvoice" abstract="true" className="ish.oncourse.server.cayenne.AbstractInvoice" dbEntityName="Invoice" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
 		<obj-attribute name="allowAutoPay" type="java.lang.Boolean" db-attribute-path="allowAutoPay"/>
 		<obj-attribute name="amountOwing" type="ish.math.Money" db-attribute-path="amoutOwing"/>
 		<obj-attribute name="billToAddress" type="java.lang.String" db-attribute-path="billToAddress"/>
@@ -1672,7 +1672,7 @@
 		<obj-attribute name="tableName" type="ish.common.types.AccountTransactionType" db-attribute-path="tableName"/>
 		<obj-attribute name="transactionDate" type="java.time.LocalDate" db-attribute-path="transactionDate"/>
 	</obj-entity>
-	<obj-entity name="Application" className="ish.oncourse.server.cayenne.Application" dbEntityName="Application" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
+	<obj-entity name="Application" className="ish.oncourse.server.cayenne.Application" dbEntityName="Application" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
 		<obj-attribute name="confirmationStatus" type="ish.common.types.ConfirmationStatus" db-attribute-path="confirmationStatus"/>
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="enrolBy" type="java.util.Date" db-attribute-path="enrolBy"/>
@@ -1757,7 +1757,7 @@
 	<obj-entity name="ProductItemTagRelation" superEntityName="TagRelation" className="ish.oncourse.server.cayenne.ProductItemTagRelation" clientClassName="ish.oncourse.cayenne.ProductItemTagRelation">
 		<qualifier><![CDATA[entityIdentifier = 26]]></qualifier>
 	</obj-entity>
-	<obj-entity name="Assessment" className="ish.oncourse.server.cayenne.Assessment" clientClassName="ish.oncourse.cayenne.Assessment" dbEntityName="Assessment" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
+	<obj-entity name="Assessment" className="ish.oncourse.server.cayenne.Assessment" clientClassName="ish.oncourse.cayenne.Assessment" dbEntityName="Assessment" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
 		<obj-attribute name="active" type="java.lang.Boolean" db-attribute-path="active"/>
 		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
@@ -1918,7 +1918,7 @@
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
-	<obj-entity name="Contact" className="ish.oncourse.server.cayenne.Contact" clientClassName="ish.oncourse.cayenne.Contact" dbEntityName="Contact" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
+	<obj-entity name="Contact" className="ish.oncourse.server.cayenne.Contact" clientClassName="ish.oncourse.cayenne.Contact" dbEntityName="Contact" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
 		<obj-attribute name="abn" type="java.lang.String" db-attribute-path="abn"/>
 		<obj-attribute name="allowEmail" type="java.lang.Boolean" db-attribute-path="allowEmail"/>
 		<obj-attribute name="allowPost" type="java.lang.Boolean" db-attribute-path="allowPost"/>
@@ -2032,7 +2032,7 @@
 		<obj-attribute name="saccCode" type="java.lang.Integer" db-attribute-path="saccCode"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
-	<obj-entity name="Course" className="ish.oncourse.server.cayenne.Course" clientClassName="ish.oncourse.cayenne.Course" dbEntityName="Course" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
+	<obj-entity name="Course" className="ish.oncourse.server.cayenne.Course" clientClassName="ish.oncourse.cayenne.Course" dbEntityName="Course" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
 		<obj-attribute name="allowWaitingLists" type="java.lang.Boolean" db-attribute-path="allowWaitingLists"/>
 		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
@@ -2057,7 +2057,7 @@
 	<obj-entity name="CourseAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.CourseAttachmentRelation" clientClassName="ish.oncourse.cayenne.CourseAttachmentRelation">
 		<qualifier><![CDATA[entityIdentifier = "Course"]]></qualifier>
 	</obj-entity>
-	<obj-entity name="CourseClass" className="ish.oncourse.server.cayenne.CourseClass" clientClassName="ish.oncourse.cayenne.CourseClass" dbEntityName="CourseClass" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
+	<obj-entity name="CourseClass" className="ish.oncourse.server.cayenne.CourseClass" clientClassName="ish.oncourse.cayenne.CourseClass" dbEntityName="CourseClass" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
 		<obj-attribute name="attendanceType" type="ish.common.types.CourseClassAttendanceType" db-attribute-path="attendanceType"/>
 		<obj-attribute name="budgetedPlaces" type="java.lang.Integer" db-attribute-path="budgetedPlaces"/>
 		<obj-attribute name="censusDate" type="java.time.LocalDate" db-attribute-path="censusDate"/>
@@ -2229,7 +2229,7 @@
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
-	<obj-entity name="Document" className="ish.oncourse.server.cayenne.Document" clientClassName="ish.oncourse.cayenne.Document" dbEntityName="Document" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
+	<obj-entity name="Document" className="ish.oncourse.server.cayenne.Document" clientClassName="ish.oncourse.cayenne.Document" dbEntityName="Document" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
 		<obj-attribute name="added" type="java.util.Date" db-attribute-path="added"/>
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
@@ -2282,7 +2282,7 @@
 	<obj-entity name="EmailTemplateAutomationBinding" superEntityName="AutomationBinding" className="ish.oncourse.server.cayenne.EmailTemplateAutomationBinding" clientClassName="ish.oncourse.cayenne.EmailTemplateAutomationBinding">
 		<qualifier><![CDATA[entityIdentifier = "EmailTemplate"]]></qualifier>
 	</obj-entity>
-	<obj-entity name="Enrolment" className="ish.oncourse.server.cayenne.Enrolment" clientClassName="ish.oncourse.cayenne.Enrolment" dbEntityName="Enrolment" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
+	<obj-entity name="Enrolment" className="ish.oncourse.server.cayenne.Enrolment" clientClassName="ish.oncourse.cayenne.Enrolment" dbEntityName="Enrolment" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
 		<obj-attribute name="associatedCourseIdentifier" type="java.lang.String" db-attribute-path="associatedCourseIdentifier"/>
 		<obj-attribute name="attendanceType" type="ish.common.types.CourseClassAttendanceType" db-attribute-path="attendanceType"/>
 		<obj-attribute name="confirmationStatus" type="ish.common.types.ConfirmationStatus" db-attribute-path="confirmationStatus"/>
@@ -2525,7 +2525,7 @@
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
-	<obj-entity name="Lead" className="ish.oncourse.server.cayenne.Lead" dbEntityName="Lead" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
+	<obj-entity name="Lead" className="ish.oncourse.server.cayenne.Lead" dbEntityName="Lead" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
@@ -2742,7 +2742,7 @@
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 	</obj-entity>
-	<obj-entity name="Payslip" className="ish.oncourse.server.cayenne.Payslip" clientClassName="ish.oncourse.cayenne.Payslip" dbEntityName="Payslip" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
+	<obj-entity name="Payslip" className="ish.oncourse.server.cayenne.Payslip" clientClassName="ish.oncourse.cayenne.Payslip" dbEntityName="Payslip" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
@@ -2787,7 +2787,7 @@
 	<obj-entity name="PriorLearningAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.PriorLearningAttachmentRelation" clientClassName="ish.oncourse.cayenne.PriorLearningAttachmentRelation">
 		<qualifier><![CDATA[entityIdentifier = "PriorLearning"]]></qualifier>
 	</obj-entity>
-	<obj-entity name="Product" abstract="true" className="ish.oncourse.server.cayenne.Product" clientClassName="ish.oncourse.cayenne.Product" dbEntityName="Product" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
+	<obj-entity name="Product" abstract="true" className="ish.oncourse.server.cayenne.Product" clientClassName="ish.oncourse.cayenne.Product" dbEntityName="Product" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
 		<obj-attribute name="expiryDays" type="java.lang.Integer" db-attribute-path="expiryDays"/>
@@ -2804,7 +2804,7 @@
 		<obj-attribute name="type" type="java.lang.Integer" db-attribute-path="type"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
-	<obj-entity name="ProductItem" abstract="true" className="ish.oncourse.server.cayenne.ProductItem" dbEntityName="ProductItem" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
+	<obj-entity name="ProductItem" abstract="true" className="ish.oncourse.server.cayenne.ProductItem" dbEntityName="ProductItem" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
 		<obj-attribute name="confirmationStatus" type="ish.common.types.ConfirmationStatus" db-attribute-path="confirmationStatus"/>
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="expiryDate" type="java.util.Date" db-attribute-path="expiryDate"/>
@@ -2846,7 +2846,7 @@
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="script" type="java.lang.String" db-attribute-path="script"/>
 	</obj-entity>
-	<obj-entity name="Report" className="ish.oncourse.server.cayenne.Report" clientClassName="ish.oncourse.cayenne.Report" dbEntityName="Report" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
+	<obj-entity name="Report" className="ish.oncourse.server.cayenne.Report" clientClassName="ish.oncourse.cayenne.Report" dbEntityName="Report" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="data" type="byte[]" db-attribute-path="data"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
@@ -2876,7 +2876,7 @@
 	<obj-entity name="ReportTagRelation" superEntityName="TagRelation" className="ish.oncourse.server.cayenne.ReportTagRelation" clientClassName="ish.oncourse.cayenne.ReportTagRelation">
 		<qualifier><![CDATA[entityIdentifier = 6]]></qualifier>
 	</obj-entity>
-	<obj-entity name="Room" className="ish.oncourse.server.cayenne.Room" clientClassName="ish.oncourse.cayenne.Room" dbEntityName="Room" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
+	<obj-entity name="Room" className="ish.oncourse.server.cayenne.Room" clientClassName="ish.oncourse.cayenne.Room" dbEntityName="Room" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="directions" type="java.lang.String" db-attribute-path="directions"/>
 		<obj-attribute name="facilities" type="java.lang.String" db-attribute-path="facilities"/>
@@ -2957,7 +2957,7 @@
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
-	<obj-entity name="Site" className="ish.oncourse.server.cayenne.Site" clientClassName="ish.oncourse.cayenne.Site" dbEntityName="Site" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
+	<obj-entity name="Site" className="ish.oncourse.server.cayenne.Site" clientClassName="ish.oncourse.cayenne.Site" dbEntityName="Site" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="drivingDirections" type="java.lang.String" db-attribute-path="drivingDirections"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
@@ -3241,7 +3241,7 @@
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
-	<obj-entity name="WaitingList" className="ish.oncourse.server.cayenne.WaitingList" clientClassName="ish.oncourse.cayenne.WaitingList" dbEntityName="WaitingList" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
+	<obj-entity name="WaitingList" className="ish.oncourse.server.cayenne.WaitingList" clientClassName="ish.oncourse.cayenne.WaitingList" dbEntityName="WaitingList" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>

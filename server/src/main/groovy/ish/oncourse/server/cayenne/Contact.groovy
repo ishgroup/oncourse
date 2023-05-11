@@ -42,7 +42,7 @@ import java.time.LocalDate
  */
 @API
 @QueueableEntity
-class Contact extends _Contact implements ContactTrait, ExpandableTrait, ContactInterface, Queueable, NotableTrait, AttachableTrait {
+class Contact extends _Contact implements ContactTrait, ExpandableTrait, ContactInterface, Queueable, NotableTrait, AttachableTrait, TaggableTrait {
 
 	public static final String TOTAL_OVERDUE_KEY = "totalOverdue";
 	public static final String ENROLMENTS_COUNT_KEY = "enrolmentsCount";
@@ -927,7 +927,7 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 
 	@Override
 	Set<Class<? extends Taggable>> getClassesForTags() {
-		Set<Class<? extends Taggable>> result = new LinkedHashSet<>(super.getClassesForTags())
+		Set<Class<? extends Taggable>> result = new LinkedHashSet<>(getClassesForTags())
 		if (Boolean.TRUE == getIsTutor()) {
 			result.add(Tutor.class)
 		}

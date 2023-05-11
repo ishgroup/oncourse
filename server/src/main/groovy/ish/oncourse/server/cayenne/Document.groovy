@@ -30,7 +30,7 @@ import javax.annotation.Nonnull
  */
 @API
 @QueueableEntity
-class Document extends _Document implements DocumentTrait, Queueable {
+class Document extends _Document implements DocumentTrait, Queueable, TaggableTrait {
 
 
 	public static final String LINK_PROPERTY = "link"

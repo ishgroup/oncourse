@@ -40,7 +40,7 @@ import java.util.List
  */
 @API
 @QueueableEntity
-class VoucherProduct extends _VoucherProduct implements AttachableTrait, NotableTrait, ExpandableTrait{
+class VoucherProduct extends _VoucherProduct implements AttachableTrait, NotableTrait, ExpandableTrait, TaggableTrait{
 
 
 

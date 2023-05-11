@@ -49,7 +49,7 @@ import java.time.ZoneId
  */
 @API
 @QueueableEntity
-class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, NotableTrait, ExpandableTrait, AttachableTrait, CourseClassInterface {
+class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, NotableTrait, ExpandableTrait, AttachableTrait, CourseClassInterface, TaggableTrait {
 	public static final String END_DATE_TIME_KEY = "endDateTime";
 	public static final String FEE_INC_GST = "feeIncGst";
 	public static final String START_DATE_TIME_KEY = "startDateTime";
