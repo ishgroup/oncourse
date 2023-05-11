@@ -14,9 +14,12 @@ package ish.oncourse.server.api.v1.function
 import groovy.transform.CompileStatic
 import ish.common.types.ClassCostFlowType
 import ish.common.types.ClassCostRepetitionType
+import ish.common.types.DiscountAvailabilityType
 import ish.common.types.DiscountType
 import ish.math.MoneyRounding
 import ish.oncourse.server.api.BidiMap
+import ish.oncourse.server.api.v1.model.DiscountAvailabilityTypeDTO
+
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
 import static ConcessionTypeFunctions.toRestConcessionType
@@ -101,7 +104,7 @@ class DiscountFunctions {
             dto.relationDiscount = !dbDiscount.entityRelationTypes.empty
             if (full) {
                 dto.hideOnWeb = dbDiscount.hideOnWeb
-                dto.availableOnWeb = dbDiscount.isAvailableOnWeb
+                dto.availableFor = DiscountAvailabilityTypeDTO.valueOf(dbDiscount.availableFor.displayName)
                 dto.studentEnrolledWithinDays = dbDiscount.studentEnrolledWithinDays
                 if (dbDiscount.studentAge && dbDiscount.studentAge.matches('[<,>] \\d+')) {
                     dto.studentAgeUnder dbDiscount.studentAge.split(' ')[0] == '<'
@@ -218,12 +221,12 @@ class DiscountFunctions {
             return new ValidationErrorDTO(discount?.id?.toString(), 'cosAccount', "Account with id=${discount.cosAccount} is not exist.")
         }
         if (discount.predictedStudentsPercentage == null) {
-            return new ValidationErrorDTO(discount?.id?.toString(), 'availableOnWeb', 'Default forecast take-up is required.')
+            return new ValidationErrorDTO(discount?.id?.toString(), 'availableFor', 'Default forecast take-up is required.')
         } else if (discount.predictedStudentsPercentage < 0 || discount.predictedStudentsPercentage > 1) {
             return new ValidationErrorDTO(discount?.id?.toString(), 'predictedStudentsPercentage', 'Wrong value')
         }
-        if (discount.availableOnWeb == null) {
-            return new ValidationErrorDTO(discount?.id?.toString(), 'availableOnWeb', 'Availability via online is required.')
+        if (discount.availableFor == null) {
+            return new ValidationErrorDTO(discount?.id?.toString(), 'availableFor', 'Availability via online is required.')
         }
         if (trimToEmpty(discount.code).size() > 20) {
             return new ValidationErrorDTO(discount?.id?.toString(), 'name', 'Code cannot be more than 20 chars.')
@@ -332,7 +335,7 @@ class DiscountFunctions {
             dbDiscount.cosAccount = null
         }
         dbDiscount.predictedStudentsPercentage = discount.predictedStudentsPercentage
-        dbDiscount.isAvailableOnWeb = discount.availableOnWeb
+        dbDiscount.availableFor = DiscountAvailabilityType.valueOf(discount.availableFor.toString())
         dbDiscount.code = discount.code
         dbDiscount.validFrom = LocalDateUtils.valueToDate(discount.validFrom)
         dbDiscount.validFromOffset = discount.validFromOffset
