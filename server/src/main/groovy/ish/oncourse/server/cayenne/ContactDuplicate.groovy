@@ -51,7 +51,7 @@ class ContactDuplicate extends _ContactDuplicate implements Queueable {
 		return super.getCreatedByUser()
 	}
 
-	boolean isAsyncReplicationAllowed() {
+	boolean logicAllowsReplication() {
 		return ContactDuplicateStatus.IN_TRANSACTION == getStatus()
 	}
 }

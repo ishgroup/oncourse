@@ -40,7 +40,7 @@ class TagRelation extends _TagRelation implements Queueable {
 
 
 	@Override
-	boolean isAsyncReplicationAllowed() {
+	boolean logicAllowsReplication() {
 		return tag?.nodeType != NodeType.CHECKLIST
 	}
 

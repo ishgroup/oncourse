@@ -307,7 +307,7 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	 * @return isAsyncReplicationAllowed
 	 */
 	@Override
-	boolean isAsyncReplicationAllowed() {
+	boolean logicAllowsReplication() {
 		// first of all we need to check that this enrollment isn't a web-enrollment with in transaction status
 		// because replicate them back from angel to willow after create of Attendancies and Outcomes
 		// may lead to status overriding from final to in transaction like in case #14882.

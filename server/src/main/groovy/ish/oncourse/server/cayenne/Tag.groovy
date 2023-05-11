@@ -91,7 +91,7 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 	}
 
 	@Override
-	boolean isAsyncReplicationAllowed() {
+	boolean logicAllowsReplication() {
 		return nodeType != NodeType.CHECKLIST
 	}
 /**

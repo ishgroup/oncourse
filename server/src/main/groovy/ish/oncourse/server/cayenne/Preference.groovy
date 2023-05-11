@@ -38,7 +38,7 @@ class Preference extends _Preference implements Queueable {
 	 * @return isAsyncReplicationAllowed
 	 */
 	@Override
-	boolean isAsyncReplicationAllowed() {
+	boolean logicAllowsReplication() {
 		return getUser() == null && SERVICES_COMMUNICATION_KEY != getName()
 	}
 

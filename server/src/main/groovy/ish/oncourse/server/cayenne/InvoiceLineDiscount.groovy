@@ -16,7 +16,6 @@ import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._InvoiceLineDiscount
 
 import javax.annotation.Nonnull
-import java.util.Date
 
 /**
  * Object representing relation between InvoiceLine and Discount.
@@ -34,8 +33,8 @@ class InvoiceLineDiscount extends _InvoiceLineDiscount implements Queueable {
      * @return isAsyncReplicationAllowed
      */
     @Override
-    boolean isAsyncReplicationAllowed() {
-        return getInvoiceLine() != null && getInvoiceLine().isAsyncReplicationAllowed()
+    boolean logicAllowsReplication() {
+        return getInvoiceLine() != null && getInvoiceLine().logicAllowsReplication()
     }
 
 	/**

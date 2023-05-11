@@ -33,7 +33,7 @@ class AbstractInvoiceTagRelation extends _AbstractInvoiceTagRelation {
         super.setTaggedInvoice((AbstractInvoice) object)
     }
 
-    boolean isAsyncReplicationAllowed() {
+    boolean logicAllowsReplication() {
         return false
     }
 }

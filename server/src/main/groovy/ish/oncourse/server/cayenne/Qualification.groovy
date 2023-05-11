@@ -183,7 +183,7 @@ class Qualification extends _Qualification implements Queueable {
 	}
 
 	@Override
-	boolean isAsyncReplicationAllowed() {
+	boolean logicAllowsReplication() {
 		return Boolean.TRUE == getIsCustom()
 	}
 

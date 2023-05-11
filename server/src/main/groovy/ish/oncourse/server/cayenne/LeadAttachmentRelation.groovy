@@ -27,7 +27,7 @@ class LeadAttachmentRelation extends _LeadAttachmentRelation {
         super.setAttachedLead((Lead) attachable)
     }
 
-    boolean isAsyncReplicationAllowed() {
+    boolean logicAllowsReplication() {
         return false
     }
 }

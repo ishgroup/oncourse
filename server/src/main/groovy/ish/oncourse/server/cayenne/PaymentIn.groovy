@@ -350,7 +350,7 @@ class PaymentIn extends _PaymentIn implements PaymentInInterface, Queueable, Con
 	}
 
 	@Override
-	boolean isAsyncReplicationAllowed() {
+	boolean logicAllowsReplication() {
 		return getStatus() != null && PaymentStatus.NEW != getStatus() && PaymentStatus.QUEUED != getStatus() && PaymentStatus.IN_TRANSACTION != getStatus()
 	}
 
