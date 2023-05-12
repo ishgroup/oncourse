@@ -9,11 +9,39 @@
 package ish.common.types
 
 import ish.common.util.DisplayableExtendedEnumeration
+import ish.oncourse.API
 
+/**
+ * A set of values for discount availability types.
+ */
+@API
 enum DiscountAvailabilityType implements DisplayableExtendedEnumeration<Integer>{
 
+    /**
+     * Database value: 0
+     *
+     * Office only
+     * The single value that makes discount not available on web
+     */
+    @API
     OFFICE_ONLY(0, "Office only"),
+
+    /**
+     * Database value: 1
+     *
+     * Online only
+     * Default value for old available on web option
+     */
+    @API
     ONLINE_ONLY(1, "Online only"),
+
+    /**
+     * Database value: 2
+     *
+     * Online and office
+     * Also available on web
+     */
+    @API
     ONLINE_AND_OFFICE(2, "Online and office"),
 
 
