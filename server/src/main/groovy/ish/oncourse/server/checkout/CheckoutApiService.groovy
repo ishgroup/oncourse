@@ -36,6 +36,7 @@ import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.checkout.gateway.eway.EWayPaymentService
 import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
 import ish.oncourse.server.checkout.gateway.eway.test.EWayTestPaymentService
+import ish.oncourse.server.checkout.gateway.offline.OfflinePaymentService
 import ish.oncourse.server.integration.EventService
 import ish.oncourse.server.users.SystemUserService
 import ish.common.checkout.gateway.SessionAttributes
@@ -217,8 +218,10 @@ class CheckoutApiService {
             return injector.getInstance(EWayPaymentService.class)
         } else if (gatewayType.equalsIgnoreCase(PaymentGatewayType.EWAY_TEST.getValue())) {
             return injector.getInstance(EWayTestPaymentService.class)
+        } else if (gatewayType.equalsIgnoreCase(PaymentGatewayType.OFFLINE.getValue())) {
+            return injector.getInstance(OfflinePaymentService.class)
         } else {
-            throw new RuntimeException("Preference 'payment.gateway.type' value must be  'WINDCAVE', 'EWAY' or 'EWAY_TEST' to use one of Payment Service implementation.")
+            throw new RuntimeException("Preference 'payment.gateway.type' value must be  'WINDCAVE', 'EWAY', 'EWAY_TEST' or 'OFFLINE' to use one of Payment Service implementation.")
         }
     }
 }
