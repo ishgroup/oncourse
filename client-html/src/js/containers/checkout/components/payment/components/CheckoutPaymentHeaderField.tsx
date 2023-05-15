@@ -47,6 +47,7 @@ import HeaderField, { HeaderFieldTypo } from "../../HeaderField";
 import SelectedPromoCodesRenderer from "../../summary/promocode/SelectedPromoCodesRenderer";
 import CheckoutPaymentPlans from "./payment-plans/CheckoutPaymentPlans";
 import { CheckoutPage } from "../../../constants";
+import { UserPreferencesState } from "../../../../../common/reducers/userPreferencesReducer";
 
 const styles = () => createStyles({
   success: {
@@ -95,6 +96,7 @@ interface PaymentHeaderFieldProps {
   savedCreditCard?: CheckoutPayment["savedCreditCard"];
   uncheckAllPreviousInvoice?: (type: string, value?: boolean) => void;
   checkoutGetSavedCard?: (payerId: number, paymentMethodId: number) => void;
+  paymentGateway?: UserPreferencesState["payment.gateway.type"]
 }
 
 const noPaymentItems = [{ value: "No payment", label: "No payment" }];
@@ -132,7 +134,8 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     savedCreditCard,
     setDisablePayment,
     setPaymentPlans,
-    values
+    values,
+    paymentGateway
   } = props;
   
   const payerContact = useMemo(() => checkoutSummary.list.find(l => l.payer).contact, [checkoutSummary.list]);
@@ -158,6 +161,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
   const [isZeroPayment, setIsZeroPayment] = useState(checkoutSummary.finalTotal === 0);
 
   const paymentTypes = useMemo(() => availablePaymentTypes
+    .filter(({ type }) => paymentGateway === "OFFLINE" ? type !== "Credit card" : true)
     .map(p => ({ value: p.name, label: p.name }))
     .concat(savedCreditCard ? [{ value: "Saved credit card", label: "Saved credit card" }] : []), [availablePaymentTypes, savedCreditCard]);
 
@@ -646,6 +650,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
 const mapStateToProps = (state: State, ownProps) => ({
   values: getFormValues(ownProps.form)(state),
   availablePaymentTypes: state.checkout.payment.availablePaymentTypes,
+  paymentGateway: state.userPreferences['payment.gateway.type'],
   selectedPaymentType: state.checkout.payment.selectedPaymentType,
   checkoutSummary: state.checkout.summary,
   checkoutItems: state.checkout.items,
