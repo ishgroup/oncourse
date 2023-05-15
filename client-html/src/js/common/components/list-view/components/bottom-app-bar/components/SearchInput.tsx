@@ -135,10 +135,10 @@ const getTagNamesSuggestions = (tags: MenuTag[]): Suggestion[] => {
   const childTags = tags.flatMap(t => t.children);
 
   return getAllMenuTags(childTags).map(i => {
-    const name = i.tagBody.name.replace(/\s/g, "_");
+    const name = i.tagBody.name;
     const suggestion: Suggestion = {
       token: "Identifier",
-      value: name,
+      value: ` "${name}"`,
       label: name
     };
 
