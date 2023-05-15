@@ -128,6 +128,7 @@ interface Props extends Partial<ListState> {
   onLoadMore?: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
   selection?: string[];
+  customTabTitle?: string;
   editRecord?: any;
   onBeforeSave?: any;
   classes?: any;
@@ -326,7 +327,8 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
       noListTags,
       preferences,
       checkedChecklists,
-      uncheckedChecklists
+      uncheckedChecklists,
+      customTabTitle
     } = this.props;
 
     const { threeColumn } = this.state;
@@ -367,9 +369,9 @@ class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
     }
 
     if (!fullScreenEditView && rootEntity) {
-      document.title = `${getEntityDisplayName(rootEntity)} (${records.filteredCount || 0} found)`;
+      document.title = `${customTabTitle || getEntityDisplayName(rootEntity)} (${records.filteredCount || 0} found)`;
       if (records.filteredCount === null) {
-        document.title = `${getEntityDisplayName(rootEntity)}`;
+        document.title = `${customTabTitle || getEntityDisplayName(rootEntity)}`;
       }
     }
 

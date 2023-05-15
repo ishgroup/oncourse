@@ -52,6 +52,7 @@ import PriorLearningApp from "../containers/entities/priorLearnings/index";
 import MessageApp from "../containers/entities/messages/index";
 import FinaliseApp from "../containers/finalise-period/index";
 import ContactsApp from "../containers/entities/contacts";
+import VetReportingApp from "../containers/entities/vetReporting";
 import { EnvironmentConstants } from "../constants/EnvironmentConstants";
 import MergeContacts from "../containers/entities/contacts/components/merge-contacts/MergeContacts";
 import Automation from "../containers/automation/index";
@@ -431,6 +432,13 @@ export const routes: MainRoute[] = [
     url: "/duplicateCourseClasses",
     main: DuplicateCourseClassSwingWrapper,
     group: "Products"
+  },
+  {
+    title: "VET reporting",
+    path: "/vetReporting/:id?",
+    url: "/vetReporting",
+    main: VetReportingApp,
+    group: "Activity"
   },
   {
     title: "Contacts",

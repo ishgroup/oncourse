@@ -17,71 +17,27 @@ import { clearListState, getFilters, setListEditRecord } from "../../../common/c
 import ListView from "../../../common/components/list-view/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import {
-  getContactsConcessionTypes,
-  getContactsRelationTypes,
-  getContactsTaxTypes,
-  getContactTags
-} from "./actions";
-import ContactEditView from "./components/ContactEditView";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import {
- getContactRelationTypes, getCountries, getLanguages, getPaymentTypes 
+  getContactRelationTypes, getCountries, getLanguages, getPaymentTypes
 } from "../../preferences/actions";
 import { getDefaultInvoiceTerms } from "../invoices/actions";
-import ContactCogWheel from "./components/ContactCogWheel";
 import { checkPermissions } from "../../../common/actions";
 import { State } from "../../../reducers/state";
-import { PreferencesState } from "../../preferences/reducers/state";
 import student from "../../../../images/student.png";
 import tutor from "../../../../images/tutor.png";
 import company from "../../../../images/company.png";
 import tutorStudent from "../../../../images/student-tutor.png";
 import person from "../../../../images/person.png";
-import { getContactFullName } from "./utils";
-
-export type ContactType = "STUDENT" | "TUTOR" | "COMPANY" | "TUTOR_STUDENT";
-
-export interface ContactsProps {
-  onInit?: () => void;
-  getRecords?: () => void;
-  getFilters?: () => void;
-  clearListState?: () => void;
-  getTags?: () => void;
-  getCountries?: () => void;
-  getLanguages?: () => void;
-  getContactsRelationTypes?: () => void;
-  getContactsConcessionTypes?: () => void;
-  getTaxTypes?: () => void;
-  getDefaultTerms?: () => void;
-  getPermissions?: () => void;
-  getContactRelationTypes?: () => void;
-  selection?: string[];
-  relationTypes?: PreferencesState["contactRelationTypes"];
-  isVerifyingUSI?: boolean;
-  usiVerificationResult?: any;
-  getPaymentTypes?: any;
-}
-
-export const formatRelationsBeforeSave = relations => {
-  if (Array.isArray(relations) && relations.length) {
-    return relations
-      .filter(r => !!(r.relationId && r.relatedContactId))
-      .map(r => {
-        const isReverseRelation = String(r.relationId).includes("r");
-        return {
-          id: r.id,
-          relationId: parseInt(r.relationId, 10),
-          contactToId: isReverseRelation ? null : r.relatedContactId,
-          contactToName: isReverseRelation ? null : r.relatedContactName,
-          contactFromId: isReverseRelation ? r.relatedContactId : null,
-          contactFromName: isReverseRelation ? r.relatedContactName : null
-        };
-      });
-  }
-
-  return relations;
-};
+import VetReportingEditView from "./components/VetReportingEditView";
+import {
+  getContactsConcessionTypes,
+  getContactsRelationTypes,
+  getContactsTaxTypes,
+  getContactTags
+} from "../contacts/actions";
+import { ContactsProps, ContactType } from "../contacts/Contacts";
+import { getContactFullName } from "../contacts/utils";
 
 export const ContactInitial: Contact = {
   id: 0,
@@ -315,6 +271,7 @@ const Contacts: React.FC<ContactsProps> = props => {
 
   return (
     <ListView
+      customTabTitle="VET reporting"
       listProps={{
         firstColumnName: "contactType",
         primaryColumn: "fullName",
@@ -331,12 +288,11 @@ const Contacts: React.FC<ContactsProps> = props => {
         asyncChangeFields: ["notes[].message"],
         hideTitle: true
       }}
-      EditViewContent={ContactEditView}
+      EditViewContent={VetReportingEditView}
       rootEntity="Contact"
       onInit={onInit}
       findRelated={findRelatedItems}
       filterGroupsInitial={filterGroups}
-      CogwheelAdornment={ContactCogWheel}
       searchMenuItemsRenderer={searchMenuItemsRenderer}
     />
   );
@@ -381,4 +337,4 @@ const mapStateToProps = (state: State) => ({
   usiVerificationResult: state.contacts.usiVerificationResult
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Contacts);
+export default connect(mapStateToProps, mapDispatchToProps)(Contacts);
