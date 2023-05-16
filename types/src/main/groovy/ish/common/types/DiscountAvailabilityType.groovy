@@ -67,4 +67,8 @@ enum DiscountAvailabilityType implements DisplayableExtendedEnumeration<Integer>
     String toString() {
         return displayName
     }
+
+    static DiscountAvailabilityType fromValue(String text) {
+        return values().find {it.displayName.equals(text)}
+    }
 }

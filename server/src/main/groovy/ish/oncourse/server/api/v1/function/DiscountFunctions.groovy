@@ -335,7 +335,7 @@ class DiscountFunctions {
             dbDiscount.cosAccount = null
         }
         dbDiscount.predictedStudentsPercentage = discount.predictedStudentsPercentage
-        dbDiscount.availableFor = DiscountAvailabilityType.valueOf(discount.availableFor.toString())
+        dbDiscount.availableFor = DiscountAvailabilityType.fromValue(discount.availableFor.toString())
         dbDiscount.code = discount.code
         dbDiscount.validFrom = LocalDateUtils.valueToDate(discount.validFrom)
         dbDiscount.validFromOffset = discount.validFromOffset
