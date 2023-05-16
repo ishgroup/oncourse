@@ -104,7 +104,7 @@ class DiscountFunctions {
             dto.relationDiscount = !dbDiscount.entityRelationTypes.empty
             if (full) {
                 dto.hideOnWeb = dbDiscount.hideOnWeb
-                dto.availableFor = DiscountAvailabilityTypeDTO.valueOf(dbDiscount.availableFor.displayName)
+                dto.availableFor = DiscountAvailabilityTypeDTO.fromValue(dbDiscount.availableFor.displayName)
                 dto.studentEnrolledWithinDays = dbDiscount.studentEnrolledWithinDays
                 if (dbDiscount.studentAge && dbDiscount.studentAge.matches('[<,>] \\d+')) {
                     dto.studentAgeUnder dbDiscount.studentAge.split(' ')[0] == '<'

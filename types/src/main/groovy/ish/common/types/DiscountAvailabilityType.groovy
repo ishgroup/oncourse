@@ -62,4 +62,9 @@ enum DiscountAvailabilityType implements DisplayableExtendedEnumeration<Integer>
     Integer getDatabaseValue() {
         return value
     }
+
+    @Override
+    String toString() {
+        return displayName
+    }
 }
