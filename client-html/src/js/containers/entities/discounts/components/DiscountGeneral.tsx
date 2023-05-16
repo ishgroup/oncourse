@@ -23,6 +23,7 @@ import { mapSelectItems } from "../../../../common/utils/common";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { EditViewProps } from "../../../../model/common/ListView";
+import { DiscountAvailabilityTypes } from "../constatnts";
 
 interface DiscountGeneralProps extends EditViewProps<Discount> {
   cosAccounts?: { id: number; description: string }[];
@@ -437,15 +438,19 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
         </div>
 
         <FormControlLabel
-          className="checkbox pr-3"
-          control={<FormField type="checkbox" name="availableOnWeb" color="secondary"  />}
-          label="Available for online enrolment"
-        />
-        <FormControlLabel
           className="checkbox pr-3 mb-2"
           control={<FormField type="checkbox" name="hideOnWeb" color="secondary"  />}
           label="Hide discounted price on web"
         />
+
+        <FormField
+          type="select"
+          name="availableFor"
+          label="Available for online enrolment"
+          className="mb-2"
+          items={DiscountAvailabilityTypes || []}
+        />
+
         <FormField type="multilineText" name="description" label="Public description"  />
       </div>
     );
