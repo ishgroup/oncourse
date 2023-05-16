@@ -501,7 +501,7 @@
 		<db-attribute name="discountType" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="hideOnWeb" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="isAvailableOnWeb" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="availabilityType" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="limitPreviousEnrolment" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="minEnrolments" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="minValue" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
@@ -2183,7 +2183,7 @@
 		<obj-attribute name="discountType" type="ish.common.types.DiscountType" db-attribute-path="discountType"/>
 		<obj-attribute name="hideOnWeb" type="java.lang.Boolean" db-attribute-path="hideOnWeb"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
-		<obj-attribute name="availableFor" type="ish.common.types.DiscountAvailabilityType" db-attribute-path="isAvailableOnWeb"/>
+		<obj-attribute name="availableFor" type="ish.common.types.DiscountAvailabilityType" db-attribute-path="availabilityType"/>
 		<obj-attribute name="limitPreviousEnrolment" type="java.lang.Boolean" db-attribute-path="limitPreviousEnrolment"/>
 		<obj-attribute name="minEnrolments" type="java.lang.Integer" db-attribute-path="minEnrolments"/>
 		<obj-attribute name="minValue" type="ish.math.Money" db-attribute-path="minValue"/>
