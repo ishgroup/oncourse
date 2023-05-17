@@ -957,10 +957,10 @@ class DefaultUserPreference {
                         width: W300, visible: true, sortFields: [Contact.LAST_NAME.name,
                                                                  Contact.FIRST_NAME.name,
                                                                  Contact.MIDDLE_NAME.name]),
-                new ColumnDTO(title: 'Birthdate', attribute: Contact.BIRTH_DATE.name, sortable: true, type: ColumnTypeDTO.DATE,
-                        width: W300, visible: true),
                 new ColumnDTO(title: 'Email', attribute: Contact.EMAIL_KEY, sortable: true,
-                        width: W200, visible: false),
+                        width: W200, visible: true),
+                new ColumnDTO(title: 'Birthdate', attribute: Contact.BIRTH_DATE.name, sortable: true, type: ColumnTypeDTO.DATE,
+                        width: W300, visible: false),
                 new ColumnDTO(title: 'Enrolments', attribute: Contact.ENROLMENTS_COUNT_KEY, sortable: false,
                         width: W200, visible: false),
         ]
