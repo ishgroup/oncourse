@@ -29,20 +29,20 @@ enum DiscountAvailabilityType implements DisplayableExtendedEnumeration<Integer>
     /**
      * Database value: 1
      *
-     * Online only
+     * Online and office
      * Default value for old available on web option
      */
     @API
-    ONLINE_ONLY(1, "Online only"),
+    ONLINE_AND_OFFICE(1, "Online and office"),
 
     /**
      * Database value: 2
      *
-     * Online and office
-     * Also available on web
+     * Online only
+     * Avaivable only on web, not on quick enrol
      */
     @API
-    ONLINE_AND_OFFICE(2, "Online and office"),
+    ONLINE_ONLY(2, "Online only"),
 
 
     private String displayName;
