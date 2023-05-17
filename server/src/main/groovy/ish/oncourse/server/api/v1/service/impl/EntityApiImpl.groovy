@@ -156,8 +156,8 @@ class EntityApiImpl implements EntityApi {
     }
 
     @Override
-    void updateTableModel(String entity, TableModelDTO tableModel) {
-        preference.setTableModel(entity, tableModel)
+    void updateTableModel(String tableModelIdentifier, TableModelDTO tableModel) {
+        preference.setTableModel(tableModelIdentifier, tableModel)
     }
 
     private static void populateResponce(List<PersistentObject> records, DataResponseDTO response, List<ColumnDTO> columns = null, List<String> stringColumns = null) {
@@ -191,7 +191,7 @@ class EntityApiImpl implements EntityApi {
         DataResponseDTO dataResponse = new DataResponseDTO()
 
         dataResponse.entity = entity.capitalize()
-        TableModelDTO model = preference.getTableModel(request.tableModel ? request.tableModel : dataResponse.entity)
+        TableModelDTO model = preference.getTableModel(request.customTableModel ? request.customTableModel : dataResponse.entity)
         dataResponse.search = request.search
         dataResponse.pageSize = request.pageSize ? request.pageSize : DEF_PAGE_SIZE
         dataResponse.offset = request.offset ? request.offset : DEF_OFFSET

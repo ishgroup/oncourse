@@ -4,12 +4,12 @@ put:
   tags:
   - Entity
   parameters:
-  - name: entity
+  - name: tableModelIdentifier
     in: query
     required: true
     type: string
     example: Audit
-    description: onCourse entity name
+    description: identifier of required table model
   - name: tableModel
     in: body
     required: true

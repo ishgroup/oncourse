@@ -61,8 +61,8 @@ class UserPreferenceService {
 
     private ObjectMapper mapper = new ObjectMapper()
 
-    void setTableModel(String entity, TableModelDTO model) {
-        String name = "$USER_PREF_PREFIX.$entity".toString()
+    void setTableModel(String tableModelIdentifier, TableModelDTO model) {
+        String name = "$USER_PREF_PREFIX.$tableModelIdentifier".toString()
         Preference preference = getUserPref(name)?:createUserPref(name)
         preference.valueString = mapper.writeValueAsString(model)
         preference.context.commitChanges()
