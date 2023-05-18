@@ -221,7 +221,7 @@ class CheckoutApiService {
         } else if (gatewayType.equalsIgnoreCase(PaymentGatewayType.OFFLINE.getValue())) {
             return injector.getInstance(OfflinePaymentService.class)
         } else {
-            throw new RuntimeException("Preference 'payment.gateway.type' value must be  'WINDCAVE', 'EWAY', 'EWAY_TEST' or 'OFFLINE' to use one of Payment Service implementation.")
+            paymentService.handleError(PaymentGatewayError.PAYMENT_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Sorry, you cannot make a purchase. The selected payment method is prohibited for the ${gatewayType} payment system. Please contact the administrator.")])
         }
     }
 }
