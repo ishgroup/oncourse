@@ -15,7 +15,7 @@ import ish.oncourse.API
  * A set of values for discount availability types.
  */
 @API
-enum DiscountAvailabilityType implements DisplayableExtendedEnumeration<Integer>{
+public enum DiscountAvailabilityType implements DisplayableExtendedEnumeration<Integer>{
 
     /**
      * Database value: 0
