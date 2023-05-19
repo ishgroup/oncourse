@@ -14,7 +14,11 @@ import Decimal from "decimal.js-light";
 import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import Subtitle from "../../../../common/components/layout/Subtitle";
-import { validateNonNegative, validateRangeInclusive, validateSingleMandatoryField } from "../../../../common/utils/validation";
+import {
+  validateNonNegative,
+  validateRangeInclusive,
+  validateSingleMandatoryField
+} from "../../../../common/utils/validation";
 import { State } from "../../../../reducers/state";
 import { Switch } from "../../../../common/components/form/formFields/Switch";
 import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
@@ -290,9 +294,8 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
     const gridXS = twoColumn ? 6 : 12;
 
     return (
-      <div className="d-grid p-3">
-        <Grid container columnSpacing={3} rowSpacing={2}>
-          <Grid item container xs={12}>
+      <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
+          <Grid item xs={12}>
             <FullScreenStickyHeader
               opened={isNew || Object.keys(syncErrors).includes("name")}
               twoColumn={twoColumn}
@@ -365,7 +368,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
             </Collapse>
           </Grid>
 
-          <Grid item xs={12} className="mt-2 mb-2">
+          <Grid item xs={12} className="mt-2">
             <Subtitle label="ACCOUNTING" />
           </Grid>
           <Grid item xs={gridXS}>
@@ -403,7 +406,6 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
                   type="text"
                   name="code"
                   placeholder="Code"
-                  inline
                   normalize={trimValue}
                   debounced={false}
                   required
@@ -412,7 +414,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
             </div>
           </Grid>
 
-          <Grid item xs={gridXS} className="mb-2">
+          <Grid item xs={gridXS} >
             <CustomSelector
               caption="Valid from"
               options={this.validFromOptions}
@@ -421,7 +423,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
             />
           </Grid>
 
-          <Grid item xs={gridXS} className="mb-2">
+          <Grid item xs={gridXS} >
             <CustomSelector
               caption="Valid to"
               options={this.validToOptions}
@@ -429,30 +431,31 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
               initialIndex={validToIndex}
             />
           </Grid>
+          <Grid item xs={12}>
+            <Divider  />
+          </Grid>
+          <Grid item xs={12}>
+            <Subtitle label="WEB" />
+          </Grid>
+          <Grid item xs={12}>
+            <FormControlLabel
+              className="checkbox pr-3"
+              control={<FormField type="checkbox" name="hideOnWeb" color="secondary"  />}
+              label="Hide discounted price on web"
+            />
+          </Grid>
+          <Grid item xs={gridXS} >
+            <FormField
+              type="select"
+              name="availableFor"
+              label="Available for online enrolment"
+              items={DiscountAvailabilityTypes || []}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <FormField type="multilineText" name="description" label="Public description"  />
+          </Grid>
         </Grid>
-
-        <Divider className="mt-2 mb-2" />
-
-        <div className="mb-2">
-          <Subtitle label="WEB" />
-        </div>
-
-        <FormControlLabel
-          className="checkbox pr-3 mb-2"
-          control={<FormField type="checkbox" name="hideOnWeb" color="secondary"  />}
-          label="Hide discounted price on web"
-        />
-
-        <FormField
-          type="select"
-          name="availableFor"
-          label="Available for online enrolment"
-          className="mb-2"
-          items={DiscountAvailabilityTypes || []}
-        />
-
-        <FormField type="multilineText" name="description" label="Public description"  />
-      </div>
     );
   }
 }
