@@ -56,13 +56,15 @@ class ProductItem extends _ProductItem implements Queueable, NotableTrait, Conta
 	}
 
 	private void removeAbandonedCartsWithThisProduct(){
-		List<Checkout> checkouts = CartFunctions.checkoutsByContactId(context, contact.willowId)
+		if(contact != null) {
+			List<Checkout> checkouts = CartFunctions.checkoutsByContactId(context, contact.willowId)
 
-		checkouts.each {checkout ->
-			def productIds = CartFunctions.idsOfCurrentItems(checkout, contact.willowId, CartFunctions.PRODUCTS_KEY)
-			if (productIds.contains(product.willowId)) {
-				context.deleteObject(checkout)
-				context.commitChanges()
+			checkouts.each { checkout ->
+				def productIds = CartFunctions.idsOfCurrentItems(checkout, contact.willowId, CartFunctions.PRODUCTS_KEY)
+				if (productIds.contains(product.willowId)) {
+					context.deleteObject(checkout)
+					context.commitChanges()
+				}
 			}
 		}
 	}
