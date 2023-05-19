@@ -4,7 +4,6 @@
  */
 
 import React, { useCallback, useState } from "react";
-import { withStyles } from "@mui/styles";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
@@ -12,24 +11,28 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import { connect } from "react-redux";
 import { showConfirm } from "../../actions";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
+import { makeAppStyles } from "../../styles/makeStyles";
+import clsx from "clsx";
 
-const styles = theme =>
-  ({
-    mainButton: {
-      boxShadow: "none",
-      color: theme.palette.primary.main,
+const useStyles = makeAppStyles(theme => ({
+  root: {
+    zIndex: theme.zIndex.drawer
+  },
+  mainButton: {
+    boxShadow: "none",
+    color: theme.palette.primary.main,
+    backgroundColor: "transparent",
+    "&:hover": {
       backgroundColor: "transparent",
-      "&:hover": {
-        backgroundColor: "transparent",
-      }
-    },
-    actions: {},
-    directionLeft: {
-      "& $actions": {
-        paddingRight: theme.spacing(4.5)
-      }
     }
-  } as any);
+  },
+  actions: {},
+  directionLeft: {
+    "& $actions": {
+      paddingRight: theme.spacing(4.5)
+    }
+  }
+}));
 
 interface FormSettingsAction {
   action: any;
@@ -43,12 +46,13 @@ interface FormSettingsAction {
 
 interface Props {
   actions: FormSettingsAction[];
-  classes?: any;
   showConfirm?: ShowConfirmCaller;
 }
 
-const AppBarActions = React.memo<Props>(({ actions, classes, showConfirm }) => {
+const AppBarActions = React.memo<Props>(({ actions, showConfirm }) => {
   const [opened, setOpened] = useState<boolean>(false);
+  
+  const classes = useStyles();
 
   const onClickAction = useCallback((onConfirm, confirmMessage, confirmButtonText) => {
     if (confirmMessage) {
@@ -90,7 +94,7 @@ const AppBarActions = React.memo<Props>(({ actions, classes, showConfirm }) => {
           }
         }}
         classes={{
-          root: "align-items-center",
+          root: clsx("align-items-center", classes.root),
           actions: classes.actions,
           directionLeft: classes.directionLeft
         }}
@@ -116,4 +120,4 @@ const mapDispatchToProps = dispatch => ({
   showConfirm: props => dispatch(showConfirm(props))
 });
 
-export default connect<any, any, any>(null, mapDispatchToProps)(withStyles(styles)(AppBarActions));
+export default connect<any, any, any>(null, mapDispatchToProps)(AppBarActions);

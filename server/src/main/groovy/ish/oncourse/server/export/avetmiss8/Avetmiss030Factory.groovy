@@ -80,7 +80,7 @@ class Avetmiss030Factory extends AvetmissFactory {
                 line.setRecognitionIdentifier(14)
         }
 
-        def level = GetQualificationLevelOfEducation.valueOf(qualification.getLevel().toLowerCase()).get()
+        def level = GetQualificationLevelOfEducation.valueOf(qualification.level?.toLowerCase()).get()
         line.setQualLevel(level)
 
         // ------------------

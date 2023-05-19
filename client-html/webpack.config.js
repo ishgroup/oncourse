@@ -137,14 +137,12 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
               ["http-equiv"]: "Content-Security-Policy",
               ["content"]: "" +
               " default-src 'self'" +
+              " localhost:* ws://localhost:* https://127.0.0.1:8182/a/" +
               " https://*.google-analytics.com" +
               " https://*.googletagmanager.com" +
               " https://*.googleapis.com" +
               " https://*.google.com" +
               " https://*.ish.com.au" +
-              " https://*.hotjar.com" +
-              " https://*.hotjar.io" +
-              " wss://*.hotjar.com" +
               " 'unsafe-inline';" +
               " img-src * 'self' data: https:;" +
               " frame-src 'self' data: https:;"
@@ -159,7 +157,6 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
         }),
         new webpack.SourceMapDevToolPlugin({
           filename: `[file].map`,
-
           exclude: [/vendor/]
         }),
         new CompressionPlugin({
@@ -189,7 +186,6 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
           }),
         );
       }
-
       break;
     }
     case "development":

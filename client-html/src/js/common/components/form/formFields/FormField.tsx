@@ -137,7 +137,7 @@ const FormField = React.forwardRef<any, BaseProps>((props, ref) => {
     }
     if (type === "tags") {
       result.push(
-        (value, allValues, formProps) => validateTagsList(tags || [], value, formProps, props, (type === "tags"
+        (value, allValues, formProps) => validateTagsList(tags || [], value, allValues, formProps, (type === "tags"
             ? props.validateEntity
             : null
         ))

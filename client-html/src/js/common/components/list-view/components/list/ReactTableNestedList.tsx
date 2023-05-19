@@ -134,7 +134,7 @@ const Table: React.FC<NestedListTableProps> = ({
               {columnDef.header && (<TableSortLabel
                 hideSortIcon={!canSort}
                 active={Boolean(direction)}
-                direction={direction || ""}
+                direction={direction || "asc"}
                 classes={{
                   root: clsx(
                     canSort ? classes.canSort : classes.noSort,

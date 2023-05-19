@@ -173,6 +173,17 @@ public abstract class CommonPreferenceController {
 	}
 
 	/**
+	 * @return payment gateway type (EWAY, EWAY_TEST, WINDCAVE, TEST, DISABLED)
+	 */
+	public  String getPaymentGatewayType() {
+		String paymentType = getValue(PAYMENT_GATEWAY_TYPE, false);
+		if (paymentType == null) {
+			throw new IllegalArgumentException();
+		}
+		return paymentType;
+	}
+
+	/**
 	 * @return the timezone ID or null
 	 */
 	public String getOncourseServerDefaultTimezone() {

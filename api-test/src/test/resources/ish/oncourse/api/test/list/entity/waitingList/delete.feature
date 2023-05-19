@@ -7,6 +7,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/waitingList
         * def ishPathLogin = 'login'
         * def ishPath = 'list/entity/waitingList'
         * def ishPathPlain = 'list/plain'
+        * def ishPathDelete = 'list/entity/waitingList/bulkDelete'
         
 
 
@@ -43,8 +44,13 @@ Feature: Main feature for all DELETE requests with path 'list/entity/waitingList
         * print "id = " + id
 #       <----->
 
-        Given path ishPath + '/' + id
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 #       <---> Verification of deleting:
@@ -94,8 +100,13 @@ Feature: Main feature for all DELETE requests with path 'list/entity/waitingList
         
 #       <--->
 
-        Given path ishPath + '/' + id
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 #       <---> Verification deleting:
@@ -140,30 +151,44 @@ Feature: Main feature for all DELETE requests with path 'list/entity/waitingList
         * print "id = " + id
 
 #       <--->  Login as notadmin
-        * configure headers = { Authorization:  'UserWithRightsCreate'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
         
 #       <--->
 
-        Given path ishPath + '/' + id
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 403
-        And match $.errorMessage == "Sorry, you have no permissions to delete waitingList. Please contact your administrator"
+        And match $.errorMessage == "Sorry, you have no permissions to edit waiting lists. Please contact your administrator."
 
 #       <---->  Scenario have been finished. Now change back permissions and delete created entity:
         * configure headers = { Authorization: 'admin'}
 
-        
 
-        Given path ishPath + '/' + id
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 
 
     Scenario: (-) Delete NOT existing WaitingList
 
-        Given path ishPath + '/99999'
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [99999],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 400
-        And match response.errorMessage == "WaitingList with id:99999 doesn't exist"
+        And match response.errorMessage == "Record with id 99999 not found"

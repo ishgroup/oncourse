@@ -59,25 +59,23 @@ class WaitingLists extends React.Component<any, any> {
     } = this.props;
 
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "student.contact.fullName",
-            secondaryColumn: "course.name"
-          }}
-          editViewProps={{
-            manualLink,
-            nameCondition,
-            hideTitle: true
-          }}
-          updateTableModel={updateTableModel}
-          EditViewContent={WaitingListEditView}
-          rootEntity="WaitingList"
-          onInit={onInit}
-          findRelated={findRelatedGroup}
-          CogwheelAdornment={WaitingListCogWheel}
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "student.contact.fullName",
+          secondaryColumn: "course.name"
+        }}
+        editViewProps={{
+          manualLink,
+          nameCondition,
+          hideTitle: true
+        }}
+        updateTableModel={updateTableModel}
+        EditViewContent={WaitingListEditView}
+        rootEntity="WaitingList"
+        onInit={onInit}
+        findRelated={findRelatedGroup}
+        CogwheelAdornment={WaitingListCogWheel}
+      />
     );
   }
 }
