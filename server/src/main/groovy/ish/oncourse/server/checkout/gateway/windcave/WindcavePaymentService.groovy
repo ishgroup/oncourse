@@ -21,6 +21,7 @@ import ish.common.checkout.gateway.PaymentGatewayError
 import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
 
 import static WindcavePaymentAPI.AUTH_TYPE
+import static ish.oncourse.server.checkout.gateway.CheckoutErrorHandler.handleError
 
 class WindcavePaymentService implements PaymentServiceInterface {
 
