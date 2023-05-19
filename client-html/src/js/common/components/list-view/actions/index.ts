@@ -50,6 +50,8 @@ export const SET_LIST_SEARCH = "set/listView/search";
 
 export const SET_LIST_ENTITY = "set/listView/entity";
 
+export const SET_LIST_CUSTOM_TABLE_MODEL = "set/listView/customTableModel";
+
 export const SET_LIST_SEARCH_ERROR = "set/listView/search/error";
 
 export const SET_LIST_SELECTION = "set/listView/selection";
@@ -103,20 +105,10 @@ export const setListMenuTags = (menuTags: MenuTag[], checkedChecklists: MenuTag[
 });
 
 export const getRecords = (
-  {
-    entity,
-    viewAll,
-    listUpdate,
-    savedID,
-    ignoreSelection,
-    stopIndex,
-    resolve
-  }: GetRecordsArgs
+  payload: GetRecordsArgs
 ): IAction<GetRecordsArgs> => ({
   type: GET_RECORDS_REQUEST,
-  payload: {
-    entity, listUpdate, savedID, ignoreSelection, viewAll, stopIndex, resolve
-  }
+  payload
 });
 
 export const getPlainRecords = (entity: string, columns: string) => ({
@@ -201,6 +193,11 @@ export const bulkChangeRecords = (entity: EntityName, diff: Diff) => ({
 export const setListEntity = (entity: EntityName) => ({
   type: SET_LIST_ENTITY,
   payload: entity
+});
+
+export const setListCustomTableModel = (customTableModel: string) => ({
+  type: SET_LIST_CUSTOM_TABLE_MODEL,
+  payload: customTableModel
 });
 
 export const setListFullScreenEditView = (fullScreenEditView: boolean) => ({

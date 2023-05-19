@@ -33,7 +33,7 @@ import {
   SET_RECIPIENTS_MESSAGE_DATA,
   CLEAR_RECIPIENTS_MESSAGE_DATA,
   SET_LIST_EDIT_RECORD_FETCHING,
-  UPDATE_TAGS_ORDER,
+  UPDATE_TAGS_ORDER, SET_LIST_CUSTOM_TABLE_MODEL,
 } from "../actions";
 import { latestActivityStorageHandler } from "../../../utils/storage";
 import { GetRecordsArgs, ListState } from "../../../../model/common/ListView";
@@ -93,6 +93,8 @@ class State implements ListState {
   creatingNew = false;
 
   fullScreenEditView = false;
+
+  customTableModel = "";
 }
 
 export const listReducer = (state: State = new State(), action: IAction<any>): any => {
@@ -269,6 +271,13 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
           ...state.records,
           entity: action.payload
         }
+      };
+    }
+
+    case SET_LIST_CUSTOM_TABLE_MODEL: {
+      return {
+        ...state,
+        customTableModel: action.payload
       };
     }
 

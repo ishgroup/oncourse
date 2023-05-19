@@ -13,7 +13,12 @@ import { initialize } from "redux-form";
 import Typography from "@mui/material/Typography";
 import { Contact } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
-import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
+import {
+  clearListState,
+  getFilters,
+  setListCustomTableModel,
+  setListEditRecord
+} from "../../../common/components/list-view/actions";
 import ListView from "../../../common/components/list-view/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
@@ -185,7 +190,7 @@ const setRowClasses = row => {
   return undefined;
 };
 
-const Contacts: React.FC<ContactsProps> = props => {
+const VetReporting: React.FC<ContactsProps> = props => {
   const {
     getFilters,
     clearListState,
@@ -199,6 +204,7 @@ const Contacts: React.FC<ContactsProps> = props => {
     getDefaultTerms,
     getPermissions,
     getContactRelationTypes,
+    setCustomTableModel,
     relationTypes,
     selection,
     isVerifyingUSI,
@@ -249,6 +255,7 @@ const Contacts: React.FC<ContactsProps> = props => {
   }, [relationTypes, selection]);
 
   useEffect(() => {
+    setCustomTableModel();
     getPaymentTypes();
     getFilters();
     getTags();
@@ -303,11 +310,12 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(setListEditRecord(ContactInitial));
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, ContactInitial));
   },
+  setCustomTableModel: () => dispatch(setListCustomTableModel("vetReporting")),
   getTags: () => {
     dispatch(getContactTags());
   },
   getContactRelationTypes: () => {
-    dispatch(getContactRelationTypes());
+    dispatch(getContactRelationTypes())
   },
   getFilters: () => dispatch(getFilters("Contact")),
   getCountries: () => dispatch(getCountries()),
@@ -337,4 +345,4 @@ const mapStateToProps = (state: State) => ({
   usiVerificationResult: state.contacts.usiVerificationResult
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Contacts);
+export default connect(mapStateToProps, mapDispatchToProps)(VetReporting);

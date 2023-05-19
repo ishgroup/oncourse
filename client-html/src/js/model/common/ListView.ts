@@ -74,6 +74,7 @@ export interface ListState {
   searchQuery?: SearchQuery;
   searchError?: boolean;
   userAQLSearch?: string;
+  customTableModel?: string;
   savingFilter?: SavingFilterState;
   scripts?: Script[];
   emailTemplates?: EmailTemplate[];
@@ -117,6 +118,7 @@ export interface EditViewProps<V = any> extends Partial<InjectedFormProps<V>> {
   dispatch: any;
   updateDeleteCondition: AnyArgFunction;
   showConfirm: ShowConfirmCaller;
+  onScroll?: AnyArgFunction;
   twoColumn?: boolean;
   isNested?: boolean;
   nestedIndex?: number;
@@ -138,6 +140,7 @@ export interface GetRecordsArgs {
   ignoreSelection?: boolean;
   stopIndex?: number;
   resolve?: AnyArgFunction;
+  tableModel?: string;
 }
 
 export interface CustomColumnFormats {

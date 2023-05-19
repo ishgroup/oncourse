@@ -8,7 +8,7 @@
 
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { ProductItem, ProductItemStatus, TableModel } from "@api/model";
+import { ProductItem, ProductItemStatus } from "@api/model";
 import { clearListState, getFilters } from "../../../common/components/list-view/actions";
 import { getSalesManuTags } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
@@ -30,7 +30,6 @@ interface SalesProps {
   getTags?: () => void;
   getAccounts?: () => void;
   clearListState?: () => void;
-  updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
 }
 
 const filterGroups: FilterGroup[] = [
@@ -111,8 +110,6 @@ const setRowClasses = ({ displayStatus }: { displayStatus: ProductItemStatus }) 
 
 const Sales: React.FC<SalesProps> = props => {
   const {
-    updateTableModel,
-    onInit,
     getFilters,
     getAccounts,
     getTaxes,
@@ -142,7 +139,6 @@ const Sales: React.FC<SalesProps> = props => {
         asyncChangeFields: ["notes[].message"],
         nameCondition: values => (values ? values.productName : "")
       }}
-      updateTableModel={updateTableModel}
       EditViewContent={SalesEditView}
       CogwheelAdornment={SalesCogwheel}
       rootEntity="ProductItem"

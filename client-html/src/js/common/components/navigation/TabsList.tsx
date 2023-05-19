@@ -16,7 +16,6 @@ import NewsRender from "../news/NewsRender";
 import { APP_BAR_HEIGHT, TAB_LIST_SCROLL_TARGET_ID } from "../../../constants/Config";
 import { LSGetItem, LSSetItem } from "../../utils/storage";
 import { EditViewProps } from "../../../model/common/ListView";
-import { useStickyScrollSpy } from "../../utils/hooks";
 import { makeAppStyles } from "../../styles/makeStyles";
 import SideBarHeader from "../layout/side-bar-list/SideBarHeader";
 
@@ -65,9 +64,7 @@ const TabsList = React.memo<Props & RouteComponentProps>((
     newsOffset
   }
 ) => {
-  const { scrollSpy } = useStickyScrollSpy();
   const classes = useStyles();
-
   const scrolledPX = useRef<number>(0);
   const scrollNodes = useRef<HTMLElement[]>([]);
   const scrollContainer = useRef<HTMLDivElement>(null);
@@ -148,10 +145,12 @@ const TabsList = React.memo<Props & RouteComponentProps>((
       return;
     }
 
-    scrollSpy(e);
-
     if (e.target.id !== TAB_LIST_SCROLL_TARGET_ID) {
       return;
+    }
+
+    if (itemProps?.onScroll) {
+      itemProps.onScroll(e);
     }
 
     const isScrollingDown = scrolledPX.current < e.target.scrollTop;

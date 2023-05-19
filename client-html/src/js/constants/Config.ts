@@ -38,7 +38,7 @@ export const HEADER_ROWS_COUNT = 2;
 
 export const HEADER_ROWS_INDICES = [0, 1];
 
-export const STICKY_HEADER_EVENT = 'sticky-change';
+export const STICKY_HEADER_SCROLL_OFFSET = 28;
 
 export const APPLICATION_THEME_STORAGE_NAME = "theme";
 

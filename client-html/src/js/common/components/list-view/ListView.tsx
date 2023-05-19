@@ -13,7 +13,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { createStyles, withStyles } from "@mui/styles";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel } from "@api/model";
+import { Currency, ExportTemplate, LayoutType, Report, TableModel } from "@api/model";
 import { createTheme } from '@mui/material';
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import Button from "@mui/material/Button";
@@ -61,8 +61,7 @@ import {
   EditViewContainerProps,
   FilterGroup,
   FindRelatedItem,
-  ListAqlMenuItemsRenderer,
-  ListState
+  ListAqlMenuItemsRenderer
 } from "../../../model/common/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "./constants";
 import { getEntityDisplayName } from "../../utils/getEntityDisplayName";
@@ -118,34 +117,28 @@ interface OwnProps {
   onDelete?: (id: number) => void;
   getEditRecord?: (id: number) => void;
   onSave?: (item: any) => void;
-}
-
-interface Props extends Partial<ListState> {
-  listProps: TableListProps;
-  rootEntity: EntityName;
-  EditViewContent: any;
-  dispatch?: Dispatch;
-  onLoadMore?: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => void;
-  updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
-  selection?: string[];
-  customTabTitle?: string;
-  editRecord?: any;
-  onBeforeSave?: any;
+  location?: any;
+  history?: any;
+  match?: any;
   classes?: any;
   isDirty?: boolean;
   isInvalid?: boolean;
+  editRecord?: any;
   fullScreenEditView?: boolean;
   fetching?: boolean;
   savingFilter?: any;
-  defaultDeleteDisabled?: boolean;
-  createButtonDisabled?: boolean;
-  fetch?: Fetch;
-  menuTags?: MenuTag[];
-  scriptsFilterColumn?: string;
-  filterEntity?: EntityName;
-  filterGroups?: FilterGroup[];
-  filterGroupsInitial?: FilterGroup[];
   onSearch?: StringArgFunction;
+  getCustomFieldTypes?: (entity: EntityName) => void;
+  setEntity?: (entity: EntityName) => void;
+  getListViewPreferences?: () => void;
+  preferences?: UserPreferencesState;
+  setListviewMainContentWidth?: (value: string) => void;
+  submitForm?: any;
+  closeConfirm?: () => void;
+  onLoadMore?: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => void;
+  updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
+  dispatch?: Dispatch;
+  fetch?: Fetch;
   setFilterGroups?: (filterGroups: FilterGroup[]) => void;
   setListMenuTags?: ({ tags, checkedChecklists, uncheckedChecklists }: { tags: MenuTag[], checkedChecklists: MenuTag[], uncheckedChecklists: MenuTag[] }) => void;
   deleteFilter?: (id: number, entity: string, checked: boolean) => void;
@@ -158,10 +151,28 @@ interface Props extends Partial<ListState> {
   openConfirm?: ShowConfirmCaller;
   resetEditView?: NoArgFunction;
   clearListState?: NoArgFunction;
-  onInit?: NoArgFunction;
-  findRelated?: FindRelatedItem[];
   setListCreatingNew?: BooleanArgFunction;
   setListFullScreenEditView?: BooleanArgFunction;
+  sendGAEvent?: (event: GAEventTypes, screen: string, time?: number) => void;
+  currency?: Currency;
+  findRelatedByFilter?: AnyArgFunction;
+  setListEditRecordFetching?: any;
+}
+
+interface Props {
+  listProps: TableListProps;
+  rootEntity: EntityName;
+  onBeforeSave?: any;
+  EditViewContent: any;
+  customTabTitle?: string;
+  defaultDeleteDisabled?: boolean;
+  createButtonDisabled?: boolean;
+  scriptsFilterColumn?: string;
+  filterEntity?: EntityName;
+  filterGroups?: FilterGroup[];
+  filterGroupsInitial?: FilterGroup[];
+  onInit?: NoArgFunction;
+  findRelated?: FindRelatedItem[];
   editViewProps?: {
     nameCondition?: EditViewContainerProps["nameCondition"];
     manualLink?: EditViewContainerProps["manualLink"];
@@ -175,12 +186,7 @@ interface Props extends Partial<ListState> {
     hideTitle?: EditViewContainerProps["hideTitle"];
   };
   CogwheelAdornment?: any;
-  location?: any;
-  history?: any;
-  match?: any;
-  sendGAEvent?: (event: GAEventTypes, screen: string, time?: number) => void;
   alwaysFullScreenCreateView?: any;
-  currency?: Currency;
   CustomFindRelatedMenu?: any;
   ShareContainerAlertComponent?: any;
   searchMenuItemsRenderer?: ListAqlMenuItemsRenderer;
@@ -188,25 +194,10 @@ interface Props extends Partial<ListState> {
   customOnCreateAction?: any;
   customUpdateAction?: any;
   preformatBeforeSubmit?: AnyArgFunction;
-  findRelatedByFilter?: AnyArgFunction;
-  userAQLSearch?: string;
-  listSearch?: string;
-  creatingNew?: boolean;
-  editRecordFetching?: boolean;
-  searchQuery?: SearchQuery;
-  setListEditRecordFetching?: any;
-  search?: string;
   deleteDisabledCondition?: (props) => boolean;
   noListTags?: boolean;
-  setEntity?: (entity: EntityName) => void;
-  getListViewPreferences?: () => void;
-  preferences?: UserPreferencesState;
-  setListviewMainContentWidth?: (value: string) => void;
-  submitForm?: any;
-  closeConfirm?: () => void;
   deleteWithoutConfirmation?: boolean;
   getCustomBulkEditFields?: any;
-  getCustomFieldTypes?: (entity: EntityName) => void;
 }
 
 interface ComponentState {
@@ -220,7 +211,7 @@ interface ComponentState {
   newSelection: string[] | null;
 }
 
-class ListView extends React.PureComponent<Props & OwnProps, ComponentState> {
+class ListView extends React.PureComponent<Props & OwnProps & State["list"] & State["share"], ComponentState> {
   private containerNode;
 
   private searchComponentNode: React.RefObject<any>;

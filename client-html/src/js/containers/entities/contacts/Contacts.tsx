@@ -46,6 +46,7 @@ export interface ContactsProps {
   onInit?: () => void;
   getRecords?: () => void;
   getFilters?: () => void;
+  setCustomTableModel?: () => void;
   clearListState?: () => void;
   getTags?: () => void;
   getCountries?: () => void;
