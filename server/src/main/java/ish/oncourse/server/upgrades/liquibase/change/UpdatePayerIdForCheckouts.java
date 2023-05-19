@@ -9,6 +9,7 @@
 package ish.oncourse.server.upgrades.liquibase.change;
 
 import groovy.json.JsonSlurper;
+import ish.liquibase.IshTaskChange;
 import ish.math.Money;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.Checkout;
@@ -19,7 +20,6 @@ import liquibase.exception.CustomChangeException;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.ObjectSelect;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
