@@ -14,7 +14,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/discount'
     Scenario: (+) Delete existing discount without relations by admin
 
 #       <----->  Add a new entity for deleting and get id:
-        * def newDiscount = {"addByDefault":false,"code":null,"availableOnWeb":false,"corporatePassDiscounts":[],"cosAccount":null,"description":null,"discountConcessionTypes":[],"discountCourseClasses":[],"discountMax":null,"discountMemberships":[],"discountMin":null,"discountPercent":0.1,"discountType":"Percent","discountValue":0,"hideOnWeb":false,"minEnrolments":0,"minValue":0,"name":"testDiscount100","predictedStudentsPercentage":0.1,"rounding":"No Rounding","studentAge":null,"studentAgeUnder":null,"studentEnrolledWithinDays":null,"studentPostcode":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null}
+        * def newDiscount = {"addByDefault":false,"code":null,"availableFor":'Office only',"corporatePassDiscounts":[],"cosAccount":null,"description":null,"discountConcessionTypes":[],"discountCourseClasses":[],"discountMax":null,"discountMemberships":[],"discountMin":null,"discountPercent":0.1,"discountType":"Percent","discountValue":0,"hideOnWeb":false,"minEnrolments":0,"minValue":0,"name":"testDiscount100","predictedStudentsPercentage":0.1,"rounding":"No Rounding","studentAge":null,"studentAgeUnder":null,"studentEnrolledWithinDays":null,"studentPostcode":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null}
 
         Given path ishPath
         And request newDiscount
@@ -46,7 +46,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/discount'
     Scenario: (+) Delete existing discount by notadmin with access rights
 
 #       <----->  Add a new entity for deleting and get id:
-        * def newDiscount = {"addByDefault":false,"code":null,"availableOnWeb":false,"corporatePassDiscounts":[],"cosAccount":null,"description":null,"discountConcessionTypes":[],"discountCourseClasses":[],"discountMax":null,"discountMemberships":[],"discountMin":null,"discountPercent":0.1,"discountType":"Percent","discountValue":0,"hideOnWeb":false,"minEnrolments":0,"minValue":0,"name":"testDiscount101","predictedStudentsPercentage":0.1,"rounding":"No Rounding","studentAge":null,"studentAgeUnder":null,"studentEnrolledWithinDays":null,"studentPostcode":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null}
+        * def newDiscount = {"addByDefault":false,"code":null,"availableFor":'Office only',"corporatePassDiscounts":[],"cosAccount":null,"description":null,"discountConcessionTypes":[],"discountCourseClasses":[],"discountMax":null,"discountMemberships":[],"discountMin":null,"discountPercent":0.1,"discountType":"Percent","discountValue":0,"hideOnWeb":false,"minEnrolments":0,"minValue":0,"name":"testDiscount101","predictedStudentsPercentage":0.1,"rounding":"No Rounding","studentAge":null,"studentAgeUnder":null,"studentEnrolledWithinDays":null,"studentPostcode":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null}
 
         Given path ishPath
         And request newDiscount
@@ -83,7 +83,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/discount'
     Scenario: (-) Delete existing discount by notadmin without access rights
 
 #       <----->  Add a new entity for deleting and get id:
-        * def newDiscount = {"addByDefault":false,"code":null,"availableOnWeb":false,"corporatePassDiscounts":[],"cosAccount":null,"description":null,"discountConcessionTypes":[],"discountCourseClasses":[],"discountMax":null,"discountMemberships":[],"discountMin":null,"discountPercent":0.1,"discountType":"Percent","discountValue":0,"hideOnWeb":false,"minEnrolments":0,"minValue":0,"name":"testDiscount102","predictedStudentsPercentage":0.1,"rounding":"No Rounding","studentAge":null,"studentAgeUnder":null,"studentEnrolledWithinDays":null,"studentPostcode":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null}
+        * def newDiscount = {"addByDefault":false,"code":null,"availableFor":'Office only',"corporatePassDiscounts":[],"cosAccount":null,"description":null,"discountConcessionTypes":[],"discountCourseClasses":[],"discountMax":null,"discountMemberships":[],"discountMin":null,"discountPercent":0.1,"discountType":"Percent","discountValue":0,"hideOnWeb":false,"minEnrolments":0,"minValue":0,"name":"testDiscount102","predictedStudentsPercentage":0.1,"rounding":"No Rounding","studentAge":null,"studentAgeUnder":null,"studentEnrolledWithinDays":null,"studentPostcode":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null}
 
         Given path ishPath
         And request newDiscount

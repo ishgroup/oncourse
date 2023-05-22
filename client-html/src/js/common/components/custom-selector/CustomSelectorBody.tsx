@@ -24,6 +24,7 @@ const CustomSelectorBody = ({ className, options, selectedIndex }: Props) => {
             format={option.format}
             min={option.min}
             preformatDisplayValue={option.preformatDisplayValue}
+            inline
           />
           {option.type && option.type !== "date" && ` ${option.body}`}
         </Typography>
