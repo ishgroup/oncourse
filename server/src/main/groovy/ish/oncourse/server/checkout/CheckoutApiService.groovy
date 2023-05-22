@@ -10,7 +10,6 @@ package ish.oncourse.server.checkout
 
 import com.google.inject.Inject
 import com.google.inject.Injector
-import ish.oncourse.server.checkout.gateway.CheckoutErrorHandler
 import ish.common.checkout.gateway.PaymentGatewayError
 import ish.common.types.PaymentGatewayType
 import ish.common.types.SystemEventType
@@ -116,7 +115,7 @@ class CheckoutApiService {
         paymentService = getPaymentServiceByGatewayType()
 
         if (!checkout.errors.empty) {
-            CheckoutErrorHandler.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, checkout.errors)
+            paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, checkout.errors)
         }  else if (xValidateOnly) {
             eventService.postEvent(SystemEvent.valueOf(SystemEventType.VALIDATE_CHECKOUT, checkoutModel))
         }
@@ -124,7 +123,7 @@ class CheckoutApiService {
         if (checkoutModel.payWithSavedCard) {
             cardId =  paymentInDao.getCreditCardId(checkout.paymentIn.payer)
             if (cardId == null) {
-                CheckoutErrorHandler.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'payWithSavedCard', error: 'Payer has no credit card history')])
+                paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'payWithSavedCard', error: 'Payer has no credit card history')])
             }
         }
 
@@ -144,9 +143,9 @@ class CheckoutApiService {
                     dtoResponse.ccFormUrl = attributes.ccFormUrl
                     dtoResponse.merchantReference = merchantReference
                 } else if (attributes.errorMessage) {
-                    CheckoutErrorHandler.handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: attributes.errorMessage)])
+                    paymentService.handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: attributes.errorMessage)])
                 } else {
-                    CheckoutErrorHandler.handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber)
+                    paymentService.handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber)
                 }
 
             } else {
@@ -159,7 +158,7 @@ class CheckoutApiService {
                     sessionAttributes = paymentService.makeTransaction(amount, merchantReference, cardId)
                 } else {
                     if (!checkoutModel.merchantReference) {
-                        CheckoutErrorHandler.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'merchantReference', error: "Merchant reference is required")])
+                        paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'merchantReference', error: "Merchant reference is required")])
                     } else {
                         merchantReference = checkoutModel.merchantReference
                     }
@@ -167,16 +166,16 @@ class CheckoutApiService {
                     sessionAttributes = paymentService.checkStatus(xPaymentSessionId)
 
                     if (!sessionAttributes.complete) {
-                        CheckoutErrorHandler.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card authorisation is not complite, $sessionAttributes.statusText, ${sessionAttributes.errorMessage ?: ""}")])
+                        paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card authorisation is not complite, $sessionAttributes.statusText, ${sessionAttributes.errorMessage ?: ""}")])
                     }
                 }
 
                 if (!sessionAttributes.authorised) {
-                    CheckoutErrorHandler.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card declined: $sessionAttributes.statusText, ${sessionAttributes.errorMessage ?: ""}")])
+                    paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card declined: $sessionAttributes.statusText, ${sessionAttributes.errorMessage ?: ""}")])
                 }
 
                 if (ObjectSelect.query(PaymentIn).where(PaymentIn.GATEWAY_REFERENCE.eq(sessionAttributes.transactionId)).selectFirst(cayenneService.newContext) != null) {
-                    CheckoutErrorHandler.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card payment already complete")])
+                    paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card payment already complete")])
                 }
 
                 PaymentIn paymentIn = checkout.paymentIn

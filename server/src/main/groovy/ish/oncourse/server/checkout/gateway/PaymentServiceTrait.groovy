@@ -8,22 +8,31 @@
 
 package ish.oncourse.server.checkout.gateway
 
-import ish.common.checkout.gateway.PaymentGatewayError
 import ish.common.types.PaymentStatus
 import ish.oncourse.server.api.checkout.Checkout
-import ish.oncourse.server.api.v1.model.*
+import ish.oncourse.server.api.v1.model.CheckoutArticleDTO
+import ish.oncourse.server.api.v1.model.CheckoutEnrolmentDTO
+import ish.oncourse.server.api.v1.model.CheckoutMembershipDTO
+import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
+import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
+import ish.oncourse.server.api.v1.model.CheckoutVoucherDTO
+import ish.oncourse.server.api.v1.model.InvoiceDTO
+import ish.oncourse.server.api.v1.model.InvoiceInvoiceLineDTO
 import ish.oncourse.server.cayenne.Article
 import ish.oncourse.server.cayenne.Membership
 import ish.oncourse.server.cayenne.ProductItem
 import ish.oncourse.server.cayenne.Voucher
+import ish.common.checkout.gateway.PaymentGatewayError
 import ish.util.LocalDateUtils
 import org.apache.cayenne.validation.ValidationException
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import javax.ws.rs.ClientErrorException
+import javax.ws.rs.core.Response
+
 import static ish.common.types.ConfirmationStatus.DO_NOT_SEND
 import static ish.common.types.ConfirmationStatus.NOT_SENT
-import static ish.oncourse.server.checkout.gateway.CheckoutErrorHandler.handleError
 
 trait PaymentServiceTrait {
 
@@ -114,6 +123,15 @@ trait PaymentServiceTrait {
                 dtoInvoice
             }
         }
+    }
+
+    void handleError(int status, Object entity = null) {
+        Response response = Response
+                .status(status)
+                .entity(entity)
+                .build()
+
+        throw new ClientErrorException(response)
     }
 
 }
