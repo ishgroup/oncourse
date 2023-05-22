@@ -467,27 +467,27 @@
               createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Discount id="1" code="[null]" discountType="1" discountPercent="0.05" name="discountPercent1" rounding="0"
-            validFrom="[null]" validTo="[null]" predictedStudentsPercentage="0" HIDEONWEB="0" ISAVAILABLEONWEB="1"
+            validFrom="[null]" validTo="[null]" predictedStudentsPercentage="0" HIDEONWEB="0" AVAILABILITYTYPE="1"
             addByDefault="0" minEnrolments="1" minValue="0" limitPreviousEnrolment="0"
             createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Discount id="2" code="[null]" discountType="1" discountPercent="0.05" name="discountPercent2" rounding="0"
-            validFrom="[null]" validTo="[null]" predictedStudentsPercentage="0" HIDEONWEB="0" ISAVAILABLEONWEB="1"
+            validFrom="[null]" validTo="[null]" predictedStudentsPercentage="0" HIDEONWEB="0" AVAILABILITYTYPE="1"
             addByDefault="0" minEnrolments="1" minValue="0" limitPreviousEnrolment="0"
             createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Discount id="3" code="[null]" discountType="1" discountPercent="0.05" name="discountPercent3" rounding="0"
             validFrom="2000-01-01 16:00:00" validTo="2001-01-01 16:00:00" predictedStudentsPercentage="0" HIDEONWEB="0"
-            ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1" minValue="0" limitPreviousEnrolment="0"
+            AVAILABILITYTYPE="1" addByDefault="0" minEnrolments="1" minValue="0" limitPreviousEnrolment="0"
             createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Discount id="4" code="[null]" discountType="1" discountPercent="0.05" name="discountPercent4" rounding="0"
             validFrom="2000-01-01 16:00:00" validTo="2100-01-01 16:00:00" predictedStudentsPercentage="0" HIDEONWEB="0"
-            ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1" minValue="0" limitPreviousEnrolment="0"
+            AVAILABILITYTYPE="1" addByDefault="0" minEnrolments="1" minValue="0" limitPreviousEnrolment="0"
             createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Discount id="5" code="[null]" discountType="1" discountPercent="0.05" name="discountPercent5" rounding="0"
-            validFrom="[null]" validTo="[null]" predictedStudentsPercentage="0" HIDEONWEB="0" ISAVAILABLEONWEB="1"
+            validFrom="[null]" validTo="[null]" predictedStudentsPercentage="0" HIDEONWEB="0" AVAILABILITYTYPE="1"
             addByDefault="0" minEnrolments="1" minValue="0" limitPreviousEnrolment="0"
             createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Discount id="6" code="acodea" discountType="1" discountPercent="0.05" name="discountPercent6" rounding="0"
-            validFrom="[null]" validTo="[null]" predictedStudentsPercentage="0" HIDEONWEB="0" ISAVAILABLEONWEB="1"
+            validFrom="[null]" validTo="[null]" predictedStudentsPercentage="0" HIDEONWEB="0" AVAILABILITYTYPE="1"
             addByDefault="0" minEnrolments="1" minValue="0" limitPreviousEnrolment="0"
             createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
