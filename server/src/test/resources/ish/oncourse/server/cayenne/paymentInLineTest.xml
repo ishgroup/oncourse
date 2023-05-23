@@ -88,7 +88,7 @@
           ISSUFFICIENTFORQUALIFICATION="0" ISTRAINEESHIP="0" ISVET="0" NAME="Test 2" WILLOWID="2" enrolmentType="1"
           fieldConfigurationSchemaId="1" feeHelpClass="0" CREATEDON="2021-12-21 12:00:10.0" MODIFIEDON="2021-12-21 12:00:10.0"/>
 
-  <Discount DISCOUNTPERCENT="0.50" DISCOUNTTYPE="1" HIDEONWEB="0" ID="1" ISAVAILABLEONWEB="1" NAME="discountPercent1"
+  <Discount DISCOUNTPERCENT="0.50" DISCOUNTTYPE="1" HIDEONWEB="0" ID="1" AVAILABILITYTYPE="1" NAME="discountPercent1"
             PREDICTEDSTUDENTSPERCENTAGE="0.00" ROUNDING="0" addByDefault="0" minEnrolments="1" minValue="0"
             limitPreviousEnrolment="0" CREATEDON="2021-12-21 12:00:10.0" MODIFIEDON="2021-12-21 12:00:10.0"/>
 

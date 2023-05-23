@@ -53,6 +53,7 @@ import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.checkout.CheckoutApiService
 import ish.oncourse.server.checkout.gateway.eway.test.EWayTestPaymentAPI
 import ish.oncourse.server.checkout.gateway.eway.test.EWayTestPaymentService
+import ish.oncourse.server.checkout.gateway.offline.OfflinePaymentService
 import ish.oncourse.server.concurrent.ExecutorManager
 import ish.oncourse.server.dashboard.ClassSearchService
 import ish.oncourse.server.dashboard.ContactSearchService
@@ -111,6 +112,7 @@ class ApiServiceModule implements Module {
         binder.bind(EWayPaymentService).in(Scopes.SINGLETON)
         binder.bind(EWayTestPaymentAPI).in(Scopes.SINGLETON)
         binder.bind(EWayTestPaymentService).in(Scopes.SINGLETON)
+        binder.bind(OfflinePaymentService).in(Scopes.SINGLETON)
         binder.bind(WindcavePaymentAPI).in(Scopes.SINGLETON)
         binder.bind(WindcavePaymentService).in(Scopes.SINGLETON)
         binder.bind(PriorLearningApiService).in(Scopes.SINGLETON)
