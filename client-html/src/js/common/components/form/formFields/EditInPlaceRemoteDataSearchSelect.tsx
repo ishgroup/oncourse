@@ -26,6 +26,7 @@ const EditInPlaceRemoteDataSearchSelect: React.FC<EditInPlaceRemoteDataSelectFie
     entity,
     aqlFilter,
     aqlColumns,
+    getCustomSearch,
     ...rest
   }
 ) => {
@@ -83,7 +84,14 @@ const getDefaultColumns = entity => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => {
-  const getSearch = search => (search ? `~"${search}"${ownProps.aqlFilter ? ` and ${ownProps.aqlFilter}` : ""}` : "");
+  const getSearch = search => ownProps.getCustomSearch
+    ? ownProps.getCustomSearch(search)
+    : (search
+      ? `~"${search}"${ownProps.aqlFilter 
+        ? ` and ${ownProps.aqlFilter}` 
+        : ""}`
+      : "");
+
   return {
     onLoadMoreRows: (offset?: number) => dispatch(
       getCommonPlainRecords(

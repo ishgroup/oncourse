@@ -9,19 +9,32 @@
 import React, { useMemo, useState } from "react";
 import { Contact } from "@api/model";
 import { EditViewProps } from "../../../../model/common/ListView";
-import FullScreenStickyHeader from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import ProfileHeading from "../../contacts/components/ProfileHeading";
+import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
+import VetReportingStudent from "./VetReportingStudent";
+import VetReportingEnrolments from "./VetReportingEnrolments";
+import VetReportingOutcomes from "./VetReportingOutcomes";
 
-const VetReportingEditView = (props: EditViewProps<Contact>) => {
-  const {
-    twoColumn,
-    isNew,
-    form,
-    dispatch,
-    showConfirm,
-    values,
-    syncErrors,
-  } = props;
+const items: TabsListItem[] = [
+  {
+    label: "Student",
+    labelAdornment: "Contact\nVET",
+    component: props => <VetReportingStudent {...props} />,
+    expandable: true
+  },
+  {
+    label: "Enrolments",
+    labelAdornment: "VET student loans\nAssessment submissions\nCredit & RPL",
+    component: props => <VetReportingEnrolments {...props} />,
+    expandable: true
+  },
+  {
+    label: "Outcomes",
+    component: props => <VetReportingOutcomes {...props} />,
+    expandable: true
+  }
+];
+
+const VetReportingEditView = ({ onScroll, values, ...rest }: EditViewProps<Contact>) => {
 
   const [usiUpdateLocked, setUsiUpdateLocked] = useState(true);
 
@@ -31,34 +44,16 @@ const VetReportingEditView = (props: EditViewProps<Contact>) => {
   );
 
   return (
-    <div className="p-3">
-      <FullScreenStickyHeader
-        twoColumn={twoColumn}
-        title="Student"
-        disableInteraction
-      />
-      <div style={{ height: 64 }}/>
-
-      <ProfileHeading
-        isNew={isNew}
-        form={form}
-        dispatch={dispatch}
-        showConfirm={showConfirm}
-        values={values}
-        twoColumn={twoColumn}
-        isCompany={values.isCompany}
-        usiLocked={usiLocked}
-        syncErrors={syncErrors}
-      />
-
-      <div style={{ height: 2000 }}/>
-      <FullScreenStickyHeader
-        twoColumn={twoColumn}
-        title="Enrolment"
-        disableInteraction
-      />
-      <div style={{ height: 2000 }}/>
-    </div>
+    <TabsList
+      items={items}
+      onParentScroll={onScroll}
+      itemProps={{
+        setUsiUpdateLocked,
+        usiLocked,
+        values,
+        ...rest
+      }}
+    />
   );
 };
 

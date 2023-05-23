@@ -249,7 +249,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
   }, [prevId, usiVerificationResult]);
 
   return values ? (
-    <div className="pt-1 pl-3 pr-3">
+    <div className="pl-3 pr-3">
       <ExpandableContainer formErrors={syncErrors} index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
         <Grid container columnSpacing={3} rowSpacing={2}>
           {countries && (

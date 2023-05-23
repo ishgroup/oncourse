@@ -158,6 +158,7 @@ export interface EditInPlaceSearchSelectFieldProps {
 
 export interface EditInPlaceRemoteDataSelectFieldProps extends EditInPlaceSearchSelectFieldProps {
   onSearchChange?: StringArgFunction;
+  getCustomSearch?: (search: string) => string;
   onLoadMoreRows?: NumberArgFunction;
   onClearRows?: AnyArgFunction;
   entity: EntityName;

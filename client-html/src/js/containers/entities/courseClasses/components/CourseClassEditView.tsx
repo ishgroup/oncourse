@@ -226,7 +226,7 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
  dispatch,
  expandedBudget,
  expandBudgetItem,
- currentTax
+ currentTax,
 }) => {
   const classes = useBudgetAdornmentStyles();
 
@@ -341,7 +341,8 @@ const CourseClassEditView: React.FC<Props> = ({
   toogleFullScreenEditView,
   currencySymbol,
   taxes,
-  tutorRoles
+  tutorRoles,
+                                                onScroll
 }) => {
   const [classRooms, setClassRooms] = useState<CourseClassRoom[]>([]);
   const [sessionsData, setSessionsData] = useState<any>(null);
@@ -546,6 +547,7 @@ const CourseClassEditView: React.FC<Props> = ({
 
   return (
     <TabsList
+      onParentScroll={onScroll}
       items={items}
       itemProps={{
         isNew,

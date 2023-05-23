@@ -48,11 +48,13 @@ const EnrolmentEditView = props => {
     invalid,
     onEditViewScroll,
     isScrollingRoot,
+    onScroll
   } = props;
 
   return (
     <>
       <TabsList
+        onParentScroll={onScroll}
         items={values ? items : []}
         itemProps={{
           isNew,

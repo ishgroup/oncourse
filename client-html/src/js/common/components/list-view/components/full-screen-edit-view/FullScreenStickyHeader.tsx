@@ -81,6 +81,12 @@ const useStyles = makeAppStyles(theme => ({
     marginBottom: theme.spacing(0.5),
     marginLeft: theme.spacing(1)
   },
+  isFixed: {
+    marginTop: theme.spacing(4),
+    position: "fixed",
+    top: 0,
+    zIndex: theme.zIndex.appBar + 1,
+  },
   disableInteraction: {}
 }));
 
@@ -93,6 +99,7 @@ interface Props {
   title?: any;
   disableInteraction?: boolean,
   opened?: boolean,
+  isFixed?: boolean,
   fields?: any,
   className?: string
 }
@@ -107,7 +114,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
     fields,
     twoColumn,
     disableInteraction,
-    className
+    isFixed =  true
   } = props;
 
   const classes = useStyles();
@@ -165,9 +172,8 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
           xs={12}
           className={clsx(
             "centeredFlex",
-            twoColumn && !opened &&  isStuck && classes.fullScreenTitleItem,
-            className,
-
+            twoColumn && !opened && isStuck && classes.fullScreenTitleItem,
+            isFixed && twoColumn && classes.isFixed,
           )}
           columnSpacing={3}
         >

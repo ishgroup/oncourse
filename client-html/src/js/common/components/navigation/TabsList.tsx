@@ -18,6 +18,7 @@ import { LSGetItem, LSSetItem } from "../../utils/storage";
 import { EditViewProps } from "../../../model/common/ListView";
 import { makeAppStyles } from "../../styles/makeStyles";
 import SideBarHeader from "../layout/side-bar-list/SideBarHeader";
+import { AnyArgFunction } from "../../../model/common/CommonFunctions";
 
 const useStyles = makeAppStyles(theme => ({
   listContainer: {
@@ -45,9 +46,10 @@ export interface TabsListItem {
 }
 
 interface Props {
+  items: TabsListItem[];
+  onParentScroll: AnyArgFunction;
   classes?: any;
   itemProps?: EditViewProps & any;
-  items: TabsListItem[];
   newsOffset?: string;
 }
 
@@ -61,7 +63,8 @@ const TabsList = React.memo<Props & RouteComponentProps>((
     itemProps = {},
     history, 
     location,
-    newsOffset
+    newsOffset,
+    onParentScroll
   }
 ) => {
   const classes = useStyles();
@@ -149,9 +152,7 @@ const TabsList = React.memo<Props & RouteComponentProps>((
       return;
     }
 
-    if (itemProps?.onScroll) {
-      itemProps.onScroll(e);
-    }
+    onParentScroll(e);
 
     const isScrollingDown = scrolledPX.current < e.target.scrollTop;
 

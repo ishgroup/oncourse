@@ -61,7 +61,7 @@ const AvailabilityFormComponent = React.memo<Props>(
      name = "rules",
      timezone,
 }) => (
-  <div className={`${className} pl-3 pr-3`}>
+  <div className={`${className} pl-3 pr-3 pb-1`}>
     <div className="centeredFlex">
       <div className="heading mt-2 mb-2">
         {getLabelWithCount("Availability Rule", values[name] ? values[name].length : 0)}

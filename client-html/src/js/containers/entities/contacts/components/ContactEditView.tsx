@@ -156,6 +156,7 @@ const ContactEditView = (props: EditViewProps<Contact> & Props) => {
 
   return (
     <TabsList
+      onParentScroll={onScroll}
       items={values ? getActiveItems() : []}
       newsOffset={twoColumn ? theme.spacing(6) : null}
       itemProps={{

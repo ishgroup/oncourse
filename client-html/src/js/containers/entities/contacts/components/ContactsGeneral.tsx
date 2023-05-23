@@ -87,15 +87,6 @@ const filterCompanyTags = (tag: Tag) => {
   return true;
 };
 
-const useStyles = makeAppStyles(theme => ({
-  profile: {
-    marginTop: theme.spacing(4),
-    position: "fixed",
-    top: 0,
-    zIndex: theme.zIndex.appBar + 1,
-  }
-}));
-
 const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
   const {
     twoColumn,
@@ -115,8 +106,6 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     showConfirm,
     usiLocked,
   } = props;
-
-  const classes = useStyles();
 
   const isInitiallyStudent = initialValues && !!initialValues.student;
   const isInitiallyTutor = initialValues && !!initialValues.tutor;
@@ -192,6 +181,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
   return (
     <div className="pt-3 pl-3 pr-3">
       <ProfileHeading
+        isFixed
         isNew={isNew}
         form={form}
         dispatch={dispatch}
@@ -201,7 +191,6 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
         isCompany={isCompany}
         usiLocked={usiLocked}
         syncErrors={syncErrors}
-        className={classes.profile}
       />
       <Grid container columnSpacing={3}>
         <Grid item xs={12} md={twoColumn ? 7 : 12}>

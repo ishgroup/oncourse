@@ -19,6 +19,7 @@ import { usePrevious } from "../../../utils/hooks";
 import { ListboxComponent, selectStyles } from "./SelectCustomComponents";
 import EditInPlaceFieldBase from "./EditInPlaceFieldBase";
 import { EditInPlaceSearchSelectFieldProps } from "../../../../model/common/Fields";
+import { stubComponent } from "../../../utils/common";
 
 const searchStyles = theme => createStyles({
   inputEndAdornment: {
@@ -355,11 +356,8 @@ const EditInPlaceSearchSelect = ({
   const getOptionLabel = option => (selectLabelCondition ? selectLabelCondition(option) : option && option[selectLabelMark]) || "";
 
   const getOptionSelected = (option: any, value: any) => {
-    if (multiple) {
+    if (multiple || returnType === "object") {
       return option[selectValueMark] === value[selectValueMark];
-    }
-    if (returnType === "object") {
-      return option === value;
     }
     return option[selectValueMark] === value;
   };
@@ -408,10 +406,21 @@ const EditInPlaceSearchSelect = ({
     classes
   ]);
 
-  const renderValue = useMemo(() => valueRenderer
-    ? valueRenderer(displayedValue, selectedOption, searchValue, { value: selectedOption && selectedOption[selectValueMark] })
-    : null,
-  [selectedOption, searchValue, displayedValue, selectValueMark, valueRenderer]);
+  const renderValue = useMemo(() => {
+    const valueForRender = returnType === "object"
+      ? input.value
+      : selectedOption;
+    
+    return valueRenderer
+      ? valueRenderer(
+        displayedValue,
+        valueForRender,
+        searchValue,
+        { value: valueForRender && valueForRender[selectValueMark] }
+      )
+      : null;  
+  },
+  [selectedOption, searchValue, displayedValue, selectValueMark, returnType, valueRenderer, input.value]);
 
   const renderIcons = useMemo(() => !disabled && (
     loading
@@ -450,7 +459,7 @@ const EditInPlaceSearchSelect = ({
     const rendered = placeholder || (!isEditing ? "No value" : "");
     return multiple && inputValue.length ? null : rendered;
   }, [multiple, placeholder, isEditing, inputValue]);
-
+  
   return (
     <div
       className={clsx(className, "outline-none")}
@@ -547,7 +556,7 @@ const EditInPlaceSearchSelect = ({
                   }}
                   classes={{ select: "cursor-text" }}
                   onFocus={edit}
-                  value={input.value || ""}
+                  value={(returnType === "object" ? input.value[selectValueMark] : input.value) || ""}
                   endAdornment={
                     <InputAdornment
                       position="end"
@@ -555,7 +564,7 @@ const EditInPlaceSearchSelect = ({
                       {renderIcons}
                     </InputAdornment>
                   }
-                  IconComponent={null}
+                  IconComponent={stubComponent}
                 >
                   {renderValue}
                 </Select>

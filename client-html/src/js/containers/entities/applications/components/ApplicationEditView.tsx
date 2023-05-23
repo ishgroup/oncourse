@@ -36,6 +36,7 @@ const items: TabsListItem[] = [
 
 const ApplicationEditView: React.FC<EditViewProps<Application> & { classes: any }> = props => (
   <TabsList
+    onParentScroll={props.onScroll}
     items={props.values ? items : []}
     itemProps={props}
   />

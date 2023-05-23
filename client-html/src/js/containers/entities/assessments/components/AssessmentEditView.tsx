@@ -41,11 +41,13 @@ const AssessmentEditView: React.FC<EditViewProps<Assessment>> = props => {
     rootEntity,
     onCloseClick,
     toogleFullScreenEditView,
-    syncErrors
+    syncErrors,
+    onScroll
   } = props;
 
   return (
     <TabsList
+      onParentScroll={onScroll}
       items={items}
       itemProps={{
         isNew,

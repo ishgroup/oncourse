@@ -53,7 +53,6 @@ const validateBirthDate = v => (!v || new Date(v).getTime() - Date.now() < 0 ? u
 const validateABN = v => (!v || (new RegExp(/^\d+$/)).test(v) ? undefined : "Business Number (ABN) should be numeric.");
 
 interface ContactDetailsProps extends EditViewProps<Contact> {
-  relationTypes?: ContactRelationType[];
   classes?: any;
   isStudent?: boolean;
   isTutor?: boolean;
@@ -63,7 +62,6 @@ interface ContactDetailsProps extends EditViewProps<Contact> {
   setIsCompany?: any;
   tags?: any;
   countries?: any;
-  concessionTypes?: ConcessionType[];
   usiLocked?: boolean;
   fullScreenEditView?: boolean;
 }
@@ -78,9 +76,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
     dispatch,
     form,
     syncErrors,
-    relationTypes,
     countries,
-    concessionTypes,
     usiLocked,
     isCompany,
   } = props;
@@ -171,74 +167,6 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
 
     return fieldName;
   };
-
-  const membershipsCount = useMemo(() => (values.memberships && values.memberships.length) || 0, [values.memberships]);
-  const relationsCount = useMemo(() => (values.relations && values.relations.length) || 0, [values.relations]);
-  const concessionsCount = useMemo(
-    () => (values.student && values.student.concessions && values.student.concessions.length) || 0,
-    [values.student && values.student.concessions]
-  );
-
-  const deleteRelation = useCallback(
-    index => {
-      dispatch(arrayRemove(form, "relations", index));
-    },
-    [values && values.relations, form]
-  );
-
-  const addNewRelation = useCallback(() => {
-    dispatch(
-      arrayInsert(form, "relations", 0, {
-        id: null,
-        relationId: null,
-        relatedContactId: null,
-        relatedContactName: null
-      })
-    );
-  }, [values && values.id, form]);
-
-  const RelationsHeaderLine = useCallback(
-    props => <RelationsHeader relationTypes={relationTypes} contactId={values.id} {...props} />,
-    [values && values.id, relationTypes]
-  );
-  const RelationsContentLine = useCallback(
-    props => (
-      <RelationsContent
-        form={form}
-        dispatch={dispatch}
-        relationTypes={relationTypes}
-        contactId={values.id}
-        contactFullName={getContactFullName(values)}
-        {...props}
-      />
-    ),
-    [values && values.firstName, values && values.lastName, values && values.id, form, relationTypes]
-  );
-
-  const deleteConcession = useCallback(
-    index => {
-      dispatch(arrayRemove(form, "student.concessions", index));
-    },
-    [values && values.student && values.student.concessions, form]
-  );
-
-  const addNewConcession = useCallback(() => {
-    const newLine: StudentConcession = {
-      number: null,
-      expiresOn: null,
-      type: null
-    };
-
-    dispatch(arrayInsert(form, "student.concessions", 0, newLine));
-  }, [values && values.id, form]);
-
-  const ConcessionsHeaderLine = useCallback(props => <ConcessionsHeader {...props} />, [
-    values.student && values.student.concessions
-  ]);
-  const ConcessionsContentLine = useCallback(
-    props => <ConcessionsContent concessionTypes={concessionTypes} {...props} />,
-    []
-  );
 
   return values ? (
     <Grid container className="pt-2 pl-3 pr-3">
@@ -453,54 +381,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
           </Grid>
         </ExpandableContainer>
       </Grid>
-      {values.student && (
-        <>
-          <Grid item xs={12} className="pb-1">
-            <Divider className="mb-1" />
-            <MinifiedEntitiesList
-              name="student.concessions"
-              header="Concessions"
-              oneItemHeader="Concession"
-              count={concessionsCount}
-              FieldsContent={ConcessionsContentLine}
-              HeaderContent={ConcessionsHeaderLine}
-              onAdd={addNewConcession}
-              onDelete={deleteConcession}
-              syncErrors={syncErrors}
-              accordion
-            />
-          </Grid>
-        </>
-      )}
-      <Grid item xs={12} className="pb-1">
-        <Divider className="mb-1" />
-        <MinifiedEntitiesList
-          name="memberships"
-          header="Memberships"
-          oneItemHeader="Membership"
-          count={membershipsCount}
-          FieldsContent={MembershipContent}
-          HeaderContent={MembershipHeader}
-          syncErrors={syncErrors}
-          twoColumn={twoColumn}
-          accordion
-        />
-      </Grid>
-      <Grid item xs={12} className="pb-1">
-        <Divider className="mb-1" />
-        <MinifiedEntitiesList
-          name="relations"
-          header="Relations"
-          oneItemHeader="Relation"
-          count={relationsCount}
-          FieldsContent={RelationsContentLine}
-          HeaderContent={RelationsHeaderLine}
-          onAdd={addNewRelation}
-          onDelete={deleteRelation}
-          syncErrors={syncErrors}
-          accordion
-        />
-      </Grid>
+
     </Grid>
   ) : null;
 };
@@ -508,8 +389,6 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["Contact"],
   countries: state.countries,
-  relationTypes: state.contacts.contactsRelationTypes,
-  concessionTypes: state.contacts.contactsConcessionTypes,
   fullScreenEditView: state.list.fullScreenEditView
 });
 
