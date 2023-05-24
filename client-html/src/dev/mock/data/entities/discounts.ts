@@ -1,9 +1,10 @@
 import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
+import { Discount } from "@api/model";
 
 export function mockDiscounts() {
   this.getDiscounts = () => this.discounts;
 
-  this.getDiscount = id => {
+  this.getDiscount = (id): Discount => {
     const row = this.discounts.rows.find(discount => Number(discount.id) === Number(id));
     return {
       id: row.id,
@@ -15,7 +16,7 @@ export function mockDiscounts() {
       discountPercent: row.values[5],
       discountType: "Percent",
       addByDefault: false,
-      availableOnWeb: true,
+      availableFor: "Online and office",
       corporatePassDiscounts: [
         { id: 1, contactFullName: "Jackson1" },
         { id: 2, contactFullName: "Jackson2" }
@@ -25,14 +26,14 @@ export function mockDiscounts() {
       discountConcessionTypes: [
         {
           allowOnWeb: true,
-          id: "1",
+          id: 1,
           name: "Seniors card1",
           requireExpary: true,
           requireNumber: true
         },
         {
           allowOnWeb: true,
-          id: "2",
+          id: 1,
           name: "Seniors card2",
           requireExpary: true,
           requireNumber: true

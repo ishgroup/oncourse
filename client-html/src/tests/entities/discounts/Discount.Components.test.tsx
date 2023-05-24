@@ -9,7 +9,7 @@ describe("Virtual rendered DiscountEditView", () => {
   mockedEditView({
     entity: "Discount",
     EditView: DiscountEditView,
-    record: mockecApi => mockecApi.db.getDiscount(1),
+    record: mockApi => mockApi.db.getDiscount(1),
     render: ({ screen, initialValues, formRoleName }) => {
       expect(screen.getByRole(formRoleName)).toHaveFormValues({
         name: initialValues.name,
@@ -20,7 +20,7 @@ describe("Virtual rendered DiscountEditView", () => {
         code: initialValues.code,
         validFrom: format(new Date(initialValues.validFrom), III_DD_MMM_YYYY),
         validTo: format(new Date(initialValues.validTo), III_DD_MMM_YYYY),
-        availableOnWeb: initialValues.availableOnWeb,
+        availableFor: initialValues.availableFor,
         hideOnWeb: initialValues.hideOnWeb,
         description: initialValues.description,
         addByDefault: initialValues.addByDefault,

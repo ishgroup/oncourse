@@ -23,7 +23,6 @@ import { formatCurrency } from "../../../../../common/utils/numbers/numbersNorma
 import { checkoutChangeSummaryItemField, checkoutUpdatePromo } from "../../../actions/checkoutSummary";
 import { StyledCourseItemRenderer } from "../../items/components/SelectedItemRenderer";
 import CheckoutAppBar from "../../CheckoutAppBar";
-import { CheckoutSummaryCogwheel } from "../CheckoutSummaryCogwheel";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const styles = () => createStyles({
@@ -50,7 +49,7 @@ const getDiscountLabel = (selectedDiscount, currencySymbol) => {
       return `${formatCurrency(parseFloat(selectedDiscount.discountValue), currencySymbol)} fee override discount`;
     }
     case "Percent": {
-      return `${parseFloat(selectedDiscount.discount.discountPercent) * 100}% discount`;
+      return `${parseFloat(selectedDiscount.discountPercent) * 100}% discount`;
     }
     default:
       return "";

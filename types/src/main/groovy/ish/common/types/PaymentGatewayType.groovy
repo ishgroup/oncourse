@@ -18,6 +18,8 @@ enum PaymentGatewayType {
 
     TEST_PAYMENT_SYSTEM("TEST"),
 
+    OFFLINE("OFFLINE"),
+
     DISABLED("DISABLED");
 
     private String value
@@ -42,6 +44,9 @@ enum PaymentGatewayType {
         }
         if (TEST_PAYMENT_SYSTEM.value.equalsIgnoreCase(value)) {
             return TEST_PAYMENT_SYSTEM
+        }
+        if (OFFLINE.value.equalsIgnoreCase(value)) {
+            return OFFLINE
         }
         if (DISABLED.value.equalsIgnoreCase(value)) {
             return DISABLED

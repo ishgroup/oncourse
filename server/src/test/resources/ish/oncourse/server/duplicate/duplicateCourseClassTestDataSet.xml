@@ -194,11 +194,11 @@
 
   <Discount id="1" code="ABC50" discountType="1" discountDollar="50" name="discountPercent1" rounding="0"
             validFrom="2004-10-17 22:44:15" validTo="2100-01-01 00:00:00" predictedStudentsPercentage="0.15"
-            HIDEONWEB="0" ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1" minValue="0"
+            HIDEONWEB="0" AVAILABILITYTYPE="1" addByDefault="0" minEnrolments="1" minValue="0"
             limitPreviousEnrolment="0" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Discount id="2" code="ABC20" discountType="1" discountDollar="20" name="discountPercent2" rounding="0"
             validFrom="2004-10-17 22:44:15" validTo="2100-01-01 00:00:00" predictedStudentsPercentage="0.15"
-            HIDEONWEB="0" ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1" minValue="0"
+            HIDEONWEB="0" AVAILABILITYTYPE="1" addByDefault="0" minEnrolments="1" minValue="0"
             limitPreviousEnrolment="0" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Discount_CourseClass id="1" courseClassId="1" discountId="1" predictedStudentsPercentage="0.1"
