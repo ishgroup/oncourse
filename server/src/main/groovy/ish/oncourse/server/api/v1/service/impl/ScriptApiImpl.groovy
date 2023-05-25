@@ -11,7 +11,9 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
+
 import com.google.inject.Inject
+import ish.oncourse.server.api.v1.model.AutomationConfigsDTO
 import ish.oncourse.types.OutputType
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
@@ -21,6 +23,8 @@ import ish.oncourse.server.api.v1.model.ScriptDTO
 import ish.oncourse.server.api.v1.service.ScriptApi
 import ish.oncourse.server.api.validation.EntityValidator
 import ish.scripting.ScriptResult
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 import javax.servlet.http.HttpServletResponse
 import javax.ws.rs.core.Context
@@ -28,6 +32,8 @@ import java.time.LocalDateTime
 
 
 class ScriptApiImpl implements ScriptApi {
+
+    private static final Logger logger = LogManager.getLogger();
 
     @Inject
     private ICayenneService cayenneService
@@ -52,6 +58,11 @@ class ScriptApiImpl implements ScriptApi {
     @Override
     ScriptDTO get(Long id) {
         service.get(id)
+    }
+
+    @Override
+    String getConfigs(Long id) {
+        return service.getConfigs(id)
     }
 
     @Override
@@ -89,5 +100,10 @@ class ScriptApiImpl implements ScriptApi {
         ScriptResult result = service.getResult(processId) as ScriptResult
         response.addHeader('Content-Disposition', "inline;filename=\"$result.name-${LocalDateTime.now().format('yyMMddHHmmss')}.pdf\"")
         result.resultValue as byte[]
+    }
+
+    @Override
+    void updateConfigs(Long id, AutomationConfigsDTO configs) {
+        service.updateConfigs(id, configs.config)
     }
 }

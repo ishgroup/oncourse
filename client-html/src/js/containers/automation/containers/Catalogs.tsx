@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from "../../../common/utils/hooks";
 import CatalogWithSearch from "../../../common/components/layout/catalog/CatalogWithSearch";
 import { CatalogItemType } from "../../../model/common/Catalog";
 import IntegrationTypes from "./integrations/IntegrationTypes";
-import { AutomationEntity } from "../../../model/automation/integrations";
+import { AutomationEntity } from "../../../model/automation/common";
 import { installAutomation, uninstallAutomation } from "../actions";
 import { showConfirm } from "../../../common/actions";
 import { getEmailTemplatesListFulfilled } from "./email-templates/actions";

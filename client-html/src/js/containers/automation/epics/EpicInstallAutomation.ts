@@ -11,7 +11,7 @@ import { INSTALL_AUTOMATION } from "../actions";
 import { CatalogItemType } from "../../../model/common/Catalog";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { Create, Request } from "../../../common/epics/EpicUtils";
-import { AutomationEntity } from "../../../model/automation/integrations";
+import { AutomationEntity } from "../../../model/automation/common";
 import EmailTemplateService from "../containers/email-templates/services/EmailTemplateService";
 import ExportTemplatesService from "../containers/export-templates/services/ExportTemplatesService";
 import ImportTemplatesService from "../containers/import-templates/services/ImportTemplatesService";

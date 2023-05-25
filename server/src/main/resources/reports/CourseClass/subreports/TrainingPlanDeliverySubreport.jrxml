@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TrainingPlanDelivery" language="groovy" pageWidth="764" pageHeight="514" orientation="Landscape" columnWidth="764" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="c0543670-2eaf-47a9-b3fc-67049e15605e">
-	<property name="name" value="Training Plan Delivery"/>
-	<property name="entity" value="SessionModule"/>
 	<property name="isSubreport" value="true"/>
-	<property name="isVisible" value="false"/>
-
-	<property name="keyCode" value="ish.onCourse.trainingPlanDeliverySubreport"/>
 	<property name="ish.oncourse.title" value="DeliverPlan"/>
 	<property name="ish.oncourse.filePrefix" value="TrainingPlan_Delivery"/>
 	<property name="ish.oncourse.pdfFileName" value=""/>

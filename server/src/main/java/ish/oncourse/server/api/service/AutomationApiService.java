@@ -11,22 +11,34 @@
 
 package ish.oncourse.server.api.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import ish.oncourse.server.api.dao.AutomationDao;
 import ish.oncourse.server.api.function.BindingFunctions;
 import ish.oncourse.server.api.traits.AutomationDTOTrait;
 import ish.oncourse.server.api.v1.model.AutomationStatusDTO;
 import ish.oncourse.server.api.validation.EntityValidator;
 import ish.oncourse.server.cayenne.AutomationTrait;
+import ish.oncourse.server.configs.AutomationModel;
+import ish.oncourse.server.upgrades.BindingUtils;
+import ish.oncourse.server.upgrades.DataPopulationUtils;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.yaml.snakeyaml.Yaml;
 
-
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
+import static ish.oncourse.common.ResourceProperty.OPTIONS;
+import static ish.oncourse.common.ResourceProperty.VARIABLES;
 import static ish.oncourse.server.api.servlet.ApiFilter.validateOnly;
 import static ish.oncourse.server.api.v1.function.export.ExportFunctions.DEFAULT_TEMPLATE_PREFIX;
 import static org.apache.commons.lang3.StringUtils.trimToNull;
@@ -36,6 +48,10 @@ abstract class AutomationApiService<T extends AutomationDTOTrait , K extends Aut
 
 
     protected abstract T createDto();
+
+    protected abstract BiConsumer<K, Map<String, Object>> getFillPropertiesFunction();
+
+    protected abstract AutomationModel getConfigsModelOf(K entity);
 
     @Override
     public T toRestModel(K cayenneModel)  {
@@ -148,6 +164,39 @@ abstract class AutomationApiService<T extends AutomationDTOTrait , K extends Aut
         entity.setAutomationStatus(dto.getStatus().getDbType());
         BindingFunctions.updateBuiltInOptions(entity, dto.getOptions());
         return entity;
+    }
+
+    public void updateConfigs(Long id, String configs){
+        ObjectContext context = cayenneService.getNewContext();
+        var entity = getEntityAndValidateExistence(context, id);
+
+        var resourceAsStream = new ByteArrayInputStream(configs.getBytes());
+        Yaml yaml = new Yaml();
+        var loaded = yaml.load(resourceAsStream);
+        var props = (Map<String, Object>) loaded;
+
+        var propertiesFilling = getFillPropertiesFunction();
+        propertiesFilling.accept(entity, props);
+        context.commitChanges();
+
+        BindingUtils.updateOptions(context, DataPopulationUtils.get(props, OPTIONS, List.class), entity, entity.getAutomationBindingClass());
+        BindingUtils.updateVariables(context, DataPopulationUtils.get(props, VARIABLES, List.class), entity, entity.getAutomationBindingClass());
+    }
+
+    public String getConfigs(Long id){
+        ObjectContext context = cayenneService.getNewContext();
+        var entity = getEntityAndValidateExistence(context, id);
+        var mapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER)
+                .enable(YAMLGenerator.Feature.MINIMIZE_QUOTES));
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        var mapObject = getConfigsModelOf(entity);
+        var outputStream = new ByteArrayOutputStream();
+        try {
+            mapper.writeValue(outputStream, mapObject);
+        } catch (IOException e) {
+            EntityValidator.throwClientErrorException("configs", "Error with writing configs; contact ish support");
+        }
+        return outputStream.toString();
     }
 
     public List<T> getAutomationFor(String entityName) {
