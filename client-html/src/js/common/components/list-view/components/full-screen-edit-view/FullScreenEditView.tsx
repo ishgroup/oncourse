@@ -130,7 +130,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
         hasScrolling: true
       });
     }
-    if (e.target.scrollTop < STICKY_HEADER_SCROLL_OFFSET && this.state.hasScrolling) {
+    if (e.target.scrollTop <= STICKY_HEADER_SCROLL_OFFSET && this.state.hasScrolling) {
       this.setState({
         hasScrolling: false
       });

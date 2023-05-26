@@ -104,8 +104,6 @@ interface Props {
   className?: string
 }
 
-const STICKY_OFFSET = 60;
-
 const FullScreenStickyHeader = React.memo<Props>(props => {
   const {
     Avatar,
@@ -138,10 +136,10 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
 
   const onStickyChange = useCallback(() => {
     const top = rootRef.current?.getBoundingClientRect().top;
-    if (top < STICKY_OFFSET && !isStuck) {
+    if (top < APP_BAR_HEIGHT && !isStuck) {
       setIsStuck(true);
     }
-    if (top > STICKY_OFFSET && isStuck) {
+    if (top >= APP_BAR_HEIGHT && isStuck) {
       setIsStuck(false);
     }
     onClickAway();
