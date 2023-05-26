@@ -19,13 +19,14 @@ import {
   openEnrolmentLink
 } from "../../enrolments/utils";
 
-const getCustomSearch = search => `courseClass.course.name starts with "${search}" or courseClass.code starts with "${search}"`;
 
 const VetReportingStudent = (props: EditViewProps<Contact>) => {
   const {
     twoColumn,
     values
   } = props;
+
+  const getCustomSearch = search => `student.contact.id is ${values.id} and (courseClass.course.name starts with "${search}" or courseClass.code starts with "${search}")`;
 
   return (
     <div className="pt-1 pl-3 pr-3">
@@ -37,6 +38,7 @@ const VetReportingStudent = (props: EditViewProps<Contact>) => {
       />
       <Divider className="mt-3 mb-3" />
       <FormField
+        preloadEmpty
         type="remoteDataSelect"
         name="selectedEnrolment"
         entity="Enrolment"
@@ -44,14 +46,12 @@ const VetReportingStudent = (props: EditViewProps<Contact>) => {
         returnType="object"
         selectValueMark="id"
         selectLabelMark="courseClass.course.name"
-        aqlColumns="courseClass.course.name,courseClass.course.code,status"
+        aqlColumns="courseClass.course.name,courseClass.course.code,courseClass.code,status"
         itemRenderer={EnrolmentSelectItemRenderer}
         valueRenderer={EnrolmentSelectValueRenderer}
         getCustomSearch={getCustomSearch}
-        rowHeight={55}
-        labelAdornment={<LinkAdornment linkHandler={openEnrolmentLink} link={(values as any).selectedEnrolment} disabled={!(values as any).selectedEnrolment} />}
+        labelAdornment={<LinkAdornment linkHandler={openEnrolmentLink} link={(values as any).selectedEnrolment?.id} disabled={!(values as any).selectedEnrolment?.id} />}
       />
-      <div style={{ height: 2000 }}/>
     </div>
   );
 };

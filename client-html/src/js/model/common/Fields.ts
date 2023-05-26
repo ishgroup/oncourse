@@ -164,6 +164,7 @@ export interface EditInPlaceRemoteDataSelectFieldProps extends EditInPlaceSearch
   entity: EntityName;
   aqlFilter?: string;
   aqlColumns?: string;
+  preloadEmpty?: boolean;
 }
 
 export interface CodeFieldProps {

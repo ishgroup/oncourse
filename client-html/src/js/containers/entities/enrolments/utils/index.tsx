@@ -7,39 +7,50 @@
  */
 
 import { openInternalLink } from "../../../../common/utils/links";
-import { Enrolment } from "@api/model";
 import React, { useMemo } from "react";
 import Typography from "@mui/material/Typography";
-import { Course } from "@api/model";
 import { getHighlightedPartLabel } from "../../../../common/utils/formatting";
-import { SelectItemRendererProps } from "../../../../model/common/Fields";
-import LockOutlined from "@mui/icons-material/LockOutlined";
 import { MenuItem } from "@mui/material";
 
 export const openEnrolmentLink = id => openInternalLink("/enrolment/" + id);
 
-export const EnrolmentSelectValueRenderer = (content, data, search, parentProps) => {
-  console.log({ content, data, parentProps});
-
-  return (<MenuItem {...parentProps || {}}>
-    <div className="centered-flex">
+export const EnrolmentSelectValueRenderer = (content, data, search, parentProps) => (<MenuItem {...parentProps || {}}>
+  <div className="d-flex align-items-baseline overflow-hidden">
+    <div className="fontWeight600 text-truncate mr-2">
       {content}
       {" "}
-
+      ({data["courseClass.course.code"]}-{data["courseClass.code"]})
     </div>
-  </MenuItem>);
-};
+    <Typography variant="caption" component="div" color="inherit">
+      {data.status}
+    </Typography>
+  </div>
+</MenuItem>);
 
-export const EnrolmentSelectItemRenderer = (content, data, search, parentProps) => {
+const EnrolmentSelectItem = ({ content, data, search, parentProps }) => {
+  const highlightedCode = useMemo(
+    () => getHighlightedPartLabel(`${data["courseClass.course.code"]}-${data["courseClass.code"]}`, search),
+    [data.code, search]
+  );
+
   return <div {...parentProps}>
-    <div className="centered-flex">
-      <div className="flex-fill">
+    <div className="centeredFlex flex-fill overflow-hidden">
+      <div className="flex-fill text-truncate mr-2">
         {content}
+        {" "}
+        ({highlightedCode})
       </div>
-      <Typography variant="caption" component="div" color="textSecondary" className="text-truncate">
+      <Typography variant="caption" component="div" color="textSecondary">
         {data.status}
       </Typography>
     </div>
   </div>;
 };
 
+export const EnrolmentSelectItemRenderer = (content, data, search, parentProps) =>
+  <EnrolmentSelectItem
+    content={content}
+    data={data}
+    search={search}
+    parentProps={parentProps}
+  />;

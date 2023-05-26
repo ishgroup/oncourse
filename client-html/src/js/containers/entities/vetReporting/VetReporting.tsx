@@ -79,7 +79,7 @@ const filterGroups: FilterGroup[] = [
       {
         name: "Students",
         expression: "isStudent == true",
-        active: false
+        active: true
       },
       {
         name: "Students currently enrolled",
