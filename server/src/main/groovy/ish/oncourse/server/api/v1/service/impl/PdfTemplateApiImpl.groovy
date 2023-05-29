@@ -13,6 +13,7 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.server.api.service.ReportApiService
+import ish.oncourse.server.api.v1.model.AutomationConfigsDTO
 import ish.oncourse.server.api.v1.model.ReportDTO
 import ish.oncourse.server.api.v1.service.PdfTemplateApi
 import ish.oncourse.server.preference.UserPreferenceService
@@ -42,6 +43,11 @@ class PdfTemplateApiImpl implements PdfTemplateApi {
     }
 
     @Override
+    String getConfigs(Long id) {
+        return apiService.getConfigs(id)
+    }
+
+    @Override
     void remove(Long id) {
         apiService.remove(id)
     }
@@ -49,6 +55,11 @@ class PdfTemplateApiImpl implements PdfTemplateApi {
     @Override
     void update(Long id, ReportDTO report) {
         apiService.update(id, report)
+    }
+
+    @Override
+    void updateConfigs(Long id, AutomationConfigsDTO configs) {
+        apiService.updateConfigs(id, configs.config)
     }
 
     @Override

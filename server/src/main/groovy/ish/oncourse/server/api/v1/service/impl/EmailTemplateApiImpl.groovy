@@ -15,6 +15,7 @@ import com.google.inject.Inject
 import ish.common.types.AutomationStatus
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.service.EmailTemplateApiService
+import ish.oncourse.server.api.v1.model.AutomationConfigsDTO
 import ish.oncourse.server.api.v1.model.EmailTemplateDTO
 import ish.oncourse.server.api.v1.service.EmailTemplateApi
 import ish.oncourse.server.cayenne.EmailTemplate
@@ -52,6 +53,11 @@ class EmailTemplateApiImpl implements EmailTemplateApi {
     }
 
     @Override
+    String getConfigs(Long id) {
+        return service.getConfigs(id)
+    }
+
+    @Override
     void remove(Long id) {
         service.remove(id)
     }
@@ -59,6 +65,11 @@ class EmailTemplateApiImpl implements EmailTemplateApi {
     @Override
     void update(Long id, EmailTemplateDTO emailTemplate) {
         service.update(id, emailTemplate)
+    }
+
+    @Override
+    void updateConfigs(Long id, AutomationConfigsDTO  emailTemplateConfigs) {
+        service.updateConfigs(id, emailTemplateConfigs.config)
     }
 
     @Override

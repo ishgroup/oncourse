@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SiteListReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" whenResourceMissingType="Empty" uuid="e0aadf31-ec38-4f5d-bd88-da132e45fd16">
-	<property name="name" value="Waiting List"/>
-	<property name="entity" value="WaitingList"/>
 	<property name="isSubreport" value="false"/>
-	<property name="isVisible" value="true"/>
-
-	<property name="keyCode" value="ish.onCourse.waitingListListReport"/>
 	<property name="ish.oncourse.title" value="WaitingList"/>
 	<property name="ish.oncourse.filePrefix" value="waitingList"/>
-	<property name="ish.oncourse.description" value=" List of all current wait list entries, including name of course, name of student, client, and site where course is held.This report prints in Portrait format."/>
 	<property name="ish.oncourse.pdfFileName" value="WaitingList.pdf"/>
 	<property name="sortOn" value="course.name"/>
 	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="false"/>
+
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>

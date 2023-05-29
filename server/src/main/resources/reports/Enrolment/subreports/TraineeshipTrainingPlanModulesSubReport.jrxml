@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TraineeshipTrainingPlanModulesSubReport" language="groovy" pageWidth="514" pageHeight="842" columnWidth="514" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="350b8ecb-5b1a-4b73-b8db-a373692d5d8d">
-	<property name="name" value="Unit Of Competency SubReport"/>
-	<property name="entity" value="Outcome"/>
 	<property name="isSubreport" value="true"/>
-	<property name="isVisible" value="false"/>
-
-	<property name="keyCode" value="ish.onCourse.traineeshipTrainingPlanModulesSubReport"/>
 	<property name="ish.oncourse.title" value="UnitOfCompetencySubReport"/>
 	<property name="ish.oncourse.filePrefix" value="traineeshipTrainingPlanModulesSubReport"/>
 	<property name="ish.oncourse.pdfFileName" value="traineeshipTrainingPlanModulesSubReport.pdf"/>

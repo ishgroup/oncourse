@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="StudentListReport" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="786" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" whenResourceMissingType="Empty" uuid="638004db-a6e2-4036-987d-1ef5b0358513">
-	<property name="name" value="Student Contact List"/>
-	<property name="entity" value="Enrolment"/>
 	<property name="isSubreport" value="false"/>
-	<property name="isVisible" value="true"/>
-
-	<property name="keyCode" value="ish.onCourse.studentListReport"/>
 	<property name="ish.oncourse.title" value="Student contact list"/>
 	<property name="ish.oncourse.filePrefix" value="student"/>
-	<property name="ish.oncourse.description" value="Contact details for all students across a range of class groups.This report prints in Landscape format."/>
 	<property name="ish.oncourse.pdfFileName" value="Student contact list.pdf"/>
 	<property name="sortOn" value="student.contact.lastName"/>
 	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="false"/>

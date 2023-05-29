@@ -7,12 +7,7 @@
   <property name="ireport.zoom" value="1.0"/>
   <property name="ireport.x" value="0"/>
   <property name="ireport.y" value="71"/>
-  <property name="name" value="Invalid Field Report"/>
-  <property name="entity" value="Site"/>
-  <property name="isSubreport" value="false"/>
-  <property name="isVisible" value="true"/>
   <property name="versionNumber" value="1"/>
-  <property name="keyCode" value="ish.onCourse.test.simple"/>
   <title>
     <band height="802" splitType="Stretch">
       <staticText>
