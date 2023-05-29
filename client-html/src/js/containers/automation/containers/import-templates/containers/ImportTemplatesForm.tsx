@@ -37,6 +37,7 @@ import ExecuteImportModal from "../components/ExecuteImportModal";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
 import InfoPill from "../../../../../common/components/layout/InfoPill";
+import getConfigActions from "../../../components/ImportExportConfig";
 
 const manualUrl = getManualLink("advancedSetup_Import");
 const getAuditsUrl = (id: number) => `audit?search=~"ImportTemplate" and entityId == ${id}`;
@@ -102,7 +103,7 @@ const ImportTemplatesForm = React.memo<Props>(
 
     const defaultVariables = useMemo(
       () => [
-        { name: "context", type: "Context" }
+        {name: "context", type: "Context"}
       ],
       [values]
     );
@@ -111,6 +112,8 @@ const ImportTemplatesForm = React.memo<Props>(
       setImportIdSelected(values.id);
       setExecMenuOpened(true);
     };
+
+    const importExportActions = useMemo(() => getConfigActions("Import", values.name, values.id), [values.id]);
 
     const validateTemplateCopyName = useCallback(name => {
       if (importTemplates.find(i => i.title.trim() === name.trim())) {
@@ -134,6 +137,7 @@ const ImportTemplatesForm = React.memo<Props>(
           onSave={onDialogSave}
           validateNameField={validateTemplateCopyName}
         />
+        
         <ExecuteImportModal
           opened={execMenuOpened}
           onClose={() => {
@@ -178,9 +182,10 @@ const ImportTemplatesForm = React.memo<Props>(
                 {!isNew && !isInternal && (
                   <AppBarActions
                     actions={[
+                      ...importExportActions,
                       {
                         action: handleDelete,
-                        icon: <DeleteForever />,
+                        icon: <DeleteForever/>,
                         confirm: true,
                         tooltip: "Delete import template",
                         confirmText: "Import template will be deleted permanently",

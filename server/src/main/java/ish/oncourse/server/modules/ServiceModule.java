@@ -29,10 +29,8 @@ import ish.oncourse.server.messaging.EmailDequeueJob;
 import ish.oncourse.server.payroll.PayrollService;
 import ish.oncourse.server.print.PrintService;
 import ish.oncourse.server.quality.QualityService;
-import ish.oncourse.server.services.*;
-import ish.oncourse.server.report.IReportService;
-import ish.oncourse.server.report.ReportService;
 import ish.oncourse.server.scripting.GroovyScriptService;
+import ish.oncourse.server.services.*;
 import ish.oncourse.server.users.SystemUserService;
 
 /**
@@ -49,7 +47,6 @@ public class ServiceModule implements Module {
 	public void configure(Binder binder) {
 		binder.bind(SanityCheckService.class).in(Scopes.SINGLETON);
 		binder.bind(TransactionCheckService.class).in(Scopes.SINGLETON);
-		binder.bind(IReportService.class).to(ReportService.class).in(Scopes.SINGLETON);
 		binder.bind(PrintService.class).in(Scopes.SINGLETON);
 
 

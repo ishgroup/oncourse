@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import org.yaml.snakeyaml.Yaml
 
 import java.nio.charset.Charset
 
@@ -29,6 +30,30 @@ class ReportTest {
     private static final int A4_WIDTH = 595
     private static final int A4_HEIGHT = 842
 
+    private static List<String> exceptedReports = List.of("ish.oncourse.certificate.attainment",
+            "ish.oncourse.nonvetcertificate",
+            "ish.oncourse.certificate",
+            "ish.oncourse.certificate.transcript")
+
+    private static Collection<? extends Map<String, Object>> getPropsByPath(String path) {
+        InputStream resourceAsStream = null
+        try {
+            resourceAsStream = ResourcesUtil.getResourceAsInputStream(path)
+            Yaml yaml = new Yaml();
+            def loaded = yaml.load(resourceAsStream);
+            if (loaded instanceof LinkedHashMap<?, ?>)
+                return List.of((Map<String, Object>) loaded);
+            else
+                return (Collection<? extends Map<String, Object>>) loaded;
+        } catch (IOException ex) {
+            //ignored
+        } finally {
+            if (resourceAsStream != null)
+                resourceAsStream.close()
+        }
+        return null
+    }
+
     static Collection<Arguments> values() throws IOException {
 
         def reportsList = PluginService.getPluggableResources(ResourceType.REPORT.getResourcePath(), ResourceType.REPORT.getFilePattern())
@@ -36,14 +61,18 @@ class ReportTest {
 
         Collection<Arguments> dataList = new ArrayList<>()
         for (String reportFile : reportsList) {
-            if (reportFile.endsWith(".jrxml")) {
-                List<String> untrimmedReport = IOUtils.readLines(ResourcesUtil.getResourceAsInputStream(reportFile), Charset.defaultCharset())
-                Assertions.assertNotNull(untrimmedReport)
-                List<String> report = trim(untrimmedReport)
-                Assertions.assertNotNull(report)
-
-                if (shouldVerify(report)) {
-                    dataList.add(Arguments.of(reportFile))
+            if (reportFile.endsWith(".yaml")) {
+                def configs = getPropsByPath(reportFile)
+                for (def config : configs) {
+                    if (shouldVerify(config)) {
+                        def path = config.get("report") as String
+                        String fullPath = ResourceType.REPORT.getResourcePath() + path
+                        List<String> untrimmedReport = IOUtils.readLines(ResourcesUtil.getResourceAsInputStream(fullPath), Charset.defaultCharset())
+                        Assertions.assertNotNull(untrimmedReport)
+                        List<String> report = trim(untrimmedReport)
+                        Assertions.assertNotNull(report)
+                        dataList.add(Arguments.of(fullPath))
+                    }
                 }
             }
         }
@@ -91,26 +120,7 @@ class ReportTest {
         return result
     }
 
-    private static boolean shouldVerify(List<String> list) {
-        List<String> exceptedReports = new ArrayList<>()
-        exceptedReports.add("ish.oncourse.certificate.attainment")
-        exceptedReports.add("ish.oncourse.nonvetcertificate")
-        exceptedReports.add("ish.oncourse.certificate")
-        exceptedReports.add("ish.oncourse.certificate.transcript")
-        //create tasks for those
-
-        for (String s : list) {
-            if (s.contains("<property name=\"keycode\" value=\"")) {
-                // <property name="keyCode" value="ish.onCourse.studentListReport"/>
-                String keycode = s.replace("<property name=\"keycode\" value=\"", "").replace("\"/>", "")
-                if (exceptedReports.contains(keycode.toLowerCase())) {
-                    return false
-                }
-            } else if (s.contains("<property name=\"issubreport\" value=\"true\"/>")) {
-                return false
-            }
-        }
-
-        return true
+    private static boolean shouldVerify(Map<String, Object> props) {
+        return !exceptedReports.contains(props.get("keyCode") as String) && (props.get("visible") as Boolean).booleanValue()
     }
 }

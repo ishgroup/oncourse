@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TrialBalanceReport" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="786" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" isFloatColumnFooter="true" whenResourceMissingType="Empty" uuid="9f1c8a6c-9978-4f38-9f65-4ca5d6f3ceb4">
-	<property name="name" value="Trial Balance"/>
-	<property name="entity" value="Account"/>
 	<property name="isSubreport" value="false"/>
-	<property name="isVisible" value="false"/>
-
-	<property name="keyCode" value="ish.onCourse.trialBalance"/>
 	<property name="ish.oncourse.title" value="Trial Balance"/>
 	<property name="ish.oncourse.filePrefix" value="trialBalance"/>
-	<property name="ish.oncourse.description" value="To provide a more general overview of transactions made over a specified period of time.This report prints in Landscape format."/>
 	<property name="ish.oncourse.pdfFileName" value="TrialBalance.pdf"/>
 	<property name="ish.oncourse.additionalProperty" value="classRange"/>
 	<property name="ish.oncourse.additionalProperty.displayLabel1" value="from"/>
@@ -19,6 +13,7 @@
 	<property name="ish.oncourse.additionalProperty.defaultValue2" value="tomorrow"/>
 	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="false"/>
 	<property name="sortOn" value="accountCode"/>
+
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="ish.math.Money"/>

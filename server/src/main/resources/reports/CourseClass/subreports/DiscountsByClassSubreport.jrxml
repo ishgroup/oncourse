@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DiscountsByClassSubreport" language="groovy" pageWidth="514" pageHeight="842" columnWidth="514" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="af2e35b6-57af-4a24-832d-193797be1a21">
-	<property name="name" value="Discounts By Class Subreport"/>
-	<property name="entity" value="InvoiceLine"/>
 	<property name="isSubreport" value="true"/>
-	<property name="isVisible" value="false"/>
-
-	<property name="keyCode" value="ish.onCourse.discountsByClassSubreport"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="ish.math.Money"/>

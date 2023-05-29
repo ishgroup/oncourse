@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BudgetSummaryInvoiceLineSubreport" language="groovy" pageWidth="842" pageHeight="595" columnWidth="786" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isFloatColumnFooter="true" uuid="f0d2fbd3-3b3f-4c14-a151-7e2f7b9271fc">
-	<property name="name" value="Budget Summary InvoiceLine Subreport"/>
-	<property name="entity" value="InvoiceLine"/>
 	<property name="isSubreport" value="true"/>
-	<property name="isVisible" value="false"/>
-
-	<property name="keyCode" value="ish.oncourse.budgetSummary.invoiceLineSubreport"/>
 	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="false"/>
 	<import value="ish.math.Money"/>
 	<import value="ish.common.types.ClassCostFlowType"/>
