@@ -100,10 +100,10 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
   }
 
   updateTitle = (title: string) => {
-    const { fullScreenEditView, rootEntity } = this.props;
+    const { fullScreenEditView, customTableModel, rootEntity,  } = this.props;
 
     if (fullScreenEditView && title) {
-      document.title = `${getSingleEntityDisplayName(rootEntity)} (${title})`;
+      document.title = `${getSingleEntityDisplayName(customTableModel || rootEntity)} (${title})`;
     }
   };
 

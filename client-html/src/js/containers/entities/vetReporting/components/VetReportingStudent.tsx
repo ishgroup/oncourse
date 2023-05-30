@@ -6,15 +6,15 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useMemo, useState } from "react";
-import { Contact } from "@api/model";
+import React from "react";
 import { EditViewProps } from "../../../../model/common/ListView";
-import FullScreenStickyHeader from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import ProfileHeading from "../../contacts/components/ProfileHeading";
 import ContactDetails from "../../contacts/components/ContactDetails";
 import ContactsVET from "../../contacts/components/ContactsVET";
+import { FormSection } from "redux-form";
+import { VetReport } from "../../../../model/entities/VetReporting";
 
-const VetReportingEditView = (props: EditViewProps<Contact> & { usiLocked: boolean }) => {
+const VetReportingEditView = (props: EditViewProps<VetReport> & { usiLocked: boolean }) => {
   const {
     twoColumn,
     isNew,
@@ -28,16 +28,16 @@ const VetReportingEditView = (props: EditViewProps<Contact> & { usiLocked: boole
   } = props;
 
   return (
-    <div>
-      <div className="pl-3">
+    <FormSection name="student">
+      <div className="pl-3 pb-1">
         <ProfileHeading
           isNew={isNew}
           form={form}
           dispatch={dispatch}
           showConfirm={showConfirm}
-          values={values}
+          values={values.student}
           twoColumn={twoColumn}
-          isCompany={values.isCompany}
+          isCompany={values.student.isCompany}
           usiLocked={usiLocked}
           syncErrors={syncErrors}
         />
@@ -45,7 +45,7 @@ const VetReportingEditView = (props: EditViewProps<Contact> & { usiLocked: boole
 
       <ContactDetails {...props} tabIndex={tabIndex} />
       <ContactsVET {...props} tabIndex="VET"/>
-    </div>
+    </FormSection>
   );
 };
 

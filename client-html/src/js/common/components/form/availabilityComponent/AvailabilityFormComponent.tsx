@@ -6,12 +6,12 @@
 import React from "react";
 import { arrayInsert, arrayRemove, FieldArray } from "redux-form";
 import { Holiday, RepeatEndEnum, RepeatEnum } from "@api/model";
-import { Dispatch } from "redux";
 import { addHours } from "date-fns";
 import AvailabilityRenderer from "./AvailabilityRenderer";
 import { getLabelWithCount } from "../../../utils/strings";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import AddButton from "../../icons/AddButton";
+import { EditViewProps } from "../../../../model/common/ListView";
 
 const addRule = (dispatch: any, form: string) => {
   const item = {} as Holiday;
@@ -39,12 +39,7 @@ const deleteRule = (dispatch: any, showConfirm: ShowConfirmCaller, form: string,
   });
 };
 
-interface Props {
-  values: any;
-  dispatch: Dispatch;
-  showConfirm: ShowConfirmCaller;
-  twoColumn: boolean;
-  form: string;
+interface Props extends EditViewProps {
   timezone?: string;
   name?: string;
   className?: string;

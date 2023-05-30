@@ -13,23 +13,24 @@ import TabsList, { TabsListItem } from "../../../../common/components/navigation
 import VetReportingStudent from "./VetReportingStudent";
 import VetReportingEnrolments from "./VetReportingEnrolments";
 import VetReportingOutcomes from "./VetReportingOutcomes";
+import { VetReport } from "../../../../model/entities/VetReporting";
 
-const items: TabsListItem[] = [
+const items: TabsListItem<VetReport>[] = [
   {
     label: "Student",
     labelAdornment: "Contact\nVET",
-    component: props => <VetReportingStudent {...props} />,
+    component: props => props.values?.student && <VetReportingStudent {...props} />,
     expandable: true
   },
   {
     label: "Enrolments",
-    labelAdornment: "VET student loans\nAssessment submissions\nCredit & RPL",
-    component: props => <VetReportingEnrolments {...props} />,
+    labelAdornment: "VET student loans\nCredit & RPL\nAssessment submissions",
+    component: props => props.values?.enrolment && <VetReportingEnrolments {...props} />,
     expandable: true
   },
   {
     label: "Outcomes",
-    component: props => <VetReportingOutcomes {...props} />,
+    component: props => props.values?.outcome && <VetReportingOutcomes {...props} />,
     expandable: true
   }
 ];

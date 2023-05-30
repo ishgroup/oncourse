@@ -11,7 +11,7 @@ const useStyles = makeAppStyles(theme => ({
       background: theme.appBar.headerAlternate.background,
       position: "fixed",
       top: 0,
-      width: "calc(100% - 224px)",
+      width: "calc(100% - 250px)",
       zIndex: theme.zIndex.appBar + 1,
       marginTop: 0,
       height: APP_BAR_HEIGHT

@@ -241,7 +241,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
 
   const modalGradeItems = modalGradeType?.gradingItems;
 
-  const hasGrades = Boolean(values?.assessments.some(a => gradingTypes.some(g => g.id === a.gradingTypeId)));
+  const hasGrades = Boolean(values.assessments?.some(a => gradingTypes.some(g => g.id === a.gradingTypeId)));
 
   return values.assessments && values.assessments.length ? (
     <Grid item={true} xs={12} id={name} container>
@@ -270,7 +270,6 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
       />
 
       <Grid item xs={12} className="mb-2">
-        <div className="heading">Assessments Submissions</div>
         <Typography variant="caption" color="error" className="mt-1 shakingError">
           {error}
         </Typography>

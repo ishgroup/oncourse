@@ -24,7 +24,7 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/c
 import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import {
-  getContactRelationTypes, getCountries, getLanguages, getPaymentTypes
+  getContactRelationTypes, getCountries, getGradingTypes, getLanguages, getPaymentTypes
 } from "../../preferences/actions";
 import { getDefaultInvoiceTerms } from "../invoices/actions";
 import { checkPermissions } from "../../../common/actions";
@@ -41,8 +41,11 @@ import {
   getContactsTaxTypes,
   getContactTags
 } from "../contacts/actions";
-import { ContactsProps, ContactType } from "../contacts/Contacts";
+import { ContactType } from "../contacts/Contacts";
 import { getContactFullName } from "../contacts/utils";
+import { VetReport } from "../../../model/entities/VetReporting";
+import { getActiveFundingContracts } from "../../avetmiss-export/actions";
+import { PreferencesState } from "../../preferences/reducers/state";
 
 export const ContactInitial: Contact = {
   id: 0,
@@ -190,26 +193,39 @@ const setRowClasses = row => {
   return undefined;
 };
 
-const VetReporting: React.FC<ContactsProps> = props => {
+interface VetReportingProps {
+  onInit?: () => void;
+  getRecords?: () => void;
+  getFilters?: () => void;
+  setCustomTableModel?: () => void;
+  clearListState?: () => void;
+  getTags?: () => void;
+  getCountries?: () => void;
+  getLanguages?: () => void;
+  getContactsRelationTypes?: () => void;
+  getContactsConcessionTypes?: () => void;
+  getTaxTypes?: () => void;
+  getDefaultTerms?: () => void;
+  getPermissions?: () => void;
+  onMount?: () => void;
+  getContactRelationTypes?: () => void;
+  selection?: string[];
+  relationTypes?: PreferencesState["contactRelationTypes"];
+  isVerifyingUSI?: boolean;
+  usiVerificationResult?: any;
+  getPaymentTypes?: any;
+}
+
+const VetReporting: React.FC<VetReportingProps> = props => {
   const {
-    getFilters,
     clearListState,
     onInit,
-    getTags,
-    getCountries,
-    getLanguages,
-    getContactsRelationTypes,
-    getContactsConcessionTypes,
-    getTaxTypes,
-    getDefaultTerms,
+    onMount,
     getPermissions,
-    getContactRelationTypes,
-    setCustomTableModel,
     relationTypes,
     selection,
     isVerifyingUSI,
     usiVerificationResult,
-    getPaymentTypes,
   } = props;
 
   const [findRelatedItems, setFindRelatedItems] = useState([]);
@@ -255,26 +271,15 @@ const VetReporting: React.FC<ContactsProps> = props => {
   }, [relationTypes, selection]);
 
   useEffect(() => {
-    setCustomTableModel();
-    getPaymentTypes();
-    getFilters();
-    getTags();
-    getCountries();
-    getLanguages();
-    getContactsRelationTypes();
-    getContactsConcessionTypes();
-    getTaxTypes();
-    getDefaultTerms();
+    onMount();
     getPermissions();
-    getContactRelationTypes();
-
     return () => {
       clearListState();
     };
   }, []);
 
-  const getContactFullNameWithTitle = (values: Contact) =>
-    `${!values.isCompany && values.title && values.title.trim().length > 0 ? `${values.title} ` : ""}${!values.isCompany ? getContactFullName(values) : values.lastName}`;
+  const getContactFullNameWithTitle = ({ student }: VetReport) => student &&
+    `${!student.isCompany && student.title && student.title.trim().length > 0 ? `${student.title} ` : ""}${!student.isCompany ? getContactFullName(student) : student.lastName}`;
 
   return (
     <ListView
@@ -310,20 +315,21 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(setListEditRecord(ContactInitial));
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, ContactInitial));
   },
-  setCustomTableModel: () => dispatch(setListCustomTableModel("vetReporting")),
-  getTags: () => {
+  onMount: () => {
+    dispatch(getGradingTypes());
+    dispatch(setListCustomTableModel("vetReporting"));
+    dispatch(getPaymentTypes());
+    dispatch(getFilters("Contact"));
     dispatch(getContactTags());
+    dispatch(getCountries());
+    dispatch(getLanguages());
+    dispatch(getContactsRelationTypes());
+    dispatch(getContactsConcessionTypes());
+    dispatch(getContactsTaxTypes());
+    dispatch(getDefaultInvoiceTerms());
+    dispatch(getContactRelationTypes());
+    dispatch(getActiveFundingContracts(true))
   },
-  getContactRelationTypes: () => {
-    dispatch(getContactRelationTypes())
-  },
-  getFilters: () => dispatch(getFilters("Contact")),
-  getCountries: () => dispatch(getCountries()),
-  getLanguages: () => dispatch(getLanguages()),
-  getContactsRelationTypes: () => dispatch(getContactsRelationTypes()),
-  getContactsConcessionTypes: () => dispatch(getContactsConcessionTypes()),
-  getDefaultTerms: () => dispatch(getDefaultInvoiceTerms()),
-  getTaxTypes: () => dispatch(getContactsTaxTypes()),
   clearListState: () => dispatch(clearListState()),
   getPermissions: () => {
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
@@ -334,8 +340,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=PaymentIn", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/option/payroll?entity=Contact&bulkConfirmTutorWages=true", method: "POST" }));
     dispatch(checkPermissions({ path: "/a/v1/list/option/payroll?entity=Contact", method: "PUT" }));
-  },
-  getPaymentTypes: () => dispatch(getPaymentTypes())
+  }
 });
 
 const mapStateToProps = (state: State) => ({

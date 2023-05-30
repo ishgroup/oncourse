@@ -125,9 +125,9 @@ const EditInPlaceFieldBase = (
   };
 
   const inputWidth = useMemo(() => inline && inputNode
-    ? countWidth(value?.toString() || placeholder, inputNode) + 1
+    ? countWidth(inputNode?.value || placeholder, inputNode) + 1
     : null,
-  [inputNode, inline, value, placeholder]);
+  [inputNode?.value, inline, placeholder]);
 
   return (
     <FormControl

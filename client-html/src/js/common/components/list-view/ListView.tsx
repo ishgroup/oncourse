@@ -1051,7 +1051,8 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
       dispatch,
       getScripts,
       findRelatedByFilter,
-      scriptsFilterColumn
+      scriptsFilterColumn,
+      customTableModel
     } = this.props;
 
     const {
@@ -1081,6 +1082,7 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
 
         <FullScreenEditView
           {...editViewProps}
+          customTableModel={customTableModel}
           shouldAsyncValidate={shouldAsyncValidate}
           rootEntity={rootEntity}
           form={LIST_EDIT_VIEW_FORM_NAME}
@@ -1159,6 +1161,7 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
               <div className="d-flex flex-fill overflow-hidden">
                 <EditView
                   {...editViewProps}
+                  customTableModel={customTableModel}
                   shouldAsyncValidate={shouldAsyncValidate}
                   form={LIST_EDIT_VIEW_FORM_NAME}
                   rootEntity={rootEntity}

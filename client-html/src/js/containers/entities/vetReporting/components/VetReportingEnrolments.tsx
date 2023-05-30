@@ -6,8 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import { Contact } from "@api/model";
+import React, { useCallback } from "react";
 import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import Divider from "@mui/material/Divider";
@@ -18,16 +17,68 @@ import {
   EnrolmentSelectValueRenderer,
   openEnrolmentLink
 } from "../../enrolments/utils";
+import Collapse from "@mui/material/Collapse";
+import { VetReport } from "../../../../model/entities/VetReporting";
+import EnrolmentDetails from "../../enrolments/components/EnrolmentDetails";
+import { Grid } from "@mui/material";
+import EnrolmentVetStudentLoans from "../../enrolments/components/EnrolmentVetStudentLoans";
+import { change, FieldArray, FormSection } from "redux-form";
+import { getEntityItemById } from "../../common/entityItemsService";
+import { useAppSelector } from "../../../../common/utils/hooks";
+import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
+import EnrolmentSubmissions from "../../enrolments/components/EnrolmentSubmissions";
+import { AssessmentClass, Enrolment, GradingType } from "@api/model";
 
-
-const VetReportingStudent = (props: EditViewProps<Contact>) => {
+const VetReportingStudent = (props: EditViewProps<VetReport>) => {
   const {
     twoColumn,
-    values
+    values,
+    dispatch,
+    form,
+    expanded,
+    setExpanded,
+    syncErrors,
+    tabIndex
   } = props;
+  
+  const contracts = useAppSelector(state => state.export.contracts);
+  const gradingTypes = useAppSelector(state => state.preferences.gradingTypes);
 
-  const getCustomSearch = search => `student.contact.id is ${values.id} and (courseClass.course.name starts with "${search}" or courseClass.code starts with "${search}")`;
+  const validateAssesments = useCallback((value: AssessmentClass[], allValues: VetReport) => {
+    let error;
 
+    if (Array.isArray(value) && value.length) {
+      value.forEach(a => {
+        const gradeType: GradingType = gradingTypes?.find(g => g.id === a.gradingTypeId);
+        const submission = allValues.enrolment?.submissions.find(s => s.assessmentId === a.id);
+
+        if (gradeType
+          && submission
+          && typeof submission.grade === "number"
+          && (submission.grade > gradeType.maxValue || submission.grade < gradeType.minValue)) {
+          error = "Some assessments grades are invalid";
+        }
+      });
+    }
+    return error;
+  }, [gradingTypes]);
+
+  const getCustomSearch = search => `student.contact.id is ${values.student.id} and (courseClass.course.name starts with "${search}" or courseClass.code starts with "${search}")`;
+
+  const onEnrolmentSelect = en => {
+    if (en.id) {
+      getEntityItemById("Enrolment", en.id).then(enrolment => {
+        dispatch(change(form, 'enrolment', enrolment));
+      });
+
+      if (!expanded.includes(tabIndex)) {
+        setExpanded([...expanded, tabIndex]);
+      }
+    }  
+  };
+
+  console.log('!!!!!!!', values);
+  
   return (
     <div className="pt-1 pl-3 pr-3">
       <FullScreenStickyHeader
@@ -50,8 +101,57 @@ const VetReportingStudent = (props: EditViewProps<Contact>) => {
         itemRenderer={EnrolmentSelectItemRenderer}
         valueRenderer={EnrolmentSelectValueRenderer}
         getCustomSearch={getCustomSearch}
-        labelAdornment={<LinkAdornment linkHandler={openEnrolmentLink} link={(values as any).selectedEnrolment?.id} disabled={!(values as any).selectedEnrolment?.id} />}
+        onChange={onEnrolmentSelect}
+        labelAdornment={
+          <LinkAdornment 
+            linkHandler={openEnrolmentLink} 
+            link={values.selectedEnrolment?.id} 
+            disabled={!values.selectedEnrolment?.id}
+          />
+        }
       />
+      <Collapse in={Boolean(values.enrolment.id)}>
+        <FormSection name="enrolment">
+          <ExpandableContainer
+            expanded={expanded}
+            setExpanded={setExpanded}
+            formErrors={syncErrors}
+            header="Details"
+            index={tabIndex}
+            noDivider
+          >
+            <Grid container columnSpacing={3} rowSpacing={2}>
+              <EnrolmentDetails
+                twoColumn={twoColumn}
+                contracts={contracts}
+              />
+            </Grid>
+          </ExpandableContainer>
+          <EnrolmentVetStudentLoans
+            {...props}
+            values={values.enrolment}
+          />
+          {Boolean(values.enrolment?.assessments?.length) && <>
+            <ExpandableContainer
+              expanded={expanded}
+              setExpanded={setExpanded}
+              formErrors={syncErrors}
+              header="Assessments submissions"
+              index="Assessments submissions"
+            >
+              <FieldArray
+                name="assessments"
+                component={EnrolmentSubmissions}
+                values={values.enrolment}
+                gradingTypes={gradingTypes}
+                dispatch={dispatch}
+                validate={validateAssesments}
+                twoColumn={twoColumn}
+              />
+            </ExpandableContainer>
+          </>}
+        </FormSection>
+      </Collapse>
     </div>
   );
 };

@@ -89,6 +89,7 @@ export interface EditViewContainerProps<E = any> extends Partial<InjectedFormPro
   EditViewContent: React.FunctionComponent<EditViewProps>;
   hasSelected: boolean;
   creatingNew: boolean;
+  customTableModel: string;
   pending?: boolean;
   values?: E;
   updateDeleteCondition?: any;

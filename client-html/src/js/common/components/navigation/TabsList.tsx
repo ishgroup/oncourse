@@ -37,9 +37,9 @@ const useStyles = makeAppStyles(theme => ({
   }
 }));
 
-export interface TabsListItem {
+export interface TabsListItem<E = any> {
   readonly type?: string;
-  component: (props: any) => React.ReactNode;
+  component: (props: EditViewProps<E> & any) => React.ReactNode;
   labelAdornment?: React.ReactNode;
   expandable?: boolean;
   label: string;

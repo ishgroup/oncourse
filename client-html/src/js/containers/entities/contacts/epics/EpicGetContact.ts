@@ -20,6 +20,7 @@ import { getEntityItemById } from "../../common/entityItemsService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { AVETMIS_ID_KEY, REPLICATION_ENABLED_KEY } from "../../../../constants/Config";
 import { clearActionsQueue, getUserPreferences } from "../../../../common/actions";
+import { VetReport } from "../../../../model/entities/VetReporting";
 
 export const formatContactRelationIds = relations => relations.map(r => {
     if (r.contactFromId) {
@@ -81,14 +82,25 @@ const request: EpicUtils.Request = {
       contact.financialData = contact.financialData.sort((a, b) => (new Date(b.createdOn) > new Date(a.createdOn) ? 1 : -1));
     }
 
+    let editRecord = contact;
+    
+    if (s.list.customTableModel === "vetReporting") {
+      editRecord = {
+        id: contact.id,
+        student: contact,
+        enrolment: {},
+        outcome: {}
+      } as VetReport;
+    }
+
     return [
       {
         type: SET_LIST_EDIT_RECORD,
-        payload: { editRecord: contact, name: contact.lastName }
+        payload: { editRecord, name: contact.lastName }
       },
       getUserPreferences([REPLICATION_ENABLED_KEY, AVETMIS_ID_KEY]),
       getNoteItems("Contact", id, LIST_EDIT_VIEW_FORM_NAME),
-      initialize(LIST_EDIT_VIEW_FORM_NAME, contact),
+      initialize(LIST_EDIT_VIEW_FORM_NAME, editRecord),
       ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : []),
       ...paymentInPermissions ? [getContactsStoredCc(id)] : [],
       ...studentActions

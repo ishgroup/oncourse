@@ -49,6 +49,8 @@ export const validateVetTrainingContractID = (value, allValues) => {
   return validateCharacter(value, 10, "Training contract identifier");
 };
 
+export const validateCricosConfirmation = value => validateCharacter(value, 32, "Confirmation of Enrolment");
+
 export const validateVetFundingSourceState = value => validateCharacter(value, 3, "Funding source state");
 
 export const validateVetClientID = (value, allValues) => {

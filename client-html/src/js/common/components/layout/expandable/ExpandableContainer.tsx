@@ -39,8 +39,8 @@ const styles = (theme: AppTheme) =>
 interface Props {
   children: React.ReactNode;
   header: React.ReactNode;
-  expanded: number[];
-  index: number;
+  expanded: any[];
+  index: any;
   formErrors?: FormErrors;
   setExpanded: (arg: number[]) => void;
   headerAdornment?: React.ReactNode;

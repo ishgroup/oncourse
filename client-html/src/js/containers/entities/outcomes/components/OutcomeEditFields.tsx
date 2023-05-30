@@ -19,7 +19,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { makeStyles } from "@mui/styles";
 import {
- ClassFundingSource, DeliveryMode, FundingUpload, Module, Outcome, OutcomeStatus
+ DeliveryMode, FundingUpload, Module, Outcome, OutcomeStatus
 } from "@api/model";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import FormField from "../../../../common/components/form/formFields/FormField";
@@ -48,6 +48,7 @@ import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { StringKeyObject } from "../../../../model/common/CommomObjects";
 import EntityService from "../../../../common/services/EntityService";
+import { fundingSourceValues } from "../../courseClasses/constants";
 
 interface OutcomeEditFieldsProps extends EditViewProps<Outcome> {
   modules?: any[];
@@ -65,7 +66,6 @@ interface OutcomeEditFieldsProps extends EditViewProps<Outcome> {
 }
 
 const deliveryModeValues = Object.keys(DeliveryMode).map(mapSelectItems);
-const fundingSourceValues = Object.keys(ClassFundingSource).map(mapSelectItems);
 
 const parseIntValue = v => (v ? parseInt(v, 10) : v);
 
@@ -327,7 +327,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
             name={getFieldName("fundingSource")}
             label="Funding source"
             items={fundingSourceValues}
-                      />
+          />
         </Grid>
       </Grid>
 
