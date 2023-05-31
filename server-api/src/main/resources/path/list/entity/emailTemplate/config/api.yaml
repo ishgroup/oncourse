@@ -1,0 +1,56 @@
+get:
+  operationId: getConfigs
+  description: get an existing email template configs as String
+  tags:
+    - EmailTemplate
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of script record to fetch
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: string
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: SPECIAL_IMPORT
+    errorMessage: Sorry, you have no permissions to view special import. Please contact your administrator
+
+
+put:
+  operationId: updateConfigs
+  description: Update an existing email template configs
+  tags:
+    - EmailTemplate
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of script record to fetch
+    - name: emailTemplateConfigs
+      in: body
+      schema:
+        $ref: './def/entity/automation/AutomationConfigs.yaml'
+      required: true
+      description: lines of yaml file to upgrade script configs
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: EMAIL_TEMPLATE
+    errorMessage: Sorry, you have no permissions to update email template. Please contact your administrator

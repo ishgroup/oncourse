@@ -2,12 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Calendar" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="d8a159f9-1f71-4592-a18e-182a28b00fca">
 	<property name="ish.oncourse.additionalProperty" value="sessionRange"/>
 	<property name="ish.oncourse.additionalProperty.visualElement" value="Timetable"/>
-	<property name="name" value="Schedule"/>
-	<property name="entity" value="Session"/>
 	<property name="isSubreport" value="false"/>
-	<property name="isVisible" value="false"/>
 
-	<property name="keyCode" value="ish.onCourse.shedule"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>

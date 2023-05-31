@@ -907,4 +907,65 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         And match $.errorMessage == "Record with id = '99999' doesn't exist."
 
 
+    Scenario: (+) Update custom Report configs by admin
+
+#       <----->  Add a new entity to update and define its id:
+        * def newReport =
+        """
+        {
+        "name":"put Report01",
+        "entity":"AccountTransaction",
+        "status":"Enabled",
+        "keyCode":"put1",
+        "description":"some description",
+        "body":"someBody",
+        "subreport":false,
+        "backgroundId":null,
+        "sortOn":"amount",
+        "preview":null,
+        "variables":[{"name":"varName2", "label":"varLabel2", "type":"Checkbox"}],
+        "options":[{"name":"optName1","type":"Date","value":"2019-01-01"}]
+        }
+        """
+
+        Given path ishPath
+        And request newReport
+        When method POST
+        Then status 204
+
+        Given path ishPathList
+        And param entity = 'Report'
+        And param pageSize = 65000
+        And param offset = 0
+        And param columns = 'name'
+        When method GET
+        Then status 200
+
+        * def id = get[0] response.rows[?(@.values == ['put Report01'])].id
+        * print "id = " + id
+#       <--->
+
+        * def reportToUpdate =
+        """
+        {
+            "config":'  name: \"Updated Training Plan Report\"\n  short:\n  description: \"Updated description\"\n  category:\n  sortOn: \"\"\n  visible: false'
+        }
+        """
+
+        Given path ishPath + '/config/' + id
+        And request reportToUpdate
+        When method PUT
+        Then status 204
+
+        Given path ishPath + '/config/' + id
+        When method GET
+        Then status 200
+        And match $ contains 'shortDescription: Updated description\ndescription: Updated description\nname: Updated Training Plan Report\nentityClass: AccountTransaction\nisVisible: false\nsortOn: amount'
+
+#       <--->  Scenario have been finished. Now remove created object from DB:
+        Given path ishPath + '/' + id
+        When method DELETE
+        Then status 204
+
+
 

@@ -23,8 +23,8 @@ properties:
     format: int64
   predictedStudentsPercentage:
     type: number
-  availableOnWeb:
-    type: boolean
+  availableFor:
+    $ref: '../../enum/DiscountAvailabilityType.yaml'
   code:
     type: string
   validFrom:

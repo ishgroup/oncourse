@@ -18,15 +18,19 @@ import ish.oncourse.server.api.v1.model.BindingDTO;
 import ish.oncourse.server.api.v1.model.DataTypeDTO;
 import ish.oncourse.server.api.v1.model.ReportDTO;
 import ish.oncourse.server.cayenne.Report;
+import ish.oncourse.server.configs.AutomationModel;
+import ish.oncourse.server.configs.ReportModel;
 import ish.oncourse.server.report.ReportBuilder;
+import ish.oncourse.server.upgrades.DataPopulationUtils;
 import ish.print.PrintTransformationsFactory;
-import ish.print.transformations.PrintTransformation;
 import ish.util.LocalDateUtils;
 import org.apache.cayenne.query.ObjectSelect;
 
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 public class ReportApiService extends AutomationApiService<ReportDTO, Report, ReportDao> {
@@ -47,7 +51,7 @@ public class ReportApiService extends AutomationApiService<ReportDTO, Report, Re
             dto.setBackgroundId(dbReport.getBackground().getId());
         }
         dto.setSubreport(dbReport.getIsVisible());
-        dto.setSortOn(dbReport.getSortOn());
+        dto.setSortOn(dbReport.getSortOn() != null ? dbReport.getSortOn() : "");
         dto.setPreview(ish.util.ImageHelper.scaleImageToPreviewSize(dbReport.getPreview()));
         return dto;
     }
@@ -89,8 +93,8 @@ public class ReportApiService extends AutomationApiService<ReportDTO, Report, Re
     @Override
     public Report toCayenneModel(ReportDTO dto, Report cayenneModel) {
         cayenneModel = super.toCayenneModel(dto, cayenneModel);
-        cayenneModel.setIsVisible(Boolean.valueOf(ReportBuilder.valueOf(dto.getBody()).readProperty(Report.IS_VISIBLE)));
-        cayenneModel.setSortOn(dto.getSortOn());
+        cayenneModel.setIsVisible(dto.isSubreport());
+        cayenneModel.setSortOn(dto.getSortOn() != null ? dto.getSortOn() : "");
         if (dto.getBackgroundId() != null) {
             cayenneModel.setBackground(overlayDao.getById(cayenneModel.getContext(), dto.getBackgroundId()));
         } else {
@@ -134,5 +138,15 @@ public class ReportApiService extends AutomationApiService<ReportDTO, Report, Re
 
     protected ReportDTO createDto() {
         return new ReportDTO();
+    }
+
+    @Override
+    protected BiConsumer<Report, Map<String, Object>> getFillPropertiesFunction() {
+        return DataPopulationUtils::fillReportWithCommonFields;
+    }
+
+    @Override
+    protected AutomationModel getConfigsModelOf(Report entity) {
+        return new ReportModel(entity);
     }
 }

@@ -1,0 +1,7 @@
+- name: "Test Report Old"
+  entityClass: "CourseClass"
+  keyCode: "test.ish.onCourse"
+  report: "resources/schema/referenceData/reports/testReportV1.jrxml"
+  category:
+  sortOn: ""
+  visible: true
