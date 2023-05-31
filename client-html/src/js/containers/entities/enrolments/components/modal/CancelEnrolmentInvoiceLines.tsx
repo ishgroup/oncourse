@@ -98,7 +98,7 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                 />
                 <Grid className="centeredFlex">
                   <FormControlLabel
-                    className="mr-0-5"
+                    className="mr-0"
                     control={<FormField type="checkbox" name={`${item}.isChargeFee`} color="secondary" />}
                     label={`Charge ${field && field.contactName} an administrative fee of `}
                     disabled={!field.isReverseCreditNotes}
@@ -110,6 +110,7 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                     onChange={e => onCancelFeeChange(e, index)}
                     debounced={false}
                     disabled={!field.isReverseCreditNotes}
+                    className="mr-0-5 ml-0-5"
                     inline
                     step="1"
                   />
@@ -122,10 +123,10 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                     onChange={v => onTaxChange(v, index)}
                     debounced={false}
                     disabled={!field.isReverseCreditNotes}
-                    className="ml-0-5 mt-0-5"
+                    className="mr-0-5"
                     inline
                   />
-                  <span className="money ml-0-5">
+                  <span className="money mr-0-5">
                     {formatCurrency(field.chargedFee, currencySymbol)}
                   </span>
                   <FormField
@@ -135,7 +136,6 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                     selectValueMark="id"
                     selectLabelCondition={accountLabelCondition}
                     disabled={!field.isReverseCreditNotes}
-                    className="ml-0-5 mt-0-5"
                     inline
                   />
                 </Grid>

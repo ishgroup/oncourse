@@ -22,32 +22,12 @@ import { EditInPlaceSearchSelectFieldProps } from "../../../../model/common/Fiel
 import { stubComponent } from "../../../utils/common";
 
 const searchStyles = theme => createStyles({
-  inputEndAdornment: {
-    marginBottom: "-6px",
-    alignItems: "center",
-    display: "flex",
-  },
   selectAdornment: {
     marginBottom: "6px",
     color: theme.palette.primary.main
   },
   endAdornment: {
     opacity: 0.5
-  },
-  multiple: {},
-  root: {
-    "& $inline.MuiInput-root .MuiInput-input": {
-      padding: 0
-    },
-    "& $multiple": {
-      flexWrap: 'wrap'
-    },
-    "& $multiple $inputEndAdornment": {
-      position: 'absolute',
-      right: 0,
-      bottom: 6,
-      height: "auto"
-    }
   },
   popper: {
     zIndex: 1400
@@ -452,14 +432,14 @@ const EditInPlaceSearchSelect = ({
     if (multiple) {
       return (input.value || []).map(v => sortedItems.find(s => s[selectValueMark] === v));
     }
-    return input.value || "";
+    return input.value || null;
   }, [input.value, multiple, selectValueMark, sortedItems]);
 
   const renderedPlaceholder = useMemo(() => {
     const rendered = placeholder || (!isEditing ? "No value" : "");
     return multiple && inputValue.length ? null : rendered;
   }, [multiple, placeholder, isEditing, inputValue]);
-  
+
   return (
     <div
       className={clsx(className, "outline-none")}
@@ -512,7 +492,7 @@ const EditInPlaceSearchSelect = ({
             <EditInPlaceFieldBase
               {...params}
               name={input.name}
-              value={input.value}
+              value={displayedValue}
               error={error}
               invalid={hasError || invalid}
               inline={inline}
@@ -534,11 +514,11 @@ const EditInPlaceSearchSelect = ({
                 disableUnderline,
                 classes: {
                   underline: fieldClasses.underline,
-                  input: clsx(classes.input, disabled && classes.readonly, fieldClasses.text),
+                  input: clsx(disabled && classes.readonly, fieldClasses.text),
                 },
                 inputProps: {
                   ...inputProps,
-                  className: fieldClasses.text,
+                  className: clsx(fieldClasses.text, "mr-auto"),
                   ref: ref => {
                     (inputProps as any).ref.current = ref;
                     inputNode.current = ref;

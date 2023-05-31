@@ -50,7 +50,6 @@ const useStyles = makeAppStyles(theme => ({
   },
   inlineContainer: {
     display: "inline-flex",
-    margin: theme.spacing(0, 0.5)
   }
 }));
 

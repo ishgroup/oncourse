@@ -77,8 +77,6 @@ const VetReportingStudent = (props: EditViewProps<VetReport>) => {
     }  
   };
 
-  console.log('!!!!!!!', values);
-  
   return (
     <div className="pt-1 pl-3 pr-3">
       <FullScreenStickyHeader
@@ -141,6 +139,7 @@ const VetReportingStudent = (props: EditViewProps<VetReport>) => {
             >
               <FieldArray
                 name="assessments"
+                namePrefix="enrolment"
                 component={EnrolmentSubmissions}
                 values={values.enrolment}
                 gradingTypes={gradingTypes}

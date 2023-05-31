@@ -102,53 +102,57 @@ const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
 
                   return (
                     <li key={index} className={hoverClasses.container}>
-                      <Typography variant="body2" color="inherit" component="span">
-                        <EditInPlaceField
-                          meta={{
-                          error: isMap ? labelError : valueError,
-                          invalid: Boolean(isMap ? labelError : valueError)
-                        }}
-                          input={{
-                          onChange: e => changeField(index, isMap ? "label" : "value", e.target.value),
-                          onFocus: stubFunction,
-                          onBlur: stubFunction,
-                          value: (isMap ? f.label : f.value) || ""
-                        }}
-                          inline
-                          onKeyPress={onKeyPress}
-                          multiline
-                        />
+                      <div className="centeredFlex">
+                        <Typography className="centeredFlex" variant="body2" color="inherit" component="span">
+                          <EditInPlaceField
+                            className="mr-0-5"
+                            meta={{
+                              error: isMap ? labelError : valueError,
+                              invalid: Boolean(isMap ? labelError : valueError)
+                            }}
+                            input={{
+                              onChange: e => changeField(index, isMap ? "label" : "value", e.target.value),
+                              onFocus: stubFunction,
+                              onBlur: stubFunction,
+                              value: (isMap ? f.label : f.value) || ""
+                            }}
+                            inline
+                            onKeyPress={onKeyPress}
+                            multiline
+                          />
 
-                        {
-                          isMap && (
-                          <>
-                            (
-                            <EditInPlaceField
-                              meta={{
-                                error: valueError,
-                                invalid: Boolean(valueError)
-                              }}
-                              input={{
-                                onChange: e => changeField(index, "value", e.target.value),
-                                onFocus: stubFunction,
-                                onBlur: stubFunction,
-                                value: f.value || ""
-                              }}
-                              onKeyPress={onKeyPress}
-                              inline
-                              multiline
-                            />
+                          {
+                            isMap && (
+                              <>
+                                (
+                                <EditInPlaceField
+                                  className="mr-0-5 ml-0-5"
+                                  meta={{
+                                    error: valueError,
+                                    invalid: Boolean(valueError)
+                                  }}
+                                  input={{
+                                    onChange: e => changeField(index, "value", e.target.value),
+                                    onFocus: stubFunction,
+                                    onBlur: stubFunction,
+                                    value: f.value || ""
+                                  }}
+                                  onKeyPress={onKeyPress}
+                                  inline
+                                  multiline
+                                />
+                                )
+                              </>
                             )
-                          </>
-                        )
-                      }
-                      </Typography>
-                      <IconButton
-                        onClick={() => onDelete(index)}
-                        className={clsx(hoverClasses.target, "p-0-5  vert-align-mid")}
-                      >
-                        <Delete className="editInPlaceIcon" />
-                      </IconButton>
+                          }
+                        </Typography>
+                        <IconButton
+                          onClick={() => onDelete(index)}
+                          className={clsx(hoverClasses.target, "p-0-5  vert-align-mid")}
+                        >
+                          <Delete className="editInPlaceIcon" />
+                        </IconButton>
+                      </div>
                     </li>
                   );
                 })

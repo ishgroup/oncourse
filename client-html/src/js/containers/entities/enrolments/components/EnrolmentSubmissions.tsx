@@ -6,14 +6,13 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { AssessmentSubmission, GradingItem, GradingType } from "@api/model";
 import {
  Grid, IconButton, Typography
 } from "@mui/material";
 import { withStyles } from "@mui/styles";
 import DateRange from "@mui/icons-material/DateRange";
-import { Dispatch } from "redux";
 import {
  arrayInsert, arrayRemove, change, WrappedFieldArrayProps
 } from "redux-form";
@@ -23,25 +22,26 @@ import { EnrolmentAssessmentExtended, EnrolmentExtended } from "../../../../mode
 import EnrolmentAssessmentStudent from "./EnrolmentAssessmentStudent";
 import GradeModal from "../../courseClasses/components/assessments/GradeModal";
 import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
+import { EditViewProps } from "../../../../model/common/ListView";
 
-interface Props {
+interface Props extends EditViewProps<EnrolmentExtended> {
   classes?: any;
-  values: EnrolmentExtended;
-  dispatch: Dispatch;
   gradingTypes: GradingType[];
-  twoColumn: boolean;
+  namePrefix?: string;
 }
 
 const today = new Date().toISOString();
 
 const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => {
   const {
-    classes, values, dispatch, fields: { name }, meta: { error, form }, gradingTypes = []
+    classes, namePrefix= "", values, dispatch, fields: { name }, meta: { error, form }, gradingTypes = []
   } = props;
 
   const [modalOpenedBy, setModalOpenedBy] = useState<string>(null);
   const [modalProps, setModalProps] = useState<string[]>([]);
   const [gradeMenuAnchorEl, setGradeMenuAnchorEl] = useState(null);
+
+  const filedName = useMemo(() => namePrefix ? `${namePrefix}.submissions` : "submissions", [namePrefix]);
 
   useEffect(() => {
     setModalProps(modalOpenedBy ? modalOpenedBy.split("-") : []);
@@ -56,7 +56,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
   };
 
   const onChangeAllGrades = (value: number) => {
-    dispatch(change(form, "submissions", values.assessments.map(a => {
+    dispatch(change(form, filedName, values.assessments.map(a => {
       const submission = values.submissions.find(s => s.assessmentId === a.id);
       return {
         id: submission ? submission.id : null,
@@ -100,7 +100,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
         return s;
       });
     }
-    dispatch(change(form, "submissions", updatedSubmissions));
+    dispatch(change(form, filedName, updatedSubmissions));
   };
 
   const onToggleGrade = (elem: EnrolmentAssessmentExtended, prevGrade: GradingItem) => {
@@ -132,7 +132,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
         return s;
       });
     }
-    dispatch(change(form, "submissions", updatedSubmissions));
+    dispatch(change(form, filedName, updatedSubmissions));
   };
 
   const onChangeStatus = (type, submissionIndex, prevStatus, assessment) => {
@@ -153,17 +153,17 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
           classId: values.courseClassId,
           grade: null
         };
-        dispatch(arrayInsert(form, "submissions", pathIndex, newSubmission));
+        dispatch(arrayInsert(form, filedName, pathIndex, newSubmission));
       }
     } else if (submissionIndex !== -1 && type === "Submitted") {
-      dispatch(arrayRemove(form, "submissions", pathIndex));
+      dispatch(arrayRemove(form, filedName, pathIndex));
     }
     if (type === "Marked" && prevStatus === "Submitted") {
-      dispatch(change(form, `submissions[${pathIndex}].markedOn`, null));
-      dispatch(change(form, `submissions[${pathIndex}].markedById`, null));
+      dispatch(change(form, `${filedName}[${pathIndex}].markedOn`, null));
+      dispatch(change(form, `${filedName}[${pathIndex}].markedById`, null));
     }
     if (type === "Marked" && prevStatus !== "Submitted" && submissionIndex !== -1) {
-      dispatch(change(form, `submissions[${submissionIndex}].markedOn`, today));
+      dispatch(change(form, `${filedName}[${submissionIndex}].markedOn`, today));
     }
   };
 
@@ -195,7 +195,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
         }
       }
     }
-    dispatch(change(form, "submissions", updatedSubmissions.filter(s => s.hasOwnProperty("assessmentId"))));
+    dispatch(change(form, filedName, updatedSubmissions.filter(s => s.hasOwnProperty("assessmentId"))));
   };
 
   const onPickerClose = (dateVal, selectVal) => {
@@ -212,7 +212,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
     }
 
     if (modalProps[2] === "all") {
-      dispatch(change(form, "submissions", values.assessments.map(a => {
+      dispatch(change(form, filedName, values.assessments.map(a => {
         const submission = values.submissions.find(s => s.assessmentId === a.id);
         return !dateVal && modalProps[0] === "Submitted" ? null : {
           id: submission?.id,

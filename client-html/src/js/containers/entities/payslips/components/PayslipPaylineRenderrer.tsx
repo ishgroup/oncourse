@@ -24,7 +24,7 @@ const styles = theme =>
     infoContainer: {
       background: theme.palette.background.default,
       borderRadius: "4px",
-      padding: theme.spacing(1, 0, 1, 2)
+      padding: theme.spacing(1,2)
     },
     threeColumnCard: {
       marginBottom: "20px",
@@ -33,7 +33,6 @@ const styles = theme =>
     infoItem: {
       display: "flex",
       alignItems: "center",
-      paddingRight: "14px",
       justifyContent: "flex-end"
     },
     fieldMargin: {

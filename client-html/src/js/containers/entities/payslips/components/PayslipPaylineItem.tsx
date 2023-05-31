@@ -15,6 +15,7 @@ import FormField from "../../../../common/components/form/formFields/FormField";
 import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 import { EEE_D_MMM_YYYY } from "../../../../common/utils/dates/format";
 import { PayLineWithDefer } from "../../../../model/entities/Payslip";
+import Uneditable from "src/js/common/components/form/Uneditable";
 
 interface Props {
   threeColumn: boolean;
@@ -89,8 +90,10 @@ const PayslipPaylineItem = (props: Props) => {
               {field.className && (
                 <Grid item xs={paylineLayout[2].xs}>
                   <div className="flex-fill">
-                    <Typography variant="caption">Date for</Typography>
-                    <Typography variant="body2">{format(new Date(field.dateFor), EEE_D_MMM_YYYY)}</Typography>
+                    <Uneditable
+                      label="Date for"
+                      value={format(new Date(field.dateFor), EEE_D_MMM_YYYY)}
+                    />
                   </div>
                 </Grid>
               )}
@@ -126,16 +129,20 @@ const PayslipPaylineItem = (props: Props) => {
                 </Grid>
 
                 <Grid item xs={4} className="text-nowrap d-flex justify-content-end">
-                  <FormField
-                    type="number"
-                    disabled={!field.deferred}
-                    name={`${item}.quantity`}
-                    normalize={normalizeNumber}
-                    debounced={false}
-                    
-                    inline
-                    rightAligned
-                  />
+                  <Typography
+                    variant="subtitle1"
+                    className="fw300"
+                  >
+                    <FormField
+                      type="number"
+                      disabled={!field.deferred}
+                      name={`${item}.quantity`}
+                      normalize={normalizeNumber}
+                      debounced={false}
+                      inline
+                      rightAligned
+                    />
+                  </Typography>
                 </Grid>
 
                 <Grid item xs={5} className={classes.infoItem}>
@@ -155,14 +162,19 @@ const PayslipPaylineItem = (props: Props) => {
             </Grid>
 
             <Grid item xs={hasQuantityAndTotal ? 5 : 10} className="text-nowrap d-flex justify-content-end">
-              <FormField
-                type="money"
-                disabled={!field.deferred}
-                name={`${item}.value`}
-                inline
-                rightAligned
-                required
-              />
+              <Typography
+                variant="subtitle1"
+                className="fw300"
+              >
+                <FormField
+                  type="money"
+                  disabled={!field.deferred}
+                  name={`${item}.value`}
+                  inline
+                  rightAligned
+                  required
+                />
+              </Typography>
             </Grid>
 
             {hasQuantityAndTotal && (
@@ -173,6 +185,7 @@ const PayslipPaylineItem = (props: Props) => {
                   className="money fw300"
                 >
                   {shortCurrencySymbol}
+                  {" "}
                   {field.budgetedValue.toFixed(2) || 0}
                 </Typography>
               </Grid>
@@ -188,6 +201,7 @@ const PayslipPaylineItem = (props: Props) => {
                   <div className="w-100 text-end">
                     <Typography variant="subtitle1" className="money fw300" noWrap>
                       {shortCurrencySymbol}
+                      {" "}
                       {valueTotal.toFixed(2)}
                     </Typography>
                   </div>
@@ -201,6 +215,7 @@ const PayslipPaylineItem = (props: Props) => {
                     noWrap
                   >
                     {shortCurrencySymbol}
+                    {" "}
                     {budgetTotal.toFixed(2)}
                   </Typography>
                 </Grid>

@@ -1079,8 +1079,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
               paper: classes.menuShadow,
               listbox: "p-0 relative zIndex1 paperBackgroundColor",
               hasPopupIcon: classes.hasPopup,
-              hasClearIcon: classes.hasClear,
-              inputRoot: classes.inputWrapper
+              hasClearIcon: classes.hasClear
             } : undefined}
             renderInput={params => (
               <TextField

@@ -14,8 +14,9 @@ const CustomSelectorBody = ({ className, options, selectedIndex }: Props) => {
   return (
     <div className={className}>
       {option.type && (
-        <Typography component="div">
+        <Typography className="centeredFlex" component="div">
           <Field
+            className="mr-0-5"
             name={option.fieldName}
             component={option.component}
             type={option.type}
@@ -24,6 +25,7 @@ const CustomSelectorBody = ({ className, options, selectedIndex }: Props) => {
             format={option.format}
             min={option.min}
             preformatDisplayValue={option.preformatDisplayValue}
+            inline
           />
           {option.type && option.type !== "date" && ` ${option.body}`}
         </Typography>

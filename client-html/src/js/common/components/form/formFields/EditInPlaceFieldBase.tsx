@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import { FormControl, FormHelperText, Input, InputAdornment, InputLabel } from "@mui/material";
 import { InputProps } from "@mui/material/Input/Input";
@@ -116,18 +116,21 @@ const EditInPlaceFieldBase = (
     InputProps,
   }: Props) => {
   
-  const classes = useStyles();
-
-  const [inputNode, setInputNode] = useState<HTMLInputElement>();
+  const [inputWidth, setInputWidth] = useState<number>();
   
+  const classes = useStyles();
+  
+  const inputNode = useRef<any>();
+
   const onAdornmentClick = () => {
-    inputNode.focus();
+    inputNode.current.focus();
   };
 
-  const inputWidth = useMemo(() => inline && inputNode
-    ? countWidth(inputNode?.value || placeholder, inputNode) + 1
-    : null,
-  [inputNode?.value, inline, placeholder]);
+  useEffect(() => {
+    if (inline && inputNode.current) {
+      setInputWidth(countWidth(value || placeholder, inputNode.current) + 1);
+    }
+  }, [value]);
 
   return (
     <FormControl
@@ -135,7 +138,7 @@ const EditInPlaceFieldBase = (
       error={invalid}
       variant="standard"
       margin="none"
-      className={clsx(className, classes.inputWrapper)}
+      className={clsx(className, classes.inputWrapper, inline && "mt-0-5")}
     >
     {
       label && (
@@ -161,7 +164,7 @@ const EditInPlaceFieldBase = (
       {CustomInput ||
         <Input
           {...InputProps || {}}
-          inputRef={setInputNode}
+          inputRef={inputNode}
           inputProps={{
             placeholder,
             disabled,

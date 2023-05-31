@@ -62,9 +62,6 @@ export default (theme: AppTheme) => createStyles({
     top: "1px",
     "&:hover $resizer": {
       opacity: 1
-    },
-    "& $draggingCell,&:focus $draggingCell": {
-      color: theme.palette.divider
     }
   },
   draggableCellItem: {
