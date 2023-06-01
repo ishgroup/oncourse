@@ -1,0 +1,5 @@
+- name: "Test Fonts Report"
+  entityClass: "Site"
+  keyCode: "test.ish.onCourse.font"
+  report: "resources/schema/referenceData/reports/TestFontsReport.jrxml"
+  visible: true

@@ -451,3 +451,60 @@ Feature: Main feature for all PUT requests with path 'list/entity/emailTemplate'
 
 
 
+    Scenario: (+) Update EmailTemplate configs by admin
+
+#       <----->  Add a new entity to update and define its id:
+        * def newEmailTemplate =
+        """
+        {
+        "name":"put 1",
+        "type":"Post",
+        "entity":"Application",
+        "status":"Enabled",
+        "keyCode":"put1email",
+        "subject":"some subject",
+        "plainBody":"somePlainBody",
+        "description":"some description",
+        "body":"someBody",
+        "variables":[],
+        "options":[]
+        }
+        """
+
+        Given path ishPath
+        And request newEmailTemplate
+        When method POST
+        Then status 204
+
+        Given path ishPathPlain
+        And param entity = 'EmailTemplate'
+        And param columns = 'name'
+        And param pageSize = '1000'
+        When method GET
+        Then status 200
+
+        * def id = get[0] response.rows[?(@.values == ["put 1"])].id
+        * print "id = " + id
+#       <--->
+
+        * def emailTemplateConfigsToUpdate =
+        """
+        {
+            "config":'  name: \"Updated Email template\"\n  short: Updated email template short\n  description: \"Updated email template description\"\n  subject: \"Updated subject\"'
+        }
+        """
+
+        Given path ishPath + '/config/' + id
+        And request emailTemplateConfigsToUpdate
+        When method PUT
+        Then status 204
+
+        Given path ishPath + '/config/' + id
+        When method GET
+        Then status 200
+        And match $ contains 'shortDescription: Updated email template description\ndescription: Updated email template description\nname: Updated Email template\nentityClass: Application\ntype: POST\nsubject: Updated subject'
+
+#       <----->  Scenario have been finished. Now find and remove created object from DB:
+        Given path ishPath + '/' + id
+        When method DELETE
+        Then status 204

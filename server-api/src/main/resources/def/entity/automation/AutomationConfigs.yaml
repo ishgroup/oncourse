@@ -1,0 +1,5 @@
+type: object
+properties:
+  config:
+    type: string
+    description: Configs, formattted like into yaml file

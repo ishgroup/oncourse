@@ -10,7 +10,7 @@ import { CheckoutDiscount } from "../../../../model/checkout";
 import {
   CHECKOUT_GET_DISCOUNT_PROMO,
   CHECKOUT_SET_PROMO,
-   checkoutUpdateSummaryClassesDiscounts
+  checkoutUpdateSummaryClassesDiscounts
 } from "../../actions/checkoutSummary";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import EntityService from "../../../../common/services/EntityService";
@@ -47,7 +47,7 @@ const request: EpicUtils.Request = {
       : EntityService.getPlainRecords(
           "Discount",
           checkoutPromocodeColumns,
-          `code is "${code}" and (((validTo >= today) or (validTo == null)) and ((validFrom <= today) or (validFrom == null))) `,
+          `code is "${code}" and availableFor not is ONLINE_ONLY and (((validTo >= today) or (validTo == null)) and ((validFrom <= today) or (validFrom == null))) `,
           100,
           0,
           "",

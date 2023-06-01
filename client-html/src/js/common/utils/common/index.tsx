@@ -55,12 +55,12 @@ export const getCustomColumnsMap = (columns: string): (dataRow: DataRow) => any 
   });
 };
 
-export const createAndDownloadFile = (data: any, type: string, name: string) => {
+export const createAndDownloadFile = (data: any, type: string, name: string, skipDate: boolean = false) => {
   const url = window.URL.createObjectURL(type === "json"
     ? new Blob([JSON.stringify(data, null, 2)])
     : new Blob([data]));
   const link = document.createElement("a");
-  const fileName = name + "-" + formatDateTime(new Date(), "yyyMMddkkmmss");
+  const fileName = name + (skipDate ? "" : "-" + formatDateTime(new Date(), "yyyMMddkkmmss"));
 
   link.href = url;
   link.setAttribute("download", fileName + `.${type}`);
@@ -71,6 +71,26 @@ export const createAndDownloadFile = (data: any, type: string, name: string) => 
   document.body.removeChild(link);
   window.URL.revokeObjectURL(url);
 };
+
+export const uploadAndGetFile = (): Promise<Blob> => new Promise((resolve => {
+  const input = document.createElement("input");
+  input.setAttribute("type", `file`);
+  input.style.height = "0";
+  document.body.appendChild(input);
+
+  const prevFocus = document.body.onfocus;
+
+  document.body.onfocus = () => {
+    document.body.removeChild(input);
+    document.body.onfocus = prevFocus;
+  };
+
+  input.onchange = () => {
+    resolve(input.files[0]);
+  };
+
+  input.click();
+}));
 
 export const createAndDownloadBase64Image = (data: any, name: string, type = "png") => {
   const link = document.createElement("a");

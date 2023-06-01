@@ -34,6 +34,7 @@ import { EntityItems, EntityName } from "../../../../../model/entities/common";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
 import InfoPill from "../../../../../common/components/layout/InfoPill";
+import getConfigActions from "../../../components/ImportExportConfig";
 
 const manualUrl = getManualLink("advancedSetup_Export");
 const getAuditsUrl = (id: number) => `audit?search=~"ExportTemplate" and entityId == ${id}`;
@@ -130,6 +131,8 @@ const ExportTemplatesForm = React.memo<Props>(
       }
     }, [nextLocation, dirty]);
 
+    const importExportActions = useMemo(() => getConfigActions("ExportTemplate", values.name, values.id), [values.id]);
+
     const validateTemplateCopyName = useCallback(name => {
       if (exportTemplates.find(e => e.title.trim() === name.trim())) {
         return "Template name should be unique";
@@ -153,8 +156,9 @@ const ExportTemplatesForm = React.memo<Props>(
           validateNameField={validateTemplateCopyName}
         />
 
+
         <Form onSubmit={handleSubmit(handleSave)}>
-          {!disableRouteConfirm && <RouteChangeConfirm form={form} when={dirty || isNew} />}
+          {!disableRouteConfirm && <RouteChangeConfirm form={form} when={dirty || isNew}/>}
 
           <AppBarContainer
             values={values}
@@ -189,9 +193,10 @@ const ExportTemplatesForm = React.memo<Props>(
                 {!isNew && !isInternal && (
                   <AppBarActions
                     actions={[
+                      ...importExportActions,
                       {
                         action: handleDelete,
-                        icon: <DeleteForever />,
+                        icon: <DeleteForever/>,
                         confirm: true,
                         tooltip: "Delete export template",
                         confirmText: "Export template will be deleted permanently",

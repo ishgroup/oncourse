@@ -29,7 +29,7 @@ import {
 } from "../../../actions";
 import { MenuTag } from "../../../../../../model/tags";
 import { FilterGroup, ListAqlMenuItemsRenderer, SavingFilterState } from "../../../../../../model/common/ListView";
-import { FILTER_TAGS_REGEX, TAGS_REGEX } from "../../../../../../constants/Config";
+import { FILTER_TAGS_REGEX } from "../../../../../../constants/Config";
 import { AppTheme } from "../../../../../../model/common/Theme";
 import { getSaleEntityName } from "../../../../../../containers/entities/sales/utils";
 
@@ -135,10 +135,10 @@ const getTagNamesSuggestions = (tags: MenuTag[]): Suggestion[] => {
   const childTags = tags.flatMap(t => t.children);
 
   return getAllMenuTags(childTags).map(i => {
-    const name = i.tagBody.name.replace(/\s/g, "_");
+    const name = i.tagBody.name;
     const suggestion: Suggestion = {
       token: "Identifier",
-      value: name,
+      value: ` "${name}"`,
       label: name
     };
 
@@ -319,44 +319,6 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
         }
 
         return filter ? `(${filter.expression})` : "";
-      })
-      .replace(TAGS_REGEX, str => {
-        const replaced = str.replace(/#/g, "").replace(/_/g, " ");
-
-        let tag = listTags.find(f => f.tagBody.name === replaced);
-        let strPrefix;
-
-        if (tag && tag.queryPrefix) {
-          const usedPrefix = value.match(new RegExp("([^\\s]+)\\s+" + str));
-          if (usedPrefix && usedPrefix[1]) {
-            strPrefix = usedPrefix[1];
-            tag = listTags.find(f => f.tagBody.id === tag.tagBody.id && f.queryPrefix === strPrefix);
-            if (tag && !tag.parent) {
-              tag = tag.children.find(f => f.tagBody.name === tag.tagBody.name && f.queryPrefix === strPrefix);
-            }
-          }
-        }
-
-        if (tag && tag.active) {
-          activeTagsMatch.push(tag);
-        }
-
-        if (tag && !tag.active) {
-          tag.active = true;
-          activeTagsMatch.push(tag);
-          if (tag.parent) {
-            setIndeterminate(tag.parent);
-          } else {
-            const sameNameChildIndex = tag.children.findIndex(c => c.tagBody.name === tag.tagBody.name);
-            if (sameNameChildIndex !== -1) {
-              tag.children[sameNameChildIndex].active = true;
-              activeTagsMatch.push(tag.children[sameNameChildIndex]);
-              setIndeterminate(tag.children[sameNameChildIndex]);
-            }
-          }
-        }
-
-        return tag ? `# "${tag.tagBody.name}"` : "";
       });
 
     activeFilters.forEach(f => {

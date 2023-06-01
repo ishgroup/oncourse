@@ -43,6 +43,7 @@ import { CatalogItemType } from "../../../../../model/common/Catalog";
 import InfoPill from "../../../../../common/components/layout/InfoPill";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import { reportFullScreenPreview } from "../actions";
+import getConfigActions from "../../../components/ImportExportConfig";
 
 const manualUrl = getManualLink("reports");
 const getAuditsUrl = (id: number) => `audit?search=~"Report" and entityId == ${id}`;
@@ -224,6 +225,8 @@ const PdfReportsForm = React.memo<Props>(
       }
     }, [nextLocation, dirty]);
 
+    const importExportActions = useMemo(() => getConfigActions("Report", values.name, values.id), [values.id]);
+
     const validateReportCopyName = useCallback(name => {
       if (pdfReports.find(r => r.title.trim() === name.trim())) {
         return "Report name should be unique";
@@ -241,8 +244,8 @@ const PdfReportsForm = React.memo<Props>(
     return (
       <>
         <Form onSubmit={handleSubmit(handleSave)}>
-          <input type="file" ref={fileRef} className="d-none" onChange={handleUpload} />
-          <FormField type="stub" name="body" />
+          <input type="file" ref={fileRef} className="d-none" onChange={handleUpload}/>
+          <FormField type="stub" name="body"/>
 
           <SaveAsNewAutomationModal 
             opened={modalOpened} 
@@ -251,7 +254,7 @@ const PdfReportsForm = React.memo<Props>(
             validateNameField={validateReportCopyName}
           />
 
-          {!disableRouteConfirm && <RouteChangeConfirm form={form} when={dirty || isNew} />}
+          {!disableRouteConfirm && <RouteChangeConfirm form={form} when={dirty || isNew}/>}
 
           <AppBarContainer
             values={values}
@@ -286,9 +289,10 @@ const PdfReportsForm = React.memo<Props>(
                 {!isNew && !isInternal && (
                   <AppBarActions
                     actions={[
+                      ...importExportActions,
                       {
                         action: handleDelete,
-                        icon: <DeleteForever />,
+                        icon: <DeleteForever/>,
                         confirm: true,
                         tooltip: "Delete PDF template",
                         confirmText: "PDF template will be deleted permanently",
