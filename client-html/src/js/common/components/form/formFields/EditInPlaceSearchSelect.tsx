@@ -442,7 +442,7 @@ const EditInPlaceSearchSelect = ({
 
   return (
     <div
-      className={clsx(className, "outline-none")}
+      className={clsx(className, "outline-none", inline && classes.inline)}
       id={input?.name}
     >
       <SelectContext.Provider value={{
@@ -472,7 +472,7 @@ const EditInPlaceSearchSelect = ({
           isOptionEqualToValue={getOptionSelected}
           onChange={handleChange}
           classes={{
-            root: clsx("d-inline-flex", classes.root, inline && classes.inline),
+            root: clsx("d-inline-flex", classes.root),
             hasPopupIcon: classes.hasPopup,
             hasClearIcon: classes.hasClear,
             inputRoot: clsx(classes.inputWrapper, multiple && classes.multiple),

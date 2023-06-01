@@ -330,17 +330,18 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
       </Grid>
 
       <Grid item xs={12}>
-        <Typography className="centeredFlex" color="inherit" component="div" noWrap>
+        <Typography color="inherit" component="div" noWrap>
           Expires
+          {" "}
           <FormField
             type="number"
             name="expiryDays"
             validate={[validateSingleMandatoryField, validateNonNegative]}
             parse={parseFloatValue}
             debounced={false}
-            className="mr-0-5 ml-0-5"
             inline
           />
+          {" "}
           days after purchase
         </Typography>
       </Grid>

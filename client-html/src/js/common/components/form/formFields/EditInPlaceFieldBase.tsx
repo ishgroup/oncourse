@@ -138,7 +138,7 @@ const EditInPlaceFieldBase = (
       error={invalid}
       variant="standard"
       margin="none"
-      className={clsx(className, classes.inputWrapper, inline && "mt-0-5")}
+      className={clsx(className, classes.inputWrapper)}
     >
     {
       label && (

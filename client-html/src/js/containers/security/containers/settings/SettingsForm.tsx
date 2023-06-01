@@ -175,15 +175,14 @@ class SettingsForm extends React.Component<any, any> {
                       variant="body2"
                       color="inherit"
                       component="span"
-                      className="centeredFlex"
                       noWrap
                       onClick={e => e.preventDefault()}
                     >
                       Require password change every
+                      {" "}
                       <FormField
                         type="number"
                         name={this.formModel.SecurityPasswordExpiryPeriod.uniqueKey}
-                        className="mr-0-5"
                         inline
                         min="1"
                         max="999"
@@ -199,6 +198,7 @@ class SettingsForm extends React.Component<any, any> {
                         }}
                         disabled={!enablePasswordScheduleField}
                       />
+                      {" "}
                       days
                     </Typography>
                   )}
@@ -211,12 +211,12 @@ class SettingsForm extends React.Component<any, any> {
                   }}
                   control={<Switch onChange={this.onEnableTOTPSchedule} checked={enableTOTPScheduleField} />}
                   label={(
-                    <Typography className="centeredFlex" variant="body2" color="inherit" component="span" onClick={e => e.preventDefault()} noWrap>
+                    <Typography variant="body2" color="inherit" component="span" onClick={e => e.preventDefault()} noWrap>
                       Require two factor authentication every
+                      {" "}
                       <FormField
                         type="number"
                         name={this.formModel.SecurityTFAExpiryPeriod.uniqueKey}
-                        className="mr-0-5"
                         inline
                         min="1"
                         max="999"
@@ -233,6 +233,7 @@ class SettingsForm extends React.Component<any, any> {
                         debounced={false}
                         disabled={!enableTOTPScheduleField}
                       />
+                      {" "}
                       hours
                     </Typography>
                   )}
@@ -241,12 +242,12 @@ class SettingsForm extends React.Component<any, any> {
             </Grid>
 
             <Grid item xs={12} sm={8} className="mt-3">
-              <Typography className="centeredFlex" variant="body2" color="inherit" component="span" onClick={e => e.preventDefault()} noWrap>
+              <Typography variant="body2" color="inherit" component="span" onClick={e => e.preventDefault()} noWrap>
                 Disable account after
+                {" "}
                 <FormField
                   type="number"
                   name={this.formModel.SecurityNumberIncorrectLoginAttempts.uniqueKey}
-                  className="mr-0-5"
                   inline
                   min="1"
                   max="999"
@@ -262,6 +263,7 @@ class SettingsForm extends React.Component<any, any> {
                   }}
                   debounced={false}
                 />
+                {" "}
                 incorrect login attempts
               </Typography>
             </Grid>

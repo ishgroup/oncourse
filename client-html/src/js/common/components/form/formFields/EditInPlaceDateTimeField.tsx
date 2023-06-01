@@ -49,7 +49,7 @@ const useStyles = makeAppStyles(theme => ({
     bottom: theme.spacing(-0.5)
   },
   inlineContainer: {
-    display: "inline-flex",
+    display: "inline-block",
   }
 }));
 

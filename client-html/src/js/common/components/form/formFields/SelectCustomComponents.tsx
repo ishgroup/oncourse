@@ -85,6 +85,7 @@ export const selectStyles = theme => createStyles({
     },
     multiple: {},
     inline: {
+      display: "inline-block"
       "& .MuiInput-root .MuiInput-input": {
         padding: 0
       },

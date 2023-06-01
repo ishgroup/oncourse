@@ -14,9 +14,8 @@ const CustomSelectorBody = ({ className, options, selectedIndex }: Props) => {
   return (
     <div className={className}>
       {option.type && (
-        <Typography className="centeredFlex" component="div">
+        <Typography component="div">
           <Field
-            className="mr-0-5"
             name={option.fieldName}
             component={option.component}
             type={option.type}

@@ -51,9 +51,6 @@ const styles = theme => createStyles({
       paddingTop: theme.spacing(1)
     },
   },
-  bulkChangeDaysInput: {
-    maxWidth: theme.spacing(10)
-  },
   bullkWrapperItem: {
     paddingLeft: theme.spacing(3.625)
   },
@@ -420,20 +417,19 @@ const CourseClassBulkChangeSessionForm = props => {
               <Grid item xs={12}>
                 <BulkItemWrapper classes={classes} title="Move later" name="moveForward">
                   <Grid container>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                       <FormField
                         type="number"
                         name="moveForward"
                         inline
                         step="1"
-                        className={classes.bulkChangeDaysInput}
                         onChange={onMoveLater}
                         debounced={false}
                       />
                       {" "}
                       days
                     </Grid>
-                    <Grid item xs={6} id="moveForwardInfo">
+                    <Grid item xs={8} id="moveForwardInfo">
                       {laterDate && `Earliest selected session will starts ${laterDate}`}
                     </Grid>
                   </Grid>
@@ -442,20 +438,19 @@ const CourseClassBulkChangeSessionForm = props => {
               <Grid item xs={12}>
                 <BulkItemWrapper classes={classes} title="Move earlier" name="moveBackward">
                   <Grid container>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                       <FormField
                         name="moveBackward"
                         type="number"
                         inline
                         step="1"
-                        className={classes.bulkChangeDaysInput}
                         onChange={onMoveEarlier}
                         debounced={false}
                       />
                       {" "}
                       days
                     </Grid>
-                    <Grid item xs={6} id="moveBackwardInfo">
+                    <Grid item xs={8} id="moveBackwardInfo">
                       {earlierDate && `Earliest selected session will be moved from ${earlierDate}`}
                     </Grid>
                   </Grid>
