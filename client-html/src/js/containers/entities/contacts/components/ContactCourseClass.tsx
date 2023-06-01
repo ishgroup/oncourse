@@ -67,6 +67,7 @@ const ContactCourseClass = React.memo<any>(props => {
           twoColumn={twoColumn}
           isNew={isNew}
           preventAddMessage="Save course before adding classes"
+          secondaryHeading
         />
       </Grid>
     </>

@@ -42,5 +42,9 @@ properties:
     type: integer
   defaultPayType:
     $ref: '../../enum/PayslipPayType.yaml'
+  customFields:
+    type: object
+    additionalProperties:
+      type: string
 
 
